@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import "./globals.css";
+import { Header } from "@/components/layout/Header";
 
 export const metadata: Metadata = {
   title: "Project Exodus | Sustainability Hub",
@@ -17,6 +18,7 @@ export default function RootLayout({
       '--font-geist-mono': '"SF Mono", Monaco, "Cascadia Code", "Roboto Mono", Consolas, monospace'
     } as React.CSSProperties}>
       <body className="antialiased">
+        <Header />
         {children}
       </body>
     </html>
