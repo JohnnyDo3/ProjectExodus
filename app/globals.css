@@ -1,26 +1,273 @@
 @import "tailwindcss";
 
+/*
+  Project Exodus Design System
+  By Sage - Earthy, Organic, Alive
+  🌱 Let's grow something beautiful
+*/
+
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  /* Earth tones - warm, inviting, grounded */
+  --earth-50: #f6f5f3;
+  --earth-100: #e8e5df;
+  --earth-200: #d4cec3;
+  --earth-300: #b9ae9d;
+  --earth-400: #a08f79;
+  --earth-500: #8c7a62;
+  --earth-600: #786856;
+  --earth-700: #625547;
+  --earth-800: #52473d;
+  --earth-900: #473d35;
+
+  /* Moss - vibrant life, growth */
+  --moss-50: #f3f8f3;
+  --moss-100: #e3f0e3;
+  --moss-200: #c7e1c9;
+  --moss-300: #9ccba0;
+  --moss-400: #6baf72;
+  --moss-500: #489450;
+  --moss-600: #36763d;
+  --moss-700: #2d5e32;
+  --moss-800: #274b2a;
+  --moss-900: #223e25;
+
+  /* Terra - warm terracotta accent */
+  --terra-50: #fdf6f3;
+  --terra-100: #fae9e1;
+  --terra-200: #f4d1c2;
+  --terra-300: #ebb09a;
+  --terra-400: #df8567;
+  --terra-500: #d46643;
+  --terra-600: #c24f31;
+  --terra-700: #a13f27;
+  --terra-800: #853625;
+  --terra-900: #6e3023;
+
+  /* Ocean - deep trust, calm */
+  --ocean-50: #f2f9f9;
+  --ocean-100: #ddf0f0;
+  --ocean-200: #bfe2e2;
+  --ocean-300: #91cdcd;
+  --ocean-400: #5db0b0;
+  --ocean-500: #429393;
+  --ocean-600: #357777;
+  --ocean-700: #2e6161;
+  --ocean-800: #295050;
+  --ocean-900: #264444;
+
+  /* Sand - soft, natural backgrounds */
+  --sand-50: #fafaf9;
+  --sand-100: #f5f5f3;
+  --sand-200: #e9e8e4;
+  --sand-300: #dad8d1;
+  --sand-400: #c5c2b8;
+  --sand-500: #aaa69a;
+  --sand-600: #8e8a7f;
+  --sand-700: #74716a;
+  --sand-800: #615f5a;
+  --sand-900: #53504c;
+
+  /* Semantic colors */
+  --background: var(--sand-50);
+  --foreground: var(--earth-900);
+  --primary: var(--moss-600);
+  --primary-foreground: white;
+  --secondary: var(--terra-500);
+  --secondary-foreground: white;
+  --accent: var(--ocean-500);
+  --accent-foreground: white;
+  --muted: var(--sand-200);
+  --muted-foreground: var(--earth-600);
+  --card: white;
+  --card-foreground: var(--earth-900);
+  --border: var(--sand-300);
+  --radius: 0.75rem;
 }
 
 @theme inline {
+  /* Colors */
   --color-background: var(--background);
   --color-foreground: var(--foreground);
+  --color-primary: var(--primary);
+  --color-secondary: var(--secondary);
+  --color-accent: var(--accent);
+  --color-muted: var(--muted);
+  --color-border: var(--border);
+
+  /* Earth palette */
+  --color-earth-*: initial;
+  --color-moss-*: initial;
+  --color-terra-*: initial;
+  --color-ocean-*: initial;
+  --color-sand-*: initial;
+
+  /* Typography */
   --font-sans: var(--font-geist-sans);
   --font-mono: var(--font-geist-mono);
+
+  /* Spacing */
+  --spacing-section-sm: 3rem;
+  --spacing-section-md: 6rem;
+  --spacing-section-lg: 8rem;
+
+  /* Radius */
+  --radius-sm: 0.25rem;
+  --radius-md: 0.5rem;
+  --radius-lg: var(--radius);
+  --radius-xl: 1rem;
+  --radius-2xl: 1.5rem;
+  --radius-full: 9999px;
 }
 
+/* Dark mode - deeper, richer earth tones */
 @media (prefers-color-scheme: dark) {
   :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
+    --background: var(--earth-900);
+    --foreground: var(--sand-100);
+    --primary: var(--moss-400);
+    --primary-foreground: var(--earth-900);
+    --secondary: var(--terra-400);
+    --accent: var(--ocean-400);
+    --muted: var(--earth-800);
+    --muted-foreground: var(--sand-400);
+    --card: var(--earth-800);
+    --card-foreground: var(--sand-100);
+    --border: var(--earth-700);
   }
 }
 
+/* Global styles - organic, flowing, alive */
+* {
+  @apply border-border;
+}
+
 body {
-  background: var(--background);
+  @apply bg-background text-foreground;
+  font-family: var(--font-sans), system-ui, sans-serif;
+  font-feature-settings: "rlig" 1, "calt" 1;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* Smooth scrolling with organic easing */
+html {
+  scroll-behavior: smooth;
+}
+
+/* Custom scrollbar - earthy! */
+::-webkit-scrollbar {
+  width: 12px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--sand-100);
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--moss-400);
+  border-radius: var(--radius-full);
+  border: 2px solid var(--sand-100);
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--moss-600);
+}
+
+/* Selection - mossy green! */
+::selection {
+  background: var(--moss-200);
+  color: var(--earth-900);
+}
+
+/* Focus styles - organic rings */
+:focus-visible {
+  outline: 2px solid var(--moss-500);
+  outline-offset: 2px;
+  border-radius: var(--radius-sm);
+}
+
+/* Headings - natural hierarchy */
+h1, h2, h3, h4, h5, h6 {
+  @apply font-semibold tracking-tight;
   color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+}
+
+h1 {
+  @apply text-5xl md:text-6xl lg:text-7xl;
+  line-height: 1.1;
+}
+
+h2 {
+  @apply text-4xl md:text-5xl;
+  line-height: 1.2;
+}
+
+h3 {
+  @apply text-3xl md:text-4xl;
+  line-height: 1.2;
+}
+
+/* Links - growing interaction */
+a {
+  @apply text-primary hover:text-moss-700 transition-colors duration-200;
+}
+
+/* Utility classes for organic effects */
+.glass-effect {
+  background: rgba(255, 255, 255, 0.7);
+  backdrop-filter: blur(12px);
+  border: 1px solid rgba(255, 255, 255, 0.3);
+}
+
+.earth-gradient {
+  background: linear-gradient(135deg, var(--earth-400) 0%, var(--moss-500) 50%, var(--ocean-600) 100%);
+}
+
+.hero-gradient {
+  background: linear-gradient(to bottom, var(--sand-50) 0%, var(--moss-50) 50%, var(--ocean-50) 100%);
+}
+
+.card-gradient {
+  background: linear-gradient(to bottom right, white 0%, var(--sand-50) 100%);
+}
+
+/* Animated gradient for hero sections */
+@keyframes gradient-shift {
+  0%, 100% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+}
+
+.animate-gradient {
+  background-size: 200% 200%;
+  animation: gradient-shift 15s ease infinite;
+}
+
+/* Organic hover lift */
+.hover-lift {
+  @apply transition-all duration-300 ease-out;
+}
+
+.hover-lift:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 12px 24px -10px rgba(72, 148, 80, 0.3);
+}
+
+/* Pulse effect for living elements */
+@keyframes pulse-grow {
+  0%, 100% {
+    transform: scale(1);
+    opacity: 1;
+  }
+  50% {
+    transform: scale(1.05);
+    opacity: 0.8;
+  }
+}
+
+.pulse-alive {
+  animation: pulse-grow 3s ease-in-out infinite;
 }
