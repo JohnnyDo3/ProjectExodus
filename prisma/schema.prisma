@@ -1,0 +1,697 @@
+// Project Exodus - Comprehensive Database Schema
+// Full-featured sustainability hub platform
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+// ============================================
+// AUTHENTICATION & USER MODELS
+// ============================================
+
+model User {
+  id            String    @id @default(cuid())
+  name          String?
+  email         String    @unique
+  emailVerified DateTime?
+  image         String?
+  password      String?   // For email/password auth
+  bio           String?   @db.Text
+  location      String?
+  interests     String[]  // Array of interests
+  role          UserRole  @default(USER)
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
+
+  // Relations
+  accounts              Account[]
+  sessions              Session[]
+  reviews               Review[]
+  articles              Article[]
+  comments              Comment[]
+  forumPosts            ForumPost[]
+  forumReplies          ForumReply[]
+  savedProducts         SavedProduct[]
+  savedArticles         SavedArticle[]
+  notifications         Notification[]
+  adminLogs             AdminLog[]
+  following             UserFollow[]       @relation("Following")
+  followers             UserFollow[]       @relation("Followers")
+  userBadges            UserBadge[]
+  projectMemberships    ProjectMember[]
+  createdProjects       Project[]          @relation("ProjectCreator")
+  reportedContent       Report[]
+  likedPosts            PostLike[]
+  likedReplies          ReplyLike[]
+
+  @@index([email])
+  @@index([role])
+}
+
+enum UserRole {
+  USER
+  EDITOR
+  MODERATOR
+  ADMIN
+  SUPER_ADMIN
+}
+
+// NextAuth.js Models
+model Account {
+  id                String  @id @default(cuid())
+  userId            String
+  type              String
+  provider          String
+  providerAccountId String
+  refresh_token     String? @db.Text
+  access_token      String? @db.Text
+  expires_at        Int?
+  token_type        String?
+  scope             String?
+  id_token          String? @db.Text
+  session_state     String?
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([provider, providerAccountId])
+  @@index([userId])
+}
+
+model Session {
+  id           String   @id @default(cuid())
+  sessionToken String   @unique
+  userId       String
+  expires      DateTime
+  user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId])
+}
+
+model VerificationToken {
+  identifier String
+  token      String   @unique
+  expires    DateTime
+
+  @@unique([identifier, token])
+}
+
+// ============================================
+// PRODUCT MODELS
+// ============================================
+
+model Product {
+  id                    String    @id @default(cuid())
+  name                  String
+  slug                  String    @unique
+  description           String    @db.Text
+  specifications        Json?     // Flexible product specs
+  price                 Decimal?  @db.Decimal(10, 2)
+  purchaseLink          String?
+  status                ProductStatus @default(PENDING)
+  featured              Boolean   @default(false)
+  viewCount             Int       @default(0)
+  createdAt             DateTime  @default(now())
+  updatedAt             DateTime  @updatedAt
+  publishedAt           DateTime?
+
+  // Relations
+  categoryId            String
+  category              Category  @relation(fields: [categoryId], references: [id])
+  vendorId              String?
+  vendor                Vendor?   @relation(fields: [vendorId], references: [id])
+  images                ProductImage[]
+  tags                  ProductTag[]
+  sustainabilityMetric  SustainabilityMetric?
+  reviews               Review[]
+  savedBy               SavedProduct[]
+  certifications        ProductCertification[]
+
+  @@index([slug])
+  @@index([categoryId])
+  @@index([vendorId])
+  @@index([status])
+  @@index([featured])
+}
+
+enum ProductStatus {
+  DRAFT
+  PENDING
+  PUBLISHED
+  ARCHIVED
+}
+
+model Category {
+  id          String     @id @default(cuid())
+  name        String
+  slug        String     @unique
+  description String?    @db.Text
+  icon        String?
+  parentId    String?
+  parent      Category?  @relation("CategoryHierarchy", fields: [parentId], references: [id])
+  children    Category[] @relation("CategoryHierarchy")
+  products    Product[]
+  createdAt   DateTime   @default(now())
+  updatedAt   DateTime   @updatedAt
+
+  @@index([slug])
+  @@index([parentId])
+}
+
+model Vendor {
+  id          String    @id @default(cuid())
+  name        String
+  slug        String    @unique
+  description String?   @db.Text
+  website     String?
+  logo        String?
+  products    Product[]
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+
+  @@index([slug])
+}
+
+model ProductImage {
+  id        String   @id @default(cuid())
+  url       String
+  alt       String?
+  order     Int      @default(0)
+  productId String
+  product   Product  @relation(fields: [productId], references: [id], onDelete: Cascade)
+  createdAt DateTime @default(now())
+
+  @@index([productId])
+}
+
+model Tag {
+  id        String       @id @default(cuid())
+  name      String       @unique
+  slug      String       @unique
+  products  ProductTag[]
+  articles  ArticleTag[]
+  createdAt DateTime     @default(now())
+
+  @@index([slug])
+}
+
+model ProductTag {
+  productId String
+  tagId     String
+  product   Product @relation(fields: [productId], references: [id], onDelete: Cascade)
+  tag       Tag     @relation(fields: [tagId], references: [id], onDelete: Cascade)
+
+  @@id([productId, tagId])
+  @@index([productId])
+  @@index([tagId])
+}
+
+model SustainabilityMetric {
+  id                    String   @id @default(cuid())
+  productId             String   @unique
+  product               Product  @relation(fields: [productId], references: [id], onDelete: Cascade)
+
+  // Carbon metrics
+  carbonFootprint       Decimal? @db.Decimal(10, 2) // kg CO2e
+  carbonSavings         Decimal? @db.Decimal(10, 2) // vs conventional
+
+  // Water metrics
+  waterUsage            Decimal? @db.Decimal(10, 2) // liters
+  waterSavings          Decimal? @db.Decimal(10, 2)
+
+  // Material metrics
+  recycledContent       Int?     // percentage
+  recyclable            Boolean  @default(false)
+  biodegradable         Boolean  @default(false)
+
+  // Energy metrics
+  energyEfficiencyRating String? // A+, A, B, etc.
+  renewableEnergy       Boolean  @default(false)
+
+  // Lifecycle
+  lifespanYears         Int?
+  repairability         Int?     // score 1-10
+
+  // Overall score (calculated)
+  sustainabilityScore   Int?     // 0-100
+
+  // Additional data
+  materialsBreakdown    Json?    // Flexible structure
+  certificationData     Json?
+
+  createdAt             DateTime @default(now())
+  updatedAt             DateTime @updatedAt
+}
+
+model Certification {
+  id          String                 @id @default(cuid())
+  name        String                 @unique
+  slug        String                 @unique
+  description String?                @db.Text
+  logo        String?
+  website     String?
+  products    ProductCertification[]
+  createdAt   DateTime               @default(now())
+
+  @@index([slug])
+}
+
+model ProductCertification {
+  productId       String
+  certificationId String
+  product         Product       @relation(fields: [productId], references: [id], onDelete: Cascade)
+  certification   Certification @relation(fields: [certificationId], references: [id], onDelete: Cascade)
+  verifiedAt      DateTime?
+  expiresAt       DateTime?
+
+  @@id([productId, certificationId])
+  @@index([productId])
+  @@index([certificationId])
+}
+
+model Review {
+  id        String   @id @default(cuid())
+  rating    Int      // 1-5
+  title     String?
+  content   String   @db.Text
+  verified  Boolean  @default(false) // Verified purchase
+  helpful   Int      @default(0)
+  productId String
+  userId    String
+  product   Product  @relation(fields: [productId], references: [id], onDelete: Cascade)
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([productId])
+  @@index([userId])
+  @@index([rating])
+}
+
+model SavedProduct {
+  id        String   @id @default(cuid())
+  userId    String
+  productId String
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  product   Product  @relation(fields: [productId], references: [id], onDelete: Cascade)
+  createdAt DateTime @default(now())
+
+  @@unique([userId, productId])
+  @@index([userId])
+  @@index([productId])
+}
+
+// ============================================
+// EDUCATIONAL CONTENT MODELS
+// ============================================
+
+model Article {
+  id              String           @id @default(cuid())
+  title           String
+  slug            String           @unique
+  excerpt         String?          @db.Text
+  content         String           @db.Text
+  coverImage      String?
+  readTime        Int?             // minutes
+  views           Int              @default(0)
+  status          ArticleStatus    @default(DRAFT)
+  featured        Boolean          @default(false)
+  authorId        String
+  author          User             @relation(fields: [authorId], references: [id])
+  categoryId      String
+  category        ArticleCategory  @relation(fields: [categoryId], references: [id])
+  tags            ArticleTag[]
+  comments        Comment[]
+  savedBy         SavedArticle[]
+  seoTitle        String?
+  seoDescription  String?
+  createdAt       DateTime         @default(now())
+  updatedAt       DateTime         @updatedAt
+  publishedAt     DateTime?
+
+  @@index([slug])
+  @@index([authorId])
+  @@index([categoryId])
+  @@index([status])
+  @@index([featured])
+}
+
+enum ArticleStatus {
+  DRAFT
+  PUBLISHED
+  ARCHIVED
+}
+
+model ArticleCategory {
+  id          String    @id @default(cuid())
+  name        String
+  slug        String    @unique
+  description String?   @db.Text
+  icon        String?
+  articles    Article[]
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+
+  @@index([slug])
+}
+
+model ArticleTag {
+  articleId String
+  tagId     String
+  article   Article @relation(fields: [articleId], references: [id], onDelete: Cascade)
+  tag       Tag     @relation(fields: [tagId], references: [id], onDelete: Cascade)
+
+  @@id([articleId, tagId])
+  @@index([articleId])
+  @@index([tagId])
+}
+
+model Comment {
+  id        String   @id @default(cuid())
+  content   String   @db.Text
+  articleId String
+  userId    String
+  parentId  String?  // For nested comments
+  article   Article  @relation(fields: [articleId], references: [id], onDelete: Cascade)
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  parent    Comment? @relation("CommentReplies", fields: [parentId], references: [id])
+  replies   Comment[] @relation("CommentReplies")
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([articleId])
+  @@index([userId])
+  @@index([parentId])
+}
+
+model SavedArticle {
+  id        String   @id @default(cuid())
+  userId    String
+  articleId String
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  article   Article  @relation(fields: [articleId], references: [id], onDelete: Cascade)
+  createdAt DateTime @default(now())
+
+  @@unique([userId, articleId])
+  @@index([userId])
+  @@index([articleId])
+}
+
+// ============================================
+// COMMUNITY FORUM MODELS
+// ============================================
+
+model ForumCategory {
+  id          String      @id @default(cuid())
+  name        String
+  slug        String      @unique
+  description String?     @db.Text
+  icon        String?
+  order       Int         @default(0)
+  posts       ForumPost[]
+  createdAt   DateTime    @default(now())
+  updatedAt   DateTime    @updatedAt
+
+  @@index([slug])
+}
+
+model ForumPost {
+  id         String        @id @default(cuid())
+  title      String
+  slug       String        @unique
+  content    String        @db.Text
+  pinned     Boolean       @default(false)
+  locked     Boolean       @default(false)
+  views      Int           @default(0)
+  userId     String
+  categoryId String
+  user       User          @relation(fields: [userId], references: [id], onDelete: Cascade)
+  category   ForumCategory @relation(fields: [categoryId], references: [id])
+  replies    ForumReply[]
+  likes      PostLike[]
+  reports    Report[]
+  createdAt  DateTime      @default(now())
+  updatedAt  DateTime      @updatedAt
+
+  @@index([slug])
+  @@index([userId])
+  @@index([categoryId])
+  @@index([pinned])
+}
+
+model ForumReply {
+  id        String       @id @default(cuid())
+  content   String       @db.Text
+  postId    String
+  userId    String
+  parentId  String?      // For nested replies
+  post      ForumPost    @relation(fields: [postId], references: [id], onDelete: Cascade)
+  user      User         @relation(fields: [userId], references: [id], onDelete: Cascade)
+  parent    ForumReply?  @relation("ReplyThread", fields: [parentId], references: [id])
+  children  ForumReply[] @relation("ReplyThread")
+  likes     ReplyLike[]
+  reports   Report[]
+  createdAt DateTime     @default(now())
+  updatedAt DateTime     @updatedAt
+
+  @@index([postId])
+  @@index([userId])
+  @@index([parentId])
+}
+
+model PostLike {
+  id        String    @id @default(cuid())
+  userId    String
+  postId    String
+  user      User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  post      ForumPost @relation(fields: [postId], references: [id], onDelete: Cascade)
+  createdAt DateTime  @default(now())
+
+  @@unique([userId, postId])
+  @@index([userId])
+  @@index([postId])
+}
+
+model ReplyLike {
+  id        String     @id @default(cuid())
+  userId    String
+  replyId   String
+  user      User       @relation(fields: [userId], references: [id], onDelete: Cascade)
+  reply     ForumReply @relation(fields: [replyId], references: [id], onDelete: Cascade)
+  createdAt DateTime   @default(now())
+
+  @@unique([userId, replyId])
+  @@index([userId])
+  @@index([replyId])
+}
+
+// ============================================
+// SOCIAL & GAMIFICATION MODELS
+// ============================================
+
+model UserFollow {
+  id          String   @id @default(cuid())
+  followerId  String
+  followingId String
+  follower    User     @relation("Following", fields: [followerId], references: [id], onDelete: Cascade)
+  following   User     @relation("Followers", fields: [followingId], references: [id], onDelete: Cascade)
+  createdAt   DateTime @default(now())
+
+  @@unique([followerId, followingId])
+  @@index([followerId])
+  @@index([followingId])
+}
+
+model Badge {
+  id          String      @id @default(cuid())
+  name        String      @unique
+  slug        String      @unique
+  description String      @db.Text
+  icon        String
+  criteria    Json        // Flexible criteria definition
+  userBadges  UserBadge[]
+  createdAt   DateTime    @default(now())
+
+  @@index([slug])
+}
+
+model UserBadge {
+  id        String   @id @default(cuid())
+  userId    String
+  badgeId   String
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  badge     Badge    @relation(fields: [badgeId], references: [id], onDelete: Cascade)
+  earnedAt  DateTime @default(now())
+
+  @@unique([userId, badgeId])
+  @@index([userId])
+  @@index([badgeId])
+}
+
+// ============================================
+// PROJECT COLLABORATION MODELS
+// ============================================
+
+model Project {
+  id          String          @id @default(cuid())
+  name        String
+  slug        String          @unique
+  description String          @db.Text
+  goal        String?         @db.Text
+  status      ProjectStatus   @default(ACTIVE)
+  coverImage  String?
+  creatorId   String
+  creator     User            @relation("ProjectCreator", fields: [creatorId], references: [id])
+  members     ProjectMember[]
+  createdAt   DateTime        @default(now())
+  updatedAt   DateTime        @updatedAt
+
+  @@index([slug])
+  @@index([creatorId])
+  @@index([status])
+}
+
+enum ProjectStatus {
+  PLANNING
+  ACTIVE
+  COMPLETED
+  ARCHIVED
+}
+
+model ProjectMember {
+  id        String        @id @default(cuid())
+  projectId String
+  userId    String
+  role      ProjectRole   @default(MEMBER)
+  project   Project       @relation(fields: [projectId], references: [id], onDelete: Cascade)
+  user      User          @relation(fields: [userId], references: [id], onDelete: Cascade)
+  joinedAt  DateTime      @default(now())
+
+  @@unique([projectId, userId])
+  @@index([projectId])
+  @@index([userId])
+}
+
+enum ProjectRole {
+  MEMBER
+  MODERATOR
+  ADMIN
+}
+
+// ============================================
+// NOTIFICATION & MODERATION MODELS
+// ============================================
+
+model Notification {
+  id        String           @id @default(cuid())
+  type      NotificationType
+  title     String
+  message   String           @db.Text
+  link      String?
+  read      Boolean          @default(false)
+  userId    String
+  user      User             @relation(fields: [userId], references: [id], onDelete: Cascade)
+  createdAt DateTime         @default(now())
+
+  @@index([userId])
+  @@index([read])
+  @@index([createdAt])
+}
+
+enum NotificationType {
+  PRODUCT_APPROVED
+  ARTICLE_PUBLISHED
+  COMMENT_REPLY
+  FORUM_REPLY
+  NEW_FOLLOWER
+  BADGE_EARNED
+  PROJECT_INVITE
+  SYSTEM
+}
+
+model Report {
+  id           String       @id @default(cuid())
+  reason       String       @db.Text
+  status       ReportStatus @default(PENDING)
+  reporterId   String
+  reporter     User         @relation(fields: [reporterId], references: [id])
+
+  // Polymorphic relation (report can be for post or reply)
+  forumPostId  String?
+  forumReplyId String?
+  forumPost    ForumPost?   @relation(fields: [forumPostId], references: [id], onDelete: Cascade)
+  forumReply   ForumReply?  @relation(fields: [forumReplyId], references: [id], onDelete: Cascade)
+
+  createdAt    DateTime     @default(now())
+  resolvedAt   DateTime?
+
+  @@index([reporterId])
+  @@index([status])
+  @@index([forumPostId])
+  @@index([forumReplyId])
+}
+
+enum ReportStatus {
+  PENDING
+  REVIEWING
+  RESOLVED
+  DISMISSED
+}
+
+model AdminLog {
+  id          String         @id @default(cuid())
+  action      AdminAction
+  description String         @db.Text
+  metadata    Json?
+  userId      String
+  user        User           @relation(fields: [userId], references: [id])
+  createdAt   DateTime       @default(now())
+
+  @@index([userId])
+  @@index([action])
+  @@index([createdAt])
+}
+
+enum AdminAction {
+  USER_BANNED
+  USER_UNBANNED
+  PRODUCT_APPROVED
+  PRODUCT_REJECTED
+  ARTICLE_PUBLISHED
+  ARTICLE_UNPUBLISHED
+  CONTENT_DELETED
+  REPORT_RESOLVED
+  SETTINGS_CHANGED
+  OTHER
+}
+
+// ============================================
+// SYSTEM & SETTINGS MODELS
+// ============================================
+
+model EmailTemplate {
+  id        String   @id @default(cuid())
+  name      String   @unique
+  subject   String
+  html      String   @db.Text
+  text      String?  @db.Text
+  variables Json?    // Available variables
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([name])
+}
+
+model SiteSettings {
+  id          String   @id @default(cuid())
+  key         String   @unique
+  value       Json
+  description String?  @db.Text
+  updatedAt   DateTime @updatedAt
+
+  @@index([key])
+}
