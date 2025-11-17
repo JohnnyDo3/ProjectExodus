@@ -94,12 +94,65 @@
   --color-muted: var(--muted);
   --color-border: var(--border);
 
-  /* Earth palette */
-  --color-earth-*: initial;
-  --color-moss-*: initial;
-  --color-terra-*: initial;
-  --color-ocean-*: initial;
-  --color-sand-*: initial;
+  /* Earth Tones */
+  --color-earth-50: #f6f5f3;
+  --color-earth-100: #e8e5df;
+  --color-earth-200: #d4cec3;
+  --color-earth-300: #b9ae9d;
+  --color-earth-400: #a08f79;
+  --color-earth-500: #8c7a62;
+  --color-earth-600: #786856;
+  --color-earth-700: #625547;
+  --color-earth-800: #52473d;
+  --color-earth-900: #473d35;
+
+  /* Moss Green */
+  --color-moss-50: #f3f8f3;
+  --color-moss-100: #e3f0e3;
+  --color-moss-200: #c7e1c9;
+  --color-moss-300: #9ccba0;
+  --color-moss-400: #6baf72;
+  --color-moss-500: #489450;
+  --color-moss-600: #36763d;
+  --color-moss-700: #2d5e32;
+  --color-moss-800: #274b2a;
+  --color-moss-900: #223e25;
+
+  /* Terracotta */
+  --color-terra-50: #fdf6f3;
+  --color-terra-100: #fae9e1;
+  --color-terra-200: #f4d1c2;
+  --color-terra-300: #ebb09a;
+  --color-terra-400: #df8567;
+  --color-terra-500: #d46643;
+  --color-terra-600: #c24f31;
+  --color-terra-700: #a13f27;
+  --color-terra-800: #853625;
+  --color-terra-900: #6e3023;
+
+  /* Ocean Blue */
+  --color-ocean-50: #f2f9f9;
+  --color-ocean-100: #ddf0f0;
+  --color-ocean-200: #bfe2e2;
+  --color-ocean-300: #91cdcd;
+  --color-ocean-400: #5db0b0;
+  --color-ocean-500: #429393;
+  --color-ocean-600: #357777;
+  --color-ocean-700: #2e6161;
+  --color-ocean-800: #295050;
+  --color-ocean-900: #264444;
+
+  /* Sand */
+  --color-sand-50: #fafaf9;
+  --color-sand-100: #f5f5f3;
+  --color-sand-200: #e9e8e4;
+  --color-sand-300: #dad8d1;
+  --color-sand-400: #c5c2b8;
+  --color-sand-500: #aaa69a;
+  --color-sand-600: #8e8a7f;
+  --color-sand-700: #74716a;
+  --color-sand-800: #615f5a;
+  --color-sand-900: #53504c;
 
   /* Typography */
   --font-sans: var(--font-geist-sans);
