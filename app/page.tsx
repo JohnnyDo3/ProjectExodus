@@ -22,9 +22,9 @@ export default function Home() {
               </span>
             </div>
 
-            <h1 className="text-5xl md:text-7xl font-bold tracking-tight">
+            <h1 className="text-5xl md:text-7xl font-bold tracking-tight text-earth-900">
               Welcome to{' '}
-              <span className="earth-gradient bg-clip-text text-transparent">
+              <span className="earth-gradient-text">
                 Project Exodus
               </span>
             </h1>
@@ -131,7 +131,7 @@ export default function Home() {
               { value: '🌱', label: 'Living Platform' },
             ].map((stat, i) => (
               <div key={i} className="text-center space-y-2">
-                <div className="text-4xl md:text-5xl font-bold earth-gradient bg-clip-text text-transparent">
+                <div className="text-4xl md:text-5xl font-bold earth-gradient-text">
                   {stat.value}
                 </div>
                 <div className="text-sm text-earth-600 font-medium">

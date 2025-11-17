@@ -38,7 +38,7 @@ export default function CommunityPage() {
           <div className="max-w-3xl mx-auto text-center space-y-6">
             <h1 className="text-5xl md:text-6xl font-bold">
               Join the{' '}
-              <span className="earth-gradient bg-clip-text text-transparent">
+              <span className="earth-gradient-text">
                 Community
               </span>
             </h1>
@@ -79,25 +79,25 @@ export default function CommunityPage() {
           <div className="max-w-4xl mx-auto mb-16">
             <div className="grid grid-cols-2 md:grid-cols-4 gap-6 text-center">
               <div>
-                <div className="text-4xl font-bold earth-gradient bg-clip-text text-transparent">
+                <div className="text-4xl font-bold earth-gradient-text">
                   0
                 </div>
                 <div className="text-sm text-earth-600 mt-1">Active Members</div>
               </div>
               <div>
-                <div className="text-4xl font-bold earth-gradient bg-clip-text text-transparent">
+                <div className="text-4xl font-bold earth-gradient-text">
                   0
                 </div>
                 <div className="text-sm text-earth-600 mt-1">Forum Posts</div>
               </div>
               <div>
-                <div className="text-4xl font-bold earth-gradient bg-clip-text text-transparent">
+                <div className="text-4xl font-bold earth-gradient-text">
                   0
                 </div>
                 <div className="text-sm text-earth-600 mt-1">Active Projects</div>
               </div>
               <div>
-                <div className="text-4xl font-bold earth-gradient bg-clip-text text-transparent">
+                <div className="text-4xl font-bold earth-gradient-text">
                   0
                 </div>
                 <div className="text-sm text-earth-600 mt-1">Badges Earned</div>

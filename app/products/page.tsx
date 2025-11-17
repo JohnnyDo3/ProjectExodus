@@ -74,7 +74,7 @@ export default async function ProductsPage() {
           <div className="max-w-3xl mx-auto text-center space-y-6">
             <h1 className="text-5xl md:text-6xl font-bold">
               Discover Sustainable{' '}
-              <span className="earth-gradient bg-clip-text text-transparent">
+              <span className="earth-gradient-text">
                 Products
               </span>
             </h1>

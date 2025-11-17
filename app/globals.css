@@ -267,13 +267,21 @@ a {
 
 /* Utility classes for organic effects */
 .glass-effect {
-  background: rgba(255, 255, 255, 0.7);
+  background: rgba(255, 255, 255, 0.95);
   backdrop-filter: blur(12px);
-  border: 1px solid rgba(255, 255, 255, 0.3);
+  border: 1px solid rgba(255, 255, 255, 0.5);
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
 }
 
 .earth-gradient {
   background: linear-gradient(135deg, var(--earth-400) 0%, var(--moss-500) 50%, var(--ocean-600) 100%);
+}
+
+.earth-gradient-text {
+  background: linear-gradient(135deg, var(--moss-600) 0%, var(--ocean-600) 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
 }
 
 .hero-gradient {

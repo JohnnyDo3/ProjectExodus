@@ -34,7 +34,7 @@ export default function AboutPage() {
           <div className="max-w-4xl mx-auto text-center space-y-6">
             <h1 className="text-5xl md:text-6xl font-bold">
               About{' '}
-              <span className="earth-gradient bg-clip-text text-transparent">
+              <span className="earth-gradient-text">
                 Project Exodus
               </span>
             </h1>
