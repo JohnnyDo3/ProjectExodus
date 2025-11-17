@@ -3,6 +3,9 @@
 import { useState } from 'react'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/Card'
 import { Button } from '@/components/ui/Button'
+import { Input } from '@/components/ui/Input'
+import { Select } from '@/components/ui/Select'
+import { Textarea } from '@/components/ui/Textarea'
 import { ArrowLeft, Save } from 'lucide-react'
 import Link from 'next/link'
 
@@ -73,92 +76,59 @@ export default function NewProductPage() {
               <CardTitle>Basic Information</CardTitle>
             </CardHeader>
             <CardContent className="space-y-4">
-              <div>
-                <label htmlFor="name" className="block text-sm font-medium text-earth-900 mb-2">
-                  Product Name *
-                </label>
-                <input
-                  type="text"
-                  id="name"
-                  name="name"
-                  required
-                  value={formData.name}
-                  onChange={handleChange}
-                  className="w-full px-4 py-2 border border-sand-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-moss-500"
-                  placeholder="e.g., Solar Panel 300W Monocrystalline"
-                />
-              </div>
+              <Input
+                label="Product Name"
+                name="name"
+                required
+                value={formData.name}
+                onChange={handleChange}
+                placeholder="e.g., Solar Panel 300W Monocrystalline"
+              />
 
-              <div>
-                <label htmlFor="slug" className="block text-sm font-medium text-earth-900 mb-2">
-                  URL Slug *
-                </label>
-                <input
-                  type="text"
-                  id="slug"
-                  name="slug"
-                  required
-                  value={formData.slug}
-                  onChange={handleChange}
-                  className="w-full px-4 py-2 border border-sand-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-moss-500"
-                  placeholder="e.g., solar-panel-300w"
-                />
-                <p className="text-sm text-earth-600 mt-1">
-                  This will be the URL: /products/{formData.slug || 'your-slug'}
-                </p>
-              </div>
+              <Input
+                label="URL Slug"
+                name="slug"
+                required
+                value={formData.slug}
+                onChange={handleChange}
+                placeholder="e.g., solar-panel-300w"
+                hint={`This will be the URL: /products/${formData.slug || 'your-slug'}`}
+              />
 
-              <div>
-                <label htmlFor="description" className="block text-sm font-medium text-earth-900 mb-2">
-                  Description *
-                </label>
-                <textarea
-                  id="description"
-                  name="description"
-                  required
-                  rows={5}
-                  value={formData.description}
-                  onChange={handleChange}
-                  className="w-full px-4 py-2 border border-sand-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-moss-500"
-                  placeholder="Describe the product, its features, and benefits..."
-                />
-              </div>
+              <Textarea
+                label="Description"
+                name="description"
+                required
+                rows={5}
+                value={formData.description}
+                onChange={handleChange}
+                placeholder="Describe the product, its features, and benefits..."
+              />
 
               <div className="grid md:grid-cols-2 gap-4">
-                <div>
-                  <label htmlFor="price" className="block text-sm font-medium text-earth-900 mb-2">
-                    Price (USD)
-                  </label>
-                  <input
-                    type="number"
-                    id="price"
-                    name="price"
-                    step="0.01"
-                    min="0"
-                    value={formData.price}
-                    onChange={handleChange}
-                    className="w-full px-4 py-2 border border-sand-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-moss-500"
-                    placeholder="0.00"
-                  />
-                </div>
+                <Input
+                  label="Price (USD)"
+                  name="price"
+                  type="number"
+                  step="0.01"
+                  min="0"
+                  value={formData.price}
+                  onChange={handleChange}
+                  placeholder="0.00"
+                />
 
-                <div>
-                  <label htmlFor="status" className="block text-sm font-medium text-earth-900 mb-2">
-                    Status *
-                  </label>
-                  <select
-                    id="status"
-                    name="status"
-                    required
-                    value={formData.status}
-                    onChange={handleChange}
-                    className="w-full px-4 py-2 border border-sand-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-moss-500"
-                  >
-                    <option value="DRAFT">Draft</option>
-                    <option value="PUBLISHED">Published</option>
-                    <option value="ARCHIVED">Archived</option>
-                  </select>
-                </div>
+                <Select
+                  label="Status"
+                  name="status"
+                  required
+                  value={formData.status}
+                  onChange={handleChange}
+                  options={[
+                    { value: 'DRAFT', label: 'Draft' },
+                    { value: 'PUBLISHED', label: 'Published' },
+                    { value: 'ARCHIVED', label: 'Archived' },
+                  ]}
+                />
               </div>
 
               <div className="flex items-center gap-2">
@@ -183,41 +153,31 @@ export default function NewProductPage() {
               <CardTitle>Category & Vendor</CardTitle>
             </CardHeader>
             <CardContent className="space-y-4">
-              <div>
-                <label htmlFor="categoryId" className="block text-sm font-medium text-earth-900 mb-2">
-                  Category *
-                </label>
-                <select
-                  id="categoryId"
-                  name="categoryId"
-                  required
-                  value={formData.categoryId}
-                  onChange={handleChange}
-                  className="w-full px-4 py-2 border border-sand-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-moss-500"
-                >
-                  <option value="">Select a category...</option>
-                  <option value="cat-1">Energy & Power Generation</option>
-                  <option value="cat-2">Water Systems & Purification</option>
-                  <option value="cat-3">Sustainable Materials</option>
-                </select>
-              </div>
+              <Select
+                label="Category"
+                name="categoryId"
+                required
+                value={formData.categoryId}
+                onChange={handleChange}
+                options={[
+                  { value: '', label: 'Select a category...', disabled: true },
+                  { value: 'cat-1', label: 'Energy & Power Generation' },
+                  { value: 'cat-2', label: 'Water Systems & Purification' },
+                  { value: 'cat-3', label: 'Sustainable Materials' },
+                ]}
+              />
 
-              <div>
-                <label htmlFor="vendorId" className="block text-sm font-medium text-earth-900 mb-2">
-                  Vendor
-                </label>
-                <select
-                  id="vendorId"
-                  name="vendorId"
-                  value={formData.vendorId}
-                  onChange={handleChange}
-                  className="w-full px-4 py-2 border border-sand-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-moss-500"
-                >
-                  <option value="">Select a vendor...</option>
-                  <option value="vendor-1">Goal Zero</option>
-                  <option value="vendor-2">Berkey Filters</option>
-                </select>
-              </div>
+              <Select
+                label="Vendor"
+                name="vendorId"
+                value={formData.vendorId}
+                onChange={handleChange}
+                options={[
+                  { value: '', label: 'Select a vendor...' },
+                  { value: 'vendor-1', label: 'Goal Zero' },
+                  { value: 'vendor-2', label: 'Berkey Filters' },
+                ]}
+              />
             </CardContent>
           </Card>
 
@@ -240,7 +200,7 @@ export default function NewProductPage() {
               <p className="text-sm text-ocean-800">
                 <strong>Note:</strong> This form is not yet connected to the database.
                 Authentication and API integration will be added in the next phase.
-                For now, this demonstrates the admin UI structure.
+                For now, this demonstrates the admin UI structure and our new reusable form components!
               </p>
             </CardContent>
           </Card>
