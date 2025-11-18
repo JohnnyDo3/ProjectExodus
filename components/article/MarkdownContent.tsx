@@ -21,7 +21,7 @@ export function MarkdownContent({ content }: MarkdownContentProps) {
     html = html.replace(/\*(.+?)\*/g, '<em class="italic">$1</em>')
 
     // Lists - Ordered
-    html = html.replace(/^\d+\.\s+(.+)$/gm, '<li class="ml-6 mb-3 text-xl font-bold" style="color: #000">$1</li>')
+    html = html.replace(/^\d+\.\s+(.+)$/gm, '<li class="ml-6 mb-3 text-lg font-semibold" style="color: #1a1a1a">$1</li>')
     html = html.replace(/(<li.*<\/li>\n?)+/g, '<ol class="list-decimal list-outside space-y-3 mb-8">$&</ol>')
 
     // Paragraphs
@@ -29,7 +29,7 @@ export function MarkdownContent({ content }: MarkdownContentProps) {
       // Don't wrap headers, lists
       if (para.match(/^<[houl]/)) return para
       if (para.trim() === '') return ''
-      return `<p class="text-xl font-bold leading-relaxed mb-8" style="color: #000">${para}</p>`
+      return `<p class="text-lg font-semibold leading-relaxed mb-6" style="color: #1a1a1a">${para}</p>`
     }).join('\n')
 
     // Line breaks
