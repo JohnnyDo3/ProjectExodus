@@ -29,57 +29,67 @@ export function ProductCard({ product }: ProductCardProps) {
   const score = product.sustainabilityMetric?.sustainabilityScore
 
   return (
-    <Card className="card-gradient hover-lift h-full flex flex-col">
-      <CardHeader>
+    <Card className="hover-lift h-full flex flex-col border-4 border-moss-200 hover:border-moss-400 transition-all transform hover:scale-105 bg-white shadow-lg">
+      <CardHeader className="pb-4">
         {product.featured && (
-          <div className="flex items-center gap-1 text-xs text-moss-600 font-medium mb-2">
-            <Leaf className="w-3 h-3" />
-            Featured
+          <div className="flex items-center gap-2 mb-3">
+            <div className="px-3 py-1 rounded-full bg-gradient-to-r from-moss-500 to-ocean-500 flex items-center gap-1.5 shadow-md">
+              <Leaf className="w-4 h-4 text-white" />
+              <span className="text-xs font-black text-white uppercase tracking-wide">Featured</span>
+            </div>
           </div>
         )}
-        <div className="flex items-start justify-between gap-2">
-          <CardTitle className="text-lg line-clamp-2">{product.name}</CardTitle>
+        <div className="flex items-start justify-between gap-3">
+          <CardTitle className="text-xl font-black line-clamp-2" style={{ color: '#000' }}>
+            {product.name.toUpperCase()}
+          </CardTitle>
           {score && (
-            <div className="flex-shrink-0 w-12 h-12 rounded-full bg-moss-100 flex items-center justify-center">
-              <span className="text-lg font-bold text-moss-700">{score}</span>
+            <div className="flex-shrink-0 w-14 h-14 rounded-full bg-gradient-to-br from-moss-500 to-ocean-500 flex items-center justify-center shadow-lg">
+              <span className="text-xl font-black text-white">{score}</span>
             </div>
           )}
         </div>
-        <CardDescription className="text-xs text-earth-600">
-          {product.category.name}
-          {product.vendor && ` • ${product.vendor.name}`}
+        <CardDescription className="text-sm font-bold mt-2" style={{ color: '#666' }}>
+          {product.category.name.toUpperCase()}
+          {product.vendor && (
+            <>
+              <span className="mx-1.5">•</span>
+              <span className="text-moss-600">{product.vendor.name}</span>
+            </>
+          )}
         </CardDescription>
       </CardHeader>
 
-      <CardContent className="flex-grow">
-        <p className="text-sm text-earth-700 line-clamp-3">
+      <CardContent className="flex-grow pb-4">
+        <p className="text-sm font-medium line-clamp-3 mb-4" style={{ color: '#444' }}>
           {product.description}
         </p>
         {product.sustainabilityMetric?.carbonSavings && (
-          <div className="mt-4 p-3 rounded-lg bg-moss-50 border border-moss-200">
-            <p className="text-xs text-moss-800">
-              <span className="font-semibold">
+          <div className="p-3 rounded-xl bg-gradient-to-br from-moss-50 to-moss-100 border-2 border-moss-300">
+            <p className="text-xs font-bold text-moss-900">
+              <span className="text-base">
                 {product.sustainabilityMetric.carbonSavings.toFixed(0)} kg CO₂
               </span>
-              {' '}saved vs conventional
+              <br />
+              <span className="text-moss-700">SAVED VS CONVENTIONAL</span>
             </p>
           </div>
         )}
       </CardContent>
 
-      <CardFooter className="flex items-center justify-between border-t border-sand-200 pt-4">
+      <CardFooter className="flex items-center justify-between border-t-4 border-sand-200 pt-5">
         {product.price ? (
-          <span className="text-lg font-bold text-earth-900">
+          <span className="text-2xl font-black" style={{ color: '#000' }}>
             ${product.price.toFixed(2)}
           </span>
         ) : (
-          <span className="text-sm text-muted-foreground">
-            See pricing
+          <span className="text-sm font-bold" style={{ color: '#666' }}>
+            SEE PRICING
           </span>
         )}
         <Link href={`/products/${product.slug}`}>
-          <Button size="sm">
-            View Details
+          <Button size="sm" className="font-black shadow-lg px-6">
+            VIEW →
           </Button>
         </Link>
       </CardFooter>
