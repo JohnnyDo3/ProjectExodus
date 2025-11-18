@@ -46,11 +46,6 @@ export function Header() {
           {/* CTA Buttons */}
           <div className="hidden md:flex items-center gap-4">
             <ThemeToggle />
-            <Link href="/admin">
-              <Button variant="ghost" size="sm">
-                Admin
-              </Button>
-            </Link>
             <Link href="/auth/signin">
               <Button variant="outline" size="sm">
                 Sign In
@@ -93,11 +88,6 @@ export function Header() {
               </Link>
             ))}
             <div className="pt-4 space-y-2 border-t border-sand-300">
-              <Link href="/admin" className="block" onClick={() => setMobileMenuOpen(false)}>
-                <Button variant="ghost" size="sm" className="w-full">
-                  Admin
-                </Button>
-              </Link>
               <Link href="/auth/signin" className="block" onClick={() => setMobileMenuOpen(false)}>
                 <Button variant="outline" size="sm" className="w-full">
                   Sign In
