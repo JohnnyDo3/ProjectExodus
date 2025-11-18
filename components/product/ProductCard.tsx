@@ -68,7 +68,7 @@ export function ProductCard({ product }: ProductCardProps) {
           <div className="p-3 rounded-xl bg-gradient-to-br from-moss-50 to-moss-100 border-2 border-moss-300">
             <p className="text-xs font-bold text-moss-900">
               <span className="text-base">
-                {product.sustainabilityMetric.carbonSavings.toFixed(0)} kg CO₂
+                {Number(product.sustainabilityMetric.carbonSavings).toFixed(0)} kg CO₂
               </span>
               <br />
               <span className="text-moss-700">SAVED VS CONVENTIONAL</span>
@@ -80,7 +80,7 @@ export function ProductCard({ product }: ProductCardProps) {
       <CardFooter className="flex items-center justify-between border-t-4 border-sand-200 pt-5">
         {product.price ? (
           <span className="text-2xl font-black" style={{ color: '#000' }}>
-            ${product.price.toFixed(2)}
+            ${Number(product.price).toFixed(2)}
           </span>
         ) : (
           <span className="text-sm font-bold" style={{ color: '#666' }}>
