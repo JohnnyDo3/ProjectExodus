@@ -18,7 +18,7 @@ export default function Home() {
         </div>
 
         {/* Main Hero Content */}
-        <div className="relative z-10 container mx-auto px-4 sm:px-6 lg:px-8 py-8">
+        <div className="relative z-10 container mx-auto px-4 sm:px-6 lg:px-8 py-4">
           <div className="max-w-6xl mx-auto">
             {/* Badge - Floating */}
             <div className="flex justify-center mb-8 animate-bounce" style={{ animationDuration: '3s' }}>
@@ -77,7 +77,7 @@ export default function Home() {
             </p>
 
             {/* CTA Buttons - Large & Prominent */}
-            <div className="flex flex-col sm:flex-row gap-6 justify-center items-center">
+            <div className="flex flex-col sm:flex-row gap-8 justify-center items-center">
               <Button size="lg" className="text-xl px-12 py-8 rounded-2xl shadow-2xl hover:scale-110 transition-transform duration-300" style={{
                 background: 'linear-gradient(135deg, #36763d, #2d5e32)',
                 minWidth: '250px'
@@ -103,7 +103,7 @@ export default function Home() {
       </section>
 
       {/* Mission Section - Asymmetric Layout */}
-      <section className="py-48 bg-white relative overflow-hidden">
+      <section className="py-32 bg-white relative overflow-hidden">
         {/* Background Pattern */}
         <div className="absolute inset-0 opacity-5" style={{
           backgroundImage: 'radial-gradient(circle, #36763d 1px, transparent 1px)',
@@ -197,9 +197,9 @@ export default function Home() {
             ].map((stat, i) => (
               <div key={i} className="text-center transform hover:scale-110 transition-transform duration-300">
                 <div style={{
-                  fontSize: 'clamp(3rem, 8vw, 7rem)',
+                  fontSize: 'clamp(2.5rem, 6vw, 5rem)',
                   fontWeight: 900,
-                  lineHeight: 1,
+                  lineHeight: 1.2,
                   background: 'linear-gradient(135deg, #9ccba0, #91cdcd)',
                   WebkitBackgroundClip: 'text',
                   WebkitTextFillColor: 'transparent',
@@ -255,15 +255,35 @@ export default function Home() {
       </section>
 
       {/* Footer */}
-      <footer className="bg-earth-900 text-sand-100 py-16 border-t-4 border-moss-500">
+      <footer className="bg-earth-900 text-sand-100 py-20 border-t-8 border-moss-500">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="text-center space-y-6">
-            <h3 className="text-4xl font-black">PROJECT EXODUS</h3>
-            <p className="text-sand-300 max-w-2xl mx-auto text-lg">
+          <div className="text-center space-y-8">
+            <h3 className="text-5xl font-black tracking-tight" style={{
+              background: 'linear-gradient(135deg, #9ccba0, #91cdcd)',
+              WebkitBackgroundClip: 'text',
+              WebkitTextFillColor: 'transparent'
+            }}>
+              PROJECT EXODUS
+            </h3>
+            <p className="text-sand-200 max-w-2xl mx-auto text-xl font-semibold">
               Building the world's most accessible sustainability hub. One bold step at a time.
             </p>
-            <div className="pt-6 text-sm text-sand-400 font-medium">
-              Made with 🌱 by Sage • 2025
+            <div className="flex justify-center gap-8 pt-4">
+              <Link href="/products" className="text-sand-300 hover:text-moss-300 font-bold uppercase text-sm transition-colors">
+                Products
+              </Link>
+              <Link href="/learn" className="text-sand-300 hover:text-moss-300 font-bold uppercase text-sm transition-colors">
+                Learn
+              </Link>
+              <Link href="/community" className="text-sand-300 hover:text-moss-300 font-bold uppercase text-sm transition-colors">
+                Community
+              </Link>
+              <Link href="/about" className="text-sand-300 hover:text-moss-300 font-bold uppercase text-sm transition-colors">
+                About
+              </Link>
+            </div>
+            <div className="pt-6 text-base text-sand-400 font-bold tracking-wide">
+              MADE WITH 🌱 BY SAGE • 2025
             </div>
           </div>
         </div>

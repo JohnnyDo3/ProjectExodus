@@ -17,16 +17,16 @@ export function Header() {
   ]
 
   return (
-    <header className="sticky top-0 z-50 glass-effect border-b border-sand-300">
+    <header className="sticky top-0 z-50 bg-white border-b-4 border-moss-500 shadow-sm">
       <nav className="container mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="flex items-center justify-between h-16">
+        <div className="flex items-center justify-between h-20">
           {/* Logo */}
-          <Link href="/" className="flex items-center gap-2 group">
-            <div className="w-10 h-10 rounded-full bg-moss-600 flex items-center justify-center pulse-alive">
-              <Leaf className="w-6 h-6 text-white" />
+          <Link href="/" className="flex items-center gap-3 group">
+            <div className="w-12 h-12 rounded-full bg-gradient-to-br from-moss-600 to-ocean-600 flex items-center justify-center pulse-alive shadow-lg">
+              <Leaf className="w-7 h-7 text-white" />
             </div>
-            <span className="text-xl font-bold text-earth-900 group-hover:text-moss-700 transition-colors">
-              Project Exodus
+            <span className="text-2xl font-black text-earth-900 group-hover:text-moss-700 transition-colors tracking-tight">
+              PROJECT EXODUS
             </span>
           </Link>
 
@@ -36,7 +36,7 @@ export function Header() {
               <Link
                 key={item.name}
                 href={item.href}
-                className="text-earth-700 hover:text-moss-600 font-medium transition-colors"
+                className="text-earth-900 hover:text-moss-600 font-bold text-base transition-colors uppercase tracking-wide"
               >
                 {item.name}
               </Link>
@@ -47,12 +47,12 @@ export function Header() {
           <div className="hidden md:flex items-center gap-4">
             <ThemeToggle />
             <Link href="/auth/signin">
-              <Button variant="outline" size="sm">
+              <Button variant="outline" size="sm" className="font-bold border-2">
                 Sign In
               </Button>
             </Link>
             <Link href="/auth/signup">
-              <Button size="sm">
+              <Button size="sm" className="font-bold shadow-lg">
                 Get Started
               </Button>
             </Link>

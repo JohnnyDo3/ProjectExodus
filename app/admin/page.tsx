@@ -1,6 +1,7 @@
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/Card'
 import { Button } from '@/components/ui/Button'
-import { Package, FileText, Users, MessageSquare, Settings, BarChart3 } from 'lucide-react'
+import { Package, FileText, Users, MessageSquare, Settings, BarChart3, Tag, FolderTree } from 'lucide-react'
+import Link from 'next/link'
 
 export default function AdminDashboard() {
   const stats = [
@@ -13,7 +14,9 @@ export default function AdminDashboard() {
   const quickActions = [
     { name: 'Add Product', href: '/admin/products/new', icon: Package, color: 'moss' },
     { name: 'Write Article', href: '/admin/articles/new', icon: FileText, color: 'ocean' },
-    { name: 'Manage Users', href: '/admin/users', icon: Users, color: 'terra' },
+    { name: 'Manage Tags', href: '/admin/tags', icon: Tag, color: 'terra' },
+    { name: 'Manage Categories', href: '/admin/categories', icon: FolderTree, color: 'moss' },
+    { name: 'Manage Users', href: '/admin/users', icon: Users, color: 'ocean' },
     { name: 'Settings', href: '/admin/settings', icon: Settings, color: 'earth' },
   ]
 
@@ -54,20 +57,22 @@ export default function AdminDashboard() {
         {/* Quick Actions */}
         <div className="mb-8">
           <h2 className="text-2xl font-bold mb-4">Quick Actions</h2>
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
             {quickActions.map((action) => {
               const Icon = action.icon
               return (
-                <Card key={action.name} className="hover-lift cursor-pointer">
-                  <CardHeader>
-                    <div className="flex items-center gap-3">
-                      <div className={`w-10 h-10 rounded-lg bg-${action.color}-100 flex items-center justify-center`}>
-                        <Icon className={`w-5 h-5 text-${action.color}-600`} />
+                <Link key={action.name} href={action.href}>
+                  <Card className="hover-lift cursor-pointer h-full">
+                    <CardHeader>
+                      <div className="flex items-center gap-3">
+                        <div className={`w-10 h-10 rounded-lg bg-${action.color}-100 flex items-center justify-center`}>
+                          <Icon className={`w-5 h-5 text-${action.color}-600`} />
+                        </div>
+                        <CardTitle className="text-lg">{action.name}</CardTitle>
                       </div>
-                      <CardTitle className="text-lg">{action.name}</CardTitle>
-                    </div>
-                  </CardHeader>
-                </Card>
+                    </CardHeader>
+                  </Card>
+                </Link>
               )
             })}
           </div>
