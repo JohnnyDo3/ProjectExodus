@@ -163,18 +163,13 @@ async function main() {
     },
   })
 
-  await prisma.productTag.create({
-    data: {
-      productId: product1.id,
-      tagId: solarTag.id,
-    },
-  })
-
-  await prisma.productTag.create({
-    data: {
-      productId: product1.id,
-      tagId: offGridTag.id,
-    },
+  // Create ProductTags (skip if already exist)
+  await prisma.productTag.createMany({
+    data: [
+      { productId: product1.id, tagId: solarTag.id },
+      { productId: product1.id, tagId: offGridTag.id },
+    ],
+    skipDuplicates: true,
   })
 
   console.log('✓ Created Goal Zero Yeti 1500X')
@@ -228,18 +223,13 @@ async function main() {
     },
   })
 
-  await prisma.productTag.create({
-    data: {
-      productId: product2.id,
-      tagId: waterTag.id,
-    },
-  })
-
-  await prisma.productTag.create({
-    data: {
-      productId: product2.id,
-      tagId: offGridTag.id,
-    },
+  // Create ProductTags (skip if already exist)
+  await prisma.productTag.createMany({
+    data: [
+      { productId: product2.id, tagId: waterTag.id },
+      { productId: product2.id, tagId: offGridTag.id },
+    ],
+    skipDuplicates: true,
   })
 
   console.log('✓ Created Big Berkey Water Filter')
@@ -309,11 +299,12 @@ The sun is the most abundant energy source we have. Let's use it wisely.
     },
   })
 
-  await prisma.articleTag.create({
-    data: {
-      articleId: article1.id,
-      tagId: solarTag.id,
-    },
+  // Create ArticleTags (skip if already exist)
+  await prisma.articleTag.createMany({
+    data: [
+      { articleId: article1.id, tagId: solarTag.id },
+    ],
+    skipDuplicates: true,
   })
 
   console.log('✓ Created sample article')
