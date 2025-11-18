@@ -36,8 +36,8 @@ export default async function ProductDetailPage({
   }
 
   const score = product.sustainabilityMetric?.sustainabilityScore
-  const carbonSavings = product.sustainabilityMetric?.carbonSavings
-  const carbonFootprint = product.sustainabilityMetric?.carbonFootprint
+  const carbonSavings = product.sustainabilityMetric?.carbonSavings ? Number(product.sustainabilityMetric.carbonSavings) : null
+  const carbonFootprint = product.sustainabilityMetric?.carbonFootprint ? Number(product.sustainabilityMetric.carbonFootprint) : null
 
   return (
     <div className="min-h-screen">
