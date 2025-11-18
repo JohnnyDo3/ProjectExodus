@@ -1,19 +1,31 @@
-import { NextResponse } from 'next/server'
+import { NextRequest, NextResponse } from 'next/server'
 import { prisma } from '@/lib/db'
 import bcrypt from 'bcryptjs'
 import { z } from 'zod'
+import { rateLimit, rateLimitResponse } from '@/lib/rate-limit'
 
 const registerSchema = z.object({
-  name: z.string().min(2, 'Name must be at least 2 characters'),
-  email: z.string().email('Invalid email address'),
-  password: z.string().min(8, 'Password must be at least 8 characters'),
+  name: z.string().min(2, 'Name must be at least 2 characters').max(100).trim(),
+  email: z.string().email('Invalid email address').toLowerCase().trim(),
+  password: z.string().min(8, 'Password must be at least 8 characters').max(100),
 })
 
-export async function POST(req: Request) {
+export async function POST(req: NextRequest) {
   try {
+    // Rate limiting: 5 registration attempts per hour
+    const rateLimitResult = await rateLimit(req, {
+      id: 'register',
+      limit: 5,
+      windowSeconds: 3600,
+    })
+
+    if (!rateLimitResult.success) {
+      return rateLimitResponse(rateLimitResult.reset)
+    }
+
     const body = await req.json()
 
-    // Validate input
+    // Validate and sanitize input
     const validatedData = registerSchema.parse(body)
 
     // Check if user already exists
