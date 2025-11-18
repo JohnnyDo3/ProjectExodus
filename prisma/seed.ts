@@ -5,6 +5,21 @@ const prisma = new PrismaClient()
 async function main() {
   console.log('🌱 Seeding Project Exodus database...')
 
+  // Create Admin User
+  const adminUser = await prisma.user.upsert({
+    where: { email: 'admin@projectexodus.com' },
+    update: {},
+    create: {
+      email: 'admin@projectexodus.com',
+      name: 'Project Exodus Team',
+      password: '$2a$12$LQv3c1yqBWVHxkd0LHAkCOYz6TtxMQJqhN8/LewY5ByJ7JkKWZ0yS', // "password123" - change in production!
+      role: 'ADMIN',
+      bio: 'Building sustainable infrastructure for Food, Water, and Energy',
+    },
+  })
+
+  console.log('✓ Created admin user')
+
   // Create Categories
   const renewableEnergy = await prisma.category.upsert({
     where: { slug: 'renewable-energy' },
@@ -288,7 +303,7 @@ The sun is the most abundant energy source we have. Let's use it wisely.
       featured: true,
       publishedAt: new Date(),
       categoryId: energyCategory.id,
-      authorId: 'system', // Will be replaced with real user ID later
+      authorId: adminUser.id,
       seoTitle: 'Solar Power for Beginners: Complete 2025 Guide',
       seoDescription: 'Learn everything about solar power from basics to installation. Perfect guide for beginners looking to switch to renewable energy.',
     },
