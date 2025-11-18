@@ -18,7 +18,7 @@ export default function Home() {
         </div>
 
         {/* Main Hero Content */}
-        <div className="relative z-10 container mx-auto px-4 sm:px-6 lg:px-8 py-20">
+        <div className="relative z-10 container mx-auto px-4 sm:px-6 lg:px-8 py-8">
           <div className="max-w-6xl mx-auto">
             {/* Badge - Floating */}
             <div className="flex justify-center mb-8 animate-bounce" style={{ animationDuration: '3s' }}>
@@ -103,7 +103,7 @@ export default function Home() {
       </section>
 
       {/* Mission Section - Asymmetric Layout */}
-      <section className="py-32 bg-white relative overflow-hidden">
+      <section className="py-48 bg-white relative overflow-hidden">
         {/* Background Pattern */}
         <div className="absolute inset-0 opacity-5" style={{
           backgroundImage: 'radial-gradient(circle, #36763d 1px, transparent 1px)',
@@ -182,7 +182,7 @@ export default function Home() {
       </section>
 
       {/* Stats - Bold Numbers */}
-      <section className="py-32 bg-earth-900 text-white relative overflow-hidden">
+      <section className="py-56 bg-earth-900 text-white relative overflow-hidden">
         <div className="absolute inset-0 opacity-10">
           <div className="absolute top-0 left-0 w-full h-full bg-gradient-to-br from-moss-500 to-ocean-500" />
         </div>
@@ -217,7 +217,7 @@ export default function Home() {
       </section>
 
       {/* CTA Section - Full Bleed */}
-      <section className="py-40 bg-gradient-to-br from-moss-500 via-ocean-500 to-terra-500 text-white relative overflow-hidden">
+      <section className="py-56 bg-gradient-to-br from-moss-500 via-ocean-500 to-terra-500 text-white relative overflow-hidden">
         <div className="absolute inset-0">
           <div className="absolute top-20 right-20 w-96 h-96 bg-white rounded-full blur-3xl opacity-10 animate-pulse" style={{ animationDuration: '8s' }} />
           <div className="absolute bottom-20 left-20 w-96 h-96 bg-white rounded-full blur-3xl opacity-10 animate-pulse" style={{ animationDelay: '2s', animationDuration: '10s' }} />
