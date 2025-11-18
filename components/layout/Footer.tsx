@@ -30,7 +30,7 @@ export function Footer() {
             </Link>
           </div>
           <div className="pt-6 text-base text-sand-400 font-bold tracking-wide">
-            MADE WITH 🌱 BY SAGE • 2025
+            IN COLLABORATION WITH SAGE AND MR. NOBODY • 2025
           </div>
         </div>
       </div>

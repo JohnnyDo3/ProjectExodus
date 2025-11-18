@@ -309,12 +309,185 @@ The sun is the most abundant energy source we have. Let's use it wisely.
 
   console.log('✓ Created sample article')
 
+  // Create Badges
+  const earlyAdopterBadge = await prisma.badge.upsert({
+    where: { slug: 'early-adopter' },
+    update: {},
+    create: {
+      name: 'Early Adopter',
+      slug: 'early-adopter',
+      description: 'Joined the community in its early days',
+      icon: '🌱',
+      criteria: { type: 'manual' },
+    },
+  })
+
+  const helpfulBadge = await prisma.badge.upsert({
+    where: { slug: 'helpful-contributor' },
+    update: {},
+    create: {
+      name: 'Helpful Contributor',
+      slug: 'helpful-contributor',
+      description: 'Provided valuable insights and help to the community',
+      icon: '🤝',
+      criteria: { replies: 10 },
+    },
+  })
+
+  console.log('✓ Created badges')
+
+  // Award badge to admin user
+  await prisma.userBadge.create({
+    data: {
+      userId: adminUser.id,
+      badgeId: earlyAdopterBadge.id,
+    },
+  })
+
+  // Create Forum Categories
+  const sustainabilityTips = await prisma.forumCategory.upsert({
+    where: { slug: 'sustainability-tips' },
+    update: {},
+    create: {
+      name: 'Sustainability Tips',
+      slug: 'sustainability-tips',
+      description: 'Share and discover practical tips for sustainable living',
+      icon: '💡',
+    },
+  })
+
+  const productDiscussions = await prisma.forumCategory.upsert({
+    where: { slug: 'product-discussions' },
+    update: {},
+    create: {
+      name: 'Product Discussions',
+      slug: 'product-discussions',
+      description: 'Reviews, questions, and discussions about eco-friendly products',
+      icon: '🛒',
+    },
+  })
+
+  const communityProjects = await prisma.forumCategory.upsert({
+    where: { slug: 'community-projects' },
+    update: {},
+    create: {
+      name: 'Community Projects',
+      slug: 'community-projects',
+      description: 'Collaborate on local sustainability initiatives',
+      icon: '🌍',
+    },
+  })
+
+  console.log('✓ Created forum categories')
+
+  // Create Forum Posts
+  const post1 = await prisma.forumPost.create({
+    data: {
+      title: 'How to Start Your Solar Journey: My Experience',
+      content: `After 6 months of research and planning, I finally installed solar panels on my home. Here's what I learned:\n\n1. Start with an energy audit - understand your current usage\n2. Get multiple quotes - prices vary significantly\n3. Check local incentives - many states offer tax credits\n4. Consider battery storage - great for energy independence\n\nHappy to answer any questions!`,
+      categoryId: sustainabilityTips.id,
+      authorId: adminUser.id,
+      pinned: true,
+    },
+  })
+
+  const post2 = await prisma.forumPost.create({
+    data: {
+      title: 'Big Berkey Water Filter - 3 Month Review',
+      content: `I've been using the Big Berkey for 3 months now and wanted to share my honest review.\n\n**Pros:**\n- Water tastes amazing\n- No electricity needed\n- Removes 99.9% of contaminants\n- Saves money on bottled water\n\n**Cons:**\n- Takes up counter space\n- Initial cost is high\n- Filters need replacing annually\n\nOverall: Absolutely worth it! Already recommended to 5 friends.`,
+      categoryId: productDiscussions.id,
+      authorId: adminUser.id,
+    },
+  })
+
+  const post3 = await prisma.forumPost.create({
+    data: {
+      title: 'Looking for Collaborators: Community Garden Project',
+      content: `Hi everyone! I'm organizing a community garden in downtown Seattle and looking for volunteers.\n\n**What we need:**\n- People to help with planting/maintenance\n- Donors for seeds and tools\n- Someone with carpentry skills for raised beds\n\nInterested? Drop a comment below or DM me!`,
+      categoryId: communityProjects.id,
+      authorId: adminUser.id,
+    },
+  })
+
+  console.log('✓ Created forum posts')
+
+  // Create Forum Replies
+  await prisma.forumReply.create({
+    data: {
+      postId: post1.id,
+      authorId: adminUser.id,
+      content: 'Great post! How much did your system cost in total?',
+    },
+  })
+
+  await prisma.forumReply.create({
+    data: {
+      postId: post2.id,
+      authorId: adminUser.id,
+      content: 'I\'ve been considering getting one. How often do you need to refill it?',
+    },
+  })
+
+  console.log('✓ Created forum replies')
+
+  // Create Projects
+  const project1 = await prisma.project.create({
+    data: {
+      title: 'Seattle Community Solar Initiative',
+      slug: 'seattle-community-solar',
+      description: 'Bringing affordable solar power to low-income neighborhoods through community-owned installations.',
+      category: 'Energy',
+      status: 'ACTIVE',
+      location: 'Seattle, WA',
+      goal: 'Install 50 community solar panels by end of year',
+      ownerId: adminUser.id,
+    },
+  })
+
+  const project2 = await prisma.project.create({
+    data: {
+      title: 'Zero-Waste Restaurant Network',
+      slug: 'zero-waste-restaurant-network',
+      description: 'Connecting local restaurants committed to zero-waste practices and helping new establishments transition.',
+      category: 'Food',
+      status: 'ACTIVE',
+      location: 'Portland, OR',
+      goal: 'Partner with 20 restaurants by Q2 2025',
+      ownerId: adminUser.id,
+    },
+  })
+
+  console.log('✓ Created projects')
+
+  // Add project members
+  await prisma.projectMember.create({
+    data: {
+      projectId: project1.id,
+      userId: adminUser.id,
+      role: 'OWNER',
+    },
+  })
+
+  await prisma.projectMember.create({
+    data: {
+      projectId: project2.id,
+      userId: adminUser.id,
+      role: 'OWNER',
+    },
+  })
+
+  console.log('✓ Created project memberships')
+
   console.log('\n✅ Seeding complete!')
-  console.log(`   - ${await prisma.category.count()} categories`)
+  console.log(`   - ${await prisma.category.count()} product categories`)
   console.log(`   - ${await prisma.vendor.count()} vendors`)
   console.log(`   - ${await prisma.product.count()} products`)
   console.log(`   - ${await prisma.article.count()} articles`)
   console.log(`   - ${await prisma.tag.count()} tags`)
+  console.log(`   - ${await prisma.forumCategory.count()} forum categories`)
+  console.log(`   - ${await prisma.forumPost.count()} forum posts`)
+  console.log(`   - ${await prisma.project.count()} projects`)
+  console.log(`   - ${await prisma.badge.count()} badges`)
 }
 
 main()

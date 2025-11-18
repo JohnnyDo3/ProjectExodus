@@ -93,32 +93,65 @@ export default function CommunityPage() {
         </div>
       </section>
 
-      {/* Coming Soon */}
+      {/* Explore Features */}
       <section className="py-32 bg-sand-50">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="max-w-3xl mx-auto text-center">
-            <Card className="border-4 border-terra-300 bg-gradient-to-br from-terra-50 to-terra-100">
-              <CardContent className="p-12">
-                <Users className="w-20 h-20 text-terra-600 mx-auto mb-6" />
-                <h3 className="text-4xl font-black mb-6" style={{ color: '#c24f31' }}>
-                  LAUNCHING SOON
-                </h3>
-                <p className="text-xl font-semibold mb-8" style={{ color: '#853625' }}>
-                  We're building a vibrant, supportive community space where sustainability enthusiasts
-                  can connect, share, and collaborate. Forums, profiles, project boards, and more!
-                </p>
-                <div className="flex flex-col sm:flex-row gap-4 justify-center">
-                  <Button size="lg" className="text-lg px-10 py-6 font-black shadow-lg">
-                    JOIN WAITLIST
-                  </Button>
-                  <Link href="/about">
-                    <Button size="lg" variant="outline" className="text-lg px-10 py-6 font-black border-2">
-                      LEARN MORE
+          <div className="max-w-6xl mx-auto">
+            <div className="text-center mb-16">
+              <h2 className="text-5xl font-black mb-4" style={{ color: '#000' }}>
+                EXPLORE THE COMMUNITY
+              </h2>
+              <p className="text-xl font-semibold" style={{ color: '#333' }}>
+                Jump into conversations, join projects, and connect with fellow changemakers
+              </p>
+            </div>
+            <div className="grid md:grid-cols-2 gap-8">
+              {/* Forum Card */}
+              <Card className="border-4 border-moss-300 hover-lift hover:border-moss-500 transition-all">
+                <CardContent className="p-10">
+                  <div className="flex items-center gap-4 mb-6">
+                    <div className="w-16 h-16 rounded-full bg-moss-100 flex items-center justify-center">
+                      <MessageSquare className="w-8 h-8 text-moss-600" />
+                    </div>
+                    <h3 className="text-3xl font-black" style={{ color: '#000' }}>
+                      DISCUSSION FORUM
+                    </h3>
+                  </div>
+                  <p className="text-lg font-semibold mb-8" style={{ color: '#1f2937' }}>
+                    Join conversations about sustainability tips, product discussions, and community projects.
+                    Share your knowledge and learn from others.
+                  </p>
+                  <Link href="/community/forum">
+                    <Button size="lg" className="text-lg px-8 py-6 font-black w-full">
+                      VISIT FORUM →
                     </Button>
                   </Link>
-                </div>
-              </CardContent>
-            </Card>
+                </CardContent>
+              </Card>
+
+              {/* Projects Card */}
+              <Card className="border-4 border-ocean-300 hover-lift hover:border-ocean-500 transition-all">
+                <CardContent className="p-10">
+                  <div className="flex items-center gap-4 mb-6">
+                    <div className="w-16 h-16 rounded-full bg-ocean-100 flex items-center justify-center">
+                      <Rocket className="w-8 h-8 text-ocean-600" />
+                    </div>
+                    <h3 className="text-3xl font-black" style={{ color: '#000' }}>
+                      COMMUNITY PROJECTS
+                    </h3>
+                  </div>
+                  <p className="text-lg font-semibold mb-8" style={{ color: '#1f2937' }}>
+                    Collaborate on local sustainability initiatives. From community solar to zero-waste restaurants,
+                    make real impact together.
+                  </p>
+                  <Link href="/community/projects">
+                    <Button size="lg" className="text-lg px-8 py-6 font-black w-full">
+                      VIEW PROJECTS →
+                    </Button>
+                  </Link>
+                </CardContent>
+              </Card>
+            </div>
           </div>
         </div>
       </section>
