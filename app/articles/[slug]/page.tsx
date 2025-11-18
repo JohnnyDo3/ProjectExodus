@@ -39,51 +39,55 @@ export default async function ArticleDetailPage({
   return (
     <div className="min-h-screen">
       {/* Hero Section */}
-      <section className="hero-gradient py-12 md:py-20">
+      <section className="py-24 bg-gradient-to-br from-ocean-50 via-moss-50 to-terra-50">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="max-w-4xl mx-auto text-center space-y-6">
+          <div className="max-w-5xl mx-auto text-center space-y-8">
             {article.featured && (
-              <div className="inline-block px-4 py-2 bg-ocean-100 text-ocean-700 rounded-full text-sm font-medium">
-                Featured Article
+              <div>
+                <div className="inline-flex items-center gap-2 px-5 py-2 bg-gradient-to-r from-ocean-500 to-terra-500 rounded-full shadow-lg">
+                  <span className="text-sm font-black text-white uppercase tracking-wide">
+                    Featured Article
+                  </span>
+                </div>
               </div>
             )}
 
-            <h1 className="text-4xl md:text-6xl font-bold">
+            <h1 className="text-5xl md:text-7xl font-black leading-tight" style={{ color: '#000' }}>
               {article.title}
             </h1>
 
             {article.excerpt && (
-              <p className="text-xl text-earth-700 max-w-3xl mx-auto">
+              <p className="text-2xl font-semibold max-w-4xl mx-auto" style={{ color: '#333' }}>
                 {article.excerpt}
               </p>
             )}
 
             {/* Article Meta */}
-            <div className="flex flex-wrap items-center justify-center gap-6 text-sm text-earth-600 pt-4">
+            <div className="flex flex-wrap items-center justify-center gap-8 text-base font-bold pt-6">
               {article.author?.name && (
-                <div className="flex items-center gap-2">
-                  <User className="w-4 h-4" />
+                <div className="flex items-center gap-2 text-ocean-700">
+                  <User className="w-5 h-5" />
                   <span>{article.author.name}</span>
                 </div>
               )}
               {article.publishedAt && (
-                <div className="flex items-center gap-2">
-                  <Calendar className="w-4 h-4" />
+                <div className="flex items-center gap-2" style={{ color: '#666' }}>
+                  <Calendar className="w-5 h-5" />
                   <time dateTime={article.publishedAt}>
                     {formatDate(new Date(article.publishedAt))}
                   </time>
                 </div>
               )}
               {article.readTime && (
-                <div className="flex items-center gap-2">
-                  <Clock className="w-4 h-4" />
-                  <span>{article.readTime} min read</span>
+                <div className="flex items-center gap-2 text-moss-700">
+                  <Clock className="w-5 h-5" />
+                  <span>{article.readTime} MIN READ</span>
                 </div>
               )}
               {article.comments && (
-                <div className="flex items-center gap-2">
-                  <MessageCircle className="w-4 h-4" />
-                  <span>{article.comments.length} comments</span>
+                <div className="flex items-center gap-2" style={{ color: '#666' }}>
+                  <MessageCircle className="w-5 h-5" />
+                  <span>{article.comments.length} COMMENTS</span>
                 </div>
               )}
             </div>
@@ -92,7 +96,7 @@ export default async function ArticleDetailPage({
             <div>
               <Link
                 href={`/learn?category=${article.category.slug}`}
-                className="inline-block px-4 py-2 bg-moss-100 text-moss-700 rounded-lg text-sm font-medium hover:bg-moss-200"
+                className="inline-block px-6 py-3 bg-gradient-to-br from-moss-500 to-ocean-500 text-white rounded-2xl text-base font-black uppercase shadow-xl hover:shadow-2xl transition-shadow"
               >
                 {article.category.name}
               </Link>
@@ -272,16 +276,16 @@ export default async function ArticleDetailPage({
       </section>
 
       {/* Related Articles CTA */}
-      <section className="py-20 bg-sand-50">
+      <section className="py-32 bg-gradient-to-br from-moss-500 via-ocean-500 to-terra-500 text-white">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="max-w-3xl mx-auto text-center space-y-6">
-            <h2 className="text-3xl font-bold">Continue Learning</h2>
-            <p className="text-lg text-earth-700">
+          <div className="max-w-4xl mx-auto text-center space-y-8">
+            <h2 className="text-6xl font-black">CONTINUE LEARNING</h2>
+            <p className="text-2xl font-semibold">
               Explore more articles on sustainability and eco-friendly living
             </p>
             <Link href="/learn">
-              <Button size="lg">
-                Browse All Articles
+              <Button size="lg" className="text-xl px-12 py-8 bg-white text-earth-900 hover:bg-sand-100 font-black shadow-2xl rounded-2xl">
+                BROWSE ALL ARTICLES →
               </Button>
             </Link>
           </div>

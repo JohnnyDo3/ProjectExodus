@@ -42,13 +42,13 @@ export default async function ProductDetailPage({
   return (
     <div className="min-h-screen">
       {/* Hero Section */}
-      <section className="hero-gradient py-12 md:py-20">
+      <section className="py-20 bg-gradient-to-br from-moss-50 via-ocean-50 to-sand-50">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="max-w-6xl mx-auto">
+          <div className="max-w-7xl mx-auto">
             <div className="grid md:grid-cols-2 gap-12 items-start">
               {/* Product Image */}
               <div className="space-y-4">
-                <div className="aspect-square bg-sand-100 rounded-2xl flex items-center justify-center overflow-hidden">
+                <div className="aspect-square bg-white rounded-3xl border-4 border-moss-300 flex items-center justify-center overflow-hidden shadow-2xl">
                   {product.images && product.images.length > 0 ? (
                     <img
                       src={product.images[0].url}
@@ -56,9 +56,11 @@ export default async function ProductDetailPage({
                       className="w-full h-full object-cover"
                     />
                   ) : (
-                    <div className="text-center p-8">
-                      <Leaf className="w-24 h-24 text-moss-300 mx-auto mb-4" />
-                      <p className="text-earth-500">Product image coming soon</p>
+                    <div className="text-center p-12">
+                      <Leaf className="w-32 h-32 text-moss-300 mx-auto mb-6" />
+                      <p className="text-lg font-bold" style={{ color: '#666' }}>
+                        PRODUCT IMAGE COMING SOON
+                      </p>
                     </div>
                   )}
                 </div>
@@ -66,31 +68,35 @@ export default async function ProductDetailPage({
               </div>
 
               {/* Product Info */}
-              <div className="space-y-6">
+              <div className="space-y-8">
                 {product.featured && (
-                  <div className="inline-flex items-center gap-2 px-4 py-2 bg-moss-100 text-moss-700 rounded-full text-sm font-medium">
-                    <Leaf className="w-4 h-4" />
-                    Featured Product
+                  <div>
+                    <div className="inline-flex items-center gap-2 px-4 py-2 bg-gradient-to-r from-moss-500 to-ocean-500 rounded-full shadow-lg">
+                      <Leaf className="w-5 h-5 text-white" />
+                      <span className="text-sm font-black text-white uppercase tracking-wide">
+                        Featured Product
+                      </span>
+                    </div>
                   </div>
                 )}
 
                 <div>
-                  <h1 className="text-4xl md:text-5xl font-bold mb-4">
-                    {product.name}
+                  <h1 className="text-5xl md:text-6xl font-black mb-6" style={{ color: '#000' }}>
+                    {product.name.toUpperCase()}
                   </h1>
-                  <div className="flex items-center gap-4 text-sm text-earth-600">
+                  <div className="flex items-center gap-4 text-base font-bold">
                     <Link
                       href={`/products?category=${product.category.slug}`}
-                      className="hover:text-moss-600"
+                      className="text-moss-600 hover:text-moss-700 uppercase"
                     >
                       {product.category.name}
                     </Link>
                     {product.vendor && (
                       <>
-                        <span>•</span>
+                        <span style={{ color: '#999' }}>•</span>
                         <Link
                           href={`/vendors/${product.vendor.slug}`}
-                          className="hover:text-moss-600"
+                          className="text-ocean-600 hover:text-ocean-700"
                         >
                           {product.vendor.name}
                         </Link>
@@ -101,19 +107,19 @@ export default async function ProductDetailPage({
 
                 {/* Sustainability Score */}
                 {score && (
-                  <Card className="bg-gradient-to-br from-moss-50 to-moss-100 border-moss-200">
-                    <CardContent className="p-6">
+                  <Card className="bg-gradient-to-br from-moss-50 to-moss-100 border-4 border-moss-300 shadow-xl">
+                    <CardContent className="p-8">
                       <div className="flex items-center justify-between">
                         <div>
-                          <h3 className="text-lg font-semibold text-moss-900 mb-1">
-                            Sustainability Score
+                          <h3 className="text-2xl font-black mb-2" style={{ color: '#2e5d30' }}>
+                            SUSTAINABILITY SCORE
                           </h3>
-                          <p className="text-sm text-moss-700">
-                            Based on environmental impact metrics
+                          <p className="text-base font-semibold text-moss-700">
+                            Based on environmental impact
                           </p>
                         </div>
-                        <div className="w-20 h-20 rounded-full bg-moss-600 text-white flex items-center justify-center">
-                          <span className="text-3xl font-bold">{score}</span>
+                        <div className="w-24 h-24 rounded-full bg-gradient-to-br from-moss-600 to-ocean-600 text-white flex items-center justify-center shadow-2xl">
+                          <span className="text-4xl font-black">{score}</span>
                         </div>
                       </div>
                     </CardContent>
@@ -121,14 +127,14 @@ export default async function ProductDetailPage({
                 )}
 
                 {/* Price & CTA */}
-                <div className="space-y-4">
+                <div className="space-y-6">
                   {product.price ? (
-                    <div className="text-4xl font-bold text-earth-900">
+                    <div className="text-5xl font-black" style={{ color: '#000' }}>
                       ${Number(product.price).toFixed(2)}
                     </div>
                   ) : (
-                    <div className="text-lg text-earth-600">
-                      Contact vendor for pricing
+                    <div className="text-xl font-bold" style={{ color: '#666' }}>
+                      CONTACT VENDOR FOR PRICING
                     </div>
                   )}
 
@@ -137,45 +143,45 @@ export default async function ProductDetailPage({
                       href={product.purchaseLink}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="w-full"
+                      className="w-full block"
                     >
-                      <Button size="lg" className="w-full">
-                        <ExternalLink className="w-5 h-5 mr-2" />
-                        Buy from Vendor
+                      <Button size="lg" className="w-full text-xl py-8 font-black shadow-2xl">
+                        <ExternalLink className="w-6 h-6 mr-3" />
+                        BUY FROM VENDOR
                       </Button>
                     </a>
                   ) : (
-                    <Button size="lg" className="w-full" disabled>
-                      Purchase Link Coming Soon
+                    <Button size="lg" className="w-full text-xl py-8 font-black" disabled>
+                      PURCHASE LINK COMING SOON
                     </Button>
                   )}
                 </div>
 
                 {/* Key Metrics */}
                 {(carbonSavings || carbonFootprint) && (
-                  <div className="grid grid-cols-2 gap-4">
+                  <div className="grid grid-cols-2 gap-6">
                     {carbonSavings && (
-                      <Card>
-                        <CardContent className="p-4 text-center">
-                          <TrendingDown className="w-8 h-8 text-moss-600 mx-auto mb-2" />
-                          <div className="text-2xl font-bold text-moss-700">
+                      <Card className="border-4 border-moss-200 shadow-lg">
+                        <CardContent className="p-6 text-center">
+                          <TrendingDown className="w-12 h-12 text-moss-600 mx-auto mb-3" />
+                          <div className="text-3xl font-black text-moss-700">
                             {carbonSavings.toFixed(0)} kg
                           </div>
-                          <div className="text-xs text-earth-600">
-                            CO₂ savings vs conventional
+                          <div className="text-xs font-bold mt-2" style={{ color: '#666' }}>
+                            CO₂ SAVINGS VS CONVENTIONAL
                           </div>
                         </CardContent>
                       </Card>
                     )}
                     {carbonFootprint && (
-                      <Card>
-                        <CardContent className="p-4 text-center">
-                          <Leaf className="w-8 h-8 text-earth-600 mx-auto mb-2" />
-                          <div className="text-2xl font-bold text-earth-700">
+                      <Card className="border-4 border-ocean-200 shadow-lg">
+                        <CardContent className="p-6 text-center">
+                          <Leaf className="w-12 h-12 text-ocean-600 mx-auto mb-3" />
+                          <div className="text-3xl font-black text-ocean-700">
                             {carbonFootprint.toFixed(1)} kg
                           </div>
-                          <div className="text-xs text-earth-600">
-                            Carbon footprint
+                          <div className="text-xs font-bold mt-2" style={{ color: '#666' }}>
+                            CARBON FOOTPRINT
                           </div>
                         </CardContent>
                       </Card>
@@ -189,18 +195,20 @@ export default async function ProductDetailPage({
       </section>
 
       {/* Details Section */}
-      <section className="py-20">
+      <section className="py-32 bg-white">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="max-w-6xl mx-auto grid md:grid-cols-3 gap-8">
+          <div className="max-w-7xl mx-auto grid md:grid-cols-3 gap-10">
             {/* Main Content */}
-            <div className="md:col-span-2 space-y-8">
+            <div className="md:col-span-2 space-y-10">
               {/* Description */}
-              <Card>
+              <Card className="border-4 border-moss-200 shadow-lg">
                 <CardHeader>
-                  <CardTitle>About This Product</CardTitle>
+                  <CardTitle className="text-3xl font-black" style={{ color: '#000' }}>
+                    ABOUT THIS PRODUCT
+                  </CardTitle>
                 </CardHeader>
-                <CardContent className="prose max-w-none">
-                  <p className="text-earth-700 leading-relaxed">
+                <CardContent>
+                  <p className="text-lg font-medium leading-relaxed" style={{ color: '#444' }}>
                     {product.description}
                   </p>
                 </CardContent>
@@ -208,19 +216,21 @@ export default async function ProductDetailPage({
 
               {/* Specifications */}
               {product.specifications && typeof product.specifications === 'object' && (
-                <Card>
+                <Card className="border-4 border-ocean-200 shadow-lg">
                   <CardHeader>
-                    <CardTitle>Specifications</CardTitle>
+                    <CardTitle className="text-3xl font-black" style={{ color: '#000' }}>
+                      SPECIFICATIONS
+                    </CardTitle>
                   </CardHeader>
                   <CardContent>
-                    <dl className="space-y-3">
+                    <dl className="space-y-4">
                       {Object.entries(product.specifications as Record<string, any>).map(
                         ([key, value]) => (
-                          <div key={key} className="flex justify-between py-2 border-b border-sand-200">
-                            <dt className="font-medium text-earth-900 capitalize">
+                          <div key={key} className="flex justify-between py-3 border-b-2 border-sand-200">
+                            <dt className="font-bold uppercase" style={{ color: '#000' }}>
                               {key.replace(/_/g, ' ')}
                             </dt>
-                            <dd className="text-earth-700">{String(value)}</dd>
+                            <dd className="font-semibold" style={{ color: '#666' }}>{String(value)}</dd>
                           </div>
                         )
                       )}
@@ -231,20 +241,22 @@ export default async function ProductDetailPage({
 
               {/* Certifications */}
               {product.certifications && product.certifications.length > 0 && (
-                <Card>
+                <Card className="border-4 border-terra-200 shadow-lg">
                   <CardHeader>
-                    <CardTitle>Certifications</CardTitle>
+                    <CardTitle className="text-3xl font-black" style={{ color: '#000' }}>
+                      CERTIFICATIONS
+                    </CardTitle>
                   </CardHeader>
                   <CardContent>
-                    <div className="flex flex-wrap gap-3">
+                    <div className="flex flex-wrap gap-4">
                       {product.certifications.map((cert: any) => (
                         <div
                           key={cert.id}
-                          className="flex items-center gap-2 px-4 py-2 bg-moss-50 border border-moss-200 rounded-lg"
+                          className="flex items-center gap-3 px-5 py-3 bg-gradient-to-br from-moss-50 to-moss-100 border-2 border-moss-300 rounded-xl shadow-md"
                         >
-                          <Award className="w-5 h-5 text-moss-600" />
-                          <span className="font-medium text-moss-900">
-                            {cert.certification.name}
+                          <Award className="w-6 h-6 text-moss-600" />
+                          <span className="font-black text-moss-900">
+                            {cert.certification.name.toUpperCase()}
                           </span>
                         </div>
                       ))}
@@ -255,24 +267,26 @@ export default async function ProductDetailPage({
             </div>
 
             {/* Sidebar */}
-            <div className="space-y-6">
+            <div className="space-y-8">
               {/* Vendor Info */}
               {product.vendor && (
-                <Card>
+                <Card className="border-4 border-ocean-200 shadow-lg">
                   <CardHeader>
-                    <CardTitle className="text-lg">Vendor</CardTitle>
+                    <CardTitle className="text-2xl font-black" style={{ color: '#000' }}>
+                      VENDOR
+                    </CardTitle>
                   </CardHeader>
-                  <CardContent>
+                  <CardContent className="space-y-4">
                     <Link
                       href={`/vendors/${product.vendor.slug}`}
-                      className="block hover:text-moss-600"
+                      className="block group"
                     >
-                      <h3 className="font-bold text-lg mb-2">
-                        {product.vendor.name}
+                      <h3 className="font-black text-2xl mb-3 text-ocean-600 group-hover:text-ocean-700">
+                        {product.vendor.name.toUpperCase()}
                       </h3>
                     </Link>
                     {product.vendor.description && (
-                      <p className="text-sm text-earth-600 line-clamp-3">
+                      <p className="text-base font-medium line-clamp-4" style={{ color: '#666' }}>
                         {product.vendor.description}
                       </p>
                     )}
@@ -281,9 +295,10 @@ export default async function ProductDetailPage({
                         href={product.vendor.website}
                         target="_blank"
                         rel="noopener noreferrer"
-                        className="text-sm text-moss-600 hover:underline mt-2 inline-block"
+                        className="inline-flex items-center gap-2 text-base font-bold text-moss-600 hover:text-moss-700 mt-4"
                       >
-                        Visit Website →
+                        <ExternalLink className="w-5 h-5" />
+                        VISIT WEBSITE
                       </a>
                     )}
                   </CardContent>
@@ -292,19 +307,22 @@ export default async function ProductDetailPage({
 
               {/* Tags */}
               {product.tags && product.tags.length > 0 && (
-                <Card>
+                <Card className="border-4 border-terra-200 shadow-lg">
                   <CardHeader>
-                    <CardTitle className="text-lg">Tags</CardTitle>
+                    <CardTitle className="text-2xl font-black" style={{ color: '#000' }}>
+                      TAGS
+                    </CardTitle>
                   </CardHeader>
                   <CardContent>
-                    <div className="flex flex-wrap gap-2">
+                    <div className="flex flex-wrap gap-3">
                       {product.tags.map((tagRel: any) => (
                         <Link
                           key={tagRel.tag.id}
                           href={`/products?tag=${tagRel.tag.slug}`}
-                          className="px-3 py-1 bg-sand-100 hover:bg-sand-200 rounded-full text-sm text-earth-700"
+                          className="px-4 py-2 bg-sand-100 hover:bg-sand-200 border-2 border-sand-300 rounded-xl text-sm font-bold transition-colors"
+                          style={{ color: '#444' }}
                         >
-                          {tagRel.tag.name}
+                          {tagRel.tag.name.toUpperCase()}
                         </Link>
                       ))}
                     </div>
