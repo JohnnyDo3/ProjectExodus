@@ -1,5 +1,5 @@
 import { Suspense } from 'react'
-import { ProductCard } from '@/components/product/ProductCard'
+import { ProductsClient } from '@/components/product/ProductsClient'
 import { Button } from '@/components/ui/Button'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/Card'
 import { Zap, Droplet, Recycle, Leaf } from 'lucide-react'
@@ -89,16 +89,6 @@ export default async function ProductsPage() {
                 fontWeight: 900
               }}>align with your values</span>
             </p>
-            <div className="flex flex-col sm:flex-row gap-4 justify-center pt-4 max-w-3xl mx-auto">
-              <input
-                type="search"
-                placeholder="Search products..."
-                className="px-6 py-4 rounded-2xl border-4 border-moss-300 focus:border-moss-500 focus:outline-none w-full sm:flex-1 text-lg font-semibold shadow-lg"
-              />
-              <Button size="lg" className="text-xl px-12 py-8 rounded-2xl font-black shadow-2xl">
-                SEARCH
-              </Button>
-            </div>
           </div>
         </div>
       </section>
@@ -160,57 +150,10 @@ export default async function ProductsPage() {
         </section>
       )}
 
-      {/* Products Grid */}
-      {products.length > 0 ? (
-        <section className="py-32 bg-sand-50">
-          <div className="container mx-auto px-4 sm:px-6 lg:px-8">
-            <div className="text-center mb-20">
-              <h2 className="text-5xl font-black mb-6" style={{ color: '#000' }}>
-                FEATURED PRODUCTS
-              </h2>
-              <p className="text-xl font-semibold" style={{ color: '#333' }}>
-                Curated sustainable solutions for a better tomorrow
-              </p>
-            </div>
-
-            <div className="grid md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8 max-w-7xl mx-auto">
-              {products.map((product: any) => (
-                <ProductCard key={product.id} product={product} />
-              ))}
-            </div>
-
-            {products.length >= 12 && (
-              <div className="text-center mt-16">
-                <Button size="lg" className="text-xl px-12 py-8 rounded-2xl font-black shadow-2xl">
-                  LOAD MORE PRODUCTS →
-                </Button>
-              </div>
-            )}
-          </div>
-        </section>
-      ) : (
-        <section className="py-32 bg-sand-50">
-          <div className="container mx-auto px-4 sm:px-6 lg:px-8">
-            <div className="max-w-3xl mx-auto text-center">
-              <Card className="border-4 border-moss-300 bg-gradient-to-br from-moss-50 to-moss-100">
-                <CardContent className="p-12">
-                  <Leaf className="w-20 h-20 text-moss-600 mx-auto mb-6" />
-                  <h3 className="text-4xl font-black mb-6" style={{ color: '#36763d' }}>
-                    PRODUCTS LAUNCHING SOON
-                  </h3>
-                  <p className="text-xl font-semibold mb-8" style={{ color: '#2e5d30' }}>
-                    We're building out our comprehensive product database with real sustainable products,
-                    detailed specifications, sustainability metrics, and direct purchase links!
-                  </p>
-                  <Button size="lg" className="text-lg px-10 py-6 font-black shadow-lg">
-                    NOTIFY ME WHEN PRODUCTS LAUNCH
-                  </Button>
-                </CardContent>
-              </Card>
-            </div>
-          </div>
-        </section>
-      )}
+      {/* Search, Filters, and Products Grid */}
+      <section className="py-16">
+        <ProductsClient initialProducts={products} categories={categories} />
+      </section>
 
       {/* Call to Action */}
       <section className="py-32 bg-gradient-to-br from-moss-500 via-ocean-500 to-terra-500 text-white">
