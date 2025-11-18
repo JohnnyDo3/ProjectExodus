@@ -22,14 +22,14 @@ export default function Home() {
               </span>
             </div>
 
-            <h1 className="text-5xl md:text-7xl font-bold tracking-tight text-earth-900">
+            <h1 className="text-5xl md:text-7xl font-bold tracking-tight text-black">
               Welcome to{' '}
               <span className="earth-gradient-text">
                 Project Exodus
               </span>
             </h1>
 
-            <p className="text-xl md:text-2xl text-earth-800 max-w-3xl mx-auto leading-relaxed font-medium">
+            <p className="text-xl md:text-2xl text-black max-w-3xl mx-auto leading-relaxed font-semibold">
               Your gateway to discovering, learning about, and accessing sustainable alternatives
               across all aspects of life. From renewable energy to eco-friendly materials,
               we're building the world's most accessible sustainability hub.
@@ -58,8 +58,8 @@ export default function Home() {
       <section className="py-20 md:py-32 bg-sand-50">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
           <div className="max-w-3xl mx-auto text-center space-y-6 mb-16">
-            <h2 className="text-4xl md:text-5xl font-bold text-earth-900">Our Mission</h2>
-            <p className="text-lg text-earth-800 font-medium">
+            <h2 className="text-4xl md:text-5xl font-bold text-black">Our Mission</h2>
+            <p className="text-lg text-black font-semibold">
               Making sustainability accessible, understandable, and actionable for everyone.
               One product, one article, one community at a time.
             </p>
@@ -77,7 +77,7 @@ export default function Home() {
                 </CardDescription>
               </CardHeader>
               <CardContent>
-                <p className="text-sm text-earth-800">
+                <p className="text-sm text-black font-medium">
                   From solar panels to organic clothing, find alternatives that align with your values
                 </p>
               </CardContent>
@@ -94,7 +94,7 @@ export default function Home() {
                 </CardDescription>
               </CardHeader>
               <CardContent>
-                <p className="text-sm text-earth-800">
+                <p className="text-sm text-black font-medium">
                   Educational content that empowers you to make informed decisions
                 </p>
               </CardContent>
@@ -111,7 +111,7 @@ export default function Home() {
                 </CardDescription>
               </CardHeader>
               <CardContent>
-                <p className="text-sm text-earth-800">
+                <p className="text-sm text-black font-medium">
                   Share knowledge, collaborate on projects, and grow together
                 </p>
               </CardContent>
@@ -134,7 +134,7 @@ export default function Home() {
                 <div className="text-4xl md:text-5xl font-bold earth-gradient-text">
                   {stat.value}
                 </div>
-                <div className="text-sm text-earth-800 font-semibold">
+                <div className="text-sm text-black font-semibold">
                   {stat.label}
                 </div>
               </div>
@@ -147,10 +147,10 @@ export default function Home() {
       <section className="py-20 md:py-32 hero-gradient relative overflow-hidden">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
           <div className="max-w-3xl mx-auto text-center space-y-8">
-            <h2 className="text-4xl md:text-5xl font-bold">
+            <h2 className="text-4xl md:text-5xl font-bold text-black">
               Ready to Start Your Sustainable Journey?
             </h2>
-            <p className="text-lg text-earth-700">
+            <p className="text-lg text-black font-semibold">
               Join us in building a better future for our planet. Every choice matters.
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center items-center">
