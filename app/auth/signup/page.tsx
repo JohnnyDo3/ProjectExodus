@@ -1,6 +1,8 @@
 'use client'
 
 import { useState } from 'react'
+import { useRouter } from 'next/navigation'
+import { signIn } from 'next-auth/react'
 import Link from 'next/link'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/Card'
 import { Button } from '@/components/ui/Button'
@@ -8,6 +10,7 @@ import { Input } from '@/components/ui/Input'
 import { ArrowLeft, CheckCircle2 } from 'lucide-react'
 
 export default function SignUpPage() {
+  const router = useRouter()
   const [loading, setLoading] = useState(false)
   const [formData, setFormData] = useState({
     name: '',
@@ -52,14 +55,42 @@ export default function SignUpPage() {
     }
 
     try {
-      // TODO: Implement actual registration with API
-      console.log('Sign up attempt:', formData)
-      await new Promise(resolve => setTimeout(resolve, 1000))
+      // Register the user
+      const registerRes = await fetch('/api/auth/register', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          name: formData.name,
+          email: formData.email,
+          password: formData.password,
+        }),
+      })
 
-      alert('Registration not yet implemented. This will be connected to the API in the next phase.')
+      const registerData = await registerRes.json()
+
+      if (!registerRes.ok) {
+        setErrors({ email: registerData.error || 'Registration failed' })
+        setLoading(false)
+        return
+      }
+
+      // Auto sign in after registration
+      const signInResult = await signIn('credentials', {
+        email: formData.email,
+        password: formData.password,
+        redirect: false,
+      })
+
+      if (signInResult?.ok) {
+        router.push('/')
+        router.refresh()
+      } else {
+        // Registration worked but signin failed - redirect to signin page
+        router.push('/auth/signin?registered=true')
+      }
     } catch (error) {
       console.error('Sign up error:', error)
-      alert('Failed to create account')
+      setErrors({ email: 'An unexpected error occurred' })
     } finally {
       setLoading(false)
     }
@@ -247,13 +278,6 @@ export default function SignUpPage() {
                   </li>
                 </ul>
               </div>
-            </div>
-
-            <div className="mt-4 p-4 bg-ocean-50 border border-ocean-200 rounded-lg">
-              <p className="text-sm text-ocean-800">
-                <strong>Development Notice:</strong> User registration is not yet fully implemented.
-                This page demonstrates the signup flow. API integration will be completed in the next phase.
-              </p>
             </div>
           </CardContent>
         </Card>

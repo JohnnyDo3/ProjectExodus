@@ -1,6 +1,7 @@
 'use client'
 
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
+import { useRouter } from 'next/navigation'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/Card'
 import { Button } from '@/components/ui/Button'
 import { Input } from '@/components/ui/Input'
@@ -10,7 +11,11 @@ import { ArrowLeft, Save } from 'lucide-react'
 import Link from 'next/link'
 
 export default function NewProductPage() {
+  const router = useRouter()
   const [saving, setSaving] = useState(false)
+  const [categories, setCategories] = useState<any[]>([])
+  const [vendors, setVendors] = useState<any[]>([])
+  const [error, setError] = useState<string | null>(null)
   const [formData, setFormData] = useState({
     name: '',
     slug: '',
@@ -22,18 +27,53 @@ export default function NewProductPage() {
     status: 'DRAFT',
   })
 
+  // Fetch categories and vendors on mount
+  useEffect(() => {
+    async function fetchData() {
+      try {
+        const [categoriesRes, vendorsRes] = await Promise.all([
+          fetch('/api/categories'),
+          fetch('/api/vendors')
+        ])
+
+        const categoriesData = await categoriesRes.json()
+        const vendorsData = await vendorsRes.json()
+
+        if (categoriesData.success) setCategories(categoriesData.data)
+        if (vendorsData.success) setVendors(vendorsData.data)
+      } catch (err) {
+        console.error('Error fetching data:', err)
+      }
+    }
+    fetchData()
+  }, [])
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
     setSaving(true)
+    setError(null)
 
     try {
-      // TODO: Connect to API
-      console.log('Submitting product:', formData)
-      await new Promise(resolve => setTimeout(resolve, 1000)) // Simulate API call
-      alert('Product created successfully!')
+      const res = await fetch('/api/products', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(formData),
+      })
+
+      const data = await res.json()
+
+      if (!res.ok) {
+        setError(data.error || 'Failed to create product')
+        setSaving(false)
+        return
+      }
+
+      // Success! Redirect to product or admin dashboard
+      router.push(`/products/${data.data.slug}`)
+      router.refresh()
     } catch (error) {
       console.error('Error creating product:', error)
-      alert('Failed to create product')
+      setError('An unexpected error occurred')
     } finally {
       setSaving(false)
     }
@@ -161,9 +201,7 @@ export default function NewProductPage() {
                 onChange={handleChange}
                 options={[
                   { value: '', label: 'Select a category...', disabled: true },
-                  { value: 'cat-1', label: 'Energy & Power Generation' },
-                  { value: 'cat-2', label: 'Water Systems & Purification' },
-                  { value: 'cat-3', label: 'Sustainable Materials' },
+                  ...categories.map(cat => ({ value: cat.id, label: cat.name }))
                 ]}
               />
 
@@ -174,12 +212,22 @@ export default function NewProductPage() {
                 onChange={handleChange}
                 options={[
                   { value: '', label: 'Select a vendor...' },
-                  { value: 'vendor-1', label: 'Goal Zero' },
-                  { value: 'vendor-2', label: 'Berkey Filters' },
+                  ...vendors.map(vendor => ({ value: vendor.id, label: vendor.name }))
                 ]}
               />
             </CardContent>
           </Card>
+
+          {/* Error Display */}
+          {error && (
+            <Card className="bg-terra-50 border-terra-300">
+              <CardContent className="p-6">
+                <p className="text-sm text-terra-800 font-semibold">
+                  {error}
+                </p>
+              </CardContent>
+            </Card>
+          )}
 
           {/* Submit Buttons */}
           <div className="flex gap-4 justify-end">
@@ -193,17 +241,6 @@ export default function NewProductPage() {
               {saving ? 'Saving...' : 'Create Product'}
             </Button>
           </div>
-
-          {/* Development Notice */}
-          <Card className="bg-ocean-50 border-ocean-200">
-            <CardContent className="p-6">
-              <p className="text-sm text-ocean-800">
-                <strong>Note:</strong> This form is not yet connected to the database.
-                Authentication and API integration will be added in the next phase.
-                For now, this demonstrates the admin UI structure and our new reusable form components!
-              </p>
-            </CardContent>
-          </Card>
         </form>
       </div>
     </div>

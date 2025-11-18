@@ -1,7 +1,8 @@
 'use client'
 
 import { Suspense, useState } from 'react'
-import { useSearchParams } from 'next/navigation'
+import { useSearchParams, useRouter } from 'next/navigation'
+import { signIn } from 'next-auth/react'
 import Link from 'next/link'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/Card'
 import { Button } from '@/components/ui/Button'
@@ -10,9 +11,11 @@ import { ArrowLeft } from 'lucide-react'
 
 function SignInForm() {
   const searchParams = useSearchParams()
+  const router = useRouter()
   const callbackUrl = searchParams.get('callbackUrl') || '/'
 
   const [loading, setLoading] = useState(false)
+  const [error, setError] = useState<string | null>(null)
   const [formData, setFormData] = useState({
     email: '',
     password: '',
@@ -21,16 +24,24 @@ function SignInForm() {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
     setLoading(true)
+    setError(null)
 
     try {
-      // TODO: Implement actual authentication with NextAuth
-      console.log('Sign in attempt:', formData)
-      await new Promise(resolve => setTimeout(resolve, 1000))
+      const result = await signIn('credentials', {
+        email: formData.email,
+        password: formData.password,
+        redirect: false,
+      })
 
-      alert('Authentication not yet implemented. This will be connected to NextAuth in the next phase.')
+      if (result?.error) {
+        setError('Invalid email or password')
+      } else if (result?.ok) {
+        router.push(callbackUrl)
+        router.refresh()
+      }
     } catch (error) {
       console.error('Sign in error:', error)
-      alert('Failed to sign in')
+      setError('An unexpected error occurred')
     } finally {
       setLoading(false)
     }
@@ -108,6 +119,14 @@ function SignInForm() {
               </div>
             </form>
 
+            {error && (
+              <div className="mt-4 p-4 bg-terra-50 border border-terra-300 rounded-lg">
+                <p className="text-sm text-terra-800 font-semibold">
+                  {error}
+                </p>
+              </div>
+            )}
+
             {callbackUrl !== '/' && (
               <div className="mt-6 p-4 bg-ocean-50 border border-ocean-200 rounded-lg">
                 <p className="text-sm text-ocean-800">
@@ -115,13 +134,6 @@ function SignInForm() {
                 </p>
               </div>
             )}
-
-            <div className="mt-6 p-4 bg-moss-50 border border-moss-200 rounded-lg">
-              <p className="text-sm text-moss-800">
-                <strong>Development Notice:</strong> Authentication is not yet implemented.
-                This page demonstrates the admin protection UI. NextAuth will be integrated in the next phase.
-              </p>
-            </div>
           </CardContent>
         </Card>
       </div>

@@ -433,27 +433,23 @@ The sun is the most abundant energy source we have. Let's use it wisely.
   // Create Projects
   const project1 = await prisma.project.create({
     data: {
-      title: 'Seattle Community Solar Initiative',
+      name: 'Seattle Community Solar Initiative',
       slug: 'seattle-community-solar',
       description: 'Bringing affordable solar power to low-income neighborhoods through community-owned installations.',
-      category: 'Energy',
       status: 'ACTIVE',
-      location: 'Seattle, WA',
       goal: 'Install 50 community solar panels by end of year',
-      ownerId: adminUser.id,
+      creatorId: adminUser.id,
     },
   })
 
   const project2 = await prisma.project.create({
     data: {
-      title: 'Zero-Waste Restaurant Network',
+      name: 'Zero-Waste Restaurant Network',
       slug: 'zero-waste-restaurant-network',
       description: 'Connecting local restaurants committed to zero-waste practices and helping new establishments transition.',
-      category: 'Food',
       status: 'ACTIVE',
-      location: 'Portland, OR',
       goal: 'Partner with 20 restaurants by Q2 2025',
-      ownerId: adminUser.id,
+      creatorId: adminUser.id,
     },
   })
 

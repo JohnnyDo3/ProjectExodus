@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server'
 import prisma from '@/lib/db/prisma'
+import { auth } from '@/auth'
 
 // GET /api/products - List all products
 export async function GET(request: NextRequest) {
@@ -69,10 +70,25 @@ export async function GET(request: NextRequest) {
 // POST /api/products - Create new product
 export async function POST(request: NextRequest) {
   try {
-    const body = await request.json()
+    // Check authentication
+    const session = await auth()
+    if (!session?.user) {
+      return NextResponse.json(
+        { success: false, error: 'Unauthorized' },
+        { status: 401 }
+      )
+    }
 
-    // TODO: Add authentication check here
-    // For now, allowing all requests (will secure later)
+    // Check if user has permission (ADMIN, EDITOR, or SUPER_ADMIN)
+    const allowedRoles = ['ADMIN', 'EDITOR', 'SUPER_ADMIN']
+    if (!allowedRoles.includes(session.user.role)) {
+      return NextResponse.json(
+        { success: false, error: 'Forbidden - Insufficient permissions' },
+        { status: 403 }
+      )
+    }
+
+    const body = await request.json()
 
     const product = await prisma.product.create({
       data: {

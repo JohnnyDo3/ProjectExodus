@@ -99,10 +99,10 @@ export default async function ProjectsPage() {
                         <div className={`px-3 py-1 rounded-full ${colors.bg} ${colors.text} font-black text-sm uppercase`}>
                           {project.status}
                         </div>
-                        <div className="text-2xl">{project.category === 'Energy' ? '⚡' : project.category === 'Food' ? '🍃' : '🌍'}</div>
+                        <div className="text-2xl">🌍</div>
                       </div>
                       <CardTitle className="text-2xl font-black">
-                        {project.title}
+                        {project.name}
                       </CardTitle>
                     </CardHeader>
                     <CardContent>
@@ -111,12 +111,6 @@ export default async function ProjectsPage() {
                       </p>
 
                       <div className="space-y-3 mb-6">
-                        {project.location && (
-                          <div className="flex items-center gap-2 text-sm font-semibold" style={{ color: '#666' }}>
-                            <MapPin className="w-4 h-4" />
-                            <span>{project.location}</span>
-                          </div>
-                        )}
                         {project.goal && (
                           <div className="flex items-start gap-2 text-sm font-semibold" style={{ color: '#666' }}>
                             <Target className="w-4 h-4 mt-0.5 flex-shrink-0" />
@@ -125,7 +119,7 @@ export default async function ProjectsPage() {
                         )}
                         <div className="flex items-center gap-2 text-sm font-bold" style={{ color: '#666' }}>
                           <User className="w-4 h-4" />
-                          <span>Led by {project.owner.name || 'Anonymous'}</span>
+                          <span>Led by {project.creator.name || 'Anonymous'}</span>
                         </div>
                       </div>
 
