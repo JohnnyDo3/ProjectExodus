@@ -4,6 +4,7 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/Card'
 import { Clock, User, Calendar, MessageCircle, Tag } from 'lucide-react'
 import { formatDate } from '@/lib/utils/format'
 import Link from 'next/link'
+import { MarkdownContent } from '@/components/article/MarkdownContent'
 
 async function getArticle(slug: string) {
   try {
@@ -114,18 +115,13 @@ export default async function ArticleDetailPage({
               <article className="md:col-span-3">
                 <Card>
                   <CardContent className="p-8 md:p-12">
-                    <div className="prose prose-lg max-w-none">
-                      {article.content ? (
-                        <div
-                          dangerouslySetInnerHTML={{ __html: article.content }}
-                          className="article-content"
-                        />
-                      ) : (
-                        <p className="text-earth-700 leading-relaxed whitespace-pre-wrap">
-                          {article.excerpt || 'Article content coming soon...'}
-                        </p>
-                      )}
-                    </div>
+                    {article.content ? (
+                      <MarkdownContent content={article.content} />
+                    ) : (
+                      <p className="text-lg font-medium leading-relaxed" style={{ color: '#333' }}>
+                        {article.excerpt || 'Article content coming soon...'}
+                      </p>
+                    )}
                   </CardContent>
                 </Card>
 
