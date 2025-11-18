@@ -200,6 +200,8 @@ export default async function LearnPage() {
           </div>
         </div>
       </section>
+
+
     </div>
   )
 }
