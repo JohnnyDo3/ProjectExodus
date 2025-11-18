@@ -131,7 +131,7 @@ export default function Home() {
             </div>
 
             {/* Cards - Tilted & 3D */}
-            <div className="grid lg:grid-cols-3 gap-12">
+            <div className="grid lg:grid-cols-3 gap-12 mb-20">
               {/* Discover Card */}
               <div className="group perspective transform hover:scale-105 transition-all duration-500" style={{ transform: 'rotate(-2deg)' }}>
                 <div className="relative p-10 rounded-3xl bg-gradient-to-br from-moss-100 to-moss-200 border-4 border-moss-600 hover:shadow-2xl transition-shadow duration-300">

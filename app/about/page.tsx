@@ -1,144 +1,132 @@
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/Card'
+import Link from 'next/link'
 import { Button } from '@/components/ui/Button'
-import { Heart, Target, Zap, Globe } from 'lucide-react'
+import { Card, CardContent } from '@/components/ui/Card'
+import { Target, Heart, Users, Zap } from 'lucide-react'
 
 export default function AboutPage() {
-  const values = [
-    {
-      icon: Heart,
-      title: 'Earth-First',
-      description: 'Every decision we make prioritizes planetary health and sustainability.'
-    },
-    {
-      icon: Target,
-      title: 'Accessible',
-      description: 'Making sustainability knowledge and products available to everyone, everywhere.'
-    },
-    {
-      icon: Zap,
-      title: 'Action-Oriented',
-      description: 'We believe in empowering people to take real, tangible action today.'
-    },
-    {
-      icon: Globe,
-      title: 'Community-Driven',
-      description: 'Built by and for a global community of sustainability advocates.'
-    },
-  ]
-
   return (
     <div className="min-h-screen">
       {/* Hero */}
-      <section className="hero-gradient py-20 md:py-32">
+      <section className="py-32 bg-gradient-to-br from-moss-50 via-ocean-50 to-sand-50 relative overflow-hidden">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="max-w-4xl mx-auto text-center space-y-6">
-            <h1 className="text-5xl md:text-6xl font-bold">
-              About{' '}
-              <span className="earth-gradient-text">
-                Project Exodus
-              </span>
+          <div className="max-w-4xl mx-auto text-center space-y-8">
+            <h1 style={{
+              fontSize: 'clamp(3rem, 10vw, 7rem)',
+              fontWeight: 900,
+              lineHeight: 1,
+              color: '#000'
+            }}>
+              ABOUT PROJECT EXODUS
             </h1>
-            <p className="text-xl md:text-2xl text-earth-700">
-              We're building the world's most accessible sustainability hub.
-              A single destination where people can discover, learn about, and access
-              sustainable alternatives across all aspects of life.
+            <p className="text-2xl font-semibold" style={{ color: '#222' }}>
+              We're on a mission to make sustainability <span style={{
+                background: 'linear-gradient(135deg, #36763d, #357777)',
+                WebkitBackgroundClip: 'text',
+                WebkitTextFillColor: 'transparent',
+                fontWeight: 900
+              }}>accessible</span> to everyone
             </p>
           </div>
         </div>
       </section>
 
-      {/* Mission */}
-      <section className="py-20 bg-white">
+      {/* Story */}
+      <section className="py-32 bg-white">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="max-w-3xl mx-auto">
-            <h2 className="text-4xl font-bold mb-6 text-center">Our Mission</h2>
-            <p className="text-lg text-earth-700 leading-relaxed mb-8">
-              The climate crisis is here. But so is the solution. Every day, brilliant minds are
-              creating sustainable alternatives to conventional products and practices. The problem?
-              Most people don't know these alternatives exist, where to find them, or how to use them.
-            </p>
-            <p className="text-lg text-earth-700 leading-relaxed mb-8">
-              Project Exodus bridges that gap. We're creating a comprehensive, accessible hub where
-              anyone can discover sustainable products, learn about eco-friendly practices, and connect
-              with a community of changemakers. From renewable energy systems to organic materials,
-              from regenerative agriculture to circular fashion - if it's sustainable, it's here.
-            </p>
-            <p className="text-lg text-earth-700 leading-relaxed">
-              This isn't just a website. It's a movement. It's a tool for transformation. It's your
-              guide to living more sustainably, starting today.
-            </p>
-          </div>
-        </div>
-      </section>
-
-      {/* Values */}
-      <section className="py-20 bg-sand-50">
-        <div className="container mx-auto px-4 sm:px-6 lg:px-8">
-          <h2 className="text-4xl font-bold mb-12 text-center">Our Values</h2>
-          <div className="grid md:grid-cols-2 gap-8 max-w-4xl mx-auto">
-            {values.map((value) => {
-              const Icon = value.icon
-              return (
-                <Card key={value.title} className="card-gradient">
-                  <CardHeader>
-                    <div className="flex items-start gap-4">
-                      <div className="w-12 h-12 rounded-lg bg-moss-100 flex items-center justify-center flex-shrink-0">
-                        <Icon className="w-6 h-6 text-moss-600" />
-                      </div>
-                      <div>
-                        <CardTitle className="text-2xl mb-2">{value.title}</CardTitle>
-                        <p className="text-earth-700">{value.description}</p>
-                      </div>
-                    </div>
-                  </CardHeader>
-                </Card>
-              )
-            })}
-          </div>
-        </div>
-      </section>
-
-      {/* Team */}
-      <section className="py-20 bg-white">
-        <div className="container mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="max-w-3xl mx-auto text-center">
-            <h2 className="text-4xl font-bold mb-6">Built by Sage</h2>
-            <p className="text-lg text-earth-700 leading-relaxed mb-8">
-              Project Exodus is being crafted with care, creativity, and a deep commitment to
-              our planet's future. This platform embodies an earthy, organic aesthetic that
-              reflects the natural world we're working to protect.
-            </p>
-            <div className="bg-moss-50 border-2 border-moss-200 rounded-xl p-8">
-              <p className="text-moss-900 font-medium mb-4">
-                "Every choice matters. Every product has an impact. Every person can make a difference.
-                This platform exists to make those choices easier, those impacts more positive, and
-                that difference more accessible."
+          <div className="max-w-4xl mx-auto space-y-12">
+            <div className="text-center">
+              <h2 className="text-5xl font-black mb-6" style={{
+                background: 'linear-gradient(135deg, #36763d, #2e6161)',
+                WebkitBackgroundClip: 'text',
+                WebkitTextFillColor: 'transparent'
+              }}>
+                OUR STORY
+              </h2>
+              <p className="text-xl leading-relaxed" style={{ color: '#333' }}>
+                Project Exodus was born from a simple observation: <strong>sustainable living shouldn't be complicated or expensive</strong>.
+                We believe that everyone deserves access to products and knowledge that help protect our planet.
               </p>
-              <p className="text-moss-700 text-sm">
-                - Sage, Creator of Project Exodus 🌱
+            </div>
+            <div className="prose prose-lg max-w-none" style={{ color: '#333' }}>
+              <p className="text-lg leading-relaxed">
+                In a world drowning in greenwashing and confusing eco-labels, we're building something different.
+                A platform that cuts through the noise. A community that shares real experiences. A marketplace that
+                connects you directly with verified sustainable brands.
+              </p>
+              <p className="text-lg leading-relaxed">
+                We're not just another sustainability blog. We're a <strong>living platform</strong> that grows with
+                contributions from experts, activists, and everyday people making conscious choices.
               </p>
             </div>
           </div>
         </div>
       </section>
 
-      {/* CTA */}
-      <section className="py-20 md:py-32 hero-gradient">
+      {/* Values */}
+      <section className="py-32 bg-sand-50">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="max-w-3xl mx-auto text-center space-y-8">
-            <h2 className="text-4xl md:text-5xl font-bold">
-              Ready to Make a Difference?
-            </h2>
-            <p className="text-lg text-earth-700">
-              Join us in building a more sustainable future. Start exploring, learning, and taking action today.
+          <div className="text-center mb-20">
+            <h2 className="text-5xl font-black" style={{ color: '#000' }}>OUR VALUES</h2>
+          </div>
+          <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-8 max-w-7xl mx-auto">
+            {[
+              { icon: Target, title: 'TRANSPARENCY', desc: 'No greenwashing, no hidden agendas. Just honest information.', color: 'moss' },
+              { icon: Heart, title: 'ACCESSIBILITY', desc: 'Sustainability for all, not just the wealthy.', color: 'ocean' },
+              { icon: Users, title: 'COMMUNITY', desc: 'Built by people, for people, with real experiences.', color: 'terra' },
+              { icon: Zap, title: 'ACTION', desc: 'Less talk, more doing. Every choice matters.', color: 'moss' }
+            ].map((value, i) => (
+              <Card key={i} className="hover-lift border-4">
+                <CardContent className="p-8 text-center">
+                  <div className={`w-20 h-20 mx-auto mb-6 rounded-full bg-${value.color}-100 flex items-center justify-center`}>
+                    <value.icon className={`w-10 h-10 text-${value.color}-600`} />
+                  </div>
+                  <h3 className="text-xl font-black mb-3" style={{ color: '#000' }}>{value.title}</h3>
+                  <p className="font-medium" style={{ color: '#444' }}>{value.desc}</p>
+                </CardContent>
+              </Card>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* Team */}
+      <section className="py-32 bg-white">
+        <div className="container mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="text-center max-w-3xl mx-auto">
+            <h2 className="text-5xl font-black mb-6" style={{ color: '#000' }}>BUILT BY SAGE</h2>
+            <p className="text-xl font-semibold mb-8" style={{ color: '#333' }}>
+              A passionate developer and sustainability advocate creating tools that make eco-conscious living easier and more accessible.
             </p>
-            <div className="flex flex-col sm:flex-row gap-4 justify-center">
-              <Button size="lg">
-                Explore Products
-              </Button>
-              <Button size="lg" variant="outline">
-                Start Learning
-              </Button>
+            <div className="w-32 h-32 mx-auto mb-6 rounded-full bg-gradient-to-br from-moss-500 to-ocean-500 flex items-center justify-center shadow-2xl">
+              <span className="text-white text-5xl font-black">S</span>
+            </div>
+            <p className="text-lg leading-relaxed" style={{ color: '#555' }}>
+              This platform started as a personal project to consolidate my own sustainable living research.
+              Now it's growing into something bigger—a comprehensive hub where anyone can discover, learn, and take action.
+            </p>
+          </div>
+        </div>
+      </section>
+
+      {/* CTA */}
+      <section className="py-32 bg-gradient-to-br from-moss-500 via-ocean-500 to-terra-500 text-white">
+        <div className="container mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="max-w-4xl mx-auto text-center space-y-8">
+            <h2 className="text-6xl font-black">JOIN THE MOVEMENT</h2>
+            <p className="text-2xl font-semibold">
+              Be part of the community building a more sustainable future
+            </p>
+            <div className="flex flex-col sm:flex-row gap-6 justify-center">
+              <Link href="/community">
+                <Button size="lg" className="text-xl px-12 py-8 bg-white text-earth-900 hover:bg-sand-100 font-black shadow-2xl">
+                  JOIN COMMUNITY
+                </Button>
+              </Link>
+              <Link href="/products">
+                <Button size="lg" variant="outline" className="text-xl px-12 py-8 border-4 border-white text-white hover:bg-white hover:text-earth-900 font-black">
+                  EXPLORE PRODUCTS
+                </Button>
+              </Link>
             </div>
           </div>
         </div>
