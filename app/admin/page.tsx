@@ -1,6 +1,6 @@
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/Card'
 import { Button } from '@/components/ui/Button'
-import { Package, FileText, Users, MessageSquare, Settings, BarChart3, Tag, FolderTree } from 'lucide-react'
+import { Package, FileText, Users, MessageSquare, Settings, BarChart3, Tag, FolderTree, Store } from 'lucide-react'
 import Link from 'next/link'
 
 export default function AdminDashboard() {
@@ -16,7 +16,8 @@ export default function AdminDashboard() {
     { name: 'Write Article', href: '/admin/articles/new', icon: FileText, color: 'ocean' },
     { name: 'Manage Tags', href: '/admin/tags', icon: Tag, color: 'terra' },
     { name: 'Manage Categories', href: '/admin/categories', icon: FolderTree, color: 'moss' },
-    { name: 'Manage Users', href: '/admin/users', icon: Users, color: 'ocean' },
+    { name: 'Manage Vendors', href: '/admin/vendors', icon: Store, color: 'ocean' },
+    { name: 'Manage Users', href: '/admin/users', icon: Users, color: 'terra' },
     { name: 'Settings', href: '/admin/settings', icon: Settings, color: 'earth' },
   ]
 
