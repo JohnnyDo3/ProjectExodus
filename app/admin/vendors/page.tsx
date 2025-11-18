@@ -1,6 +1,6 @@
 'use client'
 
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/Card'
 import { Button } from '@/components/ui/Button'
 import { Input } from '@/components/ui/Input'
@@ -8,41 +8,25 @@ import { Textarea } from '@/components/ui/Textarea'
 import { ArrowLeft, Plus, Edit2, Trash2, Store, ExternalLink, MapPin } from 'lucide-react'
 import Link from 'next/link'
 
-export default function VendorsManagementPage() {
-  const [vendors, setVendors] = useState([
-    {
-      id: '1',
-      name: 'Goal Zero',
-      slug: 'goal-zero',
-      description: 'Leading manufacturer of portable solar power solutions for outdoor adventures and emergency preparedness',
-      website: 'https://goalzero.com',
-      location: 'Utah, USA',
-      productCount: 28,
-      verified: true
-    },
-    {
-      id: '2',
-      name: 'Berkey Filters',
-      slug: 'berkey-filters',
-      description: 'Premium water filtration systems for home and travel',
-      website: 'https://berkeyfilters.com',
-      location: 'Texas, USA',
-      productCount: 15,
-      verified: true
-    },
-    {
-      id: '3',
-      name: 'Patagonia',
-      slug: 'patagonia',
-      description: 'Outdoor clothing and gear built to last, backed by environmental activism',
-      website: 'https://patagonia.com',
-      location: 'California, USA',
-      productCount: 42,
-      verified: true
-    },
-  ])
+interface Vendor {
+  id: string
+  name: string
+  slug: string
+  description: string | null
+  website: string | null
+  location: string | null
+  verified: boolean
+  _count: {
+    products: number
+  }
+}
 
+export default function VendorsManagementPage() {
+  const [vendors, setVendors] = useState<Vendor[]>([])
+  const [loading, setLoading] = useState(true)
+  const [error, setError] = useState<string | null>(null)
   const [isCreating, setIsCreating] = useState(false)
+  const [saving, setSaving] = useState(false)
   const [newVendor, setNewVendor] = useState({
     name: '',
     slug: '',
@@ -51,25 +35,93 @@ export default function VendorsManagementPage() {
     location: ''
   })
 
-  const handleCreateVendor = () => {
-    if (!newVendor.name || !newVendor.slug) return
+  // Fetch vendors on mount
+  useEffect(() => {
+    fetchVendors()
+  }, [])
 
-    setVendors([...vendors, {
-      id: Date.now().toString(),
-      ...newVendor,
-      productCount: 0,
-      verified: false
-    }])
+  const fetchVendors = async () => {
+    try {
+      setLoading(true)
+      const res = await fetch('/api/vendors')
+      const data = await res.json()
 
-    setNewVendor({ name: '', slug: '', description: '', website: '', location: '' })
-    setIsCreating(false)
-  }
-
-  const handleDeleteVendor = (id: string) => {
-    if (confirm('Are you sure you want to delete this vendor?')) {
-      setVendors(vendors.filter(v => v.id !== id))
+      if (data.success) {
+        setVendors(data.data)
+      } else {
+        setError('Failed to load vendors')
+      }
+    } catch (err) {
+      setError('An error occurred while loading vendors')
+    } finally {
+      setLoading(false)
     }
   }
+
+  const handleCreateVendor = async () => {
+    if (!newVendor.name || !newVendor.slug) {
+      setError('Name and slug are required')
+      return
+    }
+
+    try {
+      setSaving(true)
+      setError(null)
+
+      const res = await fetch('/api/vendors', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(newVendor),
+      })
+
+      const data = await res.json()
+
+      if (!res.ok) {
+        setError(data.error || 'Failed to create vendor')
+        setSaving(false)
+        return
+      }
+
+      // Refresh vendors list
+      await fetchVendors()
+
+      // Reset form
+      setNewVendor({ name: '', slug: '', description: '', website: '', location: '' })
+      setIsCreating(false)
+    } catch (err) {
+      setError('An error occurred while creating vendor')
+    } finally {
+      setSaving(false)
+    }
+  }
+
+  const handleDeleteVendor = async (id: string, name: string) => {
+    if (!confirm(`Are you sure you want to delete "${name}"?`)) return
+
+    try {
+      const res = await fetch(`/api/vendors?id=${id}`, {
+        method: 'DELETE',
+      })
+
+      const data = await res.json()
+
+      if (!res.ok) {
+        setError(data.error || 'Failed to delete vendor')
+        return
+      }
+
+      // Refresh vendors list
+      await fetchVendors()
+    } catch (err) {
+      setError('An error occurred while deleting vendor')
+    }
+  }
+
+  const totalProducts = vendors.reduce((sum, vendor) => sum + vendor._count.products, 0)
+  const verifiedCount = vendors.filter(v => v.verified).length
+  const mostProducts = vendors.length > 0
+    ? vendors.reduce((max, vendor) => (vendor._count.products > max._count.products ? vendor : max))
+    : null
 
   return (
     <div className="min-h-screen bg-sand-50">
@@ -102,6 +154,17 @@ export default function VendorsManagementPage() {
       {/* Content */}
       <div className="container mx-auto px-4 sm:px-6 lg:px-8 py-8">
         <div className="max-w-6xl mx-auto space-y-6">
+          {/* Error Display */}
+          {error && (
+            <Card className="bg-terra-50 border-terra-300">
+              <CardContent className="p-6">
+                <p className="text-sm text-terra-800 font-semibold">
+                  {error}
+                </p>
+              </CardContent>
+            </Card>
+          )}
+
           {/* Create New Vendor */}
           {isCreating && (
             <Card className="border-moss-300 bg-moss-50">
@@ -147,10 +210,10 @@ export default function VendorsManagementPage() {
                   />
                 </div>
                 <div className="flex gap-3">
-                  <Button onClick={handleCreateVendor}>
-                    Create Vendor
+                  <Button onClick={handleCreateVendor} disabled={saving}>
+                    {saving ? 'Creating...' : 'Create Vendor'}
                   </Button>
-                  <Button variant="outline" onClick={() => setIsCreating(false)}>
+                  <Button variant="outline" onClick={() => setIsCreating(false)} disabled={saving}>
                     Cancel
                   </Button>
                 </div>
@@ -182,7 +245,7 @@ export default function VendorsManagementPage() {
                   <div>
                     <p className="text-sm font-medium" style={{ color: '#666' }}>Verified</p>
                     <p className="text-2xl font-bold" style={{ color: '#000' }}>
-                      {vendors.filter(v => v.verified).length}
+                      {verifiedCount}
                     </p>
                   </div>
                 </div>
@@ -196,7 +259,9 @@ export default function VendorsManagementPage() {
                   </div>
                   <div>
                     <p className="text-sm font-medium" style={{ color: '#666' }}>Most Products</p>
-                    <p className="text-lg font-bold" style={{ color: '#000' }}>Patagonia</p>
+                    <p className="text-lg font-bold" style={{ color: '#000' }}>
+                      {mostProducts ? mostProducts.name : 'N/A'}
+                    </p>
                   </div>
                 </div>
               </CardContent>
@@ -209,7 +274,7 @@ export default function VendorsManagementPage() {
                   </div>
                   <div>
                     <p className="text-sm font-medium" style={{ color: '#666' }}>Total Products</p>
-                    <p className="text-2xl font-bold" style={{ color: '#000' }}>85</p>
+                    <p className="text-2xl font-bold" style={{ color: '#000' }}>{totalProducts}</p>
                   </div>
                 </div>
               </CardContent>
@@ -222,86 +287,85 @@ export default function VendorsManagementPage() {
               <CardTitle>All Vendors</CardTitle>
             </CardHeader>
             <CardContent>
-              <div className="space-y-4">
-                {vendors.map((vendor) => (
-                  <div
-                    key={vendor.id}
-                    className="p-6 rounded-lg border-2 border-sand-200 hover:border-moss-300 transition-colors"
-                  >
-                    <div className="flex items-start justify-between">
-                      <div className="flex gap-4 flex-1">
-                        <div className="w-16 h-16 rounded-xl bg-gradient-to-br from-moss-500 to-ocean-500 flex items-center justify-center flex-shrink-0 shadow-lg">
-                          <Store className="w-8 h-8 text-white" />
-                        </div>
-                        <div className="flex-1">
-                          <div className="flex items-center gap-2 mb-1">
-                            <h3 className="text-xl font-black" style={{ color: '#000' }}>
-                              {vendor.name}
-                            </h3>
-                            {vendor.verified && (
-                              <span className="px-2 py-0.5 rounded-full bg-moss-100 text-moss-800 text-xs font-bold">
-                                VERIFIED
-                              </span>
-                            )}
+              {loading ? (
+                <div className="text-center py-8">
+                  <p style={{ color: '#666' }}>Loading vendors...</p>
+                </div>
+              ) : vendors.length === 0 ? (
+                <div className="text-center py-8">
+                  <p style={{ color: '#666' }}>No vendors yet. Create your first one!</p>
+                </div>
+              ) : (
+                <div className="space-y-4">
+                  {vendors.map((vendor) => (
+                    <div
+                      key={vendor.id}
+                      className="p-6 rounded-lg border-2 border-sand-200 hover:border-moss-300 transition-colors"
+                    >
+                      <div className="flex items-start justify-between">
+                        <div className="flex gap-4 flex-1">
+                          <div className="w-16 h-16 rounded-xl bg-gradient-to-br from-moss-500 to-ocean-500 flex items-center justify-center flex-shrink-0 shadow-lg">
+                            <Store className="w-8 h-8 text-white" />
                           </div>
-                          <p className="text-sm mb-2" style={{ color: '#666' }}>
-                            /{vendor.slug}
-                          </p>
-                          <p className="text-sm mb-3" style={{ color: '#444' }}>
-                            {vendor.description}
-                          </p>
-                          <div className="flex flex-wrap gap-4 text-sm">
-                            {vendor.website && (
-                              <a
-                                href={vendor.website}
-                                target="_blank"
-                                rel="noopener noreferrer"
-                                className="flex items-center gap-1 text-moss-600 hover:text-moss-700 font-semibold"
-                              >
-                                <ExternalLink className="w-4 h-4" />
-                                Website
-                              </a>
+                          <div className="flex-1">
+                            <div className="flex items-center gap-2 mb-1">
+                              <h3 className="text-xl font-black" style={{ color: '#000' }}>
+                                {vendor.name}
+                              </h3>
+                              {vendor.verified && (
+                                <span className="px-2 py-0.5 rounded-full bg-moss-100 text-moss-800 text-xs font-bold">
+                                  VERIFIED
+                                </span>
+                              )}
+                            </div>
+                            <p className="text-sm mb-2" style={{ color: '#666' }}>
+                              /{vendor.slug}
+                            </p>
+                            {vendor.description && (
+                              <p className="text-sm mb-3" style={{ color: '#444' }}>
+                                {vendor.description}
+                              </p>
                             )}
-                            {vendor.location && (
-                              <div className="flex items-center gap-1" style={{ color: '#666' }}>
-                                <MapPin className="w-4 h-4" />
-                                {vendor.location}
+                            <div className="flex flex-wrap gap-4 text-sm">
+                              {vendor.website && (
+                                <a
+                                  href={vendor.website}
+                                  target="_blank"
+                                  rel="noopener noreferrer"
+                                  className="flex items-center gap-1 text-moss-600 hover:text-moss-700 font-semibold"
+                                >
+                                  <ExternalLink className="w-4 h-4" />
+                                  Website
+                                </a>
+                              )}
+                              {vendor.location && (
+                                <div className="flex items-center gap-1" style={{ color: '#666' }}>
+                                  <MapPin className="w-4 h-4" />
+                                  {vendor.location}
+                                </div>
+                              )}
+                              <div className="px-3 py-1 rounded-full bg-moss-100">
+                                <span className="text-xs font-bold text-moss-800">
+                                  {vendor._count.products} products
+                                </span>
                               </div>
-                            )}
-                            <div className="px-3 py-1 rounded-full bg-moss-100">
-                              <span className="text-xs font-bold text-moss-800">
-                                {vendor.productCount} products
-                              </span>
                             </div>
                           </div>
                         </div>
-                      </div>
-                      <div className="flex gap-2">
-                        <Button variant="ghost" size="sm">
-                          <Edit2 className="w-4 h-4" />
-                        </Button>
-                        <Button
-                          variant="ghost"
-                          size="sm"
-                          onClick={() => handleDeleteVendor(vendor.id)}
-                        >
-                          <Trash2 className="w-4 h-4 text-terra-600" />
-                        </Button>
+                        <div className="flex gap-2">
+                          <Button
+                            variant="ghost"
+                            size="sm"
+                            onClick={() => handleDeleteVendor(vendor.id, vendor.name)}
+                          >
+                            <Trash2 className="w-4 h-4 text-terra-600" />
+                          </Button>
+                        </div>
                       </div>
                     </div>
-                  </div>
-                ))}
-              </div>
-            </CardContent>
-          </Card>
-
-          {/* Development Notice */}
-          <Card className="bg-ocean-50 border-ocean-200">
-            <CardContent className="p-6">
-              <p className="text-sm" style={{ color: '#295050' }}>
-                <strong>Note:</strong> This is a UI demonstration. Vendor management will be fully functional
-                once the database is connected. Changes made here are temporary and for preview purposes only.
-              </p>
+                  ))}
+                </div>
+              )}
             </CardContent>
           </Card>
         </div>

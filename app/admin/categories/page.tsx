@@ -1,76 +1,120 @@
 'use client'
 
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/Card'
 import { Button } from '@/components/ui/Button'
 import { Input } from '@/components/ui/Input'
 import { Textarea } from '@/components/ui/Textarea'
-import { ArrowLeft, Plus, Edit2, Trash2, FolderTree, Zap, Droplet, Recycle } from 'lucide-react'
+import { ArrowLeft, Plus, Trash2, FolderTree } from 'lucide-react'
 import Link from 'next/link'
 
-export default function CategoriesManagementPage() {
-  const [categories, setCategories] = useState([
-    {
-      id: '1',
-      name: 'Energy & Power',
-      slug: 'energy-power',
-      description: 'Solar panels, wind turbines, and renewable energy solutions',
-      productCount: 45,
-      icon: 'Zap'
-    },
-    {
-      id: '2',
-      name: 'Water Systems',
-      slug: 'water-systems',
-      description: 'Purification, conservation, and sustainable water solutions',
-      productCount: 32,
-      icon: 'Droplet'
-    },
-    {
-      id: '3',
-      name: 'Sustainable Materials',
-      slug: 'sustainable-materials',
-      description: 'Eco-friendly building materials and recycled products',
-      productCount: 28,
-      icon: 'Recycle'
-    },
-  ])
+interface Category {
+  id: string
+  name: string
+  slug: string
+  description: string | null
+  icon: string | null
+  _count: {
+    products: number
+  }
+}
 
+export default function CategoriesManagementPage() {
+  const [categories, setCategories] = useState<Category[]>([])
+  const [loading, setLoading] = useState(true)
+  const [error, setError] = useState<string | null>(null)
   const [isCreating, setIsCreating] = useState(false)
+  const [saving, setSaving] = useState(false)
   const [newCategory, setNewCategory] = useState({
     name: '',
     slug: '',
-    description: ''
+    description: '',
+    icon: 'folder-tree'
   })
 
-  const handleCreateCategory = () => {
-    if (!newCategory.name || !newCategory.slug) return
+  // Fetch categories on mount
+  useEffect(() => {
+    fetchCategories()
+  }, [])
 
-    setCategories([...categories, {
-      id: Date.now().toString(),
-      name: newCategory.name,
-      slug: newCategory.slug,
-      description: newCategory.description,
-      productCount: 0,
-      icon: 'FolderTree'
-    }])
+  const fetchCategories = async () => {
+    try {
+      setLoading(true)
+      const res = await fetch('/api/categories')
+      const data = await res.json()
 
-    setNewCategory({ name: '', slug: '', description: '' })
-    setIsCreating(false)
-  }
-
-  const handleDeleteCategory = (id: string) => {
-    if (confirm('Are you sure you want to delete this category?')) {
-      setCategories(categories.filter(cat => cat.id !== id))
+      if (data.success) {
+        setCategories(data.data)
+      } else {
+        setError('Failed to load categories')
+      }
+    } catch (err) {
+      setError('An error occurred while loading categories')
+    } finally {
+      setLoading(false)
     }
   }
 
-  const iconMap: Record<string, any> = {
-    Zap,
-    Droplet,
-    Recycle,
-    FolderTree
+  const handleCreateCategory = async () => {
+    if (!newCategory.name || !newCategory.slug) {
+      setError('Name and slug are required')
+      return
+    }
+
+    try {
+      setSaving(true)
+      setError(null)
+
+      const res = await fetch('/api/categories', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(newCategory),
+      })
+
+      const data = await res.json()
+
+      if (!res.ok) {
+        setError(data.error || 'Failed to create category')
+        setSaving(false)
+        return
+      }
+
+      // Refresh categories list
+      await fetchCategories()
+
+      // Reset form
+      setNewCategory({ name: '', slug: '', description: '', icon: 'folder-tree' })
+      setIsCreating(false)
+    } catch (err) {
+      setError('An error occurred while creating category')
+    } finally {
+      setSaving(false)
+    }
   }
+
+  const handleDeleteCategory = async (id: string, name: string) => {
+    if (!confirm(`Are you sure you want to delete "${name}"?`)) return
+
+    try {
+      const res = await fetch(`/api/categories?id=${id}`, {
+        method: 'DELETE',
+      })
+
+      const data = await res.json()
+
+      if (!res.ok) {
+        setError(data.error || 'Failed to delete category')
+        return
+      }
+
+      // Refresh categories list
+      await fetchCategories()
+    } catch (err) {
+      setError('An error occurred while deleting category')
+    }
+  }
+
+  const totalProducts = categories.reduce((sum, cat) => sum + cat._count.products, 0)
 
   return (
     <div className="min-h-screen bg-sand-50">
@@ -103,6 +147,17 @@ export default function CategoriesManagementPage() {
       {/* Content */}
       <div className="container mx-auto px-4 sm:px-6 lg:px-8 py-8">
         <div className="max-w-5xl mx-auto space-y-6">
+          {/* Error Display */}
+          {error && (
+            <Card className="bg-terra-50 border-terra-300">
+              <CardContent className="p-6">
+                <p className="text-sm text-terra-800 font-semibold">
+                  {error}
+                </p>
+              </CardContent>
+            </Card>
+          )}
+
           {/* Create New Category */}
           {isCreating && (
             <Card className="border-moss-300 bg-moss-50">
@@ -133,10 +188,10 @@ export default function CategoriesManagementPage() {
                   onChange={(e) => setNewCategory({ ...newCategory, description: e.target.value })}
                 />
                 <div className="flex gap-3">
-                  <Button onClick={handleCreateCategory}>
-                    Create Category
+                  <Button onClick={handleCreateCategory} disabled={saving}>
+                    {saving ? 'Creating...' : 'Create Category'}
                   </Button>
-                  <Button variant="outline" onClick={() => setIsCreating(false)}>
+                  <Button variant="outline" onClick={() => setIsCreating(false)} disabled={saving}>
                     Cancel
                   </Button>
                 </div>
@@ -167,7 +222,12 @@ export default function CategoriesManagementPage() {
                   </div>
                   <div>
                     <p className="text-sm font-medium" style={{ color: '#666' }}>Most Products</p>
-                    <p className="text-lg font-bold" style={{ color: '#000' }}>Energy & Power</p>
+                    <p className="text-lg font-bold" style={{ color: '#000' }}>
+                      {categories.length > 0
+                        ? categories.reduce((max, cat) => cat._count.products > max._count.products ? cat : max).name
+                        : 'N/A'
+                      }
+                    </p>
                   </div>
                 </div>
               </CardContent>
@@ -180,7 +240,7 @@ export default function CategoriesManagementPage() {
                   </div>
                   <div>
                     <p className="text-sm font-medium" style={{ color: '#666' }}>Total Products</p>
-                    <p className="text-2xl font-bold" style={{ color: '#000' }}>105</p>
+                    <p className="text-2xl font-bold" style={{ color: '#000' }}>{totalProducts}</p>
                   </div>
                 </div>
               </CardContent>
@@ -193,10 +253,17 @@ export default function CategoriesManagementPage() {
               <CardTitle>All Categories</CardTitle>
             </CardHeader>
             <CardContent>
-              <div className="space-y-4">
-                {categories.map((category) => {
-                  const Icon = iconMap[category.icon] || FolderTree
-                  return (
+              {loading ? (
+                <div className="text-center py-8">
+                  <p style={{ color: '#666' }}>Loading categories...</p>
+                </div>
+              ) : categories.length === 0 ? (
+                <div className="text-center py-8">
+                  <p style={{ color: '#666' }}>No categories yet. Create your first one!</p>
+                </div>
+              ) : (
+                <div className="space-y-4">
+                  {categories.map((category) => (
                     <div
                       key={category.id}
                       className="p-6 rounded-lg border-2 border-sand-200 hover:border-moss-300 transition-colors"
@@ -204,7 +271,7 @@ export default function CategoriesManagementPage() {
                       <div className="flex items-start justify-between">
                         <div className="flex gap-4 flex-1">
                           <div className="w-14 h-14 rounded-xl bg-moss-100 flex items-center justify-center flex-shrink-0">
-                            <Icon className="w-7 h-7 text-moss-600" />
+                            <FolderTree className="w-7 h-7 text-moss-600" />
                           </div>
                           <div className="flex-1">
                             <h3 className="text-lg font-bold mb-1" style={{ color: '#000' }}>
@@ -213,43 +280,32 @@ export default function CategoriesManagementPage() {
                             <p className="text-sm mb-2" style={{ color: '#666' }}>
                               /{category.slug}
                             </p>
-                            <p className="text-sm" style={{ color: '#444' }}>
-                              {category.description}
-                            </p>
+                            {category.description && (
+                              <p className="text-sm" style={{ color: '#444' }}>
+                                {category.description}
+                              </p>
+                            )}
                             <div className="mt-3 inline-flex items-center gap-2 px-3 py-1 rounded-full bg-moss-100">
                               <span className="text-xs font-semibold text-moss-800">
-                                {category.productCount} products
+                                {category._count.products} products
                               </span>
                             </div>
                           </div>
                         </div>
                         <div className="flex gap-2">
-                          <Button variant="ghost" size="sm">
-                            <Edit2 className="w-4 h-4" />
-                          </Button>
                           <Button
                             variant="ghost"
                             size="sm"
-                            onClick={() => handleDeleteCategory(category.id)}
+                            onClick={() => handleDeleteCategory(category.id, category.name)}
                           >
                             <Trash2 className="w-4 h-4 text-terra-600" />
                           </Button>
                         </div>
                       </div>
                     </div>
-                  )
-                })}
-              </div>
-            </CardContent>
-          </Card>
-
-          {/* Development Notice */}
-          <Card className="bg-ocean-50 border-ocean-200">
-            <CardContent className="p-6">
-              <p className="text-sm" style={{ color: '#295050' }}>
-                <strong>Note:</strong> This is a UI demonstration. Category management will be fully functional
-                once the database is connected. Changes made here are temporary and for preview purposes only.
-              </p>
+                  ))}
+                </div>
+              )}
             </CardContent>
           </Card>
         </div>

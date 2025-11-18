@@ -1,42 +1,113 @@
 'use client'
 
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/Card'
 import { Button } from '@/components/ui/Button'
 import { Input } from '@/components/ui/Input'
-import { ArrowLeft, Plus, Edit2, Trash2, Tag } from 'lucide-react'
+import { ArrowLeft, Plus, Trash2, Tag } from 'lucide-react'
 import Link from 'next/link'
 
-export default function TagsManagementPage() {
-  const [tags, setTags] = useState([
-    { id: '1', name: 'Renewable Energy', slug: 'renewable-energy', articleCount: 12 },
-    { id: '2', name: 'Zero Waste', slug: 'zero-waste', articleCount: 8 },
-    { id: '3', name: 'Sustainable Living', slug: 'sustainable-living', articleCount: 15 },
-    { id: '4', name: 'Eco-Friendly', slug: 'eco-friendly', articleCount: 23 },
-  ])
+interface TagItem {
+  id: string
+  name: string
+  slug: string
+  _count: {
+    products: number
+    articles: number
+  }
+}
 
+export default function TagsManagementPage() {
+  const [tags, setTags] = useState<TagItem[]>([])
+  const [loading, setLoading] = useState(true)
+  const [error, setError] = useState<string | null>(null)
   const [isCreating, setIsCreating] = useState(false)
+  const [saving, setSaving] = useState(false)
   const [newTag, setNewTag] = useState({ name: '', slug: '' })
 
-  const handleCreateTag = () => {
-    if (!newTag.name || !newTag.slug) return
+  // Fetch tags on mount
+  useEffect(() => {
+    fetchTags()
+  }, [])
 
-    setTags([...tags, {
-      id: Date.now().toString(),
-      name: newTag.name,
-      slug: newTag.slug,
-      articleCount: 0
-    }])
+  const fetchTags = async () => {
+    try {
+      setLoading(true)
+      const res = await fetch('/api/tags')
+      const data = await res.json()
 
-    setNewTag({ name: '', slug: '' })
-    setIsCreating(false)
-  }
-
-  const handleDeleteTag = (id: string) => {
-    if (confirm('Are you sure you want to delete this tag?')) {
-      setTags(tags.filter(tag => tag.id !== id))
+      if (data.success) {
+        setTags(data.data)
+      } else {
+        setError('Failed to load tags')
+      }
+    } catch (err) {
+      setError('An error occurred while loading tags')
+    } finally {
+      setLoading(false)
     }
   }
+
+  const handleCreateTag = async () => {
+    if (!newTag.name || !newTag.slug) {
+      setError('Name and slug are required')
+      return
+    }
+
+    try {
+      setSaving(true)
+      setError(null)
+
+      const res = await fetch('/api/tags', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(newTag),
+      })
+
+      const data = await res.json()
+
+      if (!res.ok) {
+        setError(data.error || 'Failed to create tag')
+        setSaving(false)
+        return
+      }
+
+      // Refresh tags list
+      await fetchTags()
+
+      // Reset form
+      setNewTag({ name: '', slug: '' })
+      setIsCreating(false)
+    } catch (err) {
+      setError('An error occurred while creating tag')
+    } finally {
+      setSaving(false)
+    }
+  }
+
+  const handleDeleteTag = async (id: string, name: string) => {
+    if (!confirm(`Are you sure you want to delete "${name}"? This will remove it from all products and articles.`)) return
+
+    try {
+      const res = await fetch(`/api/tags?id=${id}`, {
+        method: 'DELETE',
+      })
+
+      const data = await res.json()
+
+      if (!res.ok) {
+        setError(data.error || 'Failed to delete tag')
+        return
+      }
+
+      // Refresh tags list
+      await fetchTags()
+    } catch (err) {
+      setError('An error occurred while deleting tag')
+    }
+  }
+
+  const totalUsage = tags.reduce((sum, tag) => sum + tag._count.products + tag._count.articles, 0)
 
   return (
     <div className="min-h-screen bg-sand-50">
@@ -69,6 +140,17 @@ export default function TagsManagementPage() {
       {/* Content */}
       <div className="container mx-auto px-4 sm:px-6 lg:px-8 py-8">
         <div className="max-w-5xl mx-auto space-y-6">
+          {/* Error Display */}
+          {error && (
+            <Card className="bg-terra-50 border-terra-300">
+              <CardContent className="p-6">
+                <p className="text-sm text-terra-800 font-semibold">
+                  {error}
+                </p>
+              </CardContent>
+            </Card>
+          )}
+
           {/* Create New Tag */}
           {isCreating && (
             <Card className="border-moss-300 bg-moss-50">
@@ -92,10 +174,10 @@ export default function TagsManagementPage() {
                   />
                 </div>
                 <div className="flex gap-3">
-                  <Button onClick={handleCreateTag}>
-                    Create Tag
+                  <Button onClick={handleCreateTag} disabled={saving}>
+                    {saving ? 'Creating...' : 'Create Tag'}
                   </Button>
-                  <Button variant="outline" onClick={() => setIsCreating(false)}>
+                  <Button variant="outline" onClick={() => setIsCreating(false)} disabled={saving}>
                     Cancel
                   </Button>
                 </div>
@@ -126,7 +208,12 @@ export default function TagsManagementPage() {
                   </div>
                   <div>
                     <p className="text-sm font-medium" style={{ color: '#666' }}>Most Used</p>
-                    <p className="text-lg font-bold" style={{ color: '#000' }}>Eco-Friendly</p>
+                    <p className="text-lg font-bold" style={{ color: '#000' }}>
+                      {tags.length > 0
+                        ? tags.reduce((max, tag) => (tag._count.products + tag._count.articles) > (max._count.products + max._count.articles) ? tag : max).name
+                        : 'N/A'
+                      }
+                    </p>
                   </div>
                 </div>
               </CardContent>
@@ -138,8 +225,8 @@ export default function TagsManagementPage() {
                     <Tag className="w-6 h-6 text-terra-600" />
                   </div>
                   <div>
-                    <p className="text-sm font-medium" style={{ color: '#666' }}>Total Uses</p>
-                    <p className="text-2xl font-bold" style={{ color: '#000' }}>58</p>
+                    <p className="text-sm font-medium" style={{ color: '#666' }}>Total Usage</p>
+                    <p className="text-2xl font-bold" style={{ color: '#000' }}>{totalUsage}</p>
                   </div>
                 </div>
               </CardContent>
@@ -152,48 +239,55 @@ export default function TagsManagementPage() {
               <CardTitle>All Tags</CardTitle>
             </CardHeader>
             <CardContent>
-              <div className="space-y-3">
-                {tags.map((tag) => (
-                  <div
-                    key={tag.id}
-                    className="flex items-center justify-between p-4 rounded-lg border-2 border-sand-200 hover:border-moss-300 transition-colors"
-                  >
-                    <div className="flex items-center gap-4">
-                      <div className="w-10 h-10 rounded-full bg-moss-100 flex items-center justify-center">
-                        <Tag className="w-5 h-5 text-moss-600" />
-                      </div>
-                      <div>
-                        <h3 className="font-semibold" style={{ color: '#000' }}>{tag.name}</h3>
-                        <p className="text-sm" style={{ color: '#666' }}>
-                          /{tag.slug} • {tag.articleCount} articles
-                        </p>
+              {loading ? (
+                <div className="text-center py-8">
+                  <p style={{ color: '#666' }}>Loading tags...</p>
+                </div>
+              ) : tags.length === 0 ? (
+                <div className="text-center py-8">
+                  <p style={{ color: '#666' }}>No tags yet. Create your first one!</p>
+                </div>
+              ) : (
+                <div className="grid md:grid-cols-2 gap-4">
+                  {tags.map((tag) => (
+                    <div
+                      key={tag.id}
+                      className="p-4 rounded-lg border-2 border-sand-200 hover:border-moss-300 transition-colors"
+                    >
+                      <div className="flex items-start justify-between">
+                        <div className="flex gap-3 flex-1">
+                          <div className="w-10 h-10 rounded-full bg-moss-100 flex items-center justify-center flex-shrink-0">
+                            <Tag className="w-5 h-5 text-moss-600" />
+                          </div>
+                          <div className="flex-1">
+                            <h3 className="font-bold mb-1" style={{ color: '#000' }}>
+                              {tag.name}
+                            </h3>
+                            <p className="text-xs mb-2" style={{ color: '#666' }}>
+                              /{tag.slug}
+                            </p>
+                            <div className="flex gap-2">
+                              <span className="text-xs px-2 py-1 rounded-full bg-ocean-100 text-ocean-800 font-semibold">
+                                {tag._count.products} products
+                              </span>
+                              <span className="text-xs px-2 py-1 rounded-full bg-moss-100 text-moss-800 font-semibold">
+                                {tag._count.articles} articles
+                              </span>
+                            </div>
+                          </div>
+                        </div>
+                        <Button
+                          variant="ghost"
+                          size="sm"
+                          onClick={() => handleDeleteTag(tag.id, tag.name)}
+                        >
+                          <Trash2 className="w-4 h-4 text-terra-600" />
+                        </Button>
                       </div>
                     </div>
-                    <div className="flex gap-2">
-                      <Button variant="ghost" size="sm">
-                        <Edit2 className="w-4 h-4" />
-                      </Button>
-                      <Button
-                        variant="ghost"
-                        size="sm"
-                        onClick={() => handleDeleteTag(tag.id)}
-                      >
-                        <Trash2 className="w-4 h-4 text-terra-600" />
-                      </Button>
-                    </div>
-                  </div>
-                ))}
-              </div>
-            </CardContent>
-          </Card>
-
-          {/* Development Notice */}
-          <Card className="bg-ocean-50 border-ocean-200">
-            <CardContent className="p-6">
-              <p className="text-sm" style={{ color: '#295050' }}>
-                <strong>Note:</strong> This is a UI demonstration. Tag management will be fully functional
-                once the database is connected. Changes made here are temporary and for preview purposes only.
-              </p>
+                  ))}
+                </div>
+              )}
             </CardContent>
           </Card>
         </div>
