@@ -2,18 +2,22 @@ import type { Metadata } from "next";
 import "./globals.css";
 import { Header } from "@/components/layout/Header";
 import { Footer } from "@/components/layout/Footer";
+import { SessionProvider } from "@/components/providers/SessionProvider";
 import { generateMetadata, siteConfig } from "@/lib/metadata";
+import { auth } from "@/auth";
 
 export const metadata: Metadata = generateMetadata({
   title: 'Sustainability Hub',
   description: siteConfig.description,
 });
 
-export default function RootLayout({
+export default async function RootLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+  const session = await auth();
+
   return (
     <html lang="en" suppressHydrationWarning style={{
       '--font-geist-sans': 'system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif',
@@ -34,9 +38,11 @@ export default function RootLayout({
         />
       </head>
       <body className="antialiased">
-        <Header />
-        {children}
-        <Footer />
+        <SessionProvider session={session}>
+          <Header />
+          {children}
+          <Footer />
+        </SessionProvider>
       </body>
     </html>
   );

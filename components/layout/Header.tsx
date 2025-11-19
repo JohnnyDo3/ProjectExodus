@@ -3,13 +3,16 @@
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
 import { useState } from 'react'
+import { useSession, signOut } from 'next-auth/react'
 import { Button } from '@/components/ui/Button'
 import { ThemeToggle } from '@/components/ui/ThemeToggle'
-import { Menu, X, Leaf } from 'lucide-react'
+import { Menu, X, Leaf, User, LogOut, Settings } from 'lucide-react'
 
 export function Header() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
+  const [userMenuOpen, setUserMenuOpen] = useState(false)
   const pathname = usePathname()
+  const { data: session, status } = useSession()
 
   const navigation = [
     { name: 'Home', href: '/' },
@@ -18,6 +21,10 @@ export function Header() {
     { name: 'Community', href: '/community' },
     { name: 'About', href: '/about' },
   ]
+
+  const handleSignOut = async () => {
+    await signOut({ callbackUrl: '/' })
+  }
 
   return (
     <header className="sticky top-0 z-50 bg-white dark:bg-earth-800 border-b-4 border-moss-500 dark:border-moss-600 shadow-sm transition-colors">
@@ -57,19 +64,75 @@ export function Header() {
             })}
           </div>
 
-          {/* CTA Buttons */}
+          {/* Auth Section */}
           <div className="hidden md:flex items-center gap-4">
             <ThemeToggle />
-            <Link href="/auth/signin">
-              <Button variant="outline" size="sm" className="font-bold border-2">
-                Sign In
-              </Button>
-            </Link>
-            <Link href="/auth/signup">
-              <Button size="sm" className="font-bold shadow-lg">
-                Get Started
-              </Button>
-            </Link>
+            {status === 'loading' ? (
+              <div className="w-24 h-9 bg-sand-200 dark:bg-earth-700 rounded-lg animate-pulse" />
+            ) : session ? (
+              <div className="relative">
+                <button
+                  onClick={() => setUserMenuOpen(!userMenuOpen)}
+                  className="flex items-center gap-3 px-4 py-2 rounded-lg bg-moss-50 dark:bg-earth-700 hover:bg-moss-100 dark:hover:bg-earth-600 transition-colors border-2 border-moss-500 dark:border-moss-600"
+                >
+                  <div className="w-8 h-8 rounded-full bg-moss-600 flex items-center justify-center">
+                    <User className="w-5 h-5 text-white" />
+                  </div>
+                  <span className="font-bold text-earth-900 dark:text-sand-100">
+                    {session.user?.name || session.user?.email}
+                  </span>
+                </button>
+
+                {userMenuOpen && (
+                  <>
+                    <div
+                      className="fixed inset-0 z-40"
+                      onClick={() => setUserMenuOpen(false)}
+                    />
+                    <div className="absolute right-0 mt-2 w-56 bg-white dark:bg-earth-800 rounded-xl shadow-xl border-2 border-moss-500 dark:border-moss-600 overflow-hidden z-50">
+                      <div className="p-4 border-b-2 border-sand-200 dark:border-earth-700">
+                        <p className="font-bold text-earth-900 dark:text-sand-100">
+                          {session.user?.name}
+                        </p>
+                        <p className="text-sm text-earth-600 dark:text-sand-300 truncate">
+                          {session.user?.email}
+                        </p>
+                      </div>
+                      <div className="p-2">
+                        <Link
+                          href="/dashboard"
+                          className="flex items-center gap-3 px-4 py-2 rounded-lg hover:bg-moss-50 dark:hover:bg-earth-700 transition-colors"
+                          onClick={() => setUserMenuOpen(false)}
+                        >
+                          <Settings className="w-4 h-4 text-earth-700 dark:text-sand-300" />
+                          <span className="font-medium text-earth-900 dark:text-sand-100">Dashboard</span>
+                        </Link>
+                        <button
+                          onClick={handleSignOut}
+                          className="w-full flex items-center gap-3 px-4 py-2 rounded-lg hover:bg-terra-50 dark:hover:bg-earth-700 transition-colors text-left"
+                        >
+                          <LogOut className="w-4 h-4 text-terra-600 dark:text-terra-400" />
+                          <span className="font-medium text-terra-700 dark:text-terra-400">Sign Out</span>
+                        </button>
+                      </div>
+                    </div>
+                  </>
+                )}
+              </div>
+            ) : (
+              <>
+                <Link href="/auth/signin">
+                  <Button variant="outline" size="sm" className="font-bold border-2">
+                    Sign In
+                  </Button>
+                </Link>
+                <Link href="/auth/signup">
+                  <Button size="sm" className="font-bold shadow-lg">
+                    Get Started
+                  </Button>
+                </Link>
+              </>
+            )}
           </div>
 
           {/* Mobile menu button */}
@@ -111,16 +174,49 @@ export function Header() {
               <div className="flex justify-center mb-2">
                 <ThemeToggle />
               </div>
-              <Link href="/auth/signin" className="block" onClick={() => setMobileMenuOpen(false)}>
-                <Button variant="outline" size="sm" className="w-full">
-                  Sign In
-                </Button>
-              </Link>
-              <Link href="/auth/signup" className="block" onClick={() => setMobileMenuOpen(false)}>
-                <Button size="sm" className="w-full">
-                  Get Started
-                </Button>
-              </Link>
+              {status === 'loading' ? (
+                <div className="w-full h-9 bg-sand-200 dark:bg-earth-700 rounded-lg animate-pulse" />
+              ) : session ? (
+                <div className="space-y-2">
+                  <div className="px-4 py-3 rounded-lg bg-moss-50 dark:bg-earth-700 border-2 border-moss-500 dark:border-moss-600">
+                    <p className="font-bold text-earth-900 dark:text-sand-100">
+                      {session.user?.name}
+                    </p>
+                    <p className="text-sm text-earth-600 dark:text-sand-300 truncate">
+                      {session.user?.email}
+                    </p>
+                  </div>
+                  <Link href="/dashboard" className="block" onClick={() => setMobileMenuOpen(false)}>
+                    <Button variant="outline" size="sm" className="w-full">
+                      Dashboard
+                    </Button>
+                  </Link>
+                  <Button
+                    variant="secondary"
+                    size="sm"
+                    className="w-full"
+                    onClick={() => {
+                      setMobileMenuOpen(false)
+                      handleSignOut()
+                    }}
+                  >
+                    Sign Out
+                  </Button>
+                </div>
+              ) : (
+                <>
+                  <Link href="/auth/signin" className="block" onClick={() => setMobileMenuOpen(false)}>
+                    <Button variant="outline" size="sm" className="w-full">
+                      Sign In
+                    </Button>
+                  </Link>
+                  <Link href="/auth/signup" className="block" onClick={() => setMobileMenuOpen(false)}>
+                    <Button size="sm" className="w-full">
+                      Get Started
+                    </Button>
+                  </Link>
+                </>
+              )}
             </div>
           </div>
         )}
