@@ -11,7 +11,7 @@ export async function GET(
     const post = await prisma.forumPost.findUnique({
       where: { id: postId },
       include: {
-        author: {
+        user: {
           select: {
             id: true,
             name: true,
@@ -28,7 +28,7 @@ export async function GET(
         },
         replies: {
           include: {
-            author: {
+            user: {
               select: {
                 id: true,
                 name: true,

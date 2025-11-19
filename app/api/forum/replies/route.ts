@@ -28,11 +28,11 @@ export async function POST(request: NextRequest) {
       data: {
         content: body.content,
         postId: body.postId,
-        authorId: session.user.id,
+        userId: session.user.id,
         parentId: body.parentId || null, // For nested replies
       },
       include: {
-        author: {
+        user: {
           select: {
             id: true,
             name: true,

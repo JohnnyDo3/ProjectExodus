@@ -29,7 +29,7 @@ export async function GET(
     const posts = await prisma.forumPost.findMany({
       where: { categoryId: category.id },
       include: {
-        author: {
+        user: {
           select: {
             id: true,
             name: true,

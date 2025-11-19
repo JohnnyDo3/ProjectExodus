@@ -29,13 +29,13 @@ export async function POST(request: NextRequest) {
         title: body.title,
         content: body.content,
         categoryId: body.categoryId,
-        authorId: session.user.id,
+        userId: session.user.id,
         pinned: false,
         locked: false,
       },
       include: {
         category: true,
-        author: {
+        user: {
           select: {
             id: true,
             name: true,
