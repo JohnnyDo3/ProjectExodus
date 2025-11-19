@@ -9,7 +9,7 @@ gsap.registerPlugin(ScrollTrigger)
 export function AnimatedHero() {
   const heroRef = useRef<HTMLDivElement>(null)
   const titleRef = useRef<HTMLHeadingElement>(null)
-  const subtitleRef = useRef<HTMLParagaragraphElement>(null)
+  const subtitleRef = useRef<HTMLParagraphElement>(null)
   const ctaRef = useRef<HTMLDivElement>(null)
 
   useEffect(() => {

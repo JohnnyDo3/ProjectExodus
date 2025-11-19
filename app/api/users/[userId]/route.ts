@@ -17,7 +17,7 @@ export async function GET(
         image: true,
         bio: true,
         createdAt: true,
-        badges: {
+        userBadges: {
           include: {
             badge: true
           }
@@ -52,12 +52,12 @@ export async function GET(
           orderBy: { createdAt: 'desc' },
           take: 10
         },
-        projects: {
+        projectMemberships: {
           include: {
             project: {
               select: {
                 id: true,
-                title: true,
+                name: true,
                 description: true,
                 status: true
               }

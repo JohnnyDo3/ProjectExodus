@@ -24,9 +24,21 @@ export async function POST(request: NextRequest) {
       )
     }
 
+    // Generate slug from title
+    const baseSlug = body.title
+      .toLowerCase()
+      .replace(/[^a-z0-9\s-]/g, '')
+      .replace(/\s+/g, '-')
+      .replace(/-+/g, '-')
+      .substring(0, 60)
+
+    // Add timestamp to ensure uniqueness
+    const slug = `${baseSlug}-${Date.now()}`
+
     const post = await prisma.forumPost.create({
       data: {
         title: body.title,
+        slug: slug,
         content: body.content,
         categoryId: body.categoryId,
         userId: session.user.id,

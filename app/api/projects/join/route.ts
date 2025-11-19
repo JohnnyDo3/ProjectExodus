@@ -102,6 +102,27 @@ export async function DELETE(request: NextRequest) {
       )
     }
 
+    // Check if user is the project creator (owner)
+    const project = await prisma.project.findUnique({
+      where: { id: projectId },
+      select: { creatorId: true },
+    })
+
+    if (!project) {
+      return NextResponse.json(
+        { success: false, error: 'Project not found' },
+        { status: 404 }
+      )
+    }
+
+    // Don't allow creator (owner) to leave
+    if (project.creatorId === session.user.id) {
+      return NextResponse.json(
+        { success: false, error: 'Project creators cannot leave. Transfer ownership or delete the project.' },
+        { status: 400 }
+      )
+    }
+
     // Check if member exists
     const member = await prisma.projectMember.findUnique({
       where: {
@@ -115,14 +136,6 @@ export async function DELETE(request: NextRequest) {
     if (!member) {
       return NextResponse.json(
         { success: false, error: 'You are not a member of this project' },
-        { status: 400 }
-      )
-    }
-
-    // Don't allow OWNER to leave
-    if (member.role === 'OWNER') {
-      return NextResponse.json(
-        { success: false, error: 'Project owners cannot leave. Transfer ownership first.' },
         { status: 400 }
       )
     }

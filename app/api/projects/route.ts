@@ -91,12 +91,12 @@ export async function POST(request: NextRequest) {
       },
     })
 
-    // Automatically add creator as OWNER member
+    // Automatically add creator as ADMIN member
     await prisma.projectMember.create({
       data: {
         projectId: project.id,
         userId: session.user.id,
-        role: 'OWNER',
+        role: 'ADMIN',
       },
     })
 

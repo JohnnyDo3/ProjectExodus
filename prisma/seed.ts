@@ -463,7 +463,7 @@ The sun is the most abundant energy source we have. Let's use it wisely.
     data: {
       projectId: project1.id,
       userId: adminUser.id,
-      role: 'OWNER',
+      role: 'ADMIN',
     },
   })
 
@@ -471,7 +471,7 @@ The sun is the most abundant energy source we have. Let's use it wisely.
     data: {
       projectId: project2.id,
       userId: adminUser.id,
-      role: 'OWNER',
+      role: 'ADMIN',
     },
   })
 
