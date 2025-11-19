@@ -3,6 +3,7 @@ import type { NextAuthConfig } from "next-auth"
 // This config is used in middleware (Edge Runtime compatible)
 // Do NOT import Prisma, bcrypt, or other Node.js-only modules here
 export const authConfig = {
+  secret: process.env.AUTH_SECRET,
   pages: {
     signIn: '/auth/signin',
     signOut: '/auth/signout',

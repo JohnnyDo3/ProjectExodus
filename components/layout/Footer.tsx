@@ -1,36 +1,253 @@
+'use client'
+
 import Link from 'next/link'
+import { useState } from 'react'
+import { Facebook, Twitter, Instagram, Linkedin, Youtube, Mail, Send, Leaf } from 'lucide-react'
+import { Button } from '@/components/ui/Button'
 
 export function Footer() {
+  const [email, setEmail] = useState('')
+  const [subscribed, setSubscribed] = useState(false)
+
+  const handleSubscribe = (e: React.FormEvent) => {
+    e.preventDefault()
+    // TODO: Implement newsletter subscription
+    setSubscribed(true)
+    setEmail('')
+    setTimeout(() => setSubscribed(false), 3000)
+  }
+
+  const footerSections = {
+    company: [
+      { name: 'About Us', href: '/about' },
+      { name: 'Our Mission', href: '/about#mission' },
+      { name: 'Team', href: '/about#team' },
+      { name: 'Careers', href: '/careers' },
+      { name: 'Press', href: '/press' },
+    ],
+    products: [
+      { name: 'Browse Products', href: '/products' },
+      { name: 'Categories', href: '/products#categories' },
+      { name: 'Vendors', href: '/vendors' },
+      { name: 'New Arrivals', href: '/products?filter=new' },
+      { name: 'Best Sellers', href: '/products?filter=popular' },
+    ],
+    resources: [
+      { name: 'Learn Hub', href: '/learn' },
+      { name: 'Sustainability Guide', href: '/learn/guide' },
+      { name: 'Community Forum', href: '/community/forum' },
+      { name: 'Projects', href: '/community/projects' },
+      { name: 'Blog', href: '/learn#articles' },
+    ],
+    support: [
+      { name: 'Help Center', href: '/support' },
+      { name: 'Contact Us', href: '/contact' },
+      { name: 'Shipping Info', href: '/shipping' },
+      { name: 'Returns', href: '/returns' },
+      { name: 'FAQ', href: '/faq' },
+    ],
+  }
+
+  const socialLinks = [
+    { name: 'Facebook', icon: Facebook, href: 'https://facebook.com/projectexodus' },
+    { name: 'Twitter', icon: Twitter, href: 'https://twitter.com/projectexodus' },
+    { name: 'Instagram', icon: Instagram, href: 'https://instagram.com/projectexodus' },
+    { name: 'LinkedIn', icon: Linkedin, href: 'https://linkedin.com/company/projectexodus' },
+    { name: 'YouTube', icon: Youtube, href: 'https://youtube.com/@projectexodus' },
+  ]
+
+  const legalLinks = [
+    { name: 'Privacy Policy', href: '/privacy' },
+    { name: 'Terms of Service', href: '/terms' },
+    { name: 'Cookie Policy', href: '/cookies' },
+    { name: 'Accessibility', href: '/accessibility' },
+  ]
+
   return (
-    <footer className="bg-earth-900 text-sand-100 py-20 border-t-8 border-moss-500">
-      <div className="container mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="text-center space-y-8">
-          <h3 className="text-5xl font-black tracking-tight" style={{
-            background: 'linear-gradient(135deg, #9ccba0, #91cdcd)',
-            WebkitBackgroundClip: 'text',
-            WebkitTextFillColor: 'transparent'
-          }}>
-            PROJECT EXODUS
-          </h3>
-          <p className="text-sand-200 max-w-2xl mx-auto text-xl font-semibold">
-            Building the world's most accessible sustainability hub. One bold step at a time.
-          </p>
-          <div className="flex justify-center gap-8 pt-4">
-            <Link href="/products" className="text-sand-300 hover:text-moss-300 font-bold uppercase text-sm transition-colors">
-              Products
-            </Link>
-            <Link href="/learn" className="text-sand-300 hover:text-moss-300 font-bold uppercase text-sm transition-colors">
-              Learn
-            </Link>
-            <Link href="/community" className="text-sand-300 hover:text-moss-300 font-bold uppercase text-sm transition-colors">
-              Community
-            </Link>
-            <Link href="/about" className="text-sand-300 hover:text-moss-300 font-bold uppercase text-sm transition-colors">
-              About
-            </Link>
+    <footer className="bg-earth-900 text-sand-100 border-t-8 border-moss-500">
+      {/* Main Footer Content */}
+      <div className="container mx-auto px-4 sm:px-6 lg:px-8 py-16">
+        {/* Top Section - Newsletter & Social */}
+        <div className="mb-16 pb-12 border-b border-earth-700">
+          <div className="grid lg:grid-cols-2 gap-12 items-center">
+            {/* Newsletter Signup */}
+            <div>
+              <div className="flex items-center gap-3 mb-4">
+                <Mail className="w-8 h-8 text-moss-400" />
+                <h3 className="text-3xl font-black tracking-tight">
+                  STAY IN THE LOOP
+                </h3>
+              </div>
+              <p className="text-sand-300 text-lg mb-6 font-medium">
+                Get the latest sustainable products, tips, and community updates delivered to your inbox.
+              </p>
+              <form onSubmit={handleSubscribe} className="flex gap-3 max-w-lg">
+                <input
+                  type="email"
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
+                  placeholder="Enter your email"
+                  required
+                  className="flex-1 px-6 py-4 rounded-xl bg-earth-800 border-2 border-earth-700 text-sand-100 placeholder-sand-500 focus:outline-none focus:border-moss-500 transition-colors text-base font-medium"
+                />
+                <Button
+                  type="submit"
+                  size="lg"
+                  className="px-8 py-4 rounded-xl font-bold shadow-lg hover:scale-105 transition-transform"
+                >
+                  {subscribed ? '✓ Subscribed!' : (
+                    <>
+                      <Send className="w-5 h-5 mr-2" />
+                      Subscribe
+                    </>
+                  )}
+                </Button>
+              </form>
+            </div>
+
+            {/* Social Links */}
+            <div className="lg:text-right">
+              <h3 className="text-2xl font-black mb-6 tracking-tight">
+                CONNECT WITH US
+              </h3>
+              <div className="flex gap-4 lg:justify-end">
+                {socialLinks.map((social) => (
+                  <a
+                    key={social.name}
+                    href={social.href}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="w-14 h-14 rounded-full bg-earth-800 border-2 border-earth-700 hover:border-moss-500 hover:bg-moss-600 flex items-center justify-center transition-all duration-300 group"
+                    aria-label={social.name}
+                  >
+                    <social.icon className="w-6 h-6 text-sand-300 group-hover:text-white transition-colors" />
+                  </a>
+                ))}
+              </div>
+            </div>
           </div>
-          <div className="pt-6 text-base text-sand-400 font-bold tracking-wide">
-            IN COLLABORATION WITH SAGE AND MR. NOBODY • 2025
+        </div>
+
+        {/* Links Grid */}
+        <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-5 gap-12 mb-16">
+          {/* Brand Column */}
+          <div className="col-span-2 md:col-span-4 lg:col-span-1">
+            <Link href="/" className="flex items-center gap-3 mb-6 group">
+              <div className="w-12 h-12 rounded-full bg-gradient-to-br from-moss-600 to-ocean-600 flex items-center justify-center pulse-alive shadow-lg">
+                <Leaf className="w-7 h-7 text-white" />
+              </div>
+              <span className="text-2xl font-black tracking-tight" style={{
+                background: 'linear-gradient(135deg, #9ccba0, #91cdcd)',
+                WebkitBackgroundClip: 'text',
+                WebkitTextFillColor: 'transparent'
+              }}>
+                PROJECT
+                <br />
+                EXODUS
+              </span>
+            </Link>
+            <p className="text-sand-400 font-medium leading-relaxed">
+              Building sustainable infrastructure for a better tomorrow. Food, Water, Energy.
+            </p>
+          </div>
+
+          {/* Company */}
+          <div>
+            <h4 className="text-lg font-black mb-6 text-moss-300 tracking-wide">
+              COMPANY
+            </h4>
+            <ul className="space-y-3">
+              {footerSections.company.map((link) => (
+                <li key={link.name}>
+                  <Link
+                    href={link.href}
+                    className="text-sand-300 hover:text-moss-300 transition-colors font-medium block"
+                  >
+                    {link.name}
+                  </Link>
+                </li>
+              ))}
+            </ul>
+          </div>
+
+          {/* Products */}
+          <div>
+            <h4 className="text-lg font-black mb-6 text-moss-300 tracking-wide">
+              PRODUCTS
+            </h4>
+            <ul className="space-y-3">
+              {footerSections.products.map((link) => (
+                <li key={link.name}>
+                  <Link
+                    href={link.href}
+                    className="text-sand-300 hover:text-moss-300 transition-colors font-medium block"
+                  >
+                    {link.name}
+                  </Link>
+                </li>
+              ))}
+            </ul>
+          </div>
+
+          {/* Resources */}
+          <div>
+            <h4 className="text-lg font-black mb-6 text-moss-300 tracking-wide">
+              RESOURCES
+            </h4>
+            <ul className="space-y-3">
+              {footerSections.resources.map((link) => (
+                <li key={link.name}>
+                  <Link
+                    href={link.href}
+                    className="text-sand-300 hover:text-moss-300 transition-colors font-medium block"
+                  >
+                    {link.name}
+                  </Link>
+                </li>
+              ))}
+            </ul>
+          </div>
+
+          {/* Support */}
+          <div>
+            <h4 className="text-lg font-black mb-6 text-moss-300 tracking-wide">
+              SUPPORT
+            </h4>
+            <ul className="space-y-3">
+              {footerSections.support.map((link) => (
+                <li key={link.name}>
+                  <Link
+                    href={link.href}
+                    className="text-sand-300 hover:text-moss-300 transition-colors font-medium block"
+                  >
+                    {link.name}
+                  </Link>
+                </li>
+              ))}
+            </ul>
+          </div>
+        </div>
+
+        {/* Bottom Bar */}
+        <div className="pt-8 border-t border-earth-700">
+          <div className="flex flex-col md:flex-row justify-between items-center gap-6">
+            {/* Copyright */}
+            <p className="text-sand-400 font-bold tracking-wide text-center md:text-left">
+              © 2025 PROJECT EXODUS • IN COLLABORATION WITH SAGE AND MR. NOBODY
+            </p>
+
+            {/* Legal Links */}
+            <div className="flex flex-wrap justify-center gap-6">
+              {legalLinks.map((link) => (
+                <Link
+                  key={link.name}
+                  href={link.href}
+                  className="text-sand-400 hover:text-moss-300 transition-colors font-semibold text-sm"
+                >
+                  {link.name}
+                </Link>
+              ))}
+            </div>
           </div>
         </div>
       </div>
