@@ -1,5 +1,9 @@
 @import "tailwindcss";
 
+@theme {
+  --color-mode: class;
+}
+
 /*
   Project Exodus Design System
   By Sage - Earthy, Organic, Alive

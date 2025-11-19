@@ -41,11 +41,15 @@ export function Header() {
                 <Link
                   key={item.name}
                   href={item.href}
-                  className={`font-bold text-base transition-colors uppercase tracking-wide ${
+                  className={`font-bold text-base transition-all uppercase tracking-wide relative ${
                     isActive
                       ? 'text-moss-600 dark:text-moss-400'
                       : 'text-earth-900 dark:text-sand-200 hover:text-moss-600 dark:hover:text-moss-400'
                   }`}
+                  style={{
+                    borderBottom: isActive ? '3px solid currentColor' : 'none',
+                    paddingBottom: '4px'
+                  }}
                 >
                   {item.name}
                 </Link>
