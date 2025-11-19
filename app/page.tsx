@@ -242,7 +242,7 @@ export default function Home() {
             </p>
             <div className="flex flex-col sm:flex-row gap-6 justify-center">
               <Link href="/auth/signup">
-                <Button size="lg" className="text-xl px-12 py-8 rounded-2xl bg-white text-earth-900 hover:bg-sand-100 shadow-2xl hover:scale-110 transition-all duration-300" style={{
+                <Button size="lg" className="text-xl px-12 py-8 rounded-2xl border-4 border-white bg-white text-earth-900 hover:bg-sand-100 shadow-2xl hover:scale-110 transition-all duration-300" style={{
                   minWidth: '250px',
                   fontWeight: 800
                 }}>
