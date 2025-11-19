@@ -3,6 +3,7 @@
 import Link from 'next/link'
 import { useState } from 'react'
 import { Button } from '@/components/ui/Button'
+import { ThemeToggle } from '@/components/ui/ThemeToggle'
 import { Menu, X, Leaf } from 'lucide-react'
 
 export function Header() {
@@ -44,6 +45,7 @@ export function Header() {
 
           {/* CTA Buttons */}
           <div className="hidden md:flex items-center gap-4">
+            <ThemeToggle />
             <Link href="/auth/signin">
               <Button variant="outline" size="sm" className="font-bold border-2">
                 Sign In
@@ -85,6 +87,9 @@ export function Header() {
               </Link>
             ))}
             <div className="pt-4 space-y-2 border-t border-sand-300">
+              <div className="flex justify-center mb-2">
+                <ThemeToggle />
+              </div>
               <Link href="/auth/signin" className="block" onClick={() => setMobileMenuOpen(false)}>
                 <Button variant="outline" size="sm" className="w-full">
                   Sign In

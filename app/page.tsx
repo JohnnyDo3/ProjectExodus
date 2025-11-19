@@ -78,18 +78,22 @@ export default function Home() {
 
             {/* CTA Buttons - Large & Prominent */}
             <div className="flex flex-col sm:flex-row gap-8 justify-center items-center">
-              <Button size="lg" className="text-xl px-12 py-8 rounded-2xl shadow-2xl hover:scale-110 transition-transform duration-300" style={{
-                background: 'linear-gradient(135deg, #36763d, #2d5e32)',
-                minWidth: '250px'
-              }}>
-                Explore Now →
-              </Button>
-              <Button size="lg" variant="outline" className="text-xl px-12 py-8 rounded-2xl border-4 border-earth-900 hover:bg-earth-900 hover:text-white transition-all duration-300" style={{
-                minWidth: '250px',
-                fontWeight: 700
-              }}>
-                Learn More
-              </Button>
+              <Link href="/products">
+                <Button size="lg" className="text-xl px-12 py-8 rounded-2xl shadow-2xl hover:scale-110 transition-transform duration-300" style={{
+                  background: 'linear-gradient(135deg, #36763d, #2d5e32)',
+                  minWidth: '250px'
+                }}>
+                  Explore Now →
+                </Button>
+              </Link>
+              <Link href="/learn">
+                <Button size="lg" variant="outline" className="text-xl px-12 py-8 rounded-2xl border-4 border-earth-900 hover:bg-earth-900 hover:text-white transition-all duration-300" style={{
+                  minWidth: '250px',
+                  fontWeight: 700
+                }}>
+                  Learn More
+                </Button>
+              </Link>
             </div>
           </div>
         </div>
@@ -237,18 +241,22 @@ export default function Home() {
               Every choice matters. Every action counts. Join us today.
             </p>
             <div className="flex flex-col sm:flex-row gap-6 justify-center">
-              <Button size="lg" className="text-xl px-12 py-8 rounded-2xl bg-white text-earth-900 hover:bg-sand-100 shadow-2xl hover:scale-110 transition-all duration-300" style={{
-                minWidth: '250px',
-                fontWeight: 800
-              }}>
-                GET STARTED →
-              </Button>
-              <Button size="lg" variant="outline" className="text-xl px-12 py-8 rounded-2xl border-4 border-white text-white hover:bg-white hover:text-earth-900 transition-all duration-300" style={{
-                minWidth: '250px',
-                fontWeight: 800
-              }}>
-                VIEW DEMO
-              </Button>
+              <Link href="/auth/signup">
+                <Button size="lg" className="text-xl px-12 py-8 rounded-2xl bg-white text-earth-900 hover:bg-sand-100 shadow-2xl hover:scale-110 transition-all duration-300" style={{
+                  minWidth: '250px',
+                  fontWeight: 800
+                }}>
+                  GET STARTED →
+                </Button>
+              </Link>
+              <Link href="/products">
+                <Button size="lg" variant="outline" className="text-xl px-12 py-8 rounded-2xl border-4 border-white text-white hover:bg-white hover:text-earth-900 transition-all duration-300" style={{
+                  minWidth: '250px',
+                  fontWeight: 800
+                }}>
+                  VIEW DEMO
+                </Button>
+              </Link>
             </div>
           </div>
         </div>
