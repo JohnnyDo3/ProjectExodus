@@ -173,8 +173,22 @@
 }
 
 /* Dark mode - deeper, richer earth tones */
+.dark {
+  --background: var(--earth-900);
+  --foreground: var(--sand-100);
+  --primary: var(--moss-400);
+  --primary-foreground: var(--earth-900);
+  --secondary: var(--terra-400);
+  --accent: var(--ocean-400);
+  --muted: var(--earth-800);
+  --muted-foreground: var(--sand-400);
+  --card: var(--earth-800);
+  --card-foreground: var(--sand-100);
+  --border: var(--earth-700);
+}
+
 @media (prefers-color-scheme: dark) {
-  :root {
+  :root:not(.light) {
     --background: var(--earth-900);
     --foreground: var(--sand-100);
     --primary: var(--moss-400);
