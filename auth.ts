@@ -1,14 +1,13 @@
 import NextAuth from "next-auth"
-// import { PrismaAdapter } from "@auth/prisma-adapter"
 import { prisma } from "@/lib/db"
 import Credentials from "next-auth/providers/credentials"
 import Google from "next-auth/providers/google"
 import GitHub from "next-auth/providers/github"
 import bcrypt from "bcryptjs"
-import type { NextAuthConfig } from "next-auth"
+import { authConfig } from "./auth.config"
 
-export const authConfig: NextAuthConfig = {
-  // adapter: PrismaAdapter(prisma), // Commented out - using JWT strategy instead
+export const { handlers, auth, signIn, signOut } = NextAuth({
+  ...authConfig,
   providers: [
     Google({
       clientId: process.env.GOOGLE_CLIENT_ID!,
@@ -62,11 +61,6 @@ export const authConfig: NextAuthConfig = {
     strategy: "jwt",
     maxAge: 30 * 24 * 60 * 60, // 30 days
   },
-  pages: {
-    signIn: '/auth/signin',
-    signOut: '/auth/signout',
-    error: '/auth/error',
-  },
   callbacks: {
     async jwt({ token, user, trigger, session }) {
       if (user) {
@@ -97,6 +91,4 @@ export const authConfig: NextAuthConfig = {
     }
   },
   debug: process.env.NODE_ENV === "development",
-}
-
-export const { handlers, auth, signIn, signOut } = NextAuth(authConfig)
+})
