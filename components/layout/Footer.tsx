@@ -64,21 +64,21 @@ export function Footer() {
   ]
 
   return (
-    <footer className="bg-earth-900 text-sand-100 border-t-8 border-moss-500">
+    <footer className="bg-[var(--card)] text-[var(--card-foreground)] border-t-8 border-theme-primary">
       {/* Main Footer Content */}
       <div className="container mx-auto px-4 sm:px-6 lg:px-8 py-16">
         {/* Top Section - Newsletter & Social */}
-        <div className="mb-16 pb-12 border-b border-earth-700">
+        <div className="mb-16 pb-12 border-b border-[var(--border)]">
           <div className="grid lg:grid-cols-2 gap-12 items-center">
             {/* Newsletter Signup */}
             <div>
               <div className="flex items-center gap-3 mb-4">
-                <Mail className="w-8 h-8 text-moss-400" />
+                <Mail className="w-8 h-8 text-theme-primary" />
                 <h3 className="text-3xl font-black tracking-tight">
                   STAY IN THE LOOP
                 </h3>
               </div>
-              <p className="text-sand-300 text-lg mb-6 font-medium">
+              <p className="text-theme-muted text-lg mb-6 font-medium">
                 Get the latest sustainable products, tips, and community updates delivered to your inbox.
               </p>
               <form onSubmit={handleSubscribe} className="flex gap-3 max-w-lg">
@@ -88,7 +88,7 @@ export function Footer() {
                   onChange={(e) => setEmail(e.target.value)}
                   placeholder="Enter your email"
                   required
-                  className="flex-1 px-6 py-4 rounded-xl bg-earth-800 border-2 border-earth-700 text-sand-100 placeholder-sand-500 focus:outline-none focus:border-moss-500 transition-colors text-base font-medium"
+                  className="flex-1 px-6 py-4 rounded-xl bg-[var(--muted)] border-2 border-[var(--border)] text-[var(--foreground)] placeholder:text-theme-muted focus:outline-none focus:border-theme-primary transition-colors text-base font-medium"
                 />
                 <Button
                   type="submit"
@@ -117,10 +117,10 @@ export function Footer() {
                     href={social.href}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="w-14 h-14 rounded-full bg-earth-800 border-2 border-earth-700 hover:border-moss-500 hover:bg-moss-600 flex items-center justify-center transition-all duration-300 group"
+                    className="w-14 h-14 rounded-full bg-[var(--muted)] border-2 border-[var(--border)] hover:border-theme-primary hover:bg-theme-primary flex items-center justify-center transition-all duration-300 group"
                     aria-label={social.name}
                   >
-                    <social.icon className="w-6 h-6 text-sand-300 group-hover:text-white transition-colors" />
+                    <social.icon className="w-6 h-6 text-[var(--foreground)] group-hover:text-[var(--primary-foreground)] transition-colors" />
                   </a>
                 ))}
               </div>
@@ -146,14 +146,14 @@ export function Footer() {
                 EXODUS
               </span>
             </Link>
-            <p className="text-sand-400 font-medium leading-relaxed">
+            <p className="text-theme-muted font-medium leading-relaxed">
               Building sustainable infrastructure for a better tomorrow. Food, Water, Energy.
             </p>
           </div>
 
           {/* Company */}
           <div>
-            <h4 className="text-lg font-black mb-6 text-moss-300 tracking-wide">
+            <h4 className="text-lg font-black mb-6 text-theme-primary tracking-wide">
               COMPANY
             </h4>
             <ul className="space-y-3">
@@ -161,7 +161,7 @@ export function Footer() {
                 <li key={link.name}>
                   <Link
                     href={link.href}
-                    className="text-sand-300 hover:text-moss-300 transition-colors font-medium block"
+                    className="text-theme-muted hover:text-theme-primary transition-colors font-medium block"
                   >
                     {link.name}
                   </Link>
@@ -172,7 +172,7 @@ export function Footer() {
 
           {/* Products */}
           <div>
-            <h4 className="text-lg font-black mb-6 text-moss-300 tracking-wide">
+            <h4 className="text-lg font-black mb-6 text-theme-primary tracking-wide">
               PRODUCTS
             </h4>
             <ul className="space-y-3">
@@ -180,7 +180,7 @@ export function Footer() {
                 <li key={link.name}>
                   <Link
                     href={link.href}
-                    className="text-sand-300 hover:text-moss-300 transition-colors font-medium block"
+                    className="text-theme-muted hover:text-theme-primary transition-colors font-medium block"
                   >
                     {link.name}
                   </Link>
@@ -191,7 +191,7 @@ export function Footer() {
 
           {/* Resources */}
           <div>
-            <h4 className="text-lg font-black mb-6 text-moss-300 tracking-wide">
+            <h4 className="text-lg font-black mb-6 text-theme-primary tracking-wide">
               RESOURCES
             </h4>
             <ul className="space-y-3">
@@ -199,7 +199,7 @@ export function Footer() {
                 <li key={link.name}>
                   <Link
                     href={link.href}
-                    className="text-sand-300 hover:text-moss-300 transition-colors font-medium block"
+                    className="text-theme-muted hover:text-theme-primary transition-colors font-medium block"
                   >
                     {link.name}
                   </Link>
@@ -210,7 +210,7 @@ export function Footer() {
 
           {/* Support */}
           <div>
-            <h4 className="text-lg font-black mb-6 text-moss-300 tracking-wide">
+            <h4 className="text-lg font-black mb-6 text-theme-primary tracking-wide">
               SUPPORT
             </h4>
             <ul className="space-y-3">
@@ -218,7 +218,7 @@ export function Footer() {
                 <li key={link.name}>
                   <Link
                     href={link.href}
-                    className="text-sand-300 hover:text-moss-300 transition-colors font-medium block"
+                    className="text-theme-muted hover:text-theme-primary transition-colors font-medium block"
                   >
                     {link.name}
                   </Link>
@@ -229,10 +229,10 @@ export function Footer() {
         </div>
 
         {/* Bottom Bar */}
-        <div className="pt-8 border-t border-earth-700">
+        <div className="pt-8 border-t border-[var(--border)]">
           <div className="flex flex-col md:flex-row justify-between items-center gap-6">
             {/* Copyright */}
-            <p className="text-sand-400 font-bold tracking-wide text-center md:text-left">
+            <p className="text-theme-muted font-bold tracking-wide text-center md:text-left">
               © 2025 PROJECT EXODUS • IN COLLABORATION WITH SAGE AND MR. NOBODY
             </p>
 
@@ -242,7 +242,7 @@ export function Footer() {
                 <Link
                   key={link.name}
                   href={link.href}
-                  className="text-sand-400 hover:text-moss-300 transition-colors font-semibold text-sm"
+                  className="text-theme-muted hover:text-theme-primary transition-colors font-semibold text-sm"
                 >
                   {link.name}
                 </Link>
