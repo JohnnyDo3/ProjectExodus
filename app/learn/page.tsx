@@ -38,20 +38,19 @@ export default async function LearnPage() {
   return (
     <div className="min-h-screen">
       {/* Hero */}
-      <section className="py-32 bg-gradient-to-br from-ocean-50 via-moss-50 to-sand-50 relative overflow-hidden">
+      <section className="py-32 bg-gradient-to-br from-[color-mix(in_srgb,var(--accent)_15%,var(--background))] via-[color-mix(in_srgb,var(--primary)_15%,var(--background))] to-[var(--muted)] relative overflow-hidden">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
           <div className="max-w-5xl mx-auto text-center space-y-8">
-            <h1 style={{
+            <h1 className="text-[var(--foreground)]" style={{
               fontSize: 'clamp(3rem, 10vw, 7rem)',
               fontWeight: 900,
-              lineHeight: 1,
-              color: '#000'
+              lineHeight: 1
             }}>
               LEARN SUSTAINABILITY
             </h1>
-            <p className="text-2xl font-bold" style={{ color: '#222' }}>
+            <p className="text-2xl font-bold text-theme-muted">
               Knowledge that <span style={{
-                background: 'linear-gradient(135deg, #36763d, #357777)',
+                background: 'linear-gradient(135deg, var(--primary), var(--accent))',
                 WebkitBackgroundClip: 'text',
                 WebkitTextFillColor: 'transparent',
                 fontWeight: 900
@@ -63,17 +62,17 @@ export default async function LearnPage() {
 
       {/* Articles Grid */}
       {articles.length > 0 && (
-        <section className="py-32 bg-white">
+        <section className="py-32 bg-[var(--background)]">
           <div className="container mx-auto px-4 sm:px-6 lg:px-8">
             <div className="text-center mb-20">
               <h2 className="text-5xl font-black mb-6" style={{
-                background: 'linear-gradient(135deg, #36763d, #2e6161)',
+                background: 'linear-gradient(135deg, var(--primary), var(--accent))',
                 WebkitBackgroundClip: 'text',
                 WebkitTextFillColor: 'transparent'
               }}>
                 LATEST ARTICLES
               </h2>
-              <p className="text-xl font-semibold" style={{ color: '#333' }}>
+              <p className="text-xl font-semibold text-theme-muted">
                 In-depth guides and insights on sustainable living
               </p>
             </div>
@@ -96,11 +95,11 @@ export default async function LearnPage() {
       )}
 
       {/* Topics Grid */}
-      <section className="py-32 bg-sand-50">
+      <section className="py-32 bg-[var(--muted)]">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-20">
-            <h2 className="text-5xl font-black" style={{ color: '#000' }}>EXPLORE TOPICS</h2>
-            <p className="text-xl font-semibold mt-4" style={{ color: '#333' }}>
+            <h2 className="text-5xl font-black text-[var(--foreground)]">EXPLORE TOPICS</h2>
+            <p className="text-xl font-semibold mt-4 text-theme-muted">
               Dive deep into sustainability subjects that matter
             </p>
           </div>
@@ -108,16 +107,16 @@ export default async function LearnPage() {
           <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8 max-w-7xl mx-auto">
             {topics.map((topic) => (
               <Link key={topic.title} href={`/learn?topic=${topic.slug}`}>
-                <Card className={`hover-lift border-4 border-${topic.color}-300 bg-gradient-to-br from-${topic.color}-50 to-${topic.color}-100 transform hover:scale-105 transition-all duration-300`}>
+                <Card className="hover-lift border-4 border-theme-primary bg-gradient-to-br from-[color-mix(in_srgb,var(--primary)_15%,var(--background))] to-[color-mix(in_srgb,var(--primary)_25%,var(--background))] transform hover:scale-105 transition-all duration-300">
                   <CardContent className="p-10 text-center">
                     <div className="text-7xl mb-6">{topic.icon}</div>
-                    <h3 className="text-2xl font-black mb-3" style={{ color: '#000' }}>
+                    <h3 className="text-2xl font-black mb-3 text-[var(--foreground)]">
                       {topic.title}
                     </h3>
-                    <p className="text-lg font-medium mb-4" style={{ color: '#444' }}>
+                    <p className="text-lg font-medium mb-4 text-theme-muted">
                       {topic.desc}
                     </p>
-                    <div className={`text-${topic.color}-700 font-bold text-sm`}>
+                    <div className="text-theme-primary font-bold text-sm">
                       EXPLORE →
                     </div>
                   </CardContent>
@@ -129,24 +128,24 @@ export default async function LearnPage() {
       </section>
 
       {/* Interactive Tools */}
-      <section className="py-32 bg-white">
+      <section className="py-32 bg-[var(--background)]">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-20">
-            <h2 className="text-5xl font-black" style={{ color: '#000' }}>INTERACTIVE TOOLS</h2>
+            <h2 className="text-5xl font-black text-[var(--foreground)]">INTERACTIVE TOOLS</h2>
           </div>
           <div className="grid md:grid-cols-3 gap-8 max-w-6xl mx-auto">
             {[
-              { icon: Calculator, title: 'CARBON CALCULATOR', desc: 'Calculate your footprint', color: 'moss' },
-              { icon: Video, title: 'VIDEO TUTORIALS', desc: 'Step-by-step guides', color: 'ocean' },
-              { icon: Download, title: 'RESOURCE LIBRARY', desc: 'Download PDFs & templates', color: 'terra' }
+              { icon: Calculator, title: 'CARBON CALCULATOR', desc: 'Calculate your footprint' },
+              { icon: Video, title: 'VIDEO TUTORIALS', desc: 'Step-by-step guides' },
+              { icon: Download, title: 'RESOURCE LIBRARY', desc: 'Download PDFs & templates' }
             ].map((tool, i) => (
-              <Card key={i} className="hover-lift border-4 cursor-pointer transform hover:scale-105 transition-all">
+              <Card key={i} className="hover-lift border-4 border-theme-accent cursor-pointer transform hover:scale-105 transition-all">
                 <CardContent className="p-10 text-center">
-                  <div className={`w-24 h-24 mx-auto mb-6 rounded-full bg-${tool.color}-100 flex items-center justify-center`}>
-                    <tool.icon className={`w-12 h-12 text-${tool.color}-600`} />
+                  <div className="w-24 h-24 mx-auto mb-6 rounded-full bg-[color-mix(in_srgb,var(--accent)_20%,var(--background))] flex items-center justify-center">
+                    <tool.icon className="w-12 h-12 text-theme-accent" />
                   </div>
-                  <h3 className="text-xl font-black mb-3" style={{ color: '#000' }}>{tool.title}</h3>
-                  <p className="font-medium" style={{ color: '#444' }}>{tool.desc}</p>
+                  <h3 className="text-xl font-black mb-3 text-[var(--foreground)]">{tool.title}</h3>
+                  <p className="font-medium text-theme-muted">{tool.desc}</p>
                 </CardContent>
               </Card>
             ))}
@@ -156,16 +155,16 @@ export default async function LearnPage() {
 
       {/* Coming Soon */}
       {articles.length === 0 && (
-        <section className="py-32 bg-ocean-50">
+        <section className="py-32 bg-[var(--muted)]">
           <div className="container mx-auto px-4 sm:px-6 lg:px-8">
             <div className="max-w-3xl mx-auto text-center">
-              <Card className="border-4 border-ocean-300">
+              <Card className="border-4 border-theme-accent">
                 <CardContent className="p-12">
-                  <BookOpen className="w-20 h-20 text-ocean-600 mx-auto mb-6" />
-                  <h3 className="text-4xl font-black mb-6" style={{ color: '#357777' }}>
+                  <BookOpen className="w-20 h-20 text-theme-accent mx-auto mb-6" />
+                  <h3 className="text-4xl font-black mb-6 text-theme-accent">
                     EDUCATIONAL CONTENT LAUNCHING SOON
                   </h3>
-                  <p className="text-xl font-semibold mb-8" style={{ color: '#2e6161' }}>
+                  <p className="text-xl font-semibold mb-8 text-theme-muted">
                     We're crafting comprehensive, research-backed articles that empower you
                     with actionable knowledge on all things sustainability!
                   </p>
@@ -180,7 +179,7 @@ export default async function LearnPage() {
       )}
 
       {/* CTA */}
-      <section className="py-32 bg-gradient-to-br from-moss-500 via-ocean-500 to-terra-500 text-white">
+      <section className="py-32 bg-gradient-to-br from-[var(--primary)] via-[var(--accent)] to-[var(--secondary)] text-[var(--primary-foreground)]">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
           <div className="max-w-4xl mx-auto text-center space-y-8">
             <h2 className="text-6xl font-black">START LEARNING TODAY</h2>
@@ -188,11 +187,11 @@ export default async function LearnPage() {
               Knowledge is power. Turn learning into action.
             </p>
             <div className="flex flex-col sm:flex-row gap-6 justify-center">
-              <Button size="lg" className="text-xl px-12 py-8 bg-white text-earth-900 hover:bg-sand-100 font-black shadow-2xl">
+              <Button size="lg" className="text-xl px-12 py-8 bg-[var(--primary-foreground)] text-[var(--primary)] hover:opacity-90 font-black shadow-2xl">
                 BROWSE ARTICLES
               </Button>
               <Link href="/products">
-                <Button size="lg" variant="outline" className="text-xl px-12 py-8 border-4 border-white text-white hover:bg-white hover:text-earth-900 font-black">
+                <Button size="lg" variant="outline" className="text-xl px-12 py-8 border-4 border-[var(--primary-foreground)] text-[var(--primary-foreground)] hover:bg-[var(--primary-foreground)] hover:text-[var(--primary)] font-black">
                   EXPLORE PRODUCTS
                 </Button>
               </Link>

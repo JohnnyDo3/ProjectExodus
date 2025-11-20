@@ -92,21 +92,20 @@ export default async function VendorsPage() {
   return (
     <div className="min-h-screen">
       {/* Hero Section */}
-      <section className="py-32 bg-gradient-to-br from-ocean-50 via-moss-50 to-terra-50 relative overflow-hidden">
+      <section className="py-32 bg-gradient-to-br from-[color-mix(in_srgb,var(--accent)_15%,var(--background))] via-[color-mix(in_srgb,var(--primary)_15%,var(--background))] to-[color-mix(in_srgb,var(--secondary)_15%,var(--background))] relative overflow-hidden">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
           <div className="max-w-5xl mx-auto text-center space-y-8">
-            <h1 style={{
+            <h1 className="text-[var(--foreground)]" style={{
               fontSize: 'clamp(3rem, 10vw, 7rem)',
               fontWeight: 900,
-              lineHeight: 1,
-              color: '#000'
+              lineHeight: 1
             }}>
               SUSTAINABLE VENDORS
             </h1>
-            <p className="text-2xl font-bold" style={{ color: '#222' }}>
+            <p className="text-2xl font-bold text-theme-muted">
               Meet the companies{' '}
               <span style={{
-                background: 'linear-gradient(135deg, #36763d, #357777)',
+                background: 'linear-gradient(135deg, var(--primary), var(--accent))',
                 WebkitBackgroundClip: 'text',
                 WebkitTextFillColor: 'transparent',
                 fontWeight: 900
@@ -118,7 +117,7 @@ export default async function VendorsPage() {
       </section>
 
       {/* Stats Section */}
-      <section className="py-20 bg-white border-b-4 border-moss-200">
+      <section className="py-20 bg-[var(--background)] border-b-4 border-theme-primary">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
           <div className="grid md:grid-cols-4 gap-8 max-w-5xl mx-auto">
             {[
@@ -129,13 +128,13 @@ export default async function VendorsPage() {
             ].map((stat, i) => (
               <div key={i} className="text-center">
                 <div className="text-5xl font-black mb-2" style={{
-                  background: 'linear-gradient(135deg, #36763d, #357777)',
+                  background: 'linear-gradient(135deg, var(--primary), var(--accent))',
                   WebkitBackgroundClip: 'text',
                   WebkitTextFillColor: 'transparent'
                 }}>
                   {stat.value}
                 </div>
-                <div className="text-sm font-bold tracking-wider" style={{ color: '#666' }}>
+                <div className="text-sm font-bold tracking-wider text-theme-muted">
                   {stat.label}
                 </div>
               </div>
@@ -145,13 +144,13 @@ export default async function VendorsPage() {
       </section>
 
       {/* Vendors Grid */}
-      <section className="py-32 bg-sand-50">
+      <section className="py-32 bg-[var(--muted)]">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-20">
-            <h2 className="text-5xl font-black mb-6" style={{ color: '#000' }}>
+            <h2 className="text-5xl font-black mb-6 text-[var(--foreground)]">
               ALL VENDORS
             </h2>
-            <p className="text-xl font-semibold" style={{ color: '#333' }}>
+            <p className="text-xl font-semibold text-theme-muted">
               Carefully curated partners committed to sustainable practices
             </p>
           </div>
@@ -160,14 +159,14 @@ export default async function VendorsPage() {
             {displayVendors.map((vendor: any) => (
               <Card
                 key={vendor.id}
-                className="border-4 border-moss-200 hover:border-moss-400 transition-all transform hover:scale-[1.02] shadow-lg"
+                className="border-4 border-theme-primary hover:border-theme-accent transition-all transform hover:scale-[1.02] shadow-lg"
               >
                 <CardContent className="p-8">
                   <div className="flex items-start gap-6">
                     {/* Vendor Icon */}
                     <div className="flex-shrink-0">
-                      <div className="w-20 h-20 rounded-2xl bg-gradient-to-br from-moss-500 to-ocean-500 flex items-center justify-center shadow-xl">
-                        <Store className="w-10 h-10 text-white" />
+                      <div className="w-20 h-20 rounded-2xl bg-gradient-to-br from-[var(--primary)] to-[var(--accent)] flex items-center justify-center shadow-xl">
+                        <Store className="w-10 h-10 text-[var(--primary-foreground)]" />
                       </div>
                     </div>
 
@@ -176,23 +175,23 @@ export default async function VendorsPage() {
                       <div className="flex items-start justify-between mb-3">
                         <div>
                           <div className="flex items-center gap-3 mb-2">
-                            <h3 className="text-3xl font-black" style={{ color: '#000' }}>
+                            <h3 className="text-3xl font-black text-[var(--foreground)]">
                               {vendor.name.toUpperCase()}
                             </h3>
                             {vendor.verified && (
-                              <div className="px-3 py-1 rounded-full bg-gradient-to-r from-moss-500 to-ocean-500 flex items-center gap-1.5 shadow-md">
-                                <CheckCircle2 className="w-4 h-4 text-white" />
-                                <span className="text-xs font-black text-white uppercase">Verified</span>
+                              <div className="px-3 py-1 rounded-full bg-gradient-to-r from-[var(--primary)] to-[var(--accent)] flex items-center gap-1.5 shadow-md">
+                                <CheckCircle2 className="w-4 h-4 text-[var(--primary-foreground)]" />
+                                <span className="text-xs font-black text-[var(--primary-foreground)] uppercase">Verified</span>
                               </div>
                             )}
                           </div>
-                          <p className="text-sm font-bold mb-1" style={{ color: '#666' }}>
+                          <p className="text-sm font-bold mb-1 text-theme-muted">
                             /{vendor.slug}
                           </p>
                         </div>
                       </div>
 
-                      <p className="text-base font-medium mb-6" style={{ color: '#444' }}>
+                      <p className="text-base font-medium mb-6 text-theme-muted">
                         {vendor.description}
                       </p>
 
@@ -202,20 +201,20 @@ export default async function VendorsPage() {
                             href={vendor.website}
                             target="_blank"
                             rel="noopener noreferrer"
-                            className="flex items-center gap-2 text-moss-600 hover:text-moss-700 font-bold transition-colors"
+                            className="flex items-center gap-2 text-theme-primary hover:opacity-80 font-bold transition-colors"
                           >
                             <ExternalLink className="w-5 h-5" />
                             <span>VISIT WEBSITE</span>
                           </a>
                         )}
                         {vendor.location && (
-                          <div className="flex items-center gap-2 font-semibold" style={{ color: '#666' }}>
-                            <MapPin className="w-5 h-5 text-ocean-600" />
+                          <div className="flex items-center gap-2 font-semibold text-theme-muted">
+                            <MapPin className="w-5 h-5 text-theme-accent" />
                             <span>{vendor.location}</span>
                           </div>
                         )}
-                        <div className="flex items-center gap-2 font-semibold" style={{ color: '#666' }}>
-                          <Package className="w-5 h-5 text-terra-600" />
+                        <div className="flex items-center gap-2 font-semibold text-theme-muted">
+                          <Package className="w-5 h-5 text-theme-secondary" />
                           <span>{vendor.productCount} PRODUCTS</span>
                         </div>
                       </div>
@@ -237,7 +236,7 @@ export default async function VendorsPage() {
       </section>
 
       {/* CTA Section */}
-      <section className="py-32 bg-gradient-to-br from-moss-500 via-ocean-500 to-terra-500 text-white">
+      <section className="py-32 bg-gradient-to-br from-[var(--primary)] via-[var(--accent)] to-[var(--secondary)] text-[var(--primary-foreground)]">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
           <div className="max-w-4xl mx-auto text-center space-y-8">
             <h2 className="text-6xl font-black">
@@ -247,11 +246,11 @@ export default async function VendorsPage() {
               Are you a sustainable brand? Join our marketplace and reach conscious consumers
             </p>
             <div className="flex flex-col sm:flex-row gap-6 justify-center">
-              <Button size="lg" className="text-xl px-12 py-8 bg-white text-earth-900 hover:bg-sand-100 font-black shadow-2xl rounded-2xl">
+              <Button size="lg" className="text-xl px-12 py-8 bg-[var(--primary-foreground)] text-[var(--primary)] hover:opacity-90 font-black shadow-2xl rounded-2xl">
                 BECOME A VENDOR
               </Button>
               <Link href="/products">
-                <Button size="lg" variant="outline" className="text-xl px-12 py-8 border-4 border-white text-white hover:bg-white hover:text-earth-900 font-black rounded-2xl">
+                <Button size="lg" variant="outline" className="text-xl px-12 py-8 border-4 border-[var(--primary-foreground)] text-[var(--primary-foreground)] hover:bg-[var(--primary-foreground)] hover:text-[var(--primary)] font-black rounded-2xl">
                   BROWSE PRODUCTS
                 </Button>
               </Link>

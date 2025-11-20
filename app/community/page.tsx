@@ -7,20 +7,19 @@ export default function CommunityPage() {
   return (
     <div className="min-h-screen">
       {/* Hero */}
-      <section className="py-32 bg-gradient-to-br from-terra-50 via-ocean-50 to-moss-50 relative overflow-hidden">
+      <section className="py-32 bg-gradient-to-br from-[color-mix(in_srgb,var(--secondary)_15%,var(--background))] via-[color-mix(in_srgb,var(--accent)_15%,var(--background))] to-[color-mix(in_srgb,var(--primary)_15%,var(--background))] relative overflow-hidden">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
           <div className="max-w-5xl mx-auto text-center space-y-8">
-            <h1 style={{
+            <h1 className="text-[var(--foreground)]" style={{
               fontSize: 'clamp(3rem, 10vw, 7rem)',
               fontWeight: 900,
-              lineHeight: 1,
-              color: '#000'
+              lineHeight: 1
             }}>
               JOIN THE COMMUNITY
             </h1>
-            <p className="text-2xl font-bold" style={{ color: '#222' }}>
+            <p className="text-2xl font-bold text-theme-muted">
               Connect with <span style={{
-                background: 'linear-gradient(135deg, #36763d, #357777)',
+                background: 'linear-gradient(135deg, var(--primary), var(--accent))',
                 WebkitBackgroundClip: 'text',
                 WebkitTextFillColor: 'transparent',
                 fontWeight: 900
@@ -34,29 +33,29 @@ export default function CommunityPage() {
       </section>
 
       {/* Features */}
-      <section className="py-32 bg-white">
+      <section className="py-32 bg-[var(--background)]">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-20">
-            <h2 className="text-5xl font-black" style={{ color: '#000' }}>WHAT'S INSIDE</h2>
+            <h2 className="text-5xl font-black text-[var(--foreground)]">WHAT'S INSIDE</h2>
           </div>
           <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-10 max-w-7xl mx-auto">
             {[
-              { icon: MessageSquare, title: 'DISCUSSION FORUMS', desc: 'Deep conversations on sustainability topics', color: 'moss' },
-              { icon: Users, title: 'USER PROFILES', desc: 'Track your journey and build your reputation', color: 'ocean' },
-              { icon: Award, title: 'ACHIEVEMENTS', desc: 'Earn badges for your contributions', color: 'terra' },
-              { icon: Rocket, title: 'PROJECTS', desc: 'Collaborate on local initiatives', color: 'moss' },
-              { icon: Sparkles, title: 'KNOWLEDGE SHARING', desc: 'Learn from experts and peers', color: 'ocean' },
-              { icon: Heart, title: 'SUPPORT NETWORK', desc: 'Find your sustainability tribe', color: 'terra' }
+              { icon: MessageSquare, title: 'DISCUSSION FORUMS', desc: 'Deep conversations on sustainability topics' },
+              { icon: Users, title: 'USER PROFILES', desc: 'Track your journey and build your reputation' },
+              { icon: Award, title: 'ACHIEVEMENTS', desc: 'Earn badges for your contributions' },
+              { icon: Rocket, title: 'PROJECTS', desc: 'Collaborate on local initiatives' },
+              { icon: Sparkles, title: 'KNOWLEDGE SHARING', desc: 'Learn from experts and peers' },
+              { icon: Heart, title: 'SUPPORT NETWORK', desc: 'Find your sustainability tribe' }
             ].map((feature, i) => (
-              <Card key={i} className="hover-lift border-4 transform hover:scale-105 transition-all duration-300">
+              <Card key={i} className="hover-lift border-4 border-theme-accent transform hover:scale-105 transition-all duration-300">
                 <CardContent className="p-10 text-center">
-                  <div className={`w-24 h-24 mx-auto mb-6 rounded-full bg-${feature.color}-100 flex items-center justify-center`}>
-                    <feature.icon className={`w-12 h-12 text-${feature.color}-600`} />
+                  <div className="w-24 h-24 mx-auto mb-6 rounded-full bg-[color-mix(in_srgb,var(--accent)_20%,var(--background))] flex items-center justify-center">
+                    <feature.icon className="w-12 h-12 text-theme-accent" />
                   </div>
-                  <h3 className="text-2xl font-black mb-4" style={{ color: '#000' }}>
+                  <h3 className="text-2xl font-black mb-4 text-[var(--foreground)]">
                     {feature.title}
                   </h3>
-                  <p className="text-lg font-medium" style={{ color: '#444' }}>
+                  <p className="text-lg font-medium text-theme-muted">
                     {feature.desc}
                   </p>
                 </CardContent>
@@ -67,7 +66,7 @@ export default function CommunityPage() {
       </section>
 
       {/* Stats */}
-      <section className="py-32 bg-gradient-to-br from-moss-500 to-ocean-500 text-white">
+      <section className="py-32 bg-gradient-to-br from-[var(--primary)] to-[var(--accent)] text-[var(--primary-foreground)]">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
           <div className="max-w-5xl mx-auto">
             <div className="text-center mb-16">
@@ -94,30 +93,30 @@ export default function CommunityPage() {
       </section>
 
       {/* Explore Features */}
-      <section className="py-32 bg-sand-50">
+      <section className="py-32 bg-[var(--muted)]">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
           <div className="max-w-6xl mx-auto">
             <div className="text-center mb-16">
-              <h2 className="text-5xl font-black mb-4" style={{ color: '#000' }}>
+              <h2 className="text-5xl font-black mb-4 text-[var(--foreground)]">
                 EXPLORE THE COMMUNITY
               </h2>
-              <p className="text-xl font-semibold" style={{ color: '#333' }}>
+              <p className="text-xl font-semibold text-theme-muted">
                 Jump into conversations, join projects, and connect with fellow changemakers
               </p>
             </div>
             <div className="grid md:grid-cols-2 gap-8">
               {/* Forum Card */}
-              <Card className="border-4 border-moss-300 hover-lift hover:border-moss-500 transition-all">
+              <Card className="border-4 border-theme-primary hover-lift hover:border-theme-accent transition-all">
                 <CardContent className="p-10">
                   <div className="flex items-center gap-4 mb-6">
-                    <div className="w-16 h-16 rounded-full bg-moss-100 flex items-center justify-center">
-                      <MessageSquare className="w-8 h-8 text-moss-600" />
+                    <div className="w-16 h-16 rounded-full bg-[color-mix(in_srgb,var(--primary)_20%,var(--background))] flex items-center justify-center">
+                      <MessageSquare className="w-8 h-8 text-theme-primary" />
                     </div>
-                    <h3 className="text-3xl font-black" style={{ color: '#000' }}>
+                    <h3 className="text-3xl font-black text-[var(--foreground)]">
                       DISCUSSION FORUM
                     </h3>
                   </div>
-                  <p className="text-lg font-semibold mb-8" style={{ color: '#1f2937' }}>
+                  <p className="text-lg font-semibold mb-8 text-theme-muted">
                     Join conversations about sustainability tips, product discussions, and community projects.
                     Share your knowledge and learn from others.
                   </p>
@@ -130,17 +129,17 @@ export default function CommunityPage() {
               </Card>
 
               {/* Projects Card */}
-              <Card className="border-4 border-ocean-300 hover-lift hover:border-ocean-500 transition-all">
+              <Card className="border-4 border-theme-accent hover-lift hover:border-theme-secondary transition-all">
                 <CardContent className="p-10">
                   <div className="flex items-center gap-4 mb-6">
-                    <div className="w-16 h-16 rounded-full bg-ocean-100 flex items-center justify-center">
-                      <Rocket className="w-8 h-8 text-ocean-600" />
+                    <div className="w-16 h-16 rounded-full bg-[color-mix(in_srgb,var(--accent)_20%,var(--background))] flex items-center justify-center">
+                      <Rocket className="w-8 h-8 text-theme-accent" />
                     </div>
-                    <h3 className="text-3xl font-black" style={{ color: '#000' }}>
+                    <h3 className="text-3xl font-black text-[var(--foreground)]">
                       COMMUNITY PROJECTS
                     </h3>
                   </div>
-                  <p className="text-lg font-semibold mb-8" style={{ color: '#1f2937' }}>
+                  <p className="text-lg font-semibold mb-8 text-theme-muted">
                     Collaborate on local sustainability initiatives. From community solar to zero-waste restaurants,
                     make real impact together.
                   </p>
@@ -157,17 +156,17 @@ export default function CommunityPage() {
       </section>
 
       {/* CTA */}
-      <section className="py-32 bg-white">
+      <section className="py-32 bg-[var(--background)]">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
           <div className="max-w-4xl mx-auto text-center space-y-8">
             <h2 className="text-6xl font-black" style={{
-              background: 'linear-gradient(135deg, #36763d, #357777)',
+              background: 'linear-gradient(135deg, var(--primary), var(--accent))',
               WebkitBackgroundClip: 'text',
               WebkitTextFillColor: 'transparent'
             }}>
               READY TO CONNECT?
             </h2>
-            <p className="text-2xl font-semibold" style={{ color: '#333' }}>
+            <p className="text-2xl font-semibold text-theme-muted">
               Start your sustainability journey with like-minded people today
             </p>
             <div className="flex flex-col sm:flex-row gap-6 justify-center">
