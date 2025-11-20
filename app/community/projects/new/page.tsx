@@ -41,12 +41,24 @@ export default function NewProjectPage() {
     setSubmitMessage('')
 
     try {
+      // Generate slug from project name
+      const slug = formData.name
+        .toLowerCase()
+        .replace(/[^a-z0-9\s-]/g, '') // Remove special characters
+        .replace(/\s+/g, '-') // Replace spaces with hyphens
+        .replace(/-+/g, '-') // Replace multiple hyphens with single
+        .trim()
+        + '-' + Date.now().toString(36) // Add timestamp for uniqueness
+
       const res = await fetch('/api/projects', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify(formData),
+        body: JSON.stringify({
+          ...formData,
+          slug,
+        }),
       })
 
       const data = await res.json()
