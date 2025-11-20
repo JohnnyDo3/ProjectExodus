@@ -302,7 +302,7 @@ export default function TermsPage() {
                   <CardContent className="p-8 space-y-6">
                     {section.content.map((item, j) => (
                       <div key={j}>
-                        {item.subtitle && (
+                        {'subtitle' in item && item.subtitle && (
                           <h3 className="font-black text-lg mb-3 text-[var(--foreground)]">
                             {item.subtitle}
                           </h3>
