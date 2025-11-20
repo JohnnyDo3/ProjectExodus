@@ -236,21 +236,19 @@ export default function Home() {
               Every choice matters. Every action counts. Join us today.
             </p>
             <div className="flex flex-col sm:flex-row gap-6 justify-center">
-              <Link href="/auth/signup">
-                <Button size="lg" className="text-xl px-12 py-8 rounded-2xl border-4 border-[var(--primary-foreground)] bg-[var(--primary-foreground)] text-[var(--primary)] hover:opacity-90 shadow-theme-2xl hover:scale-110 transition-all duration-300" style={{
-                  minWidth: '250px',
-                  fontWeight: 800
-                }}>
-                  GET STARTED →
-                </Button>
+              <Link
+                href="/auth/signup"
+                className="inline-flex items-center justify-center text-xl px-12 py-8 rounded-2xl border-4 border-[var(--primary-foreground)] bg-[var(--primary-foreground)] text-[var(--primary)] hover:opacity-90 shadow-theme-2xl hover:scale-110 transition-all duration-300 font-black"
+                style={{ minWidth: '250px' }}
+              >
+                GET STARTED →
               </Link>
-              <Link href="/products">
-                <Button size="lg" variant="outline" className="text-xl px-12 py-8 rounded-2xl border-4 border-[var(--primary-foreground)] text-[var(--primary-foreground)] hover:bg-[var(--primary-foreground)] hover:text-[var(--primary)] transition-all duration-300" style={{
-                  minWidth: '250px',
-                  fontWeight: 800
-                }}>
-                  VIEW DEMO
-                </Button>
+              <Link
+                href="/products"
+                className="inline-flex items-center justify-center text-xl px-12 py-8 rounded-2xl border-4 border-[var(--primary-foreground)] text-[var(--primary-foreground)] hover:bg-[var(--primary-foreground)] hover:text-[var(--primary)] transition-all duration-300 font-black"
+                style={{ minWidth: '250px' }}
+              >
+                VIEW DEMO
               </Link>
             </div>
           </div>

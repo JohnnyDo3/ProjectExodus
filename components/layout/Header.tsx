@@ -121,15 +121,17 @@ export function Header() {
               </div>
             ) : (
               <>
-                <Link href="/auth/signin">
-                  <Button variant="outline" size="sm" className="font-bold border-2">
-                    Sign In
-                  </Button>
+                <Link
+                  href="/auth/signin"
+                  className="inline-flex items-center justify-center rounded-lg font-bold transition-all duration-200 border-2 border-[var(--primary)] text-[var(--primary)] hover:bg-[var(--muted)] bg-transparent px-3 py-1.5 text-sm"
+                >
+                  Sign In
                 </Link>
-                <Link href="/auth/signup">
-                  <Button size="sm" className="font-bold shadow-lg">
-                    Get Started
-                  </Button>
+                <Link
+                  href="/auth/signup"
+                  className="inline-flex items-center justify-center rounded-lg font-bold transition-all duration-200 bg-[var(--primary)] text-[var(--primary-foreground)] hover:opacity-90 shadow-lg px-3 py-1.5 text-sm"
+                >
+                  Get Started
                 </Link>
               </>
             )}
@@ -205,15 +207,19 @@ export function Header() {
                 </div>
               ) : (
                 <>
-                  <Link href="/auth/signin" className="block" onClick={() => setMobileMenuOpen(false)}>
-                    <Button variant="outline" size="sm" className="w-full">
-                      Sign In
-                    </Button>
+                  <Link
+                    href="/auth/signin"
+                    onClick={() => setMobileMenuOpen(false)}
+                    className="w-full inline-flex items-center justify-center rounded-lg font-bold transition-all duration-200 border-2 border-[var(--primary)] text-[var(--primary)] hover:bg-[var(--muted)] bg-transparent px-3 py-1.5 text-sm"
+                  >
+                    Sign In
                   </Link>
-                  <Link href="/auth/signup" className="block" onClick={() => setMobileMenuOpen(false)}>
-                    <Button size="sm" className="w-full">
-                      Get Started
-                    </Button>
+                  <Link
+                    href="/auth/signup"
+                    onClick={() => setMobileMenuOpen(false)}
+                    className="w-full inline-flex items-center justify-center rounded-lg font-bold transition-all duration-200 bg-[var(--primary)] text-[var(--primary-foreground)] hover:opacity-90 shadow-lg px-3 py-1.5 text-sm"
+                  >
+                    Get Started
                   </Link>
                 </>
               )}
