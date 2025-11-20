@@ -2,6 +2,7 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/Card'
 import { Button } from '@/components/ui/Button'
 import { Briefcase, User, Users, MapPin, Target, CheckCircle } from 'lucide-react'
 import Link from 'next/link'
+import { JoinProjectButton } from '@/components/projects/JoinProjectButton'
 
 async function getProjects() {
   try {
@@ -153,9 +154,7 @@ export default async function ProjectsPage() {
                             </div>
                           )}
                         </div>
-                        <Button size="sm" className="font-black">
-                          JOIN PROJECT
-                        </Button>
+                        <JoinProjectButton projectId={project.id} projectName={project.name} />
                       </div>
                     </CardContent>
                   </Card>

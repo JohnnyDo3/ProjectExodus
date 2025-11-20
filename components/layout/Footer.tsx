@@ -8,13 +8,43 @@ import { Button } from '@/components/ui/Button'
 export function Footer() {
   const [email, setEmail] = useState('')
   const [subscribed, setSubscribed] = useState(false)
+  const [isSubmitting, setIsSubmitting] = useState(false)
+  const [message, setMessage] = useState('')
 
-  const handleSubscribe = (e: React.FormEvent) => {
+  const handleSubscribe = async (e: React.FormEvent) => {
     e.preventDefault()
-    // TODO: Implement newsletter subscription
-    setSubscribed(true)
-    setEmail('')
-    setTimeout(() => setSubscribed(false), 3000)
+    setIsSubmitting(true)
+    setMessage('')
+
+    try {
+      const res = await fetch('/api/newsletter/subscribe', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ email, source: 'footer' }),
+      })
+
+      const data = await res.json()
+
+      if (data.success) {
+        setSubscribed(true)
+        setEmail('')
+        setMessage(data.message)
+        setTimeout(() => {
+          setSubscribed(false)
+          setMessage('')
+        }, 5000)
+      } else {
+        setMessage(data.error || 'Failed to subscribe')
+        setTimeout(() => setMessage(''), 5000)
+      }
+    } catch (error) {
+      setMessage('An error occurred. Please try again.')
+      setTimeout(() => setMessage(''), 5000)
+    } finally {
+      setIsSubmitting(false)
+    }
   }
 
   const footerSections = {
@@ -81,27 +111,36 @@ export function Footer() {
               <p className="text-theme-muted text-lg mb-6 font-medium">
                 Get the latest sustainable products, tips, and community updates delivered to your inbox.
               </p>
-              <form onSubmit={handleSubscribe} className="flex gap-3 max-w-lg">
-                <input
-                  type="email"
-                  value={email}
-                  onChange={(e) => setEmail(e.target.value)}
-                  placeholder="Enter your email"
-                  required
-                  className="flex-1 px-6 py-4 rounded-xl bg-[var(--muted)] border-2 border-[var(--border)] text-[var(--foreground)] placeholder:text-theme-muted focus:outline-none focus:border-theme-primary transition-colors text-base font-medium"
-                />
-                <Button
-                  type="submit"
-                  size="lg"
-                  className="px-8 py-4 rounded-xl font-bold shadow-lg hover:scale-105 transition-transform"
-                >
-                  {subscribed ? '✓ Subscribed!' : (
-                    <>
-                      <Send className="w-5 h-5 mr-2" />
-                      Subscribe
-                    </>
-                  )}
-                </Button>
+              <form onSubmit={handleSubscribe} className="flex flex-col gap-3 max-w-lg">
+                <div className="flex gap-3">
+                  <input
+                    type="email"
+                    value={email}
+                    onChange={(e) => setEmail(e.target.value)}
+                    placeholder="Enter your email"
+                    required
+                    disabled={isSubmitting}
+                    className="flex-1 px-6 py-4 rounded-xl bg-[var(--muted)] border-2 border-[var(--border)] text-[var(--foreground)] placeholder:text-theme-muted focus:outline-none focus:border-theme-primary transition-colors text-base font-medium disabled:opacity-50"
+                  />
+                  <Button
+                    type="submit"
+                    size="lg"
+                    disabled={isSubmitting}
+                    className="px-8 py-4 rounded-xl font-bold shadow-lg hover:scale-105 transition-transform"
+                  >
+                    {subscribed ? '✓ Subscribed!' : isSubmitting ? 'Subscribing...' : (
+                      <>
+                        <Send className="w-5 h-5 mr-2" />
+                        Subscribe
+                      </>
+                    )}
+                  </Button>
+                </div>
+                {message && (
+                  <p className={`text-sm font-bold ${subscribed ? 'text-theme-accent' : 'text-theme-secondary'}`}>
+                    {message}
+                  </p>
+                )}
               </form>
             </div>
 
