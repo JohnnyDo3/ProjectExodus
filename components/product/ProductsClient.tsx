@@ -123,7 +123,7 @@ export function ProductsClient({ initialProducts, categories }: ProductsClientPr
 
           {/* Filters */}
           {showFilters && categories.length > 0 && (
-            <div className="bg-white rounded-3xl border-4 border-moss-200 p-8 shadow-xl">
+            <div className="bg-[var(--card)] rounded-3xl border-4 border-theme-primary p-8 shadow-theme-xl">
               <Filter
                 title="CATEGORIES"
                 options={categoryOptions}
@@ -136,7 +136,7 @@ export function ProductsClient({ initialProducts, categories }: ProductsClientPr
 
           {/* Results Count */}
           <div className="text-center">
-            <p className="text-lg font-bold" style={{ color: '#666' }}>
+            <p className="text-lg font-bold text-theme-muted">
               Showing {displayedProducts.length} of {filteredProducts.length} products
               {searchQuery && ` for "${searchQuery}"`}
               {selectedCategories.length > 0 && ` in ${selectedCategories.length} categor${selectedCategories.length === 1 ? 'y' : 'ies'}`}
@@ -147,7 +147,7 @@ export function ProductsClient({ initialProducts, categories }: ProductsClientPr
 
       {/* Products Grid */}
       {displayedProducts.length > 0 ? (
-        <section className="bg-sand-50 py-16">
+        <section className="bg-[var(--muted)] py-16">
           <div className="container mx-auto px-4 sm:px-6 lg:px-8">
             <div className="grid md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8 max-w-7xl mx-auto">
               {displayedProducts.map((product) => (
@@ -169,16 +169,16 @@ export function ProductsClient({ initialProducts, categories }: ProductsClientPr
           </div>
         </section>
       ) : (
-        <section className="bg-sand-50 py-16">
+        <section className="bg-[var(--muted)] py-16">
           <div className="container mx-auto px-4 sm:px-6 lg:px-8">
             <div className="max-w-3xl mx-auto text-center">
-              <Card className="border-4 border-terra-300 bg-gradient-to-br from-terra-50 to-terra-100">
+              <Card className="border-4 border-theme-secondary shadow-theme-lg">
                 <CardContent className="p-12">
-                  <Leaf className="w-20 h-20 text-terra-600 mx-auto mb-6" />
-                  <h3 className="text-4xl font-black mb-6" style={{ color: '#c24f31' }}>
+                  <Leaf className="w-20 h-20 text-theme-secondary mx-auto mb-6" />
+                  <h3 className="text-4xl font-black mb-6 text-theme-secondary">
                     NO PRODUCTS FOUND
                   </h3>
-                  <p className="text-xl font-semibold mb-8" style={{ color: '#666' }}>
+                  <p className="text-xl font-semibold mb-8 text-theme-muted">
                     {searchQuery
                       ? `No products match "${searchQuery}". Try a different search term or adjust your filters.`
                       : 'No products match your current filters. Try adjusting your selection.'}
