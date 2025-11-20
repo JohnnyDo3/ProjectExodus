@@ -3,20 +3,35 @@ import { Card, CardContent } from '@/components/ui/Card'
 import { Button } from '@/components/ui/Button'
 import { BookOpen, Video, Calculator, Download, Zap, Leaf } from 'lucide-react'
 import Link from 'next/link'
+import prisma from '@/lib/db/prisma'
 
 async function getArticles() {
   try {
-    const baseUrl = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3000'
-    const res = await fetch(`${baseUrl}/api/articles?limit=12`, {
-      cache: 'no-store',
+    const articles = await prisma.article.findMany({
+      where: {
+        status: 'PUBLISHED',
+      },
+      include: {
+        author: {
+          select: {
+            name: true,
+            email: true,
+          },
+        },
+        category: true,
+        tags: {
+          include: {
+            tag: true,
+          },
+        },
+      },
+      take: 12,
+      orderBy: {
+        publishedAt: 'desc',
+      },
     })
 
-    if (!res.ok) {
-      throw new Error('Failed to fetch articles')
-    }
-
-    const data = await res.json()
-    return data.success ? data.data : []
+    return articles
   } catch (error) {
     console.error('Error fetching articles:', error)
     return []

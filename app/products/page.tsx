@@ -4,21 +4,32 @@ import { Button } from '@/components/ui/Button'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/Card'
 import { Zap, Droplet, Recycle, Leaf } from 'lucide-react'
 import Link from 'next/link'
+import prisma from '@/lib/db/prisma'
 
 async function getProducts() {
   try {
-    // In production, this would be an absolute URL
-    const baseUrl = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3000'
-    const res = await fetch(`${baseUrl}/api/products?limit=12`, {
-      cache: 'no-store', // Always get fresh data
+    const products = await prisma.product.findMany({
+      where: {
+        status: 'PUBLISHED',
+      },
+      include: {
+        category: true,
+        vendor: true,
+        images: true,
+        sustainabilityMetric: true,
+        tags: {
+          include: {
+            tag: true,
+          },
+        },
+      },
+      take: 50,
+      orderBy: {
+        createdAt: 'desc',
+      },
     })
 
-    if (!res.ok) {
-      throw new Error('Failed to fetch products')
-    }
-
-    const data = await res.json()
-    return data.success ? data.data : []
+    return products
   } catch (error) {
     console.error('Error fetching products:', error)
     return []
@@ -27,17 +38,20 @@ async function getProducts() {
 
 async function getCategories() {
   try {
-    const baseUrl = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3000'
-    const res = await fetch(`${baseUrl}/api/categories`, {
-      cache: 'no-store',
+    const categories = await prisma.category.findMany({
+      include: {
+        _count: {
+          select: {
+            products: true,
+          },
+        },
+      },
+      orderBy: {
+        name: 'asc',
+      },
     })
 
-    if (!res.ok) {
-      throw new Error('Failed to fetch categories')
-    }
-
-    const data = await res.json()
-    return data.success ? data.data : []
+    return categories
   } catch (error) {
     console.error('Error fetching categories:', error)
     return []

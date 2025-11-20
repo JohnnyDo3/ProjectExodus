@@ -18,39 +18,47 @@ export function TimeThemeProvider({ children }: { children: React.ReactNode }) {
   useEffect(() => {
     setMounted(true)
 
-    // Try to get user's location
+    // First, check if we have stored coordinates
+    const stored = localStorage.getItem('user_coords')
+    const storedTimestamp = localStorage.getItem('user_coords_timestamp')
+
+    if (stored && storedTimestamp) {
+      const age = Date.now() - parseInt(storedTimestamp)
+      const ONE_WEEK = 7 * 24 * 60 * 60 * 1000 // 7 days in milliseconds
+
+      // If coordinates are less than 1 week old, use them
+      if (age < ONE_WEEK) {
+        try {
+          setCoords(JSON.parse(stored))
+          console.log('Using cached location (age: ' + Math.round(age / (1000 * 60 * 60)) + ' hours)')
+          return // Don't request location permission if we have recent coords
+        } catch (e) {
+          console.error('Failed to parse stored coordinates')
+        }
+      }
+    }
+
+    // Only request location if we don't have recent stored coords
     if ('geolocation' in navigator) {
       navigator.geolocation.getCurrentPosition(
         (position) => {
-          setCoords({
+          const newCoords = {
             latitude: position.coords.latitude,
             longitude: position.coords.longitude,
-          })
-          // Store coordinates in localStorage for future use
-          localStorage.setItem(
-            'user_coords',
-            JSON.stringify({
-              latitude: position.coords.latitude,
-              longitude: position.coords.longitude,
-            })
-          )
+          }
+          setCoords(newCoords)
+          // Store coordinates and timestamp in localStorage
+          localStorage.setItem('user_coords', JSON.stringify(newCoords))
+          localStorage.setItem('user_coords_timestamp', Date.now().toString())
+          console.log('Location acquired and cached')
         },
         (error) => {
           console.log('Geolocation not available, using fallback times')
-          // Try to use previously stored coords
-          const stored = localStorage.getItem('user_coords')
-          if (stored) {
-            try {
-              setCoords(JSON.parse(stored))
-            } catch (e) {
-              console.error('Failed to parse stored coordinates')
-            }
-          }
         },
         {
           enableHighAccuracy: false,
           timeout: 5000,
-          maximumAge: 86400000, // 24 hours
+          maximumAge: 0, // Don't use cached position from browser
         }
       )
     }
