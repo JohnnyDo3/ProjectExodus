@@ -43,9 +43,11 @@ export default async function ProjectsPage() {
             <p className="text-xl font-semibold text-theme-muted">
               Collaborate on local sustainability initiatives that make a real difference
             </p>
-            <Button size="lg" className="text-lg px-10 py-6 font-black shadow-lg">
-              START A PROJECT
-            </Button>
+            <Link href="/community/projects/new">
+              <Button size="lg" className="text-lg px-10 py-6 font-black shadow-lg">
+                START A PROJECT
+              </Button>
+            </Link>
           </div>
         </div>
       </section>
@@ -171,9 +173,11 @@ export default async function ProjectsPage() {
                   <p className="text-lg font-semibold mb-8 text-theme-muted">
                     Be the first to start a community project!
                   </p>
-                  <Button size="lg" className="text-lg px-10 py-6 font-black">
-                    CREATE FIRST PROJECT
-                  </Button>
+                  <Link href="/community/projects/new">
+                    <Button size="lg" className="text-lg px-10 py-6 font-black">
+                      CREATE FIRST PROJECT
+                    </Button>
+                  </Link>
                 </CardContent>
               </Card>
             )}
@@ -190,9 +194,11 @@ export default async function ProjectsPage() {
               Join a project or start your own. Together, we're building a sustainable future.
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
-              <Button size="lg" className="text-xl px-12 py-8 bg-[var(--background)] text-[var(--foreground)] hover:bg-[var(--muted)] font-black shadow-2xl">
-                START A PROJECT
-              </Button>
+              <Link href="/community/projects/new">
+                <Button size="lg" className="text-xl px-12 py-8 bg-[var(--background)] text-[var(--foreground)] hover:bg-[var(--muted)] font-black shadow-2xl">
+                  START A PROJECT
+                </Button>
+              </Link>
               <Link href="/community/forum">
                 <Button size="lg" variant="outline" className="text-xl px-12 py-8 border-4 border-[var(--primary-foreground)] text-[var(--primary-foreground)] hover:bg-[var(--primary-foreground)] hover:text-[var(--primary)] font-black">
                   VISIT FORUM

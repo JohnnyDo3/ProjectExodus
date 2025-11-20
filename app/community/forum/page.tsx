@@ -57,7 +57,7 @@ export default async function ForumPage() {
               </p>
             </div>
 
-            <div className="space-y-4">
+            <div className="space-y-8">
               {categories.map((category: any) => (
                 <Link key={category.id} href={`/community/forum/${category.slug}`}>
                   <Card className="hover-lift border-4 border-theme-primary hover:border-theme-accent transition-all">
