@@ -109,10 +109,10 @@ export default async function ArticleDetailPage({
       {/* Article Content */}
       <section className="py-20">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="max-w-4xl mx-auto">
-            <div className="grid md:grid-cols-4 gap-8">
+          <div className="max-w-5xl mx-auto">
+            <div className="grid md:grid-cols-3 gap-8">
               {/* Main Content */}
-              <article className="md:col-span-3">
+              <article className="md:col-span-2">
                 <Card>
                   <CardContent className="p-8 md:p-12">
                     {article.content ? (
