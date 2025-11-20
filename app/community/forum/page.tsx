@@ -37,9 +37,11 @@ export default async function ForumPage() {
             <p className="text-xl font-semibold text-theme-muted">
               Connect, share, and learn with fellow sustainability enthusiasts
             </p>
-            <Button size="lg" className="text-lg px-10 py-6 font-black shadow-lg">
-              START A DISCUSSION
-            </Button>
+            <Link href="/community/forum/new">
+              <Button size="lg" className="text-lg px-10 py-6 font-black shadow-lg">
+                START A DISCUSSION
+              </Button>
+            </Link>
           </div>
         </div>
       </section>
