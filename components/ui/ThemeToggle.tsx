@@ -89,7 +89,7 @@ export function ThemeToggle() {
               </p>
             </div>
 
-            <div className="p-2">
+            <div className="p-2 space-y-2">
               {(Object.keys(modeConfig) as ThemeMode[]).map((themeMode) => {
                 const config = modeConfig[themeMode]
                 const Icon = config.icon
