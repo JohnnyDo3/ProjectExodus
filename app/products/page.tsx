@@ -29,20 +29,15 @@ async function getProducts() {
       },
     })
 
-    // Convert Prisma Decimal types to numbers for frontend
+    // Convert Prisma types to frontend-compatible types
     return products.map(product => ({
       ...product,
       price: product.price ? Number(product.price) : null,
+      vendor: product.vendor ? { name: product.vendor.name } : undefined,
       sustainabilityMetric: product.sustainabilityMetric ? {
-        ...product.sustainabilityMetric,
-        carbonFootprint: product.sustainabilityMetric.carbonFootprint ? Number(product.sustainabilityMetric.carbonFootprint) : null,
-        carbonSavings: product.sustainabilityMetric.carbonSavings ? Number(product.sustainabilityMetric.carbonSavings) : null,
-        waterSavings: product.sustainabilityMetric.waterSavings ? Number(product.sustainabilityMetric.waterSavings) : null,
-        recycledContent: product.sustainabilityMetric.recycledContent ? Number(product.sustainabilityMetric.recycledContent) : null,
         sustainabilityScore: product.sustainabilityMetric.sustainabilityScore ? Number(product.sustainabilityMetric.sustainabilityScore) : null,
-        repairability: product.sustainabilityMetric.repairability ? Number(product.sustainabilityMetric.repairability) : null,
-        lifespanYears: product.sustainabilityMetric.lifespanYears ? Number(product.sustainabilityMetric.lifespanYears) : null,
-      } : null,
+        carbonSavings: product.sustainabilityMetric.carbonSavings ? Number(product.sustainabilityMetric.carbonSavings) : null,
+      } : undefined,
     }))
   } catch (error) {
     console.error('Error fetching products:', error)
