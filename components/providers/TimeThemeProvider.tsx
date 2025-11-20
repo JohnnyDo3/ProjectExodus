@@ -83,7 +83,16 @@ export function TimeThemeProvider({ children }: { children: React.ReactNode }) {
     // Update every minute to catch theme transitions
     const interval = setInterval(updateTheme, 60000)
 
-    return () => clearInterval(interval)
+    // Listen for manual theme mode changes from ThemeToggle
+    const handleModeChange = () => {
+      updateTheme()
+    }
+    window.addEventListener('theme-mode-change', handleModeChange)
+
+    return () => {
+      clearInterval(interval)
+      window.removeEventListener('theme-mode-change', handleModeChange)
+    }
   }, [mounted, coords])
 
   return <>{children}</>

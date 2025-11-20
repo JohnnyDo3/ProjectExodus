@@ -26,7 +26,9 @@ export function ThemeToggle() {
     } else if (newMode === 'night') {
       document.documentElement.className = 'night'
     }
-    // Auto mode will be handled by TimeThemeProvider
+
+    // Dispatch custom event to notify TimeThemeProvider
+    window.dispatchEvent(new CustomEvent('theme-mode-change', { detail: { mode: newMode } }))
   }
 
   // Avoid hydration mismatch
