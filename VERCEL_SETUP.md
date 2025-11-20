@@ -31,29 +31,7 @@ The build should now succeed with the TypeScript fix.
 
 ### 3. Seed Your Database
 
-**Option A: Using API Endpoint (Easiest) ⭐**
-
-1. Add `SEED_SECRET` to your Vercel environment variables:
-   - Go to Vercel Project Settings → Environment Variables
-   - Add: `SEED_SECRET` = `your-secret-phrase-here`
-
-2. After deployment, visit:
-   ```
-   https://your-domain.vercel.app/api/seed?secret=your-secret-phrase-here
-   ```
-
-3. You should see a success response with counts of created items.
-
-4. Check status anytime:
-   ```
-   https://your-domain.vercel.app/api/seed
-   ```
-
-5. **IMPORTANT**: For security, either:
-   - Remove the `/app/api/seed/route.ts` file after seeding, OR
-   - Add authentication to protect it
-
-**Option B: Using Vercel CLI**
+**Option A: Using Vercel CLI (Recommended)**
 
 1. Install Vercel CLI:
 ```bash
@@ -80,9 +58,9 @@ vercel env pull .env.local
 npm run setup:db
 ```
 
-**Option C: Manual Seed (Local)**
+**Option B: Manual Seed (Local)**
 
-1. Pull your environment variables locally (as in Option B step 4)
+1. Pull your environment variables locally (as in Option A step 4)
 
 2. Run the seed script:
 ```bash
