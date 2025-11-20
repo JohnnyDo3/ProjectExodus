@@ -68,17 +68,17 @@ export function Header() {
           <div className="hidden md:flex items-center gap-4">
             <ThemeToggle />
             {status === 'loading' ? (
-              <div className="w-24 h-9 bg-sand-200 dark:bg-earth-700 rounded-lg animate-pulse" />
+              <div className="w-24 h-9 bg-[var(--muted)] rounded-lg animate-pulse" />
             ) : session ? (
               <div className="relative">
                 <button
                   onClick={() => setUserMenuOpen(!userMenuOpen)}
-                  className="flex items-center gap-3 px-4 py-2 rounded-lg bg-moss-50 dark:bg-earth-700 hover:bg-moss-100 dark:hover:bg-earth-600 transition-colors border-2 border-moss-500 dark:border-moss-600"
+                  className="flex items-center gap-3 px-4 py-2 rounded-lg bg-[var(--muted)] hover:bg-theme-primary hover:text-[var(--primary-foreground)] transition-colors border-2 border-theme-primary"
                 >
-                  <div className="w-8 h-8 rounded-full bg-moss-600 flex items-center justify-center">
-                    <User className="w-5 h-5 text-white" />
+                  <div className="w-8 h-8 rounded-full bg-theme-primary flex items-center justify-center">
+                    <User className="w-5 h-5 text-[var(--primary-foreground)]" />
                   </div>
-                  <span className="font-bold text-earth-900 dark:text-sand-100">
+                  <span className="font-bold">
                     {session.user?.name || session.user?.email}
                   </span>
                 </button>
@@ -89,30 +89,30 @@ export function Header() {
                       className="fixed inset-0 z-40"
                       onClick={() => setUserMenuOpen(false)}
                     />
-                    <div className="absolute right-0 mt-2 w-56 bg-white dark:bg-earth-800 rounded-xl shadow-xl border-2 border-moss-500 dark:border-moss-600 overflow-hidden z-50">
-                      <div className="p-4 border-b-2 border-sand-200 dark:border-earth-700">
-                        <p className="font-bold text-earth-900 dark:text-sand-100">
+                    <div className="absolute right-0 mt-2 w-56 bg-[var(--card)] rounded-xl shadow-theme-lg border-2 border-theme-primary overflow-hidden z-50">
+                      <div className="p-4 border-b-2 border-[var(--border)]">
+                        <p className="font-bold text-[var(--foreground)]">
                           {session.user?.name}
                         </p>
-                        <p className="text-sm text-earth-600 dark:text-sand-300 truncate">
+                        <p className="text-sm text-theme-muted truncate">
                           {session.user?.email}
                         </p>
                       </div>
                       <div className="p-2">
                         <Link
                           href="/dashboard"
-                          className="flex items-center gap-3 px-4 py-2 rounded-lg hover:bg-moss-50 dark:hover:bg-earth-700 transition-colors"
+                          className="flex items-center gap-3 px-4 py-2 rounded-lg hover:bg-[var(--muted)] transition-colors"
                           onClick={() => setUserMenuOpen(false)}
                         >
-                          <Settings className="w-4 h-4 text-earth-700 dark:text-sand-300" />
-                          <span className="font-medium text-earth-900 dark:text-sand-100">Dashboard</span>
+                          <Settings className="w-4 h-4 text-theme-muted" />
+                          <span className="font-medium text-[var(--foreground)]">Dashboard</span>
                         </Link>
                         <button
                           onClick={handleSignOut}
-                          className="w-full flex items-center gap-3 px-4 py-2 rounded-lg hover:bg-terra-50 dark:hover:bg-earth-700 transition-colors text-left"
+                          className="w-full flex items-center gap-3 px-4 py-2 rounded-lg hover:bg-[var(--muted)] transition-colors text-left"
                         >
-                          <LogOut className="w-4 h-4 text-terra-600 dark:text-terra-400" />
-                          <span className="font-medium text-terra-700 dark:text-terra-400">Sign Out</span>
+                          <LogOut className="w-4 h-4 text-theme-secondary" />
+                          <span className="font-medium text-theme-secondary">Sign Out</span>
                         </button>
                       </div>
                     </div>
@@ -138,13 +138,13 @@ export function Header() {
           {/* Mobile menu button */}
           <div className="md:hidden">
             <button
-              className="p-2 rounded-lg hover:bg-sand-200 dark:hover:bg-earth-700 transition-colors"
+              className="p-2 rounded-lg hover:bg-[var(--muted)] transition-colors"
               onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
             >
               {mobileMenuOpen ? (
-                <X className="w-6 h-6 text-earth-900 dark:text-sand-100" />
+                <X className="w-6 h-6 text-[var(--foreground)]" />
               ) : (
-                <Menu className="w-6 h-6 text-earth-900 dark:text-sand-100" />
+                <Menu className="w-6 h-6 text-[var(--foreground)]" />
               )}
             </button>
           </div>
@@ -152,7 +152,7 @@ export function Header() {
 
         {/* Mobile Navigation */}
         {mobileMenuOpen && (
-          <div className="md:hidden py-4 space-y-4 border-t border-sand-300 dark:border-earth-700">
+          <div className="md:hidden py-4 space-y-4 border-t border-[var(--border)]">
             {navigation.map((item) => {
               const isActive = pathname === item.href
               return (
@@ -161,8 +161,8 @@ export function Header() {
                   href={item.href}
                   className={`block py-2 font-medium transition-colors ${
                     isActive
-                      ? 'text-moss-600 dark:text-moss-400'
-                      : 'text-earth-700 dark:text-sand-200 hover:text-moss-600 dark:hover:text-moss-400'
+                      ? 'text-theme-primary'
+                      : 'text-[var(--foreground)] hover:text-theme-primary'
                   }`}
                   onClick={() => setMobileMenuOpen(false)}
                 >
@@ -170,19 +170,19 @@ export function Header() {
                 </Link>
               )
             })}
-            <div className="pt-4 space-y-2 border-t border-sand-300 dark:border-earth-700">
+            <div className="pt-4 space-y-2 border-t border-[var(--border)]">
               <div className="flex justify-center mb-2">
                 <ThemeToggle />
               </div>
               {status === 'loading' ? (
-                <div className="w-full h-9 bg-sand-200 dark:bg-earth-700 rounded-lg animate-pulse" />
+                <div className="w-full h-9 bg-[var(--muted)] rounded-lg animate-pulse" />
               ) : session ? (
                 <div className="space-y-2">
-                  <div className="px-4 py-3 rounded-lg bg-moss-50 dark:bg-earth-700 border-2 border-moss-500 dark:border-moss-600">
-                    <p className="font-bold text-earth-900 dark:text-sand-100">
+                  <div className="px-4 py-3 rounded-lg bg-[var(--muted)] border-2 border-theme-primary">
+                    <p className="font-bold text-[var(--foreground)]">
                       {session.user?.name}
                     </p>
-                    <p className="text-sm text-earth-600 dark:text-sand-300 truncate">
+                    <p className="text-sm text-theme-muted truncate">
                       {session.user?.email}
                     </p>
                   </div>
