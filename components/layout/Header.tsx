@@ -27,7 +27,7 @@ export function Header() {
   }
 
   return (
-    <header className="sticky top-0 z-50 bg-white dark:bg-earth-800 border-b-4 border-moss-500 dark:border-moss-600 shadow-sm transition-colors">
+    <header className="sticky top-0 z-50 bg-[var(--card)] border-b-4 border-theme-primary shadow-sm transition-colors">
       <nav className="container mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between h-20">
           {/* Logo */}
@@ -35,7 +35,7 @@ export function Header() {
             <div className="w-12 h-12 rounded-full bg-gradient-to-br from-moss-600 to-ocean-600 flex items-center justify-center pulse-alive shadow-lg">
               <Leaf className="w-7 h-7 text-white" />
             </div>
-            <span className="text-2xl font-black text-earth-900 dark:text-sand-100 group-hover:text-moss-700 dark:group-hover:text-moss-400 transition-colors tracking-tight">
+            <span className="text-2xl font-black text-[var(--foreground)] group-hover:text-theme-primary transition-colors tracking-tight">
               PROJECT EXODUS
             </span>
           </Link>
@@ -50,8 +50,8 @@ export function Header() {
                   href={item.href}
                   className={`font-bold text-base transition-all uppercase tracking-wide relative ${
                     isActive
-                      ? 'text-moss-600 dark:text-moss-400'
-                      : 'text-earth-900 dark:text-sand-200 hover:text-moss-600 dark:hover:text-moss-400'
+                      ? 'text-theme-primary'
+                      : 'text-[var(--foreground)] hover:text-theme-primary'
                   }`}
                   style={{
                     borderBottom: isActive ? '3px solid currentColor' : 'none',

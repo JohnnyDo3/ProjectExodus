@@ -3,6 +3,7 @@ import "./globals.css";
 import { Header } from "@/components/layout/Header";
 import { Footer } from "@/components/layout/Footer";
 import { SessionProvider } from "@/components/providers/SessionProvider";
+import { TimeThemeProvider } from "@/components/providers/TimeThemeProvider";
 import { generateMetadata, siteConfig } from "@/lib/metadata";
 import { auth } from "@/auth";
 
@@ -27,21 +28,66 @@ export default async function RootLayout({
         <script
           dangerouslySetInnerHTML={{
             __html: `
-              try {
-                const theme = localStorage.getItem('theme') || (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
-                if (theme === 'dark') {
-                  document.documentElement.classList.add('dark');
+              (function() {
+                try {
+                  const mode = localStorage.getItem('theme_mode') || 'auto';
+
+                  if (mode === 'morning') {
+                    document.documentElement.className = 'day';
+                    return;
+                  }
+
+                  if (mode === 'night') {
+                    document.documentElement.className = 'night';
+                    return;
+                  }
+
+                  // Auto mode - calculate based on time
+                  const coords = JSON.parse(localStorage.getItem('user_coords') || 'null');
+                  const now = new Date();
+
+                  if (coords && coords.latitude && coords.longitude) {
+                    // Simplified sunrise/sunset calculation for initial load
+                    // Full calculation happens in TimeThemeProvider
+                    const hour = now.getHours();
+                    if (hour >= 5 && hour < 8) {
+                      document.documentElement.className = 'sunrise';
+                    } else if (hour >= 8 && hour < 18) {
+                      document.documentElement.className = 'day';
+                    } else if (hour >= 18 && hour < 21) {
+                      document.documentElement.className = 'sunset';
+                    } else {
+                      document.documentElement.className = 'night';
+                    }
+                  } else {
+                    // Fallback to time-based detection
+                    const hour = now.getHours();
+                    if (hour >= 5 && hour < 8) {
+                      document.documentElement.className = 'sunrise';
+                    } else if (hour >= 8 && hour < 18) {
+                      document.documentElement.className = 'day';
+                    } else if (hour >= 18 && hour < 21) {
+                      document.documentElement.className = 'sunset';
+                    } else {
+                      document.documentElement.className = 'night';
+                    }
+                  }
+                } catch (e) {
+                  // Default to day theme on error
+                  document.documentElement.className = 'day';
                 }
-              } catch (e) {}
+              })();
             `,
           }}
         />
       </head>
       <body className="antialiased">
         <SessionProvider session={session}>
-          <Header />
-          {children}
-          <Footer />
+          <TimeThemeProvider>
+            <Header />
+            {children}
+            <Footer />
+          </TimeThemeProvider>
         </SessionProvider>
       </body>
     </html>
