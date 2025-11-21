@@ -382,7 +382,7 @@ export default function NetworkPage() {
                           <Button
                             onClick={() => handleFollow(user.id)}
                             disabled={isLoadingThisUser || !session?.user}
-                            variant={isFollowing ? 'outline' : 'default'}
+                            variant={isFollowing ? 'outline' : 'primary'}
                             className="flex-1 font-bold"
                           >
                             {isLoadingThisUser ? (
