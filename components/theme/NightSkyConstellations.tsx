@@ -47,7 +47,12 @@ const constellations: Constellation[] = [
   }
 ]
 
-export function NightSkyConstellations() {
+interface NightSkyConstellationsProps {
+  alwaysShow?: boolean
+  starCount?: number
+}
+
+export function NightSkyConstellations({ alwaysShow = false, starCount = 500 }: NightSkyConstellationsProps) {
   const canvasRef = useRef<HTMLCanvasElement>(null)
   const [stars, setStars] = useState<Star[]>([])
   const [mousePos, setMousePos] = useState({ x: 0, y: 0 })
@@ -55,8 +60,8 @@ export function NightSkyConstellations() {
   const { currentPhase } = useSkyTheme()
   const animationFrameRef = useRef<number | undefined>(undefined)
 
-  // Only show constellations during night phases
-  const isNightTime = ['dusk', 'evening', 'night', 'midnight'].includes(currentPhase)
+  // Only show constellations during night phases (unless alwaysShow is true)
+  const isNightTime = alwaysShow || ['dusk', 'evening', 'night', 'midnight'].includes(currentPhase)
 
   useEffect(() => {
     if (!isNightTime) return
@@ -106,8 +111,8 @@ export function NightSkyConstellations() {
       })
     })
 
-    // Add random background stars
-    for (let i = 0; i < 200; i++) {
+    // Add random background stars (densely packed)
+    for (let i = 0; i < starCount; i++) {
       newStars.push({
         x: Math.random() * canvas.width,
         y: Math.random() * canvas.height,
@@ -126,7 +131,7 @@ export function NightSkyConstellations() {
         cancelAnimationFrame(animationFrameRef.current)
       }
     }
-  }, [isNightTime])
+  }, [isNightTime, starCount])
 
   // Animation loop
   useEffect(() => {

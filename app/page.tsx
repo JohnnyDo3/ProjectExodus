@@ -2,6 +2,7 @@ import Link from 'next/link'
 import { Button } from '@/components/ui/Button'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/Card'
 import { Leaf, Droplet, Zap, Users, Heart, Shield, Sprout, BookOpen, Scale, Eye, Handshake, Award } from 'lucide-react'
+import { NightSkyConstellations } from '@/components/theme/NightSkyConstellations'
 
 export default function Home() {
   const commandments = [
@@ -81,8 +82,13 @@ export default function Home() {
     <div className="min-h-screen overflow-hidden">
       {/* Hero Section - BOLD & EXPERIMENTAL */}
       <section className="relative min-h-screen flex items-center justify-center overflow-hidden bg-gradient-to-br from-[var(--muted)] via-[color-mix(in_srgb,var(--primary)_20%,var(--background))] to-[color-mix(in_srgb,var(--accent)_20%,var(--background))]">
+        {/* Night Sky Constellations - Always visible on hero */}
+        <div className="absolute inset-0 z-0">
+          <NightSkyConstellations alwaysShow={true} starCount={800} />
+        </div>
+
         {/* Morphing Background Blobs - 3D Effect */}
-        <div className="absolute inset-0">
+        <div className="absolute inset-0 z-[1] opacity-60">
           <div className="absolute top-10 left-10 w-96 h-96 bg-[var(--primary)] rounded-full blur-3xl opacity-30 animate-pulse"
                style={{ transform: 'translateZ(0) scale(1.2)', animationDuration: '8s' }} />
           <div className="absolute bottom-20 right-20 w-[500px] h-[500px] bg-[var(--accent)] rounded-full blur-3xl opacity-30 animate-pulse"
