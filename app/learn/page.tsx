@@ -142,6 +142,55 @@ export default async function LearnPage() {
         </div>
       </section>
 
+      {/* Featured Case Study - Havana Organopónicos */}
+      <section className="py-32 bg-[var(--muted)]">
+        <div className="container mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="max-w-5xl mx-auto">
+            <div className="text-center mb-8">
+              <div className="inline-block px-6 py-2 bg-[var(--secondary)] text-[var(--primary-foreground)] rounded-full text-sm font-black mb-4">
+                FEATURED CASE STUDY
+              </div>
+              <h2 className="text-4xl font-black text-[var(--foreground)] mb-4">ARCH-662: Sustainable Built Environment</h2>
+            </div>
+            <Link href="/learn/havana-organoponicos">
+              <Card className="hover-lift border-4 border-theme-secondary bg-gradient-to-br from-[color-mix(in_srgb,var(--secondary)_20%,var(--background))] via-[var(--background)] to-[color-mix(in_srgb,var(--primary)_20%,var(--background))] cursor-pointer transform hover:scale-105 transition-all duration-300">
+                <CardContent className="p-12 md:p-16">
+                  <div className="grid md:grid-cols-3 gap-8 items-center">
+                    <div className="md:col-span-2">
+                      <h3 className="text-4xl font-black mb-4" style={{
+                        background: 'linear-gradient(135deg, var(--secondary), var(--primary))',
+                        WebkitBackgroundClip: 'text',
+                        WebkitTextFillColor: 'transparent'
+                      }}>
+                        URBAN AGRICULTURE: ORGANOPÓNICOS
+                      </h3>
+                      <p className="text-2xl font-black text-theme-secondary mb-4">Havana, Cuba</p>
+                      <p className="text-lg font-semibold text-theme-muted mb-6">
+                        How Cuba transformed crisis into innovation: 35,000 hectares, 200,000 tons of produce annually, 30,000+ urban farmers employed. From vacant lots to global model for sustainable food production.
+                      </p>
+                      <div className="flex flex-wrap gap-3 mb-6">
+                        <span className="px-4 py-2 bg-[var(--secondary)] text-[var(--primary-foreground)] rounded-full text-sm font-black">Urban Resilience</span>
+                        <span className="px-4 py-2 bg-[var(--primary)] text-[var(--primary-foreground)] rounded-full text-sm font-black">Organic Farming</span>
+                        <span className="px-4 py-2 bg-[var(--accent)] text-[var(--primary-foreground)] rounded-full text-sm font-black">Food Security</span>
+                        <span className="px-4 py-2 bg-[var(--secondary)] text-[var(--primary-foreground)] rounded-full text-sm font-black">Community-Driven</span>
+                      </div>
+                      <div className="text-theme-secondary font-black text-lg">
+                        READ CASE STUDY →
+                      </div>
+                    </div>
+                    <div className="flex justify-center">
+                      <div className="w-32 h-32 rounded-full bg-gradient-to-br from-[var(--secondary)] to-[var(--primary)] flex items-center justify-center shadow-theme-xl">
+                        <Sprout className="w-16 h-16 text-[var(--primary-foreground)]" />
+                      </div>
+                    </div>
+                  </div>
+                </CardContent>
+              </Card>
+            </Link>
+          </div>
+        </div>
+      </section>
+
       {/* Featured Content - Emerging Tech & Success Stories */}
       <section className="py-32 bg-[var(--background)]">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
