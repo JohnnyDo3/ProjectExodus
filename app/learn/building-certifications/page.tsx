@@ -20,7 +20,10 @@ import {
   Dumbbell,
   Brain,
   Sun,
-  Trees
+  Trees,
+  ExternalLink,
+  FileText,
+  BookOpen
 } from 'lucide-react'
 
 export default function BuildingCertificationsPage() {
@@ -488,6 +491,108 @@ export default function BuildingCertificationsPage() {
                   </ul>
                 </CardContent>
               </Card>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Official Resources */}
+      <section className="py-20 bg-[var(--background)]">
+        <div className="container mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="max-w-5xl mx-auto">
+            <div className="text-center mb-12">
+              <h2 className="text-5xl font-black mb-4 text-[var(--foreground)]">
+                OFFICIAL CERTIFICATION RESOURCES
+              </h2>
+              <p className="text-xl font-semibold text-theme-muted">
+                Access official documentation and certification requirements
+              </p>
+            </div>
+
+            <div className="grid md:grid-cols-3 gap-6">
+              <a href="https://www.breeam.com" target="_blank" rel="noopener noreferrer">
+                <Card className="border-4 border-theme-primary hover:border-theme-accent transition-all hover-lift cursor-pointer h-full">
+                  <CardContent className="p-8 text-center">
+                    <ExternalLink className="w-12 h-12 text-theme-primary mx-auto mb-4" />
+                    <h3 className="text-2xl font-black mb-3 text-theme-primary">
+                      BREEAM OFFICIAL
+                    </h3>
+                    <p className="text-base font-semibold text-theme-muted">
+                      Complete BREEAM certification standards and technical manuals
+                    </p>
+                  </CardContent>
+                </Card>
+              </a>
+
+              <a href="https://www.wellcertified.com" target="_blank" rel="noopener noreferrer">
+                <Card className="border-4 border-theme-accent hover:border-theme-primary transition-all hover-lift cursor-pointer h-full">
+                  <CardContent className="p-8 text-center">
+                    <ExternalLink className="w-12 h-12 text-theme-accent mx-auto mb-4" />
+                    <h3 className="text-2xl font-black mb-3 text-theme-accent">
+                      WELL BUILDING STANDARD
+                    </h3>
+                    <p className="text-base font-semibold text-theme-muted">
+                      Official WELL health and wellness certification resources
+                    </p>
+                  </CardContent>
+                </Card>
+              </a>
+
+              <a href="https://living-future.org/lbc" target="_blank" rel="noopener noreferrer">
+                <Card className="border-4 border-theme-secondary hover:border-theme-accent transition-all hover-lift cursor-pointer h-full">
+                  <CardContent className="p-8 text-center">
+                    <ExternalLink className="w-12 h-12 text-theme-secondary mx-auto mb-4" />
+                    <h3 className="text-2xl font-black mb-3 text-theme-secondary">
+                      LIVING BUILDING CHALLENGE
+                    </h3>
+                    <p className="text-base font-semibold text-theme-muted">
+                      International Living Future Institute certification portal
+                    </p>
+                  </CardContent>
+                </Card>
+              </a>
+
+              <a href="https://www.breeam.com/discover/technical-standards/" target="_blank" rel="noopener noreferrer">
+                <Card className="border-4 border-theme-primary hover:border-theme-accent transition-all hover-lift cursor-pointer h-full">
+                  <CardContent className="p-8 text-center">
+                    <FileText className="w-12 h-12 text-theme-primary mx-auto mb-4" />
+                    <h3 className="text-2xl font-black mb-3 text-theme-primary">
+                      BREEAM STANDARDS
+                    </h3>
+                    <p className="text-base font-semibold text-theme-muted">
+                      Technical standards and assessment criteria
+                    </p>
+                  </CardContent>
+                </Card>
+              </a>
+
+              <a href="https://v2.wellcertified.com/en/wellv2" target="_blank" rel="noopener noreferrer">
+                <Card className="border-4 border-theme-accent hover:border-theme-primary transition-all hover-lift cursor-pointer h-full">
+                  <CardContent className="p-8 text-center">
+                    <BookOpen className="w-12 h-12 text-theme-accent mx-auto mb-4" />
+                    <h3 className="text-2xl font-black mb-3 text-theme-accent">
+                      WELL v2 GUIDEBOOK
+                    </h3>
+                    <p className="text-base font-semibold text-theme-muted">
+                      Complete WELL v2 features and requirements
+                    </p>
+                  </CardContent>
+                </Card>
+              </a>
+
+              <a href="https://living-future.org/lbc/resources/" target="_blank" rel="noopener noreferrer">
+                <Card className="border-4 border-theme-secondary hover:border-theme-accent transition-all hover-lift cursor-pointer h-full">
+                  <CardContent className="p-8 text-center">
+                    <Award className="w-12 h-12 text-theme-secondary mx-auto mb-4" />
+                    <h3 className="text-2xl font-black mb-3 text-theme-secondary">
+                      LBC RESOURCES
+                    </h3>
+                    <p className="text-base font-semibold text-theme-muted">
+                      Petals handbook and implementation guides
+                    </p>
+                  </CardContent>
+                </Card>
+              </a>
             </div>
           </div>
         </div>

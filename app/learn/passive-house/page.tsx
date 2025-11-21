@@ -15,7 +15,11 @@ import {
   Gauge,
   Wrench,
   Eye,
-  Target
+  Target,
+  ExternalLink,
+  FileText,
+  BookOpen,
+  Award
 } from 'lucide-react'
 
 export default function PassiveHousePage() {
@@ -537,6 +541,80 @@ export default function PassiveHousePage() {
                 </p>
               </CardContent>
             </Card>
+          </div>
+        </div>
+      </section>
+
+      {/* Official Resources */}
+      <section className="py-20 bg-[var(--background)]">
+        <div className="container mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="max-w-4xl mx-auto">
+            <div className="text-center mb-12">
+              <h2 className="text-5xl font-black mb-4 text-[var(--foreground)]">
+                OFFICIAL PASSIVE HOUSE RESOURCES
+              </h2>
+              <p className="text-xl font-semibold text-theme-muted">
+                Access official documentation and certification requirements
+              </p>
+            </div>
+
+            <div className="grid md:grid-cols-2 gap-6">
+              <a href="https://passivehouse.com" target="_blank" rel="noopener noreferrer">
+                <Card className="border-4 border-theme-primary hover:border-theme-accent transition-all hover-lift cursor-pointer h-full">
+                  <CardContent className="p-8">
+                    <ExternalLink className="w-12 h-12 text-theme-primary mb-4" />
+                    <h3 className="text-2xl font-black mb-3 text-theme-primary">
+                      PASSIVE HOUSE INSTITUTE
+                    </h3>
+                    <p className="text-base font-semibold text-theme-muted">
+                      Official Passivhaus Institut (PHI) certification portal
+                    </p>
+                  </CardContent>
+                </Card>
+              </a>
+
+              <a href="https://www.phius.org" target="_blank" rel="noopener noreferrer">
+                <Card className="border-4 border-theme-accent hover:border-theme-primary transition-all hover-lift cursor-pointer h-full">
+                  <CardContent className="p-8">
+                    <ExternalLink className="w-12 h-12 text-theme-accent mb-4" />
+                    <h3 className="text-2xl font-black mb-3 text-theme-accent">
+                      PHIUS (US)
+                    </h3>
+                    <p className="text-base font-semibold text-theme-muted">
+                      Passive House Institute US - North American standards
+                    </p>
+                  </CardContent>
+                </Card>
+              </a>
+
+              <a href="https://passivehouse.com/04_phi/04_phi.htm" target="_blank" rel="noopener noreferrer">
+                <Card className="border-4 border-theme-secondary hover:border-theme-accent transition-all hover-lift cursor-pointer h-full">
+                  <CardContent className="p-8">
+                    <FileText className="w-12 h-12 text-theme-secondary mb-4" />
+                    <h3 className="text-2xl font-black mb-3 text-theme-secondary">
+                      CERTIFICATION CRITERIA
+                    </h3>
+                    <p className="text-base font-semibold text-theme-muted">
+                      Complete performance standards and requirements
+                    </p>
+                  </CardContent>
+                </Card>
+              </a>
+
+              <a href="https://www.phius.org/phius-certification-for-buildings-and-products" target="_blank" rel="noopener noreferrer">
+                <Card className="border-4 border-theme-primary hover:border-theme-accent transition-all hover-lift cursor-pointer h-full">
+                  <CardContent className="p-8">
+                    <Award className="w-12 h-12 text-theme-primary mb-4" />
+                    <h3 className="text-2xl font-black mb-3 text-theme-primary">
+                      CERTIFICATION PROCESS
+                    </h3>
+                    <p className="text-base font-semibold text-theme-muted">
+                      Step-by-step guide to Passive House certification
+                    </p>
+                  </CardContent>
+                </Card>
+              </a>
+            </div>
           </div>
         </div>
       </section>

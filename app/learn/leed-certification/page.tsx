@@ -12,7 +12,10 @@ import {
   ArrowLeft,
   Award,
   CheckCircle2,
-  Target
+  Target,
+  ExternalLink,
+  FileText,
+  BookOpen
 } from 'lucide-react'
 
 export default function LEEDCertificationPage() {
@@ -394,6 +397,80 @@ export default function LEEDCertificationPage() {
                   </ul>
                 </CardContent>
               </Card>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Official Resources */}
+      <section className="py-20 bg-[var(--background)]">
+        <div className="container mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="max-w-4xl mx-auto">
+            <div className="text-center mb-12">
+              <h2 className="text-5xl font-black mb-4 text-[var(--foreground)]">
+                OFFICIAL LEED RESOURCES
+              </h2>
+              <p className="text-xl font-semibold text-theme-muted">
+                Access official documentation and certification requirements
+              </p>
+            </div>
+
+            <div className="grid md:grid-cols-2 gap-6">
+              <a href="https://www.usgbc.org/leed" target="_blank" rel="noopener noreferrer">
+                <Card className="border-4 border-theme-primary hover:border-theme-accent transition-all hover-lift cursor-pointer h-full">
+                  <CardContent className="p-8">
+                    <ExternalLink className="w-12 h-12 text-theme-primary mb-4" />
+                    <h3 className="text-2xl font-black mb-3 text-theme-primary">
+                      USGBC LEED Homepage
+                    </h3>
+                    <p className="text-base font-semibold text-theme-muted">
+                      Official U.S. Green Building Council LEED certification portal
+                    </p>
+                  </CardContent>
+                </Card>
+              </a>
+
+              <a href="https://www.usgbc.org/credits" target="_blank" rel="noopener noreferrer">
+                <Card className="border-4 border-theme-accent hover:border-theme-primary transition-all hover-lift cursor-pointer h-full">
+                  <CardContent className="p-8">
+                    <FileText className="w-12 h-12 text-theme-accent mb-4" />
+                    <h3 className="text-2xl font-black mb-3 text-theme-accent">
+                      LEED Credit Library
+                    </h3>
+                    <p className="text-base font-semibold text-theme-muted">
+                      Complete database of all LEED credits and requirements
+                    </p>
+                  </CardContent>
+                </Card>
+              </a>
+
+              <a href="https://www.usgbc.org/resources/leed-v5-guide" target="_blank" rel="noopener noreferrer">
+                <Card className="border-4 border-theme-secondary hover:border-theme-accent transition-all hover-lift cursor-pointer h-full">
+                  <CardContent className="p-8">
+                    <BookOpen className="w-12 h-12 text-theme-secondary mb-4" />
+                    <h3 className="text-2xl font-black mb-3 text-theme-secondary">
+                      LEED v5 Guide
+                    </h3>
+                    <p className="text-base font-semibold text-theme-muted">
+                      Official guide to the latest LEED v5 (2025) requirements
+                    </p>
+                  </CardContent>
+                </Card>
+              </a>
+
+              <a href="https://www.usgbc.org/credentials" target="_blank" rel="noopener noreferrer">
+                <Card className="border-4 border-theme-primary hover:border-theme-accent transition-all hover-lift cursor-pointer h-full">
+                  <CardContent className="p-8">
+                    <Award className="w-12 h-12 text-theme-primary mb-4" />
+                    <h3 className="text-2xl font-black mb-3 text-theme-primary">
+                      LEED Professional Credentials
+                    </h3>
+                    <p className="text-base font-semibold text-theme-muted">
+                      Information on becoming a LEED AP or LEED Green Associate
+                    </p>
+                  </CardContent>
+                </Card>
+              </a>
             </div>
           </div>
         </div>

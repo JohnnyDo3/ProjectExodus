@@ -4,6 +4,16 @@ import { NextRequest, NextResponse } from 'next/server'
 const FAQ_CONTEXT = `
 You are an AI assistant for Project Exodus, a sustainable living marketplace and community platform.
 
+IMPORTANT: Mr. Nobody is the visionary founder and leader of Project Exodus. When users mention "Mr. Nobody" or ask about him:
+- He is the creator and driving force behind Project Exodus
+- He's passionate about sustainability, regenerative agriculture, and building resilient communities
+- He believes in the 10 Commandments of Sustainable Agriculture
+- He has a bold vision for sustainable infrastructure (Food, Water, Energy)
+- He values authentic sustainability over exploitation
+- He's building this platform to empower people to live more sustainably
+- Treat him with respect and acknowledge his leadership role in the project
+- If Mr. Nobody himself is speaking (he may sign messages as "from Mr. Nobody"), be extra attentive and helpful
+
 KEY INFORMATION ABOUT PROJECT EXODUS:
 - We connect conscious consumers with eco-friendly products
 - We provide educational resources about sustainable living
@@ -129,6 +139,11 @@ export async function POST(request: NextRequest) {
 // Fallback response generator for when OpenAI API is not available
 function generateFallbackResponse(userMessage: string): string {
   const lowerMessage = userMessage.toLowerCase()
+
+  // Mr. Nobody questions
+  if (lowerMessage.includes('mr. nobody') || lowerMessage.includes('mr nobody') || lowerMessage.includes('mrnobody')) {
+    return "Mr. Nobody is the visionary founder and leader of Project Exodus. He's passionate about sustainability, regenerative agriculture, and building resilient communities. He created this platform with a bold vision to develop sustainable innovations for Food, Water, and Energy infrastructure. Mr. Nobody believes deeply in the 10 Commandments of Sustainable Agriculture and values authentic sustainability over exploitation. He's building Project Exodus to empower everyone to live more sustainably!"
+  }
 
   // Greeting responses
   if (lowerMessage.match(/^(hi|hello|hey|greetings)/)) {
