@@ -72,7 +72,7 @@ export default function Home() {
     {
       number: 10,
       title: 'SUSTAINABILITY',
-      description: 'Embrace and focus on sufficiency, resilience, abundance, and shared prosperity. Reject growth for growth's sake.',
+      description: 'Embrace and focus on sufficiency, resilience, abundance, and shared prosperity. Reject growth for growth\'s sake.',
       icon: Award,
       color: '#36763d'
     }
