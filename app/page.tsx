@@ -3,7 +3,6 @@ import { Button } from '@/components/ui/Button'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/Card'
 import { Leaf, Droplet, Zap, Users, Heart, Shield, Sprout, BookOpen, Scale, Eye, Handshake, Award } from 'lucide-react'
 import { NightSkyConstellations } from '@/components/theme/NightSkyConstellations'
-import { LiveCounter } from '@/components/stats/LiveCounter'
 
 export default function Home() {
   const commandments = [
@@ -181,56 +180,6 @@ export default function Home() {
         <div className="absolute bottom-10 left-1/2 transform -translate-x-1/2 animate-bounce" style={{ animationDuration: '2s' }}>
           <div className="w-6 h-10 border-4 border-[var(--foreground)] rounded-full flex items-start justify-center p-2">
             <div className="w-1.5 h-3 bg-[var(--foreground)] rounded-full animate-pulse" />
-          </div>
-        </div>
-      </section>
-
-      {/* Live Environmental Stats Bar */}
-      <section className="py-8 bg-gradient-to-r from-red-500 via-orange-500 to-red-600 text-white overflow-hidden relative">
-        <div className="absolute inset-0 opacity-20">
-          <div className="absolute inset-0" style={{
-            backgroundImage: 'repeating-linear-gradient(45deg, transparent, transparent 10px, rgba(255,255,255,.05) 10px, rgba(255,255,255,.05) 20px)'
-          }} />
-        </div>
-        <div className="container mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
-          <div className="text-center mb-4">
-            <div className="flex items-center justify-center gap-2 mb-2">
-              <span className="w-2 h-2 bg-white rounded-full animate-pulse"></span>
-              <span className="text-sm font-black uppercase tracking-wider">Environmental Impact • Live Now</span>
-            </div>
-          </div>
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-6 max-w-6xl mx-auto">
-            <div className="text-center">
-              <div className="text-3xl md:text-4xl font-black mb-1">
-                <LiveCounter perSecond={80} unit="" suffix=" K+" decimals={1} />
-              </div>
-              <div className="text-xs font-bold uppercase opacity-90">Tons Waste/Day</div>
-            </div>
-            <div className="text-center">
-              <div className="text-3xl md:text-4xl font-black mb-1">
-                <LiveCounter perSecond={1100} unit=" M" suffix="+" decimals={0} />
-              </div>
-              <div className="text-xs font-bold uppercase opacity-90">Tons CO₂/Day</div>
-            </div>
-            <div className="text-center">
-              <div className="text-3xl md:text-4xl font-black mb-1">
-                <LiveCounter perSecond={0.5} unit=" K" decimals={1} suffix="+" />
-              </div>
-              <div className="text-xs font-bold uppercase opacity-90">Hectares Lost/Day</div>
-            </div>
-            <div className="text-center">
-              <div className="text-3xl md:text-4xl font-black mb-1">
-                <LiveCounter perSecond={127} unit=" B" suffix="+" decimals={1} />
-              </div>
-              <div className="text-xs font-bold uppercase opacity-90">m³ Water/Day</div>
-            </div>
-          </div>
-          <div className="text-center mt-4">
-            <Link href="/learn">
-              <span className="inline-flex items-center gap-2 text-sm font-black hover:underline cursor-pointer">
-                Learn how you can help →
-              </span>
-            </Link>
           </div>
         </div>
       </section>
