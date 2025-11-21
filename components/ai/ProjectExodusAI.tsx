@@ -27,7 +27,7 @@ export function ProjectExodusAI() {
       const timer = setTimeout(() => {
         const greeting: Message = {
           role: 'assistant',
-          content: "🌍 Welcome to Project Exodus! I'm your sustainability AI assistant. I can help you discover eco-friendly products, learn about renewable energy, regenerative agriculture, zero waste living, green building, and more. What would you like to explore today?",
+          content: "🌍 Welcome to Project Exodus! I'm your sustainability AI assistant. I can help you discover eco-friendly products, calculate your carbon footprint, explore breakthrough innovations like carbon capture and green hydrogen, and learn about renewable energy, regenerative agriculture, zero waste living, green building, and more. What would you like to explore today?",
           timestamp: new Date()
         }
         setMessages([greeting])
@@ -37,7 +37,7 @@ export function ProjectExodusAI() {
 
       return () => clearTimeout(timer)
     }
-  }, [autoGreetOnHomepage, hasGreeted])
+  }, [isHomepage, hasGreeted])
 
   // Scroll to bottom when messages change
   useEffect(() => {
@@ -102,11 +102,21 @@ export function ProjectExodusAI() {
 
     // Products
     if (input.includes('product') || input.includes('buy') || input.includes('shop') || input.includes('store')) {
-      return "🛍️ Our marketplace features sustainable products across all categories! From solar panels and composting systems to organic textiles and water-saving fixtures. Every product is vetted for sustainability credentials. What category are you interested in? Renewable energy, fashion, zero waste, agriculture, or home goods?"
+      return "🛍️ Our marketplace features 70+ sustainable products across all categories! From Goal Zero solar generators and EcoFlow power stations to Patagonia clothing, Berkey water filters, and Subpod composters. Every product is vetted for sustainability credentials. What category are you interested in? Renewable energy, fashion, zero waste, agriculture, or home goods?"
+    }
+
+    // Carbon Calculator
+    if (input.includes('carbon') || input.includes('footprint') || input.includes('calculator') || input.includes('emissions') || input.includes('calculate')) {
+      return "📊 Our Carbon Footprint Calculator uses EPA-verified methodology to measure your annual CO₂ emissions across housing, transportation, food, goods, and travel. You'll get personalized recommendations showing exactly how much CO₂ you can save with specific actions. The average American emits 16 tons/year—let's see where you stand and create your reduction plan! Visit /tools/carbon-calculator to get started."
+    }
+
+    // Emerging Tech / Innovation
+    if (input.includes('innovation') || input.includes('technology') || input.includes('tech') || input.includes('future') || input.includes('battery') || input.includes('hydrogen') || input.includes('carbon capture')) {
+      return "🚀 Breakthrough innovations are transforming sustainability RIGHT NOW! Climeworks' DAC plants capture CO₂ from air, QuantumScape's solid-state batteries enable 500-mile EVs, green hydrogen costs dropped 70%, and vertical farms grow food with 95% less water. $1.4 trillion invested in climate tech in 2023 alone! Check out our Emerging Technologies page to explore carbon capture, advanced batteries, green hydrogen, vertical farming, and AI for climate. The future is here!"
     }
 
     // General/Default
-    return "I'm here to help you on your sustainability journey! 🌱 I can guide you through:\n\n⚡ Renewable Energy (solar, wind, storage)\n👕 Sustainable Fashion (circular economy, ethical brands)\n🌾 Regenerative Agriculture (soil health, carbon sequestration)\n♻️ Zero Waste Living (the 5 R's, composting)\n🏡 Green Building (Passive House, LEED)\n💧 Water Conservation (efficiency, rainwater harvesting)\n\nWhat would you like to explore? Or ask me about specific products, certifications, or practices!"
+    return "I'm here to help you on your sustainability journey! 🌱 I can guide you through:\n\n⚡ Renewable Energy (solar, wind, storage)\n👕 Sustainable Fashion (circular economy, ethical brands)\n🌾 Regenerative Agriculture (soil health, carbon sequestration)\n♻️ Zero Waste Living (the 5 R's, composting)\n🏡 Green Building (Passive House, LEED)\n💧 Water Conservation (efficiency, rainwater harvesting)\n🚀 Emerging Technologies (carbon capture, green H₂, AI)\n📊 Carbon Calculator (measure your impact)\n\nWhat would you like to explore? Or ask me about specific products, certifications, or practices!"
   }
 
   return (

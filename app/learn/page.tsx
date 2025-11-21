@@ -142,8 +142,45 @@ export default async function LearnPage() {
         </div>
       </section>
 
-      {/* Building Certifications & Standards */}
+      {/* Emerging Technologies */}
       <section className="py-32 bg-[var(--background)]">
+        <div className="container mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="max-w-5xl mx-auto">
+            <Link href="/learn/emerging-tech">
+              <Card className="hover-lift border-4 border-theme-primary bg-gradient-to-br from-[color-mix(in_srgb,var(--primary)_20%,var(--background))] via-[color-mix(in_srgb,var(--accent)_20%,var(--background))] to-[color-mix(in_srgb,var(--secondary)_20%,var(--background))] cursor-pointer transform hover:scale-105 transition-all duration-300">
+                <CardContent className="p-16 text-center">
+                  <div className="w-24 h-24 mx-auto mb-6 rounded-full bg-gradient-to-br from-[var(--primary)] via-[var(--accent)] to-[var(--secondary)] flex items-center justify-center shadow-theme-xl animate-pulse">
+                    <Zap className="w-12 h-12 text-[var(--primary-foreground)]" />
+                  </div>
+                  <h2 className="text-5xl font-black mb-6" style={{
+                    background: 'linear-gradient(135deg, var(--primary), var(--accent), var(--secondary))',
+                    WebkitBackgroundClip: 'text',
+                    WebkitTextFillColor: 'transparent'
+                  }}>
+                    EMERGING TECHNOLOGIES & INNOVATIONS
+                  </h2>
+                  <p className="text-xl font-semibold text-theme-muted mb-6 max-w-3xl mx-auto">
+                    Discover breakthrough innovations in carbon capture, advanced batteries, green hydrogen, vertical farming, and AI-driven climate solutions transforming our world
+                  </p>
+                  <div className="flex flex-wrap justify-center gap-4 mb-8">
+                    <span className="px-4 py-2 bg-[var(--primary)] text-[var(--primary-foreground)] rounded-full text-sm font-black">Carbon Capture</span>
+                    <span className="px-4 py-2 bg-[var(--accent)] text-[var(--primary-foreground)] rounded-full text-sm font-black">Solid-State Batteries</span>
+                    <span className="px-4 py-2 bg-[var(--secondary)] text-[var(--primary-foreground)] rounded-full text-sm font-black">Green Hydrogen</span>
+                    <span className="px-4 py-2 bg-[var(--primary)] text-[var(--primary-foreground)] rounded-full text-sm font-black">Vertical Farming</span>
+                    <span className="px-4 py-2 bg-[var(--accent)] text-[var(--primary-foreground)] rounded-full text-sm font-black">Climate AI</span>
+                  </div>
+                  <div className="text-theme-primary font-black text-lg">
+                    EXPLORE INNOVATIONS →
+                  </div>
+                </CardContent>
+              </Card>
+            </Link>
+          </div>
+        </div>
+      </section>
+
+      {/* Building Certifications & Standards */}
+      <section className="py-32 bg-[var(--muted)]">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-20">
             <h2 className="text-5xl font-black mb-4 text-[var(--foreground)]">
@@ -239,23 +276,60 @@ export default async function LearnPage() {
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-20">
             <h2 className="text-5xl font-black text-[var(--foreground)]">INTERACTIVE TOOLS</h2>
+            <p className="text-xl font-semibold mt-4 text-theme-muted">
+              Measure your impact and discover personalized sustainability actions
+            </p>
           </div>
           <div className="grid md:grid-cols-3 gap-8 max-w-6xl mx-auto">
-            {[
-              { icon: Calculator, title: 'CARBON CALCULATOR', desc: 'Calculate your footprint' },
-              { icon: Video, title: 'VIDEO TUTORIALS', desc: 'Step-by-step guides' },
-              { icon: Download, title: 'RESOURCE LIBRARY', desc: 'Download PDFs & templates' }
-            ].map((tool, i) => (
-              <Card key={i} className="hover-lift border-4 border-theme-accent cursor-pointer transform hover:scale-105 transition-all">
+            {/* Carbon Calculator - Active */}
+            <Link href="/tools/carbon-calculator">
+              <Card className="hover-lift border-4 border-theme-primary bg-gradient-to-br from-[color-mix(in_srgb,var(--primary)_15%,var(--background))] to-[color-mix(in_srgb,var(--primary)_25%,var(--background))] cursor-pointer transform hover:scale-105 transition-all h-full">
                 <CardContent className="p-10 text-center">
-                  <div className="w-24 h-24 mx-auto mb-6 rounded-full bg-[color-mix(in_srgb,var(--accent)_20%,var(--background))] flex items-center justify-center">
-                    <tool.icon className="w-12 h-12 text-theme-accent" />
+                  <div className="w-24 h-24 mx-auto mb-6 rounded-full bg-gradient-to-br from-[var(--primary)] to-[color-mix(in_srgb,var(--primary)_80%,black)] flex items-center justify-center shadow-theme-xl">
+                    <Calculator className="w-12 h-12 text-[var(--primary-foreground)]" />
                   </div>
-                  <h3 className="text-xl font-black mb-3 text-[var(--foreground)]">{tool.title}</h3>
-                  <p className="font-medium text-theme-muted">{tool.desc}</p>
+                  <h3 className="text-xl font-black mb-3 text-[var(--foreground)]">CARBON FOOTPRINT CALCULATOR</h3>
+                  <p className="font-semibold text-theme-muted mb-4">
+                    Measure your annual CO₂ emissions and get personalized reduction strategies
+                  </p>
+                  <div className="text-theme-primary font-black text-sm">
+                    START CALCULATING →
+                  </div>
                 </CardContent>
               </Card>
-            ))}
+            </Link>
+
+            {/* Video Tutorials - Coming Soon */}
+            <Card className="hover-lift border-4 border-theme-accent bg-gradient-to-br from-[color-mix(in_srgb,var(--accent)_15%,var(--background))] to-[color-mix(in_srgb,var(--accent)_25%,var(--background))] cursor-not-allowed opacity-75 transform hover:scale-105 transition-all h-full">
+              <CardContent className="p-10 text-center">
+                <div className="w-24 h-24 mx-auto mb-6 rounded-full bg-gradient-to-br from-[var(--accent)] to-[color-mix(in_srgb,var(--accent)_80%,black)] flex items-center justify-center shadow-theme-xl">
+                  <Video className="w-12 h-12 text-[var(--primary-foreground)]" />
+                </div>
+                <h3 className="text-xl font-black mb-3 text-[var(--foreground)]">VIDEO TUTORIALS</h3>
+                <p className="font-semibold text-theme-muted mb-4">
+                  Step-by-step guides on renewable energy, zero waste, and sustainable living
+                </p>
+                <div className="text-theme-accent font-black text-sm">
+                  COMING SOON
+                </div>
+              </CardContent>
+            </Card>
+
+            {/* Resource Library - Coming Soon */}
+            <Card className="hover-lift border-4 border-theme-secondary bg-gradient-to-br from-[color-mix(in_srgb,var(--secondary)_15%,var(--background))] to-[color-mix(in_srgb,var(--secondary)_25%,var(--background))] cursor-not-allowed opacity-75 transform hover:scale-105 transition-all h-full">
+              <CardContent className="p-10 text-center">
+                <div className="w-24 h-24 mx-auto mb-6 rounded-full bg-gradient-to-br from-[var(--secondary)] to-[color-mix(in_srgb,var(--secondary)_80%,black)] flex items-center justify-center shadow-theme-xl">
+                  <Download className="w-12 h-12 text-[var(--primary-foreground)]" />
+                </div>
+                <h3 className="text-xl font-black mb-3 text-[var(--foreground)]">RESOURCE LIBRARY</h3>
+                <p className="font-semibold text-theme-muted mb-4">
+                  Download PDFs, templates, and guides for your sustainability journey
+                </p>
+                <div className="text-theme-secondary font-black text-sm">
+                  COMING SOON
+                </div>
+              </CardContent>
+            </Card>
           </div>
         </div>
       </section>
