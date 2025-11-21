@@ -117,95 +117,95 @@ export async function GET(request: NextRequest) {
       }))
     )
 
-    // 3. New events created - TEMPORARILY DISABLED until Event model is in database
-    // const events = await prisma.event.findMany({
-    //   where: {
-    //     creatorId: { in: followingIds },
-    //     createdAt: {
-    //       gte: new Date(Date.now() - 7 * 24 * 60 * 60 * 1000),
-    //     },
-    //   },
-    //   include: {
-    //     creator: {
-    //       select: {
-    //         id: true,
-    //         name: true,
-    //         image: true,
-    //       },
-    //     },
-    //     _count: {
-    //       select: {
-    //         attendees: true,
-    //       },
-    //     },
-    //   },
-    //   orderBy: { createdAt: 'desc' },
-    //   take: limit,
-    //})
+    // 3. New events created
+    const events = await prisma.event.findMany({
+      where: {
+        creatorId: { in: followingIds },
+        createdAt: {
+          gte: new Date(Date.now() - 7 * 24 * 60 * 60 * 1000),
+        },
+      },
+      include: {
+        creator: {
+          select: {
+            id: true,
+            name: true,
+            image: true,
+          },
+        },
+        _count: {
+          select: {
+            attendees: true,
+          },
+        },
+      },
+      orderBy: { createdAt: 'desc' },
+      take: limit,
+    })
 
-    // activities.push(
-    //   ...events.map((event) => ({
-    //     id: `event-create-${event.id}`,
-    //     type: 'EVENT_CREATE',
-    //     user: event.creator,
-    //     event: {
-    //       id: event.id,
-    //       title: event.title,
-    //       slug: event.slug,
-    //       type: event.type,
-    //       startDate: event.startDate,
-    //       attendeeCount: event._count.attendees,
-    //     },
-    //     createdAt: event.createdAt,
-    //   }))
-    // )
+    activities.push(
+      ...events.map((event) => ({
+        id: `event-create-${event.id}`,
+        type: 'EVENT_CREATE',
+        user: event.creator,
+        event: {
+          id: event.id,
+          title: event.title,
+          slug: event.slug,
+          type: event.type,
+          startDate: event.startDate,
+          attendeeCount: event._count.attendees,
+        },
+        createdAt: event.createdAt,
+      }))
+    )
 
-    // 4. Event RSVPs - TEMPORARILY DISABLED until Event model is in database
-    // const eventRSVPs = await prisma.eventAttendee.findMany({
-    //   where: {
-    //     userId: { in: followingIds },
-    //     status: 'GOING',
-    //     joinedAt: {
-    //       gte: new Date(Date.now() - 7 * 24 * 60 * 60 * 1000),
-    //     },
-    //   },
-    //   include: {
-    //     user: {
-    //       select: {
-    //         id: true,
-    //         name: true,
-    //         image: true,
-    //       },
-    //     },
-    //     event: {
-    //       select: {
-    //         id: true,
-    //         title: true,
-    //         slug: true,
-    //         type: true,
-    //         startDate: true,
-    //       },
-    //     },
-    //   },
-    //   orderBy: { joinedAt: 'desc' },
-    //   take: limit,
-    // })
+    // 4. Event RSVPs
+    const eventRSVPs = await prisma.eventAttendee.findMany({
+      where: {
+        userId: { in: followingIds },
+        status: 'GOING',
+        joinedAt: {
+          gte: new Date(Date.now() - 7 * 24 * 60 * 60 * 1000),
+        },
+      },
+      include: {
+        user: {
+          select: {
+            id: true,
+            name: true,
+            image: true,
+          },
+        },
+        event: {
+          select: {
+            id: true,
+            title: true,
+            slug: true,
+            type: true,
+            startDate: true,
+          },
+        },
+      },
+      orderBy: { joinedAt: 'desc' },
+      take: limit,
+    })
 
-    // activities.push(
-    //   ...eventRSVPs.map((rsvp) => ({
-    //     id: `event-rsvp-${rsvp.id}`,
-    //     type: 'EVENT_RSVP',
-    //     user: rsvp.user,
-    //     event: {
-    //       id: rsvp.event.id,
-    //       title: rsvp.event.title,
-    //       slug: rsvp.event.slug,
-    //       type: rsvp.event.type,
-    //       startDate: rsvp.event.startDate,
-    //     },
-    //     createdAt: rsvp.joinedAt,
-    //   }))
-    // )
+    activities.push(
+      ...eventRSVPs.map((rsvp) => ({
+        id: `event-rsvp-${rsvp.id}`,
+        type: 'EVENT_RSVP',
+        user: rsvp.user,
+        event: {
+          id: rsvp.event.id,
+          title: rsvp.event.title,
+          slug: rsvp.event.slug,
+          type: rsvp.event.type,
+          startDate: rsvp.event.startDate,
+        },
+        createdAt: rsvp.joinedAt,
+      }))
+    )
 
     // 5. New projects created
     const projects = await prisma.project.findMany({
