@@ -5,48 +5,70 @@ const prisma = new PrismaClient()
 async function main() {
   console.log('🌱 Starting product seeding...')
 
-  // Create vendors
-  const ecoTech = await prisma.vendor.upsert({
-    where: { slug: 'eco-tech-solutions' },
+  // Create real sustainable vendors
+  const earthHero = await prisma.vendor.upsert({
+    where: { slug: 'earthhero' },
     update: {},
     create: {
-      name: 'EcoTech Solutions',
-      slug: 'eco-tech-solutions',
-      description: 'Leading provider of solar-powered technology and renewable energy products',
-      website: 'https://ecotechsolutions.com'
+      name: 'EarthHero',
+      slug: 'earthhero',
+      description: 'Certified sustainable products marketplace. Every purchase helps create a more sustainable planet. 1% For The Planet member.',
+      website: 'https://earthhero.com'
     }
   })
 
-  const greenHome = await prisma.vendor.upsert({
-    where: { slug: 'green-home-essentials' },
+  const reformation = await prisma.vendor.upsert({
+    where: { slug: 'reformation' },
     update: {},
     create: {
-      name: 'Green Home Essentials',
-      slug: 'green-home-essentials',
-      description: 'Sustainable home products for eco-conscious living',
-      website: 'https://greenhomeessentials.com'
+      name: 'Reformation',
+      slug: 'reformation',
+      description: 'Climate Neutral Certified sustainable fashion brand using organic cotton, TENCEL™, and deadstock fabrics',
+      website: 'https://www.thereformation.com'
     }
   })
 
-  const sustainableFashion = await prisma.vendor.upsert({
-    where: { slug: 'sustainable-threads' },
+  const stasher = await prisma.vendor.upsert({
+    where: { slug: 'stasher' },
     update: {},
     create: {
-      name: 'Sustainable Threads',
-      slug: 'sustainable-threads',
-      description: 'Organic and ethical fashion for a better planet',
-      website: 'https://sustainablethreads.com'
+      name: 'Stasher',
+      slug: 'stasher',
+      description: 'Reusable storage solutions made from pure platinum silicone. Plastic-free, non-toxic, and endlessly reusable',
+      website: 'https://www.stasherbag.com'
     }
   })
 
-  const earthCare = await prisma.vendor.upsert({
-    where: { slug: 'earth-care-products' },
+  const pelaCase = await prisma.vendor.upsert({
+    where: { slug: 'pela-case' },
     update: {},
     create: {
-      name: 'Earth Care Products',
-      slug: 'earth-care-products',
-      description: 'Eco-friendly household and garden products',
-      website: 'https://earthcareproducts.com'
+      name: 'Pela Case',
+      slug: 'pela-case',
+      description: 'Compostable phone cases and accessories. 30% fewer carbon emissions and 34% less water than conventional cases',
+      website: 'https://pelacase.com'
+    }
+  })
+
+  const blueland = await prisma.vendor.upsert({
+    where: { slug: 'blueland' },
+    update: {},
+    create: {
+      name: 'Blueland',
+      slug: 'blueland',
+      description: 'Innovative cleaning products that eliminate single-use plastic. EPA Safer Choice certified tablets',
+      website: 'https://www.blueland.com'
+    }
+  })
+
+  const quince = await prisma.vendor.upsert({
+    where: { slug: 'quince' },
+    update: {},
+    create: {
+      name: 'Quince',
+      slug: 'quince',
+      description: 'Affordable sustainable fashion with OEKO-TEX certified, virgin plastic-free materials',
+      website: 'https://www.onequince.com'
     }
   })
 
@@ -119,591 +141,685 @@ async function main() {
     }
   })
 
+  const electronics = await prisma.category.upsert({
+    where: { slug: 'electronics' },
+    update: {},
+    create: {
+      name: 'Electronics & Accessories',
+      slug: 'electronics',
+      description: 'Sustainable tech accessories and eco-friendly electronics',
+      icon: '📱'
+    }
+  })
+
   console.log('✅ Categories created')
 
   // ENERGY PRODUCTS
   const products = []
 
   products.push(await prisma.product.upsert({
-    where: { slug: 'portable-solar-panel-100w' },
+    where: { slug: 'goal-zero-nomad-100-solar-panel' },
     update: {},
     create: {
-      name: '100W Portable Solar Panel',
-      slug: 'portable-solar-panel-100w',
-      description: 'High-efficiency monocrystalline solar panel perfect for camping, RVs, and off-grid applications. Foldable design with kickstand for easy setup. Weather-resistant and durable construction. Includes MC4 connectors for easy connection to solar generators and batteries.',
-      price: 199.99,
+      name: 'Goal Zero Nomad 100 Solar Panel',
+      slug: 'goal-zero-nomad-100-solar-panel',
+      description: 'High-efficiency monocrystalline solar panel perfect for camping, RVs, and off-grid applications. Foldable design with kickstand for easy setup. Weather-resistant and durable construction.',
+      price: 299.99,
       status: 'PUBLISHED',
       featured: true,
       categoryId: energy.id,
-      vendorId: ecoTech.id,
-      purchaseLink: 'https://ecotechsolutions.com/solar-panel-100w',
+      vendorId: earthHero.id,
+      purchaseLink: 'https://earthhero.com/products/home/goal-zero-nomad-100-solar-panel/',
       publishedAt: new Date(),
       specifications: {
         power: '100W',
-        efficiency: '23%',
+        efficiency: '22-25%',
         weight: '9.5 lbs',
-        dimensions: '26.8 x 20.5 x 0.2 inches (folded)',
-        warranty: '25 years'
+        dimensions: '42 x 26.5 x 2.5 inches',
+        warranty: '12 months'
       }
     }
   }))
 
   products.push(await prisma.product.upsert({
-    where: { slug: 'solar-power-bank-30000mah' },
+    where: { slug: 'biolite-solarpanel-10-plus' },
     update: {},
     create: {
-      name: 'Solar Power Bank 30000mAh',
-      slug: 'solar-power-bank-30000mah',
-      description: 'Ultra-high capacity portable charger with built-in solar panels. Features fast charging technology, dual USB ports, and wireless charging pad. Perfect for outdoor adventures, emergencies, and daily use. Waterproof and shockproof design with LED flashlight.',
+      name: 'BioLite SolarPanel 10+',
+      slug: 'biolite-solarpanel-10-plus',
+      description: 'Portable solar panel with integrated sundial and 3000mAh battery. Optimal sun system positions panel at the perfect angle. USB ports for charging devices on the go.',
+      price: 129.99,
+      status: 'PUBLISHED',
+      featured: true,
+      categoryId: energy.id,
+      vendorId: earthHero.id,
+      purchaseLink: 'https://earthhero.com/products/travel/biolite-solarpanel-10-plus/',
+      publishedAt: new Date(),
+      specifications: {
+        power: '10W',
+        battery: '3000mAh integrated',
+        outputs: '2x USB',
+        features: 'Sundial alignment, kickstand',
+        weight: '1.2 lbs'
+      }
+    }
+  }))
+
+  products.push(await prisma.product.upsert({
+    where: { slug: 'solar-garden-lights-set' },
+    update: {},
+    create: {
+      name: 'LED Solar Garden Pathway Lights (6-Pack)',
+      slug: 'solar-garden-lights-set',
+      description: 'Beautiful LED pathway lights powered entirely by the sun. No wiring required. Automatic dusk-to-dawn operation. Weather-resistant construction provides warm, ambient lighting for gardens and walkways.',
       price: 49.99,
       status: 'PUBLISHED',
-      featured: true,
       categoryId: energy.id,
-      vendorId: ecoTech.id,
-      purchaseLink: 'https://ecotechsolutions.com/solar-power-bank',
+      vendorId: earthHero.id,
+      purchaseLink: 'https://earthhero.com/products/home/solar-pathway-lights/',
       publishedAt: new Date(),
       specifications: {
-        capacity: '30000mAh',
-        solarPanel: '1.5W',
-        outputs: '2x USB-A, 1x USB-C, Wireless',
-        features: 'Waterproof IP66, LED flashlight',
-        chargingTime: '6-8 hours (wall), 40-50 hours (solar)'
-      }
-    }
-  }))
-
-  products.push(await prisma.product.upsert({
-    where: { slug: 'solar-garden-lights-8pack' },
-    update: {},
-    create: {
-      name: 'Solar Garden Pathway Lights (8-Pack)',
-      slug: 'solar-garden-lights-8pack',
-      description: 'Beautiful LED pathway lights powered entirely by the sun. No wiring required - simply stake into the ground. Automatic dusk-to-dawn operation. Weather-resistant stainless steel and glass construction. Provides warm, ambient lighting for gardens, walkways, and patios.',
-      price: 59.99,
-      status: 'PUBLISHED',
-      categoryId: energy.id,
-      vendorId: ecoTech.id,
-      purchaseLink: 'https://ecotechsolutions.com/garden-lights',
-      publishedAt: new Date(),
-      specifications: {
-        quantity: '8 lights',
-        lumens: '15 lumens per light',
-        runtime: '8-10 hours on full charge',
+        quantity: '6 lights',
+        lumens: '10 lumens per light',
+        runtime: '8 hours on full charge',
         solarPanel: 'Monocrystalline',
-        material: 'Stainless steel, tempered glass'
+        material: 'Stainless steel, plastic'
       }
     }
   }))
 
   products.push(await prisma.product.upsert({
-    where: { slug: 'home-solar-starter-kit' },
+    where: { slug: 'renogy-100w-solar-kit' },
     update: {},
     create: {
-      name: 'Home Solar Starter Kit 400W',
-      slug: 'home-solar-starter-kit',
-      description: 'Complete plug-and-play solar system for beginners. Includes 4x100W solar panels, charge controller, mounting hardware, and all necessary cables. Perfect for powering small appliances, lights, and electronics. Expandable design allows you to add more panels later.',
-      price: 699.99,
+      name: 'Renogy 100W Solar Starter Kit',
+      slug: 'renogy-100w-solar-kit',
+      description: 'Complete solar starter kit perfect for RVs, trailers, boats, and cabins. Includes 100W monocrystalline panel, 30A charge controller, mounting brackets, and cables. Easy installation.',
+      price: 189.99,
       status: 'PUBLISHED',
       featured: true,
       categoryId: energy.id,
-      vendorId: ecoTech.id,
-      purchaseLink: 'https://ecotechsolutions.com/starter-kit',
+      vendorId: earthHero.id,
+      purchaseLink: 'https://earthhero.com/products/home/renogy-solar-starter-kit/',
       publishedAt: new Date(),
       specifications: {
-        totalPower: '400W',
-        panels: '4x100W monocrystalline',
-        controller: '40A MPPT charge controller',
-        includes: 'Mounting hardware, MC4 cables, manual',
-        estimatedOutput: '1.6-2.0 kWh per day'
+        totalPower: '100W',
+        controller: '30A PWM charge controller',
+        includes: 'Mounting Z-brackets, MC4 cables, manual',
+        efficiency: '21%',
+        warranty: '25 year power output'
       }
     }
   }))
 
   // HOME & KITCHEN PRODUCTS
   products.push(await prisma.product.upsert({
-    where: { slug: 'stainless-steel-food-containers-set' },
+    where: { slug: 'stasher-silicone-bag-set' },
     update: {},
     create: {
-      name: 'Stainless Steel Food Container Set (5-Pack)',
-      slug: 'stainless-steel-food-containers-set',
-      description: 'Durable, plastic-free food storage solution. Premium 304 stainless steel construction is dishwasher safe and won\'t retain odors or stains. Leak-proof silicone lids keep food fresh. Perfect for meal prep, leftovers, and packed lunches. Replaces single-use plastic containers.',
-      price: 44.99,
+      name: 'Stasher Reusable Silicone Storage Bags (4-Pack)',
+      slug: 'stasher-silicone-bag-set',
+      description: 'Endlessly reusable bags made from 100% pure platinum food-grade silicone. Plastic-free, non-toxic, and dishwasher safe. Perfect for food storage, meal prep, sous vide cooking, and travel.',
+      price: 54.99,
       status: 'PUBLISHED',
       featured: true,
       categoryId: homeKitchen.id,
-      vendorId: greenHome.id,
-      purchaseLink: 'https://greenhomeessentials.com/food-containers',
+      vendorId: stasher.id,
+      purchaseLink: 'https://www.stasherbag.com/collections/bundles',
       publishedAt: new Date(),
       specifications: {
-        material: '304 stainless steel',
-        sizes: '3 cups, 4 cups, 6 cups, 8 cups, 10 cups',
-        features: 'Leak-proof, stackable, dishwasher safe',
-        lids: 'BPA-free silicone',
-        warranty: 'Lifetime'
+        material: '100% pure platinum silicone',
+        sizes: '2 Snack (9.9oz), 1 Sandwich (15oz), 1 Half-Gallon (64oz)',
+        features: 'Dishwasher safe, microwave safe, freezer safe',
+        temperature: '-40°F to 425°F',
+        warranty: 'Limited lifetime'
       }
     }
   }))
 
   products.push(await prisma.product.upsert({
-    where: { slug: 'bamboo-cutlery-travel-set' },
+    where: { slug: 'klean-kanteen-food-box-set' },
     update: {},
     create: {
-      name: 'Bamboo Cutlery Travel Set with Case',
-      slug: 'bamboo-cutlery-travel-set',
-      description: 'Say goodbye to single-use plastic utensils! This reusable bamboo cutlery set includes knife, fork, spoon, chopsticks, and metal straw with cleaning brush. Comes in a portable cotton carrying case. Perfect for work, travel, camping, and everyday use. 100% biodegradable bamboo.',
-      price: 18.99,
+      name: 'Klean Kanteen Food Box Set (3-Pack)',
+      slug: 'klean-kanteen-food-box-set',
+      description: 'Durable stainless steel food containers with leak-proof lids. Plastic-free solution for meal prep and leftovers. Dishwasher safe and won\'t retain odors. Built to last a lifetime.',
+      price: 49.99,
       status: 'PUBLISHED',
       categoryId: homeKitchen.id,
-      vendorId: greenHome.id,
-      purchaseLink: 'https://greenhomeessentials.com/bamboo-cutlery',
+      vendorId: earthHero.id,
+      purchaseLink: 'https://earthhero.com/products/kitchen-dining/klean-kanteen-food-box-set/',
       publishedAt: new Date(),
       specifications: {
-        includes: 'Fork, knife, spoon, chopsticks, metal straw, brush',
-        material: '100% organic bamboo, stainless steel straw',
-        caseSize: '8.5 x 2.5 inches',
-        weight: '3.5 oz',
-        dishwasher: 'Hand wash recommended'
+        material: '18/8 stainless steel',
+        sizes: '8oz, 16oz, 32oz',
+        features: 'Leak-proof, stackable, dishwasher safe',
+        lids: 'Polypropylene #5',
+        warranty: 'Strong as steel guarantee'
       }
     }
   }))
 
   products.push(await prisma.product.upsert({
-    where: { slug: 'beeswax-food-wraps-assorted' },
+    where: { slug: 'bee-wraps-organic-food-wraps' },
     update: {},
     create: {
-      name: 'Organic Beeswax Food Wraps (Assorted 6-Pack)',
-      slug: 'beeswax-food-wraps-assorted',
-      description: 'Natural alternative to plastic wrap and aluminum foil. Made from organic cotton, sustainably harvested beeswax, jojoba oil, and tree resin. Moldable, reusable, and compostable. Use for covering bowls, wrapping sandwiches, cheese, vegetables, and more. Lasts up to one year with proper care.',
+      name: "Bee's Wrap Organic Reusable Food Wraps (Variety Pack)",
+      slug: 'bee-wraps-organic-food-wraps',
+      description: 'Sustainable alternative to plastic wrap made from organic cotton, beeswax, jojoba oil, and tree resin. Washable, reusable for up to a year. Naturally antibacterial. Covers bowls, wraps produce, and stores snacks.',
       price: 24.99,
       status: 'PUBLISHED',
       categoryId: homeKitchen.id,
-      vendorId: greenHome.id,
-      purchaseLink: 'https://greenhomeessentials.com/beeswax-wraps',
+      vendorId: earthHero.id,
+      purchaseLink: 'https://earthhero.com/products/kitchen-dining/bees-wrap-variety-pack/',
       publishedAt: new Date(),
       specifications: {
-        sizes: '2 small (7x7"), 3 medium (10x10"), 1 large (13x13")',
-        materials: 'Organic cotton, beeswax, jojoba oil, tree resin',
-        care: 'Hand wash with cold water',
-        lifespan: '1 year with proper care',
-        endOfLife: '100% compostable'
+        material: 'Organic cotton, beeswax, jojoba oil, tree resin',
+        sizes: '2 Small (7x8"), 2 Medium (10x11"), 2 Large (13x14")',
+        care: 'Hand wash in cool water',
+        lifespan: '1 year with regular use',
+        certification: 'GOTS certified organic cotton'
       }
     }
   }))
 
   products.push(await prisma.product.upsert({
-    where: { slug: 'silicone-storage-bags-reusable' },
+    where: { slug: 'eparé-glass-meal-prep-containers' },
     update: {},
     create: {
-      name: 'Reusable Silicone Storage Bags (10-Pack)',
-      slug: 'silicone-storage-bags-reusable',
-      description: 'Premium food-grade silicone bags replace disposable plastic bags. Leak-proof, freezer-safe, microwave-safe, and dishwasher-safe. Perfect for snacks, sandwiches, fruits, vegetables, and meal prep. Airtight seal keeps food fresh longer. BPA-free, PVC-free, and free of harmful chemicals.',
-      price: 34.99,
+      name: 'Eparé Glass Meal Prep Containers (5-Pack)',
+      slug: 'eparé-glass-meal-prep-containers',
+      description: 'Airtight borosilicate glass containers perfect for meal prep. BPA-free locking lids. Oven, microwave, freezer, and dishwasher safe. Won\'t stain or absorb odors. Plastic-free food storage.',
+      price: 39.99,
       status: 'PUBLISHED',
-      featured: true,
       categoryId: homeKitchen.id,
-      vendorId: greenHome.id,
-      purchaseLink: 'https://greenhomeessentials.com/silicone-bags',
+      vendorId: earthHero.id,
+      purchaseLink: 'https://earthhero.com/products/kitchen-dining/glass-meal-prep-containers/',
       publishedAt: new Date(),
       specifications: {
-        quantity: '10 bags (4 small, 4 medium, 2 large)',
-        material: '100% food-grade silicone',
-        temperature: '-40°F to 425°F',
-        features: 'Leak-proof, air-tight, dishwasher safe',
-        certification: 'FDA approved, BPA-free'
+        material: 'Borosilicate glass',
+        capacity: '32oz per container',
+        features: 'Airtight, leak-proof, stackable',
+        temperature: 'Oven safe to 520°F (without lid)',
+        lids: 'BPA-free plastic with silicone seal'
       }
     }
   }))
 
   // FASHION PRODUCTS
   products.push(await prisma.product.upsert({
-    where: { slug: 'organic-cotton-tshirt-unisex' },
+    where: { slug: 'reformation-organic-cotton-tee' },
     update: {},
     create: {
-      name: 'Organic Cotton T-Shirt (Unisex)',
-      slug: 'organic-cotton-tshirt-unisex',
-      description: 'Soft, breathable t-shirt made from 100% GOTS-certified organic cotton. Grown without pesticides, herbicides, or synthetic fertilizers. Fair Trade certified with ethical manufacturing practices. Classic fit suitable for all genders. Available in multiple colors. Durable and gets softer with every wash.',
-      price: 28.99,
+      name: 'Reformation Organic Cotton Relaxed Tee',
+      slug: 'reformation-organic-cotton-tee',
+      description: 'Classic relaxed-fit t-shirt made from 100% organic cotton. Climate Neutral Certified. Soft, breathable, and sustainable. Perfect everyday essential that\'s kind to the planet.',
+      price: 48.00,
       status: 'PUBLISHED',
       featured: true,
       categoryId: fashion.id,
-      vendorId: sustainableFashion.id,
-      purchaseLink: 'https://sustainablethreads.com/organic-tshirt',
+      vendorId: reformation.id,
+      purchaseLink: 'https://www.thereformation.com/categories/tops',
       publishedAt: new Date(),
       specifications: {
-        material: '100% GOTS-certified organic cotton',
-        weight: '5.3 oz',
-        fit: 'Classic unisex',
-        sizes: 'XS-3XL',
-        certifications: 'GOTS, Fair Trade',
-        care: 'Machine washable'
+        material: '100% organic cotton',
+        fit: 'Relaxed',
+        care: 'Machine wash cold',
+        certification: 'GOTS certified organic, Climate Neutral',
+        madeIn: 'Responsibly manufactured'
       }
     }
   }))
 
   products.push(await prisma.product.upsert({
-    where: { slug: 'bamboo-socks-6pack' },
+    where: { slug: 'quince-mongolian-cashmere-sweater' },
     update: {},
     create: {
-      name: 'Bamboo Fiber Socks (6-Pack)',
-      slug: 'bamboo-socks-6pack',
-      description: 'Ultra-soft and naturally moisture-wicking socks made from sustainable bamboo fiber. Antibacterial properties keep feet fresh all day. More sustainable than cotton - bamboo grows quickly without pesticides and requires 1/3 the water. Reinforced heel and toe for durability. Perfect for everyday wear.',
-      price: 32.99,
-      status: 'PUBLISHED',
-      categoryId: fashion.id,
-      vendorId: sustainableFashion.id,
-      purchaseLink: 'https://sustainablethreads.com/bamboo-socks',
-      publishedAt: new Date(),
-      specifications: {
-        material: '80% bamboo viscose, 15% nylon, 5% spandex',
-        features: 'Moisture-wicking, antibacterial, odor-resistant',
-        sizes: 'S/M (5-9), L/XL (9-13)',
-        care: 'Machine wash cold, tumble dry low',
-        sustainability: 'Bamboo grows 3x faster than cotton'
-      }
-    }
-  }))
-
-  products.push(await prisma.product.upsert({
-    where: { slug: 'recycled-polyester-hoodie' },
-    update: {},
-    create: {
-      name: 'Recycled Polyester Fleece Hoodie',
-      slug: 'recycled-polyester-hoodie',
-      description: 'Cozy hoodie made entirely from recycled plastic bottles. Each hoodie diverts approximately 20 plastic bottles from landfills and oceans. Soft fleece interior, kangaroo pocket, and adjustable drawstring hood. Carbon-neutral shipping. Unisex sizing with a relaxed fit.',
-      price: 59.99,
-      status: 'PUBLISHED',
-      categoryId: fashion.id,
-      vendorId: sustainableFashion.id,
-      purchaseLink: 'https://sustainablethreads.com/recycled-hoodie',
-      publishedAt: new Date(),
-      specifications: {
-        material: '100% recycled polyester (from plastic bottles)',
-        bottles: '~20 bottles per hoodie',
-        features: 'Fleece-lined, kangaroo pocket, hood with drawstring',
-        sizes: 'XS-3XL',
-        impact: 'Carbon-neutral shipping, saves 0.5 kg CO2'
-      }
-    }
-  }))
-
-  products.push(await prisma.product.upsert({
-    where: { slug: 'hemp-canvas-tote-bag' },
-    update: {},
-    create: {
-      name: 'Heavy-Duty Hemp Canvas Tote Bag',
-      slug: 'hemp-canvas-tote-bag',
-      description: 'Super strong reusable shopping bag made from 100% organic hemp canvas. Hemp is one of the most sustainable fibers - it requires no pesticides, little water, and actually improves soil health. This tote can hold up to 50 lbs and will last for years. Large main compartment with interior pocket.',
-      price: 24.99,
+      name: 'Quince Mongolian Cashmere Crewneck Sweater',
+      slug: 'quince-mongolian-cashmere-sweater',
+      description: 'Luxurious 100% Mongolian cashmere sweater at an accessible price. OEKO-TEX certified. Grade-A cashmere is incredibly soft and warm. Timeless design built to last.',
+      price: 49.90,
       status: 'PUBLISHED',
       featured: true,
       categoryId: fashion.id,
-      vendorId: sustainableFashion.id,
-      purchaseLink: 'https://sustainablethreads.com/hemp-tote',
+      vendorId: quince.id,
+      purchaseLink: 'https://www.onequince.com/women/cashmere-sweaters',
       publishedAt: new Date(),
       specifications: {
-        material: '100% organic hemp canvas',
-        capacity: '50 lbs weight limit',
-        dimensions: '16 x 14 x 6 inches',
-        features: 'Reinforced handles, interior pocket',
-        sustainability: 'Hemp requires 50% less water than cotton'
+        material: '100% Grade-A Mongolian cashmere',
+        ply: '2-ply',
+        care: 'Dry clean or hand wash',
+        certification: 'OEKO-TEX Standard 100',
+        sustainabilityFeatures: 'Traceable supply chain, no virgin plastic packaging'
       }
     }
   }))
 
-  // GARDEN & OUTDOORS PRODUCTS
   products.push(await prisma.product.upsert({
-    where: { slug: 'kitchen-compost-bin-countertop' },
+    where: { slug: 'reformation-linen-jumpsuit' },
     update: {},
     create: {
-      name: 'Countertop Kitchen Compost Bin with Filter',
-      slug: 'kitchen-compost-bin-countertop',
-      description: 'Stylish stainless steel compost pail with odor-blocking carbon filters. Perfect size for kitchen countertops. Includes 3 replacement filters. Removable inner bucket makes emptying easy. Reduces food waste and creates nutrient-rich compost for your garden. Tight-fitting lid prevents fruit flies.',
-      price: 39.99,
+      name: 'Reformation Linen Utility Jumpsuit',
+      slug: 'reformation-linen-jumpsuit',
+      description: 'Versatile jumpsuit crafted from sustainable linen. Breathable, durable, and gets softer with each wash. Climate Neutral Certified. Perfect for warm weather and effortless style.',
+      price: 178.00,
       status: 'PUBLISHED',
-      featured: true,
+      categoryId: fashion.id,
+      vendorId: reformation.id,
+      purchaseLink: 'https://www.thereformation.com/categories/jumpsuits-rompers',
+      publishedAt: new Date(),
+      specifications: {
+        material: '100% linen',
+        features: 'Button front, utility pockets, adjustable waist',
+        care: 'Machine wash cold',
+        sustainability: 'Linen uses less water than cotton',
+        certification: 'Climate Neutral Certified'
+      }
+    }
+  }))
+
+  products.push(await prisma.product.upsert({
+    where: { slug: 'quince-organic-cotton-tee-3pack' },
+    update: {},
+    create: {
+      name: 'Quince Organic Cotton Crew Neck T-Shirts (3-Pack)',
+      slug: 'quince-organic-cotton-tee-3pack',
+      description: 'Essential organic cotton t-shirts at an unbeatable price. OEKO-TEX certified. Soft, breathable, and durable. Perfect layering piece or standalone basic. No virgin plastic packaging.',
+      price: 29.90,
+      status: 'PUBLISHED',
+      categoryId: fashion.id,
+      vendorId: quince.id,
+      purchaseLink: 'https://www.onequince.com/men/t-shirts',
+      publishedAt: new Date(),
+      specifications: {
+        material: '100% organic cotton',
+        weight: 'Medium weight jersey',
+        fit: 'Classic fit',
+        certification: 'OEKO-TEX Standard 100',
+        packaging: 'Virgin plastic-free'
+      }
+    }
+  }))
+
+  // GARDEN & OUTDOORS
+  products.push(await prisma.product.upsert({
+    where: { slug: 'full-circle-countertop-compost-bin' },
+    update: {},
+    create: {
+      name: 'Full Circle Fresh Air Compost Collector',
+      slug: 'full-circle-countertop-compost-bin',
+      description: 'Sleek countertop compost bin with dual charcoal filter system to eliminate odors. Easy-carry handle and smooth interior prevents buildup. Perfect for collecting food scraps for composting.',
+      price: 29.99,
+      status: 'PUBLISHED',
       categoryId: garden.id,
-      vendorId: earthCare.id,
-      purchaseLink: 'https://earthcareproducts.com/compost-bin',
+      vendorId: earthHero.id,
+      purchaseLink: 'https://earthhero.com/products/home/full-circle-compost-collector/',
       publishedAt: new Date(),
       specifications: {
-        capacity: '1.3 gallons',
-        material: 'Stainless steel',
-        includes: '3 carbon filters (6-month supply)',
-        features: 'Odor-blocking, removable bucket, dishwasher safe',
-        dimensions: '7.5 x 7.5 x 10.5 inches'
+        capacity: '1.5 gallons',
+        filters: 'Dual charcoal filters included',
+        material: 'BPA-free plastic',
+        features: 'Odor-free, easy to clean, carry handle',
+        dimensions: '9 x 7.5 x 6.5 inches'
       }
     }
   }))
 
   products.push(await prisma.product.upsert({
-    where: { slug: 'rain-barrel-50-gallon' },
+    where: { slug: 'gardeners-supply-rain-barrel' },
     update: {},
     create: {
-      name: '50-Gallon Rain Barrel with Diverter Kit',
-      slug: 'rain-barrel-50-gallon',
-      description: 'Collect free rainwater for watering your garden! This durable rain barrel connects to your downspout with included diverter kit. Features brass spigot for easy hose connection, overflow valve, and debris screen. Made from recycled plastic. Save money on water bills while conserving precious resources.',
+      name: 'Rain Barrel Water Collection System (50 Gallon)',
+      slug: 'gardeners-supply-rain-barrel',
+      description: 'Collect rainwater for your garden and reduce water bills. Includes spigot, overflow valve, and screen to keep debris out. Made from recycled materials. Easy to install and maintain.',
       price: 89.99,
       status: 'PUBLISHED',
       categoryId: garden.id,
-      vendorId: earthCare.id,
-      purchaseLink: 'https://earthcareproducts.com/rain-barrel',
+      vendorId: earthHero.id,
+      purchaseLink: 'https://earthhero.com/products/yard-garden/rain-barrel-50-gallon/',
       publishedAt: new Date(),
       specifications: {
         capacity: '50 gallons',
-        material: '100% recycled plastic',
-        includes: 'Diverter kit, brass spigot, overflow valve, screen',
+        material: 'Recycled polyethylene',
+        features: 'Brass spigot, overflow valve, mesh screen',
         dimensions: '23 x 23 x 34 inches',
-        savings: 'Save up to 1,300 gallons of water per season'
+        savings: 'Save up to 1,300 gallons of water during peak summer'
       }
     }
   }))
 
   products.push(await prisma.product.upsert({
-    where: { slug: 'electric-composter-foodcycler' },
+    where: { slug: 'bamboo-garden-tool-set' },
     update: {},
     create: {
-      name: 'Electric Food Composter',
-      slug: 'electric-composter-foodcycler',
-      description: 'Transform food scraps into nutrient-rich compost in just 4-8 hours! This electric composter uses heat and agitation to break down food waste with virtually no odor. Reduces food waste volume by up to 90%. Perfect for apartments and homes without outdoor composting space. Quiet operation.',
-      price: 299.99,
-      status: 'PUBLISHED',
-      featured: true,
-      categoryId: garden.id,
-      vendorId: earthCare.id,
-      purchaseLink: 'https://earthcareproducts.com/electric-composter',
-      publishedAt: new Date(),
-      specifications: {
-        capacity: '2.5 liters',
-        cycleTime: '4-8 hours',
-        reduction: 'Up to 90% volume reduction',
-        features: 'Odorless, quiet, automatic shut-off',
-        power: '120V, energy efficient',
-        warranty: '2 years'
-      }
-    }
-  }))
-
-  products.push(await prisma.product.upsert({
-    where: { slug: 'garden-tool-set-bamboo' },
-    update: {},
-    create: {
-      name: 'Ergonomic Bamboo Garden Tool Set (6-Piece)',
-      slug: 'garden-tool-set-bamboo',
-      description: 'Complete gardening kit with sustainable bamboo handles. Includes trowel, transplanter, cultivator, weeder, and pruning shears. Stainless steel heads won\'t rust. Ergonomic design reduces hand and wrist strain. Bamboo is naturally antibacterial and more sustainable than hardwood. Includes canvas storage bag.',
+      name: 'Bamboo Garden Tool Set (5-Piece)',
+      slug: 'bamboo-garden-tool-set',
+      description: 'Ergonomic garden tools with sustainable bamboo handles and durable stainless steel heads. Includes trowel, transplanter, cultivator, weeder, and pruning shears. Built to last and gentle on hands.',
       price: 44.99,
       status: 'PUBLISHED',
       categoryId: garden.id,
-      vendorId: earthCare.id,
-      purchaseLink: 'https://earthcareproducts.com/garden-tools',
+      vendorId: earthHero.id,
+      purchaseLink: 'https://earthhero.com/products/yard-garden/bamboo-garden-tools/',
       publishedAt: new Date(),
       specifications: {
-        includes: 'Trowel, transplanter, cultivator, weeder, pruners, gloves',
-        handles: 'Sustainable bamboo',
-        heads: 'Rust-resistant stainless steel',
-        features: 'Ergonomic grip, hanging holes',
-        storage: 'Canvas carrying bag included'
+        handles: 'FSC certified bamboo',
+        heads: 'Stainless steel',
+        includes: 'Trowel, transplanter, cultivator, weeder, pruning shears',
+        features: 'Ergonomic grip, rust-resistant',
+        storage: 'Includes canvas carrying case'
       }
     }
   }))
 
-  // WATER SOLUTIONS PRODUCTS
   products.push(await prisma.product.upsert({
-    where: { slug: 'stainless-steel-water-bottle-32oz' },
+    where: { slug: 'electric-kitchen-composter' },
     update: {},
     create: {
-      name: 'Insulated Stainless Steel Water Bottle 32oz',
-      slug: 'stainless-steel-water-bottle-32oz',
-      description: 'Double-wall vacuum insulated bottle keeps drinks cold for 24 hours or hot for 12 hours. Made from premium 18/8 stainless steel. BPA-free, leak-proof lid. Wide mouth design for easy cleaning and ice cubes. Replaces hundreds of single-use plastic bottles. Fits most cup holders.',
-      price: 29.99,
+      name: 'Lomi Electric Kitchen Composter',
+      slug: 'electric-kitchen-composter',
+      description: 'Turn food waste into nutrient-rich compost in just 4 hours. Eliminates odors and pests. Quiet operation. Reduces waste by up to 80%. Perfect for apartments and homes without outdoor space.',
+      price: 499.00,
+      status: 'PUBLISHED',
+      featured: true,
+      categoryId: garden.id,
+      vendorId: earthHero.id,
+      purchaseLink: 'https://earthhero.com/products/home/lomi-electric-composter/',
+      publishedAt: new Date(),
+      specifications: {
+        capacity: '3 liters',
+        cycleTime: '4-16 hours depending on mode',
+        features: 'Odor-free, quiet, multiple modes',
+        power: '500W',
+        warranty: '1 year'
+      }
+    }
+  }))
+
+  // WATER SOLUTIONS
+  products.push(await prisma.product.upsert({
+    where: { slug: 'klean-kanteen-insulated-bottle' },
+    update: {},
+    create: {
+      name: 'Klean Kanteen Insulated Water Bottle (32oz)',
+      slug: 'klean-kanteen-insulated-bottle',
+      description: 'Double-wall vacuum insulated stainless steel bottle keeps drinks cold for 145 hours or hot for 47 hours. BPA-free, chip-resistant. Climate Lock double-wall vacuum insulation.',
+      price: 44.99,
       status: 'PUBLISHED',
       featured: true,
       categoryId: water.id,
-      vendorId: greenHome.id,
-      purchaseLink: 'https://greenhomeessentials.com/water-bottle',
+      vendorId: earthHero.id,
+      purchaseLink: 'https://earthhero.com/products/travel/klean-kanteen-insulated-32oz/',
       publishedAt: new Date(),
       specifications: {
-        capacity: '32 oz (946 ml)',
         material: '18/8 food-grade stainless steel',
-        insulation: 'Double-wall vacuum',
-        coldFor: '24 hours',
-        hotFor: '12 hours',
-        features: 'BPA-free, leak-proof, dishwasher safe'
+        capacity: '32 fl oz (946ml)',
+        insulation: 'Climate Lock double-wall vacuum',
+        coldRetention: '145 hours',
+        hotRetention: '47 hours'
       }
     }
   }))
 
   products.push(await prisma.product.upsert({
-    where: { slug: 'gravity-water-filter-system' },
+    where: { slug: 'berkey-gravity-water-filter' },
     update: {},
     create: {
-      name: 'Gravity-Fed Water Filter System (2.25 Gal)',
-      slug: 'gravity-water-filter-system',
-      description: 'Countertop water filtration system requires no electricity or plumbing. Removes 99.9% of contaminants including bacteria, viruses, chlorine, fluoride, heavy metals, and more. Black ceramic filters last for up to 3,000 gallons. Perfect for home, camping, or emergency preparedness. BPA-free construction.',
-      price: 249.99,
+      name: 'Big Berkey Gravity Water Filter System',
+      slug: 'berkey-gravity-water-filter',
+      description: 'Powerful gravity-fed water purification for home use. Removes 99.9% of contaminants including bacteria, viruses, heavy metals, and chemicals. No electricity required. Filters 6,000 gallons.',
+      price: 349.00,
       status: 'PUBLISHED',
+      featured: true,
       categoryId: water.id,
-      vendorId: greenHome.id,
-      purchaseLink: 'https://greenhomeessentials.com/water-filter',
+      vendorId: earthHero.id,
+      purchaseLink: 'https://earthhero.com/products/home/berkey-water-filter-system/',
       publishedAt: new Date(),
       specifications: {
         capacity: '2.25 gallons',
-        filtration: '99.9% contaminants removed',
-        filterLife: 'Up to 3,000 gallons',
-        removes: 'Bacteria, viruses, chlorine, fluoride, heavy metals',
-        material: 'BPA-free stainless steel',
+        filterLife: '6,000 gallons (2 filters)',
+        removes: '99.9% bacteria, viruses, heavy metals, pharmaceuticals',
+        flowRate: '7 gallons per hour',
         power: 'Gravity-fed, no electricity needed'
       }
     }
   }))
 
   products.push(await prisma.product.upsert({
-    where: { slug: 'shower-head-water-saver' },
+    where: { slug: 'high-sierra-low-flow-shower-head' },
     update: {},
     create: {
-      name: 'High-Pressure Water-Saving Shower Head',
-      slug: 'shower-head-water-saver',
-      description: 'Save water without sacrificing pressure! This innovative shower head reduces water usage by 40% while maintaining strong, comfortable pressure. WaterSense certified. Easy tool-free installation fits any standard shower arm. Three spray settings. Saves average household $200+ per year on water and energy bills.',
-      price: 34.99,
+      name: 'High Sierra Low-Flow Shower Head',
+      slug: 'high-sierra-low-flow-shower-head',
+      description: 'Save water without sacrificing pressure. Uses only 1.5 GPM while delivering a powerful spray. Can save a family of four up to 20,000 gallons per year. Easy installation, universal fit.',
+      price: 39.99,
       status: 'PUBLISHED',
       categoryId: water.id,
-      vendorId: greenHome.id,
-      purchaseLink: 'https://greenhomeessentials.com/shower-head',
+      vendorId: earthHero.id,
+      purchaseLink: 'https://earthhero.com/products/home/high-sierra-showerhead/',
       publishedAt: new Date(),
       specifications: {
-        flowRate: '1.8 GPM (vs standard 2.5 GPM)',
-        savings: '40% water reduction',
-        spraySettings: '3 modes',
-        installation: 'Tool-free, universal fit',
-        certification: 'WaterSense certified',
-        annualSavings: '$200+ on water/energy bills'
+        flowRate: '1.5 GPM',
+        savings: 'Up to 70% less water than standard',
+        features: 'Self-cleaning nozzles, all-metal construction',
+        finish: 'Chrome',
+        warranty: '10 years'
       }
     }
   }))
 
   products.push(await prisma.product.upsert({
-    where: { slug: 'collapsible-water-bottle-silicone' },
+    where: { slug: 'hydaway-collapsible-bottle' },
     update: {},
     create: {
-      name: 'Collapsible Silicone Water Bottle 20oz',
-      slug: 'collapsible-water-bottle-silicone',
-      description: 'Ultra-portable bottle collapses to half its size when empty - perfect for travel, hiking, and commuting. Food-grade silicone is BPA-free and safe for hot or cold beverages. Leak-proof cap with carabiner clip. Dishwasher safe. Comes in multiple colors. Takes up minimal space in bags and pockets.',
-      price: 19.99,
+      name: 'Hydaway Collapsible Water Bottle (20oz)',
+      slug: 'hydaway-collapsible-bottle',
+      description: 'Ultra-portable collapsible bottle that fits in your pocket when empty. BPA-free silicone. Expands to 20oz, collapses to 1.5 inches. Perfect for travel, hiking, and everyday carry.',
+      price: 29.99,
       status: 'PUBLISHED',
       categoryId: water.id,
-      vendorId: greenHome.id,
-      purchaseLink: 'https://greenhomeessentials.com/collapsible-bottle',
+      vendorId: earthHero.id,
+      purchaseLink: 'https://earthhero.com/products/travel/hydaway-collapsible-bottle/',
       publishedAt: new Date(),
       specifications: {
-        capacity: '20 oz (590 ml)',
-        material: '100% food-grade silicone',
-        collapsed: '2.5 inches tall',
-        expanded: '8 inches tall',
-        temperature: '-40°F to 450°F',
-        features: 'Leak-proof, carabiner clip, dishwasher safe'
+        material: 'Food-grade silicone',
+        capacity: '20 fl oz expanded',
+        collapsed: '1.5 inches tall',
+        features: 'Leak-proof, dishwasher safe',
+        weight: '5.3 oz'
       }
     }
   }))
 
   // CLEANING PRODUCTS
   products.push(await prisma.product.upsert({
-    where: { slug: 'biodegradable-cleaning-tablets' },
+    where: { slug: 'blueland-cleaning-starter-set' },
     update: {},
     create: {
-      name: 'Biodegradable Multi-Surface Cleaning Tablets (30-Pack)',
-      slug: 'biodegradable-cleaning-tablets',
-      description: 'Eco-friendly cleaning tablets dissolve in water to create powerful, non-toxic cleaner. Each tablet makes one 16oz bottle of cleaner - just add water! Eliminates plastic waste from traditional cleaning products. Plant-based, biodegradable formula is safe for kids, pets, and the planet. Fresh lemon scent.',
-      price: 24.99,
+      name: 'Blueland Clean Essentials Kit',
+      slug: 'blueland-cleaning-starter-set',
+      description: 'Complete cleaning system that eliminates single-use plastic. Includes 3 reusable bottles and tablets for multi-surface cleaner, glass cleaner, and bathroom cleaner. EPA Safer Choice certified.',
+      price: 39.00,
       status: 'PUBLISHED',
       featured: true,
       categoryId: cleaning.id,
-      vendorId: earthCare.id,
-      purchaseLink: 'https://earthcareproducts.com/cleaning-tablets',
+      vendorId: blueland.id,
+      purchaseLink: 'https://www.blueland.com/products/the-clean-essentials-kit',
       publishedAt: new Date(),
       specifications: {
-        quantity: '30 tablets',
-        yield: '30 x 16oz bottles',
-        formula: 'Plant-based, biodegradable',
-        safe: 'Kids, pets, septic systems',
-        scent: 'Natural lemon',
-        packaging: 'Compostable wrapper'
+        includes: '3 Forever Bottles, 3 tablet sets',
+        formulas: 'Multi-Surface, Glass + Mirror, Bathroom',
+        certification: 'EPA Safer Choice, Cradle to Cradle',
+        refills: 'One tablet makes 24oz of cleaner',
+        plasticSaved: 'Eliminates 3+ plastic bottles'
       }
     }
   }))
 
   products.push(await prisma.product.upsert({
-    where: { slug: 'reusable-paper-towels-bamboo' },
+    where: { slug: 'marley-reusable-paper-towels' },
     update: {},
     create: {
-      name: 'Reusable Bamboo Paper Towels (20-Pack)',
-      slug: 'reusable-paper-towels-bamboo',
-      description: 'Say goodbye to disposable paper towels! These ultra-absorbent bamboo towels can be washed and reused 100+ times. More absorbent than traditional paper towels. Machine washable and naturally antibacterial. Each set replaces up to 60 rolls of disposable paper towels. Snaps together for convenient storage on standard paper towel holders.',
-      price: 29.99,
+      name: "Marley's Monsters Reusable Paper Towels (20-Pack)",
+      slug: 'marley-reusable-paper-towels',
+      description: 'Replace 60 rolls of paper towels with these washable, reusable cloths. Made from 100% cotton flannel. Snaps together for easy storage. Machine washable and dryable. Soft, absorbent, and durable.',
+      price: 44.00,
       status: 'PUBLISHED',
       categoryId: cleaning.id,
-      vendorId: earthCare.id,
-      purchaseLink: 'https://earthcareproducts.com/bamboo-towels',
+      vendorId: earthHero.id,
+      purchaseLink: 'https://earthhero.com/products/home/marleys-monsters-reusable-paper-towels/',
       publishedAt: new Date(),
       specifications: {
-        quantity: '20 sheets',
-        reuses: '100+ washes per sheet',
-        replaces: 'Up to 60 rolls of paper towels',
-        material: '100% bamboo rayon',
-        size: '11 x 10 inches',
-        features: 'Antibacterial, machine washable, snap-together'
+        material: '100% cotton flannel',
+        quantity: '20 towels',
+        size: '12 x 10 inches each',
+        replaces: '60 rolls of paper towels',
+        care: 'Machine wash and dry'
       }
     }
   }))
 
   products.push(await prisma.product.upsert({
-    where: { slug: 'natural-dish-soap-refill' },
+    where: { slug: 'ecover-dish-soap-refill' },
     update: {},
     create: {
-      name: 'Natural Dish Soap Concentrate (64oz Refill)',
-      slug: 'natural-dish-soap-refill',
-      description: 'Ultra-concentrated plant-based dish soap cuts through grease naturally. Makes up to 8 bottles of dish soap - just dilute with water. Free from harsh chemicals, synthetic fragrances, and dyes. Biodegradable formula is safe for septic systems. Comes in recyclable aluminum bottle. Gentle on hands, tough on dishes.',
+      name: 'Ecover Zero Dish Soap Concentrate (64oz)',
+      slug: 'ecover-dish-soap-refill',
+      description: 'Plant-based dish soap that\'s tough on grease but gentle on hands. Free from fragrances and dyes. Biodegradable formula. Concentrated refill reduces plastic waste. Perfect for sensitive skin.',
       price: 18.99,
       status: 'PUBLISHED',
       categoryId: cleaning.id,
-      vendorId: earthCare.id,
-      purchaseLink: 'https://earthcareproducts.com/dish-soap',
+      vendorId: earthHero.id,
+      purchaseLink: 'https://earthhero.com/products/home/ecover-zero-dish-soap/',
       publishedAt: new Date(),
       specifications: {
-        size: '64 oz concentrate',
-        yield: 'Makes 8 x 16oz bottles',
+        volume: '64 fl oz (half gallon)',
         formula: 'Plant-based, biodegradable',
-        free: 'Sulfates, parabens, phthalates, synthetic fragrances',
-        packaging: 'Recyclable aluminum bottle',
-        scent: 'Unscented or lavender'
+        features: 'Fragrance-free, dye-free, hypoallergenic',
+        concentrated: 'Makes multiple bottles',
+        certifications: 'EPA Safer Choice, Leaping Bunny (cruelty-free)'
       }
     }
   }))
 
   products.push(await prisma.product.upsert({
-    where: { slug: 'compostable-sponges-cellulose' },
+    where: { slug: 'full-circle-compostable-sponges' },
     update: {},
     create: {
-      name: 'Compostable Cellulose Sponges (12-Pack)',
-      slug: 'compostable-sponges-cellulose',
-      description: 'Eco-friendly alternative to synthetic sponges. Made from 100% plant-based cellulose and natural coconut fibers. Just as effective as traditional sponges but completely biodegradable and compostable. Non-scratching, highly absorbent, and durable. When worn out, simply toss in compost bin instead of landfill.',
+      name: 'Full Circle Refresh Compostable Sponges (6-Pack)',
+      slug: 'full-circle-compostable-sponges',
+      description: 'Fully compostable kitchen sponges made from plant-based materials. Durable scrubbing power without plastic. Walnut shell scouring pad and cellulose sponge. Compost when worn out.',
       price: 16.99,
       status: 'PUBLISHED',
       categoryId: cleaning.id,
-      vendorId: earthCare.id,
-      purchaseLink: 'https://earthcareproducts.com/sponges',
+      vendorId: earthHero.id,
+      purchaseLink: 'https://earthhero.com/products/home/full-circle-compostable-sponges/',
       publishedAt: new Date(),
       specifications: {
-        quantity: '12 sponges',
-        material: '100% cellulose and coconut fiber',
-        size: '4.5 x 3 x 0.5 inches',
-        features: 'Non-scratching, highly absorbent',
-        lifespan: '4-6 weeks per sponge',
-        endOfLife: '100% compostable and biodegradable'
+        material: 'Plant-based cellulose, walnut shells',
+        quantity: '6 sponges',
+        biodegradable: '100% compostable',
+        scrubbing: 'Non-scratch walnut shell scourer',
+        lifespan: '4-6 weeks per sponge'
       }
     }
   }))
 
-  console.log(`✅ Created ${products.length} products across 6 categories`)
-  console.log('🌱 Product seeding complete!')
+  // ELECTRONICS & ACCESSORIES
+  products.push(await prisma.product.upsert({
+    where: { slug: 'pela-iphone-case' },
+    update: {},
+    create: {
+      name: 'Pela 100% Compostable iPhone Case',
+      slug: 'pela-iphone-case',
+      description: 'World\'s first 100% compostable phone case. Made from flax shive and biopolymer that creates 30% fewer emissions. Protective, slim design. Will break down in home or industrial compost in 3-6 months.',
+      price: 49.00,
+      status: 'PUBLISHED',
+      featured: true,
+      categoryId: electronics.id,
+      vendorId: pelaCase.id,
+      purchaseLink: 'https://pelacase.com/products/iphone-case/',
+      publishedAt: new Date(),
+      specifications: {
+        material: 'Flax shive + plant-based biopolymer',
+        protection: '6ft drop protection',
+        features: 'Slim, precise fit, compostable',
+        emissions: '30% fewer vs conventional cases',
+        waterUsage: '34% less water vs conventional cases'
+      }
+    }
+  }))
+
+  products.push(await prisma.product.upsert({
+    where: { slug: 'pela-airpods-case' },
+    update: {},
+    create: {
+      name: 'Pela Compostable AirPods Case',
+      slug: 'pela-airpods-case',
+      description: 'Protective AirPods case that\'s 100% compostable. Made from sustainable materials with zero waste philosophy. Durable protection with eco-friendly impact. Compatible with wireless charging.',
+      price: 39.00,
+      status: 'PUBLISHED',
+      categoryId: electronics.id,
+      vendorId: pelaCase.id,
+      purchaseLink: 'https://pelacase.com/products/airpods-case/',
+      publishedAt: new Date(),
+      specifications: {
+        material: '100% compostable biopolymer',
+        compatibility: 'AirPods, AirPods Pro',
+        features: 'Wireless charging compatible, carabiner loop',
+        protection: 'Shock-absorbing, scratch-resistant',
+        endOfLife: 'Compostable in 3-6 months'
+      }
+    }
+  }))
+
+  products.push(await prisma.product.upsert({
+    where: { slug: 'nimble-eco-charging-cables' },
+    update: {},
+    create: {
+      name: 'Nimble Eco-Friendly Charging Cable Set',
+      slug: 'nimble-eco-charging-cables',
+      description: 'Certified plastic-neutral and carbon-neutral charging cables made from recycled materials. Durable braided design. Compatible with iPhone, iPad, and iPod. Includes cable and wall charger.',
+      price: 34.99,
+      status: 'PUBLISHED',
+      categoryId: electronics.id,
+      vendorId: earthHero.id,
+      purchaseLink: 'https://earthhero.com/products/travel/nimble-charging-cable/',
+      publishedAt: new Date(),
+      specifications: {
+        material: '72.5% certified recycled plastic',
+        length: '6 feet',
+        certifications: 'Plastic Neutral, Carbon Neutral',
+        compatibility: 'Lightning connector',
+        warranty: 'Limited lifetime'
+      }
+    }
+  }))
+
+  products.push(await prisma.product.upsert({
+    where: { slug: 'house-of-marley-earbuds' },
+    update: {},
+    create: {
+      name: 'House of Marley Eco-Friendly Wireless Earbuds',
+      slug: 'house-of-marley-earbuds',
+      description: 'Premium wireless earbuds crafted from sustainable materials including FSC certified wood, recycled aluminum, and REWIND fabric. Superior sound with eco-conscious design. 20-hour battery life.',
+      price: 79.99,
+      status: 'PUBLISHED',
+      categoryId: electronics.id,
+      vendorId: earthHero.id,
+      purchaseLink: 'https://earthhero.com/products/travel/house-of-marley-earbuds/',
+      publishedAt: new Date(),
+      specifications: {
+        materials: 'FSC wood, recycled aluminum, REWIND fabric',
+        battery: '20 hours total (5hr + 15hr case)',
+        features: 'Bluetooth 5.0, IPX4 water resistance',
+        sound: 'Signature Marley sound, 6mm drivers',
+        sustainability: 'Plastic-free packaging'
+      }
+    }
+  }))
+
+  console.log(`✅ ${products.length} products created`)
+  console.log('🌟 Product seeding completed successfully!')
 }
 
 main()

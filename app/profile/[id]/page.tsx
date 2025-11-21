@@ -19,8 +19,7 @@ import {
   Sparkles
 } from 'lucide-react'
 import prisma from '@/lib/db/prisma'
-import { getServerSession } from 'next-auth'
-import { authOptions } from '@/lib/auth/authOptions'
+import { auth } from '@/auth'
 
 async function getUserProfile(userId: string) {
   try {
@@ -52,7 +51,7 @@ async function getUserProfile(userId: string) {
 
 export default async function ProfilePage({ params }: { params: Promise<{ id: string }> }) {
   const { id } = await params
-  const session = await getServerSession(authOptions)
+  const session = await auth()
   const user = await getUserProfile(id)
 
   if (!user) {

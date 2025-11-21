@@ -1,6 +1,5 @@
 import { redirect } from 'next/navigation'
-import { getServerSession } from 'next-auth'
-import { authOptions } from '@/lib/auth/authOptions'
+import { auth } from '@/auth'
 import { ProfileEditForm } from '@/components/profile/ProfileEditForm'
 import prisma from '@/lib/db/prisma'
 
@@ -17,7 +16,7 @@ async function getUserProfile(userId: string) {
 }
 
 export default async function ProfileEditPage() {
-  const session = await getServerSession(authOptions)
+  const session = await auth()
 
   if (!session?.user?.id) {
     redirect('/auth/signin?callbackUrl=/profile/edit')
