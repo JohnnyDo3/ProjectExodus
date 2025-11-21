@@ -25,9 +25,11 @@ export default function CommunityPage() {
                 fontWeight: 900
               }}>thousands</span> of changemakers building a sustainable future
             </p>
-            <Button size="lg" className="text-xl px-12 py-8 rounded-2xl shadow-2xl font-black">
-              CREATE YOUR PROFILE →
-            </Button>
+            <Link href="/profile/edit">
+              <Button size="lg" className="text-xl px-12 py-8 rounded-2xl shadow-2xl font-black">
+                CREATE YOUR PROFILE →
+              </Button>
+            </Link>
           </div>
         </div>
       </section>
@@ -40,26 +42,28 @@ export default function CommunityPage() {
           </div>
           <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-10 max-w-7xl mx-auto">
             {[
-              { icon: MessageSquare, title: 'DISCUSSION FORUMS', desc: 'Deep conversations on sustainability topics' },
-              { icon: Users, title: 'USER PROFILES', desc: 'Track your journey and build your reputation' },
-              { icon: Award, title: 'ACHIEVEMENTS', desc: 'Earn badges for your contributions' },
-              { icon: Rocket, title: 'PROJECTS', desc: 'Collaborate on local initiatives' },
-              { icon: Sparkles, title: 'KNOWLEDGE SHARING', desc: 'Learn from experts and peers' },
-              { icon: Heart, title: 'SUPPORT NETWORK', desc: 'Find your sustainability tribe' }
+              { icon: MessageSquare, title: 'DISCUSSION FORUMS', desc: 'Deep conversations on sustainability topics', link: '/community/forum' },
+              { icon: Heart, title: 'SOCIAL FEED', desc: 'Share your journey and connect with others', link: '/community/feed' },
+              { icon: Rocket, title: 'PROJECTS', desc: 'Collaborate on local initiatives', link: '/community/projects' },
+              { icon: Sparkles, title: 'KNOWLEDGE BASE', desc: 'Learn from experts and peers', link: '/learn' },
+              { icon: Users, title: 'MEMBER DIRECTORY', desc: 'Connect with the community', link: '/community/users' },
+              { icon: Award, title: 'LEADERBOARD', desc: 'See top contributors and achievements', link: '/community/leaderboard' }
             ].map((feature, i) => (
-              <Card key={i} className="hover-lift border-4 border-theme-accent transform hover:scale-105 transition-all duration-300">
-                <CardContent className="p-10 text-center">
-                  <div className="w-24 h-24 mx-auto mb-6 rounded-full bg-[color-mix(in_srgb,var(--accent)_20%,var(--background))] flex items-center justify-center">
-                    <feature.icon className="w-12 h-12 text-theme-accent" />
-                  </div>
-                  <h3 className="text-2xl font-black mb-4 text-[var(--foreground)]">
-                    {feature.title}
-                  </h3>
-                  <p className="text-lg font-medium text-theme-muted">
-                    {feature.desc}
-                  </p>
-                </CardContent>
-              </Card>
+              <Link key={i} href={feature.link}>
+                <Card className="hover-lift border-4 border-theme-accent transform hover:scale-105 transition-all duration-300 cursor-pointer h-full">
+                  <CardContent className="p-10 text-center">
+                    <div className="w-24 h-24 mx-auto mb-6 rounded-full bg-[color-mix(in_srgb,var(--accent)_20%,var(--background))] flex items-center justify-center">
+                      <feature.icon className="w-12 h-12 text-theme-accent" />
+                    </div>
+                    <h3 className="text-2xl font-black mb-4 text-[var(--foreground)]">
+                      {feature.title}
+                    </h3>
+                    <p className="text-lg font-medium text-theme-muted">
+                      {feature.desc}
+                    </p>
+                  </CardContent>
+                </Card>
+              </Link>
             ))}
           </div>
         </div>
@@ -170,12 +174,14 @@ export default function CommunityPage() {
               Start your sustainability journey with like-minded people today
             </p>
             <div className="flex flex-col sm:flex-row gap-6 justify-center">
-              <Button size="lg" className="text-xl px-12 py-8 rounded-2xl font-black shadow-2xl">
-                GET STARTED
-              </Button>
-              <Link href="/products">
+              <Link href="/community/feed">
+                <Button size="lg" className="text-xl px-12 py-8 rounded-2xl font-black shadow-2xl">
+                  JOIN THE FEED →
+                </Button>
+              </Link>
+              <Link href="/community/forum">
                 <Button size="lg" variant="outline" className="text-xl px-12 py-8 rounded-2xl font-black border-4">
-                  EXPLORE PRODUCTS
+                  BROWSE FORUMS
                 </Button>
               </Link>
             </div>
