@@ -19,6 +19,7 @@ export function Header() {
     { name: 'Products', href: '/products' },
     { name: 'Learn', href: '/learn' },
     { name: 'Community', href: '/community' },
+    { name: 'Network', href: '/network' },
     { name: 'About', href: '/about' },
   ]
 
