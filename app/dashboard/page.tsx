@@ -17,11 +17,43 @@ import {
   Award,
   Leaf,
   Users,
+  Briefcase,
+  Target,
 } from 'lucide-react'
 import Link from 'next/link'
+import { useEffect, useState } from 'react'
 
 export default function DashboardPage() {
   const { data: session, status } = useSession()
+  const [projects, setProjects] = useState<any[]>([])
+  const [isLoadingProjects, setIsLoadingProjects] = useState(true)
+
+  useEffect(() => {
+    if (session?.user?.id) {
+      fetchUserProjects()
+    }
+  }, [session?.user?.id])
+
+  const fetchUserProjects = async () => {
+    try {
+      const res = await fetch('/api/projects')
+      const data = await res.json()
+
+      if (data.success) {
+        // Filter to only show projects the user is a member of or created
+        const userProjects = data.data.filter((project: any) => {
+          const isMember = project.members.some((m: any) => m.userId === session?.user?.id)
+          const isCreator = project.creatorId === session?.user?.id
+          return isMember || isCreator
+        })
+        setProjects(userProjects)
+      }
+    } catch (error) {
+      console.error('Error fetching projects:', error)
+    } finally {
+      setIsLoadingProjects(false)
+    }
+  }
 
   if (status === 'loading') {
     return (
@@ -42,9 +74,9 @@ export default function DashboardPage() {
 
   const stats = [
     {
-      icon: ShoppingBag,
-      label: 'Orders',
-      value: '0',
+      icon: Briefcase,
+      label: 'Projects',
+      value: projects.length.toString(),
       color: 'primary',
     },
     {
@@ -124,6 +156,12 @@ export default function DashboardPage() {
     },
   ]
 
+  const statusColors = {
+    ACTIVE: { bg: 'bg-[color-mix(in_srgb,var(--primary)_20%,var(--background))]', text: 'text-theme-primary' },
+    COMPLETED: { bg: 'bg-[color-mix(in_srgb,var(--accent)_20%,var(--background))]', text: 'text-theme-accent' },
+    PLANNING: { bg: 'bg-[color-mix(in_srgb,var(--secondary)_20%,var(--background))]', text: 'text-theme-secondary' },
+  }
+
   return (
     <div className="min-h-screen bg-[var(--background)]">
       {/* Hero Section */}
@@ -200,6 +238,100 @@ export default function DashboardPage() {
       <section className="py-16">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
           <div className="max-w-6xl mx-auto space-y-12">
+            {/* Your Projects Section */}
+            <div>
+              <div className="flex items-center justify-between mb-6">
+                <h3 className="text-3xl font-black text-[var(--foreground)]">YOUR PROJECTS</h3>
+                <Link href="/community/projects/new">
+                  <Button className="font-bold">
+                    <Briefcase className="w-4 h-4 mr-2" />
+                    START NEW PROJECT
+                  </Button>
+                </Link>
+              </div>
+
+              {isLoadingProjects ? (
+                <Card className="border-2 border-[var(--border)]">
+                  <CardContent className="p-12 text-center">
+                    <div className="w-12 h-12 border-4 border-theme-primary border-t-transparent rounded-full animate-spin mx-auto mb-4" />
+                    <p className="text-lg font-bold text-theme-muted">Loading your projects...</p>
+                  </CardContent>
+                </Card>
+              ) : projects.length > 0 ? (
+                <div className="grid md:grid-cols-2 gap-6">
+                  {projects.map((project: any) => {
+                    const colors = statusColors[project.status as keyof typeof statusColors] || statusColors.PLANNING
+                    const isCreator = project.creatorId === session?.user?.id
+
+                    return (
+                      <Card key={project.id} className="border-4 border-theme-primary hover:border-theme-accent transition-all">
+                        <CardHeader>
+                          <div className="flex items-start justify-between mb-2">
+                            <div className={`px-3 py-1 rounded-full ${colors.bg} ${colors.text} font-black text-xs uppercase`}>
+                              {project.status}
+                            </div>
+                            {isCreator && (
+                              <div className="px-3 py-1 rounded-full bg-[color-mix(in_srgb,var(--accent)_20%,var(--background))] text-theme-accent font-black text-xs uppercase">
+                                OWNER
+                              </div>
+                            )}
+                          </div>
+                          <CardTitle className="text-xl font-black">
+                            {project.name}
+                          </CardTitle>
+                        </CardHeader>
+                        <CardContent>
+                          <p className="text-sm font-semibold mb-4 text-theme-muted line-clamp-2">
+                            {project.description}
+                          </p>
+                          {project.goal && (
+                            <div className="flex items-start gap-2 text-sm font-semibold text-theme-muted mb-4">
+                              <Target className="w-4 h-4 mt-0.5 flex-shrink-0" />
+                              <span className="line-clamp-1">{project.goal}</span>
+                            </div>
+                          )}
+                          <div className="flex items-center justify-between pt-4 border-t-2 border-theme-muted">
+                            <div className="flex items-center gap-2 text-sm font-bold text-theme-muted">
+                              <Users className="w-4 h-4" />
+                              <span>{project._count.members} MEMBERS</span>
+                            </div>
+                            <Link href="/community/projects">
+                              <Button size="sm" variant="outline" className="font-bold">
+                                VIEW PROJECT
+                              </Button>
+                            </Link>
+                          </div>
+                        </CardContent>
+                      </Card>
+                    )
+                  })}
+                </div>
+              ) : (
+                <Card className="border-4 border-theme-secondary">
+                  <CardContent className="p-12 text-center">
+                    <Briefcase className="w-16 h-16 text-theme-secondary mx-auto mb-4 opacity-50" />
+                    <h4 className="text-xl font-black mb-2 text-theme-muted">NO PROJECTS YET</h4>
+                    <p className="text-sm font-medium text-theme-muted mb-6">
+                      Start a new project or join an existing one to get started!
+                    </p>
+                    <div className="flex flex-col sm:flex-row gap-3 justify-center">
+                      <Link href="/community/projects/new">
+                        <Button className="font-bold">
+                          <Briefcase className="w-4 h-4 mr-2" />
+                          START A PROJECT
+                        </Button>
+                      </Link>
+                      <Link href="/community/projects">
+                        <Button variant="outline" className="font-bold">
+                          BROWSE PROJECTS
+                        </Button>
+                      </Link>
+                    </div>
+                  </CardContent>
+                </Card>
+              )}
+            </div>
+
             {/* Quick Actions */}
             <div>
               <h3 className="text-3xl font-black mb-6 text-[var(--foreground)]">QUICK ACTIONS</h3>
