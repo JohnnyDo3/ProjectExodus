@@ -21,9 +21,24 @@ model User {
   emailVerified DateTime?
   image         String?
   password      String?   // For email/password auth
+
+  // LinkedIn-style Profile Fields
   bio           String?   @db.Text
+  headline      String?   // Professional tagline (e.g., "Sustainability Advocate | Green Building Expert")
+  banner        String?   // Banner/cover image URL
   location      String?
+  company       String?   // Current company/organization
+  jobTitle      String?   // Current job title
+  website       String?   // Personal website or portfolio
+  linkedin      String?   // LinkedIn profile URL
+  twitter       String?   // Twitter/X handle
   interests     String[]  // Array of interests
+  expertise     String[]  // Array of skills/expertise areas
+
+  // Professional Background
+  experience    Json?     // Array of work experience objects
+  education     Json?     // Array of education objects
+
   role          UserRole  @default(USER)
   createdAt     DateTime  @default(now())
   updatedAt     DateTime  @updatedAt
