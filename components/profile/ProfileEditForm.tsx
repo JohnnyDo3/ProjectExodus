@@ -57,6 +57,28 @@ export function ProfileEditForm({ user }: ProfileEditFormProps) {
   const [newInterest, setNewInterest] = useState('')
   const [newExpertise, setNewExpertise] = useState('')
 
+  // Experience state
+  const [showExperienceForm, setShowExperienceForm] = useState(false)
+  const [editingExpIndex, setEditingExpIndex] = useState<number | null>(null)
+  const [experienceForm, setExperienceForm] = useState({
+    title: '',
+    company: '',
+    startDate: '',
+    endDate: '',
+    description: ''
+  })
+
+  // Education state
+  const [showEducationForm, setShowEducationForm] = useState(false)
+  const [editingEduIndex, setEditingEduIndex] = useState<number | null>(null)
+  const [educationForm, setEducationForm] = useState({
+    school: '',
+    degree: '',
+    fieldOfStudy: '',
+    startYear: '',
+    endYear: ''
+  })
+
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     setFormData({
       ...formData,
@@ -96,6 +118,86 @@ export function ProfileEditForm({ user }: ProfileEditFormProps) {
       ...formData,
       expertise: formData.expertise.filter((_, i) => i !== index)
     })
+  }
+
+  // Experience handlers
+  const addExperience = () => {
+    if (experienceForm.title && experienceForm.company) {
+      if (editingExpIndex !== null) {
+        // Edit existing
+        const updated = [...formData.experience]
+        updated[editingExpIndex] = experienceForm
+        setFormData({ ...formData, experience: updated })
+      } else {
+        // Add new
+        setFormData({
+          ...formData,
+          experience: [...formData.experience, experienceForm]
+        })
+      }
+      setExperienceForm({ title: '', company: '', startDate: '', endDate: '', description: '' })
+      setShowExperienceForm(false)
+      setEditingExpIndex(null)
+    }
+  }
+
+  const editExperience = (index: number) => {
+    setExperienceForm(formData.experience[index])
+    setEditingExpIndex(index)
+    setShowExperienceForm(true)
+  }
+
+  const removeExperience = (index: number) => {
+    setFormData({
+      ...formData,
+      experience: formData.experience.filter((_: any, i: number) => i !== index)
+    })
+  }
+
+  const cancelExperienceForm = () => {
+    setExperienceForm({ title: '', company: '', startDate: '', endDate: '', description: '' })
+    setShowExperienceForm(false)
+    setEditingExpIndex(null)
+  }
+
+  // Education handlers
+  const addEducation = () => {
+    if (educationForm.school && educationForm.degree) {
+      if (editingEduIndex !== null) {
+        // Edit existing
+        const updated = [...formData.education]
+        updated[editingEduIndex] = educationForm
+        setFormData({ ...formData, education: updated })
+      } else {
+        // Add new
+        setFormData({
+          ...formData,
+          education: [...formData.education, educationForm]
+        })
+      }
+      setEducationForm({ school: '', degree: '', fieldOfStudy: '', startYear: '', endYear: '' })
+      setShowEducationForm(false)
+      setEditingEduIndex(null)
+    }
+  }
+
+  const editEducation = (index: number) => {
+    setEducationForm(formData.education[index])
+    setEditingEduIndex(index)
+    setShowEducationForm(true)
+  }
+
+  const removeEducation = (index: number) => {
+    setFormData({
+      ...formData,
+      education: formData.education.filter((_: any, i: number) => i !== index)
+    })
+  }
+
+  const cancelEducationForm = () => {
+    setEducationForm({ school: '', degree: '', fieldOfStudy: '', startYear: '', endYear: '' })
+    setShowEducationForm(false)
+    setEditingEduIndex(null)
   }
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -405,6 +507,247 @@ export function ProfileEditForm({ user }: ProfileEditFormProps) {
                   </span>
                 ))}
               </div>
+            </div>
+          </CardContent>
+        </Card>
+
+        {/* Experience */}
+        <Card className="border-4 border-theme-primary">
+          <CardContent className="p-8">
+            <div className="flex justify-between items-center mb-6">
+              <h2 className="text-2xl font-black text-[var(--foreground)]">
+                EXPERIENCE (OPTIONAL)
+              </h2>
+              {!showExperienceForm && (
+                <Button type="button" onClick={() => setShowExperienceForm(true)} className="font-black">
+                  <Plus className="w-5 h-5 mr-2" />
+                  ADD EXPERIENCE
+                </Button>
+              )}
+            </div>
+
+            {/* Experience Form */}
+            {showExperienceForm && (
+              <div className="mb-6 p-6 bg-[var(--muted)] rounded-lg border-2 border-theme-primary space-y-4">
+                <div>
+                  <label className="block text-sm font-bold text-theme-muted mb-2">
+                    JOB TITLE *
+                  </label>
+                  <input
+                    type="text"
+                    value={experienceForm.title}
+                    onChange={(e) => setExperienceForm({ ...experienceForm, title: e.target.value })}
+                    className="w-full px-4 py-3 rounded-lg bg-[var(--card)] border-2 border-[var(--border)] text-[var(--foreground)] placeholder:text-theme-muted focus:outline-none focus:border-theme-primary transition-colors font-medium"
+                    placeholder="e.g., Sustainability Coordinator"
+                  />
+                </div>
+                <div>
+                  <label className="block text-sm font-bold text-theme-muted mb-2">
+                    COMPANY *
+                  </label>
+                  <input
+                    type="text"
+                    value={experienceForm.company}
+                    onChange={(e) => setExperienceForm({ ...experienceForm, company: e.target.value })}
+                    className="w-full px-4 py-3 rounded-lg bg-[var(--card)] border-2 border-[var(--border)] text-[var(--foreground)] placeholder:text-theme-muted focus:outline-none focus:border-theme-primary transition-colors font-medium"
+                    placeholder="e.g., Green Earth Solutions"
+                  />
+                </div>
+                <div className="grid grid-cols-2 gap-4">
+                  <div>
+                    <label className="block text-sm font-bold text-theme-muted mb-2">
+                      START DATE
+                    </label>
+                    <input
+                      type="text"
+                      value={experienceForm.startDate}
+                      onChange={(e) => setExperienceForm({ ...experienceForm, startDate: e.target.value })}
+                      className="w-full px-4 py-3 rounded-lg bg-[var(--card)] border-2 border-[var(--border)] text-[var(--foreground)] placeholder:text-theme-muted focus:outline-none focus:border-theme-primary transition-colors font-medium"
+                      placeholder="e.g., Jan 2020"
+                    />
+                  </div>
+                  <div>
+                    <label className="block text-sm font-bold text-theme-muted mb-2">
+                      END DATE
+                    </label>
+                    <input
+                      type="text"
+                      value={experienceForm.endDate}
+                      onChange={(e) => setExperienceForm({ ...experienceForm, endDate: e.target.value })}
+                      className="w-full px-4 py-3 rounded-lg bg-[var(--card)] border-2 border-[var(--border)] text-[var(--foreground)] placeholder:text-theme-muted focus:outline-none focus:border-theme-primary transition-colors font-medium"
+                      placeholder="Present or Dec 2023"
+                    />
+                  </div>
+                </div>
+                <div>
+                  <label className="block text-sm font-bold text-theme-muted mb-2">
+                    DESCRIPTION
+                  </label>
+                  <textarea
+                    value={experienceForm.description}
+                    onChange={(e) => setExperienceForm({ ...experienceForm, description: e.target.value })}
+                    rows={4}
+                    className="w-full px-4 py-3 rounded-lg bg-[var(--card)] border-2 border-[var(--border)] text-[var(--foreground)] placeholder:text-theme-muted focus:outline-none focus:border-theme-primary transition-colors font-medium resize-none"
+                    placeholder="Describe your responsibilities and achievements..."
+                  />
+                </div>
+                <div className="flex gap-2">
+                  <Button type="button" onClick={addExperience} className="font-black">
+                    {editingExpIndex !== null ? 'UPDATE' : 'ADD'}
+                  </Button>
+                  <Button type="button" onClick={cancelExperienceForm} variant="outline" className="font-black">
+                    CANCEL
+                  </Button>
+                </div>
+              </div>
+            )}
+
+            {/* Experience List */}
+            <div className="space-y-4">
+              {formData.experience.map((exp: any, index: number) => (
+                <div key={index} className="p-4 bg-[var(--muted)] rounded-lg border-2 border-theme-muted">
+                  <div className="flex justify-between items-start mb-2">
+                    <div>
+                      <h3 className="text-lg font-black text-theme-primary">{exp.title}</h3>
+                      <p className="text-base font-bold text-[var(--foreground)]">{exp.company}</p>
+                      <p className="text-sm font-semibold text-theme-muted">
+                        {exp.startDate} - {exp.endDate || 'Present'}
+                      </p>
+                    </div>
+                    <div className="flex gap-2">
+                      <Button type="button" size="sm" onClick={() => editExperience(index)} className="font-black">
+                        EDIT
+                      </Button>
+                      <Button type="button" size="sm" variant="outline" onClick={() => removeExperience(index)} className="font-black">
+                        <X className="w-4 h-4" />
+                      </Button>
+                    </div>
+                  </div>
+                  {exp.description && (
+                    <p className="text-sm font-medium text-theme-muted mt-2">{exp.description}</p>
+                  )}
+                </div>
+              ))}
+            </div>
+          </CardContent>
+        </Card>
+
+        {/* Education */}
+        <Card className="border-4 border-theme-accent">
+          <CardContent className="p-8">
+            <div className="flex justify-between items-center mb-6">
+              <h2 className="text-2xl font-black text-[var(--foreground)]">
+                EDUCATION (OPTIONAL)
+              </h2>
+              {!showEducationForm && (
+                <Button type="button" onClick={() => setShowEducationForm(true)} className="font-black">
+                  <Plus className="w-5 h-5 mr-2" />
+                  ADD EDUCATION
+                </Button>
+              )}
+            </div>
+
+            {/* Education Form */}
+            {showEducationForm && (
+              <div className="mb-6 p-6 bg-[var(--muted)] rounded-lg border-2 border-theme-accent space-y-4">
+                <div>
+                  <label className="block text-sm font-bold text-theme-muted mb-2">
+                    SCHOOL *
+                  </label>
+                  <input
+                    type="text"
+                    value={educationForm.school}
+                    onChange={(e) => setEducationForm({ ...educationForm, school: e.target.value })}
+                    className="w-full px-4 py-3 rounded-lg bg-[var(--card)] border-2 border-[var(--border)] text-[var(--foreground)] placeholder:text-theme-muted focus:outline-none focus:border-theme-accent transition-colors font-medium"
+                    placeholder="e.g., University of Sustainability"
+                  />
+                </div>
+                <div>
+                  <label className="block text-sm font-bold text-theme-muted mb-2">
+                    DEGREE *
+                  </label>
+                  <input
+                    type="text"
+                    value={educationForm.degree}
+                    onChange={(e) => setEducationForm({ ...educationForm, degree: e.target.value })}
+                    className="w-full px-4 py-3 rounded-lg bg-[var(--card)] border-2 border-[var(--border)] text-[var(--foreground)] placeholder:text-theme-muted focus:outline-none focus:border-theme-accent transition-colors font-medium"
+                    placeholder="e.g., Bachelor of Science"
+                  />
+                </div>
+                <div>
+                  <label className="block text-sm font-bold text-theme-muted mb-2">
+                    FIELD OF STUDY
+                  </label>
+                  <input
+                    type="text"
+                    value={educationForm.fieldOfStudy}
+                    onChange={(e) => setEducationForm({ ...educationForm, fieldOfStudy: e.target.value })}
+                    className="w-full px-4 py-3 rounded-lg bg-[var(--card)] border-2 border-[var(--border)] text-[var(--foreground)] placeholder:text-theme-muted focus:outline-none focus:border-theme-accent transition-colors font-medium"
+                    placeholder="e.g., Environmental Science"
+                  />
+                </div>
+                <div className="grid grid-cols-2 gap-4">
+                  <div>
+                    <label className="block text-sm font-bold text-theme-muted mb-2">
+                      START YEAR
+                    </label>
+                    <input
+                      type="text"
+                      value={educationForm.startYear}
+                      onChange={(e) => setEducationForm({ ...educationForm, startYear: e.target.value })}
+                      className="w-full px-4 py-3 rounded-lg bg-[var(--card)] border-2 border-[var(--border)] text-[var(--foreground)] placeholder:text-theme-muted focus:outline-none focus:border-theme-accent transition-colors font-medium"
+                      placeholder="e.g., 2016"
+                    />
+                  </div>
+                  <div>
+                    <label className="block text-sm font-bold text-theme-muted mb-2">
+                      END YEAR
+                    </label>
+                    <input
+                      type="text"
+                      value={educationForm.endYear}
+                      onChange={(e) => setEducationForm({ ...educationForm, endYear: e.target.value })}
+                      className="w-full px-4 py-3 rounded-lg bg-[var(--card)] border-2 border-[var(--border)] text-[var(--foreground)] placeholder:text-theme-muted focus:outline-none focus:border-theme-accent transition-colors font-medium"
+                      placeholder="Present or 2020"
+                    />
+                  </div>
+                </div>
+                <div className="flex gap-2">
+                  <Button type="button" onClick={addEducation} className="font-black">
+                    {editingEduIndex !== null ? 'UPDATE' : 'ADD'}
+                  </Button>
+                  <Button type="button" onClick={cancelEducationForm} variant="outline" className="font-black">
+                    CANCEL
+                  </Button>
+                </div>
+              </div>
+            )}
+
+            {/* Education List */}
+            <div className="space-y-4">
+              {formData.education.map((edu: any, index: number) => (
+                <div key={index} className="p-4 bg-[var(--muted)] rounded-lg border-2 border-theme-muted">
+                  <div className="flex justify-between items-start mb-2">
+                    <div>
+                      <h3 className="text-lg font-black text-theme-accent">{edu.school}</h3>
+                      <p className="text-base font-bold text-[var(--foreground)]">
+                        {edu.degree} {edu.fieldOfStudy && `in ${edu.fieldOfStudy}`}
+                      </p>
+                      <p className="text-sm font-semibold text-theme-muted">
+                        {edu.startYear} - {edu.endYear || 'Present'}
+                      </p>
+                    </div>
+                    <div className="flex gap-2">
+                      <Button type="button" size="sm" onClick={() => editEducation(index)} className="font-black">
+                        EDIT
+                      </Button>
+                      <Button type="button" size="sm" variant="outline" onClick={() => removeEducation(index)} className="font-black">
+                        <X className="w-4 h-4" />
+                      </Button>
+                    </div>
+                  </div>
+                </div>
+              ))}
             </div>
           </CardContent>
         </Card>
