@@ -77,6 +77,9 @@ model User {
   reportedContent       Report[]
   likedPosts            PostLike[]
   likedReplies          ReplyLike[]
+  socialPosts           SocialPost[]     @relation("SocialPosts")
+  socialComments        SocialComment[]  @relation("SocialComments")
+  socialLikes           SocialLike[]     @relation("SocialLikes")
 
   @@index([email])
   @@index([role])
@@ -559,6 +562,87 @@ model UserBadge {
   @@unique([userId, badgeId])
   @@index([userId])
   @@index([badgeId])
+}
+
+// ============================================
+// SOCIAL FEED MODELS (Instagram/Meta-style)
+// ============================================
+
+model SocialPost {
+  id          String          @id @default(cuid())
+  content     String          @db.Text
+  userId      String
+  visibility  PostVisibility  @default(PUBLIC)
+  user        User            @relation("SocialPosts", fields: [userId], references: [id], onDelete: Cascade)
+  media       SocialMedia[]
+  comments    SocialComment[]
+  likes       SocialLike[]
+  hashtags    String[]        // Array of hashtags
+  mentions    String[]        // Array of mentioned user IDs
+  shares      Int             @default(0)
+  createdAt   DateTime        @default(now())
+  updatedAt   DateTime        @updatedAt
+
+  @@index([userId])
+  @@index([createdAt])
+  @@index([visibility])
+}
+
+enum PostVisibility {
+  PUBLIC
+  FOLLOWERS_ONLY
+  PRIVATE
+}
+
+model SocialMedia {
+  id        String    @id @default(cuid())
+  postId    String
+  type      MediaType
+  url       String
+  caption   String?
+  order     Int       @default(0)
+  post      SocialPost @relation(fields: [postId], references: [id], onDelete: Cascade)
+  createdAt DateTime   @default(now())
+
+  @@index([postId])
+}
+
+enum MediaType {
+  IMAGE
+  VIDEO
+  GIF
+}
+
+model SocialComment {
+  id        String          @id @default(cuid())
+  content   String          @db.Text
+  postId    String
+  userId    String
+  parentId  String?         // For nested comments
+  post      SocialPost      @relation(fields: [postId], references: [id], onDelete: Cascade)
+  user      User            @relation("SocialComments", fields: [userId], references: [id], onDelete: Cascade)
+  parent    SocialComment?  @relation("CommentThread", fields: [parentId], references: [id])
+  children  SocialComment[] @relation("CommentThread")
+  likes     Int             @default(0)
+  createdAt DateTime        @default(now())
+  updatedAt DateTime        @updatedAt
+
+  @@index([postId])
+  @@index([userId])
+  @@index([parentId])
+}
+
+model SocialLike {
+  id        String     @id @default(cuid())
+  postId    String
+  userId    String
+  post      SocialPost @relation(fields: [postId], references: [id], onDelete: Cascade)
+  user      User       @relation("SocialLikes", fields: [userId], references: [id], onDelete: Cascade)
+  createdAt DateTime   @default(now())
+
+  @@unique([postId, userId])
+  @@index([postId])
+  @@index([userId])
 }
 
 // ============================================
