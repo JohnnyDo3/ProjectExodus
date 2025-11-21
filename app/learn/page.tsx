@@ -1,7 +1,7 @@
 import { ArticleCard } from '@/components/article/ArticleCard'
 import { Card, CardContent } from '@/components/ui/Card'
 import { Button } from '@/components/ui/Button'
-import { BookOpen, Video, Calculator, Download, Zap, Leaf } from 'lucide-react'
+import { BookOpen, Video, Calculator, Download, Zap, Leaf, Home, Award, CheckCircle, Sprout } from 'lucide-react'
 import Link from 'next/link'
 import prisma from '@/lib/db/prisma'
 
@@ -138,6 +138,98 @@ export default async function LearnPage() {
                 </Card>
               </Link>
             ))}
+          </div>
+        </div>
+      </section>
+
+      {/* Building Certifications & Standards */}
+      <section className="py-32 bg-[var(--background)]">
+        <div className="container mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="text-center mb-20">
+            <h2 className="text-5xl font-black mb-4 text-[var(--foreground)]">
+              CERTIFICATIONS & BUILDING STANDARDS
+            </h2>
+            <p className="text-xl font-semibold text-theme-muted">
+              Master green building certifications and sustainable design principles
+            </p>
+          </div>
+
+          <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-8 max-w-7xl mx-auto">
+            <Link href="/learn/leed-certification">
+              <Card className="hover-lift border-4 border-theme-primary bg-gradient-to-br from-[color-mix(in_srgb,var(--primary)_15%,var(--background))] to-[color-mix(in_srgb,var(--primary)_25%,var(--background))] transform hover:scale-105 transition-all duration-300 cursor-pointer h-full">
+                <CardContent className="p-8 text-center flex flex-col h-full">
+                  <div className="w-20 h-20 mx-auto mb-6 rounded-full bg-gradient-to-br from-[var(--primary)] to-[color-mix(in_srgb,var(--primary)_80%,black)] flex items-center justify-center shadow-theme-xl">
+                    <Award className="w-10 h-10 text-[var(--primary-foreground)]" />
+                  </div>
+                  <h3 className="text-2xl font-black mb-3 text-theme-primary">
+                    LEED CERTIFICATION
+                  </h3>
+                  <p className="text-base font-semibold mb-4 text-theme-muted flex-1">
+                    Learn about LEED v5 (2025), certification levels, and the path to sustainable building
+                  </p>
+                  <div className="text-theme-primary font-black text-sm mt-auto">
+                    LEARN MORE →
+                  </div>
+                </CardContent>
+              </Card>
+            </Link>
+
+            <Link href="/learn/building-certifications">
+              <Card className="hover-lift border-4 border-theme-accent bg-gradient-to-br from-[color-mix(in_srgb,var(--accent)_15%,var(--background))] to-[color-mix(in_srgb,var(--accent)_25%,var(--background))] transform hover:scale-105 transition-all duration-300 cursor-pointer h-full">
+                <CardContent className="p-8 text-center flex flex-col h-full">
+                  <div className="w-20 h-20 mx-auto mb-6 rounded-full bg-gradient-to-br from-[var(--accent)] to-[color-mix(in_srgb,var(--accent)_80%,black)] flex items-center justify-center shadow-theme-xl">
+                    <CheckCircle className="w-10 h-10 text-[var(--primary-foreground)]" />
+                  </div>
+                  <h3 className="text-2xl font-black mb-3 text-theme-accent">
+                    BUILDING CERTIFICATIONS
+                  </h3>
+                  <p className="text-base font-semibold mb-4 text-theme-muted flex-1">
+                    Explore BREEAM, WELL, and Living Building Challenge certifications
+                  </p>
+                  <div className="text-theme-accent font-black text-sm mt-auto">
+                    EXPLORE →
+                  </div>
+                </CardContent>
+              </Card>
+            </Link>
+
+            <Link href="/learn/passive-house">
+              <Card className="hover-lift border-4 border-theme-secondary bg-gradient-to-br from-[color-mix(in_srgb,var(--secondary)_15%,var(--background))] to-[color-mix(in_srgb,var(--secondary)_25%,var(--background))] transform hover:scale-105 transition-all duration-300 cursor-pointer h-full">
+                <CardContent className="p-8 text-center flex flex-col h-full">
+                  <div className="w-20 h-20 mx-auto mb-6 rounded-full bg-gradient-to-br from-[var(--secondary)] to-[color-mix(in_srgb,var(--secondary)_80%,black)] flex items-center justify-center shadow-theme-xl">
+                    <Home className="w-10 h-10 text-[var(--primary-foreground)]" />
+                  </div>
+                  <h3 className="text-2xl font-black mb-3 text-theme-secondary">
+                    PASSIVE HOUSE
+                  </h3>
+                  <p className="text-base font-semibold mb-4 text-theme-muted flex-1">
+                    Master ultra-efficient building standards achieving 90% energy reduction
+                  </p>
+                  <div className="text-theme-secondary font-black text-sm mt-auto">
+                    DISCOVER →
+                  </div>
+                </CardContent>
+              </Card>
+            </Link>
+
+            <Link href="/learn/acorn-land-labs">
+              <Card className="hover-lift border-4 border-theme-primary bg-gradient-to-br from-[color-mix(in_srgb,var(--primary)_15%,var(--background))] to-[color-mix(in_srgb,var(--primary)_25%,var(--background))] transform hover:scale-105 transition-all duration-300 cursor-pointer h-full">
+                <CardContent className="p-8 text-center flex flex-col h-full">
+                  <div className="w-20 h-20 mx-auto mb-6 rounded-full bg-gradient-to-br from-[var(--primary)] to-[color-mix(in_srgb,var(--primary)_80%,black)] flex items-center justify-center shadow-theme-xl">
+                    <Sprout className="w-10 h-10 text-[var(--primary-foreground)]" />
+                  </div>
+                  <h3 className="text-2xl font-black mb-3 text-theme-primary">
+                    ACORN LAND LABS
+                  </h3>
+                  <p className="text-base font-semibold mb-4 text-theme-muted flex-1">
+                    Off-grid systems education for food, water, shelter, sanitation, and energy
+                  </p>
+                  <div className="text-theme-primary font-black text-sm mt-auto">
+                    START LEARNING →
+                  </div>
+                </CardContent>
+              </Card>
+            </Link>
           </div>
         </div>
       </section>
