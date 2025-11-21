@@ -4,7 +4,7 @@ import { useState, useEffect } from 'react'
 import { useRouter } from 'next/navigation'
 import { Button } from '@/components/ui/Button'
 import { Card, CardContent } from '@/components/ui/Card'
-import { Plus, X, Save, Loader2, User, Briefcase, Sparkles, Link as LinkIcon, Award, Target, TrendingUp } from 'lucide-react'
+import { Plus, X, Save, Loader2, User, Briefcase, Sparkles, Link as LinkIcon, Award, Target, TrendingUp, Lock, Bell, Shield, Trash2, AlertCircle } from 'lucide-react'
 
 interface User {
   id: string
@@ -30,7 +30,7 @@ interface ProfileEditFormProps {
   user: User
 }
 
-type TabType = 'essential' | 'professional' | 'skills' | 'links' | 'badges'
+type TabType = 'essential' | 'professional' | 'skills' | 'links' | 'badges' | 'security' | 'notifications' | 'privacy'
 
 export function ProfileEditForm({ user }: ProfileEditFormProps) {
   const router = useRouter()
@@ -65,6 +65,21 @@ export function ProfileEditForm({ user }: ProfileEditFormProps) {
 
   const [newInterest, setNewInterest] = useState('')
   const [newExpertise, setNewExpertise] = useState('')
+
+  // Password form state
+  const [passwordData, setPasswordData] = useState({
+    currentPassword: '',
+    newPassword: '',
+    confirmPassword: '',
+  })
+
+  // Notification preferences
+  const [notifications, setNotifications] = useState({
+    email: true,
+    newsletter: true,
+    communityUpdates: true,
+    productUpdates: false,
+  })
 
   // Experience state
   const [showExperienceForm, setShowExperienceForm] = useState(false)
@@ -275,6 +290,9 @@ export function ProfileEditForm({ user }: ProfileEditFormProps) {
     { id: 'skills' as TabType, label: 'SKILLS', icon: Sparkles },
     { id: 'links' as TabType, label: 'LINKS & IMAGES', icon: LinkIcon },
     { id: 'badges' as TabType, label: 'BADGES & GOALS', icon: Award },
+    { id: 'security' as TabType, label: 'SECURITY', icon: Lock },
+    { id: 'notifications' as TabType, label: 'NOTIFICATIONS', icon: Bell },
+    { id: 'privacy' as TabType, label: 'PRIVACY', icon: Shield },
   ]
 
   return (
@@ -997,6 +1015,155 @@ export function ProfileEditForm({ user }: ProfileEditFormProps) {
               </CardContent>
             </Card>
           </>
+        )}
+
+        {/* Security Tab */}
+        {activeTab === 'security' && (
+          <Card className="border-4 border-theme-primary">
+            <CardContent className="p-8">
+              <h2 className="text-2xl font-black mb-6 text-[var(--foreground)] flex items-center gap-2">
+                <Lock className="w-6 h-6" />
+                SECURITY SETTINGS
+              </h2>
+              <div className="space-y-6">
+                <div>
+                  <label className="block text-sm font-bold text-theme-muted mb-2">
+                    CURRENT PASSWORD
+                  </label>
+                  <input
+                    type="password"
+                    value={passwordData.currentPassword}
+                    onChange={(e) => setPasswordData({ ...passwordData, currentPassword: e.target.value })}
+                    className="w-full px-4 py-3 rounded-lg bg-[var(--card)] border-2 border-[var(--border)] text-[var(--foreground)] focus:outline-none focus:border-theme-primary transition-colors font-medium"
+                    placeholder="Enter current password"
+                  />
+                </div>
+
+                <div>
+                  <label className="block text-sm font-bold text-theme-muted mb-2">
+                    NEW PASSWORD
+                  </label>
+                  <input
+                    type="password"
+                    value={passwordData.newPassword}
+                    onChange={(e) => setPasswordData({ ...passwordData, newPassword: e.target.value })}
+                    className="w-full px-4 py-3 rounded-lg bg-[var(--card)] border-2 border-[var(--border)] text-[var(--foreground)] focus:outline-none focus:border-theme-primary transition-colors font-medium"
+                    placeholder="Enter new password"
+                  />
+                </div>
+
+                <div>
+                  <label className="block text-sm font-bold text-theme-muted mb-2">
+                    CONFIRM NEW PASSWORD
+                  </label>
+                  <input
+                    type="password"
+                    value={passwordData.confirmPassword}
+                    onChange={(e) => setPasswordData({ ...passwordData, confirmPassword: e.target.value })}
+                    className="w-full px-4 py-3 rounded-lg bg-[var(--card)] border-2 border-[var(--border)] text-[var(--foreground)] focus:outline-none focus:border-theme-primary transition-colors font-medium"
+                    placeholder="Confirm new password"
+                  />
+                </div>
+
+                <div className="p-6 bg-[var(--muted)] rounded-lg">
+                  <h4 className="font-black text-[var(--foreground)] mb-2">PASSWORD REQUIREMENTS</h4>
+                  <ul className="space-y-1 text-sm font-medium text-theme-muted">
+                    <li>• At least 8 characters long</li>
+                    <li>• Include uppercase and lowercase letters</li>
+                    <li>• Include at least one number</li>
+                    <li>• Include at least one special character</li>
+                  </ul>
+                </div>
+              </div>
+            </CardContent>
+          </Card>
+        )}
+
+        {/* Notifications Tab */}
+        {activeTab === 'notifications' && (
+          <Card className="border-4 border-theme-accent">
+            <CardContent className="p-8">
+              <h2 className="text-2xl font-black mb-6 text-[var(--foreground)] flex items-center gap-2">
+                <Bell className="w-6 h-6" />
+                NOTIFICATION PREFERENCES
+              </h2>
+              <div className="space-y-4">
+                {[
+                  { key: 'email', label: 'Email Notifications', desc: 'Receive email updates about your account' },
+                  { key: 'newsletter', label: 'Newsletter', desc: 'Weekly sustainability tips and articles' },
+                  { key: 'communityUpdates', label: 'Community Updates', desc: 'New forum posts and replies' },
+                  { key: 'productUpdates', label: 'Product Updates', desc: 'New products and special offers' },
+                ].map((item) => (
+                  <div key={item.key} className="flex items-start justify-between p-4 bg-[var(--muted)] rounded-lg">
+                    <div className="flex-1">
+                      <h4 className="font-black text-[var(--foreground)] mb-1">{item.label}</h4>
+                      <p className="text-sm font-medium text-theme-muted">{item.desc}</p>
+                    </div>
+                    <label className="relative inline-flex items-center cursor-pointer ml-4">
+                      <input
+                        type="checkbox"
+                        checked={notifications[item.key as keyof typeof notifications]}
+                        onChange={(e) => setNotifications({ ...notifications, [item.key]: e.target.checked })}
+                        className="sr-only peer"
+                      />
+                      <div className="w-11 h-6 bg-[var(--border)] peer-focus:outline-none peer-focus:ring-2 peer-focus:ring-theme-accent rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-[var(--accent)]"></div>
+                    </label>
+                  </div>
+                ))}
+              </div>
+            </CardContent>
+          </Card>
+        )}
+
+        {/* Privacy Tab */}
+        {activeTab === 'privacy' && (
+          <Card className="border-4 border-theme-secondary">
+            <CardContent className="p-8">
+              <h2 className="text-2xl font-black mb-6 text-[var(--foreground)] flex items-center gap-2">
+                <Shield className="w-6 h-6" />
+                PRIVACY & DATA
+              </h2>
+              <div className="space-y-6">
+                <div className="p-6 bg-[var(--muted)] rounded-lg">
+                  <h4 className="font-black text-[var(--foreground)] mb-2">DATA EXPORT</h4>
+                  <p className="text-sm font-medium text-theme-muted mb-4">
+                    Download a copy of your personal data, including profile information, orders, and activity.
+                  </p>
+                  <Button type="button" variant="outline" className="font-bold">
+                    REQUEST DATA EXPORT
+                  </Button>
+                </div>
+
+                <div className="p-6 bg-[var(--muted)] rounded-lg">
+                  <h4 className="font-black text-[var(--foreground)] mb-2">PROFILE VISIBILITY</h4>
+                  <p className="text-sm font-medium text-theme-muted mb-4">
+                    Control who can see your profile and activity on Project Exodus.
+                  </p>
+                  <select className="w-full px-4 py-3 rounded-lg bg-[var(--card)] border-2 border-[var(--border)] text-[var(--foreground)] font-medium focus:outline-none focus:border-theme-secondary">
+                    <option>Public - Everyone can see your profile</option>
+                    <option>Community Only - Only registered users</option>
+                    <option>Private - Only you can see your profile</option>
+                  </select>
+                </div>
+
+                <div className="p-6 bg-[color-mix(in_srgb,var(--secondary)_20%,var(--background))] border-2 border-theme-secondary rounded-lg">
+                  <div className="flex items-start gap-4">
+                    <AlertCircle className="w-6 h-6 text-theme-secondary flex-shrink-0 mt-1" />
+                    <div>
+                      <h4 className="font-black text-theme-secondary mb-2">DELETE ACCOUNT</h4>
+                      <p className="text-sm font-medium text-theme-muted mb-4">
+                        Permanently delete your account and all associated data. This action cannot be undone.
+                      </p>
+                      <Button type="button" variant="outline" className="font-bold border-2 border-theme-secondary text-theme-secondary hover:bg-theme-secondary hover:text-[var(--secondary-foreground)]">
+                        <Trash2 className="w-4 h-4 mr-2" />
+                        DELETE ACCOUNT
+                      </Button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </CardContent>
+          </Card>
         )}
 
         {/* Message */}
