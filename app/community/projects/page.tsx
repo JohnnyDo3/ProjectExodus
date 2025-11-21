@@ -155,9 +155,7 @@ export default async function ProjectsPage() {
                               </div>
                             )}
                           </div>
-                          <div onClick={(e) => e.preventDefault()}>
-                            <JoinProjectButton projectId={project.id} projectName={project.name} />
-                          </div>
+                          <JoinProjectButton projectId={project.id} projectName={project.name} />
                         </div>
                       </CardContent>
                     </Card>

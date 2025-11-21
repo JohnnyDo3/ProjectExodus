@@ -16,7 +16,11 @@ export function JoinProjectButton({ projectId, projectName }: JoinProjectButtonP
   const [isJoining, setIsJoining] = useState(false)
   const [message, setMessage] = useState('')
 
-  const handleJoin = async () => {
+  const handleJoin = async (e: React.MouseEvent) => {
+    // Prevent the Link from navigating when button is clicked
+    e.preventDefault()
+    e.stopPropagation()
+
     if (status !== 'authenticated') {
       router.push('/auth/signin')
       return
