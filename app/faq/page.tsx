@@ -13,6 +13,7 @@ import {
   ChevronDown
 } from 'lucide-react'
 import Link from 'next/link'
+import { AIChatbot } from '@/components/faq/AIChatbot'
 
 export default function FAQPage() {
   const faqCategories = [
@@ -314,7 +315,7 @@ export default function FAQPage() {
           <div className="max-w-3xl mx-auto text-center space-y-6">
             <h2 className="text-4xl font-black">STILL HAVE QUESTIONS?</h2>
             <p className="text-xl font-semibold opacity-90">
-              Can't find what you're looking for? Our support team is here to help.
+              Can't find what you're looking for? Try our AI assistant or contact our support team.
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center pt-4">
               <Link href="/contact">
@@ -331,6 +332,9 @@ export default function FAQPage() {
           </div>
         </div>
       </section>
+
+      {/* AI Chatbot */}
+      <AIChatbot />
     </div>
   )
 }
