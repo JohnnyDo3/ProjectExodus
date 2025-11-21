@@ -82,9 +82,9 @@ export default function Home() {
     <div className="min-h-screen overflow-hidden">
       {/* Hero Section - BOLD & EXPERIMENTAL */}
       <section className="relative min-h-screen flex items-center justify-center overflow-hidden bg-gradient-to-br from-[var(--muted)] via-[color-mix(in_srgb,var(--primary)_20%,var(--background))] to-[color-mix(in_srgb,var(--accent)_20%,var(--background))]">
-        {/* Night Sky Constellations - Always visible on hero */}
+        {/* Night Sky Constellations - Only at night */}
         <div className="absolute inset-0 z-0">
-          <NightSkyConstellations alwaysShow={true} starCount={800} />
+          <NightSkyConstellations starCount={800} />
         </div>
 
         {/* Morphing Background Blobs - 3D Effect */}

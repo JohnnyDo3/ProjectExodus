@@ -260,9 +260,9 @@ export function NightSkyConstellations({ alwaysShow = false, starCount = 500 }: 
       ref={canvasRef}
       onMouseMove={handleMouseMove}
       onMouseLeave={() => setActiveConstellation(null)}
-      className="fixed inset-0 pointer-events-auto z-0"
+      className="absolute inset-0 pointer-events-auto z-0"
       style={{
-        background: 'var(--sky-gradient, linear-gradient(to bottom, #000000 0%, #0A0A0F 20%, #191970 50%, #1C1C3C 100%))'
+        background: 'transparent'
       }}
     />
   )

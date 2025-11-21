@@ -6,7 +6,7 @@ import { useState } from 'react'
 import { useSession, signOut } from 'next-auth/react'
 import { Button } from '@/components/ui/Button'
 import { ThemeToggle } from '@/components/ui/ThemeToggle'
-import { Menu, X, Leaf, User, LogOut, Settings } from 'lucide-react'
+import { Menu, X, Leaf, User, LogOut, Settings, Users, Calendar, LayoutDashboard, UserCircle } from 'lucide-react'
 
 export function Header() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
@@ -19,8 +19,6 @@ export function Header() {
     { name: 'Products', href: '/products' },
     { name: 'Learn', href: '/learn' },
     { name: 'Community', href: '/community' },
-    { name: 'Network', href: '/network' },
-    { name: 'Events', href: '/events' },
   ]
 
   const handleSignOut = async () => {
@@ -90,7 +88,7 @@ export function Header() {
                       className="fixed inset-0 z-40"
                       onClick={() => setUserMenuOpen(false)}
                     />
-                    <div className="absolute right-0 mt-2 w-56 bg-[var(--card)] rounded-xl shadow-theme-lg border-2 border-theme-primary overflow-hidden z-50">
+                    <div className="absolute right-0 mt-2 w-64 bg-[var(--card)] rounded-xl shadow-theme-lg border-2 border-theme-primary overflow-hidden z-50">
                       <div className="p-4 border-b-2 border-[var(--border)]">
                         <p className="font-bold text-[var(--foreground)]">
                           {session.user?.name}
@@ -102,19 +100,53 @@ export function Header() {
                       <div className="p-2">
                         <Link
                           href="/dashboard"
-                          className="flex items-center gap-3 px-4 py-2 rounded-lg hover:bg-[var(--muted)] transition-colors"
+                          className="flex items-center gap-3 px-4 py-2 rounded-lg hover:bg-[var(--muted)] transition-colors group"
                           onClick={() => setUserMenuOpen(false)}
                         >
-                          <Settings className="w-4 h-4 text-theme-muted" />
-                          <span className="font-medium text-[var(--foreground)]">Dashboard</span>
+                          <LayoutDashboard className="w-4 h-4 text-theme-primary" />
+                          <span className="font-bold text-[var(--foreground)] group-hover:text-theme-primary">Dashboard</span>
                         </Link>
-                        <button
-                          onClick={handleSignOut}
-                          className="w-full flex items-center gap-3 px-4 py-2 rounded-lg hover:bg-[var(--muted)] transition-colors text-left"
+                        <Link
+                          href={`/profile/${session.user?.id}`}
+                          className="flex items-center gap-3 px-4 py-2 rounded-lg hover:bg-[var(--muted)] transition-colors group"
+                          onClick={() => setUserMenuOpen(false)}
                         >
-                          <LogOut className="w-4 h-4 text-theme-secondary" />
-                          <span className="font-medium text-theme-secondary">Sign Out</span>
-                        </button>
+                          <UserCircle className="w-4 h-4 text-theme-accent" />
+                          <span className="font-bold text-[var(--foreground)] group-hover:text-theme-accent">My Profile</span>
+                        </Link>
+                        <Link
+                          href="/network"
+                          className="flex items-center gap-3 px-4 py-2 rounded-lg hover:bg-[var(--muted)] transition-colors group"
+                          onClick={() => setUserMenuOpen(false)}
+                        >
+                          <Users className="w-4 h-4 text-theme-primary" />
+                          <span className="font-bold text-[var(--foreground)] group-hover:text-theme-primary">Network</span>
+                        </Link>
+                        <Link
+                          href="/events"
+                          className="flex items-center gap-3 px-4 py-2 rounded-lg hover:bg-[var(--muted)] transition-colors group"
+                          onClick={() => setUserMenuOpen(false)}
+                        >
+                          <Calendar className="w-4 h-4 text-theme-secondary" />
+                          <span className="font-bold text-[var(--foreground)] group-hover:text-theme-secondary">Events</span>
+                        </Link>
+                        <div className="border-t-2 border-[var(--border)] mt-2 pt-2">
+                          <Link
+                            href="/settings"
+                            className="flex items-center gap-3 px-4 py-2 rounded-lg hover:bg-[var(--muted)] transition-colors group"
+                            onClick={() => setUserMenuOpen(false)}
+                          >
+                            <Settings className="w-4 h-4 text-theme-muted" />
+                            <span className="font-medium text-[var(--foreground)]">Settings</span>
+                          </Link>
+                          <button
+                            onClick={handleSignOut}
+                            className="w-full flex items-center gap-3 px-4 py-2 rounded-lg hover:bg-[var(--muted)] transition-colors text-left group"
+                          >
+                            <LogOut className="w-4 h-4 text-theme-secondary" />
+                            <span className="font-medium text-theme-secondary">Sign Out</span>
+                          </button>
+                        </div>
                       </div>
                     </div>
                   </>
@@ -190,8 +222,33 @@ export function Header() {
                     </p>
                   </div>
                   <Link href="/dashboard" className="block" onClick={() => setMobileMenuOpen(false)}>
-                    <Button variant="outline" size="sm" className="w-full">
+                    <Button variant="outline" size="sm" className="w-full font-black">
+                      <LayoutDashboard className="w-4 h-4 mr-2" />
                       Dashboard
+                    </Button>
+                  </Link>
+                  <Link href={`/profile/${session.user?.id}`} className="block" onClick={() => setMobileMenuOpen(false)}>
+                    <Button variant="outline" size="sm" className="w-full font-black">
+                      <UserCircle className="w-4 h-4 mr-2" />
+                      My Profile
+                    </Button>
+                  </Link>
+                  <Link href="/network" className="block" onClick={() => setMobileMenuOpen(false)}>
+                    <Button variant="outline" size="sm" className="w-full font-black">
+                      <Users className="w-4 h-4 mr-2" />
+                      Network
+                    </Button>
+                  </Link>
+                  <Link href="/events" className="block" onClick={() => setMobileMenuOpen(false)}>
+                    <Button variant="outline" size="sm" className="w-full font-black">
+                      <Calendar className="w-4 h-4 mr-2" />
+                      Events
+                    </Button>
+                  </Link>
+                  <Link href="/settings" className="block" onClick={() => setMobileMenuOpen(false)}>
+                    <Button variant="outline" size="sm" className="w-full font-black">
+                      <Settings className="w-4 h-4 mr-2" />
+                      Settings
                     </Button>
                   </Link>
                   <Button

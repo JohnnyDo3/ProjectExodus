@@ -121,7 +121,7 @@ export default async function LearnPage() {
 
           <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8 max-w-7xl mx-auto">
             {topics.map((topic) => (
-              <Link key={topic.title} href={`/learn?topic=${topic.slug}`}>
+              <Link key={topic.title} href={`/learn/${topic.slug}`}>
                 <Card className="hover-lift border-4 border-theme-primary bg-gradient-to-br from-[color-mix(in_srgb,var(--primary)_15%,var(--background))] to-[color-mix(in_srgb,var(--primary)_25%,var(--background))] transform hover:scale-105 transition-all duration-300">
                   <CardContent className="p-10 text-center">
                     <div className="text-7xl mb-6">{topic.icon}</div>

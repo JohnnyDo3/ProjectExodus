@@ -6,6 +6,7 @@ import { SessionProvider } from "@/components/providers/SessionProvider";
 import { TimeThemeProvider } from "@/components/providers/TimeThemeProvider";
 import { SkyThemeProvider } from "@/components/theme/SkyThemeProvider";
 import { SkyBackground } from "@/components/theme/SkyBackground";
+import { ProjectExodusAI } from "@/components/ai/ProjectExodusAI";
 import { generateMetadata, siteConfig } from "@/lib/metadata";
 import { auth } from "@/auth";
 
@@ -93,6 +94,8 @@ export default async function RootLayout({
                 {children}
                 <Footer />
               </div>
+              {/* AI Assistant - Available on all pages, auto-greets on homepage */}
+              <ProjectExodusAI />
             </SkyThemeProvider>
           </TimeThemeProvider>
         </SessionProvider>
