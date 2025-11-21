@@ -1,6 +1,7 @@
 import { ArticleCard } from '@/components/article/ArticleCard'
 import { Card, CardContent } from '@/components/ui/Card'
 import { Button } from '@/components/ui/Button'
+import { LiveImpactStats } from '@/components/learn/LiveImpactStats'
 import { BookOpen, Video, Calculator, Download, Zap, Leaf, Home, Award, CheckCircle, Sprout } from 'lucide-react'
 import Link from 'next/link'
 import prisma from '@/lib/db/prisma'
@@ -71,6 +72,35 @@ export default async function LearnPage() {
                 fontWeight: 900
               }}>empowers</span> real change
             </p>
+          </div>
+        </div>
+      </section>
+
+      {/* Live Environmental Impact Statistics */}
+      <section className="py-32 bg-[var(--background)]">
+        <div className="container mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="max-w-7xl mx-auto">
+            <div className="text-center mb-16">
+              <div className="inline-block px-6 py-3 bg-red-500/20 rounded-full border-2 border-red-500 mb-6">
+                <span className="text-sm font-black text-red-500 uppercase tracking-wider flex items-center gap-2">
+                  <span className="w-2 h-2 bg-red-500 rounded-full animate-pulse"></span>
+                  REAL-TIME ENVIRONMENTAL IMPACT
+                </span>
+              </div>
+              <h2 className="text-5xl md:text-6xl font-black mb-6" style={{
+                background: 'linear-gradient(135deg, #ef4444, #f97316, #eab308)',
+                WebkitBackgroundClip: 'text',
+                WebkitTextFillColor: 'transparent'
+              }}>
+                THE PLANET IN NUMBERS
+              </h2>
+              <p className="text-xl font-semibold text-theme-muted max-w-3xl mx-auto">
+                Watch these statistics count up in <span className="font-black text-red-500">real-time</span>.
+                Every number represents the environmental impact happening across our planet right now.
+              </p>
+            </div>
+
+            <LiveImpactStats />
           </div>
         </div>
       </section>
