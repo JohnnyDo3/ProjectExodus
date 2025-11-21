@@ -4,6 +4,8 @@ import { Header } from "@/components/layout/Header";
 import { Footer } from "@/components/layout/Footer";
 import { SessionProvider } from "@/components/providers/SessionProvider";
 import { TimeThemeProvider } from "@/components/providers/TimeThemeProvider";
+import { SkyThemeProvider } from "@/components/theme/SkyThemeProvider";
+import { SkyBackground } from "@/components/theme/SkyBackground";
 import { generateMetadata, siteConfig } from "@/lib/metadata";
 import { auth } from "@/auth";
 
@@ -84,9 +86,14 @@ export default async function RootLayout({
       <body className="antialiased">
         <SessionProvider session={session}>
           <TimeThemeProvider>
-            <Header />
-            {children}
-            <Footer />
+            <SkyThemeProvider>
+              <SkyBackground />
+              <div className="relative z-10">
+                <Header />
+                {children}
+                <Footer />
+              </div>
+            </SkyThemeProvider>
           </TimeThemeProvider>
         </SessionProvider>
       </body>

@@ -1,0 +1,456 @@
+'use client'
+
+import { useState } from 'react'
+import { useRouter } from 'next/navigation'
+import { Button } from '@/components/ui/Button'
+import { Card, CardContent } from '@/components/ui/Card'
+import { Plus, X, Save, Loader2 } from 'lucide-react'
+
+interface User {
+  id: string
+  name: string | null
+  email: string
+  image: string | null
+  bio: string | null
+  headline: string | null
+  banner: string | null
+  location: string | null
+  company: string | null
+  jobTitle: string | null
+  website: string | null
+  linkedin: string | null
+  twitter: string | null
+  interests: string[]
+  expertise: string[]
+  experience: any
+  education: any
+}
+
+interface ProfileEditFormProps {
+  user: User
+}
+
+export function ProfileEditForm({ user }: ProfileEditFormProps) {
+  const router = useRouter()
+  const [loading, setLoading] = useState(false)
+  const [message, setMessage] = useState('')
+
+  // Form state
+  const [formData, setFormData] = useState({
+    name: user.name || '',
+    headline: user.headline || '',
+    bio: user.bio || '',
+    location: user.location || '',
+    company: user.company || '',
+    jobTitle: user.jobTitle || '',
+    website: user.website || '',
+    linkedin: user.linkedin || '',
+    twitter: user.twitter || '',
+    image: user.image || '',
+    banner: user.banner || '',
+    interests: user.interests || [],
+    expertise: user.expertise || [],
+    experience: user.experience || [],
+    education: user.education || []
+  })
+
+  const [newInterest, setNewInterest] = useState('')
+  const [newExpertise, setNewExpertise] = useState('')
+
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+    setFormData({
+      ...formData,
+      [e.target.name]: e.target.value
+    })
+  }
+
+  const addInterest = () => {
+    if (newInterest.trim()) {
+      setFormData({
+        ...formData,
+        interests: [...formData.interests, newInterest.trim()]
+      })
+      setNewInterest('')
+    }
+  }
+
+  const removeInterest = (index: number) => {
+    setFormData({
+      ...formData,
+      interests: formData.interests.filter((_, i) => i !== index)
+    })
+  }
+
+  const addExpertise = () => {
+    if (newExpertise.trim()) {
+      setFormData({
+        ...formData,
+        expertise: [...formData.expertise, newExpertise.trim()]
+      })
+      setNewExpertise('')
+    }
+  }
+
+  const removeExpertise = (index: number) => {
+    setFormData({
+      ...formData,
+      expertise: formData.expertise.filter((_, i) => i !== index)
+    })
+  }
+
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault()
+    setLoading(true)
+    setMessage('')
+
+    try {
+      const res = await fetch('/api/profile/update', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(formData)
+      })
+
+      const data = await res.json()
+
+      if (data.success) {
+        setMessage('✓ Profile updated successfully!')
+        setTimeout(() => {
+          router.push(`/profile/${user.id}`)
+          router.refresh()
+        }, 1500)
+      } else {
+        setMessage(data.error || 'Failed to update profile')
+        setLoading(false)
+      }
+    } catch (error) {
+      setMessage('Error updating profile')
+      setLoading(false)
+    }
+  }
+
+  return (
+    <form onSubmit={handleSubmit}>
+      <div className="space-y-6">
+        {/* Basic Information */}
+        <Card className="border-4 border-theme-primary">
+          <CardContent className="p-8">
+            <h2 className="text-2xl font-black mb-6 text-[var(--foreground)]">
+              BASIC INFORMATION
+            </h2>
+            <div className="space-y-4">
+              <div>
+                <label className="block text-sm font-bold text-theme-muted mb-2">
+                  FULL NAME
+                </label>
+                <input
+                  type="text"
+                  name="name"
+                  value={formData.name}
+                  onChange={handleChange}
+                  className="w-full px-4 py-3 rounded-lg bg-[var(--card)] border-2 border-[var(--border)] text-[var(--foreground)] placeholder:text-theme-muted focus:outline-none focus:border-theme-primary transition-colors font-medium"
+                  placeholder="Your full name"
+                />
+              </div>
+
+              <div>
+                <label className="block text-sm font-bold text-theme-muted mb-2">
+                  HEADLINE
+                </label>
+                <input
+                  type="text"
+                  name="headline"
+                  value={formData.headline}
+                  onChange={handleChange}
+                  className="w-full px-4 py-3 rounded-lg bg-[var(--card)] border-2 border-[var(--border)] text-[var(--foreground)] placeholder:text-theme-muted focus:outline-none focus:border-theme-primary transition-colors font-medium"
+                  placeholder="e.g., Sustainability Advocate | Green Building Expert"
+                />
+              </div>
+
+              <div>
+                <label className="block text-sm font-bold text-theme-muted mb-2">
+                  BIO
+                </label>
+                <textarea
+                  name="bio"
+                  value={formData.bio}
+                  onChange={handleChange}
+                  rows={5}
+                  className="w-full px-4 py-3 rounded-lg bg-[var(--card)] border-2 border-[var(--border)] text-[var(--foreground)] placeholder:text-theme-muted focus:outline-none focus:border-theme-primary transition-colors font-medium resize-none"
+                  placeholder="Tell us about yourself, your passion for sustainability, and your journey..."
+                />
+              </div>
+
+              <div>
+                <label className="block text-sm font-bold text-theme-muted mb-2">
+                  LOCATION
+                </label>
+                <input
+                  type="text"
+                  name="location"
+                  value={formData.location}
+                  onChange={handleChange}
+                  className="w-full px-4 py-3 rounded-lg bg-[var(--card)] border-2 border-[var(--border)] text-[var(--foreground)] placeholder:text-theme-muted focus:outline-none focus:border-theme-primary transition-colors font-medium"
+                  placeholder="City, State, Country"
+                />
+              </div>
+            </div>
+          </CardContent>
+        </Card>
+
+        {/* Professional Information */}
+        <Card className="border-4 border-theme-accent">
+          <CardContent className="p-8">
+            <h2 className="text-2xl font-black mb-6 text-[var(--foreground)]">
+              PROFESSIONAL INFORMATION
+            </h2>
+            <div className="space-y-4">
+              <div>
+                <label className="block text-sm font-bold text-theme-muted mb-2">
+                  JOB TITLE
+                </label>
+                <input
+                  type="text"
+                  name="jobTitle"
+                  value={formData.jobTitle}
+                  onChange={handleChange}
+                  className="w-full px-4 py-3 rounded-lg bg-[var(--card)] border-2 border-[var(--border)] text-[var(--foreground)] placeholder:text-theme-muted focus:outline-none focus:border-theme-accent transition-colors font-medium"
+                  placeholder="Your current job title"
+                />
+              </div>
+
+              <div>
+                <label className="block text-sm font-bold text-theme-muted mb-2">
+                  COMPANY / ORGANIZATION
+                </label>
+                <input
+                  type="text"
+                  name="company"
+                  value={formData.company}
+                  onChange={handleChange}
+                  className="w-full px-4 py-3 rounded-lg bg-[var(--card)] border-2 border-[var(--border)] text-[var(--foreground)] placeholder:text-theme-muted focus:outline-none focus:border-theme-accent transition-colors font-medium"
+                  placeholder="Your company or organization"
+                />
+              </div>
+            </div>
+          </CardContent>
+        </Card>
+
+        {/* Images */}
+        <Card className="border-4 border-theme-secondary">
+          <CardContent className="p-8">
+            <h2 className="text-2xl font-black mb-6 text-[var(--foreground)]">
+              PROFILE IMAGES
+            </h2>
+            <div className="space-y-4">
+              <div>
+                <label className="block text-sm font-bold text-theme-muted mb-2">
+                  PROFILE IMAGE URL
+                </label>
+                <input
+                  type="url"
+                  name="image"
+                  value={formData.image}
+                  onChange={handleChange}
+                  className="w-full px-4 py-3 rounded-lg bg-[var(--card)] border-2 border-[var(--border)] text-[var(--foreground)] placeholder:text-theme-muted focus:outline-none focus:border-theme-secondary transition-colors font-medium"
+                  placeholder="https://example.com/your-photo.jpg"
+                />
+              </div>
+
+              <div>
+                <label className="block text-sm font-bold text-theme-muted mb-2">
+                  BANNER IMAGE URL
+                </label>
+                <input
+                  type="url"
+                  name="banner"
+                  value={formData.banner}
+                  onChange={handleChange}
+                  className="w-full px-4 py-3 rounded-lg bg-[var(--card)] border-2 border-[var(--border)] text-[var(--foreground)] placeholder:text-theme-muted focus:outline-none focus:border-theme-secondary transition-colors font-medium"
+                  placeholder="https://example.com/your-banner.jpg"
+                />
+              </div>
+            </div>
+          </CardContent>
+        </Card>
+
+        {/* Social Links */}
+        <Card className="border-4 border-theme-primary">
+          <CardContent className="p-8">
+            <h2 className="text-2xl font-black mb-6 text-[var(--foreground)]">
+              SOCIAL LINKS
+            </h2>
+            <div className="space-y-4">
+              <div>
+                <label className="block text-sm font-bold text-theme-muted mb-2">
+                  WEBSITE
+                </label>
+                <input
+                  type="url"
+                  name="website"
+                  value={formData.website}
+                  onChange={handleChange}
+                  className="w-full px-4 py-3 rounded-lg bg-[var(--card)] border-2 border-[var(--border)] text-[var(--foreground)] placeholder:text-theme-muted focus:outline-none focus:border-theme-primary transition-colors font-medium"
+                  placeholder="https://yourwebsite.com"
+                />
+              </div>
+
+              <div>
+                <label className="block text-sm font-bold text-theme-muted mb-2">
+                  LINKEDIN
+                </label>
+                <input
+                  type="url"
+                  name="linkedin"
+                  value={formData.linkedin}
+                  onChange={handleChange}
+                  className="w-full px-4 py-3 rounded-lg bg-[var(--card)] border-2 border-[var(--border)] text-[var(--foreground)] placeholder:text-theme-muted focus:outline-none focus:border-theme-primary transition-colors font-medium"
+                  placeholder="https://linkedin.com/in/yourprofile"
+                />
+              </div>
+
+              <div>
+                <label className="block text-sm font-bold text-theme-muted mb-2">
+                  TWITTER / X
+                </label>
+                <input
+                  type="text"
+                  name="twitter"
+                  value={formData.twitter}
+                  onChange={handleChange}
+                  className="w-full px-4 py-3 rounded-lg bg-[var(--card)] border-2 border-[var(--border)] text-[var(--foreground)] placeholder:text-theme-muted focus:outline-none focus:border-theme-primary transition-colors font-medium"
+                  placeholder="@yourhandle"
+                />
+              </div>
+            </div>
+          </CardContent>
+        </Card>
+
+        {/* Expertise */}
+        <Card className="border-4 border-theme-accent">
+          <CardContent className="p-8">
+            <h2 className="text-2xl font-black mb-6 text-[var(--foreground)]">
+              EXPERTISE & SKILLS
+            </h2>
+            <div className="space-y-4">
+              <div className="flex gap-2">
+                <input
+                  type="text"
+                  value={newExpertise}
+                  onChange={(e) => setNewExpertise(e.target.value)}
+                  onKeyPress={(e) => e.key === 'Enter' && (e.preventDefault(), addExpertise())}
+                  className="flex-1 px-4 py-3 rounded-lg bg-[var(--card)] border-2 border-[var(--border)] text-[var(--foreground)] placeholder:text-theme-muted focus:outline-none focus:border-theme-accent transition-colors font-medium"
+                  placeholder="Add an expertise area (e.g., Solar Energy, Permaculture)"
+                />
+                <Button type="button" onClick={addExpertise} className="font-black">
+                  <Plus className="w-5 h-5" />
+                </Button>
+              </div>
+              <div className="flex flex-wrap gap-2">
+                {formData.expertise.map((skill, index) => (
+                  <span
+                    key={index}
+                    className="px-3 py-2 bg-gradient-to-br from-[var(--accent)] to-[color-mix(in_srgb,var(--accent)_80%,black)] text-[var(--primary-foreground)] rounded-lg font-bold text-sm flex items-center gap-2 shadow-theme-md"
+                  >
+                    {skill}
+                    <button
+                      type="button"
+                      onClick={() => removeExpertise(index)}
+                      className="hover:text-red-300 transition-colors"
+                    >
+                      <X className="w-4 h-4" />
+                    </button>
+                  </span>
+                ))}
+              </div>
+            </div>
+          </CardContent>
+        </Card>
+
+        {/* Interests */}
+        <Card className="border-4 border-theme-secondary">
+          <CardContent className="p-8">
+            <h2 className="text-2xl font-black mb-6 text-[var(--foreground)]">
+              INTERESTS
+            </h2>
+            <div className="space-y-4">
+              <div className="flex gap-2">
+                <input
+                  type="text"
+                  value={newInterest}
+                  onChange={(e) => setNewInterest(e.target.value)}
+                  onKeyPress={(e) => e.key === 'Enter' && (e.preventDefault(), addInterest())}
+                  className="flex-1 px-4 py-3 rounded-lg bg-[var(--card)] border-2 border-[var(--border)] text-[var(--foreground)] placeholder:text-theme-muted focus:outline-none focus:border-theme-secondary transition-colors font-medium"
+                  placeholder="Add an interest (e.g., Organic Farming, Green Building)"
+                />
+                <Button type="button" onClick={addInterest} variant="secondary" className="font-black">
+                  <Plus className="w-5 h-5" />
+                </Button>
+              </div>
+              <div className="flex flex-wrap gap-2">
+                {formData.interests.map((interest, index) => (
+                  <span
+                    key={index}
+                    className="px-3 py-2 bg-[color-mix(in_srgb,var(--secondary)_20%,var(--background))] text-theme-secondary rounded-lg font-semibold text-sm border-2 border-theme-secondary flex items-center gap-2"
+                  >
+                    {interest}
+                    <button
+                      type="button"
+                      onClick={() => removeInterest(index)}
+                      className="hover:text-red-500 transition-colors"
+                    >
+                      <X className="w-4 h-4" />
+                    </button>
+                  </span>
+                ))}
+              </div>
+            </div>
+          </CardContent>
+        </Card>
+
+        {/* Message */}
+        {message && (
+          <div className={`p-4 rounded-lg font-bold text-center ${
+            message.includes('✓')
+              ? 'bg-green-500/20 text-green-600 border-2 border-green-600'
+              : 'bg-red-500/20 text-red-600 border-2 border-red-600'
+          }`}>
+            {message}
+          </div>
+        )}
+
+        {/* Actions */}
+        <div className="flex gap-4">
+          <Button
+            type="submit"
+            size="lg"
+            disabled={loading}
+            className="flex-1 text-lg py-6 font-black shadow-theme-lg"
+          >
+            {loading ? (
+              <>
+                <Loader2 className="w-5 h-5 mr-2 animate-spin" />
+                SAVING...
+              </>
+            ) : (
+              <>
+                <Save className="w-5 h-5 mr-2" />
+                SAVE PROFILE
+              </>
+            )}
+          </Button>
+          <Button
+            type="button"
+            size="lg"
+            variant="outline"
+            onClick={() => router.push(`/profile/${user.id}`)}
+            className="text-lg py-6 font-black"
+          >
+            CANCEL
+          </Button>
+        </div>
+      </div>
+    </form>
+  )
+}
