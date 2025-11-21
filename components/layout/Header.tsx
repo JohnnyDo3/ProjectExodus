@@ -21,7 +21,6 @@ export function Header() {
     { name: 'Community', href: '/community' },
     { name: 'Network', href: '/network' },
     { name: 'Events', href: '/events' },
-    { name: 'About', href: '/about' },
   ]
 
   const handleSignOut = async () => {
