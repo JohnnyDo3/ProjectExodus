@@ -6,16 +6,16 @@ import Link from 'next/link'
 
 export default function RegenerativeAgriculturePage() {
   const commandments = [
-    { number: 1, title: 'STEWARDSHIP', icon: Shield, desc: 'Guard, protect, and manage the Earth' },
-    { number: 2, title: 'BIODIVERSITY', icon: Sprout, desc: 'Prioritize diversification' },
-    { number: 3, title: 'INTEGRITY', icon: Heart, desc: "Don't exploit sustainability, live it" },
-    { number: 4, title: 'REST', icon: Leaf, desc: 'Honor the rhythm of rest' },
-    { number: 5, title: 'LEGACY', icon: TrendingUp, desc: 'Keep traditions while innovating' },
-    { number: 6, title: 'SANCTITY', icon: Shield, desc: 'Protect human, economic, ecological life' },
-    { number: 7, title: 'LOYALTY', icon: Users, desc: 'Stand with community' },
-    { number: 8, title: 'EQUITY', icon: Scale, desc: 'Fair share in Justice' },
-    { number: 9, title: 'TRANSPARENCY', icon: Eye, desc: 'Maintain honest reporting' },
-    { number: 10, title: 'SUSTAINABILITY', icon: Sprout, desc: 'Embrace sufficiency and resilience' },
+    { number: 1, title: 'STEWARDSHIP', icon: Shield, desc: 'Guard, Protect, and Manage the Earth and her Natural Resources above all Profit.' },
+    { number: 2, title: 'BIODIVERSITY', icon: Sprout, desc: 'Prioritize Diversification, Nurture Variety, not Uniform Yield, but allow Creation\'s Richness to Thrive.' },
+    { number: 3, title: 'INTEGRITY', icon: Heart, desc: 'Don\'t exploit sustainability, live it with integrity. Speak truthfully, align branding with practice and match words with proper action. Transparency ensures Accountability.' },
+    { number: 4, title: 'REST', icon: Leaf, desc: 'Honor the rhythm of rest. The Land, Workers, and Community need time to recover. Operational models restore land, labor, and community capacity. Renewal brings Abundance.' },
+    { number: 5, title: 'LEGACY', icon: TrendingUp, desc: 'Keep traditions that promote Life while innovating to nourish the lives of tomorrow.' },
+    { number: 6, title: 'SANCTITY', icon: Shield, desc: 'Protect and Promote human life, economic life, and ecological life. Do not destroy through waste, greed, and neglect. Every seed, every being, matters.' },
+    { number: 7, title: 'LOYALTY', icon: Users, desc: 'Stand Loyal with the covenant of community. Do not exploit, betray, or abandon those who labor and live beside you.' },
+    { number: 8, title: 'EQUITY', icon: Scale, desc: 'Everyone gets their fair share in Justice. Avoid over-extraction and prioritize long-term balance over short-term gain. Do not steal from the Soil, the Worker, or Future Generations.' },
+    { number: 9, title: 'TRANSPARENCY', icon: Eye, desc: 'Maintain a Transparent practice in reporting and operations. Be honest and tell the truth, never lie. Integrity is the Harvest of Truth.' },
+    { number: 10, title: 'SUSTAINABILITY', icon: Sprout, desc: 'Embrace and focus on sufficiency, resilience, abundance, and shared prosperity. Reject growth for growth\'s sake.' },
   ]
 
   return (
@@ -53,18 +53,24 @@ export default function RegenerativeAgriculturePage() {
               <p className="text-xl font-semibold text-theme-muted">Guiding principles for regenerative farming</p>
             </div>
 
-            <div className="grid md:grid-cols-2 lg:grid-cols-5 gap-6">
+            <div className="grid md:grid-cols-2 gap-6">
               {commandments.map((commandment) => {
                 const Icon = commandment.icon
                 return (
                   <Card key={commandment.number} className="border-4 border-theme-primary hover:scale-105 transition-transform">
-                    <CardContent className="p-6 text-center">
-                      <div className="w-12 h-12 mx-auto mb-3 rounded-full bg-theme-primary flex items-center justify-center">
-                        <Icon className="w-6 h-6 text-[var(--primary-foreground)]" />
+                    <CardContent className="p-8">
+                      <div className="flex items-start gap-4">
+                        <div className="flex-shrink-0">
+                          <div className="w-16 h-16 rounded-full bg-theme-primary flex items-center justify-center mb-2">
+                            <Icon className="w-8 h-8 text-[var(--primary-foreground)]" />
+                          </div>
+                          <div className="text-4xl font-black text-theme-primary text-center">{commandment.number}</div>
+                        </div>
+                        <div className="flex-1">
+                          <h3 className="text-2xl font-black text-[var(--foreground)] mb-3">{commandment.title}</h3>
+                          <p className="text-base font-medium text-theme-muted leading-relaxed">{commandment.desc}</p>
+                        </div>
                       </div>
-                      <div className="text-3xl font-black text-theme-primary mb-2">{commandment.number}</div>
-                      <h3 className="text-lg font-black text-[var(--foreground)] mb-2">{commandment.title}</h3>
-                      <p className="text-sm text-theme-muted">{commandment.desc}</p>
                     </CardContent>
                   </Card>
                 )
