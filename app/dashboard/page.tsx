@@ -19,6 +19,10 @@ import {
   Users,
   Briefcase,
   Target,
+  MapPin,
+  Video,
+  Globe,
+  FileText,
 } from 'lucide-react'
 import Link from 'next/link'
 import { useEffect, useState } from 'react'
@@ -27,10 +31,13 @@ export default function DashboardPage() {
   const { data: session, status } = useSession()
   const [projects, setProjects] = useState<any[]>([])
   const [isLoadingProjects, setIsLoadingProjects] = useState(true)
+  const [activities, setActivities] = useState<any[]>([])
+  const [isLoadingActivities, setIsLoadingActivities] = useState(true)
 
   useEffect(() => {
     if (session?.user?.id) {
       fetchUserProjects()
+      fetchActivityFeed()
     }
   }, [session?.user?.id])
 
@@ -52,6 +59,21 @@ export default function DashboardPage() {
       console.error('Error fetching projects:', error)
     } finally {
       setIsLoadingProjects(false)
+    }
+  }
+
+  const fetchActivityFeed = async () => {
+    try {
+      const res = await fetch('/api/activity?limit=10')
+      const data = await res.json()
+
+      if (data.success) {
+        setActivities(data.data)
+      }
+    } catch (error) {
+      console.error('Error fetching activity feed:', error)
+    } finally {
+      setIsLoadingActivities(false)
     }
   }
 
@@ -386,17 +408,139 @@ export default function DashboardPage() {
                 <CardHeader>
                   <CardTitle className="text-2xl font-black flex items-center gap-2">
                     <TrendingUp className="w-6 h-6 text-theme-primary" />
-                    RECENT ACTIVITY
+                    NETWORK ACTIVITY
                   </CardTitle>
+                  <p className="text-sm font-semibold text-theme-muted">See what people you follow are doing</p>
                 </CardHeader>
                 <CardContent>
-                  <div className="text-center py-12">
-                    <MessageCircle className="w-16 h-16 text-theme-muted mx-auto mb-4 opacity-50" />
-                    <p className="text-lg font-bold text-theme-muted">No recent activity</p>
-                    <p className="text-sm font-medium text-theme-muted mt-2">
-                      Start exploring to see your activity here
-                    </p>
-                  </div>
+                  {isLoadingActivities ? (
+                    <div className="text-center py-12">
+                      <div className="w-12 h-12 border-4 border-theme-primary border-t-transparent rounded-full animate-spin mx-auto mb-4" />
+                      <p className="text-sm font-bold text-theme-muted">Loading activity...</p>
+                    </div>
+                  ) : activities.length === 0 ? (
+                    <div className="text-center py-12">
+                      <MessageCircle className="w-16 h-16 text-theme-muted mx-auto mb-4 opacity-50" />
+                      <p className="text-lg font-bold text-theme-muted">No activity yet</p>
+                      <p className="text-sm font-medium text-theme-muted mt-2 mb-4">
+                        Follow people from the network to see their activity here
+                      </p>
+                      <Link href="/network">
+                        <Button size="sm" className="font-bold">
+                          <Users className="w-4 h-4 mr-2" />
+                          BROWSE NETWORK
+                        </Button>
+                      </Link>
+                    </div>
+                  ) : (
+                    <div className="space-y-4 max-h-96 overflow-y-auto">
+                      {activities.map((activity) => {
+                        const getActivityIcon = () => {
+                          switch (activity.type) {
+                            case 'PROJECT_JOIN':
+                              return <Briefcase className="w-5 h-5 text-theme-primary" />
+                            case 'PROJECT_CREATE':
+                              return <Briefcase className="w-5 h-5 text-theme-accent" />
+                            case 'FORUM_POST':
+                              return <FileText className="w-5 h-5 text-theme-secondary" />
+                            case 'EVENT_CREATE':
+                              return <Calendar className="w-5 h-5 text-theme-primary" />
+                            case 'EVENT_RSVP':
+                              return activity.event?.type === 'VIRTUAL' ? <Video className="w-5 h-5 text-theme-primary" /> : activity.event?.type === 'IN_PERSON' ? <MapPin className="w-5 h-5 text-theme-accent" /> : <Globe className="w-5 h-5 text-theme-secondary" />
+                            default:
+                              return <TrendingUp className="w-5 h-5 text-theme-muted" />
+                          }
+                        }
+
+                        const getActivityText = () => {
+                          switch (activity.type) {
+                            case 'PROJECT_JOIN':
+                              return (
+                                <>
+                                  <strong>{activity.user.name || 'Someone'}</strong> joined the project{' '}
+                                  <Link href={`/community/projects/${activity.project.slug}`} className="font-black text-theme-primary hover:underline">
+                                    {activity.project.name}
+                                  </Link>
+                                </>
+                              )
+                            case 'PROJECT_CREATE':
+                              return (
+                                <>
+                                  <strong>{activity.user.name || 'Someone'}</strong> created a new project{' '}
+                                  <Link href={`/community/projects/${activity.project.slug}`} className="font-black text-theme-accent hover:underline">
+                                    {activity.project.name}
+                                  </Link>
+                                </>
+                              )
+                            case 'FORUM_POST':
+                              return (
+                                <>
+                                  <strong>{activity.user.name || 'Someone'}</strong> posted{' '}
+                                  <Link href={`/community/forum/${activity.forumPost.slug}`} className="font-black text-theme-secondary hover:underline">
+                                    {activity.forumPost.title}
+                                  </Link>
+                                </>
+                              )
+                            case 'EVENT_CREATE':
+                              return (
+                                <>
+                                  <strong>{activity.user.name || 'Someone'}</strong> created an event{' '}
+                                  <Link href={`/events/${activity.event.slug}`} className="font-black text-theme-primary hover:underline">
+                                    {activity.event.title}
+                                  </Link>
+                                </>
+                              )
+                            case 'EVENT_RSVP':
+                              return (
+                                <>
+                                  <strong>{activity.user.name || 'Someone'}</strong> is going to{' '}
+                                  <Link href={`/events/${activity.event.slug}`} className="font-black text-theme-accent hover:underline">
+                                    {activity.event.title}
+                                  </Link>
+                                </>
+                              )
+                            default:
+                              return <>{activity.user.name || 'Someone'} did something</>
+                          }
+                        }
+
+                        const timeAgo = (date: string) => {
+                          const seconds = Math.floor((new Date().getTime() - new Date(date).getTime()) / 1000)
+                          if (seconds < 60) return 'just now'
+                          if (seconds < 3600) return `${Math.floor(seconds / 60)}m ago`
+                          if (seconds < 86400) return `${Math.floor(seconds / 3600)}h ago`
+                          return `${Math.floor(seconds / 86400)}d ago`
+                        }
+
+                        return (
+                          <div key={activity.id} className="flex gap-3 p-3 bg-[var(--muted)] rounded-lg hover:bg-[color-mix(in_srgb,var(--primary)_10%,var(--background))] transition-colors">
+                            <div className="w-10 h-10 rounded-full bg-gradient-to-br from-[var(--primary)] to-[var(--accent)] flex items-center justify-center flex-shrink-0">
+                              {activity.user.image ? (
+                                <img
+                                  src={activity.user.image}
+                                  alt={activity.user.name || 'User'}
+                                  className="w-full h-full rounded-full object-cover"
+                                />
+                              ) : (
+                                <User className="w-5 h-5 text-[var(--primary-foreground)]" />
+                              )}
+                            </div>
+                            <div className="flex-1 min-w-0">
+                              <div className="flex items-center gap-2 mb-1">
+                                {getActivityIcon()}
+                                <p className="text-sm font-semibold text-[var(--foreground)] leading-tight">
+                                  {getActivityText()}
+                                </p>
+                              </div>
+                              <p className="text-xs font-medium text-theme-muted">
+                                {timeAgo(activity.createdAt)}
+                              </p>
+                            </div>
+                          </div>
+                        )
+                      })}
+                    </div>
+                  )}
                 </CardContent>
               </Card>
 
