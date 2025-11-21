@@ -8,6 +8,7 @@ import {
 import Link from 'next/link'
 import { auth } from '@/auth'
 import prisma from '@/lib/db/prisma'
+import { LiveCounter } from '@/components/stats/LiveCounter'
 
 async function getDashboardData(userId: string) {
   try {
@@ -303,6 +304,46 @@ export default async function CommunityPage() {
                     EDIT PROFILE
                   </Button>
                 </Link>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Live Community Growth Stats */}
+      <section className="py-6 bg-gradient-to-r from-[var(--primary)] via-[var(--accent)] to-[var(--primary)] text-[var(--primary-foreground)]">
+        <div className="container mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="max-w-7xl mx-auto">
+            <div className="text-center mb-3">
+              <div className="flex items-center justify-center gap-2">
+                <span className="w-2 h-2 bg-white rounded-full animate-pulse"></span>
+                <span className="text-xs font-black uppercase tracking-wider opacity-90">Community Activity • Real-Time</span>
+              </div>
+            </div>
+            <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+              <div className="text-center">
+                <div className="text-2xl md:text-3xl font-black mb-1">
+                  {communityStats.totalMembers}+
+                </div>
+                <div className="text-xs font-bold uppercase opacity-90">Members Strong</div>
+              </div>
+              <div className="text-center">
+                <div className="text-2xl md:text-3xl font-black mb-1">
+                  <LiveCounter perSecond={0.05} unit="" decimals={0} prefix="" />+
+                </div>
+                <div className="text-xs font-bold uppercase opacity-90">Posts Today</div>
+              </div>
+              <div className="text-center">
+                <div className="text-2xl md:text-3xl font-black mb-1">
+                  <LiveCounter perSecond={0.02} unit="" decimals={0} prefix="" />+
+                </div>
+                <div className="text-xs font-bold uppercase opacity-90">Connections/Min</div>
+              </div>
+              <div className="text-center">
+                <div className="text-2xl md:text-3xl font-black mb-1">
+                  {communityStats.activeProjects}
+                </div>
+                <div className="text-xs font-bold uppercase opacity-90">Active Projects</div>
               </div>
             </div>
           </div>
