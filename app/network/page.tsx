@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from 'react'
 import { useSession } from 'next-auth/react'
+import { useRouter } from 'next/navigation'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/Card'
 import { Button } from '@/components/ui/Button'
 import {
@@ -37,6 +38,7 @@ interface UserProfile {
 
 export default function NetworkPage() {
   const { data: session } = useSession()
+  const router = useRouter()
   const [users, setUsers] = useState<UserProfile[]>([])
   const [filteredUsers, setFilteredUsers] = useState<UserProfile[]>([])
   const [searchQuery, setSearchQuery] = useState('')
@@ -400,6 +402,7 @@ export default function NetworkPage() {
                           <Button
                             variant="outline"
                             disabled={!session?.user}
+                            onClick={() => router.push(`/messages/${user.id}`)}
                             className="font-bold"
                             title="Send Message"
                           >
