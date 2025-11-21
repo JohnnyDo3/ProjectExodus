@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { prisma } from '@/lib/db'
 import { auth } from '@/auth'
+import { pusherServer } from '@/lib/pusher'
 
 // GET /api/messages/[userId] - Get conversation with a specific user
 export async function GET(
@@ -163,6 +164,16 @@ export async function POST(
         },
       },
     })
+
+    // ⚡ REAL-TIME: Trigger Pusher event for instant delivery
+    await pusherServer.trigger(
+      `private-chat-${userId}`,
+      'new-message',
+      {
+        message,
+        timestamp: new Date().toISOString(),
+      }
+    )
 
     return NextResponse.json({
       success: true,

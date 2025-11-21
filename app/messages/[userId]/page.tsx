@@ -12,8 +12,10 @@ import {
   MapPin,
   Lock,
   Loader2,
+  Zap,
 } from 'lucide-react'
 import Link from 'next/link'
+import { getPusherClient } from '@/lib/pusher'
 
 interface Message {
   id: string
@@ -63,10 +65,30 @@ export default function ConversationPage({ params }: { params: { userId: string 
       return
     }
 
+    // Initial fetch
     fetchConversation()
-    // Poll for new messages every 3 seconds
-    const interval = setInterval(fetchConversation, 3000)
-    return () => clearInterval(interval)
+
+    // ⚡ REAL-TIME: Subscribe to Pusher for instant message delivery
+    const pusher = getPusherClient()
+    if (!pusher) return
+
+    const channel = pusher.subscribe(`private-chat-${session.user.id}`)
+
+    channel.bind('new-message', (data: { message: Message; timestamp: string }) => {
+      // Only add message if it's from the current conversation
+      if (data.message.senderId === params.userId || data.message.receiverId === params.userId) {
+        setMessages((prev) => {
+          // Prevent duplicates
+          if (prev.some(msg => msg.id === data.message.id)) return prev
+          return [...prev, data.message]
+        })
+      }
+    })
+
+    return () => {
+      channel.unbind_all()
+      channel.unsubscribe()
+    }
   }, [session?.user, params.userId])
 
   useEffect(() => {
@@ -195,10 +217,16 @@ export default function ConversationPage({ params }: { params: { userId: string 
                 )}
               </div>
 
-              {/* Security Badge */}
-              <div className="hidden sm:flex items-center gap-2 px-4 py-2 rounded-full bg-[color-mix(in_srgb,var(--accent)_20%,var(--background))] text-theme-accent text-sm font-black">
-                <Lock className="w-4 h-4" />
-                SECURE
+              {/* Status Badges */}
+              <div className="hidden sm:flex items-center gap-2">
+                <div className="flex items-center gap-2 px-4 py-2 rounded-full bg-[color-mix(in_srgb,var(--accent)_20%,var(--background))] text-theme-accent text-sm font-black">
+                  <Lock className="w-4 h-4" />
+                  SECURE
+                </div>
+                <div className="flex items-center gap-2 px-4 py-2 rounded-full bg-[color-mix(in_srgb,var(--primary)_20%,var(--background))] text-theme-primary text-sm font-black">
+                  <Zap className="w-4 h-4 animate-pulse" />
+                  REAL-TIME
+                </div>
               </div>
             </div>
           </div>
