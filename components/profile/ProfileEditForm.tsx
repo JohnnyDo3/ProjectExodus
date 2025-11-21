@@ -24,6 +24,13 @@ interface User {
   expertise: string[]
   experience: any
   education: any
+  skills: any
+  languages: any
+  certifications: any
+  volunteer: any
+  publications: any
+  honors: any
+  projects: any
 }
 
 interface ProfileEditFormProps {
@@ -51,7 +58,14 @@ export function ProfileEditForm({ user }: ProfileEditFormProps) {
     interests: user.interests || [],
     expertise: user.expertise || [],
     experience: user.experience || [],
-    education: user.education || []
+    education: user.education || [],
+    skills: user.skills || [],
+    languages: user.languages || [],
+    certifications: user.certifications || [],
+    volunteer: user.volunteer || [],
+    publications: user.publications || [],
+    honors: user.honors || [],
+    projects: user.projects || []
   })
 
   const [newInterest, setNewInterest] = useState('')
@@ -78,6 +92,34 @@ export function ProfileEditForm({ user }: ProfileEditFormProps) {
     startYear: '',
     endYear: ''
   })
+
+  // Skills state
+  const [showSkillForm, setShowSkillForm] = useState(false)
+  const [skillForm, setSkillForm] = useState({ name: '', level: 'Intermediate' })
+
+  // Languages state
+  const [showLanguageForm, setShowLanguageForm] = useState(false)
+  const [languageForm, setLanguageForm] = useState({ name: '', proficiency: 'Professional Working' })
+
+  // Certifications state
+  const [showCertForm, setShowCertForm] = useState(false)
+  const [certForm, setCertForm] = useState({ name: '', issuer: '', date: '', url: '' })
+
+  // Volunteer state
+  const [showVolunteerForm, setShowVolunteerForm] = useState(false)
+  const [volunteerForm, setVolunteerForm] = useState({ role: '', organization: '', startDate: '', endDate: '', description: '' })
+
+  // Publications state
+  const [showPublicationForm, setShowPublicationForm] = useState(false)
+  const [publicationForm, setPublicationForm] = useState({ title: '', publisher: '', date: '', url: '', description: '' })
+
+  // Honors state
+  const [showHonorForm, setShowHonorForm] = useState(false)
+  const [honorForm, setHonorForm] = useState({ title: '', issuer: '', date: '', description: '' })
+
+  // Projects state
+  const [showProjectForm, setShowProjectForm] = useState(false)
+  const [projectForm, setProjectForm] = useState({ name: '', startDate: '', endDate: '', description: '', url: '' })
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     setFormData({
@@ -198,6 +240,90 @@ export function ProfileEditForm({ user }: ProfileEditFormProps) {
     setEducationForm({ school: '', degree: '', fieldOfStudy: '', startYear: '', endYear: '' })
     setShowEducationForm(false)
     setEditingEduIndex(null)
+  }
+
+  // Skills handlers
+  const addSkill = () => {
+    if (skillForm.name) {
+      setFormData({ ...formData, skills: [...formData.skills, skillForm] })
+      setSkillForm({ name: '', level: 'Intermediate' })
+      setShowSkillForm(false)
+    }
+  }
+  const removeSkill = (index: number) => {
+    setFormData({ ...formData, skills: formData.skills.filter((_: any, i: number) => i !== index) })
+  }
+
+  // Languages handlers
+  const addLanguage = () => {
+    if (languageForm.name) {
+      setFormData({ ...formData, languages: [...formData.languages, languageForm] })
+      setLanguageForm({ name: '', proficiency: 'Professional Working' })
+      setShowLanguageForm(false)
+    }
+  }
+  const removeLanguage = (index: number) => {
+    setFormData({ ...formData, languages: formData.languages.filter((_: any, i: number) => i !== index) })
+  }
+
+  // Certifications handlers
+  const addCertification = () => {
+    if (certForm.name && certForm.issuer) {
+      setFormData({ ...formData, certifications: [...formData.certifications, certForm] })
+      setCertForm({ name: '', issuer: '', date: '', url: '' })
+      setShowCertForm(false)
+    }
+  }
+  const removeCertification = (index: number) => {
+    setFormData({ ...formData, certifications: formData.certifications.filter((_: any, i: number) => i !== index) })
+  }
+
+  // Volunteer handlers
+  const addVolunteer = () => {
+    if (volunteerForm.role && volunteerForm.organization) {
+      setFormData({ ...formData, volunteer: [...formData.volunteer, volunteerForm] })
+      setVolunteerForm({ role: '', organization: '', startDate: '', endDate: '', description: '' })
+      setShowVolunteerForm(false)
+    }
+  }
+  const removeVolunteer = (index: number) => {
+    setFormData({ ...formData, volunteer: formData.volunteer.filter((_: any, i: number) => i !== index) })
+  }
+
+  // Publications handlers
+  const addPublication = () => {
+    if (publicationForm.title) {
+      setFormData({ ...formData, publications: [...formData.publications, publicationForm] })
+      setPublicationForm({ title: '', publisher: '', date: '', url: '', description: '' })
+      setShowPublicationForm(false)
+    }
+  }
+  const removePublication = (index: number) => {
+    setFormData({ ...formData, publications: formData.publications.filter((_: any, i: number) => i !== index) })
+  }
+
+  // Honors handlers
+  const addHonor = () => {
+    if (honorForm.title) {
+      setFormData({ ...formData, honors: [...formData.honors, honorForm] })
+      setHonorForm({ title: '', issuer: '', date: '', description: '' })
+      setShowHonorForm(false)
+    }
+  }
+  const removeHonor = (index: number) => {
+    setFormData({ ...formData, honors: formData.honors.filter((_: any, i: number) => i !== index) })
+  }
+
+  // Projects handlers
+  const addProject = () => {
+    if (projectForm.name) {
+      setFormData({ ...formData, projects: [...formData.projects, projectForm] })
+      setProjectForm({ name: '', startDate: '', endDate: '', description: '', url: '' })
+      setShowProjectForm(false)
+    }
+  }
+  const removeProject = (index: number) => {
+    setFormData({ ...formData, projects: formData.projects.filter((_: any, i: number) => i !== index) })
   }
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -752,6 +878,461 @@ export function ProfileEditForm({ user }: ProfileEditFormProps) {
           </CardContent>
         </Card>
 
+
+        {/* Skills Section */}
+        <Card className="border-4 border-theme-secondary">
+          <CardContent className="p-8">
+            <div className="flex justify-between items-center mb-6">
+              <h2 className="text-2xl font-black text-[var(--foreground)]">
+                SKILLS (OPTIONAL)
+              </h2>
+              {!showSkillForm && (
+                <Button type="button" onClick={() => setShowSkillForm(true)} className="font-black">
+                  <Plus className="w-5 h-5 mr-2" />
+                  ADD SKILL
+                </Button>
+              )}
+            </div>
+
+            {showSkillForm && (
+              <div className="mb-6 p-6 bg-[var(--muted)] rounded-lg border-2 border-theme-secondary space-y-4">
+                <div>
+                  <label className="block text-sm font-bold text-theme-muted mb-2">SKILL NAME *</label>
+                  <input
+                    type="text"
+                    value={skillForm.name}
+                    onChange={(e) => setSkillForm({ ...skillForm, name: e.target.value })}
+                    className="w-full px-4 py-3 rounded-lg bg-[var(--card)] border-2 border-[var(--border)] text-[var(--foreground)] focus:border-theme-secondary transition-colors font-medium"
+                    placeholder="e.g., Solar Panel Installation"
+                  />
+                </div>
+                <div>
+                  <label className="block text-sm font-bold text-theme-muted mb-2">PROFICIENCY LEVEL</label>
+                  <select
+                    value={skillForm.level}
+                    onChange={(e) => setSkillForm({ ...skillForm, level: e.target.value })}
+                    className="w-full px-4 py-3 rounded-lg bg-[var(--card)] border-2 border-[var(--border)] text-[var(--foreground)] focus:border-theme-secondary transition-colors font-medium"
+                  >
+                    <option>Beginner</option>
+                    <option>Intermediate</option>
+                    <option>Advanced</option>
+                    <option>Expert</option>
+                  </select>
+                </div>
+                <div className="flex gap-2">
+                  <Button type="button" onClick={addSkill} className="font-black">ADD</Button>
+                  <Button type="button" onClick={() => setShowSkillForm(false)} variant="outline" className="font-black">CANCEL</Button>
+                </div>
+              </div>
+            )}
+
+            <div className="flex flex-wrap gap-3">
+              {formData.skills.map((skill: any, index: number) => (
+                <span key={index} className="inline-flex items-center gap-2 px-4 py-2 bg-gradient-to-br from-[var(--secondary)] to-[color-mix(in_srgb,var(--secondary)_80%,black)] text-[var(--primary-foreground)] rounded-lg font-bold shadow-theme-md">
+                  {skill.name} <span className="text-xs opacity-75">({skill.level})</span>
+                  <button type="button" onClick={() => removeSkill(index)} className="hover:text-red-300"><X className="w-4 h-4" /></button>
+                </span>
+              ))}
+            </div>
+          </CardContent>
+        </Card>
+
+        {/* Languages Section */}
+        <Card className="border-4 border-theme-primary">
+          <CardContent className="p-8">
+            <div className="flex justify-between items-center mb-6">
+              <h2 className="text-2xl font-black text-[var(--foreground)]">LANGUAGES (OPTIONAL)</h2>
+              {!showLanguageForm && (
+                <Button type="button" onClick={() => setShowLanguageForm(true)} className="font-black">
+                  <Plus className="w-5 h-5 mr-2" />
+                  ADD LANGUAGE
+                </Button>
+              )}
+            </div>
+
+            {showLanguageForm && (
+              <div className="mb-6 p-6 bg-[var(--muted)] rounded-lg border-2 border-theme-primary space-y-4">
+                <div>
+                  <label className="block text-sm font-bold text-theme-muted mb-2">LANGUAGE *</label>
+                  <input
+                    type="text"
+                    value={languageForm.name}
+                    onChange={(e) => setLanguageForm({ ...languageForm, name: e.target.value })}
+                    className="w-full px-4 py-3 rounded-lg bg-[var(--card)] border-2 border-[var(--border)] text-[var(--foreground)] focus:border-theme-primary transition-colors font-medium"
+                    placeholder="e.g., Spanish"
+                  />
+                </div>
+                <div>
+                  <label className="block text-sm font-bold text-theme-muted mb-2">PROFICIENCY</label>
+                  <select
+                    value={languageForm.proficiency}
+                    onChange={(e) => setLanguageForm({ ...languageForm, proficiency: e.target.value })}
+                    className="w-full px-4 py-3 rounded-lg bg-[var(--card)] border-2 border-[var(--border)] text-[var(--foreground)] focus:border-theme-primary transition-colors font-medium"
+                  >
+                    <option>Elementary</option>
+                    <option>Limited Working</option>
+                    <option>Professional Working</option>
+                    <option>Full Professional</option>
+                    <option>Native or Bilingual</option>
+                  </select>
+                </div>
+                <div className="flex gap-2">
+                  <Button type="button" onClick={addLanguage} className="font-black">ADD</Button>
+                  <Button type="button" onClick={() => setShowLanguageForm(false)} variant="outline" className="font-black">CANCEL</Button>
+                </div>
+              </div>
+            )}
+
+            <div className="space-y-2">
+              {formData.languages.map((lang: any, index: number) => (
+                <div key={index} className="flex justify-between items-center p-3 bg-[var(--muted)] rounded-lg border-2 border-theme-muted">
+                  <div>
+                    <span className="font-black text-theme-primary">{lang.name}</span>
+                    <span className="ml-3 text-sm font-semibold text-theme-muted">- {lang.proficiency}</span>
+                  </div>
+                  <Button type="button" size="sm" variant="outline" onClick={() => removeLanguage(index)}><X className="w-4 h-4" /></Button>
+                </div>
+              ))}
+            </div>
+          </CardContent>
+        </Card>
+
+        {/* Certifications Section */}
+        <Card className="border-4 border-theme-accent">
+          <CardContent className="p-8">
+            <div className="flex justify-between items-center mb-6">
+              <h2 className="text-2xl font-black text-[var(--foreground)]">CERTIFICATIONS & LICENSES (OPTIONAL)</h2>
+              {!showCertForm && (
+                <Button type="button" onClick={() => setShowCertForm(true)} className="font-black">
+                  <Plus className="w-5 h-5 mr-2" />
+                  ADD CERTIFICATION
+                </Button>
+              )}
+            </div>
+
+            {showCertForm && (
+              <div className="mb-6 p-6 bg-[var(--muted)] rounded-lg border-2 border-theme-accent space-y-4">
+                <div>
+                  <label className="block text-sm font-bold text-theme-muted mb-2">CERTIFICATION NAME *</label>
+                  <input
+                    type="text"
+                    value={certForm.name}
+                    onChange={(e) => setCertForm({ ...certForm, name: e.target.value })}
+                    className="w-full px-4 py-3 rounded-lg bg-[var(--card)] border-2 border-[var(--border)] text-[var(--foreground)] focus:border-theme-accent transition-colors font-medium"
+                    placeholder="e.g., LEED Green Associate"
+                  />
+                </div>
+                <div>
+                  <label className="block text-sm font-bold text-theme-muted mb-2">ISSUING ORGANIZATION *</label>
+                  <input
+                    type="text"
+                    value={certForm.issuer}
+                    onChange={(e) => setCertForm({ ...certForm, issuer: e.target.value })}
+                    className="w-full px-4 py-3 rounded-lg bg-[var(--card)] border-2 border-[var(--border)] text-[var(--foreground)] focus:border-theme-accent transition-colors font-medium"
+                    placeholder="e.g., U.S. Green Building Council"
+                  />
+                </div>
+                <div className="grid grid-cols-2 gap-4">
+                  <div>
+                    <label className="block text-sm font-bold text-theme-muted mb-2">ISSUE DATE</label>
+                    <input
+                      type="text"
+                      value={certForm.date}
+                      onChange={(e) => setCertForm({ ...certForm, date: e.target.value })}
+                      className="w-full px-4 py-3 rounded-lg bg-[var(--card)] border-2 border-[var(--border)] text-[var(--foreground)] focus:border-theme-accent transition-colors font-medium"
+                      placeholder="Jan 2023"
+                    />
+                  </div>
+                  <div>
+                    <label className="block text-sm font-bold text-theme-muted mb-2">CREDENTIAL URL</label>
+                    <input
+                      type="text"
+                      value={certForm.url}
+                      onChange={(e) => setCertForm({ ...certForm, url: e.target.value })}
+                      className="w-full px-4 py-3 rounded-lg bg-[var(--card)] border-2 border-[var(--border)] text-[var(--foreground)] focus:border-theme-accent transition-colors font-medium"
+                      placeholder="https://..."
+                    />
+                  </div>
+                </div>
+                <div className="flex gap-2">
+                  <Button type="button" onClick={addCertification} className="font-black">ADD</Button>
+                  <Button type="button" onClick={() => setShowCertForm(false)} variant="outline" className="font-black">CANCEL</Button>
+                </div>
+              </div>
+            )}
+
+            <div className="space-y-3">
+              {formData.certifications.map((cert: any, index: number) => (
+                <div key={index} className="p-4 bg-[var(--muted)] rounded-lg border-2 border-theme-muted">
+                  <div className="flex justify-between items-start">
+                    <div>
+                      <h3 className="text-lg font-black text-theme-accent">{cert.name}</h3>
+                      <p className="text-base font-bold text-[var(--foreground)]">{cert.issuer}</p>
+                      {cert.date && <p className="text-sm font-semibold text-theme-muted">Issued {cert.date}</p>}
+                      {cert.url && <a href={cert.url} target="_blank" rel="noopener noreferrer" className="text-sm font-bold text-theme-primary hover:text-theme-accent">View Credential →</a>}
+                    </div>
+                    <Button type="button" size="sm" variant="outline" onClick={() => removeCertification(index)}><X className="w-4 h-4" /></Button>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </CardContent>
+        </Card>
+
+        {/* Volunteer Experience Section */}
+        <Card className="border-4 border-theme-secondary">
+          <CardContent className="p-8">
+            <div className="flex justify-between items-center mb-6">
+              <h2 className="text-2xl font-black text-[var(--foreground)]">VOLUNTEER EXPERIENCE (OPTIONAL)</h2>
+              {!showVolunteerForm && (
+                <Button type="button" onClick={() => setShowVolunteerForm(true)} className="font-black">
+                  <Plus className="w-5 h-5 mr-2" />
+                  ADD VOLUNTEER WORK
+                </Button>
+              )}
+            </div>
+
+            {showVolunteerForm && (
+              <div className="mb-6 p-6 bg-[var(--muted)] rounded-lg border-2 border-theme-secondary space-y-4">
+                <div>
+                  <label className="block text-sm font-bold text-theme-muted mb-2">ROLE *</label>
+                  <input
+                    type="text"
+                    value={volunteerForm.role}
+                    onChange={(e) => setVolunteerForm({ ...volunteerForm, role: e.target.value })}
+                    className="w-full px-4 py-3 rounded-lg bg-[var(--card)] border-2 border-[var(--border)] text-[var(--foreground)] focus:border-theme-secondary transition-colors font-medium"
+                    placeholder="e.g., Community Garden Coordinator"
+                  />
+                </div>
+                <div>
+                  <label className="block text-sm font-bold text-theme-muted mb-2">ORGANIZATION *</label>
+                  <input
+                    type="text"
+                    value={volunteerForm.organization}
+                    onChange={(e) => setVolunteerForm({ ...volunteerForm, organization: e.target.value })}
+                    className="w-full px-4 py-3 rounded-lg bg-[var(--card)] border-2 border-[var(--border)] text-[var(--foreground)] focus:border-theme-secondary transition-colors font-medium"
+                    placeholder="e.g., Green Earth Initiative"
+                  />
+                </div>
+                <div className="grid grid-cols-2 gap-4">
+                  <div>
+                    <label className="block text-sm font-bold text-theme-muted mb-2">START DATE</label>
+                    <input type="text" value={volunteerForm.startDate} onChange={(e) => setVolunteerForm({ ...volunteerForm, startDate: e.target.value })} className="w-full px-4 py-3 rounded-lg bg-[var(--card)] border-2 border-[var(--border)] text-[var(--foreground)] focus:border-theme-secondary transition-colors font-medium" placeholder="Jan 2022" />
+                  </div>
+                  <div>
+                    <label className="block text-sm font-bold text-theme-muted mb-2">END DATE</label>
+                    <input type="text" value={volunteerForm.endDate} onChange={(e) => setVolunteerForm({ ...volunteerForm, endDate: e.target.value })} className="w-full px-4 py-3 rounded-lg bg-[var(--card)] border-2 border-[var(--border)] text-[var(--foreground)] focus:border-theme-secondary transition-colors font-medium" placeholder="Present" />
+                  </div>
+                </div>
+                <div>
+                  <label className="block text-sm font-bold text-theme-muted mb-2">DESCRIPTION</label>
+                  <textarea value={volunteerForm.description} onChange={(e) => setVolunteerForm({ ...volunteerForm, description: e.target.value })} rows={3} className="w-full px-4 py-3 rounded-lg bg-[var(--card)] border-2 border-[var(--border)] text-[var(--foreground)] focus:border-theme-secondary transition-colors font-medium resize-none" placeholder="What did you do?" />
+                </div>
+                <div className="flex gap-2">
+                  <Button type="button" onClick={addVolunteer} className="font-black">ADD</Button>
+                  <Button type="button" onClick={() => setShowVolunteerForm(false)} variant="outline" className="font-black">CANCEL</Button>
+                </div>
+              </div>
+            )}
+
+            <div className="space-y-3">
+              {formData.volunteer.map((vol: any, index: number) => (
+                <div key={index} className="p-4 bg-[var(--muted)] rounded-lg border-2 border-theme-muted">
+                  <div className="flex justify-between items-start">
+                    <div>
+                      <h3 className="text-lg font-black text-theme-secondary">{vol.role}</h3>
+                      <p className="text-base font-bold text-[var(--foreground)]">{vol.organization}</p>
+                      <p className="text-sm font-semibold text-theme-muted">{vol.startDate} - {vol.endDate || 'Present'}</p>
+                      {vol.description && <p className="text-sm font-medium text-theme-muted mt-2">{vol.description}</p>}
+                    </div>
+                    <Button type="button" size="sm" variant="outline" onClick={() => removeVolunteer(index)}><X className="w-4 h-4" /></Button>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </CardContent>
+        </Card>
+
+        {/* Publications Section */}
+        <Card className="border-4 border-theme-primary">
+          <CardContent className="p-8">
+            <div className="flex justify-between items-center mb-6">
+              <h2 className="text-2xl font-black text-[var(--foreground)]">PUBLICATIONS (OPTIONAL)</h2>
+              {!showPublicationForm && (
+                <Button type="button" onClick={() => setShowPublicationForm(true)} className="font-black">
+                  <Plus className="w-5 h-5 mr-2" />
+                  ADD PUBLICATION
+                </Button>
+              )}
+            </div>
+
+            {showPublicationForm && (
+              <div className="mb-6 p-6 bg-[var(--muted)] rounded-lg border-2 border-theme-primary space-y-4">
+                <div>
+                  <label className="block text-sm font-bold text-theme-muted mb-2">TITLE *</label>
+                  <input type="text" value={publicationForm.title} onChange={(e) => setPublicationForm({ ...publicationForm, title: e.target.value })} className="w-full px-4 py-3 rounded-lg bg-[var(--card)] border-2 border-[var(--border)] text-[var(--foreground)] focus:border-theme-primary transition-colors font-medium" placeholder="e.g., Sustainable Agriculture Practices in Urban Environments" />
+                </div>
+                <div className="grid grid-cols-2 gap-4">
+                  <div>
+                    <label className="block text-sm font-bold text-theme-muted mb-2">PUBLISHER</label>
+                    <input type="text" value={publicationForm.publisher} onChange={(e) => setPublicationForm({ ...publicationForm, publisher: e.target.value })} className="w-full px-4 py-3 rounded-lg bg-[var(--card)] border-2 border-[var(--border)] text-[var(--foreground)] focus:border-theme-primary transition-colors font-medium" placeholder="Journal or Publisher" />
+                  </div>
+                  <div>
+                    <label className="block text-sm font-bold text-theme-muted mb-2">DATE</label>
+                    <input type="text" value={publicationForm.date} onChange={(e) => setPublicationForm({ ...publicationForm, date: e.target.value })} className="w-full px-4 py-3 rounded-lg bg-[var(--card)] border-2 border-[var(--border)] text-[var(--foreground)] focus:border-theme-primary transition-colors font-medium" placeholder="Jan 2023" />
+                  </div>
+                </div>
+                <div>
+                  <label className="block text-sm font-bold text-theme-muted mb-2">URL</label>
+                  <input type="text" value={publicationForm.url} onChange={(e) => setPublicationForm({ ...publicationForm, url: e.target.value })} className="w-full px-4 py-3 rounded-lg bg-[var(--card)] border-2 border-[var(--border)] text-[var(--foreground)] focus:border-theme-primary transition-colors font-medium" placeholder="https://..." />
+                </div>
+                <div>
+                  <label className="block text-sm font-bold text-theme-muted mb-2">DESCRIPTION</label>
+                  <textarea value={publicationForm.description} onChange={(e) => setPublicationForm({ ...publicationForm, description: e.target.value })} rows={2} className="w-full px-4 py-3 rounded-lg bg-[var(--card)] border-2 border-[var(--border)] text-[var(--foreground)] focus:border-theme-primary transition-colors font-medium resize-none" placeholder="Brief description" />
+                </div>
+                <div className="flex gap-2">
+                  <Button type="button" onClick={addPublication} className="font-black">ADD</Button>
+                  <Button type="button" onClick={() => setShowPublicationForm(false)} variant="outline" className="font-black">CANCEL</Button>
+                </div>
+              </div>
+            )}
+
+            <div className="space-y-3">
+              {formData.publications.map((pub: any, index: number) => (
+                <div key={index} className="p-4 bg-[var(--muted)] rounded-lg border-2 border-theme-muted">
+                  <div className="flex justify-between items-start">
+                    <div>
+                      <h3 className="text-lg font-black text-theme-primary">{pub.title}</h3>
+                      <p className="text-base font-bold text-[var(--foreground)]">{pub.publisher} {pub.date && `• ${pub.date}`}</p>
+                      {pub.description && <p className="text-sm font-medium text-theme-muted mt-2">{pub.description}</p>}
+                      {pub.url && <a href={pub.url} target="_blank" rel="noopener noreferrer" className="text-sm font-bold text-theme-primary hover:text-theme-accent mt-1 inline-block">View Publication →</a>}
+                    </div>
+                    <Button type="button" size="sm" variant="outline" onClick={() => removePublication(index)}><X className="w-4 h-4" /></Button>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </CardContent>
+        </Card>
+
+        {/* Honors & Awards Section */}
+        <Card className="border-4 border-theme-accent">
+          <CardContent className="p-8">
+            <div className="flex justify-between items-center mb-6">
+              <h2 className="text-2xl font-black text-[var(--foreground)]">HONORS & AWARDS (OPTIONAL)</h2>
+              {!showHonorForm && (
+                <Button type="button" onClick={() => setShowHonorForm(true)} className="font-black">
+                  <Plus className="w-5 h-5 mr-2" />
+                  ADD HONOR/AWARD
+                </Button>
+              )}
+            </div>
+
+            {showHonorForm && (
+              <div className="mb-6 p-6 bg-[var(--muted)] rounded-lg border-2 border-theme-accent space-y-4">
+                <div>
+                  <label className="block text-sm font-bold text-theme-muted mb-2">TITLE *</label>
+                  <input type="text" value={honorForm.title} onChange={(e) => setHonorForm({ ...honorForm, title: e.target.value })} className="w-full px-4 py-3 rounded-lg bg-[var(--card)] border-2 border-[var(--border)] text-[var(--foreground)] focus:border-theme-accent transition-colors font-medium" placeholder="e.g., Sustainability Champion Award" />
+                </div>
+                <div className="grid grid-cols-2 gap-4">
+                  <div>
+                    <label className="block text-sm font-bold text-theme-muted mb-2">ISSUER</label>
+                    <input type="text" value={honorForm.issuer} onChange={(e) => setHonorForm({ ...honorForm, issuer: e.target.value })} className="w-full px-4 py-3 rounded-lg bg-[var(--card)] border-2 border-[var(--border)] text-[var(--foreground)] focus:border-theme-accent transition-colors font-medium" placeholder="Organization" />
+                  </div>
+                  <div>
+                    <label className="block text-sm font-bold text-theme-muted mb-2">DATE</label>
+                    <input type="text" value={honorForm.date} onChange={(e) => setHonorForm({ ...honorForm, date: e.target.value })} className="w-full px-4 py-3 rounded-lg bg-[var(--card)] border-2 border-[var(--border)] text-[var(--foreground)] focus:border-theme-accent transition-colors font-medium" placeholder="2023" />
+                  </div>
+                </div>
+                <div>
+                  <label className="block text-sm font-bold text-theme-muted mb-2">DESCRIPTION</label>
+                  <textarea value={honorForm.description} onChange={(e) => setHonorForm({ ...honorForm, description: e.target.value })} rows={2} className="w-full px-4 py-3 rounded-lg bg-[var(--card)] border-2 border-[var(--border)] text-[var(--foreground)] focus:border-theme-accent transition-colors font-medium resize-none" placeholder="What was this awarded for?" />
+                </div>
+                <div className="flex gap-2">
+                  <Button type="button" onClick={addHonor} className="font-black">ADD</Button>
+                  <Button type="button" onClick={() => setShowHonorForm(false)} variant="outline" className="font-black">CANCEL</Button>
+                </div>
+              </div>
+            )}
+
+            <div className="space-y-3">
+              {formData.honors.map((honor: any, index: number) => (
+                <div key={index} className="p-4 bg-[var(--muted)] rounded-lg border-2 border-theme-muted">
+                  <div className="flex justify-between items-start">
+                    <div>
+                      <h3 className="text-lg font-black text-theme-accent">{honor.title}</h3>
+                      <p className="text-base font-bold text-[var(--foreground)]">{honor.issuer} {honor.date && `• ${honor.date}`}</p>
+                      {honor.description && <p className="text-sm font-medium text-theme-muted mt-2">{honor.description}</p>}
+                    </div>
+                    <Button type="button" size="sm" variant="outline" onClick={() => removeHonor(index)}><X className="w-4 h-4" /></Button>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </CardContent>
+        </Card>
+
+        {/* Projects Section */}
+        <Card className="border-4 border-theme-secondary">
+          <CardContent className="p-8">
+            <div className="flex justify-between items-center mb-6">
+              <h2 className="text-2xl font-black text-[var(--foreground)]">PROJECTS (OPTIONAL)</h2>
+              {!showProjectForm && (
+                <Button type="button" onClick={() => setShowProjectForm(true)} className="font-black">
+                  <Plus className="w-5 h-5 mr-2" />
+                  ADD PROJECT
+                </Button>
+              )}
+            </div>
+
+            {showProjectForm && (
+              <div className="mb-6 p-6 bg-[var(--muted)] rounded-lg border-2 border-theme-secondary space-y-4">
+                <div>
+                  <label className="block text-sm font-bold text-theme-muted mb-2">PROJECT NAME *</label>
+                  <input type="text" value={projectForm.name} onChange={(e) => setProjectForm({ ...projectForm, name: e.target.value })} className="w-full px-4 py-3 rounded-lg bg-[var(--card)] border-2 border-[var(--border)] text-[var(--foreground)] focus:border-theme-secondary transition-colors font-medium" placeholder="e.g., Community Solar Initiative" />
+                </div>
+                <div className="grid grid-cols-2 gap-4">
+                  <div>
+                    <label className="block text-sm font-bold text-theme-muted mb-2">START DATE</label>
+                    <input type="text" value={projectForm.startDate} onChange={(e) => setProjectForm({ ...projectForm, startDate: e.target.value })} className="w-full px-4 py-3 rounded-lg bg-[var(--card)] border-2 border-[var(--border)] text-[var(--foreground)] focus:border-theme-secondary transition-colors font-medium" placeholder="Jan 2023" />
+                  </div>
+                  <div>
+                    <label className="block text-sm font-bold text-theme-muted mb-2">END DATE</label>
+                    <input type="text" value={projectForm.endDate} onChange={(e) => setProjectForm({ ...projectForm, endDate: e.target.value })} className="w-full px-4 py-3 rounded-lg bg-[var(--card)] border-2 border-[var(--border)] text-[var(--foreground)] focus:border-theme-secondary transition-colors font-medium" placeholder="Present or Dec 2023" />
+                  </div>
+                </div>
+                <div>
+                  <label className="block text-sm font-bold text-theme-muted mb-2">PROJECT URL</label>
+                  <input type="text" value={projectForm.url} onChange={(e) => setProjectForm({ ...projectForm, url: e.target.value })} className="w-full px-4 py-3 rounded-lg bg-[var(--card)] border-2 border-[var(--border)] text-[var(--foreground)] focus:border-theme-secondary transition-colors font-medium" placeholder="https://..." />
+                </div>
+                <div>
+                  <label className="block text-sm font-bold text-theme-muted mb-2">DESCRIPTION</label>
+                  <textarea value={projectForm.description} onChange={(e) => setProjectForm({ ...projectForm, description: e.target.value })} rows={3} className="w-full px-4 py-3 rounded-lg bg-[var(--card)] border-2 border-[var(--border)] text-[var(--foreground)] focus:border-theme-secondary transition-colors font-medium resize-none" placeholder="Describe the project and your role" />
+                </div>
+                <div className="flex gap-2">
+                  <Button type="button" onClick={addProject} className="font-black">ADD</Button>
+                  <Button type="button" onClick={() => setShowProjectForm(false)} variant="outline" className="font-black">CANCEL</Button>
+                </div>
+              </div>
+            )}
+
+            <div className="space-y-3">
+              {formData.projects.map((project: any, index: number) => (
+                <div key={index} className="p-4 bg-[var(--muted)] rounded-lg border-2 border-theme-muted">
+                  <div className="flex justify-between items-start">
+                    <div>
+                      <h3 className="text-lg font-black text-theme-secondary">{project.name}</h3>
+                      <p className="text-sm font-semibold text-theme-muted">{project.startDate} - {project.endDate || 'Present'}</p>
+                      {project.description && <p className="text-sm font-medium text-theme-muted mt-2">{project.description}</p>}
+                      {project.url && <a href={project.url} target="_blank" rel="noopener noreferrer" className="text-sm font-bold text-theme-primary hover:text-theme-accent mt-1 inline-block">View Project →</a>}
+                    </div>
+                    <Button type="button" size="sm" variant="outline" onClick={() => removeProject(index)}><X className="w-4 h-4" /></Button>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </CardContent>
+        </Card>
         {/* Message */}
         {message && (
           <div className={`p-4 rounded-lg font-bold text-center ${

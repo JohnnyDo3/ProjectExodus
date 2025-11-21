@@ -39,6 +39,15 @@ model User {
   experience    Json?     // Array of work experience objects
   education     Json?     // Array of education objects
 
+  // LinkedIn-style Additional Sections
+  skills        Json?     // Array of skill objects {name, level}
+  languages     Json?     // Array of language objects {name, proficiency}
+  certifications Json?    // Array of certification objects {name, issuer, date, url}
+  volunteer     Json?     // Array of volunteer experience objects {role, organization, startDate, endDate, description}
+  publications  Json?     // Array of publication objects {title, publisher, date, url, description}
+  honors        Json?     // Array of honors/awards objects {title, issuer, date, description}
+  projects      Json?     // Array of project objects {name, startDate, endDate, description, url}
+
   role          UserRole  @default(USER)
   createdAt     DateTime  @default(now())
   updatedAt     DateTime  @updatedAt

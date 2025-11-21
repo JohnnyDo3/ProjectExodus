@@ -29,7 +29,14 @@ export async function POST(request: NextRequest) {
       interests,
       expertise,
       experience,
-      education
+      education,
+      skills,
+      languages,
+      certifications,
+      volunteer,
+      publications,
+      honors,
+      projects
     } = body
 
     // Update user profile
@@ -50,7 +57,14 @@ export async function POST(request: NextRequest) {
         interests,
         expertise,
         experience,
-        education
+        education,
+        skills,
+        languages,
+        certifications,
+        volunteer,
+        publications,
+        honors,
+        projects
       }
     })
 
