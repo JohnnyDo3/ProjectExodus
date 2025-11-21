@@ -96,68 +96,72 @@ export default async function ProjectsPage() {
                 const colors = statusColors[project.status as keyof typeof statusColors] || statusColors.PLANNING
 
                 return (
-                  <Card key={project.id} className="hover-lift border-4 border-theme-primary hover:border-theme-accent transition-all">
-                    <CardHeader>
-                      <div className="flex items-start justify-between mb-2">
-                        <div className={`px-3 py-1 rounded-full ${colors.bg} ${colors.text} font-black text-sm uppercase`}>
-                          {project.status}
-                        </div>
-                        <div className="text-2xl">🌍</div>
-                      </div>
-                      <CardTitle className="text-2xl font-black">
-                        {project.name}
-                      </CardTitle>
-                    </CardHeader>
-                    <CardContent>
-                      <p className="text-base font-semibold mb-6 leading-relaxed text-[var(--foreground)]">
-                        {project.description}
-                      </p>
-
-                      <div className="space-y-3 mb-6">
-                        {project.goal && (
-                          <div className="flex items-start gap-2 text-sm font-semibold text-theme-muted">
-                            <Target className="w-4 h-4 mt-0.5 flex-shrink-0" />
-                            <span>{project.goal}</span>
+                  <Link key={project.id} href={`/community/projects/${project.slug}`}>
+                    <Card className="hover-lift border-4 border-theme-primary hover:border-theme-accent transition-all cursor-pointer">
+                      <CardHeader>
+                        <div className="flex items-start justify-between mb-2">
+                          <div className={`px-3 py-1 rounded-full ${colors.bg} ${colors.text} font-black text-sm uppercase`}>
+                            {project.status}
                           </div>
-                        )}
-                        <div className="flex items-center gap-2 text-sm font-bold text-theme-muted">
-                          <User className="w-4 h-4" />
-                          <span>Led by {project.creator.name || 'Anonymous'}</span>
+                          <div className="text-2xl">🌍</div>
                         </div>
-                      </div>
+                        <CardTitle className="text-2xl font-black">
+                          {project.name}
+                        </CardTitle>
+                      </CardHeader>
+                      <CardContent>
+                        <p className="text-base font-semibold mb-6 leading-relaxed text-[var(--foreground)]">
+                          {project.description}
+                        </p>
 
-                      {/* Members */}
-                      <div className="flex items-center justify-between pt-4 border-t-2 border-theme-muted">
-                        <div className="flex -space-x-2">
-                          {project.members.slice(0, 4).map((member: any, idx: number) => (
-                            <div
-                              key={member.user.id}
-                              className="w-10 h-10 rounded-full bg-[color-mix(in_srgb,var(--accent)_20%,var(--background))] border-2 border-[var(--background)] flex items-center justify-center"
-                              title={member.user.name || 'User'}
-                            >
-                              {member.user.image ? (
-                                <img
-                                  src={member.user.image}
-                                  alt={member.user.name || 'User'}
-                                  className="w-full h-full rounded-full object-cover"
-                                />
-                              ) : (
-                                <User className="w-5 h-5 text-theme-accent" />
-                              )}
-                            </div>
-                          ))}
-                          {project._count.members > 4 && (
-                            <div className="w-10 h-10 rounded-full bg-[var(--primary)] border-2 border-[var(--background)] flex items-center justify-center">
-                              <span className="text-xs font-black text-[var(--primary-foreground)]">
-                                +{project._count.members - 4}
-                              </span>
+                        <div className="space-y-3 mb-6">
+                          {project.goal && (
+                            <div className="flex items-start gap-2 text-sm font-semibold text-theme-muted">
+                              <Target className="w-4 h-4 mt-0.5 flex-shrink-0" />
+                              <span>{project.goal}</span>
                             </div>
                           )}
+                          <div className="flex items-center gap-2 text-sm font-bold text-theme-muted">
+                            <User className="w-4 h-4" />
+                            <span>Led by {project.creator.name || 'Anonymous'}</span>
+                          </div>
                         </div>
-                        <JoinProjectButton projectId={project.id} projectName={project.name} />
-                      </div>
-                    </CardContent>
-                  </Card>
+
+                        {/* Members */}
+                        <div className="flex items-center justify-between pt-4 border-t-2 border-theme-muted">
+                          <div className="flex -space-x-2">
+                            {project.members.slice(0, 4).map((member: any, idx: number) => (
+                              <div
+                                key={member.user.id}
+                                className="w-10 h-10 rounded-full bg-[color-mix(in_srgb,var(--accent)_20%,var(--background))] border-2 border-[var(--background)] flex items-center justify-center"
+                                title={member.user.name || 'User'}
+                              >
+                                {member.user.image ? (
+                                  <img
+                                    src={member.user.image}
+                                    alt={member.user.name || 'User'}
+                                    className="w-full h-full rounded-full object-cover"
+                                  />
+                                ) : (
+                                  <User className="w-5 h-5 text-theme-accent" />
+                                )}
+                              </div>
+                            ))}
+                            {project._count.members > 4 && (
+                              <div className="w-10 h-10 rounded-full bg-[var(--primary)] border-2 border-[var(--background)] flex items-center justify-center">
+                                <span className="text-xs font-black text-[var(--primary-foreground)]">
+                                  +{project._count.members - 4}
+                                </span>
+                              </div>
+                            )}
+                          </div>
+                          <div onClick={(e) => e.preventDefault()}>
+                            <JoinProjectButton projectId={project.id} projectName={project.name} />
+                          </div>
+                        </div>
+                      </CardContent>
+                    </Card>
+                  </Link>
                 )
               })}
             </div>
