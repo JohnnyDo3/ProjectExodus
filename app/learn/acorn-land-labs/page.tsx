@@ -20,7 +20,8 @@ import {
   ExternalLink,
   Lightbulb,
   Heart,
-  Globe
+  Globe,
+  Shield
 } from 'lucide-react'
 
 export default function AcornLandLabsPage() {
