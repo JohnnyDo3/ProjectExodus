@@ -46,6 +46,10 @@ model User {
   projectMemberships    ProjectMember[]
   createdProjects       Project[]          @relation("ProjectCreator")
   projectMessages       ProjectMessage[]   @relation("ProjectMessages")
+  sentMessages          DirectMessage[]    @relation("SentMessages")
+  receivedMessages      DirectMessage[]    @relation("ReceivedMessages")
+  createdEvents         Event[]            @relation("CreatedEvents")
+  eventAttendances      EventAttendee[]
   reportedContent       Report[]
   likedPosts            PostLike[]
   likedReplies          ReplyLike[]
@@ -597,6 +601,81 @@ model ProjectMessage {
   @@index([projectId])
   @@index([userId])
   @@index([createdAt])
+}
+
+// ============================================
+// DIRECT MESSAGING MODELS
+// ============================================
+
+model DirectMessage {
+  id           String   @id @default(cuid())
+  content      String   @db.Text
+  senderId     String
+  receiverId   String
+  read         Boolean  @default(false)
+  sender       User     @relation("SentMessages", fields: [senderId], references: [id], onDelete: Cascade)
+  receiver     User     @relation("ReceivedMessages", fields: [receiverId], references: [id], onDelete: Cascade)
+  createdAt    DateTime @default(now())
+
+  @@index([senderId])
+  @@index([receiverId])
+  @@index([createdAt])
+  @@index([read])
+}
+
+// ============================================
+// EVENTS & MEETUPS MODELS
+// ============================================
+
+model Event {
+  id          String        @id @default(cuid())
+  title       String
+  slug        String        @unique
+  description String        @db.Text
+  type        EventType     @default(VIRTUAL)
+  location    String?       // For in-person events
+  meetingLink String?       // For virtual events
+  startDate   DateTime
+  endDate     DateTime?
+  maxCapacity Int?
+  coverImage  String?
+  creatorId   String
+  creator     User          @relation("CreatedEvents", fields: [creatorId], references: [id])
+  attendees   EventAttendee[]
+  createdAt   DateTime      @default(now())
+  updatedAt   DateTime      @updatedAt
+
+  @@index([slug])
+  @@index([creatorId])
+  @@index([startDate])
+  @@index([type])
+}
+
+enum EventType {
+  VIRTUAL
+  IN_PERSON
+  HYBRID
+}
+
+model EventAttendee {
+  id        String           @id @default(cuid())
+  eventId   String
+  userId    String
+  status    AttendeeStatus   @default(GOING)
+  event     Event            @relation(fields: [eventId], references: [id], onDelete: Cascade)
+  user      User             @relation(fields: [userId], references: [id], onDelete: Cascade)
+  joinedAt  DateTime         @default(now())
+
+  @@unique([eventId, userId])
+  @@index([eventId])
+  @@index([userId])
+  @@index([status])
+}
+
+enum AttendeeStatus {
+  GOING
+  MAYBE
+  NOT_GOING
 }
 
 // ============================================
