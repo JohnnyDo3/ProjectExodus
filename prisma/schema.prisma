@@ -45,6 +45,7 @@ model User {
   userBadges            UserBadge[]
   projectMemberships    ProjectMember[]
   createdProjects       Project[]          @relation("ProjectCreator")
+  projectMessages       ProjectMessage[]   @relation("ProjectMessages")
   reportedContent       Report[]
   likedPosts            PostLike[]
   likedReplies          ReplyLike[]
@@ -547,6 +548,7 @@ model Project {
   creatorId   String
   creator     User            @relation("ProjectCreator", fields: [creatorId], references: [id])
   members     ProjectMember[]
+  messages    ProjectMessage[]
   createdAt   DateTime        @default(now())
   updatedAt   DateTime        @updatedAt
 
@@ -580,6 +582,21 @@ enum ProjectRole {
   MEMBER
   MODERATOR
   ADMIN
+}
+
+model ProjectMessage {
+  id        String   @id @default(cuid())
+  content   String   @db.Text
+  projectId String
+  userId    String
+  project   Project  @relation(fields: [projectId], references: [id], onDelete: Cascade)
+  user      User     @relation("ProjectMessages", fields: [userId], references: [id], onDelete: Cascade)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([projectId])
+  @@index([userId])
+  @@index([createdAt])
 }
 
 // ============================================

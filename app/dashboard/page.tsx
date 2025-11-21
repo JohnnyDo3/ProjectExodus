@@ -295,7 +295,7 @@ export default function DashboardPage() {
                               <Users className="w-4 h-4" />
                               <span>{project._count.members} MEMBERS</span>
                             </div>
-                            <Link href="/community/projects">
+                            <Link href={`/community/projects/${project.slug}`}>
                               <Button size="sm" variant="outline" className="font-bold">
                                 VIEW PROJECT
                               </Button>
