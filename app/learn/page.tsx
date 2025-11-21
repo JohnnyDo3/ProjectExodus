@@ -5,6 +5,8 @@ import { LiveImpactStats } from '@/components/learn/LiveImpactStats'
 import { BookOpen, Video, Calculator, Download, Zap, Leaf, Home, Award, CheckCircle, Sprout } from 'lucide-react'
 import Link from 'next/link'
 import prisma from '@/lib/db/prisma'
+import { TreeBranches } from '@/components/decorative/TreeBranches'
+import { FlyingBirds } from '@/components/decorative/FlyingBirds'
 
 async function getArticles() {
   try {
@@ -52,7 +54,11 @@ export default async function LearnPage() {
   ]
 
   return (
-    <div className="min-h-screen">
+    <div className="min-h-screen relative">
+      {/* Decorative Elements */}
+      <TreeBranches />
+      <FlyingBirds />
+
       {/* Hero */}
       <section className="py-32 bg-gradient-to-br from-[color-mix(in_srgb,var(--accent)_15%,var(--background))] via-[color-mix(in_srgb,var(--primary)_15%,var(--background))] to-[var(--muted)] relative overflow-hidden">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">

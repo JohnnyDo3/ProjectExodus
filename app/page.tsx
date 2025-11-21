@@ -3,6 +3,8 @@ import { Button } from '@/components/ui/Button'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/Card'
 import { Leaf, Droplet, Zap, Users, Heart, Shield, Sprout, BookOpen, Scale, Eye, Handshake, Award } from 'lucide-react'
 import { NightSkyConstellations } from '@/components/theme/NightSkyConstellations'
+import { TreeBranches } from '@/components/decorative/TreeBranches'
+import { FlyingBirds } from '@/components/decorative/FlyingBirds'
 
 export default function Home() {
   const commandments = [
@@ -79,7 +81,11 @@ export default function Home() {
   ]
 
   return (
-    <div className="min-h-screen overflow-hidden">
+    <div className="min-h-screen overflow-hidden relative">
+      {/* Decorative Elements */}
+      <TreeBranches />
+      <FlyingBirds />
+
       {/* Hero Section - BOLD & EXPERIMENTAL */}
       <section className="relative min-h-screen flex items-center justify-center overflow-hidden bg-gradient-to-br from-[var(--muted)] via-[color-mix(in_srgb,var(--primary)_20%,var(--background))] to-[color-mix(in_srgb,var(--accent)_20%,var(--background))]">
         {/* Night Sky Constellations - Only at night */}

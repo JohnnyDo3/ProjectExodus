@@ -80,6 +80,7 @@ model User {
   socialPosts           SocialPost[]     @relation("SocialPosts")
   socialComments        SocialComment[]  @relation("SocialComments")
   socialLikes           SocialLike[]     @relation("SocialLikes")
+  userProducts          UserProduct[]    @relation("UserProducts")
 
   @@index([email])
   @@index([role])
@@ -871,6 +872,45 @@ enum AdminAction {
   REPORT_RESOLVED
   SETTINGS_CHANGED
   OTHER
+}
+
+// ============================================
+// USER MARKETPLACE MODELS
+// ============================================
+
+model UserProduct {
+  id              String   @id @default(cuid())
+  name            String
+  description     String   @db.Text
+  price           Float
+  category        String
+  materials       String   // Sustainable materials used
+  images          String[] // Array of image URLs
+  externalUrl     String   // Link to user's store (Etsy, Shopify, etc.)
+
+  // Approval workflow
+  approvalStatus  ProductApprovalStatus @default(PENDING)
+  rejectionReason String?  @db.Text
+  affiliateLink   String?  // Project Exodus affiliate link (generated after approval)
+  reviewedBy      String?  // Admin who reviewed
+  reviewedAt      DateTime?
+
+  // Seller info
+  sellerId        String
+  seller          User     @relation("UserProducts", fields: [sellerId], references: [id], onDelete: Cascade)
+
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+
+  @@index([sellerId])
+  @@index([approvalStatus])
+  @@index([category])
+}
+
+enum ProductApprovalStatus {
+  PENDING
+  APPROVED
+  REJECTED
 }
 
 // ============================================

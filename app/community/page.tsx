@@ -9,6 +9,8 @@ import Link from 'next/link'
 import { auth } from '@/auth'
 import prisma from '@/lib/db/prisma'
 import { LiveCounter } from '@/components/stats/LiveCounter'
+import { TreeBranches } from '@/components/decorative/TreeBranches'
+import { FlyingBirds } from '@/components/decorative/FlyingBirds'
 
 async function getDashboardData(userId: string) {
   try {
@@ -278,7 +280,11 @@ export default async function CommunityPage() {
   const { user, recentForumPosts, suggestedUsers, activeProjects, communityStats } = dashboardData
 
   return (
-    <div className="min-h-screen bg-[var(--background)]">
+    <div className="min-h-screen bg-[var(--background)] relative">
+      {/* Decorative Elements */}
+      <TreeBranches />
+      <FlyingBirds />
+
       {/* Welcome Header */}
       <section className="py-8 bg-gradient-to-br from-[var(--primary)] via-[var(--accent)] to-[var(--secondary)] text-[var(--primary-foreground)]">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
