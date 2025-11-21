@@ -1,6 +1,6 @@
 'use client'
 
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { useRouter } from 'next/navigation'
 import { Button } from '@/components/ui/Button'
 import { Card, CardContent } from '@/components/ui/Card'
@@ -37,6 +37,12 @@ export function ProfileEditForm({ user }: ProfileEditFormProps) {
   const [loading, setLoading] = useState(false)
   const [message, setMessage] = useState('')
   const [activeTab, setActiveTab] = useState<TabType>('essential')
+
+  // Badge state
+  const [badgeProgress, setBadgeProgress] = useState<any[]>([])
+  const [badgeStats, setBadgeStats] = useState({ badgesEarned: 0, goalsCompleted: 0, totalGoals: 0, profileCompletion: 0 })
+  const [badges, setBadges] = useState<any[]>([])
+  const [loadingBadges, setLoadingBadges] = useState(false)
 
   // Form state
   const [formData, setFormData] = useState({
@@ -198,6 +204,38 @@ export function ProfileEditForm({ user }: ProfileEditFormProps) {
     setShowEducationForm(false)
     setEditingEduIndex(null)
   }
+
+  // Fetch badge data when badges tab is active
+  useEffect(() => {
+    if (activeTab === 'badges' && badgeProgress.length === 0) {
+      const fetchBadgeData = async () => {
+        setLoadingBadges(true)
+        try {
+          const [progressRes, badgesRes] = await Promise.all([
+            fetch('/api/badges/progress'),
+            fetch('/api/badges')
+          ])
+
+          if (progressRes.ok) {
+            const progressData = await progressRes.json()
+            setBadgeProgress(progressData.badgeProgress || [])
+            setBadgeStats(progressData.stats || { badgesEarned: 0, goalsCompleted: 0, totalGoals: 0, profileCompletion: 0 })
+          }
+
+          if (badgesRes.ok) {
+            const badgesData = await badgesRes.json()
+            setBadges(badgesData.badges || [])
+          }
+        } catch (error) {
+          console.error('Error fetching badge data:', error)
+        } finally {
+          setLoadingBadges(false)
+        }
+      }
+
+      fetchBadgeData()
+    }
+  }, [activeTab, badgeProgress.length])
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
@@ -854,64 +892,38 @@ export function ProfileEditForm({ user }: ProfileEditFormProps) {
                       Each badge unlocks new opportunities and recognition within Project Exodus.
                     </p>
 
-                    {/* Popular Learning Paths */}
-                    <div className="grid md:grid-cols-2 gap-4 mt-6">
-                      <div className="p-4 bg-[var(--card)] rounded-lg border-2 border-theme-accent">
-                        <div className="flex items-center gap-3 mb-2">
-                          <span className="text-3xl">🌱</span>
-                          <div>
-                            <h4 className="font-black text-theme-accent">GREEN STARTER</h4>
-                            <p className="text-xs font-semibold text-theme-muted">Complete your profile</p>
-                          </div>
-                        </div>
-                        <div className="mt-3 bg-[var(--muted)] rounded-full h-2 overflow-hidden">
-                          <div className="h-full bg-gradient-to-r from-[var(--accent)] to-[var(--primary)] rounded-full" style={{width: '75%'}}></div>
-                        </div>
-                        <p className="text-xs font-bold text-theme-accent mt-1">75% Complete</p>
+                    {/* Dynamic Learning Paths */}
+                    {loadingBadges ? (
+                      <div className="flex justify-center py-12">
+                        <Loader2 className="w-8 h-8 animate-spin text-theme-primary" />
                       </div>
-
-                      <div className="p-4 bg-[var(--card)] rounded-lg border-2 border-theme-secondary">
-                        <div className="flex items-center gap-3 mb-2">
-                          <span className="text-3xl">📚</span>
-                          <div>
-                            <h4 className="font-black text-theme-secondary">KNOWLEDGE SHARER</h4>
-                            <p className="text-xs font-semibold text-theme-muted">Write 5 articles</p>
+                    ) : (
+                      <div className="grid md:grid-cols-2 gap-4 mt-6">
+                        {badgeProgress.slice(0, 4).map((badge) => (
+                          <div key={badge.id} className={`p-4 bg-[var(--card)] rounded-lg border-2 border-theme-${badge.color} ${badge.earned ? 'ring-2 ring-green-500' : ''}`}>
+                            <div className="flex items-center gap-3 mb-2">
+                              <span className="text-3xl">{badge.icon}</span>
+                              <div className="flex-1">
+                                <div className="flex items-center gap-2">
+                                  <h4 className={`font-black text-theme-${badge.color}`}>{badge.name}</h4>
+                                  {badge.earned && <span className="text-xs">✓</span>}
+                                </div>
+                                <p className="text-xs font-semibold text-theme-muted">{badge.description}</p>
+                              </div>
+                            </div>
+                            <div className="mt-3 bg-[var(--muted)] rounded-full h-2 overflow-hidden">
+                              <div
+                                className={`h-full bg-gradient-to-r from-[var(--${badge.color})] to-[var(--primary)] rounded-full transition-all duration-500`}
+                                style={{width: `${badge.progress}%`}}
+                              />
+                            </div>
+                            <p className={`text-xs font-bold text-theme-${badge.color} mt-1`}>
+                              {badge.earned ? 'Completed!' : `${badge.current}/${badge.target} - ${badge.progress}% Complete`}
+                            </p>
                           </div>
-                        </div>
-                        <div className="mt-3 bg-[var(--muted)] rounded-full h-2 overflow-hidden">
-                          <div className="h-full bg-gradient-to-r from-[var(--secondary)] to-[var(--accent)] rounded-full" style={{width: '40%'}}></div>
-                        </div>
-                        <p className="text-xs font-bold text-theme-secondary mt-1">2/5 Articles</p>
+                        ))}
                       </div>
-
-                      <div className="p-4 bg-[var(--card)] rounded-lg border-2 border-theme-primary">
-                        <div className="flex items-center gap-3 mb-2">
-                          <span className="text-3xl">💬</span>
-                          <div>
-                            <h4 className="font-black text-theme-primary">COMMUNITY BUILDER</h4>
-                            <p className="text-xs font-semibold text-theme-muted">Make 50 forum posts</p>
-                          </div>
-                        </div>
-                        <div className="mt-3 bg-[var(--muted)] rounded-full h-2 overflow-hidden">
-                          <div className="h-full bg-gradient-to-r from-[var(--primary)] to-[var(--secondary)] rounded-full" style={{width: '20%'}}></div>
-                        </div>
-                        <p className="text-xs font-bold text-theme-primary mt-1">10/50 Posts</p>
-                      </div>
-
-                      <div className="p-4 bg-[var(--card)] rounded-lg border-2 border-theme-accent">
-                        <div className="flex items-center gap-3 mb-2">
-                          <span className="text-3xl">🤝</span>
-                          <div>
-                            <h4 className="font-black text-theme-accent">CONNECTOR</h4>
-                            <p className="text-xs font-semibold text-theme-muted">Get 100 followers</p>
-                          </div>
-                        </div>
-                        <div className="mt-3 bg-[var(--muted)] rounded-full h-2 overflow-hidden">
-                          <div className="h-full bg-gradient-to-r from-[var(--accent)] to-[var(--primary)] rounded-full" style={{width: '0%'}}></div>
-                        </div>
-                        <p className="text-xs font-bold text-theme-accent mt-1">0/100 Followers</p>
-                      </div>
-                    </div>
+                    )}
                   </div>
 
                   {/* Achievement Milestones */}
@@ -925,39 +937,36 @@ export function ProfileEditForm({ user }: ProfileEditFormProps) {
                     </p>
 
                     <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
-                      {/* Badge examples - these would be loaded from API */}
-                      <div className="p-3 bg-[var(--card)] rounded-lg border-2 border-theme-muted text-center hover:border-theme-primary transition-colors cursor-pointer">
-                        <span className="text-4xl mb-2 block">🌍</span>
-                        <span className="text-xs font-bold text-[var(--foreground)] block">ECO WARRIOR</span>
-                      </div>
-                      <div className="p-3 bg-[var(--card)] rounded-lg border-2 border-theme-muted text-center hover:border-theme-accent transition-colors cursor-pointer">
-                        <span className="text-4xl mb-2 block">♻️</span>
-                        <span className="text-xs font-bold text-[var(--foreground)] block">RECYCLER</span>
-                      </div>
-                      <div className="p-3 bg-[var(--card)] rounded-lg border-2 border-theme-muted text-center hover:border-theme-secondary transition-colors cursor-pointer">
-                        <span className="text-4xl mb-2 block">🌿</span>
-                        <span className="text-xs font-bold text-[var(--foreground)] block">NATURE LOVER</span>
-                      </div>
-                      <div className="p-3 bg-[var(--card)] rounded-lg border-2 border-theme-muted text-center hover:border-theme-primary transition-colors cursor-pointer">
-                        <span className="text-4xl mb-2 block">💡</span>
-                        <span className="text-xs font-bold text-[var(--foreground)] block">INNOVATOR</span>
-                      </div>
-                      <div className="p-3 bg-[var(--card)] rounded-lg border-2 border-theme-muted text-center hover:border-theme-accent transition-colors cursor-pointer">
-                        <span className="text-4xl mb-2 block">🏆</span>
-                        <span className="text-xs font-bold text-[var(--foreground)] block">CHAMPION</span>
-                      </div>
-                      <div className="p-3 bg-[var(--card)] rounded-lg border-2 border-theme-muted text-center hover:border-theme-secondary transition-colors cursor-pointer">
-                        <span className="text-4xl mb-2 block">⭐</span>
-                        <span className="text-xs font-bold text-[var(--foreground)] block">EXPERT</span>
-                      </div>
-                      <div className="p-3 bg-[var(--card)] rounded-lg border-2 border-theme-muted text-center hover:border-theme-primary transition-colors cursor-pointer">
-                        <span className="text-4xl mb-2 block">🎯</span>
-                        <span className="text-xs font-bold text-[var(--foreground)] block">ACHIEVER</span>
-                      </div>
-                      <div className="p-3 bg-[var(--card)] rounded-lg border-2 border-theme-muted text-center hover:border-theme-accent transition-colors cursor-pointer">
-                        <span className="text-4xl mb-2 block">🚀</span>
-                        <span className="text-xs font-bold text-[var(--foreground)] block">PIONEER</span>
-                      </div>
+                      {/* All Badge Progress Goals */}
+                      {badgeProgress.length > 0 ? (
+                        badgeProgress.map((badge) => (
+                          <div
+                            key={badge.id}
+                            className={`p-3 bg-[var(--card)] rounded-lg border-2 ${
+                              badge.earned ? 'border-green-500 bg-green-500/10' : 'border-theme-muted'
+                            } text-center hover:border-theme-primary transition-colors cursor-pointer relative`}
+                            title={`${badge.description} - ${badge.current}/${badge.target}`}
+                          >
+                            {badge.earned && (
+                              <div className="absolute -top-1 -right-1 w-6 h-6 bg-green-500 rounded-full flex items-center justify-center">
+                                <span className="text-white text-xs font-black">✓</span>
+                              </div>
+                            )}
+                            <span className="text-4xl mb-2 block">{badge.icon}</span>
+                            <span className="text-xs font-bold text-[var(--foreground)] block">{badge.name}</span>
+                            <div className="mt-2 bg-[var(--muted)] rounded-full h-1 overflow-hidden">
+                              <div
+                                className="h-full bg-theme-primary rounded-full"
+                                style={{width: `${badge.progress}%`}}
+                              />
+                            </div>
+                          </div>
+                        ))
+                      ) : (
+                        <div className="col-span-4 text-center py-8 text-theme-muted">
+                          <p>Loading badges...</p>
+                        </div>
+                      )}
                     </div>
                   </div>
 
@@ -966,15 +975,15 @@ export function ProfileEditForm({ user }: ProfileEditFormProps) {
                     <h3 className="text-lg font-black text-[var(--foreground)] mb-4">YOUR IMPACT</h3>
                     <div className="grid grid-cols-3 gap-4 text-center">
                       <div>
-                        <div className="text-3xl font-black text-theme-primary mb-1">0</div>
+                        <div className="text-3xl font-black text-theme-primary mb-1">{badgeStats.badgesEarned}</div>
                         <div className="text-xs font-bold text-theme-muted uppercase">Badges Earned</div>
                       </div>
                       <div>
-                        <div className="text-3xl font-black text-theme-accent mb-1">0</div>
+                        <div className="text-3xl font-black text-theme-accent mb-1">{badgeStats.goalsCompleted}/{badgeStats.totalGoals}</div>
                         <div className="text-xs font-bold text-theme-muted uppercase">Goals Completed</div>
                       </div>
                       <div>
-                        <div className="text-3xl font-black text-theme-secondary mb-1">0%</div>
+                        <div className="text-3xl font-black text-theme-secondary mb-1">{badgeStats.profileCompletion}%</div>
                         <div className="text-xs font-bold text-theme-muted uppercase">Profile Complete</div>
                       </div>
                     </div>
