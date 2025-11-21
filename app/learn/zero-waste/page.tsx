@@ -1,7 +1,7 @@
 import { Card, CardContent } from '@/components/ui/Card'
 import { Button } from '@/components/ui/Button'
 import { Citation } from '@/components/learn/Citation'
-import { Recycle, Trash2, PackageCheck, Leaf, TrendingDown, Home, ShoppingBag, Utensils, CheckCircle, ArrowRight } from 'lucide-react'
+import { Recycle, Trash2, PackageCheck, Leaf, TrendingDown, Home, ShoppingBag, Utensils, CheckCircle, ArrowRight, AlertCircle } from 'lucide-react'
 import Link from 'next/link'
 
 export default function ZeroWastePage() {
