@@ -2,11 +2,9 @@
 
 import { useState, useMemo } from 'react'
 import { ProductCard } from './ProductCard'
-import { Search } from '@/components/ui/Search'
-import { Filter } from '@/components/ui/Filter'
 import { Button } from '@/components/ui/Button'
 import { Card, CardContent } from '@/components/ui/Card'
-import { Leaf, SlidersHorizontal } from 'lucide-react'
+import { Leaf, Search as SearchIcon, ChevronDown, X } from 'lucide-react'
 
 interface Product {
   id: string
@@ -51,11 +49,11 @@ interface ProductsClientProps {
 
 export function ProductsClient({ initialProducts, categories }: ProductsClientProps) {
   const [searchQuery, setSearchQuery] = useState('')
-  const [selectedCategories, setSelectedCategories] = useState<string[]>([])
-  const [showFilters, setShowFilters] = useState(true)
+  const [selectedCategory, setSelectedCategory] = useState<string>('all')
+  const [dropdownOpen, setDropdownOpen] = useState(false)
   const [displayCount, setDisplayCount] = useState(12)
 
-  // Filter products based on search and selected categories
+  // Filter products based on search and selected category
   const filteredProducts = useMemo(() => {
     let filtered = initialProducts
 
@@ -71,76 +69,139 @@ export function ProductsClient({ initialProducts, categories }: ProductsClientPr
     }
 
     // Apply category filter
-    if (selectedCategories.length > 0) {
+    if (selectedCategory !== 'all') {
       filtered = filtered.filter(product =>
-        selectedCategories.includes(product.category.id)
+        product.category.id === selectedCategory
       )
     }
 
     return filtered
-  }, [initialProducts, searchQuery, selectedCategories])
+  }, [initialProducts, searchQuery, selectedCategory])
 
   const displayedProducts = filteredProducts.slice(0, displayCount)
   const hasMore = filteredProducts.length > displayCount
 
-  const handleCategoryToggle = (categoryId: string) => {
-    setSelectedCategories(prev =>
-      prev.includes(categoryId)
-        ? prev.filter(id => id !== categoryId)
-        : [...prev, categoryId]
-    )
-  }
+  const selectedCategoryName = selectedCategory === 'all'
+    ? 'All Categories'
+    : categories.find(c => c.id === selectedCategory)?.name || 'All Categories'
 
-  const categoryOptions = categories.map(cat => ({
-    id: cat.id,
-    label: cat.name,
-    count: cat._count?.products
-  }))
+  const selectedCategoryCount = selectedCategory === 'all'
+    ? initialProducts.length
+    : categories.find(c => c.id === selectedCategory)?._count?.products || 0
 
   return (
-    <div className="space-y-16">
-      {/* Search and Filters */}
+    <div className="space-y-12">
+      {/* Search and Category Filter - PROMINENTLY AT TOP */}
       <div className="container mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="max-w-7xl mx-auto space-y-8">
-          {/* Search Bar */}
-          <Search
-            placeholder="Search products, categories, vendors..."
-            onSearch={setSearchQuery}
-            className="max-w-3xl mx-auto"
-          />
-
-          {/* Filter Toggle */}
-          <div className="flex justify-center">
-            <Button
-              variant="outline"
-              onClick={() => setShowFilters(!showFilters)}
-              className="font-bold border-2"
-            >
-              <SlidersHorizontal className="w-5 h-5 mr-2" />
-              {showFilters ? 'Hide' : 'Show'} Filters
-            </Button>
+        <div className="max-w-5xl mx-auto space-y-6">
+          {/* Search Bar - FIRST */}
+          <div className="relative">
+            <SearchIcon className="absolute left-6 top-1/2 transform -translate-y-1/2 w-6 h-6 text-theme-muted pointer-events-none" />
+            <input
+              type="text"
+              value={searchQuery}
+              onChange={(e) => setSearchQuery(e.target.value)}
+              placeholder="Search sustainable products..."
+              className="w-full pl-16 pr-12 py-6 text-lg font-semibold rounded-2xl bg-[var(--card)] border-4 border-theme-primary focus:border-theme-accent focus:outline-none text-[var(--foreground)] placeholder:text-theme-muted shadow-theme-lg"
+            />
+            {searchQuery && (
+              <button
+                onClick={() => setSearchQuery('')}
+                className="absolute right-6 top-1/2 transform -translate-y-1/2 w-8 h-8 rounded-full bg-theme-muted hover:bg-theme-primary transition-colors flex items-center justify-center"
+                aria-label="Clear search"
+              >
+                <X className="w-5 h-5 text-white" />
+              </button>
+            )}
           </div>
 
-          {/* Filters */}
-          {showFilters && categories.length > 0 && (
-            <div className="bg-[var(--card)] rounded-3xl border-4 border-theme-primary p-8 shadow-theme-xl">
-              <Filter
-                title="CATEGORIES"
-                options={categoryOptions}
-                selectedIds={selectedCategories}
-                onToggle={handleCategoryToggle}
-                onClear={() => setSelectedCategories([])}
-              />
-            </div>
-          )}
+          {/* Category Dropdown - SECOND */}
+          <div className="relative">
+            <button
+              onClick={() => setDropdownOpen(!dropdownOpen)}
+              className="w-full px-6 py-5 text-lg font-black rounded-2xl bg-[var(--card)] border-4 border-theme-accent hover:border-theme-primary transition-all text-left flex items-center justify-between shadow-theme-lg"
+            >
+              <div className="flex items-center gap-3">
+                <Leaf className="w-6 h-6 text-theme-accent" />
+                <span className="text-[var(--foreground)]">{selectedCategoryName}</span>
+                <span className="text-sm font-semibold text-theme-muted">
+                  ({selectedCategoryCount} products)
+                </span>
+              </div>
+              <ChevronDown className={`w-6 h-6 text-theme-accent transition-transform ${dropdownOpen ? 'rotate-180' : ''}`} />
+            </button>
 
-          {/* Results Count */}
-          <div className="text-center">
-            <p className="text-lg font-bold text-theme-muted">
-              Showing {displayedProducts.length} of {filteredProducts.length} products
-              {searchQuery && ` for "${searchQuery}"`}
-              {selectedCategories.length > 0 && ` in ${selectedCategories.length} categor${selectedCategories.length === 1 ? 'y' : 'ies'}`}
+            {/* Dropdown Menu */}
+            {dropdownOpen && (
+              <div className="absolute z-50 w-full mt-2 bg-[var(--card)] border-4 border-theme-accent rounded-2xl shadow-2xl max-h-96 overflow-y-auto">
+                <div className="p-2">
+                  {/* All Categories Option */}
+                  <button
+                    onClick={() => {
+                      setSelectedCategory('all')
+                      setDropdownOpen(false)
+                    }}
+                    className={`w-full px-6 py-4 rounded-xl text-left font-bold transition-all ${
+                      selectedCategory === 'all'
+                        ? 'bg-theme-primary text-[var(--primary-foreground)]'
+                        : 'hover:bg-[var(--muted)] text-[var(--foreground)]'
+                    }`}
+                  >
+                    <div className="flex items-center justify-between">
+                      <span>All Categories</span>
+                      <span className="text-sm font-semibold opacity-75">
+                        {initialProducts.length} products
+                      </span>
+                    </div>
+                  </button>
+
+                  {/* Individual Categories */}
+                  {categories.map((category) => (
+                    <button
+                      key={category.id}
+                      onClick={() => {
+                        setSelectedCategory(category.id)
+                        setDropdownOpen(false)
+                      }}
+                      className={`w-full px-6 py-4 rounded-xl text-left font-bold transition-all ${
+                        selectedCategory === category.id
+                          ? 'bg-theme-primary text-[var(--primary-foreground)]'
+                          : 'hover:bg-[var(--muted)] text-[var(--foreground)]'
+                      }`}
+                    >
+                      <div className="flex items-center justify-between">
+                        <span>{category.name}</span>
+                        <span className="text-sm font-semibold opacity-75">
+                          {category._count?.products || 0} products
+                        </span>
+                      </div>
+                    </button>
+                  ))}
+                </div>
+              </div>
+            )}
+          </div>
+
+          {/* Results Summary */}
+          <div className="text-center py-4">
+            <p className="text-xl font-black text-[var(--foreground)]">
+              {filteredProducts.length === initialProducts.length ? (
+                <>Showing all <span className="text-theme-primary">{filteredProducts.length}</span> sustainable products</>
+              ) : (
+                <>Found <span className="text-theme-primary">{filteredProducts.length}</span> products</>
+              )}
             </p>
+            {(searchQuery || selectedCategory !== 'all') && (
+              <button
+                onClick={() => {
+                  setSearchQuery('')
+                  setSelectedCategory('all')
+                }}
+                className="mt-3 text-sm font-bold text-theme-accent hover:text-theme-primary transition-colors underline"
+              >
+                Clear all filters
+              </button>
+            )}
           </div>
         </div>
       </div>
@@ -162,7 +223,7 @@ export function ProductsClient({ initialProducts, categories }: ProductsClientPr
                   onClick={() => setDisplayCount(prev => prev + 12)}
                   className="text-xl px-12 py-8 rounded-2xl font-black shadow-2xl"
                 >
-                  LOAD MORE PRODUCTS →
+                  LOAD MORE PRODUCTS ({filteredProducts.length - displayCount} remaining)
                 </Button>
               </div>
             )}
@@ -180,18 +241,18 @@ export function ProductsClient({ initialProducts, categories }: ProductsClientPr
                   </h3>
                   <p className="text-xl font-semibold mb-8 text-theme-muted">
                     {searchQuery
-                      ? `No products match "${searchQuery}". Try a different search term or adjust your filters.`
-                      : 'No products match your current filters. Try adjusting your selection.'}
+                      ? `No products match "${searchQuery}". Try a different search term.`
+                      : 'No products in this category yet. Check back soon!'}
                   </p>
                   <Button
                     size="lg"
                     onClick={() => {
                       setSearchQuery('')
-                      setSelectedCategories([])
+                      setSelectedCategory('all')
                     }}
                     className="text-lg px-10 py-6 font-black shadow-lg"
                   >
-                    CLEAR ALL FILTERS
+                    VIEW ALL PRODUCTS
                   </Button>
                 </CardContent>
               </Card>

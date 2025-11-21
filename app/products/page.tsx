@@ -89,91 +89,53 @@ export default async function ProductsPage() {
     getCategories(),
   ])
 
+  const totalProducts = products.length
+  const totalCategories = categories.length
+
   return (
     <div className="min-h-screen">
       {/* Hero Section */}
-      <section className="py-32 bg-gradient-to-br from-[color-mix(in_srgb,var(--primary)_15%,var(--background))] via-[color-mix(in_srgb,var(--accent)_15%,var(--background))] to-[color-mix(in_srgb,var(--secondary)_15%,var(--background))] relative overflow-hidden">
+      <section className="py-24 bg-gradient-to-br from-[color-mix(in_srgb,var(--primary)_15%,var(--background))] via-[color-mix(in_srgb,var(--accent)_15%,var(--background))] to-[color-mix(in_srgb,var(--secondary)_15%,var(--background))] relative overflow-hidden">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="max-w-5xl mx-auto text-center space-y-8">
+          <div className="max-w-5xl mx-auto text-center space-y-6">
             <h1 className="text-[var(--foreground)]" style={{
-              fontSize: 'clamp(3rem, 10vw, 7rem)',
+              fontSize: 'clamp(3rem, 8vw, 6rem)',
               fontWeight: 900,
               lineHeight: 1
             }}>
-              SUSTAINABLE PRODUCTS
+              SUSTAINABLE MARKETPLACE
             </h1>
-            <p className="text-2xl font-bold text-theme-muted">
-              Discover eco-friendly alternatives that{' '}
-              <span style={{
+            <p className="text-2xl font-bold text-theme-muted max-w-3xl mx-auto">
+              Discover <span style={{
                 background: 'linear-gradient(135deg, var(--primary), var(--accent))',
                 WebkitBackgroundClip: 'text',
                 WebkitTextFillColor: 'transparent',
                 fontWeight: 900
-              }}>align with your values</span>
+              }}>{totalProducts}+ eco-friendly products</span> across {totalCategories} categories
             </p>
+            <div className="flex flex-wrap justify-center gap-4 pt-4">
+              <div className="px-6 py-3 bg-[var(--card)] border-2 border-theme-primary rounded-full">
+                <p className="text-sm font-black text-[var(--foreground)]">
+                  ✓ Vetted for Sustainability
+                </p>
+              </div>
+              <div className="px-6 py-3 bg-[var(--card)] border-2 border-theme-accent rounded-full">
+                <p className="text-sm font-black text-[var(--foreground)]">
+                  ✓ Real Brands You Trust
+                </p>
+              </div>
+              <div className="px-6 py-3 bg-[var(--card)] border-2 border-theme-secondary rounded-full">
+                <p className="text-sm font-black text-[var(--foreground)]">
+                  ✓ Carbon Impact Data
+                </p>
+              </div>
+            </div>
           </div>
         </div>
       </section>
 
-      {/* Categories Grid */}
-      {categories.length > 0 && (
-        <section className="py-32 bg-[var(--background)]">
-          <div className="container mx-auto px-4 sm:px-6 lg:px-8">
-            <div className="text-center mb-20">
-              <h2 className="text-5xl font-black mb-6" style={{
-                background: 'linear-gradient(135deg, var(--primary), var(--accent))',
-                WebkitBackgroundClip: 'text',
-                WebkitTextFillColor: 'transparent'
-              }}>
-                BROWSE BY CATEGORY
-              </h2>
-              <p className="text-xl font-semibold text-theme-muted">
-                Find exactly what you're looking for
-              </p>
-            </div>
-
-            <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-8 max-w-7xl mx-auto">
-              {categories.slice(0, 8).map((category: any) => {
-                const Icon = getCategoryIcon(category.slug)
-                const productCount = category._count?.products || 0
-
-                return (
-                  <Link
-                    key={category.id}
-                    href={`/products?category=${category.slug}`}
-                  >
-                    <Card className="hover-lift cursor-pointer h-full border-4 border-theme-primary hover:border-theme-accent transition-all transform hover:scale-105">
-                      <CardHeader>
-                        <div className="w-20 h-20 mx-auto mb-6 rounded-full bg-gradient-to-br from-[var(--primary)] to-[var(--accent)] flex items-center justify-center shadow-lg">
-                          <Icon className="w-10 h-10 text-[var(--primary-foreground)]" />
-                        </div>
-                        <CardTitle className="text-center text-2xl font-black text-[var(--foreground)]">
-                          {category.name.toUpperCase()}
-                        </CardTitle>
-                        {category.description && (
-                          <CardDescription className="text-center text-base line-clamp-2 font-medium text-theme-muted">
-                            {category.description}
-                          </CardDescription>
-                        )}
-                      </CardHeader>
-                      <CardContent className="text-center">
-                        <div className="px-4 py-2 rounded-full bg-[color-mix(in_srgb,var(--primary)_20%,var(--background))] inline-block">
-                          <p className="text-sm font-bold text-theme-primary">
-                            {productCount} {productCount === 1 ? 'PRODUCT' : 'PRODUCTS'}
-                          </p>
-                        </div>
-                      </CardContent>
-                    </Card>
-                  </Link>
-                )
-              })}
-            </div>
-          </div>
-        </section>
-      )}
-
-      {/* Search, Filters, and Products Grid */}
-      <section className="py-16">
+      {/* Search, Filters, and Products Grid - IMMEDIATELY AFTER HERO */}
+      <section className="py-16 bg-[var(--background)]">
         <ProductsClient initialProducts={products} categories={categories} />
       </section>
 
