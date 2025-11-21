@@ -202,27 +202,27 @@ export default function Home() {
           <div className="grid grid-cols-2 md:grid-cols-4 gap-6 max-w-6xl mx-auto">
             <div className="text-center">
               <div className="text-3xl md:text-4xl font-black mb-1">
-                <LiveCounter perSecond={80} unit="kg" suffix="+" />
+                <LiveCounter perSecond={80} unit="" suffix=" K+" decimals={1} />
               </div>
-              <div className="text-xs font-bold uppercase opacity-90">Waste/Second</div>
+              <div className="text-xs font-bold uppercase opacity-90">Tons Waste/Day</div>
             </div>
             <div className="text-center">
               <div className="text-3xl md:text-4xl font-black mb-1">
-                <LiveCounter perSecond={1100} unit="tons" suffix="+" />
+                <LiveCounter perSecond={1100} unit=" M" suffix="+" decimals={0} />
               </div>
-              <div className="text-xs font-bold uppercase opacity-90">CO₂/Second</div>
+              <div className="text-xs font-bold uppercase opacity-90">Tons CO₂/Day</div>
             </div>
             <div className="text-center">
               <div className="text-3xl md:text-4xl font-black mb-1">
-                <LiveCounter perSecond={0.5} unit="hectares" decimals={1} suffix="+" />
+                <LiveCounter perSecond={0.5} unit=" K" decimals={1} suffix="+" />
               </div>
-              <div className="text-xs font-bold uppercase opacity-90">Trees Lost/Sec</div>
+              <div className="text-xs font-bold uppercase opacity-90">Hectares Lost/Day</div>
             </div>
             <div className="text-center">
               <div className="text-3xl md:text-4xl font-black mb-1">
-                <LiveCounter perSecond={127000} unit="m³" suffix="+" />
+                <LiveCounter perSecond={127} unit=" B" suffix="+" decimals={1} />
               </div>
-              <div className="text-xs font-bold uppercase opacity-90">Water Used/Sec</div>
+              <div className="text-xs font-bold uppercase opacity-90">m³ Water/Day</div>
             </div>
           </div>
           <div className="text-center mt-4">
