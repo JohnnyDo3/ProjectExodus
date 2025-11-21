@@ -53,7 +53,7 @@ export function NightSkyConstellations() {
   const [mousePos, setMousePos] = useState({ x: 0, y: 0 })
   const [activeConstellation, setActiveConstellation] = useState<number | null>(null)
   const { currentPhase } = useSkyTheme()
-  const animationFrameRef = useRef<number>()
+  const animationFrameRef = useRef<number | undefined>(undefined)
 
   // Only show constellations during night phases
   const isNightTime = ['dusk', 'evening', 'night', 'midnight'].includes(currentPhase)
