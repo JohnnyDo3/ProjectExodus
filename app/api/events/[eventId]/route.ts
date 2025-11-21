@@ -5,10 +5,10 @@ import { auth } from '@/auth'
 // GET /api/events/[eventId] - Get a specific event
 export async function GET(
   request: NextRequest,
-  { params }: { params: { eventId: string } }
+  { params }: { params: Promise<{ eventId: string }> }
 ) {
   try {
-    const { eventId } = params
+    const { eventId } = await params
 
     const event = await prisma.event.findUnique({
       where: { id: eventId },

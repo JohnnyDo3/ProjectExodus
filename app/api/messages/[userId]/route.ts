@@ -5,7 +5,7 @@ import { auth } from '@/auth'
 // GET /api/messages/[userId] - Get conversation with a specific user
 export async function GET(
   request: NextRequest,
-  { params }: { params: { userId: string } }
+  { params }: { params: Promise<{ userId: string }> }
 ) {
   try {
     const session = await auth()
@@ -16,7 +16,7 @@ export async function GET(
       )
     }
 
-    const { userId } = params
+    const { userId } = await params
 
     // SECURITY: Only return messages where current user is sender OR receiver
     const messages = await prisma.directMessage.findMany({
@@ -95,7 +95,7 @@ export async function GET(
 // POST /api/messages/[userId] - Send a message to a specific user
 export async function POST(
   request: NextRequest,
-  { params }: { params: { userId: string } }
+  { params }: { params: Promise<{ userId: string }> }
 ) {
   try {
     const session = await auth()
@@ -106,7 +106,7 @@ export async function POST(
       )
     }
 
-    const { userId } = params
+    const { userId } = await params
     const body = await request.json()
     const { content } = body
 

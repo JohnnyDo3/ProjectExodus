@@ -5,7 +5,7 @@ import { auth } from '@/auth'
 // POST /api/events/[eventId]/rsvp - RSVP to an event
 export async function POST(
   request: NextRequest,
-  { params }: { params: { eventId: string } }
+  { params }: { params: Promise<{ eventId: string }> }
 ) {
   try {
     const session = await auth()
@@ -16,7 +16,7 @@ export async function POST(
       )
     }
 
-    const { eventId } = params
+    const { eventId } = await params
     const body = await request.json()
     const { status } = body // GOING, MAYBE, NOT_GOING
 
@@ -120,7 +120,7 @@ export async function POST(
 // DELETE /api/events/[eventId]/rsvp - Cancel RSVP
 export async function DELETE(
   request: NextRequest,
-  { params }: { params: { eventId: string } }
+  { params }: { params: Promise<{ eventId: string }> }
 ) {
   try {
     const session = await auth()
@@ -131,7 +131,7 @@ export async function DELETE(
       )
     }
 
-    const { eventId } = params
+    const { eventId } = await params
 
     await prisma.eventAttendee.delete({
       where: {
