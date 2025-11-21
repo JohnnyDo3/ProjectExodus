@@ -418,8 +418,8 @@ export default async function CommunityPage() {
                             <span>•</span>
                             <span className="px-1.5 py-0.5 bg-theme-accent/10 text-theme-accent rounded-full">{post.category.name}</span>
                             <span>•</span>
-                            <span>{post._count.replies} replies</span>
-                            <span>{post._count.likes} likes</span>
+                            <span><span title="Replies">↪</span> {post._count.replies} replies</span>
+                            <span><span title="Likes">♥</span> {post._count.likes} likes</span>
                           </div>
                         </div>
                       </div>
@@ -451,7 +451,7 @@ export default async function CommunityPage() {
                       <h3 className="font-bold text-sm text-[var(--foreground)] mb-1.5 line-clamp-1">{project.name}</h3>
                       <p className="text-xs font-medium text-theme-muted mb-2 line-clamp-2">{project.description}</p>
                       <div className="flex items-center justify-between text-[10px] font-bold text-theme-muted">
-                        <span>{project._count.members} members</span>
+                        <span><span title="Members">@</span> {project._count.members} members</span>
                         <span className="px-2 py-0.5 bg-theme-secondary/20 text-theme-secondary rounded-full">
                           {project.status}
                         </span>
