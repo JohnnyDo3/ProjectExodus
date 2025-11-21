@@ -111,39 +111,162 @@ export default async function LearnPage() {
         </div>
       </section>
 
-      {/* Articles Grid */}
-      {articles.length > 0 && (
-        <section className="py-32 bg-[var(--background)]">
-          <div className="container mx-auto px-4 sm:px-6 lg:px-8">
-            <div className="text-center mb-20">
-              <h2 className="text-5xl font-black mb-6" style={{
-                background: 'linear-gradient(135deg, var(--primary), var(--accent))',
-                WebkitBackgroundClip: 'text',
-                WebkitTextFillColor: 'transparent'
-              }}>
-                LATEST ARTICLES
-              </h2>
-              <p className="text-xl font-semibold text-theme-muted">
-                In-depth guides and insights on sustainable living
-              </p>
+      {/* Content Hub - Table of Contents */}
+      <section className="py-32 bg-[var(--background)]">
+        <div className="container mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="text-center mb-20">
+            <div className="inline-block px-6 py-3 bg-gradient-to-r from-[var(--primary)]/20 to-[var(--accent)]/20 rounded-full border-2 border-theme-primary mb-6">
+              <span className="text-sm font-black text-theme-primary uppercase tracking-wider">Content Library</span>
             </div>
-
-            <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8 max-w-7xl mx-auto">
-              {articles.map((article: any) => (
-                <ArticleCard key={article.id} article={article} />
-              ))}
-            </div>
-
-            {articles.length >= 12 && (
-              <div className="text-center mt-16">
-                <Button size="lg" className="text-xl px-12 py-8 rounded-2xl font-black shadow-2xl">
-                  VIEW ALL ARTICLES →
-                </Button>
-              </div>
-            )}
+            <h2 className="text-5xl md:text-6xl font-black mb-6" style={{
+              background: 'linear-gradient(135deg, var(--primary), var(--accent))',
+              WebkitBackgroundClip: 'text',
+              WebkitTextFillColor: 'transparent'
+            }}>
+              EXPLORE OUR KNOWLEDGE BASE
+            </h2>
+            <p className="text-xl font-semibold text-theme-muted max-w-3xl mx-auto">
+              From cutting-edge innovations to proven success stories—your complete guide to sustainable living
+            </p>
           </div>
-        </section>
-      )}
+
+          {/* Category Cards */}
+          <div className="grid md:grid-cols-2 gap-8 max-w-5xl mx-auto mb-16">
+            {/* Emerging Technologies Card */}
+            <Link href="/learn/emerging-tech">
+              <Card className="hover-lift border-4 border-theme-primary bg-gradient-to-br from-[color-mix(in_srgb,var(--primary)_15%,var(--background))] to-[color-mix(in_srgb,var(--accent)_15%,var(--background))] cursor-pointer transform hover:scale-[1.02] transition-all duration-300 h-full">
+                <CardContent className="p-10">
+                  <div className="flex items-start gap-6">
+                    <div className="w-16 h-16 rounded-2xl bg-gradient-to-br from-[var(--primary)] to-[var(--accent)] flex items-center justify-center flex-shrink-0 shadow-lg">
+                      <Zap className="w-8 h-8 text-white" />
+                    </div>
+                    <div className="flex-1">
+                      <h3 className="text-2xl font-black mb-3 text-theme-primary">
+                        EMERGING TECHNOLOGIES
+                      </h3>
+                      <p className="text-base font-semibold text-theme-muted mb-4 leading-relaxed">
+                        Carbon capture, solid-state batteries, green hydrogen, vertical farming, and AI-driven climate solutions
+                      </p>
+                      <div className="flex flex-wrap gap-2 mb-4">
+                        <span className="text-xs font-bold px-3 py-1 bg-theme-primary/20 text-theme-primary rounded-full">Innovation</span>
+                        <span className="text-xs font-bold px-3 py-1 bg-theme-accent/20 text-theme-accent rounded-full">Future Tech</span>
+                      </div>
+                      <div className="text-theme-primary font-black text-sm">
+                        EXPLORE →
+                      </div>
+                    </div>
+                  </div>
+                </CardContent>
+              </Card>
+            </Link>
+
+            {/* Success Stories Card */}
+            <Link href="/learn/success-stories">
+              <Card className="hover-lift border-4 border-theme-accent bg-gradient-to-br from-[color-mix(in_srgb,var(--accent)_15%,var(--background))] to-[color-mix(in_srgb,var(--secondary)_15%,var(--background))] cursor-pointer transform hover:scale-[1.02] transition-all duration-300 h-full">
+                <CardContent className="p-10">
+                  <div className="flex items-start gap-6">
+                    <div className="w-16 h-16 rounded-2xl bg-gradient-to-br from-[var(--accent)] to-[var(--secondary)] flex items-center justify-center flex-shrink-0 shadow-lg">
+                      <Award className="w-8 h-8 text-white" />
+                    </div>
+                    <div className="flex-1">
+                      <h3 className="text-2xl font-black mb-3 text-theme-accent">
+                        SUCCESS STORIES
+                      </h3>
+                      <p className="text-base font-semibold text-theme-muted mb-4 leading-relaxed">
+                        Proven examples from Patagonia, Copenhagen, regenerative farms, and net-zero buildings worldwide
+                      </p>
+                      <div className="flex flex-wrap gap-2 mb-4">
+                        <span className="text-xs font-bold px-3 py-1 bg-theme-accent/20 text-theme-accent rounded-full">Case Studies</span>
+                        <span className="text-xs font-bold px-3 py-1 bg-theme-secondary/20 text-theme-secondary rounded-full">Real Results</span>
+                      </div>
+                      <div className="text-theme-accent font-black text-sm">
+                        READ STORIES →
+                      </div>
+                    </div>
+                  </div>
+                </CardContent>
+              </Card>
+            </Link>
+
+            {/* Guides & Tutorials Card */}
+            <Link href="/learn#articles">
+              <Card className="hover-lift border-4 border-theme-secondary bg-gradient-to-br from-[color-mix(in_srgb,var(--secondary)_15%,var(--background))] to-[color-mix(in_srgb,var(--primary)_15%,var(--background))] cursor-pointer transform hover:scale-[1.02] transition-all duration-300 h-full">
+                <CardContent className="p-10">
+                  <div className="flex items-start gap-6">
+                    <div className="w-16 h-16 rounded-2xl bg-gradient-to-br from-[var(--secondary)] to-[var(--primary)] flex items-center justify-center flex-shrink-0 shadow-lg">
+                      <BookOpen className="w-8 h-8 text-white" />
+                    </div>
+                    <div className="flex-1">
+                      <h3 className="text-2xl font-black mb-3 text-theme-secondary">
+                        GUIDES & TUTORIALS
+                      </h3>
+                      <p className="text-base font-semibold text-theme-muted mb-4 leading-relaxed">
+                        Step-by-step instructions for sustainable living, renewable energy, zero waste, and eco-friendly practices
+                      </p>
+                      <div className="flex flex-wrap gap-2 mb-4">
+                        <span className="text-xs font-bold px-3 py-1 bg-theme-secondary/20 text-theme-secondary rounded-full">How-To</span>
+                        <span className="text-xs font-bold px-3 py-1 bg-theme-primary/20 text-theme-primary rounded-full">Practical</span>
+                      </div>
+                      <div className="text-theme-secondary font-black text-sm">
+                        START LEARNING →
+                      </div>
+                    </div>
+                  </div>
+                </CardContent>
+              </Card>
+            </Link>
+
+            {/* Research & Data Card */}
+            <Link href="/learn#research">
+              <Card className="hover-lift border-4 border-theme-primary bg-gradient-to-br from-[color-mix(in_srgb,var(--primary)_15%,var(--background))] to-[color-mix(in_srgb,var(--primary)_25%,var(--background))] cursor-pointer transform hover:scale-[1.02] transition-all duration-300 h-full">
+                <CardContent className="p-10">
+                  <div className="flex items-start gap-6">
+                    <div className="w-16 h-16 rounded-2xl bg-gradient-to-br from-[var(--primary)] to-[color-mix(in_srgb,var(--primary)_70%,black)] flex items-center justify-center flex-shrink-0 shadow-lg">
+                      <CheckCircle className="w-8 h-8 text-white" />
+                    </div>
+                    <div className="flex-1">
+                      <h3 className="text-2xl font-black mb-3 text-theme-primary">
+                        RESEARCH & DATA
+                      </h3>
+                      <p className="text-base font-semibold text-theme-muted mb-4 leading-relaxed">
+                        Science-backed reports, environmental statistics, and evidence-based sustainability research
+                      </p>
+                      <div className="flex flex-wrap gap-2 mb-4">
+                        <span className="text-xs font-bold px-3 py-1 bg-theme-primary/20 text-theme-primary rounded-full">Data-Driven</span>
+                        <span className="text-xs font-bold px-3 py-1 bg-theme-accent/20 text-theme-accent rounded-full">Scientific</span>
+                      </div>
+                      <div className="text-theme-primary font-black text-sm">
+                        VIEW DATA →
+                      </div>
+                    </div>
+                  </div>
+                </CardContent>
+              </Card>
+            </Link>
+          </div>
+
+          {/* Latest Articles */}
+          {articles.length > 0 && (
+            <div className="max-w-7xl mx-auto">
+              <h3 className="text-3xl font-black mb-8 text-center text-[var(--foreground)]">
+                RECENTLY PUBLISHED
+              </h3>
+              <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+                {articles.slice(0, 6).map((article: any) => (
+                  <ArticleCard key={article.id} article={article} />
+                ))}
+              </div>
+              {articles.length > 6 && (
+                <div className="text-center mt-12">
+                  <Button size="lg" className="text-lg px-10 py-6 rounded-xl font-black shadow-lg">
+                    VIEW ALL ARTICLES →
+                  </Button>
+                </div>
+              )}
+            </div>
+          )}
+        </div>
+      </section>
 
       {/* Topics Grid */}
       <section className="py-32 bg-[var(--muted)]">
