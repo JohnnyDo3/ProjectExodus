@@ -20,7 +20,7 @@ export function Header() {
     { name: 'Learn', href: '/learn' },
     { name: 'Community', href: '/community' },
     { name: 'Network', href: '/network' },
-    { name: 'Events', href: '/events' },
+    // { name: 'Events', href: '/events' }, // Temporarily disabled until Event model is in database
     { name: 'About', href: '/about' },
   ]
 
