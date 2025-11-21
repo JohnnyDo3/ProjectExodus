@@ -48,7 +48,7 @@ export function FeedPost({ post, onLike, onComment }: FeedPostProps) {
       if (res.ok) {
         const data = await res.json()
         setLiked(data.liked)
-        setLikeCount(prev => data.liked ? prev + 1 : prev - 1)
+        setLikeCount((prev: number) => data.liked ? prev + 1 : prev - 1)
         if (onLike) onLike()
       }
     } catch (error) {
@@ -105,11 +105,11 @@ export function FeedPost({ post, onLike, onComment }: FeedPostProps) {
     })
   }
 
-  const visibilityIcon = {
+  const visibilityIcon = ({
     PUBLIC: Globe,
     FOLLOWERS_ONLY: Users,
     PRIVATE: Lock
-  }[post.visibility]
+  } as Record<string, any>)[post.visibility]
 
   const VisibilityIcon = visibilityIcon || Globe
 

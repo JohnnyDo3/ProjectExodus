@@ -87,7 +87,7 @@ async function getLeaderboardData() {
   }
 }
 
-function LeaderboardSection({ title, users, icon: Icon, countKey, countLabel, medal Color }: any) {
+function LeaderboardSection({ title, users, icon: Icon, countKey, countLabel, medalColor }: any) {
   return (
     <Card className="border-4 border-theme-primary">
       <CardContent className="p-8">
