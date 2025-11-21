@@ -62,9 +62,9 @@ export default async function ProfilePage({ params }: { params: Promise<{ id: st
 
   return (
     <div className="min-h-screen bg-[var(--muted)]">
-      {/* Banner */}
+      {/* Compact Banner */}
       <div
-        className="h-80 bg-gradient-to-br from-[var(--primary)] via-[var(--accent)] to-[var(--secondary)] relative"
+        className="h-40 bg-gradient-to-br from-[var(--primary)] via-[var(--accent)] to-[var(--secondary)] relative"
         style={user.banner ? {
           backgroundImage: `url(${user.banner})`,
           backgroundSize: 'cover',
@@ -74,15 +74,15 @@ export default async function ProfilePage({ params }: { params: Promise<{ id: st
         <div className="absolute inset-0 bg-gradient-to-t from-[var(--background)]/80 to-transparent" />
       </div>
 
-      {/* Profile Header */}
-      <div className="container mx-auto px-4 sm:px-6 lg:px-8 -mt-32 relative z-10">
+      {/* Compact Profile Header */}
+      <div className="container mx-auto px-4 sm:px-6 lg:px-8 -mt-20 relative z-10">
         <div className="max-w-5xl mx-auto">
           <Card className="border-4 border-theme-primary shadow-theme-2xl">
-            <CardContent className="p-8">
-              <div className="flex flex-col md:flex-row gap-8">
-                {/* Profile Image */}
+            <CardContent className="p-6">
+              <div className="flex flex-col md:flex-row gap-6">
+                {/* Smaller Profile Image */}
                 <div className="flex-shrink-0">
-                  <div className="w-40 h-40 rounded-full border-8 border-[var(--background)] overflow-hidden bg-gradient-to-br from-[var(--primary)] to-[var(--accent)] flex items-center justify-center shadow-theme-xl">
+                  <div className="w-32 h-32 rounded-full border-6 border-[var(--background)] overflow-hidden bg-gradient-to-br from-[var(--primary)] to-[var(--accent)] flex items-center justify-center shadow-theme-xl">
                     {user.image ? (
                       <img
                         src={user.image}
@@ -90,7 +90,7 @@ export default async function ProfilePage({ params }: { params: Promise<{ id: st
                         className="w-full h-full object-cover"
                       />
                     ) : (
-                      <span className="text-6xl font-black text-[var(--primary-foreground)]">
+                      <span className="text-5xl font-black text-[var(--primary-foreground)]">
                         {user.name?.[0]?.toUpperCase() || user.email[0].toUpperCase()}
                       </span>
                     )}
@@ -99,32 +99,32 @@ export default async function ProfilePage({ params }: { params: Promise<{ id: st
 
                 {/* Profile Info */}
                 <div className="flex-1">
-                  <div className="flex justify-between items-start mb-4">
+                  <div className="flex justify-between items-start mb-3">
                     <div>
-                      <h1 className="text-4xl font-black text-[var(--foreground)] mb-2">
+                      <h1 className="text-3xl font-black text-[var(--foreground)] mb-1">
                         {user.name || 'Anonymous User'}
                       </h1>
                       {user.headline && (
-                        <p className="text-xl font-bold text-theme-muted mb-4">
+                        <p className="text-lg font-bold text-theme-muted mb-2">
                           {user.headline}
                         </p>
                       )}
                     </div>
                     {isOwnProfile ? (
                       <Link href="/profile/edit">
-                        <Button size="lg" className="font-black">
-                          <Edit className="w-5 h-5 mr-2" />
-                          EDIT PROFILE
+                        <Button size="sm" className="font-black">
+                          <Edit className="w-4 h-4 mr-2" />
+                          EDIT
                         </Button>
                       </Link>
                     ) : (
                       <div className="flex gap-2">
-                        <Button size="lg" className="font-black">
-                          <UserPlus className="w-5 h-5 mr-2" />
+                        <Button size="sm" className="font-black">
+                          <UserPlus className="w-4 h-4 mr-2" />
                           FOLLOW
                         </Button>
-                        <Button size="lg" variant="outline" className="font-black">
-                          <MessageSquare className="w-5 h-5 mr-2" />
+                        <Button size="sm" variant="outline" className="font-black">
+                          <MessageSquare className="w-4 h-4 mr-2" />
                           MESSAGE
                         </Button>
                       </div>
@@ -133,9 +133,9 @@ export default async function ProfilePage({ params }: { params: Promise<{ id: st
 
                   {/* Current Position */}
                   {(user.jobTitle || user.company) && (
-                    <div className="flex items-center gap-2 mb-3">
-                      <Briefcase className="w-5 h-5 text-theme-primary" />
-                      <span className="text-lg font-semibold text-[var(--foreground)]">
+                    <div className="flex items-center gap-2 mb-2">
+                      <Briefcase className="w-4 h-4 text-theme-primary" />
+                      <span className="text-base font-semibold text-[var(--foreground)]">
                         {user.jobTitle}
                         {user.jobTitle && user.company && ' at '}
                         {user.company && <span className="font-black text-theme-primary">{user.company}</span>}
@@ -143,71 +143,67 @@ export default async function ProfilePage({ params }: { params: Promise<{ id: st
                     </div>
                   )}
 
-                  {/* Location */}
-                  {user.location && (
-                    <div className="flex items-center gap-2 mb-3">
-                      <MapPin className="w-5 h-5 text-theme-accent" />
-                      <span className="text-base font-semibold text-theme-muted">
-                        {user.location}
-                      </span>
-                    </div>
-                  )}
-
-                  {/* Links */}
-                  <div className="flex flex-wrap items-center gap-4 mt-4">
+                  {/* Location & Links - Combined */}
+                  <div className="flex flex-wrap items-center gap-3 text-sm">
+                    {user.location && (
+                      <div className="flex items-center gap-1">
+                        <MapPin className="w-4 h-4 text-theme-accent" />
+                        <span className="font-semibold text-theme-muted">{user.location}</span>
+                      </div>
+                    )}
                     {user.website && (
-                      <a href={user.website} target="_blank" rel="noopener noreferrer" className="flex items-center gap-2 text-theme-primary hover:text-theme-accent transition-colors">
-                        <Globe className="w-5 h-5" />
-                        <span className="font-bold text-sm">Website</span>
+                      <a href={user.website} target="_blank" rel="noopener noreferrer" className="flex items-center gap-1 text-theme-primary hover:text-theme-accent transition-colors">
+                        <Globe className="w-4 h-4" />
+                        <span className="font-bold">Website</span>
                       </a>
                     )}
                     {user.linkedin && (
-                      <a href={user.linkedin} target="_blank" rel="noopener noreferrer" className="flex items-center gap-2 text-theme-primary hover:text-theme-accent transition-colors">
-                        <Linkedin className="w-5 h-5" />
-                        <span className="font-bold text-sm">LinkedIn</span>
+                      <a href={user.linkedin} target="_blank" rel="noopener noreferrer" className="flex items-center gap-1 text-theme-primary hover:text-theme-accent transition-colors">
+                        <Linkedin className="w-4 h-4" />
+                        <span className="font-bold">LinkedIn</span>
                       </a>
                     )}
                     {user.twitter && (
-                      <a href={user.twitter} target="_blank" rel="noopener noreferrer" className="flex items-center gap-2 text-theme-primary hover:text-theme-accent transition-colors">
-                        <Twitter className="w-5 h-5" />
-                        <span className="font-bold text-sm">Twitter</span>
+                      <a href={user.twitter} target="_blank" rel="noopener noreferrer" className="flex items-center gap-1 text-theme-primary hover:text-theme-accent transition-colors">
+                        <Twitter className="w-4 h-4" />
+                        <span className="font-bold">Twitter</span>
                       </a>
                     )}
                   </div>
                 </div>
               </div>
 
-              {/* Stats */}
-              <div className="grid grid-cols-2 md:grid-cols-5 gap-4 mt-8 pt-8 border-t-2 border-theme-muted">
+              {/* Compact Stats */}
+              <div className="grid grid-cols-5 gap-3 mt-6 pt-6 border-t-2 border-theme-muted">
                 <div className="text-center">
-                  <div className="text-3xl font-black text-theme-primary mb-1">
+                  <div className="text-2xl font-black text-theme-primary mb-1">
                     {user._count.followers}
                   </div>
-                  <div className="text-sm font-bold text-theme-muted uppercase">Followers</div>
+                  <div className="text-xs font-bold text-theme-muted uppercase">Followers</div>
                 </div>
                 <div className="text-center">
-                  <div className="text-3xl font-black text-theme-accent mb-1">
+                  <div className="text-2xl font-black text-theme-accent mb-1">
                     {user._count.following}
                   </div>
-                  <div className="text-sm font-bold text-theme-muted uppercase">Following</div>
+                  <div className="text-xs font-bold text-theme-muted uppercase">Following</div>
                 </div>
                 <div className="text-center">
-                  <div className="text-3xl font-black text-theme-secondary mb-1">
+                  <div className="text-2xl font-black text-theme-secondary mb-1">
                     {user._count.articles}
                   </div>
-                  <div className="text-sm font-bold text-theme-muted uppercase">Articles</div>
+                  <div className="text-xs font-bold text-theme-muted uppercase">Articles</div>
                 </div>
                 <div className="text-center">
-                  <div className="text-3xl font-black text-theme-primary mb-1">
+                  <div className="text-2xl font-black text-theme-primary mb-1">
                     {user._count.forumPosts}
                   </div>
-                  <div className="text-sm font-bold text-theme-muted uppercase">Forum Posts</div>
+                  <div className="text-xs font-bold text-theme-muted uppercase">Posts</div>
                 </div>
                 <div className="text-center">
-                  <div className="text-3xl font-black text-theme-accent mb-1">
+                  <div className="text-2xl font-black text-theme-accent mb-1">
                     {user._count.createdProjects}
                   </div>
-                  <div className="text-sm font-bold text-theme-muted uppercase">Projects</div>
+                  <div className="text-xs font-bold text-theme-muted uppercase">Projects</div>
                 </div>
               </div>
             </CardContent>
@@ -215,98 +211,110 @@ export default async function ProfilePage({ params }: { params: Promise<{ id: st
         </div>
       </div>
 
-      {/* Main Content */}
-      <div className="container mx-auto px-4 sm:px-6 lg:px-8 py-16">
-        <div className="max-w-5xl mx-auto grid md:grid-cols-3 gap-8">
+      {/* Compact Main Content */}
+      <div className="container mx-auto px-4 sm:px-6 lg:px-8 py-8">
+        <div className="max-w-5xl mx-auto grid md:grid-cols-3 gap-4">
           {/* Left Column */}
-          <div className="md:col-span-2 space-y-8">
-            {/* About */}
+          <div className="md:col-span-2 space-y-4">
+            {/* About - Collapsible */}
             {user.bio && (
               <Card className="border-4 border-theme-primary">
-                <CardContent className="p-8">
-                  <h2 className="text-2xl font-black mb-4 text-[var(--foreground)]">ABOUT</h2>
-                  <p className="text-base font-medium text-theme-muted leading-relaxed whitespace-pre-wrap">
-                    {user.bio}
-                  </p>
-                </CardContent>
+                <details open>
+                  <summary className="p-4 cursor-pointer hover:bg-[var(--muted)] transition-colors list-none">
+                    <h2 className="text-xl font-black text-[var(--foreground)] inline">ABOUT</h2>
+                  </summary>
+                  <CardContent className="px-4 pb-4 pt-0">
+                    <p className="text-sm font-medium text-theme-muted leading-relaxed whitespace-pre-wrap">
+                      {user.bio}
+                    </p>
+                  </CardContent>
+                </details>
               </Card>
             )}
 
-            {/* Experience */}
+            {/* Experience - Collapsible */}
             {user.experience && Array.isArray(user.experience) && (user.experience as any[]).length > 0 && (
               <Card className="border-4 border-theme-accent">
-                <CardContent className="p-8">
-                  <h2 className="text-2xl font-black mb-6 text-[var(--foreground)] flex items-center gap-3">
-                    <Briefcase className="w-7 h-7 text-theme-accent" />
-                    EXPERIENCE
-                  </h2>
-                  <div className="space-y-6">
-                    {(user.experience as any[]).map((exp: any, index: number) => (
-                      <div key={index} className="border-l-4 border-theme-accent pl-6">
-                        <h3 className="text-xl font-black text-theme-accent mb-1">
-                          {exp.title}
-                        </h3>
-                        <p className="text-lg font-bold text-[var(--foreground)] mb-2">
-                          {exp.company}
-                        </p>
-                        <p className="text-sm font-semibold text-theme-muted mb-3">
-                          {exp.startDate} - {exp.endDate || 'Present'}
-                        </p>
-                        {exp.description && (
-                          <p className="text-base font-medium text-theme-muted leading-relaxed">
-                            {exp.description}
+                <details open>
+                  <summary className="p-4 cursor-pointer hover:bg-[var(--muted)] transition-colors list-none">
+                    <h2 className="text-xl font-black text-[var(--foreground)] inline flex items-center gap-2">
+                      <Briefcase className="w-6 h-6 text-theme-accent inline" />
+                      EXPERIENCE
+                    </h2>
+                  </summary>
+                  <CardContent className="px-4 pb-4 pt-0">
+                    <div className="space-y-4">
+                      {(user.experience as any[]).map((exp: any, index: number) => (
+                        <div key={index} className="border-l-4 border-theme-accent pl-4">
+                          <h3 className="text-lg font-black text-theme-accent mb-1">
+                            {exp.title}
+                          </h3>
+                          <p className="text-base font-bold text-[var(--foreground)] mb-1">
+                            {exp.company}
                           </p>
-                        )}
-                      </div>
-                    ))}
-                  </div>
-                </CardContent>
+                          <p className="text-xs font-semibold text-theme-muted mb-2">
+                            {exp.startDate} - {exp.endDate || 'Present'}
+                          </p>
+                          {exp.description && (
+                            <p className="text-sm font-medium text-theme-muted leading-relaxed">
+                              {exp.description}
+                            </p>
+                          )}
+                        </div>
+                      ))}
+                    </div>
+                  </CardContent>
+                </details>
               </Card>
             )}
 
-            {/* Education */}
+            {/* Education - Collapsible */}
             {user.education && Array.isArray(user.education) && (user.education as any[]).length > 0 && (
               <Card className="border-4 border-theme-secondary">
-                <CardContent className="p-8">
-                  <h2 className="text-2xl font-black mb-6 text-[var(--foreground)] flex items-center gap-3">
-                    <GraduationCap className="w-7 h-7 text-theme-secondary" />
-                    EDUCATION
-                  </h2>
-                  <div className="space-y-6">
-                    {(user.education as any[]).map((edu: any, index: number) => (
-                      <div key={index} className="border-l-4 border-theme-secondary pl-6">
-                        <h3 className="text-xl font-black text-theme-secondary mb-1">
-                          {edu.school}
-                        </h3>
-                        <p className="text-lg font-bold text-[var(--foreground)] mb-2">
-                          {edu.degree} {edu.fieldOfStudy && `in ${edu.fieldOfStudy}`}
-                        </p>
-                        <p className="text-sm font-semibold text-theme-muted">
-                          {edu.startYear} - {edu.endYear || 'Present'}
-                        </p>
-                      </div>
-                    ))}
-                  </div>
-                </CardContent>
+                <details open>
+                  <summary className="p-4 cursor-pointer hover:bg-[var(--muted)] transition-colors list-none">
+                    <h2 className="text-xl font-black text-[var(--foreground)] inline flex items-center gap-2">
+                      <GraduationCap className="w-6 h-6 text-theme-secondary inline" />
+                      EDUCATION
+                    </h2>
+                  </summary>
+                  <CardContent className="px-4 pb-4 pt-0">
+                    <div className="space-y-4">
+                      {(user.education as any[]).map((edu: any, index: number) => (
+                        <div key={index} className="border-l-4 border-theme-secondary pl-4">
+                          <h3 className="text-lg font-black text-theme-secondary mb-1">
+                            {edu.school}
+                          </h3>
+                          <p className="text-base font-bold text-[var(--foreground)] mb-1">
+                            {edu.degree} {edu.fieldOfStudy && `in ${edu.fieldOfStudy}`}
+                          </p>
+                          <p className="text-xs font-semibold text-theme-muted">
+                            {edu.startYear} - {edu.endYear || 'Present'}
+                          </p>
+                        </div>
+                      ))}
+                    </div>
+                  </CardContent>
+                </details>
               </Card>
             )}
           </div>
 
-          {/* Right Column */}
-          <div className="space-y-8">
+          {/* Right Column - More Compact */}
+          <div className="space-y-4">
             {/* Expertise */}
             {user.expertise && user.expertise.length > 0 && (
               <Card className="border-4 border-theme-primary">
-                <CardContent className="p-6">
-                  <h2 className="text-xl font-black mb-4 text-[var(--foreground)] flex items-center gap-2">
-                    <Sparkles className="w-6 h-6 text-theme-primary" />
+                <CardContent className="p-4">
+                  <h2 className="text-lg font-black mb-3 text-[var(--foreground)] flex items-center gap-2">
+                    <Sparkles className="w-5 h-5 text-theme-primary" />
                     EXPERTISE
                   </h2>
                   <div className="flex flex-wrap gap-2">
                     {user.expertise.map((skill, index) => (
                       <span
                         key={index}
-                        className="px-3 py-2 bg-gradient-to-br from-[var(--primary)] to-[color-mix(in_srgb,var(--primary)_80%,black)] text-[var(--primary-foreground)] rounded-lg font-bold text-sm shadow-theme-md"
+                        className="px-2 py-1 bg-gradient-to-br from-[var(--primary)] to-[color-mix(in_srgb,var(--primary)_80%,black)] text-[var(--primary-foreground)] rounded-lg font-bold text-xs shadow-theme-md"
                       >
                         {skill}
                       </span>
@@ -319,13 +327,13 @@ export default async function ProfilePage({ params }: { params: Promise<{ id: st
             {/* Interests */}
             {user.interests && user.interests.length > 0 && (
               <Card className="border-4 border-theme-accent">
-                <CardContent className="p-6">
-                  <h2 className="text-xl font-black mb-4 text-[var(--foreground)]">INTERESTS</h2>
+                <CardContent className="p-4">
+                  <h2 className="text-lg font-black mb-3 text-[var(--foreground)]">INTERESTS</h2>
                   <div className="flex flex-wrap gap-2">
                     {user.interests.map((interest, index) => (
                       <span
                         key={index}
-                        className="px-3 py-2 bg-[color-mix(in_srgb,var(--accent)_20%,var(--background))] text-theme-accent rounded-lg font-semibold text-sm border-2 border-theme-accent"
+                        className="px-2 py-1 bg-[color-mix(in_srgb,var(--accent)_20%,var(--background))] text-theme-accent rounded-lg font-semibold text-xs border-2 border-theme-accent"
                       >
                         {interest}
                       </span>
@@ -338,20 +346,20 @@ export default async function ProfilePage({ params }: { params: Promise<{ id: st
             {/* Badges */}
             {user.userBadges && user.userBadges.length > 0 && (
               <Card className="border-4 border-theme-secondary">
-                <CardContent className="p-6">
-                  <h2 className="text-xl font-black mb-4 text-[var(--foreground)] flex items-center gap-2">
-                    <Award className="w-6 h-6 text-theme-secondary" />
+                <CardContent className="p-4">
+                  <h2 className="text-lg font-black mb-3 text-[var(--foreground)] flex items-center gap-2">
+                    <Award className="w-5 h-5 text-theme-secondary" />
                     BADGES
                   </h2>
-                  <div className="grid grid-cols-2 gap-3">
+                  <div className="grid grid-cols-2 gap-2">
                     {user.userBadges.map((userBadge) => (
                       <div
                         key={userBadge.id}
-                        className="flex flex-col items-center p-3 bg-gradient-to-br from-[var(--secondary)] to-[color-mix(in_srgb,var(--secondary)_80%,black)] rounded-lg shadow-theme-md"
+                        className="flex flex-col items-center p-2 bg-gradient-to-br from-[var(--secondary)] to-[color-mix(in_srgb,var(--secondary)_80%,black)] rounded-lg shadow-theme-md"
                         title={userBadge.badge.description}
                       >
-                        <span className="text-3xl mb-1">{userBadge.badge.icon}</span>
-                        <span className="text-xs font-bold text-[var(--primary-foreground)] text-center">
+                        <span className="text-2xl mb-1">{userBadge.badge.icon}</span>
+                        <span className="text-[10px] font-bold text-[var(--primary-foreground)] text-center leading-tight">
                           {userBadge.badge.name}
                         </span>
                       </div>
@@ -363,12 +371,12 @@ export default async function ProfilePage({ params }: { params: Promise<{ id: st
 
             {/* Member Since */}
             <Card className="border-4 border-theme-primary">
-              <CardContent className="p-6">
-                <div className="flex items-center gap-3 mb-2">
-                  <Calendar className="w-5 h-5 text-theme-primary" />
-                  <span className="font-bold text-theme-muted">MEMBER SINCE</span>
+              <CardContent className="p-4">
+                <div className="flex items-center gap-2 mb-2">
+                  <Calendar className="w-4 h-4 text-theme-primary" />
+                  <span className="font-bold text-theme-muted text-sm">MEMBER SINCE</span>
                 </div>
-                <p className="text-xl font-black text-[var(--foreground)]">
+                <p className="text-lg font-black text-[var(--foreground)]">
                   {new Date(user.createdAt).toLocaleDateString('en-US', {
                     month: 'long',
                     year: 'numeric'
