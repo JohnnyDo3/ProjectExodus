@@ -201,14 +201,14 @@ export default function EventsPage() {
               {/* Type Filter */}
               <div className="flex gap-2 flex-wrap">
                 <Button
-                  variant={filterType === '' ? 'default' : 'outline'}
+                  variant={filterType === '' ? 'primary' : 'outline'}
                   onClick={() => setFilterType('')}
                   className="font-bold"
                 >
                   ALL TYPES
                 </Button>
                 <Button
-                  variant={filterType === 'VIRTUAL' ? 'default' : 'outline'}
+                  variant={filterType === 'VIRTUAL' ? 'primary' : 'outline'}
                   onClick={() => setFilterType('VIRTUAL')}
                   className="font-bold"
                 >
@@ -216,7 +216,7 @@ export default function EventsPage() {
                   VIRTUAL
                 </Button>
                 <Button
-                  variant={filterType === 'IN_PERSON' ? 'default' : 'outline'}
+                  variant={filterType === 'IN_PERSON' ? 'primary' : 'outline'}
                   onClick={() => setFilterType('IN_PERSON')}
                   className="font-bold"
                 >
@@ -224,7 +224,7 @@ export default function EventsPage() {
                   IN-PERSON
                 </Button>
                 <Button
-                  variant={filterType === 'HYBRID' ? 'default' : 'outline'}
+                  variant={filterType === 'HYBRID' ? 'primary' : 'outline'}
                   onClick={() => setFilterType('HYBRID')}
                   className="font-bold"
                 >
@@ -236,14 +236,14 @@ export default function EventsPage() {
               {/* Time Filter */}
               <div className="flex gap-2">
                 <Button
-                  variant={showUpcoming ? 'default' : 'outline'}
+                  variant={showUpcoming ? 'primary' : 'outline'}
                   onClick={() => setShowUpcoming(true)}
                   className="font-bold"
                 >
                   UPCOMING
                 </Button>
                 <Button
-                  variant={!showUpcoming ? 'default' : 'outline'}
+                  variant={!showUpcoming ? 'primary' : 'outline'}
                   onClick={() => setShowUpcoming(false)}
                   className="font-bold"
                 >

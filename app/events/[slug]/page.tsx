@@ -202,7 +202,7 @@ export default function EventPage({ params }: { params: { slug: string } }) {
   const userRSVP = event.attendees.find((a) => a.user.id === session?.user?.id)
   const isCreator = event.creatorId === session?.user?.id
   const isPast = new Date(event.startDate) < new Date()
-  const isFull = event.maxCapacity && event._count.attendees >= event.maxCapacity
+  const isFull = !!(event.maxCapacity && event._count.attendees >= event.maxCapacity)
   const goingCount = event.attendees.filter((a) => a.status === 'GOING').length
 
   return (
@@ -304,7 +304,7 @@ export default function EventPage({ params }: { params: { slug: string } }) {
                       <Button
                         onClick={() => handleRSVP('GOING')}
                         disabled={isRSVPing || (isFull && userRSVP?.status !== 'GOING')}
-                        variant={userRSVP?.status === 'GOING' ? 'default' : 'outline'}
+                        variant={userRSVP?.status === 'GOING' ? 'primary' : 'outline'}
                         className="flex-1 font-bold"
                       >
                         {isRSVPing ? (
@@ -317,7 +317,7 @@ export default function EventPage({ params }: { params: { slug: string } }) {
                       <Button
                         onClick={() => handleRSVP('MAYBE')}
                         disabled={isRSVPing}
-                        variant={userRSVP?.status === 'MAYBE' ? 'default' : 'outline'}
+                        variant={userRSVP?.status === 'MAYBE' ? 'primary' : 'outline'}
                         className="flex-1 font-bold"
                       >
                         {isRSVPing ? (
@@ -330,7 +330,7 @@ export default function EventPage({ params }: { params: { slug: string } }) {
                       <Button
                         onClick={() => handleRSVP('NOT_GOING')}
                         disabled={isRSVPing}
-                        variant={userRSVP?.status === 'NOT_GOING' ? 'default' : 'outline'}
+                        variant={userRSVP?.status === 'NOT_GOING' ? 'primary' : 'outline'}
                         className="flex-1 font-bold"
                       >
                         {isRSVPing ? (
