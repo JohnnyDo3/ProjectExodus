@@ -115,8 +115,13 @@ export function ProjectExodusAI() {
       return "🚀 Breakthrough innovations are transforming sustainability RIGHT NOW! Climeworks' DAC plants capture CO₂ from air, QuantumScape's solid-state batteries enable 500-mile EVs, green hydrogen costs dropped 70%, and vertical farms grow food with 95% less water. $1.4 trillion invested in climate tech in 2023 alone! Check out our Emerging Technologies page to explore carbon capture, advanced batteries, green hydrogen, vertical farming, and AI for climate. The future is here!"
     }
 
+    // Success Stories / Case Studies / Examples
+    if (input.includes('success') || input.includes('example') || input.includes('case study') || input.includes('proof') || input.includes('works') || input.includes('real world')) {
+      return "✅ Sustainability isn't just theory—it's WORKING! Patagonia built a $3B business on activism, Interface saved $450M while going carbon-negative, Copenhagen is carbon-neutral by 2025, regenerative farms are sequestering carbon while increasing profits 78%, and net-zero buildings save 70-90% on energy. Our Success Stories page shows companies, cities, farms, and buildings proving environmental stewardship = economic prosperity. See the proof!"
+    }
+
     // General/Default
-    return "I'm here to help you on your sustainability journey! 🌱 I can guide you through:\n\n⚡ Renewable Energy (solar, wind, storage)\n👕 Sustainable Fashion (circular economy, ethical brands)\n🌾 Regenerative Agriculture (soil health, carbon sequestration)\n♻️ Zero Waste Living (the 5 R's, composting)\n🏡 Green Building (Passive House, LEED)\n💧 Water Conservation (efficiency, rainwater harvesting)\n🚀 Emerging Technologies (carbon capture, green H₂, AI)\n📊 Carbon Calculator (measure your impact)\n\nWhat would you like to explore? Or ask me about specific products, certifications, or practices!"
+    return "I'm here to help you on your sustainability journey! 🌱 I can guide you through:\n\n⚡ Renewable Energy (solar, wind, storage)\n👕 Sustainable Fashion (circular economy, ethical brands)\n🌾 Regenerative Agriculture (soil health, carbon sequestration)\n♻️ Zero Waste Living (the 5 R's, composting)\n🏡 Green Building (Passive House, LEED)\n💧 Water Conservation (efficiency, rainwater harvesting)\n🚀 Emerging Technologies (carbon capture, green H₂, AI)\n✅ Success Stories (real-world proof)\n📊 Carbon Calculator (measure your impact)\n\nWhat would you like to explore? Or ask me about specific products, certifications, or practices!"
   }
 
   return (

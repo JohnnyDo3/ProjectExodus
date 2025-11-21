@@ -142,10 +142,11 @@ export default async function LearnPage() {
         </div>
       </section>
 
-      {/* Emerging Technologies */}
+      {/* Featured Content - Emerging Tech & Success Stories */}
       <section className="py-32 bg-[var(--background)]">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="max-w-5xl mx-auto">
+          <div className="max-w-7xl mx-auto space-y-8">
+            {/* Emerging Technologies */}
             <Link href="/learn/emerging-tech">
               <Card className="hover-lift border-4 border-theme-primary bg-gradient-to-br from-[color-mix(in_srgb,var(--primary)_20%,var(--background))] via-[color-mix(in_srgb,var(--accent)_20%,var(--background))] to-[color-mix(in_srgb,var(--secondary)_20%,var(--background))] cursor-pointer transform hover:scale-105 transition-all duration-300">
                 <CardContent className="p-16 text-center">
@@ -171,6 +172,36 @@ export default async function LearnPage() {
                   </div>
                   <div className="text-theme-primary font-black text-lg">
                     EXPLORE INNOVATIONS →
+                  </div>
+                </CardContent>
+              </Card>
+            </Link>
+
+            {/* Success Stories */}
+            <Link href="/learn/success-stories">
+              <Card className="hover-lift border-4 border-theme-accent bg-gradient-to-br from-[color-mix(in_srgb,var(--accent)_20%,var(--background))] via-[color-mix(in_srgb,var(--primary)_20%,var(--background))] to-[color-mix(in_srgb,var(--accent)_20%,var(--background))] cursor-pointer transform hover:scale-105 transition-all duration-300">
+                <CardContent className="p-16 text-center">
+                  <div className="w-24 h-24 mx-auto mb-6 rounded-full bg-gradient-to-br from-[var(--accent)] to-[var(--primary)] flex items-center justify-center shadow-theme-xl">
+                    <Award className="w-12 h-12 text-[var(--primary-foreground)]" />
+                  </div>
+                  <h2 className="text-5xl font-black mb-6" style={{
+                    background: 'linear-gradient(135deg, var(--accent), var(--primary))',
+                    WebkitBackgroundClip: 'text',
+                    WebkitTextFillColor: 'transparent'
+                  }}>
+                    SUCCESS STORIES & CASE STUDIES
+                  </h2>
+                  <p className="text-xl font-semibold text-theme-muted mb-6 max-w-3xl mx-auto">
+                    Real-world proof that sustainability works—from Patagonia's $3B business to Copenhagen's carbon neutrality, regenerative farms, and net-zero buildings
+                  </p>
+                  <div className="flex flex-wrap justify-center gap-4 mb-8">
+                    <span className="px-4 py-2 bg-[var(--accent)] text-[var(--primary-foreground)] rounded-full text-sm font-black">Companies</span>
+                    <span className="px-4 py-2 bg-[var(--primary)] text-[var(--primary-foreground)] rounded-full text-sm font-black">Cities</span>
+                    <span className="px-4 py-2 bg-[var(--accent)] text-[var(--primary-foreground)] rounded-full text-sm font-black">Farms</span>
+                    <span className="px-4 py-2 bg-[var(--primary)] text-[var(--primary-foreground)] rounded-full text-sm font-black">Buildings</span>
+                  </div>
+                  <div className="text-theme-accent font-black text-lg">
+                    SEE THE PROOF →
                   </div>
                 </CardContent>
               </Card>
