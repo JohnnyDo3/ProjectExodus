@@ -4,7 +4,7 @@ import { useState } from 'react'
 import { useRouter } from 'next/navigation'
 import { Button } from '@/components/ui/Button'
 import { Card, CardContent } from '@/components/ui/Card'
-import { Plus, X, Save, Loader2, User, Briefcase, Sparkles, Link as LinkIcon } from 'lucide-react'
+import { Plus, X, Save, Loader2, User, Briefcase, Sparkles, Link as LinkIcon, Award, Target, TrendingUp } from 'lucide-react'
 
 interface User {
   id: string
@@ -30,7 +30,7 @@ interface ProfileEditFormProps {
   user: User
 }
 
-type TabType = 'essential' | 'professional' | 'skills' | 'links'
+type TabType = 'essential' | 'professional' | 'skills' | 'links' | 'badges'
 
 export function ProfileEditForm({ user }: ProfileEditFormProps) {
   const router = useRouter()
@@ -236,6 +236,7 @@ export function ProfileEditForm({ user }: ProfileEditFormProps) {
     { id: 'professional' as TabType, label: 'PROFESSIONAL', icon: Briefcase },
     { id: 'skills' as TabType, label: 'SKILLS', icon: Sparkles },
     { id: 'links' as TabType, label: 'LINKS & IMAGES', icon: LinkIcon },
+    { id: 'badges' as TabType, label: 'BADGES & GOALS', icon: Award },
   ]
 
   return (
@@ -814,6 +815,174 @@ export function ProfileEditForm({ user }: ProfileEditFormProps) {
                         <img src={formData.banner} alt="Banner Preview" className="w-full h-40 rounded-lg object-cover border-4 border-theme-secondary" />
                       </div>
                     )}
+                  </div>
+                </div>
+              </CardContent>
+            </Card>
+          </>
+        )}
+
+        {/* Badges & Goals Tab */}
+        {activeTab === 'badges' && (
+          <>
+            {/* Learning Goals */}
+            <Card className="border-4 border-theme-primary">
+              <CardContent className="p-8">
+                <div className="flex items-center gap-3 mb-6">
+                  <div className="w-12 h-12 rounded-full bg-gradient-to-br from-[var(--primary)] to-[var(--accent)] flex items-center justify-center">
+                    <Target className="w-7 h-7 text-white" />
+                  </div>
+                  <div>
+                    <h2 className="text-2xl font-black text-[var(--foreground)]">
+                      YOUR LEARNING GOALS
+                    </h2>
+                    <p className="text-sm font-semibold text-theme-muted">
+                      Track your progress toward earning badges and achieving sustainability milestones
+                    </p>
+                  </div>
+                </div>
+
+                <div className="space-y-6">
+                  {/* Badge Progress Section */}
+                  <div className="p-6 bg-gradient-to-br from-[color-mix(in_srgb,var(--primary)_10%,var(--background))] to-[color-mix(in_srgb,var(--accent)_10%,var(--background))] rounded-xl border-2 border-theme-primary">
+                    <div className="flex items-center gap-2 mb-4">
+                      <TrendingUp className="w-5 h-5 text-theme-primary" />
+                      <h3 className="text-lg font-black text-[var(--foreground)]">BADGE PROGRESS</h3>
+                    </div>
+                    <p className="text-sm font-medium text-theme-muted mb-4">
+                      Earn badges by contributing to the community, sharing knowledge, and achieving sustainability goals.
+                      Each badge unlocks new opportunities and recognition within Project Exodus.
+                    </p>
+
+                    {/* Popular Learning Paths */}
+                    <div className="grid md:grid-cols-2 gap-4 mt-6">
+                      <div className="p-4 bg-[var(--card)] rounded-lg border-2 border-theme-accent">
+                        <div className="flex items-center gap-3 mb-2">
+                          <span className="text-3xl">🌱</span>
+                          <div>
+                            <h4 className="font-black text-theme-accent">GREEN STARTER</h4>
+                            <p className="text-xs font-semibold text-theme-muted">Complete your profile</p>
+                          </div>
+                        </div>
+                        <div className="mt-3 bg-[var(--muted)] rounded-full h-2 overflow-hidden">
+                          <div className="h-full bg-gradient-to-r from-[var(--accent)] to-[var(--primary)] rounded-full" style={{width: '75%'}}></div>
+                        </div>
+                        <p className="text-xs font-bold text-theme-accent mt-1">75% Complete</p>
+                      </div>
+
+                      <div className="p-4 bg-[var(--card)] rounded-lg border-2 border-theme-secondary">
+                        <div className="flex items-center gap-3 mb-2">
+                          <span className="text-3xl">📚</span>
+                          <div>
+                            <h4 className="font-black text-theme-secondary">KNOWLEDGE SHARER</h4>
+                            <p className="text-xs font-semibold text-theme-muted">Write 5 articles</p>
+                          </div>
+                        </div>
+                        <div className="mt-3 bg-[var(--muted)] rounded-full h-2 overflow-hidden">
+                          <div className="h-full bg-gradient-to-r from-[var(--secondary)] to-[var(--accent)] rounded-full" style={{width: '40%'}}></div>
+                        </div>
+                        <p className="text-xs font-bold text-theme-secondary mt-1">2/5 Articles</p>
+                      </div>
+
+                      <div className="p-4 bg-[var(--card)] rounded-lg border-2 border-theme-primary">
+                        <div className="flex items-center gap-3 mb-2">
+                          <span className="text-3xl">💬</span>
+                          <div>
+                            <h4 className="font-black text-theme-primary">COMMUNITY BUILDER</h4>
+                            <p className="text-xs font-semibold text-theme-muted">Make 50 forum posts</p>
+                          </div>
+                        </div>
+                        <div className="mt-3 bg-[var(--muted)] rounded-full h-2 overflow-hidden">
+                          <div className="h-full bg-gradient-to-r from-[var(--primary)] to-[var(--secondary)] rounded-full" style={{width: '20%'}}></div>
+                        </div>
+                        <p className="text-xs font-bold text-theme-primary mt-1">10/50 Posts</p>
+                      </div>
+
+                      <div className="p-4 bg-[var(--card)] rounded-lg border-2 border-theme-accent">
+                        <div className="flex items-center gap-3 mb-2">
+                          <span className="text-3xl">🤝</span>
+                          <div>
+                            <h4 className="font-black text-theme-accent">CONNECTOR</h4>
+                            <p className="text-xs font-semibold text-theme-muted">Get 100 followers</p>
+                          </div>
+                        </div>
+                        <div className="mt-3 bg-[var(--muted)] rounded-full h-2 overflow-hidden">
+                          <div className="h-full bg-gradient-to-r from-[var(--accent)] to-[var(--primary)] rounded-full" style={{width: '0%'}}></div>
+                        </div>
+                        <p className="text-xs font-bold text-theme-accent mt-1">0/100 Followers</p>
+                      </div>
+                    </div>
+                  </div>
+
+                  {/* Achievement Milestones */}
+                  <div className="p-6 bg-gradient-to-br from-[color-mix(in_srgb,var(--secondary)_10%,var(--background))] to-[color-mix(in_srgb,var(--primary)_10%,var(--background))] rounded-xl border-2 border-theme-secondary">
+                    <div className="flex items-center gap-2 mb-4">
+                      <Award className="w-5 h-5 text-theme-secondary" />
+                      <h3 className="text-lg font-black text-[var(--foreground)]">AVAILABLE BADGES</h3>
+                    </div>
+                    <p className="text-sm font-medium text-theme-muted mb-4">
+                      Explore all the badges you can earn and the impact you can make
+                    </p>
+
+                    <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
+                      {/* Badge examples - these would be loaded from API */}
+                      <div className="p-3 bg-[var(--card)] rounded-lg border-2 border-theme-muted text-center hover:border-theme-primary transition-colors cursor-pointer">
+                        <span className="text-4xl mb-2 block">🌍</span>
+                        <span className="text-xs font-bold text-[var(--foreground)] block">ECO WARRIOR</span>
+                      </div>
+                      <div className="p-3 bg-[var(--card)] rounded-lg border-2 border-theme-muted text-center hover:border-theme-accent transition-colors cursor-pointer">
+                        <span className="text-4xl mb-2 block">♻️</span>
+                        <span className="text-xs font-bold text-[var(--foreground)] block">RECYCLER</span>
+                      </div>
+                      <div className="p-3 bg-[var(--card)] rounded-lg border-2 border-theme-muted text-center hover:border-theme-secondary transition-colors cursor-pointer">
+                        <span className="text-4xl mb-2 block">🌿</span>
+                        <span className="text-xs font-bold text-[var(--foreground)] block">NATURE LOVER</span>
+                      </div>
+                      <div className="p-3 bg-[var(--card)] rounded-lg border-2 border-theme-muted text-center hover:border-theme-primary transition-colors cursor-pointer">
+                        <span className="text-4xl mb-2 block">💡</span>
+                        <span className="text-xs font-bold text-[var(--foreground)] block">INNOVATOR</span>
+                      </div>
+                      <div className="p-3 bg-[var(--card)] rounded-lg border-2 border-theme-muted text-center hover:border-theme-accent transition-colors cursor-pointer">
+                        <span className="text-4xl mb-2 block">🏆</span>
+                        <span className="text-xs font-bold text-[var(--foreground)] block">CHAMPION</span>
+                      </div>
+                      <div className="p-3 bg-[var(--card)] rounded-lg border-2 border-theme-muted text-center hover:border-theme-secondary transition-colors cursor-pointer">
+                        <span className="text-4xl mb-2 block">⭐</span>
+                        <span className="text-xs font-bold text-[var(--foreground)] block">EXPERT</span>
+                      </div>
+                      <div className="p-3 bg-[var(--card)] rounded-lg border-2 border-theme-muted text-center hover:border-theme-primary transition-colors cursor-pointer">
+                        <span className="text-4xl mb-2 block">🎯</span>
+                        <span className="text-xs font-bold text-[var(--foreground)] block">ACHIEVER</span>
+                      </div>
+                      <div className="p-3 bg-[var(--card)] rounded-lg border-2 border-theme-muted text-center hover:border-theme-accent transition-colors cursor-pointer">
+                        <span className="text-4xl mb-2 block">🚀</span>
+                        <span className="text-xs font-bold text-[var(--foreground)] block">PIONEER</span>
+                      </div>
+                    </div>
+                  </div>
+
+                  {/* Impact Stats */}
+                  <div className="p-6 bg-gradient-to-br from-[color-mix(in_srgb,var(--accent)_10%,var(--background))] to-[color-mix(in_srgb,var(--secondary)_10%,var(--background))] rounded-xl border-2 border-theme-accent">
+                    <h3 className="text-lg font-black text-[var(--foreground)] mb-4">YOUR IMPACT</h3>
+                    <div className="grid grid-cols-3 gap-4 text-center">
+                      <div>
+                        <div className="text-3xl font-black text-theme-primary mb-1">0</div>
+                        <div className="text-xs font-bold text-theme-muted uppercase">Badges Earned</div>
+                      </div>
+                      <div>
+                        <div className="text-3xl font-black text-theme-accent mb-1">0</div>
+                        <div className="text-xs font-bold text-theme-muted uppercase">Goals Completed</div>
+                      </div>
+                      <div>
+                        <div className="text-3xl font-black text-theme-secondary mb-1">0%</div>
+                        <div className="text-xs font-bold text-theme-muted uppercase">Profile Complete</div>
+                      </div>
+                    </div>
+                    <div className="mt-4 p-3 bg-[var(--card)] rounded-lg border-2 border-theme-primary">
+                      <p className="text-xs font-semibold text-theme-muted text-center">
+                        💡 <span className="font-black">PRO TIP:</span> Complete your profile and engage with the community to unlock your first badge!
+                      </p>
+                    </div>
                   </div>
                 </div>
               </CardContent>
