@@ -379,13 +379,13 @@ export default async function CommunityPage() {
         </div>
       </section>
 
-      {/* Flowing Content - Cute & Curvy */}
+      {/* Flowing Content - Cute & Curvy with Borders */}
       <section className="py-6">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="max-w-3xl mx-auto space-y-6">
+          <div className="max-w-6xl mx-auto grid lg:grid-cols-2 gap-4">
 
             {/* Trending Discussions - Cute Cards */}
-            <div>
+            <div className="p-5 bg-[var(--card)] rounded-3xl border-3 border-theme-accent/40 shadow-sm">
               <div className="flex items-center justify-between mb-3">
                 <div className="flex items-center gap-2">
                   <div className="w-8 h-8 rounded-full bg-gradient-to-br from-[var(--accent)] to-[var(--accent)]/70 flex items-center justify-center">
@@ -430,7 +430,7 @@ export default async function CommunityPage() {
             </div>
 
             {/* Active Projects - Cute Grid */}
-            <div>
+            <div className="p-5 bg-[var(--card)] rounded-3xl border-3 border-theme-secondary/40 shadow-sm lg:col-span-2">
               <div className="flex items-center justify-between mb-3">
                 <div className="flex items-center gap-2">
                   <div className="w-8 h-8 rounded-full bg-gradient-to-br from-[var(--secondary)] to-[var(--secondary)]/70 flex items-center justify-center">
@@ -463,7 +463,7 @@ export default async function CommunityPage() {
             </div>
 
             {/* Suggested Connections - Cute List */}
-            <div>
+            <div className="p-5 bg-[var(--card)] rounded-3xl border-3 border-theme-primary/40 shadow-sm">
               <div className="flex items-center justify-between mb-3">
                 <div className="flex items-center gap-2">
                   <div className="w-8 h-8 rounded-full bg-gradient-to-br from-[var(--primary)] to-[var(--primary)]/70 flex items-center justify-center">
@@ -500,7 +500,7 @@ export default async function CommunityPage() {
             </div>
 
             {/* Community Stats - Cute Rounded Card */}
-            <div className="p-5 bg-gradient-to-br from-[var(--primary)]/10 via-[var(--accent)]/10 to-[var(--secondary)]/10 rounded-3xl border-2 border-[var(--border)]">
+            <div className="p-5 bg-gradient-to-br from-[var(--primary)]/10 via-[var(--accent)]/10 to-[var(--secondary)]/10 rounded-3xl border-3 border-[var(--primary)]/30 shadow-sm">
               <div className="flex items-center gap-2 mb-3">
                 <div className="w-7 h-7 rounded-full bg-gradient-to-br from-[var(--primary)] to-[var(--accent)] flex items-center justify-center">
                   <Globe className="w-3.5 h-3.5 text-white" />
