@@ -5,7 +5,6 @@ import { Leaf, Droplet, Zap, Users, Heart, Shield, Sprout, BookOpen, Scale, Eye,
 import { NightSkyConstellations } from '@/components/theme/NightSkyConstellations'
 import { TreeBranches } from '@/components/decorative/TreeBranches'
 import { FlyingBirds } from '@/components/decorative/FlyingBirds'
-import { ProgressiveSkyline } from '@/components/decorative/ProgressiveSkyline'
 import { CircularCarousel } from '@/components/carousel/CircularCarousel'
 
 export default function Home() {
@@ -87,7 +86,6 @@ export default function Home() {
       {/* Decorative Elements */}
       <TreeBranches />
       <FlyingBirds />
-      <ProgressiveSkyline />
 
       {/* Hero Section - BOLD & EXPERIMENTAL */}
       <section className="relative min-h-screen flex items-center justify-center overflow-hidden bg-gradient-to-br from-[var(--muted)] via-[color-mix(in_srgb,var(--primary)_20%,var(--background))] to-[color-mix(in_srgb,var(--accent)_20%,var(--background))]">
