@@ -82,9 +82,6 @@ export default async function CategoryPage({
       {/* Posts */}
       <section className="py-12 bg-[var(--background)]">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="mb-6">
-            <BackButton label="Back to Forum" fallbackUrl="/community/forum" />
-          </div>
           <div className="max-w-5xl mx-auto">
             <div className="space-y-4">
               {posts.map((post: any) => (

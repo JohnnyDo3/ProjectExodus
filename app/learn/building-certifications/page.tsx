@@ -230,9 +230,6 @@ export default function BuildingCertificationsPage() {
       {/* Overview Comparison */}
       <section className="py-20 bg-[var(--background)]">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="mb-6">
-            <BackButton label="Back to Learn" fallbackUrl="/learn" />
-          </div>
           <div className="max-w-6xl mx-auto">
             <h2 className="text-5xl font-black mb-12 text-center text-[var(--foreground)]">CERTIFICATION OVERVIEW</h2>
 
@@ -266,9 +263,6 @@ export default function BuildingCertificationsPage() {
       {/* BREEAM Section */}
       <section className="py-20 bg-gradient-to-br from-[color-mix(in_srgb,var(--primary)_10%,var(--background))] to-[var(--muted)]">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="mb-6">
-            <BackButton label="Back to Learn" fallbackUrl="/learn" />
-          </div>
           <div className="max-w-6xl mx-auto">
             <div className="text-center mb-16">
               <Building2 className="w-20 h-20 text-theme-primary mx-auto mb-6" />
@@ -329,9 +323,6 @@ export default function BuildingCertificationsPage() {
       {/* WELL Section */}
       <section className="py-20 bg-[var(--background)]">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="mb-6">
-            <BackButton label="Back to Learn" fallbackUrl="/learn" />
-          </div>
           <div className="max-w-6xl mx-auto">
             <div className="text-center mb-16">
               <Heart className="w-20 h-20 text-theme-accent mx-auto mb-6" />
@@ -379,9 +370,6 @@ export default function BuildingCertificationsPage() {
       {/* Living Building Challenge Section */}
       <section className="py-20 bg-gradient-to-br from-[color-mix(in_srgb,var(--secondary)_10%,var(--background))] to-[var(--muted)]">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="mb-6">
-            <BackButton label="Back to Learn" fallbackUrl="/learn" />
-          </div>
           <div className="max-w-6xl mx-auto">
             <div className="text-center mb-16">
               <Leaf className="w-20 h-20 text-theme-secondary mx-auto mb-6" />
@@ -440,9 +428,6 @@ export default function BuildingCertificationsPage() {
       {/* Comparison */}
       <section className="py-20 bg-[var(--background)]">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="mb-6">
-            <BackButton label="Back to Learn" fallbackUrl="/learn" />
-          </div>
           <div className="max-w-5xl mx-auto">
             <h2 className="text-5xl font-black mb-12 text-center text-[var(--foreground)]">CHOOSING THE RIGHT CERTIFICATION</h2>
 
@@ -517,9 +502,6 @@ export default function BuildingCertificationsPage() {
       {/* Official Resources */}
       <section className="py-20 bg-[var(--background)]">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="mb-6">
-            <BackButton label="Back to Learn" fallbackUrl="/learn" />
-          </div>
           <div className="max-w-5xl mx-auto">
             <div className="text-center mb-12">
               <h2 className="text-5xl font-black mb-4 text-[var(--foreground)]">
@@ -622,9 +604,6 @@ export default function BuildingCertificationsPage() {
       {/* CTA */}
       <section className="py-20 bg-gradient-to-br from-[var(--primary)] via-[var(--accent)] to-[var(--secondary)] text-[var(--primary-foreground)]">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="mb-6">
-            <BackButton label="Back to Learn" fallbackUrl="/learn" />
-          </div>
           <div className="max-w-4xl mx-auto text-center space-y-8">
             <h2 className="text-5xl font-black text-[var(--primary-foreground)]">EXPLORE MORE</h2>
             <p className="text-2xl font-semibold text-[var(--primary-foreground)]">

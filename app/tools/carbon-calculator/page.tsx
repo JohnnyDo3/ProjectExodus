@@ -245,9 +245,6 @@ export default function CarbonCalculatorPage() {
       {step < 6 && (
         <section className="py-12 bg-[var(--muted)]">
           <div className="container mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="mb-6">
-            <BackButton label="Back to Tools" fallbackUrl="/tools" />
-          </div>
             <div className="max-w-3xl mx-auto">
               {/* Progress Bar */}
               <div className="mb-8">
@@ -667,9 +664,6 @@ export default function CarbonCalculatorPage() {
         <>
           <section className="py-12 bg-[var(--background)]">
             <div className="container mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="mb-6">
-            <BackButton label="Back to Tools" fallbackUrl="/tools" />
-          </div>
               <div className="max-w-5xl mx-auto">
                 <Card className="border-4 border-theme-primary mb-8">
                   <CardContent className="p-10">
@@ -813,9 +807,6 @@ export default function CarbonCalculatorPage() {
           {/* Data Sources */}
           <section className="py-12 bg-[var(--muted)]">
             <div className="container mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="mb-6">
-            <BackButton label="Back to Tools" fallbackUrl="/tools" />
-          </div>
               <div className="max-w-5xl mx-auto">
                 <Citation
                   statistic="Carbon footprint calculation methodology"

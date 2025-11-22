@@ -288,9 +288,6 @@ export default function ProjectPage({ params }: { params: { slug: string } }) {
       {isMember && (
         <section className="py-16">
           <div className="container mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="mb-6">
-            <BackButton label="Back to Projects" fallbackUrl="/community/projects" />
-          </div>
             <div className="max-w-6xl mx-auto">
               <Card className="border-4 border-theme-primary">
                 <CardHeader>
@@ -400,9 +397,6 @@ export default function ProjectPage({ params }: { params: { slug: string } }) {
       {!isMember && (
         <section className="py-16">
           <div className="container mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="mb-6">
-            <BackButton label="Back to Projects" fallbackUrl="/community/projects" />
-          </div>
             <div className="max-w-6xl mx-auto">
               <Card className="border-4 border-theme-secondary">
                 <CardContent className="p-12 text-center">

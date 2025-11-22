@@ -53,9 +53,6 @@ export default async function ForumPage() {
       {/* Categories */}
       <section className="py-16 bg-[var(--background)]">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="mb-6">
-            <BackButton label="Back to Community" fallbackUrl="/community" />
-          </div>
           <div className="max-w-5xl mx-auto">
             <div className="mb-10">
               <h2 className="text-3xl font-black mb-2 text-[var(--foreground)]">
@@ -124,9 +121,6 @@ export default async function ForumPage() {
       {/* Stats */}
       <section className="py-16 bg-[var(--muted)]">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="mb-6">
-            <BackButton label="Back to Community" fallbackUrl="/community" />
-          </div>
           <div className="max-w-4xl mx-auto">
             <div className="grid grid-cols-3 gap-8">
               <div className="text-center">

@@ -307,9 +307,6 @@ export default function ConversationPage({ params }: { params: { userId: string 
       {/* Message Input */}
       <section className="py-6 border-t-4 border-[var(--border)] bg-[var(--card)]">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="mb-6">
-            <BackButton label="Back to Messages" fallbackUrl="/messages" />
-          </div>
           <div className="max-w-4xl mx-auto">
             <form onSubmit={handleSendMessage} className="flex gap-3">
               <input

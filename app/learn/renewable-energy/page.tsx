@@ -38,9 +38,6 @@ export default function RenewableEnergyPage() {
       {/* Overview Stats */}
       <section className="py-20 bg-[var(--background)]">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="mb-6">
-            <BackButton label="Back to Learn" fallbackUrl="/learn" />
-          </div>
           <div className="grid md:grid-cols-3 gap-8 max-w-6xl mx-auto">
             <Card className="border-4 border-theme-primary bg-gradient-to-br from-[color-mix(in_srgb,var(--primary)_10%,var(--background))] to-[var(--background)]">
               <CardContent className="p-8 text-center">
@@ -99,9 +96,6 @@ export default function RenewableEnergyPage() {
       {/* Solar Energy */}
       <section className="py-20 bg-[var(--muted)]">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="mb-6">
-            <BackButton label="Back to Learn" fallbackUrl="/learn" />
-          </div>
           <div className="max-w-6xl mx-auto">
             <div className="flex items-center gap-4 mb-12">
               <Sun className="w-16 h-16 text-theme-primary" />
@@ -282,9 +276,6 @@ export default function RenewableEnergyPage() {
       {/* Wind Energy */}
       <section className="py-20 bg-[var(--background)]">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="mb-6">
-            <BackButton label="Back to Learn" fallbackUrl="/learn" />
-          </div>
           <div className="max-w-6xl mx-auto">
             <div className="flex items-center gap-4 mb-12">
               <Wind className="w-16 h-16 text-theme-accent" />
@@ -419,9 +410,6 @@ export default function RenewableEnergyPage() {
       {/* Energy Storage */}
       <section className="py-20 bg-[var(--muted)]">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="mb-6">
-            <BackButton label="Back to Learn" fallbackUrl="/learn" />
-          </div>
           <div className="max-w-6xl mx-auto">
             <div className="flex items-center gap-4 mb-12">
               <Battery className="w-16 h-16 text-theme-secondary" />
@@ -560,9 +548,6 @@ export default function RenewableEnergyPage() {
       {/* Implementation Guide */}
       <section className="py-20 bg-[var(--background)]">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="mb-6">
-            <BackButton label="Back to Learn" fallbackUrl="/learn" />
-          </div>
           <div className="max-w-6xl mx-auto">
             <h2 className="text-5xl font-black text-[var(--foreground)] mb-12 text-center">IMPLEMENTATION ROADMAP</h2>
 
@@ -712,9 +697,6 @@ export default function RenewableEnergyPage() {
       {/* CTA */}
       <section className="py-32 bg-gradient-to-br from-[var(--primary)] via-[var(--accent)] to-[var(--secondary)] text-[var(--primary-foreground)]">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="mb-6">
-            <BackButton label="Back to Learn" fallbackUrl="/learn" />
-          </div>
           <div className="max-w-4xl mx-auto text-center space-y-8">
             <h2 className="text-6xl font-black">POWER YOUR FUTURE WITH CLEAN ENERGY</h2>
             <p className="text-2xl font-semibold">

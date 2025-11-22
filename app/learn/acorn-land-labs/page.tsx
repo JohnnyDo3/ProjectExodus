@@ -290,9 +290,6 @@ export default function AcornLandLabsPage() {
       {/* Introduction */}
       <section className="py-16 bg-[var(--background)]">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="mb-6">
-            <BackButton label="Back to Learn" fallbackUrl="/learn" />
-          </div>
           <div className="max-w-4xl mx-auto">
             <Card className="border-4 border-theme-primary shadow-theme-xl">
               <CardContent className="p-10">
@@ -322,9 +319,6 @@ export default function AcornLandLabsPage() {
       {/* Five Core Areas */}
       <section className="py-16 bg-[var(--muted)]">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="mb-6">
-            <BackButton label="Back to Learn" fallbackUrl="/learn" />
-          </div>
           <div className="max-w-6xl mx-auto">
             <div className="text-center mb-12">
               <h2 className="text-5xl font-black mb-4 text-[var(--foreground)]">
@@ -380,9 +374,6 @@ export default function AcornLandLabsPage() {
       {/* Educational Programs */}
       <section className="py-16 bg-[var(--background)]">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="mb-6">
-            <BackButton label="Back to Learn" fallbackUrl="/learn" />
-          </div>
           <div className="max-w-6xl mx-auto">
             <div className="text-center mb-12">
               <h2 className="text-5xl font-black mb-4 text-[var(--foreground)]">
@@ -447,9 +438,6 @@ export default function AcornLandLabsPage() {
       {/* Design Principles */}
       <section className="py-16 bg-gradient-to-br from-[var(--primary)] via-[var(--accent)] to-[var(--secondary)] text-[var(--primary-foreground)]">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="mb-6">
-            <BackButton label="Back to Learn" fallbackUrl="/learn" />
-          </div>
           <div className="max-w-6xl mx-auto">
             <div className="text-center mb-12">
               <h2 className="text-5xl font-black mb-4 text-[var(--primary-foreground)]">
@@ -496,9 +484,6 @@ export default function AcornLandLabsPage() {
       {/* System Benefits */}
       <section className="py-16 bg-[var(--muted)]">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="mb-6">
-            <BackButton label="Back to Learn" fallbackUrl="/learn" />
-          </div>
           <div className="max-w-6xl mx-auto">
             <div className="text-center mb-12">
               <h2 className="text-5xl font-black mb-4 text-[var(--foreground)]">
@@ -550,9 +535,6 @@ export default function AcornLandLabsPage() {
       {/* Getting Started */}
       <section className="py-16 bg-[var(--background)]">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="mb-6">
-            <BackButton label="Back to Learn" fallbackUrl="/learn" />
-          </div>
           <div className="max-w-4xl mx-auto">
             <Card className="border-4 border-theme-accent shadow-theme-2xl">
               <CardContent className="p-12">
@@ -587,9 +569,6 @@ export default function AcornLandLabsPage() {
       {/* Related Topics */}
       <section className="py-16 bg-[var(--muted)]">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="mb-6">
-            <BackButton label="Back to Learn" fallbackUrl="/learn" />
-          </div>
           <div className="max-w-6xl mx-auto">
             <div className="text-center mb-10">
               <h2 className="text-4xl font-black mb-4 text-[var(--foreground)]">

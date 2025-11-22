@@ -51,9 +51,6 @@ export default function RegenerativeAgriculturePage() {
       {/* The Commandments */}
       <section className="py-20 bg-[var(--background)]">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="mb-6">
-            <BackButton label="Back to Learn" fallbackUrl="/learn" />
-          </div>
           <div className="max-w-6xl mx-auto">
             <div className="text-center mb-12">
               <h2 className="text-5xl font-black text-[var(--foreground)] mb-4">THE COMMANDMENTS OF SUSTAINABLE AGRICULTURE</h2>
@@ -90,9 +87,6 @@ export default function RegenerativeAgriculturePage() {
       {/* Crisis Overview */}
       <section className="py-20 bg-[var(--muted)]">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="mb-6">
-            <BackButton label="Back to Learn" fallbackUrl="/learn" />
-          </div>
           <div className="max-w-6xl mx-auto">
             <div className="text-center mb-12">
               <h2 className="text-5xl font-black text-[var(--foreground)] mb-4">THE INDUSTRIAL AGRICULTURE CRISIS</h2>
@@ -220,9 +214,6 @@ export default function RegenerativeAgriculturePage() {
       {/* Core Principles */}
       <section className="py-20 bg-[var(--background)]">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="mb-6">
-            <BackButton label="Back to Learn" fallbackUrl="/learn" />
-          </div>
           <div className="max-w-6xl mx-auto">
             <h2 className="text-5xl font-black text-[var(--foreground)] mb-12 text-center">REGENERATIVE PRINCIPLES</h2>
 
@@ -540,9 +531,6 @@ export default function RegenerativeAgriculturePage() {
       {/* Economic Benefits */}
       <section className="py-20 bg-[var(--muted)]">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="mb-6">
-            <BackButton label="Back to Learn" fallbackUrl="/learn" />
-          </div>
           <div className="max-w-6xl mx-auto">
             <h2 className="text-5xl font-black text-[var(--foreground)] mb-12 text-center">ECONOMIC VIABILITY</h2>
 
@@ -641,9 +629,6 @@ export default function RegenerativeAgriculturePage() {
       {/* CTA */}
       <section className="py-32 bg-gradient-to-br from-[var(--primary)] via-[var(--secondary)] to-[var(--accent)] text-[var(--primary-foreground)]">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="mb-6">
-            <BackButton label="Back to Learn" fallbackUrl="/learn" />
-          </div>
           <div className="max-w-4xl mx-auto text-center space-y-8">
             <h2 className="text-6xl font-black">REGENERATE THE EARTH</h2>
             <p className="text-2xl font-semibold">

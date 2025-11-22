@@ -193,9 +193,6 @@ export default function AdminProductsPage() {
       {/* Stats Bar */}
       <section className="py-4 bg-[var(--background)] border-b border-[var(--border)]">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="mb-6">
-            <BackButton label="Back to Admin" fallbackUrl="/admin" />
-          </div>
           <div className="max-w-7xl mx-auto">
             <div className="grid grid-cols-4 gap-4">
               <button
@@ -242,9 +239,6 @@ export default function AdminProductsPage() {
       {/* Products List */}
       <section className="py-8">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="mb-6">
-            <BackButton label="Back to Admin" fallbackUrl="/admin" />
-          </div>
           <div className="max-w-7xl mx-auto">
             {filteredProducts.length === 0 ? (
               <Card>

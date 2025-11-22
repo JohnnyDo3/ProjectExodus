@@ -160,9 +160,6 @@ export default function LEEDCertificationPage() {
       {/* What is LEED */}
       <section className="py-20 bg-[var(--background)]">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="mb-6">
-            <BackButton label="Back to Learn" fallbackUrl="/learn" />
-          </div>
           <div className="max-w-5xl mx-auto">
             <h2 className="text-5xl font-black mb-12 text-center text-[var(--foreground)]">WHAT IS LEED?</h2>
             <Card className="border-4 border-theme-primary shadow-theme-xl">
@@ -190,9 +187,6 @@ export default function LEEDCertificationPage() {
       {/* LEED v5 Global Goals */}
       <section className="py-20 bg-[var(--muted)]">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="mb-6">
-            <BackButton label="Back to Learn" fallbackUrl="/learn" />
-          </div>
           <div className="max-w-6xl mx-auto">
             <h2 className="text-5xl font-black mb-12 text-center text-[var(--foreground)]">LEED v5 GLOBAL GOALS</h2>
             <p className="text-xl font-bold text-center text-theme-muted mb-12 max-w-3xl mx-auto">
@@ -217,9 +211,6 @@ export default function LEEDCertificationPage() {
       {/* Certification Levels */}
       <section className="py-20 bg-[var(--background)]">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="mb-6">
-            <BackButton label="Back to Learn" fallbackUrl="/learn" />
-          </div>
           <div className="max-w-6xl mx-auto">
             <h2 className="text-5xl font-black mb-12 text-center text-[var(--foreground)]">CERTIFICATION LEVELS</h2>
 
@@ -261,9 +252,6 @@ export default function LEEDCertificationPage() {
       {/* Credit Categories */}
       <section className="py-20 bg-gradient-to-br from-[var(--primary)] via-[var(--accent)] to-[var(--secondary)] text-[var(--primary-foreground)]">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="mb-6">
-            <BackButton label="Back to Learn" fallbackUrl="/learn" />
-          </div>
           <div className="max-w-6xl mx-auto">
             <h2 className="text-5xl font-black mb-12 text-center text-[var(--primary-foreground)]">CREDIT CATEGORIES</h2>
 
@@ -288,9 +276,6 @@ export default function LEEDCertificationPage() {
       {/* Certification Process */}
       <section className="py-20 bg-[var(--background)]">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="mb-6">
-            <BackButton label="Back to Learn" fallbackUrl="/learn" />
-          </div>
           <div className="max-w-5xl mx-auto">
             <h2 className="text-5xl font-black mb-12 text-center text-[var(--foreground)]">CERTIFICATION PROCESS</h2>
 
@@ -349,9 +334,6 @@ export default function LEEDCertificationPage() {
       {/* Benefits */}
       <section className="py-20 bg-[var(--muted)]">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="mb-6">
-            <BackButton label="Back to Learn" fallbackUrl="/learn" />
-          </div>
           <div className="max-w-5xl mx-auto">
             <h2 className="text-5xl font-black mb-12 text-center text-[var(--foreground)]">BENEFITS OF LEED</h2>
 
@@ -426,9 +408,6 @@ export default function LEEDCertificationPage() {
       {/* Official Resources */}
       <section className="py-20 bg-[var(--background)]">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="mb-6">
-            <BackButton label="Back to Learn" fallbackUrl="/learn" />
-          </div>
           <div className="max-w-4xl mx-auto">
             <div className="text-center mb-12">
               <h2 className="text-5xl font-black mb-4 text-[var(--foreground)]">
@@ -503,9 +482,6 @@ export default function LEEDCertificationPage() {
       {/* CTA */}
       <section className="py-20 bg-gradient-to-br from-[var(--primary)] via-[var(--accent)] to-[var(--secondary)] text-[var(--primary-foreground)]">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="mb-6">
-            <BackButton label="Back to Learn" fallbackUrl="/learn" />
-          </div>
           <div className="max-w-4xl mx-auto text-center space-y-8">
             <h2 className="text-5xl font-black text-[var(--primary-foreground)]">READY TO GO GREEN?</h2>
             <p className="text-2xl font-semibold text-[var(--primary-foreground)]">

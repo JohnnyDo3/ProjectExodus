@@ -38,9 +38,6 @@ export default function SustainableFashionPage() {
       {/* Crisis Overview */}
       <section className="py-20 bg-[var(--background)]">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="mb-6">
-            <BackButton label="Back to Learn" fallbackUrl="/learn" />
-          </div>
           <div className="max-w-6xl mx-auto">
             <div className="text-center mb-12">
               <h2 className="text-5xl font-black text-[var(--foreground)] mb-4">THE FASHION CRISIS</h2>
@@ -121,9 +118,6 @@ export default function SustainableFashionPage() {
       {/* Fast Fashion Problem */}
       <section className="py-20 bg-[var(--muted)]">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="mb-6">
-            <BackButton label="Back to Learn" fallbackUrl="/learn" />
-          </div>
           <div className="max-w-6xl mx-auto">
             <Card className="border-4 border-theme-secondary">
               <CardContent className="p-10">
@@ -227,9 +221,6 @@ export default function SustainableFashionPage() {
       {/* Circular Fashion Solutions */}
       <section className="py-20 bg-[var(--background)]">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="mb-6">
-            <BackButton label="Back to Learn" fallbackUrl="/learn" />
-          </div>
           <div className="max-w-6xl mx-auto">
             <div className="flex items-center gap-4 mb-12">
               <Recycle className="w-16 h-16 text-theme-primary" />
@@ -350,9 +341,6 @@ export default function SustainableFashionPage() {
       {/* Sustainable Materials */}
       <section className="py-20 bg-[var(--muted)]">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="mb-6">
-            <BackButton label="Back to Learn" fallbackUrl="/learn" />
-          </div>
           <div className="max-w-6xl mx-auto">
             <h2 className="text-5xl font-black text-[var(--foreground)] mb-12 text-center">SUSTAINABLE MATERIALS</h2>
 
@@ -496,9 +484,6 @@ export default function SustainableFashionPage() {
       {/* Take Action */}
       <section className="py-20 bg-[var(--background)]">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="mb-6">
-            <BackButton label="Back to Learn" fallbackUrl="/learn" />
-          </div>
           <div className="max-w-6xl mx-auto">
             <h2 className="text-5xl font-black text-[var(--foreground)] mb-12 text-center">HOW TO PARTICIPATE</h2>
 
@@ -612,9 +597,6 @@ export default function SustainableFashionPage() {
       {/* CTA */}
       <section className="py-32 bg-gradient-to-br from-[var(--accent)] via-[var(--secondary)] to-[var(--primary)] text-[var(--primary-foreground)]">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="mb-6">
-            <BackButton label="Back to Learn" fallbackUrl="/learn" />
-          </div>
           <div className="max-w-4xl mx-auto text-center space-y-8">
             <h2 className="text-6xl font-black">TRANSFORM FASHION TOGETHER</h2>
             <p className="text-2xl font-semibold">

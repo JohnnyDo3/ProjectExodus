@@ -126,9 +126,6 @@ export default function CreateEventPage() {
       {/* Form */}
       <section className="py-16">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="mb-6">
-            <BackButton label="Back to Events" fallbackUrl="/events" />
-          </div>
           <div className="max-w-3xl mx-auto">
             <Card className="border-4 border-theme-primary">
               <CardHeader>

@@ -113,9 +113,6 @@ export default function NewProductPage() {
       {/* Form */}
       <section className="py-8">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="mb-6">
-            <BackButton label="Back to Profile" fallbackUrl="/profile" />
-          </div>
           <div className="max-w-4xl mx-auto">
 
             <Card>

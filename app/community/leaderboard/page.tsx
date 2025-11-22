@@ -201,9 +201,6 @@ export default async function LeaderboardPage() {
       {/* Leaderboards */}
       <section className="py-16 bg-[var(--background)]">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="mb-6">
-            <BackButton label="Back to Community" fallbackUrl="/community" />
-          </div>
           <div className="max-w-7xl mx-auto space-y-12">
             {/* Top Article Writers */}
             <LeaderboardSection
@@ -241,9 +238,6 @@ export default async function LeaderboardPage() {
       {/* CTA */}
       <section className="py-20 bg-gradient-to-br from-[var(--primary)] via-[var(--accent)] to-[var(--secondary)] text-[var(--primary-foreground)]">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="mb-6">
-            <BackButton label="Back to Community" fallbackUrl="/community" />
-          </div>
           <div className="max-w-4xl mx-auto text-center space-y-8">
             <h2 className="text-5xl font-black">READY TO MAKE YOUR MARK?</h2>
             <p className="text-2xl font-semibold">

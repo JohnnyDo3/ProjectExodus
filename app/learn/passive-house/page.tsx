@@ -240,9 +240,6 @@ export default function PassiveHousePage() {
       {/* Introduction */}
       <section className="py-20 bg-[var(--background)]">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="mb-6">
-            <BackButton label="Back to Learn" fallbackUrl="/learn" />
-          </div>
           <div className="max-w-5xl mx-auto">
             <Card className="border-4 border-theme-primary shadow-theme-xl">
               <CardContent className="p-12">
@@ -272,9 +269,6 @@ export default function PassiveHousePage() {
       {/* Five Principles */}
       <section className="py-20 bg-gradient-to-br from-[var(--primary)] via-[var(--accent)] to-[var(--secondary)] text-[var(--primary-foreground)]">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="mb-6">
-            <BackButton label="Back to Learn" fallbackUrl="/learn" />
-          </div>
           <div className="max-w-6xl mx-auto">
             <h2 className="text-5xl font-black mb-12 text-center text-[var(--primary-foreground)]">
               FIVE CORE PRINCIPLES
@@ -311,9 +305,6 @@ export default function PassiveHousePage() {
       {/* Performance Standards */}
       <section className="py-20 bg-[var(--background)]">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="mb-6">
-            <BackButton label="Back to Learn" fallbackUrl="/learn" />
-          </div>
           <div className="max-w-6xl mx-auto">
             <h2 className="text-5xl font-black mb-12 text-center text-[var(--foreground)]">
               PERFORMANCE STANDARDS
@@ -350,9 +341,6 @@ export default function PassiveHousePage() {
       {/* Construction Techniques */}
       <section className="py-20 bg-[var(--muted)]">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="mb-6">
-            <BackButton label="Back to Learn" fallbackUrl="/learn" />
-          </div>
           <div className="max-w-6xl mx-auto">
             <h2 className="text-5xl font-black mb-12 text-center text-[var(--foreground)]">
               MODERN CONSTRUCTION TECHNIQUES
@@ -385,9 +373,6 @@ export default function PassiveHousePage() {
       {/* Windows & Doors */}
       <section className="py-20 bg-[var(--background)]">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="mb-6">
-            <BackButton label="Back to Learn" fallbackUrl="/learn" />
-          </div>
           <div className="max-w-5xl mx-auto">
             <h2 className="text-5xl font-black mb-12 text-center text-[var(--foreground)]">
               HIGH-PERFORMANCE WINDOWS
@@ -429,9 +414,6 @@ export default function PassiveHousePage() {
       {/* Ventilation Systems */}
       <section className="py-20 bg-gradient-to-br from-[color-mix(in_srgb,var(--accent)_10%,var(--background))] to-[var(--muted)]">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="mb-6">
-            <BackButton label="Back to Learn" fallbackUrl="/learn" />
-          </div>
           <div className="max-w-6xl mx-auto">
             <h2 className="text-5xl font-black mb-12 text-center text-[var(--foreground)]">
               HEAT RECOVERY VENTILATION
@@ -485,9 +467,6 @@ export default function PassiveHousePage() {
       {/* Blower Door Testing */}
       <section className="py-20 bg-[var(--background)]">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="mb-6">
-            <BackButton label="Back to Learn" fallbackUrl="/learn" />
-          </div>
           <div className="max-w-5xl mx-auto">
             <h2 className="text-5xl font-black mb-12 text-center text-[var(--foreground)]">
               BLOWER DOOR TESTING
@@ -535,9 +514,6 @@ export default function PassiveHousePage() {
       {/* Energy Savings */}
       <section className="py-20 bg-[var(--muted)]">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="mb-6">
-            <BackButton label="Back to Learn" fallbackUrl="/learn" />
-          </div>
           <div className="max-w-5xl mx-auto">
             <h2 className="text-5xl font-black mb-12 text-center text-[var(--foreground)]">
               PROVEN ENERGY SAVINGS
@@ -575,9 +551,6 @@ export default function PassiveHousePage() {
       {/* Official Resources */}
       <section className="py-20 bg-[var(--background)]">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="mb-6">
-            <BackButton label="Back to Learn" fallbackUrl="/learn" />
-          </div>
           <div className="max-w-4xl mx-auto">
             <div className="text-center mb-12">
               <h2 className="text-5xl font-black mb-4 text-[var(--foreground)]">
@@ -652,9 +625,6 @@ export default function PassiveHousePage() {
       {/* CTA */}
       <section className="py-20 bg-gradient-to-br from-[var(--primary)] via-[var(--accent)] to-[var(--secondary)] text-[var(--primary-foreground)]">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="mb-6">
-            <BackButton label="Back to Learn" fallbackUrl="/learn" />
-          </div>
           <div className="max-w-4xl mx-auto text-center space-y-8">
             <h2 className="text-5xl font-black text-[var(--primary-foreground)]">CONTINUE LEARNING</h2>
             <p className="text-2xl font-semibold text-[var(--primary-foreground)]">

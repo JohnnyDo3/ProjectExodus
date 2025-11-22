@@ -95,9 +95,6 @@ export default async function UserProfilePage({
       {/* Stats */}
       <section className="py-8 bg-[var(--background)] border-b-4 border-theme-muted">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="mb-6">
-            <BackButton label="Back to Community" fallbackUrl="/community/users" />
-          </div>
           <div className="max-w-5xl mx-auto">
             <div className="grid grid-cols-4 gap-6">
               <div className="text-center">
@@ -132,9 +129,6 @@ export default async function UserProfilePage({
       {/* Content */}
       <section className="py-12">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="mb-6">
-            <BackButton label="Back to Community" fallbackUrl="/community/users" />
-          </div>
           <div className="max-w-5xl mx-auto">
             <div className="grid md:grid-cols-3 gap-8">
               {/* Main Content */}

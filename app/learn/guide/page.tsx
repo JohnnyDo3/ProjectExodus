@@ -181,9 +181,6 @@ export default function SustainabilityGuidePage() {
       {/* Introduction */}
       <section className="py-20 bg-[var(--background)]">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="mb-6">
-            <BackButton label="Back to Learn" fallbackUrl="/learn" />
-          </div>
           <div className="max-w-4xl mx-auto">
             <Card className="border-4 border-theme-primary shadow-xl">
               <CardContent className="p-10">
@@ -219,9 +216,6 @@ export default function SustainabilityGuidePage() {
       {/* Quick Wins */}
       <section className="py-20 bg-[var(--muted)]">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="mb-6">
-            <BackButton label="Back to Learn" fallbackUrl="/learn" />
-          </div>
           <div className="text-center mb-12">
             <h2 className="text-4xl font-black mb-4 text-[var(--foreground)]">
               QUICK WINS - START TODAY
@@ -258,9 +252,6 @@ export default function SustainabilityGuidePage() {
       {/* Main Guide Topics */}
       <section className="py-20 bg-[var(--background)]">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="mb-6">
-            <BackButton label="Back to Learn" fallbackUrl="/learn" />
-          </div>
           <div className="text-center mb-16">
             <h2 className="text-4xl font-black mb-4 text-[var(--foreground)]">
               COMPREHENSIVE GUIDE TOPICS
@@ -308,9 +299,6 @@ export default function SustainabilityGuidePage() {
       {/* Impact Stats */}
       <section className="py-20 bg-gradient-to-br from-[var(--primary)] via-[var(--accent)] to-[var(--secondary)] text-[var(--primary-foreground)]">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="mb-6">
-            <BackButton label="Back to Learn" fallbackUrl="/learn" />
-          </div>
           <div className="text-center mb-12">
             <h2 className="text-4xl font-black mb-4">OUR COLLECTIVE IMPACT</h2>
             <p className="text-xl font-semibold opacity-90">
@@ -335,9 +323,6 @@ export default function SustainabilityGuidePage() {
       {/* Advanced Topics */}
       <section className="py-20 bg-[var(--muted)]">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="mb-6">
-            <BackButton label="Back to Learn" fallbackUrl="/learn" />
-          </div>
           <div className="max-w-6xl mx-auto">
             <div className="text-center mb-12">
               <h2 className="text-4xl font-black mb-4 text-[var(--foreground)]">
@@ -397,9 +382,6 @@ export default function SustainabilityGuidePage() {
       {/* Resources */}
       <section className="py-20 bg-[var(--background)]">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="mb-6">
-            <BackButton label="Back to Learn" fallbackUrl="/learn" />
-          </div>
           <div className="max-w-4xl mx-auto">
             <Card className="border-4 border-theme-primary shadow-xl">
               <CardHeader>
@@ -446,9 +428,6 @@ export default function SustainabilityGuidePage() {
       {/* CTA */}
       <section className="py-20 bg-[var(--muted)]">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="mb-6">
-            <BackButton label="Back to Learn" fallbackUrl="/learn" />
-          </div>
           <div className="max-w-3xl mx-auto text-center space-y-6">
             <h2 className="text-4xl font-black" style={{
               background: 'linear-gradient(135deg, var(--primary), var(--accent))',
