@@ -37,9 +37,9 @@ export default async function PostPage({
   }
 
   return (
-    <div className="min-h-screen bg-sand-50">
+    <div className="min-h-screen bg-[var(--muted)]">
       {/* Header */}
-      <section className="py-12 bg-white border-b-4 border-sand-200">
+      <section className="py-12 bg-[var(--background)] border-b-4 border-theme-muted">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
           <div className="max-w-4xl mx-auto">
             <Link href={`/community/forum/${post.category.slug}`} className="inline-block mb-6">
@@ -50,17 +50,17 @@ export default async function PostPage({
 
             <div className="flex items-center gap-3 mb-4">
               {post.pinned && (
-                <div className="flex items-center gap-2 px-3 py-1 bg-terra-100 rounded-full">
-                  <Pin className="w-4 h-4 text-terra-600" />
-                  <span className="text-sm font-black text-terra-600 uppercase">Pinned</span>
+                <div className="flex items-center gap-2 px-3 py-1 bg-[color-mix(in_srgb,var(--secondary)_20%,var(--background))] rounded-full">
+                  <Pin className="w-4 h-4 text-theme-secondary" />
+                  <span className="text-sm font-black text-theme-secondary uppercase">Pinned</span>
                 </div>
               )}
-              <h1 className="text-4xl font-black" style={{ color: '#000' }}>
+              <h1 className="text-4xl font-black text-[var(--foreground)]">
                 {post.title}
               </h1>
             </div>
 
-            <div className="flex items-center gap-6 text-sm font-semibold" style={{ color: '#666' }}>
+            <div className="flex items-center gap-6 text-sm font-semibold text-theme-muted">
               <div className="flex items-center gap-2">
                 <User className="w-4 h-4" />
                 <span>{post.author.name || 'Anonymous'}</span>
@@ -86,12 +86,12 @@ export default async function PostPage({
       <section className="py-8">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
           <div className="max-w-4xl mx-auto">
-            <Card className="border-4 border-ocean-300">
+            <Card className="border-4 border-theme-accent">
               <CardContent className="p-8">
                 <div className="flex gap-6">
                   {/* Author */}
                   <div className="flex-shrink-0">
-                    <div className="w-16 h-16 rounded-full bg-moss-100 flex items-center justify-center mb-2">
+                    <div className="w-16 h-16 rounded-full bg-[color-mix(in_srgb,var(--primary)_20%,var(--background))] flex items-center justify-center mb-2">
                       {post.author.image ? (
                         <img
                           src={post.author.image}
@@ -99,11 +99,11 @@ export default async function PostPage({
                           className="w-full h-full rounded-full object-cover"
                         />
                       ) : (
-                        <User className="w-8 h-8 text-moss-600" />
+                        <User className="w-8 h-8 text-theme-primary" />
                       )}
                     </div>
                     <div className="text-center">
-                      <p className="text-sm font-black" style={{ color: '#000' }}>
+                      <p className="text-sm font-black text-[var(--foreground)]">
                         {post.author.name || 'Anonymous'}
                       </p>
                     </div>
@@ -111,7 +111,7 @@ export default async function PostPage({
 
                   {/* Content */}
                   <div className="flex-grow">
-                    <div className="text-lg font-semibold leading-relaxed whitespace-pre-wrap" style={{ color: '#1f2937' }}>
+                    <div className="text-lg font-semibold leading-relaxed whitespace-pre-wrap text-[var(--foreground)]">
                       {post.content}
                     </div>
                   </div>
@@ -126,18 +126,18 @@ export default async function PostPage({
       <section className="py-4 pb-12">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
           <div className="max-w-4xl mx-auto">
-            <h2 className="text-2xl font-black mb-6" style={{ color: '#000' }}>
+            <h2 className="text-2xl font-black mb-6 text-[var(--foreground)]">
               REPLIES ({post.replies.length})
             </h2>
 
             <div className="space-y-4 mb-8">
               {post.replies.map((reply: any) => (
-                <Card key={reply.id} className="border-2 border-moss-200">
+                <Card key={reply.id} className="border-2 border-theme-primary">
                   <CardContent className="p-6">
                     <div className="flex gap-4">
                       {/* Author */}
                       <div className="flex-shrink-0">
-                        <div className="w-12 h-12 rounded-full bg-ocean-100 flex items-center justify-center">
+                        <div className="w-12 h-12 rounded-full bg-[color-mix(in_srgb,var(--accent)_20%,var(--background))] flex items-center justify-center">
                           {reply.author.image ? (
                             <img
                               src={reply.author.image}
@@ -145,7 +145,7 @@ export default async function PostPage({
                               className="w-full h-full rounded-full object-cover"
                             />
                           ) : (
-                            <User className="w-6 h-6 text-ocean-600" />
+                            <User className="w-6 h-6 text-theme-accent" />
                           )}
                         </div>
                       </div>
@@ -153,18 +153,18 @@ export default async function PostPage({
                       {/* Content */}
                       <div className="flex-grow">
                         <div className="flex items-center gap-4 mb-2">
-                          <span className="font-black" style={{ color: '#000' }}>
+                          <span className="font-black text-[var(--foreground)]">
                             {reply.author.name || 'Anonymous'}
                           </span>
-                          <span className="text-sm font-semibold" style={{ color: '#888' }}>
+                          <span className="text-sm font-semibold text-theme-muted">
                             {formatDate(new Date(reply.createdAt))}
                           </span>
                         </div>
-                        <p className="text-base font-semibold leading-relaxed" style={{ color: '#1f2937' }}>
+                        <p className="text-base font-semibold leading-relaxed text-[var(--foreground)]">
                           {reply.content}
                         </p>
-                        <div className="mt-3 flex items-center gap-2 text-sm font-bold" style={{ color: '#666' }}>
-                          <button className="flex items-center gap-1 hover:text-ocean-600 transition-colors">
+                        <div className="mt-3 flex items-center gap-2 text-sm font-bold text-theme-muted">
+                          <button className="flex items-center gap-1 hover:text-theme-accent transition-colors">
                             <ThumbsUp className="w-4 h-4" />
                             <span>{reply._count.likes}</span>
                           </button>
@@ -177,19 +177,19 @@ export default async function PostPage({
             </div>
 
             {/* Reply Form Placeholder */}
-            <Card className="border-4 border-moss-300">
+            <Card className="border-4 border-theme-primary">
               <CardContent className="p-8">
-                <h3 className="text-xl font-black mb-4" style={{ color: '#000' }}>
+                <h3 className="text-xl font-black mb-4 text-[var(--foreground)]">
                   ADD YOUR REPLY
                 </h3>
                 <textarea
-                  className="w-full p-4 border-2 border-sand-300 rounded-xl font-semibold resize-none focus:outline-none focus:border-moss-500"
+                  className="w-full p-4 border-2 border-theme-muted rounded-xl font-semibold resize-none focus:outline-none focus:border-theme-primary"
                   rows={4}
                   placeholder="Share your thoughts..."
                   disabled
                 />
                 <div className="mt-4 flex justify-between items-center">
-                  <p className="text-sm font-semibold" style={{ color: '#888' }}>
+                  <p className="text-sm font-semibold text-theme-muted">
                     Sign in to post a reply
                   </p>
                   <Button size="lg" className="font-black" disabled>

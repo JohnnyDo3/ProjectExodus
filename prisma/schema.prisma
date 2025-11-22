@@ -21,9 +21,33 @@ model User {
   emailVerified DateTime?
   image         String?
   password      String?   // For email/password auth
+
+  // LinkedIn-style Profile Fields
   bio           String?   @db.Text
+  headline      String?   // Professional tagline (e.g., "Sustainability Advocate | Green Building Expert")
+  banner        String?   // Banner/cover image URL
   location      String?
+  company       String?   // Current company/organization
+  jobTitle      String?   // Current job title
+  website       String?   // Personal website or portfolio
+  linkedin      String?   // LinkedIn profile URL
+  twitter       String?   // Twitter/X handle
   interests     String[]  // Array of interests
+  expertise     String[]  // Array of skills/expertise areas
+
+  // Professional Background
+  experience    Json?     // Array of work experience objects
+  education     Json?     // Array of education objects
+
+  // LinkedIn-style Additional Sections
+  skills        Json?     // Array of skill objects {name, level}
+  languages     Json?     // Array of language objects {name, proficiency}
+  certifications Json?    // Array of certification objects {name, issuer, date, url}
+  volunteer     Json?     // Array of volunteer experience objects {role, organization, startDate, endDate, description}
+  publications  Json?     // Array of publication objects {title, publisher, date, url, description}
+  honors        Json?     // Array of honors/awards objects {title, issuer, date, description}
+  projects      Json?     // Array of project objects {name, startDate, endDate, description, url}
+
   role          UserRole  @default(USER)
   createdAt     DateTime  @default(now())
   updatedAt     DateTime  @updatedAt
@@ -45,9 +69,17 @@ model User {
   userBadges            UserBadge[]
   projectMemberships    ProjectMember[]
   createdProjects       Project[]          @relation("ProjectCreator")
+  projectMessages       ProjectMessage[]   @relation("ProjectMessages")
+  sentMessages          DirectMessage[]    @relation("SentMessages")
+  receivedMessages      DirectMessage[]    @relation("ReceivedMessages")
+  createdEvents         Event[]            @relation("CreatedEvents")
+  eventAttendances      EventAttendee[]
   reportedContent       Report[]
   likedPosts            PostLike[]
   likedReplies          ReplyLike[]
+  socialPosts           SocialPost[]     @relation("SocialPosts")
+  socialComments        SocialComment[]  @relation("SocialComments")
+  socialLikes           SocialLike[]     @relation("SocialLikes")
 
   @@index([email])
   @@index([role])
@@ -533,6 +565,87 @@ model UserBadge {
 }
 
 // ============================================
+// SOCIAL FEED MODELS (Instagram/Meta-style)
+// ============================================
+
+model SocialPost {
+  id          String          @id @default(cuid())
+  content     String          @db.Text
+  userId      String
+  visibility  PostVisibility  @default(PUBLIC)
+  user        User            @relation("SocialPosts", fields: [userId], references: [id], onDelete: Cascade)
+  media       SocialMedia[]
+  comments    SocialComment[]
+  likes       SocialLike[]
+  hashtags    String[]        // Array of hashtags
+  mentions    String[]        // Array of mentioned user IDs
+  shares      Int             @default(0)
+  createdAt   DateTime        @default(now())
+  updatedAt   DateTime        @updatedAt
+
+  @@index([userId])
+  @@index([createdAt])
+  @@index([visibility])
+}
+
+enum PostVisibility {
+  PUBLIC
+  FOLLOWERS_ONLY
+  PRIVATE
+}
+
+model SocialMedia {
+  id        String    @id @default(cuid())
+  postId    String
+  type      MediaType
+  url       String
+  caption   String?
+  order     Int       @default(0)
+  post      SocialPost @relation(fields: [postId], references: [id], onDelete: Cascade)
+  createdAt DateTime   @default(now())
+
+  @@index([postId])
+}
+
+enum MediaType {
+  IMAGE
+  VIDEO
+  GIF
+}
+
+model SocialComment {
+  id        String          @id @default(cuid())
+  content   String          @db.Text
+  postId    String
+  userId    String
+  parentId  String?         // For nested comments
+  post      SocialPost      @relation(fields: [postId], references: [id], onDelete: Cascade)
+  user      User            @relation("SocialComments", fields: [userId], references: [id], onDelete: Cascade)
+  parent    SocialComment?  @relation("CommentThread", fields: [parentId], references: [id])
+  children  SocialComment[] @relation("CommentThread")
+  likes     Int             @default(0)
+  createdAt DateTime        @default(now())
+  updatedAt DateTime        @updatedAt
+
+  @@index([postId])
+  @@index([userId])
+  @@index([parentId])
+}
+
+model SocialLike {
+  id        String     @id @default(cuid())
+  postId    String
+  userId    String
+  post      SocialPost @relation(fields: [postId], references: [id], onDelete: Cascade)
+  user      User       @relation("SocialLikes", fields: [userId], references: [id], onDelete: Cascade)
+  createdAt DateTime   @default(now())
+
+  @@unique([postId, userId])
+  @@index([postId])
+  @@index([userId])
+}
+
+// ============================================
 // PROJECT COLLABORATION MODELS
 // ============================================
 
@@ -547,6 +660,7 @@ model Project {
   creatorId   String
   creator     User            @relation("ProjectCreator", fields: [creatorId], references: [id])
   members     ProjectMember[]
+  messages    ProjectMessage[]
   createdAt   DateTime        @default(now())
   updatedAt   DateTime        @updatedAt
 
@@ -580,6 +694,96 @@ enum ProjectRole {
   MEMBER
   MODERATOR
   ADMIN
+}
+
+model ProjectMessage {
+  id        String   @id @default(cuid())
+  content   String   @db.Text
+  projectId String
+  userId    String
+  project   Project  @relation(fields: [projectId], references: [id], onDelete: Cascade)
+  user      User     @relation("ProjectMessages", fields: [userId], references: [id], onDelete: Cascade)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([projectId])
+  @@index([userId])
+  @@index([createdAt])
+}
+
+// ============================================
+// DIRECT MESSAGING MODELS
+// ============================================
+
+model DirectMessage {
+  id           String   @id @default(cuid())
+  content      String   @db.Text
+  senderId     String
+  receiverId   String
+  read         Boolean  @default(false)
+  sender       User     @relation("SentMessages", fields: [senderId], references: [id], onDelete: Cascade)
+  receiver     User     @relation("ReceivedMessages", fields: [receiverId], references: [id], onDelete: Cascade)
+  createdAt    DateTime @default(now())
+
+  @@index([senderId])
+  @@index([receiverId])
+  @@index([createdAt])
+  @@index([read])
+}
+
+// ============================================
+// EVENTS & MEETUPS MODELS
+// ============================================
+
+model Event {
+  id          String        @id @default(cuid())
+  title       String
+  slug        String        @unique
+  description String        @db.Text
+  type        EventType     @default(VIRTUAL)
+  location    String?       // For in-person events
+  meetingLink String?       // For virtual events
+  startDate   DateTime
+  endDate     DateTime?
+  maxCapacity Int?
+  coverImage  String?
+  creatorId   String
+  creator     User          @relation("CreatedEvents", fields: [creatorId], references: [id])
+  attendees   EventAttendee[]
+  createdAt   DateTime      @default(now())
+  updatedAt   DateTime      @updatedAt
+
+  @@index([slug])
+  @@index([creatorId])
+  @@index([startDate])
+  @@index([type])
+}
+
+enum EventType {
+  VIRTUAL
+  IN_PERSON
+  HYBRID
+}
+
+model EventAttendee {
+  id        String           @id @default(cuid())
+  eventId   String
+  userId    String
+  status    AttendeeStatus   @default(GOING)
+  event     Event            @relation(fields: [eventId], references: [id], onDelete: Cascade)
+  user      User             @relation(fields: [userId], references: [id], onDelete: Cascade)
+  joinedAt  DateTime         @default(now())
+
+  @@unique([eventId, userId])
+  @@index([eventId])
+  @@index([userId])
+  @@index([status])
+}
+
+enum AttendeeStatus {
+  GOING
+  MAYBE
+  NOT_GOING
 }
 
 // ============================================
@@ -694,4 +898,21 @@ model SiteSettings {
   updatedAt   DateTime @updatedAt
 
   @@index([key])
+}
+
+model NewsletterSubscription {
+  id          String   @id @default(cuid())
+  email       String   @unique
+  status      SubscriptionStatus @default(ACTIVE)
+  source      String?  // Where they subscribed from
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  @@index([email])
+  @@index([status])
+}
+
+enum SubscriptionStatus {
+  ACTIVE
+  UNSUBSCRIBED
 }

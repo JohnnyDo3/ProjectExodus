@@ -29,61 +29,61 @@ export function ProductCard({ product }: ProductCardProps) {
   const score = product.sustainabilityMetric?.sustainabilityScore
 
   return (
-    <Card className="hover-lift h-full flex flex-col border-4 border-moss-200 hover:border-moss-400 transition-all transform hover:scale-105 bg-white shadow-lg">
+    <Card className="hover-lift h-full flex flex-col border-4 border-theme-primary hover:opacity-90 transition-all transform hover:scale-105 shadow-theme-lg">
       <CardHeader className="pb-4">
         {product.featured && (
           <div className="flex items-center gap-2 mb-3">
-            <div className="px-3 py-1 rounded-full bg-gradient-to-r from-moss-500 to-ocean-500 flex items-center gap-1.5 shadow-md">
-              <Leaf className="w-4 h-4 text-white" />
-              <span className="text-xs font-black text-white uppercase tracking-wide">Featured</span>
+            <div className="px-3 py-1 rounded-full bg-theme-primary flex items-center gap-1.5 shadow-md">
+              <Leaf className="w-4 h-4 text-[var(--primary-foreground)]" />
+              <span className="text-xs font-black text-[var(--primary-foreground)] uppercase tracking-wide">Featured</span>
             </div>
           </div>
         )}
         <div className="flex items-start justify-between gap-3">
-          <CardTitle className="text-xl font-black line-clamp-2" style={{ color: '#000' }}>
+          <CardTitle className="text-xl font-black line-clamp-2">
             {product.name.toUpperCase()}
           </CardTitle>
           {score && (
-            <div className="flex-shrink-0 w-14 h-14 rounded-full bg-gradient-to-br from-moss-500 to-ocean-500 flex items-center justify-center shadow-lg">
-              <span className="text-xl font-black text-white">{score}</span>
+            <div className="flex-shrink-0 w-14 h-14 rounded-full bg-theme-accent flex items-center justify-center shadow-lg">
+              <span className="text-xl font-black text-[var(--accent-foreground)]">{score}</span>
             </div>
           )}
         </div>
-        <CardDescription className="text-sm font-bold mt-2" style={{ color: '#666' }}>
+        <CardDescription className="text-sm font-bold mt-2">
           {product.category.name.toUpperCase()}
           {product.vendor && (
             <>
               <span className="mx-1.5">•</span>
-              <span className="text-moss-600">{product.vendor.name}</span>
+              <span className="text-theme-primary">{product.vendor.name}</span>
             </>
           )}
         </CardDescription>
       </CardHeader>
 
       <CardContent className="flex-grow pb-4">
-        <p className="text-sm font-medium line-clamp-3 mb-4" style={{ color: '#444' }}>
+        <p className="text-sm font-medium line-clamp-3 mb-4 text-[var(--foreground)] opacity-80">
           {product.description}
         </p>
         {product.sustainabilityMetric?.carbonSavings && (
-          <div className="p-3 rounded-xl bg-gradient-to-br from-moss-50 to-moss-100 border-2 border-moss-300">
-            <p className="text-xs font-bold text-moss-900">
+          <div className="p-3 rounded-xl bg-theme-muted border-2 border-theme-primary">
+            <p className="text-xs font-bold text-theme-primary">
               <span className="text-base">
                 {Number(product.sustainabilityMetric.carbonSavings).toFixed(0)} kg CO₂
               </span>
               <br />
-              <span className="text-moss-700">SAVED VS CONVENTIONAL</span>
+              <span className="opacity-80">SAVED VS CONVENTIONAL</span>
             </p>
           </div>
         )}
       </CardContent>
 
-      <CardFooter className="flex items-center justify-between border-t-4 border-sand-200 pt-5">
+      <CardFooter className="flex items-center justify-between border-t-4 border-[var(--border)] pt-5">
         {product.price ? (
-          <span className="text-2xl font-black" style={{ color: '#000' }}>
+          <span className="text-2xl font-black text-[var(--foreground)]">
             ${Number(product.price).toFixed(2)}
           </span>
         ) : (
-          <span className="text-sm font-bold" style={{ color: '#666' }}>
+          <span className="text-sm font-bold text-theme-muted">
             SEE PRICING
           </span>
         )}
