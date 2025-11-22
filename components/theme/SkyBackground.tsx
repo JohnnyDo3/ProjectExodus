@@ -13,7 +13,7 @@ export function SkyBackground() {
       {/* Sky Gradient Background */}
       {!isNightTime && (
         <div
-          className="fixed inset-0 z-0 transition-all duration-[2000ms] ease-in-out"
+          className="fixed inset-0 z-0 transition-all duration-[2000ms] ease-in-out pointer-events-none"
           style={{
             background: theme.colors.sky
           }}

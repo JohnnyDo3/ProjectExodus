@@ -258,9 +258,7 @@ export function NightSkyConstellations({ alwaysShow = false, starCount = 500 }: 
   return (
     <canvas
       ref={canvasRef}
-      onMouseMove={handleMouseMove}
-      onMouseLeave={() => setActiveConstellation(null)}
-      className="absolute inset-0 pointer-events-auto z-0"
+      className="absolute inset-0 pointer-events-none z-0"
       style={{
         background: 'transparent'
       }}
