@@ -44,6 +44,30 @@ const constellations: Constellation[] = [
     name: 'Leo',
     stars: [19, 20, 21, 22, 23, 24],
     connections: [[19, 20], [20, 21], [21, 22], [22, 23], [23, 24], [24, 19]]
+  },
+  {
+    id: 4,
+    name: 'Cygnus (Northern Cross)',
+    stars: [25, 26, 27, 28, 29],
+    connections: [[25, 27], [26, 28], [27, 29]]
+  },
+  {
+    id: 5,
+    name: 'Lyra',
+    stars: [30, 31, 32, 33],
+    connections: [[30, 31], [31, 32], [32, 33], [33, 30]]
+  },
+  {
+    id: 6,
+    name: 'Scorpius',
+    stars: [34, 35, 36, 37, 38, 39],
+    connections: [[34, 35], [35, 36], [36, 37], [37, 38], [38, 39]]
+  },
+  {
+    id: 7,
+    name: 'Aquila',
+    stars: [40, 41, 42, 43, 44],
+    connections: [[40, 41], [41, 42], [42, 43], [43, 44]]
   }
 ]
 
@@ -52,7 +76,7 @@ interface NightSkyConstellationsProps {
   starCount?: number
 }
 
-export function NightSkyConstellations({ alwaysShow = false, starCount = 500 }: NightSkyConstellationsProps) {
+export function NightSkyConstellations({ alwaysShow = false, starCount = 1400 }: NightSkyConstellationsProps) {
   const canvasRef = useRef<HTMLCanvasElement>(null)
   const [stars, setStars] = useState<Star[]>([])
   const [mousePos, setMousePos] = useState({ x: 0, y: 0 })
@@ -95,7 +119,19 @@ export function NightSkyConstellations({ alwaysShow = false, starCount = 500 }: 
 
       // Leo - bottom left
       { x: 25, y: 70 }, { x: 30, y: 72 }, { x: 35, y: 70 },
-      { x: 37, y: 75 }, { x: 33, y: 78 }, { x: 28, y: 76 }
+      { x: 37, y: 75 }, { x: 33, y: 78 }, { x: 28, y: 76 },
+
+      // Cygnus (Northern Cross) - upper center-right
+      { x: 65, y: 22 }, { x: 60, y: 25 }, { x: 65, y: 28 }, { x: 70, y: 25 }, { x: 65, y: 32 },
+
+      // Lyra - top right
+      { x: 85, y: 18 }, { x: 88, y: 20 }, { x: 88, y: 24 }, { x: 85, y: 26 },
+
+      // Scorpius - bottom right (curved)
+      { x: 82, y: 68 }, { x: 78, y: 72 }, { x: 73, y: 75 }, { x: 68, y: 77 }, { x: 63, y: 78 }, { x: 58, y: 80 },
+
+      // Aquila - center right
+      { x: 88, y: 52 }, { x: 85, y: 55 }, { x: 82, y: 58 }, { x: 85, y: 61 }, { x: 88, y: 64 }
     ]
 
     constellationStarPositions.forEach((pos, index) => {
@@ -103,21 +139,21 @@ export function NightSkyConstellations({ alwaysShow = false, starCount = 500 }: 
       newStars.push({
         x: (pos.x / 100) * canvas.width,
         y: (pos.y / 100) * canvas.height,
-        size: 2 + Math.random() * 1.5,
-        brightness: 0.7 + Math.random() * 0.3,
+        size: 2.5 + Math.random() * 2, // Larger constellation stars
+        brightness: 0.85 + Math.random() * 0.15, // Brighter constellation stars
         twinkleSpeed: 0.5 + Math.random() * 1.5,
         isConstellation: true,
         constellationId
       })
     })
 
-    // Add random background stars (densely packed)
+    // Add random background stars (densely packed and more visible)
     for (let i = 0; i < starCount; i++) {
       newStars.push({
         x: Math.random() * canvas.width,
         y: Math.random() * canvas.height,
-        size: 0.5 + Math.random() * 1.5,
-        brightness: 0.3 + Math.random() * 0.5,
+        size: 0.8 + Math.random() * 2, // Larger background stars
+        brightness: 0.45 + Math.random() * 0.55, // Brighter background stars
         twinkleSpeed: 0.5 + Math.random() * 2,
         isConstellation: false
       })
@@ -167,12 +203,14 @@ export function NightSkyConstellations({ alwaysShow = false, starCount = 500 }: 
           : `rgba(255, 255, 255, ${alpha})`
         ctx.fill()
 
-        // Add glow for constellation stars
+        // Add glow for constellation stars (enhanced visibility)
         if (star.isConstellation) {
-          ctx.shadowBlur = isNearMouse ? 15 : 5
+          ctx.shadowBlur = isNearMouse ? 20 : 8
           ctx.shadowColor = isNearMouse ? '#FFD700' : '#FFFFFF'
         } else {
-          ctx.shadowBlur = 0
+          // Add subtle glow to all stars for better visibility
+          ctx.shadowBlur = 2
+          ctx.shadowColor = '#FFFFFF'
         }
       })
 

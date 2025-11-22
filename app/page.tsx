@@ -4,7 +4,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/com
 import { Leaf, Droplet, Zap, Users, Heart, Shield, Sprout, BookOpen, Scale, Eye, Handshake, Award } from 'lucide-react'
 import { NightSkyConstellations } from '@/components/theme/NightSkyConstellations'
 import { TreeBranches } from '@/components/decorative/TreeBranches'
-import { FlyingBirds } from '@/components/decorative/FlyingBirds'
+import { ProgressiveSkyline } from '@/components/decorative/ProgressiveSkyline'
 import { CircularCarousel } from '@/components/carousel/CircularCarousel'
 
 export default function Home() {
@@ -85,13 +85,13 @@ export default function Home() {
     <div className="min-h-screen overflow-hidden relative">
       {/* Decorative Elements */}
       <TreeBranches />
-      <FlyingBirds />
+      <ProgressiveSkyline />
 
       {/* Hero Section - BOLD & EXPERIMENTAL */}
       <section className="relative min-h-screen flex items-center justify-center overflow-hidden bg-gradient-to-br from-[var(--muted)] via-[color-mix(in_srgb,var(--primary)_20%,var(--background))] to-[color-mix(in_srgb,var(--accent)_20%,var(--background))]">
         {/* Night Sky Constellations - Only at night */}
         <div className="absolute inset-0 z-0">
-          <NightSkyConstellations starCount={800} />
+          <NightSkyConstellations starCount={1400} />
         </div>
 
         {/* Morphing Background Blobs - 3D Effect */}

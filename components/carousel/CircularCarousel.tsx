@@ -53,28 +53,36 @@ export function CircularCarousel({ items }: CircularCarouselProps) {
       position += items.length
     }
 
-    // Calculate 3D transforms for circular carousel effect
+    // Calculate 3D transforms for circular carousel effect with organic curves
+    // Using golden ratio for natural spacing: φ ≈ 1.618
+    const phi = 1.618
     const angle = (position * 360) / items.length
-    const translateZ = 400 // Distance from center
+    const translateZ = 450 // Distance from center - slightly increased for depth
     const rotateY = angle
-    const translateX = Math.sin((angle * Math.PI) / 180) * 600
 
-    // Opacity and scale based on position
+    // Curvilinear motion - natural arc following fibonacci spiral principles
+    const angleRad = (angle * Math.PI) / 180
+    const translateX = Math.sin(angleRad) * (600 * phi / 2)
+    const translateY = Math.cos(angleRad) * 25 - 25 // Gentle vertical curve
+
+    // Opacity and scale based on position - smoother falloff
     const distance = Math.abs(position)
-    const opacity = Math.max(0.3, 1 - distance * 0.3)
-    const scale = Math.max(0.6, 1 - distance * 0.15)
+    const opacity = Math.max(0.25, 1 - distance * 0.25)
+    const scale = Math.max(0.65, 1 - distance * 0.12)
     const zIndex = Math.floor(100 - Math.abs(position) * 10)
 
     return {
       transform: `
         translateX(${translateX}px)
+        translateY(${translateY}px)
         translateZ(${translateZ}px)
         rotateY(${rotateY}deg)
         scale(${scale})
       `,
       opacity,
       zIndex,
-      transition: 'all 0.8s cubic-bezier(0.4, 0, 0.2, 1)',
+      transition: 'all 0.85s cubic-bezier(0.34, 1.56, 0.64, 1)', // Organic spring easing
+      willChange: 'transform, opacity', // Performance optimization
     }
   }
 
