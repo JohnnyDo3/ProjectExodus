@@ -4,6 +4,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/com
 import { Leaf, Droplet, Zap, Users, Heart, Shield, Sprout, BookOpen, Scale, Eye, Handshake, Award } from 'lucide-react'
 import { NightSkyConstellations } from '@/components/theme/NightSkyConstellations'
 import { TreeBranches } from '@/components/decorative/TreeBranches'
+import { FlyingBirds } from '@/components/decorative/FlyingBirds'
 import { ProgressiveSkyline } from '@/components/decorative/ProgressiveSkyline'
 import { CircularCarousel } from '@/components/carousel/CircularCarousel'
 
@@ -85,6 +86,7 @@ export default function Home() {
     <div className="min-h-screen overflow-hidden relative">
       {/* Decorative Elements */}
       <TreeBranches />
+      <FlyingBirds />
       <ProgressiveSkyline />
 
       {/* Hero Section - BOLD & EXPERIMENTAL */}

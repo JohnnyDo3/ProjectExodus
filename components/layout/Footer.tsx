@@ -4,7 +4,7 @@ import Link from 'next/link'
 import { useState } from 'react'
 import { Facebook, Twitter, Instagram, Linkedin, Youtube, Mail, Send, Leaf } from 'lucide-react'
 import { Button } from '@/components/ui/Button'
-import { FooterCritters } from '@/components/decorative/FooterCritters'
+import { ProgressiveSkyline } from '@/components/decorative/ProgressiveSkyline'
 
 export function Footer() {
   const [email, setEmail] = useState('')
@@ -292,8 +292,8 @@ export function Footer() {
         </div>
       </div>
 
-      {/* Walking Critters */}
-      <FooterCritters />
+      {/* Progressive Skyline - Rural to Sustainable City */}
+      <ProgressiveSkyline />
     </footer>
   )
 }
