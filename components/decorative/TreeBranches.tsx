@@ -3,177 +3,198 @@
 export function TreeBranches() {
   return (
     <>
-      {/* Worm's-Eye View - Looking Up Through Forest Canopy */}
+      {/* Dense Chaotic Forest Canopy - Worm's-Eye View with Random Branches Everywhere */}
       <svg
-        className="fixed inset-0 w-full h-full pointer-events-none z-10 opacity-20 dark:opacity-12"
+        className="fixed inset-0 w-full h-full pointer-events-none z-10 opacity-18 dark:opacity-10"
         viewBox="0 0 1000 1000"
         fill="none"
         xmlns="http://www.w3.org/2000/svg"
         preserveAspectRatio="xMidYMid slice"
       >
-        {/* Tree 1 - Center-left trunk radiating upward-left */}
-        <g opacity="0.7">
-          {/* Main trunk */}
-          <path
-            d="M 450,550 Q 420,500 390,440 Q 360,380 320,310 Q 280,240 230,160 Q 180,80 120,0"
-            stroke="currentColor"
-            strokeWidth="14"
-            strokeLinecap="round"
-            className="text-[var(--foreground)]"
-          />
-          {/* Major branches spreading left */}
-          <path d="M 390,440 Q 350,420 310,390 Q 270,360 220,320 Q 170,280 100,230" stroke="currentColor" strokeWidth="8" strokeLinecap="round" className="text-[var(--foreground)]" />
-          <path d="M 320,310 Q 280,300 240,280 Q 200,260 150,230 Q 100,200 40,160" stroke="currentColor" strokeWidth="7" strokeLinecap="round" className="text-[var(--foreground)]" />
-          <path d="M 360,380 Q 320,360 280,340 Q 240,320 180,290 Q 120,260 50,220" stroke="currentColor" strokeWidth="6" strokeLinecap="round" className="text-[var(--foreground)]" />
-          {/* Smaller branches */}
-          <path d="M 280,240 Q 240,220 200,200 Q 160,180 100,150 L 40,120" stroke="currentColor" strokeWidth="4" strokeLinecap="round" className="text-[var(--foreground)]" opacity="0.6" />
-          <path d="M 350,420 Q 300,400 250,380 L 180,350" stroke="currentColor" strokeWidth="4" strokeLinecap="round" className="text-[var(--foreground)]" opacity="0.6" />
-          {/* Twigs */}
-          <path d="M 220,320 L 180,300 L 140,280" stroke="currentColor" strokeWidth="2" strokeLinecap="round" className="text-[var(--foreground)]" opacity="0.5" />
-          <path d="M 310,390 L 270,370 L 230,350" stroke="currentColor" strokeWidth="2" strokeLinecap="round" className="text-[var(--foreground)]" opacity="0.5" />
+        {/* Main cluster - upper left radiating */}
+        <g opacity="0.8">
+          <path d="M 380,480 Q 340,420 300,350 Q 260,280 210,200 Q 160,120 100,30 L 40,0" stroke="currentColor" strokeWidth="16" strokeLinecap="round" className="text-[var(--foreground)]" />
+          <path d="M 300,350 Q 250,320 200,280 Q 150,240 90,180 L 20,110" stroke="currentColor" strokeWidth="9" strokeLinecap="round" className="text-[var(--foreground)]" />
+          <path d="M 260,280 Q 220,250 180,210 L 120,150 L 60,80" stroke="currentColor" strokeWidth="6" strokeLinecap="round" className="text-[var(--foreground)]" />
+          <path d="M 340,420 Q 290,380 240,340 L 170,270" stroke="currentColor" strokeWidth="7" strokeLinecap="round" className="text-[var(--foreground)]" />
+          <path d="M 210,200 Q 170,170 130,130 L 80,70" stroke="currentColor" strokeWidth="4" strokeLinecap="round" className="text-[var(--foreground)]" opacity="0.7" />
         </g>
 
-        {/* Tree 2 - Center-right trunk radiating upward-right */}
-        <g opacity="0.7">
-          {/* Main trunk */}
-          <path
-            d="M 550,550 Q 580,500 610,440 Q 640,380 680,310 Q 720,240 770,160 Q 820,80 880,0"
-            stroke="currentColor"
-            strokeWidth="14"
-            strokeLinecap="round"
-            className="text-[var(--foreground)]"
-          />
-          {/* Major branches spreading right */}
-          <path d="M 610,440 Q 650,420 690,390 Q 730,360 780,320 Q 830,280 900,230" stroke="currentColor" strokeWidth="8" strokeLinecap="round" className="text-[var(--foreground)]" />
-          <path d="M 680,310 Q 720,300 760,280 Q 800,260 850,230 Q 900,200 960,160" stroke="currentColor" strokeWidth="7" strokeLinecap="round" className="text-[var(--foreground)]" />
-          <path d="M 640,380 Q 680,360 720,340 Q 760,320 820,290 Q 880,260 950,220" stroke="currentColor" strokeWidth="6" strokeLinecap="round" className="text-[var(--foreground)]" />
-          {/* Smaller branches */}
-          <path d="M 720,240 Q 760,220 800,200 Q 840,180 900,150 L 960,120" stroke="currentColor" strokeWidth="4" strokeLinecap="round" className="text-[var(--foreground)]" opacity="0.6" />
-          <path d="M 650,420 Q 700,400 750,380 L 820,350" stroke="currentColor" strokeWidth="4" strokeLinecap="round" className="text-[var(--foreground)]" opacity="0.6" />
-          {/* Twigs */}
-          <path d="M 780,320 L 820,300 L 860,280" stroke="currentColor" strokeWidth="2" strokeLinecap="round" className="text-[var(--foreground)]" opacity="0.5" />
-          <path d="M 690,390 L 730,370 L 770,350" stroke="currentColor" strokeWidth="2" strokeLinecap="round" className="text-[var(--foreground)]" opacity="0.5" />
-        </g>
-
-        {/* Tree 3 - Center-bottom trunk radiating downward-left */}
-        <g opacity="0.65">
-          {/* Main trunk */}
-          <path
-            d="M 480,520 Q 450,570 420,630 Q 390,690 350,760 Q 310,830 260,900 Q 210,970 150,1000"
-            stroke="currentColor"
-            strokeWidth="13"
-            strokeLinecap="round"
-            className="text-[var(--foreground)]"
-          />
-          {/* Major branches */}
-          <path d="M 420,630 Q 380,660 340,690 Q 300,720 250,760 Q 200,800 130,850" stroke="currentColor" strokeWidth="7" strokeLinecap="round" className="text-[var(--foreground)]" />
-          <path d="M 350,760 Q 310,780 270,810 Q 230,840 180,880 Q 130,920 60,970" stroke="currentColor" strokeWidth="6" strokeLinecap="round" className="text-[var(--foreground)]" />
-          <path d="M 390,690 Q 350,710 310,740 Q 270,770 210,810 L 140,860" stroke="currentColor" strokeWidth="5" strokeLinecap="round" className="text-[var(--foreground)]" />
-          {/* Smaller branches */}
-          <path d="M 310,830 Q 270,850 230,880 L 170,920" stroke="currentColor" strokeWidth="3" strokeLinecap="round" className="text-[var(--foreground)]" opacity="0.6" />
-          <path d="M 380,660 Q 340,680 300,710 L 240,750" stroke="currentColor" strokeWidth="3" strokeLinecap="round" className="text-[var(--foreground)]" opacity="0.6" />
-        </g>
-
-        {/* Tree 4 - Center-bottom trunk radiating downward-right */}
-        <g opacity="0.65">
-          {/* Main trunk */}
-          <path
-            d="M 520,520 Q 550,570 580,630 Q 610,690 650,760 Q 690,830 740,900 Q 790,970 850,1000"
-            stroke="currentColor"
-            strokeWidth="13"
-            strokeLinecap="round"
-            className="text-[var(--foreground)]"
-          />
-          {/* Major branches */}
-          <path d="M 580,630 Q 620,660 660,690 Q 700,720 750,760 Q 800,800 870,850" stroke="currentColor" strokeWidth="7" strokeLinecap="round" className="text-[var(--foreground)]" />
-          <path d="M 650,760 Q 690,780 730,810 Q 770,840 820,880 Q 870,920 940,970" stroke="currentColor" strokeWidth="6" strokeLinecap="round" className="text-[var(--foreground)]" />
-          <path d="M 610,690 Q 650,710 690,740 Q 730,770 790,810 L 860,860" stroke="currentColor" strokeWidth="5" strokeLinecap="round" className="text-[var(--foreground)]" />
-          {/* Smaller branches */}
-          <path d="M 690,830 Q 730,850 770,880 L 830,920" stroke="currentColor" strokeWidth="3" strokeLinecap="round" className="text-[var(--foreground)]" opacity="0.6" />
-          <path d="M 620,660 Q 660,680 700,710 L 760,750" stroke="currentColor" strokeWidth="3" strokeLinecap="round" className="text-[var(--foreground)]" opacity="0.6" />
-        </g>
-
-        {/* Tree 5 - Center-top trunk radiating upward */}
+        {/* Twisted trunk - upper right */}
         <g opacity="0.75">
-          {/* Main trunk */}
-          <path
-            d="M 500,580 Q 500,520 500,450 Q 500,380 500,300 Q 500,220 500,130 Q 500,60 500,0"
-            stroke="currentColor"
-            strokeWidth="15"
-            strokeLinecap="round"
-            className="text-[var(--foreground)]"
-          />
-          {/* Branches spreading left and right */}
-          <path d="M 500,450 Q 460,430 420,410 Q 380,390 330,360 Q 280,330 220,290" stroke="currentColor" strokeWidth="8" strokeLinecap="round" className="text-[var(--foreground)]" />
-          <path d="M 500,450 Q 540,430 580,410 Q 620,390 670,360 Q 720,330 780,290" stroke="currentColor" strokeWidth="8" strokeLinecap="round" className="text-[var(--foreground)]" />
-          <path d="M 500,300 Q 450,280 400,260 Q 350,240 280,210 L 200,170" stroke="currentColor" strokeWidth="6" strokeLinecap="round" className="text-[var(--foreground)]" />
-          <path d="M 500,300 Q 550,280 600,260 Q 650,240 720,210 L 800,170" stroke="currentColor" strokeWidth="6" strokeLinecap="round" className="text-[var(--foreground)]" />
-          {/* Smaller branches */}
-          <path d="M 500,380 Q 460,360 420,340 L 360,310" stroke="currentColor" strokeWidth="4" strokeLinecap="round" className="text-[var(--foreground)]" opacity="0.6" />
-          <path d="M 500,380 Q 540,360 580,340 L 640,310" stroke="currentColor" strokeWidth="4" strokeLinecap="round" className="text-[var(--foreground)]" opacity="0.6" />
-          {/* Twigs */}
-          <path d="M 420,410 L 380,390 L 340,370" stroke="currentColor" strokeWidth="2" strokeLinecap="round" className="text-[var(--foreground)]" opacity="0.5" />
-          <path d="M 580,410 L 620,390 L 660,370" stroke="currentColor" strokeWidth="2" strokeLinecap="round" className="text-[var(--foreground)]" opacity="0.5" />
+          <path d="M 620,520 Q 660,460 700,390 Q 740,320 780,240 Q 820,160 860,70 L 900,0" stroke="currentColor" strokeWidth="14" strokeLinecap="round" className="text-[var(--foreground)]" />
+          <path d="M 700,390 Q 740,360 780,320 Q 820,280 870,220 L 930,140" stroke="currentColor" strokeWidth="8" strokeLinecap="round" className="text-[var(--foreground)]" />
+          <path d="M 740,320 Q 780,290 820,250 L 880,180 L 950,100" stroke="currentColor" strokeWidth="5" strokeLinecap="round" className="text-[var(--foreground)]" />
+          <path d="M 660,460 Q 710,420 760,380 L 830,310" stroke="currentColor" strokeWidth="6" strokeLinecap="round" className="text-[var(--foreground)]" />
         </g>
 
-        {/* Tree 6 - Center trunk radiating downward */}
+        {/* Lower left sprawl */}
         <g opacity="0.7">
-          {/* Main trunk */}
-          <path
-            d="M 500,500 Q 500,560 500,630 Q 500,700 500,780 Q 500,860 500,930 Q 500,970 500,1000"
-            stroke="currentColor"
-            strokeWidth="14"
-            strokeLinecap="round"
-            className="text-[var(--foreground)]"
-          />
-          {/* Branches spreading left and right */}
-          <path d="M 500,630 Q 460,650 420,670 Q 380,690 330,720 Q 280,750 220,790" stroke="currentColor" strokeWidth="7" strokeLinecap="round" className="text-[var(--foreground)]" />
-          <path d="M 500,630 Q 540,650 580,670 Q 620,690 670,720 Q 720,750 780,790" stroke="currentColor" strokeWidth="7" strokeLinecap="round" className="text-[var(--foreground)]" />
-          <path d="M 500,780 Q 450,800 400,820 Q 350,840 280,870 L 200,910" stroke="currentColor" strokeWidth="5" strokeLinecap="round" className="text-[var(--foreground)]" />
-          <path d="M 500,780 Q 550,800 600,820 Q 650,840 720,870 L 800,910" stroke="currentColor" strokeWidth="5" strokeLinecap="round" className="text-[var(--foreground)]" />
-          {/* Smaller branches */}
-          <path d="M 500,700 Q 460,720 420,740 L 360,770" stroke="currentColor" strokeWidth="3" strokeLinecap="round" className="text-[var(--foreground)]" opacity="0.6" />
-          <path d="M 500,700 Q 540,720 580,740 L 640,770" stroke="currentColor" strokeWidth="3" strokeLinecap="round" className="text-[var(--foreground)]" opacity="0.6" />
+          <path d="M 420,550 Q 380,610 340,680 Q 300,750 250,830 Q 200,910 140,980 L 80,1000" stroke="currentColor" strokeWidth="15" strokeLinecap="round" className="text-[var(--foreground)]" />
+          <path d="M 340,680 Q 290,720 240,770 Q 190,820 130,880 L 60,940" stroke="currentColor" strokeWidth="8" strokeLinecap="round" className="text-[var(--foreground)]" />
+          <path d="M 300,750 Q 250,790 200,840 L 140,900 L 70,970" stroke="currentColor" strokeWidth="6" strokeLinecap="round" className="text-[var(--foreground)]" />
+          <path d="M 380,610 Q 330,650 280,700 L 210,760" stroke="currentColor" strokeWidth="7" strokeLinecap="round" className="text-[var(--foreground)]" />
         </g>
 
-        {/* Additional depth layer - Background branches (more subtle) */}
-        <g opacity="0.35">
-          <path d="M 470,540 Q 420,480 370,420 Q 320,360 250,280 Q 180,200 90,100" stroke="currentColor" strokeWidth="9" strokeLinecap="round" className="text-[var(--foreground)]" />
-          <path d="M 530,540 Q 580,480 630,420 Q 680,360 750,280 Q 820,200 910,100" stroke="currentColor" strokeWidth="9" strokeLinecap="round" className="text-[var(--foreground)]" />
-          <path d="M 490,560 Q 440,620 390,680 Q 340,740 270,820 Q 200,900 110,980" stroke="currentColor" strokeWidth="8" strokeLinecap="round" className="text-[var(--foreground)]" />
-          <path d="M 510,560 Q 560,620 610,680 Q 660,740 730,820 Q 800,900 890,980" stroke="currentColor" strokeWidth="8" strokeLinecap="round" className="text-[var(--foreground)]" />
+        {/* Lower right tangle */}
+        <g opacity="0.72">
+          <path d="M 580,530 Q 620,590 660,660 Q 700,730 750,810 Q 800,890 860,970 L 920,1000" stroke="currentColor" strokeWidth="13" strokeLinecap="round" className="text-[var(--foreground)]" />
+          <path d="M 660,660 Q 710,710 760,770 Q 810,830 870,900 L 940,970" stroke="currentColor" strokeWidth="7" strokeLinecap="round" className="text-[var(--foreground)]" />
+          <path d="M 700,730 Q 750,780 800,840 L 870,920" stroke="currentColor" strokeWidth="5" strokeLinecap="round" className="text-[var(--foreground)]" />
+          <path d="M 620,590 Q 670,640 720,700 L 790,780" stroke="currentColor" strokeWidth="6" strokeLinecap="round" className="text-[var(--foreground)]" />
         </g>
 
-        {/* Fine detail layer - Furthest branches (very subtle) */}
-        <g opacity="0.25">
-          <path d="M 460,530 Q 400,460 340,390 Q 280,320 200,230 L 120,140 L 40,50" stroke="currentColor" strokeWidth="5" strokeLinecap="round" className="text-[var(--foreground)]" />
-          <path d="M 540,530 Q 600,460 660,390 Q 720,320 800,230 L 880,140 L 960,50" stroke="currentColor" strokeWidth="5" strokeLinecap="round" className="text-[var(--foreground)]" />
-          <path d="M 470,570 Q 410,640 350,710 Q 290,780 210,870 L 130,950" stroke="currentColor" strokeWidth="5" strokeLinecap="round" className="text-[var(--foreground)]" />
-          <path d="M 530,570 Q 590,640 650,710 Q 710,780 790,870 L 870,950" stroke="currentColor" strokeWidth="5" strokeLinecap="round" className="text-[var(--foreground)]" />
-          {/* Cross branches */}
-          <path d="M 300,400 Q 380,420 460,440 Q 540,460 620,480 Q 700,500 780,520" stroke="currentColor" strokeWidth="3" strokeLinecap="round" className="text-[var(--foreground)]" />
-          <path d="M 300,600 Q 380,580 460,560 Q 540,540 620,520 Q 700,500 780,480" stroke="currentColor" strokeWidth="3" strokeLinecap="round" className="text-[var(--foreground)]" />
+        {/* Off-center vertical trunk */}
+        <g opacity="0.78">
+          <path d="M 450,560 Q 440,490 430,410 Q 420,330 410,240 Q 400,150 390,50 L 380,0" stroke="currentColor" strokeWidth="17" strokeLinecap="round" className="text-[var(--foreground)]" />
+          <path d="M 430,410 Q 390,380 350,350 Q 310,320 260,280 L 200,230" stroke="currentColor" strokeWidth="9" strokeLinecap="round" className="text-[var(--foreground)]" />
+          <path d="M 430,410 Q 470,380 510,350 Q 550,320 600,280 L 660,230" stroke="currentColor" strokeWidth="8" strokeLinecap="round" className="text-[var(--foreground)]" />
+          <path d="M 410,240 Q 370,210 330,180 L 270,130" stroke="currentColor" strokeWidth="6" strokeLinecap="round" className="text-[var(--foreground)]" />
+          <path d="M 410,240 Q 450,210 490,180 L 550,130" stroke="currentColor" strokeWidth="5" strokeLinecap="round" className="text-[var(--foreground)]" />
         </g>
 
-        {/* Birds flying through the canopy */}
+        {/* Diagonal slash - top left to bottom right */}
+        <g opacity="0.65">
+          <path d="M 150,180 Q 250,280 350,380 Q 450,480 550,580 Q 650,680 750,780 L 850,880" stroke="currentColor" strokeWidth="11" strokeLinecap="round" className="text-[var(--foreground)]" />
+          <path d="M 250,280 Q 290,320 330,360 L 390,420" stroke="currentColor" strokeWidth="5" strokeLinecap="round" className="text-[var(--foreground)]" />
+          <path d="M 450,480 Q 490,520 530,560 L 590,620" stroke="currentColor" strokeWidth="6" strokeLinecap="round" className="text-[var(--foreground)]" />
+          <path d="M 650,680 Q 690,720 730,760 L 790,820" stroke="currentColor" strokeWidth="4" strokeLinecap="round" className="text-[var(--foreground)]" />
+        </g>
+
+        {/* Random branch cluster - mid right */}
+        <g opacity="0.68">
+          <path d="M 720,480 Q 760,440 800,390 L 860,320 L 920,240" stroke="currentColor" strokeWidth="10" strokeLinecap="round" className="text-[var(--foreground)]" />
+          <path d="M 760,440 Q 810,460 860,480 L 930,510" stroke="currentColor" strokeWidth="6" strokeLinecap="round" className="text-[var(--foreground)]" />
+          <path d="M 800,390 Q 840,370 880,350 L 940,320" stroke="currentColor" strokeWidth="5" strokeLinecap="round" className="text-[var(--foreground)]" />
+          <path d="M 720,480 Q 750,520 780,560 L 830,620" stroke="currentColor" strokeWidth="7" strokeLinecap="round" className="text-[var(--foreground)]" />
+        </g>
+
+        {/* Wild upper sweep */}
+        <g opacity="0.71">
+          <path d="M 550,500 Q 580,430 610,350 Q 640,270 670,180 L 700,80 L 730,0" stroke="currentColor" strokeWidth="12" strokeLinecap="round" className="text-[var(--foreground)]" />
+          <path d="M 610,350 Q 650,320 690,290 L 750,240" stroke="currentColor" strokeWidth="6" strokeLinecap="round" className="text-[var(--foreground)]" />
+          <path d="M 640,270 Q 620,230 600,190 L 570,130" stroke="currentColor" strokeWidth="5" strokeLinecap="round" className="text-[var(--foreground)]" />
+        </g>
+
+        {/* Lower mid sprawl */}
+        <g opacity="0.69">
+          <path d="M 480,580 Q 460,650 440,720 Q 420,790 400,870 L 380,950 L 360,1000" stroke="currentColor" strokeWidth="14" strokeLinecap="round" className="text-[var(--foreground)]" />
+          <path d="M 440,720 Q 400,750 360,780 L 300,830 L 230,890" stroke="currentColor" strokeWidth="7" strokeLinecap="round" className="text-[var(--foreground)]" />
+          <path d="M 440,720 Q 480,750 520,780 L 580,830 L 650,890" stroke="currentColor" strokeWidth="6" strokeLinecap="round" className="text-[var(--foreground)]" />
+          <path d="M 420,790 Q 460,820 500,850 L 560,900" stroke="currentColor" strokeWidth="5" strokeLinecap="round" className="text-[var(--foreground)]" />
+        </g>
+
+        {/* Far left vertical */}
+        <g opacity="0.63">
+          <path d="M 220,520 Q 200,450 180,370 Q 160,290 140,200 L 120,100 L 100,0" stroke="currentColor" strokeWidth="13" strokeLinecap="round" className="text-[var(--foreground)]" />
+          <path d="M 180,370 Q 140,340 100,310 L 40,260" stroke="currentColor" strokeWidth="7" strokeLinecap="round" className="text-[var(--foreground)]" />
+          <path d="M 160,290 Q 120,260 80,230 L 20,180" stroke="currentColor" strokeWidth="5" strokeLinecap="round" className="text-[var(--foreground)]" />
+        </g>
+
+        {/* Far right vertical */}
+        <g opacity="0.66">
+          <path d="M 820,510 Q 840,440 860,360 Q 880,280 900,190 L 920,90 L 940,0" stroke="currentColor" strokeWidth="11" strokeLinecap="round" className="text-[var(--foreground)]" />
+          <path d="M 860,360 Q 900,340 940,320 L 980,290" stroke="currentColor" strokeWidth="6" strokeLinecap="round" className="text-[var(--foreground)]" />
+          <path d="M 880,280 Q 920,250 960,220 L 1000,180" stroke="currentColor" strokeWidth="4" strokeLinecap="round" className="text-[var(--foreground)]" />
+        </g>
+
+        {/* Chaotic mid-layer - background depth */}
         <g opacity="0.4">
-          <g transform="translate(350, 300)">
+          <path d="M 320,460 Q 280,400 240,330 Q 200,260 150,180 L 90,90" stroke="currentColor" strokeWidth="10" strokeLinecap="round" className="text-[var(--foreground)]" />
+          <path d="M 680,440 Q 720,380 760,310 Q 800,240 850,160 L 910,70" stroke="currentColor" strokeWidth="9" strokeLinecap="round" className="text-[var(--foreground)]" />
+          <path d="M 350,570 Q 310,640 270,710 Q 230,780 180,860 L 120,950" stroke="currentColor" strokeWidth="11" strokeLinecap="round" className="text-[var(--foreground)]" />
+          <path d="M 650,560 Q 690,630 730,700 Q 770,770 820,850 L 880,940" stroke="currentColor" strokeWidth="10" strokeLinecap="round" className="text-[var(--foreground)]" />
+          <path d="M 500,420 Q 540,360 580,290 L 630,200 L 680,100" stroke="currentColor" strokeWidth="8" strokeLinecap="round" className="text-[var(--foreground)]" />
+          <path d="M 490,600 Q 450,670 410,740 L 360,820 L 300,910" stroke="currentColor" strokeWidth="9" strokeLinecap="round" className="text-[var(--foreground)]" />
+        </g>
+
+        {/* Dense twig layer - very background */}
+        <g opacity="0.3">
+          <path d="M 280,380 Q 240,340 200,300 L 150,250 L 100,200 L 50,150" stroke="currentColor" strokeWidth="6" strokeLinecap="round" className="text-[var(--foreground)]" />
+          <path d="M 720,370 Q 760,330 800,290 L 850,240 L 900,190 L 950,140" stroke="currentColor" strokeWidth="5" strokeLinecap="round" className="text-[var(--foreground)]" />
+          <path d="M 290,620 Q 250,670 210,720 L 160,780 L 110,840 L 60,900" stroke="currentColor" strokeWidth="7" strokeLinecap="round" className="text-[var(--foreground)]" />
+          <path d="M 710,610 Q 750,660 790,710 L 840,770 L 890,830 L 940,890" stroke="currentColor" strokeWidth="6" strokeLinecap="round" className="text-[var(--foreground)]" />
+          <path d="M 400,300 Q 450,250 500,200 L 560,140 L 620,80" stroke="currentColor" strokeWidth="5" strokeLinecap="round" className="text-[var(--foreground)]" />
+          <path d="M 410,700 Q 460,750 510,800 L 570,860 L 630,920" stroke="currentColor" strokeWidth="6" strokeLinecap="round" className="text-[var(--foreground)]" />
+        </g>
+
+        {/* Random crossing branches */}
+        <g opacity="0.5">
+          <path d="M 100,400 Q 200,420 300,440 Q 400,460 500,480 Q 600,500 700,520 Q 800,540 900,560" stroke="currentColor" strokeWidth="7" strokeLinecap="round" className="text-[var(--foreground)]" />
+          <path d="M 120,600 Q 220,580 320,560 Q 420,540 520,520 Q 620,500 720,480 Q 820,460 920,440" stroke="currentColor" strokeWidth="6" strokeLinecap="round" className="text-[var(--foreground)]" />
+          <path d="M 200,250 Q 300,300 400,350 Q 500,400 600,450 L 700,500" stroke="currentColor" strokeWidth="5" strokeLinecap="round" className="text-[var(--foreground)]" />
+          <path d="M 180,750 Q 280,700 380,650 Q 480,600 580,550 L 680,500" stroke="currentColor" strokeWidth="6" strokeLinecap="round" className="text-[var(--foreground)]" />
+        </g>
+
+        {/* Extra random twigs scattered */}
+        <g opacity="0.35">
+          <path d="M 150,320 L 180,290 L 210,260 L 240,230" stroke="currentColor" strokeWidth="3" strokeLinecap="round" className="text-[var(--foreground)]" />
+          <path d="M 850,310 L 820,280 L 790,250 L 760,220" stroke="currentColor" strokeWidth="3" strokeLinecap="round" className="text-[var(--foreground)]" />
+          <path d="M 160,680 L 190,710 L 220,740 L 250,770" stroke="currentColor" strokeWidth="3" strokeLinecap="round" className="text-[var(--foreground)]" />
+          <path d="M 840,670 L 810,700 L 780,730 L 750,760" stroke="currentColor" strokeWidth="3" strokeLinecap="round" className="text-[var(--foreground)]" />
+          <path d="M 450,200 L 480,170 L 510,140 L 540,110" stroke="currentColor" strokeWidth="2" strokeLinecap="round" className="text-[var(--foreground)]" />
+          <path d="M 440,800 L 470,830 L 500,860 L 530,890" stroke="currentColor" strokeWidth="3" strokeLinecap="round" className="text-[var(--foreground)]" />
+          <path d="M 310,450 L 340,480 L 370,510" stroke="currentColor" strokeWidth="2" strokeLinecap="round" className="text-[var(--foreground)]" />
+          <path d="M 690,460 L 660,490 L 630,520" stroke="currentColor" strokeWidth="2" strokeLinecap="round" className="text-[var(--foreground)]" />
+        </g>
+
+        {/* Additional scattered small branches */}
+        <g opacity="0.45">
+          <path d="M 270,510 Q 240,480 210,450 L 170,410" stroke="currentColor" strokeWidth="5" strokeLinecap="round" className="text-[var(--foreground)]" />
+          <path d="M 730,520 Q 760,490 790,460 L 830,420" stroke="currentColor" strokeWidth="4" strokeLinecap="round" className="text-[var(--foreground)]" />
+          <path d="M 380,280 Q 350,250 320,220 L 280,180" stroke="currentColor" strokeWidth="4" strokeLinecap="round" className="text-[var(--foreground)]" />
+          <path d="M 620,290 Q 650,260 680,230 L 720,190" stroke="currentColor" strokeWidth="4" strokeLinecap="round" className="text-[var(--foreground)]" />
+          <path d="M 370,720 Q 340,750 310,780 L 270,820" stroke="currentColor" strokeWidth="5" strokeLinecap="round" className="text-[var(--foreground)]" />
+          <path d="M 630,710 Q 660,740 690,770 L 730,810" stroke="currentColor" strokeWidth="4" strokeLinecap="round" className="text-[var(--foreground)]" />
+        </g>
+
+        {/* Off-angle wild branches */}
+        <g opacity="0.58">
+          <path d="M 330,390 Q 370,350 410,310 Q 450,270 490,230 L 540,180 L 590,130" stroke="currentColor" strokeWidth="8" strokeLinecap="round" className="text-[var(--foreground)]" />
+          <path d="M 670,610 Q 630,650 590,690 Q 550,730 510,770 L 460,820 L 410,870" stroke="currentColor" strokeWidth="9" strokeLinecap="round" className="text-[var(--foreground)]" />
+          <path d="M 180,540 Q 230,510 280,480 Q 330,450 380,420" stroke="currentColor" strokeWidth="6" strokeLinecap="round" className="text-[var(--foreground)]" />
+          <path d="M 820,460 Q 770,490 720,520 Q 670,550 620,580" stroke="currentColor" strokeWidth="7" strokeLinecap="round" className="text-[var(--foreground)]" />
+        </g>
+
+        {/* More chaos - zigzag branches */}
+        <g opacity="0.42">
+          <path d="M 140,260 L 190,310 L 240,360 L 290,410 L 340,460" stroke="currentColor" strokeWidth="5" strokeLinecap="round" className="text-[var(--foreground)]" />
+          <path d="M 860,270 L 810,320 L 760,370 L 710,420 L 660,470" stroke="currentColor" strokeWidth="4" strokeLinecap="round" className="text-[var(--foreground)]" />
+          <path d="M 130,740 L 180,690 L 230,640 L 280,590 L 330,540" stroke="currentColor" strokeWidth="6" strokeLinecap="round" className="text-[var(--foreground)]" />
+          <path d="M 870,730 L 820,680 L 770,630 L 720,580 L 670,530" stroke="currentColor" strokeWidth="5" strokeLinecap="round" className="text-[var(--foreground)]" />
+        </g>
+
+        {/* Birds flying through chaos */}
+        <g opacity="0.45">
+          <g transform="translate(280, 350)">
             <ellipse cx="0" cy="0" rx="5" ry="3" fill="currentColor" className="text-[var(--foreground)]" />
             <circle cx="-1.5" cy="-0.5" r="1" fill="currentColor" className="text-[var(--foreground)]" />
             <path d="M -5,-0.5 Q -7,-2 -9,-1" stroke="currentColor" strokeWidth="0.8" fill="none" className="text-[var(--foreground)]" />
             <path d="M 5,-0.5 Q 7,-2 9,-1" stroke="currentColor" strokeWidth="0.8" fill="none" className="text-[var(--foreground)]" />
           </g>
-          <g transform="translate(650, 280)">
+          <g transform="translate(720, 380)">
             <ellipse cx="0" cy="0" rx="5.5" ry="3.5" fill="currentColor" className="text-[var(--foreground)]" />
             <circle cx="1.8" cy="-0.8" r="1.2" fill="currentColor" className="text-[var(--foreground)]" />
             <path d="M 5.5,-0.8 Q 7.5,-2.5 9.5,-1.5" stroke="currentColor" strokeWidth="0.9" fill="none" className="text-[var(--foreground)]" />
             <path d="M -5.5,-0.8 Q -7.5,-2.5 -9.5,-1.5" stroke="currentColor" strokeWidth="0.9" fill="none" className="text-[var(--foreground)]" />
           </g>
-          <g transform="translate(520, 700)">
+          <g transform="translate(450, 650)">
             <ellipse cx="0" cy="0" rx="4.5" ry="3" fill="currentColor" className="text-[var(--foreground)]" />
             <circle cx="1.2" cy="-0.6" r="0.9" fill="currentColor" className="text-[var(--foreground)]" />
             <path d="M 4.5,-0.6 Q 6.5,-2 8,-1.2" stroke="currentColor" strokeWidth="0.7" fill="none" className="text-[var(--foreground)]" />
             <path d="M -4.5,-0.6 Q -6.5,-2 -8,-1.2" stroke="currentColor" strokeWidth="0.7" fill="none" className="text-[var(--foreground)]" />
+          </g>
+          <g transform="translate(580, 280)">
+            <ellipse cx="0" cy="0" rx="6" ry="4" fill="currentColor" className="text-[var(--foreground)]" />
+            <circle cx="2" cy="-1" r="1.5" fill="currentColor" className="text-[var(--foreground)]" />
+            <path d="M 6,-1 Q 8,-3 10,-2" stroke="currentColor" strokeWidth="1" fill="none" className="text-[var(--foreground)]" />
+            <path d="M -6,-1 Q -8,-3 -10,-2" stroke="currentColor" strokeWidth="1" fill="none" className="text-[var(--foreground)]" />
+          </g>
+          <g transform="translate(340, 720)">
+            <ellipse cx="0" cy="0" rx="5" ry="3" fill="currentColor" className="text-[var(--foreground)]" />
+            <circle cx="-1.5" cy="-0.5" r="1" fill="currentColor" className="text-[var(--foreground)]" />
+            <path d="M -5,-0.5 Q -7,-2 -9,-1" stroke="currentColor" strokeWidth="0.8" fill="none" className="text-[var(--foreground)]" />
+            <path d="M 5,-0.5 Q 7,-2 9,-1" stroke="currentColor" strokeWidth="0.8" fill="none" className="text-[var(--foreground)]" />
           </g>
         </g>
       </svg>
