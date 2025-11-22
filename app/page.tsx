@@ -278,7 +278,7 @@ export default function Home() {
               { value: '10K+', label: 'PRODUCTS' },
               { value: '∞', label: 'IMPACT' },
               { value: '100%', label: 'EARTH-FIRST' },
-              { value: '🌱', label: 'LIVING' },
+              { value: '✿', label: 'LIVING' },
             ].map((stat, i) => (
               <div key={i} className="text-center transform hover:scale-110 transition-transform duration-300">
                 <div style={{

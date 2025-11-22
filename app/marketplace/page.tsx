@@ -60,7 +60,7 @@ export default async function MarketplacePage() {
           <div className="max-w-5xl mx-auto text-center space-y-6">
             <div className="inline-block px-6 py-3 bg-[var(--accent)]/10 rounded-full border-2 border-theme-accent mb-4">
               <span className="text-sm font-black text-theme-accent uppercase tracking-wider">
-                🌱 Community Marketplace
+                Community Marketplace
               </span>
             </div>
             <h1 className="text-[var(--foreground)]" style={{

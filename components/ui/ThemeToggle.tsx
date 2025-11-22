@@ -82,7 +82,7 @@ export function ThemeToggle() {
           <div className="absolute right-0 mt-2 w-64 bg-[var(--card)] rounded-xl shadow-theme-lg border-2 border-theme-primary overflow-hidden z-50">
             <div className="p-3 border-b-2 border-[var(--border)]">
               <h3 className="font-bold text-[var(--foreground)] text-sm uppercase tracking-wide">
-                🌱 Living Theme
+                Living Theme
               </h3>
               <p className="text-xs text-theme-muted mt-1">
                 Choose how the site breathes

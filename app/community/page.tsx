@@ -171,7 +171,7 @@ export default async function CommunityPage() {
             <div className="max-w-5xl mx-auto text-center space-y-8">
               <div className="inline-block px-6 py-3 bg-[var(--accent)]/10 rounded-full border-2 border-theme-accent mb-4">
                 <span className="text-sm font-black text-theme-accent uppercase tracking-wider">
-                  ⚡ Create an account to join
+                  Create an account to join
                 </span>
               </div>
               <h1 className="text-[var(--foreground)]" style={{
@@ -490,7 +490,7 @@ export default async function CommunityPage() {
                       )}
                       <div className="flex-1 min-w-0">
                         <h4 className="font-bold text-xs text-[var(--foreground)] truncate">{suggestedUser.name || 'Anonymous'}</h4>
-                        <p className="text-[10px] font-medium text-theme-muted">{suggestedUser._count.followers} followers • {suggestedUser._count.articles} articles</p>
+                        <p className="text-[10px] font-medium text-theme-muted"><span title="Followers">◉</span> {suggestedUser._count.followers} followers • <span title="Articles">✎</span> {suggestedUser._count.articles} articles</p>
                       </div>
                       <ChevronRight className="w-3.5 h-3.5 text-theme-muted flex-shrink-0" />
                     </div>
