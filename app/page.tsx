@@ -5,6 +5,7 @@ import { Leaf, Droplet, Zap, Users, Heart, Shield, Sprout, BookOpen, Scale, Eye,
 import { NightSkyConstellations } from '@/components/theme/NightSkyConstellations'
 import { TreeBranches } from '@/components/decorative/TreeBranches'
 import { FlyingBirds } from '@/components/decorative/FlyingBirds'
+import { CircularCarousel } from '@/components/carousel/CircularCarousel'
 
 export default function Home() {
   const commandments = [
@@ -393,35 +394,7 @@ export default function Home() {
               <p className="text-3xl font-bold text-[var(--primary-foreground)]">OF SUSTAINABLE AGRICULTURE</p>
             </div>
 
-            <div className="grid md:grid-cols-2 gap-8">
-              {commandments.map((commandment) => (
-                <Card
-                  key={commandment.number}
-                  className="border-4 border-[var(--background)] bg-[var(--card)]/95 shadow-theme-2xl transform hover:scale-105 transition-all"
-                >
-                  <CardContent className="p-8">
-                    <div className="flex items-start gap-6">
-                      <div
-                        className="flex-shrink-0 w-16 h-16 rounded-full flex items-center justify-center text-[var(--primary-foreground)] text-3xl font-black shadow-theme-xl"
-                        style={{
-                          background: `linear-gradient(135deg, ${commandment.color}, ${commandment.color}dd)`
-                        }}
-                      >
-                        {commandment.number}
-                      </div>
-                      <div className="flex-1">
-                        <h3 className="text-2xl font-black mb-3" style={{ color: commandment.color }}>
-                          {commandment.title}
-                        </h3>
-                        <p className="text-lg font-bold text-theme-muted">
-                          {commandment.description}
-                        </p>
-                      </div>
-                    </div>
-                  </CardContent>
-                </Card>
-              ))}
-            </div>
+            <CircularCarousel items={commandments} />
           </div>
         </div>
       </section>
