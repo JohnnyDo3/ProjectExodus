@@ -1,6 +1,7 @@
 import { Card, CardContent } from '@/components/ui/Card'
 import { Button } from '@/components/ui/Button'
 import { Citation } from '@/components/learn/Citation'
+import { BackButton } from '@/components/navigation/BackButton'
 import { Recycle, Trash2, PackageCheck, Leaf, TrendingDown, Home, ShoppingBag, Utensils, CheckCircle, ArrowRight, AlertCircle } from 'lucide-react'
 import Link from 'next/link'
 
@@ -10,6 +11,9 @@ export default function ZeroWastePage() {
       {/* Hero */}
       <section className="py-32 bg-gradient-to-br from-[color-mix(in_srgb,var(--secondary)_20%,var(--background))] via-[var(--background)] to-[color-mix(in_srgb,var(--primary)_20%,var(--background))] relative overflow-hidden">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="mb-6">
+            <BackButton label="Back to Learn" fallbackUrl="/learn" />
+          </div>
           <div className="max-w-5xl mx-auto text-center space-y-8">
             <div className="text-7xl mb-6">♻️</div>
             <h1 className="text-[var(--foreground)]" style={{

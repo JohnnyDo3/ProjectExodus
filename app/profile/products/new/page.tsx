@@ -6,6 +6,7 @@ import { Button } from '@/components/ui/Button'
 import { Input } from '@/components/ui/Input'
 import { Textarea } from '@/components/ui/Textarea'
 import { Package, Image, DollarSign, Link as LinkIcon, ArrowLeft, Upload, X } from 'lucide-react'
+import { BackButton } from '@/components/navigation/BackButton'
 import Link from 'next/link'
 import { useRouter } from 'next/navigation'
 
@@ -89,6 +90,9 @@ export default function NewProductPage() {
       {/* Header */}
       <section className="py-8 bg-gradient-to-br from-[var(--accent)] via-[var(--primary)] to-[var(--secondary)] text-[var(--primary-foreground)]">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="mb-6">
+            <BackButton label="Back to Profile" fallbackUrl="/profile" />
+          </div>
           <div className="max-w-4xl mx-auto">
             <Link href="/profile/products">
               <Button variant="ghost" size="sm" className="mb-4 text-white hover:bg-white/20">
@@ -109,6 +113,9 @@ export default function NewProductPage() {
       {/* Form */}
       <section className="py-8">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="mb-6">
+            <BackButton label="Back to Profile" fallbackUrl="/profile" />
+          </div>
           <div className="max-w-4xl mx-auto">
 
             <Card>

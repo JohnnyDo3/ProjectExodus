@@ -4,6 +4,7 @@ import { useState, useEffect } from 'react'
 import { Card, CardContent } from '@/components/ui/Card'
 import { Button } from '@/components/ui/Button'
 import { Package, CheckCircle, XCircle, Clock, User, ExternalLink, Image as ImageIcon } from 'lucide-react'
+import { BackButton } from '@/components/navigation/BackButton'
 import Link from 'next/link'
 
 interface Seller {
@@ -160,6 +161,9 @@ export default function AdminProductsPage() {
       {/* Header */}
       <section className="py-8 bg-gradient-to-br from-[var(--primary)] to-[var(--accent)] text-[var(--primary-foreground)]">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="mb-6">
+            <BackButton label="Back to Admin" fallbackUrl="/admin" />
+          </div>
           <div className="max-w-7xl mx-auto">
             <div className="flex flex-col md:flex-row items-center justify-between gap-6">
               <div>
@@ -189,6 +193,9 @@ export default function AdminProductsPage() {
       {/* Stats Bar */}
       <section className="py-4 bg-[var(--background)] border-b border-[var(--border)]">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="mb-6">
+            <BackButton label="Back to Admin" fallbackUrl="/admin" />
+          </div>
           <div className="max-w-7xl mx-auto">
             <div className="grid grid-cols-4 gap-4">
               <button
@@ -235,6 +242,9 @@ export default function AdminProductsPage() {
       {/* Products List */}
       <section className="py-8">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="mb-6">
+            <BackButton label="Back to Admin" fallbackUrl="/admin" />
+          </div>
           <div className="max-w-7xl mx-auto">
             {filteredProducts.length === 0 ? (
               <Card>

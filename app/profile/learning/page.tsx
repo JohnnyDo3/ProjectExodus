@@ -2,6 +2,7 @@ import { ArticleCard } from '@/components/article/ArticleCard'
 import { Card, CardContent } from '@/components/ui/Card'
 import { Button } from '@/components/ui/Button'
 import { BookOpen, Video, Calculator, Download, Zap, Leaf, Home, Award, CheckCircle, Sprout, TrendingUp, Target, Flame, ArrowRight, Clock } from 'lucide-react'
+import { BackButton } from '@/components/navigation/BackButton'
 import Link from 'next/link'
 import prisma from '@/lib/db/prisma'
 import { auth } from '@/auth'
@@ -99,6 +100,9 @@ export default async function MyLearningPage() {
       {/* Compact Welcome Header */}
       <section className="py-12 bg-gradient-to-br from-[var(--accent)] via-[var(--primary)] to-[var(--secondary)] text-[var(--primary-foreground)]">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="mb-6">
+            <BackButton label="Back to Profile" fallbackUrl="/profile" />
+          </div>
           <div className="max-w-7xl mx-auto">
             <div className="flex flex-col md:flex-row items-center justify-between gap-6">
               <div>
@@ -128,6 +132,9 @@ export default async function MyLearningPage() {
       {/* Quick Impact Stats */}
       <section className="py-6 bg-gradient-to-r from-red-500 via-orange-500 to-red-600 text-white">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="mb-6">
+            <BackButton label="Back to Profile" fallbackUrl="/profile" />
+          </div>
           <div className="max-w-7xl mx-auto">
             <div className="text-center mb-3">
               <div className="flex items-center justify-center gap-2">
@@ -160,6 +167,9 @@ export default async function MyLearningPage() {
       {/* Main Dashboard Content */}
       <section className="py-12">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="mb-6">
+            <BackButton label="Back to Profile" fallbackUrl="/profile" />
+          </div>
           <div className="max-w-7xl mx-auto">
             <div className="grid lg:grid-cols-3 gap-8">
               {/* Main Content */}

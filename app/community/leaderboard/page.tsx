@@ -1,5 +1,6 @@
 import { Card, CardContent } from '@/components/ui/Card'
 import { Trophy, Medal, Award, TrendingUp, Users, MessageSquare, Rocket } from 'lucide-react'
+import { BackButton } from '@/components/navigation/BackButton'
 import Link from 'next/link'
 import prisma from '@/lib/db/prisma'
 
@@ -178,6 +179,9 @@ export default async function LeaderboardPage() {
       {/* Hero */}
       <section className="py-20 bg-gradient-to-br from-[color-mix(in_srgb,var(--secondary)_15%,var(--background))] via-[color-mix(in_srgb,var(--accent)_15%,var(--background))] to-[color-mix(in_srgb,var(--primary)_15%,var(--background))]">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="mb-6">
+            <BackButton label="Back to Community" fallbackUrl="/community" />
+          </div>
           <div className="max-w-5xl mx-auto text-center space-y-6">
             <div className="flex justify-center mb-6">
               <div className="w-24 h-24 rounded-full bg-gradient-to-br from-yellow-400 via-yellow-500 to-orange-500 flex items-center justify-center shadow-2xl">
@@ -197,6 +201,9 @@ export default async function LeaderboardPage() {
       {/* Leaderboards */}
       <section className="py-16 bg-[var(--background)]">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="mb-6">
+            <BackButton label="Back to Community" fallbackUrl="/community" />
+          </div>
           <div className="max-w-7xl mx-auto space-y-12">
             {/* Top Article Writers */}
             <LeaderboardSection
@@ -234,6 +241,9 @@ export default async function LeaderboardPage() {
       {/* CTA */}
       <section className="py-20 bg-gradient-to-br from-[var(--primary)] via-[var(--accent)] to-[var(--secondary)] text-[var(--primary-foreground)]">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="mb-6">
+            <BackButton label="Back to Community" fallbackUrl="/community" />
+          </div>
           <div className="max-w-4xl mx-auto text-center space-y-8">
             <h2 className="text-5xl font-black">READY TO MAKE YOUR MARK?</h2>
             <p className="text-2xl font-semibold">

@@ -210,6 +210,9 @@ export default function EventPage({ params }: { params: { slug: string } }) {
       {/* Header */}
       <section className="py-12 bg-gradient-to-br from-[color-mix(in_srgb,var(--secondary)_15%,var(--background))] via-[color-mix(in_srgb,var(--primary)_15%,var(--background))] to-[color-mix(in_srgb,var(--accent)_15%,var(--background))]">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="mb-6">
+            <BackButton label="Back to Events" fallbackUrl="/events" />
+          </div>
           <div className="max-w-6xl mx-auto">
             <Link href="/events">
               <Button variant="ghost" className="mb-6 font-bold">

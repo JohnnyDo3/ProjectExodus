@@ -1,6 +1,7 @@
 import { Card, CardContent } from '@/components/ui/Card'
 import { Button } from '@/components/ui/Button'
 import { Citation } from '@/components/learn/Citation'
+import { BackButton } from '@/components/navigation/BackButton'
 import { Home, Sun, Droplet, Wind, TrendingDown, Leaf, Zap, CheckCircle, Award, DollarSign } from 'lucide-react'
 import Link from 'next/link'
 
@@ -10,6 +11,9 @@ export default function GreenBuildingPage() {
       {/* Hero */}
       <section className="py-32 bg-gradient-to-br from-[color-mix(in_srgb,var(--accent)_20%,var(--background))] via-[var(--background)] to-[color-mix(in_srgb,var(--primary)_20%,var(--background))] relative overflow-hidden">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="mb-6">
+            <BackButton label="Back to Learn" fallbackUrl="/learn" />
+          </div>
           <div className="max-w-5xl mx-auto text-center space-y-8">
             <div className="text-7xl mb-6">🏡</div>
             <h1 className="text-[var(--foreground)]" style={{
@@ -34,6 +38,9 @@ export default function GreenBuildingPage() {
       {/* Buildings & Climate */}
       <section className="py-20 bg-[var(--background)]">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="mb-6">
+            <BackButton label="Back to Learn" fallbackUrl="/learn" />
+          </div>
           <div className="max-w-6xl mx-auto">
             <div className="text-center mb-12">
               <h2 className="text-5xl font-black text-[var(--foreground)] mb-4">BUILDINGS & THE CLIMATE CRISIS</h2>
@@ -155,6 +162,9 @@ export default function GreenBuildingPage() {
       {/* Core Strategies */}
       <section className="py-20 bg-[var(--muted)]">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="mb-6">
+            <BackButton label="Back to Learn" fallbackUrl="/learn" />
+          </div>
           <div className="max-w-6xl mx-auto">
             <h2 className="text-5xl font-black text-[var(--foreground)] mb-12 text-center">CORE GREEN BUILDING STRATEGIES</h2>
 
@@ -486,6 +496,9 @@ export default function GreenBuildingPage() {
       {/* ROI & Economics */}
       <section className="py-20 bg-[var(--background)]">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="mb-6">
+            <BackButton label="Back to Learn" fallbackUrl="/learn" />
+          </div>
           <div className="max-w-6xl mx-auto">
             <h2 className="text-5xl font-black text-[var(--foreground)] mb-12 text-center">ECONOMICS & ROI</h2>
 
@@ -606,6 +619,9 @@ export default function GreenBuildingPage() {
       {/* CTA */}
       <section className="py-32 bg-gradient-to-br from-[var(--accent)] via-[var(--primary)] to-[var(--secondary)] text-[var(--primary-foreground)]">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="mb-6">
+            <BackButton label="Back to Learn" fallbackUrl="/learn" />
+          </div>
           <div className="max-w-4xl mx-auto text-center space-y-8">
             <h2 className="text-6xl font-black">BUILD FOR THE FUTURE</h2>
             <p className="text-2xl font-semibold">

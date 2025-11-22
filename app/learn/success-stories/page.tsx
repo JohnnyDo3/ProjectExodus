@@ -1,5 +1,6 @@
 import { Card, CardContent } from '@/components/ui/Card'
 import { Citation } from '@/components/learn/Citation'
+import { BackButton } from '@/components/navigation/BackButton'
 import {
   Building2,
   Factory,
@@ -21,6 +22,9 @@ export default function SuccessStoriesPage() {
       {/* Hero */}
       <section className="py-32 bg-gradient-to-br from-[color-mix(in_srgb,var(--primary)_15%,var(--background))] via-[color-mix(in_srgb,var(--accent)_15%,var(--background))] to-[color-mix(in_srgb,var(--secondary)_15%,var(--background))] relative overflow-hidden">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="mb-6">
+            <BackButton label="Back to Learn" fallbackUrl="/learn" />
+          </div>
           <div className="max-w-5xl mx-auto text-center space-y-8">
             <div className="inline-block">
               <div className="w-24 h-24 mx-auto mb-6 rounded-full bg-gradient-to-br from-[var(--primary)] to-[var(--accent)] flex items-center justify-center shadow-theme-xl">
@@ -49,6 +53,9 @@ export default function SuccessStoriesPage() {
       {/* Overview */}
       <section className="py-24 bg-[var(--background)]">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="mb-6">
+            <BackButton label="Back to Learn" fallbackUrl="/learn" />
+          </div>
           <div className="max-w-4xl mx-auto">
             <Card className="border-4 border-theme-primary">
               <CardContent className="p-12">
@@ -70,6 +77,9 @@ export default function SuccessStoriesPage() {
       {/* Company Success Stories */}
       <section className="py-24 bg-[var(--muted)]">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="mb-6">
+            <BackButton label="Back to Learn" fallbackUrl="/learn" />
+          </div>
           <div className="max-w-6xl mx-auto">
             <div className="flex items-center gap-6 mb-12">
               <div className="w-20 h-20 rounded-full bg-gradient-to-br from-[var(--primary)] to-[color-mix(in_srgb,var(--primary)_80%,black)] flex items-center justify-center shadow-theme-xl">
@@ -253,6 +263,9 @@ export default function SuccessStoriesPage() {
       {/* City Success Stories */}
       <section className="py-24 bg-[var(--background)]">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="mb-6">
+            <BackButton label="Back to Learn" fallbackUrl="/learn" />
+          </div>
           <div className="max-w-6xl mx-auto">
             <div className="flex items-center gap-6 mb-12">
               <div className="w-20 h-20 rounded-full bg-gradient-to-br from-[var(--accent)] to-[color-mix(in_srgb,var(--accent)_80%,black)] flex items-center justify-center shadow-theme-xl">
@@ -360,6 +373,9 @@ export default function SuccessStoriesPage() {
       {/* Regenerative Farm Success */}
       <section className="py-24 bg-[var(--muted)]">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="mb-6">
+            <BackButton label="Back to Learn" fallbackUrl="/learn" />
+          </div>
           <div className="max-w-6xl mx-auto">
             <div className="flex items-center gap-6 mb-12">
               <div className="w-20 h-20 rounded-full bg-gradient-to-br from-[var(--secondary)] to-[color-mix(in_srgb,var(--secondary)_80%,black)] flex items-center justify-center shadow-theme-xl">
@@ -436,6 +452,9 @@ export default function SuccessStoriesPage() {
       {/* Net-Zero Buildings */}
       <section className="py-24 bg-[var(--background)]">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="mb-6">
+            <BackButton label="Back to Learn" fallbackUrl="/learn" />
+          </div>
           <div className="max-w-6xl mx-auto">
             <div className="flex items-center gap-6 mb-12">
               <div className="w-20 h-20 rounded-full bg-gradient-to-br from-[var(--primary)] to-[color-mix(in_srgb,var(--primary)_80%,black)] flex items-center justify-center shadow-theme-xl">
@@ -512,6 +531,9 @@ export default function SuccessStoriesPage() {
       {/* Key Takeaways */}
       <section className="py-24 bg-[var(--muted)]">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="mb-6">
+            <BackButton label="Back to Learn" fallbackUrl="/learn" />
+          </div>
           <div className="max-w-5xl mx-auto">
             <Card className="border-4 border-theme-primary bg-gradient-to-br from-[color-mix(in_srgb,var(--primary)_10%,var(--background))] to-[var(--background)]">
               <CardContent className="p-12">
@@ -558,6 +580,9 @@ export default function SuccessStoriesPage() {
       {/* CTA */}
       <section className="py-32 bg-gradient-to-br from-[var(--primary)] via-[var(--accent)] to-[var(--secondary)] text-[var(--primary-foreground)]">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="mb-6">
+            <BackButton label="Back to Learn" fallbackUrl="/learn" />
+          </div>
           <div className="max-w-4xl mx-auto text-center space-y-8">
             <h2 className="text-6xl font-black">YOUR SUCCESS STORY STARTS NOW</h2>
             <p className="text-2xl font-semibold">

@@ -5,6 +5,7 @@ import { Card, CardContent } from '@/components/ui/Card'
 import { Button } from '@/components/ui/Button'
 import { Citation } from '@/components/learn/Citation'
 import { Calculator, TrendingDown, Zap, Car, Home, Utensils, ShoppingBag, Plane, CheckCircle, AlertCircle, Leaf } from 'lucide-react'
+import { BackButton } from '@/components/navigation/BackButton'
 import Link from 'next/link'
 
 interface CarbonData {
@@ -226,6 +227,9 @@ export default function CarbonCalculatorPage() {
       {/* Hero */}
       <section className="py-20 bg-gradient-to-br from-[color-mix(in_srgb,var(--primary)_20%,var(--background))] via-[var(--background)] to-[color-mix(in_srgb,var(--accent)_20%,var(--background))]">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="mb-6">
+            <BackButton label="Back to Tools" fallbackUrl="/tools" />
+          </div>
           <div className="max-w-4xl mx-auto text-center space-y-6">
             <Calculator className="w-16 h-16 text-theme-primary mx-auto" />
             <h1 className="text-5xl md:text-6xl font-black text-[var(--foreground)]">
@@ -241,6 +245,9 @@ export default function CarbonCalculatorPage() {
       {step < 6 && (
         <section className="py-12 bg-[var(--muted)]">
           <div className="container mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="mb-6">
+            <BackButton label="Back to Tools" fallbackUrl="/tools" />
+          </div>
             <div className="max-w-3xl mx-auto">
               {/* Progress Bar */}
               <div className="mb-8">
@@ -660,6 +667,9 @@ export default function CarbonCalculatorPage() {
         <>
           <section className="py-12 bg-[var(--background)]">
             <div className="container mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="mb-6">
+            <BackButton label="Back to Tools" fallbackUrl="/tools" />
+          </div>
               <div className="max-w-5xl mx-auto">
                 <Card className="border-4 border-theme-primary mb-8">
                   <CardContent className="p-10">
@@ -803,6 +813,9 @@ export default function CarbonCalculatorPage() {
           {/* Data Sources */}
           <section className="py-12 bg-[var(--muted)]">
             <div className="container mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="mb-6">
+            <BackButton label="Back to Tools" fallbackUrl="/tools" />
+          </div>
               <div className="max-w-5xl mx-auto">
                 <Citation
                   statistic="Carbon footprint calculation methodology"

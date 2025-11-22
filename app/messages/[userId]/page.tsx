@@ -182,6 +182,9 @@ export default function ConversationPage({ params }: { params: { userId: string 
       {/* Header */}
       <section className="py-6 bg-gradient-to-br from-[color-mix(in_srgb,var(--secondary)_15%,var(--background))] via-[color-mix(in_srgb,var(--primary)_15%,var(--background))] to-[color-mix(in_srgb,var(--accent)_15%,var(--background))] border-b-4 border-[var(--border)]">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="mb-6">
+            <BackButton label="Back to Messages" fallbackUrl="/messages" />
+          </div>
           <div className="max-w-4xl mx-auto">
             <Link href="/messages">
               <Button variant="ghost" className="mb-4 font-bold">
@@ -304,6 +307,9 @@ export default function ConversationPage({ params }: { params: { userId: string 
       {/* Message Input */}
       <section className="py-6 border-t-4 border-[var(--border)] bg-[var(--card)]">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="mb-6">
+            <BackButton label="Back to Messages" fallbackUrl="/messages" />
+          </div>
           <div className="max-w-4xl mx-auto">
             <form onSubmit={handleSendMessage} className="flex gap-3">
               <input

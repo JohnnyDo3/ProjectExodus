@@ -2,6 +2,7 @@ import { notFound } from 'next/navigation'
 import { Button } from '@/components/ui/Button'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/Card'
 import { Clock, User, Calendar, MessageCircle, Tag } from 'lucide-react'
+import { BackButton } from '@/components/navigation/BackButton'
 import { formatDate } from '@/lib/utils/format'
 import Link from 'next/link'
 import { MarkdownContent } from '@/components/article/MarkdownContent'
@@ -42,6 +43,9 @@ export default async function ArticleDetailPage({
       {/* Hero Section */}
       <section className="py-24 bg-gradient-to-br from-ocean-50 via-moss-50 to-terra-50">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="mb-6">
+            <BackButton label="Back to Articles" fallbackUrl="/articles" />
+          </div>
           <div className="max-w-5xl mx-auto text-center space-y-8">
             {article.featured && (
               <div>
@@ -109,6 +113,9 @@ export default async function ArticleDetailPage({
       {/* Article Content */}
       <section className="py-20">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="mb-6">
+            <BackButton label="Back to Articles" fallbackUrl="/articles" />
+          </div>
           <div className="max-w-5xl mx-auto">
             <div className="grid md:grid-cols-3 gap-8">
               {/* Main Content */}
@@ -274,6 +281,9 @@ export default async function ArticleDetailPage({
       {/* Related Articles CTA */}
       <section className="py-32 bg-gradient-to-br from-moss-500 via-ocean-500 to-terra-500 text-white">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="mb-6">
+            <BackButton label="Back to Articles" fallbackUrl="/articles" />
+          </div>
           <div className="max-w-4xl mx-auto text-center space-y-8">
             <h2 className="text-6xl font-black">CONTINUE LEARNING</h2>
             <p className="text-2xl font-semibold">

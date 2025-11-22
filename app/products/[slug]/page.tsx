@@ -1,6 +1,7 @@
 import { notFound } from 'next/navigation'
 import { Button } from '@/components/ui/Button'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/Card'
+import { BackButton } from '@/components/navigation/BackButton'
 import { Leaf, ExternalLink, TrendingDown, Award, Star } from 'lucide-react'
 import Link from 'next/link'
 
@@ -44,6 +45,9 @@ export default async function ProductDetailPage({
       {/* Hero Section */}
       <section className="py-20 bg-gradient-to-br from-moss-50 via-ocean-50 to-sand-50">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="mb-6">
+            <BackButton label="Back to Products" fallbackUrl="/products" />
+          </div>
           <div className="max-w-7xl mx-auto">
             <div className="grid md:grid-cols-2 gap-12 items-start">
               {/* Product Image */}

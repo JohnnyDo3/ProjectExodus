@@ -1,5 +1,6 @@
 import { Card, CardContent } from '@/components/ui/Card'
 import { Citation } from '@/components/learn/Citation'
+import { BackButton } from '@/components/navigation/BackButton'
 import {
   Zap,
   Battery,
@@ -24,6 +25,9 @@ export default function EmergingTechPage() {
       {/* Hero */}
       <section className="py-32 bg-gradient-to-br from-[color-mix(in_srgb,var(--primary)_15%,var(--background))] via-[color-mix(in_srgb,var(--accent)_15%,var(--background))] to-[color-mix(in_srgb,var(--secondary)_15%,var(--background))] relative overflow-hidden">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="mb-6">
+            <BackButton label="Back to Learn" fallbackUrl="/learn" />
+          </div>
           <div className="max-w-5xl mx-auto text-center space-y-8">
             <div className="inline-block">
               <div className="w-24 h-24 mx-auto mb-6 rounded-full bg-gradient-to-br from-[var(--primary)] to-[var(--accent)] flex items-center justify-center shadow-theme-xl animate-pulse">

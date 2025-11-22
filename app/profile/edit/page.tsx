@@ -31,6 +31,9 @@ export default async function ProfileEditPage() {
   return (
     <div className="min-h-screen bg-[var(--muted)] py-16">
       <div className="container mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="mb-6">
+            <BackButton label="Back to Profile" fallbackUrl="/profile" />
+          </div>
         <div className="max-w-4xl mx-auto">
           <div className="mb-8">
             <h1 className="text-5xl font-black text-[var(--foreground)] mb-4">

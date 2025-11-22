@@ -1,6 +1,7 @@
 import { Card, CardContent } from '@/components/ui/Card'
 import { Button } from '@/components/ui/Button'
 import { Package, DollarSign, Image, AlertCircle, CheckCircle, Clock, Store } from 'lucide-react'
+import { BackButton } from '@/components/navigation/BackButton'
 import Link from 'next/link'
 import { auth } from '@/auth'
 import { redirect } from 'next/navigation'
@@ -41,6 +42,9 @@ export default async function MyProductsPage() {
       {/* Header */}
       <section className="py-8 bg-gradient-to-br from-[var(--accent)] via-[var(--primary)] to-[var(--secondary)] text-[var(--primary-foreground)]">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="mb-6">
+            <BackButton label="Back to Profile" fallbackUrl="/profile" />
+          </div>
           <div className="max-w-6xl mx-auto">
             <div className="flex flex-col md:flex-row items-center justify-between gap-6">
               <div>
@@ -70,6 +74,9 @@ export default async function MyProductsPage() {
       {/* Stats */}
       <section className="py-4 bg-[var(--background)] border-b border-[var(--border)]">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="mb-6">
+            <BackButton label="Back to Profile" fallbackUrl="/profile" />
+          </div>
           <div className="max-w-6xl mx-auto">
             <div className="grid grid-cols-3 gap-4">
               <div className="text-center">
@@ -92,6 +99,9 @@ export default async function MyProductsPage() {
       {/* Main Content */}
       <section className="py-8">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="mb-6">
+            <BackButton label="Back to Profile" fallbackUrl="/profile" />
+          </div>
           <div className="max-w-6xl mx-auto">
 
             {/* Info Card */}

@@ -6,6 +6,7 @@ import { redirect, useRouter } from 'next/navigation'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/Card'
 import { Button } from '@/components/ui/Button'
 import { Briefcase, Target, Users, FileText, ArrowLeft } from 'lucide-react'
+import { BackButton } from '@/components/navigation/BackButton'
 import Link from 'next/link'
 
 export default function NewProjectPage() {
@@ -90,6 +91,9 @@ export default function NewProjectPage() {
       {/* Header */}
       <section className="py-12 bg-gradient-to-br from-[color-mix(in_srgb,var(--secondary)_15%,var(--background))] via-[color-mix(in_srgb,var(--primary)_15%,var(--background))] to-[color-mix(in_srgb,var(--accent)_15%,var(--background))]">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="mb-6">
+            <BackButton label="Back to Projects" fallbackUrl="/community/projects" />
+          </div>
           <div className="max-w-4xl mx-auto">
             <Link href="/community/projects">
               <Button variant="ghost" className="mb-6 font-bold">
@@ -117,6 +121,9 @@ export default function NewProjectPage() {
       {/* Form */}
       <section className="py-16">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="mb-6">
+            <BackButton label="Back to Projects" fallbackUrl="/community/projects" />
+          </div>
           <div className="max-w-4xl mx-auto">
             <Card className="border-4 border-theme-primary shadow-xl">
               <CardHeader>

@@ -1,6 +1,7 @@
 import { Card, CardContent } from '@/components/ui/Card'
 import { Button } from '@/components/ui/Button'
 import { Citation } from '@/components/learn/Citation'
+import { BackButton } from '@/components/navigation/BackButton'
 import { Sprout, Leaf, Droplet, Bug, TrendingUp, Heart, Shield, Eye, Scale, Users, CheckCircle, AlertCircle } from 'lucide-react'
 import Link from 'next/link'
 
@@ -23,6 +24,9 @@ export default function RegenerativeAgriculturePage() {
       {/* Hero */}
       <section className="py-32 bg-gradient-to-br from-[color-mix(in_srgb,var(--primary)_20%,var(--background))] via-[var(--background)] to-[color-mix(in_srgb,var(--secondary)_20%,var(--background))] relative overflow-hidden">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="mb-6">
+            <BackButton label="Back to Learn" fallbackUrl="/learn" />
+          </div>
           <div className="max-w-5xl mx-auto text-center space-y-8">
             <div className="text-7xl mb-6">🌾</div>
             <h1 className="text-[var(--foreground)]" style={{
@@ -47,6 +51,9 @@ export default function RegenerativeAgriculturePage() {
       {/* The Commandments */}
       <section className="py-20 bg-[var(--background)]">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="mb-6">
+            <BackButton label="Back to Learn" fallbackUrl="/learn" />
+          </div>
           <div className="max-w-6xl mx-auto">
             <div className="text-center mb-12">
               <h2 className="text-5xl font-black text-[var(--foreground)] mb-4">THE COMMANDMENTS OF SUSTAINABLE AGRICULTURE</h2>
@@ -83,6 +90,9 @@ export default function RegenerativeAgriculturePage() {
       {/* Crisis Overview */}
       <section className="py-20 bg-[var(--muted)]">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="mb-6">
+            <BackButton label="Back to Learn" fallbackUrl="/learn" />
+          </div>
           <div className="max-w-6xl mx-auto">
             <div className="text-center mb-12">
               <h2 className="text-5xl font-black text-[var(--foreground)] mb-4">THE INDUSTRIAL AGRICULTURE CRISIS</h2>
@@ -210,6 +220,9 @@ export default function RegenerativeAgriculturePage() {
       {/* Core Principles */}
       <section className="py-20 bg-[var(--background)]">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="mb-6">
+            <BackButton label="Back to Learn" fallbackUrl="/learn" />
+          </div>
           <div className="max-w-6xl mx-auto">
             <h2 className="text-5xl font-black text-[var(--foreground)] mb-12 text-center">REGENERATIVE PRINCIPLES</h2>
 
@@ -527,6 +540,9 @@ export default function RegenerativeAgriculturePage() {
       {/* Economic Benefits */}
       <section className="py-20 bg-[var(--muted)]">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="mb-6">
+            <BackButton label="Back to Learn" fallbackUrl="/learn" />
+          </div>
           <div className="max-w-6xl mx-auto">
             <h2 className="text-5xl font-black text-[var(--foreground)] mb-12 text-center">ECONOMIC VIABILITY</h2>
 
@@ -625,6 +641,9 @@ export default function RegenerativeAgriculturePage() {
       {/* CTA */}
       <section className="py-32 bg-gradient-to-br from-[var(--primary)] via-[var(--secondary)] to-[var(--accent)] text-[var(--primary-foreground)]">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="mb-6">
+            <BackButton label="Back to Learn" fallbackUrl="/learn" />
+          </div>
           <div className="max-w-4xl mx-auto text-center space-y-8">
             <h2 className="text-6xl font-black">REGENERATE THE EARTH</h2>
             <p className="text-2xl font-semibold">

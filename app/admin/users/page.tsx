@@ -6,6 +6,7 @@ import { Button } from '@/components/ui/Button'
 import { Input } from '@/components/ui/Input'
 import { Select } from '@/components/ui/Select'
 import { ArrowLeft, Plus, Edit2, Trash2, Users, Mail, Shield, UserCheck, Ban } from 'lucide-react'
+import { BackButton } from '@/components/navigation/BackButton'
 import Link from 'next/link'
 
 export default function UsersManagementPage() {

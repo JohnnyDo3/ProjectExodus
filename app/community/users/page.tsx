@@ -1,6 +1,7 @@
 import { Card, CardContent } from '@/components/ui/Card'
 import { Button } from '@/components/ui/Button'
 import { Users, Search, UserPlus, MapPin, Briefcase } from 'lucide-react'
+import { BackButton } from '@/components/navigation/BackButton'
 import Link from 'next/link'
 import prisma from '@/lib/db/prisma'
 
@@ -43,6 +44,9 @@ export default async function MemberDirectoryPage() {
       {/* Hero */}
       <section className="py-20 bg-gradient-to-br from-[color-mix(in_srgb,var(--accent)_15%,var(--background))] via-[color-mix(in_srgb,var(--primary)_15%,var(--background))] to-[color-mix(in_srgb,var(--secondary)_15%,var(--background))]">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="mb-6">
+            <BackButton label="Back to Community" fallbackUrl="/community" />
+          </div>
           <div className="max-w-5xl mx-auto text-center space-y-6">
             <h1 className="text-6xl font-black text-[var(--foreground)]">
               MEMBER DIRECTORY
@@ -57,6 +61,9 @@ export default async function MemberDirectoryPage() {
       {/* Search Bar */}
       <section className="py-12 bg-[var(--background)] border-b-4 border-theme-muted">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="mb-6">
+            <BackButton label="Back to Community" fallbackUrl="/community" />
+          </div>
           <div className="max-w-3xl mx-auto">
             <div className="relative">
               <Search className="absolute left-6 top-1/2 transform -translate-y-1/2 w-6 h-6 text-theme-muted" />
@@ -73,6 +80,9 @@ export default async function MemberDirectoryPage() {
       {/* Members Grid */}
       <section className="py-16 bg-[var(--muted)]">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="mb-6">
+            <BackButton label="Back to Community" fallbackUrl="/community" />
+          </div>
           <div className="max-w-6xl mx-auto">
             <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
               {users.map((user) => (

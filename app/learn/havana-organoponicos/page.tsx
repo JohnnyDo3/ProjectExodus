@@ -1,5 +1,6 @@
 import { Card, CardContent } from '@/components/ui/Card'
 import { Citation } from '@/components/learn/Citation'
+import { BackButton } from '@/components/navigation/BackButton'
 import {
   Sprout,
   Users,
@@ -21,6 +22,9 @@ export default function HavanaOrganoponicosPage() {
       {/* Hero */}
       <section className="py-32 bg-gradient-to-br from-[color-mix(in_srgb,var(--primary)_15%,var(--background))] via-[color-mix(in_srgb,var(--accent)_15%,var(--background))] to-[color-mix(in_srgb,var(--secondary)_15%,var(--background))] relative overflow-hidden">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="mb-6">
+            <BackButton label="Back to Learn" fallbackUrl="/learn" />
+          </div>
           <div className="max-w-5xl mx-auto text-center space-y-8">
             <div className="inline-block">
               <div className="w-24 h-24 mx-auto mb-6 rounded-full bg-gradient-to-br from-[var(--primary)] to-[var(--accent)] flex items-center justify-center shadow-theme-xl">
@@ -67,6 +71,9 @@ export default function HavanaOrganoponicosPage() {
       {/* Executive Summary */}
       <section className="py-24 bg-[var(--background)]">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="mb-6">
+            <BackButton label="Back to Learn" fallbackUrl="/learn" />
+          </div>
           <div className="max-w-4xl mx-auto">
             <Card className="border-4 border-theme-primary">
               <CardContent className="p-12">
@@ -88,6 +95,9 @@ export default function HavanaOrganoponicosPage() {
       {/* Historical Context */}
       <section className="py-24 bg-[var(--muted)]">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="mb-6">
+            <BackButton label="Back to Learn" fallbackUrl="/learn" />
+          </div>
           <div className="max-w-6xl mx-auto">
             <div className="text-center mb-12">
               <h2 className="text-5xl font-black text-[var(--foreground)] mb-4">THE SPECIAL PERIOD CRISIS</h2>
@@ -166,6 +176,9 @@ export default function HavanaOrganoponicosPage() {
       {/* Key Innovations */}
       <section className="py-24 bg-[var(--background)]">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="mb-6">
+            <BackButton label="Back to Learn" fallbackUrl="/learn" />
+          </div>
           <div className="max-w-6xl mx-auto">
             <div className="text-center mb-12">
               <h2 className="text-5xl font-black text-[var(--foreground)] mb-4">KEY INNOVATIONS</h2>
@@ -252,6 +265,9 @@ export default function HavanaOrganoponicosPage() {
       {/* Results */}
       <section className="py-24 bg-[var(--muted)]">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="mb-6">
+            <BackButton label="Back to Learn" fallbackUrl="/learn" />
+          </div>
           <div className="max-w-6xl mx-auto">
             <div className="text-center mb-12">
               <h2 className="text-5xl font-black text-[var(--foreground)] mb-4">REMARKABLE RESULTS</h2>
@@ -304,6 +320,9 @@ export default function HavanaOrganoponicosPage() {
       {/* Governance & Financing */}
       <section className="py-24 bg-[var(--background)]">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="mb-6">
+            <BackButton label="Back to Learn" fallbackUrl="/learn" />
+          </div>
           <div className="max-w-6xl mx-auto">
             <div className="text-center mb-12">
               <h2 className="text-5xl font-black text-[var(--foreground)] mb-4">GOVERNANCE & FINANCING</h2>
@@ -358,6 +377,9 @@ export default function HavanaOrganoponicosPage() {
       {/* Global Replicability */}
       <section className="py-24 bg-[var(--muted)]">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="mb-6">
+            <BackButton label="Back to Learn" fallbackUrl="/learn" />
+          </div>
           <div className="max-w-6xl mx-auto">
             <div className="text-center mb-12">
               <h2 className="text-5xl font-black text-[var(--foreground)] mb-4">GLOBAL REPLICABILITY</h2>
@@ -461,6 +483,9 @@ export default function HavanaOrganoponicosPage() {
       {/* Resilience Assessment */}
       <section className="py-24 bg-[var(--background)]">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="mb-6">
+            <BackButton label="Back to Learn" fallbackUrl="/learn" />
+          </div>
           <div className="max-w-6xl mx-auto">
             <div className="text-center mb-12">
               <h2 className="text-5xl font-black text-[var(--foreground)] mb-4">RESILIENCE ASSESSMENT</h2>
@@ -545,6 +570,9 @@ export default function HavanaOrganoponicosPage() {
       {/* Conclusion */}
       <section className="py-24 bg-[var(--muted)]">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="mb-6">
+            <BackButton label="Back to Learn" fallbackUrl="/learn" />
+          </div>
           <div className="max-w-4xl mx-auto">
             <Card className="border-4 border-theme-primary">
               <CardContent className="p-12">
@@ -572,6 +600,9 @@ export default function HavanaOrganoponicosPage() {
       {/* References */}
       <section className="py-24 bg-[var(--background)]">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="mb-6">
+            <BackButton label="Back to Learn" fallbackUrl="/learn" />
+          </div>
           <div className="max-w-4xl mx-auto">
             <h2 className="text-4xl font-black text-[var(--foreground)] mb-8 text-center">REFERENCES</h2>
             <Citation
@@ -620,6 +651,9 @@ export default function HavanaOrganoponicosPage() {
       {/* CTA */}
       <section className="py-32 bg-gradient-to-br from-[var(--primary)] via-[var(--accent)] to-[var(--secondary)] text-[var(--primary-foreground)]">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="mb-6">
+            <BackButton label="Back to Learn" fallbackUrl="/learn" />
+          </div>
           <div className="max-w-4xl mx-auto text-center space-y-8">
             <h2 className="text-6xl font-black">BRING ORGANOPÓNICOS TO YOUR CITY</h2>
             <p className="text-2xl font-semibold">

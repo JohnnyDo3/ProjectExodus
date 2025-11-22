@@ -1,5 +1,6 @@
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/Card'
 import { Button } from '@/components/ui/Button'
+import { BackButton } from '@/components/navigation/BackButton'
 import { Briefcase, User, Users, MapPin, Target, CheckCircle } from 'lucide-react'
 import Link from 'next/link'
 import { JoinProjectButton } from '@/components/projects/JoinProjectButton'
@@ -37,6 +38,9 @@ export default async function ProjectsPage() {
       {/* Hero */}
       <section className="py-20 bg-gradient-to-br from-[color-mix(in_srgb,var(--secondary)_15%,var(--background))] via-[color-mix(in_srgb,var(--primary)_15%,var(--background))] to-[color-mix(in_srgb,var(--accent)_15%,var(--background))]">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="mb-6">
+            <BackButton label="Back to Community" fallbackUrl="/community" />
+          </div>
           <div className="max-w-5xl mx-auto text-center space-y-6">
             <h1 className="text-6xl font-black text-[var(--foreground)]">
               COMMUNITY PROJECTS
