@@ -1,3 +1,4 @@
+import { BackButton } from '@/components/navigation/BackButton'
 import { redirect } from 'next/navigation'
 import { auth } from '@/auth'
 import { ProfileEditForm } from '@/components/profile/ProfileEditForm'
