@@ -2,6 +2,7 @@ import { notFound } from 'next/navigation'
 import { Card, CardContent } from '@/components/ui/Card'
 import { Button } from '@/components/ui/Button'
 import { User, ThumbsUp, MessageSquare, Pin, Clock } from 'lucide-react'
+import { BackButton } from '@/components/navigation/BackButton'
 import Link from 'next/link'
 import { formatDate } from '@/lib/utils/format'
 
@@ -41,6 +42,9 @@ export default async function PostPage({
       {/* Header */}
       <section className="py-12 bg-[var(--background)] border-b-4 border-theme-muted">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="mb-6">
+            <BackButton label="Back to Forum" fallbackUrl="/community/forum" />
+          </div>
           <div className="max-w-4xl mx-auto">
             <Link href={`/community/forum/${post.category.slug}`} className="inline-block mb-6">
               <Button variant="outline" size="sm" className="font-bold">
