@@ -80,12 +80,24 @@ export function Footer() {
   }
 
   const socialLinks = [
-    { name: 'Facebook', icon: Facebook, href: 'https://facebook.com/projectexodus' },
-    { name: 'Twitter', icon: Twitter, href: 'https://twitter.com/projectexodus' },
-    { name: 'Instagram', icon: Instagram, href: 'https://instagram.com/projectexodus' },
-    { name: 'LinkedIn', icon: Linkedin, href: 'https://linkedin.com/company/projectexodus' },
-    { name: 'YouTube', icon: Youtube, href: 'https://youtube.com/@projectexodus' },
+    { name: 'Facebook', href: 'https://facebook.com/projectexodus' },
+    { name: 'Twitter', href: 'https://twitter.com/projectexodus' },
+    { name: 'Instagram', href: 'https://instagram.com/projectexodus' },
+    { name: 'LinkedIn', href: 'https://linkedin.com/company/projectexodus' },
+    { name: 'YouTube', href: 'https://youtube.com/@projectexodus' },
   ]
+
+  const getSocialIcon = (name: string) => {
+    const iconProps = { className: "w-6 h-6 text-theme-accent group-hover:text-[var(--primary-foreground)] transition-colors" }
+    switch (name) {
+      case 'Facebook': return <Facebook {...iconProps} />
+      case 'Twitter': return <Twitter {...iconProps} />
+      case 'Instagram': return <Instagram {...iconProps} />
+      case 'LinkedIn': return <Linkedin {...iconProps} />
+      case 'YouTube': return <Youtube {...iconProps} />
+      default: return null
+    }
+  }
 
   const legalLinks = [
     { name: 'Privacy Policy', href: '/privacy' },
@@ -160,7 +172,7 @@ export function Footer() {
                     className="w-14 h-14 rounded-full bg-[var(--muted)] border-2 border-[var(--border)] hover:border-theme-primary hover:bg-theme-primary flex items-center justify-center transition-all duration-300 group"
                     aria-label={social.name}
                   >
-                    <social.icon className="w-6 h-6 text-[var(--foreground)] group-hover:text-[var(--primary-foreground)] transition-colors" />
+                    {getSocialIcon(social.name)}
                   </a>
                 ))}
               </div>
