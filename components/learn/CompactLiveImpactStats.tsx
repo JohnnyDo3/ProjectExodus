@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from 'react'
 import { Card, CardContent } from '@/components/ui/Card'
-import { Flame, Trash2, Droplets, Trees, Factory, Zap } from 'lucide-react'
+import { Flame, Trash2, Droplets, Trees, Factory, Zap, Loader2, RefreshCw } from 'lucide-react'
 
 interface StatConfig {
   label: string
@@ -11,68 +11,79 @@ interface StatConfig {
   perSecond: number
   unit: string
   decimals: number
+  source?: string
 }
 
-const STATS_CONFIG: StatConfig[] = [
-  {
-    label: 'CO₂ Emissions',
-    icon: Flame,
-    color: 'orange',
-    perSecond: 1100,
-    unit: 'tons',
-    decimals: 0
-  },
-  {
-    label: 'Global Waste',
-    icon: Trash2,
-    color: 'red',
-    perSecond: 80,
-    unit: 'kg',
-    decimals: 0
-  },
-  {
-    label: 'Plastic Waste',
-    icon: Factory,
-    color: 'purple',
-    perSecond: 10,
-    unit: 'kg',
-    decimals: 0
-  },
-  {
-    label: 'Deforestation',
-    icon: Trees,
-    color: 'green',
-    perSecond: 0.5,
-    unit: 'hectares',
-    decimals: 2
-  },
-  {
-    label: 'Water Used',
-    icon: Droplets,
-    color: 'blue',
-    perSecond: 127000,
-    unit: 'm³',
-    decimals: 0
-  },
-  {
-    label: 'Energy Used',
-    icon: Zap,
-    color: 'yellow',
-    perSecond: 1700,
-    unit: 'MWh',
-    decimals: 0
-  }
-]
+const ICON_MAP: Record<string, any> = {
+  'CO₂ Emissions': Flame,
+  'Global Waste': Trash2,
+  'Plastic Waste': Factory,
+  'Deforestation': Trees,
+  'Water Used': Droplets,
+  'Energy Used': Zap,
+}
+
+const COLOR_MAP: Record<string, string> = {
+  'CO₂ Emissions': 'orange',
+  'Global Waste': 'red',
+  'Plastic Waste': 'purple',
+  'Deforestation': 'green',
+  'Water Used': 'blue',
+  'Energy Used': 'yellow',
+}
+
+const DECIMALS_MAP: Record<string, number> = {
+  'CO₂ Emissions': 0,
+  'Global Waste': 0,
+  'Plastic Waste': 0,
+  'Deforestation': 3,
+  'Water Used': 0,
+  'Energy Used': 0,
+}
 
 export function CompactLiveImpactStats() {
   const [mounted, setMounted] = useState(false)
+  const [statsConfig, setStatsConfig] = useState<StatConfig[]>([])
+  const [loading, setLoading] = useState(true)
+  const [error, setError] = useState<string | null>(null)
   const [timeInterval, setTimeInterval] = useState<'second' | 'minute' | 'hour'>('second')
   const [startTime, setStartTime] = useState(Date.now())
 
   useEffect(() => {
     setMounted(true)
     setStartTime(Date.now())
+    fetchEnvironmentalData()
   }, [])
+
+  const fetchEnvironmentalData = async () => {
+    try {
+      setLoading(true)
+      const response = await fetch('/api/environmental-stats')
+      const data = await response.json()
+
+      if (!data.success) {
+        throw new Error('Failed to fetch environmental data')
+      }
+
+      const transformedStats: StatConfig[] = data.stats.map((stat: any) => ({
+        label: stat.label,
+        icon: ICON_MAP[stat.label],
+        color: COLOR_MAP[stat.label],
+        perSecond: stat.perSecond,
+        unit: stat.unit,
+        decimals: DECIMALS_MAP[stat.label] ?? 0,
+        source: stat.source,
+      }))
+
+      setStatsConfig(transformedStats)
+      setError(null)
+    } catch (err) {
+      console.error('Error fetching environmental stats:', err)
+      setError('Failed to load real-time data')
+    } finally {
+      setLoading(false)
+    }
+  }
 
   useEffect(() => {
     const interval = setInterval(() => {
@@ -141,9 +152,36 @@ export function CompactLiveImpactStats() {
     return colors[color] || 'border-theme-primary'
   }
 
+  if (loading) {
+    return (
+      <div className="flex items-center justify-center py-20">
+        <div className="text-center">
+          <Loader2 className="w-12 h-12 animate-spin text-theme-primary mx-auto mb-4" />
+          <p className="text-theme-muted font-bold">Loading real-time environmental data...</p>
+        </div>
+      </div>
+    )
+  }
+
+  if (error) {
+    return (
+      <div className="text-center py-12">
+        <div className="max-w-md mx-auto p-6 bg-red-500/10 border-2 border-red-500/40 rounded-xl">
+          <p className="text-red-500 font-bold mb-4">{error}</p>
+          <button
+            onClick={fetchEnvironmentalData}
+            className="inline-flex items-center gap-2 px-4 py-2 bg-red-500 text-white rounded-lg font-bold hover:bg-red-600 transition-colors"
+          >
+            <RefreshCw className="w-4 h-4" />
+            Retry
+          </button>
+        </div>
+      </div>
+    )
+  }
+
   return (
     <div className="space-y-4">
-      {/* Time Interval Selector - Compact */}
       <div className="flex justify-center">
         <div className="inline-flex gap-1 p-1 bg-[var(--card)] rounded-xl border-2 border-red-500/40">
           {(['second', 'minute', 'hour'] as const).map((interval) => (
@@ -165,9 +203,8 @@ export function CompactLiveImpactStats() {
         </div>
       </div>
 
-      {/* Stats Grid - Compact 3x2 */}
       <div className="grid grid-cols-2 lg:grid-cols-3 gap-3 max-w-5xl mx-auto">
-        {STATS_CONFIG.map((stat, index) => {
+        {statsConfig.map((stat, index) => {
           const Icon = stat.icon
           const value = getCurrentValue(stat)
 
@@ -192,17 +229,28 @@ export function CompactLiveImpactStats() {
                 <div className="text-[10px] font-bold text-theme-muted uppercase">
                   {stat.unit}/{timeInterval}
                 </div>
+                {stat.source && (
+                  <div className="text-[8px] font-semibold text-theme-muted/60 mt-1 truncate" title={stat.source}>
+                    {stat.source}
+                  </div>
+                )}
               </CardContent>
             </Card>
           )
         })}
       </div>
 
-      {/* Compact CTA */}
       <div className="text-center p-4 bg-gradient-to-br from-red-500/10 to-orange-500/10 rounded-xl border-2 border-red-500/40 max-w-3xl mx-auto">
         <p className="text-sm font-bold text-theme-muted">
-          <span className="font-black text-red-500">LIVE DATA</span> - These numbers update in real-time. Learn how to make a difference below.
+          <span className="font-black text-red-500">REAL DATA</span> from Global Carbon Project, World Bank, FAO, IEA, and OECD. Updated hourly.
         </p>
+        <button
+          onClick={fetchEnvironmentalData}
+          className="mt-2 inline-flex items-center gap-2 text-xs font-bold text-theme-primary hover:text-[var(--primary)] transition-colors"
+        >
+          <RefreshCw className="w-3 h-3" />
+          Refresh Data
+        </button>
       </div>
     </div>
   )

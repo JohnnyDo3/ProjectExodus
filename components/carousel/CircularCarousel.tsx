@@ -81,10 +81,10 @@ export function CircularCarousel({ items }: CircularCarouselProps) {
     const translateX = Math.sin(angleRad) * (600 * phi / 2)
     const translateY = Math.cos(angleRad) * 25 - 25 // Gentle vertical curve
 
-    // Opacity and scale based on position - smoother falloff
+    // Opacity and scale based on position - better visibility
     const distance = Math.abs(position)
-    const opacity = Math.max(0.25, 1 - distance * 0.25)
-    const scale = Math.max(0.65, 1 - distance * 0.12)
+    const opacity = Math.max(0.65, 1 - distance * 0.18)
+    const scale = Math.max(0.7, 1 - distance * 0.1)
     const zIndex = Math.floor(100 - Math.abs(position) * 10)
 
     return {
@@ -135,12 +135,13 @@ export function CircularCarousel({ items }: CircularCarouselProps) {
               >
                 <Card
                   className={`
-                    border-4 bg-[var(--card)]/95 shadow-2xl cursor-pointer
+                    border-4 bg-[var(--card)]/98 shadow-2xl cursor-pointer
                     ${isCenter ? 'border-[var(--primary)]' : 'border-[var(--background)]'}
                   `}
                   style={{
                     width: '500px',
                     maxWidth: '90vw',
+                    filter: isCenter ? 'none' : 'blur(0.5px)',
                   }}
                   onClick={() => setCurrentIndex(index)}
                 >
