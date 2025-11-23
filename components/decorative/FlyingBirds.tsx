@@ -50,108 +50,41 @@ export function FlyingBirds() {
               '--total-cycle': `${bird.flapCycleDuration + bird.glideDuration}s`,
             }}
           >
-            {/* Simple, clean hawk/eagle silhouette */}
+            {/* Simple classic bird silhouette - W/M shape */}
             <svg
-              width={60 * bird.size}
-              height={35 * bird.size}
-              viewBox="0 0 60 35"
+              width={50 * bird.size}
+              height={20 * bird.size}
+              viewBox="0 0 50 20"
               fill="none"
               xmlns="http://www.w3.org/2000/svg"
-              className="bird-svg text-[var(--foreground)]"
+              className="bird-svg"
             >
-              {/* Body - simple streamlined shape */}
-              <ellipse
-                cx="28"
-                cy="17"
-                rx="4"
-                ry="2.5"
-                fill="currentColor"
-                opacity="0.95"
-              />
-
-              {/* Head - front of bird */}
-              <circle
-                cx="24"
-                cy="16"
-                r="1.8"
-                fill="currentColor"
-                opacity="0.95"
-              />
-
-              {/* Beak pointing forward */}
+              {/* Classic soaring bird shape - single path */}
               <path
-                d="M 22.5,16 L 20,16"
+                className="bird-wings"
+                d="M 0,12 Q 8,8 12,10 Q 16,12 20,10 L 25,10 L 30,10 Q 34,12 38,10 Q 42,8 50,12"
                 stroke="currentColor"
-                strokeWidth="0.8"
+                strokeWidth="2"
+                fill="none"
+                strokeLinecap="round"
+                strokeLinejoin="round"
                 opacity="0.9"
               />
-
-              {/* LEFT WING - Classic bird wing shape */}
-              <g className="wing-left">
-                <path
-                  d="M 26,17 Q 20,12 14,13 Q 10,14 6,15 Q 4,15.5 2,16 Q 5,17 10,17 Q 18,17.5 26,18"
-                  fill="currentColor"
-                  opacity="0.88"
-                />
-                {/* Wing tip feathers */}
-                <path
-                  d="M 6,15 Q 3,14 1,14.5 L 0,15.5 Q 2,15.5 4,16"
-                  fill="currentColor"
-                  opacity="0.75"
-                />
-              </g>
-
-              {/* RIGHT WING - Classic bird wing shape */}
-              <g className="wing-right">
-                <path
-                  d="M 30,17 Q 36,12 42,13 Q 46,14 50,15 Q 52,15.5 54,16 Q 51,17 46,17 Q 38,17.5 30,18"
-                  fill="currentColor"
-                  opacity="0.88"
-                />
-                {/* Wing tip feathers */}
-                <path
-                  d="M 50,15 Q 53,14 55,14.5 L 56,15.5 Q 54,15.5 52,16"
-                  fill="currentColor"
-                  opacity="0.75"
-                />
-              </g>
-
-              {/* TAIL - Pointing BACKWARD (to the right) */}
-              <g className="tail-group">
-                {/* Fan-shaped tail spreading backward */}
-                <path
-                  d="M 32,16 Q 36,14 40,15"
-                  stroke="currentColor"
-                  strokeWidth="1.2"
-                  fill="none"
-                  opacity="0.85"
-                />
-                <path
-                  d="M 32,17 Q 37,17 42,17"
-                  stroke="currentColor"
-                  strokeWidth="1.5"
-                  fill="none"
-                  opacity="0.9"
-                />
-                <path
-                  d="M 32,18 Q 36,20 40,19"
-                  stroke="currentColor"
-                  strokeWidth="1.2"
-                  fill="none"
-                  opacity="0.85"
-                />
-              </g>
+              {/* Small body in center */}
+              <ellipse
+                cx="25"
+                cy="10"
+                rx="2"
+                ry="1.5"
+                fill="currentColor"
+                opacity="0.95"
+              />
             </svg>
           </div>
         ))}
       </div>
 
       <style jsx global>{`
-        /* Make sure SVG transforms work */
-        .bird-svg * {
-          transform-box: fill-box;
-        }
-
         .bird-container {
           animation: fly var(--bird-speed) cubic-bezier(0.35, 0, 0.65, 1) var(--bird-delay) infinite;
           animation-fill-mode: both;
@@ -160,7 +93,7 @@ export function FlyingBirds() {
 
         @keyframes fly {
           0% {
-            left: -120px;
+            left: -100px;
             transform: translateY(0px) rotate(0deg) scale(var(--bird-size));
           }
           /* Flapping upward */
@@ -190,77 +123,44 @@ export function FlyingBirds() {
             transform: translateY(calc(var(--bird-amplitude) * 0.2)) rotate(2deg) scale(var(--bird-size));
           }
           100% {
-            left: calc(100% + 120px);
+            left: calc(100% + 100px);
             transform: translateY(0px) rotate(0deg) scale(var(--bird-size));
           }
         }
 
-        /* Tail subtle spread */}
-        .tail-group {
-          animation: tail-spread 1.8s ease-in-out infinite;
-          transform-origin: 32px 17px;
+        /* Wing flapping - simple scale animation */
+        .bird-wings {
+          animation: wing-beat var(--total-cycle) ease-in-out infinite;
+          transform-origin: 25px 10px;
+          transform-box: fill-box;
         }
 
-        @keyframes tail-spread {
-          0%, 100% {
-            transform: scaleX(1);
-          }
-          50% {
-            transform: scaleX(1.15);
-          }
-        }
-
-        /* Wing flapping - using rotation for visible movement */
-        .wing-left {
-          animation: wing-flap-soar var(--total-cycle) ease-in-out infinite;
-          transform-origin: 26px 17px;
-        }
-
-        .wing-right {
-          animation: wing-flap-soar var(--total-cycle) ease-in-out infinite;
-          transform-origin: 30px 17px;
-          animation-delay: 0.08s;
-        }
-
-        @keyframes wing-flap-soar {
-          /* DRAMATIC flapping - wings rotate UP then DOWN */
+        @keyframes wing-beat {
+          /* Flapping phase - wings compress vertically */
           0% {
-            transform: rotate(0deg);
+            transform: scaleY(1);
           }
           6% {
-            transform: rotate(-45deg);
+            transform: scaleY(0.5);
           }
           12% {
-            transform: rotate(5deg);
+            transform: scaleY(1);
           }
           18% {
-            transform: rotate(-45deg);
+            transform: scaleY(0.5);
           }
           24% {
-            transform: rotate(5deg);
+            transform: scaleY(1);
           }
           30% {
-            transform: rotate(-45deg);
+            transform: scaleY(0.5);
           }
           36% {
-            transform: rotate(0deg);
+            transform: scaleY(1);
           }
-
-          /* Extended soaring - wings mostly level */
-          45% {
-            transform: rotate(-8deg);
-          }
-          60% {
-            transform: rotate(-12deg);
-          }
-          75% {
-            transform: rotate(-10deg);
-          }
-          90% {
-            transform: rotate(-6deg);
-          }
-          100% {
-            transform: rotate(0deg);
+          /* Gliding - minimal movement */
+          45%, 100% {
+            transform: scaleY(0.95);
           }
         }
       `}</style>
