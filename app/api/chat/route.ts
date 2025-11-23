@@ -108,9 +108,9 @@ export async function POST(request: NextRequest) {
       }]
     }))
 
-    // Use Google Gemini API (using v1 endpoint, not v1beta)
+    // Use Google Gemini API (Gemini 2.0 Flash Experimental - free until May 2025)
     const geminiResponse = await fetch(
-      `https://generativelanguage.googleapis.com/v1/models/gemini-1.5-flash:generateContent?key=${googleApiKey}`,
+      `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash-exp:generateContent?key=${googleApiKey}`,
       {
         method: 'POST',
         headers: {
