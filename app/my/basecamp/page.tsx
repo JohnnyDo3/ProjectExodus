@@ -51,6 +51,14 @@ export default function MyBasecampPage() {
   const [learningProgress, setLearningProgress] = useState<any>(null)
   const [isLoadingLearning, setIsLoadingLearning] = useState(true)
 
+  // Network state
+  const [networkSuggestions, setNetworkSuggestions] = useState<any[]>([])
+  const [networkStats, setNetworkStats] = useState({
+    connectionsCount: 0,
+    pendingRequests: 0,
+  })
+  const [isLoadingNetwork, setIsLoadingNetwork] = useState(true)
+
   useEffect(() => {
     if (session?.user?.id) {
       fetchUserProjects()
@@ -60,6 +68,7 @@ export default function MyBasecampPage() {
       fetchUserForumPosts()
       fetchUserDiscussions()
       fetchLearningProgress()
+      fetchNetworkHighlights()
     }
   }, [session?.user?.id])
 
@@ -174,6 +183,31 @@ export default function MyBasecampPage() {
       setLearningProgress(null)
     } finally {
       setIsLoadingLearning(false)
+    }
+  }
+
+  const fetchNetworkHighlights = async () => {
+    try {
+      // Fetch connection suggestions
+      const suggestionsRes = await fetch('/api/network/suggestions?limit=3')
+      const suggestionsData = await suggestionsRes.json()
+      if (suggestionsData.success) {
+        setNetworkSuggestions(suggestionsData.data.suggestions || [])
+      }
+
+      // Fetch pending connection requests count
+      const requestsRes = await fetch('/api/connections/requests')
+      const requestsData = await requestsRes.json()
+      if (requestsData.success) {
+        setNetworkStats({
+          connectionsCount: userProfile?._count?.connections || 0,
+          pendingRequests: requestsData.data.requests?.length || 0,
+        })
+      }
+    } catch (error) {
+      console.error('Error fetching network highlights:', error)
+    } finally {
+      setIsLoadingNetwork(false)
     }
   }
 
@@ -412,6 +446,124 @@ export default function MyBasecampPage() {
                   <p className="text-base font-semibold text-theme-muted">
                     This is your command center for all sustainability activities. Track your projects, connect with your community, and measure your impact.
                   </p>
+                </CardContent>
+              </Card>
+
+              {/* Network Highlights */}
+              <Card className="border-4 border-theme-primary">
+                <CardHeader>
+                  <div className="flex items-center justify-between">
+                    <CardTitle className="text-2xl font-black flex items-center gap-2">
+                      <Users className="w-6 h-6" />
+                      NETWORK HIGHLIGHTS
+                    </CardTitle>
+                    <Link href="/network">
+                      <Button variant="outline" size="sm" className="font-bold">
+                        VIEW FULL NETWORK
+                      </Button>
+                    </Link>
+                  </div>
+                </CardHeader>
+                <CardContent>
+                  {/* Network Stats */}
+                  <div className="grid grid-cols-2 gap-4 mb-6">
+                    <div className="p-4 rounded-lg bg-gradient-to-br from-[color-mix(in_srgb,var(--primary)_10%,var(--background))] to-[var(--background)] border-2 border-theme-primary">
+                      <div className="flex items-center gap-3">
+                        <Users className="w-8 h-8 text-theme-primary" />
+                        <div>
+                          <p className="text-2xl font-black text-[var(--foreground)]">
+                            {userProfile?._count?.followers || 0}
+                          </p>
+                          <p className="text-xs font-bold text-theme-muted uppercase">Connections</p>
+                        </div>
+                      </div>
+                    </div>
+                    {networkStats.pendingRequests > 0 && (
+                      <div className="p-4 rounded-lg bg-gradient-to-br from-[color-mix(in_srgb,var(--accent)_10%,var(--background))] to-[var(--background)] border-2 border-theme-accent">
+                        <div className="flex items-center gap-3">
+                          <MessageCircle className="w-8 h-8 text-theme-accent" />
+                          <div>
+                            <p className="text-2xl font-black text-[var(--foreground)]">
+                              {networkStats.pendingRequests}
+                            </p>
+                            <p className="text-xs font-bold text-theme-muted uppercase">Pending Requests</p>
+                          </div>
+                        </div>
+                      </div>
+                    )}
+                  </div>
+
+                  {/* Connection Suggestions */}
+                  {!isLoadingNetwork && networkSuggestions.length > 0 && (
+                    <div>
+                      <h4 className="text-base font-black text-[var(--foreground)] mb-3 flex items-center gap-2">
+                        <Sparkles className="w-4 h-4 text-theme-accent" />
+                        SUGGESTED CONNECTIONS
+                      </h4>
+                      <div className="space-y-3">
+                        {networkSuggestions.slice(0, 3).map((suggestion: any) => (
+                          <div
+                            key={suggestion.id}
+                            className="p-3 rounded-lg bg-[var(--muted)] border-2 border-[var(--border)] flex items-center gap-3"
+                          >
+                            <div className="w-10 h-10 rounded-full bg-gradient-to-br from-[var(--primary)] to-[var(--accent)] flex items-center justify-center flex-shrink-0">
+                              {suggestion.image ? (
+                                <img
+                                  src={suggestion.image}
+                                  alt={suggestion.name}
+                                  className="w-full h-full rounded-full object-cover"
+                                />
+                              ) : (
+                                <User className="w-5 h-5 text-[var(--primary-foreground)]" />
+                              )}
+                            </div>
+                            <div className="flex-1 min-w-0">
+                              <Link href={`/profile/${suggestion.id}`}>
+                                <p className="font-black text-sm text-[var(--foreground)] hover:text-theme-primary transition-colors truncate">
+                                  {suggestion.name}
+                                </p>
+                              </Link>
+                              {suggestion.headline && (
+                                <p className="text-xs font-medium text-theme-muted truncate">
+                                  {suggestion.headline}
+                                </p>
+                              )}
+                              {suggestion.matchReasons && suggestion.matchReasons.length > 0 && (
+                                <p className="text-xs font-medium text-theme-primary truncate">
+                                  {suggestion.matchReasons[0]}
+                                </p>
+                              )}
+                            </div>
+                            <Link href="/network">
+                              <Button size="sm" variant="outline" className="font-bold text-xs">
+                                Connect
+                              </Button>
+                            </Link>
+                          </div>
+                        ))}
+                      </div>
+                      <Link href="/network/browse">
+                        <Button variant="outline" className="w-full mt-4 font-bold">
+                          Browse More Professionals
+                        </Button>
+                      </Link>
+                    </div>
+                  )}
+
+                  {!isLoadingNetwork && networkSuggestions.length === 0 && (
+                    <div className="text-center py-6">
+                      <Users className="w-12 h-12 text-theme-muted mx-auto mb-3 opacity-50" />
+                      <p className="text-sm font-bold text-theme-muted">No suggestions available</p>
+                      <p className="text-xs font-medium text-theme-muted mt-1 mb-4">
+                        Complete your profile to get better connection suggestions
+                      </p>
+                      <Link href="/network/browse">
+                        <Button className="font-bold">
+                          Browse Professionals
+                        </Button>
+                      </Link>
+                    </div>
+                  )}
                 </CardContent>
               </Card>
 
