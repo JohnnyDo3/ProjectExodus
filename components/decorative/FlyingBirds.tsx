@@ -147,6 +147,11 @@ export function FlyingBirds() {
       </div>
 
       <style jsx global>{`
+        /* Make sure SVG transforms work */
+        .bird-svg * {
+          transform-box: fill-box;
+        }
+
         .bird-container {
           animation: fly var(--bird-speed) cubic-bezier(0.35, 0, 0.65, 1) var(--bird-delay) infinite;
           animation-fill-mode: both;
@@ -218,24 +223,24 @@ export function FlyingBirds() {
         }
 
         @keyframes wing-flap-soar {
-          /* Powerful flapping - wings rotate UP */
+          /* DRAMATIC flapping - wings rotate UP then DOWN */
           0% {
             transform: rotate(0deg);
           }
           6% {
-            transform: rotate(-30deg);
+            transform: rotate(-45deg);
           }
           12% {
-            transform: rotate(0deg);
+            transform: rotate(5deg);
           }
           18% {
-            transform: rotate(-30deg);
+            transform: rotate(-45deg);
           }
           24% {
-            transform: rotate(0deg);
+            transform: rotate(5deg);
           }
           30% {
-            transform: rotate(-30deg);
+            transform: rotate(-45deg);
           }
           36% {
             transform: rotate(0deg);
@@ -243,16 +248,16 @@ export function FlyingBirds() {
 
           /* Extended soaring - wings mostly level */
           45% {
-            transform: rotate(-4deg);
+            transform: rotate(-8deg);
           }
           60% {
-            transform: rotate(-6deg);
+            transform: rotate(-12deg);
           }
           75% {
-            transform: rotate(-5deg);
+            transform: rotate(-10deg);
           }
           90% {
-            transform: rotate(-3deg);
+            transform: rotate(-6deg);
           }
           100% {
             transform: rotate(0deg);
