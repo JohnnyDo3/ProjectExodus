@@ -50,21 +50,21 @@ export function FlyingBirds() {
               '--total-cycle': `${bird.flapCycleDuration + bird.glideDuration}s`,
             }}
           >
-            {/* Simple classic bird silhouette - W/M shape */}
+            {/* Simple classic bird silhouette - compact W shape */}
             <svg
-              width={50 * bird.size}
-              height={20 * bird.size}
-              viewBox="0 0 50 20"
+              width={30 * bird.size}
+              height={16 * bird.size}
+              viewBox="0 0 30 16"
               fill="none"
               xmlns="http://www.w3.org/2000/svg"
               className="bird-svg"
             >
-              {/* Classic soaring bird shape - single path */}
+              {/* Compact soaring bird shape */}
               <path
                 className="bird-wings"
-                d="M 0,12 Q 8,8 12,10 Q 16,12 20,10 L 25,10 L 30,10 Q 34,12 38,10 Q 42,8 50,12"
+                d="M 2,10 Q 6,7 10,8 L 15,8 L 20,8 Q 24,7 28,10"
                 stroke="currentColor"
-                strokeWidth="2"
+                strokeWidth="1.5"
                 fill="none"
                 strokeLinecap="round"
                 strokeLinejoin="round"
@@ -72,10 +72,10 @@ export function FlyingBirds() {
               />
               {/* Small body in center */}
               <ellipse
-                cx="25"
-                cy="10"
-                rx="2"
-                ry="1.5"
+                cx="15"
+                cy="8"
+                rx="1.5"
+                ry="1"
                 fill="currentColor"
                 opacity="0.95"
               />
@@ -131,7 +131,7 @@ export function FlyingBirds() {
         /* Wing flapping - simple scale animation */
         .bird-wings {
           animation: wing-beat var(--total-cycle) ease-in-out infinite;
-          transform-origin: 25px 10px;
+          transform-origin: 15px 8px;
           transform-box: fill-box;
         }
 
