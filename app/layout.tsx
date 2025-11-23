@@ -7,6 +7,7 @@ import { TimeThemeProvider } from "@/components/providers/TimeThemeProvider";
 import { SkyThemeProvider } from "@/components/theme/SkyThemeProvider";
 import { SkyBackground } from "@/components/theme/SkyBackground";
 import { ProjectExodusAI } from "@/components/ai/ProjectExodusAI";
+import { DecorativeBranches } from "@/components/decorative/DecorativeBranches";
 import { generateMetadata, siteConfig } from "@/lib/metadata";
 import { auth } from "@/auth";
 
@@ -89,6 +90,7 @@ export default async function RootLayout({
           <TimeThemeProvider>
             <SkyThemeProvider>
               <SkyBackground />
+              <DecorativeBranches />
               <div className="relative z-10">
                 <Header />
                 {children}
