@@ -1,0 +1,518 @@
+'use client'
+
+import { useSession } from 'next-auth/react'
+import { redirect } from 'next/navigation'
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/Card'
+import { Button } from '@/components/ui/Button'
+import {
+  User,
+  Mail,
+  Calendar,
+  Settings,
+  Heart,
+  MessageCircle,
+  ShoppingBag,
+  BookOpen,
+  TrendingUp,
+  Award,
+  Leaf,
+  Users,
+  Briefcase,
+  Target,
+  MapPin,
+  Video,
+  Globe,
+  FileText,
+  GraduationCap,
+  Sparkles,
+  MapPinIcon,
+  Linkedin,
+  Twitter,
+} from 'lucide-react'
+import Link from 'next/link'
+import { useEffect, useState } from 'react'
+
+export default function MyBasecampPage() {
+  const { data: session, status } = useSession()
+  const [projects, setProjects] = useState<any[]>([])
+  const [isLoadingProjects, setIsLoadingProjects] = useState(true)
+  const [activities, setActivities] = useState<any[]>([])
+  const [isLoadingActivities, setIsLoadingActivities] = useState(true)
+  const [userProfile, setUserProfile] = useState<any>(null)
+  const [isLoadingProfile, setIsLoadingProfile] = useState(true)
+
+  useEffect(() => {
+    if (session?.user?.id) {
+      fetchUserProjects()
+      fetchActivityFeed()
+      fetchUserProfile()
+    }
+  }, [session?.user?.id])
+
+  const fetchUserProjects = async () => {
+    try {
+      const res = await fetch('/api/projects')
+      const data = await res.json()
+
+      if (data.success) {
+        const userProjects = data.data.filter((project: any) => {
+          const isMember = project.members.some((m: any) => m.userId === session?.user?.id)
+          const isCreator = project.creatorId === session?.user?.id
+          return isMember || isCreator
+        })
+        setProjects(userProjects)
+      }
+    } catch (error) {
+      console.error('Error fetching projects:', error)
+    } finally {
+      setIsLoadingProjects(false)
+    }
+  }
+
+  const fetchActivityFeed = async () => {
+    try {
+      const res = await fetch('/api/activity?limit=10')
+      const data = await res.json()
+
+      if (data.success) {
+        setActivities(data.data)
+      }
+    } catch (error) {
+      console.error('Error fetching activity feed:', error)
+    } finally {
+      setIsLoadingActivities(false)
+    }
+  }
+
+  const fetchUserProfile = async () => {
+    try {
+      const res = await fetch(`/api/users/${session?.user?.id}`)
+      const data = await res.json()
+
+      if (data.success) {
+        setUserProfile(data.data)
+      }
+    } catch (error) {
+      console.error('Error fetching user profile:', error)
+    } finally {
+      setIsLoadingProfile(false)
+    }
+  }
+
+  if (status === 'loading') {
+    return (
+      <div className="min-h-screen flex items-center justify-center">
+        <div className="text-center space-y-4">
+          <div className="w-16 h-16 border-4 border-theme-primary border-t-transparent rounded-full animate-spin mx-auto" />
+          <p className="text-lg font-bold text-theme-muted">Loading your Base Camp...</p>
+        </div>
+      </div>
+    )
+  }
+
+  if (!session) {
+    redirect('/auth/signin')
+  }
+
+  const user = session.user
+
+  const statusColors = {
+    ACTIVE: { bg: 'bg-[color-mix(in_srgb,var(--primary)_20%,var(--background))]', text: 'text-theme-primary' },
+    COMPLETED: { bg: 'bg-[color-mix(in_srgb,var(--accent)_20%,var(--background))]', text: 'text-theme-accent' },
+    PLANNING: { bg: 'bg-[color-mix(in_srgb,var(--secondary)_20%,var(--background))]', text: 'text-theme-secondary' },
+  }
+
+  return (
+    <div className="min-h-screen bg-[var(--background)]">
+      {/* Header Banner */}
+      <div className="h-32 bg-gradient-to-br from-[var(--primary)] via-[var(--accent)] to-[var(--secondary)]" />
+
+      {/* Main Content */}
+      <div className="container mx-auto px-4 sm:px-6 lg:px-8 -mt-16 pb-16">
+        <div className="max-w-7xl mx-auto">
+          <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+            {/* LEFT SIDEBAR (1/3) - Profile */}
+            <div className="lg:col-span-1 space-y-4">
+              {/* Profile Card */}
+              <Card className="border-4 border-theme-primary shadow-theme-2xl sticky top-4">
+                <CardContent className="p-6">
+                  {/* Avatar */}
+                  <div className="flex justify-center mb-4">
+                    <div className="w-32 h-32 rounded-full border-6 border-[var(--background)] overflow-hidden bg-gradient-to-br from-[var(--primary)] to-[var(--accent)] flex items-center justify-center shadow-theme-xl">
+                      {user?.image ? (
+                        <img
+                          src={user.image}
+                          alt={user.name || 'User'}
+                          className="w-full h-full object-cover"
+                        />
+                      ) : (
+                        <User className="w-16 h-16 text-[var(--primary-foreground)]" />
+                      )}
+                    </div>
+                  </div>
+
+                  {/* Name & Headline */}
+                  <div className="text-center mb-4">
+                    <h1 className="text-2xl font-black text-[var(--foreground)] mb-2">
+                      {user?.name || 'User'}
+                    </h1>
+                    {userProfile?.headline && (
+                      <p className="text-sm font-bold text-theme-muted mb-2">
+                        {userProfile.headline}
+                      </p>
+                    )}
+                    <p className="text-xs font-medium text-theme-muted flex items-center justify-center gap-2 mb-2">
+                      <Mail className="w-3 h-3" />
+                      {user?.email}
+                    </p>
+                  </div>
+
+                  {/* Job & Location */}
+                  {(userProfile?.jobTitle || userProfile?.company) && (
+                    <div className="flex items-center gap-2 mb-2 text-sm">
+                      <Briefcase className="w-4 h-4 text-theme-primary flex-shrink-0" />
+                      <span className="font-semibold text-[var(--foreground)]">
+                        {userProfile.jobTitle}
+                        {userProfile.jobTitle && userProfile.company && ' at '}
+                        {userProfile.company && <span className="font-black text-theme-primary">{userProfile.company}</span>}
+                      </span>
+                    </div>
+                  )}
+
+                  {userProfile?.location && (
+                    <div className="flex items-center gap-2 mb-4 text-sm">
+                      <MapPinIcon className="w-4 h-4 text-theme-accent flex-shrink-0" />
+                      <span className="font-semibold text-theme-muted">{userProfile.location}</span>
+                    </div>
+                  )}
+
+                  {/* Stats Grid */}
+                  <div className="grid grid-cols-3 gap-2 mb-4 p-3 bg-[var(--muted)] rounded-lg">
+                    <div className="text-center">
+                      <div className="text-lg font-black text-theme-primary">
+                        {userProfile?._count?.followers || 0}
+                      </div>
+                      <div className="text-[10px] font-bold text-theme-muted uppercase">Followers</div>
+                    </div>
+                    <div className="text-center">
+                      <div className="text-lg font-black text-theme-accent">
+                        {userProfile?._count?.following || 0}
+                      </div>
+                      <div className="text-[10px] font-bold text-theme-muted uppercase">Following</div>
+                    </div>
+                    <div className="text-center">
+                      <div className="text-lg font-black text-theme-secondary">
+                        {projects.length}
+                      </div>
+                      <div className="text-[10px] font-bold text-theme-muted uppercase">Projects</div>
+                    </div>
+                  </div>
+
+                  {/* Badges */}
+                  {userProfile?.userBadges && userProfile.userBadges.length > 0 && (
+                    <div className="mb-4">
+                      <h3 className="text-sm font-black mb-2 text-[var(--foreground)] flex items-center gap-2">
+                        <Award className="w-4 h-4 text-theme-accent" />
+                        BADGES
+                      </h3>
+                      <div className="grid grid-cols-3 gap-2">
+                        {userProfile.userBadges.map((userBadge: any) => (
+                          <div
+                            key={userBadge.id}
+                            className="flex flex-col items-center p-2 bg-gradient-to-br from-[var(--secondary)] to-[color-mix(in_srgb,var(--secondary)_80%,black)] rounded-lg shadow-theme-md"
+                            title={userBadge.badge.description}
+                          >
+                            <span className="text-xl mb-1">{userBadge.badge.icon}</span>
+                            <span className="text-[9px] font-bold text-[var(--primary-foreground)] text-center leading-tight">
+                              {userBadge.badge.name}
+                            </span>
+                          </div>
+                        ))}
+                      </div>
+                    </div>
+                  )}
+
+                  {/* Bio */}
+                  {userProfile?.bio && (
+                    <div className="mb-4">
+                      <h3 className="text-sm font-black mb-2 text-[var(--foreground)]">ABOUT</h3>
+                      <p className="text-xs font-medium text-theme-muted leading-relaxed">
+                        {userProfile.bio}
+                      </p>
+                    </div>
+                  )}
+
+                  {/* Expertise */}
+                  {userProfile?.expertise && userProfile.expertise.length > 0 && (
+                    <div className="mb-4">
+                      <h3 className="text-sm font-black mb-2 text-[var(--foreground)] flex items-center gap-2">
+                        <Sparkles className="w-4 h-4 text-theme-primary" />
+                        EXPERTISE
+                      </h3>
+                      <div className="flex flex-wrap gap-1">
+                        {userProfile.expertise.map((skill: string, index: number) => (
+                          <span
+                            key={index}
+                            className="px-2 py-1 bg-gradient-to-br from-[var(--primary)] to-[color-mix(in_srgb,var(--primary)_80%,black)] text-[var(--primary-foreground)] rounded-lg font-bold text-[10px] shadow-theme-sm"
+                          >
+                            {skill}
+                          </span>
+                        ))}
+                      </div>
+                    </div>
+                  )}
+
+                  {/* Interests */}
+                  {userProfile?.interests && userProfile.interests.length > 0 && (
+                    <div className="mb-4">
+                      <h3 className="text-sm font-black mb-2 text-[var(--foreground)]">INTERESTS</h3>
+                      <div className="flex flex-wrap gap-1">
+                        {userProfile.interests.map((interest: string, index: number) => (
+                          <span
+                            key={index}
+                            className="px-2 py-1 bg-[color-mix(in_srgb,var(--accent)_20%,var(--background))] text-theme-accent rounded-lg font-semibold text-[10px] border border-theme-accent"
+                          >
+                            {interest}
+                          </span>
+                        ))}
+                      </div>
+                    </div>
+                  )}
+
+                  {/* Social Links */}
+                  {(userProfile?.website || userProfile?.linkedin || userProfile?.twitter) && (
+                    <div className="mb-4">
+                      <h3 className="text-sm font-black mb-2 text-[var(--foreground)]">LINKS</h3>
+                      <div className="flex flex-wrap gap-2 text-xs">
+                        {userProfile.website && (
+                          <a href={userProfile.website} target="_blank" rel="noopener noreferrer" className="flex items-center gap-1 text-theme-primary hover:text-theme-accent transition-colors">
+                            <Globe className="w-3 h-3" />
+                            <span className="font-bold">Website</span>
+                          </a>
+                        )}
+                        {userProfile.linkedin && (
+                          <a href={userProfile.linkedin} target="_blank" rel="noopener noreferrer" className="flex items-center gap-1 text-theme-primary hover:text-theme-accent transition-colors">
+                            <Linkedin className="w-3 h-3" />
+                            <span className="font-bold">LinkedIn</span>
+                          </a>
+                        )}
+                        {userProfile.twitter && (
+                          <a href={userProfile.twitter} target="_blank" rel="noopener noreferrer" className="flex items-center gap-1 text-theme-primary hover:text-theme-accent transition-colors">
+                            <Twitter className="w-3 h-3" />
+                            <span className="font-bold">Twitter</span>
+                          </a>
+                        )}
+                      </div>
+                    </div>
+                  )}
+
+                  {/* Member Since */}
+                  <div className="flex items-center gap-2 text-xs text-theme-muted mb-4">
+                    <Calendar className="w-3 h-3" />
+                    <span className="font-medium">Member since {new Date().getFullYear()}</span>
+                  </div>
+
+                  {/* Edit Profile Button */}
+                  <Link href="/settings">
+                    <Button className="w-full font-bold">
+                      <Settings className="w-4 h-4 mr-2" />
+                      EDIT PROFILE
+                    </Button>
+                  </Link>
+                </CardContent>
+              </Card>
+            </div>
+
+            {/* RIGHT CONTENT (2/3) - User Activity */}
+            <div className="lg:col-span-2 space-y-6">
+              {/* Welcome Message */}
+              <Card className="border-4 border-theme-primary bg-gradient-to-br from-[color-mix(in_srgb,var(--primary)_10%,var(--card))] to-[var(--card)]">
+                <CardContent className="p-6">
+                  <h2 className="text-3xl font-black mb-2 text-[var(--foreground)]">
+                    Welcome to Your Base Camp, {user?.name?.split(' ')[0] || 'friend'}! 🏕️
+                  </h2>
+                  <p className="text-base font-semibold text-theme-muted">
+                    This is your command center for all sustainability activities. Track your projects, connect with your community, and measure your impact.
+                  </p>
+                </CardContent>
+              </Card>
+
+              {/* My Projects */}
+              <div>
+                <div className="flex items-center justify-between mb-4">
+                  <h3 className="text-2xl font-black text-[var(--foreground)]">MY PROJECTS</h3>
+                  <Link href="/community/projects/new">
+                    <Button className="font-bold">
+                      <Briefcase className="w-4 h-4 mr-2" />
+                      NEW PROJECT
+                    </Button>
+                  </Link>
+                </div>
+
+                {isLoadingProjects ? (
+                  <Card className="border-2 border-[var(--border)]">
+                    <CardContent className="p-8 text-center">
+                      <div className="w-12 h-12 border-4 border-theme-primary border-t-transparent rounded-full animate-spin mx-auto mb-4" />
+                      <p className="text-base font-bold text-theme-muted">Loading your projects...</p>
+                    </CardContent>
+                  </Card>
+                ) : projects.length > 0 ? (
+                  <div className="grid md:grid-cols-2 gap-4">
+                    {projects.map((project: any) => {
+                      const colors = statusColors[project.status as keyof typeof statusColors] || statusColors.PLANNING
+                      const isCreator = project.creatorId === session?.user?.id
+
+                      return (
+                        <Card key={project.id} className="border-4 border-theme-primary hover:border-theme-accent transition-all">
+                          <CardHeader>
+                            <div className="flex items-start justify-between mb-2">
+                              <div className={`px-3 py-1 rounded-full ${colors.bg} ${colors.text} font-black text-xs uppercase`}>
+                                {project.status}
+                              </div>
+                              {isCreator && (
+                                <div className="px-3 py-1 rounded-full bg-[color-mix(in_srgb,var(--accent)_20%,var(--background))] text-theme-accent font-black text-xs uppercase">
+                                  OWNER
+                                </div>
+                              )}
+                            </div>
+                            <CardTitle className="text-lg font-black">
+                              {project.name}
+                            </CardTitle>
+                          </CardHeader>
+                          <CardContent>
+                            <p className="text-sm font-semibold mb-4 text-theme-muted line-clamp-2">
+                              {project.description}
+                            </p>
+                            {project.goal && (
+                              <div className="flex items-start gap-2 text-sm font-semibold text-theme-muted mb-4">
+                                <Target className="w-4 h-4 mt-0.5 flex-shrink-0" />
+                                <span className="line-clamp-1">{project.goal}</span>
+                              </div>
+                            )}
+                            <div className="flex items-center justify-between pt-4 border-t-2 border-theme-muted">
+                              <div className="flex items-center gap-2 text-sm font-bold text-theme-muted">
+                                <Users className="w-4 h-4" />
+                                <span>{project._count.members} MEMBERS</span>
+                              </div>
+                              <Link href={`/community/projects/${project.slug}`}>
+                                <Button size="sm" variant="outline" className="font-bold">
+                                  VIEW
+                                </Button>
+                              </Link>
+                            </div>
+                          </CardContent>
+                        </Card>
+                      )
+                    })}
+                  </div>
+                ) : (
+                  <Card className="border-4 border-theme-secondary">
+                    <CardContent className="p-8 text-center">
+                      <Briefcase className="w-12 h-12 text-theme-secondary mx-auto mb-4 opacity-50" />
+                      <h4 className="text-lg font-black mb-2 text-theme-muted">NO PROJECTS YET</h4>
+                      <p className="text-sm font-medium text-theme-muted mb-4">
+                        Start your first sustainability project!
+                      </p>
+                      <Link href="/community/projects/new">
+                        <Button className="font-bold">
+                          <Briefcase className="w-4 h-4 mr-2" />
+                          START A PROJECT
+                        </Button>
+                      </Link>
+                    </CardContent>
+                  </Card>
+                )}
+              </div>
+
+              {/* Activity & Impact Row */}
+              <div className="grid md:grid-cols-2 gap-4">
+                {/* Network Activity */}
+                <Card className="border-4 border-theme-primary">
+                  <CardHeader>
+                    <CardTitle className="text-xl font-black flex items-center gap-2">
+                      <TrendingUp className="w-5 h-5 text-theme-primary" />
+                      NETWORK ACTIVITY
+                    </CardTitle>
+                  </CardHeader>
+                  <CardContent>
+                    {isLoadingActivities ? (
+                      <div className="text-center py-8">
+                        <div className="w-10 h-10 border-4 border-theme-primary border-t-transparent rounded-full animate-spin mx-auto mb-4" />
+                        <p className="text-sm font-bold text-theme-muted">Loading...</p>
+                      </div>
+                    ) : activities.length === 0 ? (
+                      <div className="text-center py-8">
+                        <MessageCircle className="w-12 h-12 text-theme-muted mx-auto mb-4 opacity-50" />
+                        <p className="text-sm font-bold text-theme-muted">No activity yet</p>
+                        <p className="text-xs font-medium text-theme-muted mt-2 mb-4">
+                          Follow people to see their activity
+                        </p>
+                        <Link href="/network">
+                          <Button size="sm" className="font-bold">
+                            BROWSE NETWORK
+                          </Button>
+                        </Link>
+                      </div>
+                    ) : (
+                      <div className="space-y-3 max-h-64 overflow-y-auto">
+                        {activities.slice(0, 5).map((activity) => (
+                          <div key={activity.id} className="flex gap-2 p-2 bg-[var(--muted)] rounded-lg text-xs">
+                            <div className="w-8 h-8 rounded-full bg-gradient-to-br from-[var(--primary)] to-[var(--accent)] flex items-center justify-center flex-shrink-0">
+                              {activity.user.image ? (
+                                <img src={activity.user.image} alt="" className="w-full h-full rounded-full object-cover" />
+                              ) : (
+                                <User className="w-4 h-4 text-[var(--primary-foreground)]" />
+                              )}
+                            </div>
+                            <div className="flex-1 min-w-0">
+                              <p className="font-semibold text-[var(--foreground)] leading-tight">
+                                {activity.user.name || 'Someone'} {activity.type === 'PROJECT_JOIN' ? 'joined a project' : 'did something'}
+                              </p>
+                            </div>
+                          </div>
+                        ))}
+                      </div>
+                    )}
+                  </CardContent>
+                </Card>
+
+                {/* Environmental Impact */}
+                <Card className="border-4 border-theme-accent bg-gradient-to-br from-[color-mix(in_srgb,var(--accent)_10%,var(--card))] to-[var(--card)]">
+                  <CardHeader>
+                    <CardTitle className="text-xl font-black flex items-center gap-2">
+                      <Leaf className="w-5 h-5 text-theme-accent" />
+                      MY IMPACT
+                    </CardTitle>
+                  </CardHeader>
+                  <CardContent>
+                    <div className="space-y-3">
+                      <div className="flex items-center justify-between p-3 bg-[var(--background)] rounded-lg">
+                        <div>
+                          <p className="text-xs font-bold text-theme-muted">CO₂ Saved</p>
+                          <p className="text-xl font-black text-[var(--foreground)]">0 kg</p>
+                        </div>
+                        <div className="text-3xl">🌍</div>
+                      </div>
+                      <div className="flex items-center justify-between p-3 bg-[var(--background)] rounded-lg">
+                        <div>
+                          <p className="text-xs font-bold text-theme-muted">Waste Reduced</p>
+                          <p className="text-xl font-black text-[var(--foreground)]">0 lbs</p>
+                        </div>
+                        <div className="text-3xl">♻️</div>
+                      </div>
+                      <div className="p-3 bg-[var(--background)] rounded-lg text-center">
+                        <p className="text-xs font-medium text-theme-muted">
+                          Make sustainable choices to grow your impact!
+                        </p>
+                      </div>
+                    </div>
+                  </CardContent>
+                </Card>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  )
+}

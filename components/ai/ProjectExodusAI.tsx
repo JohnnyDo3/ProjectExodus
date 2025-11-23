@@ -27,7 +27,7 @@ export function ProjectExodusAI() {
       const timer = setTimeout(() => {
         const greeting: Message = {
           role: 'assistant',
-          content: "🌍 Welcome to Project Exodus! I'm your sustainability AI assistant. I can help you discover eco-friendly products, calculate your carbon footprint, explore breakthrough innovations like carbon capture and green hydrogen, and learn about renewable energy, regenerative agriculture, zero waste living, green building, and more. What would you like to explore today?",
+          content: "🌍 Welcome to Project Exodus! I'm Sage 2.0, your sustainability guide. I can help you discover eco-friendly products, calculate your carbon footprint, explore breakthrough innovations like carbon capture and green hydrogen, and learn about renewable energy, regenerative agriculture, zero waste living, green building, and more. What would you like to explore today?",
           timestamp: new Date()
         }
         setMessages([greeting])
@@ -160,7 +160,7 @@ export function ProjectExodusAI() {
         <button
           onClick={() => setIsOpen(true)}
           className="fixed bottom-4 right-4 sm:bottom-6 sm:right-6 z-50 group"
-          aria-label="Open Project Exodus AI Assistant"
+          aria-label="Open Sage 2.0"
         >
           <div className="relative">
             {/* Pulsing ring animation */}
@@ -181,7 +181,7 @@ export function ProjectExodusAI() {
 
           {/* Tooltip */}
           <div className="absolute bottom-full right-0 mb-2 px-4 py-2 bg-[var(--card)] border-2 border-theme-primary rounded-lg shadow-lg opacity-0 group-hover:opacity-100 transition-opacity duration-200 whitespace-nowrap">
-            <p className="text-sm font-bold text-[var(--foreground)]">Project Exodus AI Assistant</p>
+            <p className="text-sm font-bold text-[var(--foreground)]">Sage 2.0 - Your Sustainability Guide</p>
             <div className="absolute bottom-0 right-6 transform translate-y-1/2 rotate-45 w-3 h-3 bg-[var(--card)] border-r-2 border-b-2 border-theme-primary" />
           </div>
         </button>
@@ -197,7 +197,7 @@ export function ProjectExodusAI() {
                 <Leaf className="w-5 h-5 sm:w-6 sm:h-6 text-white" />
               </div>
               <div className="min-w-0 flex-1">
-                <h3 className="text-white font-black text-base sm:text-lg truncate">Project Exodus AI</h3>
+                <h3 className="text-white font-black text-base sm:text-lg truncate">Sage 2.0</h3>
                 <p className="text-white/80 text-xs font-semibold flex items-center gap-1">
                   <span className="w-2 h-2 bg-green-400 rounded-full animate-pulse flex-shrink-0" />
                   <span className="truncate">Online</span>
@@ -241,7 +241,7 @@ export function ProjectExodusAI() {
                   {message.role === 'assistant' && (
                     <div className="flex items-center gap-2 mb-2">
                       <Leaf className="w-4 h-4 text-theme-primary" />
-                      <span className="text-xs font-bold text-theme-primary">PROJECT EXODUS AI</span>
+                      <span className="text-xs font-bold text-theme-primary">SAGE 2.0</span>
                     </div>
                   )}
                   <p className="text-sm leading-relaxed whitespace-pre-line">

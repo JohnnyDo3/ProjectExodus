@@ -99,28 +99,20 @@ export function Header() {
                       </div>
                       <div className="p-2">
                         <Link
-                          href="/dashboard"
+                          href="/my/basecamp"
                           className="flex items-center gap-3 px-4 py-2 rounded-lg hover:bg-[var(--muted)] transition-colors group"
                           onClick={() => setUserMenuOpen(false)}
                         >
                           <LayoutDashboard className="w-4 h-4 text-theme-primary" />
-                          <span className="font-bold text-[var(--foreground)] group-hover:text-theme-primary">Dashboard</span>
-                        </Link>
-                        <Link
-                          href={`/profile/${session.user?.id}`}
-                          className="flex items-center gap-3 px-4 py-2 rounded-lg hover:bg-[var(--muted)] transition-colors group"
-                          onClick={() => setUserMenuOpen(false)}
-                        >
-                          <UserCircle className="w-4 h-4 text-theme-accent" />
-                          <span className="font-bold text-[var(--foreground)] group-hover:text-theme-accent">My Profile</span>
+                          <span className="font-bold text-[var(--foreground)] group-hover:text-theme-primary">My Basecamp</span>
                         </Link>
                         <Link
                           href="/network"
                           className="flex items-center gap-3 px-4 py-2 rounded-lg hover:bg-[var(--muted)] transition-colors group"
                           onClick={() => setUserMenuOpen(false)}
                         >
-                          <Users className="w-4 h-4 text-theme-primary" />
-                          <span className="font-bold text-[var(--foreground)] group-hover:text-theme-primary">Network</span>
+                          <Users className="w-4 h-4 text-theme-accent" />
+                          <span className="font-bold text-[var(--foreground)] group-hover:text-theme-accent">My Network</span>
                         </Link>
                         <Link
                           href="/events"
@@ -128,7 +120,7 @@ export function Header() {
                           onClick={() => setUserMenuOpen(false)}
                         >
                           <Calendar className="w-4 h-4 text-theme-secondary" />
-                          <span className="font-bold text-[var(--foreground)] group-hover:text-theme-secondary">Events</span>
+                          <span className="font-bold text-[var(--foreground)] group-hover:text-theme-secondary">My Events</span>
                         </Link>
                         <div className="border-t-2 border-[var(--border)] mt-2 pt-2">
                           <Link
@@ -221,28 +213,22 @@ export function Header() {
                       {session.user?.email}
                     </p>
                   </div>
-                  <Link href="/dashboard" className="block" onClick={() => setMobileMenuOpen(false)}>
+                  <Link href="/my/basecamp" className="block" onClick={() => setMobileMenuOpen(false)}>
                     <Button variant="outline" size="sm" className="w-full font-black">
                       <LayoutDashboard className="w-4 h-4 mr-2" />
-                      Dashboard
-                    </Button>
-                  </Link>
-                  <Link href={`/profile/${session.user?.id}`} className="block" onClick={() => setMobileMenuOpen(false)}>
-                    <Button variant="outline" size="sm" className="w-full font-black">
-                      <UserCircle className="w-4 h-4 mr-2" />
-                      My Profile
+                      My Basecamp
                     </Button>
                   </Link>
                   <Link href="/network" className="block" onClick={() => setMobileMenuOpen(false)}>
                     <Button variant="outline" size="sm" className="w-full font-black">
                       <Users className="w-4 h-4 mr-2" />
-                      Network
+                      My Network
                     </Button>
                   </Link>
                   <Link href="/events" className="block" onClick={() => setMobileMenuOpen(false)}>
                     <Button variant="outline" size="sm" className="w-full font-black">
                       <Calendar className="w-4 h-4 mr-2" />
-                      Events
+                      My Events
                     </Button>
                   </Link>
                   <Link href="/settings" className="block" onClick={() => setMobileMenuOpen(false)}>

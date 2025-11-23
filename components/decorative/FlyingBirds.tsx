@@ -4,73 +4,152 @@ import { useEffect, useState } from 'react'
 
 interface Bird {
   id: number
+  clusterId: number
+  offsetX: number // Horizontal offset within cluster
+  offsetY: number // Vertical offset within cluster (for V-formation)
+  size: number
+  delay: number // Individual bird delay within cluster
+}
+
+interface Cluster {
+  id: number
   y: number
   speed: number
-  delay: number
-  size: number
+  delay: number // Cluster start delay
   amplitude: number
   flapCycleDuration: number
   glideDuration: number
+  formation: 'v-left' | 'v-right' | 'scattered' // Formation type
 }
 
 export function FlyingBirds() {
+  const [clusters, setClusters] = useState<Cluster[]>([])
   const [birds, setBirds] = useState<Bird[]>([])
 
   useEffect(() => {
-    // Initialize 8 birds with varied characteristics for natural flight
-    const initialBirds: Bird[] = [
-      { id: 1, y: 12, speed: 38, delay: 0, size: 1.0, amplitude: 50, flapCycleDuration: 2.0, glideDuration: 3.5 },
-      { id: 2, y: 22, speed: 32, delay: 3, size: 0.9, amplitude: 55, flapCycleDuration: 1.8, glideDuration: 3.8 },
-      { id: 3, y: 38, speed: 35, delay: 7, size: 1.05, amplitude: 45, flapCycleDuration: 2.2, glideDuration: 3.2 },
-      { id: 4, y: 18, speed: 42, delay: 11, size: 1.15, amplitude: 60, flapCycleDuration: 2.1, glideDuration: 3.6 },
-      { id: 5, y: 28, speed: 34, delay: 15, size: 0.95, amplitude: 52, flapCycleDuration: 1.9, glideDuration: 3.4 },
-      { id: 6, y: 8, speed: 40, delay: 19, size: 1.1, amplitude: 48, flapCycleDuration: 2.0, glideDuration: 3.7 },
-      { id: 7, y: 33, speed: 36, delay: 23, size: 0.85, amplitude: 58, flapCycleDuration: 1.85, glideDuration: 3.3 },
-      { id: 8, y: 16, speed: 39, delay: 27, size: 1.0, amplitude: 50, flapCycleDuration: 2.05, glideDuration: 3.5 },
-    ]
+    // Create 2-4 clusters
+    const numClusters = 3 // 3 clusters for balance
+    const initialClusters: Cluster[] = []
+    const initialBirds: Bird[] = []
+    let birdIdCounter = 1
+
+    for (let i = 0; i < numClusters; i++) {
+      const formation = i === 0 ? 'v-left' : i === 1 ? 'v-right' : 'scattered'
+
+      const cluster: Cluster = {
+        id: i + 1,
+        y: 15 + (i * 15), // Spread clusters vertically
+        speed: 35 + Math.random() * 8, // 35-43 seconds
+        delay: i * 12, // Stagger cluster starts
+        amplitude: 48 + Math.random() * 15,
+        flapCycleDuration: 1.9 + Math.random() * 0.4,
+        glideDuration: 3.3 + Math.random() * 0.6,
+        formation
+      }
+      initialClusters.push(cluster)
+
+      // Create 3-9 birds per cluster
+      const birdsInCluster = 4 + Math.floor(Math.random() * 5) // 4-8 birds
+
+      for (let j = 0; j < birdsInCluster; j++) {
+        let offsetX = 0
+        let offsetY = 0
+
+        if (formation === 'v-left') {
+          // V-shape pointing left (leader at left, others trail behind in V)
+          if (j === 0) {
+            // Leader
+            offsetX = 0
+            offsetY = 0
+          } else {
+            // Followers form V behind leader
+            const side = j % 2 === 0 ? 1 : -1
+            const depth = Math.floor((j + 1) / 2)
+            offsetX = depth * 40 // Trail behind
+            offsetY = side * depth * 25 // Spread vertically
+          }
+        } else if (formation === 'v-right') {
+          // V-shape pointing right (leader at right, others trail behind in V)
+          if (j === 0) {
+            // Leader is ahead
+            offsetX = 0
+            offsetY = 0
+          } else {
+            const side = j % 2 === 0 ? 1 : -1
+            const depth = Math.floor((j + 1) / 2)
+            offsetX = -depth * 40 // Trail behind (negative because leader is ahead)
+            offsetY = side * depth * 25
+          }
+        } else {
+          // Scattered formation
+          offsetX = (Math.random() - 0.5) * 80
+          offsetY = (Math.random() - 0.5) * 60
+        }
+
+        const bird: Bird = {
+          id: birdIdCounter++,
+          clusterId: cluster.id,
+          offsetX,
+          offsetY,
+          size: 0.9 + Math.random() * 0.3, // 0.9-1.2
+          delay: j * 0.2 // Small delay between birds in same cluster
+        }
+        initialBirds.push(bird)
+      }
+    }
+
+    setClusters(initialClusters)
     setBirds(initialBirds)
   }, [])
 
   return (
     <>
       <div className="fixed inset-0 pointer-events-none z-10 overflow-hidden">
-        {birds.map((bird) => (
-          <div
-            key={bird.id}
-            className="bird-container absolute opacity-35 dark:opacity-25"
-            style={{
-              top: `${bird.y}%`,
-              // @ts-ignore - CSS custom properties
-              '--bird-speed': `${bird.speed}s`,
-              '--bird-delay': `${bird.delay}s`,
-              '--bird-amplitude': `${bird.amplitude}px`,
-              '--bird-size': bird.size,
-              '--flap-cycle': `${bird.flapCycleDuration}s`,
-              '--glide-duration': `${bird.glideDuration}s`,
-              '--total-cycle': `${bird.flapCycleDuration + bird.glideDuration}s`,
-            }}
-          >
-            {/* Simple V-shape bird */}
-            <svg
-              width={20 * bird.size}
-              height={12 * bird.size}
-              viewBox="0 0 20 12"
-              fill="none"
-              xmlns="http://www.w3.org/2000/svg"
-              className="bird-svg"
-            >
-              {/* Simple V shape - two lines */}
-              <path
-                className="bird-wings"
-                d="M 2,4 L 10,8 L 18,4"
-                stroke="currentColor"
-                strokeWidth="1.5"
-                fill="none"
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                opacity="0.85"
-              />
-            </svg>
+        {clusters.map((cluster) => (
+          <div key={cluster.id}>
+            {birds
+              .filter((bird) => bird.clusterId === cluster.id)
+              .map((bird) => (
+                <div
+                  key={bird.id}
+                  className="bird-container absolute opacity-35 dark:opacity-25"
+                  style={{
+                    top: `${cluster.y}%`,
+                    // @ts-ignore - CSS custom properties
+                    '--bird-speed': `${cluster.speed}s`,
+                    '--bird-delay': `${cluster.delay + bird.delay}s`,
+                    '--bird-amplitude': `${cluster.amplitude}px`,
+                    '--bird-size': bird.size,
+                    '--flap-cycle': `${cluster.flapCycleDuration}s`,
+                    '--glide-duration': `${cluster.glideDuration}s`,
+                    '--total-cycle': `${cluster.flapCycleDuration + cluster.glideDuration}s`,
+                    '--offset-x': `${bird.offsetX}px`,
+                    '--offset-y': `${bird.offsetY}px`,
+                  }}
+                >
+                  {/* Simple V-shape bird */}
+                  <svg
+                    width={20 * bird.size}
+                    height={12 * bird.size}
+                    viewBox="0 0 20 12"
+                    fill="none"
+                    xmlns="http://www.w3.org/2000/svg"
+                    className="bird-svg"
+                  >
+                    {/* Simple V shape - two lines */}
+                    <path
+                      className="bird-wings"
+                      d="M 2,4 L 10,8 L 18,4"
+                      stroke="currentColor"
+                      strokeWidth="1.5"
+                      fill="none"
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      opacity="0.85"
+                    />
+                  </svg>
+                </div>
+              ))}
           </div>
         ))}
       </div>
@@ -85,43 +164,44 @@ export function FlyingBirds() {
         @keyframes fly {
           0% {
             left: -100px;
-            transform: translateY(0px) rotate(0deg) scale(var(--bird-size));
+            transform: translateY(calc(var(--offset-y) + 0px)) translateX(var(--offset-x)) rotate(0deg) scale(var(--bird-size));
           }
-          /* Flapping upward */
+          /* Flapping upward - maintain formation */
           8% {
-            transform: translateY(calc(var(--bird-amplitude) * -0.5)) rotate(-5deg) scale(var(--bird-size));
+            transform: translateY(calc(var(--offset-y) + calc(var(--bird-amplitude) * -0.5))) translateX(var(--offset-x)) rotate(-5deg) scale(var(--bird-size));
           }
           16% {
-            transform: translateY(calc(var(--bird-amplitude) * -0.9)) rotate(-7deg) scale(var(--bird-size));
+            transform: translateY(calc(var(--offset-y) + calc(var(--bird-amplitude) * -0.9))) translateX(var(--offset-x)) rotate(-7deg) scale(var(--bird-size));
           }
           24% {
-            transform: translateY(calc(var(--bird-amplitude) * -1.15)) rotate(-6deg) scale(var(--bird-size));
+            transform: translateY(calc(var(--offset-y) + calc(var(--bird-amplitude) * -1.15))) translateX(var(--offset-x)) rotate(-6deg) scale(var(--bird-size));
           }
           32% {
-            transform: translateY(calc(var(--bird-amplitude) * -1.3)) rotate(-4deg) scale(var(--bird-size));
+            transform: translateY(calc(var(--offset-y) + calc(var(--bird-amplitude) * -1.3))) translateX(var(--offset-x)) rotate(-4deg) scale(var(--bird-size));
           }
-          /* Swooping glide down */
+          /* Swooping glide down - maintain formation */
           45% {
-            transform: translateY(calc(var(--bird-amplitude) * -0.8)) rotate(0deg) scale(var(--bird-size));
+            transform: translateY(calc(var(--offset-y) + calc(var(--bird-amplitude) * -0.8))) translateX(var(--offset-x)) rotate(0deg) scale(var(--bird-size));
           }
           60% {
-            transform: translateY(calc(var(--bird-amplitude) * -0.2)) rotate(4deg) scale(var(--bird-size));
+            transform: translateY(calc(var(--offset-y) + calc(var(--bird-amplitude) * -0.2))) translateX(var(--offset-x)) rotate(4deg) scale(var(--bird-size));
           }
           75% {
-            transform: translateY(calc(var(--bird-amplitude) * 0.4)) rotate(5deg) scale(var(--bird-size));
+            transform: translateY(calc(var(--offset-y) + calc(var(--bird-amplitude) * 0.4))) translateX(var(--offset-x)) rotate(5deg) scale(var(--bird-size));
           }
           90% {
-            transform: translateY(calc(var(--bird-amplitude) * 0.2)) rotate(2deg) scale(var(--bird-size));
+            transform: translateY(calc(var(--offset-y) + calc(var(--bird-amplitude) * 0.2))) translateX(var(--offset-x)) rotate(2deg) scale(var(--bird-size));
           }
           100% {
             left: calc(100% + 100px);
-            transform: translateY(0px) rotate(0deg) scale(var(--bird-size));
+            transform: translateY(calc(var(--offset-y) + 0px)) translateX(var(--offset-x)) rotate(0deg) scale(var(--bird-size));
           }
         }
 
-        /* Wing flapping - simple scale animation */
+        /* Wing flapping - synchronized within cluster */
         .bird-wings {
           animation: wing-beat var(--total-cycle) ease-in-out infinite;
+          animation-delay: var(--bird-delay);
           transform-origin: 10px 8px;
           transform-box: fill-box;
         }
