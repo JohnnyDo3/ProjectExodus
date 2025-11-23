@@ -86,10 +86,10 @@ export async function POST(request: NextRequest) {
       )
     }
 
-    // Check if OpenAI API key is available
-    const openaiApiKey = process.env.OPENAI_API_KEY
+    // Check if Google AI API key is available
+    const googleApiKey = process.env.GOOGLE_AI_API_KEY
 
-    if (!openaiApiKey) {
+    if (!googleApiKey) {
       // Fallback to rule-based responses if no API key
       const lastMessage = messages[messages.length - 1]
       const response = generateFallbackResponse(lastMessage.content)
@@ -97,33 +97,43 @@ export async function POST(request: NextRequest) {
       return NextResponse.json({ message: response })
     }
 
-    // Use OpenAI API
-    const openaiResponse = await fetch('https://api.openai.com/v1/chat/completions', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        'Authorization': `Bearer ${openaiApiKey}`
-      },
-      body: JSON.stringify({
-        model: 'gpt-4o-mini',
-        messages: [
-          {
-            role: 'system',
-            content: FAQ_CONTEXT
-          },
-          ...messages
-        ],
-        temperature: 0.7,
-        max_tokens: 500
-      })
-    })
+    // Convert messages to Gemini format
+    // Gemini requires alternating user/model messages, so we need to combine the system prompt with first user message
+    const geminiMessages = messages.map((msg: any, index: number) => ({
+      role: msg.role === 'assistant' ? 'model' : 'user',
+      parts: [{
+        text: index === 0
+          ? `Context: ${FAQ_CONTEXT}\n\nUser: ${msg.content}`
+          : msg.content
+      }]
+    }))
 
-    if (!openaiResponse.ok) {
-      throw new Error('OpenAI API request failed')
+    // Use Google Gemini API
+    const geminiResponse = await fetch(
+      `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${googleApiKey}`,
+      {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          contents: geminiMessages,
+          generationConfig: {
+            temperature: 0.7,
+            maxOutputTokens: 500,
+          }
+        })
+      }
+    )
+
+    if (!geminiResponse.ok) {
+      const errorData = await geminiResponse.json()
+      console.error('Gemini API error:', errorData)
+      throw new Error('Gemini API request failed')
     }
 
-    const data = await openaiResponse.json()
-    const assistantMessage = data.choices[0].message.content
+    const data = await geminiResponse.json()
+    const assistantMessage = data.candidates[0].content.parts[0].text
 
     return NextResponse.json({ message: assistantMessage })
   } catch (error) {
