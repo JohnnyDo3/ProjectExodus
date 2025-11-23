@@ -50,142 +50,95 @@ export function FlyingBirds() {
               '--total-cycle': `${bird.flapCycleDuration + bird.glideDuration}s`,
             }}
           >
+            {/* Simple, clean hawk/eagle silhouette */}
             <svg
-              width={70 * bird.size}
-              height={45 * bird.size}
-              viewBox="0 0 70 45"
+              width={60 * bird.size}
+              height={35 * bird.size}
+              viewBox="0 0 60 35"
               fill="none"
               xmlns="http://www.w3.org/2000/svg"
               className="bird-svg text-[var(--foreground)]"
             >
-              {/* HAWK/EAGLE BODY - Angular and powerful */}
-              <g className="bird-body-group">
-                {/* Chest - broad and muscular */}
-                <path
-                  d="M 30,22 L 28,18 L 32,16 L 36,18 L 34,22 Z"
-                  fill="currentColor"
-                  opacity="0.95"
-                  className="bird-chest"
-                />
-                {/* Belly */}
-                <ellipse
-                  cx="32"
-                  cy="24"
-                  rx="3"
-                  ry="4"
-                  fill="currentColor"
-                  opacity="0.9"
-                />
-                {/* Head and neck */}
-                <ellipse
-                  cx="29"
-                  cy="18"
-                  rx="2.5"
-                  ry="3"
-                  fill="currentColor"
-                  opacity="0.95"
-                />
-                {/* Hooked beak - raptor */}
-                <path
-                  d="M 27,18 Q 25,17 24,18 L 25,19 Q 26,18.5 27,18.5 Z"
-                  fill="currentColor"
-                  opacity="0.98"
-                />
-              </g>
+              {/* Body - simple streamlined shape */}
+              <ellipse
+                cx="28"
+                cy="17"
+                rx="4"
+                ry="2.5"
+                fill="currentColor"
+                opacity="0.95"
+              />
 
-              {/* FAN-SHAPED TAIL - eagle style, dramatic spread */}
-              <g className="tail-group">
-                {/* Center tail feather */}
-                <path
-                  d="M 37,22 Q 42,20 46,22 Q 44,23 37,23 Z"
-                  fill="currentColor"
-                  opacity="0.85"
-                />
-                {/* Upper tail feathers */}
-                <path
-                  d="M 37,20 Q 41,18 45,19 Q 43,20.5 37,21 Z"
-                  fill="currentColor"
-                  opacity="0.8"
-                />
-                <path
-                  d="M 37,18 Q 40,16 44,17 Q 42,18.5 37,19 Z"
-                  fill="currentColor"
-                  opacity="0.75"
-                />
-                {/* Lower tail feathers */}
-                <path
-                  d="M 37,24 Q 41,26 45,25 Q 43,23.5 37,23 Z"
-                  fill="currentColor"
-                  opacity="0.8"
-                />
-                <path
-                  d="M 37,26 Q 40,28 44,27 Q 42,25.5 37,25 Z"
-                  fill="currentColor"
-                  opacity="0.75"
-                />
-              </g>
+              {/* Head - front of bird */}
+              <circle
+                cx="24"
+                cy="16"
+                r="1.8"
+                fill="currentColor"
+                opacity="0.95"
+              />
 
-              {/* LEFT WING - Broad raptor wing with defined feathers */}
+              {/* Beak pointing forward */}
+              <path
+                d="M 22.5,16 L 20,16"
+                stroke="currentColor"
+                strokeWidth="0.8"
+                opacity="0.9"
+              />
+
+              {/* LEFT WING - Classic bird wing shape */}
               <g className="wing-left">
-                {/* Wing shoulder */}
                 <path
-                  d="M 30,20 L 24,18 L 22,20 L 28,22 Z"
+                  d="M 26,17 Q 20,12 14,13 Q 10,14 6,15 Q 4,15.5 2,16 Q 5,17 10,17 Q 18,17.5 26,18"
                   fill="currentColor"
-                  opacity="0.9"
+                  opacity="0.88"
                 />
-                {/* Primary feathers - long and separated */}
+                {/* Wing tip feathers */}
                 <path
-                  d="M 22,20 Q 16,16 10,17 L 8,19 Q 12,19 18,21 L 22,22 Z"
-                  fill="currentColor"
-                  opacity="0.85"
-                />
-                <path
-                  d="M 10,17 Q 6,14 3,15 L 2,17 Q 5,17 8,19 Z"
+                  d="M 6,15 Q 3,14 1,14.5 L 0,15.5 Q 2,15.5 4,16"
                   fill="currentColor"
                   opacity="0.75"
-                />
-                <path
-                  d="M 6,14 Q 3,12 1,13 L 0.5,15 Q 2,14.5 5,16 Z"
-                  fill="currentColor"
-                  opacity="0.7"
-                />
-                {/* Secondary feathers */}
-                <path
-                  d="M 18,21 Q 14,19 11,20 L 10,22 Q 13,22 17,23 Z"
-                  fill="currentColor"
-                  opacity="0.82"
                 />
               </g>
 
-              {/* RIGHT WING - Broad raptor wing with defined feathers */}
+              {/* RIGHT WING - Classic bird wing shape */}
               <g className="wing-right">
-                {/* Wing shoulder */}
                 <path
-                  d="M 34,20 L 40,18 L 42,20 L 36,22 Z"
+                  d="M 30,17 Q 36,12 42,13 Q 46,14 50,15 Q 52,15.5 54,16 Q 51,17 46,17 Q 38,17.5 30,18"
                   fill="currentColor"
-                  opacity="0.9"
+                  opacity="0.88"
                 />
-                {/* Primary feathers - long and separated */}
+                {/* Wing tip feathers */}
                 <path
-                  d="M 42,20 Q 48,16 54,17 L 56,19 Q 52,19 46,21 L 42,22 Z"
-                  fill="currentColor"
-                  opacity="0.85"
-                />
-                <path
-                  d="M 54,17 Q 58,14 61,15 L 62,17 Q 59,17 56,19 Z"
+                  d="M 50,15 Q 53,14 55,14.5 L 56,15.5 Q 54,15.5 52,16"
                   fill="currentColor"
                   opacity="0.75"
                 />
+              </g>
+
+              {/* TAIL - Pointing BACKWARD (to the right) */}
+              <g className="tail-group">
+                {/* Fan-shaped tail spreading backward */}
                 <path
-                  d="M 58,14 Q 61,12 63,13 L 63.5,15 Q 62,14.5 59,16 Z"
-                  fill="currentColor"
-                  opacity="0.7"
+                  d="M 32,16 Q 36,14 40,15"
+                  stroke="currentColor"
+                  strokeWidth="1.2"
+                  fill="none"
+                  opacity="0.85"
                 />
-                {/* Secondary feathers */}
                 <path
-                  d="M 46,21 Q 50,19 53,20 L 54,22 Q 51,22 47,23 Z"
-                  fill="currentColor"
-                  opacity="0.82"
+                  d="M 32,17 Q 37,17 42,17"
+                  stroke="currentColor"
+                  strokeWidth="1.5"
+                  fill="none"
+                  opacity="0.9"
+                />
+                <path
+                  d="M 32,18 Q 36,20 40,19"
+                  stroke="currentColor"
+                  strokeWidth="1.2"
+                  fill="none"
+                  opacity="0.85"
                 />
               </g>
             </svg>
@@ -202,7 +155,7 @@ export function FlyingBirds() {
 
         @keyframes fly {
           0% {
-            left: -150px;
+            left: -120px;
             transform: translateY(0px) rotate(0deg) scale(var(--bird-size));
           }
           /* Flapping upward */
@@ -232,45 +185,30 @@ export function FlyingBirds() {
             transform: translateY(calc(var(--bird-amplitude) * 0.2)) rotate(2deg) scale(var(--bird-size));
           }
           100% {
-            left: calc(100% + 150px);
+            left: calc(100% + 120px);
             transform: translateY(0px) rotate(0deg) scale(var(--bird-size));
           }
         }
 
-        /* Body subtle movement */
-        .bird-body-group {
-          animation: body-shift 0.5s ease-in-out infinite;
-          transform-origin: 32px 22px;
-        }
-
-        @keyframes body-shift {
-          0%, 100% {
-            transform: scaleY(1) scaleX(1);
-          }
-          50% {
-            transform: scaleY(0.96) scaleX(1.03);
-          }
-        }
-
-        /* Tail fanning - dramatic spread */}
+        /* Tail subtle spread */}
         .tail-group {
-          animation: tail-fan 1.6s ease-in-out infinite;
-          transform-origin: 37px 22px;
+          animation: tail-spread 1.8s ease-in-out infinite;
+          transform-origin: 32px 17px;
         }
 
-        @keyframes tail-fan {
+        @keyframes tail-spread {
           0%, 100% {
-            transform: scaleX(1) scaleY(1);
+            transform: scaleX(1);
           }
           50% {
-            transform: scaleX(1.25) scaleY(1.15);
+            transform: scaleX(1.15);
           }
         }
 
-        /* Wing flapping - powerful and dramatic */
+        /* Wing flapping */}
         .wing-left, .wing-right {
           animation: wing-flap-soar var(--total-cycle) ease-in-out infinite;
-          transform-origin: 32px 20px;
+          transform-origin: 28px 17px;
         }
 
         .wing-right {
@@ -283,36 +221,36 @@ export function FlyingBirds() {
             transform: rotateX(0deg) scaleY(1);
           }
           6% {
-            transform: rotateX(70deg) scaleY(0.2);
+            transform: rotateX(65deg) scaleY(0.25);
           }
           12% {
             transform: rotateX(0deg) scaleY(1);
           }
           18% {
-            transform: rotateX(70deg) scaleY(0.2);
+            transform: rotateX(65deg) scaleY(0.25);
           }
           24% {
             transform: rotateX(0deg) scaleY(1);
           }
           30% {
-            transform: rotateX(70deg) scaleY(0.2);
+            transform: rotateX(65deg) scaleY(0.25);
           }
           36% {
             transform: rotateX(0deg) scaleY(1);
           }
 
-          /* Extended soaring */
+          /* Extended soaring - wings mostly level */}
           40% {
             transform: rotateX(-5deg) scaleY(0.98);
           }
           55% {
-            transform: rotateX(-12deg) scaleY(0.94);
-          }
-          70% {
             transform: rotateX(-8deg) scaleY(0.96);
           }
+          70% {
+            transform: rotateX(-6deg) scaleY(0.97);
+          }
           85% {
-            transform: rotateX(-10deg) scaleY(0.95);
+            transform: rotateX(-7deg) scaleY(0.96);
           }
           95% {
             transform: rotateX(-3deg) scaleY(0.98);
