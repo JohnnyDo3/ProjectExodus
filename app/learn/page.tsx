@@ -73,15 +73,15 @@ export default async function LearnPage() {
         </div>
       </section>
 
-      {/* The Planet in Numbers - Full Viewport, Compact */}
-      <section className="min-h-screen flex items-center justify-center bg-[var(--background)] py-12">
+      {/* The Planet in Numbers - Compact */}
+      <section className="flex items-center justify-center bg-[var(--background)] py-8">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
           <div className="max-w-6xl mx-auto">
-            <div className="text-center mb-8">
-              <div className="inline-block px-4 py-2 bg-red-500/20 rounded-full border-2 border-red-500 mb-4">
-                <span className="text-xs font-black text-red-500 uppercase tracking-wider flex items-center gap-2">
-                  <span className="w-2 h-2 bg-red-500 rounded-full animate-pulse"></span>
-                  REAL-TIME ENVIRONMENTAL IMPACT
+            <div className="text-center mb-6">
+              <div className="inline-block px-4 py-2 bg-orange-500/20 rounded-full border-2 border-orange-500 mb-4">
+                <span className="text-xs font-black text-orange-500 uppercase tracking-wider flex items-center gap-2">
+                  <span className="w-2 h-2 bg-orange-500 rounded-full animate-pulse"></span>
+                  CALCULATED FROM ANNUAL DATA
                 </span>
               </div>
               <h2 className="text-4xl md:text-5xl font-black mb-4" style={{
@@ -92,8 +92,7 @@ export default async function LearnPage() {
                 THE PLANET IN NUMBERS
               </h2>
               <p className="text-base font-semibold text-theme-muted max-w-3xl mx-auto">
-                Watch these statistics count up in <span className="font-black text-red-500">real-time</span>.
-                Every number represents the environmental impact happening across our planet right now.
+                Statistics calculated from latest annual reports. Click any card to verify the source data.
               </p>
             </div>
 

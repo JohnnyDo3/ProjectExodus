@@ -12,6 +12,8 @@ interface StatConfig {
   unit: string
   decimals: number
   source?: string
+  sourceUrl?: string
+  annualTotal?: string
 }
 
 const ICON_MAP: Record<string, any> = {
@@ -73,6 +75,8 @@ export function CompactLiveImpactStats() {
         unit: stat.unit,
         decimals: DECIMALS_MAP[stat.label] ?? 0,
         source: stat.source,
+        sourceUrl: stat.sourceUrl,
+        annualTotal: stat.annualTotal,
       }))
 
       setStatsConfig(transformedStats)
@@ -207,46 +211,73 @@ export function CompactLiveImpactStats() {
         {statsConfig.map((stat, index) => {
           const Icon = stat.icon
           const value = getCurrentValue(stat)
+          const CardWrapper = stat.sourceUrl ? 'a' : 'div'
 
           return (
-            <Card
+            <CardWrapper
               key={index}
-              className={`border-2 ${getBorderClass(stat.color)} ${getBgClass(stat.color)}`}
+              {...(stat.sourceUrl ? {
+                href: stat.sourceUrl,
+                target: '_blank',
+                rel: 'noopener noreferrer',
+                className: 'block hover:scale-105 transition-transform duration-200'
+              } : {})}
             >
-              <CardContent className="p-3">
-                <div className="flex items-center gap-2 mb-1">
-                  <div className={`w-8 h-8 rounded-full ${getBgClass(stat.color)} flex items-center justify-center flex-shrink-0`}>
-                    <Icon className={`w-4 h-4 ${getColorClass(stat.color)}`} />
+              <Card
+                className={`border-2 ${getBorderClass(stat.color)} ${getBgClass(stat.color)} ${stat.sourceUrl ? 'cursor-pointer hover:border-opacity-100' : ''}`}
+              >
+                <CardContent className="p-3">
+                  <div className="flex items-center gap-2 mb-1">
+                    <div className={`w-8 h-8 rounded-full ${getBgClass(stat.color)} flex items-center justify-center flex-shrink-0`}>
+                      <Icon className={`w-4 h-4 ${getColorClass(stat.color)}`} />
+                    </div>
+                    <h3 className="text-[10px] font-black text-theme-muted uppercase tracking-tight leading-tight">
+                      {stat.label}
+                    </h3>
                   </div>
-                  <h3 className="text-[10px] font-black text-theme-muted uppercase tracking-tight leading-tight">
-                    {stat.label}
-                  </h3>
-                </div>
 
-                <div className={`text-xl md:text-2xl font-black ${getColorClass(stat.color)} tabular-nums mb-0.5`}>
-                  {formatNumber(value, stat.decimals)}
-                </div>
-                <div className="text-[10px] font-bold text-theme-muted uppercase">
-                  {stat.unit}/{timeInterval}
-                </div>
-                {stat.source && (
-                  <div className="text-[8px] font-semibold text-theme-muted/60 mt-1 truncate" title={stat.source}>
-                    {stat.source}
+                  <div className={`text-xl md:text-2xl font-black ${getColorClass(stat.color)} tabular-nums mb-0.5`}>
+                    {formatNumber(value, stat.decimals)}
                   </div>
-                )}
-              </CardContent>
-            </Card>
+                  <div className="text-[10px] font-bold text-theme-muted uppercase">
+                    {stat.unit}/{timeInterval}
+                  </div>
+
+                  {stat.annualTotal && (
+                    <div className="text-[9px] font-bold text-theme-muted/80 mt-1">
+                      Annual: {stat.annualTotal}
+                    </div>
+                  )}
+
+                  {stat.source && (
+                    <div className="flex items-center gap-1 mt-1">
+                      <div className="text-[8px] font-semibold text-theme-muted/60 truncate">
+                        Source: {stat.source}
+                      </div>
+                      {stat.sourceUrl && (
+                        <svg className="w-3 h-3 text-theme-muted/60 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
+                        </svg>
+                      )}
+                    </div>
+                  )}
+                </CardContent>
+              </Card>
+            </CardWrapper>
           )
         })}
       </div>
 
-      <div className="text-center p-4 bg-gradient-to-br from-red-500/10 to-orange-500/10 rounded-xl border-2 border-red-500/40 max-w-3xl mx-auto">
-        <p className="text-sm font-bold text-theme-muted">
-          <span className="font-black text-red-500">REAL DATA</span> from Global Carbon Project, World Bank, FAO, IEA, and OECD. Updated hourly.
+      <div className="text-center p-4 bg-gradient-to-br from-orange-500/10 to-red-500/10 rounded-xl border-2 border-orange-500/40 max-w-3xl mx-auto">
+        <p className="text-sm font-bold text-theme-muted mb-2">
+          <span className="font-black text-orange-500">Based on Latest Annual Reports</span> from Global Carbon Project, World Bank, FAO, IEA, and OECD.
+        </p>
+        <p className="text-xs text-theme-muted mb-3">
+          Per-second rates calculated from verified annual totals. Click any card to view the source data.
         </p>
         <button
           onClick={fetchEnvironmentalData}
-          className="mt-2 inline-flex items-center gap-2 text-xs font-bold text-theme-primary hover:text-[var(--primary)] transition-colors"
+          className="inline-flex items-center gap-2 text-xs font-bold text-theme-primary hover:text-[var(--primary)] transition-colors"
         >
           <RefreshCw className="w-3 h-3" />
           Refresh Data

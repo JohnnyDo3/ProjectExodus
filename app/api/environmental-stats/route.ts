@@ -13,7 +13,9 @@ interface EnvironmentalStat {
   perSecond: number
   unit: string
   source: string
+  sourceUrl: string
   lastUpdated: string
+  annualTotal: string
 }
 
 // Revalidate cached data every hour
@@ -34,12 +36,14 @@ export async function GET() {
     if (co2Data.status === 'fulfilled') {
       stats.push(co2Data.value)
     } else {
-      // Fallback to World Bank 2023 data: ~37.9 billion tonnes/year
+      // Fallback to Global Carbon Project 2023 data: ~37.9 billion tonnes/year
       stats.push({
         label: 'CO₂ Emissions',
         perSecond: 1201, // 37.9B tonnes/year ÷ 365 days ÷ 24h ÷ 3600s
         unit: 'tons',
-        source: 'World Bank (2023)',
+        source: 'Global Carbon Project',
+        sourceUrl: 'https://globalcarbonproject.org/carbonbudget/',
+        annualTotal: '37.9 billion tons/year',
         lastUpdated: new Date().toISOString(),
       })
     }
@@ -53,7 +57,9 @@ export async function GET() {
         label: 'Deforestation',
         perSecond: 0.317, // 10M hectares/year
         unit: 'hectares',
-        source: 'FAO Global Forest Resources Assessment',
+        source: 'FAO',
+        sourceUrl: 'https://www.fao.org/forest-resources-assessment/en/',
+        annualTotal: '10 million hectares/year',
         lastUpdated: new Date().toISOString(),
       })
     }
@@ -66,30 +72,38 @@ export async function GET() {
       stats.push(
         {
           label: 'Global Waste',
-          perSecond: 73.6, // 2.32B tonnes/year (World Bank What a Waste 2.0)
+          perSecond: 73.6, // 2.32B tonnes/year
           unit: 'tons',
-          source: 'World Bank What a Waste 2.0',
+          source: 'World Bank',
+          sourceUrl: 'https://datatopics.worldbank.org/what-a-waste/',
+          annualTotal: '2.32 billion tons/year',
           lastUpdated: new Date().toISOString(),
         },
         {
           label: 'Plastic Waste',
-          perSecond: 11.4, // 360M tonnes/year (OECD 2023)
+          perSecond: 11.4, // 360M tonnes/year
           unit: 'tons',
-          source: 'OECD Plastics Outlook',
+          source: 'OECD',
+          sourceUrl: 'https://www.oecd.org/environment/plastics/',
+          annualTotal: '360 million tons/year',
           lastUpdated: new Date().toISOString(),
         },
         {
           label: 'Water Used',
-          perSecond: 127323, // 4,000 km³/year (FAO AQUASTAT)
+          perSecond: 127323, // 4,000 km³/year
           unit: 'm³',
           source: 'FAO AQUASTAT',
+          sourceUrl: 'https://www.fao.org/aquastat/en/',
+          annualTotal: '4,000 km³/year',
           lastUpdated: new Date().toISOString(),
         },
         {
           label: 'Energy Used',
-          perSecond: 1755, // 15,500 TWh/year (IEA 2023)
+          perSecond: 1755, // 15,500 TWh/year
           unit: 'MWh',
-          source: 'IEA World Energy Outlook',
+          source: 'IEA',
+          sourceUrl: 'https://www.iea.org/reports/world-energy-outlook-2023',
+          annualTotal: '15,500 TWh/year',
           lastUpdated: new Date().toISOString(),
         }
       )
