@@ -41,11 +41,25 @@ export default function MyBasecampPage() {
   const [userProfile, setUserProfile] = useState<any>(null)
   const [isLoadingProfile, setIsLoadingProfile] = useState(true)
 
+  // New state for additional sections
+  const [articles, setArticles] = useState<any[]>([])
+  const [isLoadingArticles, setIsLoadingArticles] = useState(true)
+  const [forumPosts, setForumPosts] = useState<any[]>([])
+  const [isLoadingForumPosts, setIsLoadingForumPosts] = useState(true)
+  const [discussions, setDiscussions] = useState<any[]>([])
+  const [isLoadingDiscussions, setIsLoadingDiscussions] = useState(true)
+  const [learningProgress, setLearningProgress] = useState<any>(null)
+  const [isLoadingLearning, setIsLoadingLearning] = useState(true)
+
   useEffect(() => {
     if (session?.user?.id) {
       fetchUserProjects()
       fetchActivityFeed()
       fetchUserProfile()
+      fetchUserArticles()
+      fetchUserForumPosts()
+      fetchUserDiscussions()
+      fetchLearningProgress()
     }
   }, [session?.user?.id])
 
@@ -96,6 +110,70 @@ export default function MyBasecampPage() {
       console.error('Error fetching user profile:', error)
     } finally {
       setIsLoadingProfile(false)
+    }
+  }
+
+  const fetchUserArticles = async () => {
+    try {
+      const res = await fetch(`/api/articles?authorId=${session?.user?.id}`)
+      const data = await res.json()
+
+      if (data.success) {
+        setArticles(data.data || [])
+      }
+    } catch (error) {
+      console.error('Error fetching articles:', error)
+      setArticles([])
+    } finally {
+      setIsLoadingArticles(false)
+    }
+  }
+
+  const fetchUserForumPosts = async () => {
+    try {
+      const res = await fetch(`/api/forum?authorId=${session?.user?.id}`)
+      const data = await res.json()
+
+      if (data.success) {
+        setForumPosts(data.data || [])
+      }
+    } catch (error) {
+      console.error('Error fetching forum posts:', error)
+      setForumPosts([])
+    } finally {
+      setIsLoadingForumPosts(false)
+    }
+  }
+
+  const fetchUserDiscussions = async () => {
+    try {
+      const res = await fetch(`/api/discussions?userId=${session?.user?.id}`)
+      const data = await res.json()
+
+      if (data.success) {
+        setDiscussions(data.data || [])
+      }
+    } catch (error) {
+      console.error('Error fetching discussions:', error)
+      setDiscussions([])
+    } finally {
+      setIsLoadingDiscussions(false)
+    }
+  }
+
+  const fetchLearningProgress = async () => {
+    try {
+      const res = await fetch(`/api/learning/progress?userId=${session?.user?.id}`)
+      const data = await res.json()
+
+      if (data.success) {
+        setLearningProgress(data.data)
+      }
+    } catch (error) {
+      console.error('Error fetching learning progress:', error)
+      setLearningProgress(null)
+    } finally {
+      setIsLoadingLearning(false)
     }
   }
 
@@ -506,6 +584,240 @@ export default function MyBasecampPage() {
                         </p>
                       </div>
                     </div>
+                  </CardContent>
+                </Card>
+              </div>
+
+              {/* My Articles */}
+              <div>
+                <div className="flex items-center justify-between mb-4">
+                  <h3 className="text-2xl font-black text-[var(--foreground)] flex items-center gap-2">
+                    <BookOpen className="w-6 h-6 text-theme-primary" />
+                    MY ARTICLES
+                  </h3>
+                  <Link href="/learn">
+                    <Button size="sm" className="font-bold">
+                      <FileText className="w-4 h-4 mr-2" />
+                      WRITE ARTICLE
+                    </Button>
+                  </Link>
+                </div>
+
+                {isLoadingArticles ? (
+                  <Card className="border-2 border-[var(--border)]">
+                    <CardContent className="p-8 text-center">
+                      <div className="w-10 h-10 border-4 border-theme-primary border-t-transparent rounded-full animate-spin mx-auto mb-4" />
+                      <p className="text-sm font-bold text-theme-muted">Loading articles...</p>
+                    </CardContent>
+                  </Card>
+                ) : articles.length > 0 ? (
+                  <div className="grid md:grid-cols-2 gap-4">
+                    {articles.slice(0, 4).map((article: any) => (
+                      <Card key={article.id} className="border-2 border-theme-primary hover:border-theme-accent transition-all">
+                        <CardContent className="p-4">
+                          <h4 className="text-base font-black text-[var(--foreground)] mb-2 line-clamp-2">
+                            {article.title}
+                          </h4>
+                          <p className="text-xs font-medium text-theme-muted mb-3 line-clamp-2">
+                            {article.excerpt || article.description}
+                          </p>
+                          <div className="flex items-center justify-between text-xs">
+                            <span className="font-semibold text-theme-muted">
+                              {new Date(article.createdAt).toLocaleDateString()}
+                            </span>
+                            <Link href={`/learn/${article.slug}`}>
+                              <Button size="sm" variant="outline" className="font-bold text-xs">
+                                READ
+                              </Button>
+                            </Link>
+                          </div>
+                        </CardContent>
+                      </Card>
+                    ))}
+                  </div>
+                ) : (
+                  <Card className="border-4 border-theme-secondary">
+                    <CardContent className="p-8 text-center">
+                      <BookOpen className="w-12 h-12 text-theme-secondary mx-auto mb-4 opacity-50" />
+                      <h4 className="text-lg font-black mb-2 text-theme-muted">NO ARTICLES YET</h4>
+                      <p className="text-sm font-medium text-theme-muted mb-4">
+                        Share your sustainability knowledge with the community!
+                      </p>
+                      <Link href="/learn">
+                        <Button className="font-bold">
+                          <FileText className="w-4 h-4 mr-2" />
+                          WRITE YOUR FIRST ARTICLE
+                        </Button>
+                      </Link>
+                    </CardContent>
+                  </Card>
+                )}
+              </div>
+
+              {/* My Forum Posts & Discussions Grid */}
+              <div className="grid md:grid-cols-2 gap-6">
+                {/* My Forum Posts */}
+                <div>
+                  <div className="flex items-center justify-between mb-4">
+                    <h3 className="text-xl font-black text-[var(--foreground)] flex items-center gap-2">
+                      <MessageCircle className="w-5 h-5 text-theme-accent" />
+                      MY FORUM POSTS
+                    </h3>
+                  </div>
+
+                  <Card className="border-4 border-theme-accent">
+                    <CardContent className="p-4">
+                      {isLoadingForumPosts ? (
+                        <div className="text-center py-6">
+                          <div className="w-8 h-8 border-4 border-theme-accent border-t-transparent rounded-full animate-spin mx-auto mb-3" />
+                          <p className="text-xs font-bold text-theme-muted">Loading...</p>
+                        </div>
+                      ) : forumPosts.length > 0 ? (
+                        <div className="space-y-3 max-h-64 overflow-y-auto">
+                          {forumPosts.slice(0, 5).map((post: any) => (
+                            <div key={post.id} className="p-3 bg-[var(--muted)] rounded-lg hover:bg-[color-mix(in_srgb,var(--accent)_10%,var(--muted))] transition-colors">
+                              <h4 className="text-sm font-black text-[var(--foreground)] mb-1 line-clamp-1">
+                                {post.title}
+                              </h4>
+                              <p className="text-xs font-medium text-theme-muted mb-2 line-clamp-2">
+                                {post.content}
+                              </p>
+                              <div className="flex items-center justify-between text-xs">
+                                <span className="font-semibold text-theme-muted">
+                                  {new Date(post.createdAt).toLocaleDateString()}
+                                </span>
+                                <Link href={`/community/forum/${post.slug}`}>
+                                  <Button size="sm" variant="ghost" className="font-bold text-xs h-6">
+                                    VIEW
+                                  </Button>
+                                </Link>
+                              </div>
+                            </div>
+                          ))}
+                        </div>
+                      ) : (
+                        <div className="text-center py-6">
+                          <MessageCircle className="w-10 h-10 text-theme-accent mx-auto mb-3 opacity-50" />
+                          <p className="text-xs font-bold text-theme-muted mb-3">No forum posts yet</p>
+                          <Link href="/community/forum">
+                            <Button size="sm" className="font-bold text-xs">
+                              JOIN DISCUSSIONS
+                            </Button>
+                          </Link>
+                        </div>
+                      )}
+                    </CardContent>
+                  </Card>
+                </div>
+
+                {/* My Discussions */}
+                <div>
+                  <div className="flex items-center justify-between mb-4">
+                    <h3 className="text-xl font-black text-[var(--foreground)] flex items-center gap-2">
+                      <Users className="w-5 h-5 text-theme-secondary" />
+                      MY DISCUSSIONS
+                    </h3>
+                  </div>
+
+                  <Card className="border-4 border-theme-secondary">
+                    <CardContent className="p-4">
+                      {isLoadingDiscussions ? (
+                        <div className="text-center py-6">
+                          <div className="w-8 h-8 border-4 border-theme-secondary border-t-transparent rounded-full animate-spin mx-auto mb-3" />
+                          <p className="text-xs font-bold text-theme-muted">Loading...</p>
+                        </div>
+                      ) : discussions.length > 0 ? (
+                        <div className="space-y-3 max-h-64 overflow-y-auto">
+                          {discussions.slice(0, 5).map((discussion: any) => (
+                            <div key={discussion.id} className="p-3 bg-[var(--muted)] rounded-lg hover:bg-[color-mix(in_srgb,var(--secondary)_10%,var(--muted))] transition-colors">
+                              <h4 className="text-sm font-black text-[var(--foreground)] mb-1 line-clamp-1">
+                                {discussion.title}
+                              </h4>
+                              <div className="flex items-center justify-between text-xs">
+                                <span className="font-semibold text-theme-muted">
+                                  {discussion.replies || 0} replies
+                                </span>
+                                <span className="font-semibold text-theme-muted">
+                                  {new Date(discussion.updatedAt).toLocaleDateString()}
+                                </span>
+                              </div>
+                            </div>
+                          ))}
+                        </div>
+                      ) : (
+                        <div className="text-center py-6">
+                          <Users className="w-10 h-10 text-theme-secondary mx-auto mb-3 opacity-50" />
+                          <p className="text-xs font-bold text-theme-muted mb-3">No discussions yet</p>
+                          <Link href="/community">
+                            <Button size="sm" className="font-bold text-xs">
+                              START DISCUSSING
+                            </Button>
+                          </Link>
+                        </div>
+                      )}
+                    </CardContent>
+                  </Card>
+                </div>
+              </div>
+
+              {/* My Learning Progress */}
+              <div>
+                <div className="flex items-center justify-between mb-4">
+                  <h3 className="text-2xl font-black text-[var(--foreground)] flex items-center gap-2">
+                    <GraduationCap className="w-6 h-6 text-theme-primary" />
+                    MY LEARNING PROGRESS
+                  </h3>
+                  <Link href="/learn">
+                    <Button size="sm" className="font-bold">
+                      <BookOpen className="w-4 h-4 mr-2" />
+                      EXPLORE LEARNING
+                    </Button>
+                  </Link>
+                </div>
+
+                <Card className="border-4 border-theme-primary bg-gradient-to-br from-[color-mix(in_srgb,var(--primary)_10%,var(--card))] to-[var(--card)]">
+                  <CardContent className="p-6">
+                    {isLoadingLearning ? (
+                      <div className="text-center py-8">
+                        <div className="w-12 h-12 border-4 border-theme-primary border-t-transparent rounded-full animate-spin mx-auto mb-4" />
+                        <p className="text-sm font-bold text-theme-muted">Loading your progress...</p>
+                      </div>
+                    ) : learningProgress ? (
+                      <div className="grid md:grid-cols-3 gap-4">
+                        <div className="text-center p-4 bg-[var(--background)] rounded-lg">
+                          <div className="text-3xl font-black text-theme-primary mb-2">
+                            {learningProgress.articlesRead || 0}
+                          </div>
+                          <p className="text-xs font-bold text-theme-muted uppercase">Articles Read</p>
+                        </div>
+                        <div className="text-center p-4 bg-[var(--background)] rounded-lg">
+                          <div className="text-3xl font-black text-theme-accent mb-2">
+                            {learningProgress.coursesCompleted || 0}
+                          </div>
+                          <p className="text-xs font-bold text-theme-muted uppercase">Courses Done</p>
+                        </div>
+                        <div className="text-center p-4 bg-[var(--background)] rounded-lg">
+                          <div className="text-3xl font-black text-theme-secondary mb-2">
+                            {learningProgress.totalHours || 0}h
+                          </div>
+                          <p className="text-xs font-bold text-theme-muted uppercase">Learning Time</p>
+                        </div>
+                      </div>
+                    ) : (
+                      <div className="text-center py-8">
+                        <GraduationCap className="w-16 h-16 text-theme-primary mx-auto mb-4 opacity-50" />
+                        <h4 className="text-lg font-black mb-2 text-theme-muted">START YOUR LEARNING JOURNEY</h4>
+                        <p className="text-sm font-medium text-theme-muted mb-6 max-w-md mx-auto">
+                          Explore our learning resources on renewable energy, sustainable agriculture, zero waste living, and more!
+                        </p>
+                        <Link href="/learn">
+                          <Button className="font-bold">
+                            <BookOpen className="w-4 h-4 mr-2" />
+                            BROWSE LEARNING CONTENT
+                          </Button>
+                        </Link>
+                      </div>
+                    )}
                   </CardContent>
                 </Card>
               </div>
