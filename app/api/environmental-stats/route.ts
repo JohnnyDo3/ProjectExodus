@@ -207,7 +207,7 @@ async function fetchWasteAndResourceData(): Promise<EnvironmentalStat[]> {
     const waterUsed = (4000 * 1e9) / (365.25 * 24 * 3600) // km³ to m³
 
     // IEA World Energy Outlook 2023: ~15,500 TWh/year
-    const energyUsed = (15500 * 1000) / (365.25 * 24 * 3600) // TWh to MWh
+    const energyUsed = (15500 * 1000000) / (365.25 * 24 * 3600) // TWh to kWh
 
     return [
       {
@@ -240,7 +240,7 @@ async function fetchWasteAndResourceData(): Promise<EnvironmentalStat[]> {
       {
         label: 'Energy Used',
         perSecond: Math.round(energyUsed),
-        unit: 'MWh',
+        unit: 'kWh',
         source: 'IEA World Energy Outlook 2023',
         sourceUrl: 'https://www.iea.org/reports/world-energy-outlook-2023',
         annualTotal: '15,500 TWh/year',

@@ -9,7 +9,8 @@ interface Bird {
   delay: number
   size: number
   amplitude: number
-  flapSpeed: number
+  flapCycleDuration: number
+  glideDuration: number
 }
 
 export function FlyingBirds() {
@@ -18,14 +19,14 @@ export function FlyingBirds() {
   useEffect(() => {
     // Initialize 8 birds with varied characteristics for natural flight
     const initialBirds: Bird[] = [
-      { id: 1, y: 12, speed: 35, delay: 0, size: 1.0, amplitude: 30, flapSpeed: 0.25 },
-      { id: 2, y: 22, speed: 28, delay: 3, size: 0.85, amplitude: 35, flapSpeed: 0.2 },
-      { id: 3, y: 38, speed: 32, delay: 7, size: 0.95, amplitude: 25, flapSpeed: 0.3 },
-      { id: 4, y: 18, speed: 40, delay: 11, size: 1.1, amplitude: 40, flapSpeed: 0.22 },
-      { id: 5, y: 28, speed: 30, delay: 15, size: 0.9, amplitude: 32, flapSpeed: 0.28 },
-      { id: 6, y: 8, speed: 38, delay: 19, size: 1.05, amplitude: 28, flapSpeed: 0.26 },
-      { id: 7, y: 33, speed: 34, delay: 23, size: 0.88, amplitude: 38, flapSpeed: 0.19 },
-      { id: 8, y: 16, speed: 36, delay: 27, size: 0.98, amplitude: 30, flapSpeed: 0.24 },
+      { id: 1, y: 12, speed: 35, delay: 0, size: 1.0, amplitude: 30, flapCycleDuration: 2.5, glideDuration: 1.8 },
+      { id: 2, y: 22, speed: 28, delay: 3, size: 0.85, amplitude: 35, flapCycleDuration: 2.2, glideDuration: 2.0 },
+      { id: 3, y: 38, speed: 32, delay: 7, size: 0.95, amplitude: 25, flapCycleDuration: 2.8, glideDuration: 1.5 },
+      { id: 4, y: 18, speed: 40, delay: 11, size: 1.1, amplitude: 40, flapCycleDuration: 2.6, glideDuration: 1.7 },
+      { id: 5, y: 28, speed: 30, delay: 15, size: 0.9, amplitude: 32, flapCycleDuration: 2.4, glideDuration: 1.9 },
+      { id: 6, y: 8, speed: 38, delay: 19, size: 1.05, amplitude: 28, flapCycleDuration: 2.7, glideDuration: 1.6 },
+      { id: 7, y: 33, speed: 34, delay: 23, size: 0.88, amplitude: 38, flapCycleDuration: 2.3, glideDuration: 2.1 },
+      { id: 8, y: 16, speed: 36, delay: 27, size: 0.98, amplitude: 30, flapCycleDuration: 2.5, glideDuration: 1.8 },
     ]
     setBirds(initialBirds)
   }, [])
@@ -44,38 +45,95 @@ export function FlyingBirds() {
               '--bird-delay': `${bird.delay}s`,
               '--bird-amplitude': `${bird.amplitude}px`,
               '--bird-size': bird.size,
-              '--flap-speed': `${bird.flapSpeed}s`,
+              '--flap-cycle': `${bird.flapCycleDuration}s`,
+              '--glide-duration': `${bird.glideDuration}s`,
+              '--total-cycle': `${bird.flapCycleDuration + bird.glideDuration}s`,
             }}
           >
             <svg
-              width={24 * bird.size}
-              height={16 * bird.size}
-              viewBox="0 0 24 16"
+              width={40 * bird.size}
+              height={28 * bird.size}
+              viewBox="0 0 40 28"
               fill="none"
               xmlns="http://www.w3.org/2000/svg"
               className="bird-svg text-[var(--foreground)]"
             >
-              {/* Bird body */}
-              <ellipse cx="12" cy="8" rx="2.5" ry="3" fill="currentColor" opacity="0.9" />
-
-              {/* Left wing */}
-              <path
-                d="M 12,8 Q 8,3 4,5 L 2,7 Q 4,6 8,8 Q 10,9 12,8 Z"
+              {/* Bird body - elongated teardrop shape */}
+              <ellipse
+                cx="20"
+                cy="14"
+                rx="4"
+                ry="5.5"
                 fill="currentColor"
-                opacity="0.85"
-                className="wing-left"
+                opacity="0.95"
+                className="bird-body"
               />
 
-              {/* Right wing */}
+              {/* Tail feathers */}
               <path
-                d="M 12,8 Q 16,3 20,5 L 22,7 Q 20,6 16,8 Q 14,9 12,8 Z"
+                d="M 24,14 Q 28,12 30,13 Q 28,14 24,14 Z"
                 fill="currentColor"
-                opacity="0.85"
-                className="wing-right"
+                opacity="0.8"
+                className="tail-top"
+              />
+              <path
+                d="M 24,14 Q 28,16 30,15 Q 28,14 24,14 Z"
+                fill="currentColor"
+                opacity="0.8"
+                className="tail-bottom"
               />
 
-              {/* Head */}
-              <circle cx="12" cy="6" r="1.2" fill="currentColor" opacity="0.95" />
+              {/* Left wing - detailed with segments */}
+              <g className="wing-left">
+                {/* Wing base */}
+                <path
+                  d="M 20,14 Q 14,8 8,9 Q 6,10 4,12 Q 8,11 14,13 Q 18,14.5 20,14 Z"
+                  fill="currentColor"
+                  opacity="0.88"
+                />
+                {/* Wing tip feathers */}
+                <path
+                  d="M 8,9 Q 4,6 2,7 L 1,9 Q 3,8 6,10 Z"
+                  fill="currentColor"
+                  opacity="0.75"
+                />
+                {/* Mid feathers */}
+                <path
+                  d="M 11,10 Q 8,7 5,8 L 4,10 Q 6,9 9,11 Z"
+                  fill="currentColor"
+                  opacity="0.80"
+                />
+              </g>
+
+              {/* Right wing - detailed with segments */}
+              <g className="wing-right">
+                {/* Wing base */}
+                <path
+                  d="M 20,14 Q 26,8 32,9 Q 34,10 36,12 Q 32,11 26,13 Q 22,14.5 20,14 Z"
+                  fill="currentColor"
+                  opacity="0.88"
+                />
+                {/* Wing tip feathers */}
+                <path
+                  d="M 32,9 Q 36,6 38,7 L 39,9 Q 37,8 34,10 Z"
+                  fill="currentColor"
+                  opacity="0.75"
+                />
+                {/* Mid feathers */}
+                <path
+                  d="M 29,10 Q 32,7 35,8 L 36,10 Q 34,9 31,11 Z"
+                  fill="currentColor"
+                  opacity="0.80"
+                />
+              </g>
+
+              {/* Head and beak */}
+              <ellipse cx="18" cy="12" rx="2" ry="2.2" fill="currentColor" opacity="0.98" />
+              <path
+                d="M 16,12 L 14,11.5 L 14,12.5 Z"
+                fill="currentColor"
+                opacity="0.9"
+              />
             </svg>
           </div>
         ))}
@@ -126,8 +184,9 @@ export function FlyingBirds() {
           }
         }
 
-        .bird-svg {
-          animation: body-bob var(--flap-speed) ease-in-out infinite;
+        /* Body subtle bobbing during flight */
+        .bird-body {
+          animation: body-bob 0.4s ease-in-out infinite;
           transform-origin: center center;
         }
 
@@ -136,35 +195,95 @@ export function FlyingBirds() {
             transform: scaleY(1) scaleX(1);
           }
           50% {
-            transform: scaleY(0.85) scaleX(1.08);
+            transform: scaleY(0.92) scaleX(1.05);
           }
         }
 
-        .wing-left, .wing-right {
-          animation: wing-beat var(--flap-speed) ease-in-out infinite;
-          transform-origin: 12px 8px;
+        /* Tail movement */
+        .tail-top, .tail-bottom {
+          animation: tail-sway 1.2s ease-in-out infinite;
+          transform-origin: 24px 14px;
         }
 
-        .wing-left {
-          animation-delay: calc(var(--flap-speed) * -0.1);
+        .tail-bottom {
+          animation-delay: 0.1s;
+        }
+
+        @keyframes tail-sway {
+          0%, 100% {
+            transform: rotate(0deg);
+          }
+          50% {
+            transform: rotate(-3deg);
+          }
+        }
+
+        /* Flap/Glide cycle for wings */
+        .wing-left, .wing-right {
+          animation:
+            wing-flap-glide var(--total-cycle) ease-in-out infinite;
+          transform-origin: 20px 14px;
         }
 
         .wing-right {
-          animation-delay: calc(var(--flap-speed) * 0.1);
+          animation-delay: 0.05s;
         }
 
-        @keyframes wing-beat {
-          0%, 100% {
-            transform: scaleY(1) translateY(0px);
+        @keyframes wing-flap-glide {
+          /* Flapping phase - multiple beats */
+          0% {
+            transform: rotateX(0deg) scaleY(1) translateY(0px);
+          }
+          5% {
+            transform: rotateX(60deg) scaleY(0.3) translateY(-2px);
+          }
+          10% {
+            transform: rotateX(0deg) scaleY(1) translateY(0px);
+          }
+          15% {
+            transform: rotateX(60deg) scaleY(0.3) translateY(-2px);
+          }
+          20% {
+            transform: rotateX(0deg) scaleY(1) translateY(0px);
           }
           25% {
-            transform: scaleY(0.4) translateY(-1px);
+            transform: rotateX(60deg) scaleY(0.3) translateY(-2px);
           }
+          30% {
+            transform: rotateX(0deg) scaleY(1) translateY(0px);
+          }
+          35% {
+            transform: rotateX(60deg) scaleY(0.3) translateY(-2px);
+          }
+          40% {
+            transform: rotateX(0deg) scaleY(1) translateY(0px);
+          }
+
+          /* Transition to glide */
+          45% {
+            transform: rotateX(0deg) scaleY(1) translateY(0px);
+          }
+
+          /* Gliding phase - wings extended */
           50% {
-            transform: scaleY(0.2) translateY(-1.5px);
+            transform: rotateX(0deg) scaleY(1) translateY(0px);
           }
-          75% {
-            transform: scaleY(0.4) translateY(-1px);
+          60% {
+            transform: rotateX(-5deg) scaleY(0.98) translateY(0px);
+          }
+          70% {
+            transform: rotateX(0deg) scaleY(1) translateY(0px);
+          }
+          80% {
+            transform: rotateX(-5deg) scaleY(0.98) translateY(0px);
+          }
+          90% {
+            transform: rotateX(0deg) scaleY(1) translateY(0px);
+          }
+
+          /* Back to flapping */
+          100% {
+            transform: rotateX(0deg) scaleY(1) translateY(0px);
           }
         }
       `}</style>
