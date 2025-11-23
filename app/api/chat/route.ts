@@ -110,7 +110,7 @@ export async function POST(request: NextRequest) {
 
     // Use Google Gemini API
     const geminiResponse = await fetch(
-      `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${googleApiKey}`,
+      `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash-latest:generateContent?key=${googleApiKey}`,
       {
         method: 'POST',
         headers: {
