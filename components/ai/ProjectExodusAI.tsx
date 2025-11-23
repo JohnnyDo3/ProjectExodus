@@ -44,7 +44,7 @@ export function ProjectExodusAI() {
     messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' })
   }, [messages])
 
-  const handleSendMessage = () => {
+  const handleSendMessage = async () => {
     if (!inputValue.trim()) return
 
     const userMessage: Message = {
@@ -54,17 +54,46 @@ export function ProjectExodusAI() {
     }
 
     setMessages(prev => [...prev, userMessage])
+    const currentInput = inputValue
     setInputValue('')
 
-    // Simulate AI response (in production, this would call your AI API)
-    setTimeout(() => {
+    // Call the actual AI API
+    try {
+      const response = await fetch('/api/chat', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          messages: [...messages, userMessage].map(m => ({
+            role: m.role,
+            content: m.content
+          }))
+        }),
+      })
+
+      if (!response.ok) {
+        throw new Error('API request failed')
+      }
+
+      const data = await response.json()
+
       const aiResponse: Message = {
         role: 'assistant',
-        content: getAIResponse(inputValue),
+        content: data.message || 'Sorry, I encountered an error. Please try again.',
         timestamp: new Date()
       }
       setMessages(prev => [...prev, aiResponse])
-    }, 1000)
+    } catch (error) {
+      console.error('AI API Error:', error)
+      // Fallback to keyword matching if API fails
+      const aiResponse: Message = {
+        role: 'assistant',
+        content: getAIResponse(currentInput),
+        timestamp: new Date()
+      }
+      setMessages(prev => [...prev, aiResponse])
+    }
   }
 
   const getAIResponse = (userInput: string): string => {
