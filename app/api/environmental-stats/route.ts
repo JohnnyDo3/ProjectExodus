@@ -16,8 +16,8 @@ interface EnvironmentalStat {
   lastUpdated: string
 }
 
-export const dynamic = 'force-dynamic'
-export const revalidate = CACHE_DURATION
+// Revalidate cached data every hour
+export const revalidate = 3600
 
 export async function GET() {
   try {
