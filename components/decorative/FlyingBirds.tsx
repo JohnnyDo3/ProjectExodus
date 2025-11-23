@@ -205,55 +205,57 @@ export function FlyingBirds() {
           }
         }
 
-        /* Wing flapping */}
-        .wing-left, .wing-right {
+        /* Wing flapping - using rotation for visible movement */
+        .wing-left {
           animation: wing-flap-soar var(--total-cycle) ease-in-out infinite;
-          transform-origin: 28px 17px;
+          transform-origin: 26px 17px;
         }
 
         .wing-right {
+          animation: wing-flap-soar var(--total-cycle) ease-in-out infinite;
+          transform-origin: 30px 17px;
           animation-delay: 0.08s;
         }
 
         @keyframes wing-flap-soar {
-          /* Powerful flapping - compress wings vertically */
+          /* Powerful flapping - wings rotate UP */
           0% {
-            transform: scaleY(1) translateY(0px);
+            transform: rotate(0deg);
           }
           6% {
-            transform: scaleY(0.2) translateY(-3px);
+            transform: rotate(-30deg);
           }
           12% {
-            transform: scaleY(1) translateY(0px);
+            transform: rotate(0deg);
           }
           18% {
-            transform: scaleY(0.2) translateY(-3px);
+            transform: rotate(-30deg);
           }
           24% {
-            transform: scaleY(1) translateY(0px);
+            transform: rotate(0deg);
           }
           30% {
-            transform: scaleY(0.2) translateY(-3px);
+            transform: rotate(-30deg);
           }
           36% {
-            transform: scaleY(1) translateY(0px);
+            transform: rotate(0deg);
           }
 
-          /* Extended soaring - wings mostly level with slight adjustments */
+          /* Extended soaring - wings mostly level */
           45% {
-            transform: scaleY(0.95) translateY(-0.5px);
+            transform: rotate(-4deg);
           }
           60% {
-            transform: scaleY(0.92) translateY(-1px);
+            transform: rotate(-6deg);
           }
           75% {
-            transform: scaleY(0.94) translateY(-0.8px);
+            transform: rotate(-5deg);
           }
           90% {
-            transform: scaleY(0.96) translateY(-0.3px);
+            transform: rotate(-3deg);
           }
           100% {
-            transform: scaleY(1) translateY(0px);
+            transform: rotate(0deg);
           }
         }
       `}</style>
