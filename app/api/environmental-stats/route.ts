@@ -157,6 +157,8 @@ async function fetchCO2Data(): Promise<EnvironmentalStat> {
       perSecond: Math.round(perSecond),
       unit: 'tons',
       source: 'Global Carbon Project 2023',
+      sourceUrl: 'https://globalcarbonproject.org/carbonbudget/',
+      annualTotal: '37.9 billion tons/year',
       lastUpdated: new Date().toISOString(),
     }
   } catch (error) {
@@ -179,6 +181,8 @@ async function fetchDeforestationData(): Promise<EnvironmentalStat> {
       perSecond: Number(perSecond.toFixed(3)),
       unit: 'hectares',
       source: 'Global Forest Watch (Hansen et al.)',
+      sourceUrl: 'https://www.globalforestwatch.org/',
+      annualTotal: '10 million hectares/year',
       lastUpdated: new Date().toISOString(),
     }
   } catch (error) {
@@ -211,6 +215,8 @@ async function fetchWasteAndResourceData(): Promise<EnvironmentalStat[]> {
         perSecond: Math.round(globalWaste),
         unit: 'tons',
         source: 'World Bank What a Waste 2.0',
+        sourceUrl: 'https://datatopics.worldbank.org/what-a-waste/',
+        annualTotal: '2.32 billion tons/year',
         lastUpdated: new Date().toISOString(),
       },
       {
@@ -218,6 +224,8 @@ async function fetchWasteAndResourceData(): Promise<EnvironmentalStat[]> {
         perSecond: Math.round(plasticWaste),
         unit: 'tons',
         source: 'OECD Global Plastics Outlook 2023',
+        sourceUrl: 'https://www.oecd.org/environment/plastics/',
+        annualTotal: '360 million tons/year',
         lastUpdated: new Date().toISOString(),
       },
       {
@@ -225,6 +233,8 @@ async function fetchWasteAndResourceData(): Promise<EnvironmentalStat[]> {
         perSecond: Math.round(waterUsed),
         unit: 'm³',
         source: 'FAO AQUASTAT',
+        sourceUrl: 'https://www.fao.org/aquastat/en/',
+        annualTotal: '4,000 km³/year',
         lastUpdated: new Date().toISOString(),
       },
       {
@@ -232,6 +242,8 @@ async function fetchWasteAndResourceData(): Promise<EnvironmentalStat[]> {
         perSecond: Math.round(energyUsed),
         unit: 'MWh',
         source: 'IEA World Energy Outlook 2023',
+        sourceUrl: 'https://www.iea.org/reports/world-energy-outlook-2023',
+        annualTotal: '15,500 TWh/year',
         lastUpdated: new Date().toISOString(),
       },
     ]
