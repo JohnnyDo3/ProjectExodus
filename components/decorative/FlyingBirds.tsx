@@ -216,47 +216,44 @@ export function FlyingBirds() {
         }
 
         @keyframes wing-flap-soar {
-          /* Powerful flapping */
+          /* Powerful flapping - compress wings vertically */
           0% {
-            transform: rotateX(0deg) scaleY(1);
+            transform: scaleY(1) translateY(0px);
           }
           6% {
-            transform: rotateX(65deg) scaleY(0.25);
+            transform: scaleY(0.2) translateY(-3px);
           }
           12% {
-            transform: rotateX(0deg) scaleY(1);
+            transform: scaleY(1) translateY(0px);
           }
           18% {
-            transform: rotateX(65deg) scaleY(0.25);
+            transform: scaleY(0.2) translateY(-3px);
           }
           24% {
-            transform: rotateX(0deg) scaleY(1);
+            transform: scaleY(1) translateY(0px);
           }
           30% {
-            transform: rotateX(65deg) scaleY(0.25);
+            transform: scaleY(0.2) translateY(-3px);
           }
           36% {
-            transform: rotateX(0deg) scaleY(1);
+            transform: scaleY(1) translateY(0px);
           }
 
-          /* Extended soaring - wings mostly level */}
-          40% {
-            transform: rotateX(-5deg) scaleY(0.98);
+          /* Extended soaring - wings mostly level with slight adjustments */
+          45% {
+            transform: scaleY(0.95) translateY(-0.5px);
           }
-          55% {
-            transform: rotateX(-8deg) scaleY(0.96);
+          60% {
+            transform: scaleY(0.92) translateY(-1px);
           }
-          70% {
-            transform: rotateX(-6deg) scaleY(0.97);
+          75% {
+            transform: scaleY(0.94) translateY(-0.8px);
           }
-          85% {
-            transform: rotateX(-7deg) scaleY(0.96);
-          }
-          95% {
-            transform: rotateX(-3deg) scaleY(0.98);
+          90% {
+            transform: scaleY(0.96) translateY(-0.3px);
           }
           100% {
-            transform: rotateX(0deg) scaleY(1);
+            transform: scaleY(1) translateY(0px);
           }
         }
       `}</style>
