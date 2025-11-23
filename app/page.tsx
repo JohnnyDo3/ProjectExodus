@@ -1,7 +1,7 @@
 import Link from 'next/link'
 import { Button } from '@/components/ui/Button'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/Card'
-import { Leaf, Droplet, Zap, Users, Heart, Shield, Sprout, BookOpen, Scale, Eye, Handshake, Award } from 'lucide-react'
+import { Leaf, Droplet, Zap, Users, Heart, BookOpen, Award, Sprout } from 'lucide-react'
 import { NightSkyConstellations } from '@/components/theme/NightSkyConstellations'
 import { TreeBranches } from '@/components/decorative/TreeBranches'
 import { FlyingBirds } from '@/components/decorative/FlyingBirds'
@@ -13,70 +13,70 @@ export default function Home() {
       number: 1,
       title: 'STEWARDSHIP',
       description: 'Guard, Protect, and Manage the Earth and her Natural Resources above all Profit.',
-      icon: Shield,
+      iconName: 'Shield',
       color: '#36763d'
     },
     {
       number: 2,
       title: 'BIODIVERSITY',
       description: "Prioritize Diversification, Nurture Variety, not Uniform Yield, but allow Creation's Richness to Thrive.",
-      icon: Sprout,
+      iconName: 'Sprout',
       color: '#357777'
     },
     {
       number: 3,
       title: 'INTEGRITY',
       description: "Don't exploit sustainability, live it with integrity. Speak truthfully, align branding with practice and match words with proper action. Transparency ensures Accountability.",
-      icon: Heart,
+      iconName: 'Heart',
       color: '#c24f31'
     },
     {
       number: 4,
       title: 'REST',
       description: 'Honor the rhythm of rest. The Land, Workers, and Community need time to recover. Operational models restore land, labor, and community capacity. Renewal brings Abundance.',
-      icon: Leaf,
+      iconName: 'Leaf',
       color: '#36763d'
     },
     {
       number: 5,
       title: 'LEGACY',
       description: 'Keep traditions that promote Life while innovating to nourish the lives of tomorrow.',
-      icon: BookOpen,
+      iconName: 'BookOpen',
       color: '#357777'
     },
     {
       number: 6,
       title: 'SANCTITY',
       description: 'Protect and Promote human life, economic life, and ecological life. Do not destroy through waste, greed, and neglect. Every seed, every being, matters.',
-      icon: Shield,
+      iconName: 'Shield',
       color: '#c24f31'
     },
     {
       number: 7,
       title: 'LOYALTY',
       description: 'Stand Loyal with the covenant of community. Do not exploit, betray, or abandon those who labor and live beside you.',
-      icon: Handshake,
+      iconName: 'Handshake',
       color: '#36763d'
     },
     {
       number: 8,
       title: 'EQUITY',
       description: 'Everyone gets their fair share in Justice. Avoid over-extraction and prioritize long-term balance over short-term gain. Do not steal from the Soil, the Worker, or Future Generations.',
-      icon: Scale,
+      iconName: 'Scale',
       color: '#357777'
     },
     {
       number: 9,
       title: 'TRANSPARENCY',
       description: 'Maintain a Transparent practice in reporting and operations. Be honest and tell the truth, never lie. Integrity is the Harvest of Truth.',
-      icon: Eye,
+      iconName: 'Eye',
       color: '#c24f31'
     },
     {
       number: 10,
       title: 'SUSTAINABILITY',
       description: 'Embrace and focus on sufficiency, resilience, abundance, and shared prosperity. Reject growth for growth\'s sake.',
-      icon: Award,
+      iconName: 'Award',
       color: '#36763d'
     }
   ]

@@ -45,23 +45,28 @@ export function ThemeToggle() {
 
   const modeConfig = {
     auto: {
-      icon: Clock,
       label: 'Auto',
       description: 'Syncs with your local time',
     },
     morning: {
-      icon: Sun,
       label: 'Morning',
       description: 'Always bright and vibrant',
     },
     night: {
-      icon: Moon,
       label: 'Night',
       description: 'Always dark and restful',
     },
   }
 
-  const CurrentIcon = modeConfig[mode].icon
+  const getModeIcon = (themeMode: ThemeMode, className?: string) => {
+    const props = { className: className || 'w-5 h-5' }
+    switch (themeMode) {
+      case 'auto': return <Clock {...props} />
+      case 'morning': return <Sun {...props} />
+      case 'night': return <Moon {...props} />
+      default: return <Clock {...props} />
+    }
+  }
 
   return (
     <div className="relative">
@@ -70,7 +75,7 @@ export function ThemeToggle() {
         className="p-2 rounded-lg border-2 border-[var(--border)] bg-[var(--card)] hover:bg-[var(--muted)] hover:border-theme-primary transition-all"
         aria-label={`Theme: ${modeConfig[mode].label}`}
       >
-        <CurrentIcon className="w-5 h-5 text-theme-primary" />
+        {getModeIcon(mode, 'w-5 h-5 text-theme-primary')}
       </button>
 
       {dropdownOpen && (
@@ -92,7 +97,6 @@ export function ThemeToggle() {
             <div className="p-2 space-y-2">
               {(Object.keys(modeConfig) as ThemeMode[]).map((themeMode) => {
                 const config = modeConfig[themeMode]
-                const Icon = config.icon
                 const isActive = mode === themeMode
 
                 return (
@@ -105,13 +109,11 @@ export function ThemeToggle() {
                         : 'hover:bg-[var(--muted)] border-2 border-transparent'
                     }`}
                   >
-                    <Icon
-                      className={`w-5 h-5 mt-0.5 ${
-                        isActive
-                          ? 'text-theme-primary'
-                          : 'text-theme-muted'
-                      }`}
-                    />
+                    {getModeIcon(themeMode, `w-5 h-5 mt-0.5 ${
+                      isActive
+                        ? 'text-theme-primary'
+                        : 'text-theme-muted'
+                    }`)}
                     <div className="flex-1 text-left">
                       <div
                         className={`font-bold text-sm ${

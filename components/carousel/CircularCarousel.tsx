@@ -2,18 +2,34 @@
 
 import { useEffect, useRef, useState } from 'react'
 import { Card, CardContent } from '@/components/ui/Card'
-import { ChevronLeft, ChevronRight } from 'lucide-react'
+import { ChevronLeft, ChevronRight, Shield, Sprout, Heart, Leaf, BookOpen, Scale, Eye, Handshake, Award } from 'lucide-react'
 
 interface CarouselItem {
   number: number
   title: string
   description: string
-  icon: any
+  iconName: string
   color: string
 }
 
 interface CircularCarouselProps {
   items: CarouselItem[]
+}
+
+// Helper function to get icon component from name
+const getIconComponent = (iconName: string) => {
+  const icons: Record<string, any> = {
+    Shield,
+    Sprout,
+    Heart,
+    Leaf,
+    BookOpen,
+    Scale,
+    Eye,
+    Handshake,
+    Award,
+  }
+  return icons[iconName] || Shield
 }
 
 export function CircularCarousel({ items }: CircularCarouselProps) {
@@ -103,7 +119,7 @@ export function CircularCarousel({ items }: CircularCarouselProps) {
         {/* Carousel Items */}
         <div className="relative w-full h-full flex items-center justify-center">
           {items.map((item, index) => {
-            const Icon = item.icon
+            const Icon = getIconComponent(item.iconName)
             const style = getItemStyle(index)
             const isCenter = index === currentIndex
 
