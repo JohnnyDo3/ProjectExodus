@@ -772,7 +772,7 @@ export function ProgressiveSkyline() {
                       {/* Lush green foliage */}
                       <circle cx={x+2} cy="198" r="8" fill="#4a7c2f" opacity="0.9" />
                       <circle cx={x-3} cy="200" r="6" fill="#5a8a5a" opacity="0.85" />
-                      <circle cx={x+7} cy="200} r="6" fill="#5a8a5a" opacity="0.85" />
+                      <circle cx={x+7} cy="200" r="6" fill="#5a8a5a" opacity="0.85" />
                       <circle cx={x+2} cy="193" r="5" fill="#6a9a6a" opacity="0.8" />
                     </g>
                   );
