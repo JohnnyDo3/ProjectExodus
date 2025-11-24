@@ -114,7 +114,7 @@ export async function POST(request: NextRequest) {
     }))
 
     // Use Google Gemini API (Gemini 1.5 Flash - correct model name)
-    const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${googleApiKey}`
+    const apiUrl = `https://generativelanguage.googleapis.com/v1/models/gemini-1.5-flash:generateContent?key=${googleApiKey}`
     console.log('[CHAT API] Calling Gemini API...')
 
     const geminiResponse = await fetch(apiUrl, {
