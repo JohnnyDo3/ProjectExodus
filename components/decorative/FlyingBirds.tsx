@@ -38,7 +38,7 @@ export function FlyingBirds() {
 
       const cluster: Cluster = {
         id: i + 1,
-        y: 15 + (i * 15), // Spread clusters vertically
+        y: 40 + (i * 10), // Spread clusters vertically - lowered from 15% to 40% start
         speed: 35 + Math.random() * 8, // 35-43 seconds
         delay: i * 12, // Stagger cluster starts
         amplitude: 48 + Math.random() * 15,
