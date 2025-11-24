@@ -254,7 +254,7 @@ export default async function UserProfilePage({
                         {user.projects.map((membership: any) => (
                           <div key={membership.project.id} className="p-3 bg-[color-mix(in_srgb,var(--primary)_15%,var(--background))] rounded-xl">
                             <p className="font-black text-sm mb-1 text-[var(--foreground)]">
-                              {membership.project.title}
+                              {membership.project.name}
                             </p>
                             <p className="text-xs font-semibold text-theme-muted">
                               {membership.role}

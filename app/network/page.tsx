@@ -375,7 +375,10 @@ export default function NetworkPage() {
                       <CardContent className="p-6">
                         {/* User Avatar and Name */}
                         <div className="flex items-start gap-4 mb-4">
-                          <div className="w-16 h-16 rounded-full bg-gradient-to-br from-[var(--primary)] to-[var(--accent)] flex items-center justify-center flex-shrink-0">
+                          <Link
+                            href={`/profile/${user.id}`}
+                            className="w-16 h-16 rounded-full bg-gradient-to-br from-[var(--primary)] to-[var(--accent)] flex items-center justify-center flex-shrink-0 hover:scale-105 transition-transform cursor-pointer"
+                          >
                             {user.image ? (
                               <img
                                 src={user.image}
@@ -385,11 +388,13 @@ export default function NetworkPage() {
                             ) : (
                               <Users className="w-8 h-8 text-[var(--primary-foreground)]" />
                             )}
-                          </div>
+                          </Link>
                           <div className="flex-1 min-w-0">
-                            <h3 className="text-xl font-black text-[var(--foreground)] truncate">
-                              {user.name || 'Anonymous'}
-                            </h3>
+                            <Link href={`/profile/${user.id}`}>
+                              <h3 className="text-xl font-black text-[var(--foreground)] truncate hover:text-theme-primary transition-colors cursor-pointer">
+                                {user.name || 'Anonymous'}
+                              </h3>
+                            </Link>
                             {user.location && (
                               <div className="flex items-center gap-1 mt-1 text-sm font-semibold text-theme-muted">
                                 <MapPin className="w-4 h-4" />

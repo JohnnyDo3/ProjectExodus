@@ -67,7 +67,7 @@ export default async function PostPage({
             <div className="flex items-center gap-6 text-sm font-semibold text-theme-muted">
               <div className="flex items-center gap-2">
                 <User className="w-4 h-4" />
-                <span>{post.author.name || 'Anonymous'}</span>
+                <span>{post.user.name || 'Anonymous'}</span>
               </div>
               <div className="flex items-center gap-2">
                 <Clock className="w-4 h-4" />
@@ -96,10 +96,10 @@ export default async function PostPage({
                   {/* Author */}
                   <div className="flex-shrink-0">
                     <div className="w-16 h-16 rounded-full bg-[color-mix(in_srgb,var(--primary)_20%,var(--background))] flex items-center justify-center mb-2">
-                      {post.author.image ? (
+                      {post.user.image ? (
                         <img
-                          src={post.author.image}
-                          alt={post.author.name || 'User'}
+                          src={post.user.image}
+                          alt={post.user.name || 'User'}
                           className="w-full h-full rounded-full object-cover"
                         />
                       ) : (
@@ -108,7 +108,7 @@ export default async function PostPage({
                     </div>
                     <div className="text-center">
                       <p className="text-sm font-black text-[var(--foreground)]">
-                        {post.author.name || 'Anonymous'}
+                        {post.user.name || 'Anonymous'}
                       </p>
                     </div>
                   </div>
@@ -142,10 +142,10 @@ export default async function PostPage({
                       {/* Author */}
                       <div className="flex-shrink-0">
                         <div className="w-12 h-12 rounded-full bg-[color-mix(in_srgb,var(--accent)_20%,var(--background))] flex items-center justify-center">
-                          {reply.author.image ? (
+                          {reply.user.image ? (
                             <img
-                              src={reply.author.image}
-                              alt={reply.author.name || 'User'}
+                              src={reply.user.image}
+                              alt={reply.user.name || 'User'}
                               className="w-full h-full rounded-full object-cover"
                             />
                           ) : (
@@ -158,7 +158,7 @@ export default async function PostPage({
                       <div className="flex-grow">
                         <div className="flex items-center gap-4 mb-2">
                           <span className="font-black text-[var(--foreground)]">
-                            {reply.author.name || 'Anonymous'}
+                            {reply.user.name || 'Anonymous'}
                           </span>
                           <span className="text-sm font-semibold text-theme-muted">
                             {formatDate(new Date(reply.createdAt))}
