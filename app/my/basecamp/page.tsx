@@ -4,6 +4,7 @@ import { useSession } from 'next-auth/react'
 import { redirect } from 'next/navigation'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/Card'
 import { Button } from '@/components/ui/Button'
+import { ActivityCard } from '@/components/activity/ActivityCard'
 import {
   User,
   Mail,
@@ -774,23 +775,23 @@ export default function MyBasecampPage() {
                         </Link>
                       </div>
                     ) : (
-                      <div className="space-y-3 max-h-64 overflow-y-auto">
+                      <div className="space-y-3 max-h-96 overflow-y-auto pr-2">
                         {activities.slice(0, 5).map((activity) => (
-                          <div key={activity.id} className="flex gap-2 p-2 bg-[var(--muted)] rounded-lg text-xs">
-                            <div className="w-8 h-8 rounded-full bg-gradient-to-br from-[var(--primary)] to-[var(--accent)] flex items-center justify-center flex-shrink-0">
-                              {activity.user.image ? (
-                                <img src={activity.user.image} alt="" className="w-full h-full rounded-full object-cover" />
-                              ) : (
-                                <User className="w-4 h-4 text-[var(--primary-foreground)]" />
-                              )}
-                            </div>
-                            <div className="flex-1 min-w-0">
-                              <p className="font-semibold text-[var(--foreground)] leading-tight">
-                                {activity.user.name || 'Someone'} {activity.type === 'PROJECT_JOIN' ? 'joined a project' : 'did something'}
-                              </p>
-                            </div>
-                          </div>
+                          <ActivityCard
+                            key={activity.id}
+                            activity={activity}
+                            currentUserId={session?.user?.id}
+                          />
                         ))}
+                        {activities.length > 5 && (
+                          <div className="text-center pt-2">
+                            <Link href="/activity">
+                              <Button variant="outline" size="sm" className="font-bold">
+                                View All Activity
+                              </Button>
+                            </Link>
+                          </div>
+                        )}
                       </div>
                     )}
                   </CardContent>
