@@ -30,7 +30,7 @@ export function ProgressiveSkyline() {
         }
 
         .skyline-container {
-          animation: skylineScroll 240s linear infinite;
+          animation: skylineScroll 120s linear infinite;
           will-change: transform;
         }
 
@@ -74,7 +74,7 @@ export function ProgressiveSkyline() {
         }
 
         .moving-car {
-          animation: carDrive 240s linear infinite;
+          animation: carDrive 120s linear infinite;
         }
 
         @keyframes carDriveReverse {
@@ -83,7 +83,7 @@ export function ProgressiveSkyline() {
         }
 
         .moving-car-reverse {
-          animation: carDriveReverse 240s linear infinite;
+          animation: carDriveReverse 120s linear infinite;
         }
 
         @keyframes chimneySmokeRise {
@@ -93,6 +93,33 @@ export function ProgressiveSkyline() {
 
         .chimney-smoke {
           animation: chimneySmokeRise 3s ease-out infinite;
+        }
+
+        @keyframes animalWalk {
+          0%, 100% { transform: translateY(0); }
+          50% { transform: translateY(-2px); }
+        }
+
+        .animal-horse {
+          animation: animalWalk 3s ease-in-out infinite;
+        }
+
+        .animal-cow {
+          animation: animalWalk 4s ease-in-out infinite;
+        }
+
+        .animal-sheep {
+          animation: animalWalk 3.5s ease-in-out infinite;
+        }
+
+        @keyframes animalPeck {
+          0%, 80%, 100% { transform: translateY(0); }
+          10%, 30%, 50%, 70% { transform: translateY(-1px); }
+          20%, 40%, 60% { transform: translateY(0); }
+        }
+
+        .animal-chicken {
+          animation: animalPeck 4s ease-in-out infinite;
         }
       `}</style>
 
@@ -104,7 +131,7 @@ export function ProgressiveSkyline() {
         {[0, 1].map((iteration) => (
           <svg
             key={iteration}
-            className="flex-shrink-0 opacity-40 dark:opacity-30"
+            className="flex-shrink-0 opacity-60 dark:opacity-50"
             width="5000"
             height="250"
             viewBox="0 0 5000 250"
@@ -277,7 +304,7 @@ export function ProgressiveSkyline() {
               {/* Horses in the fields - MORE HORSES! */}
               <g>
                 {[120, 320, 420, 580, 680, 760].map((x, i) => (
-                  <g key={`horse-${i}`} opacity="1">
+                  <g key={`horse-${i}`} className="animal-horse" opacity="1" style={{animationDelay: `${i * 0.3}s`}}>
                     {/* Horse body */}
                     <ellipse cx={x} cy="200" rx="8" ry="5" fill="#654321" />
                     {/* Horse head */}
@@ -296,7 +323,7 @@ export function ProgressiveSkyline() {
               {/* Cows grazing - MORE COWS! */}
               <g>
                 {[230, 390, 510, 640].map((x, i) => (
-                  <g key={`cow-${i}`} opacity="1">
+                  <g key={`cow-${i}`} className="animal-cow" opacity="1" style={{animationDelay: `${i * 0.5}s`}}>
                     {/* Cow body */}
                     <ellipse cx={x} cy="202" rx="9" ry="5" fill="#f5f5f5" />
                     {/* Black spots */}
@@ -316,7 +343,7 @@ export function ProgressiveSkyline() {
               {/* Sheep grazing - FLUFFY! */}
               <g>
                 {[160, 290, 470, 590, 700].map((x, i) => (
-                  <g key={`sheep-${i}`} opacity="1">
+                  <g key={`sheep-${i}`} className="animal-sheep" opacity="1" style={{animationDelay: `${i * 0.4}s`}}>
                     {/* Fluffy sheep body */}
                     <ellipse cx={x} cy="204" rx="6" ry="4" fill="#f5f5f5" />
                     <circle cx={x-2} cy="203" r="3" fill="#f5f5f5" />
@@ -333,7 +360,7 @@ export function ProgressiveSkyline() {
               {/* Chickens pecking - TINY! */}
               <g>
                 {[200, 260, 340, 480, 540, 620, 730].map((x, i) => (
-                  <g key={`chicken-${i}`} opacity="1">
+                  <g key={`chicken-${i}`} className="animal-chicken" opacity="1" style={{animationDelay: `${i * 0.2}s`}}>
                     {/* Chicken body - super small */}
                     <ellipse cx={x} cy="207" rx="2.5" ry="2" fill="#d4a574" />
                     {/* Chicken head */}
@@ -399,15 +426,6 @@ export function ProgressiveSkyline() {
                     {/* Yellow details */}
                     <rect x={x+13} y="199" width="4" height="1" fill="#ffd700" opacity="1" />
                   </g>
-                ))}
-              </g>
-
-              {/* Birds flying over countryside */}
-              <g opacity="0.75">
-                {[150, 250, 350, 450, 550, 650, 750].map((x, i) => (
-                  <path key={`bird-${i}`}
-                        d={`M ${x},160 Q ${x-4},158 ${x-8},160 M ${x+4},160 Q ${x+8},158 ${x+12},160`}
-                        stroke="#4a4a4a" strokeWidth="1" fill="none" />
                 ))}
               </g>
 
@@ -501,8 +519,8 @@ export function ProgressiveSkyline() {
                   <path d={`M ${x-2},193 L ${x+19},186 L ${x+40},193 Z`} fill={`url(#ranchRoof-${iteration})`} />
 
                   {/* Horizontal windows */}
-                  <rect x={x+5} y="196" width="8" height="5" fill="#6b8ea8" opacity="0.95" />
-                  <rect x={x+25} y="196" width="8" height="5" fill="#6b8ea8" opacity="0.95" />
+                  <rect x={x+5} y="195" width="8" height="4" fill="#6b8ea8" opacity="0.95" />
+                  <rect x={x+25} y="195" width="8" height="4" fill="#6b8ea8" opacity="0.95" />
 
                   {/* Attached garage */}
                   <rect x={x+30} y="197" width="7" height="10" fill="#c9b18f" opacity="1" />
@@ -529,16 +547,16 @@ export function ProgressiveSkyline() {
                   <path d={`M ${x+9},197 L ${x+9},207 L ${x+15},207 L ${x+15},197 Q ${x+12},195 ${x+9},197 Z`} fill="#a85757" opacity="1" />
 
                   {/* Small cottage windows */}
-                  <rect x={x+4} y="195" width="4" height="5" fill="#6b8ea8" opacity="0.95" />
-                  <rect x={x+16} y="195" width="4" height="5" fill="#6b8ea8" opacity="0.95" />
+                  <rect x={x+4} y="194" width="4" height="4" fill="#6b8ea8" opacity="0.95" />
+                  <rect x={x+16} y="194" width="4" height="4" fill="#6b8ea8" opacity="0.95" />
 
                   {/* Window boxes with flowers */}
-                  <rect x={x+3} y="200" width="6" height="1.5" fill="#8b7355" opacity="1" />
-                  <rect x={x+15} y="200" width="6" height="1.5" fill="#8b7355" opacity="1" />
-                  <circle cx={x+5} cy="199" r="0.8" fill="#ff69b4" opacity="1" />
-                  <circle cx={x+7} cy="199" r="0.8" fill="#ffd700" opacity="1" />
-                  <circle cx={x+17} cy="199" r="0.8" fill="#ff69b4" opacity="1" />
-                  <circle cx={x+19} cy="199" r="0.8" fill="#ffd700" opacity="1" />
+                  <rect x={x+3} y="198" width="6" height="1.5" fill="#8b7355" opacity="1" />
+                  <rect x={x+15} y="198" width="6" height="1.5" fill="#8b7355" opacity="1" />
+                  <circle cx={x+5} cy="197" r="0.8" fill="#ff69b4" opacity="1" />
+                  <circle cx={x+7} cy="197" r="0.8" fill="#ffd700" opacity="1" />
+                  <circle cx={x+17} cy="197" r="0.8" fill="#ff69b4" opacity="1" />
+                  <circle cx={x+19} cy="197" r="0.8" fill="#ffd700" opacity="1" />
 
                   {/* Small chimney */}
                   <rect x={x+19} y="186" width="2.5" height="6" fill="#a85757" opacity="1" />
@@ -560,8 +578,8 @@ export function ProgressiveSkyline() {
                   <rect x={x-1} y="186" width="28" height="2" fill={`url(#modernRoof-${iteration})`} />
 
                   {/* Large modern windows */}
-                  <rect x={x+3} y="192" width="9" height="11" fill="#6b8ea8" opacity="0.9" />
-                  <rect x={x+14} y="192" width="9" height="11" fill="#6b8ea8" opacity="0.9" />
+                  <rect x={x+2} y="192" width="8" height="11" fill="#6b8ea8" opacity="0.9" />
+                  <rect x={x+16} y="192" width="8" height="11" fill="#6b8ea8" opacity="0.9" />
 
                   {/* Minimal door */}
                   <rect x={x+11} y="199" width="4" height="8" fill="#5a7a8a" opacity="1" />
@@ -775,14 +793,6 @@ export function ProgressiveSkyline() {
                 ))}
               </g>
 
-              {/* Birds flying in clean air */}
-              <g opacity="0.6">
-                {[2950, 3150, 3350, 3550, 3750].map((x, i) => (
-                  <path key={`bird-${i}`}
-                        d={`M ${x},125 Q ${x-5},123 ${x-10},125 M ${x+5},125 Q ${x+10},123 ${x+15},125`} />
-                ))}
-              </g>
-
               {/* Community gardens */}
               <g opacity="0.4">
                 <ellipse cx="3020" cy="200" rx="45" ry="15" />
@@ -829,14 +839,6 @@ export function ProgressiveSkyline() {
                 <ellipse cx="4850" cy="184" rx="10" ry="6" />
               </g>
 
-              {/* Birds everywhere */}
-              <g opacity="0.5">
-                {[3900, 4100, 4300, 4500, 4700, 4900].map((x, i) => (
-                  <path key={`nature-bird-${i}`}
-                        d={`M ${x},130 Q ${x-5},128 ${x-10},130 M ${x+5},130 Q ${x+10},128 ${x+15},130`} />
-                ))}
-              </g>
-
               {/* Final peaceful countryside elements */}
               <g opacity="0.85">
                 <rect x="3980" y="175" width="35" height="25" />
@@ -866,15 +868,26 @@ export function ProgressiveSkyline() {
               {/* Moving traffic - cars driving across the entire city with VARIED COLORS and BIDIRECTIONAL! */}
               <g>
                 {[
-                  {x: 200, color: "#c73e3e", direction: "forward"},    // Red
-                  {x: 600, color: "#2f4f7f", direction: "reverse"},    // Blue
-                  {x: 1100, color: "#4a7c2f", direction: "forward"},   // Green
-                  {x: 1700, color: "#d4af37", direction: "reverse"},   // Gold
-                  {x: 2300, color: "#8a8a8a", direction: "forward"},   // Silver
-                  {x: 2900, color: "#4a4a4a", direction: "reverse"},   // Dark Gray
-                  {x: 3500, color: "#cc6633", direction: "forward"},   // Orange
-                  {x: 4100, color: "#5a3d8a", direction: "reverse"},   // Purple
-                  {x: 4700, color: "#e8e8e8", direction: "forward"}    // White
+                  {x: 100, color: "#c73e3e", direction: "forward"},    // Red
+                  {x: 350, color: "#2f4f7f", direction: "reverse"},    // Blue
+                  {x: 600, color: "#4a7c2f", direction: "forward"},    // Green
+                  {x: 850, color: "#d4af37", direction: "reverse"},    // Gold
+                  {x: 1100, color: "#8a8a8a", direction: "forward"},   // Silver
+                  {x: 1350, color: "#4a4a4a", direction: "reverse"},   // Dark Gray
+                  {x: 1600, color: "#cc6633", direction: "forward"},   // Orange
+                  {x: 1850, color: "#5a3d8a", direction: "reverse"},   // Purple
+                  {x: 2100, color: "#e8e8e8", direction: "forward"},   // White
+                  {x: 2350, color: "#c73e3e", direction: "reverse"},   // Red
+                  {x: 2600, color: "#2f4f7f", direction: "forward"},   // Blue
+                  {x: 2850, color: "#4a7c2f", direction: "reverse"},   // Green
+                  {x: 3100, color: "#d4af37", direction: "forward"},   // Gold
+                  {x: 3350, color: "#8a8a8a", direction: "reverse"},   // Silver
+                  {x: 3600, color: "#4a4a4a", direction: "forward"},   // Dark Gray
+                  {x: 3850, color: "#cc6633", direction: "reverse"},   // Orange
+                  {x: 4100, color: "#5a3d8a", direction: "forward"},   // Purple
+                  {x: 4350, color: "#e8e8e8", direction: "reverse"},   // White
+                  {x: 4600, color: "#c73e3e", direction: "forward"},   // Red
+                  {x: 4850, color: "#2f4f7f", direction: "reverse"}    // Blue
                 ].map((car, i) => (
                   <g key={`fg-car-${i}`} className={car.direction === "forward" ? "moving-car" : "moving-car-reverse"} opacity="1" style={{animationDelay: `${i * 1.5}s`}}>
                     {/* Sedan body - COLORED! */}
@@ -904,11 +917,17 @@ export function ProgressiveSkyline() {
               {/* Additional vehicles - SUVs with bidirectional traffic */}
               <g>
                 {[
-                  {x: 400, direction: "forward"},
-                  {x: 1300, direction: "reverse"},
-                  {x: 2200, direction: "forward"},
-                  {x: 3100, direction: "reverse"},
-                  {x: 4000, direction: "forward"}
+                  {x: 250, direction: "forward"},
+                  {x: 700, direction: "reverse"},
+                  {x: 1150, direction: "forward"},
+                  {x: 1600, direction: "reverse"},
+                  {x: 2050, direction: "forward"},
+                  {x: 2500, direction: "reverse"},
+                  {x: 2950, direction: "forward"},
+                  {x: 3400, direction: "reverse"},
+                  {x: 3850, direction: "forward"},
+                  {x: 4300, direction: "reverse"},
+                  {x: 4750, direction: "forward"}
                 ].map((suv, i) => (
                   <g key={`fg-suv-${i}`} className={suv.direction === "forward" ? "moving-car" : "moving-car-reverse"} opacity="1" style={{animationDelay: `${i * 2}s`}}>
                     {/* SUV body - taller and wider */}
@@ -938,10 +957,15 @@ export function ProgressiveSkyline() {
               {/* Delivery trucks with bidirectional traffic */}
               <g>
                 {[
-                  {x: 800, direction: "reverse"},
+                  {x: 500, direction: "reverse"},
+                  {x: 1000, direction: "forward"},
+                  {x: 1500, direction: "reverse"},
                   {x: 2000, direction: "forward"},
-                  {x: 3300, direction: "reverse"},
-                  {x: 4500, direction: "forward"}
+                  {x: 2500, direction: "reverse"},
+                  {x: 3000, direction: "forward"},
+                  {x: 3500, direction: "reverse"},
+                  {x: 4000, direction: "forward"},
+                  {x: 4500, direction: "reverse"}
                 ].map((truck, i) => (
                   <g key={`fg-truck-${i}`} className={truck.direction === "forward" ? "moving-car" : "moving-car-reverse"} opacity="1" style={{animationDelay: `${i * 2.5}s`}}>
                     {/* Truck body */}
