@@ -38,6 +38,7 @@ model User {
   // Professional Background
   experience    Json?     // Array of work experience objects
   education     Json?     // Array of education objects
+  resume        String?   // Uploaded resume/CV file path or URL
 
   // LinkedIn-style Additional Sections
   skills        Json?     // Array of skill objects {name, level}
