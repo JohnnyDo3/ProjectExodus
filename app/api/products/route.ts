@@ -1,5 +1,4 @@
 import { NextRequest, NextResponse } from 'next/server'
-import { handlePrismaError } from '@/lib/utils/prisma-errors'
 import { prisma } from '@/lib/db'
 import { auth } from '@/auth'
 
@@ -11,15 +10,21 @@ export async function GET(request: NextRequest) {
     const featured = searchParams.get('featured')
     const limit = parseInt(searchParams.get('limit') || '50')
     const offset = parseInt(searchParams.get('offset') || '0')
+
     const where: any = {
       status: 'PUBLISHED',
     }
+
     if (category) {
       where.category = {
         slug: category,
       }
+    }
+
     if (featured === 'true') {
       where.featured = true
+    }
+
     const [products, total] = await Promise.all([
       prisma.product.findMany({
         where,
@@ -38,9 +43,11 @@ export async function GET(request: NextRequest) {
         skip: offset,
         orderBy: {
           createdAt: 'desc',
+        },
       }),
       prisma.product.count({ where }),
     ])
+
     return NextResponse.json({
       success: true,
       data: products,
@@ -59,8 +66,10 @@ export async function GET(request: NextRequest) {
     )
   }
 }
+
 // POST /api/products - Create new product
 export async function POST(request: NextRequest) {
+  try {
     // Check authentication
     const session = await auth()
     if (!session?.user) {
@@ -68,12 +77,19 @@ export async function POST(request: NextRequest) {
         { success: false, error: 'Unauthorized' },
         { status: 401 }
       )
+    }
+
     // Check if user has permission (ADMIN, EDITOR, or SUPER_ADMIN)
     const allowedRoles = ['ADMIN', 'EDITOR', 'SUPER_ADMIN']
     if (!allowedRoles.includes(session.user.role)) {
+      return NextResponse.json(
         { success: false, error: 'Forbidden - Insufficient permissions' },
         { status: 403 }
+      )
+    }
+
     const body = await request.json()
+
     const product = await prisma.product.create({
       data: {
         name: body.name,
@@ -86,9 +102,22 @@ export async function POST(request: NextRequest) {
         featured: body.featured || false,
         categoryId: body.categoryId,
         vendorId: body.vendorId,
+      },
       include: {
         category: true,
         vendor: true,
+      },
+    })
+
+    return NextResponse.json({
+      success: true,
       data: product,
+    })
+  } catch (error) {
     console.error('Error creating product:', error)
+    return NextResponse.json(
       { success: false, error: 'Failed to create product' },
+      { status: 500 }
+    )
+  }
+}
