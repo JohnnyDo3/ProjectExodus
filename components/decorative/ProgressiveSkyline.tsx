@@ -70,20 +70,20 @@ export function ProgressiveSkyline() {
 
         @keyframes carDrive {
           0% { transform: translateX(0); }
-          100% { transform: translateX(400px); }
+          100% { transform: translateX(5000px); }
         }
 
         .moving-car {
-          animation: carDrive 15s linear infinite;
+          animation: carDrive 240s linear infinite;
         }
 
         @keyframes carDriveReverse {
           0% { transform: translateX(0) scaleX(-1); }
-          100% { transform: translateX(-400px) scaleX(-1); }
+          100% { transform: translateX(-5000px) scaleX(-1); }
         }
 
         .moving-car-reverse {
-          animation: carDriveReverse 15s linear infinite;
+          animation: carDriveReverse 240s linear infinite;
         }
 
         @keyframes chimneySmokeRise {
@@ -104,7 +104,7 @@ export function ProgressiveSkyline() {
         {[0, 1].map((iteration) => (
           <svg
             key={iteration}
-            className="flex-shrink-0 opacity-20 dark:opacity-15"
+            className="flex-shrink-0 opacity-40 dark:opacity-30"
             width="5000"
             height="250"
             viewBox="0 0 5000 250"
