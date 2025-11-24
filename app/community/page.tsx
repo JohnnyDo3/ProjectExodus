@@ -52,7 +52,11 @@ async function getDashboardData(userId: string) {
       orderBy: {
         createdAt: 'desc'
       },
-      include: {
+      select: {
+        id: true,
+        title: true,
+        content: true,
+        createdAt: true,
         user: {
           select: {
             id: true,
@@ -90,7 +94,10 @@ async function getDashboardData(userId: string) {
         }
       },
       take: 8,
-      include: {
+      select: {
+        id: true,
+        name: true,
+        image: true,
         _count: {
           select: {
             followers: true,
@@ -117,7 +124,13 @@ async function getDashboardData(userId: string) {
       orderBy: {
         createdAt: 'desc'
       },
-      include: {
+      select: {
+        id: true,
+        name: true,
+        slug: true,
+        description: true,
+        status: true,
+        createdAt: true,
         creator: {
           select: {
             name: true,
