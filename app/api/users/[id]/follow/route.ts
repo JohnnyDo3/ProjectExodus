@@ -1,15 +1,15 @@
 import { NextRequest, NextResponse } from 'next/server'
-import { getServerSession } from 'next-auth'
-import { authOptions } from '@/lib/auth'
-import prisma from '@/lib/prisma'
+import { auth } from '@/auth'
+import { prisma } from '@/lib/db'
 
 // POST /api/users/[id]/follow - Follow a user
 export async function POST(
   request: NextRequest,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ) {
   try {
-    const session = await getServerSession(authOptions)
+    const session = await auth()
+    const { id } = await params
 
     if (!session?.user?.id) {
       return NextResponse.json(
@@ -18,7 +18,7 @@ export async function POST(
       )
     }
 
-    const targetUserId = params.id
+    const targetUserId = id
     const currentUserId = session.user.id
 
     // Can't follow yourself
@@ -71,10 +71,11 @@ export async function POST(
 // DELETE /api/users/[id]/follow - Unfollow a user
 export async function DELETE(
   request: NextRequest,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ) {
   try {
-    const session = await getServerSession(authOptions)
+    const session = await auth()
+    const { id } = await params
 
     if (!session?.user?.id) {
       return NextResponse.json(
@@ -83,7 +84,7 @@ export async function DELETE(
       )
     }
 
-    const targetUserId = params.id
+    const targetUserId = id
     const currentUserId = session.user.id
 
     // Delete follow relationship
@@ -112,11 +113,12 @@ export async function DELETE(
 // GET /api/users/[id]/follow - Get follow status and counts
 export async function GET(
   request: NextRequest,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ) {
   try {
-    const session = await getServerSession(authOptions)
-    const targetUserId = params.id
+    const session = await auth()
+    const { id } = await params
+    const targetUserId = id
     const currentUserId = session?.user?.id
 
     // Get follower and following counts

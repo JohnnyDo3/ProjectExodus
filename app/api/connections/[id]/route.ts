@@ -1,15 +1,15 @@
 import { NextRequest, NextResponse } from 'next/server'
-import { getServerSession } from 'next-auth'
-import { authOptions } from '@/lib/auth'
-import prisma from '@/lib/prisma'
+import { auth } from '@/auth'
+import { prisma } from '@/lib/db'
 
 // PATCH /api/connections/[id] - Accept or reject connection request
 export async function PATCH(
   request: NextRequest,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ) {
   try {
-    const session = await getServerSession(authOptions)
+    const session = await auth()
+    const { id } = await params
 
     if (!session?.user?.id) {
       return NextResponse.json(
@@ -18,7 +18,7 @@ export async function PATCH(
       )
     }
 
-    const connectionId = params.id
+    const connectionId = id
     const currentUserId = session.user.id
     const body = await request.json()
     const { action } = body // 'accept' or 'reject'
@@ -112,10 +112,11 @@ export async function PATCH(
 // GET /api/connections/[id] - Get connection details
 export async function GET(
   request: NextRequest,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ) {
   try {
-    const session = await getServerSession(authOptions)
+    const session = await auth()
+    const { id } = await params
 
     if (!session?.user?.id) {
       return NextResponse.json(
@@ -124,7 +125,7 @@ export async function GET(
       )
     }
 
-    const connectionId = params.id
+    const connectionId = id
     const currentUserId = session.user.id
 
     const connection = await prisma.connection.findUnique({

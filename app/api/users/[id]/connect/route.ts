@@ -1,15 +1,15 @@
 import { NextRequest, NextResponse } from 'next/server'
-import { getServerSession } from 'next-auth'
-import { authOptions } from '@/lib/auth'
-import prisma from '@/lib/prisma'
+import { auth } from '@/auth'
+import { prisma } from '@/lib/db'
 
 // POST /api/users/[id]/connect - Send connection request
 export async function POST(
   request: NextRequest,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ) {
   try {
-    const session = await getServerSession(authOptions)
+    const session = await auth()
+    const { id } = await params
 
     if (!session?.user?.id) {
       return NextResponse.json(
@@ -18,7 +18,7 @@ export async function POST(
       )
     }
 
-    const targetUserId = params.id
+    const targetUserId = id
     const currentUserId = session.user.id
     const body = await request.json()
     const { message } = body
@@ -104,10 +104,11 @@ export async function POST(
 // DELETE /api/users/[id]/connect - Cancel connection request or remove connection
 export async function DELETE(
   request: NextRequest,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ) {
   try {
-    const session = await getServerSession(authOptions)
+    const session = await auth()
+    const { id } = await params
 
     if (!session?.user?.id) {
       return NextResponse.json(
@@ -116,7 +117,7 @@ export async function DELETE(
       )
     }
 
-    const targetUserId = params.id
+    const targetUserId = id
     const currentUserId = session.user.id
 
     // Delete connection (pending or accepted)
@@ -145,10 +146,11 @@ export async function DELETE(
 // GET /api/users/[id]/connect - Get connection status
 export async function GET(
   request: NextRequest,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ) {
   try {
-    const session = await getServerSession(authOptions)
+    const session = await auth()
+    const { id } = await params
 
     if (!session?.user?.id) {
       return NextResponse.json(
@@ -157,7 +159,7 @@ export async function GET(
       )
     }
 
-    const targetUserId = params.id
+    const targetUserId = id
     const currentUserId = session.user.id
 
     // Find connection status
