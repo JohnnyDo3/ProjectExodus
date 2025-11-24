@@ -10,6 +10,7 @@ import { ProjectExodusAI } from "@/components/ai/ProjectExodusAI";
 import { DecorativeBranches } from "@/components/decorative/DecorativeBranches";
 import { generateMetadata, siteConfig } from "@/lib/metadata";
 import { auth } from "@/auth";
+import { Toaster } from "react-hot-toast";
 
 export const metadata: Metadata = generateMetadata({
   title: 'Sustainability Hub',
@@ -98,6 +99,31 @@ export default async function RootLayout({
               </div>
               {/* AI Assistant - Available on all pages, auto-greets on homepage */}
               <ProjectExodusAI />
+              {/* Toast Notifications */}
+              <Toaster
+                position="top-right"
+                toastOptions={{
+                  duration: 4000,
+                  style: {
+                    background: 'var(--card)',
+                    color: 'var(--foreground)',
+                    border: '2px solid var(--border)',
+                    fontWeight: '600',
+                  },
+                  success: {
+                    iconTheme: {
+                      primary: 'var(--primary)',
+                      secondary: 'white',
+                    },
+                  },
+                  error: {
+                    iconTheme: {
+                      primary: 'var(--destructive)',
+                      secondary: 'white',
+                    },
+                  },
+                }}
+              />
             </SkyThemeProvider>
           </TimeThemeProvider>
         </SessionProvider>

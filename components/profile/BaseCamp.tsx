@@ -4,6 +4,7 @@ import { useState, useEffect } from 'react'
 import { useRouter } from 'next/navigation'
 import { Button } from '@/components/ui/Button'
 import { Card, CardContent } from '@/components/ui/Card'
+import toast from 'react-hot-toast'
 import {
   Plus,
   X,
@@ -324,6 +325,8 @@ export function BaseCamp({ user }: BaseCampProps) {
     setLoading(true)
     setMessage('')
 
+    const loadingToast = toast.loading('Saving your profile...')
+
     try {
       const res = await fetch('/api/profile/update', {
         method: 'POST',
@@ -336,16 +339,19 @@ export function BaseCamp({ user }: BaseCampProps) {
       const data = await res.json()
 
       if (data.success) {
+        toast.success('Profile updated successfully!', { id: loadingToast })
         setMessage('✓ Profile updated successfully!')
         setTimeout(() => {
           router.push(`/profile/${user.id}`)
           router.refresh()
         }, 1500)
       } else {
+        toast.error(data.error || 'Failed to update profile', { id: loadingToast })
         setMessage(data.error || 'Failed to update profile')
         setLoading(false)
       }
     } catch (error) {
+      toast.error('Error updating profile', { id: loadingToast })
       setMessage('Error updating profile')
       setLoading(false)
     }
@@ -353,6 +359,7 @@ export function BaseCamp({ user }: BaseCampProps) {
 
   const handlePasswordChange = async () => {
     if (passwordData.newPassword !== passwordData.confirmPassword) {
+      toast.error('Passwords do not match!')
       setMessage('Passwords do not match!')
       setTimeout(() => setMessage(''), 3000)
       return

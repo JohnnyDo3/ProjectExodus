@@ -5,6 +5,8 @@ import { useSession } from 'next-auth/react'
 import { useRouter } from 'next/navigation'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/Card'
 import { Button } from '@/components/ui/Button'
+import Link from 'next/link'
+import toast from 'react-hot-toast'
 import {
   Users,
   Search,
@@ -161,7 +163,7 @@ export default function NetworkPage() {
 
   const handleFollow = async (userId: string) => {
     if (!session?.user) {
-      alert('Please sign in to follow users')
+      toast.error('Please sign in to follow users')
       return
     }
 
@@ -188,8 +190,10 @@ export default function NetworkPage() {
         const newSet = new Set(prev)
         if (isFollowing) {
           newSet.delete(userId)
+          toast.success('Unfollowed successfully!')
         } else {
           newSet.add(userId)
+          toast.success('Following! You\'ll see their activity in your feed.')
         }
         return newSet
       })
@@ -198,7 +202,7 @@ export default function NetworkPage() {
       fetchUsers()
     } catch (error) {
       console.error('Error following/unfollowing user:', error)
-      alert('Failed to update follow status')
+      toast.error('Failed to update follow status')
     } finally {
       setLoadingFollow((prev) => {
         const newSet = new Set(prev)
