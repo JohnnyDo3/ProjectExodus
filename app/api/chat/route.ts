@@ -76,10 +76,13 @@ When answering questions:
 
 export async function POST(request: NextRequest) {
   try {
+    console.log('[CHAT API] Request received')
     const body = await request.json()
     const { messages } = body
+    console.log('[CHAT API] Messages count:', messages?.length)
 
     if (!messages || !Array.isArray(messages)) {
+      console.error('[CHAT API] Invalid request format')
       return NextResponse.json(
         { error: 'Invalid request format' },
         { status: 400 }
@@ -88,8 +91,10 @@ export async function POST(request: NextRequest) {
 
     // Check if Google AI API key is available
     const googleApiKey = process.env.GOOGLE_AI_API_KEY
+    console.log('[CHAT API] API key present:', !!googleApiKey)
 
     if (!googleApiKey) {
+      console.log('[CHAT API] Using fallback response (no API key)')
       // Fallback to rule-based responses if no API key
       const lastMessage = messages[messages.length - 1]
       const response = generateFallbackResponse(lastMessage.content)
@@ -108,36 +113,39 @@ export async function POST(request: NextRequest) {
       }]
     }))
 
-    // Use Google Gemini API (Gemini 2.5 Flash - current stable model as of 2025)
-    const geminiResponse = await fetch(
-      `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key=${googleApiKey}`,
-      {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          contents: geminiMessages,
-          generationConfig: {
-            temperature: 0.7,
-            maxOutputTokens: 500,
-          }
-        })
-      }
-    )
+    // Use Google Gemini API (Gemini 1.5 Flash - correct model name)
+    const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${googleApiKey}`
+    console.log('[CHAT API] Calling Gemini API...')
+
+    const geminiResponse = await fetch(apiUrl, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        contents: geminiMessages,
+        generationConfig: {
+          temperature: 0.7,
+          maxOutputTokens: 500,
+        }
+      })
+    })
+
+    console.log('[CHAT API] Gemini response status:', geminiResponse.status)
 
     if (!geminiResponse.ok) {
       const errorData = await geminiResponse.json()
-      console.error('Gemini API error:', errorData)
+      console.error('[CHAT API] Gemini API error:', JSON.stringify(errorData, null, 2))
       throw new Error('Gemini API request failed')
     }
 
     const data = await geminiResponse.json()
+    console.log('[CHAT API] Gemini response received successfully')
     const assistantMessage = data.candidates[0].content.parts[0].text
 
     return NextResponse.json({ message: assistantMessage })
   } catch (error) {
-    console.error('Chat API error:', error)
+    console.error('[CHAT API] Error:', error)
 
     // Return a fallback response on error
     return NextResponse.json({

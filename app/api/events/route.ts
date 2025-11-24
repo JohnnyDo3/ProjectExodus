@@ -5,10 +5,13 @@ import { auth } from '@/auth'
 // GET /api/events - Get all events
 export async function GET(request: NextRequest) {
   try {
+    console.log('[API /events] Request received')
     const { searchParams } = new URL(request.url)
     const type = searchParams.get('type') // Filter by VIRTUAL/IN_PERSON/HYBRID
     const upcoming = searchParams.get('upcoming') === 'true'
+    console.log('[API /events] Query params:', { type, upcoming })
 
+    console.log('[API /events] Fetching events from database...')
     const events = await prisma.event.findMany({
       where: {
         AND: [
@@ -44,12 +47,16 @@ export async function GET(request: NextRequest) {
       orderBy: { startDate: 'asc' },
     })
 
+    console.log('[API /events] Found', events.length, 'events')
+    console.log('[API /events] Returning success response')
+
     return NextResponse.json({
       success: true,
       data: events,
     })
   } catch (error) {
-    console.error('Error fetching events:', error)
+    console.error('[API /events] ERROR:', error)
+    console.error('[API /events] Error details:', JSON.stringify(error, null, 2))
     return NextResponse.json(
       { success: false, error: 'Failed to fetch events' },
       { status: 500 }

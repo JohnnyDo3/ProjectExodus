@@ -59,15 +59,22 @@ export default function EventsPage() {
 
   const fetchEvents = async () => {
     try {
+      console.log('[Events Page] Fetching events...')
       const res = await fetch('/api/events')
+      console.log('[Events Page] Response status:', res.status)
       const data = await res.json()
+      console.log('[Events Page] Response data:', data)
 
       if (data.success) {
+        console.log('[Events Page] Setting', data.data.length, 'events')
         setEvents(data.data)
+      } else {
+        console.error('[Events Page] API returned success=false:', data.error)
       }
     } catch (error) {
-      console.error('Error fetching events:', error)
+      console.error('[Events Page] Error fetching events:', error)
     } finally {
+      console.log('[Events Page] Setting isLoading to false')
       setIsLoading(false)
     }
   }

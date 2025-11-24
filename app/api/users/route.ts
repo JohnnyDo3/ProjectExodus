@@ -5,11 +5,16 @@ import { auth } from '@/auth'
 // GET /api/users - Get all users for networking
 export async function GET(request: NextRequest) {
   try {
+    console.log('[API /users] Request received')
     const session = await auth()
+    console.log('[API /users] Session user ID:', session?.user?.id || 'not logged in')
+
     const { searchParams } = new URL(request.url)
     const search = searchParams.get('search')
     const interest = searchParams.get('interest')
+    console.log('[API /users] Search params:', { search, interest })
 
+    console.log('[API /users] Fetching users from database...')
     const users = await prisma.user.findMany({
       where: {
         AND: [
@@ -50,12 +55,16 @@ export async function GET(request: NextRequest) {
       orderBy: { createdAt: 'desc' },
     })
 
+    console.log('[API /users] Found', users.length, 'users')
+    console.log('[API /users] Returning success response')
+
     return NextResponse.json({
       success: true,
       data: users,
     })
   } catch (error) {
-    console.error('Error fetching users:', error)
+    console.error('[API /users] ERROR:', error)
+    console.error('[API /users] Error details:', JSON.stringify(error, null, 2))
     return NextResponse.json(
       { success: false, error: 'Failed to fetch users' },
       { status: 500 }

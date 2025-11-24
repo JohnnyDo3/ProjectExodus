@@ -60,29 +60,42 @@ export default function NetworkPage() {
 
   const fetchUsers = async () => {
     try {
+      console.log('[Network Page] Fetching users...')
       const res = await fetch('/api/users')
+      console.log('[Network Page] Response status:', res.status)
       const data = await res.json()
+      console.log('[Network Page] Response data:', data)
 
       if (data.success) {
+        console.log('[Network Page] Setting', data.data.length, 'users')
         setUsers(data.data)
+      } else {
+        console.error('[Network Page] API returned success=false:', data.error)
       }
     } catch (error) {
-      console.error('Error fetching users:', error)
+      console.error('[Network Page] Error fetching users:', error)
     } finally {
+      console.log('[Network Page] Setting isLoading to false')
       setIsLoading(false)
     }
   }
 
   const fetchFollowingStatus = async () => {
     try {
+      console.log('[Network Page] Fetching following status...')
       const res = await fetch('/api/users/following')
+      console.log('[Network Page] Following response status:', res.status)
       const data = await res.json()
+      console.log('[Network Page] Following data:', data)
 
       if (data.success) {
+        console.log('[Network Page] Setting', data.data.length, 'following users')
         setFollowingUsers(new Set(data.data.map((u: any) => u.id)))
+      } else {
+        console.error('[Network Page] Following API returned success=false:', data.error)
       }
     } catch (error) {
-      console.error('Error fetching following status:', error)
+      console.error('[Network Page] Error fetching following status:', error)
     }
   }
 
