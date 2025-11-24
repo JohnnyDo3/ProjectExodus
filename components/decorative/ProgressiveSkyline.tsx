@@ -25,7 +25,7 @@ export function ProgressiveSkyline() {
             transform: translateX(0);
           }
           100% {
-            transform: translateX(-50%);
+            transform: translateX(-5000px);
           }
         }
 
@@ -301,6 +301,61 @@ export function ProgressiveSkyline() {
                 <rect x={570} y="198" width="2" height="2" fill="#6b8ea8" opacity="0.8" />
               </g>
 
+              {/* Natural scattered trees */}
+              <g>
+                {[60, 110, 165, 320, 410, 490, 610, 690, 750].map((x, i) => (
+                  <g key={`tree-${i}`} opacity="0.85">
+                    {/* Tree trunk */}
+                    <rect x={x} y="195" width="3" height="10" fill="#6b5a45" />
+                    {/* Tree foliage - fuller, rounder */}
+                    <circle cx={x+1.5} cy="192" r="7" fill="#5a8a5a" opacity="0.9" />
+                    <circle cx={x-2} cy="194" r="5" fill="#6a9a6a" opacity="0.85" />
+                    <circle cx={x+5} cy="194" r="5" fill="#6a9a6a" opacity="0.85" />
+                  </g>
+                ))}
+              </g>
+
+              {/* Hay bales scattered in fields */}
+              <g>
+                {[350, 420, 620, 680].map((x, i) => (
+                  <g key={`hay-${i}`} opacity="1">
+                    <ellipse cx={x} cy="205" rx="5" ry="3" fill="#d4a574" />
+                    <ellipse cx={x} cy="203" rx="4" ry="2" fill="#c9995f" />
+                    {/* Hay texture lines */}
+                    <path d={`M ${x-3},204 L ${x+3},204 M ${x-2},205 L ${x+2},205`} stroke="#b88a50" strokeWidth="0.5" opacity="1" />
+                  </g>
+                ))}
+              </g>
+
+              {/* Parked Tractors - GREEN JOHN DEERE STYLE! */}
+              <g>
+                {[250, 550].map((x, i) => (
+                  <g key={`tractor-${i}`} opacity="1">
+                    {/* Tractor body - green */}
+                    <rect x={x} y="198" width="18" height="8" rx="1" fill="#4a7c2f" />
+                    {/* Engine hood */}
+                    <rect x={x+12} y="196" width="6" height="4" rx="0.5" fill="#3d6928" />
+                    {/* Cab */}
+                    <rect x={x+4} y="194" width="6" height="5" rx="0.5" fill="#5a8a3f" />
+                    {/* Cab window */}
+                    <rect x={x+5} y="195" width="4" height="3" fill="#6b8ea8" opacity="0.9" />
+                    {/* Big rear wheel */}
+                    <circle cx={x+4} cy="206" r="4" fill="#2f2f2f" />
+                    <circle cx={x+4} cy="206" r="2" fill="#4a4a4a" />
+                    {/* Small front wheel */}
+                    <circle cx={x+15} cy="204" r="2.5" fill="#2f2f2f" />
+                    <circle cx={x+15} cy="204" r="1" fill="#4a4a4a" />
+                    {/* Exhaust pipe */}
+                    <rect x={x+10} y="192" width="1" height="4" fill="#4a4a4a" />
+                    <ellipse cx={x+10.5} cy="192" rx="1.5" ry="0.8" fill="#6a6a6a" />
+                    {/* Yellow details */}
+                    <rect x={x+13} y="199" width="4" height="1" fill="#ffd700" opacity="1" />
+                  </g>
+                ))}
+              </g>
+
+              {/* FARM ANIMALS - Rendered on top of trees and hay */}
+
               {/* Horses in the fields - MORE HORSES! */}
               <g>
                 {[120, 320, 420, 580, 680, 760].map((x, i) => (
@@ -372,59 +427,6 @@ export function ProgressiveSkyline() {
                     {/* Tiny legs */}
                     <rect x={x-1} y="209" width="0.5" height="2" fill="#d4a574" />
                     <rect x={x+0.5} y="209" width="0.5" height="2" fill="#d4a574" />
-                  </g>
-                ))}
-              </g>
-
-              {/* Natural scattered trees */}
-              <g>
-                {[60, 110, 165, 320, 410, 490, 610, 690, 750].map((x, i) => (
-                  <g key={`tree-${i}`} opacity="0.85">
-                    {/* Tree trunk */}
-                    <rect x={x} y="195" width="3" height="10" fill="#6b5a45" />
-                    {/* Tree foliage - fuller, rounder */}
-                    <circle cx={x+1.5} cy="192" r="7" fill="#5a8a5a" opacity="0.9" />
-                    <circle cx={x-2} cy="194" r="5" fill="#6a9a6a" opacity="0.85" />
-                    <circle cx={x+5} cy="194" r="5" fill="#6a9a6a" opacity="0.85" />
-                  </g>
-                ))}
-              </g>
-
-              {/* Hay bales scattered in fields */}
-              <g>
-                {[350, 420, 620, 680].map((x, i) => (
-                  <g key={`hay-${i}`} opacity="1">
-                    <ellipse cx={x} cy="205" rx="5" ry="3" fill="#d4a574" />
-                    <ellipse cx={x} cy="203" rx="4" ry="2" fill="#c9995f" />
-                    {/* Hay texture lines */}
-                    <path d={`M ${x-3},204 L ${x+3},204 M ${x-2},205 L ${x+2},205`} stroke="#b88a50" strokeWidth="0.5" opacity="1" />
-                  </g>
-                ))}
-              </g>
-
-              {/* Parked Tractors - GREEN JOHN DEERE STYLE! */}
-              <g>
-                {[250, 550].map((x, i) => (
-                  <g key={`tractor-${i}`} opacity="1">
-                    {/* Tractor body - green */}
-                    <rect x={x} y="198" width="18" height="8" rx="1" fill="#4a7c2f" />
-                    {/* Engine hood */}
-                    <rect x={x+12} y="196" width="6" height="4" rx="0.5" fill="#3d6928" />
-                    {/* Cab */}
-                    <rect x={x+4} y="194" width="6" height="5" rx="0.5" fill="#5a8a3f" />
-                    {/* Cab window */}
-                    <rect x={x+5} y="195" width="4" height="3" fill="#6b8ea8" opacity="0.9" />
-                    {/* Big rear wheel */}
-                    <circle cx={x+4} cy="206" r="4" fill="#2f2f2f" />
-                    <circle cx={x+4} cy="206" r="2" fill="#4a4a4a" />
-                    {/* Small front wheel */}
-                    <circle cx={x+15} cy="204" r="2.5" fill="#2f2f2f" />
-                    <circle cx={x+15} cy="204" r="1" fill="#4a4a4a" />
-                    {/* Exhaust pipe */}
-                    <rect x={x+10} y="192" width="1" height="4" fill="#4a4a4a" />
-                    <ellipse cx={x+10.5} cy="192" rx="1.5" ry="0.8" fill="#6a6a6a" />
-                    {/* Yellow details */}
-                    <rect x={x+13} y="199" width="4" height="1" fill="#ffd700" opacity="1" />
                   </g>
                 ))}
               </g>
