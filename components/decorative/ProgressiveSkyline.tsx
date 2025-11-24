@@ -127,88 +127,200 @@ export function ProgressiveSkyline() {
 
               {/* House Color Gradients - Victorian (Warm Beige/Cream) */}
               <linearGradient id={`victorianHouse-${iteration}`} x1="0%" y1="0%" x2="0%" y2="100%">
-                <stop offset="0%" stopColor="#f5e6d3" stopOpacity="0.9" />
-                <stop offset="100%" stopColor="#d4c4a8" stopOpacity="0.95" />
+                <stop offset="0%" stopColor="#f5e6d3" stopOpacity="1" />
+                <stop offset="100%" stopColor="#d4c4a8" stopOpacity="1" />
               </linearGradient>
               <linearGradient id={`victorianRoof-${iteration}`} x1="0%" y1="0%" x2="0%" y2="100%">
-                <stop offset="0%" stopColor="#8b5a3c" stopOpacity="0.9" />
-                <stop offset="100%" stopColor="#6d4428" stopOpacity="0.95" />
+                <stop offset="0%" stopColor="#8b5a3c" stopOpacity="1" />
+                <stop offset="100%" stopColor="#6d4428" stopOpacity="1" />
               </linearGradient>
 
               {/* Colonial (White/Light Gray) */}
               <linearGradient id={`colonialHouse-${iteration}`} x1="0%" y1="0%" x2="0%" y2="100%">
-                <stop offset="0%" stopColor="#f0f0f0" stopOpacity="0.9" />
-                <stop offset="100%" stopColor="#d8d8d8" stopOpacity="0.95" />
+                <stop offset="0%" stopColor="#f0f0f0" stopOpacity="1" />
+                <stop offset="100%" stopColor="#d8d8d8" stopOpacity="1" />
               </linearGradient>
               <linearGradient id={`colonialRoof-${iteration}`} x1="0%" y1="0%" x2="0%" y2="100%">
-                <stop offset="0%" stopColor="#4a4a4a" stopOpacity="0.9" />
-                <stop offset="100%" stopColor="#2f2f2f" stopOpacity="0.95" />
+                <stop offset="0%" stopColor="#4a4a4a" stopOpacity="1" />
+                <stop offset="100%" stopColor="#2f2f2f" stopOpacity="1" />
               </linearGradient>
 
               {/* Ranch (Tan/Brown Earth Tones) */}
               <linearGradient id={`ranchHouse-${iteration}`} x1="0%" y1="0%" x2="0%" y2="100%">
-                <stop offset="0%" stopColor="#e8d4b8" stopOpacity="0.9" />
-                <stop offset="100%" stopColor="#c9b18f" stopOpacity="0.95" />
+                <stop offset="0%" stopColor="#e8d4b8" stopOpacity="1" />
+                <stop offset="100%" stopColor="#c9b18f" stopOpacity="1" />
               </linearGradient>
               <linearGradient id={`ranchRoof-${iteration}`} x1="0%" y1="0%" x2="0%" y2="100%">
-                <stop offset="0%" stopColor="#8b7355" stopOpacity="0.9" />
-                <stop offset="100%" stopColor="#6b5a45" stopOpacity="0.95" />
+                <stop offset="0%" stopColor="#8b7355" stopOpacity="1" />
+                <stop offset="100%" stopColor="#6b5a45" stopOpacity="1" />
               </linearGradient>
 
               {/* Cottage (Pastel Blue) */}
               <linearGradient id={`cottageHouse-${iteration}`} x1="0%" y1="0%" x2="0%" y2="100%">
-                <stop offset="0%" stopColor="#d4e7f5" stopOpacity="0.9" />
-                <stop offset="100%" stopColor="#b8d4e8" stopOpacity="0.95" />
+                <stop offset="0%" stopColor="#d4e7f5" stopOpacity="1" />
+                <stop offset="100%" stopColor="#b8d4e8" stopOpacity="1" />
               </linearGradient>
               <linearGradient id={`cottageRoof-${iteration}`} x1="0%" y1="0%" x2="0%" y2="100%">
-                <stop offset="0%" stopColor="#a85757" stopOpacity="0.9" />
-                <stop offset="100%" stopColor="#8b4545" stopOpacity="0.95" />
+                <stop offset="0%" stopColor="#a85757" stopOpacity="1" />
+                <stop offset="100%" stopColor="#8b4545" stopOpacity="1" />
               </linearGradient>
 
               {/* Modern (Gray/White with Blue Accent) */}
               <linearGradient id={`modernHouse-${iteration}`} x1="0%" y1="0%" x2="0%" y2="100%">
-                <stop offset="0%" stopColor="#e8e8e8" stopOpacity="0.9" />
-                <stop offset="100%" stopColor="#c4c4c4" stopOpacity="0.95" />
+                <stop offset="0%" stopColor="#e8e8e8" stopOpacity="1" />
+                <stop offset="100%" stopColor="#c4c4c4" stopOpacity="1" />
               </linearGradient>
               <linearGradient id={`modernRoof-${iteration}`} x1="0%" y1="0%" x2="0%" y2="100%">
-                <stop offset="0%" stopColor="#5a7a8a" stopOpacity="0.9" />
-                <stop offset="100%" stopColor="#3d5866" stopOpacity="0.95" />
+                <stop offset="0%" stopColor="#5a7a8a" stopOpacity="1" />
+                <stop offset="100%" stopColor="#3d5866" stopOpacity="1" />
               </linearGradient>
             </defs>
 
             <g fill={`url(#skylineGradient-${iteration})`} className="text-[var(--foreground)]">
               {/* ========== PHASE 1: RURAL COUNTRYSIDE (0-800) ========== */}
 
-              {/* Rolling hills */}
-              <path d="M 0,200 Q 80,185 160,195 Q 240,205 320,190 Q 400,175 480,185 Q 560,195 640,180 Q 720,170 800,175 L 800,250 L 0,250 Z"
-                    opacity="0.5" />
+              {/* Beautiful rolling hills with green grass */}
+              <path d="M 0,210 Q 100,195 200,205 Q 300,215 400,200 Q 500,190 600,200 Q 700,205 800,195 L 800,250 L 0,250 Z"
+                    fill="#7aa87a" opacity="0.7" />
+              <path d="M 0,205 Q 80,192 160,200 Q 240,208 320,195 Q 400,185 480,195 Q 560,203 640,190 Q 720,185 800,192 L 800,250 L 0,250 Z"
+                    fill="#8ab88a" opacity="0.6" />
 
-              {/* Forest clusters */}
-              <g opacity="0.8">
-                {[40, 90, 140, 200, 260, 320, 380, 450, 520, 590, 650, 710, 760].map((x, i) => (
-                  <path key={`tree1-${i}`}
-                        d={`M ${x},190 L ${x-8},155 L ${x-10},160 L ${x-12},150 L ${x-15},157 L ${x-20},155 L ${x-18},190 Z`} />
+              {/* White picket fences along hills */}
+              <g>
+                {[40, 140, 240, 340, 440, 540, 640, 740].map((x, i) => (
+                  <g key={`fence-section-${i}`}>
+                    {Array.from({length: 12}).map((_, fi) => (
+                      <g key={`picket-${fi}`}>
+                        <rect x={x + fi * 8} y="195" width="2" height="8" fill="#f5f5f5" opacity="0.95" />
+                        <path d={`M ${x + fi * 8},195 L ${x + fi * 8 + 1},193 L ${x + fi * 8 + 2},195 Z`} fill="#f5f5f5" opacity="0.95" />
+                      </g>
+                    ))}
+                    <rect x={x} y="200" width="96" height="1.5" fill="#f5f5f5" opacity="0.9" />
+                  </g>
                 ))}
               </g>
 
-              {/* Farm structures */}
-              <g opacity="0.85">
-                <rect x="180" y="175" width="40" height="30" />
-                <path d="M 175,175 L 200,155 L 225,175 Z" />
-                <rect x="550" y="172" width="35" height="25" />
-                <path d="M 547,172 L 567.5,156 L 588,172 Z" />
+              {/* Red Barn #1 - Large Classic Barn */}
+              <g>
+                <rect x="180" y="185" width="32" height="20" fill="#c73e3e" opacity="1" />
+                <path d="M 176,185 L 196,170 L 216,185 Z" fill="#a83232" opacity="1" />
+                <rect x="194" y="193" width="8" height="12" fill="#6d4428" opacity="0.95" />
+                <rect x="184" y="190" width="4" height="5" fill="#4a4a4a" opacity="0.8" />
+                <rect x="204" y="190" width="4" height="5" fill="#4a4a4a" opacity="0.8" />
+                {/* Barn door cross pattern */}
+                <path d="M 198,197 L 198,205 M 194,201 L 202,201" stroke="#5a3a2a" strokeWidth="1" opacity="0.9" />
+                {/* Silo next to barn */}
+                <rect x="215" y="180" width="8" height="25" fill="#d4d4d4" opacity="0.95" />
+                <ellipse cx="219" cy="180" rx="4" ry="2" fill="#b8b8b8" opacity="0.95" />
+                <path d="M 217,178 L 219,173 L 221,178" fill="#a83232" opacity="0.95" />
               </g>
 
-              {/* Wildlife silhouettes */}
-              <g opacity="0.6">
-                <ellipse cx="420" cy="185" rx="10" ry="6" />
-                <ellipse cx="680" cy="183" rx="9" ry="5" />
+              {/* Red Barn #2 - Smaller Barn */}
+              <g>
+                <rect x="450" y="190" width="24" height="15" fill="#c73e3e" opacity="1" />
+                <path d="M 447,190 L 462,178 L 477,190 Z" fill="#a83232" opacity="1" />
+                <rect x="458" y="195" width="6" height="10" fill="#6d4428" opacity="0.95" />
+                <rect x="452" y="193" width="3" height="4" fill="#4a4a4a" opacity="0.8" />
+                <rect x="467" y="193" width="3" height="4" fill="#4a4a4a" opacity="0.8" />
+                {/* Small silo */}
+                <rect x="477" y="188" width="6" height="17" fill="#d4d4d4" opacity="0.95" />
+                <ellipse cx="480" cy="188" rx="3" ry="1.5" fill="#b8b8b8" opacity="0.95" />
               </g>
 
-              {/* Birds */}
-              <g opacity="0.5">
-                <path d="M 250,140 Q 245,138 240,140 M 255,140 Q 260,138 265,140" />
-                <path d="M 600,135 Q 595,133 590,135 M 605,135 Q 610,133 615,135" />
+              {/* Red Barn #3 - Rustic Small Barn */}
+              <g>
+                <rect x="650" y="192" width="20" height="13" fill="#c73e3e" opacity="1" />
+                <path d="M 648,192 L 660,182 L 672,192 Z" fill="#a83232" opacity="1" />
+                <rect x="656" y="196" width="5" height="9" fill="#6d4428" opacity="0.95" />
+                <rect x="651" y="194" width="2.5" height="3" fill="#4a4a4a" opacity="0.8" />
+              </g>
+
+              {/* Miniature Farmhouses */}
+              <g>
+                {/* Farmhouse #1 */}
+                <rect x="280" y="195" width="18" height="10" fill="#f0e6d3" opacity="1" />
+                <path d="M 278,195 L 289,188 L 300,195 Z" fill="#8b5a3c" opacity="1" />
+                <rect x="285" y="198" width="3" height="7" fill="#6d4428" opacity="0.95" />
+                <rect x={283} y="197" width="2" height="2.5" fill="#6b8ea8" opacity="0.8" />
+                <rect x={291} y="197" width="2" height="2.5" fill="#6b8ea8" opacity="0.8" />
+                <rect x="295" y="191" width="2" height="4" fill="#a85757" opacity="0.95" />
+
+                {/* Farmhouse #2 */}
+                <rect x="560" y="197" width="16" height="8" fill="#e8d4b8" opacity="1" />
+                <path d="M 558,197 L 568,191 L 578,197 Z" fill="#6b5a45" opacity="1" />
+                <rect x="565" y="199" width="3" height="6" fill="#6d4428" opacity="0.95" />
+                <rect x={562} y="198" width="2" height="2" fill="#6b8ea8" opacity="0.8" />
+                <rect x={570} y="198" width="2" height="2" fill="#6b8ea8" opacity="0.8" />
+              </g>
+
+              {/* Horses in the fields */}
+              <g>
+                {[120, 380, 580, 720].map((x, i) => (
+                  <g key={`horse-${i}`} opacity="0.9">
+                    {/* Horse body */}
+                    <ellipse cx={x} cy="200" rx="8" ry="5" fill="#654321" />
+                    {/* Horse head */}
+                    <ellipse cx={x-6} cy="197" rx="3" ry="4" fill="#654321" />
+                    {/* Legs */}
+                    <rect x={x-3} y="205" width="1.5" height="5" fill="#654321" />
+                    <rect x={x+2} y="205" width="1.5" height="5" fill="#654321" />
+                    {/* Tail */}
+                    <path d={`M ${x+8},200 Q ${x+11},198 ${x+12},202`} stroke="#4a3520" strokeWidth="1.5" fill="none" />
+                  </g>
+                ))}
+              </g>
+
+              {/* Cows grazing */}
+              <g>
+                {[230, 510].map((x, i) => (
+                  <g key={`cow-${i}`} opacity="0.9">
+                    {/* Cow body */}
+                    <ellipse cx={x} cy="202" rx="9" ry="5" fill="#f5f5f5" />
+                    {/* Black spots */}
+                    <ellipse cx={x-3} cy="201" rx="2" ry="2" fill="#2f2f2f" opacity="0.8" />
+                    <ellipse cx={x+4} cy="202" rx="2.5" ry="2.5" fill="#2f2f2f" opacity="0.8" />
+                    {/* Cow head */}
+                    <ellipse cx={x-7} cy="200" rx="3" ry="3.5" fill="#f5f5f5" />
+                    {/* Legs */}
+                    <rect x={x-4} y="207" width="1.5" height="4" fill="#e8e8e8" />
+                    <rect x={x+3} y="207" width="1.5" height="4" fill="#e8e8e8" />
+                  </g>
+                ))}
+              </g>
+
+              {/* Natural scattered trees */}
+              <g>
+                {[60, 110, 165, 320, 410, 490, 610, 690, 750].map((x, i) => (
+                  <g key={`tree-${i}`} opacity="0.85">
+                    {/* Tree trunk */}
+                    <rect x={x} y="195" width="3" height="10" fill="#6b5a45" />
+                    {/* Tree foliage - fuller, rounder */}
+                    <circle cx={x+1.5} cy="192" r="7" fill="#5a8a5a" opacity="0.9" />
+                    <circle cx={x-2} cy="194" r="5" fill="#6a9a6a" opacity="0.85" />
+                    <circle cx={x+5} cy="194" r="5" fill="#6a9a6a" opacity="0.85" />
+                  </g>
+                ))}
+              </g>
+
+              {/* Hay bales scattered in fields */}
+              <g>
+                {[350, 420, 620, 680].map((x, i) => (
+                  <g key={`hay-${i}`} opacity="0.9">
+                    <ellipse cx={x} cy="205" rx="5" ry="3" fill="#d4a574" />
+                    <ellipse cx={x} cy="203" rx="4" ry="2" fill="#c9995f" />
+                    {/* Hay texture lines */}
+                    <path d={`M ${x-3},204 L ${x+3},204 M ${x-2},205 L ${x+2},205`} stroke="#b88a50" strokeWidth="0.5" opacity="0.7" />
+                  </g>
+                ))}
+              </g>
+
+              {/* Birds flying over countryside */}
+              <g opacity="0.75">
+                {[150, 250, 350, 450, 550, 650, 750].map((x, i) => (
+                  <path key={`bird-${i}`}
+                        d={`M ${x},160 Q ${x-4},158 ${x-8},160 M ${x+4},160 Q ${x+8},158 ${x+12},160`}
+                        stroke="#4a4a4a" strokeWidth="1" fill="none" />
+                ))}
               </g>
 
               {/* ========== PHASE 2: DEVELOPING SUBURBS (800-2000) ========== */}
@@ -267,20 +379,20 @@ export function ProgressiveSkyline() {
                   <path d={`M ${x+10},170 L ${x+14},163 L ${x+18},170 Z`} fill={`url(#victorianRoof-${iteration})`} /> {/* Tower roof */}
 
                   {/* Detailed windows */}
-                  <rect x={x+4} y="190" width="5" height="7" fill="#6b8ea8" opacity="0.7" />
-                  <rect x={x+19} y="190" width="5" height="7" fill="#6b8ea8" opacity="0.7" />
-                  <rect x={x+11} y="178" width="4" height="5" fill="#6b8ea8" opacity="0.7" />
+                  <rect x={x+4} y="190" width="5" height="7" fill="#6b8ea8" opacity="0.95" />
+                  <rect x={x+19} y="190" width="5" height="7" fill="#6b8ea8" opacity="0.95" />
+                  <rect x={x+11} y="178" width="4" height="5" fill="#6b8ea8" opacity="0.95" />
 
                   {/* Front door with porch */}
-                  <rect x={x+11} y="197" width="6" height="10" fill="#8b5a3c" opacity="0.9" />
-                  <path d={`M ${x+8},197 L ${x+20},197`} stroke="#6d4428" strokeWidth="1.5" opacity="0.8" />
+                  <rect x={x+11} y="197" width="6" height="10" fill="#8b5a3c" opacity="1" />
+                  <path d={`M ${x+8},197 L ${x+20},197`} stroke="#6d4428" strokeWidth="1.5" opacity="1" />
 
                   {/* Chimney with smoke */}
-                  <rect x={x+22} y="176" width="3" height="9" fill="#a85757" opacity="0.9" />
+                  <rect x={x+22} y="176" width="3" height="9" fill="#a85757" opacity="1" />
                   <ellipse className="chimney-smoke" cx={x+23.5} cy="173" rx="2" ry="3" fill="#c4c4c4" opacity="0.5" />
 
                   {/* Decorative trim */}
-                  <rect x={x} y="207" width="28" height="1.5" fill="#d4c4a8" opacity="0.9" />
+                  <rect x={x} y="207" width="28" height="1.5" fill="#d4c4a8" opacity="1" />
                 </g>
               ))}
 
@@ -294,27 +406,27 @@ export function ProgressiveSkyline() {
                   <path d={`M ${x-2},183 L ${x+16},172 L ${x+34},183 Z`} fill={`url(#colonialRoof-${iteration})`} />
 
                   {/* Symmetrical windows (4 windows, 2 stories) */}
-                  <rect x={x+4} y="188" width="5" height="6" fill="#6b8ea8" opacity="0.7" />
-                  <rect x={x+23} y="188" width="5" height="6" fill="#6b8ea8" opacity="0.7" />
-                  <rect x={x+4} y="197" width="5" height="6" fill="#6b8ea8" opacity="0.7" />
-                  <rect x={x+23} y="197" width="5" height="6" fill="#6b8ea8" opacity="0.7" />
+                  <rect x={x+4} y="188" width="5" height="6" fill="#6b8ea8" opacity="0.95" />
+                  <rect x={x+23} y="188" width="5" height="6" fill="#6b8ea8" opacity="0.95" />
+                  <rect x={x+4} y="197" width="5" height="6" fill="#6b8ea8" opacity="0.95" />
+                  <rect x={x+23} y="197" width="5" height="6" fill="#6b8ea8" opacity="0.95" />
 
                   {/* Centered front door */}
-                  <rect x={x+13} y="197" width="6" height="10" fill="#5a4a3a" opacity="0.9" />
-                  <circle cx={x+17} cy="202" r="0.5" fill="#d4af37" opacity="0.9" />
+                  <rect x={x+13} y="197" width="6" height="10" fill="#5a4a3a" opacity="1" />
+                  <circle cx={x+17} cy="202" r="0.5" fill="#d4af37" opacity="1" />
 
                   {/* Front porch pillars */}
-                  <rect x={x+10} y="197" width="1.5" height="10" fill="#e8e8e8" opacity="0.9" />
-                  <rect x={x+20.5} y="197" width="1.5" height="10" fill="#e8e8e8" opacity="0.9" />
+                  <rect x={x+10} y="197" width="1.5" height="10" fill="#e8e8e8" opacity="1" />
+                  <rect x={x+20.5} y="197" width="1.5" height="10" fill="#e8e8e8" opacity="1" />
 
                   {/* Chimney */}
-                  <rect x={x+27} y="175" width="3" height="8" fill="#a85757" opacity="0.9" />
+                  <rect x={x+27} y="175" width="3" height="8" fill="#a85757" opacity="1" />
 
                   {/* Shutters */}
-                  <rect x={x+2.5} y="188" width="1" height="6" fill="#2f2f2f" opacity="0.8" />
-                  <rect x={x+9.5} y="188" width="1" height="6" fill="#2f2f2f" opacity="0.8" />
-                  <rect x={x+21.5} y="188" width="1" height="6" fill="#2f2f2f" opacity="0.8" />
-                  <rect x={x+28.5} y="188" width="1" height="6" fill="#2f2f2f" opacity="0.8" />
+                  <rect x={x+2.5} y="188" width="1" height="6" fill="#2f2f2f" opacity="1" />
+                  <rect x={x+9.5} y="188" width="1" height="6" fill="#2f2f2f" opacity="1" />
+                  <rect x={x+21.5} y="188" width="1" height="6" fill="#2f2f2f" opacity="1" />
+                  <rect x={x+28.5} y="188" width="1" height="6" fill="#2f2f2f" opacity="1" />
                 </g>
               ))}
 
@@ -328,18 +440,18 @@ export function ProgressiveSkyline() {
                   <path d={`M ${x-2},193 L ${x+19},186 L ${x+40},193 Z`} fill={`url(#ranchRoof-${iteration})`} />
 
                   {/* Horizontal windows */}
-                  <rect x={x+5} y="196" width="8" height="5" fill="#6b8ea8" opacity="0.7" />
-                  <rect x={x+25} y="196" width="8" height="5" fill="#6b8ea8" opacity="0.7" />
+                  <rect x={x+5} y="196" width="8" height="5" fill="#6b8ea8" opacity="0.95" />
+                  <rect x={x+25} y="196" width="8" height="5" fill="#6b8ea8" opacity="0.95" />
 
                   {/* Attached garage */}
-                  <rect x={x+30} y="197" width="7" height="10" fill="#c9b18f" opacity="0.9" />
-                  <rect x={x+31} y="203" width="5" height="4" fill="#4a4a4a" opacity="0.6" />
+                  <rect x={x+30} y="197" width="7" height="10" fill="#c9b18f" opacity="1" />
+                  <rect x={x+31} y="203" width="5" height="4" fill="#4a4a4a" opacity="0.95" />
 
                   {/* Front door */}
-                  <rect x={x+15} y="199" width="4" height="8" fill="#6b5a45" opacity="0.9" />
+                  <rect x={x+15} y="199" width="4" height="8" fill="#6b5a45" opacity="1" />
 
                   {/* Driveway */}
-                  <path d={`M ${x+33},207 L ${x+33},215`} stroke="#8a8a8a" strokeWidth="4" opacity="0.6" />
+                  <path d={`M ${x+33},207 L ${x+33},215`} stroke="#8a8a8a" strokeWidth="4" opacity="0.9" />
                 </g>
               ))}
 
@@ -353,26 +465,26 @@ export function ProgressiveSkyline() {
                   <path d={`M ${x-2},192 Q ${x+12},182 ${x+26},192 Z`} fill={`url(#cottageRoof-${iteration})`} />
 
                   {/* Arched door */}
-                  <path d={`M ${x+9},197 L ${x+9},207 L ${x+15},207 L ${x+15},197 Q ${x+12},195 ${x+9},197 Z`} fill="#a85757" opacity="0.9" />
+                  <path d={`M ${x+9},197 L ${x+9},207 L ${x+15},207 L ${x+15},197 Q ${x+12},195 ${x+9},197 Z`} fill="#a85757" opacity="1" />
 
                   {/* Small cottage windows */}
-                  <rect x={x+4} y="195" width="4" height="5" fill="#6b8ea8" opacity="0.7" />
-                  <rect x={x+16} y="195" width="4" height="5" fill="#6b8ea8" opacity="0.7" />
+                  <rect x={x+4} y="195" width="4" height="5" fill="#6b8ea8" opacity="0.95" />
+                  <rect x={x+16} y="195" width="4" height="5" fill="#6b8ea8" opacity="0.95" />
 
                   {/* Window boxes with flowers */}
-                  <rect x={x+3} y="200" width="6" height="1.5" fill="#8b7355" opacity="0.8" />
-                  <rect x={x+15} y="200" width="6" height="1.5" fill="#8b7355" opacity="0.8" />
-                  <circle cx={x+5} cy="199" r="0.8" fill="#ff69b4" opacity="0.8" />
-                  <circle cx={x+7} cy="199" r="0.8" fill="#ffd700" opacity="0.8" />
-                  <circle cx={x+17} cy="199" r="0.8" fill="#ff69b4" opacity="0.8" />
-                  <circle cx={x+19} cy="199" r="0.8" fill="#ffd700" opacity="0.8" />
+                  <rect x={x+3} y="200" width="6" height="1.5" fill="#8b7355" opacity="1" />
+                  <rect x={x+15} y="200" width="6" height="1.5" fill="#8b7355" opacity="1" />
+                  <circle cx={x+5} cy="199" r="0.8" fill="#ff69b4" opacity="1" />
+                  <circle cx={x+7} cy="199" r="0.8" fill="#ffd700" opacity="1" />
+                  <circle cx={x+17} cy="199" r="0.8" fill="#ff69b4" opacity="1" />
+                  <circle cx={x+19} cy="199" r="0.8" fill="#ffd700" opacity="1" />
 
                   {/* Small chimney */}
-                  <rect x={x+19} y="186" width="2.5" height="6" fill="#a85757" opacity="0.9" />
+                  <rect x={x+19} y="186" width="2.5" height="6" fill="#a85757" opacity="1" />
 
                   {/* Garden fence */}
                   {Array.from({length: 6}).map((_, fi) => (
-                    <rect key={`fence-${fi}`} x={x + fi * 4} y="207" width="1" height="5" fill="#e8d4b8" opacity="0.7" />
+                    <rect key={`fence-${fi}`} x={x + fi * 4} y="207" width="1" height="5" fill="#e8d4b8" opacity="0.95" />
                   ))}
                 </g>
               ))}
@@ -387,19 +499,19 @@ export function ProgressiveSkyline() {
                   <rect x={x-1} y="186" width="28" height="2" fill={`url(#modernRoof-${iteration})`} />
 
                   {/* Large modern windows */}
-                  <rect x={x+3} y="192" width="9" height="11" fill="#6b8ea8" opacity="0.6" />
-                  <rect x={x+14} y="192" width="9" height="11" fill="#6b8ea8" opacity="0.6" />
+                  <rect x={x+3} y="192" width="9" height="11" fill="#6b8ea8" opacity="0.9" />
+                  <rect x={x+14} y="192" width="9" height="11" fill="#6b8ea8" opacity="0.9" />
 
                   {/* Minimal door */}
-                  <rect x={x+11} y="199" width="4" height="8" fill="#5a7a8a" opacity="0.9" />
+                  <rect x={x+11} y="199" width="4" height="8" fill="#5a7a8a" opacity="1" />
 
                   {/* Solar panels on roof */}
-                  <rect x={x+2} y="187" width="10" height="1" fill="#3d5866" opacity="0.9" />
-                  <rect x={x+14} y="187" width="10" height="1" fill="#3d5866" opacity="0.9" />
+                  <rect x={x+2} y="187" width="10" height="1" fill="#3d5866" opacity="1" />
+                  <rect x={x+14} y="187" width="10" height="1" fill="#3d5866" opacity="1" />
 
                   {/* Modern landscaping */}
-                  <circle cx={x+4} cy="208" r="3" fill="#8bc34a" opacity="0.7" />
-                  <circle cx={x+22} cy="208" r="3" fill="#8bc34a" opacity="0.7" />
+                  <circle cx={x+4} cy="208" r="3" fill="#8bc34a" opacity="0.95" />
+                  <circle cx={x+22} cy="208" r="3" fill="#8bc34a" opacity="0.95" />
                 </g>
               ))}
 
@@ -672,6 +784,81 @@ export function ProgressiveSkyline() {
                 <path d="M 4316,178 L 4339,160 L 4362,178 Z" />
                 <rect x="4680" y="176" width="36" height="26" />
                 <path d="M 4677,176 L 4698,161 L 4719,176 Z" />
+              </g>
+
+              {/* ========== FOREGROUND: MAIN STREET WITH TRAFFIC ========== */}
+              {/* Main foreground road spanning entire city */}
+              <g opacity="0.85">
+                {/* Asphalt road at very bottom */}
+                <rect x="0" y="238" width="5000" height="12" fill="#4a4a4a" opacity="0.9" />
+
+                {/* Road center dashed lines */}
+                {Array.from({length: 125}).map((_, i) => (
+                  <rect key={`fg-dash-${i}`} x={i * 40} y="243" width="20" height="1.5" fill="#ffeb3b" opacity="0.7" />
+                ))}
+
+                {/* Road edge lines */}
+                <rect x="0" y="238" width="5000" height="1" fill="#f5f5f5" opacity="0.6" />
+                <rect x="0" y="249" width="5000" height="1" fill="#f5f5f5" opacity="0.6" />
+              </g>
+
+              {/* Moving traffic - cars driving across the entire city */}
+              <g className="moving-car">
+                {[200, 600, 1100, 1700, 2300, 2900, 3500, 4100, 4700].map((startX, i) => (
+                  <g key={`fg-car-${i}`} opacity="0.9" style={{animationDelay: `${i * 1.5}s`}}>
+                    {/* Sedan body */}
+                    <rect x={startX} y="239.5" width="26" height="7" rx="2" fill="#c73e3e" />
+                    {/* Windshields */}
+                    <rect x={startX + 4} y="236" width="8" height="4" rx="1" fill="#6b8ea8" opacity="0.8" />
+                    <rect x={startX + 14} y="236" width="8" height="4" rx="1" fill="#6b8ea8" opacity="0.8" />
+                    {/* Wheels */}
+                    <circle cx={startX + 6} cy="246.5" r="2" fill="#2f2f2f" />
+                    <circle cx={startX + 20} cy="246.5" r="2" fill="#2f2f2f" />
+                    {/* Headlights */}
+                    <circle cx={startX + 25} cy="241" r="0.8" fill="#ffeb3b" opacity="0.9" />
+                    <circle cx={startX + 25} cy="245" r="0.8" fill="#ffeb3b" opacity="0.9" />
+                  </g>
+                ))}
+              </g>
+
+              {/* Additional vehicles - SUVs and trucks */}
+              <g opacity="0.85">
+                {[400, 1300, 2200, 3100, 4000].map((x, i) => (
+                  <g key={`fg-suv-${i}`}>
+                    {/* SUV body - taller and wider */}
+                    <rect x={x} y="237" width="30" height="9" rx="2" fill="#2f4f7f" />
+                    {/* Windows */}
+                    <rect x={x + 4} y="234" width="10" height="4" rx="1" fill="#6b8ea8" opacity="0.7" />
+                    <rect x={x + 16} y="234" width="10" height="4" rx="1" fill="#6b8ea8" opacity="0.7" />
+                    {/* Wheels */}
+                    <circle cx={x + 7} cy="246" r="2.5" fill="#2f2f2f" />
+                    <circle cx={x + 23} cy="246" r="2.5" fill="#2f2f2f" />
+                    {/* Taillights */}
+                    <circle cx={x + 2} cy="240" r="0.8" fill="#cc3333" opacity="0.9" />
+                    <circle cx={x + 2} cy="244" r="0.8" fill="#cc3333" opacity="0.9" />
+                  </g>
+                ))}
+              </g>
+
+              {/* Delivery trucks */}
+              <g opacity="0.8">
+                {[800, 2000, 3300, 4500].map((x, i) => (
+                  <g key={`fg-truck-${i}`}>
+                    {/* Truck body */}
+                    <rect x={x} y="236" width="35" height="10" rx="2" fill="#f0f0f0" />
+                    {/* Cab */}
+                    <rect x={x + 28} y="234" width="8" height="6" rx="1" fill="#e8d4b8" />
+                    {/* Cab window */}
+                    <rect x={x + 29} y="235" width="6" height="3" rx="0.5" fill="#6b8ea8" opacity="0.7" />
+                    {/* Wheels */}
+                    <circle cx={x + 8} cy="246" r="2.5" fill="#2f2f2f" />
+                    <circle cx={x + 20} cy="246" r="2.5" fill="#2f2f2f" />
+                    <circle cx={x + 30} cy="246" r="2.5" fill="#2f2f2f" />
+                    {/* Headlights */}
+                    <circle cx={x + 35} cy="239" r="0.8" fill="#ffeb3b" opacity="0.9" />
+                    <circle cx={x + 35} cy="243" r="0.8" fill="#ffeb3b" opacity="0.9" />
+                  </g>
+                ))}
               </g>
             </g>
           </svg>
