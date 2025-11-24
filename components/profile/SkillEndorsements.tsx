@@ -2,7 +2,6 @@
 
 import { useState, useEffect } from 'react'
 import { useSession } from 'next-auth/react'
-import { ChevronDownIcon, CheckIcon } from '@heroicons/react/24/outline'
 import Image from 'next/image'
 
 interface Endorser {
@@ -40,7 +39,6 @@ export default function SkillEndorsements({ userId, skills, isOwnProfile = false
   const [loading, setLoading] = useState(true)
   const [endorsing, setEndorsing] = useState<string | null>(null)
 
-  // Fetch endorsements
   useEffect(() => {
     fetchEndorsements()
   }, [userId])
@@ -75,7 +73,6 @@ export default function SkillEndorsements({ userId, skills, isOwnProfile = false
 
       const data = await res.json()
       if (data.success) {
-        // Refresh endorsements
         await fetchEndorsements()
       } else {
         alert(data.error || 'Failed to endorse skill')
@@ -96,7 +93,6 @@ export default function SkillEndorsements({ userId, skills, isOwnProfile = false
 
       const data = await res.json()
       if (data.success) {
-        // Refresh endorsements
         await fetchEndorsements()
       } else {
         alert(data.error || 'Failed to remove endorsement')
@@ -130,7 +126,7 @@ export default function SkillEndorsements({ userId, skills, isOwnProfile = false
   }
 
   const canEndorseSkill = (skill: string): boolean => {
-    return !isOwnProfile && session?.user && !hasUserEndorsed(skill)
+    return !isOwnProfile && !!session?.user && !hasUserEndorsed(skill)
   }
 
   if (loading) {
@@ -170,21 +166,13 @@ export default function SkillEndorsements({ userId, skills, isOwnProfile = false
                     disabled={endorsing === skill}
                     className="flex items-center gap-1.5 px-3 py-1.5 text-sm font-medium text-emerald-700 bg-emerald-50 rounded-md hover:bg-emerald-100 transition-colors disabled:opacity-50"
                   >
-                    {endorsing === skill ? (
-                      'Endorsing...'
-                    ) : (
-                      <>
-                        <CheckIcon className="w-4 h-4" />
-                        Endorse
-                      </>
-                    )}
+                    {endorsing === skill ? 'Endorsing...' : '✓ Endorse'}
                   </button>
                 )}
 
                 {userHasEndorsed && (
                   <span className="flex items-center gap-1.5 px-3 py-1.5 text-sm font-medium text-emerald-700 bg-emerald-100 rounded-md">
-                    <CheckIcon className="w-4 h-4" />
-                    Endorsed
+                    ✓ Endorsed
                   </span>
                 )}
 
@@ -193,15 +181,12 @@ export default function SkillEndorsements({ userId, skills, isOwnProfile = false
                     onClick={() => toggleSkillExpanded(skill)}
                     className="p-1 hover:bg-gray-100 rounded transition-colors"
                   >
-                    <ChevronDownIcon
-                      className={`w-5 h-5 text-gray-500 transition-transform ${isExpanded ? 'rotate-180' : ''}`}
-                    />
+                    <span className="text-gray-500 text-sm">{isExpanded ? '▲' : '▼'}</span>
                   </button>
                 )}
               </div>
             </div>
 
-            {/* Endorsers List */}
             {isExpanded && count > 0 && (
               <div className="mt-4 pt-4 border-t border-gray-200">
                 <p className="text-sm text-gray-600 mb-3">Endorsed by:</p>
