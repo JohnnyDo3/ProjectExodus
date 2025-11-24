@@ -1016,9 +1016,11 @@ export default function MyBasecampPage() {
                         <div className="space-y-3 max-h-64 overflow-y-auto">
                           {forumPosts.slice(0, 5).map((post: any) => (
                             <div key={post.id} className="p-3 bg-[var(--muted)] rounded-lg hover:bg-[color-mix(in_srgb,var(--accent)_10%,var(--muted))] transition-colors">
-                              <h4 className="text-sm font-black text-[var(--foreground)] mb-1 line-clamp-1">
-                                {post.title}
-                              </h4>
+                              <Link href={`/community/forum/posts/${post.id}`}>
+                                <h4 className="text-sm font-black text-[var(--foreground)] mb-1 line-clamp-1 hover:text-theme-accent transition-colors cursor-pointer">
+                                  {post.title}
+                                </h4>
+                              </Link>
                               <p className="text-xs font-medium text-theme-muted mb-2 line-clamp-2">
                                 {post.content}
                               </p>
@@ -1027,21 +1029,19 @@ export default function MyBasecampPage() {
                                   {new Date(post.createdAt).toLocaleDateString()}
                                 </span>
                                 <div className="flex items-center gap-1">
-                                  <Link href={`/community/forum/posts/${post.slug}/edit`}>
-                                    <Button size="sm" variant="ghost" className="font-bold text-xs h-6 w-6 p-0" title="Edit post">
-                                      <Edit className="w-3 h-3" />
-                                    </Button>
-                                  </Link>
                                   <Button
                                     size="sm"
                                     variant="ghost"
                                     className="font-bold text-xs h-6 w-6 p-0 text-destructive hover:text-destructive"
-                                    onClick={() => handleDeleteForumPost(post.id)}
+                                    onClick={(e) => {
+                                      e.preventDefault()
+                                      handleDeleteForumPost(post.id)
+                                    }}
                                     title="Delete post"
                                   >
                                     <Trash2 className="w-3 h-3" />
                                   </Button>
-                                  <Link href={`/community/forum/posts/${post.slug}`}>
+                                  <Link href={`/community/forum/posts/${post.id}`}>
                                     <Button size="sm" variant="ghost" className="font-bold text-xs h-6">
                                       VIEW
                                     </Button>
@@ -1087,9 +1087,11 @@ export default function MyBasecampPage() {
                         <div className="space-y-3 max-h-64 overflow-y-auto">
                           {discussions.slice(0, 5).map((discussion: any) => (
                             <div key={discussion.id} className="p-3 bg-[var(--muted)] rounded-lg hover:bg-[color-mix(in_srgb,var(--secondary)_10%,var(--muted))] transition-colors">
-                              <h4 className="text-sm font-black text-[var(--foreground)] mb-1 line-clamp-1">
-                                {discussion.title}
-                              </h4>
+                              <Link href={`/community/forum/posts/${discussion.id}`}>
+                                <h4 className="text-sm font-black text-[var(--foreground)] mb-1 line-clamp-1 hover:text-theme-secondary transition-colors cursor-pointer">
+                                  {discussion.title}
+                                </h4>
+                              </Link>
                               <div className="flex items-center justify-between text-xs">
                                 <div className="flex items-center gap-2">
                                   <span className="font-semibold text-theme-muted">
@@ -1101,21 +1103,19 @@ export default function MyBasecampPage() {
                                   </span>
                                 </div>
                                 <div className="flex items-center gap-1">
-                                  <Link href={`/community/forum/posts/${discussion.slug}/edit`}>
-                                    <Button size="sm" variant="ghost" className="font-bold text-xs h-6 w-6 p-0" title="Edit discussion">
-                                      <Edit className="w-3 h-3" />
-                                    </Button>
-                                  </Link>
                                   <Button
                                     size="sm"
                                     variant="ghost"
                                     className="font-bold text-xs h-6 w-6 p-0 text-destructive hover:text-destructive"
-                                    onClick={() => handleDeleteDiscussion(discussion.id)}
+                                    onClick={(e) => {
+                                      e.preventDefault()
+                                      handleDeleteDiscussion(discussion.id)
+                                    }}
                                     title="Delete discussion"
                                   >
                                     <Trash2 className="w-3 h-3" />
                                   </Button>
-                                  <Link href={`/community/forum/posts/${discussion.slug}`}>
+                                  <Link href={`/community/forum/posts/${discussion.id}`}>
                                     <Button size="sm" variant="ghost" className="font-bold text-xs h-6">
                                       VIEW
                                     </Button>
