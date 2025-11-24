@@ -5,6 +5,7 @@ import { useSession } from 'next-auth/react'
 import { useRouter } from 'next/navigation'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/Card'
 import { Button } from '@/components/ui/Button'
+import { SkeletonUserCard } from '@/components/ui/SkeletonUserCard'
 import Link from 'next/link'
 import toast from 'react-hot-toast'
 import {
@@ -232,11 +233,37 @@ export default function NetworkPage() {
   if (isLoading) {
     console.log('[Network Page] Data still loading...')
     return (
-      <div className="min-h-screen flex items-center justify-center">
-        <div className="text-center space-y-4">
-          <div className="w-16 h-16 border-4 border-theme-primary border-t-transparent rounded-full animate-spin mx-auto" />
-          <p className="text-lg font-bold text-theme-muted">Loading network...</p>
-        </div>
+      <div className="min-h-screen bg-[var(--background)]">
+        {/* Header */}
+        <section className="py-12 bg-gradient-to-br from-[color-mix(in_srgb,var(--secondary)_15%,var(--background))] via-[color-mix(in_srgb,var(--primary)_15%,var(--background))] to-[color-mix(in_srgb,var(--accent)_15%,var(--background))]">
+          <div className="container mx-auto px-4 sm:px-6 lg:px-8">
+            <div className="max-w-6xl mx-auto text-center">
+              <div className="inline-flex items-center gap-3 px-6 py-3 rounded-full bg-gradient-to-r from-[var(--primary)] to-[var(--accent)] text-[var(--primary-foreground)] font-black text-sm uppercase mb-6">
+                <Users className="w-5 h-5" />
+                NETWORKING HUB
+              </div>
+              <h1 className="text-5xl font-black mb-4 text-[var(--foreground)]">
+                CONNECT WITH SUSTAINABILITY ENTHUSIASTS
+              </h1>
+              <p className="text-xl font-semibold text-theme-muted max-w-2xl mx-auto">
+                Discovering members...
+              </p>
+            </div>
+          </div>
+        </section>
+
+        {/* Loading Skeleton Grid */}
+        <section className="py-16">
+          <div className="container mx-auto px-4 sm:px-6 lg:px-8">
+            <div className="max-w-6xl mx-auto">
+              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                {Array.from({ length: 6 }).map((_, i) => (
+                  <SkeletonUserCard key={i} />
+                ))}
+              </div>
+            </div>
+          </div>
+        </section>
       </div>
     )
   }

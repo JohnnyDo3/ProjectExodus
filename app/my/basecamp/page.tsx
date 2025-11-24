@@ -5,6 +5,9 @@ import { redirect } from 'next/navigation'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/Card'
 import { Button } from '@/components/ui/Button'
 import { ActivityCard } from '@/components/activity/ActivityCard'
+import { SkeletonProjectCard } from '@/components/ui/SkeletonProjectCard'
+import { SkeletonActivityCard } from '@/components/ui/SkeletonActivityCard'
+import { SkeletonCard } from '@/components/ui/SkeletonCard'
 import {
   User,
   Mail,
@@ -671,12 +674,11 @@ export default function MyBasecampPage() {
                 </div>
 
                 {isLoadingProjects ? (
-                  <Card className="border-2 border-[var(--border)]">
-                    <CardContent className="p-8 text-center">
-                      <div className="w-12 h-12 border-4 border-theme-primary border-t-transparent rounded-full animate-spin mx-auto mb-4" />
-                      <p className="text-base font-bold text-theme-muted">Loading your projects...</p>
-                    </CardContent>
-                  </Card>
+                  <div className="space-y-4">
+                    {Array.from({ length: 3 }).map((_, i) => (
+                      <SkeletonProjectCard key={i} />
+                    ))}
+                  </div>
                 ) : projects.length > 0 ? (
                   <div className="grid md:grid-cols-2 gap-4">
                     {projects.map((project: any) => {
@@ -757,9 +759,10 @@ export default function MyBasecampPage() {
                   </CardHeader>
                   <CardContent>
                     {isLoadingActivities ? (
-                      <div className="text-center py-8">
-                        <div className="w-10 h-10 border-4 border-theme-primary border-t-transparent rounded-full animate-spin mx-auto mb-4" />
-                        <p className="text-sm font-bold text-theme-muted">Loading...</p>
+                      <div className="space-y-3">
+                        {Array.from({ length: 4 }).map((_, i) => (
+                          <SkeletonActivityCard key={i} />
+                        ))}
                       </div>
                     ) : activities.length === 0 ? (
                       <div className="text-center py-8">
@@ -847,12 +850,11 @@ export default function MyBasecampPage() {
                 </div>
 
                 {isLoadingArticles ? (
-                  <Card className="border-2 border-[var(--border)]">
-                    <CardContent className="p-8 text-center">
-                      <div className="w-10 h-10 border-4 border-theme-primary border-t-transparent rounded-full animate-spin mx-auto mb-4" />
-                      <p className="text-sm font-bold text-theme-muted">Loading articles...</p>
-                    </CardContent>
-                  </Card>
+                  <div className="space-y-3">
+                    {Array.from({ length: 2 }).map((_, i) => (
+                      <SkeletonProjectCard key={i} />
+                    ))}
+                  </div>
                 ) : articles.length > 0 ? (
                   <div className="grid md:grid-cols-2 gap-4">
                     {articles.slice(0, 4).map((article: any) => (
@@ -911,9 +913,10 @@ export default function MyBasecampPage() {
                   <Card className="border-4 border-theme-accent">
                     <CardContent className="p-4">
                       {isLoadingForumPosts ? (
-                        <div className="text-center py-6">
-                          <div className="w-8 h-8 border-4 border-theme-accent border-t-transparent rounded-full animate-spin mx-auto mb-3" />
-                          <p className="text-xs font-bold text-theme-muted">Loading...</p>
+                        <div className="space-y-2">
+                          {Array.from({ length: 2 }).map((_, i) => (
+                            <SkeletonCard key={i} lines={2} />
+                          ))}
                         </div>
                       ) : forumPosts.length > 0 ? (
                         <div className="space-y-3 max-h-64 overflow-y-auto">
@@ -965,9 +968,10 @@ export default function MyBasecampPage() {
                   <Card className="border-4 border-theme-secondary">
                     <CardContent className="p-4">
                       {isLoadingDiscussions ? (
-                        <div className="text-center py-6">
-                          <div className="w-8 h-8 border-4 border-theme-secondary border-t-transparent rounded-full animate-spin mx-auto mb-3" />
-                          <p className="text-xs font-bold text-theme-muted">Loading...</p>
+                        <div className="space-y-2">
+                          {Array.from({ length: 2 }).map((_, i) => (
+                            <SkeletonCard key={i} lines={2} />
+                          ))}
                         </div>
                       ) : discussions.length > 0 ? (
                         <div className="space-y-3 max-h-64 overflow-y-auto">
@@ -1021,9 +1025,8 @@ export default function MyBasecampPage() {
                 <Card className="border-4 border-theme-primary bg-gradient-to-br from-[color-mix(in_srgb,var(--primary)_10%,var(--card))] to-[var(--card)]">
                   <CardContent className="p-6">
                     {isLoadingLearning ? (
-                      <div className="text-center py-8">
-                        <div className="w-12 h-12 border-4 border-theme-primary border-t-transparent rounded-full animate-spin mx-auto mb-4" />
-                        <p className="text-sm font-bold text-theme-muted">Loading your progress...</p>
+                      <div className="space-y-4">
+                        <SkeletonCard lines={4} />
                       </div>
                     ) : learningProgress ? (
                       <div className="grid md:grid-cols-3 gap-4">
