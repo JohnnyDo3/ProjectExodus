@@ -539,6 +539,55 @@ model UserFollow {
   @@index([followingId])
 }
 
+// LinkedIn-style Follower model (public following)
+model Follower {
+  id          String   @id @default(cuid())
+  followerId  String
+  followingId String
+  createdAt   DateTime @default(now())
+
+  @@unique([followerId, followingId])
+  @@index([followerId])
+  @@index([followingId])
+}
+
+// LinkedIn-style Connection model (mutual professional connections)
+model Connection {
+  id              String            @id @default(cuid())
+  userId          String            // User who sent the request
+  connectedUserId String            // User who received the request
+  status          ConnectionStatus  @default(PENDING)
+  message         String?           @db.Text // Optional message with connection request
+  createdAt       DateTime          @default(now())
+  acceptedAt      DateTime?         // When connection was accepted
+  updatedAt       DateTime          @updatedAt
+
+  @@unique([userId, connectedUserId])
+  @@index([userId])
+  @@index([connectedUserId])
+  @@index([status])
+}
+
+enum ConnectionStatus {
+  PENDING
+  ACCEPTED
+  REJECTED
+}
+
+// LinkedIn-style Skill Endorsement model
+model Endorsement {
+  id          String   @id @default(cuid())
+  userId      String   // User being endorsed
+  endorserId  String   // User giving the endorsement
+  skill       String   // Skill being endorsed
+  createdAt   DateTime @default(now())
+
+  @@unique([userId, endorserId, skill])
+  @@index([userId])
+  @@index([endorserId])
+  @@index([skill])
+}
+
 model Badge {
   id          String      @id @default(cuid())
   name        String      @unique
