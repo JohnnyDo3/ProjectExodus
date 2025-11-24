@@ -82,6 +82,8 @@ model User {
   socialComments        SocialComment[]  @relation("SocialComments")
   socialLikes           SocialLike[]     @relation("SocialLikes")
   userProducts          UserProduct[]    @relation("UserProducts")
+  sentConnections       Connection[]     @relation("SentConnections")
+  receivedConnections   Connection[]     @relation("ReceivedConnections")
 
   @@index([email])
   @@index([role])
@@ -562,6 +564,9 @@ model Connection {
   createdAt       DateTime          @default(now())
   acceptedAt      DateTime?         // When connection was accepted
   updatedAt       DateTime          @updatedAt
+
+  user            User              @relation("SentConnections", fields: [userId], references: [id], onDelete: Cascade)
+  connectedUser   User              @relation("ReceivedConnections", fields: [connectedUserId], references: [id], onDelete: Cascade)
 
   @@unique([userId, connectedUserId])
   @@index([userId])
