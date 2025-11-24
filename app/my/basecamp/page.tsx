@@ -32,12 +32,17 @@ import {
   MapPinIcon,
   Linkedin,
   Twitter,
+  Edit,
+  Trash2,
 } from 'lucide-react'
 import Link from 'next/link'
 import { useEffect, useState } from 'react'
+import toast from 'react-hot-toast'
+import { useRouter } from 'next/navigation'
 
 export default function MyBasecampPage() {
   const { data: session, status } = useSession()
+  const router = useRouter()
   const [projects, setProjects] = useState<any[]>([])
   const [isLoadingProjects, setIsLoadingProjects] = useState(true)
   const [activities, setActivities] = useState<any[]>([])
@@ -302,6 +307,79 @@ export default function MyBasecampPage() {
       })
     } finally {
       setIsLoadingNetwork(false)
+    }
+  }
+
+  // Delete handlers
+  const handleDeleteForumPost = async (postId: string) => {
+    if (!confirm('Are you sure you want to delete this forum post? This action cannot be undone.')) {
+      return
+    }
+
+    try {
+      const res = await fetch(`/api/forum/posts/${postId}`, {
+        method: 'DELETE',
+      })
+
+      const data = await res.json()
+
+      if (data.success) {
+        toast.success('Forum post deleted successfully!')
+        setForumPosts((prev) => prev.filter((p) => p.id !== postId))
+      } else {
+        toast.error(data.error || 'Failed to delete forum post')
+      }
+    } catch (error) {
+      console.error('Error deleting forum post:', error)
+      toast.error('Something went wrong')
+    }
+  }
+
+  const handleDeleteDiscussion = async (discussionId: string) => {
+    if (!confirm('Are you sure you want to delete this discussion? This action cannot be undone.')) {
+      return
+    }
+
+    try {
+      const res = await fetch(`/api/forum/posts/${discussionId}`, {
+        method: 'DELETE',
+      })
+
+      const data = await res.json()
+
+      if (data.success) {
+        toast.success('Discussion deleted successfully!')
+        setDiscussions((prev) => prev.filter((d) => d.id !== discussionId))
+      } else {
+        toast.error(data.error || 'Failed to delete discussion')
+      }
+    } catch (error) {
+      console.error('Error deleting discussion:', error)
+      toast.error('Something went wrong')
+    }
+  }
+
+  const handleDeleteArticle = async (articleId: string) => {
+    if (!confirm('Are you sure you want to delete this article? This action cannot be undone.')) {
+      return
+    }
+
+    try {
+      const res = await fetch(`/api/articles/${articleId}`, {
+        method: 'DELETE',
+      })
+
+      const data = await res.json()
+
+      if (data.success) {
+        toast.success('Article deleted successfully!')
+        setArticles((prev) => prev.filter((a) => a.id !== articleId))
+      } else {
+        toast.error(data.error || 'Failed to delete article')
+      }
+    } catch (error) {
+      console.error('Error deleting article:', error)
+      toast.error('Something went wrong')
     }
   }
 
@@ -870,11 +948,27 @@ export default function MyBasecampPage() {
                             <span className="font-semibold text-theme-muted">
                               {new Date(article.createdAt).toLocaleDateString()}
                             </span>
-                            <Link href={`/learn/${article.slug}`}>
-                              <Button size="sm" variant="outline" className="font-bold text-xs">
-                                READ
+                            <div className="flex items-center gap-1">
+                              <Link href={`/learn/${article.slug}/edit`}>
+                                <Button size="sm" variant="ghost" className="font-bold text-xs h-6 w-6 p-0" title="Edit article">
+                                  <Edit className="w-3 h-3" />
+                                </Button>
+                              </Link>
+                              <Button
+                                size="sm"
+                                variant="ghost"
+                                className="font-bold text-xs h-6 w-6 p-0 text-destructive hover:text-destructive"
+                                onClick={() => handleDeleteArticle(article.id)}
+                                title="Delete article"
+                              >
+                                <Trash2 className="w-3 h-3" />
                               </Button>
-                            </Link>
+                              <Link href={`/learn/${article.slug}`}>
+                                <Button size="sm" variant="outline" className="font-bold text-xs">
+                                  READ
+                                </Button>
+                              </Link>
+                            </div>
                           </div>
                         </CardContent>
                       </Card>
@@ -932,11 +1026,27 @@ export default function MyBasecampPage() {
                                 <span className="font-semibold text-theme-muted">
                                   {new Date(post.createdAt).toLocaleDateString()}
                                 </span>
-                                <Link href={`/community/forum/${post.slug}`}>
-                                  <Button size="sm" variant="ghost" className="font-bold text-xs h-6">
-                                    VIEW
+                                <div className="flex items-center gap-1">
+                                  <Link href={`/community/forum/posts/${post.slug}/edit`}>
+                                    <Button size="sm" variant="ghost" className="font-bold text-xs h-6 w-6 p-0" title="Edit post">
+                                      <Edit className="w-3 h-3" />
+                                    </Button>
+                                  </Link>
+                                  <Button
+                                    size="sm"
+                                    variant="ghost"
+                                    className="font-bold text-xs h-6 w-6 p-0 text-destructive hover:text-destructive"
+                                    onClick={() => handleDeleteForumPost(post.id)}
+                                    title="Delete post"
+                                  >
+                                    <Trash2 className="w-3 h-3" />
                                   </Button>
-                                </Link>
+                                  <Link href={`/community/forum/posts/${post.slug}`}>
+                                    <Button size="sm" variant="ghost" className="font-bold text-xs h-6">
+                                      VIEW
+                                    </Button>
+                                  </Link>
+                                </div>
                               </div>
                             </div>
                           ))}
@@ -976,21 +1086,43 @@ export default function MyBasecampPage() {
                       ) : discussions.length > 0 ? (
                         <div className="space-y-3 max-h-64 overflow-y-auto">
                           {discussions.slice(0, 5).map((discussion: any) => (
-                            <Link key={discussion.id} href={`/community/forum/posts/${discussion.slug}`}>
-                              <div className="p-3 bg-[var(--muted)] rounded-lg hover:bg-[color-mix(in_srgb,var(--secondary)_10%,var(--muted))] transition-colors cursor-pointer">
-                                <h4 className="text-sm font-black text-[var(--foreground)] mb-1 line-clamp-1">
-                                  {discussion.title}
-                                </h4>
-                                <div className="flex items-center justify-between text-xs">
+                            <div key={discussion.id} className="p-3 bg-[var(--muted)] rounded-lg hover:bg-[color-mix(in_srgb,var(--secondary)_10%,var(--muted))] transition-colors">
+                              <h4 className="text-sm font-black text-[var(--foreground)] mb-1 line-clamp-1">
+                                {discussion.title}
+                              </h4>
+                              <div className="flex items-center justify-between text-xs">
+                                <div className="flex items-center gap-2">
                                   <span className="font-semibold text-theme-muted">
                                     {discussion.replies || 0} replies
                                   </span>
+                                  <span>•</span>
                                   <span className="font-semibold text-theme-muted">
                                     {new Date(discussion.updatedAt).toLocaleDateString()}
                                   </span>
                                 </div>
+                                <div className="flex items-center gap-1">
+                                  <Link href={`/community/forum/posts/${discussion.slug}/edit`}>
+                                    <Button size="sm" variant="ghost" className="font-bold text-xs h-6 w-6 p-0" title="Edit discussion">
+                                      <Edit className="w-3 h-3" />
+                                    </Button>
+                                  </Link>
+                                  <Button
+                                    size="sm"
+                                    variant="ghost"
+                                    className="font-bold text-xs h-6 w-6 p-0 text-destructive hover:text-destructive"
+                                    onClick={() => handleDeleteDiscussion(discussion.id)}
+                                    title="Delete discussion"
+                                  >
+                                    <Trash2 className="w-3 h-3" />
+                                  </Button>
+                                  <Link href={`/community/forum/posts/${discussion.slug}`}>
+                                    <Button size="sm" variant="ghost" className="font-bold text-xs h-6">
+                                      VIEW
+                                    </Button>
+                                  </Link>
+                                </div>
                               </div>
-                            </Link>
+                            </div>
                           ))}
                         </div>
                       ) : (
