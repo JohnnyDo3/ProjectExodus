@@ -1,26 +1,16 @@
 -- Migration: Add networking features and resume field
 -- Run this SQL against your database to apply the schema changes
+-- Note: UserFollow table should already exist. If not, it will be created by Prisma.
 
--- Add resume column to User table
-ALTER TABLE "User" ADD COLUMN "resume" TEXT;
+-- Add resume column to User table (skip if already exists)
+ALTER TABLE "User" ADD COLUMN IF NOT EXISTS "resume" TEXT;
 
--- Create Follower table
-CREATE TABLE "Follower" (
-    "id" TEXT NOT NULL,
-    "followerId" TEXT NOT NULL,
-    "followingId" TEXT NOT NULL,
-    "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
-
-    CONSTRAINT "Follower_pkey" PRIMARY KEY ("id")
-);
-
--- Create unique constraint and indexes for Follower
-CREATE UNIQUE INDEX "Follower_followerId_followingId_key" ON "Follower"("followerId", "followingId");
-CREATE INDEX "Follower_followerId_idx" ON "Follower"("followerId");
-CREATE INDEX "Follower_followingId_idx" ON "Follower"("followingId");
-
--- Create ConnectionStatus enum
-CREATE TYPE "ConnectionStatus" AS ENUM ('PENDING', 'ACCEPTED', 'REJECTED');
+-- Create ConnectionStatus enum (skip if already exists)
+DO $$ BEGIN
+    CREATE TYPE "ConnectionStatus" AS ENUM ('PENDING', 'ACCEPTED', 'REJECTED');
+EXCEPTION
+    WHEN duplicate_object THEN null;
+END $$;
 
 -- Create Connection table
 CREATE TABLE "Connection" (

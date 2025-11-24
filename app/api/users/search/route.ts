@@ -93,7 +93,7 @@ export async function GET(request: NextRequest) {
     const usersWithStatus = await Promise.all(
       users.map(async (user: any) => {
         const [follower, connection] = await Promise.all([
-          prisma.follower.findUnique({
+          prisma.userFollow.findUnique({
             where: {
               followerId_followingId: {
                 followerId: session.user.id,

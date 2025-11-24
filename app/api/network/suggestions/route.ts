@@ -37,7 +37,7 @@ export async function GET(request: NextRequest) {
     }
 
     // Get users the current user is already following
-    const existingFollows = await prisma.follower.findMany({
+    const existingFollows = await prisma.userFollow.findMany({
       where: { followerId: currentUserId },
       select: { followingId: true },
     })

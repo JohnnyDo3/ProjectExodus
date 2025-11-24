@@ -31,7 +31,7 @@ export async function POST(
     }
 
     // Check if already following
-    const existingFollow = await prisma.follower.findUnique({
+    const existingFollow = await prisma.userFollow.findUnique({
       where: {
         followerId_followingId: {
           followerId: currentUserId,
@@ -48,7 +48,7 @@ export async function POST(
     }
 
     // Create follow relationship
-    const follower = await prisma.follower.create({
+    const follower = await prisma.userFollow.create({
       data: {
         followerId: currentUserId,
         followingId: targetUserId,
@@ -85,7 +85,7 @@ export async function DELETE(
     const currentUserId = session.user.id
 
     // Delete follow relationship
-    await prisma.follower.delete({
+    await prisma.userFollow.delete({
       where: {
         followerId_followingId: {
           followerId: currentUserId,
@@ -116,10 +116,10 @@ export async function GET(
 
     // Get follower and following counts
     const [followersCount, followingCount] = await Promise.all([
-      prisma.follower.count({
+      prisma.userFollow.count({
         where: { followingId: targetUserId },
       }),
-      prisma.follower.count({
+      prisma.userFollow.count({
         where: { followerId: targetUserId },
       }),
     ])
@@ -129,7 +129,7 @@ export async function GET(
 
     if (currentUserId) {
       const [following, follower] = await Promise.all([
-        prisma.follower.findUnique({
+        prisma.userFollow.findUnique({
           where: {
             followerId_followingId: {
               followerId: currentUserId,
@@ -137,7 +137,7 @@ export async function GET(
             },
           },
         }),
-        prisma.follower.findUnique({
+        prisma.userFollow.findUnique({
           where: {
             followerId_followingId: {
               followerId: targetUserId,

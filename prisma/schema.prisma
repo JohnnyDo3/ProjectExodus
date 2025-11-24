@@ -542,18 +542,6 @@ model UserFollow {
   @@index([followingId])
 }
 
-// LinkedIn-style Follower model (public following)
-model Follower {
-  id          String   @id @default(cuid())
-  followerId  String
-  followingId String
-  createdAt   DateTime @default(now())
-
-  @@unique([followerId, followingId])
-  @@index([followerId])
-  @@index([followingId])
-}
-
 // LinkedIn-style Connection model (mutual professional connections)
 model Connection {
   id              String            @id @default(cuid())
