@@ -20,7 +20,7 @@ export function ProjectExodusAI() {
   const [hasGreeted, setHasGreeted] = useState(false)
   const messagesEndRef = useRef<HTMLDivElement>(null)
 
-  // Auto-greet on homepage load
+  // Prepare greeting on homepage load (but don't auto-open)
   useEffect(() => {
     if (isHomepage && !hasGreeted) {
       // Delay greeting by 2 seconds for better UX
@@ -31,7 +31,7 @@ export function ProjectExodusAI() {
           timestamp: new Date()
         }
         setMessages([greeting])
-        setIsOpen(true)
+        // Note: Removed setIsOpen(true) - user must click to open
         setHasGreeted(true)
       }, 2000)
 
@@ -170,10 +170,10 @@ export function ProjectExodusAI() {
             <div className="relative w-14 h-14 sm:w-16 sm:h-16 bg-gradient-to-br from-moss-600 to-ocean-600 rounded-full flex items-center justify-center shadow-2xl transform group-hover:scale-110 transition-transform duration-300">
               <Leaf className="w-7 h-7 sm:w-8 sm:h-8 text-white" />
 
-              {/* Notification badge if new messages */}
-              {messages.length > 0 && !hasGreeted && (
-                <div className="absolute -top-1 -right-1 w-5 h-5 bg-red-500 rounded-full flex items-center justify-center">
-                  <span className="text-white text-xs font-bold">!</span>
+              {/* Notification badge if greeting is ready */}
+              {messages.length > 0 && (
+                <div className="absolute -top-1 -right-1 w-5 h-5 bg-gradient-to-br from-red-500 to-orange-500 rounded-full flex items-center justify-center shadow-lg animate-pulse">
+                  <span className="text-white text-xs font-bold">1</span>
                 </div>
               )}
             </div>
