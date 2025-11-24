@@ -77,6 +77,15 @@ export function ProgressiveSkyline() {
           animation: carDrive 15s linear infinite;
         }
 
+        @keyframes carDriveReverse {
+          0% { transform: translateX(0) scaleX(-1); }
+          100% { transform: translateX(-400px) scaleX(-1); }
+        }
+
+        .moving-car-reverse {
+          animation: carDriveReverse 15s linear infinite;
+        }
+
         @keyframes chimneySmokeRise {
           0% { opacity: 0.6; transform: translateY(0); }
           100% { opacity: 0; transform: translateY(-20px); }
@@ -854,20 +863,20 @@ export function ProgressiveSkyline() {
                 <rect x="0" y="249" width="5000" height="1" fill="#f5f5f5" opacity="0.6" />
               </g>
 
-              {/* Moving traffic - cars driving across the entire city with VARIED COLORS! */}
-              <g className="moving-car">
+              {/* Moving traffic - cars driving across the entire city with VARIED COLORS and BIDIRECTIONAL! */}
+              <g>
                 {[
-                  {x: 200, color: "#c73e3e"},    // Red
-                  {x: 600, color: "#2f4f7f"},    // Blue
-                  {x: 1100, color: "#4a7c2f"},   // Green
-                  {x: 1700, color: "#d4af37"},   // Gold
-                  {x: 2300, color: "#8a8a8a"},   // Silver
-                  {x: 2900, color: "#4a4a4a"},   // Dark Gray
-                  {x: 3500, color: "#cc6633"},   // Orange
-                  {x: 4100, color: "#5a3d8a"},   // Purple
-                  {x: 4700, color: "#e8e8e8"}    // White
+                  {x: 200, color: "#c73e3e", direction: "forward"},    // Red
+                  {x: 600, color: "#2f4f7f", direction: "reverse"},    // Blue
+                  {x: 1100, color: "#4a7c2f", direction: "forward"},   // Green
+                  {x: 1700, color: "#d4af37", direction: "reverse"},   // Gold
+                  {x: 2300, color: "#8a8a8a", direction: "forward"},   // Silver
+                  {x: 2900, color: "#4a4a4a", direction: "reverse"},   // Dark Gray
+                  {x: 3500, color: "#cc6633", direction: "forward"},   // Orange
+                  {x: 4100, color: "#5a3d8a", direction: "reverse"},   // Purple
+                  {x: 4700, color: "#e8e8e8", direction: "forward"}    // White
                 ].map((car, i) => (
-                  <g key={`fg-car-${i}`} opacity="1" style={{animationDelay: `${i * 1.5}s`}}>
+                  <g key={`fg-car-${i}`} className={car.direction === "forward" ? "moving-car" : "moving-car-reverse"} opacity="1" style={{animationDelay: `${i * 1.5}s`}}>
                     {/* Sedan body - COLORED! */}
                     <rect x={car.x} y="239.5" width="26" height="7" rx="2" fill={car.color} />
                     {/* Windshields */}
@@ -876,49 +885,95 @@ export function ProgressiveSkyline() {
                     {/* Wheels */}
                     <circle cx={car.x + 6} cy="246.5" r="2" fill="#2f2f2f" />
                     <circle cx={car.x + 20} cy="246.5" r="2" fill="#2f2f2f" />
-                    {/* Headlights */}
-                    <circle cx={car.x + 25} cy="241" r="0.8" fill="#ffeb3b" opacity="1" />
-                    <circle cx={car.x + 25} cy="245" r="0.8" fill="#ffeb3b" opacity="1" />
+                    {/* Lights - headlights for forward, taillights for reverse */}
+                    {car.direction === "forward" ? (
+                      <>
+                        <circle cx={car.x + 25} cy="241" r="0.8" fill="#ffeb3b" opacity="1" />
+                        <circle cx={car.x + 25} cy="245" r="0.8" fill="#ffeb3b" opacity="1" />
+                      </>
+                    ) : (
+                      <>
+                        <circle cx={car.x + 1} cy="241" r="0.8" fill="#cc3333" opacity="1" />
+                        <circle cx={car.x + 1} cy="245" r="0.8" fill="#cc3333" opacity="1" />
+                      </>
+                    )}
                   </g>
                 ))}
               </g>
 
-              {/* Additional vehicles - SUVs and trucks */}
-              <g opacity="1">
-                {[400, 1300, 2200, 3100, 4000].map((x, i) => (
-                  <g key={`fg-suv-${i}`}>
+              {/* Additional vehicles - SUVs with bidirectional traffic */}
+              <g>
+                {[
+                  {x: 400, direction: "forward"},
+                  {x: 1300, direction: "reverse"},
+                  {x: 2200, direction: "forward"},
+                  {x: 3100, direction: "reverse"},
+                  {x: 4000, direction: "forward"}
+                ].map((suv, i) => (
+                  <g key={`fg-suv-${i}`} className={suv.direction === "forward" ? "moving-car" : "moving-car-reverse"} opacity="1" style={{animationDelay: `${i * 2}s`}}>
                     {/* SUV body - taller and wider */}
-                    <rect x={x} y="237" width="30" height="9" rx="2" fill="#2f4f7f" />
+                    <rect x={suv.x} y="237" width="30" height="9" rx="2" fill="#2f4f7f" />
                     {/* Windows */}
-                    <rect x={x + 4} y="234" width="10" height="4" rx="1" fill="#6b8ea8" opacity="0.95" />
-                    <rect x={x + 16} y="234" width="10" height="4" rx="1" fill="#6b8ea8" opacity="0.95" />
+                    <rect x={suv.x + 4} y="234" width="10" height="4" rx="1" fill="#6b8ea8" opacity="0.95" />
+                    <rect x={suv.x + 16} y="234" width="10" height="4" rx="1" fill="#6b8ea8" opacity="0.95" />
                     {/* Wheels */}
-                    <circle cx={x + 7} cy="246" r="2.5" fill="#2f2f2f" />
-                    <circle cx={x + 23} cy="246" r="2.5" fill="#2f2f2f" />
-                    {/* Taillights */}
-                    <circle cx={x + 2} cy="240" r="0.8" fill="#cc3333" opacity="1" />
-                    <circle cx={x + 2} cy="244" r="0.8" fill="#cc3333" opacity="1" />
+                    <circle cx={suv.x + 7} cy="246" r="2.5" fill="#2f2f2f" />
+                    <circle cx={suv.x + 23} cy="246" r="2.5" fill="#2f2f2f" />
+                    {/* Lights - headlights for forward, taillights for reverse */}
+                    {suv.direction === "forward" ? (
+                      <>
+                        <circle cx={suv.x + 28} cy="240" r="0.8" fill="#ffeb3b" opacity="1" />
+                        <circle cx={suv.x + 28} cy="244" r="0.8" fill="#ffeb3b" opacity="1" />
+                      </>
+                    ) : (
+                      <>
+                        <circle cx={suv.x + 2} cy="240" r="0.8" fill="#cc3333" opacity="1" />
+                        <circle cx={suv.x + 2} cy="244" r="0.8" fill="#cc3333" opacity="1" />
+                      </>
+                    )}
                   </g>
                 ))}
               </g>
 
-              {/* Delivery trucks */}
-              <g opacity="1">
-                {[800, 2000, 3300, 4500].map((x, i) => (
-                  <g key={`fg-truck-${i}`}>
+              {/* Delivery trucks with bidirectional traffic */}
+              <g>
+                {[
+                  {x: 800, direction: "reverse"},
+                  {x: 2000, direction: "forward"},
+                  {x: 3300, direction: "reverse"},
+                  {x: 4500, direction: "forward"}
+                ].map((truck, i) => (
+                  <g key={`fg-truck-${i}`} className={truck.direction === "forward" ? "moving-car" : "moving-car-reverse"} opacity="1" style={{animationDelay: `${i * 2.5}s`}}>
                     {/* Truck body */}
-                    <rect x={x} y="236" width="35" height="10" rx="2" fill="#f0f0f0" />
-                    {/* Cab */}
-                    <rect x={x + 28} y="234" width="8" height="6" rx="1" fill="#e8d4b8" />
-                    {/* Cab window */}
-                    <rect x={x + 29} y="235" width="6" height="3" rx="0.5" fill="#6b8ea8" opacity="0.95" />
+                    <rect x={truck.x} y="236" width="35" height="10" rx="2" fill="#f0f0f0" />
+                    {/* Cab positioned based on direction */}
+                    {truck.direction === "forward" ? (
+                      <>
+                        <rect x={truck.x + 28} y="234" width="8" height="6" rx="1" fill="#e8d4b8" />
+                        <rect x={truck.x + 29} y="235" width="6" height="3" rx="0.5" fill="#6b8ea8" opacity="0.95" />
+                      </>
+                    ) : (
+                      <>
+                        <rect x={truck.x} y="234" width="8" height="6" rx="1" fill="#e8d4b8" />
+                        <rect x={truck.x + 1} y="235" width="6" height="3" rx="0.5" fill="#6b8ea8" opacity="0.95" />
+                      </>
+                    )}
                     {/* Wheels */}
-                    <circle cx={x + 8} cy="246" r="2.5" fill="#2f2f2f" />
-                    <circle cx={x + 20} cy="246" r="2.5" fill="#2f2f2f" />
-                    <circle cx={x + 30} cy="246" r="2.5" fill="#2f2f2f" />
-                    {/* Headlights */}
-                    <circle cx={x + 35} cy="239" r="0.8" fill="#ffeb3b" opacity="1" />
-                    <circle cx={x + 35} cy="243" r="0.8" fill="#ffeb3b" opacity="1" />
+                    <circle cx={truck.x + 8} cy="246" r="2.5" fill="#2f2f2f" />
+                    <circle cx={truck.x + 20} cy="246" r="2.5" fill="#2f2f2f" />
+                    <circle cx={truck.x + 30} cy="246" r="2.5" fill="#2f2f2f" />
+                    {/* Lights - headlights for forward, taillights for reverse */}
+                    {truck.direction === "forward" ? (
+                      <>
+                        <circle cx={truck.x + 35} cy="239" r="0.8" fill="#ffeb3b" opacity="1" />
+                        <circle cx={truck.x + 35} cy="243" r="0.8" fill="#ffeb3b" opacity="1" />
+                      </>
+                    ) : (
+                      <>
+                        <circle cx={truck.x + 1} cy="239" r="0.8" fill="#cc3333" opacity="1" />
+                        <circle cx={truck.x + 1} cy="243" r="0.8" fill="#cc3333" opacity="1" />
+                      </>
+                    )}
                   </g>
                 ))}
               </g>
