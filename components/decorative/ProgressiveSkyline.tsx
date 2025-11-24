@@ -486,7 +486,7 @@ export function ProgressiveSkyline() {
               ))}
 
               {/* Colonial style houses - symmetrical design */}
-              {[850, 1150, 1450, 1750].map((x, i) => (
+              {[1000, 1300, 1600, 1900].map((x, i) => (
                 <g key={`colonial-${i}`}>
                   {/* Main colonial structure */}
                   <rect x={x} y="183" width="32" height="24" fill={`url(#colonialHouse-${iteration})`} />
@@ -545,7 +545,7 @@ export function ProgressiveSkyline() {
               ))}
 
               {/* Cottage style houses - small and cozy */}
-              {[910, 1210, 1510, 1810].map((x, i) => (
+              {[1060, 1360, 1660, 1960].map((x, i) => (
                 <g key={`cottage-${i}`}>
                   {/* Small cottage body */}
                   <rect x={x} y="192" width="24" height="15" fill={`url(#cottageHouse-${iteration})`} />
@@ -821,6 +821,38 @@ export function ProgressiveSkyline() {
                               r="2"
                               fill="#8a8a8a"
                               opacity="0.7" />
+
+                      {/* Small rooftop wind turbine */}
+                      <g>
+                        {/* Turbine tower - small white pole */}
+                        <rect x={bldg.x + bldg.w/2 - 1}
+                              y={215 - bldg.h - 10}
+                              width="2"
+                              height="10"
+                              fill="#e8e8e8"
+                              opacity="0.9" />
+                        {/* Turbine hub - small green circle */}
+                        <circle cx={bldg.x + bldg.w/2}
+                                cy={215 - bldg.h - 10}
+                                r="2"
+                                fill="#4a7c2f"
+                                opacity="0.9" />
+                        {/* Small rotating blades */}
+                        <g className="turbine-blade" style={{animationDelay: `${i * 0.2}s`}}>
+                          {/* Blade 1 - pointing up */}
+                          <path d={`M ${bldg.x + bldg.w/2},${215 - bldg.h - 12} L ${bldg.x + bldg.w/2 + 1},${215 - bldg.h - 18} L ${bldg.x + bldg.w/2 - 1},${215 - bldg.h - 18} Z`}
+                                fill="#f0f0f0"
+                                opacity="0.9" />
+                          {/* Blade 2 - pointing right */}
+                          <path d={`M ${bldg.x + bldg.w/2 + 2},${215 - bldg.h - 10} L ${bldg.x + bldg.w/2 + 8},${215 - bldg.h - 11} L ${bldg.x + bldg.w/2 + 7},${215 - bldg.h - 9} Z`}
+                                fill="#f0f0f0"
+                                opacity="0.9" />
+                          {/* Blade 3 - pointing lower left */}
+                          <path d={`M ${bldg.x + bldg.w/2 - 1},${215 - bldg.h - 8} L ${bldg.x + bldg.w/2 - 6},${215 - bldg.h - 5} L ${bldg.x + bldg.w/2 - 5},${215 - bldg.h - 7} Z`}
+                                fill="#f0f0f0"
+                                opacity="0.9" />
+                        </g>
+                      </g>
                     </g>
                   </g>
                 ))}
@@ -974,30 +1006,6 @@ export function ProgressiveSkyline() {
                     <ellipse cx={x+2} cy="207.5" rx="1.4" ry="1" fill={i % 2 === 0 ? "#4a7c2f" : "#c73e3e"} opacity="0.95" />
                   </g>
                 ))}
-              </g>
-
-              {/* Wind turbines - VISIBLE, positioned to peek above buildings */}
-              <g>
-                {[2080, 2200, 2320, 2440, 2560, 2680, 2800, 2920, 3040, 3160, 3280, 3400, 3520, 3640, 3760].map((x, i) => {
-                  const yBase = 95 + (i % 3) * 5; // Vary height: 95, 100, 105
-                  return (
-                    <g key={`turbine-${i}`}>
-                      {/* Turbine tower - tall white tower */}
-                      <rect x={x - 3} y={yBase} width="6" height="115" fill="#e8e8e8" opacity="0.95" />
-                      {/* Turbine hub - green circle at top of tower */}
-                      <circle cx={x} cy={yBase} r="8" fill="#4a7c2f" opacity="0.95" />
-                      {/* Slowly rotating blades */}
-                      <g className="turbine-blade" style={{animationDelay: `${i * 0.3}s`}}>
-                        {/* Blade 1 - pointing up */}
-                        <path d={`M ${x},${yBase - 8} L ${x + 3},${yBase - 45} L ${x - 3},${yBase - 45} Z`} fill="#f0f0f0" opacity="0.95" />
-                        {/* Blade 2 - pointing right */}
-                        <path d={`M ${x + 8},${yBase} L ${x + 40},${yBase - 5} L ${x + 38},${yBase + 5} Z`} fill="#f0f0f0" opacity="0.95" />
-                        {/* Blade 3 - pointing lower left */}
-                        <path d={`M ${x - 4},${yBase + 6} L ${x - 28},${yBase + 30} L ${x - 22},${yBase + 32} Z`} fill="#f0f0f0" opacity="0.95" />
-                      </g>
-                    </g>
-                  );
-                })}
               </g>
 
               {/* ========== PHASE 4: RETURN TO RURAL - IDENTICAL TO OPENING (3800-5000) ========== */}
