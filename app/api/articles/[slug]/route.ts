@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { prisma } from '@/lib/db'
+import { auth } from '@/auth'
 
 type Params = {
   params: Promise<{
@@ -89,6 +90,67 @@ export async function GET(
     console.error('Error fetching article:', error)
     return NextResponse.json(
       { success: false, error: 'Failed to fetch article' },
+      { status: 500 }
+    )
+  }
+}
+
+// DELETE /api/articles/[slug] - Delete an article (accepts slug or ID)
+export async function DELETE(
+  request: NextRequest,
+  { params }: Params
+) {
+  try {
+    const session = await auth()
+    if (!session?.user) {
+      return NextResponse.json(
+        { success: false, error: 'Unauthorized' },
+        { status: 401 }
+      )
+    }
+
+    const { slug } = await params
+
+    // Try to find by ID first, then by slug
+    let article = await prisma.article.findUnique({
+      where: { id: slug },
+      select: { id: true, authorId: true }
+    }).catch(() => null)
+
+    if (!article) {
+      article = await prisma.article.findUnique({
+        where: { slug: slug },
+        select: { id: true, authorId: true }
+      })
+    }
+
+    if (!article) {
+      return NextResponse.json(
+        { success: false, error: 'Article not found' },
+        { status: 404 }
+      )
+    }
+
+    if (article.authorId !== session.user.id) {
+      return NextResponse.json(
+        { success: false, error: 'Unauthorized - You can only delete your own articles' },
+        { status: 403 }
+      )
+    }
+
+    // Delete the article
+    await prisma.article.delete({
+      where: { id: article.id }
+    })
+
+    return NextResponse.json({
+      success: true,
+      message: 'Article deleted successfully'
+    })
+  } catch (error) {
+    console.error('Error deleting article:', error)
+    return NextResponse.json(
+      { success: false, error: 'Failed to delete article' },
       { status: 500 }
     )
   }

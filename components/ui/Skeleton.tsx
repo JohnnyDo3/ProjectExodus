@@ -1,5 +1,3 @@
-import { cn } from '@/lib/utils'
-
 interface SkeletonProps {
   className?: string
 }
@@ -7,10 +5,7 @@ interface SkeletonProps {
 export function Skeleton({ className }: SkeletonProps) {
   return (
     <div
-      className={cn(
-        'animate-pulse rounded-md bg-[var(--muted)]',
-        className
-      )}
+      className={`animate-pulse rounded-md bg-[var(--muted)] ${className || ''}`}
     />
   )
 }

@@ -98,7 +98,7 @@ export function FollowButton({ userId, className }: FollowButtonProps) {
   return (
     <Button
       size="sm"
-      variant={isFollowing ? 'outline' : 'default'}
+      variant={isFollowing ? 'outline' : 'primary'}
       className={className}
       onClick={handleFollow}
       disabled={isUpdating}

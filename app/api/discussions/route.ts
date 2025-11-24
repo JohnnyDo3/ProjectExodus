@@ -62,7 +62,7 @@ export async function GET(request: Request) {
     console.log('[API /discussions] Found', discussions.length, 'discussions')
 
     // Transform to match the expected format
-    const transformedDiscussions = discussions.map((discussion) => ({
+    const transformedDiscussions = discussions.map((discussion: any) => ({
       id: discussion.id,
       title: discussion.title,
       slug: discussion.slug,
