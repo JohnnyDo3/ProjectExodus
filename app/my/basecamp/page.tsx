@@ -157,6 +157,14 @@ export default function MyBasecampPage() {
   const fetchUserDiscussions = async () => {
     try {
       const res = await fetch(`/api/discussions?userId=${session?.user?.id}`)
+
+      // Handle 404 or non-JSON responses gracefully
+      if (!res.ok) {
+        console.log('[Basecamp] Discussions endpoint not available (404), using empty array')
+        setDiscussions([])
+        return
+      }
+
       const data = await res.json()
 
       if (data.success) {
@@ -173,6 +181,14 @@ export default function MyBasecampPage() {
   const fetchLearningProgress = async () => {
     try {
       const res = await fetch(`/api/learning/progress?userId=${session?.user?.id}`)
+
+      // Handle 404 or non-JSON responses gracefully
+      if (!res.ok) {
+        console.log('[Basecamp] Learning progress endpoint not available (404), using defaults')
+        setLearningProgress({ articlesRead: 0, coursesCompleted: 0, totalHours: 0 })
+        return
+      }
+
       const data = await res.json()
 
       if (data.success) {
