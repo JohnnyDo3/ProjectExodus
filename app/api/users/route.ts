@@ -1,4 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server'
+import { handlePrismaError } from '@/lib/utils/prisma-errors'
 import { prisma } from '@/lib/db'
 import { auth } from '@/auth'
 
@@ -9,7 +10,6 @@ export async function GET(request: NextRequest) {
     const { searchParams } = new URL(request.url)
     const search = searchParams.get('search')
     const interest = searchParams.get('interest')
-
     const users = await prisma.user.findMany({
       where: {
         AND: [
@@ -25,7 +25,6 @@ export async function GET(request: NextRequest) {
           // Filter by interest
           interest ? {
             interests: { has: interest },
-          } : {},
         ],
       },
       select: {
@@ -45,15 +44,12 @@ export async function GET(request: NextRequest) {
             forumPosts: true,
           },
         },
-      },
       take: 50,
       orderBy: { createdAt: 'desc' },
     })
-
     return NextResponse.json({
       success: true,
       data: users,
-    })
   } catch (error) {
     console.error('Error fetching users:', error)
     return NextResponse.json(

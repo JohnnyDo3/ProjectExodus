@@ -1,6 +1,7 @@
 import { NextResponse } from 'next/server'
 import { auth } from '@/auth'
 import { prisma } from '@/lib/db'
+import { handlePrismaError } from '@/lib/utils/prisma-errors'
 
 export async function POST(request: Request) {
   try {
@@ -60,10 +61,6 @@ export async function POST(request: Request) {
       })
     }
   } catch (error) {
-    console.error('Error toggling like:', error)
-    return NextResponse.json(
-      { success: false, error: 'Failed to toggle like' },
-      { status: 500 }
-    )
+    return handlePrismaError(error, 'toggle like')
   }
 }

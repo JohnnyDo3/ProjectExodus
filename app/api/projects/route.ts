@@ -1,4 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server'
+import { handlePrismaError } from '@/lib/utils/prisma-errors'
 import { prisma } from '@/lib/db'
 import { auth } from '@/auth'
 
@@ -24,18 +25,15 @@ export async function GET() {
             }
           },
           take: 5
-        },
         _count: {
           select: { members: true }
         }
       },
       orderBy: { createdAt: 'desc' }
     })
-
     return NextResponse.json({
       success: true,
       data: projects
-    })
   } catch (error) {
     console.error('Error fetching projects:', error)
     return NextResponse.json(
@@ -44,10 +42,8 @@ export async function GET() {
     )
   }
 }
-
 // POST /api/projects - Create new project
 export async function POST(request: NextRequest) {
-  try {
     // Check authentication
     const session = await auth()
     if (!session?.user) {
@@ -56,17 +52,11 @@ export async function POST(request: NextRequest) {
         { status: 401 }
       )
     }
-
     const body = await request.json()
-
     // Validate required fields
     if (!body.name || !body.slug || !body.description) {
-      return NextResponse.json(
         { success: false, error: 'Missing required fields: name, slug, description' },
         { status: 400 }
-      )
-    }
-
     const project = await prisma.project.create({
       data: {
         name: body.name,
@@ -76,39 +66,13 @@ export async function POST(request: NextRequest) {
         status: body.status || 'PLANNING',
         coverImage: body.coverImage || null,
         creatorId: session.user.id,
-      },
-      include: {
-        creator: {
-          select: {
-            id: true,
-            name: true,
             image: true,
-          },
-        },
-        _count: {
           select: { members: true },
-        },
-      },
-    })
-
     // Automatically add creator as ADMIN member
     await prisma.projectMember.create({
-      data: {
         projectId: project.id,
         userId: session.user.id,
         role: 'ADMIN',
-      },
-    })
-
-    return NextResponse.json({
-      success: true,
       data: project,
-    })
-  } catch (error) {
     console.error('Error creating project:', error)
-    return NextResponse.json(
       { success: false, error: 'Failed to create project' },
-      { status: 500 }
-    )
-  }
-}

@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { prisma } from '@/lib/db'
 import { auth } from '@/auth'
+import { handlePrismaError } from '@/lib/utils/prisma-errors'
 
 // POST /api/users/follow - Follow a user
 export async function POST(request: NextRequest) {
@@ -58,11 +59,7 @@ export async function POST(request: NextRequest) {
       message: 'Successfully followed user',
     })
   } catch (error) {
-    console.error('Error following user:', error)
-    return NextResponse.json(
-      { success: false, error: 'Failed to follow user' },
-      { status: 500 }
-    )
+    return handlePrismaError(error, 'follow user')
   }
 }
 
@@ -101,10 +98,6 @@ export async function DELETE(request: NextRequest) {
       message: 'Successfully unfollowed user',
     })
   } catch (error) {
-    console.error('Error unfollowing user:', error)
-    return NextResponse.json(
-      { success: false, error: 'Failed to unfollow user' },
-      { status: 500 }
-    )
+    return handlePrismaError(error, 'unfollow user')
   }
 }

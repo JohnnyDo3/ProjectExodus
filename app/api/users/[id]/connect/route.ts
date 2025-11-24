@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { auth } from '@/auth'
 import { prisma } from '@/lib/db'
+import { handlePrismaError } from '@/lib/utils/prisma-errors'
 
 // POST /api/users/[id]/connect - Send connection request
 export async function POST(
@@ -93,11 +94,7 @@ export async function POST(
       message: 'Connection request sent successfully',
     })
   } catch (error) {
-    console.error('Error sending connection request:', error)
-    return NextResponse.json(
-      { success: false, error: 'Failed to send connection request' },
-      { status: 500 }
-    )
+    return handlePrismaError(error, 'send connection request')
   }
 }
 
@@ -135,11 +132,7 @@ export async function DELETE(
       message: 'Connection removed successfully',
     })
   } catch (error) {
-    console.error('Error removing connection:', error)
-    return NextResponse.json(
-      { success: false, error: 'Failed to remove connection' },
-      { status: 500 }
-    )
+    return handlePrismaError(error, 'remove connection')
   }
 }
 
@@ -193,10 +186,6 @@ export async function GET(
       },
     })
   } catch (error) {
-    console.error('Error getting connection status:', error)
-    return NextResponse.json(
-      { success: false, error: 'Failed to get connection status' },
-      { status: 500 }
-    )
+    return handlePrismaError(error, 'get connection status')
   }
 }

@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { auth } from '@/auth'
 import { prisma } from '@/lib/db'
+import { handlePrismaError } from '@/lib/utils/prisma-errors'
 
 // PATCH /api/connections/[id] - Accept or reject connection request
 export async function PATCH(
@@ -101,11 +102,7 @@ export async function PATCH(
       )
     }
   } catch (error) {
-    console.error('Error handling connection request:', error)
-    return NextResponse.json(
-      { success: false, error: 'Failed to handle connection request' },
-      { status: 500 }
-    )
+    return handlePrismaError(error, 'handle connection request')
   }
 }
 
@@ -174,10 +171,6 @@ export async function GET(
       data: connection,
     })
   } catch (error) {
-    console.error('Error getting connection:', error)
-    return NextResponse.json(
-      { success: false, error: 'Failed to get connection' },
-      { status: 500 }
-    )
+    return handlePrismaError(error, 'get connection')
   }
 }
