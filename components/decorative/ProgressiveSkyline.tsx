@@ -362,17 +362,17 @@ export function ProgressiveSkyline() {
                   <g key={`horse-${i}`} className="animal-horse" opacity="1" style={{animationDelay: `${i * 0.3}s`}}>
                     {/* Horse body */}
                     <ellipse cx={x} cy="200" rx="8" ry="5" fill="#654321" />
-                    {/* Horse head - facing forward */}
-                    <ellipse cx={x+6} cy="197" rx="3" ry="4" fill="#654321" />
+                    {/* Horse head - facing forward, clearly visible */}
+                    <ellipse cx={x+9} cy="197" rx="3" ry="4" fill="#654321" />
                     {/* Legs */}
                     <rect x={x-3} y="205" width="1.5" height="5" fill="#654321" />
                     <rect x={x+2} y="205" width="1.5" height="5" fill="#654321" />
                     {/* Tail */}
                     <path d={`M ${x-8},200 Q ${x-11},198 ${x-12},202`} stroke="#4a3520" strokeWidth="1.5" fill="none" />
                     {/* Mane */}
-                    <path d={`M ${x+6},195 Q ${x+4},193 ${x+2},195`} stroke="#4a3520" strokeWidth="1" fill="none" />
-                    {/* Eye */}
-                    <circle cx={x+7} cy="196" r="0.5" fill="#2f2f2f" />
+                    <path d={`M ${x+9},195 Q ${x+6},193 ${x+3},195`} stroke="#4a3520" strokeWidth="1" fill="none" />
+                    {/* Eye - clearly visible */}
+                    <circle cx={x+10} cy="196" r="0.8" fill="#2f2f2f" />
                   </g>
                 ))}
               </g>
@@ -1115,17 +1115,17 @@ export function ProgressiveSkyline() {
                   <g key={`horse-end-${i}`} className="animal-horse" opacity="1" style={{animationDelay: `${i * 0.3}s`}}>
                     {/* Horse body */}
                     <ellipse cx={x} cy="200" rx="8" ry="5" fill="#654321" />
-                    {/* Horse head - facing forward */}
-                    <ellipse cx={x+6} cy="197" rx="3" ry="4" fill="#654321" />
+                    {/* Horse head - facing forward, clearly visible */}
+                    <ellipse cx={x+9} cy="197" rx="3" ry="4" fill="#654321" />
                     {/* Legs */}
                     <rect x={x-3} y="205" width="1.5" height="5" fill="#654321" />
                     <rect x={x+2} y="205" width="1.5" height="5" fill="#654321" />
                     {/* Tail */}
                     <path d={`M ${x-8},200 Q ${x-11},198 ${x-12},202`} stroke="#4a3520" strokeWidth="1.5" fill="none" />
                     {/* Mane */}
-                    <path d={`M ${x+6},195 Q ${x+4},193 ${x+2},195`} stroke="#4a3520" strokeWidth="1" fill="none" />
-                    {/* Eye */}
-                    <circle cx={x+7} cy="196" r="0.5" fill="#2f2f2f" />
+                    <path d={`M ${x+9},195 Q ${x+6},193 ${x+3},195`} stroke="#4a3520" strokeWidth="1" fill="none" />
+                    {/* Eye - clearly visible */}
+                    <circle cx={x+10} cy="196" r="0.8" fill="#2f2f2f" />
                   </g>
                 ))}
               </g>
