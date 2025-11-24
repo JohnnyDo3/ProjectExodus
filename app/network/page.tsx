@@ -63,7 +63,13 @@ export default function NetworkPage() {
   const fetchUsers = async () => {
     try {
       console.log('[Network Page] Fetching users...')
-      const res = await fetch('/api/users')
+
+      const controller = new AbortController()
+      const timeoutId = setTimeout(() => controller.abort(), 10000) // 10s timeout
+
+      const res = await fetch('/api/users', { signal: controller.signal })
+      clearTimeout(timeoutId)
+
       console.log('[Network Page] Response status:', res.status)
 
       if (!res.ok) {
@@ -85,6 +91,9 @@ export default function NetworkPage() {
       }
     } catch (error) {
       console.error('[Network Page] Error fetching users:', error)
+      if ((error as Error).name === 'AbortError') {
+        console.error('[Network Page] Request timed out after 10s')
+      }
       setUsers([])
     } finally {
       console.log('[Network Page] Setting isLoading to false')
@@ -95,8 +104,20 @@ export default function NetworkPage() {
   const fetchFollowingStatus = async () => {
     try {
       console.log('[Network Page] Fetching following status...')
-      const res = await fetch('/api/users/following')
+
+      const controller = new AbortController()
+      const timeoutId = setTimeout(() => controller.abort(), 10000) // 10s timeout
+
+      const res = await fetch('/api/users/following', { signal: controller.signal })
+      clearTimeout(timeoutId)
+
       console.log('[Network Page] Following response status:', res.status)
+
+      if (!res.ok) {
+        console.error('[Network Page] Following endpoint returned:', res.status)
+        return
+      }
+
       const data = await res.json()
       console.log('[Network Page] Following data:', data)
 
@@ -108,6 +129,9 @@ export default function NetworkPage() {
       }
     } catch (error) {
       console.error('[Network Page] Error fetching following status:', error)
+      if ((error as Error).name === 'AbortError') {
+        console.error('[Network Page] Following request timed out after 10s')
+      }
     }
   }
 
