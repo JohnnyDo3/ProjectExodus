@@ -74,7 +74,15 @@ export default function MyBasecampPage() {
 
   const fetchUserProjects = async () => {
     try {
+      console.log('[Basecamp] Fetching user projects...')
       const res = await fetch('/api/projects')
+
+      if (!res.ok) {
+        console.log('[Basecamp] Projects endpoint returned', res.status)
+        setProjects([])
+        return
+      }
+
       const data = await res.json()
 
       if (data.success) {
@@ -84,9 +92,11 @@ export default function MyBasecampPage() {
           return isMember || isCreator
         })
         setProjects(userProjects)
+        console.log('[Basecamp] Loaded', userProjects.length, 'user projects')
       }
     } catch (error) {
-      console.error('Error fetching projects:', error)
+      console.error('[Basecamp] Error fetching projects:', error)
+      setProjects([])
     } finally {
       setIsLoadingProjects(false)
     }
@@ -94,14 +104,24 @@ export default function MyBasecampPage() {
 
   const fetchActivityFeed = async () => {
     try {
+      console.log('[Basecamp] Fetching activity feed...')
       const res = await fetch('/api/activity?limit=10')
+
+      if (!res.ok) {
+        console.log('[Basecamp] Activity endpoint returned', res.status)
+        setActivities([])
+        return
+      }
+
       const data = await res.json()
 
       if (data.success) {
         setActivities(data.data)
+        console.log('[Basecamp] Loaded', data.data.length, 'activities')
       }
     } catch (error) {
-      console.error('Error fetching activity feed:', error)
+      console.error('[Basecamp] Error fetching activity feed:', error)
+      setActivities([])
     } finally {
       setIsLoadingActivities(false)
     }
@@ -109,14 +129,24 @@ export default function MyBasecampPage() {
 
   const fetchUserProfile = async () => {
     try {
+      console.log('[Basecamp] Fetching user profile...')
       const res = await fetch(`/api/users/${session?.user?.id}`)
+
+      if (!res.ok) {
+        console.log('[Basecamp] User profile endpoint returned', res.status)
+        setUserProfile(null)
+        return
+      }
+
       const data = await res.json()
 
       if (data.success) {
         setUserProfile(data.data)
+        console.log('[Basecamp] User profile loaded')
       }
     } catch (error) {
-      console.error('Error fetching user profile:', error)
+      console.error('[Basecamp] Error fetching user profile:', error)
+      setUserProfile(null)
     } finally {
       setIsLoadingProfile(false)
     }
@@ -124,14 +154,23 @@ export default function MyBasecampPage() {
 
   const fetchUserArticles = async () => {
     try {
+      console.log('[Basecamp] Fetching user articles...')
       const res = await fetch(`/api/articles?authorId=${session?.user?.id}`)
+
+      if (!res.ok) {
+        console.log('[Basecamp] Articles endpoint returned', res.status)
+        setArticles([])
+        return
+      }
+
       const data = await res.json()
 
       if (data.success) {
         setArticles(data.data || [])
+        console.log('[Basecamp] Loaded', data.data?.length || 0, 'articles')
       }
     } catch (error) {
-      console.error('Error fetching articles:', error)
+      console.error('[Basecamp] Error fetching articles:', error)
       setArticles([])
     } finally {
       setIsLoadingArticles(false)
@@ -140,14 +179,23 @@ export default function MyBasecampPage() {
 
   const fetchUserForumPosts = async () => {
     try {
+      console.log('[Basecamp] Fetching user forum posts...')
       const res = await fetch(`/api/forum?authorId=${session?.user?.id}`)
+
+      if (!res.ok) {
+        console.log('[Basecamp] Forum posts endpoint returned', res.status)
+        setForumPosts([])
+        return
+      }
+
       const data = await res.json()
 
       if (data.success) {
         setForumPosts(data.data || [])
+        console.log('[Basecamp] Loaded', data.data?.length || 0, 'forum posts')
       }
     } catch (error) {
-      console.error('Error fetching forum posts:', error)
+      console.error('[Basecamp] Error fetching forum posts:', error)
       setForumPosts([])
     } finally {
       setIsLoadingForumPosts(false)
@@ -156,11 +204,12 @@ export default function MyBasecampPage() {
 
   const fetchUserDiscussions = async () => {
     try {
+      console.log('[Basecamp] Fetching user discussions...')
       const res = await fetch(`/api/discussions?userId=${session?.user?.id}`)
 
       // Handle 404 or non-JSON responses gracefully
       if (!res.ok) {
-        console.log('[Basecamp] Discussions endpoint not available (404), using empty array')
+        console.log('[Basecamp] Discussions endpoint returned', res.status, ', using empty array')
         setDiscussions([])
         return
       }
@@ -169,9 +218,10 @@ export default function MyBasecampPage() {
 
       if (data.success) {
         setDiscussions(data.data || [])
+        console.log('[Basecamp] Loaded', data.data?.length || 0, 'discussions')
       }
     } catch (error) {
-      console.error('Error fetching discussions:', error)
+      console.error('[Basecamp] Error fetching discussions:', error)
       setDiscussions([])
     } finally {
       setIsLoadingDiscussions(false)
@@ -180,11 +230,12 @@ export default function MyBasecampPage() {
 
   const fetchLearningProgress = async () => {
     try {
+      console.log('[Basecamp] Fetching learning progress...')
       const res = await fetch(`/api/learning/progress?userId=${session?.user?.id}`)
 
       // Handle 404 or non-JSON responses gracefully
       if (!res.ok) {
-        console.log('[Basecamp] Learning progress endpoint not available (404), using defaults')
+        console.log('[Basecamp] Learning progress endpoint returned', res.status, ', using defaults')
         setLearningProgress({ articlesRead: 0, coursesCompleted: 0, totalHours: 0 })
         return
       }
@@ -193,9 +244,10 @@ export default function MyBasecampPage() {
 
       if (data.success) {
         setLearningProgress(data.data)
+        console.log('[Basecamp] Learning progress loaded:', data.data)
       }
     } catch (error) {
-      console.error('Error fetching learning progress:', error)
+      console.error('[Basecamp] Error fetching learning progress:', error)
       setLearningProgress(null)
     } finally {
       setIsLoadingLearning(false)
@@ -204,24 +256,46 @@ export default function MyBasecampPage() {
 
   const fetchNetworkHighlights = async () => {
     try {
+      console.log('[Basecamp] Fetching network highlights...')
+
       // Fetch connection suggestions
       const suggestionsRes = await fetch('/api/network/suggestions?limit=3')
-      const suggestionsData = await suggestionsRes.json()
-      if (suggestionsData.success) {
-        setNetworkSuggestions(suggestionsData.data.suggestions || [])
+      if (suggestionsRes.ok) {
+        const suggestionsData = await suggestionsRes.json()
+        if (suggestionsData.success) {
+          setNetworkSuggestions(suggestionsData.data.suggestions || [])
+        }
+      } else {
+        console.log('[Basecamp] Network suggestions endpoint returned', suggestionsRes.status)
+        setNetworkSuggestions([])
       }
 
       // Fetch pending connection requests count
       const requestsRes = await fetch('/api/connections/requests')
-      const requestsData = await requestsRes.json()
-      if (requestsData.success) {
+      if (requestsRes.ok) {
+        const requestsData = await requestsRes.json()
+        if (requestsData.success) {
+          setNetworkStats({
+            connectionsCount: userProfile?._count?.connections || 0,
+            pendingRequests: requestsData.data.requests?.length || 0,
+          })
+        }
+      } else {
+        console.log('[Basecamp] Connection requests endpoint returned', requestsRes.status)
         setNetworkStats({
           connectionsCount: userProfile?._count?.connections || 0,
-          pendingRequests: requestsData.data.requests?.length || 0,
+          pendingRequests: 0,
         })
       }
+
+      console.log('[Basecamp] Network highlights loaded successfully')
     } catch (error) {
-      console.error('Error fetching network highlights:', error)
+      console.error('[Basecamp] Error fetching network highlights:', error)
+      setNetworkSuggestions([])
+      setNetworkStats({
+        connectionsCount: 0,
+        pendingRequests: 0,
+      })
     } finally {
       setIsLoadingNetwork(false)
     }
