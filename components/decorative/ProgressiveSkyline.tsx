@@ -30,7 +30,7 @@ export function ProgressiveSkyline() {
         }
 
         .skyline-container {
-          animation: skylineScroll 300s linear infinite;
+          animation: skylineScroll 420s linear infinite;
           will-change: transform;
         }
 
@@ -457,7 +457,7 @@ export function ProgressiveSkyline() {
               </g>
 
               {/* Ultra-detailed miniature houses - Victorian style */}
-              {[820, 970, 1120, 1270, 1420, 1570, 1720, 1870].map((x, i) => (
+              {[820, 1120, 1420, 1720].map((x, i) => (
                 <g key={`victorian-${i}`}>
                   {/* Main house body - small and detailed */}
                   <rect x={x} y="185" width="28" height="22" fill={`url(#victorianHouse-${iteration})`} />
@@ -486,7 +486,7 @@ export function ProgressiveSkyline() {
               ))}
 
               {/* Colonial style houses - symmetrical design */}
-              {[850, 1000, 1150, 1300, 1450, 1600, 1750, 1900].map((x, i) => (
+              {[850, 1150, 1450, 1750].map((x, i) => (
                 <g key={`colonial-${i}`}>
                   {/* Main colonial structure */}
                   <rect x={x} y="183" width="32" height="24" fill={`url(#colonialHouse-${iteration})`} />
@@ -520,7 +520,7 @@ export function ProgressiveSkyline() {
               ))}
 
               {/* Ranch style houses - low and wide */}
-              {[880, 1030, 1180, 1330, 1480, 1630, 1780, 1930].map((x, i) => (
+              {[880, 1180, 1480, 1780].map((x, i) => (
                 <g key={`ranch-${i}`}>
                   {/* Wide, low ranch house */}
                   <rect x={x} y="193" width="38" height="14" fill={`url(#ranchHouse-${iteration})`} />
@@ -545,7 +545,7 @@ export function ProgressiveSkyline() {
               ))}
 
               {/* Cottage style houses - small and cozy */}
-              {[910, 1060, 1210, 1360, 1510, 1660, 1810, 1960].map((x, i) => (
+              {[910, 1210, 1510, 1810].map((x, i) => (
                 <g key={`cottage-${i}`}>
                   {/* Small cottage body */}
                   <rect x={x} y="192" width="24" height="15" fill={`url(#cottageHouse-${iteration})`} />
@@ -579,7 +579,7 @@ export function ProgressiveSkyline() {
               ))}
 
               {/* Modern style houses - clean lines */}
-              {[940, 1090, 1240, 1390, 1540, 1690, 1840, 1990].map((x, i) => (
+              {[940, 1240, 1540, 1840].map((x, i) => (
                 <g key={`modern-${i}`}>
                   {/* Cubic modern house */}
                   <rect x={x} y="188" width="26" height="19" fill={`url(#modernHouse-${iteration})`} />
