@@ -976,19 +976,21 @@ export default function MyBasecampPage() {
                       ) : discussions.length > 0 ? (
                         <div className="space-y-3 max-h-64 overflow-y-auto">
                           {discussions.slice(0, 5).map((discussion: any) => (
-                            <div key={discussion.id} className="p-3 bg-[var(--muted)] rounded-lg hover:bg-[color-mix(in_srgb,var(--secondary)_10%,var(--muted))] transition-colors">
-                              <h4 className="text-sm font-black text-[var(--foreground)] mb-1 line-clamp-1">
-                                {discussion.title}
-                              </h4>
-                              <div className="flex items-center justify-between text-xs">
-                                <span className="font-semibold text-theme-muted">
-                                  {discussion.replies || 0} replies
-                                </span>
-                                <span className="font-semibold text-theme-muted">
-                                  {new Date(discussion.updatedAt).toLocaleDateString()}
-                                </span>
+                            <Link key={discussion.id} href={`/community/forum/posts/${discussion.slug}`}>
+                              <div className="p-3 bg-[var(--muted)] rounded-lg hover:bg-[color-mix(in_srgb,var(--secondary)_10%,var(--muted))] transition-colors cursor-pointer">
+                                <h4 className="text-sm font-black text-[var(--foreground)] mb-1 line-clamp-1">
+                                  {discussion.title}
+                                </h4>
+                                <div className="flex items-center justify-between text-xs">
+                                  <span className="font-semibold text-theme-muted">
+                                    {discussion.replies || 0} replies
+                                  </span>
+                                  <span className="font-semibold text-theme-muted">
+                                    {new Date(discussion.updatedAt).toLocaleDateString()}
+                                  </span>
+                                </div>
                               </div>
-                            </div>
+                            </Link>
                           ))}
                         </div>
                       ) : (

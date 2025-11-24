@@ -5,6 +5,8 @@ import { User, ThumbsUp, MessageSquare, Pin, Clock } from 'lucide-react'
 import { BackButton } from '@/components/navigation/BackButton'
 import Link from 'next/link'
 import { formatDate } from '@/lib/utils/format'
+import { ReplyForm } from '@/components/forum/ReplyForm'
+import { auth } from '@/auth'
 
 async function getPost(postId: string) {
   try {
@@ -31,6 +33,7 @@ export default async function PostPage({
   params: Promise<{ postId: string }>
 }) {
   const { postId } = await params
+  const session = await auth()
   const post = await getPost(postId)
 
   if (!post) {
@@ -180,28 +183,8 @@ export default async function PostPage({
               ))}
             </div>
 
-            {/* Reply Form Placeholder */}
-            <Card className="border-4 border-theme-primary">
-              <CardContent className="p-8">
-                <h3 className="text-xl font-black mb-4 text-[var(--foreground)]">
-                  ADD YOUR REPLY
-                </h3>
-                <textarea
-                  className="w-full p-4 border-2 border-theme-muted rounded-xl font-semibold resize-none focus:outline-none focus:border-theme-primary"
-                  rows={4}
-                  placeholder="Share your thoughts..."
-                  disabled
-                />
-                <div className="mt-4 flex justify-between items-center">
-                  <p className="text-sm font-semibold text-theme-muted">
-                    Sign in to post a reply
-                  </p>
-                  <Button size="lg" className="font-black" disabled>
-                    POST REPLY
-                  </Button>
-                </div>
-              </CardContent>
-            </Card>
+            {/* Reply Form */}
+            <ReplyForm postId={post.id} isSignedIn={!!session?.user} />
           </div>
         </div>
       </section>

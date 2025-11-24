@@ -2,6 +2,7 @@ import { notFound } from 'next/navigation'
 import Link from 'next/link'
 import { Button } from '@/components/ui/Button'
 import { Card, CardContent } from '@/components/ui/Card'
+import { FollowButton } from '@/components/profile/FollowButton'
 import {
   MapPin,
   Briefcase,
@@ -16,7 +17,8 @@ import {
   Award,
   Calendar,
   Building2,
-  Sparkles
+  Sparkles,
+  ArrowLeft
 } from 'lucide-react'
 import prisma from '@/lib/db/prisma'
 import { auth } from '@/auth'
@@ -62,6 +64,22 @@ export default async function ProfilePage({ params }: { params: Promise<{ id: st
 
   return (
     <div className="min-h-screen bg-[var(--muted)]">
+      {/* Back to Network Navigation */}
+      {!isOwnProfile && (
+        <div className="bg-[var(--background)] border-b-2 border-[var(--border)]">
+          <div className="container mx-auto px-4 sm:px-6 lg:px-8 py-3">
+            <div className="max-w-5xl mx-auto">
+              <Link href="/network">
+                <Button variant="ghost" size="sm" className="font-bold">
+                  <ArrowLeft className="w-4 h-4 mr-2" />
+                  BACK TO NETWORK
+                </Button>
+              </Link>
+            </div>
+          </div>
+        </div>
+      )}
+
       {/* Compact Banner */}
       <div
         className="h-40 bg-gradient-to-br from-[var(--primary)] via-[var(--accent)] to-[var(--secondary)] relative"
@@ -119,14 +137,13 @@ export default async function ProfilePage({ params }: { params: Promise<{ id: st
                       </Link>
                     ) : (
                       <div className="flex gap-2">
-                        <Button size="sm" className="font-black">
-                          <UserPlus className="w-4 h-4 mr-2" />
-                          FOLLOW
-                        </Button>
-                        <Button size="sm" variant="outline" className="font-black">
-                          <MessageSquare className="w-4 h-4 mr-2" />
-                          MESSAGE
-                        </Button>
+                        <FollowButton userId={user.id} className="font-black" />
+                        <Link href={`/messages/${user.id}`}>
+                          <Button size="sm" variant="outline" className="font-black">
+                            <MessageSquare className="w-4 h-4 mr-2" />
+                            MESSAGE
+                          </Button>
+                        </Link>
                       </div>
                     )}
                   </div>
