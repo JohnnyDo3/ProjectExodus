@@ -393,7 +393,7 @@ export default function BrowseProfessionalsPage() {
                       return (
                         <Button
                           key={page}
-                          variant={currentPage === page ? 'default' : 'outline'}
+                          variant={currentPage === page ? 'primary' : 'outline'}
                           onClick={() => setCurrentPage(page)}
                           className="font-bold min-w-[40px]"
                         >
