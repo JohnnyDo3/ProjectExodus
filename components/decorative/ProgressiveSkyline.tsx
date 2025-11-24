@@ -665,24 +665,6 @@ export function ProgressiveSkyline() {
               <path d="M 2000,208 Q 2200,205 2400,208 Q 2600,211 2800,207 Q 3000,204 3200,208 Q 3400,210 3600,206 Q 3700,208 3800,208 L 3800,250 L 2000,250 Z"
                     fill="#8ab88a" opacity="0.5" />
 
-              {/* Wind turbines (BEHIND buildings) - slowly spinning, peeking above buildings */}
-              <g>
-                {[2080, 2200, 2320, 2440, 2560, 2680, 2800, 2920, 3040, 3160, 3280, 3400, 3520, 3640, 3760].map((x, i) => (
-                  <g key={`turbine-${i}`} transform={`translate(${x}, ${125 + (i % 4) * 8})`}>
-                    {/* Turbine tower - TALLER to peek above buildings */}
-                    <rect x="-3" y="0" width="6" height="85" fill="#e8e8e8" opacity="0.95" />
-                    {/* Turbine hub */}
-                    <circle cx="0" cy="0" r="8" fill="#4a7c2f" opacity="0.95" />
-                    {/* Slowly rotating blades */}
-                    <g className="turbine-blade" style={{animationDelay: `${i * 0.2}s`}}>
-                      <path d="M 0,-8 L 3,-38 L -3,-38 Z" fill="#f0f0f0" opacity="0.95" />
-                      <path d="M 8,0 L 34,-5 L 32,5 Z" fill="#f0f0f0" opacity="0.95" />
-                      <path d="M -4,6 L -24,26 L -18,28 Z" fill="#f0f0f0" opacity="0.95" />
-                    </g>
-                  </g>
-                ))}
-              </g>
-
               {/* Pedestrian-friendly streets with bike lanes */}
               <g opacity="0.7">
                 <rect x="2000" y="220" width="1800" height="30" fill={`url(#roadGradient-${iteration})`} />
@@ -996,6 +978,30 @@ export function ProgressiveSkyline() {
                 ))}
               </g>
 
+              {/* Wind turbines - VISIBLE, positioned to peek above buildings */}
+              <g>
+                {[2080, 2200, 2320, 2440, 2560, 2680, 2800, 2920, 3040, 3160, 3280, 3400, 3520, 3640, 3760].map((x, i) => {
+                  const yBase = 95 + (i % 3) * 5; // Vary height: 95, 100, 105
+                  return (
+                    <g key={`turbine-${i}`}>
+                      {/* Turbine tower - tall white tower */}
+                      <rect x={x - 3} y={yBase} width="6" height="115" fill="#e8e8e8" opacity="0.95" />
+                      {/* Turbine hub - green circle at top of tower */}
+                      <circle cx={x} cy={yBase} r="8" fill="#4a7c2f" opacity="0.95" />
+                      {/* Slowly rotating blades */}
+                      <g className="turbine-blade" style={{animationDelay: `${i * 0.3}s`}}>
+                        {/* Blade 1 - pointing up */}
+                        <path d={`M ${x},${yBase - 8} L ${x + 3},${yBase - 45} L ${x - 3},${yBase - 45} Z`} fill="#f0f0f0" opacity="0.95" />
+                        {/* Blade 2 - pointing right */}
+                        <path d={`M ${x + 8},${yBase} L ${x + 40},${yBase - 5} L ${x + 38},${yBase + 5} Z`} fill="#f0f0f0" opacity="0.95" />
+                        {/* Blade 3 - pointing lower left */}
+                        <path d={`M ${x - 4},${yBase + 6} L ${x - 28},${yBase + 30} L ${x - 22},${yBase + 32} Z`} fill="#f0f0f0" opacity="0.95" />
+                      </g>
+                    </g>
+                  );
+                })}
+              </g>
+
               {/* ========== PHASE 4: RETURN TO RURAL - IDENTICAL TO OPENING (3800-5000) ========== */}
               {/* This creates a SEAMLESS LOOP back to the start */}
 
@@ -1101,8 +1107,84 @@ export function ProgressiveSkyline() {
                 ))}
               </g>
 
-              {/* Animals from earlier (horses, cows, sheep, chickens) will be rendered on top from the FARM ANIMALS section above */}
-              {/* This creates perfect symmetry - the loop is now SEAMLESS! */}
+              {/* FARM ANIMALS - matching opening rural biome */}
+
+              {/* Horses in the fields */}
+              <g>
+                {[3920, 4120, 4220, 4380, 4480, 4560].map((x, i) => (
+                  <g key={`horse-end-${i}`} className="animal-horse" opacity="1" style={{animationDelay: `${i * 0.3}s`}}>
+                    {/* Horse body */}
+                    <ellipse cx={x} cy="200" rx="8" ry="5" fill="#654321" />
+                    {/* Horse head - facing forward */}
+                    <ellipse cx={x+6} cy="197" rx="3" ry="4" fill="#654321" />
+                    {/* Legs */}
+                    <rect x={x-3} y="205" width="1.5" height="5" fill="#654321" />
+                    <rect x={x+2} y="205" width="1.5" height="5" fill="#654321" />
+                    {/* Tail */}
+                    <path d={`M ${x-8},200 Q ${x-11},198 ${x-12},202`} stroke="#4a3520" strokeWidth="1.5" fill="none" />
+                    {/* Mane */}
+                    <path d={`M ${x+6},195 Q ${x+4},193 ${x+2},195`} stroke="#4a3520" strokeWidth="1" fill="none" />
+                    {/* Eye */}
+                    <circle cx={x+7} cy="196" r="0.5" fill="#2f2f2f" />
+                  </g>
+                ))}
+              </g>
+
+              {/* Cows grazing */}
+              <g>
+                {[4030, 4190, 4310, 4440].map((x, i) => (
+                  <g key={`cow-end-${i}`} className="animal-cow" opacity="1" style={{animationDelay: `${i * 0.5}s`}}>
+                    {/* Cow body */}
+                    <ellipse cx={x} cy="202" rx="9" ry="5" fill="#f5f5f5" />
+                    {/* Black spots */}
+                    <ellipse cx={x-3} cy="201" rx="2" ry="2" fill="#2f2f2f" opacity="1" />
+                    <ellipse cx={x+4} cy="202" rx="2.5" ry="2.5" fill="#2f2f2f" opacity="1" />
+                    {/* Cow head */}
+                    <ellipse cx={x-7} cy="200" rx="3" ry="3.5" fill="#f5f5f5" />
+                    {/* Horns */}
+                    <path d={`M ${x-9},199 L ${x-10},197 M ${x-5},199 L ${x-4},197`} stroke="#4a4a4a" strokeWidth="0.8" />
+                    {/* Legs */}
+                    <rect x={x-4} y="207" width="1.5" height="4" fill="#e8e8e8" />
+                    <rect x={x+3} y="207" width="1.5" height="4" fill="#e8e8e8" />
+                  </g>
+                ))}
+              </g>
+
+              {/* Sheep grazing */}
+              <g>
+                {[3960, 4090, 4270, 4390, 4500].map((x, i) => (
+                  <g key={`sheep-end-${i}`} className="animal-sheep" opacity="1" style={{animationDelay: `${i * 0.4}s`}}>
+                    {/* Fluffy sheep body */}
+                    <ellipse cx={x} cy="204" rx="6" ry="4" fill="#f5f5f5" />
+                    <circle cx={x-2} cy="203" r="3" fill="#f5f5f5" />
+                    <circle cx={x+2} cy="203" r="3" fill="#f5f5f5" />
+                    {/* Black sheep face */}
+                    <ellipse cx={x-5} cy="203" rx="2" ry="2.5" fill="#2f2f2f" />
+                    {/* Tiny legs */}
+                    <rect x={x-3} y="208" width="1" height="3" fill="#2f2f2f" />
+                    <rect x={x+2} y="208" width="1" height="3" fill="#2f2f2f" />
+                  </g>
+                ))}
+              </g>
+
+              {/* Chickens pecking */}
+              <g>
+                {[4000, 4060, 4140, 4280, 4340, 4420, 4530].map((x, i) => (
+                  <g key={`chicken-end-${i}`} className="animal-chicken" opacity="1" style={{animationDelay: `${i * 0.2}s`}}>
+                    {/* Chicken body - super small */}
+                    <ellipse cx={x} cy="207" rx="2.5" ry="2" fill="#d4a574" />
+                    {/* Chicken head */}
+                    <circle cx={x-2} cy="206" r="1.5" fill="#d4a574" />
+                    {/* Red comb */}
+                    <path d={`M ${x-2},205 L ${x-1.5},204 L ${x-2.5},204`} fill="#cc3333" />
+                    {/* Beak */}
+                    <path d={`M ${x-3},206 L ${x-3.5},206`} stroke="#ffd700" strokeWidth="0.5" />
+                    {/* Tiny legs */}
+                    <rect x={x-1} y="209" width="0.5" height="2" fill="#d4a574" />
+                    <rect x={x+0.5} y="209" width="0.5" height="2" fill="#d4a574" />
+                  </g>
+                ))}
+              </g>
 
               {/* ========== FOREGROUND: MAIN STREET WITH TRAFFIC ========== */}
               {/* Main foreground road spanning entire city */}
