@@ -667,18 +667,16 @@ export function ProgressiveSkyline() {
 
               {/* Pedestrian-friendly streets with bike lanes */}
               <g opacity="0.7">
+                {/* Horizontal sidewalk above the street - parallel to road */}
+                <rect x="2000" y="216" width="1800" height="3" fill="currentColor" opacity="0.35" />
+
+                {/* Main street */}
                 <rect x="2000" y="220" width="1800" height="30" fill={`url(#roadGradient-${iteration})`} />
-                {/* Bike lane markings - MANY MORE! */}
+
+                {/* Bike lane markings */}
                 {Array.from({length: 36}).map((_, i) => (
                   <path key={`bike-${i}`} d={`M ${2010 + i * 50},225 L ${2015 + i * 50},230 L ${2010 + i * 50},235`}
                         stroke="#4a7c2f" strokeWidth="1.5" fill="none" opacity="0.7" />
-                ))}
-                {/* Pedestrian crosswalk */}
-                {Array.from({length: 12}).map((_, i) => (
-                  <rect key={`cross-${i}`} x={2300 + i * 15} y="220" width="8" height="30" fill="#f5f5f5" opacity="0.4" />
-                ))}
-                {Array.from({length: 12}).map((_, i) => (
-                  <rect key={`cross2-${i}`} x={3200 + i * 15} y="220" width="8" height="30" fill="#f5f5f5" opacity="0.4" />
                 ))}
               </g>
 
