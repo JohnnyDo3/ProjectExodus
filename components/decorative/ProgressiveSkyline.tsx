@@ -30,7 +30,7 @@ export function ProgressiveSkyline() {
         }
 
         .skyline-container {
-          animation: skylineScroll 240s linear infinite;
+          animation: skylineScroll 300s linear infinite;
           will-change: transform;
         }
 
@@ -659,22 +659,25 @@ export function ProgressiveSkyline() {
 
               {/* ========== PHASE 3: SUSTAINABLE GREEN CITY - PROJECT EXODUS (2000-3800) ========== */}
 
-              {/* Green city base - EXPANDED */}
-              <rect x="2000" y="160" width="1800" height="90" fill="#e8f5e8" opacity="0.3" />
+              {/* Grassy ground layer - matching rural and suburban */}
+              <path d="M 2000,210 Q 2200,207 2400,210 Q 2600,213 2800,209 Q 3000,206 3200,210 Q 3400,212 3600,208 Q 3700,210 3800,210 L 3800,250 L 2000,250 Z"
+                    fill="#7aa87a" opacity="0.6" />
+              <path d="M 2000,208 Q 2200,205 2400,208 Q 2600,211 2800,207 Q 3000,204 3200,208 Q 3400,210 3600,206 Q 3700,208 3800,208 L 3800,250 L 2000,250 Z"
+                    fill="#8ab88a" opacity="0.5" />
 
               {/* Wind turbines (BEHIND buildings) - slowly spinning, peeking above buildings */}
               <g>
                 {[2080, 2200, 2320, 2440, 2560, 2680, 2800, 2920, 3040, 3160, 3280, 3400, 3520, 3640, 3760].map((x, i) => (
-                  <g key={`turbine-${i}`} transform={`translate(${x}, ${135 + (i % 4) * 10})`}>
+                  <g key={`turbine-${i}`} transform={`translate(${x}, ${125 + (i % 4) * 8})`}>
                     {/* Turbine tower - TALLER to peek above buildings */}
-                    <rect x="-3" y="0" width="6" height="110" fill="#e8e8e8" opacity="0.8" />
+                    <rect x="-3" y="0" width="6" height="85" fill="#e8e8e8" opacity="0.95" />
                     {/* Turbine hub */}
-                    <circle cx="0" cy="0" r="8" fill="#4a7c2f" opacity="0.85" />
+                    <circle cx="0" cy="0" r="8" fill="#4a7c2f" opacity="0.95" />
                     {/* Slowly rotating blades */}
                     <g className="turbine-blade" style={{animationDelay: `${i * 0.2}s`}}>
-                      <path d="M 0,-8 L 3,-38 L -3,-38 Z" fill="#f0f0f0" opacity="0.75" />
-                      <path d="M 8,0 L 34,-5 L 32,5 Z" fill="#f0f0f0" opacity="0.75" />
-                      <path d="M -4,6 L -24,26 L -18,28 Z" fill="#f0f0f0" opacity="0.75" />
+                      <path d="M 0,-8 L 3,-38 L -3,-38 Z" fill="#f0f0f0" opacity="0.95" />
+                      <path d="M 8,0 L 34,-5 L 32,5 Z" fill="#f0f0f0" opacity="0.95" />
+                      <path d="M -4,6 L -24,26 L -18,28 Z" fill="#f0f0f0" opacity="0.95" />
                     </g>
                   </g>
                 ))}
@@ -697,31 +700,31 @@ export function ProgressiveSkyline() {
                 ))}
               </g>
 
-              {/* Modern eco-buildings with varied sizes and detailed architecture */}
+              {/* Modern eco-buildings with varied sizes and detailed architecture - MINIATURE */}
               <g>
                 {[
-                  {x: 2020, h: 95, w: 45, color: "#e8f4e8"}, {x: 2074, h: 125, w: 58, color: "#f0f8f0"},
-                  {x: 2142, h: 105, w: 52, color: "#e0f2e0"}, {x: 2204, h: 140, w: 64, color: "#e8f4e8"},
-                  {x: 2278, h: 115, w: 50, color: "#f0f8f0"}, {x: 2338, h: 135, w: 62, color: "#e0f2e0"},
-                  {x: 2410, h: 100, w: 48, color: "#e8f4e8"}, {x: 2468, h: 150, w: 68, color: "#f0f8f0"},
-                  {x: 2546, h: 120, w: 56, color: "#e0f2e0"}, {x: 2612, h: 130, w: 60, color: "#e8f4e8"},
-                  {x: 2682, h: 110, w: 54, color: "#f0f8f0"}, {x: 2746, h: 145, w: 66, color: "#e0f2e0"},
-                  {x: 2822, h: 125, w: 58, color: "#e8f4e8"}, {x: 2890, h: 115, w: 52, color: "#f0f8f0"},
-                  {x: 2952, h: 140, w: 64, color: "#e0f2e0"}, {x: 3026, h: 105, w: 50, color: "#e8f4e8"},
-                  {x: 3086, h: 135, w: 62, color: "#f0f8f0"}, {x: 3158, h: 120, w: 56, color: "#e0f2e0"},
-                  {x: 3224, h: 150, w: 68, color: "#e8f4e8"}, {x: 3302, h: 130, w: 60, color: "#f0f8f0"},
-                  {x: 3372, h: 110, w: 54, color: "#e0f2e0"}, {x: 3436, h: 145, w: 66, color: "#e8f4e8"},
-                  {x: 3512, h: 125, w: 58, color: "#f0f8f0"}, {x: 3580, h: 155, w: 70, color: "#e0f2e0"},
-                  {x: 3660, h: 135, w: 62, color: "#e8f4e8"}, {x: 3732, h: 115, w: 54, color: "#f0f8f0"}
+                  {x: 2020, h: 60, w: 45, color: "#e8f4e8"}, {x: 2074, h: 80, w: 58, color: "#f0f8f0"},
+                  {x: 2142, h: 68, w: 52, color: "#e0f2e0"}, {x: 2204, h: 90, w: 64, color: "#e8f4e8"},
+                  {x: 2278, h: 75, w: 50, color: "#f0f8f0"}, {x: 2338, h: 88, w: 62, color: "#e0f2e0"},
+                  {x: 2410, h: 65, w: 48, color: "#e8f4e8"}, {x: 2468, h: 98, w: 68, color: "#f0f8f0"},
+                  {x: 2546, h: 78, w: 56, color: "#e0f2e0"}, {x: 2612, h: 85, w: 60, color: "#e8f4e8"},
+                  {x: 2682, h: 72, w: 54, color: "#f0f8f0"}, {x: 2746, h: 95, w: 66, color: "#e0f2e0"},
+                  {x: 2822, h: 82, w: 58, color: "#e8f4e8"}, {x: 2890, h: 75, w: 52, color: "#f0f8f0"},
+                  {x: 2952, h: 92, w: 64, color: "#e0f2e0"}, {x: 3026, h: 68, w: 50, color: "#e8f4e8"},
+                  {x: 3086, h: 88, w: 62, color: "#f0f8f0"}, {x: 3158, h: 78, w: 56, color: "#e0f2e0"},
+                  {x: 3224, h: 98, w: 68, color: "#e8f4e8"}, {x: 3302, h: 85, w: 60, color: "#f0f8f0"},
+                  {x: 3372, h: 72, w: 54, color: "#e0f2e0"}, {x: 3436, h: 95, w: 66, color: "#e8f4e8"},
+                  {x: 3512, h: 82, w: 58, color: "#f0f8f0"}, {x: 3580, h: 100, w: 70, color: "#e0f2e0"},
+                  {x: 3660, h: 88, w: 62, color: "#e8f4e8"}, {x: 3732, h: 75, w: 54, color: "#f0f8f0"}
                 ].map((bldg, i) => (
                   <g key={`green-bldg-${i}`}>
                     {/* Building body with green tint */}
-                    <rect x={bldg.x} y={250-bldg.h} width={bldg.w} height={bldg.h} fill={bldg.color} opacity="0.95" />
+                    <rect x={bldg.x} y={215-bldg.h} width={bldg.w} height={bldg.h} fill={bldg.color} opacity="0.95" />
 
                     {/* GREEN ROOF with plants */}
-                    <rect x={bldg.x} y={250-bldg.h-3} width={bldg.w} height="3" fill="#4a7c2f" opacity="0.9" />
+                    <rect x={bldg.x} y={215-bldg.h-3} width={bldg.w} height="3" fill="#4a7c2f" opacity="0.9" />
                     {Array.from({length: Math.floor(bldg.w/8)}).map((_, plant) => (
-                      <circle key={`plant-${plant}`} cx={bldg.x + 4 + plant * 8} cy={250-bldg.h-2} r="1.5" fill="#5a8a5a" opacity="0.8" />
+                      <circle key={`plant-${plant}`} cx={bldg.x + 4 + plant * 8} cy={215-bldg.h-2} r="1.5" fill="#5a8a5a" opacity="0.8" />
                     ))}
 
                     {/* SOLAR PANELS covering entire roof */}
@@ -729,7 +732,7 @@ export function ProgressiveSkyline() {
                       {Array.from({length: Math.floor(bldg.w/12)}).map((_, panel) => (
                         <rect key={`solar-${panel}`}
                               x={bldg.x + 2 + panel * 12}
-                              y={250 - bldg.h - 6}
+                              y={215 - bldg.h - 6}
                               width="10"
                               height="6"
                               fill="#2f4f7f"
@@ -742,7 +745,7 @@ export function ProgressiveSkyline() {
                     <g opacity="0.6">
                       {Array.from({length: Math.floor(bldg.w/18)}).map((_, vine) => (
                         <path key={`vine-${vine}`}
-                              d={`M ${bldg.x+8+vine*18},${250-bldg.h+8} Q ${bldg.x+10+vine*18},${250-bldg.h+bldg.h/3} ${bldg.x+8+vine*18},${250-bldg.h+2*bldg.h/3} Q ${bldg.x+10+vine*18},${250-bldg.h+bldg.h-5} ${bldg.x+8+vine*18},${250-bldg.h+bldg.h-2}`}
+                              d={`M ${bldg.x+8+vine*18},${215-bldg.h+8} Q ${bldg.x+10+vine*18},${215-bldg.h+bldg.h/3} ${bldg.x+8+vine*18},${215-bldg.h+2*bldg.h/3} Q ${bldg.x+10+vine*18},${215-bldg.h+bldg.h-5} ${bldg.x+8+vine*18},${215-bldg.h+bldg.h-2}`}
                               stroke="#5a8a5a"
                               strokeWidth="3"
                               fill="none" />
@@ -756,14 +759,14 @@ export function ProgressiveSkyline() {
                           <g key={`win-${row}-${col}`}>
                             {/* Window frame */}
                             <rect x={bldg.x + 4 + col * 16}
-                                  y={250 - bldg.h + 12 + row * 20}
+                                  y={215 - bldg.h + 12 + row * 20}
                                   width="10"
                                   height="14"
                                   fill="#8a9a8a"
                                   opacity="0.9" />
                             {/* Window glass */}
                             <rect x={bldg.x + 5 + col * 16}
-                                  y={250 - bldg.h + 13 + row * 20}
+                                  y={215 - bldg.h + 13 + row * 20}
                                   width="8"
                                   height="12"
                                   fill="#6b8ea8"
@@ -773,22 +776,22 @@ export function ProgressiveSkyline() {
                       ))}
                     </g>
 
-                    {/* Balconies on select floors */}
-                    {bldg.h > 100 && (
+                    {/* Balconies on select floors - only for taller buildings */}
+                    {bldg.h > 70 && (
                       <g opacity="0.8">
                         {Array.from({length: Math.floor(bldg.h/40)}).map((_, floor) => (
                           Array.from({length: Math.floor(bldg.w/32)}).map((_, side) => (
                             <g key={`balc-${floor}-${side}`}>
                               {/* Balcony platform */}
                               <rect x={bldg.x + 8 + side * 32}
-                                    y={250 - bldg.h + 25 + floor * 40}
+                                    y={215 - bldg.h + 25 + floor * 40}
                                     width="12"
                                     height="2"
                                     fill="#7a8a7a"
                                     opacity="0.9" />
                               {/* Balcony railing */}
                               <rect x={bldg.x + 8 + side * 32}
-                                    y={250 - bldg.h + 20 + floor * 40}
+                                    y={215 - bldg.h + 20 + floor * 40}
                                     width="12"
                                     height="5"
                                     fill="none"
@@ -804,14 +807,14 @@ export function ProgressiveSkyline() {
                     {/* Ground-level entrance doors */}
                     <g opacity="0.95">
                       <rect x={bldg.x + bldg.w/2 - 6}
-                            y={250 - 12}
+                            y={215 - 12}
                             width="12"
                             height="12"
                             fill="#6a7a6a"
                             opacity="1" />
                       {/* Door handle */}
                       <circle cx={bldg.x + bldg.w/2 + 3}
-                              cy={250 - 6}
+                              cy={215 - 6}
                               r="0.8"
                               fill="#d4af37"
                               opacity="1" />
@@ -821,20 +824,20 @@ export function ProgressiveSkyline() {
                     <g opacity="0.85">
                       {/* HVAC unit */}
                       <rect x={bldg.x + bldg.w - 12}
-                            y={250 - bldg.h - 8}
+                            y={215 - bldg.h - 8}
                             width="8"
                             height="5"
                             fill="#a8a8a8"
                             opacity="0.9" />
                       {/* Antenna */}
                       <rect x={bldg.x + 6}
-                            y={250 - bldg.h - 15}
+                            y={215 - bldg.h - 15}
                             width="1"
                             height="12"
                             fill="#8a8a8a"
                             opacity="0.9" />
                       <circle cx={bldg.x + 6.5}
-                              cy={250 - bldg.h - 15}
+                              cy={215 - bldg.h - 15}
                               r="2"
                               fill="#8a8a8a"
                               opacity="0.7" />
@@ -844,18 +847,18 @@ export function ProgressiveSkyline() {
               </g>
 
               {/* Trees lining EVERY street - Dense urban forest! */}
-              <g opacity="0.8">
+              <g opacity="0.85">
                 {Array.from({length: 45}).map((_, i) => {
                   const x = 2030 + i * 40;
                   return (
                     <g key={`green-tree-${i}`}>
                       {/* Tree trunk */}
-                      <rect x={x} y="200" width="4" height="15" fill="#6b5a45" opacity="0.9" />
+                      <rect x={x} y="202" width="4" height="13" fill="#6b5a45" opacity="0.95" />
                       {/* Lush green foliage */}
-                      <circle cx={x+2} cy="198" r="8" fill="#4a7c2f" opacity="0.9" />
-                      <circle cx={x-3} cy="200" r="6" fill="#5a8a5a" opacity="0.85" />
-                      <circle cx={x+7} cy="200" r="6" fill="#5a8a5a" opacity="0.85" />
-                      <circle cx={x+2} cy="193" r="5" fill="#6a9a6a" opacity="0.8" />
+                      <circle cx={x+2} cy="200" r="8" fill="#4a7c2f" opacity="0.95" />
+                      <circle cx={x-3} cy="202" r="6" fill="#5a8a5a" opacity="0.9" />
+                      <circle cx={x+7} cy="202" r="6" fill="#5a8a5a" opacity="0.9" />
+                      <circle cx={x+2} cy="195" r="5" fill="#6a9a6a" opacity="0.85" />
                     </g>
                   );
                 })}
@@ -926,69 +929,69 @@ export function ProgressiveSkyline() {
               </g>
 
               {/* Street furniture: Benches */}
-              <g opacity="0.85">
+              <g opacity="0.9">
                 {[2080, 2280, 2480, 2680, 2880, 3080, 3280, 3480, 3680].map((x, i) => (
                   <g key={`bench-${i}`}>
                     {/* Bench seat */}
-                    <rect x={x} y="217" width="12" height="2" fill="#8b7355" opacity="0.9" />
+                    <rect x={x} y="213" width="12" height="2" fill="#8b7355" opacity="0.95" />
                     {/* Bench back */}
-                    <rect x={x} y="213" width="12" height="4" fill="#8b7355" opacity="0.8" />
+                    <rect x={x} y="209" width="12" height="4" fill="#8b7355" opacity="0.9" />
                     {/* Bench legs */}
-                    <rect x={x+2} y="219" width="1" height="3" fill="#6b5a45" opacity="0.9" />
-                    <rect x={x+9} y="219" width="1" height="3" fill="#6b5a45" opacity="0.9" />
+                    <rect x={x+2} y="215" width="1" height="3" fill="#6b5a45" opacity="0.95" />
+                    <rect x={x+9} y="215" width="1" height="3" fill="#6b5a45" opacity="0.95" />
                   </g>
                 ))}
               </g>
 
               {/* Planters with flowers and greenery */}
-              <g opacity="0.85">
+              <g opacity="0.9">
                 {[2140, 2340, 2540, 2740, 2940, 3140, 3340, 3540, 3740].map((x, i) => (
                   <g key={`planter-${i}`}>
                     {/* Planter box */}
-                    <rect x={x} y="215" width="16" height="7" fill="#8b7355" opacity="0.9" />
+                    <rect x={x} y="211" width="16" height="7" fill="#8b7355" opacity="0.95" />
                     {/* Flowers/plants */}
-                    <circle cx={x+3} cy="214" r="1.5" fill="#ff69b4" opacity="0.9" />
-                    <circle cx={x+6} cy="213" r="1.5" fill="#ffd700" opacity="0.9" />
-                    <circle cx={x+9} cy="214" r="1.5" fill="#9b59b6" opacity="0.9" />
-                    <circle cx={x+12} cy="213" r="1.5" fill="#ff69b4" opacity="0.9" />
+                    <circle cx={x+3} cy="210" r="1.5" fill="#ff69b4" opacity="0.95" />
+                    <circle cx={x+6} cy="209" r="1.5" fill="#ffd700" opacity="0.95" />
+                    <circle cx={x+9} cy="210" r="1.5" fill="#9b59b6" opacity="0.95" />
+                    <circle cx={x+12} cy="209" r="1.5" fill="#ff69b4" opacity="0.95" />
                     {/* Greenery */}
-                    <rect x={x+4} y="216" width="1" height="4" fill="#4a7c2f" opacity="0.8" />
-                    <rect x={x+8} y="216" width="1" height="5" fill="#4a7c2f" opacity="0.8" />
-                    <rect x={x+11} y="216" width="1" height="4" fill="#4a7c2f" opacity="0.8" />
+                    <rect x={x+4} y="212" width="1" height="4" fill="#4a7c2f" opacity="0.9" />
+                    <rect x={x+8} y="212" width="1" height="5" fill="#4a7c2f" opacity="0.9" />
+                    <rect x={x+11} y="212" width="1" height="4" fill="#4a7c2f" opacity="0.9" />
                   </g>
                 ))}
               </g>
 
               {/* Pedestrians walking */}
-              <g opacity="0.8">
+              <g opacity="0.9">
                 {[2050, 2200, 2350, 2500, 2650, 2800, 2950, 3100, 3250, 3400, 3550, 3700].map((x, i) => (
                   <g key={`ped-${i}`}>
                     {/* Person body */}
-                    <ellipse cx={x} cy="218" rx="2" ry="3" fill={i % 3 === 0 ? "#5a7a8a" : i % 3 === 1 ? "#8a6a5a" : "#6a5a7a"} opacity="0.9" />
+                    <ellipse cx={x} cy="213" rx="2" ry="3" fill={i % 3 === 0 ? "#5a7a8a" : i % 3 === 1 ? "#8a6a5a" : "#6a5a7a"} opacity="0.95" />
                     {/* Person head */}
-                    <circle cx={x} cy="214" r="1.5" fill="#d4a574" opacity="0.9" />
+                    <circle cx={x} cy="209" r="1.5" fill="#d4a574" opacity="0.95" />
                     {/* Person legs */}
-                    <rect x={x-1} y="221" width="0.8" height="3" fill={i % 3 === 0 ? "#4a5a6a" : i % 3 === 1 ? "#6a5a4a" : "#5a4a6a"} opacity="0.9" />
-                    <rect x={x+0.2} y="221" width="0.8" height="3" fill={i % 3 === 0 ? "#4a5a6a" : i % 3 === 1 ? "#6a5a4a" : "#5a4a6a"} opacity="0.9" />
+                    <rect x={x-1} y="216" width="0.8" height="2.5" fill={i % 3 === 0 ? "#4a5a6a" : i % 3 === 1 ? "#6a5a4a" : "#5a4a6a"} opacity="0.95" />
+                    <rect x={x+0.2} y="216" width="0.8" height="2.5" fill={i % 3 === 0 ? "#4a5a6a" : i % 3 === 1 ? "#6a5a4a" : "#5a4a6a"} opacity="0.95" />
                   </g>
                 ))}
               </g>
 
               {/* Cyclists riding bikes */}
-              <g opacity="0.8">
+              <g opacity="0.9">
                 {[2120, 2320, 2520, 2720, 2920, 3120, 3320, 3520, 3720].map((x, i) => (
                   <g key={`cyclist-${i}`}>
                     {/* Bike frame */}
-                    <path d={`M ${x},219 L ${x+4},219 L ${x+2},215 Z`} stroke="#4a7c2f" strokeWidth="1" fill="none" opacity="0.9" />
+                    <path d={`M ${x},214 L ${x+4},214 L ${x+2},210 Z`} stroke="#4a7c2f" strokeWidth="1" fill="none" opacity="0.95" />
                     {/* Wheels */}
-                    <circle cx={x} cy="221" r="2" fill="none" stroke="#2f2f2f" strokeWidth="0.8" opacity="0.9" />
-                    <circle cx={x+4} cy="221" r="2" fill="none" stroke="#2f2f2f" strokeWidth="0.8" opacity="0.9" />
+                    <circle cx={x} cy="216" r="2" fill="none" stroke="#2f2f2f" strokeWidth="0.8" opacity="0.95" />
+                    <circle cx={x+4} cy="216" r="2" fill="none" stroke="#2f2f2f" strokeWidth="0.8" opacity="0.95" />
                     {/* Cyclist body */}
-                    <ellipse cx={x+2} cy="216" rx="1.5" ry="2" fill={i % 2 === 0 ? "#5a8a5a" : "#7a6a5a"} opacity="0.9" />
+                    <ellipse cx={x+2} cy="211" rx="1.5" ry="2" fill={i % 2 === 0 ? "#5a8a5a" : "#7a6a5a"} opacity="0.95" />
                     {/* Cyclist head */}
-                    <circle cx={x+2} cy="213" r="1.2" fill="#d4a574" opacity="0.9" />
+                    <circle cx={x+2} cy="208" r="1.2" fill="#d4a574" opacity="0.95" />
                     {/* Helmet */}
-                    <ellipse cx={x+2} cy="212.5" rx="1.4" ry="1" fill={i % 2 === 0 ? "#4a7c2f" : "#c73e3e"} opacity="0.9" />
+                    <ellipse cx={x+2} cy="207.5" rx="1.4" ry="1" fill={i % 2 === 0 ? "#4a7c2f" : "#c73e3e"} opacity="0.95" />
                   </g>
                 ))}
               </g>
