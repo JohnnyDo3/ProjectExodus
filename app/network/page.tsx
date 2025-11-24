@@ -37,7 +37,9 @@ interface UserProfile {
 }
 
 export default function NetworkPage() {
-  const { data: session } = useSession()
+  console.log('[Network Page] Component mounting')
+  const { data: session, status } = useSession()
+  console.log('[Network Page] Session status:', status, 'User ID:', session?.user?.id)
   const router = useRouter()
   const [users, setUsers] = useState<UserProfile[]>([])
   const [filteredUsers, setFilteredUsers] = useState<UserProfile[]>([])
@@ -63,6 +65,14 @@ export default function NetworkPage() {
       console.log('[Network Page] Fetching users...')
       const res = await fetch('/api/users')
       console.log('[Network Page] Response status:', res.status)
+
+      if (!res.ok) {
+        console.error('[Network Page] Response not OK:', res.status, res.statusText)
+        setUsers([])
+        setIsLoading(false)
+        return
+      }
+
       const data = await res.json()
       console.log('[Network Page] Response data:', data)
 
@@ -71,9 +81,11 @@ export default function NetworkPage() {
         setUsers(data.data)
       } else {
         console.error('[Network Page] API returned success=false:', data.error)
+        setUsers([])
       }
     } catch (error) {
       console.error('[Network Page] Error fetching users:', error)
+      setUsers([])
     } finally {
       console.log('[Network Page] Setting isLoading to false')
       setIsLoading(false)
@@ -177,7 +189,20 @@ export default function NetworkPage() {
     new Set(users.flatMap((user) => user.interests))
   ).sort()
 
+  if (status === 'loading') {
+    console.log('[Network Page] Session still loading...')
+    return (
+      <div className="min-h-screen flex items-center justify-center">
+        <div className="text-center space-y-4">
+          <div className="w-16 h-16 border-4 border-theme-primary border-t-transparent rounded-full animate-spin mx-auto" />
+          <p className="text-lg font-bold text-theme-muted">Loading session...</p>
+        </div>
+      </div>
+    )
+  }
+
   if (isLoading) {
+    console.log('[Network Page] Data still loading...')
     return (
       <div className="min-h-screen flex items-center justify-center">
         <div className="text-center space-y-4">
@@ -187,6 +212,8 @@ export default function NetworkPage() {
       </div>
     )
   }
+
+  console.log('[Network Page] Rendering main content with', users.length, 'users')
 
   return (
     <div className="min-h-screen bg-[var(--background)]">
