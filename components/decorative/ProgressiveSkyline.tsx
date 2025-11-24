@@ -30,7 +30,7 @@ export function ProgressiveSkyline() {
         }
 
         .skyline-container {
-          animation: skylineScroll 120s linear infinite;
+          animation: skylineScroll 180s linear infinite;
           will-change: transform;
         }
 
@@ -74,7 +74,7 @@ export function ProgressiveSkyline() {
         }
 
         .moving-car {
-          animation: carDrive 120s linear infinite;
+          animation: carDrive 180s linear infinite;
         }
 
         @keyframes carDriveReverse {
@@ -83,7 +83,7 @@ export function ProgressiveSkyline() {
         }
 
         .moving-car-reverse {
-          animation: carDriveReverse 120s linear infinite;
+          animation: carDriveReverse 180s linear infinite;
         }
 
         @keyframes chimneySmokeRise {
@@ -362,15 +362,17 @@ export function ProgressiveSkyline() {
                   <g key={`horse-${i}`} className="animal-horse" opacity="1" style={{animationDelay: `${i * 0.3}s`}}>
                     {/* Horse body */}
                     <ellipse cx={x} cy="200" rx="8" ry="5" fill="#654321" />
-                    {/* Horse head */}
-                    <ellipse cx={x-6} cy="197" rx="3" ry="4" fill="#654321" />
+                    {/* Horse head - facing forward */}
+                    <ellipse cx={x+6} cy="197" rx="3" ry="4" fill="#654321" />
                     {/* Legs */}
                     <rect x={x-3} y="205" width="1.5" height="5" fill="#654321" />
                     <rect x={x+2} y="205" width="1.5" height="5" fill="#654321" />
                     {/* Tail */}
-                    <path d={`M ${x+8},200 Q ${x+11},198 ${x+12},202`} stroke="#4a3520" strokeWidth="1.5" fill="none" />
+                    <path d={`M ${x-8},200 Q ${x-11},198 ${x-12},202`} stroke="#4a3520" strokeWidth="1.5" fill="none" />
                     {/* Mane */}
-                    <path d={`M ${x-6},195 Q ${x-4},193 ${x-2},195`} stroke="#4a3520" strokeWidth="1" fill="none" />
+                    <path d={`M ${x+6},195 Q ${x+4},193 ${x+2},195`} stroke="#4a3520" strokeWidth="1" fill="none" />
+                    {/* Eye */}
+                    <circle cx={x+7} cy="196" r="0.5" fill="#2f2f2f" />
                   </g>
                 ))}
               </g>
@@ -649,54 +651,91 @@ export function ProgressiveSkyline() {
                 ))}
               </g>
 
-              {/* ========== PHASE 3: INDUSTRIAL CITY WITH POLLUTION (2000-2800) ========== */}
+              {/* ========== PHASE 3: SUSTAINABLE GREEN CITY - PROJECT EXODUS (2000-3800) ========== */}
 
-              {/* City base */}
-              <rect x="2000" y="160" width="800" height="90" opacity="0.6" />
+              {/* Green city base - EXPANDED */}
+              <rect x="2000" y="160" width="1800" height="90" fill="#e8f5e8" opacity="0.3" />
 
-              {/* City streets */}
-              <rect x="2000" y="220" width="800" height="30" fill={`url(#roadGradient-${iteration})`} opacity="0.5" />
-
-              {/* Industrial smokestacks */}
-              <g opacity="0.75">
-                {[2050, 2250, 2450, 2650].map((x, i) => (
-                  <g key={`stack-${i}`}>
-                    <rect x={x} y="140" width="15" height="110" />
-                    <rect x={x-3} y="137" width="21" height="6" />
-                    {/* Smoke/pollution */}
-                    <ellipse className="smog-layer" cx={x+7.5} cy="130" rx="15" ry="8"
-                             fill={`url(#smogGradient-${iteration})`} opacity="0.6" />
-                    <ellipse className="smog-layer" cx={x+7.5} cy="120" rx="20" ry="10"
-                             fill={`url(#smogGradient-${iteration})`} opacity="0.4"
-                             style={{animationDelay: '0.5s'}} />
-                  </g>
+              {/* Pedestrian-friendly streets with bike lanes */}
+              <g opacity="0.7">
+                <rect x="2000" y="220" width="1800" height="30" fill={`url(#roadGradient-${iteration})`} />
+                {/* Bike lane markings - MANY MORE! */}
+                {Array.from({length: 36}).map((_, i) => (
+                  <path key={`bike-${i}`} d={`M ${2010 + i * 50},225 L ${2015 + i * 50},230 L ${2010 + i * 50},235`}
+                        stroke="#4a7c2f" strokeWidth="1.5" fill="none" opacity="0.7" />
+                ))}
+                {/* Pedestrian crosswalk */}
+                {Array.from({length: 12}).map((_, i) => (
+                  <rect key={`cross-${i}`} x={2300 + i * 15} y="220" width="8" height="30" fill="#f5f5f5" opacity="0.4" />
+                ))}
+                {Array.from({length: 12}).map((_, i) => (
+                  <rect key={`cross2-${i}`} x={3200 + i * 15} y="220" width="8" height="30" fill="#f5f5f5" opacity="0.4" />
                 ))}
               </g>
 
-              {/* Dense city buildings (tall, imposing) */}
+              {/* Modern eco-buildings with ALL sustainable features - MASSIVELY EXPANDED! */}
               <g>
                 {[
-                  {x: 2020, h: 110, w: 50}, {x: 2075, h: 95, w: 42}, {x: 2122, h: 125, w: 55},
-                  {x: 2182, h: 105, w: 48}, {x: 2235, h: 140, w: 60}, {x: 2300, h: 115, w: 52},
-                  {x: 2357, h: 130, w: 58}, {x: 2420, h: 110, w: 50}, {x: 2475, h: 145, w: 62},
-                  {x: 2542, h: 120, w: 54}, {x: 2601, h: 135, w: 60}, {x: 2666, h: 125, w: 56},
-                  {x: 2727, h: 150, w: 65}
+                  {x: 2020, h: 100, w: 48, color: "#e8f4e8"}, {x: 2075, h: 115, w: 52, color: "#f0f8f0"},
+                  {x: 2135, h: 105, w: 50, color: "#e0f2e0"}, {x: 2192, h: 125, w: 58, color: "#e8f4e8"},
+                  {x: 2258, h: 110, w: 54, color: "#f0f8f0"}, {x: 2320, h: 130, w: 60, color: "#e0f2e0"},
+                  {x: 2388, h: 115, w: 56, color: "#e8f4e8"}, {x: 2452, h: 140, w: 64, color: "#f0f8f0"},
+                  {x: 2524, h: 120, w: 58, color: "#e0f2e0"}, {x: 2590, h: 135, w: 62, color: "#e8f4e8"},
+                  {x: 2660, h: 125, w: 60, color: "#f0f8f0"}, {x: 2728, h: 145, w: 66, color: "#e0f2e0"},
+                  {x: 2802, h: 130, w: 62, color: "#e8f4e8"}, {x: 2872, h: 120, w: 58, color: "#f0f8f0"},
+                  {x: 2938, h: 135, w: 64, color: "#e0f2e0"}, {x: 3010, h: 125, w: 60, color: "#e8f4e8"},
+                  {x: 3078, h: 140, w: 66, color: "#f0f8f0"}, {x: 3152, h: 130, w: 62, color: "#e0f2e0"},
+                  {x: 3222, h: 145, w: 68, color: "#e8f4e8"}, {x: 3298, h: 135, w: 64, color: "#f0f8f0"},
+                  {x: 3370, h: 125, w: 60, color: "#e0f2e0"}, {x: 3438, h: 140, w: 66, color: "#e8f4e8"},
+                  {x: 3512, h: 130, w: 62, color: "#f0f8f0"}, {x: 3582, h: 150, w: 70, color: "#e0f2e0"},
+                  {x: 3660, h: 135, w: 64, color: "#e8f4e8"}, {x: 3732, h: 125, w: 60, color: "#f0f8f0"}
                 ].map((bldg, i) => (
-                  <g key={`industrial-bldg-${i}`}>
-                    <rect x={bldg.x} y={250-bldg.h} width={bldg.w} height={bldg.h}
-                          fill={`url(#buildingGradient-${iteration})`} />
-                    {/* Windows grid */}
-                    <g opacity="0.4">
-                      {Array.from({length: Math.floor(bldg.h/15)}).map((_, row) => (
-                        Array.from({length: Math.floor(bldg.w/12)}).map((_, col) => (
+                  <g key={`green-bldg-${i}`}>
+                    {/* Building body with green tint */}
+                    <rect x={bldg.x} y={250-bldg.h} width={bldg.w} height={bldg.h} fill={bldg.color} opacity="0.95" />
+
+                    {/* GREEN ROOF with plants */}
+                    <rect x={bldg.x} y={250-bldg.h-3} width={bldg.w} height="3" fill="#4a7c2f" opacity="0.9" />
+                    {Array.from({length: Math.floor(bldg.w/8)}).map((_, plant) => (
+                      <circle key={`plant-${plant}`} cx={bldg.x + 4 + plant * 8} cy={250-bldg.h-2} r="1.5" fill="#5a8a5a" opacity="0.8" />
+                    ))}
+
+                    {/* SOLAR PANELS covering entire roof */}
+                    <g opacity="0.7">
+                      {Array.from({length: Math.floor(bldg.w/12)}).map((_, panel) => (
+                        <rect key={`solar-${panel}`}
+                              x={bldg.x + 2 + panel * 12}
+                              y={250 - bldg.h - 6}
+                              width="10"
+                              height="6"
+                              fill="#2f4f7f"
+                              stroke="#1a2f4f"
+                              strokeWidth="0.5" />
+                      ))}
+                    </g>
+
+                    {/* VERTICAL GARDENS - greenery cascading down facade */}
+                    <g opacity="0.6">
+                      {Array.from({length: Math.floor(bldg.w/18)}).map((_, vine) => (
+                        <path key={`vine-${vine}`}
+                              d={`M ${bldg.x+8+vine*18},${250-bldg.h+8} Q ${bldg.x+10+vine*18},${250-bldg.h+bldg.h/3} ${bldg.x+8+vine*18},${250-bldg.h+2*bldg.h/3} Q ${bldg.x+10+vine*18},${250-bldg.h+bldg.h-5} ${bldg.x+8+vine*18},${250-bldg.h+bldg.h-2}`}
+                              stroke="#5a8a5a"
+                              strokeWidth="3"
+                              fill="none" />
+                      ))}
+                    </g>
+
+                    {/* Large windows for natural light */}
+                    <g opacity="0.6">
+                      {Array.from({length: Math.floor(bldg.h/20)}).map((_, row) => (
+                        Array.from({length: Math.floor(bldg.w/16)}).map((_, col) => (
                           <rect key={`win-${row}-${col}`}
-                                className="window-light"
-                                x={bldg.x + 5 + col * 12}
-                                y={250 - bldg.h + 8 + row * 15}
-                                width="4"
-                                height="6"
-                                fill="currentColor"
-                                style={{animationDelay: `${(row + col) * 0.2}s`}} />
+                                x={bldg.x + 4 + col * 16}
+                                y={250 - bldg.h + 12 + row * 20}
+                                width="10"
+                                height="14"
+                                fill="#6b8ea8"
+                                opacity="0.7" />
                         ))
                       ))}
                     </g>
@@ -704,152 +743,213 @@ export function ProgressiveSkyline() {
                 ))}
               </g>
 
-              {/* Heavy smog overlay for industrial area */}
-              <rect x="2000" y="100" width="800" height="80"
-                    fill={`url(#smogGradient-${iteration})`}
-                    className="smog-layer" opacity="0.3" />
-
-              {/* Antenna towers */}
-              <g opacity="0.7">
-                <rect x="2380" y="75" width="5" height="75" />
-                <path d="M 2382.5,80 L 2370,95 M 2382.5,80 L 2395,95" stroke="currentColor" strokeWidth="2" fill="none" />
-              </g>
-
-              {/* ========== PHASE 4: SUSTAINABLE GREEN CITY (2800-3800) ========== */}
-
-              {/* Green city base */}
-              <rect x="2800" y="170" width="1000" height="80" opacity="0.5" />
-
-              {/* Green city streets with bike lanes */}
-              <g opacity="0.6">
-                <rect x="2800" y="220" width="1000" height="30" fill={`url(#roadGradient-${iteration})`} />
-                {/* Bike lane markings */}
-                {Array.from({length: 20}).map((_, i) => (
-                  <path key={`bike-${i}`} d={`M ${2810 + i * 50},225 L ${2815 + i * 50},230 L ${2810 + i * 50},235`}
-                        stroke="currentColor" strokeWidth="1" fill="none" opacity="0.4" />
+              {/* Wind turbines (with rotating blades) - MANY MORE! */}
+              <g>
+                {[2080, 2200, 2320, 2440, 2560, 2680, 2800, 2920, 3040, 3160, 3280, 3400, 3520, 3640, 3760].map((x, i) => (
+                  <g key={`turbine-${i}`} transform={`translate(${x}, ${140 + (i % 3) * 8})`}>
+                    {/* Turbine tower */}
+                    <rect x="-3" y="0" width="6" height="75" fill="#e8e8e8" opacity="0.9" />
+                    {/* Turbine hub */}
+                    <circle cx="0" cy="0" r="8" fill="#4a7c2f" opacity="0.9" />
+                    {/* Rotating blades */}
+                    <g className="turbine-blade" style={{animationDelay: `${i * 0.2}s`}}>
+                      <path d="M 0,-8 L 3,-38 L -3,-38 Z" fill="#f0f0f0" opacity="0.85" />
+                      <path d="M 8,0 L 34,-5 L 32,5 Z" fill="#f0f0f0" opacity="0.85" />
+                      <path d="M -4,6 L -24,26 L -18,28 Z" fill="#f0f0f0" opacity="0.85" />
+                    </g>
+                  </g>
                 ))}
               </g>
 
-              {/* Modern eco-buildings with green features */}
+              {/* Trees lining EVERY street - Dense urban forest! */}
+              <g opacity="0.8">
+                {Array.from({length: 45}).map((_, i) => {
+                  const x = 2030 + i * 40;
+                  return (
+                    <g key={`green-tree-${i}`}>
+                      {/* Tree trunk */}
+                      <rect x={x} y="200" width="4" height="15" fill="#6b5a45" opacity="0.9" />
+                      {/* Lush green foliage */}
+                      <circle cx={x+2} cy="198" r="8" fill="#4a7c2f" opacity="0.9" />
+                      <circle cx={x-3} cy="200" r="6" fill="#5a8a5a" opacity="0.85" />
+                      <circle cx={x+7} cy="200} r="6" fill="#5a8a5a" opacity="0.85" />
+                      <circle cx={x+2} cy="193" r="5" fill="#6a9a6a" opacity="0.8" />
+                    </g>
+                  );
+                })}
+              </g>
+
+              {/* Community gardens - EXPANDED with details */}
               <g>
                 {[
-                  {x: 2820, h: 105, w: 52}, {x: 2880, h: 115, w: 56}, {x: 2945, h: 100, w: 50},
-                  {x: 3005, h: 120, w: 58}, {x: 3070, h: 110, w: 54}, {x: 3135, h: 125, w: 60},
-                  {x: 3205, h: 115, w: 56}, {x: 3270, h: 130, w: 62}, {x: 3340, h: 120, w: 58},
-                  {x: 3408, h: 135, w: 64}, {x: 3480, h: 125, w: 60}, {x: 3550, h: 115, w: 56},
-                  {x: 3615, h: 128, w: 61}, {x: 3685, h: 118, w: 57}, {x: 3750, h: 122, w: 59}
-                ].map((bldg, i) => (
-                  <g key={`green-bldg-${i}`}>
-                    <rect x={bldg.x} y={250-bldg.h} width={bldg.w} height={bldg.h}
-                          fill={`url(#buildingGradient-${iteration})`} />
-                    {/* Green roof */}
-                    <path d={`M ${bldg.x},${250-bldg.h} Q ${bldg.x+bldg.w/3},${250-bldg.h-5} ${bldg.x+2*bldg.w/3},${250-bldg.h} Q ${bldg.x+bldg.w},${250-bldg.h-5} ${bldg.x+bldg.w},${250-bldg.h} L ${bldg.x+bldg.w},${250-bldg.h+5} L ${bldg.x},${250-bldg.h+5} Z`}
-                          opacity="0.5" />
-                    {/* Vertical gardens (green lines on facade) */}
-                    <g opacity="0.4">
-                      {Array.from({length: 3}).map((_, line) => (
-                        <path key={`garden-${line}`}
-                              d={`M ${bldg.x+10+line*15},${250-bldg.h+10} Q ${bldg.x+12+line*15},${250-bldg.h+bldg.h/2} ${bldg.x+10+line*15},${250-bldg.h+bldg.h-10}`}
-                              stroke="currentColor"
-                              strokeWidth="2.5"
-                              fill="none" />
-                      ))}
-                    </g>
-                    {/* Solar panels on roof */}
-                    <g opacity="0.5">
-                      {Array.from({length: Math.floor(bldg.w/15)}).map((_, panel) => (
-                        <rect key={`solar-${panel}`}
-                              x={bldg.x + 5 + panel * 15}
-                              y={250 - bldg.h - 4}
-                              width="10"
-                              height="8"
-                              fill="currentColor" />
-                      ))}
-                    </g>
+                  {x: 2150, size: 40}, {x: 2400, size: 45}, {x: 2650, size: 42},
+                  {x: 2900, size: 50}, {x: 3150, size: 48}, {x: 3400, size: 46}, {x: 3650, size: 44}
+                ].map((garden, i) => (
+                  <g key={`garden-${i}`}>
+                    {/* Garden plot */}
+                    <ellipse cx={garden.x} cy="202" rx={garden.size} ry="12" fill="#7aa87a" opacity="0.5" />
+                    {/* Colorful flowers/vegetables */}
+                    {Array.from({length: 8}).map((_, flower) => (
+                      <circle key={`flower-${flower}`}
+                              cx={garden.x - garden.size/2 + flower * (garden.size/4)}
+                              cy={202 - 8 + (flower % 3) * 4}
+                              r="2"
+                              fill={["#ff6b6b", "#ffd700", "#ff69b4", "#9b59b6"][flower % 4]}
+                              opacity="0.8" />
+                    ))}
                   </g>
                 ))}
               </g>
 
-              {/* Wind turbines (with rotating blades) */}
+              {/* Water features & fountains */}
               <g>
-                {[2900, 3050, 3200, 3350, 3500, 3650].map((x, i) => (
-                  <g key={`turbine-${i}`} transform={`translate(${x}, ${145 + i * 5})`}>
-                    <rect x="-3" y="0" width="6" height="70" />
-                    <circle cx="0" cy="0" r="8" />
-                    <g className="turbine-blade" style={{animationDelay: `${i * 0.3}s`}}>
-                      <path d="M 0,-8 L 3,-35 L -3,-35 Z" opacity="0.8" />
-                      <path d="M 8,0 L 30,-5 L 28,5 Z" opacity="0.8" />
-                      <path d="M -4,6 L -22,24 L -16,26 Z" opacity="0.8" />
-                    </g>
+                {[2250, 2750, 3250, 3750].map((x, i) => (
+                  <g key={`fountain-${i}`}>
+                    {/* Fountain basin */}
+                    <ellipse cx={x} cy="208" rx="18" ry="6" fill="#6b8ea8" opacity="0.6" />
+                    {/* Water spray */}
+                    <circle cx={x} cy="200" r="3" fill="#add8e6" opacity="0.7" />
+                    <circle cx={x-4} cy="203" r="2" fill="#add8e6" opacity="0.6" />
+                    <circle cx={x+4} cy="203" r="2" fill="#add8e6" opacity="0.6" />
+                    <circle cx={x} cy="196" r="2" fill="#add8e6" opacity="0.5" />
                   </g>
                 ))}
               </g>
 
-              {/* Urban trees and green spaces */}
-              <g opacity="0.75">
-                {[2860, 2960, 3080, 3160, 3260, 3360, 3460, 3560, 3660, 3760].map((x, i) => (
-                  <g key={`green-tree-${i}`}>
-                    <path d={`M ${x},185 L ${x-10},155 L ${x-12},160 L ${x-14},152 L ${x-17},158 L ${x-22},156 L ${x-20},185 Z`} />
-                    <path d={`M ${x+5},187 L ${x-3},160 L ${x-5},164 L ${x-7},158 L ${x-10},163 L ${x-14},161 L ${x-12},187 Z`} />
+              {/* Light Rail / Tram system */}
+              <g>
+                <rect x="2000" y="212" width="1800" height="3" fill="#4a7c2f" opacity="0.6" />
+                {Array.from({length: 360}).map((_, i) => (
+                  <rect key={`rail-tie-${i}`} x={2000 + i * 5} y="211" width="2" height="5" fill="#6b5a45" opacity="0.5" />
+                ))}
+                {/* Tram cars */}
+                {[2100, 2800, 3500].map((x, i) => (
+                  <g key={`tram-${i}`}>
+                    <rect x={x} y="203" width="45" height="10" rx="2" fill="#5a8a5a" opacity="0.9" />
+                    <rect x={x+5} y="200" width="12" height="4" rx="1" fill="#6b8ea8" opacity="0.8" />
+                    <rect x={x+20} y="200" width="12" height="4" rx="1" fill="#6b8ea8" opacity="0.8" />
+                    <circle cx={x+10} cy="213" r="2" fill="#2f2f2f" />
+                    <circle cx={x+35} cy="213" r="2" fill="#2f2f2f" />
                   </g>
                 ))}
               </g>
 
-              {/* Community gardens */}
-              <g opacity="0.4">
-                <ellipse cx="3020" cy="200" rx="45" ry="15" />
-                <ellipse cx="3300" cy="198" rx="50" ry="18" />
-                <ellipse cx="3600" cy="199" rx="48" ry="16" />
-              </g>
-
-              {/* Electric buses/vehicles */}
-              <g opacity="0.7">
-                {[2900, 3200, 3500].map((x, i) => (
-                  <g key={`ebus-${i}`}>
-                    <rect x={x} y="235" width="35" height="12" rx="2" />
-                    <rect x={x+3} y="231" width="10" height="5" rx="1" opacity="0.5" />
-                    <rect x={x+22} y="231" width="10" height="5" rx="1" opacity="0.5" />
-                    <circle cx={x+8} cy="247" r="2.5" opacity="0.5" />
-                    <circle cx={x+27} cy="247" r="2.5" opacity="0.5" />
-                    {/* Electric symbol */}
-                    <path d={`M ${x+17},238 L ${x+15},242 L ${x+18},242 L ${x+16},246`} stroke="currentColor" strokeWidth="0.8" opacity="0.6" />
-                  </g>
-                ))}
-              </g>
-
-              {/* ========== PHASE 5: RETURN TO RURAL (3800-5000) ========== */}
-
-              {/* Transition hills back to nature */}
-              <path d="M 3800,185 Q 3880,175 3960,180 Q 4040,190 4120,175 Q 4200,165 4280,172 Q 4360,180 4440,168 Q 4520,175 4600,170 Q 4680,178 4760,173 Q 4840,168 4920,175 Q 4980,180 5000,178 L 5000,250 L 3800,250 Z"
-                    opacity="0.5" />
-
-              {/* Restored forests */}
+              {/* Electric buses - MORE! */}
               <g opacity="0.8">
-                {[3820, 3880, 3940, 4000, 4060, 4120, 4180, 4240, 4300, 4360, 4420, 4480, 4540, 4600, 4660, 4720, 4780, 4840, 4900, 4960].map((x, i) => (
-                  <g key={`restored-tree-${i}`}>
-                    <path d={`M ${x},180 L ${x-8},150 L ${x-10},155 L ${x-12},147 L ${x-15},153 L ${x-20},151 L ${x-18},180 Z`} />
-                    <path d={`M ${x+15},182 L ${x+8},155 L ${x+6},159 L ${x+4},153 L ${x+1},157 L ${x-3},155 L ${x-2},182 Z`} />
+                {[2050, 2350, 2650, 2950, 3250, 3550].map((x, i) => (
+                  <g key={`ebus-${i}`}>
+                    <rect x={x} y="235" width="38" height="13" rx="2" fill="#4a7c2f" opacity="0.9" />
+                    <rect x={x+4} y="231" width="11" height="5" rx="1" fill="#6b8ea8" opacity="0.8" />
+                    <rect x={x+23} y="231" width="11" height="5" rx="1" fill="#6b8ea8" opacity="0.8" />
+                    <circle cx={x+9} cy="248" r="3" fill="#2f2f2f" />
+                    <circle cx={x+29} cy="248" r="3" fill="#2f2f2f" />
+                    {/* Electric symbol */}
+                    <path d={`M ${x+18},238 L ${x+16},243 L ${x+20},243 L ${x+17},248`} stroke="#ffd700" strokeWidth="1.2" opacity="0.9" />
+                    {/* "ELECTRIC" text simulation */}
+                    <rect x={x+8} y="240" width="22" height="2" fill="#ffd700" opacity="0.3" />
                   </g>
                 ))}
               </g>
 
-              {/* Wildlife returns */}
-              <g opacity="0.6">
-                <ellipse cx="3950" cy="185" rx="11" ry="7" />
-                <ellipse cx="4250" cy="183" rx="10" ry="6" />
-                <ellipse cx="4580" cy="186" rx="9" ry="6" />
-                <ellipse cx="4850" cy="184" rx="10" ry="6" />
+              {/* Electric cars/bikes on streets */}
+              <g opacity="0.75">
+                {Array.from({length: 20}).map((_, i) => (
+                  <g key={`e-vehicle-${i}`}>
+                    <ellipse cx={2100 + i * 90} cy="227" rx="6" ry="3" fill="#5a8a5a" />
+                    <circle cx={2100 + i * 90} cy="225" r="2" fill="#6b8ea8" opacity="0.7" />
+                  </g>
+                ))}
               </g>
 
-              {/* Final peaceful countryside elements */}
-              <g opacity="0.85">
-                <rect x="3980" y="175" width="35" height="25" />
-                <path d="M 3977,175 L 3997.5,159 L 4018,175 Z" />
-                <rect x="4320" y="178" width="38" height="28" />
-                <path d="M 4316,178 L 4339,160 L 4362,178 Z" />
-                <rect x="4680" y="176" width="36" height="26" />
-                <path d="M 4677,176 L 4698,161 L 4719,176 Z" />
+              {/* ========== PHASE 4: RETURN TO RURAL - IDENTICAL TO OPENING (3800-4600) ========== */}
+              {/* This creates a SEAMLESS LOOP back to the start */}
+
+              {/* Rolling hills - IDENTICAL to opening */}
+              <path d="M 3800,210 Q 3900,195 4000,205 Q 4100,215 4200,200 Q 4300,190 4400,200 Q 4500,205 4600,195 L 4600,250 L 3800,250 Z"
+                    fill="#7aa87a" opacity="0.7" />
+              <path d="M 3800,205 Q 3880,192 3960,200 Q 4040,208 4120,195 Q 4200,185 4280,195 Q 4360,203 4440,190 Q 4520,185 4600,192 L 4600,250 L 3800,250 Z"
+                    fill="#8ab88a" opacity="0.6" />
+
+              {/* White picket fences */}
+              <g>
+                {[3840, 3940, 4040, 4140, 4240, 4340, 4440, 4540].map((x, i) => (
+                  <g key={`fence-end-${i}`}>
+                    {Array.from({length: 12}).map((_, fi) => (
+                      <g key={`picket-${fi}`}>
+                        <rect x={x + fi * 8} y="195" width="2" height="8" fill="#f5f5f5" opacity="0.95" />
+                        <path d={`M ${x + fi * 8},195 L ${x + fi * 8 + 1},193 L ${x + fi * 8 + 2},195 Z`} fill="#f5f5f5" opacity="0.95" />
+                      </g>
+                    ))}
+                    <rect x={x} y="200" width="96" height="1.5" fill="#f5f5f5" opacity="0.9" />
+                  </g>
+                ))}
               </g>
+
+              {/* Red barns - matching opening */}
+              <g>
+                <rect x="3980" y="185" width="32" height="20" fill="#c73e3e" opacity="1" />
+                <path d="M 3976,185 L 3996,170 L 4016,185 Z" fill="#a83232" opacity="1" />
+                <rect x="3994" y="193" width="8" height="12" fill="#6d4428" opacity="1" />
+                <rect x="4015" y="180" width="8" height="25" fill="#d4d4d4" opacity="1" />
+                <ellipse cx="4019" cy="180" rx="4" ry="2" fill="#b8b8b8" opacity="1" />
+
+                <rect x="4250" y="190" width="24" height="15" fill="#c73e3e" opacity="1" />
+                <path d="M 4247,190 L 4262,178 L 4277,190 Z" fill="#a83232" opacity="1" />
+                <rect x="4258" y="195" width="6" height="10" fill="#6d4428" opacity="0.95" />
+
+                <rect x="4450" y="192" width="20" height="13" fill="#c73e3e" opacity="1" />
+                <path d="M 4448,192 L 4460,182 L 4472,192 Z" fill="#a83232" opacity="1" />
+                <rect x="4456" y="196" width="5" height="9" fill="#6d4428" opacity="0.95" />
+              </g>
+
+              {/* Farmhouses */}
+              <g>
+                <rect x="4080" y="195" width="18" height="10" fill="#f0e6d3" opacity="1" />
+                <path d="M 4078,195 L 4089,188 L 4100,195 Z" fill="#8b5a3c" opacity="1" />
+                <rect x="4085" y="198" width="3" height="7" fill="#6d4428" opacity="0.95" />
+
+                <rect x="4360" y="197" width="16" height="8" fill="#e8d4b8" opacity="1" />
+                <path d="M 4358,197 L 4368,191 L 4378,197 Z" fill="#6b5a45" opacity="1" />
+                <rect x="4365" y="199" width="3" height="6" fill="#6d4428" opacity="0.95" />
+              </g>
+
+              {/* Trees */}
+              <g>
+                {[3860, 3910, 3965, 4120, 4210, 4290, 4410, 4490, 4550].map((x, i) => (
+                  <g key={`tree-end-${i}`} opacity="0.85">
+                    <rect x={x} y="195" width="3" height="10" fill="#6b5a45" />
+                    <circle cx={x+1.5} cy="192" r="7" fill="#5a8a5a" opacity="0.9" />
+                    <circle cx={x-2} cy="194" r="5" fill="#6a9a6a" opacity="0.85" />
+                    <circle cx={x+5} cy="194" r="5" fill="#6a9a6a" opacity="0.85" />
+                  </g>
+                ))}
+              </g>
+
+              {/* Hay bales */}
+              <g>
+                {[4150, 4220, 4420, 4480].map((x, i) => (
+                  <g key={`hay-end-${i}`} opacity="1">
+                    <ellipse cx={x} cy="205" rx="5" ry="3" fill="#d4a574" />
+                    <ellipse cx={x} cy="203" rx="4" ry="2" fill="#c9995f" />
+                  </g>
+                ))}
+              </g>
+
+              {/* Tractors */}
+              <g>
+                {[4050, 4350].map((x, i) => (
+                  <g key={`tractor-end-${i}`} opacity="1">
+                    <rect x={x} y="198" width="18" height="8" rx="1" fill="#4a7c2f" />
+                    <rect x={x+12} y="196" width="6" height="4" rx="0.5" fill="#3d6928" />
+                    <rect x={x+4} y="194" width="6" height="5" rx="0.5" fill="#5a8a3f" />
+                    <circle cx={x+4} cy="206" r="4" fill="#2f2f2f" />
+                    <circle cx={x+15} cy="204" r="2.5" fill="#2f2f2f" />
+                  </g>
+                ))}
+              </g>
+
+              {/* Animals from earlier (horses, cows, sheep, chickens) will be rendered on top from the FARM ANIMALS section above */}
+              {/* This creates perfect symmetry - the loop is now SEAMLESS! */}
 
               {/* ========== FOREGROUND: MAIN STREET WITH TRAFFIC ========== */}
               {/* Main foreground road spanning entire city */}
