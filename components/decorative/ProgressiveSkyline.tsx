@@ -200,19 +200,31 @@ export function ProgressiveSkyline() {
                 ))}
               </g>
 
-              {/* Red Barn #1 - Large Classic Barn */}
+              {/* Red Barn #1 - Large Classic Barn with Details */}
               <g>
                 <rect x="180" y="185" width="32" height="20" fill="#c73e3e" opacity="1" />
                 <path d="M 176,185 L 196,170 L 216,185 Z" fill="#a83232" opacity="1" />
-                <rect x="194" y="193" width="8" height="12" fill="#6d4428" opacity="0.95" />
-                <rect x="184" y="190" width="4" height="5" fill="#4a4a4a" opacity="0.8" />
-                <rect x="204" y="190" width="4" height="5" fill="#4a4a4a" opacity="0.8" />
+                {/* Wood plank texture lines */}
+                <path d="M 181,190 L 211,190 M 181,195 L 211,195 M 181,200 L 211,200" stroke="#a83232" strokeWidth="0.5" opacity="0.6" />
+                {/* Barn doors */}
+                <rect x="194" y="193" width="8" height="12" fill="#6d4428" opacity="1" />
                 {/* Barn door cross pattern */}
-                <path d="M 198,197 L 198,205 M 194,201 L 202,201" stroke="#5a3a2a" strokeWidth="1" opacity="0.9" />
+                <path d="M 198,197 L 198,205 M 194,201 L 202,201" stroke="#5a3a2a" strokeWidth="1" opacity="1" />
+                {/* Hayloft window */}
+                <rect x="184" y="190" width="4" height="5" fill="#4a4a4a" opacity="1" />
+                <rect x="204" y="190" width="4" height="5" fill="#4a4a4a" opacity="1" />
+                {/* Weather vane on top */}
+                <rect x="195.5" y="168" width="1" height="5" fill="#4a4a4a" opacity="1" />
+                <path d="M 191,170 L 196,168 L 196,172 Z" fill="#d4af37" opacity="1" />
+                <path d="M 201,170 L 196,168 L 196,172 Z" fill="#d4af37" opacity="0.8" />
                 {/* Silo next to barn */}
-                <rect x="215" y="180" width="8" height="25" fill="#d4d4d4" opacity="0.95" />
-                <ellipse cx="219" cy="180" rx="4" ry="2" fill="#b8b8b8" opacity="0.95" />
-                <path d="M 217,178 L 219,173 L 221,178" fill="#a83232" opacity="0.95" />
+                <rect x="215" y="180" width="8" height="25" fill="#d4d4d4" opacity="1" />
+                <ellipse cx="219" cy="180" rx="4" ry="2" fill="#b8b8b8" opacity="1" />
+                {/* Silo roof */}
+                <path d="M 217,178 L 219,173 L 221,178" fill="#a83232" opacity="1" />
+                {/* Silo bands */}
+                <rect x="215" y="188" width="8" height="1" fill="#a8a8a8" opacity="0.8" />
+                <rect x="215" y="196" width="8" height="1" fill="#a8a8a8" opacity="0.8" />
               </g>
 
               {/* Red Barn #2 - Smaller Barn */}
@@ -253,10 +265,10 @@ export function ProgressiveSkyline() {
                 <rect x={570} y="198" width="2" height="2" fill="#6b8ea8" opacity="0.8" />
               </g>
 
-              {/* Horses in the fields */}
+              {/* Horses in the fields - MORE HORSES! */}
               <g>
-                {[120, 380, 580, 720].map((x, i) => (
-                  <g key={`horse-${i}`} opacity="0.9">
+                {[120, 320, 420, 580, 680, 760].map((x, i) => (
+                  <g key={`horse-${i}`} opacity="1">
                     {/* Horse body */}
                     <ellipse cx={x} cy="200" rx="8" ry="5" fill="#654321" />
                     {/* Horse head */}
@@ -266,24 +278,64 @@ export function ProgressiveSkyline() {
                     <rect x={x+2} y="205" width="1.5" height="5" fill="#654321" />
                     {/* Tail */}
                     <path d={`M ${x+8},200 Q ${x+11},198 ${x+12},202`} stroke="#4a3520" strokeWidth="1.5" fill="none" />
+                    {/* Mane */}
+                    <path d={`M ${x-6},195 Q ${x-4},193 ${x-2},195`} stroke="#4a3520" strokeWidth="1" fill="none" />
                   </g>
                 ))}
               </g>
 
-              {/* Cows grazing */}
+              {/* Cows grazing - MORE COWS! */}
               <g>
-                {[230, 510].map((x, i) => (
-                  <g key={`cow-${i}`} opacity="0.9">
+                {[230, 390, 510, 640].map((x, i) => (
+                  <g key={`cow-${i}`} opacity="1">
                     {/* Cow body */}
                     <ellipse cx={x} cy="202" rx="9" ry="5" fill="#f5f5f5" />
                     {/* Black spots */}
-                    <ellipse cx={x-3} cy="201" rx="2" ry="2" fill="#2f2f2f" opacity="0.8" />
-                    <ellipse cx={x+4} cy="202" rx="2.5" ry="2.5" fill="#2f2f2f" opacity="0.8" />
+                    <ellipse cx={x-3} cy="201" rx="2" ry="2" fill="#2f2f2f" opacity="1" />
+                    <ellipse cx={x+4} cy="202" rx="2.5" ry="2.5" fill="#2f2f2f" opacity="1" />
                     {/* Cow head */}
                     <ellipse cx={x-7} cy="200" rx="3" ry="3.5" fill="#f5f5f5" />
+                    {/* Horns */}
+                    <path d={`M ${x-9},199 L ${x-10},197 M ${x-5},199 L ${x-4},197`} stroke="#4a4a4a" strokeWidth="0.8" />
                     {/* Legs */}
                     <rect x={x-4} y="207" width="1.5" height="4" fill="#e8e8e8" />
                     <rect x={x+3} y="207" width="1.5" height="4" fill="#e8e8e8" />
+                  </g>
+                ))}
+              </g>
+
+              {/* Sheep grazing - FLUFFY! */}
+              <g>
+                {[160, 290, 470, 590, 700].map((x, i) => (
+                  <g key={`sheep-${i}`} opacity="1">
+                    {/* Fluffy sheep body */}
+                    <ellipse cx={x} cy="204" rx="6" ry="4" fill="#f5f5f5" />
+                    <circle cx={x-2} cy="203" r="3" fill="#f5f5f5" />
+                    <circle cx={x+2} cy="203" r="3" fill="#f5f5f5" />
+                    {/* Black sheep face */}
+                    <ellipse cx={x-5} cy="203" rx="2" ry="2.5" fill="#2f2f2f" />
+                    {/* Tiny legs */}
+                    <rect x={x-3} y="208" width="1" height="3" fill="#2f2f2f" />
+                    <rect x={x+2} y="208" width="1" height="3" fill="#2f2f2f" />
+                  </g>
+                ))}
+              </g>
+
+              {/* Chickens pecking - TINY! */}
+              <g>
+                {[200, 260, 340, 480, 540, 620, 730].map((x, i) => (
+                  <g key={`chicken-${i}`} opacity="1">
+                    {/* Chicken body - super small */}
+                    <ellipse cx={x} cy="207" rx="2.5" ry="2" fill="#d4a574" />
+                    {/* Chicken head */}
+                    <circle cx={x-2} cy="206" r="1.5" fill="#d4a574" />
+                    {/* Red comb */}
+                    <path d={`M ${x-2},205 L ${x-1.5},204 L ${x-2.5},204`} fill="#cc3333" />
+                    {/* Beak */}
+                    <path d={`M ${x-3},206 L ${x-3.5},206`} stroke="#ffd700" strokeWidth="0.5" />
+                    {/* Tiny legs */}
+                    <rect x={x-1} y="209" width="0.5" height="2" fill="#d4a574" />
+                    <rect x={x+0.5} y="209" width="0.5" height="2" fill="#d4a574" />
                   </g>
                 ))}
               </g>
@@ -305,11 +357,38 @@ export function ProgressiveSkyline() {
               {/* Hay bales scattered in fields */}
               <g>
                 {[350, 420, 620, 680].map((x, i) => (
-                  <g key={`hay-${i}`} opacity="0.9">
+                  <g key={`hay-${i}`} opacity="1">
                     <ellipse cx={x} cy="205" rx="5" ry="3" fill="#d4a574" />
                     <ellipse cx={x} cy="203" rx="4" ry="2" fill="#c9995f" />
                     {/* Hay texture lines */}
-                    <path d={`M ${x-3},204 L ${x+3},204 M ${x-2},205 L ${x+2},205`} stroke="#b88a50" strokeWidth="0.5" opacity="0.7" />
+                    <path d={`M ${x-3},204 L ${x+3},204 M ${x-2},205 L ${x+2},205`} stroke="#b88a50" strokeWidth="0.5" opacity="1" />
+                  </g>
+                ))}
+              </g>
+
+              {/* Parked Tractors - GREEN JOHN DEERE STYLE! */}
+              <g>
+                {[250, 550].map((x, i) => (
+                  <g key={`tractor-${i}`} opacity="1">
+                    {/* Tractor body - green */}
+                    <rect x={x} y="198" width="18" height="8" rx="1" fill="#4a7c2f" />
+                    {/* Engine hood */}
+                    <rect x={x+12} y="196" width="6" height="4" rx="0.5" fill="#3d6928" />
+                    {/* Cab */}
+                    <rect x={x+4} y="194" width="6" height="5" rx="0.5" fill="#5a8a3f" />
+                    {/* Cab window */}
+                    <rect x={x+5} y="195" width="4" height="3" fill="#6b8ea8" opacity="0.9" />
+                    {/* Big rear wheel */}
+                    <circle cx={x+4} cy="206" r="4" fill="#2f2f2f" />
+                    <circle cx={x+4} cy="206" r="2" fill="#4a4a4a" />
+                    {/* Small front wheel */}
+                    <circle cx={x+15} cy="204" r="2.5" fill="#2f2f2f" />
+                    <circle cx={x+15} cy="204" r="1" fill="#4a4a4a" />
+                    {/* Exhaust pipe */}
+                    <rect x={x+10} y="192" width="1" height="4" fill="#4a4a4a" />
+                    <ellipse cx={x+10.5} cy="192" rx="1.5" ry="0.8" fill="#6a6a6a" />
+                    {/* Yellow details */}
+                    <rect x={x+13} y="199" width="4" height="1" fill="#ffd700" opacity="1" />
                   </g>
                 ))}
               </g>
@@ -338,33 +417,6 @@ export function ProgressiveSkyline() {
                 {/* Sidewalks */}
                 <rect x="800" y="210" width="1200" height="4" opacity="0.35" />
                 <rect x="800" y="251" width="1200" height="2" opacity="0.35" />
-              </g>
-
-              {/* Moving cars on the road */}
-              <g className="moving-car" opacity="0.7">
-                {[850, 1100, 1400, 1700].map((startX, i) => (
-                  <g key={`car-${i}`} style={{animationDelay: `${i * 3}s`}}>
-                    {/* Sedan */}
-                    <rect x={startX} y="220" width="22" height="9" rx="2" />
-                    <rect x={startX + 3} y="216" width="7" height="5" rx="1" opacity="0.6" />
-                    <rect x={startX + 12} y="216" width="7" height="5" rx="1" opacity="0.6" />
-                    <circle cx={startX + 5} cy="229" r="2" opacity="0.5" />
-                    <circle cx={startX + 17} cy="229" r="2" opacity="0.5" />
-                  </g>
-                ))}
-              </g>
-
-              {/* Additional trucks/vehicles */}
-              <g opacity="0.65">
-                {[950, 1550].map((x, i) => (
-                  <g key={`truck-${i}`}>
-                    {/* Pickup truck */}
-                    <rect x={x} y="236" width="28" height="10" rx="2" />
-                    <rect x={x + 2} y="232" width="10" height="5" rx="1" opacity="0.6" />
-                    <circle cx={x + 6} cy="246" r="2.5" opacity="0.5" />
-                    <circle cx={x + 22} cy="246" r="2.5" opacity="0.5" />
-                  </g>
-                ))}
               </g>
 
               {/* Ultra-detailed miniature houses - Victorian style */}
@@ -802,46 +854,56 @@ export function ProgressiveSkyline() {
                 <rect x="0" y="249" width="5000" height="1" fill="#f5f5f5" opacity="0.6" />
               </g>
 
-              {/* Moving traffic - cars driving across the entire city */}
+              {/* Moving traffic - cars driving across the entire city with VARIED COLORS! */}
               <g className="moving-car">
-                {[200, 600, 1100, 1700, 2300, 2900, 3500, 4100, 4700].map((startX, i) => (
-                  <g key={`fg-car-${i}`} opacity="0.9" style={{animationDelay: `${i * 1.5}s`}}>
-                    {/* Sedan body */}
-                    <rect x={startX} y="239.5" width="26" height="7" rx="2" fill="#c73e3e" />
+                {[
+                  {x: 200, color: "#c73e3e"},    // Red
+                  {x: 600, color: "#2f4f7f"},    // Blue
+                  {x: 1100, color: "#4a7c2f"},   // Green
+                  {x: 1700, color: "#d4af37"},   // Gold
+                  {x: 2300, color: "#8a8a8a"},   // Silver
+                  {x: 2900, color: "#4a4a4a"},   // Dark Gray
+                  {x: 3500, color: "#cc6633"},   // Orange
+                  {x: 4100, color: "#5a3d8a"},   // Purple
+                  {x: 4700, color: "#e8e8e8"}    // White
+                ].map((car, i) => (
+                  <g key={`fg-car-${i}`} opacity="1" style={{animationDelay: `${i * 1.5}s`}}>
+                    {/* Sedan body - COLORED! */}
+                    <rect x={car.x} y="239.5" width="26" height="7" rx="2" fill={car.color} />
                     {/* Windshields */}
-                    <rect x={startX + 4} y="236" width="8" height="4" rx="1" fill="#6b8ea8" opacity="0.8" />
-                    <rect x={startX + 14} y="236" width="8" height="4" rx="1" fill="#6b8ea8" opacity="0.8" />
+                    <rect x={car.x + 4} y="236" width="8" height="4" rx="1" fill="#6b8ea8" opacity="0.95" />
+                    <rect x={car.x + 14} y="236" width="8" height="4" rx="1" fill="#6b8ea8" opacity="0.95" />
                     {/* Wheels */}
-                    <circle cx={startX + 6} cy="246.5" r="2" fill="#2f2f2f" />
-                    <circle cx={startX + 20} cy="246.5" r="2" fill="#2f2f2f" />
+                    <circle cx={car.x + 6} cy="246.5" r="2" fill="#2f2f2f" />
+                    <circle cx={car.x + 20} cy="246.5" r="2" fill="#2f2f2f" />
                     {/* Headlights */}
-                    <circle cx={startX + 25} cy="241" r="0.8" fill="#ffeb3b" opacity="0.9" />
-                    <circle cx={startX + 25} cy="245" r="0.8" fill="#ffeb3b" opacity="0.9" />
+                    <circle cx={car.x + 25} cy="241" r="0.8" fill="#ffeb3b" opacity="1" />
+                    <circle cx={car.x + 25} cy="245" r="0.8" fill="#ffeb3b" opacity="1" />
                   </g>
                 ))}
               </g>
 
               {/* Additional vehicles - SUVs and trucks */}
-              <g opacity="0.85">
+              <g opacity="1">
                 {[400, 1300, 2200, 3100, 4000].map((x, i) => (
                   <g key={`fg-suv-${i}`}>
                     {/* SUV body - taller and wider */}
                     <rect x={x} y="237" width="30" height="9" rx="2" fill="#2f4f7f" />
                     {/* Windows */}
-                    <rect x={x + 4} y="234" width="10" height="4" rx="1" fill="#6b8ea8" opacity="0.7" />
-                    <rect x={x + 16} y="234" width="10" height="4" rx="1" fill="#6b8ea8" opacity="0.7" />
+                    <rect x={x + 4} y="234" width="10" height="4" rx="1" fill="#6b8ea8" opacity="0.95" />
+                    <rect x={x + 16} y="234" width="10" height="4" rx="1" fill="#6b8ea8" opacity="0.95" />
                     {/* Wheels */}
                     <circle cx={x + 7} cy="246" r="2.5" fill="#2f2f2f" />
                     <circle cx={x + 23} cy="246" r="2.5" fill="#2f2f2f" />
                     {/* Taillights */}
-                    <circle cx={x + 2} cy="240" r="0.8" fill="#cc3333" opacity="0.9" />
-                    <circle cx={x + 2} cy="244" r="0.8" fill="#cc3333" opacity="0.9" />
+                    <circle cx={x + 2} cy="240" r="0.8" fill="#cc3333" opacity="1" />
+                    <circle cx={x + 2} cy="244" r="0.8" fill="#cc3333" opacity="1" />
                   </g>
                 ))}
               </g>
 
               {/* Delivery trucks */}
-              <g opacity="0.8">
+              <g opacity="1">
                 {[800, 2000, 3300, 4500].map((x, i) => (
                   <g key={`fg-truck-${i}`}>
                     {/* Truck body */}
@@ -849,14 +911,14 @@ export function ProgressiveSkyline() {
                     {/* Cab */}
                     <rect x={x + 28} y="234" width="8" height="6" rx="1" fill="#e8d4b8" />
                     {/* Cab window */}
-                    <rect x={x + 29} y="235" width="6" height="3" rx="0.5" fill="#6b8ea8" opacity="0.7" />
+                    <rect x={x + 29} y="235" width="6" height="3" rx="0.5" fill="#6b8ea8" opacity="0.95" />
                     {/* Wheels */}
                     <circle cx={x + 8} cy="246" r="2.5" fill="#2f2f2f" />
                     <circle cx={x + 20} cy="246" r="2.5" fill="#2f2f2f" />
                     <circle cx={x + 30} cy="246" r="2.5" fill="#2f2f2f" />
                     {/* Headlights */}
-                    <circle cx={x + 35} cy="239" r="0.8" fill="#ffeb3b" opacity="0.9" />
-                    <circle cx={x + 35} cy="243" r="0.8" fill="#ffeb3b" opacity="0.9" />
+                    <circle cx={x + 35} cy="239" r="0.8" fill="#ffeb3b" opacity="1" />
+                    <circle cx={x + 35} cy="243" r="0.8" fill="#ffeb3b" opacity="1" />
                   </g>
                 ))}
               </g>
