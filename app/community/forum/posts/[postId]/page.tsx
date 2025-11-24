@@ -46,7 +46,7 @@ export default async function PostPage({
       <section className="py-12 bg-[var(--background)] border-b-4 border-theme-muted">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
           <div className="mb-6">
-            <BackButton label="Back to Forum" fallbackUrl="/community/forum" />
+            <BackButton label="Back to Community" fallbackUrl="/community" />
           </div>
           <div className="max-w-4xl mx-auto">
             <Link href="/community/forum" className="inline-block mb-6">

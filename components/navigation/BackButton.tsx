@@ -18,12 +18,12 @@ export function BackButton({
   const router = useRouter()
 
   const handleBack = () => {
-    // Check if there's history to go back to
-    if (window.history.length > 1) {
-      router.back()
-    } else if (fallbackUrl) {
-      // If no history, go to fallback URL
+    // Always use fallback URL if provided for consistent navigation
+    if (fallbackUrl) {
       router.push(fallbackUrl)
+    } else if (window.history.length > 1) {
+      // Only use browser history if no fallback specified
+      router.back()
     } else {
       // Default to home
       router.push('/')
