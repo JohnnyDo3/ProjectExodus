@@ -41,7 +41,7 @@ export async function GET(request: NextRequest) {
       where: { followerId: currentUserId },
       select: { followingId: true },
     })
-    const followingIds = existingFollows.map((f) => f.followingId)
+    const followingIds = existingFollows.map((f: any) => f.followingId)
 
     // Get users with pending or accepted connections
     const existingConnections = await prisma.connection.findMany({
@@ -53,7 +53,7 @@ export async function GET(request: NextRequest) {
       },
       select: { userId: true, connectedUserId: true },
     })
-    const connectedUserIds = existingConnections.map((c) =>
+    const connectedUserIds = existingConnections.map((c: any) =>
       c.userId === currentUserId ? c.connectedUserId : c.userId
     )
 
@@ -91,13 +91,13 @@ export async function GET(request: NextRequest) {
       matchReasons: string[]
     }
 
-    const scoredUsers: ScoredUser[] = allUsers.map((user) => {
+    const scoredUsers: ScoredUser[] = allUsers.map((user: any) => {
       let score = 0
       const matchReasons: string[] = []
 
       // Shared interests (high priority)
       const sharedInterests =
-        currentUser.interests?.filter((interest) =>
+        currentUser.interests?.filter((interest: any) =>
           user.interests?.includes(interest)
         ) || []
       if (sharedInterests.length > 0) {
@@ -109,7 +109,7 @@ export async function GET(request: NextRequest) {
 
       // Shared skills (medium priority)
       const sharedSkills =
-        currentUser.expertise?.filter((skill) =>
+        currentUser.expertise?.filter((skill: any) =>
           user.expertise?.includes(skill)
         ) || []
       if (sharedSkills.length > 0) {
@@ -122,7 +122,7 @@ export async function GET(request: NextRequest) {
       // Complementary skills (users have skills the other doesn't have)
       const complementarySkills =
         user.expertise?.filter(
-          (skill) => !currentUser.expertise?.includes(skill)
+          (skill: any) => !currentUser.expertise?.includes(skill)
         ) || []
       if (complementarySkills.length > 0 && currentUser.expertise && currentUser.expertise.length > 0) {
         score += Math.min(complementarySkills.length, 3) * 1.5
@@ -183,12 +183,12 @@ export async function GET(request: NextRequest) {
 
     // Sort by score and take top matches
     const topMatches = scoredUsers
-      .filter((su) => su.score > 0) // Only show users with some match
-      .sort((a, b) => b.score - a.score)
+      .filter((su: any) => su.score > 0) // Only show users with some match
+      .sort((a: any, b: any) => b.score - a.score)
       .slice(0, limit)
 
     // Format response
-    const suggestions = topMatches.map(({ user, score, matchReasons }) => ({
+    const suggestions = topMatches.map(({ user, score, matchReasons }: any) => ({
       ...user,
       matchScore: Math.round(score * 10) / 10,
       matchReasons,

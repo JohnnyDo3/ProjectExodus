@@ -22,7 +22,7 @@ export async function GET(request: NextRequest) {
       select: { followingId: true },
     })
 
-    const followingIds = following.map((f) => f.followingId)
+    const followingIds = following.map((f: { followingId: string }) => f.followingId)
 
     // If not following anyone, return empty feed
     if (followingIds.length === 0) {
@@ -62,11 +62,11 @@ export async function GET(request: NextRequest) {
 
     // Filter to recent joins (use project creation as proxy since ProjectMember doesn't have createdAt)
     const recentProjectJoins = projectJoins.filter(
-      (pj) => new Date(pj.project.createdAt).getTime() > Date.now() - 7 * 24 * 60 * 60 * 1000
+      (pj: { project: { createdAt: Date } }) => new Date(pj.project.createdAt).getTime() > Date.now() - 7 * 24 * 60 * 60 * 1000
     )
 
     activities.push(
-      ...recentProjectJoins.map((pj) => ({
+      ...recentProjectJoins.map((pj: any) => ({
         id: `project-join-${pj.id}`,
         type: 'PROJECT_JOIN',
         user: pj.user,
@@ -102,7 +102,7 @@ export async function GET(request: NextRequest) {
     })
 
     activities.push(
-      ...forumPosts.map((post) => ({
+      ...forumPosts.map((post: any) => ({
         id: `forum-post-${post.id}`,
         type: 'FORUM_POST',
         user: post.user,
@@ -144,7 +144,7 @@ export async function GET(request: NextRequest) {
     })
 
     activities.push(
-      ...events.map((event) => ({
+      ...events.map((event: any) => ({
         id: `event-create-${event.id}`,
         type: 'EVENT_CREATE',
         user: event.creator,
@@ -192,7 +192,7 @@ export async function GET(request: NextRequest) {
     })
 
     activities.push(
-      ...eventRSVPs.map((rsvp) => ({
+      ...eventRSVPs.map((rsvp: any) => ({
         id: `event-rsvp-${rsvp.id}`,
         type: 'EVENT_RSVP',
         user: rsvp.user,
@@ -234,7 +234,7 @@ export async function GET(request: NextRequest) {
     })
 
     activities.push(
-      ...projects.map((project) => ({
+      ...projects.map((project: any) => ({
         id: `project-create-${project.id}`,
         type: 'PROJECT_CREATE',
         user: project.creator,

@@ -116,7 +116,7 @@ export async function GET(request: NextRequest) {
     })
 
     // Get endorser details
-    const endorserIds = [...new Set(endorsements.map(e => e.endorserId))]
+    const endorserIds = [...new Set(endorsements.map((e: any) => e.endorserId))]
     const endorsers = await prisma.user.findMany({
       where: { id: { in: endorserIds } },
       select: {
@@ -128,17 +128,17 @@ export async function GET(request: NextRequest) {
     })
 
     const endorsersMap = Object.fromEntries(
-      endorsers.map(e => [e.id, e])
+      endorsers.map((e: any) => [e.id, e])
     )
 
     // Enrich endorsements with endorser details
-    const enrichedEndorsements = endorsements.map(endorsement => ({
+    const enrichedEndorsements = endorsements.map((endorsement: any) => ({
       ...endorsement,
       endorser: endorsersMap[endorsement.endorserId]
     }))
 
     // Group by skill and count
-    const skillCounts = endorsements.reduce((acc, endorsement) => {
+    const skillCounts = endorsements.reduce((acc: any, endorsement: any) => {
       acc[endorsement.skill] = (acc[endorsement.skill] || 0) + 1
       return acc
     }, {} as Record<string, number>)

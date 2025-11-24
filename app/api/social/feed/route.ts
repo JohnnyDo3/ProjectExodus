@@ -22,7 +22,7 @@ export async function GET(request: Request) {
         select: { followingId: true }
       })
 
-      const followingIds = following.map(f => f.followingId)
+      const followingIds = following.map((f: any) => f.followingId)
 
       // Include posts from followed users or public posts
       whereClause = {

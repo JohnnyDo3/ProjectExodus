@@ -30,7 +30,7 @@ async function getProducts() {
     })
 
     // Convert Prisma types to frontend-compatible types
-    return products.map(product => ({
+    return products.map((product: any) => ({
       ...product,
       price: product.price ? Number(product.price) : null,
       vendor: product.vendor ? { name: product.vendor.name } : undefined,

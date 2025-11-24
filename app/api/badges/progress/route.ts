@@ -153,7 +153,7 @@ export async function GET() {
     ]
 
     // Calculate impact stats
-    const goalsCompleted = badgeProgress.filter(b => b.earned).length
+    const goalsCompleted = badgeProgress.filter((b: any) => b.earned).length
     const totalGoals = badgeProgress.length
     const badgesEarned = user.userBadges.length
 
@@ -165,7 +165,7 @@ export async function GET() {
         totalGoals,
         profileCompletion
       },
-      earnedBadges: user.userBadges.map(ub => ({
+      earnedBadges: user.userBadges.map((ub: any) => ({
         id: ub.badge.id,
         name: ub.badge.name,
         icon: ub.badge.icon,

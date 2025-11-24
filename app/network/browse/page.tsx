@@ -405,7 +405,7 @@ export default function BrowseProfessionalsPage() {
                       <>
                         <span className="px-2 py-2 font-bold text-theme-muted">...</span>
                         <Button
-                          variant={currentPage === totalPages ? 'default' : 'outline'}
+                          variant={currentPage === totalPages ? 'primary' : 'outline'}
                           onClick={() => setCurrentPage(totalPages)}
                           className="font-bold min-w-[40px]"
                         >

@@ -400,7 +400,7 @@ export default async function CommunityPage() {
                 </Link>
               </div>
               <div className="space-y-2">
-                {recentForumPosts.map((post) => (
+                {recentForumPosts.map((post: any) => (
                   <Link key={post.id} href={`/community/forum/posts/${post.id}`}>
                     <div className="p-3 bg-[var(--muted)]/50 rounded-2xl hover:bg-[var(--muted)] transition-all hover:shadow-md cursor-pointer border-2 border-transparent hover:border-theme-accent/30">
                       <div className="flex items-start gap-2.5">
@@ -445,7 +445,7 @@ export default async function CommunityPage() {
                 </Link>
               </div>
               <div className="grid md:grid-cols-2 gap-3">
-                {activeProjects.map((project) => (
+                {activeProjects.map((project: any) => (
                   <Link key={project.id} href={`/community/projects/${project.slug}`}>
                     <div className="p-4 bg-[var(--muted)]/50 rounded-2xl hover:bg-[var(--muted)] transition-all hover:shadow-md cursor-pointer border-2 border-transparent hover:border-theme-secondary/30 h-full">
                       <h3 className="font-bold text-sm text-[var(--foreground)] mb-1.5 line-clamp-1">{project.name}</h3>
@@ -478,7 +478,7 @@ export default async function CommunityPage() {
                 </Link>
               </div>
               <div className="grid md:grid-cols-2 gap-2">
-                {suggestedUsers.map((suggestedUser) => (
+                {suggestedUsers.map((suggestedUser: any) => (
                   <Link key={suggestedUser.id} href={`/profile/${suggestedUser.id}`}>
                     <div className="flex items-center gap-2.5 p-2.5 bg-[var(--muted)]/50 rounded-2xl hover:bg-[var(--muted)] transition-all hover:shadow-md cursor-pointer border-2 border-transparent hover:border-theme-primary/30">
                       {suggestedUser.image ? (

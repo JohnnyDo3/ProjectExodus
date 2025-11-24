@@ -79,7 +79,7 @@ export default async function MemberDirectoryPage() {
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
           <div className="max-w-6xl mx-auto">
             <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
-              {users.map((user) => (
+              {users.map((user: any) => (
                 <Card key={user.id} className="border-4 border-theme-primary hover:border-theme-accent transition-all hover-lift">
                   <CardContent className="p-6">
                     <Link href={`/profile/${user.id}`} className="block">
@@ -120,7 +120,7 @@ export default async function MemberDirectoryPage() {
                       {/* Expertise Tags */}
                       {user.expertise && user.expertise.length > 0 && (
                         <div className="flex flex-wrap gap-2 mb-4 justify-center">
-                          {user.expertise.slice(0, 3).map((skill, i) => (
+                          {user.expertise.slice(0, 3).map((skill: any, i: number) => (
                             <span
                               key={i}
                               className="px-2 py-1 bg-[color-mix(in_srgb,var(--primary)_20%,var(--background))] text-theme-primary rounded-lg font-bold text-xs"

@@ -311,7 +311,7 @@ export default async function ProfilePage({ params }: { params: Promise<{ id: st
                     EXPERTISE
                   </h2>
                   <div className="flex flex-wrap gap-2">
-                    {user.expertise.map((skill, index) => (
+                    {user.expertise.map((skill: any, index: number) => (
                       <span
                         key={index}
                         className="px-2 py-1 bg-gradient-to-br from-[var(--primary)] to-[color-mix(in_srgb,var(--primary)_80%,black)] text-[var(--primary-foreground)] rounded-lg font-bold text-xs shadow-theme-md"
@@ -330,7 +330,7 @@ export default async function ProfilePage({ params }: { params: Promise<{ id: st
                 <CardContent className="p-4">
                   <h2 className="text-lg font-black mb-3 text-[var(--foreground)]">INTERESTS</h2>
                   <div className="flex flex-wrap gap-2">
-                    {user.interests.map((interest, index) => (
+                    {user.interests.map((interest: any, index: number) => (
                       <span
                         key={index}
                         className="px-2 py-1 bg-[color-mix(in_srgb,var(--accent)_20%,var(--background))] text-theme-accent rounded-lg font-semibold text-xs border-2 border-theme-accent"
@@ -352,7 +352,7 @@ export default async function ProfilePage({ params }: { params: Promise<{ id: st
                     BADGES
                   </h2>
                   <div className="grid grid-cols-2 gap-2">
-                    {user.userBadges.map((userBadge) => (
+                    {user.userBadges.map((userBadge: any) => (
                       <div
                         key={userBadge.id}
                         className="flex flex-col items-center p-2 bg-gradient-to-br from-[var(--secondary)] to-[color-mix(in_srgb,var(--secondary)_80%,black)] rounded-lg shadow-theme-md"

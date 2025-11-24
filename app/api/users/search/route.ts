@@ -91,7 +91,7 @@ export async function GET(request: NextRequest) {
 
     // Get follow/connection status for each user
     const usersWithStatus = await Promise.all(
-      users.map(async (user) => {
+      users.map(async (user: any) => {
         const [follower, connection] = await Promise.all([
           prisma.follower.findUnique({
             where: {

@@ -1,11 +1,12 @@
 import { Prisma } from '@prisma/client'
+import { PrismaClientKnownRequestError, PrismaClientValidationError } from '@prisma/client/runtime/library'
 import { NextResponse } from 'next/server'
 
 export function handlePrismaError(error: unknown, operation: string = 'operation') {
   console.error(`Error during ${operation}:`, error)
 
   // Handle Prisma-specific errors
-  if (error instanceof Prisma.PrismaClientKnownRequestError) {
+  if (error instanceof PrismaClientKnownRequestError) {
     switch (error.code) {
       case 'P2002':
         // Unique constraint violation
@@ -66,7 +67,7 @@ export function handlePrismaError(error: unknown, operation: string = 'operation
   }
 
   // Handle validation errors
-  if (error instanceof Prisma.PrismaClientValidationError) {
+  if (error instanceof PrismaClientValidationError) {
     return NextResponse.json(
       {
         success: false,

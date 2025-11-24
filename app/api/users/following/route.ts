@@ -32,7 +32,7 @@ export async function GET(request: NextRequest) {
       },
     })
 
-    const followingUsers = following.map((f) => f.following)
+    const followingUsers = following.map((f: any) => f.following)
 
     return NextResponse.json({
       success: true,
