@@ -384,15 +384,18 @@ export default async function CommunityPage() {
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
           <div className="max-w-6xl mx-auto grid lg:grid-cols-2 gap-4">
 
-            {/* Trending Discussions - Cute Cards */}
+            {/* Community Forum - Cute Cards */}
             <div className="p-5 bg-[var(--card)] rounded-3xl border-3 border-theme-accent/40 shadow-sm">
               <div className="flex items-center justify-between mb-3">
-                <div className="flex items-center gap-2">
+                <Link href="/community/forum" className="flex items-center gap-2 hover:opacity-80 transition-opacity">
                   <div className="w-8 h-8 rounded-full bg-gradient-to-br from-[var(--accent)] to-[var(--accent)]/70 flex items-center justify-center">
                     <TrendingUp className="w-4 h-4 text-white" />
                   </div>
-                  <h2 className="text-base font-black text-[var(--foreground)]">Trending Discussions</h2>
-                </div>
+                  <div>
+                    <h2 className="text-base font-black text-[var(--foreground)]">Community Forum</h2>
+                    <p className="text-[10px] font-semibold text-theme-muted">Trending Posts</p>
+                  </div>
+                </Link>
                 <Link href="/community/forum">
                   <Button variant="ghost" size="sm" className="font-bold text-xs rounded-full hover:bg-[var(--muted)]">
                     View all <ChevronRight className="w-3 h-3 ml-1" />

@@ -49,9 +49,9 @@ export default async function PostPage({
             <BackButton label="Back to Forum" fallbackUrl="/community/forum" />
           </div>
           <div className="max-w-4xl mx-auto">
-            <Link href={`/community/forum/${post.category.slug}`} className="inline-block mb-6">
+            <Link href="/community/forum" className="inline-block mb-6">
               <Button variant="outline" size="sm" className="font-bold">
-                ← BACK TO {post.category.name.toUpperCase()}
+                ← COMMUNITY FORUM
               </Button>
             </Link>
 
