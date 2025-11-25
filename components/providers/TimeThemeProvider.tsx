@@ -121,24 +121,37 @@ function calculateTimeTheme(coords: GeolocationCoords | null): TimeTheme {
     const sunsetHour = times.sunset.getHours()
 
     // Map to 8 granular phases based on sunrise/sunset
-    // Dawn: 1 hour before sunrise
-    if (hour >= 5 && hour < Math.max(5, sunriseHour - 1)) return 'dawn'
+    // Dawn: 1 hour before sunrise (but not earlier than 5am)
+    const dawnEnd = Math.max(5, sunriseHour - 1)
+    if (hour >= 5 && hour < dawnEnd) return 'dawn'
+
     // Sunrise: 1 hour before to 2 hours after sunrise
-    if (hour >= Math.max(5, sunriseHour - 1) && hour < Math.min(10, sunriseHour + 2)) return 'sunrise'
-    // Morning: After sunrise period until 10am
-    if (hour >= Math.min(10, sunriseHour + 2) && hour < 10) return 'morning'
+    const sunriseEnd = Math.min(10, sunriseHour + 2)
+    if (hour >= dawnEnd && hour < sunriseEnd) return 'sunrise'
+
+    // Morning: After sunrise period until 10am (only if there's a gap)
+    if (sunriseEnd < 10 && hour >= sunriseEnd && hour < 10) return 'morning'
+
     // Day: 10am to 3pm
     if (hour >= 10 && hour < 15) return 'day'
+
     // Afternoon: 3pm until 2 hours before sunset
-    if (hour >= 15 && hour < Math.max(15, sunsetHour - 2)) return 'afternoon'
+    const duskStart = Math.max(15, sunsetHour - 2)
+    if (hour >= 15 && hour < duskStart) return 'afternoon'
+
     // Dusk: 2 hours before sunset
-    if (hour >= Math.max(15, sunsetHour - 2) && hour < sunsetHour) return 'dusk'
+    if (hour >= duskStart && hour < sunsetHour) return 'dusk'
+
     // Sunset: At sunset through 2 hours after
-    if (hour >= sunsetHour && hour < Math.min(22, sunsetHour + 2)) return 'sunset'
-    // Evening: After sunset period until 10pm
-    if (hour >= Math.min(22, sunsetHour + 2) && hour < 22) return 'evening'
+    const sunsetEnd = Math.min(22, sunsetHour + 2)
+    if (hour >= sunsetHour && hour < sunsetEnd) return 'sunset'
+
+    // Evening: After sunset period until 10pm (only if there's a gap)
+    if (sunsetEnd < 22 && hour >= sunsetEnd && hour < 22) return 'evening'
+
     // Night: 10pm to 2am
     if (hour >= 22 || hour < 2) return 'night'
+
     // Midnight: 2am to 5am
     return 'midnight'
   } else {
