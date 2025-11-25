@@ -131,7 +131,7 @@ export function ProgressiveSkyline() {
         {[0, 1].map((iteration) => (
           <svg
             key={iteration}
-            className="flex-shrink-0 opacity-60 dark:opacity-50"
+            className="flex-shrink-0 opacity-[0.72] dark:opacity-60"
             width="5000"
             height="250"
             viewBox="0 0 5000 250"
