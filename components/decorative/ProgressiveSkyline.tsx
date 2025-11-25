@@ -356,79 +356,219 @@ export function ProgressiveSkyline() {
 
               {/* FARM ANIMALS - Rendered on top of trees and hay */}
 
-              {/* Horses in the fields - MORE HORSES! */}
+              {/* Horses in the fields - DETAILED AND RECOGNIZABLE! */}
               <g>
                 {[120, 320, 420, 580, 680, 760].map((x, i) => (
                   <g key={`horse-${i}`} className="animal-horse" opacity="1" style={{animationDelay: `${i * 0.3}s`}}>
-                    {/* Horse body */}
-                    <ellipse cx={x} cy="200" rx="8" ry="5" fill="#654321" />
-                    {/* Horse head - facing forward, clearly visible */}
-                    <ellipse cx={x+9} cy="197" rx="3" ry="4" fill="#654321" />
-                    {/* Legs */}
-                    <rect x={x-3} y="205" width="1.5" height="5" fill="#654321" />
-                    <rect x={x+2} y="205" width="1.5" height="5" fill="#654321" />
-                    {/* Tail */}
-                    <path d={`M ${x-8},200 Q ${x-11},198 ${x-12},202`} stroke="#4a3520" strokeWidth="1.5" fill="none" />
-                    {/* Mane */}
-                    <path d={`M ${x+9},195 Q ${x+6},193 ${x+3},195`} stroke="#4a3520" strokeWidth="1" fill="none" />
-                    {/* Eye - clearly visible */}
-                    <circle cx={x+10} cy="196" r="0.8" fill="#2f2f2f" />
+                    {/* Main body - larger and more defined */}
+                    <ellipse cx={x} cy="200" rx="10" ry="6" fill="#654321" />
+
+                    {/* Chest/shoulder area */}
+                    <ellipse cx={x+6} cy="200" rx="5" ry="6" fill="#7a5230" />
+
+                    {/* Neck - connecting body to head */}
+                    <path d={`M ${x+8},198 L ${x+11},195 L ${x+10},200 Z`} fill="#654321" />
+
+                    {/* Horse head - defined and forward-facing */}
+                    <ellipse cx={x+13} cy="195" rx="3.5" ry="4.5" fill="#654321" />
+
+                    {/* Snout/muzzle - lighter color */}
+                    <ellipse cx={x+15} cy="196" rx="2" ry="2.5" fill="#8b6f47" />
+
+                    {/* Ears - two visible ears */}
+                    <path d={`M ${x+12},191 L ${x+11},188 L ${x+13},190 Z`} fill="#654321" />
+                    <path d={`M ${x+14},191 L ${x+15},188 L ${x+13.5},190 Z`} fill="#654321" />
+
+                    {/* Eye - large and visible */}
+                    <circle cx={x+13} cy="194" r="1" fill="#2f2f2f" />
+                    <circle cx={x+13.3} cy="193.7" r="0.4" fill="#ffffff" opacity="0.8" />
+
+                    {/* Nostril */}
+                    <circle cx={x+15.5} cy="197" r="0.5" fill="#4a3520" />
+
+                    {/* Front legs - clearly separated */}
+                    <rect x={x+3} y="206" width="2" height="6" fill="#654321" />
+                    <rect x={x+7} y="206" width="2" height="6" fill="#7a5230" />
+                    {/* Hooves on front legs */}
+                    <rect x={x+3} y="211" width="2" height="1" fill="#2f2f2f" />
+                    <rect x={x+7} y="211" width="2" height="1" fill="#2f2f2f" />
+
+                    {/* Back legs - clearly separated */}
+                    <rect x={x-5} y="206" width="2" height="6" fill="#654321" />
+                    <rect x={x-1} y="206" width="2" height="6" fill="#7a5230" />
+                    {/* Hooves on back legs */}
+                    <rect x={x-5} y="211" width="2" height="1" fill="#2f2f2f" />
+                    <rect x={x-1} y="211" width="2" height="1" fill="#2f2f2f" />
+
+                    {/* Tail - flowing and detailed */}
+                    <path d={`M ${x-10},199 Q ${x-13},201 ${x-14},205 Q ${x-13},208 ${x-11},207`}
+                          stroke="#4a3520" strokeWidth="2" fill="none" />
+
+                    {/* Mane - flowing down neck */}
+                    <path d={`M ${x+11},192 Q ${x+9},193 ${x+7},195 Q ${x+5},196 ${x+3},197`}
+                          stroke="#4a3520" strokeWidth="1.5" fill="none" />
+                    <path d={`M ${x+10},193 Q ${x+8},194 ${x+6},196`}
+                          stroke="#4a3520" strokeWidth="1.2" fill="none" />
                   </g>
                 ))}
               </g>
 
-              {/* Cows grazing - MORE COWS! */}
+              {/* Cows grazing - DETAILED AND RECOGNIZABLE! */}
               <g>
                 {[230, 390, 510, 640].map((x, i) => (
                   <g key={`cow-${i}`} className="animal-cow" opacity="1" style={{animationDelay: `${i * 0.5}s`}}>
-                    {/* Cow body */}
-                    <ellipse cx={x} cy="202" rx="9" ry="5" fill="#f5f5f5" />
-                    {/* Black spots */}
-                    <ellipse cx={x-3} cy="201" rx="2" ry="2" fill="#2f2f2f" opacity="1" />
-                    <ellipse cx={x+4} cy="202" rx="2.5" ry="2.5" fill="#2f2f2f" opacity="1" />
-                    {/* Cow head */}
-                    <ellipse cx={x-7} cy="200" rx="3" ry="3.5" fill="#f5f5f5" />
-                    {/* Horns */}
-                    <path d={`M ${x-9},199 L ${x-10},197 M ${x-5},199 L ${x-4},197`} stroke="#4a4a4a" strokeWidth="0.8" />
-                    {/* Legs */}
-                    <rect x={x-4} y="207" width="1.5" height="4" fill="#e8e8e8" />
-                    <rect x={x+3} y="207" width="1.5" height="4" fill="#e8e8e8" />
+                    {/* Main cow body - large and boxy */}
+                    <rect x={x-8} y="197" width="16" height="8" rx="2" fill="#f5f5f5" />
+
+                    {/* Udder underneath */}
+                    <ellipse cx={x} cy="205" rx="3" ry="2" fill="#ffb6c1" />
+
+                    {/* Black spots - multiple and prominent */}
+                    <ellipse cx={x-5} cy="199" rx="2.5" ry="2" fill="#2f2f2f" />
+                    <ellipse cx={x+2} cy="198" rx="3" ry="2.5" fill="#2f2f2f" />
+                    <ellipse cx={x-2} cy="202" rx="2" ry="1.5" fill="#2f2f2f" />
+                    <ellipse cx={x+5} cy="201" rx="2.5" ry="2" fill="#2f2f2f" />
+
+                    {/* Neck */}
+                    <rect x={x-9} y="194" width="3" height="5" rx="1" fill="#f5f5f5" />
+
+                    {/* Cow head - defined and forward-facing */}
+                    <ellipse cx={x-10} cy="195" rx="3.5" ry="4" fill="#f5f5f5" />
+
+                    {/* Spot on head */}
+                    <ellipse cx={x-11} cy="194" rx="1.5" ry="1.5" fill="#2f2f2f" />
+
+                    {/* Snout/muzzle - pink */}
+                    <ellipse cx={x-12} cy="197" rx="2" ry="2.5" fill="#ffb6c1" />
+
+                    {/* Nostrils */}
+                    <circle cx={x-12.5} cy="196.5" r="0.4" fill="#2f2f2f" />
+                    <circle cx={x-11.5} cy="196.5" r="0.4" fill="#2f2f2f" />
+
+                    {/* Horns - curved upward */}
+                    <path d={`M ${x-11},191 Q ${x-12},189 ${x-13},188`} stroke="#8a7a6a" strokeWidth="1.2" fill="none" />
+                    <path d={`M ${x-9},191 Q ${x-8},189 ${x-7},188`} stroke="#8a7a6a" strokeWidth="1.2" fill="none" />
+
+                    {/* Ears - floppy */}
+                    <ellipse cx={x-12} cy="192" rx="1.5" ry="1" fill="#e8e8e8" transform={`rotate(-30 ${x-12} 192)`} />
+                    <ellipse cx={x-8} cy="192" rx="1.5" ry="1" fill="#e8e8e8" transform={`rotate(30 ${x-8} 192)`} />
+
+                    {/* Eye - large and visible */}
+                    <circle cx={x-10} cy="194" r="1" fill="#2f2f2f" />
+                    <circle cx={x-9.7} cy="193.7" r="0.4" fill="#ffffff" opacity="0.8" />
+
+                    {/* Front legs - clearly separated */}
+                    <rect x={x-5} y="205" width="2" height="7" rx="1" fill="#e8e8e8" />
+                    <rect x={x-1} y="205" width="2" height="7" rx="1" fill="#e8e8e8" />
+                    {/* Hooves on front legs */}
+                    <rect x={x-5} y="211" width="2" height="1" fill="#2f2f2f" />
+                    <rect x={x-1} y="211" width="2" height="1" fill="#2f2f2f" />
+
+                    {/* Back legs - clearly separated */}
+                    <rect x={x+2} y="205" width="2" height="7" rx="1" fill="#e8e8e8" />
+                    <rect x={x+6} y="205" width="2" height="7" rx="1" fill="#e8e8e8" />
+                    {/* Hooves on back legs */}
+                    <rect x={x+2} y="211" width="2" height="1" fill="#2f2f2f" />
+                    <rect x={x+6} y="211" width="2" height="1" fill="#2f2f2f" />
+
+                    {/* Tail - hanging down with tuft */}
+                    <path d={`M ${x+8},199 L ${x+10},205`} stroke="#f5f5f5" strokeWidth="1.5" />
+                    <ellipse cx={x+10} cy="206" rx="1.5" ry="2" fill="#2f2f2f" />
                   </g>
                 ))}
               </g>
 
-              {/* Sheep grazing - FLUFFY! */}
+              {/* Sheep grazing - FLUFFY AND RECOGNIZABLE! */}
               <g>
                 {[160, 290, 470, 590, 700].map((x, i) => (
                   <g key={`sheep-${i}`} className="animal-sheep" opacity="1" style={{animationDelay: `${i * 0.4}s`}}>
-                    {/* Fluffy sheep body */}
-                    <ellipse cx={x} cy="204" rx="6" ry="4" fill="#f5f5f5" />
-                    <circle cx={x-2} cy="203" r="3" fill="#f5f5f5" />
-                    <circle cx={x+2} cy="203" r="3" fill="#f5f5f5" />
-                    {/* Black sheep face */}
-                    <ellipse cx={x-5} cy="203" rx="2" ry="2.5" fill="#2f2f2f" />
-                    {/* Tiny legs */}
-                    <rect x={x-3} y="208" width="1" height="3" fill="#2f2f2f" />
-                    <rect x={x+2} y="208" width="1" height="3" fill="#2f2f2f" />
+                    {/* Fluffy wool body - multiple overlapping circles for texture */}
+                    <circle cx={x} cy="203" r="4.5" fill="#f5f5f5" />
+                    <circle cx={x-3} cy="202" r="3.5" fill="#f5f5f5" />
+                    <circle cx={x+3} cy="202" r="3.5" fill="#f5f5f5" />
+                    <circle cx={x-1} cy="205" r="3" fill="#f5f5f5" />
+                    <circle cx={x+2} cy="205" r="3" fill="#f5f5f5" />
+                    <circle cx={x} cy="200" r="3" fill="#f5f5f5" />
+
+                    {/* Wool texture - smaller accent circles */}
+                    <circle cx={x-2} cy="201" r="1.5" fill="#e8e8e8" />
+                    <circle cx={x+1} cy="203" r="1.5" fill="#e8e8e8" />
+                    <circle cx={x+3} cy="200" r="1.2" fill="#e8e8e8" />
+
+                    {/* Black sheep face and head - clearly defined */}
+                    <ellipse cx={x-6} cy="201" rx="2.5" ry="3" fill="#2f2f2f" />
+
+                    {/* Ears - sticking up */}
+                    <ellipse cx={x-7} cy="199" rx="1" ry="1.5" fill="#2f2f2f" />
+                    <ellipse cx={x-5} cy="199" rx="1" ry="1.5" fill="#2f2f2f" />
+
+                    {/* Eyes - visible white with black pupils */}
+                    <circle cx={x-6.5} cy="201" r="0.6" fill="#ffffff" />
+                    <circle cx={x-6.5} cy="201" r="0.3" fill="#2f2f2f" />
+
+                    {/* Nose/snout */}
+                    <ellipse cx={x-7.5} cy="202" rx="0.8" ry="0.6" fill="#1a1a1a" />
+
+                    {/* Four black legs - clearly visible */}
+                    <rect x={x-4} y="207" width="1.5" height="4" rx="0.5" fill="#2f2f2f" />
+                    <rect x={x-1} y="207" width="1.5" height="4" rx="0.5" fill="#2f2f2f" />
+                    <rect x={x+1} y="207" width="1.5" height="4" rx="0.5" fill="#2f2f2f" />
+                    <rect x={x+4} y="207" width="1.5" height="4" rx="0.5" fill="#2f2f2f" />
+
+                    {/* Small fluffy tail */}
+                    <circle cx={x+5} cy="204" r="1.5" fill="#f5f5f5" />
                   </g>
                 ))}
               </g>
 
-              {/* Chickens pecking - TINY! */}
+              {/* Chickens pecking - DETAILED AND RECOGNIZABLE! */}
               <g>
                 {[200, 260, 340, 480, 540, 620, 730].map((x, i) => (
                   <g key={`chicken-${i}`} className="animal-chicken" opacity="1" style={{animationDelay: `${i * 0.2}s`}}>
-                    {/* Chicken body - super small */}
-                    <ellipse cx={x} cy="207" rx="2.5" ry="2" fill="#d4a574" />
-                    {/* Chicken head */}
-                    <circle cx={x-2} cy="206" r="1.5" fill="#d4a574" />
-                    {/* Red comb */}
-                    <path d={`M ${x-2},205 L ${x-1.5},204 L ${x-2.5},204`} fill="#cc3333" />
-                    {/* Beak */}
-                    <path d={`M ${x-3},206 L ${x-3.5},206`} stroke="#ffd700" strokeWidth="0.5" />
-                    {/* Tiny legs */}
-                    <rect x={x-1} y="209" width="0.5" height="2" fill="#d4a574" />
-                    <rect x={x+0.5} y="209" width="0.5" height="2" fill="#d4a574" />
+                    {/* Chicken body - plump and defined */}
+                    <ellipse cx={x} cy="207" rx="3.5" ry="3" fill="#d4a574" />
+
+                    {/* Wing detail - darker feather area */}
+                    <ellipse cx={x+0.5} cy="207" rx="2" ry="2" fill="#b8946a" />
+
+                    {/* Tail feathers - pointing upward */}
+                    <path d={`M ${x+3},206 Q ${x+4.5},204 ${x+5},202 Q ${x+4},203 ${x+3.5},205 Z`}
+                          fill="#8b6f47" />
+                    <path d={`M ${x+3.5},205 Q ${x+5},203 ${x+5.5},201 Q ${x+4.5},202 ${x+4},204 Z`}
+                          fill="#9a7a55" />
+
+                    {/* Neck connecting body to head */}
+                    <rect x={x-2.5} y="204" width="1.5" height="2" rx="0.5" fill="#d4a574" />
+
+                    {/* Chicken head - round and defined */}
+                    <circle cx={x-2.5} cy="204" r="2" fill="#d4a574" />
+
+                    {/* Red comb - prominent and wavy */}
+                    <path d={`M ${x-3},202 L ${x-2.8},200.5 L ${x-2.3},201 L ${x-2},200 L ${x-1.8},201 L ${x-1.5},202 Z`}
+                          fill="#cc3333" />
+
+                    {/* Wattle under beak */}
+                    <ellipse cx={x-3} cy="205" rx="0.6" ry="0.8" fill="#cc3333" />
+
+                    {/* Beak - prominent yellow */}
+                    <path d={`M ${x-4},204 L ${x-5},204 L ${x-4.5},204.5 Z`}
+                          fill="#ffd700" />
+
+                    {/* Eye - small but visible */}
+                    <circle cx={x-2.5} cy="203.5" r="0.4" fill="#2f2f2f" />
+                    <circle cx={x-2.3} cy="203.3" r="0.15" fill="#ffffff" />
+
+                    {/* Legs - thin chicken legs with visible joints */}
+                    <path d={`M ${x-1},210 L ${x-1},211 L ${x-2},212`}
+                          stroke="#ffd700" strokeWidth="1" fill="none" />
+                    <path d={`M ${x+1},210 L ${x+1},211 L ${x+2},212`}
+                          stroke="#ffd700" strokeWidth="1" fill="none" />
+
+                    {/* Feet - three toes visible */}
+                    <path d={`M ${x-2},212 L ${x-2.5},212 M ${x-2},212 L ${x-2},212.5 M ${x-2},212 L ${x-1.5},212`}
+                          stroke="#ffd700" strokeWidth="0.5" />
+                    <path d={`M ${x+2},212 L ${x+2.5},212 M ${x+2},212 L ${x+2},212.5 M ${x+2},212 L ${x+1.5},212`}
+                          stroke="#ffd700" strokeWidth="0.5" />
                   </g>
                 ))}
               </g>
@@ -1115,79 +1255,219 @@ export function ProgressiveSkyline() {
 
               {/* FARM ANIMALS - matching opening rural biome */}
 
-              {/* Horses in the fields */}
+              {/* Horses in the fields - DETAILED AND RECOGNIZABLE! */}
               <g>
                 {[3920, 4120, 4220, 4380, 4480, 4560].map((x, i) => (
                   <g key={`horse-end-${i}`} className="animal-horse" opacity="1" style={{animationDelay: `${i * 0.3}s`}}>
-                    {/* Horse body */}
-                    <ellipse cx={x} cy="200" rx="8" ry="5" fill="#654321" />
-                    {/* Horse head - facing forward, clearly visible */}
-                    <ellipse cx={x+9} cy="197" rx="3" ry="4" fill="#654321" />
-                    {/* Legs */}
-                    <rect x={x-3} y="205" width="1.5" height="5" fill="#654321" />
-                    <rect x={x+2} y="205" width="1.5" height="5" fill="#654321" />
-                    {/* Tail */}
-                    <path d={`M ${x-8},200 Q ${x-11},198 ${x-12},202`} stroke="#4a3520" strokeWidth="1.5" fill="none" />
-                    {/* Mane */}
-                    <path d={`M ${x+9},195 Q ${x+6},193 ${x+3},195`} stroke="#4a3520" strokeWidth="1" fill="none" />
-                    {/* Eye - clearly visible */}
-                    <circle cx={x+10} cy="196" r="0.8" fill="#2f2f2f" />
+                    {/* Main body - larger and more defined */}
+                    <ellipse cx={x} cy="200" rx="10" ry="6" fill="#654321" />
+
+                    {/* Chest/shoulder area */}
+                    <ellipse cx={x+6} cy="200" rx="5" ry="6" fill="#7a5230" />
+
+                    {/* Neck - connecting body to head */}
+                    <path d={`M ${x+8},198 L ${x+11},195 L ${x+10},200 Z`} fill="#654321" />
+
+                    {/* Horse head - defined and forward-facing */}
+                    <ellipse cx={x+13} cy="195" rx="3.5" ry="4.5" fill="#654321" />
+
+                    {/* Snout/muzzle - lighter color */}
+                    <ellipse cx={x+15} cy="196" rx="2" ry="2.5" fill="#8b6f47" />
+
+                    {/* Ears - two visible ears */}
+                    <path d={`M ${x+12},191 L ${x+11},188 L ${x+13},190 Z`} fill="#654321" />
+                    <path d={`M ${x+14},191 L ${x+15},188 L ${x+13.5},190 Z`} fill="#654321" />
+
+                    {/* Eye - large and visible */}
+                    <circle cx={x+13} cy="194" r="1" fill="#2f2f2f" />
+                    <circle cx={x+13.3} cy="193.7" r="0.4" fill="#ffffff" opacity="0.8" />
+
+                    {/* Nostril */}
+                    <circle cx={x+15.5} cy="197" r="0.5" fill="#4a3520" />
+
+                    {/* Front legs - clearly separated */}
+                    <rect x={x+3} y="206" width="2" height="6" fill="#654321" />
+                    <rect x={x+7} y="206" width="2" height="6" fill="#7a5230" />
+                    {/* Hooves on front legs */}
+                    <rect x={x+3} y="211" width="2" height="1" fill="#2f2f2f" />
+                    <rect x={x+7} y="211" width="2" height="1" fill="#2f2f2f" />
+
+                    {/* Back legs - clearly separated */}
+                    <rect x={x-5} y="206" width="2" height="6" fill="#654321" />
+                    <rect x={x-1} y="206" width="2" height="6" fill="#7a5230" />
+                    {/* Hooves on back legs */}
+                    <rect x={x-5} y="211" width="2" height="1" fill="#2f2f2f" />
+                    <rect x={x-1} y="211" width="2" height="1" fill="#2f2f2f" />
+
+                    {/* Tail - flowing and detailed */}
+                    <path d={`M ${x-10},199 Q ${x-13},201 ${x-14},205 Q ${x-13},208 ${x-11},207`}
+                          stroke="#4a3520" strokeWidth="2" fill="none" />
+
+                    {/* Mane - flowing down neck */}
+                    <path d={`M ${x+11},192 Q ${x+9},193 ${x+7},195 Q ${x+5},196 ${x+3},197`}
+                          stroke="#4a3520" strokeWidth="1.5" fill="none" />
+                    <path d={`M ${x+10},193 Q ${x+8},194 ${x+6},196`}
+                          stroke="#4a3520" strokeWidth="1.2" fill="none" />
                   </g>
                 ))}
               </g>
 
-              {/* Cows grazing */}
+              {/* Cows grazing - DETAILED AND RECOGNIZABLE! */}
               <g>
                 {[4030, 4190, 4310, 4440].map((x, i) => (
                   <g key={`cow-end-${i}`} className="animal-cow" opacity="1" style={{animationDelay: `${i * 0.5}s`}}>
-                    {/* Cow body */}
-                    <ellipse cx={x} cy="202" rx="9" ry="5" fill="#f5f5f5" />
-                    {/* Black spots */}
-                    <ellipse cx={x-3} cy="201" rx="2" ry="2" fill="#2f2f2f" opacity="1" />
-                    <ellipse cx={x+4} cy="202" rx="2.5" ry="2.5" fill="#2f2f2f" opacity="1" />
-                    {/* Cow head */}
-                    <ellipse cx={x-7} cy="200" rx="3" ry="3.5" fill="#f5f5f5" />
-                    {/* Horns */}
-                    <path d={`M ${x-9},199 L ${x-10},197 M ${x-5},199 L ${x-4},197`} stroke="#4a4a4a" strokeWidth="0.8" />
-                    {/* Legs */}
-                    <rect x={x-4} y="207" width="1.5" height="4" fill="#e8e8e8" />
-                    <rect x={x+3} y="207" width="1.5" height="4" fill="#e8e8e8" />
+                    {/* Main cow body - large and boxy */}
+                    <rect x={x-8} y="197" width="16" height="8" rx="2" fill="#f5f5f5" />
+
+                    {/* Udder underneath */}
+                    <ellipse cx={x} cy="205" rx="3" ry="2" fill="#ffb6c1" />
+
+                    {/* Black spots - multiple and prominent */}
+                    <ellipse cx={x-5} cy="199" rx="2.5" ry="2" fill="#2f2f2f" />
+                    <ellipse cx={x+2} cy="198" rx="3" ry="2.5" fill="#2f2f2f" />
+                    <ellipse cx={x-2} cy="202" rx="2" ry="1.5" fill="#2f2f2f" />
+                    <ellipse cx={x+5} cy="201" rx="2.5" ry="2" fill="#2f2f2f" />
+
+                    {/* Neck */}
+                    <rect x={x-9} y="194" width="3" height="5" rx="1" fill="#f5f5f5" />
+
+                    {/* Cow head - defined and forward-facing */}
+                    <ellipse cx={x-10} cy="195" rx="3.5" ry="4" fill="#f5f5f5" />
+
+                    {/* Spot on head */}
+                    <ellipse cx={x-11} cy="194" rx="1.5" ry="1.5" fill="#2f2f2f" />
+
+                    {/* Snout/muzzle - pink */}
+                    <ellipse cx={x-12} cy="197" rx="2" ry="2.5" fill="#ffb6c1" />
+
+                    {/* Nostrils */}
+                    <circle cx={x-12.5} cy="196.5" r="0.4" fill="#2f2f2f" />
+                    <circle cx={x-11.5} cy="196.5" r="0.4" fill="#2f2f2f" />
+
+                    {/* Horns - curved upward */}
+                    <path d={`M ${x-11},191 Q ${x-12},189 ${x-13},188`} stroke="#8a7a6a" strokeWidth="1.2" fill="none" />
+                    <path d={`M ${x-9},191 Q ${x-8},189 ${x-7},188`} stroke="#8a7a6a" strokeWidth="1.2" fill="none" />
+
+                    {/* Ears - floppy */}
+                    <ellipse cx={x-12} cy="192" rx="1.5" ry="1" fill="#e8e8e8" transform={`rotate(-30 ${x-12} 192)`} />
+                    <ellipse cx={x-8} cy="192" rx="1.5" ry="1" fill="#e8e8e8" transform={`rotate(30 ${x-8} 192)`} />
+
+                    {/* Eye - large and visible */}
+                    <circle cx={x-10} cy="194" r="1" fill="#2f2f2f" />
+                    <circle cx={x-9.7} cy="193.7" r="0.4" fill="#ffffff" opacity="0.8" />
+
+                    {/* Front legs - clearly separated */}
+                    <rect x={x-5} y="205" width="2" height="7" rx="1" fill="#e8e8e8" />
+                    <rect x={x-1} y="205" width="2" height="7" rx="1" fill="#e8e8e8" />
+                    {/* Hooves on front legs */}
+                    <rect x={x-5} y="211" width="2" height="1" fill="#2f2f2f" />
+                    <rect x={x-1} y="211" width="2" height="1" fill="#2f2f2f" />
+
+                    {/* Back legs - clearly separated */}
+                    <rect x={x+2} y="205" width="2" height="7" rx="1" fill="#e8e8e8" />
+                    <rect x={x+6} y="205" width="2" height="7" rx="1" fill="#e8e8e8" />
+                    {/* Hooves on back legs */}
+                    <rect x={x+2} y="211" width="2" height="1" fill="#2f2f2f" />
+                    <rect x={x+6} y="211" width="2" height="1" fill="#2f2f2f" />
+
+                    {/* Tail - hanging down with tuft */}
+                    <path d={`M ${x+8},199 L ${x+10},205`} stroke="#f5f5f5" strokeWidth="1.5" />
+                    <ellipse cx={x+10} cy="206" rx="1.5" ry="2" fill="#2f2f2f" />
                   </g>
                 ))}
               </g>
 
-              {/* Sheep grazing */}
+              {/* Sheep grazing - FLUFFY AND RECOGNIZABLE! */}
               <g>
                 {[3960, 4090, 4270, 4390, 4500].map((x, i) => (
                   <g key={`sheep-end-${i}`} className="animal-sheep" opacity="1" style={{animationDelay: `${i * 0.4}s`}}>
-                    {/* Fluffy sheep body */}
-                    <ellipse cx={x} cy="204" rx="6" ry="4" fill="#f5f5f5" />
-                    <circle cx={x-2} cy="203" r="3" fill="#f5f5f5" />
-                    <circle cx={x+2} cy="203" r="3" fill="#f5f5f5" />
-                    {/* Black sheep face */}
-                    <ellipse cx={x-5} cy="203" rx="2" ry="2.5" fill="#2f2f2f" />
-                    {/* Tiny legs */}
-                    <rect x={x-3} y="208" width="1" height="3" fill="#2f2f2f" />
-                    <rect x={x+2} y="208" width="1" height="3" fill="#2f2f2f" />
+                    {/* Fluffy wool body - multiple overlapping circles for texture */}
+                    <circle cx={x} cy="203" r="4.5" fill="#f5f5f5" />
+                    <circle cx={x-3} cy="202" r="3.5" fill="#f5f5f5" />
+                    <circle cx={x+3} cy="202" r="3.5" fill="#f5f5f5" />
+                    <circle cx={x-1} cy="205" r="3" fill="#f5f5f5" />
+                    <circle cx={x+2} cy="205" r="3" fill="#f5f5f5" />
+                    <circle cx={x} cy="200" r="3" fill="#f5f5f5" />
+
+                    {/* Wool texture - smaller accent circles */}
+                    <circle cx={x-2} cy="201" r="1.5" fill="#e8e8e8" />
+                    <circle cx={x+1} cy="203" r="1.5" fill="#e8e8e8" />
+                    <circle cx={x+3} cy="200" r="1.2" fill="#e8e8e8" />
+
+                    {/* Black sheep face and head - clearly defined */}
+                    <ellipse cx={x-6} cy="201" rx="2.5" ry="3" fill="#2f2f2f" />
+
+                    {/* Ears - sticking up */}
+                    <ellipse cx={x-7} cy="199" rx="1" ry="1.5" fill="#2f2f2f" />
+                    <ellipse cx={x-5} cy="199" rx="1" ry="1.5" fill="#2f2f2f" />
+
+                    {/* Eyes - visible white with black pupils */}
+                    <circle cx={x-6.5} cy="201" r="0.6" fill="#ffffff" />
+                    <circle cx={x-6.5} cy="201" r="0.3" fill="#2f2f2f" />
+
+                    {/* Nose/snout */}
+                    <ellipse cx={x-7.5} cy="202" rx="0.8" ry="0.6" fill="#1a1a1a" />
+
+                    {/* Four black legs - clearly visible */}
+                    <rect x={x-4} y="207" width="1.5" height="4" rx="0.5" fill="#2f2f2f" />
+                    <rect x={x-1} y="207" width="1.5" height="4" rx="0.5" fill="#2f2f2f" />
+                    <rect x={x+1} y="207" width="1.5" height="4" rx="0.5" fill="#2f2f2f" />
+                    <rect x={x+4} y="207" width="1.5" height="4" rx="0.5" fill="#2f2f2f" />
+
+                    {/* Small fluffy tail */}
+                    <circle cx={x+5} cy="204" r="1.5" fill="#f5f5f5" />
                   </g>
                 ))}
               </g>
 
-              {/* Chickens pecking */}
+              {/* Chickens pecking - DETAILED AND RECOGNIZABLE! */}
               <g>
                 {[4000, 4060, 4140, 4280, 4340, 4420, 4530].map((x, i) => (
                   <g key={`chicken-end-${i}`} className="animal-chicken" opacity="1" style={{animationDelay: `${i * 0.2}s`}}>
-                    {/* Chicken body - super small */}
-                    <ellipse cx={x} cy="207" rx="2.5" ry="2" fill="#d4a574" />
-                    {/* Chicken head */}
-                    <circle cx={x-2} cy="206" r="1.5" fill="#d4a574" />
-                    {/* Red comb */}
-                    <path d={`M ${x-2},205 L ${x-1.5},204 L ${x-2.5},204`} fill="#cc3333" />
-                    {/* Beak */}
-                    <path d={`M ${x-3},206 L ${x-3.5},206`} stroke="#ffd700" strokeWidth="0.5" />
-                    {/* Tiny legs */}
-                    <rect x={x-1} y="209" width="0.5" height="2" fill="#d4a574" />
-                    <rect x={x+0.5} y="209" width="0.5" height="2" fill="#d4a574" />
+                    {/* Chicken body - plump and defined */}
+                    <ellipse cx={x} cy="207" rx="3.5" ry="3" fill="#d4a574" />
+
+                    {/* Wing detail - darker feather area */}
+                    <ellipse cx={x+0.5} cy="207" rx="2" ry="2" fill="#b8946a" />
+
+                    {/* Tail feathers - pointing upward */}
+                    <path d={`M ${x+3},206 Q ${x+4.5},204 ${x+5},202 Q ${x+4},203 ${x+3.5},205 Z`}
+                          fill="#8b6f47" />
+                    <path d={`M ${x+3.5},205 Q ${x+5},203 ${x+5.5},201 Q ${x+4.5},202 ${x+4},204 Z`}
+                          fill="#9a7a55" />
+
+                    {/* Neck connecting body to head */}
+                    <rect x={x-2.5} y="204" width="1.5" height="2" rx="0.5" fill="#d4a574" />
+
+                    {/* Chicken head - round and defined */}
+                    <circle cx={x-2.5} cy="204" r="2" fill="#d4a574" />
+
+                    {/* Red comb - prominent and wavy */}
+                    <path d={`M ${x-3},202 L ${x-2.8},200.5 L ${x-2.3},201 L ${x-2},200 L ${x-1.8},201 L ${x-1.5},202 Z`}
+                          fill="#cc3333" />
+
+                    {/* Wattle under beak */}
+                    <ellipse cx={x-3} cy="205" rx="0.6" ry="0.8" fill="#cc3333" />
+
+                    {/* Beak - prominent yellow */}
+                    <path d={`M ${x-4},204 L ${x-5},204 L ${x-4.5},204.5 Z`}
+                          fill="#ffd700" />
+
+                    {/* Eye - small but visible */}
+                    <circle cx={x-2.5} cy="203.5" r="0.4" fill="#2f2f2f" />
+                    <circle cx={x-2.3} cy="203.3" r="0.15" fill="#ffffff" />
+
+                    {/* Legs - thin chicken legs with visible joints */}
+                    <path d={`M ${x-1},210 L ${x-1},211 L ${x-2},212`}
+                          stroke="#ffd700" strokeWidth="1" fill="none" />
+                    <path d={`M ${x+1},210 L ${x+1},211 L ${x+2},212`}
+                          stroke="#ffd700" strokeWidth="1" fill="none" />
+
+                    {/* Feet - three toes visible */}
+                    <path d={`M ${x-2},212 L ${x-2.5},212 M ${x-2},212 L ${x-2},212.5 M ${x-2},212 L ${x-1.5},212`}
+                          stroke="#ffd700" strokeWidth="0.5" />
+                    <path d={`M ${x+2},212 L ${x+2.5},212 M ${x+2},212 L ${x+2},212.5 M ${x+2},212 L ${x+1.5},212`}
+                          stroke="#ffd700" strokeWidth="0.5" />
                   </g>
                 ))}
               </g>
