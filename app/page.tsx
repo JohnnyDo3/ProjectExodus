@@ -89,7 +89,7 @@ export default function Home() {
       <FlyingBirds />
 
       {/* Hero Section - BOLD & EXPERIMENTAL */}
-      <section className="relative min-h-screen flex items-start justify-center overflow-hidden pt-5">
+      <section className="relative h-[85vh] flex items-start justify-center overflow-hidden pt-5">
         {/* Daytime: Sun Ray Gradient Background - Subtle with slight prominence */}
         <div className="absolute inset-0 z-0 day-only" style={{
           background: `
