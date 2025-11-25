@@ -89,61 +89,93 @@ export default function Home() {
 
       {/* Hero Section - BOLD & EXPERIMENTAL */}
       <section className="relative min-h-[85vh] flex items-center justify-center overflow-hidden pt-20">
-        {/* Daytime: Sun Ray Gradient Background */}
+        {/* Daytime: Sun Ray Gradient Background - RADIANT */}
         <div className="absolute inset-0 z-0 day-only" style={{
           background: `
-            radial-gradient(ellipse 150% 100% at 50% -20%,
-              rgba(255, 235, 120, 0.7) 0%,
-              rgba(255, 223, 100, 0.5) 20%,
-              rgba(135, 206, 250, 0.4) 40%,
-              rgba(135, 206, 250, 0.6) 60%,
-              rgba(176, 224, 230, 0.5) 80%,
-              rgba(255, 255, 255, 0.3) 100%
+            radial-gradient(ellipse 150% 120% at 50% -30%,
+              rgba(255, 245, 150, 0.95) 0%,
+              rgba(255, 235, 120, 0.85) 15%,
+              rgba(255, 220, 100, 0.7) 30%,
+              rgba(135, 206, 250, 0.5) 50%,
+              rgba(135, 206, 250, 0.7) 70%,
+              rgba(176, 224, 230, 0.6) 85%,
+              rgba(255, 255, 255, 0.4) 100%
             ),
             linear-gradient(180deg,
-              rgba(255, 250, 230, 0.8) 0%,
-              rgba(135, 206, 250, 0.8) 50%,
-              rgba(100, 149, 237, 0.6) 100%
+              rgba(255, 252, 240, 0.95) 0%,
+              rgba(255, 248, 220, 0.9) 30%,
+              rgba(135, 206, 250, 0.85) 60%,
+              rgba(100, 149, 237, 0.7) 100%
             )
           `
         }}>
-          {/* Heavenly Star Rays - Emanating from top - Enhanced */}
+          {/* Primary Radiant Rays - Intense golden light */}
           <div className="absolute inset-0" style={{
             background: `
               repeating-conic-gradient(
-                from 0deg at 50% -50%,
+                from 0deg at 50% -60%,
                 transparent 0deg,
-                rgba(255, 255, 255, 0.35) 1.5deg,
-                rgba(255, 250, 200, 0.25) 2deg,
+                rgba(255, 255, 255, 0.6) 0.8deg,
+                rgba(255, 250, 200, 0.5) 1.5deg,
+                rgba(255, 240, 180, 0.3) 2deg,
+                transparent 2.5deg,
+                transparent 6deg
+              )
+            `,
+            opacity: 1,
+            mixBlendMode: 'overlay',
+            filter: 'brightness(1.2)'
+          }} />
+
+          {/* Secondary ray layer - Deeper glow */}
+          <div className="absolute inset-0" style={{
+            background: `
+              repeating-conic-gradient(
+                from 30deg at 50% -60%,
+                transparent 0deg,
+                rgba(255, 245, 200, 0.45) 1deg,
+                rgba(255, 235, 180, 0.35) 2deg,
+                transparent 3deg,
+                transparent 7deg
+              )
+            `,
+            opacity: 0.9,
+            mixBlendMode: 'soft-light'
+          }} />
+
+          {/* Tertiary shimmer layer */}
+          <div className="absolute inset-0" style={{
+            background: `
+              repeating-conic-gradient(
+                from 60deg at 50% -60%,
+                transparent 0deg,
+                rgba(255, 255, 240, 0.3) 1.5deg,
                 transparent 3deg,
                 transparent 8deg
               )
             `,
-            opacity: 0.9,
-            mixBlendMode: 'overlay'
+            opacity: 0.85
           }} />
 
-          {/* Secondary ray layer for depth */}
+          {/* Radiant wispy cloud effect */}
           <div className="absolute inset-0" style={{
             background: `
-              repeating-conic-gradient(
-                from 45deg at 50% -50%,
-                transparent 0deg,
-                rgba(255, 240, 180, 0.2) 2deg,
-                transparent 4deg,
-                transparent 10deg
+              radial-gradient(ellipse 60% 30% at 20% 40%, rgba(255, 255, 255, 0.8) 0%, rgba(255, 250, 240, 0.3) 30%, transparent 60%),
+              radial-gradient(ellipse 50% 25% at 80% 30%, rgba(255, 255, 255, 0.75) 0%, rgba(255, 248, 230, 0.25) 30%, transparent 60%),
+              radial-gradient(ellipse 70% 35% at 60% 70%, rgba(255, 255, 255, 0.7) 0%, rgba(255, 245, 220, 0.2) 30%, transparent 60%)
+            `
+          }} />
+
+          {/* Central radiance glow */}
+          <div className="absolute inset-0" style={{
+            background: `
+              radial-gradient(ellipse 80% 60% at 50% -40%,
+                rgba(255, 250, 220, 0.6) 0%,
+                rgba(255, 240, 200, 0.4) 25%,
+                transparent 50%
               )
             `,
-            opacity: 0.7
-          }} />
-
-          {/* Subtle wispy cloud effect - Enhanced */}
-          <div className="absolute inset-0" style={{
-            background: `
-              radial-gradient(ellipse 60% 30% at 20% 40%, rgba(255, 255, 255, 0.6) 0%, transparent 50%),
-              radial-gradient(ellipse 50% 25% at 80% 30%, rgba(255, 255, 255, 0.5) 0%, transparent 50%),
-              radial-gradient(ellipse 70% 35% at 60% 70%, rgba(255, 255, 255, 0.4) 0%, transparent 50%)
-            `
+            filter: 'blur(20px)'
           }} />
         </div>
 
