@@ -9,6 +9,7 @@ interface Star {
   size: number
   brightness: number
   twinkleSpeed: number
+  pulsePhase: number // Random starting phase for pulse animation
   isConstellation: boolean
   constellationId?: number
 }
@@ -139,9 +140,10 @@ export function NightSkyConstellations({ alwaysShow = false, starCount = 1400 }:
       newStars.push({
         x: (pos.x / 100) * canvas.width,
         y: (pos.y / 100) * canvas.height,
-        size: 2.5 + Math.random() * 2, // Larger constellation stars
+        size: 3 + Math.random() * 3, // Enhanced size variation for depth (3-6px)
         brightness: 0.85 + Math.random() * 0.15, // Brighter constellation stars
         twinkleSpeed: 0.5 + Math.random() * 1.5,
+        pulsePhase: Math.random() * Math.PI * 2, // Random starting phase
         isConstellation: true,
         constellationId
       })
@@ -149,12 +151,17 @@ export function NightSkyConstellations({ alwaysShow = false, starCount = 1400 }:
 
     // Add random background stars (densely packed and more visible)
     for (let i = 0; i < starCount; i++) {
+      // Create depth variation: smaller stars (far) to larger stars (near)
+      const depthFactor = Math.random()
+      const size = depthFactor < 0.7 ? 0.5 + Math.random() * 1.5 : 2 + Math.random() * 3
+
       newStars.push({
         x: Math.random() * canvas.width,
         y: Math.random() * canvas.height,
-        size: 0.8 + Math.random() * 2, // Larger background stars
-        brightness: 0.45 + Math.random() * 0.55, // Brighter background stars
+        size, // Enhanced size variation for depth perception (0.5-5px)
+        brightness: 0.3 + Math.random() * 0.7, // Wide brightness range
         twinkleSpeed: 0.5 + Math.random() * 2,
+        pulsePhase: Math.random() * Math.PI * 2, // Random starting phase
         isConstellation: false
       })
     }
@@ -185,10 +192,15 @@ export function NightSkyConstellations({ alwaysShow = false, starCount = 1400 }:
       ctx.clearRect(0, 0, canvas.width, canvas.height)
       time += 0.01
 
-      // Draw stars
+      // Draw stars with 4-point sparkle effect
       stars.forEach((star, index) => {
-        const twinkle = Math.sin(time * star.twinkleSpeed) * 0.3 + 0.7
-        const alpha = star.brightness * twinkle
+        // Pulse animation: smooth breathing effect
+        const pulseValue = Math.sin(time * star.twinkleSpeed + star.pulsePhase)
+        const pulseScale = 0.7 + (pulseValue * 0.3 + 0.3) // Scale between 0.7x and 1.3x
+        const currentSize = star.size * pulseScale
+
+        // Alpha varies with pulse for sparkle effect
+        const alpha = star.brightness * (0.6 + pulseValue * 0.2 + 0.2)
 
         // Highlight constellation stars when hovered
         const isNearMouse = star.isConstellation &&
@@ -196,22 +208,75 @@ export function NightSkyConstellations({ alwaysShow = false, starCount = 1400 }:
           Math.abs(star.x - mousePos.x) < 100 &&
           Math.abs(star.y - mousePos.y) < 100
 
-        ctx.beginPath()
-        ctx.arc(star.x, star.y, star.size, 0, Math.PI * 2)
-        ctx.fillStyle = isNearMouse
-          ? `rgba(255, 223, 0, ${alpha})` // Gold for active constellation
-          : `rgba(255, 255, 255, ${alpha})`
-        ctx.fill()
+        const starColor = isNearMouse ? [255, 223, 0] : [255, 255, 255]
 
-        // Add glow for constellation stars (enhanced visibility)
+        // Draw 4-point star shape
+        ctx.save()
+        ctx.translate(star.x, star.y)
+
+        // Set glow based on star type
         if (star.isConstellation) {
-          ctx.shadowBlur = isNearMouse ? 20 : 8
+          ctx.shadowBlur = isNearMouse ? 20 : 12
           ctx.shadowColor = isNearMouse ? '#FFD700' : '#FFFFFF'
         } else {
-          // Add subtle glow to all stars for better visibility
-          ctx.shadowBlur = 2
+          ctx.shadowBlur = 4
           ctx.shadowColor = '#FFFFFF'
         }
+
+        // Draw the 4-point star
+        ctx.beginPath()
+        for (let i = 0; i < 4; i++) {
+          const angle = (i * Math.PI / 2) - Math.PI / 4 // 4 points at 45° intervals
+          const outerRadius = currentSize
+          const innerRadius = currentSize * 0.4
+
+          // Outer point
+          const outerX = Math.cos(angle) * outerRadius
+          const outerY = Math.sin(angle) * outerRadius
+
+          // Inner point (between outer points)
+          const innerAngle = angle + Math.PI / 4
+          const innerX = Math.cos(innerAngle) * innerRadius
+          const innerY = Math.sin(innerAngle) * innerRadius
+
+          if (i === 0) {
+            ctx.moveTo(outerX, outerY)
+          } else {
+            ctx.lineTo(outerX, outerY)
+          }
+          ctx.lineTo(innerX, innerY)
+        }
+        ctx.closePath()
+
+        ctx.fillStyle = `rgba(${starColor[0]}, ${starColor[1]}, ${starColor[2]}, ${alpha})`
+        ctx.fill()
+
+        // Draw light rays at maximum growth (when pulseValue > 0.7)
+        if (pulseValue > 0.7) {
+          const rayIntensity = (pulseValue - 0.7) / 0.3 // 0 to 1 as pulse reaches max
+          const rayLength = currentSize * (1.5 + rayIntensity * 1.5) // Extends beyond star
+          const rayAlpha = alpha * rayIntensity * 0.6
+
+          ctx.strokeStyle = `rgba(${starColor[0]}, ${starColor[1]}, ${starColor[2]}, ${rayAlpha})`
+          ctx.lineWidth = 0.5
+          ctx.shadowBlur = 8
+
+          // Draw 4 rays from each tip
+          for (let i = 0; i < 4; i++) {
+            const angle = (i * Math.PI / 2) - Math.PI / 4
+            const startX = Math.cos(angle) * currentSize
+            const startY = Math.sin(angle) * currentSize
+            const endX = Math.cos(angle) * rayLength
+            const endY = Math.sin(angle) * rayLength
+
+            ctx.beginPath()
+            ctx.moveTo(startX, startY)
+            ctx.lineTo(endX, endY)
+            ctx.stroke()
+          }
+        }
+
+        ctx.restore()
       })
 
       // Draw constellation lines when hovering nearby

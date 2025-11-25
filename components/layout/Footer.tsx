@@ -2,11 +2,14 @@
 
 import Link from 'next/link'
 import { useState } from 'react'
+import { usePathname } from 'next/navigation'
 import { Facebook, Twitter, Instagram, Linkedin, Youtube, Mail, Send, Leaf } from 'lucide-react'
 import { Button } from '@/components/ui/Button'
 import { ProgressiveSkyline } from '@/components/decorative/ProgressiveSkyline'
 
 export function Footer() {
+  const pathname = usePathname()
+  const isHeroPage = pathname === '/'
   const [email, setEmail] = useState('')
   const [subscribed, setSubscribed] = useState(false)
   const [isSubmitting, setIsSubmitting] = useState(false)
@@ -304,8 +307,8 @@ export function Footer() {
         </div>
       </div>
 
-      {/* Progressive Skyline - Rural to Sustainable City */}
-      <ProgressiveSkyline />
+      {/* Progressive Skyline - Rural to Sustainable City (Hero Page Only) */}
+      {isHeroPage && <ProgressiveSkyline />}
     </footer>
   )
 }

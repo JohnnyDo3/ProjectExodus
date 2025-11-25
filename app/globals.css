@@ -237,6 +237,33 @@
   --border: var(--earth-700);
 }
 
+/* 🌅 Conditional visibility for day/night elements */
+/* Show only during daytime phases */
+.day-only {
+  display: block;
+}
+
+.night .day-only,
+.dark .day-only,
+.midnight .day-only,
+.evening .day-only,
+.dusk .day-only {
+  display: none !important;
+}
+
+/* Show only during nighttime phases */
+.night-only {
+  display: none;
+}
+
+.night .night-only,
+.dark .night-only,
+.midnight .night-only,
+.evening .night-only,
+.dusk .night-only {
+  display: block !important;
+}
+
 /* Fallback for system preference */
 @media (prefers-color-scheme: dark) {
   :root:not(.light):not(.day):not(.sunrise):not(.sunset):not(.night) {

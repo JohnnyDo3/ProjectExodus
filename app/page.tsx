@@ -88,14 +88,55 @@ export default function Home() {
       <FlyingBirds />
 
       {/* Hero Section - BOLD & EXPERIMENTAL */}
-      <section className="relative min-h-screen flex items-center justify-center overflow-hidden bg-gradient-to-br from-[var(--muted)] via-[color-mix(in_srgb,var(--primary)_20%,var(--background))] to-[color-mix(in_srgb,var(--accent)_20%,var(--background))]">
+      <section className="relative min-h-screen flex items-center justify-center overflow-hidden">
+        {/* Daytime: Sun Ray Gradient Background */}
+        <div className="absolute inset-0 z-0 day-only" style={{
+          background: `
+            radial-gradient(ellipse 150% 100% at 50% -20%,
+              rgba(255, 223, 100, 0.4) 0%,
+              rgba(135, 206, 250, 0.3) 30%,
+              rgba(135, 206, 250, 0.5) 50%,
+              rgba(176, 224, 230, 0.4) 70%,
+              rgba(255, 255, 255, 0.2) 100%
+            ),
+            linear-gradient(180deg,
+              rgba(255, 248, 220, 0.6) 0%,
+              rgba(135, 206, 250, 0.7) 40%,
+              rgba(100, 149, 237, 0.5) 100%
+            )
+          `
+        }}>
+          {/* Heavenly Star Rays - Emanating from top */}
+          <div className="absolute inset-0" style={{
+            background: `
+              repeating-conic-gradient(
+                from 0deg at 50% -50%,
+                transparent 0deg,
+                rgba(255, 255, 255, 0.15) 2deg,
+                transparent 4deg,
+                transparent 10deg
+              )
+            `,
+            opacity: 0.6
+          }} />
+
+          {/* Subtle wispy cloud effect */}
+          <div className="absolute inset-0" style={{
+            background: `
+              radial-gradient(ellipse 60% 30% at 20% 40%, rgba(255, 255, 255, 0.4) 0%, transparent 50%),
+              radial-gradient(ellipse 50% 25% at 80% 30%, rgba(255, 255, 255, 0.3) 0%, transparent 50%),
+              radial-gradient(ellipse 70% 35% at 60% 70%, rgba(255, 255, 255, 0.25) 0%, transparent 50%)
+            `
+          }} />
+        </div>
+
         {/* Night Sky Constellations - Only at night */}
         <div className="absolute inset-0 z-0">
           <NightSkyConstellations starCount={1400} />
         </div>
 
-        {/* Morphing Background Blobs - 3D Effect */}
-        <div className="absolute inset-0 z-[1] opacity-60">
+        {/* Morphing Background Blobs - 3D Effect (both day and night) */}
+        <div className="absolute inset-0 z-[1] opacity-40">
           <div className="absolute top-10 left-10 w-96 h-96 bg-[var(--primary)] rounded-full blur-3xl opacity-30 animate-pulse"
                style={{ transform: 'translateZ(0) scale(1.2)', animationDuration: '8s' }} />
           <div className="absolute bottom-20 right-20 w-[500px] h-[500px] bg-[var(--accent)] rounded-full blur-3xl opacity-30 animate-pulse"

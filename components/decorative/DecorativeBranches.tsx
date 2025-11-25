@@ -1,6 +1,7 @@
 'use client'
 
 import { useEffect, useState } from 'react'
+import { usePathname } from 'next/navigation'
 
 interface Leaf {
   id: number
@@ -11,7 +12,14 @@ interface Leaf {
 }
 
 export function DecorativeBranches() {
+  const pathname = usePathname()
+  const isHeroPage = pathname === '/'
   const [leaves, setLeaves] = useState<Leaf[]>([])
+
+  // Don't render on hero page
+  if (isHeroPage) {
+    return null
+  }
 
   useEffect(() => {
     // 7 leaves - some attached, some falling
