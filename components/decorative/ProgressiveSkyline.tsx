@@ -1598,10 +1598,10 @@ export function ProgressiveSkyline() {
                   {x: 580, color: "#2f4f7f", direction: "reverse"},    // Blue
                   {x: 1080, color: "#4a7c2f", direction: "forward"},   // Green
                   {x: 1580, color: "#d4af37", direction: "reverse"},   // Gold
-                  {x: 2080, color: "#8a8a8a", direction: "forward"},   // Silver
-                  {x: 2580, color: "#4a4a4a", direction: "reverse"},   // Dark Gray
-                  {x: 3080, color: "#cc6633", direction: "forward"},   // Orange
-                  {x: 3580, color: "#5a3d8a", direction: "reverse"},   // Purple
+                  {x: 1880, color: "#8a8a8a", direction: "forward"},   // Silver - moved before green city
+                  {x: 1750, color: "#4a4a4a", direction: "reverse"},   // Dark Gray - moved before green city
+                  {x: 3950, color: "#cc6633", direction: "forward"},   // Orange - moved after green city
+                  {x: 3880, color: "#5a3d8a", direction: "reverse"},   // Purple - moved after green city
                   {x: 4080, color: "#e8e8e8", direction: "forward"},   // White
                   {x: 4580, color: "#c73e3e", direction: "reverse"},   // Red
                   {x: 4950, color: "#2f4f7f", direction: "forward"}    // Blue
@@ -1638,10 +1638,10 @@ export function ProgressiveSkyline() {
                   {x: 760, direction: "reverse"},
                   {x: 1260, direction: "forward"},
                   {x: 1760, direction: "reverse"},
-                  {x: 2260, direction: "forward"},
-                  {x: 2760, direction: "reverse"},
-                  {x: 3260, direction: "forward"},
-                  {x: 3760, direction: "reverse"},
+                  {x: 1920, direction: "forward"},     // Moved before green city
+                  {x: 1850, direction: "reverse"},     // Moved before green city
+                  {x: 3850, direction: "forward"},     // Moved after green city
+                  {x: 3820, direction: "reverse"},     // Moved after green city
                   {x: 4260, direction: "forward"},
                   {x: 4760, direction: "reverse"},
                   {x: 4900, direction: "forward"}
@@ -1678,10 +1678,10 @@ export function ProgressiveSkyline() {
                   {x: 950, direction: "forward"},
                   {x: 1450, direction: "reverse"},
                   {x: 1950, direction: "forward"},
-                  {x: 2450, direction: "reverse"},
-                  {x: 2950, direction: "forward"},
-                  {x: 3450, direction: "reverse"},
-                  {x: 3950, direction: "forward"},
+                  {x: 1800, direction: "reverse"},     // Moved before green city
+                  {x: 1980, direction: "forward"},     // Moved before green city
+                  {x: 3900, direction: "reverse"},     // Moved after green city
+                  {x: 4050, direction: "forward"},     // Moved after green city
                   {x: 4450, direction: "reverse"}
                 ].map((truck, i) => (
                   <g key={`fg-truck-${i}`} className={truck.direction === "forward" ? "moving-car" : "moving-car-reverse"} opacity="1" style={{animationDelay: `${i * 2.5}s`}}>
