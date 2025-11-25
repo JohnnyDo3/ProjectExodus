@@ -215,26 +215,24 @@ export function ProgressiveSkyline() {
             <g fill={`url(#skylineGradient-${iteration})`} className="text-[var(--foreground)]">
               {/* ========== PHASE 1: RURAL COUNTRYSIDE (0-800) ========== */}
 
-              {/* Beautiful rolling hills with green grass */}
-              <path d="M 0,210 Q 100,195 200,205 Q 300,215 400,200 Q 500,190 600,200 Q 700,205 800,195 L 800,250 L 0,250 Z"
-                    fill="#7aa87a" opacity="0.7" />
-              <path d="M 0,205 Q 80,192 160,200 Q 240,208 320,195 Q 400,185 480,195 Q 560,203 640,190 Q 720,185 800,192 L 800,250 L 0,250 Z"
-                    fill="#8ab88a" opacity="0.6" />
+              {/* Beautiful rolling hills with green grass - calming toward suburbs */}
+              <path d="M 0,210 Q 100,195 200,205 Q 300,215 400,200 Q 500,190 600,200 Q 700,205 750,202 Q 775,207 800,210 L 800,250 L 0,250 Z"
+                    fill="#7aa87a" opacity="0.6" />
+              <path d="M 0,205 Q 80,192 160,200 Q 240,208 320,195 Q 400,185 480,195 Q 560,203 640,190 Q 720,188 750,200 Q 775,205 800,208 L 800,250 L 0,250 Z"
+                    fill="#8ab88a" opacity="0.5" />
 
-              {/* White picket fences along road - protecting animals */}
+              {/* White picket fences along road - protecting animals - CONTINUOUS */}
               <g>
-                {[40, 140, 240, 340, 440, 540, 640, 740].map((x, i) => (
-                  <g key={`fence-section-${i}`}>
-                    {Array.from({length: 12}).map((_, fi) => (
-                      <g key={`picket-${fi}`}>
-                        <rect x={x + fi * 8} y="225" width="2" height="10" fill="#f5f5f5" opacity="0.95" />
-                        <path d={`M ${x + fi * 8},225 L ${x + fi * 8 + 1},223 L ${x + fi * 8 + 2},225 Z`} fill="#f5f5f5" opacity="0.95" />
-                      </g>
-                    ))}
-                    <rect x={x} y="228" width="96" height="1.5" fill="#f5f5f5" opacity="0.9" />
-                    <rect x={x} y="232" width="96" height="1.5" fill="#f5f5f5" opacity="0.9" />
+                {/* Continuous fence from 0 to 800 */}
+                {Array.from({length: 100}).map((_, i) => (
+                  <g key={`picket-${i}`}>
+                    <rect x={i * 8} y="225" width="2" height="10" fill="#f5f5f5" opacity="0.95" />
+                    <path d={`M ${i * 8},225 L ${i * 8 + 1},223 L ${i * 8 + 2},225 Z`} fill="#f5f5f5" opacity="0.95" />
                   </g>
                 ))}
+                {/* Horizontal rails spanning entire length */}
+                <rect x="0" y="228" width="800" height="1.5" fill="#f5f5f5" opacity="0.9" />
+                <rect x="0" y="232" width="800" height="1.5" fill="#f5f5f5" opacity="0.9" />
               </g>
 
               {/* Red Barn #1 - Large Classic Barn with Details */}
@@ -605,10 +603,10 @@ export function ProgressiveSkyline() {
 
               {/* ========== PHASE 2: DEVELOPING SUBURBS (800-2000) ========== */}
 
-              {/* Grassy ground layer - matching rural appearance */}
-              <path d="M 800,210 Q 900,205 1000,208 Q 1100,212 1200,207 Q 1300,203 1400,209 Q 1500,211 1600,206 Q 1700,204 1800,208 Q 1900,211 2000,207 L 2000,250 L 800,250 Z"
+              {/* Grassy ground layer - smooth transitions from rural and to green city */}
+              <path d="M 800,210 Q 850,209 900,207 Q 950,206 1000,208 Q 1100,212 1200,207 Q 1300,203 1400,209 Q 1500,211 1600,206 Q 1700,204 1800,208 Q 1900,211 1950,210 Q 1975,210 2000,210 L 2000,250 L 800,250 Z"
                     fill="#7aa87a" opacity="0.6" />
-              <path d="M 800,208 Q 880,203 960,206 Q 1040,209 1120,205 Q 1200,202 1280,207 Q 1360,210 1440,205 Q 1520,203 1600,207 Q 1680,209 1760,205 Q 1840,203 1920,206 Q 1960,208 2000,205 L 2000,250 L 800,250 Z"
+              <path d="M 800,208 Q 850,207 900,206 Q 950,205 1000,206 Q 1100,209 1200,205 Q 1300,202 1400,207 Q 1500,210 1600,205 Q 1700,203 1800,207 Q 1900,209 1950,209 Q 1975,209 2000,208 L 2000,250 L 800,250 Z"
                     fill="#8ab88a" opacity="0.5" />
 
               {/* Main road infrastructure */}
@@ -829,10 +827,10 @@ export function ProgressiveSkyline() {
 
               {/* ========== PHASE 3: SUSTAINABLE GREEN CITY - PROJECT EXODUS (2000-3800) ========== */}
 
-              {/* Flat ground layer - urban landscape */}
-              <path d="M 2000,210 L 3800,210 L 3800,250 L 2000,250 Z"
+              {/* Flat ground layer - urban landscape with gentle rural transition */}
+              <path d="M 2000,210 L 3700,210 Q 3750,210 3775,208 Q 3790,207 3800,205 L 3800,250 L 2000,250 Z"
                     fill="#7aa87a" opacity="0.6" />
-              <path d="M 2000,208 L 3800,208 L 3800,250 L 2000,250 Z"
+              <path d="M 2000,208 L 3700,208 Q 3750,208 3775,207 Q 3790,206 3800,203 L 3800,250 L 2000,250 Z"
                     fill="#8ab88a" opacity="0.5" />
 
               {/* Pedestrian-friendly streets with bike lanes */}
@@ -1223,26 +1221,24 @@ export function ProgressiveSkyline() {
               {/* ========== PHASE 4: RETURN TO RURAL - IDENTICAL TO OPENING (3800-5000) ========== */}
               {/* This creates a SEAMLESS LOOP back to the start */}
 
-              {/* Rolling hills - EXTENDED to 5000px for seamless loop */}
-              <path d="M 3800,210 Q 3900,195 4000,205 Q 4100,215 4200,200 Q 4300,190 4400,200 Q 4500,205 4600,195 Q 4700,200 4800,205 Q 4900,195 5000,210 L 5000,250 L 3800,250 Z"
-                    fill="#7aa87a" opacity="0.7" />
-              <path d="M 3800,205 Q 3880,192 3960,200 Q 4040,208 4120,195 Q 4200,185 4280,195 Q 4360,203 4440,190 Q 4520,185 4600,192 Q 4680,200 4760,195 Q 4840,188 4920,195 Q 4960,200 5000,205 L 5000,250 L 3800,250 Z"
-                    fill="#8ab88a" opacity="0.6" />
+              {/* Rolling hills - smooth emergence from green city, then full rolling hills */}
+              <path d="M 3800,205 Q 3850,202 3900,200 Q 3950,198 4000,205 Q 4100,215 4200,200 Q 4300,190 4400,200 Q 4500,205 4600,195 Q 4700,200 4800,205 Q 4900,195 5000,210 L 5000,250 L 3800,250 Z"
+                    fill="#7aa87a" opacity="0.6" />
+              <path d="M 3800,203 Q 3850,201 3900,198 Q 3950,196 4000,200 Q 4100,208 4200,195 Q 4300,185 4400,195 Q 4500,203 4600,190 Q 4700,185 4800,192 Q 4900,188 5000,205 L 5000,250 L 3800,250 Z"
+                    fill="#8ab88a" opacity="0.5" />
 
-              {/* White picket fences along road - protecting animals */}
+              {/* White picket fences along road - protecting animals - CONTINUOUS */}
               <g>
-                {[3840, 3940, 4040, 4140, 4240, 4340, 4440, 4540, 4640, 4740, 4840, 4940].map((x, i) => (
-                  <g key={`fence-end-${i}`}>
-                    {Array.from({length: 12}).map((_, fi) => (
-                      <g key={`picket-${fi}`}>
-                        <rect x={x + fi * 8} y="225" width="2" height="10" fill="#f5f5f5" opacity="0.95" />
-                        <path d={`M ${x + fi * 8},225 L ${x + fi * 8 + 1},223 L ${x + fi * 8 + 2},225 Z`} fill="#f5f5f5" opacity="0.95" />
-                      </g>
-                    ))}
-                    <rect x={x} y="228" width="96" height="1.5" fill="#f5f5f5" opacity="0.9" />
-                    <rect x={x} y="232" width="96" height="1.5" fill="#f5f5f5" opacity="0.9" />
+                {/* Continuous fence from 3800 to 5000 */}
+                {Array.from({length: 150}).map((_, i) => (
+                  <g key={`picket-end-${i}`}>
+                    <rect x={3800 + i * 8} y="225" width="2" height="10" fill="#f5f5f5" opacity="0.95" />
+                    <path d={`M ${3800 + i * 8},225 L ${3800 + i * 8 + 1},223 L ${3800 + i * 8 + 2},225 Z`} fill="#f5f5f5" opacity="0.95" />
                   </g>
                 ))}
+                {/* Horizontal rails spanning entire length */}
+                <rect x="3800" y="228" width="1200" height="1.5" fill="#f5f5f5" opacity="0.9" />
+                <rect x="3800" y="232" width="1200" height="1.5" fill="#f5f5f5" opacity="0.9" />
               </g>
 
               {/* Red barns - matching opening, extended */}
