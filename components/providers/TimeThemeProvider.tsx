@@ -117,25 +117,35 @@ function calculateTimeTheme(coords: GeolocationCoords | null): TimeTheme {
   if (coords) {
     // Calculate actual sunrise/sunset times for user's location
     const times = SunCalc.getTimes(now, coords.latitude, coords.longitude)
-    const sunrise = times.sunrise.getHours()
-    const sunset = times.sunset.getHours()
+    const sunriseHour = times.sunrise.getHours()
+    const sunsetHour = times.sunset.getHours()
 
     // Map to 8 granular phases based on sunrise/sunset
-    if (hour >= 5 && hour < sunrise - 1) return 'dawn'
-    if (hour >= sunrise - 1 && hour < sunrise + 2) return 'sunrise'
-    if (hour >= sunrise + 2 && hour < 10) return 'morning'
+    // Dawn: 1 hour before sunrise
+    if (hour >= 5 && hour < Math.max(5, sunriseHour - 1)) return 'dawn'
+    // Sunrise: 1 hour before to 2 hours after sunrise
+    if (hour >= Math.max(5, sunriseHour - 1) && hour < Math.min(10, sunriseHour + 2)) return 'sunrise'
+    // Morning: After sunrise period until 10am
+    if (hour >= Math.min(10, sunriseHour + 2) && hour < 10) return 'morning'
+    // Day: 10am to 3pm
     if (hour >= 10 && hour < 15) return 'day'
-    if (hour >= 15 && hour < sunset - 2) return 'afternoon'
-    if (hour >= sunset - 2 && hour < sunset) return 'dusk'
-    if (hour >= sunset && hour < sunset + 2) return 'sunset'
-    if (hour >= sunset + 2 && hour < 22) return 'evening'
+    // Afternoon: 3pm until 2 hours before sunset
+    if (hour >= 15 && hour < Math.max(15, sunsetHour - 2)) return 'afternoon'
+    // Dusk: 2 hours before sunset
+    if (hour >= Math.max(15, sunsetHour - 2) && hour < sunsetHour) return 'dusk'
+    // Sunset: At sunset through 2 hours after
+    if (hour >= sunsetHour && hour < Math.min(22, sunsetHour + 2)) return 'sunset'
+    // Evening: After sunset period until 10pm
+    if (hour >= Math.min(22, sunsetHour + 2) && hour < 22) return 'evening'
+    // Night: 10pm to 2am
     if (hour >= 22 || hour < 2) return 'night'
+    // Midnight: 2am to 5am
     return 'midnight'
   } else {
     // Fallback: Use fixed times based on local timezone (8 phases)
     if (hour >= 5 && hour < 7) return 'dawn'
     if (hour >= 7 && hour < 10) return 'sunrise'
-    if (hour === 10) return 'morning'
+    if (hour >= 10 && hour < 11) return 'morning'
     if (hour >= 11 && hour < 15) return 'day'
     if (hour >= 15 && hour < 18) return 'afternoon'
     if (hour >= 18 && hour < 19) return 'dusk'
