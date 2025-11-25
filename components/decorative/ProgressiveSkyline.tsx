@@ -1102,23 +1102,6 @@ export function ProgressiveSkyline() {
                 ))}
               </g>
 
-              {/* Electric buses - MORE! */}
-              <g opacity="0.8">
-                {[2050, 2350, 2650, 2950, 3250, 3550].map((x, i) => (
-                  <g key={`ebus-${i}`}>
-                    <rect x={x} y="235" width="38" height="13" rx="2" fill="#4a7c2f" opacity="0.9" />
-                    <rect x={x+4} y="231" width="11" height="5" rx="1" fill="#6b8ea8" opacity="0.8" />
-                    <rect x={x+23} y="231" width="11" height="5" rx="1" fill="#6b8ea8" opacity="0.8" />
-                    <circle cx={x+9} cy="248" r="3" fill="#2f2f2f" />
-                    <circle cx={x+29} cy="248" r="3" fill="#2f2f2f" />
-                    {/* Electric symbol */}
-                    <path d={`M ${x+18},238 L ${x+16},243 L ${x+20},243 L ${x+17},248`} stroke="#ffd700" strokeWidth="1.2" opacity="0.9" />
-                    {/* "ELECTRIC" text simulation */}
-                    <rect x={x+8} y="240" width="22" height="2" fill="#ffd700" opacity="0.3" />
-                  </g>
-                ))}
-              </g>
-
               {/* Electric cars/bikes on streets */}
               <g opacity="0.75">
                 {Array.from({length: 20}).map((_, i) => (
@@ -1570,25 +1553,16 @@ export function ProgressiveSkyline() {
               <g>
                 {[
                   {x: 100, color: "#c73e3e", direction: "forward"},    // Red
-                  {x: 350, color: "#2f4f7f", direction: "reverse"},    // Blue
-                  {x: 600, color: "#4a7c2f", direction: "forward"},    // Green
-                  {x: 850, color: "#d4af37", direction: "reverse"},    // Gold
-                  {x: 1100, color: "#8a8a8a", direction: "forward"},   // Silver
-                  {x: 1350, color: "#4a4a4a", direction: "reverse"},   // Dark Gray
-                  {x: 1600, color: "#cc6633", direction: "forward"},   // Orange
-                  {x: 1850, color: "#5a3d8a", direction: "reverse"},   // Purple
-                  {x: 2100, color: "#e8e8e8", direction: "forward"},   // White
-                  {x: 2350, color: "#c73e3e", direction: "reverse"},   // Red
-                  {x: 2600, color: "#2f4f7f", direction: "forward"},   // Blue
-                  {x: 2850, color: "#4a7c2f", direction: "reverse"},   // Green
-                  {x: 3100, color: "#d4af37", direction: "forward"},   // Gold
-                  {x: 3350, color: "#8a8a8a", direction: "reverse"},   // Silver
-                  {x: 3600, color: "#4a4a4a", direction: "forward"},   // Dark Gray
-                  {x: 3850, color: "#cc6633", direction: "reverse"},   // Orange
-                  {x: 4100, color: "#5a3d8a", direction: "forward"},   // Purple
-                  {x: 4350, color: "#e8e8e8", direction: "reverse"},   // White
-                  {x: 4600, color: "#c73e3e", direction: "forward"},   // Red
-                  {x: 4850, color: "#2f4f7f", direction: "reverse"}    // Blue
+                  {x: 550, color: "#2f4f7f", direction: "reverse"},    // Blue
+                  {x: 1000, color: "#4a7c2f", direction: "forward"},   // Green
+                  {x: 1450, color: "#d4af37", direction: "reverse"},   // Gold
+                  {x: 1900, color: "#8a8a8a", direction: "forward"},   // Silver
+                  {x: 2350, color: "#4a4a4a", direction: "reverse"},   // Dark Gray
+                  {x: 2800, color: "#cc6633", direction: "forward"},   // Orange
+                  {x: 3250, color: "#5a3d8a", direction: "reverse"},   // Purple
+                  {x: 3700, color: "#e8e8e8", direction: "forward"},   // White
+                  {x: 4150, color: "#c73e3e", direction: "reverse"},   // Red
+                  {x: 4600, color: "#2f4f7f", direction: "forward"}    // Blue
                 ].map((car, i) => (
                   <g key={`fg-car-${i}`} className={car.direction === "forward" ? "moving-car" : "moving-car-reverse"} opacity="1" style={{animationDelay: `${i * 1.5}s`}}>
                     {/* Sedan body - COLORED! */}
