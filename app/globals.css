@@ -181,9 +181,25 @@
   The site adapts to your local time, just like nature 🌱
 */
 
-/* 🌅 SUNRISE - Gentle awakening, soft golden dawn */
-.sunrise {
-  /* Warm, gentle dawn colors */
+/* 🌄 DAWN - Very early morning, pre-sunrise (5am-7am) */
+.dawn {
+  --background: #fff5f0;
+  --foreground: var(--earth-800);
+  --primary: #ff8ba7; /* Pink dawn */
+  --primary-foreground: white;
+  --secondary: #ffb4a2; /* Coral */
+  --secondary-foreground: white;
+  --accent: #87b8c7; /* Cool morning ocean */
+  --accent-foreground: white;
+  --muted: #ffe8dd;
+  --muted-foreground: var(--earth-600);
+  --card: #fffaf7;
+  --card-foreground: var(--earth-800);
+  --border: #ffd4c4;
+}
+
+/* 🌅 SUNRISE - Gentle awakening, soft golden dawn (7am-10am) */
+.sunrise, .morning {
   --background: #fff8f0;
   --foreground: var(--earth-800);
   --primary: #e8a05d; /* Warm golden */
@@ -199,21 +215,37 @@
   --border: #f4d9c4;
 }
 
-/* ☀️ DAY - Bright, vibrant, full of life (default light theme) */
+/* ☀️ DAY - Bright, vibrant, full of life (10am-3pm) */
 .day, :root {
   /* Already defined in :root above, but ensuring consistency */
 }
 
-/* 🌇 SUNSET - Warm terracotta, golden hour, peaceful transition */
-.sunset {
-  /* Deep warm earth with golden glow */
+/* 🌤️ AFTERNOON - Warm afternoon light (3pm-6pm) */
+.afternoon {
+  --background: #fff9e6;
+  --foreground: var(--earth-900);
+  --primary: #e89550; /* Warm afternoon sun */
+  --primary-foreground: white;
+  --secondary: #d88855; /* Rich terra */
+  --secondary-foreground: white;
+  --accent: #8fa89f; /* Warm teal */
+  --accent-foreground: white;
+  --muted: #f4ebcd;
+  --muted-foreground: var(--earth-700);
+  --card: #fffcf0;
+  --card-foreground: var(--earth-900);
+  --border: #ead4b0;
+}
+
+/* 🌆 DUSK - Early evening, golden hour (6pm-8pm) */
+.dusk {
   --background: #f5ebe0;
   --foreground: var(--earth-900);
-  --primary: var(--terra-600); /* Warm terracotta */
+  --primary: #d67050; /* Deep orange */
   --primary-foreground: white;
-  --secondary: #d68855; /* Deep warm orange */
+  --secondary: #c45f40; /* Rich terracotta */
   --secondary-foreground: white;
-  --accent: #8b6f47; /* Warm earthy accent */
+  --accent: #8b7565; /* Warm brown */
   --accent-foreground: white;
   --muted: #e8d5c4;
   --muted-foreground: var(--earth-700);
@@ -222,7 +254,24 @@
   --border: #d9c3ad;
 }
 
-/* 🌙 NIGHT - Deep earth tones, restful darkness */
+/* 🌇 SUNSET - Warm terracotta, golden hour transition (8pm-10pm) */
+.sunset, .evening {
+  --background: #ebe0d8;
+  --foreground: var(--earth-900);
+  --primary: var(--terra-600); /* Warm terracotta */
+  --primary-foreground: white;
+  --secondary: #9b6f8f; /* Purple dusk */
+  --secondary-foreground: white;
+  --accent: #7a6a5f; /* Dusky brown */
+  --accent-foreground: white;
+  --muted: #ddd0c4;
+  --muted-foreground: var(--earth-700);
+  --card: #f0e8e0;
+  --card-foreground: var(--earth-900);
+  --border: #cfc0ad;
+}
+
+/* 🌙 NIGHT - Deep earth tones, restful darkness (10pm-2am) */
 .night, .dark {
   --background: var(--earth-900);
   --foreground: var(--sand-100);
@@ -237,26 +286,49 @@
   --border: var(--earth-700);
 }
 
+/* 🌌 MIDNIGHT - Deepest night (2am-5am) */
+.midnight {
+  --background: #1a1614;
+  --foreground: var(--sand-200);
+  --primary: #5a7a65; /* Muted moss */
+  --primary-foreground: white;
+  --secondary: #8b5a4a; /* Muted terra */
+  --secondary-foreground: white;
+  --accent: #5a7a7a; /* Deep teal */
+  --accent-foreground: white;
+  --muted: #2a2420;
+  --muted-foreground: var(--sand-500);
+  --card: #221e1a;
+  --card-foreground: var(--sand-200);
+  --border: #3a342e;
+}
+
 /* 🌅 Conditional visibility for day/night elements */
-/* Show only during daytime phases (sunrise, day) */
+/* Show only during daytime phases (dawn, sunrise, morning, day, afternoon) */
 .day-only {
   display: block;
 }
 
+.dusk .day-only,
+.sunset .day-only,
+.evening .day-only,
 .night .day-only,
-.dark .day-only,
-.sunset .day-only {
+.midnight .day-only,
+.dark .day-only {
   display: none !important;
 }
 
-/* Show only during nighttime phases (sunset, night) */
+/* Show only during nighttime phases (dusk, sunset, evening, night, midnight) */
 .night-only {
   display: none;
 }
 
+.dusk .night-only,
+.sunset .night-only,
+.evening .night-only,
 .night .night-only,
-.dark .night-only,
-.sunset .night-only {
+.midnight .night-only,
+.dark .night-only {
   display: block !important;
 }
 

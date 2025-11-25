@@ -4,7 +4,7 @@ import { useEffect, useState } from 'react'
 import * as SunCalc from 'suncalc'
 
 export type ThemeMode = 'auto' | 'morning' | 'night'
-export type TimeTheme = 'sunrise' | 'day' | 'sunset' | 'night'
+export type TimeTheme = 'dawn' | 'sunrise' | 'morning' | 'day' | 'afternoon' | 'dusk' | 'sunset' | 'evening' | 'night' | 'midnight'
 
 interface GeolocationCoords {
   latitude: number
@@ -108,48 +108,41 @@ export function TimeThemeProvider({ children }: { children: React.ReactNode }) {
 
 /**
  * Calculate the appropriate theme based on current time and location
+ * Uses 8 granular time phases for natural transitions
  */
 function calculateTimeTheme(coords: GeolocationCoords | null): TimeTheme {
   const now = new Date()
+  const hour = now.getHours()
 
   if (coords) {
     // Calculate actual sunrise/sunset times for user's location
     const times = SunCalc.getTimes(now, coords.latitude, coords.longitude)
+    const sunrise = times.sunrise.getHours()
+    const sunset = times.sunset.getHours()
 
-    const sunrise = times.sunrise.getTime()
-    const sunset = times.sunset.getTime()
-    const currentTime = now.getTime()
-
-    // Define theme periods (with 1 hour buffer around sunrise/sunset)
-    const hourInMs = 60 * 60 * 1000
-    const sunriseStart = sunrise - hourInMs
-    const sunriseEnd = sunrise + hourInMs
-    const sunsetStart = sunset - hourInMs
-    const sunsetEnd = sunset + hourInMs
-
-    // Determine current theme period
-    if (currentTime >= sunriseStart && currentTime <= sunriseEnd) {
-      return 'sunrise'
-    } else if (currentTime > sunriseEnd && currentTime < sunsetStart) {
-      return 'day'
-    } else if (currentTime >= sunsetStart && currentTime <= sunsetEnd) {
-      return 'sunset'
-    } else {
-      return 'night'
-    }
+    // Map to 8 granular phases based on sunrise/sunset
+    if (hour >= 5 && hour < sunrise - 1) return 'dawn'
+    if (hour >= sunrise - 1 && hour < sunrise + 2) return 'sunrise'
+    if (hour >= sunrise + 2 && hour < 10) return 'morning'
+    if (hour >= 10 && hour < 15) return 'day'
+    if (hour >= 15 && hour < sunset - 2) return 'afternoon'
+    if (hour >= sunset - 2 && hour < sunset) return 'dusk'
+    if (hour >= sunset && hour < sunset + 2) return 'sunset'
+    if (hour >= sunset + 2 && hour < 22) return 'evening'
+    if (hour >= 22 || hour < 2) return 'night'
+    return 'midnight'
   } else {
-    // Fallback: Use fixed times based on local timezone
-    const hour = now.getHours()
-
-    if (hour >= 5 && hour < 8) {
-      return 'sunrise'
-    } else if (hour >= 8 && hour < 18) {
-      return 'day'
-    } else if (hour >= 18 && hour < 21) {
-      return 'sunset'
-    } else {
-      return 'night'
-    }
+    // Fallback: Use fixed times based on local timezone (8 phases)
+    if (hour >= 5 && hour < 7) return 'dawn'
+    if (hour >= 7 && hour < 10) return 'sunrise'
+    if (hour === 10) return 'morning'
+    if (hour >= 11 && hour < 15) return 'day'
+    if (hour >= 15 && hour < 18) return 'afternoon'
+    if (hour >= 18 && hour < 19) return 'dusk'
+    if (hour >= 19 && hour < 21) return 'sunset'
+    if (hour >= 21 && hour < 22) return 'evening'
+    if (hour >= 22 || hour < 2) return 'night'
+    return 'midnight'
   }
 }
 
@@ -160,10 +153,16 @@ export function getTimeDescription(coords: GeolocationCoords | null): string {
   const theme = calculateTimeTheme(coords)
 
   const descriptions: Record<TimeTheme, string> = {
+    dawn: '🌄 Early dawn awakens',
     sunrise: '🌅 Dawn is breaking',
+    morning: '🌤️ Morning has arrived',
     day: '☀️ It\'s a beautiful day',
+    afternoon: '🌞 Warm afternoon light',
+    dusk: '🌆 Dusk settles in',
     sunset: '🌇 Golden hour approaches',
+    evening: '🌃 Evening descends',
     night: '🌙 Night has fallen',
+    midnight: '🌌 Deep night silence',
   }
 
   return descriptions[theme]

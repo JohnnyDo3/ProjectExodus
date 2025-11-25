@@ -93,39 +93,56 @@ export default function Home() {
         <div className="absolute inset-0 z-0 day-only" style={{
           background: `
             radial-gradient(ellipse 150% 100% at 50% -20%,
-              rgba(255, 223, 100, 0.4) 0%,
-              rgba(135, 206, 250, 0.3) 30%,
-              rgba(135, 206, 250, 0.5) 50%,
-              rgba(176, 224, 230, 0.4) 70%,
-              rgba(255, 255, 255, 0.2) 100%
+              rgba(255, 235, 120, 0.7) 0%,
+              rgba(255, 223, 100, 0.5) 20%,
+              rgba(135, 206, 250, 0.4) 40%,
+              rgba(135, 206, 250, 0.6) 60%,
+              rgba(176, 224, 230, 0.5) 80%,
+              rgba(255, 255, 255, 0.3) 100%
             ),
             linear-gradient(180deg,
-              rgba(255, 248, 220, 0.6) 0%,
-              rgba(135, 206, 250, 0.7) 40%,
-              rgba(100, 149, 237, 0.5) 100%
+              rgba(255, 250, 230, 0.8) 0%,
+              rgba(135, 206, 250, 0.8) 50%,
+              rgba(100, 149, 237, 0.6) 100%
             )
           `
         }}>
-          {/* Heavenly Star Rays - Emanating from top */}
+          {/* Heavenly Star Rays - Emanating from top - Enhanced */}
           <div className="absolute inset-0" style={{
             background: `
               repeating-conic-gradient(
                 from 0deg at 50% -50%,
                 transparent 0deg,
-                rgba(255, 255, 255, 0.15) 2deg,
+                rgba(255, 255, 255, 0.35) 1.5deg,
+                rgba(255, 250, 200, 0.25) 2deg,
+                transparent 3deg,
+                transparent 8deg
+              )
+            `,
+            opacity: 0.9,
+            mixBlendMode: 'overlay'
+          }} />
+
+          {/* Secondary ray layer for depth */}
+          <div className="absolute inset-0" style={{
+            background: `
+              repeating-conic-gradient(
+                from 45deg at 50% -50%,
+                transparent 0deg,
+                rgba(255, 240, 180, 0.2) 2deg,
                 transparent 4deg,
                 transparent 10deg
               )
             `,
-            opacity: 0.6
+            opacity: 0.7
           }} />
 
-          {/* Subtle wispy cloud effect */}
+          {/* Subtle wispy cloud effect - Enhanced */}
           <div className="absolute inset-0" style={{
             background: `
-              radial-gradient(ellipse 60% 30% at 20% 40%, rgba(255, 255, 255, 0.4) 0%, transparent 50%),
-              radial-gradient(ellipse 50% 25% at 80% 30%, rgba(255, 255, 255, 0.3) 0%, transparent 50%),
-              radial-gradient(ellipse 70% 35% at 60% 70%, rgba(255, 255, 255, 0.25) 0%, transparent 50%)
+              radial-gradient(ellipse 60% 30% at 20% 40%, rgba(255, 255, 255, 0.6) 0%, transparent 50%),
+              radial-gradient(ellipse 50% 25% at 80% 30%, rgba(255, 255, 255, 0.5) 0%, transparent 50%),
+              radial-gradient(ellipse 70% 35% at 60% 70%, rgba(255, 255, 255, 0.4) 0%, transparent 50%)
             `
           }} />
         </div>
