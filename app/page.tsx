@@ -107,19 +107,19 @@ export default function Home() {
             )
           `
         }}>
-          {/* Subtle sun rays */}
+          {/* Prominent sun rays - 3x wider */}
           <div className="absolute inset-0" style={{
             background: `
               repeating-conic-gradient(
                 from 0deg at 50% -60%,
                 transparent 0deg,
-                rgba(255, 255, 255, 0.12) 1deg,
-                rgba(255, 250, 200, 0.09) 1.5deg,
-                transparent 2deg,
-                transparent 8deg
+                rgba(255, 255, 255, 0.15) 3deg,
+                rgba(255, 250, 200, 0.12) 4.5deg,
+                transparent 6deg,
+                transparent 24deg
               )
             `,
-            opacity: 0.65,
+            opacity: 0.75,
             mixBlendMode: 'soft-light'
           }} />
 
@@ -194,14 +194,6 @@ export default function Home() {
                 fontWeight: 800
               }}>Energy</span>
             </p>
-
-            {/* Badge */}
-            <div className="flex justify-center">
-              <span className="inline-flex items-center gap-3 px-6 py-3 rounded-full glass-effect border-2 border-theme-primary text-theme-primary font-bold text-base backdrop-blur-xl">
-                <span className="w-3 h-3 bg-theme-primary rounded-full" />
-                BUILDING A SUSTAINABLE FUTURE
-              </span>
-            </div>
           </div>
         </div>
       </section>

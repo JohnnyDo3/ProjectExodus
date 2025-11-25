@@ -22,10 +22,10 @@ export function ProgressiveSkyline() {
       <style jsx>{`
         @keyframes skylineScroll {
           0% {
-            transform: translateX(0);
+            transform: translateX(-2400px);
           }
           100% {
-            transform: translateX(-5000px);
+            transform: translateX(-7400px);
           }
         }
 
@@ -74,7 +74,7 @@ export function ProgressiveSkyline() {
         }
 
         .moving-car {
-          animation: carDrive 180s linear infinite;
+          animation: carDrive 100s linear infinite;
         }
 
         @keyframes carDriveReverse {
@@ -83,7 +83,7 @@ export function ProgressiveSkyline() {
         }
 
         .moving-car-reverse {
-          animation: carDriveReverse 180s linear infinite;
+          animation: carDriveReverse 100s linear infinite;
         }
 
         @keyframes chimneySmokeRise {
@@ -856,6 +856,7 @@ export function ProgressiveSkyline() {
                   {x: 2020, h: 60, w: 45, color: "#e8f4e8"}, {x: 2074, h: 80, w: 58, color: "#f0f8f0"},
                   {x: 2142, h: 68, w: 52, color: "#e0f2e0"}, {x: 2204, h: 90, w: 64, color: "#e8f4e8"},
                   {x: 2338, h: 88, w: 62, color: "#e0f2e0"},
+                  {x: 2410, h: 65, w: 48, color: "#e8f4e8"},
                   {x: 2468, h: 98, w: 68, color: "#f0f8f0"},
                   {x: 2546, h: 78, w: 56, color: "#e0f2e0"}, {x: 2612, h: 85, w: 60, color: "#e8f4e8"},
                   {x: 2682, h: 72, w: 54, color: "#f0f8f0"}, {x: 2746, h: 95, w: 66, color: "#e0f2e0"},
@@ -1028,60 +1029,60 @@ export function ProgressiveSkyline() {
                 ))}
               </g>
 
-              {/* City Parks - Green spaces where buildings were removed */}
+              {/* City Park - Green space with fountain, benches, and trees */}
               <g>
-                {/* Park 1 - at former 5th building location (x: 2278) */}
+                {/* Park 1 - at former 5th building location (x: 2278) - Continuation of landscape */}
                 <g>
-                  {/* Park ground */}
-                  <rect x="2268" y="150" width="60" height="65" fill="#7aa87a" opacity="0.7" />
-                  {/* Park trees */}
-                  {[2275, 2290, 2305, 2320].map((x, i) => (
-                    <g key={`park1-tree-${i}`}>
-                      <rect x={x} y="185" width="4" height="18" fill="#6b5a45" opacity="0.95" />
-                      <circle cx={x+2} cy="183" r="10" fill="#4a7c2f" opacity="0.95" />
-                      <circle cx={x-4} cy="186" r="7" fill="#5a8a5a" opacity="0.9" />
-                      <circle cx={x+8} cy="186" r="7" fill="#5a8a5a" opacity="0.9" />
-                    </g>
-                  ))}
-                  {/* Flower beds */}
-                  {Array.from({length: 15}).map((_, i) => (
-                    <circle key={`park1-flower-${i}`}
-                            cx={2270 + (i % 5) * 12}
-                            cy={195 + Math.floor(i / 5) * 6}
-                            r="2"
-                            fill={["#ff6b6b", "#ffd700", "#ff69b4"][i % 3]}
-                            opacity="0.9" />
-                  ))}
-                  {/* Park bench */}
-                  <rect x="2280" y="207" width="14" height="2" fill="#8b7355" opacity="0.95" />
-                  <rect x="2280" y="203" width="14" height="4" fill="#8b7355" opacity="0.9" />
-                </g>
+                  {/* Two trees in back of foreground */}
+                  <g key="park1-tree-1">
+                    <rect x="2275" y="192" width="4" height="16" fill="#6b5a45" opacity="0.95" />
+                    <circle cx="2277" cy="190" r="9" fill="#4a7c2f" opacity="0.95" />
+                    <circle cx="2273" cy="193" r="6" fill="#5a8a5a" opacity="0.9" />
+                    <circle cx="2281" cy="193" r="6" fill="#5a8a5a" opacity="0.9" />
+                  </g>
+                  <g key="park1-tree-2">
+                    <rect x="2315" y="194" width="4" height="15" fill="#6b5a45" opacity="0.95" />
+                    <circle cx="2317" cy="192" r="8" fill="#4a7c2f" opacity="0.95" />
+                    <circle cx="2313" cy="195" r="6" fill="#5a8a5a" opacity="0.9" />
+                    <circle cx="2321" cy="195" r="6" fill="#5a8a5a" opacity="0.9" />
+                  </g>
 
-                {/* Park 2 - at former 7th building location (x: 2410) */}
-                <g>
-                  {/* Park ground */}
-                  <rect x="2400" y="155" width="55" height="60" fill="#7aa87a" opacity="0.7" />
-                  {/* Park trees */}
-                  {[2407, 2422, 2437, 2447].map((x, i) => (
-                    <g key={`park2-tree-${i}`}>
-                      <rect x={x} y="188" width="4" height="16" fill="#6b5a45" opacity="0.95" />
-                      <circle cx={x+2} cy="186" r="9" fill="#4a7c2f" opacity="0.95" />
-                      <circle cx={x-3} cy="189" r="6" fill="#5a8a5a" opacity="0.9" />
-                      <circle cx={x+7} cy="189" r="6" fill="#5a8a5a" opacity="0.9" />
-                    </g>
-                  ))}
-                  {/* Flower beds */}
-                  {Array.from({length: 12}).map((_, i) => (
-                    <circle key={`park2-flower-${i}`}
-                            cx={2403 + (i % 4) * 12}
-                            cy={198 + Math.floor(i / 4) * 6}
-                            r="2"
-                            fill={["#ff6b6b", "#ffd700", "#ff69b4", "#9b59b6"][i % 4]}
-                            opacity="0.9" />
-                  ))}
-                  {/* Park bench */}
-                  <rect x="2415" y="209" width="12" height="2" fill="#8b7355" opacity="0.95" />
-                  <rect x="2415" y="205" width="12" height="4" fill="#8b7355" opacity="0.9" />
+                  {/* Fountain in middle */}
+                  <g>
+                    {/* Fountain base */}
+                    <ellipse cx="2298" cy="210" rx="10" ry="4" fill="#a8a8a8" opacity="0.9" />
+                    <rect x="2293" y="206" width="10" height="4" fill="#b8b8b8" opacity="0.95" rx="1" />
+
+                    {/* Fountain basin */}
+                    <ellipse cx="2298" cy="206" rx="8" ry="3" fill="#87CEEB" opacity="0.7" />
+
+                    {/* Water spray */}
+                    <circle cx="2298" cy="203" r="1.5" fill="#B0E0E6" opacity="0.8" />
+                    <circle cx="2295" cy="204" r="1" fill="#B0E0E6" opacity="0.7" />
+                    <circle cx="2301" cy="204" r="1" fill="#B0E0E6" opacity="0.7" />
+                    <circle cx="2296" cy="201" r="0.8" fill="#B0E0E6" opacity="0.6" />
+                    <circle cx="2300" cy="201" r="0.8" fill="#B0E0E6" opacity="0.6" />
+
+                    {/* Central water column */}
+                    <path d="M 2298,203 L 2298,198 L 2297,199 M 2298,198 L 2299,199"
+                          stroke="#B0E0E6" strokeWidth="0.8" fill="none" opacity="0.7" />
+                  </g>
+
+                  {/* Bench on left side */}
+                  <g>
+                    <rect x="2273" y="209" width="12" height="2" fill="#8b7355" opacity="0.95" />
+                    <rect x="2273" y="205" width="12" height="4" fill="#8b7355" opacity="0.9" />
+                    <rect x="2273" y="207" width="2" height="4" fill="#6b5a45" opacity="0.9" />
+                    <rect x="2283" y="207" width="2" height="4" fill="#6b5a45" opacity="0.9" />
+                  </g>
+
+                  {/* Bench on right side */}
+                  <g>
+                    <rect x="2310" y="209" width="12" height="2" fill="#8b7355" opacity="0.95" />
+                    <rect x="2310" y="205" width="12" height="4" fill="#8b7355" opacity="0.9" />
+                    <rect x="2310" y="207" width="2" height="4" fill="#6b5a45" opacity="0.9" />
+                    <rect x="2320" y="207" width="2" height="4" fill="#6b5a45" opacity="0.9" />
+                  </g>
                 </g>
               </g>
 
@@ -1107,28 +1108,6 @@ export function ProgressiveSkyline() {
                     </g>
                   );
                 })}
-              </g>
-
-              {/* Community gardens - EXPANDED with details */}
-              <g>
-                {[
-                  {x: 2150, size: 40}, {x: 2400, size: 45}, {x: 2650, size: 42},
-                  {x: 2900, size: 50}, {x: 3150, size: 48}, {x: 3400, size: 46}, {x: 3650, size: 44}
-                ].map((garden, i) => (
-                  <g key={`garden-${i}`}>
-                    {/* Garden plot */}
-                    <ellipse cx={garden.x} cy="202" rx={garden.size} ry="12" fill="#7aa87a" opacity="0.5" />
-                    {/* Colorful flowers/vegetables */}
-                    {Array.from({length: 8}).map((_, flower) => (
-                      <circle key={`flower-${flower}`}
-                              cx={garden.x - garden.size/2 + flower * (garden.size/4)}
-                              cy={202 - 8 + (flower % 3) * 4}
-                              r="2"
-                              fill={["#ff6b6b", "#ffd700", "#ff69b4", "#9b59b6"][flower % 4]}
-                              opacity="0.8" />
-                    ))}
-                  </g>
-                ))}
               </g>
 
               {/* Water features & fountains */}
@@ -1597,17 +1576,11 @@ export function ProgressiveSkyline() {
               {/* Moving traffic - cars driving across the entire city with VARIED COLORS and BIDIRECTIONAL! */}
               <g>
                 {[
-                  {x: 100, color: "#c73e3e", direction: "forward"},    // Red
-                  {x: 580, color: "#2f4f7f", direction: "reverse"},    // Blue
-                  {x: 1080, color: "#4a7c2f", direction: "forward"},   // Green
-                  {x: 1580, color: "#d4af37", direction: "reverse"},   // Gold
-                  {x: 1880, color: "#8a8a8a", direction: "forward"},   // Silver - moved before green city
-                  {x: 1750, color: "#4a4a4a", direction: "reverse"},   // Dark Gray - moved before green city
-                  {x: 3950, color: "#cc6633", direction: "forward"},   // Orange - moved after green city
-                  {x: 3880, color: "#5a3d8a", direction: "reverse"},   // Purple - moved after green city
-                  {x: 4080, color: "#e8e8e8", direction: "forward"},   // White
-                  {x: 4580, color: "#c73e3e", direction: "reverse"},   // Red
-                  {x: 4950, color: "#2f4f7f", direction: "forward"}    // Blue
+                  {x: 400, color: "#c73e3e", direction: "forward"},    // Red
+                  {x: 1200, color: "#2f4f7f", direction: "reverse"},   // Blue
+                  {x: 1950, color: "#4a7c2f", direction: "forward"},   // Green - just before green city
+                  {x: 3850, color: "#d4af37", direction: "reverse"},   // Gold - just after green city
+                  {x: 4600, color: "#cc6633", direction: "forward"}    // Orange
                 ].map((car, i) => (
                   <g key={`fg-car-${i}`} className={car.direction === "forward" ? "moving-car" : "moving-car-reverse"} opacity="1" style={{animationDelay: `${i * 1.5}s`}}>
                     {/* Sedan body - COLORED! */}
@@ -1637,17 +1610,10 @@ export function ProgressiveSkyline() {
               {/* Additional vehicles - SUVs with bidirectional traffic */}
               <g>
                 {[
-                  {x: 280, direction: "forward"},
-                  {x: 760, direction: "reverse"},
-                  {x: 1260, direction: "forward"},
-                  {x: 1760, direction: "reverse"},
-                  {x: 1920, direction: "forward"},     // Moved before green city
-                  {x: 1850, direction: "reverse"},     // Moved before green city
-                  {x: 3850, direction: "forward"},     // Moved after green city
-                  {x: 3820, direction: "reverse"},     // Moved after green city
-                  {x: 4260, direction: "forward"},
-                  {x: 4760, direction: "reverse"},
-                  {x: 4900, direction: "forward"}
+                  {x: 800, direction: "reverse"},
+                  {x: 1600, direction: "forward"},
+                  {x: 3900, direction: "reverse"},     // Just after green city
+                  {x: 4800, direction: "forward"}
                 ].map((suv, i) => (
                   <g key={`fg-suv-${i}`} className={suv.direction === "forward" ? "moving-car" : "moving-car-reverse"} opacity="1" style={{animationDelay: `${i * 2}s`}}>
                     {/* SUV body - taller and wider */}
@@ -1677,15 +1643,9 @@ export function ProgressiveSkyline() {
               {/* Delivery trucks with bidirectional traffic */}
               <g>
                 {[
-                  {x: 450, direction: "reverse"},
-                  {x: 950, direction: "forward"},
-                  {x: 1450, direction: "reverse"},
-                  {x: 1950, direction: "forward"},
-                  {x: 1800, direction: "reverse"},     // Moved before green city
-                  {x: 1980, direction: "forward"},     // Moved before green city
-                  {x: 3900, direction: "reverse"},     // Moved after green city
-                  {x: 4050, direction: "forward"},     // Moved after green city
-                  {x: 4450, direction: "reverse"}
+                  {x: 200, direction: "forward"},
+                  {x: 1400, direction: "reverse"},
+                  {x: 4200, direction: "forward"}
                 ].map((truck, i) => (
                   <g key={`fg-truck-${i}`} className={truck.direction === "forward" ? "moving-car" : "moving-car-reverse"} opacity="1" style={{animationDelay: `${i * 2.5}s`}}>
                     {/* Truck body */}
