@@ -125,7 +125,8 @@ function calculateTimeTheme(coords: GeolocationCoords | null): TimeTheme {
     const dawnEnd = Math.max(5, sunriseHour - 1)
     if (hour >= 5 && hour < dawnEnd) return 'dawn'
 
-    // Sunrise: 1 hour before to 2 hours after sunrise
+    // Sunrise: Always include actual sunrise hour, then extend period
+    if (hour === sunriseHour) return 'sunrise'
     const sunriseEnd = Math.min(10, sunriseHour + 2)
     if (hour >= dawnEnd && hour < sunriseEnd) return 'sunrise'
 
@@ -142,9 +143,10 @@ function calculateTimeTheme(coords: GeolocationCoords | null): TimeTheme {
     // Dusk: 2 hours before sunset
     if (hour >= duskStart && hour < sunsetHour) return 'dusk'
 
-    // Sunset: At sunset through 2 hours after
+    // Sunset: Always include actual sunset hour, then extend period
+    if (hour === sunsetHour) return 'sunset'
     const sunsetEnd = Math.min(22, sunsetHour + 2)
-    if (hour >= sunsetHour && hour < sunsetEnd) return 'sunset'
+    if (hour > sunsetHour && hour < sunsetEnd) return 'sunset'
 
     // Evening: After sunset period until 10pm (only if there's a gap)
     if (sunsetEnd < 22 && hour >= sunsetEnd && hour < 22) return 'evening'
