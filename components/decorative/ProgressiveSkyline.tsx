@@ -774,9 +774,9 @@ export function ProgressiveSkyline() {
                 </g>
               ))}
 
-              {/* Yard trees and landscaping - between houses with more grass */}
+              {/* Yard trees and landscaping - between houses, not blocking views */}
               <g opacity="0.8">
-                {[815, 865, 915, 965, 1020, 1070, 1125, 1175, 1225, 1280, 1330, 1385, 1435, 1485, 1540, 1590, 1645, 1695, 1745, 1800, 1850, 1900, 1950].map((x, i) => (
+                {[815, 865, 1020, 1175, 1225, 1280, 1330, 1385, 1590, 1645, 1695, 1850, 1900, 1950].map((x, i) => (
                   <g key={`yard-tree-${i}`}>
                     {/* Tree trunk */}
                     <rect x={x} y="203" width="2" height="7" fill="#6b5a45" opacity="0.9" />
@@ -875,8 +875,8 @@ export function ProgressiveSkyline() {
                 {[
                   {x: 2020, h: 60, w: 45, color: "#e8f4e8"}, {x: 2074, h: 80, w: 58, color: "#f0f8f0"},
                   {x: 2142, h: 68, w: 52, color: "#e0f2e0"}, {x: 2204, h: 90, w: 64, color: "#e8f4e8"},
-                  {x: 2278, h: 75, w: 50, color: "#f0f8f0"}, {x: 2338, h: 88, w: 62, color: "#e0f2e0"},
-                  {x: 2410, h: 65, w: 48, color: "#e8f4e8"}, {x: 2468, h: 98, w: 68, color: "#f0f8f0"},
+                  {x: 2338, h: 88, w: 62, color: "#e0f2e0"},
+                  {x: 2468, h: 98, w: 68, color: "#f0f8f0"},
                   {x: 2546, h: 78, w: 56, color: "#e0f2e0"}, {x: 2612, h: 85, w: 60, color: "#e8f4e8"},
                   {x: 2682, h: 72, w: 54, color: "#f0f8f0"}, {x: 2746, h: 95, w: 66, color: "#e0f2e0"},
                   {x: 2822, h: 82, w: 58, color: "#e8f4e8"}, {x: 2890, h: 75, w: 52, color: "#f0f8f0"},
@@ -1048,6 +1048,63 @@ export function ProgressiveSkyline() {
                 ))}
               </g>
 
+              {/* City Parks - Green spaces where buildings were removed */}
+              <g>
+                {/* Park 1 - at former 5th building location (x: 2278) */}
+                <g>
+                  {/* Park ground */}
+                  <rect x="2268" y="150" width="60" height="65" fill="#7aa87a" opacity="0.7" />
+                  {/* Park trees */}
+                  {[2275, 2290, 2305, 2320].map((x, i) => (
+                    <g key={`park1-tree-${i}`}>
+                      <rect x={x} y="185" width="4" height="18" fill="#6b5a45" opacity="0.95" />
+                      <circle cx={x+2} cy="183" r="10" fill="#4a7c2f" opacity="0.95" />
+                      <circle cx={x-4} cy="186" r="7" fill="#5a8a5a" opacity="0.9" />
+                      <circle cx={x+8} cy="186" r="7" fill="#5a8a5a" opacity="0.9" />
+                    </g>
+                  ))}
+                  {/* Flower beds */}
+                  {Array.from({length: 15}).map((_, i) => (
+                    <circle key={`park1-flower-${i}`}
+                            cx={2270 + (i % 5) * 12}
+                            cy={195 + Math.floor(i / 5) * 6}
+                            r="2"
+                            fill={["#ff6b6b", "#ffd700", "#ff69b4"][i % 3]}
+                            opacity="0.9" />
+                  ))}
+                  {/* Park bench */}
+                  <rect x="2280" y="207" width="14" height="2" fill="#8b7355" opacity="0.95" />
+                  <rect x="2280" y="203" width="14" height="4" fill="#8b7355" opacity="0.9" />
+                </g>
+
+                {/* Park 2 - at former 7th building location (x: 2410) */}
+                <g>
+                  {/* Park ground */}
+                  <rect x="2400" y="155" width="55" height="60" fill="#7aa87a" opacity="0.7" />
+                  {/* Park trees */}
+                  {[2407, 2422, 2437, 2447].map((x, i) => (
+                    <g key={`park2-tree-${i}`}>
+                      <rect x={x} y="188" width="4" height="16" fill="#6b5a45" opacity="0.95" />
+                      <circle cx={x+2} cy="186" r="9" fill="#4a7c2f" opacity="0.95" />
+                      <circle cx={x-3} cy="189" r="6" fill="#5a8a5a" opacity="0.9" />
+                      <circle cx={x+7} cy="189" r="6" fill="#5a8a5a" opacity="0.9" />
+                    </g>
+                  ))}
+                  {/* Flower beds */}
+                  {Array.from({length: 12}).map((_, i) => (
+                    <circle key={`park2-flower-${i}`}
+                            cx={2403 + (i % 4) * 12}
+                            cy={198 + Math.floor(i / 4) * 6}
+                            r="2"
+                            fill={["#ff6b6b", "#ffd700", "#ff69b4", "#9b59b6"][i % 4]}
+                            opacity="0.9" />
+                  ))}
+                  {/* Park bench */}
+                  <rect x="2415" y="209" width="12" height="2" fill="#8b7355" opacity="0.95" />
+                  <rect x="2415" y="205" width="12" height="4" fill="#8b7355" opacity="0.9" />
+                </g>
+              </g>
+
               {/* Trees lining EVERY street - Dense urban forest! */}
               <g opacity="0.85">
                 {Array.from({length: 45}).map((_, i) => {
@@ -1207,17 +1264,18 @@ export function ProgressiveSkyline() {
               <path d="M 3800,205 Q 3880,192 3960,200 Q 4040,208 4120,195 Q 4200,185 4280,195 Q 4360,203 4440,190 Q 4520,185 4600,192 Q 4680,200 4760,195 Q 4840,188 4920,195 Q 4960,200 5000,205 L 5000,250 L 3800,250 Z"
                     fill="#8ab88a" opacity="0.6" />
 
-              {/* White picket fences */}
+              {/* White picket fences along road - protecting animals */}
               <g>
                 {[3840, 3940, 4040, 4140, 4240, 4340, 4440, 4540, 4640, 4740, 4840, 4940].map((x, i) => (
                   <g key={`fence-end-${i}`}>
                     {Array.from({length: 12}).map((_, fi) => (
                       <g key={`picket-${fi}`}>
-                        <rect x={x + fi * 8} y="195" width="2" height="8" fill="#f5f5f5" opacity="0.95" />
-                        <path d={`M ${x + fi * 8},195 L ${x + fi * 8 + 1},193 L ${x + fi * 8 + 2},195 Z`} fill="#f5f5f5" opacity="0.95" />
+                        <rect x={x + fi * 8} y="225" width="2" height="10" fill="#f5f5f5" opacity="0.95" />
+                        <path d={`M ${x + fi * 8},225 L ${x + fi * 8 + 1},223 L ${x + fi * 8 + 2},225 Z`} fill="#f5f5f5" opacity="0.95" />
                       </g>
                     ))}
-                    <rect x={x} y="200" width="96" height="1.5" fill="#f5f5f5" opacity="0.9" />
+                    <rect x={x} y="228" width="96" height="1.5" fill="#f5f5f5" opacity="0.9" />
+                    <rect x={x} y="232" width="96" height="1.5" fill="#f5f5f5" opacity="0.9" />
                   </g>
                 ))}
               </g>
