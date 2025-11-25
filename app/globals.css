@@ -238,29 +238,25 @@
 }
 
 /* 🌅 Conditional visibility for day/night elements */
-/* Show only during daytime phases */
+/* Show only during daytime phases (sunrise, day) */
 .day-only {
   display: block;
 }
 
 .night .day-only,
 .dark .day-only,
-.midnight .day-only,
-.evening .day-only,
-.dusk .day-only {
+.sunset .day-only {
   display: none !important;
 }
 
-/* Show only during nighttime phases */
+/* Show only during nighttime phases (sunset, night) */
 .night-only {
   display: none;
 }
 
 .night .night-only,
 .dark .night-only,
-.midnight .night-only,
-.evening .night-only,
-.dusk .night-only {
+.sunset .night-only {
   display: block !important;
 }
 
