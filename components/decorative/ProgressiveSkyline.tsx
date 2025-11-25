@@ -853,13 +853,16 @@ export function ProgressiveSkyline() {
 
               {/* Pedestrian-friendly streets with bike lanes */}
               <g opacity="0.7">
-                {/* Horizontal sidewalk above the street - parallel to road */}
-                <rect x="2000" y="216" width="1800" height="3" fill="currentColor" opacity="0.35" />
-
-                {/* Main street */}
+                {/* Main street at bottom */}
                 <rect x="2000" y="220" width="1800" height="30" fill={`url(#roadGradient-${iteration})`} />
 
-                {/* Bike lane markings */}
+                {/* Thin sidewalk strip directly above street */}
+                <rect x="2000" y="218" width="1800" height="2" fill="#c4c4c4" opacity="0.6" />
+
+                {/* Grass foreground area between sidewalk and buildings */}
+                <rect x="2000" y="215" width="1800" height="3" fill="#7aa87a" opacity="0.5" />
+
+                {/* Bike lane markings on street */}
                 {Array.from({length: 36}).map((_, i) => (
                   <path key={`bike-${i}`} d={`M ${2010 + i * 50},225 L ${2015 + i * 50},230 L ${2010 + i * 50},235`}
                         stroke="#4a7c2f" strokeWidth="1.5" fill="none" opacity="0.7" />
