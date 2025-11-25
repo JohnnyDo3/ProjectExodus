@@ -358,8 +358,10 @@ export function ProgressiveSkyline() {
 
               {/* Horses in the fields - DETAILED AND RECOGNIZABLE! */}
               <g>
-                {[120, 320, 420, 580, 680, 760].map((x, i) => (
-                  <g key={`horse-${i}`} className="animal-horse" opacity="1" style={{animationDelay: `${i * 0.3}s`}}>
+                {[120, 320, 420, 580, 680, 760].map((x, i) => {
+                  const yOffsets = [-5, 2, -2, 4, 0, 3]; // Varied depths for visual interest
+                  return (
+                  <g key={`horse-${i}`} transform={`translate(0, ${yOffsets[i]})`} className="animal-horse" opacity="1" style={{animationDelay: `${i * 0.3}s`}}>
                     {/* Main body - larger and more defined */}
                     <ellipse cx={x} cy="200" rx="10" ry="6" fill="#654321" />
 
@@ -410,13 +412,16 @@ export function ProgressiveSkyline() {
                     <path d={`M ${x+10},193 Q ${x+8},194 ${x+6},196`}
                           stroke="#4a3520" strokeWidth="1.2" fill="none" />
                   </g>
-                ))}
+                  );
+                })}
               </g>
 
               {/* Cows grazing - DETAILED AND RECOGNIZABLE! */}
               <g>
-                {[230, 390, 510, 640].map((x, i) => (
-                  <g key={`cow-${i}`} className="animal-cow" opacity="1" style={{animationDelay: `${i * 0.5}s`}}>
+                {[230, 390, 510, 640].map((x, i) => {
+                  const yOffsets = [3, -4, 1, -2]; // Varied depths
+                  return (
+                  <g key={`cow-${i}`} transform={`translate(0, ${yOffsets[i]})`} className="animal-cow" opacity="1" style={{animationDelay: `${i * 0.5}s`}}>
                     {/* Main cow body - large and boxy */}
                     <rect x={x-8} y="197" width="16" height="8" rx="2" fill="#f5f5f5" />
 
@@ -475,13 +480,16 @@ export function ProgressiveSkyline() {
                     <path d={`M ${x+8},199 L ${x+10},205`} stroke="#f5f5f5" strokeWidth="1.5" />
                     <ellipse cx={x+10} cy="206" rx="1.5" ry="2" fill="#2f2f2f" />
                   </g>
-                ))}
+                  );
+                })}
               </g>
 
               {/* Sheep grazing - FLUFFY AND RECOGNIZABLE! */}
               <g>
-                {[160, 290, 470, 590, 700].map((x, i) => (
-                  <g key={`sheep-${i}`} className="animal-sheep" opacity="1" style={{animationDelay: `${i * 0.4}s`}}>
+                {[160, 290, 470, 590, 700].map((x, i) => {
+                  const yOffsets = [-3, 4, -1, 2, 0]; // Varied depths
+                  return (
+                  <g key={`sheep-${i}`} transform={`translate(0, ${yOffsets[i]})`} className="animal-sheep" opacity="1" style={{animationDelay: `${i * 0.4}s`}}>
                     {/* Fluffy wool body - multiple overlapping circles for texture */}
                     <circle cx={x} cy="203" r="4.5" fill="#f5f5f5" />
                     <circle cx={x-3} cy="202" r="3.5" fill="#f5f5f5" />
@@ -518,13 +526,16 @@ export function ProgressiveSkyline() {
                     {/* Small fluffy tail */}
                     <circle cx={x+5} cy="204" r="1.5" fill="#f5f5f5" />
                   </g>
-                ))}
+                  );
+                })}
               </g>
 
               {/* Chickens pecking - DETAILED AND RECOGNIZABLE! */}
               <g>
-                {[200, 260, 340, 480, 540, 620, 730].map((x, i) => (
-                  <g key={`chicken-${i}`} className="animal-chicken" opacity="1" style={{animationDelay: `${i * 0.2}s`}}>
+                {[200, 260, 340, 480, 540, 620, 730].map((x, i) => {
+                  const yOffsets = [2, -2, 3, -1, 1, 4, 0]; // Varied depths
+                  return (
+                  <g key={`chicken-${i}`} transform={`translate(0, ${yOffsets[i]})`} className="animal-chicken" opacity="1" style={{animationDelay: `${i * 0.2}s`}}>
                     {/* Chicken body - plump and defined */}
                     <ellipse cx={x} cy="207" rx="3.5" ry="3" fill="#d4a574" />
 
@@ -570,7 +581,8 @@ export function ProgressiveSkyline() {
                     <path d={`M ${x+2},212 L ${x+2.5},212 M ${x+2},212 L ${x+2},212.5 M ${x+2},212 L ${x+1.5},212`}
                           stroke="#ffd700" strokeWidth="0.5" />
                   </g>
-                ))}
+                  );
+                })}
               </g>
 
               {/* ========== VERTICAL BOUNDARY: Rural → Suburbs (x=800) ========== */}
@@ -1308,8 +1320,10 @@ export function ProgressiveSkyline() {
 
               {/* Horses in the fields - DETAILED AND RECOGNIZABLE! */}
               <g>
-                {[3920, 4120, 4220, 4380, 4480, 4560].map((x, i) => (
-                  <g key={`horse-end-${i}`} className="animal-horse" opacity="1" style={{animationDelay: `${i * 0.3}s`}}>
+                {[3920, 4120, 4220, 4380, 4480, 4560].map((x, i) => {
+                  const yOffsets = [3, -4, 1, -2, 4, 0]; // Varied depths
+                  return (
+                  <g key={`horse-end-${i}`} transform={`translate(0, ${yOffsets[i]})`} className="animal-horse" opacity="1" style={{animationDelay: `${i * 0.3}s`}}>
                     {/* Main body - larger and more defined */}
                     <ellipse cx={x} cy="200" rx="10" ry="6" fill="#654321" />
 
@@ -1360,13 +1374,16 @@ export function ProgressiveSkyline() {
                     <path d={`M ${x+10},193 Q ${x+8},194 ${x+6},196`}
                           stroke="#4a3520" strokeWidth="1.2" fill="none" />
                   </g>
-                ))}
+                  );
+                })}
               </g>
 
               {/* Cows grazing - DETAILED AND RECOGNIZABLE! */}
               <g>
-                {[4030, 4190, 4310, 4440].map((x, i) => (
-                  <g key={`cow-end-${i}`} className="animal-cow" opacity="1" style={{animationDelay: `${i * 0.5}s`}}>
+                {[4030, 4190, 4310, 4440].map((x, i) => {
+                  const yOffsets = [-2, 3, -4, 2]; // Varied depths
+                  return (
+                  <g key={`cow-end-${i}`} transform={`translate(0, ${yOffsets[i]})`} className="animal-cow" opacity="1" style={{animationDelay: `${i * 0.5}s`}}>
                     {/* Main cow body - large and boxy */}
                     <rect x={x-8} y="197" width="16" height="8" rx="2" fill="#f5f5f5" />
 
@@ -1425,13 +1442,16 @@ export function ProgressiveSkyline() {
                     <path d={`M ${x+8},199 L ${x+10},205`} stroke="#f5f5f5" strokeWidth="1.5" />
                     <ellipse cx={x+10} cy="206" rx="1.5" ry="2" fill="#2f2f2f" />
                   </g>
-                ))}
+                  );
+                })}
               </g>
 
               {/* Sheep grazing - FLUFFY AND RECOGNIZABLE! */}
               <g>
-                {[3960, 4090, 4270, 4390, 4500].map((x, i) => (
-                  <g key={`sheep-end-${i}`} className="animal-sheep" opacity="1" style={{animationDelay: `${i * 0.4}s`}}>
+                {[3960, 4090, 4270, 4390, 4500].map((x, i) => {
+                  const yOffsets = [4, -3, 2, -1, 3]; // Varied depths
+                  return (
+                  <g key={`sheep-end-${i}`} transform={`translate(0, ${yOffsets[i]})`} className="animal-sheep" opacity="1" style={{animationDelay: `${i * 0.4}s`}}>
                     {/* Fluffy wool body - multiple overlapping circles for texture */}
                     <circle cx={x} cy="203" r="4.5" fill="#f5f5f5" />
                     <circle cx={x-3} cy="202" r="3.5" fill="#f5f5f5" />
@@ -1468,13 +1488,16 @@ export function ProgressiveSkyline() {
                     {/* Small fluffy tail */}
                     <circle cx={x+5} cy="204" r="1.5" fill="#f5f5f5" />
                   </g>
-                ))}
+                  );
+                })}
               </g>
 
               {/* Chickens pecking - DETAILED AND RECOGNIZABLE! */}
               <g>
-                {[4000, 4060, 4140, 4280, 4340, 4420, 4530].map((x, i) => (
-                  <g key={`chicken-end-${i}`} className="animal-chicken" opacity="1" style={{animationDelay: `${i * 0.2}s`}}>
+                {[4000, 4060, 4140, 4280, 4340, 4420, 4530].map((x, i) => {
+                  const yOffsets = [-1, 3, -2, 1, 4, 0, 2]; // Varied depths
+                  return (
+                  <g key={`chicken-end-${i}`} transform={`translate(0, ${yOffsets[i]})`} className="animal-chicken" opacity="1" style={{animationDelay: `${i * 0.2}s`}}>
                     {/* Chicken body - plump and defined */}
                     <ellipse cx={x} cy="207" rx="3.5" ry="3" fill="#d4a574" />
 
@@ -1520,7 +1543,8 @@ export function ProgressiveSkyline() {
                     <path d={`M ${x+2},212 L ${x+2.5},212 M ${x+2},212 L ${x+2},212.5 M ${x+2},212 L ${x+1.5},212`}
                           stroke="#ffd700" strokeWidth="0.5" />
                   </g>
-                ))}
+                  );
+                })}
               </g>
 
               {/* ========== FOREGROUND: MAIN STREET WITH TRAFFIC ========== */}
