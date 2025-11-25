@@ -215,10 +215,10 @@ export function ProgressiveSkyline() {
             <g fill={`url(#skylineGradient-${iteration})`} className="text-[var(--foreground)]">
               {/* ========== PHASE 1: RURAL COUNTRYSIDE (0-800) ========== */}
 
-              {/* Beautiful rolling hills with green grass - calming toward suburbs */}
-              <path d="M 0,210 Q 100,195 200,205 Q 300,215 400,200 Q 500,190 600,200 Q 700,205 750,202 Q 775,207 800,210 L 800,250 L 0,250 Z"
+              {/* Beautiful rolling hills - gradually calming toward suburbs (WIDE BUFFER: 600-900) */}
+              <path d="M 0,210 Q 100,195 200,205 Q 300,215 400,200 Q 500,190 600,200 Q 650,205 700,208 Q 750,210 800,210 Q 850,210 900,210 L 900,250 L 0,250 Z"
                     fill="#7aa87a" opacity="0.6" />
-              <path d="M 0,205 Q 80,192 160,200 Q 240,208 320,195 Q 400,185 480,195 Q 560,203 640,190 Q 720,188 750,200 Q 775,205 800,208 L 800,250 L 0,250 Z"
+              <path d="M 0,205 Q 80,192 160,200 Q 240,208 320,195 Q 400,185 480,195 Q 560,203 600,198 Q 650,203 700,206 Q 750,208 800,208 Q 850,208 900,208 L 900,250 L 0,250 Z"
                     fill="#8ab88a" opacity="0.5" />
 
               {/* White picket fences along road - protecting animals - CONTINUOUS */}
@@ -603,10 +603,10 @@ export function ProgressiveSkyline() {
 
               {/* ========== PHASE 2: DEVELOPING SUBURBS (800-2000) ========== */}
 
-              {/* Grassy ground layer - smooth transitions from rural and to green city */}
-              <path d="M 800,210 Q 850,209 900,207 Q 950,206 1000,208 Q 1100,212 1200,207 Q 1300,203 1400,209 Q 1500,211 1600,206 Q 1700,204 1800,208 Q 1900,211 1950,210 Q 1975,210 2000,210 L 2000,250 L 800,250 Z"
+              {/* Grassy ground layer - smooth from rural buffer, flattening toward city (WIDE BUFFERS: 800-900, 1800-2100) */}
+              <path d="M 800,210 Q 900,210 1000,208 Q 1100,212 1200,207 Q 1300,203 1400,209 Q 1500,211 1600,206 Q 1700,206 1800,208 Q 1900,209 1950,210 Q 2000,210 2050,210 Q 2100,210 2100,210 L 2100,250 L 800,250 Z"
                     fill="#7aa87a" opacity="0.6" />
-              <path d="M 800,208 Q 850,207 900,206 Q 950,205 1000,206 Q 1100,209 1200,205 Q 1300,202 1400,207 Q 1500,210 1600,205 Q 1700,203 1800,207 Q 1900,209 1950,209 Q 1975,209 2000,208 L 2000,250 L 800,250 Z"
+              <path d="M 800,208 Q 900,208 1000,206 Q 1100,209 1200,205 Q 1300,202 1400,207 Q 1500,210 1600,205 Q 1700,205 1800,206 Q 1900,207 1950,208 Q 2000,208 2050,208 Q 2100,208 2100,208 L 2100,250 L 800,250 Z"
                     fill="#8ab88a" opacity="0.5" />
 
               {/* Main road infrastructure */}
@@ -827,10 +827,10 @@ export function ProgressiveSkyline() {
 
               {/* ========== PHASE 3: SUSTAINABLE GREEN CITY - PROJECT EXODUS (2000-3800) ========== */}
 
-              {/* Flat ground layer - urban landscape with gentle rural transition */}
-              <path d="M 2000,210 L 3700,210 Q 3750,210 3775,208 Q 3790,207 3800,205 L 3800,250 L 2000,250 Z"
+              {/* Flat ground layer - with wide buffers from suburbs and to rural (WIDE BUFFERS: 2000-2100, 3600-3900) */}
+              <path d="M 2000,210 Q 2100,210 2200,210 L 3500,210 Q 3600,210 3650,209 Q 3700,207 3750,205 Q 3800,203 3850,200 Q 3900,198 3900,198 L 3900,250 L 2000,250 Z"
                     fill="#7aa87a" opacity="0.6" />
-              <path d="M 2000,208 L 3700,208 Q 3750,208 3775,207 Q 3790,206 3800,203 L 3800,250 L 2000,250 Z"
+              <path d="M 2000,208 Q 2100,208 2200,208 L 3500,208 Q 3600,208 3650,207 Q 3700,206 3750,204 Q 3800,202 3850,199 Q 3900,197 3900,197 L 3900,250 L 2000,250 Z"
                     fill="#8ab88a" opacity="0.5" />
 
               {/* Pedestrian-friendly streets with bike lanes */}
@@ -1221,10 +1221,10 @@ export function ProgressiveSkyline() {
               {/* ========== PHASE 4: RETURN TO RURAL - IDENTICAL TO OPENING (3800-5000) ========== */}
               {/* This creates a SEAMLESS LOOP back to the start */}
 
-              {/* Rolling hills - smooth emergence from green city, then full rolling hills */}
-              <path d="M 3800,205 Q 3850,202 3900,200 Q 3950,198 4000,205 Q 4100,215 4200,200 Q 4300,190 4400,200 Q 4500,205 4600,195 Q 4700,200 4800,205 Q 4900,195 5000,210 L 5000,250 L 3800,250 Z"
+              {/* Rolling hills - smooth gradual emergence from city buffer (WIDE BUFFER: 3800-3900) */}
+              <path d="M 3800,203 Q 3900,198 4000,200 Q 4100,215 4200,200 Q 4300,190 4400,200 Q 4500,205 4600,195 Q 4700,200 4800,205 Q 4900,195 5000,210 L 5000,250 L 3800,250 Z"
                     fill="#7aa87a" opacity="0.6" />
-              <path d="M 3800,203 Q 3850,201 3900,198 Q 3950,196 4000,200 Q 4100,208 4200,195 Q 4300,185 4400,195 Q 4500,203 4600,190 Q 4700,185 4800,192 Q 4900,188 5000,205 L 5000,250 L 3800,250 Z"
+              <path d="M 3800,202 Q 3900,197 4000,198 Q 4100,208 4200,195 Q 4300,185 4400,195 Q 4500,203 4600,190 Q 4700,185 4800,192 Q 4900,188 5000,205 L 5000,250 L 3800,250 Z"
                     fill="#8ab88a" opacity="0.5" />
 
               {/* White picket fences along road - protecting animals - CONTINUOUS */}
