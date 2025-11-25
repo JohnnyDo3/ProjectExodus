@@ -88,22 +88,22 @@ export default function Home() {
       <FlyingBirds />
 
       {/* Hero Section - BOLD & EXPERIMENTAL */}
-      <section className="relative min-h-screen flex items-start justify-center overflow-hidden pt-24">
-        {/* Daytime: Sun Ray Gradient Background - Subtle */}
+      <section className="relative min-h-screen flex items-start justify-center overflow-hidden pt-20">
+        {/* Daytime: Sun Ray Gradient Background - Subtle with slight prominence */}
         <div className="absolute inset-0 z-0 day-only" style={{
           background: `
             radial-gradient(ellipse 150% 120% at 50% -30%,
-              rgba(255, 245, 150, 0.3) 0%,
-              rgba(255, 235, 120, 0.25) 15%,
-              rgba(135, 206, 250, 0.2) 40%,
-              rgba(135, 206, 250, 0.3) 70%,
-              rgba(176, 224, 230, 0.2) 85%,
-              rgba(255, 255, 255, 0.1) 100%
+              rgba(255, 245, 150, 0.4) 0%,
+              rgba(255, 235, 120, 0.35) 15%,
+              rgba(135, 206, 250, 0.28) 40%,
+              rgba(135, 206, 250, 0.4) 70%,
+              rgba(176, 224, 230, 0.28) 85%,
+              rgba(255, 255, 255, 0.15) 100%
             ),
             linear-gradient(180deg,
-              rgba(255, 252, 240, 0.4) 0%,
-              rgba(135, 206, 250, 0.35) 50%,
-              rgba(100, 149, 237, 0.25) 100%
+              rgba(255, 252, 240, 0.5) 0%,
+              rgba(135, 206, 250, 0.45) 50%,
+              rgba(100, 149, 237, 0.35) 100%
             )
           `
         }}>
@@ -113,22 +113,22 @@ export default function Home() {
               repeating-conic-gradient(
                 from 0deg at 50% -60%,
                 transparent 0deg,
-                rgba(255, 255, 255, 0.08) 1deg,
-                rgba(255, 250, 200, 0.06) 1.5deg,
+                rgba(255, 255, 255, 0.12) 1deg,
+                rgba(255, 250, 200, 0.09) 1.5deg,
                 transparent 2deg,
                 transparent 8deg
               )
             `,
-            opacity: 0.5,
+            opacity: 0.65,
             mixBlendMode: 'soft-light'
           }} />
 
           {/* Wispy clouds */}
           <div className="absolute inset-0" style={{
             background: `
-              radial-gradient(ellipse 60% 30% at 20% 40%, rgba(255, 255, 255, 0.3) 0%, rgba(255, 250, 240, 0.1) 30%, transparent 60%),
-              radial-gradient(ellipse 50% 25% at 80% 30%, rgba(255, 255, 255, 0.25) 0%, rgba(255, 248, 230, 0.08) 30%, transparent 60%),
-              radial-gradient(ellipse 70% 35% at 60% 70%, rgba(255, 255, 255, 0.2) 0%, rgba(255, 245, 220, 0.06) 30%, transparent 60%)
+              radial-gradient(ellipse 60% 30% at 20% 40%, rgba(255, 255, 255, 0.4) 0%, rgba(255, 250, 240, 0.15) 30%, transparent 60%),
+              radial-gradient(ellipse 50% 25% at 80% 30%, rgba(255, 255, 255, 0.35) 0%, rgba(255, 248, 230, 0.12) 30%, transparent 60%),
+              radial-gradient(ellipse 70% 35% at 60% 70%, rgba(255, 255, 255, 0.28) 0%, rgba(255, 245, 220, 0.09) 30%, transparent 60%)
             `
           }} />
         </div>

@@ -221,17 +221,18 @@ export function ProgressiveSkyline() {
               <path d="M 0,205 Q 80,192 160,200 Q 240,208 320,195 Q 400,185 480,195 Q 560,203 640,190 Q 720,185 800,192 L 800,250 L 0,250 Z"
                     fill="#8ab88a" opacity="0.6" />
 
-              {/* White picket fences along hills */}
+              {/* White picket fences along road - protecting animals */}
               <g>
                 {[40, 140, 240, 340, 440, 540, 640, 740].map((x, i) => (
                   <g key={`fence-section-${i}`}>
                     {Array.from({length: 12}).map((_, fi) => (
                       <g key={`picket-${fi}`}>
-                        <rect x={x + fi * 8} y="195" width="2" height="8" fill="#f5f5f5" opacity="0.95" />
-                        <path d={`M ${x + fi * 8},195 L ${x + fi * 8 + 1},193 L ${x + fi * 8 + 2},195 Z`} fill="#f5f5f5" opacity="0.95" />
+                        <rect x={x + fi * 8} y="225" width="2" height="10" fill="#f5f5f5" opacity="0.95" />
+                        <path d={`M ${x + fi * 8},225 L ${x + fi * 8 + 1},223 L ${x + fi * 8 + 2},225 Z`} fill="#f5f5f5" opacity="0.95" />
                       </g>
                     ))}
-                    <rect x={x} y="200" width="96" height="1.5" fill="#f5f5f5" opacity="0.9" />
+                    <rect x={x} y="228" width="96" height="1.5" fill="#f5f5f5" opacity="0.9" />
+                    <rect x={x} y="232" width="96" height="1.5" fill="#f5f5f5" opacity="0.9" />
                   </g>
                 ))}
               </g>
@@ -1553,16 +1554,16 @@ export function ProgressiveSkyline() {
               <g>
                 {[
                   {x: 100, color: "#c73e3e", direction: "forward"},    // Red
-                  {x: 550, color: "#2f4f7f", direction: "reverse"},    // Blue
-                  {x: 1000, color: "#4a7c2f", direction: "forward"},   // Green
-                  {x: 1450, color: "#d4af37", direction: "reverse"},   // Gold
-                  {x: 1900, color: "#8a8a8a", direction: "forward"},   // Silver
-                  {x: 2350, color: "#4a4a4a", direction: "reverse"},   // Dark Gray
-                  {x: 2800, color: "#cc6633", direction: "forward"},   // Orange
-                  {x: 3250, color: "#5a3d8a", direction: "reverse"},   // Purple
-                  {x: 3700, color: "#e8e8e8", direction: "forward"},   // White
-                  {x: 4150, color: "#c73e3e", direction: "reverse"},   // Red
-                  {x: 4600, color: "#2f4f7f", direction: "forward"}    // Blue
+                  {x: 580, color: "#2f4f7f", direction: "reverse"},    // Blue
+                  {x: 1080, color: "#4a7c2f", direction: "forward"},   // Green
+                  {x: 1580, color: "#d4af37", direction: "reverse"},   // Gold
+                  {x: 2080, color: "#8a8a8a", direction: "forward"},   // Silver
+                  {x: 2580, color: "#4a4a4a", direction: "reverse"},   // Dark Gray
+                  {x: 3080, color: "#cc6633", direction: "forward"},   // Orange
+                  {x: 3580, color: "#5a3d8a", direction: "reverse"},   // Purple
+                  {x: 4080, color: "#e8e8e8", direction: "forward"},   // White
+                  {x: 4580, color: "#c73e3e", direction: "reverse"},   // Red
+                  {x: 4950, color: "#2f4f7f", direction: "forward"}    // Blue
                 ].map((car, i) => (
                   <g key={`fg-car-${i}`} className={car.direction === "forward" ? "moving-car" : "moving-car-reverse"} opacity="1" style={{animationDelay: `${i * 1.5}s`}}>
                     {/* Sedan body - COLORED! */}
@@ -1592,17 +1593,17 @@ export function ProgressiveSkyline() {
               {/* Additional vehicles - SUVs with bidirectional traffic */}
               <g>
                 {[
-                  {x: 250, direction: "forward"},
-                  {x: 700, direction: "reverse"},
-                  {x: 1150, direction: "forward"},
-                  {x: 1600, direction: "reverse"},
-                  {x: 2050, direction: "forward"},
-                  {x: 2500, direction: "reverse"},
-                  {x: 2950, direction: "forward"},
-                  {x: 3400, direction: "reverse"},
-                  {x: 3850, direction: "forward"},
-                  {x: 4300, direction: "reverse"},
-                  {x: 4750, direction: "forward"}
+                  {x: 280, direction: "forward"},
+                  {x: 760, direction: "reverse"},
+                  {x: 1260, direction: "forward"},
+                  {x: 1760, direction: "reverse"},
+                  {x: 2260, direction: "forward"},
+                  {x: 2760, direction: "reverse"},
+                  {x: 3260, direction: "forward"},
+                  {x: 3760, direction: "reverse"},
+                  {x: 4260, direction: "forward"},
+                  {x: 4760, direction: "reverse"},
+                  {x: 4900, direction: "forward"}
                 ].map((suv, i) => (
                   <g key={`fg-suv-${i}`} className={suv.direction === "forward" ? "moving-car" : "moving-car-reverse"} opacity="1" style={{animationDelay: `${i * 2}s`}}>
                     {/* SUV body - taller and wider */}
@@ -1632,15 +1633,15 @@ export function ProgressiveSkyline() {
               {/* Delivery trucks with bidirectional traffic */}
               <g>
                 {[
-                  {x: 500, direction: "reverse"},
-                  {x: 1000, direction: "forward"},
-                  {x: 1500, direction: "reverse"},
-                  {x: 2000, direction: "forward"},
-                  {x: 2500, direction: "reverse"},
-                  {x: 3000, direction: "forward"},
-                  {x: 3500, direction: "reverse"},
-                  {x: 4000, direction: "forward"},
-                  {x: 4500, direction: "reverse"}
+                  {x: 450, direction: "reverse"},
+                  {x: 950, direction: "forward"},
+                  {x: 1450, direction: "reverse"},
+                  {x: 1950, direction: "forward"},
+                  {x: 2450, direction: "reverse"},
+                  {x: 2950, direction: "forward"},
+                  {x: 3450, direction: "reverse"},
+                  {x: 3950, direction: "forward"},
+                  {x: 4450, direction: "reverse"}
                 ].map((truck, i) => (
                   <g key={`fg-truck-${i}`} className={truck.direction === "forward" ? "moving-car" : "moving-car-reverse"} opacity="1" style={{animationDelay: `${i * 2.5}s`}}>
                     {/* Truck body */}
