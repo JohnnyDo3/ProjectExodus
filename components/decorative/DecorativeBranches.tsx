@@ -16,11 +16,6 @@ export function DecorativeBranches() {
   const isHeroPage = pathname === '/'
   const [leaves, setLeaves] = useState<Leaf[]>([])
 
-  // Don't render on hero page
-  if (isHeroPage) {
-    return null
-  }
-
   useEffect(() => {
     // 7 leaves - some attached, some falling
     const leafPositions: Leaf[] = [
@@ -34,6 +29,11 @@ export function DecorativeBranches() {
     ]
     setLeaves(leafPositions)
   }, [])
+
+  // Don't render on hero page
+  if (isHeroPage) {
+    return null
+  }
 
   const phi = 1.618
 
