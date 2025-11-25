@@ -201,18 +201,19 @@ export function NightSkyConstellations({ alwaysShow = false, starCount = 1400 }:
           Math.abs(star.y - mousePos.y) < 100
 
         const starColor = isNearMouse ? [255, 223, 0] : [255, 255, 255]
-        const alpha = star.brightness
+        // Boost brightness for better visibility since we removed animation
+        const alpha = Math.min(1, star.brightness * 1.2)
 
         // Draw 4-point star shape
         ctx.save()
         ctx.translate(star.x, star.y)
 
-        // Set glow based on star type
+        // Enhanced glow for better visibility
         if (star.isConstellation) {
-          ctx.shadowBlur = isNearMouse ? 20 : 8
+          ctx.shadowBlur = isNearMouse ? 25 : 15
           ctx.shadowColor = isNearMouse ? '#FFD700' : '#FFFFFF'
         } else {
-          ctx.shadowBlur = 3
+          ctx.shadowBlur = 6
           ctx.shadowColor = '#FFFFFF'
         }
 

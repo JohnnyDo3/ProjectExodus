@@ -130,19 +130,19 @@ export default function Home() {
           }} />
         </div>
 
-        {/* Night Sky Constellations - Only at night */}
-        <div className="absolute inset-0 z-0">
-          <NightSkyConstellations starCount={1400} />
-        </div>
-
         {/* Subtle Background Blobs - Static (no animation for performance) */}
-        <div className="absolute inset-0 z-[1] opacity-30">
+        <div className="absolute inset-0 z-0 opacity-20">
           <div className="absolute top-10 left-10 w-96 h-96 bg-[var(--primary)] rounded-full blur-3xl opacity-30"
                style={{ transform: 'translateZ(0) scale(1.2)' }} />
           <div className="absolute bottom-20 right-20 w-[500px] h-[500px] bg-[var(--accent)] rounded-full blur-3xl opacity-30"
                style={{ transform: 'translateZ(0) scale(1.3)' }} />
           <div className="absolute top-1/2 left-1/3 w-80 h-80 bg-[var(--secondary)] rounded-full blur-3xl opacity-20"
                style={{ transform: 'translateZ(0)' }} />
+        </div>
+
+        {/* Night Sky Constellations - Only at night */}
+        <div className="absolute inset-0 z-[1]">
+          <NightSkyConstellations starCount={1400} />
         </div>
 
         {/* Main Hero Content */}
