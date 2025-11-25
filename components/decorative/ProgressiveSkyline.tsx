@@ -840,11 +840,8 @@ export function ProgressiveSkyline() {
                 {/* Main street at bottom */}
                 <rect x="2000" y="220" width="1800" height="30" fill={`url(#roadGradient-${iteration})`} />
 
-                {/* Thin sidewalk strip directly above street */}
-                <rect x="2000" y="218" width="1800" height="2" fill="#c4c4c4" opacity="0.6" />
-
                 {/* Grass foreground area between sidewalk and buildings */}
-                <rect x="2000" y="215" width="1800" height="3" fill="#7aa87a" opacity="0.5" />
+                <rect x="2000" y="215" width="1800" height="5" fill="#7aa87a" opacity="0.5" />
 
                 {/* Bike lane markings on street */}
                 {Array.from({length: 36}).map((_, i) => (
@@ -1088,19 +1085,25 @@ export function ProgressiveSkyline() {
                 </g>
               </g>
 
-              {/* Trees lining EVERY street - Dense urban forest! */}
+              {/* Trees lining EVERY street - Dense urban forest with varied depth! */}
               <g opacity="0.85">
                 {Array.from({length: 45}).map((_, i) => {
                   const x = 2030 + i * 40;
+                  // Randomize y position for depth variation (195-210 range)
+                  const yVariation = [0, 3, 7, 2, 10, 5, 8, 1, 12, 4, 6, 9, 3, 11, 2, 8, 5, 1, 7, 10, 4, 6, 9, 3, 12, 5, 8, 2, 11, 7, 4, 1, 9, 6, 10, 3, 8, 5, 12, 2, 7, 4, 11, 6, 9][i % 45];
+                  const treeY = 195 + yVariation;
+                  const trunkHeight = 13 + (yVariation > 6 ? 2 : 0); // Taller trunks for closer trees
+                  const foliageRadius = yVariation > 6 ? 9 : 8; // Larger foliage for closer trees
+
                   return (
                     <g key={`green-tree-${i}`}>
                       {/* Tree trunk */}
-                      <rect x={x} y="202" width="4" height="13" fill="#6b5a45" opacity="0.95" />
+                      <rect x={x} y={treeY + 7} width="4" height={trunkHeight} fill="#6b5a45" opacity="0.95" />
                       {/* Lush green foliage */}
-                      <circle cx={x+2} cy="200" r="8" fill="#4a7c2f" opacity="0.95" />
-                      <circle cx={x-3} cy="202" r="6" fill="#5a8a5a" opacity="0.9" />
-                      <circle cx={x+7} cy="202" r="6" fill="#5a8a5a" opacity="0.9" />
-                      <circle cx={x+2} cy="195" r="5" fill="#6a9a6a" opacity="0.85" />
+                      <circle cx={x+2} cy={treeY + 5} r={foliageRadius} fill="#4a7c2f" opacity="0.95" />
+                      <circle cx={x-3} cy={treeY + 7} r={foliageRadius - 2} fill="#5a8a5a" opacity="0.9" />
+                      <circle cx={x+7} cy={treeY + 7} r={foliageRadius - 2} fill="#5a8a5a" opacity="0.9" />
+                      <circle cx={x+2} cy={treeY} r={foliageRadius - 3} fill="#6a9a6a" opacity="0.85" />
                     </g>
                   );
                 })}
