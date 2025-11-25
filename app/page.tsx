@@ -88,7 +88,7 @@ export default function Home() {
       <FlyingBirds />
 
       {/* Hero Section - BOLD & EXPERIMENTAL */}
-      <section className="relative min-h-screen flex items-center justify-center overflow-hidden">
+      <section className="relative min-h-[85vh] flex items-center justify-center overflow-hidden pt-20">
         {/* Daytime: Sun Ray Gradient Background */}
         <div className="absolute inset-0 z-0 day-only" style={{
           background: `
@@ -135,31 +135,22 @@ export default function Home() {
           <NightSkyConstellations starCount={1400} />
         </div>
 
-        {/* Morphing Background Blobs - 3D Effect (both day and night) */}
-        <div className="absolute inset-0 z-[1] opacity-40">
-          <div className="absolute top-10 left-10 w-96 h-96 bg-[var(--primary)] rounded-full blur-3xl opacity-30 animate-pulse"
-               style={{ transform: 'translateZ(0) scale(1.2)', animationDuration: '8s' }} />
-          <div className="absolute bottom-20 right-20 w-[500px] h-[500px] bg-[var(--accent)] rounded-full blur-3xl opacity-30 animate-pulse"
-               style={{ transform: 'translateZ(0) scale(1.3)', animationDelay: '2s', animationDuration: '10s' }} />
-          <div className="absolute top-1/2 left-1/3 w-80 h-80 bg-[var(--secondary)] rounded-full blur-3xl opacity-20 animate-pulse"
-               style={{ transform: 'translateZ(0)', animationDelay: '4s', animationDuration: '12s' }} />
+        {/* Subtle Background Blobs - Static (no animation for performance) */}
+        <div className="absolute inset-0 z-[1] opacity-30">
+          <div className="absolute top-10 left-10 w-96 h-96 bg-[var(--primary)] rounded-full blur-3xl opacity-30"
+               style={{ transform: 'translateZ(0) scale(1.2)' }} />
+          <div className="absolute bottom-20 right-20 w-[500px] h-[500px] bg-[var(--accent)] rounded-full blur-3xl opacity-30"
+               style={{ transform: 'translateZ(0) scale(1.3)' }} />
+          <div className="absolute top-1/2 left-1/3 w-80 h-80 bg-[var(--secondary)] rounded-full blur-3xl opacity-20"
+               style={{ transform: 'translateZ(0)' }} />
         </div>
 
         {/* Main Hero Content */}
         <div className="relative z-10 container mx-auto px-4 sm:px-6 lg:px-8 py-4">
           <div className="max-w-6xl mx-auto">
-            {/* Badge - Floating */}
-            <div className="flex justify-center mb-8 animate-bounce" style={{ animationDuration: '3s' }}>
-              <span className="inline-flex items-center gap-3 px-6 py-3 rounded-full glass-effect border-2 border-theme-primary text-theme-primary font-bold text-base backdrop-blur-xl">
-                <span className="w-3 h-3 bg-theme-primary rounded-full animate-ping" />
-                <span className="w-3 h-3 bg-theme-primary rounded-full absolute pulse-alive" />
-                BUILDING A SUSTAINABLE FUTURE
-              </span>
-            </div>
-
-            {/* Massive Hero Title - Ultra Bold */}
-            <h1 className="text-center mb-8" style={{
-              fontSize: 'clamp(3rem, 12vw, 9rem)',
+            {/* Massive Hero Title - Ultra Bold - Fits Above Fold */}
+            <h1 className="text-center mb-6" style={{
+              fontSize: 'clamp(2.5rem, 10vw, 7rem)',
               fontWeight: 900,
               lineHeight: 0.95,
               letterSpacing: '-0.02em'
@@ -171,19 +162,17 @@ export default function Home() {
                 background: 'linear-gradient(135deg, var(--primary) 0%, var(--accent) 50%, var(--secondary) 100%)',
                 WebkitBackgroundClip: 'text',
                 WebkitTextFillColor: 'transparent',
-                backgroundClip: 'text',
-                backgroundSize: '200% 200%',
-                animation: 'gradient-shift 6s ease infinite'
+                backgroundClip: 'text'
               }}>
                 PROJECT EXODUS
               </div>
             </h1>
 
             {/* Subtitle - Large & Bold */}
-            <p className="text-center max-w-4xl mx-auto mb-12 text-[var(--foreground)]" style={{
-              fontSize: 'clamp(1.25rem, 3vw, 2rem)',
+            <p className="text-center max-w-4xl mx-auto mb-8 text-[var(--foreground)]" style={{
+              fontSize: 'clamp(1.1rem, 2.5vw, 1.75rem)',
               fontWeight: 600,
-              lineHeight: 1.4
+              lineHeight: 1.3
             }}>
               Building sustainable infrastructure for <span style={{
                 background: 'linear-gradient(135deg, var(--primary), var(--accent))',
@@ -204,7 +193,7 @@ export default function Home() {
             </p>
 
             {/* CTA Buttons - Large & Prominent */}
-            <div className="flex flex-col sm:flex-row gap-8 justify-center items-center">
+            <div className="flex flex-col sm:flex-row gap-6 justify-center items-center mb-6">
               <Link href="/products">
                 <Button size="lg" className="text-xl px-12 py-8 rounded-2xl shadow-theme-2xl hover:scale-110 transition-transform duration-300" style={{
                   minWidth: '250px'
@@ -221,13 +210,14 @@ export default function Home() {
                 </Button>
               </Link>
             </div>
-          </div>
-        </div>
 
-        {/* Scroll Indicator */}
-        <div className="absolute bottom-10 left-1/2 transform -translate-x-1/2 animate-bounce" style={{ animationDuration: '2s' }}>
-          <div className="w-6 h-10 border-4 border-[var(--foreground)] rounded-full flex items-start justify-center p-2">
-            <div className="w-1.5 h-3 bg-[var(--foreground)] rounded-full animate-pulse" />
+            {/* Badge - Below Buttons */}
+            <div className="flex justify-center">
+              <span className="inline-flex items-center gap-3 px-6 py-3 rounded-full glass-effect border-2 border-theme-primary text-theme-primary font-bold text-base backdrop-blur-xl">
+                <span className="w-3 h-3 bg-theme-primary rounded-full" />
+                BUILDING A SUSTAINABLE FUTURE
+              </span>
+            </div>
           </div>
         </div>
       </section>

@@ -1,11 +1,21 @@
 'use client'
 
+import { usePathname } from 'next/navigation'
+
 // Golden Ratio: φ ≈ 1.618
 // Golden Angle: 137.5° - natural branching angle found in plants
 // Branch length reduction: 1/φ ≈ 0.618 at each level
 // This creates natural, fractal-like branching patterns
 
 export function TreeBranches() {
+  const pathname = usePathname()
+  const isHeroPage = pathname === '/'
+
+  // Don't render on hero page
+  if (isHeroPage) {
+    return null
+  }
+
   return (
     <>
       {/* Ultra-Dense Forest Canopy - Golden Ratio Branching System */}

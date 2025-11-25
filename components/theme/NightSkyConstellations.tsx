@@ -192,16 +192,8 @@ export function NightSkyConstellations({ alwaysShow = false, starCount = 1400 }:
       ctx.clearRect(0, 0, canvas.width, canvas.height)
       time += 0.01
 
-      // Draw stars with 4-point sparkle effect
+      // Draw stars - static (no animation for performance)
       stars.forEach((star, index) => {
-        // Pulse animation: smooth breathing effect
-        const pulseValue = Math.sin(time * star.twinkleSpeed + star.pulsePhase)
-        const pulseScale = 0.7 + (pulseValue * 0.3 + 0.3) // Scale between 0.7x and 1.3x
-        const currentSize = star.size * pulseScale
-
-        // Alpha varies with pulse for sparkle effect
-        const alpha = star.brightness * (0.6 + pulseValue * 0.2 + 0.2)
-
         // Highlight constellation stars when hovered
         const isNearMouse = star.isConstellation &&
           activeConstellation === star.constellationId &&
@@ -209,6 +201,7 @@ export function NightSkyConstellations({ alwaysShow = false, starCount = 1400 }:
           Math.abs(star.y - mousePos.y) < 100
 
         const starColor = isNearMouse ? [255, 223, 0] : [255, 255, 255]
+        const alpha = star.brightness
 
         // Draw 4-point star shape
         ctx.save()
@@ -216,10 +209,10 @@ export function NightSkyConstellations({ alwaysShow = false, starCount = 1400 }:
 
         // Set glow based on star type
         if (star.isConstellation) {
-          ctx.shadowBlur = isNearMouse ? 20 : 12
+          ctx.shadowBlur = isNearMouse ? 20 : 8
           ctx.shadowColor = isNearMouse ? '#FFD700' : '#FFFFFF'
         } else {
-          ctx.shadowBlur = 4
+          ctx.shadowBlur = 3
           ctx.shadowColor = '#FFFFFF'
         }
 
@@ -227,8 +220,8 @@ export function NightSkyConstellations({ alwaysShow = false, starCount = 1400 }:
         ctx.beginPath()
         for (let i = 0; i < 4; i++) {
           const angle = (i * Math.PI / 2) - Math.PI / 4 // 4 points at 45° intervals
-          const outerRadius = currentSize
-          const innerRadius = currentSize * 0.4
+          const outerRadius = star.size
+          const innerRadius = star.size * 0.4
 
           // Outer point
           const outerX = Math.cos(angle) * outerRadius
@@ -250,31 +243,6 @@ export function NightSkyConstellations({ alwaysShow = false, starCount = 1400 }:
 
         ctx.fillStyle = `rgba(${starColor[0]}, ${starColor[1]}, ${starColor[2]}, ${alpha})`
         ctx.fill()
-
-        // Draw light rays at maximum growth (when pulseValue > 0.7)
-        if (pulseValue > 0.7) {
-          const rayIntensity = (pulseValue - 0.7) / 0.3 // 0 to 1 as pulse reaches max
-          const rayLength = currentSize * (1.5 + rayIntensity * 1.5) // Extends beyond star
-          const rayAlpha = alpha * rayIntensity * 0.6
-
-          ctx.strokeStyle = `rgba(${starColor[0]}, ${starColor[1]}, ${starColor[2]}, ${rayAlpha})`
-          ctx.lineWidth = 0.5
-          ctx.shadowBlur = 8
-
-          // Draw 4 rays from each tip
-          for (let i = 0; i < 4; i++) {
-            const angle = (i * Math.PI / 2) - Math.PI / 4
-            const startX = Math.cos(angle) * currentSize
-            const startY = Math.sin(angle) * currentSize
-            const endX = Math.cos(angle) * rayLength
-            const endY = Math.sin(angle) * rayLength
-
-            ctx.beginPath()
-            ctx.moveTo(startX, startY)
-            ctx.lineTo(endX, endY)
-            ctx.stroke()
-          }
-        }
 
         ctx.restore()
       })
