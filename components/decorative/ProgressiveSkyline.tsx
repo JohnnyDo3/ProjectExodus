@@ -573,6 +573,23 @@ export function ProgressiveSkyline() {
                 ))}
               </g>
 
+              {/* ========== VERTICAL BOUNDARY: Rural → Suburbs (x=800) ========== */}
+              <g opacity="0.95">
+                {/* White picket fence border */}
+                {Array.from({length: 20}).map((_, i) => (
+                  <g key={`boundary-fence-1-${i}`}>
+                    {/* Picket */}
+                    <rect x="798" y={195 + i * 3} width="4" height="10" fill="#f5f5f5" />
+                    {/* Pointed top */}
+                    <path d="M 798,${195 + i * 3} L 800,${192 + i * 3} L 802,${195 + i * 3} Z" fill="#f5f5f5" />
+                  </g>
+                ))}
+                {/* Horizontal rails */}
+                <rect x="798" y="200" width="4" height="2" fill="#f5f5f5" />
+                <rect x="798" y="210" width="4" height="2" fill="#f5f5f5" />
+                <rect x="798" y="220" width="4" height="2" fill="#f5f5f5" />
+              </g>
+
               {/* ========== PHASE 2: DEVELOPING SUBURBS (800-2000) ========== */}
 
               {/* Grassy ground layer - matching rural appearance */}
@@ -795,6 +812,23 @@ export function ProgressiveSkyline() {
                     <polygon points={`${x+0.75},204 ${x+4},206 ${x+4},210 ${x+0.75},212 ${x-2.5},210 ${x-2.5},206`} fill="#cc3333" opacity="0.9" />
                   </g>
                 ))}
+              </g>
+
+              {/* ========== VERTICAL BOUNDARY: Suburbs → Green City (x=2000) ========== */}
+              <g opacity="0.95">
+                {/* White picket fence border */}
+                {Array.from({length: 20}).map((_, i) => (
+                  <g key={`boundary-fence-2-${i}`}>
+                    {/* Picket */}
+                    <rect x="1998" y={195 + i * 3} width="4" height="10" fill="#f5f5f5" />
+                    {/* Pointed top */}
+                    <path d="M 1998,${195 + i * 3} L 2000,${192 + i * 3} L 2002,${195 + i * 3} Z" fill="#f5f5f5" />
+                  </g>
+                ))}
+                {/* Horizontal rails */}
+                <rect x="1998" y="200" width="4" height="2" fill="#f5f5f5" />
+                <rect x="1998" y="210" width="4" height="2" fill="#f5f5f5" />
+                <rect x="1998" y="220" width="4" height="2" fill="#f5f5f5" />
               </g>
 
               {/* ========== PHASE 3: SUSTAINABLE GREEN CITY - PROJECT EXODUS (2000-3800) ========== */}
@@ -1146,6 +1180,23 @@ export function ProgressiveSkyline() {
                     <ellipse cx={x+2} cy="207.5" rx="1.4" ry="1" fill={i % 2 === 0 ? "#4a7c2f" : "#c73e3e"} opacity="0.95" />
                   </g>
                 ))}
+              </g>
+
+              {/* ========== VERTICAL BOUNDARY: Green City → Rural (x=3800) ========== */}
+              <g opacity="0.95">
+                {/* White picket fence border */}
+                {Array.from({length: 20}).map((_, i) => (
+                  <g key={`boundary-fence-3-${i}`}>
+                    {/* Picket */}
+                    <rect x="3798" y={195 + i * 3} width="4" height="10" fill="#f5f5f5" />
+                    {/* Pointed top */}
+                    <path d="M 3798,${195 + i * 3} L 3800,${192 + i * 3} L 3802,${195 + i * 3} Z" fill="#f5f5f5" />
+                  </g>
+                ))}
+                {/* Horizontal rails */}
+                <rect x="3798" y="200" width="4" height="2" fill="#f5f5f5" />
+                <rect x="3798" y="210" width="4" height="2" fill="#f5f5f5" />
+                <rect x="3798" y="220" width="4" height="2" fill="#f5f5f5" />
               </g>
 
               {/* ========== PHASE 4: RETURN TO RURAL - IDENTICAL TO OPENING (3800-5000) ========== */}
