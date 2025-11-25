@@ -846,10 +846,10 @@ export function ProgressiveSkyline() {
 
               {/* ========== PHASE 3: SUSTAINABLE GREEN CITY - PROJECT EXODUS (2000-3800) ========== */}
 
-              {/* Grassy ground layer - matching rural and suburban */}
-              <path d="M 2000,210 Q 2200,207 2400,210 Q 2600,213 2800,209 Q 3000,206 3200,210 Q 3400,212 3600,208 Q 3700,210 3800,210 L 3800,250 L 2000,250 Z"
+              {/* Flat ground layer - urban landscape */}
+              <path d="M 2000,210 L 3800,210 L 3800,250 L 2000,250 Z"
                     fill="#7aa87a" opacity="0.6" />
-              <path d="M 2000,208 Q 2200,205 2400,208 Q 2600,211 2800,207 Q 3000,204 3200,208 Q 3400,210 3600,206 Q 3700,208 3800,208 L 3800,250 L 2000,250 Z"
+              <path d="M 2000,208 L 3800,208 L 3800,250 L 2000,250 Z"
                     fill="#8ab88a" opacity="0.5" />
 
               {/* Pedestrian-friendly streets with bike lanes */}

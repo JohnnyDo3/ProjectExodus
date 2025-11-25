@@ -195,26 +195,7 @@ export default function Home() {
               }}>Energy</span>
             </p>
 
-            {/* CTA Buttons - Large & Prominent */}
-            <div className="flex flex-col sm:flex-row gap-6 justify-center items-center mb-6">
-              <Link href="/products">
-                <Button size="lg" className="text-xl px-12 py-8 rounded-2xl shadow-theme-2xl hover:scale-110 transition-transform duration-300" style={{
-                  minWidth: '250px'
-                }}>
-                  Explore Now →
-                </Button>
-              </Link>
-              <Link href="/learn">
-                <Button size="lg" variant="outline" className="text-xl px-12 py-8 rounded-2xl border-4 hover:bg-[var(--foreground)] hover:text-[var(--background)] transition-all duration-300" style={{
-                  minWidth: '250px',
-                  fontWeight: 700
-                }}>
-                  Learn More
-                </Button>
-              </Link>
-            </div>
-
-            {/* Badge - Below Buttons */}
+            {/* Badge */}
             <div className="flex justify-center">
               <span className="inline-flex items-center gap-3 px-6 py-3 rounded-full glass-effect border-2 border-theme-primary text-theme-primary font-bold text-base backdrop-blur-xl">
                 <span className="w-3 h-3 bg-theme-primary rounded-full" />
