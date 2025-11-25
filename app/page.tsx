@@ -6,6 +6,7 @@ import { NightSkyConstellations } from '@/components/theme/NightSkyConstellation
 import { TreeBranches } from '@/components/decorative/TreeBranches'
 import { FlyingBirds } from '@/components/decorative/FlyingBirds'
 import { CircularCarousel } from '@/components/carousel/CircularCarousel'
+import { ProgressiveSkyline } from '@/components/decorative/ProgressiveSkyline'
 
 export default function Home() {
   const commandments = [
@@ -196,6 +197,9 @@ export default function Home() {
             </p>
           </div>
         </div>
+
+        {/* Progressive Skyline - Fixed to bottom of hero page */}
+        <ProgressiveSkyline />
       </section>
 
       {/* Mission Section - Asymmetric Layout */}
