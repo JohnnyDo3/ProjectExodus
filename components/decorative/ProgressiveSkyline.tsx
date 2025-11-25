@@ -838,7 +838,7 @@ export function ProgressiveSkyline() {
                                 fill="#4a7c2f"
                                 opacity="0.9" />
                         {/* Small rotating blades */}
-                        <g className="turbine-blade" style={{animationDelay: `${i * 0.2}s`}}>
+                        <g className="turbine-blade" style={{animationDelay: `${i * 0.2}s`, transformOrigin: `${bldg.x + bldg.w/2}px ${215 - bldg.h - 10}px`}}>
                           {/* Blade 1 - pointing up */}
                           <path d={`M ${bldg.x + bldg.w/2},${215 - bldg.h - 12} L ${bldg.x + bldg.w/2 + 1},${215 - bldg.h - 18} L ${bldg.x + bldg.w/2 - 1},${215 - bldg.h - 18} Z`}
                                 fill="#f0f0f0"
