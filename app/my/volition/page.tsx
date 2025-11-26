@@ -88,15 +88,11 @@ function DraggableColumn({ id, children }: { id: string; children: React.ReactNo
 
 export default function MyVolitionPage() {
   const { data: session, status } = useSession()
-  const [currentPage, setCurrentPage] = useState(0)
   const [projects, setProjects] = useState<any[]>([])
   const [articles, setArticles] = useState<any[]>([])
   const [feedPosts, setFeedPosts] = useState<any[]>([])
   const [userProfile, setUserProfile] = useState<any>(null)
-  const [contacts, setContacts] = useState<any[]>([])
   const [isLoading, setIsLoading] = useState(true)
-  const [messageContent, setMessageContent] = useState('')
-  const [selectedContact, setSelectedContact] = useState<any>(null)
   const [discussionFilter, setDiscussionFilter] = useState<'recent' | 'oldest' | 'popular'>('recent')
   const [networkSuggestions, setNetworkSuggestions] = useState<any[]>([])
   const [following, setFollowing] = useState<any[]>([])
@@ -148,7 +144,6 @@ export default function MyVolitionPage() {
         fetchArticles(),
         fetchFeedPosts(),
         fetchProfile(),
-        fetchContacts(),
         fetchNetworkSuggestions(),
         fetchFollowing(),
       ]).finally(() => setIsLoading(false))
@@ -269,20 +264,6 @@ export default function MyVolitionPage() {
     }
   }
 
-  const fetchContacts = async () => {
-    try {
-      const res = await fetch('/api/users')
-      if (res.ok) {
-        const data = await res.json()
-        if (data.success) {
-          setContacts(data.data.filter((u: any) => u.id !== session?.user?.id).slice(0, 20))
-        }
-      }
-    } catch (error) {
-      console.error('Error fetching contacts:', error)
-    }
-  }
-
   const fetchNetworkSuggestions = async () => {
     try {
       const res = await fetch('/api/network/suggestions?limit=6')
@@ -345,10 +326,6 @@ export default function MyVolitionPage() {
     }
   }
 
-  const goToPage = (page: number) => {
-    setCurrentPage(page)
-  }
-
 
   if (status === 'loading' || isLoading) {
     return (
@@ -377,33 +354,10 @@ export default function MyVolitionPage() {
               <Zap className="w-6 h-6 text-white" />
               <div>
                 <h1 className="text-xl font-black text-white">YOUR VOLITION</h1>
-                <p className="text-xs font-medium text-white/70">
-                  {currentPage === 0 ? 'Your Deck' : 'Network & Messages'}
-                </p>
                 <p className="text-[9px] font-medium text-white/50 italic mt-0.5">
                   Track your contributions to Project Exodus. They are YOUR STOCK of the P.E. system.
                 </p>
               </div>
-            </div>
-
-            {/* Page Indicators */}
-            <div className="flex items-center gap-2">
-              <button
-                onClick={() => goToPage(0)}
-                className={`w-8 h-8 rounded-full flex items-center justify-center transition-all ${
-                  currentPage === 0 ? 'bg-white text-[var(--primary)]' : 'bg-white/20 text-white'
-                }`}
-              >
-                1
-              </button>
-              <button
-                onClick={() => goToPage(1)}
-                className={`w-8 h-8 rounded-full flex items-center justify-center transition-all ${
-                  currentPage === 1 ? 'bg-white text-[var(--primary)]' : 'bg-white/20 text-white'
-                }`}
-              >
-                2
-              </button>
             </div>
 
             <Link href="/settings">
@@ -416,15 +370,9 @@ export default function MyVolitionPage() {
         </div>
       </div>
 
-      {/* Horizontal Pages Container */}
+      {/* Deck Columns Container */}
       <div className="relative h-[calc(100vh-100px)] overflow-hidden">
-        <div
-          className="flex h-full transition-transform duration-500 ease-in-out"
-          style={{ transform: `translateX(-${currentPage * 100}%)` }}
-        >
-          {/* PAGE 1: DECK COLUMNS */}
-          <div className="w-full h-full flex-shrink-0 overflow-hidden">
-            <DndContext
+        <DndContext
               sensors={sensors}
               collisionDetection={closestCenter}
               onDragEnd={handleDragEnd}
@@ -867,147 +815,7 @@ export default function MyVolitionPage() {
                   </DraggableColumn>
                 </div>
               </SortableContext>
-            </DndContext>
-
-            {/* Navigation Arrow - Right */}
-            <button
-              onClick={() => goToPage(1)}
-              className="fixed right-6 top-1/2 -translate-y-1/2 w-12 h-12 bg-white shadow-2xl rounded-full flex items-center justify-center hover:bg-[var(--primary)] hover:text-white transition-all z-40"
-            >
-              <ChevronRight className="w-6 h-6" />
-            </button>
-          </div>
-
-          {/* PAGE 2: NETWORK & MESSENGER */}
-          <div className="w-full h-full flex-shrink-0 overflow-hidden">
-            <div className="h-full flex gap-4 p-6">
-              {/* Network/Contacts Column */}
-              <div className="w-1/3 h-full flex flex-col bg-[var(--card)] rounded-2xl border-2 border-theme-primary shadow-lg overflow-hidden">
-                <div className="p-4 border-b border-[var(--border)]">
-                  <div className="flex items-center gap-2 mb-3">
-                    <User className="w-5 h-5 text-theme-primary" />
-                    <h2 className="text-sm font-black text-[var(--foreground)]">NETWORK</h2>
-                  </div>
-                  <div className="relative">
-                    <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-theme-muted" />
-                    <input
-                      type="text"
-                      placeholder="Search contacts..."
-                      className="w-full pl-10 pr-3 py-2 bg-[var(--muted)] border border-[var(--border)] rounded-lg text-xs font-medium text-[var(--foreground)] placeholder-theme-muted focus:outline-none focus:border-theme-primary"
-                    />
-                  </div>
-                </div>
-                <div className="flex-1 overflow-y-auto">
-                  {contacts.map(contact => (
-                    <button
-                      key={contact.id}
-                      onClick={() => setSelectedContact(contact)}
-                      className={`w-full p-4 border-b border-[var(--border)] hover:bg-[var(--muted)] transition-colors text-left ${
-                        selectedContact?.id === contact.id ? 'bg-[var(--primary)]/10' : ''
-                      }`}
-                    >
-                      <div className="flex items-center gap-3">
-                        <div className="w-10 h-10 rounded-full bg-gradient-to-br from-[var(--primary)] to-[var(--accent)] flex items-center justify-center flex-shrink-0">
-                          {contact.image ? (
-                            <img
-                              src={contact.image}
-                              alt={contact.name}
-                              className="w-full h-full rounded-full object-cover"
-                            />
-                          ) : (
-                            <User className="w-5 h-5 text-white" />
-                          )}
-                        </div>
-                        <div className="flex-1 min-w-0">
-                          <p className="text-sm font-black text-[var(--foreground)] truncate">
-                            {contact.name || 'Anonymous'}
-                          </p>
-                          <p className="text-xs font-medium text-theme-muted truncate">
-                            {contact.headline || 'Member'}
-                          </p>
-                        </div>
-                      </div>
-                    </button>
-                  ))}
-                </div>
-              </div>
-
-              {/* Messenger Column */}
-              <div className="flex-1 h-full flex flex-col bg-[var(--card)] rounded-2xl border-2 border-theme-accent shadow-lg overflow-hidden">
-                {selectedContact ? (
-                  <>
-                    {/* Messenger Header */}
-                    <div className="p-4 border-b border-[var(--border)] flex items-center justify-between">
-                      <div className="flex items-center gap-3">
-                        <div className="w-10 h-10 rounded-full bg-gradient-to-br from-[var(--primary)] to-[var(--accent)] flex items-center justify-center">
-                          {selectedContact.image ? (
-                            <img
-                              src={selectedContact.image}
-                              alt={selectedContact.name}
-                              className="w-full h-full rounded-full object-cover"
-                            />
-                          ) : (
-                            <User className="w-5 h-5 text-white" />
-                          )}
-                        </div>
-                        <div>
-                          <p className="text-sm font-black text-[var(--foreground)]">
-                            {selectedContact.name || 'Anonymous'}
-                          </p>
-                          <p className="text-xs font-medium text-theme-muted">Active now</p>
-                        </div>
-                      </div>
-                      <button className="w-8 h-8 rounded-full hover:bg-[var(--muted)] flex items-center justify-center transition-colors">
-                        <MoreVertical className="w-5 h-5 text-theme-muted" />
-                      </button>
-                    </div>
-
-                    {/* Messages Area */}
-                    <div className="flex-1 overflow-y-auto p-4 space-y-4">
-                      <div className="text-center">
-                        <p className="text-xs font-bold text-theme-muted">
-                          Start a conversation with {selectedContact.name}
-                        </p>
-                      </div>
-                    </div>
-
-                    {/* Message Input */}
-                    <div className="p-4 border-t border-[var(--border)]">
-                      <div className="flex gap-2">
-                        <input
-                          type="text"
-                          value={messageContent}
-                          onChange={(e) => setMessageContent(e.target.value)}
-                          placeholder="Type a message..."
-                          className="flex-1 px-4 py-2 bg-[var(--muted)] border border-[var(--border)] rounded-lg text-sm font-medium text-[var(--foreground)] placeholder-theme-muted focus:outline-none focus:border-theme-primary"
-                        />
-                        <button className="px-6 py-2 bg-[var(--primary)] text-white rounded-lg font-bold text-sm hover:bg-[var(--accent)] transition-colors flex items-center gap-2">
-                          <Send className="w-4 h-4" />
-                          Send
-                        </button>
-                      </div>
-                    </div>
-                  </>
-                ) : (
-                  <div className="flex-1 flex items-center justify-center">
-                    <div className="text-center">
-                      <User className="w-16 h-16 text-theme-muted mx-auto mb-4 opacity-50" />
-                      <p className="text-sm font-bold text-theme-muted">Select a contact to start messaging</p>
-                    </div>
-                  </div>
-                )}
-              </div>
-            </div>
-
-            {/* Navigation Arrow - Left */}
-            <button
-              onClick={() => goToPage(0)}
-              className="fixed left-6 top-1/2 -translate-y-1/2 w-12 h-12 bg-white shadow-2xl rounded-full flex items-center justify-center hover:bg-[var(--primary)] hover:text-white transition-all z-40"
-            >
-              <ChevronLeft className="w-6 h-6" />
-            </button>
-          </div>
-        </div>
+        </DndContext>
       </div>
     </div>
   )
