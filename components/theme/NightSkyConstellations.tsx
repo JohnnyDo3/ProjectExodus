@@ -205,6 +205,49 @@ export function NightSkyConstellations({ alwaysShow = false, starCount = 1400 }:
       ctx.clearRect(0, 0, canvas.width, canvas.height)
       time += 0.01
 
+      // Draw deep black space background
+      const blackGradient = ctx.createLinearGradient(0, 0, 0, canvas.height)
+      blackGradient.addColorStop(0, 'rgba(0, 0, 5, 1)')
+      blackGradient.addColorStop(0.7, 'rgba(0, 0, 10, 1)')
+      blackGradient.addColorStop(1, 'rgba(5, 5, 15, 1)')
+      ctx.fillStyle = blackGradient
+      ctx.fillRect(0, 0, canvas.width, canvas.height)
+
+      // Light pollution from city below - orange/amber glow at bottom
+      const lightPollutionHeight = canvas.height * 0.4
+      const pollutionGradient = ctx.createLinearGradient(0, canvas.height, 0, canvas.height - lightPollutionHeight)
+      pollutionGradient.addColorStop(0, 'rgba(255, 140, 50, 0.15)')
+      pollutionGradient.addColorStop(0.3, 'rgba(255, 160, 70, 0.08)')
+      pollutionGradient.addColorStop(0.6, 'rgba(255, 180, 90, 0.03)')
+      pollutionGradient.addColorStop(1, 'rgba(255, 200, 100, 0)')
+      ctx.fillStyle = pollutionGradient
+      ctx.fillRect(0, canvas.height - lightPollutionHeight, canvas.width, lightPollutionHeight)
+
+      // Add localized light pollution hotspots (simulating cities)
+      const cityLights = [
+        { x: canvas.width * 0.25, intensity: 0.12 },
+        { x: canvas.width * 0.5, intensity: 0.18 }, // Brightest - main city
+        { x: canvas.width * 0.75, intensity: 0.10 }
+      ]
+
+      cityLights.forEach(city => {
+        const cityGlow = ctx.createRadialGradient(
+          city.x, canvas.height, 0,
+          city.x, canvas.height, canvas.width * 0.3
+        )
+        cityGlow.addColorStop(0, `rgba(255, 160, 60, ${city.intensity})`)
+        cityGlow.addColorStop(0.4, `rgba(255, 180, 80, ${city.intensity * 0.5})`)
+        cityGlow.addColorStop(0.7, `rgba(255, 200, 100, ${city.intensity * 0.2})`)
+        cityGlow.addColorStop(1, 'rgba(0, 0, 0, 0)')
+        ctx.fillStyle = cityGlow
+        ctx.fillRect(
+          city.x - canvas.width * 0.3,
+          canvas.height - lightPollutionHeight,
+          canvas.width * 0.6,
+          lightPollutionHeight
+        )
+      })
+
       // Draw Milky Way band - horizontal arched band across the sky
       // Main galactic band (horizontal with slight arch)
       const centerY = canvas.height * 0.45 // Slightly above center
