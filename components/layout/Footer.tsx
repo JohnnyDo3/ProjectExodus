@@ -136,13 +136,13 @@ export function Footer() {
                   />
                   <Button
                     type="submit"
-                    size="lg"
+                    size="sm"
                     disabled={isSubmitting}
-                    className="px-8 py-4 rounded-xl font-bold shadow-lg hover:scale-105 transition-transform"
+                    className="px-3 py-2 rounded-md font-bold text-xs shadow-md hover:scale-105 transition-transform"
                   >
-                    {subscribed ? '✓ Subscribed!' : isSubmitting ? 'Subscribing...' : (
+                    {subscribed ? '✓' : isSubmitting ? '...' : (
                       <>
-                        <Send className="w-5 h-5 mr-2" />
+                        <Send className="w-3 h-3 mr-1" />
                         Subscribe
                       </>
                     )}
