@@ -144,6 +144,24 @@ export default function MyVolitionPage() {
 
       {/* Single-Screen Dashboard - No Scroll */}
       <div className="container mx-auto px-6 py-4 max-h-[calc(100vh-8rem)] overflow-hidden">
+        {/* Mission Statement Banner */}
+        <div className="mb-3 p-3 bg-gradient-to-r from-[var(--primary)]/10 via-[var(--accent)]/10 to-[var(--secondary)]/10 border-2 border-theme-primary rounded-lg">
+          <div className="flex items-center gap-3">
+            <div className="w-10 h-10 rounded-full bg-gradient-to-br from-[var(--primary)] to-[var(--accent)] flex items-center justify-center flex-shrink-0">
+              <Target className="w-5 h-5 text-white" />
+            </div>
+            <div className="flex-1">
+              <h2 className="text-sm font-black text-[var(--foreground)] mb-0.5">
+                Your Personal Contribution Tracker
+              </h2>
+              <p className="text-xs font-semibold text-theme-muted leading-tight">
+                This is YOUR dashboard to track how much you contribute and become part of Project Exodus.
+                Every action you take—projects, learning, connections—builds a sustainable future together.
+              </p>
+            </div>
+          </div>
+        </div>
+
         {/* Tight 4-Column Grid */}
         <div className="grid grid-cols-12 gap-3 h-full">
           {/* LEFT COLUMN - Profile & Stats (3 cols) */}
