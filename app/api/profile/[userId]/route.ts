@@ -27,17 +27,22 @@ export async function GET(
         headline: true,
         bio: true,
         location: true,
-        phone: true,
         company: true,
         jobTitle: true,
         expertise: true,
         interests: true,
         website: true,
-        github: true,
         linkedin: true,
         twitter: true,
-        // Note: experience, education, portfolio, achievements, resume fields
-        // may need to be added to the Prisma schema if they don't exist yet
+        experience: true,
+        education: true,
+        skills: true,
+        resume: true,
+        certifications: true,
+        volunteer: true,
+        publications: true,
+        honors: true,
+        projects: true,
       },
     })
 
