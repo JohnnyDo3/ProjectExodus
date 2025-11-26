@@ -300,23 +300,14 @@ export default async function CommunityPage() {
       <TreeBranches />
       <FlyingBirds />
 
-      {/* Welcome Header with Stats Grid */}
-      <section className="py-6 bg-gradient-to-br from-[var(--primary)] via-[var(--accent)] to-[var(--secondary)] text-[var(--primary-foreground)] rounded-b-3xl">
+      {/* Compact Header with Stats and Navigation */}
+      <section className="py-4 bg-gradient-to-br from-[var(--primary)] via-[var(--accent)] to-[var(--secondary)] text-[var(--primary-foreground)] rounded-b-3xl">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="max-w-6xl mx-auto">
-            <div className="flex flex-col lg:flex-row items-center justify-between gap-6">
-              {/* LEFT: Discussions Action Button */}
-              <div className="flex-shrink-0">
-                <Link href="/community/feed">
-                  <Button size="sm" className="bg-white text-[var(--primary)] hover:bg-gray-100 font-bold rounded-full shadow-lg">
-                    <MessageSquare className="w-3.5 h-3.5 mr-1.5" />
-                    Discussions
-                  </Button>
-                </Link>
-              </div>
-
-              {/* CENTER: Greeting */}
-              <div className="text-center lg:text-left">
+          <div className="max-w-6xl mx-auto space-y-4">
+            {/* Top Row: Greeting + Stats */}
+            <div className="flex items-start justify-between gap-4">
+              {/* LEFT: Greeting */}
+              <div>
                 <h1 className="text-xl md:text-2xl font-black mb-1">
                   Hey {user?.name || 'friend'}!
                 </h1>
@@ -376,35 +367,35 @@ export default async function CommunityPage() {
                 </div>
               </div>
             </div>
-          </div>
-        </div>
-      </section>
 
-      {/* Quick Actions - Cute Floating Pills */}
-      <section className="py-4 bg-[var(--muted)]/50">
-        <div className="container mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="max-w-4xl mx-auto">
-            <div className="flex flex-wrap justify-center gap-2">
+            {/* Bottom Row: Navigation Buttons */}
+            <div className="flex items-center gap-2 border-t border-white/20 pt-4">
+              <Link href="/community/feed">
+                <Button size="sm" className="bg-white text-[var(--primary)] hover:bg-gray-100 font-bold rounded-full shadow-md">
+                  <MessageSquare className="w-3.5 h-3.5 mr-1.5" />
+                  Discussions
+                </Button>
+              </Link>
               <Link href="/learn">
-                <Button size="sm" variant="outline" className="font-bold rounded-full hover:shadow-md transition-shadow">
+                <Button size="sm" variant="outline" className="bg-white/10 hover:bg-white/20 text-white border-white/30 font-bold rounded-full">
                   <BookOpen className="w-3.5 h-3.5 mr-1.5" />
                   Articles
                 </Button>
               </Link>
               <Link href="/community/projects/new">
-                <Button size="sm" variant="outline" className="font-bold rounded-full hover:shadow-md transition-shadow">
+                <Button size="sm" variant="outline" className="bg-white/10 hover:bg-white/20 text-white border-white/30 font-bold rounded-full">
                   <Rocket className="w-3.5 h-3.5 mr-1.5" />
                   Create Project
                 </Button>
               </Link>
               <Link href="/community/leaderboard">
-                <Button size="sm" variant="outline" className="font-bold rounded-full hover:shadow-md transition-shadow">
+                <Button size="sm" variant="outline" className="bg-white/10 hover:bg-white/20 text-white border-white/30 font-bold rounded-full">
                   <Award className="w-3.5 h-3.5 mr-1.5" />
                   Leaderboard
                 </Button>
               </Link>
               <Link href="/community/users">
-                <Button size="sm" variant="outline" className="font-bold rounded-full hover:shadow-md transition-shadow">
+                <Button size="sm" variant="outline" className="bg-white/10 hover:bg-white/20 text-white border-white/30 font-bold rounded-full">
                   <Users className="w-3.5 h-3.5 mr-1.5" />
                   Members
                 </Button>
@@ -417,43 +408,10 @@ export default async function CommunityPage() {
       {/* Flowing Content - Cute & Curvy with Borders */}
       <section className="py-6">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="max-w-6xl mx-auto grid lg:grid-cols-2 gap-4">
-
-            {/* Active Projects - Cute Grid */}
-            <div className="p-5 bg-[var(--card)] rounded-3xl border-3 border-theme-secondary/40 shadow-sm lg:col-span-2">
-              <div className="flex items-center justify-between mb-3">
-                <div className="flex items-center gap-2">
-                  <div className="w-8 h-8 rounded-full bg-gradient-to-br from-[var(--secondary)] to-[var(--secondary)]/70 flex items-center justify-center">
-                    <Rocket className="w-4 h-4 text-white" />
-                  </div>
-                  <h2 className="text-base font-black text-[var(--foreground)]">Active Projects</h2>
-                </div>
-                <Link href="/community/projects">
-                  <Button variant="ghost" size="sm" className="font-bold text-xs rounded-full hover:bg-[var(--muted)]">
-                    View all <ChevronRight className="w-3 h-3 ml-1" />
-                  </Button>
-                </Link>
-              </div>
-              <div className="grid md:grid-cols-2 gap-3">
-                {activeProjects.map((project: any) => (
-                  <Link key={project.id} href={`/community/projects/${project.slug}`}>
-                    <div className="p-4 bg-[var(--muted)]/50 rounded-2xl hover:bg-[var(--muted)] transition-all hover:shadow-md cursor-pointer border-2 border-transparent hover:border-theme-secondary/30 h-full">
-                      <h3 className="font-bold text-sm text-[var(--foreground)] mb-1.5 line-clamp-1">{project.name}</h3>
-                      <p className="text-xs font-medium text-theme-muted mb-2 line-clamp-2">{project.description}</p>
-                      <div className="flex items-center justify-between text-[10px] font-bold text-theme-muted">
-                        <span><span title="Members">@</span> {project._count.members} members</span>
-                        <span className="px-2 py-0.5 bg-theme-secondary/20 text-theme-secondary rounded-full">
-                          {project.status}
-                        </span>
-                      </div>
-                    </div>
-                  </Link>
-                ))}
-              </div>
-            </div>
+          <div className="max-w-6xl mx-auto space-y-4">
 
             {/* Recent Discussions - Cute Cards */}
-            <div className="p-5 bg-[var(--card)] rounded-3xl border-3 border-theme-accent/40 shadow-sm lg:col-span-2">
+            <div className="p-5 bg-[var(--card)] rounded-3xl border-3 border-theme-accent/40 shadow-sm">
               <div className="flex items-center justify-between mb-3">
                 <div className="flex items-center gap-2">
                   <div className="w-8 h-8 rounded-full bg-gradient-to-br from-[var(--accent)] to-[var(--accent)]/70 flex items-center justify-center">
@@ -461,11 +419,21 @@ export default async function CommunityPage() {
                   </div>
                   <h2 className="text-base font-black text-[var(--foreground)]">Recent Discussions</h2>
                 </div>
-                <Link href="/learn">
-                  <Button variant="ghost" size="sm" className="font-bold text-xs rounded-full hover:bg-[var(--muted)]">
-                    View all <ChevronRight className="w-3 h-3 ml-1" />
-                  </Button>
-                </Link>
+                <div className="flex items-center gap-2">
+                  <div className="flex gap-1">
+                    <button className="px-2 py-1 text-[10px] font-bold bg-[var(--primary)] text-white rounded-full">
+                      Newest
+                    </button>
+                    <button className="px-2 py-1 text-[10px] font-bold bg-[var(--muted)] text-[var(--foreground)] hover:bg-[var(--primary)]/20 rounded-full">
+                      Oldest
+                    </button>
+                  </div>
+                  <Link href="/learn">
+                    <Button variant="ghost" size="sm" className="font-bold text-xs rounded-full hover:bg-[var(--muted)]">
+                      View all <ChevronRight className="w-3 h-3 ml-1" />
+                    </Button>
+                  </Link>
+                </div>
               </div>
               <div className="grid md:grid-cols-2 gap-3">
                 {recentDiscussions.map((discussion: any) => (
@@ -500,6 +468,51 @@ export default async function CommunityPage() {
                 ))}
               </div>
             </div>
+
+            {/* Active Projects - Cute Grid */}
+            <div className="p-5 bg-[var(--card)] rounded-3xl border-3 border-theme-secondary/40 shadow-sm">
+              <div className="flex items-center justify-between mb-3">
+                <div className="flex items-center gap-2">
+                  <div className="w-8 h-8 rounded-full bg-gradient-to-br from-[var(--secondary)] to-[var(--secondary)]/70 flex items-center justify-center">
+                    <Rocket className="w-4 h-4 text-white" />
+                  </div>
+                  <h2 className="text-base font-black text-[var(--foreground)]">Active Projects</h2>
+                </div>
+                <div className="flex items-center gap-2">
+                  <div className="flex gap-1">
+                    <button className="px-2 py-1 text-[10px] font-bold bg-[var(--primary)] text-white rounded-full">
+                      Newest
+                    </button>
+                    <button className="px-2 py-1 text-[10px] font-bold bg-[var(--muted)] text-[var(--foreground)] hover:bg-[var(--primary)]/20 rounded-full">
+                      Oldest
+                    </button>
+                  </div>
+                  <Link href="/community/projects">
+                    <Button variant="ghost" size="sm" className="font-bold text-xs rounded-full hover:bg-[var(--muted)]">
+                      View all <ChevronRight className="w-3 h-3 ml-1" />
+                    </Button>
+                  </Link>
+                </div>
+              </div>
+              <div className="grid md:grid-cols-2 gap-3">
+                {activeProjects.map((project: any) => (
+                  <Link key={project.id} href={`/community/projects/${project.slug}`}>
+                    <div className="p-4 bg-[var(--muted)]/50 rounded-2xl hover:bg-[var(--muted)] transition-all hover:shadow-md cursor-pointer border-2 border-transparent hover:border-theme-secondary/30 h-full">
+                      <h3 className="font-bold text-sm text-[var(--foreground)] mb-1.5 line-clamp-1">{project.name}</h3>
+                      <p className="text-xs font-medium text-theme-muted mb-2 line-clamp-2">{project.description}</p>
+                      <div className="flex items-center justify-between text-[10px] font-bold text-theme-muted">
+                        <span><span title="Members">@</span> {project._count.members} members</span>
+                        <span className="px-2 py-0.5 bg-theme-secondary/20 text-theme-secondary rounded-full">
+                          {project.status}
+                        </span>
+                      </div>
+                    </div>
+                  </Link>
+                ))}
+              </div>
+            </div>
+
+            <div className="grid lg:grid-cols-2 gap-4">
 
             {/* Suggested Connections - Cute List */}
             <div className="p-5 bg-[var(--card)] rounded-3xl border-3 border-theme-primary/40 shadow-sm">

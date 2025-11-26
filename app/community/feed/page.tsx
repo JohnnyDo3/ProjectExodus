@@ -63,7 +63,7 @@ export default function SocialFeedPage() {
           </div>
           <div className="max-w-5xl mx-auto text-center space-y-4">
             <h1 className="text-5xl font-black text-[var(--foreground)]">
-              COMMUNITY FEED
+              COMMUNITY DISCUSSIONS
             </h1>
             <p className="text-xl font-semibold text-theme-muted">
               Share your sustainability journey, connect with like-minded people
@@ -116,11 +116,6 @@ export default function SocialFeedPage() {
                     EXPLORE
                   </h3>
                   <div className="space-y-2">
-                    <Link href="/community/forum">
-                      <button className="w-full text-left px-4 py-3 rounded-lg hover:bg-[var(--muted)] transition-colors font-bold text-[var(--foreground)]">
-                        Discussion Forums
-                      </button>
-                    </Link>
                     <Link href="/community/projects">
                       <button className="w-full text-left px-4 py-3 rounded-lg hover:bg-[var(--muted)] transition-colors font-bold text-[var(--foreground)]">
                         Community Projects
