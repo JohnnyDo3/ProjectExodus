@@ -11,6 +11,7 @@ interface WidgetProps {
   theme?: 'primary' | 'accent' | 'secondary'
   collapsed?: boolean
   onToggleCollapse?: () => void
+  onClick?: () => void
   className?: string
 }
 
@@ -22,6 +23,7 @@ export default function Widget({
   theme = 'primary',
   collapsed = false,
   onToggleCollapse,
+  onClick,
   className = '',
 }: WidgetProps) {
   const themeClasses = {
@@ -38,8 +40,9 @@ export default function Widget({
 
   return (
     <div
-      className={`bg-[var(--card)] border-2 ${themeClasses[theme]} rounded-xl shadow-xl overflow-hidden transition-all ${className}`}
+      className={`bg-[var(--card)] border-2 ${themeClasses[theme]} rounded-xl shadow-xl overflow-hidden transition-all ${onClick ? 'cursor-pointer hover:scale-[1.02] hover:shadow-2xl' : ''} ${className}`}
       data-widget-id={id}
+      onClick={onClick}
     >
       {/* Widget Header */}
       <div

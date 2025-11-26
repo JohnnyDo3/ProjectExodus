@@ -1,7 +1,7 @@
 'use client'
 
 import { useSession } from 'next-auth/react'
-import { redirect } from 'next/navigation'
+import { redirect, useRouter } from 'next/navigation'
 import {
   User,
   Settings,
@@ -92,6 +92,7 @@ const LAYOUT_PRESETS = {
 
 export default function MyVolitionPage() {
   const { data: session, status } = useSession()
+  const router = useRouter()
   const [projects, setProjects] = useState<any[]>([])
   const [userProfile, setUserProfile] = useState<any>(null)
   const [isLoading, setIsLoading] = useState(true)
@@ -297,7 +298,7 @@ export default function MyVolitionPage() {
   const visibleLayout = layout.filter(widget => !hiddenWidgets.has(widget.i as WidgetKey))
 
   return (
-    <div className="min-h-screen bg-[var(--background)] pb-20">
+    <div className="h-screen overflow-hidden bg-[var(--background)] hide-footer">
       {/* Header - Solid Background with Full Mission Statement */}
       <div className="sticky top-0 z-50 bg-gradient-to-r from-[var(--primary)]/95 via-[var(--accent)]/95 to-[var(--secondary)]/95 backdrop-blur-sm border-b-2 border-theme-primary">
         <div className="container mx-auto px-6 py-4">
@@ -421,7 +422,7 @@ export default function MyVolitionPage() {
       )}
 
       {/* Dashboard Grid */}
-      <div className="container mx-auto px-6 py-6">
+      <div className="container mx-auto px-6 py-6 h-[calc(100vh-120px)] overflow-y-auto">
         <GridLayout
           className="layout"
           layout={visibleLayout}
@@ -431,6 +432,7 @@ export default function MyVolitionPage() {
           onLayoutChange={handleLayoutChange}
           isDraggable={!isLayoutLocked}
           isResizable={!isLayoutLocked}
+          resizeHandles={['se', 'sw', 'ne', 'nw']}
           compactType="vertical"
           preventCollision={false}
         >
@@ -444,6 +446,7 @@ export default function MyVolitionPage() {
                 theme={layout.find(w => w.i === 'profile')?.theme || 'primary'}
                 collapsed={collapsedWidgets.has('profile')}
                 onToggleCollapse={() => toggleWidgetCollapse('profile')}
+                onClick={() => router.push(`/profile/${session?.user?.id}`)}
               >
                 <div className="flex flex-col items-center text-center space-y-2">
                   <div className="w-16 h-16 rounded-full bg-gradient-to-br from-[var(--primary)] to-[var(--accent)] flex items-center justify-center border-2 border-white shadow-lg">
@@ -482,6 +485,7 @@ export default function MyVolitionPage() {
                 theme={layout.find(w => w.i === 'projects')?.theme || 'primary'}
                 collapsed={collapsedWidgets.has('projects')}
                 onToggleCollapse={() => toggleWidgetCollapse('projects')}
+                onClick={() => router.push('/community/projects')}
               >
                 <div className="space-y-2">
                   {projects.length > 0 ? (
@@ -518,6 +522,7 @@ export default function MyVolitionPage() {
                 theme={layout.find(w => w.i === 'learning')?.theme || 'accent'}
                 collapsed={collapsedWidgets.has('learning')}
                 onToggleCollapse={() => toggleWidgetCollapse('learning')}
+                onClick={() => router.push('/learn')}
               >
                 <div className="space-y-2">
                   <div className="flex items-center justify-between p-2 bg-[var(--muted)] rounded">
@@ -547,6 +552,7 @@ export default function MyVolitionPage() {
                 theme={layout.find(w => w.i === 'impact')?.theme || 'secondary'}
                 collapsed={collapsedWidgets.has('impact')}
                 onToggleCollapse={() => toggleWidgetCollapse('impact')}
+                onClick={() => router.push('/my/impact')}
               >
                 <div className="space-y-2">
                   <div className="flex items-center justify-between">
@@ -596,6 +602,7 @@ export default function MyVolitionPage() {
                 theme={layout.find(w => w.i === 'network')?.theme || 'primary'}
                 collapsed={collapsedWidgets.has('network')}
                 onToggleCollapse={() => toggleWidgetCollapse('network')}
+                onClick={() => router.push('/network')}
               >
                 <div className="space-y-2">
                   <div className="p-2.5 bg-gradient-to-br from-[var(--primary)]/10 to-transparent border border-theme-primary rounded-lg text-center">
@@ -626,6 +633,7 @@ export default function MyVolitionPage() {
                 theme={layout.find(w => w.i === 'achievements')?.theme || 'accent'}
                 collapsed={collapsedWidgets.has('achievements')}
                 onToggleCollapse={() => toggleWidgetCollapse('achievements')}
+                onClick={() => router.push('/my/achievements')}
               >
                 <div className="grid grid-cols-4 gap-2">
                   {badges.map((badge, i) => (
@@ -694,6 +702,7 @@ export default function MyVolitionPage() {
                 theme={layout.find(w => w.i === 'stats')?.theme || 'primary'}
                 collapsed={collapsedWidgets.has('stats')}
                 onToggleCollapse={() => toggleWidgetCollapse('stats')}
+                onClick={() => router.push('/my/stats')}
               >
                 <div className="flex items-center justify-around">
                   <div className="text-center">

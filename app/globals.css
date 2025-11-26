@@ -611,3 +611,32 @@ a:hover {
   box-shadow: 0 10px 15px -3px color-mix(in srgb, var(--foreground) 10%, transparent),
               0 4px 6px -2px color-mix(in srgb, var(--foreground) 5%, transparent);
 }
+
+/* Hide footer on My Volition page */
+.hide-footer ~ footer,
+body:has(.hide-footer) footer {
+  display: none !important;
+}
+
+/* React Grid Layout resize handle styling */
+.react-grid-item > .react-resizable-handle {
+  width: 20px;
+  height: 20px;
+}
+
+.react-grid-item > .react-resizable-handle::after {
+  content: "";
+  position: absolute;
+  right: 3px;
+  bottom: 3px;
+  width: 8px;
+  height: 8px;
+  border-right: 2px solid var(--primary);
+  border-bottom: 2px solid var(--primary);
+  opacity: 0.7;
+}
+
+.react-grid-item > .react-resizable-handle:hover::after {
+  opacity: 1;
+  border-color: var(--accent);
+}
