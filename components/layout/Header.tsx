@@ -99,12 +99,12 @@ export function Header() {
                       </div>
                       <div className="p-2">
                         <Link
-                          href="/my/basecamp"
+                          href="/my/volition"
                           className="flex items-center gap-3 px-4 py-2 rounded-lg hover:bg-[var(--muted)] transition-colors group"
                           onClick={() => setUserMenuOpen(false)}
                         >
                           <LayoutDashboard className="w-4 h-4 text-theme-primary" />
-                          <span className="font-bold text-[var(--foreground)] group-hover:text-theme-primary">My Basecamp</span>
+                          <span className="font-bold text-[var(--foreground)] group-hover:text-theme-primary">My Volition</span>
                         </Link>
                         <Link
                           href="/network"
@@ -213,10 +213,10 @@ export function Header() {
                       {session.user?.email}
                     </p>
                   </div>
-                  <Link href="/my/basecamp" className="block" onClick={() => setMobileMenuOpen(false)}>
+                  <Link href="/my/volition" className="block" onClick={() => setMobileMenuOpen(false)}>
                     <Button variant="outline" size="sm" className="w-full font-black">
                       <LayoutDashboard className="w-4 h-4 mr-2" />
-                      My Basecamp
+                      My Volition
                     </Button>
                   </Link>
                   <Link href="/network" className="block" onClick={() => setMobileMenuOpen(false)}>
