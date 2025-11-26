@@ -11,6 +11,8 @@ import prisma from '@/lib/db/prisma'
 import { LiveCounter } from '@/components/stats/LiveCounter'
 import { TreeBranches } from '@/components/decorative/TreeBranches'
 import { FlyingBirds } from '@/components/decorative/FlyingBirds'
+import { RecentDiscussionsWidget } from '@/components/community/RecentDiscussionsWidget'
+import { ActiveProjectsWidget } from '@/components/community/ActiveProjectsWidget'
 
 async function getDashboardData(userId: string) {
   try {
@@ -114,13 +116,10 @@ async function getDashboardData(userId: string) {
       }
     })
 
-    // Get recent discussions (articles)
-    const recentDiscussions = await prisma.article.findMany({
+    // Get recent discussions (feed posts)
+    const recentDiscussions = await prisma.socialPost.findMany({
       where: {
-        status: 'PUBLISHED',
-        NOT: {
-          authorId: userId
-        }
+        visibility: 'PUBLIC'
       },
       take: 6,
       orderBy: {
@@ -128,11 +127,9 @@ async function getDashboardData(userId: string) {
       },
       select: {
         id: true,
-        title: true,
-        slug: true,
-        excerpt: true,
+        content: true,
         createdAt: true,
-        author: {
+        user: {
           select: {
             id: true,
             name: true,
@@ -141,7 +138,8 @@ async function getDashboardData(userId: string) {
         },
         _count: {
           select: {
-            comments: true
+            comments: true,
+            likes: true
           }
         }
       }
@@ -410,107 +408,11 @@ export default async function CommunityPage() {
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
           <div className="max-w-6xl mx-auto space-y-4">
 
-            {/* Recent Discussions - Cute Cards */}
-            <div className="p-5 bg-[var(--card)] rounded-3xl border-3 border-theme-accent/40 shadow-sm">
-              <div className="flex items-center justify-between mb-3">
-                <div className="flex items-center gap-2">
-                  <div className="w-8 h-8 rounded-full bg-gradient-to-br from-[var(--accent)] to-[var(--accent)]/70 flex items-center justify-center">
-                    <MessageSquare className="w-4 h-4 text-white" />
-                  </div>
-                  <h2 className="text-base font-black text-[var(--foreground)]">Recent Discussions</h2>
-                </div>
-                <div className="flex items-center gap-2">
-                  <div className="flex gap-1">
-                    <button className="px-2 py-1 text-[10px] font-bold bg-[var(--primary)] text-white rounded-full">
-                      Newest
-                    </button>
-                    <button className="px-2 py-1 text-[10px] font-bold bg-[var(--muted)] text-[var(--foreground)] hover:bg-[var(--primary)]/20 rounded-full">
-                      Oldest
-                    </button>
-                  </div>
-                  <Link href="/learn">
-                    <Button variant="ghost" size="sm" className="font-bold text-xs rounded-full hover:bg-[var(--muted)]">
-                      View all <ChevronRight className="w-3 h-3 ml-1" />
-                    </Button>
-                  </Link>
-                </div>
-              </div>
-              <div className="grid md:grid-cols-2 gap-3">
-                {recentDiscussions.map((discussion: any) => (
-                  <Link key={discussion.id} href={`/learn/${discussion.slug}`}>
-                    <div className="p-4 bg-[var(--muted)]/50 rounded-2xl hover:bg-[var(--muted)] transition-all hover:shadow-md cursor-pointer border-2 border-transparent hover:border-theme-accent/30 h-full">
-                      <div className="flex items-start gap-2.5 mb-2">
-                        {discussion.author.image ? (
-                          <img src={discussion.author.image} alt={discussion.author.name || 'User'} className="w-7 h-7 rounded-full flex-shrink-0" />
-                        ) : (
-                          <div className="w-7 h-7 rounded-full bg-gradient-to-br from-[var(--primary)] to-[var(--accent)] flex items-center justify-center flex-shrink-0">
-                            <span className="text-[10px] font-bold text-white">{discussion.author.name?.[0]?.toUpperCase() || '?'}</span>
-                          </div>
-                        )}
-                        <div className="flex-1 min-w-0">
-                          <h3 className="font-bold text-sm text-[var(--foreground)] mb-1 line-clamp-2">{discussion.title}</h3>
-                        </div>
-                      </div>
-                      {discussion.excerpt && (
-                        <p className="text-xs font-medium text-theme-muted mb-2 line-clamp-2">{discussion.excerpt}</p>
-                      )}
-                      <div className="flex items-center justify-between text-[10px] font-bold text-theme-muted">
-                        <span>{discussion.author.name || 'Anonymous'}</span>
-                        <div className="flex items-center gap-2">
-                          <span><span title="Comments">💬</span> {discussion._count.comments}</span>
-                          <span className="px-2 py-0.5 bg-theme-accent/20 text-theme-accent rounded-full">
-                            {new Date(discussion.createdAt).toLocaleDateString()}
-                          </span>
-                        </div>
-                      </div>
-                    </div>
-                  </Link>
-                ))}
-              </div>
-            </div>
+            {/* Recent Discussions - Client Component with Filters */}
+            <RecentDiscussionsWidget initialDiscussions={recentDiscussions} />
 
-            {/* Active Projects - Cute Grid */}
-            <div className="p-5 bg-[var(--card)] rounded-3xl border-3 border-theme-secondary/40 shadow-sm">
-              <div className="flex items-center justify-between mb-3">
-                <div className="flex items-center gap-2">
-                  <div className="w-8 h-8 rounded-full bg-gradient-to-br from-[var(--secondary)] to-[var(--secondary)]/70 flex items-center justify-center">
-                    <Rocket className="w-4 h-4 text-white" />
-                  </div>
-                  <h2 className="text-base font-black text-[var(--foreground)]">Active Projects</h2>
-                </div>
-                <div className="flex items-center gap-2">
-                  <div className="flex gap-1">
-                    <button className="px-2 py-1 text-[10px] font-bold bg-[var(--primary)] text-white rounded-full">
-                      Newest
-                    </button>
-                    <button className="px-2 py-1 text-[10px] font-bold bg-[var(--muted)] text-[var(--foreground)] hover:bg-[var(--primary)]/20 rounded-full">
-                      Oldest
-                    </button>
-                  </div>
-                  <Link href="/community/projects">
-                    <Button variant="ghost" size="sm" className="font-bold text-xs rounded-full hover:bg-[var(--muted)]">
-                      View all <ChevronRight className="w-3 h-3 ml-1" />
-                    </Button>
-                  </Link>
-                </div>
-              </div>
-              <div className="grid md:grid-cols-2 gap-3">
-                {activeProjects.map((project: any) => (
-                  <Link key={project.id} href={`/community/projects/${project.slug}`}>
-                    <div className="p-4 bg-[var(--muted)]/50 rounded-2xl hover:bg-[var(--muted)] transition-all hover:shadow-md cursor-pointer border-2 border-transparent hover:border-theme-secondary/30 h-full">
-                      <h3 className="font-bold text-sm text-[var(--foreground)] mb-1.5 line-clamp-1">{project.name}</h3>
-                      <p className="text-xs font-medium text-theme-muted mb-2 line-clamp-2">{project.description}</p>
-                      <div className="flex items-center justify-between text-[10px] font-bold text-theme-muted">
-                        <span><span title="Members">@</span> {project._count.members} members</span>
-                        <span className="px-2 py-0.5 bg-theme-secondary/20 text-theme-secondary rounded-full">
-                          {project.status}
-                        </span>
-                      </div>
-                    </div>
-                  </Link>
-                ))}
-              </div>
-            </div>
+            {/* Active Projects - Client Component with Filters */}
+            <ActiveProjectsWidget initialProjects={activeProjects} />
 
             {/* Suggested Connections - Cute List */}
             <div className="p-5 bg-[var(--card)] rounded-3xl border-3 border-theme-primary/40 shadow-sm">

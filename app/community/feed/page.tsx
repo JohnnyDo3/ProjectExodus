@@ -13,14 +13,16 @@ import { useSession } from 'next-auth/react'
 export default function SocialFeedPage() {
   const { data: session } = useSession()
   const [posts, setPosts] = useState<any[]>([])
+  const [filteredPosts, setFilteredPosts] = useState<any[]>([])
   const [loading, setLoading] = useState(true)
   const [page, setPage] = useState(1)
   const [hasMore, setHasMore] = useState(true)
+  const [filter, setFilter] = useState<'all' | 'newest' | 'oldest' | 'popular'>('all')
 
   const fetchPosts = async (pageNum: number = 1) => {
     try {
       setLoading(true)
-      const res = await fetch(`/api/social/feed?page=${pageNum}&limit=10`)
+      const res = await fetch(`/api/social/feed?page=${pageNum}&limit=50`)
       const data = await res.json()
 
       if (data.success) {
@@ -41,6 +43,25 @@ export default function SocialFeedPage() {
   useEffect(() => {
     fetchPosts(1)
   }, [])
+
+  useEffect(() => {
+    // Apply filter
+    let sorted = [...posts]
+
+    if (filter === 'newest') {
+      sorted.sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime())
+    } else if (filter === 'oldest') {
+      sorted.sort((a, b) => new Date(a.createdAt).getTime() - new Date(b.createdAt).getTime())
+    } else if (filter === 'popular') {
+      sorted.sort((a, b) => {
+        const popularityA = (a._count?.likes || 0) + (a._count?.comments || 0)
+        const popularityB = (b._count?.likes || 0) + (b._count?.comments || 0)
+        return popularityB - popularityA
+      })
+    }
+
+    setFilteredPosts(sorted)
+  }, [posts, filter])
 
   const handlePostCreated = () => {
     fetchPosts(1)
@@ -162,15 +183,64 @@ export default function SocialFeedPage() {
               {/* Create Post */}
               <CreatePost onPostCreated={handlePostCreated} />
 
+              {/* Filter Buttons */}
+              <Card className="border-2 border-theme-primary">
+                <CardContent className="p-4">
+                  <div className="flex items-center gap-2">
+                    <span className="text-sm font-black text-[var(--foreground)] mr-2">FILTER:</span>
+                    <button
+                      onClick={() => setFilter('all')}
+                      className={`px-4 py-2 rounded-full text-xs font-bold transition-colors ${
+                        filter === 'all'
+                          ? 'bg-[var(--primary)] text-white'
+                          : 'bg-[var(--muted)] text-[var(--foreground)] hover:bg-[var(--primary)]/20'
+                      }`}
+                    >
+                      All Posts
+                    </button>
+                    <button
+                      onClick={() => setFilter('newest')}
+                      className={`px-4 py-2 rounded-full text-xs font-bold transition-colors ${
+                        filter === 'newest'
+                          ? 'bg-[var(--primary)] text-white'
+                          : 'bg-[var(--muted)] text-[var(--foreground)] hover:bg-[var(--primary)]/20'
+                      }`}
+                    >
+                      Newest
+                    </button>
+                    <button
+                      onClick={() => setFilter('oldest')}
+                      className={`px-4 py-2 rounded-full text-xs font-bold transition-colors ${
+                        filter === 'oldest'
+                          ? 'bg-[var(--primary)] text-white'
+                          : 'bg-[var(--muted)] text-[var(--foreground)] hover:bg-[var(--primary)]/20'
+                      }`}
+                    >
+                      Oldest
+                    </button>
+                    <button
+                      onClick={() => setFilter('popular')}
+                      className={`px-4 py-2 rounded-full text-xs font-bold transition-colors ${
+                        filter === 'popular'
+                          ? 'bg-[var(--primary)] text-white'
+                          : 'bg-[var(--muted)] text-[var(--foreground)] hover:bg-[var(--primary)]/20'
+                      }`}
+                    >
+                      Most Popular
+                    </button>
+                  </div>
+                </CardContent>
+              </Card>
+
               {/* Posts Feed */}
               {loading && page === 1 ? (
                 <div className="flex justify-center items-center py-20">
                   <Loader2 className="w-12 h-12 animate-spin text-theme-primary" />
                 </div>
-              ) : posts.length > 0 ? (
+              ) : filteredPosts.length > 0 ? (
                 <>
                   <div className="space-y-6">
-                    {posts.map((post) => (
+                    {filteredPosts.map((post) => (
                       <FeedPost
                         key={post.id}
                         post={post}
