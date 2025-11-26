@@ -75,49 +75,7 @@ export async function GET(request: NextRequest) {
       }))
     )
 
-    // 2. New forum posts
-    const forumPosts = await prisma.forumPost.findMany({
-      where: {
-        userId: { in: followingIds },
-        createdAt: {
-          gte: new Date(Date.now() - 7 * 24 * 60 * 60 * 1000),
-        },
-      },
-      include: {
-        user: {
-          select: {
-            id: true,
-            name: true,
-            image: true,
-          },
-        },
-        _count: {
-          select: {
-            replies: true,
-          },
-        },
-      },
-      orderBy: { createdAt: 'desc' },
-      take: limit,
-    })
-
-    activities.push(
-      ...forumPosts.map((post: any) => ({
-        id: `forum-post-${post.id}`,
-        type: 'FORUM_POST',
-        user: post.user,
-        forumPost: {
-          id: post.id,
-          title: post.title,
-          content: post.content,
-          slug: post.slug,
-          commentCount: post._count.replies,
-        },
-        createdAt: post.createdAt,
-      }))
-    )
-
-    // 3. New events created
+    // 2. New events created
     const events = await prisma.event.findMany({
       where: {
         creatorId: { in: followingIds },
@@ -160,7 +118,7 @@ export async function GET(request: NextRequest) {
       }))
     )
 
-    // 4. Event RSVPs
+    // 3. Event RSVPs
     const eventRSVPs = await prisma.eventAttendee.findMany({
       where: {
         userId: { in: followingIds },
@@ -207,7 +165,7 @@ export async function GET(request: NextRequest) {
       }))
     )
 
-    // 5. New projects created
+    // 4. New projects created
     const projects = await prisma.project.findMany({
       where: {
         creatorId: { in: followingIds },
