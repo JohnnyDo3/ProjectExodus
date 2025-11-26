@@ -651,7 +651,7 @@ export default function MyVolitionPage() {
 
       {/* Customization Panel */}
       {customizationOpen && (
-        <div className="absolute top-20 right-6 w-80 bg-[var(--card)] border-2 border-theme-primary rounded-xl shadow-2xl p-4 z-50">
+        <div className="absolute top-20 right-6 w-80 max-h-[calc(100vh-6rem)] overflow-y-auto bg-[var(--card)] border-2 border-theme-primary rounded-xl shadow-2xl p-4 z-50">
           <div className="mb-4">
             <h3 className="text-sm font-black text-[var(--foreground)] mb-2 flex items-center gap-2">
               <Palette className="w-4 h-4 text-theme-primary" />
