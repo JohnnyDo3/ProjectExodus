@@ -91,10 +91,10 @@ export default async function CategoryPage({
                       <div className="flex items-start gap-4">
                         {/* Author Avatar */}
                         <div className="w-12 h-12 rounded-full bg-[color-mix(in_srgb,var(--primary)_20%,var(--background))] flex items-center justify-center flex-shrink-0">
-                          {post.author.image ? (
+                          {post.user.image ? (
                             <img
-                              src={post.author.image}
-                              alt={post.author.name || 'User'}
+                              src={post.user.image}
+                              alt={post.user.name || 'User'}
                               className="w-full h-full rounded-full object-cover"
                             />
                           ) : (
@@ -121,7 +121,7 @@ export default async function CategoryPage({
                           <div className="flex items-center gap-6 text-sm font-semibold text-theme-muted">
                             <div className="flex items-center gap-1">
                               <User className="w-4 h-4" />
-                              <span>{post.author.name || 'Anonymous'}</span>
+                              <span>{post.user.name || 'Anonymous'}</span>
                             </div>
                             <div className="flex items-center gap-1">
                               <Clock className="w-4 h-4" />
