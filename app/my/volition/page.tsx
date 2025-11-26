@@ -18,9 +18,14 @@ import {
   Filter,
   Heart,
   MessageSquare as MessageSquareIcon,
+  Edit2,
+  X,
+  Trash2,
+  FileText,
 } from 'lucide-react'
 import Link from 'next/link'
 import { useEffect, useState } from 'react'
+import { ProfileColumn } from '@/components/profile/ProfileColumn'
 
 // Card type for deck columns
 interface DeckCard {
@@ -43,6 +48,8 @@ export default function MyVolitionPage() {
   const [messageContent, setMessageContent] = useState('')
   const [selectedContact, setSelectedContact] = useState<any>(null)
   const [discussionFilter, setDiscussionFilter] = useState<'recent' | 'oldest' | 'popular'>('recent')
+  const [networkSuggestions, setNetworkSuggestions] = useState<any[]>([])
+  const [following, setFollowing] = useState<any[]>([])
 
   // Deck columns data
   const [discussionCards, setDiscussionCards] = useState<DeckCard[]>([])
@@ -51,7 +58,15 @@ export default function MyVolitionPage() {
 
   useEffect(() => {
     if (session?.user?.id) {
-      Promise.all([fetchProjects(), fetchArticles(), fetchFeedPosts(), fetchProfile(), fetchContacts()]).finally(() => setIsLoading(false))
+      Promise.all([
+        fetchProjects(),
+        fetchArticles(),
+        fetchFeedPosts(),
+        fetchProfile(),
+        fetchContacts(),
+        fetchNetworkSuggestions(),
+        fetchFollowing(),
+      ]).finally(() => setIsLoading(false))
     }
   }, [session?.user?.id])
 
@@ -183,6 +198,34 @@ export default function MyVolitionPage() {
     }
   }
 
+  const fetchNetworkSuggestions = async () => {
+    try {
+      const res = await fetch('/api/network/suggestions?limit=6')
+      if (res.ok) {
+        const data = await res.json()
+        if (data.success) {
+          setNetworkSuggestions(data.data.suggestions || [])
+        }
+      }
+    } catch (error) {
+      console.error('Error fetching network suggestions:', error)
+    }
+  }
+
+  const fetchFollowing = async () => {
+    try {
+      const res = await fetch('/api/users/following')
+      if (res.ok) {
+        const data = await res.json()
+        if (data.success) {
+          setFollowing(data.data || [])
+        }
+      }
+    } catch (error) {
+      console.error('Error fetching following:', error)
+    }
+  }
+
   const addNewCard = (column: 'discussion' | 'learning' | 'project') => {
     const newCard: DeckCard = {
       id: `new-${Date.now()}`,
@@ -235,9 +278,12 @@ export default function MyVolitionPage() {
             <div className="flex items-center gap-3">
               <Zap className="w-6 h-6 text-white" />
               <div>
-                <h1 className="text-xl font-black text-white">MY VOLITION</h1>
+                <h1 className="text-xl font-black text-white">YOUR VOLITION</h1>
                 <p className="text-xs font-medium text-white/70">
                   {currentPage === 0 ? 'Your Deck' : 'Network & Messages'}
+                </p>
+                <p className="text-[9px] font-medium text-white/50 italic mt-0.5">
+                  Track your contributions to Project Exodus. They are YOUR STOCK of the P.E. system.
                 </p>
               </div>
             </div>
@@ -281,13 +327,33 @@ export default function MyVolitionPage() {
           {/* PAGE 1: DECK COLUMNS */}
           <div className="w-full h-full flex-shrink-0 overflow-hidden">
             <div className="h-full flex gap-4 p-6 overflow-x-auto">
+              {/* Profile Column */}
+              <ProfileColumn
+                initialProfile={{
+                  name: userProfile?.name || user?.name || '',
+                  headline: userProfile?.headline || '',
+                  location: userProfile?.location || '',
+                  email: userProfile?.email || user?.email || '',
+                  phone: userProfile?.phone || '',
+                  bio: userProfile?.bio || '',
+                  skills: userProfile?.skills || [],
+                  experience: userProfile?.experience || [],
+                  education: userProfile?.education || [],
+                  social: userProfile?.social || {},
+                  portfolio: userProfile?.portfolio || [],
+                  achievements: userProfile?.achievements || [],
+                  resumeUrl: userProfile?.resumeUrl,
+                  resumeFileName: userProfile?.resumeFileName,
+                }}
+              />
+
               {/* Discussions Column */}
               <div className="flex-shrink-0 w-80 h-full flex flex-col bg-[var(--card)] rounded-2xl border-2 border-theme-primary shadow-lg">
                 <div className="p-4 border-b border-[var(--border)]">
                   <div className="flex items-center justify-between mb-3">
                     <div className="flex items-center gap-2">
                       <MessageCircle className="w-5 h-5 text-theme-primary" />
-                      <h2 className="text-sm font-black text-[var(--foreground)]">MY FEED POSTS</h2>
+                      <h2 className="text-sm font-black text-[var(--foreground)]">YOUR FEED POSTS</h2>
                     </div>
                     <Link href="/community/feed">
                       <button className="w-7 h-7 rounded-full bg-[var(--primary)] text-white flex items-center justify-center hover:bg-[var(--accent)] transition-colors">
@@ -331,21 +397,49 @@ export default function MyVolitionPage() {
                 </div>
                 <div className="flex-1 overflow-y-auto p-4 space-y-3">
                   {discussionCards.map(card => (
-                    <Link key={card.id} href="/community/feed">
-                      <div className="p-4 bg-gradient-to-br from-[var(--primary)]/10 to-transparent border-2 border-theme-primary rounded-xl cursor-pointer hover:shadow-lg transition-all">
-                        <h3 className="text-sm font-black text-[var(--foreground)] mb-1 line-clamp-2">
-                          {card.title}
-                        </h3>
-                        {card.subtitle && (
-                          <p className="text-xs font-medium text-theme-muted mb-2">{card.subtitle}</p>
-                        )}
-                        {card.date && (
-                          <p className="text-[10px] font-bold text-theme-muted opacity-70">
-                            {card.date.toLocaleDateString()}
-                          </p>
-                        )}
+                    <div key={card.id} className="relative group">
+                      <Link href="/community/feed">
+                        <div className="p-4 bg-gradient-to-br from-[var(--primary)]/10 to-transparent border-2 border-theme-primary rounded-xl cursor-pointer hover:shadow-lg transition-all">
+                          <h3 className="text-sm font-black text-[var(--foreground)] mb-1 line-clamp-2 pr-12">
+                            {card.title}
+                          </h3>
+                          {card.subtitle && (
+                            <p className="text-xs font-medium text-theme-muted mb-2">{card.subtitle}</p>
+                          )}
+                          {card.date && (
+                            <p className="text-[10px] font-bold text-theme-muted opacity-70">
+                              {card.date.toLocaleDateString()}
+                            </p>
+                          )}
+                        </div>
+                      </Link>
+                      <div className="absolute top-2 right-2 flex gap-1 opacity-0 group-hover:opacity-100 transition-opacity">
+                        <button
+                          onClick={(e) => {
+                            e.preventDefault()
+                            e.stopPropagation()
+                            alert('Edit post: ' + card.id)
+                          }}
+                          className="w-7 h-7 bg-[var(--primary)] text-white rounded-lg hover:bg-[var(--accent)] transition-colors flex items-center justify-center"
+                          title="Edit"
+                        >
+                          <Edit2 className="w-3 h-3" />
+                        </button>
+                        <button
+                          onClick={(e) => {
+                            e.preventDefault()
+                            e.stopPropagation()
+                            if (confirm('Delete this post?')) {
+                              alert('Delete post: ' + card.id)
+                            }
+                          }}
+                          className="w-7 h-7 bg-red-500 text-white rounded-lg hover:bg-red-600 transition-colors flex items-center justify-center"
+                          title="Delete"
+                        >
+                          <X className="w-3 h-3" />
+                        </button>
                       </div>
-                    </Link>
+                    </div>
                   ))}
                   {discussionCards.length === 0 && (
                     <div className="text-center py-12">
@@ -366,7 +460,7 @@ export default function MyVolitionPage() {
                 <div className="p-4 border-b border-[var(--border)] flex items-center justify-between">
                   <div className="flex items-center gap-2">
                     <BookOpen className="w-5 h-5 text-theme-accent" />
-                    <h2 className="text-sm font-black text-[var(--foreground)]">MY LEARNING</h2>
+                    <h2 className="text-sm font-black text-[var(--foreground)]">YOUR LEARNING</h2>
                   </div>
                   <button
                     onClick={() => addNewCard('learning')}
@@ -377,21 +471,46 @@ export default function MyVolitionPage() {
                 </div>
                 <div className="flex-1 overflow-y-auto p-4 space-y-3">
                   {learningCards.map(card => (
-                    <div
-                      key={card.id}
-                      className="p-4 bg-gradient-to-br from-[var(--accent)]/10 to-transparent border-2 border-theme-accent rounded-xl cursor-pointer hover:shadow-lg transition-all"
-                    >
-                      <h3 className="text-sm font-black text-[var(--foreground)] mb-1 line-clamp-2">
-                        {card.title}
-                      </h3>
-                      {card.subtitle && (
-                        <p className="text-xs font-medium text-theme-muted mb-2">{card.subtitle}</p>
-                      )}
-                      {card.date && (
-                        <p className="text-[10px] font-bold text-theme-muted opacity-70">
-                          {card.date.toLocaleDateString()}
-                        </p>
-                      )}
+                    <div key={card.id} className="relative group">
+                      <div className="p-4 bg-gradient-to-br from-[var(--accent)]/10 to-transparent border-2 border-theme-accent rounded-xl cursor-pointer hover:shadow-lg transition-all">
+                        <h3 className="text-sm font-black text-[var(--foreground)] mb-1 line-clamp-2 pr-12">
+                          {card.title}
+                        </h3>
+                        {card.subtitle && (
+                          <p className="text-xs font-medium text-theme-muted mb-2">{card.subtitle}</p>
+                        )}
+                        {card.date && (
+                          <p className="text-[10px] font-bold text-theme-muted opacity-70">
+                            {card.date.toLocaleDateString()}
+                          </p>
+                        )}
+                      </div>
+                      <div className="absolute top-2 right-2 flex gap-1 opacity-0 group-hover:opacity-100 transition-opacity">
+                        <button
+                          onClick={(e) => {
+                            e.preventDefault()
+                            e.stopPropagation()
+                            alert('Edit learning: ' + card.id)
+                          }}
+                          className="w-7 h-7 bg-[var(--accent)] text-white rounded-lg hover:bg-[var(--primary)] transition-colors flex items-center justify-center"
+                          title="Edit"
+                        >
+                          <Edit2 className="w-3 h-3" />
+                        </button>
+                        <button
+                          onClick={(e) => {
+                            e.preventDefault()
+                            e.stopPropagation()
+                            if (confirm('Delete this learning item?')) {
+                              alert('Delete learning: ' + card.id)
+                            }
+                          }}
+                          className="w-7 h-7 bg-red-500 text-white rounded-lg hover:bg-red-600 transition-colors flex items-center justify-center"
+                          title="Delete"
+                        >
+                          <X className="w-3 h-3" />
+                        </button>
+                      </div>
                     </div>
                   ))}
                   {learningCards.length === 0 && (
@@ -414,7 +533,7 @@ export default function MyVolitionPage() {
                 <div className="p-4 border-b border-[var(--border)] flex items-center justify-between">
                   <div className="flex items-center gap-2">
                     <Briefcase className="w-5 h-5 text-theme-secondary" />
-                    <h2 className="text-sm font-black text-[var(--foreground)]">MY PROJECTS</h2>
+                    <h2 className="text-sm font-black text-[var(--foreground)]">YOUR PROJECTS</h2>
                   </div>
                   <button
                     onClick={() => addNewCard('project')}
@@ -425,21 +544,46 @@ export default function MyVolitionPage() {
                 </div>
                 <div className="flex-1 overflow-y-auto p-4 space-y-3">
                   {projectCards.map(card => (
-                    <div
-                      key={card.id}
-                      className="p-4 bg-gradient-to-br from-[var(--secondary)]/10 to-transparent border-2 border-theme-secondary rounded-xl cursor-pointer hover:shadow-lg transition-all"
-                    >
-                      <h3 className="text-sm font-black text-[var(--foreground)] mb-1 line-clamp-2">
-                        {card.title}
-                      </h3>
-                      {card.subtitle && (
-                        <p className="text-xs font-medium text-theme-muted mb-2">{card.subtitle}</p>
-                      )}
-                      {card.date && (
-                        <p className="text-[10px] font-bold text-theme-muted opacity-70">
-                          {card.date.toLocaleDateString()}
-                        </p>
-                      )}
+                    <div key={card.id} className="relative group">
+                      <div className="p-4 bg-gradient-to-br from-[var(--secondary)]/10 to-transparent border-2 border-theme-secondary rounded-xl cursor-pointer hover:shadow-lg transition-all">
+                        <h3 className="text-sm font-black text-[var(--foreground)] mb-1 line-clamp-2 pr-12">
+                          {card.title}
+                        </h3>
+                        {card.subtitle && (
+                          <p className="text-xs font-medium text-theme-muted mb-2">{card.subtitle}</p>
+                        )}
+                        {card.date && (
+                          <p className="text-[10px] font-bold text-theme-muted opacity-70">
+                            {card.date.toLocaleDateString()}
+                          </p>
+                        )}
+                      </div>
+                      <div className="absolute top-2 right-2 flex gap-1 opacity-0 group-hover:opacity-100 transition-opacity">
+                        <button
+                          onClick={(e) => {
+                            e.preventDefault()
+                            e.stopPropagation()
+                            alert('Edit project: ' + card.id)
+                          }}
+                          className="w-7 h-7 bg-[var(--secondary)] text-white rounded-lg hover:bg-[var(--primary)] transition-colors flex items-center justify-center"
+                          title="Edit"
+                        >
+                          <Edit2 className="w-3 h-3" />
+                        </button>
+                        <button
+                          onClick={(e) => {
+                            e.preventDefault()
+                            e.stopPropagation()
+                            if (confirm('Delete this project?')) {
+                              alert('Delete project: ' + card.id)
+                            }
+                          }}
+                          className="w-7 h-7 bg-red-500 text-white rounded-lg hover:bg-red-600 transition-colors flex items-center justify-center"
+                          title="Delete"
+                        >
+                          <X className="w-3 h-3" />
+                        </button>
+                      </div>
                     </div>
                   ))}
                   {projectCards.length === 0 && (
@@ -451,6 +595,153 @@ export default function MyVolitionPage() {
                           Create One
                         </button>
                       </Link>
+                    </div>
+                  )}
+                </div>
+              </div>
+
+              {/* Network Highlights Column */}
+              <div className="flex-shrink-0 w-80 h-full flex flex-col bg-[var(--card)] rounded-2xl border-2 border-theme-primary shadow-lg">
+                <div className="p-4 border-b border-[var(--border)]">
+                  <div className="flex items-center gap-2 mb-2">
+                    <User className="w-5 h-5 text-theme-primary" />
+                    <h2 className="text-sm font-black text-[var(--foreground)]">NETWORK HIGHLIGHTS</h2>
+                  </div>
+                  <p className="text-[9px] font-medium text-theme-muted">Suggested connections & recent followers</p>
+                </div>
+                <div className="flex-1 overflow-y-auto p-4 space-y-3">
+                  {/* Recent Followers */}
+                  {following.length > 0 && (
+                    <div className="mb-4">
+                      <h3 className="text-xs font-black text-[var(--foreground)] mb-2">Recent Connections</h3>
+                      <div className="space-y-2">
+                        {following.slice(0, 3).map((user: any) => (
+                          <div key={user.id} className="flex items-center gap-2 p-2 bg-[var(--muted)]/50 rounded-lg hover:bg-[var(--muted)] transition-colors">
+                            <div className="w-8 h-8 rounded-full bg-gradient-to-br from-[var(--primary)] to-[var(--accent)] flex items-center justify-center flex-shrink-0">
+                              {user.image ? (
+                                <img src={user.image} alt={user.name} className="w-full h-full rounded-full object-cover" />
+                              ) : (
+                                <User className="w-4 h-4 text-white" />
+                              )}
+                            </div>
+                            <div className="flex-1 min-w-0">
+                              <p className="text-xs font-black text-[var(--foreground)] truncate">{user.name || 'Anonymous'}</p>
+                              <p className="text-[10px] font-medium text-theme-muted truncate">{user.bio || 'Member'}</p>
+                            </div>
+                          </div>
+                        ))}
+                      </div>
+                    </div>
+                  )}
+
+                  {/* Suggested Connections */}
+                  <div>
+                    <h3 className="text-xs font-black text-[var(--foreground)] mb-2">Suggested Connections</h3>
+                    <div className="space-y-2">
+                      {networkSuggestions.length > 0 ? (
+                        networkSuggestions.map((user: any) => (
+                          <div key={user.id} className="p-3 bg-gradient-to-br from-[var(--primary)]/10 to-transparent border-2 border-theme-primary rounded-xl hover:shadow-lg transition-all">
+                            <div className="flex items-center gap-2 mb-2">
+                              <div className="w-8 h-8 rounded-full bg-gradient-to-br from-[var(--primary)] to-[var(--accent)] flex items-center justify-center flex-shrink-0">
+                                {user.image ? (
+                                  <img src={user.image} alt={user.name} className="w-full h-full rounded-full object-cover" />
+                                ) : (
+                                  <User className="w-4 h-4 text-white" />
+                                )}
+                              </div>
+                              <div className="flex-1 min-w-0">
+                                <p className="text-xs font-black text-[var(--foreground)] truncate">{user.name || 'Anonymous'}</p>
+                                <p className="text-[10px] font-medium text-theme-muted truncate">{user.headline || 'Member'}</p>
+                              </div>
+                            </div>
+                            {user.matchReasons && user.matchReasons.length > 0 && (
+                              <p className="text-[9px] font-medium text-theme-muted mb-2 line-clamp-2">
+                                {user.matchReasons[0]}
+                              </p>
+                            )}
+                            <button className="w-full py-1.5 px-3 bg-[var(--primary)] text-white rounded-lg text-[10px] font-bold hover:bg-[var(--accent)] transition-colors">
+                              Connect
+                            </button>
+                          </div>
+                        ))
+                      ) : (
+                        <p className="text-xs font-medium text-theme-muted text-center py-4">No suggestions available</p>
+                      )}
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              {/* My Articles Column */}
+              <div className="flex-shrink-0 w-80 h-full flex flex-col bg-[var(--card)] rounded-2xl border-2 border-theme-accent shadow-lg">
+                <div className="p-4 border-b border-[var(--border)] flex items-center justify-between">
+                  <div className="flex items-center gap-2">
+                    <FileText className="w-5 h-5 text-theme-accent" />
+                    <h2 className="text-sm font-black text-[var(--foreground)]">YOUR ARTICLES</h2>
+                  </div>
+                  <button
+                    onClick={() => alert('Create new article')}
+                    className="w-7 h-7 rounded-full bg-[var(--accent)] text-white flex items-center justify-center hover:bg-[var(--primary)] transition-colors"
+                  >
+                    <Plus className="w-4 h-4" />
+                  </button>
+                </div>
+                <div className="flex-1 overflow-y-auto p-4 space-y-3">
+                  {articles.length > 0 ? (
+                    articles.map((article: any) => (
+                      <div key={article.id} className="relative group">
+                        <div className="p-4 bg-gradient-to-br from-[var(--accent)]/10 to-transparent border-2 border-theme-accent rounded-xl cursor-pointer hover:shadow-lg transition-all">
+                          <h3 className="text-sm font-black text-[var(--foreground)] mb-1 line-clamp-2 pr-12">
+                            {article.title}
+                          </h3>
+                          {article.excerpt && (
+                            <p className="text-xs font-medium text-theme-muted mb-2 line-clamp-2">{article.excerpt}</p>
+                          )}
+                          <div className="flex items-center justify-between text-[10px] font-bold text-theme-muted">
+                            <span>{article._count?.comments || 0} comments</span>
+                            {article.createdAt && (
+                              <span>{new Date(article.createdAt).toLocaleDateString()}</span>
+                            )}
+                          </div>
+                        </div>
+                        <div className="absolute top-2 right-2 flex gap-1 opacity-0 group-hover:opacity-100 transition-opacity">
+                          <button
+                            onClick={(e) => {
+                              e.preventDefault()
+                              e.stopPropagation()
+                              alert('Edit article: ' + article.id)
+                            }}
+                            className="w-7 h-7 bg-[var(--accent)] text-white rounded-lg hover:bg-[var(--primary)] transition-colors flex items-center justify-center"
+                            title="Edit"
+                          >
+                            <Edit2 className="w-3 h-3" />
+                          </button>
+                          <button
+                            onClick={(e) => {
+                              e.preventDefault()
+                              e.stopPropagation()
+                              if (confirm('Delete this article?')) {
+                                alert('Delete article: ' + article.id)
+                              }
+                            }}
+                            className="w-7 h-7 bg-red-500 text-white rounded-lg hover:bg-red-600 transition-colors flex items-center justify-center"
+                            title="Delete"
+                          >
+                            <X className="w-3 h-3" />
+                          </button>
+                        </div>
+                      </div>
+                    ))
+                  ) : (
+                    <div className="text-center py-12">
+                      <FileText className="w-12 h-12 text-theme-muted mx-auto mb-3 opacity-50" />
+                      <p className="text-xs font-bold text-theme-muted">No articles yet</p>
+                      <button
+                        onClick={() => alert('Create new article')}
+                        className="mt-3 px-4 py-2 bg-[var(--accent)] text-white rounded-lg text-xs font-bold hover:bg-[var(--primary)] transition-colors"
+                      >
+                        Write One
+                      </button>
                     </div>
                   )}
                 </div>
