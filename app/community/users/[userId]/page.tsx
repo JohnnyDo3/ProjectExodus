@@ -96,19 +96,7 @@ export default async function UserProfilePage({
       <section className="py-8 bg-[var(--background)] border-b-4 border-theme-muted">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
           <div className="max-w-5xl mx-auto">
-            <div className="grid grid-cols-4 gap-6">
-              <div className="text-center">
-                <div className="text-4xl font-black mb-1 text-theme-primary">
-                  {user._count.forumPosts}
-                </div>
-                <div className="text-sm font-bold text-theme-muted">POSTS</div>
-              </div>
-              <div className="text-center">
-                <div className="text-4xl font-black mb-1 text-theme-accent">
-                  {user._count.forumReplies}
-                </div>
-                <div className="text-sm font-bold text-theme-muted">REPLIES</div>
-              </div>
+            <div className="grid grid-cols-2 gap-6">
               <div className="text-center">
                 <div className="text-4xl font-black mb-1 text-theme-secondary">
                   {user.projects.length}
@@ -129,84 +117,8 @@ export default async function UserProfilePage({
       {/* Content */}
       <section className="py-12">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="max-w-5xl mx-auto">
-            <div className="grid md:grid-cols-3 gap-8">
-              {/* Main Content */}
-              <div className="md:col-span-2 space-y-8">
-                {/* Recent Posts */}
-                <div>
-                  <h2 className="text-3xl font-black mb-6 text-[var(--foreground)]">
-                    RECENT POSTS
-                  </h2>
-                  <div className="space-y-4">
-                    {user.forumPosts.map((post: any) => (
-                      <Link key={post.id} href={`/community/forum/posts/${post.id}`}>
-                        <Card className="hover-lift border-2 border-theme-accent hover:border-theme-primary transition-all">
-                          <CardContent className="p-5">
-                            <h3 className="text-lg font-black mb-2 text-[var(--foreground)]">
-                              {post.title}
-                            </h3>
-                            <div className="flex items-center gap-4 text-sm font-semibold text-theme-muted">
-                              <span>{post.category.name}</span>
-                              <span>•</span>
-                              <span>{formatDate(new Date(post.createdAt))}</span>
-                              <span>•</span>
-                              <span>{post._count.replies} replies</span>
-                            </div>
-                          </CardContent>
-                        </Card>
-                      </Link>
-                    ))}
-                    {user.forumPosts.length === 0 && (
-                      <Card className="border-2 border-theme-muted">
-                        <CardContent className="p-8 text-center">
-                          <p className="font-semibold text-theme-muted">
-                            No posts yet
-                          </p>
-                        </CardContent>
-                      </Card>
-                    )}
-                  </div>
-                </div>
-
-                {/* Recent Activity */}
-                <div>
-                  <h2 className="text-3xl font-black mb-6 text-[var(--foreground)]">
-                    RECENT REPLIES
-                  </h2>
-                  <div className="space-y-4">
-                    {user.forumReplies.slice(0, 5).map((reply: any) => (
-                      <Link key={reply.id} href={`/community/forum/posts/${reply.post.id}`}>
-                        <Card className="hover-lift border-2 border-theme-primary hover:border-theme-accent transition-all">
-                          <CardContent className="p-5">
-                            <p className="text-sm font-bold mb-2 text-theme-muted">
-                              Replied to: {reply.post.title}
-                            </p>
-                            <p className="text-base font-semibold line-clamp-2 text-[var(--foreground)]">
-                              {reply.content}
-                            </p>
-                            <p className="text-sm font-semibold mt-2 text-theme-muted">
-                              {formatDate(new Date(reply.createdAt))}
-                            </p>
-                          </CardContent>
-                        </Card>
-                      </Link>
-                    ))}
-                    {user.forumReplies.length === 0 && (
-                      <Card className="border-2 border-theme-muted">
-                        <CardContent className="p-8 text-center">
-                          <p className="font-semibold text-theme-muted">
-                            No replies yet
-                          </p>
-                        </CardContent>
-                      </Card>
-                    )}
-                  </div>
-                </div>
-              </div>
-
-              {/* Sidebar */}
-              <div className="space-y-6">
+          <div className="max-w-3xl mx-auto">
+            <div className="space-y-6">
                 {/* Badges */}
                 <Card className="border-4 border-theme-secondary">
                   <CardHeader>
@@ -269,7 +181,6 @@ export default async function UserProfilePage({
                     )}
                   </CardContent>
                 </Card>
-              </div>
             </div>
           </div>
         </div>

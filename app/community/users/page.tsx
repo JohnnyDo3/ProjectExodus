@@ -19,8 +19,7 @@ async function getUsers() {
         _count: {
           select: {
             followers: true,
-            articles: true,
-            forumPosts: true
+            articles: true
           }
         }
       },
@@ -149,12 +148,6 @@ export default async function MemberDirectoryPage() {
                             {user._count.articles}
                           </div>
                           <div className="text-xs font-bold text-theme-muted">Articles</div>
-                        </div>
-                        <div className="text-center">
-                          <div className="text-lg font-black text-theme-secondary">
-                            {user._count.forumPosts}
-                          </div>
-                          <div className="text-xs font-bold text-theme-muted">Posts</div>
                         </div>
                       </div>
                     </Link>
