@@ -4,13 +4,28 @@
 
 ### Vercel Environment Variables
 
-Set these in your Vercel dashboard (Settings → Environment Variables):
+⚠️ **CRITICAL - Required for app to run:**
+
+Set these in your Vercel dashboard (Settings → Environment Variables → Production):
 
 ```
+# REQUIRED - App will not start without these
 NEXTAUTH_URL=https://projxodus.com
 NEXT_PUBLIC_API_URL=https://projxodus.com
 DATABASE_URL=<your-production-database-url>
-NEXTAUTH_SECRET=<your-secret-key>
+NEXTAUTH_SECRET=<generate-with: openssl rand -base64 32>
+```
+
+**Optional - OAuth & Features:**
+
+```
+# OAuth Providers (optional - email/password auth works without these)
+GOOGLE_CLIENT_ID=<your-google-client-id>
+GOOGLE_CLIENT_SECRET=<your-google-client-secret>
+GITHUB_CLIENT_ID=<your-github-client-id>
+GITHUB_CLIENT_SECRET=<your-github-client-secret>
+
+# Real-time messaging (optional)
 PUSHER_APP_ID=<your-pusher-app-id>
 PUSHER_SECRET=<your-pusher-secret>
 NEXT_PUBLIC_PUSHER_KEY=<your-pusher-key>
