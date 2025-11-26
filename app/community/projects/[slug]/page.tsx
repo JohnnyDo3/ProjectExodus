@@ -1,7 +1,7 @@
 'use client'
 
 import { BackButton } from '@/components/navigation/BackButton'
-import { useState, useEffect, useRef } from 'react'
+import { useState, useEffect, useRef, use } from 'react'
 import { useSession } from 'next-auth/react'
 import { useRouter } from 'next/navigation'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/Card'
@@ -23,7 +23,8 @@ import {
 import Link from 'next/link'
 import { JoinProjectButton } from '@/components/projects/JoinProjectButton'
 
-export default function ProjectPage({ params }: { params: { slug: string } }) {
+export default function ProjectPage({ params }: { params: Promise<{ slug: string }> }) {
+  const { slug } = use(params)
   const { data: session } = useSession()
   const router = useRouter()
   const [project, setProject] = useState<any>(null)
@@ -39,7 +40,7 @@ export default function ProjectPage({ params }: { params: { slug: string } }) {
 
   useEffect(() => {
     fetchProject()
-  }, [params.slug])
+  }, [slug])
 
   useEffect(() => {
     if (project?.id) {
@@ -59,7 +60,7 @@ export default function ProjectPage({ params }: { params: { slug: string } }) {
       const res = await fetch(`/api/projects`)
       const data = await res.json()
       if (data.success) {
-        const proj = data.data.find((p: any) => p.slug === params.slug)
+        const proj = data.data.find((p: any) => p.slug === slug)
         setProject(proj)
       }
     } catch (error) {

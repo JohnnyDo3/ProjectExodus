@@ -1,7 +1,7 @@
 'use client'
 
 import { BackButton } from '@/components/navigation/BackButton'
-import { useState, useEffect, useRef } from 'react'
+import { useState, useEffect, useRef, use } from 'react'
 import { useSession } from 'next-auth/react'
 import { useRouter } from 'next/navigation'
 import { Card, CardContent } from '@/components/ui/Card'
@@ -46,7 +46,8 @@ interface OtherUser {
   location: string | null
 }
 
-export default function ConversationPage({ params }: { params: { userId: string } }) {
+export default function ConversationPage({ params }: { params: Promise<{ userId: string }> }) {
+  const { userId } = use(params)
   const { data: session } = useSession()
   const router = useRouter()
   const [messages, setMessages] = useState<Message[]>([])
@@ -77,7 +78,7 @@ export default function ConversationPage({ params }: { params: { userId: string 
 
     channel.bind('new-message', (data: { message: Message; timestamp: string }) => {
       // Only add message if it's from the current conversation
-      if (data.message.senderId === params.userId || data.message.receiverId === params.userId) {
+      if (data.message.senderId === userId || data.message.receiverId === userId) {
         setMessages((prev) => {
           // Prevent duplicates
           if (prev.some(msg => msg.id === data.message.id)) return prev
@@ -90,7 +91,7 @@ export default function ConversationPage({ params }: { params: { userId: string 
       channel.unbind_all()
       channel.unsubscribe()
     }
-  }, [session?.user, params.userId])
+  }, [session?.user, userId])
 
   useEffect(() => {
     scrollToBottom()
@@ -98,7 +99,7 @@ export default function ConversationPage({ params }: { params: { userId: string 
 
   const fetchConversation = async () => {
     try {
-      const res = await fetch(`/api/messages/${params.userId}`)
+      const res = await fetch(`/api/messages/${userId}`)
       const data = await res.json()
 
       if (data.success) {
@@ -123,7 +124,7 @@ export default function ConversationPage({ params }: { params: { userId: string 
     setNewMessage('') // Clear input immediately for better UX
 
     try {
-      const res = await fetch(`/api/messages/${params.userId}`, {
+      const res = await fetch(`/api/messages/${userId}`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ content: messageToSend }),
