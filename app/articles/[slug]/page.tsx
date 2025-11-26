@@ -226,20 +226,22 @@ export default async function ArticleDetailPage({
                     </CardHeader>
                     <CardContent>
                       <div className="text-center">
-                        <div className="w-20 h-20 rounded-full bg-moss-100 flex items-center justify-center mx-auto mb-3">
-                          {article.author.image ? (
-                            <img
-                              src={article.author.image}
-                              alt={article.author.name || 'Author'}
-                              className="w-full h-full rounded-full object-cover"
-                            />
-                          ) : (
-                            <User className="w-10 h-10 text-moss-600" />
-                          )}
-                        </div>
-                        <h3 className="font-bold text-earth-900 mb-2">
-                          {article.author.name}
-                        </h3>
+                        <Link href={`/profile/${article.author.id}`} className="block">
+                          <div className="w-20 h-20 rounded-full bg-moss-100 flex items-center justify-center mx-auto mb-3 hover:scale-105 transition-transform cursor-pointer">
+                            {article.author.image ? (
+                              <img
+                                src={article.author.image}
+                                alt={article.author.name || 'Author'}
+                                className="w-full h-full rounded-full object-cover"
+                              />
+                            ) : (
+                              <User className="w-10 h-10 text-moss-600" />
+                            )}
+                          </div>
+                          <h3 className="font-bold text-earth-900 mb-2 hover:text-moss-600 transition-colors cursor-pointer">
+                            {article.author.name}
+                          </h3>
+                        </Link>
                         {article.author.bio && (
                           <p className="text-sm text-earth-600">
                             {article.author.bio}

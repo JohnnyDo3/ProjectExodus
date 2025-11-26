@@ -1,6 +1,6 @@
 'use client'
 
-import { useState, useRef } from 'react'
+import { useState, useRef, useEffect } from 'react'
 import {
   User,
   Mail,
@@ -94,12 +94,15 @@ type EditSection = 'basic' | 'bio' | 'skills' | 'experience' | 'education' | 'so
 
 interface Props {
   initialProfile?: Partial<ProfileData>
+  viewOnly?: boolean
+  userId?: string
 }
 
-export function ProfileColumn({ initialProfile }: Props) {
-  const [isPreviewMode, setIsPreviewMode] = useState(false)
+export function ProfileColumn({ initialProfile, viewOnly = false, userId }: Props) {
+  const [isPreviewMode, setIsPreviewMode] = useState(viewOnly) // Auto-enable preview mode for viewOnly
   const [template, setTemplate] = useState<'modern' | 'classic' | 'minimal'>('modern')
   const [editingSection, setEditingSection] = useState<EditSection>(null)
+  const [isLoading, setIsLoading] = useState(!!userId) // Loading state for fetching user data
   const [profile, setProfile] = useState<ProfileData>({
     name: initialProfile?.name || '',
     headline: initialProfile?.headline || '',
@@ -118,6 +121,49 @@ export function ProfileColumn({ initialProfile }: Props) {
   })
 
   const fileInputRef = useRef<HTMLInputElement>(null)
+
+  // Fetch user profile data when userId is provided
+  useEffect(() => {
+    if (userId) {
+      const fetchUserProfile = async () => {
+        setIsLoading(true)
+        try {
+          const res = await fetch(`/api/profile/${userId}`)
+          if (res.ok) {
+            const data = await res.json()
+            if (data.success) {
+              setProfile({
+                name: data.data.name || '',
+                headline: data.data.headline || '',
+                location: data.data.location || '',
+                email: data.data.email || '',
+                phone: data.data.phone || '',
+                bio: data.data.bio || '',
+                skills: data.data.expertise || [],
+                experience: data.data.experience || [],
+                education: data.data.education || [],
+                social: {
+                  website: data.data.website,
+                  github: data.data.github,
+                  linkedin: data.data.linkedin,
+                  twitter: data.data.twitter,
+                },
+                portfolio: data.data.portfolio || [],
+                achievements: data.data.achievements || [],
+                resumeUrl: data.data.resumeUrl,
+                resumeFileName: data.data.resumeFileName,
+              })
+            }
+          }
+        } catch (error) {
+          console.error('Error fetching user profile:', error)
+        } finally {
+          setIsLoading(false)
+        }
+      }
+      fetchUserProfile()
+    }
+  }, [userId])
 
   // Template colors
   const templateColors = {
@@ -184,6 +230,16 @@ export function ProfileColumn({ initialProfile }: Props) {
 
   const colors = templateColors[template]
 
+  // Show loading state when fetching user data
+  if (isLoading) {
+    return (
+      <div className="flex-shrink-0 w-80 min-h-full flex flex-col bg-[var(--card)] rounded-2xl border-2 border-theme-primary shadow-lg items-center justify-center p-8">
+        <div className="w-12 h-12 border-4 border-theme-primary border-t-transparent rounded-full animate-spin mb-4" />
+        <p className="text-sm font-bold text-theme-muted">Loading profile...</p>
+      </div>
+    )
+  }
+
   return (
     <div className="flex-shrink-0 w-80 min-h-full flex flex-col bg-[var(--card)] rounded-2xl border-2 border-theme-primary shadow-lg">
       {/* Header */}
@@ -191,59 +247,65 @@ export function ProfileColumn({ initialProfile }: Props) {
         <div className="flex items-center justify-between mb-3">
           <div className="flex items-center gap-2">
             <User className="w-5 h-5 text-theme-primary" />
-            <h2 className="text-sm font-black text-[var(--foreground)]">YOUR PROFILE</h2>
+            <h2 className="text-sm font-black text-[var(--foreground)]">
+              {viewOnly ? 'USER PROFILE' : 'YOUR PROFILE'}
+            </h2>
           </div>
         </div>
 
-        {/* Template & Preview Controls */}
-        <div className="flex gap-2 mb-2">
-          <button
-            onClick={() => setIsPreviewMode(!isPreviewMode)}
-            className={`flex-1 px-2 py-1 rounded-lg text-[10px] font-bold transition-colors flex items-center justify-center gap-1 ${
-              isPreviewMode
-                ? 'bg-[var(--primary)] text-white'
-                : 'bg-[var(--muted)] text-[var(--foreground)] hover:bg-[var(--primary)]/20'
-            }`}
-          >
-            {isPreviewMode ? <Eye className="w-3 h-3" /> : <EyeOff className="w-3 h-3" />}
-            {isPreviewMode ? 'Preview' : 'Edit'}
-          </button>
-        </div>
+        {/* Template & Preview Controls - Hidden in viewOnly mode */}
+        {!viewOnly && (
+          <>
+            <div className="flex gap-2 mb-2">
+              <button
+                onClick={() => setIsPreviewMode(!isPreviewMode)}
+                className={`flex-1 px-2 py-1 rounded-lg text-[10px] font-bold transition-colors flex items-center justify-center gap-1 ${
+                  isPreviewMode
+                    ? 'bg-[var(--primary)] text-white'
+                    : 'bg-[var(--muted)] text-[var(--foreground)] hover:bg-[var(--primary)]/20'
+                }`}
+              >
+                {isPreviewMode ? <Eye className="w-3 h-3" /> : <EyeOff className="w-3 h-3" />}
+                {isPreviewMode ? 'Preview' : 'Edit'}
+              </button>
+            </div>
 
-        {/* Template Selection */}
-        {!isPreviewMode && (
-          <div className="flex gap-1">
-            <button
-              onClick={() => setTemplate('modern')}
-              className={`flex-1 px-2 py-1 rounded-lg text-[9px] font-bold transition-colors ${
-                template === 'modern'
-                  ? 'bg-blue-500 text-white'
-                  : 'bg-[var(--muted)] text-[var(--foreground)]'
-              }`}
-            >
-              Modern
-            </button>
-            <button
-              onClick={() => setTemplate('classic')}
-              className={`flex-1 px-2 py-1 rounded-lg text-[9px] font-bold transition-colors ${
-                template === 'classic'
-                  ? 'bg-gray-700 text-white'
-                  : 'bg-[var(--muted)] text-[var(--foreground)]'
-              }`}
-            >
-              Classic
-            </button>
-            <button
-              onClick={() => setTemplate('minimal')}
-              className={`flex-1 px-2 py-1 rounded-lg text-[9px] font-bold transition-colors ${
-                template === 'minimal'
-                  ? 'bg-emerald-500 text-white'
-                  : 'bg-[var(--muted)] text-[var(--foreground)]'
-              }`}
-            >
-              Minimal
-            </button>
-          </div>
+            {/* Template Selection */}
+            {!isPreviewMode && (
+              <div className="flex gap-1">
+                <button
+                  onClick={() => setTemplate('modern')}
+                  className={`flex-1 px-2 py-1 rounded-lg text-[9px] font-bold transition-colors ${
+                    template === 'modern'
+                      ? 'bg-blue-500 text-white'
+                      : 'bg-[var(--muted)] text-[var(--foreground)]'
+                  }`}
+                >
+                  Modern
+                </button>
+                <button
+                  onClick={() => setTemplate('classic')}
+                  className={`flex-1 px-2 py-1 rounded-lg text-[9px] font-bold transition-colors ${
+                    template === 'classic'
+                      ? 'bg-gray-700 text-white'
+                      : 'bg-[var(--muted)] text-[var(--foreground)]'
+                  }`}
+                >
+                  Classic
+                </button>
+                <button
+                  onClick={() => setTemplate('minimal')}
+                  className={`flex-1 px-2 py-1 rounded-lg text-[9px] font-bold transition-colors ${
+                    template === 'minimal'
+                      ? 'bg-emerald-500 text-white'
+                      : 'bg-[var(--muted)] text-[var(--foreground)]'
+                  }`}
+                >
+                  Minimal
+                </button>
+              </div>
+            )}
+          </>
         )}
       </div>
 
@@ -251,7 +313,7 @@ export function ProfileColumn({ initialProfile }: Props) {
       <div className="flex-1 overflow-y-auto p-4 space-y-3">
         {/* Basic Info Card */}
         <div className={`p-4 bg-gradient-to-br ${colors.primary} rounded-xl text-white relative`}>
-          {!isPreviewMode && (
+          {!isPreviewMode && !viewOnly && (
             <button
               onClick={() => openEditModal('basic')}
               className="absolute top-2 right-2 w-6 h-6 bg-white/20 hover:bg-white/30 rounded-full flex items-center justify-center transition-colors"
@@ -292,7 +354,7 @@ export function ProfileColumn({ initialProfile }: Props) {
 
         {/* Bio Section */}
         <div className="p-3 bg-[var(--muted)]/50 rounded-xl relative">
-          {!isPreviewMode && (
+          {!isPreviewMode && !viewOnly && (
             <button
               onClick={() => openEditModal('bio')}
               className="absolute top-2 right-2 w-6 h-6 bg-[var(--primary)]/20 hover:bg-[var(--primary)]/30 rounded-full flex items-center justify-center transition-colors"
@@ -308,7 +370,7 @@ export function ProfileColumn({ initialProfile }: Props) {
 
         {/* Skills Section */}
         <div className="p-3 bg-[var(--muted)]/50 rounded-xl relative">
-          {!isPreviewMode && (
+          {!isPreviewMode && !viewOnly && (
             <button
               onClick={() => openEditModal('skills')}
               className="absolute top-2 right-2 w-6 h-6 bg-[var(--primary)]/20 hover:bg-[var(--primary)]/30 rounded-full flex items-center justify-center transition-colors"
@@ -335,7 +397,7 @@ export function ProfileColumn({ initialProfile }: Props) {
 
         {/* Experience Section */}
         <div className="p-3 bg-[var(--muted)]/50 rounded-xl relative">
-          {!isPreviewMode && (
+          {!isPreviewMode && !viewOnly && (
             <button
               onClick={() => openEditModal('experience')}
               className="absolute top-2 right-2 w-6 h-6 bg-[var(--primary)]/20 hover:bg-[var(--primary)]/30 rounded-full flex items-center justify-center transition-colors"
@@ -371,7 +433,7 @@ export function ProfileColumn({ initialProfile }: Props) {
 
         {/* Education Section */}
         <div className="p-3 bg-[var(--muted)]/50 rounded-xl relative">
-          {!isPreviewMode && (
+          {!isPreviewMode && !viewOnly && (
             <button
               onClick={() => openEditModal('education')}
               className="absolute top-2 right-2 w-6 h-6 bg-[var(--primary)]/20 hover:bg-[var(--primary)]/30 rounded-full flex items-center justify-center transition-colors"
@@ -405,7 +467,7 @@ export function ProfileColumn({ initialProfile }: Props) {
 
         {/* Social Links Section */}
         <div className="p-3 bg-[var(--muted)]/50 rounded-xl relative">
-          {!isPreviewMode && (
+          {!isPreviewMode && !viewOnly && (
             <button
               onClick={() => openEditModal('social')}
               className="absolute top-2 right-2 w-6 h-6 bg-[var(--primary)]/20 hover:bg-[var(--primary)]/30 rounded-full flex items-center justify-center transition-colors"
@@ -447,7 +509,7 @@ export function ProfileColumn({ initialProfile }: Props) {
 
         {/* Portfolio Section */}
         <div className="p-3 bg-[var(--muted)]/50 rounded-xl relative">
-          {!isPreviewMode && (
+          {!isPreviewMode && !viewOnly && (
             <button
               onClick={() => openEditModal('portfolio')}
               className="absolute top-2 right-2 w-6 h-6 bg-[var(--primary)]/20 hover:bg-[var(--primary)]/30 rounded-full flex items-center justify-center transition-colors"
@@ -478,7 +540,7 @@ export function ProfileColumn({ initialProfile }: Props) {
 
         {/* Achievements Section */}
         <div className="p-3 bg-[var(--muted)]/50 rounded-xl relative">
-          {!isPreviewMode && (
+          {!isPreviewMode && !viewOnly && (
             <button
               onClick={() => openEditModal('achievements')}
               className="absolute top-2 right-2 w-6 h-6 bg-[var(--primary)]/20 hover:bg-[var(--primary)]/30 rounded-full flex items-center justify-center transition-colors"
@@ -528,7 +590,7 @@ export function ProfileColumn({ initialProfile }: Props) {
             ) : (
               <p className="text-xs font-medium text-theme-muted">No resume uploaded</p>
             )}
-            {!isPreviewMode && (
+            {!isPreviewMode && !viewOnly && (
               <>
                 <input
                   ref={fileInputRef}

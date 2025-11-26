@@ -257,27 +257,29 @@ export default function ProjectPage({ params }: { params: { slug: string } }) {
                 <CardContent>
                   <div className="space-y-3 max-h-96 overflow-y-auto">
                     {project.members?.map((member: any) => (
-                      <div key={member.id} className="flex items-center gap-3 p-3 bg-[var(--muted)] rounded-lg">
-                        <div className="w-10 h-10 rounded-full bg-gradient-to-br from-[var(--primary)] to-[var(--accent)] flex items-center justify-center flex-shrink-0">
-                          {member.user.image ? (
-                            <img
-                              src={member.user.image}
-                              alt={member.user.name}
-                              className="w-full h-full rounded-full object-cover"
-                            />
-                          ) : (
-                            <User className="w-5 h-5 text-[var(--primary-foreground)]" />
-                          )}
-                        </div>
-                        <div className="flex-1 min-w-0">
-                          <p className="font-black text-sm truncate text-[var(--foreground)]">
-                            {member.user.name || 'Anonymous'}
-                          </p>
-                          <div className="mt-1">
-                            {getRoleBadge(member)}
+                      <Link key={member.id} href={`/profile/${member.userId}`}>
+                        <div className="flex items-center gap-3 p-3 bg-[var(--muted)] rounded-lg hover:bg-[var(--muted)]/70 transition-colors cursor-pointer">
+                          <div className="w-10 h-10 rounded-full bg-gradient-to-br from-[var(--primary)] to-[var(--accent)] flex items-center justify-center flex-shrink-0">
+                            {member.user.image ? (
+                              <img
+                                src={member.user.image}
+                                alt={member.user.name}
+                                className="w-full h-full rounded-full object-cover"
+                              />
+                            ) : (
+                              <User className="w-5 h-5 text-[var(--primary-foreground)]" />
+                            )}
+                          </div>
+                          <div className="flex-1 min-w-0">
+                            <p className="font-black text-sm truncate text-[var(--foreground)] hover:text-theme-primary transition-colors">
+                              {member.user.name || 'Anonymous'}
+                            </p>
+                            <div className="mt-1">
+                              {getRoleBadge(member)}
+                            </div>
                           </div>
                         </div>
-                      </div>
+                      </Link>
                     ))}
                   </div>
                 </CardContent>

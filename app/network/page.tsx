@@ -541,7 +541,7 @@ export default function NetworkPage() {
                           <Button
                             variant="outline"
                             disabled={!session?.user}
-                            onClick={() => router.push(`/messages/${user.id}`)}
+                            onClick={() => router.push(`/messages?user=${user.id}`)}
                             className="font-bold"
                             title="Send Message"
                           >
