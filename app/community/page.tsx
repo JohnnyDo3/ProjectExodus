@@ -512,8 +512,6 @@ export default async function CommunityPage() {
               </div>
             </div>
 
-            <div className="grid lg:grid-cols-2 gap-4">
-
             {/* Suggested Connections - Cute List */}
             <div className="p-5 bg-[var(--card)] rounded-3xl border-3 border-theme-primary/40 shadow-sm">
               <div className="flex items-center justify-between mb-3">
