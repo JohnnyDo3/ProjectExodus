@@ -205,24 +205,68 @@ export function NightSkyConstellations({ alwaysShow = false, starCount = 1400 }:
       ctx.clearRect(0, 0, canvas.width, canvas.height)
       time += 0.01
 
-      // Draw Milky Way band (diagonal gradient across canvas)
-      const milkyWayGradient = ctx.createLinearGradient(0, 0, canvas.width, canvas.height)
-      milkyWayGradient.addColorStop(0, 'rgba(25, 25, 60, 0)')
-      milkyWayGradient.addColorStop(0.3, 'rgba(65, 50, 100, 0.15)')
-      milkyWayGradient.addColorStop(0.4, 'rgba(95, 70, 130, 0.25)')
-      milkyWayGradient.addColorStop(0.5, 'rgba(120, 100, 160, 0.35)')
-      milkyWayGradient.addColorStop(0.6, 'rgba(95, 70, 130, 0.25)')
-      milkyWayGradient.addColorStop(0.7, 'rgba(65, 50, 100, 0.15)')
-      milkyWayGradient.addColorStop(1, 'rgba(25, 25, 60, 0)')
-      ctx.fillStyle = milkyWayGradient
-      ctx.fillRect(0, 0, canvas.width, canvas.height)
+      // Draw Milky Way band - horizontal arched band across the sky
+      // Main galactic band (horizontal with slight arch)
+      const centerY = canvas.height * 0.45 // Slightly above center
+      const bandHeight = canvas.height * 0.5 // Wider band
 
-      // Add nebula clouds
+      // Create vertical gradient for the main band
+      const milkyWayGradient = ctx.createLinearGradient(0, centerY - bandHeight/2, 0, centerY + bandHeight/2)
+      milkyWayGradient.addColorStop(0, 'rgba(15, 20, 40, 0)')
+      milkyWayGradient.addColorStop(0.2, 'rgba(40, 50, 80, 0.12)')
+      milkyWayGradient.addColorStop(0.35, 'rgba(70, 80, 120, 0.25)')
+      milkyWayGradient.addColorStop(0.45, 'rgba(90, 100, 140, 0.35)')
+      milkyWayGradient.addColorStop(0.5, 'rgba(110, 120, 160, 0.42)')
+      milkyWayGradient.addColorStop(0.55, 'rgba(90, 100, 140, 0.35)')
+      milkyWayGradient.addColorStop(0.65, 'rgba(70, 80, 120, 0.25)')
+      milkyWayGradient.addColorStop(0.8, 'rgba(40, 50, 80, 0.12)')
+      milkyWayGradient.addColorStop(1, 'rgba(15, 20, 40, 0)')
+      ctx.fillStyle = milkyWayGradient
+      ctx.fillRect(0, centerY - bandHeight/2, canvas.width, bandHeight)
+
+      // Galactic center - brighter concentrated region
+      const galacticCenterX = canvas.width * 0.6
+      const galacticCenterY = centerY
+      const centerGradient = ctx.createRadialGradient(
+        galacticCenterX, galacticCenterY, 0,
+        galacticCenterX, galacticCenterY, canvas.width * 0.25
+      )
+      centerGradient.addColorStop(0, 'rgba(180, 160, 200, 0.25)')
+      centerGradient.addColorStop(0.3, 'rgba(130, 120, 160, 0.15)')
+      centerGradient.addColorStop(0.6, 'rgba(80, 90, 130, 0.08)')
+      centerGradient.addColorStop(1, 'rgba(0, 0, 0, 0)')
+      ctx.fillStyle = centerGradient
+      ctx.fillRect(
+        galacticCenterX - canvas.width * 0.25,
+        galacticCenterY - canvas.width * 0.25,
+        canvas.width * 0.5,
+        canvas.width * 0.5
+      )
+
+      // Add dark dust lanes (characteristic rifts in the Milky Way)
+      const dustLanes = [
+        { x: canvas.width * 0.3, y: centerY - 50, width: canvas.width * 0.15, height: 80 },
+        { x: canvas.width * 0.55, y: centerY + 30, width: canvas.width * 0.12, height: 60 },
+        { x: canvas.width * 0.75, y: centerY - 20, width: canvas.width * 0.1, height: 70 }
+      ]
+
+      dustLanes.forEach(lane => {
+        const dustGradient = ctx.createRadialGradient(
+          lane.x + lane.width/2, lane.y + lane.height/2, 0,
+          lane.x + lane.width/2, lane.y + lane.height/2, Math.max(lane.width, lane.height)
+        )
+        dustGradient.addColorStop(0, 'rgba(5, 8, 15, 0.4)')
+        dustGradient.addColorStop(0.5, 'rgba(5, 8, 15, 0.2)')
+        dustGradient.addColorStop(1, 'rgba(0, 0, 0, 0)')
+        ctx.fillStyle = dustGradient
+        ctx.fillRect(lane.x, lane.y, lane.width, lane.height)
+      })
+
+      // Subtle nebula regions within the Milky Way
       const nebulas = [
-        { x: canvas.width * 0.2, y: canvas.height * 0.3, radius: 300, color: 'rgba(138, 43, 226, 0.08)' },
-        { x: canvas.width * 0.7, y: canvas.height * 0.5, radius: 250, color: 'rgba(75, 0, 130, 0.06)' },
-        { x: canvas.width * 0.5, y: canvas.height * 0.7, radius: 350, color: 'rgba(186, 85, 211, 0.05)' },
-        { x: canvas.width * 0.8, y: canvas.height * 0.2, radius: 200, color: 'rgba(123, 104, 238, 0.07)' }
+        { x: canvas.width * 0.35, y: centerY - 60, radius: 180, color: 'rgba(180, 140, 200, 0.06)' },
+        { x: canvas.width * 0.65, y: centerY + 40, radius: 220, color: 'rgba(150, 120, 180, 0.05)' },
+        { x: canvas.width * 0.8, y: centerY - 30, radius: 150, color: 'rgba(160, 130, 190, 0.04)' }
       ]
 
       nebulas.forEach(nebula => {
