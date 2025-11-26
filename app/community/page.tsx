@@ -305,12 +305,12 @@ export default async function CommunityPage() {
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
           <div className="max-w-6xl mx-auto">
             <div className="flex flex-col lg:flex-row items-center justify-between gap-6">
-              {/* LEFT: Feed Action Button */}
+              {/* LEFT: Discussions Action Button */}
               <div className="flex-shrink-0">
                 <Link href="/community/feed">
                   <Button size="sm" className="bg-white text-[var(--primary)] hover:bg-gray-100 font-bold rounded-full shadow-lg">
-                    <Heart className="w-3.5 h-3.5 mr-1.5" />
-                    Feed
+                    <MessageSquare className="w-3.5 h-3.5 mr-1.5" />
+                    Discussions
                   </Button>
                 </Link>
               </div>
@@ -386,9 +386,9 @@ export default async function CommunityPage() {
           <div className="max-w-4xl mx-auto">
             <div className="flex flex-wrap justify-center gap-2">
               <Link href="/learn">
-                <Button size="sm" className="font-bold rounded-full shadow-md hover:shadow-lg transition-shadow">
-                  <MessageSquare className="w-3.5 h-3.5 mr-1.5" />
-                  Discussions
+                <Button size="sm" variant="outline" className="font-bold rounded-full hover:shadow-md transition-shadow">
+                  <BookOpen className="w-3.5 h-3.5 mr-1.5" />
+                  Articles
                 </Button>
               </Link>
               <Link href="/community/projects/new">

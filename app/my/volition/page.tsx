@@ -15,6 +15,9 @@ import {
   Send,
   Search,
   MoreVertical,
+  Filter,
+  Heart,
+  MessageSquare as MessageSquareIcon,
 } from 'lucide-react'
 import Link from 'next/link'
 import { useEffect, useState } from 'react'
@@ -33,11 +36,13 @@ export default function MyVolitionPage() {
   const [currentPage, setCurrentPage] = useState(0)
   const [projects, setProjects] = useState<any[]>([])
   const [articles, setArticles] = useState<any[]>([])
+  const [feedPosts, setFeedPosts] = useState<any[]>([])
   const [userProfile, setUserProfile] = useState<any>(null)
   const [contacts, setContacts] = useState<any[]>([])
   const [isLoading, setIsLoading] = useState(true)
   const [messageContent, setMessageContent] = useState('')
   const [selectedContact, setSelectedContact] = useState<any>(null)
+  const [discussionFilter, setDiscussionFilter] = useState<'recent' | 'oldest' | 'popular'>('recent')
 
   // Deck columns data
   const [discussionCards, setDiscussionCards] = useState<DeckCard[]>([])
@@ -46,23 +51,51 @@ export default function MyVolitionPage() {
 
   useEffect(() => {
     if (session?.user?.id) {
-      Promise.all([fetchProjects(), fetchArticles(), fetchProfile(), fetchContacts()]).finally(() => setIsLoading(false))
+      Promise.all([fetchProjects(), fetchArticles(), fetchFeedPosts(), fetchProfile(), fetchContacts()]).finally(() => setIsLoading(false))
     }
   }, [session?.user?.id])
 
   useEffect(() => {
     // Convert fetched data to deck cards
+    if (feedPosts.length > 0) {
+      let sortedPosts = [...feedPosts]
+
+      // Apply filter
+      if (discussionFilter === 'recent' || discussionFilter === 'oldest') {
+        sortedPosts.sort((a, b) => {
+          const dateA = new Date(a.createdAt).getTime()
+          const dateB = new Date(b.createdAt).getTime()
+          return discussionFilter === 'recent' ? dateB - dateA : dateA - dateB
+        })
+      } else if (discussionFilter === 'popular') {
+        sortedPosts.sort((a, b) => {
+          const popularityA = (a._count?.likes || 0) + (a._count?.comments || 0)
+          const popularityB = (b._count?.likes || 0) + (b._count?.comments || 0)
+          return popularityB - popularityA
+        })
+      }
+
+      const cards: DeckCard[] = sortedPosts.map(post => ({
+        id: post.id,
+        title: post.content.substring(0, 100) + (post.content.length > 100 ? '...' : ''),
+        subtitle: `${post._count?.likes || 0} likes • ${post._count?.comments || 0} comments`,
+        date: new Date(post.createdAt),
+        type: 'discussion' as const,
+      }))
+      setDiscussionCards(cards)
+    }
+
     if (articles.length > 0) {
       const cards: DeckCard[] = articles.map(article => ({
         id: article.id,
         title: article.title,
         subtitle: `${article._count?.comments || 0} comments`,
         date: new Date(article.createdAt),
-        type: 'discussion' as const,
+        type: 'learning' as const,
       }))
-      setDiscussionCards(cards)
-      setLearningCards(cards.map(c => ({ ...c, type: 'learning' as const })))
+      setLearningCards(cards)
     }
+
     if (projects.length > 0) {
       const cards: DeckCard[] = projects.map(project => ({
         id: project.id,
@@ -73,7 +106,7 @@ export default function MyVolitionPage() {
       }))
       setProjectCards(cards)
     }
-  }, [articles, projects])
+  }, [feedPosts, articles, projects, discussionFilter])
 
   const fetchProjects = async () => {
     try {
@@ -105,6 +138,22 @@ export default function MyVolitionPage() {
       }
     } catch (error) {
       console.error('Error fetching articles:', error)
+    }
+  }
+
+  const fetchFeedPosts = async () => {
+    try {
+      const res = await fetch('/api/social/feed?limit=50')
+      if (res.ok) {
+        const data = await res.json()
+        if (data.success) {
+          // Filter to only show user's own posts
+          const userPosts = data.data.posts.filter((post: any) => post.userId === session?.user?.id)
+          setFeedPosts(userPosts)
+        }
+      }
+    } catch (error) {
+      console.error('Error fetching feed posts:', error)
     }
   }
 
@@ -234,47 +283,79 @@ export default function MyVolitionPage() {
             <div className="h-full flex gap-4 p-6 overflow-x-auto">
               {/* Discussions Column */}
               <div className="flex-shrink-0 w-80 h-full flex flex-col bg-[var(--card)] rounded-2xl border-2 border-theme-primary shadow-lg">
-                <div className="p-4 border-b border-[var(--border)] flex items-center justify-between">
-                  <div className="flex items-center gap-2">
-                    <MessageCircle className="w-5 h-5 text-theme-primary" />
-                    <h2 className="text-sm font-black text-[var(--foreground)]">MY DISCUSSIONS</h2>
+                <div className="p-4 border-b border-[var(--border)]">
+                  <div className="flex items-center justify-between mb-3">
+                    <div className="flex items-center gap-2">
+                      <MessageCircle className="w-5 h-5 text-theme-primary" />
+                      <h2 className="text-sm font-black text-[var(--foreground)]">MY FEED POSTS</h2>
+                    </div>
+                    <Link href="/community/feed">
+                      <button className="w-7 h-7 rounded-full bg-[var(--primary)] text-white flex items-center justify-center hover:bg-[var(--accent)] transition-colors">
+                        <Plus className="w-4 h-4" />
+                      </button>
+                    </Link>
                   </div>
-                  <button
-                    onClick={() => addNewCard('discussion')}
-                    className="w-7 h-7 rounded-full bg-[var(--primary)] text-white flex items-center justify-center hover:bg-[var(--accent)] transition-colors"
-                  >
-                    <Plus className="w-4 h-4" />
-                  </button>
+                  {/* Filter Buttons */}
+                  <div className="flex gap-2">
+                    <button
+                      onClick={() => setDiscussionFilter('recent')}
+                      className={`flex-1 px-2 py-1 rounded-lg text-[10px] font-bold transition-colors ${
+                        discussionFilter === 'recent'
+                          ? 'bg-[var(--primary)] text-white'
+                          : 'bg-[var(--muted)] text-[var(--foreground)] hover:bg-[var(--primary)]/20'
+                      }`}
+                    >
+                      Recent
+                    </button>
+                    <button
+                      onClick={() => setDiscussionFilter('oldest')}
+                      className={`flex-1 px-2 py-1 rounded-lg text-[10px] font-bold transition-colors ${
+                        discussionFilter === 'oldest'
+                          ? 'bg-[var(--primary)] text-white'
+                          : 'bg-[var(--muted)] text-[var(--foreground)] hover:bg-[var(--primary)]/20'
+                      }`}
+                    >
+                      Oldest
+                    </button>
+                    <button
+                      onClick={() => setDiscussionFilter('popular')}
+                      className={`flex-1 px-2 py-1 rounded-lg text-[10px] font-bold transition-colors ${
+                        discussionFilter === 'popular'
+                          ? 'bg-[var(--primary)] text-white'
+                          : 'bg-[var(--muted)] text-[var(--foreground)] hover:bg-[var(--primary)]/20'
+                      }`}
+                    >
+                      Popular
+                    </button>
+                  </div>
                 </div>
                 <div className="flex-1 overflow-y-auto p-4 space-y-3">
                   {discussionCards.map(card => (
-                    <div
-                      key={card.id}
-                      className="p-4 bg-gradient-to-br from-[var(--primary)]/10 to-transparent border-2 border-theme-primary rounded-xl cursor-pointer hover:shadow-lg transition-all"
-                    >
-                      <h3 className="text-sm font-black text-[var(--foreground)] mb-1 line-clamp-2">
-                        {card.title}
-                      </h3>
-                      {card.subtitle && (
-                        <p className="text-xs font-medium text-theme-muted mb-2">{card.subtitle}</p>
-                      )}
-                      {card.date && (
-                        <p className="text-[10px] font-bold text-theme-muted opacity-70">
-                          {card.date.toLocaleDateString()}
-                        </p>
-                      )}
-                    </div>
+                    <Link key={card.id} href="/community/feed">
+                      <div className="p-4 bg-gradient-to-br from-[var(--primary)]/10 to-transparent border-2 border-theme-primary rounded-xl cursor-pointer hover:shadow-lg transition-all">
+                        <h3 className="text-sm font-black text-[var(--foreground)] mb-1 line-clamp-2">
+                          {card.title}
+                        </h3>
+                        {card.subtitle && (
+                          <p className="text-xs font-medium text-theme-muted mb-2">{card.subtitle}</p>
+                        )}
+                        {card.date && (
+                          <p className="text-[10px] font-bold text-theme-muted opacity-70">
+                            {card.date.toLocaleDateString()}
+                          </p>
+                        )}
+                      </div>
+                    </Link>
                   ))}
                   {discussionCards.length === 0 && (
                     <div className="text-center py-12">
                       <MessageCircle className="w-12 h-12 text-theme-muted mx-auto mb-3 opacity-50" />
-                      <p className="text-xs font-bold text-theme-muted">No discussions yet</p>
-                      <button
-                        onClick={() => addNewCard('discussion')}
-                        className="mt-3 px-4 py-2 bg-[var(--primary)] text-white rounded-lg text-xs font-bold hover:bg-[var(--accent)] transition-colors"
-                      >
-                        Start One
-                      </button>
+                      <p className="text-xs font-bold text-theme-muted">No posts yet</p>
+                      <Link href="/community/feed">
+                        <button className="mt-3 px-4 py-2 bg-[var(--primary)] text-white rounded-lg text-xs font-bold hover:bg-[var(--accent)] transition-colors">
+                          Create Post
+                        </button>
+                      </Link>
                     </div>
                   )}
                 </div>
