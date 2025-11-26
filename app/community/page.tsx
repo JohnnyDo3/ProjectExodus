@@ -327,41 +327,51 @@ export default async function CommunityPage() {
 
               {/* RIGHT: 2x4 Stats Grid */}
               <div className="flex-shrink-0">
-                <div className="grid grid-cols-4 gap-2 text-center">
-                  {/* Top Row - User Stats */}
-                  <div className="px-3 py-2 bg-white/20 backdrop-blur-sm rounded-lg">
-                    <div className="text-sm font-black">{user?._count.articles || 0}</div>
-                    <div className="text-[9px] font-bold uppercase opacity-90">Articles</div>
-                  </div>
-                  <div className="px-3 py-2 bg-white/20 backdrop-blur-sm rounded-lg">
-                    <div className="text-sm font-black">{user?._count.createdProjects || 0}</div>
-                    <div className="text-[9px] font-bold uppercase opacity-90">Projects</div>
-                  </div>
-                  <div className="px-3 py-2 bg-white/20 backdrop-blur-sm rounded-lg">
-                    <div className="text-sm font-black">{user?._count.followers || 0}</div>
-                    <div className="text-[9px] font-bold uppercase opacity-90">Followers</div>
-                  </div>
-                  <div className="px-3 py-2 bg-white/20 backdrop-blur-sm rounded-lg">
-                    <div className="text-sm font-black">{user?.userBadges.length || 0}</div>
-                    <div className="text-[9px] font-bold uppercase opacity-90">Badges</div>
+                <div className="space-y-2">
+                  {/* User Stats Row */}
+                  <div>
+                    <div className="text-[8px] font-black uppercase opacity-70 mb-1 text-center">Your Stats</div>
+                    <div className="grid grid-cols-4 gap-2 text-center">
+                      <div className="px-3 py-2 bg-white/20 backdrop-blur-sm rounded-lg">
+                        <div className="text-sm font-black">{user?._count.articles || 0}</div>
+                        <div className="text-[9px] font-bold uppercase opacity-90">Articles</div>
+                      </div>
+                      <div className="px-3 py-2 bg-white/20 backdrop-blur-sm rounded-lg">
+                        <div className="text-sm font-black">{user?._count.createdProjects || 0}</div>
+                        <div className="text-[9px] font-bold uppercase opacity-90">Projects</div>
+                      </div>
+                      <div className="px-3 py-2 bg-white/20 backdrop-blur-sm rounded-lg">
+                        <div className="text-sm font-black">{user?._count.followers || 0}</div>
+                        <div className="text-[9px] font-bold uppercase opacity-90">Followers</div>
+                      </div>
+                      <div className="px-3 py-2 bg-white/20 backdrop-blur-sm rounded-lg">
+                        <div className="text-sm font-black">{user?.userBadges.length || 0}</div>
+                        <div className="text-[9px] font-bold uppercase opacity-90">Badges</div>
+                      </div>
+                    </div>
                   </div>
 
-                  {/* Bottom Row - Community Stats */}
-                  <div className="px-3 py-2 bg-white/10 backdrop-blur-sm rounded-lg">
-                    <div className="text-sm font-black">{communityStats.totalMembers.toLocaleString()}</div>
-                    <div className="text-[9px] font-bold uppercase opacity-80">Members</div>
-                  </div>
-                  <div className="px-3 py-2 bg-white/10 backdrop-blur-sm rounded-lg">
-                    <div className="text-sm font-black">{communityStats.totalProjects.toLocaleString()}</div>
-                    <div className="text-[9px] font-bold uppercase opacity-80">Projects</div>
-                  </div>
-                  <div className="px-3 py-2 bg-white/10 backdrop-blur-sm rounded-lg">
-                    <div className="text-sm font-black">{communityStats.totalArticles.toLocaleString()}</div>
-                    <div className="text-[9px] font-bold uppercase opacity-80">Articles</div>
-                  </div>
-                  <div className="px-3 py-2 bg-white/10 backdrop-blur-sm rounded-lg">
-                    <div className="text-sm font-black">{communityStats.activeProjects}</div>
-                    <div className="text-[9px] font-bold uppercase opacity-80">Active</div>
+                  {/* Community Stats Row */}
+                  <div>
+                    <div className="text-[8px] font-black uppercase opacity-70 mb-1 text-center">Community Stats</div>
+                    <div className="grid grid-cols-4 gap-2 text-center">
+                      <div className="px-3 py-2 bg-white/10 backdrop-blur-sm rounded-lg">
+                        <div className="text-sm font-black">{communityStats.totalMembers.toLocaleString()}</div>
+                        <div className="text-[9px] font-bold uppercase opacity-80">Members</div>
+                      </div>
+                      <div className="px-3 py-2 bg-white/10 backdrop-blur-sm rounded-lg">
+                        <div className="text-sm font-black">{communityStats.totalProjects.toLocaleString()}</div>
+                        <div className="text-[9px] font-bold uppercase opacity-80">Projects</div>
+                      </div>
+                      <div className="px-3 py-2 bg-white/10 backdrop-blur-sm rounded-lg">
+                        <div className="text-sm font-black">{communityStats.totalArticles.toLocaleString()}</div>
+                        <div className="text-[9px] font-bold uppercase opacity-80">Articles</div>
+                      </div>
+                      <div className="px-3 py-2 bg-white/10 backdrop-blur-sm rounded-lg">
+                        <div className="text-sm font-black">{communityStats.activeProjects}</div>
+                        <div className="text-[9px] font-bold uppercase opacity-80">Active</div>
+                      </div>
+                    </div>
                   </div>
                 </div>
               </div>
