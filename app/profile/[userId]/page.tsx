@@ -30,25 +30,25 @@ export default function UserProfilePage({ params }: Props) {
     }
 
     // Check if already following this user
-    checkFollowStatus()
-  }, [session?.user, userId])
-
-  const checkFollowStatus = async () => {
-    try {
-      const res = await fetch(`/api/users/following`)
-      if (res.ok) {
-        const data = await res.json()
-        if (data.success) {
-          const following = data.data || []
-          setIsFollowing(following.some((u: any) => u.id === userId))
+    const checkFollowStatus = async () => {
+      try {
+        const res = await fetch(`/api/users/following`)
+        if (res.ok) {
+          const data = await res.json()
+          if (data.success) {
+            const following = data.data || []
+            setIsFollowing(following.some((u: any) => u.id === userId))
+          }
         }
+      } catch (error) {
+        console.error('Error checking follow status:', error)
+      } finally {
+        setIsLoading(false)
       }
-    } catch (error) {
-      console.error('Error checking follow status:', error)
-    } finally {
-      setIsLoading(false)
     }
-  }
+
+    checkFollowStatus()
+  }, [session?.user, userId, router])
 
   const handleConnect = async () => {
     setIsConnecting(true)

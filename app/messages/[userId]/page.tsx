@@ -61,6 +61,24 @@ export default function ConversationPage({ params }: { params: Promise<{ userId:
     messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' })
   }
 
+  const fetchConversation = async () => {
+    try {
+      const res = await fetch(`/api/messages/${userId}`)
+      const data = await res.json()
+
+      if (data.success) {
+        setMessages(data.data.messages)
+        setOtherUser(data.data.otherUser)
+      } else if (data.error === 'Unauthorized - Please sign in to view messages') {
+        router.push('/auth/signin?callbackUrl=/messages')
+      }
+    } catch (error) {
+      console.error('Error fetching conversation:', error)
+    } finally {
+      setIsLoading(false)
+    }
+  }
+
   useEffect(() => {
     if (!session?.user) {
       router.push('/auth/signin?callbackUrl=/messages')
@@ -91,6 +109,7 @@ export default function ConversationPage({ params }: { params: Promise<{ userId:
       channel.unbind_all()
       channel.unsubscribe()
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [session?.user, userId])
 
   useEffect(() => {
