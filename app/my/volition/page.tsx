@@ -55,8 +55,6 @@ const LAYOUT_PRESETS = {
     { i: 'impact', x: 0, y: 3, w: 6, h: 4, minW: 4, minH: 3, theme: 'secondary' as const },
     { i: 'learning', x: 6, y: 3, w: 4, h: 4, minW: 3, minH: 3, theme: 'accent' as const },
     { i: 'network', x: 10, y: 3, w: 2, h: 4, minW: 2, minH: 3, theme: 'primary' as const },
-    { i: 'stats', x: 0, y: 7, w: 6, h: 2, minW: 4, minH: 2, theme: 'primary' as const },
-    { i: 'achievements', x: 6, y: 7, w: 6, h: 2, minW: 4, minH: 2, theme: 'accent' as const },
   ],
   focused: [
     { i: 'profile', x: 0, y: 0, w: 3, h: 3, minW: 3, minH: 3, theme: 'primary' as const },
@@ -64,29 +62,23 @@ const LAYOUT_PRESETS = {
     { i: 'impact', x: 0, y: 3, w: 12, h: 3, minW: 4, minH: 3, theme: 'secondary' as const },
     { i: 'learning', x: 0, y: 6, w: 6, h: 3, minW: 3, minH: 3, theme: 'accent' as const },
     { i: 'network', x: 6, y: 6, w: 6, h: 3, minW: 3, minH: 3, theme: 'primary' as const },
-    { i: 'stats', x: 0, y: 9, w: 12, h: 2, minW: 4, minH: 2, theme: 'primary' as const },
-    { i: 'achievements', x: 0, y: 11, w: 8, h: 2, minW: 4, minH: 2, theme: 'accent' as const },
-    { i: 'actions', x: 8, y: 11, w: 4, h: 2, minW: 2, minH: 2, theme: 'secondary' as const },
+    { i: 'actions', x: 0, y: 9, w: 12, h: 2, minW: 4, minH: 2, theme: 'secondary' as const },
   ],
   compact: [
     { i: 'profile', x: 0, y: 0, w: 3, h: 2, minW: 3, minH: 2, theme: 'primary' as const },
-    { i: 'stats', x: 3, y: 0, w: 6, h: 2, minW: 4, minH: 2, theme: 'primary' as const },
-    { i: 'actions', x: 9, y: 0, w: 3, h: 2, minW: 2, minH: 2, theme: 'secondary' as const },
-    { i: 'projects', x: 0, y: 2, w: 4, h: 3, minW: 3, minH: 2, theme: 'primary' as const },
-    { i: 'learning', x: 4, y: 2, w: 4, h: 3, minW: 3, minH: 2, theme: 'accent' as const },
-    { i: 'network', x: 8, y: 2, w: 4, h: 3, minW: 3, minH: 2, theme: 'primary' as const },
-    { i: 'impact', x: 0, y: 5, w: 6, h: 3, minW: 4, minH: 2, theme: 'secondary' as const },
-    { i: 'achievements', x: 6, y: 5, w: 6, h: 3, minW: 4, minH: 2, theme: 'accent' as const },
+    { i: 'actions', x: 3, y: 0, w: 3, h: 2, minW: 2, minH: 2, theme: 'secondary' as const },
+    { i: 'network', x: 6, y: 0, w: 3, h: 2, minW: 2, minH: 2, theme: 'primary' as const },
+    { i: 'projects', x: 9, y: 0, w: 3, h: 2, minW: 3, minH: 2, theme: 'primary' as const },
+    { i: 'learning', x: 0, y: 2, w: 6, h: 3, minW: 3, minH: 2, theme: 'accent' as const },
+    { i: 'impact', x: 6, y: 2, w: 6, h: 3, minW: 4, minH: 2, theme: 'secondary' as const },
   ],
   detailed: [
     { i: 'profile', x: 0, y: 0, w: 4, h: 4, minW: 3, minH: 3, theme: 'primary' as const },
-    { i: 'stats', x: 4, y: 0, w: 8, h: 2, minW: 4, minH: 2, theme: 'primary' as const },
-    { i: 'projects', x: 4, y: 2, w: 8, h: 4, minW: 4, minH: 3, theme: 'primary' as const },
+    { i: 'projects', x: 4, y: 0, w: 8, h: 4, minW: 4, minH: 3, theme: 'primary' as const },
     { i: 'impact', x: 0, y: 4, w: 12, h: 4, minW: 4, minH: 3, theme: 'secondary' as const },
     { i: 'learning', x: 0, y: 8, w: 6, h: 4, minW: 3, minH: 3, theme: 'accent' as const },
     { i: 'network', x: 6, y: 8, w: 6, h: 4, minW: 3, minH: 3, theme: 'primary' as const },
-    { i: 'achievements', x: 0, y: 12, w: 8, h: 3, minW: 4, minH: 2, theme: 'accent' as const },
-    { i: 'actions', x: 8, y: 12, w: 4, h: 3, minW: 2, minH: 2, theme: 'secondary' as const },
+    { i: 'actions', x: 0, y: 12, w: 12, h: 3, minW: 4, minH: 2, theme: 'secondary' as const },
   ],
 }
 
@@ -314,6 +306,24 @@ export default function MyVolitionPage() {
                 <p className="text-xs font-medium text-white/70 leading-relaxed">
                   This is YOUR dashboard to track how much you contribute and become part of Project Exodus
                 </p>
+
+                {/* Achievements and Stats Overlay */}
+                <div className="mt-3 flex items-center gap-4 text-white/90">
+                  {/* Achievements Summary */}
+                  <div className="flex items-center gap-1.5">
+                    {badges.map((badge, i) => (
+                      <div key={i} className="flex items-center gap-0.5">
+                        <span className="text-sm">{badge.icon}</span>
+                        <span className="text-[9px] font-bold">{badge.progress}%</span>
+                      </div>
+                    ))}
+                  </div>
+                  <span className="text-white/40">•</span>
+                  {/* Stats Summary */}
+                  <div className="text-[10px] font-bold">
+                    Impact 742 • Streak 12d • Level 8
+                  </div>
+                </div>
               </div>
             </div>
             <div className="flex items-center gap-2">
@@ -427,7 +437,7 @@ export default function MyVolitionPage() {
           className="layout"
           layout={visibleLayout}
           cols={12}
-          rowHeight={80}
+          rowHeight={40}
           width={1200}
           onLayoutChange={handleLayoutChange}
           isDraggable={!isLayoutLocked}
@@ -623,34 +633,6 @@ export default function MyVolitionPage() {
             </div>
           )}
 
-          {/* Achievements Widget */}
-          {!hiddenWidgets.has('achievements') && (
-            <div key="achievements">
-              <Widget
-                id="achievements"
-                title="ACHIEVEMENTS"
-                icon={Award}
-                theme={layout.find(w => w.i === 'achievements')?.theme || 'accent'}
-                collapsed={collapsedWidgets.has('achievements')}
-                onToggleCollapse={() => toggleWidgetCollapse('achievements')}
-                onClick={() => router.push('/my/achievements')}
-              >
-                <div className="grid grid-cols-4 gap-2">
-                  {badges.map((badge, i) => (
-                    <div key={i} className="text-center p-2 bg-[var(--muted)] rounded-lg">
-                      <div className="text-xl mb-1">{badge.icon}</div>
-                      <div className="text-[8px] font-bold text-theme-muted mb-1 line-clamp-1">{badge.name}</div>
-                      <div className="h-1 bg-[var(--background)] rounded-full">
-                        <div className="h-full bg-gradient-to-r from-[var(--primary)] to-[var(--accent)] rounded-full" style={{ width: `${badge.progress}%` }} />
-                      </div>
-                      <div className="text-[8px] font-black text-theme-primary mt-0.5">{badge.progress}%</div>
-                    </div>
-                  ))}
-                </div>
-              </Widget>
-            </div>
-          )}
-
           {/* Quick Actions Widget */}
           {!hiddenWidgets.has('actions') && (
             <div key="actions">
@@ -687,47 +669,6 @@ export default function MyVolitionPage() {
                       Connect
                     </button>
                   </Link>
-                </div>
-              </Widget>
-            </div>
-          )}
-
-          {/* Stats Overview Widget */}
-          {!hiddenWidgets.has('stats') && (
-            <div key="stats">
-              <Widget
-                id="stats"
-                title="STATS OVERVIEW"
-                icon={TrendingUp}
-                theme={layout.find(w => w.i === 'stats')?.theme || 'primary'}
-                collapsed={collapsedWidgets.has('stats')}
-                onToggleCollapse={() => toggleWidgetCollapse('stats')}
-                onClick={() => router.push('/my/stats')}
-              >
-                <div className="flex items-center justify-around">
-                  <div className="text-center">
-                    <div className="flex items-center gap-1.5 justify-center mb-1">
-                      <TrendingUp className="w-4 h-4 text-theme-primary" />
-                      <span className="text-xs font-bold text-[var(--foreground)]">Impact</span>
-                    </div>
-                    <div className="text-xl font-black text-theme-primary">742</div>
-                  </div>
-                  <div className="w-px h-12 bg-[var(--border)]" />
-                  <div className="text-center">
-                    <div className="flex items-center gap-1.5 justify-center mb-1">
-                      <Flame className="w-4 h-4 text-theme-accent" />
-                      <span className="text-xs font-bold text-[var(--foreground)]">Streak</span>
-                    </div>
-                    <div className="text-xl font-black text-theme-accent">12d</div>
-                  </div>
-                  <div className="w-px h-12 bg-[var(--border)]" />
-                  <div className="text-center">
-                    <div className="flex items-center gap-1.5 justify-center mb-1">
-                      <Target className="w-4 h-4 text-theme-secondary" />
-                      <span className="text-xs font-bold text-[var(--foreground)]">Level</span>
-                    </div>
-                    <div className="text-xl font-black text-theme-secondary">8</div>
-                  </div>
                 </div>
               </Widget>
             </div>

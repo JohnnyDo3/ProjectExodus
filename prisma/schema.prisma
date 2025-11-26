@@ -59,8 +59,6 @@ model User {
   reviews               Review[]
   articles              Article[]
   comments              Comment[]
-  forumPosts            ForumPost[]
-  forumReplies          ForumReply[]
   savedProducts         SavedProduct[]
   savedArticles         SavedArticle[]
   notifications         Notification[]
@@ -76,8 +74,6 @@ model User {
   createdEvents         Event[]            @relation("CreatedEvents")
   eventAttendances      EventAttendee[]
   reportedContent       Report[]
-  likedPosts            PostLike[]
-  likedReplies          ReplyLike[]
   socialPosts           SocialPost[]     @relation("SocialPosts")
   socialComments        SocialComment[]  @relation("SocialComments")
   socialLikes           SocialLike[]     @relation("SocialLikes")
@@ -438,94 +434,6 @@ model SavedArticle {
 }
 
 // ============================================
-// COMMUNITY FORUM MODELS
-// ============================================
-
-model ForumCategory {
-  id          String      @id @default(cuid())
-  name        String
-  slug        String      @unique
-  description String?     @db.Text
-  icon        String?
-  order       Int         @default(0)
-  posts       ForumPost[]
-  createdAt   DateTime    @default(now())
-  updatedAt   DateTime    @updatedAt
-
-  @@index([slug])
-}
-
-model ForumPost {
-  id         String        @id @default(cuid())
-  title      String
-  slug       String        @unique
-  content    String        @db.Text
-  pinned     Boolean       @default(false)
-  locked     Boolean       @default(false)
-  views      Int           @default(0)
-  userId     String
-  categoryId String
-  user       User          @relation(fields: [userId], references: [id], onDelete: Cascade)
-  category   ForumCategory @relation(fields: [categoryId], references: [id])
-  replies    ForumReply[]
-  likes      PostLike[]
-  reports    Report[]
-  createdAt  DateTime      @default(now())
-  updatedAt  DateTime      @updatedAt
-
-  @@index([slug])
-  @@index([userId])
-  @@index([categoryId])
-  @@index([pinned])
-}
-
-model ForumReply {
-  id        String       @id @default(cuid())
-  content   String       @db.Text
-  postId    String
-  userId    String
-  parentId  String?      // For nested replies
-  post      ForumPost    @relation(fields: [postId], references: [id], onDelete: Cascade)
-  user      User         @relation(fields: [userId], references: [id], onDelete: Cascade)
-  parent    ForumReply?  @relation("ReplyThread", fields: [parentId], references: [id])
-  children  ForumReply[] @relation("ReplyThread")
-  likes     ReplyLike[]
-  reports   Report[]
-  createdAt DateTime     @default(now())
-  updatedAt DateTime     @updatedAt
-
-  @@index([postId])
-  @@index([userId])
-  @@index([parentId])
-}
-
-model PostLike {
-  id        String    @id @default(cuid())
-  userId    String
-  postId    String
-  user      User      @relation(fields: [userId], references: [id], onDelete: Cascade)
-  post      ForumPost @relation(fields: [postId], references: [id], onDelete: Cascade)
-  createdAt DateTime  @default(now())
-
-  @@unique([userId, postId])
-  @@index([userId])
-  @@index([postId])
-}
-
-model ReplyLike {
-  id        String     @id @default(cuid())
-  userId    String
-  replyId   String
-  user      User       @relation(fields: [userId], references: [id], onDelete: Cascade)
-  reply     ForumReply @relation(fields: [replyId], references: [id], onDelete: Cascade)
-  createdAt DateTime   @default(now())
-
-  @@unique([userId, replyId])
-  @@index([userId])
-  @@index([replyId])
-}
-
-// ============================================
 // SOCIAL & GAMIFICATION MODELS
 // ============================================
 
@@ -868,19 +776,11 @@ model Report {
   reporterId   String
   reporter     User         @relation(fields: [reporterId], references: [id])
 
-  // Polymorphic relation (report can be for post or reply)
-  forumPostId  String?
-  forumReplyId String?
-  forumPost    ForumPost?   @relation(fields: [forumPostId], references: [id], onDelete: Cascade)
-  forumReply   ForumReply?  @relation(fields: [forumReplyId], references: [id], onDelete: Cascade)
-
   createdAt    DateTime     @default(now())
   resolvedAt   DateTime?
 
   @@index([reporterId])
   @@index([status])
-  @@index([forumPostId])
-  @@index([forumReplyId])
 }
 
 enum ReportStatus {

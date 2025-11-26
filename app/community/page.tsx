@@ -36,48 +36,17 @@ async function getDashboardData(userId: string) {
         _count: {
           select: {
             articles: true,
-            forumPosts: true,
             followers: true,
             following: true,
-            createdProjects: true,
-            forumReplies: true
+            createdProjects: true
           }
         }
       }
     })
 
-    // Get recent forum activity
-    const recentForumPosts = await prisma.forumPost.findMany({
-      take: 8,
-      orderBy: {
-        createdAt: 'desc'
-      },
-      select: {
-        id: true,
-        title: true,
-        content: true,
-        createdAt: true,
-        user: {
-          select: {
-            id: true,
-            name: true,
-            image: true
-          }
-        },
-        category: {
-          select: {
-            name: true,
-            slug: true
-          }
-        },
-        _count: {
-          select: {
-            replies: true,
-            likes: true
-          }
-        }
-      }
-    })
+    // Get community activity stats
+    const totalArticles = await prisma.article.count()
+    const totalProjects = await prisma.project.count()
 
     // Get trending users (most followers in last 30 days)
     const suggestedUsers = await prisma.user.findMany({
@@ -148,21 +117,20 @@ async function getDashboardData(userId: string) {
     // Get community stats
     const stats = await prisma.$transaction([
       prisma.user.count(),
-      prisma.forumPost.count(),
       prisma.project.count({ where: { status: { in: ['ACTIVE', 'PLANNING'] } } }),
       prisma.article.count({ where: { status: 'PUBLISHED' } })
     ])
 
     return {
       user,
-      recentForumPosts,
       suggestedUsers,
       activeProjects,
       communityStats: {
         totalMembers: stats[0],
-        totalDiscussions: stats[1],
-        activeProjects: stats[2],
-        knowledgeArticles: stats[3]
+        activeProjects: stats[1],
+        knowledgeArticles: stats[2],
+        totalArticles: totalArticles,
+        totalProjects: totalProjects
       }
     }
   } catch (error) {
@@ -290,7 +258,7 @@ export default async function CommunityPage() {
     )
   }
 
-  const { user, recentForumPosts, suggestedUsers, activeProjects, communityStats } = dashboardData
+  const { user, suggestedUsers, activeProjects, communityStats } = dashboardData
 
   return (
     <div className="min-h-screen bg-[var(--background)] relative">
@@ -298,20 +266,13 @@ export default async function CommunityPage() {
       <TreeBranches />
       <FlyingBirds />
 
-      {/* Welcome Header - Cute & Compact */}
+      {/* Welcome Header with Stats Grid */}
       <section className="py-6 bg-gradient-to-br from-[var(--primary)] via-[var(--accent)] to-[var(--secondary)] text-[var(--primary-foreground)] rounded-b-3xl">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="max-w-5xl mx-auto">
-            <div className="flex flex-col md:flex-row items-center justify-between gap-4">
-              <div>
-                <h1 className="text-xl md:text-2xl font-black mb-1">
-                  Hey {user?.name || 'friend'}!
-                </h1>
-                <p className="text-xs font-medium opacity-80">
-                  {new Date().toLocaleDateString('en-US', { weekday: 'long', month: 'long', day: 'numeric' })}
-                </p>
-              </div>
-              <div className="flex gap-2">
+          <div className="max-w-6xl mx-auto">
+            <div className="flex flex-col lg:flex-row items-center justify-between gap-6">
+              {/* LEFT: Feed Action Button */}
+              <div className="flex-shrink-0">
                 <Link href="/community/feed">
                   <Button size="sm" className="bg-white text-[var(--primary)] hover:bg-gray-100 font-bold rounded-full shadow-lg">
                     <Heart className="w-3.5 h-3.5 mr-1.5" />
@@ -319,38 +280,55 @@ export default async function CommunityPage() {
                   </Button>
                 </Link>
               </div>
-            </div>
-          </div>
-        </div>
-      </section>
 
-      {/* Stats Bar - Cute Pills */}
-      <section className="py-5 bg-[var(--background)]">
-        <div className="container mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="max-w-4xl mx-auto">
-            <div className="flex flex-wrap justify-center gap-3">
-              <div className="px-5 py-3 bg-gradient-to-br from-[var(--primary)]/10 to-[var(--primary)]/5 rounded-full border-2 border-[var(--primary)]/20">
-                <div className="text-center">
-                  <div className="text-lg font-black text-theme-primary">{user?._count.articles || 0}</div>
-                  <div className="text-[10px] font-bold text-theme-muted uppercase">Articles</div>
-                </div>
+              {/* CENTER: Greeting */}
+              <div className="text-center lg:text-left">
+                <h1 className="text-xl md:text-2xl font-black mb-1">
+                  Hey {user?.name || 'friend'}!
+                </h1>
+                <p className="text-xs font-medium opacity-80">
+                  {new Date().toLocaleDateString('en-US', { weekday: 'long', month: 'long', day: 'numeric' })}
+                </p>
               </div>
-              <div className="px-5 py-3 bg-gradient-to-br from-[var(--accent)]/10 to-[var(--accent)]/5 rounded-full border-2 border-[var(--accent)]/20">
-                <div className="text-center">
-                  <div className="text-lg font-black text-theme-accent">{user?._count.forumPosts || 0}</div>
-                  <div className="text-[10px] font-bold text-theme-muted uppercase">Posts</div>
-                </div>
-              </div>
-              <div className="px-5 py-3 bg-gradient-to-br from-[var(--secondary)]/10 to-[var(--secondary)]/5 rounded-full border-2 border-[var(--secondary)]/20">
-                <div className="text-center">
-                  <div className="text-lg font-black text-theme-secondary">{user?._count.followers || 0}</div>
-                  <div className="text-[10px] font-bold text-theme-muted uppercase">Followers</div>
-                </div>
-              </div>
-              <div className="px-5 py-3 bg-gradient-to-br from-[var(--primary)]/10 to-[var(--accent)]/5 rounded-full border-2 border-[var(--primary)]/20">
-                <div className="text-center">
-                  <div className="text-lg font-black text-theme-primary">{user?.userBadges.length || 0}</div>
-                  <div className="text-[10px] font-bold text-theme-muted uppercase">Badges</div>
+
+              {/* RIGHT: 2x4 Stats Grid */}
+              <div className="flex-shrink-0">
+                <div className="grid grid-cols-4 gap-2 text-center">
+                  {/* Top Row - User Stats */}
+                  <div className="px-3 py-2 bg-white/20 backdrop-blur-sm rounded-lg">
+                    <div className="text-sm font-black">{user?._count.articles || 0}</div>
+                    <div className="text-[9px] font-bold uppercase opacity-90">Articles</div>
+                  </div>
+                  <div className="px-3 py-2 bg-white/20 backdrop-blur-sm rounded-lg">
+                    <div className="text-sm font-black">{user?._count.createdProjects || 0}</div>
+                    <div className="text-[9px] font-bold uppercase opacity-90">Projects</div>
+                  </div>
+                  <div className="px-3 py-2 bg-white/20 backdrop-blur-sm rounded-lg">
+                    <div className="text-sm font-black">{user?._count.followers || 0}</div>
+                    <div className="text-[9px] font-bold uppercase opacity-90">Followers</div>
+                  </div>
+                  <div className="px-3 py-2 bg-white/20 backdrop-blur-sm rounded-lg">
+                    <div className="text-sm font-black">{user?.userBadges.length || 0}</div>
+                    <div className="text-[9px] font-bold uppercase opacity-90">Badges</div>
+                  </div>
+
+                  {/* Bottom Row - Community Stats */}
+                  <div className="px-3 py-2 bg-white/10 backdrop-blur-sm rounded-lg">
+                    <div className="text-sm font-black">{communityStats.totalMembers.toLocaleString()}</div>
+                    <div className="text-[9px] font-bold uppercase opacity-80">Members</div>
+                  </div>
+                  <div className="px-3 py-2 bg-white/10 backdrop-blur-sm rounded-lg">
+                    <div className="text-sm font-black">{communityStats.totalProjects.toLocaleString()}</div>
+                    <div className="text-[9px] font-bold uppercase opacity-80">Projects</div>
+                  </div>
+                  <div className="px-3 py-2 bg-white/10 backdrop-blur-sm rounded-lg">
+                    <div className="text-sm font-black">{communityStats.totalArticles.toLocaleString()}</div>
+                    <div className="text-[9px] font-bold uppercase opacity-80">Articles</div>
+                  </div>
+                  <div className="px-3 py-2 bg-white/10 backdrop-blur-sm rounded-lg">
+                    <div className="text-sm font-black">{communityStats.activeProjects}</div>
+                    <div className="text-[9px] font-bold uppercase opacity-80">Active</div>
+                  </div>
                 </div>
               </div>
             </div>
@@ -363,14 +341,8 @@ export default async function CommunityPage() {
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
           <div className="max-w-4xl mx-auto">
             <div className="flex flex-wrap justify-center gap-2">
-              <Link href="/community/forum/new">
-                <Button size="sm" className="font-bold rounded-full shadow-md hover:shadow-lg transition-shadow">
-                  <MessageSquare className="w-3.5 h-3.5 mr-1.5" />
-                  Start Discussion
-                </Button>
-              </Link>
               <Link href="/community/projects/new">
-                <Button size="sm" variant="outline" className="font-bold rounded-full hover:shadow-md transition-shadow">
+                <Button size="sm" className="font-bold rounded-full shadow-md hover:shadow-lg transition-shadow">
                   <Rocket className="w-3.5 h-3.5 mr-1.5" />
                   Create Project
                 </Button>
@@ -396,54 +368,6 @@ export default async function CommunityPage() {
       <section className="py-6">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
           <div className="max-w-6xl mx-auto grid lg:grid-cols-2 gap-4">
-
-            {/* Community Forum - Cute Cards */}
-            <div className="p-5 bg-[var(--card)] rounded-3xl border-3 border-theme-accent/40 shadow-sm">
-              <div className="flex items-center justify-between mb-3">
-                <Link href="/community/forum" className="flex items-center gap-2 hover:opacity-80 transition-opacity">
-                  <div className="w-8 h-8 rounded-full bg-gradient-to-br from-[var(--accent)] to-[var(--accent)]/70 flex items-center justify-center">
-                    <TrendingUp className="w-4 h-4 text-white" />
-                  </div>
-                  <div>
-                    <h2 className="text-base font-black text-[var(--foreground)]">Community Forum</h2>
-                    <p className="text-[10px] font-semibold text-theme-muted">Trending Posts</p>
-                  </div>
-                </Link>
-                <Link href="/community/forum">
-                  <Button variant="ghost" size="sm" className="font-bold text-xs rounded-full hover:bg-[var(--muted)]">
-                    View all <ChevronRight className="w-3 h-3 ml-1" />
-                  </Button>
-                </Link>
-              </div>
-              <div className="space-y-2">
-                {recentForumPosts.map((post: any) => (
-                  <Link key={post.id} href={`/community/forum/posts/${post.id}`}>
-                    <div className="p-3 bg-[var(--muted)]/50 rounded-2xl hover:bg-[var(--muted)] transition-all hover:shadow-md cursor-pointer border-2 border-transparent hover:border-theme-accent/30">
-                      <div className="flex items-start gap-2.5">
-                        {post.user.image ? (
-                          <img src={post.user.image} alt={post.user.name || 'User'} className="w-7 h-7 rounded-full flex-shrink-0" />
-                        ) : (
-                          <div className="w-7 h-7 rounded-full bg-gradient-to-br from-[var(--primary)] to-[var(--accent)] flex items-center justify-center flex-shrink-0">
-                            <span className="text-[10px] font-bold text-white">{post.user.name?.[0]?.toUpperCase() || '?'}</span>
-                          </div>
-                        )}
-                        <div className="flex-1 min-w-0">
-                          <h3 className="font-bold text-sm text-[var(--foreground)] mb-0.5 line-clamp-1">{post.title}</h3>
-                          <div className="flex items-center gap-1.5 text-[10px] font-medium text-theme-muted flex-wrap">
-                            <span>{post.user.name || 'Anonymous'}</span>
-                            <span>•</span>
-                            <span className="px-1.5 py-0.5 bg-theme-accent/10 text-theme-accent rounded-full">{post.category.name}</span>
-                            <span>•</span>
-                            <span><span title="Replies">↪</span> {post._count.replies} replies</span>
-                            <span><span title="Likes">♥</span> {post._count.likes} likes</span>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                  </Link>
-                ))}
-              </div>
-            </div>
 
             {/* Active Projects - Cute Grid */}
             <div className="p-5 bg-[var(--card)] rounded-3xl border-3 border-theme-secondary/40 shadow-sm lg:col-span-2">
@@ -512,34 +436,6 @@ export default async function CommunityPage() {
                     </div>
                   </Link>
                 ))}
-              </div>
-            </div>
-
-            {/* Community Stats - Cute Rounded Card */}
-            <div className="p-5 bg-gradient-to-br from-[var(--primary)]/10 via-[var(--accent)]/10 to-[var(--secondary)]/10 rounded-3xl border-3 border-[var(--primary)]/30 shadow-sm">
-              <div className="flex items-center gap-2 mb-3">
-                <div className="w-7 h-7 rounded-full bg-gradient-to-br from-[var(--primary)] to-[var(--accent)] flex items-center justify-center">
-                  <Globe className="w-3.5 h-3.5 text-white" />
-                </div>
-                <h3 className="text-sm font-black text-[var(--foreground)]">Community Stats</h3>
-              </div>
-              <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
-                <div className="text-center p-3 bg-[var(--background)]/50 rounded-2xl">
-                  <div className="text-lg font-black text-theme-primary mb-0.5">{communityStats.totalMembers.toLocaleString()}</div>
-                  <div className="text-[10px] font-bold text-theme-muted uppercase">Members</div>
-                </div>
-                <div className="text-center p-3 bg-[var(--background)]/50 rounded-2xl">
-                  <div className="text-lg font-black text-theme-accent mb-0.5">{communityStats.totalDiscussions.toLocaleString()}</div>
-                  <div className="text-[10px] font-bold text-theme-muted uppercase">Discussions</div>
-                </div>
-                <div className="text-center p-3 bg-[var(--background)]/50 rounded-2xl">
-                  <div className="text-lg font-black text-theme-secondary mb-0.5">{communityStats.activeProjects}</div>
-                  <div className="text-[10px] font-bold text-theme-muted uppercase">Projects</div>
-                </div>
-                <div className="text-center p-3 bg-[var(--background)]/50 rounded-2xl">
-                  <div className="text-lg font-black text-theme-primary mb-0.5">{communityStats.knowledgeArticles}</div>
-                  <div className="text-[10px] font-bold text-theme-muted uppercase">Articles</div>
-                </div>
               </div>
             </div>
 
