@@ -6,6 +6,7 @@ import { useSession } from 'next-auth/react'
 import { useRouter } from 'next/navigation'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/Card'
 import { Button } from '@/components/ui/Button'
+import TeamCollaborationVisualization from '@/components/projects/TeamCollaborationVisualization'
 import {
   ArrowLeft,
   Users,
@@ -17,6 +18,7 @@ import {
   Shield,
   Crown,
   User,
+  Network,
 } from 'lucide-react'
 import Link from 'next/link'
 import { JoinProjectButton } from '@/components/projects/JoinProjectButton'
@@ -284,6 +286,43 @@ export default function ProjectPage({ params }: { params: { slug: string } }) {
           </div>
         </div>
       </section>
+
+      {/* Team Network Visualization - Members Only */}
+      {isMember && (
+        <section className="py-16 bg-gradient-to-b from-[var(--background)] to-[color-mix(in_srgb,var(--primary)_5%,var(--background))]">
+          <div className="container mx-auto px-4 sm:px-6 lg:px-8">
+            <div className="max-w-7xl mx-auto">
+              <div className="mb-8 text-center">
+                <div className="inline-flex items-center gap-3 px-6 py-3 rounded-full bg-gradient-to-r from-[var(--primary)] to-[var(--accent)] text-[var(--primary-foreground)] font-black text-sm uppercase mb-4">
+                  <Network className="w-5 h-5" />
+                  TEAM NETWORK
+                </div>
+                <h2 className="text-4xl font-black mb-3 text-[var(--foreground)]">
+                  TEAM COLLABORATION MAP
+                </h2>
+                <p className="text-lg font-semibold text-theme-muted max-w-2xl mx-auto">
+                  Visualize how your team connects and collaborates on {project.name}
+                </p>
+              </div>
+              <TeamCollaborationVisualization
+                projectId={project.id}
+                projectName={project.name}
+                members={project.members?.map((m: any) => ({
+                  id: m.id,
+                  userId: m.userId,
+                  name: m.user.name || 'Anonymous',
+                  image: m.user.image,
+                  role: m.role,
+                  isCreator: m.userId === project.creatorId,
+                  messageCount: messages.filter((msg: any) => msg.userId === m.userId).length,
+                })) || []}
+                currentUserId={session?.user?.id || null}
+                messages={messages}
+              />
+            </div>
+          </div>
+        </section>
+      )}
 
       {/* Project Discussion */}
       {isMember && (
