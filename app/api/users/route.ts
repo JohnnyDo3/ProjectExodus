@@ -47,7 +47,6 @@ export async function GET(request: NextRequest) {
             followers: true,
             following: true,
             projectMemberships: true,
-            forumPosts: true,
           },
         },
       },

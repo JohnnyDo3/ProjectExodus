@@ -29,28 +29,6 @@ async function getLeaderboardData() {
       take: 10
     })
 
-    // Top Contributors by Forum Posts
-    const topForumPosters = await prisma.user.findMany({
-      select: {
-        id: true,
-        name: true,
-        email: true,
-        image: true,
-        headline: true,
-        _count: {
-          select: {
-            forumPosts: true
-          }
-        }
-      },
-      orderBy: {
-        forumPosts: {
-          _count: 'desc'
-        }
-      },
-      take: 10
-    })
-
     // Most Followed Users
     const mostFollowed = await prisma.user.findMany({
       select: {
@@ -75,14 +53,12 @@ async function getLeaderboardData() {
 
     return {
       topArticleWriters,
-      topForumPosters,
       mostFollowed
     }
   } catch (error) {
     console.error('Error fetching leaderboard data:', error)
     return {
       topArticleWriters: [],
-      topForumPosters: [],
       mostFollowed: []
     }
   }
@@ -172,7 +148,7 @@ function LeaderboardSection({ title, users, icon: Icon, countKey, countLabel, me
 }
 
 export default async function LeaderboardPage() {
-  const { topArticleWriters, topForumPosters, mostFollowed } = await getLeaderboardData()
+  const { topArticleWriters, mostFollowed } = await getLeaderboardData()
 
   return (
     <div className="min-h-screen">
@@ -212,16 +188,6 @@ export default async function LeaderboardPage() {
               medalColor="primary"
             />
 
-            {/* Most Active Forum Members */}
-            <LeaderboardSection
-              title="MOST ACTIVE DISCUSSERS"
-              users={topForumPosters}
-              icon={MessageSquare}
-              countKey="_count.forumPosts"
-              countLabel="Posts"
-              medalColor="accent"
-            />
-
             {/* Most Followed */}
             <LeaderboardSection
               title="COMMUNITY LEADERS"
@@ -243,15 +209,10 @@ export default async function LeaderboardPage() {
             <p className="text-2xl font-semibold">
               Join the community, share your knowledge, and climb the leaderboard!
             </p>
-            <div className="flex flex-col sm:flex-row gap-4 justify-center">
+            <div className="flex justify-center">
               <Link href="/community/feed">
                 <button className="text-xl px-12 py-6 bg-white text-[var(--primary)] hover:bg-gray-100 font-black shadow-2xl rounded-2xl">
                   JOIN THE FEED
-                </button>
-              </Link>
-              <Link href="/community/forum">
-                <button className="text-xl px-12 py-6 border-4 border-white text-white hover:bg-white hover:text-[var(--primary)] font-black rounded-2xl transition-colors">
-                  START DISCUSSING
                 </button>
               </Link>
             </div>

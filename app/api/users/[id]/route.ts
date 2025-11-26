@@ -22,36 +22,6 @@ export async function GET(
             badge: true
           }
         },
-        forumPosts: {
-          select: {
-            id: true,
-            title: true,
-            createdAt: true,
-            category: {
-              select: { name: true, slug: true }
-            },
-            _count: {
-              select: { replies: true, likes: true }
-            }
-          },
-          orderBy: { createdAt: 'desc' },
-          take: 10
-        },
-        forumReplies: {
-          select: {
-            id: true,
-            content: true,
-            createdAt: true,
-            post: {
-              select: {
-                id: true,
-                title: true
-              }
-            }
-          },
-          orderBy: { createdAt: 'desc' },
-          take: 10
-        },
         projectMemberships: {
           include: {
             project: {
@@ -66,8 +36,6 @@ export async function GET(
         },
         _count: {
           select: {
-            forumPosts: true,
-            forumReplies: true,
             followers: true,
             following: true
           }

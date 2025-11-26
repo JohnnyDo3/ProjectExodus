@@ -27,11 +27,9 @@ export async function GET() {
         _count: {
           select: {
             articles: true,
-            forumPosts: true,
             followers: true,
             following: true,
             createdProjects: true,
-            forumReplies: true,
             reviews: true
           }
         }
@@ -85,17 +83,6 @@ export async function GET() {
         earned: user._count.articles >= 5
       },
       {
-        id: 'community-builder',
-        name: 'COMMUNITY BUILDER',
-        icon: '💬',
-        description: 'Make 50 forum posts',
-        progress: Math.min(100, Math.round((user._count.forumPosts / 50) * 100)),
-        current: user._count.forumPosts,
-        target: 50,
-        color: 'primary',
-        earned: user._count.forumPosts >= 50
-      },
-      {
         id: 'connector',
         name: 'CONNECTOR',
         icon: '🤝',
@@ -105,17 +92,6 @@ export async function GET() {
         target: 100,
         color: 'accent',
         earned: user._count.followers >= 100
-      },
-      {
-        id: 'conversation-starter',
-        name: 'CONVERSATION STARTER',
-        icon: '💭',
-        description: 'Make 100 forum replies',
-        progress: Math.min(100, Math.round((user._count.forumReplies / 100) * 100)),
-        current: user._count.forumReplies,
-        target: 100,
-        color: 'secondary',
-        earned: user._count.forumReplies >= 100
       },
       {
         id: 'project-leader',
