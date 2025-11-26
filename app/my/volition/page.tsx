@@ -28,13 +28,14 @@ import Link from 'next/link'
 import { useEffect, useState, useRef } from 'react'
 
 // Default node positions (as percentages)
+// Y constraints: 20-72% to avoid header (64px top) and stats bar (bottom)
 const DEFAULT_POSITIONS = {
-  projects: { x: 10, y: 15 },
-  learning: { x: 85, y: 15 },
-  impact: { x: 10, y: 80 },
-  network: { x: 85, y: 80 },
-  badges: { x: 3, y: 50 },
-  actions: { x: 92, y: 50 },
+  projects: { x: 12, y: 22 },
+  learning: { x: 88, y: 22 },
+  impact: { x: 12, y: 72 },
+  network: { x: 88, y: 72 },
+  badges: { x: 5, y: 47 },
+  actions: { x: 95, y: 47 },
 }
 
 // Node type definition
@@ -181,9 +182,9 @@ export default function MyVolitionPage() {
     const x = ((e.clientX - dragOffset.x) / rect.width) * 100
     const y = ((e.clientY - dragOffset.y) / rect.height) * 100
 
-    // Constrain to viewport (with some padding)
-    const constrainedX = Math.max(3, Math.min(92, x))
-    const constrainedY = Math.max(10, Math.min(85, y))
+    // Constrain to safe zone: avoid header overlap (top) and stats bar (bottom)
+    const constrainedX = Math.max(5, Math.min(95, x))
+    const constrainedY = Math.max(20, Math.min(75, y))
 
     setNodePositions((prev) => ({
       ...prev,
@@ -326,28 +327,26 @@ export default function MyVolitionPage() {
       </svg>
 
       {/* Top Bar - Compact */}
-      <div className="absolute top-0 left-0 right-0 h-16 bg-gradient-to-r from-[var(--primary)]/10 via-[var(--accent)]/10 to-[var(--secondary)]/10 border-b-2 border-theme-primary flex items-center px-6 z-50">
-        <div className="flex items-center gap-3 flex-1">
-          <Zap className="w-6 h-6 text-theme-primary" />
+      <div className="absolute top-0 left-0 right-0 h-16 bg-gradient-to-r from-[var(--primary)]/10 via-[var(--accent)]/10 to-[var(--secondary)]/10 border-b-2 border-theme-primary flex items-center justify-between px-6 z-50">
+        <div className="flex items-center gap-3">
+          <Zap className="w-5 h-5 text-theme-primary" />
           <div>
-            <h1 className="text-lg font-black text-[var(--foreground)]">MY VOLITION</h1>
-            <p className="text-[10px] font-bold text-theme-muted">This is YOUR portfolio—a living web showing how you contribute and become part of Project Exodus</p>
+            <h1 className="text-base font-black text-[var(--foreground)] leading-tight">MY VOLITION</h1>
+            <p className="text-[9px] font-bold text-theme-muted leading-tight">Your living web • Project Exodus</p>
           </div>
         </div>
-        <div className="flex items-center gap-3 mr-4">
-          <p className="text-xs font-bold text-theme-muted">Command Center</p>
-        </div>
+        <p className="text-xs font-bold text-theme-muted">Command Center</p>
         <div className="flex items-center gap-2">
           <button
             onClick={() => setCustomizationOpen(!customizationOpen)}
-            className="px-4 py-2 bg-[var(--accent)] text-white rounded-lg font-bold text-xs hover:bg-[var(--secondary)] transition-colors flex items-center gap-2"
+            className="px-3 py-1.5 bg-[var(--accent)] text-white rounded-lg font-bold text-xs hover:bg-[var(--secondary)] transition-colors flex items-center gap-1.5"
           >
-            <Palette className="w-4 h-4" />
+            <Palette className="w-3.5 h-3.5" />
             CUSTOMIZE
           </button>
           <Link href="/settings">
-            <button className="px-4 py-2 bg-[var(--primary)] text-white rounded-lg font-bold text-xs hover:bg-[var(--accent)] transition-colors flex items-center gap-2">
-              <Settings className="w-4 h-4" />
+            <button className="px-3 py-1.5 bg-[var(--primary)] text-white rounded-lg font-bold text-xs hover:bg-[var(--accent)] transition-colors flex items-center gap-1.5">
+              <Settings className="w-3.5 h-3.5" />
               SETTINGS
             </button>
           </Link>
@@ -361,24 +360,24 @@ export default function MyVolitionPage() {
           <div className="absolute inset-0 bg-gradient-to-br from-[var(--primary)] to-[var(--accent)] rounded-full blur-2xl opacity-30 animate-pulse" />
 
           {/* Center card */}
-          <div className="relative w-48 h-48 bg-gradient-to-br from-[var(--primary)] to-[var(--accent)] rounded-full border-4 border-white shadow-2xl flex flex-col items-center justify-center p-4">
-            <div className="w-16 h-16 rounded-full bg-white/20 backdrop-blur-sm flex items-center justify-center mb-2 border-2 border-white/40">
+          <div className="relative w-44 h-44 bg-gradient-to-br from-[var(--primary)] to-[var(--accent)] rounded-full border-4 border-white shadow-2xl flex flex-col items-center justify-center p-3.5">
+            <div className="w-14 h-14 rounded-full bg-white/20 backdrop-blur-sm flex items-center justify-center mb-1.5 border-2 border-white/40">
               {user?.image ? (
                 <img src={user.image} alt={user.name || 'User'} className="w-full h-full rounded-full object-cover" />
               ) : (
-                <User className="w-8 h-8 text-white" />
+                <User className="w-7 h-7 text-white" />
               )}
             </div>
-            <h2 className="text-sm font-black text-white text-center line-clamp-1">{user?.name || 'You'}</h2>
-            <p className="text-[10px] font-bold text-white/80 text-center line-clamp-2">{userProfile?.headline || 'Sustainability Advocate'}</p>
-            <div className="flex gap-3 mt-2">
+            <h2 className="text-xs font-black text-white text-center line-clamp-1 leading-tight">{user?.name || 'You'}</h2>
+            <p className="text-[9px] font-bold text-white/80 text-center line-clamp-2 leading-tight mt-0.5">{userProfile?.headline || 'Sustainability Advocate'}</p>
+            <div className="flex gap-3 mt-1.5">
               <div className="text-center">
-                <div className="text-lg font-black text-white">{userProfile?._count?.followers || 0}</div>
-                <div className="text-[8px] font-bold text-white/70">FOLLOWERS</div>
+                <div className="text-base font-black text-white leading-tight">{userProfile?._count?.followers || 0}</div>
+                <div className="text-[9px] font-bold text-white/70 leading-tight">FOLLOWERS</div>
               </div>
               <div className="text-center">
-                <div className="text-lg font-black text-white">{projects.length}</div>
-                <div className="text-[8px] font-bold text-white/70">PROJECTS</div>
+                <div className="text-base font-black text-white leading-tight">{projects.length}</div>
+                <div className="text-[9px] font-bold text-white/70 leading-tight">PROJECTS</div>
               </div>
             </div>
           </div>
@@ -398,20 +397,20 @@ export default function MyVolitionPage() {
           }}
           onMouseDown={(e) => handleMouseDown('projects', e)}
         >
-          <div className="w-64 bg-[var(--card)] border-2 border-theme-primary rounded-xl shadow-xl p-4 pointer-events-auto">
-          <div className="flex items-center gap-2 mb-3">
-            <div className="w-8 h-8 rounded-full bg-gradient-to-br from-[var(--primary)] to-[var(--accent)] flex items-center justify-center">
-              <Briefcase className="w-4 h-4 text-white" />
+          <div className="w-64 bg-[var(--card)] border-2 border-theme-primary rounded-xl shadow-xl p-3.5 pointer-events-auto">
+          <div className="flex items-center gap-2 mb-2.5">
+            <div className="w-7 h-7 rounded-full bg-gradient-to-br from-[var(--primary)] to-[var(--accent)] flex items-center justify-center flex-shrink-0">
+              <Briefcase className="w-3.5 h-3.5 text-white" />
             </div>
             <h3 className="text-xs font-black text-[var(--foreground)]">ACTIVE PROJECTS</h3>
           </div>
-          <div className="space-y-2">
+          <div className="space-y-1.5">
             {projects.length > 0 ? (
               projects.slice(0, 3).map((project) => (
                 <Link key={project.id} href={`/community/projects/${project.slug}`}>
                   <div className="p-2 bg-[var(--muted)] rounded-lg hover:bg-[var(--accent)]/10 transition-all cursor-pointer border border-transparent hover:border-theme-accent">
                     <p className="text-[10px] font-black text-[var(--foreground)] line-clamp-1">{project.name}</p>
-                    <p className="text-[8px] font-medium text-theme-muted line-clamp-1">{project.status}</p>
+                    <p className="text-[9px] font-medium text-theme-muted line-clamp-1">{project.status}</p>
                   </div>
                 </Link>
               ))
@@ -419,7 +418,7 @@ export default function MyVolitionPage() {
               <div className="text-center py-2">
                 <p className="text-[10px] font-bold text-theme-muted">No projects yet</p>
                 <Link href="/community/projects/new">
-                  <button className="mt-2 px-3 py-1 bg-[var(--primary)] text-white rounded text-[9px] font-bold">START ONE</button>
+                  <button className="mt-1.5 px-3 py-1 bg-[var(--primary)] text-white rounded text-[10px] font-bold hover:bg-[var(--accent)] transition-colors">START ONE</button>
                 </Link>
               </div>
             )}
@@ -441,25 +440,25 @@ export default function MyVolitionPage() {
           }}
           onMouseDown={(e) => handleMouseDown('learning', e)}
         >
-          <div className="w-64 bg-[var(--card)] border-2 border-theme-accent rounded-xl shadow-xl p-4 pointer-events-auto">
-          <div className="flex items-center gap-2 mb-3">
-            <div className="w-8 h-8 rounded-full bg-gradient-to-br from-[var(--accent)] to-[var(--secondary)] flex items-center justify-center">
-              <BookOpen className="w-4 h-4 text-white" />
+          <div className="w-64 bg-[var(--card)] border-2 border-theme-accent rounded-xl shadow-xl p-3.5 pointer-events-auto">
+          <div className="flex items-center gap-2 mb-2.5">
+            <div className="w-7 h-7 rounded-full bg-gradient-to-br from-[var(--accent)] to-[var(--secondary)] flex items-center justify-center flex-shrink-0">
+              <BookOpen className="w-3.5 h-3.5 text-white" />
             </div>
             <h3 className="text-xs font-black text-[var(--foreground)]">LEARNING JOURNEY</h3>
           </div>
-          <div className="space-y-2">
+          <div className="space-y-1.5">
             <div className="flex items-center justify-between p-2 bg-[var(--muted)] rounded">
               <span className="text-[10px] font-bold text-theme-muted">Articles Read</span>
-              <span className="text-lg font-black text-theme-primary">12</span>
+              <span className="text-base font-black text-theme-primary">12</span>
             </div>
             <div className="flex items-center justify-between p-2 bg-[var(--muted)] rounded">
               <span className="text-[10px] font-bold text-theme-muted">Courses Done</span>
-              <span className="text-lg font-black text-theme-accent">3</span>
+              <span className="text-base font-black text-theme-accent">3</span>
             </div>
             <div className="flex items-center justify-between p-2 bg-[var(--muted)] rounded">
               <span className="text-[10px] font-bold text-theme-muted">Learning Hours</span>
-              <span className="text-lg font-black text-theme-secondary">24h</span>
+              <span className="text-base font-black text-theme-secondary">24h</span>
             </div>
           </div>
         </div>
@@ -479,42 +478,42 @@ export default function MyVolitionPage() {
           }}
           onMouseDown={(e) => handleMouseDown('impact', e)}
         >
-          <div className="w-64 bg-[var(--card)] border-2 border-theme-secondary rounded-xl shadow-xl p-4 pointer-events-auto">
-          <div className="flex items-center gap-2 mb-3">
-            <div className="w-8 h-8 rounded-full bg-gradient-to-br from-[var(--secondary)] to-[var(--primary)] flex items-center justify-center">
-              <Leaf className="w-4 h-4 text-white" />
+          <div className="w-64 bg-[var(--card)] border-2 border-theme-secondary rounded-xl shadow-xl p-3.5 pointer-events-auto">
+          <div className="flex items-center gap-2 mb-2.5">
+            <div className="w-7 h-7 rounded-full bg-gradient-to-br from-[var(--secondary)] to-[var(--primary)] flex items-center justify-center flex-shrink-0">
+              <Leaf className="w-3.5 h-3.5 text-white" />
             </div>
             <h3 className="text-xs font-black text-[var(--foreground)]">ENVIRONMENTAL IMPACT</h3>
           </div>
           <div className="space-y-2">
             <div className="flex items-center justify-between">
               <div className="flex items-center gap-1">
-                <Wind className="w-3 h-3 text-theme-primary" />
+                <Wind className="w-3 h-3 text-theme-primary flex-shrink-0" />
                 <span className="text-[10px] font-bold text-theme-muted">CO₂ Saved</span>
               </div>
-              <span className="text-sm font-black text-theme-primary">{impactMetrics.co2Saved}kg</span>
+              <span className="text-base font-black text-theme-primary">{impactMetrics.co2Saved}kg</span>
             </div>
             <div className="h-1.5 bg-[var(--muted)] rounded-full">
               <div className="h-full bg-gradient-to-r from-green-500 to-emerald-600 rounded-full" style={{ width: '63%' }} />
             </div>
 
-            <div className="flex items-center justify-between mt-2">
+            <div className="flex items-center justify-between">
               <div className="flex items-center gap-1">
-                <Droplet className="w-3 h-3 text-theme-accent" />
+                <Droplet className="w-3 h-3 text-theme-accent flex-shrink-0" />
                 <span className="text-[10px] font-bold text-theme-muted">Water Saved</span>
               </div>
-              <span className="text-sm font-black text-theme-accent">{impactMetrics.waterSaved}gal</span>
+              <span className="text-base font-black text-theme-accent">{impactMetrics.waterSaved}gal</span>
             </div>
             <div className="h-1.5 bg-[var(--muted)] rounded-full">
               <div className="h-full bg-gradient-to-r from-blue-400 to-blue-600 rounded-full" style={{ width: '91%' }} />
             </div>
 
-            <div className="flex items-center justify-between mt-2">
+            <div className="flex items-center justify-between">
               <div className="flex items-center gap-1">
-                <Zap className="w-3 h-3 text-theme-secondary" />
+                <Zap className="w-3 h-3 text-theme-secondary flex-shrink-0" />
                 <span className="text-[10px] font-bold text-theme-muted">Energy Saved</span>
               </div>
-              <span className="text-sm font-black text-theme-secondary">{impactMetrics.energySaved}kWh</span>
+              <span className="text-base font-black text-theme-secondary">{impactMetrics.energySaved}kWh</span>
             </div>
             <div className="h-1.5 bg-[var(--muted)] rounded-full">
               <div className="h-full bg-gradient-to-r from-yellow-500 to-orange-600 rounded-full" style={{ width: '78%' }} />
@@ -537,24 +536,24 @@ export default function MyVolitionPage() {
           }}
           onMouseDown={(e) => handleMouseDown('network', e)}
         >
-          <div className="w-64 bg-[var(--card)] border-2 border-theme-primary rounded-xl shadow-xl p-4 pointer-events-auto">
-          <div className="flex items-center gap-2 mb-3">
-            <div className="w-8 h-8 rounded-full bg-gradient-to-br from-[var(--primary)] to-[var(--accent)] flex items-center justify-center">
-              <Users className="w-4 h-4 text-white" />
+          <div className="w-64 bg-[var(--card)] border-2 border-theme-primary rounded-xl shadow-xl p-3.5 pointer-events-auto">
+          <div className="flex items-center gap-2 mb-2.5">
+            <div className="w-7 h-7 rounded-full bg-gradient-to-br from-[var(--primary)] to-[var(--accent)] flex items-center justify-center flex-shrink-0">
+              <Users className="w-3.5 h-3.5 text-white" />
             </div>
             <h3 className="text-xs font-black text-[var(--foreground)]">YOUR NETWORK</h3>
           </div>
-          <div className="space-y-2">
-            <div className="p-3 bg-gradient-to-br from-[var(--primary)]/10 to-transparent border border-theme-primary rounded-lg">
-              <div className="text-2xl font-black text-theme-primary text-center">{userProfile?._count?.followers || 0}</div>
-              <div className="text-[10px] font-bold text-theme-muted text-center">CONNECTIONS</div>
+          <div className="space-y-1.5">
+            <div className="p-2.5 bg-gradient-to-br from-[var(--primary)]/10 to-transparent border border-theme-primary rounded-lg">
+              <div className="text-xl font-black text-theme-primary text-center">{userProfile?._count?.followers || 0}</div>
+              <div className="text-[9px] font-bold text-theme-muted text-center">CONNECTIONS</div>
             </div>
-            <div className="p-3 bg-gradient-to-br from-[var(--accent)]/10 to-transparent border border-theme-accent rounded-lg">
-              <div className="text-2xl font-black text-theme-accent text-center">5</div>
-              <div className="text-[10px] font-bold text-theme-muted text-center">COMMUNITIES</div>
+            <div className="p-2.5 bg-gradient-to-br from-[var(--accent)]/10 to-transparent border border-theme-accent rounded-lg">
+              <div className="text-xl font-black text-theme-accent text-center">5</div>
+              <div className="text-[9px] font-bold text-theme-muted text-center">COMMUNITIES</div>
             </div>
             <Link href="/network">
-              <button className="w-full px-3 py-2 bg-[var(--primary)] text-white rounded-lg text-[10px] font-bold hover:bg-[var(--accent)] transition-colors">
+              <button className="w-full px-3 py-1.5 bg-[var(--primary)] text-white rounded-lg text-[10px] font-bold hover:bg-[var(--accent)] transition-colors">
                 VIEW NETWORK →
               </button>
             </Link>
@@ -576,22 +575,22 @@ export default function MyVolitionPage() {
           }}
           onMouseDown={(e) => handleMouseDown('badges', e)}
         >
-          <div className="w-56 bg-[var(--card)] border-2 border-theme-accent rounded-xl shadow-xl p-4 pointer-events-auto">
-          <div className="flex items-center gap-2 mb-3">
-            <div className="w-8 h-8 rounded-full bg-gradient-to-br from-[var(--accent)] to-[var(--secondary)] flex items-center justify-center">
-              <Award className="w-4 h-4 text-white" />
+          <div className="w-56 bg-[var(--card)] border-2 border-theme-accent rounded-xl shadow-xl p-3.5 pointer-events-auto">
+          <div className="flex items-center gap-2 mb-2.5">
+            <div className="w-7 h-7 rounded-full bg-gradient-to-br from-[var(--accent)] to-[var(--secondary)] flex items-center justify-center flex-shrink-0">
+              <Award className="w-3.5 h-3.5 text-white" />
             </div>
             <h3 className="text-xs font-black text-[var(--foreground)]">ACHIEVEMENTS</h3>
           </div>
-          <div className="grid grid-cols-2 gap-2">
+          <div className="grid grid-cols-2 gap-1.5">
             {badges.map((badge, i) => (
               <div key={i} className="text-center p-2 bg-[var(--muted)] rounded-lg border border-transparent hover:border-theme-accent transition-all">
-                <div className="text-2xl mb-1">{badge.icon}</div>
-                <div className="text-[8px] font-bold text-theme-muted mb-1 line-clamp-1">{badge.name}</div>
+                <div className="text-xl mb-1">{badge.icon}</div>
+                <div className="text-[9px] font-bold text-theme-muted mb-1 line-clamp-1">{badge.name}</div>
                 <div className="h-1 bg-[var(--background)] rounded-full">
                   <div className="h-full bg-gradient-to-r from-[var(--primary)] to-[var(--accent)] rounded-full" style={{ width: `${badge.progress}%` }} />
                 </div>
-                <div className="text-[8px] font-black text-theme-primary mt-0.5">{badge.progress}%</div>
+                <div className="text-[9px] font-black text-theme-primary mt-0.5">{badge.progress}%</div>
               </div>
             ))}
           </div>
@@ -612,35 +611,35 @@ export default function MyVolitionPage() {
           }}
           onMouseDown={(e) => handleMouseDown('actions', e)}
         >
-          <div className="w-56 bg-[var(--card)] border-2 border-theme-secondary rounded-xl shadow-xl p-4 pointer-events-auto">
-          <div className="flex items-center gap-2 mb-3">
-            <div className="w-8 h-8 rounded-full bg-gradient-to-br from-[var(--secondary)] to-[var(--primary)] flex items-center justify-center">
-              <Zap className="w-4 h-4 text-white" />
+          <div className="w-56 bg-[var(--card)] border-2 border-theme-secondary rounded-xl shadow-xl p-3.5 pointer-events-auto">
+          <div className="flex items-center gap-2 mb-2.5">
+            <div className="w-7 h-7 rounded-full bg-gradient-to-br from-[var(--secondary)] to-[var(--primary)] flex items-center justify-center flex-shrink-0">
+              <Zap className="w-3.5 h-3.5 text-white" />
             </div>
             <h3 className="text-xs font-black text-[var(--foreground)]">QUICK ACTIONS</h3>
           </div>
-          <div className="space-y-2">
+          <div className="space-y-1.5">
             <Link href="/community/projects/new">
-              <button className="w-full px-3 py-2 bg-[var(--muted)] hover:bg-[var(--primary)]/10 border border-transparent hover:border-theme-primary rounded-lg text-[10px] font-bold text-[var(--foreground)] flex items-center gap-2 transition-all">
-                <Briefcase className="w-3 h-3" />
+              <button className="w-full px-2.5 py-1.5 bg-[var(--muted)] hover:bg-[var(--primary)]/10 border border-transparent hover:border-theme-primary rounded-lg text-[10px] font-bold text-[var(--foreground)] flex items-center gap-2 transition-all">
+                <Briefcase className="w-3 h-3 flex-shrink-0" />
                 Start Project
               </button>
             </Link>
             <Link href="/learn">
-              <button className="w-full px-3 py-2 bg-[var(--muted)] hover:bg-[var(--accent)]/10 border border-transparent hover:border-theme-accent rounded-lg text-[10px] font-bold text-[var(--foreground)] flex items-center gap-2 transition-all">
-                <BookOpen className="w-3 h-3" />
+              <button className="w-full px-2.5 py-1.5 bg-[var(--muted)] hover:bg-[var(--accent)]/10 border border-transparent hover:border-theme-accent rounded-lg text-[10px] font-bold text-[var(--foreground)] flex items-center gap-2 transition-all">
+                <BookOpen className="w-3 h-3 flex-shrink-0" />
                 Write Article
               </button>
             </Link>
             <Link href="/community/forum">
-              <button className="w-full px-3 py-2 bg-[var(--muted)] hover:bg-[var(--secondary)]/10 border border-transparent hover:border-theme-secondary rounded-lg text-[10px] font-bold text-[var(--foreground)] flex items-center gap-2 transition-all">
-                <MessageCircle className="w-3 h-3" />
+              <button className="w-full px-2.5 py-1.5 bg-[var(--muted)] hover:bg-[var(--secondary)]/10 border border-transparent hover:border-theme-secondary rounded-lg text-[10px] font-bold text-[var(--foreground)] flex items-center gap-2 transition-all">
+                <MessageCircle className="w-3 h-3 flex-shrink-0" />
                 Join Discussion
               </button>
             </Link>
             <Link href="/network/browse">
-              <button className="w-full px-3 py-2 bg-[var(--muted)] hover:bg-[var(--primary)]/10 border border-transparent hover:border-theme-primary rounded-lg text-[10px] font-bold text-[var(--foreground)] flex items-center gap-2 transition-all">
-                <Users className="w-3 h-3" />
+              <button className="w-full px-2.5 py-1.5 bg-[var(--muted)] hover:bg-[var(--primary)]/10 border border-transparent hover:border-theme-primary rounded-lg text-[10px] font-bold text-[var(--foreground)] flex items-center gap-2 transition-all">
+                <Users className="w-3 h-3 flex-shrink-0" />
                 Connect
               </button>
             </Link>
@@ -651,42 +650,42 @@ export default function MyVolitionPage() {
 
       {/* Customization Panel */}
       {customizationOpen && (
-        <div className="absolute top-20 right-6 w-80 max-h-[calc(100vh-6rem)] overflow-y-auto bg-[var(--card)] border-2 border-theme-primary rounded-xl shadow-2xl p-4 z-50">
-          <div className="mb-4">
-            <h3 className="text-sm font-black text-[var(--foreground)] mb-2 flex items-center gap-2">
-              <Palette className="w-4 h-4 text-theme-primary" />
+        <div className="absolute top-20 right-6 w-72 max-h-[calc(100vh-6rem)] overflow-y-auto bg-[var(--card)] border-2 border-theme-primary rounded-xl shadow-2xl p-3.5 z-50">
+          <div className="mb-3">
+            <h3 className="text-xs font-black text-[var(--foreground)] mb-1.5 flex items-center gap-2">
+              <Palette className="w-3.5 h-3.5 text-theme-primary flex-shrink-0" />
               CUSTOMIZE YOUR WEB
             </h3>
-            <p className="text-[10px] text-theme-muted">Drag nodes to arrange your personal data web. Lock layout when done.</p>
+            <p className="text-[9px] text-theme-muted leading-tight">Drag nodes to rearrange. Lock when done.</p>
           </div>
 
           {/* Layout Controls */}
-          <div className="space-y-3 mb-4">
+          <div className="space-y-1.5 mb-3">
             <button
               onClick={() => setIsLayoutLocked(!isLayoutLocked)}
-              className={`w-full px-3 py-2 rounded-lg text-xs font-bold flex items-center gap-2 transition-colors ${
+              className={`w-full px-2.5 py-1.5 rounded-lg text-[10px] font-bold flex items-center gap-1.5 transition-colors ${
                 isLayoutLocked
                   ? 'bg-[var(--accent)] text-white hover:bg-[var(--accent)]/80'
                   : 'bg-[var(--muted)] text-[var(--foreground)] hover:bg-[var(--primary)]/10 border border-theme-primary'
               }`}
             >
-              {isLayoutLocked ? <Lock className="w-3 h-3" /> : <Unlock className="w-3 h-3" />}
+              {isLayoutLocked ? <Lock className="w-3 h-3 flex-shrink-0" /> : <Unlock className="w-3 h-3 flex-shrink-0" />}
               {isLayoutLocked ? 'Layout Locked' : 'Unlock to Drag'}
             </button>
 
             <button
               onClick={resetLayout}
-              className="w-full px-3 py-2 bg-[var(--muted)] hover:bg-[var(--secondary)]/10 border border-theme-secondary rounded-lg text-xs font-bold text-[var(--foreground)] flex items-center gap-2 transition-colors"
+              className="w-full px-2.5 py-1.5 bg-[var(--muted)] hover:bg-[var(--secondary)]/10 border border-theme-secondary rounded-lg text-[10px] font-bold text-[var(--foreground)] flex items-center gap-1.5 transition-colors"
             >
-              <RotateCcw className="w-3 h-3" />
+              <RotateCcw className="w-3 h-3 flex-shrink-0" />
               Reset to Default
             </button>
           </div>
 
           {/* Node Visibility Toggles */}
           <div className="border-t border-[var(--border)] pt-3">
-            <h4 className="text-xs font-black text-[var(--foreground)] mb-2">SHOW/HIDE NODES</h4>
-            <div className="space-y-2">
+            <h4 className="text-[10px] font-black text-[var(--foreground)] mb-1.5">SHOW/HIDE NODES</h4>
+            <div className="space-y-1.5">
               {[
                 { key: 'projects' as NodeKey, label: 'Active Projects', icon: Briefcase },
                 { key: 'learning' as NodeKey, label: 'Learning Journey', icon: BookOpen },
@@ -698,14 +697,14 @@ export default function MyVolitionPage() {
                 <button
                   key={key}
                   onClick={() => toggleNodeVisibility(key)}
-                  className={`w-full px-3 py-2 rounded-lg text-xs font-bold flex items-center gap-2 transition-colors ${
+                  className={`w-full px-2.5 py-1.5 rounded-lg text-[10px] font-bold flex items-center gap-1.5 transition-colors ${
                     hiddenNodes.has(key)
                       ? 'bg-[var(--muted)] text-theme-muted hover:bg-[var(--primary)]/10'
                       : 'bg-[var(--primary)]/10 text-[var(--foreground)] border border-theme-primary'
                   }`}
                 >
-                  {hiddenNodes.has(key) ? <EyeOff className="w-3 h-3" /> : <Eye className="w-3 h-3" />}
-                  <Icon className="w-3 h-3" />
+                  {hiddenNodes.has(key) ? <EyeOff className="w-3 h-3 flex-shrink-0" /> : <Eye className="w-3 h-3 flex-shrink-0" />}
+                  <Icon className="w-3 h-3 flex-shrink-0" />
                   {label}
                 </button>
               ))}
@@ -715,20 +714,20 @@ export default function MyVolitionPage() {
       )}
 
       {/* Floating Stats Indicators */}
-      <div className="absolute bottom-4 left-1/2 transform -translate-x-1/2 flex items-center gap-4 bg-[var(--card)]/80 backdrop-blur-md border-2 border-theme-primary rounded-full px-6 py-2 z-50">
-        <div className="flex items-center gap-2">
-          <TrendingUp className="w-4 h-4 text-theme-primary" />
-          <span className="text-xs font-black text-[var(--foreground)]">Impact Score: <span className="text-theme-primary">742</span></span>
+      <div className="absolute bottom-3 left-1/2 transform -translate-x-1/2 flex items-center gap-3 bg-[var(--card)]/90 backdrop-blur-md border-2 border-theme-primary rounded-full px-5 py-1.5 z-50 shadow-xl">
+        <div className="flex items-center gap-1.5">
+          <TrendingUp className="w-3.5 h-3.5 text-theme-primary flex-shrink-0" />
+          <span className="text-[10px] font-black text-[var(--foreground)]">Impact: <span className="text-theme-primary">742</span></span>
         </div>
-        <div className="w-px h-4 bg-[var(--border)]" />
-        <div className="flex items-center gap-2">
-          <Flame className="w-4 h-4 text-theme-accent" />
-          <span className="text-xs font-black text-[var(--foreground)]">Streak: <span className="text-theme-accent">12 days</span></span>
+        <div className="w-px h-3.5 bg-[var(--border)]" />
+        <div className="flex items-center gap-1.5">
+          <Flame className="w-3.5 h-3.5 text-theme-accent flex-shrink-0" />
+          <span className="text-[10px] font-black text-[var(--foreground)]">Streak: <span className="text-theme-accent">12d</span></span>
         </div>
-        <div className="w-px h-4 bg-[var(--border)]" />
-        <div className="flex items-center gap-2">
-          <Target className="w-4 h-4 text-theme-secondary" />
-          <span className="text-xs font-black text-[var(--foreground)]">Level: <span className="text-theme-secondary">8</span></span>
+        <div className="w-px h-3.5 bg-[var(--border)]" />
+        <div className="flex items-center gap-1.5">
+          <Target className="w-3.5 h-3.5 text-theme-secondary flex-shrink-0" />
+          <span className="text-[10px] font-black text-[var(--foreground)]">Level: <span className="text-theme-secondary">8</span></span>
         </div>
       </div>
     </div>
