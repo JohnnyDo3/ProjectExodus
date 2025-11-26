@@ -114,6 +114,39 @@ async function getDashboardData(userId: string) {
       }
     })
 
+    // Get recent discussions (articles)
+    const recentDiscussions = await prisma.article.findMany({
+      where: {
+        status: 'PUBLISHED',
+        NOT: {
+          authorId: userId
+        }
+      },
+      take: 6,
+      orderBy: {
+        createdAt: 'desc'
+      },
+      select: {
+        id: true,
+        title: true,
+        slug: true,
+        excerpt: true,
+        createdAt: true,
+        author: {
+          select: {
+            id: true,
+            name: true,
+            image: true
+          }
+        },
+        _count: {
+          select: {
+            comments: true
+          }
+        }
+      }
+    })
+
     // Get community stats
     const stats = await prisma.$transaction([
       prisma.user.count(),
@@ -125,6 +158,7 @@ async function getDashboardData(userId: string) {
       user,
       suggestedUsers,
       activeProjects,
+      recentDiscussions,
       communityStats: {
         totalMembers: stats[0],
         activeProjects: stats[1],
@@ -258,7 +292,7 @@ export default async function CommunityPage() {
     )
   }
 
-  const { user, suggestedUsers, activeProjects, communityStats } = dashboardData
+  const { user, suggestedUsers, activeProjects, recentDiscussions, communityStats } = dashboardData
 
   return (
     <div className="min-h-screen bg-[var(--background)] relative">
@@ -341,8 +375,14 @@ export default async function CommunityPage() {
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
           <div className="max-w-4xl mx-auto">
             <div className="flex flex-wrap justify-center gap-2">
-              <Link href="/community/projects/new">
+              <Link href="/learn">
                 <Button size="sm" className="font-bold rounded-full shadow-md hover:shadow-lg transition-shadow">
+                  <MessageSquare className="w-3.5 h-3.5 mr-1.5" />
+                  Discussions
+                </Button>
+              </Link>
+              <Link href="/community/projects/new">
+                <Button size="sm" variant="outline" className="font-bold rounded-full hover:shadow-md transition-shadow">
                   <Rocket className="w-3.5 h-3.5 mr-1.5" />
                   Create Project
                 </Button>
@@ -395,6 +435,55 @@ export default async function CommunityPage() {
                         <span className="px-2 py-0.5 bg-theme-secondary/20 text-theme-secondary rounded-full">
                           {project.status}
                         </span>
+                      </div>
+                    </div>
+                  </Link>
+                ))}
+              </div>
+            </div>
+
+            {/* Recent Discussions - Cute Cards */}
+            <div className="p-5 bg-[var(--card)] rounded-3xl border-3 border-theme-accent/40 shadow-sm lg:col-span-2">
+              <div className="flex items-center justify-between mb-3">
+                <div className="flex items-center gap-2">
+                  <div className="w-8 h-8 rounded-full bg-gradient-to-br from-[var(--accent)] to-[var(--accent)]/70 flex items-center justify-center">
+                    <MessageSquare className="w-4 h-4 text-white" />
+                  </div>
+                  <h2 className="text-base font-black text-[var(--foreground)]">Recent Discussions</h2>
+                </div>
+                <Link href="/learn">
+                  <Button variant="ghost" size="sm" className="font-bold text-xs rounded-full hover:bg-[var(--muted)]">
+                    View all <ChevronRight className="w-3 h-3 ml-1" />
+                  </Button>
+                </Link>
+              </div>
+              <div className="grid md:grid-cols-2 gap-3">
+                {recentDiscussions.map((discussion: any) => (
+                  <Link key={discussion.id} href={`/learn/${discussion.slug}`}>
+                    <div className="p-4 bg-[var(--muted)]/50 rounded-2xl hover:bg-[var(--muted)] transition-all hover:shadow-md cursor-pointer border-2 border-transparent hover:border-theme-accent/30 h-full">
+                      <div className="flex items-start gap-2.5 mb-2">
+                        {discussion.author.image ? (
+                          <img src={discussion.author.image} alt={discussion.author.name || 'User'} className="w-7 h-7 rounded-full flex-shrink-0" />
+                        ) : (
+                          <div className="w-7 h-7 rounded-full bg-gradient-to-br from-[var(--primary)] to-[var(--accent)] flex items-center justify-center flex-shrink-0">
+                            <span className="text-[10px] font-bold text-white">{discussion.author.name?.[0]?.toUpperCase() || '?'}</span>
+                          </div>
+                        )}
+                        <div className="flex-1 min-w-0">
+                          <h3 className="font-bold text-sm text-[var(--foreground)] mb-1 line-clamp-2">{discussion.title}</h3>
+                        </div>
+                      </div>
+                      {discussion.excerpt && (
+                        <p className="text-xs font-medium text-theme-muted mb-2 line-clamp-2">{discussion.excerpt}</p>
+                      )}
+                      <div className="flex items-center justify-between text-[10px] font-bold text-theme-muted">
+                        <span>{discussion.author.name || 'Anonymous'}</span>
+                        <div className="flex items-center gap-2">
+                          <span><span title="Comments">💬</span> {discussion._count.comments}</span>
+                          <span className="px-2 py-0.5 bg-theme-accent/20 text-theme-accent rounded-full">
+                            {new Date(discussion.createdAt).toLocaleDateString()}
+                          </span>
+                        </div>
                       </div>
                     </div>
                   </Link>
