@@ -1,186 +1,79 @@
 'use client'
 
 import { useSession } from 'next-auth/react'
-import { redirect, useRouter } from 'next/navigation'
+import { redirect } from 'next/navigation'
 import {
   User,
   Settings,
-  Award,
-  Leaf,
-  Users,
-  Briefcase,
-  Target,
   Zap,
   BookOpen,
   MessageCircle,
-  TrendingUp,
-  Wind,
-  Droplet,
-  Flame,
-  Lock,
-  Unlock,
-  RotateCcw,
-  Palette,
-  Eye,
-  EyeOff,
-  Maximize2,
-  Minimize2,
+  Briefcase,
+  Plus,
+  ChevronLeft,
+  ChevronRight,
+  Send,
+  Search,
+  MoreVertical,
 } from 'lucide-react'
 import Link from 'next/link'
 import { useEffect, useState } from 'react'
-import GridLayout from 'react-grid-layout'
-import 'react-grid-layout/css/styles.css'
-import Widget from '@/components/dashboard/Widget'
 
-// Widget type definition
-type WidgetKey = 'profile' | 'projects' | 'learning' | 'impact' | 'network' | 'achievements' | 'actions' | 'stats'
-
-interface WidgetConfig {
-  i: string
-  x: number
-  y: number
-  w: number
-  h: number
-  minW?: number
-  minH?: number
-  theme: 'primary' | 'accent' | 'secondary'
-}
-
-// Default layout configurations
-const LAYOUT_PRESETS = {
-  balanced: [
-    { i: 'profile', x: 0, y: 0, w: 4, h: 3, minW: 3, minH: 3, theme: 'primary' as const },
-    { i: 'projects', x: 4, y: 0, w: 6, h: 3, minW: 4, minH: 3, theme: 'primary' as const },
-    { i: 'actions', x: 10, y: 0, w: 2, h: 3, minW: 2, minH: 3, theme: 'secondary' as const },
-    { i: 'impact', x: 0, y: 3, w: 6, h: 4, minW: 4, minH: 3, theme: 'secondary' as const },
-    { i: 'learning', x: 6, y: 3, w: 4, h: 4, minW: 3, minH: 3, theme: 'accent' as const },
-    { i: 'network', x: 10, y: 3, w: 2, h: 4, minW: 2, minH: 3, theme: 'primary' as const },
-  ],
-  focused: [
-    { i: 'profile', x: 0, y: 0, w: 3, h: 3, minW: 3, minH: 3, theme: 'primary' as const },
-    { i: 'projects', x: 3, y: 0, w: 9, h: 4, minW: 4, minH: 3, theme: 'primary' as const },
-    { i: 'impact', x: 0, y: 3, w: 12, h: 3, minW: 4, minH: 3, theme: 'secondary' as const },
-    { i: 'learning', x: 0, y: 6, w: 6, h: 3, minW: 3, minH: 3, theme: 'accent' as const },
-    { i: 'network', x: 6, y: 6, w: 6, h: 3, minW: 3, minH: 3, theme: 'primary' as const },
-    { i: 'actions', x: 0, y: 9, w: 12, h: 2, minW: 4, minH: 2, theme: 'secondary' as const },
-  ],
-  compact: [
-    { i: 'profile', x: 0, y: 0, w: 3, h: 2, minW: 3, minH: 2, theme: 'primary' as const },
-    { i: 'actions', x: 3, y: 0, w: 3, h: 2, minW: 2, minH: 2, theme: 'secondary' as const },
-    { i: 'network', x: 6, y: 0, w: 3, h: 2, minW: 2, minH: 2, theme: 'primary' as const },
-    { i: 'projects', x: 9, y: 0, w: 3, h: 2, minW: 3, minH: 2, theme: 'primary' as const },
-    { i: 'learning', x: 0, y: 2, w: 6, h: 3, minW: 3, minH: 2, theme: 'accent' as const },
-    { i: 'impact', x: 6, y: 2, w: 6, h: 3, minW: 4, minH: 2, theme: 'secondary' as const },
-  ],
-  detailed: [
-    { i: 'profile', x: 0, y: 0, w: 4, h: 4, minW: 3, minH: 3, theme: 'primary' as const },
-    { i: 'projects', x: 4, y: 0, w: 8, h: 4, minW: 4, minH: 3, theme: 'primary' as const },
-    { i: 'impact', x: 0, y: 4, w: 12, h: 4, minW: 4, minH: 3, theme: 'secondary' as const },
-    { i: 'learning', x: 0, y: 8, w: 6, h: 4, minW: 3, minH: 3, theme: 'accent' as const },
-    { i: 'network', x: 6, y: 8, w: 6, h: 4, minW: 3, minH: 3, theme: 'primary' as const },
-    { i: 'actions', x: 0, y: 12, w: 12, h: 3, minW: 4, minH: 2, theme: 'secondary' as const },
-  ],
+// Card type for deck columns
+interface DeckCard {
+  id: string
+  title: string
+  subtitle?: string
+  date?: Date
+  type: 'discussion' | 'learning' | 'project'
 }
 
 export default function MyVolitionPage() {
   const { data: session, status } = useSession()
-  const router = useRouter()
+  const [currentPage, setCurrentPage] = useState(0)
   const [projects, setProjects] = useState<any[]>([])
+  const [articles, setArticles] = useState<any[]>([])
   const [userProfile, setUserProfile] = useState<any>(null)
+  const [contacts, setContacts] = useState<any[]>([])
   const [isLoading, setIsLoading] = useState(true)
+  const [messageContent, setMessageContent] = useState('')
+  const [selectedContact, setSelectedContact] = useState<any>(null)
 
-  // Dashboard customization state
-  const [layout, setLayout] = useState<WidgetConfig[]>(LAYOUT_PRESETS.balanced)
-  const [currentPreset, setCurrentPreset] = useState<keyof typeof LAYOUT_PRESETS>('balanced')
-  const [hiddenWidgets, setHiddenWidgets] = useState<Set<WidgetKey>>(new Set())
-  const [collapsedWidgets, setCollapsedWidgets] = useState<Set<WidgetKey>>(new Set())
-  const [isLayoutLocked, setIsLayoutLocked] = useState(false)
-  const [customizationOpen, setCustomizationOpen] = useState(false)
+  // Deck columns data
+  const [discussionCards, setDiscussionCards] = useState<DeckCard[]>([])
+  const [learningCards, setLearningCards] = useState<DeckCard[]>([])
+  const [projectCards, setProjectCards] = useState<DeckCard[]>([])
 
-  // Impact metrics
-  const [impactMetrics] = useState({
-    co2Saved: 127,
-    wasteReduced: 89,
-    energySaved: 234,
-    waterSaved: 1450,
-  })
-
-  // Badge progress
-  const [badges] = useState([
-    { name: 'Eco Warrior', icon: '🌱', progress: 75 },
-    { name: 'Knowledge Seeker', icon: '📚', progress: 60 },
-    { name: 'Community Builder', icon: '🤝', progress: 40 },
-    { name: 'Impact Maker', icon: '💚', progress: 85 },
-  ])
-
-  // Load saved customization from localStorage
-  useEffect(() => {
-    const savedLayout = localStorage.getItem('volition-layout')
-    const savedPreset = localStorage.getItem('volition-preset')
-    const savedHidden = localStorage.getItem('volition-hidden')
-    const savedCollapsed = localStorage.getItem('volition-collapsed')
-    const savedLocked = localStorage.getItem('volition-locked')
-
-    if (savedLayout) {
-      try {
-        setLayout(JSON.parse(savedLayout))
-      } catch (e) {
-        console.error('Failed to load layout:', e)
-      }
-    }
-
-    if (savedPreset && savedPreset in LAYOUT_PRESETS) {
-      setCurrentPreset(savedPreset as keyof typeof LAYOUT_PRESETS)
-    }
-
-    if (savedHidden) {
-      try {
-        setHiddenWidgets(new Set(JSON.parse(savedHidden)))
-      } catch (e) {
-        console.error('Failed to load hidden widgets:', e)
-      }
-    }
-
-    if (savedCollapsed) {
-      try {
-        setCollapsedWidgets(new Set(JSON.parse(savedCollapsed)))
-      } catch (e) {
-        console.error('Failed to load collapsed widgets:', e)
-      }
-    }
-
-    if (savedLocked) {
-      setIsLayoutLocked(savedLocked === 'true')
-    }
-  }, [])
-
-  // Fetch data
   useEffect(() => {
     if (session?.user?.id) {
-      Promise.all([fetchProjects(), fetchProfile()]).finally(() => setIsLoading(false))
+      Promise.all([fetchProjects(), fetchArticles(), fetchProfile(), fetchContacts()]).finally(() => setIsLoading(false))
     }
   }, [session?.user?.id])
 
-  // Save layout changes
   useEffect(() => {
-    localStorage.setItem('volition-layout', JSON.stringify(layout))
-  }, [layout])
-
-  useEffect(() => {
-    localStorage.setItem('volition-preset', currentPreset)
-  }, [currentPreset])
-
-  useEffect(() => {
-    localStorage.setItem('volition-hidden', JSON.stringify([...hiddenWidgets]))
-  }, [hiddenWidgets])
-
-  useEffect(() => {
-    localStorage.setItem('volition-collapsed', JSON.stringify([...collapsedWidgets]))
-  }, [collapsedWidgets])
-
-  useEffect(() => {
-    localStorage.setItem('volition-locked', String(isLayoutLocked))
-  }, [isLayoutLocked])
+    // Convert fetched data to deck cards
+    if (articles.length > 0) {
+      const cards: DeckCard[] = articles.map(article => ({
+        id: article.id,
+        title: article.title,
+        subtitle: `${article._count?.comments || 0} comments`,
+        date: new Date(article.createdAt),
+        type: 'discussion' as const,
+      }))
+      setDiscussionCards(cards)
+      setLearningCards(cards.map(c => ({ ...c, type: 'learning' as const })))
+    }
+    if (projects.length > 0) {
+      const cards: DeckCard[] = projects.map(project => ({
+        id: project.id,
+        title: project.name,
+        subtitle: project.status,
+        date: new Date(project.createdAt),
+        type: 'project' as const,
+      }))
+      setProjectCards(cards)
+    }
+  }, [articles, projects])
 
   const fetchProjects = async () => {
     try {
@@ -193,11 +86,25 @@ export default function MyVolitionPage() {
               p.members.some((m: any) => m.userId === session?.user?.id) ||
               p.creatorId === session?.user?.id
           )
-          setProjects(userProjects.slice(0, 4))
+          setProjects(userProjects)
         }
       }
     } catch (error) {
       console.error('Error fetching projects:', error)
+    }
+  }
+
+  const fetchArticles = async () => {
+    try {
+      const res = await fetch(`/api/users/${session?.user?.id}`)
+      if (res.ok) {
+        const data = await res.json()
+        if (data.success && data.data.articles) {
+          setArticles(data.data.articles)
+        }
+      }
+    } catch (error) {
+      console.error('Error fetching articles:', error)
     }
   }
 
@@ -213,60 +120,44 @@ export default function MyVolitionPage() {
     }
   }
 
-  // Layout handlers
-  const handleLayoutChange = (newLayout: any[]) => {
-    if (isLayoutLocked) return
-
-    // Map back to our WidgetConfig format
-    const updatedLayout = layout.map(widget => {
-      const newPos = newLayout.find(item => item.i === widget.i)
-      if (newPos) {
-        return { ...widget, x: newPos.x, y: newPos.y, w: newPos.w, h: newPos.h }
+  const fetchContacts = async () => {
+    try {
+      const res = await fetch('/api/users')
+      if (res.ok) {
+        const data = await res.json()
+        if (data.success) {
+          setContacts(data.data.filter((u: any) => u.id !== session?.user?.id).slice(0, 20))
+        }
       }
-      return widget
-    })
-
-    setLayout(updatedLayout)
+    } catch (error) {
+      console.error('Error fetching contacts:', error)
+    }
   }
 
-  const changePreset = (preset: keyof typeof LAYOUT_PRESETS) => {
-    setLayout(LAYOUT_PRESETS[preset])
-    setCurrentPreset(preset)
+  const addNewCard = (column: 'discussion' | 'learning' | 'project') => {
+    const newCard: DeckCard = {
+      id: `new-${Date.now()}`,
+      title: `New ${column}`,
+      subtitle: 'Just created',
+      date: new Date(),
+      type: column,
+    }
+
+    switch (column) {
+      case 'discussion':
+        setDiscussionCards(prev => [newCard, ...prev])
+        break
+      case 'learning':
+        setLearningCards(prev => [newCard, ...prev])
+        break
+      case 'project':
+        setProjectCards(prev => [newCard, ...prev])
+        break
+    }
   }
 
-  const resetLayout = () => {
-    setLayout(LAYOUT_PRESETS.balanced)
-    setCurrentPreset('balanced')
-    setHiddenWidgets(new Set())
-    setCollapsedWidgets(new Set())
-  }
-
-  const toggleWidgetVisibility = (widget: WidgetKey) => {
-    setHiddenWidgets(prev => {
-      const newSet = new Set(prev)
-      if (newSet.has(widget)) {
-        newSet.delete(widget)
-      } else {
-        newSet.add(widget)
-      }
-      return newSet
-    })
-  }
-
-  const toggleWidgetCollapse = (widget: WidgetKey) => {
-    setCollapsedWidgets(prev => {
-      const newSet = new Set(prev)
-      if (newSet.has(widget)) {
-        newSet.delete(widget)
-      } else {
-        newSet.add(widget)
-      }
-      return newSet
-    })
-  }
-
-  const changeWidgetTheme = (widgetId: string, theme: 'primary' | 'accent' | 'secondary') => {
-    setLayout(prev => prev.map(w => w.i === widgetId ? { ...w, theme } : w))
+  const goToPage = (page: number) => {
+    setCurrentPage(page)
   }
 
   if (status === 'loading' || isLoading) {
@@ -286,394 +177,344 @@ export default function MyVolitionPage() {
 
   const user = session.user
 
-  // Get visible layout (filter out hidden widgets)
-  const visibleLayout = layout.filter(widget => !hiddenWidgets.has(widget.i as WidgetKey))
-
   return (
     <div className="h-screen overflow-hidden bg-[var(--background)] hide-footer">
-      {/* Header - Solid Background with Full Mission Statement */}
+      {/* Header */}
       <div className="sticky top-0 z-50 bg-gradient-to-r from-[var(--primary)]/95 via-[var(--accent)]/95 to-[var(--secondary)]/95 backdrop-blur-sm border-b-2 border-theme-primary">
-        <div className="container mx-auto px-6 py-4">
-          <div className="flex items-start justify-between gap-4">
-            <div className="flex items-center gap-3 flex-1">
-              <Zap className="w-6 h-6 text-white flex-shrink-0 mt-1" />
-              <div className="flex-1">
-                <div className="flex items-center gap-3 mb-1">
-                  <h1 className="text-xl font-black text-white leading-tight">MY VOLITION</h1>
-                  <span className="text-white/60">•</span>
-                  <p className="text-sm font-bold text-white/80">Command Center</p>
-                </div>
-                <p className="text-xs font-medium text-white/70 leading-relaxed">
-                  This is YOUR dashboard to track how much you contribute and become part of Project Exodus
+        <div className="container mx-auto px-6 py-3">
+          <div className="flex items-center justify-between">
+            <div className="flex items-center gap-3">
+              <Zap className="w-6 h-6 text-white" />
+              <div>
+                <h1 className="text-xl font-black text-white">MY VOLITION</h1>
+                <p className="text-xs font-medium text-white/70">
+                  {currentPage === 0 ? 'Your Deck' : 'Network & Messages'}
                 </p>
-
-                {/* Achievements and Stats Overlay */}
-                <div className="mt-3 flex items-center gap-4 text-white/90">
-                  {/* Achievements Summary */}
-                  <div className="flex items-center gap-1.5">
-                    {badges.map((badge, i) => (
-                      <div key={i} className="flex items-center gap-0.5">
-                        <span className="text-sm">{badge.icon}</span>
-                        <span className="text-[9px] font-bold">{badge.progress}%</span>
-                      </div>
-                    ))}
-                  </div>
-                  <span className="text-white/40">•</span>
-                  {/* Stats Summary */}
-                  <div className="text-[10px] font-bold">
-                    Impact 742 • Streak 12d • Level 8
-                  </div>
-                </div>
               </div>
             </div>
+
+            {/* Page Indicators */}
             <div className="flex items-center gap-2">
               <button
-                onClick={() => setCustomizationOpen(!customizationOpen)}
-                className="px-4 py-2 bg-white/20 hover:bg-white/30 text-white rounded-lg font-bold text-xs transition-colors flex items-center gap-2 backdrop-blur-sm"
+                onClick={() => goToPage(0)}
+                className={`w-8 h-8 rounded-full flex items-center justify-center transition-all ${
+                  currentPage === 0 ? 'bg-white text-[var(--primary)]' : 'bg-white/20 text-white'
+                }`}
               >
-                <Palette className="w-4 h-4" />
-                CUSTOMIZE
+                1
               </button>
-              <Link href="/settings">
-                <button className="px-4 py-2 bg-white/20 hover:bg-white/30 text-white rounded-lg font-bold text-xs transition-colors flex items-center gap-2 backdrop-blur-sm">
-                  <Settings className="w-4 h-4" />
-                  SETTINGS
-                </button>
-              </Link>
+              <button
+                onClick={() => goToPage(1)}
+                className={`w-8 h-8 rounded-full flex items-center justify-center transition-all ${
+                  currentPage === 1 ? 'bg-white text-[var(--primary)]' : 'bg-white/20 text-white'
+                }`}
+              >
+                2
+              </button>
             </div>
+
+            <Link href="/settings">
+              <button className="px-4 py-2 bg-white/20 hover:bg-white/30 text-white rounded-lg font-bold text-xs transition-colors flex items-center gap-2">
+                <Settings className="w-4 h-4" />
+                SETTINGS
+              </button>
+            </Link>
           </div>
         </div>
       </div>
 
-      {/* Customization Panel */}
-      {customizationOpen && (
-        <div className="fixed top-24 right-6 w-80 max-h-[calc(100vh-7rem)] overflow-y-auto bg-[var(--card)] border-2 border-theme-primary rounded-xl shadow-2xl z-40">
-          <div className="p-4">
-            <h3 className="text-sm font-black text-[var(--foreground)] mb-3 flex items-center gap-2">
-              <Palette className="w-4 h-4 text-theme-primary" />
-              DASHBOARD CUSTOMIZATION
-            </h3>
-
-            {/* Layout Presets */}
-            <div className="mb-4">
-              <h4 className="text-xs font-bold text-[var(--foreground)] mb-2">LAYOUT PRESETS</h4>
-              <div className="grid grid-cols-2 gap-2">
-                {(Object.keys(LAYOUT_PRESETS) as Array<keyof typeof LAYOUT_PRESETS>).map(preset => (
-                  <button
-                    key={preset}
-                    onClick={() => changePreset(preset)}
-                    className={`px-3 py-2 rounded-lg text-xs font-bold transition-colors capitalize ${
-                      currentPreset === preset
-                        ? 'bg-[var(--primary)] text-white'
-                        : 'bg-[var(--muted)] text-[var(--foreground)] hover:bg-[var(--primary)]/10'
-                    }`}
-                  >
-                    {preset}
-                  </button>
-                ))}
-              </div>
-            </div>
-
-            {/* Layout Controls */}
-            <div className="space-y-2 mb-4">
-              <button
-                onClick={() => setIsLayoutLocked(!isLayoutLocked)}
-                className={`w-full px-3 py-2 rounded-lg text-xs font-bold flex items-center gap-2 transition-colors ${
-                  isLayoutLocked
-                    ? 'bg-[var(--accent)] text-white'
-                    : 'bg-[var(--muted)] text-[var(--foreground)] hover:bg-[var(--primary)]/10 border border-theme-primary'
-                }`}
-              >
-                {isLayoutLocked ? <Lock className="w-3 h-3" /> : <Unlock className="w-3 h-3" />}
-                {isLayoutLocked ? 'Layout Locked' : 'Unlock to Customize'}
-              </button>
-
-              <button
-                onClick={resetLayout}
-                className="w-full px-3 py-2 bg-[var(--muted)] hover:bg-[var(--secondary)]/10 border border-theme-secondary rounded-lg text-xs font-bold text-[var(--foreground)] flex items-center gap-2 transition-colors"
-              >
-                <RotateCcw className="w-3 h-3" />
-                Reset to Default
-              </button>
-            </div>
-
-            {/* Widget Visibility */}
-            <div className="border-t border-[var(--border)] pt-4">
-              <h4 className="text-xs font-bold text-[var(--foreground)] mb-2">SHOW/HIDE WIDGETS</h4>
-              <div className="space-y-2">
-                {[
-                  { key: 'profile' as WidgetKey, label: 'Profile', icon: User },
-                  { key: 'projects' as WidgetKey, label: 'Active Projects', icon: Briefcase },
-                  { key: 'learning' as WidgetKey, label: 'Learning Journey', icon: BookOpen },
-                  { key: 'impact' as WidgetKey, label: 'Environmental Impact', icon: Leaf },
-                  { key: 'network' as WidgetKey, label: 'Your Network', icon: Users },
-                  { key: 'achievements' as WidgetKey, label: 'Achievements', icon: Award },
-                  { key: 'actions' as WidgetKey, label: 'Quick Actions', icon: Zap },
-                  { key: 'stats' as WidgetKey, label: 'Stats Overview', icon: TrendingUp },
-                ].map(({ key, label, icon: Icon }) => (
-                  <button
-                    key={key}
-                    onClick={() => toggleWidgetVisibility(key)}
-                    className={`w-full px-3 py-2 rounded-lg text-xs font-bold flex items-center gap-2 transition-colors ${
-                      hiddenWidgets.has(key)
-                        ? 'bg-[var(--muted)] text-theme-muted'
-                        : 'bg-[var(--primary)]/10 text-[var(--foreground)] border border-theme-primary'
-                    }`}
-                  >
-                    {hiddenWidgets.has(key) ? <EyeOff className="w-3 h-3" /> : <Eye className="w-3 h-3" />}
-                    <Icon className="w-3 h-3" />
-                    {label}
-                  </button>
-                ))}
-              </div>
-            </div>
-          </div>
-        </div>
-      )}
-
-      {/* Dashboard Grid */}
-      <div className="container mx-auto px-6 py-6 h-[calc(100vh-120px)] overflow-y-auto">
-        <GridLayout
-          className="layout"
-          layout={visibleLayout}
-          cols={12}
-          rowHeight={40}
-          width={1200}
-          onLayoutChange={handleLayoutChange}
-          isDraggable={!isLayoutLocked}
-          isResizable={!isLayoutLocked}
-          resizeHandles={['se', 'sw', 'ne', 'nw']}
-          compactType="vertical"
-          preventCollision={false}
+      {/* Horizontal Pages Container */}
+      <div className="relative h-[calc(100vh-80px)]">
+        <div
+          className="flex h-full transition-transform duration-500 ease-in-out"
+          style={{ transform: `translateX(-${currentPage * 100}%)` }}
         >
-          {/* Profile Widget */}
-          {!hiddenWidgets.has('profile') && (
-            <div key="profile">
-              <Widget
-                id="profile"
-                title="YOUR PROFILE"
-                icon={User}
-                theme={layout.find(w => w.i === 'profile')?.theme || 'primary'}
-                collapsed={collapsedWidgets.has('profile')}
-                onToggleCollapse={() => toggleWidgetCollapse('profile')}
-                onClick={() => router.push(`/profile/${session?.user?.id}`)}
-              >
-                <div className="flex flex-col items-center text-center space-y-2">
-                  <div className="w-16 h-16 rounded-full bg-gradient-to-br from-[var(--primary)] to-[var(--accent)] flex items-center justify-center border-2 border-white shadow-lg">
-                    {user?.image ? (
-                      <img src={user.image} alt={user.name || 'User'} className="w-full h-full rounded-full object-cover" />
-                    ) : (
-                      <User className="w-8 h-8 text-white" />
-                    )}
+          {/* PAGE 1: DECK COLUMNS */}
+          <div className="w-full h-full flex-shrink-0 overflow-hidden">
+            <div className="h-full flex gap-4 p-6 overflow-x-auto">
+              {/* Discussions Column */}
+              <div className="flex-shrink-0 w-80 h-full flex flex-col bg-[var(--card)] rounded-2xl border-2 border-theme-primary shadow-lg">
+                <div className="p-4 border-b border-[var(--border)] flex items-center justify-between">
+                  <div className="flex items-center gap-2">
+                    <MessageCircle className="w-5 h-5 text-theme-primary" />
+                    <h2 className="text-sm font-black text-[var(--foreground)]">MY DISCUSSIONS</h2>
                   </div>
-                  <div>
-                    <h3 className="text-sm font-black text-[var(--foreground)]">{user?.name || 'You'}</h3>
-                    <p className="text-[10px] font-medium text-theme-muted">{userProfile?.headline || 'Sustainability Advocate'}</p>
-                  </div>
-                  <div className="flex gap-4 pt-2">
-                    <div>
-                      <div className="text-lg font-black text-theme-primary">{userProfile?._count?.followers || 0}</div>
-                      <div className="text-[9px] font-bold text-theme-muted">FOLLOWERS</div>
-                    </div>
-                    <div>
-                      <div className="text-lg font-black text-theme-accent">{projects.length}</div>
-                      <div className="text-[9px] font-bold text-theme-muted">PROJECTS</div>
-                    </div>
-                  </div>
+                  <button
+                    onClick={() => addNewCard('discussion')}
+                    className="w-7 h-7 rounded-full bg-[var(--primary)] text-white flex items-center justify-center hover:bg-[var(--accent)] transition-colors"
+                  >
+                    <Plus className="w-4 h-4" />
+                  </button>
                 </div>
-              </Widget>
-            </div>
-          )}
+                <div className="flex-1 overflow-y-auto p-4 space-y-3">
+                  {discussionCards.map(card => (
+                    <div
+                      key={card.id}
+                      className="p-4 bg-gradient-to-br from-[var(--primary)]/10 to-transparent border-2 border-theme-primary rounded-xl cursor-pointer hover:shadow-lg transition-all"
+                    >
+                      <h3 className="text-sm font-black text-[var(--foreground)] mb-1 line-clamp-2">
+                        {card.title}
+                      </h3>
+                      {card.subtitle && (
+                        <p className="text-xs font-medium text-theme-muted mb-2">{card.subtitle}</p>
+                      )}
+                      {card.date && (
+                        <p className="text-[10px] font-bold text-theme-muted opacity-70">
+                          {card.date.toLocaleDateString()}
+                        </p>
+                      )}
+                    </div>
+                  ))}
+                  {discussionCards.length === 0 && (
+                    <div className="text-center py-12">
+                      <MessageCircle className="w-12 h-12 text-theme-muted mx-auto mb-3 opacity-50" />
+                      <p className="text-xs font-bold text-theme-muted">No discussions yet</p>
+                      <button
+                        onClick={() => addNewCard('discussion')}
+                        className="mt-3 px-4 py-2 bg-[var(--primary)] text-white rounded-lg text-xs font-bold hover:bg-[var(--accent)] transition-colors"
+                      >
+                        Start One
+                      </button>
+                    </div>
+                  )}
+                </div>
+              </div>
 
-          {/* Projects Widget */}
-          {!hiddenWidgets.has('projects') && (
-            <div key="projects">
-              <Widget
-                id="projects"
-                title="ACTIVE PROJECTS"
-                icon={Briefcase}
-                theme={layout.find(w => w.i === 'projects')?.theme || 'primary'}
-                collapsed={collapsedWidgets.has('projects')}
-                onToggleCollapse={() => toggleWidgetCollapse('projects')}
-                onClick={() => router.push('/community/projects')}
-              >
-                <div className="space-y-2">
-                  {projects.length > 0 ? (
-                    projects.slice(0, 3).map((project) => (
-                      <Link key={project.id} href={`/community/projects/${project.slug}`}>
-                        <div className="p-2 bg-[var(--muted)] rounded-lg hover:bg-[var(--accent)]/10 transition-all cursor-pointer border border-transparent hover:border-theme-accent">
-                          <p className="text-[10px] font-black text-[var(--foreground)] line-clamp-1">{project.name}</p>
-                          <p className="text-[9px] font-medium text-theme-muted line-clamp-1">{project.status}</p>
-                        </div>
-                      </Link>
-                    ))
-                  ) : (
-                    <div className="text-center py-4">
-                      <p className="text-[10px] font-bold text-theme-muted mb-2">No projects yet</p>
+              {/* Learning Column */}
+              <div className="flex-shrink-0 w-80 h-full flex flex-col bg-[var(--card)] rounded-2xl border-2 border-theme-accent shadow-lg">
+                <div className="p-4 border-b border-[var(--border)] flex items-center justify-between">
+                  <div className="flex items-center gap-2">
+                    <BookOpen className="w-5 h-5 text-theme-accent" />
+                    <h2 className="text-sm font-black text-[var(--foreground)]">MY LEARNING</h2>
+                  </div>
+                  <button
+                    onClick={() => addNewCard('learning')}
+                    className="w-7 h-7 rounded-full bg-[var(--accent)] text-white flex items-center justify-center hover:bg-[var(--primary)] transition-colors"
+                  >
+                    <Plus className="w-4 h-4" />
+                  </button>
+                </div>
+                <div className="flex-1 overflow-y-auto p-4 space-y-3">
+                  {learningCards.map(card => (
+                    <div
+                      key={card.id}
+                      className="p-4 bg-gradient-to-br from-[var(--accent)]/10 to-transparent border-2 border-theme-accent rounded-xl cursor-pointer hover:shadow-lg transition-all"
+                    >
+                      <h3 className="text-sm font-black text-[var(--foreground)] mb-1 line-clamp-2">
+                        {card.title}
+                      </h3>
+                      {card.subtitle && (
+                        <p className="text-xs font-medium text-theme-muted mb-2">{card.subtitle}</p>
+                      )}
+                      {card.date && (
+                        <p className="text-[10px] font-bold text-theme-muted opacity-70">
+                          {card.date.toLocaleDateString()}
+                        </p>
+                      )}
+                    </div>
+                  ))}
+                  {learningCards.length === 0 && (
+                    <div className="text-center py-12">
+                      <BookOpen className="w-12 h-12 text-theme-muted mx-auto mb-3 opacity-50" />
+                      <p className="text-xs font-bold text-theme-muted">No learning items yet</p>
+                      <button
+                        onClick={() => addNewCard('learning')}
+                        className="mt-3 px-4 py-2 bg-[var(--accent)] text-white rounded-lg text-xs font-bold hover:bg-[var(--primary)] transition-colors"
+                      >
+                        Add One
+                      </button>
+                    </div>
+                  )}
+                </div>
+              </div>
+
+              {/* Projects Column */}
+              <div className="flex-shrink-0 w-80 h-full flex flex-col bg-[var(--card)] rounded-2xl border-2 border-theme-secondary shadow-lg">
+                <div className="p-4 border-b border-[var(--border)] flex items-center justify-between">
+                  <div className="flex items-center gap-2">
+                    <Briefcase className="w-5 h-5 text-theme-secondary" />
+                    <h2 className="text-sm font-black text-[var(--foreground)]">MY PROJECTS</h2>
+                  </div>
+                  <button
+                    onClick={() => addNewCard('project')}
+                    className="w-7 h-7 rounded-full bg-[var(--secondary)] text-white flex items-center justify-center hover:bg-[var(--primary)] transition-colors"
+                  >
+                    <Plus className="w-4 h-4" />
+                  </button>
+                </div>
+                <div className="flex-1 overflow-y-auto p-4 space-y-3">
+                  {projectCards.map(card => (
+                    <div
+                      key={card.id}
+                      className="p-4 bg-gradient-to-br from-[var(--secondary)]/10 to-transparent border-2 border-theme-secondary rounded-xl cursor-pointer hover:shadow-lg transition-all"
+                    >
+                      <h3 className="text-sm font-black text-[var(--foreground)] mb-1 line-clamp-2">
+                        {card.title}
+                      </h3>
+                      {card.subtitle && (
+                        <p className="text-xs font-medium text-theme-muted mb-2">{card.subtitle}</p>
+                      )}
+                      {card.date && (
+                        <p className="text-[10px] font-bold text-theme-muted opacity-70">
+                          {card.date.toLocaleDateString()}
+                        </p>
+                      )}
+                    </div>
+                  ))}
+                  {projectCards.length === 0 && (
+                    <div className="text-center py-12">
+                      <Briefcase className="w-12 h-12 text-theme-muted mx-auto mb-3 opacity-50" />
+                      <p className="text-xs font-bold text-theme-muted">No projects yet</p>
                       <Link href="/community/projects/new">
-                        <button className="px-3 py-1.5 bg-[var(--primary)] text-white rounded text-[10px] font-bold hover:bg-[var(--accent)] transition-colors">
-                          START ONE
+                        <button className="mt-3 px-4 py-2 bg-[var(--secondary)] text-white rounded-lg text-xs font-bold hover:bg-[var(--primary)] transition-colors">
+                          Create One
                         </button>
                       </Link>
                     </div>
                   )}
                 </div>
-              </Widget>
+              </div>
             </div>
-          )}
 
-          {/* Learning Widget */}
-          {!hiddenWidgets.has('learning') && (
-            <div key="learning">
-              <Widget
-                id="learning"
-                title="LEARNING JOURNEY"
-                icon={BookOpen}
-                theme={layout.find(w => w.i === 'learning')?.theme || 'accent'}
-                collapsed={collapsedWidgets.has('learning')}
-                onToggleCollapse={() => toggleWidgetCollapse('learning')}
-                onClick={() => router.push('/learn')}
-              >
-                <div className="space-y-2">
-                  <div className="flex items-center justify-between p-2 bg-[var(--muted)] rounded">
-                    <span className="text-[10px] font-bold text-theme-muted">Articles Read</span>
-                    <span className="text-base font-black text-theme-primary">12</span>
+            {/* Navigation Arrow - Right */}
+            <button
+              onClick={() => goToPage(1)}
+              className="fixed right-6 top-1/2 -translate-y-1/2 w-12 h-12 bg-white shadow-2xl rounded-full flex items-center justify-center hover:bg-[var(--primary)] hover:text-white transition-all z-40"
+            >
+              <ChevronRight className="w-6 h-6" />
+            </button>
+          </div>
+
+          {/* PAGE 2: NETWORK & MESSENGER */}
+          <div className="w-full h-full flex-shrink-0 overflow-hidden">
+            <div className="h-full flex gap-4 p-6">
+              {/* Network/Contacts Column */}
+              <div className="w-1/3 h-full flex flex-col bg-[var(--card)] rounded-2xl border-2 border-theme-primary shadow-lg overflow-hidden">
+                <div className="p-4 border-b border-[var(--border)]">
+                  <div className="flex items-center gap-2 mb-3">
+                    <User className="w-5 h-5 text-theme-primary" />
+                    <h2 className="text-sm font-black text-[var(--foreground)]">NETWORK</h2>
                   </div>
-                  <div className="flex items-center justify-between p-2 bg-[var(--muted)] rounded">
-                    <span className="text-[10px] font-bold text-theme-muted">Courses Done</span>
-                    <span className="text-base font-black text-theme-accent">3</span>
-                  </div>
-                  <div className="flex items-center justify-between p-2 bg-[var(--muted)] rounded">
-                    <span className="text-[10px] font-bold text-theme-muted">Learning Hours</span>
-                    <span className="text-base font-black text-theme-secondary">24h</span>
+                  <div className="relative">
+                    <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-theme-muted" />
+                    <input
+                      type="text"
+                      placeholder="Search contacts..."
+                      className="w-full pl-10 pr-3 py-2 bg-[var(--muted)] border border-[var(--border)] rounded-lg text-xs font-medium text-[var(--foreground)] placeholder-theme-muted focus:outline-none focus:border-theme-primary"
+                    />
                   </div>
                 </div>
-              </Widget>
-            </div>
-          )}
+                <div className="flex-1 overflow-y-auto">
+                  {contacts.map(contact => (
+                    <button
+                      key={contact.id}
+                      onClick={() => setSelectedContact(contact)}
+                      className={`w-full p-4 border-b border-[var(--border)] hover:bg-[var(--muted)] transition-colors text-left ${
+                        selectedContact?.id === contact.id ? 'bg-[var(--primary)]/10' : ''
+                      }`}
+                    >
+                      <div className="flex items-center gap-3">
+                        <div className="w-10 h-10 rounded-full bg-gradient-to-br from-[var(--primary)] to-[var(--accent)] flex items-center justify-center flex-shrink-0">
+                          {contact.image ? (
+                            <img
+                              src={contact.image}
+                              alt={contact.name}
+                              className="w-full h-full rounded-full object-cover"
+                            />
+                          ) : (
+                            <User className="w-5 h-5 text-white" />
+                          )}
+                        </div>
+                        <div className="flex-1 min-w-0">
+                          <p className="text-sm font-black text-[var(--foreground)] truncate">
+                            {contact.name || 'Anonymous'}
+                          </p>
+                          <p className="text-xs font-medium text-theme-muted truncate">
+                            {contact.headline || 'Member'}
+                          </p>
+                        </div>
+                      </div>
+                    </button>
+                  ))}
+                </div>
+              </div>
 
-          {/* Impact Widget */}
-          {!hiddenWidgets.has('impact') && (
-            <div key="impact">
-              <Widget
-                id="impact"
-                title="ENVIRONMENTAL IMPACT"
-                icon={Leaf}
-                theme={layout.find(w => w.i === 'impact')?.theme || 'secondary'}
-                collapsed={collapsedWidgets.has('impact')}
-                onToggleCollapse={() => toggleWidgetCollapse('impact')}
-                onClick={() => router.push('/my/impact')}
-              >
-                <div className="space-y-2">
-                  <div className="flex items-center justify-between">
-                    <div className="flex items-center gap-1">
-                      <Wind className="w-3 h-3 text-theme-primary flex-shrink-0" />
-                      <span className="text-[10px] font-bold text-theme-muted">CO₂ Saved</span>
+              {/* Messenger Column */}
+              <div className="flex-1 h-full flex flex-col bg-[var(--card)] rounded-2xl border-2 border-theme-accent shadow-lg overflow-hidden">
+                {selectedContact ? (
+                  <>
+                    {/* Messenger Header */}
+                    <div className="p-4 border-b border-[var(--border)] flex items-center justify-between">
+                      <div className="flex items-center gap-3">
+                        <div className="w-10 h-10 rounded-full bg-gradient-to-br from-[var(--primary)] to-[var(--accent)] flex items-center justify-center">
+                          {selectedContact.image ? (
+                            <img
+                              src={selectedContact.image}
+                              alt={selectedContact.name}
+                              className="w-full h-full rounded-full object-cover"
+                            />
+                          ) : (
+                            <User className="w-5 h-5 text-white" />
+                          )}
+                        </div>
+                        <div>
+                          <p className="text-sm font-black text-[var(--foreground)]">
+                            {selectedContact.name || 'Anonymous'}
+                          </p>
+                          <p className="text-xs font-medium text-theme-muted">Active now</p>
+                        </div>
+                      </div>
+                      <button className="w-8 h-8 rounded-full hover:bg-[var(--muted)] flex items-center justify-center transition-colors">
+                        <MoreVertical className="w-5 h-5 text-theme-muted" />
+                      </button>
                     </div>
-                    <span className="text-base font-black text-theme-primary">{impactMetrics.co2Saved}kg</span>
-                  </div>
-                  <div className="h-1.5 bg-[var(--muted)] rounded-full">
-                    <div className="h-full bg-gradient-to-r from-green-500 to-emerald-600 rounded-full" style={{ width: '63%' }} />
-                  </div>
 
-                  <div className="flex items-center justify-between">
-                    <div className="flex items-center gap-1">
-                      <Droplet className="w-3 h-3 text-theme-accent flex-shrink-0" />
-                      <span className="text-[10px] font-bold text-theme-muted">Water Saved</span>
+                    {/* Messages Area */}
+                    <div className="flex-1 overflow-y-auto p-4 space-y-4">
+                      <div className="text-center">
+                        <p className="text-xs font-bold text-theme-muted">
+                          Start a conversation with {selectedContact.name}
+                        </p>
+                      </div>
                     </div>
-                    <span className="text-base font-black text-theme-accent">{impactMetrics.waterSaved}gal</span>
-                  </div>
-                  <div className="h-1.5 bg-[var(--muted)] rounded-full">
-                    <div className="h-full bg-gradient-to-r from-blue-400 to-blue-600 rounded-full" style={{ width: '91%' }} />
-                  </div>
 
-                  <div className="flex items-center justify-between">
-                    <div className="flex items-center gap-1">
-                      <Zap className="w-3 h-3 text-theme-secondary flex-shrink-0" />
-                      <span className="text-[10px] font-bold text-theme-muted">Energy Saved</span>
+                    {/* Message Input */}
+                    <div className="p-4 border-t border-[var(--border)]">
+                      <div className="flex gap-2">
+                        <input
+                          type="text"
+                          value={messageContent}
+                          onChange={(e) => setMessageContent(e.target.value)}
+                          placeholder="Type a message..."
+                          className="flex-1 px-4 py-2 bg-[var(--muted)] border border-[var(--border)] rounded-lg text-sm font-medium text-[var(--foreground)] placeholder-theme-muted focus:outline-none focus:border-theme-primary"
+                        />
+                        <button className="px-6 py-2 bg-[var(--primary)] text-white rounded-lg font-bold text-sm hover:bg-[var(--accent)] transition-colors flex items-center gap-2">
+                          <Send className="w-4 h-4" />
+                          Send
+                        </button>
+                      </div>
                     </div>
-                    <span className="text-base font-black text-theme-secondary">{impactMetrics.energySaved}kWh</span>
+                  </>
+                ) : (
+                  <div className="flex-1 flex items-center justify-center">
+                    <div className="text-center">
+                      <User className="w-16 h-16 text-theme-muted mx-auto mb-4 opacity-50" />
+                      <p className="text-sm font-bold text-theme-muted">Select a contact to start messaging</p>
+                    </div>
                   </div>
-                  <div className="h-1.5 bg-[var(--muted)] rounded-full">
-                    <div className="h-full bg-gradient-to-r from-yellow-500 to-orange-600 rounded-full" style={{ width: '78%' }} />
-                  </div>
-                </div>
-              </Widget>
+                )}
+              </div>
             </div>
-          )}
 
-          {/* Network Widget */}
-          {!hiddenWidgets.has('network') && (
-            <div key="network">
-              <Widget
-                id="network"
-                title="YOUR NETWORK"
-                icon={Users}
-                theme={layout.find(w => w.i === 'network')?.theme || 'primary'}
-                collapsed={collapsedWidgets.has('network')}
-                onToggleCollapse={() => toggleWidgetCollapse('network')}
-                onClick={() => router.push('/network')}
-              >
-                <div className="space-y-2">
-                  <div className="p-2.5 bg-gradient-to-br from-[var(--primary)]/10 to-transparent border border-theme-primary rounded-lg text-center">
-                    <div className="text-xl font-black text-theme-primary">{userProfile?._count?.followers || 0}</div>
-                    <div className="text-[9px] font-bold text-theme-muted">CONNECTIONS</div>
-                  </div>
-                  <div className="p-2.5 bg-gradient-to-br from-[var(--accent)]/10 to-transparent border border-theme-accent rounded-lg text-center">
-                    <div className="text-xl font-black text-theme-accent">5</div>
-                    <div className="text-[9px] font-bold text-theme-muted">COMMUNITIES</div>
-                  </div>
-                  <Link href="/network">
-                    <button className="w-full px-3 py-1.5 bg-[var(--primary)] text-white rounded-lg text-[10px] font-bold hover:bg-[var(--accent)] transition-colors">
-                      VIEW NETWORK →
-                    </button>
-                  </Link>
-                </div>
-              </Widget>
-            </div>
-          )}
-
-          {/* Quick Actions Widget */}
-          {!hiddenWidgets.has('actions') && (
-            <div key="actions">
-              <Widget
-                id="actions"
-                title="QUICK ACTIONS"
-                icon={Zap}
-                theme={layout.find(w => w.i === 'actions')?.theme || 'secondary'}
-                collapsed={collapsedWidgets.has('actions')}
-                onToggleCollapse={() => toggleWidgetCollapse('actions')}
-              >
-                <div className="space-y-2">
-                  <Link href="/community/projects/new">
-                    <button className="w-full px-2.5 py-2 bg-[var(--muted)] hover:bg-[var(--primary)]/10 border border-transparent hover:border-theme-primary rounded-lg text-[10px] font-bold text-[var(--foreground)] flex items-center gap-2 transition-all">
-                      <Briefcase className="w-3 h-3 flex-shrink-0" />
-                      Start Project
-                    </button>
-                  </Link>
-                  <Link href="/learn">
-                    <button className="w-full px-2.5 py-2 bg-[var(--muted)] hover:bg-[var(--accent)]/10 border border-transparent hover:border-theme-accent rounded-lg text-[10px] font-bold text-[var(--foreground)] flex items-center gap-2 transition-all">
-                      <BookOpen className="w-3 h-3 flex-shrink-0" />
-                      Write Article
-                    </button>
-                  </Link>
-                  <Link href="/community/forum">
-                    <button className="w-full px-2.5 py-2 bg-[var(--muted)] hover:bg-[var(--secondary)]/10 border border-transparent hover:border-theme-secondary rounded-lg text-[10px] font-bold text-[var(--foreground)] flex items-center gap-2 transition-all">
-                      <MessageCircle className="w-3 h-3 flex-shrink-0" />
-                      Join Discussion
-                    </button>
-                  </Link>
-                  <Link href="/network/browse">
-                    <button className="w-full px-2.5 py-2 bg-[var(--muted)] hover:bg-[var(--primary)]/10 border border-transparent hover:border-theme-primary rounded-lg text-[10px] font-bold text-[var(--foreground)] flex items-center gap-2 transition-all">
-                      <Users className="w-3 h-3 flex-shrink-0" />
-                      Connect
-                    </button>
-                  </Link>
-                </div>
-              </Widget>
-            </div>
-          )}
-        </GridLayout>
+            {/* Navigation Arrow - Left */}
+            <button
+              onClick={() => goToPage(0)}
+              className="fixed left-6 top-1/2 -translate-y-1/2 w-12 h-12 bg-white shadow-2xl rounded-full flex items-center justify-center hover:bg-[var(--primary)] hover:text-white transition-all z-40"
+            >
+              <ChevronLeft className="w-6 h-6" />
+            </button>
+          </div>
+        </div>
       </div>
     </div>
   )
