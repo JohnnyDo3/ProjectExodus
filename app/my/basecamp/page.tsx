@@ -53,8 +53,6 @@ export default function MyBasecampPage() {
   // New state for additional sections
   const [articles, setArticles] = useState<any[]>([])
   const [isLoadingArticles, setIsLoadingArticles] = useState(true)
-  const [forumPosts, setForumPosts] = useState<any[]>([])
-  const [isLoadingForumPosts, setIsLoadingForumPosts] = useState(true)
   const [discussions, setDiscussions] = useState<any[]>([])
   const [isLoadingDiscussions, setIsLoadingDiscussions] = useState(true)
   const [learningProgress, setLearningProgress] = useState<any>(null)
@@ -74,7 +72,6 @@ export default function MyBasecampPage() {
       fetchActivityFeed()
       fetchUserProfile()
       fetchUserArticles()
-      fetchUserForumPosts()
       fetchUserDiscussions()
       fetchLearningProgress()
       fetchNetworkHighlights()
@@ -186,31 +183,6 @@ export default function MyBasecampPage() {
     }
   }
 
-  const fetchUserForumPosts = async () => {
-    try {
-      console.log('[Basecamp] Fetching user forum posts...')
-      const res = await fetch(`/api/forum?authorId=${session?.user?.id}`)
-
-      if (!res.ok) {
-        console.log('[Basecamp] Forum posts endpoint returned', res.status)
-        setForumPosts([])
-        return
-      }
-
-      const data = await res.json()
-
-      if (data.success) {
-        setForumPosts(data.data || [])
-        console.log('[Basecamp] Loaded', data.data?.length || 0, 'forum posts')
-      }
-    } catch (error) {
-      console.error('[Basecamp] Error fetching forum posts:', error)
-      setForumPosts([])
-    } finally {
-      setIsLoadingForumPosts(false)
-    }
-  }
-
   const fetchUserDiscussions = async () => {
     try {
       console.log('[Basecamp] Fetching user discussions...')
@@ -311,30 +283,6 @@ export default function MyBasecampPage() {
   }
 
   // Delete handlers
-  const handleDeleteForumPost = async (postId: string) => {
-    if (!confirm('Are you sure you want to delete this forum post? This action cannot be undone.')) {
-      return
-    }
-
-    try {
-      const res = await fetch(`/api/forum/posts/${postId}`, {
-        method: 'DELETE',
-      })
-
-      const data = await res.json()
-
-      if (data.success) {
-        toast.success('Forum post deleted successfully!')
-        setForumPosts((prev) => prev.filter((p) => p.id !== postId))
-      } else {
-        toast.error(data.error || 'Failed to delete forum post')
-      }
-    } catch (error) {
-      console.error('Error deleting forum post:', error)
-      toast.error('Something went wrong')
-    }
-  }
-
   const handleDeleteDiscussion = async (discussionId: string) => {
     if (!confirm('Are you sure you want to delete this discussion? This action cannot be undone.')) {
       return
@@ -995,77 +943,6 @@ export default function MyBasecampPage() {
 
               {/* My Forum Posts & Discussions Grid */}
               <div className="grid md:grid-cols-2 gap-6">
-                {/* My Forum Posts */}
-                <div>
-                  <div className="flex items-center justify-between mb-4">
-                    <h3 className="text-xl font-black text-[var(--foreground)] flex items-center gap-2">
-                      <MessageCircle className="w-5 h-5 text-theme-accent" />
-                      MY FORUM POSTS
-                    </h3>
-                  </div>
-
-                  <Card className="border-4 border-theme-accent">
-                    <CardContent className="p-4">
-                      {isLoadingForumPosts ? (
-                        <div className="space-y-2">
-                          {Array.from({ length: 2 }).map((_, i) => (
-                            <SkeletonCard key={i} lines={2} />
-                          ))}
-                        </div>
-                      ) : forumPosts.length > 0 ? (
-                        <div className="space-y-3 max-h-64 overflow-y-auto">
-                          {forumPosts.slice(0, 5).map((post: any) => (
-                            <div key={post.id} className="p-3 bg-[var(--muted)] rounded-lg hover:bg-[color-mix(in_srgb,var(--accent)_10%,var(--muted))] transition-colors">
-                              <Link href={`/community/forum/posts/${post.id}`}>
-                                <h4 className="text-sm font-black text-[var(--foreground)] mb-1 line-clamp-1 hover:text-theme-accent transition-colors cursor-pointer">
-                                  {post.title}
-                                </h4>
-                              </Link>
-                              <p className="text-xs font-medium text-theme-muted mb-2 line-clamp-2">
-                                {post.content}
-                              </p>
-                              <div className="flex items-center justify-between text-xs">
-                                <span className="font-semibold text-theme-muted">
-                                  {new Date(post.createdAt).toLocaleDateString()}
-                                </span>
-                                <div className="flex items-center gap-1">
-                                  <Button
-                                    size="sm"
-                                    variant="ghost"
-                                    className="font-bold text-xs h-6 w-6 p-0 text-destructive hover:text-destructive"
-                                    onClick={(e) => {
-                                      e.preventDefault()
-                                      handleDeleteForumPost(post.id)
-                                    }}
-                                    title="Delete post"
-                                  >
-                                    <Trash2 className="w-3 h-3" />
-                                  </Button>
-                                  <Link href={`/community/forum/posts/${post.id}`}>
-                                    <Button size="sm" variant="ghost" className="font-bold text-xs h-6">
-                                      VIEW
-                                    </Button>
-                                  </Link>
-                                </div>
-                              </div>
-                            </div>
-                          ))}
-                        </div>
-                      ) : (
-                        <div className="text-center py-6">
-                          <MessageCircle className="w-10 h-10 text-theme-accent mx-auto mb-3 opacity-50" />
-                          <p className="text-xs font-bold text-theme-muted mb-3">No forum posts yet</p>
-                          <Link href="/community/forum">
-                            <Button size="sm" className="font-bold text-xs">
-                              JOIN DISCUSSIONS
-                            </Button>
-                          </Link>
-                        </div>
-                      )}
-                    </CardContent>
-                  </Card>
-                </div>
-
                 {/* My Discussions */}
                 <div>
                   <div className="flex items-center justify-between mb-4">
