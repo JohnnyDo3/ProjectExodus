@@ -26,6 +26,24 @@ import {
 import Link from 'next/link'
 import { useEffect, useState } from 'react'
 import { ProfileColumn } from '@/components/profile/ProfileColumn'
+import {
+  DndContext,
+  closestCenter,
+  KeyboardSensor,
+  PointerSensor,
+  useSensor,
+  useSensors,
+  DragEndEvent,
+} from '@dnd-kit/core'
+import {
+  arrayMove,
+  SortableContext,
+  sortableKeyboardCoordinates,
+  horizontalListSortingStrategy,
+  useSortable,
+} from '@dnd-kit/sortable'
+import { CSS } from '@dnd-kit/utilities'
+import { GripVertical } from 'lucide-react'
 
 // Card type for deck columns
 interface DeckCard {
@@ -34,6 +52,38 @@ interface DeckCard {
   subtitle?: string
   date?: Date
   type: 'discussion' | 'learning' | 'project'
+}
+
+// Draggable Column Wrapper Component
+function DraggableColumn({ id, children }: { id: string; children: React.ReactNode }) {
+  const {
+    attributes,
+    listeners,
+    setNodeRef,
+    transform,
+    transition,
+    isDragging,
+  } = useSortable({ id })
+
+  const style = {
+    transform: CSS.Transform.toString(transform),
+    transition,
+    opacity: isDragging ? 0.5 : 1,
+  }
+
+  return (
+    <div ref={setNodeRef} style={style} className="relative">
+      <div
+        {...attributes}
+        {...listeners}
+        className="absolute top-2 left-2 z-10 cursor-grab active:cursor-grabbing p-1.5 bg-[var(--muted)] rounded-lg hover:bg-[var(--primary)] hover:text-white transition-colors group"
+        title="Drag to reorder"
+      >
+        <GripVertical className="w-4 h-4" />
+      </div>
+      {children}
+    </div>
+  )
 }
 
 export default function MyVolitionPage() {
@@ -55,6 +105,41 @@ export default function MyVolitionPage() {
   const [discussionCards, setDiscussionCards] = useState<DeckCard[]>([])
   const [learningCards, setLearningCards] = useState<DeckCard[]>([])
   const [projectCards, setProjectCards] = useState<DeckCard[]>([])
+
+  // Column order state
+  const [columnOrder, setColumnOrder] = useState<string[]>([
+    'profile',
+    'discussions',
+    'learning',
+    'projects',
+    'network',
+    'articles',
+  ])
+
+  // Drag and drop sensors
+  const sensors = useSensors(
+    useSensor(PointerSensor),
+    useSensor(KeyboardSensor, {
+      coordinateGetter: sortableKeyboardCoordinates,
+    })
+  )
+
+  // Load column order from localStorage
+  useEffect(() => {
+    const savedOrder = localStorage.getItem('volition-column-order')
+    if (savedOrder) {
+      try {
+        setColumnOrder(JSON.parse(savedOrder))
+      } catch (e) {
+        console.error('Error loading column order:', e)
+      }
+    }
+  }, [])
+
+  // Save column order to localStorage whenever it changes
+  useEffect(() => {
+    localStorage.setItem('volition-column-order', JSON.stringify(columnOrder))
+  }, [columnOrder])
 
   useEffect(() => {
     if (session?.user?.id) {
@@ -248,9 +333,22 @@ export default function MyVolitionPage() {
     }
   }
 
+  const handleDragEnd = (event: DragEndEvent) => {
+    const { active, over } = event
+
+    if (over && active.id !== over.id) {
+      setColumnOrder((items) => {
+        const oldIndex = items.indexOf(active.id as string)
+        const newIndex = items.indexOf(over.id as string)
+        return arrayMove(items, oldIndex, newIndex)
+      })
+    }
+  }
+
   const goToPage = (page: number) => {
     setCurrentPage(page)
   }
+
 
   if (status === 'loading' || isLoading) {
     return (
@@ -326,9 +424,19 @@ export default function MyVolitionPage() {
         >
           {/* PAGE 1: DECK COLUMNS */}
           <div className="w-full h-full flex-shrink-0 overflow-hidden">
-            <div className="h-full flex gap-4 p-6 overflow-x-auto overflow-y-visible">
-              {/* Profile Column */}
-              <ProfileColumn
+            <DndContext
+              sensors={sensors}
+              collisionDetection={closestCenter}
+              onDragEnd={handleDragEnd}
+            >
+              <SortableContext
+                items={columnOrder}
+                strategy={horizontalListSortingStrategy}
+              >
+                <div className="h-full flex gap-4 p-6 overflow-x-auto overflow-y-visible">
+                  {/* Profile Column */}
+                  <DraggableColumn id="profile">
+                    <ProfileColumn
                 initialProfile={{
                   name: userProfile?.name || user?.name || '',
                   headline: userProfile?.headline || '',
@@ -346,8 +454,10 @@ export default function MyVolitionPage() {
                   resumeFileName: userProfile?.resumeFileName,
                 }}
               />
+                  </DraggableColumn>
 
               {/* Discussions Column */}
+                  <DraggableColumn id="discussions">
               <div className="flex-shrink-0 w-80 min-h-full flex flex-col bg-[var(--card)] rounded-2xl border-2 border-theme-primary shadow-lg">
                 <div className="p-4 border-b border-[var(--border)]">
                   <div className="flex items-center justify-between mb-3">
@@ -454,8 +564,10 @@ export default function MyVolitionPage() {
                   )}
                 </div>
               </div>
+                  </DraggableColumn>
 
               {/* Learning Column */}
+                  <DraggableColumn id="learning">
               <div className="flex-shrink-0 w-80 min-h-full flex flex-col bg-[var(--card)] rounded-2xl border-2 border-theme-accent shadow-lg">
                 <div className="p-4 border-b border-[var(--border)] flex items-center justify-between">
                   <div className="flex items-center gap-2">
@@ -527,8 +639,10 @@ export default function MyVolitionPage() {
                   )}
                 </div>
               </div>
+                  </DraggableColumn>
 
               {/* Projects Column */}
+                  <DraggableColumn id="projects">
               <div className="flex-shrink-0 w-80 min-h-full flex flex-col bg-[var(--card)] rounded-2xl border-2 border-theme-secondary shadow-lg">
                 <div className="p-4 border-b border-[var(--border)] flex items-center justify-between">
                   <div className="flex items-center gap-2">
@@ -599,8 +713,10 @@ export default function MyVolitionPage() {
                   )}
                 </div>
               </div>
+                  </DraggableColumn>
 
               {/* Network Highlights Column */}
+                  <DraggableColumn id="network">
               <div className="flex-shrink-0 w-80 min-h-full flex flex-col bg-[var(--card)] rounded-2xl border-2 border-theme-primary shadow-lg">
                 <div className="p-4 border-b border-[var(--border)]">
                   <div className="flex items-center gap-2 mb-2">
@@ -671,8 +787,10 @@ export default function MyVolitionPage() {
                   </div>
                 </div>
               </div>
+                  </DraggableColumn>
 
               {/* My Articles Column */}
+                  <DraggableColumn id="articles">
               <div className="flex-shrink-0 w-80 min-h-full flex flex-col bg-[var(--card)] rounded-2xl border-2 border-theme-accent shadow-lg">
                 <div className="p-4 border-b border-[var(--border)] flex items-center justify-between">
                   <div className="flex items-center gap-2">
@@ -746,7 +864,10 @@ export default function MyVolitionPage() {
                   )}
                 </div>
               </div>
-            </div>
+                  </DraggableColumn>
+                </div>
+              </SortableContext>
+            </DndContext>
 
             {/* Navigation Arrow - Right */}
             <button
