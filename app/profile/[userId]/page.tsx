@@ -6,17 +6,18 @@ import { useRouter } from 'next/navigation'
 import { Send, UserPlus, ArrowLeft } from 'lucide-react'
 import Link from 'next/link'
 import { ProfileColumn } from '@/components/profile/ProfileColumn'
+import { use } from 'react'
 
 interface Props {
-  params: {
+  params: Promise<{
     userId: string
-  }
+  }>
 }
 
 export default function UserProfilePage({ params }: Props) {
   const { data: session, status } = useSession()
   const router = useRouter()
-  const { userId } = params
+  const { userId } = use(params)
 
   const [isFollowing, setIsFollowing] = useState(false)
   const [isLoading, setIsLoading] = useState(true)
