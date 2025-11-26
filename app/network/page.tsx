@@ -6,6 +6,7 @@ import { useRouter } from 'next/navigation'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/Card'
 import { Button } from '@/components/ui/Button'
 import { SkeletonUserCard } from '@/components/ui/SkeletonUserCard'
+import NetworkVisualization from '@/components/network/NetworkVisualization'
 import Link from 'next/link'
 import toast from 'react-hot-toast'
 import {
@@ -19,6 +20,8 @@ import {
   MessageCircle,
   UserCheck,
   Loader2,
+  Grid3x3,
+  Network,
 } from 'lucide-react'
 
 interface UserProfile {
@@ -51,6 +54,7 @@ export default function NetworkPage() {
   const [isLoading, setIsLoading] = useState(true)
   const [followingUsers, setFollowingUsers] = useState<Set<string>>(new Set())
   const [loadingFollow, setLoadingFollow] = useState<Set<string>>(new Set())
+  const [viewMode, setViewMode] = useState<'grid' | 'network'>('grid')
 
   useEffect(() => {
     fetchUsers()
@@ -62,6 +66,19 @@ export default function NetworkPage() {
   useEffect(() => {
     filterUsers()
   }, [users, searchQuery, selectedInterest, followingUsers])
+
+  // Load view mode from localStorage
+  useEffect(() => {
+    const savedViewMode = localStorage.getItem('network-view-mode') as 'grid' | 'network' | null
+    if (savedViewMode) {
+      setViewMode(savedViewMode)
+    }
+  }, [])
+
+  // Save view mode to localStorage
+  useEffect(() => {
+    localStorage.setItem('network-view-mode', viewMode)
+  }, [viewMode])
 
   const fetchUsers = async () => {
     try {
@@ -302,11 +319,32 @@ export default function NetworkPage() {
                 <p className="text-sm font-bold text-theme-muted uppercase">Interests</p>
               </div>
             </div>
+
+            {/* View Mode Toggle */}
+            <div className="mt-8 flex justify-center gap-2">
+              <Button
+                onClick={() => setViewMode('grid')}
+                variant={viewMode === 'grid' ? 'primary' : 'outline'}
+                className="font-bold"
+              >
+                <Grid3x3 className="w-4 h-4 mr-2" />
+                GRID VIEW
+              </Button>
+              <Button
+                onClick={() => setViewMode('network')}
+                variant={viewMode === 'network' ? 'primary' : 'outline'}
+                className="font-bold"
+              >
+                <Network className="w-4 h-4 mr-2" />
+                NETWORK VIEW
+              </Button>
+            </div>
           </div>
         </div>
       </section>
 
-      {/* Search and Filters */}
+      {/* Search and Filters - Grid View Only */}
+      {viewMode === 'grid' && (
       <section className="py-8 border-b-4 border-[var(--border)]">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
           <div className="max-w-6xl mx-auto">
@@ -377,8 +415,10 @@ export default function NetworkPage() {
           </div>
         </div>
       </section>
+      )}
 
-      {/* Members Grid */}
+      {/* Members Grid - Grid View Only */}
+      {viewMode === 'grid' && (
       <section className="py-16">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
           <div className="max-w-6xl mx-auto">
@@ -518,6 +558,29 @@ export default function NetworkPage() {
           </div>
         </div>
       </section>
+      )}
+
+      {/* Network View - Network Visualization */}
+      {viewMode === 'network' && (
+        <section className="py-16">
+          <div className="container mx-auto px-4 sm:px-6 lg:px-8">
+            <div className="max-w-7xl mx-auto">
+              <NetworkVisualization
+                currentUserId={session?.user?.id || null}
+                users={users.map(u => ({
+                  id: u.id,
+                  name: u.name || 'User',
+                  image: u.image,
+                  followers: u._count.followers,
+                  projects: u._count.projectMemberships,
+                  interests: u.interests,
+                }))}
+                followingIds={followingUsers}
+              />
+            </div>
+          </div>
+        </section>
+      )}
     </div>
   )
 }
