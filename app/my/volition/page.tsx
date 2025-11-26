@@ -319,14 +319,14 @@ export default function MyVolitionPage() {
       </div>
 
       {/* Horizontal Pages Container */}
-      <div className="relative h-[calc(100vh-80px)]">
+      <div className="relative h-[calc(100vh-100px)] overflow-hidden">
         <div
           className="flex h-full transition-transform duration-500 ease-in-out"
           style={{ transform: `translateX(-${currentPage * 100}%)` }}
         >
           {/* PAGE 1: DECK COLUMNS */}
           <div className="w-full h-full flex-shrink-0 overflow-hidden">
-            <div className="h-full flex gap-4 p-6 overflow-x-auto">
+            <div className="h-full flex gap-4 p-6 overflow-x-auto overflow-y-visible">
               {/* Profile Column */}
               <ProfileColumn
                 initialProfile={{
@@ -348,7 +348,7 @@ export default function MyVolitionPage() {
               />
 
               {/* Discussions Column */}
-              <div className="flex-shrink-0 w-80 h-full flex flex-col bg-[var(--card)] rounded-2xl border-2 border-theme-primary shadow-lg">
+              <div className="flex-shrink-0 w-80 min-h-full flex flex-col bg-[var(--card)] rounded-2xl border-2 border-theme-primary shadow-lg">
                 <div className="p-4 border-b border-[var(--border)]">
                   <div className="flex items-center justify-between mb-3">
                     <div className="flex items-center gap-2">
@@ -456,7 +456,7 @@ export default function MyVolitionPage() {
               </div>
 
               {/* Learning Column */}
-              <div className="flex-shrink-0 w-80 h-full flex flex-col bg-[var(--card)] rounded-2xl border-2 border-theme-accent shadow-lg">
+              <div className="flex-shrink-0 w-80 min-h-full flex flex-col bg-[var(--card)] rounded-2xl border-2 border-theme-accent shadow-lg">
                 <div className="p-4 border-b border-[var(--border)] flex items-center justify-between">
                   <div className="flex items-center gap-2">
                     <BookOpen className="w-5 h-5 text-theme-accent" />
@@ -529,7 +529,7 @@ export default function MyVolitionPage() {
               </div>
 
               {/* Projects Column */}
-              <div className="flex-shrink-0 w-80 h-full flex flex-col bg-[var(--card)] rounded-2xl border-2 border-theme-secondary shadow-lg">
+              <div className="flex-shrink-0 w-80 min-h-full flex flex-col bg-[var(--card)] rounded-2xl border-2 border-theme-secondary shadow-lg">
                 <div className="p-4 border-b border-[var(--border)] flex items-center justify-between">
                   <div className="flex items-center gap-2">
                     <Briefcase className="w-5 h-5 text-theme-secondary" />
@@ -601,7 +601,7 @@ export default function MyVolitionPage() {
               </div>
 
               {/* Network Highlights Column */}
-              <div className="flex-shrink-0 w-80 h-full flex flex-col bg-[var(--card)] rounded-2xl border-2 border-theme-primary shadow-lg">
+              <div className="flex-shrink-0 w-80 min-h-full flex flex-col bg-[var(--card)] rounded-2xl border-2 border-theme-primary shadow-lg">
                 <div className="p-4 border-b border-[var(--border)]">
                   <div className="flex items-center gap-2 mb-2">
                     <User className="w-5 h-5 text-theme-primary" />
@@ -673,7 +673,7 @@ export default function MyVolitionPage() {
               </div>
 
               {/* My Articles Column */}
-              <div className="flex-shrink-0 w-80 h-full flex flex-col bg-[var(--card)] rounded-2xl border-2 border-theme-accent shadow-lg">
+              <div className="flex-shrink-0 w-80 min-h-full flex flex-col bg-[var(--card)] rounded-2xl border-2 border-theme-accent shadow-lg">
                 <div className="p-4 border-b border-[var(--border)] flex items-center justify-between">
                   <div className="flex items-center gap-2">
                     <FileText className="w-5 h-5 text-theme-accent" />

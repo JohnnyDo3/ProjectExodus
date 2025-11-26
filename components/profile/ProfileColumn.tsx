@@ -185,7 +185,7 @@ export function ProfileColumn({ initialProfile }: Props) {
   const colors = templateColors[template]
 
   return (
-    <div className="flex-shrink-0 w-80 h-full flex flex-col bg-[var(--card)] rounded-2xl border-2 border-theme-primary shadow-lg">
+    <div className="flex-shrink-0 w-80 min-h-full flex flex-col bg-[var(--card)] rounded-2xl border-2 border-theme-primary shadow-lg">
       {/* Header */}
       <div className="p-4 border-b border-[var(--border)]">
         <div className="flex items-center justify-between mb-3">
