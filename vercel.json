@@ -1,10 +1,6 @@
 {
   "framework": "nextjs",
   "buildCommand": "npm run vercel-build",
-  "env": {
-    "NEXTAUTH_URL": "https://projxodus.com",
-    "NEXT_PUBLIC_API_URL": "https://projxodus.com"
-  },
   "headers": [
     {
       "source": "/(.*)",
