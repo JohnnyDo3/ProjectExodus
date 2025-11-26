@@ -38,7 +38,6 @@ async function getUserProfile(userId: string) {
             followers: true,
             following: true,
             articles: true,
-            forumPosts: true,
             createdProjects: true
           }
         }
@@ -209,12 +208,6 @@ export default async function ProfilePage({ params }: { params: Promise<{ id: st
                     {user._count.articles}
                   </div>
                   <div className="text-xs font-bold text-theme-muted uppercase">Articles</div>
-                </div>
-                <div className="text-center">
-                  <div className="text-2xl font-black text-theme-primary mb-1">
-                    {user._count.forumPosts}
-                  </div>
-                  <div className="text-xs font-bold text-theme-muted uppercase">Posts</div>
                 </div>
                 <div className="text-center">
                   <div className="text-2xl font-black text-theme-accent mb-1">

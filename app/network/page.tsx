@@ -37,7 +37,6 @@ interface UserProfile {
     followers: number
     following: number
     projectMemberships: number
-    forumPosts: number
   }
   isFollowing?: boolean
 }

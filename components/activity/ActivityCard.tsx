@@ -33,12 +33,6 @@ interface ActivityCardProps {
       description?: string
       memberCount?: number
     }
-    forumPost?: {
-      id: string
-      title: string
-      slug: string
-      commentCount: number
-    }
     event?: {
       id: string
       title: string
@@ -59,8 +53,6 @@ export function ActivityCard({ activity, currentUserId }: ActivityCardProps) {
       case 'PROJECT_JOIN':
       case 'PROJECT_CREATE':
         return <Briefcase className="w-4 h-4" />
-      case 'FORUM_POST':
-        return <MessageSquare className="w-4 h-4" />
       case 'EVENT_CREATE':
       case 'EVENT_RSVP':
         return <Calendar className="w-4 h-4" />
@@ -74,8 +66,6 @@ export function ActivityCard({ activity, currentUserId }: ActivityCardProps) {
       case 'PROJECT_JOIN':
       case 'PROJECT_CREATE':
         return 'border-theme-primary bg-[color-mix(in_srgb,var(--primary)_5%,var(--muted))]'
-      case 'FORUM_POST':
-        return 'border-theme-accent bg-[color-mix(in_srgb,var(--accent)_5%,var(--muted))]'
       case 'EVENT_CREATE':
       case 'EVENT_RSVP':
         return 'border-theme-secondary bg-[color-mix(in_srgb,var(--secondary)_5%,var(--muted))]'
@@ -141,32 +131,6 @@ export function ActivityCard({ activity, currentUserId }: ActivityCardProps) {
               <Link href={`/community/projects/${activity.project?.slug}`}>
                 <Button size="sm" className="h-6 text-xs font-bold">
                   Join Project
-                </Button>
-              </Link>
-            </div>
-          </div>
-        )
-
-      case 'FORUM_POST':
-        return (
-          <div className="flex-1">
-            <p className="text-sm font-semibold text-[var(--foreground)] leading-tight mb-1">
-              <Link href={`/profile/${user.id}`} className="hover:text-theme-primary transition-colors">
-                {user.name || 'Someone'}
-              </Link>
-              {' '}posted{' '}
-              <Link href={`/community/forum/${activity.forumPost?.slug}`} className="text-theme-accent hover:underline font-black">
-                {activity.forumPost?.title}
-              </Link>
-            </p>
-            <div className="flex items-center gap-2 mt-2">
-              <div className="px-2 py-1 rounded-full bg-[var(--background)] text-xs font-bold text-theme-muted flex items-center gap-1">
-                <MessageSquare className="w-3 h-3" />
-                {activity.forumPost?.commentCount || 0} replies
-              </div>
-              <Link href={`/community/forum/${activity.forumPost?.slug}`}>
-                <Button size="sm" variant="outline" className="h-6 text-xs font-bold">
-                  Read Discussion
                 </Button>
               </Link>
             </div>
