@@ -18,7 +18,7 @@
 
 export function ProgressiveSkyline() {
   return (
-    <div className="absolute bottom-[30px] left-0 right-0 pointer-events-none z-10 overflow-hidden">
+    <div className="absolute bottom-[13px] left-0 right-0 pointer-events-none z-10 overflow-hidden">
       <style jsx>{`
         @keyframes skylineScroll {
           0% {
