@@ -40,6 +40,7 @@ export default function ProjectPage({ params }: { params: Promise<{ slug: string
 
   useEffect(() => {
     fetchProject()
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [slug])
 
   useEffect(() => {
@@ -49,6 +50,7 @@ export default function ProjectPage({ params }: { params: Promise<{ slug: string
       const interval = setInterval(fetchMessages, 5000)
       return () => clearInterval(interval)
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [project?.id])
 
   useEffect(() => {
