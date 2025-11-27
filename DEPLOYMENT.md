@@ -13,7 +13,7 @@ Set these in your Vercel dashboard (Settings → Environment Variables → Produ
 NEXTAUTH_URL=https://projxodus.com
 NEXT_PUBLIC_API_URL=https://projxodus.com
 DATABASE_URL=<your-production-database-url>
-NEXTAUTH_SECRET=<generate-with: openssl rand -base64 32>
+AUTH_SECRET=<generate-with: openssl rand -base64 32>
 ```
 
 **Optional - OAuth & Features:**
