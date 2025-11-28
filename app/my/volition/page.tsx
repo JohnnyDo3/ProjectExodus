@@ -406,12 +406,12 @@ export default function MyVolitionPage() {
 
               {/* Discussions Column */}
                   <DraggableColumn id="discussions">
-              <div className="flex-shrink-0 w-80 min-h-full flex flex-col bg-[var(--card)] rounded-2xl border-2 border-theme-primary shadow-lg">
+              <div className="flex-shrink-0 w-80 h-full flex flex-col bg-[var(--card)] rounded-2xl border-2 border-theme-primary shadow-lg">
                 <div className="p-4 border-b border-[var(--border)]">
                   <div className="flex items-center justify-between mb-3">
                     <div className="flex items-center gap-2">
                       <MessageCircle className="w-5 h-5 text-theme-primary" />
-                      <h2 className="text-sm font-black text-[var(--foreground)]">YOUR FEED POSTS</h2>
+                      <h2 className="text-xs font-black text-[var(--foreground)]">YOUR FEED POSTS</h2>
                     </div>
                     <Link href="/community/feed">
                       <button className="w-7 h-7 rounded-full bg-[var(--primary)] text-white flex items-center justify-center hover:bg-[var(--accent)] transition-colors">
@@ -516,11 +516,11 @@ export default function MyVolitionPage() {
 
               {/* Learning Column */}
                   <DraggableColumn id="learning">
-              <div className="flex-shrink-0 w-80 min-h-full flex flex-col bg-[var(--card)] rounded-2xl border-2 border-theme-accent shadow-lg">
+              <div className="flex-shrink-0 w-80 h-full flex flex-col bg-[var(--card)] rounded-2xl border-2 border-theme-accent shadow-lg">
                 <div className="p-4 border-b border-[var(--border)] flex items-center justify-between">
                   <div className="flex items-center gap-2">
                     <BookOpen className="w-5 h-5 text-theme-accent" />
-                    <h2 className="text-sm font-black text-[var(--foreground)]">YOUR LEARNING</h2>
+                    <h2 className="text-xs font-black text-[var(--foreground)]">YOUR LEARNING</h2>
                   </div>
                   <button
                     onClick={() => addNewCard('learning')}
@@ -591,11 +591,11 @@ export default function MyVolitionPage() {
 
               {/* Projects Column */}
                   <DraggableColumn id="projects">
-              <div className="flex-shrink-0 w-80 min-h-full flex flex-col bg-[var(--card)] rounded-2xl border-2 border-theme-secondary shadow-lg">
+              <div className="flex-shrink-0 w-80 h-full flex flex-col bg-[var(--card)] rounded-2xl border-2 border-theme-secondary shadow-lg">
                 <div className="p-4 border-b border-[var(--border)] flex items-center justify-between">
                   <div className="flex items-center gap-2">
                     <Briefcase className="w-5 h-5 text-theme-secondary" />
-                    <h2 className="text-sm font-black text-[var(--foreground)]">YOUR PROJECTS</h2>
+                    <h2 className="text-xs font-black text-[var(--foreground)]">YOUR PROJECTS</h2>
                   </div>
                   <button
                     onClick={() => addNewCard('project')}
@@ -665,11 +665,11 @@ export default function MyVolitionPage() {
 
               {/* Network Highlights Column */}
                   <DraggableColumn id="network">
-              <div className="flex-shrink-0 w-80 min-h-full flex flex-col bg-[var(--card)] rounded-2xl border-2 border-theme-primary shadow-lg">
+              <div className="flex-shrink-0 w-80 h-full flex flex-col bg-[var(--card)] rounded-2xl border-2 border-theme-primary shadow-lg">
                 <div className="p-4 border-b border-[var(--border)]">
                   <div className="flex items-center gap-2 mb-2">
                     <User className="w-5 h-5 text-theme-primary" />
-                    <h2 className="text-sm font-black text-[var(--foreground)]">NETWORK HIGHLIGHTS</h2>
+                    <h2 className="text-xs font-black text-[var(--foreground)]">NETWORK HIGHLIGHTS</h2>
                   </div>
                   <p className="text-[9px] font-medium text-theme-muted">Suggested connections & recent followers</p>
                 </div>
@@ -739,11 +739,11 @@ export default function MyVolitionPage() {
 
               {/* My Articles Column */}
                   <DraggableColumn id="articles">
-              <div className="flex-shrink-0 w-80 min-h-full flex flex-col bg-[var(--card)] rounded-2xl border-2 border-theme-accent shadow-lg">
+              <div className="flex-shrink-0 w-80 h-full flex flex-col bg-[var(--card)] rounded-2xl border-2 border-theme-accent shadow-lg">
                 <div className="p-4 border-b border-[var(--border)] flex items-center justify-between">
                   <div className="flex items-center gap-2">
                     <FileText className="w-5 h-5 text-theme-accent" />
-                    <h2 className="text-sm font-black text-[var(--foreground)]">YOUR ARTICLES</h2>
+                    <h2 className="text-xs font-black text-[var(--foreground)]">YOUR ARTICLES</h2>
                   </div>
                   <button
                     onClick={() => alert('Create new article')}
