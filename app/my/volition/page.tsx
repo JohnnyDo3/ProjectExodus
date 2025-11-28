@@ -22,6 +22,7 @@ import {
   X,
   Trash2,
   FileText,
+  CheckCircle,
 } from 'lucide-react'
 import Link from 'next/link'
 import { useEffect, useState } from 'react'
@@ -102,6 +103,10 @@ export default function MyVolitionPage() {
   const [learningCards, setLearningCards] = useState<DeckCard[]>([])
   const [projectCards, setProjectCards] = useState<DeckCard[]>([])
 
+  // Learning module state
+  const [learningModules, setLearningModules] = useState<any[]>([])
+  const [learningFilter, setLearningFilter] = useState<'all' | 'in_progress' | 'completed'>('all')
+
   // Column order state
   const [columnOrder, setColumnOrder] = useState<string[]>([
     'profile',
@@ -146,9 +151,17 @@ export default function MyVolitionPage() {
         fetchProfile(),
         fetchNetworkSuggestions(),
         fetchFollowing(),
+        fetchLearningModules(),
       ]).finally(() => setIsLoading(false))
     }
   }, [session?.user?.id])
+
+  // Refetch learning modules when filter changes
+  useEffect(() => {
+    if (session?.user?.id) {
+      fetchLearningModules()
+    }
+  }, [learningFilter, session?.user?.id])
 
   useEffect(() => {
     // Convert fetched data to deck cards
@@ -180,17 +193,6 @@ export default function MyVolitionPage() {
       setDiscussionCards(cards)
     }
 
-    if (articles.length > 0) {
-      const cards: DeckCard[] = articles.map(article => ({
-        id: article.id,
-        title: article.title,
-        subtitle: `${article._count?.comments || 0} comments`,
-        date: new Date(article.createdAt),
-        type: 'learning' as const,
-      }))
-      setLearningCards(cards)
-    }
-
     if (projects.length > 0) {
       const cards: DeckCard[] = projects.map(project => ({
         id: project.id,
@@ -201,7 +203,7 @@ export default function MyVolitionPage() {
       }))
       setProjectCards(cards)
     }
-  }, [feedPosts, articles, projects, discussionFilter])
+  }, [feedPosts, projects, discussionFilter])
 
   const fetchProjects = async () => {
     try {
@@ -289,6 +291,21 @@ export default function MyVolitionPage() {
       }
     } catch (error) {
       console.error('Error fetching following:', error)
+    }
+  }
+
+  const fetchLearningModules = async () => {
+    try {
+      const filterParam = learningFilter !== 'all' ? `?filter=${learningFilter === 'in_progress' ? 'in_progress' : 'completed'}` : ''
+      const res = await fetch(`/api/learning/user${filterParam}`)
+      if (res.ok) {
+        const data = await res.json()
+        if (data.success) {
+          setLearningModules(data.data || [])
+        }
+      }
+    } catch (error) {
+      console.error('Error fetching learning modules:', error)
     }
   }
 
@@ -517,72 +534,133 @@ export default function MyVolitionPage() {
               {/* Learning Column */}
                   <DraggableColumn id="learning">
               <div className="flex-shrink-0 w-80 h-full flex flex-col bg-[var(--card)] rounded-2xl border-2 border-theme-accent shadow-lg">
-                <div className="p-4 border-b border-[var(--border)] flex items-center justify-between">
-                  <div className="flex items-center gap-2">
-                    <BookOpen className="w-5 h-5 text-theme-accent" />
-                    <h2 className="text-xs font-black text-[var(--foreground)]">YOUR LEARNING</h2>
+                <div className="p-4 border-b border-[var(--border)]">
+                  <div className="flex items-center justify-between mb-3">
+                    <div className="flex items-center gap-2">
+                      <BookOpen className="w-5 h-5 text-theme-accent" />
+                      <h2 className="text-xs font-black text-[var(--foreground)]">YOUR LEARNING</h2>
+                    </div>
+                    <Link href="/learn">
+                      <button className="w-7 h-7 rounded-full bg-[var(--accent)] text-white flex items-center justify-center hover:bg-[var(--primary)] transition-colors">
+                        <Plus className="w-4 h-4" />
+                      </button>
+                    </Link>
                   </div>
-                  <button
-                    onClick={() => addNewCard('learning')}
-                    className="w-7 h-7 rounded-full bg-[var(--accent)] text-white flex items-center justify-center hover:bg-[var(--primary)] transition-colors"
-                  >
-                    <Plus className="w-4 h-4" />
-                  </button>
+                  {/* Filter Buttons */}
+                  <div className="flex gap-2">
+                    <button
+                      onClick={() => setLearningFilter('all')}
+                      className={`flex-1 px-2 py-1 rounded-lg text-[10px] font-bold transition-colors ${
+                        learningFilter === 'all'
+                          ? 'bg-[var(--accent)] text-white'
+                          : 'bg-[var(--muted)] text-[var(--foreground)] hover:bg-[var(--accent)]/20'
+                      }`}
+                    >
+                      All
+                    </button>
+                    <button
+                      onClick={() => setLearningFilter('in_progress')}
+                      className={`flex-1 px-2 py-1 rounded-lg text-[10px] font-bold transition-colors ${
+                        learningFilter === 'in_progress'
+                          ? 'bg-[var(--accent)] text-white'
+                          : 'bg-[var(--muted)] text-[var(--foreground)] hover:bg-[var(--accent)]/20'
+                      }`}
+                    >
+                      In Progress
+                    </button>
+                    <button
+                      onClick={() => setLearningFilter('completed')}
+                      className={`flex-1 px-2 py-1 rounded-lg text-[10px] font-bold transition-colors ${
+                        learningFilter === 'completed'
+                          ? 'bg-[var(--accent)] text-white'
+                          : 'bg-[var(--muted)] text-[var(--foreground)] hover:bg-[var(--accent)]/20'
+                      }`}
+                    >
+                      Completed
+                    </button>
+                  </div>
                 </div>
                 <div className="flex-1 overflow-y-auto p-4 space-y-3">
-                  {learningCards.map(card => (
-                    <div key={card.id} className="relative group">
+                  {learningModules.map((module) => (
+                    <Link key={module.id} href={`/learn/${module.article.slug}`}>
                       <div className="p-4 bg-gradient-to-br from-[var(--accent)]/10 to-transparent border-2 border-theme-accent rounded-xl cursor-pointer hover:shadow-lg transition-all">
-                        <h3 className="text-sm font-black text-[var(--foreground)] mb-1 line-clamp-2 pr-12">
-                          {card.title}
-                        </h3>
-                        {card.subtitle && (
-                          <p className="text-xs font-medium text-theme-muted mb-2">{card.subtitle}</p>
+                        <div className="flex items-start justify-between mb-2">
+                          <h3 className="text-sm font-black text-[var(--foreground)] line-clamp-2 flex-1 pr-2">
+                            {module.article.title}
+                          </h3>
+                          {module.status === 'COMPLETED' && (
+                            <CheckCircle className="w-5 h-5 text-green-500 flex-shrink-0" />
+                          )}
+                        </div>
+
+                        {/* Progress Bar for Large Modules */}
+                        {module.article.moduleType === 'LARGE' && module.status === 'IN_PROGRESS' && (
+                          <div className="mb-2">
+                            <div className="flex items-center justify-between mb-1">
+                              <span className="text-[10px] font-bold text-theme-muted">
+                                {module.currentTab}/{module.totalTabs} sections
+                              </span>
+                              <span className="text-[10px] font-bold text-theme-accent">
+                                {module.progressPercentage}%
+                              </span>
+                            </div>
+                            <div className="h-1.5 bg-[var(--muted)] rounded-full overflow-hidden">
+                              <div
+                                className="h-full bg-gradient-to-r from-[var(--accent)] to-[var(--secondary)] transition-all"
+                                style={{ width: `${module.progressPercentage}%` }}
+                              />
+                            </div>
+                          </div>
                         )}
-                        {card.date && (
-                          <p className="text-[10px] font-bold text-theme-muted opacity-70">
-                            {card.date.toLocaleDateString()}
-                          </p>
+
+                        {/* Module Info */}
+                        <div className="flex items-center gap-2 flex-wrap">
+                          {module.article.moduleType === 'SMALL' && (
+                            <span className="text-[9px] font-bold text-theme-secondary px-1.5 py-0.5 bg-[var(--secondary)]/20 rounded">
+                              QUICK READ
+                            </span>
+                          )}
+                          {module.article.moduleType === 'LARGE' && (
+                            <span className="text-[9px] font-bold text-theme-accent px-1.5 py-0.5 bg-[var(--accent)]/20 rounded">
+                              {module.totalTabs} TABS + QUIZ
+                            </span>
+                          )}
+                          {module.article.estimatedTime && (
+                            <span className="text-[9px] font-medium text-theme-muted">
+                              ⏱️ {module.article.estimatedTime}min
+                            </span>
+                          )}
+                          {module.status === 'COMPLETED' && module.completedAt && (
+                            <span className="text-[9px] font-medium text-green-600">
+                              ✓ {new Date(module.completedAt).toLocaleDateString()}
+                            </span>
+                          )}
+                        </div>
+
+                        {/* Quiz Status for Large Modules */}
+                        {module.article.moduleType === 'LARGE' && module.quizAttempts > 0 && !module.quizPassed && (
+                          <div className="mt-2 text-[10px] font-semibold text-orange-600">
+                            Quiz attempts: {module.quizAttempts} - Score: {module.quizScore}/5
+                          </div>
                         )}
                       </div>
-                      <div className="absolute top-2 right-2 flex gap-1 opacity-0 group-hover:opacity-100 transition-opacity">
-                        <button
-                          onClick={(e) => {
-                            e.preventDefault()
-                            e.stopPropagation()
-                            alert('Edit learning: ' + card.id)
-                          }}
-                          className="w-7 h-7 bg-[var(--accent)] text-white rounded-lg hover:bg-[var(--primary)] transition-colors flex items-center justify-center"
-                          title="Edit"
-                        >
-                          <Edit2 className="w-3 h-3" />
-                        </button>
-                        <button
-                          onClick={(e) => {
-                            e.preventDefault()
-                            e.stopPropagation()
-                            if (confirm('Delete this learning item?')) {
-                              alert('Delete learning: ' + card.id)
-                            }
-                          }}
-                          className="w-7 h-7 bg-red-500 text-white rounded-lg hover:bg-red-600 transition-colors flex items-center justify-center"
-                          title="Delete"
-                        >
-                          <X className="w-3 h-3" />
-                        </button>
-                      </div>
-                    </div>
+                    </Link>
                   ))}
-                  {learningCards.length === 0 && (
+                  {learningModules.length === 0 && (
                     <div className="text-center py-12">
                       <BookOpen className="w-12 h-12 text-theme-muted mx-auto mb-3 opacity-50" />
-                      <p className="text-xs font-bold text-theme-muted">No learning items yet</p>
-                      <button
-                        onClick={() => addNewCard('learning')}
-                        className="mt-3 px-4 py-2 bg-[var(--accent)] text-white rounded-lg text-xs font-bold hover:bg-[var(--primary)] transition-colors"
-                      >
-                        Add One
-                      </button>
+                      <p className="text-xs font-bold text-theme-muted">
+                        {learningFilter === 'completed'
+                          ? 'No completed modules yet'
+                          : learningFilter === 'in_progress'
+                          ? 'No modules in progress'
+                          : 'Start learning!'}
+                      </p>
+                      <Link href="/learn">
+                        <button className="mt-3 px-4 py-2 bg-[var(--accent)] text-white rounded-lg text-xs font-bold hover:bg-[var(--primary)] transition-colors">
+                          Browse Modules
+                        </button>
+                      </Link>
                     </div>
                   )}
                 </div>

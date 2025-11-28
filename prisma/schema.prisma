@@ -80,6 +80,7 @@ model User {
   userProducts          UserProduct[]    @relation("UserProducts")
   sentConnections       Connection[]     @relation("SentConnections")
   receivedConnections   Connection[]     @relation("ReceivedConnections")
+  learningProgress      UserLearningProgress[]
 
   @@index([email])
   @@index([role])
@@ -365,11 +366,20 @@ model Article {
   updatedAt       DateTime         @updatedAt
   publishedAt     DateTime?
 
+  // Learning Module Fields
+  moduleType      ModuleType?      // SMALL (quick facts) or LARGE (tabs + quiz)
+  moduleTabs      Json?            // Array of tab objects: [{title: string, content: string}]
+  quizQuestions   Json?            // Array of quiz objects: [{question: string, type: 'multiple_choice'|'true_false', options: string[], correctAnswer: string}]
+  estimatedTime   Int?             // Estimated minutes to complete
+  difficulty      String?          // 'Beginner', 'Intermediate', 'Advanced'
+  learningProgress UserLearningProgress[]
+
   @@index([slug])
   @@index([authorId])
   @@index([categoryId])
   @@index([status])
   @@index([featured])
+  @@index([moduleType])
 }
 
 enum ArticleStatus {
@@ -431,6 +441,47 @@ model SavedArticle {
   @@unique([userId, articleId])
   @@index([userId])
   @@index([articleId])
+}
+
+enum ModuleType {
+  SMALL   // Quick facts, mark as read
+  LARGE   // Tabs + quiz with perfect score requirement
+}
+
+// Learning Progress Tracking
+model UserLearningProgress {
+  id                String         @id @default(cuid())
+  userId            String
+  articleId         String
+
+  // Progress tracking
+  status            LearningStatus @default(IN_PROGRESS)
+  progressPercentage Int           @default(0)  // 0-100 for large modules
+  currentTabIndex   Int            @default(0)  // Current tab user is on (for large modules)
+
+  // Quiz tracking (for large modules)
+  quizAttempts      Int            @default(0)
+  quizScore         Int?           // Last quiz score (0-5)
+  quizPassed        Boolean        @default(false) // Must achieve perfect score (5/5)
+
+  // Timestamps
+  startedAt         DateTime       @default(now())
+  completedAt       DateTime?
+  lastAccessedAt    DateTime       @updatedAt
+
+  // Relations
+  user              User           @relation(fields: [userId], references: [id], onDelete: Cascade)
+  article           Article        @relation(fields: [articleId], references: [id], onDelete: Cascade)
+
+  @@unique([userId, articleId])
+  @@index([userId])
+  @@index([articleId])
+  @@index([status])
+}
+
+enum LearningStatus {
+  IN_PROGRESS
+  COMPLETED
 }
 
 // ============================================
