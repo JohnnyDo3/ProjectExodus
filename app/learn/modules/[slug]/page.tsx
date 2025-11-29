@@ -1281,7 +1281,7 @@ export default async function ModulePage({
   const session = await auth()
   const userId = session?.user?.id
 
-  let progress = null
+  let progress = undefined
   if (userId) {
     progress = await getUserProgress(userId, module.id)
   }
