@@ -1,7 +1,10 @@
 import { ArticleCard } from '@/components/article/ArticleCard'
 import { Card, CardContent } from '@/components/ui/Card'
 import { Button } from '@/components/ui/Button'
+import { CompactLiveImpactStats } from '@/components/learn/CompactLiveImpactStats'
 import { ExpertCarousel } from '@/components/learning/ExpertCarousel'
+import { TreeBranches } from '@/components/decorative/TreeBranches'
+import { FlyingBirds } from '@/components/decorative/FlyingBirds'
 import {
   BookOpen, Video, Calculator, Download, Zap, Leaf,
   GraduationCap, Target, Clock, Users, Star, ChevronRight,
@@ -187,84 +190,77 @@ export default async function LearnPage() {
   ]
 
   return (
-    <div className="min-h-screen">
-      {/* Hero - Professor Sage Welcome */}
-      <section className="py-24 bg-gradient-to-br from-ocean-50 via-moss-50 to-sand-50 dark:from-earth-900 dark:via-earth-800 dark:to-earth-900 relative overflow-hidden">
-        <div className="absolute inset-0">
-          <div className="absolute top-10 right-10 w-72 h-72 bg-moss-400 dark:bg-moss-600 rounded-full blur-3xl opacity-30 dark:opacity-20" />
-          <div className="absolute bottom-10 left-10 w-96 h-96 bg-ocean-400 dark:bg-ocean-600 rounded-full blur-3xl opacity-30 dark:opacity-20" />
-        </div>
+    <div className="min-h-screen relative">
+      {/* Decorative Elements */}
+      <TreeBranches />
+      <FlyingBirds />
 
-        <div className="container mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
-          <div className="max-w-6xl mx-auto">
-            <div className="grid lg:grid-cols-2 gap-12 items-center">
-              <div className="space-y-8">
-                <div className="inline-flex items-center gap-3 px-6 py-3 rounded-full bg-moss-100 dark:bg-moss-900 border-2 border-moss-500 dark:border-moss-600">
-                  <GraduationCap className="w-6 h-6 text-moss-700 dark:text-moss-400" />
-                  <span className="font-bold text-moss-800 dark:text-moss-300">PROFESSOR SAGE'S CLASSROOM</span>
-                </div>
+      {/* Hero Section - Original "LEARN SUSTAINABILITY" */}
+      <section className="min-h-screen flex items-center justify-center bg-gradient-to-br from-[color-mix(in_srgb,var(--accent)_15%,var(--background))] via-[color-mix(in_srgb,var(--primary)_15%,var(--background))] to-[var(--muted)] relative overflow-hidden">
+        <div className="container mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="max-w-5xl mx-auto text-center space-y-8">
+            <h1 className="text-[var(--foreground)]" style={{
+              fontSize: 'clamp(3rem, 10vw, 7rem)',
+              fontWeight: 900,
+              lineHeight: 1
+            }}>
+              LEARN SUSTAINABILITY
+            </h1>
+            <p className="text-2xl font-bold text-theme-muted">
+              Knowledge that <span style={{
+                background: 'linear-gradient(135deg, var(--primary), var(--accent))',
+                WebkitBackgroundClip: 'text',
+                WebkitTextFillColor: 'transparent',
+                fontWeight: 900
+              }}>empowers</span> real change
+            </p>
 
-                <h1 style={{
-                  fontSize: 'clamp(2.5rem, 8vw, 5rem)',
-                  fontWeight: 900,
-                  lineHeight: 1.1,
-                }} className="text-earth-900 dark:text-sand-100">
-                  LEARN TO BUILD A{' '}
-                  <span style={{
-                    background: 'linear-gradient(135deg, #36763d, #357777)',
-                    WebkitBackgroundClip: 'text',
-                    WebkitTextFillColor: 'transparent',
-                  }}>
-                    SUSTAINABLE FUTURE
-                  </span>
-                </h1>
-
-                <p className="text-xl font-semibold text-earth-700 dark:text-sand-300">
-                  Welcome to the most comprehensive sustainability education platform.
-                  From beginner basics to advanced systems thinking—your journey to
-                  becoming an environmental changemaker starts here.
-                </p>
-
-                <div className="flex flex-wrap gap-4">
-                  <Button size="lg" className="text-lg px-8 py-6 rounded-xl font-black shadow-xl">
-                    <Play className="w-5 h-5 mr-2" />
-                    START LEARNING
-                  </Button>
-                  <Button size="lg" variant="outline" className="text-lg px-8 py-6 rounded-xl font-bold border-2">
-                    BROWSE COURSES
-                  </Button>
-                </div>
-              </div>
-
-              <div className="hidden lg:block">
-                <Card className="border-4 border-moss-400 dark:border-moss-600 bg-white/90 dark:bg-earth-800/90 backdrop-blur-sm shadow-2xl transform rotate-2 hover:rotate-0 transition-transform duration-500">
-                  <CardContent className="p-8">
-                    <div className="text-center space-y-4">
-                      <div className="text-8xl">🌱</div>
-                      <h3 className="text-2xl font-black text-earth-900 dark:text-sand-100">Quick Stats</h3>
-                      <div className="grid grid-cols-2 gap-4 pt-4">
-                        <div className="p-4 bg-moss-50 dark:bg-earth-700 rounded-xl">
-                          <div className="text-3xl font-black text-moss-700 dark:text-moss-400">150+</div>
-                          <div className="text-sm font-bold text-earth-600 dark:text-sand-300">Lessons</div>
-                        </div>
-                        <div className="p-4 bg-ocean-50 dark:bg-earth-700 rounded-xl">
-                          <div className="text-3xl font-black text-ocean-700 dark:text-ocean-400">36</div>
-                          <div className="text-sm font-bold text-earth-600 dark:text-sand-300">Modules</div>
-                        </div>
-                        <div className="p-4 bg-terra-50 dark:bg-earth-700 rounded-xl">
-                          <div className="text-3xl font-black text-terra-700 dark:text-terra-400">6</div>
-                          <div className="text-sm font-bold text-earth-600 dark:text-sand-300">Core Topics</div>
-                        </div>
-                        <div className="p-4 bg-sand-100 dark:bg-earth-700 rounded-xl">
-                          <div className="text-3xl font-black text-earth-700 dark:text-sand-300">∞</div>
-                          <div className="text-sm font-bold text-earth-600 dark:text-sand-300">Impact</div>
-                        </div>
-                      </div>
-                    </div>
-                  </CardContent>
-                </Card>
-              </div>
+            {/* Welcome Statement */}
+            <div className="max-w-3xl mx-auto">
+              <p className="text-xl font-semibold text-theme-muted">
+                Welcome to the most comprehensive sustainability education platform.
+                From beginner basics to advanced systems thinking—your journey to
+                becoming an environmental changemaker starts here.
+              </p>
             </div>
+
+            <div className="flex flex-wrap gap-4 justify-center pt-4">
+              <Button size="lg" className="text-lg px-8 py-6 rounded-xl font-black shadow-xl">
+                <Play className="w-5 h-5 mr-2" />
+                START LEARNING
+              </Button>
+              <Button size="lg" variant="outline" className="text-lg px-8 py-6 rounded-xl font-bold border-2">
+                BROWSE COURSES
+              </Button>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* The Planet in Numbers - Compact Stats */}
+      <section className="flex items-center justify-center bg-[var(--background)] py-12">
+        <div className="container mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="max-w-6xl mx-auto">
+            <div className="text-center mb-8">
+              <div className="inline-block px-4 py-2 bg-orange-500/20 rounded-full border-2 border-orange-500 mb-4">
+                <span className="text-xs font-black text-orange-500 uppercase tracking-wider flex items-center gap-2">
+                  <span className="w-2 h-2 bg-orange-500 rounded-full animate-pulse"></span>
+                  CALCULATED FROM ANNUAL DATA
+                </span>
+              </div>
+              <h2 className="text-4xl md:text-5xl font-black mb-4" style={{
+                background: 'linear-gradient(135deg, #ef4444, #f97316, #eab308)',
+                WebkitBackgroundClip: 'text',
+                WebkitTextFillColor: 'transparent'
+              }}>
+                THE PLANET IN NUMBERS
+              </h2>
+              <p className="text-base font-semibold text-theme-muted max-w-3xl mx-auto">
+                Statistics calculated from latest annual reports. Click any card to verify the source data.
+              </p>
+            </div>
+
+            <CompactLiveImpactStats />
           </div>
         </div>
       </section>
