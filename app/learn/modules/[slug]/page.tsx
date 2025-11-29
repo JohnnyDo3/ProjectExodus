@@ -1263,7 +1263,7 @@ async function getUserProgress(userId: string, moduleId: string) {
   // const progress = await prisma.userModuleProgress.findUnique({
   //   where: { userId_moduleId: { userId, moduleId } }
   // })
-  return null
+  return undefined
 }
 
 export default async function ModulePage({
