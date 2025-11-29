@@ -35,6 +35,13 @@ const demoModules: Record<string, any> = {
           <blockquote>
             "The greatest threat to our planet is the belief that someone else will save it." - Robert Swan
           </blockquote>
+
+          <h3>Learn More - External Resources</h3>
+          <div class="resource-links">
+            <p><a href="https://www.epa.gov/ghgemissions/sources-greenhouse-gas-emissions" target="_blank" rel="noopener noreferrer">EPA: Sources of Greenhouse Gas Emissions</a></p>
+            <p><a href="https://www.nature.org/en-us/get-involved/how-to-help/carbon-footprint-calculator/" target="_blank" rel="noopener noreferrer">Nature Conservancy: Carbon Footprint Calculator</a></p>
+            <p><a href="https://www.ipcc.ch/report/ar6/wg1/" target="_blank" rel="noopener noreferrer">IPCC Climate Change 2021: The Physical Science Basis</a></p>
+          </div>
         `
       },
       {
@@ -63,6 +70,13 @@ const demoModules: Record<string, any> = {
 
           <h3>Setting a Baseline</h3>
           <p>Calculate your current footprint to establish a baseline. This gives you a starting point to measure progress against as you implement changes.</p>
+
+          <h3>Learn More - External Resources</h3>
+          <div class="resource-links">
+            <p><a href="https://www.epa.gov/energy/greenhouse-gas-equivalencies-calculator" target="_blank" rel="noopener noreferrer">EPA: Greenhouse Gas Equivalencies Calculator</a></p>
+            <p><a href="https://www.carbonfootprint.com/calculator.aspx" target="_blank" rel="noopener noreferrer">Carbon Footprint Ltd: Personal Calculator</a></p>
+            <p><a href="https://www.footprintcalculator.org/" target="_blank" rel="noopener noreferrer">Global Footprint Network: Ecological Footprint Calculator</a></p>
+          </div>
         `
       },
       {
@@ -96,6 +110,13 @@ const demoModules: Record<string, any> = {
 
           <h3>Creating Your Action Plan</h3>
           <p>Start with one or two changes and build from there. Small, consistent actions add up to significant impact over time.</p>
+
+          <h3>Learn More - External Resources</h3>
+          <div class="resource-links">
+            <p><a href="https://www.drawdown.org/solutions" target="_blank" rel="noopener noreferrer">Project Drawdown: Climate Solutions</a></p>
+            <p><a href="https://www.energy.gov/energysaver/energy-saver" target="_blank" rel="noopener noreferrer">DOE: Energy Saver Guide</a></p>
+            <p><a href="https://sustainability.georgetown.edu/community-engagement/things-you-can-do/" target="_blank" rel="noopener noreferrer">Georgetown University: 22 Ways to Reduce Your Carbon Footprint</a></p>
+          </div>
         `
       },
       {
@@ -128,6 +149,13 @@ const demoModules: Record<string, any> = {
 
           <h3>Remember</h3>
           <p>Progress, not perfection. Every reduction in emissions matters. You're part of a global movement working toward a sustainable future.</p>
+
+          <h3>Learn More - External Resources</h3>
+          <div class="resource-links">
+            <p><a href="https://www.un.org/en/actnow" target="_blank" rel="noopener noreferrer">UN: ActNow Campaign</a></p>
+            <p><a href="https://www.iea.org/topics/climate-change" target="_blank" rel="noopener noreferrer">IEA: Climate Change Resources</a></p>
+            <p><a href="https://climate.nasa.gov/evidence/" target="_blank" rel="noopener noreferrer">NASA: Climate Change Evidence</a></p>
+          </div>
         `
       }
     ],
@@ -226,6 +254,13 @@ const demoModules: Record<string, any> = {
             <li>Climate change affecting precipitation patterns</li>
             <li>Urban development increasing runoff</li>
           </ul>
+
+          <h3>Learn More - External Resources</h3>
+          <div class="resource-links">
+            <p><a href="https://www.usgs.gov/special-topics/water-science-school/science/water-cycle" target="_blank" rel="noopener noreferrer">USGS: The Water Cycle</a></p>
+            <p><a href="https://www.epa.gov/watersense/how-we-use-water" target="_blank" rel="noopener noreferrer">EPA WaterSense: How We Use Water</a></p>
+            <p><a href="https://www.nationalgeographic.com/environment/article/freshwater-crisis" target="_blank" rel="noopener noreferrer">National Geographic: Freshwater Crisis</a></p>
+          </div>
         `
       },
       {
@@ -251,6 +286,13 @@ const demoModules: Record<string, any> = {
             <li><strong>Pollution</strong> - Contaminating available freshwater sources</li>
             <li><strong>Inefficient Use</strong> - Wasting water in agriculture and industry</li>
           </ol>
+
+          <h3>Learn More - External Resources</h3>
+          <div class="resource-links">
+            <p><a href="https://www.who.int/news-room/fact-sheets/detail/drinking-water" target="_blank" rel="noopener noreferrer">WHO: Drinking Water Fact Sheet</a></p>
+            <p><a href="https://www.worldwildlife.org/threats/water-scarcity" target="_blank" rel="noopener noreferrer">WWF: Water Scarcity</a></p>
+            <p><a href="https://www.unwater.org/water-facts/water-scarcity" target="_blank" rel="noopener noreferrer">UN-Water: Water Scarcity Facts</a></p>
+          </div>
         `
       },
       {
@@ -290,6 +332,13 @@ const demoModules: Record<string, any> = {
             <li>Plant native, drought-resistant plants</li>
             <li>Collect rainwater for garden use</li>
           </ul>
+
+          <h3>Learn More - External Resources</h3>
+          <div class="resource-links">
+            <p><a href="https://www.epa.gov/watersense/start-saving" target="_blank" rel="noopener noreferrer">EPA WaterSense: Start Saving</a></p>
+            <p><a href="https://www.energy.gov/energysaver/water-heating" target="_blank" rel="noopener noreferrer">DOE: Water Heating Efficiency</a></p>
+            <p><a href="https://www.waterwise.org.uk/save-water/" target="_blank" rel="noopener noreferrer">Waterwise UK: Save Water Tips</a></p>
+          </div>
         `
       },
       {
@@ -319,6 +368,13 @@ const demoModules: Record<string, any> = {
 
           <h3>Getting Started</h3>
           <p>A simple rain barrel connected to your downspout is an easy first step. A 1-inch rainfall on a 1,000 sq ft roof yields about 600 gallons of water!</p>
+
+          <h3>Learn More - External Resources</h3>
+          <div class="resource-links">
+            <p><a href="https://www.epa.gov/green-infrastructure/what-green-infrastructure" target="_blank" rel="noopener noreferrer">EPA: Green Infrastructure Guide</a></p>
+            <p><a href="https://extension.uga.edu/publications/detail.html?number=B1324" target="_blank" rel="noopener noreferrer">UGA Extension: Rainwater Harvesting</a></p>
+            <p><a href="https://www.americanrainwater.com/resources" target="_blank" rel="noopener noreferrer">American Rainwater Catchment Association</a></p>
+          </div>
         `
       }
     ],
@@ -415,6 +471,13 @@ const demoModules: Record<string, any> = {
           <blockquote>
             "Solar power is the last energy resource that isn't owned yet - nobody taxes the sun yet." - Bonnie Raitt
           </blockquote>
+
+          <h3>Learn More - External Resources</h3>
+          <div class="resource-links">
+            <p><a href="https://www.energy.gov/eere/solar/how-does-solar-work" target="_blank" rel="noopener noreferrer">DOE: How Does Solar Work?</a></p>
+            <p><a href="https://www.seia.org/solar-industry-research-data" target="_blank" rel="noopener noreferrer">SEIA: Solar Industry Research & Data</a></p>
+            <p><a href="https://www.iea.org/reports/solar-pv" target="_blank" rel="noopener noreferrer">IEA: Solar PV Report</a></p>
+          </div>
         `
       },
       {
@@ -451,6 +514,13 @@ const demoModules: Record<string, any> = {
 
           <h3>Panel Technologies</h3>
           <p>The <strong>DOE</strong> identifies three main types: <strong>Monocrystalline</strong> (most efficient, 20-22%), <strong>Polycrystalline</strong> (slightly less efficient, 15-17%), and <strong>Thin-film</strong> (flexible but lower efficiency, 10-12%).</p>
+
+          <h3>Learn More - External Resources</h3>
+          <div class="resource-links">
+            <p><a href="https://www.nrel.gov/research/re-solar.html" target="_blank" rel="noopener noreferrer">NREL: Solar Research</a></p>
+            <p><a href="https://www.energy.gov/eere/solar/solar-photovoltaic-technology-basics" target="_blank" rel="noopener noreferrer">DOE: Solar PV Technology Basics</a></p>
+            <p><a href="https://www.energysage.com/solar/101/types-of-solar-panels/" target="_blank" rel="noopener noreferrer">EnergySage: Types of Solar Panels</a></p>
+          </div>
         `
       },
       {
@@ -483,6 +553,13 @@ const demoModules: Record<string, any> = {
             <li><strong>Solar loans</strong> - Own the system, monthly payments</li>
             <li><strong>Leases/PPAs</strong> - Lower upfront cost, less savings</li>
           </ol>
+
+          <h3>Learn More - External Resources</h3>
+          <div class="resource-links">
+            <p><a href="https://www.irs.gov/credits-deductions/residential-clean-energy-credit" target="_blank" rel="noopener noreferrer">IRS: Residential Clean Energy Credit</a></p>
+            <p><a href="https://www.dsireusa.org/" target="_blank" rel="noopener noreferrer">DSIRE: Database of State Incentives</a></p>
+            <p><a href="https://www.energysage.com/solar/financing/" target="_blank" rel="noopener noreferrer">EnergySage: Solar Financing Guide</a></p>
+          </div>
         `
       },
       {
@@ -515,6 +592,13 @@ const demoModules: Record<string, any> = {
 
           <h3>The Future is Bright</h3>
           <p><strong>BloombergNEF</strong> projects solar will supply 50% of global electricity by 2050. By going solar now, you're joining a movement that's reshaping our energy future.</p>
+
+          <h3>Learn More - External Resources</h3>
+          <div class="resource-links">
+            <p><a href="https://sunroof.withgoogle.com/" target="_blank" rel="noopener noreferrer">Google Project Sunroof: Solar Savings Calculator</a></p>
+            <p><a href="https://pvwatts.nrel.gov/" target="_blank" rel="noopener noreferrer">NREL PVWatts: Solar Production Calculator</a></p>
+            <p><a href="https://www.nabcep.org/resources/find-a-certified-professional/" target="_blank" rel="noopener noreferrer">NABCEP: Find a Certified Solar Installer</a></p>
+          </div>
         `
       }
     ],
@@ -611,6 +695,13 @@ const demoModules: Record<string, any> = {
           <blockquote>
             "Composting is so simple. Nature takes care of everything. You just have to get out of the way." - Jeff Lowenfels
           </blockquote>
+
+          <h3>Learn More - External Resources</h3>
+          <div class="resource-links">
+            <p><a href="https://www.epa.gov/recycle/composting-home" target="_blank" rel="noopener noreferrer">EPA: Composting at Home</a></p>
+            <p><a href="https://www.usda.gov/peoples-garden/soil-health/composting" target="_blank" rel="noopener noreferrer">USDA: Composting Guide</a></p>
+            <p><a href="https://rodaleinstitute.org/why-organic/organic-farming-practices/composting/" target="_blank" rel="noopener noreferrer">Rodale Institute: Composting Practices</a></p>
+          </div>
         `
       },
       {
@@ -648,6 +739,13 @@ const demoModules: Record<string, any> = {
             <li>Pet waste (health hazard)</li>
             <li>Treated wood or coal ash (chemicals)</li>
           </ul>
+
+          <h3>Learn More - External Resources</h3>
+          <div class="resource-links">
+            <p><a href="https://compost.css.cornell.edu/chemistry.html" target="_blank" rel="noopener noreferrer">Cornell: Composting Chemistry</a></p>
+            <p><a href="https://www.calrecycle.ca.gov/organics/homecompost/Materials" target="_blank" rel="noopener noreferrer">CalRecycle: What to Compost</a></p>
+            <p><a href="https://extension.psu.edu/composting-at-home" target="_blank" rel="noopener noreferrer">Penn State Extension: Home Composting</a></p>
+          </div>
         `
       },
       {
@@ -691,6 +789,13 @@ const demoModules: Record<string, any> = {
             <li>Faster decomposition with regular turning</li>
             <li>Good for beginners</li>
           </ul>
+
+          <h3>Learn More - External Resources</h3>
+          <div class="resource-links">
+            <p><a href="https://content.ces.ncsu.edu/vermicomposting" target="_blank" rel="noopener noreferrer">NC State Extension: Vermicomposting Guide</a></p>
+            <p><a href="https://extension.umd.edu/resource/backyard-composting" target="_blank" rel="noopener noreferrer">UMD Extension: Backyard Composting</a></p>
+            <p><a href="https://www.bokashicycle.com/blog/how-does-bokashi-work" target="_blank" rel="noopener noreferrer">Bokashi Cycle: How Bokashi Works</a></p>
+          </div>
         `
       },
       {
@@ -734,6 +839,13 @@ const demoModules: Record<string, any> = {
             <li><strong>Pests?</strong> Bury food scraps, avoid meat/dairy</li>
             <li><strong>Too dry?</strong> Add water until damp like a wrung sponge</li>
           </ul>
+
+          <h3>Learn More - External Resources</h3>
+          <div class="resource-links">
+            <p><a href="https://www.canr.msu.edu/news/using_compost_in_home_gardens" target="_blank" rel="noopener noreferrer">MSU Extension: Using Compost in Gardens</a></p>
+            <p><a href="https://www.soilassociation.org/our-work-in-scotland/scotland-projects/compost/" target="_blank" rel="noopener noreferrer">Soil Association: Compost Benefits</a></p>
+            <p><a href="https://compostingcouncil.org/compost-use-guide/" target="_blank" rel="noopener noreferrer">US Composting Council: Compost Use Guide</a></p>
+          </div>
         `
       }
     ],
@@ -832,6 +944,13 @@ const demoModules: Record<string, any> = {
           <blockquote>
             "The soil is the great connector of lives, the source and destination of all." - Wendell Berry
           </blockquote>
+
+          <h3>Learn More - External Resources</h3>
+          <div class="resource-links">
+            <p><a href="https://rodaleinstitute.org/why-organic/organic-farming-practices/regenerative-organic-agriculture/" target="_blank" rel="noopener noreferrer">Rodale Institute: Regenerative Organic Agriculture</a></p>
+            <p><a href="https://www.drawdown.org/solutions/regenerative-annual-cropping" target="_blank" rel="noopener noreferrer">Project Drawdown: Regenerative Agriculture</a></p>
+            <p><a href="https://www.nature.org/en-us/what-we-do/our-insights/perspectives/regenerative-agriculture-farming-practices/" target="_blank" rel="noopener noreferrer">Nature Conservancy: Regenerative Farming</a></p>
+          </div>
         `
       },
       {
@@ -869,6 +988,13 @@ const demoModules: Record<string, any> = {
 
           <h3>The Soil Food Web</h3>
           <p>Research from <strong>Oregon State University</strong> shows that healthy soil biology reduces the need for synthetic inputs while improving plant health and pest resistance.</p>
+
+          <h3>Learn More - External Resources</h3>
+          <div class="resource-links">
+            <p><a href="https://www.nrcs.usda.gov/conservation-basics/natural-resource-concerns/soils/soil-health" target="_blank" rel="noopener noreferrer">USDA NRCS: Soil Health</a></p>
+            <p><a href="https://www.fao.org/soils-portal/soil-biodiversity/en/" target="_blank" rel="noopener noreferrer">FAO: Soil Biodiversity Portal</a></p>
+            <p><a href="https://extension.oregonstate.edu/gardening/soil-compost/soil-biology-soil-food-web" target="_blank" rel="noopener noreferrer">Oregon State: Soil Food Web</a></p>
+          </div>
         `
       },
       {
@@ -909,6 +1035,13 @@ const demoModules: Record<string, any> = {
             <li>Recycles farm waste</li>
             <li>Reduces input costs</li>
           </ul>
+
+          <h3>Learn More - External Resources</h3>
+          <div class="resource-links">
+            <p><a href="https://savory.global/holistic-management/" target="_blank" rel="noopener noreferrer">Savory Institute: Holistic Management</a></p>
+            <p><a href="https://www.drawdown.org/solutions/silvopasture" target="_blank" rel="noopener noreferrer">Project Drawdown: Silvopasture</a></p>
+            <p><a href="https://www.nrcs.usda.gov/conservation-basics/conservation-by-state/iowa/cover-crops" target="_blank" rel="noopener noreferrer">USDA NRCS: Cover Crops</a></p>
+          </div>
         `
       },
       {
@@ -944,6 +1077,13 @@ const demoModules: Record<string, any> = {
 
           <h3>The Future of Food</h3>
           <p>The <strong>World Economic Forum</strong> and <strong>UN FAO</strong> have both highlighted regenerative agriculture as essential for food security and climate stability. This isn't just a farming trend - it's a fundamental shift in how we relate to the land.</p>
+
+          <h3>Learn More - External Resources</h3>
+          <div class="resource-links">
+            <p><a href="https://regenorganic.org/" target="_blank" rel="noopener noreferrer">Regenerative Organic Alliance: ROC Certification</a></p>
+            <p><a href="https://savory.global/land-to-market/" target="_blank" rel="noopener noreferrer">Savory Institute: Land to Market</a></p>
+            <p><a href="https://www.localharvest.org/" target="_blank" rel="noopener noreferrer">Local Harvest: Find Regenerative Farms</a></p>
+          </div>
         `
       }
     ],
@@ -1047,6 +1187,13 @@ const demoModules: Record<string, any> = {
           <blockquote>
             "The most sustainable garment is the one already in your closet." - Orsola de Castro, Fashion Revolution
           </blockquote>
+
+          <h3>Learn More - External Resources</h3>
+          <div class="resource-links">
+            <p><a href="https://www.unep.org/news-and-stories/story/putting-brakes-fast-fashion" target="_blank" rel="noopener noreferrer">UN Environment: Fast Fashion Impact</a></p>
+            <p><a href="https://ellenmacarthurfoundation.org/topics/fashion/overview" target="_blank" rel="noopener noreferrer">Ellen MacArthur Foundation: Circular Fashion</a></p>
+            <p><a href="https://www.fashionrevolution.org/about/transparency/" target="_blank" rel="noopener noreferrer">Fashion Revolution: Transparency Index</a></p>
+          </div>
         `
       },
       {
@@ -1085,6 +1232,13 @@ const demoModules: Record<string, any> = {
             <li><strong>TENCEL™/Lyocell</strong> - Closed-loop production, biodegradable</li>
             <li><strong>Recycled materials</strong> - Reduces waste and virgin resource use</li>
           </ul>
+
+          <h3>Learn More - External Resources</h3>
+          <div class="resource-links">
+            <p><a href="https://textileexchange.org/knowledge-center/" target="_blank" rel="noopener noreferrer">Textile Exchange: Material Knowledge Center</a></p>
+            <p><a href="https://www.wwf.org.uk/updates/impact-cotton-farming" target="_blank" rel="noopener noreferrer">WWF: Impact of Cotton Farming</a></p>
+            <p><a href="https://www.iucn.org/resources/issues-briefs/marine-plastics" target="_blank" rel="noopener noreferrer">IUCN: Marine Plastics & Microfibers</a></p>
+          </div>
         `
       },
       {
@@ -1127,6 +1281,13 @@ const demoModules: Record<string, any> = {
 
           <h4>Step 4: Practice the One-In-One-Out Rule</h4>
           <p>For every new item you add, remove one. This maintains wardrobe size and encourages thoughtful purchasing.</p>
+
+          <h3>Learn More - External Resources</h3>
+          <div class="resource-links">
+            <p><a href="https://www.thegoodtrade.com/features/capsule-wardrobe-tips/" target="_blank" rel="noopener noreferrer">The Good Trade: Capsule Wardrobe Guide</a></p>
+            <p><a href="https://www.vogue.com/article/capsule-wardrobe-guide" target="_blank" rel="noopener noreferrer">Vogue: Building a Capsule Wardrobe</a></p>
+            <p><a href="https://www.projectcapsule.org/" target="_blank" rel="noopener noreferrer">Project 333: Minimalist Fashion Challenge</a></p>
+          </div>
         `
       },
       {
@@ -1171,6 +1332,13 @@ const demoModules: Record<string, any> = {
             <li>Store properly (folded or on appropriate hangers)</li>
             <li>Support local tailors and cobblers</li>
           </ul>
+
+          <h3>Learn More - External Resources</h3>
+          <div class="resource-links">
+            <p><a href="https://goodonyou.eco/" target="_blank" rel="noopener noreferrer">Good On You: Ethical Brand Ratings</a></p>
+            <p><a href="https://www.global-standard.org/" target="_blank" rel="noopener noreferrer">GOTS: Global Organic Textile Standard</a></p>
+            <p><a href="https://www.wrap.org.uk/taking-action/textiles" target="_blank" rel="noopener noreferrer">WRAP UK: Sustainable Clothing Action Plan</a></p>
+          </div>
         `
       }
     ],

@@ -1,6 +1,7 @@
 import { ArticleCard } from '@/components/article/ArticleCard'
 import { Card, CardContent } from '@/components/ui/Card'
 import { Button } from '@/components/ui/Button'
+import { ExpertCarousel } from '@/components/learning/ExpertCarousel'
 import {
   BookOpen, Video, Calculator, Download, Zap, Leaf,
   GraduationCap, Target, Clock, Users, Star, ChevronRight,
@@ -280,53 +281,54 @@ export default async function LearnPage() {
 
           <div className="grid lg:grid-cols-3 gap-8 max-w-7xl mx-auto">
             {learningPaths.map((path) => (
-              <Card
-                key={path.id}
-                className={`border-4 border-${path.color}-300 dark:border-${path.color}-600 hover:border-${path.color}-500 dark:hover:border-${path.color}-500 bg-gradient-to-br from-${path.color}-50 to-white dark:from-earth-800 dark:to-earth-900 transform hover:scale-105 transition-all duration-300 cursor-pointer overflow-hidden`}
-              >
-                <div className={`h-2 bg-gradient-to-r from-${path.color}-500 to-${path.color}-600`} />
-                <CardContent className="p-8">
-                  <div className="flex items-center gap-4 mb-6">
-                    <div className={`w-16 h-16 rounded-2xl bg-${path.color}-100 dark:bg-${path.color}-900 flex items-center justify-center`}>
-                      <path.icon className={`w-8 h-8 text-${path.color}-600 dark:text-${path.color}-400`} />
+              <Link key={path.id} href={`/learn/paths/${path.id}`}>
+                <Card
+                  className={`h-full border-4 border-${path.color}-300 dark:border-${path.color}-600 hover:border-${path.color}-500 dark:hover:border-${path.color}-500 bg-gradient-to-br from-${path.color}-50 to-white dark:from-earth-800 dark:to-earth-900 transform hover:scale-105 transition-all duration-300 cursor-pointer overflow-hidden`}
+                >
+                  <div className={`h-2 bg-gradient-to-r from-${path.color}-500 to-${path.color}-600`} />
+                  <CardContent className="p-8">
+                    <div className="flex items-center gap-4 mb-6">
+                      <div className={`w-16 h-16 rounded-2xl bg-${path.color}-100 dark:bg-${path.color}-900 flex items-center justify-center`}>
+                        <path.icon className={`w-8 h-8 text-${path.color}-600 dark:text-${path.color}-400`} />
+                      </div>
+                      <div>
+                        <span className={`text-sm font-black text-${path.color}-600 dark:text-${path.color}-400`}>{path.level}</span>
+                        <h3 className="text-xl font-black text-earth-900 dark:text-sand-100">{path.title}</h3>
+                      </div>
                     </div>
-                    <div>
-                      <span className={`text-sm font-black text-${path.color}-600 dark:text-${path.color}-400`}>{path.level}</span>
-                      <h3 className="text-xl font-black text-earth-900 dark:text-sand-100">{path.title}</h3>
-                    </div>
-                  </div>
 
-                  <p className="text-base font-medium text-earth-700 dark:text-sand-300 mb-6">
-                    {path.description}
-                  </p>
+                    <p className="text-base font-medium text-earth-700 dark:text-sand-300 mb-6">
+                      {path.description}
+                    </p>
 
-                  <div className="flex items-center gap-6 mb-6 text-sm font-bold text-earth-600 dark:text-sand-400">
-                    <span className="flex items-center gap-2">
-                      <Clock className="w-4 h-4" />
-                      {path.duration}
-                    </span>
-                    <span className="flex items-center gap-2">
-                      <BookOpen className="w-4 h-4" />
-                      {path.modules} modules
-                    </span>
-                  </div>
-
-                  <div className="flex flex-wrap gap-2 mb-6">
-                    {path.topics.map((topic, i) => (
-                      <span
-                        key={i}
-                        className={`px-3 py-1 rounded-full text-xs font-bold bg-${path.color}-100 dark:bg-${path.color}-900 text-${path.color}-700 dark:text-${path.color}-300`}
-                      >
-                        {topic}
+                    <div className="flex items-center gap-6 mb-6 text-sm font-bold text-earth-600 dark:text-sand-400">
+                      <span className="flex items-center gap-2">
+                        <Clock className="w-4 h-4" />
+                        {path.duration}
                       </span>
-                    ))}
-                  </div>
+                      <span className="flex items-center gap-2">
+                        <BookOpen className="w-4 h-4" />
+                        {path.modules} modules
+                      </span>
+                    </div>
 
-                  <Button className={`w-full font-bold`}>
-                    START PATH <ChevronRight className="w-4 h-4 ml-2" />
-                  </Button>
-                </CardContent>
-              </Card>
+                    <div className="flex flex-wrap gap-2 mb-6">
+                      {path.topics.map((topic, i) => (
+                        <span
+                          key={i}
+                          className={`px-3 py-1 rounded-full text-xs font-bold bg-${path.color}-100 dark:bg-${path.color}-900 text-${path.color}-700 dark:text-${path.color}-300`}
+                        >
+                          {topic}
+                        </span>
+                      ))}
+                    </div>
+
+                    <Button className={`w-full font-bold`}>
+                      START PATH <ChevronRight className="w-4 h-4 ml-2" />
+                    </Button>
+                  </CardContent>
+                </Card>
+              </Link>
             ))}
           </div>
         </div>
@@ -457,7 +459,7 @@ export default async function LearnPage() {
         </div>
       </section>
 
-      {/* Expert Insights */}
+      {/* Expert Insights - Interactive Carousel */}
       <section className="py-24 bg-gradient-to-br from-earth-800 to-earth-900 text-white">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-16">
@@ -467,22 +469,7 @@ export default async function LearnPage() {
             </p>
           </div>
 
-          <div className="grid md:grid-cols-3 gap-8 max-w-6xl mx-auto">
-            {expertInsights.map((expert, i) => (
-              <Card key={i} className="bg-earth-700/50 border-2 border-earth-600 backdrop-blur-sm">
-                <CardContent className="p-8 text-center">
-                  <div className="text-6xl mb-6">{expert.image}</div>
-                  <blockquote className="text-lg font-medium text-sand-200 mb-6 italic">
-                    "{expert.quote}"
-                  </blockquote>
-                  <div>
-                    <div className="font-black text-sand-100">{expert.author}</div>
-                    <div className="text-sm font-medium text-sand-400">{expert.role}</div>
-                  </div>
-                </CardContent>
-              </Card>
-            ))}
-          </div>
+          <ExpertCarousel experts={expertInsights} autoPlayInterval={6000} />
         </div>
       </section>
 
@@ -512,24 +499,27 @@ export default async function LearnPage() {
             ))}
           </div>
 
-          <div className="grid md:grid-cols-3 gap-8 max-w-6xl mx-auto">
+          <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6 max-w-7xl mx-auto">
             {[
-              { icon: Calculator, title: 'CARBON CALCULATOR', desc: 'Calculate your environmental footprint and get personalized reduction tips', color: 'moss', cta: 'CALCULATE NOW' },
-              { icon: Video, title: 'VIDEO LIBRARY', desc: 'Watch expert tutorials, documentaries, and step-by-step guides', color: 'ocean', cta: 'WATCH NOW' },
-              { icon: Download, title: 'RESOURCE DOWNLOADS', desc: 'PDFs, worksheets, checklists, and templates for sustainable living', color: 'terra', cta: 'BROWSE RESOURCES' }
+              { icon: Calculator, title: 'CARBON CALCULATOR', desc: 'Calculate your environmental footprint and get personalized reduction tips', color: 'moss', cta: 'CALCULATE NOW', href: '/tools/carbon-calculator' },
+              { icon: Droplet, title: 'WATER CALCULATOR', desc: 'Discover your total water footprint including hidden virtual water', color: 'ocean', cta: 'CALCULATE NOW', href: '/tools/water-calculator' },
+              { icon: Play, title: 'VIDEO LIBRARY', desc: 'Curated educational videos from trusted sources on sustainability topics', color: 'terra', cta: 'WATCH VIDEOS', href: '/videos' },
+              { icon: Download, title: 'RESOURCE LIBRARY', desc: 'PDFs, worksheets, checklists, and templates for sustainable living', color: 'moss', cta: 'BROWSE RESOURCES', href: '/resources' }
             ].map((tool, i) => (
-              <Card key={i} className={`border-4 border-${tool.color}-300 dark:border-${tool.color}-600 bg-gradient-to-br from-${tool.color}-50 to-white dark:from-earth-800 dark:to-earth-900 transform hover:scale-105 transition-all cursor-pointer`}>
-                <CardContent className="p-10 text-center">
-                  <div className={`w-24 h-24 mx-auto mb-6 rounded-full bg-${tool.color}-100 dark:bg-${tool.color}-900 flex items-center justify-center`}>
-                    <tool.icon className={`w-12 h-12 text-${tool.color}-600 dark:text-${tool.color}-400`} />
-                  </div>
-                  <h3 className="text-xl font-black mb-3 text-earth-900 dark:text-sand-100">{tool.title}</h3>
-                  <p className="font-medium mb-6 text-earth-700 dark:text-sand-300">{tool.desc}</p>
-                  <Button variant="outline" className={`font-bold border-2 border-${tool.color}-500 text-${tool.color}-700 dark:text-${tool.color}-400 hover:bg-${tool.color}-500 hover:text-white`}>
-                    {tool.cta}
-                  </Button>
-                </CardContent>
-              </Card>
+              <Link key={i} href={tool.href}>
+                <Card className={`h-full border-4 border-${tool.color}-300 dark:border-${tool.color}-600 bg-gradient-to-br from-${tool.color}-50 to-white dark:from-earth-800 dark:to-earth-900 transform hover:scale-105 transition-all cursor-pointer`}>
+                  <CardContent className="p-10 text-center">
+                    <div className={`w-24 h-24 mx-auto mb-6 rounded-full bg-${tool.color}-100 dark:bg-${tool.color}-900 flex items-center justify-center`}>
+                      <tool.icon className={`w-12 h-12 text-${tool.color}-600 dark:text-${tool.color}-400`} />
+                    </div>
+                    <h3 className="text-xl font-black mb-3 text-earth-900 dark:text-sand-100">{tool.title}</h3>
+                    <p className="font-medium mb-6 text-earth-700 dark:text-sand-300">{tool.desc}</p>
+                    <Button variant="outline" className={`font-bold border-2 border-${tool.color}-500 text-${tool.color}-700 dark:text-${tool.color}-400 hover:bg-${tool.color}-500 hover:text-white`}>
+                      {tool.cta}
+                    </Button>
+                  </CardContent>
+                </Card>
+              </Link>
             ))}
           </div>
         </div>
