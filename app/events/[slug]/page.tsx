@@ -1,7 +1,7 @@
 'use client'
 
 import { BackButton } from '@/components/navigation/BackButton'
-import { useState, useEffect } from 'react'
+import { useState, useEffect, use } from 'react'
 import { useSession } from 'next-auth/react'
 import { useRouter } from 'next/navigation'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/Card'
@@ -58,7 +58,8 @@ interface Event {
   createdAt: string
 }
 
-export default function EventPage({ params }: { params: { slug: string } }) {
+export default function EventPage({ params }: { params: Promise<{ slug: string }> }) {
+  const { slug } = use(params)
   const { data: session } = useSession()
   const router = useRouter()
   const [event, setEvent] = useState<Event | null>(null)
@@ -67,7 +68,8 @@ export default function EventPage({ params }: { params: { slug: string } }) {
 
   useEffect(() => {
     fetchEvent()
-  }, [params.slug])
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [slug])
 
   const fetchEvent = async () => {
     try {
@@ -76,7 +78,7 @@ export default function EventPage({ params }: { params: { slug: string } }) {
       const data = await res.json()
 
       if (data.success) {
-        const foundEvent = data.data.find((e: Event) => e.slug === params.slug)
+        const foundEvent = data.data.find((e: Event) => e.slug === slug)
         if (foundEvent) {
           // Then fetch full details for this specific event
           const detailRes = await fetch(`/api/events/${foundEvent.id}`)
@@ -95,7 +97,7 @@ export default function EventPage({ params }: { params: { slug: string } }) {
 
   const handleRSVP = async (status: 'GOING' | 'MAYBE' | 'NOT_GOING') => {
     if (!session?.user) {
-      router.push('/auth/signin?callbackUrl=/events/' + params.slug)
+      router.push('/auth/signin?callbackUrl=/events/' + slug)
       return
     }
 

@@ -17,23 +17,23 @@ const Select = forwardRef<HTMLSelectElement, SelectProps>(
         {label && (
           <label
             htmlFor={selectId}
-            className="block text-sm font-medium text-earth-900 mb-2"
+            className="block text-sm font-medium text-[var(--foreground)] mb-2"
           >
             {label}
-            {props.required && <span className="text-terra-500 ml-1">*</span>}
+            {props.required && <span className="text-theme-secondary ml-1">*</span>}
           </label>
         )}
         <select
           id={selectId}
           className={cn(
-            'w-full px-4 py-2 rounded-lg border text-earth-900',
-            'bg-white',
+            'w-full px-4 py-2 rounded-lg border text-[var(--foreground)]',
+            'bg-[var(--card)]',
             'transition-colors duration-200',
-            'focus:outline-none focus:ring-2 focus:ring-moss-500 focus:border-transparent',
+            'focus:outline-none focus:ring-2 focus:ring-[var(--primary)] focus:border-transparent',
             error
-              ? 'border-terra-500 focus:ring-terra-500'
-              : 'border-sand-300 hover:border-sand-400',
-            'disabled:bg-sand-100 disabled:cursor-not-allowed disabled:text-earth-500',
+              ? 'border-theme-secondary focus:ring-[var(--secondary)]'
+              : 'border-[var(--border)] hover:border-theme-primary',
+            'disabled:bg-[var(--muted)] disabled:cursor-not-allowed disabled:opacity-60',
             className
           )}
           ref={ref}
@@ -58,14 +58,14 @@ const Select = forwardRef<HTMLSelectElement, SelectProps>(
         {error && (
           <p
             id={`${selectId}-error`}
-            className="mt-1 text-sm text-terra-600"
+            className="mt-1 text-sm text-theme-secondary"
             role="alert"
           >
             {error}
           </p>
         )}
         {hint && !error && (
-          <p id={`${selectId}-hint`} className="mt-1 text-sm text-earth-600">
+          <p id={`${selectId}-hint`} className="mt-1 text-sm text-theme-muted">
             {hint}
           </p>
         )}

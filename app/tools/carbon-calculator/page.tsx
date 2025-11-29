@@ -1,687 +1,851 @@
 'use client'
 
 import { useState } from 'react'
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/Card'
+import { Card, CardContent } from '@/components/ui/Card'
 import { Button } from '@/components/ui/Button'
-import {
-  Car, Home, Plane, ShoppingBag, Utensils, Zap,
-  Droplet, Recycle, TreePine, ChevronRight, ChevronLeft,
-  Calculator, Leaf, TrendingDown, Award, Target, Info
-} from 'lucide-react'
+import { Citation } from '@/components/learn/Citation'
+import { Calculator, TrendingDown, Zap, Car, Home, Utensils, ShoppingBag, Plane, CheckCircle, AlertCircle, Leaf } from 'lucide-react'
+import { BackButton } from '@/components/navigation/BackButton'
 import Link from 'next/link'
 
-type Category = 'transportation' | 'home' | 'food' | 'shopping' | 'results'
-
-interface FormData {
-  // Transportation
-  carMiles: number
-  carType: 'gas' | 'hybrid' | 'electric' | 'none'
-  flightsShort: number
-  flightsLong: number
-  publicTransit: number
-
-  // Home Energy
-  electricityBill: number
-  gasBill: number
-  homeSize: 'small' | 'medium' | 'large'
-  renewableEnergy: number
-
-  // Food
-  dietType: 'meat-heavy' | 'average' | 'vegetarian' | 'vegan'
-  localFood: number
-  foodWaste: 'high' | 'medium' | 'low'
-
-  // Shopping
-  newClothes: number
-  electronics: number
-  recyclePercent: number
-}
-
-const initialData: FormData = {
-  carMiles: 0,
-  carType: 'gas',
-  flightsShort: 0,
-  flightsLong: 0,
-  publicTransit: 0,
-  electricityBill: 100,
-  gasBill: 50,
-  homeSize: 'medium',
-  renewableEnergy: 0,
-  dietType: 'average',
-  localFood: 20,
-  foodWaste: 'medium',
-  newClothes: 20,
-  electronics: 2,
-  recyclePercent: 30
+interface CarbonData {
+  housing: number
+  transportation: number
+  food: number
+  goods: number
+  travel: number
 }
 
 export default function CarbonCalculatorPage() {
-  const [currentStep, setCurrentStep] = useState<Category>('transportation')
-  const [formData, setFormData] = useState<FormData>(initialData)
-  const [showResults, setShowResults] = useState(false)
+  const [step, setStep] = useState(1)
+  const [results, setResults] = useState<CarbonData | null>(null)
 
-  const steps: { id: Category; title: string; icon: any }[] = [
-    { id: 'transportation', title: 'Transportation', icon: Car },
-    { id: 'home', title: 'Home Energy', icon: Home },
-    { id: 'food', title: 'Food & Diet', icon: Utensils },
-    { id: 'shopping', title: 'Shopping', icon: ShoppingBag },
-  ]
+  // Housing
+  const [electricity, setElectricity] = useState(900) // kWh/month
+  const [naturalGas, setNaturalGas] = useState(40) // therms/month
+  const [homeSize, setHomeSize] = useState(1500) // sq ft
+  const [renewable, setRenewable] = useState(false)
 
-  const currentStepIndex = steps.findIndex(s => s.id === currentStep)
+  // Transportation
+  const [milesDriven, setMilesDriven] = useState(12000) // miles/year
+  const [mpg, setMpg] = useState(25)
+  const [publicTransit, setPublicTransit] = useState(false)
+  const [ev, setEv] = useState(false)
 
-  const updateField = (field: keyof FormData, value: any) => {
-    setFormData(prev => ({ ...prev, [field]: value }))
-  }
+  // Food
+  const [diet, setDiet] = useState<'omnivore' | 'vegetarian' | 'vegan' | 'low-meat'>('omnivore')
+  const [organic, setOrganic] = useState(false)
+  const [local, setLocal] = useState(false)
+
+  // Goods & Services
+  const [shopping, setShopping] = useState<'high' | 'medium' | 'low'>('medium')
+  const [secondHand, setSecondHand] = useState(false)
+
+  // Travel
+  const [flights, setFlights] = useState(2) // per year
 
   const calculateFootprint = () => {
-    let total = 0
+    // HOUSING (based on EPA and DOE data)
+    let housingCO2 = 0
 
-    // Transportation (tons CO2/year)
-    const carFactors = { gas: 0.404, hybrid: 0.257, electric: 0.1, none: 0 }
-    total += (formData.carMiles * 52 * carFactors[formData.carType]) / 1000
-    total += formData.flightsShort * 0.255 // Short flights ~255kg CO2
-    total += formData.flightsLong * 1.5 // Long flights ~1.5 tons CO2
-    total += (formData.publicTransit * 52 * 0.089) / 1000
+    // Electricity: 0.92 lbs CO2/kWh (US average grid)
+    housingCO2 += renewable ? electricity * 0.1 * 12 : electricity * 0.92 * 12
 
-    // Home Energy
-    total += (formData.electricityBill * 12 * 0.0004) // ~0.4kg CO2 per kWh
-    total += (formData.gasBill * 12 * 0.005) // ~5kg CO2 per therm
-    const homeSizeFactors = { small: 0.8, medium: 1, large: 1.3 }
-    total *= homeSizeFactors[formData.homeSize]
-    total *= (1 - formData.renewableEnergy / 100 * 0.5)
+    // Natural Gas: 11.7 lbs CO2/therm
+    housingCO2 += naturalGas * 11.7 * 12
 
-    // Food
-    const dietFactors = { 'meat-heavy': 3.3, average: 2.5, vegetarian: 1.7, vegan: 1.5 }
-    let foodFootprint = dietFactors[formData.dietType]
-    foodFootprint *= (1 - formData.localFood / 100 * 0.1)
-    const wasteFactors = { high: 1.2, medium: 1, low: 0.85 }
-    foodFootprint *= wasteFactors[formData.foodWaste]
-    total += foodFootprint
+    // TRANSPORTATION
+    let transportCO2 = 0
 
-    // Shopping
-    total += formData.newClothes * 0.025 // ~25kg CO2 per item
-    total += formData.electronics * 0.3 // ~300kg CO2 per device
-    total *= (1 - formData.recyclePercent / 100 * 0.05)
+    if (ev) {
+      // Electric vehicle: 0.35 lbs CO2/mile (incl electricity generation)
+      transportCO2 += milesDriven * 0.35
+    } else {
+      // Gasoline: 19.6 lbs CO2/gallon
+      transportCO2 += (milesDriven / mpg) * 19.6
+    }
 
-    return Math.round(total * 10) / 10
+    // Public transit bonus (20% reduction)
+    if (publicTransit) {
+      transportCO2 *= 0.8
+    }
+
+    // FOOD
+    let foodCO2 = 0
+    const dietFactors = {
+      vegan: 3300,
+      vegetarian: 3900,
+      'low-meat': 4700,
+      omnivore: 5500
+    }
+    foodCO2 = dietFactors[diet]
+
+    // Organic reduces by 10%
+    if (organic) foodCO2 *= 0.9
+    // Local reduces by 5%
+    if (local) foodCO2 *= 0.95
+
+    // GOODS & SERVICES
+    let goodsCO2 = 0
+    const shoppingFactors = {
+      low: 2000,
+      medium: 4000,
+      high: 7000
+    }
+    goodsCO2 = shoppingFactors[shopping]
+
+    // Second-hand reduces by 40%
+    if (secondHand) goodsCO2 *= 0.6
+
+    // TRAVEL (flights)
+    // Average: 0.4 tons CO2 per domestic flight, 2.0 tons per international
+    const travelCO2 = flights * 1200 // lbs (assuming mix)
+
+    setResults({
+      housing: Math.round(housingCO2),
+      transportation: Math.round(transportCO2),
+      food: Math.round(foodCO2),
+      goods: Math.round(goodsCO2),
+      travel: Math.round(travelCO2)
+    })
+
+    setStep(6)
   }
 
-  const footprint = calculateFootprint()
-  const usAverage = 16 // US average is about 16 tons CO2/year
-  const globalAverage = 4.5 // Global average
-  const sustainableTarget = 2 // Paris Agreement target
+  const totalEmissions = results
+    ? Math.round((results.housing + results.transportation + results.food + results.goods + results.travel) / 2000) // Convert to tons
+    : 0
 
-  const getFootprintRating = () => {
-    if (footprint <= sustainableTarget) return { label: 'Excellent', color: 'moss', emoji: '🌟' }
-    if (footprint <= globalAverage) return { label: 'Good', color: 'ocean', emoji: '👍' }
-    if (footprint <= usAverage * 0.7) return { label: 'Average', color: 'terra', emoji: '📊' }
-    return { label: 'High', color: 'red', emoji: '⚠️' }
-  }
-
-  const rating = getFootprintRating()
+  const usAverage = 16 // tons CO2/year
+  const globalAverage = 4 // tons CO2/year
+  const parisTarget = 2 // tons CO2/year for 1.5°C goal
 
   const getRecommendations = () => {
+    if (!results) return []
+
     const recs = []
+    const total = results.housing + results.transportation + results.food + results.goods + results.travel
 
-    if (formData.carType === 'gas' && formData.carMiles > 100) {
+    // Housing recommendations
+    if ((results.housing / total) > 0.3) {
+      if (!renewable) {
+        recs.push({
+          icon: Zap,
+          category: 'Energy',
+          title: 'Switch to 100% Renewable Energy',
+          impact: 'Reduce housing emissions by 60-90%',
+          savings: `${Math.round(results.housing * 0.75 / 2000)} tons CO₂/year`,
+          action: '/learn/renewable-energy'
+        })
+      }
       recs.push({
-        title: 'Consider an Electric Vehicle',
-        desc: 'Switching to an EV could save up to 4.6 tons of CO2 annually',
-        impact: 'High',
-        icon: Car
+        icon: Home,
+        category: 'Efficiency',
+        title: 'Improve Home Insulation & Efficiency',
+        impact: 'Reduce heating/cooling by 30-50%',
+        savings: `${Math.round(results.housing * 0.4 / 2000)} tons CO₂/year`,
+        action: '/learn/green-building'
       })
     }
 
-    if (formData.flightsLong > 2) {
-      recs.push({
-        title: 'Reduce Long-Haul Flights',
-        desc: 'One less international flight saves ~1.5 tons of CO2',
-        impact: 'High',
-        icon: Plane
-      })
+    // Transportation recommendations
+    if ((results.transportation / total) > 0.25) {
+      if (!ev) {
+        recs.push({
+          icon: Car,
+          category: 'Transportation',
+          title: 'Switch to Electric Vehicle',
+          impact: 'Reduce transport emissions by 50-70%',
+          savings: `${Math.round(results.transportation * 0.6 / 2000)} tons CO₂/year`,
+          action: '/products?category=transportation'
+        })
+      }
+      if (!publicTransit) {
+        recs.push({
+          icon: Car,
+          category: 'Transportation',
+          title: 'Use Public Transit & Bike More',
+          impact: 'Reduce transport emissions by 20-40%',
+          savings: `${Math.round(results.transportation * 0.3 / 2000)} tons CO₂/year`,
+          action: '/learn'
+        })
+      }
     }
 
-    if (formData.renewableEnergy < 50) {
+    // Food recommendations
+    if (diet === 'omnivore') {
       recs.push({
-        title: 'Switch to Renewable Energy',
-        desc: 'Green energy plans can reduce your home emissions by 50%+',
-        impact: 'High',
-        icon: Zap
-      })
-    }
-
-    if (formData.dietType === 'meat-heavy' || formData.dietType === 'average') {
-      recs.push({
+        icon: Utensils,
+        category: 'Food',
         title: 'Reduce Meat Consumption',
-        desc: 'Going vegetarian 3 days/week saves ~0.5 tons CO2 annually',
-        impact: 'Medium',
-        icon: Utensils
+        impact: 'Low-meat or vegetarian diet',
+        savings: `${Math.round((5500 - 3900) / 2000)} tons CO₂/year`,
+        action: '/learn/agriculture'
       })
     }
 
-    if (formData.recyclePercent < 50) {
+    if (!organic || !local) {
       recs.push({
-        title: 'Improve Recycling Habits',
-        desc: 'Recycling and composting can significantly reduce waste emissions',
-        impact: 'Medium',
-        icon: Recycle
+        icon: Leaf,
+        category: 'Food',
+        title: 'Buy Organic & Local Food',
+        impact: 'Support regenerative agriculture',
+        savings: `${Math.round(results.food * 0.15 / 2000)} tons CO₂/year`,
+        action: '/products?category=food'
       })
     }
 
-    if (formData.localFood < 30) {
+    // Goods recommendations
+    if (shopping === 'high' || !secondHand) {
       recs.push({
-        title: 'Buy Local & Seasonal',
-        desc: 'Local food reduces transportation emissions and supports community',
-        impact: 'Low',
-        icon: Leaf
+        icon: ShoppingBag,
+        category: 'Consumption',
+        title: 'Buy Less, Choose Second-Hand',
+        impact: 'Embrace minimalism & circular economy',
+        savings: `${Math.round(results.goods * 0.4 / 2000)} tons CO₂/year`,
+        action: '/learn/zero-waste'
       })
     }
 
-    return recs.slice(0, 4)
-  }
-
-  const nextStep = () => {
-    if (currentStepIndex < steps.length - 1) {
-      setCurrentStep(steps[currentStepIndex + 1].id)
-    } else {
-      setShowResults(true)
+    // Travel recommendations
+    if (flights > 2) {
+      recs.push({
+        icon: Plane,
+        category: 'Travel',
+        title: 'Reduce Air Travel',
+        impact: 'Each flight avoided saves significant emissions',
+        savings: `${Math.round((flights - 1) * 1200 / 2000)} tons CO₂/year`,
+        action: '/learn'
+      })
     }
+
+    return recs.slice(0, 6) // Top 6 recommendations
   }
-
-  const prevStep = () => {
-    if (showResults) {
-      setShowResults(false)
-    } else if (currentStepIndex > 0) {
-      setCurrentStep(steps[currentStepIndex - 1].id)
-    }
-  }
-
-  const SliderInput = ({
-    label,
-    value,
-    onChange,
-    min,
-    max,
-    step = 1,
-    unit = '',
-    helpText
-  }: {
-    label: string
-    value: number
-    onChange: (val: number) => void
-    min: number
-    max: number
-    step?: number
-    unit?: string
-    helpText?: string
-  }) => (
-    <div className="space-y-3">
-      <div className="flex justify-between items-center">
-        <label className="font-bold text-earth-800 dark:text-sand-200">{label}</label>
-        <span className="text-2xl font-black text-moss-600 dark:text-moss-400">
-          {value}{unit}
-        </span>
-      </div>
-      {helpText && (
-        <p className="text-sm text-earth-600 dark:text-sand-400">{helpText}</p>
-      )}
-      <input
-        type="range"
-        min={min}
-        max={max}
-        step={step}
-        value={value}
-        onChange={(e) => onChange(Number(e.target.value))}
-        className="w-full h-3 bg-sand-200 dark:bg-earth-700 rounded-lg appearance-none cursor-pointer accent-moss-500"
-      />
-      <div className="flex justify-between text-xs font-medium text-earth-500 dark:text-sand-500">
-        <span>{min}{unit}</span>
-        <span>{max}{unit}</span>
-      </div>
-    </div>
-  )
-
-  const OptionButton = ({
-    selected,
-    onClick,
-    children
-  }: {
-    selected: boolean
-    onClick: () => void
-    children: React.ReactNode
-  }) => (
-    <button
-      onClick={onClick}
-      className={`px-4 py-3 rounded-xl font-bold transition-all ${
-        selected
-          ? 'bg-moss-500 text-white shadow-lg scale-105'
-          : 'bg-sand-100 dark:bg-earth-700 text-earth-700 dark:text-sand-300 hover:bg-sand-200 dark:hover:bg-earth-600'
-      }`}
-    >
-      {children}
-    </button>
-  )
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-moss-50 via-sand-50 to-ocean-50 dark:from-earth-900 dark:via-earth-800 dark:to-earth-900">
-      {/* Header */}
-      <section className="py-16 bg-gradient-to-r from-moss-600 to-ocean-600 text-white">
+    <div className="min-h-screen bg-[var(--background)]">
+      {/* Hero */}
+      <section className="py-20 bg-gradient-to-br from-[color-mix(in_srgb,var(--primary)_20%,var(--background))] via-[var(--background)] to-[color-mix(in_srgb,var(--accent)_20%,var(--background))]">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="max-w-4xl mx-auto text-center">
-            <div className="inline-flex items-center gap-3 px-6 py-3 rounded-full bg-white/20 backdrop-blur-sm mb-6">
-              <Calculator className="w-6 h-6" />
-              <span className="font-bold">INTERACTIVE TOOL</span>
-            </div>
-            <h1 className="text-5xl font-black mb-4">CARBON FOOTPRINT CALCULATOR</h1>
-            <p className="text-xl font-medium text-moss-100">
-              Discover your environmental impact and get personalized tips to reduce it
+          <div className="mb-6">
+            <BackButton label="Back to Tools" fallbackUrl="/tools" />
+          </div>
+          <div className="max-w-4xl mx-auto text-center space-y-6">
+            <Calculator className="w-16 h-16 text-theme-primary mx-auto" />
+            <h1 className="text-5xl md:text-6xl font-black text-[var(--foreground)]">
+              CARBON FOOTPRINT CALCULATOR
+            </h1>
+            <p className="text-xl font-semibold text-theme-muted">
+              Measure your climate impact and discover personalized ways to reduce it
             </p>
           </div>
         </div>
       </section>
 
-      <div className="container mx-auto px-4 sm:px-6 lg:px-8 py-12">
-        <div className="max-w-4xl mx-auto">
-          {/* Progress Steps */}
-          {!showResults && (
-            <div className="flex items-center justify-center gap-2 mb-12">
-              {steps.map((step, i) => (
-                <div key={step.id} className="flex items-center">
-                  <button
-                    onClick={() => setCurrentStep(step.id)}
-                    className={`flex items-center gap-2 px-4 py-2 rounded-full font-bold transition-all ${
-                      currentStep === step.id
-                        ? 'bg-moss-500 text-white shadow-lg'
-                        : i < currentStepIndex
-                        ? 'bg-moss-200 dark:bg-moss-800 text-moss-700 dark:text-moss-300'
-                        : 'bg-sand-200 dark:bg-earth-700 text-earth-500 dark:text-sand-500'
-                    }`}
-                  >
-                    <step.icon className="w-5 h-5" />
-                    <span className="hidden sm:inline">{step.title}</span>
-                  </button>
-                  {i < steps.length - 1 && (
-                    <ChevronRight className="w-5 h-5 text-earth-400 mx-1" />
-                  )}
+      {step < 6 && (
+        <section className="py-12 bg-[var(--muted)]">
+          <div className="container mx-auto px-4 sm:px-6 lg:px-8">
+            <div className="max-w-3xl mx-auto">
+              {/* Progress Bar */}
+              <div className="mb-8">
+                <div className="flex justify-between mb-2">
+                  <span className="text-sm font-bold text-theme-muted">Step {step} of 5</span>
+                  <span className="text-sm font-bold text-theme-primary">{(step/5*100).toFixed(0)}%</span>
                 </div>
-              ))}
-            </div>
-          )}
-
-          {/* Form Content */}
-          {!showResults ? (
-            <Card className="border-4 border-moss-300 dark:border-moss-700 shadow-2xl">
-              <CardHeader className="border-b-2 border-sand-200 dark:border-earth-700">
-                <CardTitle className="text-2xl font-black text-earth-900 dark:text-sand-100 flex items-center gap-3">
-                  {(() => {
-                    const StepIcon = steps[currentStepIndex].icon
-                    return <StepIcon className="w-8 h-8 text-moss-600 dark:text-moss-400" />
-                  })()}
-                  {steps[currentStepIndex].title}
-                </CardTitle>
-              </CardHeader>
-              <CardContent className="p-8 space-y-8">
-                {/* Transportation */}
-                {currentStep === 'transportation' && (
-                  <>
-                    <SliderInput
-                      label="Weekly Car Miles"
-                      value={formData.carMiles}
-                      onChange={(val) => updateField('carMiles', val)}
-                      min={0}
-                      max={500}
-                      unit=" mi"
-                      helpText="Average miles you drive per week"
-                    />
-
-                    <div className="space-y-3">
-                      <label className="font-bold text-earth-800 dark:text-sand-200">Vehicle Type</label>
-                      <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
-                        {(['none', 'electric', 'hybrid', 'gas'] as const).map((type) => (
-                          <OptionButton
-                            key={type}
-                            selected={formData.carType === type}
-                            onClick={() => updateField('carType', type)}
-                          >
-                            {type === 'none' ? 'No Car' : type.charAt(0).toUpperCase() + type.slice(1)}
-                          </OptionButton>
-                        ))}
-                      </div>
-                    </div>
-
-                    <SliderInput
-                      label="Short Flights per Year"
-                      value={formData.flightsShort}
-                      onChange={(val) => updateField('flightsShort', val)}
-                      min={0}
-                      max={20}
-                      helpText="Flights under 3 hours"
-                    />
-
-                    <SliderInput
-                      label="Long Flights per Year"
-                      value={formData.flightsLong}
-                      onChange={(val) => updateField('flightsLong', val)}
-                      min={0}
-                      max={10}
-                      helpText="International/cross-country flights"
-                    />
-
-                    <SliderInput
-                      label="Public Transit (hours/week)"
-                      value={formData.publicTransit}
-                      onChange={(val) => updateField('publicTransit', val)}
-                      min={0}
-                      max={40}
-                      unit=" hrs"
-                    />
-                  </>
-                )}
-
-                {/* Home Energy */}
-                {currentStep === 'home' && (
-                  <>
-                    <SliderInput
-                      label="Monthly Electricity Bill"
-                      value={formData.electricityBill}
-                      onChange={(val) => updateField('electricityBill', val)}
-                      min={0}
-                      max={500}
-                      unit="$"
-                    />
-
-                    <SliderInput
-                      label="Monthly Gas Bill"
-                      value={formData.gasBill}
-                      onChange={(val) => updateField('gasBill', val)}
-                      min={0}
-                      max={300}
-                      unit="$"
-                    />
-
-                    <div className="space-y-3">
-                      <label className="font-bold text-earth-800 dark:text-sand-200">Home Size</label>
-                      <div className="grid grid-cols-3 gap-3">
-                        {(['small', 'medium', 'large'] as const).map((size) => (
-                          <OptionButton
-                            key={size}
-                            selected={formData.homeSize === size}
-                            onClick={() => updateField('homeSize', size)}
-                          >
-                            {size === 'small' ? 'Small (<1000 sqft)' : size === 'medium' ? 'Medium' : 'Large (>2000 sqft)'}
-                          </OptionButton>
-                        ))}
-                      </div>
-                    </div>
-
-                    <SliderInput
-                      label="Renewable Energy %"
-                      value={formData.renewableEnergy}
-                      onChange={(val) => updateField('renewableEnergy', val)}
-                      min={0}
-                      max={100}
-                      unit="%"
-                      helpText="Percentage of electricity from renewable sources"
-                    />
-                  </>
-                )}
-
-                {/* Food */}
-                {currentStep === 'food' && (
-                  <>
-                    <div className="space-y-3">
-                      <label className="font-bold text-earth-800 dark:text-sand-200">Diet Type</label>
-                      <div className="grid grid-cols-2 gap-3">
-                        {([
-                          { value: 'vegan', label: 'Vegan' },
-                          { value: 'vegetarian', label: 'Vegetarian' },
-                          { value: 'average', label: 'Average (some meat)' },
-                          { value: 'meat-heavy', label: 'Meat-Heavy' }
-                        ] as const).map((diet) => (
-                          <OptionButton
-                            key={diet.value}
-                            selected={formData.dietType === diet.value}
-                            onClick={() => updateField('dietType', diet.value)}
-                          >
-                            {diet.label}
-                          </OptionButton>
-                        ))}
-                      </div>
-                    </div>
-
-                    <SliderInput
-                      label="Local/Seasonal Food %"
-                      value={formData.localFood}
-                      onChange={(val) => updateField('localFood', val)}
-                      min={0}
-                      max={100}
-                      unit="%"
-                      helpText="How much of your food is locally sourced"
-                    />
-
-                    <div className="space-y-3">
-                      <label className="font-bold text-earth-800 dark:text-sand-200">Food Waste Level</label>
-                      <div className="grid grid-cols-3 gap-3">
-                        {(['low', 'medium', 'high'] as const).map((level) => (
-                          <OptionButton
-                            key={level}
-                            selected={formData.foodWaste === level}
-                            onClick={() => updateField('foodWaste', level)}
-                          >
-                            {level.charAt(0).toUpperCase() + level.slice(1)}
-                          </OptionButton>
-                        ))}
-                      </div>
-                    </div>
-                  </>
-                )}
-
-                {/* Shopping */}
-                {currentStep === 'shopping' && (
-                  <>
-                    <SliderInput
-                      label="New Clothing Items per Year"
-                      value={formData.newClothes}
-                      onChange={(val) => updateField('newClothes', val)}
-                      min={0}
-                      max={100}
-                      helpText="Including shoes, accessories"
-                    />
-
-                    <SliderInput
-                      label="New Electronics per Year"
-                      value={formData.electronics}
-                      onChange={(val) => updateField('electronics', val)}
-                      min={0}
-                      max={10}
-                      helpText="Phones, laptops, tablets, etc."
-                    />
-
-                    <SliderInput
-                      label="Recycling Rate"
-                      value={formData.recyclePercent}
-                      onChange={(val) => updateField('recyclePercent', val)}
-                      min={0}
-                      max={100}
-                      unit="%"
-                      helpText="How much of your waste do you recycle/compost"
-                    />
-                  </>
-                )}
-
-                {/* Navigation */}
-                <div className="flex justify-between pt-6 border-t-2 border-sand-200 dark:border-earth-700">
-                  <Button
-                    variant="outline"
-                    onClick={prevStep}
-                    disabled={currentStepIndex === 0}
-                    className="font-bold"
-                  >
-                    <ChevronLeft className="w-5 h-5 mr-2" />
-                    Back
-                  </Button>
-                  <Button onClick={nextStep} className="font-bold">
-                    {currentStepIndex === steps.length - 1 ? 'Calculate Results' : 'Next'}
-                    <ChevronRight className="w-5 h-5 ml-2" />
-                  </Button>
+                <div className="w-full h-3 bg-[var(--background)] rounded-full overflow-hidden">
+                  <div
+                    className="h-full bg-gradient-to-r from-theme-primary to-theme-accent transition-all duration-300"
+                    style={{ width: `${(step/5*100)}%` }}
+                  />
                 </div>
-              </CardContent>
-            </Card>
-          ) : (
-            /* Results */
-            <div className="space-y-8">
-              {/* Main Result */}
-              <Card className="border-4 border-moss-400 dark:border-moss-600 shadow-2xl overflow-hidden">
-                <div className="bg-gradient-to-r from-moss-500 to-ocean-500 p-8 text-white text-center">
-                  <h2 className="text-2xl font-bold mb-2">Your Annual Carbon Footprint</h2>
-                  <div className="text-8xl font-black mb-2">{footprint}</div>
-                  <div className="text-2xl font-bold">tons of CO2</div>
-                </div>
-                <CardContent className="p-8">
-                  <div className="flex items-center justify-center gap-4 mb-8">
-                    <span className="text-5xl">{rating.emoji}</span>
-                    <div>
-                      <div className={`text-3xl font-black text-${rating.color}-600 dark:text-${rating.color}-400`}>
-                        {rating.label}
-                      </div>
-                      <div className="text-earth-600 dark:text-sand-400 font-medium">
-                        {footprint <= globalAverage
-                          ? "You're below the global average!"
-                          : footprint <= usAverage
-                          ? "Below US average, room to improve"
-                          : "Higher than average - let's reduce it!"}
-                      </div>
-                    </div>
-                  </div>
-
-                  {/* Comparison Bars */}
-                  <div className="space-y-4">
-                    <div className="space-y-2">
-                      <div className="flex justify-between text-sm font-bold">
-                        <span className="text-moss-700 dark:text-moss-400">Your Footprint</span>
-                        <span>{footprint} tons</span>
-                      </div>
-                      <div className="h-4 bg-sand-200 dark:bg-earth-700 rounded-full overflow-hidden">
-                        <div
-                          className="h-full bg-gradient-to-r from-moss-500 to-moss-600 rounded-full transition-all duration-1000"
-                          style={{ width: `${Math.min((footprint / usAverage) * 100, 100)}%` }}
-                        />
-                      </div>
-                    </div>
-
-                    <div className="space-y-2">
-                      <div className="flex justify-between text-sm font-bold">
-                        <span className="text-ocean-700 dark:text-ocean-400">Global Average</span>
-                        <span>{globalAverage} tons</span>
-                      </div>
-                      <div className="h-4 bg-sand-200 dark:bg-earth-700 rounded-full overflow-hidden">
-                        <div
-                          className="h-full bg-gradient-to-r from-ocean-500 to-ocean-600 rounded-full"
-                          style={{ width: `${(globalAverage / usAverage) * 100}%` }}
-                        />
-                      </div>
-                    </div>
-
-                    <div className="space-y-2">
-                      <div className="flex justify-between text-sm font-bold">
-                        <span className="text-terra-700 dark:text-terra-400">US Average</span>
-                        <span>{usAverage} tons</span>
-                      </div>
-                      <div className="h-4 bg-sand-200 dark:bg-earth-700 rounded-full overflow-hidden">
-                        <div className="h-full bg-gradient-to-r from-terra-500 to-terra-600 rounded-full w-full" />
-                      </div>
-                    </div>
-
-                    <div className="space-y-2">
-                      <div className="flex justify-between text-sm font-bold">
-                        <span className="text-moss-700 dark:text-moss-400">Sustainable Target</span>
-                        <span>{sustainableTarget} tons</span>
-                      </div>
-                      <div className="h-4 bg-sand-200 dark:bg-earth-700 rounded-full overflow-hidden">
-                        <div
-                          className="h-full bg-gradient-to-r from-moss-400 to-moss-500 rounded-full"
-                          style={{ width: `${(sustainableTarget / usAverage) * 100}%` }}
-                        />
-                      </div>
-                    </div>
-                  </div>
-                </CardContent>
-              </Card>
-
-              {/* Recommendations */}
-              <Card className="border-4 border-ocean-300 dark:border-ocean-700">
-                <CardHeader>
-                  <CardTitle className="text-2xl font-black text-earth-900 dark:text-sand-100 flex items-center gap-3">
-                    <TrendingDown className="w-8 h-8 text-ocean-600" />
-                    Personalized Recommendations
-                  </CardTitle>
-                </CardHeader>
-                <CardContent className="p-6">
-                  <div className="grid md:grid-cols-2 gap-4">
-                    {getRecommendations().map((rec, i) => (
-                      <div
-                        key={i}
-                        className="p-4 rounded-xl bg-sand-50 dark:bg-earth-800 border-2 border-sand-200 dark:border-earth-700"
-                      >
-                        <div className="flex items-start gap-4">
-                          <div className="w-12 h-12 rounded-xl bg-ocean-100 dark:bg-ocean-900 flex items-center justify-center flex-shrink-0">
-                            <rec.icon className="w-6 h-6 text-ocean-600 dark:text-ocean-400" />
-                          </div>
-                          <div>
-                            <div className="flex items-center gap-2 mb-1">
-                              <h4 className="font-black text-earth-900 dark:text-sand-100">{rec.title}</h4>
-                              <span className={`text-xs font-bold px-2 py-0.5 rounded-full ${
-                                rec.impact === 'High'
-                                  ? 'bg-moss-100 text-moss-700 dark:bg-moss-900 dark:text-moss-400'
-                                  : rec.impact === 'Medium'
-                                  ? 'bg-ocean-100 text-ocean-700 dark:bg-ocean-900 dark:text-ocean-400'
-                                  : 'bg-sand-200 text-earth-600 dark:bg-earth-700 dark:text-sand-400'
-                              }`}>
-                                {rec.impact} Impact
-                              </span>
-                            </div>
-                            <p className="text-sm text-earth-600 dark:text-sand-400">{rec.desc}</p>
-                          </div>
-                        </div>
-                      </div>
-                    ))}
-                  </div>
-                </CardContent>
-              </Card>
-
-              {/* Actions */}
-              <div className="flex flex-col sm:flex-row gap-4 justify-center">
-                <Button onClick={() => setShowResults(false)} variant="outline" className="font-bold">
-                  <ChevronLeft className="w-5 h-5 mr-2" />
-                  Adjust Answers
-                </Button>
-                <Link href="/learn">
-                  <Button className="font-bold w-full sm:w-auto">
-                    <Leaf className="w-5 h-5 mr-2" />
-                    Learn to Reduce Your Footprint
-                  </Button>
-                </Link>
               </div>
 
-              {/* Trees Equivalent */}
-              <Card className="border-2 border-moss-300 dark:border-moss-700 bg-moss-50 dark:bg-moss-900/30">
-                <CardContent className="p-6 text-center">
-                  <TreePine className="w-16 h-16 text-moss-600 dark:text-moss-400 mx-auto mb-4" />
-                  <p className="text-xl font-bold text-earth-800 dark:text-sand-200">
-                    To offset your footprint, you'd need to plant approximately
-                  </p>
-                  <p className="text-5xl font-black text-moss-600 dark:text-moss-400 my-4">
-                    {Math.round(footprint * 45)} trees
-                  </p>
-                  <p className="text-earth-600 dark:text-sand-400">
-                    Or reduce your emissions by making sustainable choices every day
-                  </p>
+              <Card className="border-4 border-theme-primary">
+                <CardContent className="p-8">
+                  {/* Step 1: Housing */}
+                  {step === 1 && (
+                    <div className="space-y-6">
+                      <div className="flex items-center gap-3 mb-6">
+                        <Home className="w-8 h-8 text-theme-primary" />
+                        <h2 className="text-3xl font-black text-[var(--foreground)]">HOUSING & ENERGY</h2>
+                      </div>
+
+                      <div>
+                        <label className="block font-bold text-[var(--foreground)] mb-2">
+                          Monthly Electricity Usage (kWh)
+                        </label>
+                        <input
+                          type="range"
+                          min="200"
+                          max="3000"
+                          value={electricity}
+                          onChange={(e) => setElectricity(Number(e.target.value))}
+                          className="w-full"
+                        />
+                        <div className="flex justify-between text-sm text-theme-muted mt-1">
+                          <span>200 kWh</span>
+                          <span className="font-bold text-theme-primary">{electricity} kWh</span>
+                          <span>3000 kWh</span>
+                        </div>
+                        <p className="text-sm text-theme-muted mt-1">US average: 900 kWh/month</p>
+                      </div>
+
+                      <div>
+                        <label className="block font-bold text-[var(--foreground)] mb-2">
+                          Monthly Natural Gas (therms)
+                        </label>
+                        <input
+                          type="range"
+                          min="0"
+                          max="150"
+                          value={naturalGas}
+                          onChange={(e) => setNaturalGas(Number(e.target.value))}
+                          className="w-full"
+                        />
+                        <div className="flex justify-between text-sm text-theme-muted mt-1">
+                          <span>0 therms</span>
+                          <span className="font-bold text-theme-primary">{naturalGas} therms</span>
+                          <span>150 therms</span>
+                        </div>
+                        <p className="text-sm text-theme-muted mt-1">US average: 40 therms/month</p>
+                      </div>
+
+                      <div>
+                        <label className="block font-bold text-[var(--foreground)] mb-2">
+                          Home Size (sq ft)
+                        </label>
+                        <input
+                          type="range"
+                          min="500"
+                          max="5000"
+                          step="100"
+                          value={homeSize}
+                          onChange={(e) => setHomeSize(Number(e.target.value))}
+                          className="w-full"
+                        />
+                        <div className="flex justify-between text-sm text-theme-muted mt-1">
+                          <span>500 sq ft</span>
+                          <span className="font-bold text-theme-primary">{homeSize.toLocaleString()} sq ft</span>
+                          <span>5000 sq ft</span>
+                        </div>
+                      </div>
+
+                      <div className="flex items-center gap-3 p-4 bg-[var(--muted)] rounded-lg">
+                        <input
+                          type="checkbox"
+                          id="renewable"
+                          checked={renewable}
+                          onChange={(e) => setRenewable(e.target.checked)}
+                          className="w-5 h-5"
+                        />
+                        <label htmlFor="renewable" className="font-bold text-[var(--foreground)] cursor-pointer">
+                          I use 100% renewable energy (solar, wind, etc.)
+                        </label>
+                      </div>
+
+                      <Button
+                        onClick={() => setStep(2)}
+                        className="w-full text-lg py-6 font-black"
+                        size="lg"
+                      >
+                        NEXT: TRANSPORTATION →
+                      </Button>
+                    </div>
+                  )}
+
+                  {/* Step 2: Transportation */}
+                  {step === 2 && (
+                    <div className="space-y-6">
+                      <div className="flex items-center gap-3 mb-6">
+                        <Car className="w-8 h-8 text-theme-accent" />
+                        <h2 className="text-3xl font-black text-[var(--foreground)]">TRANSPORTATION</h2>
+                      </div>
+
+                      <div>
+                        <label className="block font-bold text-[var(--foreground)] mb-2">
+                          Miles Driven Per Year
+                        </label>
+                        <input
+                          type="range"
+                          min="0"
+                          max="30000"
+                          step="1000"
+                          value={milesDriven}
+                          onChange={(e) => setMilesDriven(Number(e.target.value))}
+                          className="w-full"
+                        />
+                        <div className="flex justify-between text-sm text-theme-muted mt-1">
+                          <span>0 mi</span>
+                          <span className="font-bold text-theme-accent">{milesDriven.toLocaleString()} miles/year</span>
+                          <span>30,000 mi</span>
+                        </div>
+                        <p className="text-sm text-theme-muted mt-1">US average: 12,000 miles/year</p>
+                      </div>
+
+                      <div>
+                        <label className="block font-bold text-[var(--foreground)] mb-2">
+                          Vehicle Fuel Economy (MPG)
+                        </label>
+                        <input
+                          type="range"
+                          min="10"
+                          max="50"
+                          value={mpg}
+                          onChange={(e) => setMpg(Number(e.target.value))}
+                          className="w-full"
+                          disabled={ev}
+                        />
+                        <div className="flex justify-between text-sm text-theme-muted mt-1">
+                          <span>10 MPG</span>
+                          <span className="font-bold text-theme-accent">{mpg} MPG</span>
+                          <span>50 MPG</span>
+                        </div>
+                      </div>
+
+                      <div className="space-y-3">
+                        <div className="flex items-center gap-3 p-4 bg-[var(--muted)] rounded-lg">
+                          <input
+                            type="checkbox"
+                            id="ev"
+                            checked={ev}
+                            onChange={(e) => setEv(e.target.checked)}
+                            className="w-5 h-5"
+                          />
+                          <label htmlFor="ev" className="font-bold text-[var(--foreground)] cursor-pointer">
+                            I drive an electric vehicle (EV)
+                          </label>
+                        </div>
+
+                        <div className="flex items-center gap-3 p-4 bg-[var(--muted)] rounded-lg">
+                          <input
+                            type="checkbox"
+                            id="transit"
+                            checked={publicTransit}
+                            onChange={(e) => setPublicTransit(e.target.checked)}
+                            className="w-5 h-5"
+                          />
+                          <label htmlFor="transit" className="font-bold text-[var(--foreground)] cursor-pointer">
+                            I regularly use public transportation, bike, or walk
+                          </label>
+                        </div>
+                      </div>
+
+                      <div className="flex gap-4">
+                        <Button
+                          onClick={() => setStep(1)}
+                          variant="outline"
+                          className="w-1/3"
+                        >
+                          ← BACK
+                        </Button>
+                        <Button
+                          onClick={() => setStep(3)}
+                          className="w-2/3 text-lg py-6 font-black"
+                          size="lg"
+                        >
+                          NEXT: FOOD →
+                        </Button>
+                      </div>
+                    </div>
+                  )}
+
+                  {/* Step 3: Food */}
+                  {step === 3 && (
+                    <div className="space-y-6">
+                      <div className="flex items-center gap-3 mb-6">
+                        <Utensils className="w-8 h-8 text-theme-secondary" />
+                        <h2 className="text-3xl font-black text-[var(--foreground)]">FOOD & DIET</h2>
+                      </div>
+
+                      <div>
+                        <label className="block font-bold text-[var(--foreground)] mb-3">
+                          What best describes your diet?
+                        </label>
+                        <div className="grid grid-cols-2 gap-3">
+                          {[
+                            { value: 'vegan', label: 'Vegan', co2: '3,300 lbs/yr' },
+                            { value: 'vegetarian', label: 'Vegetarian', co2: '3,900 lbs/yr' },
+                            { value: 'low-meat', label: 'Low Meat', co2: '4,700 lbs/yr' },
+                            { value: 'omnivore', label: 'Omnivore', co2: '5,500 lbs/yr' },
+                          ].map((option) => (
+                            <button
+                              key={option.value}
+                              onClick={() => setDiet(option.value as any)}
+                              className={`p-4 rounded-lg border-2 transition-all ${
+                                diet === option.value
+                                  ? 'border-theme-secondary bg-[color-mix(in_srgb,var(--secondary)_20%,var(--background))] scale-105'
+                                  : 'border-[var(--border)] hover:border-theme-secondary'
+                              }`}
+                            >
+                              <div className="font-black text-lg text-[var(--foreground)]">{option.label}</div>
+                              <div className="text-sm text-theme-muted mt-1">{option.co2}</div>
+                            </button>
+                          ))}
+                        </div>
+                      </div>
+
+                      <div className="space-y-3">
+                        <div className="flex items-center gap-3 p-4 bg-[var(--muted)] rounded-lg">
+                          <input
+                            type="checkbox"
+                            id="organic"
+                            checked={organic}
+                            onChange={(e) => setOrganic(e.target.checked)}
+                            className="w-5 h-5"
+                          />
+                          <label htmlFor="organic" className="font-bold text-[var(--foreground)] cursor-pointer">
+                            I buy mostly organic food
+                          </label>
+                        </div>
+
+                        <div className="flex items-center gap-3 p-4 bg-[var(--muted)] rounded-lg">
+                          <input
+                            type="checkbox"
+                            id="local"
+                            checked={local}
+                            onChange={(e) => setLocal(e.target.checked)}
+                            className="w-5 h-5"
+                          />
+                          <label htmlFor="local" className="font-bold text-[var(--foreground)] cursor-pointer">
+                            I buy mostly local/seasonal food
+                          </label>
+                        </div>
+                      </div>
+
+                      <div className="flex gap-4">
+                        <Button
+                          onClick={() => setStep(2)}
+                          variant="outline"
+                          className="w-1/3"
+                        >
+                          ← BACK
+                        </Button>
+                        <Button
+                          onClick={() => setStep(4)}
+                          className="w-2/3 text-lg py-6 font-black"
+                          size="lg"
+                        >
+                          NEXT: SHOPPING →
+                        </Button>
+                      </div>
+                    </div>
+                  )}
+
+                  {/* Step 4: Goods */}
+                  {step === 4 && (
+                    <div className="space-y-6">
+                      <div className="flex items-center gap-3 mb-6">
+                        <ShoppingBag className="w-8 h-8 text-theme-primary" />
+                        <h2 className="text-3xl font-black text-[var(--foreground)]">GOODS & SERVICES</h2>
+                      </div>
+
+                      <div>
+                        <label className="block font-bold text-[var(--foreground)] mb-3">
+                          How much do you shop for new goods? (clothes, electronics, furniture, etc.)
+                        </label>
+                        <div className="grid grid-cols-3 gap-3">
+                          {[
+                            { value: 'low', label: 'Minimalist', co2: '2,000 lbs/yr' },
+                            { value: 'medium', label: 'Average', co2: '4,000 lbs/yr' },
+                            { value: 'high', label: 'Frequent', co2: '7,000 lbs/yr' },
+                          ].map((option) => (
+                            <button
+                              key={option.value}
+                              onClick={() => setShopping(option.value as any)}
+                              className={`p-4 rounded-lg border-2 transition-all ${
+                                shopping === option.value
+                                  ? 'border-theme-primary bg-[color-mix(in_srgb,var(--primary)_20%,var(--background))] scale-105'
+                                  : 'border-[var(--border)] hover:border-theme-primary'
+                              }`}
+                            >
+                              <div className="font-black text-lg text-[var(--foreground)]">{option.label}</div>
+                              <div className="text-sm text-theme-muted mt-1">{option.co2}</div>
+                            </button>
+                          ))}
+                        </div>
+                      </div>
+
+                      <div className="flex items-center gap-3 p-4 bg-[var(--muted)] rounded-lg">
+                        <input
+                          type="checkbox"
+                          id="secondhand"
+                          checked={secondHand}
+                          onChange={(e) => setSecondHand(e.target.checked)}
+                          className="w-5 h-5"
+                        />
+                        <label htmlFor="secondhand" className="font-bold text-[var(--foreground)] cursor-pointer">
+                          I frequently buy second-hand/used items
+                        </label>
+                      </div>
+
+                      <div className="flex gap-4">
+                        <Button
+                          onClick={() => setStep(3)}
+                          variant="outline"
+                          className="w-1/3"
+                        >
+                          ← BACK
+                        </Button>
+                        <Button
+                          onClick={() => setStep(5)}
+                          className="w-2/3 text-lg py-6 font-black"
+                          size="lg"
+                        >
+                          NEXT: TRAVEL →
+                        </Button>
+                      </div>
+                    </div>
+                  )}
+
+                  {/* Step 5: Travel */}
+                  {step === 5 && (
+                    <div className="space-y-6">
+                      <div className="flex items-center gap-3 mb-6">
+                        <Plane className="w-8 h-8 text-theme-accent" />
+                        <h2 className="text-3xl font-black text-[var(--foreground)]">AIR TRAVEL</h2>
+                      </div>
+
+                      <div>
+                        <label className="block font-bold text-[var(--foreground)] mb-2">
+                          How many round-trip flights do you take per year?
+                        </label>
+                        <input
+                          type="range"
+                          min="0"
+                          max="20"
+                          value={flights}
+                          onChange={(e) => setFlights(Number(e.target.value))}
+                          className="w-full"
+                        />
+                        <div className="flex justify-between text-sm text-theme-muted mt-1">
+                          <span>0 flights</span>
+                          <span className="font-bold text-theme-accent">{flights} flights/year</span>
+                          <span>20 flights</span>
+                        </div>
+                        <p className="text-sm text-theme-muted mt-2">
+                          Each flight = ~0.6 tons CO₂ (domestic) to 2.0 tons (international)
+                        </p>
+                      </div>
+
+                      <div className="bg-[color-mix(in_srgb,var(--accent)_10%,var(--background))] p-6 rounded-lg border-2 border-theme-accent">
+                        <p className="font-bold text-[var(--foreground)] mb-2">💡 Did you know?</p>
+                        <p className="text-theme-muted">
+                          A single round-trip transatlantic flight can emit more CO₂ than an entire year of driving for some people. Air travel is one of the most carbon-intensive activities.
+                        </p>
+                      </div>
+
+                      <div className="flex gap-4">
+                        <Button
+                          onClick={() => setStep(4)}
+                          variant="outline"
+                          className="w-1/3"
+                        >
+                          ← BACK
+                        </Button>
+                        <Button
+                          onClick={calculateFootprint}
+                          className="w-2/3 text-lg py-6 font-black bg-gradient-to-r from-theme-primary to-theme-accent"
+                          size="lg"
+                        >
+                          CALCULATE MY FOOTPRINT 🌍
+                        </Button>
+                      </div>
+                    </div>
+                  )}
                 </CardContent>
               </Card>
             </div>
-          )}
-        </div>
-      </div>
+          </div>
+        </section>
+      )}
+
+      {/* Results */}
+      {step === 6 && results && (
+        <>
+          <section className="py-12 bg-[var(--background)]">
+            <div className="container mx-auto px-4 sm:px-6 lg:px-8">
+              <div className="max-w-5xl mx-auto">
+                <Card className="border-4 border-theme-primary mb-8">
+                  <CardContent className="p-10">
+                    <h2 className="text-4xl font-black text-center text-[var(--foreground)] mb-8">
+                      YOUR ANNUAL CARBON FOOTPRINT
+                    </h2>
+
+                    <div className="text-center mb-12">
+                      <div className="inline-block p-8 bg-gradient-to-br from-theme-primary to-theme-accent rounded-2xl">
+                        <div className="text-7xl font-black text-white mb-2">
+                          {totalEmissions}
+                        </div>
+                        <div className="text-2xl font-bold text-white/90">
+                          tons CO₂ per year
+                        </div>
+                      </div>
+                    </div>
+
+                    {/* Comparison */}
+                    <div className="grid md:grid-cols-3 gap-6 mb-8">
+                      <div className={`p-6 rounded-xl border-2 ${totalEmissions > usAverage ? 'border-theme-secondary bg-[color-mix(in_srgb,var(--secondary)_10%,var(--background))]' : 'border-theme-primary bg-[color-mix(in_srgb,var(--primary)_10%,var(--background))]'}`}>
+                        <div className="text-3xl font-black mb-2">{usAverage} tons</div>
+                        <div className="font-bold text-theme-muted">US Average</div>
+                        {totalEmissions < usAverage && (
+                          <div className="mt-2 flex items-center gap-2 text-theme-primary">
+                            <TrendingDown className="w-5 h-5" />
+                            <span className="font-bold">{Math.round((1 - totalEmissions/usAverage) * 100)}% below!</span>
+                          </div>
+                        )}
+                      </div>
+
+                      <div className={`p-6 rounded-xl border-2 ${totalEmissions > globalAverage ? 'border-theme-accent' : 'border-theme-primary bg-[color-mix(in_srgb,var(--primary)_10%,var(--background))]'}`}>
+                        <div className="text-3xl font-black mb-2">{globalAverage} tons</div>
+                        <div className="font-bold text-theme-muted">Global Average</div>
+                        {totalEmissions < globalAverage && (
+                          <div className="mt-2 flex items-center gap-2 text-theme-primary">
+                            <TrendingDown className="w-5 h-5" />
+                            <span className="font-bold">{Math.round((1 - totalEmissions/globalAverage) * 100)}% below!</span>
+                          </div>
+                        )}
+                      </div>
+
+                      <div className={`p-6 rounded-xl border-2 ${totalEmissions > parisTarget ? 'border-theme-secondary' : 'border-theme-primary bg-[color-mix(in_srgb,var(--primary)_20%,var(--background))]'}`}>
+                        <div className="text-3xl font-black mb-2">{parisTarget} tons</div>
+                        <div className="font-bold text-theme-muted">Paris Agreement Target</div>
+                        {totalEmissions > parisTarget && (
+                          <div className="mt-2 text-theme-secondary">
+                            <span className="font-bold">{Math.round((totalEmissions/parisTarget - 1) * 100)}% above target</span>
+                          </div>
+                        )}
+                      </div>
+                    </div>
+
+                    {/* Breakdown */}
+                    <div className="space-y-4">
+                      <h3 className="text-2xl font-black text-[var(--foreground)] mb-4">EMISSIONS BREAKDOWN</h3>
+
+                      {[
+                        { label: 'Housing & Energy', value: results.housing, icon: Home, color: 'primary' },
+                        { label: 'Transportation', value: results.transportation, icon: Car, color: 'accent' },
+                        { label: 'Food', value: results.food, icon: Utensils, color: 'secondary' },
+                        { label: 'Goods & Services', value: results.goods, icon: ShoppingBag, color: 'primary' },
+                        { label: 'Air Travel', value: results.travel, icon: Plane, color: 'accent' },
+                      ].map((item) => {
+                        const total = results.housing + results.transportation + results.food + results.goods + results.travel
+                        const percentage = (item.value / total * 100).toFixed(1)
+                        const Icon = item.icon
+
+                        return (
+                          <div key={item.label} className="flex items-center gap-4">
+                            <Icon className={`w-6 h-6 text-theme-${item.color} flex-shrink-0`} />
+                            <div className="flex-1">
+                              <div className="flex justify-between mb-1">
+                                <span className="font-bold text-[var(--foreground)]">{item.label}</span>
+                                <span className="font-bold text-theme-muted">{(item.value / 2000).toFixed(1)} tons ({percentage}%)</span>
+                              </div>
+                              <div className="w-full h-3 bg-[var(--muted)] rounded-full overflow-hidden">
+                                <div
+                                  className={`h-full bg-theme-${item.color}`}
+                                  style={{ width: `${percentage}%` }}
+                                />
+                              </div>
+                            </div>
+                          </div>
+                        )
+                      })}
+                    </div>
+                  </CardContent>
+                </Card>
+
+                {/* Recommendations */}
+                <h2 className="text-4xl font-black text-[var(--foreground)] mb-8 text-center">
+                  PERSONALIZED RECOMMENDATIONS
+                </h2>
+
+                <div className="grid md:grid-cols-2 gap-6">
+                  {getRecommendations().map((rec, index) => {
+                    const Icon = rec.icon
+                    return (
+                      <Card key={index} className="border-4 border-theme-primary hover:scale-105 transition-transform">
+                        <CardContent className="p-6">
+                          <div className="flex items-start gap-4">
+                            <div className="w-12 h-12 rounded-full bg-theme-primary flex items-center justify-center flex-shrink-0">
+                              <Icon className="w-6 h-6 text-[var(--primary-foreground)]" />
+                            </div>
+                            <div className="flex-1">
+                              <div className="text-sm font-bold text-theme-primary mb-1">{rec.category}</div>
+                              <h3 className="text-xl font-black text-[var(--foreground)] mb-2">{rec.title}</h3>
+                              <p className="text-theme-muted mb-3">{rec.impact}</p>
+                              <div className="flex items-center gap-2 mb-4">
+                                <TrendingDown className="w-5 h-5 text-theme-secondary" />
+                                <span className="font-black text-theme-secondary">{rec.savings}</span>
+                              </div>
+                              <Link href={rec.action}>
+                                <Button className="w-full font-bold">
+                                  LEARN MORE →
+                                </Button>
+                              </Link>
+                            </div>
+                          </div>
+                        </CardContent>
+                      </Card>
+                    )
+                  })}
+                </div>
+
+                <div className="text-center mt-12">
+                  <Button
+                    onClick={() => { setStep(1); setResults(null); }}
+                    variant="outline"
+                    size="lg"
+                    className="text-lg px-12 py-6 font-black"
+                  >
+                    ← RECALCULATE
+                  </Button>
+                </div>
+              </div>
+            </div>
+          </section>
+
+          {/* Data Sources */}
+          <section className="py-12 bg-[var(--muted)]">
+            <div className="container mx-auto px-4 sm:px-6 lg:px-8">
+              <div className="max-w-5xl mx-auto">
+                <Citation
+                  statistic="Carbon footprint calculation methodology"
+                  sources={[
+                    {
+                      title: "Household Carbon Footprint Calculator Methodology",
+                      author: "US Environmental Protection Agency",
+                      organization: "EPA",
+                      year: 2024,
+                      url: "https://www.epa.gov/carbon-footprint-calculator"
+                    },
+                    {
+                      title: "Greenhouse Gas Equivalencies Calculator",
+                      author: "EPA Office of Atmospheric Protection",
+                      organization: "EPA",
+                      year: 2024,
+                      url: "https://www.epa.gov/energy/greenhouse-gas-equivalencies-calculator"
+                    },
+                    {
+                      title: "Diet and the Environment: Does What You Eat Matter?",
+                      author: "Poore & Nemecek",
+                      organization: "Science Journal",
+                      year: 2024,
+                      url: "https://www.science.org/doi/10.1126/science.aaq0216"
+                    },
+                    {
+                      title: "Carbon Footprint of Electricity Generation",
+                      author: "Intergovernmental Panel on Climate Change",
+                      organization: "IPCC",
+                      year: 2024,
+                      url: "https://www.ipcc.ch/report/ar6/wg3/"
+                    }
+                  ]}
+                />
+              </div>
+            </div>
+          </section>
+        </>
+      )}
     </div>
   )
 }

@@ -3,7 +3,6 @@
 
 generator client {
   provider = "prisma-client-js"
-  previewFeatures = ["driverAdapters"]
 }
 
 datasource db {
@@ -22,9 +21,34 @@ model User {
   emailVerified DateTime?
   image         String?
   password      String?   // For email/password auth
+
+  // LinkedIn-style Profile Fields
   bio           String?   @db.Text
+  headline      String?   // Professional tagline (e.g., "Sustainability Advocate | Green Building Expert")
+  banner        String?   // Banner/cover image URL
   location      String?
+  company       String?   // Current company/organization
+  jobTitle      String?   // Current job title
+  website       String?   // Personal website or portfolio
+  linkedin      String?   // LinkedIn profile URL
+  twitter       String?   // Twitter/X handle
   interests     String[]  // Array of interests
+  expertise     String[]  // Array of skills/expertise areas
+
+  // Professional Background
+  experience    Json?     // Array of work experience objects
+  education     Json?     // Array of education objects
+  resume        String?   // Uploaded resume/CV file path or URL
+
+  // LinkedIn-style Additional Sections
+  skills        Json?     // Array of skill objects {name, level}
+  languages     Json?     // Array of language objects {name, proficiency}
+  certifications Json?    // Array of certification objects {name, issuer, date, url}
+  volunteer     Json?     // Array of volunteer experience objects {role, organization, startDate, endDate, description}
+  publications  Json?     // Array of publication objects {title, publisher, date, url, description}
+  honors        Json?     // Array of honors/awards objects {title, issuer, date, description}
+  projects      Json?     // Array of project objects {name, startDate, endDate, description, url}
+
   role          UserRole  @default(USER)
   createdAt     DateTime  @default(now())
   updatedAt     DateTime  @updatedAt
@@ -35,8 +59,6 @@ model User {
   reviews               Review[]
   articles              Article[]
   comments              Comment[]
-  forumPosts            ForumPost[]
-  forumReplies          ForumReply[]
   savedProducts         SavedProduct[]
   savedArticles         SavedArticle[]
   notifications         Notification[]
@@ -46,9 +68,19 @@ model User {
   userBadges            UserBadge[]
   projectMemberships    ProjectMember[]
   createdProjects       Project[]          @relation("ProjectCreator")
+  projectMessages       ProjectMessage[]   @relation("ProjectMessages")
+  sentMessages          DirectMessage[]    @relation("SentMessages")
+  receivedMessages      DirectMessage[]    @relation("ReceivedMessages")
+  createdEvents         Event[]            @relation("CreatedEvents")
+  eventAttendances      EventAttendee[]
   reportedContent       Report[]
-  likedPosts            PostLike[]
-  likedReplies          ReplyLike[]
+  socialPosts           SocialPost[]     @relation("SocialPosts")
+  socialComments        SocialComment[]  @relation("SocialComments")
+  socialLikes           SocialLike[]     @relation("SocialLikes")
+  userProducts          UserProduct[]    @relation("UserProducts")
+  sentConnections       Connection[]     @relation("SentConnections")
+  receivedConnections   Connection[]     @relation("ReceivedConnections")
+  learningProgress      UserLearningProgress[]
 
   @@index([email])
   @@index([role])
@@ -334,11 +366,20 @@ model Article {
   updatedAt       DateTime         @updatedAt
   publishedAt     DateTime?
 
+  // Learning Module Fields
+  moduleType      ModuleType?      // SMALL (quick facts) or LARGE (tabs + quiz)
+  moduleTabs      Json?            // Array of tab objects: [{title: string, content: string}]
+  quizQuestions   Json?            // Array of quiz objects: [{question: string, type: 'multiple_choice'|'true_false', options: string[], correctAnswer: string}]
+  estimatedTime   Int?             // Estimated minutes to complete
+  difficulty      String?          // 'Beginner', 'Intermediate', 'Advanced'
+  learningProgress UserLearningProgress[]
+
   @@index([slug])
   @@index([authorId])
   @@index([categoryId])
   @@index([status])
   @@index([featured])
+  @@index([moduleType])
 }
 
 enum ArticleStatus {
@@ -402,92 +443,45 @@ model SavedArticle {
   @@index([articleId])
 }
 
-// ============================================
-// COMMUNITY FORUM MODELS
-// ============================================
-
-model ForumCategory {
-  id          String      @id @default(cuid())
-  name        String
-  slug        String      @unique
-  description String?     @db.Text
-  icon        String?
-  order       Int         @default(0)
-  posts       ForumPost[]
-  createdAt   DateTime    @default(now())
-  updatedAt   DateTime    @updatedAt
-
-  @@index([slug])
+enum ModuleType {
+  SMALL   // Quick facts, mark as read
+  LARGE   // Tabs + quiz with perfect score requirement
 }
 
-model ForumPost {
-  id         String        @id @default(cuid())
-  title      String
-  slug       String        @unique
-  content    String        @db.Text
-  pinned     Boolean       @default(false)
-  locked     Boolean       @default(false)
-  views      Int           @default(0)
-  userId     String
-  categoryId String
-  user       User          @relation(fields: [userId], references: [id], onDelete: Cascade)
-  category   ForumCategory @relation(fields: [categoryId], references: [id])
-  replies    ForumReply[]
-  likes      PostLike[]
-  reports    Report[]
-  createdAt  DateTime      @default(now())
-  updatedAt  DateTime      @updatedAt
+// Learning Progress Tracking
+model UserLearningProgress {
+  id                String         @id @default(cuid())
+  userId            String
+  articleId         String
 
-  @@index([slug])
+  // Progress tracking
+  status            LearningStatus @default(IN_PROGRESS)
+  progressPercentage Int           @default(0)  // 0-100 for large modules
+  currentTabIndex   Int            @default(0)  // Current tab user is on (for large modules)
+
+  // Quiz tracking (for large modules)
+  quizAttempts      Int            @default(0)
+  quizScore         Int?           // Last quiz score (0-5)
+  quizPassed        Boolean        @default(false) // Must achieve perfect score (5/5)
+
+  // Timestamps
+  startedAt         DateTime       @default(now())
+  completedAt       DateTime?
+  lastAccessedAt    DateTime       @updatedAt
+
+  // Relations
+  user              User           @relation(fields: [userId], references: [id], onDelete: Cascade)
+  article           Article        @relation(fields: [articleId], references: [id], onDelete: Cascade)
+
+  @@unique([userId, articleId])
   @@index([userId])
-  @@index([categoryId])
-  @@index([pinned])
+  @@index([articleId])
+  @@index([status])
 }
 
-model ForumReply {
-  id        String       @id @default(cuid())
-  content   String       @db.Text
-  postId    String
-  userId    String
-  parentId  String?      // For nested replies
-  post      ForumPost    @relation(fields: [postId], references: [id], onDelete: Cascade)
-  user      User         @relation(fields: [userId], references: [id], onDelete: Cascade)
-  parent    ForumReply?  @relation("ReplyThread", fields: [parentId], references: [id])
-  children  ForumReply[] @relation("ReplyThread")
-  likes     ReplyLike[]
-  reports   Report[]
-  createdAt DateTime     @default(now())
-  updatedAt DateTime     @updatedAt
-
-  @@index([postId])
-  @@index([userId])
-  @@index([parentId])
-}
-
-model PostLike {
-  id        String    @id @default(cuid())
-  userId    String
-  postId    String
-  user      User      @relation(fields: [userId], references: [id], onDelete: Cascade)
-  post      ForumPost @relation(fields: [postId], references: [id], onDelete: Cascade)
-  createdAt DateTime  @default(now())
-
-  @@unique([userId, postId])
-  @@index([userId])
-  @@index([postId])
-}
-
-model ReplyLike {
-  id        String     @id @default(cuid())
-  userId    String
-  replyId   String
-  user      User       @relation(fields: [userId], references: [id], onDelete: Cascade)
-  reply     ForumReply @relation(fields: [replyId], references: [id], onDelete: Cascade)
-  createdAt DateTime   @default(now())
-
-  @@unique([userId, replyId])
-  @@index([userId])
-  @@index([replyId])
+enum LearningStatus {
+  IN_PROGRESS
+  COMPLETED
 }
 
 // ============================================
@@ -505,6 +499,46 @@ model UserFollow {
   @@unique([followerId, followingId])
   @@index([followerId])
   @@index([followingId])
+}
+
+// LinkedIn-style Connection model (mutual professional connections)
+model Connection {
+  id              String            @id @default(cuid())
+  userId          String            // User who sent the request
+  connectedUserId String            // User who received the request
+  status          ConnectionStatus  @default(PENDING)
+  message         String?           @db.Text // Optional message with connection request
+  createdAt       DateTime          @default(now())
+  acceptedAt      DateTime?         // When connection was accepted
+  updatedAt       DateTime          @updatedAt
+
+  user            User              @relation("SentConnections", fields: [userId], references: [id], onDelete: Cascade)
+  connectedUser   User              @relation("ReceivedConnections", fields: [connectedUserId], references: [id], onDelete: Cascade)
+
+  @@unique([userId, connectedUserId])
+  @@index([userId])
+  @@index([connectedUserId])
+  @@index([status])
+}
+
+enum ConnectionStatus {
+  PENDING
+  ACCEPTED
+  REJECTED
+}
+
+// LinkedIn-style Skill Endorsement model
+model Endorsement {
+  id          String   @id @default(cuid())
+  userId      String   // User being endorsed
+  endorserId  String   // User giving the endorsement
+  skill       String   // Skill being endorsed
+  createdAt   DateTime @default(now())
+
+  @@unique([userId, endorserId, skill])
+  @@index([userId])
+  @@index([endorserId])
+  @@index([skill])
 }
 
 model Badge {
@@ -534,6 +568,87 @@ model UserBadge {
 }
 
 // ============================================
+// SOCIAL FEED MODELS (Instagram/Meta-style)
+// ============================================
+
+model SocialPost {
+  id          String          @id @default(cuid())
+  content     String          @db.Text
+  userId      String
+  visibility  PostVisibility  @default(PUBLIC)
+  user        User            @relation("SocialPosts", fields: [userId], references: [id], onDelete: Cascade)
+  media       SocialMedia[]
+  comments    SocialComment[]
+  likes       SocialLike[]
+  hashtags    String[]        // Array of hashtags
+  mentions    String[]        // Array of mentioned user IDs
+  shares      Int             @default(0)
+  createdAt   DateTime        @default(now())
+  updatedAt   DateTime        @updatedAt
+
+  @@index([userId])
+  @@index([createdAt])
+  @@index([visibility])
+}
+
+enum PostVisibility {
+  PUBLIC
+  FOLLOWERS_ONLY
+  PRIVATE
+}
+
+model SocialMedia {
+  id        String    @id @default(cuid())
+  postId    String
+  type      MediaType
+  url       String
+  caption   String?
+  order     Int       @default(0)
+  post      SocialPost @relation(fields: [postId], references: [id], onDelete: Cascade)
+  createdAt DateTime   @default(now())
+
+  @@index([postId])
+}
+
+enum MediaType {
+  IMAGE
+  VIDEO
+  GIF
+}
+
+model SocialComment {
+  id        String          @id @default(cuid())
+  content   String          @db.Text
+  postId    String
+  userId    String
+  parentId  String?         // For nested comments
+  post      SocialPost      @relation(fields: [postId], references: [id], onDelete: Cascade)
+  user      User            @relation("SocialComments", fields: [userId], references: [id], onDelete: Cascade)
+  parent    SocialComment?  @relation("CommentThread", fields: [parentId], references: [id])
+  children  SocialComment[] @relation("CommentThread")
+  likes     Int             @default(0)
+  createdAt DateTime        @default(now())
+  updatedAt DateTime        @updatedAt
+
+  @@index([postId])
+  @@index([userId])
+  @@index([parentId])
+}
+
+model SocialLike {
+  id        String     @id @default(cuid())
+  postId    String
+  userId    String
+  post      SocialPost @relation(fields: [postId], references: [id], onDelete: Cascade)
+  user      User       @relation("SocialLikes", fields: [userId], references: [id], onDelete: Cascade)
+  createdAt DateTime   @default(now())
+
+  @@unique([postId, userId])
+  @@index([postId])
+  @@index([userId])
+}
+
+// ============================================
 // PROJECT COLLABORATION MODELS
 // ============================================
 
@@ -548,6 +663,7 @@ model Project {
   creatorId   String
   creator     User            @relation("ProjectCreator", fields: [creatorId], references: [id])
   members     ProjectMember[]
+  messages    ProjectMessage[]
   createdAt   DateTime        @default(now())
   updatedAt   DateTime        @updatedAt
 
@@ -581,6 +697,96 @@ enum ProjectRole {
   MEMBER
   MODERATOR
   ADMIN
+}
+
+model ProjectMessage {
+  id        String   @id @default(cuid())
+  content   String   @db.Text
+  projectId String
+  userId    String
+  project   Project  @relation(fields: [projectId], references: [id], onDelete: Cascade)
+  user      User     @relation("ProjectMessages", fields: [userId], references: [id], onDelete: Cascade)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([projectId])
+  @@index([userId])
+  @@index([createdAt])
+}
+
+// ============================================
+// DIRECT MESSAGING MODELS
+// ============================================
+
+model DirectMessage {
+  id           String   @id @default(cuid())
+  content      String   @db.Text
+  senderId     String
+  receiverId   String
+  read         Boolean  @default(false)
+  sender       User     @relation("SentMessages", fields: [senderId], references: [id], onDelete: Cascade)
+  receiver     User     @relation("ReceivedMessages", fields: [receiverId], references: [id], onDelete: Cascade)
+  createdAt    DateTime @default(now())
+
+  @@index([senderId])
+  @@index([receiverId])
+  @@index([createdAt])
+  @@index([read])
+}
+
+// ============================================
+// EVENTS & MEETUPS MODELS
+// ============================================
+
+model Event {
+  id          String        @id @default(cuid())
+  title       String
+  slug        String        @unique
+  description String        @db.Text
+  type        EventType     @default(VIRTUAL)
+  location    String?       // For in-person events
+  meetingLink String?       // For virtual events
+  startDate   DateTime
+  endDate     DateTime?
+  maxCapacity Int?
+  coverImage  String?
+  creatorId   String
+  creator     User          @relation("CreatedEvents", fields: [creatorId], references: [id])
+  attendees   EventAttendee[]
+  createdAt   DateTime      @default(now())
+  updatedAt   DateTime      @updatedAt
+
+  @@index([slug])
+  @@index([creatorId])
+  @@index([startDate])
+  @@index([type])
+}
+
+enum EventType {
+  VIRTUAL
+  IN_PERSON
+  HYBRID
+}
+
+model EventAttendee {
+  id        String           @id @default(cuid())
+  eventId   String
+  userId    String
+  status    AttendeeStatus   @default(GOING)
+  event     Event            @relation(fields: [eventId], references: [id], onDelete: Cascade)
+  user      User             @relation(fields: [userId], references: [id], onDelete: Cascade)
+  joinedAt  DateTime         @default(now())
+
+  @@unique([eventId, userId])
+  @@index([eventId])
+  @@index([userId])
+  @@index([status])
+}
+
+enum AttendeeStatus {
+  GOING
+  MAYBE
+  NOT_GOING
 }
 
 // ============================================
@@ -621,19 +827,11 @@ model Report {
   reporterId   String
   reporter     User         @relation(fields: [reporterId], references: [id])
 
-  // Polymorphic relation (report can be for post or reply)
-  forumPostId  String?
-  forumReplyId String?
-  forumPost    ForumPost?   @relation(fields: [forumPostId], references: [id], onDelete: Cascade)
-  forumReply   ForumReply?  @relation(fields: [forumReplyId], references: [id], onDelete: Cascade)
-
   createdAt    DateTime     @default(now())
   resolvedAt   DateTime?
 
   @@index([reporterId])
   @@index([status])
-  @@index([forumPostId])
-  @@index([forumReplyId])
 }
 
 enum ReportStatus {
@@ -671,6 +869,45 @@ enum AdminAction {
 }
 
 // ============================================
+// USER MARKETPLACE MODELS
+// ============================================
+
+model UserProduct {
+  id              String   @id @default(cuid())
+  name            String
+  description     String   @db.Text
+  price           Float
+  category        String
+  materials       String   // Sustainable materials used
+  images          String[] // Array of image URLs
+  externalUrl     String   // Link to user's store (Etsy, Shopify, etc.)
+
+  // Approval workflow
+  approvalStatus  ProductApprovalStatus @default(PENDING)
+  rejectionReason String?  @db.Text
+  affiliateLink   String?  // Project Exodus affiliate link (generated after approval)
+  reviewedBy      String?  // Admin who reviewed
+  reviewedAt      DateTime?
+
+  // Seller info
+  sellerId        String
+  seller          User     @relation("UserProducts", fields: [sellerId], references: [id], onDelete: Cascade)
+
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+
+  @@index([sellerId])
+  @@index([approvalStatus])
+  @@index([category])
+}
+
+enum ProductApprovalStatus {
+  PENDING
+  APPROVED
+  REJECTED
+}
+
+// ============================================
 // SYSTEM & SETTINGS MODELS
 // ============================================
 
@@ -697,172 +934,19 @@ model SiteSettings {
   @@index([key])
 }
 
-// ============================================
-// LEARNING & EDUCATION MODELS
-// ============================================
+model NewsletterSubscription {
+  id          String   @id @default(cuid())
+  email       String   @unique
+  status      SubscriptionStatus @default(ACTIVE)
+  source      String?  // Where they subscribed from
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
 
-model LearningPath {
-  id          String           @id @default(cuid())
-  title       String
-  slug        String           @unique
-  description String           @db.Text
-  level       LearningLevel    @default(BEGINNER)
-  duration    String?          // e.g., "4 weeks"
-  icon        String?
-  color       String?          // e.g., "moss", "ocean", "terra"
-  order       Int              @default(0)
-  published   Boolean          @default(false)
-  modules     LearningModule[]
-  userProgress UserPathProgress[]
-  createdAt   DateTime         @default(now())
-  updatedAt   DateTime         @updatedAt
-
-  @@index([slug])
-  @@index([published])
-}
-
-enum LearningLevel {
-  BEGINNER
-  INTERMEDIATE
-  ADVANCED
-}
-
-model LearningModule {
-  id           String           @id @default(cuid())
-  title        String
-  slug         String           @unique
-  description  String           @db.Text
-  category     String           // e.g., "FUNDAMENTALS", "WATER SYSTEMS"
-  duration     Int?             // estimated minutes
-  icon         String?
-  color        String?
-  order        Int              @default(0)
-  published    Boolean          @default(false)
-  pathId       String?
-  path         LearningPath?    @relation(fields: [pathId], references: [id])
-  lessons      ModuleLesson[]
-  quiz         ModuleQuiz?
-  userProgress UserModuleProgress[]
-  createdAt    DateTime         @default(now())
-  updatedAt    DateTime         @updatedAt
-
-  @@index([slug])
-  @@index([pathId])
-  @@index([published])
-  @@index([category])
-}
-
-model ModuleLesson {
-  id          String         @id @default(cuid())
-  title       String
-  content     String         @db.Text    // Rich content (HTML/Markdown)
-  order       Int            @default(0)
-  moduleId    String
-  module      LearningModule @relation(fields: [moduleId], references: [id], onDelete: Cascade)
-  userProgress UserLessonProgress[]
-  createdAt   DateTime       @default(now())
-  updatedAt   DateTime       @updatedAt
-
-  @@index([moduleId])
-  @@index([order])
-}
-
-model ModuleQuiz {
-  id          String         @id @default(cuid())
-  moduleId    String         @unique
-  module      LearningModule @relation(fields: [moduleId], references: [id], onDelete: Cascade)
-  passingScore Int           @default(80)  // percentage needed to pass
-  questions   QuizQuestion[]
-  attempts    QuizAttempt[]
-  createdAt   DateTime       @default(now())
-  updatedAt   DateTime       @updatedAt
-}
-
-model QuizQuestion {
-  id           String        @id @default(cuid())
-  question     String        @db.Text
-  explanation  String?       @db.Text   // Shown after answering
-  order        Int           @default(0)
-  quizId       String
-  quiz         ModuleQuiz    @relation(fields: [quizId], references: [id], onDelete: Cascade)
-  options      QuizOption[]
-  createdAt    DateTime      @default(now())
-
-  @@index([quizId])
-  @@index([order])
-}
-
-model QuizOption {
-  id          String       @id @default(cuid())
-  text        String
-  isCorrect   Boolean      @default(false)
-  order       Int          @default(0)
-  questionId  String
-  question    QuizQuestion @relation(fields: [questionId], references: [id], onDelete: Cascade)
-
-  @@index([questionId])
-}
-
-model QuizAttempt {
-  id          String      @id @default(cuid())
-  userId      String
-  quizId      String
-  score       Int         // percentage
-  passed      Boolean
-  answers     Json        // Store user's answers
-  quiz        ModuleQuiz  @relation(fields: [quizId], references: [id], onDelete: Cascade)
-  completedAt DateTime    @default(now())
-
-  @@index([userId])
-  @@index([quizId])
-}
-
-// User Progress Tracking
-model UserPathProgress {
-  id            String       @id @default(cuid())
-  userId        String
-  pathId        String
-  path          LearningPath @relation(fields: [pathId], references: [id], onDelete: Cascade)
-  startedAt     DateTime     @default(now())
-  completedAt   DateTime?
-
-  @@unique([userId, pathId])
-  @@index([userId])
-  @@index([pathId])
-}
-
-model UserModuleProgress {
-  id            String         @id @default(cuid())
-  userId        String
-  moduleId      String
-  module        LearningModule @relation(fields: [moduleId], references: [id], onDelete: Cascade)
-  status        ModuleStatus   @default(NOT_STARTED)
-  progressPercent Int          @default(0)
-  startedAt     DateTime?
-  completedAt   DateTime?
-  lastAccessedAt DateTime      @default(now())
-
-  @@unique([userId, moduleId])
-  @@index([userId])
-  @@index([moduleId])
+  @@index([email])
   @@index([status])
 }
 
-enum ModuleStatus {
-  NOT_STARTED
-  IN_PROGRESS
-  COMPLETED
-}
-
-model UserLessonProgress {
-  id          String       @id @default(cuid())
-  userId      String
-  lessonId    String
-  lesson      ModuleLesson @relation(fields: [lessonId], references: [id], onDelete: Cascade)
-  completed   Boolean      @default(false)
-  completedAt DateTime?
-
-  @@unique([userId, lessonId])
-  @@index([userId])
-  @@index([lessonId])
+enum SubscriptionStatus {
+  ACTIVE
+  UNSUBSCRIBED
 }

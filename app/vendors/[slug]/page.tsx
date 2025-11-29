@@ -3,6 +3,7 @@ import { Card, CardContent } from '@/components/ui/Card'
 import { Button } from '@/components/ui/Button'
 import { ProductCard } from '@/components/product/ProductCard'
 import { Store, ExternalLink, MapPin, Package, CheckCircle2, Globe } from 'lucide-react'
+import { BackButton } from '@/components/navigation/BackButton'
 import Link from 'next/link'
 
 async function getVendor(slug: string) {
@@ -64,6 +65,9 @@ export default async function VendorDetailPage({ params }: { params: Promise<{ s
       {products.length > 0 ? (
         <section className="py-32 bg-white">
           <div className="container mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="mb-6">
+            <BackButton label="Back to Vendors" fallbackUrl="/vendors" />
+          </div>
             <div className="text-center mb-20">
               <h2 className="text-5xl font-black mb-6" style={{ color: '#000' }}>PRODUCTS FROM {vendor.name.toUpperCase()}</h2>
             </div>
