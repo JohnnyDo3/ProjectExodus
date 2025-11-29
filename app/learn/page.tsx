@@ -73,57 +73,69 @@ export default async function LearnPage() {
   const featuredModules = [
     {
       title: 'Understanding Your Carbon Footprint',
+      slug: 'carbon-footprint',
       description: 'Learn how to measure, track, and reduce your personal environmental impact with practical tools and strategies.',
       category: 'FUNDAMENTALS',
       duration: '45 min',
       type: 'Interactive Lesson',
       icon: Target,
-      color: 'moss'
+      color: 'moss',
+      available: true
     },
     {
       title: 'The Water Cycle & Conservation',
+      slug: 'water-conservation',
       description: 'Explore how water systems work and discover innovative techniques for conservation at home and in your community.',
       category: 'WATER SYSTEMS',
       duration: '60 min',
       type: 'Video + Quiz',
       icon: Droplet,
-      color: 'ocean'
+      color: 'ocean',
+      available: true
     },
     {
       title: 'Solar Energy Basics',
+      slug: 'solar-energy',
       description: 'Everything you need to know about solar power - from how panels work to evaluating if solar is right for your home.',
       category: 'RENEWABLE ENERGY',
       duration: '55 min',
       type: 'Comprehensive Guide',
       icon: Sun,
-      color: 'terra'
+      color: 'terra',
+      available: false
     },
     {
       title: 'Composting Masterclass',
+      slug: 'composting',
       description: 'Turn waste into gold! Master the art of composting with our step-by-step guide to creating nutrient-rich soil.',
       category: 'ZERO WASTE',
       duration: '40 min',
       type: 'Practical Workshop',
       icon: Recycle,
-      color: 'moss'
+      color: 'moss',
+      available: false
     },
     {
       title: 'Regenerative Agriculture Principles',
+      slug: 'regenerative-agriculture',
       description: 'Discover farming practices that heal the land, sequester carbon, and produce healthier food for communities.',
       category: 'FOOD SYSTEMS',
       duration: '75 min',
       type: 'Deep Dive',
       icon: Sprout,
-      color: 'ocean'
+      color: 'ocean',
+      available: false
     },
     {
       title: 'Building a Sustainable Wardrobe',
+      slug: 'sustainable-wardrobe',
       description: 'Transform your closet with ethical fashion choices, capsule wardrobes, and understanding textile sustainability.',
       category: 'SUSTAINABLE FASHION',
       duration: '50 min',
       type: 'Style Guide',
       icon: Heart,
-      color: 'terra'
+      color: 'terra',
+      available: false
     }
   ]
 
@@ -331,42 +343,56 @@ export default async function LearnPage() {
           </div>
 
           <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6 max-w-7xl mx-auto">
-            {featuredModules.map((module, i) => (
-              <Card
-                key={i}
-                className="border-2 border-sand-300 dark:border-earth-600 hover:border-moss-400 dark:hover:border-moss-500 bg-white dark:bg-earth-900 transform hover:-translate-y-2 transition-all duration-300 cursor-pointer group"
-              >
-                <CardContent className="p-6">
-                  <div className="flex items-start justify-between mb-4">
-                    <span className={`px-3 py-1 rounded-full text-xs font-black bg-${module.color}-100 dark:bg-${module.color}-900 text-${module.color}-700 dark:text-${module.color}-400`}>
-                      {module.category}
-                    </span>
-                    <div className={`w-12 h-12 rounded-xl bg-${module.color}-100 dark:bg-${module.color}-900 flex items-center justify-center group-hover:scale-110 transition-transform`}>
-                      <module.icon className={`w-6 h-6 text-${module.color}-600 dark:text-${module.color}-400`} />
+            {featuredModules.map((module, i) => {
+              const ModuleCard = (
+                <Card
+                  className={`border-2 border-sand-300 dark:border-earth-600 ${module.available ? 'hover:border-moss-400 dark:hover:border-moss-500 cursor-pointer' : 'opacity-75'} bg-white dark:bg-earth-900 transform ${module.available ? 'hover:-translate-y-2' : ''} transition-all duration-300 group relative`}
+                >
+                  {!module.available && (
+                    <div className="absolute top-3 right-3 px-2 py-1 bg-earth-200 dark:bg-earth-700 rounded text-xs font-bold text-earth-600 dark:text-sand-400">
+                      COMING SOON
                     </div>
-                  </div>
+                  )}
+                  <CardContent className="p-6">
+                    <div className="flex items-start justify-between mb-4">
+                      <span className={`px-3 py-1 rounded-full text-xs font-black bg-${module.color}-100 dark:bg-${module.color}-900 text-${module.color}-700 dark:text-${module.color}-400`}>
+                        {module.category}
+                      </span>
+                      <div className={`w-12 h-12 rounded-xl bg-${module.color}-100 dark:bg-${module.color}-900 flex items-center justify-center ${module.available ? 'group-hover:scale-110' : ''} transition-transform`}>
+                        <module.icon className={`w-6 h-6 text-${module.color}-600 dark:text-${module.color}-400`} />
+                      </div>
+                    </div>
 
-                  <h3 className="text-lg font-black mb-2 text-earth-900 dark:text-sand-100 group-hover:text-moss-700 dark:group-hover:text-moss-400 transition-colors">
-                    {module.title}
-                  </h3>
+                    <h3 className={`text-lg font-black mb-2 text-earth-900 dark:text-sand-100 ${module.available ? 'group-hover:text-moss-700 dark:group-hover:text-moss-400' : ''} transition-colors`}>
+                      {module.title}
+                    </h3>
 
-                  <p className="text-sm font-medium text-earth-600 dark:text-sand-400 mb-4">
-                    {module.description}
-                  </p>
+                    <p className="text-sm font-medium text-earth-600 dark:text-sand-400 mb-4">
+                      {module.description}
+                    </p>
 
-                  <div className="flex items-center justify-between text-sm">
-                    <span className="font-bold text-earth-500 dark:text-sand-500 flex items-center gap-2">
-                      <Clock className="w-4 h-4" />
-                      {module.duration}
-                    </span>
-                    <span className="font-bold text-moss-600 dark:text-moss-400 flex items-center gap-1">
-                      {module.type}
-                      <ChevronRight className="w-4 h-4" />
-                    </span>
-                  </div>
-                </CardContent>
-              </Card>
-            ))}
+                    <div className="flex items-center justify-between text-sm">
+                      <span className="font-bold text-earth-500 dark:text-sand-500 flex items-center gap-2">
+                        <Clock className="w-4 h-4" />
+                        {module.duration}
+                      </span>
+                      <span className={`font-bold ${module.available ? 'text-moss-600 dark:text-moss-400' : 'text-earth-400 dark:text-earth-500'} flex items-center gap-1`}>
+                        {module.available ? 'START MODULE' : module.type}
+                        <ChevronRight className="w-4 h-4" />
+                      </span>
+                    </div>
+                  </CardContent>
+                </Card>
+              )
+
+              return module.available ? (
+                <Link key={i} href={`/learn/modules/${module.slug}`}>
+                  {ModuleCard}
+                </Link>
+              ) : (
+                <div key={i}>{ModuleCard}</div>
+              )
+            })}
           </div>
 
           <div className="text-center mt-12">

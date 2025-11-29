@@ -695,3 +695,173 @@ model SiteSettings {
 
   @@index([key])
 }
+
+// ============================================
+// LEARNING & EDUCATION MODELS
+// ============================================
+
+model LearningPath {
+  id          String           @id @default(cuid())
+  title       String
+  slug        String           @unique
+  description String           @db.Text
+  level       LearningLevel    @default(BEGINNER)
+  duration    String?          // e.g., "4 weeks"
+  icon        String?
+  color       String?          // e.g., "moss", "ocean", "terra"
+  order       Int              @default(0)
+  published   Boolean          @default(false)
+  modules     LearningModule[]
+  userProgress UserPathProgress[]
+  createdAt   DateTime         @default(now())
+  updatedAt   DateTime         @updatedAt
+
+  @@index([slug])
+  @@index([published])
+}
+
+enum LearningLevel {
+  BEGINNER
+  INTERMEDIATE
+  ADVANCED
+}
+
+model LearningModule {
+  id           String           @id @default(cuid())
+  title        String
+  slug         String           @unique
+  description  String           @db.Text
+  category     String           // e.g., "FUNDAMENTALS", "WATER SYSTEMS"
+  duration     Int?             // estimated minutes
+  icon         String?
+  color        String?
+  order        Int              @default(0)
+  published    Boolean          @default(false)
+  pathId       String?
+  path         LearningPath?    @relation(fields: [pathId], references: [id])
+  lessons      ModuleLesson[]
+  quiz         ModuleQuiz?
+  userProgress UserModuleProgress[]
+  createdAt    DateTime         @default(now())
+  updatedAt    DateTime         @updatedAt
+
+  @@index([slug])
+  @@index([pathId])
+  @@index([published])
+  @@index([category])
+}
+
+model ModuleLesson {
+  id          String         @id @default(cuid())
+  title       String
+  content     String         @db.Text    // Rich content (HTML/Markdown)
+  order       Int            @default(0)
+  moduleId    String
+  module      LearningModule @relation(fields: [moduleId], references: [id], onDelete: Cascade)
+  userProgress UserLessonProgress[]
+  createdAt   DateTime       @default(now())
+  updatedAt   DateTime       @updatedAt
+
+  @@index([moduleId])
+  @@index([order])
+}
+
+model ModuleQuiz {
+  id          String         @id @default(cuid())
+  moduleId    String         @unique
+  module      LearningModule @relation(fields: [moduleId], references: [id], onDelete: Cascade)
+  passingScore Int           @default(80)  // percentage needed to pass
+  questions   QuizQuestion[]
+  attempts    QuizAttempt[]
+  createdAt   DateTime       @default(now())
+  updatedAt   DateTime       @updatedAt
+}
+
+model QuizQuestion {
+  id           String        @id @default(cuid())
+  question     String        @db.Text
+  explanation  String?       @db.Text   // Shown after answering
+  order        Int           @default(0)
+  quizId       String
+  quiz         ModuleQuiz    @relation(fields: [quizId], references: [id], onDelete: Cascade)
+  options      QuizOption[]
+  createdAt    DateTime      @default(now())
+
+  @@index([quizId])
+  @@index([order])
+}
+
+model QuizOption {
+  id          String       @id @default(cuid())
+  text        String
+  isCorrect   Boolean      @default(false)
+  order       Int          @default(0)
+  questionId  String
+  question    QuizQuestion @relation(fields: [questionId], references: [id], onDelete: Cascade)
+
+  @@index([questionId])
+}
+
+model QuizAttempt {
+  id          String      @id @default(cuid())
+  userId      String
+  quizId      String
+  score       Int         // percentage
+  passed      Boolean
+  answers     Json        // Store user's answers
+  quiz        ModuleQuiz  @relation(fields: [quizId], references: [id], onDelete: Cascade)
+  completedAt DateTime    @default(now())
+
+  @@index([userId])
+  @@index([quizId])
+}
+
+// User Progress Tracking
+model UserPathProgress {
+  id            String       @id @default(cuid())
+  userId        String
+  pathId        String
+  path          LearningPath @relation(fields: [pathId], references: [id], onDelete: Cascade)
+  startedAt     DateTime     @default(now())
+  completedAt   DateTime?
+
+  @@unique([userId, pathId])
+  @@index([userId])
+  @@index([pathId])
+}
+
+model UserModuleProgress {
+  id            String         @id @default(cuid())
+  userId        String
+  moduleId      String
+  module        LearningModule @relation(fields: [moduleId], references: [id], onDelete: Cascade)
+  status        ModuleStatus   @default(NOT_STARTED)
+  progressPercent Int          @default(0)
+  startedAt     DateTime?
+  completedAt   DateTime?
+  lastAccessedAt DateTime      @default(now())
+
+  @@unique([userId, moduleId])
+  @@index([userId])
+  @@index([moduleId])
+  @@index([status])
+}
+
+enum ModuleStatus {
+  NOT_STARTED
+  IN_PROGRESS
+  COMPLETED
+}
+
+model UserLessonProgress {
+  id          String       @id @default(cuid())
+  userId      String
+  lessonId    String
+  lesson      ModuleLesson @relation(fields: [lessonId], references: [id], onDelete: Cascade)
+  completed   Boolean      @default(false)
+  completedAt DateTime?
+
+  @@unique([userId, lessonId])
+  @@index([userId])
+  @@index([lessonId])
+}
