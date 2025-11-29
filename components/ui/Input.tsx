@@ -16,24 +16,24 @@ const Input = forwardRef<HTMLInputElement, InputProps>(
         {label && (
           <label
             htmlFor={inputId}
-            className="block text-sm font-medium text-earth-900 mb-2"
+            className="block text-sm font-medium text-[var(--foreground)] mb-2"
           >
             {label}
-            {props.required && <span className="text-terra-500 ml-1">*</span>}
+            {props.required && <span className="text-theme-secondary ml-1">*</span>}
           </label>
         )}
         <input
           type={type}
           id={inputId}
           className={cn(
-            'w-full px-4 py-2 rounded-lg border text-earth-900',
-            'bg-white placeholder:text-earth-400',
+            'w-full px-4 py-2 rounded-lg border text-[var(--foreground)]',
+            'bg-[var(--card)] placeholder:text-theme-muted',
             'transition-colors duration-200',
-            'focus:outline-none focus:ring-2 focus:ring-moss-500 focus:border-transparent',
+            'focus:outline-none focus:ring-2 focus:ring-[var(--primary)] focus:border-transparent',
             error
-              ? 'border-terra-500 focus:ring-terra-500'
-              : 'border-sand-300 hover:border-sand-400',
-            'disabled:bg-sand-100 disabled:cursor-not-allowed disabled:text-earth-500',
+              ? 'border-theme-secondary focus:ring-[var(--secondary)]'
+              : 'border-[var(--border)] hover:border-theme-primary',
+            'disabled:bg-[var(--muted)] disabled:cursor-not-allowed disabled:opacity-60',
             className
           )}
           ref={ref}
@@ -46,14 +46,14 @@ const Input = forwardRef<HTMLInputElement, InputProps>(
         {error && (
           <p
             id={`${inputId}-error`}
-            className="mt-1 text-sm text-terra-600"
+            className="mt-1 text-sm text-theme-secondary"
             role="alert"
           >
             {error}
           </p>
         )}
         {hint && !error && (
-          <p id={`${inputId}-hint`} className="mt-1 text-sm text-earth-600">
+          <p id={`${inputId}-hint`} className="mt-1 text-sm text-theme-muted">
             {hint}
           </p>
         )}

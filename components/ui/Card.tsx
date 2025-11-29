@@ -7,7 +7,7 @@ export const Card = forwardRef<HTMLDivElement, HTMLAttributes<HTMLDivElement>>(
       <div
         ref={ref}
         className={cn(
-          'rounded-xl bg-white border border-sand-300 shadow-sm',
+          'rounded-xl bg-[var(--card)] border border-[var(--border)] shadow-theme',
           'hover-lift',
           className
         )}
@@ -38,7 +38,7 @@ export const CardTitle = forwardRef<HTMLHeadingElement, HTMLAttributes<HTMLHeadi
     return (
       <h3
         ref={ref}
-        className={cn('text-xl font-semibold text-black', className)}
+        className={cn('text-xl font-semibold text-[var(--card-foreground)]', className)}
         {...props}
       />
     )
@@ -52,7 +52,7 @@ export const CardDescription = forwardRef<HTMLParagraphElement, HTMLAttributes<H
     return (
       <p
         ref={ref}
-        className={cn('text-sm text-black font-medium mt-1', className)}
+        className={cn('text-sm text-theme-muted font-medium mt-1', className)}
         {...props}
       />
     )
