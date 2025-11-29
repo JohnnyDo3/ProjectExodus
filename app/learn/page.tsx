@@ -102,7 +102,7 @@ export default async function LearnPage() {
       type: 'Comprehensive Guide',
       icon: Sun,
       color: 'terra',
-      available: false
+      available: true
     },
     {
       title: 'Composting Masterclass',
@@ -113,7 +113,7 @@ export default async function LearnPage() {
       type: 'Practical Workshop',
       icon: Recycle,
       color: 'moss',
-      available: false
+      available: true
     },
     {
       title: 'Regenerative Agriculture Principles',
@@ -124,7 +124,7 @@ export default async function LearnPage() {
       type: 'Deep Dive',
       icon: Sprout,
       color: 'ocean',
-      available: false
+      available: true
     },
     {
       title: 'Building a Sustainable Wardrobe',
@@ -135,7 +135,7 @@ export default async function LearnPage() {
       type: 'Style Guide',
       icon: Heart,
       color: 'terra',
-      available: false
+      available: true
     }
   ]
 

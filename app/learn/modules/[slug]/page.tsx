@@ -383,6 +383,858 @@ const demoModules: Record<string, any> = {
         }
       ]
     }
+  },
+  'solar-energy': {
+    id: 'mod-solar-1',
+    title: 'Solar Energy Basics',
+    slug: 'solar-energy',
+    description: 'Everything you need to know about solar power - from how panels work to evaluating if solar is right for your home.',
+    category: 'RENEWABLE ENERGY',
+    duration: 55,
+    color: 'terra',
+    lessons: [
+      {
+        id: 'les-se-1',
+        title: 'How Solar Energy Works',
+        order: 1,
+        content: `
+          <h3>The Science of Solar Power</h3>
+          <p>Solar energy works by converting sunlight directly into electricity using <strong>photovoltaic (PV) cells</strong>. When photons from sunlight hit the solar panel, they knock electrons loose from atoms in the semiconductor material, creating an electrical current.</p>
+
+          <h4>Key Components of a Solar System</h4>
+          <ul>
+            <li><strong>Solar Panels</strong> - Capture sunlight and convert it to DC electricity</li>
+            <li><strong>Inverter</strong> - Converts DC to AC power for home use</li>
+            <li><strong>Mounting System</strong> - Secures panels to roof or ground</li>
+            <li><strong>Monitoring System</strong> - Tracks energy production</li>
+          </ul>
+
+          <h3>Solar Energy by the Numbers</h3>
+          <p>According to the <strong>International Energy Agency (IEA)</strong>, solar PV is now the cheapest source of electricity in history. The <strong>Solar Energy Industries Association (SEIA)</strong> reports that solar has grown at an average annual rate of 24% over the past decade. The <strong>U.S. Department of Energy (DOE)</strong> notes that enough sunlight hits Earth's surface in one hour to power the world for an entire year.</p>
+
+          <blockquote>
+            "Solar power is the last energy resource that isn't owned yet - nobody taxes the sun yet." - Bonnie Raitt
+          </blockquote>
+        `
+      },
+      {
+        id: 'les-se-2',
+        title: 'Types of Solar Systems',
+        order: 2,
+        content: `
+          <h3>Residential Solar Options</h3>
+
+          <h4>1. Grid-Tied Systems (Most Common)</h4>
+          <p>Connected to the utility grid, allowing you to:</p>
+          <ul>
+            <li>Use grid power when solar isn't producing</li>
+            <li>Sell excess power back through net metering</li>
+            <li>No battery storage required (though optional)</li>
+          </ul>
+          <p>According to the <strong>National Renewable Energy Laboratory (NREL)</strong>, grid-tied systems represent over 90% of residential installations.</p>
+
+          <h4>2. Off-Grid Systems</h4>
+          <p>Completely independent from the utility grid:</p>
+          <ul>
+            <li>Requires battery storage for nighttime/cloudy days</li>
+            <li>Common in remote locations</li>
+            <li>Higher upfront cost but complete energy independence</li>
+          </ul>
+
+          <h4>3. Hybrid Systems</h4>
+          <p>Best of both worlds - grid connection plus battery backup:</p>
+          <ul>
+            <li>Protection during power outages</li>
+            <li>Store excess energy for later use</li>
+            <li>Maximize self-consumption</li>
+          </ul>
+
+          <h3>Panel Technologies</h3>
+          <p>The <strong>DOE</strong> identifies three main types: <strong>Monocrystalline</strong> (most efficient, 20-22%), <strong>Polycrystalline</strong> (slightly less efficient, 15-17%), and <strong>Thin-film</strong> (flexible but lower efficiency, 10-12%).</p>
+        `
+      },
+      {
+        id: 'les-se-3',
+        title: 'Costs & Financial Benefits',
+        order: 3,
+        content: `
+          <h3>The Economics of Solar</h3>
+          <p>According to <strong>SEIA</strong> data, the cost of solar has dropped by <strong>89% since 2010</strong>. The average residential system now costs $2.75-$3.50 per watt installed.</p>
+
+          <h4>Financial Incentives</h4>
+          <ul>
+            <li><strong>Federal Investment Tax Credit (ITC)</strong> - 30% of system cost through 2032 (per <strong>IRS</strong>)</li>
+            <li><strong>State incentives</strong> - Vary by location, check DSIRE database</li>
+            <li><strong>Net metering</strong> - Get credit for excess power sent to grid</li>
+            <li><strong>Solar Renewable Energy Credits (SRECs)</strong> - Additional income in some states</li>
+          </ul>
+
+          <h3>Return on Investment</h3>
+          <p>According to <strong>EnergySage</strong>:</p>
+          <ul>
+            <li>Average payback period: 6-10 years</li>
+            <li>25-year savings: $20,000-$75,000 (varies by location)</li>
+            <li>Home value increase: 4.1% on average (per <strong>Zillow</strong>)</li>
+          </ul>
+
+          <h4>Financing Options</h4>
+          <ol>
+            <li><strong>Cash purchase</strong> - Best long-term value</li>
+            <li><strong>Solar loans</strong> - Own the system, monthly payments</li>
+            <li><strong>Leases/PPAs</strong> - Lower upfront cost, less savings</li>
+          </ol>
+        `
+      },
+      {
+        id: 'les-se-4',
+        title: 'Is Solar Right for You?',
+        order: 4,
+        content: `
+          <h3>Evaluating Your Home for Solar</h3>
+          <p>Not every home is ideal for solar. Consider these factors:</p>
+
+          <h4>Roof Assessment</h4>
+          <ul>
+            <li><strong>Orientation</strong> - South-facing roofs receive the most sunlight in the Northern Hemisphere</li>
+            <li><strong>Shade</strong> - Trees or buildings blocking sunlight reduce production</li>
+            <li><strong>Age & condition</strong> - Replace old roofs before installing panels</li>
+            <li><strong>Material</strong> - Most roof types work, though some are easier than others</li>
+          </ul>
+
+          <h4>Energy Usage Analysis</h4>
+          <p>The <strong>DOE</strong> recommends reviewing 12 months of utility bills to understand your consumption patterns. The average U.S. home uses about 10,500 kWh per year, according to the <strong>Energy Information Administration (EIA)</strong>.</p>
+
+          <h3>Getting Started</h3>
+          <ol>
+            <li>Review your electricity bills</li>
+            <li>Use online solar calculators (Google Project Sunroof, NREL's PVWatts)</li>
+            <li>Get multiple quotes from installers</li>
+            <li>Verify installer certifications (NABCEP is the gold standard)</li>
+            <li>Understand your contract and warranty terms</li>
+          </ol>
+
+          <h3>The Future is Bright</h3>
+          <p><strong>BloombergNEF</strong> projects solar will supply 50% of global electricity by 2050. By going solar now, you're joining a movement that's reshaping our energy future.</p>
+        `
+      }
+    ],
+    quiz: {
+      id: 'quiz-se-1',
+      passingScore: 80,
+      questions: [
+        {
+          id: 'q-se-1',
+          question: 'How much has the cost of solar dropped since 2010?',
+          explanation: 'According to SEIA data, solar costs have dropped by 89% since 2010, making it the cheapest source of electricity in history according to the IEA.',
+          options: [
+            { id: 'qse1-a', text: '25%', isCorrect: false },
+            { id: 'qse1-b', text: '50%', isCorrect: false },
+            { id: 'qse1-c', text: '89%', isCorrect: true },
+            { id: 'qse1-d', text: '95%', isCorrect: false }
+          ]
+        },
+        {
+          id: 'q-se-2',
+          question: 'What is the current Federal Investment Tax Credit for solar?',
+          explanation: 'The Federal ITC provides a 30% tax credit for solar systems installed through 2032, per IRS guidelines.',
+          options: [
+            { id: 'qse2-a', text: '10%', isCorrect: false },
+            { id: 'qse2-b', text: '26%', isCorrect: false },
+            { id: 'qse2-c', text: '30%', isCorrect: true },
+            { id: 'qse2-d', text: '50%', isCorrect: false }
+          ]
+        },
+        {
+          id: 'q-se-3',
+          question: 'What type of residential solar system is most common?',
+          explanation: 'Grid-tied systems represent over 90% of residential installations according to NREL, as they allow homeowners to use grid power when solar isn\'t producing and sell excess back.',
+          options: [
+            { id: 'qse3-a', text: 'Off-grid systems', isCorrect: false },
+            { id: 'qse3-b', text: 'Grid-tied systems', isCorrect: true },
+            { id: 'qse3-c', text: 'Hybrid systems', isCorrect: false },
+            { id: 'qse3-d', text: 'Portable systems', isCorrect: false }
+          ]
+        },
+        {
+          id: 'q-se-4',
+          question: 'Which roof orientation is best for solar in the Northern Hemisphere?',
+          explanation: 'South-facing roofs receive the most direct sunlight throughout the day in the Northern Hemisphere, maximizing energy production.',
+          options: [
+            { id: 'qse4-a', text: 'North-facing', isCorrect: false },
+            { id: 'qse4-b', text: 'East-facing', isCorrect: false },
+            { id: 'qse4-c', text: 'South-facing', isCorrect: true },
+            { id: 'qse4-d', text: 'West-facing', isCorrect: false }
+          ]
+        },
+        {
+          id: 'q-se-5',
+          question: 'How much does installing solar increase home value on average?',
+          explanation: 'According to Zillow research, homes with solar panels sell for 4.1% more on average than comparable homes without solar.',
+          options: [
+            { id: 'qse5-a', text: '1%', isCorrect: false },
+            { id: 'qse5-b', text: '4.1%', isCorrect: true },
+            { id: 'qse5-c', text: '10%', isCorrect: false },
+            { id: 'qse5-d', text: '15%', isCorrect: false }
+          ]
+        }
+      ]
+    }
+  },
+  'composting': {
+    id: 'mod-compost-1',
+    title: 'Composting Masterclass',
+    slug: 'composting',
+    description: 'Turn waste into gold! Master the art of composting with our step-by-step guide to creating nutrient-rich soil.',
+    category: 'ZERO WASTE',
+    duration: 40,
+    color: 'moss',
+    lessons: [
+      {
+        id: 'les-cp-1',
+        title: 'The Science of Composting',
+        order: 1,
+        content: `
+          <h3>What is Composting?</h3>
+          <p>Composting is the natural process of recycling organic matter into a valuable soil amendment called <strong>humus</strong>. Microorganisms, fungi, and invertebrates break down materials into nutrient-rich compost.</p>
+
+          <h4>Why Compost Matters</h4>
+          <p>According to the <strong>EPA</strong>, food scraps and yard waste make up more than <strong>30% of what we throw away</strong>. The <strong>USDA</strong> reports that composting can divert this material from landfills while creating valuable fertilizer. The <strong>Rodale Institute</strong> has found that compost can increase soil carbon by up to 1% per year.</p>
+
+          <h3>The Composting Process</h3>
+          <ol>
+            <li><strong>Mesophilic Phase</strong> - Initial breakdown at moderate temperatures (68-104°F)</li>
+            <li><strong>Thermophilic Phase</strong> - High heat (104-160°F) kills pathogens and weed seeds</li>
+            <li><strong>Cooling Phase</strong> - Temperature drops, fungi become active</li>
+            <li><strong>Curing Phase</strong> - Final stabilization for 1-2 months</li>
+          </ol>
+
+          <blockquote>
+            "Composting is so simple. Nature takes care of everything. You just have to get out of the way." - Jeff Lowenfels
+          </blockquote>
+        `
+      },
+      {
+        id: 'les-cp-2',
+        title: 'Greens, Browns & Balance',
+        order: 2,
+        content: `
+          <h3>The Carbon-Nitrogen Ratio</h3>
+          <p>Successful composting requires balancing <strong>"greens"</strong> (nitrogen-rich) and <strong>"browns"</strong> (carbon-rich) materials. The <strong>Cornell Waste Management Institute</strong> recommends a C:N ratio of 25-30:1 for optimal decomposition.</p>
+
+          <h4>Green Materials (Nitrogen)</h4>
+          <ul>
+            <li>Fruit and vegetable scraps</li>
+            <li>Coffee grounds and tea leaves</li>
+            <li>Fresh grass clippings</li>
+            <li>Fresh plant trimmings</li>
+            <li>Eggshells (technically neutral but often listed here)</li>
+          </ul>
+
+          <h4>Brown Materials (Carbon)</h4>
+          <ul>
+            <li>Dry leaves</li>
+            <li>Cardboard and paper (uncoated)</li>
+            <li>Straw and hay</li>
+            <li>Wood chips and sawdust</li>
+            <li>Dryer lint (from natural fibers)</li>
+          </ul>
+
+          <h3>What NOT to Compost</h3>
+          <p>The <strong>EPA</strong> recommends avoiding:</p>
+          <ul>
+            <li>Meat, fish, and bones (attracts pests)</li>
+            <li>Dairy products (creates odor)</li>
+            <li>Diseased plants (can spread pathogens)</li>
+            <li>Pet waste (health hazard)</li>
+            <li>Treated wood or coal ash (chemicals)</li>
+          </ul>
+        `
+      },
+      {
+        id: 'les-cp-3',
+        title: 'Composting Methods',
+        order: 3,
+        content: `
+          <h3>Choose Your Method</h3>
+
+          <h4>1. Backyard Bin Composting</h4>
+          <p>The most common method for home gardeners:</p>
+          <ul>
+            <li>Use a bin or enclosed pile (3x3x3 ft minimum)</li>
+            <li>Turn every 1-2 weeks for aeration</li>
+            <li>Ready in 2-6 months</li>
+            <li>According to <strong>University of California Extension</strong>, properly managed piles can reach 130-160°F</li>
+          </ul>
+
+          <h4>2. Vermicomposting (Worm Composting)</h4>
+          <p>Perfect for apartments and small spaces:</p>
+          <ul>
+            <li>Uses red wiggler worms (Eisenia fetida)</li>
+            <li>Can be done indoors year-round</li>
+            <li>Produces nutrient-rich worm castings</li>
+            <li><strong>NC State Extension</strong> reports worms can process half their weight in food daily</li>
+          </ul>
+
+          <h4>3. Bokashi Fermentation</h4>
+          <p>Anaerobic method from Japan:</p>
+          <ul>
+            <li>Uses beneficial microbes to ferment waste</li>
+            <li>Can process meat and dairy</li>
+            <li>Faster than traditional composting (2-4 weeks + burial)</li>
+            <li>Requires special bokashi bran</li>
+          </ul>
+
+          <h4>4. Tumbler Composting</h4>
+          <p>Enclosed drums that make turning easy:</p>
+          <ul>
+            <li>Pest-resistant and tidy</li>
+            <li>Faster decomposition with regular turning</li>
+            <li>Good for beginners</li>
+          </ul>
+        `
+      },
+      {
+        id: 'les-cp-4',
+        title: 'Using Your Compost',
+        order: 4,
+        content: `
+          <h3>When is Compost Ready?</h3>
+          <p>Finished compost should:</p>
+          <ul>
+            <li>Look dark and crumbly</li>
+            <li>Smell earthy, not rotten</li>
+            <li>Have no recognizable food or plant material</li>
+            <li>Feel cool to the touch (no longer heating up)</li>
+          </ul>
+
+          <h3>Applications for Compost</h3>
+
+          <h4>In the Garden</h4>
+          <ul>
+            <li><strong>Soil amendment</strong> - Mix 2-4 inches into garden beds (per <strong>USDA</strong> recommendations)</li>
+            <li><strong>Mulch</strong> - Apply 1-3 inches around plants</li>
+            <li><strong>Potting mix</strong> - Combine with soil and perlite</li>
+            <li><strong>Compost tea</strong> - Steep for liquid fertilizer</li>
+          </ul>
+
+          <h3>Benefits of Compost</h3>
+          <p>Research from <strong>Michigan State University</strong> shows compost:</p>
+          <ul>
+            <li>Improves soil structure and drainage</li>
+            <li>Adds beneficial microorganisms</li>
+            <li>Increases water retention by up to 20%</li>
+            <li>Provides slow-release nutrients</li>
+            <li>Reduces the need for chemical fertilizers</li>
+          </ul>
+
+          <h3>Troubleshooting</h3>
+          <ul>
+            <li><strong>Smelly pile?</strong> Add more browns, turn for aeration</li>
+            <li><strong>Not heating up?</strong> Add more greens, check moisture</li>
+            <li><strong>Pests?</strong> Bury food scraps, avoid meat/dairy</li>
+            <li><strong>Too dry?</strong> Add water until damp like a wrung sponge</li>
+          </ul>
+        `
+      }
+    ],
+    quiz: {
+      id: 'quiz-cp-1',
+      passingScore: 80,
+      questions: [
+        {
+          id: 'q-cp-1',
+          question: 'What percentage of household waste is food scraps and yard waste?',
+          explanation: 'According to the EPA, food scraps and yard waste make up more than 30% of what we throw away, all of which could be composted.',
+          options: [
+            { id: 'qcp1-a', text: '10%', isCorrect: false },
+            { id: 'qcp1-b', text: '20%', isCorrect: false },
+            { id: 'qcp1-c', text: '30%', isCorrect: true },
+            { id: 'qcp1-d', text: '50%', isCorrect: false }
+          ]
+        },
+        {
+          id: 'q-cp-2',
+          question: 'What is the ideal carbon-to-nitrogen ratio for composting?',
+          explanation: 'The Cornell Waste Management Institute recommends a C:N ratio of 25-30:1 for optimal decomposition.',
+          options: [
+            { id: 'qcp2-a', text: '5:1', isCorrect: false },
+            { id: 'qcp2-b', text: '25-30:1', isCorrect: true },
+            { id: 'qcp2-c', text: '50:1', isCorrect: false },
+            { id: 'qcp2-d', text: '100:1', isCorrect: false }
+          ]
+        },
+        {
+          id: 'q-cp-3',
+          question: 'Which composting method allows you to process meat and dairy?',
+          explanation: 'Bokashi fermentation is an anaerobic method that uses beneficial microbes to break down all food waste including meat and dairy.',
+          options: [
+            { id: 'qcp3-a', text: 'Backyard bin composting', isCorrect: false },
+            { id: 'qcp3-b', text: 'Vermicomposting', isCorrect: false },
+            { id: 'qcp3-c', text: 'Bokashi fermentation', isCorrect: true },
+            { id: 'qcp3-d', text: 'Tumbler composting', isCorrect: false }
+          ]
+        },
+        {
+          id: 'q-cp-4',
+          question: 'What type of worm is commonly used for vermicomposting?',
+          explanation: 'Red wiggler worms (Eisenia fetida) are the most commonly used species for vermicomposting because they thrive in decomposing organic matter.',
+          options: [
+            { id: 'qcp4-a', text: 'Earthworms', isCorrect: false },
+            { id: 'qcp4-b', text: 'Nightcrawlers', isCorrect: false },
+            { id: 'qcp4-c', text: 'Red wigglers', isCorrect: true },
+            { id: 'qcp4-d', text: 'Grub worms', isCorrect: false }
+          ]
+        },
+        {
+          id: 'q-cp-5',
+          question: 'Which of these should NOT be added to a home compost pile?',
+          explanation: 'The EPA recommends avoiding meat, fish, and dairy products in home compost as they attract pests and create odors.',
+          options: [
+            { id: 'qcp5-a', text: 'Coffee grounds', isCorrect: false },
+            { id: 'qcp5-b', text: 'Meat and dairy', isCorrect: true },
+            { id: 'qcp5-c', text: 'Dry leaves', isCorrect: false },
+            { id: 'qcp5-d', text: 'Vegetable scraps', isCorrect: false }
+          ]
+        }
+      ]
+    }
+  },
+  'regenerative-agriculture': {
+    id: 'mod-regen-1',
+    title: 'Regenerative Agriculture Principles',
+    slug: 'regenerative-agriculture',
+    description: 'Discover farming practices that heal the land, sequester carbon, and produce healthier food for communities.',
+    category: 'FOOD SYSTEMS',
+    duration: 75,
+    color: 'ocean',
+    lessons: [
+      {
+        id: 'les-ra-1',
+        title: 'What is Regenerative Agriculture?',
+        order: 1,
+        content: `
+          <h3>Beyond Sustainable</h3>
+          <p>Regenerative agriculture goes beyond "sustainable" farming. While sustainable practices aim to maintain current conditions, <strong>regenerative agriculture actively restores and improves ecosystem health</strong>.</p>
+
+          <h4>Core Principles</h4>
+          <p>According to the <strong>Rodale Institute</strong>, regenerative organic agriculture is built on these foundations:</p>
+          <ul>
+            <li><strong>Minimize soil disturbance</strong> - Reduce or eliminate tillage</li>
+            <li><strong>Keep soil covered</strong> - Use cover crops and mulch</li>
+            <li><strong>Maintain living roots</strong> - Year-round plant growth</li>
+            <li><strong>Increase biodiversity</strong> - Diverse crops and livestock</li>
+            <li><strong>Integrate animals</strong> - Managed grazing mimics nature</li>
+          </ul>
+
+          <h3>The Carbon Connection</h3>
+          <p>The <strong>IPCC</strong> identifies soil as one of the largest carbon sinks on Earth. Research from <strong>The Nature Conservancy</strong> shows that regenerative practices can sequester 3-6 tons of carbon per acre annually. <strong>Project Drawdown</strong> ranks regenerative agriculture among the top climate solutions.</p>
+
+          <blockquote>
+            "The soil is the great connector of lives, the source and destination of all." - Wendell Berry
+          </blockquote>
+        `
+      },
+      {
+        id: 'les-ra-2',
+        title: 'Soil Health Fundamentals',
+        order: 2,
+        content: `
+          <h3>The Living Soil</h3>
+          <p>Healthy soil is a living ecosystem. According to the <strong>USDA Natural Resources Conservation Service</strong>, one teaspoon of healthy soil contains:</p>
+          <ul>
+            <li>1 billion bacteria</li>
+            <li>Several yards of fungal filaments</li>
+            <li>Thousands of protozoa</li>
+            <li>Dozens of nematodes</li>
+          </ul>
+
+          <h3>Building Soil Organic Matter</h3>
+          <p>The <strong>FAO</strong> reports that increasing soil organic matter by just 1% can increase water-holding capacity by 20,000 gallons per acre. Methods include:</p>
+
+          <h4>Cover Cropping</h4>
+          <ul>
+            <li>Protects soil from erosion</li>
+            <li>Feeds soil microbes</li>
+            <li>Adds organic matter</li>
+            <li>Fixes nitrogen (legumes)</li>
+          </ul>
+
+          <h4>Reduced Tillage</h4>
+          <ul>
+            <li>Preserves soil structure</li>
+            <li>Protects fungal networks</li>
+            <li>Reduces carbon release</li>
+            <li>Saves fuel and time</li>
+          </ul>
+
+          <h3>The Soil Food Web</h3>
+          <p>Research from <strong>Oregon State University</strong> shows that healthy soil biology reduces the need for synthetic inputs while improving plant health and pest resistance.</p>
+        `
+      },
+      {
+        id: 'les-ra-3',
+        title: 'Regenerative Practices',
+        order: 3,
+        content: `
+          <h3>Key Regenerative Techniques</h3>
+
+          <h4>1. Holistic Planned Grazing</h4>
+          <p>Developed by Allan Savory, this approach mimics natural herd movements:</p>
+          <ul>
+            <li>High-density, short-duration grazing</li>
+            <li>Long recovery periods for pastures</li>
+            <li>According to the <strong>Savory Institute</strong>, properly managed livestock can actually restore grasslands</li>
+          </ul>
+
+          <h4>2. Agroforestry</h4>
+          <p>Integrating trees with crops and livestock:</p>
+          <ul>
+            <li><strong>Silvopasture</strong> - Trees + grazing animals</li>
+            <li><strong>Alley cropping</strong> - Crops between tree rows</li>
+            <li><strong>Forest farming</strong> - Specialty crops under forest canopy</li>
+          </ul>
+          <p><strong>Project Drawdown</strong> ranks silvopasture as the #9 climate solution globally.</p>
+
+          <h4>3. Polyculture & Crop Rotation</h4>
+          <p>Growing multiple species together or in sequence:</p>
+          <ul>
+            <li>Reduces pest and disease pressure</li>
+            <li>Improves nutrient cycling</li>
+            <li>Research from <strong>Iowa State University</strong> shows 3-year rotations can maintain yields with 80% less synthetic nitrogen</li>
+          </ul>
+
+          <h4>4. Composting at Scale</h4>
+          <ul>
+            <li>Builds soil biology</li>
+            <li>Recycles farm waste</li>
+            <li>Reduces input costs</li>
+          </ul>
+        `
+      },
+      {
+        id: 'les-ra-4',
+        title: 'The Regenerative Movement',
+        order: 4,
+        content: `
+          <h3>Certifications & Standards</h3>
+          <p>Several organizations are defining regenerative standards:</p>
+          <ul>
+            <li><strong>Regenerative Organic Certified (ROC)</strong> - Rodale Institute's comprehensive certification</li>
+            <li><strong>Land to Market</strong> - Savory Institute's ecological outcome verification</li>
+            <li><strong>Soil Carbon Initiative</strong> - Science-based carbon verification</li>
+          </ul>
+
+          <h3>Economic Benefits</h3>
+          <p>A 2018 study by <strong>Ecdysis Foundation</strong> found that regenerative farms had:</p>
+          <ul>
+            <li>78% higher profits than conventional farms</li>
+            <li>29% lower production costs</li>
+            <li>Higher resilience to drought and flooding</li>
+          </ul>
+
+          <h3>Consumer Action</h3>
+          <p>How to support regenerative agriculture:</p>
+          <ul>
+            <li>Buy from local regenerative farms</li>
+            <li>Look for ROC certification</li>
+            <li>Support farmers markets</li>
+            <li>Ask questions about farming practices</li>
+            <li>Advocate for policy changes</li>
+          </ul>
+
+          <h3>The Future of Food</h3>
+          <p>The <strong>World Economic Forum</strong> and <strong>UN FAO</strong> have both highlighted regenerative agriculture as essential for food security and climate stability. This isn't just a farming trend - it's a fundamental shift in how we relate to the land.</p>
+        `
+      }
+    ],
+    quiz: {
+      id: 'quiz-ra-1',
+      passingScore: 80,
+      questions: [
+        {
+          id: 'q-ra-1',
+          question: 'How much carbon can regenerative practices sequester per acre annually?',
+          explanation: 'Research from The Nature Conservancy shows that regenerative practices can sequester 3-6 tons of carbon per acre annually.',
+          options: [
+            { id: 'qra1-a', text: '0.5-1 ton', isCorrect: false },
+            { id: 'qra1-b', text: '3-6 tons', isCorrect: true },
+            { id: 'qra1-c', text: '10-15 tons', isCorrect: false },
+            { id: 'qra1-d', text: '20+ tons', isCorrect: false }
+          ]
+        },
+        {
+          id: 'q-ra-2',
+          question: 'How much can water-holding capacity increase with 1% more soil organic matter?',
+          explanation: 'The FAO reports that increasing soil organic matter by just 1% can increase water-holding capacity by 20,000 gallons per acre.',
+          options: [
+            { id: 'qra2-a', text: '1,000 gallons/acre', isCorrect: false },
+            { id: 'qra2-b', text: '5,000 gallons/acre', isCorrect: false },
+            { id: 'qra2-c', text: '20,000 gallons/acre', isCorrect: true },
+            { id: 'qra2-d', text: '50,000 gallons/acre', isCorrect: false }
+          ]
+        },
+        {
+          id: 'q-ra-3',
+          question: 'Which regenerative practice integrates trees with grazing animals?',
+          explanation: 'Silvopasture combines trees with grazing animals and is ranked as the #9 climate solution by Project Drawdown.',
+          options: [
+            { id: 'qra3-a', text: 'Alley cropping', isCorrect: false },
+            { id: 'qra3-b', text: 'Forest farming', isCorrect: false },
+            { id: 'qra3-c', text: 'Silvopasture', isCorrect: true },
+            { id: 'qra3-d', text: 'Cover cropping', isCorrect: false }
+          ]
+        },
+        {
+          id: 'q-ra-4',
+          question: 'According to research, how much higher are profits on regenerative farms vs conventional?',
+          explanation: 'A 2018 study by Ecdysis Foundation found that regenerative farms had 78% higher profits than conventional farms.',
+          options: [
+            { id: 'qra4-a', text: '10% higher', isCorrect: false },
+            { id: 'qra4-b', text: '25% higher', isCorrect: false },
+            { id: 'qra4-c', text: '50% higher', isCorrect: false },
+            { id: 'qra4-d', text: '78% higher', isCorrect: true }
+          ]
+        },
+        {
+          id: 'q-ra-5',
+          question: 'What are the five core principles of regenerative agriculture?',
+          explanation: 'The Rodale Institute defines regenerative agriculture through: minimizing soil disturbance, keeping soil covered, maintaining living roots, increasing biodiversity, and integrating animals.',
+          options: [
+            { id: 'qra5-a', text: 'Maximize yields, increase fertilizer, use pesticides, irrigate heavily, monocrop', isCorrect: false },
+            { id: 'qra5-b', text: 'Minimal disturbance, soil coverage, living roots, biodiversity, animal integration', isCorrect: true },
+            { id: 'qra5-c', text: 'Deep tillage, bare soil, annual crops only, single species, no animals', isCorrect: false },
+            { id: 'qra5-d', text: 'Organic inputs, crop insurance, machinery investment, hired labor, export focus', isCorrect: false }
+          ]
+        }
+      ]
+    }
+  },
+  'sustainable-wardrobe': {
+    id: 'mod-wardrobe-1',
+    title: 'Building a Sustainable Wardrobe',
+    slug: 'sustainable-wardrobe',
+    description: 'Transform your closet with ethical fashion choices, capsule wardrobes, and understanding textile sustainability.',
+    category: 'SUSTAINABLE FASHION',
+    duration: 50,
+    color: 'terra',
+    lessons: [
+      {
+        id: 'les-sw-1',
+        title: 'The Fashion Industry\'s Impact',
+        order: 1,
+        content: `
+          <h3>Fashion's Environmental Footprint</h3>
+          <p>The fashion industry is one of the world's largest polluters. Understanding its impact is the first step toward change.</p>
+
+          <h4>By the Numbers</h4>
+          <p>According to the <strong>UN Environment Programme</strong>:</p>
+          <ul>
+            <li>Fashion produces <strong>10% of global carbon emissions</strong></li>
+            <li>It's the <strong>second-largest consumer of water</strong> worldwide</li>
+            <li>Nearly <strong>20% of global wastewater</strong> comes from textile dyeing</li>
+          </ul>
+
+          <p>The <strong>Ellen MacArthur Foundation</strong> reports:</p>
+          <ul>
+            <li>One garbage truck of textiles is landfilled or burned every second</li>
+            <li>Less than 1% of clothing is recycled into new garments</li>
+            <li>The average garment is worn only 7-10 times before disposal</li>
+          </ul>
+
+          <h3>The Human Cost</h3>
+          <p>The <strong>Fashion Revolution</strong> organization highlights that many garment workers earn poverty wages in unsafe conditions. The 2013 Rana Plaza collapse in Bangladesh killed 1,134 workers, exposing the industry's dark side.</p>
+
+          <blockquote>
+            "The most sustainable garment is the one already in your closet." - Orsola de Castro, Fashion Revolution
+          </blockquote>
+        `
+      },
+      {
+        id: 'les-sw-2',
+        title: 'Understanding Textile Materials',
+        order: 2,
+        content: `
+          <h3>Natural vs. Synthetic Fibers</h3>
+
+          <h4>Conventional Cotton</h4>
+          <ul>
+            <li>Uses 2,700 liters of water for one t-shirt (<strong>WWF</strong>)</li>
+            <li>Accounts for 16% of global insecticide use</li>
+            <li>Biodegradable but often chemically treated</li>
+          </ul>
+
+          <h4>Organic Cotton</h4>
+          <ul>
+            <li>Uses 91% less water than conventional (<strong>Textile Exchange</strong>)</li>
+            <li>No synthetic pesticides or fertilizers</li>
+            <li>Better for farmer health and soil</li>
+          </ul>
+
+          <h4>Polyester & Synthetics</h4>
+          <ul>
+            <li>Made from petroleum (non-renewable)</li>
+            <li>Releases microplastics when washed (<strong>IUCN</strong> estimates 35% of ocean microplastics come from synthetic textiles)</li>
+            <li>Takes 200+ years to decompose</li>
+            <li>However: recycled polyester reduces virgin plastic use</li>
+          </ul>
+
+          <h4>Better Alternatives</h4>
+          <ul>
+            <li><strong>Hemp</strong> - Requires little water, no pesticides, enriches soil</li>
+            <li><strong>Linen (Flax)</strong> - Durable, biodegradable, low-input crop</li>
+            <li><strong>TENCEL™/Lyocell</strong> - Closed-loop production, biodegradable</li>
+            <li><strong>Recycled materials</strong> - Reduces waste and virgin resource use</li>
+          </ul>
+        `
+      },
+      {
+        id: 'les-sw-3',
+        title: 'Building a Capsule Wardrobe',
+        order: 3,
+        content: `
+          <h3>What is a Capsule Wardrobe?</h3>
+          <p>A capsule wardrobe is a small collection of versatile, timeless pieces that can be mixed and matched. Coined by London boutique owner Susie Faux in the 1970s, the concept promotes <strong>quality over quantity</strong>.</p>
+
+          <h4>Benefits</h4>
+          <ul>
+            <li>Less decision fatigue each morning</li>
+            <li>More money for higher-quality pieces</li>
+            <li>Smaller environmental footprint</li>
+            <li>Less closet clutter</li>
+          </ul>
+
+          <h3>Building Your Capsule</h3>
+
+          <h4>Step 1: Audit Your Closet</h4>
+          <p>According to <strong>ClosetMaid</strong> research, we wear 20% of our clothes 80% of the time. Identify your most-worn items.</p>
+
+          <h4>Step 2: Define Your Style</h4>
+          <ul>
+            <li>Save inspiration images</li>
+            <li>Identify colors that work for you</li>
+            <li>Consider your lifestyle needs</li>
+          </ul>
+
+          <h4>Step 3: Choose Your Core Pieces</h4>
+          <p>A typical capsule includes 25-40 items:</p>
+          <ul>
+            <li>Quality basics (t-shirts, tanks, button-ups)</li>
+            <li>Versatile bottoms (jeans, pants, skirts)</li>
+            <li>Layering pieces (cardigans, jackets)</li>
+            <li>A few statement items</li>
+            <li>Appropriate footwear</li>
+          </ul>
+
+          <h4>Step 4: Practice the One-In-One-Out Rule</h4>
+          <p>For every new item you add, remove one. This maintains wardrobe size and encourages thoughtful purchasing.</p>
+        `
+      },
+      {
+        id: 'les-sw-4',
+        title: 'Sustainable Shopping Practices',
+        order: 4,
+        content: `
+          <h3>The Hierarchy of Sustainable Fashion</h3>
+          <p>In order of environmental impact:</p>
+          <ol>
+            <li><strong>Use what you have</strong> - Repair, alter, restyle</li>
+            <li><strong>Borrow or rent</strong> - For special occasions</li>
+            <li><strong>Swap</strong> - Clothing swaps with friends or community</li>
+            <li><strong>Buy secondhand</strong> - Thrift, consignment, online resale</li>
+            <li><strong>Buy sustainable new</strong> - Ethical brands, certified materials</li>
+          </ol>
+
+          <h3>What to Look For</h3>
+
+          <h4>Certifications</h4>
+          <ul>
+            <li><strong>GOTS</strong> - Global Organic Textile Standard</li>
+            <li><strong>OEKO-TEX</strong> - Tested for harmful substances</li>
+            <li><strong>Fair Trade</strong> - Fair wages and conditions</li>
+            <li><strong>B Corp</strong> - Social and environmental performance</li>
+          </ul>
+
+          <h4>Questions to Ask</h4>
+          <ul>
+            <li>Will I wear this at least 30 times? (the <strong>#30wears</strong> rule from Livia Firth)</li>
+            <li>Does this work with what I already own?</li>
+            <li>Is this quality construction that will last?</li>
+            <li>Can I afford the ethical version?</li>
+          </ul>
+
+          <h3>Extending Garment Life</h3>
+          <p>The <strong>WRAP UK</strong> found that extending a garment's life by just 9 months reduces its carbon, water, and waste footprints by 20-30%.</p>
+          <ul>
+            <li>Learn basic repairs (buttons, hems, patches)</li>
+            <li>Wash less, wash cold</li>
+            <li>Air dry when possible</li>
+            <li>Store properly (folded or on appropriate hangers)</li>
+            <li>Support local tailors and cobblers</li>
+          </ul>
+        `
+      }
+    ],
+    quiz: {
+      id: 'quiz-sw-1',
+      passingScore: 80,
+      questions: [
+        {
+          id: 'q-sw-1',
+          question: 'What percentage of global carbon emissions does fashion produce?',
+          explanation: 'According to the UN Environment Programme, fashion produces 10% of global carbon emissions, making it one of the largest polluting industries.',
+          options: [
+            { id: 'qsw1-a', text: '2%', isCorrect: false },
+            { id: 'qsw1-b', text: '5%', isCorrect: false },
+            { id: 'qsw1-c', text: '10%', isCorrect: true },
+            { id: 'qsw1-d', text: '25%', isCorrect: false }
+          ]
+        },
+        {
+          id: 'q-sw-2',
+          question: 'How much water is used to make one conventional cotton t-shirt?',
+          explanation: 'According to WWF, 2,700 liters of water are used to produce one cotton t-shirt - enough drinking water for one person for 2.5 years.',
+          options: [
+            { id: 'qsw2-a', text: '500 liters', isCorrect: false },
+            { id: 'qsw2-b', text: '1,000 liters', isCorrect: false },
+            { id: 'qsw2-c', text: '2,700 liters', isCorrect: true },
+            { id: 'qsw2-d', text: '5,000 liters', isCorrect: false }
+          ]
+        },
+        {
+          id: 'q-sw-3',
+          question: 'What is the recommended number of wears before buying a new item (#30wears rule)?',
+          explanation: 'The #30wears campaign by Livia Firth encourages asking "Will I wear this at least 30 times?" before purchasing to reduce impulse buying.',
+          options: [
+            { id: 'qsw3-a', text: '5 times', isCorrect: false },
+            { id: 'qsw3-b', text: '10 times', isCorrect: false },
+            { id: 'qsw3-c', text: '30 times', isCorrect: true },
+            { id: 'qsw3-d', text: '100 times', isCorrect: false }
+          ]
+        },
+        {
+          id: 'q-sw-4',
+          question: 'What percentage of ocean microplastics comes from synthetic textiles?',
+          explanation: 'IUCN estimates that 35% of ocean microplastics come from washing synthetic textiles like polyester and nylon.',
+          options: [
+            { id: 'qsw4-a', text: '10%', isCorrect: false },
+            { id: 'qsw4-b', text: '35%', isCorrect: true },
+            { id: 'qsw4-c', text: '50%', isCorrect: false },
+            { id: 'qsw4-d', text: '75%', isCorrect: false }
+          ]
+        },
+        {
+          id: 'q-sw-5',
+          question: 'By how much can extending a garment\'s life by 9 months reduce its environmental footprint?',
+          explanation: 'WRAP UK found that extending a garment\'s life by just 9 months reduces its carbon, water, and waste footprints by 20-30%.',
+          options: [
+            { id: 'qsw5-a', text: '5-10%', isCorrect: false },
+            { id: 'qsw5-b', text: '20-30%', isCorrect: true },
+            { id: 'qsw5-c', text: '40-50%', isCorrect: false },
+            { id: 'qsw5-d', text: '60-70%', isCorrect: false }
+          ]
+        }
+      ]
+    }
   }
 }
 
