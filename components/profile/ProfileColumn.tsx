@@ -1,0 +1,902 @@
+'use client'
+
+import { useState, useRef, useEffect } from 'react'
+import {
+  User,
+  Mail,
+  MapPin,
+  Briefcase,
+  GraduationCap,
+  Phone,
+  Globe,
+  Github,
+  Linkedin,
+  Twitter,
+  Award,
+  FileText,
+  Edit2,
+  Eye,
+  EyeOff,
+  Download,
+  Upload,
+  Plus,
+  X,
+  Palette,
+  Save,
+  Settings,
+  Lock,
+  Unlock,
+  Minimize2,
+  Maximize2,
+} from 'lucide-react'
+
+interface ProfileData {
+  // Basic Info
+  name: string
+  headline: string
+  location: string
+  email: string
+  phone: string
+
+  // Bio
+  bio: string
+
+  // Skills
+  skills: string[]
+
+  // Experience
+  experience: {
+    id: string
+    title: string
+    company: string
+    location: string
+    startDate: string
+    endDate: string
+    current: boolean
+    description: string
+  }[]
+
+  // Education
+  education: {
+    id: string
+    degree: string
+    school: string
+    location: string
+    graduationYear: string
+    description: string
+  }[]
+
+  // Social Links
+  social: {
+    website?: string
+    github?: string
+    linkedin?: string
+    twitter?: string
+  }
+
+  // Portfolio
+  portfolio: {
+    id: string
+    title: string
+    description: string
+    link: string
+  }[]
+
+  // Achievements
+  achievements: {
+    id: string
+    title: string
+    description: string
+    date: string
+  }[]
+
+  // Resume
+  resumeUrl?: string
+  resumeFileName?: string
+}
+
+type EditSection = 'basic' | 'bio' | 'skills' | 'experience' | 'education' | 'social' | 'portfolio' | 'achievements' | null
+
+type SectionSize = 'small' | 'medium' | 'large'
+
+interface SectionSettings {
+  visible: boolean
+  isPublic: boolean
+  size: SectionSize
+}
+
+interface SectionPreferences {
+  bio: SectionSettings
+  skills: SectionSettings
+  experience: SectionSettings
+  education: SectionSettings
+  social: SectionSettings
+  portfolio: SectionSettings
+  achievements: SectionSettings
+  resume: SectionSettings
+}
+
+interface Props {
+  initialProfile?: Partial<ProfileData>
+  viewOnly?: boolean
+  userId?: string
+}
+
+export function ProfileColumn({ initialProfile, viewOnly = false, userId }: Props) {
+  const [isPreviewMode, setIsPreviewMode] = useState(viewOnly) // Auto-enable preview mode for viewOnly
+  const [template, setTemplate] = useState<'modern' | 'classic' | 'minimal'>('modern')
+  const [editingSection, setEditingSection] = useState<EditSection>(null)
+  const [isLoading, setIsLoading] = useState(!!userId) // Loading state for fetching user data
+  const [showSettings, setShowSettings] = useState(false) // Settings modal
+
+  // Default section preferences
+  const defaultPreferences: SectionPreferences = {
+    bio: { visible: true, isPublic: true, size: 'medium' },
+    skills: { visible: true, isPublic: true, size: 'medium' },
+    experience: { visible: true, isPublic: true, size: 'medium' },
+    education: { visible: true, isPublic: true, size: 'medium' },
+    social: { visible: true, isPublic: true, size: 'medium' },
+    portfolio: { visible: true, isPublic: true, size: 'medium' },
+    achievements: { visible: true, isPublic: true, size: 'medium' },
+    resume: { visible: true, isPublic: false, size: 'medium' },
+  }
+
+  const [sectionPreferences, setSectionPreferences] = useState<SectionPreferences>(defaultPreferences)
+
+  const [profile, setProfile] = useState<ProfileData>({
+    name: initialProfile?.name || '',
+    headline: initialProfile?.headline || '',
+    location: initialProfile?.location || '',
+    email: initialProfile?.email || '',
+    phone: initialProfile?.phone || '',
+    bio: initialProfile?.bio || '',
+    skills: initialProfile?.skills || [],
+    experience: initialProfile?.experience || [],
+    education: initialProfile?.education || [],
+    social: initialProfile?.social || {},
+    portfolio: initialProfile?.portfolio || [],
+    achievements: initialProfile?.achievements || [],
+    resumeUrl: initialProfile?.resumeUrl,
+    resumeFileName: initialProfile?.resumeFileName,
+  })
+
+  const fileInputRef = useRef<HTMLInputElement>(null)
+
+  // Fetch user profile data when userId is provided
+  useEffect(() => {
+    if (userId) {
+      const fetchUserProfile = async () => {
+        setIsLoading(true)
+        try {
+          const res = await fetch(`/api/profile/${userId}`)
+          if (res.ok) {
+            const data = await res.json()
+            if (data.success) {
+              setProfile({
+                name: data.data.name || '',
+                headline: data.data.headline || '',
+                location: data.data.location || '',
+                email: data.data.email || '',
+                phone: data.data.phone || '',
+                bio: data.data.bio || '',
+                skills: data.data.expertise || [],
+                experience: data.data.experience || [],
+                education: data.data.education || [],
+                social: {
+                  website: data.data.website,
+                  github: data.data.github,
+                  linkedin: data.data.linkedin,
+                  twitter: data.data.twitter,
+                },
+                portfolio: data.data.portfolio || [],
+                achievements: data.data.achievements || [],
+                resumeUrl: data.data.resumeUrl,
+                resumeFileName: data.data.resumeFileName,
+              })
+            }
+          }
+        } catch (error) {
+          console.error('Error fetching user profile:', error)
+        } finally {
+          setIsLoading(false)
+        }
+      }
+      fetchUserProfile()
+    }
+  }, [userId])
+
+  // Load section preferences from localStorage (only for own profile, not viewOnly)
+  useEffect(() => {
+    if (!viewOnly) {
+      const saved = localStorage.getItem('profile-section-preferences')
+      if (saved) {
+        try {
+          setSectionPreferences(JSON.parse(saved))
+        } catch (error) {
+          console.error('Error loading section preferences:', error)
+        }
+      }
+    }
+  }, [viewOnly])
+
+  // Save section preferences to localStorage
+  useEffect(() => {
+    if (!viewOnly) {
+      localStorage.setItem('profile-section-preferences', JSON.stringify(sectionPreferences))
+    }
+  }, [sectionPreferences, viewOnly])
+
+  // Helper function to check if section should be shown
+  const shouldShowSection = (sectionKey: keyof SectionPreferences): boolean => {
+    const prefs = sectionPreferences[sectionKey]
+    if (!prefs.visible) return false
+    // In viewOnly mode, only show public sections
+    if (viewOnly && !prefs.isPublic) return false
+    return true
+  }
+
+  // Helper function to get section container classes based on size
+  const getSectionSizeClasses = (sectionKey: keyof SectionPreferences): string => {
+    const size = sectionPreferences[sectionKey].size
+    const baseClasses = 'p-3 bg-[var(--muted)]/50 rounded-xl relative'
+
+    switch (size) {
+      case 'small':
+        return `${baseClasses} text-xs max-h-32 overflow-hidden`
+      case 'large':
+        return `${baseClasses} text-sm`
+      default: // medium
+        return baseClasses
+    }
+  }
+
+  // Update section preference
+  const updateSectionPreference = (
+    sectionKey: keyof SectionPreferences,
+    updates: Partial<SectionSettings>
+  ) => {
+    setSectionPreferences(prev => ({
+      ...prev,
+      [sectionKey]: { ...prev[sectionKey], ...updates }
+    }))
+  }
+
+  // Template colors
+  const templateColors = {
+    modern: {
+      primary: 'from-blue-500 to-purple-600',
+      accent: 'bg-blue-500',
+      border: 'border-blue-400',
+    },
+    classic: {
+      primary: 'from-gray-700 to-gray-900',
+      accent: 'bg-gray-700',
+      border: 'border-gray-500',
+    },
+    minimal: {
+      primary: 'from-emerald-400 to-teal-500',
+      accent: 'bg-emerald-500',
+      border: 'border-emerald-400',
+    },
+  }
+
+  const handleResumeUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0]
+    if (!file) return
+
+    // Create FormData for upload
+    const formData = new FormData()
+    formData.append('resume', file)
+
+    try {
+      const res = await fetch('/api/profile/resume/upload', {
+        method: 'POST',
+        body: formData,
+      })
+
+      if (res.ok) {
+        const data = await res.json()
+        setProfile(prev => ({
+          ...prev,
+          resumeUrl: data.url,
+          resumeFileName: file.name,
+        }))
+      }
+    } catch (error) {
+      console.error('Error uploading resume:', error)
+    }
+  }
+
+  const handleResumeDownload = () => {
+    if (profile.resumeUrl) {
+      const link = document.createElement('a')
+      link.href = profile.resumeUrl
+      link.download = profile.resumeFileName || 'resume.pdf'
+      link.click()
+    }
+  }
+
+  const openEditModal = (section: EditSection) => {
+    setEditingSection(section)
+  }
+
+  const closeEditModal = () => {
+    setEditingSection(null)
+  }
+
+  const colors = templateColors[template]
+
+  // Show loading state when fetching user data
+  if (isLoading) {
+    return (
+      <div className="flex-shrink-0 w-80 h-full flex flex-col bg-[var(--card)] rounded-2xl border-2 border-theme-primary shadow-lg items-center justify-center p-8">
+        <div className="w-12 h-12 border-4 border-theme-primary border-t-transparent rounded-full animate-spin mb-4" />
+        <p className="text-sm font-bold text-theme-muted">Loading profile...</p>
+      </div>
+    )
+  }
+
+  return (
+    <div className="flex-shrink-0 w-80 h-full flex flex-col bg-[var(--card)] rounded-2xl border-2 border-theme-primary shadow-lg">
+      {/* Header */}
+      <div className="p-4 border-b border-[var(--border)]">
+        <div className="flex items-center justify-between mb-3">
+          <div className="flex items-center gap-2">
+            <User className="w-5 h-5 text-theme-primary" />
+            <h2 className="text-xs font-black text-[var(--foreground)]">
+              {viewOnly ? 'USER PROFILE' : 'YOUR PROFILE'}
+            </h2>
+          </div>
+          {!viewOnly && (
+            <button
+              onClick={() => setShowSettings(true)}
+              className="w-7 h-7 rounded-full bg-[var(--muted)] hover:bg-[var(--primary)] hover:text-white flex items-center justify-center transition-colors"
+              title="Section Settings"
+            >
+              <Settings className="w-4 h-4" />
+            </button>
+          )}
+        </div>
+
+        {/* Template & Preview Controls - Hidden in viewOnly mode */}
+        {!viewOnly && (
+          <>
+            <div className="flex gap-2 mb-2">
+              <button
+                onClick={() => setIsPreviewMode(!isPreviewMode)}
+                className={`flex-1 px-2 py-1 rounded-lg text-[10px] font-bold transition-colors flex items-center justify-center gap-1 ${
+                  isPreviewMode
+                    ? 'bg-[var(--primary)] text-white'
+                    : 'bg-[var(--muted)] text-[var(--foreground)] hover:bg-[var(--primary)]/20'
+                }`}
+              >
+                {isPreviewMode ? <Eye className="w-3 h-3" /> : <EyeOff className="w-3 h-3" />}
+                {isPreviewMode ? 'Preview' : 'Edit'}
+              </button>
+            </div>
+
+            {/* Template Selection */}
+            {!isPreviewMode && (
+              <div className="flex gap-1">
+                <button
+                  onClick={() => setTemplate('modern')}
+                  className={`flex-1 px-2 py-1 rounded-lg text-[9px] font-bold transition-colors ${
+                    template === 'modern'
+                      ? 'bg-blue-500 text-white'
+                      : 'bg-[var(--muted)] text-[var(--foreground)]'
+                  }`}
+                >
+                  Modern
+                </button>
+                <button
+                  onClick={() => setTemplate('classic')}
+                  className={`flex-1 px-2 py-1 rounded-lg text-[9px] font-bold transition-colors ${
+                    template === 'classic'
+                      ? 'bg-gray-700 text-white'
+                      : 'bg-[var(--muted)] text-[var(--foreground)]'
+                  }`}
+                >
+                  Classic
+                </button>
+                <button
+                  onClick={() => setTemplate('minimal')}
+                  className={`flex-1 px-2 py-1 rounded-lg text-[9px] font-bold transition-colors ${
+                    template === 'minimal'
+                      ? 'bg-emerald-500 text-white'
+                      : 'bg-[var(--muted)] text-[var(--foreground)]'
+                  }`}
+                >
+                  Minimal
+                </button>
+              </div>
+            )}
+          </>
+        )}
+      </div>
+
+      {/* Profile Content - Scrollable */}
+      <div className="flex-1 overflow-y-auto p-4 space-y-3">
+        {/* Basic Info Card */}
+        <div className={`p-4 bg-gradient-to-br ${colors.primary} rounded-xl text-white relative`}>
+          {!isPreviewMode && !viewOnly && (
+            <button
+              onClick={() => openEditModal('basic')}
+              className="absolute top-2 right-2 w-6 h-6 bg-white/20 hover:bg-white/30 rounded-full flex items-center justify-center transition-colors"
+            >
+              <Edit2 className="w-3 h-3" />
+            </button>
+          )}
+          <div className="flex items-center gap-3 mb-3">
+            <div className="w-16 h-16 rounded-full bg-white/20 flex items-center justify-center">
+              <User className="w-8 h-8" />
+            </div>
+            <div className="flex-1">
+              <h3 className="text-base font-black">{profile.name || 'Your Name'}</h3>
+              <p className="text-xs font-medium opacity-90">{profile.headline || 'Your Headline'}</p>
+            </div>
+          </div>
+          <div className="space-y-1 text-xs">
+            {profile.location && (
+              <div className="flex items-center gap-2">
+                <MapPin className="w-3 h-3" />
+                <span>{profile.location}</span>
+              </div>
+            )}
+            {profile.email && (
+              <div className="flex items-center gap-2">
+                <Mail className="w-3 h-3" />
+                <span>{profile.email}</span>
+              </div>
+            )}
+            {profile.phone && (
+              <div className="flex items-center gap-2">
+                <Phone className="w-3 h-3" />
+                <span>{profile.phone}</span>
+              </div>
+            )}
+          </div>
+        </div>
+
+        {/* Bio Section */}
+        {shouldShowSection('bio') && (
+          <div className={getSectionSizeClasses('bio')}>
+            {!isPreviewMode && !viewOnly && (
+              <button
+                onClick={() => openEditModal('bio')}
+                className="absolute top-2 right-2 w-6 h-6 bg-[var(--primary)]/20 hover:bg-[var(--primary)]/30 rounded-full flex items-center justify-center transition-colors"
+              >
+                <Edit2 className="w-3 h-3 text-[var(--primary)]" />
+              </button>
+            )}
+            <h4 className="text-xs font-black text-[var(--foreground)] mb-2 flex items-center gap-2">
+              About
+              {!viewOnly && !sectionPreferences.bio.isPublic && (
+                <Lock className="w-3 h-3 text-theme-muted" />
+              )}
+            </h4>
+            <p className="text-xs font-medium text-theme-muted leading-relaxed">
+              {profile.bio || 'Add a bio to tell others about yourself...'}
+            </p>
+          </div>
+        )}
+
+        {/* Skills Section */}
+        {shouldShowSection('skills') && (
+          <div className={getSectionSizeClasses('skills')}>
+            {!isPreviewMode && !viewOnly && (
+              <button
+                onClick={() => openEditModal('skills')}
+                className="absolute top-2 right-2 w-6 h-6 bg-[var(--primary)]/20 hover:bg-[var(--primary)]/30 rounded-full flex items-center justify-center transition-colors"
+              >
+                <Edit2 className="w-3 h-3 text-[var(--primary)]" />
+              </button>
+            )}
+            <h4 className="text-xs font-black text-[var(--foreground)] mb-2 flex items-center gap-2">
+              Skills
+              {!viewOnly && !sectionPreferences.skills.isPublic && (
+                <Lock className="w-3 h-3 text-theme-muted" />
+              )}
+            </h4>
+          <div className="flex flex-wrap gap-1.5">
+            {profile.skills.length > 0 ? (
+              profile.skills.map((skill, idx) => (
+                <span
+                  key={idx}
+                  className={`px-2 py-1 ${colors.accent} text-white text-[10px] font-bold rounded-full`}
+                >
+                  {skill}
+                </span>
+              ))
+            ) : (
+              <p className="text-xs font-medium text-theme-muted">Add your skills...</p>
+            )}
+          </div>
+          </div>
+        )}
+
+        {/* Experience Section */}
+        {shouldShowSection('experience') && (
+          <div className={getSectionSizeClasses('experience')}>
+            {!isPreviewMode && !viewOnly && (
+              <button
+                onClick={() => openEditModal('experience')}
+                className="absolute top-2 right-2 w-6 h-6 bg-[var(--primary)]/20 hover:bg-[var(--primary)]/30 rounded-full flex items-center justify-center transition-colors"
+              >
+                <Edit2 className="w-3 h-3 text-[var(--primary)]" />
+              </button>
+            )}
+            <div className="flex items-center gap-2 mb-2">
+              <Briefcase className="w-4 h-4 text-theme-primary" />
+              <h4 className="text-xs font-black text-[var(--foreground)] flex items-center gap-2">
+                Experience
+                {!viewOnly && !sectionPreferences.experience.isPublic && (
+                  <Lock className="w-3 h-3 text-theme-muted" />
+                )}
+              </h4>
+            </div>
+          <div className="space-y-3">
+            {profile.experience.length > 0 ? (
+              profile.experience.map((exp) => (
+                <div key={exp.id} className="border-l-2 border-theme-primary pl-3">
+                  <h5 className="text-xs font-black text-[var(--foreground)]">{exp.title}</h5>
+                  <p className="text-[10px] font-bold text-theme-muted">{exp.company}</p>
+                  <p className="text-[9px] font-medium text-theme-muted">
+                    {exp.startDate} - {exp.current ? 'Present' : exp.endDate}
+                  </p>
+                  {exp.description && (
+                    <p className="text-[10px] font-medium text-theme-muted mt-1 leading-relaxed">
+                      {exp.description}
+                    </p>
+                  )}
+                </div>
+              ))
+            ) : (
+              <p className="text-xs font-medium text-theme-muted">Add your work experience...</p>
+            )}
+          </div>
+          </div>
+        )}
+
+        {/* Education Section */}
+        {shouldShowSection('education') && (
+          <div className={getSectionSizeClasses('education')}>
+            {!isPreviewMode && !viewOnly && (
+              <button
+                onClick={() => openEditModal('education')}
+                className="absolute top-2 right-2 w-6 h-6 bg-[var(--primary)]/20 hover:bg-[var(--primary)]/30 rounded-full flex items-center justify-center transition-colors"
+              >
+                <Edit2 className="w-3 h-3 text-[var(--primary)]" />
+              </button>
+            )}
+            <div className="flex items-center gap-2 mb-2">
+              <GraduationCap className="w-4 h-4 text-theme-accent" />
+              <h4 className="text-xs font-black text-[var(--foreground)] flex items-center gap-2">
+                Education
+                {!viewOnly && !sectionPreferences.education.isPublic && (
+                  <Lock className="w-3 h-3 text-theme-muted" />
+                )}
+              </h4>
+            </div>
+            <div className="space-y-3">
+              {profile.education.length > 0 ? (
+                profile.education.map((edu) => (
+                  <div key={edu.id} className="border-l-2 border-theme-accent pl-3">
+                    <h5 className="text-xs font-black text-[var(--foreground)]">{edu.degree}</h5>
+                    <p className="text-[10px] font-bold text-theme-muted">{edu.school}</p>
+                    <p className="text-[9px] font-medium text-theme-muted">{edu.graduationYear}</p>
+                    {edu.description && (
+                      <p className="text-[10px] font-medium text-theme-muted mt-1 leading-relaxed">
+                        {edu.description}
+                      </p>
+                    )}
+                  </div>
+                ))
+              ) : (
+                <p className="text-xs font-medium text-theme-muted">Add your education...</p>
+              )}
+            </div>
+          </div>
+        )}
+
+        {/* Social Links Section */}
+        {shouldShowSection('social') && (
+          <div className={getSectionSizeClasses('social')}>
+            {!isPreviewMode && !viewOnly && (
+              <button
+                onClick={() => openEditModal('social')}
+                className="absolute top-2 right-2 w-6 h-6 bg-[var(--primary)]/20 hover:bg-[var(--primary)]/30 rounded-full flex items-center justify-center transition-colors"
+              >
+                <Edit2 className="w-3 h-3 text-[var(--primary)]" />
+              </button>
+            )}
+            <h4 className="text-xs font-black text-[var(--foreground)] mb-2 flex items-center gap-2">
+              Social Links
+              {!viewOnly && !sectionPreferences.social.isPublic && (
+                <Lock className="w-3 h-3 text-theme-muted" />
+              )}
+            </h4>
+            <div className="space-y-2">
+              {profile.social.website && (
+                <a href={profile.social.website} target="_blank" rel="noopener noreferrer" className="flex items-center gap-2 text-xs font-medium text-theme-muted hover:text-[var(--primary)]">
+                  <Globe className="w-3 h-3" />
+                  <span>Website</span>
+                </a>
+              )}
+              {profile.social.github && (
+                <a href={profile.social.github} target="_blank" rel="noopener noreferrer" className="flex items-center gap-2 text-xs font-medium text-theme-muted hover:text-[var(--primary)]">
+                  <Github className="w-3 h-3" />
+                  <span>GitHub</span>
+                </a>
+              )}
+              {profile.social.linkedin && (
+                <a href={profile.social.linkedin} target="_blank" rel="noopener noreferrer" className="flex items-center gap-2 text-xs font-medium text-theme-muted hover:text-[var(--primary)]">
+                  <Linkedin className="w-3 h-3" />
+                  <span>LinkedIn</span>
+                </a>
+              )}
+              {profile.social.twitter && (
+                <a href={profile.social.twitter} target="_blank" rel="noopener noreferrer" className="flex items-center gap-2 text-xs font-medium text-theme-muted hover:text-[var(--primary)]">
+                  <Twitter className="w-3 h-3" />
+                  <span>Twitter</span>
+                </a>
+              )}
+              {!profile.social.website && !profile.social.github && !profile.social.linkedin && !profile.social.twitter && (
+                <p className="text-xs font-medium text-theme-muted">Add your social links...</p>
+              )}
+            </div>
+          </div>
+        )}
+
+        {/* Portfolio Section */}
+        {shouldShowSection('portfolio') && (
+          <div className={getSectionSizeClasses('portfolio')}>
+            {!isPreviewMode && !viewOnly && (
+              <button
+                onClick={() => openEditModal('portfolio')}
+                className="absolute top-2 right-2 w-6 h-6 bg-[var(--primary)]/20 hover:bg-[var(--primary)]/30 rounded-full flex items-center justify-center transition-colors"
+              >
+                <Edit2 className="w-3 h-3 text-[var(--primary)]" />
+              </button>
+            )}
+            <h4 className="text-xs font-black text-[var(--foreground)] mb-2 flex items-center gap-2">
+              Portfolio
+              {!viewOnly && !sectionPreferences.portfolio.isPublic && (
+                <Lock className="w-3 h-3 text-theme-muted" />
+              )}
+            </h4>
+            <div className="space-y-2">
+              {profile.portfolio.length > 0 ? (
+                profile.portfolio.map((item) => (
+                  <a
+                    key={item.id}
+                    href={item.link}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="block p-2 bg-[var(--background)] rounded-lg hover:bg-[var(--primary)]/10 transition-colors"
+                  >
+                    <h5 className="text-xs font-black text-[var(--foreground)]">{item.title}</h5>
+                    <p className="text-[10px] font-medium text-theme-muted">{item.description}</p>
+                  </a>
+                ))
+              ) : (
+                <p className="text-xs font-medium text-theme-muted">Add portfolio items...</p>
+              )}
+            </div>
+          </div>
+        )}
+
+        {/* Achievements Section */}
+        {shouldShowSection('achievements') && (
+          <div className={getSectionSizeClasses('achievements')}>
+            {!isPreviewMode && !viewOnly && (
+              <button
+                onClick={() => openEditModal('achievements')}
+                className="absolute top-2 right-2 w-6 h-6 bg-[var(--primary)]/20 hover:bg-[var(--primary)]/30 rounded-full flex items-center justify-center transition-colors"
+              >
+                <Edit2 className="w-3 h-3 text-[var(--primary)]" />
+              </button>
+            )}
+            <div className="flex items-center gap-2 mb-2">
+              <Award className="w-4 h-4 text-theme-secondary" />
+              <h4 className="text-xs font-black text-[var(--foreground)] flex items-center gap-2">
+                Achievements
+                {!viewOnly && !sectionPreferences.achievements.isPublic && (
+                  <Lock className="w-3 h-3 text-theme-muted" />
+                )}
+              </h4>
+            </div>
+            <div className="space-y-2">
+              {profile.achievements.length > 0 ? (
+                profile.achievements.map((achievement) => (
+                  <div key={achievement.id} className="p-2 bg-[var(--background)] rounded-lg">
+                    <h5 className="text-xs font-black text-[var(--foreground)]">{achievement.title}</h5>
+                    <p className="text-[10px] font-medium text-theme-muted">{achievement.description}</p>
+                    <p className="text-[9px] font-bold text-theme-muted mt-1">{achievement.date}</p>
+                  </div>
+                ))
+              ) : (
+                <p className="text-xs font-medium text-theme-muted">Add your achievements...</p>
+              )}
+            </div>
+          </div>
+        )}
+
+        {/* Resume Section */}
+        {shouldShowSection('resume') && (
+          <div className={getSectionSizeClasses('resume')}>
+            <div className="flex items-center gap-2 mb-2">
+              <FileText className="w-4 h-4 text-[var(--primary)]" />
+              <h4 className="text-xs font-black text-[var(--foreground)] flex items-center gap-2">
+                Resume
+                {!viewOnly && !sectionPreferences.resume.isPublic && (
+                  <Lock className="w-3 h-3 text-theme-muted" />
+                )}
+              </h4>
+            </div>
+            <div className="space-y-2">
+              {profile.resumeFileName ? (
+                <div className="flex items-center gap-2">
+                  <p className="text-xs font-medium text-theme-muted flex-1 truncate">
+                    {profile.resumeFileName}
+                  </p>
+                  <button
+                    onClick={handleResumeDownload}
+                    className="p-1.5 bg-[var(--primary)] text-white rounded-lg hover:bg-[var(--accent)] transition-colors"
+                    title="Download Resume"
+                  >
+                    <Download className="w-3 h-3" />
+                  </button>
+                </div>
+              ) : (
+                <p className="text-xs font-medium text-theme-muted">No resume uploaded</p>
+              )}
+              {!isPreviewMode && !viewOnly && (
+                <>
+                  <input
+                    ref={fileInputRef}
+                    type="file"
+                    accept=".pdf"
+                    onChange={handleResumeUpload}
+                    className="hidden"
+                  />
+                  <button
+                    onClick={() => fileInputRef.current?.click()}
+                    className="w-full py-2 px-3 bg-[var(--primary)] text-white rounded-lg text-xs font-bold hover:bg-[var(--accent)] transition-colors flex items-center justify-center gap-2"
+                  >
+                    <Upload className="w-3 h-3" />
+                    {profile.resumeFileName ? 'Replace Resume' : 'Upload Resume'}
+                  </button>
+                </>
+              )}
+            </div>
+          </div>
+        )}
+      </div>
+
+      {/* Edit Modals */}
+      {editingSection && (
+        <div className="fixed inset-0 bg-black/50 z-[100] flex items-center justify-center p-4">
+          <div className="bg-[var(--card)] rounded-2xl p-6 max-w-md w-full max-h-[80vh] overflow-y-auto">
+            <div className="flex items-center justify-between mb-4">
+              <h3 className="text-base font-black text-[var(--foreground)]">
+                Edit {editingSection.charAt(0).toUpperCase() + editingSection.slice(1)}
+              </h3>
+              <button
+                onClick={closeEditModal}
+                className="w-8 h-8 rounded-full hover:bg-[var(--muted)] flex items-center justify-center transition-colors"
+              >
+                <X className="w-5 h-5" />
+              </button>
+            </div>
+
+            {/* Modal content will vary based on editingSection */}
+            <div className="space-y-3">
+              <p className="text-xs font-medium text-theme-muted">
+                Edit modal for {editingSection} section - Full implementation coming soon
+              </p>
+              <button
+                onClick={closeEditModal}
+                className="w-full py-2 px-4 bg-[var(--primary)] text-white rounded-lg text-xs font-bold hover:bg-[var(--accent)] transition-colors flex items-center justify-center gap-2"
+              >
+                <Save className="w-3 h-3" />
+                Save Changes
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* Settings Modal */}
+      {showSettings && (
+        <div className="fixed inset-0 bg-black/50 z-[100] flex items-center justify-center p-4">
+          <div className="bg-[var(--card)] rounded-2xl p-6 max-w-2xl w-full max-h-[80vh] overflow-y-auto">
+            <div className="flex items-center justify-between mb-6">
+              <h3 className="text-xl font-black text-[var(--foreground)]">Section Settings</h3>
+              <button
+                onClick={() => setShowSettings(false)}
+                className="w-8 h-8 rounded-full hover:bg-[var(--muted)] flex items-center justify-center transition-colors"
+              >
+                <X className="w-5 h-5" />
+              </button>
+            </div>
+
+            <div className="space-y-4">
+              <p className="text-sm font-medium text-theme-muted mb-4">
+                Control which sections are visible and public on your profile
+              </p>
+
+              {(Object.keys(sectionPreferences) as Array<keyof SectionPreferences>).map((sectionKey) => (
+                <div key={sectionKey} className="p-4 bg-[var(--muted)]/30 rounded-xl border-2 border-[var(--border)]">
+                  <div className="flex items-center justify-between mb-3">
+                    <h4 className="text-sm font-black text-[var(--foreground)] capitalize">{sectionKey}</h4>
+                    <div className="flex items-center gap-2">
+                      {/* Visibility Toggle */}
+                      <button
+                        onClick={() => updateSectionPreference(sectionKey, { visible: !sectionPreferences[sectionKey].visible })}
+                        className={`px-3 py-1 rounded-lg text-xs font-bold transition-colors ${
+                          sectionPreferences[sectionKey].visible
+                            ? 'bg-green-500 text-white'
+                            : 'bg-[var(--muted)] text-theme-muted'
+                        }`}
+                      >
+                        {sectionPreferences[sectionKey].visible ? 'Visible' : 'Hidden'}
+                      </button>
+
+                      {/* Public/Private Toggle */}
+                      <button
+                        onClick={() => updateSectionPreference(sectionKey, { isPublic: !sectionPreferences[sectionKey].isPublic })}
+                        className={`px-3 py-1 rounded-lg text-xs font-bold transition-colors flex items-center gap-1 ${
+                          sectionPreferences[sectionKey].isPublic
+                            ? 'bg-blue-500 text-white'
+                            : 'bg-orange-500 text-white'
+                        }`}
+                        disabled={!sectionPreferences[sectionKey].visible}
+                      >
+                        {sectionPreferences[sectionKey].isPublic ? (
+                          <><Unlock className="w-3 h-3" /> Public</>
+                        ) : (
+                          <><Lock className="w-3 h-3" /> Private</>
+                        )}
+                      </button>
+                    </div>
+                  </div>
+
+                  {/* Size Controls */}
+                  {sectionPreferences[sectionKey].visible && (
+                    <div className="flex gap-2">
+                      <span className="text-xs font-bold text-theme-muted mr-2">Size:</span>
+                      {(['small', 'medium', 'large'] as SectionSize[]).map((size) => (
+                        <button
+                          key={size}
+                          onClick={() => updateSectionPreference(sectionKey, { size })}
+                          className={`px-3 py-1 rounded-lg text-xs font-bold transition-colors ${
+                            sectionPreferences[sectionKey].size === size
+                              ? 'bg-[var(--primary)] text-white'
+                              : 'bg-[var(--muted)] text-[var(--foreground)] hover:bg-[var(--primary)]/20'
+                          }`}
+                        >
+                          {size === 'small' && <Minimize2 className="w-3 h-3 inline mr-1" />}
+                          {size === 'large' && <Maximize2 className="w-3 h-3 inline mr-1" />}
+                          {size.charAt(0).toUpperCase() + size.slice(1)}
+                        </button>
+                      ))}
+                    </div>
+                  )}
+                </div>
+              ))}
+
+              <div className="pt-4 border-t-2 border-[var(--border)]">
+                <button
+                  onClick={() => setShowSettings(false)}
+                  className="w-full py-3 px-4 bg-[var(--primary)] text-white rounded-xl text-sm font-bold hover:bg-[var(--accent)] transition-colors"
+                >
+                  Done
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
+    </div>
+  )
+}

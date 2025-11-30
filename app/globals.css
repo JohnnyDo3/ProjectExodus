@@ -176,8 +176,103 @@
   --radius-full: 9999px;
 }
 
-/* Dark mode - deeper, richer earth tones */
-.dark {
+/*
+  Time-Based Themes - Living, Breathing Ecosystem
+  The site adapts to your local time, just like nature 🌱
+*/
+
+/* 🌄 DAWN - Very early morning, pre-sunrise (5am-7am) */
+.dawn {
+  --background: #fff5f0;
+  --foreground: var(--earth-800);
+  --primary: #ff8ba7; /* Pink dawn */
+  --primary-foreground: white;
+  --secondary: #ffb4a2; /* Coral */
+  --secondary-foreground: white;
+  --accent: #87b8c7; /* Cool morning ocean */
+  --accent-foreground: white;
+  --muted: #ffe8dd;
+  --muted-foreground: var(--earth-600);
+  --card: #fffaf7;
+  --card-foreground: var(--earth-800);
+  --border: #ffd4c4;
+}
+
+/* 🌅 SUNRISE - Gentle awakening, soft golden dawn (7am-10am) */
+.sunrise, .morning {
+  --background: #fff8f0;
+  --foreground: var(--earth-800);
+  --primary: #e8a05d; /* Warm golden */
+  --primary-foreground: white;
+  --secondary: #e89b8f; /* Soft peachy terra */
+  --secondary-foreground: white;
+  --accent: #7eb8b8; /* Gentle ocean with warmth */
+  --accent-foreground: white;
+  --muted: #f9e8d9;
+  --muted-foreground: var(--earth-600);
+  --card: #fffbf5;
+  --card-foreground: var(--earth-800);
+  --border: #f4d9c4;
+}
+
+/* ☀️ DAY - Bright, vibrant, full of life (10am-3pm) */
+.day, :root {
+  /* Already defined in :root above, but ensuring consistency */
+}
+
+/* 🌤️ AFTERNOON - Warm afternoon light (3pm-6pm) */
+.afternoon {
+  --background: #fff9e6;
+  --foreground: var(--earth-900);
+  --primary: #e89550; /* Warm afternoon sun */
+  --primary-foreground: white;
+  --secondary: #d88855; /* Rich terra */
+  --secondary-foreground: white;
+  --accent: #8fa89f; /* Warm teal */
+  --accent-foreground: white;
+  --muted: #f4ebcd;
+  --muted-foreground: var(--earth-700);
+  --card: #fffcf0;
+  --card-foreground: var(--earth-900);
+  --border: #ead4b0;
+}
+
+/* 🌆 DUSK - Early evening, golden hour (6pm-8pm) */
+.dusk {
+  --background: #f5ebe0;
+  --foreground: var(--earth-900);
+  --primary: #d67050; /* Deep orange */
+  --primary-foreground: white;
+  --secondary: #c45f40; /* Rich terracotta */
+  --secondary-foreground: white;
+  --accent: #8b7565; /* Warm brown */
+  --accent-foreground: white;
+  --muted: #e8d5c4;
+  --muted-foreground: var(--earth-700);
+  --card: #faf3ea;
+  --card-foreground: var(--earth-900);
+  --border: #d9c3ad;
+}
+
+/* 🌇 SUNSET - Warm terracotta, golden hour transition (8pm-10pm) */
+.sunset, .evening {
+  --background: #ebe0d8;
+  --foreground: var(--earth-900);
+  --primary: var(--terra-600); /* Warm terracotta */
+  --primary-foreground: white;
+  --secondary: #9b6f8f; /* Purple dusk */
+  --secondary-foreground: white;
+  --accent: #7a6a5f; /* Dusky brown */
+  --accent-foreground: white;
+  --muted: #ddd0c4;
+  --muted-foreground: var(--earth-700);
+  --card: #f0e8e0;
+  --card-foreground: var(--earth-900);
+  --border: #cfc0ad;
+}
+
+/* 🌙 NIGHT - Deep earth tones, restful darkness (10pm-2am) */
+.night, .dark {
   --background: var(--earth-900);
   --foreground: var(--sand-100);
   --primary: var(--moss-400);
@@ -191,8 +286,63 @@
   --border: var(--earth-700);
 }
 
+/* 🌌 MIDNIGHT - Deepest night (2am-5am) */
+.midnight {
+  --background: #1a1614;
+  --foreground: var(--sand-200);
+  --primary: #5a7a65; /* Muted moss */
+  --primary-foreground: white;
+  --secondary: #8b5a4a; /* Muted terra */
+  --secondary-foreground: white;
+  --accent: #5a7a7a; /* Deep teal */
+  --accent-foreground: white;
+  --muted: #2a2420;
+  --muted-foreground: var(--sand-500);
+  --card: #221e1a;
+  --card-foreground: var(--sand-200);
+  --border: #3a342e;
+}
+
+/* 🌅 Conditional visibility for day/night elements - SMOOTH TRANSITIONS */
+/* Show only during daytime phases (dawn, sunrise, morning, day, afternoon) */
+.day-only {
+  opacity: 1;
+  visibility: visible;
+  transition: opacity 1200ms cubic-bezier(0.4, 0, 0.2, 1),
+              visibility 1200ms cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.dusk .day-only,
+.sunset .day-only,
+.evening .day-only,
+.night .day-only,
+.midnight .day-only,
+.dark .day-only {
+  opacity: 0 !important;
+  visibility: hidden !important;
+}
+
+/* Show only during nighttime phases (dusk, sunset, evening, night, midnight) */
+.night-only {
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 1200ms cubic-bezier(0.4, 0, 0.2, 1),
+              visibility 1200ms cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.dusk .night-only,
+.sunset .night-only,
+.evening .night-only,
+.night .night-only,
+.midnight .night-only,
+.dark .night-only {
+  opacity: 1 !important;
+  visibility: visible !important;
+}
+
+/* Fallback for system preference */
 @media (prefers-color-scheme: dark) {
-  :root:not(.light) {
+  :root:not(.light):not(.day):not(.sunrise):not(.sunset):not(.night) {
     --background: var(--earth-900);
     --foreground: var(--sand-100);
     --primary: var(--moss-400);
@@ -212,6 +362,12 @@
   border-color: var(--border);
 }
 
+/* Smooth theme transitions - breathing with nature */
+html {
+  transition: background-color 1200ms cubic-bezier(0.4, 0, 0.2, 1),
+              color 1200ms cubic-bezier(0.4, 0, 0.2, 1);
+}
+
 body {
   background-color: var(--background);
   color: var(--foreground);
@@ -219,6 +375,15 @@ body {
   font-feature-settings: "rlig" 1, "calt" 1;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  transition: background-color 1200ms cubic-bezier(0.4, 0, 0.2, 1),
+              color 1200ms cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* Ensure all interactive elements transition smoothly */
+a, button, input, textarea, select {
+  transition: background-color 600ms cubic-bezier(0.4, 0, 0.2, 1),
+              color 600ms cubic-bezier(0.4, 0, 0.2, 1),
+              border-color 600ms cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 /* Smooth scrolling with organic easing */
@@ -226,23 +391,25 @@ html {
   scroll-behavior: smooth;
 }
 
-/* Custom scrollbar - earthy! */
+/* Custom scrollbar - adapts to time of day! */
 ::-webkit-scrollbar {
   width: 12px;
 }
 
 ::-webkit-scrollbar-track {
-  background: var(--sand-100);
+  background: var(--muted);
+  transition: background-color 600ms cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 ::-webkit-scrollbar-thumb {
-  background: var(--moss-400);
+  background: var(--primary);
   border-radius: var(--radius-full);
-  border: 2px solid var(--sand-100);
+  border: 2px solid var(--muted);
+  transition: background-color 600ms cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  background: var(--moss-600);
+  background: var(--accent);
 }
 
 /* Selection - mossy green! */
@@ -355,4 +522,121 @@ a:hover {
 
 .pulse-alive {
   animation: pulse-grow 3s ease-in-out infinite;
+}
+
+/* Theme-aware utility classes - these adapt to ALL time periods! */
+.bg-theme-primary {
+  background-color: var(--primary);
+}
+
+.bg-theme-secondary {
+  background-color: var(--secondary);
+}
+
+.bg-theme-accent {
+  background-color: var(--accent);
+}
+
+.bg-theme-muted {
+  background-color: var(--muted);
+}
+
+.bg-theme-card {
+  background-color: var(--card);
+}
+
+.text-theme-primary {
+  color: var(--primary);
+}
+
+.text-theme-secondary {
+  color: var(--secondary);
+}
+
+.text-theme-accent {
+  color: var(--accent);
+}
+
+.text-theme-muted {
+  color: var(--muted-foreground);
+}
+
+.text-theme-foreground {
+  color: var(--foreground);
+}
+
+.text-theme-card-foreground {
+  color: var(--card-foreground);
+}
+
+.border-theme-primary {
+  border-color: var(--primary);
+}
+
+.border-theme-secondary {
+  border-color: var(--secondary);
+}
+
+.border-theme-accent {
+  border-color: var(--accent);
+}
+
+.border-theme-muted {
+  border-color: var(--border);
+}
+
+/* Theme-adaptive gradients - these change based on time of day! */
+.hero-gradient-theme {
+  background: linear-gradient(to bottom, var(--background) 0%, var(--muted) 100%);
+}
+
+.card-gradient-theme {
+  background: linear-gradient(to bottom right, var(--card) 0%, var(--muted) 100%);
+}
+
+/* Adaptive glass effect for each theme */
+.glass-theme {
+  background: color-mix(in srgb, var(--card) 95%, transparent);
+  backdrop-filter: blur(12px);
+  border: 1px solid color-mix(in srgb, var(--border) 50%, transparent);
+}
+
+/* Theme-adaptive shadows */
+.shadow-theme {
+  box-shadow: 0 4px 6px -1px color-mix(in srgb, var(--foreground) 10%, transparent),
+              0 2px 4px -1px color-mix(in srgb, var(--foreground) 6%, transparent);
+}
+
+.shadow-theme-lg {
+  box-shadow: 0 10px 15px -3px color-mix(in srgb, var(--foreground) 10%, transparent),
+              0 4px 6px -2px color-mix(in srgb, var(--foreground) 5%, transparent);
+}
+
+/* Hide footer on My Volition page */
+.hide-footer ~ footer,
+body:has(.hide-footer) footer {
+  display: none !important;
+}
+
+/* React Grid Layout resize handle styling */
+.react-grid-item > .react-resizable-handle {
+  width: 20px;
+  height: 20px;
+}
+
+.react-grid-item > .react-resizable-handle::after {
+  content: "";
+  position: absolute;
+  right: 3px;
+  bottom: 3px;
+  width: 8px;
+  height: 8px;
+  border-right: 2px solid var(--primary);
+  border-bottom: 2px solid var(--primary);
+  opacity: 0.7;
+}
+
+.react-grid-item > .react-resizable-handle:hover::after {
+  opacity: 1;
+  border-color: var(--accent);
 }

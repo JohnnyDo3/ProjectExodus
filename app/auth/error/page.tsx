@@ -30,18 +30,18 @@ function ErrorContent() {
   const message = error ? errorMessages[error] || errorMessages.default : errorMessages.default
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-sand-50 via-moss-50 to-ocean-50 p-4">
-      <Card className="w-full max-w-md border-4 border-terra-300 shadow-2xl">
+    <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-[color-mix(in_srgb,var(--muted)_50%,var(--background))] via-[color-mix(in_srgb,var(--primary)_15%,var(--background))] to-[color-mix(in_srgb,var(--accent)_15%,var(--background))] p-4">
+      <Card className="w-full max-w-md border-4 border-theme-secondary shadow-2xl">
         <CardHeader className="text-center">
-          <div className="w-20 h-20 mx-auto mb-4 rounded-full bg-gradient-to-br from-terra-500 to-terra-600 flex items-center justify-center shadow-xl">
-            <AlertCircle className="w-10 h-10 text-white" />
+          <div className="w-20 h-20 mx-auto mb-4 rounded-full bg-gradient-to-br from-[var(--secondary)] to-[color-mix(in_srgb,var(--secondary)_80%,black)] flex items-center justify-center shadow-xl">
+            <AlertCircle className="w-10 h-10 text-[var(--secondary-foreground)]" />
           </div>
-          <CardTitle className="text-3xl font-black" style={{ color: '#c24f31' }}>
+          <CardTitle className="text-3xl font-black text-theme-secondary">
             AUTHENTICATION ERROR
           </CardTitle>
         </CardHeader>
         <CardContent className="space-y-6">
-          <p className="text-center text-lg font-semibold" style={{ color: '#333' }}>
+          <p className="text-center text-lg font-semibold text-theme-muted">
             {message}
           </p>
 
@@ -62,7 +62,7 @@ function ErrorContent() {
           </div>
 
           {error && (
-            <p className="text-sm text-center font-medium" style={{ color: '#666' }}>
+            <p className="text-sm text-center font-medium text-theme-muted">
               Error code: {error}
             </p>
           )}

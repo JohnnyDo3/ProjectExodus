@@ -3,8 +3,14 @@ import "./globals.css";
 import { Header } from "@/components/layout/Header";
 import { Footer } from "@/components/layout/Footer";
 import { SessionProvider } from "@/components/providers/SessionProvider";
+import { TimeThemeProvider } from "@/components/providers/TimeThemeProvider";
+import { SkyThemeProvider } from "@/components/theme/SkyThemeProvider";
+import { SkyBackground } from "@/components/theme/SkyBackground";
+import { ProjectExodusAI } from "@/components/ai/ProjectExodusAI";
+import { DecorativeBranches } from "@/components/decorative/DecorativeBranches";
 import { generateMetadata, siteConfig } from "@/lib/metadata";
 import { auth } from "@/auth";
+import { Toaster } from "react-hot-toast";
 
 export const metadata: Metadata = generateMetadata({
   title: 'Sustainability Hub',
@@ -27,21 +33,99 @@ export default async function RootLayout({
         <script
           dangerouslySetInnerHTML={{
             __html: `
-              try {
-                const theme = localStorage.getItem('theme') || (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
-                if (theme === 'dark') {
-                  document.documentElement.classList.add('dark');
+              (function() {
+                try {
+                  const mode = localStorage.getItem('theme_mode') || 'auto';
+
+                  if (mode === 'morning') {
+                    document.documentElement.className = 'day';
+                    return;
+                  }
+
+                  if (mode === 'night') {
+                    document.documentElement.className = 'night';
+                    return;
+                  }
+
+                  // Auto mode - calculate based on time
+                  const coords = JSON.parse(localStorage.getItem('user_coords') || 'null');
+                  const now = new Date();
+
+                  if (coords && coords.latitude && coords.longitude) {
+                    // Simplified sunrise/sunset calculation for initial load
+                    // Full calculation happens in TimeThemeProvider
+                    const hour = now.getHours();
+                    if (hour >= 5 && hour < 8) {
+                      document.documentElement.className = 'sunrise';
+                    } else if (hour >= 8 && hour < 18) {
+                      document.documentElement.className = 'day';
+                    } else if (hour >= 18 && hour < 21) {
+                      document.documentElement.className = 'sunset';
+                    } else {
+                      document.documentElement.className = 'night';
+                    }
+                  } else {
+                    // Fallback to time-based detection
+                    const hour = now.getHours();
+                    if (hour >= 5 && hour < 8) {
+                      document.documentElement.className = 'sunrise';
+                    } else if (hour >= 8 && hour < 18) {
+                      document.documentElement.className = 'day';
+                    } else if (hour >= 18 && hour < 21) {
+                      document.documentElement.className = 'sunset';
+                    } else {
+                      document.documentElement.className = 'night';
+                    }
+                  }
+                } catch (e) {
+                  // Default to day theme on error
+                  document.documentElement.className = 'day';
                 }
-              } catch (e) {}
+              })();
             `,
           }}
         />
       </head>
       <body className="antialiased">
         <SessionProvider session={session}>
-          <Header />
-          {children}
-          <Footer />
+          <TimeThemeProvider>
+            <SkyThemeProvider>
+              <SkyBackground />
+              <DecorativeBranches />
+              <div className="relative z-10">
+                <Header />
+                {children}
+                <Footer />
+              </div>
+              {/* AI Assistant - Available on all pages, auto-greets on homepage */}
+              <ProjectExodusAI />
+              {/* Toast Notifications */}
+              <Toaster
+                position="top-right"
+                toastOptions={{
+                  duration: 4000,
+                  style: {
+                    background: 'var(--card)',
+                    color: 'var(--foreground)',
+                    border: '2px solid var(--border)',
+                    fontWeight: '600',
+                  },
+                  success: {
+                    iconTheme: {
+                      primary: 'var(--primary)',
+                      secondary: 'white',
+                    },
+                  },
+                  error: {
+                    iconTheme: {
+                      primary: 'var(--destructive)',
+                      secondary: 'white',
+                    },
+                  },
+                }}
+              />
+            </SkyThemeProvider>
+          </TimeThemeProvider>
         </SessionProvider>
       </body>
     </html>

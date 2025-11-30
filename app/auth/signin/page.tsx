@@ -60,7 +60,7 @@ function SignInForm() {
   }
 
   return (
-    <div className="min-h-screen bg-sand-50 dark:bg-earth-900 flex items-center justify-center py-12 px-4 sm:px-6 lg:px-8">
+    <div className="min-h-screen bg-[var(--muted)] flex items-center justify-center py-12 px-4 sm:px-6 lg:px-8">
       <div className="w-full max-w-md">
         <div className="mb-8">
           <Link href="/">
@@ -73,10 +73,10 @@ function SignInForm() {
 
         <Card>
           <CardHeader className="text-center">
-            <CardTitle className="text-2xl text-earth-900 dark:text-sand-100">
+            <CardTitle className="text-2xl text-[var(--foreground)]">
               Sign In to Project Exodus
             </CardTitle>
-            <CardDescription className="text-earth-700 dark:text-sand-300">
+            <CardDescription className="text-theme-muted">
               Enter your credentials to access your account
             </CardDescription>
           </CardHeader>
@@ -105,9 +105,9 @@ function SignInForm() {
               <div className="flex items-center justify-between text-sm">
                 <label className="flex items-center gap-2">
                   <input type="checkbox" className="rounded" />
-                  <span className="text-earth-700 dark:text-sand-300">Remember me</span>
+                  <span className="text-theme-muted">Remember me</span>
                 </label>
-                <Link href="/auth/forgot-password" className="text-moss-600 dark:text-moss-400 hover:text-moss-700 dark:hover:text-moss-300">
+                <Link href="/auth/forgot-password" className="text-theme-primary hover:opacity-80">
                   Forgot password?
                 </Link>
               </div>
@@ -116,25 +116,25 @@ function SignInForm() {
                 {loading ? 'Signing in...' : 'Sign In'}
               </Button>
 
-              <div className="text-center text-sm text-earth-600 dark:text-sand-400">
+              <div className="text-center text-sm text-theme-muted">
                 Don't have an account?{' '}
-                <Link href="/auth/signup" className="text-moss-600 dark:text-moss-400 hover:text-moss-700 dark:hover:text-moss-300 font-medium">
+                <Link href="/auth/signup" className="text-theme-primary hover:opacity-80 font-medium">
                   Sign up
                 </Link>
               </div>
             </form>
 
             {error && (
-              <div className="mt-4 p-4 bg-terra-50 dark:bg-terra-900 border border-terra-300 dark:border-terra-700 rounded-lg">
-                <p className="text-sm text-terra-800 dark:text-terra-200 font-semibold">
+              <div className="mt-4 p-4 bg-[color-mix(in_srgb,var(--secondary)_10%,var(--background))] border border-theme-secondary rounded-lg">
+                <p className="text-sm text-theme-secondary font-semibold">
                   {error}
                 </p>
               </div>
             )}
 
             {success && (
-              <div className="mt-4 p-4 bg-moss-50 dark:bg-moss-900 border-2 border-moss-500 dark:border-moss-600 rounded-lg">
-                <p className="text-sm text-moss-800 dark:text-moss-200 font-bold flex items-center gap-2">
+              <div className="mt-4 p-4 bg-[color-mix(in_srgb,var(--primary)_10%,var(--background))] border-2 border-theme-primary rounded-lg">
+                <p className="text-sm text-theme-primary font-bold flex items-center gap-2">
                   <span className="text-lg">✓</span>
                   Sign in successful! Redirecting...
                 </p>
@@ -142,9 +142,9 @@ function SignInForm() {
             )}
 
             {callbackUrl !== '/' && (
-              <div className="mt-6 p-4 bg-ocean-50 dark:bg-ocean-900 border border-ocean-200 dark:border-ocean-700 rounded-lg">
-                <p className="text-sm text-ocean-800 dark:text-ocean-200">
-                  <strong>Note:</strong> You need to sign in to access <code className="px-1 py-0.5 bg-ocean-100 dark:bg-ocean-800 rounded">{callbackUrl}</code>
+              <div className="mt-6 p-4 bg-[color-mix(in_srgb,var(--accent)_10%,var(--background))] border border-theme-accent rounded-lg">
+                <p className="text-sm text-theme-accent">
+                  <strong>Note:</strong> You need to sign in to access <code className="px-1 py-0.5 bg-[var(--muted)] rounded">{callbackUrl}</code>
                 </p>
               </div>
             )}
@@ -158,8 +158,8 @@ function SignInForm() {
 export default function SignInPage() {
   return (
     <Suspense fallback={
-      <div className="min-h-screen bg-sand-50 dark:bg-earth-900 flex items-center justify-center">
-        <p className="text-earth-900 dark:text-sand-100">Loading...</p>
+      <div className="min-h-screen bg-[var(--muted)] flex items-center justify-center">
+        <p className="text-[var(--foreground)]">Loading...</p>
       </div>
     }>
       <SignInForm />
