@@ -174,29 +174,29 @@ export function ModuleViewer({ module, userId, initialProgress }: ModuleViewerPr
   // Start screen
   if (!started) {
     return (
-      <div className="min-h-screen bg-sand-50 dark:bg-earth-900 py-12">
+      <div className="min-h-screen bg-[var(--background)] py-12">
         <div className="container mx-auto px-4 max-w-4xl">
-          <Link href="/learn" className="inline-flex items-center gap-2 text-moss-600 dark:text-moss-400 font-bold mb-8 hover:underline">
+          <Link href="/learn" className="inline-flex items-center gap-2 text-theme-primary font-bold mb-8 hover:underline">
             <ArrowLeft className="w-4 h-4" />
             Back to Learn
           </Link>
 
-          <Card className="border-4 border-moss-400 dark:border-moss-600 overflow-hidden">
-            <div className="h-3 bg-gradient-to-r from-moss-500 to-ocean-500" />
+          <Card className="border-4 border-theme-primary overflow-hidden">
+            <div className="h-3 bg-gradient-to-r from-[var(--primary)] to-[var(--accent)]" />
             <CardContent className="p-12 text-center">
-              <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-moss-100 dark:bg-moss-900 text-moss-700 dark:text-moss-300 font-bold text-sm mb-6">
+              <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-[color-mix(in_srgb,var(--primary)_20%,var(--background))] text-theme-primary font-bold text-sm mb-6">
                 {module.category}
               </div>
 
-              <h1 className="text-4xl font-black text-earth-900 dark:text-sand-100 mb-4">
+              <h1 className="text-4xl font-black text-[var(--foreground)] mb-4">
                 {module.title}
               </h1>
 
-              <p className="text-lg text-earth-700 dark:text-sand-300 mb-8 max-w-2xl mx-auto">
+              <p className="text-lg text-theme-muted mb-8 max-w-2xl mx-auto">
                 {module.description}
               </p>
 
-              <div className="flex items-center justify-center gap-8 mb-10 text-earth-600 dark:text-sand-400">
+              <div className="flex items-center justify-center gap-8 mb-10 text-theme-muted">
                 <span className="flex items-center gap-2 font-bold">
                   <BookOpen className="w-5 h-5" />
                   {totalLessons} Lessons
@@ -233,23 +233,23 @@ export function ModuleViewer({ module, userId, initialProgress }: ModuleViewerPr
   // Quiz screen
   if (showQuiz && module.quiz) {
     return (
-      <div className="min-h-screen bg-sand-50 dark:bg-earth-900 py-12">
+      <div className="min-h-screen bg-[var(--background)] py-12">
         <div className="container mx-auto px-4 max-w-4xl">
-          <Card className="border-4 border-ocean-400 dark:border-ocean-600 overflow-hidden">
-            <div className="h-3 bg-gradient-to-r from-ocean-500 to-moss-500" />
+          <Card className="border-4 border-theme-accent overflow-hidden">
+            <div className="h-3 bg-gradient-to-r from-[var(--accent)] to-[var(--primary)]" />
             <CardContent className="p-8">
               <div className="text-center mb-8">
-                <Trophy className="w-16 h-16 text-ocean-600 dark:text-ocean-400 mx-auto mb-4" />
-                <h2 className="text-3xl font-black text-earth-900 dark:text-sand-100 mb-2">
+                <Trophy className="w-16 h-16 text-theme-accent mx-auto mb-4" />
+                <h2 className="text-3xl font-black text-[var(--foreground)] mb-2">
                   {quizSubmitted ? 'Quiz Complete!' : 'Knowledge Check'}
                 </h2>
                 {quizSubmitted && quizScore !== null && (
-                  <div className={`text-5xl font-black ${quizScore >= module.quiz.passingScore ? 'text-moss-600' : 'text-terra-600'}`}>
+                  <div className={`text-5xl font-black ${quizScore >= module.quiz.passingScore ? 'text-theme-primary' : 'text-theme-secondary'}`}>
                     {quizScore}%
                   </div>
                 )}
                 {quizSubmitted && (
-                  <p className={`text-lg font-bold mt-2 ${quizScore && quizScore >= module.quiz.passingScore ? 'text-moss-600' : 'text-terra-600'}`}>
+                  <p className={`text-lg font-bold mt-2 ${quizScore && quizScore >= module.quiz.passingScore ? 'text-theme-primary' : 'text-theme-secondary'}`}>
                     {quizScore && quizScore >= module.quiz.passingScore
                       ? 'Congratulations! You passed!'
                       : `You need ${module.quiz.passingScore}% to pass. Try again!`}
@@ -263,8 +263,8 @@ export function ModuleViewer({ module, userId, initialProgress }: ModuleViewerPr
                   const correctOption = question.options.find(o => o.isCorrect)
 
                   return (
-                    <div key={question.id} className="p-6 bg-white dark:bg-earth-800 rounded-xl border-2 border-sand-300 dark:border-earth-600">
-                      <p className="text-lg font-bold text-earth-900 dark:text-sand-100 mb-4">
+                    <div key={question.id} className="p-6 bg-[var(--card)] rounded-xl border-2 border-[var(--border)]">
+                      <p className="text-lg font-bold text-[var(--foreground)] mb-4">
                         {qIndex + 1}. {question.question}
                       </p>
 
@@ -273,15 +273,15 @@ export function ModuleViewer({ module, userId, initialProgress }: ModuleViewerPr
                           const isSelected = selectedAnswer === option.id
                           const showResult = quizSubmitted
 
-                          let optionClass = 'border-sand-300 dark:border-earth-600 hover:border-moss-400'
+                          let optionClass = 'border-[var(--border)] hover:border-[var(--primary)]'
                           if (showResult) {
                             if (option.isCorrect) {
-                              optionClass = 'border-moss-500 bg-moss-50 dark:bg-moss-900/30'
+                              optionClass = 'border-[var(--primary)] bg-[color-mix(in_srgb,var(--primary)_15%,var(--background))]'
                             } else if (isSelected && !option.isCorrect) {
-                              optionClass = 'border-terra-500 bg-terra-50 dark:bg-terra-900/30'
+                              optionClass = 'border-[var(--secondary)] bg-[color-mix(in_srgb,var(--secondary)_15%,var(--background))]'
                             }
                           } else if (isSelected) {
-                            optionClass = 'border-ocean-500 bg-ocean-50 dark:bg-ocean-900/30'
+                            optionClass = 'border-[var(--accent)] bg-[color-mix(in_srgb,var(--accent)_15%,var(--background))]'
                           }
 
                           return (
@@ -291,11 +291,11 @@ export function ModuleViewer({ module, userId, initialProgress }: ModuleViewerPr
                               disabled={quizSubmitted}
                               className={`w-full p-4 rounded-lg border-2 text-left transition-all ${optionClass}`}
                             >
-                              <span className="font-medium text-earth-900 dark:text-sand-100">
+                              <span className="font-medium text-[var(--foreground)]">
                                 {option.text}
                               </span>
                               {showResult && option.isCorrect && (
-                                <CheckCircle2 className="inline-block w-5 h-5 text-moss-600 ml-2" />
+                                <CheckCircle2 className="inline-block w-5 h-5 text-theme-primary ml-2" />
                               )}
                             </button>
                           )
@@ -303,8 +303,8 @@ export function ModuleViewer({ module, userId, initialProgress }: ModuleViewerPr
                       </div>
 
                       {quizSubmitted && question.explanation && (
-                        <div className="mt-4 p-4 bg-ocean-50 dark:bg-ocean-900/30 rounded-lg border border-ocean-200 dark:border-ocean-700">
-                          <p className="text-sm font-medium text-ocean-800 dark:text-ocean-200">
+                        <div className="mt-4 p-4 bg-[color-mix(in_srgb,var(--accent)_15%,var(--background))] rounded-lg border border-[var(--accent)]">
+                          <p className="text-sm font-medium text-[var(--foreground)]">
                             <strong>Explanation:</strong> {question.explanation}
                           </p>
                         </div>
@@ -351,24 +351,29 @@ export function ModuleViewer({ module, userId, initialProgress }: ModuleViewerPr
     )
   }
 
+  // Check if module is completed (all lessons done + quiz passed if applicable)
+  const allLessonsComplete = completedLessons.size === totalLessons
+  const quizPassed = quizSubmitted && quizScore !== null && module.quiz && quizScore >= module.quiz.passingScore
+  const moduleComplete = hasQuiz ? (allLessonsComplete && quizPassed) : allLessonsComplete
+
   // Lesson viewer
   return (
-    <div className="min-h-screen bg-sand-50 dark:bg-earth-900 py-8">
+    <div className="min-h-screen bg-[var(--background)] py-8">
       <div className="container mx-auto px-4 max-w-5xl">
         {/* Header */}
-        <div className="flex items-center justify-between mb-6">
-          <Link href="/learn" className="inline-flex items-center gap-2 text-moss-600 dark:text-moss-400 font-bold hover:underline">
+        <div className="flex items-center justify-between mb-4">
+          <Link href="/learn" className="inline-flex items-center gap-2 text-theme-primary font-bold hover:underline">
             <ArrowLeft className="w-4 h-4" />
             Back to Learn
           </Link>
 
           <div className="flex items-center gap-4">
-            <span className="text-sm font-bold text-earth-600 dark:text-sand-400">
+            <span className="text-sm font-bold text-theme-muted">
               {progressPercent}% Complete
             </span>
-            <div className="w-32 h-2 bg-sand-300 dark:bg-earth-700 rounded-full overflow-hidden">
+            <div className="w-32 h-2 bg-[var(--muted)] rounded-full overflow-hidden">
               <div
-                className="h-full bg-gradient-to-r from-moss-500 to-ocean-500 rounded-full transition-all duration-500"
+                className="h-full bg-gradient-to-r from-[var(--primary)] to-[var(--accent)] rounded-full transition-all duration-500"
                 style={{ width: `${progressPercent}%` }}
               />
             </div>
@@ -376,13 +381,13 @@ export function ModuleViewer({ module, userId, initialProgress }: ModuleViewerPr
         </div>
 
         {/* Module Title */}
-        <div className="mb-6">
-          <span className="text-sm font-bold text-moss-600 dark:text-moss-400">{module.category}</span>
-          <h1 className="text-2xl font-black text-earth-900 dark:text-sand-100">{module.title}</h1>
+        <div className="mb-3">
+          <span className="text-sm font-bold text-theme-primary">{module.category}</span>
+          <h1 className="text-2xl font-black text-[var(--foreground)]">{module.title}</h1>
         </div>
 
-        {/* Tab Navigation */}
-        <div className="flex gap-2 mb-6 overflow-x-auto pb-2">
+        {/* Tab Navigation - Compact */}
+        <div className="flex gap-2 mb-3 overflow-x-auto pb-1">
           {module.lessons.map((lesson, index) => {
             const isCompleted = completedLessons.has(lesson.id)
             const isCurrent = index === currentTab
@@ -393,10 +398,10 @@ export function ModuleViewer({ module, userId, initialProgress }: ModuleViewerPr
                 onClick={() => setCurrentTab(index)}
                 className={`flex items-center gap-2 px-4 py-2 rounded-lg font-bold text-sm whitespace-nowrap transition-all ${
                   isCurrent
-                    ? 'bg-moss-600 text-white'
+                    ? 'bg-[var(--primary)] text-[var(--primary-foreground)]'
                     : isCompleted
-                    ? 'bg-moss-100 dark:bg-moss-900 text-moss-700 dark:text-moss-300'
-                    : 'bg-sand-200 dark:bg-earth-700 text-earth-600 dark:text-sand-400 hover:bg-sand-300 dark:hover:bg-earth-600'
+                    ? 'bg-[color-mix(in_srgb,var(--primary)_20%,var(--background))] text-theme-primary'
+                    : 'bg-[var(--muted)] text-theme-muted hover:bg-[color-mix(in_srgb,var(--primary)_10%,var(--muted))]'
                 }`}
               >
                 {isCompleted ? (
@@ -411,30 +416,40 @@ export function ModuleViewer({ module, userId, initialProgress }: ModuleViewerPr
           {hasQuiz && (
             <button
               onClick={() => setShowQuiz(true)}
-              className="flex items-center gap-2 px-4 py-2 rounded-lg font-bold text-sm whitespace-nowrap bg-ocean-100 dark:bg-ocean-900 text-ocean-700 dark:text-ocean-300 hover:bg-ocean-200 dark:hover:bg-ocean-800 transition-all"
+              className={`flex items-center gap-2 px-4 py-2 rounded-lg font-bold text-sm whitespace-nowrap transition-all ${
+                quizPassed
+                  ? 'bg-[color-mix(in_srgb,var(--accent)_20%,var(--background))] text-theme-accent'
+                  : 'bg-[color-mix(in_srgb,var(--accent)_15%,var(--background))] text-theme-accent hover:bg-[color-mix(in_srgb,var(--accent)_25%,var(--background))]'
+              }`}
             >
-              <Trophy className="w-4 h-4" />
+              {quizPassed ? <CheckCircle2 className="w-4 h-4" /> : <Trophy className="w-4 h-4" />}
               Quiz
             </button>
           )}
         </div>
 
         {/* Lesson Content */}
-        <Card className="border-2 border-sand-300 dark:border-earth-600 mb-6">
+        <Card className="border-2 border-[var(--border)] mb-4">
           <CardContent className="p-8">
-            <h2 className="text-2xl font-black text-earth-900 dark:text-sand-100 mb-6">
+            <h2 className="text-2xl font-black text-[var(--foreground)] mb-6">
               {currentLesson.title}
             </h2>
 
             <div
-              className="prose prose-lg dark:prose-invert max-w-none"
+              className="prose prose-lg max-w-none text-[var(--foreground)]
+                         prose-headings:text-[var(--foreground)]
+                         prose-p:text-[var(--foreground)]
+                         prose-li:text-[var(--foreground)]
+                         prose-strong:text-[var(--foreground)]
+                         prose-a:text-theme-primary prose-a:font-semibold
+                         prose-blockquote:border-[var(--primary)] prose-blockquote:text-theme-muted"
               dangerouslySetInnerHTML={{ __html: currentLesson.content }}
             />
           </CardContent>
         </Card>
 
-        {/* Navigation */}
-        <div className="flex justify-between">
+        {/* Navigation with Completion Text */}
+        <div className="flex items-center justify-between">
           <Button
             variant="outline"
             onClick={goToPrevious}
@@ -444,6 +459,17 @@ export function ModuleViewer({ module, userId, initialProgress }: ModuleViewerPr
             <ChevronLeft className="w-4 h-4 mr-2" />
             Previous
           </Button>
+
+          {/* Engraved completion text - centered */}
+          <p className="text-sm font-medium text-theme-muted opacity-70 text-center px-4" style={{
+            textShadow: '0 1px 0 rgba(255,255,255,0.1)',
+            letterSpacing: '0.02em'
+          }}>
+            {moduleComplete
+              ? 'Module complete! You can revisit this material anytime.'
+              : 'Complete the quiz to finish this module at 100%.'
+            }
+          </p>
 
           <Button
             onClick={goToNext}

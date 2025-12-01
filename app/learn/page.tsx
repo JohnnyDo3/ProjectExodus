@@ -266,11 +266,11 @@ export default async function LearnPage() {
       </section>
 
       {/* Learning Paths */}
-      <section className="py-24 bg-white dark:bg-earth-900">
+      <section className="py-24 bg-[var(--background)]">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-16">
-            <h2 className="text-5xl font-black mb-4 text-earth-900 dark:text-sand-100">LEARNING PATHS</h2>
-            <p className="text-xl font-semibold text-earth-700 dark:text-sand-300">
+            <h2 className="text-5xl font-black mb-4 text-[var(--foreground)]">LEARNING PATHS</h2>
+            <p className="text-xl font-semibold text-theme-muted">
               Structured courses designed to take you from curious to expert
             </p>
           </div>
@@ -279,25 +279,25 @@ export default async function LearnPage() {
             {learningPaths.map((path) => (
               <Link key={path.id} href={`/learn/paths/${path.id}`}>
                 <Card
-                  className={`h-full border-4 border-${path.color}-300 dark:border-${path.color}-600 hover:border-${path.color}-500 dark:hover:border-${path.color}-500 bg-gradient-to-br from-${path.color}-50 to-white dark:from-earth-800 dark:to-earth-900 transform hover:scale-105 transition-all duration-300 cursor-pointer overflow-hidden`}
+                  className="h-full border-4 border-theme-primary hover:border-theme-accent bg-gradient-to-br from-[color-mix(in_srgb,var(--primary)_15%,var(--background))] to-[var(--background)] transform hover:scale-105 transition-all duration-300 cursor-pointer overflow-hidden"
                 >
-                  <div className={`h-2 bg-gradient-to-r from-${path.color}-500 to-${path.color}-600`} />
+                  <div className="h-2 bg-gradient-to-r from-[var(--primary)] to-[var(--accent)]" />
                   <CardContent className="p-8">
                     <div className="flex items-center gap-4 mb-6">
-                      <div className={`w-16 h-16 rounded-2xl bg-${path.color}-100 dark:bg-${path.color}-900 flex items-center justify-center`}>
-                        <path.icon className={`w-8 h-8 text-${path.color}-600 dark:text-${path.color}-400`} />
+                      <div className="w-16 h-16 rounded-2xl bg-[color-mix(in_srgb,var(--primary)_20%,var(--background))] flex items-center justify-center">
+                        <path.icon className="w-8 h-8 text-theme-primary" />
                       </div>
                       <div>
-                        <span className={`text-sm font-black text-${path.color}-600 dark:text-${path.color}-400`}>{path.level}</span>
-                        <h3 className="text-xl font-black text-earth-900 dark:text-sand-100">{path.title}</h3>
+                        <span className="text-sm font-black text-theme-primary">{path.level}</span>
+                        <h3 className="text-xl font-black text-[var(--foreground)]">{path.title}</h3>
                       </div>
                     </div>
 
-                    <p className="text-base font-medium text-earth-700 dark:text-sand-300 mb-6">
+                    <p className="text-base font-medium text-theme-muted mb-6">
                       {path.description}
                     </p>
 
-                    <div className="flex items-center gap-6 mb-6 text-sm font-bold text-earth-600 dark:text-sand-400">
+                    <div className="flex items-center gap-6 mb-6 text-sm font-bold text-theme-muted">
                       <span className="flex items-center gap-2">
                         <Clock className="w-4 h-4" />
                         {path.duration}
@@ -312,14 +312,14 @@ export default async function LearnPage() {
                       {path.topics.map((topic, i) => (
                         <span
                           key={i}
-                          className={`px-3 py-1 rounded-full text-xs font-bold bg-${path.color}-100 dark:bg-${path.color}-900 text-${path.color}-700 dark:text-${path.color}-300`}
+                          className="px-3 py-1 rounded-full text-xs font-bold bg-[color-mix(in_srgb,var(--primary)_20%,var(--background))] text-theme-primary"
                         >
                           {topic}
                         </span>
                       ))}
                     </div>
 
-                    <Button className={`w-full font-bold`}>
+                    <Button className="w-full font-bold">
                       START PATH <ChevronRight className="w-4 h-4 ml-2" />
                     </Button>
                   </CardContent>
@@ -331,11 +331,11 @@ export default async function LearnPage() {
       </section>
 
       {/* Featured Modules */}
-      <section className="py-24 bg-sand-50 dark:bg-earth-800">
+      <section className="py-24 bg-[var(--muted)]">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-16">
-            <h2 className="text-5xl font-black mb-4 text-earth-900 dark:text-sand-100">FEATURED MODULES</h2>
-            <p className="text-xl font-semibold text-earth-700 dark:text-sand-300">
+            <h2 className="text-5xl font-black mb-4 text-[var(--foreground)]">FEATURED MODULES</h2>
+            <p className="text-xl font-semibold text-theme-muted">
               Dive deep with our most popular lessons
             </p>
           </div>
@@ -344,37 +344,37 @@ export default async function LearnPage() {
             {featuredModules.map((module, i) => {
               const ModuleCard = (
                 <Card
-                  className={`border-2 border-sand-300 dark:border-earth-600 ${module.available ? 'hover:border-moss-400 dark:hover:border-moss-500 cursor-pointer' : 'opacity-75'} bg-white dark:bg-earth-900 transform ${module.available ? 'hover:-translate-y-2' : ''} transition-all duration-300 group relative`}
+                  className={`border-2 border-[var(--border)] ${module.available ? 'hover:border-theme-primary cursor-pointer' : 'opacity-75'} bg-[var(--card)] transform ${module.available ? 'hover:-translate-y-2' : ''} transition-all duration-300 group relative`}
                 >
                   {!module.available && (
-                    <div className="absolute top-3 right-3 px-2 py-1 bg-earth-200 dark:bg-earth-700 rounded text-xs font-bold text-earth-600 dark:text-sand-400">
+                    <div className="absolute top-3 right-3 px-2 py-1 bg-[var(--muted)] rounded text-xs font-bold text-theme-muted">
                       COMING SOON
                     </div>
                   )}
                   <CardContent className="p-6">
                     <div className="flex items-start justify-between mb-4">
-                      <span className={`px-3 py-1 rounded-full text-xs font-black bg-${module.color}-100 dark:bg-${module.color}-900 text-${module.color}-700 dark:text-${module.color}-400`}>
+                      <span className="px-3 py-1 rounded-full text-xs font-black bg-[color-mix(in_srgb,var(--primary)_20%,var(--background))] text-theme-primary">
                         {module.category}
                       </span>
-                      <div className={`w-12 h-12 rounded-xl bg-${module.color}-100 dark:bg-${module.color}-900 flex items-center justify-center ${module.available ? 'group-hover:scale-110' : ''} transition-transform`}>
-                        <module.icon className={`w-6 h-6 text-${module.color}-600 dark:text-${module.color}-400`} />
+                      <div className={`w-12 h-12 rounded-xl bg-[color-mix(in_srgb,var(--primary)_20%,var(--background))] flex items-center justify-center ${module.available ? 'group-hover:scale-110' : ''} transition-transform`}>
+                        <module.icon className="w-6 h-6 text-theme-primary" />
                       </div>
                     </div>
 
-                    <h3 className={`text-lg font-black mb-2 text-earth-900 dark:text-sand-100 ${module.available ? 'group-hover:text-moss-700 dark:group-hover:text-moss-400' : ''} transition-colors`}>
+                    <h3 className={`text-lg font-black mb-2 text-[var(--foreground)] ${module.available ? 'group-hover:text-theme-primary' : ''} transition-colors`}>
                       {module.title}
                     </h3>
 
-                    <p className="text-sm font-medium text-earth-600 dark:text-sand-400 mb-4">
+                    <p className="text-sm font-medium text-theme-muted mb-4">
                       {module.description}
                     </p>
 
                     <div className="flex items-center justify-between text-sm">
-                      <span className="font-bold text-earth-500 dark:text-sand-500 flex items-center gap-2">
+                      <span className="font-bold text-theme-muted flex items-center gap-2">
                         <Clock className="w-4 h-4" />
                         {module.duration}
                       </span>
-                      <span className={`font-bold ${module.available ? 'text-moss-600 dark:text-moss-400' : 'text-earth-400 dark:text-earth-500'} flex items-center gap-1`}>
+                      <span className={`font-bold ${module.available ? 'text-theme-primary' : 'text-theme-muted'} flex items-center gap-1`}>
                         {module.available ? 'START MODULE' : module.type}
                         <ChevronRight className="w-4 h-4" />
                       </span>
@@ -402,25 +402,25 @@ export default async function LearnPage() {
       </section>
 
       {/* Quick Facts Marquee */}
-      <section className="py-12 bg-moss-600 dark:bg-moss-800 overflow-hidden">
+      <section className="py-12 bg-[var(--primary)] overflow-hidden">
         <div className="flex gap-12 animate-scroll">
           {[...quickFacts, ...quickFacts].map((item, i) => (
             <div key={i} className="flex items-center gap-4 whitespace-nowrap">
-              <Lightbulb className="w-6 h-6 text-moss-200" />
-              <span className="text-lg font-bold text-white">{item.fact}</span>
-              <span className="text-sm font-medium text-moss-200">— {item.source}</span>
-              <span className="text-moss-300 mx-4">•</span>
+              <Lightbulb className="w-6 h-6 text-[var(--primary-foreground)] opacity-70" />
+              <span className="text-lg font-bold text-[var(--primary-foreground)]">{item.fact}</span>
+              <span className="text-sm font-medium text-[var(--primary-foreground)] opacity-70">— {item.source}</span>
+              <span className="text-[var(--primary-foreground)] opacity-50 mx-4">•</span>
             </div>
           ))}
         </div>
       </section>
 
       {/* Core Topics */}
-      <section className="py-24 bg-white dark:bg-earth-900">
+      <section className="py-24 bg-[var(--background)]">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-16">
-            <h2 className="text-5xl font-black mb-4 text-earth-900 dark:text-sand-100">CORE TOPICS</h2>
-            <p className="text-xl font-semibold text-earth-700 dark:text-sand-300">
+            <h2 className="text-5xl font-black mb-4 text-[var(--foreground)]">CORE TOPICS</h2>
+            <p className="text-xl font-semibold text-theme-muted">
               Master the pillars of sustainability
             </p>
           </div>
@@ -428,22 +428,22 @@ export default async function LearnPage() {
           <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8 max-w-7xl mx-auto">
             {topics.map((topic) => (
               <Link key={topic.title} href={`/learn/topics/${topic.slug}`}>
-                <Card className={`h-full border-4 border-${topic.color}-300 dark:border-${topic.color}-600 bg-gradient-to-br from-${topic.color}-50 to-white dark:from-earth-800 dark:to-earth-900 transform hover:scale-105 hover:shadow-2xl transition-all duration-300 cursor-pointer`}>
+                <Card className="h-full border-4 border-theme-primary bg-gradient-to-br from-[color-mix(in_srgb,var(--primary)_15%,var(--background))] to-[var(--background)] transform hover:scale-105 hover:shadow-2xl transition-all duration-300 cursor-pointer">
                   <CardContent className="p-8">
-                    <div className={`w-20 h-20 mb-6 rounded-2xl bg-${topic.color}-100 dark:bg-${topic.color}-900 flex items-center justify-center`}>
-                      <topic.icon className={`w-10 h-10 text-${topic.color}-600 dark:text-${topic.color}-400`} />
+                    <div className="w-20 h-20 mb-6 rounded-2xl bg-[color-mix(in_srgb,var(--primary)_20%,var(--background))] flex items-center justify-center">
+                      <topic.icon className="w-10 h-10 text-theme-primary" />
                     </div>
-                    <h3 className="text-2xl font-black mb-3 text-earth-900 dark:text-sand-100">
+                    <h3 className="text-2xl font-black mb-3 text-[var(--foreground)]">
                       {topic.title}
                     </h3>
-                    <p className="text-base font-medium mb-4 text-earth-700 dark:text-sand-300">
+                    <p className="text-base font-medium mb-4 text-theme-muted">
                       {topic.desc}
                     </p>
                     <div className="flex items-center justify-between">
-                      <span className="text-sm font-bold text-earth-500 dark:text-sand-500">
+                      <span className="text-sm font-bold text-theme-muted">
                         {topic.lessons} lessons
                       </span>
-                      <span className={`text-${topic.color}-600 dark:text-${topic.color}-400 font-black text-sm flex items-center gap-1`}>
+                      <span className="text-theme-primary font-black text-sm flex items-center gap-1">
                         EXPLORE <ChevronRight className="w-4 h-4" />
                       </span>
                     </div>
@@ -456,11 +456,11 @@ export default async function LearnPage() {
       </section>
 
       {/* Expert Insights - Interactive Carousel */}
-      <section className="py-24 bg-gradient-to-br from-earth-800 to-earth-900 text-white">
+      <section className="py-24 bg-gradient-to-br from-[var(--primary)] via-[var(--accent)] to-[var(--secondary)] text-[var(--primary-foreground)]">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-16">
-            <h2 className="text-5xl font-black mb-4">WORDS OF WISDOM</h2>
-            <p className="text-xl font-semibold text-sand-300">
+            <h2 className="text-5xl font-black mb-4 text-[var(--primary-foreground)]">WORDS OF WISDOM</h2>
+            <p className="text-xl font-semibold text-[var(--primary-foreground)] opacity-80">
               Insights from sustainability leaders
             </p>
           </div>
@@ -470,24 +470,24 @@ export default async function LearnPage() {
       </section>
 
       {/* Interactive Tools */}
-      <section className="py-24 bg-sand-50 dark:bg-earth-800">
+      <section className="py-24 bg-[var(--muted)]">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-16">
-            <h2 className="text-5xl font-black mb-4 text-earth-900 dark:text-sand-100">INTERACTIVE TOOLS</h2>
-            <p className="text-xl font-semibold text-earth-700 dark:text-sand-300">
+            <h2 className="text-5xl font-black mb-4 text-[var(--foreground)]">INTERACTIVE TOOLS</h2>
+            <p className="text-xl font-semibold text-theme-muted">
               Learn by doing with hands-on resources
             </p>
           </div>
 
           <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6 max-w-6xl mx-auto mb-12">
             {resourceTypes.map((resource, i) => (
-              <Card key={i} className="border-2 border-sand-300 dark:border-earth-600 bg-white dark:bg-earth-900 hover:shadow-xl transition-shadow cursor-pointer">
+              <Card key={i} className="border-2 border-[var(--border)] bg-[var(--card)] hover:shadow-xl transition-shadow cursor-pointer">
                 <CardContent className="p-6 text-center">
-                  <div className={`w-16 h-16 mx-auto mb-4 rounded-2xl bg-${resource.color}-100 dark:bg-${resource.color}-900 flex items-center justify-center`}>
-                    <resource.icon className={`w-8 h-8 text-${resource.color}-600 dark:text-${resource.color}-400`} />
+                  <div className="w-16 h-16 mx-auto mb-4 rounded-2xl bg-[color-mix(in_srgb,var(--primary)_20%,var(--background))] flex items-center justify-center">
+                    <resource.icon className="w-8 h-8 text-theme-primary" />
                   </div>
-                  <h3 className="text-lg font-black mb-2 text-earth-900 dark:text-sand-100">{resource.type}</h3>
-                  <div className={`text-3xl font-black text-${resource.color}-600 dark:text-${resource.color}-400`}>
+                  <h3 className="text-lg font-black mb-2 text-[var(--foreground)]">{resource.type}</h3>
+                  <div className="text-3xl font-black text-theme-primary">
                     {resource.count}+
                   </div>
                 </CardContent>
@@ -497,20 +497,20 @@ export default async function LearnPage() {
 
           <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6 max-w-7xl mx-auto">
             {[
-              { icon: Calculator, title: 'CARBON CALCULATOR', desc: 'Calculate your environmental footprint and get personalized reduction tips', color: 'moss', cta: 'CALCULATE NOW', href: '/tools/carbon-calculator' },
-              { icon: Droplet, title: 'WATER CALCULATOR', desc: 'Discover your total water footprint including hidden virtual water', color: 'ocean', cta: 'CALCULATE NOW', href: '/tools/water-calculator' },
-              { icon: Play, title: 'VIDEO LIBRARY', desc: 'Curated educational videos from trusted sources on sustainability topics', color: 'terra', cta: 'WATCH VIDEOS', href: '/videos' },
-              { icon: Download, title: 'RESOURCE LIBRARY', desc: 'PDFs, worksheets, checklists, and templates for sustainable living', color: 'moss', cta: 'BROWSE RESOURCES', href: '/resources' }
+              { icon: Calculator, title: 'CARBON CALCULATOR', desc: 'Calculate your environmental footprint and get personalized reduction tips', cta: 'CALCULATE NOW', href: '/tools/carbon-calculator' },
+              { icon: Droplet, title: 'WATER CALCULATOR', desc: 'Discover your total water footprint including hidden virtual water', cta: 'CALCULATE NOW', href: '/tools/water-calculator' },
+              { icon: Play, title: 'VIDEO LIBRARY', desc: 'Curated educational videos from trusted sources on sustainability topics', cta: 'WATCH VIDEOS', href: '/videos' },
+              { icon: Download, title: 'RESOURCE LIBRARY', desc: 'PDFs, worksheets, checklists, and templates for sustainable living', cta: 'BROWSE RESOURCES', href: '/resources' }
             ].map((tool, i) => (
               <Link key={i} href={tool.href}>
-                <Card className={`h-full border-4 border-${tool.color}-300 dark:border-${tool.color}-600 bg-gradient-to-br from-${tool.color}-50 to-white dark:from-earth-800 dark:to-earth-900 transform hover:scale-105 transition-all cursor-pointer`}>
+                <Card className="h-full border-4 border-theme-primary bg-gradient-to-br from-[color-mix(in_srgb,var(--primary)_15%,var(--background))] to-[var(--background)] transform hover:scale-105 transition-all cursor-pointer">
                   <CardContent className="p-10 text-center">
-                    <div className={`w-24 h-24 mx-auto mb-6 rounded-full bg-${tool.color}-100 dark:bg-${tool.color}-900 flex items-center justify-center`}>
-                      <tool.icon className={`w-12 h-12 text-${tool.color}-600 dark:text-${tool.color}-400`} />
+                    <div className="w-24 h-24 mx-auto mb-6 rounded-full bg-[color-mix(in_srgb,var(--primary)_20%,var(--background))] flex items-center justify-center">
+                      <tool.icon className="w-12 h-12 text-theme-primary" />
                     </div>
-                    <h3 className="text-xl font-black mb-3 text-earth-900 dark:text-sand-100">{tool.title}</h3>
-                    <p className="font-medium mb-6 text-earth-700 dark:text-sand-300">{tool.desc}</p>
-                    <Button variant="outline" className={`font-bold border-2 border-${tool.color}-500 text-${tool.color}-700 dark:text-${tool.color}-400 hover:bg-${tool.color}-500 hover:text-white`}>
+                    <h3 className="text-xl font-black mb-3 text-[var(--foreground)]">{tool.title}</h3>
+                    <p className="font-medium mb-6 text-theme-muted">{tool.desc}</p>
+                    <Button variant="outline" className="font-bold border-2">
                       {tool.cta}
                     </Button>
                   </CardContent>
@@ -523,17 +523,17 @@ export default async function LearnPage() {
 
       {/* Articles Grid */}
       {articles.length > 0 && (
-        <section className="py-24 bg-white dark:bg-earth-900">
+        <section className="py-24 bg-[var(--background)]">
           <div className="container mx-auto px-4 sm:px-6 lg:px-8">
             <div className="text-center mb-16">
               <h2 className="text-5xl font-black mb-4" style={{
-                background: 'linear-gradient(135deg, #36763d, #2e6161)',
+                background: 'linear-gradient(135deg, var(--primary), var(--accent))',
                 WebkitBackgroundClip: 'text',
                 WebkitTextFillColor: 'transparent'
               }}>
                 LATEST ARTICLES
               </h2>
-              <p className="text-xl font-semibold text-earth-700 dark:text-sand-300">
+              <p className="text-xl font-semibold text-theme-muted">
                 Fresh insights and in-depth guides from Professor Sage
               </p>
             </div>
@@ -557,16 +557,16 @@ export default async function LearnPage() {
 
       {/* Coming Soon */}
       {articles.length === 0 && (
-        <section className="py-24 bg-ocean-50 dark:bg-ocean-900/20">
+        <section className="py-24 bg-[color-mix(in_srgb,var(--accent)_10%,var(--background))]">
           <div className="container mx-auto px-4 sm:px-6 lg:px-8">
             <div className="max-w-3xl mx-auto text-center">
-              <Card className="border-4 border-ocean-300 dark:border-ocean-600 bg-white dark:bg-earth-800">
+              <Card className="border-4 border-theme-accent bg-[var(--card)]">
                 <CardContent className="p-12">
-                  <BookOpen className="w-20 h-20 text-ocean-600 dark:text-ocean-400 mx-auto mb-6" />
-                  <h3 className="text-4xl font-black mb-6 text-ocean-700 dark:text-ocean-300">
+                  <BookOpen className="w-20 h-20 text-theme-accent mx-auto mb-6" />
+                  <h3 className="text-4xl font-black mb-6 text-theme-accent">
                     NEW ARTICLES COMING SOON
                   </h3>
-                  <p className="text-xl font-semibold mb-8 text-ocean-600 dark:text-ocean-400">
+                  <p className="text-xl font-semibold mb-8 text-theme-muted">
                     Professor Sage is crafting comprehensive, research-backed articles
                     to empower your sustainability journey!
                   </p>
@@ -581,20 +581,20 @@ export default async function LearnPage() {
       )}
 
       {/* CTA */}
-      <section className="py-24 bg-gradient-to-br from-moss-500 via-ocean-500 to-terra-500 text-white">
+      <section className="py-24 bg-gradient-to-br from-[var(--primary)] via-[var(--accent)] to-[var(--secondary)] text-[var(--primary-foreground)]">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
           <div className="max-w-4xl mx-auto text-center space-y-8">
             <div className="text-7xl">🎓</div>
-            <h2 className="text-5xl font-black">READY TO BECOME A SUSTAINABILITY EXPERT?</h2>
-            <p className="text-2xl font-semibold text-sand-100">
+            <h2 className="text-5xl font-black text-[var(--primary-foreground)]">READY TO BECOME A SUSTAINABILITY EXPERT?</h2>
+            <p className="text-2xl font-semibold text-[var(--primary-foreground)] opacity-90">
               Join thousands of learners transforming knowledge into action.
             </p>
             <div className="flex flex-col sm:flex-row gap-6 justify-center">
-              <Button size="lg" className="text-xl px-12 py-8 bg-white text-earth-900 hover:bg-sand-100 font-black shadow-2xl rounded-2xl">
+              <Button size="lg" className="text-xl px-12 py-8 bg-[var(--primary-foreground)] text-[var(--primary)] hover:opacity-90 font-black shadow-2xl rounded-2xl">
                 START YOUR JOURNEY
               </Button>
               <Link href="/community">
-                <Button size="lg" variant="outline" className="text-xl px-12 py-8 border-4 border-white text-white hover:bg-white hover:text-earth-900 font-black rounded-2xl">
+                <Button size="lg" variant="outline" className="text-xl px-12 py-8 border-4 border-[var(--primary-foreground)] text-[var(--primary-foreground)] hover:bg-[var(--primary-foreground)] hover:text-[var(--primary)] font-black rounded-2xl">
                   JOIN THE COMMUNITY
                 </Button>
               </Link>
