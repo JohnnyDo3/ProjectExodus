@@ -1,6 +1,6 @@
 'use client'
 
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useRef } from 'react'
 import { useSession } from 'next-auth/react'
 import { Card, CardContent } from '@/components/ui/Card'
 import { Button } from '@/components/ui/Button'
@@ -277,6 +277,7 @@ export function ProfileBusinessCard({ userId }: ProfileBusinessCardProps) {
   const [selectedArchetype, setSelectedArchetype] = useState<ArchetypeType>('michael')
   const [editedProfile, setEditedProfile] = useState<Partial<ProfileData>>({})
   const [isSaving, setIsSaving] = useState(false)
+  const expandedSectionRef = useRef<HTMLDivElement>(null)
 
   const isOwnProfile = session?.user?.id === userId
 
@@ -419,8 +420,8 @@ export function ProfileBusinessCard({ userId }: ProfileBusinessCardProps) {
                 <Crown className="w-4 h-4 text-white/80" />
                 <p className="text-xs font-bold text-white/80 uppercase tracking-wider">Identity Declaration</p>
               </div>
-              <h2 className="text-2xl font-black text-white tracking-wide">{archetype.name}</h2>
-              <p className="text-sm font-medium text-white/90">{archetype.title}</p>
+              <h2 className="text-2xl font-black text-white tracking-wide">{profile.name || 'Anonymous'}</h2>
+              <p className="text-sm font-medium text-white/90">{archetype.title} • {archetype.value}</p>
             </div>
           </div>
 
@@ -452,7 +453,16 @@ export function ProfileBusinessCard({ userId }: ProfileBusinessCardProps) {
               </>
             )}
             <button
-              onClick={() => setIsExpanded(!isExpanded)}
+              onClick={() => {
+                const newExpanded = !isExpanded
+                setIsExpanded(newExpanded)
+                // Scroll to expanded content after state update
+                if (newExpanded) {
+                  setTimeout(() => {
+                    expandedSectionRef.current?.scrollIntoView({ behavior: 'smooth', block: 'start' })
+                  }, 100)
+                }
+              }}
               className="p-2.5 bg-white/20 hover:bg-white/30 rounded-xl transition-colors backdrop-blur-sm"
             >
               {isExpanded ? (
@@ -755,7 +765,7 @@ export function ProfileBusinessCard({ userId }: ProfileBusinessCardProps) {
 
         {/* Expanded Section - Full Profile */}
         {isExpanded && (
-          <div className="mt-6 pt-6 border-t-2 border-[var(--border)]">
+          <div ref={expandedSectionRef} className="mt-6 pt-6 border-t-2 border-[var(--border)]">
             <div className="grid md:grid-cols-2 gap-6">
               {/* Bio */}
               <div>

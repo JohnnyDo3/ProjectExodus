@@ -949,12 +949,11 @@ export default function MyVolitionPage() {
                     <FileText className="w-5 h-5 text-theme-accent" />
                     <h2 className="text-xs font-black text-[var(--foreground)]">YOUR ARTICLES</h2>
                   </div>
-                  <button
-                    onClick={() => alert('Create new article')}
-                    className="w-7 h-7 rounded-full bg-[var(--accent)] text-white flex items-center justify-center hover:bg-[var(--primary)] transition-colors"
-                  >
-                    <Plus className="w-4 h-4" />
-                  </button>
+                  <Link href="/articles/write">
+                    <button className="w-7 h-7 rounded-full bg-[var(--accent)] text-white flex items-center justify-center hover:bg-[var(--primary)] transition-colors">
+                      <Plus className="w-4 h-4" />
+                    </button>
+                  </Link>
                 </div>
                 <div className="flex-1 overflow-y-auto p-4 space-y-3">
                   {articles.length > 0 ? (
@@ -1006,12 +1005,11 @@ export default function MyVolitionPage() {
                     <div className="text-center py-12">
                       <FileText className="w-12 h-12 text-theme-muted mx-auto mb-3 opacity-50" />
                       <p className="text-xs font-bold text-theme-muted">No articles yet</p>
-                      <button
-                        onClick={() => alert('Create new article')}
-                        className="mt-3 px-4 py-2 bg-[var(--accent)] text-white rounded-lg text-xs font-bold hover:bg-[var(--primary)] transition-colors"
-                      >
-                        Write One
-                      </button>
+                      <Link href="/articles/write">
+                        <button className="mt-3 px-4 py-2 bg-[var(--accent)] text-white rounded-lg text-xs font-bold hover:bg-[var(--primary)] transition-colors">
+                          Write One
+                        </button>
+                      </Link>
                     </div>
                   )}
                               </div>

@@ -66,6 +66,7 @@ model User {
   comments              Comment[]
   savedProducts         SavedProduct[]
   savedArticles         SavedArticle[]
+  articleReads          ArticleRead[]
   notifications         Notification[]
   adminLogs             AdminLog[]
   following             UserFollow[]       @relation("Following")
@@ -365,6 +366,7 @@ model Article {
   tags            ArticleTag[]
   comments        Comment[]
   savedBy         SavedArticle[]
+  readBy          ArticleRead[]
   seoTitle        String?
   seoDescription  String?
   createdAt       DateTime         @default(now())
@@ -442,6 +444,20 @@ model SavedArticle {
   user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
   article   Article  @relation(fields: [articleId], references: [id], onDelete: Cascade)
   createdAt DateTime @default(now())
+
+  @@unique([userId, articleId])
+  @@index([userId])
+  @@index([articleId])
+}
+
+// Track which users have read which articles
+model ArticleRead {
+  id        String   @id @default(cuid())
+  userId    String
+  articleId String
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  article   Article  @relation(fields: [articleId], references: [id], onDelete: Cascade)
+  readAt    DateTime @default(now())
 
   @@unique([userId, articleId])
   @@index([userId])

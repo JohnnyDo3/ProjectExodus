@@ -160,12 +160,18 @@ export function UserBusinessCard({
 
   const scrollToBusinessCard = () => {
     if (businessCardRef.current && scrollContainerRef.current) {
-      businessCardRef.current.scrollIntoView({ behavior: 'smooth', block: 'start' })
+      const container = scrollContainerRef.current
+      const card = businessCardRef.current
+      // Calculate the offset of the business card relative to the container
+      const containerTop = container.getBoundingClientRect().top
+      const cardTop = card.getBoundingClientRect().top
+      const scrollOffset = container.scrollTop + (cardTop - containerTop) - 10 // 10px padding
+      container.scrollTo({ top: scrollOffset, behavior: 'smooth' })
     }
   }
 
   const scrollToProfile = () => {
-    if (profileSectionRef.current && scrollContainerRef.current) {
+    if (scrollContainerRef.current) {
       scrollContainerRef.current.scrollTo({ top: 0, behavior: 'smooth' })
     }
   }

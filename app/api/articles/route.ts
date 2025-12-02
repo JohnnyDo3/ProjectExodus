@@ -2,14 +2,18 @@ import { NextRequest, NextResponse } from 'next/server'
 import { prisma } from '@/lib/db'
 import { auth } from '@/auth'
 
-// GET /api/articles - List all articles
+// GET /api/articles - List all articles with filters
 export async function GET(request: NextRequest) {
   try {
+    const session = await auth()
     const searchParams = request.nextUrl.searchParams
     const category = searchParams.get('category')
     const featured = searchParams.get('featured')
     const limit = parseInt(searchParams.get('limit') || '20')
     const offset = parseInt(searchParams.get('offset') || '0')
+    const sort = searchParams.get('sort') || 'newest' // newest, oldest, most_read, read
+    const search = searchParams.get('search') || ''
+    const authorId = searchParams.get('authorId')
 
     const where: any = {
       status: 'PUBLISHED',
@@ -25,6 +29,36 @@ export async function GET(request: NextRequest) {
       where.featured = true
     }
 
+    if (authorId) {
+      where.authorId = authorId
+    }
+
+    if (search) {
+      where.OR = [
+        { title: { contains: search, mode: 'insensitive' } },
+        { excerpt: { contains: search, mode: 'insensitive' } },
+        { content: { contains: search, mode: 'insensitive' } },
+      ]
+    }
+
+    // Determine ordering based on sort parameter
+    let orderBy: any = { publishedAt: 'desc' }
+    if (sort === 'oldest') {
+      orderBy = { publishedAt: 'asc' }
+    } else if (sort === 'most_read') {
+      orderBy = { views: 'desc' }
+    }
+
+    // For "read" filter, we need to filter articles the current user has read
+    if (sort === 'read' && session?.user?.id) {
+      const readArticleIds = await prisma.articleRead.findMany({
+        where: { userId: session.user.id },
+        select: { articleId: true },
+      })
+      where.id = { in: readArticleIds.map(r => r.articleId) }
+      orderBy = { publishedAt: 'desc' }
+    }
+
     const [articles, total] = await Promise.all([
       prisma.article.findMany({
         where,
@@ -35,6 +69,7 @@ export async function GET(request: NextRequest) {
               id: true,
               name: true,
               image: true,
+              guardianArchetype: true,
             },
           },
           tags: {
@@ -45,21 +80,38 @@ export async function GET(request: NextRequest) {
           _count: {
             select: {
               comments: true,
+              readBy: true,
             },
           },
         },
         take: limit,
         skip: offset,
-        orderBy: {
-          publishedAt: 'desc',
-        },
+        orderBy,
       }),
       prisma.article.count({ where }),
     ])
 
+    // If user is logged in, mark which articles they've read
+    let readArticleIds: string[] = []
+    if (session?.user?.id) {
+      const reads = await prisma.articleRead.findMany({
+        where: {
+          userId: session.user.id,
+          articleId: { in: articles.map(a => a.id) },
+        },
+        select: { articleId: true },
+      })
+      readArticleIds = reads.map(r => r.articleId)
+    }
+
+    const articlesWithReadStatus = articles.map(article => ({
+      ...article,
+      hasRead: readArticleIds.includes(article.id),
+    }))
+
     return NextResponse.json({
       success: true,
-      data: articles,
+      data: articlesWithReadStatus,
       pagination: {
         total,
         limit,
@@ -76,7 +128,7 @@ export async function GET(request: NextRequest) {
   }
 }
 
-// POST /api/articles - Create new article
+// POST /api/articles - Create new article (any logged-in user can create)
 export async function POST(request: NextRequest) {
   try {
     // Check authentication
@@ -88,32 +140,52 @@ export async function POST(request: NextRequest) {
       )
     }
 
-    // Check if user has permission (ADMIN, EDITOR, or SUPER_ADMIN)
-    const allowedRoles = ['ADMIN', 'EDITOR', 'SUPER_ADMIN']
-    if (!allowedRoles.includes(session.user.role)) {
-      return NextResponse.json(
-        { success: false, error: 'Forbidden - Insufficient permissions' },
-        { status: 403 }
-      )
-    }
-
     const body = await request.json()
+
+    // Generate slug from title if not provided
+    const slug = body.slug || body.title
+      .toLowerCase()
+      .replace(/[^a-z0-9]+/g, '-')
+      .replace(/(^-|-$)/g, '') + '-' + Date.now()
+
+    // Calculate read time from content (roughly 200 words per minute)
+    const wordCount = body.content?.split(/\s+/).length || 0
+    const readTime = body.readTime || Math.max(1, Math.ceil(wordCount / 200))
+
+    // Get or create a default category if none provided
+    let categoryId = body.categoryId
+    if (!categoryId) {
+      // Find or create "General" category
+      let generalCategory = await prisma.articleCategory.findFirst({
+        where: { slug: 'general' },
+      })
+      if (!generalCategory) {
+        generalCategory = await prisma.articleCategory.create({
+          data: {
+            name: 'General',
+            slug: 'general',
+            description: 'General articles from the community',
+          },
+        })
+      }
+      categoryId = generalCategory.id
+    }
 
     const article = await prisma.article.create({
       data: {
         title: body.title,
-        slug: body.slug,
-        excerpt: body.excerpt,
+        slug,
+        excerpt: body.excerpt || body.content?.substring(0, 200) + '...',
         content: body.content,
         coverImage: body.coverImage || null,
-        readTime: body.readTime || null,
-        status: body.status || 'DRAFT',
-        featured: body.featured || false,
-        publishedAt: body.status === 'PUBLISHED' ? new Date() : null,
-        categoryId: body.categoryId,
+        readTime,
+        status: body.status || 'PUBLISHED', // Default to published for user articles
+        featured: false, // Only admins can feature articles
+        publishedAt: body.status === 'DRAFT' ? null : new Date(),
+        categoryId,
         authorId: session.user.id,
-        seoTitle: body.seoTitle || null,
-        seoDescription: body.seoDescription || null,
+        seoTitle: body.seoTitle || body.title,
+        seoDescription: body.seoDescription || body.excerpt,
       },
       include: {
         category: true,
@@ -122,6 +194,7 @@ export async function POST(request: NextRequest) {
             id: true,
             name: true,
             image: true,
+            guardianArchetype: true,
           },
         },
       },
