@@ -349,6 +349,7 @@ export function IdentityDeclarationEditor({ initialProfile }: Props) {
           headline: profile.headline,
           bio: profile.bio,
           location: profile.location,
+          phone: profile.phone,
           website: profile.social.website,
           linkedin: profile.social.linkedin,
           twitter: profile.social.twitter,
@@ -514,12 +515,12 @@ export function IdentityDeclarationEditor({ initialProfile }: Props) {
             {/* Contact - Editable */}
             <div className="space-y-1 text-[10px]">
               <div className="flex items-center gap-2 opacity-90">
-                <MapPin className="w-3 h-3 flex-shrink-0" />
+                <Phone className="w-3 h-3 flex-shrink-0" />
                 <input
-                  type="text"
-                  value={profile.location}
-                  onChange={(e) => handleFieldChange('location', e.target.value)}
-                  placeholder="Add location..."
+                  type="tel"
+                  value={profile.phone}
+                  onChange={(e) => handleFieldChange('phone', e.target.value)}
+                  placeholder="Add phone number..."
                   className="flex-1 bg-transparent border-b border-transparent hover:border-white/30 focus:border-white focus:outline-none placeholder:opacity-40"
                 />
               </div>
@@ -712,15 +713,15 @@ export function IdentityDeclarationEditor({ initialProfile }: Props) {
 
                 {/* Contact Info */}
                 <div className="space-y-2 text-sm mb-5">
-                  {profile.location ? (
+                  {profile.phone ? (
                     <div className="flex items-center gap-2">
-                      <MapPin className="w-4 h-4 opacity-75" />
-                      <span>{profile.location}</span>
+                      <Phone className="w-4 h-4 opacity-75" />
+                      <span>{profile.phone}</span>
                     </div>
                   ) : (
                     <div className="flex items-center gap-2 opacity-30">
-                      <MapPin className="w-4 h-4" />
-                      <span className="italic border-b border-dashed border-white/50">Add your location</span>
+                      <Phone className="w-4 h-4" />
+                      <span className="italic border-b border-dashed border-white/50">Add your phone number</span>
                     </div>
                   )}
                   {profile.email && (
