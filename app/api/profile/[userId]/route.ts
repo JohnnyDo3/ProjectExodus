@@ -27,6 +27,7 @@ export async function GET(
         headline: true,
         bio: true,
         location: true,
+        phone: true,
         company: true,
         jobTitle: true,
         expertise: true,
@@ -43,6 +44,9 @@ export async function GET(
         publications: true,
         honors: true,
         projects: true,
+        guardianArchetype: true,
+        declaration: true,
+        createdAt: true,
       },
     })
 
