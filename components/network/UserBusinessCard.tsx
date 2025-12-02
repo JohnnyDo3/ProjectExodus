@@ -1,5 +1,6 @@
 'use client'
 
+import { useRef } from 'react'
 import Link from 'next/link'
 import { Button } from '@/components/ui/Button'
 import { Card, CardContent } from '@/components/ui/Card'
@@ -20,6 +21,7 @@ import {
   Users,
   MapPin,
   ChevronDown,
+  ChevronUp,
 } from 'lucide-react'
 
 const GUARDIAN_ARCHETYPES = {
@@ -141,6 +143,10 @@ export function UserBusinessCard({
   onMessage,
   isLoggedIn,
 }: UserBusinessCardProps) {
+  const scrollContainerRef = useRef<HTMLDivElement>(null)
+  const businessCardRef = useRef<HTMLDivElement>(null)
+  const profileSectionRef = useRef<HTMLDivElement>(null)
+
   const archetypeKey = (user.guardianArchetype || 'michael') as ArchetypeType
   const archetype = GUARDIAN_ARCHETYPES[archetypeKey] || GUARDIAN_ARCHETYPES.michael
   const ArchetypeIcon = archetype.icon
@@ -152,13 +158,25 @@ export function UserBusinessCard({
     (user._count.followers * 1) +
     (user._count.projectMemberships * 2)
 
+  const scrollToBusinessCard = () => {
+    if (businessCardRef.current && scrollContainerRef.current) {
+      businessCardRef.current.scrollIntoView({ behavior: 'smooth', block: 'start' })
+    }
+  }
+
+  const scrollToProfile = () => {
+    if (profileSectionRef.current && scrollContainerRef.current) {
+      scrollContainerRef.current.scrollTo({ top: 0, behavior: 'smooth' })
+    }
+  }
+
   return (
     <Card className="border-4 border-theme-primary hover:border-theme-accent transition-colors overflow-hidden">
       <CardContent className="p-0">
         {/* Scrollable container */}
-        <div className="max-h-[500px] overflow-y-auto">
+        <div ref={scrollContainerRef} className="max-h-[500px] overflow-y-auto scroll-smooth">
           {/* Original Profile Section */}
-          <div className="p-6">
+          <div ref={profileSectionRef} className="p-6">
             {/* User Avatar and Name */}
             <div className="flex items-start gap-4 mb-4">
               <Link
@@ -266,15 +284,20 @@ export function UserBusinessCard({
             </div>
           </div>
 
-          {/* Scroll indicator */}
-          <div className="flex items-center justify-center py-2 border-t border-[var(--border)] bg-[var(--muted)]/50">
-            <ChevronDown className="w-4 h-4 text-theme-muted animate-bounce" />
-            <span className="text-[10px] font-bold text-theme-muted uppercase ml-1">Digital Business Card</span>
-            <ChevronDown className="w-4 h-4 text-theme-muted animate-bounce" />
-          </div>
+          {/* Clickable Scroll indicator to Business Card */}
+          <button
+            onClick={scrollToBusinessCard}
+            className="w-full flex items-center justify-center gap-2 py-3 border-t border-[var(--border)] bg-[var(--muted)]/50 hover:bg-[var(--muted)] transition-colors cursor-pointer group"
+          >
+            <ChevronDown className="w-5 h-5 text-theme-primary animate-bounce group-hover:text-theme-accent" />
+            <span className="text-xs font-black text-theme-primary uppercase group-hover:text-theme-accent">
+              View Digital Business Card
+            </span>
+            <ChevronDown className="w-5 h-5 text-theme-primary animate-bounce group-hover:text-theme-accent" />
+          </button>
 
           {/* Digital Business Card Section */}
-          <div className={`m-3 rounded-xl border-4 ${archetype.borderColor} overflow-hidden`}>
+          <div ref={businessCardRef} className={`m-3 rounded-xl border-4 ${archetype.borderColor} overflow-hidden`}>
             {/* Business Card Header */}
             <div className={`p-3 bg-gradient-to-r ${archetype.gradient} relative overflow-hidden`}>
               <div className="absolute inset-0 opacity-10">
@@ -364,6 +387,18 @@ export function UserBusinessCard({
               )}
             </div>
           </div>
+
+          {/* Clickable Scroll indicator back to Profile */}
+          <button
+            onClick={scrollToProfile}
+            className="w-full flex items-center justify-center gap-2 py-3 border-t border-[var(--border)] bg-[var(--muted)]/50 hover:bg-[var(--muted)] transition-colors cursor-pointer group mb-2"
+          >
+            <ChevronUp className="w-5 h-5 text-theme-primary group-hover:text-theme-accent" />
+            <span className="text-xs font-black text-theme-primary uppercase group-hover:text-theme-accent">
+              Back to Profile
+            </span>
+            <ChevronUp className="w-5 h-5 text-theme-primary group-hover:text-theme-accent" />
+          </button>
         </div>
       </CardContent>
     </Card>
