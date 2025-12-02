@@ -7,6 +7,7 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/Card'
 import { Button } from '@/components/ui/Button'
 import { SkeletonUserCard } from '@/components/ui/SkeletonUserCard'
 import NetworkVisualization from '@/components/network/NetworkVisualization'
+import { UserBusinessCard } from '@/components/network/UserBusinessCard'
 import Link from 'next/link'
 import toast from 'react-hot-toast'
 import {
@@ -30,13 +31,20 @@ interface UserProfile {
   email: string
   image: string | null
   bio: string | null
+  headline: string | null
   location: string | null
+  phone: string | null
   interests: string[]
+  expertise: string[]
+  guardianArchetype: string | null
+  declaration: string | null
   createdAt: string
   _count: {
     followers: number
     following: number
     projectMemberships: number
+    articles: number
+    createdProjects: number
   }
   isFollowing?: boolean
 }
@@ -438,118 +446,15 @@ export default function NetworkPage() {
                   const isLoadingThisUser = loadingFollow.has(user.id)
 
                   return (
-                    <Card
+                    <UserBusinessCard
                       key={user.id}
-                      className="border-4 border-theme-primary hover:border-theme-accent transition-colors"
-                    >
-                      <CardContent className="p-6">
-                        {/* User Avatar and Name */}
-                        <div className="flex items-start gap-4 mb-4">
-                          <Link
-                            href={`/profile/${user.id}`}
-                            className="w-16 h-16 rounded-full bg-gradient-to-br from-[var(--primary)] to-[var(--accent)] flex items-center justify-center flex-shrink-0 hover:scale-105 transition-transform cursor-pointer"
-                          >
-                            {user.image ? (
-                              <img
-                                src={user.image}
-                                alt={user.name || 'User'}
-                                className="w-full h-full rounded-full object-cover"
-                              />
-                            ) : (
-                              <Users className="w-8 h-8 text-[var(--primary-foreground)]" />
-                            )}
-                          </Link>
-                          <div className="flex-1 min-w-0">
-                            <Link href={`/profile/${user.id}`}>
-                              <h3 className="text-xl font-black text-[var(--foreground)] truncate hover:text-theme-primary transition-colors cursor-pointer">
-                                {user.name || 'Anonymous'}
-                              </h3>
-                            </Link>
-                            {user.location && (
-                              <div className="flex items-center gap-1 mt-1 text-sm font-semibold text-theme-muted">
-                                <MapPin className="w-4 h-4" />
-                                <span className="truncate">{user.location}</span>
-                              </div>
-                            )}
-                          </div>
-                        </div>
-
-                        {/* Bio */}
-                        {user.bio && (
-                          <p className="text-sm font-semibold text-theme-muted mb-4 line-clamp-2">
-                            {user.bio}
-                          </p>
-                        )}
-
-                        {/* Interests */}
-                        {user.interests.length > 0 && (
-                          <div className="mb-4 flex flex-wrap gap-2">
-                            {user.interests.slice(0, 3).map((interest) => (
-                              <span
-                                key={interest}
-                                className="px-2 py-1 rounded-full bg-[color-mix(in_srgb,var(--accent)_20%,var(--background))] text-theme-accent text-xs font-black uppercase"
-                              >
-                                {interest}
-                              </span>
-                            ))}
-                            {user.interests.length > 3 && (
-                              <span className="px-2 py-1 rounded-full bg-[var(--muted)] text-theme-muted text-xs font-black">
-                                +{user.interests.length - 3}
-                              </span>
-                            )}
-                          </div>
-                        )}
-
-                        {/* Stats */}
-                        <div className="grid grid-cols-2 gap-4 mb-4 p-4 bg-[var(--muted)] rounded-lg">
-                          <div className="text-center">
-                            <p className="text-2xl font-black text-theme-primary">
-                              {user._count.followers}
-                            </p>
-                            <p className="text-xs font-bold text-theme-muted uppercase">Followers</p>
-                          </div>
-                          <div className="text-center">
-                            <p className="text-2xl font-black text-theme-accent">
-                              {user._count.projectMemberships}
-                            </p>
-                            <p className="text-xs font-bold text-theme-muted uppercase">Projects</p>
-                          </div>
-                        </div>
-
-                        {/* Actions */}
-                        <div className="flex gap-2">
-                          <Button
-                            onClick={() => handleFollow(user.id)}
-                            disabled={isLoadingThisUser || !session?.user}
-                            variant={isFollowing ? 'outline' : 'primary'}
-                            className="flex-1 font-bold"
-                          >
-                            {isLoadingThisUser ? (
-                              <Loader2 className="w-4 h-4 mr-2 animate-spin" />
-                            ) : isFollowing ? (
-                              <>
-                                <UserCheck className="w-4 h-4 mr-2" />
-                                FOLLOWING
-                              </>
-                            ) : (
-                              <>
-                                <UserPlus className="w-4 h-4 mr-2" />
-                                FOLLOW
-                              </>
-                            )}
-                          </Button>
-                          <Button
-                            variant="outline"
-                            disabled={!session?.user}
-                            onClick={() => router.push(`/messages?user=${user.id}`)}
-                            className="font-bold"
-                            title="Send Message"
-                          >
-                            <MessageCircle className="w-4 h-4" />
-                          </Button>
-                        </div>
-                      </CardContent>
-                    </Card>
+                      user={user}
+                      isFollowing={isFollowing}
+                      isLoadingFollow={isLoadingThisUser}
+                      onFollow={handleFollow}
+                      onMessage={(userId) => router.push(`/messages?user=${userId}`)}
+                      isLoggedIn={!!session?.user}
+                    />
                   )
                 })}
               </div>
