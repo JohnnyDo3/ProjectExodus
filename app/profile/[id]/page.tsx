@@ -3,6 +3,7 @@ import Link from 'next/link'
 import { Button } from '@/components/ui/Button'
 import { Card, CardContent } from '@/components/ui/Card'
 import { FollowButton } from '@/components/profile/FollowButton'
+import { ProfileBusinessCard } from '@/components/profile/ProfileBusinessCard'
 import {
   MapPin,
   Briefcase,
@@ -218,6 +219,13 @@ export default async function ProfilePage({ params }: { params: Promise<{ id: st
               </div>
             </CardContent>
           </Card>
+        </div>
+      </div>
+
+      {/* Digital Business Card Widget */}
+      <div className="container mx-auto px-4 sm:px-6 lg:px-8 pt-8">
+        <div className="max-w-5xl mx-auto">
+          <ProfileBusinessCard userId={user.id} />
         </div>
       </div>
 
