@@ -1,4 +1,3 @@
-import { ArticleCard } from '@/components/article/ArticleCard'
 import { Card, CardContent } from '@/components/ui/Card'
 import { Button } from '@/components/ui/Button'
 import { CompactLiveImpactStats } from '@/components/learn/CompactLiveImpactStats'
@@ -13,27 +12,7 @@ import {
 } from 'lucide-react'
 import Link from 'next/link'
 
-async function getArticles() {
-  try {
-    const baseUrl = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3000'
-    const res = await fetch(`${baseUrl}/api/articles?limit=12`, {
-      cache: 'no-store',
-    })
-
-    if (!res.ok) {
-      throw new Error('Failed to fetch articles')
-    }
-
-    const data = await res.json()
-    return data.success ? data.data : []
-  } catch (error) {
-    console.error('Error fetching articles:', error)
-    return []
-  }
-}
-
 export default async function LearnPage() {
-  const articles = await getArticles()
 
   const learningPaths = [
     {
@@ -520,65 +499,6 @@ export default async function LearnPage() {
           </div>
         </div>
       </section>
-
-      {/* Articles Grid */}
-      {articles.length > 0 && (
-        <section className="py-24 bg-[var(--background)]">
-          <div className="container mx-auto px-4 sm:px-6 lg:px-8">
-            <div className="text-center mb-16">
-              <h2 className="text-5xl font-black mb-4" style={{
-                background: 'linear-gradient(135deg, var(--primary), var(--accent))',
-                WebkitBackgroundClip: 'text',
-                WebkitTextFillColor: 'transparent'
-              }}>
-                LATEST ARTICLES
-              </h2>
-              <p className="text-xl font-semibold text-theme-muted">
-                Fresh insights and in-depth guides from Professor Sage
-              </p>
-            </div>
-
-            <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8 max-w-7xl mx-auto">
-              {articles.map((article: any) => (
-                <ArticleCard key={article.id} article={article} />
-              ))}
-            </div>
-
-            {articles.length >= 12 && (
-              <div className="text-center mt-12">
-                <Button size="lg" className="text-xl px-12 py-8 rounded-2xl font-black shadow-2xl">
-                  VIEW ALL ARTICLES →
-                </Button>
-              </div>
-            )}
-          </div>
-        </section>
-      )}
-
-      {/* Coming Soon */}
-      {articles.length === 0 && (
-        <section className="py-24 bg-[color-mix(in_srgb,var(--accent)_10%,var(--background))]">
-          <div className="container mx-auto px-4 sm:px-6 lg:px-8">
-            <div className="max-w-3xl mx-auto text-center">
-              <Card className="border-4 border-theme-accent bg-[var(--card)]">
-                <CardContent className="p-12">
-                  <BookOpen className="w-20 h-20 text-theme-accent mx-auto mb-6" />
-                  <h3 className="text-4xl font-black mb-6 text-theme-accent">
-                    NEW ARTICLES COMING SOON
-                  </h3>
-                  <p className="text-xl font-semibold mb-8 text-theme-muted">
-                    Professor Sage is crafting comprehensive, research-backed articles
-                    to empower your sustainability journey!
-                  </p>
-                  <Button size="lg" className="text-lg px-10 py-6 font-black shadow-lg">
-                    NOTIFY ME WHEN ARTICLES LAUNCH
-                  </Button>
-                </CardContent>
-              </Card>
-            </div>
-          </div>
-        </section>
-      )}
 
       {/* CTA */}
       <section className="py-24 bg-gradient-to-br from-[var(--primary)] via-[var(--accent)] to-[var(--secondary)] text-[var(--primary-foreground)]">
