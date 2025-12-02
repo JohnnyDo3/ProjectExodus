@@ -13,6 +13,7 @@ import { TreeBranches } from '@/components/decorative/TreeBranches'
 import { FlyingBirds } from '@/components/decorative/FlyingBirds'
 import { RecentDiscussionsWidget } from '@/components/community/RecentDiscussionsWidget'
 import { ActiveProjectsWidget } from '@/components/community/ActiveProjectsWidget'
+import { NetworkActivityFeed } from '@/components/community/NetworkActivityFeed'
 
 async function getDashboardData(userId: string) {
   try {
@@ -403,54 +404,64 @@ export default async function CommunityPage() {
         </div>
       </section>
 
-      {/* Flowing Content - Cute & Curvy with Borders */}
+      {/* Flowing Content - Two Column Layout with Sidebar */}
       <section className="py-6">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="max-w-6xl mx-auto space-y-4">
+          <div className="max-w-7xl mx-auto">
+            <div className="flex flex-col lg:flex-row gap-6">
+              {/* Main Content */}
+              <div className="flex-1 space-y-4">
+                {/* Recent Discussions - Client Component with Filters */}
+                <RecentDiscussionsWidget initialDiscussions={recentDiscussions} />
 
-            {/* Recent Discussions - Client Component with Filters */}
-            <RecentDiscussionsWidget initialDiscussions={recentDiscussions} />
+                {/* Active Projects - Client Component with Filters */}
+                <ActiveProjectsWidget initialProjects={activeProjects} />
 
-            {/* Active Projects - Client Component with Filters */}
-            <ActiveProjectsWidget initialProjects={activeProjects} />
-
-            {/* Suggested Connections - Cute List */}
-            <div className="p-5 bg-[var(--card)] rounded-3xl border-3 border-theme-primary/40 shadow-sm">
-              <div className="flex items-center justify-between mb-3">
-                <div className="flex items-center gap-2">
-                  <div className="w-8 h-8 rounded-full bg-gradient-to-br from-[var(--primary)] to-[var(--primary)]/70 flex items-center justify-center">
-                    <UserPlus className="w-4 h-4 text-white" />
-                  </div>
-                  <h2 className="text-base font-black text-[var(--foreground)]">People to Follow</h2>
-                </div>
-                <Link href="/community/users">
-                  <Button variant="ghost" size="sm" className="font-bold text-xs rounded-full hover:bg-[var(--muted)]">
-                    See more <ChevronRight className="w-3 h-3 ml-1" />
-                  </Button>
-                </Link>
-              </div>
-              <div className="grid md:grid-cols-2 gap-2">
-                {suggestedUsers.map((suggestedUser: any) => (
-                  <Link key={suggestedUser.id} href={`/profile/${suggestedUser.id}`}>
-                    <div className="flex items-center gap-2.5 p-2.5 bg-[var(--muted)]/50 rounded-2xl hover:bg-[var(--muted)] transition-all hover:shadow-md cursor-pointer border-2 border-transparent hover:border-theme-primary/30">
-                      {suggestedUser.image ? (
-                        <img src={suggestedUser.image} alt={suggestedUser.name || 'User'} className="w-9 h-9 rounded-full flex-shrink-0" />
-                      ) : (
-                        <div className="w-9 h-9 rounded-full bg-gradient-to-br from-[var(--primary)] to-[var(--accent)] flex items-center justify-center flex-shrink-0">
-                          <span className="text-xs font-bold text-white">{suggestedUser.name?.[0]?.toUpperCase() || '?'}</span>
-                        </div>
-                      )}
-                      <div className="flex-1 min-w-0">
-                        <h4 className="font-bold text-xs text-[var(--foreground)] truncate">{suggestedUser.name || 'Anonymous'}</h4>
-                        <p className="text-[10px] font-medium text-theme-muted"><span title="Followers">◉</span> {suggestedUser._count.followers} followers • <span title="Articles">✎</span> {suggestedUser._count.articles} articles</p>
+                {/* Suggested Connections - Cute List */}
+                <div className="p-5 bg-[var(--card)] rounded-3xl border-3 border-theme-primary/40 shadow-sm">
+                  <div className="flex items-center justify-between mb-3">
+                    <div className="flex items-center gap-2">
+                      <div className="w-8 h-8 rounded-full bg-gradient-to-br from-[var(--primary)] to-[var(--primary)]/70 flex items-center justify-center">
+                        <UserPlus className="w-4 h-4 text-white" />
                       </div>
-                      <ChevronRight className="w-3.5 h-3.5 text-theme-muted flex-shrink-0" />
+                      <h2 className="text-base font-black text-[var(--foreground)]">People to Follow</h2>
                     </div>
-                  </Link>
-                ))}
+                    <Link href="/community/users">
+                      <Button variant="ghost" size="sm" className="font-bold text-xs rounded-full hover:bg-[var(--muted)]">
+                        See more <ChevronRight className="w-3 h-3 ml-1" />
+                      </Button>
+                    </Link>
+                  </div>
+                  <div className="grid md:grid-cols-2 gap-2">
+                    {suggestedUsers.map((suggestedUser: any) => (
+                      <Link key={suggestedUser.id} href={`/profile/${suggestedUser.id}`}>
+                        <div className="flex items-center gap-2.5 p-2.5 bg-[var(--muted)]/50 rounded-2xl hover:bg-[var(--muted)] transition-all hover:shadow-md cursor-pointer border-2 border-transparent hover:border-theme-primary/30">
+                          {suggestedUser.image ? (
+                            <img src={suggestedUser.image} alt={suggestedUser.name || 'User'} className="w-9 h-9 rounded-full flex-shrink-0" />
+                          ) : (
+                            <div className="w-9 h-9 rounded-full bg-gradient-to-br from-[var(--primary)] to-[var(--accent)] flex items-center justify-center flex-shrink-0">
+                              <span className="text-xs font-bold text-white">{suggestedUser.name?.[0]?.toUpperCase() || '?'}</span>
+                            </div>
+                          )}
+                          <div className="flex-1 min-w-0">
+                            <h4 className="font-bold text-xs text-[var(--foreground)] truncate">{suggestedUser.name || 'Anonymous'}</h4>
+                            <p className="text-[10px] font-medium text-theme-muted"><span title="Followers">◉</span> {suggestedUser._count.followers} followers • <span title="Articles">✎</span> {suggestedUser._count.articles} articles</p>
+                          </div>
+                          <ChevronRight className="w-3.5 h-3.5 text-theme-muted flex-shrink-0" />
+                        </div>
+                      </Link>
+                    ))}
+                  </div>
+                </div>
+              </div>
+
+              {/* Sidebar - Network Activity Feed */}
+              <div className="lg:w-80 flex-shrink-0">
+                <div className="lg:sticky lg:top-24">
+                  <NetworkActivityFeed />
+                </div>
               </div>
             </div>
-
           </div>
         </div>
       </section>
