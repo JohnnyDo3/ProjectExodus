@@ -26,7 +26,9 @@ import {
 } from 'lucide-react'
 import Link from 'next/link'
 import { useEffect, useState } from 'react'
+import { useRouter } from 'next/navigation'
 import { ProfileColumn } from '@/components/profile/ProfileColumn'
+import { DeleteConfirmationModal } from '@/components/ui/DeleteConfirmationModal'
 import {
   DndContext,
   closestCenter,
@@ -53,6 +55,8 @@ interface DeckCard {
   subtitle?: string
   date?: Date
   type: 'discussion' | 'learning' | 'project'
+  slug?: string
+  isOwner?: boolean
 }
 
 // Draggable Column Wrapper Component
@@ -89,14 +93,25 @@ function DraggableColumn({ id, children }: { id: string; children: React.ReactNo
 
 export default function MyVolitionPage() {
   const { data: session, status } = useSession()
+  const router = useRouter()
   const [projects, setProjects] = useState<any[]>([])
   const [articles, setArticles] = useState<any[]>([])
   const [feedPosts, setFeedPosts] = useState<any[]>([])
   const [userProfile, setUserProfile] = useState<any>(null)
   const [isLoading, setIsLoading] = useState(true)
   const [discussionFilter, setDiscussionFilter] = useState<'recent' | 'oldest' | 'popular'>('recent')
+  const [projectFilter, setProjectFilter] = useState<'all' | 'created' | 'joined'>('all')
   const [networkSuggestions, setNetworkSuggestions] = useState<any[]>([])
   const [following, setFollowing] = useState<any[]>([])
+
+  // Delete modal state
+  const [deleteModal, setDeleteModal] = useState<{
+    isOpen: boolean
+    type: 'discussion' | 'project' | null
+    id: string | null
+    title: string
+  }>({ isOpen: false, type: null, id: null, title: '' })
+  const [isDeleting, setIsDeleting] = useState(false)
 
   // Deck columns data
   const [discussionCards, setDiscussionCards] = useState<DeckCard[]>([])
@@ -194,16 +209,26 @@ export default function MyVolitionPage() {
     }
 
     if (projects.length > 0) {
-      const cards: DeckCard[] = projects.map(project => ({
+      // Filter projects based on projectFilter
+      let filteredProjects = [...projects]
+      if (projectFilter === 'created') {
+        filteredProjects = projects.filter(p => p.creatorId === session?.user?.id)
+      } else if (projectFilter === 'joined') {
+        filteredProjects = projects.filter(p => p.creatorId !== session?.user?.id)
+      }
+
+      const cards = filteredProjects.map(project => ({
         id: project.id,
         title: project.name,
         subtitle: project.status,
         date: new Date(project.createdAt),
         type: 'project' as const,
+        slug: project.slug,
+        isOwner: project.creatorId === session?.user?.id,
       }))
-      setProjectCards(cards)
+      setProjectCards(cards as any)
     }
-  }, [feedPosts, projects, discussionFilter])
+  }, [feedPosts, projects, discussionFilter, projectFilter, session?.user?.id])
 
   const fetchProjects = async () => {
     try {
@@ -343,6 +368,48 @@ export default function MyVolitionPage() {
     }
   }
 
+  const handleDelete = async () => {
+    if (!deleteModal.id || !deleteModal.type) return
+
+    setIsDeleting(true)
+    try {
+      let endpoint = ''
+      if (deleteModal.type === 'discussion') {
+        endpoint = `/api/social/post/${deleteModal.id}`
+      } else if (deleteModal.type === 'project') {
+        endpoint = `/api/projects/${deleteModal.id}`
+      }
+
+      const res = await fetch(endpoint, { method: 'DELETE' })
+      const data = await res.json()
+
+      if (data.success) {
+        // Refresh data
+        if (deleteModal.type === 'discussion') {
+          setFeedPosts(prev => prev.filter(p => p.id !== deleteModal.id))
+        } else if (deleteModal.type === 'project') {
+          setProjects(prev => prev.filter(p => p.id !== deleteModal.id))
+        }
+        setDeleteModal({ isOpen: false, type: null, id: null, title: '' })
+      } else {
+        alert(data.error || 'Failed to delete')
+      }
+    } catch (error) {
+      console.error('Error deleting:', error)
+      alert('Failed to delete')
+    } finally {
+      setIsDeleting(false)
+    }
+  }
+
+  const handleEditDiscussion = (id: string) => {
+    router.push(`/community/discussions/${id}?edit=true`)
+  }
+
+  const handleEditProject = (slug: string) => {
+    router.push(`/community/projects/${slug}?edit=true`)
+  }
+
 
   if (status === 'loading' || isLoading) {
     return (
@@ -473,7 +540,7 @@ export default function MyVolitionPage() {
                 <div className="flex-1 overflow-y-auto p-4 space-y-3">
                   {discussionCards.map(card => (
                     <div key={card.id} className="relative group">
-                      <Link href="/community/feed">
+                      <Link href={`/community/discussions/${card.id}`}>
                         <div className="p-4 bg-gradient-to-br from-[var(--primary)]/10 to-transparent border-2 border-theme-primary rounded-xl cursor-pointer hover:shadow-lg transition-all">
                           <h3 className="text-sm font-black text-[var(--foreground)] mb-1 line-clamp-2 pr-12">
                             {card.title}
@@ -488,12 +555,13 @@ export default function MyVolitionPage() {
                           )}
                         </div>
                       </Link>
+                      {/* Owner actions - always show for user's own posts */}
                       <div className="absolute top-2 right-2 flex gap-1 opacity-0 group-hover:opacity-100 transition-opacity">
                         <button
                           onClick={(e) => {
                             e.preventDefault()
                             e.stopPropagation()
-                            alert('Edit post: ' + card.id)
+                            handleEditDiscussion(card.id)
                           }}
                           className="w-7 h-7 bg-[var(--primary)] text-white rounded-lg hover:bg-[var(--accent)] transition-colors flex items-center justify-center"
                           title="Edit"
@@ -504,14 +572,17 @@ export default function MyVolitionPage() {
                           onClick={(e) => {
                             e.preventDefault()
                             e.stopPropagation()
-                            if (confirm('Delete this post?')) {
-                              alert('Delete post: ' + card.id)
-                            }
+                            setDeleteModal({
+                              isOpen: true,
+                              type: 'discussion',
+                              id: card.id,
+                              title: 'Delete Discussion'
+                            })
                           }}
                           className="w-7 h-7 bg-red-500 text-white rounded-lg hover:bg-red-600 transition-colors flex items-center justify-center"
                           title="Delete"
                         >
-                          <X className="w-3 h-3" />
+                          <Trash2 className="w-3 h-3" />
                         </button>
                       </div>
                     </div>
@@ -670,60 +741,109 @@ export default function MyVolitionPage() {
               {/* Projects Column */}
                   <DraggableColumn id="projects">
               <div className="flex-shrink-0 w-80 h-full flex flex-col bg-[var(--card)] rounded-2xl border-2 border-theme-secondary shadow-lg">
-                <div className="p-4 border-b border-[var(--border)] flex items-center justify-between">
-                  <div className="flex items-center gap-2">
-                    <Briefcase className="w-5 h-5 text-theme-secondary" />
-                    <h2 className="text-xs font-black text-[var(--foreground)]">YOUR PROJECTS</h2>
+                <div className="p-4 border-b border-[var(--border)]">
+                  <div className="flex items-center justify-between mb-3">
+                    <div className="flex items-center gap-2">
+                      <Briefcase className="w-5 h-5 text-theme-secondary" />
+                      <h2 className="text-xs font-black text-[var(--foreground)]">YOUR PROJECTS</h2>
+                    </div>
+                    <Link href="/community/projects/new">
+                      <button className="w-7 h-7 rounded-full bg-[var(--secondary)] text-white flex items-center justify-center hover:bg-[var(--primary)] transition-colors">
+                        <Plus className="w-4 h-4" />
+                      </button>
+                    </Link>
                   </div>
-                  <button
-                    onClick={() => addNewCard('project')}
-                    className="w-7 h-7 rounded-full bg-[var(--secondary)] text-white flex items-center justify-center hover:bg-[var(--primary)] transition-colors"
-                  >
-                    <Plus className="w-4 h-4" />
-                  </button>
+                  {/* Filter Buttons */}
+                  <div className="flex gap-2">
+                    <button
+                      onClick={() => setProjectFilter('all')}
+                      className={`flex-1 px-2 py-1 rounded-lg text-[10px] font-bold transition-colors ${
+                        projectFilter === 'all'
+                          ? 'bg-[var(--secondary)] text-white'
+                          : 'bg-[var(--muted)] text-[var(--foreground)] hover:bg-[var(--secondary)]/20'
+                      }`}
+                    >
+                      All
+                    </button>
+                    <button
+                      onClick={() => setProjectFilter('created')}
+                      className={`flex-1 px-2 py-1 rounded-lg text-[10px] font-bold transition-colors ${
+                        projectFilter === 'created'
+                          ? 'bg-[var(--secondary)] text-white'
+                          : 'bg-[var(--muted)] text-[var(--foreground)] hover:bg-[var(--secondary)]/20'
+                      }`}
+                    >
+                      Created
+                    </button>
+                    <button
+                      onClick={() => setProjectFilter('joined')}
+                      className={`flex-1 px-2 py-1 rounded-lg text-[10px] font-bold transition-colors ${
+                        projectFilter === 'joined'
+                          ? 'bg-[var(--secondary)] text-white'
+                          : 'bg-[var(--muted)] text-[var(--foreground)] hover:bg-[var(--secondary)]/20'
+                      }`}
+                    >
+                      Joined
+                    </button>
+                  </div>
                 </div>
                 <div className="flex-1 overflow-y-auto p-4 space-y-3">
                   {projectCards.map(card => (
                     <div key={card.id} className="relative group">
-                      <div className="p-4 bg-gradient-to-br from-[var(--secondary)]/10 to-transparent border-2 border-theme-secondary rounded-xl cursor-pointer hover:shadow-lg transition-all">
-                        <h3 className="text-sm font-black text-[var(--foreground)] mb-1 line-clamp-2 pr-12">
-                          {card.title}
-                        </h3>
-                        {card.subtitle && (
-                          <p className="text-xs font-medium text-theme-muted mb-2">{card.subtitle}</p>
-                        )}
-                        {card.date && (
-                          <p className="text-[10px] font-bold text-theme-muted opacity-70">
-                            {card.date.toLocaleDateString()}
-                          </p>
-                        )}
-                      </div>
-                      <div className="absolute top-2 right-2 flex gap-1 opacity-0 group-hover:opacity-100 transition-opacity">
-                        <button
-                          onClick={(e) => {
-                            e.preventDefault()
-                            e.stopPropagation()
-                            alert('Edit project: ' + card.id)
-                          }}
-                          className="w-7 h-7 bg-[var(--secondary)] text-white rounded-lg hover:bg-[var(--primary)] transition-colors flex items-center justify-center"
-                          title="Edit"
-                        >
-                          <Edit2 className="w-3 h-3" />
-                        </button>
-                        <button
-                          onClick={(e) => {
-                            e.preventDefault()
-                            e.stopPropagation()
-                            if (confirm('Delete this project?')) {
-                              alert('Delete project: ' + card.id)
-                            }
-                          }}
-                          className="w-7 h-7 bg-red-500 text-white rounded-lg hover:bg-red-600 transition-colors flex items-center justify-center"
-                          title="Delete"
-                        >
-                          <X className="w-3 h-3" />
-                        </button>
-                      </div>
+                      <Link href={`/community/projects/${card.slug}`}>
+                        <div className="p-4 bg-gradient-to-br from-[var(--secondary)]/10 to-transparent border-2 border-theme-secondary rounded-xl cursor-pointer hover:shadow-lg transition-all">
+                          <div className="flex items-start justify-between mb-1">
+                            <h3 className="text-sm font-black text-[var(--foreground)] line-clamp-2 pr-8">
+                              {card.title}
+                            </h3>
+                            {card.isOwner && (
+                              <span className="text-[8px] font-black px-1.5 py-0.5 bg-[var(--secondary)] text-white rounded">
+                                OWNER
+                              </span>
+                            )}
+                          </div>
+                          {card.subtitle && (
+                            <p className="text-xs font-medium text-theme-muted mb-2">{card.subtitle}</p>
+                          )}
+                          {card.date && (
+                            <p className="text-[10px] font-bold text-theme-muted opacity-70">
+                              {card.date.toLocaleDateString()}
+                            </p>
+                          )}
+                        </div>
+                      </Link>
+                      {/* Only show edit/delete for owner */}
+                      {card.isOwner && (
+                        <div className="absolute top-2 right-2 flex gap-1 opacity-0 group-hover:opacity-100 transition-opacity">
+                          <button
+                            onClick={(e) => {
+                              e.preventDefault()
+                              e.stopPropagation()
+                              handleEditProject(card.slug || '')
+                            }}
+                            className="w-7 h-7 bg-[var(--secondary)] text-white rounded-lg hover:bg-[var(--primary)] transition-colors flex items-center justify-center"
+                            title="Edit"
+                          >
+                            <Edit2 className="w-3 h-3" />
+                          </button>
+                          <button
+                            onClick={(e) => {
+                              e.preventDefault()
+                              e.stopPropagation()
+                              setDeleteModal({
+                                isOpen: true,
+                                type: 'project',
+                                id: card.id,
+                                title: 'Delete Project'
+                              })
+                            }}
+                            className="w-7 h-7 bg-red-500 text-white rounded-lg hover:bg-red-600 transition-colors flex items-center justify-center"
+                            title="Delete"
+                          >
+                            <Trash2 className="w-3 h-3" />
+                          </button>
+                        </div>
+                      )}
                     </div>
                   ))}
                   {projectCards.length === 0 && (
@@ -895,6 +1015,20 @@ export default function MyVolitionPage() {
               </SortableContext>
         </DndContext>
       </div>
+
+      {/* Delete Confirmation Modal */}
+      <DeleteConfirmationModal
+        isOpen={deleteModal.isOpen}
+        onClose={() => setDeleteModal({ isOpen: false, type: null, id: null, title: '' })}
+        onConfirm={handleDelete}
+        title={deleteModal.title}
+        description={
+          deleteModal.type === 'discussion'
+            ? 'This will permanently delete this discussion and all its comments.'
+            : 'This will permanently delete this project and remove all members.'
+        }
+        isLoading={isDeleting}
+      />
     </div>
   )
 }

@@ -3,10 +3,11 @@
 import { BackButton } from '@/components/navigation/BackButton'
 import { useState, useEffect, useRef, use } from 'react'
 import { useSession } from 'next-auth/react'
-import { useRouter } from 'next/navigation'
+import { useRouter, useSearchParams } from 'next/navigation'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/Card'
 import { Button } from '@/components/ui/Button'
 import TeamCollaborationVisualization from '@/components/projects/TeamCollaborationVisualization'
+import { DeleteConfirmationModal } from '@/components/ui/DeleteConfirmationModal'
 import {
   ArrowLeft,
   Users,
@@ -19,6 +20,10 @@ import {
   Crown,
   User,
   Network,
+  Pencil,
+  Trash2,
+  X,
+  Save,
 } from 'lucide-react'
 import Link from 'next/link'
 import { JoinProjectButton } from '@/components/projects/JoinProjectButton'
@@ -27,12 +32,25 @@ export default function ProjectPage({ params }: { params: Promise<{ slug: string
   const { slug } = use(params)
   const { data: session } = useSession()
   const router = useRouter()
+  const searchParams = useSearchParams()
   const [project, setProject] = useState<any>(null)
   const [messages, setMessages] = useState<any[]>([])
   const [newMessage, setNewMessage] = useState('')
   const [isLoading, setIsLoading] = useState(true)
   const [isSending, setIsSending] = useState(false)
   const messagesEndRef = useRef<HTMLDivElement>(null)
+
+  // Edit mode state
+  const [isEditing, setIsEditing] = useState(false)
+  const [editedName, setEditedName] = useState('')
+  const [editedDescription, setEditedDescription] = useState('')
+  const [editedGoal, setEditedGoal] = useState('')
+  const [editedStatus, setEditedStatus] = useState('')
+  const [isSaving, setIsSaving] = useState(false)
+
+  // Delete modal state
+  const [showDeleteModal, setShowDeleteModal] = useState(false)
+  const [isDeleting, setIsDeleting] = useState(false)
 
   const scrollToBottom = () => {
     messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' })
@@ -56,6 +74,96 @@ export default function ProjectPage({ params }: { params: Promise<{ slug: string
   useEffect(() => {
     scrollToBottom()
   }, [messages])
+
+  // Check for edit mode from URL and initialize edit values
+  useEffect(() => {
+    if (project && session?.user?.id === project.creatorId) {
+      const editParam = searchParams.get('edit')
+      if (editParam === 'true') {
+        setIsEditing(true)
+        setEditedName(project.name || '')
+        setEditedDescription(project.description || '')
+        setEditedGoal(project.goal || '')
+        setEditedStatus(project.status || 'PLANNING')
+      }
+    }
+  }, [project, session?.user?.id, searchParams])
+
+  const startEditing = () => {
+    if (project) {
+      setEditedName(project.name || '')
+      setEditedDescription(project.description || '')
+      setEditedGoal(project.goal || '')
+      setEditedStatus(project.status || 'PLANNING')
+      setIsEditing(true)
+    }
+  }
+
+  const cancelEditing = () => {
+    setIsEditing(false)
+    // Remove edit param from URL
+    router.replace(`/community/projects/${slug}`)
+  }
+
+  const saveChanges = async () => {
+    if (!project?.id) return
+    setIsSaving(true)
+    try {
+      const res = await fetch(`/api/projects/${project.id}`, {
+        method: 'PUT',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          name: editedName,
+          description: editedDescription,
+          goal: editedGoal,
+          status: editedStatus,
+        }),
+      })
+
+      const data = await res.json()
+      if (data.success) {
+        setProject((prev: any) => ({
+          ...prev,
+          name: editedName,
+          description: editedDescription,
+          goal: editedGoal,
+          status: editedStatus,
+        }))
+        setIsEditing(false)
+        router.replace(`/community/projects/${slug}`)
+      } else {
+        alert(data.error || 'Failed to save changes')
+      }
+    } catch (error) {
+      console.error('Error saving project:', error)
+      alert('Failed to save changes')
+    } finally {
+      setIsSaving(false)
+    }
+  }
+
+  const handleDelete = async () => {
+    if (!project?.id) return
+    setIsDeleting(true)
+    try {
+      const res = await fetch(`/api/projects/${project.id}`, {
+        method: 'DELETE',
+      })
+
+      const data = await res.json()
+      if (data.success) {
+        router.push('/community/projects')
+      } else {
+        alert(data.error || 'Failed to delete project')
+      }
+    } catch (error) {
+      console.error('Error deleting project:', error)
+      alert('Failed to delete project')
+    } finally {
+      setIsDeleting(false)
+      setShowDeleteModal(false)
+    }
+  }
 
   const fetchProject = async () => {
     try {
@@ -202,26 +310,118 @@ export default function ProjectPage({ params }: { params: Promise<{ slug: string
             <div className="flex flex-col lg:flex-row gap-8">
               {/* Project Info */}
               <div className="flex-1">
-                <div className="flex items-start gap-4 mb-4">
-                  <div className={`px-4 py-2 rounded-full ${colors.bg} ${colors.text} font-black text-sm uppercase`}>
-                    {project.status}
-                  </div>
-                  {isCreator && (
+                <div className="flex items-start gap-4 mb-4 flex-wrap">
+                  {isEditing ? (
+                    <select
+                      value={editedStatus}
+                      onChange={(e) => setEditedStatus(e.target.value)}
+                      className="px-4 py-2 rounded-full font-black text-sm uppercase bg-[var(--background)] border-2 border-[var(--border)] text-[var(--foreground)] focus:outline-none focus:border-theme-primary"
+                    >
+                      <option value="PLANNING">PLANNING</option>
+                      <option value="ACTIVE">ACTIVE</option>
+                      <option value="COMPLETED">COMPLETED</option>
+                    </select>
+                  ) : (
+                    <div className={`px-4 py-2 rounded-full ${colors.bg} ${colors.text} font-black text-sm uppercase`}>
+                      {project.status}
+                    </div>
+                  )}
+                  {isCreator && !isEditing && (
                     <div className="px-4 py-2 rounded-full bg-gradient-to-r from-[var(--accent)] to-[var(--primary)] text-[var(--primary-foreground)] font-black text-sm uppercase flex items-center gap-2">
                       <Crown className="w-4 h-4" />
                       YOUR PROJECT
                     </div>
                   )}
+                  {isCreator && !isEditing && (
+                    <div className="flex items-center gap-2 ml-auto">
+                      <Button
+                        variant="outline"
+                        size="sm"
+                        onClick={startEditing}
+                        className="font-bold"
+                      >
+                        <Pencil className="w-4 h-4 mr-1" />
+                        EDIT
+                      </Button>
+                      <Button
+                        variant="outline"
+                        size="sm"
+                        onClick={() => setShowDeleteModal(true)}
+                        className="font-bold text-red-500 border-red-500 hover:bg-red-500/10"
+                      >
+                        <Trash2 className="w-4 h-4 mr-1" />
+                        DELETE
+                      </Button>
+                    </div>
+                  )}
+                  {isEditing && (
+                    <div className="flex items-center gap-2 ml-auto">
+                      <Button
+                        variant="outline"
+                        size="sm"
+                        onClick={cancelEditing}
+                        disabled={isSaving}
+                        className="font-bold"
+                      >
+                        <X className="w-4 h-4 mr-1" />
+                        CANCEL
+                      </Button>
+                      <Button
+                        size="sm"
+                        onClick={saveChanges}
+                        disabled={isSaving}
+                        className="font-bold"
+                      >
+                        <Save className="w-4 h-4 mr-1" />
+                        {isSaving ? 'SAVING...' : 'SAVE'}
+                      </Button>
+                    </div>
+                  )}
                 </div>
 
-                <h1 className="text-5xl font-black mb-4 text-[var(--foreground)]">
-                  {project.name}
-                </h1>
-                <p className="text-xl font-semibold text-theme-muted mb-6">
-                  {project.description}
-                </p>
+                {isEditing ? (
+                  <input
+                    type="text"
+                    value={editedName}
+                    onChange={(e) => setEditedName(e.target.value)}
+                    className="text-5xl font-black mb-4 text-[var(--foreground)] bg-transparent border-b-4 border-theme-primary focus:outline-none w-full"
+                    placeholder="Project Name"
+                  />
+                ) : (
+                  <h1 className="text-5xl font-black mb-4 text-[var(--foreground)]">
+                    {project.name}
+                  </h1>
+                )}
 
-                {project.goal && (
+                {isEditing ? (
+                  <textarea
+                    value={editedDescription}
+                    onChange={(e) => setEditedDescription(e.target.value)}
+                    className="text-xl font-semibold text-theme-muted mb-6 bg-transparent border-2 border-[var(--border)] rounded-lg p-3 focus:outline-none focus:border-theme-primary w-full resize-none"
+                    placeholder="Project description..."
+                    rows={3}
+                  />
+                ) : (
+                  <p className="text-xl font-semibold text-theme-muted mb-6">
+                    {project.description}
+                  </p>
+                )}
+
+                {isEditing ? (
+                  <div className="flex items-start gap-3 p-4 bg-[color-mix(in_srgb,var(--accent)_10%,var(--background))] rounded-lg border-2 border-theme-accent mb-6">
+                    <Target className="w-6 h-6 text-theme-accent mt-0.5 flex-shrink-0" />
+                    <div className="flex-1">
+                      <p className="font-black text-sm uppercase text-theme-accent mb-1">PROJECT GOAL</p>
+                      <textarea
+                        value={editedGoal}
+                        onChange={(e) => setEditedGoal(e.target.value)}
+                        className="font-semibold text-[var(--foreground)] bg-transparent border-2 border-[var(--border)] rounded-lg p-2 focus:outline-none focus:border-theme-primary w-full resize-none"
+                        placeholder="Project goal..."
+                        rows={2}
+                      />
+                    </div>
+                  </div>
+                ) : project.goal ? (
                   <div className="flex items-start gap-3 p-4 bg-[color-mix(in_srgb,var(--accent)_10%,var(--background))] rounded-lg border-2 border-theme-accent mb-6">
                     <Target className="w-6 h-6 text-theme-accent mt-0.5 flex-shrink-0" />
                     <div>
@@ -229,7 +429,7 @@ export default function ProjectPage({ params }: { params: Promise<{ slug: string
                       <p className="font-semibold text-[var(--foreground)]">{project.goal}</p>
                     </div>
                   </div>
-                )}
+                ) : null}
 
                 <div className="flex flex-wrap gap-4 text-sm font-bold text-theme-muted">
                   <div className="flex items-center gap-2">
@@ -469,6 +669,16 @@ export default function ProjectPage({ params }: { params: Promise<{ slug: string
           </div>
         </section>
       )}
+
+      {/* Delete Confirmation Modal */}
+      <DeleteConfirmationModal
+        isOpen={showDeleteModal}
+        onClose={() => setShowDeleteModal(false)}
+        onConfirm={handleDelete}
+        title="Delete Project"
+        description={`Are you sure you want to delete "${project.name}"? This will permanently remove the project and all its messages. This action cannot be undone.`}
+        isLoading={isDeleting}
+      />
     </div>
   )
 }
