@@ -242,9 +242,14 @@ export default function ProjectPage({ params }: { params: Promise<{ slug: string
                   </div>
                 </div>
 
-                {!isMember && (
+                {!isCreator && (
                   <div className="mt-6">
-                    <JoinProjectButton projectId={project.id} projectName={project.name} />
+                    <JoinProjectButton
+                      projectId={project.id}
+                      projectName={project.name}
+                      isMember={isMember}
+                      isOwner={isCreator}
+                    />
                   </div>
                 )}
               </div>
@@ -452,7 +457,12 @@ export default function ProjectPage({ params }: { params: Promise<{ slug: string
                   <p className="text-lg font-semibold mb-6 text-theme-muted">
                     Become a member to chat with the team and collaborate on this project!
                   </p>
-                  <JoinProjectButton projectId={project.id} projectName={project.name} />
+                  <JoinProjectButton
+                    projectId={project.id}
+                    projectName={project.name}
+                    isMember={isMember}
+                    isOwner={isCreator}
+                  />
                 </CardContent>
               </Card>
             </div>

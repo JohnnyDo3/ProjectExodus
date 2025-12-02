@@ -4,17 +4,38 @@ import { useState } from 'react'
 import { useSession } from 'next-auth/react'
 import { useRouter } from 'next/navigation'
 import { Button } from '@/components/ui/Button'
+import { Check } from 'lucide-react'
 
 interface JoinProjectButtonProps {
   projectId: string
   projectName: string
+  isMember?: boolean
+  isOwner?: boolean
 }
 
-export function JoinProjectButton({ projectId, projectName }: JoinProjectButtonProps) {
+export function JoinProjectButton({ projectId, projectName, isMember = false, isOwner = false }: JoinProjectButtonProps) {
   const { data: session, status } = useSession()
   const router = useRouter()
   const [isJoining, setIsJoining] = useState(false)
   const [message, setMessage] = useState('')
+  const [joined, setJoined] = useState(isMember)
+
+  // If user is owner or already a member, show "Joined" state
+  if (isOwner || joined) {
+    return (
+      <div className="flex items-center gap-2">
+        <Button
+          size="sm"
+          variant="outline"
+          disabled
+          className="font-black bg-[color-mix(in_srgb,var(--primary)_20%,var(--background))] border-[var(--primary)] text-theme-primary cursor-default"
+        >
+          <Check className="w-4 h-4 mr-1" />
+          {isOwner ? 'YOUR PROJECT' : 'JOINED'}
+        </Button>
+      </div>
+    )
+  }
 
   const handleJoin = async (e: React.MouseEvent) => {
     // Prevent the Link from navigating when button is clicked
@@ -42,6 +63,7 @@ export function JoinProjectButton({ projectId, projectName }: JoinProjectButtonP
 
       if (data.success) {
         setMessage('✓ Joined!')
+        setJoined(true)
         // Refresh the page to show updated member count
         setTimeout(() => {
           router.refresh()

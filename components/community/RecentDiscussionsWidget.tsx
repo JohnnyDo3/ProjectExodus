@@ -45,7 +45,7 @@ export function RecentDiscussionsWidget({ initialDiscussions }: Props) {
           <div className="w-8 h-8 rounded-full bg-gradient-to-br from-[var(--accent)] to-[var(--accent)]/70 flex items-center justify-center">
             <MessageSquare className="w-4 h-4 text-white" />
           </div>
-          <h2 className="text-base font-black text-[var(--foreground)]">Recent Discussions</h2>
+          <h2 className="text-base font-black text-[var(--foreground)]">Open Discussions</h2>
         </div>
         <div className="flex items-center gap-2">
           <div className="flex gap-1">
@@ -79,7 +79,7 @@ export function RecentDiscussionsWidget({ initialDiscussions }: Props) {
       </div>
       <div className="grid md:grid-cols-2 gap-3">
         {discussions.map((discussion) => (
-          <Link key={discussion.id} href="/community/feed">
+          <Link key={discussion.id} href={`/community/discussions/${discussion.id}`}>
             <div className="p-4 bg-[var(--muted)]/50 rounded-2xl hover:bg-[var(--muted)] transition-all hover:shadow-md cursor-pointer border-2 border-transparent hover:border-theme-accent/30 h-full">
               <div className="flex items-start gap-2.5 mb-2">
                 {discussion.user.image ? (
