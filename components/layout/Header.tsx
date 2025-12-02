@@ -26,7 +26,7 @@ export function Header() {
   }
 
   return (
-    <header className="sticky top-0 z-50 bg-[var(--card)] border-b-4 border-theme-primary shadow-sm transition-colors">
+    <header className="sticky top-0 z-[100] bg-[var(--card)] border-b-4 border-theme-primary shadow-sm transition-colors">
       <nav className="container mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between h-20">
           {/* Logo */}
