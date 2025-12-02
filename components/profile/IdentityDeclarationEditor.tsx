@@ -363,8 +363,13 @@ export function IdentityDeclarationEditor({ initialProfile }: Props) {
       })
 
       if (res.ok) {
+        // Update profile.archetype to match selectedArchetype
+        setProfile(prev => ({ ...prev, archetype: selectedArchetype }))
         setHasUnsavedChanges(false)
         setEditingSection(null)
+      } else {
+        const errorData = await res.json()
+        console.error('Save failed:', errorData)
       }
     } catch (error) {
       console.error('Error saving profile:', error)
@@ -657,6 +662,7 @@ export function IdentityDeclarationEditor({ initialProfile }: Props) {
                     key={a.id}
                     onClick={() => {
                       setSelectedArchetype(a.id as ArchetypeType)
+                      setProfile(prev => ({ ...prev, archetype: a.id as ArchetypeType }))
                       setHasUnsavedChanges(true)
                     }}
                     className={`flex flex-col items-center gap-1 p-3 rounded-xl text-xs font-bold transition-all ${
