@@ -488,7 +488,7 @@ export default function MyVolitionPage() {
                       case 'discussions':
                         return (
                           <DraggableColumn key={columnId} id="discussions">
-              <div className="flex-shrink-0 w-80 h-full flex flex-col bg-[var(--card)] rounded-2xl border-2 border-theme-primary shadow-lg">
+              <div className="flex-shrink-0 w-96 h-full flex flex-col bg-[var(--card)] rounded-2xl border-2 border-theme-primary shadow-lg">
                 <div className="p-4 border-b border-[var(--border)]">
                   <div className="flex items-center justify-between mb-3">
                     <div className="flex items-center gap-2">
@@ -604,7 +604,7 @@ export default function MyVolitionPage() {
                       case 'learning':
                         return (
                           <DraggableColumn key={columnId} id="learning">
-                            <div className="flex-shrink-0 w-80 h-full flex flex-col bg-[var(--card)] rounded-2xl border-2 border-theme-accent shadow-lg">
+                            <div className="flex-shrink-0 w-96 h-full flex flex-col bg-[var(--card)] rounded-2xl border-2 border-theme-accent shadow-lg">
                 <div className="p-4 border-b border-[var(--border)]">
                   <div className="flex items-center justify-between mb-3">
                     <div className="flex items-center gap-2">
@@ -742,7 +742,7 @@ export default function MyVolitionPage() {
                       case 'projects':
                         return (
                           <DraggableColumn key={columnId} id="projects">
-                            <div className="flex-shrink-0 w-80 h-full flex flex-col bg-[var(--card)] rounded-2xl border-2 border-theme-secondary shadow-lg">
+                            <div className="flex-shrink-0 w-96 h-full flex flex-col bg-[var(--card)] rounded-2xl border-2 border-theme-secondary shadow-lg">
                 <div className="p-4 border-b border-[var(--border)]">
                   <div className="flex items-center justify-between mb-3">
                     <div className="flex items-center gap-2">
@@ -867,7 +867,7 @@ export default function MyVolitionPage() {
                       case 'network':
                         return (
                           <DraggableColumn key={columnId} id="network">
-                            <div className="flex-shrink-0 w-80 h-full flex flex-col bg-[var(--card)] rounded-2xl border-2 border-theme-primary shadow-lg">
+                            <div className="flex-shrink-0 w-96 h-full flex flex-col bg-[var(--card)] rounded-2xl border-2 border-theme-primary shadow-lg">
                 <div className="p-4 border-b border-[var(--border)]">
                   <div className="flex items-center gap-2 mb-2">
                     <User className="w-5 h-5 text-theme-primary" />
@@ -943,7 +943,7 @@ export default function MyVolitionPage() {
                       case 'articles':
                         return (
                           <DraggableColumn key={columnId} id="articles">
-                            <div className="flex-shrink-0 w-80 h-full flex flex-col bg-[var(--card)] rounded-2xl border-2 border-theme-accent shadow-lg">
+                            <div className="flex-shrink-0 w-96 h-full flex flex-col bg-[var(--card)] rounded-2xl border-2 border-theme-accent shadow-lg">
                 <div className="p-4 border-b border-[var(--border)] flex items-center justify-between">
                   <div className="flex items-center gap-2">
                     <FileText className="w-5 h-5 text-theme-accent" />

@@ -421,7 +421,7 @@ export function IdentityDeclarationEditor({ initialProfile }: Props) {
 
   if (isLoading) {
     return (
-      <div className="flex-shrink-0 w-80 h-full flex flex-col bg-[var(--card)] rounded-2xl border-2 border-theme-primary shadow-lg items-center justify-center">
+      <div className="flex-shrink-0 w-96 h-full flex flex-col bg-[var(--card)] rounded-2xl border-2 border-theme-primary shadow-lg items-center justify-center">
         <div className="w-12 h-12 border-4 border-theme-primary border-t-transparent rounded-full animate-spin mb-4" />
         <p className="text-sm font-bold text-theme-muted">Loading your identity...</p>
       </div>
@@ -431,7 +431,7 @@ export function IdentityDeclarationEditor({ initialProfile }: Props) {
   // Compact column view
   if (!isFullScreen) {
     return (
-      <div className={`flex-shrink-0 w-80 h-full flex flex-col bg-[var(--card)] rounded-2xl border-4 ${archetype.borderColor} shadow-lg overflow-hidden`}>
+      <div className={`flex-shrink-0 w-96 h-full flex flex-col bg-[var(--card)] rounded-2xl border-4 ${archetype.borderColor} shadow-lg overflow-hidden`}>
         {/* Header */}
         <div className={`p-4 bg-gradient-to-r ${archetype.gradient} relative overflow-hidden`}>
           <div className="absolute inset-0 opacity-10">
