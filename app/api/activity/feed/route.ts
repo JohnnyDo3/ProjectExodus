@@ -98,8 +98,78 @@ export async function GET(request: NextRequest) {
   try {
     const { searchParams } = new URL(request.url)
     const limit = parseInt(searchParams.get('limit') || '20')
+    const sevenDaysAgo = new Date(Date.now() - 7 * 24 * 60 * 60 * 1000)
 
     // Fetch recent activity from multiple sources in parallel
+    const recentUsersPromise = prisma.user.findMany({
+      where: { createdAt: { gte: sevenDaysAgo } },
+      select: { id: true, name: true, image: true, createdAt: true },
+      orderBy: { createdAt: 'desc' },
+      take: 10
+    })
+
+    const recentPostsPromise = prisma.socialPost.findMany({
+      where: { visibility: 'PUBLIC', createdAt: { gte: sevenDaysAgo } },
+      select: {
+        id: true, content: true, createdAt: true,
+        user: { select: { id: true, name: true, image: true } }
+      },
+      orderBy: { createdAt: 'desc' },
+      take: 10
+    })
+
+    const recentProjectsPromise = prisma.project.findMany({
+      where: { createdAt: { gte: sevenDaysAgo } },
+      select: {
+        id: true, name: true, slug: true, createdAt: true,
+        creator: { select: { id: true, name: true, image: true } }
+      },
+      orderBy: { createdAt: 'desc' },
+      take: 10
+    })
+
+    const recentArticlesPromise = prisma.article.findMany({
+      where: { status: 'PUBLISHED', createdAt: { gte: sevenDaysAgo } },
+      select: {
+        id: true, title: true, slug: true, createdAt: true,
+        author: { select: { id: true, name: true, image: true } }
+      },
+      orderBy: { createdAt: 'desc' },
+      take: 10
+    })
+
+    const recentEventsPromise = prisma.event.findMany({
+      where: { createdAt: { gte: sevenDaysAgo } },
+      select: {
+        id: true, title: true, createdAt: true,
+        creator: { select: { id: true, name: true, image: true } }
+      },
+      orderBy: { createdAt: 'desc' },
+      take: 10
+    })
+
+    const recentFollowsPromise = prisma.userFollow.findMany({
+      where: { createdAt: { gte: sevenDaysAgo } },
+      select: {
+        id: true, createdAt: true,
+        follower: { select: { id: true, name: true, image: true } },
+        following: { select: { id: true, name: true } }
+      },
+      orderBy: { createdAt: 'desc' },
+      take: 10
+    })
+
+    const recentCommentsPromise = prisma.socialComment.findMany({
+      where: { createdAt: { gte: sevenDaysAgo } },
+      select: {
+        id: true, content: true, createdAt: true,
+        user: { select: { id: true, name: true, image: true } }
+      },
+      orderBy: { createdAt: 'desc' },
+      take: 10
+    })
+
+    // Await all promises
     const [
       recentUsers,
       recentPosts,
@@ -109,176 +179,20 @@ export async function GET(request: NextRequest) {
       recentFollows,
       recentComments
     ] = await Promise.all([
-      // New users (last 7 days)
-      prisma.user.findMany({
-        where: {
-          createdAt: {
-            gte: new Date(Date.now() - 7 * 24 * 60 * 60 * 1000)
-          }
-        },
-        select: {
-          id: true,
-          name: true,
-          image: true,
-          createdAt: true
-        },
-        orderBy: { createdAt: 'desc' },
-        take: 10
-      }),
-
-      // New posts
-      prisma.socialPost.findMany({
-        where: {
-          visibility: 'PUBLIC',
-          createdAt: {
-            gte: new Date(Date.now() - 7 * 24 * 60 * 60 * 1000)
-          }
-        },
-        select: {
-          id: true,
-          content: true,
-          createdAt: true,
-          user: {
-            select: {
-              id: true,
-              name: true,
-              image: true
-            }
-          }
-        },
-        orderBy: { createdAt: 'desc' },
-        take: 10
-      }),
-
-      // New projects
-      prisma.project.findMany({
-        where: {
-          createdAt: {
-            gte: new Date(Date.now() - 7 * 24 * 60 * 60 * 1000)
-          }
-        },
-        select: {
-          id: true,
-          name: true,
-          slug: true,
-          createdAt: true,
-          creator: {
-            select: {
-              id: true,
-              name: true,
-              image: true
-            }
-          }
-        },
-        orderBy: { createdAt: 'desc' },
-        take: 10
-      }),
-
-      // New articles
-      prisma.article.findMany({
-        where: {
-          status: 'PUBLISHED',
-          createdAt: {
-            gte: new Date(Date.now() - 7 * 24 * 60 * 60 * 1000)
-          }
-        },
-        select: {
-          id: true,
-          title: true,
-          slug: true,
-          createdAt: true,
-          author: {
-            select: {
-              id: true,
-              name: true,
-              image: true
-            }
-          }
-        },
-        orderBy: { createdAt: 'desc' },
-        take: 10
-      }),
-
-      // New events
-      prisma.event.findMany({
-        where: {
-          createdAt: {
-            gte: new Date(Date.now() - 7 * 24 * 60 * 60 * 1000)
-          }
-        },
-        select: {
-          id: true,
-          title: true,
-          createdAt: true,
-          creator: {
-            select: {
-              id: true,
-              name: true,
-              image: true
-            }
-          }
-        },
-        orderBy: { createdAt: 'desc' },
-        take: 10
-      }),
-
-      // New follows
-      prisma.userFollow.findMany({
-        where: {
-          createdAt: {
-            gte: new Date(Date.now() - 7 * 24 * 60 * 60 * 1000)
-          }
-        },
-        select: {
-          id: true,
-          createdAt: true,
-          follower: {
-            select: {
-              id: true,
-              name: true,
-              image: true
-            }
-          },
-          following: {
-            select: {
-              id: true,
-              name: true
-            }
-          }
-        },
-        orderBy: { createdAt: 'desc' },
-        take: 10
-      }),
-
-      // New comments
-      prisma.socialComment.findMany({
-        where: {
-          createdAt: {
-            gte: new Date(Date.now() - 7 * 24 * 60 * 60 * 1000)
-          }
-        },
-        select: {
-          id: true,
-          content: true,
-          createdAt: true,
-          user: {
-            select: {
-              id: true,
-              name: true,
-              image: true
-            }
-          }
-        },
-        orderBy: { createdAt: 'desc' },
-        take: 10
-      })
+      recentUsersPromise,
+      recentPostsPromise,
+      recentProjectsPromise,
+      recentArticlesPromise,
+      recentEventsPromise,
+      recentFollowsPromise,
+      recentCommentsPromise
     ])
 
     // Transform into unified activity items
     const activities: ActivityItem[] = []
 
     // Add new users
-    (recentUsers as RecentUser[]).forEach((user: RecentUser) => {
+    for (const user of recentUsers) {
       activities.push({
         id: `user-${user.id}`,
         type: 'new_user',
@@ -288,10 +202,10 @@ export async function GET(request: NextRequest) {
         userImage: user.image,
         createdAt: user.createdAt
       })
-    })
+    }
 
     // Add new posts
-    (recentPosts as RecentPost[]).forEach((post: RecentPost) => {
+    for (const post of recentPosts) {
       activities.push({
         id: `post-${post.id}`,
         type: 'new_post',
@@ -302,10 +216,10 @@ export async function GET(request: NextRequest) {
         targetId: post.id,
         createdAt: post.createdAt
       })
-    })
+    }
 
     // Add new projects
-    (recentProjects as RecentProject[]).forEach((project: RecentProject) => {
+    for (const project of recentProjects) {
       activities.push({
         id: `project-${project.id}`,
         type: 'new_project',
@@ -317,10 +231,10 @@ export async function GET(request: NextRequest) {
         targetId: project.slug,
         createdAt: project.createdAt
       })
-    })
+    }
 
     // Add new articles
-    (recentArticles as RecentArticle[]).forEach((article: RecentArticle) => {
+    for (const article of recentArticles) {
       activities.push({
         id: `article-${article.id}`,
         type: 'new_article',
@@ -332,10 +246,10 @@ export async function GET(request: NextRequest) {
         targetId: article.slug,
         createdAt: article.createdAt
       })
-    })
+    }
 
     // Add new events
-    (recentEvents as RecentEvent[]).forEach((event: RecentEvent) => {
+    for (const event of recentEvents) {
       activities.push({
         id: `event-${event.id}`,
         type: 'new_event',
@@ -347,10 +261,10 @@ export async function GET(request: NextRequest) {
         targetId: event.id,
         createdAt: event.createdAt
       })
-    })
+    }
 
     // Add new follows
-    (recentFollows as RecentFollow[]).forEach((follow: RecentFollow) => {
+    for (const follow of recentFollows) {
       activities.push({
         id: `follow-${follow.id}`,
         type: 'new_follow',
@@ -362,10 +276,10 @@ export async function GET(request: NextRequest) {
         targetId: follow.following.id,
         createdAt: follow.createdAt
       })
-    })
+    }
 
     // Add new comments
-    (recentComments as RecentComment[]).forEach((comment: RecentComment) => {
+    for (const comment of recentComments) {
       activities.push({
         id: `comment-${comment.id}`,
         type: 'new_comment',
@@ -375,7 +289,7 @@ export async function GET(request: NextRequest) {
         userImage: comment.user.image,
         createdAt: comment.createdAt
       })
-    })
+    }
 
     // Sort by createdAt (most recent first) and limit
     activities.sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime())
