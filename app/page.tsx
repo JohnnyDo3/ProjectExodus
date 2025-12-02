@@ -278,41 +278,6 @@ export default function Home() {
         </div>
       </section>
 
-      {/* Stats - Bold Numbers */}
-      <section className="py-56 bg-[var(--foreground)] text-[var(--background)] relative overflow-hidden">
-        <div className="absolute inset-0 opacity-10">
-          <div className="absolute top-0 left-0 w-full h-full bg-gradient-to-br from-[var(--primary)] to-[var(--accent)]" />
-        </div>
-
-        <div className="container mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
-          <div className="grid grid-cols-2 lg:grid-cols-4 gap-16 max-w-6xl mx-auto">
-            {[
-              { value: '10K+', label: 'PRODUCTS' },
-              { value: '∞', label: 'IMPACT' },
-              { value: '100%', label: 'EARTH-FIRST' },
-              { value: '✿', label: 'LIVING' },
-            ].map((stat, i) => (
-              <div key={i} className="text-center transform hover:scale-110 transition-transform duration-300">
-                <div style={{
-                  fontSize: 'clamp(2.5rem, 6vw, 5rem)',
-                  fontWeight: 900,
-                  lineHeight: 1.2,
-                  background: 'linear-gradient(135deg, var(--primary), var(--accent))',
-                  WebkitBackgroundClip: 'text',
-                  WebkitTextFillColor: 'transparent',
-                  marginBottom: '1rem'
-                }}>
-                  {stat.value}
-                </div>
-                <div className="text-xl font-black tracking-wider text-[var(--background)]">
-                  {stat.label}
-                </div>
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
-
       {/* About: Company Description with Food/Water/Energy */}
       <section className="py-32 bg-gradient-to-br from-[color-mix(in_srgb,var(--primary)_15%,var(--background))] via-[color-mix(in_srgb,var(--accent)_15%,var(--background))] to-[var(--muted)] relative overflow-hidden">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
