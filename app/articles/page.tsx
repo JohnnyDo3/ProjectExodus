@@ -72,7 +72,7 @@ interface Article {
   }
 }
 
-type SortOption = 'newest' | 'oldest' | 'most_read' | 'read'
+type SortOption = 'all' | 'newest' | 'oldest' | 'most_read' | 'read'
 
 export default function ArticlesPage() {
   const { data: session } = useSession()
@@ -80,26 +80,29 @@ export default function ArticlesPage() {
   const [featuredArticle, setFeaturedArticle] = useState<Article | null>(null)
   const [isLoading, setIsLoading] = useState(true)
   const [searchQuery, setSearchQuery] = useState('')
-  const [activeSort, setActiveSort] = useState<SortOption>('newest')
+  const [activeSort, setActiveSort] = useState<SortOption>('all')
   const [showFilters, setShowFilters] = useState(false)
   const [hasMore, setHasMore] = useState(true)
   const [offset, setOffset] = useState(0)
   const loadMoreRef = useRef<HTMLDivElement>(null)
 
   const sortOptions: { value: SortOption; label: string; icon: any }[] = [
+    { value: 'all', label: 'All Articles', icon: BookOpen },
     { value: 'newest', label: 'Newest', icon: Sparkles },
     { value: 'oldest', label: 'Oldest', icon: History },
     { value: 'most_read', label: 'Most Read', icon: TrendingUp },
-    { value: 'read', label: 'Already Read', icon: BookOpen },
+    { value: 'read', label: 'Already Read', icon: CheckCircle2 },
   ]
 
   const fetchArticles = useCallback(async (reset = false) => {
     try {
       const currentOffset = reset ? 0 : offset
+      // Map 'all' to 'newest' for the API, since 'all' just means show everything sorted by newest
+      const apiSort = activeSort === 'all' ? 'newest' : activeSort
       const params = new URLSearchParams({
         limit: '12',
         offset: currentOffset.toString(),
-        sort: activeSort,
+        sort: apiSort,
       })
       if (searchQuery) {
         params.set('search', searchQuery)
@@ -111,8 +114,9 @@ export default function ArticlesPage() {
       if (data.success) {
         if (reset) {
           // Set featured article from the first article if it exists and is actually featured
+          // Show featured article for 'all' and 'newest' filters when not searching
           const featured = data.data.find((a: Article) => a.featured)
-          if (featured && activeSort === 'newest' && !searchQuery) {
+          if (featured && (activeSort === 'all' || activeSort === 'newest') && !searchQuery) {
             setFeaturedArticle(featured)
             setArticles(data.data.filter((a: Article) => a.id !== featured.id))
           } else {
@@ -175,8 +179,11 @@ export default function ArticlesPage() {
             <h1 className="text-5xl md:text-6xl font-black mb-4 tracking-tight">
               FEATURED ARTICLES
             </h1>
-            <p className="text-xl font-medium opacity-90 mb-8">
-              Insights, stories, and knowledge from the Project Exodus community
+            <p className="text-xl font-medium opacity-90 mb-4">
+              Case studies, insights, and knowledge written by members of the Project Exodus community
+            </p>
+            <p className="text-base font-medium opacity-75 mb-8 max-w-2xl mx-auto">
+              Articles are in-depth explorations of ideas, experiences, and lessons learned on our collective journey toward building a better future. Share your story and contribute to our growing body of knowledge.
             </p>
 
             {/* Search Bar */}
