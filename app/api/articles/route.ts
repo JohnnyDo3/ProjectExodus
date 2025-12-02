@@ -2,6 +2,47 @@ import { NextRequest, NextResponse } from 'next/server'
 import { prisma } from '@/lib/db'
 import { auth } from '@/auth'
 
+// Type for article query results
+interface ArticleQueryResult {
+  id: string
+  title: string
+  slug: string
+  excerpt: string | null
+  content: string | null
+  coverImage: string | null
+  readTime: number | null
+  views: number
+  featured: boolean
+  status: string
+  publishedAt: Date | null
+  createdAt: Date
+  updatedAt: Date
+  authorId: string
+  categoryId: string
+  category: {
+    id: string
+    name: string
+    slug: string
+  }
+  author: {
+    id: string
+    name: string | null
+    image: string | null
+    guardianArchetype: string | null
+  }
+  tags: Array<{
+    tag: {
+      id: string
+      name: string
+      slug: string
+    }
+  }>
+  _count: {
+    comments: number
+    readBy: number
+  }
+}
+
 // GET /api/articles - List all articles with filters
 export async function GET(request: NextRequest) {
   try {
@@ -55,7 +96,7 @@ export async function GET(request: NextRequest) {
         where: { userId: session.user.id },
         select: { articleId: true },
       })
-      where.id = { in: readArticleIds.map(r => r.articleId) }
+      where.id = { in: readArticleIds.map((r: { articleId: string }) => r.articleId) }
       orderBy = { publishedAt: 'desc' }
     }
 
@@ -87,7 +128,7 @@ export async function GET(request: NextRequest) {
         take: limit,
         skip: offset,
         orderBy,
-      }),
+      }) as Promise<ArticleQueryResult[]>,
       prisma.article.count({ where }),
     ])
 
@@ -97,11 +138,11 @@ export async function GET(request: NextRequest) {
       const reads = await prisma.articleRead.findMany({
         where: {
           userId: session.user.id,
-          articleId: { in: articles.map(a => a.id) },
+          articleId: { in: articles.map((a: { id: string }) => a.id) },
         },
         select: { articleId: true },
       })
-      readArticleIds = reads.map(r => r.articleId)
+      readArticleIds = reads.map((r: { articleId: string }) => r.articleId)
     }
 
     const articlesWithReadStatus = articles.map(article => ({
