@@ -49,6 +49,10 @@ model User {
   honors        Json?     // Array of honors/awards objects {title, issuer, date, description}
   projects      Json?     // Array of project objects {name, startDate, endDate, description, url}
 
+  // Identity Declaration (7 Guardians)
+  guardianArchetype String?   // Selected guardian value: michael, gabriel, raphael, uriel, camael, jophiel, zadkiel
+  declaration       String?   @db.Text // Personal declaration/truth statement
+
   role          UserRole  @default(USER)
   createdAt     DateTime  @default(now())
   updatedAt     DateTime  @updatedAt

@@ -342,11 +342,22 @@ export function IdentityDeclarationEditor({ initialProfile }: Props) {
     setIsSaving(true)
     try {
       const res = await fetch('/api/profile/update', {
-        method: 'PUT',
+        method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
-          ...profile,
+          name: profile.name,
+          headline: profile.headline,
+          bio: profile.bio,
+          location: profile.location,
+          website: profile.social.website,
+          linkedin: profile.social.linkedin,
+          twitter: profile.social.twitter,
+          expertise: profile.skills,
+          experience: profile.experience,
+          education: profile.education,
+          honors: profile.achievements,
           guardianArchetype: selectedArchetype,
+          declaration: profile.declaration,
         }),
       })
 
@@ -433,57 +444,89 @@ export function IdentityDeclarationEditor({ initialProfile }: Props) {
               </div>
               <div>
                 <p className="text-[9px] font-bold text-white/70 uppercase tracking-wider">Identity Declaration</p>
-                <h2 className="text-sm font-black text-white">{archetype.name}</h2>
+                <h2 className="text-sm font-black text-white">{profile.name || session?.user?.name || 'Your Username'}</h2>
               </div>
             </div>
-            <button
-              onClick={() => setIsFullScreen(true)}
-              className="p-2 bg-white/20 hover:bg-white/30 rounded-lg transition-colors"
-              title="Expand to edit"
-            >
-              <Maximize2 className="w-4 h-4 text-white" />
-            </button>
+            <div className="flex items-center gap-2">
+              {hasUnsavedChanges && (
+                <button
+                  onClick={handleSave}
+                  disabled={isSaving}
+                  className="p-2 bg-white text-gray-900 hover:bg-white/90 rounded-lg transition-colors"
+                  title="Save changes"
+                >
+                  {isSaving ? (
+                    <div className="w-4 h-4 border-2 border-gray-900 border-t-transparent rounded-full animate-spin" />
+                  ) : (
+                    <Save className="w-4 h-4" />
+                  )}
+                </button>
+              )}
+              <button
+                onClick={() => setIsFullScreen(true)}
+                className="p-2 bg-white/20 hover:bg-white/30 rounded-lg transition-colors"
+                title="Expand to edit"
+              >
+                <Maximize2 className="w-4 h-4 text-white" />
+              </button>
+            </div>
           </div>
         </div>
 
         {/* Content */}
         <div className="flex-1 overflow-y-auto p-4 space-y-4">
-          {/* Profile Card */}
+          {/* Profile Card - Editable */}
           <div className={`p-4 bg-gradient-to-br ${archetype.gradient} rounded-xl text-white relative`}>
             <div className="flex items-center gap-3 mb-3">
               <div className="w-14 h-14 rounded-xl bg-white/20 flex items-center justify-center border-2 border-white/30">
                 <User className="w-7 h-7" />
               </div>
               <div className="flex-1">
-                <h3 className="text-sm font-black">{profile.name || 'Your Name'}</h3>
-                <p className="text-[10px] font-medium opacity-90">{profile.headline || archetype.title}</p>
+                <input
+                  type="text"
+                  value={profile.name}
+                  onChange={(e) => handleFieldChange('name', e.target.value)}
+                  placeholder="Your Name"
+                  className="w-full text-sm font-black bg-transparent border-b border-transparent hover:border-white/30 focus:border-white focus:outline-none placeholder:text-white/40"
+                />
+                <input
+                  type="text"
+                  value={profile.headline}
+                  onChange={(e) => handleFieldChange('headline', e.target.value)}
+                  placeholder={archetype.title}
+                  className="w-full text-[10px] font-medium bg-transparent border-b border-transparent hover:border-white/30 focus:border-white focus:outline-none opacity-90 placeholder:opacity-40"
+                />
               </div>
             </div>
 
-            {/* Declaration */}
+            {/* Declaration - Editable */}
             <div className="p-3 bg-white/10 rounded-lg backdrop-blur-sm mb-3">
               <p className="text-[9px] font-bold opacity-70 uppercase mb-1">My Declaration</p>
-              {profile.declaration ? (
-                <p className="text-[11px] font-medium italic leading-relaxed">"{profile.declaration}"</p>
-              ) : (
-                <p className="text-[11px] font-medium italic opacity-40">Speak your truth...</p>
-              )}
+              <textarea
+                value={profile.declaration || ''}
+                onChange={(e) => handleFieldChange('declaration', e.target.value)}
+                placeholder="Speak your truth..."
+                rows={2}
+                className="w-full text-[11px] font-medium italic leading-relaxed bg-transparent resize-none border-b border-transparent hover:border-white/30 focus:border-white focus:outline-none placeholder:opacity-40"
+              />
             </div>
 
-            {/* Contact */}
+            {/* Contact - Editable */}
             <div className="space-y-1 text-[10px]">
-              {profile.location && (
-                <div className="flex items-center gap-2 opacity-90">
-                  <MapPin className="w-3 h-3" />
-                  <span>{profile.location}</span>
-                </div>
-              )}
-              {profile.email && (
-                <div className="flex items-center gap-2 opacity-90">
-                  <Mail className="w-3 h-3" />
-                  <span>{profile.email}</span>
-                </div>
-              )}
+              <div className="flex items-center gap-2 opacity-90">
+                <MapPin className="w-3 h-3 flex-shrink-0" />
+                <input
+                  type="text"
+                  value={profile.location}
+                  onChange={(e) => handleFieldChange('location', e.target.value)}
+                  placeholder="Add location..."
+                  className="flex-1 bg-transparent border-b border-transparent hover:border-white/30 focus:border-white focus:outline-none placeholder:opacity-40"
+                />
+              </div>
+              <div className="flex items-center gap-2 opacity-90">
+                <Mail className="w-3 h-3 flex-shrink-0" />
+                <span className="truncate">{profile.email || 'No email set'}</span>
+              </div>
             </div>
 
             {/* STOCK */}
@@ -574,8 +617,8 @@ export function IdentityDeclarationEditor({ initialProfile }: Props) {
                   <Crown className="w-4 h-4 text-white/80" />
                   <p className="text-xs font-bold text-white/80 uppercase tracking-wider">Edit Your Identity Declaration</p>
                 </div>
-                <h2 className="text-2xl font-black text-white tracking-wide">{archetype.name}</h2>
-                <p className="text-sm font-medium text-white/90">{archetype.title}</p>
+                <h2 className="text-2xl font-black text-white tracking-wide">{profile.name || session?.user?.name || 'Your Username'}</h2>
+                <p className="text-sm font-medium text-white/90">{archetype.title} - {archetype.value}</p>
               </div>
             </div>
 

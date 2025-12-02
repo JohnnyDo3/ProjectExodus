@@ -36,7 +36,9 @@ export async function POST(request: NextRequest) {
       volunteer,
       publications,
       honors,
-      projects
+      projects,
+      guardianArchetype,
+      declaration
     } = body
 
     // Update user profile
@@ -64,7 +66,9 @@ export async function POST(request: NextRequest) {
         volunteer,
         publications,
         honors,
-        projects
+        projects,
+        guardianArchetype,
+        declaration
       }
     })
 
