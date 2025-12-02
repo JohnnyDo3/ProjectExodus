@@ -27,7 +27,7 @@ import {
 import Link from 'next/link'
 import { useEffect, useState } from 'react'
 import { useRouter } from 'next/navigation'
-import { ProfileColumn } from '@/components/profile/ProfileColumn'
+import { IdentityDeclarationEditor } from '@/components/profile/IdentityDeclarationEditor'
 import { DeleteConfirmationModal } from '@/components/ui/DeleteConfirmationModal'
 import {
   DndContext,
@@ -466,30 +466,36 @@ export default function MyVolitionPage() {
                 strategy={horizontalListSortingStrategy}
               >
                 <div className="h-full flex gap-4 p-6 overflow-x-auto overflow-y-visible">
-                  {/* Profile Column */}
-                  <DraggableColumn id="profile">
-                    <ProfileColumn
-                initialProfile={{
-                  name: userProfile?.name || user?.name || '',
-                  headline: userProfile?.headline || '',
-                  location: userProfile?.location || '',
-                  email: userProfile?.email || user?.email || '',
-                  phone: userProfile?.phone || '',
-                  bio: userProfile?.bio || '',
-                  skills: userProfile?.skills || [],
-                  experience: userProfile?.experience || [],
-                  education: userProfile?.education || [],
-                  social: userProfile?.social || {},
-                  portfolio: userProfile?.portfolio || [],
-                  achievements: userProfile?.achievements || [],
-                  resumeUrl: userProfile?.resumeUrl,
-                  resumeFileName: userProfile?.resumeFileName,
-                }}
-              />
-                  </DraggableColumn>
+                  {/* Render columns in saved order */}
+                  {columnOrder.map((columnId) => {
+                    switch (columnId) {
+                      case 'profile':
+                        return (
+                          <DraggableColumn key={columnId} id="profile">
+                            <IdentityDeclarationEditor
+                              initialProfile={{
+                                name: userProfile?.name || user?.name || '',
+                                headline: userProfile?.headline || '',
+                                location: userProfile?.location || '',
+                                email: userProfile?.email || user?.email || '',
+                                phone: userProfile?.phone || '',
+                                bio: userProfile?.bio || '',
+                                skills: userProfile?.skills || [],
+                                experience: userProfile?.experience || [],
+                                education: userProfile?.education || [],
+                                social: userProfile?.social || {},
+                                portfolio: userProfile?.portfolio || [],
+                                achievements: userProfile?.achievements || [],
+                                resumeUrl: userProfile?.resumeUrl,
+                                resumeFileName: userProfile?.resumeFileName,
+                              }}
+                            />
+                          </DraggableColumn>
+                        )
 
-              {/* Discussions Column */}
-                  <DraggableColumn id="discussions">
+                      case 'discussions':
+                        return (
+                          <DraggableColumn key={columnId} id="discussions">
               <div className="flex-shrink-0 w-80 h-full flex flex-col bg-[var(--card)] rounded-2xl border-2 border-theme-primary shadow-lg">
                 <div className="p-4 border-b border-[var(--border)]">
                   <div className="flex items-center justify-between mb-3">
@@ -598,13 +604,15 @@ export default function MyVolitionPage() {
                       </Link>
                     </div>
                   )}
-                </div>
-              </div>
-                  </DraggableColumn>
+                              </div>
+                            </div>
+                          </DraggableColumn>
+                        )
 
-              {/* Learning Column */}
-                  <DraggableColumn id="learning">
-              <div className="flex-shrink-0 w-80 h-full flex flex-col bg-[var(--card)] rounded-2xl border-2 border-theme-accent shadow-lg">
+                      case 'learning':
+                        return (
+                          <DraggableColumn key={columnId} id="learning">
+                            <div className="flex-shrink-0 w-80 h-full flex flex-col bg-[var(--card)] rounded-2xl border-2 border-theme-accent shadow-lg">
                 <div className="p-4 border-b border-[var(--border)]">
                   <div className="flex items-center justify-between mb-3">
                     <div className="flex items-center gap-2">
@@ -734,13 +742,15 @@ export default function MyVolitionPage() {
                       </Link>
                     </div>
                   )}
-                </div>
-              </div>
-                  </DraggableColumn>
+                              </div>
+                            </div>
+                          </DraggableColumn>
+                        )
 
-              {/* Projects Column */}
-                  <DraggableColumn id="projects">
-              <div className="flex-shrink-0 w-80 h-full flex flex-col bg-[var(--card)] rounded-2xl border-2 border-theme-secondary shadow-lg">
+                      case 'projects':
+                        return (
+                          <DraggableColumn key={columnId} id="projects">
+                            <div className="flex-shrink-0 w-80 h-full flex flex-col bg-[var(--card)] rounded-2xl border-2 border-theme-secondary shadow-lg">
                 <div className="p-4 border-b border-[var(--border)]">
                   <div className="flex items-center justify-between mb-3">
                     <div className="flex items-center gap-2">
@@ -857,13 +867,15 @@ export default function MyVolitionPage() {
                       </Link>
                     </div>
                   )}
-                </div>
-              </div>
-                  </DraggableColumn>
+                              </div>
+                            </div>
+                          </DraggableColumn>
+                        )
 
-              {/* Network Highlights Column */}
-                  <DraggableColumn id="network">
-              <div className="flex-shrink-0 w-80 h-full flex flex-col bg-[var(--card)] rounded-2xl border-2 border-theme-primary shadow-lg">
+                      case 'network':
+                        return (
+                          <DraggableColumn key={columnId} id="network">
+                            <div className="flex-shrink-0 w-80 h-full flex flex-col bg-[var(--card)] rounded-2xl border-2 border-theme-primary shadow-lg">
                 <div className="p-4 border-b border-[var(--border)]">
                   <div className="flex items-center gap-2 mb-2">
                     <User className="w-5 h-5 text-theme-primary" />
@@ -931,13 +943,15 @@ export default function MyVolitionPage() {
                       )}
                     </div>
                   </div>
-                </div>
-              </div>
-                  </DraggableColumn>
+                              </div>
+                            </div>
+                          </DraggableColumn>
+                        )
 
-              {/* My Articles Column */}
-                  <DraggableColumn id="articles">
-              <div className="flex-shrink-0 w-80 h-full flex flex-col bg-[var(--card)] rounded-2xl border-2 border-theme-accent shadow-lg">
+                      case 'articles':
+                        return (
+                          <DraggableColumn key={columnId} id="articles">
+                            <div className="flex-shrink-0 w-80 h-full flex flex-col bg-[var(--card)] rounded-2xl border-2 border-theme-accent shadow-lg">
                 <div className="p-4 border-b border-[var(--border)] flex items-center justify-between">
                   <div className="flex items-center gap-2">
                     <FileText className="w-5 h-5 text-theme-accent" />
@@ -1008,9 +1022,15 @@ export default function MyVolitionPage() {
                       </button>
                     </div>
                   )}
-                </div>
-              </div>
-                  </DraggableColumn>
+                              </div>
+                            </div>
+                          </DraggableColumn>
+                        )
+
+                      default:
+                        return null
+                    }
+                  })}
                 </div>
               </SortableContext>
         </DndContext>
