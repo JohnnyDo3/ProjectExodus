@@ -85,10 +85,10 @@ export function Header() {
                 {userMenuOpen && (
                   <>
                     <div
-                      className="fixed inset-0 z-[100]"
+                      className="fixed inset-0 z-[200]"
                       onClick={() => setUserMenuOpen(false)}
                     />
-                    <div className="absolute right-0 mt-2 w-64 bg-[var(--card)] rounded-xl shadow-theme-lg border-2 border-theme-primary overflow-hidden z-[101]">
+                    <div className="absolute right-0 mt-2 w-64 bg-[var(--card)] rounded-xl shadow-theme-lg border-2 border-theme-primary overflow-hidden z-[201]">
                       <div className="p-4 border-b-2 border-[var(--border)]">
                         <p className="font-bold text-[var(--foreground)]">
                           {session.user?.name}

@@ -4,7 +4,6 @@ import { useSession } from 'next-auth/react'
 import { redirect } from 'next/navigation'
 import {
   User,
-  Settings,
   Zap,
   BookOpen,
   MessageCircle,
@@ -443,13 +442,6 @@ export default function MyVolitionPage() {
                 </p>
               </div>
             </div>
-
-            <Link href="/settings">
-              <button className="px-4 py-2 bg-white/20 hover:bg-white/30 text-white rounded-lg font-bold text-xs transition-colors flex items-center gap-2">
-                <Settings className="w-4 h-4" />
-                SETTINGS
-              </button>
-            </Link>
           </div>
         </div>
       </div>
