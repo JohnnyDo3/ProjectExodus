@@ -493,7 +493,7 @@ export default function MyVolitionPage() {
                   <div className="flex items-center justify-between mb-3">
                     <div className="flex items-center gap-2">
                       <MessageCircle className="w-5 h-5 text-theme-primary" />
-                      <h2 className="text-xs font-black text-[var(--foreground)]">YOUR FEED POSTS</h2>
+                      <h2 className="text-[10px] font-black text-[var(--foreground)]">MY FEED POSTS</h2>
                     </div>
                     <Link href="/community/feed">
                       <button className="w-7 h-7 rounded-full bg-[var(--primary)] text-white flex items-center justify-center hover:bg-[var(--accent)] transition-colors">
@@ -535,36 +535,36 @@ export default function MyVolitionPage() {
                     </button>
                   </div>
                 </div>
-                <div className="flex-1 overflow-y-auto p-4 space-y-3">
+                <div className="flex-1 overflow-y-auto p-3 space-y-2">
                   {discussionCards.map(card => (
                     <div key={card.id} className="relative group">
                       <Link href={`/community/discussions/${card.id}`}>
-                        <div className="p-4 bg-gradient-to-br from-[var(--primary)]/10 to-transparent border-2 border-theme-primary rounded-xl cursor-pointer hover:shadow-lg transition-all">
-                          <h3 className="text-sm font-black text-[var(--foreground)] mb-1 line-clamp-2 pr-12">
+                        <div className="p-2.5 bg-gradient-to-br from-[var(--primary)]/10 to-transparent border border-theme-primary rounded-lg cursor-pointer hover:shadow-md transition-all">
+                          <h3 className="text-xs font-bold text-[var(--foreground)] mb-0.5 line-clamp-1 pr-10">
                             {card.title}
                           </h3>
                           {card.subtitle && (
-                            <p className="text-xs font-medium text-theme-muted mb-2">{card.subtitle}</p>
+                            <p className="text-[10px] font-medium text-theme-muted mb-1 line-clamp-1">{card.subtitle}</p>
                           )}
                           {card.date && (
-                            <p className="text-[10px] font-bold text-theme-muted opacity-70">
+                            <p className="text-[9px] font-bold text-theme-muted opacity-70">
                               {card.date.toLocaleDateString()}
                             </p>
                           )}
                         </div>
                       </Link>
                       {/* Owner actions - always show for user's own posts */}
-                      <div className="absolute top-2 right-2 flex gap-1 opacity-0 group-hover:opacity-100 transition-opacity">
+                      <div className="absolute top-1.5 right-1.5 flex gap-0.5 opacity-0 group-hover:opacity-100 transition-opacity">
                         <button
                           onClick={(e) => {
                             e.preventDefault()
                             e.stopPropagation()
                             handleEditDiscussion(card.id)
                           }}
-                          className="w-7 h-7 bg-[var(--primary)] text-white rounded-lg hover:bg-[var(--accent)] transition-colors flex items-center justify-center"
+                          className="w-5 h-5 bg-[var(--primary)] text-white rounded hover:bg-[var(--accent)] transition-colors flex items-center justify-center"
                           title="Edit"
                         >
-                          <Edit2 className="w-3 h-3" />
+                          <Edit2 className="w-2.5 h-2.5" />
                         </button>
                         <button
                           onClick={(e) => {
@@ -577,10 +577,10 @@ export default function MyVolitionPage() {
                               title: 'Delete Discussion'
                             })
                           }}
-                          className="w-7 h-7 bg-red-500 text-white rounded-lg hover:bg-red-600 transition-colors flex items-center justify-center"
+                          className="w-5 h-5 bg-red-500 text-white rounded hover:bg-red-600 transition-colors flex items-center justify-center"
                           title="Delete"
                         >
-                          <Trash2 className="w-3 h-3" />
+                          <Trash2 className="w-2.5 h-2.5" />
                         </button>
                       </div>
                     </div>
@@ -609,7 +609,7 @@ export default function MyVolitionPage() {
                   <div className="flex items-center justify-between mb-3">
                     <div className="flex items-center gap-2">
                       <BookOpen className="w-5 h-5 text-theme-accent" />
-                      <h2 className="text-xs font-black text-[var(--foreground)]">YOUR LEARNING</h2>
+                      <h2 className="text-[10px] font-black text-[var(--foreground)]">MY LEARNING</h2>
                     </div>
                     <Link href="/learn">
                       <button className="w-7 h-7 rounded-full bg-[var(--accent)] text-white flex items-center justify-center hover:bg-[var(--primary)] transition-colors">
@@ -651,31 +651,31 @@ export default function MyVolitionPage() {
                     </button>
                   </div>
                 </div>
-                <div className="flex-1 overflow-y-auto p-4 space-y-3">
+                <div className="flex-1 overflow-y-auto p-3 space-y-2">
                   {learningModules.map((module) => (
                     <Link key={module.id} href={`/learn/${module.article.slug}`}>
-                      <div className="p-4 bg-gradient-to-br from-[var(--accent)]/10 to-transparent border-2 border-theme-accent rounded-xl cursor-pointer hover:shadow-lg transition-all">
-                        <div className="flex items-start justify-between mb-2">
-                          <h3 className="text-sm font-black text-[var(--foreground)] line-clamp-2 flex-1 pr-2">
+                      <div className="p-2.5 bg-gradient-to-br from-[var(--accent)]/10 to-transparent border border-theme-accent rounded-lg cursor-pointer hover:shadow-md transition-all">
+                        <div className="flex items-start justify-between mb-1">
+                          <h3 className="text-xs font-bold text-[var(--foreground)] line-clamp-1 flex-1 pr-2">
                             {module.article.title}
                           </h3>
                           {module.status === 'COMPLETED' && (
-                            <CheckCircle className="w-5 h-5 text-green-500 flex-shrink-0" />
+                            <CheckCircle className="w-4 h-4 text-green-500 flex-shrink-0" />
                           )}
                         </div>
 
                         {/* Progress Bar for Large Modules */}
                         {module.article.moduleType === 'LARGE' && module.status === 'IN_PROGRESS' && (
-                          <div className="mb-2">
-                            <div className="flex items-center justify-between mb-1">
-                              <span className="text-[10px] font-bold text-theme-muted">
+                          <div className="mb-1.5">
+                            <div className="flex items-center justify-between mb-0.5">
+                              <span className="text-[9px] font-bold text-theme-muted">
                                 {module.currentTab}/{module.totalTabs} sections
                               </span>
-                              <span className="text-[10px] font-bold text-theme-accent">
+                              <span className="text-[9px] font-bold text-theme-accent">
                                 {module.progressPercentage}%
                               </span>
                             </div>
-                            <div className="h-1.5 bg-[var(--muted)] rounded-full overflow-hidden">
+                            <div className="h-1 bg-[var(--muted)] rounded-full overflow-hidden">
                               <div
                                 className="h-full bg-gradient-to-r from-[var(--accent)] to-[var(--secondary)] transition-all"
                                 style={{ width: `${module.progressPercentage}%` }}
@@ -685,24 +685,24 @@ export default function MyVolitionPage() {
                         )}
 
                         {/* Module Info */}
-                        <div className="flex items-center gap-2 flex-wrap">
+                        <div className="flex items-center gap-1.5 flex-wrap">
                           {module.article.moduleType === 'SMALL' && (
-                            <span className="text-[9px] font-bold text-theme-secondary px-1.5 py-0.5 bg-[var(--secondary)]/20 rounded">
-                              QUICK READ
+                            <span className="text-[8px] font-bold text-theme-secondary px-1 py-0.5 bg-[var(--secondary)]/20 rounded">
+                              QUICK
                             </span>
                           )}
                           {module.article.moduleType === 'LARGE' && (
-                            <span className="text-[9px] font-bold text-theme-accent px-1.5 py-0.5 bg-[var(--accent)]/20 rounded">
-                              {module.totalTabs} TABS + QUIZ
+                            <span className="text-[8px] font-bold text-theme-accent px-1 py-0.5 bg-[var(--accent)]/20 rounded">
+                              {module.totalTabs} TABS
                             </span>
                           )}
                           {module.article.estimatedTime && (
-                            <span className="text-[9px] font-medium text-theme-muted">
-                              ⏱️ {module.article.estimatedTime}min
+                            <span className="text-[8px] font-medium text-theme-muted">
+                              {module.article.estimatedTime}min
                             </span>
                           )}
                           {module.status === 'COMPLETED' && module.completedAt && (
-                            <span className="text-[9px] font-medium text-green-600">
+                            <span className="text-[8px] font-medium text-green-600">
                               ✓ {new Date(module.completedAt).toLocaleDateString()}
                             </span>
                           )}
@@ -747,7 +747,7 @@ export default function MyVolitionPage() {
                   <div className="flex items-center justify-between mb-3">
                     <div className="flex items-center gap-2">
                       <Briefcase className="w-5 h-5 text-theme-secondary" />
-                      <h2 className="text-xs font-black text-[var(--foreground)]">YOUR PROJECTS</h2>
+                      <h2 className="text-[10px] font-black text-[var(--foreground)]">MY PROJECTS</h2>
                     </div>
                     <Link href="/community/projects/new">
                       <button className="w-7 h-7 rounded-full bg-[var(--secondary)] text-white flex items-center justify-center hover:bg-[var(--primary)] transition-colors">
@@ -789,26 +789,26 @@ export default function MyVolitionPage() {
                     </button>
                   </div>
                 </div>
-                <div className="flex-1 overflow-y-auto p-4 space-y-3">
+                <div className="flex-1 overflow-y-auto p-3 space-y-2">
                   {projectCards.map(card => (
                     <div key={card.id} className="relative group">
                       <Link href={`/community/projects/${card.slug}`}>
-                        <div className="p-4 bg-gradient-to-br from-[var(--secondary)]/10 to-transparent border-2 border-theme-secondary rounded-xl cursor-pointer hover:shadow-lg transition-all">
-                          <div className="flex items-start justify-between mb-1">
-                            <h3 className="text-sm font-black text-[var(--foreground)] line-clamp-2 pr-8">
+                        <div className="p-2.5 bg-gradient-to-br from-[var(--secondary)]/10 to-transparent border border-theme-secondary rounded-lg cursor-pointer hover:shadow-md transition-all">
+                          <div className="flex items-start justify-between mb-0.5">
+                            <h3 className="text-xs font-bold text-[var(--foreground)] line-clamp-1 pr-6">
                               {card.title}
                             </h3>
                             {card.isOwner && (
-                              <span className="text-[8px] font-black px-1.5 py-0.5 bg-[var(--secondary)] text-white rounded">
+                              <span className="text-[7px] font-black px-1 py-0.5 bg-[var(--secondary)] text-white rounded">
                                 OWNER
                               </span>
                             )}
                           </div>
                           {card.subtitle && (
-                            <p className="text-xs font-medium text-theme-muted mb-2">{card.subtitle}</p>
+                            <p className="text-[10px] font-medium text-theme-muted mb-1 line-clamp-1">{card.subtitle}</p>
                           )}
                           {card.date && (
-                            <p className="text-[10px] font-bold text-theme-muted opacity-70">
+                            <p className="text-[9px] font-bold text-theme-muted opacity-70">
                               {card.date.toLocaleDateString()}
                             </p>
                           )}
@@ -816,17 +816,17 @@ export default function MyVolitionPage() {
                       </Link>
                       {/* Only show edit/delete for owner */}
                       {card.isOwner && (
-                        <div className="absolute top-2 right-2 flex gap-1 opacity-0 group-hover:opacity-100 transition-opacity">
+                        <div className="absolute top-1.5 right-1.5 flex gap-0.5 opacity-0 group-hover:opacity-100 transition-opacity">
                           <button
                             onClick={(e) => {
                               e.preventDefault()
                               e.stopPropagation()
                               handleEditProject(card.slug || '')
                             }}
-                            className="w-7 h-7 bg-[var(--secondary)] text-white rounded-lg hover:bg-[var(--primary)] transition-colors flex items-center justify-center"
+                            className="w-5 h-5 bg-[var(--secondary)] text-white rounded hover:bg-[var(--primary)] transition-colors flex items-center justify-center"
                             title="Edit"
                           >
-                            <Edit2 className="w-3 h-3" />
+                            <Edit2 className="w-2.5 h-2.5" />
                           </button>
                           <button
                             onClick={(e) => {
@@ -839,10 +839,10 @@ export default function MyVolitionPage() {
                                 title: 'Delete Project'
                               })
                             }}
-                            className="w-7 h-7 bg-red-500 text-white rounded-lg hover:bg-red-600 transition-colors flex items-center justify-center"
+                            className="w-5 h-5 bg-red-500 text-white rounded hover:bg-red-600 transition-colors flex items-center justify-center"
                             title="Delete"
                           >
-                            <Trash2 className="w-3 h-3" />
+                            <Trash2 className="w-2.5 h-2.5" />
                           </button>
                         </div>
                       )}
@@ -947,7 +947,7 @@ export default function MyVolitionPage() {
                 <div className="p-4 border-b border-[var(--border)] flex items-center justify-between">
                   <div className="flex items-center gap-2">
                     <FileText className="w-5 h-5 text-theme-accent" />
-                    <h2 className="text-xs font-black text-[var(--foreground)]">YOUR ARTICLES</h2>
+                    <h2 className="text-[10px] font-black text-[var(--foreground)]">MY ARTICLES</h2>
                   </div>
                   <Link href="/articles/write">
                     <button className="w-7 h-7 rounded-full bg-[var(--accent)] text-white flex items-center justify-center hover:bg-[var(--primary)] transition-colors">
@@ -955,35 +955,35 @@ export default function MyVolitionPage() {
                     </button>
                   </Link>
                 </div>
-                <div className="flex-1 overflow-y-auto p-4 space-y-3">
+                <div className="flex-1 overflow-y-auto p-3 space-y-2">
                   {articles.length > 0 ? (
                     articles.map((article: any) => (
                       <div key={article.id} className="relative group">
-                        <div className="p-4 bg-gradient-to-br from-[var(--accent)]/10 to-transparent border-2 border-theme-accent rounded-xl cursor-pointer hover:shadow-lg transition-all">
-                          <h3 className="text-sm font-black text-[var(--foreground)] mb-1 line-clamp-2 pr-12">
+                        <div className="p-2.5 bg-gradient-to-br from-[var(--accent)]/10 to-transparent border border-theme-accent rounded-lg cursor-pointer hover:shadow-md transition-all">
+                          <h3 className="text-xs font-bold text-[var(--foreground)] mb-0.5 line-clamp-1 pr-10">
                             {article.title}
                           </h3>
                           {article.excerpt && (
-                            <p className="text-xs font-medium text-theme-muted mb-2 line-clamp-2">{article.excerpt}</p>
+                            <p className="text-[10px] font-medium text-theme-muted mb-1 line-clamp-1">{article.excerpt}</p>
                           )}
-                          <div className="flex items-center justify-between text-[10px] font-bold text-theme-muted">
+                          <div className="flex items-center justify-between text-[9px] font-bold text-theme-muted">
                             <span>{article._count?.comments || 0} comments</span>
                             {article.createdAt && (
                               <span>{new Date(article.createdAt).toLocaleDateString()}</span>
                             )}
                           </div>
                         </div>
-                        <div className="absolute top-2 right-2 flex gap-1 opacity-0 group-hover:opacity-100 transition-opacity">
+                        <div className="absolute top-1.5 right-1.5 flex gap-0.5 opacity-0 group-hover:opacity-100 transition-opacity">
                           <button
                             onClick={(e) => {
                               e.preventDefault()
                               e.stopPropagation()
                               alert('Edit article: ' + article.id)
                             }}
-                            className="w-7 h-7 bg-[var(--accent)] text-white rounded-lg hover:bg-[var(--primary)] transition-colors flex items-center justify-center"
+                            className="w-5 h-5 bg-[var(--accent)] text-white rounded hover:bg-[var(--primary)] transition-colors flex items-center justify-center"
                             title="Edit"
                           >
-                            <Edit2 className="w-3 h-3" />
+                            <Edit2 className="w-2.5 h-2.5" />
                           </button>
                           <button
                             onClick={(e) => {
@@ -993,10 +993,10 @@ export default function MyVolitionPage() {
                                 alert('Delete article: ' + article.id)
                               }
                             }}
-                            className="w-7 h-7 bg-red-500 text-white rounded-lg hover:bg-red-600 transition-colors flex items-center justify-center"
+                            className="w-5 h-5 bg-red-500 text-white rounded hover:bg-red-600 transition-colors flex items-center justify-center"
                             title="Delete"
                           >
-                            <X className="w-3 h-3" />
+                            <X className="w-2.5 h-2.5" />
                           </button>
                         </div>
                       </div>
