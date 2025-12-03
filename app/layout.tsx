@@ -1,4 +1,4 @@
-import type { Metadata } from "next";
+import type { Metadata, Viewport } from "next";
 import "./globals.css";
 import { Header } from "@/components/layout/Header";
 import { Footer } from "@/components/layout/Footer";
@@ -12,10 +12,48 @@ import { generateMetadata, siteConfig } from "@/lib/metadata";
 import { auth } from "@/auth";
 import { Toaster } from "react-hot-toast";
 
-export const metadata: Metadata = generateMetadata({
-  title: 'Sustainability Hub',
-  description: siteConfig.description,
-});
+// Viewport configuration for mobile responsiveness
+export const viewport: Viewport = {
+  width: 'device-width',
+  initialScale: 1,
+  maximumScale: 5,
+  userScalable: true,
+  themeColor: [
+    { media: '(prefers-color-scheme: light)', color: '#36763d' },
+    { media: '(prefers-color-scheme: dark)', color: '#223e25' },
+  ],
+};
+
+export const metadata: Metadata = {
+  ...generateMetadata({
+    title: 'Sustainability Hub',
+    description: siteConfig.description,
+  }),
+  manifest: '/manifest.json',
+  icons: {
+    icon: [
+      { url: '/favicon.ico', sizes: 'any' },
+      { url: '/icon.svg', type: 'image/svg+xml' },
+    ],
+    apple: [
+      { url: '/apple-touch-icon.png', sizes: '180x180' },
+    ],
+  },
+  appleWebApp: {
+    capable: true,
+    statusBarStyle: 'default',
+    title: siteConfig.name,
+  },
+  formatDetection: {
+    telephone: true,
+    date: true,
+    address: true,
+    email: true,
+  },
+  other: {
+    'mobile-web-app-capable': 'yes',
+  },
+};
 
 export default async function RootLayout({
   children,
