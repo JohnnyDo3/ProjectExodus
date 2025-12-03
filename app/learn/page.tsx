@@ -9,7 +9,7 @@ import {
   BookOpen, Video, Calculator, Download, Zap, Leaf,
   GraduationCap, Target, Clock, Users, Star, ChevronRight,
   Lightbulb, TrendingUp, Award, Play, FileText, Droplet,
-  Sun, Wind, Recycle, Home, Sprout, Heart, Globe, CheckCircle2
+  Sun, Wind, Recycle, Home, Sprout, Heart, Globe, CheckCircle2, Lock
 } from 'lucide-react'
 import Link from 'next/link'
 
@@ -319,39 +319,40 @@ export default function LearnPage() {
             {featuredModules.map((module, i) => {
               const ModuleCard = (
                 <Card
-                  className={`border-2 border-[var(--border)] ${module.available ? 'hover:border-theme-primary cursor-pointer' : 'opacity-75'} bg-[var(--card)] transform ${module.available ? 'hover:-translate-y-2' : ''} transition-all duration-300 group relative`}
+                  className={`border-2 ${module.available ? 'border-[var(--border)] hover:border-theme-primary cursor-pointer' : 'border-dashed border-[var(--border)]'} bg-[var(--card)] transform ${module.available ? 'hover:-translate-y-2' : ''} transition-all duration-300 group relative`}
                 >
                   {!module.available && (
-                    <div className="absolute top-3 right-3 px-2 py-1 bg-[var(--muted)] rounded text-xs font-bold text-theme-muted">
-                      COMING SOON
+                    <div className="absolute top-3 right-3 px-3 py-1.5 bg-slate-200 dark:bg-slate-700 rounded-lg text-xs font-black text-slate-600 dark:text-slate-300 flex items-center gap-1.5">
+                      <Lock className="w-3 h-3" />
+                      LOCKED
                     </div>
                   )}
                   <CardContent className="p-6">
                     <div className="flex items-start justify-between mb-4">
-                      <span className="px-3 py-1 rounded-full text-xs font-black bg-[color-mix(in_srgb,var(--primary)_20%,var(--background))] text-theme-primary">
+                      <span className={`px-3 py-1 rounded-full text-xs font-black ${module.available ? 'bg-[color-mix(in_srgb,var(--primary)_20%,var(--background))] text-theme-primary' : 'bg-slate-100 dark:bg-slate-800 text-slate-500 dark:text-slate-400'}`}>
                         {module.category}
                       </span>
-                      <div className={`w-12 h-12 rounded-xl bg-[color-mix(in_srgb,var(--primary)_20%,var(--background))] flex items-center justify-center ${module.available ? 'group-hover:scale-110' : ''} transition-transform`}>
-                        <module.icon className="w-6 h-6 text-theme-primary" />
+                      <div className={`w-12 h-12 rounded-xl ${module.available ? 'bg-[color-mix(in_srgb,var(--primary)_20%,var(--background))]' : 'bg-slate-100 dark:bg-slate-800'} flex items-center justify-center ${module.available ? 'group-hover:scale-110' : ''} transition-transform`}>
+                        <module.icon className={`w-6 h-6 ${module.available ? 'text-theme-primary' : 'text-slate-400 dark:text-slate-500'}`} />
                       </div>
                     </div>
 
-                    <h3 className={`text-lg font-black mb-2 text-[var(--foreground)] ${module.available ? 'group-hover:text-theme-primary' : ''} transition-colors`}>
+                    <h3 className={`text-lg font-black mb-2 ${module.available ? 'text-[var(--foreground)] group-hover:text-theme-primary' : 'text-slate-600 dark:text-slate-300'} transition-colors`}>
                       {module.title}
                     </h3>
 
-                    <p className="text-sm font-medium text-theme-muted mb-4">
+                    <p className={`text-sm font-medium mb-4 ${module.available ? 'text-theme-muted' : 'text-slate-500 dark:text-slate-400'}`}>
                       {module.description}
                     </p>
 
                     <div className="flex items-center justify-between text-sm">
-                      <span className="font-bold text-theme-muted flex items-center gap-2">
+                      <span className={`font-bold flex items-center gap-2 ${module.available ? 'text-theme-muted' : 'text-slate-400 dark:text-slate-500'}`}>
                         <Clock className="w-4 h-4" />
                         {module.duration}
                       </span>
-                      <span className={`font-bold ${module.available ? 'text-theme-primary' : 'text-theme-muted'} flex items-center gap-1`}>
-                        {module.available ? 'START MODULE' : module.type}
-                        <ChevronRight className="w-4 h-4" />
+                      <span className={`font-black flex items-center gap-1 ${module.available ? 'text-theme-primary' : 'text-slate-400 dark:text-slate-500'}`}>
+                        {module.available ? 'START MODULE' : 'COMING SOON'}
+                        {module.available ? <ChevronRight className="w-4 h-4" /> : <Lock className="w-4 h-4" />}
                       </span>
                     </div>
                   </CardContent>
