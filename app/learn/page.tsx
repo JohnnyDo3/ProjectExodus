@@ -1,7 +1,8 @@
+'use client'
+
 import { Card, CardContent } from '@/components/ui/Card'
 import { Button } from '@/components/ui/Button'
 import { CompactLiveImpactStats } from '@/components/learn/CompactLiveImpactStats'
-import { ExpertCarousel } from '@/components/learning/ExpertCarousel'
 import { TreeBranches } from '@/components/decorative/TreeBranches'
 import { FlyingBirds } from '@/components/decorative/FlyingBirds'
 import {
@@ -12,7 +13,14 @@ import {
 } from 'lucide-react'
 import Link from 'next/link'
 
-export default async function LearnPage() {
+export default function LearnPage() {
+  // Auto-scroll handlers
+  const scrollToSection = (sectionId: string) => {
+    const element = document.getElementById(sectionId)
+    if (element) {
+      element.scrollIntoView({ behavior: 'smooth', block: 'start' })
+    }
+  }
 
   const learningPaths = [
     {
@@ -140,27 +148,6 @@ export default async function LearnPage() {
     { title: 'FOOD SOVEREIGNTY', desc: 'Local food systems, gardening, and community nutrition', icon: Leaf, slug: 'food-sovereignty', color: 'terra', lessons: 26 },
   ]
 
-  const expertInsights = [
-    {
-      quote: "Sustainability is not about perfection. It's about making better choices, one day at a time.",
-      author: "Professor Sage",
-      role: "Lead Educator, Project Exodus",
-      image: "🌱"
-    },
-    {
-      quote: "The greatest threat to our planet is the belief that someone else will save it.",
-      author: "Robert Swan",
-      role: "Polar Explorer & Environmentalist",
-      image: "🌍"
-    },
-    {
-      quote: "We don't need a handful of people doing zero waste perfectly. We need millions doing it imperfectly.",
-      author: "Anne-Marie Bonneau",
-      role: "Zero Waste Chef",
-      image: "♻️"
-    }
-  ]
-
   const resourceTypes = [
     { type: 'Video Tutorials', count: 150, icon: Play, color: 'moss' },
     { type: 'Written Guides', count: 200, icon: FileText, color: 'ocean' },
@@ -204,12 +191,21 @@ export default async function LearnPage() {
             </div>
 
             <div className="flex flex-wrap gap-4 justify-center pt-4">
-              <Button size="lg" className="text-lg px-8 py-6 rounded-xl font-black shadow-xl">
+              <Button
+                size="lg"
+                className="text-lg px-8 py-6 rounded-xl font-black shadow-xl"
+                onClick={() => scrollToSection('learning-paths')}
+              >
                 <Play className="w-5 h-5 mr-2" />
                 START LEARNING
               </Button>
-              <Button size="lg" variant="outline" className="text-lg px-8 py-6 rounded-xl font-bold border-2">
-                BROWSE COURSES
+              <Button
+                size="lg"
+                variant="outline"
+                className="text-lg px-8 py-6 rounded-xl font-bold border-2"
+                onClick={() => scrollToSection('core-topics')}
+              >
+                CORE TOPICS
               </Button>
             </div>
           </div>
@@ -245,11 +241,11 @@ export default async function LearnPage() {
       </section>
 
       {/* Learning Paths */}
-      <section className="py-24 bg-[var(--background)]">
+      <section id="learning-paths" className="py-24 bg-[var(--background)] scroll-mt-20">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="text-center mb-16">
-            <h2 className="text-5xl font-black mb-4 text-[var(--foreground)]">LEARNING PATHS</h2>
-            <p className="text-xl font-semibold text-theme-muted">
+          <div className="text-center mb-12 sm:mb-16">
+            <h2 className="text-3xl sm:text-4xl md:text-5xl font-black mb-4 text-[var(--foreground)]">LEARNING PATHS</h2>
+            <p className="text-base sm:text-lg md:text-xl font-semibold text-theme-muted px-4">
               Structured courses designed to take you from curious to expert
             </p>
           </div>
@@ -312,9 +308,9 @@ export default async function LearnPage() {
       {/* Featured Modules */}
       <section className="py-24 bg-[var(--muted)]">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="text-center mb-16">
-            <h2 className="text-5xl font-black mb-4 text-[var(--foreground)]">FEATURED MODULES</h2>
-            <p className="text-xl font-semibold text-theme-muted">
+          <div className="text-center mb-12 sm:mb-16">
+            <h2 className="text-3xl sm:text-4xl md:text-5xl font-black mb-4 text-[var(--foreground)]">FEATURED MODULES</h2>
+            <p className="text-base sm:text-lg md:text-xl font-semibold text-theme-muted px-4">
               Dive deep with our most popular lessons
             </p>
           </div>
@@ -395,11 +391,11 @@ export default async function LearnPage() {
       </section>
 
       {/* Core Topics */}
-      <section className="py-24 bg-[var(--background)]">
+      <section id="core-topics" className="py-24 bg-[var(--background)] scroll-mt-20">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="text-center mb-16">
-            <h2 className="text-5xl font-black mb-4 text-[var(--foreground)]">CORE TOPICS</h2>
-            <p className="text-xl font-semibold text-theme-muted">
+          <div className="text-center mb-12 sm:mb-16">
+            <h2 className="text-3xl sm:text-4xl md:text-5xl font-black mb-4 text-[var(--foreground)]">CORE TOPICS</h2>
+            <p className="text-base sm:text-lg md:text-xl font-semibold text-theme-muted px-4">
               Master the pillars of sustainability
             </p>
           </div>
@@ -434,26 +430,12 @@ export default async function LearnPage() {
         </div>
       </section>
 
-      {/* Expert Insights - Interactive Carousel */}
-      <section className="py-24 bg-gradient-to-br from-[var(--primary)] via-[var(--accent)] to-[var(--secondary)] text-[var(--primary-foreground)]">
-        <div className="container mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="text-center mb-16">
-            <h2 className="text-5xl font-black mb-4 text-[var(--primary-foreground)]">WORDS OF WISDOM</h2>
-            <p className="text-xl font-semibold text-[var(--primary-foreground)] opacity-80">
-              Insights from sustainability leaders
-            </p>
-          </div>
-
-          <ExpertCarousel experts={expertInsights} autoPlayInterval={6000} />
-        </div>
-      </section>
-
       {/* Interactive Tools */}
       <section className="py-24 bg-[var(--muted)]">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="text-center mb-16">
-            <h2 className="text-5xl font-black mb-4 text-[var(--foreground)]">INTERACTIVE TOOLS</h2>
-            <p className="text-xl font-semibold text-theme-muted">
+          <div className="text-center mb-12 sm:mb-16">
+            <h2 className="text-3xl sm:text-4xl md:text-5xl font-black mb-4 text-[var(--foreground)]">INTERACTIVE TOOLS</h2>
+            <p className="text-base sm:text-lg md:text-xl font-semibold text-theme-muted px-4">
               Learn by doing with hands-on resources
             </p>
           </div>
@@ -504,9 +486,9 @@ export default async function LearnPage() {
       <section className="py-24 bg-gradient-to-br from-[var(--primary)] via-[var(--accent)] to-[var(--secondary)] text-[var(--primary-foreground)]">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
           <div className="max-w-4xl mx-auto text-center space-y-8">
-            <div className="text-7xl">🎓</div>
-            <h2 className="text-5xl font-black text-[var(--primary-foreground)]">READY TO BECOME A SUSTAINABILITY EXPERT?</h2>
-            <p className="text-2xl font-semibold text-[var(--primary-foreground)] opacity-90">
+            <div className="text-5xl sm:text-6xl md:text-7xl">🎓</div>
+            <h2 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-black text-[var(--primary-foreground)] px-4">READY TO BECOME A SUSTAINABILITY EXPERT?</h2>
+            <p className="text-lg sm:text-xl md:text-2xl font-semibold text-[var(--primary-foreground)] opacity-90 px-4">
               Join thousands of learners transforming knowledge into action.
             </p>
             <div className="flex flex-col sm:flex-row gap-6 justify-center">

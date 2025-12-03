@@ -524,6 +524,22 @@ a:hover {
   animation: pulse-grow 3s ease-in-out infinite;
 }
 
+/* Fade in up animation for quote toasts */
+@keyframes fade-in-up {
+  from {
+    opacity: 0;
+    transform: translateX(-50%) translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(-50%) translateY(0);
+  }
+}
+
+.animate-fade-in-up {
+  animation: fade-in-up 0.4s ease-out forwards;
+}
+
 /* Theme-aware utility classes - these adapt to ALL time periods! */
 .bg-theme-primary {
   background-color: var(--primary);

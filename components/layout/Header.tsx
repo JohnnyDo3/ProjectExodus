@@ -187,7 +187,7 @@ export function Header() {
           <div className="lg:hidden flex items-center gap-2">
             <ThemeToggle />
             <button
-              className="p-2 rounded-lg hover:bg-[var(--muted)] transition-colors"
+              className="p-2.5 rounded-lg hover:bg-[var(--muted)] transition-colors"
               onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
               aria-label={mobileMenuOpen ? 'Close menu' : 'Open menu'}
             >
