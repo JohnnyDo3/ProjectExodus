@@ -887,17 +887,14 @@ export default function SettingsPage() {
                       Customize your digital identity card that others see when they view your profile
                     </p>
                   </CardHeader>
-                  <CardContent className="space-y-8">
-                    {/* Guardian Archetype Selection */}
-                    <div className="space-y-4">
-                      <h3 className="text-lg font-black text-[var(--foreground)] flex items-center gap-2">
-                        <Shield className="w-5 h-5 text-theme-primary" />
-                        SELECT YOUR GUARDIAN ARCHETYPE
+                  <CardContent className="space-y-6">
+                    {/* Guardian Archetype Selection - Compact Grid */}
+                    <div className="space-y-3">
+                      <h3 className="text-base font-black text-[var(--foreground)] flex items-center gap-2">
+                        <Shield className="w-4 h-4 text-theme-primary" />
+                        GUARDIAN ARCHETYPE
                       </h3>
-                      <p className="text-sm text-theme-muted">
-                        Choose the archetype that best represents your values and how you contribute to Project Exodus
-                      </p>
-                      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3">
+                      <div className="grid grid-cols-2 sm:grid-cols-4 lg:grid-cols-7 gap-2">
                         {Object.entries(GUARDIAN_ARCHETYPES).map(([key, archetype]) => {
                           const Icon = archetype.icon
                           const isSelected = businessCardData.guardianArchetype === key
@@ -906,119 +903,113 @@ export default function SettingsPage() {
                               key={key}
                               type="button"
                               onClick={() => setBusinessCardData({ ...businessCardData, guardianArchetype: key as ArchetypeKey })}
-                              className={`p-4 rounded-xl border-2 transition-all text-left ${
+                              title={archetype.description}
+                              className={`p-3 rounded-xl border-2 transition-all text-center ${
                                 isSelected
-                                  ? `border-transparent bg-gradient-to-br ${archetype.gradient} text-white shadow-lg`
-                                  : 'border-[var(--border)] bg-[var(--card)] hover:border-theme-primary'
+                                  ? `border-transparent bg-gradient-to-br ${archetype.gradient} text-white shadow-lg scale-105`
+                                  : 'border-[var(--border)] bg-[var(--card)] hover:border-theme-primary hover:scale-102'
                               }`}
                             >
-                              <div className="flex items-center gap-3 mb-2">
-                                <div className={`w-10 h-10 rounded-lg flex items-center justify-center ${
-                                  isSelected ? 'bg-white/20' : `bg-gradient-to-br ${archetype.gradient}`
-                                }`}>
-                                  <Icon className={`w-5 h-5 ${isSelected ? 'text-white' : 'text-white'}`} />
-                                </div>
-                                <div>
-                                  <p className={`text-xs font-black ${isSelected ? 'text-white/80' : 'text-theme-muted'}`}>
-                                    {archetype.title}
-                                  </p>
-                                  <p className={`text-sm font-bold ${isSelected ? 'text-white' : 'text-[var(--foreground)]'}`}>
-                                    {archetype.name}
-                                  </p>
-                                </div>
+                              <div className={`w-10 h-10 mx-auto rounded-lg flex items-center justify-center mb-1 ${
+                                isSelected ? 'bg-white/20' : `bg-gradient-to-br ${archetype.gradient}`
+                              }`}>
+                                <Icon className="w-5 h-5 text-white" />
                               </div>
-                              <p className={`text-xs ${isSelected ? 'text-white/80' : 'text-theme-muted'}`}>
-                                {archetype.description}
+                              <p className={`text-[10px] font-black leading-tight ${isSelected ? 'text-white' : 'text-[var(--foreground)]'}`}>
+                                {archetype.name}
                               </p>
                             </button>
                           )
                         })}
                       </div>
+                      {businessCardData.guardianArchetype && (
+                        <p className="text-xs text-theme-muted italic">
+                          {GUARDIAN_ARCHETYPES[businessCardData.guardianArchetype]?.description}
+                        </p>
+                      )}
                     </div>
 
-                    {/* Personal Declaration */}
-                    <div className="space-y-3">
-                      <h3 className="text-lg font-black text-[var(--foreground)] flex items-center gap-2">
-                        <Heart className="w-5 h-5 text-theme-primary" />
-                        YOUR PERSONAL DECLARATION
-                      </h3>
-                      <p className="text-sm text-theme-muted">
-                        Write a personal statement that defines who you are and what you stand for
-                      </p>
-                      <textarea
-                        value={businessCardData.declaration}
-                        onChange={(e) => setBusinessCardData({ ...businessCardData, declaration: e.target.value })}
-                        placeholder="I believe in creating a sustainable future where..."
-                        className="w-full px-4 py-3 bg-[var(--background)] border-2 border-[var(--border)] rounded-xl text-[var(--foreground)] font-medium focus:outline-none focus:border-theme-primary resize-none"
-                        rows={4}
-                        maxLength={280}
-                      />
-                      <p className="text-xs text-theme-muted text-right">
-                        {businessCardData.declaration.length}/280 characters
-                      </p>
+                    {/* Personal Declaration & Phone - Side by Side on larger screens */}
+                    <div className="grid md:grid-cols-2 gap-4">
+                      {/* Personal Declaration */}
+                      <div className="space-y-2">
+                        <h3 className="text-base font-black text-[var(--foreground)] flex items-center gap-2">
+                          <Heart className="w-4 h-4 text-theme-primary" />
+                          PERSONAL DECLARATION
+                        </h3>
+                        <textarea
+                          value={businessCardData.declaration}
+                          onChange={(e) => setBusinessCardData({ ...businessCardData, declaration: e.target.value })}
+                          placeholder="I believe in creating a sustainable future where..."
+                          className="w-full px-3 py-2 bg-[var(--background)] border-2 border-[var(--border)] rounded-lg text-[var(--foreground)] text-sm font-medium focus:outline-none focus:border-theme-primary resize-none"
+                          rows={3}
+                          maxLength={280}
+                        />
+                        <p className="text-[10px] text-theme-muted text-right">
+                          {businessCardData.declaration.length}/280
+                        </p>
+                      </div>
+
+                      {/* Contact Phone */}
+                      <div className="space-y-2">
+                        <h3 className="text-base font-black text-[var(--foreground)] flex items-center gap-2">
+                          <Mail className="w-4 h-4 text-theme-primary" />
+                          CONTACT PHONE
+                          <span className="text-xs font-medium text-theme-muted">(Optional)</span>
+                        </h3>
+                        <input
+                          type="tel"
+                          value={businessCardData.phone}
+                          onChange={(e) => setBusinessCardData({ ...businessCardData, phone: e.target.value })}
+                          placeholder="+1 (555) 123-4567"
+                          className="w-full px-3 py-2 bg-[var(--background)] border-2 border-[var(--border)] rounded-lg text-[var(--foreground)] text-sm font-medium focus:outline-none focus:border-theme-primary"
+                        />
+                      </div>
                     </div>
 
-                    {/* Contact Phone */}
-                    <div className="space-y-3">
-                      <h3 className="text-lg font-black text-[var(--foreground)] flex items-center gap-2">
-                        <Mail className="w-5 h-5 text-theme-primary" />
-                        CONTACT PHONE (Optional)
-                      </h3>
-                      <p className="text-sm text-theme-muted">
-                        Add a phone number to your business card for direct contact
-                      </p>
-                      <input
-                        type="tel"
-                        value={businessCardData.phone}
-                        onChange={(e) => setBusinessCardData({ ...businessCardData, phone: e.target.value })}
-                        placeholder="+1 (555) 123-4567"
-                        className="w-full px-4 py-3 bg-[var(--background)] border-2 border-[var(--border)] rounded-xl text-[var(--foreground)] font-medium focus:outline-none focus:border-theme-primary"
-                      />
-                    </div>
-
-                    {/* Preview Card */}
-                    <div className="space-y-3">
-                      <h3 className="text-lg font-black text-[var(--foreground)]">CARD PREVIEW</h3>
-                      <div className={`p-6 rounded-2xl border-2 ${
+                    {/* Preview Card - Compact */}
+                    <div className="space-y-2">
+                      <h3 className="text-base font-black text-[var(--foreground)]">PREVIEW</h3>
+                      <div className={`p-4 rounded-xl border-2 ${
                         businessCardData.guardianArchetype
                           ? `bg-gradient-to-br ${GUARDIAN_ARCHETYPES[businessCardData.guardianArchetype]?.gradient} border-transparent text-white`
                           : 'bg-gradient-to-br from-[var(--primary)] to-[var(--accent)] border-transparent text-white'
                       }`}>
-                        <div className="flex items-start gap-4">
-                          <div className="w-16 h-16 rounded-xl bg-white/20 flex items-center justify-center">
+                        <div className="flex items-center gap-3">
+                          <div className="w-12 h-12 rounded-lg bg-white/20 flex items-center justify-center flex-shrink-0">
                             {businessCardData.guardianArchetype ? (
                               (() => {
                                 const Icon = GUARDIAN_ARCHETYPES[businessCardData.guardianArchetype]?.icon
-                                return Icon ? <Icon className="w-8 h-8 text-white" /> : <User className="w-8 h-8 text-white" />
+                                return Icon ? <Icon className="w-6 h-6 text-white" /> : <User className="w-6 h-6 text-white" />
                               })()
                             ) : (
-                              <User className="w-8 h-8 text-white" />
+                              <User className="w-6 h-6 text-white" />
                             )}
                           </div>
-                          <div className="flex-1">
-                            <p className="text-xs font-bold opacity-80">
+                          <div className="flex-1 min-w-0">
+                            <p className="text-[10px] font-bold opacity-80">
                               {businessCardData.guardianArchetype
                                 ? GUARDIAN_ARCHETYPES[businessCardData.guardianArchetype]?.title
                                 : 'Guardian of Project Exodus'}
                             </p>
-                            <h4 className="text-xl font-black">{profileData.name || 'Your Name'}</h4>
-                            <p className="text-sm opacity-80">{profileData.headline || 'Your headline'}</p>
+                            <h4 className="text-base font-black truncate">{profileData.name || 'Your Name'}</h4>
+                            <p className="text-xs opacity-80 truncate">{profileData.headline || 'Your headline'}</p>
                           </div>
                         </div>
                         {businessCardData.declaration && (
-                          <p className="mt-4 text-sm italic opacity-90 border-t border-white/20 pt-4">
+                          <p className="mt-2 text-xs italic opacity-90 border-t border-white/20 pt-2 line-clamp-2">
                             "{businessCardData.declaration}"
                           </p>
                         )}
-                        <div className="mt-4 flex flex-wrap gap-3 text-xs">
+                        <div className="mt-2 flex flex-wrap gap-2 text-[10px]">
                           {profileData.location && (
                             <span className="flex items-center gap-1 opacity-80">
-                              <MapPin className="w-3 h-3" /> {profileData.location}
+                              <MapPin className="w-2.5 h-2.5" /> {profileData.location}
                             </span>
                           )}
                           {profileData.email && (
                             <span className="flex items-center gap-1 opacity-80">
-                              <Mail className="w-3 h-3" /> {profileData.email}
+                              <Mail className="w-2.5 h-2.5" /> {profileData.email}
                             </span>
                           )}
                         </div>
