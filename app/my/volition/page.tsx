@@ -727,7 +727,7 @@ export default function MyVolitionPage() {
                           ? 'No modules in progress'
                           : 'Start learning!'}
                       </p>
-                      <Link href="/learn">
+                      <Link href="/learn#featured-modules">
                         <button className="mt-3 px-4 py-2 bg-[var(--accent)] text-white rounded-lg text-xs font-bold hover:bg-[var(--primary)] transition-colors">
                           Browse Modules
                         </button>

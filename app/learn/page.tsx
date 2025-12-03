@@ -306,7 +306,7 @@ export default function LearnPage() {
       </section>
 
       {/* Featured Modules */}
-      <section className="py-24 bg-[var(--muted)]">
+      <section id="featured-modules" className="py-24 bg-[var(--muted)]">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-12 sm:mb-16">
             <h2 className="text-3xl sm:text-4xl md:text-5xl font-black mb-4 text-[var(--foreground)]">FEATURED MODULES</h2>
