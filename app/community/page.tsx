@@ -3,17 +3,28 @@ import { Button } from '@/components/ui/Button'
 import {
   MessageSquare, Users, Award, Rocket, Sparkles, Heart,
   TrendingUp, Calendar, Bell, UserPlus, ArrowRight, Activity,
-  Zap, Globe, BookOpen, ChevronRight
+  Zap, Globe, BookOpen, ChevronRight, PenTool, Target, Compass,
+  Star, Shield, Eye, Flame, Crown
 } from 'lucide-react'
 import Link from 'next/link'
 import { auth } from '@/auth'
 import prisma from '@/lib/db/prisma'
-import { LiveCounter } from '@/components/stats/LiveCounter'
 import { TreeBranches } from '@/components/decorative/TreeBranches'
 import { FlyingBirds } from '@/components/decorative/FlyingBirds'
 import { RecentDiscussionsWidget } from '@/components/community/RecentDiscussionsWidget'
 import { ActiveProjectsWidget } from '@/components/community/ActiveProjectsWidget'
 import { NetworkActivityFeed } from '@/components/community/NetworkActivityFeed'
+
+// Guardian archetype icons and colors
+const archetypeConfig: Record<string, { icon: any, gradient: string, name: string }> = {
+  GUARDIAN_OF_TEMPERANCE: { icon: Shield, gradient: 'from-blue-500 to-cyan-500', name: 'Guardian of Temperance' },
+  GUARDIAN_OF_WISDOM: { icon: Eye, gradient: 'from-violet-500 to-purple-500', name: 'Guardian of Wisdom' },
+  GUARDIAN_OF_COURAGE: { icon: Flame, gradient: 'from-orange-500 to-red-500', name: 'Guardian of Courage' },
+  GUARDIAN_OF_JUSTICE: { icon: Target, gradient: 'from-amber-500 to-yellow-500', name: 'Guardian of Justice' },
+  GUARDIAN_OF_HUMANITY: { icon: Heart, gradient: 'from-pink-500 to-rose-500', name: 'Guardian of Humanity' },
+  GUARDIAN_OF_TRANSCENDENCE: { icon: Sparkles, gradient: 'from-indigo-500 to-blue-500', name: 'Guardian of Transcendence' },
+  GUARDIAN_OF_NATURE: { icon: Globe, gradient: 'from-emerald-500 to-green-500', name: 'Guardian of Nature' },
+}
 
 async function getDashboardData(userId: string) {
   try {
@@ -22,7 +33,7 @@ async function getDashboardData(userId: string) {
       where: { id: userId },
       include: {
         userBadges: {
-          take: 3,
+          take: 5,
           include: {
             badge: true
           },
@@ -70,6 +81,7 @@ async function getDashboardData(userId: string) {
         id: true,
         name: true,
         image: true,
+        guardianArchetype: true,
         _count: {
           select: {
             followers: true,
@@ -175,102 +187,223 @@ async function getDashboardData(userId: string) {
 export default async function CommunityPage() {
   const session = await auth()
 
-  // If not logged in, show public landing page
+  // If not logged in, show immersive public landing page
   if (!session?.user?.id) {
     return (
-      <div className="min-h-screen">
-        {/* Hero */}
-        <section className="py-32 bg-gradient-to-br from-[color-mix(in_srgb,var(--secondary)_15%,var(--background))] via-[color-mix(in_srgb,var(--accent)_15%,var(--background))] to-[color-mix(in_srgb,var(--primary)_15%,var(--background))] relative overflow-hidden">
-          <div className="container mx-auto px-4 sm:px-6 lg:px-8">
-            <div className="max-w-5xl mx-auto text-center space-y-8">
-              <div className="inline-block px-6 py-3 bg-[var(--accent)]/10 rounded-full border-2 border-theme-accent mb-4">
-                <span className="text-sm font-black text-theme-accent uppercase tracking-wider">
-                  Create an account to join
-                </span>
+      <div className="min-h-screen bg-[var(--background)]">
+        {/* Animated Hero Section */}
+        <section className="relative min-h-[90vh] flex items-center justify-center overflow-hidden">
+          {/* Animated gradient background */}
+          <div className="absolute inset-0 bg-gradient-to-br from-[var(--primary)] via-[var(--accent)] to-[var(--secondary)]">
+            <div className="absolute inset-0 opacity-30">
+              <div className="absolute top-1/4 left-1/4 w-96 h-96 bg-white/20 rounded-full blur-3xl animate-pulse" />
+              <div className="absolute bottom-1/4 right-1/4 w-80 h-80 bg-white/10 rounded-full blur-3xl animate-pulse" style={{ animationDelay: '1s' }} />
+              <div className="absolute top-1/2 right-1/3 w-64 h-64 bg-white/15 rounded-full blur-3xl animate-pulse" style={{ animationDelay: '2s' }} />
+            </div>
+          </div>
+
+          {/* Grid pattern overlay */}
+          <div className="absolute inset-0 opacity-10" style={{
+            backgroundImage: `linear-gradient(rgba(255,255,255,0.1) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.1) 1px, transparent 1px)`,
+            backgroundSize: '50px 50px'
+          }} />
+
+          <div className="container mx-auto px-4 relative z-10">
+            <div className="max-w-5xl mx-auto text-center text-white space-y-8">
+              {/* Badge */}
+              <div className="inline-flex items-center gap-2 px-6 py-3 bg-white/10 backdrop-blur-md rounded-full border border-white/20">
+                <Sparkles className="w-5 h-5 text-yellow-300" />
+                <span className="text-sm font-black uppercase tracking-widest">Join the Movement</span>
               </div>
-              <h1 className="text-[var(--foreground)]" style={{
-                fontSize: 'clamp(3rem, 10vw, 7rem)',
+
+              {/* Main headline */}
+              <h1 className="leading-none" style={{
+                fontSize: 'clamp(3.5rem, 12vw, 8rem)',
                 fontWeight: 900,
-                lineHeight: 1
+                textShadow: '0 4px 30px rgba(0,0,0,0.3)'
               }}>
-                JOIN THE COMMUNITY
+                BUILD THE
+                <br />
+                <span className="relative">
+                  <span className="relative z-10">FUTURE</span>
+                  <span className="absolute inset-0 bg-white/20 blur-xl" />
+                </span>
               </h1>
-              <p className="text-2xl font-bold text-theme-muted max-w-3xl mx-auto">
-                Connect with <span style={{
-                  background: 'linear-gradient(135deg, var(--primary), var(--accent))',
-                  WebkitBackgroundClip: 'text',
-                  WebkitTextFillColor: 'transparent',
-                  fontWeight: 900
-                }}>thousands</span> of changemakers building a sustainable future
+
+              <p className="text-xl md:text-2xl font-bold opacity-90 max-w-3xl mx-auto leading-relaxed">
+                Connect with <span className="text-yellow-300 font-black">thousands</span> of changemakers,
+                share your journey, and collaborate on projects that matter
               </p>
-              <div className="flex flex-col sm:flex-row gap-4 justify-center">
+
+              {/* CTA Buttons */}
+              <div className="flex flex-col sm:flex-row gap-4 justify-center pt-4">
                 <Link href="/auth/signup">
-                  <Button size="lg" className="text-xl px-12 py-8 rounded-2xl shadow-2xl font-black">
-                    CREATE ACCOUNT →
+                  <Button size="lg" className="text-xl px-12 py-8 bg-white text-[var(--primary)] hover:bg-gray-100 rounded-2xl font-black shadow-2xl transform hover:scale-105 transition-all">
+                    <Zap className="w-6 h-6 mr-2" />
+                    GET STARTED FREE
                   </Button>
                 </Link>
                 <Link href="/auth/signin">
-                  <Button size="lg" variant="outline" className="text-xl px-12 py-8 rounded-2xl font-black border-4">
+                  <Button size="lg" variant="outline" className="text-xl px-12 py-8 bg-transparent text-white border-2 border-white/50 hover:bg-white/10 rounded-2xl font-black">
                     SIGN IN
                   </Button>
                 </Link>
               </div>
+
+              {/* Social proof */}
+              <div className="flex flex-wrap items-center justify-center gap-8 pt-8">
+                <div className="flex items-center gap-2">
+                  <div className="flex -space-x-2">
+                    {[1,2,3,4,5].map(i => (
+                      <div key={i} className={`w-10 h-10 rounded-full bg-gradient-to-br ${['from-pink-400 to-rose-500', 'from-blue-400 to-cyan-500', 'from-green-400 to-emerald-500', 'from-purple-400 to-violet-500', 'from-amber-400 to-orange-500'][i-1]} border-2 border-white flex items-center justify-center`}>
+                        <span className="text-xs font-bold text-white">{['A', 'B', 'C', 'D', 'E'][i-1]}</span>
+                      </div>
+                    ))}
+                  </div>
+                  <span className="text-sm font-bold">+2,000 members</span>
+                </div>
+                <div className="flex items-center gap-2">
+                  <Star className="w-5 h-5 text-yellow-300" />
+                  <span className="text-sm font-bold">Community-driven</span>
+                </div>
+                <div className="flex items-center gap-2">
+                  <Shield className="w-5 h-5 text-emerald-300" />
+                  <span className="text-sm font-bold">Safe & supportive</span>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          {/* Scroll indicator */}
+          <div className="absolute bottom-8 left-1/2 -translate-x-1/2 animate-bounce">
+            <div className="w-8 h-14 rounded-full border-2 border-white/50 flex items-start justify-center p-2">
+              <div className="w-2 h-3 bg-white rounded-full animate-pulse" />
             </div>
           </div>
         </section>
 
-        {/* Features Preview */}
-        <section className="py-32 bg-[var(--background)]">
+        {/* What Awaits You Section */}
+        <section className="py-24 bg-[var(--background)] relative">
           <div className="container mx-auto px-4 sm:px-6 lg:px-8">
-            <div className="text-center mb-20">
-              <h2 className="text-5xl font-black text-[var(--foreground)] mb-4">WHAT YOU'LL GET ACCESS TO</h2>
-              <p className="text-xl font-semibold text-theme-muted">
-                Create a free account to unlock the full community experience
+            <div className="text-center mb-16">
+              <span className="inline-block px-4 py-2 bg-[var(--accent)]/10 rounded-full text-sm font-black text-theme-accent uppercase tracking-wider mb-4">
+                Unlock Your Potential
+              </span>
+              <h2 className="text-5xl md:text-6xl font-black text-[var(--foreground)] mb-4">
+                WHAT AWAITS YOU
+              </h2>
+              <p className="text-xl font-semibold text-theme-muted max-w-2xl mx-auto">
+                Everything you need to make a real impact in your community and beyond
               </p>
             </div>
-            <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-10 max-w-7xl mx-auto">
-              {[
-                { icon: MessageSquare, title: 'DISCUSSION FORUMS', desc: 'Deep conversations on sustainability topics', color: 'primary' },
-                { icon: Heart, title: 'SOCIAL FEED', desc: 'Share your journey and connect with others', color: 'accent' },
-                { icon: Rocket, title: 'PROJECTS', desc: 'Collaborate on local initiatives', color: 'secondary' },
-                { icon: BookOpen, title: 'KNOWLEDGE BASE', desc: 'Learn from experts and peers', color: 'primary' },
-                { icon: Users, title: 'NETWORKING', desc: 'Connect with changemakers worldwide', color: 'accent' },
-                { icon: Award, title: 'ACHIEVEMENTS', desc: 'Earn badges and track your impact', color: 'secondary' }
-              ].map((feature, i) => (
-                <Card key={i} className={`border-4 border-theme-${feature.color} relative overflow-hidden`}>
-                  <div className="absolute top-0 right-0 px-3 py-1 bg-red-500 text-white text-xs font-black rounded-bl-lg">
-                    LOGIN REQUIRED
+
+            {/* Bento Grid Features */}
+            <div className="grid md:grid-cols-3 gap-6 max-w-6xl mx-auto">
+              {/* Large Feature Card */}
+              <div className="md:col-span-2 md:row-span-2 relative overflow-hidden rounded-3xl bg-gradient-to-br from-[var(--primary)] to-[var(--primary)]/80 p-8 text-white group hover:shadow-2xl transition-all">
+                <div className="absolute top-0 right-0 w-64 h-64 bg-white/10 rounded-full blur-3xl transform translate-x-1/2 -translate-y-1/2" />
+                <div className="relative z-10 h-full flex flex-col">
+                  <div className="w-16 h-16 rounded-2xl bg-white/20 flex items-center justify-center mb-6">
+                    <MessageSquare className="w-8 h-8" />
                   </div>
-                  <CardContent className="p-10 text-center opacity-75">
-                    <div className="w-24 h-24 mx-auto mb-6 rounded-full bg-[color-mix(in_srgb,var(--accent)_20%,var(--background))] flex items-center justify-center">
-                      <feature.icon className="w-12 h-12 text-theme-accent" />
-                    </div>
-                    <h3 className="text-2xl font-black mb-4 text-[var(--foreground)]">
-                      {feature.title}
-                    </h3>
-                    <p className="text-lg font-medium text-theme-muted">
-                      {feature.desc}
-                    </p>
-                  </CardContent>
-                </Card>
-              ))}
+                  <h3 className="text-3xl font-black mb-4">MEANINGFUL DISCUSSIONS</h3>
+                  <p className="text-lg font-medium opacity-90 mb-6 flex-1">
+                    Engage in deep conversations about sustainability, personal growth, and building a better world.
+                    Share ideas, ask questions, and learn from diverse perspectives.
+                  </p>
+                  <div className="flex items-center gap-2 text-sm font-bold opacity-75">
+                    <span className="px-3 py-1 bg-white/20 rounded-full">Daily Topics</span>
+                    <span className="px-3 py-1 bg-white/20 rounded-full">Expert AMAs</span>
+                    <span className="px-3 py-1 bg-white/20 rounded-full">Book Clubs</span>
+                  </div>
+                </div>
+                <div className="absolute -bottom-2 -right-2 text-white/5 text-[200px] font-black leading-none select-none">
+                  01
+                </div>
+              </div>
+
+              {/* Medium Cards */}
+              <div className="relative overflow-hidden rounded-3xl bg-[var(--card)] border-4 border-theme-accent p-6 group hover:shadow-xl transition-all hover:border-[var(--accent)]">
+                <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-[var(--accent)] to-[var(--accent)]/70 flex items-center justify-center mb-4">
+                  <Rocket className="w-6 h-6 text-white" />
+                </div>
+                <h3 className="text-xl font-black text-[var(--foreground)] mb-2">COLLABORATIVE PROJECTS</h3>
+                <p className="text-sm font-medium text-theme-muted">
+                  Start or join local initiatives. Find collaborators who share your vision.
+                </p>
+              </div>
+
+              <div className="relative overflow-hidden rounded-3xl bg-[var(--card)] border-4 border-theme-secondary p-6 group hover:shadow-xl transition-all hover:border-[var(--secondary)]">
+                <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-[var(--secondary)] to-[var(--secondary)]/70 flex items-center justify-center mb-4">
+                  <BookOpen className="w-6 h-6 text-white" />
+                </div>
+                <h3 className="text-xl font-black text-[var(--foreground)] mb-2">SHARED KNOWLEDGE</h3>
+                <p className="text-sm font-medium text-theme-muted">
+                  Access case studies and insights from community members around the world.
+                </p>
+              </div>
+
+              {/* Bottom Row */}
+              <div className="relative overflow-hidden rounded-3xl bg-gradient-to-br from-[var(--accent)] to-[var(--secondary)] p-6 text-white">
+                <div className="w-12 h-12 rounded-xl bg-white/20 flex items-center justify-center mb-4">
+                  <Users className="w-6 h-6" />
+                </div>
+                <h3 className="text-xl font-black mb-2">GLOBAL NETWORK</h3>
+                <p className="text-sm font-medium opacity-90">
+                  Connect with changemakers worldwide
+                </p>
+              </div>
+
+              <div className="relative overflow-hidden rounded-3xl bg-[var(--muted)] p-6">
+                <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-amber-500 to-orange-500 flex items-center justify-center mb-4">
+                  <Award className="w-6 h-6 text-white" />
+                </div>
+                <h3 className="text-xl font-black text-[var(--foreground)] mb-2">ACHIEVEMENTS</h3>
+                <p className="text-sm font-medium text-theme-muted">
+                  Earn badges and track your journey
+                </p>
+              </div>
+
+              <div className="relative overflow-hidden rounded-3xl bg-[var(--muted)] p-6">
+                <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-rose-500 to-pink-500 flex items-center justify-center mb-4">
+                  <Heart className="w-6 h-6 text-white" />
+                </div>
+                <h3 className="text-xl font-black text-[var(--foreground)] mb-2">SOCIAL FEED</h3>
+                <p className="text-sm font-medium text-theme-muted">
+                  Share your journey and inspire others
+                </p>
+              </div>
             </div>
           </div>
         </section>
 
-        {/* CTA */}
-        <section className="py-32 bg-gradient-to-br from-[var(--primary)] to-[var(--accent)] text-[var(--primary-foreground)]">
-          <div className="container mx-auto px-4 sm:px-6 lg:px-8">
-            <div className="max-w-4xl mx-auto text-center space-y-8">
-              <h2 className="text-6xl font-black">
-                READY TO GET STARTED?
+        {/* Final CTA */}
+        <section className="py-24 relative overflow-hidden">
+          <div className="absolute inset-0 bg-gradient-to-br from-[var(--primary)] via-[var(--accent)] to-[var(--secondary)]" />
+          <div className="absolute inset-0">
+            <div className="absolute top-0 left-1/4 w-96 h-96 bg-white/10 rounded-full blur-3xl" />
+            <div className="absolute bottom-0 right-1/4 w-80 h-80 bg-white/10 rounded-full blur-3xl" />
+          </div>
+
+          <div className="container mx-auto px-4 relative z-10">
+            <div className="max-w-4xl mx-auto text-center text-white space-y-8">
+              <div className="inline-flex items-center gap-2 px-4 py-2 bg-white/10 backdrop-blur rounded-full">
+                <Crown className="w-5 h-5 text-yellow-300" />
+                <span className="text-sm font-bold">100% Free Forever</span>
+              </div>
+              <h2 className="text-5xl md:text-7xl font-black leading-tight">
+                YOUR JOURNEY
+                <br />
+                STARTS NOW
               </h2>
-              <p className="text-2xl font-semibold opacity-90">
-                Join thousands of sustainability advocates making real change
+              <p className="text-xl font-semibold opacity-90 max-w-2xl mx-auto">
+                Join a community of passionate individuals committed to positive change.
+                No credit card required. No strings attached.
               </p>
               <Link href="/auth/signup">
-                <Button size="lg" className="text-xl px-16 py-10 bg-white text-[var(--primary)] hover:bg-gray-100 rounded-2xl font-black shadow-2xl">
-                  CREATE FREE ACCOUNT →
+                <Button size="lg" className="text-2xl px-16 py-10 bg-white text-[var(--primary)] hover:bg-gray-100 rounded-2xl font-black shadow-2xl transform hover:scale-105 transition-all">
+                  CREATE FREE ACCOUNT
+                  <ArrowRight className="w-7 h-7 ml-3" />
                 </Button>
               </Link>
             </div>
@@ -280,7 +413,7 @@ export default async function CommunityPage() {
     )
   }
 
-  // Logged-in user: Show personalized dashboard
+  // Logged-in user: Show personalized bento dashboard
   const dashboardData = await getDashboardData(session.user.id)
 
   if (!dashboardData) {
@@ -293,172 +426,274 @@ export default async function CommunityPage() {
 
   const { user, suggestedUsers, activeProjects, recentDiscussions, communityStats } = dashboardData
 
+  // Get user's archetype config
+  const userArchetype = user?.guardianArchetype ? archetypeConfig[user.guardianArchetype] : null
+  const ArchetypeIcon = userArchetype?.icon || Compass
+
   return (
     <div className="min-h-screen bg-[var(--background)] relative">
       {/* Decorative Elements */}
       <TreeBranches />
       <FlyingBirds />
 
-      {/* Compact Header with Stats and Navigation */}
-      <section className="py-4 bg-gradient-to-br from-[var(--primary)] via-[var(--accent)] to-[var(--secondary)] text-[var(--primary-foreground)] rounded-b-3xl">
-        <div className="container mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="max-w-6xl mx-auto space-y-4">
-            {/* Top Row: Greeting + Stats */}
-            <div className="flex items-start justify-between gap-4">
-              {/* LEFT: Greeting */}
-              <div>
-                <h1 className="text-xl md:text-2xl font-black mb-1">
-                  Hey {user?.name || 'friend'}!
-                </h1>
-                <p className="text-xs font-medium opacity-80">
-                  {new Date().toLocaleDateString('en-US', { weekday: 'long', month: 'long', day: 'numeric' })}
-                </p>
-              </div>
+      {/* Immersive Welcome Header */}
+      <section className="relative overflow-hidden">
+        <div className={`py-10 px-4 bg-gradient-to-br ${userArchetype?.gradient || 'from-[var(--primary)] via-[var(--accent)] to-[var(--secondary)]'} text-white`}>
+          {/* Background decorations */}
+          <div className="absolute inset-0 opacity-20">
+            <div className="absolute top-0 right-0 w-80 h-80 bg-white/20 rounded-full blur-3xl transform translate-x-1/2 -translate-y-1/2" />
+            <div className="absolute bottom-0 left-0 w-64 h-64 bg-white/10 rounded-full blur-3xl transform -translate-x-1/2 translate-y-1/2" />
+          </div>
 
-              {/* RIGHT: 2x4 Stats Grid */}
-              <div className="flex-shrink-0">
-                <div className="space-y-2">
-                  {/* User Stats Row */}
-                  <div>
-                    <div className="text-[8px] font-black uppercase opacity-70 mb-1 text-center">Your Stats</div>
-                    <div className="grid grid-cols-4 gap-2 text-center">
-                      <div className="px-3 py-2 bg-white/20 backdrop-blur-sm rounded-lg">
-                        <div className="text-sm font-black">{user?._count.articles || 0}</div>
-                        <div className="text-[9px] font-bold uppercase opacity-90">Articles</div>
-                      </div>
-                      <div className="px-3 py-2 bg-white/20 backdrop-blur-sm rounded-lg">
-                        <div className="text-sm font-black">{user?._count.createdProjects || 0}</div>
-                        <div className="text-[9px] font-bold uppercase opacity-90">Projects</div>
-                      </div>
-                      <div className="px-3 py-2 bg-white/20 backdrop-blur-sm rounded-lg">
-                        <div className="text-sm font-black">{user?._count.followers || 0}</div>
-                        <div className="text-[9px] font-bold uppercase opacity-90">Followers</div>
-                      </div>
-                      <div className="px-3 py-2 bg-white/20 backdrop-blur-sm rounded-lg">
-                        <div className="text-sm font-black">{user?.userBadges.length || 0}</div>
-                        <div className="text-[9px] font-bold uppercase opacity-90">Badges</div>
-                      </div>
+          <div className="container mx-auto relative z-10">
+            <div className="max-w-7xl mx-auto">
+              <div className="flex flex-col md:flex-row md:items-center justify-between gap-6">
+                {/* Welcome Message */}
+                <div className="flex items-center gap-5">
+                  {/* Avatar with archetype ring */}
+                  <div className="relative">
+                    <div className="w-20 h-20 rounded-2xl bg-white/20 backdrop-blur-sm p-1 transform rotate-3 hover:rotate-0 transition-transform">
+                      {user?.image ? (
+                        <img src={user.image} alt={user.name || 'User'} className="w-full h-full rounded-xl object-cover" />
+                      ) : (
+                        <div className="w-full h-full rounded-xl bg-white/30 flex items-center justify-center">
+                          <span className="text-2xl font-black">{user?.name?.[0]?.toUpperCase() || '?'}</span>
+                        </div>
+                      )}
+                    </div>
+                    <div className="absolute -bottom-2 -right-2 w-10 h-10 rounded-xl bg-white/30 backdrop-blur-sm flex items-center justify-center">
+                      <ArchetypeIcon className="w-5 h-5" />
                     </div>
                   </div>
 
-                  {/* Community Stats Row */}
                   <div>
-                    <div className="text-[8px] font-black uppercase opacity-70 mb-1 text-center">Community Stats</div>
-                    <div className="grid grid-cols-4 gap-2 text-center">
-                      <div className="px-3 py-2 bg-white/10 backdrop-blur-sm rounded-lg">
-                        <div className="text-sm font-black">{communityStats.totalMembers.toLocaleString()}</div>
-                        <div className="text-[9px] font-bold uppercase opacity-80">Members</div>
-                      </div>
-                      <div className="px-3 py-2 bg-white/10 backdrop-blur-sm rounded-lg">
-                        <div className="text-sm font-black">{communityStats.totalProjects.toLocaleString()}</div>
-                        <div className="text-[9px] font-bold uppercase opacity-80">Projects</div>
-                      </div>
-                      <div className="px-3 py-2 bg-white/10 backdrop-blur-sm rounded-lg">
-                        <div className="text-sm font-black">{communityStats.totalArticles.toLocaleString()}</div>
-                        <div className="text-[9px] font-bold uppercase opacity-80">Articles</div>
-                      </div>
-                      <div className="px-3 py-2 bg-white/10 backdrop-blur-sm rounded-lg">
-                        <div className="text-sm font-black">{communityStats.activeProjects}</div>
-                        <div className="text-[9px] font-bold uppercase opacity-80">Active</div>
-                      </div>
-                    </div>
+                    <p className="text-sm font-bold opacity-80 mb-1">
+                      {new Date().toLocaleDateString('en-US', { weekday: 'long', month: 'long', day: 'numeric' })}
+                    </p>
+                    <h1 className="text-3xl md:text-4xl font-black">
+                      Welcome back, {user?.name?.split(' ')[0] || 'friend'}!
+                    </h1>
+                    {userArchetype && (
+                      <p className="text-sm font-semibold opacity-80 mt-1 flex items-center gap-2">
+                        <ArchetypeIcon className="w-4 h-4" />
+                        {userArchetype.name}
+                      </p>
+                    )}
+                  </div>
+                </div>
+
+                {/* Stats Tiles */}
+                <div className="flex flex-wrap gap-3">
+                  <div className="px-5 py-3 bg-white/15 backdrop-blur-sm rounded-2xl text-center min-w-[80px]">
+                    <div className="text-2xl font-black">{user?._count.articles || 0}</div>
+                    <div className="text-[10px] font-bold uppercase opacity-80">Articles</div>
+                  </div>
+                  <div className="px-5 py-3 bg-white/15 backdrop-blur-sm rounded-2xl text-center min-w-[80px]">
+                    <div className="text-2xl font-black">{user?._count.createdProjects || 0}</div>
+                    <div className="text-[10px] font-bold uppercase opacity-80">Projects</div>
+                  </div>
+                  <div className="px-5 py-3 bg-white/15 backdrop-blur-sm rounded-2xl text-center min-w-[80px]">
+                    <div className="text-2xl font-black">{user?._count.followers || 0}</div>
+                    <div className="text-[10px] font-bold uppercase opacity-80">Followers</div>
+                  </div>
+                  <div className="px-5 py-3 bg-white/15 backdrop-blur-sm rounded-2xl text-center min-w-[80px]">
+                    <div className="text-2xl font-black">{user?.userBadges.length || 0}</div>
+                    <div className="text-[10px] font-bold uppercase opacity-80">Badges</div>
                   </div>
                 </div>
               </div>
-            </div>
 
-            {/* Bottom Row: Navigation Buttons */}
-            <div className="flex items-center gap-2 border-t border-white/20 pt-4">
-              <Link href="/community/feed">
-                <Button size="sm" className="bg-white text-[var(--primary)] hover:bg-gray-100 font-bold rounded-full shadow-md">
-                  <MessageSquare className="w-3.5 h-3.5 mr-1.5" />
-                  Discussions
-                </Button>
-              </Link>
-              <Link href="/learn">
-                <Button size="sm" variant="outline" className="bg-white/10 hover:bg-white/20 text-white border-white/30 font-bold rounded-full">
-                  <BookOpen className="w-3.5 h-3.5 mr-1.5" />
-                  Articles
-                </Button>
-              </Link>
-              <Link href="/community/projects/new">
-                <Button size="sm" variant="outline" className="bg-white/10 hover:bg-white/20 text-white border-white/30 font-bold rounded-full">
-                  <Rocket className="w-3.5 h-3.5 mr-1.5" />
-                  Create Project
-                </Button>
-              </Link>
-              <Link href="/community/leaderboard">
-                <Button size="sm" variant="outline" className="bg-white/10 hover:bg-white/20 text-white border-white/30 font-bold rounded-full">
-                  <Award className="w-3.5 h-3.5 mr-1.5" />
-                  Leaderboard
-                </Button>
-              </Link>
-              <Link href="/community/users">
-                <Button size="sm" variant="outline" className="bg-white/10 hover:bg-white/20 text-white border-white/30 font-bold rounded-full">
-                  <Users className="w-3.5 h-3.5 mr-1.5" />
-                  Members
-                </Button>
-              </Link>
+              {/* Quick Actions Bar */}
+              <div className="mt-6 flex flex-wrap items-center gap-3">
+                <Link href="/community/feed">
+                  <Button className="bg-white text-[var(--foreground)] hover:bg-gray-100 font-bold rounded-xl shadow-lg">
+                    <MessageSquare className="w-4 h-4 mr-2" />
+                    Discussions
+                  </Button>
+                </Link>
+                <Link href="/articles">
+                  <Button variant="outline" className="bg-white/10 hover:bg-white/20 text-white border-white/30 font-bold rounded-xl">
+                    <BookOpen className="w-4 h-4 mr-2" />
+                    Articles
+                  </Button>
+                </Link>
+                <Link href="/community/projects/new">
+                  <Button variant="outline" className="bg-white/10 hover:bg-white/20 text-white border-white/30 font-bold rounded-xl">
+                    <Rocket className="w-4 h-4 mr-2" />
+                    Create Project
+                  </Button>
+                </Link>
+                <Link href="/community/leaderboard">
+                  <Button variant="outline" className="bg-white/10 hover:bg-white/20 text-white border-white/30 font-bold rounded-xl">
+                    <Award className="w-4 h-4 mr-2" />
+                    Leaderboard
+                  </Button>
+                </Link>
+                <Link href="/community/users">
+                  <Button variant="outline" className="bg-white/10 hover:bg-white/20 text-white border-white/30 font-bold rounded-xl">
+                    <Users className="w-4 h-4 mr-2" />
+                    Members
+                  </Button>
+                </Link>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        {/* Community Stats Bar */}
+        <div className="bg-[var(--card)] border-b border-[var(--border)] py-4">
+          <div className="container mx-auto px-4">
+            <div className="max-w-7xl mx-auto flex flex-wrap items-center justify-center gap-8 text-center">
+              <div className="flex items-center gap-2">
+                <Users className="w-5 h-5 text-theme-primary" />
+                <span className="text-lg font-black text-[var(--foreground)]">{communityStats.totalMembers.toLocaleString()}</span>
+                <span className="text-sm font-bold text-theme-muted">Members</span>
+              </div>
+              <div className="w-px h-6 bg-[var(--border)]" />
+              <div className="flex items-center gap-2">
+                <Rocket className="w-5 h-5 text-theme-secondary" />
+                <span className="text-lg font-black text-[var(--foreground)]">{communityStats.totalProjects.toLocaleString()}</span>
+                <span className="text-sm font-bold text-theme-muted">Projects</span>
+              </div>
+              <div className="w-px h-6 bg-[var(--border)]" />
+              <div className="flex items-center gap-2">
+                <BookOpen className="w-5 h-5 text-theme-accent" />
+                <span className="text-lg font-black text-[var(--foreground)]">{communityStats.totalArticles.toLocaleString()}</span>
+                <span className="text-sm font-bold text-theme-muted">Articles</span>
+              </div>
+              <div className="w-px h-6 bg-[var(--border)]" />
+              <div className="flex items-center gap-2">
+                <Activity className="w-5 h-5 text-emerald-500" />
+                <span className="text-lg font-black text-[var(--foreground)]">{communityStats.activeProjects}</span>
+                <span className="text-sm font-bold text-theme-muted">Active Now</span>
+              </div>
             </div>
           </div>
         </div>
       </section>
 
-      {/* Flowing Content - Two Column Layout with Sidebar */}
-      <section className="py-6">
-        <div className="container mx-auto px-4 sm:px-6 lg:px-8">
+      {/* Bento Grid Dashboard */}
+      <section className="py-8">
+        <div className="container mx-auto px-4">
           <div className="max-w-7xl mx-auto">
-            <div className="flex flex-col lg:flex-row gap-6">
-              {/* Main Content */}
-              <div className="flex-1 space-y-4">
+            <div className="grid lg:grid-cols-12 gap-6">
+              {/* Main Content Column - 8 cols */}
+              <div className="lg:col-span-8 space-y-6">
                 {/* Recent Discussions - Client Component with Filters */}
                 <RecentDiscussionsWidget initialDiscussions={recentDiscussions} />
 
                 {/* Active Projects - Client Component with Filters */}
                 <ActiveProjectsWidget initialProjects={activeProjects} />
 
-                {/* Suggested Connections - Cute List */}
-                <div className="p-5 bg-[var(--card)] rounded-3xl border-3 border-theme-primary/40 shadow-sm">
-                  <div className="flex items-center justify-between mb-3">
-                    <div className="flex items-center gap-2">
-                      <div className="w-8 h-8 rounded-full bg-gradient-to-br from-[var(--primary)] to-[var(--primary)]/70 flex items-center justify-center">
-                        <UserPlus className="w-4 h-4 text-white" />
+                {/* People to Follow - Full Width Card */}
+                <div className="p-6 bg-[var(--card)] rounded-3xl border-4 border-theme-primary/30 shadow-lg overflow-hidden relative">
+                  <div className="absolute top-0 right-0 w-48 h-48 bg-gradient-to-br from-[var(--primary)]/10 to-transparent rounded-full blur-2xl transform translate-x-1/2 -translate-y-1/2" />
+
+                  <div className="flex items-center justify-between mb-5 relative z-10">
+                    <div className="flex items-center gap-3">
+                      <div className="w-12 h-12 rounded-2xl bg-gradient-to-br from-[var(--primary)] to-[var(--primary)]/70 flex items-center justify-center shadow-lg">
+                        <UserPlus className="w-6 h-6 text-white" />
                       </div>
-                      <h2 className="text-base font-black text-[var(--foreground)]">People to Follow</h2>
+                      <div>
+                        <h2 className="text-xl font-black text-[var(--foreground)]">People to Follow</h2>
+                        <p className="text-xs font-semibold text-theme-muted">Connect with active community members</p>
+                      </div>
                     </div>
                     <Link href="/community/users">
-                      <Button variant="ghost" size="sm" className="font-bold text-xs rounded-full hover:bg-[var(--muted)]">
-                        See more <ChevronRight className="w-3 h-3 ml-1" />
+                      <Button variant="ghost" size="sm" className="font-bold text-sm rounded-full hover:bg-[var(--muted)]">
+                        See all <ChevronRight className="w-4 h-4 ml-1" />
                       </Button>
                     </Link>
                   </div>
-                  <div className="grid md:grid-cols-2 gap-2">
-                    {suggestedUsers.map((suggestedUser: any) => (
-                      <Link key={suggestedUser.id} href={`/profile/${suggestedUser.id}`}>
-                        <div className="flex items-center gap-2.5 p-2.5 bg-[var(--muted)]/50 rounded-2xl hover:bg-[var(--muted)] transition-all hover:shadow-md cursor-pointer border-2 border-transparent hover:border-theme-primary/30">
-                          {suggestedUser.image ? (
-                            <img src={suggestedUser.image} alt={suggestedUser.name || 'User'} className="w-9 h-9 rounded-full flex-shrink-0" />
-                          ) : (
-                            <div className="w-9 h-9 rounded-full bg-gradient-to-br from-[var(--primary)] to-[var(--accent)] flex items-center justify-center flex-shrink-0">
-                              <span className="text-xs font-bold text-white">{suggestedUser.name?.[0]?.toUpperCase() || '?'}</span>
+
+                  <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-4 relative z-10">
+                    {suggestedUsers.map((suggestedUser: any) => {
+                      const userArchetypeConfig = suggestedUser.guardianArchetype ? archetypeConfig[suggestedUser.guardianArchetype] : null
+                      const UserArchetypeIcon = userArchetypeConfig?.icon || Compass
+
+                      return (
+                        <Link key={suggestedUser.id} href={`/profile/${suggestedUser.id}`}>
+                          <div className="group p-4 bg-gradient-to-br from-[var(--muted)]/50 to-[var(--muted)] rounded-2xl hover:shadow-lg transition-all cursor-pointer border-2 border-transparent hover:border-theme-primary/30 text-center">
+                            <div className="relative mx-auto w-16 h-16 mb-3">
+                              {suggestedUser.image ? (
+                                <img
+                                  src={suggestedUser.image}
+                                  alt={suggestedUser.name || 'User'}
+                                  className="w-full h-full rounded-2xl object-cover shadow-md group-hover:scale-105 transition-transform"
+                                />
+                              ) : (
+                                <div className="w-full h-full rounded-2xl bg-gradient-to-br from-[var(--primary)] to-[var(--accent)] flex items-center justify-center shadow-md group-hover:scale-105 transition-transform">
+                                  <span className="text-xl font-bold text-white">{suggestedUser.name?.[0]?.toUpperCase() || '?'}</span>
+                                </div>
+                              )}
+                              {userArchetypeConfig && (
+                                <div className={`absolute -bottom-1 -right-1 w-7 h-7 rounded-lg bg-gradient-to-br ${userArchetypeConfig.gradient} flex items-center justify-center shadow-md`}>
+                                  <UserArchetypeIcon className="w-3.5 h-3.5 text-white" />
+                                </div>
+                              )}
                             </div>
-                          )}
-                          <div className="flex-1 min-w-0">
-                            <h4 className="font-bold text-xs text-[var(--foreground)] truncate">{suggestedUser.name || 'Anonymous'}</h4>
-                            <p className="text-[10px] font-medium text-theme-muted"><span title="Followers">◉</span> {suggestedUser._count.followers} followers • <span title="Articles">✎</span> {suggestedUser._count.articles} articles</p>
+                            <h4 className="font-bold text-sm text-[var(--foreground)] truncate">{suggestedUser.name || 'Anonymous'}</h4>
+                            <div className="flex items-center justify-center gap-3 mt-2 text-[10px] font-bold text-theme-muted">
+                              <span>{suggestedUser._count.followers} followers</span>
+                              <span>•</span>
+                              <span>{suggestedUser._count.articles} articles</span>
+                            </div>
                           </div>
-                          <ChevronRight className="w-3.5 h-3.5 text-theme-muted flex-shrink-0" />
-                        </div>
-                      </Link>
-                    ))}
+                        </Link>
+                      )
+                    })}
                   </div>
                 </div>
               </div>
 
-              {/* Sidebar - Network Activity Feed */}
-              <div className="lg:w-80 flex-shrink-0">
-                <div className="lg:sticky lg:top-24">
+              {/* Sidebar Column - 4 cols */}
+              <div className="lg:col-span-4">
+                <div className="lg:sticky lg:top-24 space-y-6">
+                  {/* Network Activity Feed */}
                   <NetworkActivityFeed />
+
+                  {/* Quick Write Card */}
+                  <div className="p-5 bg-gradient-to-br from-[var(--accent)] to-[var(--secondary)] rounded-3xl text-white shadow-lg">
+                    <div className="flex items-center gap-3 mb-4">
+                      <div className="w-10 h-10 rounded-xl bg-white/20 flex items-center justify-center">
+                        <PenTool className="w-5 h-5" />
+                      </div>
+                      <div>
+                        <h3 className="font-black">Share Your Story</h3>
+                        <p className="text-xs font-medium opacity-80">Write an article for the community</p>
+                      </div>
+                    </div>
+                    <Link href="/articles/write">
+                      <Button className="w-full bg-white text-[var(--foreground)] hover:bg-gray-100 font-bold rounded-xl">
+                        Start Writing
+                        <ArrowRight className="w-4 h-4 ml-2" />
+                      </Button>
+                    </Link>
+                  </div>
+
+                  {/* Badges Preview */}
+                  {user?.userBadges && user.userBadges.length > 0 && (
+                    <div className="p-5 bg-[var(--card)] rounded-3xl border-3 border-amber-500/40 shadow-sm">
+                      <div className="flex items-center gap-2 mb-4">
+                        <div className="w-8 h-8 rounded-full bg-gradient-to-br from-amber-500 to-orange-500 flex items-center justify-center">
+                          <Award className="w-4 h-4 text-white" />
+                        </div>
+                        <h3 className="text-sm font-black text-[var(--foreground)]">Recent Badges</h3>
+                      </div>
+                      <div className="flex flex-wrap gap-2">
+                        {user.userBadges.map((ub: any) => (
+                          <div key={ub.id} className="px-3 py-1.5 bg-amber-500/10 rounded-full border border-amber-500/30" title={ub.badge.description}>
+                            <span className="text-xs font-bold text-amber-600">{ub.badge.name}</span>
+                          </div>
+                        ))}
+                      </div>
+                      <Link href="/my/volition" className="block mt-3">
+                        <Button variant="ghost" size="sm" className="w-full font-bold text-xs rounded-full hover:bg-amber-500/10">
+                          View all badges <ChevronRight className="w-3 h-3 ml-1" />
+                        </Button>
+                      </Link>
+                    </div>
+                  )}
                 </div>
               </div>
             </div>
