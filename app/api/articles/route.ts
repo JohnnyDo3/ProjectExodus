@@ -55,9 +55,19 @@ export async function GET(request: NextRequest) {
     const sort = searchParams.get('sort') || 'newest' // newest, oldest, most_read, read
     const search = searchParams.get('search') || ''
     const authorId = searchParams.get('authorId')
+    const mine = searchParams.get('mine') === 'true'
 
-    const where: any = {
-      status: 'PUBLISHED',
+    const where: any = {}
+
+    // If user is fetching their own articles, show all statuses
+    // Otherwise, only show published articles
+    if (mine && session?.user?.id) {
+      where.authorId = session.user.id
+    } else {
+      where.status = 'PUBLISHED'
+      if (authorId) {
+        where.authorId = authorId
+      }
     }
 
     if (category) {
@@ -68,10 +78,6 @@ export async function GET(request: NextRequest) {
 
     if (featured === 'true') {
       where.featured = true
-    }
-
-    if (authorId) {
-      where.authorId = authorId
     }
 
     if (search) {

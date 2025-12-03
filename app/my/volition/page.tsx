@@ -250,11 +250,12 @@ export default function MyVolitionPage() {
 
   const fetchArticles = async () => {
     try {
-      const res = await fetch(`/api/users/${session?.user?.id}`)
+      // Fetch user's own articles (including drafts) using mine=true
+      const res = await fetch('/api/articles?mine=true&limit=50')
       if (res.ok) {
         const data = await res.json()
-        if (data.success && data.data.articles) {
-          setArticles(data.data.articles)
+        if (data.success && data.data) {
+          setArticles(data.data)
         }
       }
     } catch (error) {
@@ -942,9 +943,16 @@ export default function MyVolitionPage() {
                       <div key={article.id} className="relative group">
                         <Link href={`/articles/${article.slug}`}>
                           <div className="p-2 bg-gradient-to-br from-[var(--accent)]/10 to-transparent border border-theme-accent rounded cursor-pointer hover:shadow-sm transition-all">
-                            <h3 className="text-[11px] font-bold text-[var(--foreground)] line-clamp-1 pr-12">
-                              {article.title}
-                            </h3>
+                            <div className="flex items-start justify-between gap-1">
+                              <h3 className="text-[11px] font-bold text-[var(--foreground)] line-clamp-1 pr-8">
+                                {article.title}
+                              </h3>
+                              {article.status === 'DRAFT' && (
+                                <span className="text-[7px] font-black px-1 py-0.5 bg-amber-500/20 text-amber-600 rounded flex-shrink-0">
+                                  DRAFT
+                                </span>
+                              )}
+                            </div>
                             <div className="flex items-center justify-between text-[8px] font-medium text-theme-muted">
                               <span>{article._count?.comments || 0} comments • {article.views || 0} views</span>
                               {article.createdAt && (
