@@ -523,8 +523,12 @@ export default function SettingsPage() {
 
   // Discard changes and proceed with tab switch
   const handleDiscardChanges = () => {
-    // Reset business card data to original saved values
-    setBusinessCardData({ ...originalBusinessCardData })
+    // Explicitly reset each field to original saved values
+    setBusinessCardData({
+      declaration: originalBusinessCardData.declaration,
+      guardianArchetype: originalBusinessCardData.guardianArchetype,
+      phone: originalBusinessCardData.phone,
+    })
     if (pendingTabSwitch) {
       setActiveTab(pendingTabSwitch)
     }
@@ -566,8 +570,14 @@ export default function SettingsPage() {
 
           {/* Unsaved Changes Warning Dialog */}
           {showUnsavedWarning && (
-            <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 backdrop-blur-sm">
-              <div className="bg-[var(--card)] border-4 border-theme-accent rounded-2xl p-6 max-w-md w-full mx-4 shadow-2xl">
+            <div
+              className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 backdrop-blur-sm"
+              onClick={handleStayOnTab}
+            >
+              <div
+                className="bg-[var(--card)] border-4 border-theme-accent rounded-2xl p-6 max-w-md w-full mx-4 shadow-2xl"
+                onClick={(e) => e.stopPropagation()}
+              >
                 <div className="flex items-start gap-4">
                   <div className="w-12 h-12 rounded-full bg-[color-mix(in_srgb,var(--accent)_20%,var(--background))] flex items-center justify-center flex-shrink-0">
                     <AlertTriangle className="w-6 h-6 text-theme-accent" />
@@ -1015,40 +1025,62 @@ export default function SettingsPage() {
                       </div>
                     </div>
 
-                    {/* Save Button */}
-                    <Button
-                      onClick={async () => {
-                        setIsSaving(true)
-                        try {
-                          const res = await fetch(`/api/users/${session?.user?.id}`, {
-                            method: 'PATCH',
-                            headers: { 'Content-Type': 'application/json' },
-                            body: JSON.stringify({
-                              declaration: businessCardData.declaration,
-                              guardianArchetype: businessCardData.guardianArchetype,
-                              phone: businessCardData.phone,
-                            }),
-                          })
-                          if (res.ok) {
-                            // Update original data to match current (changes are now saved)
-                            setOriginalBusinessCardData({ ...businessCardData })
-                            setSaveMessage('Business card updated successfully!')
-                          } else {
-                            setSaveMessage('Failed to update business card')
+                    {/* Action Buttons */}
+                    <div className="flex gap-3">
+                      {/* Reset Button - only show when there are unsaved changes */}
+                      {hasUnsavedBusinessCardChanges() && (
+                        <Button
+                          variant="outline"
+                          onClick={() => {
+                            setBusinessCardData({
+                              declaration: originalBusinessCardData.declaration,
+                              guardianArchetype: originalBusinessCardData.guardianArchetype,
+                              phone: originalBusinessCardData.phone,
+                            })
+                            setSaveMessage('Changes discarded')
+                            setTimeout(() => setSaveMessage(''), 2000)
+                          }}
+                          className="font-bold text-theme-accent border-theme-accent hover:bg-[color-mix(in_srgb,var(--accent)_10%,var(--background))]"
+                        >
+                          <X className="w-4 h-4 mr-2" />
+                          RESET
+                        </Button>
+                      )}
+                      {/* Save Button */}
+                      <Button
+                        onClick={async () => {
+                          setIsSaving(true)
+                          try {
+                            const res = await fetch(`/api/users/${session?.user?.id}`, {
+                              method: 'PATCH',
+                              headers: { 'Content-Type': 'application/json' },
+                              body: JSON.stringify({
+                                declaration: businessCardData.declaration,
+                                guardianArchetype: businessCardData.guardianArchetype,
+                                phone: businessCardData.phone,
+                              }),
+                            })
+                            if (res.ok) {
+                              // Update original data to match current (changes are now saved)
+                              setOriginalBusinessCardData({ ...businessCardData })
+                              setSaveMessage('Business card updated successfully!')
+                            } else {
+                              setSaveMessage('Failed to update business card')
+                            }
+                          } catch (error) {
+                            setSaveMessage('Error updating business card')
+                          } finally {
+                            setIsSaving(false)
+                            setTimeout(() => setSaveMessage(''), 3000)
                           }
-                        } catch (error) {
-                          setSaveMessage('Error updating business card')
-                        } finally {
-                          setIsSaving(false)
-                          setTimeout(() => setSaveMessage(''), 3000)
-                        }
-                      }}
-                      className="w-full font-black"
-                      disabled={isSaving}
-                    >
-                      <Save className="w-4 h-4 mr-2" />
-                      {isSaving ? 'SAVING...' : 'SAVE BUSINESS CARD'}
-                    </Button>
+                        }}
+                        className="flex-1 font-black"
+                        disabled={isSaving}
+                      >
+                        <Save className="w-4 h-4 mr-2" />
+                        {isSaving ? 'SAVING...' : 'SAVE BUSINESS CARD'}
+                      </Button>
+                    </div>
                   </CardContent>
                 </Card>
               )}
