@@ -866,3 +866,59 @@ html {
     gap: 1.5rem;
   }
 }
+
+/* ============================================
+   VISIBLE SCROLLBAR FOR WIDGETS
+   Always show scrollbar for better UX in widgets
+   ============================================ */
+.scrollbar-visible {
+  overflow-y: auto;
+  scrollbar-width: thin;
+  scrollbar-color: var(--primary) var(--muted);
+}
+
+.scrollbar-visible::-webkit-scrollbar {
+  width: 6px;
+  display: block;
+}
+
+.scrollbar-visible::-webkit-scrollbar-track {
+  background: var(--muted);
+  border-radius: 3px;
+}
+
+.scrollbar-visible::-webkit-scrollbar-thumb {
+  background: var(--primary);
+  border-radius: 3px;
+  min-height: 30px;
+}
+
+.scrollbar-visible::-webkit-scrollbar-thumb:hover {
+  background: var(--accent);
+}
+
+/* Thin variant for compact widgets */
+.scrollbar-visible-thin {
+  overflow-y: auto;
+  scrollbar-width: thin;
+  scrollbar-color: color-mix(in srgb, var(--primary) 50%, transparent) transparent;
+}
+
+.scrollbar-visible-thin::-webkit-scrollbar {
+  width: 4px;
+  display: block;
+}
+
+.scrollbar-visible-thin::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.scrollbar-visible-thin::-webkit-scrollbar-thumb {
+  background: color-mix(in srgb, var(--primary) 50%, transparent);
+  border-radius: 2px;
+  min-height: 20px;
+}
+
+.scrollbar-visible-thin::-webkit-scrollbar-thumb:hover {
+  background: var(--primary);
+}

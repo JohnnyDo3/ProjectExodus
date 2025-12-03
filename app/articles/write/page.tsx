@@ -32,6 +32,7 @@ import {
   Lightbulb,
   ChevronDown,
   ChevronUp,
+  ChevronRight,
   Copy,
   Check,
 } from 'lucide-react'
@@ -63,6 +64,10 @@ export default function WriteArticlePage() {
   const [suggestions, setSuggestions] = useState<SageSuggestions | null>(null)
   const [showSuggestions, setShowSuggestions] = useState(false)
   const [copiedIndex, setCopiedIndex] = useState<string | null>(null)
+
+  // Step-based publishing flow
+  const [currentStep, setCurrentStep] = useState<'write' | 'preview' | 'publish'>('write')
+  const [hasPreviewedOnce, setHasPreviewedOnce] = useState(false)
 
   // Calculate read time
   const wordCount = content.split(/\s+/).filter(Boolean).length
@@ -216,12 +221,123 @@ export default function WriteArticlePage() {
     return null
   }
 
+  // Handle step transitions
+  const goToPreview = () => {
+    if (!title.trim() || !content.trim()) {
+      setErrorMessage('Please add a title and content before previewing')
+      return
+    }
+    setIsPreview(true)
+    setCurrentStep('preview')
+    setHasPreviewedOnce(true)
+    setErrorMessage('')
+  }
+
+  const goToEdit = () => {
+    setIsPreview(false)
+    setCurrentStep('write')
+    setErrorMessage('')
+  }
+
+  const goToPublish = () => {
+    if (!hasPreviewedOnce) {
+      setErrorMessage('Please preview your article first before publishing')
+      return
+    }
+    setCurrentStep('publish')
+    setErrorMessage('')
+  }
+
   return (
     <div className="min-h-screen bg-[var(--background)]">
-      {/* Header */}
+      {/* Header with Step Indicator */}
       <div className="sticky top-0 z-50 bg-[var(--card)] border-b-2 border-[var(--border)] shadow-sm">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex items-center justify-between py-4">
+          {/* Step Progress Indicator */}
+          <div className="py-3 border-b border-[var(--border)]">
+            <div className="flex items-center justify-center gap-2">
+              {/* Step 1: Write */}
+              <button
+                onClick={goToEdit}
+                className={`flex items-center gap-2 px-4 py-2 rounded-full transition-all ${
+                  currentStep === 'write'
+                    ? 'bg-[var(--primary)] text-white font-bold'
+                    : 'bg-[var(--muted)] text-[var(--foreground)] hover:bg-[var(--primary)]/20'
+                }`}
+              >
+                <span className={`w-6 h-6 rounded-full flex items-center justify-center text-xs font-black ${
+                  currentStep === 'write' ? 'bg-white text-[var(--primary)]' : 'bg-[var(--border)] text-[var(--foreground)]'
+                }`}>1</span>
+                <span className="text-sm font-bold">Write</span>
+              </button>
+
+              <ChevronRight className="w-4 h-4 text-theme-muted" />
+
+              {/* Step 2: Preview */}
+              <button
+                onClick={goToPreview}
+                disabled={!title.trim() || !content.trim()}
+                className={`flex items-center gap-2 px-4 py-2 rounded-full transition-all ${
+                  currentStep === 'preview'
+                    ? 'bg-[var(--accent)] text-white font-bold'
+                    : hasPreviewedOnce
+                    ? 'bg-emerald-100 text-emerald-700 hover:bg-emerald-200'
+                    : 'bg-[var(--muted)] text-[var(--foreground)] hover:bg-[var(--accent)]/20 disabled:opacity-50'
+                }`}
+              >
+                <span className={`w-6 h-6 rounded-full flex items-center justify-center text-xs font-black ${
+                  currentStep === 'preview'
+                    ? 'bg-white text-[var(--accent)]'
+                    : hasPreviewedOnce
+                    ? 'bg-emerald-500 text-white'
+                    : 'bg-[var(--border)] text-[var(--foreground)]'
+                }`}>
+                  {hasPreviewedOnce ? <Check className="w-3 h-3" /> : '2'}
+                </span>
+                <span className="text-sm font-bold flex items-center gap-1">
+                  <Eye className="w-3.5 h-3.5" />
+                  Preview
+                </span>
+                {!hasPreviewedOnce && (
+                  <span className="text-[10px] bg-amber-500 text-white px-1.5 py-0.5 rounded-full font-black animate-pulse">
+                    REQUIRED
+                  </span>
+                )}
+              </button>
+
+              <ChevronRight className="w-4 h-4 text-theme-muted" />
+
+              {/* Step 3: Publish */}
+              <button
+                onClick={() => hasPreviewedOnce && handleSave(true)}
+                disabled={!hasPreviewedOnce || isSaving || !title || !content}
+                className={`flex items-center gap-2 px-4 py-2 rounded-full transition-all ${
+                  currentStep === 'publish' || saveStatus === 'saved'
+                    ? 'bg-emerald-500 text-white font-bold'
+                    : hasPreviewedOnce
+                    ? 'bg-gradient-to-r from-[var(--primary)] to-[var(--secondary)] text-white hover:opacity-90'
+                    : 'bg-[var(--muted)] text-theme-muted cursor-not-allowed opacity-50'
+                }`}
+              >
+                <span className={`w-6 h-6 rounded-full flex items-center justify-center text-xs font-black ${
+                  saveStatus === 'saved'
+                    ? 'bg-white text-emerald-500'
+                    : hasPreviewedOnce
+                    ? 'bg-white/20 text-white'
+                    : 'bg-[var(--border)] text-[var(--foreground)]'
+                }`}>
+                  {saveStatus === 'saved' ? <CheckCircle className="w-3.5 h-3.5" /> : isSaving ? <Loader2 className="w-3 h-3 animate-spin" /> : '3'}
+                </span>
+                <span className="text-sm font-bold flex items-center gap-1">
+                  <Sparkles className="w-3.5 h-3.5" />
+                  {isSaving ? 'Publishing...' : saveStatus === 'saved' ? 'Published!' : 'Publish'}
+                </span>
+              </button>
+            </div>
+          </div>
+
+          {/* Title and Actions Row */}
+          <div className="flex items-center justify-between py-3">
             <div className="flex items-center gap-4">
               <Link href="/articles">
                 <Button variant="ghost" size="sm" className="font-bold">
@@ -230,7 +346,9 @@ export default function WriteArticlePage() {
                 </Button>
               </Link>
               <div className="hidden sm:block">
-                <h1 className="text-lg font-black text-[var(--foreground)]">Write Article</h1>
+                <h1 className="text-lg font-black text-[var(--foreground)]">
+                  {currentStep === 'write' ? 'Write Article' : currentStep === 'preview' ? 'Preview Article' : 'Publish Article'}
+                </h1>
                 <p className="text-xs text-theme-muted">
                   {wordCount} words • {readTime} min read
                 </p>
@@ -238,46 +356,42 @@ export default function WriteArticlePage() {
             </div>
 
             <div className="flex items-center gap-2">
-              {/* Preview Toggle */}
-              <button
-                onClick={() => setIsPreview(!isPreview)}
-                className={`p-2 rounded-lg transition-colors ${
-                  isPreview
-                    ? 'bg-[var(--primary)] text-white'
-                    : 'bg-[var(--muted)] text-[var(--foreground)] hover:bg-[var(--primary)]/20'
-                }`}
-                title={isPreview ? 'Edit' : 'Preview'}
-              >
-                {isPreview ? <EyeOff className="w-5 h-5" /> : <Eye className="w-5 h-5" />}
-              </button>
-
-              {/* Save Status Indicator */}
-              {saveStatus === 'saving' && (
-                <span className="flex items-center gap-1 text-theme-muted text-sm">
-                  <Loader2 className="w-4 h-4 animate-spin" />
-                  Saving...
-                </span>
-              )}
-              {saveStatus === 'saved' && (
-                <span className="flex items-center gap-1 text-emerald-500 text-sm font-bold">
-                  <CheckCircle className="w-4 h-4" />
-                  Saved!
-                </span>
+              {/* Step-specific action buttons */}
+              {currentStep === 'write' && (
+                <Button
+                  onClick={goToPreview}
+                  disabled={!title.trim() || !content.trim()}
+                  className="font-black bg-[var(--accent)] hover:bg-[var(--accent)]/90"
+                >
+                  <Eye className="w-4 h-4 mr-2" />
+                  PREVIEW ARTICLE
+                </Button>
               )}
 
-              {/* Publish Button */}
-              <Button
-                onClick={() => handleSave(true)}
-                disabled={isSaving || !title || !content}
-                className="font-black"
-              >
-                {isSaving ? (
-                  <Loader2 className="w-4 h-4 mr-2 animate-spin" />
-                ) : (
-                  <Sparkles className="w-4 h-4 mr-2" />
-                )}
-                PUBLISH
-              </Button>
+              {currentStep === 'preview' && (
+                <>
+                  <Button
+                    onClick={goToEdit}
+                    variant="outline"
+                    className="font-bold"
+                  >
+                    <ArrowLeft className="w-4 h-4 mr-2" />
+                    Edit
+                  </Button>
+                  <Button
+                    onClick={() => handleSave(true)}
+                    disabled={isSaving}
+                    className="font-black bg-gradient-to-r from-[var(--primary)] to-[var(--secondary)]"
+                  >
+                    {isSaving ? (
+                      <Loader2 className="w-4 h-4 mr-2 animate-spin" />
+                    ) : (
+                      <Sparkles className="w-4 h-4 mr-2" />
+                    )}
+                    PUBLISH NOW
+                  </Button>
+                </>
+              )}
             </div>
           </div>
         </div>
@@ -652,6 +766,35 @@ Share your knowledge with the Project Exodus community!"
                 className="w-full min-h-[500px] px-0 py-4 text-lg bg-transparent border-none focus:outline-none text-[var(--foreground)] placeholder-theme-muted/50 resize-none leading-relaxed"
               />
 
+              {/* Preview Before Publishing Reminder */}
+              {!hasPreviewedOnce && title.trim() && content.trim() && (
+                <Card className="border-4 border-amber-500 bg-gradient-to-r from-amber-50 to-orange-50 dark:from-amber-900/20 dark:to-orange-900/20">
+                  <CardContent className="p-6">
+                    <div className="flex items-start gap-4">
+                      <div className="w-12 h-12 rounded-full bg-amber-500 flex items-center justify-center flex-shrink-0">
+                        <Eye className="w-6 h-6 text-white" />
+                      </div>
+                      <div className="flex-1">
+                        <h3 className="text-lg font-black text-amber-700 dark:text-amber-400 mb-1">
+                          Ready to Preview?
+                        </h3>
+                        <p className="text-sm text-amber-600 dark:text-amber-300 mb-3 font-medium">
+                          Before publishing, preview your article to see exactly how readers will experience it.
+                          This helps catch formatting issues and ensures your content looks perfect!
+                        </p>
+                        <Button
+                          onClick={goToPreview}
+                          className="font-black bg-amber-500 hover:bg-amber-600 text-white"
+                        >
+                          <Eye className="w-4 h-4 mr-2" />
+                          PREVIEW MY ARTICLE
+                        </Button>
+                      </div>
+                    </div>
+                  </CardContent>
+                </Card>
+              )}
+
               {/* Tips */}
               <Card className="border-2 border-theme-accent bg-[var(--accent)]/5">
                 <CardContent className="p-4">
@@ -665,6 +808,7 @@ Share your knowledge with the Project Exodus community!"
                     <li>• Include real examples and personal experiences</li>
                     <li>• End with a call to action or thought-provoking question</li>
                     <li>• <strong>Click "Ask Sage"</strong> for AI-powered suggestions!</li>
+                    <li>• <strong className="text-amber-600">Preview is required</strong> before publishing to ensure quality!</li>
                   </ul>
                 </CardContent>
               </Card>

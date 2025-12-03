@@ -535,7 +535,7 @@ export default function MyVolitionPage() {
                     </button>
                   </div>
                 </div>
-                <div className="flex-1 overflow-y-auto p-2 space-y-1.5">
+                <div className="flex-1 overflow-y-auto scrollbar-visible p-2 space-y-1.5">
                   {discussionCards.map(card => (
                     <div key={card.id} className="relative group">
                       <Link href={`/community/discussions/${card.id}`}>
@@ -651,7 +651,7 @@ export default function MyVolitionPage() {
                     </button>
                   </div>
                 </div>
-                <div className="flex-1 overflow-y-auto p-2 space-y-1.5">
+                <div className="flex-1 overflow-y-auto scrollbar-visible p-2 space-y-1.5">
                   {learningModules.map((module) => (
                     <Link key={module.id} href={`/learn/${module.article.slug}`}>
                       <div className="p-2 bg-gradient-to-br from-[var(--accent)]/10 to-transparent border border-theme-accent rounded cursor-pointer hover:shadow-sm transition-all">
@@ -769,7 +769,7 @@ export default function MyVolitionPage() {
                     </button>
                   </div>
                 </div>
-                <div className="flex-1 overflow-y-auto p-2 space-y-1.5">
+                <div className="flex-1 overflow-y-auto scrollbar-visible p-2 space-y-1.5">
                   {projectCards.map(card => (
                     <div key={card.id} className="relative group">
                       <Link href={`/community/projects/${card.slug}`}>
@@ -856,7 +856,7 @@ export default function MyVolitionPage() {
                                   </button>
                                 </Link>
                               </div>
-                              <div className="flex-1 overflow-y-auto p-2 space-y-2">
+                              <div className="flex-1 overflow-y-auto scrollbar-visible p-2 space-y-2">
                                 {/* Recent Followers */}
                                 {following.length > 0 && (
                                   <div className="mb-2">
@@ -936,7 +936,7 @@ export default function MyVolitionPage() {
                     </button>
                   </Link>
                 </div>
-                <div className="flex-1 overflow-y-auto p-2 space-y-1.5">
+                <div className="flex-1 overflow-y-auto scrollbar-visible p-2 space-y-1.5">
                   {articles.length > 0 ? (
                     articles.map((article: any) => (
                       <div key={article.id} className="relative group">
