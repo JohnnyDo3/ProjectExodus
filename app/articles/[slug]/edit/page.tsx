@@ -2,13 +2,12 @@
 
 import { useState, useEffect, useRef } from 'react'
 import { useSession } from 'next-auth/react'
-import { useRouter } from 'next/navigation'
+import { useRouter, useParams } from 'next/navigation'
 import Link from 'next/link'
 import { Card, CardContent } from '@/components/ui/Card'
 import { Button } from '@/components/ui/Button'
 import {
   ArrowLeft,
-  Save,
   Eye,
   EyeOff,
   Image as ImageIcon,
@@ -28,25 +27,14 @@ import {
   Clock,
   Sparkles,
   Wand2,
-  MessageSquareQuote,
-  Lightbulb,
-  ChevronDown,
-  ChevronUp,
-  Copy,
-  Check,
+  Trash2,
 } from 'lucide-react'
 
-interface SageSuggestions {
-  excerpts?: string[]
-  hooks?: string[]
-  quotes?: string[]
-  ctas?: string[]
-  sage_tip?: string
-}
-
-export default function WriteArticlePage() {
+export default function EditArticlePage() {
   const { data: session, status } = useSession()
   const router = useRouter()
+  const params = useParams()
+  const slug = params.slug as string
   const contentRef = useRef<HTMLTextAreaElement>(null)
 
   const [title, setTitle] = useState('')
@@ -55,25 +43,56 @@ export default function WriteArticlePage() {
   const [coverImage, setCoverImage] = useState('')
   const [isPreview, setIsPreview] = useState(false)
   const [isSaving, setIsSaving] = useState(false)
+  const [isDeleting, setIsDeleting] = useState(false)
+  const [isLoading, setIsLoading] = useState(true)
   const [saveStatus, setSaveStatus] = useState<'idle' | 'saving' | 'saved' | 'error'>('idle')
   const [errorMessage, setErrorMessage] = useState('')
-
-  // Sage suggestions state
-  const [isLoadingSuggestions, setIsLoadingSuggestions] = useState(false)
-  const [suggestions, setSuggestions] = useState<SageSuggestions | null>(null)
-  const [showSuggestions, setShowSuggestions] = useState(false)
-  const [copiedIndex, setCopiedIndex] = useState<string | null>(null)
+  const [articleId, setArticleId] = useState<string | null>(null)
 
   // Calculate read time
   const wordCount = content.split(/\s+/).filter(Boolean).length
   const readTime = Math.max(1, Math.ceil(wordCount / 200))
 
+  // Load article data
+  useEffect(() => {
+    const loadArticle = async () => {
+      try {
+        const res = await fetch(`/api/articles/${slug}`)
+        const data = await res.json()
+
+        if (data.success) {
+          const article = data.data
+          setTitle(article.title)
+          setContent(article.content || '')
+          setExcerpt(article.excerpt || '')
+          setCoverImage(article.coverImage || '')
+          setArticleId(article.id)
+
+          // Check ownership
+          if (article.author?.id !== session?.user?.id) {
+            setErrorMessage('You can only edit your own articles')
+          }
+        } else {
+          setErrorMessage(data.error || 'Failed to load article')
+        }
+      } catch (error) {
+        setErrorMessage('Failed to load article')
+      } finally {
+        setIsLoading(false)
+      }
+    }
+
+    if (slug && session?.user?.id) {
+      loadArticle()
+    }
+  }, [slug, session?.user?.id])
+
   // Redirect if not logged in
   useEffect(() => {
     if (status === 'unauthenticated') {
-      router.push('/auth/signin?callbackUrl=/articles/write')
+      router.push(`/auth/signin?callbackUrl=/articles/${slug}/edit`)
     }
-  }, [status, router])
+  }, [status, router, slug])
 
   const insertMarkdown = (before: string, after: string = '') => {
     const textarea = contentRef.current
@@ -86,7 +105,6 @@ export default function WriteArticlePage() {
 
     setContent(newText)
 
-    // Restore cursor position
     setTimeout(() => {
       textarea.focus()
       const newCursorPos = start + before.length + selectedText.length + after.length
@@ -94,49 +112,7 @@ export default function WriteArticlePage() {
     }, 0)
   }
 
-  // Fetch Sage's suggestions
-  const fetchSuggestions = async () => {
-    if (content.length < 50) {
-      setErrorMessage('Please write at least 50 characters before getting suggestions')
-      return
-    }
-
-    setIsLoadingSuggestions(true)
-    setErrorMessage('')
-
-    try {
-      const res = await fetch('/api/articles/suggest', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ content, title, type: 'all' }),
-      })
-
-      const data = await res.json()
-
-      if (data.success) {
-        setSuggestions(data.data)
-        setShowSuggestions(true)
-      } else {
-        setErrorMessage(data.error || 'Failed to get suggestions')
-      }
-    } catch (error) {
-      setErrorMessage('Failed to connect to Sage')
-    } finally {
-      setIsLoadingSuggestions(false)
-    }
-  }
-
-  // Copy to clipboard and set excerpt
-  const useSuggestion = (text: string, type: string, index: number) => {
-    if (type === 'excerpt') {
-      setExcerpt(text)
-    }
-    navigator.clipboard.writeText(text)
-    setCopiedIndex(`${type}-${index}`)
-    setTimeout(() => setCopiedIndex(null), 2000)
-  }
-
-  const handleSave = async (publish: boolean = true) => {
+  const handleSave = async () => {
     if (!title.trim()) {
       setErrorMessage('Please add a title for your article')
       return
@@ -151,15 +127,15 @@ export default function WriteArticlePage() {
     setErrorMessage('')
 
     try {
-      const res = await fetch('/api/articles', {
-        method: 'POST',
+      const res = await fetch(`/api/articles/${articleId}`, {
+        method: 'PUT',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
           title,
           content,
           excerpt: excerpt || content.replace(/[#*_`~\[\]]/g, '').substring(0, 200) + '...',
           coverImage: coverImage || null,
-          status: publish ? 'PUBLISHED' : 'DRAFT',
+          status: 'PUBLISHED',
         }),
       })
 
@@ -182,6 +158,32 @@ export default function WriteArticlePage() {
     }
   }
 
+  const handleDelete = async () => {
+    if (!confirm('Are you sure you want to delete this article? This cannot be undone.')) {
+      return
+    }
+
+    setIsDeleting(true)
+
+    try {
+      const res = await fetch(`/api/articles/${articleId}`, {
+        method: 'DELETE',
+      })
+
+      const data = await res.json()
+
+      if (data.success) {
+        router.push('/articles')
+      } else {
+        setErrorMessage(data.error || 'Failed to delete article')
+      }
+    } catch (error) {
+      setErrorMessage('An error occurred while deleting')
+    } finally {
+      setIsDeleting(false)
+    }
+  }
+
   // Simple markdown to HTML converter for preview
   const renderMarkdown = (text: string) => {
     return text
@@ -201,12 +203,12 @@ export default function WriteArticlePage() {
       .replace(/\n/gim, '<br />')
   }
 
-  if (status === 'loading') {
+  if (status === 'loading' || isLoading) {
     return (
       <div className="min-h-screen flex items-center justify-center bg-[var(--background)]">
         <div className="text-center">
           <Loader2 className="w-12 h-12 text-theme-primary animate-spin mx-auto mb-4" />
-          <p className="text-lg font-bold text-theme-muted">Loading...</p>
+          <p className="text-lg font-bold text-theme-muted">Loading article...</p>
         </div>
       </div>
     )
@@ -223,14 +225,14 @@ export default function WriteArticlePage() {
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex items-center justify-between py-4">
             <div className="flex items-center gap-4">
-              <Link href="/articles">
+              <Link href={`/articles/${slug}`}>
                 <Button variant="ghost" size="sm" className="font-bold">
                   <ArrowLeft className="w-4 h-4 mr-2" />
                   Back
                 </Button>
               </Link>
               <div className="hidden sm:block">
-                <h1 className="text-lg font-black text-[var(--foreground)]">Write Article</h1>
+                <h1 className="text-lg font-black text-[var(--foreground)]">Edit Article</h1>
                 <p className="text-xs text-theme-muted">
                   {wordCount} words • {readTime} min read
                 </p>
@@ -238,6 +240,22 @@ export default function WriteArticlePage() {
             </div>
 
             <div className="flex items-center gap-2">
+              {/* Delete Button */}
+              <Button
+                variant="outline"
+                size="sm"
+                onClick={handleDelete}
+                disabled={isDeleting}
+                className="font-bold text-red-500 border-red-500 hover:bg-red-500 hover:text-white"
+              >
+                {isDeleting ? (
+                  <Loader2 className="w-4 h-4 mr-2 animate-spin" />
+                ) : (
+                  <Trash2 className="w-4 h-4 mr-2" />
+                )}
+                Delete
+              </Button>
+
               {/* Preview Toggle */}
               <button
                 onClick={() => setIsPreview(!isPreview)}
@@ -251,7 +269,7 @@ export default function WriteArticlePage() {
                 {isPreview ? <EyeOff className="w-5 h-5" /> : <Eye className="w-5 h-5" />}
               </button>
 
-              {/* Save Status Indicator */}
+              {/* Save Status */}
               {saveStatus === 'saving' && (
                 <span className="flex items-center gap-1 text-theme-muted text-sm">
                   <Loader2 className="w-4 h-4 animate-spin" />
@@ -265,9 +283,9 @@ export default function WriteArticlePage() {
                 </span>
               )}
 
-              {/* Publish Button */}
+              {/* Save Button */}
               <Button
-                onClick={() => handleSave(true)}
+                onClick={handleSave}
                 disabled={isSaving || !title || !content}
                 className="font-black"
               >
@@ -276,7 +294,7 @@ export default function WriteArticlePage() {
                 ) : (
                   <Sparkles className="w-4 h-4 mr-2" />
                 )}
-                PUBLISH
+                SAVE CHANGES
               </Button>
             </div>
           </div>
@@ -365,185 +383,21 @@ export default function WriteArticlePage() {
                 className="w-full px-0 py-4 text-4xl font-black bg-transparent border-none focus:outline-none text-[var(--foreground)] placeholder-theme-muted"
               />
 
-              {/* Excerpt with Sage Suggestions */}
+              {/* Excerpt */}
               <Card className="border-2 border-[var(--border)]">
                 <CardContent className="p-4">
-                  <div className="flex items-center justify-between mb-2">
-                    <label className="block text-sm font-black text-theme-muted uppercase">
-                      Excerpt / Summary
-                    </label>
-                    <Button
-                      variant="outline"
-                      size="sm"
-                      onClick={fetchSuggestions}
-                      disabled={isLoadingSuggestions || content.length < 50}
-                      className="font-bold text-xs"
-                    >
-                      {isLoadingSuggestions ? (
-                        <Loader2 className="w-3 h-3 mr-1 animate-spin" />
-                      ) : (
-                        <Wand2 className="w-3 h-3 mr-1" />
-                      )}
-                      Ask Sage
-                    </Button>
-                  </div>
+                  <label className="block text-sm font-black text-theme-muted uppercase mb-2">
+                    Excerpt / Summary
+                  </label>
                   <textarea
                     value={excerpt}
                     onChange={(e) => setExcerpt(e.target.value)}
-                    placeholder="A brief summary of your article... (Sage can help!)"
+                    placeholder="A brief summary of your article..."
                     rows={2}
                     className="w-full px-4 py-3 bg-[var(--background)] border-2 border-[var(--border)] rounded-xl text-[var(--foreground)] font-medium focus:outline-none focus:border-theme-primary resize-none"
                   />
                 </CardContent>
               </Card>
-
-              {/* Sage Suggestions Panel */}
-              {suggestions && (
-                <Card className="border-2 border-theme-accent bg-gradient-to-br from-[var(--accent)]/10 to-transparent">
-                  <CardContent className="p-4">
-                    <button
-                      onClick={() => setShowSuggestions(!showSuggestions)}
-                      className="w-full flex items-center justify-between mb-3"
-                    >
-                      <h3 className="font-black text-theme-accent flex items-center gap-2">
-                        <Sparkles className="w-4 h-4" />
-                        Sage's Suggestions
-                      </h3>
-                      {showSuggestions ? (
-                        <ChevronUp className="w-4 h-4 text-theme-accent" />
-                      ) : (
-                        <ChevronDown className="w-4 h-4 text-theme-accent" />
-                      )}
-                    </button>
-
-                    {showSuggestions && (
-                      <div className="space-y-4">
-                        {/* Sage Tip */}
-                        {suggestions.sage_tip && (
-                          <div className="p-3 bg-[var(--muted)] rounded-lg">
-                            <p className="text-sm font-medium text-[var(--foreground)] flex items-start gap-2">
-                              <Lightbulb className="w-4 h-4 text-amber-500 flex-shrink-0 mt-0.5" />
-                              {suggestions.sage_tip}
-                            </p>
-                          </div>
-                        )}
-
-                        {/* Excerpts */}
-                        {suggestions.excerpts && suggestions.excerpts.length > 0 && (
-                          <div>
-                            <h4 className="text-xs font-black text-theme-muted uppercase mb-2 flex items-center gap-1">
-                              <FileText className="w-3 h-3" />
-                              Excerpt Options (click to use)
-                            </h4>
-                            <div className="space-y-2">
-                              {suggestions.excerpts.map((ex, i) => (
-                                <button
-                                  key={i}
-                                  onClick={() => useSuggestion(ex, 'excerpt', i)}
-                                  className="w-full p-3 bg-[var(--background)] border-2 border-[var(--border)] rounded-lg text-left text-sm text-[var(--foreground)] hover:border-theme-primary transition-colors group"
-                                >
-                                  <div className="flex items-start justify-between gap-2">
-                                    <span className="flex-1">{ex}</span>
-                                    {copiedIndex === `excerpt-${i}` ? (
-                                      <Check className="w-4 h-4 text-emerald-500 flex-shrink-0" />
-                                    ) : (
-                                      <Copy className="w-4 h-4 text-theme-muted opacity-0 group-hover:opacity-100 transition-opacity flex-shrink-0" />
-                                    )}
-                                  </div>
-                                </button>
-                              ))}
-                            </div>
-                          </div>
-                        )}
-
-                        {/* Hooks */}
-                        {suggestions.hooks && suggestions.hooks.length > 0 && (
-                          <div>
-                            <h4 className="text-xs font-black text-theme-muted uppercase mb-2 flex items-center gap-1">
-                              <Sparkles className="w-3 h-3" />
-                              Opening Hook Ideas
-                            </h4>
-                            <div className="space-y-2">
-                              {suggestions.hooks.map((hook, i) => (
-                                <button
-                                  key={i}
-                                  onClick={() => useSuggestion(hook, 'hook', i)}
-                                  className="w-full p-3 bg-[var(--background)] border-2 border-[var(--border)] rounded-lg text-left text-sm text-[var(--foreground)] hover:border-theme-secondary transition-colors group"
-                                >
-                                  <div className="flex items-start justify-between gap-2">
-                                    <span className="flex-1 italic">"{hook}"</span>
-                                    {copiedIndex === `hook-${i}` ? (
-                                      <Check className="w-4 h-4 text-emerald-500 flex-shrink-0" />
-                                    ) : (
-                                      <Copy className="w-4 h-4 text-theme-muted opacity-0 group-hover:opacity-100 transition-opacity flex-shrink-0" />
-                                    )}
-                                  </div>
-                                </button>
-                              ))}
-                            </div>
-                          </div>
-                        )}
-
-                        {/* Quotes */}
-                        {suggestions.quotes && suggestions.quotes.length > 0 && (
-                          <div>
-                            <h4 className="text-xs font-black text-theme-muted uppercase mb-2 flex items-center gap-1">
-                              <MessageSquareQuote className="w-3 h-3" />
-                              Quotable Moments
-                            </h4>
-                            <div className="space-y-2">
-                              {suggestions.quotes.map((quote, i) => (
-                                <button
-                                  key={i}
-                                  onClick={() => useSuggestion(quote, 'quote', i)}
-                                  className="w-full p-3 bg-[var(--background)] border-l-4 border-theme-accent rounded-lg text-left text-sm text-[var(--foreground)] hover:bg-[var(--muted)] transition-colors group"
-                                >
-                                  <div className="flex items-start justify-between gap-2">
-                                    <span className="flex-1">"{quote}"</span>
-                                    {copiedIndex === `quote-${i}` ? (
-                                      <Check className="w-4 h-4 text-emerald-500 flex-shrink-0" />
-                                    ) : (
-                                      <Copy className="w-4 h-4 text-theme-muted opacity-0 group-hover:opacity-100 transition-opacity flex-shrink-0" />
-                                    )}
-                                  </div>
-                                </button>
-                              ))}
-                            </div>
-                          </div>
-                        )}
-
-                        {/* CTAs */}
-                        {suggestions.ctas && suggestions.ctas.length > 0 && (
-                          <div>
-                            <h4 className="text-xs font-black text-theme-muted uppercase mb-2 flex items-center gap-1">
-                              <Lightbulb className="w-3 h-3" />
-                              Call-to-Action Ideas
-                            </h4>
-                            <div className="space-y-2">
-                              {suggestions.ctas.map((cta, i) => (
-                                <button
-                                  key={i}
-                                  onClick={() => useSuggestion(cta, 'cta', i)}
-                                  className="w-full p-3 bg-[var(--background)] border-2 border-[var(--border)] rounded-lg text-left text-sm text-[var(--foreground)] hover:border-theme-primary transition-colors group"
-                                >
-                                  <div className="flex items-start justify-between gap-2">
-                                    <span className="flex-1">{cta}</span>
-                                    {copiedIndex === `cta-${i}` ? (
-                                      <Check className="w-4 h-4 text-emerald-500 flex-shrink-0" />
-                                    ) : (
-                                      <Copy className="w-4 h-4 text-theme-muted opacity-0 group-hover:opacity-100 transition-opacity flex-shrink-0" />
-                                    )}
-                                  </div>
-                                </button>
-                              ))}
-                            </div>
-                          </div>
-                        )}
-                      </div>
-                    )}
-                  </CardContent>
-                </Card>
-              )}
 
               {/* Formatting Toolbar */}
               <Card className="border-2 border-[var(--border)] sticky top-20 z-40 bg-[var(--card)]">
@@ -636,38 +490,9 @@ export default function WriteArticlePage() {
                 ref={contentRef}
                 value={content}
                 onChange={(e) => setContent(e.target.value)}
-                placeholder="Start writing your article...
-
-Use markdown for formatting:
-# Heading 1
-## Heading 2
-**bold** and *italic*
-- bullet points
-1. numbered lists
-> quotes
-`code`
-[link text](url)
-
-Share your knowledge with the Project Exodus community!"
+                placeholder="Start writing your article..."
                 className="w-full min-h-[500px] px-0 py-4 text-lg bg-transparent border-none focus:outline-none text-[var(--foreground)] placeholder-theme-muted/50 resize-none leading-relaxed"
               />
-
-              {/* Tips */}
-              <Card className="border-2 border-theme-accent bg-[var(--accent)]/5">
-                <CardContent className="p-4">
-                  <h3 className="font-black text-theme-accent mb-2 flex items-center gap-2">
-                    <Sparkles className="w-4 h-4" />
-                    Writing Tips
-                  </h3>
-                  <ul className="text-sm text-theme-muted space-y-1 font-medium">
-                    <li>• Start with a compelling hook to grab readers' attention</li>
-                    <li>• Use headings to organize your content</li>
-                    <li>• Include real examples and personal experiences</li>
-                    <li>• End with a call to action or thought-provoking question</li>
-                    <li>• <strong>Click "Ask Sage"</strong> for AI-powered suggestions!</li>
-                  </ul>
-                </CardContent>
-              </Card>
             </div>
           )}
         </div>

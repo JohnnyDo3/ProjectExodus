@@ -844,73 +844,78 @@ export default function MyVolitionPage() {
                       case 'network':
                         return (
                           <DraggableColumn key={columnId} id="network">
-                            <div className="flex-shrink-0 w-96 h-full flex flex-col bg-[var(--card)] rounded-2xl border-2 border-theme-primary shadow-lg">
-                <div className="p-3 border-b border-[var(--border)]">
-                  <div className="flex items-center gap-1.5">
-                    <User className="w-4 h-4 text-theme-primary" />
-                    <h2 className="text-[9px] font-black text-[var(--foreground)] whitespace-nowrap">MY CONNECTIONS</h2>
-                  </div>
-                </div>
-                <div className="flex-1 overflow-y-auto p-2 space-y-2">
-                  {/* Recent Followers */}
-                  {following.length > 0 && (
-                    <div className="mb-2">
-                      <h3 className="text-[9px] font-black text-[var(--foreground)] mb-1.5">Recent</h3>
-                      <div className="space-y-1">
-                        {following.slice(0, 3).map((user: any) => (
-                          <div key={user.id} className="flex items-center gap-1.5 p-1.5 bg-[var(--muted)]/50 rounded hover:bg-[var(--muted)] transition-colors">
-                            <div className="w-6 h-6 rounded-full bg-gradient-to-br from-[var(--primary)] to-[var(--accent)] flex items-center justify-center flex-shrink-0">
-                              {user.image ? (
-                                <img src={user.image} alt={user.name} className="w-full h-full rounded-full object-cover" />
-                              ) : (
-                                <User className="w-3 h-3 text-white" />
-                              )}
-                            </div>
-                            <div className="flex-1 min-w-0">
-                              <p className="text-xs font-black text-[var(--foreground)] truncate">{user.name || 'Anonymous'}</p>
-                              <p className="text-[10px] font-medium text-theme-muted truncate">{user.bio || 'Member'}</p>
-                            </div>
-                          </div>
-                        ))}
-                      </div>
-                    </div>
-                  )}
-
-                  {/* Suggested Connections */}
-                  <div>
-                    <h3 className="text-xs font-black text-[var(--foreground)] mb-2">Suggested Connections</h3>
-                    <div className="space-y-2">
-                      {networkSuggestions.length > 0 ? (
-                        networkSuggestions.map((user: any) => (
-                          <div key={user.id} className="p-3 bg-gradient-to-br from-[var(--primary)]/10 to-transparent border-2 border-theme-primary rounded-xl hover:shadow-lg transition-all">
-                            <div className="flex items-center gap-2 mb-2">
-                              <div className="w-8 h-8 rounded-full bg-gradient-to-br from-[var(--primary)] to-[var(--accent)] flex items-center justify-center flex-shrink-0">
-                                {user.image ? (
-                                  <img src={user.image} alt={user.name} className="w-full h-full rounded-full object-cover" />
-                                ) : (
-                                  <User className="w-4 h-4 text-white" />
+                            <div className="flex-shrink-0 w-96 h-full flex flex-col bg-[var(--card)] rounded-2xl border-2 border-theme-primary shadow-lg overflow-hidden">
+                              <div className="p-3 border-b border-[var(--border)] flex items-center justify-between">
+                                <div className="flex items-center gap-1.5 min-w-0">
+                                  <User className="w-4 h-4 text-theme-primary flex-shrink-0" />
+                                  <h2 className="text-[9px] font-black text-[var(--foreground)] whitespace-nowrap truncate">MY CONNECTIONS</h2>
+                                </div>
+                                <Link href="/network/browse">
+                                  <button className="w-6 h-6 rounded-full bg-[var(--primary)] text-white flex items-center justify-center hover:bg-[var(--accent)] transition-colors flex-shrink-0">
+                                    <Plus className="w-3.5 h-3.5" />
+                                  </button>
+                                </Link>
+                              </div>
+                              <div className="flex-1 overflow-y-auto p-2 space-y-2">
+                                {/* Recent Followers */}
+                                {following.length > 0 && (
+                                  <div className="mb-2">
+                                    <h3 className="text-[9px] font-black text-[var(--foreground)] mb-1.5">Recent</h3>
+                                    <div className="space-y-1">
+                                      {following.slice(0, 3).map((user: any) => (
+                                        <div key={user.id} className="flex items-center gap-1.5 p-1.5 bg-[var(--muted)]/50 rounded hover:bg-[var(--muted)] transition-colors">
+                                          <div className="w-6 h-6 rounded-full bg-gradient-to-br from-[var(--primary)] to-[var(--accent)] flex items-center justify-center flex-shrink-0">
+                                            {user.image ? (
+                                              <img src={user.image} alt={user.name} className="w-full h-full rounded-full object-cover" />
+                                            ) : (
+                                              <User className="w-3 h-3 text-white" />
+                                            )}
+                                          </div>
+                                          <div className="flex-1 min-w-0">
+                                            <p className="text-xs font-black text-[var(--foreground)] truncate">{user.name || 'Anonymous'}</p>
+                                            <p className="text-[10px] font-medium text-theme-muted truncate">{user.bio || 'Member'}</p>
+                                          </div>
+                                        </div>
+                                      ))}
+                                    </div>
+                                  </div>
                                 )}
-                              </div>
-                              <div className="flex-1 min-w-0">
-                                <p className="text-xs font-black text-[var(--foreground)] truncate">{user.name || 'Anonymous'}</p>
-                                <p className="text-[10px] font-medium text-theme-muted truncate">{user.headline || 'Member'}</p>
-                              </div>
-                            </div>
-                            {user.matchReasons && user.matchReasons.length > 0 && (
-                              <p className="text-[9px] font-medium text-theme-muted mb-2 line-clamp-2">
-                                {user.matchReasons[0]}
-                              </p>
-                            )}
-                            <button className="w-full py-1.5 px-3 bg-[var(--primary)] text-white rounded-lg text-[10px] font-bold hover:bg-[var(--accent)] transition-colors">
-                              Connect
-                            </button>
-                          </div>
-                        ))
-                      ) : (
-                        <p className="text-xs font-medium text-theme-muted text-center py-4">No suggestions available</p>
-                      )}
-                    </div>
-                  </div>
+
+                                {/* Suggested Connections */}
+                                <div>
+                                  <h3 className="text-xs font-black text-[var(--foreground)] mb-2">Suggested</h3>
+                                  <div className="space-y-2">
+                                    {networkSuggestions.length > 0 ? (
+                                      networkSuggestions.map((user: any) => (
+                                        <div key={user.id} className="p-2 bg-gradient-to-br from-[var(--primary)]/10 to-transparent border border-theme-primary rounded-lg hover:shadow-md transition-all">
+                                          <div className="flex items-center gap-2 mb-1.5">
+                                            <div className="w-7 h-7 rounded-full bg-gradient-to-br from-[var(--primary)] to-[var(--accent)] flex items-center justify-center flex-shrink-0">
+                                              {user.image ? (
+                                                <img src={user.image} alt={user.name} className="w-full h-full rounded-full object-cover" />
+                                              ) : (
+                                                <User className="w-3.5 h-3.5 text-white" />
+                                              )}
+                                            </div>
+                                            <div className="flex-1 min-w-0">
+                                              <p className="text-[11px] font-black text-[var(--foreground)] truncate">{user.name || 'Anonymous'}</p>
+                                              <p className="text-[9px] font-medium text-theme-muted truncate">{user.headline || 'Member'}</p>
+                                            </div>
+                                          </div>
+                                          {user.matchReasons && user.matchReasons.length > 0 && (
+                                            <p className="text-[8px] font-medium text-theme-muted mb-1.5 line-clamp-1">
+                                              {user.matchReasons[0]}
+                                            </p>
+                                          )}
+                                          <button className="w-full py-1 px-2 bg-[var(--primary)] text-white rounded text-[9px] font-bold hover:bg-[var(--accent)] transition-colors">
+                                            Connect
+                                          </button>
+                                        </div>
+                                      ))
+                                    ) : (
+                                      <p className="text-xs font-medium text-theme-muted text-center py-4">No suggestions available</p>
+                                    )}
+                                  </div>
+                                </div>
                               </div>
                             </div>
                           </DraggableColumn>
@@ -935,35 +940,43 @@ export default function MyVolitionPage() {
                   {articles.length > 0 ? (
                     articles.map((article: any) => (
                       <div key={article.id} className="relative group">
-                        <div className="p-2 bg-gradient-to-br from-[var(--accent)]/10 to-transparent border border-theme-accent rounded cursor-pointer hover:shadow-sm transition-all">
-                          <h3 className="text-[11px] font-bold text-[var(--foreground)] line-clamp-1 pr-8">
-                            {article.title}
-                          </h3>
-                          <div className="flex items-center justify-between text-[8px] font-medium text-theme-muted">
-                            <span>{article._count?.comments || 0} comments</span>
-                            {article.createdAt && (
-                              <span>{new Date(article.createdAt).toLocaleDateString()}</span>
-                            )}
+                        <Link href={`/articles/${article.slug}`}>
+                          <div className="p-2 bg-gradient-to-br from-[var(--accent)]/10 to-transparent border border-theme-accent rounded cursor-pointer hover:shadow-sm transition-all">
+                            <h3 className="text-[11px] font-bold text-[var(--foreground)] line-clamp-1 pr-12">
+                              {article.title}
+                            </h3>
+                            <div className="flex items-center justify-between text-[8px] font-medium text-theme-muted">
+                              <span>{article._count?.comments || 0} comments • {article.views || 0} views</span>
+                              {article.createdAt && (
+                                <span>{new Date(article.createdAt).toLocaleDateString()}</span>
+                              )}
+                            </div>
                           </div>
-                        </div>
+                        </Link>
                         <div className="absolute top-1.5 right-1.5 flex gap-0.5 opacity-0 group-hover:opacity-100 transition-opacity">
+                          <Link href={`/articles/${article.slug}/edit`}>
+                            <button
+                              className="w-5 h-5 bg-[var(--accent)] text-white rounded hover:bg-[var(--primary)] transition-colors flex items-center justify-center"
+                              title="Edit"
+                            >
+                              <Edit2 className="w-2.5 h-2.5" />
+                            </button>
+                          </Link>
                           <button
-                            onClick={(e) => {
+                            onClick={async (e) => {
                               e.preventDefault()
                               e.stopPropagation()
-                              alert('Edit article: ' + article.id)
-                            }}
-                            className="w-5 h-5 bg-[var(--accent)] text-white rounded hover:bg-[var(--primary)] transition-colors flex items-center justify-center"
-                            title="Edit"
-                          >
-                            <Edit2 className="w-2.5 h-2.5" />
-                          </button>
-                          <button
-                            onClick={(e) => {
-                              e.preventDefault()
-                              e.stopPropagation()
-                              if (confirm('Delete this article?')) {
-                                alert('Delete article: ' + article.id)
+                              if (confirm('Are you sure you want to delete this article? This cannot be undone.')) {
+                                try {
+                                  const res = await fetch(`/api/articles/${article.id}`, { method: 'DELETE' })
+                                  if (res.ok) {
+                                    setArticles(articles.filter((a: any) => a.id !== article.id))
+                                  } else {
+                                    alert('Failed to delete article')
+                                  }
+                                } catch (error) {
+                                  alert('Error deleting article')
+                                }
                               }
                             }}
                             className="w-5 h-5 bg-red-500 text-white rounded hover:bg-red-600 transition-colors flex items-center justify-center"
