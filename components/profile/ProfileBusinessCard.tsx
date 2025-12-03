@@ -1,6 +1,6 @@
 'use client'
 
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useRef } from 'react'
 import { useSession } from 'next-auth/react'
 import { Card, CardContent } from '@/components/ui/Card'
 import { Button } from '@/components/ui/Button'
@@ -17,6 +17,8 @@ import {
   Award,
   FileText,
   Download,
+  ChevronDown,
+  ChevronUp,
   Edit2,
   Save,
   X,
@@ -270,10 +272,12 @@ export function ProfileBusinessCard({ userId }: ProfileBusinessCardProps) {
   const { data: session } = useSession()
   const [isLoading, setIsLoading] = useState(true)
   const [profile, setProfile] = useState<ProfileData | null>(null)
+  const [isExpanded, setIsExpanded] = useState(false)
   const [isEditing, setIsEditing] = useState(false)
   const [selectedArchetype, setSelectedArchetype] = useState<ArchetypeType>('michael')
   const [editedProfile, setEditedProfile] = useState<Partial<ProfileData>>({})
   const [isSaving, setIsSaving] = useState(false)
+  const expandedSectionRef = useRef<HTMLDivElement>(null)
 
   const isOwnProfile = session?.user?.id === userId
 
@@ -448,6 +452,25 @@ export function ProfileBusinessCard({ userId }: ProfileBusinessCardProps) {
                 </button>
               </>
             )}
+            <button
+              onClick={() => {
+                const newExpanded = !isExpanded
+                setIsExpanded(newExpanded)
+                // Scroll to expanded content after state update
+                if (newExpanded) {
+                  setTimeout(() => {
+                    expandedSectionRef.current?.scrollIntoView({ behavior: 'smooth', block: 'start' })
+                  }, 100)
+                }
+              }}
+              className="p-2.5 bg-white/20 hover:bg-white/30 rounded-xl transition-colors backdrop-blur-sm"
+            >
+              {isExpanded ? (
+                <ChevronUp className="w-5 h-5 text-white" />
+              ) : (
+                <ChevronDown className="w-5 h-5 text-white" />
+              )}
+            </button>
           </div>
         </div>
 
@@ -740,8 +763,9 @@ export function ProfileBusinessCard({ userId }: ProfileBusinessCardProps) {
           </div>
         </div>
 
-        {/* Extended Profile Section - Always Visible */}
-        <div className="mt-6 pt-6 border-t-2 border-[var(--border)]">
+        {/* Expanded Section - Full Profile */}
+        {isExpanded && (
+          <div ref={expandedSectionRef} className="mt-6 pt-6 border-t-2 border-[var(--border)]">
             <div className="grid md:grid-cols-2 gap-6">
               {/* Bio */}
               <div>
@@ -857,6 +881,7 @@ export function ProfileBusinessCard({ userId }: ProfileBusinessCardProps) {
               )}
             </div>
           </div>
+        )}
 
         {/* Sacred Footer */}
         <div className="mt-6 pt-5 border-t-2 border-[var(--border)]">

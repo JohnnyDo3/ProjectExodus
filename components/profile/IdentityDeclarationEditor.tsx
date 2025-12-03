@@ -43,6 +43,7 @@ import {
   Maximize2,
   Minimize2,
   Check,
+  AlertTriangle,
 } from 'lucide-react'
 
 /*
@@ -248,6 +249,11 @@ export function IdentityDeclarationEditor({ initialProfile }: Props) {
   const [isSaving, setIsSaving] = useState(false)
   const [editingSection, setEditingSection] = useState<EditSection>(null)
   const [hasUnsavedChanges, setHasUnsavedChanges] = useState(false)
+  const [showCloseWarning, setShowCloseWarning] = useState(false)
+  const [originalFullScreenData, setOriginalFullScreenData] = useState<{
+    profile: ProfileData
+    archetype: ArchetypeType
+  } | null>(null)
   const fileInputRef = useRef<HTMLInputElement>(null)
 
   const [profile, setProfile] = useState<ProfileData>({
@@ -278,6 +284,46 @@ export function IdentityDeclarationEditor({ initialProfile }: Props) {
       fetchProfile()
     }
   }, [session?.user?.id])
+
+  // Capture original values when entering fullscreen mode
+  useEffect(() => {
+    if (isFullScreen && !originalFullScreenData) {
+      setOriginalFullScreenData({
+        profile: { ...profile },
+        archetype: selectedArchetype,
+      })
+      setHasUnsavedChanges(false)
+    } else if (!isFullScreen) {
+      setOriginalFullScreenData(null)
+    }
+  }, [isFullScreen])
+
+  // Handler for attempting to close fullscreen
+  const handleCloseFullScreen = () => {
+    if (hasUnsavedChanges) {
+      setShowCloseWarning(true)
+    } else {
+      setIsFullScreen(false)
+    }
+  }
+
+  // Discard changes and close fullscreen
+  const handleDiscardAndClose = () => {
+    if (originalFullScreenData) {
+      setProfile(originalFullScreenData.profile)
+      setSelectedArchetype(originalFullScreenData.archetype)
+    }
+    setHasUnsavedChanges(false)
+    setShowCloseWarning(false)
+    setIsFullScreen(false)
+  }
+
+  // Save changes and close fullscreen
+  const handleSaveAndClose = async () => {
+    await handleSave()
+    setShowCloseWarning(false)
+    setIsFullScreen(false)
+  }
 
   const fetchProfile = async () => {
     setIsLoading(true)
@@ -605,6 +651,52 @@ export function IdentityDeclarationEditor({ initialProfile }: Props) {
   // Full screen edit mode
   return (
     <div className="fixed inset-0 z-[100] bg-black/80 flex items-center justify-center p-4 overflow-y-auto">
+      {/* Unsaved Changes Warning Dialog */}
+      {showCloseWarning && (
+        <div className="fixed inset-0 z-[150] bg-black/60 flex items-center justify-center p-4">
+          <div className="bg-[var(--card)] rounded-2xl border-4 border-amber-500 shadow-2xl max-w-md w-full p-6">
+            <div className="flex items-center gap-3 mb-4">
+              <div className="p-3 bg-amber-500/20 rounded-xl">
+                <AlertTriangle className="w-6 h-6 text-amber-500" />
+              </div>
+              <div>
+                <h3 className="text-lg font-black text-[var(--foreground)]">Unsaved Changes</h3>
+                <p className="text-sm text-theme-muted">You have unsaved changes to your identity declaration.</p>
+              </div>
+            </div>
+            <p className="text-sm text-theme-muted mb-6">
+              Would you like to save your changes before closing?
+            </p>
+            <div className="flex flex-col gap-2">
+              <button
+                onClick={handleSaveAndClose}
+                disabled={isSaving}
+                className={`w-full py-3 bg-gradient-to-r ${archetype.gradient} text-white rounded-xl font-bold text-sm hover:opacity-90 transition-opacity flex items-center justify-center gap-2`}
+              >
+                {isSaving ? (
+                  <div className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin" />
+                ) : (
+                  <Save className="w-4 h-4" />
+                )}
+                {isSaving ? 'Saving...' : 'Save & Close'}
+              </button>
+              <button
+                onClick={handleDiscardAndClose}
+                className="w-full py-3 bg-red-500/10 text-red-500 border-2 border-red-500 rounded-xl font-bold text-sm hover:bg-red-500/20 transition-colors"
+              >
+                Discard Changes
+              </button>
+              <button
+                onClick={() => setShowCloseWarning(false)}
+                className="w-full py-3 bg-[var(--muted)] text-[var(--foreground)] rounded-xl font-bold text-sm hover:bg-[var(--muted)]/80 transition-colors"
+              >
+                Cancel
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+
       <div className={`w-full max-w-5xl bg-[var(--card)] rounded-2xl border-4 ${archetype.borderColor} shadow-2xl max-h-[95vh] overflow-hidden flex flex-col`}>
         {/* Header */}
         <div className={`px-6 py-5 bg-gradient-to-r ${archetype.gradient} relative overflow-hidden flex-shrink-0`}>
@@ -640,8 +732,9 @@ export function IdentityDeclarationEditor({ initialProfile }: Props) {
                 </button>
               )}
               <button
-                onClick={() => setIsFullScreen(false)}
+                onClick={handleCloseFullScreen}
                 className="p-2.5 bg-white/20 hover:bg-white/30 rounded-xl transition-colors"
+                title="Close editor"
               >
                 <Minimize2 className="w-5 h-5 text-white" />
               </button>
