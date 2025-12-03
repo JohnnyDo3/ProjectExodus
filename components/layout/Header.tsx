@@ -52,11 +52,8 @@ export function Header() {
             <div className="w-10 h-10 sm:w-12 sm:h-12 rounded-full bg-gradient-to-br from-moss-600 to-ocean-600 flex items-center justify-center pulse-alive shadow-lg">
               <Leaf className="w-5 h-5 sm:w-7 sm:h-7 text-white" />
             </div>
-            <span className="text-lg sm:text-2xl font-black text-[var(--foreground)] group-hover:text-theme-primary transition-colors tracking-tight hidden xs:block">
+            <span className="text-base sm:text-2xl font-black text-[var(--foreground)] group-hover:text-theme-primary transition-colors tracking-tight">
               PROJECT EXODUS
-            </span>
-            <span className="text-lg font-black text-[var(--foreground)] group-hover:text-theme-primary transition-colors tracking-tight xs:hidden">
-              PE
             </span>
           </Link>
 
