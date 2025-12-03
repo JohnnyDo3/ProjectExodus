@@ -16,6 +16,7 @@ import {
   Camera,
   ArrowLeft,
   AlertCircle,
+  AlertTriangle,
   Briefcase,
   GraduationCap,
   Sparkles,
@@ -177,6 +178,15 @@ export default function SettingsPage() {
     guardianArchetype: '' as ArchetypeKey | '',
     phone: '',
   })
+  // Track original saved business card values for unsaved changes detection
+  const [originalBusinessCardData, setOriginalBusinessCardData] = useState({
+    declaration: '',
+    guardianArchetype: '' as ArchetypeKey | '',
+    phone: '',
+  })
+  // Unsaved changes warning dialog state
+  const [showUnsavedWarning, setShowUnsavedWarning] = useState(false)
+  const [pendingTabSwitch, setPendingTabSwitch] = useState<string | null>(null)
 
   // Password form state
   const [passwordData, setPasswordData] = useState({
@@ -238,11 +248,13 @@ export default function SettingsPage() {
         setEducations(user.education || [])
         setSkills(user.expertise || [])
         setInterests(user.interests || [])
-        setBusinessCardData({
+        const businessCard = {
           declaration: user.declaration || '',
           guardianArchetype: user.guardianArchetype || '',
           phone: user.phone || '',
-        })
+        }
+        setBusinessCardData(businessCard)
+        setOriginalBusinessCardData(businessCard)
       }
     } catch (error) {
       console.error('Error fetching user profile:', error)
@@ -489,6 +501,43 @@ export default function SettingsPage() {
     { id: 'privacy', label: 'Privacy Settings', icon: Shield },
   ]
 
+  // Check if there are unsaved business card changes
+  const hasUnsavedBusinessCardChanges = () => {
+    return (
+      businessCardData.declaration !== originalBusinessCardData.declaration ||
+      businessCardData.guardianArchetype !== originalBusinessCardData.guardianArchetype ||
+      businessCardData.phone !== originalBusinessCardData.phone
+    )
+  }
+
+  // Handle tab switch with unsaved changes warning
+  const handleTabSwitch = (tabId: string) => {
+    // Only check for unsaved changes when leaving the businesscard tab
+    if (activeTab === 'businesscard' && tabId !== 'businesscard' && hasUnsavedBusinessCardChanges()) {
+      setPendingTabSwitch(tabId)
+      setShowUnsavedWarning(true)
+    } else {
+      setActiveTab(tabId)
+    }
+  }
+
+  // Discard changes and proceed with tab switch
+  const handleDiscardChanges = () => {
+    // Reset business card data to original saved values
+    setBusinessCardData({ ...originalBusinessCardData })
+    if (pendingTabSwitch) {
+      setActiveTab(pendingTabSwitch)
+    }
+    setShowUnsavedWarning(false)
+    setPendingTabSwitch(null)
+  }
+
+  // Cancel tab switch and stay on current tab
+  const handleStayOnTab = () => {
+    setShowUnsavedWarning(false)
+    setPendingTabSwitch(null)
+  }
+
   return (
     <div className="min-h-screen bg-[var(--background)] py-12">
       <div className="container mx-auto px-4 sm:px-6 lg:px-8">
@@ -515,6 +564,82 @@ export default function SettingsPage() {
             </div>
           )}
 
+          {/* Unsaved Changes Warning Dialog */}
+          {showUnsavedWarning && (
+            <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 backdrop-blur-sm">
+              <div className="bg-[var(--card)] border-4 border-theme-accent rounded-2xl p-6 max-w-md w-full mx-4 shadow-2xl">
+                <div className="flex items-start gap-4">
+                  <div className="w-12 h-12 rounded-full bg-[color-mix(in_srgb,var(--accent)_20%,var(--background))] flex items-center justify-center flex-shrink-0">
+                    <AlertTriangle className="w-6 h-6 text-theme-accent" />
+                  </div>
+                  <div className="flex-1">
+                    <h3 className="text-xl font-black text-[var(--foreground)] mb-2">
+                      UNSAVED CHANGES
+                    </h3>
+                    <p className="text-sm font-medium text-theme-muted mb-4">
+                      You have unsaved changes to your Digital Business Card. Would you like to save your changes before leaving?
+                    </p>
+                    <div className="flex flex-col sm:flex-row gap-3">
+                      <Button
+                        onClick={async () => {
+                          // Save changes first, then switch tabs
+                          setIsSaving(true)
+                          try {
+                            const res = await fetch(`/api/users/${session?.user?.id}`, {
+                              method: 'PATCH',
+                              headers: { 'Content-Type': 'application/json' },
+                              body: JSON.stringify({
+                                declaration: businessCardData.declaration,
+                                guardianArchetype: businessCardData.guardianArchetype,
+                                phone: businessCardData.phone,
+                              }),
+                            })
+                            if (res.ok) {
+                              setOriginalBusinessCardData({ ...businessCardData })
+                              setSaveMessage('Business card saved!')
+                              if (pendingTabSwitch) {
+                                setActiveTab(pendingTabSwitch)
+                              }
+                            } else {
+                              setSaveMessage('Failed to save business card')
+                            }
+                          } catch (error) {
+                            setSaveMessage('Error saving business card')
+                          } finally {
+                            setIsSaving(false)
+                            setShowUnsavedWarning(false)
+                            setPendingTabSwitch(null)
+                            setTimeout(() => setSaveMessage(''), 3000)
+                          }
+                        }}
+                        className="font-black"
+                        disabled={isSaving}
+                      >
+                        <Save className="w-4 h-4 mr-2" />
+                        {isSaving ? 'SAVING...' : 'SAVE & CONTINUE'}
+                      </Button>
+                      <Button
+                        variant="outline"
+                        onClick={handleDiscardChanges}
+                        className="font-bold text-theme-accent border-theme-accent hover:bg-[color-mix(in_srgb,var(--accent)_10%,var(--background))]"
+                      >
+                        <Trash2 className="w-4 h-4 mr-2" />
+                        DISCARD
+                      </Button>
+                      <Button
+                        variant="outline"
+                        onClick={handleStayOnTab}
+                        className="font-bold"
+                      >
+                        CANCEL
+                      </Button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          )}
+
           <div className="grid lg:grid-cols-3 gap-8">
             {/* LEFT SIDEBAR TABS (1/3) */}
             <div className="lg:col-span-1">
@@ -524,7 +649,7 @@ export default function SettingsPage() {
                     {tabs.map((tab) => (
                       <button
                         key={tab.id}
-                        onClick={() => setActiveTab(tab.id)}
+                        onClick={() => handleTabSwitch(tab.id)}
                         className={`w-full flex items-center gap-3 px-4 py-3 rounded-lg font-bold transition-all ${
                           activeTab === tab.id
                             ? 'bg-[var(--primary)] text-[var(--primary-foreground)]'
@@ -742,6 +867,11 @@ export default function SettingsPage() {
                     <CardTitle className="text-2xl font-black flex items-center gap-2">
                       <CreditCard className="w-6 h-6" />
                       DIGITAL BUSINESS CARD
+                      {hasUnsavedBusinessCardChanges() && (
+                        <span className="ml-2 px-2 py-0.5 text-xs font-bold bg-theme-accent text-white rounded-full animate-pulse">
+                          UNSAVED
+                        </span>
+                      )}
                     </CardTitle>
                     <p className="text-sm font-medium text-theme-muted">
                       Customize your digital identity card that others see when they view your profile
@@ -900,6 +1030,8 @@ export default function SettingsPage() {
                             }),
                           })
                           if (res.ok) {
+                            // Update original data to match current (changes are now saved)
+                            setOriginalBusinessCardData({ ...businessCardData })
                             setSaveMessage('Business card updated successfully!')
                           } else {
                             setSaveMessage('Failed to update business card')
