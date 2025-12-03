@@ -363,9 +363,15 @@
 }
 
 /* Smooth theme transitions - breathing with nature */
+/*
+ * When using smooth theme interpolation, CSS variables are updated via JS
+ * every 30 seconds with interpolated color values. This creates a gradual,
+ * continuous transition that mimics natural light changes throughout the day.
+ */
 html {
-  transition: background-color 1200ms cubic-bezier(0.4, 0, 0.2, 1),
-              color 1200ms cubic-bezier(0.4, 0, 0.2, 1);
+  /* Smooth transition for any remaining CSS property changes */
+  transition: background-color 800ms cubic-bezier(0.4, 0, 0.2, 1),
+              color 800ms cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 body {
@@ -375,8 +381,18 @@ body {
   font-feature-settings: "rlig" 1, "calt" 1;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  transition: background-color 1200ms cubic-bezier(0.4, 0, 0.2, 1),
-              color 1200ms cubic-bezier(0.4, 0, 0.2, 1);
+  /* Slightly faster transitions since JS handles gradual changes */
+  transition: background-color 800ms cubic-bezier(0.4, 0, 0.2, 1),
+              color 800ms cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* CSS custom property registration for smooth animations (modern browsers) */
+@supports (background: color-mix(in srgb, red, blue)) {
+  /* These enable smoother transitions when CSS vars change */
+  :root {
+    /* Smooth interpolation hint for background transitions */
+    color-scheme: light dark;
+  }
 }
 
 /* Ensure all interactive elements transition smoothly */

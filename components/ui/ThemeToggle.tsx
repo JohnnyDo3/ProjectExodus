@@ -1,70 +1,69 @@
 'use client'
 
 import { useEffect, useState } from 'react'
-import { Moon, Sun, Sunrise, Sunset, Clock } from 'lucide-react'
-import type { ThemeMode } from '@/components/providers/TimeThemeProvider'
+import { Moon, Sun, Clock, Sunrise, ChevronDown } from 'lucide-react'
+import { useTimeTheme, type ThemeMode } from '@/components/providers/TimeThemeProvider'
 
 export function ThemeToggle() {
-  const [mode, setMode] = useState<ThemeMode>('auto')
+  const { mode, setMode, phase, isDay, twilightProgress } = useTimeTheme()
   const [mounted, setMounted] = useState(false)
   const [dropdownOpen, setDropdownOpen] = useState(false)
 
   useEffect(() => {
     setMounted(true)
-    const stored = (localStorage.getItem('theme_mode') as ThemeMode) || 'auto'
-    setMode(stored)
   }, [])
-
-  const handleModeChange = (newMode: ThemeMode) => {
-    setMode(newMode)
-    localStorage.setItem('theme_mode', newMode)
-    setDropdownOpen(false)
-
-    // Update theme immediately
-    if (newMode === 'morning') {
-      document.documentElement.className = 'day'
-    } else if (newMode === 'night') {
-      document.documentElement.className = 'night'
-    }
-
-    // Dispatch custom event to notify TimeThemeProvider
-    window.dispatchEvent(new CustomEvent('theme-mode-change', { detail: { mode: newMode } }))
-  }
 
   // Avoid hydration mismatch
   if (!mounted) {
     return (
       <button
-        className="p-2 rounded-lg border-2 border-earth-200 bg-white hover:bg-sand-100 hover:border-earth-300 transition-colors"
+        className="p-2 rounded-lg border-2 border-[var(--border)] bg-[var(--card)] hover:bg-[var(--muted)] transition-all"
         aria-label="Theme selector"
       >
-        <Clock className="w-5 h-5 text-earth-900" />
+        <Clock className="w-5 h-5 text-[var(--foreground)]" />
       </button>
     )
   }
 
   const modeConfig = {
     auto: {
-      label: 'Auto',
-      description: 'Syncs with your local time',
+      label: 'Auto Sync',
+      description: 'Smooth transitions throughout the day',
     },
     morning: {
-      label: 'Morning',
-      description: 'Always bright and vibrant',
+      label: 'Day Mode',
+      description: 'Bright and vibrant, always',
     },
     night: {
-      label: 'Night',
-      description: 'Always dark and restful',
+      label: 'Night Mode',
+      description: 'Dark and restful, always',
     },
   }
 
   const getModeIcon = (themeMode: ThemeMode, className?: string) => {
     const props = { className: className || 'w-5 h-5' }
     switch (themeMode) {
-      case 'auto': return <Clock {...props} />
+      case 'auto': return <Sunrise {...props} />
       case 'morning': return <Sun {...props} />
       case 'night': return <Moon {...props} />
       default: return <Clock {...props} />
+    }
+  }
+
+  // Get dynamic icon based on current state when in auto mode
+  const getCurrentIcon = (className?: string) => {
+    if (mode !== 'auto') {
+      return getModeIcon(mode, className)
+    }
+
+    // In auto mode, show sun/moon based on twilight progress
+    const props = { className: className || 'w-5 h-5' }
+    if (twilightProgress < 0.3) {
+      return <Sun {...props} />
+    } else if (twilightProgress > 0.7) {
+      return <Moon {...props} />
+    } else {
+      return <Sunrise {...props} /> // Twilight
     }
   }
 
@@ -72,10 +71,11 @@ export function ThemeToggle() {
     <div className="relative">
       <button
         onClick={() => setDropdownOpen(!dropdownOpen)}
-        className="p-2 rounded-lg border-2 border-[var(--border)] bg-[var(--card)] hover:bg-[var(--muted)] hover:border-theme-primary transition-all"
+        className="flex items-center gap-1.5 p-2 rounded-lg border-2 border-[var(--border)] bg-[var(--card)] hover:bg-[var(--muted)] hover:border-theme-primary transition-all"
         aria-label={`Theme: ${modeConfig[mode].label}`}
       >
-        {getModeIcon(mode, 'w-5 h-5 text-theme-primary')}
+        {getCurrentIcon('w-5 h-5 text-theme-primary')}
+        <ChevronDown className={`w-3 h-3 text-theme-muted transition-transform ${dropdownOpen ? 'rotate-180' : ''}`} />
       </button>
 
       {dropdownOpen && (
@@ -84,17 +84,24 @@ export function ThemeToggle() {
             className="fixed inset-0 z-40"
             onClick={() => setDropdownOpen(false)}
           />
-          <div className="absolute right-0 mt-2 w-64 bg-[var(--card)] rounded-xl shadow-theme-lg border-2 border-theme-primary overflow-hidden z-50">
-            <div className="p-3 border-b-2 border-[var(--border)]">
-              <h3 className="font-bold text-[var(--foreground)] text-sm uppercase tracking-wide">
-                Living Theme
-              </h3>
-              <p className="text-xs text-theme-muted mt-1">
-                Choose how the site breathes
-              </p>
+          <div className="absolute right-0 mt-2 w-72 bg-[var(--card)] rounded-xl shadow-theme-lg border-2 border-theme-primary overflow-hidden z-50">
+            <div className="p-3 border-b-2 border-[var(--border)] bg-[var(--muted)]">
+              <div className="flex items-center gap-2">
+                {getCurrentIcon('w-5 h-5 text-theme-primary')}
+                <div>
+                  <h3 className="font-bold text-[var(--foreground)] text-sm uppercase tracking-wide">
+                    Living Theme
+                  </h3>
+                  {mode === 'auto' && (
+                    <p className="text-xs text-theme-muted mt-0.5">
+                      Currently: {phase}
+                    </p>
+                  )}
+                </div>
+              </div>
             </div>
 
-            <div className="p-2 space-y-2">
+            <div className="p-2 space-y-1">
               {(Object.keys(modeConfig) as ThemeMode[]).map((themeMode) => {
                 const config = modeConfig[themeMode]
                 const isActive = mode === themeMode
@@ -102,18 +109,23 @@ export function ThemeToggle() {
                 return (
                   <button
                     key={themeMode}
-                    onClick={() => handleModeChange(themeMode)}
+                    onClick={() => {
+                      setMode(themeMode)
+                      setDropdownOpen(false)
+                    }}
                     className={`w-full flex items-start gap-3 px-3 py-3 rounded-lg transition-all ${
                       isActive
-                        ? 'bg-[var(--muted)] border-2 border-theme-primary'
+                        ? 'bg-gradient-to-r from-[var(--primary)]/10 to-[var(--accent)]/10 border-2 border-theme-primary'
                         : 'hover:bg-[var(--muted)] border-2 border-transparent'
                     }`}
                   >
-                    {getModeIcon(themeMode, `w-5 h-5 mt-0.5 ${
-                      isActive
-                        ? 'text-theme-primary'
-                        : 'text-theme-muted'
-                    }`)}
+                    <div className={`p-2 rounded-lg ${isActive ? 'bg-[var(--primary)]/20' : 'bg-[var(--muted)]'}`}>
+                      {getModeIcon(themeMode, `w-4 h-4 ${
+                        isActive
+                          ? 'text-theme-primary'
+                          : 'text-theme-muted'
+                      }`)}
+                    </div>
                     <div className="flex-1 text-left">
                       <div
                         className={`font-bold text-sm ${
@@ -129,7 +141,7 @@ export function ThemeToggle() {
                       </div>
                     </div>
                     {isActive && (
-                      <div className="w-2 h-2 rounded-full bg-theme-primary mt-2" />
+                      <div className="w-2 h-2 rounded-full bg-theme-primary mt-2 animate-pulse" />
                     )}
                   </button>
                 )
@@ -140,8 +152,7 @@ export function ThemeToggle() {
               <div className="flex items-start gap-2">
                 <Sunrise className="w-4 h-4 text-theme-secondary mt-0.5 flex-shrink-0" />
                 <p className="text-xs text-[var(--foreground)] leading-relaxed">
-                  <span className="font-semibold">Auto mode</span> adapts to your location's real
-                  sunrise and sunset times for a truly natural experience.
+                  <span className="font-semibold">Auto Sync</span> creates smooth color transitions based on real sunrise/sunset times for your location.
                 </p>
               </div>
             </div>

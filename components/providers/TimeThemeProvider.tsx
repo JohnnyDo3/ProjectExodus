@@ -1,7 +1,18 @@
 'use client'
 
-import { useEffect, useState } from 'react'
+import { useEffect, useState, useCallback, createContext, useContext } from 'react'
 import * as SunCalc from 'suncalc'
+import {
+  getCurrentThemeColors,
+  applyThemeColors,
+  clearThemeColors,
+  savePreferences,
+  loadPreferences,
+  getSunPosition,
+  getTwilightProgress,
+  type ThemeColors,
+  type UserPreferences,
+} from '@/lib/smoothThemeEngine'
 
 export type ThemeMode = 'auto' | 'morning' | 'night'
 export type TimeTheme = 'dawn' | 'sunrise' | 'morning' | 'day' | 'afternoon' | 'dusk' | 'sunset' | 'evening' | 'night' | 'midnight'
@@ -11,34 +22,57 @@ interface GeolocationCoords {
   longitude: number
 }
 
+interface TimeThemeContextType {
+  mode: ThemeMode
+  setMode: (mode: ThemeMode) => void
+  phase: string
+  isDay: boolean
+  twilightProgress: number // 0 = full day, 1 = full night
+  sunAltitude: number // degrees above/below horizon
+  coords: GeolocationCoords | null
+}
+
+const TimeThemeContext = createContext<TimeThemeContextType | undefined>(undefined)
+
+export function useTimeTheme() {
+  const context = useContext(TimeThemeContext)
+  if (!context) {
+    return {
+      mode: 'auto' as ThemeMode,
+      setMode: () => {},
+      phase: 'day',
+      isDay: true,
+      twilightProgress: 0,
+      sunAltitude: 45,
+      coords: null,
+    }
+  }
+  return context
+}
+
 export function TimeThemeProvider({ children }: { children: React.ReactNode }) {
   const [mounted, setMounted] = useState(false)
   const [coords, setCoords] = useState<GeolocationCoords | null>(null)
+  const [mode, setModeState] = useState<ThemeMode>('auto')
+  const [phase, setPhase] = useState('day')
+  const [isDay, setIsDay] = useState(true)
+  const [twilightProgress, setTwilightProgress] = useState(0)
+  const [sunAltitude, setSunAltitude] = useState(45)
 
+  // Load stored preferences on mount
   useEffect(() => {
     setMounted(true)
 
-    // First, check if we have stored coordinates
-    const stored = localStorage.getItem('user_coords')
-    const storedTimestamp = localStorage.getItem('user_coords_timestamp')
+    const prefs = loadPreferences()
+    setModeState(prefs.mode)
 
-    if (stored && storedTimestamp) {
-      const age = Date.now() - parseInt(storedTimestamp)
-      const ONE_WEEK = 7 * 24 * 60 * 60 * 1000 // 7 days in milliseconds
-
-      // If coordinates are less than 1 week old, use them
-      if (age < ONE_WEEK) {
-        try {
-          setCoords(JSON.parse(stored))
-          console.log('Using cached location (age: ' + Math.round(age / (1000 * 60 * 60)) + ' hours)')
-          return // Don't request location permission if we have recent coords
-        } catch (e) {
-          console.error('Failed to parse stored coordinates')
-        }
-      }
+    // Use stored coordinates if available
+    if (prefs.latitude !== null && prefs.longitude !== null) {
+      setCoords({ latitude: prefs.latitude, longitude: prefs.longitude })
+      console.log('[Theme] Using stored location:', prefs.latitude.toFixed(2), prefs.longitude.toFixed(2))
     }
 
-    // Only request location if we don't have recent stored coords
+    // Request fresh geolocation (will update storage if successful)
     if ('geolocation' in navigator) {
       navigator.geolocation.getCurrentPosition(
         (position) => {
@@ -47,68 +81,132 @@ export function TimeThemeProvider({ children }: { children: React.ReactNode }) {
             longitude: position.coords.longitude,
           }
           setCoords(newCoords)
-          // Store coordinates and timestamp in localStorage
-          localStorage.setItem('user_coords', JSON.stringify(newCoords))
-          localStorage.setItem('user_coords_timestamp', Date.now().toString())
-          console.log('Location acquired and cached')
+
+          // Save indefinitely
+          savePreferences({
+            latitude: newCoords.latitude,
+            longitude: newCoords.longitude,
+          })
+          console.log('[Theme] Location updated and saved permanently')
         },
         (error) => {
-          console.log('Geolocation not available, using fallback times')
+          console.log('[Theme] Geolocation not available, using stored or default')
         },
         {
           enableHighAccuracy: false,
-          timeout: 5000,
-          maximumAge: 0, // Don't use cached position from browser
+          timeout: 10000,
+          maximumAge: 300000, // Accept cached position up to 5 minutes old
         }
       )
     }
   }, [])
 
+  // Mode setter that persists to storage
+  const setMode = useCallback((newMode: ThemeMode) => {
+    setModeState(newMode)
+    savePreferences({ mode: newMode })
+
+    // Dispatch event for other components
+    window.dispatchEvent(new CustomEvent('theme-mode-change', { detail: { mode: newMode } }))
+  }, [])
+
+  // Main theme update effect
   useEffect(() => {
     if (!mounted) return
 
     const updateTheme = () => {
-      const mode = (localStorage.getItem('theme_mode') as ThemeMode) || 'auto'
+      const now = new Date()
 
+      // Handle fixed modes
       if (mode === 'morning') {
         document.documentElement.className = 'day'
+        clearThemeColors()
+        setPhase('Day (Fixed)')
+        setIsDay(true)
+        setTwilightProgress(0)
+        setSunAltitude(60)
         return
       }
 
       if (mode === 'night') {
         document.documentElement.className = 'night'
+        clearThemeColors()
+        setPhase('Night (Fixed)')
+        setIsDay(false)
+        setTwilightProgress(1)
+        setSunAltitude(-30)
         return
       }
 
-      // Auto mode - calculate based on time
-      const theme = calculateTimeTheme(coords)
-      document.documentElement.className = theme
+      // AUTO MODE - Smooth interpolation
+      const { colors, phase: currentPhase } = getCurrentThemeColors(now, coords)
+      applyThemeColors(colors)
+
+      // Calculate sun position for UI elements
+      const sunPos = getSunPosition(now, coords)
+      const twilight = getTwilightProgress(now, coords)
+
+      setPhase(currentPhase)
+      setIsDay(sunPos.isDay)
+      setTwilightProgress(twilight)
+      setSunAltitude(sunPos.sunAltitude)
+
+      // Set appropriate class for day-only/night-only CSS visibility
+      // Use a smooth threshold with hysteresis
+      if (twilight < 0.3) {
+        document.documentElement.className = 'day'
+      } else if (twilight > 0.7) {
+        document.documentElement.className = 'night'
+      } else if (twilight < 0.5) {
+        document.documentElement.className = 'dusk'
+      } else {
+        document.documentElement.className = 'evening'
+      }
     }
 
     // Update immediately
     updateTheme()
 
-    // Update every minute to catch theme transitions
-    const interval = setInterval(updateTheme, 60000)
+    // Update every 30 seconds for smooth transitions
+    // This is frequent enough to appear continuous but efficient on resources
+    const interval = setInterval(updateTheme, 30000)
 
-    // Listen for manual theme mode changes from ThemeToggle
-    const handleModeChange = () => {
+    // Listen for manual theme mode changes
+    const handleModeChange = (e: CustomEvent<{ mode: ThemeMode }>) => {
+      // Mode is already set via setMode, just trigger update
       updateTheme()
     }
-    window.addEventListener('theme-mode-change', handleModeChange)
+
+    window.addEventListener('theme-mode-change', handleModeChange as EventListener)
 
     return () => {
       clearInterval(interval)
-      window.removeEventListener('theme-mode-change', handleModeChange)
+      window.removeEventListener('theme-mode-change', handleModeChange as EventListener)
     }
-  }, [mounted, coords])
+  }, [mounted, coords, mode])
 
-  return <>{children}</>
+  // Context value
+  const contextValue: TimeThemeContextType = {
+    mode,
+    setMode,
+    phase,
+    isDay,
+    twilightProgress,
+    sunAltitude,
+    coords,
+  }
+
+  return (
+    <TimeThemeContext.Provider value={contextValue}>
+      {children}
+    </TimeThemeContext.Provider>
+  )
 }
 
 /**
  * Calculate the appropriate theme based on current time and location
  * Uses 8 granular time phases for natural transitions
+ * @deprecated Use smooth interpolation via useTimeTheme() instead
  */
 function calculateTimeTheme(coords: GeolocationCoords | null): TimeTheme {
   const now = new Date()
