@@ -442,6 +442,9 @@ export default function MyVolitionPage() {
                 <p className="text-[9px] font-medium text-white/50 italic mt-0.5">
                   Track your contributions to Project Exodus. They are YOUR STOCK of the P.E. system.
                 </p>
+                <p className="text-[8px] font-medium text-white/40 flex items-center gap-1 mt-1">
+                  <GripVertical className="w-3 h-3" /> Drag widgets to reorganize your dashboard
+                </p>
               </div>
             </div>
           </div>

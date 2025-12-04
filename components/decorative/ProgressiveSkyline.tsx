@@ -638,7 +638,8 @@ export function ProgressiveSkyline() {
                   {/* Detailed windows */}
                   <rect x={x+4} y="190" width="5" height="7" fill="#6b8ea8" opacity="1" />
                   <rect x={x+19} y="190" width="5" height="7" fill="#6b8ea8" opacity="1" />
-                  <rect x={x+11} y="178" width="4" height="5" fill="#6b8ea8" opacity="1" />
+                  {/* Tower window - centered within tower (tower is at x+12, width 4) */}
+                  <rect x={x+12.5} y="178" width="3" height="5" fill="#6b8ea8" opacity="1" />
 
                   {/* Front door with porch */}
                   <rect x={x+11} y="197" width="6" height="10" fill="#8b5a3c" opacity="1" />
@@ -926,29 +927,48 @@ export function ProgressiveSkyline() {
                     </g>
 
                     {/* Balconies on select floors - only for taller buildings */}
+                    {/* Balconies align with window grid: windows at x+4+col*16, y+12+row*20 */}
                     {bldg.h > 70 && (
                       <g opacity="1">
-                        {Array.from({length: Math.floor(bldg.h/40)}).map((_, floor) => (
-                          Array.from({length: Math.floor(bldg.w/32)}).map((_, side) => (
-                            <g key={`balc-${floor}-${side}`}>
-                              {/* Balcony platform */}
-                              <rect x={bldg.x + 8 + side * 32}
-                                    y={215 - bldg.h + 25 + floor * 40}
-                                    width="12"
-                                    height="2"
-                                    fill="#7a8a7a"
-                                    opacity="1" />
-                              {/* Balcony railing */}
-                              <rect x={bldg.x + 8 + side * 32}
-                                    y={215 - bldg.h + 20 + floor * 40}
-                                    width="12"
-                                    height="5"
-                                    fill="none"
-                                    stroke="#7a8a7a"
-                                    strokeWidth="0.5"
-                                    opacity="1" />
-                            </g>
-                          ))
+                        {Array.from({length: Math.floor((bldg.h - 20)/40)}).map((_, floor) => (
+                          Array.from({length: Math.max(1, Math.floor((bldg.w - 8)/32))}).map((_, side) => {
+                            // Align balcony X with window column (windows at bldg.x + 4 + col*16)
+                            const balconyX = bldg.x + 4 + side * 32
+                            // Balcony sits at bottom of window row (window at y+12, height 14, so bottom at y+26)
+                            // Place balcony every 2 window rows (40px spacing)
+                            const windowRowY = 215 - bldg.h + 26 + floor * 40
+                            return (
+                              <g key={`balc-${floor}-${side}`}>
+                                {/* Balcony floor/platform - extends out from building */}
+                                <rect x={balconyX - 1}
+                                      y={windowRowY}
+                                      width="12"
+                                      height="2"
+                                      fill="#6a7a6a"
+                                      opacity="1" />
+                                {/* Balcony railing - sits on top of platform */}
+                                <rect x={balconyX - 1}
+                                      y={windowRowY - 6}
+                                      width="1"
+                                      height="6"
+                                      fill="#5a6a5a"
+                                      opacity="1" />
+                                <rect x={balconyX + 10}
+                                      y={windowRowY - 6}
+                                      width="1"
+                                      height="6"
+                                      fill="#5a6a5a"
+                                      opacity="1" />
+                                {/* Top rail connecting posts */}
+                                <rect x={balconyX - 1}
+                                      y={windowRowY - 6}
+                                      width="12"
+                                      height="1"
+                                      fill="#5a6a5a"
+                                      opacity="1" />
+                              </g>
+                            )
+                          })
                         ))}
                       </g>
                     )}
