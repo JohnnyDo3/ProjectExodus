@@ -498,7 +498,7 @@ export default function MyVolitionPage() {
                   <div className="flex items-center justify-between mb-2">
                     <div className="flex items-center gap-1.5">
                       <MessageCircle className="w-4 h-4 text-theme-primary" />
-                      <h2 className="text-[10px] font-black text-[var(--foreground)]">MY FEED POSTS</h2>
+                      <h2 className="text-[8px] font-black text-[var(--foreground)] whitespace-nowrap">MY FEED POSTS</h2>
                     </div>
                     <Link href="/community/feed">
                       <button className="w-6 h-6 rounded-full bg-[var(--primary)] text-white flex items-center justify-center hover:bg-[var(--accent)] transition-colors">
@@ -614,7 +614,7 @@ export default function MyVolitionPage() {
                   <div className="flex items-center justify-between mb-2">
                     <div className="flex items-center gap-1.5">
                       <BookOpen className="w-4 h-4 text-theme-accent" />
-                      <h2 className="text-[10px] font-black text-[var(--foreground)]">MY LEARNING</h2>
+                      <h2 className="text-[8px] font-black text-[var(--foreground)] whitespace-nowrap">MY LEARNING</h2>
                     </div>
                     <Link href="/learn">
                       <button className="w-6 h-6 rounded-full bg-[var(--accent)] text-white flex items-center justify-center hover:bg-[var(--primary)] transition-colors">
@@ -732,7 +732,7 @@ export default function MyVolitionPage() {
                   <div className="flex items-center justify-between mb-2">
                     <div className="flex items-center gap-1.5">
                       <Briefcase className="w-4 h-4 text-theme-secondary" />
-                      <h2 className="text-[10px] font-black text-[var(--foreground)]">MY PROJECTS</h2>
+                      <h2 className="text-[8px] font-black text-[var(--foreground)] whitespace-nowrap">MY PROJECTS</h2>
                     </div>
                     <Link href="/community/projects/new">
                       <button className="w-6 h-6 rounded-full bg-[var(--secondary)] text-white flex items-center justify-center hover:bg-[var(--primary)] transition-colors">
@@ -850,20 +850,24 @@ export default function MyVolitionPage() {
                         return (
                           <DraggableColumn key={columnId} id="network">
                             <div className="flex-shrink-0 w-96 h-full flex flex-col bg-[var(--card)] rounded-2xl border-2 border-theme-primary shadow-lg overflow-hidden">
-                              <div className="p-3 border-b border-[var(--border)] flex items-center justify-between">
-                                <div className="flex items-center gap-1.5">
-                                  <User className="w-4 h-4 text-theme-primary flex-shrink-0" />
-                                  <h2 className="text-[10px] font-black text-[var(--foreground)]">MY CONNECTIONS</h2>
-                                </div>
-                                <div className="flex items-center gap-1.5">
-                                  <Link href="/messages">
-                                    <button className="w-6 h-6 rounded-full bg-[var(--accent)] text-white flex items-center justify-center hover:bg-[var(--primary)] transition-colors flex-shrink-0" title="Messages">
-                                      <Mail className="w-3.5 h-3.5" />
-                                    </button>
-                                  </Link>
+                              <div className="p-3 border-b border-[var(--border)]">
+                                <div className="flex items-center justify-between mb-2">
+                                  <div className="flex items-center gap-1.5">
+                                    <User className="w-4 h-4 text-theme-primary flex-shrink-0" />
+                                    <h2 className="text-[8px] font-black text-[var(--foreground)] whitespace-nowrap">MY CONNECTIONS</h2>
+                                  </div>
                                   <Link href="/network/browse">
                                     <button className="w-6 h-6 rounded-full bg-[var(--primary)] text-white flex items-center justify-center hover:bg-[var(--accent)] transition-colors flex-shrink-0" title="Browse Network">
                                       <Plus className="w-3.5 h-3.5" />
+                                    </button>
+                                  </Link>
+                                </div>
+                                {/* Filter-style Messages Button */}
+                                <div className="flex gap-1.5">
+                                  <Link href="/messages" className="flex-1">
+                                    <button className="w-full px-1.5 py-0.5 rounded text-[9px] font-bold transition-colors bg-[var(--muted)] text-[var(--foreground)] hover:bg-[var(--primary)] hover:text-white flex items-center justify-center gap-1">
+                                      <Mail className="w-3 h-3" />
+                                      Messages
                                     </button>
                                   </Link>
                                 </div>
@@ -944,7 +948,7 @@ export default function MyVolitionPage() {
                 <div className="p-3 border-b border-[var(--border)] flex items-center justify-between">
                   <div className="flex items-center gap-1.5">
                     <FileText className="w-4 h-4 text-theme-accent" />
-                    <h2 className="text-[10px] font-black text-[var(--foreground)]">MY ARTICLES</h2>
+                    <h2 className="text-[8px] font-black text-[var(--foreground)] whitespace-nowrap">MY ARTICLES</h2>
                   </div>
                   <Link href="/articles/write">
                     <button className="w-6 h-6 rounded-full bg-[var(--accent)] text-white flex items-center justify-center hover:bg-[var(--primary)] transition-colors">
