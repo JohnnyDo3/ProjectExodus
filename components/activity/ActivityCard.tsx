@@ -244,7 +244,7 @@ export function ActivityCard({ activity, currentUserId }: ActivityCardProps) {
           {/* Quick Actions */}
           {user.id !== currentUserId && (
             <div className="flex items-center gap-1">
-              <Link href={`/messages/${user.id}`}>
+              <Link href={`/messages?user=${user.id}`}>
                 <Button size="sm" variant="ghost" className="h-7 w-7 p-0" title="Message">
                   <MessageCircle className="w-3.5 h-3.5" />
                 </Button>

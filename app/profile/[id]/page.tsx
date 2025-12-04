@@ -138,7 +138,7 @@ export default async function ProfilePage({ params }: { params: Promise<{ id: st
                     ) : (
                       <div className="flex gap-2">
                         <FollowButton userId={user.id} className="font-black" />
-                        <Link href={`/messages/${user.id}`}>
+                        <Link href={`/messages?user=${user.id}`}>
                           <Button size="sm" variant="outline" className="font-black">
                             <MessageSquare className="w-4 h-4 mr-2" />
                             MESSAGE
