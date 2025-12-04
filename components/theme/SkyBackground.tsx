@@ -1,32 +1,25 @@
 'use client'
 
 import { useSkyTheme } from './SkyThemeProvider'
-import { NightSkyConstellations } from './NightSkyConstellations'
 
 export function SkyBackground() {
   const { theme, currentPhase } = useSkyTheme()
 
+  // Only show daytime sky gradient - night sky is handled by home page hero only
   const isNightTime = ['dusk', 'evening', 'night', 'midnight'].includes(currentPhase)
 
+  // During night, let the CSS theme variables handle the background
+  // The NightSkyConstellations is only used on the home page hero
+  if (isNightTime) {
+    return null
+  }
+
   return (
-    <>
-      {/* Sky Gradient Background */}
-      {!isNightTime && (
-        <div
-          className="fixed inset-0 z-0 transition-all duration-[2000ms] ease-in-out pointer-events-none"
-          style={{
-            background: theme.colors.sky
-          }}
-        />
-      )}
-
-      {/* Night Sky with Constellations */}
-      {isNightTime && <NightSkyConstellations />}
-
-      {/* Content overlay to ensure content is above background */}
-      <div className="relative z-10">
-        {/* This div ensures all page content renders above the sky background */}
-      </div>
-    </>
+    <div
+      className="fixed inset-0 z-0 transition-all duration-[2000ms] ease-in-out pointer-events-none"
+      style={{
+        background: theme.colors.sky
+      }}
+    />
   )
 }
