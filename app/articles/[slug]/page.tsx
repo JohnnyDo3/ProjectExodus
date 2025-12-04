@@ -5,6 +5,8 @@ import { Clock, User, Calendar, MessageCircle, Tag } from 'lucide-react'
 import { formatDate } from '@/lib/utils/format'
 import Link from 'next/link'
 import { MarkdownContent } from '@/components/article/MarkdownContent'
+import { ReferencesWidget } from '@/components/article/ReferencesWidget'
+import { PeerReviewWidget } from '@/components/article/PeerReviewWidget'
 
 async function getArticle(slug: string) {
   try {
@@ -38,9 +40,9 @@ export default async function ArticleDetailPage({
   }
 
   return (
-    <div className="min-h-screen">
+    <div className="min-h-screen bg-sand-50 dark:bg-earth-900 transition-colors">
       {/* Hero Section */}
-      <section className="py-24 bg-gradient-to-br from-ocean-50 via-moss-50 to-terra-50">
+      <section className="py-24 bg-gradient-to-br from-ocean-50 via-moss-50 to-terra-50 dark:from-earth-800 dark:via-earth-900 dark:to-earth-800">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
           <div className="max-w-5xl mx-auto text-center space-y-8">
             {article.featured && (
@@ -53,12 +55,12 @@ export default async function ArticleDetailPage({
               </div>
             )}
 
-            <h1 className="text-5xl md:text-7xl font-black leading-tight" style={{ color: '#000' }}>
+            <h1 className="text-5xl md:text-7xl font-black leading-tight text-earth-900 dark:text-sand-100">
               {article.title}
             </h1>
 
             {article.excerpt && (
-              <p className="text-2xl font-semibold max-w-4xl mx-auto" style={{ color: '#333' }}>
+              <p className="text-2xl font-semibold max-w-4xl mx-auto text-earth-700 dark:text-sand-300">
                 {article.excerpt}
               </p>
             )}
@@ -66,13 +68,13 @@ export default async function ArticleDetailPage({
             {/* Article Meta */}
             <div className="flex flex-wrap items-center justify-center gap-8 text-base font-bold pt-6">
               {article.author?.name && (
-                <div className="flex items-center gap-2 text-ocean-700">
+                <div className="flex items-center gap-2 text-ocean-700 dark:text-ocean-400">
                   <User className="w-5 h-5" />
                   <span>{article.author.name}</span>
                 </div>
               )}
               {article.publishedAt && (
-                <div className="flex items-center gap-2" style={{ color: '#666' }}>
+                <div className="flex items-center gap-2 text-earth-600 dark:text-sand-400">
                   <Calendar className="w-5 h-5" />
                   <time dateTime={article.publishedAt}>
                     {formatDate(new Date(article.publishedAt))}
@@ -80,13 +82,13 @@ export default async function ArticleDetailPage({
                 </div>
               )}
               {article.readTime && (
-                <div className="flex items-center gap-2 text-moss-700">
+                <div className="flex items-center gap-2 text-moss-700 dark:text-moss-400">
                   <Clock className="w-5 h-5" />
                   <span>{article.readTime} MIN READ</span>
                 </div>
               )}
               {article.comments && (
-                <div className="flex items-center gap-2" style={{ color: '#666' }}>
+                <div className="flex items-center gap-2 text-earth-600 dark:text-sand-400">
                   <MessageCircle className="w-5 h-5" />
                   <span>{article.comments.length} COMMENTS</span>
                 </div>
@@ -113,12 +115,12 @@ export default async function ArticleDetailPage({
             <div className="grid md:grid-cols-4 gap-8">
               {/* Main Content */}
               <article className="md:col-span-3">
-                <Card>
+                <Card className="dark:bg-earth-800 dark:border-earth-700">
                   <CardContent className="p-8 md:p-12">
                     {article.content ? (
                       <MarkdownContent content={article.content} />
                     ) : (
-                      <p className="text-lg font-medium leading-relaxed" style={{ color: '#333' }}>
+                      <p className="text-lg font-medium leading-relaxed text-earth-700 dark:text-sand-300">
                         {article.excerpt || 'Article content coming soon...'}
                       </p>
                     )}
@@ -128,7 +130,7 @@ export default async function ArticleDetailPage({
                 {/* Tags */}
                 {article.tags && article.tags.length > 0 && (
                   <div className="mt-8">
-                    <h3 className="text-sm font-semibold text-earth-900 mb-3 flex items-center gap-2">
+                    <h3 className="text-sm font-semibold text-earth-900 dark:text-sand-100 mb-3 flex items-center gap-2">
                       <Tag className="w-4 h-4" />
                       Tags
                     </h3>
@@ -137,7 +139,7 @@ export default async function ArticleDetailPage({
                         <Link
                           key={tagRel.tag.id}
                           href={`/learn?tag=${tagRel.tag.slug}`}
-                          className="px-3 py-1 bg-sand-100 hover:bg-sand-200 rounded-full text-sm text-earth-700"
+                          className="px-3 py-1 bg-sand-100 dark:bg-earth-700 hover:bg-sand-200 dark:hover:bg-earth-600 rounded-full text-sm text-earth-700 dark:text-sand-300 transition-colors"
                         >
                           {tagRel.tag.name}
                         </Link>
@@ -149,9 +151,9 @@ export default async function ArticleDetailPage({
                 {/* Comments Section */}
                 {article.comments && article.comments.length > 0 && (
                   <div className="mt-12">
-                    <Card>
+                    <Card className="dark:bg-earth-800 dark:border-earth-700">
                       <CardHeader>
-                        <CardTitle className="flex items-center gap-2">
+                        <CardTitle className="flex items-center gap-2 text-earth-900 dark:text-sand-100">
                           <MessageCircle className="w-5 h-5" />
                           Comments ({article.comments.length})
                         </CardTitle>
@@ -162,43 +164,43 @@ export default async function ArticleDetailPage({
                             {/* Top-level comment */}
                             <div className="flex gap-4">
                               <div className="flex-shrink-0">
-                                <div className="w-10 h-10 rounded-full bg-moss-100 flex items-center justify-center">
-                                  <User className="w-5 h-5 text-moss-600" />
+                                <div className="w-10 h-10 rounded-full bg-moss-100 dark:bg-moss-900 flex items-center justify-center">
+                                  <User className="w-5 h-5 text-moss-600 dark:text-moss-400" />
                                 </div>
                               </div>
                               <div className="flex-grow">
                                 <div className="flex items-center gap-2 mb-1">
-                                  <span className="font-semibold text-earth-900">
+                                  <span className="font-semibold text-earth-900 dark:text-sand-100">
                                     {comment.user?.name || 'Anonymous'}
                                   </span>
-                                  <span className="text-sm text-earth-500">
+                                  <span className="text-sm text-earth-500 dark:text-sand-500">
                                     {formatDate(new Date(comment.createdAt))}
                                   </span>
                                 </div>
-                                <p className="text-earth-700">{comment.content}</p>
+                                <p className="text-earth-700 dark:text-sand-300">{comment.content}</p>
                               </div>
                             </div>
 
                             {/* Replies */}
                             {comment.replies && comment.replies.length > 0 && (
-                              <div className="ml-14 space-y-4 border-l-2 border-sand-200 pl-6">
+                              <div className="ml-14 space-y-4 border-l-2 border-sand-200 dark:border-earth-600 pl-6">
                                 {comment.replies.map((reply: any) => (
                                   <div key={reply.id} className="flex gap-4">
                                     <div className="flex-shrink-0">
-                                      <div className="w-8 h-8 rounded-full bg-ocean-100 flex items-center justify-center">
-                                        <User className="w-4 h-4 text-ocean-600" />
+                                      <div className="w-8 h-8 rounded-full bg-ocean-100 dark:bg-ocean-900 flex items-center justify-center">
+                                        <User className="w-4 h-4 text-ocean-600 dark:text-ocean-400" />
                                       </div>
                                     </div>
                                     <div className="flex-grow">
                                       <div className="flex items-center gap-2 mb-1">
-                                        <span className="font-semibold text-earth-900 text-sm">
+                                        <span className="font-semibold text-earth-900 dark:text-sand-100 text-sm">
                                           {reply.user?.name || 'Anonymous'}
                                         </span>
-                                        <span className="text-xs text-earth-500">
+                                        <span className="text-xs text-earth-500 dark:text-sand-500">
                                           {formatDate(new Date(reply.createdAt))}
                                         </span>
                                       </div>
-                                      <p className="text-sm text-earth-700">{reply.content}</p>
+                                      <p className="text-sm text-earth-700 dark:text-sand-300">{reply.content}</p>
                                     </div>
                                   </div>
                                 ))}
@@ -214,15 +216,24 @@ export default async function ArticleDetailPage({
 
               {/* Sidebar */}
               <aside className="md:col-span-1 space-y-6">
+                {/* References Widget */}
+                <ReferencesWidget references={article.references || []} />
+
+                {/* Peer Review Widget */}
+                <PeerReviewWidget
+                  articleId={article.id}
+                  peerReviews={article.peerReviews || []}
+                />
+
                 {/* Author Card */}
                 {article.author && (
-                  <Card>
+                  <Card className="dark:bg-earth-800 dark:border-earth-700">
                     <CardHeader>
-                      <CardTitle className="text-base">About the Author</CardTitle>
+                      <CardTitle className="text-base text-earth-900 dark:text-sand-100">About the Author</CardTitle>
                     </CardHeader>
                     <CardContent>
                       <div className="text-center">
-                        <div className="w-20 h-20 rounded-full bg-moss-100 flex items-center justify-center mx-auto mb-3">
+                        <div className="w-20 h-20 rounded-full bg-moss-100 dark:bg-moss-900 flex items-center justify-center mx-auto mb-3">
                           {article.author.image ? (
                             <img
                               src={article.author.image}
@@ -230,14 +241,14 @@ export default async function ArticleDetailPage({
                               className="w-full h-full rounded-full object-cover"
                             />
                           ) : (
-                            <User className="w-10 h-10 text-moss-600" />
+                            <User className="w-10 h-10 text-moss-600 dark:text-moss-400" />
                           )}
                         </div>
-                        <h3 className="font-bold text-earth-900 mb-2">
+                        <h3 className="font-bold text-earth-900 dark:text-sand-100 mb-2">
                           {article.author.name}
                         </h3>
                         {article.author.bio && (
-                          <p className="text-sm text-earth-600">
+                          <p className="text-sm text-earth-600 dark:text-sand-400">
                             {article.author.bio}
                           </p>
                         )}
@@ -247,19 +258,19 @@ export default async function ArticleDetailPage({
                 )}
 
                 {/* Share Card */}
-                <Card>
+                <Card className="dark:bg-earth-800 dark:border-earth-700">
                   <CardHeader>
-                    <CardTitle className="text-base">Share Article</CardTitle>
+                    <CardTitle className="text-base text-earth-900 dark:text-sand-100">Share Article</CardTitle>
                   </CardHeader>
                   <CardContent>
                     <div className="space-y-2">
-                      <Button variant="outline" className="w-full text-sm" size="sm">
+                      <Button variant="outline" className="w-full text-sm dark:border-earth-600 dark:text-sand-200 dark:hover:bg-earth-700" size="sm">
                         Share on Twitter
                       </Button>
-                      <Button variant="outline" className="w-full text-sm" size="sm">
+                      <Button variant="outline" className="w-full text-sm dark:border-earth-600 dark:text-sand-200 dark:hover:bg-earth-700" size="sm">
                         Share on Facebook
                       </Button>
-                      <Button variant="outline" className="w-full text-sm" size="sm">
+                      <Button variant="outline" className="w-full text-sm dark:border-earth-600 dark:text-sand-200 dark:hover:bg-earth-700" size="sm">
                         Copy Link
                       </Button>
                     </div>

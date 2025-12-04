@@ -9,10 +9,10 @@ export function MarkdownContent({ content }: MarkdownContentProps) {
   const convertMarkdownToHTML = (markdown: string): string => {
     let html = markdown
 
-    // Headers
-    html = html.replace(/^### (.+)$/gm, '<h3 class="text-2xl font-black mt-8 mb-4" style="color: #1f2937">$1</h3>')
-    html = html.replace(/^## (.+)$/gm, '<h2 class="text-3xl font-black mt-10 mb-6" style="color: #1f2937">$1</h2>')
-    html = html.replace(/^# (.+)$/gm, '<h1 class="text-4xl font-black mt-12 mb-8" style="color: #000">$1</h1>')
+    // Headers - using CSS classes that respect dark mode
+    html = html.replace(/^### (.+)$/gm, '<h3 class="article-h3">$1</h3>')
+    html = html.replace(/^## (.+)$/gm, '<h2 class="article-h2">$1</h2>')
+    html = html.replace(/^# (.+)$/gm, '<h1 class="article-h1">$1</h1>')
 
     // Bold
     html = html.replace(/\*\*(.+?)\*\*/g, '<strong class="font-black">$1</strong>')
@@ -20,16 +20,23 @@ export function MarkdownContent({ content }: MarkdownContentProps) {
     // Italic
     html = html.replace(/\*(.+?)\*/g, '<em class="italic">$1</em>')
 
+    // Links
+    html = html.replace(/\[([^\]]+)\]\(([^)]+)\)/g, '<a href="$2" class="article-link" target="_blank" rel="noopener noreferrer">$1</a>')
+
     // Lists - Ordered
-    html = html.replace(/^\d+\.\s+(.+)$/gm, '<li class="ml-6 mb-3 text-lg font-semibold" style="color: #1f2937">$1</li>')
-    html = html.replace(/(<li.*<\/li>\n?)+/g, '<ol class="list-decimal list-outside space-y-3 mb-8">$&</ol>')
+    html = html.replace(/^\d+\.\s+(.+)$/gm, '<li class="article-li">$1</li>')
+    html = html.replace(/(<li class="article-li">.*<\/li>\n?)+/g, '<ol class="article-ol">$&</ol>')
+
+    // Lists - Unordered
+    html = html.replace(/^[-*]\s+(.+)$/gm, '<li class="article-li-ul">$1</li>')
+    html = html.replace(/(<li class="article-li-ul">.*<\/li>\n?)+/g, '<ul class="article-ul">$&</ul>')
 
     // Paragraphs
     html = html.split('\n\n').map(para => {
       // Don't wrap headers, lists
       if (para.match(/^<[houl]/)) return para
       if (para.trim() === '') return ''
-      return `<p class="text-lg font-semibold leading-relaxed mb-6" style="color: #1f2937">${para}</p>`
+      return `<p class="article-p">${para}</p>`
     }).join('\n')
 
     // Line breaks
@@ -40,7 +47,7 @@ export function MarkdownContent({ content }: MarkdownContentProps) {
 
   return (
     <div
-      className="article-content"
+      className="article-content text-earth-800 dark:text-sand-200"
       dangerouslySetInnerHTML={{ __html: convertMarkdownToHTML(content) }}
     />
   )

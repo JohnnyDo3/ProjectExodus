@@ -6,11 +6,19 @@ import { Button } from '@/components/ui/Button'
 import { Input } from '@/components/ui/Input'
 import { Select } from '@/components/ui/Select'
 import { Textarea } from '@/components/ui/Textarea'
-import { ArrowLeft, Save, Eye } from 'lucide-react'
+import { ArrowLeft, Save, Eye, Plus, Trash2, Link as LinkIcon } from 'lucide-react'
 import Link from 'next/link'
+
+interface Reference {
+  id: string
+  title: string
+  url: string
+  description: string
+}
 
 export default function NewArticlePage() {
   const [saving, setSaving] = useState(false)
+  const [references, setReferences] = useState<Reference[]>([])
   const [formData, setFormData] = useState({
     title: '',
     slug: '',
@@ -23,13 +31,30 @@ export default function NewArticlePage() {
     status: 'DRAFT',
   })
 
+  const addReference = () => {
+    setReferences(prev => [
+      ...prev,
+      { id: crypto.randomUUID(), title: '', url: '', description: '' }
+    ])
+  }
+
+  const updateReference = (id: string, field: keyof Reference, value: string) => {
+    setReferences(prev =>
+      prev.map(ref => (ref.id === id ? { ...ref, [field]: value } : ref))
+    )
+  }
+
+  const removeReference = (id: string) => {
+    setReferences(prev => prev.filter(ref => ref.id !== id))
+  }
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
     setSaving(true)
 
     try {
       // TODO: Connect to API
-      console.log('Submitting article:', formData)
+      console.log('Submitting article:', { ...formData, references })
       await new Promise(resolve => setTimeout(resolve, 1000))
       alert('Article created successfully!')
     } catch (error) {
@@ -215,6 +240,76 @@ export default function NewArticlePage() {
                       { value: 'author-2', label: 'Guest Writer' },
                     ]}
                   />
+                </CardContent>
+              </Card>
+
+              {/* References */}
+              <Card className="border-2 border-ocean-200">
+                <CardHeader>
+                  <div className="flex items-center justify-between">
+                    <CardTitle className="flex items-center gap-2">
+                      <LinkIcon className="w-5 h-5 text-ocean-600" />
+                      References
+                    </CardTitle>
+                    <Button
+                      type="button"
+                      variant="outline"
+                      size="sm"
+                      onClick={addReference}
+                      className="text-ocean-600 border-ocean-300 hover:bg-ocean-50"
+                    >
+                      <Plus className="w-4 h-4 mr-1" />
+                      Add
+                    </Button>
+                  </div>
+                </CardHeader>
+                <CardContent className="space-y-4">
+                  {references.length === 0 ? (
+                    <p className="text-sm text-earth-500 text-center py-4">
+                      No references added yet. Click "Add" to include source links.
+                    </p>
+                  ) : (
+                    references.map((ref, index) => (
+                      <div
+                        key={ref.id}
+                        className="p-4 bg-sand-50 rounded-lg space-y-3 relative"
+                      >
+                        <div className="flex items-center justify-between mb-2">
+                          <span className="text-xs font-bold text-ocean-600 uppercase">
+                            Reference #{index + 1}
+                          </span>
+                          <button
+                            type="button"
+                            onClick={() => removeReference(ref.id)}
+                            className="p-1 text-terra-600 hover:bg-terra-100 rounded transition-colors"
+                          >
+                            <Trash2 className="w-4 h-4" />
+                          </button>
+                        </div>
+                        <Input
+                          label="Title"
+                          value={ref.title}
+                          onChange={(e) => updateReference(ref.id, 'title', e.target.value)}
+                          placeholder="e.g., Solar Energy Statistics 2024"
+                          className="text-sm"
+                        />
+                        <Input
+                          label="URL"
+                          value={ref.url}
+                          onChange={(e) => updateReference(ref.id, 'url', e.target.value)}
+                          placeholder="https://example.com/source"
+                          className="text-sm"
+                        />
+                        <Input
+                          label="Description (optional)"
+                          value={ref.description}
+                          onChange={(e) => updateReference(ref.id, 'description', e.target.value)}
+                          placeholder="Brief description of the source"
+                          className="text-sm"
+                        />
+                      </div>
+                    ))
+                  )}
                 </CardContent>
               </Card>
 

@@ -152,7 +152,7 @@ export default async function CategoryPage({
                       NO POSTS YET
                     </h3>
                     <p className="font-semibold mb-6" style={{ color: '#888' }}>
-                      Be the first to start a discussion!
+                      Be the first to start a conversation!
                     </p>
                     <Button size="lg" className="font-black">
                       CREATE FIRST POST

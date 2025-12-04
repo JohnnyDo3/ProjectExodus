@@ -63,7 +63,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
       select: { slug: true, updatedAt: true },
     })
 
-    const productPages = products.map((product) => ({
+    const productPages = products.map((product: { slug: string; updatedAt: Date }) => ({
       url: `${baseUrl}/products/${product.slug}`,
       lastModified: product.updatedAt,
       changeFrequency: 'weekly' as const,
@@ -76,7 +76,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
       select: { slug: true, updatedAt: true },
     })
 
-    const articlePages = articles.map((article) => ({
+    const articlePages = articles.map((article: { slug: string; updatedAt: Date }) => ({
       url: `${baseUrl}/articles/${article.slug}`,
       lastModified: article.updatedAt,
       changeFrequency: 'monthly' as const,
@@ -88,7 +88,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
       select: { slug: true, updatedAt: true },
     })
 
-    const vendorPages = vendors.map((vendor) => ({
+    const vendorPages = vendors.map((vendor: { slug: string; updatedAt: Date }) => ({
       url: `${baseUrl}/vendors/${vendor.slug}`,
       lastModified: vendor.updatedAt,
       changeFrequency: 'weekly' as const,

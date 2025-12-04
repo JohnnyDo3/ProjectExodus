@@ -41,7 +41,7 @@ export default function CommunityPage() {
           </div>
           <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-10 max-w-7xl mx-auto">
             {[
-              { icon: MessageSquare, title: 'DISCUSSION FORUMS', desc: 'Deep conversations on sustainability topics', color: 'moss' },
+              { icon: MessageSquare, title: 'ROUND TABLE', desc: 'Deep conversations on sustainability topics', color: 'moss' },
               { icon: Users, title: 'USER PROFILES', desc: 'Track your journey and build your reputation', color: 'ocean' },
               { icon: Award, title: 'ACHIEVEMENTS', desc: 'Earn badges for your contributions', color: 'terra' },
               { icon: Rocket, title: 'PROJECTS', desc: 'Collaborate on local initiatives', color: 'moss' },
@@ -79,7 +79,7 @@ export default function CommunityPage() {
             <div className="grid grid-cols-2 md:grid-cols-4 gap-10">
               {[
                 { value: '1K+', label: 'MEMBERS' },
-                { value: '500+', label: 'DISCUSSIONS' },
+                { value: '500+', label: 'CONVERSATIONS' },
                 { value: '50+', label: 'PROJECTS' },
                 { value: '∞', label: 'IMPACT' }
               ].map((stat, i) => (
@@ -114,16 +114,16 @@ export default function CommunityPage() {
                       <MessageSquare className="w-8 h-8 text-moss-600" />
                     </div>
                     <h3 className="text-3xl font-black" style={{ color: '#000' }}>
-                      DISCUSSION FORUM
+                      ROUND TABLE
                     </h3>
                   </div>
                   <p className="text-lg font-semibold mb-8" style={{ color: '#1f2937' }}>
-                    Join conversations about sustainability tips, product discussions, and community projects.
+                    Join conversations about sustainability tips, product topics, and community projects.
                     Share your knowledge and learn from others.
                   </p>
                   <Link href="/community/forum">
                     <Button size="lg" className="text-lg px-8 py-6 font-black w-full">
-                      VISIT FORUM →
+                      JOIN THE ROUND TABLE →
                     </Button>
                   </Link>
                 </CardContent>
