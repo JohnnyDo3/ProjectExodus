@@ -17,8 +17,6 @@ import {
   Award,
   FileText,
   Download,
-  ChevronDown,
-  ChevronUp,
   Edit2,
   Save,
   X,
@@ -272,7 +270,9 @@ export function ProfileBusinessCard({ userId }: ProfileBusinessCardProps) {
   const { data: session } = useSession()
   const [isLoading, setIsLoading] = useState(true)
   const [profile, setProfile] = useState<ProfileData | null>(null)
-  const [isExpanded, setIsExpanded] = useState(false)
+  // When viewing someone else's profile, always show expanded content
+  // Only own profile can toggle expansion
+  const [isExpanded, setIsExpanded] = useState(true)
   const [isEditing, setIsEditing] = useState(false)
   const [selectedArchetype, setSelectedArchetype] = useState<ArchetypeType>('michael')
   const [editedProfile, setEditedProfile] = useState<Partial<ProfileData>>({})
@@ -452,25 +452,6 @@ export function ProfileBusinessCard({ userId }: ProfileBusinessCardProps) {
                 </button>
               </>
             )}
-            <button
-              onClick={() => {
-                const newExpanded = !isExpanded
-                setIsExpanded(newExpanded)
-                // Scroll to expanded content after state update
-                if (newExpanded) {
-                  setTimeout(() => {
-                    expandedSectionRef.current?.scrollIntoView({ behavior: 'smooth', block: 'start' })
-                  }, 100)
-                }
-              }}
-              className="p-2.5 bg-white/20 hover:bg-white/30 rounded-xl transition-colors backdrop-blur-sm"
-            >
-              {isExpanded ? (
-                <ChevronUp className="w-5 h-5 text-white" />
-              ) : (
-                <ChevronDown className="w-5 h-5 text-white" />
-              )}
-            </button>
           </div>
         </div>
 
@@ -763,9 +744,8 @@ export function ProfileBusinessCard({ userId }: ProfileBusinessCardProps) {
           </div>
         </div>
 
-        {/* Expanded Section - Full Profile */}
-        {isExpanded && (
-          <div ref={expandedSectionRef} className="mt-6 pt-6 border-t-2 border-[var(--border)]">
+        {/* Full Profile Details - Always shown */}
+        <div ref={expandedSectionRef} className="mt-6 pt-6 border-t-2 border-[var(--border)]">
             <div className="grid md:grid-cols-2 gap-6">
               {/* Bio */}
               <div>
@@ -881,7 +861,6 @@ export function ProfileBusinessCard({ userId }: ProfileBusinessCardProps) {
               )}
             </div>
           </div>
-        )}
 
         {/* Sacred Footer */}
         <div className="mt-6 pt-5 border-t-2 border-[var(--border)]">
