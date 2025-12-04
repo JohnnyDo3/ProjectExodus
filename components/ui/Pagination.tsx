@@ -86,7 +86,7 @@ export function Pagination({
             return (
               <div
                 key={`ellipsis-${index}`}
-                className="w-10 h-10 flex items-center justify-center text-earth-500"
+                className="w-10 h-10 flex items-center justify-center text-theme-muted"
               >
                 <MoreHorizontal className="w-4 h-4" />
               </div>
@@ -104,8 +104,8 @@ export function Pagination({
                 w-10 h-10 rounded-lg font-medium transition-colors
                 ${
                   isActive
-                    ? 'bg-moss-600 text-white'
-                    : 'bg-white text-earth-700 hover:bg-sand-100 border border-sand-300'
+                    ? 'bg-theme-primary text-[var(--primary-foreground)]'
+                    : 'bg-[var(--card)] text-[var(--foreground)] hover:bg-[var(--muted)] border border-[var(--border)]'
                 }
               `}
             >
@@ -155,7 +155,7 @@ export function PaginationInfo({
   const end = Math.min(currentPage * pageSize, totalItems)
 
   return (
-    <p className="text-sm text-earth-600">
+    <p className="text-sm text-theme-muted">
       Showing <span className="font-medium">{start}</span> to{' '}
       <span className="font-medium">{end}</span> of{' '}
       <span className="font-medium">{totalItems}</span> results

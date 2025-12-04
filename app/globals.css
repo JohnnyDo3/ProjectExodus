@@ -176,8 +176,103 @@
   --radius-full: 9999px;
 }
 
-/* Dark mode - deeper, richer earth tones */
-.dark {
+/*
+  Time-Based Themes - Living, Breathing Ecosystem
+  The site adapts to your local time, just like nature 🌱
+*/
+
+/* 🌄 DAWN - Very early morning, pre-sunrise (5am-7am) */
+.dawn {
+  --background: #fff5f0;
+  --foreground: var(--earth-800);
+  --primary: #ff8ba7; /* Pink dawn */
+  --primary-foreground: white;
+  --secondary: #ffb4a2; /* Coral */
+  --secondary-foreground: white;
+  --accent: #87b8c7; /* Cool morning ocean */
+  --accent-foreground: white;
+  --muted: #ffe8dd;
+  --muted-foreground: var(--earth-600);
+  --card: #fffaf7;
+  --card-foreground: var(--earth-800);
+  --border: #ffd4c4;
+}
+
+/* 🌅 SUNRISE - Gentle awakening, soft golden dawn (7am-10am) */
+.sunrise, .morning {
+  --background: #fff8f0;
+  --foreground: var(--earth-800);
+  --primary: #e8a05d; /* Warm golden */
+  --primary-foreground: white;
+  --secondary: #e89b8f; /* Soft peachy terra */
+  --secondary-foreground: white;
+  --accent: #7eb8b8; /* Gentle ocean with warmth */
+  --accent-foreground: white;
+  --muted: #f9e8d9;
+  --muted-foreground: var(--earth-600);
+  --card: #fffbf5;
+  --card-foreground: var(--earth-800);
+  --border: #f4d9c4;
+}
+
+/* ☀️ DAY - Bright, vibrant, full of life (10am-3pm) */
+.day, :root {
+  /* Already defined in :root above, but ensuring consistency */
+}
+
+/* 🌤️ AFTERNOON - Warm afternoon light (3pm-6pm) */
+.afternoon {
+  --background: #fff9e6;
+  --foreground: var(--earth-900);
+  --primary: #e89550; /* Warm afternoon sun */
+  --primary-foreground: white;
+  --secondary: #d88855; /* Rich terra */
+  --secondary-foreground: white;
+  --accent: #8fa89f; /* Warm teal */
+  --accent-foreground: white;
+  --muted: #f4ebcd;
+  --muted-foreground: var(--earth-700);
+  --card: #fffcf0;
+  --card-foreground: var(--earth-900);
+  --border: #ead4b0;
+}
+
+/* 🌆 DUSK - Early evening, golden hour (6pm-8pm) */
+.dusk {
+  --background: #f5ebe0;
+  --foreground: var(--earth-900);
+  --primary: #d67050; /* Deep orange */
+  --primary-foreground: white;
+  --secondary: #c45f40; /* Rich terracotta */
+  --secondary-foreground: white;
+  --accent: #8b7565; /* Warm brown */
+  --accent-foreground: white;
+  --muted: #e8d5c4;
+  --muted-foreground: var(--earth-700);
+  --card: #faf3ea;
+  --card-foreground: var(--earth-900);
+  --border: #d9c3ad;
+}
+
+/* 🌇 SUNSET - Warm terracotta, golden hour transition (8pm-10pm) */
+.sunset, .evening {
+  --background: #ebe0d8;
+  --foreground: var(--earth-900);
+  --primary: var(--terra-600); /* Warm terracotta */
+  --primary-foreground: white;
+  --secondary: #9b6f8f; /* Purple dusk */
+  --secondary-foreground: white;
+  --accent: #7a6a5f; /* Dusky brown */
+  --accent-foreground: white;
+  --muted: #ddd0c4;
+  --muted-foreground: var(--earth-700);
+  --card: #f0e8e0;
+  --card-foreground: var(--earth-900);
+  --border: #cfc0ad;
+}
+
+/* 🌙 NIGHT - Deep earth tones, restful darkness (10pm-2am) */
+.night, .dark {
   --background: var(--earth-900);
   --foreground: var(--sand-100);
   --primary: var(--moss-400);
@@ -191,8 +286,63 @@
   --border: var(--earth-700);
 }
 
+/* 🌌 MIDNIGHT - Deepest night (2am-5am) */
+.midnight {
+  --background: #1a1614;
+  --foreground: var(--sand-200);
+  --primary: #5a7a65; /* Muted moss */
+  --primary-foreground: white;
+  --secondary: #8b5a4a; /* Muted terra */
+  --secondary-foreground: white;
+  --accent: #5a7a7a; /* Deep teal */
+  --accent-foreground: white;
+  --muted: #2a2420;
+  --muted-foreground: var(--sand-500);
+  --card: #221e1a;
+  --card-foreground: var(--sand-200);
+  --border: #3a342e;
+}
+
+/* 🌅 Conditional visibility for day/night elements - SMOOTH TRANSITIONS */
+/* Show only during daytime phases (dawn, sunrise, morning, day, afternoon) */
+.day-only {
+  opacity: 1;
+  visibility: visible;
+  transition: opacity 1200ms cubic-bezier(0.4, 0, 0.2, 1),
+              visibility 1200ms cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.dusk .day-only,
+.sunset .day-only,
+.evening .day-only,
+.night .day-only,
+.midnight .day-only,
+.dark .day-only {
+  opacity: 0 !important;
+  visibility: hidden !important;
+}
+
+/* Show only during nighttime phases (dusk, sunset, evening, night, midnight) */
+.night-only {
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 1200ms cubic-bezier(0.4, 0, 0.2, 1),
+              visibility 1200ms cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.dusk .night-only,
+.sunset .night-only,
+.evening .night-only,
+.night .night-only,
+.midnight .night-only,
+.dark .night-only {
+  opacity: 1 !important;
+  visibility: visible !important;
+}
+
+/* Fallback for system preference */
 @media (prefers-color-scheme: dark) {
-  :root:not(.light) {
+  :root:not(.light):not(.day):not(.sunrise):not(.sunset):not(.night) {
     --background: var(--earth-900);
     --foreground: var(--sand-100);
     --primary: var(--moss-400);
@@ -212,6 +362,18 @@
   border-color: var(--border);
 }
 
+/* Smooth theme transitions - breathing with nature */
+/*
+ * When using smooth theme interpolation, CSS variables are updated via JS
+ * every 30 seconds with interpolated color values. This creates a gradual,
+ * continuous transition that mimics natural light changes throughout the day.
+ */
+html {
+  /* Smooth transition for any remaining CSS property changes */
+  transition: background-color 800ms cubic-bezier(0.4, 0, 0.2, 1),
+              color 800ms cubic-bezier(0.4, 0, 0.2, 1);
+}
+
 body {
   background-color: var(--background);
   color: var(--foreground);
@@ -219,6 +381,25 @@ body {
   font-feature-settings: "rlig" 1, "calt" 1;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  /* Slightly faster transitions since JS handles gradual changes */
+  transition: background-color 800ms cubic-bezier(0.4, 0, 0.2, 1),
+              color 800ms cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* CSS custom property registration for smooth animations (modern browsers) */
+@supports (background: color-mix(in srgb, red, blue)) {
+  /* These enable smoother transitions when CSS vars change */
+  :root {
+    /* Smooth interpolation hint for background transitions */
+    color-scheme: light dark;
+  }
+}
+
+/* Ensure all interactive elements transition smoothly */
+a, button, input, textarea, select {
+  transition: background-color 600ms cubic-bezier(0.4, 0, 0.2, 1),
+              color 600ms cubic-bezier(0.4, 0, 0.2, 1),
+              border-color 600ms cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 /* Smooth scrolling with organic easing */
@@ -226,23 +407,25 @@ html {
   scroll-behavior: smooth;
 }
 
-/* Custom scrollbar - earthy! */
+/* Custom scrollbar - adapts to time of day! */
 ::-webkit-scrollbar {
   width: 12px;
 }
 
 ::-webkit-scrollbar-track {
-  background: var(--sand-100);
+  background: var(--muted);
+  transition: background-color 600ms cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 ::-webkit-scrollbar-thumb {
-  background: var(--moss-400);
+  background: var(--primary);
   border-radius: var(--radius-full);
-  border: 2px solid var(--sand-100);
+  border: 2px solid var(--muted);
+  transition: background-color 600ms cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  background: var(--moss-600);
+  background: var(--accent);
 }
 
 /* Selection - mossy green! */
@@ -357,96 +540,329 @@ a:hover {
   animation: pulse-grow 3s ease-in-out infinite;
 }
 
-/* Article Content Styles - Dark Mode Support */
-.article-content .article-h1 {
-  font-size: 2.25rem;
-  font-weight: 900;
-  margin-top: 3rem;
-  margin-bottom: 2rem;
-  color: var(--earth-900);
+/* Fade in up animation for quote toasts */
+@keyframes fade-in-up {
+  from {
+    opacity: 0;
+    transform: translateX(-50%) translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(-50%) translateY(0);
+  }
 }
 
-.dark .article-content .article-h1 {
-  color: var(--sand-100);
+.animate-fade-in-up {
+  animation: fade-in-up 0.4s ease-out forwards;
 }
 
-.article-content .article-h2 {
-  font-size: 1.875rem;
-  font-weight: 900;
-  margin-top: 2.5rem;
-  margin-bottom: 1.5rem;
-  color: var(--earth-800);
+/* Theme-aware utility classes - these adapt to ALL time periods! */
+.bg-theme-primary {
+  background-color: var(--primary);
 }
 
-.dark .article-content .article-h2 {
-  color: var(--sand-200);
+.bg-theme-secondary {
+  background-color: var(--secondary);
 }
 
-.article-content .article-h3 {
-  font-size: 1.5rem;
-  font-weight: 900;
-  margin-top: 2rem;
-  margin-bottom: 1rem;
-  color: var(--earth-800);
+.bg-theme-accent {
+  background-color: var(--accent);
 }
 
-.dark .article-content .article-h3 {
-  color: var(--sand-200);
+.bg-theme-muted {
+  background-color: var(--muted);
 }
 
-.article-content .article-p {
-  font-size: 1.125rem;
-  font-weight: 500;
-  line-height: 1.75;
-  margin-bottom: 1.5rem;
-  color: var(--earth-700);
+.bg-theme-card {
+  background-color: var(--card);
 }
 
-.dark .article-content .article-p {
-  color: var(--sand-300);
+.text-theme-primary {
+  color: var(--primary);
 }
 
-.article-content .article-link {
-  color: var(--ocean-600);
-  text-decoration: underline;
-  font-weight: 600;
+.text-theme-secondary {
+  color: var(--secondary);
 }
 
-.dark .article-content .article-link {
-  color: var(--ocean-400);
+.text-theme-accent {
+  color: var(--accent);
 }
 
-.article-content .article-link:hover {
-  color: var(--ocean-700);
+.text-theme-muted {
+  color: var(--muted-foreground);
 }
 
-.dark .article-content .article-link:hover {
-  color: var(--ocean-300);
+.text-theme-foreground {
+  color: var(--foreground);
 }
 
-.article-content .article-ol {
-  list-style-type: decimal;
-  list-style-position: outside;
-  margin-bottom: 2rem;
-  margin-left: 1.5rem;
+.text-theme-card-foreground {
+  color: var(--card-foreground);
 }
 
-.article-content .article-ul {
-  list-style-type: disc;
-  list-style-position: outside;
-  margin-bottom: 2rem;
-  margin-left: 1.5rem;
+.border-theme-primary {
+  border-color: var(--primary);
 }
 
-.article-content .article-li,
-.article-content .article-li-ul {
-  font-size: 1.125rem;
-  font-weight: 500;
-  margin-bottom: 0.75rem;
-  color: var(--earth-700);
+.border-theme-secondary {
+  border-color: var(--secondary);
 }
 
-.dark .article-content .article-li,
-.dark .article-content .article-li-ul {
-  color: var(--sand-300);
+.border-theme-accent {
+  border-color: var(--accent);
+}
+
+.border-theme-muted {
+  border-color: var(--border);
+}
+
+/* Theme-adaptive gradients - these change based on time of day! */
+.hero-gradient-theme {
+  background: linear-gradient(to bottom, var(--background) 0%, var(--muted) 100%);
+}
+
+.card-gradient-theme {
+  background: linear-gradient(to bottom right, var(--card) 0%, var(--muted) 100%);
+}
+
+/* Adaptive glass effect for each theme */
+.glass-theme {
+  background: color-mix(in srgb, var(--card) 95%, transparent);
+  backdrop-filter: blur(12px);
+  border: 1px solid color-mix(in srgb, var(--border) 50%, transparent);
+}
+
+/* Theme-adaptive shadows */
+.shadow-theme {
+  box-shadow: 0 4px 6px -1px color-mix(in srgb, var(--foreground) 10%, transparent),
+              0 2px 4px -1px color-mix(in srgb, var(--foreground) 6%, transparent);
+}
+
+.shadow-theme-lg {
+  box-shadow: 0 10px 15px -3px color-mix(in srgb, var(--foreground) 10%, transparent),
+              0 4px 6px -2px color-mix(in srgb, var(--foreground) 5%, transparent);
+}
+
+/* Hide footer on My Volition page */
+.hide-footer ~ footer,
+body:has(.hide-footer) footer {
+  display: none !important;
+}
+
+/* React Grid Layout resize handle styling */
+.react-grid-item > .react-resizable-handle {
+  width: 20px;
+  height: 20px;
+}
+
+.react-grid-item > .react-resizable-handle::after {
+  content: "";
+  position: absolute;
+  right: 3px;
+  bottom: 3px;
+  width: 8px;
+  height: 8px;
+  border-right: 2px solid var(--primary);
+  border-bottom: 2px solid var(--primary);
+  opacity: 0.7;
+}
+
+.react-grid-item > .react-resizable-handle:hover::after {
+  opacity: 1;
+  border-color: var(--accent);
+}
+
+/* ============================================
+   MOBILE RESPONSIVE UTILITIES
+   ============================================ */
+
+/* Safe area padding for notched phones (iPhone X, etc.) */
+.safe-area-inset {
+  padding-left: env(safe-area-inset-left);
+  padding-right: env(safe-area-inset-right);
+  padding-bottom: env(safe-area-inset-bottom);
+}
+
+.safe-area-top {
+  padding-top: env(safe-area-inset-top);
+}
+
+/* Prevent text size adjustment on orientation change */
+html {
+  -webkit-text-size-adjust: 100%;
+  text-size-adjust: 100%;
+}
+
+/* Improve tap targets for mobile */
+@media (max-width: 768px) {
+  button:not(.no-min-size),
+  a:not(.no-min-size) {
+    min-height: 44px;
+  }
+
+  /* Prevent horizontal scroll on mobile */
+  body {
+    overflow-x: hidden;
+  }
+
+  /* Make images responsive */
+  img {
+    max-width: 100%;
+    height: auto;
+  }
+
+  /* Reduce heading sizes on mobile */
+  h1 {
+    font-size: clamp(2rem, 8vw, 3.5rem) !important;
+  }
+
+  h2 {
+    font-size: clamp(1.5rem, 6vw, 2.5rem) !important;
+  }
+
+  h3 {
+    font-size: clamp(1.25rem, 5vw, 2rem) !important;
+  }
+}
+
+/* Responsive container padding */
+.container {
+  width: 100%;
+  margin-left: auto;
+  margin-right: auto;
+  padding-left: 1rem;
+  padding-right: 1rem;
+}
+
+@media (min-width: 640px) {
+  .container {
+    padding-left: 1.5rem;
+    padding-right: 1.5rem;
+  }
+}
+
+@media (min-width: 1024px) {
+  .container {
+    padding-left: 2rem;
+    padding-right: 2rem;
+  }
+}
+
+/* Mobile-first responsive typography */
+.text-responsive-hero {
+  font-size: clamp(2rem, 10vw, 7rem);
+  line-height: 1;
+}
+
+/* Touch-friendly scrolling */
+.scroll-touch {
+  -webkit-overflow-scrolling: touch;
+  overflow-y: auto;
+}
+
+/* Hide scrollbar but keep functionality */
+.scrollbar-hide {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+.scrollbar-hide::-webkit-scrollbar {
+  display: none;
+}
+
+/* Mobile menu overlay styles */
+.mobile-menu-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.5);
+  backdrop-filter: blur(4px);
+  z-index: 40;
+}
+
+/* Mobile-only visibility */
+@media (min-width: 768px) {
+  .mobile-only {
+    display: none !important;
+  }
+}
+
+/* Desktop-only visibility */
+@media (max-width: 767px) {
+  .desktop-only {
+    display: none !important;
+  }
+}
+
+/* Responsive section spacing */
+.section-responsive {
+  padding-top: 3rem;
+  padding-bottom: 3rem;
+}
+
+@media (min-width: 640px) {
+  .section-responsive {
+    padding-top: 4rem;
+    padding-bottom: 4rem;
+  }
+}
+
+@media (min-width: 1024px) {
+  .section-responsive {
+    padding-top: 6rem;
+    padding-bottom: 6rem;
+  }
+}
+
+@media (min-width: 1280px) {
+  .section-responsive {
+    padding-top: 8rem;
+    padding-bottom: 8rem;
+  }
+}
+
+/* Touch feedback for mobile */
+@media (hover: none) {
+  .touch-highlight:active {
+    opacity: 0.7;
+    transform: scale(0.98);
+  }
+}
+
+/* Reduce motion for accessibility */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+/* Fix for fixed elements on iOS */
+@supports (-webkit-touch-callout: none) {
+  .fixed-ios {
+    position: fixed;
+    -webkit-transform: translateZ(0);
+    transform: translateZ(0);
+  }
+}
+
+/* Responsive flex gap for older browsers */
+.gap-responsive {
+  gap: 0.75rem;
+}
+
+@media (min-width: 640px) {
+  .gap-responsive {
+    gap: 1rem;
+  }
+}
+
+@media (min-width: 1024px) {
+  .gap-responsive {
+    gap: 1.5rem;
+  }
 }

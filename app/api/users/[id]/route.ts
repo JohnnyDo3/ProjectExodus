@@ -3,13 +3,13 @@ import { prisma } from '@/lib/db'
 
 export async function GET(
   request: Request,
-  { params }: { params: Promise<{ userId: string }> }
+  { params }: { params: Promise<{ id: string }> }
 ) {
   try {
-    const { userId } = await params
+    const { id } = await params
 
     const user = await prisma.user.findUnique({
-      where: { id: userId },
+      where: { id },
       select: {
         id: true,
         name: true,
@@ -21,36 +21,6 @@ export async function GET(
           include: {
             badge: true
           }
-        },
-        forumPosts: {
-          select: {
-            id: true,
-            title: true,
-            createdAt: true,
-            category: {
-              select: { name: true, slug: true }
-            },
-            _count: {
-              select: { replies: true, likes: true }
-            }
-          },
-          orderBy: { createdAt: 'desc' },
-          take: 10
-        },
-        forumReplies: {
-          select: {
-            id: true,
-            content: true,
-            createdAt: true,
-            post: {
-              select: {
-                id: true,
-                title: true
-              }
-            }
-          },
-          orderBy: { createdAt: 'desc' },
-          take: 10
         },
         projectMemberships: {
           include: {
@@ -66,8 +36,6 @@ export async function GET(
         },
         _count: {
           select: {
-            forumPosts: true,
-            forumReplies: true,
             followers: true,
             following: true
           }

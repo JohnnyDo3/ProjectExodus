@@ -24,18 +24,18 @@ export default function SignOutPage() {
   }
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-sand-50 via-moss-50 to-ocean-50 p-4">
-      <Card className="w-full max-w-md border-4 border-moss-300 shadow-2xl">
+    <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-[color-mix(in_srgb,var(--muted)_50%,var(--background))] via-[color-mix(in_srgb,var(--primary)_15%,var(--background))] to-[color-mix(in_srgb,var(--accent)_15%,var(--background))] p-4">
+      <Card className="w-full max-w-md border-4 border-theme-primary shadow-2xl">
         <CardHeader className="text-center">
-          <div className="w-20 h-20 mx-auto mb-4 rounded-full bg-gradient-to-br from-moss-500 to-ocean-500 flex items-center justify-center shadow-xl">
-            <LogOut className="w-10 h-10 text-white" />
+          <div className="w-20 h-20 mx-auto mb-4 rounded-full bg-gradient-to-br from-[var(--primary)] to-[var(--accent)] flex items-center justify-center shadow-xl">
+            <LogOut className="w-10 h-10 text-[var(--primary-foreground)]" />
           </div>
-          <CardTitle className="text-3xl font-black" style={{ color: '#000' }}>
+          <CardTitle className="text-3xl font-black text-[var(--foreground)]">
             SIGN OUT
           </CardTitle>
         </CardHeader>
         <CardContent className="space-y-6">
-          <p className="text-center text-lg font-semibold" style={{ color: '#333' }}>
+          <p className="text-center text-lg font-semibold text-theme-muted">
             Are you sure you want to sign out?
           </p>
 
@@ -55,7 +55,7 @@ export default function SignOutPage() {
             </Button>
           </div>
 
-          <p className="text-sm text-center font-medium" style={{ color: '#666' }}>
+          <p className="text-sm text-center font-medium text-theme-muted">
             You will be automatically signed out in 5 seconds...
           </p>
         </CardContent>

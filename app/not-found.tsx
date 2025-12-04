@@ -6,7 +6,7 @@ import Link from 'next/link'
 
 export default function NotFoundPage() {
   return (
-    <div className="min-h-screen bg-gradient-to-br from-moss-50 via-ocean-50 to-terra-50 flex items-center justify-center">
+    <div className="min-h-screen bg-gradient-to-br from-[color-mix(in_srgb,var(--primary)_15%,var(--background))] via-[color-mix(in_srgb,var(--accent)_15%,var(--background))] to-[color-mix(in_srgb,var(--secondary)_15%,var(--background))] flex items-center justify-center">
       <div className="container mx-auto px-4 sm:px-6 lg:px-8">
         <div className="max-w-3xl mx-auto text-center space-y-12">
           {/* Large 404 */}
@@ -15,7 +15,7 @@ export default function NotFoundPage() {
               <h1
                 className="text-[12rem] md:text-[20rem] font-black leading-none opacity-20"
                 style={{
-                  background: 'linear-gradient(135deg, #36763d, #357777)',
+                  background: 'linear-gradient(135deg, var(--primary), var(--accent))',
                   WebkitBackgroundClip: 'text',
                   WebkitTextFillColor: 'transparent'
                 }}
@@ -23,8 +23,8 @@ export default function NotFoundPage() {
                 404
               </h1>
               <div className="absolute inset-0 flex items-center justify-center">
-                <div className="w-32 h-32 md:w-40 md:h-40 rounded-full bg-gradient-to-br from-moss-500 to-ocean-500 flex items-center justify-center shadow-2xl animate-pulse">
-                  <Leaf className="w-16 h-16 md:w-20 md:h-20 text-white" />
+                <div className="w-32 h-32 md:w-40 md:h-40 rounded-full bg-gradient-to-br from-[var(--primary)] to-[var(--accent)] flex items-center justify-center shadow-2xl animate-pulse">
+                  <Leaf className="w-16 h-16 md:w-20 md:h-20 text-[var(--primary-foreground)]" />
                 </div>
               </div>
             </div>
@@ -32,13 +32,13 @@ export default function NotFoundPage() {
 
           {/* Message */}
           <div className="space-y-6">
-            <h2 className="text-5xl md:text-6xl font-black" style={{ color: '#000' }}>
+            <h2 className="text-5xl md:text-6xl font-black text-[var(--foreground)]">
               PAGE NOT FOUND
             </h2>
-            <p className="text-2xl font-semibold max-w-2xl mx-auto" style={{ color: '#333' }}>
+            <p className="text-2xl font-semibold max-w-2xl mx-auto text-theme-muted">
               Looks like this page has gone off the grid!{' '}
               <span style={{
-                background: 'linear-gradient(135deg, #36763d, #357777)',
+                background: 'linear-gradient(135deg, var(--primary), var(--accent))',
                 WebkitBackgroundClip: 'text',
                 WebkitTextFillColor: 'transparent',
                 fontWeight: 900
@@ -65,8 +65,8 @@ export default function NotFoundPage() {
           </div>
 
           {/* Helpful Links */}
-          <div className="pt-12 border-t-4 border-moss-200">
-            <p className="text-lg font-bold mb-6" style={{ color: '#666' }}>
+          <div className="pt-12 border-t-4 border-theme-primary">
+            <p className="text-lg font-bold mb-6 text-theme-muted">
               POPULAR PAGES
             </p>
             <div className="grid sm:grid-cols-2 md:grid-cols-4 gap-4 max-w-2xl mx-auto">
@@ -79,8 +79,7 @@ export default function NotFoundPage() {
                 <Link
                   key={link.name}
                   href={link.href}
-                  className="px-6 py-4 bg-white border-2 border-moss-200 hover:border-moss-400 rounded-xl text-base font-bold transition-all transform hover:scale-105 shadow-md"
-                  style={{ color: '#000' }}
+                  className="px-6 py-4 bg-[var(--card)] border-2 border-theme-primary hover:border-theme-accent rounded-xl text-base font-bold transition-all transform hover:scale-105 shadow-md text-[var(--foreground)]"
                 >
                   {link.name.toUpperCase()}
                 </Link>
@@ -92,7 +91,7 @@ export default function NotFoundPage() {
           <div className="pt-8">
             <button
               onClick={() => window.history.back()}
-              className="inline-flex items-center gap-2 text-lg font-bold text-ocean-600 hover:text-ocean-700 transition-colors"
+              className="inline-flex items-center gap-2 text-lg font-bold text-theme-accent hover:opacity-80 transition-colors"
             >
               <ArrowLeft className="w-5 h-5" />
               GO BACK TO PREVIOUS PAGE

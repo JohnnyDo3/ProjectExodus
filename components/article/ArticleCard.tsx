@@ -29,40 +29,40 @@ interface ArticleCardProps {
 export function ArticleCard({ article }: ArticleCardProps) {
   return (
     <Link href={`/articles/${article.slug}`}>
-      <Card className="hover-lift h-full cursor-pointer border-4 border-ocean-200 hover:border-ocean-400 transition-all transform hover:scale-105 bg-white shadow-lg">
+      <Card className="hover-lift h-full cursor-pointer border-4 border-theme-accent hover:opacity-90 transition-all transform hover:scale-105 shadow-theme-lg">
         <CardHeader className="pb-4">
           {article.featured && (
             <div className="mb-3">
-              <div className="px-3 py-1 rounded-full bg-gradient-to-r from-ocean-500 to-terra-500 inline-flex shadow-md">
-                <span className="text-xs font-black text-white uppercase tracking-wide">Featured Article</span>
+              <div className="px-3 py-1 rounded-full bg-theme-secondary inline-flex shadow-md">
+                <span className="text-xs font-black text-[var(--secondary-foreground)] uppercase tracking-wide">Featured Article</span>
               </div>
             </div>
           )}
-          <CardTitle className="text-2xl font-black line-clamp-2 mb-3" style={{ color: '#000' }}>
+          <CardTitle className="text-2xl font-black line-clamp-2 mb-3">
             {article.title}
           </CardTitle>
-          <CardDescription className="text-sm font-bold" style={{ color: '#666' }}>
+          <CardDescription className="text-sm font-bold">
             {article.category.name.toUpperCase()}
           </CardDescription>
         </CardHeader>
 
         <CardContent className="space-y-4">
           {article.excerpt && (
-            <p className="text-base font-medium line-clamp-3" style={{ color: '#444' }}>
+            <p className="text-base font-medium line-clamp-3 text-[var(--foreground)] opacity-80">
               {article.excerpt}
             </p>
           )}
 
-          <div className="flex flex-wrap items-center gap-4 text-sm font-semibold" style={{ color: '#666' }}>
+          <div className="flex flex-wrap items-center gap-4 text-sm font-semibold text-theme-muted">
             {article.author.name && (
               <div className="flex items-center gap-1.5">
-                <User className="w-4 h-4 text-ocean-600" />
-                <span className="text-ocean-700">{article.author.name}</span>
+                <User className="w-4 h-4 text-theme-accent" />
+                <span className="text-theme-primary">{article.author.name}</span>
               </div>
             )}
             {article.readTime && (
               <div className="flex items-center gap-1.5">
-                <Clock className="w-4 h-4 text-moss-600" />
+                <Clock className="w-4 h-4 text-theme-primary" />
                 <span>{article.readTime} MIN READ</span>
               </div>
             )}
@@ -74,8 +74,8 @@ export function ArticleCard({ article }: ArticleCardProps) {
           </div>
 
           {article._count && article._count.comments > 0 && (
-            <div className="pt-2 border-t-2 border-sand-200">
-              <span className="text-sm font-bold" style={{ color: '#666' }}>
+            <div className="pt-2 border-t-2 border-[var(--border)]">
+              <span className="text-sm font-bold text-theme-muted">
                 {article._count.comments} {article._count.comments === 1 ? 'COMMENT' : 'COMMENTS'}
               </span>
             </div>

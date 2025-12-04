@@ -127,7 +127,7 @@ export default function SignUpPage() {
   const strengthColors = ['', 'bg-terra-500', 'bg-terra-400', 'bg-moss-400', 'bg-moss-500', 'bg-moss-600']
 
   return (
-    <div className="min-h-screen bg-sand-50 flex items-center justify-center py-12 px-4 sm:px-6 lg:px-8">
+    <div className="min-h-screen bg-[var(--muted)] flex items-center justify-center py-12 px-4 sm:px-6 lg:px-8">
       <div className="w-full max-w-md">
         <div className="mb-8">
           <Link href="/">
@@ -138,12 +138,12 @@ export default function SignUpPage() {
           </Link>
         </div>
 
-        <Card className="border-4 border-moss-200">
+        <Card className="border-4 border-theme-primary">
           <CardHeader className="text-center">
-            <CardTitle className="text-3xl font-black" style={{ color: '#000' }}>
+            <CardTitle className="text-3xl font-black text-[var(--foreground)]">
               JOIN PROJECT EXODUS
             </CardTitle>
-            <CardDescription className="text-base font-semibold" style={{ color: '#333' }}>
+            <CardDescription className="text-base font-semibold text-theme-muted">
               Create your account and start your sustainability journey
             </CardDescription>
           </CardHeader>
@@ -191,12 +191,12 @@ export default function SignUpPage() {
                         <div
                           key={level}
                           className={`h-1 flex-1 rounded ${
-                            level <= strength ? strengthColors[strength] : 'bg-sand-300'
+                            level <= strength ? strengthColors[strength] : 'bg-[var(--border)]'
                           }`}
                         />
                       ))}
                     </div>
-                    <p className="text-xs font-medium" style={{ color: '#666' }}>
+                    <p className="text-xs font-medium text-theme-muted">
                       Password strength: {strengthLabels[strength]}
                     </p>
                   </div>
@@ -217,13 +217,13 @@ export default function SignUpPage() {
               <div className="space-y-3 pt-2">
                 <label className="flex items-start gap-3 text-sm">
                   <input type="checkbox" required className="mt-1 rounded" />
-                  <span style={{ color: '#333' }}>
+                  <span className="text-theme-muted">
                     I agree to the{' '}
-                    <Link href="/legal/terms" className="text-moss-600 hover:text-moss-700 font-medium underline">
+                    <Link href="/legal/terms" className="text-theme-primary hover:opacity-80 font-medium underline">
                       Terms of Service
                     </Link>
                     {' '}and{' '}
-                    <Link href="/legal/privacy" className="text-moss-600 hover:text-moss-700 font-medium underline">
+                    <Link href="/legal/privacy" className="text-theme-primary hover:opacity-80 font-medium underline">
                       Privacy Policy
                     </Link>
                   </span>
@@ -231,7 +231,7 @@ export default function SignUpPage() {
 
                 <label className="flex items-start gap-3 text-sm">
                   <input type="checkbox" className="mt-1 rounded" />
-                  <span style={{ color: '#333' }}>
+                  <span className="text-theme-muted">
                     Send me updates about new sustainable products and features
                   </span>
                 </label>
@@ -245,35 +245,35 @@ export default function SignUpPage() {
                 {loading ? 'CREATING ACCOUNT...' : 'CREATE ACCOUNT'}
               </Button>
 
-              <div className="text-center text-sm" style={{ color: '#666' }}>
+              <div className="text-center text-sm text-theme-muted">
                 Already have an account?{' '}
-                <Link href="/auth/signin" className="text-moss-600 hover:text-moss-700 font-bold">
+                <Link href="/auth/signin" className="text-theme-primary hover:opacity-80 font-bold">
                   Sign in
                 </Link>
               </div>
             </form>
 
-            <div className="mt-6 p-5 bg-moss-50 border-2 border-moss-200 rounded-lg">
+            <div className="mt-6 p-5 bg-[color-mix(in_srgb,var(--primary)_10%,var(--background))] border-2 border-theme-primary rounded-lg">
               <div className="space-y-3">
-                <p className="text-sm font-bold text-moss-900 flex items-center gap-2">
+                <p className="text-sm font-bold text-theme-primary flex items-center gap-2">
                   <CheckCircle2 className="w-4 h-4" />
                   Why Join Project Exodus?
                 </p>
-                <ul className="space-y-2 text-sm text-moss-800">
+                <ul className="space-y-2 text-sm text-[var(--foreground)]">
                   <li className="flex items-start gap-2">
-                    <span className="text-moss-600 mt-0.5">✓</span>
+                    <span className="text-theme-primary mt-0.5">✓</span>
                     <span>Save your favorite sustainable products</span>
                   </li>
                   <li className="flex items-start gap-2">
-                    <span className="text-moss-600 mt-0.5">✓</span>
+                    <span className="text-theme-primary mt-0.5">✓</span>
                     <span>Track your environmental impact</span>
                   </li>
                   <li className="flex items-start gap-2">
-                    <span className="text-moss-600 mt-0.5">✓</span>
+                    <span className="text-theme-primary mt-0.5">✓</span>
                     <span>Connect with the sustainability community</span>
                   </li>
                   <li className="flex items-start gap-2">
-                    <span className="text-moss-600 mt-0.5">✓</span>
+                    <span className="text-theme-primary mt-0.5">✓</span>
                     <span>Get personalized product recommendations</span>
                   </li>
                 </ul>

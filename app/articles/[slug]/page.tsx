@@ -2,6 +2,7 @@ import { notFound } from 'next/navigation'
 import { Button } from '@/components/ui/Button'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/Card'
 import { Clock, User, Calendar, MessageCircle, Tag } from 'lucide-react'
+import { BackButton } from '@/components/navigation/BackButton'
 import { formatDate } from '@/lib/utils/format'
 import Link from 'next/link'
 import { MarkdownContent } from '@/components/article/MarkdownContent'
@@ -44,6 +45,9 @@ export default async function ArticleDetailPage({
       {/* Hero Section */}
       <section className="py-24 bg-gradient-to-br from-ocean-50 via-moss-50 to-terra-50 dark:from-earth-800 dark:via-earth-900 dark:to-earth-800">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="mb-6">
+            <BackButton label="Back to Articles" fallbackUrl="/articles" />
+          </div>
           <div className="max-w-5xl mx-auto text-center space-y-8">
             {article.featured && (
               <div>
@@ -111,10 +115,10 @@ export default async function ArticleDetailPage({
       {/* Article Content */}
       <section className="py-20">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="max-w-4xl mx-auto">
-            <div className="grid md:grid-cols-4 gap-8">
+          <div className="max-w-5xl mx-auto">
+            <div className="grid md:grid-cols-3 gap-8">
               {/* Main Content */}
-              <article className="md:col-span-3">
+              <article className="md:col-span-2">
                 <Card className="dark:bg-earth-800 dark:border-earth-700">
                   <CardContent className="p-8 md:p-12">
                     {article.content ? (
@@ -233,20 +237,22 @@ export default async function ArticleDetailPage({
                     </CardHeader>
                     <CardContent>
                       <div className="text-center">
-                        <div className="w-20 h-20 rounded-full bg-moss-100 dark:bg-moss-900 flex items-center justify-center mx-auto mb-3">
-                          {article.author.image ? (
-                            <img
-                              src={article.author.image}
-                              alt={article.author.name || 'Author'}
-                              className="w-full h-full rounded-full object-cover"
-                            />
-                          ) : (
-                            <User className="w-10 h-10 text-moss-600 dark:text-moss-400" />
-                          )}
-                        </div>
-                        <h3 className="font-bold text-earth-900 dark:text-sand-100 mb-2">
-                          {article.author.name}
-                        </h3>
+                        <Link href={`/profile/${article.author.id}`} className="block">
+                          <div className="w-20 h-20 rounded-full bg-moss-100 dark:bg-moss-900 flex items-center justify-center mx-auto mb-3 hover:scale-105 transition-transform cursor-pointer">
+                            {article.author.image ? (
+                              <img
+                                src={article.author.image}
+                                alt={article.author.name || 'Author'}
+                                className="w-full h-full rounded-full object-cover"
+                              />
+                            ) : (
+                              <User className="w-10 h-10 text-moss-600 dark:text-moss-400" />
+                            )}
+                          </div>
+                          <h3 className="font-bold text-earth-900 dark:text-sand-100 mb-2 hover:text-moss-600 dark:hover:text-moss-400 transition-colors cursor-pointer">
+                            {article.author.name}
+                          </h3>
+                        </Link>
                         {article.author.bio && (
                           <p className="text-sm text-earth-600 dark:text-sand-400">
                             {article.author.bio}
