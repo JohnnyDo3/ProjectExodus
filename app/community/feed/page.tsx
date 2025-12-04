@@ -84,7 +84,7 @@ export default function SocialFeedPage() {
           </div>
           <div className="max-w-5xl mx-auto text-center space-y-4">
             <h1 className="text-5xl font-black text-[var(--foreground)]">
-              COMMUNITY DISCUSSIONS
+              COMMUNITY ROUND TABLE
             </h1>
             <p className="text-xl font-semibold text-theme-muted">
               Share your sustainability journey, connect with like-minded people

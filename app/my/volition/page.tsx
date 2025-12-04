@@ -848,7 +848,7 @@ export default function MyVolitionPage() {
                 <div className="p-3 border-b border-[var(--border)]">
                   <div className="flex items-center gap-1.5">
                     <User className="w-4 h-4 text-theme-primary" />
-                    <h2 className="text-[9px] font-black text-[var(--foreground)] whitespace-nowrap">MY CONNECTIONS</h2>
+                    <h2 className="text-[9px] font-black text-[var(--foreground)] whitespace-nowrap">MY SENATE</h2>
                   </div>
                 </div>
                 <div className="flex-1 overflow-y-auto p-2 space-y-2">

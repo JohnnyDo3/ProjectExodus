@@ -38,7 +38,7 @@ export default async function ForumPage() {
               Connect, share, and learn with fellow sustainability enthusiasts
             </p>
             <Button size="lg" className="text-lg px-10 py-6 font-black shadow-lg">
-              START A DISCUSSION
+              START A ROUND TABLE
             </Button>
           </div>
         </div>
@@ -50,7 +50,7 @@ export default async function ForumPage() {
           <div className="max-w-5xl mx-auto">
             <div className="mb-10">
               <h2 className="text-3xl font-black mb-2" style={{ color: '#000' }}>
-                DISCUSSION CATEGORIES
+                ROUND TABLE CATEGORIES
               </h2>
               <p className="text-lg font-semibold" style={{ color: '#666' }}>
                 Explore conversations across different topics
@@ -122,7 +122,7 @@ export default async function ForumPage() {
                   {categories.reduce((sum: number, cat: any) => sum + cat._count.posts, 0)}
                 </div>
                 <div className="text-lg font-bold" style={{ color: '#666' }}>
-                  DISCUSSIONS
+                  ROUND TABLES
                 </div>
               </div>
               <div className="text-center">

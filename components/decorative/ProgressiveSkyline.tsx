@@ -235,51 +235,79 @@ export function ProgressiveSkyline() {
                 <rect x="0" y="232" width="800" height="1.5" fill="#f5f5f5" opacity="1" />
               </g>
 
-              {/* Red Barn #1 - Large Classic Barn with Details */}
+              {/* Red Barn #1 - Large Classic Barn with Details (1/3 LARGER) */}
               <g>
-                <rect x="180" y="185" width="32" height="20" fill="#c73e3e" opacity="1" />
-                <path d="M 176,185 L 196,170 L 216,185 Z" fill="#a83232" opacity="1" />
+                <rect x="170" y="178" width="43" height="27" fill="#c73e3e" opacity="1" />
+                <path d="M 165,178 L 191.5,158 L 218,178 Z" fill="#a83232" opacity="1" />
                 {/* Wood plank texture lines */}
-                <path d="M 181,190 L 211,190 M 181,195 L 211,195 M 181,200 L 211,200" stroke="#a83232" strokeWidth="0.5" opacity="1" />
+                <path d="M 172,185 L 212,185 M 172,192 L 212,192 M 172,199 L 212,199" stroke="#a83232" strokeWidth="0.7" opacity="1" />
                 {/* Barn doors */}
-                <rect x="194" y="193" width="8" height="12" fill="#6d4428" opacity="1" />
+                <rect x="185" y="188" width="11" height="17" fill="#6d4428" opacity="1" />
                 {/* Barn door cross pattern */}
-                <path d="M 198,197 L 198,205 M 194,201 L 202,201" stroke="#5a3a2a" strokeWidth="1" opacity="1" />
-                {/* Hayloft window */}
-                <rect x="184" y="190" width="4" height="5" fill="#4a4a4a" opacity="1" />
-                <rect x="204" y="190" width="4" height="5" fill="#4a4a4a" opacity="1" />
+                <path d="M 190.5,193 L 190.5,205 M 185,198 L 196,198" stroke="#5a3a2a" strokeWidth="1.3" opacity="1" />
+                {/* Hayloft windows */}
+                <rect x="175" y="183" width="6" height="7" fill="#4a4a4a" opacity="1" />
+                <rect x="200" y="183" width="6" height="7" fill="#4a4a4a" opacity="1" />
+                {/* Additional barn detail - cross beams */}
+                <path d="M 170,178 L 170,205 M 213,178 L 213,205" stroke="#a83232" strokeWidth="1" opacity="1" />
                 {/* Weather vane on top */}
-                <rect x="195.5" y="168" width="1" height="5" fill="#4a4a4a" opacity="1" />
-                <path d="M 191,170 L 196,168 L 196,172 Z" fill="#d4af37" opacity="1" />
-                <path d="M 201,170 L 196,168 L 196,172 Z" fill="#d4af37" opacity="1" />
-                {/* Silo next to barn */}
-                <rect x="215" y="180" width="8" height="25" fill="#d4d4d4" opacity="1" />
-                <ellipse cx="219" cy="180" rx="4" ry="2" fill="#b8b8b8" opacity="1" />
+                <rect x="190.5" y="155" width="1.5" height="7" fill="#4a4a4a" opacity="1" />
+                <path d="M 185,158 L 191.5,155 L 191.5,161 Z" fill="#d4af37" opacity="1" />
+                <path d="M 198,158 L 191.5,155 L 191.5,161 Z" fill="#d4af37" opacity="1" />
+                {/* Silo next to barn - larger */}
+                <rect x="220" y="172" width="11" height="33" fill="#d4d4d4" opacity="1" />
+                <ellipse cx="225.5" cy="172" rx="5.5" ry="2.5" fill="#b8b8b8" opacity="1" />
                 {/* Silo roof */}
-                <path d="M 217,178 L 219,173 L 221,178" fill="#a83232" opacity="1" />
+                <path d="M 222,170 L 225.5,163 L 229,170" fill="#a83232" opacity="1" />
                 {/* Silo bands */}
-                <rect x="215" y="188" width="8" height="1" fill="#a8a8a8" opacity="1" />
-                <rect x="215" y="196" width="8" height="1" fill="#a8a8a8" opacity="1" />
+                <rect x="220" y="183" width="11" height="1.5" fill="#a8a8a8" opacity="1" />
+                <rect x="220" y="194" width="11" height="1.5" fill="#a8a8a8" opacity="1" />
+                {/* Silo ladder */}
+                <rect x="225" y="175" width="1" height="25" fill="#8a8a8a" opacity="1" />
+                {Array.from({length: 8}).map((_, i) => (
+                  <rect key={`ladder-${i}`} x="223" y={178 + i * 3} width="5" height="0.5" fill="#8a8a8a" opacity="1" />
+                ))}
               </g>
 
-              {/* Red Barn #2 - Smaller Barn */}
+              {/* Red Barn #2 - Medium Barn (1/3 LARGER) */}
               <g>
-                <rect x="450" y="190" width="24" height="15" fill="#c73e3e" opacity="1" />
-                <path d="M 447,190 L 462,178 L 477,190 Z" fill="#a83232" opacity="1" />
-                <rect x="458" y="195" width="6" height="10" fill="#6d4428" opacity="1" />
-                <rect x="452" y="193" width="3" height="4" fill="#4a4a4a" opacity="1" />
-                <rect x="467" y="193" width="3" height="4" fill="#4a4a4a" opacity="1" />
-                {/* Small silo */}
-                <rect x="477" y="188" width="6" height="17" fill="#d4d4d4" opacity="1" />
-                <ellipse cx="480" cy="188" rx="3" ry="1.5" fill="#b8b8b8" opacity="1" />
+                <rect x="442" y="182" width="32" height="20" fill="#c73e3e" opacity="1" />
+                <path d="M 438,182 L 458,166 L 478,182 Z" fill="#a83232" opacity="1" />
+                <rect x="452" y="188" width="8" height="14" fill="#6d4428" opacity="1" />
+                <rect x="444" y="185" width="5" height="6" fill="#4a4a4a" opacity="1" />
+                <rect x="465" y="185" width="5" height="6" fill="#4a4a4a" opacity="1" />
+                {/* Barn door X pattern */}
+                <path d="M 452,188 L 460,202 M 460,188 L 452,202" stroke="#5a3a2a" strokeWidth="0.8" opacity="1" />
+                {/* Larger silo */}
+                <rect x="478" y="178" width="9" height="24" fill="#d4d4d4" opacity="1" />
+                <ellipse cx="482.5" cy="178" rx="4.5" ry="2" fill="#b8b8b8" opacity="1" />
+                {/* Silo cap */}
+                <path d="M 479,176 L 482.5,170 L 486,176" fill="#a83232" opacity="1" />
               </g>
 
-              {/* Red Barn #3 - Rustic Small Barn */}
+              {/* Red Barn #3 - Rustic Barn (1/3 LARGER) */}
               <g>
-                <rect x="650" y="192" width="20" height="13" fill="#c73e3e" opacity="1" />
-                <path d="M 648,192 L 660,182 L 672,192 Z" fill="#a83232" opacity="1" />
-                <rect x="656" y="196" width="5" height="9" fill="#6d4428" opacity="1" />
-                <rect x="651" y="194" width="2.5" height="3" fill="#4a4a4a" opacity="1" />
+                <rect x="642" y="185" width="27" height="18" fill="#c73e3e" opacity="1" />
+                <path d="M 639,185 L 655.5,172 L 672,185 Z" fill="#a83232" opacity="1" />
+                <rect x="651" y="190" width="7" height="13" fill="#6d4428" opacity="1" />
+                <rect x="644" y="187" width="4" height="5" fill="#4a4a4a" opacity="1" />
+                <rect x="663" y="187" width="4" height="5" fill="#4a4a4a" opacity="1" />
+                {/* Weathered wood detail */}
+                <path d="M 643,190 L 668,190 M 643,195 L 668,195" stroke="#a83232" strokeWidth="0.5" opacity="1" />
+              </g>
+
+              {/* Farmland/crop rows near barns (grass areas for animals, crop rows without) */}
+              <g opacity="0.9">
+                {/* Light farmland patches - tilled soil appearance */}
+                <rect x="235" y="200" width="35" height="8" fill="#c9b18f" opacity="0.4" />
+                <rect x="490" y="198" width="30" height="7" fill="#c9b18f" opacity="0.4" />
+                {/* Crop rows - simple lines */}
+                {Array.from({length: 8}).map((_, i) => (
+                  <rect key={`crop-1-${i}`} x={237 + i * 4} y="201" width="2" height="6" fill="#6a9a6a" opacity="0.7" />
+                ))}
+                {Array.from({length: 7}).map((_, i) => (
+                  <rect key={`crop-2-${i}`} x={492 + i * 4} y="199" width="2" height="5" fill="#6a9a6a" opacity="0.7" />
+                ))}
               </g>
 
               {/* Miniature Farmhouses */}
@@ -612,121 +640,122 @@ export function ProgressiveSkyline() {
               {/* Main road infrastructure */}
               <g opacity="1">
                 {/* Asphalt road */}
-                <rect x="800" y="215" width="1200" height="35" fill={`url(#roadGradient-${iteration})`} />
+                <rect x="800" y="218" width="1200" height="32" fill={`url(#roadGradient-${iteration})`} />
 
                 {/* Road center line (dashed) */}
                 {Array.from({length: 30}).map((_, i) => (
-                  <rect key={`dash-${i}`} x={800 + i * 40} y="231" width="20" height="2" opacity="1" />
+                  <rect key={`dash-${i}`} x={800 + i * 40} y="232" width="20" height="2" opacity="1" />
                 ))}
 
                 {/* Sidewalks */}
-                <rect x="800" y="210" width="1200" height="4" opacity="1" />
-                <rect x="800" y="251" width="1200" height="2" opacity="1" />
+                <rect x="800" y="210" width="1200" height="4" fill="#d8d8d8" opacity="1" />
+                <rect x="800" y="250" width="1200" height="2" fill="#d8d8d8" opacity="1" />
               </g>
 
-              {/* Ultra-detailed miniature houses - Victorian style */}
+
+              {/* Ultra-detailed miniature houses - Victorian style (1/4 LARGER) */}
               {[820, 1120, 1420, 1720].map((x, i) => (
                 <g key={`victorian-${i}`}>
-                  {/* Main house body - small and detailed */}
-                  <rect x={x} y="185" width="28" height="22" fill={`url(#victorianHouse-${iteration})`} />
+                  {/* Main house body - 25% larger */}
+                  <rect x={x} y="180" width="35" height="28" fill={`url(#victorianHouse-${iteration})`} />
 
                   {/* Steep Victorian roof with decorative peak */}
-                  <path d={`M ${x-3},185 L ${x+14},170 L ${x+31},185 Z`} fill={`url(#victorianRoof-${iteration})`} />
-                  <rect x={x+12} y="170" width="4" height="15" fill={`url(#victorianHouse-${iteration})`} /> {/* Tower */}
-                  <path d={`M ${x+10},170 L ${x+14},163 L ${x+18},170 Z`} fill={`url(#victorianRoof-${iteration})`} /> {/* Tower roof */}
+                  <path d={`M ${x-4},180 L ${x+17.5},162 L ${x+39},180 Z`} fill={`url(#victorianRoof-${iteration})`} />
+                  <rect x={x+15} y="162" width="5" height="18" fill={`url(#victorianHouse-${iteration})`} /> {/* Tower */}
+                  <path d={`M ${x+12.5},162 L ${x+17.5},153 L ${x+22.5},162 Z`} fill={`url(#victorianRoof-${iteration})`} /> {/* Tower roof */}
 
-                  {/* Detailed windows */}
-                  <rect x={x+4} y="190" width="5" height="7" fill="#6b8ea8" opacity="1" />
-                  <rect x={x+19} y="190" width="5" height="7" fill="#6b8ea8" opacity="1" />
-                  <rect x={x+11} y="178" width="4" height="5" fill="#6b8ea8" opacity="1" />
+                  {/* Detailed windows - larger */}
+                  <rect x={x+5} y="186" width="6" height="9" fill="#6b8ea8" opacity="1" />
+                  <rect x={x+24} y="186" width="6" height="9" fill="#6b8ea8" opacity="1" />
+                  <rect x={x+14} y="170" width="5" height="6" fill="#6b8ea8" opacity="1" />
 
                   {/* Front door with porch */}
-                  <rect x={x+11} y="197" width="6" height="10" fill="#8b5a3c" opacity="1" />
-                  <path d={`M ${x+8},197 L ${x+20},197`} stroke="#6d4428" strokeWidth="1.5" opacity="1" />
+                  <rect x={x+14} y="194" width="7" height="14" fill="#8b5a3c" opacity="1" />
+                  <path d={`M ${x+10},194 L ${x+25},194`} stroke="#6d4428" strokeWidth="2" opacity="1" />
 
                   {/* Chimney with smoke */}
-                  <rect x={x+22} y="176" width="3" height="9" fill="#a85757" opacity="1" />
-                  <ellipse className="chimney-smoke" cx={x+23.5} cy="173" rx="2" ry="3" fill="#c4c4c4" opacity="1" />
+                  <rect x={x+28} y="168" width="4" height="12" fill="#a85757" opacity="1" />
+                  <ellipse className="chimney-smoke" cx={x+30} cy="164" rx="2.5" ry="4" fill="#c4c4c4" opacity="1" />
 
                   {/* Decorative trim */}
-                  <rect x={x} y="207" width="28" height="1.5" fill="#d4c4a8" opacity="1" />
+                  <rect x={x} y="207" width="35" height="2" fill="#d4c4a8" opacity="1" />
                 </g>
               ))}
 
-              {/* Colonial style houses - symmetrical design */}
+              {/* Colonial style houses - symmetrical design (1/4 LARGER) */}
               {[1000, 1300, 1600, 1900].map((x, i) => (
                 <g key={`colonial-${i}`}>
-                  {/* Main colonial structure */}
-                  <rect x={x} y="183" width="32" height="24" fill={`url(#colonialHouse-${iteration})`} />
+                  {/* Main colonial structure - 25% larger */}
+                  <rect x={x} y="178" width="40" height="30" fill={`url(#colonialHouse-${iteration})`} />
 
                   {/* Classic colonial roof */}
-                  <path d={`M ${x-2},183 L ${x+16},172 L ${x+34},183 Z`} fill={`url(#colonialRoof-${iteration})`} />
+                  <path d={`M ${x-3},178 L ${x+20},164 L ${x+43},178 Z`} fill={`url(#colonialRoof-${iteration})`} />
 
-                  {/* Symmetrical windows (4 windows, 2 stories) */}
-                  <rect x={x+4} y="188" width="5" height="6" fill="#6b8ea8" opacity="1" />
-                  <rect x={x+23} y="188" width="5" height="6" fill="#6b8ea8" opacity="1" />
-                  <rect x={x+4} y="197" width="5" height="6" fill="#6b8ea8" opacity="1" />
-                  <rect x={x+23} y="197" width="5" height="6" fill="#6b8ea8" opacity="1" />
+                  {/* Symmetrical windows (4 windows, 2 stories) - larger */}
+                  <rect x={x+5} y="184" width="6" height="8" fill="#6b8ea8" opacity="1" />
+                  <rect x={x+29} y="184" width="6" height="8" fill="#6b8ea8" opacity="1" />
+                  <rect x={x+5} y="196" width="6" height="8" fill="#6b8ea8" opacity="1" />
+                  <rect x={x+29} y="196" width="6" height="8" fill="#6b8ea8" opacity="1" />
 
                   {/* Centered front door */}
-                  <rect x={x+13} y="197" width="6" height="10" fill="#5a4a3a" opacity="1" />
-                  <circle cx={x+17} cy="202" r="0.5" fill="#d4af37" opacity="1" />
+                  <rect x={x+16} y="194" width="8" height="14" fill="#5a4a3a" opacity="1" />
+                  <circle cx={x+21} cy="201" r="0.7" fill="#d4af37" opacity="1" />
 
                   {/* Front porch pillars */}
-                  <rect x={x+10} y="197" width="1.5" height="10" fill="#e8e8e8" opacity="1" />
-                  <rect x={x+20.5} y="197" width="1.5" height="10" fill="#e8e8e8" opacity="1" />
+                  <rect x={x+12} y="194" width="2" height="14" fill="#e8e8e8" opacity="1" />
+                  <rect x={x+26} y="194" width="2" height="14" fill="#e8e8e8" opacity="1" />
 
                   {/* Chimney */}
-                  <rect x={x+27} y="175" width="3" height="8" fill="#a85757" opacity="1" />
+                  <rect x={x+34} y="168" width="4" height="10" fill="#a85757" opacity="1" />
 
                   {/* Shutters */}
-                  <rect x={x+2.5} y="188" width="1" height="6" fill="#2f2f2f" opacity="1" />
-                  <rect x={x+9.5} y="188" width="1" height="6" fill="#2f2f2f" opacity="1" />
-                  <rect x={x+21.5} y="188" width="1" height="6" fill="#2f2f2f" opacity="1" />
-                  <rect x={x+28.5} y="188" width="1" height="6" fill="#2f2f2f" opacity="1" />
+                  <rect x={x+3} y="184" width="1.2" height="8" fill="#2f2f2f" opacity="1" />
+                  <rect x={x+11.8} y="184" width="1.2" height="8" fill="#2f2f2f" opacity="1" />
+                  <rect x={x+27} y="184" width="1.2" height="8" fill="#2f2f2f" opacity="1" />
+                  <rect x={x+35.8} y="184" width="1.2" height="8" fill="#2f2f2f" opacity="1" />
                 </g>
               ))}
 
-              {/* Ranch style houses - low and wide */}
+              {/* Ranch style houses - low and wide (1/4 LARGER, NO DRIVEWAYS) */}
               {[880, 1180, 1480, 1780].map((x, i) => (
                 <g key={`ranch-${i}`}>
-                  {/* Wide, low ranch house */}
-                  <rect x={x} y="193" width="38" height="14" fill={`url(#ranchHouse-${iteration})`} />
+                  {/* Wide, low ranch house - 25% larger */}
+                  <rect x={x} y="188" width="48" height="18" fill={`url(#ranchHouse-${iteration})`} />
 
                   {/* Low-pitched roof */}
-                  <path d={`M ${x-2},193 L ${x+19},186 L ${x+40},193 Z`} fill={`url(#ranchRoof-${iteration})`} />
+                  <path d={`M ${x-3},188 L ${x+24},179 L ${x+51},188 Z`} fill={`url(#ranchRoof-${iteration})`} />
 
-                  {/* Horizontal windows */}
-                  <rect x={x+5} y="195" width="8" height="4" fill="#6b8ea8" opacity="1" />
-                  <rect x={x+25} y="195" width="8" height="4" fill="#6b8ea8" opacity="1" />
+                  {/* Horizontal windows - larger */}
+                  <rect x={x+6} y="191" width="10" height="5" fill="#6b8ea8" opacity="1" />
+                  <rect x={x+32} y="191" width="10" height="5" fill="#6b8ea8" opacity="1" />
 
-                  {/* Attached garage */}
-                  <rect x={x+30} y="197" width="7" height="10" fill="#c9b18f" opacity="1" />
-                  <rect x={x+31} y="203" width="5" height="4" fill="#4a4a4a" opacity="1" />
+                  {/* Attached garage - larger */}
+                  <rect x={x+38} y="193" width="9" height="13" fill="#c9b18f" opacity="1" />
+                  <rect x={x+39} y="200" width="7" height="6" fill="#4a4a4a" opacity="1" />
 
                   {/* Front door */}
-                  <rect x={x+15} y="199" width="4" height="8" fill="#6b5a45" opacity="1" />
+                  <rect x={x+19} y="196" width="5" height="10" fill="#6b5a45" opacity="1" />
 
-                  {/* Driveway */}
-                  <path d={`M ${x+33},207 L ${x+33},215`} stroke="#8a8a8a" strokeWidth="4" opacity="1" />
+                  {/* Front porch/step */}
+                  <rect x={x+17} y="206" width="9" height="2" fill="#c9b18f" opacity="1" />
                 </g>
               ))}
 
-              {/* Cottage style houses - small and cozy */}
+              {/* Cottage style houses - small and cozy (1/4 LARGER) */}
               {[1060, 1360, 1660, 1960].map((x, i) => (
                 <g key={`cottage-${i}`}>
-                  {/* Small cottage body */}
-                  <rect x={x} y="192" width="24" height="15" fill={`url(#cottageHouse-${iteration})`} />
+                  {/* Cottage body - 25% larger */}
+                  <rect x={x} y="188" width="30" height="19" fill={`url(#cottageHouse-${iteration})`} />
 
                   {/* Rounded cottage roof */}
-                  <path d={`M ${x-2},192 Q ${x+12},182 ${x+26},192 Z`} fill={`url(#cottageRoof-${iteration})`} />
+                  <path d={`M ${x-3},188 Q ${x+15},175 ${x+33},188 Z`} fill={`url(#cottageRoof-${iteration})`} />
 
-                  {/* Arched door */}
-                  <path d={`M ${x+9},197 L ${x+9},207 L ${x+15},207 L ${x+15},197 Q ${x+12},195 ${x+9},197 Z`} fill="#a85757" opacity="1" />
+                  {/* Arched door - larger */}
+                  <path d={`M ${x+11},193 L ${x+11},207 L ${x+19},207 L ${x+19},193 Q ${x+15},190 ${x+11},193 Z`} fill="#a85757" opacity="1" />
 
-                  {/* Small cottage windows */}
-                  <rect x={x+4} y="194" width="4" height="4" fill="#6b8ea8" opacity="1" />
-                  <rect x={x+16} y="194" width="4" height="4" fill="#6b8ea8" opacity="1" />
+                  {/* Cottage windows - larger */}
+                  <rect x={x+5} y="191" width="5" height="5" fill="#6b8ea8" opacity="1" />
+                  <rect x={x+20} y="191" width="5" height="5" fill="#6b8ea8" opacity="1" />
 
                   {/* Window boxes with flowers */}
                   <rect x={x+3} y="198" width="6" height="1.5" fill="#8b7355" opacity="1" />
@@ -746,29 +775,29 @@ export function ProgressiveSkyline() {
                 </g>
               ))}
 
-              {/* Modern style houses - clean lines */}
+              {/* Modern style houses - clean lines (1/4 LARGER) */}
               {[940, 1240, 1540, 1840].map((x, i) => (
                 <g key={`modern-${i}`}>
-                  {/* Cubic modern house */}
-                  <rect x={x} y="188" width="26" height="19" fill={`url(#modernHouse-${iteration})`} />
+                  {/* Cubic modern house - 25% larger */}
+                  <rect x={x} y="183" width="33" height="24" fill={`url(#modernHouse-${iteration})`} />
 
                   {/* Flat/minimal roof */}
-                  <rect x={x-1} y="186" width="28" height="2" fill={`url(#modernRoof-${iteration})`} />
+                  <rect x={x-1} y="180" width="35" height="3" fill={`url(#modernRoof-${iteration})`} />
 
-                  {/* Large modern windows */}
-                  <rect x={x+2} y="192" width="8" height="11" fill="#6b8ea8" opacity="1" />
-                  <rect x={x+16} y="192" width="8" height="11" fill="#6b8ea8" opacity="1" />
+                  {/* Large modern windows - larger */}
+                  <rect x={x+3} y="188" width="10" height="14" fill="#6b8ea8" opacity="1" />
+                  <rect x={x+20} y="188" width="10" height="14" fill="#6b8ea8" opacity="1" />
 
                   {/* Minimal door */}
-                  <rect x={x+11} y="199" width="4" height="8" fill="#5a7a8a" opacity="1" />
+                  <rect x={x+14} y="196" width="5" height="11" fill="#5a7a8a" opacity="1" />
 
-                  {/* Solar panels on roof */}
-                  <rect x={x+2} y="187" width="10" height="1" fill="#3d5866" opacity="1" />
-                  <rect x={x+14} y="187" width="10" height="1" fill="#3d5866" opacity="1" />
+                  {/* Solar panels on roof - more panels */}
+                  <rect x={x+2} y="181" width="12" height="1.5" fill="#3d5866" opacity="1" />
+                  <rect x={x+18} y="181" width="12" height="1.5" fill="#3d5866" opacity="1" />
 
-                  {/* Modern landscaping */}
-                  <circle cx={x+4} cy="208" r="3" fill="#8bc34a" opacity="1" />
-                  <circle cx={x+22} cy="208" r="3" fill="#8bc34a" opacity="1" />
+                  {/* Modern landscaping - larger */}
+                  <circle cx={x+5} cy="208" r="4" fill="#8bc34a" opacity="1" />
+                  <circle cx={x+28} cy="208" r="4" fill="#8bc34a" opacity="1" />
                 </g>
               ))}
 
@@ -784,13 +813,18 @@ export function ProgressiveSkyline() {
                 ))}
               </g>
 
-              {/* Street lights along the road */}
+              {/* Street lights along the road - POSITIONED ON ROAD EDGE */}
               <g opacity="1">
                 {[840, 990, 1140, 1290, 1440, 1590, 1740, 1890].map((x, i) => (
                   <g key={`street-light-${i}`}>
-                    <rect x={x} y="208" width="2" height="15" fill="#4a4a4a" opacity="1" />
-                    <circle cx={x+1} cy="206" r="3" fill="#ffd700" opacity="1" />
-                    <circle cx={x+1} cy="206" r="1.5" fill="#ffeb3b" className="window-light" />
+                    {/* Light pole base on sidewalk edge near road */}
+                    <rect x={x} y="212" width="2" height="12" fill="#4a4a4a" opacity="1" />
+                    {/* Light arm extending over road */}
+                    <rect x={x} y="212" width="8" height="1.5" fill="#4a4a4a" opacity="1" />
+                    {/* Light fixture */}
+                    <rect x={x+5} y="213" width="4" height="2" fill="#5a5a5a" opacity="1" />
+                    <circle cx={x+7} cy="216" r="2" fill="#ffd700" opacity="1" />
+                    <circle cx={x+7} cy="216" r="1" fill="#ffeb3b" className="window-light" />
                   </g>
                 ))}
               </g>
@@ -815,16 +849,6 @@ export function ProgressiveSkyline() {
                 ))}
               </g>
 
-              {/* Stop signs at intersections */}
-              <g opacity="1">
-                {[1100, 1400, 1700].map((x, i) => (
-                  <g key={`stop-sign-${i}`}>
-                    <rect x={x} y="208" width="1.5" height="10" fill="#4a4a4a" opacity="1" />
-                    <polygon points={`${x+0.75},204 ${x+4},206 ${x+4},210 ${x+0.75},212 ${x-2.5},210 ${x-2.5},206`} fill="#cc3333" opacity="1" />
-                  </g>
-                ))}
-              </g>
-
               {/* ========== PHASE 3: SUSTAINABLE GREEN CITY - PROJECT EXODUS (2000-3800) ========== */}
 
               {/* Flat ground layer - with wide buffers from suburbs and to rural (WIDE BUFFERS: 2000-2100, 3600-3900) */}
@@ -838,8 +862,41 @@ export function ProgressiveSkyline() {
                 {/* Main street at bottom */}
                 <rect x="2000" y="220" width="1800" height="30" fill={`url(#roadGradient-${iteration})`} />
 
-                {/* Grass foreground area between sidewalk and buildings */}
-                <rect x="2000" y="215" width="1800" height="5" fill="#7aa87a" opacity="1" />
+                {/* Sidewalk/pedestrian path */}
+                <rect x="2000" y="217" width="1800" height="3" fill="#d8d8d8" opacity="1" />
+
+                {/* Grass strip between road and sidewalk - landscape architecture area */}
+                <rect x="2000" y="213" width="1800" height="4" fill="#7aa87a" opacity="1" />
+
+                {/* LANDSCAPE ARCHITECTURE - decorative plantings along the green city */}
+                {Array.from({length: 60}).map((_, i) => (
+                  <g key={`city-landscape-${i}`}>
+                    {/* Sculpted hedges/topiaries */}
+                    <ellipse cx={2015 + i * 30} cy="214" rx="5" ry="3" fill="#4a7c2f" opacity="1" />
+                    {/* Ornamental flower beds */}
+                    {i % 2 === 0 && (
+                      <g>
+                        <circle cx={2027 + i * 30} cy="213" r="1.2" fill="#ff69b4" opacity="1" />
+                        <circle cx={2030 + i * 30} cy="214" r="1" fill="#ffd700" opacity="1" />
+                        <circle cx={2033 + i * 30} cy="213" r="1.2" fill="#9b59b6" opacity="1" />
+                      </g>
+                    )}
+                    {/* Small decorative shrubs */}
+                    {i % 3 === 0 && (
+                      <g>
+                        <circle cx={2022 + i * 30} cy="214" r="2" fill="#5a8a5a" opacity="1" />
+                        <circle cx={2020 + i * 30} cy="215" r="1.5" fill="#6a9a6a" opacity="1" />
+                      </g>
+                    )}
+                    {/* Ornamental grasses */}
+                    {i % 4 === 1 && (
+                      <g>
+                        <path d={`M ${2025 + i * 30},217 L ${2023 + i * 30},212 M ${2025 + i * 30},217 L ${2025 + i * 30},211 M ${2025 + i * 30},217 L ${2027 + i * 30},212`}
+                              stroke="#6a9a6a" strokeWidth="0.8" fill="none" />
+                      </g>
+                    )}
+                  </g>
+                ))}
 
                 {/* Bike lane markings on street */}
                 {Array.from({length: 36}).map((_, i) => (
@@ -901,7 +958,7 @@ export function ProgressiveSkyline() {
                       ))}
                     </g>
 
-                    {/* Large windows with frames for natural light */}
+                    {/* Large windows with frames and BALCONIES on ALL windows */}
                     <g opacity="1">
                       {Array.from({length: Math.floor(bldg.h/20)}).map((_, row) => (
                         Array.from({length: Math.floor(bldg.w/16)}).map((_, col) => (
@@ -920,53 +977,91 @@ export function ProgressiveSkyline() {
                                   height="12"
                                   fill="#6b8ea8"
                                   opacity="1" />
+                            {/* BALCONY for each window */}
+                            <rect x={bldg.x + 3 + col * 16}
+                                  y={215 - bldg.h + 26 + row * 20}
+                                  width="12"
+                                  height="2"
+                                  fill="#7a8a7a"
+                                  opacity="1" />
+                            {/* Balcony railing posts */}
+                            <rect x={bldg.x + 3 + col * 16}
+                                  y={215 - bldg.h + 23 + row * 20}
+                                  width="0.8"
+                                  height="3"
+                                  fill="#6a7a6a"
+                                  opacity="1" />
+                            <rect x={bldg.x + 14.2 + col * 16}
+                                  y={215 - bldg.h + 23 + row * 20}
+                                  width="0.8"
+                                  height="3"
+                                  fill="#6a7a6a"
+                                  opacity="1" />
+                            {/* Balcony top rail */}
+                            <rect x={bldg.x + 3 + col * 16}
+                                  y={215 - bldg.h + 23 + row * 20}
+                                  width="12"
+                                  height="0.8"
+                                  fill="#6a7a6a"
+                                  opacity="1" />
                           </g>
                         ))
                       ))}
                     </g>
 
-                    {/* Balconies on select floors - only for taller buildings */}
-                    {bldg.h > 70 && (
-                      <g opacity="1">
-                        {Array.from({length: Math.floor(bldg.h/40)}).map((_, floor) => (
-                          Array.from({length: Math.floor(bldg.w/32)}).map((_, side) => (
-                            <g key={`balc-${floor}-${side}`}>
-                              {/* Balcony platform */}
-                              <rect x={bldg.x + 8 + side * 32}
-                                    y={215 - bldg.h + 25 + floor * 40}
-                                    width="12"
-                                    height="2"
-                                    fill="#7a8a7a"
-                                    opacity="1" />
-                              {/* Balcony railing */}
-                              <rect x={bldg.x + 8 + side * 32}
-                                    y={215 - bldg.h + 20 + floor * 40}
-                                    width="12"
-                                    height="5"
-                                    fill="none"
-                                    stroke="#7a8a7a"
-                                    strokeWidth="0.5"
-                                    opacity="1" />
-                            </g>
-                          ))
-                        ))}
-                      </g>
-                    )}
+                    {/* Building foundation/sidewalk - prevents merging into grass */}
+                    <g opacity="1">
+                      {/* Concrete foundation strip under building */}
+                      <rect x={bldg.x - 3}
+                            y="212"
+                            width={bldg.w + 6}
+                            height="6"
+                            fill="#c8c8c8"
+                            opacity="1" />
+                      {/* Foundation edge detail */}
+                      <rect x={bldg.x - 3}
+                            y="212"
+                            width={bldg.w + 6}
+                            height="1"
+                            fill="#b0b0b0"
+                            opacity="1" />
+                    </g>
 
                     {/* Ground-level entrance doors */}
                     <g opacity="1">
-                      <rect x={bldg.x + bldg.w/2 - 6}
-                            y={215 - 12}
-                            width="12"
-                            height="12"
-                            fill="#6a7a6a"
+                      {/* Door frame */}
+                      <rect x={bldg.x + bldg.w/2 - 8}
+                            y={215 - 15}
+                            width="16"
+                            height="15"
+                            fill="#5a6a5a"
                             opacity="1" />
-                      {/* Door handle */}
-                      <circle cx={bldg.x + bldg.w/2 + 3}
-                              cy={215 - 6}
-                              r="0.8"
-                              fill="#d4af37"
-                              opacity="1" />
+                      {/* Glass doors */}
+                      <rect x={bldg.x + bldg.w/2 - 6}
+                            y={215 - 13}
+                            width="5"
+                            height="11"
+                            fill="#6b8ea8"
+                            opacity="0.8" />
+                      <rect x={bldg.x + bldg.w/2 + 1}
+                            y={215 - 13}
+                            width="5"
+                            height="11"
+                            fill="#6b8ea8"
+                            opacity="0.8" />
+                      {/* Door handles */}
+                      <rect x={bldg.x + bldg.w/2 - 2}
+                            y={215 - 9}
+                            width="0.8"
+                            height="3"
+                            fill="#d4af37"
+                            opacity="1" />
+                      <rect x={bldg.x + bldg.w/2 + 1.2}
+                            y={215 - 9}
+                            width="0.8"
+                            height="3"
+                            fill="#d4af37"
+                            opacity="1" />
                     </g>
 
                     {/* Rooftop equipment (HVAC units, antennas) */}
@@ -1108,27 +1203,29 @@ export function ProgressiveSkyline() {
                 })}
               </g>
 
-              {/* Water features & fountains */}
+              {/* Water features & fountains - cleaner design without floating dots */}
               <g>
                 {[2250, 2750, 3250, 3750].map((x, i) => (
                   <g key={`fountain-${i}`}>
-                    {/* Fountain basin */}
-                    <ellipse cx={x} cy="208" rx="18" ry="6" fill="#6b8ea8" opacity="1" />
-                    {/* Water spray */}
-                    <circle cx={x} cy="200" r="3" fill="#add8e6" opacity="1" />
-                    <circle cx={x-4} cy="203" r="2" fill="#add8e6" opacity="1" />
-                    <circle cx={x+4} cy="203" r="2" fill="#add8e6" opacity="1" />
-                    <circle cx={x} cy="196" r="2" fill="#add8e6" opacity="1" />
+                    {/* Fountain basin - stone edge */}
+                    <ellipse cx={x} cy="209" rx="20" ry="7" fill="#8a8a8a" opacity="1" />
+                    <ellipse cx={x} cy="208" rx="18" ry="6" fill="#6b9eb8" opacity="0.8" />
+                    {/* Fountain centerpiece */}
+                    <rect x={x-2} y="200" width="4" height="8" fill="#a8a8a8" opacity="1" />
+                    <ellipse cx={x} cy="200" rx="3" ry="1.5" fill="#b8b8b8" opacity="1" />
+                    {/* Water jet - vertical line */}
+                    <rect x={x-0.5} y="192" width="1" height="8" fill="#a8d8e8" opacity="0.7" />
                   </g>
                 ))}
               </g>
 
-              {/* Electric cars/bikes on streets */}
+              {/* Electric cars/bikes on streets - cleaner design */}
               <g opacity="1">
                 {Array.from({length: 20}).map((_, i) => (
                   <g key={`e-vehicle-${i}`}>
-                    <ellipse cx={2100 + i * 90} cy="227" rx="6" ry="3" fill="#5a8a5a" />
-                    <circle cx={2100 + i * 90} cy="225" r="2" fill="#6b8ea8" opacity="1" />
+                    {/* Simple car shape */}
+                    <rect x={2095 + i * 90} y="225" width="10" height="4" rx="1" fill="#5a8a5a" />
+                    <rect x={2097 + i * 90} y="223" width="6" height="3" rx="1" fill="#5a8a5a" />
                   </g>
                 ))}
               </g>
@@ -1241,31 +1338,43 @@ export function ProgressiveSkyline() {
                 <rect x="3800" y="232" width="1200" height="1.5" fill="#f5f5f5" opacity="1" />
               </g>
 
-              {/* Red barns - matching opening, extended */}
+              {/* Red barns - matching opening, extended (1/3 LARGER) */}
               <g>
-                <rect x="3980" y="185" width="32" height="20" fill="#c73e3e" opacity="1" />
-                <path d="M 3976,185 L 3996,170 L 4016,185 Z" fill="#a83232" opacity="1" />
-                <rect x="3994" y="193" width="8" height="12" fill="#6d4428" opacity="1" />
-                <rect x="4015" y="180" width="8" height="25" fill="#d4d4d4" opacity="1" />
-                <ellipse cx="4019" cy="180" rx="4" ry="2" fill="#b8b8b8" opacity="1" />
+                {/* Barn 1 - Large */}
+                <rect x="3970" y="178" width="43" height="27" fill="#c73e3e" opacity="1" />
+                <path d="M 3965,178 L 3991.5,158 L 4018,178 Z" fill="#a83232" opacity="1" />
+                <rect x="3986" y="189" width="11" height="16" fill="#6d4428" opacity="1" />
+                <rect x="4017" y="170" width="11" height="35" fill="#d4d4d4" opacity="1" />
+                <ellipse cx="4022.5" cy="170" rx="5.5" ry="2.5" fill="#b8b8b8" opacity="1" />
+                {/* Detail: wood planks */}
+                <path d="M 3972,185 L 4012,185 M 3972,192 L 4012,192 M 3972,199 L 4012,199" stroke="#a83232" strokeWidth="0.5" opacity="1" />
 
-                <rect x="4250" y="190" width="24" height="15" fill="#c73e3e" opacity="1" />
-                <path d="M 4247,190 L 4262,178 L 4277,190 Z" fill="#a83232" opacity="1" />
-                <rect x="4258" y="195" width="6" height="10" fill="#6d4428" opacity="1" />
+                {/* Barn 2 - Medium */}
+                <rect x="4242" y="182" width="32" height="20" fill="#c73e3e" opacity="1" />
+                <path d="M 4238,182 L 4258,166 L 4278,182 Z" fill="#a83232" opacity="1" />
+                <rect x="4252" y="189" width="8" height="13" fill="#6d4428" opacity="1" />
+                {/* Detail: window */}
+                <rect x="4244" y="185" width="4" height="4" fill="#4a4a4a" opacity="1" />
+                <rect x="4268" y="185" width="4" height="4" fill="#4a4a4a" opacity="1" />
 
-                <rect x="4450" y="192" width="20" height="13" fill="#c73e3e" opacity="1" />
-                <path d="M 4448,192 L 4460,182 L 4472,192 Z" fill="#a83232" opacity="1" />
-                <rect x="4456" y="196" width="5" height="9" fill="#6d4428" opacity="1" />
+                {/* Barn 3 - Small-Medium */}
+                <rect x="4442" y="185" width="27" height="17" fill="#c73e3e" opacity="1" />
+                <path d="M 4439,185 L 4455.5,172 L 4472,185 Z" fill="#a83232" opacity="1" />
+                <rect x="4450" y="190" width="7" height="12" fill="#6d4428" opacity="1" />
 
-                <rect x="4680" y="187" width="28" height="18" fill="#c73e3e" opacity="1" />
-                <path d="M 4677,187 L 4694,174 L 4711,187 Z" fill="#a83232" opacity="1" />
-                <rect x="4690" y="194" width="7" height="11" fill="#6d4428" opacity="1" />
-                <rect x="4711" y="183" width="7" height="22" fill="#d4d4d4" opacity="1" />
-                <ellipse cx="4714.5" cy="183" rx="3.5" ry="1.8" fill="#b8b8b8" opacity="1" />
+                {/* Barn 4 - Large */}
+                <rect x="4672" y="178" width="37" height="24" fill="#c73e3e" opacity="1" />
+                <path d="M 4668,178 L 4690.5,162 L 4713,178 Z" fill="#a83232" opacity="1" />
+                <rect x="4684" y="187" width="9" height="15" fill="#6d4428" opacity="1" />
+                <rect x="4713" y="173" width="9" height="29" fill="#d4d4d4" opacity="1" />
+                <ellipse cx="4717.5" cy="173" rx="4.5" ry="2.2" fill="#b8b8b8" opacity="1" />
+                {/* Detail: X on door */}
+                <path d="M 4684,187 L 4693,202 M 4693,187 L 4684,202" stroke="#5a3a2a" strokeWidth="0.8" opacity="1" />
 
-                <rect x="4900" y="191" width="22" height="14" fill="#c73e3e" opacity="1" />
-                <path d="M 4898,191 L 4911,180 L 4924,191 Z" fill="#a83232" opacity="1" />
-                <rect x="4907" y="196" width="6" height="9" fill="#6d4428" opacity="1" />
+                {/* Barn 5 - Medium */}
+                <rect x="4892" y="183" width="29" height="19" fill="#c73e3e" opacity="1" />
+                <path d="M 4889,183 L 4906.5,170 L 4924,183 Z" fill="#a83232" opacity="1" />
+                <rect x="4901" y="189" width="8" height="13" fill="#6d4428" opacity="1" />
               </g>
 
               {/* Farmhouses */}
