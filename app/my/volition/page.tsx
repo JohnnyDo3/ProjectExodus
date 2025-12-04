@@ -22,6 +22,7 @@ import {
   Trash2,
   FileText,
   CheckCircle,
+  Mail,
 } from 'lucide-react'
 import Link from 'next/link'
 import { useEffect, useState } from 'react'
@@ -851,11 +852,18 @@ export default function MyVolitionPage() {
                                   <User className="w-4 h-4 text-theme-primary flex-shrink-0" />
                                   <h2 className="text-[10px] font-black text-[var(--foreground)]">MY CONNECTIONS</h2>
                                 </div>
-                                <Link href="/network/browse">
-                                  <button className="w-6 h-6 rounded-full bg-[var(--primary)] text-white flex items-center justify-center hover:bg-[var(--accent)] transition-colors flex-shrink-0">
-                                    <Plus className="w-3.5 h-3.5" />
-                                  </button>
-                                </Link>
+                                <div className="flex items-center gap-1.5">
+                                  <Link href="/messages">
+                                    <button className="w-6 h-6 rounded-full bg-[var(--accent)] text-white flex items-center justify-center hover:bg-[var(--primary)] transition-colors flex-shrink-0" title="Messages">
+                                      <Mail className="w-3.5 h-3.5" />
+                                    </button>
+                                  </Link>
+                                  <Link href="/network/browse">
+                                    <button className="w-6 h-6 rounded-full bg-[var(--primary)] text-white flex items-center justify-center hover:bg-[var(--accent)] transition-colors flex-shrink-0" title="Browse Network">
+                                      <Plus className="w-3.5 h-3.5" />
+                                    </button>
+                                  </Link>
+                                </div>
                               </div>
                               <div className="flex-1 overflow-y-auto scrollbar-visible p-2 space-y-2">
                                 {/* Recent Followers */}
@@ -907,9 +915,11 @@ export default function MyVolitionPage() {
                                               {user.matchReasons[0]}
                                             </p>
                                           )}
-                                          <button className="w-full py-1 px-2 bg-[var(--primary)] text-white rounded text-[9px] font-bold hover:bg-[var(--accent)] transition-colors">
-                                            Connect
-                                          </button>
+                                          <Link href={`/profile/${user.id}`} className="block">
+                                            <button className="w-full py-1 px-2 bg-[var(--primary)] text-white rounded text-[9px] font-bold hover:bg-[var(--accent)] transition-colors">
+                                              Connect
+                                            </button>
+                                          </Link>
                                         </div>
                                       ))
                                     ) : (
