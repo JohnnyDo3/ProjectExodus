@@ -91,119 +91,6 @@ export function ArticleSidebar({
     }
   }
 
-  // Expanded full-screen discussion view
-  if (isDiscussionExpanded) {
-    return (
-      <div className="fixed inset-0 z-50 bg-[var(--background)] overflow-y-auto">
-        <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
-          {/* Header */}
-          <div className="flex items-center justify-between mb-6 sticky top-0 bg-[var(--background)] py-4 border-b border-[var(--border)]">
-            <h2 className="text-xl sm:text-2xl font-black text-[var(--foreground)]">Article Discussion</h2>
-            <button
-              onClick={() => setIsDiscussionExpanded(false)}
-              className="p-2 bg-[var(--muted)] hover:bg-[var(--border)] rounded-lg transition-colors"
-              title="Close discussion"
-            >
-              <Minimize2 className="w-5 h-5 text-[var(--foreground)]" />
-            </button>
-          </div>
-
-          {/* Comment Input */}
-          {session?.user ? (
-            <div className="space-y-3 mb-8">
-              <textarea
-                value={newComment}
-                onChange={(e) => setNewComment(e.target.value)}
-                placeholder="Share your thoughts on this article..."
-                className="w-full p-4 border-2 border-[var(--border)] rounded-xl text-base font-medium resize-none focus:outline-none focus:border-theme-primary bg-[var(--card)] text-[var(--foreground)]"
-                rows={4}
-              />
-              <Button
-                onClick={handleSubmitComment}
-                disabled={isSubmitting || !newComment.trim()}
-                className="font-bold"
-              >
-                <Send className="w-4 h-4 mr-2" />
-                {isSubmitting ? 'Posting...' : 'Post Comment'}
-              </Button>
-            </div>
-          ) : (
-            <div className="p-6 bg-[var(--muted)] rounded-xl text-center mb-8">
-              <p className="text-base font-medium text-theme-muted mb-3">Sign in to join the discussion</p>
-              <Link href="/auth/signin">
-                <Button variant="outline" className="font-bold">
-                  Sign In
-                </Button>
-              </Link>
-            </div>
-          )}
-
-          {/* Comments List */}
-          <div className="space-y-6">
-            {localComments.length > 0 ? (
-              localComments.map((comment) => (
-                <div key={comment.id} className="p-4 bg-[var(--card)] rounded-xl border border-[var(--border)]">
-                  <div className="flex gap-4">
-                    <div className="flex-shrink-0">
-                      <div className="w-10 h-10 rounded-full bg-gradient-to-br from-[var(--primary)] to-[var(--accent)] flex items-center justify-center">
-                        {comment.user?.image ? (
-                          <img src={comment.user.image} alt={comment.user.name || 'User'} className="w-full h-full rounded-full object-cover" />
-                        ) : (
-                          <User className="w-5 h-5 text-white" />
-                        )}
-                      </div>
-                    </div>
-                    <div className="flex-grow">
-                      <div className="flex items-center gap-2 mb-2">
-                        <Link href={`/profile/${comment.user?.id}`} className="font-bold text-[var(--foreground)] hover:text-theme-primary">
-                          {comment.user?.name || 'Anonymous'}
-                        </Link>
-                        <span className="text-sm text-theme-muted">
-                          {formatDate(new Date(comment.createdAt))}
-                        </span>
-                      </div>
-                      <p className="text-[var(--foreground)] leading-relaxed">{comment.content}</p>
-                    </div>
-                  </div>
-
-                  {/* Replies */}
-                  {comment.replies && comment.replies.length > 0 && (
-                    <div className="mt-4 ml-14 space-y-4 border-l-2 border-[var(--border)] pl-4">
-                      {comment.replies.map((reply) => (
-                        <div key={reply.id} className="flex gap-3">
-                          <div className="w-8 h-8 rounded-full bg-[var(--muted)] flex items-center justify-center flex-shrink-0">
-                            {reply.user?.image ? (
-                              <img src={reply.user.image} alt={reply.user.name || 'User'} className="w-full h-full rounded-full object-cover" />
-                            ) : (
-                              <User className="w-4 h-4 text-theme-muted" />
-                            )}
-                          </div>
-                          <div>
-                            <div className="flex items-center gap-2 mb-1">
-                              <span className="font-bold text-sm text-[var(--foreground)]">{reply.user?.name || 'Anonymous'}</span>
-                              <span className="text-xs text-theme-muted">{formatDate(new Date(reply.createdAt))}</span>
-                            </div>
-                            <p className="text-sm text-[var(--foreground)]">{reply.content}</p>
-                          </div>
-                        </div>
-                      ))}
-                    </div>
-                  )}
-                </div>
-              ))
-            ) : (
-              <div className="text-center py-12">
-                <MessageCircle className="w-12 h-12 text-theme-muted mx-auto mb-3 opacity-50" />
-                <p className="text-lg font-medium text-theme-muted">No comments yet</p>
-                <p className="text-sm text-theme-muted">Be the first to share your thoughts!</p>
-              </div>
-            )}
-          </div>
-        </div>
-      </div>
-    )
-  }
-
   // Regular sidebar view
   return (
     <aside className="space-y-6 md:col-span-1">
@@ -254,7 +141,7 @@ export function ArticleSidebar({
       )}
 
       {/* Discussion Widget */}
-      <Card className="border-2 border-theme-primary">
+      <Card className={`border-2 border-theme-primary ${isDiscussionExpanded ? 'sticky top-4' : ''}`}>
         <CardHeader className="pb-2">
           <div className="flex items-center justify-between">
             <CardTitle className="text-base flex items-center gap-2">
@@ -262,11 +149,15 @@ export function ArticleSidebar({
               Discussion ({localComments.length})
             </CardTitle>
             <button
-              onClick={() => setIsDiscussionExpanded(true)}
+              onClick={() => setIsDiscussionExpanded(!isDiscussionExpanded)}
               className="p-1.5 hover:bg-[var(--muted)] rounded-lg transition-colors"
-              title="Expand discussion"
+              title={isDiscussionExpanded ? "Collapse discussion" : "Expand discussion"}
             >
-              <Maximize2 className="w-4 h-4 text-theme-muted" />
+              {isDiscussionExpanded ? (
+                <Minimize2 className="w-4 h-4 text-theme-muted" />
+              ) : (
+                <Maximize2 className="w-4 h-4 text-theme-muted" />
+              )}
             </button>
           </div>
         </CardHeader>
@@ -279,7 +170,7 @@ export function ArticleSidebar({
                 onChange={(e) => setNewComment(e.target.value)}
                 placeholder="Share your thoughts..."
                 className="w-full p-3 border-2 border-[var(--border)] rounded-lg text-sm font-medium resize-none focus:outline-none focus:border-theme-primary bg-[var(--card)] text-[var(--foreground)]"
-                rows={2}
+                rows={isDiscussionExpanded ? 4 : 2}
               />
               <Button
                 onClick={handleSubmitComment}
@@ -303,7 +194,7 @@ export function ArticleSidebar({
           )}
 
           {/* Comments List */}
-          <div className="space-y-4 max-h-64 overflow-y-auto">
+          <div className={`space-y-4 overflow-y-auto ${isDiscussionExpanded ? 'max-h-[60vh]' : 'max-h-64'}`}>
             {localComments.length > 0 ? (
               localComments.map((comment) => (
                 <div key={comment.id} className="space-y-3">
