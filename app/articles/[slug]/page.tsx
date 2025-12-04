@@ -6,6 +6,42 @@ import { BackButton } from '@/components/navigation/BackButton'
 import { formatDate } from '@/lib/utils/format'
 import Link from 'next/link'
 import { MarkdownContent } from '@/components/article/MarkdownContent'
+import { ArticleSidebar } from '@/components/article/ArticleSidebar'
+
+// Extract references (URLs) from markdown content
+function extractReferences(content: string): Array<{ url: string; text: string }> {
+  const references: Array<{ url: string; text: string }> = []
+  const seen = new Set<string>()
+
+  // Match markdown links: [text](url)
+  const markdownLinkRegex = /\[([^\]]+)\]\(([^)]+)\)/g
+  let match
+  while ((match = markdownLinkRegex.exec(content)) !== null) {
+    const [, text, url] = match
+    if (!seen.has(url) && url.startsWith('http')) {
+      seen.add(url)
+      references.push({ url, text: text || url })
+    }
+  }
+
+  // Match raw URLs
+  const urlRegex = /(?<![[(])https?:\/\/[^\s<>\])"']+/g
+  while ((match = urlRegex.exec(content)) !== null) {
+    const url = match[0]
+    if (!seen.has(url)) {
+      seen.add(url)
+      // Try to extract domain name for display
+      try {
+        const hostname = new URL(url).hostname.replace('www.', '')
+        references.push({ url, text: hostname })
+      } catch {
+        references.push({ url, text: url })
+      }
+    }
+  }
+
+  return references
+}
 
 async function getArticle(slug: string) {
   try {
@@ -150,128 +186,16 @@ export default async function ArticleDetailPage({
                   </div>
                 )}
 
-                {/* Comments Section */}
-                {article.comments && article.comments.length > 0 && (
-                  <div className="mt-12">
-                    <Card>
-                      <CardHeader>
-                        <CardTitle className="flex items-center gap-2">
-                          <MessageCircle className="w-5 h-5" />
-                          Comments ({article.comments.length})
-                        </CardTitle>
-                      </CardHeader>
-                      <CardContent className="space-y-6">
-                        {article.comments.map((comment: any) => (
-                          <div key={comment.id} className="space-y-4">
-                            {/* Top-level comment */}
-                            <div className="flex gap-4">
-                              <div className="flex-shrink-0">
-                                <div className="w-10 h-10 rounded-full bg-moss-100 flex items-center justify-center">
-                                  <User className="w-5 h-5 text-moss-600" />
-                                </div>
-                              </div>
-                              <div className="flex-grow">
-                                <div className="flex items-center gap-2 mb-1">
-                                  <span className="font-semibold text-earth-900">
-                                    {comment.user?.name || 'Anonymous'}
-                                  </span>
-                                  <span className="text-sm text-earth-500">
-                                    {formatDate(new Date(comment.createdAt))}
-                                  </span>
-                                </div>
-                                <p className="text-earth-700">{comment.content}</p>
-                              </div>
-                            </div>
-
-                            {/* Replies */}
-                            {comment.replies && comment.replies.length > 0 && (
-                              <div className="ml-14 space-y-4 border-l-2 border-sand-200 pl-6">
-                                {comment.replies.map((reply: any) => (
-                                  <div key={reply.id} className="flex gap-4">
-                                    <div className="flex-shrink-0">
-                                      <div className="w-8 h-8 rounded-full bg-ocean-100 flex items-center justify-center">
-                                        <User className="w-4 h-4 text-ocean-600" />
-                                      </div>
-                                    </div>
-                                    <div className="flex-grow">
-                                      <div className="flex items-center gap-2 mb-1">
-                                        <span className="font-semibold text-earth-900 text-sm">
-                                          {reply.user?.name || 'Anonymous'}
-                                        </span>
-                                        <span className="text-xs text-earth-500">
-                                          {formatDate(new Date(reply.createdAt))}
-                                        </span>
-                                      </div>
-                                      <p className="text-sm text-earth-700">{reply.content}</p>
-                                    </div>
-                                  </div>
-                                ))}
-                              </div>
-                            )}
-                          </div>
-                        ))}
-                      </CardContent>
-                    </Card>
-                  </div>
-                )}
               </article>
 
-              {/* Sidebar */}
-              <aside className="md:col-span-1 space-y-6">
-                {/* Author Card */}
-                {article.author && (
-                  <Card>
-                    <CardHeader>
-                      <CardTitle className="text-base">About the Author</CardTitle>
-                    </CardHeader>
-                    <CardContent>
-                      <div className="text-center">
-                        <Link href={`/profile/${article.author.id}`} className="block">
-                          <div className="w-20 h-20 rounded-full bg-moss-100 flex items-center justify-center mx-auto mb-3 hover:scale-105 transition-transform cursor-pointer">
-                            {article.author.image ? (
-                              <img
-                                src={article.author.image}
-                                alt={article.author.name || 'Author'}
-                                className="w-full h-full rounded-full object-cover"
-                              />
-                            ) : (
-                              <User className="w-10 h-10 text-moss-600" />
-                            )}
-                          </div>
-                          <h3 className="font-bold text-earth-900 mb-2 hover:text-moss-600 transition-colors cursor-pointer">
-                            {article.author.name}
-                          </h3>
-                        </Link>
-                        {article.author.bio && (
-                          <p className="text-sm text-earth-600">
-                            {article.author.bio}
-                          </p>
-                        )}
-                      </div>
-                    </CardContent>
-                  </Card>
-                )}
-
-                {/* Share Card */}
-                <Card>
-                  <CardHeader>
-                    <CardTitle className="text-base">Share Article</CardTitle>
-                  </CardHeader>
-                  <CardContent>
-                    <div className="space-y-2">
-                      <Button variant="outline" className="w-full text-sm" size="sm">
-                        Share on Twitter
-                      </Button>
-                      <Button variant="outline" className="w-full text-sm" size="sm">
-                        Share on Facebook
-                      </Button>
-                      <Button variant="outline" className="w-full text-sm" size="sm">
-                        Copy Link
-                      </Button>
-                    </div>
-                  </CardContent>
-                </Card>
-              </aside>
+              {/* Sidebar with References, Discussion, Author, and Share */}
+              <ArticleSidebar
+                references={article.content ? extractReferences(article.content) : []}
+                comments={article.comments || []}
+                author={article.author}
+                articleId={article.id}
+                articleSlug={slug}
+              />
             </div>
           </div>
         </div>
