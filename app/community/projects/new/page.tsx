@@ -95,12 +95,6 @@ export default function NewProjectPage() {
             <BackButton label="Back to Projects" fallbackUrl="/community/projects" />
           </div>
           <div className="max-w-4xl mx-auto">
-            <Link href="/community/projects">
-              <Button variant="ghost" className="mb-6 font-bold">
-                <ArrowLeft className="w-4 h-4 mr-2" />
-                BACK TO PROJECTS
-              </Button>
-            </Link>
             <div className="flex items-center gap-4 mb-4">
               <div className="w-16 h-16 rounded-full bg-gradient-to-br from-[var(--primary)] to-[var(--accent)] flex items-center justify-center shadow-xl">
                 <Briefcase className="w-8 h-8 text-[var(--primary-foreground)]" />

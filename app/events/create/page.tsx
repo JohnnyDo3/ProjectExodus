@@ -101,13 +101,6 @@ export default function CreateEventPage() {
             <BackButton label="Back to Events" fallbackUrl="/events" />
           </div>
           <div className="max-w-3xl mx-auto">
-            <Link href="/events">
-              <Button variant="ghost" className="mb-6 font-bold">
-                <ArrowLeft className="w-4 h-4 mr-2" />
-                BACK TO EVENTS
-              </Button>
-            </Link>
-
             <div className="text-center">
               <div className="inline-flex items-center gap-3 px-6 py-3 rounded-full bg-gradient-to-r from-[var(--primary)] to-[var(--accent)] text-[var(--primary-foreground)] font-black text-sm uppercase mb-6">
                 <Calendar className="w-5 h-5" />

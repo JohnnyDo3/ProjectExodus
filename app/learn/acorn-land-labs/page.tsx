@@ -246,18 +246,6 @@ export default function AcornLandLabsPage() {
 
   return (
     <div className="min-h-screen">
-      {/* Back Navigation */}
-      <div className="bg-[var(--background)] border-b-2 border-theme-muted">
-        <div className="container mx-auto px-4 sm:px-6 lg:px-8 py-4">
-          <Link href="/learn">
-            <Button variant="ghost" className="font-bold">
-              <ArrowLeft className="w-4 h-4 mr-2" />
-              BACK TO LEARN
-            </Button>
-          </Link>
-        </div>
-      </div>
-
       {/* Hero */}
       <section className="py-20 bg-gradient-to-br from-[color-mix(in_srgb,var(--primary)_15%,var(--background))] via-[color-mix(in_srgb,var(--accent)_15%,var(--background))] to-[color-mix(in_srgb,var(--secondary)_15%,var(--background))]">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">

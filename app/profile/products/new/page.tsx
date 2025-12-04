@@ -91,15 +91,9 @@ export default function NewProductPage() {
       <section className="py-8 bg-gradient-to-br from-[var(--accent)] via-[var(--primary)] to-[var(--secondary)] text-[var(--primary-foreground)]">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
           <div className="mb-6">
-            <BackButton label="Back to Profile" fallbackUrl="/profile" />
+            <BackButton label="Back to Products" fallbackUrl="/profile/products" />
           </div>
           <div className="max-w-4xl mx-auto">
-            <Link href="/profile/products">
-              <Button variant="ghost" size="sm" className="mb-4 text-white hover:bg-white/20">
-                <ArrowLeft className="w-4 h-4 mr-2" />
-                Back to Products
-              </Button>
-            </Link>
             <h1 className="text-3xl md:text-4xl font-black mb-2">
               SUBMIT A PRODUCT
             </h1>

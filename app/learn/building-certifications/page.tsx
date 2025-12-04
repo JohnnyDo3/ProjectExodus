@@ -206,13 +206,6 @@ export default function BuildingCertificationsPage() {
             <BackButton label="Back to Learn" fallbackUrl="/learn" />
           </div>
           <div className="max-w-5xl mx-auto">
-            <Link href="/learn">
-              <Button variant="ghost" className="mb-6 font-bold">
-                <ArrowLeft className="w-4 h-4 mr-2" />
-                BACK TO LEARN
-              </Button>
-            </Link>
-
             <div className="text-center space-y-6">
               <div className="inline-block px-6 py-3 rounded-full bg-theme-primary text-[var(--primary-foreground)] font-black text-sm uppercase mb-4">
                 SUSTAINABLE BUILDING CERTIFICATIONS

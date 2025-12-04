@@ -300,13 +300,6 @@ export default function ProjectPage({ params }: { params: Promise<{ slug: string
             <BackButton label="Back to Projects" fallbackUrl="/community/projects" />
           </div>
           <div className="max-w-6xl mx-auto">
-            <Link href="/community/projects">
-              <Button variant="ghost" className="mb-6 font-bold">
-                <ArrowLeft className="w-4 h-4 mr-2" />
-                BACK TO PROJECTS
-              </Button>
-            </Link>
-
             <div className="flex flex-col lg:flex-row gap-8">
               {/* Project Info */}
               <div className="flex-1">
