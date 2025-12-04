@@ -130,11 +130,11 @@ export default function SkillEndorsements({ userId, skills, isOwnProfile = false
   }
 
   if (loading) {
-    return <div className="text-gray-500">Loading endorsements...</div>
+    return <div className="text-theme-muted">Loading endorsements...</div>
   }
 
   if (!skills || skills.length === 0) {
-    return <div className="text-gray-500">No skills listed</div>
+    return <div className="text-theme-muted">No skills listed</div>
   }
 
   return (
@@ -146,13 +146,13 @@ export default function SkillEndorsements({ userId, skills, isOwnProfile = false
         const userHasEndorsed = hasUserEndorsed(skill)
 
         return (
-          <div key={skill} className="border border-gray-200 rounded-lg p-4 hover:border-gray-300 transition-colors">
+          <div key={skill} className="border border-[var(--border)] rounded-lg p-4 hover:border-theme-primary transition-colors">
             <div className="flex items-center justify-between">
               <div className="flex-1">
                 <div className="flex items-center gap-3">
-                  <h4 className="font-medium text-gray-900">{skill}</h4>
+                  <h4 className="font-medium text-[var(--foreground)]">{skill}</h4>
                   {count > 0 && (
-                    <span className="text-sm text-gray-500">
+                    <span className="text-sm text-theme-muted">
                       {count} endorsement{count !== 1 ? 's' : ''}
                     </span>
                   )}
@@ -179,22 +179,22 @@ export default function SkillEndorsements({ userId, skills, isOwnProfile = false
                 {count > 0 && (
                   <button
                     onClick={() => toggleSkillExpanded(skill)}
-                    className="p-1 hover:bg-gray-100 rounded transition-colors"
+                    className="p-1 hover:bg-[var(--muted)] rounded transition-colors"
                   >
-                    <span className="text-gray-500 text-sm">{isExpanded ? '▲' : '▼'}</span>
+                    <span className="text-theme-muted text-sm">{isExpanded ? '▲' : '▼'}</span>
                   </button>
                 )}
               </div>
             </div>
 
             {isExpanded && count > 0 && (
-              <div className="mt-4 pt-4 border-t border-gray-200">
-                <p className="text-sm text-gray-600 mb-3">Endorsed by:</p>
+              <div className="mt-4 pt-4 border-t border-[var(--border)]">
+                <p className="text-sm text-theme-muted mb-3">Endorsed by:</p>
                 <div className="grid grid-cols-1 gap-2">
                   {skillEndorsements.map((endorsement) => (
                     <div
                       key={endorsement.id}
-                      className="flex items-center justify-between p-2 hover:bg-gray-50 rounded"
+                      className="flex items-center justify-between p-2 hover:bg-[var(--muted)] rounded"
                     >
                       <div className="flex items-center gap-3">
                         {endorsement.endorser?.image ? (
@@ -206,18 +206,18 @@ export default function SkillEndorsements({ userId, skills, isOwnProfile = false
                             className="rounded-full"
                           />
                         ) : (
-                          <div className="w-8 h-8 bg-gray-200 rounded-full flex items-center justify-center">
-                            <span className="text-xs text-gray-600">
+                          <div className="w-8 h-8 bg-[var(--muted)] rounded-full flex items-center justify-center">
+                            <span className="text-xs text-theme-muted">
                               {endorsement.endorser?.name?.charAt(0) || '?'}
                             </span>
                           </div>
                         )}
                         <div>
-                          <p className="text-sm font-medium text-gray-900">
+                          <p className="text-sm font-medium text-[var(--foreground)]">
                             {endorsement.endorser?.name || 'Unknown'}
                           </p>
                           {endorsement.endorser?.headline && (
-                            <p className="text-xs text-gray-500">
+                            <p className="text-xs text-theme-muted">
                               {endorsement.endorser.headline}
                             </p>
                           )}
@@ -227,7 +227,7 @@ export default function SkillEndorsements({ userId, skills, isOwnProfile = false
                       {endorsement.endorserId === session?.user?.id && (
                         <button
                           onClick={() => handleRemoveEndorsement(endorsement.id)}
-                          className="text-xs text-gray-500 hover:text-red-600 transition-colors"
+                          className="text-xs text-theme-muted hover:text-red-600 transition-colors"
                         >
                           Remove
                         </button>

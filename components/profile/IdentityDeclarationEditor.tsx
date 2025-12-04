@@ -504,11 +504,11 @@ export function IdentityDeclarationEditor({ initialProfile }: Props) {
                 <button
                   onClick={handleSave}
                   disabled={isSaving}
-                  className="p-2 bg-white text-gray-900 hover:bg-white/90 rounded-lg transition-colors"
+                  className="p-2 bg-white text-[var(--earth-900)] hover:bg-white/90 rounded-lg transition-colors"
                   title="Save changes"
                 >
                   {isSaving ? (
-                    <div className="w-4 h-4 border-2 border-gray-900 border-t-transparent rounded-full animate-spin" />
+                    <div className="w-4 h-4 border-2 border-[var(--earth-900)] border-t-transparent rounded-full animate-spin" />
                   ) : (
                     <Save className="w-4 h-4" />
                   )}
@@ -725,7 +725,7 @@ export function IdentityDeclarationEditor({ initialProfile }: Props) {
                 <button
                   onClick={handleSave}
                   disabled={isSaving}
-                  className="px-4 py-2 bg-white text-gray-900 rounded-xl font-bold text-sm flex items-center gap-2 hover:bg-white/90 transition-colors"
+                  className="px-4 py-2 bg-white text-[var(--earth-900)] rounded-xl font-bold text-sm flex items-center gap-2 hover:bg-white/90 transition-colors"
                 >
                   <Save className="w-4 h-4" />
                   {isSaving ? 'Saving...' : 'Save Changes'}
@@ -760,7 +760,7 @@ export function IdentityDeclarationEditor({ initialProfile }: Props) {
                     }}
                     className={`flex flex-col items-center gap-1 p-3 rounded-xl text-xs font-bold transition-all ${
                       isSelected
-                        ? 'bg-white text-gray-900 shadow-lg scale-105'
+                        ? 'bg-white text-[var(--earth-900)] shadow-lg scale-105'
                         : 'bg-white/10 text-white hover:bg-white/20'
                     }`}
                     title={`${a.name}: ${a.value}`}

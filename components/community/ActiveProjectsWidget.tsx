@@ -25,7 +25,7 @@ const statusConfig: Record<string, { label: string, className: string }> = {
   ACTIVE: { label: 'Active', className: 'bg-emerald-500/20 text-emerald-600 border-emerald-500/30' },
   PLANNING: { label: 'Planning', className: 'bg-amber-500/20 text-amber-600 border-amber-500/30' },
   COMPLETED: { label: 'Completed', className: 'bg-blue-500/20 text-blue-600 border-blue-500/30' },
-  PAUSED: { label: 'Paused', className: 'bg-gray-500/20 text-gray-600 border-gray-500/30' },
+  PAUSED: { label: 'Paused', className: 'bg-[var(--muted)] text-theme-muted border-[var(--border)]' },
 }
 
 export function ActiveProjectsWidget({ initialProjects }: Props) {

@@ -490,7 +490,7 @@ export function ProfileBusinessCard({ userId }: ProfileBusinessCardProps) {
                     onClick={() => setSelectedArchetype(a.id as ArchetypeType)}
                     className={`flex flex-col items-center gap-1 p-3 rounded-xl text-xs font-bold transition-all ${
                       isSelected
-                        ? 'bg-white text-gray-900 shadow-lg scale-105'
+                        ? 'bg-white text-[var(--earth-900)] shadow-lg scale-105'
                         : 'bg-white/10 text-white hover:bg-white/20'
                     }`}
                     title={`${a.name}: ${a.value}`}

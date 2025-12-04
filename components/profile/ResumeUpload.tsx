@@ -98,8 +98,8 @@ export default function ResumeUpload({
     <div className="space-y-4">
       <div className="flex items-center justify-between">
         <div>
-          <h3 className="text-lg font-semibold text-gray-900">Upload Resume/CV</h3>
-          <p className="text-sm text-gray-500">Upload your resume as a PDF (max 5MB)</p>
+          <h3 className="text-lg font-semibold text-[var(--foreground)]">Upload Resume/CV</h3>
+          <p className="text-sm text-theme-muted">Upload your resume as a PDF (max 5MB)</p>
         </div>
       </div>
 
@@ -113,8 +113,8 @@ export default function ResumeUpload({
                 </svg>
               </div>
               <div>
-                <p className="font-medium text-gray-900">Resume uploaded</p>
-                <p className="text-sm text-gray-600">Your resume is ready to share</p>
+                <p className="font-medium text-[var(--foreground)]">Resume uploaded</p>
+                <p className="text-sm text-theme-muted">Your resume is ready to share</p>
               </div>
             </div>
 
@@ -136,13 +136,13 @@ export default function ResumeUpload({
           </div>
         </div>
       ) : (
-        <div className="border-2 border-dashed border-gray-300 rounded-lg p-8 text-center hover:border-emerald-400 transition-colors">
-          <svg className="w-12 h-12 text-gray-400 mx-auto mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <div className="border-2 border-dashed border-[var(--border)] rounded-lg p-8 text-center hover:border-theme-primary transition-colors">
+          <svg className="w-12 h-12 text-theme-muted mx-auto mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
           </svg>
 
           <div className="mb-4">
-            <p className="text-sm font-medium text-gray-700 mb-1">
+            <p className="text-sm font-medium text-[var(--foreground)] mb-1">
               Drop your PDF resume here, or
             </p>
             <label className="inline-block">
@@ -160,7 +160,7 @@ export default function ResumeUpload({
             </label>
           </div>
 
-          <p className="text-xs text-gray-500">PDF only, max 5MB</p>
+          <p className="text-xs text-theme-muted">PDF only, max 5MB</p>
 
           {uploading && (
             <div className="mt-4">
