@@ -118,7 +118,7 @@ export default async function MyLearningPage() {
               </div>
               <div className="flex gap-3">
                 <Link href="/tools/carbon-calculator">
-                  <Button size="lg" className="bg-white text-[var(--primary)] hover:bg-gray-100 font-black">
+                  <Button size="lg" className="bg-white text-[var(--primary)] hover:bg-[var(--sand-100)] font-black">
                     <Calculator className="w-5 h-5 mr-2" />
                     CALCULATOR
                   </Button>

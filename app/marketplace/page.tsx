@@ -223,7 +223,7 @@ export default async function MarketplacePage() {
               Join our community of sustainable makers and reach thousands of eco-conscious customers
             </p>
             <Link href="/profile/products/new">
-              <Button size="lg" className="text-xl px-14 py-10 bg-white text-[var(--primary)] hover:bg-gray-100 rounded-2xl font-black shadow-2xl">
+              <Button size="lg" className="text-xl px-14 py-10 bg-white text-[var(--primary)] hover:bg-[var(--sand-100)] rounded-2xl font-black shadow-2xl">
                 START SELLING TODAY →
               </Button>
             </Link>

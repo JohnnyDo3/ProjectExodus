@@ -60,7 +60,7 @@ export default async function MyProductsPage() {
               </div>
               <div className="flex gap-3">
                 <Link href="/profile/products/new">
-                  <Button size="lg" className="bg-white text-[var(--primary)] hover:bg-gray-100 font-black">
+                  <Button size="lg" className="bg-white text-[var(--primary)] hover:bg-[var(--sand-100)] font-black">
                     <Package className="w-4 h-4 mr-2" />
                     ADD PRODUCT
                   </Button>

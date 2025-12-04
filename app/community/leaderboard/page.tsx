@@ -211,7 +211,7 @@ export default async function LeaderboardPage() {
             </p>
             <div className="flex justify-center">
               <Link href="/community/feed">
-                <button className="text-xl px-12 py-6 bg-white text-[var(--primary)] hover:bg-gray-100 font-black shadow-2xl rounded-2xl">
+                <button className="text-xl px-12 py-6 bg-white text-[var(--primary)] hover:bg-[var(--sand-100)] font-black shadow-2xl rounded-2xl">
                   JOIN THE FEED
                 </button>
               </Link>
