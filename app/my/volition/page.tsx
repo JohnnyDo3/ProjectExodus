@@ -872,19 +872,21 @@ export default function MyVolitionPage() {
                                     <h3 className="text-[9px] font-black text-[var(--foreground)] mb-1.5">Recent</h3>
                                     <div className="space-y-1">
                                       {following.slice(0, 3).map((user: any) => (
-                                        <div key={user.id} className="flex items-center gap-1.5 p-1.5 bg-[var(--muted)]/50 rounded hover:bg-[var(--muted)] transition-colors">
-                                          <div className="w-6 h-6 rounded-full bg-gradient-to-br from-[var(--primary)] to-[var(--accent)] flex items-center justify-center flex-shrink-0">
-                                            {user.image ? (
-                                              <img src={user.image} alt={user.name} className="w-full h-full rounded-full object-cover" />
-                                            ) : (
-                                              <User className="w-3 h-3 text-white" />
-                                            )}
+                                        <Link key={user.id} href={`/profile/${user.id}`}>
+                                          <div className="flex items-center gap-1.5 p-1.5 bg-[var(--muted)]/50 rounded hover:bg-[var(--muted)] transition-colors cursor-pointer">
+                                            <div className="w-6 h-6 rounded-full bg-gradient-to-br from-[var(--primary)] to-[var(--accent)] flex items-center justify-center flex-shrink-0">
+                                              {user.image ? (
+                                                <img src={user.image} alt={user.name} className="w-full h-full rounded-full object-cover" />
+                                              ) : (
+                                                <User className="w-3 h-3 text-white" />
+                                              )}
+                                            </div>
+                                            <div className="flex-1 min-w-0">
+                                              <p className="text-xs font-black text-[var(--foreground)] truncate">{user.name || 'Anonymous'}</p>
+                                              <p className="text-[10px] font-medium text-theme-muted truncate">{user.bio || 'Member'}</p>
+                                            </div>
                                           </div>
-                                          <div className="flex-1 min-w-0">
-                                            <p className="text-xs font-black text-[var(--foreground)] truncate">{user.name || 'Anonymous'}</p>
-                                            <p className="text-[10px] font-medium text-theme-muted truncate">{user.bio || 'Member'}</p>
-                                          </div>
-                                        </div>
+                                        </Link>
                                       ))}
                                     </div>
                                   </div>
