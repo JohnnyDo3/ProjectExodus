@@ -97,6 +97,8 @@ export function NightSkyConstellations({ alwaysShow = false, starCount = 1400 }:
   const animationFrameRef = useRef<number | undefined>(undefined)
   const shootingStarsRef = useRef<ShootingStar[]>([])
   const lastShootingStarTimeRef = useRef(0)
+  // Persist rotation start time across re-renders
+  const rotationStartTimeRef = useRef<number>(Date.now())
 
   // Only show constellations during night phases (unless alwaysShow is true)
   const isNightTime = alwaysShow || ['dusk', 'evening', 'night', 'midnight'].includes(currentPhase)
@@ -212,7 +214,6 @@ export function NightSkyConstellations({ alwaysShow = false, starCount = 1400 }:
     if (!ctx) return
 
     let time = 0
-    const rotationStartTime = Date.now()
     // 1 full rotation per 30 minutes = 360 degrees / 1800000 ms
     const rotationSpeed = 360 / (30 * 60 * 1000)
 
@@ -220,8 +221,8 @@ export function NightSkyConstellations({ alwaysShow = false, starCount = 1400 }:
       ctx.clearRect(0, 0, canvas.width, canvas.height)
       time += 0.01
 
-      // Calculate rotation angle based on real time elapsed
-      const elapsedMs = Date.now() - rotationStartTime
+      // Calculate rotation angle based on real time elapsed (using persistent ref)
+      const elapsedMs = Date.now() - rotationStartTimeRef.current
       const rotationAngle = (elapsedMs * rotationSpeed) % 360
       const rotationRadians = (rotationAngle * Math.PI) / 180
 

@@ -43,16 +43,25 @@ interface ArticleQueryResult {
   }
 }
 
+// Helper to add timeout to promises
+function withTimeout<T>(promise: Promise<T>, ms: number, name: string): Promise<T> {
+  const timeout = new Promise<never>((_, reject) =>
+    setTimeout(() => reject(new Error(`${name} timed out after ${ms}ms`)), ms)
+  )
+  return Promise.race([promise, timeout])
+}
+
 // GET /api/articles - List all articles with filters
 export async function GET(request: NextRequest) {
+  const startTime = Date.now()
   try {
     console.log('[API /articles] Request received')
 
-    // Auth is optional - used for read tracking only
+    // Auth is optional - used for read tracking only (with 5s timeout)
     let session = null
     try {
-      session = await auth()
-      console.log('[API /articles] Auth completed, user:', session?.user?.id || 'anonymous')
+      session = await withTimeout(auth(), 5000, 'Auth')
+      console.log('[API /articles] Auth completed in', Date.now() - startTime, 'ms, user:', session?.user?.id || 'anonymous')
     } catch (authError) {
       console.error('[API /articles] Auth error (continuing without auth):', authError)
       // Continue without auth - articles are public
@@ -111,39 +120,43 @@ export async function GET(request: NextRequest) {
       orderBy = { publishedAt: 'desc' }
     }
 
-    console.log('[API /articles] Starting database query...')
-    const [articles, total] = await Promise.all([
-      prisma.article.findMany({
-        where,
-        include: {
-          category: true,
-          author: {
-            select: {
-              id: true,
-              name: true,
-              image: true,
-              guardianArchetype: true,
+    console.log('[API /articles] Starting database query at', Date.now() - startTime, 'ms')
+    const [articles, total] = await withTimeout(
+      Promise.all([
+        prisma.article.findMany({
+          where,
+          include: {
+            category: true,
+            author: {
+              select: {
+                id: true,
+                name: true,
+                image: true,
+                guardianArchetype: true,
+              },
+            },
+            tags: {
+              include: {
+                tag: true,
+              },
+            },
+            _count: {
+              select: {
+                comments: true,
+                readBy: true,
+              },
             },
           },
-          tags: {
-            include: {
-              tag: true,
-            },
-          },
-          _count: {
-            select: {
-              comments: true,
-              readBy: true,
-            },
-          },
-        },
-        take: limit,
-        skip: offset,
-        orderBy,
-      }) as Promise<ArticleQueryResult[]>,
-      prisma.article.count({ where }),
-    ])
-    console.log('[API /articles] Database query complete, found', articles.length, 'articles')
+          take: limit,
+          skip: offset,
+          orderBy,
+        }) as Promise<ArticleQueryResult[]>,
+        prisma.article.count({ where }),
+      ]),
+      10000,
+      'Database query'
+    )
+    console.log('[API /articles] Database query complete in', Date.now() - startTime, 'ms, found', articles.length, 'articles')
 
     // If user is logged in, mark which articles they've read
     let readArticleIds: string[] = []
