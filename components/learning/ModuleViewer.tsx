@@ -8,6 +8,7 @@ import {
   BookOpen, Trophy, Clock, Target, ArrowLeft, Play, Quote
 } from 'lucide-react'
 import Link from 'next/link'
+import { sanitizeHtml } from '@/lib/utils/sanitize'
 
 // Historical sustainability quotes from influential figures throughout human history
 const historicalQuotes = [
@@ -541,7 +542,7 @@ export function ModuleViewer({ module, userId, initialProgress }: ModuleViewerPr
                          prose-strong:text-[var(--foreground)]
                          prose-a:text-theme-primary prose-a:font-semibold
                          prose-blockquote:border-[var(--primary)] prose-blockquote:text-theme-muted"
-              dangerouslySetInnerHTML={{ __html: currentLesson.content }}
+              dangerouslySetInnerHTML={{ __html: sanitizeHtml(currentLesson.content) }}
             />
           </CardContent>
         </Card>

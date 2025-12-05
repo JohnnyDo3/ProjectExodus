@@ -4,7 +4,7 @@ import { Button } from '@/components/ui/Button'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/Card'
 import { Zap, Droplet, Recycle, Leaf } from 'lucide-react'
 import Link from 'next/link'
-import prisma from '@/lib/db/prisma'
+import { prisma } from '@/lib/db'
 
 async function getProducts() {
   try {

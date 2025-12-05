@@ -26,7 +26,7 @@ export default function SettingsPage() {
 
   return (
     <div className="min-h-screen bg-sand-50">
-      <div className="bg-white border-b border-sand-300">
+      <div className="bg-[var(--card)] border-b border-[var(--border)]">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8 py-6">
           <div className="flex items-center gap-4">
             <Link href="/admin">
@@ -36,8 +36,8 @@ export default function SettingsPage() {
               </Button>
             </Link>
             <div className="flex-1">
-              <h1 className="text-3xl font-bold">Settings</h1>
-              <p className="text-earth-700 mt-1">Configure your platform</p>
+              <h1 className="text-3xl font-bold text-[var(--foreground)]">Settings</h1>
+              <p className="text-[var(--muted-foreground)] mt-1">Configure your platform</p>
             </div>
             <Button>
               <Save className="w-4 h-4 mr-2" />
@@ -116,15 +116,15 @@ export default function SettingsPage() {
               <label className="flex items-center gap-3">
                 <input type="checkbox" checked={settings.emailNotifications} className="w-5 h-5" />
                 <div>
-                  <div className="font-semibold">Email Notifications</div>
-                  <div className="text-sm text-earth-600">Receive important updates</div>
+                  <div className="font-semibold text-[var(--foreground)]">Email Notifications</div>
+                  <div className="text-sm text-[var(--muted-foreground)]">Receive important updates</div>
                 </div>
               </label>
               <label className="flex items-center gap-3">
                 <input type="checkbox" checked={settings.communityPosts} className="w-5 h-5" />
                 <div>
-                  <div className="font-semibold">Community Activity</div>
-                  <div className="text-sm text-earth-600">Get notified of forum posts</div>
+                  <div className="font-semibold text-[var(--foreground)]">Community Activity</div>
+                  <div className="text-sm text-[var(--muted-foreground)]">Get notified of forum posts</div>
                 </div>
               </label>
             </CardContent>
@@ -136,23 +136,23 @@ export default function SettingsPage() {
               <div className="flex items-center gap-3">
                 <Database className="w-5 h-5 text-moss-700" />
                 <div>
-                  <CardTitle style={{ color: '#36763d' }}>Database Status</CardTitle>
-                  <CardDescription style={{ color: '#2d5e32' }}>Connection info</CardDescription>
+                  <CardTitle className="text-[var(--primary)]">Database Status</CardTitle>
+                  <CardDescription className="text-[var(--muted-foreground)]">Connection info</CardDescription>
                 </div>
               </div>
             </CardHeader>
             <CardContent className="space-y-3">
               <div className="flex justify-between">
-                <span className="font-medium">Status</span>
-                <span className="text-moss-700 font-bold">● Ready (Not Connected)</span>
+                <span className="font-medium text-[var(--foreground)]">Status</span>
+                <span className="text-[var(--primary)] font-bold">● Ready (Not Connected)</span>
               </div>
               <div className="flex justify-between">
-                <span className="font-medium">Provider</span>
-                <span className="font-semibold">Neon PostgreSQL</span>
+                <span className="font-medium text-[var(--foreground)]">Provider</span>
+                <span className="font-semibold text-[var(--foreground)]">Neon PostgreSQL</span>
               </div>
               <div className="flex justify-between">
-                <span className="font-medium">Prisma</span>
-                <span className="font-semibold">Schema Ready</span>
+                <span className="font-medium text-[var(--foreground)]">Prisma</span>
+                <span className="font-semibold text-[var(--foreground)]">Schema Ready</span>
               </div>
               <Button className="w-full mt-2">
                 Connect Database

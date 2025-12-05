@@ -1,9 +1,21 @@
-import { NextResponse } from 'next/server'
+import { NextRequest, NextResponse } from 'next/server'
 import { auth } from '@/auth'
 import { prisma } from '@/lib/db'
+import { rateLimit, rateLimitResponse } from '@/lib/rate-limit'
 
-export async function POST(request: Request) {
+export async function POST(request: NextRequest) {
   try {
+    // Rate limiting: 20 posts per minute
+    const rateLimitResult = await rateLimit(request, {
+      id: 'social-posts',
+      limit: 20,
+      windowSeconds: 60,
+    })
+
+    if (!rateLimitResult.success) {
+      return rateLimitResponse(rateLimitResult.reset)
+    }
+
     const session = await auth()
 
     if (!session?.user?.id) {

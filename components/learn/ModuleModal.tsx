@@ -5,6 +5,7 @@ import { X, ChevronLeft, ChevronRight, CheckCircle, BookOpen } from 'lucide-reac
 import { Button } from '@/components/ui/Button'
 import { Card, CardContent } from '@/components/ui/Card'
 import { QuizComponent } from './QuizComponent'
+import { sanitizeHtml } from '@/lib/utils/sanitize'
 
 interface ModuleTab {
   title: string
@@ -261,7 +262,7 @@ export function ModuleModal({ article, isOpen, onClose, onModuleComplete }: Modu
             <div className="prose prose-lg max-w-none">
               <div
                 className="text-[var(--foreground)] leading-relaxed"
-                dangerouslySetInnerHTML={{ __html: article.content }}
+                dangerouslySetInnerHTML={{ __html: sanitizeHtml(article.content) }}
               />
             </div>
           ) : (
@@ -276,7 +277,7 @@ export function ModuleModal({ article, isOpen, onClose, onModuleComplete }: Modu
                     <div
                       className="prose prose-lg max-w-none text-[var(--foreground)] leading-relaxed"
                       dangerouslySetInnerHTML={{
-                        __html: moduleTabs[currentTabIndex].content,
+                        __html: sanitizeHtml(moduleTabs[currentTabIndex].content),
                       }}
                     />
                   </CardContent>

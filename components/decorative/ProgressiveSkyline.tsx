@@ -1,5 +1,7 @@
 'use client'
 
+import { useSkyTheme } from '@/components/theme/SkyThemeProvider'
+
 /**
  * ProgressiveSkyline - An animated journey through civilization's evolution
  *
@@ -17,6 +19,16 @@
  */
 
 export function ProgressiveSkyline() {
+  const { currentPhase } = useSkyTheme()
+  const isNightTime = ['dusk', 'evening', 'night', 'midnight'].includes(currentPhase)
+
+  // Helper function to determine if a window should be lit (60-70% chance)
+  const isWindowLit = (seed: number) => {
+    // Use a deterministic random based on seed for consistent pattern
+    const random = Math.abs(Math.sin(seed * 12.9898) * 43758.5453) % 1
+    return random > 0.35 // ~65% of windows lit
+  }
+
   return (
     <div className="absolute bottom-[9px] left-0 right-0 pointer-events-none z-10 overflow-hidden">
       <style jsx>{`
@@ -51,11 +63,13 @@ export function ProgressiveSkyline() {
 
         @keyframes twinkle {
           0%, 100% { opacity: 1; }
-          50% { opacity: 1; }
+          50% { opacity: 0.7; }
         }
 
         .window-light {
           animation: twinkle 3s ease-in-out infinite;
+          filter: drop-shadow(0 0 2px rgba(255, 215, 0, 0.6));
+          transition: opacity 2s ease-in-out;
         }
 
         @keyframes rotate {
@@ -669,6 +683,17 @@ export function ProgressiveSkyline() {
                   <rect x={x+24} y="186" width="6" height="9" fill="#6b8ea8" opacity="1" />
                   <rect x={x+14} y="170" width="5" height="6" fill="#6b8ea8" opacity="1" />
 
+                  {/* Window lights for nighttime */}
+                  {isNightTime && isWindowLit(x + i * 100) && (
+                    <rect className="window-light" x={x+6} y="187" width="4" height="7" fill="#FFD700" opacity="0.9" />
+                  )}
+                  {isNightTime && isWindowLit(x + i * 100 + 1) && (
+                    <rect className="window-light" x={x+25} y="187" width="4" height="7" fill="#FFD700" opacity="0.9" />
+                  )}
+                  {isNightTime && isWindowLit(x + i * 100 + 2) && (
+                    <rect className="window-light" x={x+15} y="171" width="3" height="4" fill="#FFA500" opacity="0.85" />
+                  )}
+
                   {/* Front door with porch */}
                   <rect x={x+14} y="194" width="7" height="14" fill="#8b5a3c" opacity="1" />
                   <path d={`M ${x+10},194 L ${x+25},194`} stroke="#6d4428" strokeWidth="2" opacity="1" />
@@ -696,6 +721,20 @@ export function ProgressiveSkyline() {
                   <rect x={x+29} y="184" width="6" height="8" fill="#6b8ea8" opacity="1" />
                   <rect x={x+5} y="196" width="6" height="8" fill="#6b8ea8" opacity="1" />
                   <rect x={x+29} y="196" width="6" height="8" fill="#6b8ea8" opacity="1" />
+
+                  {/* Window lights for nighttime */}
+                  {isNightTime && isWindowLit(x + i * 200) && (
+                    <rect className="window-light" x={x+6} y="185" width="4" height="6" fill="#FFD700" opacity="0.9" />
+                  )}
+                  {isNightTime && isWindowLit(x + i * 200 + 1) && (
+                    <rect className="window-light" x={x+30} y="185" width="4" height="6" fill="#FFA500" opacity="0.85" />
+                  )}
+                  {isNightTime && isWindowLit(x + i * 200 + 2) && (
+                    <rect className="window-light" x={x+6} y="197" width="4" height="6" fill="#FFD700" opacity="0.9" />
+                  )}
+                  {isNightTime && isWindowLit(x + i * 200 + 3) && (
+                    <rect className="window-light" x={x+30} y="197" width="4" height="6" fill="#FFA500" opacity="0.85" />
+                  )}
 
                   {/* Centered front door */}
                   <rect x={x+16} y="194" width="8" height="14" fill="#5a4a3a" opacity="1" />
@@ -728,6 +767,14 @@ export function ProgressiveSkyline() {
                   {/* Horizontal windows - larger */}
                   <rect x={x+6} y="191" width="10" height="5" fill="#6b8ea8" opacity="1" />
                   <rect x={x+32} y="191" width="10" height="5" fill="#6b8ea8" opacity="1" />
+
+                  {/* Window lights for nighttime */}
+                  {isNightTime && isWindowLit(x + i * 150) && (
+                    <rect className="window-light" x={x+7} y="192" width="8" height="3" fill="#FFD700" opacity="0.9" />
+                  )}
+                  {isNightTime && isWindowLit(x + i * 150 + 1) && (
+                    <rect className="window-light" x={x+33} y="192" width="8" height="3" fill="#FFA500" opacity="0.85" />
+                  )}
 
                   {/* Attached garage - larger */}
                   <rect x={x+38} y="193" width="9" height="13" fill="#c9b18f" opacity="1" />
@@ -977,6 +1024,16 @@ export function ProgressiveSkyline() {
                                   height="12"
                                   fill="#6b8ea8"
                                   opacity="1" />
+                            {/* Window light for nighttime */}
+                            {isNightTime && isWindowLit(bldg.x + row * 100 + col * 50 + i) && (
+                              <rect className="window-light"
+                                    x={bldg.x + 6 + col * 16}
+                                    y={215 - bldg.h + 14 + row * 20}
+                                    width="6"
+                                    height="10"
+                                    fill="#FFD700"
+                                    opacity="0.9" />
+                            )}
                             {/* BALCONY for each window */}
                             <rect x={bldg.x + 3 + col * 16}
                                   y={215 - bldg.h + 26 + row * 20}

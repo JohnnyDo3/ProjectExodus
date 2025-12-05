@@ -46,72 +46,76 @@ export async function GET(request: NextRequest) {
       },
     })
 
-    // Combine and deduplicate conversation partners
-    const conversationPartnerIds = new Set<string>()
-    const conversations: any[] = []
+    // Build conversation partner map
+    const conversationPartners = new Map<string, any>()
 
     for (const msg of sentMessages) {
-      if (!conversationPartnerIds.has(msg.receiverId)) {
-        conversationPartnerIds.add(msg.receiverId)
-
-        // Get latest message in this conversation
-        const latestMessage = await prisma.directMessage.findFirst({
-          where: {
-            OR: [
-              { senderId: session.user.id, receiverId: msg.receiverId },
-              { senderId: msg.receiverId, receiverId: session.user.id },
-            ],
-          },
-          orderBy: { createdAt: 'desc' },
-        })
-
-        // Count unread messages from this user
-        const unreadCount = await prisma.directMessage.count({
-          where: {
-            senderId: msg.receiverId,
-            receiverId: session.user.id,
-            read: false,
-          },
-        })
-
-        conversations.push({
-          partner: msg.receiver,
-          latestMessage,
-          unreadCount,
-        })
+      if (!conversationPartners.has(msg.receiverId)) {
+        conversationPartners.set(msg.receiverId, msg.receiver)
       }
     }
 
     for (const msg of receivedMessages) {
-      if (!conversationPartnerIds.has(msg.senderId)) {
-        conversationPartnerIds.add(msg.senderId)
-
-        // Get latest message in this conversation
-        const latestMessage = await prisma.directMessage.findFirst({
-          where: {
-            OR: [
-              { senderId: session.user.id, receiverId: msg.senderId },
-              { senderId: msg.senderId, receiverId: session.user.id },
-            ],
-          },
-          orderBy: { createdAt: 'desc' },
-        })
-
-        // Count unread messages from this user
-        const unreadCount = await prisma.directMessage.count({
-          where: {
-            senderId: msg.senderId,
-            receiverId: session.user.id,
-            read: false,
-          },
-        })
-
-        conversations.push({
-          partner: msg.sender,
-          latestMessage,
-          unreadCount,
-        })
+      if (!conversationPartners.has(msg.senderId)) {
+        conversationPartners.set(msg.senderId, msg.sender)
       }
+    }
+
+    const partnerIds = Array.from(conversationPartners.keys())
+
+    if (partnerIds.length === 0) {
+      return NextResponse.json({
+        success: true,
+        data: [],
+      })
+    }
+
+    // Fetch ALL messages for ALL conversations in ONE query
+    const allMessages = await prisma.directMessage.findMany({
+      where: {
+        OR: [
+          { senderId: session.user.id, receiverId: { in: partnerIds } },
+          { senderId: { in: partnerIds }, receiverId: session.user.id },
+        ],
+      },
+      orderBy: { createdAt: 'desc' },
+    })
+
+    // Get unread counts for ALL conversations in ONE aggregation query
+    const unreadCounts = await prisma.directMessage.groupBy({
+      by: ['senderId'],
+      where: {
+        senderId: { in: partnerIds },
+        receiverId: session.user.id,
+        read: false,
+      },
+      _count: {
+        id: true,
+      },
+    })
+
+    // Create a map of unread counts by partner ID
+    const unreadMap = new Map<string, number>()
+    for (const count of unreadCounts) {
+      unreadMap.set(count.senderId, count._count.id)
+    }
+
+    // Build conversations with latest messages
+    const conversations: any[] = []
+
+    for (const [partnerId, partner] of conversationPartners) {
+      // Find the latest message for this conversation
+      const latestMessage = allMessages.find(
+        (msg) =>
+          (msg.senderId === session.user.id && msg.receiverId === partnerId) ||
+          (msg.senderId === partnerId && msg.receiverId === session.user.id)
+      )
+
+      conversations.push({
+        partner,
+        latestMessage: latestMessage || null,
+        unreadCount: unreadMap.get(partnerId) || 0,
+      })
     }
 
     // Sort by latest message time

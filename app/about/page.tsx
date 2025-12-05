@@ -83,15 +83,14 @@ export default function AboutPage() {
       <section className="py-32 bg-gradient-to-br from-moss-50 via-ocean-50 to-sand-50 relative overflow-hidden">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
           <div className="max-w-5xl mx-auto text-center space-y-12">
-            <h1 style={{
+            <h1 className="text-[var(--foreground)]" style={{
               fontSize: 'clamp(3rem, 10vw, 7rem)',
               fontWeight: 900,
-              lineHeight: 1,
-              color: '#000'
+              lineHeight: 1
             }}>
               PROJECT EXODUS
             </h1>
-            <p className="text-3xl font-black leading-relaxed" style={{ color: '#222' }}>
+            <p className="text-3xl font-black leading-relaxed text-[var(--foreground)]">
               WE ARE DEVELOPING{' '}
               <span style={{
                 background: 'linear-gradient(135deg, #36763d, #357777)',
@@ -107,8 +106,8 @@ export default function AboutPage() {
               <Card className="border-4 border-moss-300 bg-gradient-to-br from-moss-50 to-moss-100 shadow-xl">
                 <CardContent className="p-8 text-center">
                   <Leaf className="w-16 h-16 text-moss-600 mx-auto mb-4" />
-                  <h3 className="text-2xl font-black" style={{ color: '#36763d' }}>FOOD</h3>
-                  <p className="mt-3 text-base font-bold" style={{ color: '#444' }}>
+                  <h3 className="text-2xl font-black text-[var(--primary)]">FOOD</h3>
+                  <p className="mt-3 text-base font-bold text-[var(--muted-foreground)]">
                     Sustainable agriculture and food systems
                   </p>
                 </CardContent>
@@ -116,8 +115,8 @@ export default function AboutPage() {
               <Card className="border-4 border-ocean-300 bg-gradient-to-br from-ocean-50 to-ocean-100 shadow-xl">
                 <CardContent className="p-8 text-center">
                   <Droplet className="w-16 h-16 text-ocean-600 mx-auto mb-4" />
-                  <h3 className="text-2xl font-black" style={{ color: '#357777' }}>WATER</h3>
-                  <p className="mt-3 text-base font-bold" style={{ color: '#444' }}>
+                  <h3 className="text-2xl font-black text-[var(--accent)]">WATER</h3>
+                  <p className="mt-3 text-base font-bold text-[var(--muted-foreground)]">
                     Clean water access and conservation
                   </p>
                 </CardContent>
@@ -125,8 +124,8 @@ export default function AboutPage() {
               <Card className="border-4 border-terra-300 bg-gradient-to-br from-terra-50 to-terra-100 shadow-xl">
                 <CardContent className="p-8 text-center">
                   <Zap className="w-16 h-16 text-terra-600 mx-auto mb-4" />
-                  <h3 className="text-2xl font-black" style={{ color: '#c24f31' }}>ENERGY</h3>
-                  <p className="mt-3 text-base font-bold" style={{ color: '#444' }}>
+                  <h3 className="text-2xl font-black text-[var(--secondary)]">ENERGY</h3>
+                  <p className="mt-3 text-base font-bold text-[var(--muted-foreground)]">
                     Renewable energy solutions
                   </p>
                 </CardContent>
@@ -137,25 +136,25 @@ export default function AboutPage() {
       </section>
 
       {/* Mission Statement */}
-      <section className="py-32 bg-white">
+      <section className="py-32 bg-[var(--card)]">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
           <div className="max-w-4xl mx-auto">
             <div className="text-center mb-12">
-              <h2 className="text-6xl font-black mb-8" style={{ color: '#000' }}>OUR MISSION</h2>
+              <h2 className="text-6xl font-black mb-8 text-[var(--foreground)]">OUR MISSION</h2>
             </div>
             <Card className="border-4 border-moss-300 bg-gradient-to-br from-moss-50 to-ocean-50 shadow-2xl">
               <CardContent className="p-12">
                 <div className="flex items-center justify-center mb-8">
                   <Heart className="w-20 h-20 text-moss-600" />
                 </div>
-                <p className="text-2xl font-bold leading-relaxed text-center" style={{ color: '#222' }}>
+                <p className="text-2xl font-bold leading-relaxed text-center text-[var(--foreground)]">
                   It is our <span style={{
                     background: 'linear-gradient(135deg, #36763d, #357777)',
                     WebkitBackgroundClip: 'text',
                     WebkitTextFillColor: 'transparent',
                     fontWeight: 900
                   }}>duty, destiny, and responsibility</span>, to ensure that those of you who choose to be a part of our family and make it yours, that{' '}
-                  <span className="font-black" style={{ color: '#36763d' }}>You will love it the same way if not more than me and the team here at Project Exodus.</span>
+                  <span className="font-black text-[var(--primary)]">You will love it the same way if not more than me and the team here at Project Exodus.</span>
                 </p>
               </CardContent>
             </Card>
@@ -192,7 +191,7 @@ export default function AboutPage() {
                         <h3 className="text-2xl font-black mb-3" style={{ color: commandment.color }}>
                           {commandment.title}
                         </h3>
-                        <p className="text-lg font-bold" style={{ color: '#333' }}>
+                        <p className="text-lg font-bold text-[var(--muted-foreground)]">
                           {commandment.description}
                         </p>
                       </div>
@@ -206,12 +205,12 @@ export default function AboutPage() {
       </section>
 
       {/* Team Structure */}
-      <section className="py-32 bg-white">
+      <section className="py-32 bg-[var(--card)]">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
           <div className="max-w-5xl mx-auto">
             <div className="text-center mb-20">
-              <h2 className="text-6xl font-black mb-6" style={{ color: '#000' }}>OUR TEAM STRUCTURE</h2>
-              <p className="text-xl font-semibold" style={{ color: '#333' }}>
+              <h2 className="text-6xl font-black mb-6 text-[var(--foreground)]">OUR TEAM STRUCTURE</h2>
+              <p className="text-xl font-semibold text-[var(--muted-foreground)]">
                 Building the future together through collaborative leadership
               </p>
             </div>
@@ -223,11 +222,11 @@ export default function AboutPage() {
                     <div className="w-20 h-20 mx-auto mb-4 rounded-full bg-gradient-to-br from-moss-500 to-moss-600 flex items-center justify-center shadow-xl">
                       <Users className="w-10 h-10 text-white" />
                     </div>
-                    <h3 className="text-2xl font-black" style={{ color: '#36763d' }}>ROUND TABLE</h3>
+                    <h3 className="text-2xl font-black text-[var(--primary)]">ROUND TABLE</h3>
                   </CardTitle>
                 </CardHeader>
                 <CardContent className="text-center">
-                  <p className="text-base font-bold" style={{ color: '#444' }}>
+                  <p className="text-base font-bold text-[var(--muted-foreground)]">
                     Our Senate - Collaborative decision-making body guiding strategic direction
                   </p>
                 </CardContent>
@@ -239,11 +238,11 @@ export default function AboutPage() {
                     <div className="w-20 h-20 mx-auto mb-4 rounded-full bg-gradient-to-br from-ocean-500 to-ocean-600 flex items-center justify-center shadow-xl">
                       <BookOpen className="w-10 h-10 text-white" />
                     </div>
-                    <h3 className="text-2xl font-black" style={{ color: '#357777' }}>ITJ COMMITTEE</h3>
+                    <h3 className="text-2xl font-black text-[var(--accent)]">ITJ COMMITTEE</h3>
                   </CardTitle>
                 </CardHeader>
                 <CardContent className="text-center">
-                  <p className="text-base font-bold" style={{ color: '#444' }}>
+                  <p className="text-base font-bold text-[var(--muted-foreground)]">
                     Innovation, Technology & Justice - Driving our technical and ethical initiatives
                   </p>
                 </CardContent>
@@ -255,11 +254,11 @@ export default function AboutPage() {
                     <div className="w-20 h-20 mx-auto mb-4 rounded-full bg-gradient-to-br from-terra-500 to-terra-600 flex items-center justify-center shadow-xl">
                       <Award className="w-10 h-10 text-white" />
                     </div>
-                    <h3 className="text-2xl font-black" style={{ color: '#c24f31' }}>BIZ OP</h3>
+                    <h3 className="text-2xl font-black text-[var(--secondary)]">BIZ OP</h3>
                   </CardTitle>
                 </CardHeader>
                 <CardContent className="text-center">
-                  <p className="text-base font-bold" style={{ color: '#444' }}>
+                  <p className="text-base font-bold text-[var(--muted-foreground)]">
                     Business Operations - Managing partnerships, growth, and sustainability
                   </p>
                 </CardContent>
@@ -274,8 +273,8 @@ export default function AboutPage() {
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
           <div className="max-w-4xl mx-auto">
             <div className="text-center mb-16">
-              <h2 className="text-6xl font-black mb-6" style={{ color: '#000' }}>OUR PHILOSOPHY</h2>
-              <p className="text-xl font-semibold" style={{ color: '#333' }}>
+              <h2 className="text-6xl font-black mb-6 text-[var(--foreground)]">OUR PHILOSOPHY</h2>
+              <p className="text-xl font-semibold text-[var(--muted-foreground)]">
                 Every action we take today becomes the foundation for tomorrow
               </p>
             </div>
@@ -286,7 +285,7 @@ export default function AboutPage() {
                   <div className="text-center mb-8">
                     <Sprout className="w-16 h-16 text-moss-600 mx-auto" />
                   </div>
-                  <blockquote className="text-xl font-bold leading-relaxed text-center space-y-6" style={{ color: '#222' }}>
+                  <blockquote className="text-xl font-bold leading-relaxed text-center space-y-6 text-[var(--foreground)]">
                     <p>
                       When you <span style={{
                         background: 'linear-gradient(135deg, #36763d, #357777)',
@@ -295,13 +294,13 @@ export default function AboutPage() {
                         fontWeight: 900
                       }}>plant a seed</span>, it grows into a tree.
                     </p>
-                    <p style={{ color: '#333' }}>
+                    <p className="text-[var(--muted-foreground)]">
                       Everyone who encounters that tree interacts with it differently.
                     </p>
-                    <p style={{ color: '#333' }}>
+                    <p className="text-[var(--muted-foreground)]">
                       Some find shade. Others find fruit. Some find shelter.
                     </p>
-                    <p className="font-black" style={{ color: '#36763d' }}>
+                    <p className="font-black text-[var(--primary)]">
                       But the tree stands as a testament to the seed that was planted with intention.
                     </p>
                   </blockquote>
@@ -310,9 +309,9 @@ export default function AboutPage() {
             </Card>
 
             <div className="mt-12 text-center">
-              <p className="text-lg font-bold" style={{ color: '#444' }}>
+              <p className="text-lg font-bold text-[var(--muted-foreground)]">
                 This is how we build at Project Exodus. Every innovation, every partnership, every decision—
-                <span className="font-black" style={{ color: '#36763d' }}> planted with purpose, grown with care, shared with all.</span>
+                <span className="font-black text-[var(--primary)]"> planted with purpose, grown with care, shared with all.</span>
               </p>
             </div>
           </div>

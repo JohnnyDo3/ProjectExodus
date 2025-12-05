@@ -1,10 +1,22 @@
 import { NextRequest, NextResponse } from 'next/server'
-import prisma from '@/lib/db/prisma'
+import { prisma } from '@/lib/db'
 import { auth } from '@/auth'
+import { rateLimit, rateLimitResponse } from '@/lib/rate-limit'
 
 // POST /api/forum/posts - Create new forum post
 export async function POST(request: NextRequest) {
   try {
+    // Rate limiting: 10 posts per minute
+    const rateLimitResult = await rateLimit(request, {
+      id: 'forum-posts',
+      limit: 10,
+      windowSeconds: 60,
+    })
+
+    if (!rateLimitResult.success) {
+      return rateLimitResponse(rateLimitResult.reset)
+    }
+
     // Check authentication
     const session = await auth()
     if (!session?.user) {

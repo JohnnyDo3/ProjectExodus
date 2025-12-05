@@ -184,11 +184,13 @@ export function Footer() {
           {/* Brand Column */}
           <div className="col-span-2 md:col-span-4 lg:col-span-1">
             <Link href="/" className="flex items-center gap-3 mb-6 group">
-              <div className="w-12 h-12 rounded-full bg-gradient-to-br from-moss-600 to-ocean-600 flex items-center justify-center pulse-alive shadow-lg">
-                <Leaf className="w-7 h-7 text-white" />
+              <div className="w-12 h-12 rounded-full flex items-center justify-center pulse-alive shadow-lg" style={{
+                background: 'linear-gradient(135deg, var(--primary), var(--accent))'
+              }}>
+                <Leaf className="w-7 h-7 text-[var(--primary-foreground)]" />
               </div>
               <span className="text-2xl font-black tracking-tight" style={{
-                background: 'linear-gradient(135deg, #9ccba0, #91cdcd)',
+                background: 'linear-gradient(135deg, var(--primary), var(--accent))',
                 WebkitBackgroundClip: 'text',
                 WebkitTextFillColor: 'transparent'
               }}>

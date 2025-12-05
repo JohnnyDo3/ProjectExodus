@@ -46,6 +46,8 @@ export async function GET(request: NextRequest) {
         expertise: true,
         guardianArchetype: true,
         declaration: true,
+        showEmail: true,
+        showPhone: true,
         createdAt: true,
         _count: {
           select: {
@@ -62,11 +64,26 @@ export async function GET(request: NextRequest) {
     })
 
     console.log('[API /users] Found', users.length, 'users')
+
+    // Filter email/phone based on privacy settings
+    const filteredUsers = users.map(user => {
+      const isOwnProfile = session?.user?.id === user.id
+
+      return {
+        ...user,
+        email: (user.showEmail || isOwnProfile) ? user.email : undefined,
+        phone: (user.showPhone || isOwnProfile) ? user.phone : undefined,
+        // Remove privacy flags from response
+        showEmail: undefined,
+        showPhone: undefined,
+      }
+    })
+
     console.log('[API /users] Returning success response')
 
     return NextResponse.json({
       success: true,
-      data: users,
+      data: filteredUsers,
     })
   } catch (error) {
     console.error('[API /users] ERROR:', error)

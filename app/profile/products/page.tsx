@@ -5,7 +5,7 @@ import { BackButton } from '@/components/navigation/BackButton'
 import Link from 'next/link'
 import { auth } from '@/auth'
 import { redirect } from 'next/navigation'
-import prisma from '@/lib/db/prisma'
+import { prisma } from '@/lib/db'
 
 async function getUserProducts(userId: string) {
   try {

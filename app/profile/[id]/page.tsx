@@ -21,7 +21,7 @@ import {
   Sparkles,
   ArrowLeft
 } from 'lucide-react'
-import prisma from '@/lib/db/prisma'
+import { prisma } from '@/lib/db'
 import { auth } from '@/auth'
 
 async function getUserProfile(userId: string) {

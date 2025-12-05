@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { prisma } from '@/lib/db'
+import { auth } from '@/auth'
 
 type Params = {
   params: Promise<{
@@ -93,10 +94,24 @@ export async function PUT(
   { params }: Params
 ) {
   try {
+    // Authentication and authorization check
+    const session = await auth()
+    if (!session?.user) {
+      return NextResponse.json(
+        { success: false, error: 'Unauthorized' },
+        { status: 401 }
+      )
+    }
+    const userRole = session.user.role
+    if (!['ADMIN', 'SUPER_ADMIN', 'EDITOR'].includes(userRole || '')) {
+      return NextResponse.json(
+        { success: false, error: 'Forbidden - Admin or Editor role required' },
+        { status: 403 }
+      )
+    }
+
     const { slug } = await params
     const body = await request.json()
-
-    // TODO: Add authentication and authorization check
 
     const tag = await prisma.tag.update({
       where: { slug: slug },
@@ -124,8 +139,23 @@ export async function DELETE(
   { params }: Params
 ) {
   try {
+    // Authentication and authorization check
+    const session = await auth()
+    if (!session?.user) {
+      return NextResponse.json(
+        { success: false, error: 'Unauthorized' },
+        { status: 401 }
+      )
+    }
+    const userRole = session.user.role
+    if (!['ADMIN', 'SUPER_ADMIN'].includes(userRole || '')) {
+      return NextResponse.json(
+        { success: false, error: 'Forbidden - Admin role required' },
+        { status: 403 }
+      )
+    }
+
     const { slug } = await params
-    // TODO: Add authentication and authorization check
 
     await prisma.tag.delete({
       where: { slug: slug },

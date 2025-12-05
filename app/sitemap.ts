@@ -1,5 +1,5 @@
 import { MetadataRoute } from 'next'
-import prisma from '@/lib/db/prisma'
+import { prisma } from '@/lib/db'
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const baseUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://projectexodus.com'

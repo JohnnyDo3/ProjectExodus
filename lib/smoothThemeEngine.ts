@@ -199,6 +199,17 @@ const TERRA_600 = '#c24f31'
 const OCEAN_400 = '#5db0b0'
 const OCEAN_500 = '#429393'
 
+// Galaxy night colors
+const GALAXY_BLACK = '#020208'
+const GALAXY_DEEP = '#0a0a18'
+const GALAXY_MUTED = '#1a1a2e'
+const GALAXY_BORDER = '#2a2a4a'
+const STAR_BLUE = '#6eb5ff'
+const NEBULA_PURPLE = '#d4a0ff'
+const AURORA_CYAN = '#7fdbca'
+const STARLIGHT = '#f0f0ff'
+const STARLIGHT_MUTED = '#8888aa'
+
 /**
  * 24 keyframes for smooth day-long color transitions
  * These represent key moments in the day cycle
@@ -209,32 +220,32 @@ export const TIME_KEYFRAMES: TimeKeyframe[] = [
     hour: 0,
     label: 'Midnight',
     colors: {
-      background: '#1a1614',
-      foreground: SAND_200,
-      primary: '#5a7a65',
-      secondary: '#8b5a4a',
-      accent: '#5a7a7a',
-      muted: '#2a2420',
-      mutedForeground: SAND_400,
-      card: '#221e1a',
-      cardForeground: SAND_200,
-      border: '#3a342e',
+      background: GALAXY_BLACK,
+      foreground: STARLIGHT,
+      primary: STAR_BLUE,
+      secondary: NEBULA_PURPLE,
+      accent: AURORA_CYAN,
+      muted: GALAXY_MUTED,
+      mutedForeground: STARLIGHT_MUTED,
+      card: GALAXY_DEEP,
+      cardForeground: STARLIGHT,
+      border: GALAXY_BORDER,
     }
   },
   {
     hour: 2,
     label: 'Deep Night',
     colors: {
-      background: '#1a1614',
-      foreground: SAND_200,
-      primary: '#5a7a65',
-      secondary: '#8b5a4a',
-      accent: '#5a7a7a',
-      muted: '#2a2420',
-      mutedForeground: SAND_400,
-      card: '#221e1a',
-      cardForeground: SAND_200,
-      border: '#3a342e',
+      background: GALAXY_BLACK,
+      foreground: STARLIGHT,
+      primary: STAR_BLUE,
+      secondary: NEBULA_PURPLE,
+      accent: AURORA_CYAN,
+      muted: GALAXY_MUTED,
+      mutedForeground: STARLIGHT_MUTED,
+      card: GALAXY_DEEP,
+      cardForeground: STARLIGHT,
+      border: GALAXY_BORDER,
     }
   },
   // PRE-DAWN (3am - 5am)
@@ -556,32 +567,32 @@ export const TIME_KEYFRAMES: TimeKeyframe[] = [
     hour: 22,
     label: 'Night',
     colors: {
-      background: EARTH_900,
-      foreground: SAND_100,
-      primary: MOSS_400,
-      secondary: TERRA_400,
-      accent: OCEAN_400,
-      muted: EARTH_800,
-      mutedForeground: SAND_400,
-      card: EARTH_800,
-      cardForeground: SAND_100,
-      border: EARTH_700,
+      background: GALAXY_BLACK,
+      foreground: STARLIGHT,
+      primary: STAR_BLUE,
+      secondary: NEBULA_PURPLE,
+      accent: AURORA_CYAN,
+      muted: GALAXY_MUTED,
+      mutedForeground: STARLIGHT_MUTED,
+      card: GALAXY_DEEP,
+      cardForeground: STARLIGHT,
+      border: GALAXY_BORDER,
     }
   },
   {
     hour: 23,
     label: 'Late Night',
     colors: {
-      background: '#302820',
-      foreground: SAND_200,
-      primary: '#608868',
-      secondary: '#a06858',
-      accent: '#588888',
-      muted: '#282018',
-      mutedForeground: SAND_400,
-      card: '#282218',
-      cardForeground: SAND_200,
-      border: '#403830',
+      background: GALAXY_BLACK,
+      foreground: STARLIGHT,
+      primary: STAR_BLUE,
+      secondary: NEBULA_PURPLE,
+      accent: AURORA_CYAN,
+      muted: GALAXY_MUTED,
+      mutedForeground: STARLIGHT_MUTED,
+      card: GALAXY_DEEP,
+      cardForeground: STARLIGHT,
+      border: GALAXY_BORDER,
     }
   },
 ]

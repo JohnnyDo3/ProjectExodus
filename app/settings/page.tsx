@@ -204,6 +204,8 @@ export default function SettingsPage() {
     showSkills: true,
     showBadges: true,
     showContact: false,
+    showEmail: false,
+    showPhone: false,
     allowMessages: 'followers', // 'everyone' | 'followers' | 'nobody'
     resumeVisibility: 'followers', // Always 'followers' (enforced)
   })
@@ -243,6 +245,13 @@ export default function SettingsPage() {
           guardianArchetype: user.guardianArchetype || '',
           phone: user.phone || '',
         })
+        // Load privacy settings if they exist
+        if (user.privacySettings) {
+          setPrivacySettings({
+            ...privacySettings,
+            ...user.privacySettings,
+          })
+        }
       }
     } catch (error) {
       console.error('Error fetching user profile:', error)
@@ -1806,6 +1815,40 @@ export default function SettingsPage() {
                           checked={privacySettings.showContact}
                           onChange={(e) =>
                             setPrivacySettings({ ...privacySettings, showContact: e.target.checked })
+                          }
+                          className="w-5 h-5 rounded border-2 border-[var(--border)] text-theme-primary focus:ring-2 focus:ring-theme-primary"
+                        />
+                      </label>
+
+                      <label className="flex items-center justify-between p-4 rounded-lg bg-[var(--muted)] border-2 border-[var(--border)] cursor-pointer">
+                        <div>
+                          <div className="font-bold text-[var(--foreground)]">Show Email Publicly</div>
+                          <p className="text-xs font-medium text-theme-muted mt-1">
+                            Display your email address on your public profile
+                          </p>
+                        </div>
+                        <input
+                          type="checkbox"
+                          checked={privacySettings.showEmail}
+                          onChange={(e) =>
+                            setPrivacySettings({ ...privacySettings, showEmail: e.target.checked })
+                          }
+                          className="w-5 h-5 rounded border-2 border-[var(--border)] text-theme-primary focus:ring-2 focus:ring-theme-primary"
+                        />
+                      </label>
+
+                      <label className="flex items-center justify-between p-4 rounded-lg bg-[var(--muted)] border-2 border-[var(--border)] cursor-pointer">
+                        <div>
+                          <div className="font-bold text-[var(--foreground)]">Show Phone Publicly</div>
+                          <p className="text-xs font-medium text-theme-muted mt-1">
+                            Display your phone number on your public profile
+                          </p>
+                        </div>
+                        <input
+                          type="checkbox"
+                          checked={privacySettings.showPhone}
+                          onChange={(e) =>
+                            setPrivacySettings({ ...privacySettings, showPhone: e.target.checked })
                           }
                           className="w-5 h-5 rounded border-2 border-[var(--border)] text-theme-primary focus:ring-2 focus:ring-theme-primary"
                         />

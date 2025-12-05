@@ -1,7 +1,7 @@
 import { redirect } from 'next/navigation'
 import { auth } from '@/auth'
 import { BaseCamp } from '@/components/profile/BaseCamp'
-import prisma from '@/lib/db/prisma'
+import { prisma } from '@/lib/db'
 
 async function getUserProfile(userId: string) {
   try {

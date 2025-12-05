@@ -28,7 +28,7 @@ export function Search({ placeholder = 'Search...', onSearch, className = '' }: 
     <form onSubmit={handleSubmit} className={`relative ${className}`}>
       <div className="relative">
         <SearchIcon
-          className="absolute left-4 top-1/2 -translate-y-1/2 text-moss-600 pointer-events-none"
+          className="absolute left-4 top-1/2 -translate-y-1/2 text-[var(--primary)] pointer-events-none"
           size={24}
         />
         <Input
@@ -36,14 +36,13 @@ export function Search({ placeholder = 'Search...', onSearch, className = '' }: 
           value={query}
           onChange={(e) => setQuery(e.target.value)}
           placeholder={placeholder}
-          className="pl-14 pr-24 py-4 text-lg font-semibold border-4 border-moss-300 focus:border-moss-500 rounded-2xl"
-          style={{ color: '#000' }}
+          className="pl-14 pr-24 py-4 text-lg font-semibold border-4 border-[var(--border)] focus:border-[var(--primary)] rounded-2xl text-[var(--foreground)]"
         />
         {query && (
           <button
             type="button"
             onClick={handleClear}
-            className="absolute right-16 top-1/2 -translate-y-1/2 text-earth-500 hover:text-earth-700 transition-colors"
+            className="absolute right-16 top-1/2 -translate-y-1/2 text-[var(--muted-foreground)] hover:text-[var(--foreground)] transition-colors"
             aria-label="Clear search"
           >
             <X size={20} />

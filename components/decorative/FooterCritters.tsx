@@ -1,6 +1,7 @@
 'use client'
 
 import { useEffect, useState } from 'react'
+import { useSkyTheme } from '@/components/theme/SkyThemeProvider'
 
 interface Critter {
   id: number
@@ -10,8 +11,21 @@ interface Critter {
   yOffset: number // vertical position variation
 }
 
+interface NightCreature {
+  id: number
+  type: 'owl' | 'firefly' | 'bat'
+  speed?: number // seconds to cross screen (for bats)
+  delay: number // seconds before starting
+  xPosition?: number // horizontal position (for owls/fireflies)
+  yOffset: number // vertical position variation
+}
+
 export function FooterCritters() {
+  const { currentPhase } = useSkyTheme()
+  const isNightTime = ['dusk', 'evening', 'night', 'midnight'].includes(currentPhase)
+
   const [critters, setCritters] = useState<Critter[]>([])
+  const [nightCreatures, setNightCreatures] = useState<NightCreature[]>([])
 
   useEffect(() => {
     const initialCritters: Critter[] = [
@@ -25,6 +39,29 @@ export function FooterCritters() {
       { id: 8, type: 'hedgehog', speed: 48, delay: 35, yOffset: 3 },
     ]
     setCritters(initialCritters)
+
+    const initialNightCreatures: NightCreature[] = [
+      // Owls (stationary, perched)
+      { id: 1, type: 'owl', delay: 0, xPosition: 15, yOffset: -5 },
+      { id: 2, type: 'owl', delay: 2, xPosition: 85, yOffset: -3 },
+
+      // Fireflies (glowing, floating)
+      { id: 3, type: 'firefly', delay: 0, xPosition: 20, yOffset: 10 },
+      { id: 4, type: 'firefly', delay: 1, xPosition: 35, yOffset: 15 },
+      { id: 5, type: 'firefly', delay: 2, xPosition: 50, yOffset: 8 },
+      { id: 6, type: 'firefly', delay: 0.5, xPosition: 65, yOffset: 12 },
+      { id: 7, type: 'firefly', delay: 1.5, xPosition: 80, yOffset: 18 },
+      { id: 8, type: 'firefly', delay: 2.5, xPosition: 25, yOffset: 20 },
+      { id: 9, type: 'firefly', delay: 1, xPosition: 45, yOffset: 5 },
+      { id: 10, type: 'firefly', delay: 2, xPosition: 70, yOffset: 14 },
+
+      // Bats (flying)
+      { id: 11, type: 'bat', speed: 20, delay: 0, yOffset: -8 },
+      { id: 12, type: 'bat', speed: 25, delay: 8, yOffset: -12 },
+      { id: 13, type: 'bat', speed: 22, delay: 16, yOffset: -6 },
+      { id: 14, type: 'bat', speed: 24, delay: 24, yOffset: -10 },
+    ]
+    setNightCreatures(initialNightCreatures)
   }, [])
 
   const renderCritter = (critter: Critter) => {
@@ -142,20 +179,144 @@ export function FooterCritters() {
     }
   }
 
+  const renderNightCreature = (creature: NightCreature) => {
+    switch (creature.type) {
+      case 'owl':
+        return (
+          <svg width="40" height="40" viewBox="0 0 40 40" fill="currentColor" className="text-[var(--foreground)]">
+            {/* Owl body */}
+            <ellipse cx="20" cy="24" rx="10" ry="12" />
+            {/* Head (part of body, owl style) */}
+            <circle cx="20" cy="16" r="9" />
+            {/* Ear tufts */}
+            <path d="M 14,8 L 12,4 L 16,8" />
+            <path d="M 26,8 L 28,4 L 24,8" />
+            {/* Eyes (large, round) */}
+            <circle cx="16" cy="16" r="4" fill="white" />
+            <circle cx="24" cy="16" r="4" fill="white" />
+            {/* Pupils */}
+            <circle cx="16" cy="16" r="2" fill="currentColor" />
+            <circle cx="24" cy="16" r="2" fill="currentColor" />
+            {/* Beak */}
+            <path d="M 20,18 L 18,22 L 22,22 Z" />
+            {/* Wing */}
+            <ellipse cx="12" cy="24" rx="4" ry="8" opacity="0.7" />
+            <ellipse cx="28" cy="24" rx="4" ry="8" opacity="0.7" />
+            {/* Feet */}
+            <path d="M 17,34 L 15,38 M 17,34 L 17,38 M 17,34 L 19,38" stroke="currentColor" strokeWidth="1" fill="none" />
+            <path d="M 23,34 L 21,38 M 23,34 L 23,38 M 23,34 L 25,38" stroke="currentColor" strokeWidth="1" fill="none" />
+          </svg>
+        )
+
+      case 'firefly':
+        return (
+          <svg width="8" height="8" viewBox="0 0 8 8">
+            {/* Glow effect */}
+            <circle cx="4" cy="4" r="3" fill="rgba(255, 255, 100, 0.3)" className="firefly-glow" />
+            {/* Core */}
+            <circle cx="4" cy="4" r="1.5" fill="rgba(255, 255, 150, 0.9)" className="firefly-core" />
+          </svg>
+        )
+
+      case 'bat':
+        return (
+          <svg width="32" height="24" viewBox="0 0 32 24" fill="currentColor" className="text-[var(--foreground)]">
+            {/* Body */}
+            <ellipse cx="16" cy="12" rx="3" ry="4" />
+            {/* Head */}
+            <circle cx="16" cy="8" r="2.5" />
+            {/* Ears */}
+            <path d="M 14,6 L 13,3 L 15,6" />
+            <path d="M 18,6 L 19,3 L 17,6" />
+            {/* Left wing */}
+            <path d="M 13,12 Q 8,10 4,12 Q 2,13 3,15 Q 5,14 8,13 Q 11,12 13,13" opacity="0.9" />
+            <path d="M 10,13 Q 6,14 3,16 Q 1,17 2,19 Q 4,17 7,15 Q 9,14 10,14" opacity="0.8" />
+            {/* Right wing */}
+            <path d="M 19,12 Q 24,10 28,12 Q 30,13 29,15 Q 27,14 24,13 Q 21,12 19,13" opacity="0.9" />
+            <path d="M 22,13 Q 26,14 29,16 Q 31,17 30,19 Q 28,17 25,15 Q 23,14 22,14" opacity="0.8" />
+          </svg>
+        )
+
+      default:
+        return null
+    }
+  }
+
   return (
     <div className="fixed bottom-0 left-0 w-full h-16 pointer-events-none z-10 overflow-hidden">
-      {critters.map((critter) => (
-        <div
-          key={critter.id}
-          className="absolute"
-          style={{
-            bottom: `${8 + critter.yOffset}px`,
-            animation: `walkCritter ${critter.speed}s linear ${critter.delay}s infinite`,
-          }}
-        >
-          {renderCritter(critter)}
-        </div>
-      ))}
+      {/* Day creatures */}
+      <div
+        className="transition-opacity duration-[2000ms]"
+        style={{ opacity: isNightTime ? 0 : 1 }}
+      >
+        {critters.map((critter) => (
+          <div
+            key={critter.id}
+            className="absolute"
+            style={{
+              bottom: `${8 + critter.yOffset}px`,
+              animation: `walkCritter ${critter.speed}s linear ${critter.delay}s infinite`,
+            }}
+          >
+            {renderCritter(critter)}
+          </div>
+        ))}
+      </div>
+
+      {/* Night creatures */}
+      <div
+        className="transition-opacity duration-[2000ms]"
+        style={{ opacity: isNightTime ? 1 : 0 }}
+      >
+        {nightCreatures.map((creature) => {
+          if (creature.type === 'bat') {
+            // Bats fly across the screen like day critters
+            return (
+              <div
+                key={creature.id}
+                className="absolute"
+                style={{
+                  bottom: `${8 + creature.yOffset}px`,
+                  animation: `walkCritter ${creature.speed}s linear ${creature.delay}s infinite`,
+                }}
+              >
+                {renderNightCreature(creature)}
+              </div>
+            )
+          } else if (creature.type === 'owl') {
+            // Owls are stationary
+            return (
+              <div
+                key={creature.id}
+                className="absolute"
+                style={{
+                  bottom: `${8 + creature.yOffset}px`,
+                  left: `${creature.xPosition}%`,
+                  animation: `owlSway 4s ease-in-out ${creature.delay}s infinite`,
+                }}
+              >
+                {renderNightCreature(creature)}
+              </div>
+            )
+          } else if (creature.type === 'firefly') {
+            // Fireflies float and glow
+            return (
+              <div
+                key={creature.id}
+                className="absolute"
+                style={{
+                  bottom: `${8 + creature.yOffset}px`,
+                  left: `${creature.xPosition}%`,
+                  animation: `fireflyFloat 3s ease-in-out ${creature.delay}s infinite`,
+                }}
+              >
+                {renderNightCreature(creature)}
+              </div>
+            )
+          }
+          return null
+        })}
+      </div>
 
       <style jsx>{`
         @keyframes walkCritter {
@@ -176,6 +337,46 @@ export function FooterCritters() {
           100% {
             left: calc(100% + 50px);
             transform: scaleX(1);
+          }
+        }
+
+        @keyframes fireflyFloat {
+          0%, 100% {
+            transform: translateY(0px) translateX(0px);
+          }
+          33% {
+            transform: translateY(-8px) translateX(4px);
+          }
+          66% {
+            transform: translateY(-4px) translateX(-4px);
+          }
+        }
+
+        @keyframes owlSway {
+          0%, 100% {
+            transform: rotate(0deg);
+          }
+          50% {
+            transform: rotate(3deg);
+          }
+        }
+
+        :global(.firefly-glow) {
+          animation: fireflyGlow 2s ease-in-out infinite;
+        }
+
+        :global(.firefly-core) {
+          animation: fireflyGlow 2s ease-in-out infinite;
+        }
+
+        @keyframes fireflyGlow {
+          0%, 100% {
+            opacity: 0.3;
+            transform: scale(1);
+          }
+          50% {
+            opacity: 1;
+            transform: scale(1.2);
           }
         }
       `}</style>

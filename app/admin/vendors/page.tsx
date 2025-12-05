@@ -127,7 +127,7 @@ export default function VendorsManagementPage() {
   return (
     <div className="min-h-screen bg-sand-50">
       {/* Header */}
-      <div className="bg-white border-b border-sand-300">
+      <div className="bg-[var(--card)] border-b border-[var(--border)]">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8 py-6">
           <div className="flex items-center gap-4">
             <Link href="/admin">
@@ -137,10 +137,10 @@ export default function VendorsManagementPage() {
               </Button>
             </Link>
             <div className="flex-1">
-              <h1 className="text-3xl font-bold" style={{ color: '#000' }}>
+              <h1 className="text-3xl font-bold text-[var(--foreground)]">
                 Manage Vendors
               </h1>
-              <p style={{ color: '#444' }} className="mt-1">
+              <p className="text-[var(--muted-foreground)] mt-1">
                 Partner companies and manufacturers
               </p>
             </div>
@@ -170,7 +170,7 @@ export default function VendorsManagementPage() {
           {isCreating && (
             <Card className="border-moss-300 bg-moss-50">
               <CardHeader>
-                <CardTitle style={{ color: '#36763d' }}>Add New Vendor</CardTitle>
+                <CardTitle className="text-[var(--primary)]">Add New Vendor</CardTitle>
               </CardHeader>
               <CardContent className="space-y-4">
                 <div className="grid md:grid-cols-2 gap-4">
@@ -231,8 +231,8 @@ export default function VendorsManagementPage() {
                     <Store className="w-6 h-6 text-moss-600" />
                   </div>
                   <div>
-                    <p className="text-sm font-medium" style={{ color: '#666' }}>Total Vendors</p>
-                    <p className="text-2xl font-bold" style={{ color: '#000' }}>{vendors.length}</p>
+                    <p className="text-sm font-medium text-[var(--muted-foreground)]">Total Vendors</p>
+                    <p className="text-2xl font-bold text-[var(--foreground)]">{vendors.length}</p>
                   </div>
                 </div>
               </CardContent>
@@ -244,8 +244,8 @@ export default function VendorsManagementPage() {
                     <Store className="w-6 h-6 text-ocean-600" />
                   </div>
                   <div>
-                    <p className="text-sm font-medium" style={{ color: '#666' }}>Verified</p>
-                    <p className="text-2xl font-bold" style={{ color: '#000' }}>
+                    <p className="text-sm font-medium text-[var(--muted-foreground)]">Verified</p>
+                    <p className="text-2xl font-bold text-[var(--foreground)]">
                       {verifiedCount}
                     </p>
                   </div>
@@ -259,8 +259,8 @@ export default function VendorsManagementPage() {
                     <Store className="w-6 h-6 text-terra-600" />
                   </div>
                   <div>
-                    <p className="text-sm font-medium" style={{ color: '#666' }}>Most Products</p>
-                    <p className="text-lg font-bold" style={{ color: '#000' }}>
+                    <p className="text-sm font-medium text-[var(--muted-foreground)]">Most Products</p>
+                    <p className="text-lg font-bold text-[var(--foreground)]">
                       {mostProducts ? mostProducts.name : 'N/A'}
                     </p>
                   </div>
@@ -274,8 +274,8 @@ export default function VendorsManagementPage() {
                     <Store className="w-6 h-6 text-moss-600" />
                   </div>
                   <div>
-                    <p className="text-sm font-medium" style={{ color: '#666' }}>Total Products</p>
-                    <p className="text-2xl font-bold" style={{ color: '#000' }}>{totalProducts}</p>
+                    <p className="text-sm font-medium text-[var(--muted-foreground)]">Total Products</p>
+                    <p className="text-2xl font-bold text-[var(--foreground)]">{totalProducts}</p>
                   </div>
                 </div>
               </CardContent>
@@ -290,18 +290,18 @@ export default function VendorsManagementPage() {
             <CardContent>
               {loading ? (
                 <div className="text-center py-8">
-                  <p style={{ color: '#666' }}>Loading vendors...</p>
+                  <p className="text-[var(--muted-foreground)]">Loading vendors...</p>
                 </div>
               ) : vendors.length === 0 ? (
                 <div className="text-center py-8">
-                  <p style={{ color: '#666' }}>No vendors yet. Create your first one!</p>
+                  <p className="text-[var(--muted-foreground)]">No vendors yet. Create your first one!</p>
                 </div>
               ) : (
                 <div className="space-y-4">
                   {vendors.map((vendor) => (
                     <div
                       key={vendor.id}
-                      className="p-6 rounded-lg border-2 border-sand-200 hover:border-moss-300 transition-colors"
+                      className="p-6 rounded-lg border-2 border-[var(--border)] hover:border-[var(--primary)] transition-colors"
                     >
                       <div className="flex items-start justify-between">
                         <div className="flex gap-4 flex-1">
@@ -310,7 +310,7 @@ export default function VendorsManagementPage() {
                           </div>
                           <div className="flex-1">
                             <div className="flex items-center gap-2 mb-1">
-                              <h3 className="text-xl font-black" style={{ color: '#000' }}>
+                              <h3 className="text-xl font-black text-[var(--foreground)]">
                                 {vendor.name}
                               </h3>
                               {vendor.verified && (
@@ -319,11 +319,11 @@ export default function VendorsManagementPage() {
                                 </span>
                               )}
                             </div>
-                            <p className="text-sm mb-2" style={{ color: '#666' }}>
+                            <p className="text-sm mb-2 text-[var(--muted-foreground)]">
                               /{vendor.slug}
                             </p>
                             {vendor.description && (
-                              <p className="text-sm mb-3" style={{ color: '#444' }}>
+                              <p className="text-sm mb-3 text-[var(--muted-foreground)]">
                                 {vendor.description}
                               </p>
                             )}
@@ -340,7 +340,7 @@ export default function VendorsManagementPage() {
                                 </a>
                               )}
                               {vendor.location && (
-                                <div className="flex items-center gap-1" style={{ color: '#666' }}>
+                                <div className="flex items-center gap-1 text-[var(--muted-foreground)]">
                                   <MapPin className="w-4 h-4" />
                                   {vendor.location}
                                 </div>

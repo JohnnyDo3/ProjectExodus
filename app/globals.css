@@ -271,36 +271,46 @@
   --border: #cfc0ad;
 }
 
-/* 🌙 NIGHT - Deep earth tones, restful darkness (10pm-2am) */
+/* 🌙 NIGHT - Midnight galaxy, cosmic darkness (10pm-2am) */
 .night, .dark {
-  --background: var(--earth-900);
-  --foreground: var(--sand-100);
-  --primary: var(--moss-400);
-  --primary-foreground: var(--earth-900);
-  --secondary: var(--terra-400);
-  --accent: var(--ocean-400);
-  --muted: var(--earth-800);
-  --muted-foreground: var(--sand-400);
-  --card: var(--earth-800);
-  --card-foreground: var(--sand-100);
-  --border: var(--earth-700);
+  --background: #020208;      /* Pure black space */
+  --foreground: #f0f0ff;      /* Starlight white */
+  --primary: #6eb5ff;         /* Bright star blue */
+  --primary-foreground: #020208;
+  --secondary: #d4a0ff;       /* Nebula purple */
+  --secondary-foreground: #020208;
+  --accent: #7fdbca;          /* Aurora cyan */
+  --accent-foreground: #020208;
+  --muted: #1a1a2e;           /* Deep purple-black */
+  --muted-foreground: #8888aa; /* Muted starlight */
+  --card: #0a0a18;            /* Near-black panel */
+  --card-foreground: #e8e8ff; /* Light starlight */
+  --border: #2a2a4a;          /* Subtle cosmic edge */
+  --input: #1a1a2e;           /* Same as muted */
+  --ring: #6eb5ff;            /* Same as primary for focus rings */
+  --destructive: #ff6b6b;     /* Bright red for visibility */
+  --destructive-foreground: #020208;
 }
 
-/* 🌌 MIDNIGHT - Deepest night (2am-5am) */
+/* 🌌 MIDNIGHT - Deepest cosmic void (2am-5am) */
 .midnight {
-  --background: #1a1614;
-  --foreground: var(--sand-200);
-  --primary: #5a7a65; /* Muted moss */
-  --primary-foreground: white;
-  --secondary: #8b5a4a; /* Muted terra */
-  --secondary-foreground: white;
-  --accent: #5a7a7a; /* Deep teal */
-  --accent-foreground: white;
-  --muted: #2a2420;
-  --muted-foreground: var(--sand-500);
-  --card: #221e1a;
-  --card-foreground: var(--sand-200);
-  --border: #3a342e;
+  --background: #020208;      /* Pure black space */
+  --foreground: #f0f0ff;      /* Starlight white */
+  --primary: #6eb5ff;         /* Bright star blue */
+  --primary-foreground: #020208;
+  --secondary: #d4a0ff;       /* Nebula purple */
+  --secondary-foreground: #020208;
+  --accent: #7fdbca;          /* Aurora cyan */
+  --accent-foreground: #020208;
+  --muted: #1a1a2e;           /* Deep purple-black */
+  --muted-foreground: #8888aa; /* Muted starlight */
+  --card: #0a0a18;            /* Near-black panel */
+  --card-foreground: #e8e8ff; /* Light starlight */
+  --border: #2a2a4a;          /* Subtle cosmic edge */
+  --input: #1a1a2e;           /* Same as muted */
+  --ring: #6eb5ff;            /* Same as primary for focus rings */
+  --destructive: #ff6b6b;     /* Bright red for visibility */
+  --destructive-foreground: #020208;
 }
 
 /* 🌅 Conditional visibility for day/night elements - SMOOTH TRANSITIONS */
@@ -340,20 +350,26 @@
   visibility: visible !important;
 }
 
-/* Fallback for system preference */
+/* Fallback for system preference - midnight galaxy */
 @media (prefers-color-scheme: dark) {
   :root:not(.light):not(.day):not(.sunrise):not(.sunset):not(.night) {
-    --background: var(--earth-900);
-    --foreground: var(--sand-100);
-    --primary: var(--moss-400);
-    --primary-foreground: var(--earth-900);
-    --secondary: var(--terra-400);
-    --accent: var(--ocean-400);
-    --muted: var(--earth-800);
-    --muted-foreground: var(--sand-400);
-    --card: var(--earth-800);
-    --card-foreground: var(--sand-100);
-    --border: var(--earth-700);
+    --background: #020208;      /* Pure black space */
+    --foreground: #f0f0ff;      /* Starlight white */
+    --primary: #6eb5ff;         /* Bright star blue */
+    --primary-foreground: #020208;
+    --secondary: #d4a0ff;       /* Nebula purple */
+    --secondary-foreground: #020208;
+    --accent: #7fdbca;          /* Aurora cyan */
+    --accent-foreground: #020208;
+    --muted: #1a1a2e;           /* Deep purple-black */
+    --muted-foreground: #8888aa; /* Muted starlight */
+    --card: #0a0a18;            /* Near-black panel */
+    --card-foreground: #e8e8ff; /* Light starlight */
+    --border: #2a2a4a;          /* Subtle cosmic edge */
+    --input: #1a1a2e;           /* Same as muted */
+    --ring: #6eb5ff;            /* Same as primary for focus rings */
+    --destructive: #ff6b6b;     /* Bright red for visibility */
+    --destructive-foreground: #020208;
   }
 }
 

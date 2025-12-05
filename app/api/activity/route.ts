@@ -32,33 +32,119 @@ export async function GET(request: NextRequest) {
       })
     }
 
-    // Fetch recent activities from followed users
+    // Fetch recent activities from followed users in parallel
     const activities: any[] = []
 
-    // 1. New project memberships
-    const projectJoins = await prisma.projectMember.findMany({
-      where: {
-        userId: { in: followingIds },
-      },
-      include: {
-        user: {
-          select: {
-            id: true,
-            name: true,
-            image: true,
+    // Execute all database queries in parallel
+    const [projectJoins, events, eventRSVPs, projects] = await Promise.all([
+      // 1. New project memberships
+      prisma.projectMember.findMany({
+        where: {
+          userId: { in: followingIds },
+        },
+        include: {
+          user: {
+            select: {
+              id: true,
+              name: true,
+              image: true,
+            },
+          },
+          project: {
+            select: {
+              id: true,
+              name: true,
+              slug: true,
+              createdAt: true,
+            },
           },
         },
-        project: {
-          select: {
-            id: true,
-            name: true,
-            slug: true,
-            createdAt: true,
+        take: limit,
+      }),
+
+      // 2. New events created
+      prisma.event.findMany({
+        where: {
+          creatorId: { in: followingIds },
+          createdAt: {
+            gte: new Date(Date.now() - 7 * 24 * 60 * 60 * 1000),
           },
         },
-      },
-      take: limit,
-    })
+        include: {
+          creator: {
+            select: {
+              id: true,
+              name: true,
+              image: true,
+            },
+          },
+          _count: {
+            select: {
+              attendees: true,
+            },
+          },
+        },
+        orderBy: { createdAt: 'desc' },
+        take: limit,
+      }),
+
+      // 3. Event RSVPs
+      prisma.eventAttendee.findMany({
+        where: {
+          userId: { in: followingIds },
+          status: 'GOING',
+          joinedAt: {
+            gte: new Date(Date.now() - 7 * 24 * 60 * 60 * 1000),
+          },
+        },
+        include: {
+          user: {
+            select: {
+              id: true,
+              name: true,
+              image: true,
+            },
+          },
+          event: {
+            select: {
+              id: true,
+              title: true,
+              slug: true,
+              type: true,
+              startDate: true,
+            },
+          },
+        },
+        orderBy: { joinedAt: 'desc' },
+        take: limit,
+      }),
+
+      // 4. New projects created
+      prisma.project.findMany({
+        where: {
+          creatorId: { in: followingIds },
+          createdAt: {
+            gte: new Date(Date.now() - 7 * 24 * 60 * 60 * 1000),
+          },
+        },
+        include: {
+          creator: {
+            select: {
+              id: true,
+              name: true,
+              image: true,
+            },
+          },
+          _count: {
+            select: {
+              members: true,
+            },
+          },
+        },
+        orderBy: { createdAt: 'desc' },
+        take: limit,
+      }),
+    ])
 
     // Filter to recent joins (use project creation as proxy since ProjectMember doesn't have createdAt)
     const recentProjectJoins = projectJoins.filter(
@@ -74,32 +160,6 @@ export async function GET(request: NextRequest) {
         createdAt: pj.project.createdAt,
       }))
     )
-
-    // 2. New events created
-    const events = await prisma.event.findMany({
-      where: {
-        creatorId: { in: followingIds },
-        createdAt: {
-          gte: new Date(Date.now() - 7 * 24 * 60 * 60 * 1000),
-        },
-      },
-      include: {
-        creator: {
-          select: {
-            id: true,
-            name: true,
-            image: true,
-          },
-        },
-        _count: {
-          select: {
-            attendees: true,
-          },
-        },
-      },
-      orderBy: { createdAt: 'desc' },
-      take: limit,
-    })
 
     activities.push(
       ...events.map((event: any) => ({
@@ -118,37 +178,6 @@ export async function GET(request: NextRequest) {
       }))
     )
 
-    // 3. Event RSVPs
-    const eventRSVPs = await prisma.eventAttendee.findMany({
-      where: {
-        userId: { in: followingIds },
-        status: 'GOING',
-        joinedAt: {
-          gte: new Date(Date.now() - 7 * 24 * 60 * 60 * 1000),
-        },
-      },
-      include: {
-        user: {
-          select: {
-            id: true,
-            name: true,
-            image: true,
-          },
-        },
-        event: {
-          select: {
-            id: true,
-            title: true,
-            slug: true,
-            type: true,
-            startDate: true,
-          },
-        },
-      },
-      orderBy: { joinedAt: 'desc' },
-      take: limit,
-    })
-
     activities.push(
       ...eventRSVPs.map((rsvp: any) => ({
         id: `event-rsvp-${rsvp.id}`,
@@ -164,32 +193,6 @@ export async function GET(request: NextRequest) {
         createdAt: rsvp.joinedAt,
       }))
     )
-
-    // 4. New projects created
-    const projects = await prisma.project.findMany({
-      where: {
-        creatorId: { in: followingIds },
-        createdAt: {
-          gte: new Date(Date.now() - 7 * 24 * 60 * 60 * 1000),
-        },
-      },
-      include: {
-        creator: {
-          select: {
-            id: true,
-            name: true,
-            image: true,
-          },
-        },
-        _count: {
-          select: {
-            members: true,
-          },
-        },
-      },
-      orderBy: { createdAt: 'desc' },
-      take: limit,
-    })
 
     activities.push(
       ...projects.map((project: any) => ({

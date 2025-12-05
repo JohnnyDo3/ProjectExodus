@@ -124,8 +124,8 @@ export function ImageUpload({
         onClick={handleClick}
         className={`relative border-4 border-dashed rounded-3xl p-12 text-center cursor-pointer transition-all ${
           dragActive
-            ? 'border-moss-500 bg-moss-50 scale-105'
-            : 'border-moss-300 hover:border-moss-400 hover:bg-moss-50/50'
+            ? 'border-[var(--primary)] bg-[var(--muted)] scale-105'
+            : 'border-[var(--border)] hover:border-[var(--primary)] hover:bg-[var(--muted)]'
         }`}
       >
         <input
@@ -138,20 +138,20 @@ export function ImageUpload({
         />
 
         <div className="space-y-4">
-          <div className="w-20 h-20 mx-auto rounded-full bg-gradient-to-br from-moss-500 to-ocean-500 flex items-center justify-center shadow-xl">
+          <div className="w-20 h-20 mx-auto rounded-full bg-[var(--primary)] flex items-center justify-center shadow-xl">
             <Upload className="w-10 h-10 text-white" />
           </div>
 
           <div>
-            <h3 className="text-2xl font-black mb-2" style={{ color: '#000' }}>
+            <h3 className="text-2xl font-black mb-2 text-[var(--foreground)]">
               UPLOAD IMAGES
             </h3>
-            <p className="text-base font-bold" style={{ color: '#666' }}>
+            <p className="text-base font-bold text-[var(--muted-foreground)]">
               Drag and drop or click to browse
             </p>
           </div>
 
-          <div className="text-sm font-semibold" style={{ color: '#888' }}>
+          <div className="text-sm font-semibold text-[var(--muted-foreground)]">
             <p>Maximum {maxFiles} files • Up to {maxSizeInMB}MB each</p>
             <p>JPEG, PNG, WebP, or GIF</p>
           </div>
@@ -160,14 +160,14 @@ export function ImageUpload({
 
       {/* Error Message */}
       {error && (
-        <Card className="border-4 border-terra-300 bg-terra-50">
+        <Card className="border-4 border-[var(--destructive)] bg-[var(--muted)]">
           <CardContent className="p-4">
             <div className="flex items-center gap-3">
-              <AlertCircle className="w-6 h-6 text-terra-600 flex-shrink-0" />
-              <p className="text-base font-bold text-terra-700">{error}</p>
+              <AlertCircle className="w-6 h-6 text-[var(--destructive)] flex-shrink-0" />
+              <p className="text-base font-bold text-[var(--destructive)]">{error}</p>
               <button
                 onClick={() => setError(null)}
-                className="ml-auto text-terra-600 hover:text-terra-800"
+                className="ml-auto text-[var(--destructive)] hover:opacity-80"
               >
                 <X className="w-5 h-5" />
               </button>
@@ -179,14 +179,14 @@ export function ImageUpload({
       {/* Existing Images */}
       {existingImages.length > 0 && (
         <div>
-          <h4 className="text-lg font-black mb-4" style={{ color: '#000' }}>
+          <h4 className="text-lg font-black mb-4 text-[var(--foreground)]">
             EXISTING IMAGES ({existingImages.length})
           </h4>
           <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
             {existingImages.map((img, index) => (
               <Card
                 key={index}
-                className="relative group overflow-hidden border-4 border-ocean-200 hover:border-ocean-400 transition-all"
+                className="relative group overflow-hidden border-4 border-[var(--border)] hover:border-[var(--primary)] transition-all"
               >
                 <div className="aspect-square relative">
                   <img
@@ -197,7 +197,7 @@ export function ImageUpload({
                   {onRemove && (
                     <button
                       onClick={() => onRemove(img.url)}
-                      className="absolute top-2 right-2 w-8 h-8 rounded-full bg-terra-500 text-white flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity shadow-lg hover:bg-terra-600"
+                      className="absolute top-2 right-2 w-8 h-8 rounded-full bg-[var(--destructive)] text-white flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity shadow-lg hover:opacity-90"
                       aria-label="Remove image"
                     >
                       <X className="w-5 h-5" />
@@ -213,14 +213,14 @@ export function ImageUpload({
       {/* New Image Previews */}
       {previews.length > 0 && (
         <div>
-          <h4 className="text-lg font-black mb-4" style={{ color: '#000' }}>
+          <h4 className="text-lg font-black mb-4 text-[var(--foreground)]">
             NEW IMAGES ({previews.length})
           </h4>
           <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
             {previews.map((preview, index) => (
               <Card
                 key={index}
-                className="relative group overflow-hidden border-4 border-moss-200 hover:border-moss-400 transition-all"
+                className="relative group overflow-hidden border-4 border-[var(--border)] hover:border-[var(--primary)] transition-all"
               >
                 <div className="aspect-square relative">
                   <img
@@ -233,7 +233,7 @@ export function ImageUpload({
                       e.stopPropagation()
                       handleRemovePreview(index)
                     }}
-                    className="absolute top-2 right-2 w-8 h-8 rounded-full bg-terra-500 text-white flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity shadow-lg hover:bg-terra-600"
+                    className="absolute top-2 right-2 w-8 h-8 rounded-full bg-[var(--destructive)] text-white flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity shadow-lg hover:opacity-90"
                     aria-label="Remove preview"
                   >
                     <X className="w-5 h-5" />
@@ -250,7 +250,7 @@ export function ImageUpload({
       )}
 
       {/* Upload Summary */}
-      <div className="flex items-center justify-between text-sm font-bold" style={{ color: '#666' }}>
+      <div className="flex items-center justify-between text-sm font-bold text-[var(--muted-foreground)]">
         <div>
           {existingImages.length + previews.length} of {maxFiles} images
         </div>

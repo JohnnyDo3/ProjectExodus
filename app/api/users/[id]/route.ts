@@ -1,5 +1,6 @@
 import { NextResponse } from 'next/server'
 import { prisma } from '@/lib/db'
+import { auth } from '@/auth'
 
 export async function GET(
   request: Request,
@@ -7,6 +8,7 @@ export async function GET(
 ) {
   try {
     const { id } = await params
+    const session = await auth()
 
     const user = await prisma.user.findUnique({
       where: { id },
@@ -16,6 +18,9 @@ export async function GET(
         email: true,
         image: true,
         bio: true,
+        phone: true,
+        showEmail: true,
+        showPhone: true,
         createdAt: true,
         userBadges: {
           include: {
@@ -50,9 +55,20 @@ export async function GET(
       )
     }
 
+    // Filter email/phone based on privacy settings
+    const isOwnProfile = session?.user?.id === user.id
+    const filteredUser = {
+      ...user,
+      email: (user.showEmail || isOwnProfile) ? user.email : undefined,
+      phone: (user.showPhone || isOwnProfile) ? user.phone : undefined,
+      // Remove privacy flags from response
+      showEmail: undefined,
+      showPhone: undefined,
+    }
+
     return NextResponse.json({
       success: true,
-      data: user
+      data: filteredUser
     })
   } catch (error) {
     console.error('Error fetching user:', error)

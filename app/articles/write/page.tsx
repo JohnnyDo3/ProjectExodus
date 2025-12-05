@@ -28,6 +28,7 @@ import {
   Clock,
   Sparkles,
 } from 'lucide-react'
+import { sanitizeHtml } from '@/lib/utils/sanitize'
 
 export default function WriteArticlePage() {
   const { data: session, status } = useSession()
@@ -282,7 +283,7 @@ export default function WriteArticlePage() {
                 <div
                   className="prose prose-lg max-w-none text-[var(--foreground)]"
                   dangerouslySetInnerHTML={{
-                    __html: `<p class="mb-4">${renderMarkdown(content || 'Start writing your article...')}</p>`,
+                    __html: sanitizeHtml(`<p class="mb-4">${renderMarkdown(content || 'Start writing your article...')}</p>`),
                   }}
                 />
               </CardContent>

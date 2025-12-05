@@ -103,7 +103,7 @@ export default function UsersManagementPage() {
   return (
     <div className="min-h-screen bg-sand-50">
       {/* Header */}
-      <div className="bg-white border-b border-sand-300">
+      <div className="bg-[var(--card)] border-b border-[var(--border)]">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8 py-6">
           <div className="flex items-center gap-4">
             <Link href="/admin">
@@ -113,10 +113,10 @@ export default function UsersManagementPage() {
               </Button>
             </Link>
             <div className="flex-1">
-              <h1 className="text-3xl font-bold" style={{ color: '#000' }}>
+              <h1 className="text-3xl font-bold text-[var(--foreground)]">
                 Manage Users
               </h1>
-              <p style={{ color: '#444' }} className="mt-1">
+              <p className="text-[var(--muted-foreground)] mt-1">
                 User accounts, roles, and permissions
               </p>
             </div>
@@ -135,7 +135,7 @@ export default function UsersManagementPage() {
           {isCreating && (
             <Card className="border-moss-300 bg-moss-50">
               <CardHeader>
-                <CardTitle style={{ color: '#36763d' }}>Create New User</CardTitle>
+                <CardTitle className="text-[var(--primary)]">Create New User</CardTitle>
               </CardHeader>
               <CardContent className="space-y-4">
                 <div className="grid md:grid-cols-2 gap-4">
@@ -184,8 +184,8 @@ export default function UsersManagementPage() {
                     <Users className="w-6 h-6 text-moss-600" />
                   </div>
                   <div>
-                    <p className="text-sm font-medium" style={{ color: '#666' }}>Total Users</p>
-                    <p className="text-2xl font-bold" style={{ color: '#000' }}>{users.length}</p>
+                    <p className="text-sm font-medium text-[var(--muted-foreground)]">Total Users</p>
+                    <p className="text-2xl font-bold text-[var(--foreground)]">{users.length}</p>
                   </div>
                 </div>
               </CardContent>
@@ -197,8 +197,8 @@ export default function UsersManagementPage() {
                     <UserCheck className="w-6 h-6 text-ocean-600" />
                   </div>
                   <div>
-                    <p className="text-sm font-medium" style={{ color: '#666' }}>Active</p>
-                    <p className="text-2xl font-bold" style={{ color: '#000' }}>
+                    <p className="text-sm font-medium text-[var(--muted-foreground)]">Active</p>
+                    <p className="text-2xl font-bold text-[var(--foreground)]">
                       {users.filter(u => u.status === 'ACTIVE').length}
                     </p>
                   </div>
@@ -212,8 +212,8 @@ export default function UsersManagementPage() {
                     <Shield className="w-6 h-6 text-terra-600" />
                   </div>
                   <div>
-                    <p className="text-sm font-medium" style={{ color: '#666' }}>Admins</p>
-                    <p className="text-2xl font-bold" style={{ color: '#000' }}>
+                    <p className="text-sm font-medium text-[var(--muted-foreground)]">Admins</p>
+                    <p className="text-2xl font-bold text-[var(--foreground)]">
                       {users.filter(u => u.role === 'ADMIN').length}
                     </p>
                   </div>
@@ -227,8 +227,8 @@ export default function UsersManagementPage() {
                     <Ban className="w-6 h-6 text-moss-600" />
                   </div>
                   <div>
-                    <p className="text-sm font-medium" style={{ color: '#666' }}>Suspended</p>
-                    <p className="text-2xl font-bold" style={{ color: '#000' }}>
+                    <p className="text-sm font-medium text-[var(--muted-foreground)]">Suspended</p>
+                    <p className="text-2xl font-bold text-[var(--foreground)]">
                       {users.filter(u => u.status === 'SUSPENDED').length}
                     </p>
                   </div>
@@ -247,7 +247,7 @@ export default function UsersManagementPage() {
                 {users.map((user) => (
                   <div
                     key={user.id}
-                    className="flex items-center justify-between p-5 rounded-lg border-2 border-sand-200 hover:border-moss-300 transition-colors"
+                    className="flex items-center justify-between p-5 rounded-lg border-2 border-[var(--border)] hover:border-[var(--primary)] transition-colors"
                   >
                     <div className="flex items-center gap-4 flex-1">
                       {/* Avatar */}
@@ -260,7 +260,7 @@ export default function UsersManagementPage() {
                       {/* User Info */}
                       <div className="flex-1">
                         <div className="flex items-center gap-3 mb-1">
-                          <h3 className="text-lg font-bold" style={{ color: '#000' }}>
+                          <h3 className="text-lg font-bold text-[var(--foreground)]">
                             {user.name}
                           </h3>
                           <span className={`px-3 py-1 rounded-full text-xs font-bold ${getRoleBadgeColor(user.role)}`}>
@@ -270,14 +270,14 @@ export default function UsersManagementPage() {
                             ● {user.status}
                           </span>
                         </div>
-                        <div className="flex items-center gap-4 text-sm" style={{ color: '#666' }}>
+                        <div className="flex items-center gap-4 text-sm text-[var(--muted-foreground)]">
                           <div className="flex items-center gap-1">
                             <Mail className="w-4 h-4" />
                             {user.email}
                           </div>
                           <div>Joined {new Date(user.joinedDate).toLocaleDateString()}</div>
                         </div>
-                        <div className="flex gap-4 mt-2 text-xs font-semibold" style={{ color: '#666' }}>
+                        <div className="flex gap-4 mt-2 text-xs font-semibold text-[var(--muted-foreground)]">
                           {user.productsCreated > 0 && (
                             <div>{user.productsCreated} products</div>
                           )}
@@ -317,7 +317,7 @@ export default function UsersManagementPage() {
           {/* Development Notice */}
           <Card className="bg-ocean-50 border-ocean-200">
             <CardContent className="p-6">
-              <p className="text-sm" style={{ color: '#295050' }}>
+              <p className="text-sm text-[var(--muted-foreground)]">
                 <strong>Note:</strong> This is a UI demonstration. User management will be fully functional
                 once authentication is integrated with NextAuth. Changes made here are temporary and for preview purposes only.
               </p>

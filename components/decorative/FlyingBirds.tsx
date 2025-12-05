@@ -1,6 +1,7 @@
 'use client'
 
 import { useEffect, useState } from 'react'
+import { useSkyTheme } from '@/components/theme/SkyThemeProvider'
 
 interface Bird {
   id: number
@@ -23,8 +24,12 @@ interface Cluster {
 }
 
 export function FlyingBirds() {
+  const { currentPhase } = useSkyTheme()
   const [clusters, setClusters] = useState<Cluster[]>([])
   const [birds, setBirds] = useState<Bird[]>([])
+
+  // Birds sleep at night! Only show during daytime phases
+  const isDaytime = ['dawn', 'morning', 'day', 'afternoon'].includes(currentPhase)
 
   useEffect(() => {
     // Create 2-4 clusters
@@ -104,7 +109,13 @@ export function FlyingBirds() {
 
   return (
     <>
-      <div className="fixed inset-0 pointer-events-none z-10 overflow-hidden">
+      <div
+        className="fixed inset-0 pointer-events-none z-10 overflow-hidden"
+        style={{
+          opacity: isDaytime ? 1 : 0,
+          transition: 'opacity 2s ease-in-out'
+        }}
+      >
         {clusters.map((cluster) => (
           <div key={cluster.id}>
             {birds

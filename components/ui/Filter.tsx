@@ -31,7 +31,7 @@ export function Filter({
   return (
     <div className={`space-y-4 ${className}`}>
       <div className="flex items-center justify-between">
-        <h3 className="text-xl font-black" style={{ color: '#000' }}>
+        <h3 className="text-xl font-black text-[var(--foreground)]">
           {title}
         </h3>
         {hasActiveFilters && (
@@ -58,7 +58,7 @@ export function Filter({
               className={`px-4 py-2 rounded-xl text-sm font-bold border-2 transition-all ${
                 isSelected
                   ? 'bg-gradient-to-br from-moss-500 to-ocean-500 text-white border-moss-600 shadow-lg'
-                  : 'bg-white text-earth-700 border-moss-200 hover:border-moss-400'
+                  : 'bg-[var(--card)] text-earth-700 border-moss-200 hover:border-moss-400'
               }`}
             >
               {option.label}

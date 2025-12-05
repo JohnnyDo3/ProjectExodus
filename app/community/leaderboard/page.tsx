@@ -2,7 +2,7 @@ import { Card, CardContent } from '@/components/ui/Card'
 import { Trophy, Medal, Award, TrendingUp, Users, MessageSquare, Rocket } from 'lucide-react'
 import { BackButton } from '@/components/navigation/BackButton'
 import Link from 'next/link'
-import prisma from '@/lib/db/prisma'
+import { prisma } from '@/lib/db'
 
 async function getLeaderboardData() {
   try {

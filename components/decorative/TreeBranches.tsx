@@ -1,6 +1,7 @@
 'use client'
 
 import { usePathname } from 'next/navigation'
+import { useSkyTheme } from '@/components/theme/SkyThemeProvider'
 
 // Golden Ratio: φ ≈ 1.618
 // Golden Angle: 137.5° - natural branching angle found in plants
@@ -10,6 +11,10 @@ import { usePathname } from 'next/navigation'
 export function TreeBranches() {
   const pathname = usePathname()
   const isHeroPage = pathname === '/'
+  const { currentPhase } = useSkyTheme()
+
+  // Check if it's nighttime - branches should be dark silhouettes
+  const isNightTime = ['dusk', 'evening', 'night', 'midnight'].includes(currentPhase)
 
   // Don't render on hero page
   if (isHeroPage) {
@@ -26,6 +31,10 @@ export function TreeBranches() {
         fill="none"
         xmlns="http://www.w3.org/2000/svg"
         preserveAspectRatio="xMidYMid slice"
+        style={{
+          filter: isNightTime ? 'brightness(0.08)' : 'brightness(1)',
+          transition: 'filter 2s ease-in-out'
+        }}
       >
         {/* TRUNK 1 - Upper Left Quadrant - PRIMARY with GOLDEN RATIO BRANCHING */}
         <g opacity="0.85">

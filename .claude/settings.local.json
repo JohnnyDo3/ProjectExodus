@@ -1,7 +1,15 @@
 {
   "permissions": {
     "allow": [
-      "Bash(timeout 5 bash:*)"
+      "Bash(timeout 5 bash:*)",
+      "Skill(secret-scanner)",
+      "Skill(vulnerability-checker)",
+      "Skill(code-quality-checker)",
+      "Bash(npm audit:*)",
+      "Bash(npm install:*)",
+      "Bash(npx tsc:*)",
+      "Bash(npm run build:*)",
+      "mcp__ide__getDiagnostics"
     ],
     "deny": [],
     "ask": []

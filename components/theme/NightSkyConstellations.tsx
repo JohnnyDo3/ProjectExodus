@@ -22,6 +22,16 @@ interface Constellation {
   connections: [number, number][] // pairs of star indices to connect
 }
 
+interface ShootingStar {
+  x: number
+  y: number
+  length: number
+  speed: number
+  angle: number
+  opacity: number
+  active: boolean
+}
+
 const constellations: Constellation[] = [
   {
     id: 0,
@@ -85,6 +95,8 @@ export function NightSkyConstellations({ alwaysShow = false, starCount = 1400 }:
   const [activeConstellation, setActiveConstellation] = useState<number | null>(null)
   const { currentPhase } = useSkyTheme()
   const animationFrameRef = useRef<number | undefined>(undefined)
+  const shootingStarsRef = useRef<ShootingStar[]>([])
+  const lastShootingStarTimeRef = useRef(0)
 
   // Only show constellations during night phases (unless alwaysShow is true)
   const isNightTime = alwaysShow || ['dusk', 'evening', 'night', 'midnight'].includes(currentPhase)
@@ -205,6 +217,58 @@ export function NightSkyConstellations({ alwaysShow = false, starCount = 1400 }:
       ctx.clearRect(0, 0, canvas.width, canvas.height)
       time += 0.01
 
+      // Shooting star management
+      const currentTime = Date.now()
+      const timeSinceLastShootingStar = currentTime - lastShootingStarTimeRef.current
+      const activeShootingStars = shootingStarsRef.current.filter(s => s.active).length
+
+      // Spawn new shooting star (random interval 3-8 seconds, max 3 at a time)
+      if (activeShootingStars < 3 && timeSinceLastShootingStar > 3000 + Math.random() * 5000) {
+        const angle = -Math.PI / 6 + (Math.random() - 0.5) * Math.PI / 4 // Slight downward angle
+        shootingStarsRef.current.push({
+          x: Math.random() * canvas.width,
+          y: Math.random() * canvas.height * 0.4, // Upper portion of sky
+          length: 60 + Math.random() * 80,
+          speed: 8 + Math.random() * 6,
+          angle,
+          opacity: 0,
+          active: true
+        })
+        lastShootingStarTimeRef.current = currentTime
+      }
+
+      // Update shooting stars
+      shootingStarsRef.current = shootingStarsRef.current.filter(star => {
+        if (!star.active) return false
+
+        // Fade in/out
+        if (star.opacity < 1) {
+          star.opacity += 0.05
+        }
+
+        // Move shooting star
+        star.x += Math.cos(star.angle) * star.speed
+        star.y += Math.sin(star.angle) * star.speed
+
+        // Deactivate if off screen
+        if (star.x > canvas.width + 200 || star.y > canvas.height + 200 || star.x < -200 || star.y < -200) {
+          star.active = false
+          return false
+        }
+
+        // Gradually fade out near end of trajectory
+        const distanceTraveled = Math.sqrt(Math.pow(star.x, 2) + Math.pow(star.y, 2))
+        if (distanceTraveled > canvas.width * 0.8) {
+          star.opacity -= 0.02
+          if (star.opacity <= 0) {
+            star.active = false
+            return false
+          }
+        }
+
+        return true
+      })
+
       // Draw deep black space background
       const blackGradient = ctx.createLinearGradient(0, 0, 0, canvas.height)
       blackGradient.addColorStop(0, 'rgba(0, 0, 5, 1)')
@@ -251,7 +315,7 @@ export function NightSkyConstellations({ alwaysShow = false, starCount = 1400 }:
       // Draw Milky Way band - horizontal arched band across the sky
       // Main galactic band (horizontal with slight arch)
       const centerY = canvas.height * 0.45 // Slightly above center
-      const bandHeight = canvas.height * 0.5 // Wider band
+      const bandHeight = canvas.height * 0.6 // Wider band for more stunning effect
 
       // Create vertical gradient for the main band
       const milkyWayGradient = ctx.createLinearGradient(0, centerY - bandHeight/2, 0, centerY + bandHeight/2)
@@ -267,16 +331,16 @@ export function NightSkyConstellations({ alwaysShow = false, starCount = 1400 }:
       ctx.fillStyle = milkyWayGradient
       ctx.fillRect(0, centerY - bandHeight/2, canvas.width, bandHeight)
 
-      // Galactic center - brighter concentrated region
+      // Galactic center - brighter concentrated region with enhanced opacity
       const galacticCenterX = canvas.width * 0.6
       const galacticCenterY = centerY
       const centerGradient = ctx.createRadialGradient(
         galacticCenterX, galacticCenterY, 0,
         galacticCenterX, galacticCenterY, canvas.width * 0.25
       )
-      centerGradient.addColorStop(0, 'rgba(180, 160, 200, 0.25)')
-      centerGradient.addColorStop(0.3, 'rgba(130, 120, 160, 0.15)')
-      centerGradient.addColorStop(0.6, 'rgba(80, 90, 130, 0.08)')
+      centerGradient.addColorStop(0, 'rgba(180, 160, 200, 0.35)')
+      centerGradient.addColorStop(0.3, 'rgba(130, 120, 160, 0.22)')
+      centerGradient.addColorStop(0.6, 'rgba(80, 90, 130, 0.12)')
       centerGradient.addColorStop(1, 'rgba(0, 0, 0, 0)')
       ctx.fillStyle = centerGradient
       ctx.fillRect(
@@ -305,11 +369,12 @@ export function NightSkyConstellations({ alwaysShow = false, starCount = 1400 }:
         ctx.fillRect(lane.x, lane.y, lane.width, lane.height)
       })
 
-      // Subtle nebula regions within the Milky Way
+      // Enhanced nebula regions within the Milky Way - more purple/blue hints
       const nebulas = [
-        { x: canvas.width * 0.35, y: centerY - 60, radius: 180, color: 'rgba(180, 140, 200, 0.06)' },
-        { x: canvas.width * 0.65, y: centerY + 40, radius: 220, color: 'rgba(150, 120, 180, 0.05)' },
-        { x: canvas.width * 0.8, y: centerY - 30, radius: 150, color: 'rgba(160, 130, 190, 0.04)' }
+        { x: canvas.width * 0.35, y: centerY - 60, radius: 180, color: 'rgba(180, 140, 220, 0.08)' },
+        { x: canvas.width * 0.65, y: centerY + 40, radius: 220, color: 'rgba(140, 160, 220, 0.07)' },
+        { x: canvas.width * 0.8, y: centerY - 30, radius: 150, color: 'rgba(160, 150, 210, 0.06)' },
+        { x: canvas.width * 0.45, y: centerY + 70, radius: 190, color: 'rgba(150, 140, 200, 0.05)' }
       ]
 
       nebulas.forEach(nebula => {
@@ -338,8 +403,10 @@ export function NightSkyConstellations({ alwaysShow = false, starCount = 1400 }:
           Math.abs(star.y - mousePos.y) < 100
 
         const starColor = isNearMouse ? [255, 223, 0] : star.color
-        // Boost brightness for better visibility since we removed animation
-        const alpha = Math.min(1, star.brightness * 1.2)
+        // Add subtle twinkling animation
+        const twinkle = 0.8 + 0.2 * Math.sin(time * star.twinkleSpeed + star.pulsePhase)
+        // Boost brightness for better visibility and stunning galaxy effect
+        const alpha = Math.min(1, star.brightness * 1.5 * twinkle)
 
         // Draw 4-point star shape
         ctx.save()
@@ -347,10 +414,11 @@ export function NightSkyConstellations({ alwaysShow = false, starCount = 1400 }:
 
         // Enhanced glow for better visibility with star color
         if (star.isConstellation) {
-          ctx.shadowBlur = isNearMouse ? 25 : 15
+          ctx.shadowBlur = isNearMouse ? 25 : 20
           ctx.shadowColor = isNearMouse ? '#FFD700' : `rgba(${starColor[0]}, ${starColor[1]}, ${starColor[2]}, 0.8)`
         } else {
-          ctx.shadowBlur = 6
+          // Larger stars get more glow
+          ctx.shadowBlur = star.size > 3 ? 10 : 6
           ctx.shadowColor = `rgba(${starColor[0]}, ${starColor[1]}, ${starColor[2]}, 0.6)`
         }
 
@@ -380,6 +448,48 @@ export function NightSkyConstellations({ alwaysShow = false, starCount = 1400 }:
         ctx.closePath()
 
         ctx.fillStyle = `rgba(${starColor[0]}, ${starColor[1]}, ${starColor[2]}, ${alpha})`
+        ctx.fill()
+
+        ctx.restore()
+      })
+
+      // Draw shooting stars
+      shootingStarsRef.current.forEach(star => {
+        if (!star.active) return
+
+        ctx.save()
+
+        // Draw glowing trail
+        const gradient = ctx.createLinearGradient(
+          star.x,
+          star.y,
+          star.x - Math.cos(star.angle) * star.length,
+          star.y - Math.sin(star.angle) * star.length
+        )
+        gradient.addColorStop(0, `rgba(255, 255, 255, ${star.opacity * 0.9})`)
+        gradient.addColorStop(0.3, `rgba(200, 220, 255, ${star.opacity * 0.6})`)
+        gradient.addColorStop(0.7, `rgba(150, 180, 255, ${star.opacity * 0.3})`)
+        gradient.addColorStop(1, 'rgba(100, 150, 255, 0)')
+
+        ctx.strokeStyle = gradient
+        ctx.lineWidth = 3
+        ctx.shadowBlur = 15
+        ctx.shadowColor = `rgba(200, 220, 255, ${star.opacity * 0.8})`
+
+        ctx.beginPath()
+        ctx.moveTo(star.x, star.y)
+        ctx.lineTo(
+          star.x - Math.cos(star.angle) * star.length,
+          star.y - Math.sin(star.angle) * star.length
+        )
+        ctx.stroke()
+
+        // Draw bright head
+        ctx.beginPath()
+        ctx.arc(star.x, star.y, 2, 0, Math.PI * 2)
+        ctx.fillStyle = `rgba(255, 255, 255, ${star.opacity})`
+        ctx.shadowBlur = 20
+        ctx.shadowColor = `rgba(255, 255, 255, ${star.opacity})`
         ctx.fill()
 
         ctx.restore()
@@ -467,9 +577,11 @@ export function NightSkyConstellations({ alwaysShow = false, starCount = 1400 }:
   return (
     <canvas
       ref={canvasRef}
-      className="absolute inset-0 pointer-events-none z-0"
+      className="absolute inset-0 z-0"
+      onMouseMove={handleMouseMove}
       style={{
-        background: 'transparent'
+        background: 'transparent',
+        cursor: activeConstellation !== null ? 'pointer' : 'default'
       }}
     />
   )

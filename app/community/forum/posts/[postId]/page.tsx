@@ -39,7 +39,7 @@ export default async function PostPage({
   return (
     <div className="min-h-screen bg-sand-50">
       {/* Header */}
-      <section className="py-12 bg-white border-b-4 border-sand-200">
+      <section className="py-12 bg-[var(--card)] border-b-4 border-sand-200">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
           <div className="max-w-4xl mx-auto">
             <Link href={`/community/forum/${post.category.slug}`} className="inline-block mb-6">
@@ -55,12 +55,12 @@ export default async function PostPage({
                   <span className="text-sm font-black text-terra-600 uppercase">Pinned</span>
                 </div>
               )}
-              <h1 className="text-4xl font-black" style={{ color: '#000' }}>
+              <h1 className="text-4xl font-black text-[var(--foreground)]">
                 {post.title}
               </h1>
             </div>
 
-            <div className="flex items-center gap-6 text-sm font-semibold" style={{ color: '#666' }}>
+            <div className="flex items-center gap-6 text-sm font-semibold text-[var(--muted-foreground)]">
               <div className="flex items-center gap-2">
                 <User className="w-4 h-4" />
                 <span>{post.author.name || 'Anonymous'}</span>
@@ -103,7 +103,7 @@ export default async function PostPage({
                       )}
                     </div>
                     <div className="text-center">
-                      <p className="text-sm font-black" style={{ color: '#000' }}>
+                      <p className="text-sm font-black text-[var(--foreground)]">
                         {post.author.name || 'Anonymous'}
                       </p>
                     </div>
@@ -111,7 +111,7 @@ export default async function PostPage({
 
                   {/* Content */}
                   <div className="flex-grow">
-                    <div className="text-lg font-semibold leading-relaxed whitespace-pre-wrap" style={{ color: '#1f2937' }}>
+                    <div className="text-lg font-semibold leading-relaxed whitespace-pre-wrap text-[var(--foreground)]">
                       {post.content}
                     </div>
                   </div>
@@ -126,7 +126,7 @@ export default async function PostPage({
       <section className="py-4 pb-12">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
           <div className="max-w-4xl mx-auto">
-            <h2 className="text-2xl font-black mb-6" style={{ color: '#000' }}>
+            <h2 className="text-2xl font-black mb-6 text-[var(--foreground)]">
               REPLIES ({post.replies.length})
             </h2>
 
@@ -153,17 +153,17 @@ export default async function PostPage({
                       {/* Content */}
                       <div className="flex-grow">
                         <div className="flex items-center gap-4 mb-2">
-                          <span className="font-black" style={{ color: '#000' }}>
+                          <span className="font-black text-[var(--foreground)]">
                             {reply.author.name || 'Anonymous'}
                           </span>
-                          <span className="text-sm font-semibold" style={{ color: '#888' }}>
+                          <span className="text-sm font-semibold text-[var(--muted-foreground)]">
                             {formatDate(new Date(reply.createdAt))}
                           </span>
                         </div>
-                        <p className="text-base font-semibold leading-relaxed" style={{ color: '#1f2937' }}>
+                        <p className="text-base font-semibold leading-relaxed text-[var(--foreground)]">
                           {reply.content}
                         </p>
-                        <div className="mt-3 flex items-center gap-2 text-sm font-bold" style={{ color: '#666' }}>
+                        <div className="mt-3 flex items-center gap-2 text-sm font-bold text-[var(--muted-foreground)]">
                           <button className="flex items-center gap-1 hover:text-ocean-600 transition-colors">
                             <ThumbsUp className="w-4 h-4" />
                             <span>{reply._count.likes}</span>
@@ -179,7 +179,7 @@ export default async function PostPage({
             {/* Reply Form Placeholder */}
             <Card className="border-4 border-moss-300">
               <CardContent className="p-8">
-                <h3 className="text-xl font-black mb-4" style={{ color: '#000' }}>
+                <h3 className="text-xl font-black mb-4 text-[var(--foreground)]">
                   ADD YOUR REPLY
                 </h3>
                 <textarea
@@ -189,7 +189,7 @@ export default async function PostPage({
                   disabled
                 />
                 <div className="mt-4 flex justify-between items-center">
-                  <p className="text-sm font-semibold" style={{ color: '#888' }}>
+                  <p className="text-sm font-semibold text-[var(--muted-foreground)]">
                     Sign in to post a reply
                   </p>
                   <Button size="lg" className="font-black" disabled>

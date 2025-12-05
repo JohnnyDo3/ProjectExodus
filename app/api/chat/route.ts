@@ -1,4 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server'
+import { rateLimit, rateLimitResponse } from '@/lib/rate-limit'
 
 // FAQ context for the AI to reference
 const FAQ_CONTEXT = `
@@ -76,6 +77,17 @@ When answering questions:
 
 export async function POST(request: NextRequest) {
   try {
+    // Rate limiting: 30 messages per minute
+    const rateLimitResult = await rateLimit(request, {
+      id: 'chat-messages',
+      limit: 30,
+      windowSeconds: 60,
+    })
+
+    if (!rateLimitResult.success) {
+      return rateLimitResponse(rateLimitResult.reset)
+    }
+
     console.log('[CHAT API] Request received')
     const body = await request.json()
     const { messages } = body

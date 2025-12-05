@@ -120,7 +120,7 @@ export default function CategoriesManagementPage() {
   return (
     <div className="min-h-screen bg-sand-50">
       {/* Header */}
-      <div className="bg-white border-b border-sand-300">
+      <div className="bg-[var(--card)] border-b border-[var(--border)]">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8 py-6">
           <div className="flex items-center gap-4">
             <Link href="/admin">
@@ -130,10 +130,10 @@ export default function CategoriesManagementPage() {
               </Button>
             </Link>
             <div className="flex-1">
-              <h1 className="text-3xl font-bold" style={{ color: '#000' }}>
+              <h1 className="text-3xl font-bold text-[var(--foreground)]">
                 Manage Categories
               </h1>
-              <p style={{ color: '#444' }} className="mt-1">
+              <p className="text-[var(--muted-foreground)] mt-1">
                 Organize products into meaningful categories
               </p>
             </div>
@@ -163,7 +163,7 @@ export default function CategoriesManagementPage() {
           {isCreating && (
             <Card className="border-moss-300 bg-moss-50">
               <CardHeader>
-                <CardTitle style={{ color: '#36763d' }}>Create New Category</CardTitle>
+                <CardTitle className="text-[var(--primary)]">Create New Category</CardTitle>
               </CardHeader>
               <CardContent className="space-y-4">
                 <div className="grid md:grid-cols-2 gap-4">
@@ -209,8 +209,8 @@ export default function CategoriesManagementPage() {
                     <FolderTree className="w-6 h-6 text-moss-600" />
                   </div>
                   <div>
-                    <p className="text-sm font-medium" style={{ color: '#666' }}>Total Categories</p>
-                    <p className="text-2xl font-bold" style={{ color: '#000' }}>{categories.length}</p>
+                    <p className="text-sm font-medium text-[var(--muted-foreground)]">Total Categories</p>
+                    <p className="text-2xl font-bold text-[var(--foreground)]">{categories.length}</p>
                   </div>
                 </div>
               </CardContent>
@@ -222,8 +222,8 @@ export default function CategoriesManagementPage() {
                     <FolderTree className="w-6 h-6 text-ocean-600" />
                   </div>
                   <div>
-                    <p className="text-sm font-medium" style={{ color: '#666' }}>Most Products</p>
-                    <p className="text-lg font-bold" style={{ color: '#000' }}>
+                    <p className="text-sm font-medium text-[var(--muted-foreground)]">Most Products</p>
+                    <p className="text-lg font-bold text-[var(--foreground)]">
                       {categories.length > 0
                         ? categories.reduce((max, cat) => cat._count.products > max._count.products ? cat : max).name
                         : 'N/A'
@@ -240,8 +240,8 @@ export default function CategoriesManagementPage() {
                     <FolderTree className="w-6 h-6 text-terra-600" />
                   </div>
                   <div>
-                    <p className="text-sm font-medium" style={{ color: '#666' }}>Total Products</p>
-                    <p className="text-2xl font-bold" style={{ color: '#000' }}>{totalProducts}</p>
+                    <p className="text-sm font-medium text-[var(--muted-foreground)]">Total Products</p>
+                    <p className="text-2xl font-bold text-[var(--foreground)]">{totalProducts}</p>
                   </div>
                 </div>
               </CardContent>
@@ -256,18 +256,18 @@ export default function CategoriesManagementPage() {
             <CardContent>
               {loading ? (
                 <div className="text-center py-8">
-                  <p style={{ color: '#666' }}>Loading categories...</p>
+                  <p className="text-[var(--muted-foreground)]">Loading categories...</p>
                 </div>
               ) : categories.length === 0 ? (
                 <div className="text-center py-8">
-                  <p style={{ color: '#666' }}>No categories yet. Create your first one!</p>
+                  <p className="text-[var(--muted-foreground)]">No categories yet. Create your first one!</p>
                 </div>
               ) : (
                 <div className="space-y-4">
                   {categories.map((category) => (
                     <div
                       key={category.id}
-                      className="p-6 rounded-lg border-2 border-sand-200 hover:border-moss-300 transition-colors"
+                      className="p-6 rounded-lg border-2 border-[var(--border)] hover:border-[var(--primary)] transition-colors"
                     >
                       <div className="flex items-start justify-between">
                         <div className="flex gap-4 flex-1">
@@ -275,14 +275,14 @@ export default function CategoriesManagementPage() {
                             <FolderTree className="w-7 h-7 text-moss-600" />
                           </div>
                           <div className="flex-1">
-                            <h3 className="text-lg font-bold mb-1" style={{ color: '#000' }}>
+                            <h3 className="text-lg font-bold mb-1 text-[var(--foreground)]">
                               {category.name}
                             </h3>
-                            <p className="text-sm mb-2" style={{ color: '#666' }}>
+                            <p className="text-sm mb-2 text-[var(--muted-foreground)]">
                               /{category.slug}
                             </p>
                             {category.description && (
-                              <p className="text-sm" style={{ color: '#444' }}>
+                              <p className="text-sm text-[var(--muted-foreground)]">
                                 {category.description}
                               </p>
                             )}

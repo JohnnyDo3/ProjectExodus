@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { prisma } from '@/lib/db'
+import { auth } from '@/auth'
 
 // GET /api/profile/[userId] - Get a user's public profile
 export async function GET(
@@ -15,6 +16,8 @@ export async function GET(
         { status: 400 }
       )
     }
+
+    const session = await auth()
 
     // Fetch user profile data
     const user = await prisma.user.findUnique({
@@ -46,6 +49,8 @@ export async function GET(
         projects: true,
         guardianArchetype: true,
         declaration: true,
+        showEmail: true,
+        showPhone: true,
         createdAt: true,
       },
     })
@@ -57,9 +62,20 @@ export async function GET(
       )
     }
 
+    // Filter email/phone based on privacy settings
+    const isOwnProfile = session?.user?.id === userId
+    const filteredUser = {
+      ...user,
+      email: (user.showEmail || isOwnProfile) ? user.email : undefined,
+      phone: (user.showPhone || isOwnProfile) ? user.phone : undefined,
+      // Remove privacy flags from response
+      showEmail: undefined,
+      showPhone: undefined,
+    }
+
     return NextResponse.json({
       success: true,
-      data: user,
+      data: filteredUser,
     })
   } catch (error) {
     console.error('Error fetching user profile:', error)

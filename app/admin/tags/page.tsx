@@ -113,7 +113,7 @@ export default function TagsManagementPage() {
   return (
     <div className="min-h-screen bg-sand-50">
       {/* Header */}
-      <div className="bg-white border-b border-sand-300">
+      <div className="bg-[var(--card)] border-b border-[var(--border)]">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8 py-6">
           <div className="flex items-center gap-4">
             <Link href="/admin">
@@ -123,10 +123,10 @@ export default function TagsManagementPage() {
               </Button>
             </Link>
             <div className="flex-1">
-              <h1 className="text-3xl font-bold" style={{ color: '#000' }}>
+              <h1 className="text-3xl font-bold text-[var(--foreground)]">
                 Manage Tags
               </h1>
-              <p style={{ color: '#444' }} className="mt-1">
+              <p className="text-[var(--muted-foreground)] mt-1">
                 Organize your content with tags
               </p>
             </div>
@@ -156,7 +156,7 @@ export default function TagsManagementPage() {
           {isCreating && (
             <Card className="border-moss-300 bg-moss-50">
               <CardHeader>
-                <CardTitle style={{ color: '#36763d' }}>Create New Tag</CardTitle>
+                <CardTitle className="text-[var(--primary)]">Create New Tag</CardTitle>
               </CardHeader>
               <CardContent className="space-y-4">
                 <div className="grid md:grid-cols-2 gap-4">
@@ -195,8 +195,8 @@ export default function TagsManagementPage() {
                     <Tag className="w-6 h-6 text-moss-600" />
                   </div>
                   <div>
-                    <p className="text-sm font-medium" style={{ color: '#666' }}>Total Tags</p>
-                    <p className="text-2xl font-bold" style={{ color: '#000' }}>{tags.length}</p>
+                    <p className="text-sm font-medium text-[var(--muted-foreground)]">Total Tags</p>
+                    <p className="text-2xl font-bold text-[var(--foreground)]">{tags.length}</p>
                   </div>
                 </div>
               </CardContent>
@@ -208,8 +208,8 @@ export default function TagsManagementPage() {
                     <Tag className="w-6 h-6 text-ocean-600" />
                   </div>
                   <div>
-                    <p className="text-sm font-medium" style={{ color: '#666' }}>Most Used</p>
-                    <p className="text-lg font-bold" style={{ color: '#000' }}>
+                    <p className="text-sm font-medium text-[var(--muted-foreground)]">Most Used</p>
+                    <p className="text-lg font-bold text-[var(--foreground)]">
                       {tags.length > 0
                         ? tags.reduce((max, tag) => (tag._count.products + tag._count.articles) > (max._count.products + max._count.articles) ? tag : max).name
                         : 'N/A'
@@ -226,8 +226,8 @@ export default function TagsManagementPage() {
                     <Tag className="w-6 h-6 text-terra-600" />
                   </div>
                   <div>
-                    <p className="text-sm font-medium" style={{ color: '#666' }}>Total Usage</p>
-                    <p className="text-2xl font-bold" style={{ color: '#000' }}>{totalUsage}</p>
+                    <p className="text-sm font-medium text-[var(--muted-foreground)]">Total Usage</p>
+                    <p className="text-2xl font-bold text-[var(--foreground)]">{totalUsage}</p>
                   </div>
                 </div>
               </CardContent>
@@ -242,18 +242,18 @@ export default function TagsManagementPage() {
             <CardContent>
               {loading ? (
                 <div className="text-center py-8">
-                  <p style={{ color: '#666' }}>Loading tags...</p>
+                  <p className="text-[var(--muted-foreground)]">Loading tags...</p>
                 </div>
               ) : tags.length === 0 ? (
                 <div className="text-center py-8">
-                  <p style={{ color: '#666' }}>No tags yet. Create your first one!</p>
+                  <p className="text-[var(--muted-foreground)]">No tags yet. Create your first one!</p>
                 </div>
               ) : (
                 <div className="grid md:grid-cols-2 gap-4">
                   {tags.map((tag) => (
                     <div
                       key={tag.id}
-                      className="p-4 rounded-lg border-2 border-sand-200 hover:border-moss-300 transition-colors"
+                      className="p-4 rounded-lg border-2 border-[var(--border)] hover:border-[var(--primary)] transition-colors"
                     >
                       <div className="flex items-start justify-between">
                         <div className="flex gap-3 flex-1">
@@ -261,10 +261,10 @@ export default function TagsManagementPage() {
                             <Tag className="w-5 h-5 text-moss-600" />
                           </div>
                           <div className="flex-1">
-                            <h3 className="font-bold mb-1" style={{ color: '#000' }}>
+                            <h3 className="font-bold mb-1 text-[var(--foreground)]">
                               {tag.name}
                             </h3>
-                            <p className="text-xs mb-2" style={{ color: '#666' }}>
+                            <p className="text-xs mb-2 text-[var(--muted-foreground)]">
                               /{tag.slug}
                             </p>
                             <div className="flex gap-2">

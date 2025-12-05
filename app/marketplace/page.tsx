@@ -2,7 +2,7 @@ import { Card, CardContent } from '@/components/ui/Card'
 import { Button } from '@/components/ui/Button'
 import { Package, ExternalLink, Heart, User } from 'lucide-react'
 import Link from 'next/link'
-import prisma from '@/lib/db/prisma'
+import { prisma } from '@/lib/db'
 import { TreeBranches } from '@/components/decorative/TreeBranches'
 import { FlyingBirds } from '@/components/decorative/FlyingBirds'
 

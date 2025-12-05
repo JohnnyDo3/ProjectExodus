@@ -53,13 +53,13 @@ export default async function CategoryPage({
             <div className="flex items-center gap-4 mb-4">
               <div className="text-5xl">{category.icon}</div>
               <div>
-                <h1 className="text-5xl font-black" style={{ color: '#000' }}>
+                <h1 className="text-5xl font-black text-[var(--foreground)]">
                   {category.name}
                 </h1>
               </div>
             </div>
 
-            <p className="text-xl font-semibold mb-6" style={{ color: '#333' }}>
+            <p className="text-xl font-semibold mb-6 text-[var(--foreground)]">
               {category.description}
             </p>
 
@@ -67,7 +67,7 @@ export default async function CategoryPage({
               <Button size="lg" className="text-lg px-8 py-5 font-black shadow-lg">
                 NEW POST
               </Button>
-              <div className="text-base font-bold" style={{ color: '#666' }}>
+              <div className="text-base font-bold text-[var(--muted-foreground)]">
                 {category._count.posts} posts in this category
               </div>
             </div>
@@ -76,7 +76,7 @@ export default async function CategoryPage({
       </section>
 
       {/* Posts */}
-      <section className="py-12 bg-white">
+      <section className="py-12 bg-[var(--card)]">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
           <div className="max-w-5xl mx-auto">
             <div className="space-y-4">
@@ -109,12 +109,12 @@ export default async function CategoryPage({
                                 </span>
                               </div>
                             )}
-                            <h3 className="text-xl font-black" style={{ color: '#000' }}>
+                            <h3 className="text-xl font-black text-[var(--foreground)]">
                               {post.title}
                             </h3>
                           </div>
 
-                          <div className="flex items-center gap-6 text-sm font-semibold" style={{ color: '#666' }}>
+                          <div className="flex items-center gap-6 text-sm font-semibold text-[var(--muted-foreground)]">
                             <div className="flex items-center gap-1">
                               <User className="w-4 h-4" />
                               <span>{post.author.name || 'Anonymous'}</span>
@@ -148,10 +148,10 @@ export default async function CategoryPage({
                 <Card className="border-4 border-sand-200">
                   <CardContent className="p-12 text-center">
                     <MessageSquare className="w-16 h-16 text-sand-400 mx-auto mb-4" />
-                    <h3 className="text-2xl font-black mb-2" style={{ color: '#666' }}>
+                    <h3 className="text-2xl font-black mb-2 text-[var(--muted-foreground)]">
                       NO POSTS YET
                     </h3>
-                    <p className="font-semibold mb-6" style={{ color: '#888' }}>
+                    <p className="font-semibold mb-6 text-[var(--muted-foreground)]">
                       Be the first to start a conversation!
                     </p>
                     <Button size="lg" className="font-black">

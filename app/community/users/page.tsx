@@ -3,7 +3,7 @@ import { Button } from '@/components/ui/Button'
 import { Users, Search, UserPlus, MapPin, Briefcase } from 'lucide-react'
 import { BackButton } from '@/components/navigation/BackButton'
 import Link from 'next/link'
-import prisma from '@/lib/db/prisma'
+import { prisma } from '@/lib/db'
 
 async function getUsers() {
   try {

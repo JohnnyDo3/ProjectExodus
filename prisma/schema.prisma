@@ -28,6 +28,8 @@ model User {
   banner        String?   // Banner/cover image URL
   location      String?
   phone         String?   // Contact phone number
+  showEmail     Boolean   @default(false)
+  showPhone     Boolean   @default(false)
   company       String?   // Current company/organization
   jobTitle      String?   // Current job title
   website       String?   // Personal website or portfolio

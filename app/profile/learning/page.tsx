@@ -4,7 +4,7 @@ import { Button } from '@/components/ui/Button'
 import { BookOpen, Video, Calculator, Download, Zap, Leaf, Home, Award, CheckCircle, Sprout, TrendingUp, Target, Flame, ArrowRight, Clock } from 'lucide-react'
 import { BackButton } from '@/components/navigation/BackButton'
 import Link from 'next/link'
-import prisma from '@/lib/db/prisma'
+import { prisma } from '@/lib/db'
 import { auth } from '@/auth'
 import { redirect } from 'next/navigation'
 

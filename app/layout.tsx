@@ -73,7 +73,8 @@ export default async function RootLayout({
             __html: `
               (function() {
                 try {
-                  const mode = localStorage.getItem('theme_mode') || 'auto';
+                  const prefs = JSON.parse(localStorage.getItem('project_exodus_theme_prefs') || '{}');
+                  const mode = prefs.mode || 'auto';
 
                   if (mode === 'morning') {
                     document.documentElement.className = 'day';
@@ -86,7 +87,7 @@ export default async function RootLayout({
                   }
 
                   // Auto mode - calculate based on time
-                  const coords = JSON.parse(localStorage.getItem('user_coords') || 'null');
+                  const coords = (prefs.latitude && prefs.longitude) ? { latitude: prefs.latitude, longitude: prefs.longitude } : null;
                   const now = new Date();
 
                   if (coords && coords.latitude && coords.longitude) {

@@ -1,5 +1,7 @@
 'use client'
 
+import { sanitizeHtml } from '@/lib/utils/sanitize'
+
 interface MarkdownContentProps {
   content: string
 }
@@ -48,7 +50,7 @@ export function MarkdownContent({ content }: MarkdownContentProps) {
   return (
     <div
       className="article-content text-earth-800 dark:text-sand-200"
-      dangerouslySetInnerHTML={{ __html: convertMarkdownToHTML(content) }}
+      dangerouslySetInnerHTML={{ __html: sanitizeHtml(convertMarkdownToHTML(content)) }}
     />
   )
 }

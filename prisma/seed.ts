@@ -1,9 +1,15 @@
 import { PrismaClient } from '@prisma/client'
+import * as crypto from 'crypto'
+import * as bcrypt from 'bcrypt'
 
 const prisma = new PrismaClient()
 
 async function main() {
   console.log('🌱 Seeding Project Exodus database...')
+
+  // Generate secure random password for admin
+  const adminPassword = crypto.randomBytes(16).toString('hex')
+  const hashedPassword = await bcrypt.hash(adminPassword, 12)
 
   // Create Admin User
   const adminUser = await prisma.user.upsert({
@@ -12,11 +18,18 @@ async function main() {
     create: {
       email: 'admin@projectexodus.com',
       name: 'Project Exodus Team',
-      password: '$2a$12$LQv3c1yqBWVHxkd0LHAkCOYz6TtxMQJqhN8/LewY5ByJ7JkKWZ0yS', // "password123" - change in production!
+      password: hashedPassword,
       role: 'ADMIN',
       bio: 'Building sustainable infrastructure for Food, Water, and Energy',
     },
   })
+
+  // Display admin credentials prominently
+  console.log('\n================================================')
+  console.log('ADMIN CREDENTIALS GENERATED')
+  console.log('Email: admin@projectexodus.com')
+  console.log(`Password: ${adminPassword}`)
+  console.log('================================================\n')
 
   console.log('✓ Created admin user')
 
