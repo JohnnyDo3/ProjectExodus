@@ -89,6 +89,7 @@ model User {
   sentConnections       Connection[]     @relation("SentConnections")
   receivedConnections   Connection[]     @relation("ReceivedConnections")
   learningProgress      UserLearningProgress[]
+  articlePeerReviews    ArticlePeerReview[] @relation("ArticlePeerReviews")
 
   @@index([email])
   @@index([role])
@@ -367,6 +368,7 @@ model Article {
   category        ArticleCategory  @relation(fields: [categoryId], references: [id])
   tags            ArticleTag[]
   comments        Comment[]
+  peerReviews     ArticlePeerReview[]
   savedBy         SavedArticle[]
   readBy          ArticleRead[]
   seoTitle        String?
@@ -433,6 +435,35 @@ model Comment {
   replies   Comment[] @relation("CommentReplies")
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
+
+  @@index([articleId])
+  @@index([userId])
+  @@index([parentId])
+}
+
+// Article Peer Reviews - Reddit-style threaded reviews with ratings
+model ArticlePeerReview {
+  id          String   @id @default(cuid())
+  articleId   String
+  userId      String
+  parentId    String?  // For nested replies (unlimited depth)
+
+  // Rating fields (only for top-level reviews, null for replies)
+  rating      Int?     // 1-5 overall rating
+  accuracy    Int?     // 1-5 accuracy rating
+  clarity     Int?     // 1-5 clarity rating
+  relevance   Int?     // 1-5 relevance rating
+
+  content     String   @db.Text
+
+  // Relations
+  article     Article  @relation(fields: [articleId], references: [id], onDelete: Cascade)
+  user        User     @relation("ArticlePeerReviews", fields: [userId], references: [id], onDelete: Cascade)
+  parent      ArticlePeerReview?  @relation("PeerReviewReplies", fields: [parentId], references: [id], onDelete: Cascade)
+  replies     ArticlePeerReview[] @relation("PeerReviewReplies")
+
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
 
   @@index([articleId])
   @@index([userId])

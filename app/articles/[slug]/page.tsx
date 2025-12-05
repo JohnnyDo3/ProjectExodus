@@ -8,6 +8,7 @@ import Link from 'next/link'
 import { MarkdownContent } from '@/components/article/MarkdownContent'
 import { ReferencesWidget } from '@/components/article/ReferencesWidget'
 import { PeerReviewWidget } from '@/components/article/PeerReviewWidget'
+import { ArticleReviewSection } from '@/components/article/ArticleReviewSection'
 
 async function getArticle(slug: string) {
   try {
@@ -151,6 +152,15 @@ export default async function ArticleDetailPage({
                     </div>
                   </div>
                 )}
+
+                {/* Peer Reviews Section (Reddit-style) */}
+                <div className="mt-12">
+                  <ArticleReviewSection
+                    articleId={article.id}
+                    articleAuthorId={article.authorId}
+                    initialReviews={article.peerReviews || []}
+                  />
+                </div>
 
                 {/* Comments Section */}
                 {article.comments && article.comments.length > 0 && (

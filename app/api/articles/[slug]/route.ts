@@ -66,6 +66,20 @@ export async function GET(
             createdAt: 'desc',
           },
         },
+        peerReviews: {
+          include: {
+            user: {
+              select: {
+                id: true,
+                name: true,
+                image: true,
+              },
+            },
+          },
+          orderBy: {
+            createdAt: 'desc',
+          },
+        },
       },
     })
 
