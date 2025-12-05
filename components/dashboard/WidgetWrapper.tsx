@@ -128,19 +128,15 @@ export function WidgetWrapper({
           </button>
         )}
 
-        {/* Remove Button */}
+        {/* Remove Button - always visible when onRemove is provided (edit mode) */}
         {showRemove && onRemove && (
           <button
             onClick={(e) => {
               e.stopPropagation()
+              e.preventDefault()
               onRemove()
             }}
-            className={`
-              p-1 rounded transition-all duration-200
-              text-[var(--foreground)]/40 hover:text-red-500
-              hover:bg-red-500/10
-              ${isHovered ? 'opacity-100' : 'opacity-0'}
-            `}
+            className="p-1.5 rounded-lg transition-all duration-200 opacity-100 bg-red-500/20 text-red-500 hover:bg-red-500 hover:text-white"
             title="Remove widget"
           >
             <X className="w-4 h-4" />

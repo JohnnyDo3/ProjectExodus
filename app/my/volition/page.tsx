@@ -286,36 +286,39 @@ export default function MyVolitionPage() {
                 </p>
               </div>
             </div>
-            <div className="flex items-center gap-2">
+            <div className="flex items-center gap-2 flex-shrink-0">
               {!isCustomizing ? (
                 <button
                   onClick={startCustomizing}
-                  className="flex items-center gap-2 px-3 py-2 bg-white/20 hover:bg-white/30 rounded-lg text-white text-sm font-medium transition-colors"
+                  className="flex items-center justify-center gap-2 px-3 py-2 min-w-[40px] min-h-[40px] bg-white/20 hover:bg-white/30 rounded-lg text-white text-sm font-medium transition-colors"
+                  title="Customize dashboard"
                 >
-                  <Settings className="w-4 h-4" />
+                  <Settings className="w-4 h-4 flex-shrink-0" />
                   <span className="hidden sm:inline">Customize</span>
                 </button>
               ) : (
-                <div className="flex items-center gap-2">
+                <div className="flex items-center gap-1 sm:gap-2">
                   <button
                     onClick={() => setShowWidgetPicker(true)}
-                    className="flex items-center gap-2 px-3 py-2 bg-white/20 hover:bg-white/30 rounded-lg text-white text-sm font-medium transition-colors"
+                    className="flex items-center justify-center gap-2 px-2 sm:px-3 py-2 min-w-[40px] min-h-[40px] bg-white/20 hover:bg-white/30 rounded-lg text-white text-sm font-medium transition-colors"
+                    title="Add Widget"
                   >
-                    <Plus className="w-4 h-4" />
-                    <span className="hidden sm:inline">Add Widget</span>
+                    <Plus className="w-4 h-4 flex-shrink-0" />
+                    <span className="hidden sm:inline">Add</span>
                   </button>
                   <button
                     onClick={resetToDefaults}
-                    className="flex items-center gap-2 px-3 py-2 bg-white/20 hover:bg-white/30 rounded-lg text-white text-sm font-medium transition-colors"
+                    className="flex items-center justify-center px-2 sm:px-3 py-2 min-w-[40px] min-h-[40px] bg-white/20 hover:bg-white/30 rounded-lg text-white text-sm font-medium transition-colors"
                     title="Reset to defaults"
                   >
-                    <RotateCcw className="w-4 h-4" />
+                    <RotateCcw className="w-4 h-4 flex-shrink-0" />
                   </button>
                   <button
                     onClick={stopCustomizing}
-                    className="flex items-center gap-2 px-3 py-2 bg-white hover:bg-white/90 rounded-lg text-[var(--primary)] text-sm font-bold transition-colors"
+                    className="flex items-center justify-center gap-2 px-2 sm:px-3 py-2 min-w-[40px] min-h-[40px] bg-white hover:bg-white/90 rounded-lg text-[var(--primary)] text-sm font-bold transition-colors"
+                    title="Done customizing"
                   >
-                    <Check className="w-4 h-4" />
+                    <Check className="w-4 h-4 flex-shrink-0" />
                     <span className="hidden sm:inline">Done</span>
                   </button>
                 </div>

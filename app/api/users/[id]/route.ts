@@ -39,6 +39,27 @@ export async function GET(
             }
           }
         },
+        articles: {
+          where: {
+            status: 'PUBLISHED'
+          },
+          select: {
+            id: true,
+            title: true,
+            slug: true,
+            excerpt: true,
+            coverImage: true,
+            createdAt: true,
+            _count: {
+              select: {
+                comments: true
+              }
+            }
+          },
+          orderBy: {
+            createdAt: 'desc'
+          }
+        },
         _count: {
           select: {
             followers: true,

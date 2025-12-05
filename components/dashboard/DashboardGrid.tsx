@@ -1,6 +1,6 @@
 'use client'
 
-import { useMemo, useCallback } from 'react'
+import { useMemo, useCallback, useRef, useEffect } from 'react'
 import { Responsive, WidthProvider, Layout, Layouts } from 'react-grid-layout'
 import 'react-grid-layout/css/styles.css'
 import 'react-resizable/css/styles.css'
@@ -70,6 +70,62 @@ export function DashboardGrid({
   onRefetchLearning,
 }: DashboardGridProps) {
   const isMobile = useIsMobile()
+  const scrollIntervalRef = useRef<NodeJS.Timeout | null>(null)
+  const isDraggingRef = useRef(false)
+
+  // Auto-scroll when dragging near edges
+  const handleDrag = useCallback((
+    layout: Layout[],
+    oldItem: Layout,
+    newItem: Layout,
+    placeholder: Layout,
+    e: MouseEvent,
+    element: HTMLElement
+  ) => {
+    if (!isCustomizing) return
+
+    const scrollThreshold = 100 // pixels from edge to start scrolling
+    const scrollSpeed = 15 // pixels per frame
+    const viewportHeight = window.innerHeight
+    const mouseY = e.clientY
+
+    // Clear any existing scroll interval
+    if (scrollIntervalRef.current) {
+      clearInterval(scrollIntervalRef.current)
+      scrollIntervalRef.current = null
+    }
+
+    // Scroll down when near bottom
+    if (mouseY > viewportHeight - scrollThreshold) {
+      scrollIntervalRef.current = setInterval(() => {
+        window.scrollBy(0, scrollSpeed)
+      }, 16)
+    }
+    // Scroll up when near top
+    else if (mouseY < scrollThreshold) {
+      scrollIntervalRef.current = setInterval(() => {
+        window.scrollBy(0, -scrollSpeed)
+      }, 16)
+    }
+  }, [isCustomizing])
+
+  // Clean up scroll on drag stop
+  const handleDragStop = useCallback(() => {
+    if (scrollIntervalRef.current) {
+      clearInterval(scrollIntervalRef.current)
+      scrollIntervalRef.current = null
+    }
+    isDraggingRef.current = false
+  }, [])
+
+  // Cleanup on unmount
+  useEffect(() => {
+    return () => {
+      if (scrollIntervalRef.current) {
+        clearInterval(scrollIntervalRef.current)
+      }
+    }
+  }, [])
 
   // Only enable interactions in customize mode (and not on mobile)
   const canDrag = isCustomizing && !isMobile
@@ -207,6 +263,8 @@ export function DashboardGrid({
         isDraggable={canDrag}
         isResizable={canResize}
         onLayoutChange={handleLayoutChange}
+        onDrag={handleDrag}
+        onDragStop={handleDragStop}
         compactType="vertical"
         preventCollision={false}
         margin={[16, 16]}

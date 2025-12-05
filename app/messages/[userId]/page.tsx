@@ -1,7 +1,7 @@
 'use client'
 
 import { BackButton } from '@/components/navigation/BackButton'
-import { useState, useEffect, useRef, use } from 'react'
+import { useState, useEffect, useRef, use, useCallback } from 'react'
 import { useSession } from 'next-auth/react'
 import { useRouter } from 'next/navigation'
 import { Card, CardContent } from '@/components/ui/Card'
@@ -14,9 +14,53 @@ import {
   Lock,
   Loader2,
   Zap,
+  Bell,
+  X,
 } from 'lucide-react'
 import Link from 'next/link'
 import { getPusherClient } from '@/lib/pusher'
+
+// Notification toast component
+function MessageNotification({
+  message,
+  senderName,
+  onDismiss
+}: {
+  message: string
+  senderName: string
+  onDismiss: () => void
+}) {
+  useEffect(() => {
+    const timer = setTimeout(onDismiss, 5000)
+    return () => clearTimeout(timer)
+  }, [onDismiss])
+
+  return (
+    <div className="fixed top-4 right-4 z-[100] animate-in slide-in-from-right fade-in duration-300">
+      <div className="bg-[var(--card)] border-2 border-[var(--primary)] rounded-xl shadow-2xl p-4 max-w-sm">
+        <div className="flex items-start gap-3">
+          <div className="w-10 h-10 rounded-full bg-gradient-to-br from-[var(--primary)] to-[var(--accent)] flex items-center justify-center flex-shrink-0">
+            <Bell className="w-5 h-5 text-white" />
+          </div>
+          <div className="flex-1 min-w-0">
+            <p className="text-sm font-bold text-[var(--foreground)]">
+              New message from {senderName}
+            </p>
+            <p className="text-xs text-[var(--foreground)]/70 mt-1 line-clamp-2">
+              {message}
+            </p>
+          </div>
+          <button
+            onClick={onDismiss}
+            className="p-1 rounded-lg hover:bg-[var(--muted)] transition-colors"
+          >
+            <X className="w-4 h-4 text-[var(--foreground)]/50" />
+          </button>
+        </div>
+      </div>
+    </div>
+  )
+}
 
 interface Message {
   id: string
@@ -55,11 +99,37 @@ export default function ConversationPage({ params }: { params: Promise<{ userId:
   const [newMessage, setNewMessage] = useState('')
   const [isLoading, setIsLoading] = useState(true)
   const [isSending, setIsSending] = useState(false)
-  const messagesEndRef = useRef<HTMLDivElement>(null)
+  const [notification, setNotification] = useState<{ message: string; senderName: string } | null>(null)
+  const messagesContainerRef = useRef<HTMLDivElement>(null)
 
-  const scrollToBottom = () => {
-    messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' })
-  }
+  // Play notification sound
+  const playNotificationSound = useCallback(() => {
+    try {
+      const audioContext = new (window.AudioContext || (window as any).webkitAudioContext)()
+      const oscillator = audioContext.createOscillator()
+      const gainNode = audioContext.createGain()
+
+      oscillator.connect(gainNode)
+      gainNode.connect(audioContext.destination)
+
+      oscillator.frequency.value = 800
+      oscillator.type = 'sine'
+      gainNode.gain.value = 0.1
+
+      oscillator.start()
+      gainNode.gain.exponentialRampToValueAtTime(0.01, audioContext.currentTime + 0.3)
+      oscillator.stop(audioContext.currentTime + 0.3)
+    } catch (e) {
+      // Audio not supported, ignore
+    }
+  }, [])
+
+  // Scroll to bottom of messages container (not the page)
+  const scrollToBottom = useCallback(() => {
+    if (messagesContainerRef.current) {
+      messagesContainerRef.current.scrollTop = messagesContainerRef.current.scrollHeight
+    }
+  }, [])
 
   const fetchConversation = async () => {
     try {
@@ -102,6 +172,15 @@ export default function ConversationPage({ params }: { params: Promise<{ userId:
           if (prev.some(msg => msg.id === data.message.id)) return prev
           return [...prev, data.message]
         })
+
+        // Show notification and play sound for incoming messages (not from self)
+        if (data.message.senderId !== session?.user?.id) {
+          playNotificationSound()
+          setNotification({
+            message: data.message.content,
+            senderName: data.message.sender?.name || 'Someone'
+          })
+        }
       }
     })
 
@@ -110,11 +189,11 @@ export default function ConversationPage({ params }: { params: Promise<{ userId:
       channel.unsubscribe()
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [session?.user, userId])
+  }, [session?.user, userId, playNotificationSound])
 
   useEffect(() => {
     scrollToBottom()
-  }, [messages])
+  }, [messages, scrollToBottom])
 
   const handleSendMessage = async (e: React.FormEvent) => {
     e.preventDefault()
@@ -182,6 +261,15 @@ export default function ConversationPage({ params }: { params: Promise<{ userId:
 
   return (
     <div className="min-h-screen bg-[var(--background)] flex flex-col">
+      {/* Notification Toast */}
+      {notification && (
+        <MessageNotification
+          message={notification.message}
+          senderName={notification.senderName}
+          onDismiss={() => setNotification(null)}
+        />
+      )}
+
       {/* Header */}
       <section className="py-6 bg-gradient-to-br from-[color-mix(in_srgb,var(--secondary)_15%,var(--background))] via-[color-mix(in_srgb,var(--primary)_15%,var(--background))] to-[color-mix(in_srgb,var(--accent)_15%,var(--background))] border-b-4 border-[var(--border)]">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
@@ -243,7 +331,10 @@ export default function ConversationPage({ params }: { params: Promise<{ userId:
       <section className="flex-1 py-8 overflow-hidden">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8 h-full">
           <div className="max-w-4xl mx-auto h-full flex flex-col">
-            <div className="flex-1 overflow-y-auto bg-[var(--muted)] rounded-lg p-6 space-y-4 min-h-[500px] max-h-[600px]">
+            <div
+              ref={messagesContainerRef}
+              className="flex-1 overflow-y-auto bg-[var(--muted)] rounded-lg p-6 space-y-4 min-h-[500px] max-h-[600px]"
+            >
               {messages.length === 0 ? (
                 <div className="text-center py-12">
                   <Send className="w-16 h-16 text-theme-muted mx-auto mb-4 opacity-50" />
@@ -301,7 +392,6 @@ export default function ConversationPage({ params }: { params: Promise<{ userId:
                   )
                 })
               )}
-              <div ref={messagesEndRef} />
             </div>
           </div>
         </div>
