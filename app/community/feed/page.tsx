@@ -10,6 +10,11 @@ import { BackButton } from '@/components/navigation/BackButton'
 import Link from 'next/link'
 import { useSession } from 'next-auth/react'
 
+interface TrendingHashtag {
+  hashtag: string
+  count: number
+}
+
 export default function SocialFeedPage() {
   const { data: session } = useSession()
   const [posts, setPosts] = useState<any[]>([])
@@ -18,6 +23,8 @@ export default function SocialFeedPage() {
   const [page, setPage] = useState(1)
   const [hasMore, setHasMore] = useState(true)
   const [filter, setFilter] = useState<'all' | 'newest' | 'oldest' | 'popular'>('all')
+  const [trendingHashtags, setTrendingHashtags] = useState<TrendingHashtag[]>([])
+  const [loadingTrending, setLoadingTrending] = useState(true)
 
   const fetchPosts = async (pageNum: number = 1) => {
     try {
@@ -40,8 +47,25 @@ export default function SocialFeedPage() {
     }
   }
 
+  const fetchTrendingHashtags = async () => {
+    try {
+      setLoadingTrending(true)
+      const res = await fetch('/api/social/trending')
+      const data = await res.json()
+
+      if (data.success) {
+        setTrendingHashtags(data.data)
+      }
+    } catch (error) {
+      console.error('Error fetching trending hashtags:', error)
+    } finally {
+      setLoadingTrending(false)
+    }
+  }
+
   useEffect(() => {
     fetchPosts(1)
+    fetchTrendingHashtags()
   }, [])
 
   useEffect(() => {
@@ -164,15 +188,25 @@ export default function SocialFeedPage() {
                     TRENDING
                   </h3>
                   <div className="space-y-3">
-                    {['#ZeroWaste', '#Permaculture', '#SolarEnergy', '#CompostingTips', '#SustainableLiving'].map((tag, i) => (
-                      <button
-                        key={i}
-                        className="block w-full text-left px-4 py-2 rounded-lg hover:bg-[var(--muted)] transition-colors"
-                      >
-                        <div className="font-black text-theme-primary">{tag}</div>
-                        <div className="text-xs font-semibold text-theme-muted">{Math.floor(Math.random() * 500) + 100} posts</div>
-                      </button>
-                    ))}
+                    {loadingTrending ? (
+                      <div className="flex justify-center py-4">
+                        <Loader2 className="w-6 h-6 animate-spin text-theme-secondary" />
+                      </div>
+                    ) : trendingHashtags.length > 0 ? (
+                      trendingHashtags.slice(0, 5).map((tag, i) => (
+                        <button
+                          key={i}
+                          className="block w-full text-left px-4 py-2 rounded-lg hover:bg-[var(--muted)] transition-colors"
+                        >
+                          <div className="font-black text-theme-primary">{tag.hashtag}</div>
+                          <div className="text-xs font-semibold text-theme-muted">{tag.count} {tag.count === 1 ? 'post' : 'posts'}</div>
+                        </button>
+                      ))
+                    ) : (
+                      <p className="text-sm font-semibold text-theme-muted text-center py-4">
+                        No trending hashtags yet. Be the first to use #hashtags!
+                      </p>
+                    )}
                   </div>
                 </CardContent>
               </Card>

@@ -21,6 +21,8 @@ export function FeedPost({ post, onLike, onComment }: FeedPostProps) {
   const [commentText, setCommentText] = useState('')
   const [comments, setComments] = useState(post.comments || [])
   const [loading, setLoading] = useState(false)
+  const [shareCount, setShareCount] = useState(post.shares || 0)
+  const [showShareMenu, setShowShareMenu] = useState(false)
 
   const formatDate = (date: string) => {
     const now = new Date()
@@ -81,6 +83,44 @@ export function FeedPost({ post, onLike, onComment }: FeedPostProps) {
     } finally {
       setLoading(false)
     }
+  }
+
+  const handleShare = async (method: 'copy' | 'twitter' | 'facebook' | 'native') => {
+    const postUrl = `${window.location.origin}/community/discussions/${post.id}`
+    const shareText = `Check out this post on Project Exodus: ${post.content.substring(0, 100)}${post.content.length > 100 ? '...' : ''}`
+
+    try {
+      if (method === 'native' && navigator.share) {
+        await navigator.share({
+          title: 'Share Post',
+          text: shareText,
+          url: postUrl
+        })
+      } else if (method === 'copy') {
+        await navigator.clipboard.writeText(postUrl)
+        alert('Link copied to clipboard!')
+      } else if (method === 'twitter') {
+        window.open(`https://twitter.com/intent/tweet?text=${encodeURIComponent(shareText)}&url=${encodeURIComponent(postUrl)}`, '_blank')
+      } else if (method === 'facebook') {
+        window.open(`https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(postUrl)}`, '_blank')
+      }
+
+      // Record the share in the database
+      const res = await fetch('/api/social/share', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ postId: post.id })
+      })
+
+      if (res.ok) {
+        const data = await res.json()
+        setShareCount(data.data.shares)
+      }
+    } catch (error) {
+      console.error('Error sharing:', error)
+    }
+
+    setShowShareMenu(false)
   }
 
   const renderContent = (text: string) => {
@@ -190,7 +230,7 @@ export function FeedPost({ post, onLike, onComment }: FeedPostProps) {
           <button onClick={() => setShowComments(!showComments)} className="hover:text-theme-primary transition-colors">
             {post._count?.comments || comments.length} {post._count?.comments === 1 ? 'Comment' : 'Comments'}
           </button>
-          <span>{post.shares || 0} {post.shares === 1 ? 'Share' : 'Shares'}</span>
+          <span>{shareCount} {shareCount === 1 ? 'Share' : 'Shares'}</span>
         </div>
 
         {/* Action Buttons */}
@@ -213,14 +253,47 @@ export function FeedPost({ post, onLike, onComment }: FeedPostProps) {
             <MessageCircle className="w-5 h-5 mr-2" />
             COMMENT
           </Button>
-          <Button
-            variant="ghost"
-            size="sm"
-            className="flex-1 font-black"
-          >
-            <Share2 className="w-5 h-5 mr-2" />
-            SHARE
-          </Button>
+          <div className="relative flex-1">
+            <Button
+              variant="ghost"
+              size="sm"
+              onClick={() => setShowShareMenu(!showShareMenu)}
+              className="w-full font-black"
+            >
+              <Share2 className="w-5 h-5 mr-2" />
+              SHARE
+            </Button>
+            {showShareMenu && (
+              <div className="absolute bottom-full left-0 right-0 mb-2 bg-[var(--card)] border-2 border-[var(--border)] rounded-lg shadow-xl overflow-hidden z-50">
+                {typeof navigator !== 'undefined' && navigator.share && (
+                  <button
+                    onClick={() => handleShare('native')}
+                    className="w-full px-4 py-2 text-left text-sm font-bold text-[var(--foreground)] hover:bg-[var(--muted)] transition-colors"
+                  >
+                    Share...
+                  </button>
+                )}
+                <button
+                  onClick={() => handleShare('copy')}
+                  className="w-full px-4 py-2 text-left text-sm font-bold text-[var(--foreground)] hover:bg-[var(--muted)] transition-colors"
+                >
+                  Copy Link
+                </button>
+                <button
+                  onClick={() => handleShare('twitter')}
+                  className="w-full px-4 py-2 text-left text-sm font-bold text-[var(--foreground)] hover:bg-[var(--muted)] transition-colors"
+                >
+                  Share on X
+                </button>
+                <button
+                  onClick={() => handleShare('facebook')}
+                  className="w-full px-4 py-2 text-left text-sm font-bold text-[var(--foreground)] hover:bg-[var(--muted)] transition-colors"
+                >
+                  Share on Facebook
+                </button>
+              </div>
+            )}
+          </div>
         </div>
 
         {/* Comments Section */}

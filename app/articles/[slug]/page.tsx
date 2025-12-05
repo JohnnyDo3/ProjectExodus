@@ -41,9 +41,9 @@ export default async function ArticleDetailPage({
   }
 
   return (
-    <div className="min-h-screen bg-sand-50 dark:bg-earth-900 transition-colors">
+    <div className="min-h-screen bg-[var(--background)] transition-colors">
       {/* Hero Section */}
-      <section className="py-24 bg-gradient-to-br from-ocean-50 via-moss-50 to-terra-50 dark:from-earth-800 dark:via-earth-900 dark:to-earth-800">
+      <section className="py-24 bg-gradient-to-br from-[color-mix(in_srgb,var(--primary)_15%,var(--background))] via-[color-mix(in_srgb,var(--accent)_15%,var(--background))] to-[color-mix(in_srgb,var(--secondary)_15%,var(--background))]">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
           <div className="mb-6">
             <BackButton label="Back to Articles" fallbackUrl="/articles" />
@@ -51,49 +51,49 @@ export default async function ArticleDetailPage({
           <div className="max-w-5xl mx-auto text-center space-y-8">
             {article.featured && (
               <div>
-                <div className="inline-flex items-center gap-2 px-5 py-2 bg-gradient-to-r from-ocean-500 to-terra-500 rounded-full shadow-lg">
-                  <span className="text-sm font-black text-white uppercase tracking-wide">
+                <div className="inline-flex items-center gap-2 px-5 py-2 bg-gradient-to-r from-[var(--primary)] to-[var(--accent)] rounded-full shadow-lg">
+                  <span className="text-sm font-black text-[var(--primary-foreground)] uppercase tracking-wide">
                     Featured Article
                   </span>
                 </div>
               </div>
             )}
 
-            <h1 className="text-5xl md:text-7xl font-black leading-tight text-earth-900 dark:text-sand-100">
+            <h1 className="text-4xl sm:text-5xl md:text-7xl font-black leading-tight text-[var(--foreground)]">
               {article.title}
             </h1>
 
             {article.excerpt && (
-              <p className="text-2xl font-semibold max-w-4xl mx-auto text-earth-700 dark:text-sand-300">
+              <p className="text-xl sm:text-2xl font-semibold max-w-4xl mx-auto text-theme-muted">
                 {article.excerpt}
               </p>
             )}
 
             {/* Article Meta */}
-            <div className="flex flex-wrap items-center justify-center gap-8 text-base font-bold pt-6">
+            <div className="flex flex-wrap items-center justify-center gap-4 sm:gap-8 text-sm sm:text-base font-bold pt-6">
               {article.author?.name && (
-                <div className="flex items-center gap-2 text-ocean-700 dark:text-ocean-400">
-                  <User className="w-5 h-5" />
+                <div className="flex items-center gap-2 text-theme-primary">
+                  <User className="w-4 h-4 sm:w-5 sm:h-5" />
                   <span>{article.author.name}</span>
                 </div>
               )}
               {article.publishedAt && (
-                <div className="flex items-center gap-2 text-earth-600 dark:text-sand-400">
-                  <Calendar className="w-5 h-5" />
+                <div className="flex items-center gap-2 text-theme-muted">
+                  <Calendar className="w-4 h-4 sm:w-5 sm:h-5" />
                   <time dateTime={article.publishedAt}>
                     {formatDate(new Date(article.publishedAt))}
                   </time>
                 </div>
               )}
               {article.readTime && (
-                <div className="flex items-center gap-2 text-moss-700 dark:text-moss-400">
-                  <Clock className="w-5 h-5" />
+                <div className="flex items-center gap-2 text-theme-accent">
+                  <Clock className="w-4 h-4 sm:w-5 sm:h-5" />
                   <span>{article.readTime} MIN READ</span>
                 </div>
               )}
               {article.comments && (
-                <div className="flex items-center gap-2 text-earth-600 dark:text-sand-400">
-                  <MessageCircle className="w-5 h-5" />
+                <div className="flex items-center gap-2 text-theme-muted">
+                  <MessageCircle className="w-4 h-4 sm:w-5 sm:h-5" />
                   <span>{article.comments.length} COMMENTS</span>
                 </div>
               )}
@@ -103,7 +103,7 @@ export default async function ArticleDetailPage({
             <div>
               <Link
                 href={`/learn?category=${article.category.slug}`}
-                className="inline-block px-6 py-3 bg-gradient-to-br from-moss-500 to-ocean-500 text-white rounded-2xl text-base font-black uppercase shadow-xl hover:shadow-2xl transition-shadow"
+                className="inline-block px-6 py-3 bg-gradient-to-br from-[var(--primary)] to-[var(--accent)] text-[var(--primary-foreground)] rounded-2xl text-base font-black uppercase shadow-xl hover:shadow-2xl transition-shadow"
               >
                 {article.category.name}
               </Link>
@@ -113,18 +113,18 @@ export default async function ArticleDetailPage({
       </section>
 
       {/* Article Content */}
-      <section className="py-20">
+      <section className="py-12 sm:py-20">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
           <div className="max-w-5xl mx-auto">
             <div className="grid md:grid-cols-3 gap-8">
               {/* Main Content */}
               <article className="md:col-span-2">
-                <Card className="dark:bg-earth-800 dark:border-earth-700">
-                  <CardContent className="p-8 md:p-12">
+                <Card className="bg-[var(--card)] border-2 border-[var(--border)]">
+                  <CardContent className="p-6 sm:p-8 md:p-12">
                     {article.content ? (
                       <MarkdownContent content={article.content} />
                     ) : (
-                      <p className="text-lg font-medium leading-relaxed text-earth-700 dark:text-sand-300">
+                      <p className="text-lg font-medium leading-relaxed text-theme-muted">
                         {article.excerpt || 'Article content coming soon...'}
                       </p>
                     )}
@@ -134,7 +134,7 @@ export default async function ArticleDetailPage({
                 {/* Tags */}
                 {article.tags && article.tags.length > 0 && (
                   <div className="mt-8">
-                    <h3 className="text-sm font-semibold text-earth-900 dark:text-sand-100 mb-3 flex items-center gap-2">
+                    <h3 className="text-sm font-semibold text-[var(--foreground)] mb-3 flex items-center gap-2">
                       <Tag className="w-4 h-4" />
                       Tags
                     </h3>
@@ -143,7 +143,7 @@ export default async function ArticleDetailPage({
                         <Link
                           key={tagRel.tag.id}
                           href={`/learn?tag=${tagRel.tag.slug}`}
-                          className="px-3 py-1 bg-sand-100 dark:bg-earth-700 hover:bg-sand-200 dark:hover:bg-earth-600 rounded-full text-sm text-earth-700 dark:text-sand-300 transition-colors"
+                          className="px-3 py-1 bg-[var(--muted)] hover:bg-[var(--primary)]/20 rounded-full text-sm text-[var(--foreground)] transition-colors"
                         >
                           {tagRel.tag.name}
                         </Link>
@@ -155,9 +155,9 @@ export default async function ArticleDetailPage({
                 {/* Comments Section */}
                 {article.comments && article.comments.length > 0 && (
                   <div className="mt-12">
-                    <Card className="dark:bg-earth-800 dark:border-earth-700">
+                    <Card className="bg-[var(--card)] border-2 border-[var(--border)]">
                       <CardHeader>
-                        <CardTitle className="flex items-center gap-2 text-earth-900 dark:text-sand-100">
+                        <CardTitle className="flex items-center gap-2 text-[var(--foreground)]">
                           <MessageCircle className="w-5 h-5" />
                           Comments ({article.comments.length})
                         </CardTitle>
@@ -168,43 +168,43 @@ export default async function ArticleDetailPage({
                             {/* Top-level comment */}
                             <div className="flex gap-4">
                               <div className="flex-shrink-0">
-                                <div className="w-10 h-10 rounded-full bg-moss-100 dark:bg-moss-900 flex items-center justify-center">
-                                  <User className="w-5 h-5 text-moss-600 dark:text-moss-400" />
+                                <div className="w-10 h-10 rounded-full bg-[var(--primary)]/20 flex items-center justify-center">
+                                  <User className="w-5 h-5 text-theme-primary" />
                                 </div>
                               </div>
                               <div className="flex-grow">
                                 <div className="flex items-center gap-2 mb-1">
-                                  <span className="font-semibold text-earth-900 dark:text-sand-100">
+                                  <span className="font-semibold text-[var(--foreground)]">
                                     {comment.user?.name || 'Anonymous'}
                                   </span>
-                                  <span className="text-sm text-earth-500 dark:text-sand-500">
+                                  <span className="text-sm text-theme-muted">
                                     {formatDate(new Date(comment.createdAt))}
                                   </span>
                                 </div>
-                                <p className="text-earth-700 dark:text-sand-300">{comment.content}</p>
+                                <p className="text-[var(--foreground)]">{comment.content}</p>
                               </div>
                             </div>
 
                             {/* Replies */}
                             {comment.replies && comment.replies.length > 0 && (
-                              <div className="ml-14 space-y-4 border-l-2 border-sand-200 dark:border-earth-600 pl-6">
+                              <div className="ml-14 space-y-4 border-l-2 border-[var(--border)] pl-6">
                                 {comment.replies.map((reply: any) => (
                                   <div key={reply.id} className="flex gap-4">
                                     <div className="flex-shrink-0">
-                                      <div className="w-8 h-8 rounded-full bg-ocean-100 dark:bg-ocean-900 flex items-center justify-center">
-                                        <User className="w-4 h-4 text-ocean-600 dark:text-ocean-400" />
+                                      <div className="w-8 h-8 rounded-full bg-[var(--accent)]/20 flex items-center justify-center">
+                                        <User className="w-4 h-4 text-theme-accent" />
                                       </div>
                                     </div>
                                     <div className="flex-grow">
                                       <div className="flex items-center gap-2 mb-1">
-                                        <span className="font-semibold text-earth-900 dark:text-sand-100 text-sm">
+                                        <span className="font-semibold text-[var(--foreground)] text-sm">
                                           {reply.user?.name || 'Anonymous'}
                                         </span>
-                                        <span className="text-xs text-earth-500 dark:text-sand-500">
+                                        <span className="text-xs text-theme-muted">
                                           {formatDate(new Date(reply.createdAt))}
                                         </span>
                                       </div>
-                                      <p className="text-sm text-earth-700 dark:text-sand-300">{reply.content}</p>
+                                      <p className="text-sm text-[var(--foreground)]">{reply.content}</p>
                                     </div>
                                   </div>
                                 ))}
@@ -231,14 +231,14 @@ export default async function ArticleDetailPage({
 
                 {/* Author Card */}
                 {article.author && (
-                  <Card className="dark:bg-earth-800 dark:border-earth-700">
+                  <Card className="bg-[var(--card)] border-2 border-[var(--border)]">
                     <CardHeader>
-                      <CardTitle className="text-base text-earth-900 dark:text-sand-100">About the Author</CardTitle>
+                      <CardTitle className="text-base text-[var(--foreground)]">About the Author</CardTitle>
                     </CardHeader>
                     <CardContent>
                       <div className="text-center">
                         <Link href={`/profile/${article.author.id}`} className="block">
-                          <div className="w-20 h-20 rounded-full bg-moss-100 dark:bg-moss-900 flex items-center justify-center mx-auto mb-3 hover:scale-105 transition-transform cursor-pointer">
+                          <div className="w-20 h-20 rounded-full bg-[var(--primary)]/20 flex items-center justify-center mx-auto mb-3 hover:scale-105 transition-transform cursor-pointer">
                             {article.author.image ? (
                               <img
                                 src={article.author.image}
@@ -246,15 +246,15 @@ export default async function ArticleDetailPage({
                                 className="w-full h-full rounded-full object-cover"
                               />
                             ) : (
-                              <User className="w-10 h-10 text-moss-600 dark:text-moss-400" />
+                              <User className="w-10 h-10 text-theme-primary" />
                             )}
                           </div>
-                          <h3 className="font-bold text-earth-900 dark:text-sand-100 mb-2 hover:text-moss-600 dark:hover:text-moss-400 transition-colors cursor-pointer">
+                          <h3 className="font-bold text-[var(--foreground)] mb-2 hover:text-theme-primary transition-colors cursor-pointer">
                             {article.author.name}
                           </h3>
                         </Link>
                         {article.author.bio && (
-                          <p className="text-sm text-earth-600 dark:text-sand-400">
+                          <p className="text-sm text-theme-muted">
                             {article.author.bio}
                           </p>
                         )}
@@ -264,19 +264,19 @@ export default async function ArticleDetailPage({
                 )}
 
                 {/* Share Card */}
-                <Card className="dark:bg-earth-800 dark:border-earth-700">
+                <Card className="bg-[var(--card)] border-2 border-[var(--border)]">
                   <CardHeader>
-                    <CardTitle className="text-base text-earth-900 dark:text-sand-100">Share Article</CardTitle>
+                    <CardTitle className="text-base text-[var(--foreground)]">Share Article</CardTitle>
                   </CardHeader>
                   <CardContent>
                     <div className="space-y-2">
-                      <Button variant="outline" className="w-full text-sm dark:border-earth-600 dark:text-sand-200 dark:hover:bg-earth-700" size="sm">
+                      <Button variant="outline" className="w-full text-sm" size="sm">
                         Share on Twitter
                       </Button>
-                      <Button variant="outline" className="w-full text-sm dark:border-earth-600 dark:text-sand-200 dark:hover:bg-earth-700" size="sm">
+                      <Button variant="outline" className="w-full text-sm" size="sm">
                         Share on Facebook
                       </Button>
-                      <Button variant="outline" className="w-full text-sm dark:border-earth-600 dark:text-sand-200 dark:hover:bg-earth-700" size="sm">
+                      <Button variant="outline" className="w-full text-sm" size="sm">
                         Copy Link
                       </Button>
                     </div>
@@ -289,15 +289,15 @@ export default async function ArticleDetailPage({
       </section>
 
       {/* Related Articles CTA */}
-      <section className="py-32 bg-gradient-to-br from-moss-500 via-ocean-500 to-terra-500 text-white">
+      <section className="py-20 sm:py-32 bg-gradient-to-br from-[var(--primary)] via-[var(--accent)] to-[var(--secondary)] text-[var(--primary-foreground)]">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
           <div className="max-w-4xl mx-auto text-center space-y-8">
-            <h2 className="text-6xl font-black">CONTINUE LEARNING</h2>
-            <p className="text-2xl font-semibold">
+            <h2 className="text-3xl sm:text-4xl md:text-6xl font-black">CONTINUE LEARNING</h2>
+            <p className="text-lg sm:text-xl md:text-2xl font-semibold">
               Explore more articles on sustainability and eco-friendly living
             </p>
             <Link href="/learn">
-              <Button size="lg" className="text-xl px-12 py-8 bg-white text-earth-900 hover:bg-sand-100 font-black shadow-2xl rounded-2xl">
+              <Button size="lg" className="text-lg sm:text-xl px-8 sm:px-12 py-6 sm:py-8 bg-[var(--primary-foreground)] text-[var(--primary)] hover:opacity-90 font-black shadow-2xl rounded-2xl">
                 BROWSE ALL ARTICLES →
               </Button>
             </Link>

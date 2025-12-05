@@ -18,6 +18,7 @@ interface Discussion {
     comments: number
     likes: number
   }
+  isLiked?: boolean
 }
 
 interface Props {
@@ -149,8 +150,8 @@ export function RecentDiscussionsWidget({ initialDiscussions }: Props) {
 
                   {/* Stats */}
                   <div className="flex items-center gap-4 mt-3 pt-3 border-t border-[var(--border)]">
-                    <div className="flex items-center gap-1.5 text-theme-muted">
-                      <Heart className="w-3.5 h-3.5" />
+                    <div className={`flex items-center gap-1.5 ${discussion.isLiked ? 'text-red-500' : 'text-theme-muted'}`}>
+                      <Heart className={`w-3.5 h-3.5 ${discussion.isLiked ? 'fill-red-500' : ''}`} />
                       <span className="text-xs font-bold">{discussion._count.likes}</span>
                     </div>
                     <div className="flex items-center gap-1.5 text-theme-muted">

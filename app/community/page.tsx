@@ -93,9 +93,21 @@ async function getDashboardData(userId: string) {
       select: {
         id: true, content: true, createdAt: true,
         user: { select: { id: true, name: true, image: true } },
-        _count: { select: { comments: true, likes: true } }
+        _count: { select: { comments: true, likes: true } },
+        likes: {
+          where: { userId: userId },
+          select: { id: true },
+          take: 1
+        }
       }
     })
+
+    // Transform to include isLiked boolean
+    const discussionsWithLikeStatus = recentDiscussions.map(d => ({
+      ...d,
+      isLiked: d.likes.length > 0,
+      likes: undefined // Remove the likes array, keep only isLiked
+    }))
 
     const stats = await prisma.$transaction([
       prisma.user.count(),
@@ -107,7 +119,7 @@ async function getDashboardData(userId: string) {
       user,
       suggestedUsers,
       activeProjects,
-      recentDiscussions,
+      recentDiscussions: discussionsWithLikeStatus,
       communityStats: {
         totalMembers: stats[0],
         activeProjects: stats[1],
