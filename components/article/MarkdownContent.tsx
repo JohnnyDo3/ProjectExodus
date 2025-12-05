@@ -11,34 +11,37 @@ export function MarkdownContent({ content }: MarkdownContentProps) {
   const convertMarkdownToHTML = (markdown: string): string => {
     let html = markdown
 
-    // Headers - using CSS classes that respect dark mode
-    html = html.replace(/^### (.+)$/gm, '<h3 class="article-h3">$1</h3>')
-    html = html.replace(/^## (.+)$/gm, '<h2 class="article-h2">$1</h2>')
-    html = html.replace(/^# (.+)$/gm, '<h1 class="article-h1">$1</h1>')
+    // Headers
+    html = html.replace(/^### (.+)$/gm, '<h3 class="text-xl font-bold mt-6 mb-3">$1</h3>')
+    html = html.replace(/^## (.+)$/gm, '<h2 class="text-2xl font-bold mt-8 mb-4">$1</h2>')
+    html = html.replace(/^# (.+)$/gm, '<h1 class="text-3xl font-black mt-10 mb-5">$1</h1>')
 
     // Bold
-    html = html.replace(/\*\*(.+?)\*\*/g, '<strong class="font-black">$1</strong>')
+    html = html.replace(/\*\*(.+?)\*\*/g, '<strong class="font-bold">$1</strong>')
 
     // Italic
     html = html.replace(/\*(.+?)\*/g, '<em class="italic">$1</em>')
 
-    // Links
-    html = html.replace(/\[([^\]]+)\]\(([^)]+)\)/g, '<a href="$2" class="article-link" target="_blank" rel="noopener noreferrer">$1</a>')
+    // Links - styled with theme primary color
+    html = html.replace(
+      /\[([^\]]+)\]\(([^)]+)\)/g,
+      '<a href="$2" style="color: var(--primary); text-decoration: underline;" target="_blank" rel="noopener noreferrer">$1</a>'
+    )
 
     // Lists - Ordered
-    html = html.replace(/^\d+\.\s+(.+)$/gm, '<li class="article-li">$1</li>')
-    html = html.replace(/(<li class="article-li">.*<\/li>\n?)+/g, '<ol class="article-ol">$&</ol>')
+    html = html.replace(/^\d+\.\s+(.+)$/gm, '<li class="ml-6 mb-2">$1</li>')
+    html = html.replace(/(<li class="ml-6 mb-2">.*<\/li>\n?)+/g, '<ol class="list-decimal my-4 space-y-1">$&</ol>')
 
     // Lists - Unordered
-    html = html.replace(/^[-*]\s+(.+)$/gm, '<li class="article-li-ul">$1</li>')
-    html = html.replace(/(<li class="article-li-ul">.*<\/li>\n?)+/g, '<ul class="article-ul">$&</ul>')
+    html = html.replace(/^[-*]\s+(.+)$/gm, '<li class="ml-6 mb-2 list-item">$1</li>')
+    html = html.replace(/(<li class="ml-6 mb-2 list-item">.*<\/li>\n?)+/g, '<ul class="list-disc my-4 space-y-1">$&</ul>')
 
     // Paragraphs
     html = html.split('\n\n').map(para => {
       // Don't wrap headers, lists
       if (para.match(/^<[houl]/)) return para
       if (para.trim() === '') return ''
-      return `<p class="article-p">${para}</p>`
+      return `<p class="mb-4 leading-relaxed">${para}</p>`
     }).join('\n')
 
     // Line breaks
@@ -49,7 +52,7 @@ export function MarkdownContent({ content }: MarkdownContentProps) {
 
   return (
     <div
-      className="article-content text-earth-800 dark:text-sand-200"
+      className="article-content text-[var(--foreground)] text-lg"
       dangerouslySetInnerHTML={{ __html: sanitizeHtml(convertMarkdownToHTML(content)) }}
     />
   )
