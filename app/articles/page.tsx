@@ -94,9 +94,12 @@ export default function ArticlesPage() {
     { value: 'read', label: 'Already Read', icon: CheckCircle2 },
   ]
 
+  // Use ref for offset to avoid stale closure issues
+  const offsetRef = useRef(0)
+
   const fetchArticles = useCallback(async (reset = false) => {
     try {
-      const currentOffset = reset ? 0 : offset
+      const currentOffset = reset ? 0 : offsetRef.current
       // Map 'all' to 'newest' for the API, since 'all' just means show everything sorted by newest
       const apiSort = activeSort === 'all' ? 'newest' : activeSort
       const params = new URLSearchParams({
@@ -123,10 +126,12 @@ export default function ArticlesPage() {
             setFeaturedArticle(null)
             setArticles(data.data)
           }
+          offsetRef.current = 12
           setOffset(12)
         } else {
           setArticles(prev => [...prev, ...data.data])
-          setOffset(prev => prev + 12)
+          offsetRef.current += 12
+          setOffset(offsetRef.current)
         }
         setHasMore(data.pagination.hasMore)
       }
@@ -135,12 +140,13 @@ export default function ArticlesPage() {
     } finally {
       setIsLoading(false)
     }
-  }, [activeSort, searchQuery, offset])
+  }, [activeSort, searchQuery])
 
   useEffect(() => {
     setIsLoading(true)
+    offsetRef.current = 0
     fetchArticles(true)
-  }, [activeSort, searchQuery])
+  }, [activeSort, searchQuery, fetchArticles])
 
   // Infinite scroll observer
   useEffect(() => {

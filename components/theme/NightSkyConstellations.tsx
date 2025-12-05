@@ -212,10 +212,18 @@ export function NightSkyConstellations({ alwaysShow = false, starCount = 1400 }:
     if (!ctx) return
 
     let time = 0
+    const rotationStartTime = Date.now()
+    // 1 full rotation per 30 minutes = 360 degrees / 1800000 ms
+    const rotationSpeed = 360 / (30 * 60 * 1000)
 
     const animate = () => {
       ctx.clearRect(0, 0, canvas.width, canvas.height)
       time += 0.01
+
+      // Calculate rotation angle based on real time elapsed
+      const elapsedMs = Date.now() - rotationStartTime
+      const rotationAngle = (elapsedMs * rotationSpeed) % 360
+      const rotationRadians = (rotationAngle * Math.PI) / 180
 
       // Shooting star management
       const currentTime = Date.now()
@@ -269,13 +277,20 @@ export function NightSkyConstellations({ alwaysShow = false, starCount = 1400 }:
         return true
       })
 
-      // Draw deep black space background
+      // Draw deep black space background (non-rotating base)
       const blackGradient = ctx.createLinearGradient(0, 0, 0, canvas.height)
       blackGradient.addColorStop(0, 'rgba(0, 0, 5, 1)')
       blackGradient.addColorStop(0.7, 'rgba(0, 0, 10, 1)')
       blackGradient.addColorStop(1, 'rgba(5, 5, 15, 1)')
       ctx.fillStyle = blackGradient
       ctx.fillRect(0, 0, canvas.width, canvas.height)
+
+      // Apply rotation for celestial objects (stars, Milky Way, nebulas)
+      ctx.save()
+      ctx.translate(canvas.width / 2, canvas.height / 2)
+      ctx.rotate(rotationRadians)
+      // Expand drawing area to cover rotation overhang
+      ctx.translate(-canvas.width / 2, -canvas.height / 2)
 
       // Light pollution from city below - orange/amber glow at bottom
       const lightPollutionHeight = canvas.height * 0.4
@@ -452,6 +467,9 @@ export function NightSkyConstellations({ alwaysShow = false, starCount = 1400 }:
 
         ctx.restore()
       })
+
+      // End rotation context (shooting stars and UI elements stay fixed)
+      ctx.restore()
 
       // Draw shooting stars
       shootingStarsRef.current.forEach(star => {
