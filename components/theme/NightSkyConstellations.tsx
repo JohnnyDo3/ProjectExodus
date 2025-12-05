@@ -165,7 +165,7 @@ export function NightSkyConstellations({ alwaysShow = false, starCount = 1400 }:
       newStars.push({
         x: (pos.x / 100) * canvas.width,
         y: (pos.y / 100) * canvas.height,
-        size: 3 + Math.random() * 3, // Enhanced size variation for depth (3-6px)
+        size: 1.5 + Math.random() * 1.5, // Smaller constellation stars (1.5-3px)
         brightness: 0.85 + Math.random() * 0.15, // Brighter constellation stars
         twinkleSpeed: 0.5 + Math.random() * 1.5,
         pulsePhase: Math.random() * Math.PI * 2, // Random starting phase
@@ -179,14 +179,15 @@ export function NightSkyConstellations({ alwaysShow = false, starCount = 1400 }:
     // Generate stars in a larger circular area to account for rotation
     // The diagonal of the screen determines how far stars need to extend
     const diagonal = Math.sqrt(canvas.width * canvas.width + canvas.height * canvas.height)
-    const padding = diagonal * 0.6 // Extra padding beyond the diagonal for smooth rotation
+    const padding = diagonal * 1.0 // Extra padding beyond the diagonal for smooth rotation (full diagonal radius)
     const centerX = canvas.width / 2
     const centerY = canvas.height / 2
 
     for (let i = 0; i < starCount; i++) {
       // Create depth variation: smaller stars (far) to larger stars (near)
       const depthFactor = Math.random()
-      const size = depthFactor < 0.7 ? 0.5 + Math.random() * 1.5 : 2 + Math.random() * 3
+      // Smaller star sizes across the board
+      const size = depthFactor < 0.8 ? 0.3 + Math.random() * 0.8 : 0.8 + Math.random() * 1.2
 
       // Generate stars in a circular area centered on screen
       // This ensures stars fill the view no matter the rotation angle
@@ -307,41 +308,6 @@ export function NightSkyConstellations({ alwaysShow = false, starCount = 1400 }:
       // Expand drawing area to cover rotation overhang
       ctx.translate(-canvas.width / 2, -canvas.height / 2)
 
-      // Light pollution from city below - orange/amber glow at bottom
-      const lightPollutionHeight = canvas.height * 0.4
-      const pollutionGradient = ctx.createLinearGradient(0, canvas.height, 0, canvas.height - lightPollutionHeight)
-      pollutionGradient.addColorStop(0, 'rgba(255, 140, 50, 0.15)')
-      pollutionGradient.addColorStop(0.3, 'rgba(255, 160, 70, 0.08)')
-      pollutionGradient.addColorStop(0.6, 'rgba(255, 180, 90, 0.03)')
-      pollutionGradient.addColorStop(1, 'rgba(255, 200, 100, 0)')
-      ctx.fillStyle = pollutionGradient
-      ctx.fillRect(0, canvas.height - lightPollutionHeight, canvas.width, lightPollutionHeight)
-
-      // Add localized light pollution hotspots (simulating cities)
-      const cityLights = [
-        { x: canvas.width * 0.25, intensity: 0.12 },
-        { x: canvas.width * 0.5, intensity: 0.18 }, // Brightest - main city
-        { x: canvas.width * 0.75, intensity: 0.10 }
-      ]
-
-      cityLights.forEach(city => {
-        const cityGlow = ctx.createRadialGradient(
-          city.x, canvas.height, 0,
-          city.x, canvas.height, canvas.width * 0.3
-        )
-        cityGlow.addColorStop(0, `rgba(255, 160, 60, ${city.intensity})`)
-        cityGlow.addColorStop(0.4, `rgba(255, 180, 80, ${city.intensity * 0.5})`)
-        cityGlow.addColorStop(0.7, `rgba(255, 200, 100, ${city.intensity * 0.2})`)
-        cityGlow.addColorStop(1, 'rgba(0, 0, 0, 0)')
-        ctx.fillStyle = cityGlow
-        ctx.fillRect(
-          city.x - canvas.width * 0.3,
-          canvas.height - lightPollutionHeight,
-          canvas.width * 0.6,
-          lightPollutionHeight
-        )
-      })
-
       // Draw Milky Way band - horizontal arched band across the sky
       // Main galactic band (horizontal with slight arch)
       const milkyCenterY = canvas.height * 0.45 // Slightly above center
@@ -368,39 +334,41 @@ export function NightSkyConstellations({ alwaysShow = false, starCount = 1400 }:
       // Galactic center - brighter concentrated region with enhanced opacity
       const galacticCenterX = canvas.width * 0.6
       const galacticCenterY = milkyCenterY
+      const galacticRadius = canvas.width * 0.25
       const centerGradient = ctx.createRadialGradient(
         galacticCenterX, galacticCenterY, 0,
-        galacticCenterX, galacticCenterY, canvas.width * 0.25
+        galacticCenterX, galacticCenterY, galacticRadius
       )
       centerGradient.addColorStop(0, 'rgba(180, 160, 200, 0.35)')
       centerGradient.addColorStop(0.3, 'rgba(130, 120, 160, 0.22)')
       centerGradient.addColorStop(0.6, 'rgba(80, 90, 130, 0.12)')
       centerGradient.addColorStop(1, 'rgba(0, 0, 0, 0)')
       ctx.fillStyle = centerGradient
-      ctx.fillRect(
-        galacticCenterX - canvas.width * 0.25,
-        galacticCenterY - canvas.width * 0.25,
-        canvas.width * 0.5,
-        canvas.width * 0.5
-      )
+      // Use arc instead of fillRect for circular galactic center
+      ctx.beginPath()
+      ctx.arc(galacticCenterX, galacticCenterY, galacticRadius, 0, Math.PI * 2)
+      ctx.fill()
 
-      // Add dark dust lanes (characteristic rifts in the Milky Way)
+      // Add dark dust lanes (characteristic rifts in the Milky Way) - use circular gradients
       const dustLanes = [
-        { x: canvas.width * 0.3, y: milkyCenterY - 50, width: canvas.width * 0.15, height: 80 },
-        { x: canvas.width * 0.55, y: milkyCenterY + 30, width: canvas.width * 0.12, height: 60 },
-        { x: canvas.width * 0.75, y: milkyCenterY - 20, width: canvas.width * 0.1, height: 70 }
+        { x: canvas.width * 0.35, y: milkyCenterY - 30, radius: 120 },
+        { x: canvas.width * 0.58, y: milkyCenterY + 40, radius: 100 },
+        { x: canvas.width * 0.78, y: milkyCenterY - 10, radius: 90 }
       ]
 
       dustLanes.forEach(lane => {
         const dustGradient = ctx.createRadialGradient(
-          lane.x + lane.width/2, lane.y + lane.height/2, 0,
-          lane.x + lane.width/2, lane.y + lane.height/2, Math.max(lane.width, lane.height)
+          lane.x, lane.y, 0,
+          lane.x, lane.y, lane.radius
         )
-        dustGradient.addColorStop(0, 'rgba(5, 8, 15, 0.4)')
-        dustGradient.addColorStop(0.5, 'rgba(5, 8, 15, 0.2)')
+        dustGradient.addColorStop(0, 'rgba(5, 8, 15, 0.3)')
+        dustGradient.addColorStop(0.4, 'rgba(5, 8, 15, 0.15)')
+        dustGradient.addColorStop(0.7, 'rgba(5, 8, 15, 0.05)')
         dustGradient.addColorStop(1, 'rgba(0, 0, 0, 0)')
         ctx.fillStyle = dustGradient
-        ctx.fillRect(lane.x, lane.y, lane.width, lane.height)
+        ctx.beginPath()
+        ctx.arc(lane.x, lane.y, lane.radius, 0, Math.PI * 2)
+        ctx.fill()
       })
 
       // Enhanced nebula regions within the Milky Way - more purple/blue hints
@@ -420,12 +388,10 @@ export function NightSkyConstellations({ alwaysShow = false, starCount = 1400 }:
         nebulaGradient.addColorStop(0.5, nebula.color.replace(/[\d.]+\)$/, '0.02)'))
         nebulaGradient.addColorStop(1, 'rgba(0, 0, 0, 0)')
         ctx.fillStyle = nebulaGradient
-        ctx.fillRect(
-          nebula.x - nebula.radius,
-          nebula.y - nebula.radius,
-          nebula.radius * 2,
-          nebula.radius * 2
-        )
+        // Use arc instead of fillRect for circular nebulas
+        ctx.beginPath()
+        ctx.arc(nebula.x, nebula.y, nebula.radius, 0, Math.PI * 2)
+        ctx.fill()
       })
 
       // Draw stars - static (no animation for performance)
@@ -448,12 +414,12 @@ export function NightSkyConstellations({ alwaysShow = false, starCount = 1400 }:
 
         // Enhanced glow for better visibility with star color
         if (star.isConstellation) {
-          ctx.shadowBlur = isNearMouse ? 25 : 20
+          ctx.shadowBlur = isNearMouse ? 15 : 10
           ctx.shadowColor = isNearMouse ? '#FFD700' : `rgba(${starColor[0]}, ${starColor[1]}, ${starColor[2]}, 0.8)`
         } else {
-          // Larger stars get more glow
-          ctx.shadowBlur = star.size > 3 ? 10 : 6
-          ctx.shadowColor = `rgba(${starColor[0]}, ${starColor[1]}, ${starColor[2]}, 0.6)`
+          // Subtle glow for smaller stars
+          ctx.shadowBlur = star.size > 1 ? 4 : 2
+          ctx.shadowColor = `rgba(${starColor[0]}, ${starColor[1]}, ${starColor[2]}, 0.5)`
         }
 
         // Draw the 4-point star
@@ -489,6 +455,39 @@ export function NightSkyConstellations({ alwaysShow = false, starCount = 1400 }:
 
       // End rotation context (shooting stars and UI elements stay fixed)
       ctx.restore()
+
+      // Light pollution from city below - orange/amber glow at bottom (non-rotating)
+      const lightPollutionHeight = canvas.height * 0.4
+      const pollutionGradient = ctx.createLinearGradient(0, canvas.height, 0, canvas.height - lightPollutionHeight)
+      pollutionGradient.addColorStop(0, 'rgba(255, 140, 50, 0.15)')
+      pollutionGradient.addColorStop(0.3, 'rgba(255, 160, 70, 0.08)')
+      pollutionGradient.addColorStop(0.6, 'rgba(255, 180, 90, 0.03)')
+      pollutionGradient.addColorStop(1, 'rgba(255, 200, 100, 0)')
+      ctx.fillStyle = pollutionGradient
+      ctx.fillRect(0, canvas.height - lightPollutionHeight, canvas.width, lightPollutionHeight)
+
+      // Add localized light pollution hotspots (simulating cities)
+      const cityLights = [
+        { x: canvas.width * 0.25, intensity: 0.12 },
+        { x: canvas.width * 0.5, intensity: 0.18 }, // Brightest - main city
+        { x: canvas.width * 0.75, intensity: 0.10 }
+      ]
+
+      cityLights.forEach(city => {
+        const cityGlow = ctx.createRadialGradient(
+          city.x, canvas.height, 0,
+          city.x, canvas.height, canvas.width * 0.3
+        )
+        cityGlow.addColorStop(0, `rgba(255, 160, 60, ${city.intensity})`)
+        cityGlow.addColorStop(0.4, `rgba(255, 180, 80, ${city.intensity * 0.5})`)
+        cityGlow.addColorStop(0.7, `rgba(255, 200, 100, ${city.intensity * 0.2})`)
+        cityGlow.addColorStop(1, 'rgba(0, 0, 0, 0)')
+        ctx.fillStyle = cityGlow
+        // Use arc instead of fillRect for circular city glow
+        ctx.beginPath()
+        ctx.arc(city.x, canvas.height, canvas.width * 0.3, 0, Math.PI * 2)
+        ctx.fill()
+      })
 
       // Draw shooting stars
       shootingStarsRef.current.forEach(star => {
