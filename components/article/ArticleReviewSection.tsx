@@ -183,7 +183,7 @@ export function ArticleReviewSection({ articleId, articleAuthorId, initialReview
             className={`${readonly ? 'cursor-default' : 'cursor-pointer hover:scale-110'} transition-transform`}
           >
             <Star
-              className={`${sizeClasses} ${star <= value ? 'fill-terra-500 text-terra-500' : 'text-sand-300 dark:text-earth-600'}`}
+              className={`${sizeClasses} ${star <= value ? 'fill-terra-500 text-terra-500' : 'text-[var(--foreground)]/30'}`}
             />
           </button>
         ))}
@@ -200,7 +200,7 @@ export function ArticleReviewSection({ articleId, articleAuthorId, initialReview
     const hasReplies = review.replies && review.replies.length > 0
 
     return (
-      <div className={`${depth > 0 ? 'ml-4 sm:ml-8 pl-4 border-l-2 border-sand-200 dark:border-earth-600' : ''}`}>
+      <div className={`${depth > 0 ? 'ml-4 sm:ml-8 pl-4 border-l-2 border-[var(--border)]' : ''}`}>
         <div className="py-4">
           {/* User Info */}
           <div className="flex items-start gap-3">
@@ -215,9 +215,9 @@ export function ArticleReviewSection({ articleId, articleAuthorId, initialReview
                 <div className={`w-10 h-10 rounded-full flex items-center justify-center ${
                   isAuthor
                     ? 'bg-gradient-to-br from-amber-400 to-amber-600'
-                    : 'bg-moss-200 dark:bg-moss-800'
+                    : 'bg-[var(--primary)]/20'
                 }`}>
-                  <User className={`w-5 h-5 ${isAuthor ? 'text-white' : 'text-moss-600 dark:text-moss-400'}`} />
+                  <User className={`w-5 h-5 ${isAuthor ? 'text-white' : 'text-[var(--primary)]'}`} />
                 </div>
               )}
             </div>
@@ -285,12 +285,12 @@ export function ArticleReviewSection({ articleId, articleAuthorId, initialReview
 
               {/* Reply Form */}
               {replyingTo === review.id && (
-                <div className="mt-3 p-3 bg-sand-50 dark:bg-earth-700 rounded-lg">
+                <div className="mt-3 p-3 bg-[var(--muted)] rounded-lg">
                   <textarea
                     value={replyContent}
                     onChange={(e) => setReplyContent(e.target.value)}
                     placeholder="Write a reply..."
-                    className="w-full p-2 text-sm border-2 border-sand-200 dark:border-earth-600 rounded-lg bg-white dark:bg-earth-800 text-[var(--foreground)] placeholder-earth-400 dark:placeholder-sand-500"
+                    className="w-full p-2 text-sm border-2 border-[var(--border)] rounded-lg bg-white dark:bg-earth-800 text-[var(--foreground)] placeholder-earth-400 dark:placeholder-sand-500"
                     rows={2}
                   />
                   <div className="flex gap-2 mt-2">
@@ -374,7 +374,7 @@ export function ArticleReviewSection({ articleId, articleAuthorId, initialReview
 
           {/* Review Form */}
           {showReviewForm && session && (
-            <form onSubmit={handleSubmitReview} className="mb-6 p-4 bg-sand-50 dark:bg-earth-700 rounded-lg border-2 border-sand-200 dark:border-earth-600">
+            <form onSubmit={handleSubmitReview} className="mb-6 p-4 bg-[var(--muted)] rounded-lg border-2 border-[var(--border)]">
               <h3 className="font-bold text-[var(--foreground)] mb-4">Write Your Review</h3>
 
               <div className="grid grid-cols-2 gap-4 mb-4">
@@ -406,7 +406,7 @@ export function ArticleReviewSection({ articleId, articleAuthorId, initialReview
                   value={formData.content}
                   onChange={(e) => setFormData(prev => ({ ...prev, content: e.target.value }))}
                   placeholder="Share your thoughts on this article..."
-                  className="w-full p-3 border-2 border-sand-200 dark:border-earth-600 rounded-lg bg-white dark:bg-earth-800 text-[var(--foreground)] placeholder-earth-400 dark:placeholder-sand-500"
+                  className="w-full p-3 border-2 border-[var(--border)] rounded-lg bg-white dark:bg-earth-800 text-[var(--foreground)] placeholder-earth-400 dark:placeholder-sand-500"
                   rows={4}
                 />
               </div>
@@ -428,14 +428,14 @@ export function ArticleReviewSection({ articleId, articleAuthorId, initialReview
 
           {/* Already Reviewed Notice */}
           {session && userHasReviewed && !showReviewForm && (
-            <div className="mb-4 p-3 bg-moss-50 dark:bg-moss-900/20 border border-moss-200 dark:border-moss-800 rounded-lg text-moss-700 dark:text-moss-400 text-sm">
+            <div className="mb-4 p-3 bg-[var(--primary)]/10 border border-[var(--primary)]/30 rounded-lg text-[var(--primary)] text-sm">
               You have already submitted a review for this article.
             </div>
           )}
 
           {/* Sign in prompt */}
           {!session && (
-            <div className="mb-6 p-4 bg-sand-50 dark:bg-earth-700 rounded-lg text-center">
+            <div className="mb-6 p-4 bg-[var(--muted)] rounded-lg text-center">
               <p className="text-theme-muted">
                 <a href="/auth/signin" className="text-theme-primary font-medium hover:underline">Sign in</a> to write a review or reply
               </p>
@@ -445,11 +445,11 @@ export function ArticleReviewSection({ articleId, articleAuthorId, initialReview
           {/* Reviews List */}
           {reviews.length === 0 ? (
             <div className="text-center py-8">
-              <MessageSquare className="w-12 h-12 mx-auto mb-3 text-sand-300 dark:text-earth-600" />
+              <MessageSquare className="w-12 h-12 mx-auto mb-3 text-[var(--foreground)]/30" />
               <p className="text-theme-muted">No reviews yet. Be the first to share your thoughts!</p>
             </div>
           ) : (
-            <div className="divide-y divide-sand-200 dark:divide-earth-600">
+            <div className="divide-y divide-[var(--border)]">
               {reviews.map(review => (
                 <ReviewThread key={review.id} review={review} />
               ))}

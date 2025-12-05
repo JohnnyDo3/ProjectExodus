@@ -1,6 +1,8 @@
 'use client'
 
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
+import { useSession } from 'next-auth/react'
+import { useRouter } from 'next/navigation'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/Card'
 import { Button } from '@/components/ui/Button'
 import { Input } from '@/components/ui/Input'
@@ -9,6 +11,7 @@ import { Textarea } from '@/components/ui/Textarea'
 import { ArrowLeft, Save, Eye, Plus, Trash2, Link as LinkIcon } from 'lucide-react'
 import { BackButton } from '@/components/navigation/BackButton'
 import Link from 'next/link'
+import toast from 'react-hot-toast'
 
 interface Reference {
   id: string
@@ -17,8 +20,19 @@ interface Reference {
   description: string
 }
 
+interface Category {
+  id: string
+  name: string
+  slug: string
+  description?: string
+  icon?: string
+}
+
 export default function NewArticlePage() {
+  const { data: session } = useSession()
+  const router = useRouter()
   const [saving, setSaving] = useState(false)
+  const [categories, setCategories] = useState<Category[]>([])
   const [references, setReferences] = useState<Reference[]>([])
   const [formData, setFormData] = useState({
     title: '',
@@ -26,11 +40,44 @@ export default function NewArticlePage() {
     excerpt: '',
     content: '',
     categoryId: '',
-    authorId: '',
     readTime: '',
     featured: false,
     status: 'DRAFT',
   })
+  const [slugManuallyEdited, setSlugManuallyEdited] = useState(false)
+
+  // Fetch categories on mount
+  useEffect(() => {
+    fetch('/api/article-categories')
+      .then(res => res.json())
+      .then(data => {
+        if (data.success) {
+          setCategories(data.data)
+        } else {
+          toast.error('Failed to load categories')
+        }
+      })
+      .catch(error => {
+        console.error('Error fetching categories:', error)
+        toast.error('Failed to load categories')
+      })
+  }, [])
+
+  // Generate slug from title
+  const generateSlug = (title: string) => {
+    return title.toLowerCase()
+      .replace(/[^a-z0-9\s-]/g, '')
+      .replace(/\s+/g, '-')
+      .replace(/-+/g, '-')
+      .trim()
+  }
+
+  // Auto-generate slug when title changes (unless manually edited)
+  useEffect(() => {
+    if (formData.title && !slugManuallyEdited) {
+      setFormData(prev => ({ ...prev, slug: generateSlug(formData.title) }))
+    }
+  }, [formData.title, slugManuallyEdited])
 
   const addReference = () => {
     setReferences(prev => [
@@ -51,16 +98,38 @@ export default function NewArticlePage() {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
+
+    if (!session?.user?.id) {
+      toast.error('You must be logged in to create an article')
+      return
+    }
+
     setSaving(true)
 
     try {
-      // TODO: Connect to API
-      console.log('Submitting article:', { ...formData, references })
-      await new Promise(resolve => setTimeout(resolve, 1000))
-      alert('Article created successfully!')
+      const res = await fetch('/api/articles', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          ...formData,
+          authorId: session.user.id,
+          readTime: formData.readTime ? parseInt(formData.readTime) : estimatedReadTime,
+          references: references.filter(r => r.title && r.url)
+        })
+      })
+
+      const data = await res.json()
+
+      if (data.success) {
+        toast.success(formData.status === 'PUBLISHED' ? 'Article published successfully!' : 'Draft saved successfully!')
+        // Redirect to the article page or admin dashboard
+        router.push(`/articles/${data.data.slug}`)
+      } else {
+        toast.error(data.error || 'Failed to create article')
+      }
     } catch (error) {
       console.error('Error creating article:', error)
-      alert('Failed to create article')
+      toast.error('Failed to create article')
     } finally {
       setSaving(false)
     }
@@ -68,6 +137,12 @@ export default function NewArticlePage() {
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
     const { name, value, type } = e.target
+
+    // Track if slug is manually edited
+    if (name === 'slug') {
+      setSlugManuallyEdited(true)
+    }
+
     setFormData(prev => ({
       ...prev,
       [name]: type === 'checkbox' ? (e.target as HTMLInputElement).checked : value
@@ -78,12 +153,12 @@ export default function NewArticlePage() {
   const estimatedReadTime = Math.max(1, Math.ceil(formData.content.split(/\s+/).length / 200))
 
   return (
-    <div className="min-h-screen bg-sand-50">
+    <div className="min-h-screen bg-[var(--background)]">
       {/* Header */}
-      <div className="bg-white border-b border-sand-300">
-        <div className="container mx-auto px-4 sm:px-6 lg:px-8 py-6">
+      <div className="bg-[var(--card)] border-b border-[var(--border)]">
+        <div className="container mx-auto px-4 sm:px-6 lg:px-8 py-8">
           <div className="flex items-center justify-between">
-            <div className="flex items-center gap-4">
+            <div className="flex items-center gap-6">
               <Link href="/admin">
                 <Button variant="ghost" size="sm">
                   <ArrowLeft className="w-4 h-4 mr-2" />
@@ -91,8 +166,8 @@ export default function NewArticlePage() {
                 </Button>
               </Link>
               <div>
-                <h1 className="text-3xl font-bold text-earth-900">Write New Article</h1>
-                <p className="text-earth-600 mt-1">Share knowledge about sustainable living</p>
+                <h1 className="text-4xl font-bold text-[var(--foreground)] mb-2">Write New Article</h1>
+                <p className="text-[var(--foreground)]/70 text-lg">Share knowledge about sustainable living</p>
               </div>
             </div>
             <Button variant="outline" size="sm">
@@ -122,7 +197,7 @@ export default function NewArticlePage() {
                     value={formData.title}
                     onChange={handleChange}
                     placeholder="e.g., The Complete Guide to Solar Power for Beginners"
-                    className="text-lg font-semibold"
+                    className="text-2xl font-bold"
                   />
 
                   <Input
@@ -199,16 +274,16 @@ export default function NewArticlePage() {
                       name="featured"
                       checked={formData.featured}
                       onChange={handleChange}
-                      className="w-4 h-4 text-ocean-600 border-sand-300 rounded focus:ring-ocean-500"
+                      className="w-4 h-4 text-[var(--primary)] border-[var(--border)] rounded focus:ring-[var(--primary)]"
                     />
-                    <label htmlFor="featured" className="text-sm font-medium text-earth-900">
+                    <label htmlFor="featured" className="text-sm font-medium text-[var(--foreground)]">
                       Mark as featured article
                     </label>
                   </div>
                 </CardContent>
               </Card>
 
-              {/* Category & Author */}
+              {/* Category */}
               <Card>
                 <CardHeader>
                   <CardTitle>Organization</CardTitle>
@@ -222,34 +297,27 @@ export default function NewArticlePage() {
                     onChange={handleChange}
                     options={[
                       { value: '', label: 'Select a category...', disabled: true },
-                      { value: 'cat-1', label: 'Renewable Energy' },
-                      { value: 'cat-2', label: 'Sustainable Fashion' },
-                      { value: 'cat-3', label: 'Zero Waste Living' },
-                      { value: 'cat-4', label: 'Regenerative Agriculture' },
+                      ...categories.map(cat => ({
+                        value: cat.id,
+                        label: cat.name
+                      }))
                     ]}
                   />
 
-                  <Select
-                    label="Author"
-                    name="authorId"
-                    required
-                    value={formData.authorId}
-                    onChange={handleChange}
-                    options={[
-                      { value: '', label: 'Select author...', disabled: true },
-                      { value: 'author-1', label: 'Sage (Current User)' },
-                      { value: 'author-2', label: 'Guest Writer' },
-                    ]}
-                  />
+                  <div className="p-3 bg-[var(--primary)]/10 border border-[var(--primary)]/30 rounded-lg">
+                    <p className="text-sm text-[var(--foreground)]/70">
+                      <strong className="text-[var(--foreground)]">Author:</strong> {session?.user?.name || 'You'} (Current User)
+                    </p>
+                  </div>
                 </CardContent>
               </Card>
 
               {/* References */}
-              <Card className="border-2 border-ocean-200">
+              <Card className="border-2 border-[var(--primary)]/30">
                 <CardHeader>
                   <div className="flex items-center justify-between">
                     <CardTitle className="flex items-center gap-2">
-                      <LinkIcon className="w-5 h-5 text-ocean-600" />
+                      <LinkIcon className="w-5 h-5 text-[var(--primary)]" />
                       References
                     </CardTitle>
                     <Button
@@ -257,7 +325,7 @@ export default function NewArticlePage() {
                       variant="outline"
                       size="sm"
                       onClick={addReference}
-                      className="text-ocean-600 border-ocean-300 hover:bg-ocean-50"
+                      className="text-[var(--primary)] border-[var(--primary)]/30 hover:bg-[var(--primary)]/10"
                     >
                       <Plus className="w-4 h-4 mr-1" />
                       Add
@@ -266,23 +334,23 @@ export default function NewArticlePage() {
                 </CardHeader>
                 <CardContent className="space-y-4">
                   {references.length === 0 ? (
-                    <p className="text-sm text-earth-500 text-center py-4">
+                    <p className="text-sm text-[var(--foreground)]/60 text-center py-4">
                       No references added yet. Click "Add" to include source links.
                     </p>
                   ) : (
                     references.map((ref, index) => (
                       <div
                         key={ref.id}
-                        className="p-4 bg-sand-50 rounded-lg space-y-3 relative"
+                        className="p-4 bg-[var(--background)] rounded-lg space-y-3 relative border border-[var(--border)]"
                       >
                         <div className="flex items-center justify-between mb-2">
-                          <span className="text-xs font-bold text-ocean-600 uppercase">
+                          <span className="text-xs font-bold text-[var(--primary)] uppercase">
                             Reference #{index + 1}
                           </span>
                           <button
                             type="button"
                             onClick={() => removeReference(ref.id)}
-                            className="p-1 text-terra-600 hover:bg-terra-100 rounded transition-colors"
+                            className="p-1 text-red-600 hover:bg-red-100 rounded transition-colors"
                           >
                             <Trash2 className="w-4 h-4" />
                           </button>
@@ -327,7 +395,7 @@ export default function NewArticlePage() {
                     hint="Comma-separated tags"
                   />
                   <div className="mt-3 flex flex-wrap gap-2">
-                    <span className="px-2 py-1 bg-sand-100 text-earth-700 rounded text-xs">
+                    <span className="px-2 py-1 bg-[var(--background)] text-[var(--foreground)]/80 border border-[var(--border)] rounded text-xs">
                       Example tag
                     </span>
                   </div>
@@ -348,9 +416,9 @@ export default function NewArticlePage() {
               </div>
 
               {/* Development Notice */}
-              <Card className="bg-ocean-50 border-ocean-200">
+              <Card className="bg-[var(--primary)]/10 border-[var(--primary)]/30">
                 <CardContent className="p-4">
-                  <p className="text-xs text-ocean-800">
+                  <p className="text-xs text-[var(--primary)]">
                     <strong>Note:</strong> Rich text editor and image upload coming soon!
                   </p>
                 </CardContent>

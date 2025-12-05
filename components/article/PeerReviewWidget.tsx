@@ -78,9 +78,9 @@ export function PeerReviewWidget({ articleId, peerReviews, onScrollToReviews }: 
   }
 
   return (
-    <Card className="border-4 border-moss-300 dark:border-moss-700 dark:bg-earth-800">
+    <Card className="border-4 border-[var(--border)]">
       <CardHeader className="pb-2">
-        <CardTitle className="text-base flex items-center justify-between text-earth-900 dark:text-sand-100">
+        <CardTitle className="text-base flex items-center justify-between text-[var(--foreground)]">
           <div className="flex items-center gap-2">
             <BookCheck className="w-4 h-4 text-moss-600 dark:text-moss-400" />
             Peer Reviews
@@ -96,13 +96,13 @@ export function PeerReviewWidget({ articleId, peerReviews, onScrollToReviews }: 
       <CardContent className="space-y-4">
         {topLevelReviews.length === 0 ? (
           <div className="text-center py-4">
-            <p className="text-sm text-earth-500 dark:text-sand-400 mb-3">
+            <p className="text-sm text-[var(--foreground)]/60 mb-3">
               No peer reviews yet. Be the first to review!
             </p>
             <Button
               variant="outline"
               size="sm"
-              className="w-full dark:border-earth-600 dark:text-sand-200 dark:hover:bg-earth-700"
+              className="w-full border-[var(--border)] text-[var(--foreground)] hover:bg-[var(--muted)]"
               onClick={handleScrollToReviews}
             >
               Write a Review
@@ -113,31 +113,31 @@ export function PeerReviewWidget({ articleId, peerReviews, onScrollToReviews }: 
             {/* Rating Summary */}
             <div className="space-y-2">
               <div className="flex items-center justify-between">
-                <span className="text-xs font-medium text-earth-600 dark:text-sand-400">Overall</span>
+                <span className="text-xs font-medium text-[var(--foreground)]/70">Overall</span>
                 <StarDisplay rating={averageRating} />
               </div>
               <div className="flex items-center justify-between">
-                <span className="text-xs font-medium text-earth-600 dark:text-sand-400">Accuracy</span>
+                <span className="text-xs font-medium text-[var(--foreground)]/70">Accuracy</span>
                 <StarDisplay rating={averageAccuracy} />
               </div>
               <div className="flex items-center justify-between">
-                <span className="text-xs font-medium text-earth-600 dark:text-sand-400">Clarity</span>
+                <span className="text-xs font-medium text-[var(--foreground)]/70">Clarity</span>
                 <StarDisplay rating={averageClarity} />
               </div>
               <div className="flex items-center justify-between">
-                <span className="text-xs font-medium text-earth-600 dark:text-sand-400">Relevance</span>
+                <span className="text-xs font-medium text-[var(--foreground)]/70">Relevance</span>
                 <StarDisplay rating={averageRelevance} />
               </div>
             </div>
 
             {/* Stats */}
-            <div className="flex items-center justify-center gap-4 py-2 border-t border-sand-200 dark:border-earth-600">
-              <div className="flex items-center gap-1 text-xs text-earth-500 dark:text-sand-400">
+            <div className="flex items-center justify-center gap-4 py-2 border-t border-[var(--border)]">
+              <div className="flex items-center gap-1 text-xs text-[var(--foreground)]/60">
                 <BookCheck className="w-3.5 h-3.5" />
                 <span>{topLevelReviews.length} review{topLevelReviews.length !== 1 ? 's' : ''}</span>
               </div>
               {totalReplies > 0 && (
-                <div className="flex items-center gap-1 text-xs text-earth-500 dark:text-sand-400">
+                <div className="flex items-center gap-1 text-xs text-[var(--foreground)]/60">
                   <MessageSquare className="w-3.5 h-3.5" />
                   <span>{totalReplies} repl{totalReplies !== 1 ? 'ies' : 'y'}</span>
                 </div>
@@ -146,14 +146,14 @@ export function PeerReviewWidget({ articleId, peerReviews, onScrollToReviews }: 
 
             {/* Preview of latest review */}
             {topLevelReviews[0] && (
-              <div className="p-3 bg-moss-50 dark:bg-earth-700 rounded-lg">
+              <div className="p-3 bg-[var(--muted)] rounded-lg">
                 <div className="flex items-center gap-2 mb-1">
-                  <span className="text-xs font-bold text-earth-700 dark:text-sand-300">
+                  <span className="text-xs font-bold text-[var(--foreground)]/80">
                     {topLevelReviews[0].user.name || 'Anonymous'}
                   </span>
                   <StarDisplay rating={topLevelReviews[0].rating || 0} />
                 </div>
-                <p className="text-xs text-earth-600 dark:text-sand-400 line-clamp-2">
+                <p className="text-xs text-[var(--foreground)]/70 line-clamp-2">
                   {topLevelReviews[0].content}
                 </p>
               </div>
@@ -163,7 +163,7 @@ export function PeerReviewWidget({ articleId, peerReviews, onScrollToReviews }: 
             <Button
               variant="outline"
               size="sm"
-              className="w-full dark:border-earth-600 dark:text-sand-200 dark:hover:bg-earth-700"
+              className="w-full border-[var(--border)] text-[var(--foreground)] hover:bg-[var(--muted)]"
               onClick={handleScrollToReviews}
             >
               <span>View All Reviews</span>
