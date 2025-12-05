@@ -1,7 +1,18 @@
 import { NextRequest, NextResponse } from 'next/server'
+import { z } from 'zod'
 import { prisma } from '@/lib/db'
 import { auth } from '@/auth'
 import { pusherServer } from '@/lib/pusher'
+import { rateLimit, rateLimitResponse } from '@/lib/rate-limit'
+
+// Zod schema for message validation
+const messageSchema = z.object({
+  content: z
+    .string()
+    .min(1, 'Message cannot be empty')
+    .max(5000, 'Message cannot exceed 5000 characters')
+    .transform((val) => val.trim()),
+})
 
 // GET /api/messages/[userId] - Get conversation with a specific user
 export async function GET(
@@ -107,16 +118,33 @@ export async function POST(
       )
     }
 
+    // Rate limiting: 30 messages per minute per user
+    const rateLimitResult = await rateLimit(request, {
+      id: `messages:${session.user.id}`,
+      limit: 30,
+      windowSeconds: 60,
+    })
+
+    if (!rateLimitResult.success) {
+      return rateLimitResponse(rateLimitResult.reset)
+    }
+
     const { userId } = await params
     const body = await request.json()
-    const { content } = body
 
-    if (!content || content.trim().length === 0) {
+    // Validate message content with Zod
+    const validation = messageSchema.safeParse(body)
+    if (!validation.success) {
       return NextResponse.json(
-        { success: false, error: 'Message content is required' },
+        {
+          success: false,
+          error: validation.error.issues[0]?.message || 'Invalid message content'
+        },
         { status: 400 }
       )
     }
+
+    const { content } = validation.data
 
     // SECURITY: Prevent sending messages to yourself
     if (userId === session.user.id) {
@@ -142,7 +170,7 @@ export async function POST(
     // Create the message
     const message = await prisma.directMessage.create({
       data: {
-        content: content.trim(),
+        content, // Already trimmed by Zod
         senderId: session.user.id,
         receiverId: userId,
         read: false,

@@ -7,7 +7,6 @@ import {
   User,
   Send,
   Search,
-  MoreVertical,
   Users,
   ArrowRight,
 } from 'lucide-react'
@@ -21,8 +20,6 @@ export default function MessagesPage() {
 
   const [following, setFollowing] = useState<any[]>([])
   const [isLoading, setIsLoading] = useState(true)
-  const [messageContent, setMessageContent] = useState('')
-  const [selectedContact, setSelectedContact] = useState<any>(null)
   const [searchQuery, setSearchQuery] = useState('')
 
   useEffect(() => {
@@ -34,15 +31,12 @@ export default function MessagesPage() {
     fetchFollowing()
   }, [session?.user])
 
-  // Handle pre-selected user from URL parameter
+  // Handle pre-selected user from URL parameter - redirect to conversation
   useEffect(() => {
-    if (preSelectedUserId && following.length > 0) {
-      const userToSelect = following.find(u => u.id === preSelectedUserId)
-      if (userToSelect) {
-        setSelectedContact(userToSelect)
-      }
+    if (preSelectedUserId) {
+      router.push(`/messages/${preSelectedUserId}`)
     }
-  }, [preSelectedUserId, following])
+  }, [preSelectedUserId, router])
 
   const fetchFollowing = async () => {
     try {
@@ -129,12 +123,10 @@ export default function MessagesPage() {
           <div className="flex-1 overflow-y-auto">
             {filteredContacts.length > 0 ? (
               filteredContacts.map(contact => (
-                <button
+                <Link
                   key={contact.id}
-                  onClick={() => setSelectedContact(contact)}
-                  className={`w-full p-4 border-b border-[var(--border)] hover:bg-[var(--muted)] transition-colors text-left ${
-                    selectedContact?.id === contact.id ? 'bg-[var(--primary)]/10' : ''
-                  }`}
+                  href={`/messages/${contact.id}`}
+                  className="w-full p-4 border-b border-[var(--border)] hover:bg-[var(--primary)]/10 transition-colors text-left block group"
                 >
                   <div className="flex items-center gap-3">
                     <div className="w-10 h-10 rounded-full bg-gradient-to-br from-[var(--primary)] to-[var(--accent)] flex items-center justify-center flex-shrink-0">
@@ -156,8 +148,9 @@ export default function MessagesPage() {
                         {contact.headline || contact.bio || 'Member'}
                       </p>
                     </div>
+                    <ArrowRight className="w-4 h-4 text-theme-muted opacity-0 group-hover:opacity-100 transition-opacity" />
                   </div>
-                </button>
+                </Link>
               ))
             ) : (
               <div className="p-6 text-center">
@@ -190,73 +183,36 @@ export default function MessagesPage() {
           </div>
         </div>
 
-        {/* Messenger Panel */}
+        {/* Info Panel */}
         <div className="flex-1 h-full flex flex-col bg-[var(--card)] rounded-2xl border-2 border-theme-accent shadow-lg overflow-hidden">
-          {selectedContact ? (
-            <>
-              {/* Messenger Header */}
-              <div className="p-4 border-b border-[var(--border)] flex items-center justify-between">
-                <div className="flex items-center gap-3">
-                  <div className="w-10 h-10 rounded-full bg-gradient-to-br from-[var(--primary)] to-[var(--accent)] flex items-center justify-center">
-                    {selectedContact.image ? (
-                      <img
-                        src={selectedContact.image}
-                        alt={selectedContact.name}
-                        className="w-full h-full rounded-full object-cover"
-                      />
-                    ) : (
-                      <User className="w-5 h-5 text-white" />
-                    )}
-                  </div>
-                  <div>
-                    <p className="text-sm font-black text-[var(--foreground)]">
-                      {selectedContact.name || 'Anonymous'}
-                    </p>
-                    <p className="text-xs font-medium text-theme-muted">Active now</p>
-                  </div>
-                </div>
-                <button className="w-8 h-8 rounded-full hover:bg-[var(--muted)] flex items-center justify-center transition-colors">
-                  <MoreVertical className="w-5 h-5 text-theme-muted" />
-                </button>
+          <div className="flex-1 flex items-center justify-center p-8">
+            <div className="text-center max-w-md">
+              <div className="w-20 h-20 rounded-full bg-gradient-to-br from-[var(--primary)]/20 to-[var(--accent)]/20 flex items-center justify-center mx-auto mb-6">
+                <Send className="w-10 h-10 text-theme-primary" />
               </div>
-
-              {/* Messages Area */}
-              <div className="flex-1 overflow-y-auto p-4 space-y-4">
-                <div className="text-center">
-                  <p className="text-xs font-bold text-theme-muted">
-                    Start a conversation with {selectedContact.name}
-                  </p>
+              <h2 className="text-xl font-black text-[var(--foreground)] mb-3">
+                Start a Conversation
+              </h2>
+              <p className="text-sm font-medium text-theme-muted mb-6">
+                Select a contact from your network to begin messaging.
+                Your conversations are private and secure.
+              </p>
+              <div className="flex items-center justify-center gap-4 text-xs font-bold text-theme-muted">
+                <div className="flex items-center gap-1">
+                  <div className="w-2 h-2 rounded-full bg-green-500" />
+                  Real-time
                 </div>
-              </div>
-
-              {/* Message Input */}
-              <div className="p-4 border-t border-[var(--border)]">
-                <div className="flex gap-2">
-                  <input
-                    type="text"
-                    value={messageContent}
-                    onChange={(e) => setMessageContent(e.target.value)}
-                    placeholder="Type a message..."
-                    className="flex-1 px-4 py-2 bg-[var(--muted)] border border-[var(--border)] rounded-lg text-sm font-medium text-[var(--foreground)] placeholder-theme-muted focus:outline-none focus:border-theme-primary"
-                  />
-                  <button className="px-6 py-2 bg-[var(--primary)] text-white rounded-lg font-bold text-sm hover:bg-[var(--accent)] transition-colors flex items-center gap-2">
-                    <Send className="w-4 h-4" />
-                    Send
-                  </button>
+                <div className="flex items-center gap-1">
+                  <div className="w-2 h-2 rounded-full bg-blue-500" />
+                  Secure
                 </div>
-              </div>
-            </>
-          ) : (
-            <div className="flex-1 flex items-center justify-center">
-              <div className="text-center">
-                <User className="w-16 h-16 text-theme-muted mx-auto mb-4 opacity-50" />
-                <p className="text-sm font-bold text-theme-muted mb-2">Select a contact to start messaging</p>
-                <p className="text-xs font-medium text-theme-muted">
-                  Choose someone from your contacts list
-                </p>
+                <div className="flex items-center gap-1">
+                  <div className="w-2 h-2 rounded-full bg-purple-500" />
+                  Private
+                </div>
               </div>
             </div>
-          )}
+          </div>
         </div>
       </div>
     </div>

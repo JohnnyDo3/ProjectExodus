@@ -10,11 +10,20 @@ export const pusherServer = new Pusher({
   useTLS: true,
 })
 
-// Client-side Pusher instance
+// Client-side Pusher instance (singleton to prevent multiple connections)
+let pusherClientInstance: PusherClient | null = null
+
 export const getPusherClient = () => {
   if (typeof window === 'undefined') return null
 
-  return new PusherClient(process.env.NEXT_PUBLIC_PUSHER_KEY!, {
+  // Return existing instance if available
+  if (pusherClientInstance) return pusherClientInstance
+
+  pusherClientInstance = new PusherClient(process.env.NEXT_PUBLIC_PUSHER_KEY!, {
     cluster: process.env.NEXT_PUBLIC_PUSHER_CLUSTER!,
+    // Auth endpoint for private channels - CRITICAL for security
+    authEndpoint: '/api/pusher/auth',
   })
+
+  return pusherClientInstance
 }

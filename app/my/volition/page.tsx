@@ -24,10 +24,13 @@ export default function MyVolitionPage() {
 
   // Dashboard layout hook
   const {
+    layouts,
     activeWidgets,
     widgetSettings,
     isCustomizing,
+    onLayoutChange,
     toggleWidget,
+    removeWidget,
     resetToDefaults,
     updateWidgetSettings,
     startCustomizing,
@@ -342,7 +345,13 @@ export default function MyVolitionPage() {
           following={following}
           networkSuggestions={networkSuggestions}
           articles={articles}
+          layouts={layouts}
+          activeWidgets={activeWidgets}
+          widgetSettings={widgetSettings}
           isCustomizing={isCustomizing}
+          onLayoutChange={onLayoutChange}
+          onRemoveWidget={removeWidget}
+          onUpdateWidgetSettings={updateWidgetSettings}
           onDeletePost={(id) =>
             setDeleteModal({
               isOpen: true,

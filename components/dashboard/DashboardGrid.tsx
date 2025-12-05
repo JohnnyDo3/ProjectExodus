@@ -5,8 +5,7 @@ import { Responsive, WidthProvider, Layout, Layouts } from 'react-grid-layout'
 import 'react-grid-layout/css/styles.css'
 import 'react-resizable/css/styles.css'
 import { useIsMobile } from '@/hooks/useIsMobile'
-import { useDashboardLayout } from '@/hooks/useDashboardLayout'
-import { WidgetId, GRID_COLS, GRID_BREAKPOINTS, ROW_HEIGHT } from '@/types/dashboard'
+import { WidgetId, WidgetSettings, GRID_COLS, GRID_BREAKPOINTS, ROW_HEIGHT } from '@/types/dashboard'
 import {
   ProfileWidget,
   DiscussionsWidget,
@@ -31,9 +30,16 @@ interface DashboardGridProps {
   following: any[]
   networkSuggestions: any[]
   articles: any[]
-  // Customization mode
-  isCustomizing?: boolean
-  // Callbacks
+  // Layout state (from useDashboardLayout in parent)
+  layouts: Layouts
+  activeWidgets: WidgetId[]
+  widgetSettings: Record<WidgetId, WidgetSettings>
+  isCustomizing: boolean
+  // Layout callbacks
+  onLayoutChange: (currentLayout: Layout[], allLayouts: Layouts) => void
+  onRemoveWidget: (widgetId: WidgetId) => void
+  onUpdateWidgetSettings: (widgetId: WidgetId, settings: Partial<WidgetSettings>) => void
+  // Data callbacks
   onDeletePost?: (id: string) => void
   onDeleteProject?: (id: string) => void
   onDeleteArticle?: (id: string) => void
@@ -50,7 +56,13 @@ export function DashboardGrid({
   following,
   networkSuggestions,
   articles,
-  isCustomizing = false,
+  layouts,
+  activeWidgets,
+  widgetSettings,
+  isCustomizing,
+  onLayoutChange,
+  onRemoveWidget,
+  onUpdateWidgetSettings,
   onDeletePost,
   onDeleteProject,
   onDeleteArticle,
@@ -58,14 +70,6 @@ export function DashboardGrid({
   onRefetchLearning,
 }: DashboardGridProps) {
   const isMobile = useIsMobile()
-  const {
-    layouts,
-    activeWidgets,
-    widgetSettings,
-    onLayoutChange,
-    removeWidget,
-    updateWidgetSettings,
-  } = useDashboardLayout()
 
   // Only enable interactions in customize mode (and not on mobile)
   const canDrag = isCustomizing && !isMobile
@@ -95,7 +99,7 @@ export function DashboardGrid({
     (widgetId: WidgetId) => {
       const settings = widgetSettings[widgetId] || {}
       // Only allow removal in customize mode
-      const handleRemove = isCustomizing ? () => removeWidget(widgetId) : undefined
+      const handleRemove = isCustomizing ? () => onRemoveWidget(widgetId) : undefined
 
       switch (widgetId) {
         case 'profile':
@@ -114,7 +118,7 @@ export function DashboardGrid({
               onRemove={handleRemove}
               filter={settings.filter || 'recent'}
               onFilterChange={(filter) =>
-                updateWidgetSettings('discussions', { filter })
+                onUpdateWidgetSettings('discussions', { filter })
               }
               onDeletePost={onDeletePost}
             />
@@ -126,7 +130,7 @@ export function DashboardGrid({
               onRemove={handleRemove}
               filter={settings.filter || 'all'}
               onFilterChange={(filter) => {
-                updateWidgetSettings('learning', { filter })
+                onUpdateWidgetSettings('learning', { filter })
                 onRefetchLearning?.()
               }}
             />
@@ -139,7 +143,7 @@ export function DashboardGrid({
               onRemove={handleRemove}
               filter={settings.filter || 'all'}
               onFilterChange={(filter) =>
-                updateWidgetSettings('projects', { filter })
+                onUpdateWidgetSettings('projects', { filter })
               }
               onDeleteProject={onDeleteProject}
             />
@@ -182,8 +186,8 @@ export function DashboardGrid({
       articles,
       widgetSettings,
       isCustomizing,
-      removeWidget,
-      updateWidgetSettings,
+      onRemoveWidget,
+      onUpdateWidgetSettings,
       onDeletePost,
       onDeleteProject,
       onDeleteArticle,
@@ -208,7 +212,7 @@ export function DashboardGrid({
         margin={[16, 16]}
         containerPadding={[16, 16]}
         useCSSTransforms={true}
-        draggableHandle=".react-grid-draghandle"
+        resizeHandles={canResize ? ['se', 'sw', 'ne', 'nw'] : []}
       >
         {activeWidgets.map((widgetId) => (
           <div key={widgetId} className="widget-container">
@@ -235,33 +239,88 @@ export function DashboardGrid({
           display: none;
         }
 
+        /* Customize mode - enable dragging anywhere on widget */
+        .dashboard-grid-container.customizing .widget-container {
+          cursor: grab;
+        }
+
+        .dashboard-grid-container.customizing .widget-container:active {
+          cursor: grabbing;
+        }
+
         /* Only show resize handles in customize mode */
         .dashboard-grid-container.customizing .react-resizable-handle {
           display: block;
           position: absolute;
           width: 20px;
           height: 20px;
+          z-index: 10;
+          background: transparent;
+        }
+
+        /* SE corner (bottom-right) */
+        .dashboard-grid-container.customizing .react-resizable-handle-se {
           bottom: 0;
           right: 0;
           cursor: se-resize;
-          z-index: 10;
         }
 
+        /* SW corner (bottom-left) */
+        .dashboard-grid-container.customizing .react-resizable-handle-sw {
+          bottom: 0;
+          left: 0;
+          cursor: sw-resize;
+        }
+
+        /* NE corner (top-right) */
+        .dashboard-grid-container.customizing .react-resizable-handle-ne {
+          top: 0;
+          right: 0;
+          cursor: ne-resize;
+        }
+
+        /* NW corner (top-left) */
+        .dashboard-grid-container.customizing .react-resizable-handle-nw {
+          top: 0;
+          left: 0;
+          cursor: nw-resize;
+        }
+
+        /* Visual indicator for resize handles */
         .dashboard-grid-container.customizing .react-resizable-handle::after {
           content: '';
           position: absolute;
-          right: 4px;
-          bottom: 4px;
-          width: 8px;
-          height: 8px;
-          border-right: 2px solid var(--primary);
-          border-bottom: 2px solid var(--primary);
-          opacity: 0.5;
-          transition: opacity 0.2s;
+          width: 10px;
+          height: 10px;
+          background: var(--primary);
+          border-radius: 2px;
+          opacity: 0.6;
+          transition: opacity 0.2s, transform 0.2s;
         }
 
         .dashboard-grid-container.customizing .react-resizable-handle:hover::after {
           opacity: 1;
+          transform: scale(1.2);
+        }
+
+        .dashboard-grid-container.customizing .react-resizable-handle-se::after {
+          right: 4px;
+          bottom: 4px;
+        }
+
+        .dashboard-grid-container.customizing .react-resizable-handle-sw::after {
+          left: 4px;
+          bottom: 4px;
+        }
+
+        .dashboard-grid-container.customizing .react-resizable-handle-ne::after {
+          right: 4px;
+          top: 4px;
+        }
+
+        .dashboard-grid-container.customizing .react-resizable-handle-nw::after {
+          left: 4px;
+          top: 4px;
         }
 
         /* Customize mode visual indicator */
@@ -303,6 +362,10 @@ export function DashboardGrid({
 
           .dashboard-grid-container.customizing .widget-container > div {
             outline: none;
+          }
+
+          .dashboard-grid-container.customizing .widget-container {
+            cursor: default;
           }
         }
       `}</style>
