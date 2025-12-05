@@ -190,11 +190,11 @@ export default function NetworkVisualization({
 
   if (!currentUserId) {
     return (
-      <div className="flex items-center justify-center h-[600px] bg-[var(--muted)] rounded-xl border-4 border-theme-secondary">
-        <div className="text-center space-y-4">
-          <Users className="w-16 h-16 text-theme-muted mx-auto opacity-50" />
-          <h3 className="text-2xl font-black text-theme-muted">SIGN IN TO VIEW YOUR NETWORK</h3>
-          <p className="text-lg font-semibold text-theme-muted max-w-md">
+      <div className="flex items-center justify-center h-[300px] sm:h-[400px] md:h-[600px] bg-[var(--muted)] rounded-xl border-2 sm:border-4 border-theme-secondary">
+        <div className="text-center space-y-3 sm:space-y-4 px-4">
+          <Users className="w-10 h-10 sm:w-12 sm:h-12 md:w-16 md:h-16 text-theme-muted mx-auto opacity-50" />
+          <h3 className="text-lg sm:text-xl md:text-2xl font-black text-theme-muted">SIGN IN TO VIEW YOUR NETWORK</h3>
+          <p className="text-sm sm:text-base md:text-lg font-semibold text-theme-muted max-w-md">
             Log in to see your connections visualized as an interactive network graph
           </p>
         </div>

@@ -89,7 +89,7 @@ export default function Home() {
       <FlyingBirds />
 
       {/* Hero Section - BOLD & EXPERIMENTAL */}
-      <section className="relative h-[85vh] flex items-start justify-center overflow-hidden pt-5">
+      <section className="relative min-h-[60vh] h-[85vh] md:h-[85vh] flex items-start justify-center overflow-hidden pt-5">
         {/* Daytime: Sun Ray Gradient Background - Subtle with slight prominence */}
         <div className="absolute inset-0 z-0 day-only" style={{
           background: `
@@ -149,12 +149,12 @@ export default function Home() {
           <NightSkyConstellations starCount={1400} />
         </div>
 
-        {/* Main Hero Content */}
-        <div className="relative z-10 container mx-auto px-4 sm:px-6 lg:px-8 py-4">
+        {/* Main Hero Content - pointer-events-none allows constellation hover through text */}
+        <div className="relative z-10 container mx-auto px-4 sm:px-6 lg:px-8 py-4 pointer-events-none">
           <div className="max-w-6xl mx-auto">
             {/* Massive Hero Title - Ultra Bold - Fits Above Fold */}
-            <h1 className="text-center mb-6" style={{
-              fontSize: 'clamp(2.5rem, 10vw, 7rem)',
+            <h1 className="text-center mb-4 md:mb-6" style={{
+              fontSize: 'clamp(1.75rem, 6vw, 5rem)',
               fontWeight: 900,
               lineHeight: 0.95,
               letterSpacing: '-0.02em'
@@ -173,8 +173,8 @@ export default function Home() {
             </h1>
 
             {/* Subtitle - Large & Bold */}
-            <p className="text-center max-w-4xl mx-auto mb-8 text-[var(--foreground)]" style={{
-              fontSize: 'clamp(1.1rem, 2.5vw, 1.75rem)',
+            <p className="text-center max-w-4xl mx-auto mb-6 md:mb-8 text-[var(--foreground)]" style={{
+              fontSize: 'clamp(0.9rem, 2vw, 1.5rem)',
               fontWeight: 600,
               lineHeight: 1.3
             }}>

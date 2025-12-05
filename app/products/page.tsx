@@ -99,13 +99,13 @@ export default async function ProductsPage() {
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
           <div className="max-w-5xl mx-auto text-center space-y-6">
             <h1 className="text-[var(--foreground)]" style={{
-              fontSize: 'clamp(3rem, 8vw, 6rem)',
+              fontSize: 'clamp(1.75rem, 5vw, 4rem)',
               fontWeight: 900,
               lineHeight: 1
             }}>
               SUSTAINABLE MARKETPLACE
             </h1>
-            <p className="text-2xl font-bold text-theme-muted max-w-3xl mx-auto">
+            <p className="text-lg md:text-xl lg:text-2xl font-bold text-theme-muted max-w-3xl mx-auto">
               Discover <span style={{
                 background: 'linear-gradient(135deg, var(--primary), var(--accent))',
                 WebkitBackgroundClip: 'text',
@@ -143,10 +143,10 @@ export default async function ProductsPage() {
       <section className="py-32 bg-gradient-to-br from-[var(--primary)] via-[var(--accent)] to-[var(--secondary)] text-[var(--primary-foreground)]">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
           <div className="max-w-4xl mx-auto text-center space-y-8">
-            <h2 className="text-6xl font-black">
+            <h2 className="text-3xl md:text-4xl lg:text-5xl font-black">
               CAN'T FIND WHAT YOU'RE LOOKING FOR?
             </h2>
-            <p className="text-2xl font-semibold">
+            <p className="text-lg md:text-xl lg:text-2xl font-semibold">
               Request a product and help us expand our sustainable marketplace
             </p>
             <div className="flex flex-col sm:flex-row gap-6 justify-center">

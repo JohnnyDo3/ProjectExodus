@@ -103,15 +103,14 @@ export function CircularCarousel({ items }: CircularCarouselProps) {
   }
 
   return (
-    <div className="relative w-full overflow-hidden py-20">
+    <div className="relative w-full overflow-hidden py-10 md:py-20">
       {/* Carousel Container */}
       <div
         ref={containerRef}
-        className="relative mx-auto"
+        className="relative mx-auto h-[400px] sm:h-[500px] md:h-[600px]"
         style={{
           perspective: '2000px',
           perspectiveOrigin: 'center center',
-          height: '600px',
         }}
         onMouseEnter={() => setIsAutoPlaying(false)}
         onMouseLeave={() => setIsAutoPlaying(true)}
@@ -135,21 +134,21 @@ export function CircularCarousel({ items }: CircularCarouselProps) {
               >
                 <Card
                   className={`
-                    border-4 bg-[var(--card)]/98 shadow-2xl cursor-pointer
+                    border-2 sm:border-4 bg-[var(--card)]/98 shadow-2xl cursor-pointer
                     ${isCenter ? 'border-[var(--primary)]' : 'border-[var(--background)]'}
                   `}
                   style={{
                     width: '500px',
-                    maxWidth: '90vw',
+                    maxWidth: '85vw',
                     filter: isCenter ? 'none' : 'blur(0.5px)',
                   }}
                   onClick={() => setCurrentIndex(index)}
                 >
-                  <CardContent className="p-8">
-                    <div className="flex items-start gap-6">
+                  <CardContent className="p-4 sm:p-6 md:p-8">
+                    <div className="flex items-start gap-3 sm:gap-4 md:gap-6">
                       {/* Number Badge */}
                       <div
-                        className="flex-shrink-0 w-20 h-20 rounded-full flex items-center justify-center text-[var(--primary-foreground)] text-4xl font-black shadow-xl"
+                        className="flex-shrink-0 w-12 h-12 sm:w-16 sm:h-16 md:w-20 md:h-20 rounded-full flex items-center justify-center text-[var(--primary-foreground)] text-xl sm:text-2xl md:text-4xl font-black shadow-xl"
                         style={{
                           background: `linear-gradient(135deg, ${item.color}, ${item.color}dd)`,
                         }}
@@ -158,17 +157,17 @@ export function CircularCarousel({ items }: CircularCarouselProps) {
                       </div>
 
                       {/* Content */}
-                      <div className="flex-1">
+                      <div className="flex-1 min-w-0">
                         {/* Icon */}
-                        <div className="flex items-center gap-3 mb-3">
-                          <Icon className="w-8 h-8" style={{ color: item.color }} />
-                          <h3 className="text-3xl font-black" style={{ color: item.color }}>
+                        <div className="flex items-center gap-2 sm:gap-3 mb-2 sm:mb-3">
+                          <Icon className="w-5 h-5 sm:w-6 sm:h-6 md:w-8 md:h-8 flex-shrink-0" style={{ color: item.color }} />
+                          <h3 className="text-lg sm:text-xl md:text-3xl font-black truncate" style={{ color: item.color }}>
                             {item.title}
                           </h3>
                         </div>
 
                         {/* Description */}
-                        <p className="text-lg font-bold text-theme-muted leading-relaxed">
+                        <p className="text-sm sm:text-base md:text-lg font-bold text-theme-muted leading-relaxed line-clamp-3">
                           {item.description}
                         </p>
                       </div>
@@ -182,21 +181,21 @@ export function CircularCarousel({ items }: CircularCarouselProps) {
       </div>
 
       {/* Navigation Buttons */}
-      <div className="absolute top-1/2 -translate-y-1/2 left-0 right-0 flex items-center justify-between px-8 pointer-events-none z-50">
+      <div className="absolute top-1/2 -translate-y-1/2 left-0 right-0 flex items-center justify-between px-2 sm:px-4 md:px-8 pointer-events-none z-50">
         <button
           onClick={handlePrevious}
-          className="pointer-events-auto w-16 h-16 rounded-full bg-[var(--card)] border-4 border-[var(--primary)] flex items-center justify-center text-[var(--primary)] hover:bg-[var(--primary)] hover:text-[var(--primary-foreground)] transition-all shadow-2xl transform hover:scale-110"
+          className="pointer-events-auto w-10 h-10 sm:w-12 sm:h-12 md:w-16 md:h-16 rounded-full bg-[var(--card)] border-2 sm:border-4 border-[var(--primary)] flex items-center justify-center text-[var(--primary)] hover:bg-[var(--primary)] hover:text-[var(--primary-foreground)] transition-all shadow-2xl transform hover:scale-110"
           aria-label="Previous"
         >
-          <ChevronLeft className="w-8 h-8" />
+          <ChevronLeft className="w-5 h-5 sm:w-6 sm:h-6 md:w-8 md:h-8" />
         </button>
 
         <button
           onClick={handleNext}
-          className="pointer-events-auto w-16 h-16 rounded-full bg-[var(--card)] border-4 border-[var(--primary)] flex items-center justify-center text-[var(--primary)] hover:bg-[var(--primary)] hover:text-[var(--primary-foreground)] transition-all shadow-2xl transform hover:scale-110"
+          className="pointer-events-auto w-10 h-10 sm:w-12 sm:h-12 md:w-16 md:h-16 rounded-full bg-[var(--card)] border-2 sm:border-4 border-[var(--primary)] flex items-center justify-center text-[var(--primary)] hover:bg-[var(--primary)] hover:text-[var(--primary-foreground)] transition-all shadow-2xl transform hover:scale-110"
           aria-label="Next"
         >
-          <ChevronRight className="w-8 h-8" />
+          <ChevronRight className="w-5 h-5 sm:w-6 sm:h-6 md:w-8 md:h-8" />
         </button>
       </div>
 

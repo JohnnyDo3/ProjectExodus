@@ -329,7 +329,7 @@ export function ProfileColumn({ initialProfile, viewOnly = false, userId }: Prop
   // Show loading state when fetching user data
   if (isLoading) {
     return (
-      <div className="flex-shrink-0 w-80 h-full flex flex-col bg-[var(--card)] rounded-2xl border-2 border-theme-primary shadow-lg items-center justify-center p-8">
+      <div className="flex-shrink-0 w-full md:w-80 h-full flex flex-col bg-[var(--card)] rounded-2xl border-2 border-theme-primary shadow-lg items-center justify-center p-8">
         <div className="w-12 h-12 border-4 border-theme-primary border-t-transparent rounded-full animate-spin mb-4" />
         <p className="text-sm font-bold text-theme-muted">Loading profile...</p>
       </div>
@@ -337,7 +337,7 @@ export function ProfileColumn({ initialProfile, viewOnly = false, userId }: Prop
   }
 
   return (
-    <div className="flex-shrink-0 w-80 h-full flex flex-col bg-[var(--card)] rounded-2xl border-2 border-theme-primary shadow-lg">
+    <div className="flex-shrink-0 w-full md:w-80 h-full flex flex-col bg-[var(--card)] rounded-2xl border-2 border-theme-primary shadow-lg">
       {/* Header */}
       <div className="p-4 border-b border-[var(--border)]">
         <div className="flex items-center justify-between mb-3">

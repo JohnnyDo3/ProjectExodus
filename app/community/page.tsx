@@ -435,7 +435,7 @@ export default async function CommunityPage() {
       <section className="py-4 relative z-10">
         <div className="container mx-auto px-4">
           {/* Compact Community Stats */}
-          <div className="grid grid-cols-4 gap-2 mb-4">
+          <div className="grid grid-cols-2 sm:grid-cols-4 gap-2 mb-4">
             {[
               { icon: Users, value: communityStats.totalMembers, label: 'Members', color: 'text-blue-500' },
               { icon: Rocket, value: communityStats.totalProjects, label: 'Projects', color: 'text-orange-500' },
