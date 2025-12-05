@@ -46,7 +46,18 @@ interface ArticleQueryResult {
 // GET /api/articles - List all articles with filters
 export async function GET(request: NextRequest) {
   try {
-    const session = await auth()
+    console.log('[API /articles] Request received')
+
+    // Auth is optional - used for read tracking only
+    let session = null
+    try {
+      session = await auth()
+      console.log('[API /articles] Auth completed, user:', session?.user?.id || 'anonymous')
+    } catch (authError) {
+      console.error('[API /articles] Auth error (continuing without auth):', authError)
+      // Continue without auth - articles are public
+    }
+
     const searchParams = request.nextUrl.searchParams
     const category = searchParams.get('category')
     const featured = searchParams.get('featured')
@@ -100,6 +111,7 @@ export async function GET(request: NextRequest) {
       orderBy = { publishedAt: 'desc' }
     }
 
+    console.log('[API /articles] Starting database query...')
     const [articles, total] = await Promise.all([
       prisma.article.findMany({
         where,
@@ -131,6 +143,7 @@ export async function GET(request: NextRequest) {
       }) as Promise<ArticleQueryResult[]>,
       prisma.article.count({ where }),
     ])
+    console.log('[API /articles] Database query complete, found', articles.length, 'articles')
 
     // If user is logged in, mark which articles they've read
     let readArticleIds: string[] = []

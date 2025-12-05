@@ -99,6 +99,7 @@ export default function ArticlesPage() {
   const offsetRef = useRef(0)
 
   const fetchArticles = useCallback(async (reset = false) => {
+    console.log('[Articles] fetchArticles called, reset:', reset)
     try {
       setError(null)
       const currentOffset = reset ? 0 : offsetRef.current
@@ -113,21 +114,19 @@ export default function ArticlesPage() {
         params.set('search', searchQuery)
       }
 
-      // Add timeout to prevent infinite hanging
-      const controller = new AbortController()
-      const timeoutId = setTimeout(() => controller.abort(), 15000)
-
-      const res = await fetch(`/api/articles?${params}`, {
-        signal: controller.signal,
-      })
-      clearTimeout(timeoutId)
+      console.log('[Articles] Fetching:', `/api/articles?${params}`)
+      const res = await fetch(`/api/articles?${params}`)
+      console.log('[Articles] Response status:', res.status)
 
       // Check response status
       if (!res.ok) {
+        const errorText = await res.text()
+        console.error('[Articles] Error response:', errorText)
         throw new Error(`Server error: ${res.status}`)
       }
 
       const data = await res.json()
+      console.log('[Articles] Data received, success:', data.success, 'count:', data.data?.length)
 
       if (data.success) {
         if (reset) {
@@ -153,10 +152,11 @@ export default function ArticlesPage() {
         throw new Error(data.error || 'Failed to fetch articles')
       }
     } catch (err) {
-      console.error('Error fetching articles:', err)
+      console.error('[Articles] Catch block error:', err)
       const message = err instanceof Error ? err.message : 'Failed to load articles'
-      setError(message.includes('aborted') ? 'Request timed out. Please try again.' : message)
+      setError(message)
     } finally {
+      console.log('[Articles] Finally block, setting isLoading to false')
       setIsLoading(false)
     }
   }, [activeSort, searchQuery])
