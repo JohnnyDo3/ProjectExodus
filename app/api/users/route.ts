@@ -66,7 +66,7 @@ export async function GET(request: NextRequest) {
     console.log('[API /users] Found', users.length, 'users')
 
     // Filter email/phone based on privacy settings
-    const filteredUsers = users.map(user => {
+    const filteredUsers = users.map((user: typeof users[number]) => {
       const isOwnProfile = session?.user?.id === user.id
 
       return {

@@ -106,7 +106,7 @@ export async function GET(request: NextRequest) {
     for (const [partnerId, partner] of conversationPartners) {
       // Find the latest message for this conversation
       const latestMessage = allMessages.find(
-        (msg) =>
+        (msg: typeof allMessages[number]) =>
           (msg.senderId === session.user.id && msg.receiverId === partnerId) ||
           (msg.senderId === partnerId && msg.receiverId === session.user.id)
       )
