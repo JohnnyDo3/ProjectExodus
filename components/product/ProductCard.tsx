@@ -1,7 +1,6 @@
 import Link from 'next/link'
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/Card'
-import { Button } from '@/components/ui/Button'
-import { Leaf, ExternalLink } from 'lucide-react'
+import { Leaf } from 'lucide-react'
 
 interface ProductCardProps {
   product: {
@@ -29,7 +28,8 @@ export function ProductCard({ product }: ProductCardProps) {
   const score = product.sustainabilityMetric?.sustainabilityScore
 
   return (
-    <Card className="hover-lift h-full flex flex-col border-4 border-theme-primary hover:opacity-90 transition-all transform hover:scale-105 shadow-theme-lg">
+    <Link href={`/products/${product.slug}`} className="block h-full">
+      <Card className="hover-lift h-full flex flex-col border-4 border-theme-primary hover:opacity-90 transition-all transform hover:scale-105 shadow-theme-lg cursor-pointer">
       <CardHeader className="pb-4">
         {product.featured && (
           <div className="flex items-center gap-2 mb-3">
@@ -87,12 +87,11 @@ export function ProductCard({ product }: ProductCardProps) {
             SEE PRICING
           </span>
         )}
-        <Link href={`/products/${product.slug}`}>
-          <Button size="sm" className="font-black shadow-lg px-6">
-            VIEW →
-          </Button>
-        </Link>
+        <span className="px-6 py-2 bg-[var(--primary)] text-[var(--primary-foreground)] rounded-lg font-black text-sm shadow-lg">
+          VIEW →
+        </span>
       </CardFooter>
-    </Card>
+      </Card>
+    </Link>
   )
 }
