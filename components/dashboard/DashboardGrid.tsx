@@ -28,6 +28,8 @@ interface DashboardGridProps {
   following: any[]
   networkSuggestions: any[]
   articles: any[]
+  // Customization mode
+  isCustomizing?: boolean
   // Callbacks
   onDeletePost?: (id: string) => void
   onDeleteProject?: (id: string) => void
@@ -45,6 +47,7 @@ export function DashboardGrid({
   following,
   networkSuggestions,
   articles,
+  isCustomizing = false,
   onDeletePost,
   onDeleteProject,
   onDeleteArticle,
@@ -60,6 +63,10 @@ export function DashboardGrid({
     removeWidget,
     updateWidgetSettings,
   } = useDashboardLayout()
+
+  // Only enable interactions in customize mode (and not on mobile)
+  const canDrag = isCustomizing && !isMobile
+  const canResize = isCustomizing && !isMobile
 
   // Filter layouts to only include active widgets
   const filteredLayouts = useMemo(() => {
@@ -84,7 +91,8 @@ export function DashboardGrid({
   const renderWidget = useCallback(
     (widgetId: WidgetId) => {
       const settings = widgetSettings[widgetId] || {}
-      const handleRemove = () => removeWidget(widgetId)
+      // Only allow removal in customize mode
+      const handleRemove = isCustomizing ? () => removeWidget(widgetId) : undefined
 
       switch (widgetId) {
         case 'profile':
@@ -164,6 +172,7 @@ export function DashboardGrid({
       networkSuggestions,
       articles,
       widgetSettings,
+      isCustomizing,
       removeWidget,
       updateWidgetSettings,
       onDeletePost,
@@ -175,15 +184,15 @@ export function DashboardGrid({
   )
 
   return (
-    <div className="dashboard-grid-container">
+    <div className={`dashboard-grid-container ${isCustomizing ? 'customizing' : ''}`}>
       <ResponsiveGridLayout
         className="layout"
         layouts={filteredLayouts}
         breakpoints={GRID_BREAKPOINTS}
         cols={GRID_COLS}
         rowHeight={ROW_HEIGHT}
-        isDraggable={!isMobile}
-        isResizable={!isMobile}
+        isDraggable={canDrag}
+        isResizable={canResize}
         onLayoutChange={handleLayoutChange}
         compactType="vertical"
         preventCollision={false}
@@ -212,8 +221,14 @@ export function DashboardGrid({
           height: 100%;
         }
 
-        /* Custom resize handle styling */
+        /* Hide resize handles by default */
         .react-resizable-handle {
+          display: none;
+        }
+
+        /* Only show resize handles in customize mode */
+        .dashboard-grid-container.customizing .react-resizable-handle {
+          display: block;
           position: absolute;
           width: 20px;
           height: 20px;
@@ -223,21 +238,27 @@ export function DashboardGrid({
           z-index: 10;
         }
 
-        .react-resizable-handle::after {
+        .dashboard-grid-container.customizing .react-resizable-handle::after {
           content: '';
           position: absolute;
           right: 4px;
           bottom: 4px;
           width: 8px;
           height: 8px;
-          border-right: 2px solid var(--foreground);
-          border-bottom: 2px solid var(--foreground);
-          opacity: 0.3;
+          border-right: 2px solid var(--primary);
+          border-bottom: 2px solid var(--primary);
+          opacity: 0.5;
           transition: opacity 0.2s;
         }
 
-        .react-resizable-handle:hover::after {
-          opacity: 0.6;
+        .dashboard-grid-container.customizing .react-resizable-handle:hover::after {
+          opacity: 1;
+        }
+
+        /* Customize mode visual indicator */
+        .dashboard-grid-container.customizing .widget-container > div {
+          outline: 2px dashed var(--primary);
+          outline-offset: -2px;
         }
 
         /* Grid item placeholder */
@@ -264,11 +285,15 @@ export function DashboardGrid({
         /* Mobile styles */
         @media (max-width: 768px) {
           .react-resizable-handle {
-            display: none;
+            display: none !important;
           }
 
           .dashboard-grid-container {
             padding: 8px;
+          }
+
+          .dashboard-grid-container.customizing .widget-container > div {
+            outline: none;
           }
         }
       `}</style>

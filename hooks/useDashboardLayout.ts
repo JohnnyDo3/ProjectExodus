@@ -110,6 +110,7 @@ export function useDashboardLayout() {
   const [widgetSettings, setWidgetSettings] = useState<Record<WidgetId, WidgetSettings>>(
     () => loadLayoutData().widgetSettings
   )
+  const [isCustomizing, setIsCustomizing] = useState(false)
 
   // Debounce timer ref
   const saveTimeoutRef = useRef<NodeJS.Timeout | null>(null)
@@ -199,10 +200,26 @@ export function useDashboardLayout() {
     return filtered
   }, [layouts, activeWidgets])
 
+  // Toggle customization mode
+  const toggleCustomizing = useCallback(() => {
+    setIsCustomizing((prev) => !prev)
+  }, [])
+
+  // Enter customization mode
+  const startCustomizing = useCallback(() => {
+    setIsCustomizing(true)
+  }, [])
+
+  // Exit customization mode
+  const stopCustomizing = useCallback(() => {
+    setIsCustomizing(false)
+  }, [])
+
   return {
     layouts,
     activeWidgets,
     widgetSettings,
+    isCustomizing,
     onLayoutChange,
     addWidget,
     removeWidget,
@@ -210,5 +227,8 @@ export function useDashboardLayout() {
     updateWidgetSettings,
     resetToDefaults,
     getFilteredLayouts,
+    toggleCustomizing,
+    startCustomizing,
+    stopCustomizing,
   }
 }

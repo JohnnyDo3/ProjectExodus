@@ -2,11 +2,12 @@
 
 import { useSession } from 'next-auth/react'
 import { redirect } from 'next/navigation'
-import { Zap } from 'lucide-react'
+import { Zap, Settings, Check, RotateCcw, Plus, X } from 'lucide-react'
 import { useEffect, useState, useCallback } from 'react'
 import { DashboardGrid } from '@/components/dashboard/DashboardGrid'
-import { WidgetPicker } from '@/components/dashboard/WidgetPicker'
 import { useDashboardLayout } from '@/hooks/useDashboardLayout'
+import { WIDGET_REGISTRY, ALL_WIDGET_IDS } from '@/components/dashboard/widgets'
+import { WidgetId } from '@/types/dashboard'
 import { DeleteConfirmationModal } from '@/components/ui/DeleteConfirmationModal'
 
 export default function MyVolitionPage() {
@@ -25,10 +26,16 @@ export default function MyVolitionPage() {
   const {
     activeWidgets,
     widgetSettings,
+    isCustomizing,
     toggleWidget,
     resetToDefaults,
     updateWidgetSettings,
+    startCustomizing,
+    stopCustomizing,
   } = useDashboardLayout()
+
+  // Widget picker modal state (only used in customize mode)
+  const [showWidgetPicker, setShowWidgetPicker] = useState(false)
 
   // Delete modal state
   const [deleteModal, setDeleteModal] = useState<{
@@ -277,13 +284,52 @@ export default function MyVolitionPage() {
               </div>
             </div>
             <div className="flex items-center gap-2">
-              <span className="text-sm text-white/80 hidden sm:block">
-                {activeWidgets.length} widgets active
-              </span>
+              {!isCustomizing ? (
+                <button
+                  onClick={startCustomizing}
+                  className="flex items-center gap-2 px-3 py-2 bg-white/20 hover:bg-white/30 rounded-lg text-white text-sm font-medium transition-colors"
+                >
+                  <Settings className="w-4 h-4" />
+                  <span className="hidden sm:inline">Customize</span>
+                </button>
+              ) : (
+                <div className="flex items-center gap-2">
+                  <button
+                    onClick={() => setShowWidgetPicker(true)}
+                    className="flex items-center gap-2 px-3 py-2 bg-white/20 hover:bg-white/30 rounded-lg text-white text-sm font-medium transition-colors"
+                  >
+                    <Plus className="w-4 h-4" />
+                    <span className="hidden sm:inline">Add Widget</span>
+                  </button>
+                  <button
+                    onClick={resetToDefaults}
+                    className="flex items-center gap-2 px-3 py-2 bg-white/20 hover:bg-white/30 rounded-lg text-white text-sm font-medium transition-colors"
+                    title="Reset to defaults"
+                  >
+                    <RotateCcw className="w-4 h-4" />
+                  </button>
+                  <button
+                    onClick={stopCustomizing}
+                    className="flex items-center gap-2 px-3 py-2 bg-white hover:bg-white/90 rounded-lg text-[var(--primary)] text-sm font-bold transition-colors"
+                  >
+                    <Check className="w-4 h-4" />
+                    <span className="hidden sm:inline">Done</span>
+                  </button>
+                </div>
+              )}
             </div>
           </div>
         </div>
       </div>
+
+      {/* Customize mode banner */}
+      {isCustomizing && (
+        <div className="bg-[var(--primary)]/10 border-b border-[var(--primary)]/20 py-2 px-4 text-center">
+          <p className="text-sm font-medium text-[var(--primary)]">
+            Customize Mode: Drag widgets to reposition, drag corners to resize, or click X to remove
+          </p>
+        </div>
+      )}
 
       {/* Dashboard Grid */}
       <div className="pb-20">
@@ -296,6 +342,7 @@ export default function MyVolitionPage() {
           following={following}
           networkSuggestions={networkSuggestions}
           articles={articles}
+          isCustomizing={isCustomizing}
           onDeletePost={(id) =>
             setDeleteModal({
               isOpen: true,
@@ -325,12 +372,79 @@ export default function MyVolitionPage() {
         />
       </div>
 
-      {/* Widget Picker FAB */}
-      <WidgetPicker
-        activeWidgets={activeWidgets}
-        onToggleWidget={toggleWidget}
-        onResetToDefaults={resetToDefaults}
-      />
+      {/* Widget Picker Modal */}
+      {showWidgetPicker && (
+        <div
+          className="fixed inset-0 z-[100] bg-black/50 backdrop-blur-sm flex items-center justify-center p-4"
+          onClick={() => setShowWidgetPicker(false)}
+        >
+          <div
+            className="bg-[var(--card)] rounded-2xl shadow-2xl w-full max-w-md overflow-hidden"
+            onClick={(e) => e.stopPropagation()}
+          >
+            {/* Header */}
+            <div className="flex items-center justify-between p-4 border-b border-[var(--border)]">
+              <h2 className="text-lg font-semibold text-[var(--foreground)]">
+                Add Widgets
+              </h2>
+              <button
+                onClick={() => setShowWidgetPicker(false)}
+                className="p-2 rounded-lg hover:bg-[var(--muted)] transition-colors"
+              >
+                <X className="w-5 h-5 text-[var(--foreground)]/60" />
+              </button>
+            </div>
+
+            {/* Widget Grid */}
+            <div className="p-4 max-h-[60vh] overflow-y-auto">
+              <div className="grid grid-cols-2 gap-3">
+                {ALL_WIDGET_IDS.map((widgetId: WidgetId) => {
+                  const widget = WIDGET_REGISTRY[widgetId]
+                  const isActive = activeWidgets.includes(widgetId)
+                  const Icon = widget.icon
+
+                  return (
+                    <button
+                      key={widgetId}
+                      onClick={() => toggleWidget(widgetId)}
+                      className={`
+                        relative p-4 rounded-xl border-2 transition-all text-left
+                        ${
+                          isActive
+                            ? 'border-[var(--primary)] bg-[var(--primary)]/5'
+                            : 'border-[var(--border)] hover:border-[var(--primary)]/50'
+                        }
+                      `}
+                    >
+                      {isActive && (
+                        <div className="absolute top-2 right-2 w-5 h-5 rounded-full bg-[var(--primary)] flex items-center justify-center">
+                          <Check className="w-3 h-3 text-white" />
+                        </div>
+                      )}
+                      <div className="w-10 h-10 rounded-lg bg-gradient-to-br from-[var(--primary)] to-[var(--accent)] flex items-center justify-center mb-3">
+                        <Icon className="w-5 h-5 text-white" />
+                      </div>
+                      <h3 className="text-sm font-semibold text-[var(--foreground)]">
+                        {widget.name}
+                      </h3>
+                      <p className="text-xs text-[var(--foreground)]/60 line-clamp-2">
+                        {widget.description}
+                      </p>
+                    </button>
+                  )
+                })}
+              </div>
+            </div>
+
+            {/* Footer */}
+            <div className="p-4 border-t border-[var(--border)] bg-[var(--muted)]/30">
+              <p className="text-xs text-[var(--foreground)]/60 text-center">
+                {activeWidgets.length} of {ALL_WIDGET_IDS.length} widgets active
+              </p>
+            </div>
+          </div>
+        </div>
+      )}
 
       {/* Delete Confirmation Modal */}
       <DeleteConfirmationModal
