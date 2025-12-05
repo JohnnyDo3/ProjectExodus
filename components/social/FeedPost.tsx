@@ -265,7 +265,7 @@ export function FeedPost({ post, onLike, onComment }: FeedPostProps) {
             </Button>
             {showShareMenu && (
               <div className="absolute bottom-full left-0 right-0 mb-2 bg-[var(--card)] border-2 border-[var(--border)] rounded-lg shadow-xl overflow-hidden z-50">
-                {typeof navigator !== 'undefined' && navigator.share && (
+                {typeof navigator !== 'undefined' && typeof navigator.share === 'function' && (
                   <button
                     onClick={() => handleShare('native')}
                     className="w-full px-4 py-2 text-left text-sm font-bold text-[var(--foreground)] hover:bg-[var(--muted)] transition-colors"

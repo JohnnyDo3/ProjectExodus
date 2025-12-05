@@ -103,7 +103,7 @@ async function getDashboardData(userId: string) {
     })
 
     // Transform to include isLiked boolean
-    const discussionsWithLikeStatus = recentDiscussions.map(d => ({
+    const discussionsWithLikeStatus = recentDiscussions.map((d: typeof recentDiscussions[number]) => ({
       ...d,
       isLiked: d.likes.length > 0,
       likes: undefined // Remove the likes array, keep only isLiked

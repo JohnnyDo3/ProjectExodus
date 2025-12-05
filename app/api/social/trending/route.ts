@@ -21,10 +21,10 @@ export async function GET(request: NextRequest) {
     // Count hashtags from the hashtags array field
     const hashtagCounts: Record<string, number> = {}
 
-    posts.forEach(post => {
+    posts.forEach((post: { hashtags: string[] | null; content: string }) => {
       // Count from hashtags array
       if (post.hashtags && Array.isArray(post.hashtags)) {
-        post.hashtags.forEach(tag => {
+        post.hashtags.forEach((tag: string) => {
           const normalizedTag = tag.toLowerCase().startsWith('#') ? tag.toLowerCase() : `#${tag.toLowerCase()}`
           hashtagCounts[normalizedTag] = (hashtagCounts[normalizedTag] || 0) + 1
         })
@@ -33,7 +33,7 @@ export async function GET(request: NextRequest) {
       // Also extract hashtags from content (in case they weren't stored in the array)
       const contentHashtags = post.content.match(/#\w+/g)
       if (contentHashtags) {
-        contentHashtags.forEach(tag => {
+        contentHashtags.forEach((tag: string) => {
           const normalizedTag = tag.toLowerCase()
           // Only count if not already counted from the array
           if (!post.hashtags?.some(h => h.toLowerCase() === normalizedTag || `#${h.toLowerCase()}` === normalizedTag)) {

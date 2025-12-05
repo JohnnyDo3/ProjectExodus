@@ -52,7 +52,7 @@ export default function Widget({
         <div className={`w-7 h-7 rounded-full bg-gradient-to-br ${iconGradients[theme]} flex items-center justify-center flex-shrink-0`}>
           <Icon className="w-3.5 h-3.5 text-white" />
         </div>
-        <h3 className="text-xs font-black text-[var(--foreground)] flex-1">{title}</h3>
+        <h3 className="text-sm font-semibold text-[var(--foreground)] flex-1">{title}</h3>
         {onToggleCollapse && (
           <button className="text-theme-muted hover:text-[var(--foreground)] transition-colors">
             {collapsed ? '▼' : '▲'}
