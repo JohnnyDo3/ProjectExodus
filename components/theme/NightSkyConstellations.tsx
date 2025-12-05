@@ -176,14 +176,28 @@ export function NightSkyConstellations({ alwaysShow = false, starCount = 1400 }:
     })
 
     // Add random background stars (densely packed and more visible)
+    // Generate stars in a larger circular area to account for rotation
+    // The diagonal of the screen determines how far stars need to extend
+    const diagonal = Math.sqrt(canvas.width * canvas.width + canvas.height * canvas.height)
+    const padding = diagonal * 0.6 // Extra padding beyond the diagonal for smooth rotation
+    const centerX = canvas.width / 2
+    const centerY = canvas.height / 2
+
     for (let i = 0; i < starCount; i++) {
       // Create depth variation: smaller stars (far) to larger stars (near)
       const depthFactor = Math.random()
       const size = depthFactor < 0.7 ? 0.5 + Math.random() * 1.5 : 2 + Math.random() * 3
 
+      // Generate stars in a circular area centered on screen
+      // This ensures stars fill the view no matter the rotation angle
+      const angle = Math.random() * Math.PI * 2
+      const radius = Math.random() * padding
+      const x = centerX + Math.cos(angle) * radius
+      const y = centerY + Math.sin(angle) * radius
+
       newStars.push({
-        x: Math.random() * canvas.width,
-        y: Math.random() * canvas.height,
+        x,
+        y,
         size, // Enhanced size variation for depth perception (0.5-5px)
         brightness: 0.3 + Math.random() * 0.7, // Wide brightness range
         twinkleSpeed: 0.5 + Math.random() * 2,
@@ -330,11 +344,15 @@ export function NightSkyConstellations({ alwaysShow = false, starCount = 1400 }:
 
       // Draw Milky Way band - horizontal arched band across the sky
       // Main galactic band (horizontal with slight arch)
-      const centerY = canvas.height * 0.45 // Slightly above center
+      const milkyCenterY = canvas.height * 0.45 // Slightly above center
       const bandHeight = canvas.height * 0.6 // Wider band for more stunning effect
+      // Extend width to cover rotation (use diagonal + extra)
+      const milkyDiagonal = Math.sqrt(canvas.width * canvas.width + canvas.height * canvas.height)
+      const bandWidth = milkyDiagonal * 1.5
+      const bandStartX = (canvas.width - bandWidth) / 2
 
       // Create vertical gradient for the main band
-      const milkyWayGradient = ctx.createLinearGradient(0, centerY - bandHeight/2, 0, centerY + bandHeight/2)
+      const milkyWayGradient = ctx.createLinearGradient(0, milkyCenterY - bandHeight/2, 0, milkyCenterY + bandHeight/2)
       milkyWayGradient.addColorStop(0, 'rgba(15, 20, 40, 0)')
       milkyWayGradient.addColorStop(0.2, 'rgba(40, 50, 80, 0.12)')
       milkyWayGradient.addColorStop(0.35, 'rgba(70, 80, 120, 0.25)')
@@ -345,11 +363,11 @@ export function NightSkyConstellations({ alwaysShow = false, starCount = 1400 }:
       milkyWayGradient.addColorStop(0.8, 'rgba(40, 50, 80, 0.12)')
       milkyWayGradient.addColorStop(1, 'rgba(15, 20, 40, 0)')
       ctx.fillStyle = milkyWayGradient
-      ctx.fillRect(0, centerY - bandHeight/2, canvas.width, bandHeight)
+      ctx.fillRect(bandStartX, milkyCenterY - bandHeight/2, bandWidth, bandHeight)
 
       // Galactic center - brighter concentrated region with enhanced opacity
       const galacticCenterX = canvas.width * 0.6
-      const galacticCenterY = centerY
+      const galacticCenterY = milkyCenterY
       const centerGradient = ctx.createRadialGradient(
         galacticCenterX, galacticCenterY, 0,
         galacticCenterX, galacticCenterY, canvas.width * 0.25
@@ -368,9 +386,9 @@ export function NightSkyConstellations({ alwaysShow = false, starCount = 1400 }:
 
       // Add dark dust lanes (characteristic rifts in the Milky Way)
       const dustLanes = [
-        { x: canvas.width * 0.3, y: centerY - 50, width: canvas.width * 0.15, height: 80 },
-        { x: canvas.width * 0.55, y: centerY + 30, width: canvas.width * 0.12, height: 60 },
-        { x: canvas.width * 0.75, y: centerY - 20, width: canvas.width * 0.1, height: 70 }
+        { x: canvas.width * 0.3, y: milkyCenterY - 50, width: canvas.width * 0.15, height: 80 },
+        { x: canvas.width * 0.55, y: milkyCenterY + 30, width: canvas.width * 0.12, height: 60 },
+        { x: canvas.width * 0.75, y: milkyCenterY - 20, width: canvas.width * 0.1, height: 70 }
       ]
 
       dustLanes.forEach(lane => {
@@ -387,10 +405,10 @@ export function NightSkyConstellations({ alwaysShow = false, starCount = 1400 }:
 
       // Enhanced nebula regions within the Milky Way - more purple/blue hints
       const nebulas = [
-        { x: canvas.width * 0.35, y: centerY - 60, radius: 180, color: 'rgba(180, 140, 220, 0.08)' },
-        { x: canvas.width * 0.65, y: centerY + 40, radius: 220, color: 'rgba(140, 160, 220, 0.07)' },
-        { x: canvas.width * 0.8, y: centerY - 30, radius: 150, color: 'rgba(160, 150, 210, 0.06)' },
-        { x: canvas.width * 0.45, y: centerY + 70, radius: 190, color: 'rgba(150, 140, 200, 0.05)' }
+        { x: canvas.width * 0.35, y: milkyCenterY - 60, radius: 180, color: 'rgba(180, 140, 220, 0.08)' },
+        { x: canvas.width * 0.65, y: milkyCenterY + 40, radius: 220, color: 'rgba(140, 160, 220, 0.07)' },
+        { x: canvas.width * 0.8, y: milkyCenterY - 30, radius: 150, color: 'rgba(160, 150, 210, 0.06)' },
+        { x: canvas.width * 0.45, y: milkyCenterY + 70, radius: 190, color: 'rgba(150, 140, 200, 0.05)' }
       ]
 
       nebulas.forEach(nebula => {
