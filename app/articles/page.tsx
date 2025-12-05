@@ -79,6 +79,7 @@ export default function ArticlesPage() {
   const [articles, setArticles] = useState<Article[]>([])
   const [featuredArticle, setFeaturedArticle] = useState<Article | null>(null)
   const [isLoading, setIsLoading] = useState(true)
+  const [error, setError] = useState<string | null>(null)
   const [searchQuery, setSearchQuery] = useState('')
   const [activeSort, setActiveSort] = useState<SortOption>('all')
   const [showFilters, setShowFilters] = useState(false)
@@ -99,6 +100,7 @@ export default function ArticlesPage() {
 
   const fetchArticles = useCallback(async (reset = false) => {
     try {
+      setError(null)
       const currentOffset = reset ? 0 : offsetRef.current
       // Map 'all' to 'newest' for the API, since 'all' just means show everything sorted by newest
       const apiSort = activeSort === 'all' ? 'newest' : activeSort
@@ -111,32 +113,49 @@ export default function ArticlesPage() {
         params.set('search', searchQuery)
       }
 
-      const res = await fetch(`/api/articles?${params}`)
+      // Add timeout to prevent infinite hanging
+      const controller = new AbortController()
+      const timeoutId = setTimeout(() => controller.abort(), 15000)
+
+      const res = await fetch(`/api/articles?${params}`, {
+        signal: controller.signal,
+      })
+      clearTimeout(timeoutId)
+
+      // Check response status
+      if (!res.ok) {
+        throw new Error(`Server error: ${res.status}`)
+      }
+
       const data = await res.json()
 
       if (data.success) {
         if (reset) {
           // Set featured article from the first article if it exists and is actually featured
           // Show featured article for 'all' and 'newest' filters when not searching
-          const featured = data.data.find((a: Article) => a.featured)
+          const featured = data.data?.find((a: Article) => a.featured)
           if (featured && (activeSort === 'all' || activeSort === 'newest') && !searchQuery) {
             setFeaturedArticle(featured)
-            setArticles(data.data.filter((a: Article) => a.id !== featured.id))
+            setArticles(data.data?.filter((a: Article) => a.id !== featured.id) || [])
           } else {
             setFeaturedArticle(null)
-            setArticles(data.data)
+            setArticles(data.data || [])
           }
           offsetRef.current = 12
           setOffset(12)
         } else {
-          setArticles(prev => [...prev, ...data.data])
+          setArticles(prev => [...prev, ...(data.data || [])])
           offsetRef.current += 12
           setOffset(offsetRef.current)
         }
-        setHasMore(data.pagination.hasMore)
+        setHasMore(data.pagination?.hasMore ?? false)
+      } else {
+        throw new Error(data.error || 'Failed to fetch articles')
       }
-    } catch (error) {
-      console.error('Error fetching articles:', error)
+    } catch (err) {
+      console.error('Error fetching articles:', err)
+      const message = err instanceof Error ? err.message : 'Failed to load articles'
+      setError(message.includes('aborted') ? 'Request timed out. Please try again.' : message)
     } finally {
       setIsLoading(false)
     }
@@ -256,7 +275,20 @@ export default function ArticlesPage() {
 
       {/* Main Content */}
       <div className="container mx-auto px-4 py-6 sm:py-8">
-        {isLoading && articles.length === 0 ? (
+        {error ? (
+          <div className="flex items-center justify-center py-16 sm:py-20">
+            <div className="text-center">
+              <div className="w-16 h-16 sm:w-20 sm:h-20 mx-auto mb-4 rounded-full bg-red-100 flex items-center justify-center">
+                <BookOpen className="w-8 h-8 sm:w-10 sm:h-10 text-red-500" />
+              </div>
+              <h2 className="text-xl sm:text-2xl font-black text-[var(--foreground)] mb-2">Error Loading Articles</h2>
+              <p className="text-sm sm:text-base text-theme-muted font-medium mb-6">{error}</p>
+              <Button onClick={() => { setError(null); setIsLoading(true); fetchArticles(true); }} className="font-black">
+                Try Again
+              </Button>
+            </div>
+          </div>
+        ) : isLoading && articles.length === 0 ? (
           <div className="flex items-center justify-center py-16 sm:py-20">
             <div className="text-center">
               <Loader2 className="w-10 h-10 sm:w-12 sm:h-12 text-theme-primary animate-spin mx-auto mb-3 sm:mb-4" />
