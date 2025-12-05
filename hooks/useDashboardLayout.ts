@@ -1,7 +1,7 @@
 'use client'
 
 import { useState, useEffect, useCallback, useRef } from 'react'
-import { Layouts } from 'react-grid-layout'
+import { Layout, Layouts } from 'react-grid-layout'
 import {
   DashboardLayoutData,
   WidgetId,
@@ -27,6 +27,9 @@ function getDefaultLayoutData(): DashboardLayoutData {
       projects: { filter: 'all' },
       network: {},
       articles: {},
+      clock: {},
+      quicklinks: {},
+      quote: {},
     },
   }
 }
@@ -165,6 +168,34 @@ export function useDashboardLayout() {
         return prev.filter((id) => id !== widgetId)
       }
       return [...prev, widgetId]
+    })
+
+    // When adding a widget back, ensure it has layout entries
+    setLayouts((prevLayouts) => {
+      const newLayouts = { ...prevLayouts }
+      let needsUpdate = false
+
+      // Check each breakpoint
+      for (const [breakpoint, defaultLayout] of Object.entries(DEFAULT_LAYOUTS)) {
+        const currentLayout = newLayouts[breakpoint] || []
+        const hasWidget = currentLayout.some((item) => item.i === widgetId)
+
+        if (!hasWidget) {
+          // Find the default layout for this widget
+          const defaultItem = (defaultLayout as Layout[]).find((item) => item.i === widgetId)
+          if (defaultItem) {
+            // Add at the bottom of existing widgets
+            const maxY = currentLayout.reduce((max, item) => Math.max(max, item.y + item.h), 0)
+            newLayouts[breakpoint] = [
+              ...currentLayout,
+              { ...defaultItem, y: maxY },
+            ]
+            needsUpdate = true
+          }
+        }
+      }
+
+      return needsUpdate ? newLayouts : prevLayouts
     })
   }, [])
 

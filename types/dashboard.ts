@@ -9,6 +9,9 @@ export type WidgetId =
   | 'projects'
   | 'network'
   | 'articles'
+  | 'clock'
+  | 'quicklinks'
+  | 'quote'
 
 // Widget theme colors
 export type WidgetTheme = 'primary' | 'accent' | 'secondary'
@@ -66,6 +69,9 @@ export const DEFAULT_LAYOUTS: Layouts = {
     { i: 'projects', x: 0, y: 12, w: 4, h: 8, minW: 3, minH: 5 },
     { i: 'network', x: 4, y: 10, w: 4, h: 8, minW: 3, minH: 5 },
     { i: 'articles', x: 8, y: 10, w: 4, h: 8, minW: 3, minH: 5 },
+    { i: 'clock', x: 0, y: 20, w: 3, h: 4, minW: 2, minH: 3 },
+    { i: 'quicklinks', x: 3, y: 20, w: 3, h: 5, minW: 2, minH: 4 },
+    { i: 'quote', x: 6, y: 20, w: 6, h: 4, minW: 3, minH: 3 },
   ],
   md: [
     { i: 'profile', x: 0, y: 0, w: 5, h: 10, minW: 3, minH: 8 },
@@ -74,6 +80,9 @@ export const DEFAULT_LAYOUTS: Layouts = {
     { i: 'projects', x: 5, y: 8, w: 5, h: 6, minW: 3, minH: 5 },
     { i: 'network', x: 0, y: 18, w: 5, h: 6, minW: 3, minH: 5 },
     { i: 'articles', x: 5, y: 14, w: 5, h: 6, minW: 3, minH: 5 },
+    { i: 'clock', x: 0, y: 24, w: 3, h: 4, minW: 2, minH: 3 },
+    { i: 'quicklinks', x: 3, y: 24, w: 4, h: 5, minW: 2, minH: 4 },
+    { i: 'quote', x: 7, y: 24, w: 3, h: 4, minW: 2, minH: 3 },
   ],
   sm: [
     { i: 'profile', x: 0, y: 0, w: 6, h: 10, minW: 3, minH: 8 },
@@ -82,6 +91,9 @@ export const DEFAULT_LAYOUTS: Layouts = {
     { i: 'projects', x: 0, y: 26, w: 6, h: 6, minW: 3, minH: 5 },
     { i: 'network', x: 0, y: 32, w: 6, h: 6, minW: 3, minH: 5 },
     { i: 'articles', x: 0, y: 38, w: 6, h: 6, minW: 3, minH: 5 },
+    { i: 'clock', x: 0, y: 44, w: 3, h: 4, minW: 2, minH: 3 },
+    { i: 'quicklinks', x: 3, y: 44, w: 3, h: 5, minW: 2, minH: 4 },
+    { i: 'quote', x: 0, y: 49, w: 6, h: 4, minW: 3, minH: 3 },
   ],
   xs: [
     { i: 'profile', x: 0, y: 0, w: 4, h: 10, minW: 2, minH: 8 },
@@ -90,6 +102,9 @@ export const DEFAULT_LAYOUTS: Layouts = {
     { i: 'projects', x: 0, y: 26, w: 4, h: 6, minW: 2, minH: 5 },
     { i: 'network', x: 0, y: 32, w: 4, h: 6, minW: 2, minH: 5 },
     { i: 'articles', x: 0, y: 38, w: 4, h: 6, minW: 2, minH: 5 },
+    { i: 'clock', x: 0, y: 44, w: 4, h: 4, minW: 2, minH: 3 },
+    { i: 'quicklinks', x: 0, y: 48, w: 4, h: 5, minW: 2, minH: 4 },
+    { i: 'quote', x: 0, y: 53, w: 4, h: 4, minW: 2, minH: 3 },
   ],
   xxs: [
     { i: 'profile', x: 0, y: 0, w: 2, h: 10, minW: 2, minH: 8 },
@@ -98,6 +113,9 @@ export const DEFAULT_LAYOUTS: Layouts = {
     { i: 'projects', x: 0, y: 26, w: 2, h: 6, minW: 2, minH: 5 },
     { i: 'network', x: 0, y: 32, w: 2, h: 6, minW: 2, minH: 5 },
     { i: 'articles', x: 0, y: 38, w: 2, h: 6, minW: 2, minH: 5 },
+    { i: 'clock', x: 0, y: 44, w: 2, h: 4, minW: 2, minH: 3 },
+    { i: 'quicklinks', x: 0, y: 48, w: 2, h: 5, minW: 2, minH: 4 },
+    { i: 'quote', x: 0, y: 53, w: 2, h: 4, minW: 2, minH: 3 },
   ],
 }
 

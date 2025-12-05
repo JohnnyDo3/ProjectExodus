@@ -14,6 +14,9 @@ import {
   ProjectsWidget,
   NetworkWidget,
   ArticlesWidget,
+  ClockWidget,
+  QuickLinksWidget,
+  QuoteWidget,
 } from './widgets'
 
 const ResponsiveGridLayout = WidthProvider(Responsive)
@@ -158,6 +161,12 @@ export function DashboardGrid({
               onDeleteArticle={onDeleteArticle}
             />
           )
+        case 'clock':
+          return <ClockWidget onRemove={handleRemove} />
+        case 'quicklinks':
+          return <QuickLinksWidget onRemove={handleRemove} />
+        case 'quote':
+          return <QuoteWidget onRemove={handleRemove} />
         default:
           return null
       }

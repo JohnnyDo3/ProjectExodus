@@ -5,6 +5,9 @@ import {
   Briefcase,
   Users,
   FileText,
+  Clock,
+  Link2,
+  Quote,
 } from 'lucide-react'
 import { WidgetDefinition, WidgetId } from '@/types/dashboard'
 
@@ -15,6 +18,9 @@ export { LearningWidget } from './LearningWidget'
 export { ProjectsWidget } from './ProjectsWidget'
 export { NetworkWidget } from './NetworkWidget'
 export { ArticlesWidget } from './ArticlesWidget'
+export { ClockWidget } from './ClockWidget'
+export { QuickLinksWidget } from './QuickLinksWidget'
+export { QuoteWidget } from './QuoteWidget'
 
 // Widget registry with definitions
 export const WIDGET_REGISTRY: Record<WidgetId, WidgetDefinition> = {
@@ -71,6 +77,33 @@ export const WIDGET_REGISTRY: Record<WidgetId, WidgetDefinition> = {
     defaultSize: { w: 4, h: 8 },
     minSize: { w: 3, h: 5 },
     theme: 'accent',
+  },
+  clock: {
+    id: 'clock',
+    name: 'Clock',
+    description: 'Current time and date',
+    icon: Clock,
+    defaultSize: { w: 3, h: 4 },
+    minSize: { w: 2, h: 3 },
+    theme: 'accent',
+  },
+  quicklinks: {
+    id: 'quicklinks',
+    name: 'Quick Links',
+    description: 'Fast access to common pages',
+    icon: Link2,
+    defaultSize: { w: 3, h: 5 },
+    minSize: { w: 2, h: 4 },
+    theme: 'secondary',
+  },
+  quote: {
+    id: 'quote',
+    name: 'Daily Inspiration',
+    description: 'Inspirational quotes for your day',
+    icon: Quote,
+    defaultSize: { w: 6, h: 4 },
+    minSize: { w: 3, h: 3 },
+    theme: 'primary',
   },
 }
 
