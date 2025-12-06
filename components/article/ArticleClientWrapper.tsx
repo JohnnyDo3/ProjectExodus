@@ -138,6 +138,7 @@ export function ArticleClientWrapper({ article }: ArticleClientWrapperProps) {
               articleId={article.id}
               articleAuthorId={article.authorId}
               initialReviews={reviews}
+              onExpand={() => setIsPanelOpen(true)}
             />
           </div>
 
@@ -216,6 +217,7 @@ export function ArticleClientWrapper({ article }: ArticleClientWrapperProps) {
           <PeerReviewWidget
             articleId={article.id}
             peerReviews={reviews}
+            onExpand={() => setIsPanelOpen(true)}
           />
 
           {/* Author Business Card */}

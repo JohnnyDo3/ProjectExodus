@@ -2,7 +2,7 @@
 
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/Card'
 import { Button } from '@/components/ui/Button'
-import { Star, Users, MessageSquare, ChevronDown } from 'lucide-react'
+import { Star, Users, MessageSquare, ChevronDown, Maximize2 } from 'lucide-react'
 
 interface PeerReview {
   id: string
@@ -24,9 +24,10 @@ interface PeerReviewWidgetProps {
   articleId: string
   peerReviews: PeerReview[]
   onScrollToReviews?: () => void
+  onExpand?: () => void
 }
 
-export function PeerReviewWidget({ articleId, peerReviews, onScrollToReviews }: PeerReviewWidgetProps) {
+export function PeerReviewWidget({ articleId, peerReviews, onScrollToReviews, onExpand }: PeerReviewWidgetProps) {
   // Filter to only top-level reviews (not replies)
   const topLevelReviews = peerReviews.filter(r => !r.parentId && r.rating !== null)
   const totalReplies = peerReviews.filter(r => r.parentId !== null).length
@@ -85,12 +86,19 @@ export function PeerReviewWidget({ articleId, peerReviews, onScrollToReviews }: 
             <Users className="w-4 h-4 text-moss-600 dark:text-moss-400" />
             Round Table Talk
           </div>
-          {topLevelReviews.length > 0 && (
-            <div className="flex items-center gap-1">
-              <Star className="w-4 h-4 fill-terra-500 text-terra-500" />
-              <span className="font-black text-sm">{averageRating.toFixed(1)}</span>
-            </div>
-          )}
+          <div className="flex items-center gap-2">
+            {topLevelReviews.length > 0 && (
+              <div className="flex items-center gap-1">
+                <Star className="w-4 h-4 fill-terra-500 text-terra-500" />
+                <span className="font-black text-sm">{averageRating.toFixed(1)}</span>
+              </div>
+            )}
+            {onExpand && (
+              <Button size="sm" variant="ghost" onClick={onExpand} title="Expand to read article while discussing" className="p-1 h-auto">
+                <Maximize2 className="w-4 h-4" />
+              </Button>
+            )}
+          </div>
         </CardTitle>
       </CardHeader>
       <CardContent className="space-y-4">

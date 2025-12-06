@@ -85,8 +85,8 @@ export function RoundTablePanel({
     onReviewsChange(reviews)
   }, [reviews, onReviewsChange])
 
-  // Check if user has already reviewed
-  const userHasReviewed = reviews.some(r => r.user.id === session?.user?.id && !r.parentId)
+  // Check if user has already reviewed (only top-level reviews with ratings count)
+  const userHasReviewed = reviews.some(r => r.user.id === session?.user?.id && !r.parentId && r.rating !== null)
 
   // Handle text selection for quoting
   const handleTextSelection = useCallback(() => {
@@ -420,7 +420,13 @@ export function RoundTablePanel({
         {/* Left Side - Article Content */}
         <div className="w-1/2 h-full bg-[var(--background)] overflow-hidden flex flex-col">
           <div className="flex items-center justify-between p-4 border-b border-[var(--border)]">
-            <h2 className="font-bold text-[var(--foreground)]">Article</h2>
+            <div className="flex items-center gap-3">
+              <Button variant="outline" size="sm" onClick={onClose} className="flex items-center gap-1">
+                <X className="w-4 h-4" />
+                Close
+              </Button>
+              <h2 className="font-bold text-[var(--foreground)]">Article</h2>
+            </div>
             {quotedText && (
               <Button size="sm" onClick={insertQuote} className="flex items-center gap-1">
                 <Quote className="w-4 h-4" />
@@ -446,8 +452,9 @@ export function RoundTablePanel({
               <h2 className="font-bold text-[var(--foreground)]">Round Table Talk</h2>
               <span className="text-sm text-theme-muted">({topLevelReviews.length})</span>
             </div>
-            <Button variant="outline" size="sm" onClick={onClose}>
+            <Button variant="outline" size="sm" onClick={onClose} className="flex items-center gap-1">
               <X className="w-4 h-4" />
+              Close
             </Button>
           </div>
 

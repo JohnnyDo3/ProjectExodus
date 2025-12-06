@@ -3,7 +3,7 @@
 import { useState, useCallback } from 'react'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/Card'
 import { Button } from '@/components/ui/Button'
-import { Star, MessageSquare, Reply, Trash2, User, Award, ChevronDown, ChevronUp, ThumbsUp, Users } from 'lucide-react'
+import { Star, MessageSquare, Reply, Trash2, User, Award, ChevronDown, ChevronUp, ThumbsUp, Users, Maximize2 } from 'lucide-react'
 import { useSession } from 'next-auth/react'
 import { formatDistanceToNow } from 'date-fns'
 
@@ -30,6 +30,7 @@ interface ArticleReviewSectionProps {
   articleId: string
   articleAuthorId: string
   initialReviews: PeerReview[]
+  onExpand?: () => void
 }
 
 // Recursive function to build tree from flat list
@@ -42,7 +43,7 @@ function buildReviewTree(reviews: PeerReview[], parentId: string | null = null):
     }))
 }
 
-export function ArticleReviewSection({ articleId, articleAuthorId, initialReviews }: ArticleReviewSectionProps) {
+export function ArticleReviewSection({ articleId, articleAuthorId, initialReviews, onExpand }: ArticleReviewSectionProps) {
   const { data: session } = useSession()
   const [reviews, setReviews] = useState<PeerReview[]>(() => buildReviewTree(initialReviews))
   const [showReviewForm, setShowReviewForm] = useState(false)
@@ -61,8 +62,9 @@ export function ArticleReviewSection({ articleId, articleAuthorId, initialReview
 
   const [replyContent, setReplyContent] = useState('')
 
-  // Check if user has already reviewed
-  const userHasReviewed = reviews.some(r => r.user.id === session?.user?.id)
+  // Check if user has already submitted a TOP-LEVEL review (not replies)
+  // Only check root-level items that have a rating (top-level reviews have ratings, replies don't)
+  const userHasReviewed = reviews.some(r => r.user.id === session?.user?.id && r.parentId === null && r.rating !== null)
 
   // Handle like toggle
   const handleLikeToggle = async (reviewId: string) => {
@@ -412,11 +414,19 @@ export function ArticleReviewSection({ articleId, articleAuthorId, initialReview
               <Users className="w-5 h-5" />
               Round Table Talk ({topLevelReviews.length})
             </div>
-            {session && !userHasReviewed && !showReviewForm && (
-              <Button size="sm" onClick={() => setShowReviewForm(true)}>
-                Join the Discussion
-              </Button>
-            )}
+            <div className="flex items-center gap-2">
+              {onExpand && (
+                <Button size="sm" variant="outline" onClick={onExpand} title="Expand to read article while discussing">
+                  <Maximize2 className="w-4 h-4 mr-1" />
+                  Expand
+                </Button>
+              )}
+              {session && !userHasReviewed && !showReviewForm && (
+                <Button size="sm" onClick={() => setShowReviewForm(true)}>
+                  Join the Discussion
+                </Button>
+              )}
+            </div>
           </CardTitle>
         </CardHeader>
         <CardContent>
