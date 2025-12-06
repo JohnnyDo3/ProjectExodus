@@ -62,10 +62,6 @@ export function ArticleReviewSection({ articleId, articleAuthorId, initialReview
 
   const [replyContent, setReplyContent] = useState('')
 
-  // Check if user has already submitted a TOP-LEVEL review (not replies)
-  // Only check root-level items that have a rating (top-level reviews have ratings, replies don't)
-  const userHasReviewed = reviews.some(r => r.user.id === session?.user?.id && r.parentId === null && r.rating !== null)
-
   // Handle like toggle
   const handleLikeToggle = async (reviewId: string) => {
     if (!session) return
@@ -421,7 +417,7 @@ export function ArticleReviewSection({ articleId, articleAuthorId, initialReview
                   Expand
                 </Button>
               )}
-              {session && !userHasReviewed && !showReviewForm && (
+              {session && !showReviewForm && (
                 <Button size="sm" onClick={() => setShowReviewForm(true)}>
                   Join the Discussion
                 </Button>
@@ -489,13 +485,6 @@ export function ArticleReviewSection({ articleId, articleAuthorId, initialReview
                 </Button>
               </div>
             </form>
-          )}
-
-          {/* Already Reviewed Notice */}
-          {session && userHasReviewed && !showReviewForm && (
-            <div className="mb-4 p-3 bg-[var(--primary)]/10 border border-[var(--primary)]/30 rounded-lg text-[var(--primary)] text-sm">
-              You have already shared your thoughts on this article. You can still like and reply to others!
-            </div>
           )}
 
           {/* Sign in prompt */}

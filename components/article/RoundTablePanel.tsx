@@ -85,9 +85,6 @@ export function RoundTablePanel({
     onReviewsChange(reviews)
   }, [reviews, onReviewsChange])
 
-  // Check if user has already reviewed (only top-level reviews with ratings count)
-  const userHasReviewed = reviews.some(r => r.user.id === session?.user?.id && !r.parentId && r.rating !== null)
-
   // Handle text selection for quoting
   const handleTextSelection = useCallback(() => {
     const selection = window.getSelection()
@@ -467,7 +464,7 @@ export function RoundTablePanel({
             )}
 
             {/* Review Form */}
-            {session && !userHasReviewed && (
+            {session && (
               <div className="mb-4">
                 {!showReviewForm ? (
                   <Button className="w-full" onClick={() => setShowReviewForm(true)}>
@@ -520,12 +517,6 @@ export function RoundTablePanel({
                     </div>
                   </form>
                 )}
-              </div>
-            )}
-
-            {session && userHasReviewed && (
-              <div className="mb-4 p-2 bg-[var(--primary)]/10 border border-[var(--primary)]/30 rounded text-[var(--primary)] text-xs">
-                You've shared your thoughts. Like and reply to continue the discussion!
               </div>
             )}
 
