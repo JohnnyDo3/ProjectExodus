@@ -35,6 +35,17 @@
 - [x] Connect form to API
 - [x] UI improvements (better title, auto-slug)
 
+### Phase 6: Article Page Overhaul (Session 2)
+- [x] Install TipTap and Cloudinary packages
+- [x] Create TipTap rich text editor component
+- [x] Create step progress indicator (Title -> Content -> Settings -> Review)
+- [x] Create cover image upload with Cloudinary integration
+- [x] Create publish confirmation dialog
+- [x] Add auto-save to localStorage
+- [x] Add delete draft functionality
+- [x] Live preview mode
+- [x] Complete page rebuild with all features
+
 ### Final
 - [x] Build passes
 - [x] All features tested
@@ -47,12 +58,19 @@
 5. `components/notifications/NotificationBell.tsx` - Bell with dropdown
 6. `app/notifications/page.tsx` - Full notifications page
 7. `app/api/article-categories/route.ts` - Categories API
+8. `components/editor/TipTapEditor.tsx` - Rich text editor
+9. `components/article/StepProgress.tsx` - Step indicator
+10. `components/article/CoverImageUpload.tsx` - Cloudinary upload
+11. `components/article/PublishConfirmDialog.tsx` - Confirmation dialog
+12. `lib/cloudinary.ts` - Cloudinary helper
+13. `app/api/upload/route.ts` - Image upload API
 
 ## Files Modified
 1. `components/article/PeerReviewWidget.tsx` - Theme colors
 2. `components/article/ArticleReviewSection.tsx` - Theme colors
 3. `components/layout/Header.tsx` - NotificationBell + mobile link
-4. `app/admin/articles/new/page.tsx` - Full modernization
+4. `app/admin/articles/new/page.tsx` - Complete redesign with steps, TipTap, uploads
+5. `.env.example` - Added Cloudinary config
 
 ## Work Log
 
@@ -63,4 +81,15 @@
 - Phase 3: Created NotificationBell and notifications page (parallel agents)
 - Phase 4: Integrated bell into Header
 - Phase 5: Modernized article publish page
+- Build passes successfully
+
+### Session 2 - December 6, 2025
+- Complete overhaul of article publish page
+- Added TipTap rich text editor with full toolbar
+- Added 4-step progress flow (Title, Content, Settings, Review)
+- Added Cloudinary image uploads for cover images
+- Added auto-save to localStorage (drafts persist)
+- Added delete draft functionality
+- Added live preview toggle
+- Added publish confirmation dialog
 - Build passes successfully

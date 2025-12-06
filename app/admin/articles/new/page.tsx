@@ -1,17 +1,49 @@
 'use client'
 
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useCallback, useRef } from 'react'
 import { useSession } from 'next-auth/react'
 import { useRouter } from 'next/navigation'
+import dynamic from 'next/dynamic'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/Card'
 import { Button } from '@/components/ui/Button'
 import { Input } from '@/components/ui/Input'
 import { Select } from '@/components/ui/Select'
 import { Textarea } from '@/components/ui/Textarea'
-import { ArrowLeft, Save, Eye, Plus, Trash2, Link as LinkIcon } from 'lucide-react'
-import { BackButton } from '@/components/navigation/BackButton'
+import StepProgress from '@/components/article/StepProgress'
+import CoverImageUpload from '@/components/article/CoverImageUpload'
+import PublishConfirmDialog from '@/components/article/PublishConfirmDialog'
+import {
+  ArrowLeft,
+  ArrowRight,
+  Save,
+  Eye,
+  EyeOff,
+  Plus,
+  Trash2,
+  Link as LinkIcon,
+  Send,
+  Clock,
+  CheckCircle,
+  AlertCircle,
+} from 'lucide-react'
 import Link from 'next/link'
 import toast from 'react-hot-toast'
+
+// Dynamically import TipTap editor to avoid SSR issues
+const TipTapEditor = dynamic(
+  () => import('@/components/editor/TipTapEditor'),
+  {
+    ssr: false,
+    loading: () => (
+      <div className="flex items-center justify-center h-[400px] bg-[var(--muted)] rounded-lg">
+        <div className="text-center">
+          <div className="w-8 h-8 border-3 border-[var(--muted)] border-t-[var(--primary)] rounded-full animate-spin mx-auto mb-3"></div>
+          <p className="text-[var(--muted-foreground)]">Loading editor...</p>
+        </div>
+      </div>
+    ),
+  }
+)
 
 interface Reference {
   id: string
@@ -28,10 +60,27 @@ interface Category {
   icon?: string
 }
 
+const STEPS = [
+  { id: 'title', label: 'Title' },
+  { id: 'content', label: 'Content' },
+  { id: 'settings', label: 'Settings' },
+  { id: 'review', label: 'Review' },
+]
+
+const AUTO_SAVE_DELAY = 3000 // 3 seconds
+
 export default function NewArticlePage() {
   const { data: session } = useSession()
   const router = useRouter()
+
+  // Step state
+  const [currentStep, setCurrentStep] = useState(0)
+
+  // Form state
   const [saving, setSaving] = useState(false)
+  const [autoSaveStatus, setAutoSaveStatus] = useState<
+    'idle' | 'saving' | 'saved' | 'error'
+  >('idle')
   const [categories, setCategories] = useState<Category[]>([])
   const [references, setReferences] = useState<Reference[]>([])
   const [formData, setFormData] = useState({
@@ -39,12 +88,24 @@ export default function NewArticlePage() {
     slug: '',
     excerpt: '',
     content: '',
+    coverImage: '',
     categoryId: '',
     readTime: '',
     featured: false,
     status: 'DRAFT',
+    tags: '',
   })
   const [slugManuallyEdited, setSlugManuallyEdited] = useState(false)
+
+  // Preview state
+  const [showPreview, setShowPreview] = useState(false)
+
+  // Dialog state
+  const [showPublishDialog, setShowPublishDialog] = useState(false)
+
+  // Auto-save timer
+  const autoSaveTimer = useRef<NodeJS.Timeout | null>(null)
+  const draftId = useRef<string | null>(null)
 
   // Fetch categories on mount
   useEffect(() => {
@@ -53,40 +114,96 @@ export default function NewArticlePage() {
       .then(data => {
         if (data.success) {
           setCategories(data.data)
-        } else {
-          toast.error('Failed to load categories')
         }
       })
       .catch(error => {
         console.error('Error fetching categories:', error)
-        toast.error('Failed to load categories')
       })
+
+    // Load draft from localStorage
+    const savedDraft = localStorage.getItem('article-draft')
+    if (savedDraft) {
+      try {
+        const draft = JSON.parse(savedDraft)
+        setFormData(draft.formData)
+        setReferences(draft.references || [])
+        draftId.current = draft.draftId
+        toast.success('Draft restored')
+      } catch {
+        // Invalid draft data
+      }
+    }
   }, [])
 
   // Generate slug from title
   const generateSlug = (title: string) => {
-    return title.toLowerCase()
+    return title
+      .toLowerCase()
       .replace(/[^a-z0-9\s-]/g, '')
       .replace(/\s+/g, '-')
       .replace(/-+/g, '-')
       .trim()
   }
 
-  // Auto-generate slug when title changes (unless manually edited)
+  // Auto-generate slug when title changes
   useEffect(() => {
     if (formData.title && !slugManuallyEdited) {
       setFormData(prev => ({ ...prev, slug: generateSlug(formData.title) }))
     }
   }, [formData.title, slugManuallyEdited])
 
+  // Auto-save to localStorage
+  const autoSave = useCallback(() => {
+    if (!formData.title && !formData.content) return
+
+    setAutoSaveStatus('saving')
+
+    const draft = {
+      formData,
+      references,
+      draftId: draftId.current || crypto.randomUUID(),
+      savedAt: new Date().toISOString(),
+    }
+
+    try {
+      localStorage.setItem('article-draft', JSON.stringify(draft))
+      draftId.current = draft.draftId
+      setAutoSaveStatus('saved')
+
+      // Reset to idle after 3 seconds
+      setTimeout(() => setAutoSaveStatus('idle'), 3000)
+    } catch {
+      setAutoSaveStatus('error')
+    }
+  }, [formData, references])
+
+  // Trigger auto-save when form changes
+  useEffect(() => {
+    if (autoSaveTimer.current) {
+      clearTimeout(autoSaveTimer.current)
+    }
+
+    autoSaveTimer.current = setTimeout(autoSave, AUTO_SAVE_DELAY)
+
+    return () => {
+      if (autoSaveTimer.current) {
+        clearTimeout(autoSaveTimer.current)
+      }
+    }
+  }, [formData, references, autoSave])
+
   const addReference = () => {
     setReferences(prev => [
       ...prev,
-      { id: crypto.randomUUID(), title: '', url: '', description: '' }
+      { id: crypto.randomUUID(), title: '', url: '', description: '' },
     ])
   }
 
-  const updateReference = (id: string, field: keyof Reference, value: string) => {
+  const updateReference = (
+    id: string,
+    field: keyof Reference,
+    value: string
+  ) => {
     setReferences(prev =>
       prev.map(ref => (ref.id === id ? { ...ref, [field]: value } : ref))
     )
@@ -96,33 +213,44 @@ export default function NewArticlePage() {
     setReferences(prev => prev.filter(ref => ref.id !== id))
   }
 
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault()
-
+  const handleSubmit = async (publish: boolean = false) => {
     if (!session?.user?.id) {
       toast.error('You must be logged in to create an article')
       return
     }
 
     setSaving(true)
+    setShowPublishDialog(false)
 
     try {
+      const status = publish ? 'PUBLISHED' : 'DRAFT'
       const res = await fetch('/api/articles', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
           ...formData,
+          status,
           authorId: session.user.id,
-          readTime: formData.readTime ? parseInt(formData.readTime) : estimatedReadTime,
-          references: references.filter(r => r.title && r.url)
-        })
+          readTime: formData.readTime
+            ? parseInt(formData.readTime)
+            : estimatedReadTime,
+          references: references.filter(r => r.title && r.url),
+          tags: formData.tags
+            .split(',')
+            .map(t => t.trim())
+            .filter(Boolean),
+        }),
       })
 
       const data = await res.json()
 
       if (data.success) {
-        toast.success(formData.status === 'PUBLISHED' ? 'Article published successfully!' : 'Draft saved successfully!')
-        // Redirect to the article page or admin dashboard
+        // Clear draft
+        localStorage.removeItem('article-draft')
+
+        toast.success(
+          publish ? 'Article published!' : 'Draft saved!'
+        )
         router.push(`/articles/${data.data.slug}`)
       } else {
         toast.error(data.error || 'Failed to create article')
@@ -135,127 +263,339 @@ export default function NewArticlePage() {
     }
   }
 
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
+  const handleDelete = () => {
+    if (
+      confirm(
+        'Are you sure you want to delete this draft? This cannot be undone.'
+      )
+    ) {
+      localStorage.removeItem('article-draft')
+      setFormData({
+        title: '',
+        slug: '',
+        excerpt: '',
+        content: '',
+        coverImage: '',
+        categoryId: '',
+        readTime: '',
+        featured: false,
+        status: 'DRAFT',
+        tags: '',
+      })
+      setReferences([])
+      setCurrentStep(0)
+      toast.success('Draft deleted')
+    }
+  }
+
+  const handleChange = (
+    e: React.ChangeEvent<
+      HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement
+    >
+  ) => {
     const { name, value, type } = e.target
 
-    // Track if slug is manually edited
     if (name === 'slug') {
       setSlugManuallyEdited(true)
     }
 
     setFormData(prev => ({
       ...prev,
-      [name]: type === 'checkbox' ? (e.target as HTMLInputElement).checked : value
+      [name]:
+        type === 'checkbox' ? (e.target as HTMLInputElement).checked : value,
     }))
   }
 
+  const handleContentChange = (content: string) => {
+    setFormData(prev => ({ ...prev, content }))
+  }
+
+  const handleCoverImageChange = (url: string) => {
+    setFormData(prev => ({ ...prev, coverImage: url }))
+  }
+
+  // Validation for steps
+  const canProceedFromStep = (step: number): boolean => {
+    switch (step) {
+      case 0: // Title
+        return formData.title.trim().length > 0
+      case 1: // Content
+        return formData.content.trim().length > 0
+      case 2: // Settings
+        return formData.categoryId !== '' && formData.excerpt.trim().length > 0
+      default:
+        return true
+    }
+  }
+
+  const goToNextStep = () => {
+    if (canProceedFromStep(currentStep) && currentStep < STEPS.length - 1) {
+      setCurrentStep(currentStep + 1)
+    }
+  }
+
+  const goToPreviousStep = () => {
+    if (currentStep > 0) {
+      setCurrentStep(currentStep - 1)
+    }
+  }
+
   // Calculate read time based on content
-  const estimatedReadTime = Math.max(1, Math.ceil(formData.content.split(/\s+/).length / 200))
+  const wordCount = formData.content
+    .replace(/<[^>]*>/g, '')
+    .split(/\s+/)
+    .filter(Boolean).length
+  const estimatedReadTime = Math.max(1, Math.ceil(wordCount / 200))
+
+  // Auto-save indicator
+  const renderAutoSaveStatus = () => {
+    switch (autoSaveStatus) {
+      case 'saving':
+        return (
+          <span className="flex items-center gap-2 text-sm text-[var(--muted-foreground)]">
+            <Clock size={14} className="animate-pulse" />
+            Saving...
+          </span>
+        )
+      case 'saved':
+        return (
+          <span className="flex items-center gap-2 text-sm text-green-600">
+            <CheckCircle size={14} />
+            Draft saved
+          </span>
+        )
+      case 'error':
+        return (
+          <span className="flex items-center gap-2 text-sm text-red-600">
+            <AlertCircle size={14} />
+            Save failed
+          </span>
+        )
+      default:
+        return null
+    }
+  }
 
   return (
     <div className="min-h-screen bg-[var(--background)]">
       {/* Header */}
       <div className="bg-[var(--card)] border-b border-[var(--border)]">
-        <div className="container mx-auto px-4 sm:px-6 lg:px-8 py-8">
+        <div className="container mx-auto px-4 sm:px-6 lg:px-8 py-4">
           <div className="flex items-center justify-between">
-            <div className="flex items-center gap-6">
+            <div className="flex items-center gap-4">
               <Link href="/admin">
                 <Button variant="ghost" size="sm">
                   <ArrowLeft className="w-4 h-4 mr-2" />
-                  Back to Dashboard
+                  Back
                 </Button>
               </Link>
               <div>
-                <h1 className="text-4xl font-bold text-[var(--foreground)] mb-2">Write New Article</h1>
-                <p className="text-[var(--foreground)]/70 text-lg">Share knowledge about sustainable living</p>
+                <h1 className="text-2xl font-bold text-[var(--foreground)]">
+                  {formData.title || 'New Article'}
+                </h1>
+                <div className="flex items-center gap-3 mt-1">
+                  {renderAutoSaveStatus()}
+                </div>
               </div>
             </div>
-            <Button variant="outline" size="sm">
-              <Eye className="w-4 h-4 mr-2" />
-              Preview
-            </Button>
+            <div className="flex items-center gap-2">
+              <Button
+                variant="ghost"
+                size="sm"
+                onClick={handleDelete}
+                className="text-red-600 hover:text-red-700 hover:bg-red-50"
+              >
+                <Trash2 className="w-4 h-4 mr-2" />
+                Delete
+              </Button>
+              <Button
+                variant="outline"
+                size="sm"
+                onClick={() => setShowPreview(!showPreview)}
+              >
+                {showPreview ? (
+                  <>
+                    <EyeOff className="w-4 h-4 mr-2" />
+                    Hide Preview
+                  </>
+                ) : (
+                  <>
+                    <Eye className="w-4 h-4 mr-2" />
+                    Preview
+                  </>
+                )}
+              </Button>
+            </div>
           </div>
         </div>
       </div>
 
-      {/* Form */}
+      {/* Step Progress */}
+      <StepProgress
+        steps={STEPS}
+        currentStep={currentStep}
+        onStepClick={index => {
+          // Only allow going back or to completed steps
+          if (index <= currentStep) {
+            setCurrentStep(index)
+          }
+        }}
+      />
+
+      {/* Main Content */}
       <div className="container mx-auto px-4 sm:px-6 lg:px-8 py-8">
-        <form onSubmit={handleSubmit} className="max-w-5xl mx-auto">
-          <div className="grid lg:grid-cols-3 gap-6">
-            {/* Main Content - 2/3 width */}
-            <div className="lg:col-span-2 space-y-6">
-              {/* Title & Content */}
-              <Card>
+        <div className="max-w-4xl mx-auto">
+          {/* Step 1: Title */}
+          {currentStep === 0 && (
+            <div className="space-y-6">
+              <Card className="border-2 border-[var(--border)]">
                 <CardHeader>
-                  <CardTitle>Article Content</CardTitle>
+                  <CardTitle className="text-xl">
+                    What&apos;s the title of your article?
+                  </CardTitle>
                 </CardHeader>
-                <CardContent className="space-y-4">
-                  <Input
-                    label="Article Title"
-                    name="title"
-                    required
-                    value={formData.title}
-                    onChange={handleChange}
-                    placeholder="e.g., The Complete Guide to Solar Power for Beginners"
-                    className="text-2xl font-bold"
-                  />
+                <CardContent className="space-y-6">
+                  <div className="space-y-2">
+                    <input
+                      type="text"
+                      name="title"
+                      value={formData.title}
+                      onChange={handleChange}
+                      placeholder="Enter a compelling title..."
+                      className="w-full text-3xl font-bold bg-transparent border-none outline-none text-[var(--foreground)] placeholder:text-[var(--muted-foreground)]"
+                      autoFocus
+                    />
+                    <div className="h-1 w-full bg-[var(--border)] rounded">
+                      <div
+                        className="h-full bg-[var(--primary)] rounded transition-all duration-300"
+                        style={{
+                          width: `${Math.min(100, formData.title.length * 2)}%`,
+                        }}
+                      />
+                    </div>
+                  </div>
 
-                  <Input
-                    label="URL Slug"
-                    name="slug"
-                    required
-                    value={formData.slug}
-                    onChange={handleChange}
-                    placeholder="e.g., complete-guide-solar-power-beginners"
-                    hint={`URL: /articles/${formData.slug || 'your-slug'}`}
-                  />
+                  <div className="space-y-2">
+                    <label className="text-sm font-medium text-[var(--muted-foreground)]">
+                      URL Slug
+                    </label>
+                    <Input
+                      name="slug"
+                      value={formData.slug}
+                      onChange={handleChange}
+                      placeholder="article-url-slug"
+                    />
+                    <p className="text-sm text-[var(--muted-foreground)]">
+                      /articles/{formData.slug || 'your-slug'}
+                    </p>
+                  </div>
 
-                  <Textarea
-                    label="Excerpt"
-                    name="excerpt"
-                    required
-                    rows={3}
-                    value={formData.excerpt}
-                    onChange={handleChange}
-                    placeholder="A brief summary that appears in article listings (1-2 sentences)"
-                    hint="This shows up in search results and article cards"
-                  />
-
-                  <Textarea
-                    label="Article Content"
-                    name="content"
-                    required
-                    rows={20}
-                    value={formData.content}
-                    onChange={handleChange}
-                    placeholder="Write your article content here... (Markdown supported)"
-                    hint={`Estimated read time: ${estimatedReadTime} min (${formData.content.split(/\s+/).length} words)`}
-                  />
+                  <div className="space-y-2">
+                    <label className="text-sm font-medium text-[var(--muted-foreground)]">
+                      Cover Image
+                    </label>
+                    <CoverImageUpload
+                      value={formData.coverImage}
+                      onChange={handleCoverImageChange}
+                    />
+                  </div>
                 </CardContent>
               </Card>
             </div>
+          )}
 
-            {/* Sidebar - 1/3 width */}
+          {/* Step 2: Content */}
+          {currentStep === 1 && (
             <div className="space-y-6">
-              {/* Publishing Options */}
+              {showPreview ? (
+                <div className="grid lg:grid-cols-2 gap-6">
+                  <div>
+                    <h3 className="text-sm font-medium text-[var(--muted-foreground)] mb-3">
+                      Editor
+                    </h3>
+                    <TipTapEditor
+                      content={formData.content}
+                      onChange={handleContentChange}
+                      placeholder="Start writing your article..."
+                    />
+                  </div>
+                  <div>
+                    <h3 className="text-sm font-medium text-[var(--muted-foreground)] mb-3">
+                      Preview
+                    </h3>
+                    <Card className="h-[500px] overflow-auto">
+                      <CardContent className="p-6">
+                        <article
+                          className="prose prose-lg max-w-none"
+                          dangerouslySetInnerHTML={{ __html: formData.content }}
+                        />
+                      </CardContent>
+                    </Card>
+                  </div>
+                </div>
+              ) : (
+                <TipTapEditor
+                  content={formData.content}
+                  onChange={handleContentChange}
+                  placeholder="Start writing your article..."
+                />
+              )}
+
+              <div className="flex items-center justify-between text-sm text-[var(--muted-foreground)]">
+                <span>{wordCount} words</span>
+                <span>~{estimatedReadTime} min read</span>
+              </div>
+            </div>
+          )}
+
+          {/* Step 3: Settings */}
+          {currentStep === 2 && (
+            <div className="grid md:grid-cols-2 gap-6">
+              <Card>
+                <CardHeader>
+                  <CardTitle>Details</CardTitle>
+                </CardHeader>
+                <CardContent className="space-y-4">
+                  <Textarea
+                    label="Excerpt"
+                    name="excerpt"
+                    rows={3}
+                    value={formData.excerpt}
+                    onChange={handleChange}
+                    placeholder="A brief summary for article listings..."
+                    hint="1-2 sentences that appear in search results"
+                  />
+
+                  <Select
+                    label="Category"
+                    name="categoryId"
+                    value={formData.categoryId}
+                    onChange={handleChange}
+                    options={[
+                      { value: '', label: 'Select a category...', disabled: true },
+                      ...categories.map(cat => ({
+                        value: cat.id,
+                        label: cat.name,
+                      })),
+                    ]}
+                  />
+
+                  <Input
+                    label="Tags"
+                    name="tags"
+                    value={formData.tags}
+                    onChange={handleChange}
+                    placeholder="solar, renewable, beginner"
+                    hint="Comma-separated tags"
+                  />
+                </CardContent>
+              </Card>
+
               <Card>
                 <CardHeader>
                   <CardTitle>Publishing</CardTitle>
                 </CardHeader>
                 <CardContent className="space-y-4">
-                  <Select
-                    label="Status"
-                    name="status"
-                    required
-                    value={formData.status}
-                    onChange={handleChange}
-                    options={[
-                      { value: 'DRAFT', label: 'Draft' },
-                      { value: 'PUBLISHED', label: 'Published' },
-                      { value: 'ARCHIVED', label: 'Archived' },
-                    ]}
-                  />
-
                   <Input
                     label="Read Time (minutes)"
                     name="readTime"
@@ -267,53 +607,33 @@ export default function NewArticlePage() {
                     hint="Leave empty for auto-calculation"
                   />
 
-                  <div className="flex items-center gap-2 pt-2">
+                  <div className="flex items-center gap-2 p-4 bg-[var(--muted)] rounded-lg">
                     <input
                       type="checkbox"
                       id="featured"
                       name="featured"
                       checked={formData.featured}
                       onChange={handleChange}
-                      className="w-4 h-4 text-[var(--primary)] border-[var(--border)] rounded focus:ring-[var(--primary)]"
+                      className="w-5 h-5 text-[var(--primary)] border-[var(--border)] rounded focus:ring-[var(--primary)]"
                     />
-                    <label htmlFor="featured" className="text-sm font-medium text-[var(--foreground)]">
+                    <label
+                      htmlFor="featured"
+                      className="font-medium text-[var(--foreground)]"
+                    >
                       Mark as featured article
                     </label>
                   </div>
-                </CardContent>
-              </Card>
 
-              {/* Category */}
-              <Card>
-                <CardHeader>
-                  <CardTitle>Organization</CardTitle>
-                </CardHeader>
-                <CardContent className="space-y-4">
-                  <Select
-                    label="Category"
-                    name="categoryId"
-                    required
-                    value={formData.categoryId}
-                    onChange={handleChange}
-                    options={[
-                      { value: '', label: 'Select a category...', disabled: true },
-                      ...categories.map(cat => ({
-                        value: cat.id,
-                        label: cat.name
-                      }))
-                    ]}
-                  />
-
-                  <div className="p-3 bg-[var(--primary)]/10 border border-[var(--primary)]/30 rounded-lg">
-                    <p className="text-sm text-[var(--foreground)]/70">
-                      <strong className="text-[var(--foreground)]">Author:</strong> {session?.user?.name || 'You'} (Current User)
+                  <div className="p-4 bg-[var(--primary)]/10 border border-[var(--primary)]/30 rounded-lg">
+                    <p className="text-sm text-[var(--foreground)]">
+                      <strong>Author:</strong> {session?.user?.name || 'You'}
                     </p>
                   </div>
                 </CardContent>
               </Card>
 
               {/* References */}
-              <Card className="border-2 border-[var(--primary)]/30">
+              <Card className="md:col-span-2 border-2 border-[var(--primary)]/30">
                 <CardHeader>
                   <div className="flex items-center justify-between">
                     <CardTitle className="flex items-center gap-2">
@@ -325,108 +645,235 @@ export default function NewArticlePage() {
                       variant="outline"
                       size="sm"
                       onClick={addReference}
-                      className="text-[var(--primary)] border-[var(--primary)]/30 hover:bg-[var(--primary)]/10"
                     >
                       <Plus className="w-4 h-4 mr-1" />
-                      Add
+                      Add Reference
                     </Button>
                   </div>
                 </CardHeader>
-                <CardContent className="space-y-4">
+                <CardContent>
                   {references.length === 0 ? (
-                    <p className="text-sm text-[var(--foreground)]/60 text-center py-4">
-                      No references added yet. Click "Add" to include source links.
+                    <p className="text-sm text-[var(--muted-foreground)] text-center py-8">
+                      No references added yet. Add sources to support your article.
                     </p>
                   ) : (
-                    references.map((ref, index) => (
-                      <div
-                        key={ref.id}
-                        className="p-4 bg-[var(--background)] rounded-lg space-y-3 relative border border-[var(--border)]"
-                      >
-                        <div className="flex items-center justify-between mb-2">
-                          <span className="text-xs font-bold text-[var(--primary)] uppercase">
-                            Reference #{index + 1}
-                          </span>
-                          <button
-                            type="button"
-                            onClick={() => removeReference(ref.id)}
-                            className="p-1 text-red-600 hover:bg-red-100 rounded transition-colors"
-                          >
-                            <Trash2 className="w-4 h-4" />
-                          </button>
+                    <div className="space-y-4">
+                      {references.map((ref, index) => (
+                        <div
+                          key={ref.id}
+                          className="p-4 bg-[var(--muted)] rounded-lg space-y-3 relative"
+                        >
+                          <div className="flex items-center justify-between mb-2">
+                            <span className="text-xs font-bold text-[var(--primary)] uppercase">
+                              Reference #{index + 1}
+                            </span>
+                            <button
+                              type="button"
+                              onClick={() => removeReference(ref.id)}
+                              className="p-1 text-red-600 hover:bg-red-100 rounded transition-colors"
+                            >
+                              <Trash2 className="w-4 h-4" />
+                            </button>
+                          </div>
+                          <Input
+                            value={ref.title}
+                            onChange={e =>
+                              updateReference(ref.id, 'title', e.target.value)
+                            }
+                            placeholder="Source title"
+                          />
+                          <Input
+                            value={ref.url}
+                            onChange={e =>
+                              updateReference(ref.id, 'url', e.target.value)
+                            }
+                            placeholder="https://..."
+                          />
+                          <Input
+                            value={ref.description}
+                            onChange={e =>
+                              updateReference(
+                                ref.id,
+                                'description',
+                                e.target.value
+                              )
+                            }
+                            placeholder="Brief description (optional)"
+                          />
                         </div>
-                        <Input
-                          label="Title"
-                          value={ref.title}
-                          onChange={(e) => updateReference(ref.id, 'title', e.target.value)}
-                          placeholder="e.g., Solar Energy Statistics 2024"
-                          className="text-sm"
-                        />
-                        <Input
-                          label="URL"
-                          value={ref.url}
-                          onChange={(e) => updateReference(ref.id, 'url', e.target.value)}
-                          placeholder="https://example.com/source"
-                          className="text-sm"
-                        />
-                        <Input
-                          label="Description (optional)"
-                          value={ref.description}
-                          onChange={(e) => updateReference(ref.id, 'description', e.target.value)}
-                          placeholder="Brief description of the source"
-                          className="text-sm"
-                        />
-                      </div>
-                    ))
+                      ))}
+                    </div>
                   )}
                 </CardContent>
               </Card>
+            </div>
+          )}
 
-              {/* Tags */}
+          {/* Step 4: Review */}
+          {currentStep === 3 && (
+            <div className="space-y-6">
               <Card>
                 <CardHeader>
-                  <CardTitle>Tags</CardTitle>
+                  <CardTitle>Review Your Article</CardTitle>
                 </CardHeader>
-                <CardContent>
-                  <Input
-                    label="Tags"
-                    name="tags"
-                    placeholder="solar, renewable, beginner"
-                    hint="Comma-separated tags"
-                  />
-                  <div className="mt-3 flex flex-wrap gap-2">
-                    <span className="px-2 py-1 bg-[var(--background)] text-[var(--foreground)]/80 border border-[var(--border)] rounded text-xs">
-                      Example tag
-                    </span>
+                <CardContent className="space-y-6">
+                  {/* Cover Image Preview */}
+                  {formData.coverImage && (
+                    <div className="aspect-video relative rounded-lg overflow-hidden">
+                      <img
+                        src={formData.coverImage}
+                        alt="Cover"
+                        className="w-full h-full object-cover"
+                      />
+                    </div>
+                  )}
+
+                  {/* Title & Excerpt */}
+                  <div>
+                    <h2 className="text-3xl font-bold text-[var(--foreground)] mb-3">
+                      {formData.title}
+                    </h2>
+                    <p className="text-lg text-[var(--muted-foreground)]">
+                      {formData.excerpt}
+                    </p>
                   </div>
-                </CardContent>
-              </Card>
 
-              {/* Submit Buttons */}
-              <div className="space-y-2">
-                <Button type="submit" disabled={saving} className="w-full">
-                  <Save className="w-4 h-4 mr-2" />
-                  {saving ? 'Saving...' : formData.status === 'PUBLISHED' ? 'Publish Article' : 'Save Draft'}
-                </Button>
-                <Link href="/admin" className="block">
-                  <Button type="button" variant="outline" className="w-full">
-                    Cancel
-                  </Button>
-                </Link>
-              </div>
+                  {/* Meta */}
+                  <div className="flex flex-wrap gap-4 text-sm text-[var(--muted-foreground)]">
+                    <span>
+                      Category:{' '}
+                      <strong className="text-[var(--foreground)]">
+                        {categories.find(c => c.id === formData.categoryId)
+                          ?.name || 'Not selected'}
+                      </strong>
+                    </span>
+                    <span>
+                      Read time:{' '}
+                      <strong className="text-[var(--foreground)]">
+                        {formData.readTime || estimatedReadTime} min
+                      </strong>
+                    </span>
+                    <span>
+                      Words:{' '}
+                      <strong className="text-[var(--foreground)]">
+                        {wordCount}
+                      </strong>
+                    </span>
+                    {formData.featured && (
+                      <span className="text-[var(--primary)] font-semibold">
+                        Featured
+                      </span>
+                    )}
+                  </div>
 
-              {/* Development Notice */}
-              <Card className="bg-[var(--primary)]/10 border-[var(--primary)]/30">
-                <CardContent className="p-4">
-                  <p className="text-xs text-[var(--primary)]">
-                    <strong>Note:</strong> Rich text editor and image upload coming soon!
-                  </p>
+                  {/* Tags */}
+                  {formData.tags && (
+                    <div className="flex flex-wrap gap-2">
+                      {formData.tags.split(',').map((tag, i) => (
+                        <span
+                          key={i}
+                          className="px-3 py-1 bg-[var(--muted)] text-[var(--foreground)] rounded-full text-sm"
+                        >
+                          {tag.trim()}
+                        </span>
+                      ))}
+                    </div>
+                  )}
+
+                  {/* Content Preview */}
+                  <div className="border-t border-[var(--border)] pt-6">
+                    <h3 className="text-sm font-medium text-[var(--muted-foreground)] mb-4">
+                      Content Preview
+                    </h3>
+                    <div className="max-h-[400px] overflow-auto p-4 bg-[var(--muted)] rounded-lg">
+                      <article
+                        className="prose prose-lg max-w-none"
+                        dangerouslySetInnerHTML={{ __html: formData.content }}
+                      />
+                    </div>
+                  </div>
+
+                  {/* References */}
+                  {references.length > 0 && (
+                    <div className="border-t border-[var(--border)] pt-6">
+                      <h3 className="text-sm font-medium text-[var(--muted-foreground)] mb-4">
+                        References ({references.length})
+                      </h3>
+                      <ul className="space-y-2">
+                        {references.map((ref, index) => (
+                          <li key={ref.id} className="text-sm">
+                            <span className="text-[var(--primary)]">
+                              [{index + 1}]
+                            </span>{' '}
+                            <a
+                              href={ref.url}
+                              target="_blank"
+                              rel="noopener noreferrer"
+                              className="text-[var(--foreground)] hover:underline"
+                            >
+                              {ref.title}
+                            </a>
+                          </li>
+                        ))}
+                      </ul>
+                    </div>
+                  )}
                 </CardContent>
               </Card>
             </div>
+          )}
+
+          {/* Navigation Buttons */}
+          <div className="flex items-center justify-between mt-8 pt-6 border-t border-[var(--border)]">
+            <Button
+              variant="outline"
+              onClick={goToPreviousStep}
+              disabled={currentStep === 0}
+            >
+              <ArrowLeft className="w-4 h-4 mr-2" />
+              Previous
+            </Button>
+
+            <div className="flex items-center gap-3">
+              <Button
+                variant="outline"
+                onClick={() => handleSubmit(false)}
+                disabled={saving}
+              >
+                <Save className="w-4 h-4 mr-2" />
+                Save Draft
+              </Button>
+
+              {currentStep === STEPS.length - 1 ? (
+                <Button
+                  onClick={() => setShowPublishDialog(true)}
+                  disabled={saving || !canProceedFromStep(2)}
+                >
+                  <Send className="w-4 h-4 mr-2" />
+                  Publish
+                </Button>
+              ) : (
+                <Button
+                  onClick={goToNextStep}
+                  disabled={!canProceedFromStep(currentStep)}
+                >
+                  Next
+                  <ArrowRight className="w-4 h-4 ml-2" />
+                </Button>
+              )}
+            </div>
           </div>
-        </form>
+        </div>
       </div>
+
+      {/* Publish Confirmation Dialog */}
+      <PublishConfirmDialog
+        isOpen={showPublishDialog}
+        onClose={() => setShowPublishDialog(false)}
+        onConfirm={() => handleSubmit(true)}
+        title={formData.title}
+        isPublishing={saving}
+      />
     </div>
   )
 }
