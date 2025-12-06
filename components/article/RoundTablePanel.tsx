@@ -1,9 +1,8 @@
 'use client'
 
-import { useState, useEffect, useRef, useCallback } from 'react'
+import { useState, useEffect } from 'react'
 import { Button } from '@/components/ui/Button'
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/Card'
-import { X, Users, Quote, Star, Reply, ThumbsUp, Trash2, Award, User, ChevronDown, ChevronUp, Maximize2, Minimize2 } from 'lucide-react'
+import { X, Users, Star, Reply, ThumbsUp, Trash2, Award, User, ChevronDown, ChevronUp } from 'lucide-react'
 import { useSession } from 'next-auth/react'
 import { formatDistanceToNow } from 'date-fns'
 
@@ -31,7 +30,6 @@ interface RoundTablePanelProps {
   onClose: () => void
   articleId: string
   articleAuthorId: string
-  articleContent: string
   reviews: PeerReview[]
   onReviewsChange: (reviews: PeerReview[]) => void
 }
@@ -51,7 +49,6 @@ export function RoundTablePanel({
   onClose,
   articleId,
   articleAuthorId,
-  articleContent,
   reviews: initialReviews,
   onReviewsChange
 }: RoundTablePanelProps) {
@@ -61,9 +58,7 @@ export function RoundTablePanel({
   const [submitting, setSubmitting] = useState(false)
   const [replyingTo, setReplyingTo] = useState<string | null>(null)
   const [error, setError] = useState<string | null>(null)
-  const [quotedText, setQuotedText] = useState<string>('')
   const [likingReviewId, setLikingReviewId] = useState<string | null>(null)
-  const articleRef = useRef<HTMLDivElement>(null)
 
   const [formData, setFormData] = useState({
     rating: 0,
@@ -84,29 +79,6 @@ export function RoundTablePanel({
   useEffect(() => {
     onReviewsChange(reviews)
   }, [reviews, onReviewsChange])
-
-  // Handle text selection for quoting
-  const handleTextSelection = useCallback(() => {
-    const selection = window.getSelection()
-    if (selection && selection.toString().trim() && articleRef.current?.contains(selection.anchorNode)) {
-      setQuotedText(selection.toString().trim())
-    }
-  }, [])
-
-  // Insert quote into form
-  const insertQuote = () => {
-    if (quotedText) {
-      const quoteBlock = `> ${quotedText.replace(/\n/g, '\n> ')}\n\n`
-      if (replyingTo) {
-        setReplyContent(prev => quoteBlock + prev)
-      } else {
-        setFormData(prev => ({ ...prev, content: quoteBlock + prev.content }))
-        setShowReviewForm(true)
-      }
-      setQuotedText('')
-      window.getSelection()?.removeAllRanges()
-    }
-  }
 
   // Handle like toggle
   const handleLikeToggle = async (reviewId: string) => {
@@ -403,147 +375,125 @@ export function RoundTablePanel({
     )
   }
 
-  if (!isOpen) return null
-
   const topLevelReviews = reviews.filter(r => r.parentId === null)
 
   return (
-    <div className="fixed inset-0 z-50 flex">
+    <>
       {/* Backdrop */}
-      <div className="absolute inset-0 bg-black/50" onClick={onClose} />
+      <div
+        className={`fixed inset-0 z-40 bg-black/30 transition-opacity duration-300 ${
+          isOpen ? 'opacity-100' : 'opacity-0 pointer-events-none'
+        }`}
+        onClick={onClose}
+      />
 
-      {/* Split Screen Content */}
-      <div className="relative flex w-full h-full">
-        {/* Left Side - Article Content */}
-        <div className="w-1/2 h-full bg-[var(--background)] overflow-hidden flex flex-col">
-          <div className="flex items-center justify-between p-4 border-b border-[var(--border)]">
-            <div className="flex items-center gap-3">
-              <Button variant="outline" size="sm" onClick={onClose} className="flex items-center gap-1">
-                <X className="w-4 h-4" />
-                Close
-              </Button>
-              <h2 className="font-bold text-[var(--foreground)]">Article</h2>
-            </div>
-            {quotedText && (
-              <Button size="sm" onClick={insertQuote} className="flex items-center gap-1">
-                <Quote className="w-4 h-4" />
-                Quote Selection
-              </Button>
-            )}
+      {/* Slide-out Panel */}
+      <div
+        className={`fixed top-0 right-0 z-50 h-full w-full max-w-md bg-[var(--card)] border-l-2 border-[var(--border)] shadow-2xl transform transition-transform duration-300 ease-in-out ${
+          isOpen ? 'translate-x-0' : 'translate-x-full'
+        }`}
+      >
+        {/* Header */}
+        <div className="flex items-center justify-between p-4 border-b border-[var(--border)]">
+          <div className="flex items-center gap-2">
+            <Users className="w-5 h-5 text-theme-primary" />
+            <h2 className="font-bold text-[var(--foreground)]">Round Table Talk</h2>
+            <span className="text-sm text-theme-muted">({topLevelReviews.length})</span>
           </div>
-          <div
-            ref={articleRef}
-            onMouseUp={handleTextSelection}
-            className="flex-1 overflow-y-auto p-6 prose prose-sm dark:prose-invert max-w-none select-text"
-          >
-            {/* Render article content - simple text version for now */}
-            <div dangerouslySetInnerHTML={{ __html: articleContent }} />
-          </div>
+          <Button variant="ghost" size="sm" onClick={onClose} className="p-2">
+            <X className="w-5 h-5" />
+          </Button>
         </div>
 
-        {/* Right Side - Round Table Discussion */}
-        <div className="w-1/2 h-full bg-[var(--card)] border-l border-[var(--border)] overflow-hidden flex flex-col">
-          <div className="flex items-center justify-between p-4 border-b border-[var(--border)]">
-            <div className="flex items-center gap-2">
-              <Users className="w-5 h-5 text-theme-primary" />
-              <h2 className="font-bold text-[var(--foreground)]">Round Table Talk</h2>
-              <span className="text-sm text-theme-muted">({topLevelReviews.length})</span>
+        {/* Content */}
+        <div className="h-[calc(100%-65px)] overflow-y-auto p-4">
+          {/* Error Message */}
+          {error && (
+            <div className="mb-4 p-2 bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800 rounded text-red-600 dark:text-red-400 text-xs">
+              {error}
             </div>
-            <Button variant="outline" size="sm" onClick={onClose} className="flex items-center gap-1">
-              <X className="w-4 h-4" />
-              Close
-            </Button>
-          </div>
+          )}
 
-          <div className="flex-1 overflow-y-auto p-4">
-            {/* Error Message */}
-            {error && (
-              <div className="mb-4 p-2 bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800 rounded text-red-600 dark:text-red-400 text-xs">
-                {error}
-              </div>
-            )}
+          {/* Review Form */}
+          {session && (
+            <div className="mb-4">
+              {!showReviewForm ? (
+                <Button className="w-full" onClick={() => setShowReviewForm(true)}>
+                  Join the Discussion
+                </Button>
+              ) : (
+                <form onSubmit={handleSubmitReview} className="p-3 bg-[var(--muted)] rounded-lg">
+                  <h3 className="font-bold text-sm text-[var(--foreground)] mb-3">Share Your Thoughts</h3>
 
-            {/* Review Form */}
-            {session && (
-              <div className="mb-4">
-                {!showReviewForm ? (
-                  <Button className="w-full" onClick={() => setShowReviewForm(true)}>
-                    Join the Discussion
-                  </Button>
-                ) : (
-                  <form onSubmit={handleSubmitReview} className="p-3 bg-[var(--muted)] rounded-lg">
-                    <h3 className="font-bold text-sm text-[var(--foreground)] mb-3">Share Your Thoughts</h3>
-
-                    <div className="grid grid-cols-2 gap-2 mb-3">
-                      <div>
-                        <label className="block text-xs font-medium text-[var(--foreground)] mb-1">
-                          Overall <span className="text-red-500">*</span>
-                        </label>
-                        <StarRating value={formData.rating} onChange={(v) => setFormData(prev => ({ ...prev, rating: v }))} size="sm" />
-                      </div>
-                      <div>
-                        <label className="block text-xs font-medium text-[var(--foreground)] mb-1">Accuracy</label>
-                        <StarRating value={formData.accuracy} onChange={(v) => setFormData(prev => ({ ...prev, accuracy: v }))} size="sm" />
-                      </div>
-                      <div>
-                        <label className="block text-xs font-medium text-[var(--foreground)] mb-1">Clarity</label>
-                        <StarRating value={formData.clarity} onChange={(v) => setFormData(prev => ({ ...prev, clarity: v }))} size="sm" />
-                      </div>
-                      <div>
-                        <label className="block text-xs font-medium text-[var(--foreground)] mb-1">Relevance</label>
-                        <StarRating value={formData.relevance} onChange={(v) => setFormData(prev => ({ ...prev, relevance: v }))} size="sm" />
-                      </div>
+                  <div className="grid grid-cols-2 gap-2 mb-3">
+                    <div>
+                      <label className="block text-xs font-medium text-[var(--foreground)] mb-1">
+                        Overall <span className="text-red-500">*</span>
+                      </label>
+                      <StarRating value={formData.rating} onChange={(v) => setFormData(prev => ({ ...prev, rating: v }))} size="sm" />
                     </div>
-
-                    <textarea
-                      value={formData.content}
-                      onChange={(e) => setFormData(prev => ({ ...prev, content: e.target.value }))}
-                      placeholder="Share your thoughts... (Select text from the article to quote)"
-                      className="w-full p-2 text-sm border border-[var(--border)] rounded bg-white dark:bg-earth-800 text-[var(--foreground)]"
-                      rows={3}
-                    />
-
-                    <div className="flex gap-2 mt-2">
-                      <Button type="submit" size="sm" disabled={submitting}>
-                        {submitting ? 'Sharing...' : 'Share'}
-                      </Button>
-                      <Button type="button" variant="outline" size="sm" onClick={() => {
-                        setShowReviewForm(false)
-                        setFormData({ rating: 0, accuracy: 0, clarity: 0, relevance: 0, content: '' })
-                        setError(null)
-                      }}>
-                        Cancel
-                      </Button>
+                    <div>
+                      <label className="block text-xs font-medium text-[var(--foreground)] mb-1">Accuracy</label>
+                      <StarRating value={formData.accuracy} onChange={(v) => setFormData(prev => ({ ...prev, accuracy: v }))} size="sm" />
                     </div>
-                  </form>
-                )}
-              </div>
-            )}
+                    <div>
+                      <label className="block text-xs font-medium text-[var(--foreground)] mb-1">Clarity</label>
+                      <StarRating value={formData.clarity} onChange={(v) => setFormData(prev => ({ ...prev, clarity: v }))} size="sm" />
+                    </div>
+                    <div>
+                      <label className="block text-xs font-medium text-[var(--foreground)] mb-1">Relevance</label>
+                      <StarRating value={formData.relevance} onChange={(v) => setFormData(prev => ({ ...prev, relevance: v }))} size="sm" />
+                    </div>
+                  </div>
 
-            {!session && (
-              <div className="mb-4 p-3 bg-[var(--muted)] rounded-lg text-center">
-                <p className="text-sm text-theme-muted">
-                  <a href="/auth/signin" className="text-theme-primary font-medium hover:underline">Sign in</a> to join
-                </p>
-              </div>
-            )}
+                  <textarea
+                    value={formData.content}
+                    onChange={(e) => setFormData(prev => ({ ...prev, content: e.target.value }))}
+                    placeholder="Share your thoughts..."
+                    className="w-full p-2 text-sm border border-[var(--border)] rounded bg-white dark:bg-earth-800 text-[var(--foreground)]"
+                    rows={3}
+                  />
 
-            {/* Reviews List */}
-            {reviews.length === 0 ? (
-              <div className="text-center py-8">
-                <Users className="w-10 h-10 mx-auto mb-2 text-[var(--foreground)]/30" />
-                <p className="text-sm text-theme-muted">No discussions yet. Be the first!</p>
-              </div>
-            ) : (
-              <div className="divide-y divide-[var(--border)]">
-                {reviews.filter(r => !r.parentId).map(review => (
-                  <ReviewThread key={review.id} review={review} />
-                ))}
-              </div>
-            )}
-          </div>
+                  <div className="flex gap-2 mt-2">
+                    <Button type="submit" size="sm" disabled={submitting}>
+                      {submitting ? 'Sharing...' : 'Share'}
+                    </Button>
+                    <Button type="button" variant="outline" size="sm" onClick={() => {
+                      setShowReviewForm(false)
+                      setFormData({ rating: 0, accuracy: 0, clarity: 0, relevance: 0, content: '' })
+                      setError(null)
+                    }}>
+                      Cancel
+                    </Button>
+                  </div>
+                </form>
+              )}
+            </div>
+          )}
+
+          {!session && (
+            <div className="mb-4 p-3 bg-[var(--muted)] rounded-lg text-center">
+              <p className="text-sm text-theme-muted">
+                <a href="/auth/signin" className="text-theme-primary font-medium hover:underline">Sign in</a> to join
+              </p>
+            </div>
+          )}
+
+          {/* Reviews List */}
+          {reviews.length === 0 ? (
+            <div className="text-center py-8">
+              <Users className="w-10 h-10 mx-auto mb-2 text-[var(--foreground)]/30" />
+              <p className="text-sm text-theme-muted">No discussions yet. Be the first!</p>
+            </div>
+          ) : (
+            <div className="divide-y divide-[var(--border)]">
+              {reviews.filter(r => !r.parentId).map(review => (
+                <ReviewThread key={review.id} review={review} />
+              ))}
+            </div>
+          )}
         </div>
       </div>
-    </div>
+    </>
   )
 }

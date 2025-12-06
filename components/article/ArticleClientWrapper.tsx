@@ -3,7 +3,7 @@
 import { useState, useRef, useCallback } from 'react'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/Card'
 import { Button } from '@/components/ui/Button'
-import { User, MessageCircle, Tag, Users, Quote, Maximize2 } from 'lucide-react'
+import { User, MessageCircle, Tag, Users, Quote } from 'lucide-react'
 import Link from 'next/link'
 import { formatDate } from '@/lib/utils/format'
 import { MarkdownContent } from '@/components/article/MarkdownContent'
@@ -118,19 +118,6 @@ export function ArticleClientWrapper({ article }: ArticleClientWrapperProps) {
               </div>
             </div>
           )}
-
-          {/* Expand Button for Round Table */}
-          <div className="mt-8">
-            <Button
-              variant="outline"
-              onClick={() => setIsPanelOpen(true)}
-              className="w-full flex items-center justify-center gap-2 py-6 border-2 border-dashed border-[var(--primary)] hover:bg-[var(--primary)]/10"
-            >
-              <Maximize2 className="w-5 h-5" />
-              <span className="font-bold">Expand Round Table Talk</span>
-              <span className="text-sm text-theme-muted">(Read article while discussing)</span>
-            </Button>
-          </div>
 
           {/* Round Table Section (Reddit-style) */}
           <div className="mt-12">
@@ -253,7 +240,6 @@ export function ArticleClientWrapper({ article }: ArticleClientWrapperProps) {
         onClose={() => setIsPanelOpen(false)}
         articleId={article.id}
         articleAuthorId={article.authorId}
-        articleContent={article.content}
         reviews={reviews}
         onReviewsChange={setReviews}
       />
