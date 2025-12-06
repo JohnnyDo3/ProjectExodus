@@ -206,6 +206,59 @@ export default function WriteArticlePage() {
     setReferences(prev => prev.filter(ref => ref.id !== id))
   }
 
+  // Auto-extract URLs from article content
+  const autoExtractUrls = () => {
+    // Regex to match URLs in content (handles both plain URLs and HTML anchor hrefs)
+    const urlRegex = /(?:href=["']([^"']+)["'])|(?:https?:\/\/[^\s<"']+)/g
+    const content = formData.content
+    const matches = new Set<string>()
+
+    let match
+    while ((match = urlRegex.exec(content)) !== null) {
+      const url = match[1] || match[0]
+      // Filter out common non-reference URLs
+      if (url &&
+          !url.includes('localhost') &&
+          !url.includes('127.0.0.1') &&
+          !url.startsWith('#') &&
+          !url.startsWith('mailto:')) {
+        matches.add(url)
+      }
+    }
+
+    // Get existing URLs to avoid duplicates
+    const existingUrls = new Set(references.map(r => r.url))
+
+    // Add new references for each found URL
+    const newRefs: Reference[] = []
+    matches.forEach(url => {
+      if (!existingUrls.has(url)) {
+        // Try to extract a title from the URL
+        let title = ''
+        try {
+          const urlObj = new URL(url)
+          title = urlObj.hostname.replace('www.', '')
+        } catch {
+          title = 'Reference'
+        }
+
+        newRefs.push({
+          id: crypto.randomUUID(),
+          title,
+          url,
+          description: ''
+        })
+      }
+    })
+
+    if (newRefs.length > 0) {
+      setReferences(prev => [...prev, ...newRefs])
+      toast.success(`Found ${newRefs.length} new URL${newRefs.length > 1 ? 's' : ''}`)
+    } else {
+      toast('No new URLs found in content', { icon: 'ℹ️' })
+    }
+  }
+
   const handleSubmit = async (publish: boolean = false) => {
     if (!session?.user?.id) {
       toast.error('You must be logged in')
@@ -563,16 +616,33 @@ export default function WriteArticlePage() {
                       <LinkIcon className="w-5 h-5 text-[var(--primary)]" />
                       References
                     </CardTitle>
-                    <Button type="button" variant="outline" size="sm" onClick={addReference}>
-                      <Plus className="w-4 h-4 mr-1" />
-                      Add
-                    </Button>
+                    <div className="flex gap-2">
+                      <Button type="button" variant="outline" size="sm" onClick={autoExtractUrls}>
+                        <CheckCircle className="w-4 h-4 mr-1" />
+                        Auto-Detect
+                      </Button>
+                      <Button type="button" variant="outline" size="sm" onClick={addReference}>
+                        <Plus className="w-4 h-4 mr-1" />
+                        Add
+                      </Button>
+                    </div>
                   </div>
                 </CardHeader>
                 <CardContent>
+                  {/* Guidance Text */}
+                  <div className="mb-4 p-4 bg-gradient-to-r from-[var(--primary)]/10 to-[var(--accent)]/10 border border-[var(--primary)]/20 rounded-lg">
+                    <p className="text-sm text-[var(--foreground)] font-medium mb-2">
+                      <strong>Sage will automatically link your sources!</strong>
+                    </p>
+                    <p className="text-xs text-[var(--muted-foreground)]">
+                      Include URLs in your article content and click "Auto-Detect" to extract them as references.
+                      These will appear in the References widget for your readers. You can also add references manually.
+                    </p>
+                  </div>
+
                   {references.length === 0 ? (
                     <p className="text-sm text-[var(--muted-foreground)] text-center py-8">
-                      No references yet. Add sources to support your article.
+                      No references yet. Add URLs to your content or add sources manually.
                     </p>
                   ) : (
                     <div className="space-y-4">

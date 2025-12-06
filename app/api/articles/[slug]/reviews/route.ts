@@ -24,6 +24,7 @@ export async function GET(
   { params }: Params
 ) {
   try {
+    const session = await auth()
     const { slug } = await params
 
     // Find article by slug or ID
@@ -47,7 +48,7 @@ export async function GET(
       )
     }
 
-    // Fetch all reviews (flat list, we'll build tree in code)
+    // Fetch all reviews with like counts
     const allReviews = await prisma.articlePeerReview.findMany({
       where: { articleId: article.id },
       include: {
@@ -58,12 +59,36 @@ export async function GET(
             image: true,
           },
         },
+        _count: {
+          select: { likes: true }
+        }
       },
       orderBy: { createdAt: 'desc' },
     })
 
+    // Get user's likes if logged in
+    let userLikedReviewIds: Set<string> = new Set()
+    if (session?.user?.id) {
+      const userLikes = await prisma.reviewLike.findMany({
+        where: {
+          reviewId: { in: allReviews.map((r: { id: string }) => r.id) },
+          userId: session.user.id
+        },
+        select: { reviewId: true }
+      })
+      userLikedReviewIds = new Set(userLikes.map((l: { reviewId: string }) => l.reviewId))
+    }
+
+    // Add like info to reviews
+    const reviewsWithLikes = allReviews.map((review: any) => ({
+      ...review,
+      likeCount: review._count.likes,
+      liked: userLikedReviewIds.has(review.id),
+      _count: undefined // Remove _count from response
+    }))
+
     // Build nested tree structure
-    const reviewTree = buildReplyTree(allReviews)
+    const reviewTree = buildReplyTree(reviewsWithLikes)
 
     // Calculate stats for top-level reviews only
     const topLevelReviews = allReviews.filter((r: { parentId: string | null, rating: number | null }) => !r.parentId && r.rating)

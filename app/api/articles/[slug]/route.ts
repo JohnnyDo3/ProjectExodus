@@ -26,8 +26,27 @@ export async function GET(
           select: {
             id: true,
             name: true,
+            email: true,
             image: true,
             bio: true,
+            headline: true,
+            location: true,
+            phone: true,
+            showPhone: true,
+            showEmail: true,
+            interests: true,
+            expertise: true,
+            guardianArchetype: true,
+            declaration: true,
+            _count: {
+              select: {
+                followers: true,
+                following: true,
+                projectMemberships: true,
+                articles: true,
+                createdProjects: true,
+              }
+            }
           },
         },
         tags: {

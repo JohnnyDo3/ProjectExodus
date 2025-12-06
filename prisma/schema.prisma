@@ -90,6 +90,7 @@ model User {
   receivedConnections   Connection[]     @relation("ReceivedConnections")
   learningProgress      UserLearningProgress[]
   articlePeerReviews    ArticlePeerReview[] @relation("ArticlePeerReviews")
+  reviewLikes           ReviewLike[]       @relation("ReviewLikes")
 
   @@index([email])
   @@index([role])
@@ -461,6 +462,7 @@ model ArticlePeerReview {
   user        User     @relation("ArticlePeerReviews", fields: [userId], references: [id], onDelete: Cascade)
   parent      ArticlePeerReview?  @relation("PeerReviewReplies", fields: [parentId], references: [id], onDelete: Cascade)
   replies     ArticlePeerReview[] @relation("PeerReviewReplies")
+  likes       ReviewLike[]
 
   createdAt   DateTime @default(now())
   updatedAt   DateTime @updatedAt
@@ -468,6 +470,22 @@ model ArticlePeerReview {
   @@index([articleId])
   @@index([userId])
   @@index([parentId])
+}
+
+// Review Likes - Track who liked which review/reply
+model ReviewLike {
+  id        String   @id @default(cuid())
+  reviewId  String
+  userId    String
+
+  review    ArticlePeerReview @relation(fields: [reviewId], references: [id], onDelete: Cascade)
+  user      User              @relation("ReviewLikes", fields: [userId], references: [id], onDelete: Cascade)
+
+  createdAt DateTime @default(now())
+
+  @@unique([reviewId, userId]) // One like per user per review
+  @@index([reviewId])
+  @@index([userId])
 }
 
 model SavedArticle {

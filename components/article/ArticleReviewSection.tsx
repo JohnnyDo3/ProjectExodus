@@ -3,7 +3,7 @@
 import { useState, useCallback } from 'react'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/Card'
 import { Button } from '@/components/ui/Button'
-import { Star, MessageSquare, Reply, Trash2, User, Award, ChevronDown, ChevronUp } from 'lucide-react'
+import { Star, MessageSquare, Reply, Trash2, User, Award, ChevronDown, ChevronUp, ThumbsUp, Users } from 'lucide-react'
 import { useSession } from 'next-auth/react'
 import { formatDistanceToNow } from 'date-fns'
 
@@ -22,6 +22,8 @@ interface PeerReview {
   createdAt: string
   parentId: string | null
   replies?: PeerReview[]
+  likeCount?: number
+  liked?: boolean
 }
 
 interface ArticleReviewSectionProps {
@@ -47,6 +49,7 @@ export function ArticleReviewSection({ articleId, articleAuthorId, initialReview
   const [submitting, setSubmitting] = useState(false)
   const [replyingTo, setReplyingTo] = useState<string | null>(null)
   const [error, setError] = useState<string | null>(null)
+  const [likingReviewId, setLikingReviewId] = useState<string | null>(null)
 
   const [formData, setFormData] = useState({
     rating: 0,
@@ -60,6 +63,44 @@ export function ArticleReviewSection({ articleId, articleAuthorId, initialReview
 
   // Check if user has already reviewed
   const userHasReviewed = reviews.some(r => r.user.id === session?.user?.id)
+
+  // Handle like toggle
+  const handleLikeToggle = async (reviewId: string) => {
+    if (!session) return
+    setLikingReviewId(reviewId)
+
+    try {
+      const res = await fetch(`/api/articles/${articleId}/reviews/like`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ reviewId })
+      })
+
+      const data = await res.json()
+
+      if (res.ok && data.success) {
+        // Update like status in tree
+        setReviews(prev => updateLikeInTree(prev, reviewId, data.data.liked, data.data.likeCount))
+      }
+    } catch (err) {
+      console.error('Failed to toggle like:', err)
+    } finally {
+      setLikingReviewId(null)
+    }
+  }
+
+  // Helper to update like status in nested tree
+  const updateLikeInTree = (reviews: PeerReview[], reviewId: string, liked: boolean, likeCount: number): PeerReview[] => {
+    return reviews.map(review => {
+      if (review.id === reviewId) {
+        return { ...review, liked, likeCount }
+      }
+      if (review.replies && review.replies.length > 0) {
+        return { ...review, replies: updateLikeInTree(review.replies, reviewId, liked, likeCount) }
+      }
+      return review
+    })
+  }
 
   const handleSubmitReview = async (e: React.FormEvent) => {
     e.preventDefault()
@@ -254,6 +295,20 @@ export function ArticleReviewSection({ articleId, articleAuthorId, initialReview
 
               {/* Actions */}
               <div className="flex items-center gap-4 mt-2">
+                {/* Like Button */}
+                <button
+                  onClick={() => handleLikeToggle(review.id)}
+                  disabled={!session || likingReviewId === review.id}
+                  className={`flex items-center gap-1 text-xs font-medium transition-colors ${
+                    review.liked
+                      ? 'text-theme-primary'
+                      : 'text-theme-muted hover:text-theme-primary'
+                  } ${!session ? 'opacity-50 cursor-not-allowed' : ''}`}
+                  title={session ? (review.liked ? 'Unlike' : 'Like') : 'Sign in to like'}
+                >
+                  <ThumbsUp className={`w-3.5 h-3.5 ${review.liked ? 'fill-current' : ''}`} />
+                  {(review.likeCount || 0) > 0 && <span>{review.likeCount}</span>}
+                </button>
                 {session && (
                   <button
                     onClick={() => setReplyingTo(replyingTo === review.id ? null : review.id)}
@@ -349,17 +404,17 @@ export function ArticleReviewSection({ articleId, articleAuthorId, initialReview
   const topLevelReviews = reviews.filter(r => r.parentId === null && r.rating !== null)
 
   return (
-    <div id="peer-reviews-section" className="scroll-mt-20">
+    <div id="round-table-section" className="scroll-mt-20">
       <Card className="bg-[var(--card)] border-2 border-[var(--border)]">
         <CardHeader>
           <CardTitle className="flex items-center justify-between text-[var(--foreground)]">
             <div className="flex items-center gap-2">
-              <MessageSquare className="w-5 h-5" />
-              Peer Reviews ({topLevelReviews.length})
+              <Users className="w-5 h-5" />
+              Round Table Talk ({topLevelReviews.length})
             </div>
             {session && !userHasReviewed && !showReviewForm && (
               <Button size="sm" onClick={() => setShowReviewForm(true)}>
-                Write a Review
+                Join the Discussion
               </Button>
             )}
           </CardTitle>
@@ -375,7 +430,7 @@ export function ArticleReviewSection({ articleId, articleAuthorId, initialReview
           {/* Review Form */}
           {showReviewForm && session && (
             <form onSubmit={handleSubmitReview} className="mb-6 p-4 bg-[var(--muted)] rounded-lg border-2 border-[var(--border)]">
-              <h3 className="font-bold text-[var(--foreground)] mb-4">Write Your Review</h3>
+              <h3 className="font-bold text-[var(--foreground)] mb-4">Share Your Thoughts</h3>
 
               <div className="grid grid-cols-2 gap-4 mb-4">
                 <div className="col-span-2 sm:col-span-1">
@@ -413,7 +468,7 @@ export function ArticleReviewSection({ articleId, articleAuthorId, initialReview
 
               <div className="flex gap-2">
                 <Button type="submit" disabled={submitting}>
-                  {submitting ? 'Submitting...' : 'Submit Review'}
+                  {submitting ? 'Sharing...' : 'Share'}
                 </Button>
                 <Button type="button" variant="outline" onClick={() => {
                   setShowReviewForm(false)
@@ -429,7 +484,7 @@ export function ArticleReviewSection({ articleId, articleAuthorId, initialReview
           {/* Already Reviewed Notice */}
           {session && userHasReviewed && !showReviewForm && (
             <div className="mb-4 p-3 bg-[var(--primary)]/10 border border-[var(--primary)]/30 rounded-lg text-[var(--primary)] text-sm">
-              You have already submitted a review for this article.
+              You have already shared your thoughts on this article. You can still like and reply to others!
             </div>
           )}
 
@@ -437,7 +492,7 @@ export function ArticleReviewSection({ articleId, articleAuthorId, initialReview
           {!session && (
             <div className="mb-6 p-4 bg-[var(--muted)] rounded-lg text-center">
               <p className="text-theme-muted">
-                <a href="/auth/signin" className="text-theme-primary font-medium hover:underline">Sign in</a> to write a review or reply
+                <a href="/auth/signin" className="text-theme-primary font-medium hover:underline">Sign in</a> to join the Round Table Talk
               </p>
             </div>
           )}
@@ -445,8 +500,8 @@ export function ArticleReviewSection({ articleId, articleAuthorId, initialReview
           {/* Reviews List */}
           {reviews.length === 0 ? (
             <div className="text-center py-8">
-              <MessageSquare className="w-12 h-12 mx-auto mb-3 text-[var(--foreground)]/30" />
-              <p className="text-theme-muted">No reviews yet. Be the first to share your thoughts!</p>
+              <Users className="w-12 h-12 mx-auto mb-3 text-[var(--foreground)]/30" />
+              <p className="text-theme-muted">No discussions yet. Be the first to share your thoughts!</p>
             </div>
           ) : (
             <div className="divide-y divide-[var(--border)]">

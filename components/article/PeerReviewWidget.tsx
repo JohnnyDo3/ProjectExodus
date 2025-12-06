@@ -2,7 +2,7 @@
 
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/Card'
 import { Button } from '@/components/ui/Button'
-import { Star, BookCheck, MessageSquare, ChevronDown } from 'lucide-react'
+import { Star, Users, MessageSquare, ChevronDown } from 'lucide-react'
 
 interface PeerReview {
   id: string
@@ -69,8 +69,8 @@ export function PeerReviewWidget({ articleId, peerReviews, onScrollToReviews }: 
     if (onScrollToReviews) {
       onScrollToReviews()
     } else {
-      // Fallback: scroll to reviews section
-      const reviewsSection = document.getElementById('peer-reviews-section')
+      // Fallback: scroll to round table section
+      const reviewsSection = document.getElementById('round-table-section')
       if (reviewsSection) {
         reviewsSection.scrollIntoView({ behavior: 'smooth' })
       }
@@ -82,8 +82,8 @@ export function PeerReviewWidget({ articleId, peerReviews, onScrollToReviews }: 
       <CardHeader className="pb-2">
         <CardTitle className="text-base flex items-center justify-between text-[var(--foreground)]">
           <div className="flex items-center gap-2">
-            <BookCheck className="w-4 h-4 text-moss-600 dark:text-moss-400" />
-            Peer Reviews
+            <Users className="w-4 h-4 text-moss-600 dark:text-moss-400" />
+            Round Table Talk
           </div>
           {topLevelReviews.length > 0 && (
             <div className="flex items-center gap-1">
@@ -97,7 +97,7 @@ export function PeerReviewWidget({ articleId, peerReviews, onScrollToReviews }: 
         {topLevelReviews.length === 0 ? (
           <div className="text-center py-4">
             <p className="text-sm text-[var(--foreground)]/60 mb-3">
-              No peer reviews yet. Be the first to review!
+              No discussions yet. Join the conversation!
             </p>
             <Button
               variant="outline"
@@ -105,7 +105,7 @@ export function PeerReviewWidget({ articleId, peerReviews, onScrollToReviews }: 
               className="w-full border-[var(--border)] text-[var(--foreground)] hover:bg-[var(--muted)]"
               onClick={handleScrollToReviews}
             >
-              Write a Review
+              Join the Discussion
             </Button>
           </div>
         ) : (
@@ -133,8 +133,8 @@ export function PeerReviewWidget({ articleId, peerReviews, onScrollToReviews }: 
             {/* Stats */}
             <div className="flex items-center justify-center gap-4 py-2 border-t border-[var(--border)]">
               <div className="flex items-center gap-1 text-xs text-[var(--foreground)]/60">
-                <BookCheck className="w-3.5 h-3.5" />
-                <span>{topLevelReviews.length} review{topLevelReviews.length !== 1 ? 's' : ''}</span>
+                <Users className="w-3.5 h-3.5" />
+                <span>{topLevelReviews.length} voice{topLevelReviews.length !== 1 ? 's' : ''}</span>
               </div>
               {totalReplies > 0 && (
                 <div className="flex items-center gap-1 text-xs text-[var(--foreground)]/60">
@@ -166,7 +166,7 @@ export function PeerReviewWidget({ articleId, peerReviews, onScrollToReviews }: 
               className="w-full border-[var(--border)] text-[var(--foreground)] hover:bg-[var(--muted)]"
               onClick={handleScrollToReviews}
             >
-              <span>View All Reviews</span>
+              <span>View Full Discussion</span>
               <ChevronDown className="w-4 h-4 ml-1" />
             </Button>
           </>
