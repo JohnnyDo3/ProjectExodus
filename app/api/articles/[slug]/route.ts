@@ -115,9 +115,21 @@ export async function GET(
       data: { views: { increment: 1 } },
     })
 
+    // Filter author's private data based on privacy settings
+    const filteredArticle = {
+      ...article,
+      author: {
+        ...article.author,
+        email: article.author.showEmail ? article.author.email : undefined,
+        phone: article.author.showPhone ? article.author.phone : undefined,
+        showEmail: undefined,
+        showPhone: undefined,
+      },
+    }
+
     return NextResponse.json({
       success: true,
-      data: article,
+      data: filteredArticle,
     })
   } catch (error) {
     console.error('Error fetching article:', error)

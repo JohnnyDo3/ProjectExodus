@@ -5,6 +5,7 @@ import { useSession } from 'next-auth/react'
 import { useRouter } from 'next/navigation'
 import dynamic from 'next/dynamic'
 import Link from 'next/link'
+import { sanitizeArticleContent } from '@/lib/sanitize'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/Card'
 import { Button } from '@/components/ui/Button'
 import { Input } from '@/components/ui/Input'
@@ -524,7 +525,7 @@ export default function WriteArticlePage() {
                       <CardContent className="p-6">
                         <article
                           className="prose prose-lg max-w-none"
-                          dangerouslySetInnerHTML={{ __html: formData.content }}
+                          dangerouslySetInnerHTML={{ __html: sanitizeArticleContent(formData.content) }}
                         />
                       </CardContent>
                     </Card>
@@ -696,7 +697,7 @@ export default function WriteArticlePage() {
                 <div className="border-t border-[var(--border)] pt-6">
                   <h3 className="text-sm font-medium text-[var(--muted-foreground)] mb-4">Content Preview</h3>
                   <div className="max-h-[400px] overflow-auto p-4 bg-[var(--muted)] rounded-lg">
-                    <article className="prose prose-lg max-w-none" dangerouslySetInnerHTML={{ __html: formData.content }} />
+                    <article className="prose prose-lg max-w-none" dangerouslySetInnerHTML={{ __html: sanitizeArticleContent(formData.content) }} />
                   </div>
                 </div>
               </CardContent>

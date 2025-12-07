@@ -28,6 +28,8 @@ import { DeleteConfirmationModal } from '@/components/ui/DeleteConfirmationModal
 import { DynamicSpotlight } from '@/components/volition/DynamicSpotlight'
 import { LaneContainer } from '@/components/volition/LaneContainer'
 import { Lane } from '@/components/volition/Lane'
+import { SortableLane } from '@/components/volition/SortableLane'
+import { SortableCard } from '@/components/volition/SortableCard'
 import { QuickActionsBar } from '@/components/volition/QuickActionsBar'
 
 import { ProfileCard } from '@/components/volition/cards/ProfileCard'
@@ -65,6 +67,8 @@ export default function MyVolitionPage() {
     startCustomizing,
     stopCustomizing,
     dismissSpotlight,
+    getCardOrder,
+    setCardOrder,
   } = useVolitionLayout()
 
   // Data state
@@ -329,51 +333,54 @@ export default function MyVolitionPage() {
 
       case 'projects':
         return projects.length > 0 ? (
-          projects.map((project) => (
-            <ProjectCard
-              key={project.id}
-              project={project}
-              userId={user.id}
-              isCompact={isCompact}
-              onDelete={(id) =>
-                setDeleteModal({
-                  isOpen: true,
-                  type: 'project',
-                  id,
-                  title: 'Delete Project',
-                })
-              }
-            />
+          getSortedItems(projects, 'projects').map((project) => (
+            <SortableCard key={project.id} id={project.id} isCustomizing={isCustomizing}>
+              <ProjectCard
+                project={project}
+                userId={user.id}
+                isCompact={isCompact}
+                onDelete={(id) =>
+                  setDeleteModal({
+                    isOpen: true,
+                    type: 'project',
+                    id,
+                    title: 'Delete Project',
+                  })
+                }
+              />
+            </SortableCard>
           ))
         ) : null
 
       case 'articles':
         return articles.length > 0 ? (
-          articles.map((article) => (
-            <ArticleCard
-              key={article.id}
-              article={article}
-              isCompact={isCompact}
-              onDelete={(id) =>
-                setDeleteModal({
-                  isOpen: true,
-                  type: 'article',
-                  id,
-                  title: 'Delete Article',
-                })
-              }
-            />
+          getSortedItems(articles, 'articles').map((article) => (
+            <SortableCard key={article.id} id={article.id} isCustomizing={isCustomizing}>
+              <ArticleCard
+                article={article}
+                isCompact={isCompact}
+                onDelete={(id) =>
+                  setDeleteModal({
+                    isOpen: true,
+                    type: 'article',
+                    id,
+                    title: 'Delete Article',
+                  })
+                }
+              />
+            </SortableCard>
           ))
         ) : null
 
       case 'learning':
         return learningModules.length > 0 ? (
-          learningModules.map((module) => (
-            <LearningCard
-              key={module.id}
-              module={module}
-              isCompact={isCompact}
-            />
+          getSortedItems(learningModules, 'learning').map((module) => (
+            <SortableCard key={module.id} id={module.id} isCustomizing={isCustomizing}>
+              <LearningCard
+                module={module}
+                isCompact={isCompact}
+              />
+            </SortableCard>
           ))
         ) : null
 
@@ -418,21 +425,22 @@ export default function MyVolitionPage() {
 
       case 'feed':
         return feedPosts.length > 0 ? (
-          feedPosts.map((post) => (
-            <FeedPostCard
-              key={post.id}
-              post={post}
-              currentUserId={user.id}
-              isCompact={isCompact}
-              onDelete={(id) =>
-                setDeleteModal({
-                  isOpen: true,
-                  type: 'discussion',
-                  id,
-                  title: 'Delete Post',
-                })
-              }
-            />
+          getSortedItems(feedPosts, 'feed').map((post) => (
+            <SortableCard key={post.id} id={post.id} isCustomizing={isCustomizing}>
+              <FeedPostCard
+                post={post}
+                currentUserId={user.id}
+                isCompact={isCompact}
+                onDelete={(id) =>
+                  setDeleteModal({
+                    isOpen: true,
+                    type: 'discussion',
+                    id,
+                    title: 'Delete Post',
+                  })
+                }
+              />
+            </SortableCard>
           ))
         ) : null
 
@@ -487,6 +495,39 @@ export default function MyVolitionPage() {
       case 'feed': return feedPosts.length
       default: return 0
     }
+  }
+
+  // Get item IDs for a lane
+  const getLaneItemIds = (laneId: LaneId): string[] => {
+    switch (laneId) {
+      case 'projects': return projects.map(p => p.id)
+      case 'articles': return articles.map(a => a.id)
+      case 'learning': return learningModules.map(m => m.id)
+      case 'feed': return feedPosts.map(p => p.id)
+      default: return []
+    }
+  }
+
+  // Get sorted items based on saved order
+  const getSortedItems = <T extends { id: string }>(items: T[], laneId: LaneId): T[] => {
+    const savedOrder = getCardOrder(laneId)
+    if (savedOrder.length === 0) return items
+
+    // Sort items based on saved order, putting items not in saved order at the end
+    return [...items].sort((a, b) => {
+      const indexA = savedOrder.indexOf(a.id)
+      const indexB = savedOrder.indexOf(b.id)
+
+      if (indexA === -1 && indexB === -1) return 0
+      if (indexA === -1) return 1
+      if (indexB === -1) return -1
+      return indexA - indexB
+    })
+  }
+
+  // Handle card reorder
+  const handleCardReorder = (laneId: LaneId, newOrder: string[]) => {
+    setCardOrder(laneId, newOrder)
   }
 
   return (
@@ -631,6 +672,44 @@ export default function MyVolitionPage() {
           <LaneContainer showNavArrows>
             {orderedLanes.map((lane) => {
               const Icon = iconMap[lane.icon as keyof typeof iconMap] || User
+              const isSortable = ['projects', 'articles', 'learning', 'feed'].includes(lane.id)
+              const itemIds = getLaneItemIds(lane.id)
+
+              // Use SortableLane for lanes with sortable cards
+              if (isSortable && itemIds.length > 0) {
+                return (
+                  <SortableLane
+                    key={lane.id}
+                    id={lane.id}
+                    title={lane.title}
+                    icon={Icon}
+                    itemIds={itemIds}
+                    count={getLaneCount(lane.id)}
+                    gradient={lane.gradient}
+                    isCompact={isCompact}
+                    isCustomizing={isCustomizing}
+                    onRemove={() => toggleLane(lane.id)}
+                    emptyState={getLaneEmptyState(lane.id)}
+                    onReorder={(newOrder) => handleCardReorder(lane.id as LaneId, newOrder)}
+                    onAdd={
+                      lane.id === 'projects' ? () => window.location.href = '/community/projects/new' :
+                      lane.id === 'articles' ? () => window.location.href = '/articles/write' :
+                      lane.id === 'feed' ? () => window.location.href = '/community/forum/new' :
+                      undefined
+                    }
+                    addLabel={
+                      lane.id === 'projects' ? 'New Project' :
+                      lane.id === 'articles' ? 'Write Article' :
+                      lane.id === 'feed' ? 'New Post' :
+                      'Add'
+                    }
+                  >
+                    {renderLaneContent(lane.id)}
+                  </SortableLane>
+                )
+              }
+
+              // Use regular Lane for non-sortable lanes
               return (
                 <Lane
                   key={lane.id}

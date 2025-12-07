@@ -30,16 +30,20 @@ export const DEFAULT_LANES: LaneDefinition[] = [
   { id: 'impact', title: 'Impact', icon: 'Leaf', gradient: 'from-green-500 to-emerald-500', enabled: true },
 ]
 
+// Card order per lane - stores the order of item IDs within each lane (partial since not all lanes may have custom order)
+export type CardOrderMap = Partial<Record<LaneId, string[]>>
+
 interface VolitionLayoutData {
   version: number
   laneOrder: LaneId[]
   enabledLanes: LaneId[]
   isCompact: boolean
   spotlightDismissed: string[]
+  cardOrder: CardOrderMap
 }
 
-const STORAGE_KEY = 'volition-layout-v2'
-const CURRENT_VERSION = 1
+const STORAGE_KEY = 'volition-layout-v3'
+const CURRENT_VERSION = 2
 
 function getDefaultLayoutData(): VolitionLayoutData {
   return {
@@ -48,6 +52,7 @@ function getDefaultLayoutData(): VolitionLayoutData {
     enabledLanes: DEFAULT_LANES.filter(l => l.enabled).map(l => l.id),
     isCompact: false,
     spotlightDismissed: [],
+    cardOrder: {},
   }
 }
 
@@ -70,6 +75,7 @@ function loadLayoutData(): VolitionLayoutData {
           enabledLanes: Array.isArray(parsed.enabledLanes) ? parsed.enabledLanes : defaults.enabledLanes,
           isCompact: typeof parsed.isCompact === 'boolean' ? parsed.isCompact : defaults.isCompact,
           spotlightDismissed: Array.isArray(parsed.spotlightDismissed) ? parsed.spotlightDismissed : [],
+          cardOrder: parsed.cardOrder && typeof parsed.cardOrder === 'object' ? parsed.cardOrder : {},
         }
       }
     }
@@ -95,6 +101,7 @@ export function useVolitionLayout() {
   const [enabledLanes, setEnabledLanes] = useState<LaneId[]>(() => loadLayoutData().enabledLanes)
   const [isCompact, setIsCompact] = useState(() => loadLayoutData().isCompact)
   const [spotlightDismissed, setSpotlightDismissed] = useState<string[]>(() => loadLayoutData().spotlightDismissed)
+  const [cardOrder, setCardOrderState] = useState<CardOrderMap>(() => loadLayoutData().cardOrder)
   const [isCustomizing, setIsCustomizing] = useState(false)
 
   // Debounce save
@@ -112,6 +119,7 @@ export function useVolitionLayout() {
         enabledLanes,
         isCompact,
         spotlightDismissed,
+        cardOrder,
       })
     }, 500)
 
@@ -120,7 +128,7 @@ export function useVolitionLayout() {
         clearTimeout(saveTimeoutRef.current)
       }
     }
-  }, [laneOrder, enabledLanes, isCompact, spotlightDismissed])
+  }, [laneOrder, enabledLanes, isCompact, spotlightDismissed, cardOrder])
 
   // Get ordered lanes
   const getOrderedLanes = useCallback((): LaneDefinition[] => {
@@ -175,6 +183,33 @@ export function useVolitionLayout() {
     setSpotlightDismissed([])
   }, [])
 
+  // Get card order for a lane
+  const getCardOrder = useCallback((laneId: LaneId): string[] => {
+    return cardOrder[laneId] || []
+  }, [cardOrder])
+
+  // Set card order for a lane
+  const setCardOrder = useCallback((laneId: LaneId, order: string[]) => {
+    setCardOrderState(prev => ({
+      ...prev,
+      [laneId]: order,
+    }))
+  }, [])
+
+  // Reorder cards within a lane
+  const reorderCards = useCallback((laneId: LaneId, fromIndex: number, toIndex: number) => {
+    setCardOrderState(prev => {
+      const currentOrder = prev[laneId] || []
+      const newOrder = [...currentOrder]
+      const [removed] = newOrder.splice(fromIndex, 1)
+      newOrder.splice(toIndex, 0, removed)
+      return {
+        ...prev,
+        [laneId]: newOrder,
+      }
+    })
+  }, [])
+
   // Reset to defaults
   const resetToDefaults = useCallback(() => {
     const defaults = getDefaultLayoutData()
@@ -182,6 +217,7 @@ export function useVolitionLayout() {
     setEnabledLanes(defaults.enabledLanes)
     setIsCompact(defaults.isCompact)
     setSpotlightDismissed([])
+    setCardOrderState({})
   }, [])
 
   // Customization mode
@@ -200,6 +236,7 @@ export function useVolitionLayout() {
     isCompact,
     spotlightDismissed,
     isCustomizing,
+    cardOrder,
 
     // Computed
     getOrderedLanes,
@@ -215,5 +252,8 @@ export function useVolitionLayout() {
     resetToDefaults,
     startCustomizing,
     stopCustomizing,
+    getCardOrder,
+    setCardOrder,
+    reorderCards,
   }
 }

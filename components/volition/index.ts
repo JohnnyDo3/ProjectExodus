@@ -2,6 +2,8 @@
 export { DynamicSpotlight } from './DynamicSpotlight'
 export { LaneContainer } from './LaneContainer'
 export { Lane } from './Lane'
+export { SortableLane } from './SortableLane'
+export { SortableCard } from './SortableCard'
 export { QuickActionsBar } from './QuickActionsBar'
 
 // Card components
