@@ -56,19 +56,28 @@ function loadLayoutData(): VolitionLayoutData {
     return getDefaultLayoutData()
   }
 
+  const defaults = getDefaultLayoutData()
+
   try {
     const stored = localStorage.getItem(STORAGE_KEY)
     if (stored) {
       const parsed = JSON.parse(stored) as VolitionLayoutData
       if (parsed.version === CURRENT_VERSION) {
-        return parsed
+        // Validate arrays exist and are actually arrays
+        return {
+          version: CURRENT_VERSION,
+          laneOrder: Array.isArray(parsed.laneOrder) ? parsed.laneOrder : defaults.laneOrder,
+          enabledLanes: Array.isArray(parsed.enabledLanes) ? parsed.enabledLanes : defaults.enabledLanes,
+          isCompact: typeof parsed.isCompact === 'boolean' ? parsed.isCompact : defaults.isCompact,
+          spotlightDismissed: Array.isArray(parsed.spotlightDismissed) ? parsed.spotlightDismissed : [],
+        }
       }
     }
   } catch (error) {
     console.error('Error loading volition layout:', error)
   }
 
-  return getDefaultLayoutData()
+  return defaults
 }
 
 function saveLayoutData(data: VolitionLayoutData): void {
@@ -115,8 +124,11 @@ export function useVolitionLayout() {
 
   // Get ordered lanes
   const getOrderedLanes = useCallback((): LaneDefinition[] => {
-    return laneOrder
-      .filter(id => enabledLanes.includes(id))
+    const order = Array.isArray(laneOrder) ? laneOrder : DEFAULT_LANES.map(l => l.id)
+    const enabled = Array.isArray(enabledLanes) ? enabledLanes : DEFAULT_LANES.filter(l => l.enabled).map(l => l.id)
+
+    return order
+      .filter(id => enabled.includes(id))
       .map(id => DEFAULT_LANES.find(l => l.id === id)!)
       .filter(Boolean)
   }, [laneOrder, enabledLanes])
@@ -124,10 +136,11 @@ export function useVolitionLayout() {
   // Toggle lane visibility
   const toggleLane = useCallback((laneId: LaneId) => {
     setEnabledLanes(prev => {
-      if (prev.includes(laneId)) {
-        return prev.filter(id => id !== laneId)
+      const prevArray = Array.isArray(prev) ? prev : []
+      if (prevArray.includes(laneId)) {
+        return prevArray.filter(id => id !== laneId)
       }
-      return [...prev, laneId]
+      return [...prevArray, laneId]
     })
   }, [])
 
@@ -139,7 +152,8 @@ export function useVolitionLayout() {
   // Move lane
   const moveLane = useCallback((fromIndex: number, toIndex: number) => {
     setLaneOrder(prev => {
-      const newOrder = [...prev]
+      const prevArray = Array.isArray(prev) ? prev : DEFAULT_LANES.map(l => l.id)
+      const newOrder = [...prevArray]
       const [removed] = newOrder.splice(fromIndex, 1)
       newOrder.splice(toIndex, 0, removed)
       return newOrder

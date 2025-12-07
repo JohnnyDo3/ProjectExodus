@@ -100,7 +100,7 @@ export default function MyVolitionPage() {
       const res = await fetch('/api/projects')
       if (res.ok) {
         const data = await res.json()
-        if (data.success) {
+        if (data.success && Array.isArray(data.data)) {
           const userProjects = data.data.filter(
             (p: any) =>
               p.members?.some((m: any) => m.userId === session.user.id) ||

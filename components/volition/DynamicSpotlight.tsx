@@ -68,7 +68,8 @@ export function DynamicSpotlight({
     const items: SpotlightItem[] = []
 
     // Add unread notifications (highest priority)
-    notifications
+    const notifArray = Array.isArray(notifications) ? notifications : []
+    notifArray
       .filter((n) => !n.read && !dismissedIds.has(n.id))
       .forEach((n) => {
         items.push({
@@ -83,7 +84,8 @@ export function DynamicSpotlight({
       })
 
     // Add in-progress learning modules
-    learningModules
+    const learningArray = Array.isArray(learningModules) ? learningModules : []
+    learningArray
       .filter((m) => m.progress > 0 && m.progress < 100 && !dismissedIds.has(m.id))
       .forEach((m) => {
         items.push({
@@ -99,7 +101,8 @@ export function DynamicSpotlight({
 
     // Add recent project updates (last 24 hours)
     const dayAgo = new Date(Date.now() - 24 * 60 * 60 * 1000)
-    projects
+    const projectsArray = Array.isArray(projects) ? projects : []
+    projectsArray
       .filter((p) => new Date(p.updatedAt) > dayAgo && !dismissedIds.has(p.id))
       .forEach((p) => {
         items.push({
@@ -114,7 +117,8 @@ export function DynamicSpotlight({
       })
 
     // Add connection requests
-    connectionRequests
+    const connectionsArray = Array.isArray(connectionRequests) ? connectionRequests : []
+    connectionsArray
       .filter((c) => !dismissedIds.has(c.id))
       .forEach((c) => {
         items.push({
