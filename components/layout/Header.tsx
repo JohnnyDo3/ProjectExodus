@@ -4,7 +4,6 @@ import Link from 'next/link'
 import { usePathname } from 'next/navigation'
 import { useState, useEffect } from 'react'
 import { useSession, signOut } from 'next-auth/react'
-import { Button } from '@/components/ui/Button'
 import { ThemeToggle } from '@/components/ui/ThemeToggle'
 import { Menu, X, Leaf, User, LogOut, Settings, Users, Calendar, LayoutDashboard, ChevronRight, MessageCircle, Bell } from 'lucide-react'
 import NotificationBell from '@/components/notifications/NotificationBell'
@@ -176,13 +175,13 @@ export function Header() {
               <>
                 <Link
                   href="/auth/signin"
-                  className="inline-flex items-center justify-center rounded-lg font-bold transition-all duration-200 border-2 border-[var(--primary)] text-[var(--primary)] hover:bg-[var(--muted)] bg-transparent px-3 py-1.5 text-sm no-min-size"
+                  className="inline-flex items-center justify-center rounded-lg font-medium transition-all duration-200 px-3 py-1.5 text-sm border-2 border-[var(--primary)] text-[var(--primary)] hover:bg-[var(--muted)] bg-transparent"
                 >
                   Sign In
                 </Link>
                 <Link
                   href="/auth/signup"
-                  className="inline-flex items-center justify-center rounded-lg font-bold transition-all duration-200 bg-[var(--primary)] text-[var(--primary-foreground)] hover:opacity-90 shadow-lg px-3 py-1.5 text-sm no-min-size"
+                  className="inline-flex items-center justify-center rounded-lg font-medium transition-all duration-200 px-3 py-1.5 text-sm bg-[var(--primary)] text-[var(--primary-foreground)] hover:opacity-90 shadow-sm hover:shadow-md"
                 >
                   Get Started
                 </Link>
