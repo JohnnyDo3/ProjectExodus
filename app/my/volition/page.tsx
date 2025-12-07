@@ -497,6 +497,7 @@ export default function MyVolitionPage() {
   // Get lane count
   const getLaneCount = (laneId: LaneId): number => {
     switch (laneId) {
+      case 'profile': return 1 // Always show the business card
       case 'projects': return projects.length
       case 'articles': return articles.length
       case 'learning': return learningModules.length
