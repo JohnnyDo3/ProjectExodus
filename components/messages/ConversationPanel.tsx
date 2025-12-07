@@ -255,7 +255,7 @@ export function ConversationPanel({ userId, onBack }: ConversationPanelProps) {
   const fetchConversation = async () => {
     setIsLoading(true)
     try {
-      const res = await fetch(`/api/messages/${userId}`)
+      const res = await fetch(`/api/messages/conversations/${userId}`)
       const data = await res.json()
 
       if (data.success) {
@@ -342,7 +342,7 @@ export function ConversationPanel({ userId, onBack }: ConversationPanelProps) {
     setNewMessage('') // Clear input immediately for better UX
 
     try {
-      const res = await fetch(`/api/messages/${userId}`, {
+      const res = await fetch(`/api/messages/conversations/${userId}`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ content: messageToSend }),

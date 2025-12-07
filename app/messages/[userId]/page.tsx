@@ -133,7 +133,7 @@ export default function ConversationPage({ params }: { params: Promise<{ userId:
 
   const fetchConversation = async () => {
     try {
-      const res = await fetch(`/api/messages/${userId}`)
+      const res = await fetch(`/api/messages/conversations/${userId}`)
       const data = await res.json()
 
       if (data.success) {
@@ -204,7 +204,7 @@ export default function ConversationPage({ params }: { params: Promise<{ userId:
     setNewMessage('') // Clear input immediately for better UX
 
     try {
-      const res = await fetch(`/api/messages/${userId}`, {
+      const res = await fetch(`/api/messages/conversations/${userId}`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ content: messageToSend }),
