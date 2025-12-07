@@ -9,8 +9,10 @@ import {
   Search,
   Users,
   ArrowRight,
+  Check,
 } from 'lucide-react'
 import Link from 'next/link'
+import { ConversationPanel } from '@/components/messages/ConversationPanel'
 
 export default function MessagesPage() {
   const { data: session, status } = useSession()
@@ -21,6 +23,7 @@ export default function MessagesPage() {
   const [following, setFollowing] = useState<any[]>([])
   const [isLoading, setIsLoading] = useState(true)
   const [searchQuery, setSearchQuery] = useState('')
+  const [selectedUserId, setSelectedUserId] = useState<string | null>(null)
 
   useEffect(() => {
     if (!session?.user) {
@@ -31,12 +34,14 @@ export default function MessagesPage() {
     fetchFollowing()
   }, [session?.user])
 
-  // Handle pre-selected user from URL parameter - redirect to conversation
+  // Handle pre-selected user from URL parameter
   useEffect(() => {
     if (preSelectedUserId) {
-      router.push(`/messages/${preSelectedUserId}`)
+      setSelectedUserId(preSelectedUserId)
+      // Clean up URL without navigation
+      window.history.replaceState({}, '', '/messages')
     }
-  }, [preSelectedUserId, router])
+  }, [preSelectedUserId])
 
   const fetchFollowing = async () => {
     try {
@@ -64,9 +69,13 @@ export default function MessagesPage() {
     )
   })
 
+  const handleSelectContact = (contactId: string) => {
+    setSelectedUserId(contactId)
+  }
+
   if (status === 'loading' || isLoading) {
     return (
-      <div className="min-h-screen flex items-center justify-center bg-[var(--background)]">
+      <div className="h-screen flex items-center justify-center bg-[var(--background)]">
         <div className="text-center space-y-4">
           <div className="w-16 h-16 border-4 border-theme-primary border-t-transparent rounded-full animate-spin mx-auto" />
           <p className="text-lg font-bold text-theme-muted">Loading messages...</p>
@@ -80,9 +89,9 @@ export default function MessagesPage() {
   }
 
   return (
-    <div className="h-screen overflow-hidden bg-[var(--background)] hide-footer">
+    <div className="h-screen flex flex-col overflow-hidden bg-[var(--background)]">
       {/* Header */}
-      <div className="sticky top-0 z-50 bg-gradient-to-r from-[var(--primary)]/95 via-[var(--accent)]/95 to-[var(--secondary)]/95 backdrop-blur-sm border-b-2 border-theme-primary">
+      <div className="flex-shrink-0 bg-gradient-to-r from-[var(--primary)]/95 via-[var(--accent)]/95 to-[var(--secondary)]/95 backdrop-blur-sm border-b-2 border-theme-primary">
         <div className="container mx-auto px-6 py-3">
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-3">
@@ -98,11 +107,11 @@ export default function MessagesPage() {
         </div>
       </div>
 
-      {/* Main Content */}
-      <div className="h-[calc(100vh-80px)] flex gap-4 p-6">
+      {/* Main Content - Takes remaining height */}
+      <div className="flex-1 flex gap-4 p-4 overflow-hidden">
         {/* Contacts Sidebar */}
-        <div className="w-1/3 h-full flex flex-col bg-[var(--card)] rounded-2xl border-2 border-theme-primary shadow-lg overflow-hidden">
-          <div className="p-4 border-b border-[var(--border)]">
+        <div className={`${selectedUserId ? 'hidden md:flex' : 'flex'} w-full md:w-80 lg:w-96 h-full flex-col bg-[var(--card)] rounded-2xl border-2 border-theme-primary shadow-lg overflow-hidden flex-shrink-0`}>
+          <div className="p-4 border-b border-[var(--border)] flex-shrink-0">
             <div className="flex items-center gap-2 mb-3">
               <User className="w-5 h-5 text-theme-primary" />
               <h2 className="text-sm font-black text-[var(--foreground)]">YOUR CONTACTS</h2>
@@ -119,14 +128,16 @@ export default function MessagesPage() {
             </div>
           </div>
 
-          {/* Contacts List */}
+          {/* Contacts List - Scrollable */}
           <div className="flex-1 overflow-y-auto">
             {filteredContacts.length > 0 ? (
               filteredContacts.map(contact => (
-                <Link
+                <button
                   key={contact.id}
-                  href={`/messages/${contact.id}`}
-                  className="w-full p-4 border-b border-[var(--border)] hover:bg-[var(--primary)]/10 transition-colors text-left block group"
+                  onClick={() => handleSelectContact(contact.id)}
+                  className={`w-full p-4 border-b border-[var(--border)] hover:bg-[var(--primary)]/10 transition-colors text-left group ${
+                    selectedUserId === contact.id ? 'bg-[var(--primary)]/15 border-l-4 border-l-[var(--primary)]' : ''
+                  }`}
                 >
                   <div className="flex items-center gap-3">
                     <div className="w-10 h-10 rounded-full bg-gradient-to-br from-[var(--primary)] to-[var(--accent)] flex items-center justify-center flex-shrink-0">
@@ -148,9 +159,13 @@ export default function MessagesPage() {
                         {contact.headline || contact.bio || 'Member'}
                       </p>
                     </div>
-                    <ArrowRight className="w-4 h-4 text-theme-muted opacity-0 group-hover:opacity-100 transition-opacity" />
+                    {selectedUserId === contact.id ? (
+                      <Check className="w-4 h-4 text-theme-primary" />
+                    ) : (
+                      <ArrowRight className="w-4 h-4 text-theme-muted opacity-0 group-hover:opacity-100 transition-opacity" />
+                    )}
                   </div>
-                </Link>
+                </button>
               ))
             ) : (
               <div className="p-6 text-center">
@@ -163,8 +178,8 @@ export default function MessagesPage() {
           </div>
 
           {/* Build Your Network Section */}
-          <div className="p-4 border-t-2 border-[var(--border)] bg-gradient-to-br from-[var(--primary)]/5 to-transparent">
-            <Link href="/my-network">
+          <div className="p-4 border-t-2 border-[var(--border)] bg-gradient-to-br from-[var(--primary)]/5 to-transparent flex-shrink-0">
+            <Link href="/network#members-grid">
               <div className="p-3 bg-gradient-to-r from-[var(--primary)] to-[var(--accent)] rounded-xl hover:shadow-lg transition-all cursor-pointer group">
                 <div className="flex items-center justify-between">
                   <div className="flex items-center gap-2">
@@ -183,36 +198,45 @@ export default function MessagesPage() {
           </div>
         </div>
 
-        {/* Info Panel */}
-        <div className="flex-1 h-full flex flex-col bg-[var(--card)] rounded-2xl border-2 border-theme-accent shadow-lg overflow-hidden">
-          <div className="flex-1 flex items-center justify-center p-8">
-            <div className="text-center max-w-md">
-              <div className="w-20 h-20 rounded-full bg-gradient-to-br from-[var(--primary)]/20 to-[var(--accent)]/20 flex items-center justify-center mx-auto mb-6">
-                <Send className="w-10 h-10 text-theme-primary" />
-              </div>
-              <h2 className="text-xl font-black text-[var(--foreground)] mb-3">
-                Start a Conversation
-              </h2>
-              <p className="text-sm font-medium text-theme-muted mb-6">
-                Select a contact from your network to begin messaging.
-                Your conversations are private and secure.
-              </p>
-              <div className="flex items-center justify-center gap-4 text-xs font-bold text-theme-muted">
-                <div className="flex items-center gap-1">
-                  <div className="w-2 h-2 rounded-full bg-green-500" />
-                  Real-time
+        {/* Conversation Panel */}
+        <div className={`${selectedUserId ? 'flex' : 'hidden md:flex'} flex-1 h-full bg-[var(--card)] rounded-2xl border-2 border-theme-accent shadow-lg overflow-hidden`}>
+          {selectedUserId ? (
+            <div className="w-full h-full">
+              <ConversationPanel
+                userId={selectedUserId}
+                onBack={() => setSelectedUserId(null)}
+              />
+            </div>
+          ) : (
+            <div className="w-full h-full flex items-center justify-center p-8">
+              <div className="text-center max-w-md">
+                <div className="w-20 h-20 rounded-full bg-gradient-to-br from-[var(--primary)]/20 to-[var(--accent)]/20 flex items-center justify-center mx-auto mb-6">
+                  <Send className="w-10 h-10 text-theme-primary" />
                 </div>
-                <div className="flex items-center gap-1">
-                  <div className="w-2 h-2 rounded-full bg-blue-500" />
-                  Secure
-                </div>
-                <div className="flex items-center gap-1">
-                  <div className="w-2 h-2 rounded-full bg-purple-500" />
-                  Private
+                <h2 className="text-xl font-black text-[var(--foreground)] mb-3">
+                  Start a Conversation
+                </h2>
+                <p className="text-sm font-medium text-theme-muted mb-6">
+                  Select a contact from your network to begin messaging.
+                  Your conversations are private and secure.
+                </p>
+                <div className="flex items-center justify-center gap-4 text-xs font-bold text-theme-muted">
+                  <div className="flex items-center gap-1">
+                    <div className="w-2 h-2 rounded-full bg-green-500" />
+                    Real-time
+                  </div>
+                  <div className="flex items-center gap-1">
+                    <div className="w-2 h-2 rounded-full bg-blue-500" />
+                    Secure
+                  </div>
+                  <div className="flex items-center gap-1">
+                    <div className="w-2 h-2 rounded-full bg-purple-500" />
+                    Private
+                  </div>
                 </div>
               </div>
             </div>
-          </div>
+          )}
         </div>
       </div>
     </div>

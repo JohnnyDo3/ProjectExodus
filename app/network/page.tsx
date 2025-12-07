@@ -426,7 +426,7 @@ export default function NetworkPage() {
 
       {/* Members Grid - Grid View Only */}
       {viewMode === 'grid' && (
-      <section className="py-16">
+      <section id="members-grid" className="py-16 scroll-mt-8">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
           <div className="max-w-6xl mx-auto">
             {filteredUsers.length === 0 ? (
