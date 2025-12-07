@@ -34,6 +34,7 @@ import { SortableCard } from '@/components/volition/SortableCard'
 import { QuickActionsBar } from '@/components/volition/QuickActionsBar'
 
 import { ProfileCard } from '@/components/volition/cards/ProfileCard'
+import { ProfileBusinessCard } from '@/components/profile/ProfileBusinessCard'
 import { ProjectCard } from '@/components/volition/cards/ProjectCard'
 import { ArticleCard } from '@/components/volition/cards/ArticleCard'
 import { LearningCard } from '@/components/volition/cards/LearningCard'
@@ -325,12 +326,18 @@ export default function MyVolitionPage() {
   const renderLaneContent = (laneId: LaneId) => {
     switch (laneId) {
       case 'profile':
+        // Show full business card when not compact, simple card when compact
+        if (isCompact) {
+          return (
+            <ProfileCard
+              user={user}
+              userProfile={userProfile}
+              isCompact={true}
+            />
+          )
+        }
         return (
-          <ProfileCard
-            user={user}
-            userProfile={userProfile}
-            isCompact={isCompact}
-          />
+          <ProfileBusinessCard userId={user.id || ''} />
         )
 
       case 'projects':
