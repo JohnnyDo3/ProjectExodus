@@ -11,34 +11,35 @@ interface QuickActionsBarProps {
   className?: string
 }
 
+// Actions with solid dark backgrounds for guaranteed readability
 const actions = [
   {
     id: 'project',
     label: 'New Project',
     icon: Briefcase,
     href: '/community/projects/new',
-    gradient: 'from-[var(--primary)] to-[var(--accent)]',
+    bgColor: 'var(--foreground)',
   },
   {
     id: 'article',
     label: 'Write Article',
     icon: FileText,
     href: '/articles/write',
-    gradient: 'from-[var(--accent)] to-[var(--secondary)]',
+    bgColor: 'var(--foreground)',
   },
   {
     id: 'discussion',
     label: 'Start Discussion',
     icon: MessageCircle,
     href: '/community/forum/new',
-    gradient: 'from-[var(--secondary)] to-[var(--primary)]',
+    bgColor: 'var(--foreground)',
   },
   {
     id: 'network',
     label: 'Browse Network',
     icon: Users,
     href: '/network/browse',
-    gradient: 'from-[var(--primary)] to-[var(--secondary)]',
+    bgColor: 'var(--foreground)',
   },
 ]
 
@@ -71,13 +72,10 @@ export function QuickActionsBar({
                 <Link
                   key={action.id}
                   href={action.href}
-                  className={`
-                    flex items-center gap-3 pl-4 pr-5 py-3 rounded-full
-                    bg-gradient-to-r ${action.gradient} text-white
-                    shadow-lg animate-fadeInUp
-                    [text-shadow:_0_1px_3px_rgba(0,0,0,0.4)]
-                  `}
+                  className="flex items-center gap-3 pl-4 pr-5 py-3 rounded-full shadow-lg animate-fadeInUp"
                   style={{
+                    backgroundColor: action.bgColor,
+                    color: 'var(--background)',
                     animationDelay: `${index * 50}ms`,
                   }}
                   onClick={() => setIsExpanded(false)}
@@ -118,16 +116,19 @@ export function QuickActionsBar({
           onClick={() => setIsExpanded(!isExpanded)}
           className={`
             fixed bottom-6 right-4 z-50 w-14 h-14 rounded-full
-            bg-gradient-to-r from-[var(--primary)] to-[var(--accent)]
             shadow-lg flex items-center justify-center
             transition-transform active:scale-95
             ${isExpanded ? 'rotate-45' : ''}
           `}
+          style={{
+            backgroundColor: 'var(--foreground)',
+            color: 'var(--background)',
+          }}
         >
           {isExpanded ? (
-            <X className="w-6 h-6 text-white" />
+            <X className="w-6 h-6" />
           ) : (
-            <Plus className="w-6 h-6 text-white" />
+            <Plus className="w-6 h-6" />
           )}
         </button>
 
@@ -161,14 +162,11 @@ export function QuickActionsBar({
             <Link
               key={action.id}
               href={action.href}
-              className={`
-                flex items-center gap-2 px-4 py-2.5 rounded-xl
-                bg-gradient-to-r ${action.gradient}
-                text-white font-bold text-sm
-                hover:opacity-90 transition-opacity
-                whitespace-nowrap
-                [text-shadow:_0_1px_3px_rgba(0,0,0,0.4)]
-              `}
+              className="flex items-center gap-2 px-4 py-2.5 rounded-xl font-bold text-sm hover:opacity-90 transition-opacity whitespace-nowrap"
+              style={{
+                backgroundColor: action.bgColor,
+                color: 'var(--background)',
+              }}
             >
               <Icon className="w-4 h-4" />
               <span className="hidden lg:inline">{action.label}</span>
@@ -183,14 +181,11 @@ export function QuickActionsBar({
         {onCustomize && (
           <button
             onClick={onCustomize}
-            className={`
-              flex items-center gap-2 px-4 py-2.5 rounded-xl
-              transition-all font-bold text-sm
-              ${isCustomizing
-                ? 'bg-gradient-to-r from-[var(--primary)] to-[var(--accent)] text-white [text-shadow:_0_1px_3px_rgba(0,0,0,0.4)]'
-                : 'bg-[var(--muted)] text-[var(--foreground)] hover:bg-[var(--muted)]/80'
-              }
-            `}
+            className="flex items-center gap-2 px-4 py-2.5 rounded-xl transition-all font-bold text-sm"
+            style={{
+              backgroundColor: isCustomizing ? 'var(--foreground)' : 'var(--muted)',
+              color: isCustomizing ? 'var(--background)' : 'var(--foreground)',
+            }}
           >
             <Settings className={`w-4 h-4 ${isCustomizing ? 'animate-spin-slow' : ''}`} />
             <span className="hidden lg:inline">
