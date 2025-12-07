@@ -2,43 +2,84 @@
 
 import { useSession } from 'next-auth/react'
 import { redirect } from 'next/navigation'
-import { Zap, Settings, Check, RotateCcw, Plus, X } from 'lucide-react'
 import { useEffect, useState, useCallback } from 'react'
-import { DashboardGrid } from '@/components/dashboard/DashboardGrid'
-import { useDashboardLayout } from '@/hooks/useDashboardLayout'
-import { WIDGET_REGISTRY, ALL_WIDGET_IDS } from '@/components/dashboard/widgets'
-import { WidgetId } from '@/types/dashboard'
+import {
+  Zap,
+  User,
+  Briefcase,
+  FileText,
+  BookOpen,
+  Users,
+  MessageCircle,
+  Leaf,
+  Maximize2,
+  Minimize2,
+  RotateCcw,
+  Check,
+  Settings,
+  Plus,
+  X,
+} from 'lucide-react'
+
+import { useVolitionLayout, LaneId, DEFAULT_LANES } from '@/hooks/useVolitionLayout'
+import { useIsMobile } from '@/hooks/useIsMobile'
 import { DeleteConfirmationModal } from '@/components/ui/DeleteConfirmationModal'
+
+import { DynamicSpotlight } from '@/components/volition/DynamicSpotlight'
+import { LaneContainer } from '@/components/volition/LaneContainer'
+import { Lane } from '@/components/volition/Lane'
+import { QuickActionsBar } from '@/components/volition/QuickActionsBar'
+
+import { ProfileCard } from '@/components/volition/cards/ProfileCard'
+import { ProjectCard } from '@/components/volition/cards/ProjectCard'
+import { ArticleCard } from '@/components/volition/cards/ArticleCard'
+import { LearningCard } from '@/components/volition/cards/LearningCard'
+import { NetworkCard } from '@/components/volition/cards/NetworkCard'
+import { FeedPostCard } from '@/components/volition/cards/FeedPostCard'
+import { ImpactCard } from '@/components/volition/cards/ImpactCard'
+
+const iconMap = {
+  User,
+  Briefcase,
+  FileText,
+  BookOpen,
+  Users,
+  MessageCircle,
+  Leaf,
+}
 
 export default function MyVolitionPage() {
   const { data: session, status } = useSession()
+  const isMobile = useIsMobile()
+
+  // Layout state
+  const {
+    enabledLanes,
+    isCompact,
+    isCustomizing,
+    getOrderedLanes,
+    allLanes,
+    toggleLane,
+    toggleCompact,
+    resetToDefaults,
+    startCustomizing,
+    stopCustomizing,
+    dismissSpotlight,
+  } = useVolitionLayout()
+
+  // Data state
   const [projects, setProjects] = useState<any[]>([])
   const [articles, setArticles] = useState<any[]>([])
   const [feedPosts, setFeedPosts] = useState<any[]>([])
   const [userProfile, setUserProfile] = useState<any>(null)
-  const [isLoading, setIsLoading] = useState(true)
   const [networkSuggestions, setNetworkSuggestions] = useState<any[]>([])
   const [following, setFollowing] = useState<any[]>([])
   const [learningModules, setLearningModules] = useState<any[]>([])
-  const [learningFilter, setLearningFilter] = useState<string>('all')
+  const [notifications, setNotifications] = useState<any[]>([])
+  const [isLoading, setIsLoading] = useState(true)
 
-  // Dashboard layout hook
-  const {
-    layouts,
-    activeWidgets,
-    widgetSettings,
-    isCustomizing,
-    onLayoutChange,
-    toggleWidget,
-    removeWidget,
-    resetToDefaults,
-    updateWidgetSettings,
-    startCustomizing,
-    stopCustomizing,
-  } = useDashboardLayout()
-
-  // Widget picker modal state (only used in customize mode)
-  const [showWidgetPicker, setShowWidgetPicker] = useState(false)
+  // Mobile tab navigation
+  const [activeLaneIndex, setActiveLaneIndex] = useState(0)
 
   // Delete modal state
   const [deleteModal, setDeleteModal] = useState<{
@@ -48,6 +89,9 @@ export default function MyVolitionPage() {
     title: string
   }>({ isOpen: false, type: null, id: null, title: '' })
   const [isDeleting, setIsDeleting] = useState(false)
+
+  // Lane picker modal
+  const [showLanePicker, setShowLanePicker] = useState(false)
 
   // Fetch functions
   const fetchProjects = useCallback(async () => {
@@ -59,7 +103,7 @@ export default function MyVolitionPage() {
         if (data.success) {
           const userProjects = data.data.filter(
             (p: any) =>
-              p.members.some((m: any) => m.userId === session.user.id) ||
+              p.members?.some((m: any) => m.userId === session.user.id) ||
               p.creatorId === session.user.id
           )
           setProjects(userProjects)
@@ -73,11 +117,11 @@ export default function MyVolitionPage() {
   const fetchArticles = useCallback(async () => {
     if (!session?.user?.id) return
     try {
-      const res = await fetch(`/api/users/${session.user.id}`)
+      const res = await fetch(`/api/articles?authorId=${session.user.id}`)
       if (res.ok) {
         const data = await res.json()
-        if (data.success && data.data.articles) {
-          setArticles(data.data.articles)
+        if (data.success) {
+          setArticles(data.data || [])
         }
       }
     } catch (error) {
@@ -92,9 +136,9 @@ export default function MyVolitionPage() {
       if (res.ok) {
         const data = await res.json()
         if (data.success) {
-          const userPosts = data.data.posts.filter(
+          const userPosts = data.data.posts?.filter(
             (post: any) => post.userId === session.user.id
-          )
+          ) || []
           setFeedPosts(userPosts)
         }
       }
@@ -118,7 +162,7 @@ export default function MyVolitionPage() {
 
   const fetchNetworkSuggestions = useCallback(async () => {
     try {
-      const res = await fetch('/api/network/suggestions?limit=6')
+      const res = await fetch('/api/network/suggestions?limit=10')
       if (res.ok) {
         const data = await res.json()
         if (data.success) {
@@ -146,12 +190,7 @@ export default function MyVolitionPage() {
 
   const fetchLearningModules = useCallback(async () => {
     try {
-      const filter = widgetSettings.learning?.filter || 'all'
-      const filterParam =
-        filter !== 'all'
-          ? `?filter=${filter === 'in_progress' ? 'in_progress' : 'completed'}`
-          : ''
-      const res = await fetch(`/api/learning/user${filterParam}`)
+      const res = await fetch('/api/learning/user')
       if (res.ok) {
         const data = await res.json()
         if (data.success) {
@@ -161,7 +200,21 @@ export default function MyVolitionPage() {
     } catch (error) {
       console.error('Error fetching learning modules:', error)
     }
-  }, [widgetSettings.learning?.filter])
+  }, [])
+
+  const fetchNotifications = useCallback(async () => {
+    try {
+      const res = await fetch('/api/notifications?limit=5')
+      if (res.ok) {
+        const data = await res.json()
+        if (data.success) {
+          setNotifications(data.data || [])
+        }
+      }
+    } catch (error) {
+      console.error('Error fetching notifications:', error)
+    }
+  }, [])
 
   // Initial data fetch
   useEffect(() => {
@@ -174,6 +227,7 @@ export default function MyVolitionPage() {
         fetchNetworkSuggestions(),
         fetchFollowing(),
         fetchLearningModules(),
+        fetchNotifications(),
       ]).finally(() => setIsLoading(false))
     }
   }, [
@@ -185,14 +239,8 @@ export default function MyVolitionPage() {
     fetchNetworkSuggestions,
     fetchFollowing,
     fetchLearningModules,
+    fetchNotifications,
   ])
-
-  // Refetch learning modules when filter changes
-  useEffect(() => {
-    if (session?.user?.id) {
-      fetchLearningModules()
-    }
-  }, [widgetSettings.learning?.filter, session?.user?.id, fetchLearningModules])
 
   // Handle delete
   const handleDelete = async () => {
@@ -221,12 +269,9 @@ export default function MyVolitionPage() {
           setArticles((prev) => prev.filter((a) => a.id !== deleteModal.id))
         }
         setDeleteModal({ isOpen: false, type: null, id: null, title: '' })
-      } else {
-        alert(data.error || 'Failed to delete')
       }
     } catch (error) {
       console.error('Error deleting:', error)
-      alert('Failed to delete')
     } finally {
       setIsDeleting(false)
     }
@@ -241,7 +286,6 @@ export default function MyVolitionPage() {
         body: JSON.stringify({ followingId: userId }),
       })
       if (res.ok) {
-        // Refresh suggestions and following
         fetchNetworkSuggestions()
         fetchFollowing()
       }
@@ -250,13 +294,14 @@ export default function MyVolitionPage() {
     }
   }
 
+  // Loading state
   if (status === 'loading' || isLoading) {
     return (
       <div className="min-h-screen flex items-center justify-center bg-[var(--background)]">
         <div className="text-center space-y-4">
           <div className="w-16 h-16 border-4 border-[var(--primary)] border-t-transparent rounded-full animate-spin mx-auto" />
           <p className="text-lg font-medium text-[var(--foreground)]/60">
-            Loading Your Dashboard...
+            Loading Your Volition...
           </p>
         </div>
       </div>
@@ -268,12 +313,187 @@ export default function MyVolitionPage() {
   }
 
   const user = session.user
+  const orderedLanes = getOrderedLanes()
+
+  // Render lane content based on lane ID
+  const renderLaneContent = (laneId: LaneId) => {
+    switch (laneId) {
+      case 'profile':
+        return (
+          <ProfileCard
+            user={user}
+            userProfile={userProfile}
+            isCompact={isCompact}
+          />
+        )
+
+      case 'projects':
+        return projects.length > 0 ? (
+          projects.map((project) => (
+            <ProjectCard
+              key={project.id}
+              project={project}
+              userId={user.id}
+              isCompact={isCompact}
+              onDelete={(id) =>
+                setDeleteModal({
+                  isOpen: true,
+                  type: 'project',
+                  id,
+                  title: 'Delete Project',
+                })
+              }
+            />
+          ))
+        ) : null
+
+      case 'articles':
+        return articles.length > 0 ? (
+          articles.map((article) => (
+            <ArticleCard
+              key={article.id}
+              article={article}
+              isCompact={isCompact}
+              onDelete={(id) =>
+                setDeleteModal({
+                  isOpen: true,
+                  type: 'article',
+                  id,
+                  title: 'Delete Article',
+                })
+              }
+            />
+          ))
+        ) : null
+
+      case 'learning':
+        return learningModules.length > 0 ? (
+          learningModules.map((module) => (
+            <LearningCard
+              key={module.id}
+              module={module}
+              isCompact={isCompact}
+            />
+          ))
+        ) : null
+
+      case 'network':
+        return (
+          <>
+            {following.length > 0 && (
+              <div className="mb-4">
+                <h4 className="text-xs font-bold text-[var(--foreground)]/50 uppercase mb-2 px-1">
+                  Following
+                </h4>
+                {following.slice(0, 3).map((user) => (
+                  <NetworkCard
+                    key={user.id}
+                    user={user}
+                    type="following"
+                    isCompact={isCompact}
+                    className="mb-2"
+                  />
+                ))}
+              </div>
+            )}
+            {networkSuggestions.length > 0 && (
+              <div>
+                <h4 className="text-xs font-bold text-[var(--foreground)]/50 uppercase mb-2 px-1">
+                  Suggested
+                </h4>
+                {networkSuggestions.slice(0, 5).map((user) => (
+                  <NetworkCard
+                    key={user.id}
+                    user={user}
+                    type="suggestion"
+                    isCompact={isCompact}
+                    onFollow={handleFollow}
+                    className="mb-2"
+                  />
+                ))}
+              </div>
+            )}
+          </>
+        )
+
+      case 'feed':
+        return feedPosts.length > 0 ? (
+          feedPosts.map((post) => (
+            <FeedPostCard
+              key={post.id}
+              post={post}
+              currentUserId={user.id}
+              isCompact={isCompact}
+              onDelete={(id) =>
+                setDeleteModal({
+                  isOpen: true,
+                  type: 'discussion',
+                  id,
+                  title: 'Delete Post',
+                })
+              }
+            />
+          ))
+        ) : null
+
+      case 'impact':
+        return <ImpactCard isCompact={isCompact} />
+
+      default:
+        return null
+    }
+  }
+
+  // Get lane empty state
+  const getLaneEmptyState = (laneId: LaneId) => {
+    const emptyStates: Record<LaneId, { icon: any; message: string; action?: string; href?: string }> = {
+      profile: { icon: User, message: 'Complete your profile' },
+      projects: { icon: Briefcase, message: 'No projects yet', action: 'Start a Project', href: '/community/projects/new' },
+      articles: { icon: FileText, message: 'No articles yet', action: 'Write an Article', href: '/articles/write' },
+      learning: { icon: BookOpen, message: 'Start learning', action: 'Browse Courses', href: '/learn' },
+      network: { icon: Users, message: 'Grow your network', action: 'Find People', href: '/network/browse' },
+      feed: { icon: MessageCircle, message: 'No posts yet', action: 'Start a Discussion', href: '/community/forum/new' },
+      impact: { icon: Leaf, message: 'Track your impact' },
+    }
+
+    const state = emptyStates[laneId]
+    const Icon = state.icon
+
+    return (
+      <div className="flex flex-col items-center justify-center py-8 text-center">
+        <div className="w-12 h-12 rounded-xl bg-[var(--muted)] flex items-center justify-center mb-3">
+          <Icon className="w-6 h-6 text-[var(--foreground)]/30" />
+        </div>
+        <p className="text-sm font-medium text-[var(--foreground)]/50 mb-3">{state.message}</p>
+        {state.action && state.href && (
+          <a
+            href={state.href}
+            className="px-4 py-2 rounded-lg bg-[var(--primary)]/10 text-[var(--primary)] text-sm font-bold hover:bg-[var(--primary)]/20 transition-colors"
+          >
+            {state.action}
+          </a>
+        )}
+      </div>
+    )
+  }
+
+  // Get lane count
+  const getLaneCount = (laneId: LaneId): number => {
+    switch (laneId) {
+      case 'projects': return projects.length
+      case 'articles': return articles.length
+      case 'learning': return learningModules.length
+      case 'network': return following.length + networkSuggestions.length
+      case 'feed': return feedPosts.length
+      default: return 0
+    }
+  }
 
   return (
     <div className="min-h-screen bg-[var(--background)]">
       {/* Header */}
       <div className="sticky top-0 z-50 bg-gradient-to-r from-[var(--primary)] via-[var(--accent)] to-[var(--secondary)] border-b border-white/10">
-        <div className="container mx-auto px-4 sm:px-6 py-4">
+        <div className="container mx-auto px-4 py-4">
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-3">
               <div className="w-10 h-10 rounded-xl bg-white/20 backdrop-blur flex items-center justify-center">
@@ -286,40 +506,51 @@ export default function MyVolitionPage() {
                 </p>
               </div>
             </div>
-            <div className="flex items-center gap-2 flex-shrink-0">
+
+            {/* Desktop controls */}
+            <div className="hidden md:flex items-center gap-2">
+              {/* Compact toggle */}
+              <button
+                onClick={toggleCompact}
+                className="flex items-center gap-2 px-3 py-2 bg-white/20 hover:bg-white/30 rounded-lg text-white text-sm font-medium transition-colors"
+                title={isCompact ? 'Expand cards' : 'Compact cards'}
+              >
+                {isCompact ? (
+                  <Maximize2 className="w-4 h-4" />
+                ) : (
+                  <Minimize2 className="w-4 h-4" />
+                )}
+              </button>
+
               {!isCustomizing ? (
                 <button
                   onClick={startCustomizing}
-                  className="flex items-center justify-center gap-2 px-3 py-2 min-w-[40px] min-h-[40px] bg-white/20 hover:bg-white/30 rounded-lg text-white text-sm font-medium transition-colors"
-                  title="Customize dashboard"
+                  className="flex items-center gap-2 px-3 py-2 bg-white/20 hover:bg-white/30 rounded-lg text-white text-sm font-medium transition-colors"
                 >
-                  <Settings className="w-4 h-4 flex-shrink-0" />
-                  <span className="hidden sm:inline">Customize</span>
+                  <Settings className="w-4 h-4" />
+                  <span>Customize</span>
                 </button>
               ) : (
-                <div className="flex items-center gap-1 sm:gap-2">
+                <div className="flex items-center gap-2">
                   <button
-                    onClick={() => setShowWidgetPicker(true)}
-                    className="flex items-center justify-center gap-2 px-2 sm:px-3 py-2 min-w-[40px] min-h-[40px] bg-white/20 hover:bg-white/30 rounded-lg text-white text-sm font-medium transition-colors"
-                    title="Add Widget"
+                    onClick={() => setShowLanePicker(true)}
+                    className="flex items-center gap-2 px-3 py-2 bg-white/20 hover:bg-white/30 rounded-lg text-white text-sm font-medium transition-colors"
                   >
-                    <Plus className="w-4 h-4 flex-shrink-0" />
-                    <span className="hidden sm:inline">Add</span>
+                    <Plus className="w-4 h-4" />
+                    <span>Lanes</span>
                   </button>
                   <button
                     onClick={resetToDefaults}
-                    className="flex items-center justify-center px-2 sm:px-3 py-2 min-w-[40px] min-h-[40px] bg-white/20 hover:bg-white/30 rounded-lg text-white text-sm font-medium transition-colors"
-                    title="Reset to defaults"
+                    className="flex items-center gap-2 px-3 py-2 bg-white/20 hover:bg-white/30 rounded-lg text-white text-sm font-medium transition-colors"
                   >
-                    <RotateCcw className="w-4 h-4 flex-shrink-0" />
+                    <RotateCcw className="w-4 h-4" />
                   </button>
                   <button
                     onClick={stopCustomizing}
-                    className="flex items-center justify-center gap-2 px-2 sm:px-3 py-2 min-w-[40px] min-h-[40px] bg-white hover:bg-white/90 rounded-lg text-[var(--primary)] text-sm font-bold transition-colors"
-                    title="Done customizing"
+                    className="flex items-center gap-2 px-3 py-2 bg-white hover:bg-white/90 rounded-lg text-[var(--primary)] text-sm font-bold transition-colors"
                   >
-                    <Check className="w-4 h-4 flex-shrink-0" />
-                    <span className="hidden sm:inline">Done</span>
+                    <Check className="w-4 h-4" />
+                    <span>Done</span>
                   </button>
                 </div>
               )}
@@ -328,164 +559,169 @@ export default function MyVolitionPage() {
         </div>
       </div>
 
+      {/* Mobile lane tabs */}
+      {isMobile && (
+        <div className="sticky top-[72px] z-40 bg-[var(--background)] border-b border-[var(--border)] overflow-x-auto scrollbar-none">
+          <div className="flex px-2 py-2 gap-2">
+            {orderedLanes.map((lane, index) => {
+              const Icon = iconMap[lane.icon as keyof typeof iconMap] || User
+              const isActive = index === activeLaneIndex
+              return (
+                <button
+                  key={lane.id}
+                  onClick={() => setActiveLaneIndex(index)}
+                  className={`flex items-center gap-2 px-4 py-2 rounded-full whitespace-nowrap transition-all ${
+                    isActive
+                      ? `bg-gradient-to-r ${lane.gradient} text-white`
+                      : 'bg-[var(--muted)] text-[var(--foreground)]/70'
+                  }`}
+                >
+                  <Icon className="w-4 h-4" />
+                  <span className="text-sm font-bold">{lane.title}</span>
+                </button>
+              )
+            })}
+          </div>
+        </div>
+      )}
+
       {/* Customize mode banner */}
       {isCustomizing && (
         <div className="bg-[var(--primary)]/10 border-b border-[var(--primary)]/20 py-2 px-4 text-center">
           <p className="text-sm font-medium text-[var(--primary)]">
-            Customize Mode: Drag widgets to reposition, drag corners to resize, or click X to remove
+            Customize Mode: Manage your lanes and layout
           </p>
         </div>
       )}
 
-      {/* Dashboard Grid */}
-      <div className="pb-20">
-        <DashboardGrid
-          userProfile={userProfile}
-          user={user}
-          feedPosts={feedPosts}
+      {/* Dynamic Spotlight */}
+      <div className="container mx-auto px-4 pt-4">
+        <DynamicSpotlight
+          notifications={notifications}
           learningModules={learningModules}
           projects={projects}
-          following={following}
-          networkSuggestions={networkSuggestions}
-          articles={articles}
-          layouts={layouts}
-          activeWidgets={activeWidgets}
-          widgetSettings={widgetSettings}
-          isCustomizing={isCustomizing}
-          onLayoutChange={onLayoutChange}
-          onRemoveWidget={removeWidget}
-          onUpdateWidgetSettings={updateWidgetSettings}
-          onDeletePost={(id) =>
-            setDeleteModal({
-              isOpen: true,
-              type: 'discussion',
-              id,
-              title: 'Delete Discussion',
-            })
-          }
-          onDeleteProject={(id) =>
-            setDeleteModal({
-              isOpen: true,
-              type: 'project',
-              id,
-              title: 'Delete Project',
-            })
-          }
-          onDeleteArticle={(id) =>
-            setDeleteModal({
-              isOpen: true,
-              type: 'article',
-              id,
-              title: 'Delete Article',
-            })
-          }
-          onFollow={handleFollow}
-          onRefetchLearning={fetchLearningModules}
+          onDismiss={dismissSpotlight}
         />
       </div>
 
-      {/* Widget Picker Modal */}
-      {showWidgetPicker && (
+      {/* Main content area */}
+      <div className="py-4">
+        {isMobile ? (
+          // Mobile: Show active lane only
+          <div className="container mx-auto px-4">
+            {orderedLanes[activeLaneIndex] && (
+              <Lane
+                id={orderedLanes[activeLaneIndex].id}
+                title={orderedLanes[activeLaneIndex].title}
+                icon={iconMap[orderedLanes[activeLaneIndex].icon as keyof typeof iconMap] || User}
+                count={getLaneCount(orderedLanes[activeLaneIndex].id)}
+                gradient={orderedLanes[activeLaneIndex].gradient}
+                isCompact={isCompact}
+                isCustomizing={isCustomizing}
+                onRemove={() => toggleLane(orderedLanes[activeLaneIndex].id)}
+                emptyState={getLaneEmptyState(orderedLanes[activeLaneIndex].id)}
+                className="w-full"
+              >
+                {renderLaneContent(orderedLanes[activeLaneIndex].id)}
+              </Lane>
+            )}
+          </div>
+        ) : (
+          // Desktop: Horizontal scrolling lanes
+          <LaneContainer showNavArrows>
+            {orderedLanes.map((lane) => {
+              const Icon = iconMap[lane.icon as keyof typeof iconMap] || User
+              return (
+                <Lane
+                  key={lane.id}
+                  id={lane.id}
+                  title={lane.title}
+                  icon={Icon}
+                  count={getLaneCount(lane.id)}
+                  gradient={lane.gradient}
+                  isCompact={isCompact}
+                  isCustomizing={isCustomizing}
+                  onRemove={() => toggleLane(lane.id)}
+                  emptyState={getLaneEmptyState(lane.id)}
+                  onAdd={
+                    lane.id === 'projects' ? () => window.location.href = '/community/projects/new' :
+                    lane.id === 'articles' ? () => window.location.href = '/articles/write' :
+                    lane.id === 'feed' ? () => window.location.href = '/community/forum/new' :
+                    undefined
+                  }
+                  addLabel={
+                    lane.id === 'projects' ? 'New Project' :
+                    lane.id === 'articles' ? 'Write Article' :
+                    lane.id === 'feed' ? 'New Post' :
+                    'Add'
+                  }
+                >
+                  {renderLaneContent(lane.id)}
+                </Lane>
+              )
+            })}
+          </LaneContainer>
+        )}
+      </div>
+
+      {/* Quick Actions Bar */}
+      <div className="fixed bottom-6 left-1/2 -translate-x-1/2 z-40">
+        <QuickActionsBar
+          onCustomize={isCustomizing ? stopCustomizing : startCustomizing}
+          isCustomizing={isCustomizing}
+        />
+      </div>
+
+      {/* Lane Picker Modal */}
+      {showLanePicker && (
         <div
           className="fixed inset-0 z-[100] bg-black/60 backdrop-blur-md flex items-center justify-center p-4"
-          onClick={() => setShowWidgetPicker(false)}
+          onClick={() => setShowLanePicker(false)}
         >
           <div
-            className="bg-[var(--card)] rounded-3xl shadow-2xl w-full max-w-lg overflow-hidden border-2 border-[var(--border)]"
+            className="bg-[var(--card)] rounded-3xl shadow-2xl w-full max-w-md overflow-hidden border-2 border-[var(--border)]"
             onClick={(e) => e.stopPropagation()}
           >
-            {/* Header with gradient */}
-            <div className="relative overflow-hidden">
-              <div className="absolute inset-0 bg-gradient-to-r from-[var(--primary)] via-[var(--accent)] to-[var(--secondary)]" />
-              <div className="absolute inset-0 bg-gradient-to-b from-transparent to-black/20" />
-              <div className="relative flex items-center justify-between p-5">
-                <div className="flex items-center gap-3">
-                  <div className="w-10 h-10 rounded-xl bg-white/20 backdrop-blur flex items-center justify-center">
-                    <Plus className="w-5 h-5 text-white" />
-                  </div>
-                  <div>
-                    <h2 className="text-lg font-bold text-white">Widget Library</h2>
-                    <p className="text-xs text-white/70">Customize your dashboard</p>
-                  </div>
-                </div>
-                <button
-                  onClick={() => setShowWidgetPicker(false)}
-                  className="p-2 rounded-xl bg-white/10 hover:bg-white/20 transition-colors"
-                >
-                  <X className="w-5 h-5 text-white" />
-                </button>
-              </div>
+            <div className="p-5 border-b border-[var(--border)]">
+              <h2 className="text-lg font-bold text-[var(--foreground)]">Manage Lanes</h2>
+              <p className="text-sm text-[var(--foreground)]/60">Toggle which lanes appear on your dashboard</p>
             </div>
 
-            {/* Widget Grid */}
-            <div className="p-5 max-h-[55vh] overflow-y-auto">
-              <div className="grid grid-cols-2 gap-4">
-                {ALL_WIDGET_IDS.map((widgetId: WidgetId) => {
-                  const widget = WIDGET_REGISTRY[widgetId]
-                  const isActive = activeWidgets.includes(widgetId)
-                  const Icon = widget.icon
+            <div className="p-4 max-h-[50vh] overflow-y-auto space-y-2">
+              {allLanes.map((lane) => {
+                const Icon = iconMap[lane.icon as keyof typeof iconMap] || User
+                const isEnabled = enabledLanes.includes(lane.id)
 
-                  const themeGradients = {
-                    primary: 'from-[var(--primary)] to-[var(--accent)]',
-                    accent: 'from-[var(--accent)] to-[var(--secondary)]',
-                    secondary: 'from-[var(--secondary)] to-[var(--primary)]',
-                  }
-
-                  return (
-                    <button
-                      key={widgetId}
-                      onClick={() => toggleWidget(widgetId)}
-                      className={`
-                        relative p-4 rounded-2xl border-2 transition-all text-left group
-                        hover:shadow-lg hover:scale-[1.02]
-                        ${
-                          isActive
-                            ? 'border-[var(--primary)] bg-gradient-to-br from-[var(--primary)]/10 to-[var(--accent)]/5'
-                            : 'border-[var(--border)] hover:border-[var(--primary)]/50 bg-[var(--muted)]/30'
-                        }
-                      `}
-                    >
-                      {/* Active checkmark */}
-                      {isActive && (
-                        <div className="absolute top-3 right-3 w-6 h-6 rounded-full bg-gradient-to-br from-[var(--primary)] to-[var(--accent)] flex items-center justify-center shadow-lg">
-                          <Check className="w-3.5 h-3.5 text-white" />
-                        </div>
-                      )}
-
-                      {/* Widget icon */}
-                      <div className={`w-12 h-12 rounded-xl bg-gradient-to-br ${themeGradients[widget.theme]} flex items-center justify-center mb-3 shadow-md group-hover:scale-110 transition-transform`}>
-                        <Icon className="w-6 h-6 text-white" />
+                return (
+                  <button
+                    key={lane.id}
+                    onClick={() => toggleLane(lane.id)}
+                    className={`w-full flex items-center gap-3 p-3 rounded-xl transition-all ${
+                      isEnabled
+                        ? 'bg-[var(--primary)]/10 border-2 border-[var(--primary)]'
+                        : 'bg-[var(--muted)] border-2 border-transparent'
+                    }`}
+                  >
+                    <div className={`w-10 h-10 rounded-lg bg-gradient-to-br ${lane.gradient} flex items-center justify-center`}>
+                      <Icon className="w-5 h-5 text-white" />
+                    </div>
+                    <div className="flex-1 text-left">
+                      <p className="font-bold text-[var(--foreground)]">{lane.title}</p>
+                    </div>
+                    {isEnabled && (
+                      <div className="w-6 h-6 rounded-full bg-[var(--primary)] flex items-center justify-center">
+                        <Check className="w-4 h-4 text-white" />
                       </div>
-
-                      {/* Widget info */}
-                      <h3 className="text-sm font-bold text-[var(--foreground)] mb-1">
-                        {widget.name}
-                      </h3>
-                      <p className="text-xs text-[var(--foreground)]/60 line-clamp-2 leading-relaxed">
-                        {widget.description}
-                      </p>
-
-                      {/* Status indicator */}
-                      <div className={`mt-3 text-[10px] font-semibold ${isActive ? 'text-[var(--primary)]' : 'text-[var(--foreground)]/40'}`}>
-                        {isActive ? 'Active' : 'Tap to add'}
-                      </div>
-                    </button>
-                  )
-                })}
-              </div>
+                    )}
+                  </button>
+                )
+              })}
             </div>
 
-            {/* Footer */}
-            <div className="flex items-center justify-between p-4 border-t border-[var(--border)] bg-[var(--muted)]/30">
-              <div className="flex items-center gap-2">
-                <div className="w-2 h-2 rounded-full bg-[var(--primary)] animate-pulse" />
-                <p className="text-xs font-medium text-[var(--foreground)]/60">
-                  {activeWidgets.length} of {ALL_WIDGET_IDS.length} widgets active
-                </p>
-              </div>
+            <div className="p-4 border-t border-[var(--border)]">
               <button
-                onClick={() => setShowWidgetPicker(false)}
-                className="px-4 py-2 rounded-xl bg-gradient-to-r from-[var(--primary)] to-[var(--accent)] text-white text-sm font-bold hover:opacity-90 transition-opacity"
+                onClick={() => setShowLanePicker(false)}
+                className="w-full py-3 rounded-xl bg-gradient-to-r from-[var(--primary)] to-[var(--accent)] text-white font-bold"
               >
                 Done
               </button>
@@ -504,13 +740,23 @@ export default function MyVolitionPage() {
         title={deleteModal.title}
         description={
           deleteModal.type === 'discussion'
-            ? 'This will permanently delete this discussion and all its comments.'
+            ? 'This will permanently delete this post and all its comments.'
             : deleteModal.type === 'project'
             ? 'This will permanently delete this project and remove all members.'
             : 'This will permanently delete this article.'
         }
         isLoading={isDeleting}
       />
+
+      <style jsx global>{`
+        .scrollbar-none::-webkit-scrollbar {
+          display: none;
+        }
+        .scrollbar-none {
+          -ms-overflow-style: none;
+          scrollbar-width: none;
+        }
+      `}</style>
     </div>
   )
 }

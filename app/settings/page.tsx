@@ -505,11 +505,11 @@ export default function SettingsPage() {
           {/* Header */}
           <div className="mb-8">
             <Link
-              href="/my/basecamp"
+              href="/my/volition"
               className="inline-flex items-center gap-2 text-theme-primary hover:opacity-80 font-bold mb-4"
             >
               <ArrowLeft className="w-4 h-4" />
-              Back to Base Camp
+              Back to Volition
             </Link>
             <h1 className="text-4xl font-black text-[var(--foreground)] mb-2">PROFESSIONAL SETTINGS</h1>
             <p className="text-lg font-semibold text-theme-muted">

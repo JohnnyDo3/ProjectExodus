@@ -1,0 +1,205 @@
+'use client'
+
+import { useState, useEffect, useCallback, useRef } from 'react'
+
+// Lane definitions
+export type LaneId =
+  | 'profile'
+  | 'projects'
+  | 'articles'
+  | 'learning'
+  | 'network'
+  | 'feed'
+  | 'impact'
+
+export interface LaneDefinition {
+  id: LaneId
+  title: string
+  icon: string
+  gradient: string
+  enabled: boolean
+}
+
+export const DEFAULT_LANES: LaneDefinition[] = [
+  { id: 'profile', title: 'Identity', icon: 'User', gradient: 'from-[var(--primary)] to-[var(--accent)]', enabled: true },
+  { id: 'projects', title: 'Projects', icon: 'Briefcase', gradient: 'from-[var(--secondary)] to-[var(--primary)]', enabled: true },
+  { id: 'articles', title: 'Articles', icon: 'FileText', gradient: 'from-[var(--accent)] to-[var(--secondary)]', enabled: true },
+  { id: 'learning', title: 'Learning', icon: 'BookOpen', gradient: 'from-[var(--primary)] to-[var(--secondary)]', enabled: true },
+  { id: 'network', title: 'Network', icon: 'Users', gradient: 'from-[var(--accent)] to-[var(--primary)]', enabled: true },
+  { id: 'feed', title: 'Feed', icon: 'MessageCircle', gradient: 'from-[var(--secondary)] to-[var(--accent)]', enabled: true },
+  { id: 'impact', title: 'Impact', icon: 'Leaf', gradient: 'from-green-500 to-emerald-500', enabled: true },
+]
+
+interface VolitionLayoutData {
+  version: number
+  laneOrder: LaneId[]
+  enabledLanes: LaneId[]
+  isCompact: boolean
+  spotlightDismissed: string[]
+}
+
+const STORAGE_KEY = 'volition-layout-v2'
+const CURRENT_VERSION = 1
+
+function getDefaultLayoutData(): VolitionLayoutData {
+  return {
+    version: CURRENT_VERSION,
+    laneOrder: DEFAULT_LANES.map(l => l.id),
+    enabledLanes: DEFAULT_LANES.filter(l => l.enabled).map(l => l.id),
+    isCompact: false,
+    spotlightDismissed: [],
+  }
+}
+
+function loadLayoutData(): VolitionLayoutData {
+  if (typeof window === 'undefined') {
+    return getDefaultLayoutData()
+  }
+
+  try {
+    const stored = localStorage.getItem(STORAGE_KEY)
+    if (stored) {
+      const parsed = JSON.parse(stored) as VolitionLayoutData
+      if (parsed.version === CURRENT_VERSION) {
+        return parsed
+      }
+    }
+  } catch (error) {
+    console.error('Error loading volition layout:', error)
+  }
+
+  return getDefaultLayoutData()
+}
+
+function saveLayoutData(data: VolitionLayoutData): void {
+  if (typeof window === 'undefined') return
+
+  try {
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(data))
+  } catch (error) {
+    console.error('Error saving volition layout:', error)
+  }
+}
+
+export function useVolitionLayout() {
+  const [laneOrder, setLaneOrder] = useState<LaneId[]>(() => loadLayoutData().laneOrder)
+  const [enabledLanes, setEnabledLanes] = useState<LaneId[]>(() => loadLayoutData().enabledLanes)
+  const [isCompact, setIsCompact] = useState(() => loadLayoutData().isCompact)
+  const [spotlightDismissed, setSpotlightDismissed] = useState<string[]>(() => loadLayoutData().spotlightDismissed)
+  const [isCustomizing, setIsCustomizing] = useState(false)
+
+  // Debounce save
+  const saveTimeoutRef = useRef<NodeJS.Timeout | null>(null)
+
+  useEffect(() => {
+    if (saveTimeoutRef.current) {
+      clearTimeout(saveTimeoutRef.current)
+    }
+
+    saveTimeoutRef.current = setTimeout(() => {
+      saveLayoutData({
+        version: CURRENT_VERSION,
+        laneOrder,
+        enabledLanes,
+        isCompact,
+        spotlightDismissed,
+      })
+    }, 500)
+
+    return () => {
+      if (saveTimeoutRef.current) {
+        clearTimeout(saveTimeoutRef.current)
+      }
+    }
+  }, [laneOrder, enabledLanes, isCompact, spotlightDismissed])
+
+  // Get ordered lanes
+  const getOrderedLanes = useCallback((): LaneDefinition[] => {
+    return laneOrder
+      .filter(id => enabledLanes.includes(id))
+      .map(id => DEFAULT_LANES.find(l => l.id === id)!)
+      .filter(Boolean)
+  }, [laneOrder, enabledLanes])
+
+  // Toggle lane visibility
+  const toggleLane = useCallback((laneId: LaneId) => {
+    setEnabledLanes(prev => {
+      if (prev.includes(laneId)) {
+        return prev.filter(id => id !== laneId)
+      }
+      return [...prev, laneId]
+    })
+  }, [])
+
+  // Reorder lanes
+  const reorderLanes = useCallback((newOrder: LaneId[]) => {
+    setLaneOrder(newOrder)
+  }, [])
+
+  // Move lane
+  const moveLane = useCallback((fromIndex: number, toIndex: number) => {
+    setLaneOrder(prev => {
+      const newOrder = [...prev]
+      const [removed] = newOrder.splice(fromIndex, 1)
+      newOrder.splice(toIndex, 0, removed)
+      return newOrder
+    })
+  }, [])
+
+  // Toggle compact mode
+  const toggleCompact = useCallback(() => {
+    setIsCompact(prev => !prev)
+  }, [])
+
+  // Dismiss spotlight item
+  const dismissSpotlight = useCallback((itemId: string) => {
+    setSpotlightDismissed(prev => [...prev, itemId])
+  }, [])
+
+  // Clear dismissed spotlights
+  const clearDismissedSpotlights = useCallback(() => {
+    setSpotlightDismissed([])
+  }, [])
+
+  // Reset to defaults
+  const resetToDefaults = useCallback(() => {
+    const defaults = getDefaultLayoutData()
+    setLaneOrder(defaults.laneOrder)
+    setEnabledLanes(defaults.enabledLanes)
+    setIsCompact(defaults.isCompact)
+    setSpotlightDismissed([])
+  }, [])
+
+  // Customization mode
+  const startCustomizing = useCallback(() => {
+    setIsCustomizing(true)
+  }, [])
+
+  const stopCustomizing = useCallback(() => {
+    setIsCustomizing(false)
+  }, [])
+
+  return {
+    // State
+    laneOrder,
+    enabledLanes,
+    isCompact,
+    spotlightDismissed,
+    isCustomizing,
+
+    // Computed
+    getOrderedLanes,
+    allLanes: DEFAULT_LANES,
+
+    // Actions
+    toggleLane,
+    reorderLanes,
+    moveLane,
+    toggleCompact,
+    dismissSpotlight,
+    clearDismissedSpotlights,
+    resetToDefaults,
+    startCustomizing,
+    stopCustomizing,
+  }
+}
