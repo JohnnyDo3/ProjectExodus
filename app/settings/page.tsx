@@ -252,6 +252,13 @@ export default function SettingsPage() {
             ...user.privacySettings,
           })
         }
+        // Load notification preferences if they exist
+        if (user.notificationPreferences) {
+          setNotifications({
+            ...notifications,
+            ...user.notificationPreferences,
+          })
+        }
       }
     } catch (error) {
       console.error('Error fetching user profile:', error)
@@ -393,12 +400,25 @@ export default function SettingsPage() {
   const handleNotificationsSave = async () => {
     setIsSaving(true)
 
-    // Simulate API call (implement actual notifications endpoint)
-    setTimeout(() => {
-      setSaveMessage('Notification preferences updated!')
+    try {
+      const res = await fetch(`/api/users/${session?.user?.id}`, {
+        method: 'PATCH',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ notificationPreferences: notifications }),
+      })
+
+      if (res.ok) {
+        setSaveMessage('Notification preferences updated!')
+      } else {
+        const data = await res.json()
+        setSaveMessage(data.error || 'Failed to save notification preferences')
+      }
+    } catch {
+      setSaveMessage('Failed to save notification preferences')
+    } finally {
       setIsSaving(false)
       setTimeout(() => setSaveMessage(''), 3000)
-    }, 1000)
+    }
   }
 
   const handlePrivacySave = async () => {

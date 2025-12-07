@@ -30,6 +30,7 @@ const ALLOWED_UPDATE_FIELDS = [
   'showEmail',
   'showPhone',
   'privacySettings',
+  'notificationPreferences',
   'resume',
   'banner',
   'image',
@@ -96,6 +97,7 @@ export async function PATCH(
         showEmail: true,
         showPhone: true,
         privacySettings: true,
+        notificationPreferences: true,
       },
     })
 
@@ -145,6 +147,7 @@ export async function GET(
         showEmail: true,
         showPhone: true,
         privacySettings: true,
+        notificationPreferences: true,
         createdAt: true,
         userBadges: {
           include: {

@@ -60,21 +60,53 @@ export async function GET(
             image: true,
           },
         },
+        reactions: {
+          select: {
+            id: true,
+            emoji: true,
+            userId: true,
+            user: {
+              select: { name: true },
+            },
+          },
+        },
       },
       orderBy: { createdAt: 'asc' },
     })
 
     // SECURITY: Mark all messages from this user as read
-    await prisma.directMessage.updateMany({
+    const unreadMessages = await prisma.directMessage.findMany({
       where: {
         senderId: userId,
         receiverId: session.user.id,
         read: false,
       },
-      data: {
-        read: true,
-      },
+      select: { id: true },
     })
+
+    if (unreadMessages.length > 0) {
+      await prisma.directMessage.updateMany({
+        where: {
+          senderId: userId,
+          receiverId: session.user.id,
+          read: false,
+        },
+        data: {
+          read: true,
+        },
+      })
+
+      // Notify sender that their messages were read via Pusher
+      const messageIds = unreadMessages.map((m: { id: string }) => m.id)
+      await pusherServer.trigger(
+        `private-chat-${userId}`,
+        'message-read',
+        {
+          messageIds,
+          readerId: session.user.id,
+        }
+      )
+    }
 
     // Get the other user's info
     const otherUser = await prisma.user.findUnique({

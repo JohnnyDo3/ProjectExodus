@@ -1,10 +1,11 @@
 'use client'
 
-import { useState, useEffect, useRef } from 'react'
+import { useState, useEffect, useRef, useCallback } from 'react'
 import { useSession } from 'next-auth/react'
 import { useRouter } from 'next/navigation'
 import { Bell } from 'lucide-react'
 import { formatDistanceToNow } from 'date-fns'
+import { getPusherClient } from '@/lib/pusher'
 
 type NotificationType =
   | 'PRODUCT_APPROVED'
@@ -14,6 +15,7 @@ type NotificationType =
   | 'NEW_FOLLOWER'
   | 'BADGE_EARNED'
   | 'PROJECT_INVITE'
+  | 'NEW_MESSAGE'
   | 'SYSTEM'
 
 interface Notification {
@@ -43,6 +45,7 @@ const getNotificationIcon = (type: NotificationType): string => {
     NEW_FOLLOWER: '👤',
     BADGE_EARNED: '🏆',
     PROJECT_INVITE: '📋',
+    NEW_MESSAGE: '✉️',
     SYSTEM: '🔔',
   }
   return iconMap[type] || '🔔'
@@ -80,14 +83,43 @@ export default function NotificationBell() {
     }
   }, [isOpen])
 
-  // Fetch unread count on mount and periodically
+  // Fetch unread count on mount
   useEffect(() => {
     if (session?.user) {
       fetchUnreadCount()
-      const interval = setInterval(fetchUnreadCount, 30000) // Every 30 seconds
-      return () => clearInterval(interval)
     }
   }, [session])
+
+  // Subscribe to real-time notifications via Pusher
+  useEffect(() => {
+    if (!session?.user?.id) return
+
+    const pusher = getPusherClient()
+    if (!pusher) return
+
+    const channelName = `private-notifications-${session.user.id}`
+    const channel = pusher.subscribe(channelName)
+
+    channel.bind('new-notification', (data: { notification: Notification }) => {
+      // Add new notification to the top of the list
+      setNotifications(prev => [data.notification, ...prev].slice(0, 10))
+      setUnreadCount(prev => prev + 1)
+
+      // Optional: Play a subtle notification sound
+      try {
+        const audio = new Audio('/sounds/notification.mp3')
+        audio.volume = 0.3
+        audio.play().catch(() => {}) // Ignore if autoplay blocked
+      } catch {
+        // Audio not available
+      }
+    })
+
+    return () => {
+      channel.unbind_all()
+      pusher.unsubscribe(channelName)
+    }
+  }, [session?.user?.id])
 
   const fetchNotifications = async () => {
     setIsLoading(true)

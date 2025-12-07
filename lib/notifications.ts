@@ -1,5 +1,6 @@
 import { prisma } from '@/lib/db'
 import { NotificationType } from '@prisma/client'
+import { pusherServer } from '@/lib/pusher'
 
 interface CreateNotificationParams {
   userId: string
@@ -12,6 +13,7 @@ interface CreateNotificationParams {
 /**
  * Create a notification for a user
  * Use this helper to ensure consistent notification creation across the app
+ * Triggers real-time Pusher event for instant delivery
  */
 export async function createNotification({
   userId,
@@ -31,6 +33,29 @@ export async function createNotification({
         read: false,
       }
     })
+
+    // Trigger real-time notification via Pusher
+    try {
+      await pusherServer.trigger(
+        `private-notifications-${userId}`,
+        'new-notification',
+        {
+          notification: {
+            id: notification.id,
+            type: notification.type,
+            title: notification.title,
+            message: notification.message,
+            link: notification.link,
+            read: notification.read,
+            createdAt: notification.createdAt.toISOString(),
+          }
+        }
+      )
+    } catch (pusherError) {
+      // Don't fail the notification creation if Pusher fails
+      console.error('Failed to trigger Pusher notification:', pusherError)
+    }
+
     return { success: true, notification }
   } catch (error) {
     console.error('Failed to create notification:', error)

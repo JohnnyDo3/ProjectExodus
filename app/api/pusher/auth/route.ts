@@ -33,11 +33,16 @@ export async function POST(request: NextRequest) {
       )
     }
 
-    // Security check: Verify user can only subscribe to their own private channel
-    // Channel format: private-chat-{userId}
-    const expectedChannel = `private-chat-${session.user.id}`
+    // Security check: Verify user can only subscribe to their own private channels
+    // Allowed channel formats:
+    // - private-chat-{userId} - for receiving direct messages
+    // - private-notifications-{userId} - for receiving real-time notifications
+    const allowedChannels = [
+      `private-chat-${session.user.id}`,
+      `private-notifications-${session.user.id}`,
+    ]
 
-    if (channel !== expectedChannel) {
+    if (!allowedChannels.includes(channel)) {
       console.warn(
         `[Pusher Auth] User ${session.user.id} attempted to subscribe to unauthorized channel: ${channel}`
       )
