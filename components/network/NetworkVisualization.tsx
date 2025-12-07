@@ -290,6 +290,12 @@ export default function NetworkVisualization({
           nodeCanvasObject={(node: any, ctx: CanvasRenderingContext2D, globalScale: number) => {
             const size = node.val || 10
 
+            // Skip drawing if node position is not yet computed (avoids canvas errors)
+            if (typeof node.x !== 'number' || typeof node.y !== 'number' ||
+                !isFinite(node.x) || !isFinite(node.y)) {
+              return
+            }
+
             // Draw node circle
             ctx.beginPath()
             ctx.arc(node.x, node.y, size, 0, 2 * Math.PI)

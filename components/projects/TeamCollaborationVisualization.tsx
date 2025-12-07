@@ -297,6 +297,12 @@ export default function TeamCollaborationVisualization({
           nodeCanvasObject={(node: any, ctx: CanvasRenderingContext2D, globalScale: number) => {
             const size = node.val || 10
 
+            // Skip drawing if node position is not yet computed (avoids canvas errors)
+            if (typeof node.x !== 'number' || typeof node.y !== 'number' ||
+                !isFinite(node.x) || !isFinite(node.y)) {
+              return
+            }
+
             if (node.type === 'project') {
               // Draw project node as a square/diamond
               ctx.save()
