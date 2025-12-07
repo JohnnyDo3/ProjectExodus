@@ -198,7 +198,7 @@ export function ArticleClientWrapper({ article }: ArticleClientWrapperProps) {
         {/* Sidebar */}
         <aside className="md:col-span-1 space-y-6">
           {/* References Widget */}
-          <ReferencesWidget references={article.references || []} />
+          <ReferencesWidget references={article.references || []} articleContent={article.content} />
 
           {/* Peer Review Widget */}
           <PeerReviewWidget

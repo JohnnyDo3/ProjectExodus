@@ -1,8 +1,8 @@
 'use client'
 
-import { useState } from 'react'
+import { useState, useMemo } from 'react'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/Card'
-import { ChevronDown, ChevronUp, ExternalLink, Link as LinkIcon } from 'lucide-react'
+import { ChevronDown, ChevronUp, ExternalLink, Link as LinkIcon, BookOpen } from 'lucide-react'
 
 interface Reference {
   id: string
@@ -12,56 +12,166 @@ interface Reference {
 }
 
 interface ReferencesWidgetProps {
-  references: Reference[]
+  references?: Reference[]
+  articleContent?: string
 }
 
-export function ReferencesWidget({ references }: ReferencesWidgetProps) {
+// Extract URLs from markdown/HTML content
+function extractLinksFromContent(content: string): Reference[] {
+  if (!content) return []
+
+  const links: Reference[] = []
+  const seenUrls = new Set<string>()
+
+  // Match markdown links: [text](url)
+  const markdownLinkRegex = /\[([^\]]+)\]\((https?:\/\/[^\s)]+)\)/g
+  let match
+
+  while ((match = markdownLinkRegex.exec(content)) !== null) {
+    const [, title, url] = match
+    if (!seenUrls.has(url)) {
+      seenUrls.add(url)
+      links.push({
+        id: `extracted-${links.length}`,
+        title: title || getDomainFromUrl(url),
+        url: url
+      })
+    }
+  }
+
+  // Match HTML links: <a href="url">text</a>
+  const htmlLinkRegex = /<a[^>]+href=["'](https?:\/\/[^"']+)["'][^>]*>([^<]*)<\/a>/gi
+
+  while ((match = htmlLinkRegex.exec(content)) !== null) {
+    const [, url, title] = match
+    if (!seenUrls.has(url)) {
+      seenUrls.add(url)
+      links.push({
+        id: `extracted-${links.length}`,
+        title: title || getDomainFromUrl(url),
+        url: url
+      })
+    }
+  }
+
+  // Match plain URLs that aren't already captured
+  const plainUrlRegex = /(?<!["\(])https?:\/\/[^\s<>\[\]"'\)]+/g
+
+  while ((match = plainUrlRegex.exec(content)) !== null) {
+    const url = match[0].replace(/[.,;:!?]+$/, '') // Remove trailing punctuation
+    if (!seenUrls.has(url)) {
+      seenUrls.add(url)
+      links.push({
+        id: `extracted-${links.length}`,
+        title: getDomainFromUrl(url),
+        url: url
+      })
+    }
+  }
+
+  return links
+}
+
+// Get a readable title from URL domain
+function getDomainFromUrl(url: string): string {
+  try {
+    const urlObj = new URL(url)
+    const domain = urlObj.hostname.replace('www.', '')
+    // Capitalize first letter of each part
+    return domain.split('.')[0].charAt(0).toUpperCase() + domain.split('.')[0].slice(1)
+  } catch {
+    return 'External Link'
+  }
+}
+
+// Get favicon for a URL
+function getFaviconUrl(url: string): string {
+  try {
+    const urlObj = new URL(url)
+    return `https://www.google.com/s2/favicons?domain=${urlObj.hostname}&sz=32`
+  } catch {
+    return ''
+  }
+}
+
+export function ReferencesWidget({ references = [], articleContent }: ReferencesWidgetProps) {
   const [isExpanded, setIsExpanded] = useState(false)
 
-  if (!references || references.length === 0) {
+  // Combine manual references with extracted links from content
+  const allReferences = useMemo(() => {
+    const manualRefs = references || []
+    const extractedLinks = articleContent ? extractLinksFromContent(articleContent) : []
+
+    // Filter out extracted links that match manual references
+    const manualUrls = new Set(manualRefs.map(r => r.url))
+    const uniqueExtracted = extractedLinks.filter(link => !manualUrls.has(link.url))
+
+    return [...manualRefs, ...uniqueExtracted]
+  }, [references, articleContent])
+
+  if (allReferences.length === 0) {
     return null
   }
 
-  const displayedRefs = isExpanded ? references : references.slice(0, 3)
-  const hasMore = references.length > 3
+  const displayedRefs = isExpanded ? allReferences : allReferences.slice(0, 3)
+  const hasMore = allReferences.length > 3
 
   return (
-    <Card className="border-4 border-ocean-300 dark:border-ocean-700 dark:bg-earth-800">
+    <Card className="border-4 border-[var(--border)]">
       <CardHeader className="pb-2">
-        <CardTitle className="text-base flex items-center gap-2 text-earth-900 dark:text-sand-100">
-          <LinkIcon className="w-4 h-4 text-ocean-600 dark:text-ocean-400" />
-          References ({references.length})
+        <CardTitle className="text-base flex items-center gap-2 text-[var(--foreground)]">
+          <BookOpen className="w-4 h-4 text-theme-primary" />
+          Works Cited ({allReferences.length})
         </CardTitle>
       </CardHeader>
-      <CardContent className="space-y-3">
+      <CardContent className="space-y-2">
+        <p className="text-xs text-theme-muted mb-3">
+          Sources and references used in this article
+        </p>
+
         {displayedRefs.map((ref, index) => (
           <a
             key={ref.id || index}
             href={ref.url}
             target="_blank"
             rel="noopener noreferrer"
-            className="block p-3 bg-ocean-50 dark:bg-earth-700 hover:bg-ocean-100 dark:hover:bg-earth-600 rounded-lg transition-colors group"
+            className="flex items-start gap-3 p-3 bg-[var(--muted)] hover:bg-[var(--primary)]/10 rounded-lg transition-colors group"
           >
-            <div className="flex items-start justify-between gap-2">
-              <div className="flex-1 min-w-0">
-                <p className="font-bold text-sm text-ocean-800 dark:text-ocean-300 group-hover:text-ocean-600 dark:group-hover:text-ocean-200 line-clamp-2">
-                  {ref.title}
-                </p>
-                {ref.description && (
-                  <p className="text-xs text-earth-600 dark:text-sand-400 mt-1 line-clamp-2">
-                    {ref.description}
-                  </p>
-                )}
-              </div>
-              <ExternalLink className="w-4 h-4 text-ocean-500 dark:text-ocean-400 flex-shrink-0 mt-0.5" />
+            {/* Favicon */}
+            <div className="w-6 h-6 rounded bg-[var(--background)] flex items-center justify-center flex-shrink-0 mt-0.5">
+              <img
+                src={getFaviconUrl(ref.url)}
+                alt=""
+                className="w-4 h-4"
+                onError={(e) => {
+                  (e.target as HTMLImageElement).style.display = 'none'
+                }}
+              />
+              <LinkIcon className="w-3 h-3 text-theme-muted absolute" />
             </div>
+
+            <div className="flex-1 min-w-0">
+              <p className="font-bold text-sm text-[var(--foreground)] group-hover:text-theme-primary line-clamp-1">
+                {ref.title}
+              </p>
+              <p className="text-xs text-theme-muted truncate mt-0.5">
+                {new URL(ref.url).hostname.replace('www.', '')}
+              </p>
+              {ref.description && (
+                <p className="text-xs text-theme-muted mt-1 line-clamp-2">
+                  {ref.description}
+                </p>
+              )}
+            </div>
+
+            <ExternalLink className="w-4 h-4 text-theme-muted group-hover:text-theme-primary flex-shrink-0 mt-1 opacity-0 group-hover:opacity-100 transition-opacity" />
           </a>
         ))}
 
         {hasMore && (
           <button
             onClick={() => setIsExpanded(!isExpanded)}
-            className="w-full flex items-center justify-center gap-2 py-2 text-sm font-bold text-ocean-600 dark:text-ocean-400 hover:text-ocean-800 dark:hover:text-ocean-300 transition-colors"
+            className="w-full flex items-center justify-center gap-2 py-2 text-sm font-bold text-theme-primary hover:text-theme-accent transition-colors"
           >
             {isExpanded ? (
               <>
@@ -69,7 +179,7 @@ export function ReferencesWidget({ references }: ReferencesWidgetProps) {
               </>
             ) : (
               <>
-                Show All ({references.length}) <ChevronDown className="w-4 h-4" />
+                Show All ({allReferences.length}) <ChevronDown className="w-4 h-4" />
               </>
             )}
           </button>
