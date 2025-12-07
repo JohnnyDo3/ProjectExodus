@@ -26,7 +26,8 @@ import { useIsMobile } from '@/hooks/useIsMobile'
 import { DeleteConfirmationModal } from '@/components/ui/DeleteConfirmationModal'
 
 import { DynamicSpotlight } from '@/components/volition/DynamicSpotlight'
-import { LaneContainer } from '@/components/volition/LaneContainer'
+import { SortableLaneContainer } from '@/components/volition/SortableLaneContainer'
+import { DraggableLane } from '@/components/volition/DraggableLane'
 import { Lane } from '@/components/volition/Lane'
 import { SortableLane } from '@/components/volition/SortableLane'
 import { SortableCard } from '@/components/volition/SortableCard'
@@ -69,6 +70,7 @@ export default function MyVolitionPage() {
     dismissSpotlight,
     getCardOrder,
     setCardOrder,
+    reorderLanes,
   } = useVolitionLayout()
 
   // Data state
@@ -668,51 +670,49 @@ export default function MyVolitionPage() {
             )}
           </div>
         ) : (
-          // Desktop: Horizontal scrolling lanes
-          <LaneContainer showNavArrows>
+          // Desktop: Horizontal scrolling lanes with drag-to-reorder
+          <SortableLaneContainer
+            laneIds={orderedLanes.map(l => l.id)}
+            onReorder={reorderLanes}
+            isCustomizing={isCustomizing}
+            showNavArrows
+          >
             {orderedLanes.map((lane) => {
               const Icon = iconMap[lane.icon as keyof typeof iconMap] || User
               const isSortable = ['projects', 'articles', 'learning', 'feed'].includes(lane.id)
               const itemIds = getLaneItemIds(lane.id)
 
-              // Use SortableLane for lanes with sortable cards
-              if (isSortable && itemIds.length > 0) {
-                return (
-                  <SortableLane
-                    key={lane.id}
-                    id={lane.id}
-                    title={lane.title}
-                    icon={Icon}
-                    itemIds={itemIds}
-                    count={getLaneCount(lane.id)}
-                    gradient={lane.gradient}
-                    isCompact={isCompact}
-                    isCustomizing={isCustomizing}
-                    onRemove={() => toggleLane(lane.id)}
-                    emptyState={getLaneEmptyState(lane.id)}
-                    onReorder={(newOrder) => handleCardReorder(lane.id as LaneId, newOrder)}
-                    onAdd={
-                      lane.id === 'projects' ? () => window.location.href = '/community/projects/new' :
-                      lane.id === 'articles' ? () => window.location.href = '/articles/write' :
-                      lane.id === 'feed' ? () => window.location.href = '/community/forum/new' :
-                      undefined
-                    }
-                    addLabel={
-                      lane.id === 'projects' ? 'New Project' :
-                      lane.id === 'articles' ? 'Write Article' :
-                      lane.id === 'feed' ? 'New Post' :
-                      'Add'
-                    }
-                  >
-                    {renderLaneContent(lane.id)}
-                  </SortableLane>
-                )
-              }
-
-              // Use regular Lane for non-sortable lanes
-              return (
+              // Wrap each lane in DraggableLane for lane reordering
+              const laneContent = isSortable && itemIds.length > 0 ? (
+                <SortableLane
+                  id={lane.id}
+                  title={lane.title}
+                  icon={Icon}
+                  itemIds={itemIds}
+                  count={getLaneCount(lane.id)}
+                  gradient={lane.gradient}
+                  isCompact={isCompact}
+                  isCustomizing={isCustomizing}
+                  onRemove={() => toggleLane(lane.id)}
+                  emptyState={getLaneEmptyState(lane.id)}
+                  onReorder={(newOrder) => handleCardReorder(lane.id as LaneId, newOrder)}
+                  onAdd={
+                    lane.id === 'projects' ? () => window.location.href = '/community/projects/new' :
+                    lane.id === 'articles' ? () => window.location.href = '/articles/write' :
+                    lane.id === 'feed' ? () => window.location.href = '/community/forum/new' :
+                    undefined
+                  }
+                  addLabel={
+                    lane.id === 'projects' ? 'New Project' :
+                    lane.id === 'articles' ? 'Write Article' :
+                    lane.id === 'feed' ? 'New Post' :
+                    'Add'
+                  }
+                >
+                  {renderLaneContent(lane.id)}
+                </SortableLane>
+              ) : (
                 <Lane
-                  key={lane.id}
                   id={lane.id}
                   title={lane.title}
                   icon={Icon}
@@ -738,8 +738,14 @@ export default function MyVolitionPage() {
                   {renderLaneContent(lane.id)}
                 </Lane>
               )
+
+              return (
+                <DraggableLane key={lane.id} id={lane.id} isCustomizing={isCustomizing}>
+                  {laneContent}
+                </DraggableLane>
+              )
             })}
-          </LaneContainer>
+          </SortableLaneContainer>
         )}
       </div>
 

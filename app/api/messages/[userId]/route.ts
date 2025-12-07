@@ -4,6 +4,7 @@ import { prisma } from '@/lib/db'
 import { auth } from '@/auth'
 import { pusherServer } from '@/lib/pusher'
 import { rateLimit, rateLimitResponse } from '@/lib/rate-limit'
+import { createNotification } from '@/lib/notifications'
 
 // Zod schema for message validation
 const messageSchema = z.object({
@@ -202,6 +203,17 @@ export async function POST(
         timestamp: new Date().toISOString(),
       }
     )
+
+    // Create notification for the recipient
+    const senderName = message.sender?.name || 'Someone'
+    const previewText = content.length > 50 ? content.substring(0, 50) + '...' : content
+    await createNotification({
+      userId: userId,
+      type: 'NEW_MESSAGE',
+      title: `New message from ${senderName}`,
+      message: previewText,
+      link: `/messages?user=${session.user.id}`,
+    })
 
     return NextResponse.json({
       success: true,

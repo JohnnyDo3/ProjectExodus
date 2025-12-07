@@ -56,6 +56,9 @@ model User {
   guardianArchetype String?   // Selected guardian value: michael, gabriel, raphael, uriel, camael, jophiel, zadkiel
   declaration       String?   @db.Text // Personal declaration/truth statement
 
+  // Privacy Settings (JSON object with all privacy preferences)
+  privacySettings   Json?     // { profileVisibility, showExperience, showEducation, showSkills, showBadges, showContact, allowMessages, resumeVisibility }
+
   role          UserRole  @default(USER)
   createdAt     DateTime  @default(now())
   updatedAt     DateTime  @updatedAt
@@ -889,6 +892,7 @@ enum NotificationType {
   NEW_FOLLOWER
   BADGE_EARNED
   PROJECT_INVITE
+  NEW_MESSAGE
   SYSTEM
 }
 

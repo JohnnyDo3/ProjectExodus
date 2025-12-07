@@ -2,6 +2,116 @@ import { NextResponse } from 'next/server'
 import { prisma } from '@/lib/db'
 import { auth } from '@/auth'
 
+// Whitelist of fields that can be updated
+const ALLOWED_UPDATE_FIELDS = [
+  'name',
+  'bio',
+  'headline',
+  'location',
+  'phone',
+  'company',
+  'jobTitle',
+  'website',
+  'linkedin',
+  'twitter',
+  'interests',
+  'expertise',
+  'experience',
+  'education',
+  'skills',
+  'languages',
+  'certifications',
+  'volunteer',
+  'publications',
+  'honors',
+  'projects',
+  'guardianArchetype',
+  'declaration',
+  'showEmail',
+  'showPhone',
+  'privacySettings',
+  'resume',
+  'banner',
+  'image',
+]
+
+export async function PATCH(
+  request: Request,
+  { params }: { params: Promise<{ id: string }> }
+) {
+  try {
+    const { id } = await params
+    const session = await auth()
+
+    // Must be logged in
+    if (!session?.user?.id) {
+      return NextResponse.json(
+        { success: false, error: 'Unauthorized' },
+        { status: 401 }
+      )
+    }
+
+    // Can only update own profile
+    if (session.user.id !== id) {
+      return NextResponse.json(
+        { success: false, error: 'Forbidden' },
+        { status: 403 }
+      )
+    }
+
+    const body = await request.json()
+
+    // Filter to only allowed fields
+    const updateData: Record<string, any> = {}
+    for (const key of ALLOWED_UPDATE_FIELDS) {
+      if (body[key] !== undefined) {
+        updateData[key] = body[key]
+      }
+    }
+
+    // Update the user
+    const updatedUser = await prisma.user.update({
+      where: { id },
+      data: updateData,
+      select: {
+        id: true,
+        name: true,
+        email: true,
+        image: true,
+        bio: true,
+        headline: true,
+        location: true,
+        phone: true,
+        company: true,
+        jobTitle: true,
+        website: true,
+        linkedin: true,
+        twitter: true,
+        interests: true,
+        expertise: true,
+        experience: true,
+        education: true,
+        guardianArchetype: true,
+        declaration: true,
+        showEmail: true,
+        showPhone: true,
+        privacySettings: true,
+      },
+    })
+
+    return NextResponse.json({
+      success: true,
+      data: updatedUser,
+    })
+  } catch (error) {
+    console.error('Error updating user:', error)
+    return NextResponse.json(
+      { success: false, error: 'Failed to update user' },
+      { status: 500 }
+    )
+  }
+}
+
 export async function GET(
   request: Request,
   { params }: { params: Promise<{ id: string }> }
@@ -18,9 +128,23 @@ export async function GET(
         email: true,
         image: true,
         bio: true,
+        headline: true,
+        location: true,
         phone: true,
+        company: true,
+        jobTitle: true,
+        website: true,
+        linkedin: true,
+        twitter: true,
+        interests: true,
+        expertise: true,
+        experience: true,
+        education: true,
+        guardianArchetype: true,
+        declaration: true,
         showEmail: true,
         showPhone: true,
+        privacySettings: true,
         createdAt: true,
         userBadges: {
           include: {
@@ -63,7 +187,9 @@ export async function GET(
         _count: {
           select: {
             followers: true,
-            following: true
+            following: true,
+            projectMemberships: true,
+            articles: true
           }
         }
       }

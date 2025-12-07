@@ -517,10 +517,22 @@ export default function SettingsPage() {
             </p>
           </div>
 
-          {/* Save Message */}
+          {/* Toast Notification - Fixed position */}
           {saveMessage && (
-            <div className="mb-6 p-4 bg-[color-mix(in_srgb,var(--primary)_20%,var(--background))] border-2 border-theme-primary rounded-lg">
-              <p className="font-bold text-theme-primary">{saveMessage}</p>
+            <div className="fixed bottom-6 right-6 z-50 animate-in slide-in-from-bottom-4 fade-in duration-300">
+              <div className={`p-4 rounded-xl shadow-2xl border-2 ${
+                saveMessage.toLowerCase().includes('failed') || saveMessage.toLowerCase().includes('error')
+                  ? 'bg-[color-mix(in_srgb,var(--secondary)_20%,var(--card))] border-theme-secondary'
+                  : 'bg-[color-mix(in_srgb,var(--primary)_20%,var(--card))] border-theme-primary'
+              }`}>
+                <p className={`font-bold ${
+                  saveMessage.toLowerCase().includes('failed') || saveMessage.toLowerCase().includes('error')
+                    ? 'text-theme-secondary'
+                    : 'text-theme-primary'
+                }`}>
+                  {saveMessage}
+                </p>
+              </div>
             </div>
           )}
 
@@ -1882,18 +1894,29 @@ export default function SettingsPage() {
                       </div>
                     </div>
 
-                    {/* Resume Visibility (Enforced) */}
-                    <div className="p-4 rounded-lg bg-[color-mix(in_srgb,var(--accent)_10%,var(--background))] border-2 border-theme-accent space-y-3">
+                    {/* Resume Visibility */}
+                    <div className="p-4 rounded-lg bg-[var(--muted)] border-2 border-[var(--border)] space-y-3">
                       <div className="flex items-start gap-3">
-                        <AlertCircle className="w-5 h-5 text-theme-accent flex-shrink-0 mt-0.5" />
+                        <Eye className="w-5 h-5 text-theme-primary flex-shrink-0 mt-0.5" />
                         <div className="flex-1">
                           <h4 className="font-bold text-[var(--foreground)] mb-1">Resume/CV Visibility</h4>
                           <p className="text-sm font-medium text-theme-muted mb-3">
-                            For privacy protection, your resume is always visible to followers only
+                            Control who can view and download your resume
                           </p>
-                          <div className="px-4 py-3 rounded-lg bg-[var(--background)] border-2 border-theme-accent font-bold text-theme-accent">
-                            Followers Only (Protected)
-                          </div>
+                          <select
+                            value={privacySettings.resumeVisibility}
+                            onChange={(e) =>
+                              setPrivacySettings({
+                                ...privacySettings,
+                                resumeVisibility: e.target.value as 'public' | 'followers' | 'private',
+                              })
+                            }
+                            className="w-full px-4 py-3 rounded-lg bg-[var(--background)] border-2 border-[var(--border)] text-[var(--foreground)] focus:outline-none focus:border-theme-primary transition-colors font-bold"
+                          >
+                            <option value="public">Public - Anyone can view</option>
+                            <option value="followers">Followers Only</option>
+                            <option value="private">Private - Only you</option>
+                          </select>
                         </div>
                       </div>
                     </div>

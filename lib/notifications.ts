@@ -134,6 +134,8 @@ export function getNotificationIcon(type: NotificationType): string {
       return '🏆'
     case 'PROJECT_INVITE':
       return '📋'
+    case 'NEW_MESSAGE':
+      return '✉️'
     case 'SYSTEM':
     default:
       return '🔔'
