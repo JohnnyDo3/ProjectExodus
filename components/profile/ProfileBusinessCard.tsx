@@ -3,12 +3,10 @@
 import { useState, useEffect, useRef } from 'react'
 import { useSession } from 'next-auth/react'
 import { Card, CardContent } from '@/components/ui/Card'
-import { Button } from '@/components/ui/Button'
 import {
   User,
   Mail,
   MapPin,
-  Phone,
   Globe,
   Linkedin,
   Twitter,
@@ -23,9 +21,7 @@ import {
   Save,
   X,
   Shield,
-  Heart,
   Sparkles,
-  Eye,
   Sword,
   MessageCircle,
   Stethoscope,
@@ -54,6 +50,8 @@ import {
  * - We the People of Project Exodus -
  */
 
+// Guardian archetypes using theme-aware styling
+// Each archetype maps to semantic theme colors for consistency
 const GUARDIAN_ARCHETYPES = {
   michael: {
     id: 'michael',
@@ -63,10 +61,8 @@ const GUARDIAN_ARCHETYPES = {
     description: 'You stand unwavering. Your strength protects those who cannot protect themselves.',
     scripture: 'The one who leads the armies of heaven against darkness.',
     icon: Sword,
-    gradient: 'from-red-600 to-orange-500',
-    bgGradient: 'from-red-600/20 to-orange-500/10',
-    accentColor: 'text-red-500',
-    borderColor: 'border-red-500',
+    // Maps to secondary (terra) - warm, powerful
+    themeColor: 'secondary',
     commandments: ['STEWARDSHIP', 'INTEGRITY', 'SUSTAINABILITY'],
   },
   gabriel: {
@@ -77,10 +73,8 @@ const GUARDIAN_ARCHETYPES = {
     description: 'You bring truth to light. Your words reveal what must be known.',
     scripture: 'The messenger who announces what is to come.',
     icon: MessageCircle,
-    gradient: 'from-sky-500 to-blue-600',
-    bgGradient: 'from-sky-500/20 to-blue-600/10',
-    accentColor: 'text-sky-500',
-    borderColor: 'border-sky-500',
+    // Maps to accent (ocean) - clarity, trust
+    themeColor: 'accent',
     commandments: ['TRANSPARENCY', 'LEGACY', 'EQUITY'],
   },
   raphael: {
@@ -91,10 +85,8 @@ const GUARDIAN_ARCHETYPES = {
     description: 'You mend what is broken. Your presence restores and renews.',
     scripture: 'The healer who makes whole what was wounded.',
     icon: Stethoscope,
-    gradient: 'from-emerald-500 to-green-600',
-    bgGradient: 'from-emerald-500/20 to-green-600/10',
-    accentColor: 'text-emerald-500',
-    borderColor: 'border-emerald-500',
+    // Maps to primary (moss) - growth, renewal
+    themeColor: 'primary',
     commandments: ['SANCTITY', 'REST', 'BIODIVERSITY'],
   },
   uriel: {
@@ -105,10 +97,8 @@ const GUARDIAN_ARCHETYPES = {
     description: 'You illuminate the path. Your wisdom guides those who seek understanding.',
     scripture: 'The light of God who reveals divine truth.',
     icon: Lightbulb,
-    gradient: 'from-amber-500 to-yellow-500',
-    bgGradient: 'from-amber-500/20 to-yellow-500/10',
-    accentColor: 'text-amber-500',
-    borderColor: 'border-amber-500',
+    // Maps to foreground (earth) - grounded, mature
+    themeColor: 'foreground',
     commandments: ['LEGACY', 'TRANSPARENCY', 'STEWARDSHIP'],
   },
   camael: {
@@ -119,10 +109,8 @@ const GUARDIAN_ARCHETYPES = {
     description: 'You embody compassion. Your love connects all beings as one.',
     scripture: 'The one who sees God through the heart.',
     icon: HeartHandshake,
-    gradient: 'from-pink-500 to-rose-600',
-    bgGradient: 'from-pink-500/20 to-rose-600/10',
-    accentColor: 'text-pink-500',
-    borderColor: 'border-pink-500',
+    // Maps to secondary (terra) - warm, nurturing
+    themeColor: 'secondary',
     commandments: ['LOYALTY', 'EQUITY', 'SANCTITY'],
   },
   jophiel: {
@@ -133,10 +121,8 @@ const GUARDIAN_ARCHETYPES = {
     description: 'You see the divine in all things. Your vision transforms the ordinary into the sacred.',
     scripture: 'The beauty of God who adorns creation.',
     icon: Flower2,
-    gradient: 'from-violet-500 to-purple-600',
-    bgGradient: 'from-violet-500/20 to-purple-600/10',
-    accentColor: 'text-violet-500',
-    borderColor: 'border-violet-500',
+    // Maps to primary (moss) - natural, organic
+    themeColor: 'primary',
     commandments: ['BIODIVERSITY', 'SUSTAINABILITY', 'REST'],
   },
   zadkiel: {
@@ -147,10 +133,8 @@ const GUARDIAN_ARCHETYPES = {
     description: 'You forgive the unforgivable. Your mercy grants second chances.',
     scripture: 'The righteousness of God who liberates the bound.',
     icon: Scale,
-    gradient: 'from-indigo-500 to-blue-700',
-    bgGradient: 'from-indigo-500/20 to-blue-700/10',
-    accentColor: 'text-indigo-500',
-    borderColor: 'border-indigo-500',
+    // Maps to accent (ocean) - deep, forgiving
+    themeColor: 'accent',
     commandments: ['INTEGRITY', 'LOYALTY', 'LEGACY'],
   },
 }
@@ -181,7 +165,6 @@ interface ProfileData {
   achievements: any[]
   resumeUrl?: string
   resumeFileName?: string
-  // STOCK data - The measure of contribution
   projectsCreated?: number
   projectsJoined?: number
   articlesWritten?: number
@@ -189,11 +172,8 @@ interface ProfileData {
   followers?: number
   following?: number
   connectionsCount?: number
-  // User's chosen archetype
   archetype?: ArchetypeType
-  // User's personal declaration - their truth materialized
   declaration?: string
-  // Years of contribution
   memberSince?: string
 }
 
@@ -220,13 +200,13 @@ function GhostField({
   if (isEditing) {
     return (
       <div className="group">
-        <label className="text-[10px] font-black text-theme-muted uppercase mb-1 block">{label}</label>
+        <label className="text-[10px] font-black text-[var(--muted-foreground)] uppercase mb-1 block">{label}</label>
         {type === 'textarea' ? (
           <textarea
             value={value || ''}
             onChange={(e) => onChange?.(e.target.value)}
             placeholder={placeholder}
-            className="w-full px-3 py-2 bg-[var(--background)] border-2 border-[var(--border)] rounded-lg text-sm font-medium text-[var(--foreground)] focus:outline-none focus:border-theme-primary resize-none"
+            className="w-full px-3 py-2 bg-[var(--background)] border-2 border-[var(--border)] rounded-lg text-sm font-medium text-[var(--foreground)] focus:outline-none focus:border-[var(--primary)] resize-none"
             rows={3}
           />
         ) : (
@@ -235,7 +215,7 @@ function GhostField({
             value={value || ''}
             onChange={(e) => onChange?.(e.target.value)}
             placeholder={placeholder}
-            className="w-full px-3 py-2 bg-[var(--background)] border-2 border-[var(--border)] rounded-lg text-sm font-medium text-[var(--foreground)] focus:outline-none focus:border-theme-primary"
+            className="w-full px-3 py-2 bg-[var(--background)] border-2 border-[var(--border)] rounded-lg text-sm font-medium text-[var(--foreground)] focus:outline-none focus:border-[var(--primary)]"
           />
         )}
       </div>
@@ -245,22 +225,21 @@ function GhostField({
   if (hasValue) {
     return (
       <div className="flex items-start gap-2">
-        <Icon className="w-4 h-4 text-theme-primary mt-0.5 flex-shrink-0" />
+        <Icon className="w-4 h-4 mt-0.5 flex-shrink-0" style={{ color: 'var(--primary)' }} />
         <div>
-          <p className="text-[10px] font-black text-theme-muted uppercase">{label}</p>
+          <p className="text-[10px] font-black text-[var(--muted-foreground)] uppercase">{label}</p>
           <p className="text-sm font-medium text-[var(--foreground)]">{value}</p>
         </div>
       </div>
     )
   }
 
-  // Ghost state - the potential waiting to be fulfilled
   return (
     <div className="flex items-start gap-2 opacity-30 hover:opacity-50 transition-opacity cursor-default group">
-      <Icon className="w-4 h-4 text-theme-muted mt-0.5 flex-shrink-0" />
+      <Icon className="w-4 h-4 text-[var(--muted-foreground)] mt-0.5 flex-shrink-0" />
       <div>
-        <p className="text-[10px] font-black text-theme-muted uppercase">{label}</p>
-        <p className="text-sm font-medium text-theme-muted italic border-b border-dashed border-theme-muted">
+        <p className="text-[10px] font-black text-[var(--muted-foreground)] uppercase">{label}</p>
+        <p className="text-sm font-medium text-[var(--muted-foreground)] italic border-b border-dashed border-[var(--muted-foreground)]">
           {placeholder}
         </p>
       </div>
@@ -318,7 +297,6 @@ export function ProfileBusinessCard({ userId }: ProfileBusinessCardProps) {
           }
         }
 
-        // Fetch STOCK data (contributions)
         const stockRes = await fetch(`/api/users/${userId}`)
         if (stockRes.ok) {
           const stockData = await stockRes.json()
@@ -366,12 +344,12 @@ export function ProfileBusinessCard({ userId }: ProfileBusinessCardProps) {
 
   if (isLoading) {
     return (
-      <Card className="border-4 border-theme-accent overflow-hidden">
+      <Card className="border-4 border-[var(--border)] overflow-hidden">
         <CardContent className="p-6">
           <div className="flex items-center justify-center py-12">
             <div className="text-center">
-              <div className="w-12 h-12 border-4 border-theme-accent border-t-transparent rounded-full animate-spin mx-auto mb-4" />
-              <p className="text-sm font-bold text-theme-muted">Loading identity...</p>
+              <div className="w-12 h-12 border-4 border-[var(--primary)] border-t-transparent rounded-full animate-spin mx-auto mb-4" />
+              <p className="text-sm font-bold text-[var(--muted-foreground)]">Loading identity...</p>
             </div>
           </div>
         </CardContent>
@@ -387,23 +365,29 @@ export function ProfileBusinessCard({ userId }: ProfileBusinessCardProps) {
   const ArchetypeIcon = archetype.icon
   const hasSocialLinks = profile.social.website || profile.social.linkedin || profile.social.twitter
 
-  // Calculate STOCK score - The measure of one's contribution to Project Exodus
-  // This determines eligibility for Guardianship
+  // Get the theme color CSS variable
+  const themeColorVar = `var(--${archetype.themeColor})`
+
   const stockScore = (profile.projectsCreated || 0) * 10 +
                      (profile.articlesWritten || 0) * 5 +
                      (profile.modulesCompleted || 0) * 3 +
                      (profile.followers || 0) * 1 +
                      (profile.connectionsCount || 0) * 2
 
-  // Calculate years of contribution
   const memberYears = profile.memberSince
     ? Math.floor((Date.now() - new Date(profile.memberSince).getTime()) / (1000 * 60 * 60 * 24 * 365))
     : 0
 
   return (
-    <Card className={`border-4 ${archetype.borderColor} overflow-hidden`}>
-      {/* Sacred Header */}
-      <div className={`px-6 py-5 bg-gradient-to-r ${archetype.gradient} relative overflow-hidden`}>
+    <Card className="border-4 overflow-hidden" style={{ borderColor: themeColorVar }}>
+      {/* Sacred Header - uses theme color as background */}
+      <div
+        className="px-6 py-5 relative overflow-hidden"
+        style={{ backgroundColor: themeColorVar }}
+      >
+        {/* Dark overlay for text contrast */}
+        <div className="absolute inset-0 bg-black/25" />
+
         {/* Background pattern */}
         <div className="absolute inset-0 opacity-10">
           <div className="absolute top-0 right-0 w-64 h-64 bg-white rounded-full blur-3xl transform translate-x-1/2 -translate-y-1/2" />
@@ -412,16 +396,16 @@ export function ProfileBusinessCard({ userId }: ProfileBusinessCardProps) {
 
         <div className="relative flex items-center justify-between">
           <div className="flex items-center gap-4">
-            <div className="p-3 bg-white/20 rounded-2xl backdrop-blur-sm border border-white/30">
-              <ArchetypeIcon className="w-8 h-8 text-white" />
+            <div className="p-3 bg-black/30 rounded-2xl backdrop-blur-sm border border-white/30 shadow-lg">
+              <ArchetypeIcon className="w-8 h-8 text-white drop-shadow-md" />
             </div>
             <div>
               <div className="flex items-center gap-2 mb-1">
-                <Crown className="w-4 h-4 text-white/80" />
-                <p className="text-xs font-bold text-white/80 uppercase tracking-wider">Identity Declaration</p>
+                <Crown className="w-4 h-4 text-white drop-shadow-sm" />
+                <p className="text-xs font-bold text-white uppercase tracking-wider drop-shadow-sm">Identity Declaration</p>
               </div>
-              <h2 className="text-2xl font-black text-white tracking-wide">{profile.name || 'Anonymous'}</h2>
-              <p className="text-sm font-medium text-white/90">{archetype.title} • {archetype.value}</p>
+              <h2 className="text-2xl font-black text-white tracking-wide drop-shadow-md">{profile.name || 'Anonymous'}</h2>
+              <p className="text-sm font-semibold text-white drop-shadow-sm">{archetype.title} • {archetype.value}</p>
             </div>
           </div>
 
@@ -429,7 +413,7 @@ export function ProfileBusinessCard({ userId }: ProfileBusinessCardProps) {
             {isOwnProfile && !isEditing && (
               <button
                 onClick={() => setIsEditing(true)}
-                className="p-2.5 bg-white/20 hover:bg-white/30 rounded-xl transition-colors backdrop-blur-sm"
+                className="p-2.5 bg-black/30 hover:bg-black/40 rounded-xl transition-colors backdrop-blur-sm"
                 title="Edit your declaration"
               >
                 <Edit2 className="w-5 h-5 text-white" />
@@ -439,7 +423,7 @@ export function ProfileBusinessCard({ userId }: ProfileBusinessCardProps) {
               <>
                 <button
                   onClick={() => { setIsEditing(false); setSelectedArchetype(profile.archetype || 'michael') }}
-                  className="p-2.5 bg-white/20 hover:bg-white/30 rounded-xl transition-colors"
+                  className="p-2.5 bg-black/30 hover:bg-black/40 rounded-xl transition-colors"
                 >
                   <X className="w-5 h-5 text-white" />
                 </button>
@@ -456,14 +440,13 @@ export function ProfileBusinessCard({ userId }: ProfileBusinessCardProps) {
               onClick={() => {
                 const newExpanded = !isExpanded
                 setIsExpanded(newExpanded)
-                // Scroll to expanded content after state update
                 if (newExpanded) {
                   setTimeout(() => {
                     expandedSectionRef.current?.scrollIntoView({ behavior: 'smooth', block: 'start' })
                   }, 100)
                 }
               }}
-              className="p-2.5 bg-white/20 hover:bg-white/30 rounded-xl transition-colors backdrop-blur-sm"
+              className="p-2.5 bg-black/30 hover:bg-black/40 rounded-xl transition-colors backdrop-blur-sm"
             >
               {isExpanded ? (
                 <ChevronUp className="w-5 h-5 text-white" />
@@ -476,8 +459,8 @@ export function ProfileBusinessCard({ userId }: ProfileBusinessCardProps) {
 
         {/* Guardian Archetype Selector */}
         {isEditing && (
-          <div className="relative mt-5 pt-5 border-t border-white/20">
-            <p className="text-xs font-black text-white/80 uppercase tracking-wider mb-3">
+          <div className="relative mt-5 pt-5 border-t border-white/30">
+            <p className="text-xs font-black text-white uppercase tracking-wider mb-3 drop-shadow-sm">
               Choose Your Guardian Value
             </p>
             <div className="grid grid-cols-7 gap-2">
@@ -490,9 +473,10 @@ export function ProfileBusinessCard({ userId }: ProfileBusinessCardProps) {
                     onClick={() => setSelectedArchetype(a.id as ArchetypeType)}
                     className={`flex flex-col items-center gap-1 p-3 rounded-xl text-xs font-bold transition-all ${
                       isSelected
-                        ? 'bg-white text-gray-900 shadow-lg scale-105'
-                        : 'bg-white/10 text-white hover:bg-white/20'
+                        ? 'bg-white shadow-lg scale-105'
+                        : 'bg-black/20 hover:bg-black/30'
                     }`}
+                    style={{ color: isSelected ? themeColorVar : 'white' }}
                     title={`${a.name}: ${a.value}`}
                   >
                     <AIcon className="w-5 h-5" />
@@ -509,15 +493,20 @@ export function ProfileBusinessCard({ userId }: ProfileBusinessCardProps) {
         {/* Main Identity Card */}
         <div className="flex flex-col lg:flex-row gap-6">
           {/* Left: Core Identity */}
-          <div className={`flex-shrink-0 p-6 bg-gradient-to-br ${archetype.gradient} rounded-2xl text-white lg:min-w-[320px] relative overflow-hidden`}>
+          <div
+            className="flex-shrink-0 p-6 rounded-2xl lg:min-w-[320px] relative overflow-hidden"
+            style={{ backgroundColor: themeColorVar }}
+          >
+            {/* Dark overlay for text contrast */}
+            <div className="absolute inset-0 bg-black/25 rounded-2xl" />
             {/* Decorative elements */}
             <div className="absolute top-0 right-0 w-32 h-32 bg-white/10 rounded-full blur-2xl transform translate-x-1/2 -translate-y-1/2" />
 
-            <div className="relative">
+            <div className="relative text-white">
               {/* Avatar and Name */}
               <div className="flex items-center gap-4 mb-5">
-                <div className="w-20 h-20 rounded-2xl bg-white/20 flex items-center justify-center border-2 border-white/30 backdrop-blur-sm">
-                  <User className="w-10 h-10" />
+                <div className="w-20 h-20 rounded-2xl bg-black/30 flex items-center justify-center border-2 border-white/30 backdrop-blur-sm">
+                  <User className="w-10 h-10 text-white" />
                 </div>
                 <div className="flex-1">
                   {isEditing ? (
@@ -525,44 +514,44 @@ export function ProfileBusinessCard({ userId }: ProfileBusinessCardProps) {
                       type="text"
                       value={editedProfile.name || ''}
                       onChange={(e) => setEditedProfile(prev => ({ ...prev, name: e.target.value }))}
-                      className="text-xl font-black bg-transparent border-b-2 border-white/50 focus:border-white outline-none w-full mb-1 placeholder-white/50"
+                      className="text-xl font-black bg-transparent border-b-2 border-white/50 focus:border-white outline-none w-full mb-1 placeholder-white/50 text-white"
                       placeholder="Your Name"
                     />
                   ) : (
-                    <h3 className="text-xl font-black">{profile.name || 'Anonymous'}</h3>
+                    <h3 className="text-xl font-black drop-shadow-md">{profile.name || 'Anonymous'}</h3>
                   )}
                   {isEditing ? (
                     <input
                       type="text"
                       value={editedProfile.headline || ''}
                       onChange={(e) => setEditedProfile(prev => ({ ...prev, headline: e.target.value }))}
-                      className="text-sm font-medium bg-transparent border-b border-white/30 focus:border-white/50 outline-none w-full opacity-90 placeholder-white/50"
+                      className="text-sm font-medium bg-transparent border-b border-white/30 focus:border-white/50 outline-none w-full placeholder-white/50 text-white/90"
                       placeholder="Your role or calling"
                     />
                   ) : (
-                    <p className="text-sm font-medium opacity-90">{profile.headline || archetype.title}</p>
+                    <p className="text-sm font-medium text-white/90">{profile.headline || archetype.title}</p>
                   )}
                 </div>
               </div>
 
-              {/* The Declaration - Their truth materialized */}
-              <div className="mb-5 p-4 bg-white/10 rounded-xl backdrop-blur-sm border border-white/20">
+              {/* The Declaration */}
+              <div className="mb-5 p-4 bg-black/20 rounded-xl backdrop-blur-sm border border-white/20">
                 <div className="flex items-center gap-2 mb-2">
-                  <ScrollText className="w-4 h-4 opacity-70" />
-                  <p className="text-[10px] font-black uppercase opacity-70 tracking-wider">My Declaration</p>
+                  <ScrollText className="w-4 h-4 text-white/70" />
+                  <p className="text-[10px] font-black uppercase text-white/70 tracking-wider">My Declaration</p>
                 </div>
                 {isEditing ? (
                   <textarea
                     value={editedProfile.declaration || ''}
                     onChange={(e) => setEditedProfile(prev => ({ ...prev, declaration: e.target.value }))}
-                    className="w-full text-sm font-medium bg-transparent border-b border-white/30 focus:border-white/50 outline-none italic resize-none placeholder-white/50"
+                    className="w-full text-sm font-medium bg-transparent border-b border-white/30 focus:border-white/50 outline-none italic resize-none placeholder-white/50 text-white"
                     placeholder="What truth do you carry? What do you stand for at Project Exodus?"
                     rows={2}
                   />
                 ) : profile.declaration ? (
-                  <p className="text-sm font-medium italic leading-relaxed">"{profile.declaration}"</p>
+                  <p className="text-sm font-medium italic leading-relaxed text-white">"{profile.declaration}"</p>
                 ) : (
-                  <p className="text-sm font-medium italic opacity-40 border-b border-dashed border-white/30">
+                  <p className="text-sm font-medium italic text-white/40 border-b border-dashed border-white/30">
                     "Speak your truth into existence..."
                   </p>
                 )}
@@ -572,49 +561,49 @@ export function ProfileBusinessCard({ userId }: ProfileBusinessCardProps) {
               <div className="space-y-2 text-sm mb-5">
                 {(profile.location || isEditing) && (
                   <div className="flex items-center gap-2">
-                    <MapPin className="w-4 h-4 opacity-75" />
+                    <MapPin className="w-4 h-4 text-white/75" />
                     {isEditing ? (
                       <input
                         type="text"
                         value={editedProfile.location || ''}
                         onChange={(e) => setEditedProfile(prev => ({ ...prev, location: e.target.value }))}
-                        className="bg-transparent border-b border-white/30 focus:border-white/50 outline-none flex-1 placeholder-white/50"
+                        className="bg-transparent border-b border-white/30 focus:border-white/50 outline-none flex-1 placeholder-white/50 text-white"
                         placeholder="Your location"
                       />
                     ) : (
-                      <span>{profile.location}</span>
+                      <span className="text-white">{profile.location}</span>
                     )}
                   </div>
                 )}
                 {!profile.location && !isEditing && (
                   <div className="flex items-center gap-2 opacity-30">
-                    <MapPin className="w-4 h-4" />
-                    <span className="italic border-b border-dashed border-white/50">Add your location</span>
+                    <MapPin className="w-4 h-4 text-white" />
+                    <span className="italic border-b border-dashed border-white/50 text-white">Add your location</span>
                   </div>
                 )}
 
                 {profile.email && (
                   <div className="flex items-center gap-2">
-                    <Mail className="w-4 h-4 opacity-75" />
-                    <span>{profile.email}</span>
+                    <Mail className="w-4 h-4 text-white/75" />
+                    <span className="text-white">{profile.email}</span>
                   </div>
                 )}
               </div>
 
-              {/* YOUR STOCK - The measure of contribution */}
+              {/* YOUR STOCK */}
               <div className="pt-4 border-t border-white/20">
                 <div className="flex items-center justify-between mb-2">
                   <div className="flex items-center gap-2">
-                    <Infinity className="w-5 h-5 opacity-70" />
-                    <p className="text-[10px] font-black uppercase opacity-70 tracking-wider">Your Stock</p>
+                    <Infinity className="w-5 h-5 text-white/70" />
+                    <p className="text-[10px] font-black uppercase text-white/70 tracking-wider">Your Stock</p>
                   </div>
-                  <p className="text-3xl font-black">{stockScore}</p>
+                  <p className="text-3xl font-black text-white drop-shadow-md">{stockScore}</p>
                 </div>
-                <p className="text-[10px] font-medium opacity-60 text-right">
+                <p className="text-[10px] font-medium text-white/60 text-right">
                   Contribution to Project Exodus
                 </p>
                 {memberYears > 0 && (
-                  <p className="text-[10px] font-bold opacity-50 text-right mt-1">
+                  <p className="text-[10px] font-bold text-white/50 text-right mt-1">
                     {memberYears} year{memberYears > 1 ? 's' : ''} of service
                   </p>
                 )}
@@ -625,20 +614,26 @@ export function ProfileBusinessCard({ userId }: ProfileBusinessCardProps) {
           {/* Right: Values & Contributions */}
           <div className="flex-1 space-y-5">
             {/* Guardian Value */}
-            <div className={`p-4 bg-gradient-to-br ${archetype.bgGradient} rounded-xl border-2 ${archetype.borderColor}`}>
+            <div
+              className="p-4 rounded-xl border-2"
+              style={{
+                borderColor: themeColorVar,
+                backgroundColor: `color-mix(in srgb, ${themeColorVar} 10%, var(--background))`
+              }}
+            >
               <div className="flex items-center gap-3 mb-2">
-                <ArchetypeIcon className={`w-6 h-6 ${archetype.accentColor}`} />
+                <ArchetypeIcon className="w-6 h-6" style={{ color: themeColorVar }} />
                 <div>
-                  <p className="text-xs font-black text-theme-muted uppercase">I Embody</p>
-                  <p className={`text-lg font-black ${archetype.accentColor}`}>{archetype.value}</p>
+                  <p className="text-xs font-black text-[var(--muted-foreground)] uppercase">I Embody</p>
+                  <p className="text-lg font-black" style={{ color: themeColorVar }}>{archetype.value}</p>
                 </div>
               </div>
-              <p className="text-sm font-medium text-theme-muted italic">{archetype.description}</p>
+              <p className="text-sm font-medium text-[var(--muted-foreground)] italic">{archetype.description}</p>
             </div>
 
             {/* Commandments Alignment */}
             <div>
-              <h4 className="text-xs font-black text-theme-muted uppercase mb-2 flex items-center gap-2">
+              <h4 className="text-xs font-black text-[var(--muted-foreground)] uppercase mb-2 flex items-center gap-2">
                 <Shield className="w-4 h-4" />
                 Values Alignment
               </h4>
@@ -646,7 +641,8 @@ export function ProfileBusinessCard({ userId }: ProfileBusinessCardProps) {
                 {archetype.commandments.map((value, idx) => (
                   <span
                     key={idx}
-                    className={`px-3 py-1.5 bg-gradient-to-r ${archetype.gradient} text-white text-xs font-bold rounded-full`}
+                    className="px-3 py-1.5 text-white text-xs font-bold rounded-full"
+                    style={{ backgroundColor: themeColorVar }}
                   >
                     {value}
                   </span>
@@ -656,7 +652,7 @@ export function ProfileBusinessCard({ userId }: ProfileBusinessCardProps) {
 
             {/* Expertise */}
             <div>
-              <h4 className="text-xs font-black text-theme-muted uppercase mb-2 flex items-center gap-2">
+              <h4 className="text-xs font-black text-[var(--muted-foreground)] uppercase mb-2 flex items-center gap-2">
                 <Sparkles className="w-4 h-4" />
                 Expertise
               </h4>
@@ -671,7 +667,7 @@ export function ProfileBusinessCard({ userId }: ProfileBusinessCardProps) {
                     </span>
                   ))}
                   {profile.skills.length > 6 && (
-                    <span className="px-3 py-1 bg-[var(--muted)] text-theme-muted text-xs font-bold rounded-full">
+                    <span className="px-3 py-1 bg-[var(--muted)] text-[var(--muted-foreground)] text-xs font-bold rounded-full">
                       +{profile.skills.length - 6} more
                     </span>
                   )}
@@ -681,7 +677,7 @@ export function ProfileBusinessCard({ userId }: ProfileBusinessCardProps) {
                   {['Your skill', 'Another skill', 'More skills'].map((ghost, idx) => (
                     <span
                       key={idx}
-                      className="px-3 py-1 border-2 border-dashed border-theme-muted text-theme-muted text-xs font-bold rounded-full italic"
+                      className="px-3 py-1 border-2 border-dashed border-[var(--muted-foreground)] text-[var(--muted-foreground)] text-xs font-bold rounded-full italic"
                     >
                       {ghost}
                     </span>
@@ -693,20 +689,20 @@ export function ProfileBusinessCard({ userId }: ProfileBusinessCardProps) {
             {/* STOCK Breakdown */}
             <div className="grid grid-cols-2 gap-3">
               <div className="p-3 bg-[var(--muted)] rounded-xl">
-                <p className={`text-2xl font-black ${archetype.accentColor}`}>{profile.projectsCreated || 0}</p>
-                <p className="text-[10px] font-bold text-theme-muted uppercase">Projects Built</p>
+                <p className="text-2xl font-black" style={{ color: themeColorVar }}>{profile.projectsCreated || 0}</p>
+                <p className="text-[10px] font-bold text-[var(--muted-foreground)] uppercase">Projects Built</p>
               </div>
               <div className="p-3 bg-[var(--muted)] rounded-xl">
-                <p className={`text-2xl font-black ${archetype.accentColor}`}>{profile.articlesWritten || 0}</p>
-                <p className="text-[10px] font-bold text-theme-muted uppercase">Articles Written</p>
+                <p className="text-2xl font-black" style={{ color: themeColorVar }}>{profile.articlesWritten || 0}</p>
+                <p className="text-[10px] font-bold text-[var(--muted-foreground)] uppercase">Articles Written</p>
               </div>
               <div className="p-3 bg-[var(--muted)] rounded-xl">
-                <p className={`text-2xl font-black ${archetype.accentColor}`}>{profile.followers || 0}</p>
-                <p className="text-[10px] font-bold text-theme-muted uppercase">Followers</p>
+                <p className="text-2xl font-black" style={{ color: themeColorVar }}>{profile.followers || 0}</p>
+                <p className="text-[10px] font-bold text-[var(--muted-foreground)] uppercase">Followers</p>
               </div>
               <div className="p-3 bg-[var(--muted)] rounded-xl">
-                <p className={`text-2xl font-black ${archetype.accentColor}`}>{profile.modulesCompleted || 0}</p>
-                <p className="text-[10px] font-bold text-theme-muted uppercase">Modules Completed</p>
+                <p className="text-2xl font-black" style={{ color: themeColorVar }}>{profile.modulesCompleted || 0}</p>
+                <p className="text-[10px] font-bold text-[var(--muted-foreground)] uppercase">Modules Completed</p>
               </div>
             </div>
 
@@ -718,7 +714,7 @@ export function ProfileBusinessCard({ userId }: ProfileBusinessCardProps) {
                     href={profile.social.website}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="flex items-center gap-2 px-3 py-2 bg-[var(--muted)] rounded-lg hover:bg-[var(--primary)] hover:text-white transition-colors text-sm font-bold"
+                    className="flex items-center gap-2 px-3 py-2 bg-[var(--muted)] text-[var(--foreground)] rounded-lg hover:bg-[var(--primary)] hover:text-[var(--primary-foreground)] transition-colors text-sm font-bold"
                   >
                     <Globe className="w-4 h-4" />
                     Website
@@ -729,7 +725,7 @@ export function ProfileBusinessCard({ userId }: ProfileBusinessCardProps) {
                     href={profile.social.linkedin}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="flex items-center gap-2 px-3 py-2 bg-[var(--muted)] rounded-lg hover:bg-[#0077b5] hover:text-white transition-colors text-sm font-bold"
+                    className="flex items-center gap-2 px-3 py-2 bg-[var(--muted)] text-[var(--foreground)] rounded-lg hover:bg-[var(--accent)] hover:text-[var(--accent-foreground)] transition-colors text-sm font-bold"
                   >
                     <Linkedin className="w-4 h-4" />
                     LinkedIn
@@ -740,7 +736,7 @@ export function ProfileBusinessCard({ userId }: ProfileBusinessCardProps) {
                     href={profile.social.twitter}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="flex items-center gap-2 px-3 py-2 bg-[var(--muted)] rounded-lg hover:bg-[#1da1f2] hover:text-white transition-colors text-sm font-bold"
+                    className="flex items-center gap-2 px-3 py-2 bg-[var(--muted)] text-[var(--foreground)] rounded-lg hover:bg-[var(--accent)] hover:text-[var(--accent-foreground)] transition-colors text-sm font-bold"
                   >
                     <Twitter className="w-4 h-4" />
                     Twitter
@@ -750,11 +746,11 @@ export function ProfileBusinessCard({ userId }: ProfileBusinessCardProps) {
             )}
             {!hasSocialLinks && (
               <div className="flex flex-wrap gap-2 opacity-30">
-                <span className="flex items-center gap-2 px-3 py-2 border-2 border-dashed border-theme-muted rounded-lg text-sm font-bold text-theme-muted italic">
+                <span className="flex items-center gap-2 px-3 py-2 border-2 border-dashed border-[var(--muted-foreground)] rounded-lg text-sm font-bold text-[var(--muted-foreground)] italic">
                   <Globe className="w-4 h-4" />
                   Add website
                 </span>
-                <span className="flex items-center gap-2 px-3 py-2 border-2 border-dashed border-theme-muted rounded-lg text-sm font-bold text-theme-muted italic">
+                <span className="flex items-center gap-2 px-3 py-2 border-2 border-dashed border-[var(--muted-foreground)] rounded-lg text-sm font-bold text-[var(--muted-foreground)] italic">
                   <Linkedin className="w-4 h-4" />
                   Add LinkedIn
                 </span>
@@ -783,16 +779,16 @@ export function ProfileBusinessCard({ userId }: ProfileBusinessCardProps) {
               {/* Experience */}
               <div>
                 <h4 className="text-sm font-black text-[var(--foreground)] mb-2 flex items-center gap-2">
-                  <Briefcase className={`w-4 h-4 ${archetype.accentColor}`} />
+                  <Briefcase className="w-4 h-4" style={{ color: themeColorVar }} />
                   Experience
                 </h4>
                 {profile.experience.length > 0 ? (
                   <div className="space-y-3">
                     {profile.experience.slice(0, 2).map((exp: any, idx: number) => (
-                      <div key={idx} className={`border-l-2 ${archetype.borderColor} pl-3`}>
+                      <div key={idx} className="border-l-2 pl-3" style={{ borderColor: themeColorVar }}>
                         <h5 className="text-sm font-black text-[var(--foreground)]">{exp.title}</h5>
-                        <p className="text-xs font-bold text-theme-muted">{exp.company}</p>
-                        <p className="text-[10px] font-medium text-theme-muted">
+                        <p className="text-xs font-bold text-[var(--muted-foreground)]">{exp.company}</p>
+                        <p className="text-[10px] font-medium text-[var(--muted-foreground)]">
                           {exp.startDate} - {exp.current ? 'Present' : exp.endDate}
                         </p>
                       </div>
@@ -800,10 +796,10 @@ export function ProfileBusinessCard({ userId }: ProfileBusinessCardProps) {
                   </div>
                 ) : (
                   <div className="space-y-3 opacity-30">
-                    <div className="border-l-2 border-dashed border-theme-muted pl-3">
-                      <p className="text-sm font-black text-theme-muted italic">Your Position</p>
-                      <p className="text-xs font-bold text-theme-muted italic">Organization</p>
-                      <p className="text-[10px] font-medium text-theme-muted">Add your experience...</p>
+                    <div className="border-l-2 border-dashed border-[var(--muted-foreground)] pl-3">
+                      <p className="text-sm font-black text-[var(--muted-foreground)] italic">Your Position</p>
+                      <p className="text-xs font-bold text-[var(--muted-foreground)] italic">Organization</p>
+                      <p className="text-[10px] font-medium text-[var(--muted-foreground)]">Add your experience...</p>
                     </div>
                   </div>
                 )}
@@ -812,25 +808,25 @@ export function ProfileBusinessCard({ userId }: ProfileBusinessCardProps) {
               {/* Education */}
               <div>
                 <h4 className="text-sm font-black text-[var(--foreground)] mb-2 flex items-center gap-2">
-                  <GraduationCap className={`w-4 h-4 ${archetype.accentColor}`} />
+                  <GraduationCap className="w-4 h-4" style={{ color: themeColorVar }} />
                   Education
                 </h4>
                 {profile.education.length > 0 ? (
                   <div className="space-y-3">
                     {profile.education.slice(0, 2).map((edu: any, idx: number) => (
-                      <div key={idx} className={`border-l-2 ${archetype.borderColor} pl-3`}>
+                      <div key={idx} className="border-l-2 pl-3" style={{ borderColor: themeColorVar }}>
                         <h5 className="text-sm font-black text-[var(--foreground)]">{edu.degree}</h5>
-                        <p className="text-xs font-bold text-theme-muted">{edu.school}</p>
-                        <p className="text-[10px] font-medium text-theme-muted">{edu.graduationYear}</p>
+                        <p className="text-xs font-bold text-[var(--muted-foreground)]">{edu.school}</p>
+                        <p className="text-[10px] font-medium text-[var(--muted-foreground)]">{edu.graduationYear}</p>
                       </div>
                     ))}
                   </div>
                 ) : (
                   <div className="space-y-3 opacity-30">
-                    <div className="border-l-2 border-dashed border-theme-muted pl-3">
-                      <p className="text-sm font-black text-theme-muted italic">Degree / Certification</p>
-                      <p className="text-xs font-bold text-theme-muted italic">Institution</p>
-                      <p className="text-[10px] font-medium text-theme-muted">Add your education...</p>
+                    <div className="border-l-2 border-dashed border-[var(--muted-foreground)] pl-3">
+                      <p className="text-sm font-black text-[var(--muted-foreground)] italic">Degree / Certification</p>
+                      <p className="text-xs font-bold text-[var(--muted-foreground)] italic">Institution</p>
+                      <p className="text-[10px] font-medium text-[var(--muted-foreground)]">Add your education...</p>
                     </div>
                   </div>
                 )}
@@ -839,7 +835,7 @@ export function ProfileBusinessCard({ userId }: ProfileBusinessCardProps) {
               {/* Achievements */}
               <div>
                 <h4 className="text-sm font-black text-[var(--foreground)] mb-2 flex items-center gap-2">
-                  <Award className={`w-4 h-4 ${archetype.accentColor}`} />
+                  <Award className="w-4 h-4" style={{ color: themeColorVar }} />
                   Achievements
                 </h4>
                 {profile.achievements.length > 0 ? (
@@ -847,15 +843,15 @@ export function ProfileBusinessCard({ userId }: ProfileBusinessCardProps) {
                     {profile.achievements.slice(0, 3).map((achievement: any, idx: number) => (
                       <div key={idx} className="p-2 bg-[var(--muted)] rounded-lg">
                         <h5 className="text-xs font-black text-[var(--foreground)]">{achievement.title}</h5>
-                        <p className="text-[10px] font-medium text-theme-muted">{achievement.description}</p>
+                        <p className="text-[10px] font-medium text-[var(--muted-foreground)]">{achievement.description}</p>
                       </div>
                     ))}
                   </div>
                 ) : (
                   <div className="space-y-2 opacity-30">
-                    <div className="p-2 border-2 border-dashed border-theme-muted rounded-lg">
-                      <p className="text-xs font-black text-theme-muted italic">Your Achievement</p>
-                      <p className="text-[10px] font-medium text-theme-muted">Add your achievements...</p>
+                    <div className="p-2 border-2 border-dashed border-[var(--muted-foreground)] rounded-lg">
+                      <p className="text-xs font-black text-[var(--muted-foreground)] italic">Your Achievement</p>
+                      <p className="text-[10px] font-medium text-[var(--muted-foreground)]">Add your achievements...</p>
                     </div>
                   </div>
                 )}
@@ -868,13 +864,14 @@ export function ProfileBusinessCard({ userId }: ProfileBusinessCardProps) {
                 <a
                   href={profile.resumeUrl}
                   download={profile.resumeFileName || 'resume.pdf'}
-                  className={`inline-flex items-center gap-2 px-4 py-2 bg-gradient-to-r ${archetype.gradient} text-white rounded-lg hover:opacity-90 transition-opacity text-sm font-bold`}
+                  className="inline-flex items-center gap-2 px-4 py-2 text-white rounded-lg hover:opacity-90 transition-opacity text-sm font-bold"
+                  style={{ backgroundColor: themeColorVar }}
                 >
                   <Download className="w-4 h-4" />
                   Download Resume
                 </a>
               ) : (
-                <span className="inline-flex items-center gap-2 px-4 py-2 border-2 border-dashed border-theme-muted rounded-lg text-sm font-bold text-theme-muted opacity-30 italic">
+                <span className="inline-flex items-center gap-2 px-4 py-2 border-2 border-dashed border-[var(--muted-foreground)] rounded-lg text-sm font-bold text-[var(--muted-foreground)] opacity-30 italic">
                   <FileText className="w-4 h-4" />
                   Upload your resume
                 </span>
@@ -886,15 +883,15 @@ export function ProfileBusinessCard({ userId }: ProfileBusinessCardProps) {
         {/* Sacred Footer */}
         <div className="mt-6 pt-5 border-t-2 border-[var(--border)]">
           <div className="text-center">
-            <p className="text-xs font-medium text-theme-muted italic mb-1">
+            <p className="text-xs font-medium text-[var(--muted-foreground)] italic mb-1">
               "{archetype.scripture}"
             </p>
             <div className="flex items-center justify-center gap-2 mt-3">
-              <div className={`w-2 h-2 rounded-full bg-gradient-to-r ${archetype.gradient}`} />
-              <p className="text-[10px] font-black text-theme-muted uppercase tracking-widest">
+              <div className="w-2 h-2 rounded-full" style={{ backgroundColor: themeColorVar }} />
+              <p className="text-[10px] font-black text-[var(--muted-foreground)] uppercase tracking-widest">
                 We the People of Project Exodus
               </p>
-              <div className={`w-2 h-2 rounded-full bg-gradient-to-r ${archetype.gradient}`} />
+              <div className="w-2 h-2 rounded-full" style={{ backgroundColor: themeColorVar }} />
             </div>
           </div>
         </div>
