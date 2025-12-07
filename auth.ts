@@ -117,7 +117,7 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
         ? '__Secure-next-auth.callback-url'
         : 'next-auth.callback-url',
       options: {
-        httpOnly: true,
+        httpOnly: false, // Callback URL needs to be readable
         sameSite: 'lax',
         path: '/',
         secure: process.env.NODE_ENV === 'production',
@@ -128,7 +128,7 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
         ? '__Host-next-auth.csrf-token'
         : 'next-auth.csrf-token',
       options: {
-        httpOnly: true,
+        httpOnly: false, // CSRF token must be readable by JavaScript
         sameSite: 'lax',
         path: '/',
         secure: process.env.NODE_ENV === 'production',
