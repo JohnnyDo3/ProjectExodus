@@ -453,6 +453,37 @@ export function NightSkyConstellations({ alwaysShow = false, starCount = 1400 }:
         ctx.restore()
       })
 
+      // Draw constellation lines when hovering nearby (inside rotation context so they rotate with stars)
+      if (activeConstellation !== null) {
+        const constellation = constellations[activeConstellation]
+        ctx.strokeStyle = 'rgba(255, 223, 0, 0.5)'
+        ctx.lineWidth = 2
+        ctx.shadowBlur = 10
+        ctx.shadowColor = '#FFD700'
+
+        constellation.connections.forEach(([startIdx, endIdx]) => {
+          const start = stars[startIdx]
+          const end = stars[endIdx]
+          if (start && end) {
+            ctx.beginPath()
+            ctx.moveTo(start.x, start.y)
+            ctx.lineTo(end.x, end.y)
+            ctx.stroke()
+          }
+        })
+
+        // Draw constellation name
+        ctx.font = 'bold 20px sans-serif'
+        ctx.fillStyle = 'rgba(255, 223, 0, 0.9)'
+        ctx.shadowBlur = 15
+        ctx.textAlign = 'center'
+        const firstStar = stars[constellation.stars[0]]
+        if (firstStar) {
+          ctx.fillText(constellation.name, firstStar.x, firstStar.y - 30)
+        }
+        ctx.shadowBlur = 0
+      }
+
       // End rotation context (shooting stars and UI elements stay fixed)
       ctx.restore()
 
@@ -530,38 +561,6 @@ export function NightSkyConstellations({ alwaysShow = false, starCount = 1400 }:
 
         ctx.restore()
       })
-
-      // Draw constellation lines when hovering nearby
-      if (activeConstellation !== null) {
-        const constellation = constellations[activeConstellation]
-        ctx.strokeStyle = 'rgba(255, 223, 0, 0.5)'
-        ctx.lineWidth = 2
-        ctx.shadowBlur = 10
-        ctx.shadowColor = '#FFD700'
-
-        constellation.connections.forEach(([startIdx, endIdx]) => {
-          const start = stars[startIdx]
-          const end = stars[endIdx]
-          if (start && end) {
-            ctx.beginPath()
-            ctx.moveTo(start.x, start.y)
-            ctx.lineTo(end.x, end.y)
-            ctx.stroke()
-          }
-        })
-
-        // Draw constellation name
-        ctx.font = 'bold 20px sans-serif'
-        ctx.fillStyle = 'rgba(255, 223, 0, 0.9)'
-        ctx.shadowBlur = 15
-        ctx.textAlign = 'center'
-        const firstStar = stars[constellation.stars[0]]
-        if (firstStar) {
-          ctx.fillText(constellation.name, firstStar.x, firstStar.y - 30)
-        }
-      }
-
-      ctx.shadowBlur = 0
 
       animationFrameRef.current = requestAnimationFrame(animate)
     }
