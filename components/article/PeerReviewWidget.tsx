@@ -2,7 +2,7 @@
 
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/Card'
 import { Button } from '@/components/ui/Button'
-import { Star, Users, MessageSquare, ChevronDown, Maximize2 } from 'lucide-react'
+import { Star, Users, MessageSquare } from 'lucide-react'
 
 interface PeerReview {
   id: string
@@ -24,10 +24,9 @@ interface PeerReviewWidgetProps {
   articleId: string
   peerReviews: PeerReview[]
   onScrollToReviews?: () => void
-  onExpand?: () => void
 }
 
-export function PeerReviewWidget({ articleId, peerReviews, onScrollToReviews, onExpand }: PeerReviewWidgetProps) {
+export function PeerReviewWidget({ articleId, peerReviews, onScrollToReviews }: PeerReviewWidgetProps) {
   // Filter to only top-level reviews (not replies)
   const topLevelReviews = peerReviews.filter(r => !r.parentId && r.rating !== null)
   const totalReplies = peerReviews.filter(r => r.parentId !== null).length
@@ -86,31 +85,25 @@ export function PeerReviewWidget({ articleId, peerReviews, onScrollToReviews, on
             <Users className="w-4 h-4 text-moss-600 dark:text-moss-400" />
             Round Table Talk
           </div>
-          <div className="flex items-center gap-2">
-            {topLevelReviews.length > 0 && (
-              <div className="flex items-center gap-1">
-                <Star className="w-4 h-4 fill-terra-500 text-terra-500" />
-                <span className="font-black text-sm">{averageRating.toFixed(1)}</span>
-              </div>
-            )}
-            {onExpand && (
-              <Button size="sm" variant="ghost" onClick={onExpand} title="Expand to read article while discussing" className="p-1 h-auto">
-                <Maximize2 className="w-4 h-4" />
-              </Button>
-            )}
-          </div>
+          {topLevelReviews.length > 0 && (
+            <div className="flex items-center gap-1">
+              <Star className="w-4 h-4 fill-terra-500 text-terra-500" />
+              <span className="font-black text-sm">{averageRating.toFixed(1)}</span>
+            </div>
+          )}
         </CardTitle>
       </CardHeader>
       <CardContent className="space-y-4">
         {topLevelReviews.length === 0 ? (
+          // No reviews yet
           <div className="text-center py-4">
             <p className="text-sm text-[var(--foreground)]/60 mb-3">
-              No discussions yet. Join the conversation!
+              No discussions yet. Be the first to share your thoughts!
             </p>
             <Button
-              variant="outline"
+              variant="primary"
               size="sm"
-              className="w-full border-[var(--border)] text-[var(--foreground)] hover:bg-[var(--muted)]"
+              className="w-full"
               onClick={handleScrollToReviews}
             >
               Join the Discussion
@@ -152,30 +145,14 @@ export function PeerReviewWidget({ articleId, peerReviews, onScrollToReviews, on
               )}
             </div>
 
-            {/* Preview of latest review */}
-            {topLevelReviews[0] && (
-              <div className="p-3 bg-[var(--muted)] rounded-lg">
-                <div className="flex items-center gap-2 mb-1">
-                  <span className="text-xs font-bold text-[var(--foreground)]/80">
-                    {topLevelReviews[0].user.name || 'Anonymous'}
-                  </span>
-                  <StarDisplay rating={topLevelReviews[0].rating || 0} />
-                </div>
-                <p className="text-xs text-[var(--foreground)]/70 line-clamp-2">
-                  {topLevelReviews[0].content}
-                </p>
-              </div>
-            )}
-
-            {/* View All Button */}
+            {/* Join Button */}
             <Button
-              variant="outline"
+              variant="primary"
               size="sm"
-              className="w-full border-[var(--border)] text-[var(--foreground)] hover:bg-[var(--muted)]"
+              className="w-full"
               onClick={handleScrollToReviews}
             >
-              <span>View Full Discussion</span>
-              <ChevronDown className="w-4 h-4 ml-1" />
+              Join the Discussion
             </Button>
           </>
         )}
