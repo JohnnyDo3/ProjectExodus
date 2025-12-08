@@ -1,8 +1,15 @@
 'use client'
 
-import { User, MapPin, Mail, Edit2, Sword, MessageCircle, Stethoscope, Lightbulb, HeartHandshake, Flower2, Scale } from 'lucide-react'
+import { User, MapPin, Mail, Edit2, Sword, MessageCircle, Stethoscope, Lightbulb, HeartHandshake, Flower2, Scale, Phone, Briefcase, Building2, FileText, Sparkles, Heart, BookOpen } from 'lucide-react'
 import Link from 'next/link'
 import { LucideIcon } from 'lucide-react'
+
+// Ghost text component for empty fields
+function GhostText({ children }: { children: React.ReactNode }) {
+  return (
+    <span className="text-white/30 italic">{children}</span>
+  )
+}
 
 // Guardian Archetypes - matching settings page
 const GUARDIAN_ARCHETYPES: Record<string, {
@@ -138,49 +145,125 @@ export function ProfileCard({
 
         {/* Top section - Icon and title */}
         <div className="flex items-start gap-4 mb-4">
-          <div className="w-14 h-14 rounded-xl bg-white/20 flex items-center justify-center flex-shrink-0">
+          <div className="w-16 h-16 rounded-xl bg-white/20 flex items-center justify-center flex-shrink-0">
             {user.image ? (
               <img src={user.image} alt={user.name || ''} className="w-full h-full rounded-xl object-cover" />
             ) : (
-              <ArchetypeIcon className="w-7 h-7 text-white" />
+              <ArchetypeIcon className="w-8 h-8 text-white" />
             )}
           </div>
           <div className="flex-1 min-w-0 pt-1">
-            {archetype && (
+            {archetype ? (
               <p className="text-[10px] font-bold text-white/80 uppercase tracking-wide mb-0.5">
                 {archetype.title}
               </p>
+            ) : (
+              <p className="text-[10px] font-bold uppercase tracking-wide mb-0.5">
+                <GhostText>Choose Your Guardian</GhostText>
+              </p>
             )}
             <h3 className="text-xl font-black text-white truncate">
-              {user.name || 'User'}
+              {user.name || <GhostText>Your Name</GhostText>}
             </h3>
-            {userProfile?.headline && (
-              <p className="text-sm text-white/80 truncate">{userProfile.headline}</p>
+            <p className="text-sm text-white/80 truncate">
+              {userProfile?.headline || <GhostText>Your professional headline</GhostText>}
+            </p>
+          </div>
+        </div>
+
+        {/* Job Title & Company */}
+        <div className="flex flex-wrap gap-3 text-xs text-white/80 mb-3">
+          <span className="flex items-center gap-1">
+            <Briefcase className="w-3 h-3" />
+            {userProfile?.jobTitle || <GhostText>Job Title</GhostText>}
+          </span>
+          <span className="flex items-center gap-1">
+            <Building2 className="w-3 h-3" />
+            {userProfile?.company || <GhostText>Company</GhostText>}
+          </span>
+        </div>
+
+        {/* Declaration */}
+        <div className="border-t border-white/20 pt-3 mb-3">
+          <p className="text-sm italic text-white/90 line-clamp-2">
+            {userProfile?.declaration ? (
+              `"${userProfile.declaration}"`
+            ) : (
+              <GhostText>"Your personal declaration or mission statement..."</GhostText>
+            )}
+          </p>
+        </div>
+
+        {/* Bio */}
+        <div className="mb-3">
+          <div className="flex items-center gap-1.5 text-[10px] font-bold text-white/60 uppercase mb-1">
+            <FileText className="w-3 h-3" /> About
+          </div>
+          <p className="text-xs text-white/80 line-clamp-3">
+            {userProfile?.bio || <GhostText>Share a brief bio about yourself, your background, and what drives you...</GhostText>}
+          </p>
+        </div>
+
+        {/* Expertise */}
+        <div className="mb-3">
+          <div className="flex items-center gap-1.5 text-[10px] font-bold text-white/60 uppercase mb-1.5">
+            <Sparkles className="w-3 h-3" /> Expertise
+          </div>
+          <div className="flex flex-wrap gap-1.5">
+            {userProfile?.expertise && userProfile.expertise.length > 0 ? (
+              userProfile.expertise.map((skill, i) => (
+                <span key={i} className="px-2 py-0.5 bg-white/20 rounded-full text-[10px] font-semibold text-white">
+                  {skill}
+                </span>
+              ))
+            ) : (
+              <>
+                <span className="px-2 py-0.5 bg-white/10 rounded-full text-[10px] font-semibold text-white/30 italic">Skill 1</span>
+                <span className="px-2 py-0.5 bg-white/10 rounded-full text-[10px] font-semibold text-white/30 italic">Skill 2</span>
+                <span className="px-2 py-0.5 bg-white/10 rounded-full text-[10px] font-semibold text-white/30 italic">Skill 3</span>
+              </>
             )}
           </div>
         </div>
 
-        {/* Declaration */}
-        {userProfile?.declaration && (
-          <div className="border-t border-white/20 pt-3 mb-3">
-            <p className="text-sm italic text-white/90 line-clamp-2">
-              "{userProfile.declaration}"
-            </p>
+        {/* Interests */}
+        <div className="mb-3">
+          <div className="flex items-center gap-1.5 text-[10px] font-bold text-white/60 uppercase mb-1.5">
+            <Heart className="w-3 h-3" /> Interests
           </div>
-        )}
+          <div className="flex flex-wrap gap-1.5">
+            {userProfile?.interests && userProfile.interests.length > 0 ? (
+              userProfile.interests.map((interest, i) => (
+                <span key={i} className="px-2 py-0.5 bg-white/20 rounded-full text-[10px] font-semibold text-white">
+                  {interest}
+                </span>
+              ))
+            ) : (
+              <>
+                <span className="px-2 py-0.5 bg-white/10 rounded-full text-[10px] font-semibold text-white/30 italic">Interest 1</span>
+                <span className="px-2 py-0.5 bg-white/10 rounded-full text-[10px] font-semibold text-white/30 italic">Interest 2</span>
+                <span className="px-2 py-0.5 bg-white/10 rounded-full text-[10px] font-semibold text-white/30 italic">Interest 3</span>
+              </>
+            )}
+          </div>
+        </div>
 
         {/* Contact info row */}
-        <div className="flex flex-wrap gap-3 text-xs text-white/80">
-          {userProfile?.location && (
-            <span className="flex items-center gap-1">
-              <MapPin className="w-3 h-3" /> {userProfile.location}
+        <div className="border-t border-white/20 pt-3">
+          <div className="grid grid-cols-2 gap-2 text-xs text-white/80">
+            <span className="flex items-center gap-1.5">
+              <MapPin className="w-3 h-3 flex-shrink-0" />
+              {userProfile?.location || <GhostText>Location</GhostText>}
             </span>
-          )}
-          {user.email && (
-            <span className="flex items-center gap-1">
-              <Mail className="w-3 h-3" /> {user.email}
+            <span className="flex items-center gap-1.5">
+              <Mail className="w-3 h-3 flex-shrink-0" />
+              <span className="truncate">{user.email || <GhostText>email@example.com</GhostText>}</span>
             </span>
-          )}
+            <span className="flex items-center gap-1.5 col-span-2">
+              <Phone className="w-3 h-3 flex-shrink-0" />
+              {userProfile?.phone || <GhostText>+1 (555) 000-0000</GhostText>}
+            </span>
+          </div>
         </div>
       </div>
 
@@ -206,6 +289,13 @@ export function ProfileCard({
               {userProfile?._count?.projectMemberships || 0}
             </p>
             <p className="text-[9px] font-medium text-[var(--foreground)]/50 uppercase">Projects</p>
+          </div>
+          <div className="w-px h-6 bg-[var(--border)]" />
+          <div className="text-center flex-1">
+            <p className="text-base font-bold text-[var(--foreground)]">
+              {userProfile?._count?.articles || 0}
+            </p>
+            <p className="text-[9px] font-medium text-[var(--foreground)]/50 uppercase">Articles</p>
           </div>
         </div>
 
