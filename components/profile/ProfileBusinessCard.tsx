@@ -881,57 +881,11 @@ export function ProfileBusinessCard({ userId, onClose, onSave: onSaveCallback, i
                 {/* Archetype Icon - clickable to change */}
                 <div className="flex items-start gap-4 mb-4">
                   <div className="relative">
-                    <button
-                      onClick={() => setShowArchetypeSelector(!showArchetypeSelector)}
-                      className="p-3 bg-black/30 rounded-2xl backdrop-blur-sm border border-white/30 shadow-lg hover:bg-black/40 transition-colors group"
-                      title="Click to change archetype"
+                    <div
+                      className="p-3 bg-black/30 rounded-2xl backdrop-blur-sm border border-white/30 shadow-lg"
                     >
                       <CurrentArchetypeIcon className="w-8 h-8 text-white drop-shadow-md" />
-                      <Edit2 className="w-3 h-3 absolute -bottom-1 -right-1 bg-white text-gray-800 rounded-full p-0.5 opacity-0 group-hover:opacity-100 transition-opacity" />
-                    </button>
-
-                    {/* Archetype Selector Popover */}
-                    {showArchetypeSelector && (
-                      <div className="absolute top-full left-0 mt-2 bg-[var(--card)] rounded-xl shadow-2xl border-2 border-[var(--border)] p-3 z-10 w-[280px]">
-                        <p className="text-xs font-bold text-[var(--muted-foreground)] mb-2 px-1">SELECT ARCHETYPE</p>
-                        <div className="grid grid-cols-2 gap-2">
-                          {Object.entries(GUARDIAN_ARCHETYPES).map(([key, arch]) => {
-                            const Icon = arch.icon
-                            const isSelected = selectedArchetype === key
-                            return (
-                              <button
-                                key={key}
-                                onClick={() => {
-                                  setSelectedArchetype(key as ArchetypeType)
-                                  setShowArchetypeSelector(false)
-                                }}
-                                className={`p-2 rounded-lg border-2 transition-all text-left flex items-center gap-2 ${
-                                  isSelected
-                                    ? 'border-transparent text-white'
-                                    : 'border-[var(--border)] bg-[var(--background)] hover:border-[var(--primary)]'
-                                }`}
-                                style={isSelected ? { background: arch.colors.gradient } : {}}
-                              >
-                                <div
-                                  className="w-8 h-8 rounded-lg flex items-center justify-center flex-shrink-0"
-                                  style={{ background: isSelected ? 'rgba(255,255,255,0.2)' : arch.colors.gradient }}
-                                >
-                                  <Icon className="w-4 h-4 text-white" />
-                                </div>
-                                <div className="min-w-0">
-                                  <p className={`text-[10px] font-bold truncate ${isSelected ? 'text-white/80' : 'text-[var(--muted-foreground)]'}`}>
-                                    {arch.title}
-                                  </p>
-                                  <p className={`text-xs font-black truncate ${isSelected ? 'text-white' : 'text-[var(--foreground)]'}`}>
-                                    {arch.name}
-                                  </p>
-                                </div>
-                              </button>
-                            )
-                          })}
-                        </div>
-                      </div>
-                    )}
+                    </div>
                   </div>
 
                   <div className="flex-1 min-w-0 text-white">
@@ -1222,6 +1176,45 @@ export function ProfileBusinessCard({ userId, onClose, onSave: onSaveCallback, i
       </div>
 
       <CardContent className="p-4">
+        {/* Guardian Archetype Selector - Only visible to profile owner */}
+        {isOwnProfile && isFullView && (
+          <div className="mb-4 p-3 bg-[var(--muted)] rounded-xl border-2 border-[var(--border)]">
+            <p className="text-xs font-black text-[var(--muted-foreground)] uppercase tracking-wider mb-3 flex items-center gap-2">
+              <Crown className="w-4 h-4" />
+              Choose Your Guardian Archetype
+            </p>
+            <div className="flex flex-wrap gap-2">
+              {Object.entries(GUARDIAN_ARCHETYPES).map(([key, arch]) => {
+                const Icon = arch.icon
+                const isSelected = selectedArchetype === key
+                return (
+                  <button
+                    key={key}
+                    onClick={() => setSelectedArchetype(key as ArchetypeType)}
+                    className={`flex items-center gap-2 px-3 py-2 rounded-lg border-2 transition-all ${
+                      isSelected
+                        ? 'border-transparent text-white shadow-lg scale-105'
+                        : 'border-[var(--border)] bg-[var(--background)] hover:border-[var(--primary)] hover:scale-102'
+                    }`}
+                    style={isSelected ? { background: arch.colors.gradient } : {}}
+                    title={arch.title}
+                  >
+                    <div
+                      className="w-7 h-7 rounded-lg flex items-center justify-center flex-shrink-0"
+                      style={{ background: isSelected ? 'rgba(255,255,255,0.2)' : arch.colors.gradient }}
+                    >
+                      <Icon className="w-4 h-4 text-white" />
+                    </div>
+                    <span className={`text-xs font-bold ${isSelected ? 'text-white' : 'text-[var(--foreground)]'}`}>
+                      {arch.name}
+                    </span>
+                  </button>
+                )
+              })}
+            </div>
+          </div>
+        )}
+
         {/* Main Identity Card - stack vertically in narrow containers */}
         <div className="flex flex-col gap-4">
           {/* Core Identity */}
