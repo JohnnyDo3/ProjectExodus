@@ -70,7 +70,9 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
     maxAge: 30 * 24 * 60 * 60, // 30 days
   },
   callbacks: {
+    // Extend the jwt callback from authConfig
     async jwt({ token, user, trigger, session }) {
+      // Call base jwt callback logic
       if (user) {
         token.id = user.id
         token.role = user.role
@@ -83,6 +85,7 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
 
       return token
     },
+    // Extend the session callback from authConfig
     async session({ session, token }) {
       if (session.user) {
         session.user.id = token.id as string
@@ -90,6 +93,8 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
       }
       return session
     },
+    // Keep the authorized callback from authConfig (it's merged via spread)
+    authorized: authConfig.callbacks.authorized,
     async redirect({ url, baseUrl }) {
       // Allows relative callback URLs
       if (url.startsWith("/")) return `${baseUrl}${url}`

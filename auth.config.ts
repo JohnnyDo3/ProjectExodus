@@ -9,7 +9,27 @@ export const authConfig = {
     signOut: '/auth/signout',
     error: '/auth/error',
   },
+  session: {
+    strategy: "jwt",
+  },
   callbacks: {
+    // JWT callback - runs on every request in middleware
+    // This MUST be here for the middleware to see the role
+    jwt({ token, user }) {
+      if (user) {
+        token.id = user.id
+        token.role = user.role
+      }
+      return token
+    },
+    // Session callback - makes role available in session
+    session({ session, token }) {
+      if (session.user) {
+        session.user.id = token.id as string
+        session.user.role = token.role as string
+      }
+      return session
+    },
     authorized({ auth, request: { nextUrl } }) {
       const isLoggedIn = !!auth?.user
       const isOnAdmin = nextUrl.pathname.startsWith('/admin')
