@@ -2,7 +2,7 @@
 
 import { useEffect, useState, useMemo } from 'react'
 import { useRouter } from 'next/navigation'
-import { Users, User, ZoomIn, ZoomOut, RefreshCw } from 'lucide-react'
+import { Users, ZoomIn, ZoomOut, RefreshCw } from 'lucide-react'
 import { Button } from '@/components/ui/Button'
 
 interface UserNode {
@@ -23,7 +23,53 @@ interface NetworkVisualizationProps {
   onNodeClick?: (userId: string) => void
 }
 
-// Group users by their primary interest
+interface BranchNode {
+  user: UserNode
+  x: number
+  y: number
+  branchPath: string // SVG path from parent to this node
+}
+
+interface Branch {
+  interest: string
+  nodes: BranchNode[]
+  mainPath: string // Main branch curve
+  startX: number
+  startY: number
+  endX: number
+  endY: number
+}
+
+// Generate a smooth bezier curve path for a branch
+function generateBranchPath(
+  startX: number,
+  startY: number,
+  endX: number,
+  endY: number,
+  curvature: number = 0.3
+): string {
+  const midY = startY - (startY - endY) * 0.5
+  const controlX1 = startX
+  const controlY1 = startY - (startY - endY) * curvature
+  const controlX2 = endX
+  const controlY2 = midY
+
+  return `M ${startX} ${startY} C ${controlX1} ${controlY1}, ${controlX2} ${controlY2}, ${endX} ${endY}`
+}
+
+// Generate a curved sub-branch path from main branch to user node
+function generateSubBranchPath(
+  branchX: number,
+  branchY: number,
+  nodeX: number,
+  nodeY: number
+): string {
+  const midX = (branchX + nodeX) / 2
+  const midY = branchY - 20
+  return `M ${branchX} ${branchY} Q ${midX} ${midY} ${nodeX} ${nodeY}`
+}
+
+// Group users by their primary shared interest with current user
 function groupUsersByInterest(users: UserNode[], currentUser: UserNode | undefined) {
   const groups: Record<string, UserNode[]> = {}
   const currentInterests = currentUser?.interests || []
@@ -31,7 +77,7 @@ function groupUsersByInterest(users: UserNode[], currentUser: UserNode | undefin
   users.forEach((user) => {
     if (user.isCurrentUser) return
 
-    // Find shared interest with current user, or use first interest
+    // Find shared interest with current user, prioritize matches
     const sharedInterest = user.interests.find((i) => currentInterests.includes(i))
     const primaryInterest = sharedInterest || user.interests[0] || 'Other'
 
@@ -41,9 +87,14 @@ function groupUsersByInterest(users: UserNode[], currentUser: UserNode | undefin
     groups[primaryInterest].push(user)
   })
 
-  // Sort users within each group by number of shared interests (more = closer to trunk)
+  // Sort users within each group - following first, then by shared interests
   Object.keys(groups).forEach((interest) => {
     groups[interest].sort((a, b) => {
+      // Following users come first
+      if (a.isFollowing && !b.isFollowing) return -1
+      if (!a.isFollowing && b.isFollowing) return 1
+
+      // Then sort by number of shared interests
       const aShared = a.interests.filter((i) => currentInterests.includes(i)).length
       const bShared = b.interests.filter((i) => currentInterests.includes(i)).length
       return bShared - aShared
@@ -53,36 +104,97 @@ function groupUsersByInterest(users: UserNode[], currentUser: UserNode | undefin
   return groups
 }
 
-// Calculate position on a branch
-function getPositionOnBranch(
-  branchIndex: number,
-  totalBranches: number,
-  nodeIndex: number,
-  totalNodes: number,
+// Calculate tree layout
+function calculateTreeLayout(
+  interestGroups: Record<string, UserNode[]>,
   containerWidth: number,
-  containerHeight: number,
-  scale: number
-) {
-  // Trunk is at bottom center
+  containerHeight: number
+): Branch[] {
+  const branches: Branch[] = []
+  const entries = Object.entries(interestGroups)
+  const numBranches = entries.length
+
+  // Trunk position
   const trunkX = containerWidth / 2
-  const trunkY = containerHeight - 80
+  const trunkY = containerHeight - 100
 
-  // Branches spread upward in a fan shape
-  const angleSpread = Math.PI * 0.7 // 126 degrees spread
-  const startAngle = Math.PI / 2 + angleSpread / 2 // Start from upper-left
-  const branchAngle = startAngle - (branchIndex / Math.max(totalBranches - 1, 1)) * angleSpread
+  // Calculate branch spread
+  const totalSpread = Math.min(containerWidth * 0.8, 900)
+  const branchSpacing = numBranches > 1 ? totalSpread / (numBranches - 1) : 0
+  const startX = trunkX - totalSpread / 2
 
-  // Branch length increases for nodes further from trunk
-  const baseLength = 120 * scale
-  const nodeDistance = baseLength + nodeIndex * (60 * scale)
+  entries.forEach(([interest, users], branchIndex) => {
+    // Main branch endpoint - spread horizontally, go up
+    const branchEndX = numBranches > 1
+      ? startX + branchIndex * branchSpacing
+      : trunkX
 
-  // Add slight randomness for organic feel
-  const jitter = Math.sin(branchIndex * 7 + nodeIndex * 13) * 15
+    // Vary branch heights for organic look
+    const heightVariation = Math.sin(branchIndex * 2.5) * 50
+    const branchEndY = 180 + heightVariation
 
-  const x = trunkX + Math.cos(branchAngle) * nodeDistance + jitter
-  const y = trunkY - Math.sin(branchAngle) * nodeDistance + jitter / 2
+    // Generate main branch path with curve
+    const mainPath = generateBranchPath(trunkX, trunkY, branchEndX, branchEndY, 0.4)
 
-  return { x, y, branchAngle }
+    // Position users along and around this branch
+    const nodes: BranchNode[] = []
+    const numUsers = users.length
+
+    users.forEach((user, userIndex) => {
+      // Position users in a cluster around the branch end
+      // Following users are closer to the branch
+      const isFollowing = user.isFollowing
+
+      // Calculate position relative to branch end
+      const angle = (userIndex / Math.max(numUsers - 1, 1)) * Math.PI - Math.PI / 2
+      const radius = isFollowing ? 40 + userIndex * 15 : 60 + userIndex * 20
+
+      // Spread users in a fan pattern from the branch end
+      let nodeX: number
+      let nodeY: number
+
+      if (numUsers === 1) {
+        // Single user - place at branch end
+        nodeX = branchEndX
+        nodeY = branchEndY - 50
+      } else if (numUsers <= 3) {
+        // Few users - horizontal spread
+        const spreadWidth = 80
+        const offset = (userIndex - (numUsers - 1) / 2) * spreadWidth / Math.max(numUsers - 1, 1)
+        nodeX = branchEndX + offset
+        nodeY = branchEndY - 40 - userIndex * 25
+      } else {
+        // Many users - semicircle arrangement
+        const spreadAngle = Math.PI * 0.8
+        const userAngle = -Math.PI / 2 - spreadAngle / 2 + (userIndex / (numUsers - 1)) * spreadAngle
+        const distFromBranch = 50 + (userIndex % 2) * 30
+        nodeX = branchEndX + Math.cos(userAngle) * distFromBranch
+        nodeY = branchEndY + Math.sin(userAngle) * distFromBranch - 30
+      }
+
+      // Generate path from branch to user
+      const branchPath = generateSubBranchPath(branchEndX, branchEndY, nodeX, nodeY)
+
+      nodes.push({
+        user,
+        x: nodeX,
+        y: nodeY,
+        branchPath
+      })
+    })
+
+    branches.push({
+      interest,
+      nodes,
+      mainPath,
+      startX: trunkX,
+      startY: trunkY,
+      endX: branchEndX,
+      endY: branchEndY
+    })
+  })
+
+  return branches
 }
 
 export default function NetworkVisualization({
@@ -111,6 +223,14 @@ export default function NetworkVisualization({
     [processedUsers, currentUser]
   )
 
+  const containerWidth = 1200
+  const containerHeight = 700
+
+  const branches = useMemo(
+    () => calculateTreeLayout(interestGroups, containerWidth, containerHeight),
+    [interestGroups]
+  )
+
   // Trigger animation on mount
   useEffect(() => {
     const timer = setTimeout(() => setAnimationComplete(true), 100)
@@ -127,11 +247,11 @@ export default function NetworkVisualization({
 
   if (!currentUserId) {
     return (
-      <div className="flex items-center justify-center h-[400px] md:h-[600px] bg-[var(--muted)] rounded-xl border-2 border-theme-secondary">
+      <div className="flex items-center justify-center h-[400px] md:h-[600px] bg-[var(--muted)] rounded-xl border-2 border-[var(--border)]">
         <div className="text-center space-y-4 px-4">
-          <Users className="w-12 h-12 md:w-16 md:h-16 text-theme-muted mx-auto opacity-50" />
-          <h3 className="text-xl md:text-2xl font-black text-theme-muted">SIGN IN TO VIEW YOUR NETWORK</h3>
-          <p className="text-sm md:text-base font-semibold text-theme-muted max-w-md">
+          <Users className="w-12 h-12 md:w-16 md:h-16 text-[var(--muted-foreground)] mx-auto opacity-50" />
+          <h3 className="text-xl md:text-2xl font-black text-[var(--foreground)]">SIGN IN TO VIEW YOUR NETWORK</h3>
+          <p className="text-sm md:text-base font-semibold text-[var(--muted-foreground)] max-w-md">
             Log in to see your connections visualized as an interactive network tree
           </p>
         </div>
@@ -139,10 +259,9 @@ export default function NetworkVisualization({
     )
   }
 
-  const containerWidth = 1200
-  const containerHeight = 700
-  const branches = Object.entries(interestGroups)
   const totalConnections = processedUsers.filter((u) => !u.isCurrentUser).length
+  const trunkX = containerWidth / 2
+  const trunkY = containerHeight - 100
 
   return (
     <div className="relative">
@@ -178,27 +297,27 @@ export default function NetworkVisualization({
       </div>
 
       {/* Legend */}
-      <div className="absolute top-4 left-4 z-10 bg-[var(--card)] border-2 border-theme-primary rounded-lg p-4 space-y-2 shadow-xl">
+      <div className="absolute top-4 left-4 z-10 bg-[var(--card)] border-2 border-[var(--primary)] rounded-lg p-4 space-y-2 shadow-xl">
         <h4 className="text-xs font-black text-[var(--foreground)] mb-2">LEGEND</h4>
         <div className="flex items-center gap-2">
           <div className="w-6 h-6 rounded-full bg-gradient-to-br from-[var(--primary)] to-[var(--accent)]" />
-          <span className="text-[10px] font-bold text-theme-muted">You (Root)</span>
+          <span className="text-[10px] font-bold text-[var(--muted-foreground)]">You (Root)</span>
         </div>
         <div className="flex items-center gap-2">
           <div className="w-5 h-5 rounded-full bg-[var(--accent)] shadow-lg shadow-[var(--accent)]/30" />
-          <span className="text-[10px] font-bold text-theme-muted">Following</span>
+          <span className="text-[10px] font-bold text-[var(--muted-foreground)]">Following</span>
         </div>
         <div className="flex items-center gap-2">
           <div className="w-4 h-4 rounded-full bg-[var(--muted)] border-2 border-dashed border-[var(--border)]" />
-          <span className="text-[10px] font-bold text-theme-muted">Suggested</span>
+          <span className="text-[10px] font-bold text-[var(--muted-foreground)]">Suggested</span>
         </div>
-        <div className="border-t border-theme-muted pt-2 mt-2 text-[9px] text-theme-muted">
-          Closer = More shared interests
+        <div className="border-t border-[var(--border)] pt-2 mt-2 text-[9px] text-[var(--muted-foreground)]">
+          Branches = Shared interests
         </div>
       </div>
 
       {/* SVG Tree Visualization */}
-      <div className="bg-gradient-to-b from-[var(--background)] to-[var(--muted)] rounded-xl border-4 border-theme-primary overflow-hidden shadow-2xl">
+      <div className="bg-gradient-to-b from-[var(--background)] via-[var(--background)] to-[var(--muted)]/50 rounded-xl border-2 border-[var(--border)] overflow-hidden shadow-2xl">
         <svg
           viewBox={`0 0 ${containerWidth} ${containerHeight}`}
           className="w-full h-[400px] md:h-[600px]"
@@ -206,101 +325,97 @@ export default function NetworkVisualization({
         >
           <defs>
             {/* Gradient for trunk */}
-            <linearGradient id="trunkGradient" x1="0%" y1="0%" x2="0%" y2="100%">
-              <stop offset="0%" stopColor="var(--primary)" stopOpacity="0.8" />
-              <stop offset="100%" stopColor="var(--accent)" stopOpacity="0.6" />
+            <linearGradient id="trunkGradient" x1="0%" y1="100%" x2="0%" y2="0%">
+              <stop offset="0%" stopColor="var(--secondary)" />
+              <stop offset="50%" stopColor="var(--primary)" />
+              <stop offset="100%" stopColor="var(--accent)" />
             </linearGradient>
+
+            {/* Branch gradient */}
+            <linearGradient id="branchGradient" x1="0%" y1="100%" x2="0%" y2="0%">
+              <stop offset="0%" stopColor="var(--primary)" stopOpacity="0.8" />
+              <stop offset="100%" stopColor="var(--primary)" stopOpacity="0.3" />
+            </linearGradient>
+
             {/* Glow filter for following nodes */}
             <filter id="glow" x="-50%" y="-50%" width="200%" height="200%">
-              <feGaussianBlur stdDeviation="3" result="coloredBlur" />
+              <feGaussianBlur stdDeviation="4" result="coloredBlur" />
               <feMerge>
                 <feMergeNode in="coloredBlur" />
                 <feMergeNode in="SourceGraphic" />
               </feMerge>
             </filter>
+
+            {/* Soft shadow for nodes */}
+            <filter id="nodeShadow" x="-50%" y="-50%" width="200%" height="200%">
+              <feDropShadow dx="0" dy="2" stdDeviation="3" floodOpacity="0.3" />
+            </filter>
           </defs>
 
-          {/* Draw branches (lines from trunk to nodes) */}
-          {branches.map(([interest, groupUsers], branchIdx) =>
-            groupUsers.map((user, nodeIdx) => {
-              const { x, y, branchAngle } = getPositionOnBranch(
-                branchIdx,
-                branches.length,
-                nodeIdx,
-                groupUsers.length,
-                containerWidth,
-                containerHeight,
-                scale
-              )
-              const trunkX = containerWidth / 2
-              const trunkY = containerHeight - 80
+          {/* Tree trunk - thick line from bottom to center */}
+          <path
+            d={`M ${trunkX} ${containerHeight} L ${trunkX} ${trunkY + 40}`}
+            stroke="url(#trunkGradient)"
+            strokeWidth="20"
+            strokeLinecap="round"
+            fill="none"
+            className={`transition-all duration-1000 ${animationComplete ? 'opacity-100' : 'opacity-0'}`}
+          />
 
-              // Calculate control point for curved branch
-              const midX = (trunkX + x) / 2
-              const midY = (trunkY + y) / 2 - 30
+          {/* Main branches */}
+          {branches.map((branch, branchIdx) => (
+            <g key={`branch-${branch.interest}`}>
+              {/* Main branch path */}
+              <path
+                d={branch.mainPath}
+                stroke="var(--primary)"
+                strokeWidth={Math.max(8 - branchIdx, 4)}
+                strokeLinecap="round"
+                fill="none"
+                opacity={0.6}
+                className={`transition-all duration-700 ${animationComplete ? 'opacity-60' : 'opacity-0'}`}
+                style={{ transitionDelay: `${branchIdx * 150}ms` }}
+              />
 
-              return (
+              {/* Sub-branches to each user */}
+              {branch.nodes.map((node, nodeIdx) => (
                 <path
-                  key={`branch-${user.id}`}
-                  d={`M ${trunkX} ${trunkY} Q ${midX} ${midY} ${x} ${y}`}
+                  key={`subbranch-${node.user.id}`}
+                  d={node.branchPath}
+                  stroke={node.user.isFollowing ? 'var(--accent)' : 'var(--muted-foreground)'}
+                  strokeWidth={node.user.isFollowing ? 3 : 2}
+                  strokeLinecap="round"
                   fill="none"
-                  stroke={user.isFollowing ? 'var(--accent)' : 'var(--muted)'}
-                  strokeWidth={user.isFollowing ? 3 : 1.5}
-                  strokeOpacity={user.isFollowing ? 0.6 : 0.3}
-                  strokeDasharray={user.isFollowing ? 'none' : '4 4'}
-                  className={`transition-all duration-700 ${
-                    animationComplete ? 'opacity-100' : 'opacity-0'
-                  }`}
-                  style={{ transitionDelay: `${branchIdx * 100 + nodeIdx * 50}ms` }}
+                  opacity={node.user.isFollowing ? 0.7 : 0.3}
+                  strokeDasharray={node.user.isFollowing ? 'none' : '4 4'}
+                  className={`transition-all duration-500 ${animationComplete ? 'opacity-100' : 'opacity-0'}`}
+                  style={{ transitionDelay: `${branchIdx * 150 + nodeIdx * 80 + 200}ms` }}
                 />
-              )
-            })
-          )}
+              ))}
 
-          {/* Draw interest labels on branches */}
-          {branches.map(([interest], branchIdx) => {
-            const { x, y } = getPositionOnBranch(
-              branchIdx,
-              branches.length,
-              0,
-              1,
-              containerWidth,
-              containerHeight,
-              scale
-            )
-            const trunkX = containerWidth / 2
-            const trunkY = containerHeight - 80
-            const labelX = (trunkX + x) / 2
-            const labelY = (trunkY + y) / 2
-
-            return (
+              {/* Branch label */}
               <text
-                key={`label-${interest}`}
-                x={labelX}
-                y={labelY - 10}
+                x={branch.endX}
+                y={branch.endY + 20}
                 textAnchor="middle"
-                className="fill-theme-muted text-[9px] font-bold uppercase tracking-wider"
-                style={{ opacity: animationComplete ? 0.5 : 0 }}
+                className="fill-[var(--primary)] text-[10px] font-black uppercase tracking-wider"
+                style={{
+                  opacity: animationComplete ? 0.8 : 0,
+                  transition: 'opacity 0.5s',
+                  transitionDelay: `${branchIdx * 150 + 100}ms`
+                }}
               >
-                {interest.length > 12 ? interest.substring(0, 12) + '...' : interest}
+                {branch.interest.length > 15 ? branch.interest.substring(0, 15) + '...' : branch.interest}
               </text>
-            )
-          })}
+            </g>
+          ))}
 
-          {/* Draw user nodes */}
-          {branches.map(([interest, groupUsers], branchIdx) =>
-            groupUsers.map((user, nodeIdx) => {
-              const { x, y } = getPositionOnBranch(
-                branchIdx,
-                branches.length,
-                nodeIdx,
-                groupUsers.length,
-                containerWidth,
-                containerHeight,
-                scale
-              )
+          {/* User nodes */}
+          {branches.map((branch, branchIdx) =>
+            branch.nodes.map((node, nodeIdx) => {
+              const { user, x, y } = node
               const isHovered = hoveredNode === user.id
-              const nodeSize = user.isFollowing ? 22 : 16
+              const nodeSize = user.isFollowing ? 24 : 18
 
               return (
                 <g
@@ -308,60 +423,71 @@ export default function NetworkVisualization({
                   className={`cursor-pointer transition-all duration-500 ${
                     animationComplete ? 'opacity-100' : 'opacity-0'
                   }`}
-                  style={{ transitionDelay: `${branchIdx * 100 + nodeIdx * 50 + 200}ms` }}
+                  style={{ transitionDelay: `${branchIdx * 150 + nodeIdx * 80 + 300}ms` }}
                   onClick={() => handleNodeClick(user.id)}
                   onMouseEnter={() => setHoveredNode(user.id)}
                   onMouseLeave={() => setHoveredNode(null)}
                 >
+                  {/* Node glow for following */}
+                  {user.isFollowing && (
+                    <circle
+                      cx={x}
+                      cy={y}
+                      r={nodeSize + 8}
+                      fill="var(--accent)"
+                      opacity={0.2}
+                      className="animate-pulse"
+                    />
+                  )}
+
                   {/* Node circle */}
                   <circle
                     cx={x}
                     cy={y}
                     r={isHovered ? nodeSize + 4 : nodeSize}
-                    fill={user.isFollowing ? 'var(--accent)' : 'var(--muted)'}
-                    stroke={isHovered ? 'var(--primary)' : 'rgba(255,255,255,0.3)'}
-                    strokeWidth={isHovered ? 3 : 1.5}
-                    filter={user.isFollowing ? 'url(#glow)' : 'none'}
+                    fill={user.isFollowing ? 'var(--accent)' : 'var(--card)'}
+                    stroke={user.isFollowing ? 'var(--accent)' : 'var(--border)'}
+                    strokeWidth={isHovered ? 3 : 2}
+                    filter={user.isFollowing ? 'url(#glow)' : 'url(#nodeShadow)'}
                     className="transition-all duration-200"
                   />
 
-                  {/* User image or icon */}
+                  {/* User image or initial */}
                   {user.image ? (
-                    <clipPath id={`clip-${user.id}`}>
-                      <circle cx={x} cy={y} r={nodeSize - 2} />
-                    </clipPath>
-                  ) : null}
-
-                  {user.image ? (
-                    <image
-                      href={user.image}
-                      x={x - nodeSize + 2}
-                      y={y - nodeSize + 2}
-                      width={(nodeSize - 2) * 2}
-                      height={(nodeSize - 2) * 2}
-                      clipPath={`url(#clip-${user.id})`}
-                      className="rounded-full"
-                    />
+                    <>
+                      <clipPath id={`clip-${user.id}`}>
+                        <circle cx={x} cy={y} r={nodeSize - 3} />
+                      </clipPath>
+                      <image
+                        href={user.image}
+                        x={x - nodeSize + 3}
+                        y={y - nodeSize + 3}
+                        width={(nodeSize - 3) * 2}
+                        height={(nodeSize - 3) * 2}
+                        clipPath={`url(#clip-${user.id})`}
+                      />
+                    </>
                   ) : (
                     <text
                       x={x}
-                      y={y + 4}
+                      y={y + 5}
                       textAnchor="middle"
-                      className="fill-white text-xs font-bold"
+                      className={`text-sm font-bold ${user.isFollowing ? 'fill-white' : 'fill-[var(--foreground)]'}`}
                     >
                       {(user.name || 'U')[0].toUpperCase()}
                     </text>
                   )}
 
-                  {/* Name label (visible on hover or for followed users) */}
+                  {/* Name label */}
                   {(isHovered || user.isFollowing) && (
                     <text
                       x={x}
-                      y={y + nodeSize + 14}
+                      y={y + nodeSize + 16}
                       textAnchor="middle"
-                      className="fill-[var(--foreground)] text-[10px] font-bold"
+                      className="fill-[var(--foreground)] text-[11px] font-bold"
+                      style={{ textShadow: '0 1px 2px var(--background)' }}
                     >
-                      {user.name || 'User'}
+                      {user.name?.split(' ')[0] || 'User'}
                     </text>
                   )}
 
@@ -369,32 +495,42 @@ export default function NetworkVisualization({
                   {isHovered && (
                     <g>
                       <rect
-                        x={x - 80}
-                        y={y - nodeSize - 55}
-                        width={160}
-                        height={45}
-                        rx={8}
+                        x={x - 90}
+                        y={y - nodeSize - 65}
+                        width={180}
+                        height={55}
+                        rx={10}
                         fill="var(--card)"
                         stroke="var(--border)"
-                        strokeWidth={1}
-                        className="drop-shadow-lg"
+                        strokeWidth={2}
+                        filter="url(#nodeShadow)"
                       />
                       <text
                         x={x}
-                        y={y - nodeSize - 35}
+                        y={y - nodeSize - 42}
                         textAnchor="middle"
-                        className="fill-[var(--foreground)] text-xs font-bold"
+                        className="fill-[var(--foreground)] text-sm font-bold"
                       >
                         {user.name || 'User'}
                       </text>
                       <text
                         x={x}
-                        y={y - nodeSize - 20}
+                        y={y - nodeSize - 24}
                         textAnchor="middle"
-                        className="fill-theme-muted text-[10px]"
+                        className="fill-[var(--muted-foreground)] text-[11px]"
                       >
                         {user.followers} followers • {user.projects} projects
                       </text>
+                      {user.interests.length > 0 && (
+                        <text
+                          x={x}
+                          y={y - nodeSize - 8}
+                          textAnchor="middle"
+                          className="fill-[var(--primary)] text-[10px] font-semibold"
+                        >
+                          {user.interests.slice(0, 2).join(', ')}
+                        </text>
+                      )}
                     </g>
                   )}
                 </g>
@@ -402,7 +538,7 @@ export default function NetworkVisualization({
             })
           )}
 
-          {/* Draw current user (trunk/root) */}
+          {/* Current user (trunk root) */}
           {currentUser && (
             <g
               className="cursor-pointer"
@@ -412,17 +548,25 @@ export default function NetworkVisualization({
             >
               {/* Root glow */}
               <circle
-                cx={containerWidth / 2}
-                cy={containerHeight - 80}
-                r={hoveredNode === currentUser.id ? 45 : 40}
+                cx={trunkX}
+                cy={trunkY}
+                r={55}
+                fill="var(--primary)"
+                opacity={0.15}
+                className="animate-pulse"
+              />
+              <circle
+                cx={trunkX}
+                cy={trunkY}
+                r={hoveredNode === currentUser.id ? 48 : 44}
                 fill="url(#trunkGradient)"
                 filter="url(#glow)"
                 className="transition-all duration-300"
               />
               <circle
-                cx={containerWidth / 2}
-                cy={containerHeight - 80}
-                r={35}
+                cx={trunkX}
+                cy={trunkY}
+                r={38}
                 fill="var(--primary)"
                 stroke="white"
                 strokeWidth={3}
@@ -432,21 +576,21 @@ export default function NetworkVisualization({
               {currentUser.image ? (
                 <>
                   <clipPath id="clip-current">
-                    <circle cx={containerWidth / 2} cy={containerHeight - 80} r={32} />
+                    <circle cx={trunkX} cy={trunkY} r={35} />
                   </clipPath>
                   <image
                     href={currentUser.image}
-                    x={containerWidth / 2 - 32}
-                    y={containerHeight - 80 - 32}
-                    width={64}
-                    height={64}
+                    x={trunkX - 35}
+                    y={trunkY - 35}
+                    width={70}
+                    height={70}
                     clipPath="url(#clip-current)"
                   />
                 </>
               ) : (
                 <text
-                  x={containerWidth / 2}
-                  y={containerHeight - 75}
+                  x={trunkX}
+                  y={trunkY + 8}
                   textAnchor="middle"
                   className="fill-white text-2xl font-black"
                 >
@@ -456,8 +600,8 @@ export default function NetworkVisualization({
 
               {/* "YOU" label */}
               <text
-                x={containerWidth / 2}
-                y={containerHeight - 30}
+                x={trunkX}
+                y={trunkY + 60}
                 textAnchor="middle"
                 className="fill-[var(--foreground)] text-sm font-black"
               >
@@ -470,9 +614,9 @@ export default function NetworkVisualization({
 
       {/* Info */}
       <div className="mt-4 text-center">
-        <p className="text-sm font-semibold text-theme-muted">
-          <span className="font-black text-theme-primary">{branches.length}</span> interest branches •{' '}
-          <span className="font-black text-theme-accent">{totalConnections}</span> connections •{' '}
+        <p className="text-sm font-semibold text-[var(--muted-foreground)]">
+          <span className="font-black text-[var(--primary)]">{branches.length}</span> interest branches •{' '}
+          <span className="font-black text-[var(--accent)]">{totalConnections}</span> connections •{' '}
           Click nodes to view profiles
         </p>
       </div>
