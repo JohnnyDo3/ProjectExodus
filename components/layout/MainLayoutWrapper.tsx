@@ -1,5 +1,6 @@
 'use client'
 
+import { useEffect } from 'react'
 import { usePathname } from 'next/navigation'
 import { Header } from '@/components/layout/Header'
 import { Footer } from '@/components/layout/Footer'
@@ -18,6 +19,11 @@ export function MainLayoutWrapper({
   aiAssistant
 }: MainLayoutWrapperProps) {
   const pathname = usePathname()
+
+  // Scroll to top on route change
+  useEffect(() => {
+    window.scrollTo({ top: 0, behavior: 'instant' })
+  }, [pathname])
 
   // Don't show main site header/footer/decorations on admin pages
   const isAdminRoute = pathname?.startsWith('/admin')
