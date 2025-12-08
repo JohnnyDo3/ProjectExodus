@@ -2,7 +2,7 @@
 
 import { useSession } from 'next-auth/react'
 import { redirect } from 'next/navigation'
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useCallback, useRef } from 'react'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/Card'
 import { Button } from '@/components/ui/Button'
 import {
@@ -40,8 +40,58 @@ import {
   Scale,
   Crown,
   Heart,
+  AlertTriangle,
 } from 'lucide-react'
 import Link from 'next/link'
+
+// Confirmation Dialog Component
+function ConfirmationDialog({
+  isOpen,
+  title,
+  message,
+  onConfirm,
+  onCancel,
+}: {
+  isOpen: boolean
+  title: string
+  message: string
+  onConfirm: () => void
+  onCancel: () => void
+}) {
+  if (!isOpen) return null
+
+  return (
+    <div className="fixed inset-0 z-50 flex items-center justify-center">
+      <div className="absolute inset-0 bg-black/50" onClick={onCancel} />
+      <div className="relative bg-[var(--card)] border-4 border-theme-secondary rounded-2xl p-6 max-w-md w-full mx-4 shadow-2xl">
+        <div className="flex items-start gap-4">
+          <div className="w-12 h-12 rounded-full bg-[color-mix(in_srgb,var(--secondary)_20%,var(--background))] flex items-center justify-center flex-shrink-0">
+            <AlertTriangle className="w-6 h-6 text-theme-secondary" />
+          </div>
+          <div className="flex-1">
+            <h3 className="text-lg font-black text-[var(--foreground)] mb-2">{title}</h3>
+            <p className="text-sm font-medium text-theme-muted mb-6">{message}</p>
+            <div className="flex gap-3">
+              <Button
+                variant="outline"
+                onClick={onCancel}
+                className="flex-1 font-bold"
+              >
+                Cancel
+              </Button>
+              <Button
+                onClick={onConfirm}
+                className="flex-1 font-bold bg-[var(--secondary)] hover:bg-[var(--secondary)]/90"
+              >
+                Discard Changes
+              </Button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  )
+}
 
 interface Experience {
   id: string
@@ -178,6 +228,27 @@ export default function SettingsPage() {
     phone: '',
   })
 
+  // Track original business card data for unsaved changes detection
+  const [savedBusinessCardData, setSavedBusinessCardData] = useState({
+    declaration: '',
+    guardianArchetype: '' as ArchetypeKey | '',
+    phone: '',
+  })
+
+  // Unsaved changes confirmation dialog state
+  const [showUnsavedDialog, setShowUnsavedDialog] = useState(false)
+  const pendingTabChangeRef = useRef<string | null>(null)
+  const pendingNavigationRef = useRef<string | null>(null)
+
+  // Check if business card has unsaved changes
+  const hasUnsavedBusinessCardChanges = useCallback(() => {
+    return (
+      businessCardData.declaration !== savedBusinessCardData.declaration ||
+      businessCardData.guardianArchetype !== savedBusinessCardData.guardianArchetype ||
+      businessCardData.phone !== savedBusinessCardData.phone
+    )
+  }, [businessCardData, savedBusinessCardData])
+
   // Password form state
   const [passwordData, setPasswordData] = useState({
     currentPassword: '',
@@ -217,6 +288,48 @@ export default function SettingsPage() {
     }
   }, [session?.user?.id])
 
+  // Browser beforeunload warning for unsaved changes
+  useEffect(() => {
+    const handleBeforeUnload = (e: BeforeUnloadEvent) => {
+      if (activeTab === 'businesscard' && hasUnsavedBusinessCardChanges()) {
+        e.preventDefault()
+        e.returnValue = ''
+        return ''
+      }
+    }
+
+    window.addEventListener('beforeunload', handleBeforeUnload)
+    return () => window.removeEventListener('beforeunload', handleBeforeUnload)
+  }, [activeTab, hasUnsavedBusinessCardChanges])
+
+  // Handle tab change with unsaved changes check
+  const handleTabChange = useCallback((newTab: string) => {
+    if (activeTab === 'businesscard' && hasUnsavedBusinessCardChanges()) {
+      pendingTabChangeRef.current = newTab
+      setShowUnsavedDialog(true)
+    } else {
+      setActiveTab(newTab)
+    }
+  }, [activeTab, hasUnsavedBusinessCardChanges])
+
+  // Handle confirmation dialog actions
+  const handleDiscardChanges = useCallback(() => {
+    // Reset business card to saved values
+    setBusinessCardData({ ...savedBusinessCardData })
+    setShowUnsavedDialog(false)
+
+    if (pendingTabChangeRef.current) {
+      setActiveTab(pendingTabChangeRef.current)
+      pendingTabChangeRef.current = null
+    }
+  }, [savedBusinessCardData])
+
+  const handleCancelDiscard = useCallback(() => {
+    setShowUnsavedDialog(false)
+    pendingTabChangeRef.current = null
+    pendingNavigationRef.current = null
+  }, [])
+
   const fetchUserProfile = async () => {
     try {
       const res = await fetch(`/api/users/${session?.user?.id}`)
@@ -240,11 +353,13 @@ export default function SettingsPage() {
         setEducations(user.education || [])
         setSkills(user.expertise || [])
         setInterests(user.interests || [])
-        setBusinessCardData({
+        const businessCard = {
           declaration: user.declaration || '',
           guardianArchetype: user.guardianArchetype || '',
           phone: user.phone || '',
-        })
+        }
+        setBusinessCardData(businessCard)
+        setSavedBusinessCardData(businessCard)
         // Load privacy settings if they exist
         if (user.privacySettings) {
           setPrivacySettings({
@@ -565,7 +680,7 @@ export default function SettingsPage() {
                     {tabs.map((tab) => (
                       <button
                         key={tab.id}
-                        onClick={() => setActiveTab(tab.id)}
+                        onClick={() => handleTabChange(tab.id)}
                         className={`w-full flex items-center gap-3 px-4 py-3 rounded-lg font-bold transition-all ${
                           activeTab === tab.id
                             ? 'bg-[var(--primary)] text-[var(--primary-foreground)]'
@@ -926,6 +1041,18 @@ export default function SettingsPage() {
                       </div>
                     </div>
 
+                    {/* Unsaved Changes Indicator */}
+                    {hasUnsavedBusinessCardChanges() && (
+                      <div className="p-3 bg-[color-mix(in_srgb,var(--secondary)_15%,var(--background))] border-2 border-theme-secondary rounded-lg">
+                        <div className="flex items-center gap-2">
+                          <AlertTriangle className="w-4 h-4 text-theme-secondary" />
+                          <span className="text-sm font-bold text-theme-secondary">
+                            You have unsaved changes
+                          </span>
+                        </div>
+                      </div>
+                    )}
+
                     {/* Save Button */}
                     <Button
                       onClick={async () => {
@@ -941,6 +1068,8 @@ export default function SettingsPage() {
                             }),
                           })
                           if (res.ok) {
+                            // Update saved state to match current state
+                            setSavedBusinessCardData({ ...businessCardData })
                             setSaveMessage('Business card updated successfully!')
                           } else {
                             setSaveMessage('Failed to update business card')
@@ -956,7 +1085,7 @@ export default function SettingsPage() {
                       disabled={isSaving}
                     >
                       <Save className="w-4 h-4 mr-2" />
-                      {isSaving ? 'SAVING...' : 'SAVE BUSINESS CARD'}
+                      {isSaving ? 'SAVING...' : 'SAVE CHANGES'}
                     </Button>
                   </CardContent>
                 </Card>
@@ -1957,6 +2086,15 @@ export default function SettingsPage() {
           </div>
         </div>
       </div>
+
+      {/* Unsaved Changes Confirmation Dialog */}
+      <ConfirmationDialog
+        isOpen={showUnsavedDialog}
+        title="Unsaved Changes"
+        message="You have unsaved changes to your business card. Are you sure you want to leave without saving?"
+        onConfirm={handleDiscardChanges}
+        onCancel={handleCancelDiscard}
+      />
     </div>
   )
 }
