@@ -1,6 +1,18 @@
 import { prisma } from '@/lib/db'
-import { NotificationType } from '@prisma/client'
 import { pusherServer } from '@/lib/pusher'
+
+// Define NotificationType locally to avoid Prisma client generation issues
+// This matches the enum in prisma/schema.prisma
+type NotificationType =
+  | 'PRODUCT_APPROVED'
+  | 'ARTICLE_PUBLISHED'
+  | 'COMMENT_REPLY'
+  | 'FORUM_REPLY'
+  | 'NEW_FOLLOWER'
+  | 'BADGE_EARNED'
+  | 'PROJECT_INVITE'
+  | 'NEW_MESSAGE'
+  | 'SYSTEM'
 
 interface CreateNotificationParams {
   userId: string
