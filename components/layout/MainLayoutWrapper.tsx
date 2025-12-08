@@ -6,25 +6,38 @@ import { Footer } from '@/components/layout/Footer'
 
 interface MainLayoutWrapperProps {
   children: React.ReactNode
+  skyBackground?: React.ReactNode
+  decorativeBranches?: React.ReactNode
+  aiAssistant?: React.ReactNode
 }
 
-export function MainLayoutWrapper({ children }: MainLayoutWrapperProps) {
+export function MainLayoutWrapper({
+  children,
+  skyBackground,
+  decorativeBranches,
+  aiAssistant
+}: MainLayoutWrapperProps) {
   const pathname = usePathname()
 
-  // Don't show main site header/footer on admin pages
+  // Don't show main site header/footer/decorations on admin pages
   const isAdminRoute = pathname?.startsWith('/admin')
 
   if (isAdminRoute) {
-    // Admin pages have their own layout - just render children
+    // Admin pages - completely clean, no theming decorations
     return <>{children}</>
   }
 
-  // Regular pages get the header and footer
+  // Regular pages get all the bells and whistles
   return (
-    <div className="relative z-10">
-      <Header />
-      {children}
-      <Footer />
-    </div>
+    <>
+      {skyBackground}
+      {decorativeBranches}
+      <div className="relative z-10">
+        <Header />
+        {children}
+        <Footer />
+      </div>
+      {aiAssistant}
+    </>
   )
 }

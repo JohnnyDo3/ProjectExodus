@@ -63,10 +63,10 @@ export default function AdminLayout({
   // Show loading state while checking auth
   if (status === 'loading') {
     return (
-      <div className="min-h-screen bg-[var(--background)] flex items-center justify-center">
+      <div className="min-h-screen bg-slate-100 flex items-center justify-center">
         <div className="text-center">
-          <Loader2 className="w-12 h-12 text-theme-primary mx-auto mb-4 animate-spin" />
-          <p className="text-theme-muted font-medium">Loading admin panel...</p>
+          <Loader2 className="w-12 h-12 text-emerald-600 mx-auto mb-4 animate-spin" />
+          <p className="text-slate-600 font-medium">Loading admin panel...</p>
         </div>
       </div>
     )
@@ -80,7 +80,7 @@ export default function AdminLayout({
 
   return (
     <AdminPusherProvider>
-      <div className="min-h-screen bg-[var(--muted)]">
+      <div className="min-h-screen bg-slate-100">
         {/* Sidebar */}
         <AdminSidebar
           pendingProducts={stats.pendingProducts}

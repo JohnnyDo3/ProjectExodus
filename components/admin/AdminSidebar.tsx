@@ -83,30 +83,30 @@ export function AdminSidebar({
   return (
     <aside
       className={`
-        fixed left-0 top-0 h-full bg-[var(--card)] border-r-2 border-[var(--border)]
+        fixed left-0 top-0 h-full bg-white border-r-2 border-slate-200
         transition-all duration-300 z-[50] flex flex-col
         ${collapsed ? 'w-16' : 'w-64'}
       `}
     >
       {/* Header */}
-      <div className="h-16 flex items-center justify-between px-4 border-b-2 border-[var(--border)]">
+      <div className="h-16 flex items-center justify-between px-4 border-b-2 border-slate-200">
         {!collapsed && (
           <Link href="/admin" className="flex items-center gap-2">
-            <div className="w-8 h-8 rounded-full bg-gradient-to-br from-moss-600 to-ocean-600 flex items-center justify-center">
+            <div className="w-8 h-8 rounded-full bg-gradient-to-br from-emerald-600 to-teal-600 flex items-center justify-center">
               <Leaf className="w-4 h-4 text-white" />
             </div>
-            <span className="font-black text-lg text-[var(--foreground)]">ADMIN</span>
+            <span className="font-black text-lg text-slate-900">ADMIN</span>
           </Link>
         )}
         <button
           onClick={onToggle}
-          className="p-2 rounded-lg hover:bg-[var(--muted)] transition-colors"
+          className="p-2 rounded-lg hover:bg-slate-100 transition-colors"
           title={collapsed ? 'Expand sidebar' : 'Collapse sidebar'}
         >
           {collapsed ? (
-            <PanelLeft className="w-5 h-5 text-[var(--foreground)]" />
+            <PanelLeft className="w-5 h-5 text-slate-700" />
           ) : (
-            <PanelLeftClose className="w-5 h-5 text-[var(--foreground)]" />
+            <PanelLeftClose className="w-5 h-5 text-slate-700" />
           )}
         </button>
       </div>
@@ -129,8 +129,8 @@ export function AdminSidebar({
                       w-full flex items-center gap-3 px-3 py-2.5 rounded-lg font-medium
                       transition-colors
                       ${active
-                        ? 'bg-theme-primary/10 text-theme-primary'
-                        : 'text-[var(--foreground)] hover:bg-[var(--muted)]'
+                        ? 'bg-emerald-50 text-emerald-700'
+                        : 'text-slate-700 hover:bg-slate-100'
                       }
                       ${collapsed ? 'justify-center' : ''}
                     `}
@@ -149,7 +149,7 @@ export function AdminSidebar({
                     )}
                   </button>
                   {!collapsed && isExpanded && item.children && (
-                    <ul className="mt-1 ml-4 pl-4 border-l-2 border-[var(--border)] space-y-1">
+                    <ul className="mt-1 ml-4 pl-4 border-l-2 border-slate-200 space-y-1">
                       {item.children.map((child) => (
                         <li key={child.href}>
                           <Link
@@ -158,8 +158,8 @@ export function AdminSidebar({
                               block px-3 py-2 rounded-lg font-medium text-sm
                               transition-colors
                               ${isActive(child.href)
-                                ? 'bg-theme-primary text-white'
-                                : 'text-[var(--foreground)] hover:bg-[var(--muted)]'
+                                ? 'bg-emerald-600 text-white'
+                                : 'text-slate-700 hover:bg-slate-100'
                               }
                             `}
                           >
@@ -181,8 +181,8 @@ export function AdminSidebar({
                     flex items-center gap-3 px-3 py-2.5 rounded-lg font-medium
                     transition-colors relative
                     ${active
-                      ? 'bg-theme-primary text-white'
-                      : 'text-[var(--foreground)] hover:bg-[var(--muted)]'
+                      ? 'bg-emerald-600 text-white'
+                      : 'text-slate-700 hover:bg-slate-100'
                     }
                     ${collapsed ? 'justify-center' : ''}
                   `}
@@ -213,10 +213,10 @@ export function AdminSidebar({
 
       {/* Footer */}
       {!collapsed && (
-        <div className="p-4 border-t-2 border-[var(--border)]">
+        <div className="p-4 border-t-2 border-slate-200">
           <Link
             href="/"
-            className="flex items-center gap-2 text-sm text-theme-muted hover:text-theme-primary transition-colors"
+            className="flex items-center gap-2 text-sm text-slate-500 hover:text-emerald-600 transition-colors"
           >
             <Leaf className="w-4 h-4" />
             <span>Back to Site</span>

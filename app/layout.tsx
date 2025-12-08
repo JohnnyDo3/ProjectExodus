@@ -131,13 +131,13 @@ export default async function RootLayout({
         <SessionProvider session={session}>
           <TimeThemeProvider>
             <SkyThemeProvider>
-              <SkyBackground />
-              <DecorativeBranches />
-              <MainLayoutWrapper>
+              <MainLayoutWrapper
+                skyBackground={<SkyBackground />}
+                decorativeBranches={<DecorativeBranches />}
+                aiAssistant={<ProjectExodusAI />}
+              >
                 {children}
               </MainLayoutWrapper>
-              {/* AI Assistant - Available on all pages, auto-greets on homepage */}
-              <ProjectExodusAI />
               {/* Toast Notifications */}
               <Toaster
                 position="top-right"
