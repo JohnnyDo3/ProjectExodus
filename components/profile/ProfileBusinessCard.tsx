@@ -2,6 +2,7 @@
 
 import { useState, useEffect, useRef } from 'react'
 import { useSession } from 'next-auth/react'
+import { useRouter } from 'next/navigation'
 import { Card, CardContent } from '@/components/ui/Card'
 import {
   User,
@@ -50,8 +51,8 @@ import {
  * - We the People of Project Exodus -
  */
 
-// Guardian archetypes using theme-aware styling
-// Each archetype maps to semantic theme colors for consistency
+// Guardian archetypes with fixed gradient colors (matching settings page)
+// These colors represent identity and should NOT change with theme
 const GUARDIAN_ARCHETYPES = {
   michael: {
     id: 'michael',
@@ -61,8 +62,12 @@ const GUARDIAN_ARCHETYPES = {
     description: 'You stand unwavering. Your strength protects those who cannot protect themselves.',
     scripture: 'The one who leads the armies of heaven against darkness.',
     icon: Sword,
-    // Maps to secondary (terra) - warm, powerful
-    themeColor: 'secondary',
+    // Red to Orange gradient (from settings)
+    colors: {
+      from: '#dc2626', // red-600
+      to: '#f97316',   // orange-500
+      gradient: 'linear-gradient(135deg, #dc2626 0%, #f97316 100%)',
+    },
     commandments: ['STEWARDSHIP', 'INTEGRITY', 'SUSTAINABILITY'],
   },
   gabriel: {
@@ -73,8 +78,12 @@ const GUARDIAN_ARCHETYPES = {
     description: 'You bring truth to light. Your words reveal what must be known.',
     scripture: 'The messenger who announces what is to come.',
     icon: MessageCircle,
-    // Maps to accent (ocean) - clarity, trust
-    themeColor: 'accent',
+    // Sky to Blue gradient (from settings)
+    colors: {
+      from: '#0ea5e9', // sky-500
+      to: '#2563eb',   // blue-600
+      gradient: 'linear-gradient(135deg, #0ea5e9 0%, #2563eb 100%)',
+    },
     commandments: ['TRANSPARENCY', 'LEGACY', 'EQUITY'],
   },
   raphael: {
@@ -85,8 +94,12 @@ const GUARDIAN_ARCHETYPES = {
     description: 'You mend what is broken. Your presence restores and renews.',
     scripture: 'The healer who makes whole what was wounded.',
     icon: Stethoscope,
-    // Maps to primary (moss) - growth, renewal
-    themeColor: 'primary',
+    // Emerald to Teal gradient (from settings)
+    colors: {
+      from: '#10b981', // emerald-500
+      to: '#0d9488',   // teal-600
+      gradient: 'linear-gradient(135deg, #10b981 0%, #0d9488 100%)',
+    },
     commandments: ['SANCTITY', 'REST', 'BIODIVERSITY'],
   },
   uriel: {
@@ -97,8 +110,12 @@ const GUARDIAN_ARCHETYPES = {
     description: 'You illuminate the path. Your wisdom guides those who seek understanding.',
     scripture: 'The light of God who reveals divine truth.',
     icon: Lightbulb,
-    // Maps to foreground (earth) - grounded, mature
-    themeColor: 'foreground',
+    // Amber to Yellow gradient (from settings)
+    colors: {
+      from: '#f59e0b', // amber-500
+      to: '#eab308',   // yellow-500
+      gradient: 'linear-gradient(135deg, #f59e0b 0%, #eab308 100%)',
+    },
     commandments: ['LEGACY', 'TRANSPARENCY', 'STEWARDSHIP'],
   },
   camael: {
@@ -109,8 +126,12 @@ const GUARDIAN_ARCHETYPES = {
     description: 'You embody compassion. Your love connects all beings as one.',
     scripture: 'The one who sees God through the heart.',
     icon: HeartHandshake,
-    // Maps to secondary (terra) - warm, nurturing
-    themeColor: 'secondary',
+    // Pink to Rose gradient (from settings)
+    colors: {
+      from: '#ec4899', // pink-500
+      to: '#e11d48',   // rose-600
+      gradient: 'linear-gradient(135deg, #ec4899 0%, #e11d48 100%)',
+    },
     commandments: ['LOYALTY', 'EQUITY', 'SANCTITY'],
   },
   jophiel: {
@@ -121,8 +142,12 @@ const GUARDIAN_ARCHETYPES = {
     description: 'You see the divine in all things. Your vision transforms the ordinary into the sacred.',
     scripture: 'The beauty of God who adorns creation.',
     icon: Flower2,
-    // Maps to primary (moss) - natural, organic
-    themeColor: 'primary',
+    // Violet to Purple gradient (from settings)
+    colors: {
+      from: '#8b5cf6', // violet-500
+      to: '#9333ea',   // purple-600
+      gradient: 'linear-gradient(135deg, #8b5cf6 0%, #9333ea 100%)',
+    },
     commandments: ['BIODIVERSITY', 'SUSTAINABILITY', 'REST'],
   },
   zadkiel: {
@@ -133,8 +158,12 @@ const GUARDIAN_ARCHETYPES = {
     description: 'You forgive the unforgivable. Your mercy grants second chances.',
     scripture: 'The righteousness of God who liberates the bound.',
     icon: Scale,
-    // Maps to accent (ocean) - deep, forgiving
-    themeColor: 'accent',
+    // Indigo to Blue gradient (from settings)
+    colors: {
+      from: '#6366f1', // indigo-500
+      to: '#1d4ed8',   // blue-700
+      gradient: 'linear-gradient(135deg, #6366f1 0%, #1d4ed8 100%)',
+    },
     commandments: ['INTEGRITY', 'LOYALTY', 'LEGACY'],
   },
 }
@@ -249,6 +278,7 @@ function GhostField({
 
 export function ProfileBusinessCard({ userId }: ProfileBusinessCardProps) {
   const { data: session } = useSession()
+  const router = useRouter()
   const [isLoading, setIsLoading] = useState(true)
   const [profile, setProfile] = useState<ProfileData | null>(null)
   const [isExpanded, setIsExpanded] = useState(false)
@@ -365,8 +395,9 @@ export function ProfileBusinessCard({ userId }: ProfileBusinessCardProps) {
   const ArchetypeIcon = archetype.icon
   const hasSocialLinks = profile.social.website || profile.social.linkedin || profile.social.twitter
 
-  // Get the theme color CSS variable
-  const themeColorVar = `var(--${archetype.themeColor})`
+  // Use the archetype's fixed gradient colors (not theme-dependent)
+  const archetypeColor = archetype.colors.from
+  const archetypeGradient = archetype.colors.gradient
 
   const stockScore = (profile.projectsCreated || 0) * 10 +
                      (profile.articlesWritten || 0) * 5 +
@@ -378,12 +409,17 @@ export function ProfileBusinessCard({ userId }: ProfileBusinessCardProps) {
     ? Math.floor((Date.now() - new Date(profile.memberSince).getTime()) / (1000 * 60 * 60 * 24 * 365))
     : 0
 
+  // Handle edit button - redirect to settings page
+  const handleEditClick = () => {
+    router.push('/settings#business-card')
+  }
+
   return (
-    <Card className="border-4 overflow-hidden" style={{ borderColor: themeColorVar }}>
-      {/* Sacred Header - uses theme color as background */}
+    <Card className="border-4 overflow-hidden" style={{ borderColor: archetypeColor }}>
+      {/* Sacred Header - uses archetype gradient as background */}
       <div
         className="px-6 py-5 relative overflow-hidden"
-        style={{ backgroundColor: themeColorVar }}
+        style={{ background: archetypeGradient }}
       >
         {/* Dark overlay for text contrast */}
         <div className="absolute inset-0 bg-black/25" />
@@ -410,31 +446,14 @@ export function ProfileBusinessCard({ userId }: ProfileBusinessCardProps) {
           </div>
 
           <div className="flex items-center gap-2">
-            {isOwnProfile && !isEditing && (
+            {isOwnProfile && (
               <button
-                onClick={() => setIsEditing(true)}
+                onClick={handleEditClick}
                 className="p-2.5 bg-black/30 hover:bg-black/40 rounded-xl transition-colors backdrop-blur-sm"
-                title="Edit your declaration"
+                title="Edit in Settings"
               >
                 <Edit2 className="w-5 h-5 text-white" />
               </button>
-            )}
-            {isEditing && (
-              <>
-                <button
-                  onClick={() => { setIsEditing(false); setSelectedArchetype(profile.archetype || 'michael') }}
-                  className="p-2.5 bg-black/30 hover:bg-black/40 rounded-xl transition-colors"
-                >
-                  <X className="w-5 h-5 text-white" />
-                </button>
-                <button
-                  onClick={handleSave}
-                  disabled={isSaving}
-                  className="p-2.5 bg-white/30 hover:bg-white/40 rounded-xl transition-colors"
-                >
-                  <Save className="w-5 h-5 text-white" />
-                </button>
-              </>
             )}
             <button
               onClick={() => {
@@ -457,36 +476,6 @@ export function ProfileBusinessCard({ userId }: ProfileBusinessCardProps) {
           </div>
         </div>
 
-        {/* Guardian Archetype Selector */}
-        {isEditing && (
-          <div className="relative mt-5 pt-5 border-t border-white/30">
-            <p className="text-xs font-black text-white uppercase tracking-wider mb-3 drop-shadow-sm">
-              Choose Your Guardian Value
-            </p>
-            <div className="grid grid-cols-7 gap-2">
-              {Object.values(GUARDIAN_ARCHETYPES).map((a) => {
-                const AIcon = a.icon
-                const isSelected = selectedArchetype === a.id
-                return (
-                  <button
-                    key={a.id}
-                    onClick={() => setSelectedArchetype(a.id as ArchetypeType)}
-                    className={`flex flex-col items-center gap-1 p-3 rounded-xl text-xs font-bold transition-all ${
-                      isSelected
-                        ? 'bg-white shadow-lg scale-105'
-                        : 'bg-black/20 hover:bg-black/30'
-                    }`}
-                    style={{ color: isSelected ? themeColorVar : 'white' }}
-                    title={`${a.name}: ${a.value}`}
-                  >
-                    <AIcon className="w-5 h-5" />
-                    <span className="text-[9px] font-black">{a.value}</span>
-                  </button>
-                )
-              })}
-            </div>
-          </div>
-        )}
       </div>
 
       <CardContent className="p-4">
@@ -495,7 +484,7 @@ export function ProfileBusinessCard({ userId }: ProfileBusinessCardProps) {
           {/* Core Identity */}
           <div
             className="p-5 rounded-2xl relative overflow-hidden"
-            style={{ backgroundColor: themeColorVar }}
+            style={{ background: archetypeGradient }}
           >
             {/* Dark overlay for text contrast */}
             <div className="absolute inset-0 bg-black/25 rounded-2xl" />
@@ -617,15 +606,15 @@ export function ProfileBusinessCard({ userId }: ProfileBusinessCardProps) {
             <div
               className="p-3 rounded-lg border-2"
               style={{
-                borderColor: themeColorVar,
-                backgroundColor: `color-mix(in srgb, ${themeColorVar} 10%, var(--background))`
+                borderColor: archetypeColor,
+                backgroundColor: `color-mix(in srgb, ${archetypeColor} 10%, var(--background))`
               }}
             >
               <div className="flex items-center gap-2 mb-1.5">
-                <ArchetypeIcon className="w-5 h-5 flex-shrink-0" style={{ color: themeColorVar }} />
+                <ArchetypeIcon className="w-5 h-5 flex-shrink-0" style={{ color: archetypeColor }} />
                 <div className="min-w-0">
                   <p className="text-[9px] font-black text-[var(--muted-foreground)] uppercase">I Embody</p>
-                  <p className="text-base font-black truncate" style={{ color: themeColorVar }}>{archetype.value}</p>
+                  <p className="text-base font-black truncate" style={{ color: archetypeColor }}>{archetype.value}</p>
                 </div>
               </div>
               <p className="text-xs font-medium text-[var(--muted-foreground)] italic line-clamp-2">{archetype.description}</p>
@@ -642,7 +631,7 @@ export function ProfileBusinessCard({ userId }: ProfileBusinessCardProps) {
                   <span
                     key={idx}
                     className="px-2 py-1 text-white text-[10px] font-bold rounded-full"
-                    style={{ backgroundColor: themeColorVar }}
+                    style={{ backgroundColor: archetypeColor }}
                   >
                     {value}
                   </span>
@@ -689,19 +678,19 @@ export function ProfileBusinessCard({ userId }: ProfileBusinessCardProps) {
             {/* STOCK Breakdown */}
             <div className="grid grid-cols-2 gap-1.5">
               <div className="p-2 bg-[var(--muted)] rounded-lg">
-                <p className="text-lg font-black" style={{ color: themeColorVar }}>{profile.projectsCreated || 0}</p>
+                <p className="text-lg font-black" style={{ color: archetypeColor }}>{profile.projectsCreated || 0}</p>
                 <p className="text-[8px] font-bold text-[var(--muted-foreground)] uppercase">Projects</p>
               </div>
               <div className="p-2 bg-[var(--muted)] rounded-lg">
-                <p className="text-lg font-black" style={{ color: themeColorVar }}>{profile.articlesWritten || 0}</p>
+                <p className="text-lg font-black" style={{ color: archetypeColor }}>{profile.articlesWritten || 0}</p>
                 <p className="text-[8px] font-bold text-[var(--muted-foreground)] uppercase">Articles</p>
               </div>
               <div className="p-2 bg-[var(--muted)] rounded-lg">
-                <p className="text-lg font-black" style={{ color: themeColorVar }}>{profile.followers || 0}</p>
+                <p className="text-lg font-black" style={{ color: archetypeColor }}>{profile.followers || 0}</p>
                 <p className="text-[8px] font-bold text-[var(--muted-foreground)] uppercase">Followers</p>
               </div>
               <div className="p-2 bg-[var(--muted)] rounded-lg">
-                <p className="text-lg font-black" style={{ color: themeColorVar }}>{profile.modulesCompleted || 0}</p>
+                <p className="text-lg font-black" style={{ color: archetypeColor }}>{profile.modulesCompleted || 0}</p>
                 <p className="text-[8px] font-bold text-[var(--muted-foreground)] uppercase">Modules</p>
               </div>
             </div>
@@ -779,13 +768,13 @@ export function ProfileBusinessCard({ userId }: ProfileBusinessCardProps) {
               {/* Experience */}
               <div>
                 <h4 className="text-sm font-black text-[var(--foreground)] mb-2 flex items-center gap-2">
-                  <Briefcase className="w-4 h-4" style={{ color: themeColorVar }} />
+                  <Briefcase className="w-4 h-4" style={{ color: archetypeColor }} />
                   Experience
                 </h4>
                 {profile.experience.length > 0 ? (
                   <div className="space-y-3">
                     {profile.experience.slice(0, 2).map((exp: any, idx: number) => (
-                      <div key={idx} className="border-l-2 pl-3" style={{ borderColor: themeColorVar }}>
+                      <div key={idx} className="border-l-2 pl-3" style={{ borderColor: archetypeColor }}>
                         <h5 className="text-sm font-black text-[var(--foreground)]">{exp.title}</h5>
                         <p className="text-xs font-bold text-[var(--muted-foreground)]">{exp.company}</p>
                         <p className="text-[10px] font-medium text-[var(--muted-foreground)]">
@@ -808,13 +797,13 @@ export function ProfileBusinessCard({ userId }: ProfileBusinessCardProps) {
               {/* Education */}
               <div>
                 <h4 className="text-sm font-black text-[var(--foreground)] mb-2 flex items-center gap-2">
-                  <GraduationCap className="w-4 h-4" style={{ color: themeColorVar }} />
+                  <GraduationCap className="w-4 h-4" style={{ color: archetypeColor }} />
                   Education
                 </h4>
                 {profile.education.length > 0 ? (
                   <div className="space-y-3">
                     {profile.education.slice(0, 2).map((edu: any, idx: number) => (
-                      <div key={idx} className="border-l-2 pl-3" style={{ borderColor: themeColorVar }}>
+                      <div key={idx} className="border-l-2 pl-3" style={{ borderColor: archetypeColor }}>
                         <h5 className="text-sm font-black text-[var(--foreground)]">{edu.degree}</h5>
                         <p className="text-xs font-bold text-[var(--muted-foreground)]">{edu.school}</p>
                         <p className="text-[10px] font-medium text-[var(--muted-foreground)]">{edu.graduationYear}</p>
@@ -835,7 +824,7 @@ export function ProfileBusinessCard({ userId }: ProfileBusinessCardProps) {
               {/* Achievements */}
               <div>
                 <h4 className="text-sm font-black text-[var(--foreground)] mb-2 flex items-center gap-2">
-                  <Award className="w-4 h-4" style={{ color: themeColorVar }} />
+                  <Award className="w-4 h-4" style={{ color: archetypeColor }} />
                   Achievements
                 </h4>
                 {profile.achievements.length > 0 ? (
@@ -865,7 +854,7 @@ export function ProfileBusinessCard({ userId }: ProfileBusinessCardProps) {
                   href={profile.resumeUrl}
                   download={profile.resumeFileName || 'resume.pdf'}
                   className="inline-flex items-center gap-2 px-4 py-2 text-white rounded-lg hover:opacity-90 transition-opacity text-sm font-bold"
-                  style={{ backgroundColor: themeColorVar }}
+                  style={{ backgroundColor: archetypeColor }}
                 >
                   <Download className="w-4 h-4" />
                   Download Resume
@@ -887,11 +876,11 @@ export function ProfileBusinessCard({ userId }: ProfileBusinessCardProps) {
               "{archetype.scripture}"
             </p>
             <div className="flex items-center justify-center gap-2 mt-3">
-              <div className="w-2 h-2 rounded-full" style={{ backgroundColor: themeColorVar }} />
+              <div className="w-2 h-2 rounded-full" style={{ backgroundColor: archetypeColor }} />
               <p className="text-[10px] font-black text-[var(--muted-foreground)] uppercase tracking-widest">
                 We the People of Project Exodus
               </p>
-              <div className="w-2 h-2 rounded-full" style={{ backgroundColor: themeColorVar }} />
+              <div className="w-2 h-2 rounded-full" style={{ backgroundColor: archetypeColor }} />
             </div>
           </div>
         </div>

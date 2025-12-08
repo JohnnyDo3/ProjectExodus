@@ -39,6 +39,7 @@ export default function ProjectPage({ params }: { params: Promise<{ slug: string
   const [isLoading, setIsLoading] = useState(true)
   const [isSending, setIsSending] = useState(false)
   const messagesEndRef = useRef<HTMLDivElement>(null)
+  const [hasInteractedWithChat, setHasInteractedWithChat] = useState(false)
 
   // Edit mode state
   const [isEditing, setIsEditing] = useState(false)
@@ -72,8 +73,11 @@ export default function ProjectPage({ params }: { params: Promise<{ slug: string
   }, [project?.id])
 
   useEffect(() => {
-    scrollToBottom()
-  }, [messages])
+    // Only auto-scroll if user has interacted with the chat
+    if (hasInteractedWithChat) {
+      scrollToBottom()
+    }
+  }, [messages, hasInteractedWithChat])
 
   // Check for edit mode from URL and initialize edit values
   useEffect(() => {
@@ -197,6 +201,7 @@ export default function ProjectPage({ params }: { params: Promise<{ slug: string
     e.preventDefault()
     if (!newMessage.trim() || isSending) return
 
+    setHasInteractedWithChat(true)
     setIsSending(true)
     try {
       const res = await fetch(`/api/projects/${project.id}/messages`, {
@@ -623,6 +628,7 @@ export default function ProjectPage({ params }: { params: Promise<{ slug: string
                       type="text"
                       value={newMessage}
                       onChange={(e) => setNewMessage(e.target.value)}
+                      onFocus={() => setHasInteractedWithChat(true)}
                       placeholder="Type your message..."
                       disabled={isSending}
                       className="flex-1 px-4 py-3 rounded-lg border-2 border-[var(--border)] bg-[var(--background)] text-[var(--foreground)] font-semibold focus:border-theme-primary focus:outline-none transition-colors disabled:opacity-50"
