@@ -285,7 +285,9 @@ export function ProfileBusinessCard({ userId }: ProfileBusinessCardProps) {
   const [isExpanded, setIsExpanded] = useState(false)
   const [isEditing, setIsEditing] = useState(false)
   const [isEditModalOpen, setIsEditModalOpen] = useState(false)
+  const [showArchetypeSelector, setShowArchetypeSelector] = useState(false)
   const [selectedArchetype, setSelectedArchetype] = useState<ArchetypeType>('michael')
+  const [editingField, setEditingField] = useState<string | null>(null)
   const [editedProfile, setEditedProfile] = useState<Partial<ProfileData>>({})
   const [isSaving, setIsSaving] = useState(false)
   const expandedSectionRef = useRef<HTMLDivElement>(null)
@@ -424,14 +426,30 @@ export function ProfileBusinessCard({ userId }: ProfileBusinessCardProps) {
         method: 'PUT',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
-          ...editedProfile,
+          name: editedProfile.name,
+          headline: editedProfile.headline,
+          location: editedProfile.location,
+          declaration: editedProfile.declaration,
           guardianArchetype: selectedArchetype,
+          website: editedProfile.social?.website,
+          linkedin: editedProfile.social?.linkedin,
+          twitter: editedProfile.social?.twitter,
         }),
       })
 
       if (res.ok) {
-        setProfile(prev => prev ? { ...prev, ...editedProfile, archetype: selectedArchetype } : null)
+        setProfile(prev => prev ? {
+          ...prev,
+          ...editedProfile,
+          archetype: selectedArchetype,
+          social: {
+            ...prev.social,
+            ...editedProfile.social,
+          }
+        } : null)
         setIsEditModalOpen(false)
+        setShowArchetypeSelector(false)
+        setEditingField(null)
       }
     } catch (error) {
       console.error('Error saving profile:', error)
@@ -440,237 +458,380 @@ export function ProfileBusinessCard({ userId }: ProfileBusinessCardProps) {
     }
   }
 
-  // Edit Modal Component
+  // Editable Field Component - WYSIWYG inline editing with full hover feedback
+  const EditableField = ({
+    fieldId,
+    value,
+    placeholder,
+    onChange,
+    type = 'text',
+    className = '',
+    textClassName = '',
+    maxLength,
+  }: {
+    fieldId: string
+    value: string
+    placeholder: string
+    onChange: (value: string) => void
+    type?: 'text' | 'textarea'
+    className?: string
+    textClassName?: string
+    maxLength?: number
+  }) => {
+    const isCurrentlyEditing = editingField === fieldId
+    const isEmpty = !value || value.trim() === ''
+
+    // Ghost placeholder state (empty, not editing)
+    if (isEmpty && !isCurrentlyEditing) {
+      return (
+        <div
+          onClick={() => setEditingField(fieldId)}
+          className={`group cursor-pointer relative ${className}`}
+        >
+          <span className="opacity-40 italic border-b border-dashed border-current flex items-center gap-1.5 hover:opacity-60 transition-opacity">
+            {placeholder}
+            <Edit2 className="w-3 h-3 opacity-0 group-hover:opacity-100 transition-opacity" />
+          </span>
+        </div>
+      )
+    }
+
+    // Editing state
+    if (isCurrentlyEditing) {
+      if (type === 'textarea') {
+        return (
+          <div className={className}>
+            <textarea
+              autoFocus
+              value={value}
+              onChange={(e) => onChange(e.target.value)}
+              onBlur={() => setEditingField(null)}
+              onKeyDown={(e) => e.key === 'Escape' && setEditingField(null)}
+              className={`w-full bg-black/20 backdrop-blur-sm rounded-lg px-3 py-2 border-2 border-white/50 focus:border-white outline-none resize-none ${textClassName}`}
+              placeholder={placeholder}
+              rows={3}
+              maxLength={maxLength}
+            />
+            {maxLength && (
+              <p className="text-[10px] text-white/60 text-right mt-1">{value.length}/{maxLength}</p>
+            )}
+          </div>
+        )
+      }
+      return (
+        <input
+          autoFocus
+          type="text"
+          value={value}
+          onChange={(e) => onChange(e.target.value)}
+          onBlur={() => setEditingField(null)}
+          onKeyDown={(e) => {
+            if (e.key === 'Enter' || e.key === 'Escape') setEditingField(null)
+          }}
+          className={`bg-black/20 backdrop-blur-sm rounded-lg px-3 py-1 border-2 border-white/50 focus:border-white outline-none w-full ${textClassName}`}
+          placeholder={placeholder}
+          maxLength={maxLength}
+        />
+      )
+    }
+
+    // Display state with hover feedback
+    return (
+      <div
+        onClick={() => setEditingField(fieldId)}
+        className={`group cursor-pointer relative rounded-lg px-2 py-1 -mx-2 -my-1 hover:bg-white/10 transition-all border border-transparent hover:border-dashed hover:border-white/30 ${className}`}
+      >
+        <span className={textClassName}>{value}</span>
+        <Edit2 className="w-3 h-3 absolute right-2 top-1/2 -translate-y-1/2 opacity-0 group-hover:opacity-100 transition-opacity text-white/70" />
+      </div>
+    )
+  }
+
+  // Edit Modal Component - WYSIWYG style
   const EditModal = () => {
     if (!isEditModalOpen) return null
+
+    const currentArchetype = GUARDIAN_ARCHETYPES[selectedArchetype]
+    const CurrentArchetypeIcon = currentArchetype.icon
 
     return (
       <>
         {/* Backdrop */}
         <div
-          className="fixed inset-0 bg-black/60 backdrop-blur-sm z-[200]"
-          onClick={() => setIsEditModalOpen(false)}
+          className="fixed inset-0 bg-black/60 backdrop-blur-sm z-[300]"
+          onClick={() => {
+            setIsEditModalOpen(false)
+            setShowArchetypeSelector(false)
+            setEditingField(null)
+          }}
         />
 
-        {/* Modal */}
-        <div className="fixed inset-4 md:inset-8 lg:inset-12 bg-[var(--card)] rounded-2xl shadow-2xl z-[201] overflow-hidden flex flex-col">
-          {/* Modal Header */}
-          <div
-            className="px-6 py-4 flex items-center justify-between border-b-4"
-            style={{
-              background: archetype.colors.gradient,
-              borderColor: archetypeColor,
-            }}
-          >
-            <div className="flex items-center gap-3">
-              <div className="p-2 bg-black/20 rounded-xl">
-                <Edit2 className="w-6 h-6 text-white" />
-              </div>
-              <div>
-                <h2 className="text-xl font-black text-white">EDIT BUSINESS CARD</h2>
-                <p className="text-sm text-white/80">Customize your digital identity</p>
-              </div>
-            </div>
-            <button
-              onClick={() => setIsEditModalOpen(false)}
-              className="p-2 bg-black/20 hover:bg-black/30 rounded-xl transition-colors"
+        {/* Modal Container */}
+        <div className="fixed inset-4 md:inset-8 lg:inset-16 z-[301] flex items-center justify-center">
+          {/* The Card itself - WYSIWYG */}
+          <div className="bg-[var(--card)] rounded-2xl shadow-2xl max-w-xl w-full max-h-[90vh] overflow-hidden flex flex-col border-4" style={{ borderColor: currentArchetype.colors.from }}>
+
+            {/* Card Header - Gradient with editable content */}
+            <div
+              className="px-6 py-5 relative overflow-hidden"
+              style={{ background: currentArchetype.colors.gradient }}
             >
-              <X className="w-6 h-6 text-white" />
-            </button>
-          </div>
+              {/* Dark overlay for text contrast */}
+              <div className="absolute inset-0 bg-black/25" />
 
-          {/* Modal Content - Scrollable */}
-          <div className="flex-1 overflow-y-auto p-6">
-            <div className="max-w-4xl mx-auto space-y-8">
-              {/* Guardian Archetype Selection */}
-              <div className="space-y-4">
-                <h3 className="text-lg font-black text-[var(--foreground)] flex items-center gap-2">
-                  <Shield className="w-5 h-5" style={{ color: archetypeColor }} />
-                  SELECT YOUR GUARDIAN ARCHETYPE
-                </h3>
-                <p className="text-sm text-[var(--muted-foreground)]">
-                  Choose the archetype that best represents your values and how you contribute to Project Exodus
-                </p>
-                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-3">
-                  {Object.entries(GUARDIAN_ARCHETYPES).map(([key, arch]) => {
-                    const Icon = arch.icon
-                    const isSelected = selectedArchetype === key
-                    return (
-                      <button
-                        key={key}
-                        type="button"
-                        onClick={() => setSelectedArchetype(key as ArchetypeType)}
-                        className={`p-4 rounded-xl border-2 transition-all text-left ${
-                          isSelected
-                            ? 'border-transparent text-white shadow-lg scale-[1.02]'
-                            : 'border-[var(--border)] bg-[var(--card)] hover:border-[var(--primary)]'
-                        }`}
-                        style={isSelected ? { background: arch.colors.gradient } : {}}
-                      >
-                        <div className="flex items-center gap-3 mb-2">
-                          <div
-                            className="w-10 h-10 rounded-lg flex items-center justify-center"
-                            style={{
-                              background: isSelected ? 'rgba(255,255,255,0.2)' : arch.colors.gradient
-                            }}
-                          >
-                            <Icon className="w-5 h-5 text-white" />
-                          </div>
-                          <div>
-                            <p className={`text-xs font-black ${isSelected ? 'text-white/80' : 'text-[var(--muted-foreground)]'}`}>
-                              {arch.title}
-                            </p>
-                            <p className={`text-sm font-bold ${isSelected ? 'text-white' : 'text-[var(--foreground)]'}`}>
-                              {arch.name}
-                            </p>
-                          </div>
-                        </div>
-                        <p className={`text-xs line-clamp-2 ${isSelected ? 'text-white/80' : 'text-[var(--muted-foreground)]'}`}>
-                          {arch.description}
-                        </p>
-                      </button>
-                    )
-                  })}
-                </div>
+              {/* Background pattern */}
+              <div className="absolute inset-0 opacity-10">
+                <div className="absolute top-0 right-0 w-64 h-64 bg-white rounded-full blur-3xl transform translate-x-1/2 -translate-y-1/2" />
               </div>
 
-              {/* Personal Info Section */}
-              <div className="grid md:grid-cols-2 gap-6">
-                {/* Left Column - Basic Info */}
-                <div className="space-y-4">
-                  <h3 className="text-lg font-black text-[var(--foreground)] flex items-center gap-2">
-                    <User className="w-5 h-5" style={{ color: archetypeColor }} />
-                    PERSONAL INFORMATION
-                  </h3>
+              <div className="relative">
+                {/* Close button */}
+                <button
+                  onClick={() => {
+                    setIsEditModalOpen(false)
+                    setShowArchetypeSelector(false)
+                    setEditingField(null)
+                  }}
+                  className="absolute top-0 right-0 p-2 bg-black/30 hover:bg-black/40 rounded-xl transition-colors"
+                >
+                  <X className="w-5 h-5 text-white" />
+                </button>
 
-                  <div>
-                    <label className="block text-sm font-bold text-[var(--foreground)] mb-2">
-                      FULL NAME
-                    </label>
-                    <input
-                      type="text"
-                      value={editedProfile.name || ''}
-                      onChange={(e) => setEditedProfile(prev => ({ ...prev, name: e.target.value }))}
-                      className="w-full px-4 py-3 rounded-lg bg-[var(--background)] border-2 border-[var(--border)] text-[var(--foreground)] placeholder:text-[var(--muted-foreground)] focus:outline-none focus:border-[var(--primary)] transition-colors font-medium"
-                      placeholder="Your Name"
-                    />
+                {/* Archetype Icon - clickable to change */}
+                <div className="flex items-start gap-4 mb-4">
+                  <div className="relative">
+                    <button
+                      onClick={() => setShowArchetypeSelector(!showArchetypeSelector)}
+                      className="p-3 bg-black/30 rounded-2xl backdrop-blur-sm border border-white/30 shadow-lg hover:bg-black/40 transition-colors group"
+                      title="Click to change archetype"
+                    >
+                      <CurrentArchetypeIcon className="w-8 h-8 text-white drop-shadow-md" />
+                      <Edit2 className="w-3 h-3 absolute -bottom-1 -right-1 bg-white text-gray-800 rounded-full p-0.5 opacity-0 group-hover:opacity-100 transition-opacity" />
+                    </button>
+
+                    {/* Archetype Selector Popover */}
+                    {showArchetypeSelector && (
+                      <div className="absolute top-full left-0 mt-2 bg-[var(--card)] rounded-xl shadow-2xl border-2 border-[var(--border)] p-3 z-10 w-[280px]">
+                        <p className="text-xs font-bold text-[var(--muted-foreground)] mb-2 px-1">SELECT ARCHETYPE</p>
+                        <div className="grid grid-cols-2 gap-2">
+                          {Object.entries(GUARDIAN_ARCHETYPES).map(([key, arch]) => {
+                            const Icon = arch.icon
+                            const isSelected = selectedArchetype === key
+                            return (
+                              <button
+                                key={key}
+                                onClick={() => {
+                                  setSelectedArchetype(key as ArchetypeType)
+                                  setShowArchetypeSelector(false)
+                                }}
+                                className={`p-2 rounded-lg border-2 transition-all text-left flex items-center gap-2 ${
+                                  isSelected
+                                    ? 'border-transparent text-white'
+                                    : 'border-[var(--border)] bg-[var(--background)] hover:border-[var(--primary)]'
+                                }`}
+                                style={isSelected ? { background: arch.colors.gradient } : {}}
+                              >
+                                <div
+                                  className="w-8 h-8 rounded-lg flex items-center justify-center flex-shrink-0"
+                                  style={{ background: isSelected ? 'rgba(255,255,255,0.2)' : arch.colors.gradient }}
+                                >
+                                  <Icon className="w-4 h-4 text-white" />
+                                </div>
+                                <div className="min-w-0">
+                                  <p className={`text-[10px] font-bold truncate ${isSelected ? 'text-white/80' : 'text-[var(--muted-foreground)]'}`}>
+                                    {arch.title}
+                                  </p>
+                                  <p className={`text-xs font-black truncate ${isSelected ? 'text-white' : 'text-[var(--foreground)]'}`}>
+                                    {arch.name}
+                                  </p>
+                                </div>
+                              </button>
+                            )
+                          })}
+                        </div>
+                      </div>
+                    )}
                   </div>
 
-                  <div>
-                    <label className="block text-sm font-bold text-[var(--foreground)] mb-2">
-                      HEADLINE / ROLE
-                    </label>
-                    <input
-                      type="text"
-                      value={editedProfile.headline || ''}
-                      onChange={(e) => setEditedProfile(prev => ({ ...prev, headline: e.target.value }))}
-                      className="w-full px-4 py-3 rounded-lg bg-[var(--background)] border-2 border-[var(--border)] text-[var(--foreground)] placeholder:text-[var(--muted-foreground)] focus:outline-none focus:border-[var(--primary)] transition-colors font-medium"
-                      placeholder="Sustainability Consultant | Renewable Energy Expert"
-                    />
-                  </div>
-
-                  <div>
-                    <label className="block text-sm font-bold text-[var(--foreground)] mb-2">
-                      LOCATION
-                    </label>
-                    <div className="relative">
-                      <MapPin className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-[var(--muted-foreground)]" />
-                      <input
-                        type="text"
-                        value={editedProfile.location || ''}
-                        onChange={(e) => setEditedProfile(prev => ({ ...prev, location: e.target.value }))}
-                        className="w-full pl-10 pr-4 py-3 rounded-lg bg-[var(--background)] border-2 border-[var(--border)] text-[var(--foreground)] placeholder:text-[var(--muted-foreground)] focus:outline-none focus:border-[var(--primary)] transition-colors font-medium"
-                        placeholder="San Francisco, CA"
-                      />
+                  <div className="flex-1 min-w-0 text-white">
+                    <div className="flex items-center gap-2 mb-1">
+                      <Crown className="w-3.5 h-3.5 text-white/70" />
+                      <p className="text-[10px] font-bold uppercase tracking-wider text-white/70">{currentArchetype.title}</p>
                     </div>
+
+                    {/* Editable Name */}
+                    <EditableField
+                      fieldId="name"
+                      value={editedProfile.name || ''}
+                      placeholder="Your Name"
+                      onChange={(v) => setEditedProfile(prev => ({ ...prev, name: v }))}
+                      textClassName="text-2xl font-black drop-shadow-md"
+                    />
+
+                    {/* Editable Headline */}
+                    <EditableField
+                      fieldId="headline"
+                      value={editedProfile.headline || ''}
+                      placeholder="Your role or title"
+                      onChange={(v) => setEditedProfile(prev => ({ ...prev, headline: v }))}
+                      textClassName="text-sm font-medium text-white/90"
+                      className="mt-1"
+                    />
                   </div>
                 </div>
 
-                {/* Right Column - Declaration */}
-                <div className="space-y-4">
-                  <h3 className="text-lg font-black text-[var(--foreground)] flex items-center gap-2">
-                    <Heart className="w-5 h-5" style={{ color: archetypeColor }} />
-                    YOUR PERSONAL DECLARATION
-                  </h3>
-                  <p className="text-sm text-[var(--muted-foreground)]">
-                    Write a personal statement that defines who you are and what you stand for
-                  </p>
-                  <textarea
+                {/* Editable Declaration */}
+                <div className="p-3 bg-black/20 rounded-lg backdrop-blur-sm border border-white/20">
+                  <div className="flex items-center gap-2 mb-1.5">
+                    <ScrollText className="w-3.5 h-3.5 text-white/70" />
+                    <p className="text-[9px] font-black uppercase text-white/70 tracking-wider">My Declaration</p>
+                  </div>
+                  <EditableField
+                    fieldId="declaration"
                     value={editedProfile.declaration || ''}
-                    onChange={(e) => setEditedProfile(prev => ({ ...prev, declaration: e.target.value }))}
-                    placeholder="I believe in creating a sustainable future where..."
-                    className="w-full px-4 py-3 bg-[var(--background)] border-2 border-[var(--border)] rounded-xl text-[var(--foreground)] font-medium focus:outline-none focus:border-[var(--primary)] resize-none"
-                    rows={5}
+                    placeholder="What truth do you carry? What do you stand for?"
+                    onChange={(v) => setEditedProfile(prev => ({ ...prev, declaration: v }))}
+                    type="textarea"
+                    textClassName="text-sm font-medium italic text-white"
                     maxLength={280}
                   />
-                  <p className="text-xs text-[var(--muted-foreground)] text-right">
-                    {(editedProfile.declaration || '').length}/280 characters
-                  </p>
                 </div>
-              </div>
 
-              {/* Preview Card */}
-              <div className="space-y-4">
-                <h3 className="text-lg font-black text-[var(--foreground)]">LIVE PREVIEW</h3>
-                <div
-                  className="p-6 rounded-2xl border-2 border-transparent text-white max-w-md"
-                  style={{ background: GUARDIAN_ARCHETYPES[selectedArchetype].colors.gradient }}
-                >
-                  <div className="flex items-start gap-4">
-                    <div className="w-16 h-16 rounded-xl bg-white/20 flex items-center justify-center">
-                      {(() => {
-                        const Icon = GUARDIAN_ARCHETYPES[selectedArchetype].icon
-                        return <Icon className="w-8 h-8 text-white" />
-                      })()}
-                    </div>
-                    <div className="flex-1">
-                      <p className="text-xs font-bold opacity-80">
-                        {GUARDIAN_ARCHETYPES[selectedArchetype].title}
-                      </p>
-                      <h4 className="text-xl font-black">{editedProfile.name || 'Your Name'}</h4>
-                      <p className="text-sm opacity-80">{editedProfile.headline || 'Your headline'}</p>
-                    </div>
+                {/* Contact Info */}
+                <div className="mt-4 space-y-2 text-white text-xs">
+                  <div className="flex items-center gap-2">
+                    <MapPin className="w-3.5 h-3.5 text-white/75 flex-shrink-0" />
+                    <EditableField
+                      fieldId="location"
+                      value={editedProfile.location || ''}
+                      placeholder="Add your location"
+                      onChange={(v) => setEditedProfile(prev => ({ ...prev, location: v }))}
+                      textClassName="text-xs"
+                    />
                   </div>
-                  {editedProfile.declaration && (
-                    <p className="mt-4 text-sm italic opacity-90 border-t border-white/20 pt-4">
-                      "{editedProfile.declaration}"
-                    </p>
+
+                  {profile?.email && (
+                    <div className="flex items-center gap-2 opacity-75">
+                      <Mail className="w-3.5 h-3.5 flex-shrink-0" />
+                      <span className="truncate">{profile.email}</span>
+                    </div>
                   )}
-                  <div className="mt-4 flex flex-wrap gap-3 text-xs">
-                    {editedProfile.location && (
-                      <span className="flex items-center gap-1 opacity-80">
-                        <MapPin className="w-3 h-3" /> {editedProfile.location}
-                      </span>
-                    )}
-                    {profile?.email && (
-                      <span className="flex items-center gap-1 opacity-80">
-                        <Mail className="w-3 h-3" /> {profile.email}
-                      </span>
-                    )}
-                  </div>
                 </div>
               </div>
             </div>
-          </div>
 
-          {/* Modal Footer */}
-          <div className="px-6 py-4 border-t-2 border-[var(--border)] bg-[var(--muted)] flex items-center justify-end gap-3">
-            <Button
-              variant="outline"
-              onClick={() => setIsEditModalOpen(false)}
-              className="font-bold"
-            >
-              CANCEL
-            </Button>
-            <Button
-              onClick={handleModalSave}
-              disabled={isSaving}
-              className="font-black"
-              style={{ backgroundColor: archetypeColor }}
-            >
-              <Save className="w-4 h-4 mr-2" />
-              {isSaving ? 'SAVING...' : 'SAVE CHANGES'}
-            </Button>
+            {/* Card Body - Social Links */}
+            <div className="p-4 bg-[var(--card)] space-y-3">
+              <p className="text-xs font-bold text-[var(--muted-foreground)] uppercase tracking-wide">Social Links</p>
+              <div className="flex flex-wrap gap-2">
+                {/* Website */}
+                <div className="flex items-center gap-2 px-3 py-2 bg-[var(--muted)] rounded-lg group hover:bg-[var(--primary)] hover:text-[var(--primary-foreground)] transition-colors cursor-pointer min-w-[140px]"
+                     onClick={() => setEditingField('website')}>
+                  <Globe className="w-4 h-4 flex-shrink-0" />
+                  {editingField === 'website' ? (
+                    <input
+                      autoFocus
+                      type="text"
+                      value={editedProfile.social?.website || ''}
+                      onChange={(e) => setEditedProfile(prev => ({
+                        ...prev,
+                        social: { ...prev.social, website: e.target.value }
+                      }))}
+                      onBlur={() => setEditingField(null)}
+                      onKeyDown={(e) => { if (e.key === 'Enter' || e.key === 'Escape') setEditingField(null) }}
+                      className="bg-transparent border-b border-current outline-none flex-1 text-xs font-medium"
+                      placeholder="yourwebsite.com"
+                    />
+                  ) : (
+                    <span className="text-xs font-medium truncate">
+                      {editedProfile.social?.website || <span className="opacity-50 italic">Add website</span>}
+                    </span>
+                  )}
+                  <Edit2 className="w-3 h-3 opacity-0 group-hover:opacity-100 transition-opacity flex-shrink-0" />
+                </div>
+
+                {/* LinkedIn */}
+                <div className="flex items-center gap-2 px-3 py-2 bg-[var(--muted)] rounded-lg group hover:bg-[var(--accent)] hover:text-[var(--accent-foreground)] transition-colors cursor-pointer min-w-[140px]"
+                     onClick={() => setEditingField('linkedin')}>
+                  <Linkedin className="w-4 h-4 flex-shrink-0" />
+                  {editingField === 'linkedin' ? (
+                    <input
+                      autoFocus
+                      type="text"
+                      value={editedProfile.social?.linkedin || ''}
+                      onChange={(e) => setEditedProfile(prev => ({
+                        ...prev,
+                        social: { ...prev.social, linkedin: e.target.value }
+                      }))}
+                      onBlur={() => setEditingField(null)}
+                      onKeyDown={(e) => { if (e.key === 'Enter' || e.key === 'Escape') setEditingField(null) }}
+                      className="bg-transparent border-b border-current outline-none flex-1 text-xs font-medium"
+                      placeholder="linkedin.com/in/you"
+                    />
+                  ) : (
+                    <span className="text-xs font-medium truncate">
+                      {editedProfile.social?.linkedin || <span className="opacity-50 italic">Add LinkedIn</span>}
+                    </span>
+                  )}
+                  <Edit2 className="w-3 h-3 opacity-0 group-hover:opacity-100 transition-opacity flex-shrink-0" />
+                </div>
+
+                {/* Twitter/X */}
+                <div className="flex items-center gap-2 px-3 py-2 bg-[var(--muted)] rounded-lg group hover:bg-[var(--accent)] hover:text-[var(--accent-foreground)] transition-colors cursor-pointer min-w-[140px]"
+                     onClick={() => setEditingField('twitter')}>
+                  <Twitter className="w-4 h-4 flex-shrink-0" />
+                  {editingField === 'twitter' ? (
+                    <input
+                      autoFocus
+                      type="text"
+                      value={editedProfile.social?.twitter || ''}
+                      onChange={(e) => setEditedProfile(prev => ({
+                        ...prev,
+                        social: { ...prev.social, twitter: e.target.value }
+                      }))}
+                      onBlur={() => setEditingField(null)}
+                      onKeyDown={(e) => { if (e.key === 'Enter' || e.key === 'Escape') setEditingField(null) }}
+                      className="bg-transparent border-b border-current outline-none flex-1 text-xs font-medium"
+                      placeholder="@yourhandle"
+                    />
+                  ) : (
+                    <span className="text-xs font-medium truncate">
+                      {editedProfile.social?.twitter || <span className="opacity-50 italic">Add X/Twitter</span>}
+                    </span>
+                  )}
+                  <Edit2 className="w-3 h-3 opacity-0 group-hover:opacity-100 transition-opacity flex-shrink-0" />
+                </div>
+              </div>
+            </div>
+
+            {/* Modal Footer */}
+            <div className="px-4 py-3 border-t-2 border-[var(--border)] bg-[var(--muted)] flex items-center justify-between">
+              <p className="text-xs text-[var(--muted-foreground)]">Click any field to edit</p>
+              <div className="flex items-center gap-2">
+                <Button
+                  variant="outline"
+                  size="sm"
+                  onClick={() => {
+                    setIsEditModalOpen(false)
+                    setShowArchetypeSelector(false)
+                    setEditingField(null)
+                  }}
+                  className="font-bold"
+                >
+                  Cancel
+                </Button>
+                <Button
+                  size="sm"
+                  onClick={handleModalSave}
+                  disabled={isSaving}
+                  className="font-black"
+                  style={{ backgroundColor: currentArchetype.colors.from }}
+                >
+                  <Save className="w-4 h-4 mr-1" />
+                  {isSaving ? 'Saving...' : 'Save'}
+                </Button>
+              </div>
+            </div>
           </div>
         </div>
       </>
