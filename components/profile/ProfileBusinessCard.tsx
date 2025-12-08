@@ -38,8 +38,26 @@ import {
   Heart,
   Phone,
   Eye,
+  EyeOff,
   Settings,
 } from 'lucide-react'
+import { ExperienceEditModal, EducationEditModal, SkillsEditModal } from './modals'
+import type { Experience, Education } from './modals'
+
+// Field visibility preferences interface
+interface FieldVisibility {
+  showHeadline: boolean
+  showBio: boolean
+  showLocation: boolean
+  showPhone: boolean
+  showEmail: boolean
+  showDeclaration: boolean
+  showExperience: boolean
+  showEducation: boolean
+  showSkills: boolean
+  showInterests: boolean
+  showSocialLinks: boolean
+}
 
 // Confirmation Dialog for unsaved changes
 function UnsavedChangesDialog({
@@ -340,6 +358,21 @@ function GhostField({
   )
 }
 
+// Default visibility - all fields visible by default
+const defaultVisibility: FieldVisibility = {
+  showHeadline: true,
+  showBio: true,
+  showLocation: true,
+  showPhone: true,
+  showEmail: true,
+  showDeclaration: true,
+  showExperience: true,
+  showEducation: true,
+  showSkills: true,
+  showInterests: true,
+  showSocialLinks: true,
+}
+
 export function ProfileBusinessCard({ userId, onClose, onSave: onSaveCallback, isFullView }: ProfileBusinessCardProps) {
   const { data: session } = useSession()
   const [isLoading, setIsLoading] = useState(true)
@@ -359,6 +392,14 @@ export function ProfileBusinessCard({ userId, onClose, onSave: onSaveCallback, i
   const [isSaving, setIsSaving] = useState(false)
   const [showUnsavedDialog, setShowUnsavedDialog] = useState(false)
   const expandedSectionRef = useRef<HTMLDivElement>(null)
+
+  // Field visibility state
+  const [fieldVisibility, setFieldVisibility] = useState<FieldVisibility>(defaultVisibility)
+
+  // Modal states for editing complex fields
+  const [showExperienceModal, setShowExperienceModal] = useState(false)
+  const [showEducationModal, setShowEducationModal] = useState(false)
+  const [showSkillsModal, setShowSkillsModal] = useState(false)
 
   const isOwnProfile = session?.user?.id === userId
 
@@ -432,6 +473,14 @@ export function ProfileBusinessCard({ userId, onClose, onSave: onSaveCallback, i
             setSavedProfile(profileData)
             setSelectedArchetype(profileData.archetype || 'michael')
             setSavedArchetype(profileData.archetype || 'michael')
+
+            // Load privacy/visibility settings
+            if (data.data.privacySettings) {
+              setFieldVisibility({
+                ...defaultVisibility,
+                ...data.data.privacySettings,
+              })
+            }
           }
         }
 
@@ -585,6 +634,108 @@ export function ProfileBusinessCard({ userId, onClose, onSave: onSaveCallback, i
     } finally {
       setIsSaving(false)
     }
+  }
+
+  // Toggle visibility for a specific field
+  const toggleFieldVisibility = async (field: keyof FieldVisibility) => {
+    const newVisibility = {
+      ...fieldVisibility,
+      [field]: !fieldVisibility[field],
+    }
+    setFieldVisibility(newVisibility)
+
+    // Save to server
+    try {
+      await fetch('/api/profile/update', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ privacySettings: newVisibility }),
+      })
+    } catch (error) {
+      console.error('Error saving visibility:', error)
+      // Revert on error
+      setFieldVisibility(fieldVisibility)
+    }
+  }
+
+  // Save experience from modal
+  const handleExperienceSave = async (experiences: Experience[]) => {
+    try {
+      const res = await fetch(`/api/users/${userId}`, {
+        method: 'PATCH',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ experience: experiences }),
+      })
+
+      if (res.ok) {
+        setProfile(prev => prev ? { ...prev, experience: experiences } : null)
+        setEditedProfile(prev => ({ ...prev, experience: experiences }))
+      }
+    } catch (error) {
+      console.error('Error saving experience:', error)
+      throw error
+    }
+  }
+
+  // Save education from modal
+  const handleEducationSave = async (education: Education[]) => {
+    try {
+      const res = await fetch(`/api/users/${userId}`, {
+        method: 'PATCH',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ education }),
+      })
+
+      if (res.ok) {
+        setProfile(prev => prev ? { ...prev, education } : null)
+        setEditedProfile(prev => ({ ...prev, education }))
+      }
+    } catch (error) {
+      console.error('Error saving education:', error)
+      throw error
+    }
+  }
+
+  // Save skills and interests from modal
+  const handleSkillsSave = async (skills: string[], interests: string[]) => {
+    try {
+      const res = await fetch(`/api/users/${userId}`, {
+        method: 'PATCH',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ expertise: skills, interests }),
+      })
+
+      if (res.ok) {
+        setProfile(prev => prev ? { ...prev, skills, interests } : null)
+        setEditedProfile(prev => ({ ...prev, skills, interests }))
+      }
+    } catch (error) {
+      console.error('Error saving skills:', error)
+      throw error
+    }
+  }
+
+  // Visibility Toggle Button Component
+  const VisibilityToggle = ({ field, className = '' }: { field: keyof FieldVisibility; className?: string }) => {
+    if (!isOwnProfile) return null
+
+    const isVisible = fieldVisibility[field]
+    return (
+      <button
+        onClick={(e) => {
+          e.stopPropagation()
+          toggleFieldVisibility(field)
+        }}
+        className={`p-1 rounded transition-colors ${className} ${
+          isVisible
+            ? 'text-[var(--primary)] hover:bg-[var(--primary)]/10'
+            : 'text-[var(--muted-foreground)] hover:bg-[var(--muted)]'
+        }`}
+        title={isVisible ? 'Visible to others - click to hide' : 'Hidden from others - click to show'}
+      >
+        {isVisible ? <Eye className="w-3.5 h-3.5" /> : <EyeOff className="w-3.5 h-3.5" />}
+      </button>
+    )
   }
 
   // Editable Field Component - WYSIWYG inline editing with full hover feedback
@@ -1256,12 +1407,18 @@ export function ProfileBusinessCard({ userId, onClose, onSave: onSaveCallback, i
 
             {/* Expertise */}
             <div>
-              <h4 className="text-[9px] font-black text-[var(--muted-foreground)] uppercase mb-1.5 flex items-center gap-1.5">
-                <Sparkles className="w-3.5 h-3.5" />
-                Expertise
-              </h4>
+              <div className="flex items-center justify-between mb-1.5">
+                <h4 className="text-[9px] font-black text-[var(--muted-foreground)] uppercase flex items-center gap-1.5">
+                  <Sparkles className="w-3.5 h-3.5" />
+                  Expertise
+                </h4>
+                <VisibilityToggle field="showSkills" />
+              </div>
               {profile.skills.length > 0 ? (
-                <div className="flex flex-wrap gap-1.5">
+                <div
+                  className={`flex flex-wrap gap-1.5 ${isOwnProfile ? 'cursor-pointer hover:opacity-80' : ''}`}
+                  onClick={() => isOwnProfile && setShowSkillsModal(true)}
+                >
                   {profile.skills.slice(0, 4).map((skill, idx) => (
                     <span
                       key={idx}
@@ -1275,6 +1432,20 @@ export function ProfileBusinessCard({ userId, onClose, onSave: onSaveCallback, i
                       +{profile.skills.length - 4}
                     </span>
                   )}
+                </div>
+              ) : isOwnProfile ? (
+                <div
+                  className="flex flex-wrap gap-1.5 opacity-30 hover:opacity-50 cursor-pointer transition-opacity"
+                  onClick={() => setShowSkillsModal(true)}
+                >
+                  {['Add skills', 'Add expertise'].map((ghost, idx) => (
+                    <span
+                      key={idx}
+                      className="px-2 py-0.5 border border-dashed border-[var(--muted-foreground)] text-[var(--muted-foreground)] text-[10px] font-bold rounded-full italic"
+                    >
+                      {ghost}
+                    </span>
+                  ))}
                 </div>
               ) : (
                 <div className="flex flex-wrap gap-1.5 opacity-30">
@@ -1292,12 +1463,18 @@ export function ProfileBusinessCard({ userId, onClose, onSave: onSaveCallback, i
 
             {/* Interests */}
             <div>
-              <h4 className="text-[9px] font-black text-[var(--muted-foreground)] uppercase mb-1.5 flex items-center gap-1.5">
-                <Heart className="w-3.5 h-3.5" />
-                Interests
-              </h4>
+              <div className="flex items-center justify-between mb-1.5">
+                <h4 className="text-[9px] font-black text-[var(--muted-foreground)] uppercase flex items-center gap-1.5">
+                  <Heart className="w-3.5 h-3.5" />
+                  Interests
+                </h4>
+                <VisibilityToggle field="showInterests" />
+              </div>
               {profile.interests && profile.interests.length > 0 ? (
-                <div className="flex flex-wrap gap-1.5">
+                <div
+                  className={`flex flex-wrap gap-1.5 ${isOwnProfile ? 'cursor-pointer hover:opacity-80' : ''}`}
+                  onClick={() => isOwnProfile && setShowSkillsModal(true)}
+                >
                   {profile.interests.slice(0, 4).map((interest, idx) => (
                     <span
                       key={idx}
@@ -1311,6 +1488,20 @@ export function ProfileBusinessCard({ userId, onClose, onSave: onSaveCallback, i
                       +{profile.interests.length - 4}
                     </span>
                   )}
+                </div>
+              ) : isOwnProfile ? (
+                <div
+                  className="flex flex-wrap gap-1.5 opacity-30 hover:opacity-50 cursor-pointer transition-opacity"
+                  onClick={() => setShowSkillsModal(true)}
+                >
+                  {['Add interests', 'Add passions'].map((ghost, idx) => (
+                    <span
+                      key={idx}
+                      className="px-2 py-0.5 border border-dashed border-[var(--muted-foreground)] text-[var(--muted-foreground)] text-[10px] font-bold rounded-full italic"
+                    >
+                      {ghost}
+                    </span>
+                  ))}
                 </div>
               ) : (
                 <div className="flex flex-wrap gap-1.5 opacity-30">
@@ -1435,12 +1626,18 @@ export function ProfileBusinessCard({ userId, onClose, onSave: onSaveCallback, i
 
               {/* Experience */}
               <div>
-                <h4 className="text-sm font-black text-[var(--foreground)] mb-2 flex items-center gap-2">
-                  <Briefcase className="w-4 h-4" style={{ color: archetypeColor }} />
-                  Experience
-                </h4>
+                <div className="flex items-center justify-between mb-2">
+                  <h4 className="text-sm font-black text-[var(--foreground)] flex items-center gap-2">
+                    <Briefcase className="w-4 h-4" style={{ color: archetypeColor }} />
+                    Experience
+                  </h4>
+                  <VisibilityToggle field="showExperience" />
+                </div>
                 {profile.experience.length > 0 ? (
-                  <div className="space-y-3">
+                  <div
+                    className={`space-y-3 ${isOwnProfile ? 'cursor-pointer hover:opacity-80' : ''}`}
+                    onClick={() => isOwnProfile && setShowExperienceModal(true)}
+                  >
                     {profile.experience.slice(0, 2).map((exp: any, idx: number) => (
                       <div key={idx} className="border-l-2 pl-3" style={{ borderColor: archetypeColor }}>
                         <h5 className="text-sm font-black text-[var(--foreground)]">{exp.title}</h5>
@@ -1451,12 +1648,22 @@ export function ProfileBusinessCard({ userId, onClose, onSave: onSaveCallback, i
                       </div>
                     ))}
                   </div>
+                ) : isOwnProfile ? (
+                  <div
+                    className="space-y-3 opacity-30 hover:opacity-50 cursor-pointer transition-opacity"
+                    onClick={() => setShowExperienceModal(true)}
+                  >
+                    <div className="border-l-2 border-dashed border-[var(--muted-foreground)] pl-3">
+                      <p className="text-sm font-black text-[var(--muted-foreground)] italic">Add your position</p>
+                      <p className="text-xs font-bold text-[var(--muted-foreground)] italic">Organization</p>
+                      <p className="text-[10px] font-medium text-[var(--muted-foreground)]">Click to add experience...</p>
+                    </div>
+                  </div>
                 ) : (
                   <div className="space-y-3 opacity-30">
                     <div className="border-l-2 border-dashed border-[var(--muted-foreground)] pl-3">
                       <p className="text-sm font-black text-[var(--muted-foreground)] italic">Your Position</p>
                       <p className="text-xs font-bold text-[var(--muted-foreground)] italic">Organization</p>
-                      <p className="text-[10px] font-medium text-[var(--muted-foreground)]">Add your experience...</p>
                     </div>
                   </div>
                 )}
@@ -1464,12 +1671,18 @@ export function ProfileBusinessCard({ userId, onClose, onSave: onSaveCallback, i
 
               {/* Education */}
               <div>
-                <h4 className="text-sm font-black text-[var(--foreground)] mb-2 flex items-center gap-2">
-                  <GraduationCap className="w-4 h-4" style={{ color: archetypeColor }} />
-                  Education
-                </h4>
+                <div className="flex items-center justify-between mb-2">
+                  <h4 className="text-sm font-black text-[var(--foreground)] flex items-center gap-2">
+                    <GraduationCap className="w-4 h-4" style={{ color: archetypeColor }} />
+                    Education
+                  </h4>
+                  <VisibilityToggle field="showEducation" />
+                </div>
                 {profile.education.length > 0 ? (
-                  <div className="space-y-3">
+                  <div
+                    className={`space-y-3 ${isOwnProfile ? 'cursor-pointer hover:opacity-80' : ''}`}
+                    onClick={() => isOwnProfile && setShowEducationModal(true)}
+                  >
                     {profile.education.slice(0, 2).map((edu: any, idx: number) => (
                       <div key={idx} className="border-l-2 pl-3" style={{ borderColor: archetypeColor }}>
                         <h5 className="text-sm font-black text-[var(--foreground)]">{edu.degree}</h5>
@@ -1478,12 +1691,22 @@ export function ProfileBusinessCard({ userId, onClose, onSave: onSaveCallback, i
                       </div>
                     ))}
                   </div>
+                ) : isOwnProfile ? (
+                  <div
+                    className="space-y-3 opacity-30 hover:opacity-50 cursor-pointer transition-opacity"
+                    onClick={() => setShowEducationModal(true)}
+                  >
+                    <div className="border-l-2 border-dashed border-[var(--muted-foreground)] pl-3">
+                      <p className="text-sm font-black text-[var(--muted-foreground)] italic">Add your degree</p>
+                      <p className="text-xs font-bold text-[var(--muted-foreground)] italic">Institution</p>
+                      <p className="text-[10px] font-medium text-[var(--muted-foreground)]">Click to add education...</p>
+                    </div>
+                  </div>
                 ) : (
                   <div className="space-y-3 opacity-30">
                     <div className="border-l-2 border-dashed border-[var(--muted-foreground)] pl-3">
                       <p className="text-sm font-black text-[var(--muted-foreground)] italic">Degree / Certification</p>
                       <p className="text-xs font-bold text-[var(--muted-foreground)] italic">Institution</p>
-                      <p className="text-[10px] font-medium text-[var(--muted-foreground)]">Add your education...</p>
                     </div>
                   </div>
                 )}
@@ -1563,6 +1786,31 @@ export function ProfileBusinessCard({ userId, onClose, onSave: onSaveCallback, i
         isSaving={isSaving}
       />
     </Card>
+
+    {/* Edit Modals for Complex Fields */}
+    {isOwnProfile && (
+      <>
+        <ExperienceEditModal
+          isOpen={showExperienceModal}
+          onClose={() => setShowExperienceModal(false)}
+          experiences={profile.experience || []}
+          onSave={handleExperienceSave}
+        />
+        <EducationEditModal
+          isOpen={showEducationModal}
+          onClose={() => setShowEducationModal(false)}
+          education={profile.education || []}
+          onSave={handleEducationSave}
+        />
+        <SkillsEditModal
+          isOpen={showSkillsModal}
+          onClose={() => setShowSkillsModal(false)}
+          skills={profile.skills || []}
+          interests={profile.interests || []}
+          onSave={handleSkillsSave}
+        />
+      </>
+    )}
     </>
   )
 }
