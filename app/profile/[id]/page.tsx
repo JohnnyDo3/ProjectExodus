@@ -222,10 +222,10 @@ export default async function ProfilePage({ params }: { params: Promise<{ id: st
         </div>
       </div>
 
-      {/* Digital Business Card Widget */}
+      {/* Digital Business Card Widget - Full view with inline editing for own profile */}
       <div className="container mx-auto px-4 sm:px-6 lg:px-8 pt-8">
         <div className="max-w-5xl mx-auto">
-          <ProfileBusinessCard userId={user.id} />
+          <ProfileBusinessCard userId={user.id} isFullView={true} />
         </div>
       </div>
 

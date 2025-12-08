@@ -460,13 +460,24 @@ export function ProfileBusinessCard({ userId, onClose, onSave: onSaveCallback, i
   const handleSave = async () => {
     setIsSaving(true)
     try {
+      // Format data to match API expectations (flat structure for social links)
+      const saveData = {
+        name: editedProfile.name,
+        headline: editedProfile.headline,
+        bio: editedProfile.bio,
+        location: editedProfile.location,
+        phone: editedProfile.phone,
+        declaration: editedProfile.declaration,
+        guardianArchetype: selectedArchetype,
+        website: editedProfile.social?.website,
+        linkedin: editedProfile.social?.linkedin,
+        twitter: editedProfile.social?.twitter,
+      }
+
       const res = await fetch('/api/profile/update', {
-        method: 'PUT',
+        method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          ...editedProfile,
-          guardianArchetype: selectedArchetype,
-        }),
+        body: JSON.stringify(saveData),
       })
 
       if (res.ok) {
@@ -477,6 +488,9 @@ export function ProfileBusinessCard({ userId, onClose, onSave: onSaveCallback, i
         setIsEditing(false)
         setShowUnsavedDialog(false)
         onSaveCallback?.()
+      } else {
+        const errorData = await res.json()
+        console.error('Save failed:', errorData)
       }
     } catch (error) {
       console.error('Error saving profile:', error)
@@ -522,9 +536,15 @@ export function ProfileBusinessCard({ userId, onClose, onSave: onSaveCallback, i
     ? Math.floor((Date.now() - new Date(profile.memberSince).getTime()) / (1000 * 60 * 60 * 24 * 365))
     : 0
 
-  // Handle edit button - open expanded edit modal
+  // Handle edit button - enable inline editing on profile page, or open modal in other contexts
   const handleEditClick = () => {
-    setIsEditModalOpen(true)
+    // If on profile page (isFullView without onClose), enable inline editing
+    if (isFullView && !onClose) {
+      setIsEditing(true)
+    } else {
+      // Otherwise open the edit modal
+      setIsEditModalOpen(true)
+    }
   }
 
   // Handle save from edit modal
@@ -532,7 +552,7 @@ export function ProfileBusinessCard({ userId, onClose, onSave: onSaveCallback, i
     setIsSaving(true)
     try {
       const res = await fetch('/api/profile/update', {
-        method: 'PUT',
+        method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
           name: editedProfile.name,
