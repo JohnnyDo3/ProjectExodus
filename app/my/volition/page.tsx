@@ -100,6 +100,9 @@ export default function MyVolitionPage() {
   // Lane picker modal
   const [showLanePicker, setShowLanePicker] = useState(false)
 
+  // Business card modal
+  const [showBusinessCardModal, setShowBusinessCardModal] = useState(false)
+
   // Fetch functions
   const fetchProjects = useCallback(async () => {
     if (!session?.user?.id) return
@@ -326,18 +329,14 @@ export default function MyVolitionPage() {
   const renderLaneContent = (laneId: LaneId) => {
     switch (laneId) {
       case 'profile':
-        // Show full business card when not compact, simple card when compact
-        if (isCompact) {
-          return (
-            <ProfileCard
-              user={user}
-              userProfile={userProfile}
-              isCompact={true}
-            />
-          )
-        }
+        // Always show preview card in lane with expand button
         return (
-          <ProfileBusinessCard userId={user.id || ''} />
+          <ProfileCard
+            user={user}
+            userProfile={userProfile}
+            isCompact={isCompact}
+            onExpand={() => setShowBusinessCardModal(true)}
+          />
         )
 
       case 'projects':
@@ -840,6 +839,28 @@ export default function MyVolitionPage() {
         }
         isLoading={isDeleting}
       />
+
+      {/* Business Card Edit Modal */}
+      {showBusinessCardModal && (
+        <div
+          className="fixed inset-0 z-[100] bg-black/60 backdrop-blur-sm flex items-start justify-center p-4 overflow-y-auto"
+          onClick={() => setShowBusinessCardModal(false)}
+        >
+          <div
+            className="my-8 w-full max-w-4xl"
+            onClick={(e) => e.stopPropagation()}
+          >
+            <ProfileBusinessCard
+              userId={user.id || ''}
+              onClose={() => setShowBusinessCardModal(false)}
+              onSave={() => {
+                fetchProfile()
+                setShowBusinessCardModal(false)
+              }}
+            />
+          </div>
+        </div>
+      )}
 
       <style jsx global>{`
         .scrollbar-none::-webkit-scrollbar {

@@ -1,6 +1,6 @@
 'use client'
 
-import { User, MapPin, Mail, Edit2, Sword, MessageCircle, Stethoscope, Lightbulb, HeartHandshake, Flower2, Scale, Phone, Briefcase, Building2, FileText, Sparkles, Heart, BookOpen } from 'lucide-react'
+import { User, MapPin, Mail, Edit2, Sword, MessageCircle, Stethoscope, Lightbulb, HeartHandshake, Flower2, Scale, Phone, Briefcase, Building2, FileText, Sparkles, Heart } from 'lucide-react'
 import Link from 'next/link'
 import { LucideIcon } from 'lucide-react'
 
@@ -89,6 +89,7 @@ interface ProfileCardProps {
   } | null
   isCompact?: boolean
   className?: string
+  onExpand?: () => void
 }
 
 export function ProfileCard({
@@ -96,6 +97,7 @@ export function ProfileCard({
   userProfile,
   isCompact = false,
   className = '',
+  onExpand,
 }: ProfileCardProps) {
   const archetype = userProfile?.guardianArchetype
     ? GUARDIAN_ARCHETYPES[userProfile.guardianArchetype.toLowerCase()]
@@ -110,7 +112,11 @@ export function ProfileCard({
         <div className={`bg-gradient-to-br ${gradient} p-3`}>
           <div className="flex items-center gap-3">
             <div className="w-10 h-10 rounded-lg bg-white/20 flex items-center justify-center flex-shrink-0">
-              <ArchetypeIcon className="w-5 h-5 text-white" />
+              {user.image ? (
+                <img src={user.image} alt={user.name || ''} className="w-full h-full rounded-lg object-cover" />
+              ) : (
+                <ArchetypeIcon className="w-5 h-5 text-white" />
+              )}
             </div>
             <div className="min-w-0 flex-1">
               <p className="font-bold text-white truncate">{user.name || 'User'}</p>
@@ -118,12 +124,13 @@ export function ProfileCard({
                 <p className="text-[10px] font-bold text-white/70 uppercase">{archetype.title}</p>
               )}
             </div>
-            <Link
-              href="/settings?tab=businesscard"
+            <button
+              onClick={onExpand}
               className="p-1.5 rounded-lg bg-white/10 hover:bg-white/20 transition-colors"
+              title="Edit Business Card"
             >
               <Edit2 className="w-3.5 h-3.5 text-white" />
-            </Link>
+            </button>
           </div>
         </div>
       </div>
@@ -135,13 +142,13 @@ export function ProfileCard({
       {/* Business Card Style - Full gradient background */}
       <div className={`bg-gradient-to-br ${gradient} p-5 relative`}>
         {/* Edit button */}
-        <Link
-          href="/settings?tab=businesscard"
+        <button
+          onClick={onExpand}
           className="absolute top-3 right-3 p-2 rounded-lg bg-white/10 hover:bg-white/20 transition-colors"
           title="Edit Business Card"
         >
           <Edit2 className="w-4 h-4 text-white" />
-        </Link>
+        </button>
 
         {/* Top section - Icon and title */}
         <div className="flex items-start gap-4 mb-4">

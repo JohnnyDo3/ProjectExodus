@@ -1,8 +1,9 @@
 'use client'
 
-import { useState, useEffect, useRef } from 'react'
+import { useState, useEffect, useRef, useCallback } from 'react'
 import { useSession } from 'next-auth/react'
 import { Card, CardContent } from '@/components/ui/Card'
+import { Button } from '@/components/ui/Button'
 import {
   User,
   Mail,
@@ -32,7 +33,60 @@ import {
   Crown,
   ScrollText,
   Infinity,
+  AlertTriangle,
 } from 'lucide-react'
+
+// Confirmation Dialog for unsaved changes
+function UnsavedChangesDialog({
+  isOpen,
+  onSave,
+  onDiscard,
+  onCancel,
+  isSaving,
+}: {
+  isOpen: boolean
+  onSave: () => void
+  onDiscard: () => void
+  onCancel: () => void
+  isSaving: boolean
+}) {
+  if (!isOpen) return null
+
+  return (
+    <div className="fixed inset-0 z-[200] flex items-center justify-center">
+      <div className="absolute inset-0 bg-black/50" onClick={onCancel} />
+      <div className="relative bg-[var(--card)] border-4 border-[var(--secondary)] rounded-2xl p-6 max-w-md w-full mx-4 shadow-2xl">
+        <div className="flex items-start gap-4">
+          <div className="w-12 h-12 rounded-full bg-[color-mix(in_srgb,var(--secondary)_20%,var(--background))] flex items-center justify-center flex-shrink-0">
+            <AlertTriangle className="w-6 h-6 text-[var(--secondary)]" />
+          </div>
+          <div className="flex-1">
+            <h3 className="text-lg font-black text-[var(--foreground)] mb-2">Unsaved Changes</h3>
+            <p className="text-sm font-medium text-[var(--muted-foreground)] mb-6">
+              You have unsaved changes to your business card. Would you like to save them before closing?
+            </p>
+            <div className="flex gap-3">
+              <Button
+                variant="outline"
+                onClick={onDiscard}
+                className="flex-1 font-bold"
+              >
+                Discard
+              </Button>
+              <Button
+                onClick={onSave}
+                disabled={isSaving}
+                className="flex-1 font-bold"
+              >
+                {isSaving ? 'Saving...' : 'Save Changes'}
+              </Button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  )
+}
 
 /*
  * THE 7 GUARDIANS OF PROJECT EXODUS
@@ -143,6 +197,8 @@ type ArchetypeType = keyof typeof GUARDIAN_ARCHETYPES
 
 interface ProfileBusinessCardProps {
   userId: string
+  onClose?: () => void
+  onSave?: () => void
 }
 
 interface ProfileData {
@@ -247,7 +303,7 @@ function GhostField({
   )
 }
 
-export function ProfileBusinessCard({ userId }: ProfileBusinessCardProps) {
+export function ProfileBusinessCard({ userId, onClose, onSave: onSaveCallback }: ProfileBusinessCardProps) {
   const { data: session } = useSession()
   const [isLoading, setIsLoading] = useState(true)
   const [profile, setProfile] = useState<ProfileData | null>(null)
@@ -255,10 +311,39 @@ export function ProfileBusinessCard({ userId }: ProfileBusinessCardProps) {
   const [isEditing, setIsEditing] = useState(false)
   const [selectedArchetype, setSelectedArchetype] = useState<ArchetypeType>('michael')
   const [editedProfile, setEditedProfile] = useState<Partial<ProfileData>>({})
+  const [savedProfile, setSavedProfile] = useState<Partial<ProfileData>>({})
+  const [savedArchetype, setSavedArchetype] = useState<ArchetypeType>('michael')
   const [isSaving, setIsSaving] = useState(false)
+  const [showUnsavedDialog, setShowUnsavedDialog] = useState(false)
   const expandedSectionRef = useRef<HTMLDivElement>(null)
 
   const isOwnProfile = session?.user?.id === userId
+
+  // Check if there are unsaved changes
+  const hasUnsavedChanges = useCallback(() => {
+    if (!isEditing) return false
+    const profileChanged = JSON.stringify(editedProfile) !== JSON.stringify(savedProfile)
+    const archetypeChanged = selectedArchetype !== savedArchetype
+    return profileChanged || archetypeChanged
+  }, [isEditing, editedProfile, savedProfile, selectedArchetype, savedArchetype])
+
+  // Handle close with unsaved changes check
+  const handleClose = useCallback(() => {
+    if (hasUnsavedChanges()) {
+      setShowUnsavedDialog(true)
+    } else {
+      onClose?.()
+    }
+  }, [hasUnsavedChanges, onClose])
+
+  // Handle discard changes
+  const handleDiscard = useCallback(() => {
+    setEditedProfile({ ...savedProfile })
+    setSelectedArchetype(savedArchetype)
+    setIsEditing(false)
+    setShowUnsavedDialog(false)
+    onClose?.()
+  }, [savedProfile, savedArchetype, onClose])
 
   useEffect(() => {
     const fetchUserProfile = async () => {
@@ -293,7 +378,9 @@ export function ProfileBusinessCard({ userId }: ProfileBusinessCardProps) {
             }
             setProfile(profileData)
             setEditedProfile(profileData)
+            setSavedProfile(profileData)
             setSelectedArchetype(profileData.archetype || 'michael')
+            setSavedArchetype(profileData.archetype || 'michael')
           }
         }
 
@@ -332,8 +419,13 @@ export function ProfileBusinessCard({ userId }: ProfileBusinessCardProps) {
       })
 
       if (res.ok) {
-        setProfile(prev => prev ? { ...prev, ...editedProfile, archetype: selectedArchetype } : null)
+        const updatedProfile = { ...editedProfile, archetype: selectedArchetype }
+        setProfile(prev => prev ? { ...prev, ...updatedProfile } : null)
+        setSavedProfile({ ...editedProfile })
+        setSavedArchetype(selectedArchetype)
         setIsEditing(false)
+        setShowUnsavedDialog(false)
+        onSaveCallback?.()
       }
     } catch (error) {
       console.error('Error saving profile:', error)
@@ -422,8 +514,14 @@ export function ProfileBusinessCard({ userId }: ProfileBusinessCardProps) {
             {isEditing && (
               <>
                 <button
-                  onClick={() => { setIsEditing(false); setSelectedArchetype(profile.archetype || 'michael') }}
+                  onClick={() => {
+                    // Reset to saved values when canceling
+                    setEditedProfile({ ...savedProfile })
+                    setSelectedArchetype(savedArchetype)
+                    setIsEditing(false)
+                  }}
                   className="p-2.5 bg-black/30 hover:bg-black/40 rounded-xl transition-colors"
+                  title="Cancel editing"
                 >
                   <X className="w-5 h-5 text-white" />
                 </button>
@@ -431,6 +529,7 @@ export function ProfileBusinessCard({ userId }: ProfileBusinessCardProps) {
                   onClick={handleSave}
                   disabled={isSaving}
                   className="p-2.5 bg-white/30 hover:bg-white/40 rounded-xl transition-colors"
+                  title="Save changes"
                 >
                   <Save className="w-5 h-5 text-white" />
                 </button>
@@ -454,6 +553,15 @@ export function ProfileBusinessCard({ userId }: ProfileBusinessCardProps) {
                 <ChevronDown className="w-5 h-5 text-white" />
               )}
             </button>
+            {onClose && (
+              <button
+                onClick={handleClose}
+                className="p-2.5 bg-black/30 hover:bg-black/40 rounded-xl transition-colors backdrop-blur-sm"
+                title="Close"
+              >
+                <X className="w-5 h-5 text-white" />
+              </button>
+            )}
           </div>
         </div>
 
@@ -896,6 +1004,15 @@ export function ProfileBusinessCard({ userId }: ProfileBusinessCardProps) {
           </div>
         </div>
       </CardContent>
+
+      {/* Unsaved Changes Dialog */}
+      <UnsavedChangesDialog
+        isOpen={showUnsavedDialog}
+        onSave={handleSave}
+        onDiscard={handleDiscard}
+        onCancel={() => setShowUnsavedDialog(false)}
+        isSaving={isSaving}
+      />
     </Card>
   )
 }
