@@ -1,6 +1,7 @@
 'use client'
 
 import { useState, useEffect, useRef, useCallback } from 'react'
+import { createPortal } from 'react-dom'
 import { useSession } from 'next-auth/react'
 import { Card, CardContent } from '@/components/ui/Card'
 import { Button } from '@/components/ui/Button'
@@ -34,6 +35,8 @@ import {
   ScrollText,
   Infinity,
   AlertTriangle,
+  Heart,
+  Phone,
 } from 'lucide-react'
 
 // Confirmation Dialog for unsaved changes
@@ -104,8 +107,8 @@ function UnsavedChangesDialog({
  * - We the People of Project Exodus -
  */
 
-// Guardian archetypes using theme-aware styling
-// Each archetype maps to semantic theme colors for consistency
+// Guardian archetypes with fixed gradient colors (matching settings page)
+// These colors represent identity and should NOT change with theme
 const GUARDIAN_ARCHETYPES = {
   michael: {
     id: 'michael',
@@ -115,8 +118,12 @@ const GUARDIAN_ARCHETYPES = {
     description: 'You stand unwavering. Your strength protects those who cannot protect themselves.',
     scripture: 'The one who leads the armies of heaven against darkness.',
     icon: Sword,
-    // Maps to secondary (terra) - warm, powerful
-    themeColor: 'secondary',
+    // Red to Orange gradient (from settings)
+    colors: {
+      from: '#dc2626', // red-600
+      to: '#f97316',   // orange-500
+      gradient: 'linear-gradient(135deg, #dc2626 0%, #f97316 100%)',
+    },
     commandments: ['STEWARDSHIP', 'INTEGRITY', 'SUSTAINABILITY'],
   },
   gabriel: {
@@ -127,8 +134,12 @@ const GUARDIAN_ARCHETYPES = {
     description: 'You bring truth to light. Your words reveal what must be known.',
     scripture: 'The messenger who announces what is to come.',
     icon: MessageCircle,
-    // Maps to accent (ocean) - clarity, trust
-    themeColor: 'accent',
+    // Sky to Blue gradient (from settings)
+    colors: {
+      from: '#0ea5e9', // sky-500
+      to: '#2563eb',   // blue-600
+      gradient: 'linear-gradient(135deg, #0ea5e9 0%, #2563eb 100%)',
+    },
     commandments: ['TRANSPARENCY', 'LEGACY', 'EQUITY'],
   },
   raphael: {
@@ -139,8 +150,12 @@ const GUARDIAN_ARCHETYPES = {
     description: 'You mend what is broken. Your presence restores and renews.',
     scripture: 'The healer who makes whole what was wounded.',
     icon: Stethoscope,
-    // Maps to primary (moss) - growth, renewal
-    themeColor: 'primary',
+    // Emerald to Teal gradient (from settings)
+    colors: {
+      from: '#10b981', // emerald-500
+      to: '#0d9488',   // teal-600
+      gradient: 'linear-gradient(135deg, #10b981 0%, #0d9488 100%)',
+    },
     commandments: ['SANCTITY', 'REST', 'BIODIVERSITY'],
   },
   uriel: {
@@ -151,8 +166,12 @@ const GUARDIAN_ARCHETYPES = {
     description: 'You illuminate the path. Your wisdom guides those who seek understanding.',
     scripture: 'The light of God who reveals divine truth.',
     icon: Lightbulb,
-    // Maps to foreground (earth) - grounded, mature
-    themeColor: 'foreground',
+    // Amber to Yellow gradient (from settings)
+    colors: {
+      from: '#f59e0b', // amber-500
+      to: '#eab308',   // yellow-500
+      gradient: 'linear-gradient(135deg, #f59e0b 0%, #eab308 100%)',
+    },
     commandments: ['LEGACY', 'TRANSPARENCY', 'STEWARDSHIP'],
   },
   camael: {
@@ -163,8 +182,12 @@ const GUARDIAN_ARCHETYPES = {
     description: 'You embody compassion. Your love connects all beings as one.',
     scripture: 'The one who sees God through the heart.',
     icon: HeartHandshake,
-    // Maps to secondary (terra) - warm, nurturing
-    themeColor: 'secondary',
+    // Pink to Rose gradient (from settings)
+    colors: {
+      from: '#ec4899', // pink-500
+      to: '#e11d48',   // rose-600
+      gradient: 'linear-gradient(135deg, #ec4899 0%, #e11d48 100%)',
+    },
     commandments: ['LOYALTY', 'EQUITY', 'SANCTITY'],
   },
   jophiel: {
@@ -175,8 +198,12 @@ const GUARDIAN_ARCHETYPES = {
     description: 'You see the divine in all things. Your vision transforms the ordinary into the sacred.',
     scripture: 'The beauty of God who adorns creation.',
     icon: Flower2,
-    // Maps to primary (moss) - natural, organic
-    themeColor: 'primary',
+    // Violet to Purple gradient (from settings)
+    colors: {
+      from: '#8b5cf6', // violet-500
+      to: '#9333ea',   // purple-600
+      gradient: 'linear-gradient(135deg, #8b5cf6 0%, #9333ea 100%)',
+    },
     commandments: ['BIODIVERSITY', 'SUSTAINABILITY', 'REST'],
   },
   zadkiel: {
@@ -187,8 +214,12 @@ const GUARDIAN_ARCHETYPES = {
     description: 'You forgive the unforgivable. Your mercy grants second chances.',
     scripture: 'The righteousness of God who liberates the bound.',
     icon: Scale,
-    // Maps to accent (ocean) - deep, forgiving
-    themeColor: 'accent',
+    // Indigo to Blue gradient (from settings)
+    colors: {
+      from: '#6366f1', // indigo-500
+      to: '#1d4ed8',   // blue-700
+      gradient: 'linear-gradient(135deg, #6366f1 0%, #1d4ed8 100%)',
+    },
     commandments: ['INTEGRITY', 'LOYALTY', 'LEGACY'],
   },
 }
@@ -309,10 +340,14 @@ export function ProfileBusinessCard({ userId, onClose, onSave: onSaveCallback }:
   const [profile, setProfile] = useState<ProfileData | null>(null)
   const [isExpanded, setIsExpanded] = useState(false)
   const [isEditing, setIsEditing] = useState(false)
+  const [isEditModalOpen, setIsEditModalOpen] = useState(false)
+  const [showArchetypeSelector, setShowArchetypeSelector] = useState(false)
   const [selectedArchetype, setSelectedArchetype] = useState<ArchetypeType>('michael')
+  const [editingField, setEditingField] = useState<string | null>(null)
   const [editedProfile, setEditedProfile] = useState<Partial<ProfileData>>({})
   const [savedProfile, setSavedProfile] = useState<Partial<ProfileData>>({})
   const [savedArchetype, setSavedArchetype] = useState<ArchetypeType>('michael')
+  const [isMounted, setIsMounted] = useState(false)
   const [isSaving, setIsSaving] = useState(false)
   const [showUnsavedDialog, setShowUnsavedDialog] = useState(false)
   const expandedSectionRef = useRef<HTMLDivElement>(null)
@@ -344,6 +379,11 @@ export function ProfileBusinessCard({ userId, onClose, onSave: onSaveCallback }:
     setShowUnsavedDialog(false)
     onClose?.()
   }, [savedProfile, savedArchetype, onClose])
+
+  // Set mounted state for portal rendering
+  useEffect(() => {
+    setIsMounted(true)
+  }, [])
 
   useEffect(() => {
     const fetchUserProfile = async () => {
@@ -457,8 +497,9 @@ export function ProfileBusinessCard({ userId, onClose, onSave: onSaveCallback }:
   const ArchetypeIcon = archetype.icon
   const hasSocialLinks = profile.social.website || profile.social.linkedin || profile.social.twitter
 
-  // Get the theme color CSS variable
-  const themeColorVar = `var(--${archetype.themeColor})`
+  // Use the archetype's fixed gradient colors (not theme-dependent)
+  const archetypeColor = archetype.colors.from
+  const archetypeGradient = archetype.colors.gradient
 
   const stockScore = (profile.projectsCreated || 0) * 10 +
                      (profile.articlesWritten || 0) * 5 +
@@ -470,12 +511,443 @@ export function ProfileBusinessCard({ userId, onClose, onSave: onSaveCallback }:
     ? Math.floor((Date.now() - new Date(profile.memberSince).getTime()) / (1000 * 60 * 60 * 24 * 365))
     : 0
 
+  // Handle edit button - open expanded edit modal
+  const handleEditClick = () => {
+    setIsEditModalOpen(true)
+  }
+
+  // Handle save from edit modal
+  const handleModalSave = async () => {
+    setIsSaving(true)
+    try {
+      const res = await fetch('/api/profile/update', {
+        method: 'PUT',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          name: editedProfile.name,
+          headline: editedProfile.headline,
+          location: editedProfile.location,
+          declaration: editedProfile.declaration,
+          guardianArchetype: selectedArchetype,
+          website: editedProfile.social?.website,
+          linkedin: editedProfile.social?.linkedin,
+          twitter: editedProfile.social?.twitter,
+        }),
+      })
+
+      if (res.ok) {
+        setProfile(prev => prev ? {
+          ...prev,
+          ...editedProfile,
+          archetype: selectedArchetype,
+          social: {
+            ...prev.social,
+            ...editedProfile.social,
+          }
+        } : null)
+        setIsEditModalOpen(false)
+        setShowArchetypeSelector(false)
+        setEditingField(null)
+      }
+    } catch (error) {
+      console.error('Error saving profile:', error)
+    } finally {
+      setIsSaving(false)
+    }
+  }
+
+  // Editable Field Component - WYSIWYG inline editing with full hover feedback
+  const EditableField = ({
+    fieldId,
+    value,
+    placeholder,
+    onChange,
+    type = 'text',
+    className = '',
+    textClassName = '',
+    maxLength,
+  }: {
+    fieldId: string
+    value: string
+    placeholder: string
+    onChange: (value: string) => void
+    type?: 'text' | 'textarea'
+    className?: string
+    textClassName?: string
+    maxLength?: number
+  }) => {
+    const isCurrentlyEditing = editingField === fieldId
+    const isEmpty = !value || value.trim() === ''
+
+    // Ghost placeholder state (empty, not editing)
+    if (isEmpty && !isCurrentlyEditing) {
+      return (
+        <div
+          onClick={() => setEditingField(fieldId)}
+          className={`group cursor-pointer relative ${className}`}
+        >
+          <span className="opacity-40 italic border-b border-dashed border-current flex items-center gap-1.5 hover:opacity-60 transition-opacity">
+            {placeholder}
+            <Edit2 className="w-3 h-3 opacity-0 group-hover:opacity-100 transition-opacity" />
+          </span>
+        </div>
+      )
+    }
+
+    // Editing state
+    if (isCurrentlyEditing) {
+      if (type === 'textarea') {
+        return (
+          <div className={className}>
+            <textarea
+              autoFocus
+              value={value}
+              onChange={(e) => onChange(e.target.value)}
+              onBlur={() => setEditingField(null)}
+              onKeyDown={(e) => e.key === 'Escape' && setEditingField(null)}
+              className={`w-full bg-black/20 backdrop-blur-sm rounded-lg px-3 py-2 border-2 border-white/50 focus:border-white outline-none resize-none ${textClassName}`}
+              placeholder={placeholder}
+              rows={3}
+              maxLength={maxLength}
+            />
+            {maxLength && (
+              <p className="text-[10px] text-white/60 text-right mt-1">{value.length}/{maxLength}</p>
+            )}
+          </div>
+        )
+      }
+      return (
+        <input
+          autoFocus
+          type="text"
+          value={value}
+          onChange={(e) => onChange(e.target.value)}
+          onBlur={() => setEditingField(null)}
+          onKeyDown={(e) => {
+            if (e.key === 'Enter' || e.key === 'Escape') setEditingField(null)
+          }}
+          className={`bg-black/20 backdrop-blur-sm rounded-lg px-3 py-1 border-2 border-white/50 focus:border-white outline-none w-full ${textClassName}`}
+          placeholder={placeholder}
+          maxLength={maxLength}
+        />
+      )
+    }
+
+    // Display state with hover feedback
+    return (
+      <div
+        onClick={() => setEditingField(fieldId)}
+        className={`group cursor-pointer relative rounded-lg px-2 py-1 -mx-2 -my-1 hover:bg-white/10 transition-all border border-transparent hover:border-dashed hover:border-white/30 ${className}`}
+      >
+        <span className={textClassName}>{value}</span>
+        <Edit2 className="w-3 h-3 absolute right-2 top-1/2 -translate-y-1/2 opacity-0 group-hover:opacity-100 transition-opacity text-white/70" />
+      </div>
+    )
+  }
+
+  // Edit Modal Component - WYSIWYG style (uses portal to escape stacking context)
+  const EditModal = () => {
+    if (!isEditModalOpen || !isMounted) return null
+
+    const currentArchetype = GUARDIAN_ARCHETYPES[selectedArchetype]
+    const CurrentArchetypeIcon = currentArchetype.icon
+
+    const modalContent = (
+      <>
+        {/* Backdrop */}
+        <div
+          className="fixed inset-0 bg-black/60 backdrop-blur-sm"
+          style={{ zIndex: 9998 }}
+          onClick={() => {
+            setIsEditModalOpen(false)
+            setShowArchetypeSelector(false)
+            setEditingField(null)
+          }}
+        />
+
+        {/* Modal Container */}
+        <div className="fixed inset-4 md:inset-8 lg:inset-16 flex items-center justify-center pointer-events-none" style={{ zIndex: 9999 }}>
+          {/* The Card itself - WYSIWYG */}
+          <div className="pointer-events-auto bg-[var(--card)] rounded-2xl shadow-2xl max-w-xl w-full max-h-[90vh] overflow-hidden flex flex-col border-4" style={{ borderColor: currentArchetype.colors.from }}>
+
+            {/* Card Header - Gradient with editable content */}
+            <div
+              className="px-6 py-5 relative overflow-hidden"
+              style={{ background: currentArchetype.colors.gradient }}
+            >
+              {/* Dark overlay for text contrast */}
+              <div className="absolute inset-0 bg-black/25" />
+
+              {/* Background pattern */}
+              <div className="absolute inset-0 opacity-10">
+                <div className="absolute top-0 right-0 w-64 h-64 bg-white rounded-full blur-3xl transform translate-x-1/2 -translate-y-1/2" />
+              </div>
+
+              <div className="relative">
+                {/* Close button */}
+                <button
+                  onClick={() => {
+                    setIsEditModalOpen(false)
+                    setShowArchetypeSelector(false)
+                    setEditingField(null)
+                  }}
+                  className="absolute top-0 right-0 p-2 bg-black/30 hover:bg-black/40 rounded-xl transition-colors"
+                >
+                  <X className="w-5 h-5 text-white" />
+                </button>
+
+                {/* Archetype Icon - clickable to change */}
+                <div className="flex items-start gap-4 mb-4">
+                  <div className="relative">
+                    <button
+                      onClick={() => setShowArchetypeSelector(!showArchetypeSelector)}
+                      className="p-3 bg-black/30 rounded-2xl backdrop-blur-sm border border-white/30 shadow-lg hover:bg-black/40 transition-colors group"
+                      title="Click to change archetype"
+                    >
+                      <CurrentArchetypeIcon className="w-8 h-8 text-white drop-shadow-md" />
+                      <Edit2 className="w-3 h-3 absolute -bottom-1 -right-1 bg-white text-gray-800 rounded-full p-0.5 opacity-0 group-hover:opacity-100 transition-opacity" />
+                    </button>
+
+                    {/* Archetype Selector Popover */}
+                    {showArchetypeSelector && (
+                      <div className="absolute top-full left-0 mt-2 bg-[var(--card)] rounded-xl shadow-2xl border-2 border-[var(--border)] p-3 z-10 w-[280px]">
+                        <p className="text-xs font-bold text-[var(--muted-foreground)] mb-2 px-1">SELECT ARCHETYPE</p>
+                        <div className="grid grid-cols-2 gap-2">
+                          {Object.entries(GUARDIAN_ARCHETYPES).map(([key, arch]) => {
+                            const Icon = arch.icon
+                            const isSelected = selectedArchetype === key
+                            return (
+                              <button
+                                key={key}
+                                onClick={() => {
+                                  setSelectedArchetype(key as ArchetypeType)
+                                  setShowArchetypeSelector(false)
+                                }}
+                                className={`p-2 rounded-lg border-2 transition-all text-left flex items-center gap-2 ${
+                                  isSelected
+                                    ? 'border-transparent text-white'
+                                    : 'border-[var(--border)] bg-[var(--background)] hover:border-[var(--primary)]'
+                                }`}
+                                style={isSelected ? { background: arch.colors.gradient } : {}}
+                              >
+                                <div
+                                  className="w-8 h-8 rounded-lg flex items-center justify-center flex-shrink-0"
+                                  style={{ background: isSelected ? 'rgba(255,255,255,0.2)' : arch.colors.gradient }}
+                                >
+                                  <Icon className="w-4 h-4 text-white" />
+                                </div>
+                                <div className="min-w-0">
+                                  <p className={`text-[10px] font-bold truncate ${isSelected ? 'text-white/80' : 'text-[var(--muted-foreground)]'}`}>
+                                    {arch.title}
+                                  </p>
+                                  <p className={`text-xs font-black truncate ${isSelected ? 'text-white' : 'text-[var(--foreground)]'}`}>
+                                    {arch.name}
+                                  </p>
+                                </div>
+                              </button>
+                            )
+                          })}
+                        </div>
+                      </div>
+                    )}
+                  </div>
+
+                  <div className="flex-1 min-w-0 text-white">
+                    <div className="flex items-center gap-2 mb-1">
+                      <Crown className="w-3.5 h-3.5 text-white/70" />
+                      <p className="text-[10px] font-bold uppercase tracking-wider text-white/70">{currentArchetype.title}</p>
+                    </div>
+
+                    {/* Editable Name */}
+                    <EditableField
+                      fieldId="name"
+                      value={editedProfile.name || ''}
+                      placeholder="Your Name"
+                      onChange={(v) => setEditedProfile(prev => ({ ...prev, name: v }))}
+                      textClassName="text-2xl font-black drop-shadow-md"
+                    />
+
+                    {/* Editable Headline */}
+                    <EditableField
+                      fieldId="headline"
+                      value={editedProfile.headline || ''}
+                      placeholder="Your role or title"
+                      onChange={(v) => setEditedProfile(prev => ({ ...prev, headline: v }))}
+                      textClassName="text-sm font-medium text-white/90"
+                      className="mt-1"
+                    />
+                  </div>
+                </div>
+
+                {/* Editable Declaration */}
+                <div className="p-3 bg-black/20 rounded-lg backdrop-blur-sm border border-white/20">
+                  <div className="flex items-center gap-2 mb-1.5">
+                    <ScrollText className="w-3.5 h-3.5 text-white/70" />
+                    <p className="text-[9px] font-black uppercase text-white/70 tracking-wider">My Declaration</p>
+                  </div>
+                  <EditableField
+                    fieldId="declaration"
+                    value={editedProfile.declaration || ''}
+                    placeholder="What truth do you carry? What do you stand for?"
+                    onChange={(v) => setEditedProfile(prev => ({ ...prev, declaration: v }))}
+                    type="textarea"
+                    textClassName="text-sm font-medium italic text-white"
+                    maxLength={280}
+                  />
+                </div>
+
+                {/* Contact Info */}
+                <div className="mt-4 space-y-2 text-white text-xs">
+                  <div className="flex items-center gap-2">
+                    <MapPin className="w-3.5 h-3.5 text-white/75 flex-shrink-0" />
+                    <EditableField
+                      fieldId="location"
+                      value={editedProfile.location || ''}
+                      placeholder="Add your location"
+                      onChange={(v) => setEditedProfile(prev => ({ ...prev, location: v }))}
+                      textClassName="text-xs"
+                    />
+                  </div>
+
+                  {profile?.email && (
+                    <div className="flex items-center gap-2 opacity-75">
+                      <Mail className="w-3.5 h-3.5 flex-shrink-0" />
+                      <span className="truncate">{profile.email}</span>
+                    </div>
+                  )}
+                </div>
+              </div>
+            </div>
+
+            {/* Card Body - Social Links */}
+            <div className="p-4 bg-[var(--card)] space-y-3">
+              <p className="text-xs font-bold text-[var(--muted-foreground)] uppercase tracking-wide">Social Links</p>
+              <div className="flex flex-wrap gap-2">
+                {/* Website */}
+                <div className="flex items-center gap-2 px-3 py-2 bg-[var(--muted)] rounded-lg group hover:bg-[var(--primary)] hover:text-[var(--primary-foreground)] transition-colors cursor-pointer min-w-[140px]"
+                     onClick={() => setEditingField('website')}>
+                  <Globe className="w-4 h-4 flex-shrink-0" />
+                  {editingField === 'website' ? (
+                    <input
+                      autoFocus
+                      type="text"
+                      value={editedProfile.social?.website || ''}
+                      onChange={(e) => setEditedProfile(prev => ({
+                        ...prev,
+                        social: { ...prev.social, website: e.target.value }
+                      }))}
+                      onBlur={() => setEditingField(null)}
+                      onKeyDown={(e) => { if (e.key === 'Enter' || e.key === 'Escape') setEditingField(null) }}
+                      className="bg-transparent border-b border-current outline-none flex-1 text-xs font-medium"
+                      placeholder="yourwebsite.com"
+                    />
+                  ) : (
+                    <span className="text-xs font-medium truncate">
+                      {editedProfile.social?.website || <span className="opacity-50 italic">Add website</span>}
+                    </span>
+                  )}
+                  <Edit2 className="w-3 h-3 opacity-0 group-hover:opacity-100 transition-opacity flex-shrink-0" />
+                </div>
+
+                {/* LinkedIn */}
+                <div className="flex items-center gap-2 px-3 py-2 bg-[var(--muted)] rounded-lg group hover:bg-[var(--accent)] hover:text-[var(--accent-foreground)] transition-colors cursor-pointer min-w-[140px]"
+                     onClick={() => setEditingField('linkedin')}>
+                  <Linkedin className="w-4 h-4 flex-shrink-0" />
+                  {editingField === 'linkedin' ? (
+                    <input
+                      autoFocus
+                      type="text"
+                      value={editedProfile.social?.linkedin || ''}
+                      onChange={(e) => setEditedProfile(prev => ({
+                        ...prev,
+                        social: { ...prev.social, linkedin: e.target.value }
+                      }))}
+                      onBlur={() => setEditingField(null)}
+                      onKeyDown={(e) => { if (e.key === 'Enter' || e.key === 'Escape') setEditingField(null) }}
+                      className="bg-transparent border-b border-current outline-none flex-1 text-xs font-medium"
+                      placeholder="linkedin.com/in/you"
+                    />
+                  ) : (
+                    <span className="text-xs font-medium truncate">
+                      {editedProfile.social?.linkedin || <span className="opacity-50 italic">Add LinkedIn</span>}
+                    </span>
+                  )}
+                  <Edit2 className="w-3 h-3 opacity-0 group-hover:opacity-100 transition-opacity flex-shrink-0" />
+                </div>
+
+                {/* Twitter/X */}
+                <div className="flex items-center gap-2 px-3 py-2 bg-[var(--muted)] rounded-lg group hover:bg-[var(--accent)] hover:text-[var(--accent-foreground)] transition-colors cursor-pointer min-w-[140px]"
+                     onClick={() => setEditingField('twitter')}>
+                  <Twitter className="w-4 h-4 flex-shrink-0" />
+                  {editingField === 'twitter' ? (
+                    <input
+                      autoFocus
+                      type="text"
+                      value={editedProfile.social?.twitter || ''}
+                      onChange={(e) => setEditedProfile(prev => ({
+                        ...prev,
+                        social: { ...prev.social, twitter: e.target.value }
+                      }))}
+                      onBlur={() => setEditingField(null)}
+                      onKeyDown={(e) => { if (e.key === 'Enter' || e.key === 'Escape') setEditingField(null) }}
+                      className="bg-transparent border-b border-current outline-none flex-1 text-xs font-medium"
+                      placeholder="@yourhandle"
+                    />
+                  ) : (
+                    <span className="text-xs font-medium truncate">
+                      {editedProfile.social?.twitter || <span className="opacity-50 italic">Add X/Twitter</span>}
+                    </span>
+                  )}
+                  <Edit2 className="w-3 h-3 opacity-0 group-hover:opacity-100 transition-opacity flex-shrink-0" />
+                </div>
+              </div>
+            </div>
+
+            {/* Modal Footer */}
+            <div className="px-4 py-3 border-t-2 border-[var(--border)] bg-[var(--muted)] flex items-center justify-between">
+              <p className="text-xs text-[var(--muted-foreground)]">Click any field to edit</p>
+              <div className="flex items-center gap-2">
+                <Button
+                  variant="outline"
+                  size="sm"
+                  onClick={() => {
+                    setIsEditModalOpen(false)
+                    setShowArchetypeSelector(false)
+                    setEditingField(null)
+                  }}
+                  className="font-bold"
+                >
+                  Cancel
+                </Button>
+                <Button
+                  size="sm"
+                  onClick={handleModalSave}
+                  disabled={isSaving}
+                  className="font-black"
+                  style={{ backgroundColor: currentArchetype.colors.from }}
+                >
+                  <Save className="w-4 h-4 mr-1" />
+                  {isSaving ? 'Saving...' : 'Save'}
+                </Button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </>
+    )
+
+    // Use portal to render modal at document body level (escapes stacking context)
+    return createPortal(modalContent, document.body)
+  }
+
   return (
-    <Card className="border-4 overflow-hidden" style={{ borderColor: themeColorVar }}>
-      {/* Sacred Header - uses theme color as background */}
+    <>
+      <EditModal />
+    <Card className="border-4 overflow-hidden" style={{ borderColor: archetypeColor }}>
+      {/* Sacred Header - uses archetype gradient as background */}
       <div
         className="px-6 py-5 relative overflow-hidden"
-        style={{ backgroundColor: themeColorVar }}
+        style={{ background: archetypeGradient }}
       >
         {/* Dark overlay for text contrast */}
         <div className="absolute inset-0 bg-black/25" />
@@ -502,11 +974,11 @@ export function ProfileBusinessCard({ userId, onClose, onSave: onSaveCallback }:
           </div>
 
           <div className="flex items-center gap-2">
-            {isOwnProfile && !isEditing && (
+            {isOwnProfile && (
               <button
-                onClick={() => setIsEditing(true)}
+                onClick={handleEditClick}
                 className="p-2.5 bg-black/30 hover:bg-black/40 rounded-xl transition-colors backdrop-blur-sm"
-                title="Edit your declaration"
+                title="Edit in Settings"
               >
                 <Edit2 className="w-5 h-5 text-white" />
               </button>
@@ -565,45 +1037,15 @@ export function ProfileBusinessCard({ userId, onClose, onSave: onSaveCallback }:
           </div>
         </div>
 
-        {/* Guardian Archetype Selector */}
-        {isEditing && (
-          <div className="relative mt-5 pt-5 border-t border-white/30">
-            <p className="text-xs font-black text-white uppercase tracking-wider mb-3 drop-shadow-sm">
-              Choose Your Guardian Value
-            </p>
-            <div className="grid grid-cols-7 gap-2">
-              {Object.values(GUARDIAN_ARCHETYPES).map((a) => {
-                const AIcon = a.icon
-                const isSelected = selectedArchetype === a.id
-                return (
-                  <button
-                    key={a.id}
-                    onClick={() => setSelectedArchetype(a.id as ArchetypeType)}
-                    className={`flex flex-col items-center gap-1 p-3 rounded-xl text-xs font-bold transition-all ${
-                      isSelected
-                        ? 'bg-white shadow-lg scale-105'
-                        : 'bg-black/20 hover:bg-black/30'
-                    }`}
-                    style={{ color: isSelected ? themeColorVar : 'white' }}
-                    title={`${a.name}: ${a.value}`}
-                  >
-                    <AIcon className="w-5 h-5" />
-                    <span className="text-[9px] font-black">{a.value}</span>
-                  </button>
-                )
-              })}
-            </div>
-          </div>
-        )}
       </div>
 
-      <CardContent className="p-6">
-        {/* Main Identity Card */}
-        <div className="flex flex-col lg:flex-row gap-6">
-          {/* Left: Core Identity */}
+      <CardContent className="p-4">
+        {/* Main Identity Card - stack vertically in narrow containers */}
+        <div className="flex flex-col gap-4">
+          {/* Core Identity */}
           <div
-            className="flex-shrink-0 p-6 rounded-2xl lg:min-w-[320px] relative overflow-hidden"
-            style={{ backgroundColor: themeColorVar }}
+            className="p-5 rounded-2xl relative overflow-hidden"
+            style={{ background: archetypeGradient }}
           >
             {/* Dark overlay for text contrast */}
             <div className="absolute inset-0 bg-black/25 rounded-2xl" />
@@ -612,21 +1054,21 @@ export function ProfileBusinessCard({ userId, onClose, onSave: onSaveCallback }:
 
             <div className="relative text-white">
               {/* Avatar and Name */}
-              <div className="flex items-center gap-4 mb-5">
-                <div className="w-20 h-20 rounded-2xl bg-black/30 flex items-center justify-center border-2 border-white/30 backdrop-blur-sm">
-                  <User className="w-10 h-10 text-white" />
+              <div className="flex items-center gap-3 mb-4">
+                <div className="w-16 h-16 rounded-xl bg-black/30 flex items-center justify-center border-2 border-white/30 backdrop-blur-sm flex-shrink-0">
+                  <User className="w-8 h-8 text-white" />
                 </div>
-                <div className="flex-1">
+                <div className="flex-1 min-w-0">
                   {isEditing ? (
                     <input
                       type="text"
                       value={editedProfile.name || ''}
                       onChange={(e) => setEditedProfile(prev => ({ ...prev, name: e.target.value }))}
-                      className="text-xl font-black bg-transparent border-b-2 border-white/50 focus:border-white outline-none w-full mb-1 placeholder-white/50 text-white"
+                      className="text-lg font-black bg-transparent border-b-2 border-white/50 focus:border-white outline-none w-full mb-1 placeholder-white/50 text-white"
                       placeholder="Your Name"
                     />
                   ) : (
-                    <h3 className="text-xl font-black drop-shadow-md">{profile.name || 'Anonymous'}</h3>
+                    <h3 className="text-lg font-black drop-shadow-md truncate">{profile.name || 'Anonymous'}</h3>
                   )}
                   {isEditing ? (
                     <input
@@ -637,16 +1079,16 @@ export function ProfileBusinessCard({ userId, onClose, onSave: onSaveCallback }:
                       placeholder="Your role or calling"
                     />
                   ) : (
-                    <p className="text-sm font-medium text-white/90">{profile.headline || archetype.title}</p>
+                    <p className="text-sm font-medium text-white/90 truncate">{profile.headline || archetype.title}</p>
                   )}
                 </div>
               </div>
 
               {/* The Declaration */}
-              <div className="mb-5 p-4 bg-black/20 rounded-xl backdrop-blur-sm border border-white/20">
-                <div className="flex items-center gap-2 mb-2">
-                  <ScrollText className="w-4 h-4 text-white/70" />
-                  <p className="text-[10px] font-black uppercase text-white/70 tracking-wider">My Declaration</p>
+              <div className="mb-4 p-3 bg-black/20 rounded-lg backdrop-blur-sm border border-white/20">
+                <div className="flex items-center gap-2 mb-1.5">
+                  <ScrollText className="w-3.5 h-3.5 text-white/70" />
+                  <p className="text-[9px] font-black uppercase text-white/70 tracking-wider">My Declaration</p>
                 </div>
                 {isEditing ? (
                   <textarea
@@ -666,10 +1108,10 @@ export function ProfileBusinessCard({ userId, onClose, onSave: onSaveCallback }:
               </div>
 
               {/* Contact Info */}
-              <div className="space-y-2 text-sm mb-5">
+              <div className="space-y-1.5 text-xs mb-4">
                 {(profile.location || isEditing) && (
                   <div className="flex items-center gap-2">
-                    <MapPin className="w-4 h-4 text-white/75" />
+                    <MapPin className="w-3.5 h-3.5 text-white/75 flex-shrink-0" />
                     {isEditing ? (
                       <input
                         type="text"
@@ -685,33 +1127,33 @@ export function ProfileBusinessCard({ userId, onClose, onSave: onSaveCallback }:
                 )}
                 {!profile.location && !isEditing && (
                   <div className="flex items-center gap-2 opacity-30">
-                    <MapPin className="w-4 h-4 text-white" />
-                    <span className="italic border-b border-dashed border-white/50 text-white">Add your location</span>
+                    <MapPin className="w-3.5 h-3.5 text-white flex-shrink-0" />
+                    <span className="italic border-b border-dashed border-white/50 text-white text-xs">Add location</span>
                   </div>
                 )}
 
                 {profile.email && (
                   <div className="flex items-center gap-2">
-                    <Mail className="w-4 h-4 text-white/75" />
-                    <span className="text-white">{profile.email}</span>
+                    <Mail className="w-3.5 h-3.5 text-white/75 flex-shrink-0" />
+                    <span className="text-white truncate">{profile.email}</span>
                   </div>
                 )}
               </div>
 
               {/* YOUR STOCK */}
-              <div className="pt-4 border-t border-white/20">
-                <div className="flex items-center justify-between mb-2">
-                  <div className="flex items-center gap-2">
-                    <Infinity className="w-5 h-5 text-white/70" />
-                    <p className="text-[10px] font-black uppercase text-white/70 tracking-wider">Your Stock</p>
+              <div className="pt-3 border-t border-white/20">
+                <div className="flex items-center justify-between mb-1">
+                  <div className="flex items-center gap-1.5">
+                    <Infinity className="w-4 h-4 text-white/70" />
+                    <p className="text-[9px] font-black uppercase text-white/70 tracking-wider">Your Stock</p>
                   </div>
-                  <p className="text-3xl font-black text-white drop-shadow-md">{stockScore}</p>
+                  <p className="text-2xl font-black text-white drop-shadow-md">{stockScore}</p>
                 </div>
-                <p className="text-[10px] font-medium text-white/60 text-right">
+                <p className="text-[9px] font-medium text-white/60 text-right">
                   Contribution to Project Exodus
                 </p>
                 {memberYears > 0 && (
-                  <p className="text-[10px] font-bold text-white/50 text-right mt-1">
+                  <p className="text-[9px] font-bold text-white/50 text-right mt-0.5">
                     {memberYears} year{memberYears > 1 ? 's' : ''} of service
                   </p>
                 )}
@@ -719,38 +1161,38 @@ export function ProfileBusinessCard({ userId, onClose, onSave: onSaveCallback }:
             </div>
           </div>
 
-          {/* Right: Values & Contributions */}
-          <div className="flex-1 space-y-5">
+          {/* Values & Contributions */}
+          <div className="space-y-3">
             {/* Guardian Value */}
             <div
-              className="p-4 rounded-xl border-2"
+              className="p-3 rounded-lg border-2"
               style={{
-                borderColor: themeColorVar,
-                backgroundColor: `color-mix(in srgb, ${themeColorVar} 10%, var(--background))`
+                borderColor: archetypeColor,
+                backgroundColor: `color-mix(in srgb, ${archetypeColor} 10%, var(--background))`
               }}
             >
-              <div className="flex items-center gap-3 mb-2">
-                <ArchetypeIcon className="w-6 h-6" style={{ color: themeColorVar }} />
-                <div>
-                  <p className="text-xs font-black text-[var(--muted-foreground)] uppercase">I Embody</p>
-                  <p className="text-lg font-black" style={{ color: themeColorVar }}>{archetype.value}</p>
+              <div className="flex items-center gap-2 mb-1.5">
+                <ArchetypeIcon className="w-5 h-5 flex-shrink-0" style={{ color: archetypeColor }} />
+                <div className="min-w-0">
+                  <p className="text-[9px] font-black text-[var(--muted-foreground)] uppercase">I Embody</p>
+                  <p className="text-base font-black truncate" style={{ color: archetypeColor }}>{archetype.value}</p>
                 </div>
               </div>
-              <p className="text-sm font-medium text-[var(--muted-foreground)] italic">{archetype.description}</p>
+              <p className="text-xs font-medium text-[var(--muted-foreground)] italic line-clamp-2">{archetype.description}</p>
             </div>
 
             {/* Commandments Alignment */}
             <div>
-              <h4 className="text-xs font-black text-[var(--muted-foreground)] uppercase mb-2 flex items-center gap-2">
-                <Shield className="w-4 h-4" />
-                Values Alignment
+              <h4 className="text-[9px] font-black text-[var(--muted-foreground)] uppercase mb-1.5 flex items-center gap-1.5">
+                <Shield className="w-3.5 h-3.5" />
+                Values
               </h4>
-              <div className="flex flex-wrap gap-2">
+              <div className="flex flex-wrap gap-1.5">
                 {archetype.commandments.map((value, idx) => (
                   <span
                     key={idx}
-                    className="px-3 py-1.5 text-white text-xs font-bold rounded-full"
-                    style={{ backgroundColor: themeColorVar }}
+                    className="px-2 py-1 text-white text-[10px] font-bold rounded-full"
+                    style={{ backgroundColor: archetypeColor }}
                   >
                     {value}
                   </span>
@@ -760,32 +1202,32 @@ export function ProfileBusinessCard({ userId, onClose, onSave: onSaveCallback }:
 
             {/* Expertise */}
             <div>
-              <h4 className="text-xs font-black text-[var(--muted-foreground)] uppercase mb-2 flex items-center gap-2">
-                <Sparkles className="w-4 h-4" />
+              <h4 className="text-[9px] font-black text-[var(--muted-foreground)] uppercase mb-1.5 flex items-center gap-1.5">
+                <Sparkles className="w-3.5 h-3.5" />
                 Expertise
               </h4>
               {profile.skills.length > 0 ? (
-                <div className="flex flex-wrap gap-2">
-                  {profile.skills.slice(0, 6).map((skill, idx) => (
+                <div className="flex flex-wrap gap-1.5">
+                  {profile.skills.slice(0, 4).map((skill, idx) => (
                     <span
                       key={idx}
-                      className="px-3 py-1 bg-[var(--primary)] text-[var(--primary-foreground)] text-xs font-bold rounded-full"
+                      className="px-2 py-0.5 bg-[var(--primary)] text-[var(--primary-foreground)] text-[10px] font-bold rounded-full"
                     >
                       {skill}
                     </span>
                   ))}
-                  {profile.skills.length > 6 && (
-                    <span className="px-3 py-1 bg-[var(--muted)] text-[var(--muted-foreground)] text-xs font-bold rounded-full">
-                      +{profile.skills.length - 6} more
+                  {profile.skills.length > 4 && (
+                    <span className="px-2 py-0.5 bg-[var(--muted)] text-[var(--muted-foreground)] text-[10px] font-bold rounded-full">
+                      +{profile.skills.length - 4}
                     </span>
                   )}
                 </div>
               ) : (
-                <div className="flex flex-wrap gap-2 opacity-30">
-                  {['Your skill', 'Another skill', 'More skills'].map((ghost, idx) => (
+                <div className="flex flex-wrap gap-1.5 opacity-30">
+                  {['Skill 1', 'Skill 2'].map((ghost, idx) => (
                     <span
                       key={idx}
-                      className="px-3 py-1 border-2 border-dashed border-[var(--muted-foreground)] text-[var(--muted-foreground)] text-xs font-bold rounded-full italic"
+                      className="px-2 py-0.5 border border-dashed border-[var(--muted-foreground)] text-[var(--muted-foreground)] text-[10px] font-bold rounded-full italic"
                     >
                       {ghost}
                     </span>
@@ -795,37 +1237,37 @@ export function ProfileBusinessCard({ userId, onClose, onSave: onSaveCallback }:
             </div>
 
             {/* STOCK Breakdown */}
-            <div className="grid grid-cols-2 gap-3">
-              <div className="p-3 bg-[var(--muted)] rounded-xl">
-                <p className="text-2xl font-black" style={{ color: themeColorVar }}>{profile.projectsCreated || 0}</p>
-                <p className="text-[10px] font-bold text-[var(--muted-foreground)] uppercase">Projects Built</p>
+            <div className="grid grid-cols-2 gap-1.5">
+              <div className="p-2 bg-[var(--muted)] rounded-lg">
+                <p className="text-lg font-black" style={{ color: archetypeColor }}>{profile.projectsCreated || 0}</p>
+                <p className="text-[8px] font-bold text-[var(--muted-foreground)] uppercase">Projects</p>
               </div>
-              <div className="p-3 bg-[var(--muted)] rounded-xl">
-                <p className="text-2xl font-black" style={{ color: themeColorVar }}>{profile.articlesWritten || 0}</p>
-                <p className="text-[10px] font-bold text-[var(--muted-foreground)] uppercase">Articles Written</p>
+              <div className="p-2 bg-[var(--muted)] rounded-lg">
+                <p className="text-lg font-black" style={{ color: archetypeColor }}>{profile.articlesWritten || 0}</p>
+                <p className="text-[8px] font-bold text-[var(--muted-foreground)] uppercase">Articles</p>
               </div>
-              <div className="p-3 bg-[var(--muted)] rounded-xl">
-                <p className="text-2xl font-black" style={{ color: themeColorVar }}>{profile.followers || 0}</p>
-                <p className="text-[10px] font-bold text-[var(--muted-foreground)] uppercase">Followers</p>
+              <div className="p-2 bg-[var(--muted)] rounded-lg">
+                <p className="text-lg font-black" style={{ color: archetypeColor }}>{profile.followers || 0}</p>
+                <p className="text-[8px] font-bold text-[var(--muted-foreground)] uppercase">Followers</p>
               </div>
-              <div className="p-3 bg-[var(--muted)] rounded-xl">
-                <p className="text-2xl font-black" style={{ color: themeColorVar }}>{profile.modulesCompleted || 0}</p>
-                <p className="text-[10px] font-bold text-[var(--muted-foreground)] uppercase">Modules Completed</p>
+              <div className="p-2 bg-[var(--muted)] rounded-lg">
+                <p className="text-lg font-black" style={{ color: archetypeColor }}>{profile.modulesCompleted || 0}</p>
+                <p className="text-[8px] font-bold text-[var(--muted-foreground)] uppercase">Modules</p>
               </div>
             </div>
 
             {/* Social Links */}
             {hasSocialLinks && (
-              <div className="flex flex-wrap gap-2">
+              <div className="flex flex-wrap gap-1.5">
                 {profile.social.website && (
                   <a
                     href={profile.social.website}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="flex items-center gap-2 px-3 py-2 bg-[var(--muted)] text-[var(--foreground)] rounded-lg hover:bg-[var(--primary)] hover:text-[var(--primary-foreground)] transition-colors text-sm font-bold"
+                    className="flex items-center gap-1.5 px-2 py-1.5 bg-[var(--muted)] text-[var(--foreground)] rounded-lg hover:bg-[var(--primary)] hover:text-[var(--primary-foreground)] transition-colors text-xs font-bold"
                   >
-                    <Globe className="w-4 h-4" />
-                    Website
+                    <Globe className="w-3.5 h-3.5" />
+                    Web
                   </a>
                 )}
                 {profile.social.linkedin && (
@@ -833,9 +1275,9 @@ export function ProfileBusinessCard({ userId, onClose, onSave: onSaveCallback }:
                     href={profile.social.linkedin}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="flex items-center gap-2 px-3 py-2 bg-[var(--muted)] text-[var(--foreground)] rounded-lg hover:bg-[var(--accent)] hover:text-[var(--accent-foreground)] transition-colors text-sm font-bold"
+                    className="flex items-center gap-1.5 px-2 py-1.5 bg-[var(--muted)] text-[var(--foreground)] rounded-lg hover:bg-[var(--accent)] hover:text-[var(--accent-foreground)] transition-colors text-xs font-bold"
                   >
-                    <Linkedin className="w-4 h-4" />
+                    <Linkedin className="w-3.5 h-3.5" />
                     LinkedIn
                   </a>
                 )}
@@ -844,23 +1286,23 @@ export function ProfileBusinessCard({ userId, onClose, onSave: onSaveCallback }:
                     href={profile.social.twitter}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="flex items-center gap-2 px-3 py-2 bg-[var(--muted)] text-[var(--foreground)] rounded-lg hover:bg-[var(--accent)] hover:text-[var(--accent-foreground)] transition-colors text-sm font-bold"
+                    className="flex items-center gap-1.5 px-2 py-1.5 bg-[var(--muted)] text-[var(--foreground)] rounded-lg hover:bg-[var(--accent)] hover:text-[var(--accent-foreground)] transition-colors text-xs font-bold"
                   >
-                    <Twitter className="w-4 h-4" />
-                    Twitter
+                    <Twitter className="w-3.5 h-3.5" />
+                    X
                   </a>
                 )}
               </div>
             )}
             {!hasSocialLinks && (
-              <div className="flex flex-wrap gap-2 opacity-30">
-                <span className="flex items-center gap-2 px-3 py-2 border-2 border-dashed border-[var(--muted-foreground)] rounded-lg text-sm font-bold text-[var(--muted-foreground)] italic">
-                  <Globe className="w-4 h-4" />
-                  Add website
+              <div className="flex flex-wrap gap-1.5 opacity-30">
+                <span className="flex items-center gap-1.5 px-2 py-1.5 border border-dashed border-[var(--muted-foreground)] rounded-lg text-xs font-bold text-[var(--muted-foreground)] italic">
+                  <Globe className="w-3.5 h-3.5" />
+                  Website
                 </span>
-                <span className="flex items-center gap-2 px-3 py-2 border-2 border-dashed border-[var(--muted-foreground)] rounded-lg text-sm font-bold text-[var(--muted-foreground)] italic">
-                  <Linkedin className="w-4 h-4" />
-                  Add LinkedIn
+                <span className="flex items-center gap-1.5 px-2 py-1.5 border border-dashed border-[var(--muted-foreground)] rounded-lg text-xs font-bold text-[var(--muted-foreground)] italic">
+                  <Linkedin className="w-3.5 h-3.5" />
+                  LinkedIn
                 </span>
               </div>
             )}
@@ -887,13 +1329,13 @@ export function ProfileBusinessCard({ userId, onClose, onSave: onSaveCallback }:
               {/* Experience */}
               <div>
                 <h4 className="text-sm font-black text-[var(--foreground)] mb-2 flex items-center gap-2">
-                  <Briefcase className="w-4 h-4" style={{ color: themeColorVar }} />
+                  <Briefcase className="w-4 h-4" style={{ color: archetypeColor }} />
                   Experience
                 </h4>
                 {profile.experience.length > 0 ? (
                   <div className="space-y-3">
                     {profile.experience.slice(0, 2).map((exp: any, idx: number) => (
-                      <div key={idx} className="border-l-2 pl-3" style={{ borderColor: themeColorVar }}>
+                      <div key={idx} className="border-l-2 pl-3" style={{ borderColor: archetypeColor }}>
                         <h5 className="text-sm font-black text-[var(--foreground)]">{exp.title}</h5>
                         <p className="text-xs font-bold text-[var(--muted-foreground)]">{exp.company}</p>
                         <p className="text-[10px] font-medium text-[var(--muted-foreground)]">
@@ -916,13 +1358,13 @@ export function ProfileBusinessCard({ userId, onClose, onSave: onSaveCallback }:
               {/* Education */}
               <div>
                 <h4 className="text-sm font-black text-[var(--foreground)] mb-2 flex items-center gap-2">
-                  <GraduationCap className="w-4 h-4" style={{ color: themeColorVar }} />
+                  <GraduationCap className="w-4 h-4" style={{ color: archetypeColor }} />
                   Education
                 </h4>
                 {profile.education.length > 0 ? (
                   <div className="space-y-3">
                     {profile.education.slice(0, 2).map((edu: any, idx: number) => (
-                      <div key={idx} className="border-l-2 pl-3" style={{ borderColor: themeColorVar }}>
+                      <div key={idx} className="border-l-2 pl-3" style={{ borderColor: archetypeColor }}>
                         <h5 className="text-sm font-black text-[var(--foreground)]">{edu.degree}</h5>
                         <p className="text-xs font-bold text-[var(--muted-foreground)]">{edu.school}</p>
                         <p className="text-[10px] font-medium text-[var(--muted-foreground)]">{edu.graduationYear}</p>
@@ -943,7 +1385,7 @@ export function ProfileBusinessCard({ userId, onClose, onSave: onSaveCallback }:
               {/* Achievements */}
               <div>
                 <h4 className="text-sm font-black text-[var(--foreground)] mb-2 flex items-center gap-2">
-                  <Award className="w-4 h-4" style={{ color: themeColorVar }} />
+                  <Award className="w-4 h-4" style={{ color: archetypeColor }} />
                   Achievements
                 </h4>
                 {profile.achievements.length > 0 ? (
@@ -973,7 +1415,7 @@ export function ProfileBusinessCard({ userId, onClose, onSave: onSaveCallback }:
                   href={profile.resumeUrl}
                   download={profile.resumeFileName || 'resume.pdf'}
                   className="inline-flex items-center gap-2 px-4 py-2 text-white rounded-lg hover:opacity-90 transition-opacity text-sm font-bold"
-                  style={{ backgroundColor: themeColorVar }}
+                  style={{ backgroundColor: archetypeColor }}
                 >
                   <Download className="w-4 h-4" />
                   Download Resume
@@ -995,11 +1437,11 @@ export function ProfileBusinessCard({ userId, onClose, onSave: onSaveCallback }:
               "{archetype.scripture}"
             </p>
             <div className="flex items-center justify-center gap-2 mt-3">
-              <div className="w-2 h-2 rounded-full" style={{ backgroundColor: themeColorVar }} />
+              <div className="w-2 h-2 rounded-full" style={{ backgroundColor: archetypeColor }} />
               <p className="text-[10px] font-black text-[var(--muted-foreground)] uppercase tracking-widest">
                 We the People of Project Exodus
               </p>
-              <div className="w-2 h-2 rounded-full" style={{ backgroundColor: themeColorVar }} />
+              <div className="w-2 h-2 rounded-full" style={{ backgroundColor: archetypeColor }} />
             </div>
           </div>
         </div>
@@ -1014,5 +1456,6 @@ export function ProfileBusinessCard({ userId, onClose, onSave: onSaveCallback }:
         isSaving={isSaving}
       />
     </Card>
+    </>
   )
 }

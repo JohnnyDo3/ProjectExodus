@@ -84,6 +84,15 @@ export function Header() {
           {/* Desktop Auth Section */}
           <div className="hidden lg:flex items-center gap-3 xl:gap-4">
             <ThemeToggle />
+            {session && (
+              <Link
+                href="/messages"
+                className="relative p-2 rounded-lg hover:bg-[var(--muted)] transition-colors"
+                title="Messages"
+              >
+                <MessageCircle className="w-5 h-5 text-[var(--foreground)]" />
+              </Link>
+            )}
             {session && <NotificationBell />}
             {status === 'loading' ? (
               <div className="w-24 h-9 bg-[var(--muted)] rounded-lg animate-pulse" />
@@ -140,14 +149,6 @@ export function Header() {
                         >
                           <Calendar className="w-4 h-4 text-theme-secondary" />
                           <span className="font-bold text-[var(--foreground)] group-hover:text-theme-secondary">My Events</span>
-                        </Link>
-                        <Link
-                          href="/messages"
-                          className="flex items-center gap-3 px-4 py-2 rounded-lg hover:bg-[var(--muted)] transition-colors group"
-                          onClick={() => setUserMenuOpen(false)}
-                        >
-                          <MessageCircle className="w-4 h-4 text-theme-primary" />
-                          <span className="font-bold text-[var(--foreground)] group-hover:text-theme-primary">Messages</span>
                         </Link>
                         <div className="border-t-2 border-[var(--border)] mt-2 pt-2">
                           <Link

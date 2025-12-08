@@ -1,9 +1,9 @@
 'use client'
 
-import { useState, useCallback } from 'react'
+import { useState } from 'react'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/Card'
 import { Button } from '@/components/ui/Button'
-import { Star, MessageSquare, Reply, Trash2, User, Award, ChevronDown, ChevronUp, ThumbsUp, Users, Maximize2 } from 'lucide-react'
+import { Star, Reply, Trash2, User, Award, ChevronDown, ChevronUp, ThumbsUp, Users, Maximize2 } from 'lucide-react'
 import { useSession } from 'next-auth/react'
 import { formatDistanceToNow } from 'date-fns'
 
@@ -43,6 +43,237 @@ function buildReviewTree(reviews: PeerReview[], parentId: string | null = null):
     }))
 }
 
+// StarRating component - extracted outside to prevent re-creation on every render
+function StarRating({
+  value,
+  onChange,
+  readonly = false,
+  size = 'md'
+}: {
+  value: number
+  onChange?: (v: number) => void
+  readonly?: boolean
+  size?: 'sm' | 'md'
+}) {
+  const sizeClasses = size === 'sm' ? 'w-4 h-4' : 'w-5 h-5'
+  return (
+    <div className="flex gap-1">
+      {[1, 2, 3, 4, 5].map(star => (
+        <button
+          key={star}
+          type="button"
+          disabled={readonly}
+          onClick={() => onChange?.(star)}
+          className={`${readonly ? 'cursor-default' : 'cursor-pointer hover:scale-110'} transition-transform`}
+        >
+          <Star
+            className={`${sizeClasses} ${star <= value ? 'fill-terra-500 text-terra-500' : 'text-[var(--foreground)]/30'}`}
+          />
+        </button>
+      ))}
+    </div>
+  )
+}
+
+// ReviewThread component - extracted outside to prevent focus loss on re-renders
+interface ReviewThreadProps {
+  review: PeerReview
+  depth?: number
+  articleAuthorId: string
+  sessionUserId?: string
+  replyingTo: string | null
+  replyContent: string
+  submitting: boolean
+  likingReviewId: string | null
+  onSetReplyingTo: (id: string | null) => void
+  onSetReplyContent: (content: string) => void
+  onSubmitReply: (parentId: string) => void
+  onLikeToggle: (reviewId: string) => void
+  onDeleteReview: (reviewId: string) => void
+}
+
+function ReviewThread({
+  review,
+  depth = 0,
+  articleAuthorId,
+  sessionUserId,
+  replyingTo,
+  replyContent,
+  submitting,
+  likingReviewId,
+  onSetReplyingTo,
+  onSetReplyContent,
+  onSubmitReply,
+  onLikeToggle,
+  onDeleteReview,
+}: ReviewThreadProps) {
+  const [collapsed, setCollapsed] = useState(false)
+  const isAuthor = review.user.id === articleAuthorId
+  const isOwnReview = sessionUserId === review.user.id
+  const isTopLevel = review.parentId === null
+  const hasReplies = review.replies && review.replies.length > 0
+
+  return (
+    <div className={`${depth > 0 ? 'ml-4 sm:ml-8 pl-4 border-l-2 border-[var(--border)]' : ''}`}>
+      <div className="py-4">
+        {/* User Info */}
+        <div className="flex items-start gap-3">
+          <div className="flex-shrink-0">
+            {review.user.image ? (
+              <img
+                src={review.user.image}
+                alt={review.user.name || 'User'}
+                className="w-10 h-10 rounded-full object-cover"
+              />
+            ) : (
+              <div className={`w-10 h-10 rounded-full flex items-center justify-center ${
+                isAuthor
+                  ? 'bg-gradient-to-br from-amber-400 to-amber-600'
+                  : 'bg-[var(--primary)]/20'
+              }`}>
+                <User className={`w-5 h-5 ${isAuthor ? 'text-white' : 'text-[var(--primary)]'}`} />
+              </div>
+            )}
+          </div>
+          <div className="flex-grow min-w-0">
+            <div className="flex items-center gap-2 flex-wrap">
+              <span className="font-bold text-[var(--foreground)]">
+                {review.user.name || 'Anonymous'}
+              </span>
+              {isAuthor && (
+                <span className="inline-flex items-center gap-1 px-2 py-0.5 bg-gradient-to-r from-amber-400 to-amber-500 rounded-full text-xs font-bold text-white">
+                  <Award className="w-3 h-3" />
+                  Author
+                </span>
+              )}
+              {isTopLevel && review.rating && (
+                <StarRating value={review.rating} readonly size="sm" />
+              )}
+              <span className="text-xs text-theme-muted">
+                {formatDistanceToNow(new Date(review.createdAt), { addSuffix: true })}
+              </span>
+            </div>
+
+            {/* Rating Details for top-level reviews */}
+            {isTopLevel && review.accuracy && review.clarity && review.relevance && (
+              <div className="flex gap-4 mt-1 text-xs text-theme-muted">
+                <span>Accuracy: {review.accuracy}/5</span>
+                <span>Clarity: {review.clarity}/5</span>
+                <span>Relevance: {review.relevance}/5</span>
+              </div>
+            )}
+
+            {/* Content */}
+            <p className="mt-2 text-[var(--foreground)] whitespace-pre-wrap">{review.content}</p>
+
+            {/* Actions */}
+            <div className="flex items-center gap-4 mt-2">
+              {/* Like Button */}
+              <button
+                onClick={() => onLikeToggle(review.id)}
+                disabled={!sessionUserId || likingReviewId === review.id}
+                className={`flex items-center gap-1 text-xs font-medium transition-colors ${
+                  review.liked
+                    ? 'text-theme-primary'
+                    : 'text-theme-muted hover:text-theme-primary'
+                } ${!sessionUserId ? 'opacity-50 cursor-not-allowed' : ''}`}
+                title={sessionUserId ? (review.liked ? 'Unlike' : 'Like') : 'Sign in to like'}
+              >
+                <ThumbsUp className={`w-3.5 h-3.5 ${review.liked ? 'fill-current' : ''}`} />
+                {(review.likeCount || 0) > 0 && <span>{review.likeCount}</span>}
+              </button>
+              {sessionUserId && (
+                <button
+                  onClick={() => onSetReplyingTo(replyingTo === review.id ? null : review.id)}
+                  className="flex items-center gap-1 text-xs font-medium text-theme-muted hover:text-theme-primary transition-colors"
+                >
+                  <Reply className="w-3.5 h-3.5" />
+                  Reply
+                </button>
+              )}
+              {isOwnReview && (
+                <button
+                  onClick={() => onDeleteReview(review.id)}
+                  className="flex items-center gap-1 text-xs font-medium text-red-500 hover:text-red-600 transition-colors"
+                >
+                  <Trash2 className="w-3.5 h-3.5" />
+                  Delete
+                </button>
+              )}
+              {hasReplies && (
+                <button
+                  onClick={() => setCollapsed(!collapsed)}
+                  className="flex items-center gap-1 text-xs font-medium text-theme-muted hover:text-theme-primary transition-colors"
+                >
+                  {collapsed ? <ChevronDown className="w-3.5 h-3.5" /> : <ChevronUp className="w-3.5 h-3.5" />}
+                  {collapsed ? `Show ${review.replies!.length} replies` : 'Hide replies'}
+                </button>
+              )}
+            </div>
+
+            {/* Reply Form */}
+            {replyingTo === review.id && (
+              <div className="mt-3 p-3 bg-[var(--muted)] rounded-lg">
+                <textarea
+                  value={replyContent}
+                  onChange={(e) => onSetReplyContent(e.target.value)}
+                  placeholder="Write a reply..."
+                  className="w-full p-2 text-sm border-2 border-[var(--border)] rounded-lg bg-white dark:bg-earth-800 text-[var(--foreground)] placeholder-earth-400 dark:placeholder-sand-500"
+                  rows={2}
+                  autoFocus
+                />
+                <div className="flex gap-2 mt-2">
+                  <Button
+                    size="sm"
+                    onClick={() => onSubmitReply(review.id)}
+                    disabled={submitting || !replyContent.trim()}
+                  >
+                    {submitting ? 'Posting...' : 'Post Reply'}
+                  </Button>
+                  <Button
+                    size="sm"
+                    variant="outline"
+                    onClick={() => {
+                      onSetReplyingTo(null)
+                      onSetReplyContent('')
+                    }}
+                  >
+                    Cancel
+                  </Button>
+                </div>
+              </div>
+            )}
+          </div>
+        </div>
+      </div>
+
+      {/* Nested Replies */}
+      {!collapsed && hasReplies && (
+        <div>
+          {review.replies!.map(reply => (
+            <ReviewThread
+              key={reply.id}
+              review={reply}
+              depth={depth + 1}
+              articleAuthorId={articleAuthorId}
+              sessionUserId={sessionUserId}
+              replyingTo={replyingTo}
+              replyContent={replyContent}
+              submitting={submitting}
+              likingReviewId={likingReviewId}
+              onSetReplyingTo={onSetReplyingTo}
+              onSetReplyContent={onSetReplyContent}
+              onSubmitReply={onSubmitReply}
+              onLikeToggle={onLikeToggle}
+              onDeleteReview={onDeleteReview}
+            />
+          ))}
+        </div>
+      )}
+    </div>
+  )
+}
+
 export function ArticleReviewSection({ articleId, articleAuthorId, initialReviews, onExpand }: ArticleReviewSectionProps) {
   const { data: session } = useSession()
   const [reviews, setReviews] = useState<PeerReview[]>(() => buildReviewTree(initialReviews))
@@ -61,6 +292,11 @@ export function ArticleReviewSection({ articleId, articleAuthorId, initialReview
   })
 
   const [replyContent, setReplyContent] = useState('')
+
+  // Check if user already has a top-level review
+  const userHasReview = session?.user?.id && reviews.some(
+    r => r.parentId === null && r.user.id === session.user.id
+  )
 
   // Handle like toggle
   const handleLikeToggle = async (reviewId: string) => {
@@ -209,196 +445,6 @@ export function ArticleReviewSection({ articleId, articleAuthorId, initialReview
       }))
   }
 
-  const StarRating = ({ value, onChange, readonly = false, size = 'md' }: { value: number, onChange?: (v: number) => void, readonly?: boolean, size?: 'sm' | 'md' }) => {
-    const sizeClasses = size === 'sm' ? 'w-4 h-4' : 'w-5 h-5'
-    return (
-      <div className="flex gap-1">
-        {[1, 2, 3, 4, 5].map(star => (
-          <button
-            key={star}
-            type="button"
-            disabled={readonly}
-            onClick={() => onChange?.(star)}
-            className={`${readonly ? 'cursor-default' : 'cursor-pointer hover:scale-110'} transition-transform`}
-          >
-            <Star
-              className={`${sizeClasses} ${star <= value ? 'fill-terra-500 text-terra-500' : 'text-[var(--foreground)]/30'}`}
-            />
-          </button>
-        ))}
-      </div>
-    )
-  }
-
-  // Recursive Review Thread Component
-  const ReviewThread = ({ review, depth = 0 }: { review: PeerReview, depth?: number }) => {
-    const [collapsed, setCollapsed] = useState(false)
-    const isAuthor = review.user.id === articleAuthorId
-    const isOwnReview = session?.user?.id === review.user.id
-    const isTopLevel = review.parentId === null
-    const hasReplies = review.replies && review.replies.length > 0
-
-    return (
-      <div className={`${depth > 0 ? 'ml-4 sm:ml-8 pl-4 border-l-2 border-[var(--border)]' : ''}`}>
-        <div className="py-4">
-          {/* User Info */}
-          <div className="flex items-start gap-3">
-            <div className="flex-shrink-0">
-              {review.user.image ? (
-                <img
-                  src={review.user.image}
-                  alt={review.user.name || 'User'}
-                  className="w-10 h-10 rounded-full object-cover"
-                />
-              ) : (
-                <div className={`w-10 h-10 rounded-full flex items-center justify-center ${
-                  isAuthor
-                    ? 'bg-gradient-to-br from-amber-400 to-amber-600'
-                    : 'bg-[var(--primary)]/20'
-                }`}>
-                  <User className={`w-5 h-5 ${isAuthor ? 'text-white' : 'text-[var(--primary)]'}`} />
-                </div>
-              )}
-            </div>
-            <div className="flex-grow min-w-0">
-              <div className="flex items-center gap-2 flex-wrap">
-                <span className="font-bold text-[var(--foreground)]">
-                  {review.user.name || 'Anonymous'}
-                </span>
-                {isAuthor && (
-                  <span className="inline-flex items-center gap-1 px-2 py-0.5 bg-gradient-to-r from-amber-400 to-amber-500 rounded-full text-xs font-bold text-white">
-                    <Award className="w-3 h-3" />
-                    Author
-                  </span>
-                )}
-                {isTopLevel && review.rating && (
-                  <StarRating value={review.rating} readonly size="sm" />
-                )}
-                <span className="text-xs text-theme-muted">
-                  {formatDistanceToNow(new Date(review.createdAt), { addSuffix: true })}
-                </span>
-              </div>
-
-              {/* Rating Details for top-level reviews */}
-              {isTopLevel && review.accuracy && review.clarity && review.relevance && (
-                <div className="flex gap-4 mt-1 text-xs text-theme-muted">
-                  <span>Accuracy: {review.accuracy}/5</span>
-                  <span>Clarity: {review.clarity}/5</span>
-                  <span>Relevance: {review.relevance}/5</span>
-                </div>
-              )}
-
-              {/* Content */}
-              <p className="mt-2 text-[var(--foreground)] whitespace-pre-wrap">{review.content}</p>
-
-              {/* Actions */}
-              <div className="flex items-center gap-4 mt-2">
-                {/* Like Button */}
-                <button
-                  onClick={() => handleLikeToggle(review.id)}
-                  disabled={!session || likingReviewId === review.id}
-                  className={`flex items-center gap-1 text-xs font-medium transition-colors ${
-                    review.liked
-                      ? 'text-theme-primary'
-                      : 'text-theme-muted hover:text-theme-primary'
-                  } ${!session ? 'opacity-50 cursor-not-allowed' : ''}`}
-                  title={session ? (review.liked ? 'Unlike' : 'Like') : 'Sign in to like'}
-                >
-                  <ThumbsUp className={`w-3.5 h-3.5 ${review.liked ? 'fill-current' : ''}`} />
-                  {(review.likeCount || 0) > 0 && <span>{review.likeCount}</span>}
-                </button>
-                {session && (
-                  <button
-                    onClick={() => setReplyingTo(replyingTo === review.id ? null : review.id)}
-                    className="flex items-center gap-1 text-xs font-medium text-theme-muted hover:text-theme-primary transition-colors"
-                  >
-                    <Reply className="w-3.5 h-3.5" />
-                    Reply
-                  </button>
-                )}
-                {isOwnReview && (
-                  <button
-                    onClick={() => handleDeleteReview(review.id)}
-                    className="flex items-center gap-1 text-xs font-medium text-red-500 hover:text-red-600 transition-colors"
-                  >
-                    <Trash2 className="w-3.5 h-3.5" />
-                    Delete
-                  </button>
-                )}
-                {hasReplies && (
-                  <button
-                    onClick={() => setCollapsed(!collapsed)}
-                    className="flex items-center gap-1 text-xs font-medium text-theme-muted hover:text-theme-primary transition-colors"
-                  >
-                    {collapsed ? <ChevronDown className="w-3.5 h-3.5" /> : <ChevronUp className="w-3.5 h-3.5" />}
-                    {collapsed ? `Show ${review.replies!.length} replies` : 'Hide replies'}
-                  </button>
-                )}
-              </div>
-
-              {/* Reply Form */}
-              {replyingTo === review.id && (
-                <div className="mt-3 p-3 bg-[var(--muted)] rounded-lg">
-                  <textarea
-                    value={replyContent}
-                    onChange={(e) => setReplyContent(e.target.value)}
-                    placeholder="Write a reply..."
-                    className="w-full p-2 text-sm border-2 border-[var(--border)] rounded-lg bg-white dark:bg-earth-800 text-[var(--foreground)] placeholder-earth-400 dark:placeholder-sand-500"
-                    rows={2}
-                  />
-                  <div className="flex gap-2 mt-2">
-                    <Button
-                      size="sm"
-                      onClick={() => handleSubmitReply(review.id)}
-                      disabled={submitting || !replyContent.trim()}
-                    >
-                      {submitting ? 'Posting...' : 'Post Reply'}
-                    </Button>
-                    <Button
-                      size="sm"
-                      variant="outline"
-                      onClick={() => {
-                        setReplyingTo(null)
-                        setReplyContent('')
-                      }}
-                    >
-                      Cancel
-                    </Button>
-                  </div>
-                </div>
-              )}
-            </div>
-          </div>
-        </div>
-
-        {/* Nested Replies */}
-        {!collapsed && hasReplies && (
-          <div>
-            {review.replies!.map(reply => (
-              <ReviewThread key={reply.id} review={reply} depth={depth + 1} />
-            ))}
-          </div>
-        )}
-      </div>
-    )
-  }
-
-  // Count total reviews and replies
-  const countItems = (items: PeerReview[]): { reviews: number, replies: number } => {
-    let reviews = 0
-    let replies = 0
-    items.forEach(item => {
-      if (item.parentId === null) reviews++
-      else replies++
-      if (item.replies) {
-        const counts = countItems(item.replies)
-        reviews += counts.reviews
-        replies += counts.replies
-      }
-    })
-    return { reviews, replies }
-  }
-
   const topLevelReviews = reviews.filter(r => r.parentId === null && r.rating !== null)
 
   return (
@@ -417,7 +463,7 @@ export function ArticleReviewSection({ articleId, articleAuthorId, initialReview
                   Expand
                 </Button>
               )}
-              {session && !showReviewForm && (
+              {session && !showReviewForm && !userHasReview && (
                 <Button size="sm" onClick={() => setShowReviewForm(true)}>
                   Join the Discussion
                 </Button>
@@ -505,7 +551,21 @@ export function ArticleReviewSection({ articleId, articleAuthorId, initialReview
           ) : (
             <div className="divide-y divide-[var(--border)]">
               {reviews.map(review => (
-                <ReviewThread key={review.id} review={review} />
+                <ReviewThread
+                  key={review.id}
+                  review={review}
+                  articleAuthorId={articleAuthorId}
+                  sessionUserId={session?.user?.id}
+                  replyingTo={replyingTo}
+                  replyContent={replyContent}
+                  submitting={submitting}
+                  likingReviewId={likingReviewId}
+                  onSetReplyingTo={setReplyingTo}
+                  onSetReplyContent={setReplyContent}
+                  onSubmitReply={handleSubmitReply}
+                  onLikeToggle={handleLikeToggle}
+                  onDeleteReview={handleDeleteReview}
+                />
               ))}
             </div>
           )}

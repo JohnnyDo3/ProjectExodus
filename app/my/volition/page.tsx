@@ -660,20 +660,25 @@ export default function MyVolitionPage() {
           // Mobile: Show active lane only
           <div className="container mx-auto px-4">
             {orderedLanes[activeLaneIndex] && (
-              <Lane
-                id={orderedLanes[activeLaneIndex].id}
-                title={orderedLanes[activeLaneIndex].title}
-                icon={iconMap[orderedLanes[activeLaneIndex].icon as keyof typeof iconMap] || User}
-                count={getLaneCount(orderedLanes[activeLaneIndex].id)}
-                gradient={orderedLanes[activeLaneIndex].gradient}
-                isCompact={isCompact}
-                isCustomizing={isCustomizing}
-                onRemove={() => toggleLane(orderedLanes[activeLaneIndex].id)}
-                emptyState={getLaneEmptyState(orderedLanes[activeLaneIndex].id)}
-                className="w-full"
-              >
-                {renderLaneContent(orderedLanes[activeLaneIndex].id)}
-              </Lane>
+              orderedLanes[activeLaneIndex].id === 'profile' ? (
+                // Profile lane: show ProfileBusinessCard directly
+                <ProfileBusinessCard userId={user.id || ''} />
+              ) : (
+                <Lane
+                  id={orderedLanes[activeLaneIndex].id}
+                  title={orderedLanes[activeLaneIndex].title}
+                  icon={iconMap[orderedLanes[activeLaneIndex].icon as keyof typeof iconMap] || User}
+                  count={getLaneCount(orderedLanes[activeLaneIndex].id)}
+                  gradient={orderedLanes[activeLaneIndex].gradient}
+                  isCompact={isCompact}
+                  isCustomizing={isCustomizing}
+                  onRemove={() => toggleLane(orderedLanes[activeLaneIndex].id)}
+                  emptyState={getLaneEmptyState(orderedLanes[activeLaneIndex].id)}
+                  className="w-full"
+                >
+                  {renderLaneContent(orderedLanes[activeLaneIndex].id)}
+                </Lane>
+              )
             )}
           </div>
         ) : (
@@ -688,6 +693,26 @@ export default function MyVolitionPage() {
               const Icon = iconMap[lane.icon as keyof typeof iconMap] || User
               const isSortable = ['projects', 'articles', 'learning', 'feed'].includes(lane.id)
               const itemIds = getLaneItemIds(lane.id)
+
+              // Profile lane: render ProfileBusinessCard directly without Lane wrapper
+              // Give business card more width (400px) than standard lanes (300px) for better display
+              if (lane.id === 'profile') {
+                return (
+                  <DraggableLane key={lane.id} id={lane.id} isCustomizing={isCustomizing}>
+                    <div className="relative w-[400px] min-w-[400px] flex-shrink-0">
+                      {isCustomizing && (
+                        <button
+                          onClick={() => toggleLane(lane.id)}
+                          className="absolute -top-2 -right-2 z-10 p-1.5 rounded-full bg-red-500 text-white shadow-lg hover:bg-red-600 transition-colors"
+                        >
+                          <X className="w-3.5 h-3.5" />
+                        </button>
+                      )}
+                      <ProfileBusinessCard userId={user.id || ''} />
+                    </div>
+                  </DraggableLane>
+                )
+              }
 
               // Wrap each lane in DraggableLane for lane reordering
               const laneContent = isSortable && itemIds.length > 0 ? (
