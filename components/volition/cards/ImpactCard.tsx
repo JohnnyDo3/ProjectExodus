@@ -1,6 +1,25 @@
 'use client'
 
-import { Leaf, Droplets, Recycle, Zap, TrendingUp } from 'lucide-react'
+import { useState, useEffect } from 'react'
+import { Leaf, Droplets, Recycle, Zap, TrendingUp, Award, Target, Loader2 } from 'lucide-react'
+
+interface BadgeProgress {
+  id: string
+  name: string
+  description: string
+  icon: string
+  progress: number
+  current: number
+  target: number
+  earned: boolean
+}
+
+interface BadgeStats {
+  badgesEarned: number
+  goalsCompleted: number
+  totalGoals: number
+  profileCompletion: number
+}
 
 interface ImpactCardProps {
   stats?: {
@@ -57,6 +76,41 @@ export function ImpactCard({
   isCompact = false,
   className = '',
 }: ImpactCardProps) {
+  const [badgeProgress, setBadgeProgress] = useState<BadgeProgress[]>([])
+  const [badgeStats, setBadgeStats] = useState<BadgeStats>({
+    badgesEarned: 0,
+    goalsCompleted: 0,
+    totalGoals: 0,
+    profileCompletion: 0,
+  })
+  const [loadingBadges, setLoadingBadges] = useState(true)
+
+  // Fetch badge progress
+  useEffect(() => {
+    const fetchBadgeData = async () => {
+      setLoadingBadges(true)
+      try {
+        const res = await fetch('/api/badges/progress')
+        if (res.ok) {
+          const data = await res.json()
+          setBadgeProgress(data.badgeProgress || [])
+          setBadgeStats(data.stats || {
+            badgesEarned: 0,
+            goalsCompleted: 0,
+            totalGoals: 0,
+            profileCompletion: 0,
+          })
+        }
+      } catch (error) {
+        console.error('Error fetching badge data:', error)
+      } finally {
+        setLoadingBadges(false)
+      }
+    }
+
+    fetchBadgeData()
+  }, [])
+
   const getStatValue = (id: string): number => {
     switch (id) {
       case 'co2':
@@ -159,6 +213,84 @@ export function ImpactCard({
           </div>
         </div>
       )}
+
+      {/* Badge Progress Section */}
+      <div className="border-t border-[var(--border)]">
+        <div className="p-4 bg-gradient-to-r from-amber-500/10 to-orange-500/10">
+          <div className="flex items-center gap-3">
+            <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-amber-500 to-orange-500 flex items-center justify-center">
+              <Award className="w-5 h-5 text-white" />
+            </div>
+            <div>
+              <h3 className="font-bold text-[var(--foreground)]">Badge Progress</h3>
+              <p className="text-xs text-[var(--foreground)]/60">
+                {badgeStats.badgesEarned} badges earned
+              </p>
+            </div>
+          </div>
+        </div>
+
+        <div className="p-4 space-y-3">
+          {loadingBadges ? (
+            <div className="flex justify-center py-4">
+              <Loader2 className="w-6 h-6 animate-spin text-amber-500" />
+            </div>
+          ) : badgeProgress.length > 0 ? (
+            <>
+              {badgeProgress.slice(0, 3).map((badge) => (
+                <div
+                  key={badge.id}
+                  className={`p-3 rounded-xl bg-amber-500/10 ${badge.earned ? 'ring-2 ring-green-500' : ''}`}
+                >
+                  <div className="flex items-center gap-3 mb-2">
+                    <span className="text-2xl">{badge.icon}</span>
+                    <div className="flex-1 min-w-0">
+                      <div className="flex items-center gap-2">
+                        <h4 className="font-bold text-sm text-[var(--foreground)] truncate">{badge.name}</h4>
+                        {badge.earned && <span className="text-green-500 text-xs">✓</span>}
+                      </div>
+                      <p className="text-xs text-[var(--foreground)]/60 truncate">{badge.description}</p>
+                    </div>
+                  </div>
+                  <div className="mt-2 bg-[var(--muted)] rounded-full h-2 overflow-hidden">
+                    <div
+                      className="h-full bg-gradient-to-r from-amber-500 to-orange-500 rounded-full transition-all duration-500"
+                      style={{ width: `${badge.progress}%` }}
+                    />
+                  </div>
+                  <p className="text-xs font-medium mt-1 text-[var(--foreground)]/60">
+                    {badge.earned ? 'Completed!' : `${badge.current}/${badge.target} - ${badge.progress}%`}
+                  </p>
+                </div>
+              ))}
+
+              {/* Stats Summary */}
+              <div className="grid grid-cols-3 gap-2 pt-2">
+                <div className="text-center p-2 bg-[var(--muted)] rounded-lg">
+                  <p className="text-lg font-bold text-amber-500">{badgeStats.badgesEarned}</p>
+                  <p className="text-[10px] font-bold text-[var(--foreground)]/50 uppercase">Earned</p>
+                </div>
+                <div className="text-center p-2 bg-[var(--muted)] rounded-lg">
+                  <p className="text-lg font-bold text-orange-500">
+                    {badgeStats.goalsCompleted}/{badgeStats.totalGoals}
+                  </p>
+                  <p className="text-[10px] font-bold text-[var(--foreground)]/50 uppercase">Goals</p>
+                </div>
+                <div className="text-center p-2 bg-[var(--muted)] rounded-lg">
+                  <p className="text-lg font-bold text-green-500">{badgeStats.profileCompletion}%</p>
+                  <p className="text-[10px] font-bold text-[var(--foreground)]/50 uppercase">Profile</p>
+                </div>
+              </div>
+            </>
+          ) : (
+            <div className="text-center py-4">
+              <Target className="w-8 h-8 text-amber-500 mx-auto mb-2" />
+              <p className="text-sm font-medium text-[var(--foreground)]">Start earning badges!</p>
+              <p className="text-xs text-[var(--foreground)]/60">Complete goals to unlock badges</p>
+            </div>
+          )}
+        </div>
+      </div>
     </div>
   )
 }
