@@ -29,17 +29,6 @@ import {
   Building2,
   Calendar as CalendarIcon,
   Eye,
-  EyeOff,
-  CreditCard,
-  Sword,
-  MessageCircle,
-  Stethoscope,
-  Lightbulb,
-  HeartHandshake,
-  Flower2,
-  Scale,
-  Crown,
-  Heart,
 } from 'lucide-react'
 import Link from 'next/link'
 
@@ -63,75 +52,6 @@ interface Education {
   endYear: string
   current: boolean
 }
-
-// Guardian Archetypes for Business Card
-const GUARDIAN_ARCHETYPES = {
-  michael: {
-    id: 'michael',
-    name: 'MICHAEL',
-    title: 'Guardian of Strength',
-    value: 'STRENGTH',
-    description: 'You stand unwavering. Your strength protects those who cannot protect themselves.',
-    icon: Sword,
-    gradient: 'from-red-600 to-orange-500',
-  },
-  gabriel: {
-    id: 'gabriel',
-    name: 'GABRIEL',
-    title: 'Guardian of Revelation',
-    value: 'REVELATION',
-    description: 'You bring truth to light. Your words reveal what must be known.',
-    icon: MessageCircle,
-    gradient: 'from-sky-500 to-blue-600',
-  },
-  raphael: {
-    id: 'raphael',
-    name: 'RAPHAEL',
-    title: 'Guardian of Healing',
-    value: 'HEALING',
-    description: 'You restore what is broken. Your presence brings healing to all.',
-    icon: Stethoscope,
-    gradient: 'from-emerald-500 to-teal-600',
-  },
-  uriel: {
-    id: 'uriel',
-    name: 'URIEL',
-    title: 'Guardian of Wisdom',
-    value: 'WISDOM',
-    description: 'You illuminate the path. Your wisdom guides those who seek understanding.',
-    icon: Lightbulb,
-    gradient: 'from-amber-500 to-yellow-500',
-  },
-  chamuel: {
-    id: 'chamuel',
-    name: 'CHAMUEL',
-    title: 'Guardian of Love',
-    value: 'LOVE',
-    description: 'You embody compassion. Your love connects hearts across all divides.',
-    icon: HeartHandshake,
-    gradient: 'from-pink-500 to-rose-600',
-  },
-  jophiel: {
-    id: 'jophiel',
-    name: 'JOPHIEL',
-    title: 'Guardian of Beauty',
-    value: 'BEAUTY',
-    description: 'You see beauty in all things. Your vision transforms the ordinary into extraordinary.',
-    icon: Flower2,
-    gradient: 'from-violet-500 to-purple-600',
-  },
-  zadkiel: {
-    id: 'zadkiel',
-    name: 'ZADKIEL',
-    title: 'Guardian of Mercy',
-    value: 'MERCY',
-    description: 'You offer forgiveness freely. Your mercy transforms pain into possibility.',
-    icon: Scale,
-    gradient: 'from-indigo-500 to-blue-700',
-  },
-}
-
-type ArchetypeKey = keyof typeof GUARDIAN_ARCHETYPES
 
 export default function SettingsPage() {
   const { data: session, status } = useSession()
@@ -171,12 +91,6 @@ export default function SettingsPage() {
   const [interests, setInterests] = useState<string[]>([])
   const [newInterest, setNewInterest] = useState('')
 
-  // Business Card state
-  const [businessCardData, setBusinessCardData] = useState({
-    declaration: '',
-    guardianArchetype: '' as ArchetypeKey | '',
-    phone: '',
-  })
 
   // Password form state
   const [passwordData, setPasswordData] = useState({
@@ -240,11 +154,6 @@ export default function SettingsPage() {
         setEducations(user.education || [])
         setSkills(user.expertise || [])
         setInterests(user.interests || [])
-        setBusinessCardData({
-          declaration: user.declaration || '',
-          guardianArchetype: user.guardianArchetype || '',
-          phone: user.phone || '',
-        })
         // Load privacy settings if they exist
         if (user.privacySettings) {
           setPrivacySettings({
@@ -509,7 +418,6 @@ export default function SettingsPage() {
 
   const tabs = [
     { id: 'profile', label: 'Profile Info', icon: User },
-    { id: 'businesscard', label: 'Business Card', icon: CreditCard },
     { id: 'experience', label: 'Work Experience', icon: Briefcase },
     { id: 'education', label: 'Education', icon: GraduationCap },
     { id: 'skills', label: 'Skills & Expertise', icon: Sparkles },
@@ -772,192 +680,6 @@ export default function SettingsPage() {
                         {isSaving ? 'SAVING...' : 'SAVE PROFILE'}
                       </Button>
                     </form>
-                  </CardContent>
-                </Card>
-              )}
-
-              {/* BUSINESS CARD TAB */}
-              {activeTab === 'businesscard' && (
-                <Card className="border-4 border-theme-primary">
-                  <CardHeader>
-                    <CardTitle className="text-2xl font-black flex items-center gap-2">
-                      <CreditCard className="w-6 h-6" />
-                      DIGITAL BUSINESS CARD
-                    </CardTitle>
-                    <p className="text-sm font-medium text-theme-muted">
-                      Customize your digital identity card that others see when they view your profile
-                    </p>
-                  </CardHeader>
-                  <CardContent className="space-y-8">
-                    {/* Guardian Archetype Selection */}
-                    <div className="space-y-4">
-                      <h3 className="text-lg font-black text-[var(--foreground)] flex items-center gap-2">
-                        <Shield className="w-5 h-5 text-theme-primary" />
-                        SELECT YOUR GUARDIAN ARCHETYPE
-                      </h3>
-                      <p className="text-sm text-theme-muted">
-                        Choose the archetype that best represents your values and how you contribute to Project Exodus
-                      </p>
-                      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3">
-                        {Object.entries(GUARDIAN_ARCHETYPES).map(([key, archetype]) => {
-                          const Icon = archetype.icon
-                          const isSelected = businessCardData.guardianArchetype === key
-                          return (
-                            <button
-                              key={key}
-                              type="button"
-                              onClick={() => setBusinessCardData({ ...businessCardData, guardianArchetype: key as ArchetypeKey })}
-                              className={`p-4 rounded-xl border-2 transition-all text-left ${
-                                isSelected
-                                  ? `border-transparent bg-gradient-to-br ${archetype.gradient} text-white shadow-lg`
-                                  : 'border-[var(--border)] bg-[var(--card)] hover:border-theme-primary'
-                              }`}
-                            >
-                              <div className="flex items-center gap-3 mb-2">
-                                <div className={`w-10 h-10 rounded-lg flex items-center justify-center ${
-                                  isSelected ? 'bg-white/20' : `bg-gradient-to-br ${archetype.gradient}`
-                                }`}>
-                                  <Icon className={`w-5 h-5 ${isSelected ? 'text-white' : 'text-white'}`} />
-                                </div>
-                                <div>
-                                  <p className={`text-xs font-black ${isSelected ? 'text-white/80' : 'text-theme-muted'}`}>
-                                    {archetype.title}
-                                  </p>
-                                  <p className={`text-sm font-bold ${isSelected ? 'text-white' : 'text-[var(--foreground)]'}`}>
-                                    {archetype.name}
-                                  </p>
-                                </div>
-                              </div>
-                              <p className={`text-xs ${isSelected ? 'text-white/80' : 'text-theme-muted'}`}>
-                                {archetype.description}
-                              </p>
-                            </button>
-                          )
-                        })}
-                      </div>
-                    </div>
-
-                    {/* Personal Declaration */}
-                    <div className="space-y-3">
-                      <h3 className="text-lg font-black text-[var(--foreground)] flex items-center gap-2">
-                        <Heart className="w-5 h-5 text-theme-primary" />
-                        YOUR PERSONAL DECLARATION
-                      </h3>
-                      <p className="text-sm text-theme-muted">
-                        Write a personal statement that defines who you are and what you stand for
-                      </p>
-                      <textarea
-                        value={businessCardData.declaration}
-                        onChange={(e) => setBusinessCardData({ ...businessCardData, declaration: e.target.value })}
-                        placeholder="I believe in creating a sustainable future where..."
-                        className="w-full px-4 py-3 bg-[var(--background)] border-2 border-[var(--border)] rounded-xl text-[var(--foreground)] font-medium focus:outline-none focus:border-theme-primary resize-none"
-                        rows={4}
-                        maxLength={280}
-                      />
-                      <p className="text-xs text-theme-muted text-right">
-                        {businessCardData.declaration.length}/280 characters
-                      </p>
-                    </div>
-
-                    {/* Contact Phone */}
-                    <div className="space-y-3">
-                      <h3 className="text-lg font-black text-[var(--foreground)] flex items-center gap-2">
-                        <Mail className="w-5 h-5 text-theme-primary" />
-                        CONTACT PHONE (Optional)
-                      </h3>
-                      <p className="text-sm text-theme-muted">
-                        Add a phone number to your business card for direct contact
-                      </p>
-                      <input
-                        type="tel"
-                        value={businessCardData.phone}
-                        onChange={(e) => setBusinessCardData({ ...businessCardData, phone: e.target.value })}
-                        placeholder="+1 (555) 123-4567"
-                        className="w-full px-4 py-3 bg-[var(--background)] border-2 border-[var(--border)] rounded-xl text-[var(--foreground)] font-medium focus:outline-none focus:border-theme-primary"
-                      />
-                    </div>
-
-                    {/* Preview Card */}
-                    <div className="space-y-3">
-                      <h3 className="text-lg font-black text-[var(--foreground)]">CARD PREVIEW</h3>
-                      <div className={`p-6 rounded-2xl border-2 ${
-                        businessCardData.guardianArchetype
-                          ? `bg-gradient-to-br ${GUARDIAN_ARCHETYPES[businessCardData.guardianArchetype]?.gradient} border-transparent text-white`
-                          : 'bg-gradient-to-br from-[var(--primary)] to-[var(--accent)] border-transparent text-white'
-                      }`}>
-                        <div className="flex items-start gap-4">
-                          <div className="w-16 h-16 rounded-xl bg-white/20 flex items-center justify-center">
-                            {businessCardData.guardianArchetype ? (
-                              (() => {
-                                const Icon = GUARDIAN_ARCHETYPES[businessCardData.guardianArchetype]?.icon
-                                return Icon ? <Icon className="w-8 h-8 text-white" /> : <User className="w-8 h-8 text-white" />
-                              })()
-                            ) : (
-                              <User className="w-8 h-8 text-white" />
-                            )}
-                          </div>
-                          <div className="flex-1">
-                            <p className="text-xs font-bold opacity-80">
-                              {businessCardData.guardianArchetype
-                                ? GUARDIAN_ARCHETYPES[businessCardData.guardianArchetype]?.title
-                                : 'Guardian of Project Exodus'}
-                            </p>
-                            <h4 className="text-xl font-black">{profileData.name || 'Your Name'}</h4>
-                            <p className="text-sm opacity-80">{profileData.headline || 'Your headline'}</p>
-                          </div>
-                        </div>
-                        {businessCardData.declaration && (
-                          <p className="mt-4 text-sm italic opacity-90 border-t border-white/20 pt-4">
-                            "{businessCardData.declaration}"
-                          </p>
-                        )}
-                        <div className="mt-4 flex flex-wrap gap-3 text-xs">
-                          {profileData.location && (
-                            <span className="flex items-center gap-1 opacity-80">
-                              <MapPin className="w-3 h-3" /> {profileData.location}
-                            </span>
-                          )}
-                          {profileData.email && (
-                            <span className="flex items-center gap-1 opacity-80">
-                              <Mail className="w-3 h-3" /> {profileData.email}
-                            </span>
-                          )}
-                        </div>
-                      </div>
-                    </div>
-
-                    {/* Save Button */}
-                    <Button
-                      onClick={async () => {
-                        setIsSaving(true)
-                        try {
-                          const res = await fetch(`/api/users/${session?.user?.id}`, {
-                            method: 'PATCH',
-                            headers: { 'Content-Type': 'application/json' },
-                            body: JSON.stringify({
-                              declaration: businessCardData.declaration,
-                              guardianArchetype: businessCardData.guardianArchetype,
-                              phone: businessCardData.phone,
-                            }),
-                          })
-                          if (res.ok) {
-                            setSaveMessage('Business card updated successfully!')
-                          } else {
-                            setSaveMessage('Failed to update business card')
-                          }
-                        } catch (error) {
-                          setSaveMessage('Error updating business card')
-                        } finally {
-                          setIsSaving(false)
-                          setTimeout(() => setSaveMessage(''), 3000)
-                        }
-                      }}
-                      className="w-full font-black"
-                      disabled={isSaving}
-                    >
-                      <Save className="w-4 h-4 mr-2" />
-                      {isSaving ? 'SAVING...' : 'SAVE BUSINESS CARD'}
-                    </Button>
                   </CardContent>
                 </Card>
               )}

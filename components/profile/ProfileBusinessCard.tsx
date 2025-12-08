@@ -2,8 +2,8 @@
 
 import { useState, useEffect, useRef } from 'react'
 import { useSession } from 'next-auth/react'
-import { useRouter } from 'next/navigation'
 import { Card, CardContent } from '@/components/ui/Card'
+import { Button } from '@/components/ui/Button'
 import {
   User,
   Mail,
@@ -33,6 +33,8 @@ import {
   Crown,
   ScrollText,
   Infinity,
+  Heart,
+  Phone,
 } from 'lucide-react'
 
 /*
@@ -278,11 +280,11 @@ function GhostField({
 
 export function ProfileBusinessCard({ userId }: ProfileBusinessCardProps) {
   const { data: session } = useSession()
-  const router = useRouter()
   const [isLoading, setIsLoading] = useState(true)
   const [profile, setProfile] = useState<ProfileData | null>(null)
   const [isExpanded, setIsExpanded] = useState(false)
   const [isEditing, setIsEditing] = useState(false)
+  const [isEditModalOpen, setIsEditModalOpen] = useState(false)
   const [selectedArchetype, setSelectedArchetype] = useState<ArchetypeType>('michael')
   const [editedProfile, setEditedProfile] = useState<Partial<ProfileData>>({})
   const [isSaving, setIsSaving] = useState(false)
@@ -409,12 +411,275 @@ export function ProfileBusinessCard({ userId }: ProfileBusinessCardProps) {
     ? Math.floor((Date.now() - new Date(profile.memberSince).getTime()) / (1000 * 60 * 60 * 24 * 365))
     : 0
 
-  // Handle edit button - redirect to settings page
+  // Handle edit button - open expanded edit modal
   const handleEditClick = () => {
-    router.push('/settings#business-card')
+    setIsEditModalOpen(true)
+  }
+
+  // Handle save from edit modal
+  const handleModalSave = async () => {
+    setIsSaving(true)
+    try {
+      const res = await fetch('/api/profile/update', {
+        method: 'PUT',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          ...editedProfile,
+          guardianArchetype: selectedArchetype,
+        }),
+      })
+
+      if (res.ok) {
+        setProfile(prev => prev ? { ...prev, ...editedProfile, archetype: selectedArchetype } : null)
+        setIsEditModalOpen(false)
+      }
+    } catch (error) {
+      console.error('Error saving profile:', error)
+    } finally {
+      setIsSaving(false)
+    }
+  }
+
+  // Edit Modal Component
+  const EditModal = () => {
+    if (!isEditModalOpen) return null
+
+    return (
+      <>
+        {/* Backdrop */}
+        <div
+          className="fixed inset-0 bg-black/60 backdrop-blur-sm z-[200]"
+          onClick={() => setIsEditModalOpen(false)}
+        />
+
+        {/* Modal */}
+        <div className="fixed inset-4 md:inset-8 lg:inset-12 bg-[var(--card)] rounded-2xl shadow-2xl z-[201] overflow-hidden flex flex-col">
+          {/* Modal Header */}
+          <div
+            className="px-6 py-4 flex items-center justify-between border-b-4"
+            style={{
+              background: archetype.colors.gradient,
+              borderColor: archetypeColor,
+            }}
+          >
+            <div className="flex items-center gap-3">
+              <div className="p-2 bg-black/20 rounded-xl">
+                <Edit2 className="w-6 h-6 text-white" />
+              </div>
+              <div>
+                <h2 className="text-xl font-black text-white">EDIT BUSINESS CARD</h2>
+                <p className="text-sm text-white/80">Customize your digital identity</p>
+              </div>
+            </div>
+            <button
+              onClick={() => setIsEditModalOpen(false)}
+              className="p-2 bg-black/20 hover:bg-black/30 rounded-xl transition-colors"
+            >
+              <X className="w-6 h-6 text-white" />
+            </button>
+          </div>
+
+          {/* Modal Content - Scrollable */}
+          <div className="flex-1 overflow-y-auto p-6">
+            <div className="max-w-4xl mx-auto space-y-8">
+              {/* Guardian Archetype Selection */}
+              <div className="space-y-4">
+                <h3 className="text-lg font-black text-[var(--foreground)] flex items-center gap-2">
+                  <Shield className="w-5 h-5" style={{ color: archetypeColor }} />
+                  SELECT YOUR GUARDIAN ARCHETYPE
+                </h3>
+                <p className="text-sm text-[var(--muted-foreground)]">
+                  Choose the archetype that best represents your values and how you contribute to Project Exodus
+                </p>
+                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-3">
+                  {Object.entries(GUARDIAN_ARCHETYPES).map(([key, arch]) => {
+                    const Icon = arch.icon
+                    const isSelected = selectedArchetype === key
+                    return (
+                      <button
+                        key={key}
+                        type="button"
+                        onClick={() => setSelectedArchetype(key as ArchetypeType)}
+                        className={`p-4 rounded-xl border-2 transition-all text-left ${
+                          isSelected
+                            ? 'border-transparent text-white shadow-lg scale-[1.02]'
+                            : 'border-[var(--border)] bg-[var(--card)] hover:border-[var(--primary)]'
+                        }`}
+                        style={isSelected ? { background: arch.colors.gradient } : {}}
+                      >
+                        <div className="flex items-center gap-3 mb-2">
+                          <div
+                            className="w-10 h-10 rounded-lg flex items-center justify-center"
+                            style={{
+                              background: isSelected ? 'rgba(255,255,255,0.2)' : arch.colors.gradient
+                            }}
+                          >
+                            <Icon className="w-5 h-5 text-white" />
+                          </div>
+                          <div>
+                            <p className={`text-xs font-black ${isSelected ? 'text-white/80' : 'text-[var(--muted-foreground)]'}`}>
+                              {arch.title}
+                            </p>
+                            <p className={`text-sm font-bold ${isSelected ? 'text-white' : 'text-[var(--foreground)]'}`}>
+                              {arch.name}
+                            </p>
+                          </div>
+                        </div>
+                        <p className={`text-xs line-clamp-2 ${isSelected ? 'text-white/80' : 'text-[var(--muted-foreground)]'}`}>
+                          {arch.description}
+                        </p>
+                      </button>
+                    )
+                  })}
+                </div>
+              </div>
+
+              {/* Personal Info Section */}
+              <div className="grid md:grid-cols-2 gap-6">
+                {/* Left Column - Basic Info */}
+                <div className="space-y-4">
+                  <h3 className="text-lg font-black text-[var(--foreground)] flex items-center gap-2">
+                    <User className="w-5 h-5" style={{ color: archetypeColor }} />
+                    PERSONAL INFORMATION
+                  </h3>
+
+                  <div>
+                    <label className="block text-sm font-bold text-[var(--foreground)] mb-2">
+                      FULL NAME
+                    </label>
+                    <input
+                      type="text"
+                      value={editedProfile.name || ''}
+                      onChange={(e) => setEditedProfile(prev => ({ ...prev, name: e.target.value }))}
+                      className="w-full px-4 py-3 rounded-lg bg-[var(--background)] border-2 border-[var(--border)] text-[var(--foreground)] placeholder:text-[var(--muted-foreground)] focus:outline-none focus:border-[var(--primary)] transition-colors font-medium"
+                      placeholder="Your Name"
+                    />
+                  </div>
+
+                  <div>
+                    <label className="block text-sm font-bold text-[var(--foreground)] mb-2">
+                      HEADLINE / ROLE
+                    </label>
+                    <input
+                      type="text"
+                      value={editedProfile.headline || ''}
+                      onChange={(e) => setEditedProfile(prev => ({ ...prev, headline: e.target.value }))}
+                      className="w-full px-4 py-3 rounded-lg bg-[var(--background)] border-2 border-[var(--border)] text-[var(--foreground)] placeholder:text-[var(--muted-foreground)] focus:outline-none focus:border-[var(--primary)] transition-colors font-medium"
+                      placeholder="Sustainability Consultant | Renewable Energy Expert"
+                    />
+                  </div>
+
+                  <div>
+                    <label className="block text-sm font-bold text-[var(--foreground)] mb-2">
+                      LOCATION
+                    </label>
+                    <div className="relative">
+                      <MapPin className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-[var(--muted-foreground)]" />
+                      <input
+                        type="text"
+                        value={editedProfile.location || ''}
+                        onChange={(e) => setEditedProfile(prev => ({ ...prev, location: e.target.value }))}
+                        className="w-full pl-10 pr-4 py-3 rounded-lg bg-[var(--background)] border-2 border-[var(--border)] text-[var(--foreground)] placeholder:text-[var(--muted-foreground)] focus:outline-none focus:border-[var(--primary)] transition-colors font-medium"
+                        placeholder="San Francisco, CA"
+                      />
+                    </div>
+                  </div>
+                </div>
+
+                {/* Right Column - Declaration */}
+                <div className="space-y-4">
+                  <h3 className="text-lg font-black text-[var(--foreground)] flex items-center gap-2">
+                    <Heart className="w-5 h-5" style={{ color: archetypeColor }} />
+                    YOUR PERSONAL DECLARATION
+                  </h3>
+                  <p className="text-sm text-[var(--muted-foreground)]">
+                    Write a personal statement that defines who you are and what you stand for
+                  </p>
+                  <textarea
+                    value={editedProfile.declaration || ''}
+                    onChange={(e) => setEditedProfile(prev => ({ ...prev, declaration: e.target.value }))}
+                    placeholder="I believe in creating a sustainable future where..."
+                    className="w-full px-4 py-3 bg-[var(--background)] border-2 border-[var(--border)] rounded-xl text-[var(--foreground)] font-medium focus:outline-none focus:border-[var(--primary)] resize-none"
+                    rows={5}
+                    maxLength={280}
+                  />
+                  <p className="text-xs text-[var(--muted-foreground)] text-right">
+                    {(editedProfile.declaration || '').length}/280 characters
+                  </p>
+                </div>
+              </div>
+
+              {/* Preview Card */}
+              <div className="space-y-4">
+                <h3 className="text-lg font-black text-[var(--foreground)]">LIVE PREVIEW</h3>
+                <div
+                  className="p-6 rounded-2xl border-2 border-transparent text-white max-w-md"
+                  style={{ background: GUARDIAN_ARCHETYPES[selectedArchetype].colors.gradient }}
+                >
+                  <div className="flex items-start gap-4">
+                    <div className="w-16 h-16 rounded-xl bg-white/20 flex items-center justify-center">
+                      {(() => {
+                        const Icon = GUARDIAN_ARCHETYPES[selectedArchetype].icon
+                        return <Icon className="w-8 h-8 text-white" />
+                      })()}
+                    </div>
+                    <div className="flex-1">
+                      <p className="text-xs font-bold opacity-80">
+                        {GUARDIAN_ARCHETYPES[selectedArchetype].title}
+                      </p>
+                      <h4 className="text-xl font-black">{editedProfile.name || 'Your Name'}</h4>
+                      <p className="text-sm opacity-80">{editedProfile.headline || 'Your headline'}</p>
+                    </div>
+                  </div>
+                  {editedProfile.declaration && (
+                    <p className="mt-4 text-sm italic opacity-90 border-t border-white/20 pt-4">
+                      "{editedProfile.declaration}"
+                    </p>
+                  )}
+                  <div className="mt-4 flex flex-wrap gap-3 text-xs">
+                    {editedProfile.location && (
+                      <span className="flex items-center gap-1 opacity-80">
+                        <MapPin className="w-3 h-3" /> {editedProfile.location}
+                      </span>
+                    )}
+                    {profile?.email && (
+                      <span className="flex items-center gap-1 opacity-80">
+                        <Mail className="w-3 h-3" /> {profile.email}
+                      </span>
+                    )}
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          {/* Modal Footer */}
+          <div className="px-6 py-4 border-t-2 border-[var(--border)] bg-[var(--muted)] flex items-center justify-end gap-3">
+            <Button
+              variant="outline"
+              onClick={() => setIsEditModalOpen(false)}
+              className="font-bold"
+            >
+              CANCEL
+            </Button>
+            <Button
+              onClick={handleModalSave}
+              disabled={isSaving}
+              className="font-black"
+              style={{ backgroundColor: archetypeColor }}
+            >
+              <Save className="w-4 h-4 mr-2" />
+              {isSaving ? 'SAVING...' : 'SAVE CHANGES'}
+            </Button>
+          </div>
+        </div>
+      </>
+    )
   }
 
   return (
+    <>
+      <EditModal />
     <Card className="border-4 overflow-hidden" style={{ borderColor: archetypeColor }}>
       {/* Sacred Header - uses archetype gradient as background */}
       <div
@@ -886,5 +1151,6 @@ export function ProfileBusinessCard({ userId }: ProfileBusinessCardProps) {
         </div>
       </CardContent>
     </Card>
+    </>
   )
 }
