@@ -88,7 +88,9 @@ model User {
   messageReactions      MessageReaction[]  @relation("MessageReactions")
   createdEvents         Event[]            @relation("CreatedEvents")
   eventAttendances      EventAttendee[]
-  reportedContent       Report[]
+  reportedContent       Report[]           @relation("ReportedBy")
+  assignedReports       Report[]           @relation("ReportAssignedTo")
+  resolvedReports       Report[]           @relation("ReportResolvedBy")
   socialPosts           SocialPost[]     @relation("SocialPosts")
   socialComments        SocialComment[]  @relation("SocialComments")
   socialLikes           SocialLike[]     @relation("SocialLikes")
@@ -98,6 +100,7 @@ model User {
   learningProgress      UserLearningProgress[]
   articlePeerReviews    ArticlePeerReview[] @relation("ArticlePeerReviews")
   reviewLikes           ReviewLike[]       @relation("ReviewLikes")
+  adminAlerts           AdminAlert[]       @relation("AdminAlerts")
 
   @@index([email])
   @@index([role])
@@ -918,17 +921,37 @@ enum NotificationType {
 }
 
 model Report {
-  id           String       @id @default(cuid())
-  reason       String       @db.Text
-  status       ReportStatus @default(PENDING)
-  reporterId   String
-  reporter     User         @relation(fields: [reporterId], references: [id])
+  id             String         @id @default(cuid())
+  reason         String         @db.Text
+  status         ReportStatus   @default(PENDING)
+  priority       ReportPriority @default(MEDIUM)
+  contentType    String         // 'user', 'product', 'article', 'comment', 'post'
+  contentId      String
+  reporterId     String
+  reporter       User           @relation("ReportedBy", fields: [reporterId], references: [id])
+  assignedToId   String?
+  assignedTo     User?          @relation("ReportAssignedTo", fields: [assignedToId], references: [id])
+  resolvedById   String?
+  resolvedBy     User?          @relation("ReportResolvedBy", fields: [resolvedById], references: [id])
+  resolutionNote String?        @db.Text
 
-  createdAt    DateTime     @default(now())
-  resolvedAt   DateTime?
+  createdAt      DateTime       @default(now())
+  updatedAt      DateTime       @updatedAt
+  resolvedAt     DateTime?
 
   @@index([reporterId])
   @@index([status])
+  @@index([contentType])
+  @@index([priority])
+  @@index([assignedToId])
+  @@index([createdAt])
+}
+
+enum ReportPriority {
+  LOW
+  MEDIUM
+  HIGH
+  CRITICAL
 }
 
 enum ReportStatus {
@@ -1046,4 +1069,72 @@ model NewsletterSubscription {
 enum SubscriptionStatus {
   ACTIVE
   UNSUBSCRIBED
+}
+
+// ============================================
+// ADMIN & RBAC MODELS
+// ============================================
+
+model RolePermission {
+  id         String   @id @default(cuid())
+  role       UserRole
+  permission String
+  createdAt  DateTime @default(now())
+
+  @@unique([role, permission])
+  @@index([role])
+}
+
+model AdminAlert {
+  id        String            @id @default(cuid())
+  type      AdminAlertType
+  priority  AlertPriority     @default(MEDIUM)
+  title     String
+  message   String            @db.Text
+  link      String?
+  read      Boolean           @default(false)
+  userId    String?           // Target admin (null = all admins)
+  user      User?             @relation("AdminAlerts", fields: [userId], references: [id], onDelete: SetNull)
+  metadata  Json?             // Additional context data
+  createdAt DateTime          @default(now())
+
+  @@index([userId])
+  @@index([read])
+  @@index([priority])
+  @@index([type])
+  @@index([createdAt])
+}
+
+enum AdminAlertType {
+  NEW_REPORT
+  USER_BANNED
+  SECURITY_ALERT
+  SYSTEM_ERROR
+  CONTENT_FLAGGED
+  PRODUCT_SUBMISSION
+  HIGH_PRIORITY_REPORT
+  ADMIN_ACTION
+}
+
+enum AlertPriority {
+  LOW
+  MEDIUM
+  HIGH
+  CRITICAL
+}
+
+model UserBan {
+  id          String    @id @default(cuid())
+  userId      String
+  bannedById  String
+  reason      String    @db.Text
+  expiresAt   DateTime? // Null = permanent
+  active      Boolean   @default(true)
+  createdAt   DateTime  @default(now())
+  unbannedAt  DateTime?
+  unbannedById String?
+
+  @@index([userId])
+  @@index([active])
+  @@index([expiresAt])
 }

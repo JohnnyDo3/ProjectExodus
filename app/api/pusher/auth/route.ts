@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { auth } from '@/auth'
 import { pusherServer } from '@/lib/pusher'
+import { prisma } from '@/lib/db'
 
 /**
  * Pusher Private Channel Authentication
@@ -8,8 +9,10 @@ import { pusherServer } from '@/lib/pusher'
  * This endpoint validates that users can only subscribe to their own private channels.
  * Without this, anyone could potentially listen to any user's messages.
  *
- * Channel format: private-chat-{userId}
- * A user can ONLY subscribe to private-chat-{their-own-id}
+ * Channel formats:
+ * - private-chat-{userId} - for receiving direct messages
+ * - private-notifications-{userId} - for receiving real-time notifications
+ * - private-admin - for admin-only real-time updates (requires admin role)
  */
 export async function POST(request: NextRequest) {
   try {
@@ -33,16 +36,32 @@ export async function POST(request: NextRequest) {
       )
     }
 
-    // Security check: Verify user can only subscribe to their own private channels
-    // Allowed channel formats:
-    // - private-chat-{userId} - for receiving direct messages
-    // - private-notifications-{userId} - for receiving real-time notifications
+    // User-specific private channels
     const allowedChannels = [
       `private-chat-${session.user.id}`,
       `private-notifications-${session.user.id}`,
     ]
 
-    if (!allowedChannels.includes(channel)) {
+    // Check if it's an admin channel
+    if (channel === 'private-admin') {
+      // Verify user is admin
+      const user = await prisma.user.findUnique({
+        where: { id: session.user.id },
+        select: { role: true }
+      })
+
+      const adminRoles = ['ADMIN', 'SUPER_ADMIN', 'MODERATOR']
+      if (!user || !adminRoles.includes(user.role)) {
+        console.warn(
+          `[Pusher Auth] Non-admin user ${session.user.id} attempted to subscribe to admin channel`
+        )
+        return NextResponse.json(
+          { error: 'Forbidden - Admin access required' },
+          { status: 403 }
+        )
+      }
+      // Admin is allowed to subscribe to admin channel
+    } else if (!allowedChannels.includes(channel)) {
       console.warn(
         `[Pusher Auth] User ${session.user.id} attempted to subscribe to unauthorized channel: ${channel}`
       )

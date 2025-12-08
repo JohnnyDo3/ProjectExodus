@@ -1,330 +1,680 @@
 'use client'
 
-import { useState } from 'react'
+import { useState, useEffect, useCallback } from 'react'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/Card'
 import { Button } from '@/components/ui/Button'
 import { Input } from '@/components/ui/Input'
 import { Select } from '@/components/ui/Select'
-import { ArrowLeft, Plus, Edit2, Trash2, Users, Mail, Shield, UserCheck, Ban } from 'lucide-react'
-import { BackButton } from '@/components/navigation/BackButton'
-import Link from 'next/link'
+import { Pagination } from '@/components/ui/Pagination'
+import {
+  Plus,
+  Edit2,
+  Trash2,
+  Users,
+  Mail,
+  Shield,
+  UserCheck,
+  Ban,
+  Search,
+  Loader2,
+  X,
+  AlertTriangle,
+  Calendar,
+  FileText,
+  Package,
+  User,
+  RefreshCw,
+} from 'lucide-react'
+import { formatDistanceToNow, format } from 'date-fns'
+
+interface UserData {
+  id: string
+  name: string | null
+  email: string
+  image: string | null
+  role: string
+  createdAt: string
+  emailVerified: string | null
+  isBanned: boolean
+  ban: {
+    id: string
+    reason: string
+    expiresAt: string | null
+    createdAt: string
+  } | null
+  stats: {
+    articles: number
+    products: number
+    projects: number
+    followers: number
+  }
+}
+
+interface PaginationData {
+  page: number
+  limit: number
+  total: number
+  totalPages: number
+}
+
+const ROLES = ['USER', 'EDITOR', 'MODERATOR', 'ADMIN', 'SUPER_ADMIN']
 
 export default function UsersManagementPage() {
-  const [users, setUsers] = useState([
-    {
-      id: '1',
-      name: 'Sage Thompson',
-      email: 'sage@projectexodus.com',
-      role: 'ADMIN',
-      status: 'ACTIVE',
-      joinedDate: '2024-12-01',
-      productsCreated: 45,
-      articlesWritten: 12
-    },
-    {
-      id: '2',
-      name: 'Alex Rivera',
-      email: 'alex.rivera@email.com',
-      role: 'EDITOR',
-      status: 'ACTIVE',
-      joinedDate: '2025-01-10',
-      productsCreated: 0,
-      articlesWritten: 8
-    },
-    {
-      id: '3',
-      name: 'Jordan Chen',
-      email: 'jordan.chen@email.com',
-      role: 'USER',
-      status: 'ACTIVE',
-      joinedDate: '2025-01-15',
-      productsCreated: 0,
-      articlesWritten: 0
-    },
-    {
-      id: '4',
-      name: 'Taylor Morgan',
-      email: 'taylor.m@email.com',
-      role: 'USER',
-      status: 'SUSPENDED',
-      joinedDate: '2025-01-05',
-      productsCreated: 0,
-      articlesWritten: 0
-    },
-  ])
-
-  const [isCreating, setIsCreating] = useState(false)
-  const [newUser, setNewUser] = useState({
-    name: '',
-    email: '',
-    role: 'USER'
+  const [users, setUsers] = useState<UserData[]>([])
+  const [pagination, setPagination] = useState<PaginationData>({
+    page: 1,
+    limit: 20,
+    total: 0,
+    totalPages: 0
   })
+  const [loading, setLoading] = useState(true)
+  const [search, setSearch] = useState('')
+  const [roleFilter, setRoleFilter] = useState('')
+  const [statusFilter, setStatusFilter] = useState('')
 
-  const handleCreateUser = () => {
-    if (!newUser.name || !newUser.email) return
+  // Create user state
+  const [isCreating, setIsCreating] = useState(false)
+  const [creating, setCreating] = useState(false)
+  const [newUser, setNewUser] = useState({ name: '', email: '', password: '', role: 'USER' })
+  const [createError, setCreateError] = useState('')
 
-    setUsers([...users, {
-      id: Date.now().toString(),
-      ...newUser,
-      status: 'ACTIVE',
-      joinedDate: new Date().toISOString().split('T')[0],
-      productsCreated: 0,
-      articlesWritten: 0
-    }])
+  // Ban modal state
+  const [banModalUser, setBanModalUser] = useState<UserData | null>(null)
+  const [banReason, setBanReason] = useState('')
+  const [banDuration, setBanDuration] = useState<string>('') // days or empty for permanent
+  const [banning, setBanning] = useState(false)
 
-    setNewUser({ name: '', email: '', role: 'USER' })
-    setIsCreating(false)
-  }
+  // Edit modal state
+  const [editModalUser, setEditModalUser] = useState<UserData | null>(null)
+  const [editRole, setEditRole] = useState('')
+  const [editing, setEditing] = useState(false)
 
-  const handleDeleteUser = (id: string) => {
-    if (confirm('Are you sure you want to delete this user? This action cannot be undone.')) {
-      setUsers(users.filter(u => u.id !== id))
+  const fetchUsers = useCallback(async () => {
+    setLoading(true)
+    try {
+      const params = new URLSearchParams({
+        page: pagination.page.toString(),
+        limit: pagination.limit.toString(),
+      })
+      if (search) params.append('search', search)
+      if (roleFilter) params.append('role', roleFilter)
+      if (statusFilter) params.append('status', statusFilter)
+
+      const res = await fetch(`/api/admin/users?${params}`)
+      if (res.ok) {
+        const data = await res.json()
+        setUsers(data.users)
+        setPagination(data.pagination)
+      }
+    } catch (error) {
+      console.error('Failed to fetch users:', error)
+    } finally {
+      setLoading(false)
+    }
+  }, [pagination.page, pagination.limit, search, roleFilter, statusFilter])
+
+  useEffect(() => {
+    const debounce = setTimeout(() => {
+      fetchUsers()
+    }, 300)
+    return () => clearTimeout(debounce)
+  }, [fetchUsers])
+
+  const handleCreateUser = async () => {
+    if (!newUser.name || !newUser.email || !newUser.password) {
+      setCreateError('All fields are required')
+      return
+    }
+
+    setCreating(true)
+    setCreateError('')
+
+    try {
+      const res = await fetch('/api/admin/users', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(newUser)
+      })
+
+      if (res.ok) {
+        setNewUser({ name: '', email: '', password: '', role: 'USER' })
+        setIsCreating(false)
+        fetchUsers()
+      } else {
+        const data = await res.json()
+        setCreateError(data.error || 'Failed to create user')
+      }
+    } catch (error) {
+      setCreateError('Failed to create user')
+    } finally {
+      setCreating(false)
     }
   }
 
-  const handleSuspendUser = (id: string) => {
-    setUsers(users.map(u =>
-      u.id === id ? { ...u, status: u.status === 'ACTIVE' ? 'SUSPENDED' : 'ACTIVE' } : u
-    ))
+  const handleBanUser = async () => {
+    if (!banModalUser || !banReason) return
+
+    setBanning(true)
+    try {
+      const res = await fetch(`/api/admin/users/${banModalUser.id}/ban`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          reason: banReason,
+          duration: banDuration ? parseInt(banDuration) : null
+        })
+      })
+
+      if (res.ok) {
+        setBanModalUser(null)
+        setBanReason('')
+        setBanDuration('')
+        fetchUsers()
+      }
+    } catch (error) {
+      console.error('Failed to ban user:', error)
+    } finally {
+      setBanning(false)
+    }
+  }
+
+  const handleUnbanUser = async (userId: string) => {
+    try {
+      const res = await fetch(`/api/admin/users/${userId}/ban`, {
+        method: 'DELETE'
+      })
+
+      if (res.ok) {
+        fetchUsers()
+      }
+    } catch (error) {
+      console.error('Failed to unban user:', error)
+    }
+  }
+
+  const handleUpdateRole = async () => {
+    if (!editModalUser || !editRole) return
+
+    setEditing(true)
+    try {
+      const res = await fetch(`/api/admin/users/${editModalUser.id}`, {
+        method: 'PATCH',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ role: editRole })
+      })
+
+      if (res.ok) {
+        setEditModalUser(null)
+        setEditRole('')
+        fetchUsers()
+      }
+    } catch (error) {
+      console.error('Failed to update role:', error)
+    } finally {
+      setEditing(false)
+    }
+  }
+
+  const handleDeleteUser = async (userId: string) => {
+    if (!confirm('Are you sure you want to delete this user? This action cannot be undone.')) {
+      return
+    }
+
+    try {
+      const res = await fetch(`/api/admin/users/${userId}`, {
+        method: 'DELETE'
+      })
+
+      if (res.ok) {
+        fetchUsers()
+      }
+    } catch (error) {
+      console.error('Failed to delete user:', error)
+    }
   }
 
   const getRoleBadgeColor = (role: string) => {
     switch (role) {
-      case 'ADMIN': return 'bg-terra-100 text-terra-800'
-      case 'EDITOR': return 'bg-ocean-100 text-ocean-800'
-      default: return 'bg-moss-100 text-moss-800'
+      case 'SUPER_ADMIN': return 'bg-red-500/20 text-red-700'
+      case 'ADMIN': return 'bg-purple-500/20 text-purple-700'
+      case 'MODERATOR': return 'bg-yellow-500/20 text-yellow-700'
+      case 'EDITOR': return 'bg-blue-500/20 text-blue-700'
+      default: return 'bg-green-500/20 text-green-700'
     }
   }
 
-  const getStatusColor = (status: string) => {
-    return status === 'ACTIVE' ? 'text-moss-600' : 'text-terra-600'
-  }
+  const totalUsers = pagination.total
+  const activeUsers = users.filter(u => !u.isBanned).length
+  const adminUsers = users.filter(u => u.role === 'ADMIN' || u.role === 'SUPER_ADMIN').length
+  const bannedUsers = users.filter(u => u.isBanned).length
 
   return (
-    <div className="min-h-screen bg-sand-50">
+    <div className="space-y-6">
       {/* Header */}
-      <div className="bg-[var(--card)] border-b border-[var(--border)]">
-        <div className="container mx-auto px-4 sm:px-6 lg:px-8 py-6">
-          <div className="flex items-center gap-4">
-            <Link href="/admin">
-              <Button variant="ghost" size="sm">
-                <ArrowLeft className="w-4 h-4 mr-2" />
-                Back to Dashboard
-              </Button>
-            </Link>
-            <div className="flex-1">
-              <h1 className="text-3xl font-bold text-[var(--foreground)]">
-                Manage Users
-              </h1>
-              <p className="text-[var(--muted-foreground)] mt-1">
-                User accounts, roles, and permissions
-              </p>
-            </div>
-            <Button onClick={() => setIsCreating(true)}>
-              <Plus className="w-4 h-4 mr-2" />
-              New User
-            </Button>
-          </div>
+      <div className="flex items-center justify-between">
+        <div>
+          <h1 className="text-3xl font-black text-[var(--foreground)]">Users</h1>
+          <p className="text-theme-muted mt-1">
+            Manage user accounts, roles, and permissions
+          </p>
+        </div>
+        <div className="flex items-center gap-3">
+          <Button
+            variant="outline"
+            onClick={() => fetchUsers()}
+            disabled={loading}
+          >
+            <RefreshCw className={`w-4 h-4 mr-2 ${loading ? 'animate-spin' : ''}`} />
+            Refresh
+          </Button>
+          <Button onClick={() => setIsCreating(true)}>
+            <Plus className="w-4 h-4 mr-2" />
+            New User
+          </Button>
         </div>
       </div>
 
-      {/* Content */}
-      <div className="container mx-auto px-4 sm:px-6 lg:px-8 py-8">
-        <div className="max-w-6xl mx-auto space-y-6">
-          {/* Create New User */}
-          {isCreating && (
-            <Card className="border-moss-300 bg-moss-50">
-              <CardHeader>
-                <CardTitle className="text-[var(--primary)]">Create New User</CardTitle>
-              </CardHeader>
-              <CardContent className="space-y-4">
-                <div className="grid md:grid-cols-2 gap-4">
-                  <Input
-                    label="Full Name"
-                    placeholder="e.g., Jane Doe"
-                    value={newUser.name}
-                    onChange={(e) => setNewUser({ ...newUser, name: e.target.value })}
-                  />
-                  <Input
-                    label="Email"
-                    type="email"
-                    placeholder="jane@example.com"
-                    value={newUser.email}
-                    onChange={(e) => setNewUser({ ...newUser, email: e.target.value })}
-                  />
-                </div>
-                <Select
-                  label="Role"
-                  value={newUser.role}
-                  onChange={(e) => setNewUser({ ...newUser, role: e.target.value })}
-                  options={[
-                    { value: 'USER', label: 'User - Can browse and comment' },
-                    { value: 'EDITOR', label: 'Editor - Can create content' },
-                    { value: 'ADMIN', label: 'Admin - Full access' }
-                  ]}
+      {/* Create User Form */}
+      {isCreating && (
+        <Card className="border-theme-primary">
+          <CardHeader className="flex flex-row items-center justify-between">
+            <CardTitle>Create New User</CardTitle>
+            <button onClick={() => setIsCreating(false)}>
+              <X className="w-5 h-5 text-theme-muted hover:text-[var(--foreground)]" />
+            </button>
+          </CardHeader>
+          <CardContent className="space-y-4">
+            {createError && (
+              <div className="p-3 rounded-lg bg-red-500/10 text-red-600 text-sm font-medium">
+                {createError}
+              </div>
+            )}
+            <div className="grid md:grid-cols-2 gap-4">
+              <Input
+                label="Full Name"
+                placeholder="e.g., Jane Doe"
+                value={newUser.name}
+                onChange={(e) => setNewUser({ ...newUser, name: e.target.value })}
+              />
+              <Input
+                label="Email"
+                type="email"
+                placeholder="jane@example.com"
+                value={newUser.email}
+                onChange={(e) => setNewUser({ ...newUser, email: e.target.value })}
+              />
+            </div>
+            <div className="grid md:grid-cols-2 gap-4">
+              <Input
+                label="Password"
+                type="password"
+                placeholder="Strong password"
+                value={newUser.password}
+                onChange={(e) => setNewUser({ ...newUser, password: e.target.value })}
+              />
+              <Select
+                label="Role"
+                value={newUser.role}
+                onChange={(e) => setNewUser({ ...newUser, role: e.target.value })}
+                options={ROLES.map(r => ({ value: r, label: r }))}
+              />
+            </div>
+            <div className="flex gap-3">
+              <Button onClick={handleCreateUser} disabled={creating}>
+                {creating ? (
+                  <>
+                    <Loader2 className="w-4 h-4 mr-2 animate-spin" />
+                    Creating...
+                  </>
+                ) : (
+                  'Create User'
+                )}
+              </Button>
+              <Button variant="outline" onClick={() => setIsCreating(false)}>
+                Cancel
+              </Button>
+            </div>
+          </CardContent>
+        </Card>
+      )}
+
+      {/* Stats */}
+      <div className="grid md:grid-cols-4 gap-4">
+        <Card>
+          <CardContent className="p-6">
+            <div className="flex items-center gap-4">
+              <div className="w-12 h-12 rounded-xl bg-emerald-500/10 flex items-center justify-center">
+                <Users className="w-6 h-6 text-emerald-500" />
+              </div>
+              <div>
+                <p className="text-sm font-medium text-theme-muted">Total Users</p>
+                <p className="text-2xl font-black text-[var(--foreground)]">{totalUsers}</p>
+              </div>
+            </div>
+          </CardContent>
+        </Card>
+        <Card>
+          <CardContent className="p-6">
+            <div className="flex items-center gap-4">
+              <div className="w-12 h-12 rounded-xl bg-blue-500/10 flex items-center justify-center">
+                <UserCheck className="w-6 h-6 text-blue-500" />
+              </div>
+              <div>
+                <p className="text-sm font-medium text-theme-muted">Active</p>
+                <p className="text-2xl font-black text-[var(--foreground)]">{activeUsers}</p>
+              </div>
+            </div>
+          </CardContent>
+        </Card>
+        <Card>
+          <CardContent className="p-6">
+            <div className="flex items-center gap-4">
+              <div className="w-12 h-12 rounded-xl bg-purple-500/10 flex items-center justify-center">
+                <Shield className="w-6 h-6 text-purple-500" />
+              </div>
+              <div>
+                <p className="text-sm font-medium text-theme-muted">Admins</p>
+                <p className="text-2xl font-black text-[var(--foreground)]">{adminUsers}</p>
+              </div>
+            </div>
+          </CardContent>
+        </Card>
+        <Card>
+          <CardContent className="p-6">
+            <div className="flex items-center gap-4">
+              <div className="w-12 h-12 rounded-xl bg-red-500/10 flex items-center justify-center">
+                <Ban className="w-6 h-6 text-red-500" />
+              </div>
+              <div>
+                <p className="text-sm font-medium text-theme-muted">Banned</p>
+                <p className="text-2xl font-black text-[var(--foreground)]">{bannedUsers}</p>
+              </div>
+            </div>
+          </CardContent>
+        </Card>
+      </div>
+
+      {/* Filters */}
+      <Card>
+        <CardContent className="p-4">
+          <div className="flex flex-wrap gap-4">
+            <div className="flex-1 min-w-[200px]">
+              <div className="relative">
+                <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-theme-muted" />
+                <input
+                  type="text"
+                  placeholder="Search by name or email..."
+                  value={search}
+                  onChange={(e) => setSearch(e.target.value)}
+                  className="w-full pl-10 pr-4 py-2 rounded-lg border-2 border-[var(--border)] bg-[var(--background)] focus:border-theme-primary focus:outline-none"
                 />
-                <div className="flex gap-3">
-                  <Button onClick={handleCreateUser}>
-                    Create User
-                  </Button>
-                  <Button variant="outline" onClick={() => setIsCreating(false)}>
-                    Cancel
-                  </Button>
-                </div>
-              </CardContent>
-            </Card>
-          )}
-
-          {/* Stats */}
-          <div className="grid md:grid-cols-4 gap-6">
-            <Card>
-              <CardContent className="p-6">
-                <div className="flex items-center gap-4">
-                  <div className="w-12 h-12 rounded-full bg-moss-100 flex items-center justify-center">
-                    <Users className="w-6 h-6 text-moss-600" />
-                  </div>
-                  <div>
-                    <p className="text-sm font-medium text-[var(--muted-foreground)]">Total Users</p>
-                    <p className="text-2xl font-bold text-[var(--foreground)]">{users.length}</p>
-                  </div>
-                </div>
-              </CardContent>
-            </Card>
-            <Card>
-              <CardContent className="p-6">
-                <div className="flex items-center gap-4">
-                  <div className="w-12 h-12 rounded-full bg-ocean-100 flex items-center justify-center">
-                    <UserCheck className="w-6 h-6 text-ocean-600" />
-                  </div>
-                  <div>
-                    <p className="text-sm font-medium text-[var(--muted-foreground)]">Active</p>
-                    <p className="text-2xl font-bold text-[var(--foreground)]">
-                      {users.filter(u => u.status === 'ACTIVE').length}
-                    </p>
-                  </div>
-                </div>
-              </CardContent>
-            </Card>
-            <Card>
-              <CardContent className="p-6">
-                <div className="flex items-center gap-4">
-                  <div className="w-12 h-12 rounded-full bg-terra-100 flex items-center justify-center">
-                    <Shield className="w-6 h-6 text-terra-600" />
-                  </div>
-                  <div>
-                    <p className="text-sm font-medium text-[var(--muted-foreground)]">Admins</p>
-                    <p className="text-2xl font-bold text-[var(--foreground)]">
-                      {users.filter(u => u.role === 'ADMIN').length}
-                    </p>
-                  </div>
-                </div>
-              </CardContent>
-            </Card>
-            <Card>
-              <CardContent className="p-6">
-                <div className="flex items-center gap-4">
-                  <div className="w-12 h-12 rounded-full bg-moss-100 flex items-center justify-center">
-                    <Ban className="w-6 h-6 text-moss-600" />
-                  </div>
-                  <div>
-                    <p className="text-sm font-medium text-[var(--muted-foreground)]">Suspended</p>
-                    <p className="text-2xl font-bold text-[var(--foreground)]">
-                      {users.filter(u => u.status === 'SUSPENDED').length}
-                    </p>
-                  </div>
-                </div>
-              </CardContent>
-            </Card>
+              </div>
+            </div>
+            <select
+              value={roleFilter}
+              onChange={(e) => setRoleFilter(e.target.value)}
+              className="px-4 py-2 rounded-lg border-2 border-[var(--border)] bg-[var(--background)] focus:border-theme-primary focus:outline-none"
+            >
+              <option value="">All Roles</option>
+              {ROLES.map(r => (
+                <option key={r} value={r}>{r}</option>
+              ))}
+            </select>
+            <select
+              value={statusFilter}
+              onChange={(e) => setStatusFilter(e.target.value)}
+              className="px-4 py-2 rounded-lg border-2 border-[var(--border)] bg-[var(--background)] focus:border-theme-primary focus:outline-none"
+            >
+              <option value="">All Status</option>
+              <option value="active">Active</option>
+              <option value="banned">Banned</option>
+            </select>
           </div>
+        </CardContent>
+      </Card>
 
-          {/* Users List */}
-          <Card>
-            <CardHeader>
-              <CardTitle>All Users</CardTitle>
-            </CardHeader>
-            <CardContent>
-              <div className="space-y-3">
-                {users.map((user) => (
-                  <div
-                    key={user.id}
-                    className="flex items-center justify-between p-5 rounded-lg border-2 border-[var(--border)] hover:border-[var(--primary)] transition-colors"
-                  >
-                    <div className="flex items-center gap-4 flex-1">
-                      {/* Avatar */}
-                      <div className="w-14 h-14 rounded-full bg-gradient-to-br from-moss-500 to-ocean-500 flex items-center justify-center flex-shrink-0 shadow-lg">
-                        <span className="text-white text-xl font-black">
-                          {user.name.split(' ').map(n => n[0]).join('')}
+      {/* Users List */}
+      <Card>
+        <CardContent className="p-0">
+          {loading ? (
+            <div className="p-12 text-center">
+              <Loader2 className="w-8 h-8 text-theme-primary mx-auto mb-4 animate-spin" />
+              <p className="text-theme-muted">Loading users...</p>
+            </div>
+          ) : users.length === 0 ? (
+            <div className="p-12 text-center">
+              <Users className="w-12 h-12 text-theme-muted mx-auto mb-4 opacity-50" />
+              <p className="text-theme-muted">No users found</p>
+            </div>
+          ) : (
+            <div className="divide-y divide-[var(--border)]">
+              {users.map((user) => (
+                <div
+                  key={user.id}
+                  className="flex items-center justify-between p-4 hover:bg-[var(--muted)] transition-colors"
+                >
+                  <div className="flex items-center gap-4 flex-1 min-w-0">
+                    {/* Avatar */}
+                    <div className="w-12 h-12 rounded-full bg-gradient-to-br from-theme-primary to-theme-accent flex items-center justify-center flex-shrink-0">
+                      {user.image ? (
+                        <img src={user.image} alt="" className="w-full h-full rounded-full object-cover" />
+                      ) : (
+                        <span className="text-white font-bold">
+                          {(user.name || user.email).charAt(0).toUpperCase()}
+                        </span>
+                      )}
+                    </div>
+
+                    {/* User Info */}
+                    <div className="flex-1 min-w-0">
+                      <div className="flex items-center gap-2 flex-wrap">
+                        <h3 className="font-bold text-[var(--foreground)] truncate">
+                          {user.name || 'No name'}
+                        </h3>
+                        <span className={`px-2 py-0.5 rounded-full text-xs font-bold ${getRoleBadgeColor(user.role)}`}>
+                          {user.role}
+                        </span>
+                        {user.isBanned && (
+                          <span className="px-2 py-0.5 rounded-full text-xs font-bold bg-red-500 text-white">
+                            BANNED
+                          </span>
+                        )}
+                      </div>
+                      <div className="flex items-center gap-4 text-sm text-theme-muted mt-1">
+                        <span className="flex items-center gap-1 truncate">
+                          <Mail className="w-3 h-3" />
+                          {user.email}
+                        </span>
+                        <span className="flex items-center gap-1">
+                          <Calendar className="w-3 h-3" />
+                          {formatDistanceToNow(new Date(user.createdAt), { addSuffix: true })}
                         </span>
                       </div>
-
-                      {/* User Info */}
-                      <div className="flex-1">
-                        <div className="flex items-center gap-3 mb-1">
-                          <h3 className="text-lg font-bold text-[var(--foreground)]">
-                            {user.name}
-                          </h3>
-                          <span className={`px-3 py-1 rounded-full text-xs font-bold ${getRoleBadgeColor(user.role)}`}>
-                            {user.role}
-                          </span>
-                          <span className={`text-xs font-semibold ${getStatusColor(user.status)}`}>
-                            ● {user.status}
-                          </span>
-                        </div>
-                        <div className="flex items-center gap-4 text-sm text-[var(--muted-foreground)]">
-                          <div className="flex items-center gap-1">
-                            <Mail className="w-4 h-4" />
-                            {user.email}
-                          </div>
-                          <div>Joined {new Date(user.joinedDate).toLocaleDateString()}</div>
-                        </div>
-                        <div className="flex gap-4 mt-2 text-xs font-semibold text-[var(--muted-foreground)]">
-                          {user.productsCreated > 0 && (
-                            <div>{user.productsCreated} products</div>
+                      {(user.stats.articles > 0 || user.stats.products > 0) && (
+                        <div className="flex items-center gap-3 text-xs text-theme-muted mt-1">
+                          {user.stats.articles > 0 && (
+                            <span className="flex items-center gap-1">
+                              <FileText className="w-3 h-3" />
+                              {user.stats.articles} articles
+                            </span>
                           )}
-                          {user.articlesWritten > 0 && (
-                            <div>{user.articlesWritten} articles</div>
+                          {user.stats.products > 0 && (
+                            <span className="flex items-center gap-1">
+                              <Package className="w-3 h-3" />
+                              {user.stats.products} products
+                            </span>
                           )}
                         </div>
-                      </div>
-                    </div>
-
-                    {/* Actions */}
-                    <div className="flex gap-2">
-                      <Button variant="ghost" size="sm">
-                        <Edit2 className="w-4 h-4" />
-                      </Button>
-                      <Button
-                        variant="ghost"
-                        size="sm"
-                        onClick={() => handleSuspendUser(user.id)}
-                      >
-                        <Ban className={`w-4 h-4 ${user.status === 'ACTIVE' ? 'text-terra-600' : 'text-moss-600'}`} />
-                      </Button>
-                      <Button
-                        variant="ghost"
-                        size="sm"
-                        onClick={() => handleDeleteUser(user.id)}
-                      >
-                        <Trash2 className="w-4 h-4 text-terra-600" />
-                      </Button>
+                      )}
                     </div>
                   </div>
-                ))}
-              </div>
-            </CardContent>
-          </Card>
 
-          {/* Development Notice */}
-          <Card className="bg-ocean-50 border-ocean-200">
-            <CardContent className="p-6">
-              <p className="text-sm text-[var(--muted-foreground)]">
-                <strong>Note:</strong> This is a UI demonstration. User management will be fully functional
-                once authentication is integrated with NextAuth. Changes made here are temporary and for preview purposes only.
-              </p>
-            </CardContent>
-          </Card>
+                  {/* Actions */}
+                  <div className="flex items-center gap-1">
+                    <button
+                      onClick={() => {
+                        setEditModalUser(user)
+                        setEditRole(user.role)
+                      }}
+                      className="p-2 rounded-lg hover:bg-[var(--card)] transition-colors"
+                      title="Edit role"
+                    >
+                      <Edit2 className="w-4 h-4 text-theme-muted" />
+                    </button>
+                    {user.isBanned ? (
+                      <button
+                        onClick={() => handleUnbanUser(user.id)}
+                        className="p-2 rounded-lg hover:bg-green-500/10 transition-colors"
+                        title="Unban user"
+                      >
+                        <UserCheck className="w-4 h-4 text-green-500" />
+                      </button>
+                    ) : (
+                      <button
+                        onClick={() => setBanModalUser(user)}
+                        className="p-2 rounded-lg hover:bg-red-500/10 transition-colors"
+                        title="Ban user"
+                      >
+                        <Ban className="w-4 h-4 text-red-500" />
+                      </button>
+                    )}
+                    <button
+                      onClick={() => handleDeleteUser(user.id)}
+                      className="p-2 rounded-lg hover:bg-red-500/10 transition-colors"
+                      title="Delete user"
+                    >
+                      <Trash2 className="w-4 h-4 text-red-500" />
+                    </button>
+                  </div>
+                </div>
+              ))}
+            </div>
+          )}
+        </CardContent>
+      </Card>
+
+      {/* Pagination */}
+      {pagination.totalPages > 1 && (
+        <div className="flex justify-center">
+          <Pagination
+            currentPage={pagination.page}
+            totalPages={pagination.totalPages}
+            onPageChange={(page) => setPagination(p => ({ ...p, page }))}
+          />
         </div>
-      </div>
+      )}
+
+      {/* Ban Modal */}
+      {banModalUser && (
+        <div className="fixed inset-0 z-[200] bg-black/50 flex items-center justify-center p-4">
+          <div className="bg-[var(--card)] rounded-xl shadow-xl max-w-md w-full p-6">
+            <div className="flex items-center gap-3 mb-4">
+              <div className="w-10 h-10 rounded-full bg-red-500/10 flex items-center justify-center">
+                <AlertTriangle className="w-5 h-5 text-red-500" />
+              </div>
+              <div>
+                <h3 className="font-bold text-[var(--foreground)]">Ban User</h3>
+                <p className="text-sm text-theme-muted">{banModalUser.name || banModalUser.email}</p>
+              </div>
+            </div>
+            <div className="space-y-4">
+              <div>
+                <label className="block text-sm font-medium text-[var(--foreground)] mb-2">
+                  Reason for ban *
+                </label>
+                <textarea
+                  value={banReason}
+                  onChange={(e) => setBanReason(e.target.value)}
+                  placeholder="Explain why this user is being banned..."
+                  className="w-full px-4 py-2 rounded-lg border-2 border-[var(--border)] bg-[var(--background)] focus:border-theme-primary focus:outline-none resize-none h-24"
+                />
+              </div>
+              <div>
+                <label className="block text-sm font-medium text-[var(--foreground)] mb-2">
+                  Duration (days)
+                </label>
+                <input
+                  type="number"
+                  value={banDuration}
+                  onChange={(e) => setBanDuration(e.target.value)}
+                  placeholder="Leave empty for permanent ban"
+                  className="w-full px-4 py-2 rounded-lg border-2 border-[var(--border)] bg-[var(--background)] focus:border-theme-primary focus:outline-none"
+                />
+                <p className="text-xs text-theme-muted mt-1">
+                  Leave empty for a permanent ban
+                </p>
+              </div>
+              <div className="flex justify-end gap-3 pt-4">
+                <Button variant="outline" onClick={() => setBanModalUser(null)}>
+                  Cancel
+                </Button>
+                <Button
+                  onClick={handleBanUser}
+                  disabled={banning || !banReason}
+                  className="bg-red-500 hover:bg-red-600"
+                >
+                  {banning ? (
+                    <>
+                      <Loader2 className="w-4 h-4 mr-2 animate-spin" />
+                      Banning...
+                    </>
+                  ) : (
+                    'Ban User'
+                  )}
+                </Button>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* Edit Role Modal */}
+      {editModalUser && (
+        <div className="fixed inset-0 z-[200] bg-black/50 flex items-center justify-center p-4">
+          <div className="bg-[var(--card)] rounded-xl shadow-xl max-w-md w-full p-6">
+            <div className="flex items-center gap-3 mb-4">
+              <div className="w-10 h-10 rounded-full bg-theme-primary/10 flex items-center justify-center">
+                <Edit2 className="w-5 h-5 text-theme-primary" />
+              </div>
+              <div>
+                <h3 className="font-bold text-[var(--foreground)]">Edit User Role</h3>
+                <p className="text-sm text-theme-muted">{editModalUser.name || editModalUser.email}</p>
+              </div>
+            </div>
+            <div className="space-y-4">
+              <div>
+                <label className="block text-sm font-medium text-[var(--foreground)] mb-2">
+                  Role
+                </label>
+                <select
+                  value={editRole}
+                  onChange={(e) => setEditRole(e.target.value)}
+                  className="w-full px-4 py-2 rounded-lg border-2 border-[var(--border)] bg-[var(--background)] focus:border-theme-primary focus:outline-none"
+                >
+                  {ROLES.map(r => (
+                    <option key={r} value={r}>{r}</option>
+                  ))}
+                </select>
+              </div>
+              <div className="flex justify-end gap-3 pt-4">
+                <Button variant="outline" onClick={() => setEditModalUser(null)}>
+                  Cancel
+                </Button>
+                <Button onClick={handleUpdateRole} disabled={editing}>
+                  {editing ? (
+                    <>
+                      <Loader2 className="w-4 h-4 mr-2 animate-spin" />
+                      Saving...
+                    </>
+                  ) : (
+                    'Save Changes'
+                  )}
+                </Button>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   )
 }
