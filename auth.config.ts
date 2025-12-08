@@ -12,6 +12,20 @@ export const authConfig = {
   session: {
     strategy: "jwt",
   },
+  // CRITICAL: Cookie config must match auth.ts so middleware can find the session
+  cookies: {
+    sessionToken: {
+      name: process.env.NODE_ENV === 'production'
+        ? '__Secure-next-auth.session-token'
+        : 'next-auth.session-token',
+      options: {
+        httpOnly: true,
+        sameSite: 'lax',
+        path: '/',
+        secure: process.env.NODE_ENV === 'production',
+      },
+    },
+  },
   callbacks: {
     // JWT callback - runs on every request in middleware
     // This MUST be here for the middleware to see the role
