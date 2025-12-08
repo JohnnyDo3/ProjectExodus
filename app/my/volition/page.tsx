@@ -696,10 +696,11 @@ export default function MyVolitionPage() {
               const itemIds = getLaneItemIds(lane.id)
 
               // Profile lane: render ProfileBusinessCard directly without Lane wrapper
+              // Give business card more width (400px) than standard lanes (300px) for better display
               if (lane.id === 'profile') {
                 return (
                   <DraggableLane key={lane.id} id={lane.id} isCustomizing={isCustomizing}>
-                    <div className="relative w-[320px] min-w-[320px] flex-shrink-0">
+                    <div className="relative w-[400px] min-w-[400px] flex-shrink-0">
                       {isCustomizing && (
                         <button
                           onClick={() => toggleLane(lane.id)}

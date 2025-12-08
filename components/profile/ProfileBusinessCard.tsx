@@ -489,12 +489,12 @@ export function ProfileBusinessCard({ userId }: ProfileBusinessCardProps) {
         )}
       </div>
 
-      <CardContent className="p-6">
-        {/* Main Identity Card */}
-        <div className="flex flex-col lg:flex-row gap-6">
-          {/* Left: Core Identity */}
+      <CardContent className="p-4">
+        {/* Main Identity Card - stack vertically in narrow containers */}
+        <div className="flex flex-col gap-4">
+          {/* Core Identity */}
           <div
-            className="flex-shrink-0 p-6 rounded-2xl lg:min-w-[320px] relative overflow-hidden"
+            className="p-5 rounded-2xl relative overflow-hidden"
             style={{ backgroundColor: themeColorVar }}
           >
             {/* Dark overlay for text contrast */}
@@ -504,21 +504,21 @@ export function ProfileBusinessCard({ userId }: ProfileBusinessCardProps) {
 
             <div className="relative text-white">
               {/* Avatar and Name */}
-              <div className="flex items-center gap-4 mb-5">
-                <div className="w-20 h-20 rounded-2xl bg-black/30 flex items-center justify-center border-2 border-white/30 backdrop-blur-sm">
-                  <User className="w-10 h-10 text-white" />
+              <div className="flex items-center gap-3 mb-4">
+                <div className="w-16 h-16 rounded-xl bg-black/30 flex items-center justify-center border-2 border-white/30 backdrop-blur-sm flex-shrink-0">
+                  <User className="w-8 h-8 text-white" />
                 </div>
-                <div className="flex-1">
+                <div className="flex-1 min-w-0">
                   {isEditing ? (
                     <input
                       type="text"
                       value={editedProfile.name || ''}
                       onChange={(e) => setEditedProfile(prev => ({ ...prev, name: e.target.value }))}
-                      className="text-xl font-black bg-transparent border-b-2 border-white/50 focus:border-white outline-none w-full mb-1 placeholder-white/50 text-white"
+                      className="text-lg font-black bg-transparent border-b-2 border-white/50 focus:border-white outline-none w-full mb-1 placeholder-white/50 text-white"
                       placeholder="Your Name"
                     />
                   ) : (
-                    <h3 className="text-xl font-black drop-shadow-md">{profile.name || 'Anonymous'}</h3>
+                    <h3 className="text-lg font-black drop-shadow-md truncate">{profile.name || 'Anonymous'}</h3>
                   )}
                   {isEditing ? (
                     <input
@@ -529,16 +529,16 @@ export function ProfileBusinessCard({ userId }: ProfileBusinessCardProps) {
                       placeholder="Your role or calling"
                     />
                   ) : (
-                    <p className="text-sm font-medium text-white/90">{profile.headline || archetype.title}</p>
+                    <p className="text-sm font-medium text-white/90 truncate">{profile.headline || archetype.title}</p>
                   )}
                 </div>
               </div>
 
               {/* The Declaration */}
-              <div className="mb-5 p-4 bg-black/20 rounded-xl backdrop-blur-sm border border-white/20">
-                <div className="flex items-center gap-2 mb-2">
-                  <ScrollText className="w-4 h-4 text-white/70" />
-                  <p className="text-[10px] font-black uppercase text-white/70 tracking-wider">My Declaration</p>
+              <div className="mb-4 p-3 bg-black/20 rounded-lg backdrop-blur-sm border border-white/20">
+                <div className="flex items-center gap-2 mb-1.5">
+                  <ScrollText className="w-3.5 h-3.5 text-white/70" />
+                  <p className="text-[9px] font-black uppercase text-white/70 tracking-wider">My Declaration</p>
                 </div>
                 {isEditing ? (
                   <textarea
@@ -558,10 +558,10 @@ export function ProfileBusinessCard({ userId }: ProfileBusinessCardProps) {
               </div>
 
               {/* Contact Info */}
-              <div className="space-y-2 text-sm mb-5">
+              <div className="space-y-1.5 text-xs mb-4">
                 {(profile.location || isEditing) && (
                   <div className="flex items-center gap-2">
-                    <MapPin className="w-4 h-4 text-white/75" />
+                    <MapPin className="w-3.5 h-3.5 text-white/75 flex-shrink-0" />
                     {isEditing ? (
                       <input
                         type="text"
@@ -577,33 +577,33 @@ export function ProfileBusinessCard({ userId }: ProfileBusinessCardProps) {
                 )}
                 {!profile.location && !isEditing && (
                   <div className="flex items-center gap-2 opacity-30">
-                    <MapPin className="w-4 h-4 text-white" />
-                    <span className="italic border-b border-dashed border-white/50 text-white">Add your location</span>
+                    <MapPin className="w-3.5 h-3.5 text-white flex-shrink-0" />
+                    <span className="italic border-b border-dashed border-white/50 text-white text-xs">Add location</span>
                   </div>
                 )}
 
                 {profile.email && (
                   <div className="flex items-center gap-2">
-                    <Mail className="w-4 h-4 text-white/75" />
-                    <span className="text-white">{profile.email}</span>
+                    <Mail className="w-3.5 h-3.5 text-white/75 flex-shrink-0" />
+                    <span className="text-white truncate">{profile.email}</span>
                   </div>
                 )}
               </div>
 
               {/* YOUR STOCK */}
-              <div className="pt-4 border-t border-white/20">
-                <div className="flex items-center justify-between mb-2">
-                  <div className="flex items-center gap-2">
-                    <Infinity className="w-5 h-5 text-white/70" />
-                    <p className="text-[10px] font-black uppercase text-white/70 tracking-wider">Your Stock</p>
+              <div className="pt-3 border-t border-white/20">
+                <div className="flex items-center justify-between mb-1">
+                  <div className="flex items-center gap-1.5">
+                    <Infinity className="w-4 h-4 text-white/70" />
+                    <p className="text-[9px] font-black uppercase text-white/70 tracking-wider">Your Stock</p>
                   </div>
-                  <p className="text-3xl font-black text-white drop-shadow-md">{stockScore}</p>
+                  <p className="text-2xl font-black text-white drop-shadow-md">{stockScore}</p>
                 </div>
-                <p className="text-[10px] font-medium text-white/60 text-right">
+                <p className="text-[9px] font-medium text-white/60 text-right">
                   Contribution to Project Exodus
                 </p>
                 {memberYears > 0 && (
-                  <p className="text-[10px] font-bold text-white/50 text-right mt-1">
+                  <p className="text-[9px] font-bold text-white/50 text-right mt-0.5">
                     {memberYears} year{memberYears > 1 ? 's' : ''} of service
                   </p>
                 )}
@@ -611,37 +611,37 @@ export function ProfileBusinessCard({ userId }: ProfileBusinessCardProps) {
             </div>
           </div>
 
-          {/* Right: Values & Contributions */}
-          <div className="flex-1 space-y-5">
+          {/* Values & Contributions */}
+          <div className="space-y-3">
             {/* Guardian Value */}
             <div
-              className="p-4 rounded-xl border-2"
+              className="p-3 rounded-lg border-2"
               style={{
                 borderColor: themeColorVar,
                 backgroundColor: `color-mix(in srgb, ${themeColorVar} 10%, var(--background))`
               }}
             >
-              <div className="flex items-center gap-3 mb-2">
-                <ArchetypeIcon className="w-6 h-6" style={{ color: themeColorVar }} />
-                <div>
-                  <p className="text-xs font-black text-[var(--muted-foreground)] uppercase">I Embody</p>
-                  <p className="text-lg font-black" style={{ color: themeColorVar }}>{archetype.value}</p>
+              <div className="flex items-center gap-2 mb-1.5">
+                <ArchetypeIcon className="w-5 h-5 flex-shrink-0" style={{ color: themeColorVar }} />
+                <div className="min-w-0">
+                  <p className="text-[9px] font-black text-[var(--muted-foreground)] uppercase">I Embody</p>
+                  <p className="text-base font-black truncate" style={{ color: themeColorVar }}>{archetype.value}</p>
                 </div>
               </div>
-              <p className="text-sm font-medium text-[var(--muted-foreground)] italic">{archetype.description}</p>
+              <p className="text-xs font-medium text-[var(--muted-foreground)] italic line-clamp-2">{archetype.description}</p>
             </div>
 
             {/* Commandments Alignment */}
             <div>
-              <h4 className="text-xs font-black text-[var(--muted-foreground)] uppercase mb-2 flex items-center gap-2">
-                <Shield className="w-4 h-4" />
-                Values Alignment
+              <h4 className="text-[9px] font-black text-[var(--muted-foreground)] uppercase mb-1.5 flex items-center gap-1.5">
+                <Shield className="w-3.5 h-3.5" />
+                Values
               </h4>
-              <div className="flex flex-wrap gap-2">
+              <div className="flex flex-wrap gap-1.5">
                 {archetype.commandments.map((value, idx) => (
                   <span
                     key={idx}
-                    className="px-3 py-1.5 text-white text-xs font-bold rounded-full"
+                    className="px-2 py-1 text-white text-[10px] font-bold rounded-full"
                     style={{ backgroundColor: themeColorVar }}
                   >
                     {value}
@@ -652,32 +652,32 @@ export function ProfileBusinessCard({ userId }: ProfileBusinessCardProps) {
 
             {/* Expertise */}
             <div>
-              <h4 className="text-xs font-black text-[var(--muted-foreground)] uppercase mb-2 flex items-center gap-2">
-                <Sparkles className="w-4 h-4" />
+              <h4 className="text-[9px] font-black text-[var(--muted-foreground)] uppercase mb-1.5 flex items-center gap-1.5">
+                <Sparkles className="w-3.5 h-3.5" />
                 Expertise
               </h4>
               {profile.skills.length > 0 ? (
-                <div className="flex flex-wrap gap-2">
-                  {profile.skills.slice(0, 6).map((skill, idx) => (
+                <div className="flex flex-wrap gap-1.5">
+                  {profile.skills.slice(0, 4).map((skill, idx) => (
                     <span
                       key={idx}
-                      className="px-3 py-1 bg-[var(--primary)] text-[var(--primary-foreground)] text-xs font-bold rounded-full"
+                      className="px-2 py-0.5 bg-[var(--primary)] text-[var(--primary-foreground)] text-[10px] font-bold rounded-full"
                     >
                       {skill}
                     </span>
                   ))}
-                  {profile.skills.length > 6 && (
-                    <span className="px-3 py-1 bg-[var(--muted)] text-[var(--muted-foreground)] text-xs font-bold rounded-full">
-                      +{profile.skills.length - 6} more
+                  {profile.skills.length > 4 && (
+                    <span className="px-2 py-0.5 bg-[var(--muted)] text-[var(--muted-foreground)] text-[10px] font-bold rounded-full">
+                      +{profile.skills.length - 4}
                     </span>
                   )}
                 </div>
               ) : (
-                <div className="flex flex-wrap gap-2 opacity-30">
-                  {['Your skill', 'Another skill', 'More skills'].map((ghost, idx) => (
+                <div className="flex flex-wrap gap-1.5 opacity-30">
+                  {['Skill 1', 'Skill 2'].map((ghost, idx) => (
                     <span
                       key={idx}
-                      className="px-3 py-1 border-2 border-dashed border-[var(--muted-foreground)] text-[var(--muted-foreground)] text-xs font-bold rounded-full italic"
+                      className="px-2 py-0.5 border border-dashed border-[var(--muted-foreground)] text-[var(--muted-foreground)] text-[10px] font-bold rounded-full italic"
                     >
                       {ghost}
                     </span>
@@ -687,37 +687,37 @@ export function ProfileBusinessCard({ userId }: ProfileBusinessCardProps) {
             </div>
 
             {/* STOCK Breakdown */}
-            <div className="grid grid-cols-2 gap-3">
-              <div className="p-3 bg-[var(--muted)] rounded-xl">
-                <p className="text-2xl font-black" style={{ color: themeColorVar }}>{profile.projectsCreated || 0}</p>
-                <p className="text-[10px] font-bold text-[var(--muted-foreground)] uppercase">Projects Built</p>
+            <div className="grid grid-cols-2 gap-1.5">
+              <div className="p-2 bg-[var(--muted)] rounded-lg">
+                <p className="text-lg font-black" style={{ color: themeColorVar }}>{profile.projectsCreated || 0}</p>
+                <p className="text-[8px] font-bold text-[var(--muted-foreground)] uppercase">Projects</p>
               </div>
-              <div className="p-3 bg-[var(--muted)] rounded-xl">
-                <p className="text-2xl font-black" style={{ color: themeColorVar }}>{profile.articlesWritten || 0}</p>
-                <p className="text-[10px] font-bold text-[var(--muted-foreground)] uppercase">Articles Written</p>
+              <div className="p-2 bg-[var(--muted)] rounded-lg">
+                <p className="text-lg font-black" style={{ color: themeColorVar }}>{profile.articlesWritten || 0}</p>
+                <p className="text-[8px] font-bold text-[var(--muted-foreground)] uppercase">Articles</p>
               </div>
-              <div className="p-3 bg-[var(--muted)] rounded-xl">
-                <p className="text-2xl font-black" style={{ color: themeColorVar }}>{profile.followers || 0}</p>
-                <p className="text-[10px] font-bold text-[var(--muted-foreground)] uppercase">Followers</p>
+              <div className="p-2 bg-[var(--muted)] rounded-lg">
+                <p className="text-lg font-black" style={{ color: themeColorVar }}>{profile.followers || 0}</p>
+                <p className="text-[8px] font-bold text-[var(--muted-foreground)] uppercase">Followers</p>
               </div>
-              <div className="p-3 bg-[var(--muted)] rounded-xl">
-                <p className="text-2xl font-black" style={{ color: themeColorVar }}>{profile.modulesCompleted || 0}</p>
-                <p className="text-[10px] font-bold text-[var(--muted-foreground)] uppercase">Modules Completed</p>
+              <div className="p-2 bg-[var(--muted)] rounded-lg">
+                <p className="text-lg font-black" style={{ color: themeColorVar }}>{profile.modulesCompleted || 0}</p>
+                <p className="text-[8px] font-bold text-[var(--muted-foreground)] uppercase">Modules</p>
               </div>
             </div>
 
             {/* Social Links */}
             {hasSocialLinks && (
-              <div className="flex flex-wrap gap-2">
+              <div className="flex flex-wrap gap-1.5">
                 {profile.social.website && (
                   <a
                     href={profile.social.website}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="flex items-center gap-2 px-3 py-2 bg-[var(--muted)] text-[var(--foreground)] rounded-lg hover:bg-[var(--primary)] hover:text-[var(--primary-foreground)] transition-colors text-sm font-bold"
+                    className="flex items-center gap-1.5 px-2 py-1.5 bg-[var(--muted)] text-[var(--foreground)] rounded-lg hover:bg-[var(--primary)] hover:text-[var(--primary-foreground)] transition-colors text-xs font-bold"
                   >
-                    <Globe className="w-4 h-4" />
-                    Website
+                    <Globe className="w-3.5 h-3.5" />
+                    Web
                   </a>
                 )}
                 {profile.social.linkedin && (
@@ -725,9 +725,9 @@ export function ProfileBusinessCard({ userId }: ProfileBusinessCardProps) {
                     href={profile.social.linkedin}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="flex items-center gap-2 px-3 py-2 bg-[var(--muted)] text-[var(--foreground)] rounded-lg hover:bg-[var(--accent)] hover:text-[var(--accent-foreground)] transition-colors text-sm font-bold"
+                    className="flex items-center gap-1.5 px-2 py-1.5 bg-[var(--muted)] text-[var(--foreground)] rounded-lg hover:bg-[var(--accent)] hover:text-[var(--accent-foreground)] transition-colors text-xs font-bold"
                   >
-                    <Linkedin className="w-4 h-4" />
+                    <Linkedin className="w-3.5 h-3.5" />
                     LinkedIn
                   </a>
                 )}
@@ -736,23 +736,23 @@ export function ProfileBusinessCard({ userId }: ProfileBusinessCardProps) {
                     href={profile.social.twitter}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="flex items-center gap-2 px-3 py-2 bg-[var(--muted)] text-[var(--foreground)] rounded-lg hover:bg-[var(--accent)] hover:text-[var(--accent-foreground)] transition-colors text-sm font-bold"
+                    className="flex items-center gap-1.5 px-2 py-1.5 bg-[var(--muted)] text-[var(--foreground)] rounded-lg hover:bg-[var(--accent)] hover:text-[var(--accent-foreground)] transition-colors text-xs font-bold"
                   >
-                    <Twitter className="w-4 h-4" />
-                    Twitter
+                    <Twitter className="w-3.5 h-3.5" />
+                    X
                   </a>
                 )}
               </div>
             )}
             {!hasSocialLinks && (
-              <div className="flex flex-wrap gap-2 opacity-30">
-                <span className="flex items-center gap-2 px-3 py-2 border-2 border-dashed border-[var(--muted-foreground)] rounded-lg text-sm font-bold text-[var(--muted-foreground)] italic">
-                  <Globe className="w-4 h-4" />
-                  Add website
+              <div className="flex flex-wrap gap-1.5 opacity-30">
+                <span className="flex items-center gap-1.5 px-2 py-1.5 border border-dashed border-[var(--muted-foreground)] rounded-lg text-xs font-bold text-[var(--muted-foreground)] italic">
+                  <Globe className="w-3.5 h-3.5" />
+                  Website
                 </span>
-                <span className="flex items-center gap-2 px-3 py-2 border-2 border-dashed border-[var(--muted-foreground)] rounded-lg text-sm font-bold text-[var(--muted-foreground)] italic">
-                  <Linkedin className="w-4 h-4" />
-                  Add LinkedIn
+                <span className="flex items-center gap-1.5 px-2 py-1.5 border border-dashed border-[var(--muted-foreground)] rounded-lg text-xs font-bold text-[var(--muted-foreground)] italic">
+                  <Linkedin className="w-3.5 h-3.5" />
+                  LinkedIn
                 </span>
               </div>
             )}
