@@ -1,6 +1,7 @@
 'use client'
 
 import { useState, useEffect, useRef } from 'react'
+import { createPortal } from 'react-dom'
 import { useSession } from 'next-auth/react'
 import { Card, CardContent } from '@/components/ui/Card'
 import { Button } from '@/components/ui/Button'
@@ -289,10 +290,16 @@ export function ProfileBusinessCard({ userId }: ProfileBusinessCardProps) {
   const [selectedArchetype, setSelectedArchetype] = useState<ArchetypeType>('michael')
   const [editingField, setEditingField] = useState<string | null>(null)
   const [editedProfile, setEditedProfile] = useState<Partial<ProfileData>>({})
+  const [isMounted, setIsMounted] = useState(false)
   const [isSaving, setIsSaving] = useState(false)
   const expandedSectionRef = useRef<HTMLDivElement>(null)
 
   const isOwnProfile = session?.user?.id === userId
+
+  // Set mounted state for portal rendering
+  useEffect(() => {
+    setIsMounted(true)
+  }, [])
 
   useEffect(() => {
     const fetchUserProfile = async () => {
@@ -547,18 +554,19 @@ export function ProfileBusinessCard({ userId }: ProfileBusinessCardProps) {
     )
   }
 
-  // Edit Modal Component - WYSIWYG style
+  // Edit Modal Component - WYSIWYG style (uses portal to escape stacking context)
   const EditModal = () => {
-    if (!isEditModalOpen) return null
+    if (!isEditModalOpen || !isMounted) return null
 
     const currentArchetype = GUARDIAN_ARCHETYPES[selectedArchetype]
     const CurrentArchetypeIcon = currentArchetype.icon
 
-    return (
+    const modalContent = (
       <>
         {/* Backdrop */}
         <div
-          className="fixed inset-0 bg-black/60 backdrop-blur-sm z-[300]"
+          className="fixed inset-0 bg-black/60 backdrop-blur-sm"
+          style={{ zIndex: 9998 }}
           onClick={() => {
             setIsEditModalOpen(false)
             setShowArchetypeSelector(false)
@@ -567,9 +575,9 @@ export function ProfileBusinessCard({ userId }: ProfileBusinessCardProps) {
         />
 
         {/* Modal Container */}
-        <div className="fixed inset-4 md:inset-8 lg:inset-16 z-[301] flex items-center justify-center">
+        <div className="fixed inset-4 md:inset-8 lg:inset-16 flex items-center justify-center pointer-events-none" style={{ zIndex: 9999 }}>
           {/* The Card itself - WYSIWYG */}
-          <div className="bg-[var(--card)] rounded-2xl shadow-2xl max-w-xl w-full max-h-[90vh] overflow-hidden flex flex-col border-4" style={{ borderColor: currentArchetype.colors.from }}>
+          <div className="pointer-events-auto bg-[var(--card)] rounded-2xl shadow-2xl max-w-xl w-full max-h-[90vh] overflow-hidden flex flex-col border-4" style={{ borderColor: currentArchetype.colors.from }}>
 
             {/* Card Header - Gradient with editable content */}
             <div
@@ -836,6 +844,9 @@ export function ProfileBusinessCard({ userId }: ProfileBusinessCardProps) {
         </div>
       </>
     )
+
+    // Use portal to render modal at document body level (escapes stacking context)
+    return createPortal(modalContent, document.body)
   }
 
   return (
