@@ -961,7 +961,7 @@ export function ProgressiveSkyline() {
                   {x: 2410, h: 65, w: 48, color: "#e8f4e8"},
                   {x: 2468, h: 98, w: 68, color: "#f0f8f0"},
                   {x: 2546, h: 78, w: 56, color: "#e0f2e0"}, {x: 2612, h: 85, w: 60, color: "#e8f4e8"},
-                  {x: 2682, h: 72, w: 54, color: "#f0f8f0"}, {x: 2746, h: 95, w: 66, color: "#e0f2e0"},
+                  {x: 2682, h: 72, w: 54, color: "#f0f8f0"},
                   {x: 2822, h: 82, w: 58, color: "#e8f4e8"}, {x: 2890, h: 75, w: 52, color: "#f0f8f0"},
                   {x: 2952, h: 92, w: 64, color: "#e0f2e0"}, {x: 3026, h: 68, w: 50, color: "#e8f4e8"},
                   {x: 3086, h: 88, w: 62, color: "#f0f8f0"}, {x: 3158, h: 78, w: 56, color: "#e0f2e0"},
@@ -971,8 +971,8 @@ export function ProgressiveSkyline() {
                   {x: 3660, h: 88, w: 62, color: "#e8f4e8"}, {x: 3732, h: 75, w: 54, color: "#f0f8f0"}
                 ].map((bldg, i) => (
                   <g key={`green-bldg-${i}`}>
-                    {/* Building body with green tint */}
-                    <rect x={bldg.x} y={215-bldg.h} width={bldg.w} height={bldg.h} fill={bldg.color} opacity="1" />
+                    {/* Building body with green tint - extends to sidewalk at y=217 */}
+                    <rect x={bldg.x} y={215-bldg.h} width={bldg.w} height={bldg.h + 2} fill={bldg.color} opacity="1" />
 
                     {/* GREEN ROOF with plants */}
                     <rect x={bldg.x} y={215-bldg.h-3} width={bldg.w} height="3" fill="#4a7c2f" opacity="1" />
@@ -1005,9 +1005,9 @@ export function ProgressiveSkyline() {
                       ))}
                     </g>
 
-                    {/* Large windows with frames and BALCONIES on ALL windows */}
+                    {/* Large windows with frames and BALCONIES - skip first floor (door area) */}
                     <g opacity="1">
-                      {Array.from({length: Math.floor(bldg.h/20)}).map((_, row) => (
+                      {Array.from({length: Math.max(1, Math.floor((bldg.h - 40) / 20))}).map((_, row) => (
                         Array.from({length: Math.floor(bldg.w/16)}).map((_, col) => (
                           <g key={`win-${row}-${col}`}>
                             {/* Window frame */}
@@ -1084,26 +1084,26 @@ export function ProgressiveSkyline() {
                             opacity="1" />
                     </g>
 
-                    {/* Ground-level entrance doors */}
+                    {/* Ground-level entrance doors - extend to sidewalk */}
                     <g opacity="1">
                       {/* Door frame */}
                       <rect x={bldg.x + bldg.w/2 - 8}
                             y={215 - 15}
                             width="16"
-                            height="15"
+                            height="17"
                             fill="#5a6a5a"
                             opacity="1" />
                       {/* Glass doors */}
                       <rect x={bldg.x + bldg.w/2 - 6}
                             y={215 - 13}
                             width="5"
-                            height="11"
+                            height="13"
                             fill="#6b8ea8"
                             opacity="0.8" />
                       <rect x={bldg.x + bldg.w/2 + 1}
                             y={215 - 13}
                             width="5"
-                            height="11"
+                            height="13"
                             fill="#6b8ea8"
                             opacity="0.8" />
                       {/* Door handles */}
@@ -1179,22 +1179,22 @@ export function ProgressiveSkyline() {
                 ))}
               </g>
 
-              {/* City Park - Green space with fountain, benches, and trees */}
+              {/* City Parks - Green spaces with fountains, benches, and trees */}
               <g>
-                {/* Park 1 - at former 5th building location (x: 2278) - Continuation of landscape */}
+                {/* Park 1 - at former 5th building location (x: 2278) */}
                 <g>
-                  {/* Two trees in back of foreground */}
+                  {/* Two small trees in back */}
                   <g key="park1-tree-1">
-                    <rect x="2275" y="192" width="4" height="16" fill="#6b5a45" opacity="1" />
-                    <circle cx="2277" cy="190" r="9" fill="#4a7c2f" opacity="1" />
-                    <circle cx="2273" cy="193" r="6" fill="#5a8a5a" opacity="1" />
-                    <circle cx="2281" cy="193" r="6" fill="#5a8a5a" opacity="1" />
+                    <rect x="2275" y="200" width="3" height="10" fill="#6b5a45" opacity="1" />
+                    <circle cx="2276.5" cy="198" r="6" fill="#4a7c2f" opacity="1" />
+                    <circle cx="2273" cy="200" r="4" fill="#5a8a5a" opacity="1" />
+                    <circle cx="2280" cy="200" r="4" fill="#5a8a5a" opacity="1" />
                   </g>
                   <g key="park1-tree-2">
-                    <rect x="2315" y="194" width="4" height="15" fill="#6b5a45" opacity="1" />
-                    <circle cx="2317" cy="192" r="8" fill="#4a7c2f" opacity="1" />
-                    <circle cx="2313" cy="195" r="6" fill="#5a8a5a" opacity="1" />
-                    <circle cx="2321" cy="195" r="6" fill="#5a8a5a" opacity="1" />
+                    <rect x="2315" y="201" width="3" height="9" fill="#6b5a45" opacity="1" />
+                    <circle cx="2316.5" cy="199" r="5" fill="#4a7c2f" opacity="1" />
+                    <circle cx="2313" cy="201" r="4" fill="#5a8a5a" opacity="1" />
+                    <circle cx="2320" cy="201" r="4" fill="#5a8a5a" opacity="1" />
                   </g>
 
                   {/* Fountain in middle */}
@@ -1220,18 +1220,79 @@ export function ProgressiveSkyline() {
 
                   {/* Bench on left side */}
                   <g>
-                    <rect x="2273" y="209" width="12" height="2" fill="#8b7355" opacity="1" />
-                    <rect x="2273" y="205" width="12" height="4" fill="#8b7355" opacity="1" />
-                    <rect x="2273" y="207" width="2" height="4" fill="#6b5a45" opacity="1" />
-                    <rect x="2283" y="207" width="2" height="4" fill="#6b5a45" opacity="1" />
+                    <rect x="2268" y="211" width="10" height="2" fill="#8b7355" opacity="1" />
+                    <rect x="2268" y="208" width="10" height="3" fill="#8b7355" opacity="1" />
+                    <rect x="2268" y="209" width="2" height="4" fill="#6b5a45" opacity="1" />
+                    <rect x="2276" y="209" width="2" height="4" fill="#6b5a45" opacity="1" />
                   </g>
 
                   {/* Bench on right side */}
                   <g>
-                    <rect x="2310" y="209" width="12" height="2" fill="#8b7355" opacity="1" />
-                    <rect x="2310" y="205" width="12" height="4" fill="#8b7355" opacity="1" />
-                    <rect x="2310" y="207" width="2" height="4" fill="#6b5a45" opacity="1" />
-                    <rect x="2320" y="207" width="2" height="4" fill="#6b5a45" opacity="1" />
+                    <rect x="2315" y="211" width="10" height="2" fill="#8b7355" opacity="1" />
+                    <rect x="2315" y="208" width="10" height="3" fill="#8b7355" opacity="1" />
+                    <rect x="2315" y="209" width="2" height="4" fill="#6b5a45" opacity="1" />
+                    <rect x="2323" y="209" width="2" height="4" fill="#6b5a45" opacity="1" />
+                  </g>
+                </g>
+
+                {/* Park 2 - at former building 11 location (x: 2746) */}
+                <g>
+                  {/* Tiny trees on sides */}
+                  <g key="park2-tree-1">
+                    <rect x="2725" y="203" width="2" height="7" fill="#6b5a45" opacity="1" />
+                    <circle cx="2726" cy="201" r="4" fill="#4a7c2f" opacity="1" />
+                    <circle cx="2723" cy="203" r="3" fill="#5a8a5a" opacity="1" />
+                    <circle cx="2729" cy="203" r="3" fill="#5a8a5a" opacity="1" />
+                  </g>
+                  <g key="park2-tree-2">
+                    <rect x="2765" y="202" width="2" height="8" fill="#6b5a45" opacity="1" />
+                    <circle cx="2766" cy="200" r="4.5" fill="#4a7c2f" opacity="1" />
+                    <circle cx="2763" cy="202" r="3" fill="#5a8a5a" opacity="1" />
+                    <circle cx="2769" cy="202" r="3" fill="#5a8a5a" opacity="1" />
+                  </g>
+                  {/* Additional tiny tree in middle-back */}
+                  <g key="park2-tree-3">
+                    <rect x="2745" y="198" width="2" height="6" fill="#6b5a45" opacity="1" />
+                    <circle cx="2746" cy="196" r="3.5" fill="#4a7c2f" opacity="1" />
+                    <circle cx="2743" cy="198" r="2.5" fill="#5a8a5a" opacity="1" />
+                    <circle cx="2749" cy="198" r="2.5" fill="#5a8a5a" opacity="1" />
+                  </g>
+
+                  {/* Fountain in middle */}
+                  <g>
+                    {/* Fountain base */}
+                    <ellipse cx="2746" cy="210" rx="10" ry="4" fill="#a8a8a8" opacity="1" />
+                    <rect x="2741" y="206" width="10" height="4" fill="#b8b8b8" opacity="1" rx="1" />
+
+                    {/* Fountain basin */}
+                    <ellipse cx="2746" cy="206" rx="8" ry="3" fill="#87CEEB" opacity="1" />
+
+                    {/* Water spray */}
+                    <circle cx="2746" cy="203" r="1.5" fill="#B0E0E6" opacity="1" />
+                    <circle cx="2743" cy="204" r="1" fill="#B0E0E6" opacity="1" />
+                    <circle cx="2749" cy="204" r="1" fill="#B0E0E6" opacity="1" />
+                    <circle cx="2744" cy="201" r="0.8" fill="#B0E0E6" opacity="1" />
+                    <circle cx="2748" cy="201" r="0.8" fill="#B0E0E6" opacity="1" />
+
+                    {/* Central water column */}
+                    <path d="M 2746,203 L 2746,198 L 2745,199 M 2746,198 L 2747,199"
+                          stroke="#B0E0E6" strokeWidth="0.8" fill="none" opacity="1" />
+                  </g>
+
+                  {/* Bench on left side */}
+                  <g>
+                    <rect x="2718" y="211" width="10" height="2" fill="#8b7355" opacity="1" />
+                    <rect x="2718" y="208" width="10" height="3" fill="#8b7355" opacity="1" />
+                    <rect x="2718" y="209" width="2" height="4" fill="#6b5a45" opacity="1" />
+                    <rect x="2726" y="209" width="2" height="4" fill="#6b5a45" opacity="1" />
+                  </g>
+
+                  {/* Bench on right side */}
+                  <g>
+                    <rect x="2762" y="211" width="10" height="2" fill="#8b7355" opacity="1" />
+                    <rect x="2762" y="208" width="10" height="3" fill="#8b7355" opacity="1" />
+                    <rect x="2762" y="209" width="2" height="4" fill="#6b5a45" opacity="1" />
+                    <rect x="2770" y="209" width="2" height="4" fill="#6b5a45" opacity="1" />
                   </g>
                 </g>
               </g>
@@ -1258,22 +1319,6 @@ export function ProgressiveSkyline() {
                     </g>
                   );
                 })}
-              </g>
-
-              {/* Water features & fountains - cleaner design without floating dots */}
-              <g>
-                {[2250, 2750, 3250, 3750].map((x, i) => (
-                  <g key={`fountain-${i}`}>
-                    {/* Fountain basin - stone edge */}
-                    <ellipse cx={x} cy="209" rx="20" ry="7" fill="#8a8a8a" opacity="1" />
-                    <ellipse cx={x} cy="208" rx="18" ry="6" fill="#6b9eb8" opacity="0.8" />
-                    {/* Fountain centerpiece */}
-                    <rect x={x-2} y="200" width="4" height="8" fill="#a8a8a8" opacity="1" />
-                    <ellipse cx={x} cy="200" rx="3" ry="1.5" fill="#b8b8b8" opacity="1" />
-                    {/* Water jet - vertical line */}
-                    <rect x={x-0.5} y="192" width="1" height="8" fill="#a8d8e8" opacity="0.7" />
-                  </g>
-                ))}
               </g>
 
               {/* Electric cars/bikes on streets - cleaner design */}
