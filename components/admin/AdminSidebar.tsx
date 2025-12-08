@@ -158,7 +158,7 @@ export function AdminSidebar({
                               block px-3 py-2 rounded-lg font-medium text-sm
                               transition-colors
                               ${isActive(child.href)
-                                ? 'bg-theme-primary text-[var(--primary-foreground)]'
+                                ? 'bg-theme-primary text-white'
                                 : 'text-[var(--foreground)] hover:bg-[var(--muted)]'
                               }
                             `}
@@ -181,7 +181,7 @@ export function AdminSidebar({
                     flex items-center gap-3 px-3 py-2.5 rounded-lg font-medium
                     transition-colors relative
                     ${active
-                      ? 'bg-theme-primary text-[var(--primary-foreground)]'
+                      ? 'bg-theme-primary text-white'
                       : 'text-[var(--foreground)] hover:bg-[var(--muted)]'
                     }
                     ${collapsed ? 'justify-center' : ''}

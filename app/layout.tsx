@@ -1,7 +1,5 @@
 import type { Metadata, Viewport } from "next";
 import "./globals.css";
-import { Header } from "@/components/layout/Header";
-import { Footer } from "@/components/layout/Footer";
 import { SessionProvider } from "@/components/providers/SessionProvider";
 import { TimeThemeProvider } from "@/components/providers/TimeThemeProvider";
 import { SkyThemeProvider } from "@/components/theme/SkyThemeProvider";
@@ -11,6 +9,8 @@ import { DecorativeBranches } from "@/components/decorative/DecorativeBranches";
 import { generateMetadata, siteConfig } from "@/lib/metadata";
 import { auth } from "@/auth";
 import { Toaster } from "react-hot-toast";
+import { headers } from "next/headers";
+import { MainLayoutWrapper } from "@/components/layout/MainLayoutWrapper";
 
 // Viewport configuration for mobile responsiveness
 export const viewport: Viewport = {
@@ -133,11 +133,9 @@ export default async function RootLayout({
             <SkyThemeProvider>
               <SkyBackground />
               <DecorativeBranches />
-              <div className="relative z-10">
-                <Header />
+              <MainLayoutWrapper>
                 {children}
-                <Footer />
-              </div>
+              </MainLayoutWrapper>
               {/* AI Assistant - Available on all pages, auto-greets on homepage */}
               <ProjectExodusAI />
               {/* Toast Notifications */}
