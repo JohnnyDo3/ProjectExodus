@@ -129,7 +129,7 @@ export default async function ProfilePage({ params }: { params: Promise<{ id: st
                       )}
                     </div>
                     {isOwnProfile ? (
-                      <Link href="/profile/edit">
+                      <Link href="/settings">
                         <Button size="sm" className="font-black">
                           <Edit className="w-4 h-4 mr-2" />
                           EDIT

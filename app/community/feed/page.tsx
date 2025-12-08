@@ -143,7 +143,7 @@ export default function SocialFeedPage() {
                       <h3 className="text-xl font-black text-[var(--foreground)] mb-1">
                         {session.user.name || 'Anonymous User'}
                       </h3>
-                      <Link href="/profile/edit">
+                      <Link href="/settings">
                         <Button variant="outline" size="sm" className="mt-3 font-black">
                           EDIT PROFILE
                         </Button>

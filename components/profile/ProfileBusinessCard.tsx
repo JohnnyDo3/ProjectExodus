@@ -1291,58 +1291,66 @@ export function ProfileBusinessCard({ userId, onClose, onSave: onSaveCallback, i
 
               {/* Contact Info */}
               <div className="space-y-1.5 text-xs mb-4">
-                {(profile.location || isEditing) && (
-                  <div className="flex items-center gap-2">
-                    <MapPin className="w-3.5 h-3.5 text-white/75 flex-shrink-0" />
-                    {isEditing ? (
-                      <input
-                        type="text"
-                        value={editedProfile.location || ''}
-                        onChange={(e) => setEditedProfile(prev => ({ ...prev, location: e.target.value }))}
-                        className="bg-transparent border-b border-white/30 focus:border-white/50 outline-none flex-1 placeholder-white/50 text-white"
-                        placeholder="Your location"
-                      />
-                    ) : (
-                      <span className="text-white">{profile.location}</span>
-                    )}
-                  </div>
-                )}
-                {!profile.location && !isEditing && (
-                  <div className="flex items-center gap-2 opacity-30">
-                    <MapPin className="w-3.5 h-3.5 text-white flex-shrink-0" />
-                    <span className="italic border-b border-dashed border-white/50 text-white text-xs">Add location</span>
-                  </div>
-                )}
+                {/* Location with visibility toggle */}
+                <div className="flex items-center gap-2">
+                  {(profile.location || isEditing) ? (
+                    <>
+                      <MapPin className="w-3.5 h-3.5 text-white/75 flex-shrink-0" />
+                      {isEditing ? (
+                        <input
+                          type="text"
+                          value={editedProfile.location || ''}
+                          onChange={(e) => setEditedProfile(prev => ({ ...prev, location: e.target.value }))}
+                          className="bg-transparent border-b border-white/30 focus:border-white/50 outline-none flex-1 placeholder-white/50 text-white"
+                          placeholder="Your location"
+                        />
+                      ) : (
+                        <span className="text-white flex-1">{profile.location}</span>
+                      )}
+                      <VisibilityToggle field="showLocation" className="text-white/70" />
+                    </>
+                  ) : (
+                    <>
+                      <MapPin className="w-3.5 h-3.5 text-white/50 flex-shrink-0" />
+                      <span className="italic border-b border-dashed border-white/30 text-white/50 text-xs flex-1">Add location</span>
+                      <VisibilityToggle field="showLocation" className="text-white/70" />
+                    </>
+                  )}
+                </div>
 
-                {profile.email && (
-                  <div className="flex items-center gap-2">
-                    <Mail className="w-3.5 h-3.5 text-white/75 flex-shrink-0" />
-                    <span className="text-white truncate">{profile.email}</span>
-                  </div>
-                )}
+                {/* Email with visibility toggle */}
+                <div className="flex items-center gap-2">
+                  <Mail className="w-3.5 h-3.5 text-white/75 flex-shrink-0" />
+                  <span className="text-white truncate flex-1">{profile.email || 'No email'}</span>
+                  <VisibilityToggle field="showEmail" className="text-white/70" />
+                </div>
 
-                {/* Phone with ghost text */}
-                {(profile.phone || isEditing) ? (
-                  <div className="flex items-center gap-2">
-                    <Phone className="w-3.5 h-3.5 text-white/75 flex-shrink-0" />
-                    {isEditing ? (
-                      <input
-                        type="text"
-                        value={editedProfile.phone || ''}
-                        onChange={(e) => setEditedProfile(prev => ({ ...prev, phone: e.target.value }))}
-                        className="bg-transparent border-b border-white/30 focus:border-white/50 outline-none flex-1 placeholder-white/50 text-white"
-                        placeholder="Your phone number"
-                      />
-                    ) : (
-                      <span className="text-white">{profile.phone}</span>
-                    )}
-                  </div>
-                ) : (
-                  <div className="flex items-center gap-2 opacity-30">
-                    <Phone className="w-3.5 h-3.5 text-white flex-shrink-0" />
-                    <span className="italic border-b border-dashed border-white/50 text-white text-xs">Add phone number</span>
-                  </div>
-                )}
+                {/* Phone with visibility toggle */}
+                <div className="flex items-center gap-2">
+                  {(profile.phone || isEditing) ? (
+                    <>
+                      <Phone className="w-3.5 h-3.5 text-white/75 flex-shrink-0" />
+                      {isEditing ? (
+                        <input
+                          type="text"
+                          value={editedProfile.phone || ''}
+                          onChange={(e) => setEditedProfile(prev => ({ ...prev, phone: e.target.value }))}
+                          className="bg-transparent border-b border-white/30 focus:border-white/50 outline-none flex-1 placeholder-white/50 text-white"
+                          placeholder="Your phone number"
+                        />
+                      ) : (
+                        <span className="text-white flex-1">{profile.phone}</span>
+                      )}
+                      <VisibilityToggle field="showPhone" className="text-white/70" />
+                    </>
+                  ) : (
+                    <>
+                      <Phone className="w-3.5 h-3.5 text-white/50 flex-shrink-0" />
+                      <span className="italic border-b border-dashed border-white/30 text-white/50 text-xs flex-1">Add phone number</span>
+                      <VisibilityToggle field="showPhone" className="text-white/70" />
+                    </>
+                  )}
+                </div>
               </div>
 
               {/* YOUR STOCK */}
