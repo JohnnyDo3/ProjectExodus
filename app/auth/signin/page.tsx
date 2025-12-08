@@ -43,9 +43,9 @@ function SignInForm() {
       } else if (result?.ok) {
         setSuccess(true)
         // Show success message briefly before redirecting
+        // Use window.location for full page reload to ensure middleware re-runs with fresh session
         setTimeout(() => {
-          router.push(callbackUrl)
-          router.refresh()
+          window.location.href = callbackUrl
         }, 1000)
       }
     } catch (error) {

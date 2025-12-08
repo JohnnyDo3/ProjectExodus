@@ -19,9 +19,9 @@ export const authConfig = {
       if (isOnAdmin) {
         if (!isLoggedIn) return false // Redirect to login page
 
-        // Check admin role
+        // Check admin role (ADMIN, SUPER_ADMIN, or MODERATOR can access admin panel)
         const userRole = auth.user?.role
-        const isAdmin = userRole === 'ADMIN' || userRole === 'SUPER_ADMIN'
+        const isAdmin = userRole === 'ADMIN' || userRole === 'SUPER_ADMIN' || userRole === 'MODERATOR'
         return isAdmin
       }
 
