@@ -37,6 +37,8 @@ import {
   AlertTriangle,
   Heart,
   Phone,
+  Eye,
+  Settings,
 } from 'lucide-react'
 
 // Confirmation Dialog for unsaved changes
@@ -230,6 +232,7 @@ interface ProfileBusinessCardProps {
   userId: string
   onClose?: () => void
   onSave?: () => void
+  isFullView?: boolean // When true, shows all sections expanded (for modal/resume view)
 }
 
 interface ProfileData {
@@ -240,6 +243,7 @@ interface ProfileData {
   phone: string
   bio: string
   skills: string[]
+  interests: string[]
   experience: any[]
   education: any[]
   social: {
@@ -262,6 +266,8 @@ interface ProfileData {
   archetype?: ArchetypeType
   declaration?: string
   memberSince?: string
+  jobTitle?: string
+  company?: string
 }
 
 // Ghost Placeholder - Shows what COULD be, inviting completion
@@ -334,11 +340,13 @@ function GhostField({
   )
 }
 
-export function ProfileBusinessCard({ userId, onClose, onSave: onSaveCallback }: ProfileBusinessCardProps) {
+export function ProfileBusinessCard({ userId, onClose, onSave: onSaveCallback, isFullView }: ProfileBusinessCardProps) {
   const { data: session } = useSession()
   const [isLoading, setIsLoading] = useState(true)
   const [profile, setProfile] = useState<ProfileData | null>(null)
-  const [isExpanded, setIsExpanded] = useState(false)
+  // In modal context (onClose present) or full view, auto-expand to show all sections
+  const isModalContext = Boolean(onClose) || Boolean(isFullView)
+  const [isExpanded, setIsExpanded] = useState(isModalContext)
   const [isEditing, setIsEditing] = useState(false)
   const [isEditModalOpen, setIsEditModalOpen] = useState(false)
   const [showArchetypeSelector, setShowArchetypeSelector] = useState(false)
@@ -398,9 +406,10 @@ export function ProfileBusinessCard({ userId, onClose, onSave: onSaveCallback }:
               headline: data.data.headline || data.data.jobTitle || '',
               location: data.data.location || '',
               email: data.data.email || '',
-              phone: '',
+              phone: data.data.phone || '',
               bio: data.data.bio || '',
               skills: data.data.expertise || data.data.skills || [],
+              interests: data.data.interests || [],
               experience: data.data.experience || [],
               education: data.data.education || [],
               social: {
@@ -415,6 +424,8 @@ export function ProfileBusinessCard({ userId, onClose, onSave: onSaveCallback }:
               archetype: data.data.guardianArchetype || 'michael',
               declaration: data.data.declaration || '',
               memberSince: data.data.createdAt,
+              jobTitle: data.data.jobTitle || '',
+              company: data.data.company || '',
             }
             setProfile(profileData)
             setEditedProfile(profileData)
@@ -1138,6 +1149,29 @@ export function ProfileBusinessCard({ userId, onClose, onSave: onSaveCallback }:
                     <span className="text-white truncate">{profile.email}</span>
                   </div>
                 )}
+
+                {/* Phone with ghost text */}
+                {(profile.phone || isEditing) ? (
+                  <div className="flex items-center gap-2">
+                    <Phone className="w-3.5 h-3.5 text-white/75 flex-shrink-0" />
+                    {isEditing ? (
+                      <input
+                        type="text"
+                        value={editedProfile.phone || ''}
+                        onChange={(e) => setEditedProfile(prev => ({ ...prev, phone: e.target.value }))}
+                        className="bg-transparent border-b border-white/30 focus:border-white/50 outline-none flex-1 placeholder-white/50 text-white"
+                        placeholder="Your phone number"
+                      />
+                    ) : (
+                      <span className="text-white">{profile.phone}</span>
+                    )}
+                  </div>
+                ) : (
+                  <div className="flex items-center gap-2 opacity-30">
+                    <Phone className="w-3.5 h-3.5 text-white flex-shrink-0" />
+                    <span className="italic border-b border-dashed border-white/50 text-white text-xs">Add phone number</span>
+                  </div>
+                )}
               </div>
 
               {/* YOUR STOCK */}
@@ -1236,6 +1270,42 @@ export function ProfileBusinessCard({ userId, onClose, onSave: onSaveCallback }:
               )}
             </div>
 
+            {/* Interests */}
+            <div>
+              <h4 className="text-[9px] font-black text-[var(--muted-foreground)] uppercase mb-1.5 flex items-center gap-1.5">
+                <Heart className="w-3.5 h-3.5" />
+                Interests
+              </h4>
+              {profile.interests && profile.interests.length > 0 ? (
+                <div className="flex flex-wrap gap-1.5">
+                  {profile.interests.slice(0, 4).map((interest, idx) => (
+                    <span
+                      key={idx}
+                      className="px-2 py-0.5 bg-[var(--accent)] text-[var(--accent-foreground)] text-[10px] font-bold rounded-full"
+                    >
+                      {interest}
+                    </span>
+                  ))}
+                  {profile.interests.length > 4 && (
+                    <span className="px-2 py-0.5 bg-[var(--muted)] text-[var(--muted-foreground)] text-[10px] font-bold rounded-full">
+                      +{profile.interests.length - 4}
+                    </span>
+                  )}
+                </div>
+              ) : (
+                <div className="flex flex-wrap gap-1.5 opacity-30">
+                  {['Interest 1', 'Interest 2'].map((ghost, idx) => (
+                    <span
+                      key={idx}
+                      className="px-2 py-0.5 border border-dashed border-[var(--muted-foreground)] text-[var(--muted-foreground)] text-[10px] font-bold rounded-full italic"
+                    >
+                      {ghost}
+                    </span>
+                  ))}
+                </div>
+              )}
+            </div>
+
             {/* STOCK Breakdown */}
             <div className="grid grid-cols-2 gap-1.5">
               <div className="p-2 bg-[var(--muted)] rounded-lg">
@@ -1309,9 +1379,26 @@ export function ProfileBusinessCard({ userId, onClose, onSave: onSaveCallback }:
           </div>
         </div>
 
-        {/* Expanded Section - Full Profile */}
+        {/* Expanded Section - Full Profile Resume */}
         {isExpanded && (
           <div ref={expandedSectionRef} className="mt-6 pt-6 border-t-2 border-[var(--border)]">
+            {/* Privacy Indicator */}
+            {isModalContext && (
+              <div className="mb-4 p-3 bg-[var(--muted)] rounded-lg border border-[var(--border)]">
+                <div className="flex items-center gap-2 text-sm">
+                  <Eye className="w-4 h-4 text-[var(--primary)]" />
+                  <span className="font-bold text-[var(--foreground)]">Profile Visibility</span>
+                </div>
+                <p className="text-xs text-[var(--muted-foreground)] mt-1">
+                  Ghost text shows fields you can fill in. Control what others see in{' '}
+                  <a href="/settings" className="text-[var(--primary)] hover:underline inline-flex items-center gap-1">
+                    <Settings className="w-3 h-3" />
+                    Settings
+                  </a>
+                </p>
+              </div>
+            )}
+
             <div className="grid md:grid-cols-2 gap-6">
               {/* Bio */}
               <div>

@@ -694,22 +694,28 @@ export default function MyVolitionPage() {
               const isSortable = ['projects', 'articles', 'learning', 'feed'].includes(lane.id)
               const itemIds = getLaneItemIds(lane.id)
 
-              // Profile lane: render ProfileBusinessCard directly without Lane wrapper
-              // Give business card more width (400px) than standard lanes (300px) for better display
+              // Profile lane: render ProfileCard preview with expand button to open full business card modal
               if (lane.id === 'profile') {
                 return (
                   <DraggableLane key={lane.id} id={lane.id} isCustomizing={isCustomizing}>
-                    <div className="relative w-[400px] min-w-[400px] flex-shrink-0">
-                      {isCustomizing && (
-                        <button
-                          onClick={() => toggleLane(lane.id)}
-                          className="absolute -top-2 -right-2 z-10 p-1.5 rounded-full bg-red-500 text-white shadow-lg hover:bg-red-600 transition-colors"
-                        >
-                          <X className="w-3.5 h-3.5" />
-                        </button>
-                      )}
-                      <ProfileBusinessCard userId={user.id || ''} />
-                    </div>
+                    <Lane
+                      id={lane.id}
+                      title={lane.title}
+                      icon={Icon}
+                      count={1}
+                      gradient={lane.gradient}
+                      isCompact={isCompact}
+                      isCustomizing={isCustomizing}
+                      onRemove={() => toggleLane(lane.id)}
+                      emptyState={getLaneEmptyState(lane.id)}
+                    >
+                      <ProfileCard
+                        user={user}
+                        userProfile={userProfile}
+                        isCompact={isCompact}
+                        onExpand={() => setShowBusinessCardModal(true)}
+                      />
+                    </Lane>
                   </DraggableLane>
                 )
               }
@@ -865,7 +871,7 @@ export default function MyVolitionPage() {
         isLoading={isDeleting}
       />
 
-      {/* Business Card Edit Modal */}
+      {/* Business Card Edit Modal - Full Resume View */}
       {showBusinessCardModal && (
         <div
           className="fixed inset-0 z-[100] bg-black/60 backdrop-blur-sm flex items-start justify-center p-4 overflow-y-auto"
@@ -882,6 +888,7 @@ export default function MyVolitionPage() {
                 fetchProfile()
                 setShowBusinessCardModal(false)
               }}
+              isFullView={true}
             />
           </div>
         </div>
