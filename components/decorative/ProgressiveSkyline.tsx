@@ -136,33 +136,6 @@ export function ProgressiveSkyline() {
           animation: animalPeck 4s ease-in-out infinite;
         }
 
-        @keyframes ornamentShimmer {
-          0%, 100% { opacity: 1; }
-          50% { opacity: 0.7; }
-        }
-
-        @keyframes medallionPulse {
-          0%, 100% { transform: scale(1); opacity: 1; }
-          50% { transform: scale(1.05); opacity: 0.9; }
-        }
-
-        @keyframes dentilWave {
-          0%, 100% { opacity: 1; transform: translateY(0); }
-          50% { opacity: 0.85; transform: translateY(-0.3px); }
-        }
-
-        .ornament-medallion {
-          animation: medallionPulse 4s ease-in-out infinite;
-          transform-origin: center;
-        }
-
-        .ornament-dentil {
-          animation: dentilWave 3s ease-in-out infinite;
-        }
-
-        .ornament-trim {
-          animation: ornamentShimmer 5s ease-in-out infinite;
-        }
       `}</style>
 
       {/* Background atmosphere layer */}
@@ -1313,26 +1286,24 @@ export function ProgressiveSkyline() {
                     <rect x={bldg.x} y={198} width={bldg.w} height="2" fill="#b8c8b8" opacity="1" />
                     <rect x={bldg.x} y={197} width={bldg.w} height="1" fill="#c8d8c8" opacity="1" />
 
-                    {/* Decorative ornamentation band between floors - animated */}
+                    {/* Decorative ornamentation band between floors */}
                     <g opacity="1">
-                      {/* Dentil molding - small rectangular blocks with wave animation */}
+                      {/* Dentil molding - small rectangular blocks */}
                       {Array.from({ length: Math.floor(bldg.w / 3) }).map((_, d) => (
                         <rect
                           key={`dentil-${i}-${d}`}
-                          className="ornament-dentil"
                           x={bldg.x + 1 + d * 3}
                           y={196}
                           width="1.5"
                           height="1"
                           fill="#a8b8a8"
                           opacity="1"
-                          style={{ animationDelay: `${d * 0.1}s` }}
                         />
                       ))}
 
-                      {/* Decorative medallions/rosettes at intervals - with pulse animation */}
+                      {/* Decorative medallions/rosettes at intervals */}
                       {[0.25, 0.5, 0.75].map((pos, m) => (
-                        <g key={`medallion-${i}-${m}`} className="ornament-medallion" style={{ animationDelay: `${m * 1.3}s` }}>
+                        <g key={`medallion-${i}-${m}`}>
                           {/* Circular medallion */}
                           <circle
                             cx={bldg.x + bldg.w * pos}
@@ -1364,19 +1335,17 @@ export function ProgressiveSkyline() {
                         </g>
                       ))}
 
-                      {/* Egg-and-dart style trim above dentils - shimmer effect */}
-                      <rect x={bldg.x} y={194.5} width={bldg.w} height="0.5" fill="#c0d0c0" opacity="1" className="ornament-trim" />
+                      {/* Egg-and-dart style trim above dentils */}
+                      <rect x={bldg.x} y={194.5} width={bldg.w} height="0.5" fill="#c0d0c0" opacity="1" />
                       {Array.from({ length: Math.floor(bldg.w / 4) }).map((_, e) => (
                         <ellipse
                           key={`egg-${i}-${e}`}
-                          className="ornament-trim"
                           cx={bldg.x + 2 + e * 4}
                           cy={195.5}
                           rx="1"
                           ry="0.6"
                           fill="#d8e0d8"
                           opacity="0.8"
-                          style={{ animationDelay: `${e * 0.2}s` }}
                         />
                       ))}
 
