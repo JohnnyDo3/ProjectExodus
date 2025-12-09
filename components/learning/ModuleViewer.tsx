@@ -5,10 +5,14 @@ import { Card, CardContent } from '@/components/ui/Card'
 import { Button } from '@/components/ui/Button'
 import {
   ChevronLeft, ChevronRight, CheckCircle2, Circle,
-  BookOpen, Trophy, Clock, Target, ArrowLeft, Play, Quote
+  BookOpen, Trophy, Clock, Target, ArrowLeft, Play, Quote,
+  MessageSquare, GraduationCap
 } from 'lucide-react'
 import Link from 'next/link'
 import { sanitizeHtml } from '@/lib/utils/sanitize'
+import { LevelSelector } from '@/components/learn/levels/LevelSelector'
+import { ModuleDiscussions } from '@/components/learn/discussions/ModuleDiscussions'
+import { LearningLevel, LEARNING_LEVELS } from '@/types/learning'
 
 // Historical sustainability quotes from influential figures throughout human history
 const historicalQuotes = [
@@ -128,6 +132,8 @@ export function ModuleViewer({ module, userId, initialProgress }: ModuleViewerPr
   const [started, setStarted] = useState(initialProgress?.status !== 'NOT_STARTED')
   const [currentQuote, setCurrentQuote] = useState<typeof historicalQuotes[0] | null>(null)
   const [showQuote, setShowQuote] = useState(false)
+  const [selectedLevel, setSelectedLevel] = useState<LearningLevel>('HIGH_SCHOOL')
+  const [showDiscussions, setShowDiscussions] = useState(false)
 
   // Get a random quote
   const getRandomQuote = () => {
@@ -273,7 +279,7 @@ export function ModuleViewer({ module, userId, initialProgress }: ModuleViewerPr
                 {module.description}
               </p>
 
-              <div className="flex items-center justify-center gap-8 mb-10 text-theme-muted">
+              <div className="flex items-center justify-center gap-8 mb-8 text-theme-muted">
                 <span className="flex items-center gap-2 font-bold">
                   <BookOpen className="w-5 h-5" />
                   {totalLessons} Lessons
@@ -290,6 +296,24 @@ export function ModuleViewer({ module, userId, initialProgress }: ModuleViewerPr
                     Quiz Included
                   </span>
                 )}
+              </div>
+
+              {/* Learning Level Selector */}
+              <div className="mb-8">
+                <p className="text-sm font-bold text-theme-muted mb-3 flex items-center justify-center gap-2">
+                  <GraduationCap className="w-4 h-4" />
+                  Select Your Learning Level
+                </p>
+                <LevelSelector
+                  selectedLevel={selectedLevel}
+                  onLevelChange={setSelectedLevel}
+                  variant="cards"
+                  showDescriptions={false}
+                  className="justify-center"
+                />
+                <p className="text-xs text-theme-muted mt-2 text-center">
+                  {LEARNING_LEVELS[selectedLevel].icon} {LEARNING_LEVELS[selectedLevel].label}: {LEARNING_LEVELS[selectedLevel].description}
+                </p>
               </div>
 
               <Button
@@ -581,6 +605,34 @@ export function ModuleViewer({ module, userId, initialProgress }: ModuleViewerPr
             )}
             <ChevronRight className="w-4 h-4 ml-2" />
           </Button>
+        </div>
+
+        {/* Discussions Section */}
+        <div className="mt-8">
+          <button
+            onClick={() => setShowDiscussions(!showDiscussions)}
+            className="w-full flex items-center justify-between p-4 rounded-xl bg-[var(--card)] border-2 border-[var(--border)] hover:border-[var(--primary)] transition-colors"
+          >
+            <div className="flex items-center gap-3">
+              <MessageSquare className="w-5 h-5 text-theme-primary" />
+              <span className="font-bold text-[var(--foreground)]">
+                Module Discussions
+              </span>
+              <span className="text-xs px-2 py-0.5 rounded-full bg-[color-mix(in_srgb,var(--primary)_15%,var(--background))] text-theme-primary">
+                {LEARNING_LEVELS[selectedLevel].icon} {LEARNING_LEVELS[selectedLevel].label}
+              </span>
+            </div>
+            <ChevronRight className={`w-5 h-5 text-theme-muted transition-transform ${showDiscussions ? 'rotate-90' : ''}`} />
+          </button>
+
+          {showDiscussions && (
+            <div className="mt-4">
+              <ModuleDiscussions
+                articleId={module.id}
+                level={selectedLevel}
+              />
+            </div>
+          )}
         </div>
       </div>
     </div>
