@@ -971,9 +971,9 @@ export function ProgressiveSkyline() {
                   {x: 3512, h: 82, w: 58, color: "#f0f8f0"}, {x: 3580, h: 100, w: 70, color: "#e0f2e0"},
                   {x: 3660, h: 88, w: 62, color: "#e8f4e8"}, {x: 3732, h: 75, w: 54, color: "#f0f8f0"}
                 ].map((bldg, i) => {
-                  // Calculate dense skyscraper window layout - many small windows
-                  const windowWidth = 3
-                  const windowHeight = 4
+                  // Calculate dense skyscraper window layout - matching ground floor window size
+                  const windowWidth = 6
+                  const windowHeight = 10
                   const windowGapX = 2 // Small gap between windows horizontally
                   const windowGapY = 2 // Small gap between rows vertically
                   const sideMargin = 3 // Small margin from building edge
@@ -1048,31 +1048,38 @@ export function ProgressiveSkyline() {
                               {/* Balcony - every 3rd row */}
                               {hasBalcony && (
                                 <g>
-                                  {/* Balcony floor */}
-                                  <rect x={windowX - 0.5}
+                                  {/* Balcony floor - extends beyond window */}
+                                  <rect x={windowX - 1}
                                         y={windowY + windowHeight}
-                                        width={windowWidth + 1}
-                                        height="1"
+                                        width={windowWidth + 2}
+                                        height="1.5"
                                         fill="#7a8a7a"
                                         opacity="1" />
                                   {/* Balcony railing - left post */}
-                                  <rect x={windowX - 0.5}
-                                        y={windowY + windowHeight - 1.5}
-                                        width="0.5"
-                                        height="1.5"
+                                  <rect x={windowX - 1}
+                                        y={windowY + windowHeight - 3}
+                                        width="0.8"
+                                        height="3"
                                         fill="#6a7a6a"
                                         opacity="1" />
                                   {/* Balcony railing - right post */}
-                                  <rect x={windowX + windowWidth}
-                                        y={windowY + windowHeight - 1.5}
-                                        width="0.5"
-                                        height="1.5"
+                                  <rect x={windowX + windowWidth + 0.2}
+                                        y={windowY + windowHeight - 3}
+                                        width="0.8"
+                                        height="3"
                                         fill="#6a7a6a"
                                         opacity="1" />
                                   {/* Balcony top rail */}
-                                  <rect x={windowX - 0.5}
+                                  <rect x={windowX - 1}
+                                        y={windowY + windowHeight - 3}
+                                        width={windowWidth + 2}
+                                        height="0.6"
+                                        fill="#6a7a6a"
+                                        opacity="1" />
+                                  {/* Middle horizontal rail */}
+                                  <rect x={windowX - 1}
                                         y={windowY + windowHeight - 1.5}
-                                        width={windowWidth + 1}
+                                        width={windowWidth + 2}
                                         height="0.4"
                                         fill="#6a7a6a"
                                         opacity="1" />
@@ -1238,180 +1245,180 @@ export function ProgressiveSkyline() {
 
               {/* City Parks - Green spaces with centered fountains and symmetrical layout */}
               <g>
-                {/* Park 1 - centered at x=2295 (symmetrical layout) */}
+                {/* Park 1 - centered at x=2303 (between buildings 2268 and 2338) */}
                 <g>
                   {/* Left tree - 22px from center */}
                   <g key="park1-tree-left">
-                    <rect x="2272" y="200" width="3" height="10" fill="#6b5a45" opacity="1" />
-                    <circle cx="2273.5" cy="198" r="6" fill="#4a7c2f" opacity="1" />
-                    <circle cx="2270" cy="200" r="4" fill="#5a8a5a" opacity="1" />
-                    <circle cx="2277" cy="200" r="4" fill="#5a8a5a" opacity="1" />
+                    <rect x="2280" y="200" width="3" height="10" fill="#6b5a45" opacity="1" />
+                    <circle cx="2281.5" cy="198" r="6" fill="#4a7c2f" opacity="1" />
+                    <circle cx="2278" cy="200" r="4" fill="#5a8a5a" opacity="1" />
+                    <circle cx="2285" cy="200" r="4" fill="#5a8a5a" opacity="1" />
                   </g>
                   {/* Right tree - 22px from center (mirror of left) */}
                   <g key="park1-tree-right">
-                    <rect x="2315" y="200" width="3" height="10" fill="#6b5a45" opacity="1" />
-                    <circle cx="2316.5" cy="198" r="6" fill="#4a7c2f" opacity="1" />
-                    <circle cx="2313" cy="200" r="4" fill="#5a8a5a" opacity="1" />
-                    <circle cx="2320" cy="200" r="4" fill="#5a8a5a" opacity="1" />
+                    <rect x="2323" y="200" width="3" height="10" fill="#6b5a45" opacity="1" />
+                    <circle cx="2324.5" cy="198" r="6" fill="#4a7c2f" opacity="1" />
+                    <circle cx="2321" cy="200" r="4" fill="#5a8a5a" opacity="1" />
+                    <circle cx="2328" cy="200" r="4" fill="#5a8a5a" opacity="1" />
                   </g>
 
-                  {/* Fountain centered at x=2295 */}
+                  {/* Fountain centered at x=2303 */}
                   <g>
                     {/* Fountain base */}
-                    <ellipse cx="2295" cy="210" rx="10" ry="4" fill="#a8a8a8" opacity="1" />
-                    <rect x="2290" y="206" width="10" height="4" fill="#b8b8b8" opacity="1" rx="1" />
+                    <ellipse cx="2303" cy="210" rx="10" ry="4" fill="#a8a8a8" opacity="1" />
+                    <rect x="2298" y="206" width="10" height="4" fill="#b8b8b8" opacity="1" rx="1" />
 
                     {/* Fountain basin */}
-                    <ellipse cx="2295" cy="206" rx="8" ry="3" fill="#87CEEB" opacity="1" />
+                    <ellipse cx="2303" cy="206" rx="8" ry="3" fill="#87CEEB" opacity="1" />
 
                     {/* Water spray - symmetrical around center */}
-                    <circle cx="2295" cy="203" r="1.5" fill="#B0E0E6" opacity="1" />
-                    <circle cx="2292" cy="204" r="1" fill="#B0E0E6" opacity="1" />
-                    <circle cx="2298" cy="204" r="1" fill="#B0E0E6" opacity="1" />
-                    <circle cx="2293" cy="201" r="0.8" fill="#B0E0E6" opacity="1" />
-                    <circle cx="2297" cy="201" r="0.8" fill="#B0E0E6" opacity="1" />
+                    <circle cx="2303" cy="203" r="1.5" fill="#B0E0E6" opacity="1" />
+                    <circle cx="2300" cy="204" r="1" fill="#B0E0E6" opacity="1" />
+                    <circle cx="2306" cy="204" r="1" fill="#B0E0E6" opacity="1" />
+                    <circle cx="2301" cy="201" r="0.8" fill="#B0E0E6" opacity="1" />
+                    <circle cx="2305" cy="201" r="0.8" fill="#B0E0E6" opacity="1" />
 
                     {/* Central water column */}
-                    <path d="M 2295,203 L 2295,198 L 2294,199 M 2295,198 L 2296,199"
+                    <path d="M 2303,203 L 2303,198 L 2302,199 M 2303,198 L 2304,199"
                           stroke="#B0E0E6" strokeWidth="0.8" fill="none" opacity="1" />
                   </g>
 
                   {/* Bench on left side - 25px from center */}
                   <g>
-                    <rect x="2265" y="211" width="10" height="2" fill="#8b7355" opacity="1" />
-                    <rect x="2265" y="208" width="10" height="3" fill="#8b7355" opacity="1" />
-                    <rect x="2265" y="209" width="2" height="4" fill="#6b5a45" opacity="1" />
+                    <rect x="2273" y="211" width="10" height="2" fill="#8b7355" opacity="1" />
+                    <rect x="2273" y="208" width="10" height="3" fill="#8b7355" opacity="1" />
                     <rect x="2273" y="209" width="2" height="4" fill="#6b5a45" opacity="1" />
+                    <rect x="2281" y="209" width="2" height="4" fill="#6b5a45" opacity="1" />
                   </g>
 
                   {/* Bench on right side - 25px from center (mirror of left) */}
                   <g>
-                    <rect x="2315" y="211" width="10" height="2" fill="#8b7355" opacity="1" />
-                    <rect x="2315" y="208" width="10" height="3" fill="#8b7355" opacity="1" />
-                    <rect x="2315" y="209" width="2" height="4" fill="#6b5a45" opacity="1" />
+                    <rect x="2323" y="211" width="10" height="2" fill="#8b7355" opacity="1" />
+                    <rect x="2323" y="208" width="10" height="3" fill="#8b7355" opacity="1" />
                     <rect x="2323" y="209" width="2" height="4" fill="#6b5a45" opacity="1" />
+                    <rect x="2331" y="209" width="2" height="4" fill="#6b5a45" opacity="1" />
                   </g>
                 </g>
 
-                {/* Park 2 - centered at x=2745 (symmetrical layout) */}
+                {/* Park 2 - centered at x=2779 (between buildings 2736 and 2822) */}
                 <g>
                   {/* Left tree - 20px from center */}
                   <g key="park2-tree-left">
-                    <rect x="2724" y="203" width="2" height="7" fill="#6b5a45" opacity="1" />
-                    <circle cx="2725" cy="201" r="4" fill="#4a7c2f" opacity="1" />
-                    <circle cx="2722" cy="203" r="3" fill="#5a8a5a" opacity="1" />
-                    <circle cx="2728" cy="203" r="3" fill="#5a8a5a" opacity="1" />
+                    <rect x="2758" y="203" width="2" height="7" fill="#6b5a45" opacity="1" />
+                    <circle cx="2759" cy="201" r="4" fill="#4a7c2f" opacity="1" />
+                    <circle cx="2756" cy="203" r="3" fill="#5a8a5a" opacity="1" />
+                    <circle cx="2762" cy="203" r="3" fill="#5a8a5a" opacity="1" />
                   </g>
                   {/* Right tree - 20px from center (mirror of left) */}
                   <g key="park2-tree-right">
-                    <rect x="2764" y="203" width="2" height="7" fill="#6b5a45" opacity="1" />
-                    <circle cx="2765" cy="201" r="4" fill="#4a7c2f" opacity="1" />
-                    <circle cx="2762" cy="203" r="3" fill="#5a8a5a" opacity="1" />
-                    <circle cx="2768" cy="203" r="3" fill="#5a8a5a" opacity="1" />
+                    <rect x="2798" y="203" width="2" height="7" fill="#6b5a45" opacity="1" />
+                    <circle cx="2799" cy="201" r="4" fill="#4a7c2f" opacity="1" />
+                    <circle cx="2796" cy="203" r="3" fill="#5a8a5a" opacity="1" />
+                    <circle cx="2802" cy="203" r="3" fill="#5a8a5a" opacity="1" />
                   </g>
 
-                  {/* Fountain centered at x=2745 */}
+                  {/* Fountain centered at x=2779 */}
                   <g>
                     {/* Fountain base */}
-                    <ellipse cx="2745" cy="210" rx="10" ry="4" fill="#a8a8a8" opacity="1" />
-                    <rect x="2740" y="206" width="10" height="4" fill="#b8b8b8" opacity="1" rx="1" />
+                    <ellipse cx="2779" cy="210" rx="10" ry="4" fill="#a8a8a8" opacity="1" />
+                    <rect x="2774" y="206" width="10" height="4" fill="#b8b8b8" opacity="1" rx="1" />
 
                     {/* Fountain basin */}
-                    <ellipse cx="2745" cy="206" rx="8" ry="3" fill="#87CEEB" opacity="1" />
+                    <ellipse cx="2779" cy="206" rx="8" ry="3" fill="#87CEEB" opacity="1" />
 
                     {/* Water spray - symmetrical */}
-                    <circle cx="2745" cy="203" r="1.5" fill="#B0E0E6" opacity="1" />
-                    <circle cx="2742" cy="204" r="1" fill="#B0E0E6" opacity="1" />
-                    <circle cx="2748" cy="204" r="1" fill="#B0E0E6" opacity="1" />
-                    <circle cx="2743" cy="201" r="0.8" fill="#B0E0E6" opacity="1" />
-                    <circle cx="2747" cy="201" r="0.8" fill="#B0E0E6" opacity="1" />
+                    <circle cx="2779" cy="203" r="1.5" fill="#B0E0E6" opacity="1" />
+                    <circle cx="2776" cy="204" r="1" fill="#B0E0E6" opacity="1" />
+                    <circle cx="2782" cy="204" r="1" fill="#B0E0E6" opacity="1" />
+                    <circle cx="2777" cy="201" r="0.8" fill="#B0E0E6" opacity="1" />
+                    <circle cx="2781" cy="201" r="0.8" fill="#B0E0E6" opacity="1" />
 
                     {/* Central water column */}
-                    <path d="M 2745,203 L 2745,198 L 2744,199 M 2745,198 L 2746,199"
+                    <path d="M 2779,203 L 2779,198 L 2778,199 M 2779,198 L 2780,199"
                           stroke="#B0E0E6" strokeWidth="0.8" fill="none" opacity="1" />
                   </g>
 
-                  {/* Bench on left side - 22px from center */}
+                  {/* Bench on left side - 27px from center */}
                   <g>
-                    <rect x="2718" y="211" width="10" height="2" fill="#8b7355" opacity="1" />
-                    <rect x="2718" y="208" width="10" height="3" fill="#8b7355" opacity="1" />
-                    <rect x="2718" y="209" width="2" height="4" fill="#6b5a45" opacity="1" />
-                    <rect x="2726" y="209" width="2" height="4" fill="#6b5a45" opacity="1" />
+                    <rect x="2747" y="211" width="10" height="2" fill="#8b7355" opacity="1" />
+                    <rect x="2747" y="208" width="10" height="3" fill="#8b7355" opacity="1" />
+                    <rect x="2747" y="209" width="2" height="4" fill="#6b5a45" opacity="1" />
+                    <rect x="2755" y="209" width="2" height="4" fill="#6b5a45" opacity="1" />
                   </g>
 
-                  {/* Bench on right side - 22px from center (mirror of left) */}
+                  {/* Bench on right side - 27px from center (mirror of left) */}
                   <g>
-                    <rect x="2762" y="211" width="10" height="2" fill="#8b7355" opacity="1" />
-                    <rect x="2762" y="208" width="10" height="3" fill="#8b7355" opacity="1" />
-                    <rect x="2762" y="209" width="2" height="4" fill="#6b5a45" opacity="1" />
-                    <rect x="2770" y="209" width="2" height="4" fill="#6b5a45" opacity="1" />
+                    <rect x="2801" y="211" width="10" height="2" fill="#8b7355" opacity="1" />
+                    <rect x="2801" y="208" width="10" height="3" fill="#8b7355" opacity="1" />
+                    <rect x="2801" y="209" width="2" height="4" fill="#6b5a45" opacity="1" />
+                    <rect x="2809" y="209" width="2" height="4" fill="#6b5a45" opacity="1" />
                   </g>
                 </g>
 
-                {/* Park 3 - centered at x=3390 (symmetrical layout) */}
+                {/* Park 3 - centered at x=3399 (between buildings 3362 and 3436) */}
                 <g>
                   {/* Left tree - 20px from center */}
                   <g key="park3-tree-left">
-                    <rect x="3369" y="203" width="2" height="7" fill="#6b5a45" opacity="1" />
-                    <circle cx="3370" cy="201" r="4" fill="#4a7c2f" opacity="1" />
-                    <circle cx="3367" cy="203" r="3" fill="#5a8a5a" opacity="1" />
-                    <circle cx="3373" cy="203" r="3" fill="#5a8a5a" opacity="1" />
+                    <rect x="3378" y="203" width="2" height="7" fill="#6b5a45" opacity="1" />
+                    <circle cx="3379" cy="201" r="4" fill="#4a7c2f" opacity="1" />
+                    <circle cx="3376" cy="203" r="3" fill="#5a8a5a" opacity="1" />
+                    <circle cx="3382" cy="203" r="3" fill="#5a8a5a" opacity="1" />
                   </g>
                   {/* Right tree - 20px from center (mirror of left) */}
                   <g key="park3-tree-right">
-                    <rect x="3409" y="203" width="2" height="7" fill="#6b5a45" opacity="1" />
-                    <circle cx="3410" cy="201" r="4" fill="#4a7c2f" opacity="1" />
-                    <circle cx="3407" cy="203" r="3" fill="#5a8a5a" opacity="1" />
-                    <circle cx="3413" cy="203" r="3" fill="#5a8a5a" opacity="1" />
+                    <rect x="3418" y="203" width="2" height="7" fill="#6b5a45" opacity="1" />
+                    <circle cx="3419" cy="201" r="4" fill="#4a7c2f" opacity="1" />
+                    <circle cx="3416" cy="203" r="3" fill="#5a8a5a" opacity="1" />
+                    <circle cx="3422" cy="203" r="3" fill="#5a8a5a" opacity="1" />
                   </g>
 
-                  {/* Fountain centered at x=3390 */}
+                  {/* Fountain centered at x=3399 */}
                   <g>
                     {/* Fountain base */}
-                    <ellipse cx="3390" cy="210" rx="10" ry="4" fill="#a8a8a8" opacity="1" />
-                    <rect x="3385" y="206" width="10" height="4" fill="#b8b8b8" opacity="1" rx="1" />
+                    <ellipse cx="3399" cy="210" rx="10" ry="4" fill="#a8a8a8" opacity="1" />
+                    <rect x="3394" y="206" width="10" height="4" fill="#b8b8b8" opacity="1" rx="1" />
 
                     {/* Fountain basin */}
-                    <ellipse cx="3390" cy="206" rx="8" ry="3" fill="#87CEEB" opacity="1" />
+                    <ellipse cx="3399" cy="206" rx="8" ry="3" fill="#87CEEB" opacity="1" />
 
                     {/* Water spray - symmetrical */}
-                    <circle cx="3390" cy="203" r="1.5" fill="#B0E0E6" opacity="1" />
-                    <circle cx="3387" cy="204" r="1" fill="#B0E0E6" opacity="1" />
-                    <circle cx="3393" cy="204" r="1" fill="#B0E0E6" opacity="1" />
-                    <circle cx="3388" cy="201" r="0.8" fill="#B0E0E6" opacity="1" />
-                    <circle cx="3392" cy="201" r="0.8" fill="#B0E0E6" opacity="1" />
+                    <circle cx="3399" cy="203" r="1.5" fill="#B0E0E6" opacity="1" />
+                    <circle cx="3396" cy="204" r="1" fill="#B0E0E6" opacity="1" />
+                    <circle cx="3402" cy="204" r="1" fill="#B0E0E6" opacity="1" />
+                    <circle cx="3397" cy="201" r="0.8" fill="#B0E0E6" opacity="1" />
+                    <circle cx="3401" cy="201" r="0.8" fill="#B0E0E6" opacity="1" />
 
                     {/* Central water column */}
-                    <path d="M 3390,203 L 3390,198 L 3389,199 M 3390,198 L 3391,199"
+                    <path d="M 3399,203 L 3399,198 L 3398,199 M 3399,198 L 3400,199"
                           stroke="#B0E0E6" strokeWidth="0.8" fill="none" opacity="1" />
                   </g>
 
-                  {/* Bench on left side - 22px from center */}
+                  {/* Bench on left side - 27px from center */}
                   <g>
-                    <rect x="3363" y="211" width="10" height="2" fill="#8b7355" opacity="1" />
-                    <rect x="3363" y="208" width="10" height="3" fill="#8b7355" opacity="1" />
-                    <rect x="3363" y="209" width="2" height="4" fill="#6b5a45" opacity="1" />
-                    <rect x="3371" y="209" width="2" height="4" fill="#6b5a45" opacity="1" />
+                    <rect x="3367" y="211" width="10" height="2" fill="#8b7355" opacity="1" />
+                    <rect x="3367" y="208" width="10" height="3" fill="#8b7355" opacity="1" />
+                    <rect x="3367" y="209" width="2" height="4" fill="#6b5a45" opacity="1" />
+                    <rect x="3375" y="209" width="2" height="4" fill="#6b5a45" opacity="1" />
                   </g>
 
-                  {/* Bench on right side - 22px from center (mirror of left) */}
+                  {/* Bench on right side - 27px from center (mirror of left) */}
                   <g>
-                    <rect x="3407" y="211" width="10" height="2" fill="#8b7355" opacity="1" />
-                    <rect x="3407" y="208" width="10" height="3" fill="#8b7355" opacity="1" />
-                    <rect x="3407" y="209" width="2" height="4" fill="#6b5a45" opacity="1" />
-                    <rect x="3415" y="209" width="2" height="4" fill="#6b5a45" opacity="1" />
+                    <rect x="3421" y="211" width="10" height="2" fill="#8b7355" opacity="1" />
+                    <rect x="3421" y="208" width="10" height="3" fill="#8b7355" opacity="1" />
+                    <rect x="3421" y="209" width="2" height="4" fill="#6b5a45" opacity="1" />
+                    <rect x="3429" y="209" width="2" height="4" fill="#6b5a45" opacity="1" />
                   </g>
                 </g>
               </g>
 
               {/* Trees lining streets - matching park tree sizes with subtle depth variation */}
-              {/* Skip trees in park areas: Park 1 (2260-2330), Park 2 (2710-2780), Park 3 (3355-3425) */}
+              {/* Skip trees in park areas: Park 1 (2268-2338), Park 2 (2736-2822), Park 3 (3362-3436) */}
               <g opacity="1">
                 {Array.from({length: 45}).map((_, i) => {
                   const x = 2030 + i * 40;
 
-                  // Skip trees that would overlap with park areas
-                  if ((x >= 2260 && x <= 2330) || (x >= 2710 && x <= 2780) || (x >= 3355 && x <= 3425)) {
+                  // Skip trees that would overlap with park areas (between buildings)
+                  if ((x >= 2268 && x <= 2338) || (x >= 2736 && x <= 2822) || (x >= 3362 && x <= 3436)) {
                     return null;
                   }
 
