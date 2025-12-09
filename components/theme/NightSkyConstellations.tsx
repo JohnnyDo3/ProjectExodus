@@ -32,54 +32,75 @@ interface ShootingStar {
   active: boolean
 }
 
+// Key stars that should be brighter/larger (by index)
+// 7: Betelgeuse (Orion), 13: Rigel (Orion), 19: Regulus (Leo),
+// 23: Denebola (Leo), 25: Deneb (Cygnus), 30: Vega (Lyra),
+// 34: Antares (Scorpius), 40: Altair (Aquila)
+const keyStars = new Set([7, 13, 19, 23, 25, 30, 34, 40])
+
 const constellations: Constellation[] = [
   {
     id: 0,
     name: 'Ursa Major (Big Dipper)',
+    // Stars: Dubhe, Merak, Phecda, Megrez, Alioth, Mizar, Alkaid
     stars: [0, 1, 2, 3, 4, 5, 6],
-    connections: [[0, 1], [1, 2], [2, 3], [3, 4], [4, 5], [5, 6], [6, 0]]
+    // Bowl: Dubhe-Merak-Phecda-Megrez-Dubhe, Handle: Megrez-Alioth-Mizar-Alkaid
+    connections: [[0, 1], [1, 2], [2, 3], [3, 0], [3, 4], [4, 5], [5, 6]]
   },
   {
     id: 1,
     name: 'Orion',
+    // Stars: Betelgeuse, Bellatrix, Alnitak, Alnilam, Mintaka, Saiph, Rigel
     stars: [7, 8, 9, 10, 11, 12, 13],
-    connections: [[7, 8], [8, 9], [9, 10], [10, 11], [11, 12], [12, 13], [13, 7]]
+    // Shoulders: 7-8, Belt: 9-10-11, Body: shoulder to belt to feet
+    connections: [[7, 8], [9, 10], [10, 11], [7, 9], [8, 11], [9, 12], [11, 13]]
   },
   {
     id: 2,
     name: 'Cassiopeia',
+    // Stars form W shape: Schedar, Caph, Gamma, Ruchbah, Segin
     stars: [14, 15, 16, 17, 18],
     connections: [[14, 15], [15, 16], [16, 17], [17, 18]]
   },
   {
     id: 3,
     name: 'Leo',
+    // Stars: Regulus, Eta Leo, Algieba, Zosma, Denebola, Chertan
     stars: [19, 20, 21, 22, 23, 24],
-    connections: [[19, 20], [20, 21], [21, 22], [22, 23], [23, 24], [24, 19]]
+    // Sickle (head): 19-20-21, Body/hindquarters: 19-24-22-23
+    connections: [[19, 20], [20, 21], [19, 24], [24, 22], [22, 23]]
   },
   {
     id: 4,
     name: 'Cygnus (Northern Cross)',
+    // Stars: Deneb, Sadr, Gienah, Delta Cyg, Albireo
     stars: [25, 26, 27, 28, 29],
-    connections: [[25, 27], [26, 28], [27, 29]]
+    // Cross shape: vertical 25-26-29, horizontal 27-26-28
+    connections: [[25, 26], [26, 29], [27, 26], [26, 28]]
   },
   {
     id: 5,
     name: 'Lyra',
+    // Stars: Vega, Sulafat, Sheliak, Zeta Lyrae
     stars: [30, 31, 32, 33],
-    connections: [[30, 31], [31, 32], [32, 33], [33, 30]]
+    // Parallelogram with Vega at top
+    connections: [[30, 31], [31, 32], [32, 33], [33, 31]]
   },
   {
     id: 6,
     name: 'Scorpius',
+    // Stars: Antares, Dschubba, Acrab, Shaula, Lesath, Lambda Sco
     stars: [34, 35, 36, 37, 38, 39],
-    connections: [[34, 35], [35, 36], [36, 37], [37, 38], [38, 39]]
+    // Head: 35-36, Body curve: 35-34-39-38-37
+    connections: [[35, 36], [35, 34], [34, 39], [39, 38], [38, 37]]
   },
   {
     id: 7,
     name: 'Aquila',
+    // Stars: Altair, Tarazed, Alshain, Delta Aql, Lambda Aql
     stars: [40, 41, 42, 43, 44],
-    connections: [[40, 41], [41, 42], [42, 43], [43, 44]]
+    // Main line through Altair: 41-40-42, Wings: 43-40-44
+    connections: [[41, 40], [40, 42], [43, 40], [40, 44]]
   }
 ]
 
@@ -120,34 +141,76 @@ export function NightSkyConstellations({ alwaysShow = false, starCount = 1400 }:
     // Generate stars
     const newStars: Star[] = []
 
-    // Add constellation stars first (with specific positions for formations)
+    // Add constellation stars first (with accurate astronomical positions)
     const constellationStarPositions = [
-      // Ursa Major (Big Dipper) - top left
-      { x: 15, y: 20 }, { x: 20, y: 18 }, { x: 25, y: 19 },
-      { x: 28, y: 22 }, { x: 26, y: 26 }, { x: 22, y: 28 }, { x: 18, y: 26 },
+      // Ursa Major (Big Dipper) - ladle shape, top left area
+      // 0: Dubhe, 1: Merak, 2: Phecda, 3: Megrez, 4: Alioth, 5: Mizar, 6: Alkaid
+      { x: 22, y: 15 }, // Dubhe (top-right of bowl)
+      { x: 22, y: 21 }, // Merak (bottom-right of bowl)
+      { x: 16, y: 21 }, // Phecda (bottom-left of bowl)
+      { x: 16, y: 15 }, // Megrez (top-left of bowl, joins handle)
+      { x: 11, y: 13 }, // Alioth (first handle star)
+      { x: 7, y: 15 },  // Mizar (middle handle)
+      { x: 3, y: 18 },  // Alkaid (end of handle)
 
-      // Orion - right side
-      { x: 75, y: 40 }, { x: 78, y: 45 }, { x: 80, y: 50 },
-      { x: 78, y: 55 }, { x: 75, y: 58 }, { x: 72, y: 55 }, { x: 73, y: 50 },
+      // Orion - hunter shape, right side
+      // 7: Betelgeuse, 8: Bellatrix, 9: Alnitak, 10: Alnilam, 11: Mintaka, 12: Saiph, 13: Rigel
+      { x: 72, y: 38 }, // Betelgeuse (left shoulder, red supergiant) - KEY STAR
+      { x: 80, y: 38 }, // Bellatrix (right shoulder)
+      { x: 74, y: 48 }, // Alnitak (left belt star)
+      { x: 76, y: 48 }, // Alnilam (center belt star)
+      { x: 78, y: 48 }, // Mintaka (right belt star)
+      { x: 73, y: 58 }, // Saiph (left foot)
+      { x: 81, y: 58 }, // Rigel (right foot, blue supergiant) - KEY STAR
 
-      // Cassiopeia - top center
-      { x: 45, y: 15 }, { x: 48, y: 18 }, { x: 52, y: 17 }, { x: 55, y: 20 }, { x: 58, y: 18 },
+      // Cassiopeia - W shape, top center
+      // 14: Schedar, 15: Caph, 16: Gamma Cas, 17: Ruchbah, 18: Segin
+      { x: 42, y: 12 }, // Schedar
+      { x: 46, y: 8 },  // Caph
+      { x: 50, y: 14 }, // Gamma Cas (center of W)
+      { x: 54, y: 8 },  // Ruchbah
+      { x: 58, y: 12 }, // Segin
 
-      // Leo - bottom left
-      { x: 25, y: 70 }, { x: 30, y: 72 }, { x: 35, y: 70 },
-      { x: 37, y: 75 }, { x: 33, y: 78 }, { x: 28, y: 76 },
+      // Leo - sickle (head) + triangle (body), center-left
+      // 19: Regulus, 20: Eta Leo, 21: Algieba, 22: Zosma, 23: Denebola, 24: Chertan
+      { x: 28, y: 65 }, // Regulus (heart of lion) - KEY STAR
+      { x: 26, y: 60 }, // Eta Leonis (top of sickle)
+      { x: 30, y: 56 }, // Algieba (sickle curve)
+      { x: 40, y: 62 }, // Zosma (back)
+      { x: 45, y: 68 }, // Denebola (tail tip) - KEY STAR
+      { x: 35, y: 68 }, // Chertan (hindquarter)
 
-      // Cygnus (Northern Cross) - upper center-right
-      { x: 65, y: 22 }, { x: 60, y: 25 }, { x: 65, y: 28 }, { x: 70, y: 25 }, { x: 65, y: 32 },
+      // Cygnus (Northern Cross) - cross shape, upper center
+      // 25: Deneb, 26: Sadr, 27: Gienah, 28: Delta Cyg, 29: Albireo
+      { x: 65, y: 18 }, // Deneb (top of cross, tail) - KEY STAR
+      { x: 65, y: 26 }, // Sadr (center of cross)
+      { x: 60, y: 26 }, // Gienah (left wing)
+      { x: 70, y: 26 }, // Delta Cyg (right wing)
+      { x: 65, y: 36 }, // Albireo (bottom, head of swan)
 
-      // Lyra - top right
-      { x: 85, y: 18 }, { x: 88, y: 20 }, { x: 88, y: 24 }, { x: 85, y: 26 },
+      // Lyra - parallelogram with bright Vega, top right
+      // 30: Vega, 31: Sulafat, 32: Sheliak, 33: Zeta Lyrae
+      { x: 58, y: 20 }, // Vega (5th brightest star in sky) - KEY STAR
+      { x: 60, y: 25 }, // Sulafat
+      { x: 57, y: 28 }, // Sheliak
+      { x: 54, y: 25 }, // Zeta Lyrae
 
-      // Scorpius - bottom right (curved)
-      { x: 82, y: 68 }, { x: 78, y: 72 }, { x: 73, y: 75 }, { x: 68, y: 77 }, { x: 63, y: 78 }, { x: 58, y: 80 },
+      // Scorpius - curved scorpion tail, bottom right
+      // 34: Antares, 35: Dschubba, 36: Acrab, 37: Shaula, 38: Lesath, 39: Lambda Sco
+      { x: 78, y: 70 }, // Antares (red heart of scorpion) - KEY STAR
+      { x: 76, y: 64 }, // Dschubba (head)
+      { x: 80, y: 64 }, // Acrab (head)
+      { x: 90, y: 82 }, // Shaula (stinger tip)
+      { x: 88, y: 80 }, // Lesath (near stinger)
+      { x: 84, y: 76 }, // Lambda Sco (tail curve)
 
-      // Aquila - center right
-      { x: 88, y: 52 }, { x: 85, y: 55 }, { x: 82, y: 58 }, { x: 85, y: 61 }, { x: 88, y: 64 }
+      // Aquila - eagle with Altair at center, center-right
+      // 40: Altair, 41: Tarazed, 42: Alshain, 43: Delta Aql, 44: Lambda Aql
+      { x: 72, y: 45 }, // Altair (12th brightest star) - KEY STAR
+      { x: 71, y: 41 }, // Tarazed (above Altair)
+      { x: 73, y: 49 }, // Alshain (below Altair)
+      { x: 68, y: 45 }, // Delta Aql (left wing)
+      { x: 76, y: 45 }  // Lambda Aql (right wing)
     ]
 
     // Helper function to get star color based on temperature
@@ -160,18 +223,36 @@ export function NightSkyConstellations({ alwaysShow = false, starCount = 1400 }:
       return [255, 204, 111] // Orange (cool)
     }
 
+    // Get specific star colors for famous stars
+    const getKeyStarColor = (index: number): [number, number, number] => {
+      // Betelgeuse (7) and Antares (34) are red supergiants
+      if (index === 7 || index === 34) return [255, 100, 60]
+      // Rigel (13) is blue-white
+      if (index === 13) return [155, 176, 255]
+      // Vega (30), Deneb (25), Altair (40) are white/blue-white
+      if (index === 30 || index === 25 || index === 40) return [200, 220, 255]
+      // Regulus (19) is blue-white
+      if (index === 19) return [170, 191, 255]
+      // Denebola (23) is white
+      if (index === 23) return [255, 250, 245]
+      return getStarColor()
+    }
+
     constellationStarPositions.forEach((pos, index) => {
       const constellationId = constellations.findIndex(c => c.stars.includes(index))
+      const isKeyStar = keyStars.has(index)
       newStars.push({
         x: (pos.x / 100) * canvas.width,
         y: (pos.y / 100) * canvas.height,
-        size: 1.5 + Math.random() * 1.5, // Smaller constellation stars (1.5-3px)
-        brightness: 0.85 + Math.random() * 0.15, // Brighter constellation stars
+        // Key stars are larger (3-4px), regular constellation stars (1.5-2.5px)
+        size: isKeyStar ? 3 + Math.random() * 1 : 1.5 + Math.random() * 1,
+        // Key stars are brighter
+        brightness: isKeyStar ? 0.95 + Math.random() * 0.05 : 0.8 + Math.random() * 0.15,
         twinkleSpeed: 0.5 + Math.random() * 1.5,
         pulsePhase: Math.random() * Math.PI * 2, // Random starting phase
         isConstellation: true,
         constellationId,
-        color: getStarColor()
+        color: getKeyStarColor(index)
       })
     })
 
