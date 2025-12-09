@@ -176,21 +176,12 @@ export function PeerReviewWidget({ articleId, peerReviews: initialReviews, onRev
       })
       const data = await res.json()
       if (res.ok && data.success) {
-        // Add reply to tree
-        const addReply = (items: PeerReview[]): PeerReview[] => {
-          return items.map(item => {
-            if (item.id === parentId) {
-              return { ...item, replies: [...(item.replies || []), { ...data.data, replies: [] }] }
-            }
-            if (item.replies?.length) {
-              return { ...item, replies: addReply(item.replies) }
-            }
-            return item
-          })
-        }
-        setReviews(addReply)
+        // Add reply to flat reviews array - tree will be rebuilt automatically
+        setReviews(prev => [...prev, { ...data.data, replies: [] }])
         setReplyContent('')
         setReplyingTo(null)
+      } else {
+        console.error('Reply failed:', data.error)
       }
     } catch (error) {
       console.error('Failed to post reply:', error)
@@ -210,18 +201,12 @@ export function PeerReviewWidget({ articleId, peerReviews: initialReviews, onRev
       })
       const data = await res.json()
       if (res.ok && data.success) {
-        const updateLikes = (items: PeerReview[]): PeerReview[] => {
-          return items.map(item => {
-            if (item.id === reviewId) {
-              return { ...item, liked: data.data.liked, likeCount: data.data.likeCount }
-            }
-            if (item.replies?.length) {
-              return { ...item, replies: updateLikes(item.replies) }
-            }
-            return item
-          })
-        }
-        setReviews(updateLikes)
+        // Update like in flat array - tree will be rebuilt automatically
+        setReviews(prev => prev.map(item =>
+          item.id === reviewId
+            ? { ...item, liked: data.data.liked, likeCount: data.data.likeCount }
+            : item
+        ))
       }
     } catch (error) {
       console.error('Failed to like:', error)
@@ -234,13 +219,8 @@ export function PeerReviewWidget({ articleId, peerReviews: initialReviews, onRev
     try {
       const res = await fetch(`/api/articles/${articleId}/reviews?reviewId=${reviewId}`, { method: 'DELETE' })
       if (res.ok) {
-        const removeItem = (items: PeerReview[]): PeerReview[] => {
-          return items.filter(item => item.id !== reviewId).map(item => ({
-            ...item,
-            replies: item.replies ? removeItem(item.replies) : []
-          }))
-        }
-        setReviews(removeItem)
+        // Remove from flat array - tree will be rebuilt automatically
+        setReviews(prev => prev.filter(item => item.id !== reviewId))
       }
     } catch (error) {
       console.error('Failed to delete:', error)
