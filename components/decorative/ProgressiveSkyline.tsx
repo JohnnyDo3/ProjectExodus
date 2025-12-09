@@ -994,71 +994,60 @@ export function ProgressiveSkyline() {
                       ))}
                     </g>
 
-                    {/* VERTICAL GARDENS - between windows from 2nd floor up */}
+                    {/* Windows with frames and BALCONIES - upper floors (sized to match first floor windows) */}
                     <g opacity="1">
-                      {Array.from({length: Math.max(0, Math.floor(bldg.w/16) - 1)}).map((_, vine) => (
-                        <path key={`vine-${vine}`}
-                              d={`M ${bldg.x+14+vine*16},${215-bldg.h+32} Q ${bldg.x+16+vine*16},${215-bldg.h+50} ${bldg.x+14+vine*16},${215-bldg.h+70} Q ${bldg.x+16+vine*16},${215-bldg.h+bldg.h-25} ${bldg.x+14+vine*16},${Math.min(200, 215-bldg.h+bldg.h-10)}`}
-                              stroke="#5a8a5a"
-                              strokeWidth="2.5"
-                              fill="none" />
-                      ))}
-                    </g>
-
-                    {/* Large windows with frames and BALCONIES - upper floors */}
-                    <g opacity="1">
-                      {Array.from({length: Math.max(1, Math.floor((bldg.h - 30) / 20))}).map((_, row) => (
-                        Array.from({length: Math.floor(bldg.w/16)}).map((_, col) => (
+                      {Array.from({length: Math.max(1, Math.floor((bldg.h - 30) / 16))}).map((_, row) => (
+                        Array.from({length: Math.floor(bldg.w/14)}).map((_, col) => (
                           <g key={`win-${row}-${col}`}>
-                            {/* Window frame */}
-                            <rect x={bldg.x + 4 + col * 16}
-                                  y={215 - bldg.h + 12 + row * 20}
-                                  width="10"
-                                  height="14"
+                            {/* Window frame - same size as first floor */}
+                            <rect x={bldg.x + 4 + col * 14}
+                                  y={215 - bldg.h + 12 + row * 16}
+                                  width="8"
+                                  height="10"
                                   fill="#8a9a8a"
                                   opacity="1" />
                             {/* Window glass */}
-                            <rect x={bldg.x + 5 + col * 16}
-                                  y={215 - bldg.h + 13 + row * 20}
-                                  width="8"
-                                  height="12"
+                            <rect x={bldg.x + 5 + col * 14}
+                                  y={215 - bldg.h + 13 + row * 16}
+                                  width="6"
+                                  height="8"
                                   fill="#6b8ea8"
                                   opacity="1" />
                             {/* Window light for nighttime */}
                             {isNightTime && isWindowLit(bldg.x + row * 100 + col * 50 + i) && (
                               <rect className="window-light"
-                                    x={bldg.x + 6 + col * 16}
-                                    y={215 - bldg.h + 14 + row * 20}
-                                    width="6"
-                                    height="10"
+                                    x={bldg.x + 6 + col * 14}
+                                    y={215 - bldg.h + 14 + row * 16}
+                                    width="4"
+                                    height="6"
                                     fill="#FFD700"
                                     opacity="0.9" />
                             )}
-                            {/* BALCONY for each window */}
-                            <rect x={bldg.x + 3 + col * 16}
-                                  y={215 - bldg.h + 26 + row * 20}
-                                  width="12"
-                                  height="2"
+                            {/* BALCONY for each window - resized to match smaller windows */}
+                            <rect x={bldg.x + 3 + col * 14}
+                                  y={215 - bldg.h + 22 + row * 16}
+                                  width="10"
+                                  height="1.5"
                                   fill="#7a8a7a"
                                   opacity="1" />
                             {/* Balcony railing posts */}
-                            <rect x={bldg.x + 3 + col * 16}
-                                  y={215 - bldg.h + 23 + row * 20}
-                                  width="0.8"
-                                  height="3"
+                            <rect x={bldg.x + 3 + col * 14}
+                                  y={215 - bldg.h + 20 + row * 16}
+                                  width="0.6"
+                                  height="2"
                                   fill="#6a7a6a"
                                   opacity="1" />
-                            <rect x={bldg.x + 14.2 + col * 16}
-                                  y={215 - bldg.h + 23 + row * 20}
-                                  width="0.8"
-                                  height="3"
+                            <rect x={bldg.x + 12.4 + col * 14}
+                                  y={215 - bldg.h + 20 + row * 16}
+                                  width="0.6"
+                                  height="2"
                                   fill="#6a7a6a"
                                   opacity="1" />
                             {/* Balcony top rail */}
-                            <rect x={bldg.x + 3 + col * 16}
-                                  y={215 - bldg.h + 23 + row * 20}
-                                  width="12"
-                                  height="0.8"
+                            <rect x={bldg.x + 3 + col * 14}
+                                  y={215 - bldg.h + 20 + row * 16}
+                                  width="10"
+                                  height="0.6"
                                   fill="#6a7a6a"
                                   opacity="1" />
                           </g>
