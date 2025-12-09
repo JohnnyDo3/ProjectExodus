@@ -2,6 +2,13 @@ import { NextRequest, NextResponse } from 'next/server'
 import { prisma } from '@/lib/db'
 import { auth } from '@/auth'
 
+// Type for peer review with like count
+interface PeerReviewWithCount {
+  id: string
+  _count: { likes: number }
+  [key: string]: any
+}
+
 type Params = {
   params: Promise<{
     slug: string
@@ -94,6 +101,9 @@ export async function GET(
                 image: true,
               },
             },
+            _count: {
+              select: { likes: true }
+            }
           },
           orderBy: {
             createdAt: 'desc',
@@ -115,9 +125,34 @@ export async function GET(
       data: { views: { increment: 1 } },
     })
 
+    // Get session for user's like status
+    const session = await auth()
+
+    // Get user's liked review IDs if logged in
+    let userLikedReviewIds: Set<string> = new Set()
+    if (session?.user?.id && article.peerReviews.length > 0) {
+      const userLikes = await prisma.reviewLike.findMany({
+        where: {
+          reviewId: { in: article.peerReviews.map((r: PeerReviewWithCount) => r.id) },
+          userId: session.user.id
+        },
+        select: { reviewId: true }
+      })
+      userLikedReviewIds = new Set(userLikes.map((l: { reviewId: string }) => l.reviewId))
+    }
+
+    // Process peer reviews to include likeCount and liked status
+    const processedPeerReviews = article.peerReviews.map((review: PeerReviewWithCount) => ({
+      ...review,
+      likeCount: review._count?.likes || 0,
+      liked: userLikedReviewIds.has(review.id),
+      _count: undefined
+    }))
+
     // Filter author's private data based on privacy settings
     const filteredArticle = {
       ...article,
+      peerReviews: processedPeerReviews,
       author: {
         ...article.author,
         email: article.author.showEmail ? article.author.email : undefined,

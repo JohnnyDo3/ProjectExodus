@@ -322,9 +322,14 @@ export function PeerReviewWidget({ articleId, peerReviews: initialReviews, onRev
                     type="text"
                     value={replyContent}
                     onChange={(e) => setReplyContent(e.target.value)}
+                    onKeyDown={(e) => {
+                      if (e.key === 'Enter' && !e.shiftKey && replyContent.trim()) {
+                        e.preventDefault()
+                        handleSubmitReply(item.id)
+                      }
+                    }}
                     placeholder="Write a reply..."
                     className="flex-1 px-3 py-2 text-sm border border-[var(--border)] rounded-lg bg-[var(--background)] text-[var(--foreground)]"
-                    autoFocus
                   />
                   <Button size="sm" onClick={() => handleSubmitReply(item.id)} disabled={isSubmitting || !replyContent.trim()}>
                     <Send className="w-4 h-4" />

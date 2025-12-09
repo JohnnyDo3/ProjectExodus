@@ -163,11 +163,11 @@ export async function POST(
       )
     }
 
-    // For top-level reviews (not replies), require rating
-    if (!parentId) {
-      if (!rating || rating < 1 || rating > 5) {
+    // Validate rating if provided
+    if (rating !== undefined && rating !== null && rating !== 0) {
+      if (rating < 1 || rating > 5) {
         return NextResponse.json(
-          { success: false, error: 'Rating (1-5) is required for top-level reviews' },
+          { success: false, error: 'Rating must be between 1 and 5' },
           { status: 400 }
         )
       }
@@ -188,19 +188,22 @@ export async function POST(
       }
     }
 
-    // Check if user already has a top-level review (can only submit one review per article)
-    if (!parentId) {
-      const existingReview = await prisma.articlePeerReview.findFirst({
+    // Check if user already has a RATED review (can only submit one rated review per article)
+    // Users can submit unlimited comments (reviews without ratings)
+    const hasRating = rating !== undefined && rating !== null && rating > 0
+    if (!parentId && hasRating) {
+      const existingRatedReview = await prisma.articlePeerReview.findFirst({
         where: {
           articleId: article.id,
           userId: session.user.id,
-          parentId: null, // Only check top-level reviews
+          parentId: null,
+          rating: { not: null, gt: 0 } // Only check for rated reviews
         }
       })
 
-      if (existingReview) {
+      if (existingRatedReview) {
         return NextResponse.json(
-          { success: false, error: 'You have already submitted a review for this article' },
+          { success: false, error: 'You have already submitted a rated review for this article. You can still add comments.' },
           { status: 400 }
         )
       }
@@ -213,11 +216,11 @@ export async function POST(
         userId: session.user.id,
         content: content.trim(),
         parentId: parentId || null,
-        // Only set ratings for top-level reviews
-        rating: parentId ? null : rating,
-        accuracy: parentId ? null : (accuracy || null),
-        clarity: parentId ? null : (clarity || null),
-        relevance: parentId ? null : (relevance || null),
+        // Only set ratings for top-level reviews with ratings
+        rating: parentId ? null : (hasRating ? rating : null),
+        accuracy: parentId ? null : (hasRating ? (accuracy || null) : null),
+        clarity: parentId ? null : (hasRating ? (clarity || null) : null),
+        relevance: parentId ? null : (hasRating ? (relevance || null) : null),
       },
       include: {
         user: {
