@@ -4,61 +4,86 @@ import { User, MapPin, Mail, Edit2, Sword, MessageCircle, Stethoscope, Lightbulb
 import Link from 'next/link'
 import { LucideIcon } from 'lucide-react'
 
-// Ghost text component for empty fields
-function GhostText({ children }: { children: React.ReactNode }) {
-  return (
-    <span className="text-white/30 italic">{children}</span>
-  )
-}
-
-// Guardian Archetypes - matching settings page
+// Guardian Archetypes - matching ProfileBusinessCard with hex colors
 const GUARDIAN_ARCHETYPES: Record<string, {
-  name: string
+  value: string
   title: string
   icon: LucideIcon
-  gradient: string
+  colors: {
+    from: string
+    to: string
+    gradient: string
+  }
 }> = {
   michael: {
-    name: 'MICHAEL',
+    value: 'STRENGTH',
     title: 'Guardian of Strength',
     icon: Sword,
-    gradient: 'from-red-600 to-orange-500',
+    colors: {
+      from: '#dc2626',
+      to: '#f97316',
+      gradient: 'linear-gradient(135deg, #dc2626 0%, #f97316 100%)',
+    },
   },
   gabriel: {
-    name: 'GABRIEL',
+    value: 'REVELATION',
     title: 'Guardian of Revelation',
     icon: MessageCircle,
-    gradient: 'from-sky-500 to-blue-600',
+    colors: {
+      from: '#0ea5e9',
+      to: '#2563eb',
+      gradient: 'linear-gradient(135deg, #0ea5e9 0%, #2563eb 100%)',
+    },
   },
   raphael: {
-    name: 'RAPHAEL',
+    value: 'HEALING',
     title: 'Guardian of Healing',
     icon: Stethoscope,
-    gradient: 'from-emerald-500 to-teal-600',
+    colors: {
+      from: '#10b981',
+      to: '#0d9488',
+      gradient: 'linear-gradient(135deg, #10b981 0%, #0d9488 100%)',
+    },
   },
   uriel: {
-    name: 'URIEL',
+    value: 'WISDOM',
     title: 'Guardian of Wisdom',
     icon: Lightbulb,
-    gradient: 'from-amber-500 to-yellow-500',
+    colors: {
+      from: '#f59e0b',
+      to: '#eab308',
+      gradient: 'linear-gradient(135deg, #f59e0b 0%, #eab308 100%)',
+    },
   },
-  chamuel: {
-    name: 'CHAMUEL',
+  camael: {
+    value: 'LOVE',
     title: 'Guardian of Love',
     icon: HeartHandshake,
-    gradient: 'from-pink-500 to-rose-600',
+    colors: {
+      from: '#ec4899',
+      to: '#e11d48',
+      gradient: 'linear-gradient(135deg, #ec4899 0%, #e11d48 100%)',
+    },
   },
   jophiel: {
-    name: 'JOPHIEL',
+    value: 'BEAUTY',
     title: 'Guardian of Beauty',
     icon: Flower2,
-    gradient: 'from-violet-500 to-purple-600',
+    colors: {
+      from: '#8b5cf6',
+      to: '#9333ea',
+      gradient: 'linear-gradient(135deg, #8b5cf6 0%, #9333ea 100%)',
+    },
   },
   zadkiel: {
-    name: 'ZADKIEL',
+    value: 'MERCY',
     title: 'Guardian of Mercy',
     icon: Scale,
-    gradient: 'from-indigo-500 to-blue-700',
+    colors: {
+      from: '#6366f1',
+      to: '#1d4ed8',
+      gradient: 'linear-gradient(135deg, #6366f1 0%, #1d4ed8 100%)',
+    },
   },
 }
 
@@ -104,12 +129,13 @@ export function ProfileCard({
     : null
 
   const ArchetypeIcon = archetype?.icon || User
-  const gradient = archetype?.gradient || 'from-[var(--primary)] to-[var(--accent)]'
+  // Use hex gradient from archetype colors, fallback to CSS variables
+  const gradientStyle = archetype?.colors.gradient || 'linear-gradient(135deg, var(--primary) 0%, var(--accent) 100%)'
 
   if (isCompact) {
     return (
       <div className={`rounded-xl overflow-hidden ${className}`}>
-        <div className={`bg-gradient-to-br ${gradient} p-3`}>
+        <div className="p-3" style={{ background: gradientStyle }}>
           <div className="flex items-center gap-3">
             <div className="w-10 h-10 rounded-lg bg-white/20 flex items-center justify-center flex-shrink-0">
               {user.image ? (
@@ -137,10 +163,20 @@ export function ProfileCard({
     )
   }
 
+  // Check if any contact info is filled
+  const hasLocation = userProfile?.location && userProfile.location.trim()
+  const hasPhone = userProfile?.phone && userProfile.phone.trim()
+  const hasContactInfo = hasLocation || user.email || hasPhone
+  const hasJobInfo = userProfile?.jobTitle || userProfile?.company
+  const hasExpertise = userProfile?.expertise && userProfile.expertise.length > 0
+  const hasInterests = userProfile?.interests && userProfile.interests.length > 0
+  const hasBio = userProfile?.bio && userProfile.bio.trim()
+  const hasDeclaration = userProfile?.declaration && userProfile.declaration.trim()
+
   return (
     <div className={`rounded-2xl overflow-hidden shadow-lg ${className}`}>
       {/* Business Card Style - Full gradient background */}
-      <div className={`bg-gradient-to-br ${gradient} p-5 relative`}>
+      <div className="p-5 relative" style={{ background: gradientStyle }}>
         {/* Edit button */}
         <button
           onClick={onExpand}
@@ -160,118 +196,118 @@ export function ProfileCard({
             )}
           </div>
           <div className="flex-1 min-w-0 pt-1">
-            {archetype ? (
+            {archetype && (
               <p className="text-[10px] font-bold text-white/80 uppercase tracking-wide mb-0.5">
-                {archetype.title}
-              </p>
-            ) : (
-              <p className="text-[10px] font-bold uppercase tracking-wide mb-0.5">
-                <GhostText>Choose Your Guardian</GhostText>
+                {archetype.title} • {archetype.value}
               </p>
             )}
             <h3 className="text-xl font-black text-white truncate">
-              {user.name || <GhostText>Your Name</GhostText>}
+              {user.name || 'Anonymous'}
             </h3>
-            <p className="text-sm text-white/80 truncate">
-              {userProfile?.headline || <GhostText>Your professional headline</GhostText>}
+            {userProfile?.headline && (
+              <p className="text-sm text-white/80 truncate">
+                {userProfile.headline}
+              </p>
+            )}
+          </div>
+        </div>
+
+        {/* Job Title & Company - Only show if filled */}
+        {hasJobInfo && (
+          <div className="flex flex-wrap gap-3 text-xs text-white/80 mb-3">
+            {userProfile?.jobTitle && (
+              <span className="flex items-center gap-1">
+                <Briefcase className="w-3 h-3" />
+                {userProfile.jobTitle}
+              </span>
+            )}
+            {userProfile?.company && (
+              <span className="flex items-center gap-1">
+                <Building2 className="w-3 h-3" />
+                {userProfile.company}
+              </span>
+            )}
+          </div>
+        )}
+
+        {/* Declaration - Only show if filled */}
+        {hasDeclaration && (
+          <div className="border-t border-white/20 pt-3 mb-3">
+            <p className="text-sm italic text-white/90 line-clamp-2">
+              "{userProfile.declaration}"
             </p>
           </div>
-        </div>
+        )}
 
-        {/* Job Title & Company */}
-        <div className="flex flex-wrap gap-3 text-xs text-white/80 mb-3">
-          <span className="flex items-center gap-1">
-            <Briefcase className="w-3 h-3" />
-            {userProfile?.jobTitle || <GhostText>Job Title</GhostText>}
-          </span>
-          <span className="flex items-center gap-1">
-            <Building2 className="w-3 h-3" />
-            {userProfile?.company || <GhostText>Company</GhostText>}
-          </span>
-        </div>
-
-        {/* Declaration */}
-        <div className="border-t border-white/20 pt-3 mb-3">
-          <p className="text-sm italic text-white/90 line-clamp-2">
-            {userProfile?.declaration ? (
-              `"${userProfile.declaration}"`
-            ) : (
-              <GhostText>"Your personal declaration or mission statement..."</GhostText>
-            )}
-          </p>
-        </div>
-
-        {/* Bio */}
-        <div className="mb-3">
-          <div className="flex items-center gap-1.5 text-[10px] font-bold text-white/60 uppercase mb-1">
-            <FileText className="w-3 h-3" /> About
+        {/* Bio - Only show if filled */}
+        {hasBio && (
+          <div className="mb-3">
+            <div className="flex items-center gap-1.5 text-[10px] font-bold text-white/60 uppercase mb-1">
+              <FileText className="w-3 h-3" /> About
+            </div>
+            <p className="text-xs text-white/80 line-clamp-3">
+              {userProfile.bio}
+            </p>
           </div>
-          <p className="text-xs text-white/80 line-clamp-3">
-            {userProfile?.bio || <GhostText>Share a brief bio about yourself, your background, and what drives you...</GhostText>}
-          </p>
-        </div>
+        )}
 
-        {/* Expertise */}
-        <div className="mb-3">
-          <div className="flex items-center gap-1.5 text-[10px] font-bold text-white/60 uppercase mb-1.5">
-            <Sparkles className="w-3 h-3" /> Expertise
-          </div>
-          <div className="flex flex-wrap gap-1.5">
-            {userProfile?.expertise && userProfile.expertise.length > 0 ? (
-              userProfile.expertise.map((skill, i) => (
+        {/* Expertise - Only show if filled */}
+        {hasExpertise && (
+          <div className="mb-3">
+            <div className="flex items-center gap-1.5 text-[10px] font-bold text-white/60 uppercase mb-1.5">
+              <Sparkles className="w-3 h-3" /> Expertise
+            </div>
+            <div className="flex flex-wrap gap-1.5">
+              {userProfile.expertise!.map((skill, i) => (
                 <span key={i} className="px-2 py-0.5 bg-white/20 rounded-full text-[10px] font-semibold text-white">
                   {skill}
                 </span>
-              ))
-            ) : (
-              <>
-                <span className="px-2 py-0.5 bg-white/10 rounded-full text-[10px] font-semibold text-white/30 italic">Skill 1</span>
-                <span className="px-2 py-0.5 bg-white/10 rounded-full text-[10px] font-semibold text-white/30 italic">Skill 2</span>
-                <span className="px-2 py-0.5 bg-white/10 rounded-full text-[10px] font-semibold text-white/30 italic">Skill 3</span>
-              </>
-            )}
+              ))}
+            </div>
           </div>
-        </div>
+        )}
 
-        {/* Interests */}
-        <div className="mb-3">
-          <div className="flex items-center gap-1.5 text-[10px] font-bold text-white/60 uppercase mb-1.5">
-            <Heart className="w-3 h-3" /> Interests
-          </div>
-          <div className="flex flex-wrap gap-1.5">
-            {userProfile?.interests && userProfile.interests.length > 0 ? (
-              userProfile.interests.map((interest, i) => (
+        {/* Interests - Only show if filled */}
+        {hasInterests && (
+          <div className="mb-3">
+            <div className="flex items-center gap-1.5 text-[10px] font-bold text-white/60 uppercase mb-1.5">
+              <Heart className="w-3 h-3" /> Interests
+            </div>
+            <div className="flex flex-wrap gap-1.5">
+              {userProfile.interests!.map((interest, i) => (
                 <span key={i} className="px-2 py-0.5 bg-white/20 rounded-full text-[10px] font-semibold text-white">
                   {interest}
                 </span>
-              ))
-            ) : (
-              <>
-                <span className="px-2 py-0.5 bg-white/10 rounded-full text-[10px] font-semibold text-white/30 italic">Interest 1</span>
-                <span className="px-2 py-0.5 bg-white/10 rounded-full text-[10px] font-semibold text-white/30 italic">Interest 2</span>
-                <span className="px-2 py-0.5 bg-white/10 rounded-full text-[10px] font-semibold text-white/30 italic">Interest 3</span>
-              </>
-            )}
+              ))}
+            </div>
           </div>
-        </div>
+        )}
 
-        {/* Contact info row */}
-        <div className="border-t border-white/20 pt-3">
-          <div className="grid grid-cols-2 gap-2 text-xs text-white/80">
-            <span className="flex items-center gap-1.5">
-              <MapPin className="w-3 h-3 flex-shrink-0" />
-              {userProfile?.location || <GhostText>Location</GhostText>}
-            </span>
-            <span className="flex items-center gap-1.5">
-              <Mail className="w-3 h-3 flex-shrink-0" />
-              <span className="truncate">{user.email || <GhostText>email@example.com</GhostText>}</span>
-            </span>
-            <span className="flex items-center gap-1.5 col-span-2">
-              <Phone className="w-3 h-3 flex-shrink-0" />
-              {userProfile?.phone || <GhostText>+1 (555) 000-0000</GhostText>}
-            </span>
+        {/* Contact info row - Only show fields that are filled */}
+        {hasContactInfo && (
+          <div className="border-t border-white/20 pt-3">
+            <div className="flex flex-wrap gap-x-4 gap-y-2 text-xs text-white/80">
+              {hasLocation && (
+                <span className="flex items-center gap-1.5">
+                  <MapPin className="w-3 h-3 flex-shrink-0" />
+                  {userProfile.location}
+                </span>
+              )}
+              {user.email && (
+                <span className="flex items-center gap-1.5">
+                  <Mail className="w-3 h-3 flex-shrink-0" />
+                  <span className="truncate">{user.email}</span>
+                </span>
+              )}
+              {hasPhone && (
+                <span className="flex items-center gap-1.5">
+                  <Phone className="w-3 h-3 flex-shrink-0" />
+                  {userProfile.phone}
+                </span>
+              )}
+            </div>
           </div>
-        </div>
+        )}
       </div>
 
       {/* Stats bar */}

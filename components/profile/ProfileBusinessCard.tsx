@@ -40,6 +40,8 @@ import {
   Eye,
   EyeOff,
   Settings,
+  Plus,
+  Check,
 } from 'lucide-react'
 import { ExperienceEditModal, EducationEditModal, SkillsEditModal } from './modals'
 import type { Experience, Education } from './modals'
@@ -105,6 +107,162 @@ function UnsavedChangesDialog({
               </Button>
             </div>
           </div>
+        </div>
+      </div>
+    </div>
+  )
+}
+
+// Values Edit Modal - allows users to select predefined values or add custom ones
+function ValuesEditModal({
+  isOpen,
+  onClose,
+  values,
+  onSave,
+  predefinedValues,
+  archetypeColor,
+}: {
+  isOpen: boolean
+  onClose: () => void
+  values: string[]
+  onSave: (values: string[]) => Promise<void>
+  predefinedValues: string[]
+  archetypeColor: string
+}) {
+  const [selectedValues, setSelectedValues] = useState<string[]>(values)
+  const [customValue, setCustomValue] = useState('')
+  const [isSaving, setIsSaving] = useState(false)
+
+  useEffect(() => {
+    setSelectedValues(values)
+  }, [values, isOpen])
+
+  if (!isOpen) return null
+
+  const toggleValue = (value: string) => {
+    setSelectedValues(prev =>
+      prev.includes(value)
+        ? prev.filter(v => v !== value)
+        : [...prev, value]
+    )
+  }
+
+  const addCustomValue = () => {
+    const trimmed = customValue.trim().toUpperCase()
+    if (trimmed && !selectedValues.includes(trimmed)) {
+      setSelectedValues(prev => [...prev, trimmed])
+      setCustomValue('')
+    }
+  }
+
+  const handleSave = async () => {
+    setIsSaving(true)
+    try {
+      await onSave(selectedValues)
+      onClose()
+    } catch (error) {
+      console.error('Error saving values:', error)
+    } finally {
+      setIsSaving(false)
+    }
+  }
+
+  return (
+    <div className="fixed inset-0 z-[200] flex items-center justify-center">
+      <div className="absolute inset-0 bg-black/50" onClick={onClose} />
+      <div className="relative bg-[var(--card)] border-4 border-[var(--border)] rounded-2xl p-6 max-w-lg w-full mx-4 shadow-2xl max-h-[80vh] overflow-y-auto">
+        <div className="flex items-center justify-between mb-4">
+          <h3 className="text-lg font-black text-[var(--foreground)]">Edit Your Values</h3>
+          <button onClick={onClose} className="p-1 hover:bg-[var(--muted)] rounded-lg">
+            <X className="w-5 h-5" />
+          </button>
+        </div>
+
+        <p className="text-sm text-[var(--muted-foreground)] mb-4">
+          Select values that represent who you are, or add your own custom values.
+        </p>
+
+        {/* Selected Values */}
+        {selectedValues.length > 0 && (
+          <div className="mb-4">
+            <p className="text-xs font-bold text-[var(--muted-foreground)] uppercase mb-2">Your Values</p>
+            <div className="flex flex-wrap gap-2">
+              {selectedValues.map((value, idx) => (
+                <button
+                  key={idx}
+                  onClick={() => toggleValue(value)}
+                  className="px-3 py-1.5 text-white text-xs font-bold rounded-full flex items-center gap-1.5 hover:opacity-80 transition-opacity"
+                  style={{ backgroundColor: archetypeColor }}
+                >
+                  {value}
+                  <X className="w-3 h-3" />
+                </button>
+              ))}
+            </div>
+          </div>
+        )}
+
+        {/* Add Custom Value */}
+        <div className="mb-4">
+          <p className="text-xs font-bold text-[var(--muted-foreground)] uppercase mb-2">Add Custom Value</p>
+          <div className="flex gap-2">
+            <input
+              type="text"
+              value={customValue}
+              onChange={(e) => setCustomValue(e.target.value)}
+              onKeyDown={(e) => e.key === 'Enter' && addCustomValue()}
+              placeholder="Type a value and press Enter"
+              className="flex-1 px-3 py-2 bg-[var(--background)] border-2 border-[var(--border)] rounded-lg text-sm font-medium focus:outline-none focus:border-[var(--primary)]"
+            />
+            <Button
+              onClick={addCustomValue}
+              disabled={!customValue.trim()}
+              className="px-3"
+              style={{ backgroundColor: archetypeColor }}
+            >
+              <Plus className="w-4 h-4" />
+            </Button>
+          </div>
+        </div>
+
+        {/* Predefined Values */}
+        <div className="mb-6">
+          <p className="text-xs font-bold text-[var(--muted-foreground)] uppercase mb-2">Choose from Values</p>
+          <div className="flex flex-wrap gap-2">
+            {predefinedValues.map((value, idx) => {
+              const isSelected = selectedValues.includes(value)
+              return (
+                <button
+                  key={idx}
+                  onClick={() => toggleValue(value)}
+                  className={`px-3 py-1.5 text-xs font-bold rounded-full transition-all ${
+                    isSelected
+                      ? 'text-white'
+                      : 'bg-[var(--muted)] text-[var(--foreground)] hover:bg-[var(--primary)]/20'
+                  }`}
+                  style={isSelected ? { backgroundColor: archetypeColor } : {}}
+                >
+                  {isSelected && <Check className="w-3 h-3 inline mr-1" />}
+                  {value}
+                </button>
+              )
+            })}
+          </div>
+        </div>
+
+        {/* Actions */}
+        <div className="flex gap-3">
+          <Button variant="outline" onClick={onClose} className="flex-1 font-bold">
+            Cancel
+          </Button>
+          <Button
+            onClick={handleSave}
+            disabled={isSaving}
+            className="flex-1 font-black text-white"
+            style={{ backgroundColor: archetypeColor }}
+          >
+            {isSaving ? 'Saving...' : 'Save Values'}
+          </Button>
         </div>
       </div>
     </div>
@@ -253,6 +411,14 @@ interface ProfileBusinessCardProps {
   isFullView?: boolean // When true, shows all sections expanded (for modal/resume view)
 }
 
+// Predefined values users can choose from
+const PREDEFINED_VALUES = [
+  'STEWARDSHIP', 'INTEGRITY', 'SUSTAINABILITY', 'TRANSPARENCY', 'LEGACY',
+  'EQUITY', 'SANCTITY', 'REST', 'BIODIVERSITY', 'LOYALTY', 'COMMUNITY',
+  'INNOVATION', 'AUTHENTICITY', 'COMPASSION', 'COURAGE', 'RESILIENCE',
+  'GRATITUDE', 'HUMILITY', 'JUSTICE', 'PATIENCE', 'PERSEVERANCE'
+]
+
 interface ProfileData {
   name: string
   headline: string
@@ -262,6 +428,7 @@ interface ProfileData {
   bio: string
   skills: string[]
   interests: string[]
+  customValues: string[] // User's custom values
   experience: any[]
   education: any[]
   social: {
@@ -380,7 +547,9 @@ export function ProfileBusinessCard({ userId, onClose, onSave: onSaveCallback, i
   // In modal context (onClose present) or full view, auto-expand to show all sections
   const isModalContext = Boolean(onClose) || Boolean(isFullView)
   const [isExpanded, setIsExpanded] = useState(isModalContext)
-  const [isEditing, setIsEditing] = useState(false)
+  // Auto-enter edit mode when opened from Volition (modal context with onClose)
+  const [isEditing, setIsEditing] = useState(Boolean(onClose))
+  // Remove nested edit modal - we no longer need it
   const [isEditModalOpen, setIsEditModalOpen] = useState(false)
   const [showArchetypeSelector, setShowArchetypeSelector] = useState(false)
   const [selectedArchetype, setSelectedArchetype] = useState<ArchetypeType>('michael')
@@ -400,6 +569,7 @@ export function ProfileBusinessCard({ userId, onClose, onSave: onSaveCallback, i
   const [showExperienceModal, setShowExperienceModal] = useState(false)
   const [showEducationModal, setShowEducationModal] = useState(false)
   const [showSkillsModal, setShowSkillsModal] = useState(false)
+  const [showValuesModal, setShowValuesModal] = useState(false)
 
   const isOwnProfile = session?.user?.id === userId
 
@@ -451,6 +621,7 @@ export function ProfileBusinessCard({ userId, onClose, onSave: onSaveCallback, i
               bio: data.data.bio || '',
               skills: data.data.expertise || data.data.skills || [],
               interests: data.data.interests || [],
+              customValues: data.data.customValues || [],
               experience: data.data.experience || [],
               education: data.data.education || [],
               social: {
@@ -585,15 +756,9 @@ export function ProfileBusinessCard({ userId, onClose, onSave: onSaveCallback, i
     ? Math.floor((Date.now() - new Date(profile.memberSince).getTime()) / (1000 * 60 * 60 * 24 * 365))
     : 0
 
-  // Handle edit button - enable inline editing on profile page, or open modal in other contexts
+  // Handle edit button - toggle inline editing mode
   const handleEditClick = () => {
-    // If on profile page (isFullView without onClose), enable inline editing
-    if (isFullView && !onClose) {
-      setIsEditing(true)
-    } else {
-      // Otherwise open the edit modal
-      setIsEditModalOpen(true)
-    }
+    setIsEditing(true)
   }
 
   // Handle save from edit modal
@@ -715,6 +880,25 @@ export function ProfileBusinessCard({ userId, onClose, onSave: onSaveCallback, i
     }
   }
 
+  // Save custom values
+  const handleValuesSave = async (customValues: string[]) => {
+    try {
+      const res = await fetch('/api/profile/update', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ customValues }),
+      })
+
+      if (res.ok) {
+        setProfile(prev => prev ? { ...prev, customValues } : null)
+        setEditedProfile(prev => ({ ...prev, customValues }))
+      }
+    } catch (error) {
+      console.error('Error saving values:', error)
+      throw error
+    }
+  }
+
   // Visibility Toggle Button Component
   const VisibilityToggle = ({ field, className = '' }: { field: keyof FieldVisibility; className?: string }) => {
     if (!isOwnProfile) return null
@@ -827,258 +1011,8 @@ export function ProfileBusinessCard({ userId, onClose, onSave: onSaveCallback, i
     )
   }
 
-  // Edit Modal Component - WYSIWYG style (uses portal to escape stacking context)
-  const EditModal = () => {
-    if (!isEditModalOpen || !isMounted) return null
-
-    const currentArchetype = GUARDIAN_ARCHETYPES[selectedArchetype]
-    const CurrentArchetypeIcon = currentArchetype.icon
-
-    const modalContent = (
-      <>
-        {/* Backdrop */}
-        <div
-          className="fixed inset-0 bg-black/60 backdrop-blur-sm"
-          style={{ zIndex: 9998 }}
-          onClick={() => {
-            setIsEditModalOpen(false)
-            setShowArchetypeSelector(false)
-            setEditingField(null)
-          }}
-        />
-
-        {/* Modal Container */}
-        <div className="fixed inset-4 md:inset-8 lg:inset-16 flex items-center justify-center pointer-events-none" style={{ zIndex: 9999 }}>
-          {/* The Card itself - WYSIWYG */}
-          <div className="pointer-events-auto bg-[var(--card)] rounded-2xl shadow-2xl max-w-xl w-full max-h-[90vh] overflow-hidden flex flex-col border-4" style={{ borderColor: currentArchetype.colors.from }}>
-
-            {/* Card Header - Gradient with editable content */}
-            <div
-              className="px-6 py-5 relative overflow-hidden"
-              style={{ background: currentArchetype.colors.gradient }}
-            >
-              {/* Dark overlay for text contrast */}
-              <div className="absolute inset-0 bg-black/25" />
-
-              {/* Background pattern */}
-              <div className="absolute inset-0 opacity-10">
-                <div className="absolute top-0 right-0 w-64 h-64 bg-white rounded-full blur-3xl transform translate-x-1/2 -translate-y-1/2" />
-              </div>
-
-              <div className="relative">
-                {/* Close button */}
-                <button
-                  onClick={() => {
-                    setIsEditModalOpen(false)
-                    setShowArchetypeSelector(false)
-                    setEditingField(null)
-                  }}
-                  className="absolute top-0 right-0 p-2 bg-black/30 hover:bg-black/40 rounded-xl transition-colors"
-                >
-                  <X className="w-5 h-5 text-white" />
-                </button>
-
-                {/* Archetype Icon - clickable to change */}
-                <div className="flex items-start gap-4 mb-4">
-                  <div className="relative">
-                    <div
-                      className="p-3 bg-black/30 rounded-2xl backdrop-blur-sm border border-white/30 shadow-lg"
-                    >
-                      <CurrentArchetypeIcon className="w-8 h-8 text-white drop-shadow-md" />
-                    </div>
-                  </div>
-
-                  <div className="flex-1 min-w-0 text-white">
-                    <div className="flex items-center gap-2 mb-1">
-                      <Crown className="w-3.5 h-3.5 text-white/70" />
-                      <p className="text-[10px] font-bold uppercase tracking-wider text-white/70">{currentArchetype.title}</p>
-                    </div>
-
-                    {/* Editable Name */}
-                    <EditableField
-                      fieldId="name"
-                      value={editedProfile.name || ''}
-                      placeholder="Your Name"
-                      onChange={(v) => setEditedProfile(prev => ({ ...prev, name: v }))}
-                      textClassName="text-2xl font-black drop-shadow-md"
-                    />
-
-                    {/* Editable Headline */}
-                    <EditableField
-                      fieldId="headline"
-                      value={editedProfile.headline || ''}
-                      placeholder="Your role or title"
-                      onChange={(v) => setEditedProfile(prev => ({ ...prev, headline: v }))}
-                      textClassName="text-sm font-medium text-white/90"
-                      className="mt-1"
-                    />
-                  </div>
-                </div>
-
-                {/* Editable Declaration */}
-                <div className="p-3 bg-black/20 rounded-lg backdrop-blur-sm border border-white/20">
-                  <div className="flex items-center gap-2 mb-1.5">
-                    <ScrollText className="w-3.5 h-3.5 text-white/70" />
-                    <p className="text-[9px] font-black uppercase text-white/70 tracking-wider">My Declaration</p>
-                  </div>
-                  <EditableField
-                    fieldId="declaration"
-                    value={editedProfile.declaration || ''}
-                    placeholder="What truth do you carry? What do you stand for?"
-                    onChange={(v) => setEditedProfile(prev => ({ ...prev, declaration: v }))}
-                    type="textarea"
-                    textClassName="text-sm font-medium italic text-white"
-                    maxLength={280}
-                  />
-                </div>
-
-                {/* Contact Info */}
-                <div className="mt-4 space-y-2 text-white text-xs">
-                  <div className="flex items-center gap-2">
-                    <MapPin className="w-3.5 h-3.5 text-white/75 flex-shrink-0" />
-                    <EditableField
-                      fieldId="location"
-                      value={editedProfile.location || ''}
-                      placeholder="Add your location"
-                      onChange={(v) => setEditedProfile(prev => ({ ...prev, location: v }))}
-                      textClassName="text-xs"
-                    />
-                  </div>
-
-                  {profile?.email && (
-                    <div className="flex items-center gap-2 opacity-75">
-                      <Mail className="w-3.5 h-3.5 flex-shrink-0" />
-                      <span className="truncate">{profile.email}</span>
-                    </div>
-                  )}
-                </div>
-              </div>
-            </div>
-
-            {/* Card Body - Social Links */}
-            <div className="p-4 bg-[var(--card)] space-y-3">
-              <p className="text-xs font-bold text-[var(--muted-foreground)] uppercase tracking-wide">Social Links</p>
-              <div className="flex flex-wrap gap-2">
-                {/* Website */}
-                <div className="flex items-center gap-2 px-3 py-2 bg-[var(--muted)] rounded-lg group hover:bg-[var(--primary)] hover:text-[var(--primary-foreground)] transition-colors cursor-pointer min-w-[140px]"
-                     onClick={() => setEditingField('website')}>
-                  <Globe className="w-4 h-4 flex-shrink-0" />
-                  {editingField === 'website' ? (
-                    <input
-                      autoFocus
-                      type="text"
-                      value={editedProfile.social?.website || ''}
-                      onChange={(e) => setEditedProfile(prev => ({
-                        ...prev,
-                        social: { ...prev.social, website: e.target.value }
-                      }))}
-                      onBlur={() => setEditingField(null)}
-                      onKeyDown={(e) => { if (e.key === 'Enter' || e.key === 'Escape') setEditingField(null) }}
-                      className="bg-transparent border-b border-current outline-none flex-1 text-xs font-medium"
-                      placeholder="yourwebsite.com"
-                    />
-                  ) : (
-                    <span className="text-xs font-medium truncate">
-                      {editedProfile.social?.website || <span className="opacity-50 italic">Add website</span>}
-                    </span>
-                  )}
-                  <Edit2 className="w-3 h-3 opacity-0 group-hover:opacity-100 transition-opacity flex-shrink-0" />
-                </div>
-
-                {/* LinkedIn */}
-                <div className="flex items-center gap-2 px-3 py-2 bg-[var(--muted)] rounded-lg group hover:bg-[var(--accent)] hover:text-[var(--accent-foreground)] transition-colors cursor-pointer min-w-[140px]"
-                     onClick={() => setEditingField('linkedin')}>
-                  <Linkedin className="w-4 h-4 flex-shrink-0" />
-                  {editingField === 'linkedin' ? (
-                    <input
-                      autoFocus
-                      type="text"
-                      value={editedProfile.social?.linkedin || ''}
-                      onChange={(e) => setEditedProfile(prev => ({
-                        ...prev,
-                        social: { ...prev.social, linkedin: e.target.value }
-                      }))}
-                      onBlur={() => setEditingField(null)}
-                      onKeyDown={(e) => { if (e.key === 'Enter' || e.key === 'Escape') setEditingField(null) }}
-                      className="bg-transparent border-b border-current outline-none flex-1 text-xs font-medium"
-                      placeholder="linkedin.com/in/you"
-                    />
-                  ) : (
-                    <span className="text-xs font-medium truncate">
-                      {editedProfile.social?.linkedin || <span className="opacity-50 italic">Add LinkedIn</span>}
-                    </span>
-                  )}
-                  <Edit2 className="w-3 h-3 opacity-0 group-hover:opacity-100 transition-opacity flex-shrink-0" />
-                </div>
-
-                {/* Twitter/X */}
-                <div className="flex items-center gap-2 px-3 py-2 bg-[var(--muted)] rounded-lg group hover:bg-[var(--accent)] hover:text-[var(--accent-foreground)] transition-colors cursor-pointer min-w-[140px]"
-                     onClick={() => setEditingField('twitter')}>
-                  <Twitter className="w-4 h-4 flex-shrink-0" />
-                  {editingField === 'twitter' ? (
-                    <input
-                      autoFocus
-                      type="text"
-                      value={editedProfile.social?.twitter || ''}
-                      onChange={(e) => setEditedProfile(prev => ({
-                        ...prev,
-                        social: { ...prev.social, twitter: e.target.value }
-                      }))}
-                      onBlur={() => setEditingField(null)}
-                      onKeyDown={(e) => { if (e.key === 'Enter' || e.key === 'Escape') setEditingField(null) }}
-                      className="bg-transparent border-b border-current outline-none flex-1 text-xs font-medium"
-                      placeholder="@yourhandle"
-                    />
-                  ) : (
-                    <span className="text-xs font-medium truncate">
-                      {editedProfile.social?.twitter || <span className="opacity-50 italic">Add X/Twitter</span>}
-                    </span>
-                  )}
-                  <Edit2 className="w-3 h-3 opacity-0 group-hover:opacity-100 transition-opacity flex-shrink-0" />
-                </div>
-              </div>
-            </div>
-
-            {/* Modal Footer */}
-            <div className="px-4 py-3 border-t-2 border-[var(--border)] bg-[var(--muted)] flex items-center justify-between">
-              <p className="text-xs text-[var(--muted-foreground)]">Click any field to edit</p>
-              <div className="flex items-center gap-2">
-                <Button
-                  variant="outline"
-                  size="sm"
-                  onClick={() => {
-                    setIsEditModalOpen(false)
-                    setShowArchetypeSelector(false)
-                    setEditingField(null)
-                  }}
-                  className="font-bold"
-                >
-                  Cancel
-                </Button>
-                <Button
-                  size="sm"
-                  onClick={handleModalSave}
-                  disabled={isSaving}
-                  className="font-black"
-                  style={{ backgroundColor: currentArchetype.colors.from }}
-                >
-                  <Save className="w-4 h-4 mr-1" />
-                  {isSaving ? 'Saving...' : 'Save'}
-                </Button>
-              </div>
-            </div>
-          </div>
-        </div>
-      </>
-    )
-
-    // Use portal to render modal at document body level (escapes stacking context)
-    return createPortal(modalContent, document.body)
-  }
-
   return (
     <>
-      <EditModal />
     <Card className="border-4 overflow-hidden" style={{ borderColor: archetypeColor }}>
       {/* Sacred Header - uses archetype gradient as background */}
       <div
@@ -1110,38 +1044,21 @@ export function ProfileBusinessCard({ userId, onClose, onSave: onSaveCallback, i
           </div>
 
           <div className="flex items-center gap-2">
-            {isOwnProfile && (
+            {/* Show Edit button only when NOT in edit mode */}
+            {isOwnProfile && !isEditing && (
               <button
                 onClick={handleEditClick}
                 className="p-2.5 bg-black/30 hover:bg-black/40 rounded-xl transition-colors backdrop-blur-sm"
-                title="Edit in Settings"
+                title="Edit Business Card"
               >
                 <Edit2 className="w-5 h-5 text-white" />
               </button>
             )}
+            {/* Show editing mode indicator */}
             {isEditing && (
-              <>
-                <button
-                  onClick={() => {
-                    // Reset to saved values when canceling
-                    setEditedProfile({ ...savedProfile })
-                    setSelectedArchetype(savedArchetype)
-                    setIsEditing(false)
-                  }}
-                  className="p-2.5 bg-black/30 hover:bg-black/40 rounded-xl transition-colors"
-                  title="Cancel editing"
-                >
-                  <X className="w-5 h-5 text-white" />
-                </button>
-                <button
-                  onClick={handleSave}
-                  disabled={isSaving}
-                  className="p-2.5 bg-white/30 hover:bg-white/40 rounded-xl transition-colors"
-                  title="Save changes"
-                >
-                  <Save className="w-5 h-5 text-white" />
-                </button>
-              </>
+              <span className="px-3 py-1.5 bg-white/20 rounded-lg text-xs font-bold text-white uppercase tracking-wide">
+                Editing
+              </span>
             )}
             <button
               onClick={() => {
@@ -1206,7 +1123,7 @@ export function ProfileBusinessCard({ userId, onClose, onSave: onSaveCallback, i
                       <Icon className="w-4 h-4 text-white" />
                     </div>
                     <span className={`text-xs font-bold ${isSelected ? 'text-white' : 'text-[var(--foreground)]'}`}>
-                      {arch.name}
+                      {arch.value}
                     </span>
                   </button>
                 )
@@ -1387,14 +1304,30 @@ export function ProfileBusinessCard({ userId, onClose, onSave: onSaveCallback, i
               <p className="text-xs font-medium text-[var(--muted-foreground)] italic line-clamp-2">{archetype.description}</p>
             </div>
 
-            {/* Commandments Alignment */}
+            {/* Values - Editable for profile owner */}
             <div>
               <h4 className="text-[9px] font-black text-[var(--muted-foreground)] uppercase mb-1.5 flex items-center gap-1.5">
                 <Shield className="w-3.5 h-3.5" />
                 Values
+                {isOwnProfile && isEditing && (
+                  <button
+                    onClick={() => setShowValuesModal(true)}
+                    className="ml-auto p-1 rounded bg-[var(--muted)] hover:bg-[var(--primary)]/20"
+                    title="Edit Values"
+                  >
+                    <Edit2 className="w-3 h-3" />
+                  </button>
+                )}
               </h4>
-              <div className="flex flex-wrap gap-1.5">
-                {archetype.commandments.map((value, idx) => (
+              <div
+                className={`flex flex-wrap gap-1.5 ${isOwnProfile && isEditing ? 'cursor-pointer hover:opacity-80' : ''}`}
+                onClick={() => isOwnProfile && isEditing && setShowValuesModal(true)}
+              >
+                {/* Show custom values if available, otherwise show archetype defaults */}
+                {(profile.customValues && profile.customValues.length > 0
+                  ? profile.customValues
+                  : archetype.commandments
+                ).map((value, idx) => (
                   <span
                     key={idx}
                     className="px-2 py-1 text-white text-[10px] font-bold rounded-full"
@@ -1778,6 +1711,44 @@ export function ProfileBusinessCard({ userId, onClose, onSave: onSaveCallback, i
         </div>
       </CardContent>
 
+      {/* Save Bar - Shown when in edit mode */}
+      {isEditing && (
+        <div className="sticky bottom-0 px-4 py-3 border-t-2 border-[var(--border)] bg-[var(--muted)] flex items-center justify-between">
+          <p className="text-xs text-[var(--muted-foreground)]">
+            Click any field to edit • Changes are saved when you click Save
+          </p>
+          <div className="flex items-center gap-2">
+            <Button
+              variant="outline"
+              size="sm"
+              onClick={() => {
+                if (hasUnsavedChanges()) {
+                  setShowUnsavedDialog(true)
+                } else {
+                  setEditedProfile({ ...savedProfile })
+                  setSelectedArchetype(savedArchetype)
+                  setIsEditing(false)
+                  onClose?.()
+                }
+              }}
+              className="font-bold"
+            >
+              Cancel
+            </Button>
+            <Button
+              size="sm"
+              onClick={handleSave}
+              disabled={isSaving}
+              className="font-black text-white"
+              style={{ backgroundColor: archetypeColor }}
+            >
+              <Save className="w-4 h-4 mr-1" />
+              {isSaving ? 'Saving...' : 'Save Changes'}
+            </Button>
+          </div>
+        </div>
+      )}
+
       {/* Unsaved Changes Dialog */}
       <UnsavedChangesDialog
         isOpen={showUnsavedDialog}
@@ -1809,6 +1780,14 @@ export function ProfileBusinessCard({ userId, onClose, onSave: onSaveCallback, i
           skills={profile.skills || []}
           interests={profile.interests || []}
           onSave={handleSkillsSave}
+        />
+        <ValuesEditModal
+          isOpen={showValuesModal}
+          onClose={() => setShowValuesModal(false)}
+          values={profile.customValues || []}
+          onSave={handleValuesSave}
+          predefinedValues={PREDEFINED_VALUES}
+          archetypeColor={archetypeColor}
         />
       </>
     )}
