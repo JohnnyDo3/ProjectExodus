@@ -3,6 +3,23 @@ import { prisma } from '@/lib/db/prisma'
 import { auth } from '@/auth'
 import { LearningLevel, LEARNING_LEVELS } from '@/types/learning'
 
+// Type for reply in map callback
+type ReplyWithIncludes = {
+  id: string
+  discussionId: string
+  parentReplyId: string | null
+  authorId: string
+  content: string
+  isFromCompleter: boolean
+  isAcceptedAnswer: boolean
+  helpfulCount: number
+  createdAt: Date
+  updatedAt: Date
+  author: { id: string; name: string | null; image: string | null }
+  childReplies?: ReplyWithIncludes[]
+  helpfulVotes?: { id: string }[]
+}
+
 // GET /api/learning/discussions/[discussionId]
 // Get a discussion with all replies
 export async function GET(
@@ -98,7 +115,7 @@ export async function GET(
 
     // Format replies with nested structure
     const formatReplies = (replies: typeof discussion.replies) => {
-      return replies.map(reply => ({
+      return replies.map((reply: ReplyWithIncludes) => ({
         id: reply.id,
         discussionId: reply.discussionId,
         author: {
@@ -110,7 +127,7 @@ export async function GET(
         isAcceptedAnswer: reply.isAcceptedAnswer,
         helpfulCount: reply.helpfulCount,
         hasUserVotedHelpful: Array.isArray(reply.helpfulVotes) && reply.helpfulVotes.length > 0,
-        childReplies: reply.childReplies ? reply.childReplies.map(child => ({
+        childReplies: reply.childReplies ? reply.childReplies.map((child: ReplyWithIncludes) => ({
           id: child.id,
           discussionId: child.discussionId,
           parentReplyId: reply.id,
