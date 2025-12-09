@@ -3,7 +3,7 @@
 import { useState, useRef, useCallback } from 'react'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/Card'
 import { Button } from '@/components/ui/Button'
-import { User, MessageCircle, Tag, Users, Quote } from 'lucide-react'
+import { User, MessageCircle, Tag, Users, Quote, MessagesSquare } from 'lucide-react'
 import Link from 'next/link'
 import { formatDate } from '@/lib/utils/format'
 import { MarkdownContent } from '@/components/article/MarkdownContent'
@@ -79,6 +79,18 @@ export function ArticleClientWrapper({ article }: ArticleClientWrapperProps) {
 
   return (
     <>
+      {/* Floating Discuss Button */}
+      {!isPanelOpen && (
+        <button
+          onClick={openAsSlideout}
+          className="fixed right-6 bottom-6 z-40 flex items-center gap-2 px-4 py-3 bg-[var(--primary)] hover:bg-[var(--primary)]/90 text-white rounded-full shadow-lg transition-all hover:scale-105"
+          title="Open Round Table Discussion"
+        >
+          <MessagesSquare className="w-5 h-5" />
+          <span className="font-medium">Discuss</span>
+        </button>
+      )}
+
       <div className="grid md:grid-cols-3 gap-8">
         {/* Main Content */}
         <article className="md:col-span-2">
