@@ -167,10 +167,10 @@ function ValuesEditModal({
     }
   }
 
-  return (
-    <div className="fixed inset-0 z-[200] flex items-center justify-center">
-      <div className="absolute inset-0 bg-black/50" onClick={onClose} />
-      <div className="relative bg-[var(--card)] border-4 border-[var(--border)] rounded-2xl p-6 max-w-lg w-full mx-4 shadow-2xl max-h-[80vh] overflow-y-auto">
+  return createPortal(
+    <div className="fixed inset-0 z-[9999] flex items-center justify-center p-4">
+      <div className="absolute inset-0 bg-black/60 backdrop-blur-sm" onClick={onClose} />
+      <div className="relative bg-[var(--card)] border-4 border-[var(--border)] rounded-2xl p-6 max-w-lg w-full shadow-2xl max-h-[80vh] overflow-y-auto">
         <div className="flex items-center justify-between mb-4">
           <h3 className="text-lg font-black text-[var(--foreground)]">Edit Your Values</h3>
           <button onClick={onClose} className="p-1 hover:bg-[var(--muted)] rounded-lg">
@@ -265,7 +265,8 @@ function ValuesEditModal({
           </Button>
         </div>
       </div>
-    </div>
+    </div>,
+    document.body
   )
 }
 
@@ -1054,11 +1055,35 @@ export function ProfileBusinessCard({ userId, onClose, onSave: onSaveCallback, i
                 <Edit2 className="w-5 h-5 text-white" />
               </button>
             )}
-            {/* Show editing mode indicator */}
+            {/* Show Save/Cancel buttons when in edit mode */}
             {isEditing && (
-              <span className="px-3 py-1.5 bg-white/20 rounded-lg text-xs font-bold text-white uppercase tracking-wide">
-                Editing
-              </span>
+              <>
+                <button
+                  onClick={() => {
+                    if (hasUnsavedChanges()) {
+                      setShowUnsavedDialog(true)
+                    } else {
+                      setEditedProfile({ ...savedProfile })
+                      setSelectedArchetype(savedArchetype)
+                      setIsEditing(false)
+                      onClose?.()
+                    }
+                  }}
+                  className="p-2.5 bg-black/30 hover:bg-black/40 rounded-xl transition-colors backdrop-blur-sm"
+                  title="Cancel"
+                >
+                  <X className="w-5 h-5 text-white" />
+                </button>
+                <button
+                  onClick={handleSave}
+                  disabled={isSaving}
+                  className="px-4 py-2 bg-white/30 hover:bg-white/40 rounded-xl transition-colors backdrop-blur-sm flex items-center gap-2"
+                  title="Save changes"
+                >
+                  <Save className="w-5 h-5 text-white" />
+                  <span className="text-sm font-bold text-white">{isSaving ? 'Saving...' : 'Save'}</span>
+                </button>
+              </>
             )}
             <button
               onClick={() => {
@@ -1710,44 +1735,6 @@ export function ProfileBusinessCard({ userId, onClose, onSave: onSaveCallback, i
           </div>
         </div>
       </CardContent>
-
-      {/* Save Bar - Shown when in edit mode */}
-      {isEditing && (
-        <div className="sticky bottom-0 px-4 py-3 border-t-2 border-[var(--border)] bg-[var(--muted)] flex items-center justify-between">
-          <p className="text-xs text-[var(--muted-foreground)]">
-            Click any field to edit • Changes are saved when you click Save
-          </p>
-          <div className="flex items-center gap-2">
-            <Button
-              variant="outline"
-              size="sm"
-              onClick={() => {
-                if (hasUnsavedChanges()) {
-                  setShowUnsavedDialog(true)
-                } else {
-                  setEditedProfile({ ...savedProfile })
-                  setSelectedArchetype(savedArchetype)
-                  setIsEditing(false)
-                  onClose?.()
-                }
-              }}
-              className="font-bold"
-            >
-              Cancel
-            </Button>
-            <Button
-              size="sm"
-              onClick={handleSave}
-              disabled={isSaving}
-              className="font-black text-white"
-              style={{ backgroundColor: archetypeColor }}
-            >
-              <Save className="w-4 h-4 mr-1" />
-              {isSaving ? 'Saving...' : 'Save Changes'}
-            </Button>
-          </div>
-        </div>
-      )}
 
       {/* Unsaved Changes Dialog */}
       <UnsavedChangesDialog
