@@ -329,15 +329,8 @@ export default function MyVolitionPage() {
   const renderLaneContent = (laneId: LaneId) => {
     switch (laneId) {
       case 'profile':
-        // Always show preview card in lane with expand button
-        return (
-          <ProfileCard
-            user={user}
-            userProfile={userProfile}
-            isCompact={isCompact}
-            onExpand={() => setShowBusinessCardModal(true)}
-          />
-        )
+        // Profile is handled separately - business card IS the lane
+        return null
 
       case 'projects':
         return projects.length > 0 ? (
@@ -661,8 +654,13 @@ export default function MyVolitionPage() {
           <div className="container mx-auto px-4">
             {orderedLanes[activeLaneIndex] && (
               orderedLanes[activeLaneIndex].id === 'profile' ? (
-                // Profile lane: show ProfileBusinessCard directly
-                <ProfileBusinessCard userId={user.id || ''} />
+                // Profile lane: the business card IS the lane (no wrapper)
+                <ProfileCard
+                  user={user}
+                  userProfile={userProfile}
+                  isCompact={isCompact}
+                  onExpand={() => setShowBusinessCardModal(true)}
+                />
               ) : (
                 <Lane
                   id={orderedLanes[activeLaneIndex].id}
@@ -694,28 +692,28 @@ export default function MyVolitionPage() {
               const isSortable = ['projects', 'articles', 'learning', 'feed'].includes(lane.id)
               const itemIds = getLaneItemIds(lane.id)
 
-              // Profile lane: render ProfileCard preview with expand button to open full business card modal
+              // Profile lane: the business card IS the lane (no wrapper)
               if (lane.id === 'profile') {
                 return (
                   <DraggableLane key={lane.id} id={lane.id} isCustomizing={isCustomizing}>
-                    <Lane
-                      id={lane.id}
-                      title={lane.title}
-                      icon={Icon}
-                      count={1}
-                      gradient={lane.gradient}
-                      isCompact={isCompact}
-                      isCustomizing={isCustomizing}
-                      onRemove={() => toggleLane(lane.id)}
-                      emptyState={getLaneEmptyState(lane.id)}
-                    >
+                    <div className={`w-[300px] min-w-[300px] flex-shrink-0 ${isCustomizing ? 'relative' : ''}`}>
+                      {/* Customize mode remove button */}
+                      {isCustomizing && (
+                        <button
+                          onClick={() => toggleLane(lane.id)}
+                          className="absolute -top-2 -right-2 z-10 p-1.5 rounded-full bg-red-500 hover:bg-red-600 transition-colors shadow-lg"
+                          title="Remove lane"
+                        >
+                          <X className="w-4 h-4 text-white" />
+                        </button>
+                      )}
                       <ProfileCard
                         user={user}
                         userProfile={userProfile}
                         isCompact={isCompact}
                         onExpand={() => setShowBusinessCardModal(true)}
                       />
-                    </Lane>
+                    </div>
                   </DraggableLane>
                 )
               }
