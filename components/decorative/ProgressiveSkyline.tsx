@@ -969,7 +969,27 @@ export function ProgressiveSkyline() {
                   {x: 3372, h: 72, w: 54, color: "#e0f2e0"}, {x: 3436, h: 95, w: 66, color: "#e8f4e8"},
                   {x: 3512, h: 82, w: 58, color: "#f0f8f0"}, {x: 3580, h: 100, w: 70, color: "#e0f2e0"},
                   {x: 3660, h: 88, w: 62, color: "#e8f4e8"}, {x: 3732, h: 75, w: 54, color: "#f0f8f0"}
-                ].map((bldg, i) => (
+                ].map((bldg, i) => {
+                  // Calculate symmetrical window layout
+                  const windowWidth = 8
+                  const windowHeight = 10
+                  const windowSpacingX = 12 // Space between windows horizontally
+                  const windowSpacingY = 14 // Space between rows vertically
+                  const sideMargin = 6 // Margin from building edge
+                  const topMargin = 10 // Margin from roof
+                  const bottomMargin = 18 // Space for first floor (door area)
+
+                  // Calculate number of window columns that fit symmetrically
+                  const availableWidth = bldg.w - (sideMargin * 2)
+                  const windowCols = Math.max(2, Math.floor((availableWidth + windowSpacingX) / (windowWidth + windowSpacingX)))
+                  const totalWindowsWidth = windowCols * windowWidth + (windowCols - 1) * (windowSpacingX - windowWidth)
+                  const startX = bldg.x + (bldg.w - (windowCols * windowWidth + (windowCols - 1) * 4)) / 2
+
+                  // Calculate number of rows
+                  const availableHeight = bldg.h - topMargin - bottomMargin
+                  const windowRows = Math.max(1, Math.floor(availableHeight / windowSpacingY))
+
+                  return (
                   <g key={`green-bldg-${i}`}>
                     {/* Building body with green tint - extends to sidewalk at y=217 */}
                     <rect x={bldg.x} y={215-bldg.h} width={bldg.w} height={bldg.h + 2} fill={bldg.color} opacity="1" />
@@ -994,110 +1014,112 @@ export function ProgressiveSkyline() {
                       ))}
                     </g>
 
-                    {/* Windows with frames and BALCONIES - upper floors (sized to match first floor windows) */}
+                    {/* Decorative cornice at roofline */}
+                    <rect x={bldg.x - 1} y={215 - bldg.h - 1} width={bldg.w + 2} height="2" fill="#c8d8c8" opacity="1" />
+
+                    {/* Windows - symmetrically placed with floor bands */}
                     <g opacity="1">
-                      {Array.from({length: Math.max(1, Math.floor((bldg.h - 30) / 16))}).map((_, row) => (
-                        Array.from({length: Math.floor(bldg.w/14)}).map((_, col) => (
-                          <g key={`win-${row}-${col}`}>
-                            {/* Window frame - same size as first floor */}
-                            <rect x={bldg.x + 4 + col * 14}
-                                  y={215 - bldg.h + 12 + row * 16}
-                                  width="8"
-                                  height="10"
-                                  fill="#8a9a8a"
-                                  opacity="1" />
-                            {/* Window glass */}
-                            <rect x={bldg.x + 5 + col * 14}
-                                  y={215 - bldg.h + 13 + row * 16}
-                                  width="6"
-                                  height="8"
-                                  fill="#6b8ea8"
-                                  opacity="1" />
-                            {/* Window light for nighttime */}
-                            {isNightTime && isWindowLit(bldg.x + row * 100 + col * 50 + i) && (
-                              <rect className="window-light"
-                                    x={bldg.x + 6 + col * 14}
-                                    y={215 - bldg.h + 14 + row * 16}
-                                    width="4"
-                                    height="6"
-                                    fill="#FFD700"
-                                    opacity="0.9" />
-                            )}
-                            {/* BALCONY for each window - resized to match smaller windows */}
-                            <rect x={bldg.x + 3 + col * 14}
-                                  y={215 - bldg.h + 22 + row * 16}
-                                  width="10"
+                      {Array.from({length: windowRows}).map((_, row) => (
+                        <g key={`row-${row}`}>
+                          {/* Floor band / cornice between floors */}
+                          {row > 0 && (
+                            <rect x={bldg.x + 2}
+                                  y={215 - bldg.h + topMargin + row * windowSpacingY - 3}
+                                  width={bldg.w - 4}
                                   height="1.5"
-                                  fill="#7a8a7a"
+                                  fill="#d0e0d0"
                                   opacity="1" />
-                            {/* Balcony railing posts */}
-                            <rect x={bldg.x + 3 + col * 14}
-                                  y={215 - bldg.h + 20 + row * 16}
-                                  width="0.6"
-                                  height="2"
-                                  fill="#6a7a6a"
-                                  opacity="1" />
-                            <rect x={bldg.x + 12.4 + col * 14}
-                                  y={215 - bldg.h + 20 + row * 16}
-                                  width="0.6"
-                                  height="2"
-                                  fill="#6a7a6a"
-                                  opacity="1" />
-                            {/* Balcony top rail */}
-                            <rect x={bldg.x + 3 + col * 14}
-                                  y={215 - bldg.h + 20 + row * 16}
-                                  width="10"
-                                  height="0.6"
-                                  fill="#6a7a6a"
-                                  opacity="1" />
-                          </g>
-                        ))
+                          )}
+                          {/* Windows in this row - symmetrically placed */}
+                          {Array.from({length: windowCols}).map((_, col) => {
+                            const windowX = startX + col * (windowWidth + 4)
+                            const windowY = 215 - bldg.h + topMargin + row * windowSpacingY
+                            return (
+                            <g key={`win-${row}-${col}`}>
+                              {/* Window frame */}
+                              <rect x={windowX}
+                                    y={windowY}
+                                    width={windowWidth}
+                                    height={windowHeight}
+                                    fill="#8a9a8a"
+                                    opacity="1" />
+                              {/* Window glass */}
+                              <rect x={windowX + 1}
+                                    y={windowY + 1}
+                                    width={windowWidth - 2}
+                                    height={windowHeight - 2}
+                                    fill="#6b8ea8"
+                                    opacity="1" />
+                              {/* Window light for nighttime */}
+                              {isNightTime && isWindowLit(bldg.x + row * 100 + col * 50 + i) && (
+                                <rect className="window-light"
+                                      x={windowX + 2}
+                                      y={windowY + 2}
+                                      width={windowWidth - 4}
+                                      height={windowHeight - 4}
+                                      fill="#FFD700"
+                                      opacity="0.9" />
+                              )}
+                              {/* Small balcony ledge under each window */}
+                              <rect x={windowX - 1}
+                                    y={windowY + windowHeight}
+                                    width={windowWidth + 2}
+                                    height="1.5"
+                                    fill="#7a8a7a"
+                                    opacity="1" />
+                            </g>
+                          )})}
+                        </g>
                       ))}
                     </g>
 
-                    {/* First floor windows - on either side of doorway */}
+                    {/* First floor architectural band - separates upper floors from ground floor */}
+                    <rect x={bldg.x} y={198} width={bldg.w} height="2" fill="#b8c8b8" opacity="1" />
+                    <rect x={bldg.x - 1} y={197} width={bldg.w + 2} height="1.5" fill="#c8d8c8" opacity="1" />
+
+                    {/* First floor windows - symmetrically placed around door */}
                     <g opacity="1">
-                      {/* Left window beside door */}
-                      <rect x={bldg.x + bldg.w/2 - 20}
+                      {/* Left window - equidistant from center */}
+                      <rect x={bldg.x + bldg.w/2 - 22}
                             y={200}
-                            width="8"
-                            height="10"
+                            width={windowWidth}
+                            height={windowHeight}
                             fill="#8a9a8a"
                             opacity="1" />
-                      <rect x={bldg.x + bldg.w/2 - 19}
+                      <rect x={bldg.x + bldg.w/2 - 21}
                             y={201}
-                            width="6"
-                            height="8"
+                            width={windowWidth - 2}
+                            height={windowHeight - 2}
                             fill="#6b8ea8"
                             opacity="1" />
                       {isNightTime && isWindowLit(bldg.x + 1000 + i) && (
                         <rect className="window-light"
-                              x={bldg.x + bldg.w/2 - 18}
+                              x={bldg.x + bldg.w/2 - 20}
                               y={202}
-                              width="4"
-                              height="6"
+                              width={windowWidth - 4}
+                              height={windowHeight - 4}
                               fill="#FFD700"
                               opacity="0.9" />
                       )}
-                      {/* Right window beside door */}
-                      <rect x={bldg.x + bldg.w/2 + 12}
+                      {/* Right window - equidistant from center (mirror of left) */}
+                      <rect x={bldg.x + bldg.w/2 + 14}
                             y={200}
-                            width="8"
-                            height="10"
+                            width={windowWidth}
+                            height={windowHeight}
                             fill="#8a9a8a"
                             opacity="1" />
-                      <rect x={bldg.x + bldg.w/2 + 13}
+                      <rect x={bldg.x + bldg.w/2 + 15}
                             y={201}
-                            width="6"
-                            height="8"
+                            width={windowWidth - 2}
+                            height={windowHeight - 2}
                             fill="#6b8ea8"
                             opacity="1" />
                       {isNightTime && isWindowLit(bldg.x + 1001 + i) && (
                         <rect className="window-light"
-                              x={bldg.x + bldg.w/2 + 14}
+                              x={bldg.x + bldg.w/2 + 16}
                               y={202}
-                              width="4"
-                              height="6"
+                              width={windowWidth - 4}
+                              height={windowHeight - 4}
                               fill="#FFD700"
                               opacity="0.9" />
                       )}
@@ -1213,7 +1235,7 @@ export function ProgressiveSkyline() {
                       </g>
                     </g>
                   </g>
-                ))}
+                )})}
               </g>
 
               {/* City Parks - Green spaces with centered fountains and symmetrical layout */}
