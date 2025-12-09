@@ -1334,39 +1334,39 @@ export function ProgressiveSkyline() {
               </g>
 
               {/* City Parks - Green spaces with centered fountains and symmetrical layout */}
-              {/* Enhanced with 3-5 varied larger trees per park */}
+              {/* Trees scaled to 75% of original size */}
               <g>
                 {/* Park 1 - centered at x=2303 (between buildings 2268 and 2338) */}
                 <g>
-                  {/* Large oak tree - left side */}
+                  {/* Oak tree - left side (75% scale) */}
                   <g key="park1-tree-1">
-                    <rect x="2274" y="195" width="4" height="15" fill="#5a4a3a" opacity="1" />
-                    <circle cx="2276" cy="188" r="10" fill="#4a7c2f" opacity="1" />
-                    <circle cx="2269" cy="192" r="7" fill="#5a8a4a" opacity="1" />
-                    <circle cx="2283" cy="192" r="7" fill="#5a8a4a" opacity="1" />
-                    <circle cx="2276" cy="180" r="6" fill="#6a9a5a" opacity="1" />
+                    <rect x="2275" y="199" width="3" height="11" fill="#5a4a3a" opacity="1" />
+                    <circle cx="2276.5" cy="194" r="7.5" fill="#4a7c2f" opacity="1" />
+                    <circle cx="2271" cy="197" r="5" fill="#5a8a4a" opacity="1" />
+                    <circle cx="2282" cy="197" r="5" fill="#5a8a4a" opacity="1" />
+                    <circle cx="2276.5" cy="188" r="4.5" fill="#6a9a5a" opacity="1" />
                   </g>
-                  {/* Tall pine tree - left-center */}
+                  {/* Pine tree - left-center (75% scale) */}
                   <g key="park1-tree-2">
-                    <rect x="2291" y="198" width="3" height="12" fill="#5a4a3a" opacity="1" />
-                    <polygon points="2292.5,170 2283,200 2302,200" fill="#2d5a3d" opacity="1" />
-                    <polygon points="2292.5,178 2285,198 2300,198" fill="#3d6a4d" opacity="1" />
-                    <polygon points="2292.5,185 2287,196 2298,196" fill="#2d5a3d" opacity="1" />
+                    <rect x="2292" y="201" width="2" height="9" fill="#5a4a3a" opacity="1" />
+                    <polygon points="2293,182 2286,203 2300,203" fill="#2d5a3d" opacity="1" />
+                    <polygon points="2293,188 2288,201 2298,201" fill="#3d6a4d" opacity="1" />
+                    <polygon points="2293,193 2289,200 2297,200" fill="#2d5a3d" opacity="1" />
                   </g>
-                  {/* Medium maple tree - center-right */}
+                  {/* Maple tree - center-right (75% scale) */}
                   <g key="park1-tree-3">
-                    <rect x="2312" y="197" width="3" height="13" fill="#6b5a45" opacity="1" />
-                    <ellipse cx="2313.5" cy="186" rx="10" ry="9" fill="#5a9a4a" opacity="1" />
-                    <ellipse cx="2306" cy="190" r="5" fill="#6aaa5a" opacity="1" />
-                    <ellipse cx="2321" cy="190" r="5" fill="#6aaa5a" opacity="1" />
+                    <rect x="2313" y="200" width="2" height="10" fill="#6b5a45" opacity="1" />
+                    <ellipse cx="2314" cy="192" rx="7.5" ry="7" fill="#5a9a4a" opacity="1" />
+                    <ellipse cx="2308" cy="195" r="4" fill="#6aaa5a" opacity="1" />
+                    <ellipse cx="2320" cy="195" r="4" fill="#6aaa5a" opacity="1" />
                   </g>
-                  {/* Large oak tree - right side */}
+                  {/* Oak tree - right side (75% scale) */}
                   <g key="park1-tree-4">
-                    <rect x="2328" y="195" width="4" height="15" fill="#5a4a3a" opacity="1" />
-                    <circle cx="2330" cy="188" r="10" fill="#4a7c2f" opacity="1" />
-                    <circle cx="2323" cy="192" r="7" fill="#5a8a4a" opacity="1" />
-                    <circle cx="2337" cy="192" r="7" fill="#5a8a4a" opacity="1" />
-                    <circle cx="2330" cy="180" r="6" fill="#6a9a5a" opacity="1" />
+                    <rect x="2329" y="199" width="3" height="11" fill="#5a4a3a" opacity="1" />
+                    <circle cx="2330.5" cy="194" r="7.5" fill="#4a7c2f" opacity="1" />
+                    <circle cx="2325" cy="197" r="5" fill="#5a8a4a" opacity="1" />
+                    <circle cx="2336" cy="197" r="5" fill="#5a8a4a" opacity="1" />
+                    <circle cx="2330.5" cy="188" r="4.5" fill="#6a9a5a" opacity="1" />
                   </g>
 
                   {/* Fountain centered at x=2303 */}
@@ -1409,41 +1409,41 @@ export function ProgressiveSkyline() {
 
                 {/* Park 2 - centered at x=2779 (between buildings 2736 and 2822) - largest park */}
                 <g>
-                  {/* Tall cypress tree - far left */}
+                  {/* Cypress tree - far left (75% scale) */}
                   <g key="park2-tree-1">
-                    <rect x="2742" y="198" width="3" height="12" fill="#5a4a3a" opacity="1" />
-                    <ellipse cx="2743.5" cy="180" rx="5" ry="18" fill="#2d5a3d" opacity="1" />
-                    <ellipse cx="2743.5" cy="182" rx="4" ry="15" fill="#3d6a4d" opacity="1" />
+                    <rect x="2743" y="201" width="2" height="9" fill="#5a4a3a" opacity="1" />
+                    <ellipse cx="2744" cy="188" rx="4" ry="13" fill="#2d5a3d" opacity="1" />
+                    <ellipse cx="2744" cy="190" rx="3" ry="11" fill="#3d6a4d" opacity="1" />
                   </g>
-                  {/* Large spreading oak - left side */}
+                  {/* Oak - left side (75% scale) */}
                   <g key="park2-tree-2">
-                    <rect x="2754" y="193" width="5" height="17" fill="#5a4a3a" opacity="1" />
-                    <circle cx="2756.5" cy="183" r="12" fill="#4a7c2f" opacity="1" />
-                    <circle cx="2747" cy="188" r="8" fill="#5a8a4a" opacity="1" />
-                    <circle cx="2766" cy="188" r="8" fill="#5a8a4a" opacity="1" />
-                    <circle cx="2756.5" cy="173" r="7" fill="#6a9a5a" opacity="1" />
+                    <rect x="2755" y="197" width="4" height="13" fill="#5a4a3a" opacity="1" />
+                    <circle cx="2757" cy="190" r="9" fill="#4a7c2f" opacity="1" />
+                    <circle cx="2750" cy="194" r="6" fill="#5a8a4a" opacity="1" />
+                    <circle cx="2764" cy="194" r="6" fill="#5a8a4a" opacity="1" />
+                    <circle cx="2757" cy="183" r="5" fill="#6a9a5a" opacity="1" />
                   </g>
-                  {/* Medium pine - center left */}
+                  {/* Pine - center left (75% scale) */}
                   <g key="park2-tree-3">
-                    <rect x="2772" y="197" width="3" height="13" fill="#5a4a3a" opacity="1" />
-                    <polygon points="2773.5,168 2764,198 2783,198" fill="#2d5a3d" opacity="1" />
-                    <polygon points="2773.5,176 2766,196 2781,196" fill="#3d6a4d" opacity="1" />
-                    <polygon points="2773.5,183 2768,194 2779,194" fill="#2d5a3d" opacity="1" />
+                    <rect x="2773" y="200" width="2" height="10" fill="#5a4a3a" opacity="1" />
+                    <polygon points="2774,180 2767,202 2781,202" fill="#2d5a3d" opacity="1" />
+                    <polygon points="2774,186 2769,200 2779,200" fill="#3d6a4d" opacity="1" />
+                    <polygon points="2774,192 2770,199 2778,199" fill="#2d5a3d" opacity="1" />
                   </g>
-                  {/* Medium pine - center right */}
+                  {/* Pine - center right (75% scale) */}
                   <g key="park2-tree-4">
-                    <rect x="2785" y="197" width="3" height="13" fill="#5a4a3a" opacity="1" />
-                    <polygon points="2786.5,170 2777,198 2796,198" fill="#2d5a3d" opacity="1" />
-                    <polygon points="2786.5,178 2779,196 2794,196" fill="#3d6a4d" opacity="1" />
-                    <polygon points="2786.5,184 2781,194 2792,194" fill="#2d5a3d" opacity="1" />
+                    <rect x="2785" y="200" width="2" height="10" fill="#5a4a3a" opacity="1" />
+                    <polygon points="2786,182 2779,202 2793,202" fill="#2d5a3d" opacity="1" />
+                    <polygon points="2786,188 2781,200 2791,200" fill="#3d6a4d" opacity="1" />
+                    <polygon points="2786,193 2782,199 2790,199" fill="#2d5a3d" opacity="1" />
                   </g>
-                  {/* Large spreading oak - right side */}
+                  {/* Oak - right side (75% scale) */}
                   <g key="park2-tree-5">
-                    <rect x="2801" y="193" width="5" height="17" fill="#5a4a3a" opacity="1" />
-                    <circle cx="2803.5" cy="183" r="12" fill="#4a7c2f" opacity="1" />
-                    <circle cx="2794" cy="188" r="8" fill="#5a8a4a" opacity="1" />
-                    <circle cx="2813" cy="188" r="8" fill="#5a8a4a" opacity="1" />
-                    <circle cx="2803.5" cy="173" r="7" fill="#6a9a5a" opacity="1" />
+                    <rect x="2801" y="197" width="4" height="13" fill="#5a4a3a" opacity="1" />
+                    <circle cx="2803" cy="190" r="9" fill="#4a7c2f" opacity="1" />
+                    <circle cx="2796" cy="194" r="6" fill="#5a8a4a" opacity="1" />
+                    <circle cx="2810" cy="194" r="6" fill="#5a8a4a" opacity="1" />
+                    <circle cx="2803" cy="183" r="5" fill="#6a9a5a" opacity="1" />
                   </g>
 
                   {/* Fountain centered at x=2779 */}
@@ -1486,34 +1486,34 @@ export function ProgressiveSkyline() {
 
                 {/* Park 3 - centered at x=3399 (between buildings 3362 and 3436) */}
                 <g>
-                  {/* Large maple tree - left side */}
+                  {/* Maple tree - left side (75% scale) */}
                   <g key="park3-tree-1">
-                    <rect x="3368" y="194" width="4" height="16" fill="#6b5a45" opacity="1" />
-                    <ellipse cx="3370" cy="182" rx="11" ry="10" fill="#5a9a4a" opacity="1" />
-                    <ellipse cx="3361" cy="187" r="6" fill="#6aaa5a" opacity="1" />
-                    <ellipse cx="3379" cy="187" r="6" fill="#6aaa5a" opacity="1" />
-                    <ellipse cx="3370" cy="174" rx="6" ry="5" fill="#7aba6a" opacity="1" />
+                    <rect x="3369" y="198" width="3" height="12" fill="#6b5a45" opacity="1" />
+                    <ellipse cx="3370.5" cy="190" rx="8" ry="7.5" fill="#5a9a4a" opacity="1" />
+                    <ellipse cx="3364" cy="194" r="4.5" fill="#6aaa5a" opacity="1" />
+                    <ellipse cx="3377" cy="194" r="4.5" fill="#6aaa5a" opacity="1" />
+                    <ellipse cx="3370.5" cy="184" rx="4.5" ry="4" fill="#7aba6a" opacity="1" />
                   </g>
-                  {/* Tall pine - left-center */}
+                  {/* Pine - left-center (75% scale) */}
                   <g key="park3-tree-2">
-                    <rect x="3386" y="197" width="3" height="13" fill="#5a4a3a" opacity="1" />
-                    <polygon points="3387.5,167 3378,198 3397,198" fill="#2d5a3d" opacity="1" />
-                    <polygon points="3387.5,175 3380,196 3395,196" fill="#3d6a4d" opacity="1" />
-                    <polygon points="3387.5,182 3382,194 3393,194" fill="#2d5a3d" opacity="1" />
+                    <rect x="3387" y="200" width="2" height="10" fill="#5a4a3a" opacity="1" />
+                    <polygon points="3388,183 3381,202 3395,202" fill="#2d5a3d" opacity="1" />
+                    <polygon points="3388,189 3383,200 3393,200" fill="#3d6a4d" opacity="1" />
+                    <polygon points="3388,194 3384,199 3392,199" fill="#2d5a3d" opacity="1" />
                   </g>
-                  {/* Medium cypress - center */}
+                  {/* Cypress - center (75% scale) */}
                   <g key="park3-tree-3">
-                    <rect x="3398" y="198" width="2" height="12" fill="#5a4a3a" opacity="1" />
-                    <ellipse cx="3399" cy="182" rx="4" ry="16" fill="#2d5a3d" opacity="1" />
-                    <ellipse cx="3399" cy="184" rx="3" ry="13" fill="#3d6a4d" opacity="1" />
+                    <rect x="3398" y="201" width="2" height="9" fill="#5a4a3a" opacity="1" />
+                    <ellipse cx="3399" cy="189" rx="3" ry="12" fill="#2d5a3d" opacity="1" />
+                    <ellipse cx="3399" cy="191" rx="2.5" ry="10" fill="#3d6a4d" opacity="1" />
                   </g>
-                  {/* Large oak tree - right side */}
+                  {/* Oak tree - right side (75% scale) */}
                   <g key="park3-tree-4">
-                    <rect x="3420" y="194" width="4" height="16" fill="#5a4a3a" opacity="1" />
-                    <circle cx="3422" cy="184" r="11" fill="#4a7c2f" opacity="1" />
-                    <circle cx="3414" cy="189" r="7" fill="#5a8a4a" opacity="1" />
-                    <circle cx="3430" cy="189" r="7" fill="#5a8a4a" opacity="1" />
-                    <circle cx="3422" cy="175" r="6" fill="#6a9a5a" opacity="1" />
+                    <rect x="3421" y="198" width="3" height="12" fill="#5a4a3a" opacity="1" />
+                    <circle cx="3422.5" cy="191" r="8" fill="#4a7c2f" opacity="1" />
+                    <circle cx="3416" cy="195" r="5" fill="#5a8a4a" opacity="1" />
+                    <circle cx="3429" cy="195" r="5" fill="#5a8a4a" opacity="1" />
+                    <circle cx="3422.5" cy="185" r="4.5" fill="#6a9a5a" opacity="1" />
                   </g>
 
                   {/* Fountain centered at x=3399 */}
@@ -1557,11 +1557,23 @@ export function ProgressiveSkyline() {
 
               {/* Roman-Glass Dome Bridge Indoor Garden Parks - enclosed conservatory bridges with Roman architecture */}
               <g>
-                {/* Bridge 1 over Park 1 - Roman columns + glass dome */}
+                {/* Bridge 1 over Park 1 - Roman columns + fully enclosed glass dome */}
                 <g>
-                  {/* Roman stone base/colonnade */}
+                  {/* Ornate Roman stone base with decorative moldings */}
                   <rect x="2268" y="140" width="70" height="15" fill="#d8d0c8" opacity="1" />
-                  <rect x="2268" y="138" width="70" height="3" fill="#e8e0d8" opacity="1" />
+                  <rect x="2266" y="138" width="74" height="3" fill="#e8e0d8" opacity="1" />
+                  {/* Base molding details */}
+                  <rect x="2266" y="152" width="74" height="2" fill="#c8c0b8" opacity="1" />
+                  <rect x="2268" y="154" width="70" height="1" fill="#b8b0a8" opacity="1" />
+                  {/* Decorative dentil molding on base */}
+                  {Array.from({length: 12}).map((_, d) => (
+                    <rect key={`base-dentil1-${d}`} x={2270 + d * 5.5} y="150" width="3" height="2" fill="#b8b0a8" opacity="1" />
+                  ))}
+                  {/* Balustrade/railing on base */}
+                  <rect x="2270" y="141" width="66" height="0.8" fill="#f0e8e0" opacity="1" />
+                  {Array.from({length: 14}).map((_, b) => (
+                    <rect key={`baluster1-${b}`} x={2272 + b * 4.5} y="141" width="1.5" height="8" fill="#e8e0d8" opacity="0.8" />
+                  ))}
 
                   {/* Roman columns supporting the dome */}
                   <rect x="2270" y="120" width="6" height="20" fill="#d8d0c8" opacity="1" />
@@ -1577,41 +1589,71 @@ export function ProgressiveSkyline() {
                   <line x1="2318" y1="122" x2="2318" y2="138" stroke="#c8c0b8" strokeWidth="0.5" />
                   <line x1="2332" y1="122" x2="2332" y2="138" stroke="#c8c0b8" strokeWidth="0.5" />
                   <line x1="2334" y1="122" x2="2334" y2="138" stroke="#c8c0b8" strokeWidth="0.5" />
-                  {/* Column capitals */}
+                  {/* Ornate column capitals with scrollwork */}
                   <rect x="2268" y="117" width="10" height="4" fill="#e8e0d8" opacity="1" />
                   <rect x="2284" y="117" width="10" height="4" fill="#e8e0d8" opacity="1" />
                   <rect x="2312" y="117" width="10" height="4" fill="#e8e0d8" opacity="1" />
                   <rect x="2328" y="117" width="10" height="4" fill="#e8e0d8" opacity="1" />
-                  {/* Column bases */}
+                  {/* Capital decorative details */}
+                  <ellipse cx="2273" cy="118" rx="2" ry="1" fill="#f0e8e0" opacity="1" />
+                  <ellipse cx="2289" cy="118" rx="2" ry="1" fill="#f0e8e0" opacity="1" />
+                  <ellipse cx="2317" cy="118" rx="2" ry="1" fill="#f0e8e0" opacity="1" />
+                  <ellipse cx="2333" cy="118" rx="2" ry="1" fill="#f0e8e0" opacity="1" />
+                  {/* Column bases with torus molding */}
                   <rect x="2268" y="138" width="10" height="3" fill="#c8c0b8" opacity="1" />
                   <rect x="2284" y="138" width="10" height="3" fill="#c8c0b8" opacity="1" />
                   <rect x="2312" y="138" width="10" height="3" fill="#c8c0b8" opacity="1" />
                   <rect x="2328" y="138" width="10" height="3" fill="#c8c0b8" opacity="1" />
+                  <ellipse cx="2273" cy="139" rx="4" ry="1" fill="#d8d0c8" opacity="1" />
+                  <ellipse cx="2289" cy="139" rx="4" ry="1" fill="#d8d0c8" opacity="1" />
+                  <ellipse cx="2317" cy="139" rx="4" ry="1" fill="#d8d0c8" opacity="1" />
+                  <ellipse cx="2333" cy="139" rx="4" ry="1" fill="#d8d0c8" opacity="1" />
 
                   {/* Roman arched framework connecting columns */}
                   <path d="M 2276,117 Q 2276,105 2289,105 Q 2302,105 2303,100" stroke="#d8d0c8" strokeWidth="3" fill="none" opacity="1" />
                   <path d="M 2330,117 Q 2330,105 2317,105 Q 2304,105 2303,100" stroke="#d8d0c8" strokeWidth="3" fill="none" opacity="1" />
 
-                  {/* Glass dome on top of Roman structure */}
+                  {/* Glass side panels between columns - fully enclosed */}
+                  <rect x="2276" y="120" width="10" height="18" fill="#b8d4e8" opacity="0.2" />
+                  <rect x="2320" y="120" width="10" height="18" fill="#b8d4e8" opacity="0.2" />
+                  {/* Side panel mullions */}
+                  <line x1="2281" y1="120" x2="2281" y2="138" stroke="#a8c8d8" strokeWidth="0.5" opacity="0.5" />
+                  <line x1="2325" y1="120" x2="2325" y2="138" stroke="#a8c8d8" strokeWidth="0.5" opacity="0.5" />
+                  <line x1="2276" y1="129" x2="2286" y2="129" stroke="#a8c8d8" strokeWidth="0.4" opacity="0.4" />
+                  <line x1="2320" y1="129" x2="2330" y2="129" stroke="#a8c8d8" strokeWidth="0.4" opacity="0.4" />
+
+                  {/* Full glass dome on top - with complete coverage */}
                   <path d="M 2273,117 Q 2273,85 2303,80 Q 2333,85 2333,117"
-                        fill="#b8d4e8" opacity="0.25" />
-                  {/* Glass dome frame/ribs */}
+                        fill="#b8d4e8" opacity="0.3" />
+                  {/* Glass dome frame/ribs - thicker */}
                   <path d="M 2273,117 Q 2273,85 2303,80 Q 2333,85 2333,117"
-                        stroke="#a8c8d8" strokeWidth="1.5" fill="none" opacity="0.6" />
-                  {/* Arched glass panel divisions */}
+                        stroke="#a8c8d8" strokeWidth="2" fill="none" opacity="0.7" />
+                  {/* Additional glass panel divisions for fuller coverage */}
+                  <path d="M 2278,116 Q 2280,92 2303,85 Q 2326,92 2328,116" stroke="#a8c8d8" strokeWidth="1" fill="none" opacity="0.6" />
                   <path d="M 2283,115 Q 2285,95 2303,88 Q 2321,95 2323,115" stroke="#a8c8d8" strokeWidth="0.8" fill="none" opacity="0.5" />
                   <path d="M 2293,112 Q 2296,98 2303,93 Q 2310,98 2313,112" stroke="#a8c8d8" strokeWidth="0.6" fill="none" opacity="0.4" />
-                  {/* Vertical mullions */}
+                  {/* More vertical mullions for complete glass coverage */}
+                  <line x1="2280" y1="117" x2="2282" y2="88" stroke="#a8c8d8" strokeWidth="0.5" opacity="0.5" />
                   <line x1="2288" y1="117" x2="2290" y2="92" stroke="#a8c8d8" strokeWidth="0.6" opacity="0.5" />
+                  <line x1="2296" y1="117" x2="2297" y2="86" stroke="#a8c8d8" strokeWidth="0.5" opacity="0.5" />
                   <line x1="2303" y1="117" x2="2303" y2="80" stroke="#a8c8d8" strokeWidth="0.8" opacity="0.6" />
+                  <line x1="2310" y1="117" x2="2309" y2="86" stroke="#a8c8d8" strokeWidth="0.5" opacity="0.5" />
                   <line x1="2318" y1="117" x2="2316" y2="92" stroke="#a8c8d8" strokeWidth="0.6" opacity="0.5" />
-                  {/* Glass reflections */}
-                  <path d="M 2280,105 Q 2290,92 2298,85" stroke="#ffffff" strokeWidth="0.5" fill="none" opacity="0.4" />
+                  <line x1="2326" y1="117" x2="2324" y2="88" stroke="#a8c8d8" strokeWidth="0.5" opacity="0.5" />
+                  {/* Horizontal ring mullions */}
+                  <path d="M 2278,105 Q 2290,102 2303,100 Q 2316,102 2328,105" stroke="#a8c8d8" strokeWidth="0.5" fill="none" opacity="0.4" />
+                  {/* Glass reflections - multiple for shine */}
+                  <path d="M 2280,105 Q 2290,92 2298,85" stroke="#ffffff" strokeWidth="0.6" fill="none" opacity="0.5" />
+                  <path d="M 2282,110 Q 2288,100 2294,92" stroke="#ffffff" strokeWidth="0.4" fill="none" opacity="0.3" />
                   <path d="M 2308,100 Q 2318,90 2325,85" stroke="#ffffff" strokeWidth="0.4" fill="none" opacity="0.3" />
 
-                  {/* Decorative keystone at apex */}
-                  <ellipse cx="2303" cy="80" rx="5" ry="3" fill="#e8e0d8" opacity="1" />
-                  <rect x="2300" y="78" width="6" height="3" fill="#f0e8e0" opacity="1" />
+                  {/* Ornate decorative keystone at apex */}
+                  <ellipse cx="2303" cy="80" rx="6" ry="4" fill="#e8e0d8" opacity="1" />
+                  <rect x="2299" y="77" width="8" height="4" fill="#f0e8e0" opacity="1" />
+                  {/* Keystone decorative carving */}
+                  <circle cx="2303" cy="79" r="1.5" fill="#d8d0c8" opacity="1" />
+                  <line x1="2300" y1="79" x2="2296" y2="79" stroke="#d8d0c8" strokeWidth="0.8" opacity="0.8" />
+                  <line x1="2306" y1="79" x2="2310" y2="79" stroke="#d8d0c8" strokeWidth="0.8" opacity="0.8" />
 
                   {/* Indoor garden visible through glass */}
                   <rect x="2290" y="130" width="3" height="8" fill="#6b5a45" opacity="0.8" />
@@ -1634,11 +1676,23 @@ export function ProgressiveSkyline() {
                   <circle cx="2311" cy="135" r="1.2" fill="#cc99ff" opacity="0.7" />
                 </g>
 
-                {/* Bridge 2 over Park 2 - Roman columns + glass dome */}
+                {/* Bridge 2 over Park 2 - Roman columns + fully enclosed glass dome */}
                 <g>
-                  {/* Roman stone base/colonnade */}
+                  {/* Ornate Roman stone base with decorative moldings */}
                   <rect x="2736" y="145" width="86" height="13" fill="#d8d0c8" opacity="1" />
-                  <rect x="2736" y="143" width="86" height="3" fill="#e8e0d8" opacity="1" />
+                  <rect x="2734" y="143" width="90" height="3" fill="#e8e0d8" opacity="1" />
+                  {/* Base molding details */}
+                  <rect x="2734" y="156" width="90" height="2" fill="#c8c0b8" opacity="1" />
+                  <rect x="2736" y="158" width="86" height="1" fill="#b8b0a8" opacity="1" />
+                  {/* Decorative dentil molding on base */}
+                  {Array.from({length: 15}).map((_, d) => (
+                    <rect key={`base-dentil2-${d}`} x={2738 + d * 5.5} y="154" width="3" height="2" fill="#b8b0a8" opacity="1" />
+                  ))}
+                  {/* Balustrade/railing on base */}
+                  <rect x="2738" y="146" width="82" height="0.8" fill="#f0e8e0" opacity="1" />
+                  {Array.from({length: 17}).map((_, b) => (
+                    <rect key={`baluster2-${b}`} x={2740 + b * 4.7} y="146" width="1.5" height="8" fill="#e8e0d8" opacity="0.8" />
+                  ))}
 
                   {/* Roman columns */}
                   <rect x="2738" y="125" width="6" height="20" fill="#d8d0c8" opacity="1" />
@@ -1654,40 +1708,67 @@ export function ProgressiveSkyline() {
                   <line x1="2798" y1="127" x2="2798" y2="143" stroke="#c8c0b8" strokeWidth="0.5" />
                   <line x1="2816" y1="127" x2="2816" y2="143" stroke="#c8c0b8" strokeWidth="0.5" />
                   <line x1="2818" y1="127" x2="2818" y2="143" stroke="#c8c0b8" strokeWidth="0.5" />
-                  {/* Column capitals */}
+                  {/* Ornate column capitals */}
                   <rect x="2736" y="122" width="10" height="4" fill="#e8e0d8" opacity="1" />
                   <rect x="2756" y="122" width="10" height="4" fill="#e8e0d8" opacity="1" />
                   <rect x="2792" y="122" width="10" height="4" fill="#e8e0d8" opacity="1" />
                   <rect x="2812" y="122" width="10" height="4" fill="#e8e0d8" opacity="1" />
-                  {/* Column bases */}
+                  <ellipse cx="2741" cy="123" rx="2" ry="1" fill="#f0e8e0" opacity="1" />
+                  <ellipse cx="2761" cy="123" rx="2" ry="1" fill="#f0e8e0" opacity="1" />
+                  <ellipse cx="2797" cy="123" rx="2" ry="1" fill="#f0e8e0" opacity="1" />
+                  <ellipse cx="2817" cy="123" rx="2" ry="1" fill="#f0e8e0" opacity="1" />
+                  {/* Column bases with torus molding */}
                   <rect x="2736" y="143" width="10" height="3" fill="#c8c0b8" opacity="1" />
                   <rect x="2756" y="143" width="10" height="3" fill="#c8c0b8" opacity="1" />
                   <rect x="2792" y="143" width="10" height="3" fill="#c8c0b8" opacity="1" />
                   <rect x="2812" y="143" width="10" height="3" fill="#c8c0b8" opacity="1" />
+                  <ellipse cx="2741" cy="144" rx="4" ry="1" fill="#d8d0c8" opacity="1" />
+                  <ellipse cx="2761" cy="144" rx="4" ry="1" fill="#d8d0c8" opacity="1" />
+                  <ellipse cx="2797" cy="144" rx="4" ry="1" fill="#d8d0c8" opacity="1" />
+                  <ellipse cx="2817" cy="144" rx="4" ry="1" fill="#d8d0c8" opacity="1" />
 
                   {/* Roman arched framework */}
                   <path d="M 2744,122 Q 2744,108 2761,108 Q 2778,108 2779,100" stroke="#d8d0c8" strokeWidth="3" fill="none" opacity="1" />
                   <path d="M 2814,122 Q 2814,108 2797,108 Q 2780,108 2779,100" stroke="#d8d0c8" strokeWidth="3" fill="none" opacity="1" />
 
-                  {/* Glass dome */}
+                  {/* Glass side panels between columns - fully enclosed */}
+                  <rect x="2744" y="125" width="14" height="18" fill="#b8d4e8" opacity="0.2" />
+                  <rect x="2800" y="125" width="14" height="18" fill="#b8d4e8" opacity="0.2" />
+                  <line x1="2751" y1="125" x2="2751" y2="143" stroke="#a8c8d8" strokeWidth="0.5" opacity="0.5" />
+                  <line x1="2807" y1="125" x2="2807" y2="143" stroke="#a8c8d8" strokeWidth="0.5" opacity="0.5" />
+                  <line x1="2744" y1="134" x2="2758" y2="134" stroke="#a8c8d8" strokeWidth="0.4" opacity="0.4" />
+                  <line x1="2800" y1="134" x2="2814" y2="134" stroke="#a8c8d8" strokeWidth="0.4" opacity="0.4" />
+
+                  {/* Full glass dome with complete coverage */}
                   <path d="M 2741,122 Q 2741,88 2779,82 Q 2817,88 2817,122"
-                        fill="#b8d4e8" opacity="0.25" />
+                        fill="#b8d4e8" opacity="0.3" />
                   <path d="M 2741,122 Q 2741,88 2779,82 Q 2817,88 2817,122"
-                        stroke="#a8c8d8" strokeWidth="1.5" fill="none" opacity="0.6" />
-                  {/* Arched glass panels */}
+                        stroke="#a8c8d8" strokeWidth="2" fill="none" opacity="0.7" />
+                  {/* Additional glass panels for fuller coverage */}
+                  <path d="M 2747,121 Q 2750,95 2779,87 Q 2808,95 2811,121" stroke="#a8c8d8" strokeWidth="1" fill="none" opacity="0.6" />
                   <path d="M 2753,120 Q 2758,98 2779,90 Q 2800,98 2805,120" stroke="#a8c8d8" strokeWidth="0.8" fill="none" opacity="0.5" />
                   <path d="M 2765,117 Q 2770,100 2779,95 Q 2788,100 2793,117" stroke="#a8c8d8" strokeWidth="0.6" fill="none" opacity="0.4" />
-                  {/* Vertical mullions */}
+                  {/* More vertical mullions */}
+                  <line x1="2750" y1="122" x2="2752" y2="92" stroke="#a8c8d8" strokeWidth="0.5" opacity="0.5" />
                   <line x1="2759" y1="122" x2="2762" y2="95" stroke="#a8c8d8" strokeWidth="0.6" opacity="0.5" />
+                  <line x1="2769" y1="122" x2="2770" y2="88" stroke="#a8c8d8" strokeWidth="0.5" opacity="0.5" />
                   <line x1="2779" y1="122" x2="2779" y2="82" stroke="#a8c8d8" strokeWidth="0.8" opacity="0.6" />
+                  <line x1="2789" y1="122" x2="2788" y2="88" stroke="#a8c8d8" strokeWidth="0.5" opacity="0.5" />
                   <line x1="2799" y1="122" x2="2796" y2="95" stroke="#a8c8d8" strokeWidth="0.6" opacity="0.5" />
+                  <line x1="2808" y1="122" x2="2806" y2="92" stroke="#a8c8d8" strokeWidth="0.5" opacity="0.5" />
+                  {/* Horizontal ring mullion */}
+                  <path d="M 2748,107 Q 2763,104 2779,102 Q 2795,104 2810,107" stroke="#a8c8d8" strokeWidth="0.5" fill="none" opacity="0.4" />
                   {/* Glass reflections */}
-                  <path d="M 2750,110 Q 2765,95 2778,88" stroke="#ffffff" strokeWidth="0.5" fill="none" opacity="0.4" />
+                  <path d="M 2750,110 Q 2765,95 2778,88" stroke="#ffffff" strokeWidth="0.6" fill="none" opacity="0.5" />
+                  <path d="M 2752,115 Q 2760,103 2768,95" stroke="#ffffff" strokeWidth="0.4" fill="none" opacity="0.3" />
                   <path d="M 2785,102 Q 2800,92 2810,88" stroke="#ffffff" strokeWidth="0.4" fill="none" opacity="0.3" />
 
-                  {/* Keystone */}
-                  <ellipse cx="2779" cy="82" rx="5" ry="3" fill="#e8e0d8" opacity="1" />
-                  <rect x="2776" y="80" width="6" height="3" fill="#f0e8e0" opacity="1" />
+                  {/* Ornate keystone */}
+                  <ellipse cx="2779" cy="82" rx="6" ry="4" fill="#e8e0d8" opacity="1" />
+                  <rect x="2775" y="79" width="8" height="4" fill="#f0e8e0" opacity="1" />
+                  <circle cx="2779" cy="81" r="1.5" fill="#d8d0c8" opacity="1" />
+                  <line x1="2776" y1="81" x2="2772" y2="81" stroke="#d8d0c8" strokeWidth="0.8" opacity="0.8" />
+                  <line x1="2782" y1="81" x2="2786" y2="81" stroke="#d8d0c8" strokeWidth="0.8" opacity="0.8" />
 
                   {/* Indoor garden */}
                   <rect x="2758" y="135" width="3" height="8" fill="#6b5a45" opacity="0.8" />
@@ -1708,11 +1789,23 @@ export function ProgressiveSkyline() {
                   <circle cx="2790" cy="140" r="1.2" fill="#ff9999" opacity="0.7" />
                 </g>
 
-                {/* Bridge 3 over Park 3 - Roman columns + glass dome */}
+                {/* Bridge 3 over Park 3 - Roman columns + fully enclosed glass dome */}
                 <g>
-                  {/* Roman stone base/colonnade */}
+                  {/* Ornate Roman stone base with decorative moldings */}
                   <rect x="3362" y="143" width="78" height="12" fill="#d8d0c8" opacity="1" />
-                  <rect x="3362" y="141" width="78" height="3" fill="#e8e0d8" opacity="1" />
+                  <rect x="3360" y="141" width="82" height="3" fill="#e8e0d8" opacity="1" />
+                  {/* Base molding details */}
+                  <rect x="3360" y="153" width="82" height="2" fill="#c8c0b8" opacity="1" />
+                  <rect x="3362" y="155" width="78" height="1" fill="#b8b0a8" opacity="1" />
+                  {/* Decorative dentil molding on base */}
+                  {Array.from({length: 13}).map((_, d) => (
+                    <rect key={`base-dentil3-${d}`} x={3364 + d * 5.5} y="151" width="3" height="2" fill="#b8b0a8" opacity="1" />
+                  ))}
+                  {/* Balustrade/railing on base */}
+                  <rect x="3364" y="144" width="74" height="0.8" fill="#f0e8e0" opacity="1" />
+                  {Array.from({length: 15}).map((_, b) => (
+                    <rect key={`baluster3-${b}`} x={3366 + b * 4.7} y="144" width="1.5" height="8" fill="#e8e0d8" opacity="0.8" />
+                  ))}
 
                   {/* Roman columns */}
                   <rect x="3364" y="122" width="6" height="21" fill="#d8d0c8" opacity="1" />
@@ -1728,40 +1821,67 @@ export function ProgressiveSkyline() {
                   <line x1="3414" y1="124" x2="3414" y2="141" stroke="#c8c0b8" strokeWidth="0.5" />
                   <line x1="3432" y1="124" x2="3432" y2="141" stroke="#c8c0b8" strokeWidth="0.5" />
                   <line x1="3434" y1="124" x2="3434" y2="141" stroke="#c8c0b8" strokeWidth="0.5" />
-                  {/* Column capitals */}
+                  {/* Ornate column capitals */}
                   <rect x="3362" y="119" width="10" height="4" fill="#e8e0d8" opacity="1" />
                   <rect x="3382" y="119" width="10" height="4" fill="#e8e0d8" opacity="1" />
                   <rect x="3408" y="119" width="10" height="4" fill="#e8e0d8" opacity="1" />
                   <rect x="3428" y="119" width="10" height="4" fill="#e8e0d8" opacity="1" />
-                  {/* Column bases */}
+                  <ellipse cx="3367" cy="120" rx="2" ry="1" fill="#f0e8e0" opacity="1" />
+                  <ellipse cx="3387" cy="120" rx="2" ry="1" fill="#f0e8e0" opacity="1" />
+                  <ellipse cx="3413" cy="120" rx="2" ry="1" fill="#f0e8e0" opacity="1" />
+                  <ellipse cx="3433" cy="120" rx="2" ry="1" fill="#f0e8e0" opacity="1" />
+                  {/* Column bases with torus molding */}
                   <rect x="3362" y="141" width="10" height="3" fill="#c8c0b8" opacity="1" />
                   <rect x="3382" y="141" width="10" height="3" fill="#c8c0b8" opacity="1" />
                   <rect x="3408" y="141" width="10" height="3" fill="#c8c0b8" opacity="1" />
                   <rect x="3428" y="141" width="10" height="3" fill="#c8c0b8" opacity="1" />
+                  <ellipse cx="3367" cy="142" rx="4" ry="1" fill="#d8d0c8" opacity="1" />
+                  <ellipse cx="3387" cy="142" rx="4" ry="1" fill="#d8d0c8" opacity="1" />
+                  <ellipse cx="3413" cy="142" rx="4" ry="1" fill="#d8d0c8" opacity="1" />
+                  <ellipse cx="3433" cy="142" rx="4" ry="1" fill="#d8d0c8" opacity="1" />
 
                   {/* Roman arched framework */}
                   <path d="M 3370,119 Q 3370,102 3387,102 Q 3400,102 3401,95" stroke="#d8d0c8" strokeWidth="3" fill="none" opacity="1" />
                   <path d="M 3432,119 Q 3432,102 3415,102 Q 3402,102 3401,95" stroke="#d8d0c8" strokeWidth="3" fill="none" opacity="1" />
 
-                  {/* Glass dome */}
+                  {/* Glass side panels between columns - fully enclosed */}
+                  <rect x="3370" y="122" width="14" height="19" fill="#b8d4e8" opacity="0.2" />
+                  <rect x="3416" y="122" width="14" height="19" fill="#b8d4e8" opacity="0.2" />
+                  <line x1="3377" y1="122" x2="3377" y2="141" stroke="#a8c8d8" strokeWidth="0.5" opacity="0.5" />
+                  <line x1="3423" y1="122" x2="3423" y2="141" stroke="#a8c8d8" strokeWidth="0.5" opacity="0.5" />
+                  <line x1="3370" y1="131" x2="3384" y2="131" stroke="#a8c8d8" strokeWidth="0.4" opacity="0.4" />
+                  <line x1="3416" y1="131" x2="3430" y2="131" stroke="#a8c8d8" strokeWidth="0.4" opacity="0.4" />
+
+                  {/* Full glass dome with complete coverage */}
                   <path d="M 3367,119 Q 3367,80 3401,75 Q 3435,80 3435,119"
-                        fill="#b8d4e8" opacity="0.25" />
+                        fill="#b8d4e8" opacity="0.3" />
                   <path d="M 3367,119 Q 3367,80 3401,75 Q 3435,80 3435,119"
-                        stroke="#a8c8d8" strokeWidth="1.5" fill="none" opacity="0.6" />
-                  {/* Arched glass panels */}
+                        stroke="#a8c8d8" strokeWidth="2" fill="none" opacity="0.7" />
+                  {/* Additional glass panels for fuller coverage */}
+                  <path d="M 3373,118 Q 3376,90 3401,82 Q 3426,90 3429,118" stroke="#a8c8d8" strokeWidth="1" fill="none" opacity="0.6" />
                   <path d="M 3379,117 Q 3385,92 3401,84 Q 3417,92 3423,117" stroke="#a8c8d8" strokeWidth="0.8" fill="none" opacity="0.5" />
                   <path d="M 3391,114 Q 3395,95 3401,90 Q 3407,95 3411,114" stroke="#a8c8d8" strokeWidth="0.6" fill="none" opacity="0.4" />
-                  {/* Vertical mullions */}
+                  {/* More vertical mullions */}
+                  <line x1="3375" y1="119" x2="3377" y2="88" stroke="#a8c8d8" strokeWidth="0.5" opacity="0.5" />
                   <line x1="3385" y1="119" x2="3388" y2="90" stroke="#a8c8d8" strokeWidth="0.6" opacity="0.5" />
+                  <line x1="3393" y1="119" x2="3394" y2="84" stroke="#a8c8d8" strokeWidth="0.5" opacity="0.5" />
                   <line x1="3401" y1="119" x2="3401" y2="75" stroke="#a8c8d8" strokeWidth="0.8" opacity="0.6" />
+                  <line x1="3409" y1="119" x2="3408" y2="84" stroke="#a8c8d8" strokeWidth="0.5" opacity="0.5" />
                   <line x1="3417" y1="119" x2="3414" y2="90" stroke="#a8c8d8" strokeWidth="0.6" opacity="0.5" />
+                  <line x1="3427" y1="119" x2="3425" y2="88" stroke="#a8c8d8" strokeWidth="0.5" opacity="0.5" />
+                  {/* Horizontal ring mullion */}
+                  <path d="M 3374,102 Q 3387,99 3401,97 Q 3415,99 3428,102" stroke="#a8c8d8" strokeWidth="0.5" fill="none" opacity="0.4" />
                   {/* Glass reflections */}
-                  <path d="M 3375,105 Q 3390,90 3400,82" stroke="#ffffff" strokeWidth="0.5" fill="none" opacity="0.4" />
+                  <path d="M 3375,105 Q 3390,90 3400,82" stroke="#ffffff" strokeWidth="0.6" fill="none" opacity="0.5" />
+                  <path d="M 3377,110 Q 3385,98 3393,90" stroke="#ffffff" strokeWidth="0.4" fill="none" opacity="0.3" />
                   <path d="M 3408,98 Q 3420,88 3428,82" stroke="#ffffff" strokeWidth="0.4" fill="none" opacity="0.3" />
 
-                  {/* Keystone */}
-                  <ellipse cx="3401" cy="75" rx="6" ry="3" fill="#e8e0d8" opacity="1" />
-                  <rect x="3398" y="73" width="6" height="3" fill="#f0e8e0" opacity="1" />
+                  {/* Ornate keystone */}
+                  <ellipse cx="3401" cy="75" rx="6" ry="4" fill="#e8e0d8" opacity="1" />
+                  <rect x="3397" y="72" width="8" height="4" fill="#f0e8e0" opacity="1" />
+                  <circle cx="3401" cy="74" r="1.5" fill="#d8d0c8" opacity="1" />
+                  <line x1="3398" y1="74" x2="3394" y2="74" stroke="#d8d0c8" strokeWidth="0.8" opacity="0.8" />
+                  <line x1="3404" y1="74" x2="3408" y2="74" stroke="#d8d0c8" strokeWidth="0.8" opacity="0.8" />
 
                   {/* Indoor garden */}
                   <rect x="3383" y="132" width="3" height="9" fill="#6b5a45" opacity="0.8" />
