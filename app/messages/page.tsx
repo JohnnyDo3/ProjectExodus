@@ -156,7 +156,7 @@ export default function MessagesPage() {
 
   if (status === 'loading' || isLoading) {
     return (
-      <div className="h-screen flex items-center justify-center bg-[var(--background)]">
+      <div className="h-[calc(100vh-4rem)] flex items-center justify-center bg-[var(--background)]">
         <div className="text-center space-y-4">
           <div className="w-16 h-16 border-4 border-theme-primary border-t-transparent rounded-full animate-spin mx-auto" />
           <p className="text-lg font-bold text-theme-muted">Loading messages...</p>
@@ -170,7 +170,7 @@ export default function MessagesPage() {
   }
 
   return (
-    <div className="h-screen flex flex-col overflow-hidden bg-[var(--background)]">
+    <div className="h-[calc(100vh-4rem)] flex flex-col overflow-hidden bg-[var(--background)]">
       {/* Header */}
       <div className="flex-shrink-0 bg-gradient-to-r from-[var(--primary)]/95 via-[var(--accent)]/95 to-[var(--secondary)]/95 backdrop-blur-sm border-b-2 border-theme-primary">
         <div className="container mx-auto px-6 py-3">

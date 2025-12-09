@@ -915,35 +915,64 @@ export function ProgressiveSkyline() {
                 {/* Grass strip between road and sidewalk - landscape architecture area */}
                 <rect x="2000" y="213" width="1800" height="4" fill="#7aa87a" opacity="1" />
 
-                {/* LANDSCAPE ARCHITECTURE - decorative plantings along the green city */}
-                {Array.from({length: 60}).map((_, i) => (
-                  <g key={`city-landscape-${i}`}>
-                    {/* Sculpted hedges/topiaries */}
-                    <ellipse cx={2015 + i * 30} cy="214" rx="5" ry="3" fill="#4a7c2f" opacity="1" />
-                    {/* Ornamental flower beds */}
-                    {i % 2 === 0 && (
-                      <g>
-                        <circle cx={2027 + i * 30} cy="213" r="1.2" fill="#ff69b4" opacity="1" />
-                        <circle cx={2030 + i * 30} cy="214" r="1" fill="#ffd700" opacity="1" />
-                        <circle cx={2033 + i * 30} cy="213" r="1.2" fill="#9b59b6" opacity="1" />
+                {/* VARIETY TREES - Evergreen and Deciduous mix along the grass strip */}
+                {Array.from({length: 45}).map((_, i) => {
+                  const x = 2020 + i * 40;
+                  // Tree pattern: 0=tall evergreen (pine), 1=deciduous (oak), 2=small evergreen (cypress), 3=deciduous (maple)
+                  const treeType = [0, 1, 2, 3, 1, 0, 3, 2, 1, 0, 2, 1, 3, 0, 1, 2, 0, 3, 1, 0, 2, 1, 3, 0, 1, 2, 0, 3, 1, 0, 2, 1, 3, 0, 1, 2, 0, 3, 1, 0, 2, 1, 3, 0, 1][i % 45];
+                  const baseY = 213;
+
+                  if (treeType === 0) {
+                    // Tall Evergreen Pine - triangular conifer
+                    return (
+                      <g key={`tree-${i}`}>
+                        {/* Trunk */}
+                        <rect x={x+3} y={baseY-2} width="3" height="5" fill="#5a4a3a" opacity="1" />
+                        {/* Pine layers - dark green, stays green year-round */}
+                        <polygon points={`${x+4.5},${baseY-20} ${x-2},${baseY-5} ${x+11},${baseY-5}`} fill="#2d5a3d" opacity="1" />
+                        <polygon points={`${x+4.5},${baseY-16} ${x-1},${baseY-6} ${x+10},${baseY-6}`} fill="#3d6a4d" opacity="1" />
+                        <polygon points={`${x+4.5},${baseY-12} ${x},${baseY-4} ${x+9},${baseY-4}`} fill="#2d5a3d" opacity="1" />
                       </g>
-                    )}
-                    {/* Small decorative shrubs */}
-                    {i % 3 === 0 && (
-                      <g>
-                        <circle cx={2022 + i * 30} cy="214" r="2" fill="#5a8a5a" opacity="1" />
-                        <circle cx={2020 + i * 30} cy="215" r="1.5" fill="#6a9a6a" opacity="1" />
+                    );
+                  } else if (treeType === 1) {
+                    // Deciduous Oak - round canopy
+                    return (
+                      <g key={`tree-${i}`}>
+                        {/* Trunk */}
+                        <rect x={x+2.5} y={baseY-2} width="4" height="6" fill="#6b5a45" opacity="1" />
+                        {/* Round leafy canopy - varied greens */}
+                        <circle cx={x+4.5} cy={baseY-12} r="8" fill="#5a8a4a" opacity="1" />
+                        <circle cx={x} cy={baseY-9} r="5" fill="#6a9a5a" opacity="1" />
+                        <circle cx={x+9} cy={baseY-9} r="5" fill="#6a9a5a" opacity="1" />
+                        <circle cx={x+4.5} cy={baseY-16} r="4" fill="#7aaa6a" opacity="1" />
                       </g>
-                    )}
-                    {/* Ornamental grasses */}
-                    {i % 4 === 1 && (
-                      <g>
-                        <path d={`M ${2025 + i * 30},217 L ${2023 + i * 30},212 M ${2025 + i * 30},217 L ${2025 + i * 30},211 M ${2025 + i * 30},217 L ${2027 + i * 30},212`}
-                              stroke="#6a9a6a" strokeWidth="0.8" fill="none" />
+                    );
+                  } else if (treeType === 2) {
+                    // Small Evergreen Cypress - narrow columnar shape
+                    return (
+                      <g key={`tree-${i}`}>
+                        {/* Trunk */}
+                        <rect x={x+2} y={baseY-2} width="2" height="4" fill="#5a4a3a" opacity="1" />
+                        {/* Narrow columnar evergreen */}
+                        <ellipse cx={x+3} cy={baseY-10} rx="4" ry="10" fill="#2d5a3d" opacity="1" />
+                        <ellipse cx={x+3} cy={baseY-12} rx="3" ry="8" fill="#3d6a4d" opacity="1" />
                       </g>
-                    )}
-                  </g>
-                ))}
+                    );
+                  } else {
+                    // Deciduous Maple - spreading canopy
+                    return (
+                      <g key={`tree-${i}`}>
+                        {/* Trunk */}
+                        <rect x={x+2} y={baseY-2} width="3" height="5" fill="#6b5a45" opacity="1" />
+                        {/* Spreading maple canopy */}
+                        <ellipse cx={x+3.5} cy={baseY-10} rx="9" ry="7" fill="#5a9a4a" opacity="1" />
+                        <ellipse cx={x-1} cy={baseY-8} rx="4" ry="4" fill="#6aaa5a" opacity="1" />
+                        <ellipse cx={x+8} cy={baseY-8} rx="4" ry="4" fill="#6aaa5a" opacity="1" />
+                        <ellipse cx={x+3.5} cy={baseY-14} rx="5" ry="4" fill="#7aba6a" opacity="1" />
+                      </g>
+                    );
+                  }
+                })}
 
                 {/* Bike lane markings on street */}
                 {Array.from({length: 36}).map((_, i) => (
@@ -1531,230 +1560,165 @@ export function ProgressiveSkyline() {
                 </g>
               </g>
 
-              {/* Roman-Style Garden Archways - connecting buildings over parks */}
+              {/* Glass + Roman Hybrid Garden Archways - subtle arches with greenery (no vines) */}
               <g>
-                {/* Archway 1 over Park 1 - Roman arch design */}
+                {/* Archway 1 over Park 1 - Glass + Roman hybrid */}
                 <g>
-                  {/* Stone pillars/columns */}
-                  <rect x="2264" y="125" width="8" height="30" fill="#d8d0c8" opacity="1" />
-                  <rect x="2334" y="127" width="8" height="28" fill="#d8d0c8" opacity="1" />
-                  {/* Column fluting (vertical lines) */}
-                  <line x1="2266" y1="128" x2="2266" y2="152" stroke="#c8c0b8" strokeWidth="0.5" />
-                  <line x1="2268" y1="128" x2="2268" y2="152" stroke="#c8c0b8" strokeWidth="0.5" />
-                  <line x1="2270" y1="128" x2="2270" y2="152" stroke="#c8c0b8" strokeWidth="0.5" />
-                  <line x1="2336" y1="130" x2="2336" y2="152" stroke="#c8c0b8" strokeWidth="0.5" />
-                  <line x1="2338" y1="130" x2="2338" y2="152" stroke="#c8c0b8" strokeWidth="0.5" />
-                  <line x1="2340" y1="130" x2="2340" y2="152" stroke="#c8c0b8" strokeWidth="0.5" />
-                  {/* Column capitals (decorative tops) */}
-                  <rect x="2262" y="122" width="12" height="4" fill="#e8e0d8" opacity="1" />
-                  <rect x="2332" y="124" width="12" height="4" fill="#e8e0d8" opacity="1" />
-                  <rect x="2263" y="121" width="10" height="2" fill="#f0e8e0" opacity="1" />
-                  <rect x="2333" y="123" width="10" height="2" fill="#f0e8e0" opacity="1" />
+                  {/* Roman stone columns */}
+                  <rect x="2264" y="130" width="8" height="25" fill="#d8d0c8" opacity="1" />
+                  <rect x="2334" y="130" width="8" height="25" fill="#d8d0c8" opacity="1" />
+                  {/* Column fluting */}
+                  <line x1="2266" y1="133" x2="2266" y2="152" stroke="#c8c0b8" strokeWidth="0.5" />
+                  <line x1="2268" y1="133" x2="2268" y2="152" stroke="#c8c0b8" strokeWidth="0.5" />
+                  <line x1="2270" y1="133" x2="2270" y2="152" stroke="#c8c0b8" strokeWidth="0.5" />
+                  <line x1="2336" y1="133" x2="2336" y2="152" stroke="#c8c0b8" strokeWidth="0.5" />
+                  <line x1="2338" y1="133" x2="2338" y2="152" stroke="#c8c0b8" strokeWidth="0.5" />
+                  <line x1="2340" y1="133" x2="2340" y2="152" stroke="#c8c0b8" strokeWidth="0.5" />
+                  {/* Column capitals */}
+                  <rect x="2262" y="127" width="12" height="4" fill="#e8e0d8" opacity="1" />
+                  <rect x="2332" y="127" width="12" height="4" fill="#e8e0d8" opacity="1" />
+                  <rect x="2263" y="126" width="10" height="2" fill="#f0e8e0" opacity="1" />
+                  <rect x="2333" y="126" width="10" height="2" fill="#f0e8e0" opacity="1" />
                   {/* Column bases */}
                   <rect x="2262" y="153" width="12" height="3" fill="#c8c0b8" opacity="1" />
                   <rect x="2332" y="153" width="12" height="3" fill="#c8c0b8" opacity="1" />
 
-                  {/* Roman semi-circular arch */}
-                  <path d="M 2272,122 Q 2272,95 2303,95 Q 2334,95 2334,124"
-                        stroke="#d8d0c8" strokeWidth="6" fill="none" opacity="1" />
-                  {/* Arch inner curve */}
-                  <path d="M 2275,122 Q 2275,100 2303,100 Q 2331,100 2331,124"
-                        stroke="#c8c0b8" strokeWidth="2" fill="none" opacity="1" />
-                  {/* Keystone at top */}
-                  <path d="M 2299,94 L 2303,88 L 2307,94 L 2305,95 L 2303,92 L 2301,95 Z" fill="#e8e0d8" opacity="1" />
+                  {/* Subtle Roman arch - less curved, more elegant */}
+                  <path d="M 2272,127 Q 2272,110 2303,108 Q 2334,110 2334,127"
+                        stroke="#d8d0c8" strokeWidth="4" fill="none" opacity="1" />
+                  {/* Keystone */}
+                  <rect x="2299" y="105" width="8" height="5" fill="#e8e0d8" opacity="1" />
+                  <rect x="2300" y="104" width="6" height="2" fill="#f0e8e0" opacity="1" />
 
-                  {/* Voussoirs (arch stones) */}
-                  <line x1="2280" y1="118" x2="2278" y2="108" stroke="#c8c0b8" strokeWidth="1" />
-                  <line x1="2288" y1="110" x2="2285" y2="100" stroke="#c8c0b8" strokeWidth="1" />
-                  <line x1="2318" y1="110" x2="2321" y2="100" stroke="#c8c0b8" strokeWidth="1" />
-                  <line x1="2326" y1="118" x2="2328" y2="108" stroke="#c8c0b8" strokeWidth="1" />
+                  {/* Glass panel in arch opening - translucent effect */}
+                  <path d="M 2274,127 Q 2274,112 2303,110 Q 2332,112 2332,127 L 2274,127 Z"
+                        fill="#b8d4e8" opacity="0.3" />
+                  {/* Glass frame/mullions */}
+                  <line x1="2288" y1="127" x2="2288" y2="115" stroke="#a0a0a0" strokeWidth="0.8" opacity="0.6" />
+                  <line x1="2303" y1="127" x2="2303" y2="110" stroke="#a0a0a0" strokeWidth="0.8" opacity="0.6" />
+                  <line x1="2318" y1="127" x2="2318" y2="115" stroke="#a0a0a0" strokeWidth="0.8" opacity="0.6" />
+                  {/* Glass highlight/reflection */}
+                  <path d="M 2280,120 L 2290,115" stroke="#ffffff" strokeWidth="0.5" opacity="0.4" />
+                  <path d="M 2310,118 L 2320,113" stroke="#ffffff" strokeWidth="0.5" opacity="0.4" />
 
-                  {/* Climbing vines on columns */}
-                  <path d="M 2265,155 Q 2263,145 2266,135 Q 2264,125 2267,118" stroke="#3a6a3a" strokeWidth="1.5" fill="none" />
-                  <path d="M 2340,155 Q 2342,145 2339,135 Q 2341,125 2338,120" stroke="#3a6a3a" strokeWidth="1.5" fill="none" />
-
-                  {/* Vine leaves on columns */}
-                  <circle cx="2264" cy="145" r="2" fill="#4a8a4a" opacity="0.9" />
-                  <circle cx="2267" cy="135" r="2" fill="#5a9a5a" opacity="0.9" />
-                  <circle cx="2265" cy="125" r="2" fill="#4a8a4a" opacity="0.9" />
-                  <circle cx="2341" cy="145" r="2" fill="#4a8a4a" opacity="0.9" />
-                  <circle cx="2338" cy="135" r="2" fill="#5a9a5a" opacity="0.9" />
-                  <circle cx="2340" cy="125" r="2" fill="#4a8a4a" opacity="0.9" />
-
-                  {/* Greenery draped over arch */}
-                  <path d="M 2278,115 Q 2290,105 2303,100 Q 2316,105 2328,115"
-                        stroke="#4a7c2f" strokeWidth="5" fill="none" opacity="1" />
-
-                  {/* Plants/flowers on arch */}
-                  <circle cx="2285" cy="110" r="3" fill="#5a8a5a" opacity="1" />
-                  <circle cx="2295" cy="104" r="3.5" fill="#4a7c2f" opacity="1" />
-                  <circle cx="2303" cy="100" r="4" fill="#5a8a5a" opacity="1" />
-                  <circle cx="2311" cy="104" r="3.5" fill="#4a7c2f" opacity="1" />
-                  <circle cx="2321" cy="110" r="3" fill="#5a8a5a" opacity="1" />
-
-                  {/* Hanging vines from arch */}
-                  <path d="M 2285,113 Q 2282,133 2287,160" stroke="#3a6a3a" strokeWidth="1" fill="none" opacity="0.8" />
-                  <path d="M 2295,107 Q 2292,132 2297,165" stroke="#4a7a4a" strokeWidth="1" fill="none" opacity="0.8" />
-                  <path d="M 2303,103 Q 2300,133 2305,175" stroke="#3a6a3a" strokeWidth="1" fill="none" opacity="0.8" />
-                  <path d="M 2311,107 Q 2314,132 2309,165" stroke="#4a7a4a" strokeWidth="1" fill="none" opacity="0.8" />
-                  <path d="M 2321,113 Q 2324,133 2319,160" stroke="#3a6a3a" strokeWidth="1" fill="none" opacity="0.8" />
-
-                  {/* Vine leaves hanging */}
-                  <circle cx="2287" cy="155" r="1.5" fill="#5a9a5a" opacity="0.8" />
-                  <circle cx="2297" cy="162" r="1.5" fill="#4a8a4a" opacity="0.8" />
-                  <circle cx="2305" cy="172" r="1.5" fill="#5a9a5a" opacity="0.8" />
-                  <circle cx="2309" cy="160" r="1.5" fill="#4a8a4a" opacity="0.8" />
-                  <circle cx="2319" cy="155" r="1.5" fill="#5a9a5a" opacity="0.8" />
+                  {/* Green roof/planter on top of arch */}
+                  <rect x="2275" y="103" width="56" height="5" fill="#4a7c2f" opacity="1" />
+                  {/* Plants/shrubs on roof (no vines) */}
+                  <circle cx="2283" cy="101" r="3" fill="#5a8a5a" opacity="1" />
+                  <circle cx="2293" cy="100" r="3.5" fill="#4a7c2f" opacity="1" />
+                  <circle cx="2303" cy="99" r="4" fill="#5a9a5a" opacity="1" />
+                  <circle cx="2313" cy="100" r="3.5" fill="#4a7c2f" opacity="1" />
+                  <circle cx="2323" cy="101" r="3" fill="#5a8a5a" opacity="1" />
+                  {/* Small flowers in greenery */}
+                  <circle cx="2288" cy="99" r="1" fill="#ff9999" opacity="0.9" />
+                  <circle cx="2303" cy="97" r="1.2" fill="#ffcc66" opacity="0.9" />
+                  <circle cx="2318" cy="99" r="1" fill="#ff9999" opacity="0.9" />
                 </g>
 
-                {/* Archway 2 over Park 2 - Roman arch design */}
+                {/* Archway 2 over Park 2 - Glass + Roman hybrid */}
                 <g>
-                  {/* Stone pillars/columns */}
-                  <rect x="2732" y="143" width="8" height="15" fill="#d8d0c8" opacity="1" />
-                  <rect x="2818" y="133" width="8" height="25" fill="#d8d0c8" opacity="1" />
+                  {/* Roman stone columns */}
+                  <rect x="2732" y="138" width="8" height="20" fill="#d8d0c8" opacity="1" />
+                  <rect x="2818" y="138" width="8" height="20" fill="#d8d0c8" opacity="1" />
                   {/* Column fluting */}
-                  <line x1="2734" y1="146" x2="2734" y2="155" stroke="#c8c0b8" strokeWidth="0.5" />
-                  <line x1="2736" y1="146" x2="2736" y2="155" stroke="#c8c0b8" strokeWidth="0.5" />
-                  <line x1="2738" y1="146" x2="2738" y2="155" stroke="#c8c0b8" strokeWidth="0.5" />
-                  <line x1="2820" y1="136" x2="2820" y2="155" stroke="#c8c0b8" strokeWidth="0.5" />
-                  <line x1="2822" y1="136" x2="2822" y2="155" stroke="#c8c0b8" strokeWidth="0.5" />
-                  <line x1="2824" y1="136" x2="2824" y2="155" stroke="#c8c0b8" strokeWidth="0.5" />
+                  <line x1="2734" y1="141" x2="2734" y2="155" stroke="#c8c0b8" strokeWidth="0.5" />
+                  <line x1="2736" y1="141" x2="2736" y2="155" stroke="#c8c0b8" strokeWidth="0.5" />
+                  <line x1="2738" y1="141" x2="2738" y2="155" stroke="#c8c0b8" strokeWidth="0.5" />
+                  <line x1="2820" y1="141" x2="2820" y2="155" stroke="#c8c0b8" strokeWidth="0.5" />
+                  <line x1="2822" y1="141" x2="2822" y2="155" stroke="#c8c0b8" strokeWidth="0.5" />
+                  <line x1="2824" y1="141" x2="2824" y2="155" stroke="#c8c0b8" strokeWidth="0.5" />
                   {/* Column capitals */}
-                  <rect x="2730" y="140" width="12" height="4" fill="#e8e0d8" opacity="1" />
-                  <rect x="2816" y="130" width="12" height="4" fill="#e8e0d8" opacity="1" />
-                  <rect x="2731" y="139" width="10" height="2" fill="#f0e8e0" opacity="1" />
-                  <rect x="2817" y="129" width="10" height="2" fill="#f0e8e0" opacity="1" />
+                  <rect x="2730" y="135" width="12" height="4" fill="#e8e0d8" opacity="1" />
+                  <rect x="2816" y="135" width="12" height="4" fill="#e8e0d8" opacity="1" />
+                  <rect x="2731" y="134" width="10" height="2" fill="#f0e8e0" opacity="1" />
+                  <rect x="2817" y="134" width="10" height="2" fill="#f0e8e0" opacity="1" />
                   {/* Column bases */}
                   <rect x="2730" y="156" width="12" height="3" fill="#c8c0b8" opacity="1" />
                   <rect x="2816" y="156" width="12" height="3" fill="#c8c0b8" opacity="1" />
 
-                  {/* Roman semi-circular arch */}
-                  <path d="M 2740,140 Q 2740,110 2779,110 Q 2818,110 2818,130"
-                        stroke="#d8d0c8" strokeWidth="6" fill="none" opacity="1" />
-                  {/* Arch inner curve */}
-                  <path d="M 2743,140 Q 2743,115 2779,115 Q 2815,115 2815,130"
-                        stroke="#c8c0b8" strokeWidth="2" fill="none" opacity="1" />
+                  {/* Subtle Roman arch */}
+                  <path d="M 2740,135 Q 2740,118 2779,116 Q 2818,118 2818,135"
+                        stroke="#d8d0c8" strokeWidth="4" fill="none" opacity="1" />
                   {/* Keystone */}
-                  <path d="M 2775,109 L 2779,103 L 2783,109 L 2781,110 L 2779,107 L 2777,110 Z" fill="#e8e0d8" opacity="1" />
+                  <rect x="2775" y="113" width="8" height="5" fill="#e8e0d8" opacity="1" />
+                  <rect x="2776" y="112" width="6" height="2" fill="#f0e8e0" opacity="1" />
 
-                  {/* Voussoirs */}
-                  <line x1="2752" y1="133" x2="2750" y2="123" stroke="#c8c0b8" strokeWidth="1" />
-                  <line x1="2765" y1="122" x2="2763" y2="113" stroke="#c8c0b8" strokeWidth="1" />
-                  <line x1="2793" y1="122" x2="2795" y2="113" stroke="#c8c0b8" strokeWidth="1" />
-                  <line x1="2806" y1="128" x2="2808" y2="118" stroke="#c8c0b8" strokeWidth="1" />
+                  {/* Glass panel */}
+                  <path d="M 2742,135 Q 2742,120 2779,118 Q 2816,120 2816,135 L 2742,135 Z"
+                        fill="#b8d4e8" opacity="0.3" />
+                  {/* Glass mullions */}
+                  <line x1="2760" y1="135" x2="2760" y2="122" stroke="#a0a0a0" strokeWidth="0.8" opacity="0.6" />
+                  <line x1="2779" y1="135" x2="2779" y2="118" stroke="#a0a0a0" strokeWidth="0.8" opacity="0.6" />
+                  <line x1="2798" y1="135" x2="2798" y2="122" stroke="#a0a0a0" strokeWidth="0.8" opacity="0.6" />
+                  {/* Glass reflections */}
+                  <path d="M 2752,128 L 2762,123" stroke="#ffffff" strokeWidth="0.5" opacity="0.4" />
+                  <path d="M 2790,126 L 2800,121" stroke="#ffffff" strokeWidth="0.5" opacity="0.4" />
 
-                  {/* Climbing vines on columns */}
-                  <path d="M 2733,158 Q 2731,150 2734,143" stroke="#3a6a3a" strokeWidth="1.5" fill="none" />
-                  <path d="M 2823,158 Q 2825,148 2822,138 Q 2824,133 2821,130" stroke="#3a6a3a" strokeWidth="1.5" fill="none" />
-
-                  {/* Vine leaves on columns */}
-                  <circle cx="2732" cy="150" r="2" fill="#4a8a4a" opacity="0.9" />
-                  <circle cx="2824" cy="148" r="2" fill="#5a9a5a" opacity="0.9" />
-                  <circle cx="2821" cy="138" r="2" fill="#4a8a4a" opacity="0.9" />
-
-                  {/* Greenery draped over arch */}
-                  <path d="M 2750,130 Q 2765,115 2779,110 Q 2793,115 2808,125"
-                        stroke="#4a7c2f" strokeWidth="5" fill="none" opacity="1" />
-
-                  {/* Plants on arch */}
-                  <circle cx="2758" cy="123" r="3" fill="#5a8a5a" opacity="1" />
-                  <circle cx="2770" cy="115" r="3.5" fill="#4a7c2f" opacity="1" />
-                  <circle cx="2779" cy="110" r="4" fill="#5a8a5a" opacity="1" />
-                  <circle cx="2788" cy="113" r="3.5" fill="#4a7c2f" opacity="1" />
-                  <circle cx="2800" cy="120" r="3" fill="#5a8a5a" opacity="1" />
-
-                  {/* Hanging vines */}
-                  <path d="M 2758,126 Q 2755,148 2760,175" stroke="#3a6a3a" strokeWidth="1" fill="none" opacity="0.8" />
-                  <path d="M 2770,118 Q 2767,143 2772,178" stroke="#4a7a4a" strokeWidth="1" fill="none" opacity="0.8" />
-                  <path d="M 2779,113 Q 2776,143 2781,185" stroke="#3a6a3a" strokeWidth="1" fill="none" opacity="0.8" />
-                  <path d="M 2788,116 Q 2791,143 2786,178" stroke="#4a7a4a" strokeWidth="1" fill="none" opacity="0.8" />
-                  <path d="M 2800,123 Q 2803,146 2798,172" stroke="#3a6a3a" strokeWidth="1" fill="none" opacity="0.8" />
-
-                  {/* Vine leaves */}
-                  <circle cx="2760" cy="170" r="1.5" fill="#5a9a5a" opacity="0.8" />
-                  <circle cx="2772" cy="175" r="1.5" fill="#4a8a4a" opacity="0.8" />
-                  <circle cx="2781" cy="182" r="1.5" fill="#5a9a5a" opacity="0.8" />
-                  <circle cx="2786" cy="173" r="1.5" fill="#4a8a4a" opacity="0.8" />
-                  <circle cx="2798" cy="168" r="1.5" fill="#5a9a5a" opacity="0.8" />
+                  {/* Green roof on top */}
+                  <rect x="2743" y="111" width="72" height="5" fill="#4a7c2f" opacity="1" />
+                  {/* Plants (no vines) */}
+                  <circle cx="2755" cy="109" r="3" fill="#5a8a5a" opacity="1" />
+                  <circle cx="2767" cy="108" r="3.5" fill="#4a7c2f" opacity="1" />
+                  <circle cx="2779" cy="107" r="4" fill="#5a9a5a" opacity="1" />
+                  <circle cx="2791" cy="108" r="3.5" fill="#4a7c2f" opacity="1" />
+                  <circle cx="2803" cy="109" r="3" fill="#5a8a5a" opacity="1" />
+                  {/* Flowers */}
+                  <circle cx="2761" cy="107" r="1" fill="#cc99ff" opacity="0.9" />
+                  <circle cx="2779" cy="105" r="1.2" fill="#ffcc66" opacity="0.9" />
+                  <circle cx="2797" cy="107" r="1" fill="#cc99ff" opacity="0.9" />
                 </g>
 
-                {/* Archway 3 over Park 3 - Roman arch design */}
+                {/* Archway 3 over Park 3 - Glass + Roman hybrid */}
                 <g>
-                  {/* Stone pillars/columns */}
-                  <rect x="3358" y="130" width="8" height="25" fill="#d8d0c8" opacity="1" />
-                  <rect x="3432" y="120" width="8" height="35" fill="#d8d0c8" opacity="1" />
+                  {/* Roman stone columns */}
+                  <rect x="3358" y="135" width="8" height="20" fill="#d8d0c8" opacity="1" />
+                  <rect x="3432" y="135" width="8" height="20" fill="#d8d0c8" opacity="1" />
                   {/* Column fluting */}
-                  <line x1="3360" y1="133" x2="3360" y2="152" stroke="#c8c0b8" strokeWidth="0.5" />
-                  <line x1="3362" y1="133" x2="3362" y2="152" stroke="#c8c0b8" strokeWidth="0.5" />
-                  <line x1="3364" y1="133" x2="3364" y2="152" stroke="#c8c0b8" strokeWidth="0.5" />
-                  <line x1="3434" y1="123" x2="3434" y2="152" stroke="#c8c0b8" strokeWidth="0.5" />
-                  <line x1="3436" y1="123" x2="3436" y2="152" stroke="#c8c0b8" strokeWidth="0.5" />
-                  <line x1="3438" y1="123" x2="3438" y2="152" stroke="#c8c0b8" strokeWidth="0.5" />
+                  <line x1="3360" y1="138" x2="3360" y2="152" stroke="#c8c0b8" strokeWidth="0.5" />
+                  <line x1="3362" y1="138" x2="3362" y2="152" stroke="#c8c0b8" strokeWidth="0.5" />
+                  <line x1="3364" y1="138" x2="3364" y2="152" stroke="#c8c0b8" strokeWidth="0.5" />
+                  <line x1="3434" y1="138" x2="3434" y2="152" stroke="#c8c0b8" strokeWidth="0.5" />
+                  <line x1="3436" y1="138" x2="3436" y2="152" stroke="#c8c0b8" strokeWidth="0.5" />
+                  <line x1="3438" y1="138" x2="3438" y2="152" stroke="#c8c0b8" strokeWidth="0.5" />
                   {/* Column capitals */}
-                  <rect x="3356" y="127" width="12" height="4" fill="#e8e0d8" opacity="1" />
-                  <rect x="3430" y="117" width="12" height="4" fill="#e8e0d8" opacity="1" />
-                  <rect x="3357" y="126" width="10" height="2" fill="#f0e8e0" opacity="1" />
-                  <rect x="3431" y="116" width="10" height="2" fill="#f0e8e0" opacity="1" />
+                  <rect x="3356" y="132" width="12" height="4" fill="#e8e0d8" opacity="1" />
+                  <rect x="3430" y="132" width="12" height="4" fill="#e8e0d8" opacity="1" />
+                  <rect x="3357" y="131" width="10" height="2" fill="#f0e8e0" opacity="1" />
+                  <rect x="3431" y="131" width="10" height="2" fill="#f0e8e0" opacity="1" />
                   {/* Column bases */}
                   <rect x="3356" y="153" width="12" height="3" fill="#c8c0b8" opacity="1" />
                   <rect x="3430" y="153" width="12" height="3" fill="#c8c0b8" opacity="1" />
 
-                  {/* Roman semi-circular arch */}
-                  <path d="M 3366,127 Q 3366,90 3399,90 Q 3432,90 3432,117"
-                        stroke="#d8d0c8" strokeWidth="6" fill="none" opacity="1" />
-                  {/* Arch inner curve */}
-                  <path d="M 3369,127 Q 3369,95 3399,95 Q 3429,95 3429,117"
-                        stroke="#c8c0b8" strokeWidth="2" fill="none" opacity="1" />
+                  {/* Subtle Roman arch */}
+                  <path d="M 3366,132 Q 3366,112 3399,110 Q 3432,112 3432,132"
+                        stroke="#d8d0c8" strokeWidth="4" fill="none" opacity="1" />
                   {/* Keystone */}
-                  <path d="M 3395,89 L 3399,82 L 3403,89 L 3401,90 L 3399,86 L 3397,90 Z" fill="#e8e0d8" opacity="1" />
+                  <rect x="3395" y="107" width="8" height="5" fill="#e8e0d8" opacity="1" />
+                  <rect x="3396" y="106" width="6" height="2" fill="#f0e8e0" opacity="1" />
 
-                  {/* Voussoirs */}
-                  <line x1="3378" y1="118" x2="3375" y2="105" stroke="#c8c0b8" strokeWidth="1" />
-                  <line x1="3388" y1="105" x2="3385" y2="95" stroke="#c8c0b8" strokeWidth="1" />
-                  <line x1="3410" y1="105" x2="3413" y2="95" stroke="#c8c0b8" strokeWidth="1" />
-                  <line x1="3420" y1="115" x2="3423" y2="102" stroke="#c8c0b8" strokeWidth="1" />
+                  {/* Glass panel */}
+                  <path d="M 3368,132 Q 3368,114 3399,112 Q 3430,114 3430,132 L 3368,132 Z"
+                        fill="#b8d4e8" opacity="0.3" />
+                  {/* Glass mullions */}
+                  <line x1="3383" y1="132" x2="3383" y2="118" stroke="#a0a0a0" strokeWidth="0.8" opacity="0.6" />
+                  <line x1="3399" y1="132" x2="3399" y2="112" stroke="#a0a0a0" strokeWidth="0.8" opacity="0.6" />
+                  <line x1="3415" y1="132" x2="3415" y2="118" stroke="#a0a0a0" strokeWidth="0.8" opacity="0.6" />
+                  {/* Glass reflections */}
+                  <path d="M 3375,124 L 3385,119" stroke="#ffffff" strokeWidth="0.5" opacity="0.4" />
+                  <path d="M 3408,122 L 3418,117" stroke="#ffffff" strokeWidth="0.5" opacity="0.4" />
 
-                  {/* Climbing vines on columns */}
-                  <path d="M 3359,155 Q 3357,145 3360,135 Q 3358,130 3361,127" stroke="#3a6a3a" strokeWidth="1.5" fill="none" />
-                  <path d="M 3437,155 Q 3439,145 3436,135 Q 3438,125 3435,118" stroke="#3a6a3a" strokeWidth="1.5" fill="none" />
-
-                  {/* Vine leaves on columns */}
-                  <circle cx="3358" cy="145" r="2" fill="#4a8a4a" opacity="0.9" />
-                  <circle cx="3361" cy="135" r="2" fill="#5a9a5a" opacity="0.9" />
-                  <circle cx="3359" cy="128" r="2" fill="#4a8a4a" opacity="0.9" />
-                  <circle cx="3438" cy="145" r="2" fill="#4a8a4a" opacity="0.9" />
-                  <circle cx="3435" cy="135" r="2" fill="#5a9a5a" opacity="0.9" />
-                  <circle cx="3437" cy="125" r="2" fill="#4a8a4a" opacity="0.9" />
-
-                  {/* Greenery draped over arch */}
-                  <path d="M 3375,115 Q 3387,97 3399,92 Q 3411,97 3423,112"
-                        stroke="#4a7c2f" strokeWidth="6" fill="none" opacity="1" />
-
-                  {/* Plants/flowers on arch */}
-                  <circle cx="3380" cy="108" r="3.5" fill="#5a8a5a" opacity="1" />
-                  <circle cx="3390" cy="98" r="4" fill="#4a7c2f" opacity="1" />
-                  <circle cx="3399" cy="92" r="5" fill="#5a8a5a" opacity="1" />
-                  <circle cx="3408" cy="96" r="4" fill="#4a7c2f" opacity="1" />
-                  <circle cx="3418" cy="105" r="3.5" fill="#5a8a5a" opacity="1" />
-
-                  {/* Hanging vines - longer and more dramatic */}
-                  <path d="M 3380,112 Q 3375,142 3382,180" stroke="#3a6a3a" strokeWidth="1.2" fill="none" opacity="0.8" />
-                  <path d="M 3390,102 Q 3385,137 3392,185" stroke="#4a7a4a" strokeWidth="1.2" fill="none" opacity="0.8" />
-                  <path d="M 3399,97 Q 3395,142 3401,195" stroke="#3a6a3a" strokeWidth="1.2" fill="none" opacity="0.8" />
-                  <path d="M 3408,100 Q 3413,137 3406,185" stroke="#4a7a4a" strokeWidth="1.2" fill="none" opacity="0.8" />
-                  <path d="M 3418,109 Q 3423,142 3416,180" stroke="#3a6a3a" strokeWidth="1.2" fill="none" opacity="0.8" />
-
-                  {/* Vine leaves */}
-                  <circle cx="3382" cy="175" r="2" fill="#5a9a5a" opacity="0.8" />
-                  <circle cx="3392" cy="182" r="2" fill="#4a8a4a" opacity="0.8" />
-                  <circle cx="3401" cy="192" r="2" fill="#5a9a5a" opacity="0.8" />
-                  <circle cx="3406" cy="180" r="2" fill="#4a8a4a" opacity="0.8" />
-                  <circle cx="3416" cy="175" r="2" fill="#5a9a5a" opacity="0.8" />
-
-                  {/* Small flowers in the greenery */}
-                  <circle cx="3385" cy="105" r="1" fill="#f0e0e8" opacity="0.9" />
-                  <circle cx="3399" cy="89" r="1.2" fill="#f0e0e8" opacity="0.9" />
-                  <circle cx="3413" cy="102" r="1" fill="#f0e0e8" opacity="0.9" />
+                  {/* Green roof on top */}
+                  <rect x="3369" y="105" width="60" height="5" fill="#4a7c2f" opacity="1" />
+                  {/* Plants (no vines) */}
+                  <circle cx="3379" cy="103" r="3" fill="#5a8a5a" opacity="1" />
+                  <circle cx="3389" cy="102" r="3.5" fill="#4a7c2f" opacity="1" />
+                  <circle cx="3399" cy="101" r="4" fill="#5a9a5a" opacity="1" />
+                  <circle cx="3409" cy="102" r="3.5" fill="#4a7c2f" opacity="1" />
+                  <circle cx="3419" cy="103" r="3" fill="#5a8a5a" opacity="1" />
+                  {/* Flowers */}
+                  <circle cx="3384" cy="101" r="1" fill="#ff9999" opacity="0.9" />
+                  <circle cx="3399" cy="99" r="1.2" fill="#66ccff" opacity="0.9" />
+                  <circle cx="3414" cy="101" r="1" fill="#ff9999" opacity="0.9" />
                 </g>
               </g>
 

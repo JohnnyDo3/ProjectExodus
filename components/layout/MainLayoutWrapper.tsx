@@ -28,6 +28,9 @@ export function MainLayoutWrapper({
   // Don't show main site header/footer/decorations on admin pages
   const isAdminRoute = pathname?.startsWith('/admin')
 
+  // Full-screen pages that should not have footer and should not scroll
+  const isFullScreenPage = pathname === '/messages' || pathname === '/notifications'
+
   if (isAdminRoute) {
     // Admin pages - completely clean, no theming decorations
     return <>{children}</>
@@ -41,7 +44,7 @@ export function MainLayoutWrapper({
       <div className="relative z-10">
         <Header />
         {children}
-        <Footer />
+        {!isFullScreenPage && <Footer />}
       </div>
       {aiAssistant}
     </>
