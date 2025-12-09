@@ -1007,7 +1007,7 @@ export function ProgressiveSkyline() {
 
                     {/* Large windows with frames and BALCONIES - skip first floor (door area) */}
                     <g opacity="1">
-                      {Array.from({length: Math.max(1, Math.floor((bldg.h - 40) / 20))}).map((_, row) => (
+                      {Array.from({length: Math.max(1, Math.floor((bldg.h - 30) / 20))}).map((_, row) => (
                         Array.from({length: Math.floor(bldg.w/16)}).map((_, col) => (
                           <g key={`win-${row}-${col}`}>
                             {/* Window frame */}
@@ -1298,9 +1298,16 @@ export function ProgressiveSkyline() {
               </g>
 
               {/* Trees lining EVERY street - Dense urban forest with varied depth! */}
+              {/* Skip trees in park areas: Park 1 (2260-2330), Park 2 (2710-2780) */}
               <g opacity="1">
                 {Array.from({length: 45}).map((_, i) => {
                   const x = 2030 + i * 40;
+
+                  // Skip trees that would overlap with park areas
+                  if ((x >= 2260 && x <= 2330) || (x >= 2710 && x <= 2780)) {
+                    return null;
+                  }
+
                   // Randomize y position for depth variation (195-210 range)
                   const yVariation = [0, 3, 7, 2, 10, 5, 8, 1, 12, 4, 6, 9, 3, 11, 2, 8, 5, 1, 7, 10, 4, 6, 9, 3, 12, 5, 8, 2, 11, 7, 4, 1, 9, 6, 10, 3, 8, 5, 12, 2, 7, 4, 11, 6, 9][i % 45];
                   const treeY = 195 + yVariation;
