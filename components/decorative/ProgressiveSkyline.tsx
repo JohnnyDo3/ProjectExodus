@@ -971,20 +971,20 @@ export function ProgressiveSkyline() {
                   {x: 3512, h: 82, w: 58, color: "#f0f8f0"}, {x: 3580, h: 100, w: 70, color: "#e0f2e0"},
                   {x: 3660, h: 88, w: 62, color: "#e8f4e8"}, {x: 3732, h: 75, w: 54, color: "#f0f8f0"}
                 ].map((bldg, i) => {
-                  // Calculate skyscraper window layout - detailed windows with proper spacing
+                  // Calculate skyscraper window layout - detailed windows with tight spacing
                   const windowWidth = 8
                   const windowHeight = 12
-                  const windowGapX = 4 // Gap between windows horizontally
+                  const windowGapX = 3 // Gap between windows horizontally
                   const windowGapY = 3 // Gap between rows vertically
-                  const topMargin = 6 // Margin from roof
+                  const sideMargin = 4 // Fixed small margin from building edge
+                  const topMargin = 8 // Margin from roof (below cornice details)
                   const bottomMargin = 16 // Space for first floor (door area)
 
-                  // Calculate number of window columns - one less than max, centered with even spacing
-                  const maxCols = Math.floor((bldg.w - 4) / (windowWidth + windowGapX))
-                  const windowCols = Math.max(1, maxCols - 1)
+                  // Calculate number of window columns - fill width with small margins
+                  const availableWidth = bldg.w - sideMargin * 2
+                  const windowCols = Math.max(1, Math.floor((availableWidth + windowGapX) / (windowWidth + windowGapX)))
                   const totalWindowsWidth = windowCols * windowWidth + (windowCols - 1) * windowGapX
-                  const sideMargin = (bldg.w - totalWindowsWidth) / 2
-                  const startX = bldg.x + sideMargin
+                  const startX = bldg.x + (bldg.w - totalWindowsWidth) / 2
 
                   // Calculate number of rows - fill the building height
                   const availableHeight = bldg.h - topMargin - bottomMargin
@@ -1156,19 +1156,11 @@ export function ProgressiveSkyline() {
                     </g>
 
                     {/* Architectural details - vertical pilasters on building edges */}
-                    <rect x={bldg.x} y={215 - bldg.h} width="2" height={bldg.h - 14} fill="#d0e0d0" opacity="1" />
-                    <rect x={bldg.x + bldg.w - 2} y={215 - bldg.h} width="2" height={bldg.h - 14} fill="#d0e0d0" opacity="1" />
-
-                    {/* Floor bands - horizontal lines every few floors */}
-                    {Array.from({length: Math.floor((bldg.h - 20) / 20)}).map((_, band) => (
-                      <rect key={`band-${band}`}
-                            x={bldg.x}
-                            y={215 - bldg.h + 10 + band * 20}
-                            width={bldg.w}
-                            height="1"
-                            fill="#c8d8c8"
-                            opacity="1" />
-                    ))}
+                    <rect x={bldg.x} y={215 - bldg.h} width="3" height={bldg.h - 14} fill="#d0e0d0" opacity="1" />
+                    <rect x={bldg.x + bldg.w - 3} y={215 - bldg.h} width="3" height={bldg.h - 14} fill="#d0e0d0" opacity="1" />
+                    {/* Pilaster capitals at top */}
+                    <rect x={bldg.x - 0.5} y={215 - bldg.h + 2} width="4" height="2" fill="#c0d0c0" opacity="1" />
+                    <rect x={bldg.x + bldg.w - 3.5} y={215 - bldg.h + 2} width="4" height="2" fill="#c0d0c0" opacity="1" />
 
                     {/* Floor band above first floor */}
                     <rect x={bldg.x} y={198} width={bldg.w} height="2" fill="#b8c8b8" opacity="1" />
@@ -1539,7 +1531,162 @@ export function ProgressiveSkyline() {
                 </g>
               </g>
 
-              {/* Trees lining streets - matching park tree sizes with subtle depth variation */}
+              {/* Garden Archways - connecting buildings over parks with suspended gardens */}
+              <g>
+                {/* Archway 1 over Park 1 - connecting buildings at x=2204 (h=90) and x=2338 (h=88) */}
+                <g>
+                  {/* Main arch structure */}
+                  <path d="M 2268,140 Q 2303,110 2338,140"
+                        stroke="#5a6a5a" strokeWidth="4" fill="none" opacity="1" />
+                  <path d="M 2268,143 Q 2303,115 2338,143"
+                        stroke="#4a5a4a" strokeWidth="2" fill="none" opacity="1" />
+
+                  {/* Support columns on buildings */}
+                  <rect x="2264" y="125" width="6" height="18" fill="#d0e0d0" opacity="1" />
+                  <rect x="2336" y="127" width="6" height="16" fill="#d0e0d0" opacity="1" />
+                  {/* Column capitals */}
+                  <rect x="2263" y="125" width="8" height="3" fill="#c0d0c0" opacity="1" />
+                  <rect x="2335" y="127" width="8" height="3" fill="#c0d0c0" opacity="1" />
+
+                  {/* Garden bed on arch */}
+                  <path d="M 2275,135 Q 2303,118 2331,135"
+                        stroke="#4a7c2f" strokeWidth="6" fill="none" opacity="1" />
+
+                  {/* Plants growing on arch */}
+                  <circle cx="2285" cy="128" r="3" fill="#5a8a5a" opacity="1" />
+                  <circle cx="2295" cy="122" r="4" fill="#4a7c2f" opacity="1" />
+                  <circle cx="2303" cy="120" r="4" fill="#5a8a5a" opacity="1" />
+                  <circle cx="2311" cy="122" r="4" fill="#4a7c2f" opacity="1" />
+                  <circle cx="2321" cy="128" r="3" fill="#5a8a5a" opacity="1" />
+
+                  {/* Hanging vines */}
+                  <path d="M 2280,132 Q 2278,145 2282,155" stroke="#3a6a3a" strokeWidth="1" fill="none" opacity="0.8" />
+                  <path d="M 2290,128 Q 2287,142 2291,158" stroke="#4a7a4a" strokeWidth="1" fill="none" opacity="0.8" />
+                  <path d="M 2300,125 Q 2298,140 2302,160" stroke="#3a6a3a" strokeWidth="1" fill="none" opacity="0.8" />
+                  <path d="M 2306,125 Q 2308,140 2304,160" stroke="#4a7a4a" strokeWidth="1" fill="none" opacity="0.8" />
+                  <path d="M 2316,128 Q 2319,142 2315,158" stroke="#3a6a3a" strokeWidth="1" fill="none" opacity="0.8" />
+                  <path d="M 2326,132 Q 2328,145 2324,155" stroke="#4a7a4a" strokeWidth="1" fill="none" opacity="0.8" />
+
+                  {/* Vine leaves */}
+                  <circle cx="2282" cy="150" r="1.5" fill="#5a9a5a" opacity="0.8" />
+                  <circle cx="2291" cy="155" r="1.5" fill="#4a8a4a" opacity="0.8" />
+                  <circle cx="2302" cy="158" r="1.5" fill="#5a9a5a" opacity="0.8" />
+                  <circle cx="2304" cy="155" r="1.5" fill="#4a8a4a" opacity="0.8" />
+                  <circle cx="2315" cy="153" r="1.5" fill="#5a9a5a" opacity="0.8" />
+                  <circle cx="2324" cy="150" r="1.5" fill="#4a8a4a" opacity="0.8" />
+
+                  {/* Solar panels on arch */}
+                  <rect x="2288" y="130" width="8" height="4" fill="#2f4f7f" stroke="#1a2f4f" strokeWidth="0.5" opacity="1" />
+                  <rect x="2310" y="130" width="8" height="4" fill="#2f4f7f" stroke="#1a2f4f" strokeWidth="0.5" opacity="1" />
+                </g>
+
+                {/* Archway 2 over Park 2 - connecting buildings at x=2682 (h=72) and x=2822 (h=82) */}
+                <g>
+                  {/* Main arch structure */}
+                  <path d="M 2736,148 Q 2779,115 2822,143"
+                        stroke="#5a6a5a" strokeWidth="4" fill="none" opacity="1" />
+                  <path d="M 2736,151 Q 2779,120 2822,146"
+                        stroke="#4a5a4a" strokeWidth="2" fill="none" opacity="1" />
+
+                  {/* Support columns on buildings */}
+                  <rect x="2732" y="143" width="6" height="10" fill="#d0e0d0" opacity="1" />
+                  <rect x="2820" y="133" width="6" height="15" fill="#d0e0d0" opacity="1" />
+                  {/* Column capitals */}
+                  <rect x="2731" y="143" width="8" height="3" fill="#c0d0c0" opacity="1" />
+                  <rect x="2819" y="133" width="8" height="3" fill="#c0d0c0" opacity="1" />
+
+                  {/* Garden bed on arch */}
+                  <path d="M 2745,143 Q 2779,120 2813,138"
+                        stroke="#4a7c2f" strokeWidth="6" fill="none" opacity="1" />
+
+                  {/* Plants growing on arch */}
+                  <circle cx="2755" cy="138" r="3" fill="#5a8a5a" opacity="1" />
+                  <circle cx="2767" cy="130" r="4" fill="#4a7c2f" opacity="1" />
+                  <circle cx="2779" cy="125" r="4" fill="#5a8a5a" opacity="1" />
+                  <circle cx="2791" cy="128" r="4" fill="#4a7c2f" opacity="1" />
+                  <circle cx="2803" cy="133" r="3" fill="#5a8a5a" opacity="1" />
+
+                  {/* Hanging vines */}
+                  <path d="M 2755,142 Q 2752,155 2757,168" stroke="#3a6a3a" strokeWidth="1" fill="none" opacity="0.8" />
+                  <path d="M 2767,135 Q 2764,150 2769,170" stroke="#4a7a4a" strokeWidth="1" fill="none" opacity="0.8" />
+                  <path d="M 2779,130 Q 2777,148 2781,172" stroke="#3a6a3a" strokeWidth="1" fill="none" opacity="0.8" />
+                  <path d="M 2791,133 Q 2794,150 2789,170" stroke="#4a7a4a" strokeWidth="1" fill="none" opacity="0.8" />
+                  <path d="M 2803,138 Q 2806,152 2801,165" stroke="#3a6a3a" strokeWidth="1" fill="none" opacity="0.8" />
+
+                  {/* Vine leaves */}
+                  <circle cx="2757" cy="165" r="1.5" fill="#5a9a5a" opacity="0.8" />
+                  <circle cx="2769" cy="168" r="1.5" fill="#4a8a4a" opacity="0.8" />
+                  <circle cx="2781" cy="170" r="1.5" fill="#5a9a5a" opacity="0.8" />
+                  <circle cx="2789" cy="167" r="1.5" fill="#4a8a4a" opacity="0.8" />
+                  <circle cx="2801" cy="162" r="1.5" fill="#5a9a5a" opacity="0.8" />
+
+                  {/* Solar panels on arch */}
+                  <rect x="2763" y="138" width="8" height="4" fill="#2f4f7f" stroke="#1a2f4f" strokeWidth="0.5" opacity="1" />
+                  <rect x="2787" y="136" width="8" height="4" fill="#2f4f7f" stroke="#1a2f4f" strokeWidth="0.5" opacity="1" />
+
+                  {/* Small wind turbine on arch peak */}
+                  <rect x="2778" y="118" width="2" height="7" fill="#e8e8e8" opacity="1" />
+                  <circle cx="2779" cy="118" r="1.5" fill="#4a7c2f" opacity="1" />
+                </g>
+
+                {/* Archway 3 over Park 3 - connecting buildings at x=3302 (h=85) and x=3436 (h=95) */}
+                <g>
+                  {/* Main arch structure */}
+                  <path d="M 3362,135 Q 3399,100 3436,120"
+                        stroke="#5a6a5a" strokeWidth="4" fill="none" opacity="1" />
+                  <path d="M 3362,138 Q 3399,105 3436,123"
+                        stroke="#4a5a4a" strokeWidth="2" fill="none" opacity="1" />
+
+                  {/* Support columns on buildings */}
+                  <rect x="3358" y="130" width="6" height="10" fill="#d0e0d0" opacity="1" />
+                  <rect x="3434" y="120" width="6" height="10" fill="#d0e0d0" opacity="1" />
+                  {/* Column capitals */}
+                  <rect x="3357" y="130" width="8" height="3" fill="#c0d0c0" opacity="1" />
+                  <rect x="3433" y="120" width="8" height="3" fill="#c0d0c0" opacity="1" />
+
+                  {/* Garden bed on arch */}
+                  <path d="M 3370,130 Q 3399,105 3428,118"
+                        stroke="#4a7c2f" strokeWidth="6" fill="none" opacity="1" />
+
+                  {/* Plants growing on arch */}
+                  <circle cx="3378" cy="125" r="3" fill="#5a8a5a" opacity="1" />
+                  <circle cx="3388" cy="118" r="4" fill="#4a7c2f" opacity="1" />
+                  <circle cx="3399" cy="110" r="5" fill="#5a8a5a" opacity="1" />
+                  <circle cx="3410" cy="113" r="4" fill="#4a7c2f" opacity="1" />
+                  <circle cx="3420" cy="118" r="3" fill="#5a8a5a" opacity="1" />
+
+                  {/* Hanging vines - longer and more dramatic */}
+                  <path d="M 3375,128 Q 3370,148 3378,175" stroke="#3a6a3a" strokeWidth="1.2" fill="none" opacity="0.8" />
+                  <path d="M 3385,120 Q 3380,145 3388,180" stroke="#4a7a4a" strokeWidth="1.2" fill="none" opacity="0.8" />
+                  <path d="M 3395,112 Q 3390,140 3398,185" stroke="#3a6a3a" strokeWidth="1.2" fill="none" opacity="0.8" />
+                  <path d="M 3403,112 Q 3408,140 3400,185" stroke="#4a7a4a" strokeWidth="1.2" fill="none" opacity="0.8" />
+                  <path d="M 3413,118 Q 3418,145 3410,180" stroke="#3a6a3a" strokeWidth="1.2" fill="none" opacity="0.8" />
+                  <path d="M 3423,125 Q 3428,148 3420,175" stroke="#4a7a4a" strokeWidth="1.2" fill="none" opacity="0.8" />
+
+                  {/* More vine leaves */}
+                  <circle cx="3378" cy="170" r="2" fill="#5a9a5a" opacity="0.8" />
+                  <circle cx="3388" cy="178" r="2" fill="#4a8a4a" opacity="0.8" />
+                  <circle cx="3398" cy="183" r="2" fill="#5a9a5a" opacity="0.8" />
+                  <circle cx="3400" cy="180" r="2" fill="#4a8a4a" opacity="0.8" />
+                  <circle cx="3410" cy="175" r="2" fill="#5a9a5a" opacity="0.8" />
+                  <circle cx="3420" cy="170" r="2" fill="#4a8a4a" opacity="0.8" />
+
+                  {/* Additional hanging flowers */}
+                  <circle cx="3385" cy="160" r="1" fill="#e8a8b8" opacity="0.9" />
+                  <circle cx="3400" cy="165" r="1" fill="#e8a8b8" opacity="0.9" />
+                  <circle cx="3415" cy="160" r="1" fill="#e8a8b8" opacity="0.9" />
+
+                  {/* Solar panels on arch */}
+                  <rect x="3383" y="122" width="8" height="4" fill="#2f4f7f" stroke="#1a2f4f" strokeWidth="0.5" opacity="1" />
+                  <rect x="3407" y="118" width="8" height="4" fill="#2f4f7f" stroke="#1a2f4f" strokeWidth="0.5" opacity="1" />
+
+                  {/* Rainwater collector */}
+                  <ellipse cx="3399" cy="108" rx="3" ry="1.5" fill="#6b8ea8" opacity="0.8" />
+                  <rect x="3397" y="105" width="4" height="3" fill="#5a6a5a" opacity="1" />
+                </g>
+              </g>
+
+              {/* Street trees - small decorative trees at ground level, not blocking buildings */}
               {/* Skip trees in park areas: Park 1 (2268-2338), Park 2 (2736-2822), Park 3 (3362-3436) */}
               <g opacity="1">
                 {Array.from({length: 45}).map((_, i) => {
@@ -1550,22 +1697,22 @@ export function ProgressiveSkyline() {
                     return null;
                   }
 
-                  // Subtle y position variation for depth (203-207 range, like park trees at y=203)
-                  const yVariation = [0, 1, 2, 0, 3, 1, 2, 0, 4, 1, 2, 3, 0, 4, 1, 2, 0, 1, 3, 2, 0, 1, 2, 0, 4, 1, 2, 0, 3, 2, 1, 0, 2, 1, 3, 0, 2, 1, 4, 0, 2, 1, 3, 1, 2][i % 45];
-                  const treeY = 203 + yVariation;
-                  // Subtle size variation - closer trees slightly larger
-                  const trunkHeight = 7 + (yVariation > 2 ? 1 : 0);
-                  const mainRadius = 4 + (yVariation > 2 ? 0.5 : 0);
-                  const sideRadius = 3 + (yVariation > 2 ? 0.5 : 0);
+                  // Trees positioned at ground level (y=208-210), below building facades
+                  const yVariation = [0, 1, 0, 2, 0, 1, 0, 1, 2, 0, 1, 0, 2, 1, 0, 1, 0, 2, 0, 1, 0, 1, 2, 0, 1, 0, 2, 1, 0, 1, 0, 2, 0, 1, 0, 1, 2, 0, 1, 0, 2, 1, 0, 1, 0][i % 45];
+                  const treeY = 208 + yVariation;
+                  // Small street trees - compact size
+                  const trunkHeight = 5;
+                  const mainRadius = 3;
+                  const sideRadius = 2;
 
                   return (
                     <g key={`green-tree-${i}`}>
-                      {/* Tree trunk - same size as park trees */}
-                      <rect x={x} y={treeY} width="2" height={trunkHeight} fill="#6b5a45" opacity="1" />
-                      {/* Foliage - same style as park trees */}
-                      <circle cx={x+1} cy={treeY - 2} r={mainRadius} fill="#4a7c2f" opacity="1" />
-                      <circle cx={x-2} cy={treeY} r={sideRadius} fill="#5a8a5a" opacity="1" />
-                      <circle cx={x+4} cy={treeY} r={sideRadius} fill="#5a8a5a" opacity="1" />
+                      {/* Small tree trunk at ground level */}
+                      <rect x={x} y={treeY} width="1.5" height={trunkHeight} fill="#6b5a45" opacity="1" />
+                      {/* Compact foliage - stays low */}
+                      <circle cx={x+0.75} cy={treeY - 1} r={mainRadius} fill="#4a7c2f" opacity="1" />
+                      <circle cx={x-1} cy={treeY + 0.5} r={sideRadius} fill="#5a8a5a" opacity="1" />
+                      <circle cx={x+2.5} cy={treeY + 0.5} r={sideRadius} fill="#5a8a5a" opacity="1" />
                     </g>
                   );
                 })}
