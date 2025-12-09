@@ -2,6 +2,23 @@ import { NextRequest, NextResponse } from 'next/server'
 import { prisma } from '@/lib/db/prisma'
 import { auth } from '@/auth'
 import { LearningLevel, LEARNING_LEVELS } from '@/types/learning'
+import { Prisma } from '@prisma/client'
+
+// Type for discussion with author and reply count
+type DiscussionWithAuthor = Prisma.ModuleDiscussionGetPayload<{
+  include: {
+    author: {
+      select: {
+        id: true
+        name: true
+        image: true
+      }
+    }
+    _count: {
+      select: { replies: true }
+    }
+  }
+}>
 
 // GET /api/learning/modules/[articleId]/discussions
 // Get discussions for a module, optionally filtered by level
@@ -80,7 +97,7 @@ export async function GET(
     }
 
     // Format discussions
-    const formattedDiscussions = discussions.map(d => ({
+    const formattedDiscussions = discussions.map((d: DiscussionWithAuthor) => ({
       id: d.id,
       articleId: d.articleId,
       level: d.level,
