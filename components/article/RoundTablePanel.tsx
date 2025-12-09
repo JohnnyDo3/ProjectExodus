@@ -74,9 +74,9 @@ export function RoundTablePanel({
 
   const [replyContent, setReplyContent] = useState('')
 
-  // Check if current user has already submitted a top-level review (with rating)
-  const hasUserReviewed = session?.user?.id
-    ? reviews.some(r => r.parentId === null && r.user.id === session.user.id)
+  // Check if current user has already submitted a rating (top-level review with rating > 0)
+  const hasUserRated = session?.user?.id
+    ? reviews.some(r => r.parentId === null && r.user.id === session.user.id && r.rating !== null && r.rating > 0)
     : false
 
   // Update reviews when initialReviews change
@@ -108,7 +108,7 @@ export function RoundTablePanel({
 
   // Pre-populate content with quoted text when panel opens with a quote
   useEffect(() => {
-    if (isOpen && quotedText && !hasUserReviewed) {
+    if (isOpen && quotedText) {
       // Format the quoted text as a blockquote
       const formattedQuote = `> "${quotedText}"\n\n`
       setFormData(prev => ({
@@ -117,7 +117,7 @@ export function RoundTablePanel({
       }))
       setShowReviewForm(true) // Auto-show the form
     }
-  }, [isOpen, quotedText, hasUserReviewed])
+  }, [isOpen, quotedText])
 
   // Swipe-down gesture handling for mobile (modal mode only)
   const modalRef = useRef<HTMLDivElement>(null)
@@ -194,22 +194,22 @@ export function RoundTablePanel({
     if (!session) return
     setError(null)
 
-    if (formData.rating === 0) {
-      setError('Please select an overall rating')
+    if (!formData.content.trim()) {
+      setError('Please add a comment')
       return
     }
 
-    if (!formData.content.trim()) {
-      setError('Please add a comment to your review')
-      return
-    }
+    // If user tries to rate but has already rated, clear ratings
+    const submitData = hasUserRated
+      ? { content: formData.content }
+      : formData
 
     setSubmitting(true)
     try {
       const res = await fetch(`/api/articles/${articleId}/reviews`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(formData)
+        body: JSON.stringify(submitData)
       })
 
       const data = await res.json()
@@ -499,49 +499,55 @@ export function RoundTablePanel({
               </div>
             )}
 
-            {/* Review Form - Only show if user hasn't reviewed yet */}
-            {session && !hasUserReviewed && (
+            {/* Comment Form - Always show for logged in users */}
+            {session && (
               <div className="mb-4">
                 {!showReviewForm ? (
                   <Button className="w-full" onClick={() => setShowReviewForm(true)}>
-                    Join the Discussion
+                    {hasUserRated ? 'Add a Comment' : 'Join the Discussion'}
                   </Button>
                 ) : (
                   <form onSubmit={handleSubmitReview} className="p-3 bg-[var(--muted)] rounded-lg">
-                    <h3 className="font-bold text-sm text-[var(--foreground)] mb-3">Share Your Thoughts</h3>
+                    <h3 className="font-bold text-sm text-[var(--foreground)] mb-3">
+                      {hasUserRated ? 'Add a Comment' : 'Share Your Thoughts'}
+                    </h3>
 
-                    <div className="grid grid-cols-2 gap-2 mb-3">
-                      <div>
-                        <label className="block text-xs font-medium text-[var(--foreground)] mb-1">
-                          Overall <span className="text-red-500">*</span>
-                        </label>
-                        <StarRating value={formData.rating} onChange={(v) => setFormData(prev => ({ ...prev, rating: v }))} size="sm" />
-                      </div>
-                      <div>
-                        <label className="block text-xs font-medium text-[var(--foreground)] mb-1">Accuracy</label>
-                        <StarRating value={formData.accuracy} onChange={(v) => setFormData(prev => ({ ...prev, accuracy: v }))} size="sm" />
-                      </div>
-                      <div>
-                        <label className="block text-xs font-medium text-[var(--foreground)] mb-1">Clarity</label>
-                        <StarRating value={formData.clarity} onChange={(v) => setFormData(prev => ({ ...prev, clarity: v }))} size="sm" />
-                      </div>
-                      <div>
-                        <label className="block text-xs font-medium text-[var(--foreground)] mb-1">Relevance</label>
-                        <StarRating value={formData.relevance} onChange={(v) => setFormData(prev => ({ ...prev, relevance: v }))} size="sm" />
-                      </div>
-                    </div>
+                    {/* Rating fields - only show if user hasn't rated yet */}
+                    {!hasUserRated && (
+                      <>
+                        <p className="text-xs text-theme-muted mb-2">Rate this article (optional)</p>
+                        <div className="grid grid-cols-2 gap-2 mb-3">
+                          <div>
+                            <label className="block text-xs font-medium text-[var(--foreground)] mb-1">Overall</label>
+                            <StarRating value={formData.rating} onChange={(v) => setFormData(prev => ({ ...prev, rating: v }))} size="sm" />
+                          </div>
+                          <div>
+                            <label className="block text-xs font-medium text-[var(--foreground)] mb-1">Accuracy</label>
+                            <StarRating value={formData.accuracy} onChange={(v) => setFormData(prev => ({ ...prev, accuracy: v }))} size="sm" />
+                          </div>
+                          <div>
+                            <label className="block text-xs font-medium text-[var(--foreground)] mb-1">Clarity</label>
+                            <StarRating value={formData.clarity} onChange={(v) => setFormData(prev => ({ ...prev, clarity: v }))} size="sm" />
+                          </div>
+                          <div>
+                            <label className="block text-xs font-medium text-[var(--foreground)] mb-1">Relevance</label>
+                            <StarRating value={formData.relevance} onChange={(v) => setFormData(prev => ({ ...prev, relevance: v }))} size="sm" />
+                          </div>
+                        </div>
+                      </>
+                    )}
 
                     <textarea
                       value={formData.content}
                       onChange={(e) => setFormData(prev => ({ ...prev, content: e.target.value }))}
-                      placeholder="Share your thoughts..."
+                      placeholder={hasUserRated ? "Add your comment..." : "Share your thoughts..."}
                       className="w-full p-2 text-sm border border-[var(--border)] rounded bg-white dark:bg-earth-800 text-[var(--foreground)]"
                       rows={3}
                     />
 
                     <div className="flex gap-2 mt-2">
                       <Button type="submit" size="sm" disabled={submitting}>
-                        {submitting ? 'Sharing...' : 'Share'}
+                        {submitting ? 'Posting...' : 'Post'}
                       </Button>
                       <Button type="button" variant="outline" size="sm" onClick={() => {
                         setShowReviewForm(false)
@@ -553,16 +559,6 @@ export function RoundTablePanel({
                     </div>
                   </form>
                 )}
-              </div>
-            )}
-
-            {/* Message for users who have already rated - encourage replies */}
-            {session && hasUserReviewed && (
-              <div className="mb-4 p-3 bg-[var(--primary)]/10 border border-[var(--primary)]/30 rounded-lg">
-                <p className="text-sm text-[var(--foreground)]">
-                  <Star className="w-4 h-4 inline-block mr-1 text-terra-500 fill-terra-500" />
-                  You&apos;ve already shared your rating. Reply to any comment below to continue the discussion!
-                </p>
               </div>
             )}
 
@@ -623,49 +619,55 @@ export function RoundTablePanel({
             </div>
           )}
 
-          {/* Review Form - Only show if user hasn't reviewed yet */}
-          {session && !hasUserReviewed && (
+          {/* Comment Form - Always show for logged in users */}
+          {session && (
             <div className="mb-4">
               {!showReviewForm ? (
                 <Button className="w-full" onClick={() => setShowReviewForm(true)}>
-                  Join the Discussion
+                  {hasUserRated ? 'Add a Comment' : 'Join the Discussion'}
                 </Button>
               ) : (
                 <form onSubmit={handleSubmitReview} className="p-3 bg-[var(--muted)] rounded-lg">
-                  <h3 className="font-bold text-sm text-[var(--foreground)] mb-3">Share Your Thoughts</h3>
+                  <h3 className="font-bold text-sm text-[var(--foreground)] mb-3">
+                    {hasUserRated ? 'Add a Comment' : 'Share Your Thoughts'}
+                  </h3>
 
-                  <div className="grid grid-cols-2 gap-2 mb-3">
-                    <div>
-                      <label className="block text-xs font-medium text-[var(--foreground)] mb-1">
-                        Overall <span className="text-red-500">*</span>
-                      </label>
-                      <StarRating value={formData.rating} onChange={(v) => setFormData(prev => ({ ...prev, rating: v }))} size="sm" />
-                    </div>
-                    <div>
-                      <label className="block text-xs font-medium text-[var(--foreground)] mb-1">Accuracy</label>
-                      <StarRating value={formData.accuracy} onChange={(v) => setFormData(prev => ({ ...prev, accuracy: v }))} size="sm" />
-                    </div>
-                    <div>
-                      <label className="block text-xs font-medium text-[var(--foreground)] mb-1">Clarity</label>
-                      <StarRating value={formData.clarity} onChange={(v) => setFormData(prev => ({ ...prev, clarity: v }))} size="sm" />
-                    </div>
-                    <div>
-                      <label className="block text-xs font-medium text-[var(--foreground)] mb-1">Relevance</label>
-                      <StarRating value={formData.relevance} onChange={(v) => setFormData(prev => ({ ...prev, relevance: v }))} size="sm" />
-                    </div>
-                  </div>
+                  {/* Rating fields - only show if user hasn't rated yet */}
+                  {!hasUserRated && (
+                    <>
+                      <p className="text-xs text-theme-muted mb-2">Rate this article (optional)</p>
+                      <div className="grid grid-cols-2 gap-2 mb-3">
+                        <div>
+                          <label className="block text-xs font-medium text-[var(--foreground)] mb-1">Overall</label>
+                          <StarRating value={formData.rating} onChange={(v) => setFormData(prev => ({ ...prev, rating: v }))} size="sm" />
+                        </div>
+                        <div>
+                          <label className="block text-xs font-medium text-[var(--foreground)] mb-1">Accuracy</label>
+                          <StarRating value={formData.accuracy} onChange={(v) => setFormData(prev => ({ ...prev, accuracy: v }))} size="sm" />
+                        </div>
+                        <div>
+                          <label className="block text-xs font-medium text-[var(--foreground)] mb-1">Clarity</label>
+                          <StarRating value={formData.clarity} onChange={(v) => setFormData(prev => ({ ...prev, clarity: v }))} size="sm" />
+                        </div>
+                        <div>
+                          <label className="block text-xs font-medium text-[var(--foreground)] mb-1">Relevance</label>
+                          <StarRating value={formData.relevance} onChange={(v) => setFormData(prev => ({ ...prev, relevance: v }))} size="sm" />
+                        </div>
+                      </div>
+                    </>
+                  )}
 
                   <textarea
                     value={formData.content}
                     onChange={(e) => setFormData(prev => ({ ...prev, content: e.target.value }))}
-                    placeholder="Share your thoughts..."
+                    placeholder={hasUserRated ? "Add your comment..." : "Share your thoughts..."}
                     className="w-full p-2 text-sm border border-[var(--border)] rounded bg-white dark:bg-earth-800 text-[var(--foreground)]"
                     rows={3}
                   />
 
                   <div className="flex gap-2 mt-2">
                     <Button type="submit" size="sm" disabled={submitting}>
-                      {submitting ? 'Sharing...' : 'Share'}
+                      {submitting ? 'Posting...' : 'Post'}
                     </Button>
                     <Button type="button" variant="outline" size="sm" onClick={() => {
                       setShowReviewForm(false)
@@ -677,16 +679,6 @@ export function RoundTablePanel({
                   </div>
                 </form>
               )}
-            </div>
-          )}
-
-          {/* Message for users who have already rated - encourage replies */}
-          {session && hasUserReviewed && (
-            <div className="mb-4 p-3 bg-[var(--primary)]/10 border border-[var(--primary)]/30 rounded-lg">
-              <p className="text-sm text-[var(--foreground)]">
-                <Star className="w-4 h-4 inline-block mr-1 text-terra-500 fill-terra-500" />
-                You&apos;ve already shared your rating. Reply to any comment below to continue the discussion!
-              </p>
             </div>
           )}
 
