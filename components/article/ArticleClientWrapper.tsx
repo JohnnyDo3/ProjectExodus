@@ -50,9 +50,22 @@ interface ArticleClientWrapperProps {
 
 export function ArticleClientWrapper({ article }: ArticleClientWrapperProps) {
   const [isPanelOpen, setIsPanelOpen] = useState(false)
+  const [panelDisplayMode, setPanelDisplayMode] = useState<'slideout' | 'modal'>('slideout')
   const [reviews, setReviews] = useState(article.peerReviews || [])
   const [quotedText, setQuotedText] = useState('')
   const articleContentRef = useRef<HTMLDivElement>(null)
+
+  // Open panel as slideout (default, from quote button)
+  const openAsSlideout = () => {
+    setPanelDisplayMode('slideout')
+    setIsPanelOpen(true)
+  }
+
+  // Open panel as modal (from widget expand button)
+  const openAsModal = () => {
+    setPanelDisplayMode('modal')
+    setIsPanelOpen(true)
+  }
 
   // Handle text selection for quoting
   const handleTextSelection = useCallback(() => {
@@ -75,7 +88,7 @@ export function ArticleClientWrapper({ article }: ArticleClientWrapperProps) {
               <div className="absolute top-2 right-2 z-10">
                 <Button
                   size="sm"
-                  onClick={() => setIsPanelOpen(true)}
+                  onClick={openAsSlideout}
                   className="flex items-center gap-1 shadow-lg"
                 >
                   <Quote className="w-4 h-4" />
@@ -125,7 +138,7 @@ export function ArticleClientWrapper({ article }: ArticleClientWrapperProps) {
               articleId={article.id}
               articleAuthorId={article.authorId}
               initialReviews={reviews}
-              onExpand={() => setIsPanelOpen(true)}
+              onExpand={openAsModal}
             />
           </div>
 
@@ -204,7 +217,7 @@ export function ArticleClientWrapper({ article }: ArticleClientWrapperProps) {
           <PeerReviewWidget
             articleId={article.id}
             peerReviews={reviews}
-            onOpenPanel={() => setIsPanelOpen(true)}
+            onOpenPanel={openAsModal}
           />
 
           {/* Author Business Card */}
@@ -242,6 +255,7 @@ export function ArticleClientWrapper({ article }: ArticleClientWrapperProps) {
         articleAuthorId={article.authorId}
         reviews={reviews}
         onReviewsChange={setReviews}
+        displayMode={panelDisplayMode}
       />
     </>
   )

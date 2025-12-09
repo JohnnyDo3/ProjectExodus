@@ -32,6 +32,7 @@ interface RoundTablePanelProps {
   articleAuthorId: string
   reviews: PeerReview[]
   onReviewsChange: (reviews: PeerReview[]) => void
+  displayMode?: 'slideout' | 'modal' // 'modal' shows as bottom overlay taking 75% height
 }
 
 // Recursive function to build tree from flat list
@@ -50,7 +51,8 @@ export function RoundTablePanel({
   articleId,
   articleAuthorId,
   reviews: initialReviews,
-  onReviewsChange
+  onReviewsChange,
+  displayMode = 'slideout'
 }: RoundTablePanelProps) {
   const { data: session } = useSession()
   const [reviews, setReviews] = useState<PeerReview[]>(initialReviews)
@@ -69,6 +71,11 @@ export function RoundTablePanel({
   })
 
   const [replyContent, setReplyContent] = useState('')
+
+  // Check if current user has already submitted a top-level review (with rating)
+  const hasUserReviewed = session?.user?.id
+    ? reviews.some(r => r.parentId === null && r.user.id === session.user.id)
+    : false
 
   // Update reviews when initialReviews change
   useEffect(() => {
@@ -377,6 +384,145 @@ export function RoundTablePanel({
 
   const topLevelReviews = reviews.filter(r => r.parentId === null)
 
+  // Modal mode - bottom sheet taking 75% of viewport
+  if (displayMode === 'modal') {
+    return (
+      <>
+        {/* Backdrop */}
+        <div
+          className={`fixed inset-0 z-40 bg-black/50 transition-opacity duration-300 ${
+            isOpen ? 'opacity-100' : 'opacity-0 pointer-events-none'
+          }`}
+          onClick={onClose}
+        />
+
+        {/* Bottom Modal Panel - 75% height */}
+        <div
+          className={`fixed bottom-0 left-0 right-0 z-50 h-[75vh] bg-[var(--card)] border-t-2 border-[var(--border)] shadow-2xl rounded-t-2xl transform transition-transform duration-300 ease-in-out ${
+            isOpen ? 'translate-y-0' : 'translate-y-full'
+          }`}
+        >
+          {/* Handle bar for visual affordance */}
+          <div className="flex justify-center pt-2 pb-1">
+            <div className="w-12 h-1.5 bg-[var(--foreground)]/20 rounded-full" />
+          </div>
+
+          {/* Header */}
+          <div className="flex items-center justify-between px-4 pb-3 border-b border-[var(--border)]">
+            <div className="flex items-center gap-2">
+              <Users className="w-5 h-5 text-theme-primary" />
+              <h2 className="font-bold text-[var(--foreground)]">Round Table Talk</h2>
+              <span className="text-sm text-theme-muted">({topLevelReviews.length})</span>
+            </div>
+            <Button variant="ghost" size="sm" onClick={onClose} className="p-2">
+              <X className="w-5 h-5" />
+            </Button>
+          </div>
+
+          {/* Content */}
+          <div className="h-[calc(100%-60px)] overflow-y-auto p-4">
+            {/* Error Message */}
+            {error && (
+              <div className="mb-4 p-2 bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800 rounded text-red-600 dark:text-red-400 text-xs">
+                {error}
+              </div>
+            )}
+
+            {/* Review Form - Only show if user hasn't reviewed yet */}
+            {session && !hasUserReviewed && (
+              <div className="mb-4">
+                {!showReviewForm ? (
+                  <Button className="w-full" onClick={() => setShowReviewForm(true)}>
+                    Join the Discussion
+                  </Button>
+                ) : (
+                  <form onSubmit={handleSubmitReview} className="p-3 bg-[var(--muted)] rounded-lg">
+                    <h3 className="font-bold text-sm text-[var(--foreground)] mb-3">Share Your Thoughts</h3>
+
+                    <div className="grid grid-cols-2 gap-2 mb-3">
+                      <div>
+                        <label className="block text-xs font-medium text-[var(--foreground)] mb-1">
+                          Overall <span className="text-red-500">*</span>
+                        </label>
+                        <StarRating value={formData.rating} onChange={(v) => setFormData(prev => ({ ...prev, rating: v }))} size="sm" />
+                      </div>
+                      <div>
+                        <label className="block text-xs font-medium text-[var(--foreground)] mb-1">Accuracy</label>
+                        <StarRating value={formData.accuracy} onChange={(v) => setFormData(prev => ({ ...prev, accuracy: v }))} size="sm" />
+                      </div>
+                      <div>
+                        <label className="block text-xs font-medium text-[var(--foreground)] mb-1">Clarity</label>
+                        <StarRating value={formData.clarity} onChange={(v) => setFormData(prev => ({ ...prev, clarity: v }))} size="sm" />
+                      </div>
+                      <div>
+                        <label className="block text-xs font-medium text-[var(--foreground)] mb-1">Relevance</label>
+                        <StarRating value={formData.relevance} onChange={(v) => setFormData(prev => ({ ...prev, relevance: v }))} size="sm" />
+                      </div>
+                    </div>
+
+                    <textarea
+                      value={formData.content}
+                      onChange={(e) => setFormData(prev => ({ ...prev, content: e.target.value }))}
+                      placeholder="Share your thoughts..."
+                      className="w-full p-2 text-sm border border-[var(--border)] rounded bg-white dark:bg-earth-800 text-[var(--foreground)]"
+                      rows={3}
+                    />
+
+                    <div className="flex gap-2 mt-2">
+                      <Button type="submit" size="sm" disabled={submitting}>
+                        {submitting ? 'Sharing...' : 'Share'}
+                      </Button>
+                      <Button type="button" variant="outline" size="sm" onClick={() => {
+                        setShowReviewForm(false)
+                        setFormData({ rating: 0, accuracy: 0, clarity: 0, relevance: 0, content: '' })
+                        setError(null)
+                      }}>
+                        Cancel
+                      </Button>
+                    </div>
+                  </form>
+                )}
+              </div>
+            )}
+
+            {/* Message for users who have already rated - encourage replies */}
+            {session && hasUserReviewed && (
+              <div className="mb-4 p-3 bg-[var(--primary)]/10 border border-[var(--primary)]/30 rounded-lg">
+                <p className="text-sm text-[var(--foreground)]">
+                  <Star className="w-4 h-4 inline-block mr-1 text-terra-500 fill-terra-500" />
+                  You&apos;ve already shared your rating. Reply to any comment below to continue the discussion!
+                </p>
+              </div>
+            )}
+
+            {!session && (
+              <div className="mb-4 p-3 bg-[var(--muted)] rounded-lg text-center">
+                <p className="text-sm text-theme-muted">
+                  <a href="/auth/signin" className="text-theme-primary font-medium hover:underline">Sign in</a> to join
+                </p>
+              </div>
+            )}
+
+            {/* Reviews List */}
+            {reviews.length === 0 ? (
+              <div className="text-center py-8">
+                <Users className="w-10 h-10 mx-auto mb-2 text-[var(--foreground)]/30" />
+                <p className="text-sm text-theme-muted">No discussions yet. Be the first!</p>
+              </div>
+            ) : (
+              <div className="divide-y divide-[var(--border)]">
+                {reviews.filter(r => !r.parentId).map(review => (
+                  <ReviewThread key={review.id} review={review} />
+                ))}
+              </div>
+            )}
+          </div>
+        </div>
+      </>
+    )
+  }
+
+  // Default slideout mode
   return (
     <>
       {/* Backdrop */}
@@ -414,8 +560,8 @@ export function RoundTablePanel({
             </div>
           )}
 
-          {/* Review Form */}
-          {session && (
+          {/* Review Form - Only show if user hasn't reviewed yet */}
+          {session && !hasUserReviewed && (
             <div className="mb-4">
               {!showReviewForm ? (
                 <Button className="w-full" onClick={() => setShowReviewForm(true)}>
@@ -468,6 +614,16 @@ export function RoundTablePanel({
                   </div>
                 </form>
               )}
+            </div>
+          )}
+
+          {/* Message for users who have already rated - encourage replies */}
+          {session && hasUserReviewed && (
+            <div className="mb-4 p-3 bg-[var(--primary)]/10 border border-[var(--primary)]/30 rounded-lg">
+              <p className="text-sm text-[var(--foreground)]">
+                <Star className="w-4 h-4 inline-block mr-1 text-terra-500 fill-terra-500" />
+                You&apos;ve already shared your rating. Reply to any comment below to continue the discussion!
+              </p>
             </div>
           )}
 

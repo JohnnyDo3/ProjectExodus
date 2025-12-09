@@ -588,7 +588,7 @@ export function ConversationPanel({ userId, onBack }: ConversationPanelProps) {
 
                   {/* Reactions display */}
                   {msg.reactions && msg.reactions.length > 0 && (
-                    <div className={`flex gap-1 mt-1 ${isOwnMessage ? 'justify-end' : 'justify-start'}`}>
+                    <div className={`flex flex-wrap gap-1 mt-1 ${isOwnMessage ? 'justify-end' : 'justify-start'}`}>
                       {Object.entries(
                         msg.reactions.reduce((acc, r) => {
                           acc[r.emoji] = (acc[r.emoji] || 0) + 1
@@ -597,9 +597,11 @@ export function ConversationPanel({ userId, onBack }: ConversationPanelProps) {
                       ).map(([emoji, count]) => (
                         <span
                           key={emoji}
-                          className="px-1.5 py-0.5 bg-[var(--muted)] rounded-full text-xs"
+                          className="inline-flex items-center gap-0.5 px-2 py-1 bg-[var(--muted)] rounded-full text-xs border border-[var(--border)] shadow-sm"
+                          title={`${count} ${count === 1 ? 'reaction' : 'reactions'}`}
                         >
-                          {emoji} {count > 1 && count}
+                          <span className="text-sm">{emoji}</span>
+                          <span className="text-[var(--foreground)] font-medium">{count}</span>
                         </span>
                       ))}
                     </div>

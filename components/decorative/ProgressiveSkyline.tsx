@@ -1132,60 +1132,188 @@ export function ProgressiveSkyline() {
                     <rect x={bldg.x - 0.5} y={215 - bldg.h + 2} width="4" height="2" fill="#c0d0c0" opacity="1" />
                     <rect x={bldg.x + bldg.w - 3.5} y={215 - bldg.h + 2} width="4" height="2" fill="#c0d0c0" opacity="1" />
 
-                    {/* Floor band above first floor */}
+                    {/* Floor band above first floor with ornamentation */}
                     <rect x={bldg.x} y={198} width={bldg.w} height="2" fill="#b8c8b8" opacity="1" />
                     <rect x={bldg.x} y={197} width={bldg.w} height="1" fill="#c8d8c8" opacity="1" />
 
-                    {/* First floor windows - detailed storefront style matching upper windows */}
+                    {/* Decorative ornamentation band between floors */}
                     <g opacity="1">
-                      {/* Left storefront window - detailed */}
+                      {/* Dentil molding - small rectangular blocks */}
+                      {Array.from({ length: Math.floor(bldg.w / 3) }).map((_, d) => (
+                        <rect
+                          key={`dentil-${i}-${d}`}
+                          x={bldg.x + 1 + d * 3}
+                          y={196}
+                          width="1.5"
+                          height="1"
+                          fill="#a8b8a8"
+                          opacity="1"
+                        />
+                      ))}
+
+                      {/* Decorative medallions/rosettes at intervals */}
+                      {[0.25, 0.5, 0.75].map((pos, m) => (
+                        <g key={`medallion-${i}-${m}`}>
+                          {/* Circular medallion */}
+                          <circle
+                            cx={bldg.x + bldg.w * pos}
+                            cy={193}
+                            r="2"
+                            fill="#d0dcd0"
+                            stroke="#9aaa9a"
+                            strokeWidth="0.3"
+                            opacity="1"
+                          />
+                          {/* Inner decorative circle */}
+                          <circle
+                            cx={bldg.x + bldg.w * pos}
+                            cy={193}
+                            r="1.2"
+                            fill="none"
+                            stroke="#b0c0b0"
+                            strokeWidth="0.2"
+                            opacity="1"
+                          />
+                          {/* Center dot */}
+                          <circle
+                            cx={bldg.x + bldg.w * pos}
+                            cy={193}
+                            r="0.4"
+                            fill="#8a9a8a"
+                            opacity="1"
+                          />
+                        </g>
+                      ))}
+
+                      {/* Egg-and-dart style trim above dentils */}
+                      <rect x={bldg.x} y={194.5} width={bldg.w} height="0.5" fill="#c0d0c0" opacity="1" />
+                      {Array.from({ length: Math.floor(bldg.w / 4) }).map((_, e) => (
+                        <ellipse
+                          key={`egg-${i}-${e}`}
+                          cx={bldg.x + 2 + e * 4}
+                          cy={195.5}
+                          rx="1"
+                          ry="0.6"
+                          fill="#d8e0d8"
+                          opacity="0.8"
+                        />
+                      ))}
+
+                      {/* Decorative scrollwork brackets at corners */}
+                      <path
+                        d={`M ${bldg.x + 2},195 Q ${bldg.x + 1},193 ${bldg.x + 2},191`}
+                        stroke="#9aaa9a"
+                        strokeWidth="0.5"
+                        fill="none"
+                        opacity="0.8"
+                      />
+                      <path
+                        d={`M ${bldg.x + bldg.w - 2},195 Q ${bldg.x + bldg.w - 1},193 ${bldg.x + bldg.w - 2},191`}
+                        stroke="#9aaa9a"
+                        strokeWidth="0.5"
+                        fill="none"
+                        opacity="0.8"
+                      />
+                    </g>
+
+                    {/* First floor windows - wide shop-style with 6 panes (3x2 grid) */}
+                    <g opacity="1">
+                      {/* Left storefront window - wide 6-pane shop window */}
                       {(() => {
-                        const leftWinX = bldg.x + bldg.w/2 - 22
+                        const leftWinX = bldg.x + bldg.w/2 - 26
                         const leftWinY = 200
-                        const sfWidth = 10
+                        const sfWidth = 18
                         const sfHeight = 10
+                        const paneWidth = (sfWidth - 2.4) / 3  // 3 columns
+                        const paneHeight = (sfHeight - 1.6) / 2  // 2 rows
                         const isLeftLit = isNightTime && isWindowLit(bldg.x + 1000 + i)
                         return (
                           <g>
                             {/* Window frame */}
                             <rect x={leftWinX} y={leftWinY} width={sfWidth} height={sfHeight} fill="#4a5a4a" opacity="1" />
-                            {/* Window glass */}
-                            <rect x={leftWinX + 0.8} y={leftWinY + 0.8} width={sfWidth - 1.6} height={sfHeight - 1.6}
-                                  fill={isLeftLit ? "#FFD700" : "#6b8ea8"} opacity="1" />
-                            {/* Horizontal mullion */}
-                            <rect x={leftWinX + 0.8} y={leftWinY + sfHeight/2 - 0.3} width={sfWidth - 1.6} height="0.6" fill="#4a5a4a" opacity="1" />
-                            {/* Vertical mullion */}
-                            <rect x={leftWinX + sfWidth/2 - 0.3} y={leftWinY + 0.8} width="0.6" height={sfHeight - 1.6} fill="#4a5a4a" opacity="1" />
+                            {/* 6 panes of glass (3 columns x 2 rows) */}
+                            {[0, 1, 2].map(col => [0, 1].map(row => (
+                              <rect
+                                key={`left-pane-${col}-${row}`}
+                                x={leftWinX + 0.6 + col * (paneWidth + 0.3)}
+                                y={leftWinY + 0.6 + row * (paneHeight + 0.4)}
+                                width={paneWidth}
+                                height={paneHeight}
+                                fill={isLeftLit ? "#FFD700" : "#6b8ea8"}
+                                opacity="1"
+                              />
+                            )))}
+                            {/* Vertical mullions (2 dividers for 3 columns) */}
+                            <rect x={leftWinX + 0.6 + paneWidth} y={leftWinY + 0.6} width="0.6" height={sfHeight - 1.2} fill="#4a5a4a" opacity="1" />
+                            <rect x={leftWinX + 0.6 + 2 * paneWidth + 0.3} y={leftWinY + 0.6} width="0.6" height={sfHeight - 1.2} fill="#4a5a4a" opacity="1" />
+                            {/* Horizontal mullion (center divider for 2 rows) */}
+                            <rect x={leftWinX + 0.6} y={leftWinY + 0.6 + paneHeight} width={sfWidth - 1.2} height="0.5" fill="#4a5a4a" opacity="1" />
                             {/* Window sill */}
-                            <rect x={leftWinX - 0.5} y={leftWinY + sfHeight - 0.5} width={sfWidth + 1} height="1.2" fill="#5a6a5a" opacity="1" />
-                            {/* Reflection */}
-                            {!isLeftLit && <rect x={leftWinX + 1.2} y={leftWinY + 1.2} width={sfWidth/2 - 1.5} height={sfHeight/2 - 1.5} fill="#8ab8d8" opacity="0.4" />}
+                            <rect x={leftWinX - 0.5} y={leftWinY + sfHeight - 0.5} width={sfWidth + 1} height="1.5" fill="#5a6a5a" opacity="1" />
+                            {/* Decorative trim above window */}
+                            <rect x={leftWinX - 0.5} y={leftWinY - 1} width={sfWidth + 1} height="1" fill="#6a7a6a" opacity="1" />
+                            {/* Reflections on each pane */}
+                            {!isLeftLit && [0, 1, 2].map(col => (
+                              <rect
+                                key={`left-reflect-${col}`}
+                                x={leftWinX + 1 + col * (paneWidth + 0.3)}
+                                y={leftWinY + 1}
+                                width={paneWidth * 0.4}
+                                height={paneHeight * 0.5}
+                                fill="#8ab8d8"
+                                opacity="0.35"
+                              />
+                            ))}
                           </g>
                         )
                       })()}
 
-                      {/* Right storefront window - detailed (mirror of left) */}
+                      {/* Right storefront window - wide 6-pane shop window */}
                       {(() => {
-                        const rightWinX = bldg.x + bldg.w/2 + 12
+                        const rightWinX = bldg.x + bldg.w/2 + 8
                         const rightWinY = 200
-                        const sfWidth = 10
+                        const sfWidth = 18
                         const sfHeight = 10
+                        const paneWidth = (sfWidth - 2.4) / 3  // 3 columns
+                        const paneHeight = (sfHeight - 1.6) / 2  // 2 rows
                         const isRightLit = isNightTime && isWindowLit(bldg.x + 1001 + i)
                         return (
                           <g>
                             {/* Window frame */}
                             <rect x={rightWinX} y={rightWinY} width={sfWidth} height={sfHeight} fill="#4a5a4a" opacity="1" />
-                            {/* Window glass */}
-                            <rect x={rightWinX + 0.8} y={rightWinY + 0.8} width={sfWidth - 1.6} height={sfHeight - 1.6}
-                                  fill={isRightLit ? "#FFD700" : "#6b8ea8"} opacity="1" />
-                            {/* Horizontal mullion */}
-                            <rect x={rightWinX + 0.8} y={rightWinY + sfHeight/2 - 0.3} width={sfWidth - 1.6} height="0.6" fill="#4a5a4a" opacity="1" />
-                            {/* Vertical mullion */}
-                            <rect x={rightWinX + sfWidth/2 - 0.3} y={rightWinY + 0.8} width="0.6" height={sfHeight - 1.6} fill="#4a5a4a" opacity="1" />
+                            {/* 6 panes of glass (3 columns x 2 rows) */}
+                            {[0, 1, 2].map(col => [0, 1].map(row => (
+                              <rect
+                                key={`right-pane-${col}-${row}`}
+                                x={rightWinX + 0.6 + col * (paneWidth + 0.3)}
+                                y={rightWinY + 0.6 + row * (paneHeight + 0.4)}
+                                width={paneWidth}
+                                height={paneHeight}
+                                fill={isRightLit ? "#FFD700" : "#6b8ea8"}
+                                opacity="1"
+                              />
+                            )))}
+                            {/* Vertical mullions (2 dividers for 3 columns) */}
+                            <rect x={rightWinX + 0.6 + paneWidth} y={rightWinY + 0.6} width="0.6" height={sfHeight - 1.2} fill="#4a5a4a" opacity="1" />
+                            <rect x={rightWinX + 0.6 + 2 * paneWidth + 0.3} y={rightWinY + 0.6} width="0.6" height={sfHeight - 1.2} fill="#4a5a4a" opacity="1" />
+                            {/* Horizontal mullion (center divider for 2 rows) */}
+                            <rect x={rightWinX + 0.6} y={rightWinY + 0.6 + paneHeight} width={sfWidth - 1.2} height="0.5" fill="#4a5a4a" opacity="1" />
                             {/* Window sill */}
-                            <rect x={rightWinX - 0.5} y={rightWinY + sfHeight - 0.5} width={sfWidth + 1} height="1.2" fill="#5a6a5a" opacity="1" />
-                            {/* Reflection */}
-                            {!isRightLit && <rect x={rightWinX + 1.2} y={rightWinY + 1.2} width={sfWidth/2 - 1.5} height={sfHeight/2 - 1.5} fill="#8ab8d8" opacity="0.4" />}
+                            <rect x={rightWinX - 0.5} y={rightWinY + sfHeight - 0.5} width={sfWidth + 1} height="1.5" fill="#5a6a5a" opacity="1" />
+                            {/* Decorative trim above window */}
+                            <rect x={rightWinX - 0.5} y={rightWinY - 1} width={sfWidth + 1} height="1" fill="#6a7a6a" opacity="1" />
+                            {/* Reflections on each pane */}
+                            {!isRightLit && [0, 1, 2].map(col => (
+                              <rect
+                                key={`right-reflect-${col}`}
+                                x={rightWinX + 1 + col * (paneWidth + 0.3)}
+                                y={rightWinY + 1}
+                                width={paneWidth * 0.4}
+                                height={paneHeight * 0.5}
+                                fill="#8ab8d8"
+                                opacity="0.35"
+                              />
+                            ))}
                           </g>
                         )
                       })()}
