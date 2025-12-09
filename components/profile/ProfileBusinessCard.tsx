@@ -1103,7 +1103,8 @@ export function ProfileBusinessCard({ userId, onClose, onSave: onSaveCallback, i
                 <ChevronDown className="w-5 h-5 text-white" />
               )}
             </button>
-            {onClose && (
+            {/* Only show separate close button when NOT in edit mode - in edit mode, Cancel handles closing */}
+            {onClose && !isEditing && (
               <button
                 onClick={handleClose}
                 className="p-2.5 bg-black/30 hover:bg-black/40 rounded-xl transition-colors backdrop-blur-sm"
