@@ -516,12 +516,18 @@ export function PeerReviewWidget({ articleId, peerReviews: initialReviews, onRev
 
             {/* Comment Input (always visible at bottom) */}
             {session ? (
-              <form onSubmit={handleSubmitComment} className="p-4 border-t border-[var(--border)] bg-[var(--card)]">
+              <form onSubmit={handleSubmitComment} className="p-4 pb-20 border-t border-[var(--border)] bg-[var(--card)]">
                 <div className="flex gap-2">
                   <input
                     type="text"
                     value={comment}
                     onChange={(e) => setComment(e.target.value)}
+                    onKeyDown={(e) => {
+                      if (e.key === 'Enter' && !e.shiftKey && comment.trim()) {
+                        e.preventDefault()
+                        handleSubmitComment(e)
+                      }
+                    }}
                     placeholder="Add a comment..."
                     className="flex-1 px-4 py-2 text-sm border border-[var(--border)] rounded-full bg-[var(--background)] text-[var(--foreground)]"
                   />
@@ -531,7 +537,7 @@ export function PeerReviewWidget({ articleId, peerReviews: initialReviews, onRev
                 </div>
               </form>
             ) : (
-              <div className="p-4 border-t border-[var(--border)] text-center">
+              <div className="p-4 pb-20 border-t border-[var(--border)] text-center">
                 <p className="text-sm text-[var(--foreground)]/60">
                   <a href="/auth/signin" className="text-[var(--primary)] font-medium hover:underline">Sign in</a> to join the discussion
                 </p>

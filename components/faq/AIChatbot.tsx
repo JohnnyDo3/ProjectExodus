@@ -16,7 +16,7 @@ export function AIChatbot() {
   const [messages, setMessages] = useState<Message[]>([
     {
       role: 'assistant',
-      content: 'Hello! I\'m Sage 2.0, your sustainability guide. I can help answer questions about sustainable living, our products, community, and anything else related to Project Exodus. How can I help you today?',
+      content: 'Hello! I\'m Sage, your sustainability guide. I can help answer questions about sustainable living, our products, community, and anything else related to Project Exodus. How can I help you today?',
       timestamp: new Date()
     }
   ])
@@ -108,7 +108,7 @@ export function AIChatbot() {
         <button
           onClick={() => setIsOpen(true)}
           className="fixed bottom-6 right-6 w-16 h-16 rounded-full bg-gradient-to-br from-[var(--primary)] to-[var(--accent)] text-[var(--primary-foreground)] shadow-theme-2xl hover:scale-110 transition-transform flex items-center justify-center z-50 group"
-          aria-label="Open Sage 2.0"
+          aria-label="Open Sage"
         >
           <MessageCircle className="w-8 h-8" />
           <span className="absolute -top-1 -right-1 w-4 h-4 bg-[var(--secondary)] rounded-full animate-pulse" />
