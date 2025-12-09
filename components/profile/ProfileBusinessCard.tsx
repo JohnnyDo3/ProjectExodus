@@ -1497,10 +1497,40 @@ export function ProfileBusinessCard({ userId, onClose, onSave: onSaveCallback, i
               </div>
             </div>
 
-            {/* Social Links */}
-            {hasSocialLinks && (
-              <div className="flex flex-wrap gap-1.5">
-                {profile.social.website && (
+            {/* Social Links - Always show in edit mode, clickable to edit */}
+            <div className="flex flex-wrap gap-1.5">
+              {/* Website */}
+              {isEditing && editingField === 'website' ? (
+                <div className="flex items-center gap-1.5 px-2 py-1 bg-[var(--muted)] rounded-lg">
+                  <Globe className="w-3.5 h-3.5 text-[var(--foreground)]" />
+                  <input
+                    autoFocus
+                    type="url"
+                    value={editedProfile.social?.website || ''}
+                    onChange={(e) => setEditedProfile(prev => ({
+                      ...prev,
+                      social: { ...prev.social, website: e.target.value }
+                    }))}
+                    onBlur={() => setEditingField(null)}
+                    onKeyDown={(e) => { if (e.key === 'Enter' || e.key === 'Escape') setEditingField(null) }}
+                    className="bg-transparent border-none outline-none text-xs font-bold w-32"
+                    placeholder="https://yoursite.com"
+                  />
+                </div>
+              ) : profile.social.website || (isEditing && isOwnProfile) ? (
+                isEditing && isOwnProfile ? (
+                  <button
+                    onClick={() => setEditingField('website')}
+                    className={`flex items-center gap-1.5 px-2 py-1.5 rounded-lg text-xs font-bold transition-colors ${
+                      profile.social.website
+                        ? 'bg-[var(--muted)] text-[var(--foreground)] hover:bg-[var(--primary)] hover:text-[var(--primary-foreground)]'
+                        : 'border border-dashed border-[var(--muted-foreground)] text-[var(--muted-foreground)] italic opacity-50 hover:opacity-100'
+                    }`}
+                  >
+                    <Globe className="w-3.5 h-3.5" />
+                    {profile.social.website ? 'Web' : 'Add Website'}
+                  </button>
+                ) : (
                   <a
                     href={profile.social.website}
                     target="_blank"
@@ -1510,8 +1540,41 @@ export function ProfileBusinessCard({ userId, onClose, onSave: onSaveCallback, i
                     <Globe className="w-3.5 h-3.5" />
                     Web
                   </a>
-                )}
-                {profile.social.linkedin && (
+                )
+              ) : null}
+
+              {/* LinkedIn */}
+              {isEditing && editingField === 'linkedin' ? (
+                <div className="flex items-center gap-1.5 px-2 py-1 bg-[var(--muted)] rounded-lg">
+                  <Linkedin className="w-3.5 h-3.5 text-[var(--foreground)]" />
+                  <input
+                    autoFocus
+                    type="url"
+                    value={editedProfile.social?.linkedin || ''}
+                    onChange={(e) => setEditedProfile(prev => ({
+                      ...prev,
+                      social: { ...prev.social, linkedin: e.target.value }
+                    }))}
+                    onBlur={() => setEditingField(null)}
+                    onKeyDown={(e) => { if (e.key === 'Enter' || e.key === 'Escape') setEditingField(null) }}
+                    className="bg-transparent border-none outline-none text-xs font-bold w-36"
+                    placeholder="linkedin.com/in/you"
+                  />
+                </div>
+              ) : profile.social.linkedin || (isEditing && isOwnProfile) ? (
+                isEditing && isOwnProfile ? (
+                  <button
+                    onClick={() => setEditingField('linkedin')}
+                    className={`flex items-center gap-1.5 px-2 py-1.5 rounded-lg text-xs font-bold transition-colors ${
+                      profile.social.linkedin
+                        ? 'bg-[var(--muted)] text-[var(--foreground)] hover:bg-[var(--accent)] hover:text-[var(--accent-foreground)]'
+                        : 'border border-dashed border-[var(--muted-foreground)] text-[var(--muted-foreground)] italic opacity-50 hover:opacity-100'
+                    }`}
+                  >
+                    <Linkedin className="w-3.5 h-3.5" />
+                    {profile.social.linkedin ? 'LinkedIn' : 'Add LinkedIn'}
+                  </button>
+                ) : (
                   <a
                     href={profile.social.linkedin}
                     target="_blank"
@@ -1521,8 +1584,41 @@ export function ProfileBusinessCard({ userId, onClose, onSave: onSaveCallback, i
                     <Linkedin className="w-3.5 h-3.5" />
                     LinkedIn
                   </a>
-                )}
-                {profile.social.twitter && (
+                )
+              ) : null}
+
+              {/* Twitter/X */}
+              {isEditing && editingField === 'twitter' ? (
+                <div className="flex items-center gap-1.5 px-2 py-1 bg-[var(--muted)] rounded-lg">
+                  <Twitter className="w-3.5 h-3.5 text-[var(--foreground)]" />
+                  <input
+                    autoFocus
+                    type="url"
+                    value={editedProfile.social?.twitter || ''}
+                    onChange={(e) => setEditedProfile(prev => ({
+                      ...prev,
+                      social: { ...prev.social, twitter: e.target.value }
+                    }))}
+                    onBlur={() => setEditingField(null)}
+                    onKeyDown={(e) => { if (e.key === 'Enter' || e.key === 'Escape') setEditingField(null) }}
+                    className="bg-transparent border-none outline-none text-xs font-bold w-32"
+                    placeholder="x.com/handle"
+                  />
+                </div>
+              ) : profile.social.twitter || (isEditing && isOwnProfile) ? (
+                isEditing && isOwnProfile ? (
+                  <button
+                    onClick={() => setEditingField('twitter')}
+                    className={`flex items-center gap-1.5 px-2 py-1.5 rounded-lg text-xs font-bold transition-colors ${
+                      profile.social.twitter
+                        ? 'bg-[var(--muted)] text-[var(--foreground)] hover:bg-[var(--accent)] hover:text-[var(--accent-foreground)]'
+                        : 'border border-dashed border-[var(--muted-foreground)] text-[var(--muted-foreground)] italic opacity-50 hover:opacity-100'
+                    }`}
+                  >
+                    <Twitter className="w-3.5 h-3.5" />
+                    {profile.social.twitter ? 'X' : 'Add X'}
+                  </button>
+                ) : (
                   <a
                     href={profile.social.twitter}
                     target="_blank"
@@ -1532,21 +1628,9 @@ export function ProfileBusinessCard({ userId, onClose, onSave: onSaveCallback, i
                     <Twitter className="w-3.5 h-3.5" />
                     X
                   </a>
-                )}
-              </div>
-            )}
-            {!hasSocialLinks && (
-              <div className="flex flex-wrap gap-1.5 opacity-30">
-                <span className="flex items-center gap-1.5 px-2 py-1.5 border border-dashed border-[var(--muted-foreground)] rounded-lg text-xs font-bold text-[var(--muted-foreground)] italic">
-                  <Globe className="w-3.5 h-3.5" />
-                  Website
-                </span>
-                <span className="flex items-center gap-1.5 px-2 py-1.5 border border-dashed border-[var(--muted-foreground)] rounded-lg text-xs font-bold text-[var(--muted-foreground)] italic">
-                  <Linkedin className="w-3.5 h-3.5" />
-                  LinkedIn
-                </span>
-              </div>
-            )}
+                )
+              ) : null}
+            </div>
           </div>
         </div>
 
