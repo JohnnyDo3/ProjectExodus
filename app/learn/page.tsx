@@ -1,10 +1,12 @@
 'use client'
 
+import { useState } from 'react'
 import { Card, CardContent } from '@/components/ui/Card'
 import { Button } from '@/components/ui/Button'
 import { CompactLiveImpactStats } from '@/components/learn/CompactLiveImpactStats'
 import { TreeBranches } from '@/components/decorative/TreeBranches'
 import { FlyingBirds } from '@/components/decorative/FlyingBirds'
+import { LearningLevel, LEARNING_LEVELS, LEARNING_LEVEL_ORDER } from '@/types/learning'
 import {
   BookOpen, Video, Calculator, Download, Zap, Leaf,
   GraduationCap, Target, Clock, Users, Star, ChevronRight,
@@ -14,6 +16,7 @@ import {
 import Link from 'next/link'
 
 export default function LearnPage() {
+  const [selectedLevel, setSelectedLevel] = useState<LearningLevel>('HIGH_SCHOOL')
   // Auto-scroll handlers
   const scrollToSection = (sectionId: string) => {
     const element = document.getElementById(sectionId)
@@ -190,6 +193,37 @@ export default function LearnPage() {
               </p>
             </div>
 
+            {/* Grade Level Classroom Selector */}
+            <div className="max-w-4xl mx-auto pt-6">
+              <p className="text-lg font-bold text-theme-muted mb-4">
+                Select your learning level to customize all modules:
+              </p>
+              <div className="flex flex-wrap gap-2 justify-center">
+                {LEARNING_LEVEL_ORDER.map((level) => {
+                  const meta = LEARNING_LEVELS[level]
+                  const isSelected = level === selectedLevel
+                  return (
+                    <button
+                      key={level}
+                      onClick={() => setSelectedLevel(level)}
+                      className={`px-4 py-2 rounded-xl text-sm font-bold transition-all duration-200 flex items-center gap-2 ${
+                        isSelected
+                          ? 'bg-[var(--primary)] text-[var(--primary-foreground)] shadow-lg scale-105'
+                          : 'bg-[var(--muted)] text-[var(--foreground)] hover:bg-[var(--primary)]/20 hover:scale-102'
+                      }`}
+                    >
+                      <span className="text-lg">{meta.icon}</span>
+                      <span>{meta.shortLabel}</span>
+                      <span className="text-xs opacity-70">({meta.ageRange})</span>
+                    </button>
+                  )
+                })}
+              </div>
+              <p className="text-sm text-theme-muted mt-3">
+                Currently learning at: <span className="font-black text-theme-primary">{LEARNING_LEVELS[selectedLevel].icon} {LEARNING_LEVELS[selectedLevel].label}</span> level
+              </p>
+            </div>
+
             <div className="flex flex-wrap gap-4 justify-center pt-4">
               <Button
                 size="lg"
@@ -313,6 +347,12 @@ export default function LearnPage() {
             <p className="text-base sm:text-lg md:text-xl font-semibold text-theme-muted px-4">
               Dive deep with our most popular lessons
             </p>
+            <div className="mt-4 inline-flex items-center gap-2 px-4 py-2 rounded-full bg-[color-mix(in_srgb,var(--primary)_20%,var(--background))]">
+              <span className="text-lg">{LEARNING_LEVELS[selectedLevel].icon}</span>
+              <span className="text-sm font-bold text-theme-primary">
+                Classroom Level: {LEARNING_LEVELS[selectedLevel].label}
+              </span>
+            </div>
           </div>
 
           <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6 max-w-7xl mx-auto">
@@ -325,6 +365,12 @@ export default function LearnPage() {
                     <div className="absolute top-3 right-3 px-3 py-1.5 bg-slate-200 dark:bg-slate-700 rounded-lg text-xs font-black text-slate-600 dark:text-slate-300 flex items-center gap-1.5">
                       <Lock className="w-3 h-3" />
                       LOCKED
+                    </div>
+                  )}
+                  {module.available && (
+                    <div className="absolute top-3 right-3 px-2 py-1 bg-[color-mix(in_srgb,var(--primary)_15%,var(--background))] rounded-lg text-xs font-bold text-theme-primary flex items-center gap-1">
+                      <span>{LEARNING_LEVELS[selectedLevel].icon}</span>
+                      <span>{LEARNING_LEVELS[selectedLevel].shortLabel}</span>
                     </div>
                   )}
                   <CardContent className="p-6">
@@ -360,7 +406,7 @@ export default function LearnPage() {
               )
 
               return module.available ? (
-                <Link key={i} href={`/learn/modules/${module.slug}`}>
+                <Link key={i} href={`/learn/modules/${module.slug}?level=${selectedLevel.toLowerCase()}`}>
                   {ModuleCard}
                 </Link>
               ) : (

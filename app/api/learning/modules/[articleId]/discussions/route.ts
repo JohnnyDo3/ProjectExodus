@@ -73,7 +73,7 @@ export async function GET(
         },
         select: { selectedLevel: true }
       })
-      userCompletions = completions.reduce((acc, c) => {
+      userCompletions = completions.reduce((acc: Record<string, boolean>, c) => {
         acc[c.selectedLevel] = true
         return acc
       }, {} as Record<string, boolean>)
