@@ -1216,83 +1216,78 @@ export function ProgressiveSkyline() {
                 ))}
               </g>
 
-              {/* City Parks - Green spaces with fountains, benches, and trees */}
+              {/* City Parks - Green spaces with centered fountains and symmetrical layout */}
               <g>
-                {/* Park 1 - at former 5th building location (x: 2278) */}
+                {/* Park 1 - centered at x=2295 (symmetrical layout) */}
                 <g>
-                  {/* Two small trees in back */}
-                  <g key="park1-tree-1">
-                    <rect x="2275" y="200" width="3" height="10" fill="#6b5a45" opacity="1" />
-                    <circle cx="2276.5" cy="198" r="6" fill="#4a7c2f" opacity="1" />
-                    <circle cx="2273" cy="200" r="4" fill="#5a8a5a" opacity="1" />
-                    <circle cx="2280" cy="200" r="4" fill="#5a8a5a" opacity="1" />
+                  {/* Left tree - 22px from center */}
+                  <g key="park1-tree-left">
+                    <rect x="2272" y="200" width="3" height="10" fill="#6b5a45" opacity="1" />
+                    <circle cx="2273.5" cy="198" r="6" fill="#4a7c2f" opacity="1" />
+                    <circle cx="2270" cy="200" r="4" fill="#5a8a5a" opacity="1" />
+                    <circle cx="2277" cy="200" r="4" fill="#5a8a5a" opacity="1" />
                   </g>
-                  <g key="park1-tree-2">
-                    <rect x="2315" y="201" width="3" height="9" fill="#6b5a45" opacity="1" />
-                    <circle cx="2316.5" cy="199" r="5" fill="#4a7c2f" opacity="1" />
-                    <circle cx="2313" cy="201" r="4" fill="#5a8a5a" opacity="1" />
-                    <circle cx="2320" cy="201" r="4" fill="#5a8a5a" opacity="1" />
+                  {/* Right tree - 22px from center (mirror of left) */}
+                  <g key="park1-tree-right">
+                    <rect x="2315" y="200" width="3" height="10" fill="#6b5a45" opacity="1" />
+                    <circle cx="2316.5" cy="198" r="6" fill="#4a7c2f" opacity="1" />
+                    <circle cx="2313" cy="200" r="4" fill="#5a8a5a" opacity="1" />
+                    <circle cx="2320" cy="200" r="4" fill="#5a8a5a" opacity="1" />
                   </g>
 
-                  {/* Fountain centered in park */}
+                  {/* Fountain centered at x=2295 */}
                   <g>
-                    {/* Fountain base - centered at x=2296 */}
-                    <ellipse cx="2296" cy="210" rx="10" ry="4" fill="#a8a8a8" opacity="1" />
-                    <rect x="2291" y="206" width="10" height="4" fill="#b8b8b8" opacity="1" rx="1" />
+                    {/* Fountain base */}
+                    <ellipse cx="2295" cy="210" rx="10" ry="4" fill="#a8a8a8" opacity="1" />
+                    <rect x="2290" y="206" width="10" height="4" fill="#b8b8b8" opacity="1" rx="1" />
 
                     {/* Fountain basin */}
-                    <ellipse cx="2296" cy="206" rx="8" ry="3" fill="#87CEEB" opacity="1" />
+                    <ellipse cx="2295" cy="206" rx="8" ry="3" fill="#87CEEB" opacity="1" />
 
                     {/* Water spray - symmetrical around center */}
-                    <circle cx="2296" cy="203" r="1.5" fill="#B0E0E6" opacity="1" />
-                    <circle cx="2293" cy="204" r="1" fill="#B0E0E6" opacity="1" />
-                    <circle cx="2299" cy="204" r="1" fill="#B0E0E6" opacity="1" />
-                    <circle cx="2294" cy="201" r="0.8" fill="#B0E0E6" opacity="1" />
-                    <circle cx="2298" cy="201" r="0.8" fill="#B0E0E6" opacity="1" />
+                    <circle cx="2295" cy="203" r="1.5" fill="#B0E0E6" opacity="1" />
+                    <circle cx="2292" cy="204" r="1" fill="#B0E0E6" opacity="1" />
+                    <circle cx="2298" cy="204" r="1" fill="#B0E0E6" opacity="1" />
+                    <circle cx="2293" cy="201" r="0.8" fill="#B0E0E6" opacity="1" />
+                    <circle cx="2297" cy="201" r="0.8" fill="#B0E0E6" opacity="1" />
 
                     {/* Central water column */}
-                    <path d="M 2296,203 L 2296,198 L 2295,199 M 2296,198 L 2297,199"
+                    <path d="M 2295,203 L 2295,198 L 2294,199 M 2295,198 L 2296,199"
                           stroke="#B0E0E6" strokeWidth="0.8" fill="none" opacity="1" />
                   </g>
 
-                  {/* Bench on left side - symmetrical */}
+                  {/* Bench on left side - 25px from center */}
                   <g>
-                    <rect x="2268" y="211" width="10" height="2" fill="#8b7355" opacity="1" />
-                    <rect x="2268" y="208" width="10" height="3" fill="#8b7355" opacity="1" />
-                    <rect x="2268" y="209" width="2" height="4" fill="#6b5a45" opacity="1" />
-                    <rect x="2276" y="209" width="2" height="4" fill="#6b5a45" opacity="1" />
+                    <rect x="2265" y="211" width="10" height="2" fill="#8b7355" opacity="1" />
+                    <rect x="2265" y="208" width="10" height="3" fill="#8b7355" opacity="1" />
+                    <rect x="2265" y="209" width="2" height="4" fill="#6b5a45" opacity="1" />
+                    <rect x="2273" y="209" width="2" height="4" fill="#6b5a45" opacity="1" />
                   </g>
 
-                  {/* Bench on right side - symmetrical (mirroring left bench position) */}
+                  {/* Bench on right side - 25px from center (mirror of left) */}
                   <g>
-                    <rect x="2314" y="211" width="10" height="2" fill="#8b7355" opacity="1" />
-                    <rect x="2314" y="208" width="10" height="3" fill="#8b7355" opacity="1" />
-                    <rect x="2314" y="209" width="2" height="4" fill="#6b5a45" opacity="1" />
-                    <rect x="2322" y="209" width="2" height="4" fill="#6b5a45" opacity="1" />
+                    <rect x="2315" y="211" width="10" height="2" fill="#8b7355" opacity="1" />
+                    <rect x="2315" y="208" width="10" height="3" fill="#8b7355" opacity="1" />
+                    <rect x="2315" y="209" width="2" height="4" fill="#6b5a45" opacity="1" />
+                    <rect x="2323" y="209" width="2" height="4" fill="#6b5a45" opacity="1" />
                   </g>
                 </g>
 
                 {/* Park 2 - centered at x=2745 (symmetrical layout) */}
                 <g>
-                  {/* Symmetrical trees on sides - 20px from center */}
-                  <g key="park2-tree-1">
+                  {/* Left tree - 20px from center */}
+                  <g key="park2-tree-left">
                     <rect x="2724" y="203" width="2" height="7" fill="#6b5a45" opacity="1" />
                     <circle cx="2725" cy="201" r="4" fill="#4a7c2f" opacity="1" />
                     <circle cx="2722" cy="203" r="3" fill="#5a8a5a" opacity="1" />
                     <circle cx="2728" cy="203" r="3" fill="#5a8a5a" opacity="1" />
                   </g>
-                  <g key="park2-tree-2">
+                  {/* Right tree - 20px from center (mirror of left) */}
+                  <g key="park2-tree-right">
                     <rect x="2764" y="203" width="2" height="7" fill="#6b5a45" opacity="1" />
                     <circle cx="2765" cy="201" r="4" fill="#4a7c2f" opacity="1" />
                     <circle cx="2762" cy="203" r="3" fill="#5a8a5a" opacity="1" />
                     <circle cx="2768" cy="203" r="3" fill="#5a8a5a" opacity="1" />
-                  </g>
-                  {/* Center tree in middle-back */}
-                  <g key="park2-tree-3">
-                    <rect x="2744" y="198" width="2" height="6" fill="#6b5a45" opacity="1" />
-                    <circle cx="2745" cy="196" r="3.5" fill="#4a7c2f" opacity="1" />
-                    <circle cx="2742" cy="198" r="2.5" fill="#5a8a5a" opacity="1" />
-                    <circle cx="2748" cy="198" r="2.5" fill="#5a8a5a" opacity="1" />
                   </g>
 
                   {/* Fountain centered at x=2745 */}
@@ -1316,7 +1311,7 @@ export function ProgressiveSkyline() {
                           stroke="#B0E0E6" strokeWidth="0.8" fill="none" opacity="1" />
                   </g>
 
-                  {/* Bench on left side - symmetrical at 27px from center */}
+                  {/* Bench on left side - 22px from center */}
                   <g>
                     <rect x="2718" y="211" width="10" height="2" fill="#8b7355" opacity="1" />
                     <rect x="2718" y="208" width="10" height="3" fill="#8b7355" opacity="1" />
@@ -1324,7 +1319,7 @@ export function ProgressiveSkyline() {
                     <rect x="2726" y="209" width="2" height="4" fill="#6b5a45" opacity="1" />
                   </g>
 
-                  {/* Bench on right side - symmetrical mirror of left bench */}
+                  {/* Bench on right side - 22px from center (mirror of left) */}
                   <g>
                     <rect x="2762" y="211" width="10" height="2" fill="#8b7355" opacity="1" />
                     <rect x="2762" y="208" width="10" height="3" fill="#8b7355" opacity="1" />
