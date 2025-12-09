@@ -2,6 +2,13 @@ import { NextRequest, NextResponse } from 'next/server'
 import { prisma } from '@/lib/db/prisma'
 import { LearningLevel, LEARNING_LEVELS, LEARNING_LEVEL_ORDER } from '@/types/learning'
 
+// Type for level content result from Prisma query
+type LevelContentResult = {
+  level: string
+  estimatedMinutes: number
+  readingLevel: string | null
+}
+
 // GET /api/learning/modules/[articleId]/levels
 // Get available levels for a module
 export async function GET(
@@ -44,7 +51,7 @@ export async function GET(
     }
 
     // Get available levels with metadata
-    const availableLevels = article.levelContents.map(lc => ({
+    const availableLevels = article.levelContents.map((lc: LevelContentResult) => ({
       level: lc.level as LearningLevel,
       meta: LEARNING_LEVELS[lc.level as LearningLevel],
       estimatedMinutes: lc.estimatedMinutes,
