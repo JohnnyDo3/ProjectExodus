@@ -2,7 +2,7 @@
 
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/Card'
 import { Button } from '@/components/ui/Button'
-import { Star, Users, MessageSquare } from 'lucide-react'
+import { Star, Users, MessageSquare, Maximize2, Eye, Heart } from 'lucide-react'
 
 interface PeerReview {
   id: string
@@ -23,10 +23,14 @@ interface PeerReview {
 interface PeerReviewWidgetProps {
   articleId: string
   peerReviews: PeerReview[]
-  onScrollToReviews?: () => void
+  onOpenPanel?: () => void
+  stats?: {
+    views?: number
+    likes?: number
+  }
 }
 
-export function PeerReviewWidget({ articleId, peerReviews, onScrollToReviews }: PeerReviewWidgetProps) {
+export function PeerReviewWidget({ articleId, peerReviews, onOpenPanel, stats }: PeerReviewWidgetProps) {
   // Filter to only top-level reviews (not replies)
   const topLevelReviews = peerReviews.filter(r => !r.parentId && r.rating !== null)
   const totalReplies = peerReviews.filter(r => r.parentId !== null).length
@@ -65,15 +69,9 @@ export function PeerReviewWidget({ articleId, peerReviews, onScrollToReviews }: 
     )
   }
 
-  const handleScrollToReviews = () => {
-    if (onScrollToReviews) {
-      onScrollToReviews()
-    } else {
-      // Fallback: scroll to round table section
-      const reviewsSection = document.getElementById('round-table-section')
-      if (reviewsSection) {
-        reviewsSection.scrollIntoView({ behavior: 'smooth' })
-      }
+  const handleOpenPanel = () => {
+    if (onOpenPanel) {
+      onOpenPanel()
     }
   }
 
@@ -85,12 +83,22 @@ export function PeerReviewWidget({ articleId, peerReviews, onScrollToReviews }: 
             <Users className="w-4 h-4 text-moss-600 dark:text-moss-400" />
             Round Table Talk
           </div>
-          {topLevelReviews.length > 0 && (
-            <div className="flex items-center gap-1">
-              <Star className="w-4 h-4 fill-terra-500 text-terra-500" />
-              <span className="font-black text-sm">{averageRating.toFixed(1)}</span>
-            </div>
-          )}
+          <div className="flex items-center gap-2">
+            {topLevelReviews.length > 0 && (
+              <div className="flex items-center gap-1">
+                <Star className="w-4 h-4 fill-terra-500 text-terra-500" />
+                <span className="font-black text-sm">{averageRating.toFixed(1)}</span>
+              </div>
+            )}
+            {/* Expand button - always visible */}
+            <button
+              onClick={handleOpenPanel}
+              className="p-1 rounded hover:bg-[var(--muted)] transition-colors"
+              title="Expand discussion panel"
+            >
+              <Maximize2 className="w-4 h-4 text-[var(--foreground)]/60 hover:text-[var(--foreground)]" />
+            </button>
+          </div>
         </CardTitle>
       </CardHeader>
       <CardContent className="space-y-4">
@@ -100,11 +108,28 @@ export function PeerReviewWidget({ articleId, peerReviews, onScrollToReviews }: 
             <p className="text-sm text-[var(--foreground)]/60 mb-3">
               No discussions yet. Be the first to share your thoughts!
             </p>
+            {/* Stats - views and likes even with no reviews */}
+            {stats && (stats.views !== undefined || stats.likes !== undefined) && (
+              <div className="flex items-center justify-center gap-4 py-2 mb-3 border-t border-b border-[var(--border)]">
+                {stats.views !== undefined && (
+                  <div className="flex items-center gap-1 text-xs text-[var(--foreground)]/60">
+                    <Eye className="w-3.5 h-3.5" />
+                    <span>{stats.views.toLocaleString()} view{stats.views !== 1 ? 's' : ''}</span>
+                  </div>
+                )}
+                {stats.likes !== undefined && (
+                  <div className="flex items-center gap-1 text-xs text-[var(--foreground)]/60">
+                    <Heart className="w-3.5 h-3.5" />
+                    <span>{stats.likes.toLocaleString()} like{stats.likes !== 1 ? 's' : ''}</span>
+                  </div>
+                )}
+              </div>
+            )}
             <Button
               variant="primary"
               size="sm"
               className="w-full"
-              onClick={handleScrollToReviews}
+              onClick={handleOpenPanel}
             >
               Join the Discussion
             </Button>
@@ -133,14 +158,26 @@ export function PeerReviewWidget({ articleId, peerReviews, onScrollToReviews }: 
 
             {/* Stats */}
             <div className="flex items-center justify-center gap-4 py-2 border-t border-[var(--border)]">
+              {stats?.views !== undefined && (
+                <div className="flex items-center gap-1 text-xs text-[var(--foreground)]/60">
+                  <Eye className="w-3.5 h-3.5" />
+                  <span>{stats.views.toLocaleString()}</span>
+                </div>
+              )}
+              {stats?.likes !== undefined && (
+                <div className="flex items-center gap-1 text-xs text-[var(--foreground)]/60">
+                  <Heart className="w-3.5 h-3.5" />
+                  <span>{stats.likes.toLocaleString()}</span>
+                </div>
+              )}
               <div className="flex items-center gap-1 text-xs text-[var(--foreground)]/60">
                 <Users className="w-3.5 h-3.5" />
-                <span>{topLevelReviews.length} voice{topLevelReviews.length !== 1 ? 's' : ''}</span>
+                <span>{topLevelReviews.length}</span>
               </div>
               {totalReplies > 0 && (
                 <div className="flex items-center gap-1 text-xs text-[var(--foreground)]/60">
                   <MessageSquare className="w-3.5 h-3.5" />
-                  <span>{totalReplies} repl{totalReplies !== 1 ? 'ies' : 'y'}</span>
+                  <span>{totalReplies}</span>
                 </div>
               )}
             </div>
@@ -150,7 +187,7 @@ export function PeerReviewWidget({ articleId, peerReviews, onScrollToReviews }: 
               variant="primary"
               size="sm"
               className="w-full"
-              onClick={handleScrollToReviews}
+              onClick={handleOpenPanel}
             >
               Join the Discussion
             </Button>

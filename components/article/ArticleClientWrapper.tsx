@@ -204,6 +204,7 @@ export function ArticleClientWrapper({ article }: ArticleClientWrapperProps) {
           <PeerReviewWidget
             articleId={article.id}
             peerReviews={reviews}
+            onOpenPanel={() => setIsPanelOpen(true)}
           />
 
           {/* Author Business Card */}
