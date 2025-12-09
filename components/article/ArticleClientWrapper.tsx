@@ -229,7 +229,8 @@ export function ArticleClientWrapper({ article }: ArticleClientWrapperProps) {
           <PeerReviewWidget
             articleId={article.id}
             peerReviews={reviews}
-            onOpenPanel={openAsModal}
+            onOpenPanel={openAsSlideout}
+            onReviewAdded={(review) => setReviews(prev => [{ ...review, replies: [] }, ...prev])}
           />
 
           {/* Author Business Card */}

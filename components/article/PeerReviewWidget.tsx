@@ -1,8 +1,10 @@
 'use client'
 
+import { useState } from 'react'
+import { useSession } from 'next-auth/react'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/Card'
 import { Button } from '@/components/ui/Button'
-import { Star, Users, MessageSquare, Maximize2, Eye, Heart } from 'lucide-react'
+import { Star, Users, MessageSquare, Maximize2, Eye, Heart, Send } from 'lucide-react'
 
 interface PeerReview {
   id: string
@@ -24,13 +26,17 @@ interface PeerReviewWidgetProps {
   articleId: string
   peerReviews: PeerReview[]
   onOpenPanel?: () => void
+  onReviewAdded?: (review: PeerReview) => void
   stats?: {
     views?: number
     likes?: number
   }
 }
 
-export function PeerReviewWidget({ articleId, peerReviews, onOpenPanel, stats }: PeerReviewWidgetProps) {
+export function PeerReviewWidget({ articleId, peerReviews, onOpenPanel, onReviewAdded, stats }: PeerReviewWidgetProps) {
+  const { data: session } = useSession()
+  const [quickComment, setQuickComment] = useState('')
+  const [isSubmitting, setIsSubmitting] = useState(false)
   // Filter to only top-level reviews (not replies)
   const topLevelReviews = peerReviews.filter(r => !r.parentId && r.rating !== null)
   const totalReplies = peerReviews.filter(r => r.parentId !== null).length
@@ -72,6 +78,32 @@ export function PeerReviewWidget({ articleId, peerReviews, onOpenPanel, stats }:
   const handleOpenPanel = () => {
     if (onOpenPanel) {
       onOpenPanel()
+    }
+  }
+
+  const handleQuickComment = async (e: React.FormEvent) => {
+    e.preventDefault()
+    if (!session || !quickComment.trim() || isSubmitting) return
+
+    setIsSubmitting(true)
+    try {
+      const res = await fetch(`/api/articles/${articleId}/reviews`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ content: quickComment.trim() })
+      })
+
+      const data = await res.json()
+      if (res.ok && data.success) {
+        setQuickComment('')
+        if (onReviewAdded) {
+          onReviewAdded(data.data)
+        }
+      }
+    } catch (error) {
+      console.error('Failed to post comment:', error)
+    } finally {
+      setIsSubmitting(false)
     }
   }
 
@@ -125,14 +157,30 @@ export function PeerReviewWidget({ articleId, peerReviews, onOpenPanel, stats }:
                 )}
               </div>
             )}
-            <Button
-              variant="primary"
-              size="sm"
-              className="w-full"
-              onClick={handleOpenPanel}
-            >
-              Join the Discussion
-            </Button>
+            {/* Quick comment form */}
+            {session ? (
+              <form onSubmit={handleQuickComment} className="flex gap-2">
+                <input
+                  type="text"
+                  value={quickComment}
+                  onChange={(e) => setQuickComment(e.target.value)}
+                  placeholder="Add a comment..."
+                  className="flex-1 px-3 py-2 text-sm border border-[var(--border)] rounded-lg bg-[var(--background)] text-[var(--foreground)] placeholder:text-[var(--foreground)]/40"
+                />
+                <Button
+                  type="submit"
+                  size="sm"
+                  disabled={isSubmitting || !quickComment.trim()}
+                  className="px-3"
+                >
+                  <Send className="w-4 h-4" />
+                </Button>
+              </form>
+            ) : (
+              <p className="text-xs text-center text-[var(--foreground)]/60">
+                <a href="/auth/signin" className="text-[var(--primary)] hover:underline">Sign in</a> to comment
+              </p>
+            )}
           </div>
         ) : (
           <>
@@ -182,15 +230,30 @@ export function PeerReviewWidget({ articleId, peerReviews, onOpenPanel, stats }:
               )}
             </div>
 
-            {/* Join Button */}
-            <Button
-              variant="primary"
-              size="sm"
-              className="w-full"
-              onClick={handleOpenPanel}
-            >
-              Join the Discussion
-            </Button>
+            {/* Quick comment form */}
+            {session ? (
+              <form onSubmit={handleQuickComment} className="flex gap-2">
+                <input
+                  type="text"
+                  value={quickComment}
+                  onChange={(e) => setQuickComment(e.target.value)}
+                  placeholder="Add a comment..."
+                  className="flex-1 px-3 py-2 text-sm border border-[var(--border)] rounded-lg bg-[var(--background)] text-[var(--foreground)] placeholder:text-[var(--foreground)]/40"
+                />
+                <Button
+                  type="submit"
+                  size="sm"
+                  disabled={isSubmitting || !quickComment.trim()}
+                  className="px-3"
+                >
+                  <Send className="w-4 h-4" />
+                </Button>
+              </form>
+            ) : (
+              <p className="text-xs text-center text-[var(--foreground)]/60">
+                <a href="/auth/signin" className="text-[var(--primary)] hover:underline">Sign in</a> to comment
+              </p>
+            )}
           </>
         )}
       </CardContent>
