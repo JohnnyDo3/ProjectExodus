@@ -22,6 +22,12 @@ type ModuleWithCount = Prisma.ArticleGetPayload<{
   }
 }>
 
+// Type for level count from groupBy
+type LevelCountResult = {
+  level: string
+  _count: number
+}
+
 // GET /api/community/learn-discussions
 // Get all learning module discussions for the community page
 export async function GET(request: NextRequest) {
@@ -148,7 +154,7 @@ export async function GET(request: NextRequest) {
         levels: Object.keys(LEARNING_LEVELS).map(level => ({
           level,
           meta: LEARNING_LEVELS[level as LearningLevel],
-          count: levelCounts.find(lc => lc.level === level)?._count || 0
+          count: levelCounts.find((lc: LevelCountResult) => lc.level === level)?._count || 0
         }))
       },
       pagination: {
