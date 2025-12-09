@@ -593,18 +593,10 @@ export function RoundTablePanel({
     )
   }
 
-  // Default slideout mode
+  // Default slideout mode - no backdrop so article remains readable
   return (
     <>
-      {/* Backdrop */}
-      <div
-        className={`fixed inset-0 z-40 bg-black/30 transition-opacity duration-300 ${
-          isOpen ? 'opacity-100' : 'opacity-0 pointer-events-none'
-        }`}
-        onClick={onClose}
-      />
-
-      {/* Slide-out Panel */}
+      {/* Slide-out Panel from right */}
       <div
         className={`fixed top-0 right-0 z-50 h-full w-full max-w-md bg-[var(--card)] border-l-2 border-[var(--border)] shadow-2xl transform transition-transform duration-300 ease-in-out ${
           isOpen ? 'translate-x-0' : 'translate-x-full'
