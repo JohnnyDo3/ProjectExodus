@@ -159,28 +159,26 @@ export function ProjectExodusAI() {
       {!isOpen && (
         <button
           onClick={() => setIsOpen(true)}
-          className="fixed bottom-4 right-4 sm:bottom-6 sm:right-6 z-50 group"
+          className="fixed bottom-4 right-4 sm:bottom-6 sm:right-6 z-50 w-14 h-14 sm:w-16 sm:h-16 group"
           aria-label="Open Sage"
         >
-          <div className="relative">
-            {/* Pulsing ring animation */}
-            <div className="absolute -inset-2 bg-gradient-to-r from-moss-500 to-ocean-500 rounded-full opacity-75 blur group-hover:opacity-100 transition animate-pulse" />
+          {/* Pulsing ring animation - pointer-events-none so it doesn't expand hover area */}
+          <div className="absolute -inset-2 bg-gradient-to-r from-moss-500 to-ocean-500 rounded-full opacity-50 blur group-hover:opacity-75 transition animate-pulse pointer-events-none" />
 
-            {/* Main button */}
-            <div className="relative w-14 h-14 sm:w-16 sm:h-16 bg-gradient-to-br from-moss-600 to-ocean-600 rounded-full flex items-center justify-center shadow-2xl transform group-hover:scale-110 transition-transform duration-300">
-              <Leaf className="w-7 h-7 sm:w-8 sm:h-8 text-white" />
+          {/* Main button */}
+          <div className="relative w-full h-full bg-gradient-to-br from-moss-600 to-ocean-600 rounded-full flex items-center justify-center shadow-2xl transform group-hover:scale-110 transition-transform duration-300">
+            <Leaf className="w-7 h-7 sm:w-8 sm:h-8 text-white" />
 
-              {/* Notification badge if greeting is ready */}
-              {messages.length > 0 && (
-                <div className="absolute -top-1 -right-1 w-5 h-5 bg-gradient-to-br from-red-500 to-orange-500 rounded-full flex items-center justify-center shadow-lg animate-pulse">
-                  <span className="text-white text-xs font-bold">1</span>
-                </div>
-              )}
-            </div>
+            {/* Notification badge if greeting is ready */}
+            {messages.length > 0 && (
+              <div className="absolute -top-1 -right-1 w-5 h-5 bg-gradient-to-br from-red-500 to-orange-500 rounded-full flex items-center justify-center shadow-lg animate-pulse">
+                <span className="text-white text-xs font-bold">1</span>
+              </div>
+            )}
           </div>
 
-          {/* Tooltip */}
-          <div className="absolute bottom-full right-0 mb-2 px-4 py-2 bg-[var(--card)] border-2 border-theme-primary rounded-lg shadow-lg opacity-0 group-hover:opacity-100 transition-opacity duration-200 whitespace-nowrap">
+          {/* Tooltip - only show on actual hover, not close proximity */}
+          <div className="absolute bottom-full right-0 mb-2 px-4 py-2 bg-[var(--card)] border-2 border-theme-primary rounded-lg shadow-lg opacity-0 group-hover:opacity-100 transition-opacity duration-200 whitespace-nowrap pointer-events-none">
             <p className="text-sm font-bold text-[var(--foreground)]">Sage - Your Sustainability Guide</p>
             <div className="absolute bottom-0 right-6 transform translate-y-1/2 rotate-45 w-3 h-3 bg-[var(--card)] border-r-2 border-b-2 border-theme-primary" />
           </div>
@@ -241,7 +239,7 @@ export function ProjectExodusAI() {
                   {message.role === 'assistant' && (
                     <div className="flex items-center gap-2 mb-2">
                       <Leaf className="w-4 h-4 text-theme-primary" />
-                      <span className="text-xs font-bold text-theme-primary">SAGE 2.0</span>
+                      <span className="text-xs font-bold text-theme-primary">SAGE</span>
                     </div>
                   )}
                   <p className="text-sm leading-relaxed whitespace-pre-line">

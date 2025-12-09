@@ -350,7 +350,13 @@ export function PeerReviewWidget({ articleId, peerReviews: initialReviews, onRev
 
                 {depth < maxDepth && session && (
                   <button
-                    onClick={() => setReplyingTo(replyingTo === item.id ? null : item.id)}
+                    onClick={() => {
+                      // If switching to a different comment, clear the reply content
+                      if (replyingTo !== item.id) {
+                        setReplyContent('')
+                      }
+                      setReplyingTo(replyingTo === item.id ? null : item.id)
+                    }}
                     className="flex items-center gap-1 text-xs text-[var(--foreground)]/50 hover:text-[var(--foreground)] transition-colors"
                   >
                     <Reply className="w-3.5 h-3.5" />
@@ -370,8 +376,9 @@ export function PeerReviewWidget({ articleId, peerReviews: initialReviews, onRev
 
               {/* Reply Form */}
               {replyingTo === item.id && (
-                <div className="mt-3 flex gap-2">
+                <div className="mt-3 flex gap-2" onClick={(e) => e.stopPropagation()}>
                   <input
+                    key={`reply-input-${item.id}`}
                     type="text"
                     value={replyContent}
                     onChange={(e) => setReplyContent(e.target.value)}
@@ -380,12 +387,27 @@ export function PeerReviewWidget({ articleId, peerReviews: initialReviews, onRev
                         e.preventDefault()
                         handleSubmitReply(item.id)
                       }
+                      if (e.key === 'Escape') {
+                        setReplyingTo(null)
+                        setReplyContent('')
+                      }
                     }}
                     placeholder="Write a reply..."
-                    className="flex-1 px-3 py-2 text-sm border border-[var(--border)] rounded-lg bg-[var(--background)] text-[var(--foreground)]"
+                    className="flex-1 px-3 py-2 text-sm border border-[var(--border)] rounded-lg bg-[var(--background)] text-[var(--foreground)] focus:outline-none focus:ring-2 focus:ring-[var(--primary)] focus:border-transparent"
+                    autoFocus
                   />
                   <Button size="sm" onClick={() => handleSubmitReply(item.id)} disabled={isSubmitting || !replyContent.trim()}>
                     <Send className="w-4 h-4" />
+                  </Button>
+                  <Button
+                    size="sm"
+                    variant="outline"
+                    onClick={() => {
+                      setReplyingTo(null)
+                      setReplyContent('')
+                    }}
+                  >
+                    <X className="w-4 h-4" />
                   </Button>
                 </div>
               )}

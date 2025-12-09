@@ -1,9 +1,11 @@
 'use client'
 
 import { useState } from 'react'
+import { useSession } from 'next-auth/react'
+import { useRouter } from 'next/navigation'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/Card'
 import { Button } from '@/components/ui/Button'
-import { User, MessageCircle, Tag, Star, Users } from 'lucide-react'
+import { User, MessageCircle, Tag, Star, Users, Edit, Trash2, AlertTriangle } from 'lucide-react'
 import Link from 'next/link'
 import { formatDistanceToNow } from 'date-fns'
 import { MarkdownContent } from '@/components/article/MarkdownContent'
@@ -66,9 +68,36 @@ function StarRatingDisplay({ value, size = 'sm' }: { value: number; size?: 'sm' 
 }
 
 export function ArticleClientWrapper({ article }: ArticleClientWrapperProps) {
+  const { data: session } = useSession()
+  const router = useRouter()
   const [reviews, setReviews] = useState(article.peerReviews || [])
   const [activeTab, setActiveTab] = useState<'all' | 'reviews' | 'comments'>('all')
   const [expandedRatingId, setExpandedRatingId] = useState<string | null>(null)
+  const [showDeleteConfirm, setShowDeleteConfirm] = useState(false)
+  const [isDeleting, setIsDeleting] = useState(false)
+
+  // Check if current user is the author
+  const isAuthor = session?.user?.id === article.authorId
+
+  // Handle article deletion
+  const handleDelete = async () => {
+    setIsDeleting(true)
+    try {
+      const res = await fetch(`/api/articles/${article.id}`, { method: 'DELETE' })
+      const data = await res.json()
+      if (data.success) {
+        router.push('/articles')
+      } else {
+        alert('Failed to delete article')
+      }
+    } catch (error) {
+      console.error('Error deleting article:', error)
+      alert('Failed to delete article')
+    } finally {
+      setIsDeleting(false)
+      setShowDeleteConfirm(false)
+    }
+  }
 
   // Filter reviews based on active tab
   const topLevelItems = reviews.filter((r: any) => r.parentId === null)
@@ -88,6 +117,35 @@ export function ArticleClientWrapper({ article }: ArticleClientWrapperProps) {
     <div className="grid md:grid-cols-3 gap-8">
       {/* Main Content */}
       <article className="md:col-span-2">
+        {/* Author Controls */}
+        {isAuthor && (
+          <div className="mb-4 p-4 bg-[var(--muted)] rounded-xl border-2 border-[var(--border)]">
+            <div className="flex items-center justify-between">
+              <div className="flex items-center gap-2">
+                <Edit className="w-4 h-4 text-[var(--primary)]" />
+                <span className="text-sm font-bold text-[var(--foreground)]">You are the author of this article</span>
+              </div>
+              <div className="flex items-center gap-2">
+                <Link href={`/articles/write?edit=${article.id}`}>
+                  <Button size="sm" variant="outline" className="gap-2">
+                    <Edit className="w-4 h-4" />
+                    Edit Article
+                  </Button>
+                </Link>
+                <Button
+                  size="sm"
+                  variant="outline"
+                  className="gap-2 text-red-500 hover:bg-red-500/10 hover:border-red-500"
+                  onClick={() => setShowDeleteConfirm(true)}
+                >
+                  <Trash2 className="w-4 h-4" />
+                  Delete
+                </Button>
+              </div>
+            </div>
+          </div>
+        )}
+
         <Card className="bg-[var(--card)] border-2 border-[var(--border)]">
           <CardContent className="p-6 sm:p-8 md:p-12 select-text">
             {article.content ? (
@@ -343,6 +401,44 @@ export function ArticleClientWrapper({ article }: ArticleClientWrapperProps) {
           </CardContent>
         </Card>
       </aside>
+
+      {/* Delete Confirmation Modal */}
+      {showDeleteConfirm && (
+        <div className="fixed inset-0 z-[100] flex items-center justify-center p-4 bg-black/50 backdrop-blur-sm">
+          <div className="bg-[var(--card)] rounded-2xl shadow-2xl max-w-md w-full border-2 border-[var(--border)] overflow-hidden">
+            <div className="p-6">
+              <div className="flex items-start gap-4">
+                <div className="w-12 h-12 rounded-full bg-red-500/10 flex items-center justify-center flex-shrink-0">
+                  <AlertTriangle className="w-6 h-6 text-red-500" />
+                </div>
+                <div>
+                  <h3 className="text-lg font-black text-[var(--foreground)] mb-2">Delete Article</h3>
+                  <p className="text-sm text-[var(--foreground)]/70">
+                    Are you sure you want to delete "<span className="font-semibold">{article.title}</span>"? This action cannot be undone.
+                  </p>
+                </div>
+              </div>
+            </div>
+            <div className="flex gap-3 p-4 bg-[var(--muted)] border-t border-[var(--border)]">
+              <Button
+                variant="outline"
+                className="flex-1"
+                onClick={() => setShowDeleteConfirm(false)}
+                disabled={isDeleting}
+              >
+                Cancel
+              </Button>
+              <Button
+                className="flex-1 bg-red-500 hover:bg-red-600 text-white"
+                onClick={handleDelete}
+                disabled={isDeleting}
+              >
+                {isDeleting ? 'Deleting...' : 'Delete Article'}
+              </Button>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   )
 }
