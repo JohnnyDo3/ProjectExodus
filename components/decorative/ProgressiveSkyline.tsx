@@ -971,17 +971,18 @@ export function ProgressiveSkyline() {
                   {x: 3512, h: 82, w: 58, color: "#f0f8f0"}, {x: 3580, h: 100, w: 70, color: "#e0f2e0"},
                   {x: 3660, h: 88, w: 62, color: "#e8f4e8"}, {x: 3732, h: 75, w: 54, color: "#f0f8f0"}
                 ].map((bldg, i) => {
-                  // Calculate dense skyscraper window layout - matching ground floor window size
-                  const windowWidth = 6
-                  const windowHeight = 10
-                  const windowGapX = 2 // Small gap between windows horizontally
-                  const windowGapY = 2 // Small gap between rows vertically
-                  const sideMargin = 3 // Small margin from building edge
+                  // Calculate skyscraper window layout - one less column, larger detailed windows
+                  const windowWidth = 8
+                  const windowHeight = 12
+                  const windowGapX = 3 // Gap between windows horizontally
+                  const windowGapY = 3 // Gap between rows vertically
+                  const sideMargin = 4 // Margin from building edge
                   const topMargin = 6 // Margin from roof
                   const bottomMargin = 16 // Space for first floor (door area)
 
-                  // Calculate number of window columns - pack them in tightly
-                  const windowCols = Math.floor((bldg.w - sideMargin * 2) / (windowWidth + windowGapX))
+                  // Calculate number of window columns - one less than maximum fit
+                  const maxCols = Math.floor((bldg.w - sideMargin * 2) / (windowWidth + windowGapX))
+                  const windowCols = Math.max(1, maxCols - 1)
                   const totalWindowsWidth = windowCols * windowWidth + (windowCols - 1) * windowGapX
                   const startX = bldg.x + (bldg.w - totalWindowsWidth) / 2
 
@@ -1017,70 +1018,122 @@ export function ProgressiveSkyline() {
                     {/* Decorative cornice at roofline */}
                     <rect x={bldg.x - 1} y={215 - bldg.h - 1} width={bldg.w + 2} height="1.5" fill="#c8d8c8" opacity="1" />
 
-                    {/* Dense skyscraper windows - grid pattern with balconies */}
+                    {/* Detailed skyscraper windows - grid pattern with balconies */}
                     <g opacity="1">
                       {Array.from({length: windowRows}).map((_, row) => (
                         <g key={`row-${row}`}>
-                          {/* Windows in this row - tightly packed */}
+                          {/* Windows in this row */}
                           {Array.from({length: windowCols}).map((_, col) => {
                             const windowX = startX + col * (windowWidth + windowGapX)
                             const windowY = 215 - bldg.h + topMargin + row * (windowHeight + windowGapY)
                             const hasBalcony = row % 3 === 1 // Balcony every 3rd row
+                            const isLit = isNightTime && isWindowLit(bldg.x + row * 100 + col * 50 + i)
                             return (
                             <g key={`win-${row}-${col}`}>
-                              {/* Window glass */}
+                              {/* Window frame - outer border */}
                               <rect x={windowX}
                                     y={windowY}
                                     width={windowWidth}
                                     height={windowHeight}
-                                    fill="#6b8ea8"
+                                    fill="#4a5a4a"
                                     opacity="1" />
-                              {/* Window light for nighttime */}
-                              {isNightTime && isWindowLit(bldg.x + row * 100 + col * 50 + i) && (
-                                <rect className="window-light"
-                                      x={windowX}
-                                      y={windowY}
-                                      width={windowWidth}
-                                      height={windowHeight}
-                                      fill="#FFD700"
-                                      opacity="0.9" />
+
+                              {/* Window glass background */}
+                              <rect x={windowX + 0.8}
+                                    y={windowY + 0.8}
+                                    width={windowWidth - 1.6}
+                                    height={windowHeight - 1.6}
+                                    fill={isLit ? "#FFD700" : "#6b8ea8"}
+                                    opacity="1" />
+
+                              {/* Horizontal mullion - divides window in half */}
+                              <rect x={windowX + 0.8}
+                                    y={windowY + windowHeight / 2 - 0.3}
+                                    width={windowWidth - 1.6}
+                                    height="0.6"
+                                    fill="#4a5a4a"
+                                    opacity="1" />
+
+                              {/* Vertical mullion - divides window in half */}
+                              <rect x={windowX + windowWidth / 2 - 0.3}
+                                    y={windowY + 0.8}
+                                    width="0.6"
+                                    height={windowHeight - 1.6}
+                                    fill="#4a5a4a"
+                                    opacity="1" />
+
+                              {/* Window sill - bottom ledge */}
+                              <rect x={windowX - 0.5}
+                                    y={windowY + windowHeight - 0.5}
+                                    width={windowWidth + 1}
+                                    height="1"
+                                    fill="#5a6a5a"
+                                    opacity="1" />
+
+                              {/* Reflection highlight - top left corner */}
+                              {!isLit && (
+                                <rect x={windowX + 1.2}
+                                      y={windowY + 1.2}
+                                      width={windowWidth / 2 - 1.5}
+                                      height={windowHeight / 2 - 1.5}
+                                      fill="#8ab8d8"
+                                      opacity="0.4" />
                               )}
+
+                              {/* Nighttime warm glow effect */}
+                              {isLit && (
+                                <rect className="window-light"
+                                      x={windowX + 0.8}
+                                      y={windowY + 0.8}
+                                      width={windowWidth - 1.6}
+                                      height={windowHeight - 1.6}
+                                      fill="#FFD700"
+                                      opacity="0.3" />
+                              )}
+
                               {/* Balcony - every 3rd row */}
                               {hasBalcony && (
                                 <g>
                                   {/* Balcony floor - extends beyond window */}
-                                  <rect x={windowX - 1}
+                                  <rect x={windowX - 1.5}
                                         y={windowY + windowHeight}
-                                        width={windowWidth + 2}
+                                        width={windowWidth + 3}
                                         height="1.5"
                                         fill="#7a8a7a"
                                         opacity="1" />
                                   {/* Balcony railing - left post */}
-                                  <rect x={windowX - 1}
-                                        y={windowY + windowHeight - 3}
-                                        width="0.8"
-                                        height="3"
+                                  <rect x={windowX - 1.5}
+                                        y={windowY + windowHeight - 4}
+                                        width="1"
+                                        height="4"
                                         fill="#6a7a6a"
                                         opacity="1" />
                                   {/* Balcony railing - right post */}
-                                  <rect x={windowX + windowWidth + 0.2}
-                                        y={windowY + windowHeight - 3}
-                                        width="0.8"
-                                        height="3"
+                                  <rect x={windowX + windowWidth + 0.5}
+                                        y={windowY + windowHeight - 4}
+                                        width="1"
+                                        height="4"
+                                        fill="#6a7a6a"
+                                        opacity="1" />
+                                  {/* Balcony railing - center post */}
+                                  <rect x={windowX + windowWidth / 2 - 0.5}
+                                        y={windowY + windowHeight - 4}
+                                        width="1"
+                                        height="4"
                                         fill="#6a7a6a"
                                         opacity="1" />
                                   {/* Balcony top rail */}
-                                  <rect x={windowX - 1}
-                                        y={windowY + windowHeight - 3}
-                                        width={windowWidth + 2}
-                                        height="0.6"
-                                        fill="#6a7a6a"
+                                  <rect x={windowX - 1.5}
+                                        y={windowY + windowHeight - 4}
+                                        width={windowWidth + 3}
+                                        height="0.8"
+                                        fill="#5a6a5a"
                                         opacity="1" />
                                   {/* Middle horizontal rail */}
-                                  <rect x={windowX - 1}
-                                        y={windowY + windowHeight - 1.5}
-                                        width={windowWidth + 2}
-                                        height="0.4"
+                                  <rect x={windowX - 1.5}
+                                        y={windowY + windowHeight - 2}
+                                        width={windowWidth + 3}
+                                        height="0.5"
                                         fill="#6a7a6a"
                                         opacity="1" />
                                 </g>
