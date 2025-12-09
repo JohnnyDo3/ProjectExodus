@@ -994,18 +994,18 @@ export function ProgressiveSkyline() {
                       ))}
                     </g>
 
-                    {/* VERTICAL GARDENS - greenery cascading down facade */}
+                    {/* VERTICAL GARDENS - between windows from 2nd floor up */}
                     <g opacity="1">
-                      {Array.from({length: Math.floor(bldg.w/18)}).map((_, vine) => (
+                      {Array.from({length: Math.max(0, Math.floor(bldg.w/16) - 1)}).map((_, vine) => (
                         <path key={`vine-${vine}`}
-                              d={`M ${bldg.x+8+vine*18},${215-bldg.h+8} Q ${bldg.x+10+vine*18},${215-bldg.h+bldg.h/3} ${bldg.x+8+vine*18},${215-bldg.h+2*bldg.h/3} Q ${bldg.x+10+vine*18},${215-bldg.h+bldg.h-5} ${bldg.x+8+vine*18},${215-bldg.h+bldg.h-2}`}
+                              d={`M ${bldg.x+14+vine*16},${215-bldg.h+32} Q ${bldg.x+16+vine*16},${215-bldg.h+50} ${bldg.x+14+vine*16},${215-bldg.h+70} Q ${bldg.x+16+vine*16},${215-bldg.h+bldg.h-25} ${bldg.x+14+vine*16},${Math.min(200, 215-bldg.h+bldg.h-10)}`}
                               stroke="#5a8a5a"
-                              strokeWidth="3"
+                              strokeWidth="2.5"
                               fill="none" />
                       ))}
                     </g>
 
-                    {/* Large windows with frames and BALCONIES - skip first floor (door area) */}
+                    {/* Large windows with frames and BALCONIES - upper floors */}
                     <g opacity="1">
                       {Array.from({length: Math.max(1, Math.floor((bldg.h - 30) / 20))}).map((_, row) => (
                         Array.from({length: Math.floor(bldg.w/16)}).map((_, col) => (
@@ -1066,6 +1066,54 @@ export function ProgressiveSkyline() {
                       ))}
                     </g>
 
+                    {/* First floor windows - on either side of doorway */}
+                    <g opacity="1">
+                      {/* Left window beside door */}
+                      <rect x={bldg.x + bldg.w/2 - 20}
+                            y={200}
+                            width="8"
+                            height="10"
+                            fill="#8a9a8a"
+                            opacity="1" />
+                      <rect x={bldg.x + bldg.w/2 - 19}
+                            y={201}
+                            width="6"
+                            height="8"
+                            fill="#6b8ea8"
+                            opacity="1" />
+                      {isNightTime && isWindowLit(bldg.x + 1000 + i) && (
+                        <rect className="window-light"
+                              x={bldg.x + bldg.w/2 - 18}
+                              y={202}
+                              width="4"
+                              height="6"
+                              fill="#FFD700"
+                              opacity="0.9" />
+                      )}
+                      {/* Right window beside door */}
+                      <rect x={bldg.x + bldg.w/2 + 12}
+                            y={200}
+                            width="8"
+                            height="10"
+                            fill="#8a9a8a"
+                            opacity="1" />
+                      <rect x={bldg.x + bldg.w/2 + 13}
+                            y={201}
+                            width="6"
+                            height="8"
+                            fill="#6b8ea8"
+                            opacity="1" />
+                      {isNightTime && isWindowLit(bldg.x + 1001 + i) && (
+                        <rect className="window-light"
+                              x={bldg.x + bldg.w/2 + 14}
+                              y={202}
+                              width="4"
+                              height="6"
+                              fill="#FFD700"
+                              opacity="0.9" />
+                      )}
+                    </g>
+
                     {/* Building foundation/sidewalk - prevents merging into grass */}
                     <g opacity="1">
                       {/* Concrete foundation strip under building */}
@@ -1084,37 +1132,37 @@ export function ProgressiveSkyline() {
                             opacity="1" />
                     </g>
 
-                    {/* Ground-level entrance doors - extend to sidewalk */}
+                    {/* Ground-level entrance doors - flush with sidewalk */}
                     <g opacity="1">
-                      {/* Door frame */}
+                      {/* Door frame - extends to sidewalk level (y=212) */}
                       <rect x={bldg.x + bldg.w/2 - 8}
-                            y={215 - 15}
+                            y={200}
                             width="16"
-                            height="17"
+                            height="12"
                             fill="#5a6a5a"
                             opacity="1" />
-                      {/* Glass doors */}
+                      {/* Glass doors - flush with sidewalk */}
                       <rect x={bldg.x + bldg.w/2 - 6}
-                            y={215 - 13}
+                            y={201}
                             width="5"
-                            height="13"
+                            height="11"
                             fill="#6b8ea8"
                             opacity="0.8" />
                       <rect x={bldg.x + bldg.w/2 + 1}
-                            y={215 - 13}
+                            y={201}
                             width="5"
-                            height="13"
+                            height="11"
                             fill="#6b8ea8"
                             opacity="0.8" />
                       {/* Door handles */}
                       <rect x={bldg.x + bldg.w/2 - 2}
-                            y={215 - 9}
+                            y={206}
                             width="0.8"
                             height="3"
                             fill="#d4af37"
                             opacity="1" />
                       <rect x={bldg.x + bldg.w/2 + 1.2}
-                            y={215 - 9}
+                            y={206}
                             width="0.8"
                             height="3"
                             fill="#d4af37"
@@ -1197,28 +1245,28 @@ export function ProgressiveSkyline() {
                     <circle cx="2320" cy="201" r="4" fill="#5a8a5a" opacity="1" />
                   </g>
 
-                  {/* Fountain in middle */}
+                  {/* Fountain centered in park */}
                   <g>
-                    {/* Fountain base */}
-                    <ellipse cx="2298" cy="210" rx="10" ry="4" fill="#a8a8a8" opacity="1" />
-                    <rect x="2293" y="206" width="10" height="4" fill="#b8b8b8" opacity="1" rx="1" />
+                    {/* Fountain base - centered at x=2296 */}
+                    <ellipse cx="2296" cy="210" rx="10" ry="4" fill="#a8a8a8" opacity="1" />
+                    <rect x="2291" y="206" width="10" height="4" fill="#b8b8b8" opacity="1" rx="1" />
 
                     {/* Fountain basin */}
-                    <ellipse cx="2298" cy="206" rx="8" ry="3" fill="#87CEEB" opacity="1" />
+                    <ellipse cx="2296" cy="206" rx="8" ry="3" fill="#87CEEB" opacity="1" />
 
-                    {/* Water spray */}
-                    <circle cx="2298" cy="203" r="1.5" fill="#B0E0E6" opacity="1" />
-                    <circle cx="2295" cy="204" r="1" fill="#B0E0E6" opacity="1" />
-                    <circle cx="2301" cy="204" r="1" fill="#B0E0E6" opacity="1" />
-                    <circle cx="2296" cy="201" r="0.8" fill="#B0E0E6" opacity="1" />
-                    <circle cx="2300" cy="201" r="0.8" fill="#B0E0E6" opacity="1" />
+                    {/* Water spray - symmetrical around center */}
+                    <circle cx="2296" cy="203" r="1.5" fill="#B0E0E6" opacity="1" />
+                    <circle cx="2293" cy="204" r="1" fill="#B0E0E6" opacity="1" />
+                    <circle cx="2299" cy="204" r="1" fill="#B0E0E6" opacity="1" />
+                    <circle cx="2294" cy="201" r="0.8" fill="#B0E0E6" opacity="1" />
+                    <circle cx="2298" cy="201" r="0.8" fill="#B0E0E6" opacity="1" />
 
                     {/* Central water column */}
-                    <path d="M 2298,203 L 2298,198 L 2297,199 M 2298,198 L 2299,199"
+                    <path d="M 2296,203 L 2296,198 L 2295,199 M 2296,198 L 2297,199"
                           stroke="#B0E0E6" strokeWidth="0.8" fill="none" opacity="1" />
                   </g>
 
-                  {/* Bench on left side */}
+                  {/* Bench on left side - symmetrical */}
                   <g>
                     <rect x="2268" y="211" width="10" height="2" fill="#8b7355" opacity="1" />
                     <rect x="2268" y="208" width="10" height="3" fill="#8b7355" opacity="1" />
@@ -1226,60 +1274,60 @@ export function ProgressiveSkyline() {
                     <rect x="2276" y="209" width="2" height="4" fill="#6b5a45" opacity="1" />
                   </g>
 
-                  {/* Bench on right side */}
+                  {/* Bench on right side - symmetrical (mirroring left bench position) */}
                   <g>
-                    <rect x="2315" y="211" width="10" height="2" fill="#8b7355" opacity="1" />
-                    <rect x="2315" y="208" width="10" height="3" fill="#8b7355" opacity="1" />
-                    <rect x="2315" y="209" width="2" height="4" fill="#6b5a45" opacity="1" />
-                    <rect x="2323" y="209" width="2" height="4" fill="#6b5a45" opacity="1" />
+                    <rect x="2314" y="211" width="10" height="2" fill="#8b7355" opacity="1" />
+                    <rect x="2314" y="208" width="10" height="3" fill="#8b7355" opacity="1" />
+                    <rect x="2314" y="209" width="2" height="4" fill="#6b5a45" opacity="1" />
+                    <rect x="2322" y="209" width="2" height="4" fill="#6b5a45" opacity="1" />
                   </g>
                 </g>
 
-                {/* Park 2 - at former building 11 location (x: 2746) */}
+                {/* Park 2 - centered at x=2745 (symmetrical layout) */}
                 <g>
-                  {/* Tiny trees on sides */}
+                  {/* Symmetrical trees on sides - 20px from center */}
                   <g key="park2-tree-1">
-                    <rect x="2725" y="203" width="2" height="7" fill="#6b5a45" opacity="1" />
-                    <circle cx="2726" cy="201" r="4" fill="#4a7c2f" opacity="1" />
-                    <circle cx="2723" cy="203" r="3" fill="#5a8a5a" opacity="1" />
-                    <circle cx="2729" cy="203" r="3" fill="#5a8a5a" opacity="1" />
+                    <rect x="2724" y="203" width="2" height="7" fill="#6b5a45" opacity="1" />
+                    <circle cx="2725" cy="201" r="4" fill="#4a7c2f" opacity="1" />
+                    <circle cx="2722" cy="203" r="3" fill="#5a8a5a" opacity="1" />
+                    <circle cx="2728" cy="203" r="3" fill="#5a8a5a" opacity="1" />
                   </g>
                   <g key="park2-tree-2">
-                    <rect x="2765" y="202" width="2" height="8" fill="#6b5a45" opacity="1" />
-                    <circle cx="2766" cy="200" r="4.5" fill="#4a7c2f" opacity="1" />
-                    <circle cx="2763" cy="202" r="3" fill="#5a8a5a" opacity="1" />
-                    <circle cx="2769" cy="202" r="3" fill="#5a8a5a" opacity="1" />
+                    <rect x="2764" y="203" width="2" height="7" fill="#6b5a45" opacity="1" />
+                    <circle cx="2765" cy="201" r="4" fill="#4a7c2f" opacity="1" />
+                    <circle cx="2762" cy="203" r="3" fill="#5a8a5a" opacity="1" />
+                    <circle cx="2768" cy="203" r="3" fill="#5a8a5a" opacity="1" />
                   </g>
-                  {/* Additional tiny tree in middle-back */}
+                  {/* Center tree in middle-back */}
                   <g key="park2-tree-3">
-                    <rect x="2745" y="198" width="2" height="6" fill="#6b5a45" opacity="1" />
-                    <circle cx="2746" cy="196" r="3.5" fill="#4a7c2f" opacity="1" />
-                    <circle cx="2743" cy="198" r="2.5" fill="#5a8a5a" opacity="1" />
-                    <circle cx="2749" cy="198" r="2.5" fill="#5a8a5a" opacity="1" />
+                    <rect x="2744" y="198" width="2" height="6" fill="#6b5a45" opacity="1" />
+                    <circle cx="2745" cy="196" r="3.5" fill="#4a7c2f" opacity="1" />
+                    <circle cx="2742" cy="198" r="2.5" fill="#5a8a5a" opacity="1" />
+                    <circle cx="2748" cy="198" r="2.5" fill="#5a8a5a" opacity="1" />
                   </g>
 
-                  {/* Fountain in middle */}
+                  {/* Fountain centered at x=2745 */}
                   <g>
                     {/* Fountain base */}
-                    <ellipse cx="2746" cy="210" rx="10" ry="4" fill="#a8a8a8" opacity="1" />
-                    <rect x="2741" y="206" width="10" height="4" fill="#b8b8b8" opacity="1" rx="1" />
+                    <ellipse cx="2745" cy="210" rx="10" ry="4" fill="#a8a8a8" opacity="1" />
+                    <rect x="2740" y="206" width="10" height="4" fill="#b8b8b8" opacity="1" rx="1" />
 
                     {/* Fountain basin */}
-                    <ellipse cx="2746" cy="206" rx="8" ry="3" fill="#87CEEB" opacity="1" />
+                    <ellipse cx="2745" cy="206" rx="8" ry="3" fill="#87CEEB" opacity="1" />
 
-                    {/* Water spray */}
-                    <circle cx="2746" cy="203" r="1.5" fill="#B0E0E6" opacity="1" />
-                    <circle cx="2743" cy="204" r="1" fill="#B0E0E6" opacity="1" />
-                    <circle cx="2749" cy="204" r="1" fill="#B0E0E6" opacity="1" />
-                    <circle cx="2744" cy="201" r="0.8" fill="#B0E0E6" opacity="1" />
-                    <circle cx="2748" cy="201" r="0.8" fill="#B0E0E6" opacity="1" />
+                    {/* Water spray - symmetrical */}
+                    <circle cx="2745" cy="203" r="1.5" fill="#B0E0E6" opacity="1" />
+                    <circle cx="2742" cy="204" r="1" fill="#B0E0E6" opacity="1" />
+                    <circle cx="2748" cy="204" r="1" fill="#B0E0E6" opacity="1" />
+                    <circle cx="2743" cy="201" r="0.8" fill="#B0E0E6" opacity="1" />
+                    <circle cx="2747" cy="201" r="0.8" fill="#B0E0E6" opacity="1" />
 
                     {/* Central water column */}
-                    <path d="M 2746,203 L 2746,198 L 2745,199 M 2746,198 L 2747,199"
+                    <path d="M 2745,203 L 2745,198 L 2744,199 M 2745,198 L 2746,199"
                           stroke="#B0E0E6" strokeWidth="0.8" fill="none" opacity="1" />
                   </g>
 
-                  {/* Bench on left side */}
+                  {/* Bench on left side - symmetrical at 27px from center */}
                   <g>
                     <rect x="2718" y="211" width="10" height="2" fill="#8b7355" opacity="1" />
                     <rect x="2718" y="208" width="10" height="3" fill="#8b7355" opacity="1" />
@@ -1287,7 +1335,7 @@ export function ProgressiveSkyline() {
                     <rect x="2726" y="209" width="2" height="4" fill="#6b5a45" opacity="1" />
                   </g>
 
-                  {/* Bench on right side */}
+                  {/* Bench on right side - symmetrical mirror of left bench */}
                   <g>
                     <rect x="2762" y="211" width="10" height="2" fill="#8b7355" opacity="1" />
                     <rect x="2762" y="208" width="10" height="3" fill="#8b7355" opacity="1" />
