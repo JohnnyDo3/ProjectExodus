@@ -59,7 +59,7 @@ export async function GET(
     }))
 
     // Sort by level order
-    availableLevels.sort((a, b) =>
+    availableLevels.sort((a: { level: LearningLevel }, b: { level: LearningLevel }) =>
       LEARNING_LEVEL_ORDER.indexOf(a.level) - LEARNING_LEVEL_ORDER.indexOf(b.level)
     )
 
@@ -73,7 +73,7 @@ export async function GET(
         allLevels: LEARNING_LEVEL_ORDER.map(level => ({
           level,
           meta: LEARNING_LEVELS[level],
-          isAvailable: availableLevels.some(al => al.level === level)
+          isAvailable: availableLevels.some((al: { level: LearningLevel }) => al.level === level)
         }))
       }
     })
