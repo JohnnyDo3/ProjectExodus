@@ -2,7 +2,7 @@
 
 import { useState } from 'react'
 import { GameRound } from '@/types/learning'
-import { cn } from '@/lib/utils'
+import { cn } from '@/lib/utils/cn'
 
 interface GameQuestionProps {
   round: GameRound

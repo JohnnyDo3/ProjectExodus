@@ -2,7 +2,7 @@
 
 import { useState, ReactNode } from 'react'
 import { ActivityConfig, ACTIVITY_TYPES } from '@/types/learning'
-import { cn } from '@/lib/utils'
+import { cn } from '@/lib/utils/cn'
 
 interface ActivityWrapperProps {
   activity: ActivityConfig

@@ -500,9 +500,9 @@ export interface LevelContent {
 
 export interface DiscussionAuthor {
   id: string
-  name: string
-  image?: string
-  hasCompletedModule: boolean
+  name: string | null
+  image?: string | null
+  hasCompletedModule?: boolean
 }
 
 export interface ModuleDiscussion {
@@ -660,9 +660,28 @@ export interface CommunityLearnFilter {
   level?: LearningLevel
 }
 
-export interface CommunityDiscussionItem extends ModuleDiscussion {
-  moduleName: string
-  moduleSlug: string
+export interface CommunityDiscussionItem {
+  id: string
+  type: 'learn'
+  articleId: string
+  module: {
+    id: string
+    title: string
+    slug: string
+    coverImage?: string
+  }
+  level: LearningLevel
+  levelMeta: LevelMeta
+  author: DiscussionAuthor
+  title: string
+  content: string
+  excerpt: string
+  isResolved: boolean
+  isPinned: boolean
+  viewCount: number
+  replyCount: number
+  createdAt: string
+  updatedAt: string
 }
 
 // ============================================

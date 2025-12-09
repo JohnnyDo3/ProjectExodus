@@ -305,7 +305,7 @@ export function ModuleViewer({ module, userId, initialProgress }: ModuleViewerPr
                   Select Your Learning Level
                 </p>
                 <LevelSelector
-                  selectedLevel={selectedLevel}
+                  currentLevel={selectedLevel}
                   onLevelChange={setSelectedLevel}
                   variant="cards"
                   showDescriptions={false}
@@ -629,7 +629,7 @@ export function ModuleViewer({ module, userId, initialProgress }: ModuleViewerPr
             <div className="mt-4">
               <ModuleDiscussions
                 articleId={module.id}
-                level={selectedLevel}
+                currentLevel={selectedLevel}
               />
             </div>
           )}

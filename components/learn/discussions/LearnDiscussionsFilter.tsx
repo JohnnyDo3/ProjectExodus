@@ -3,7 +3,7 @@
 import { useState, useEffect } from 'react'
 import { LearningLevel, LEARNING_LEVELS, CommunityDiscussionItem } from '@/types/learning'
 import { LevelBadge } from '../levels/LevelSelector'
-import { cn } from '@/lib/utils'
+import { cn } from '@/lib/utils/cn'
 import Link from 'next/link'
 
 interface LearnDiscussionsFilterProps {

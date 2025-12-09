@@ -2,7 +2,7 @@
 
 import { useState, useEffect, useCallback } from 'react'
 import { LearningGameConfig, GameState, GameResults, GameRound } from '@/types/learning'
-import { cn } from '@/lib/utils'
+import { cn } from '@/lib/utils/cn'
 import { GameHeader } from './GameHeader'
 import { GameQuestion } from './GameQuestion'
 import { GameResults as GameResultsDisplay } from './GameResults'

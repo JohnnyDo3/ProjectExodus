@@ -2,7 +2,7 @@
 
 import { useState, useCallback } from 'react'
 import { DragDropConfig, DragDropItem, DragDropZone } from '@/types/learning'
-import { cn } from '@/lib/utils'
+import { cn } from '@/lib/utils/cn'
 
 interface DragDropActivityProps {
   config: DragDropConfig['config']

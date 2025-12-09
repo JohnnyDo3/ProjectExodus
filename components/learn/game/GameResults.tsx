@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from 'react'
 import { GameResults as GameResultsType, LearningGameConfig } from '@/types/learning'
-import { cn } from '@/lib/utils'
+import { cn } from '@/lib/utils/cn'
 
 interface GameResultsProps {
   results: GameResultsType
