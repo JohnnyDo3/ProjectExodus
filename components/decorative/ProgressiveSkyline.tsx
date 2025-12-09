@@ -1017,7 +1017,7 @@ export function ProgressiveSkyline() {
                     {/* Decorative cornice at roofline */}
                     <rect x={bldg.x - 1} y={215 - bldg.h - 1} width={bldg.w + 2} height="1.5" fill="#c8d8c8" opacity="1" />
 
-                    {/* Dense skyscraper windows - grid pattern */}
+                    {/* Dense skyscraper windows - grid pattern with balconies */}
                     <g opacity="1">
                       {Array.from({length: windowRows}).map((_, row) => (
                         <g key={`row-${row}`}>
@@ -1025,6 +1025,7 @@ export function ProgressiveSkyline() {
                           {Array.from({length: windowCols}).map((_, col) => {
                             const windowX = startX + col * (windowWidth + windowGapX)
                             const windowY = 215 - bldg.h + topMargin + row * (windowHeight + windowGapY)
+                            const hasBalcony = row % 3 === 1 // Balcony every 3rd row
                             return (
                             <g key={`win-${row}-${col}`}>
                               {/* Window glass */}
@@ -1043,6 +1044,39 @@ export function ProgressiveSkyline() {
                                       height={windowHeight}
                                       fill="#FFD700"
                                       opacity="0.9" />
+                              )}
+                              {/* Balcony - every 3rd row */}
+                              {hasBalcony && (
+                                <g>
+                                  {/* Balcony floor */}
+                                  <rect x={windowX - 0.5}
+                                        y={windowY + windowHeight}
+                                        width={windowWidth + 1}
+                                        height="1"
+                                        fill="#7a8a7a"
+                                        opacity="1" />
+                                  {/* Balcony railing - left post */}
+                                  <rect x={windowX - 0.5}
+                                        y={windowY + windowHeight - 1.5}
+                                        width="0.5"
+                                        height="1.5"
+                                        fill="#6a7a6a"
+                                        opacity="1" />
+                                  {/* Balcony railing - right post */}
+                                  <rect x={windowX + windowWidth}
+                                        y={windowY + windowHeight - 1.5}
+                                        width="0.5"
+                                        height="1.5"
+                                        fill="#6a7a6a"
+                                        opacity="1" />
+                                  {/* Balcony top rail */}
+                                  <rect x={windowX - 0.5}
+                                        y={windowY + windowHeight - 1.5}
+                                        width={windowWidth + 1}
+                                        height="0.4"
+                                        fill="#6a7a6a"
+                                        opacity="1" />
+                                </g>
                               )}
                             </g>
                           )})}
@@ -1370,7 +1404,7 @@ export function ProgressiveSkyline() {
                 </g>
               </g>
 
-              {/* Trees lining EVERY street - Dense urban forest with varied depth! */}
+              {/* Trees lining streets - matching park tree sizes with subtle depth variation */}
               {/* Skip trees in park areas: Park 1 (2260-2330), Park 2 (2710-2780), Park 3 (3355-3425) */}
               <g opacity="1">
                 {Array.from({length: 45}).map((_, i) => {
@@ -1381,21 +1415,22 @@ export function ProgressiveSkyline() {
                     return null;
                   }
 
-                  // Randomize y position for depth variation (195-210 range)
-                  const yVariation = [0, 3, 7, 2, 10, 5, 8, 1, 12, 4, 6, 9, 3, 11, 2, 8, 5, 1, 7, 10, 4, 6, 9, 3, 12, 5, 8, 2, 11, 7, 4, 1, 9, 6, 10, 3, 8, 5, 12, 2, 7, 4, 11, 6, 9][i % 45];
-                  const treeY = 195 + yVariation;
-                  const trunkHeight = 13 + (yVariation > 6 ? 2 : 0); // Taller trunks for closer trees
-                  const foliageRadius = yVariation > 6 ? 9 : 8; // Larger foliage for closer trees
+                  // Subtle y position variation for depth (203-207 range, like park trees at y=203)
+                  const yVariation = [0, 1, 2, 0, 3, 1, 2, 0, 4, 1, 2, 3, 0, 4, 1, 2, 0, 1, 3, 2, 0, 1, 2, 0, 4, 1, 2, 0, 3, 2, 1, 0, 2, 1, 3, 0, 2, 1, 4, 0, 2, 1, 3, 1, 2][i % 45];
+                  const treeY = 203 + yVariation;
+                  // Subtle size variation - closer trees slightly larger
+                  const trunkHeight = 7 + (yVariation > 2 ? 1 : 0);
+                  const mainRadius = 4 + (yVariation > 2 ? 0.5 : 0);
+                  const sideRadius = 3 + (yVariation > 2 ? 0.5 : 0);
 
                   return (
                     <g key={`green-tree-${i}`}>
-                      {/* Tree trunk */}
-                      <rect x={x} y={treeY + 7} width="4" height={trunkHeight} fill="#6b5a45" opacity="1" />
-                      {/* Lush green foliage */}
-                      <circle cx={x+2} cy={treeY + 5} r={foliageRadius} fill="#4a7c2f" opacity="1" />
-                      <circle cx={x-3} cy={treeY + 7} r={foliageRadius - 2} fill="#5a8a5a" opacity="1" />
-                      <circle cx={x+7} cy={treeY + 7} r={foliageRadius - 2} fill="#5a8a5a" opacity="1" />
-                      <circle cx={x+2} cy={treeY} r={foliageRadius - 3} fill="#6a9a6a" opacity="1" />
+                      {/* Tree trunk - same size as park trees */}
+                      <rect x={x} y={treeY} width="2" height={trunkHeight} fill="#6b5a45" opacity="1" />
+                      {/* Foliage - same style as park trees */}
+                      <circle cx={x+1} cy={treeY - 2} r={mainRadius} fill="#4a7c2f" opacity="1" />
+                      <circle cx={x-2} cy={treeY} r={sideRadius} fill="#5a8a5a" opacity="1" />
+                      <circle cx={x+4} cy={treeY} r={sideRadius} fill="#5a8a5a" opacity="1" />
                     </g>
                   );
                 })}
