@@ -971,20 +971,20 @@ export function ProgressiveSkyline() {
                   {x: 3512, h: 82, w: 58, color: "#f0f8f0"}, {x: 3580, h: 100, w: 70, color: "#e0f2e0"},
                   {x: 3660, h: 88, w: 62, color: "#e8f4e8"}, {x: 3732, h: 75, w: 54, color: "#f0f8f0"}
                 ].map((bldg, i) => {
-                  // Calculate skyscraper window layout - one less column, larger detailed windows
+                  // Calculate skyscraper window layout - detailed windows with proper spacing
                   const windowWidth = 8
                   const windowHeight = 12
-                  const windowGapX = 3 // Gap between windows horizontally
+                  const windowGapX = 4 // Gap between windows horizontally
                   const windowGapY = 3 // Gap between rows vertically
-                  const sideMargin = 4 // Margin from building edge
                   const topMargin = 6 // Margin from roof
                   const bottomMargin = 16 // Space for first floor (door area)
 
-                  // Calculate number of window columns - one less than maximum fit
-                  const maxCols = Math.floor((bldg.w - sideMargin * 2) / (windowWidth + windowGapX))
+                  // Calculate number of window columns - one less than max, centered with even spacing
+                  const maxCols = Math.floor((bldg.w - 4) / (windowWidth + windowGapX))
                   const windowCols = Math.max(1, maxCols - 1)
                   const totalWindowsWidth = windowCols * windowWidth + (windowCols - 1) * windowGapX
-                  const startX = bldg.x + (bldg.w - totalWindowsWidth) / 2
+                  const sideMargin = (bldg.w - totalWindowsWidth) / 2
+                  const startX = bldg.x + sideMargin
 
                   // Calculate number of rows - fill the building height
                   const availableHeight = bldg.h - topMargin - bottomMargin
@@ -1015,8 +1015,19 @@ export function ProgressiveSkyline() {
                       ))}
                     </g>
 
-                    {/* Decorative cornice at roofline */}
-                    <rect x={bldg.x - 1} y={215 - bldg.h - 1} width={bldg.w + 2} height="1.5" fill="#c8d8c8" opacity="1" />
+                    {/* Decorative cornice at roofline - multi-layer detail */}
+                    <rect x={bldg.x - 2} y={215 - bldg.h - 1} width={bldg.w + 4} height="2" fill="#c8d8c8" opacity="1" />
+                    <rect x={bldg.x - 1} y={215 - bldg.h + 1} width={bldg.w + 2} height="1" fill="#b8c8b8" opacity="1" />
+                    {/* Dentil molding - small decorative blocks */}
+                    {Array.from({length: Math.floor(bldg.w / 6)}).map((_, d) => (
+                      <rect key={`dentil-${d}`}
+                            x={bldg.x + 2 + d * 6}
+                            y={215 - bldg.h + 2}
+                            width="3"
+                            height="1.5"
+                            fill="#a8b8a8"
+                            opacity="1" />
+                    ))}
 
                     {/* Detailed skyscraper windows - grid pattern with balconies */}
                     <g opacity="1">
@@ -1144,43 +1155,78 @@ export function ProgressiveSkyline() {
                       ))}
                     </g>
 
-                    {/* Floor band above first floor */}
-                    <rect x={bldg.x} y={198} width={bldg.w} height="1.5" fill="#b8c8b8" opacity="1" />
+                    {/* Architectural details - vertical pilasters on building edges */}
+                    <rect x={bldg.x} y={215 - bldg.h} width="2" height={bldg.h - 14} fill="#d0e0d0" opacity="1" />
+                    <rect x={bldg.x + bldg.w - 2} y={215 - bldg.h} width="2" height={bldg.h - 14} fill="#d0e0d0" opacity="1" />
 
-                    {/* First floor windows - larger storefront style, symmetrically placed */}
+                    {/* Floor bands - horizontal lines every few floors */}
+                    {Array.from({length: Math.floor((bldg.h - 20) / 20)}).map((_, band) => (
+                      <rect key={`band-${band}`}
+                            x={bldg.x}
+                            y={215 - bldg.h + 10 + band * 20}
+                            width={bldg.w}
+                            height="1"
+                            fill="#c8d8c8"
+                            opacity="1" />
+                    ))}
+
+                    {/* Floor band above first floor */}
+                    <rect x={bldg.x} y={198} width={bldg.w} height="2" fill="#b8c8b8" opacity="1" />
+                    <rect x={bldg.x} y={197} width={bldg.w} height="1" fill="#c8d8c8" opacity="1" />
+
+                    {/* First floor windows - detailed storefront style matching upper windows */}
                     <g opacity="1">
-                      {/* Left storefront window */}
-                      <rect x={bldg.x + bldg.w/2 - 20}
-                            y={200}
-                            width="6"
-                            height="10"
-                            fill="#6b8ea8"
-                            opacity="1" />
-                      {isNightTime && isWindowLit(bldg.x + 1000 + i) && (
-                        <rect className="window-light"
-                              x={bldg.x + bldg.w/2 - 20}
-                              y={200}
-                              width="6"
-                              height="10"
-                              fill="#FFD700"
-                              opacity="0.9" />
-                      )}
-                      {/* Right storefront window - mirror of left */}
-                      <rect x={bldg.x + bldg.w/2 + 14}
-                            y={200}
-                            width="6"
-                            height="10"
-                            fill="#6b8ea8"
-                            opacity="1" />
-                      {isNightTime && isWindowLit(bldg.x + 1001 + i) && (
-                        <rect className="window-light"
-                              x={bldg.x + bldg.w/2 + 14}
-                              y={200}
-                              width="6"
-                              height="10"
-                              fill="#FFD700"
-                              opacity="0.9" />
-                      )}
+                      {/* Left storefront window - detailed */}
+                      {(() => {
+                        const leftWinX = bldg.x + bldg.w/2 - 22
+                        const leftWinY = 200
+                        const sfWidth = 10
+                        const sfHeight = 10
+                        const isLeftLit = isNightTime && isWindowLit(bldg.x + 1000 + i)
+                        return (
+                          <g>
+                            {/* Window frame */}
+                            <rect x={leftWinX} y={leftWinY} width={sfWidth} height={sfHeight} fill="#4a5a4a" opacity="1" />
+                            {/* Window glass */}
+                            <rect x={leftWinX + 0.8} y={leftWinY + 0.8} width={sfWidth - 1.6} height={sfHeight - 1.6}
+                                  fill={isLeftLit ? "#FFD700" : "#6b8ea8"} opacity="1" />
+                            {/* Horizontal mullion */}
+                            <rect x={leftWinX + 0.8} y={leftWinY + sfHeight/2 - 0.3} width={sfWidth - 1.6} height="0.6" fill="#4a5a4a" opacity="1" />
+                            {/* Vertical mullion */}
+                            <rect x={leftWinX + sfWidth/2 - 0.3} y={leftWinY + 0.8} width="0.6" height={sfHeight - 1.6} fill="#4a5a4a" opacity="1" />
+                            {/* Window sill */}
+                            <rect x={leftWinX - 0.5} y={leftWinY + sfHeight - 0.5} width={sfWidth + 1} height="1.2" fill="#5a6a5a" opacity="1" />
+                            {/* Reflection */}
+                            {!isLeftLit && <rect x={leftWinX + 1.2} y={leftWinY + 1.2} width={sfWidth/2 - 1.5} height={sfHeight/2 - 1.5} fill="#8ab8d8" opacity="0.4" />}
+                          </g>
+                        )
+                      })()}
+
+                      {/* Right storefront window - detailed (mirror of left) */}
+                      {(() => {
+                        const rightWinX = bldg.x + bldg.w/2 + 12
+                        const rightWinY = 200
+                        const sfWidth = 10
+                        const sfHeight = 10
+                        const isRightLit = isNightTime && isWindowLit(bldg.x + 1001 + i)
+                        return (
+                          <g>
+                            {/* Window frame */}
+                            <rect x={rightWinX} y={rightWinY} width={sfWidth} height={sfHeight} fill="#4a5a4a" opacity="1" />
+                            {/* Window glass */}
+                            <rect x={rightWinX + 0.8} y={rightWinY + 0.8} width={sfWidth - 1.6} height={sfHeight - 1.6}
+                                  fill={isRightLit ? "#FFD700" : "#6b8ea8"} opacity="1" />
+                            {/* Horizontal mullion */}
+                            <rect x={rightWinX + 0.8} y={rightWinY + sfHeight/2 - 0.3} width={sfWidth - 1.6} height="0.6" fill="#4a5a4a" opacity="1" />
+                            {/* Vertical mullion */}
+                            <rect x={rightWinX + sfWidth/2 - 0.3} y={rightWinY + 0.8} width="0.6" height={sfHeight - 1.6} fill="#4a5a4a" opacity="1" />
+                            {/* Window sill */}
+                            <rect x={rightWinX - 0.5} y={rightWinY + sfHeight - 0.5} width={sfWidth + 1} height="1.2" fill="#5a6a5a" opacity="1" />
+                            {/* Reflection */}
+                            {!isRightLit && <rect x={rightWinX + 1.2} y={rightWinY + 1.2} width={sfWidth/2 - 1.5} height={sfHeight/2 - 1.5} fill="#8ab8d8" opacity="0.4" />}
+                          </g>
+                        )
+                      })()}
                     </g>
 
                     {/* Building foundation/sidewalk - prevents merging into grass */}
@@ -1201,40 +1247,69 @@ export function ProgressiveSkyline() {
                             opacity="1" />
                     </g>
 
-                    {/* Ground-level entrance doors - flush with sidewalk */}
+                    {/* Ground-level entrance with architectural details */}
                     <g opacity="1">
+                      {/* Entrance canopy/awning */}
+                      <rect x={bldg.x + bldg.w/2 - 12}
+                            y={197}
+                            width="24"
+                            height="2"
+                            fill="#4a5a4a"
+                            opacity="1" />
+                      {/* Canopy support brackets */}
+                      <path d={`M ${bldg.x + bldg.w/2 - 10},199 L ${bldg.x + bldg.w/2 - 10},197 L ${bldg.x + bldg.w/2 - 8},197`}
+                            stroke="#3a4a3a" strokeWidth="1" fill="none" />
+                      <path d={`M ${bldg.x + bldg.w/2 + 10},199 L ${bldg.x + bldg.w/2 + 10},197 L ${bldg.x + bldg.w/2 + 8},197`}
+                            stroke="#3a4a3a" strokeWidth="1" fill="none" />
+
                       {/* Door frame - extends to sidewalk level (y=212) */}
                       <rect x={bldg.x + bldg.w/2 - 8}
-                            y={200}
+                            y={199}
                             width="16"
-                            height="12"
+                            height="13"
                             fill="#5a6a5a"
                             opacity="1" />
-                      {/* Glass doors - flush with sidewalk */}
+
+                      {/* Decorative keystone above door */}
+                      <path d={`M ${bldg.x + bldg.w/2 - 3},199 L ${bldg.x + bldg.w/2},196 L ${bldg.x + bldg.w/2 + 3},199 Z`}
+                            fill="#c8d8c8" opacity="1" />
+
+                      {/* Glass doors with mullions */}
                       <rect x={bldg.x + bldg.w/2 - 6}
-                            y={201}
+                            y={200}
                             width="5"
-                            height="11"
+                            height="12"
                             fill="#6b8ea8"
-                            opacity="0.8" />
+                            opacity="0.9" />
                       <rect x={bldg.x + bldg.w/2 + 1}
-                            y={201}
+                            y={200}
                             width="5"
-                            height="11"
+                            height="12"
                             fill="#6b8ea8"
-                            opacity="0.8" />
+                            opacity="0.9" />
+                      {/* Door mullions - horizontal */}
+                      <rect x={bldg.x + bldg.w/2 - 6} y={206} width="5" height="0.5" fill="#4a5a4a" opacity="1" />
+                      <rect x={bldg.x + bldg.w/2 + 1} y={206} width="5" height="0.5" fill="#4a5a4a" opacity="1" />
                       {/* Door handles */}
-                      <rect x={bldg.x + bldg.w/2 - 2}
-                            y={206}
+                      <rect x={bldg.x + bldg.w/2 - 1.5}
+                            y={205}
                             width="0.8"
-                            height="3"
+                            height="4"
                             fill="#d4af37"
                             opacity="1" />
-                      <rect x={bldg.x + bldg.w/2 + 1.2}
-                            y={206}
+                      <rect x={bldg.x + bldg.w/2 + 0.7}
+                            y={205}
                             width="0.8"
-                            height="3"
+                            height="4"
                             fill="#d4af37"
+                            opacity="1" />
+
+                      {/* Entrance step */}
+                      <rect x={bldg.x + bldg.w/2 - 10}
+                            y={212}
+                            width="20"
+                            height="1.5"
+                            fill="#a8a8a8"
                             opacity="1" />
                     </g>
 
