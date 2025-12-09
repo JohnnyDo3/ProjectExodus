@@ -76,6 +76,7 @@ export function PeerReviewWidget({ articleId, peerReviews: initialReviews, onRev
   const [isSubmitting, setIsSubmitting] = useState(false)
   const [showRatingForm, setShowRatingForm] = useState(false)
   const [ratingForm, setRatingForm] = useState({ rating: 0, accuracy: 0, clarity: 0, relevance: 0, content: '' })
+  const [expandedRatingId, setExpandedRatingId] = useState<string | null>(null)
 
   // Sync with parent
   useEffect(() => {
@@ -270,9 +271,61 @@ export function PeerReviewWidget({ articleId, peerReviews: initialReviews, onRev
                   {item.user.name || 'Anonymous'}
                 </span>
                 {hasRating && (
-                  <div className="flex items-center gap-1 px-2 py-0.5 bg-amber-100 dark:bg-amber-900/30 rounded-full">
-                    <Star className="w-3 h-3 fill-amber-400 text-amber-400" />
-                    <span className="text-xs font-bold text-amber-600 dark:text-amber-400">{item.rating}</span>
+                  <div className="relative">
+                    <button
+                      onClick={() => setExpandedRatingId(expandedRatingId === item.id ? null : item.id)}
+                      className="flex items-center gap-1 px-2 py-0.5 bg-amber-100 dark:bg-amber-900/30 rounded-full hover:bg-amber-200 dark:hover:bg-amber-800/40 transition-colors cursor-pointer"
+                      title="Click to see rating breakdown"
+                    >
+                      <Star className="w-3 h-3 fill-amber-400 text-amber-400" />
+                      <span className="text-xs font-bold text-amber-600 dark:text-amber-400">{item.rating}</span>
+                    </button>
+
+                    {/* Rating Breakdown Popup */}
+                    {expandedRatingId === item.id && (
+                      <>
+                        <div className="fixed inset-0 z-40" onClick={() => setExpandedRatingId(null)} />
+                        <div className="absolute top-full left-0 mt-2 z-50 w-48 p-3 bg-[var(--card)] rounded-lg shadow-xl border border-[var(--border)]">
+                          <div className="text-xs font-bold text-[var(--foreground)] mb-2">Rating Breakdown</div>
+                          <div className="space-y-2">
+                            <div className="flex justify-between items-center">
+                              <span className="text-xs text-[var(--foreground)]/70">Overall</span>
+                              <div className="flex items-center gap-1">
+                                <StarRating value={item.rating || 0} readonly size="sm" />
+                                <span className="text-xs font-bold text-[var(--foreground)]">{item.rating}</span>
+                              </div>
+                            </div>
+                            {item.accuracy !== null && item.accuracy > 0 && (
+                              <div className="flex justify-between items-center">
+                                <span className="text-xs text-[var(--foreground)]/70">Accuracy</span>
+                                <div className="flex items-center gap-1">
+                                  <StarRating value={item.accuracy} readonly size="sm" />
+                                  <span className="text-xs font-bold text-[var(--foreground)]">{item.accuracy}</span>
+                                </div>
+                              </div>
+                            )}
+                            {item.clarity !== null && item.clarity > 0 && (
+                              <div className="flex justify-between items-center">
+                                <span className="text-xs text-[var(--foreground)]/70">Clarity</span>
+                                <div className="flex items-center gap-1">
+                                  <StarRating value={item.clarity} readonly size="sm" />
+                                  <span className="text-xs font-bold text-[var(--foreground)]">{item.clarity}</span>
+                                </div>
+                              </div>
+                            )}
+                            {item.relevance !== null && item.relevance > 0 && (
+                              <div className="flex justify-between items-center">
+                                <span className="text-xs text-[var(--foreground)]/70">Relevance</span>
+                                <div className="flex items-center gap-1">
+                                  <StarRating value={item.relevance} readonly size="sm" />
+                                  <span className="text-xs font-bold text-[var(--foreground)]">{item.relevance}</span>
+                                </div>
+                              </div>
+                            )}
+                          </div>
+                        </div>
+                      </>
+                    )}
                   </div>
                 )}
                 <span className="text-xs text-[var(--foreground)]/50">

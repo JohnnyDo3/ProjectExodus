@@ -46,9 +46,29 @@ interface ArticleClientWrapperProps {
   }
 }
 
+// Star Rating Display Component
+function StarRatingDisplay({ value, size = 'sm' }: { value: number; size?: 'sm' | 'md' }) {
+  const sizeClass = size === 'sm' ? 'w-3 h-3' : 'w-4 h-4'
+  return (
+    <div className="flex gap-0.5">
+      {[1, 2, 3, 4, 5].map((star) => (
+        <Star
+          key={star}
+          className={`${sizeClass} ${
+            star <= value
+              ? 'fill-amber-400 text-amber-400'
+              : 'text-gray-300 dark:text-gray-600'
+          }`}
+        />
+      ))}
+    </div>
+  )
+}
+
 export function ArticleClientWrapper({ article }: ArticleClientWrapperProps) {
   const [reviews, setReviews] = useState(article.peerReviews || [])
   const [activeTab, setActiveTab] = useState<'all' | 'reviews' | 'comments'>('all')
+  const [expandedRatingId, setExpandedRatingId] = useState<string | null>(null)
 
   // Filter reviews based on active tab
   const topLevelItems = reviews.filter((r: any) => r.parentId === null)
@@ -183,9 +203,61 @@ export function ArticleClientWrapper({ article }: ArticleClientWrapperProps) {
                               {item.user?.name || 'Anonymous'}
                             </span>
                             {hasRating && (
-                              <div className="flex items-center gap-1 px-2 py-0.5 bg-amber-100 dark:bg-amber-900/30 rounded-full">
-                                <Star className="w-3 h-3 fill-amber-400 text-amber-400" />
-                                <span className="text-xs font-bold text-amber-600 dark:text-amber-400">{item.rating}/5</span>
+                              <div className="relative">
+                                <button
+                                  onClick={() => setExpandedRatingId(expandedRatingId === item.id ? null : item.id)}
+                                  className="flex items-center gap-1 px-2 py-0.5 bg-amber-100 dark:bg-amber-900/30 rounded-full hover:bg-amber-200 dark:hover:bg-amber-800/40 transition-colors cursor-pointer"
+                                  title="Click to see rating breakdown"
+                                >
+                                  <Star className="w-3 h-3 fill-amber-400 text-amber-400" />
+                                  <span className="text-xs font-bold text-amber-600 dark:text-amber-400">{item.rating}/5</span>
+                                </button>
+
+                                {/* Rating Breakdown Popup */}
+                                {expandedRatingId === item.id && (
+                                  <>
+                                    <div className="fixed inset-0 z-40" onClick={() => setExpandedRatingId(null)} />
+                                    <div className="absolute top-full left-0 mt-2 z-50 w-52 p-4 bg-[var(--card)] rounded-lg shadow-xl border border-[var(--border)]">
+                                      <div className="text-sm font-bold text-[var(--foreground)] mb-3">Rating Breakdown</div>
+                                      <div className="space-y-2">
+                                        <div className="flex justify-between items-center">
+                                          <span className="text-sm text-[var(--foreground)]/70">Overall</span>
+                                          <div className="flex items-center gap-2">
+                                            <StarRatingDisplay value={item.rating || 0} />
+                                            <span className="text-sm font-bold text-[var(--foreground)] w-4">{item.rating}</span>
+                                          </div>
+                                        </div>
+                                        {item.accuracy !== null && item.accuracy > 0 && (
+                                          <div className="flex justify-between items-center">
+                                            <span className="text-sm text-[var(--foreground)]/70">Accuracy</span>
+                                            <div className="flex items-center gap-2">
+                                              <StarRatingDisplay value={item.accuracy} />
+                                              <span className="text-sm font-bold text-[var(--foreground)] w-4">{item.accuracy}</span>
+                                            </div>
+                                          </div>
+                                        )}
+                                        {item.clarity !== null && item.clarity > 0 && (
+                                          <div className="flex justify-between items-center">
+                                            <span className="text-sm text-[var(--foreground)]/70">Clarity</span>
+                                            <div className="flex items-center gap-2">
+                                              <StarRatingDisplay value={item.clarity} />
+                                              <span className="text-sm font-bold text-[var(--foreground)] w-4">{item.clarity}</span>
+                                            </div>
+                                          </div>
+                                        )}
+                                        {item.relevance !== null && item.relevance > 0 && (
+                                          <div className="flex justify-between items-center">
+                                            <span className="text-sm text-[var(--foreground)]/70">Relevance</span>
+                                            <div className="flex items-center gap-2">
+                                              <StarRatingDisplay value={item.relevance} />
+                                              <span className="text-sm font-bold text-[var(--foreground)] w-4">{item.relevance}</span>
+                                            </div>
+                                          </div>
+                                        )}
+                                      </div>
+                                    </div>
+                                  </>
+                                )}
                               </div>
                             )}
                             <span className="text-sm text-[var(--foreground)]/50">
