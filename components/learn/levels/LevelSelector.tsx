@@ -2,7 +2,7 @@
 
 import { useState } from 'react'
 import { LearningLevel, LEARNING_LEVELS, LEARNING_LEVEL_ORDER, LevelMeta } from '@/types/learning'
-import { cn } from '@/lib/utils'
+import { cn } from '@/lib/utils/cn'
 
 interface LevelSelectorProps {
   currentLevel: LearningLevel

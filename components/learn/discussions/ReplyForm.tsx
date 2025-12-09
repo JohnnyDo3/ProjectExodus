@@ -2,7 +2,7 @@
 
 import { useState } from 'react'
 import { DiscussionReply } from '@/types/learning'
-import { cn } from '@/lib/utils'
+import { cn } from '@/lib/utils/cn'
 
 interface ReplyFormProps {
   discussionId: string

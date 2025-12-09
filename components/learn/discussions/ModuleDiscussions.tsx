@@ -5,7 +5,7 @@ import { LearningLevel, LEARNING_LEVELS, ModuleDiscussion } from '@/types/learni
 import { LevelBadge } from '../levels/LevelSelector'
 import { DiscussionThread } from './DiscussionThread'
 import { NewDiscussionForm } from './NewDiscussionForm'
-import { cn } from '@/lib/utils'
+import { cn } from '@/lib/utils/cn'
 
 interface ModuleDiscussionsProps {
   articleId: string

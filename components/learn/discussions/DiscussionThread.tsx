@@ -5,7 +5,7 @@ import { DiscussionWithReplies, DiscussionReply } from '@/types/learning'
 import { LevelBadge } from '../levels/LevelSelector'
 import { HelpfulButton } from './HelpfulButton'
 import { ReplyForm } from './ReplyForm'
-import { cn } from '@/lib/utils'
+import { cn } from '@/lib/utils/cn'
 
 interface DiscussionThreadProps {
   discussionId: string
