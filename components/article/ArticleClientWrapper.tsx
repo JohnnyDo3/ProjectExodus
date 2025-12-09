@@ -250,12 +250,16 @@ export function ArticleClientWrapper({ article }: ArticleClientWrapperProps) {
       {/* Round Table Panel */}
       <RoundTablePanel
         isOpen={isPanelOpen}
-        onClose={() => setIsPanelOpen(false)}
+        onClose={() => {
+          setIsPanelOpen(false)
+          setQuotedText('') // Clear quoted text when closing
+        }}
         articleId={article.id}
         articleAuthorId={article.authorId}
         reviews={reviews}
         onReviewsChange={setReviews}
         displayMode={panelDisplayMode}
+        quotedText={quotedText}
       />
     </>
   )

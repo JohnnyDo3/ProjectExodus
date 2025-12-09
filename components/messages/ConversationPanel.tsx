@@ -591,19 +591,36 @@ export function ConversationPanel({ userId, onBack }: ConversationPanelProps) {
                     <div className={`flex flex-wrap gap-1 mt-1 ${isOwnMessage ? 'justify-end' : 'justify-start'}`}>
                       {Object.entries(
                         msg.reactions.reduce((acc, r) => {
-                          acc[r.emoji] = (acc[r.emoji] || 0) + 1
+                          if (!acc[r.emoji]) {
+                            acc[r.emoji] = { count: 0, users: [] as string[] }
+                          }
+                          acc[r.emoji].count += 1
+                          acc[r.emoji].users.push(r.user?.name || 'Someone')
                           return acc
-                        }, {} as Record<string, number>)
-                      ).map(([emoji, count]) => (
-                        <span
-                          key={emoji}
-                          className="inline-flex items-center gap-0.5 px-2 py-1 bg-[var(--muted)] rounded-full text-xs border border-[var(--border)] shadow-sm"
-                          title={`${count} ${count === 1 ? 'reaction' : 'reactions'}`}
-                        >
-                          <span className="text-sm">{emoji}</span>
-                          <span className="text-[var(--foreground)] font-medium">{count}</span>
-                        </span>
-                      ))}
+                        }, {} as Record<string, { count: number; users: string[] }>)
+                      ).map(([emoji, data]) => {
+                        // Build tooltip text with user names
+                        const userList = data.users.slice(0, 5).join(', ')
+                        const remainingCount = data.users.length - 5
+                        const tooltipText = remainingCount > 0
+                          ? `${userList} and ${remainingCount} more`
+                          : userList
+
+                        return (
+                          <span
+                            key={emoji}
+                            className="inline-flex items-center gap-0.5 px-2 py-1 bg-[var(--muted)] rounded-full text-xs border border-[var(--border)] shadow-sm cursor-default group relative"
+                            title={tooltipText}
+                          >
+                            <span className="text-sm">{emoji}</span>
+                            <span className="text-[var(--foreground)] font-medium">{data.count}</span>
+                            {/* Enhanced tooltip on hover */}
+                            <div className="absolute bottom-full left-1/2 -translate-x-1/2 mb-2 px-2 py-1 bg-[var(--card)] border border-[var(--border)] rounded shadow-lg text-[10px] text-[var(--foreground)] whitespace-nowrap opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 z-20">
+                              {tooltipText}
+                            </div>
+                          </span>
+                        )
+                      })}
                     </div>
                   )}
 

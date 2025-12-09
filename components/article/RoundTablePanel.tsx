@@ -1,6 +1,6 @@
 'use client'
 
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useRef, useCallback } from 'react'
 import { Button } from '@/components/ui/Button'
 import { X, Users, Star, Reply, ThumbsUp, Trash2, Award, User, ChevronDown, ChevronUp } from 'lucide-react'
 import { useSession } from 'next-auth/react'
@@ -33,6 +33,7 @@ interface RoundTablePanelProps {
   reviews: PeerReview[]
   onReviewsChange: (reviews: PeerReview[]) => void
   displayMode?: 'slideout' | 'modal' // 'modal' shows as bottom overlay taking 75% height
+  quotedText?: string // Pre-populate content with this quoted text
 }
 
 // Recursive function to build tree from flat list
@@ -52,7 +53,8 @@ export function RoundTablePanel({
   articleAuthorId,
   reviews: initialReviews,
   onReviewsChange,
-  displayMode = 'slideout'
+  displayMode = 'slideout',
+  quotedText = ''
 }: RoundTablePanelProps) {
   const { data: session } = useSession()
   const [reviews, setReviews] = useState<PeerReview[]>(initialReviews)
@@ -86,6 +88,70 @@ export function RoundTablePanel({
   useEffect(() => {
     onReviewsChange(reviews)
   }, [reviews, onReviewsChange])
+
+  // Escape key handler
+  useEffect(() => {
+    const handleEscapeKey = (e: KeyboardEvent) => {
+      if (e.key === 'Escape' && isOpen) {
+        onClose()
+      }
+    }
+
+    if (isOpen) {
+      document.addEventListener('keydown', handleEscapeKey)
+    }
+
+    return () => {
+      document.removeEventListener('keydown', handleEscapeKey)
+    }
+  }, [isOpen, onClose])
+
+  // Pre-populate content with quoted text when panel opens with a quote
+  useEffect(() => {
+    if (isOpen && quotedText && !hasUserReviewed) {
+      // Format the quoted text as a blockquote
+      const formattedQuote = `> "${quotedText}"\n\n`
+      setFormData(prev => ({
+        ...prev,
+        content: formattedQuote
+      }))
+      setShowReviewForm(true) // Auto-show the form
+    }
+  }, [isOpen, quotedText, hasUserReviewed])
+
+  // Swipe-down gesture handling for mobile (modal mode only)
+  const modalRef = useRef<HTMLDivElement>(null)
+  const touchStartY = useRef<number>(0)
+  const touchCurrentY = useRef<number>(0)
+  const [isDragging, setIsDragging] = useState(false)
+  const [dragOffset, setDragOffset] = useState(0)
+
+  const handleTouchStart = useCallback((e: React.TouchEvent) => {
+    if (displayMode !== 'modal') return
+    touchStartY.current = e.touches[0].clientY
+    touchCurrentY.current = e.touches[0].clientY
+    setIsDragging(true)
+  }, [displayMode])
+
+  const handleTouchMove = useCallback((e: React.TouchEvent) => {
+    if (!isDragging || displayMode !== 'modal') return
+    touchCurrentY.current = e.touches[0].clientY
+    const diff = touchCurrentY.current - touchStartY.current
+    // Only allow dragging down (positive diff)
+    if (diff > 0) {
+      setDragOffset(diff)
+    }
+  }, [isDragging, displayMode])
+
+  const handleTouchEnd = useCallback(() => {
+    if (!isDragging || displayMode !== 'modal') return
+    setIsDragging(false)
+    // If dragged more than 100px down, close the modal
+    if (dragOffset > 100) {
+      onClose()
+    }
+    setDragOffset(0)
+  }, [isDragging, dragOffset, displayMode, onClose])
 
   // Handle like toggle
   const handleLikeToggle = async (reviewId: string) => {
@@ -396,15 +462,20 @@ export function RoundTablePanel({
           onClick={onClose}
         />
 
-        {/* Bottom Modal Panel - 75% height */}
+        {/* Bottom Modal Panel - 75% height with swipe-down support */}
         <div
-          className={`fixed bottom-0 left-0 right-0 z-50 h-[75vh] bg-[var(--card)] border-t-2 border-[var(--border)] shadow-2xl rounded-t-2xl transform transition-transform duration-300 ease-in-out ${
-            isOpen ? 'translate-y-0' : 'translate-y-full'
-          }`}
+          ref={modalRef}
+          onTouchStart={handleTouchStart}
+          onTouchMove={handleTouchMove}
+          onTouchEnd={handleTouchEnd}
+          className={`fixed bottom-0 left-0 right-0 z-50 h-[75vh] bg-[var(--card)] border-t-2 border-[var(--border)] shadow-2xl rounded-t-2xl transform ${
+            isDragging ? '' : 'transition-transform duration-300 ease-in-out'
+          } ${isOpen ? 'translate-y-0' : 'translate-y-full'}`}
+          style={{ transform: isOpen ? `translateY(${dragOffset}px)` : 'translateY(100%)' }}
         >
-          {/* Handle bar for visual affordance */}
-          <div className="flex justify-center pt-2 pb-1">
-            <div className="w-12 h-1.5 bg-[var(--foreground)]/20 rounded-full" />
+          {/* Handle bar for swipe affordance - drag indicator */}
+          <div className="flex justify-center pt-2 pb-1 cursor-grab active:cursor-grabbing touch-pan-y">
+            <div className={`w-12 h-1.5 rounded-full transition-colors ${isDragging ? 'bg-[var(--primary)]' : 'bg-[var(--foreground)]/20'}`} />
           </div>
 
           {/* Header */}

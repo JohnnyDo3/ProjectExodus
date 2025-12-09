@@ -135,6 +135,34 @@ export function ProgressiveSkyline() {
         .animal-chicken {
           animation: animalPeck 4s ease-in-out infinite;
         }
+
+        @keyframes ornamentShimmer {
+          0%, 100% { opacity: 1; }
+          50% { opacity: 0.7; }
+        }
+
+        @keyframes medallionPulse {
+          0%, 100% { transform: scale(1); opacity: 1; }
+          50% { transform: scale(1.05); opacity: 0.9; }
+        }
+
+        @keyframes dentilWave {
+          0%, 100% { opacity: 1; transform: translateY(0); }
+          50% { opacity: 0.85; transform: translateY(-0.3px); }
+        }
+
+        .ornament-medallion {
+          animation: medallionPulse 4s ease-in-out infinite;
+          transform-origin: center;
+        }
+
+        .ornament-dentil {
+          animation: dentilWave 3s ease-in-out infinite;
+        }
+
+        .ornament-trim {
+          animation: ornamentShimmer 5s ease-in-out infinite;
+        }
       `}</style>
 
       {/* Background atmosphere layer */}
@@ -678,21 +706,56 @@ export function ProgressiveSkyline() {
                   <rect x={x+15} y="162" width="5" height="18" fill={`url(#victorianHouse-${iteration})`} /> {/* Tower */}
                   <path d={`M ${x+12.5},162 L ${x+17.5},153 L ${x+22.5},162 Z`} fill={`url(#victorianRoof-${iteration})`} /> {/* Tower roof */}
 
-                  {/* Detailed windows - larger */}
-                  <rect x={x+5} y="186" width="6" height="9" fill="#6b8ea8" opacity="1" />
-                  <rect x={x+24} y="186" width="6" height="9" fill="#6b8ea8" opacity="1" />
-                  <rect x={x+14} y="170" width="5" height="6" fill="#6b8ea8" opacity="1" />
-
-                  {/* Window lights for nighttime */}
-                  {isNightTime && isWindowLit(x + i * 100) && (
-                    <rect className="window-light" x={x+6} y="187" width="4" height="7" fill="#FFD700" opacity="0.9" />
-                  )}
-                  {isNightTime && isWindowLit(x + i * 100 + 1) && (
-                    <rect className="window-light" x={x+25} y="187" width="4" height="7" fill="#FFD700" opacity="0.9" />
-                  )}
-                  {isNightTime && isWindowLit(x + i * 100 + 2) && (
-                    <rect className="window-light" x={x+15} y="171" width="3" height="4" fill="#FFA500" opacity="0.85" />
-                  )}
+                  {/* Detailed multi-pane windows - Victorian style with 2x3 panes */}
+                  {/* Left window - 6-pane (2x3 grid) */}
+                  <g>
+                    <rect x={x+5} y="186" width="6" height="9" fill="#4a4a4a" opacity="1" />
+                    {[0, 1].map(col => [0, 1, 2].map(row => (
+                      <rect
+                        key={`vic-left-${i}-${col}-${row}`}
+                        x={x + 5.4 + col * 2.8}
+                        y={186.4 + row * 2.8}
+                        width="2.4"
+                        height="2.4"
+                        fill={isNightTime && isWindowLit(x + i * 100) ? "#FFD700" : "#6b8ea8"}
+                        opacity="1"
+                      />
+                    )))}
+                    {/* Window sill */}
+                    <rect x={x+4.5} y="194.5" width="7" height="1" fill="#d4c4a8" opacity="1" />
+                  </g>
+                  {/* Right window - 6-pane (2x3 grid) */}
+                  <g>
+                    <rect x={x+24} y="186" width="6" height="9" fill="#4a4a4a" opacity="1" />
+                    {[0, 1].map(col => [0, 1, 2].map(row => (
+                      <rect
+                        key={`vic-right-${i}-${col}-${row}`}
+                        x={x + 24.4 + col * 2.8}
+                        y={186.4 + row * 2.8}
+                        width="2.4"
+                        height="2.4"
+                        fill={isNightTime && isWindowLit(x + i * 100 + 1) ? "#FFD700" : "#6b8ea8"}
+                        opacity="1"
+                      />
+                    )))}
+                    {/* Window sill */}
+                    <rect x={x+23.5} y="194.5" width="7" height="1" fill="#d4c4a8" opacity="1" />
+                  </g>
+                  {/* Tower window - 4-pane (2x2 grid) */}
+                  <g>
+                    <rect x={x+14} y="170" width="5" height="6" fill="#4a4a4a" opacity="1" />
+                    {[0, 1].map(col => [0, 1].map(row => (
+                      <rect
+                        key={`vic-tower-${i}-${col}-${row}`}
+                        x={x + 14.4 + col * 2.2}
+                        y={170.4 + row * 2.6}
+                        width="1.9"
+                        height="2.2"
+                        fill={isNightTime && isWindowLit(x + i * 100 + 2) ? "#FFA500" : "#6b8ea8"}
+                        opacity="1"
+                      />
+                    )))}
+                  </g>
 
                   {/* Front door with porch */}
                   <rect x={x+14} y="194" width="7" height="14" fill="#8b5a3c" opacity="1" />
@@ -716,25 +779,67 @@ export function ProgressiveSkyline() {
                   {/* Classic colonial roof */}
                   <path d={`M ${x-3},178 L ${x+20},164 L ${x+43},178 Z`} fill={`url(#colonialRoof-${iteration})`} />
 
-                  {/* Symmetrical windows (4 windows, 2 stories) - larger */}
-                  <rect x={x+5} y="184" width="6" height="8" fill="#6b8ea8" opacity="1" />
-                  <rect x={x+29} y="184" width="6" height="8" fill="#6b8ea8" opacity="1" />
-                  <rect x={x+5} y="196" width="6" height="8" fill="#6b8ea8" opacity="1" />
-                  <rect x={x+29} y="196" width="6" height="8" fill="#6b8ea8" opacity="1" />
-
-                  {/* Window lights for nighttime */}
-                  {isNightTime && isWindowLit(x + i * 200) && (
-                    <rect className="window-light" x={x+6} y="185" width="4" height="6" fill="#FFD700" opacity="0.9" />
-                  )}
-                  {isNightTime && isWindowLit(x + i * 200 + 1) && (
-                    <rect className="window-light" x={x+30} y="185" width="4" height="6" fill="#FFA500" opacity="0.85" />
-                  )}
-                  {isNightTime && isWindowLit(x + i * 200 + 2) && (
-                    <rect className="window-light" x={x+6} y="197" width="4" height="6" fill="#FFD700" opacity="0.9" />
-                  )}
-                  {isNightTime && isWindowLit(x + i * 200 + 3) && (
-                    <rect className="window-light" x={x+30} y="197" width="4" height="6" fill="#FFA500" opacity="0.85" />
-                  )}
+                  {/* Symmetrical windows (4 windows, 2 stories) - Colonial 6-pane style (2x3 grid) */}
+                  {/* Top left window */}
+                  <g>
+                    <rect x={x+5} y="184" width="6" height="8" fill="#4a4a4a" opacity="1" />
+                    {[0, 1].map(col => [0, 1, 2].map(row => (
+                      <rect
+                        key={`col-tl-${i}-${col}-${row}`}
+                        x={x + 5.3 + col * 2.8}
+                        y={184.3 + row * 2.5}
+                        width="2.4"
+                        height="2.2"
+                        fill={isNightTime && isWindowLit(x + i * 200) ? "#FFD700" : "#6b8ea8"}
+                        opacity="1"
+                      />
+                    )))}
+                  </g>
+                  {/* Top right window */}
+                  <g>
+                    <rect x={x+29} y="184" width="6" height="8" fill="#4a4a4a" opacity="1" />
+                    {[0, 1].map(col => [0, 1, 2].map(row => (
+                      <rect
+                        key={`col-tr-${i}-${col}-${row}`}
+                        x={x + 29.3 + col * 2.8}
+                        y={184.3 + row * 2.5}
+                        width="2.4"
+                        height="2.2"
+                        fill={isNightTime && isWindowLit(x + i * 200 + 1) ? "#FFA500" : "#6b8ea8"}
+                        opacity="1"
+                      />
+                    )))}
+                  </g>
+                  {/* Bottom left window */}
+                  <g>
+                    <rect x={x+5} y="196" width="6" height="8" fill="#4a4a4a" opacity="1" />
+                    {[0, 1].map(col => [0, 1, 2].map(row => (
+                      <rect
+                        key={`col-bl-${i}-${col}-${row}`}
+                        x={x + 5.3 + col * 2.8}
+                        y={196.3 + row * 2.5}
+                        width="2.4"
+                        height="2.2"
+                        fill={isNightTime && isWindowLit(x + i * 200 + 2) ? "#FFD700" : "#6b8ea8"}
+                        opacity="1"
+                      />
+                    )))}
+                  </g>
+                  {/* Bottom right window */}
+                  <g>
+                    <rect x={x+29} y="196" width="6" height="8" fill="#4a4a4a" opacity="1" />
+                    {[0, 1].map(col => [0, 1, 2].map(row => (
+                      <rect
+                        key={`col-br-${i}-${col}-${row}`}
+                        x={x + 29.3 + col * 2.8}
+                        y={196.3 + row * 2.5}
+                        width="2.4"
+                        height="2.2"
+                        fill={isNightTime && isWindowLit(x + i * 200 + 3) ? "#FFA500" : "#6b8ea8"}
+                        opacity="1"
+                      />
+                    )))}
+                  </g>
 
                   {/* Centered front door */}
                   <rect x={x+16} y="194" width="8" height="14" fill="#5a4a3a" opacity="1" />
@@ -764,17 +869,37 @@ export function ProgressiveSkyline() {
                   {/* Low-pitched roof */}
                   <path d={`M ${x-3},188 L ${x+24},179 L ${x+51},188 Z`} fill={`url(#ranchRoof-${iteration})`} />
 
-                  {/* Horizontal windows - larger */}
-                  <rect x={x+6} y="191" width="10" height="5" fill="#6b8ea8" opacity="1" />
-                  <rect x={x+32} y="191" width="10" height="5" fill="#6b8ea8" opacity="1" />
-
-                  {/* Window lights for nighttime */}
-                  {isNightTime && isWindowLit(x + i * 150) && (
-                    <rect className="window-light" x={x+7} y="192" width="8" height="3" fill="#FFD700" opacity="0.9" />
-                  )}
-                  {isNightTime && isWindowLit(x + i * 150 + 1) && (
-                    <rect className="window-light" x={x+33} y="192" width="8" height="3" fill="#FFA500" opacity="0.85" />
-                  )}
+                  {/* Horizontal windows - Ranch style 6-pane (3x2 grid) for wide look */}
+                  {/* Left window */}
+                  <g>
+                    <rect x={x+6} y="191" width="10" height="5" fill="#4a4a4a" opacity="1" />
+                    {[0, 1, 2].map(col => [0, 1].map(row => (
+                      <rect
+                        key={`ranch-left-${i}-${col}-${row}`}
+                        x={x + 6.3 + col * 3.2}
+                        y={191.3 + row * 2.3}
+                        width="2.8"
+                        height="2"
+                        fill={isNightTime && isWindowLit(x + i * 150) ? "#FFD700" : "#6b8ea8"}
+                        opacity="1"
+                      />
+                    )))}
+                  </g>
+                  {/* Right window */}
+                  <g>
+                    <rect x={x+32} y="191" width="10" height="5" fill="#4a4a4a" opacity="1" />
+                    {[0, 1, 2].map(col => [0, 1].map(row => (
+                      <rect
+                        key={`ranch-right-${i}-${col}-${row}`}
+                        x={x + 32.3 + col * 3.2}
+                        y={191.3 + row * 2.3}
+                        width="2.8"
+                        height="2"
+                        fill={isNightTime && isWindowLit(x + i * 150 + 1) ? "#FFA500" : "#6b8ea8"}
+                        opacity="1"
+                      />
+                    )))}
+                  </g>
 
                   {/* Attached garage - larger */}
                   <rect x={x+38} y="193" width="9" height="13" fill="#c9b18f" opacity="1" />
@@ -800,9 +925,35 @@ export function ProgressiveSkyline() {
                   {/* Arched door - larger */}
                   <path d={`M ${x+11},193 L ${x+11},207 L ${x+19},207 L ${x+19},193 Q ${x+15},190 ${x+11},193 Z`} fill="#a85757" opacity="1" />
 
-                  {/* Cottage windows - larger */}
-                  <rect x={x+5} y="191" width="5" height="5" fill="#6b8ea8" opacity="1" />
-                  <rect x={x+20} y="191" width="5" height="5" fill="#6b8ea8" opacity="1" />
+                  {/* Cottage windows - cozy 4-pane (2x2 grid) */}
+                  <g>
+                    <rect x={x+5} y="191" width="5" height="5" fill="#4a4a4a" opacity="1" />
+                    {[0, 1].map(col => [0, 1].map(row => (
+                      <rect
+                        key={`cottage-left-${i}-${col}-${row}`}
+                        x={x + 5.3 + col * 2.3}
+                        y={191.3 + row * 2.3}
+                        width="2"
+                        height="2"
+                        fill="#6b8ea8"
+                        opacity="1"
+                      />
+                    )))}
+                  </g>
+                  <g>
+                    <rect x={x+20} y="191" width="5" height="5" fill="#4a4a4a" opacity="1" />
+                    {[0, 1].map(col => [0, 1].map(row => (
+                      <rect
+                        key={`cottage-right-${i}-${col}-${row}`}
+                        x={x + 20.3 + col * 2.3}
+                        y={191.3 + row * 2.3}
+                        width="2"
+                        height="2"
+                        fill="#6b8ea8"
+                        opacity="1"
+                      />
+                    )))}
+                  </g>
 
                   {/* Window boxes with flowers */}
                   <rect x={x+3} y="198" width="6" height="1.5" fill="#8b7355" opacity="1" />
@@ -831,9 +982,35 @@ export function ProgressiveSkyline() {
                   {/* Flat/minimal roof */}
                   <rect x={x-1} y="180" width="35" height="3" fill={`url(#modernRoof-${iteration})`} />
 
-                  {/* Large modern windows - larger */}
-                  <rect x={x+3} y="188" width="10" height="14" fill="#6b8ea8" opacity="1" />
-                  <rect x={x+20} y="188" width="10" height="14" fill="#6b8ea8" opacity="1" />
+                  {/* Large modern windows - floor-to-ceiling 3x4 grid pane design */}
+                  <g>
+                    <rect x={x+3} y="188" width="10" height="14" fill="#3a4a5a" opacity="1" />
+                    {[0, 1, 2].map(col => [0, 1, 2, 3].map(row => (
+                      <rect
+                        key={`modern-left-${i}-${col}-${row}`}
+                        x={x + 3.3 + col * 3.2}
+                        y={188.3 + row * 3.4}
+                        width="2.9"
+                        height="3.1"
+                        fill="#6b8ea8"
+                        opacity="1"
+                      />
+                    )))}
+                  </g>
+                  <g>
+                    <rect x={x+20} y="188" width="10" height="14" fill="#3a4a5a" opacity="1" />
+                    {[0, 1, 2].map(col => [0, 1, 2, 3].map(row => (
+                      <rect
+                        key={`modern-right-${i}-${col}-${row}`}
+                        x={x + 20.3 + col * 3.2}
+                        y={188.3 + row * 3.4}
+                        width="2.9"
+                        height="3.1"
+                        fill="#6b8ea8"
+                        opacity="1"
+                      />
+                    )))}
+                  </g>
 
                   {/* Minimal door */}
                   <rect x={x+14} y="196" width="5" height="11" fill="#5a7a8a" opacity="1" />
@@ -1136,24 +1313,26 @@ export function ProgressiveSkyline() {
                     <rect x={bldg.x} y={198} width={bldg.w} height="2" fill="#b8c8b8" opacity="1" />
                     <rect x={bldg.x} y={197} width={bldg.w} height="1" fill="#c8d8c8" opacity="1" />
 
-                    {/* Decorative ornamentation band between floors */}
+                    {/* Decorative ornamentation band between floors - animated */}
                     <g opacity="1">
-                      {/* Dentil molding - small rectangular blocks */}
+                      {/* Dentil molding - small rectangular blocks with wave animation */}
                       {Array.from({ length: Math.floor(bldg.w / 3) }).map((_, d) => (
                         <rect
                           key={`dentil-${i}-${d}`}
+                          className="ornament-dentil"
                           x={bldg.x + 1 + d * 3}
                           y={196}
                           width="1.5"
                           height="1"
                           fill="#a8b8a8"
                           opacity="1"
+                          style={{ animationDelay: `${d * 0.1}s` }}
                         />
                       ))}
 
-                      {/* Decorative medallions/rosettes at intervals */}
+                      {/* Decorative medallions/rosettes at intervals - with pulse animation */}
                       {[0.25, 0.5, 0.75].map((pos, m) => (
-                        <g key={`medallion-${i}-${m}`}>
+                        <g key={`medallion-${i}-${m}`} className="ornament-medallion" style={{ animationDelay: `${m * 1.3}s` }}>
                           {/* Circular medallion */}
                           <circle
                             cx={bldg.x + bldg.w * pos}
@@ -1185,17 +1364,19 @@ export function ProgressiveSkyline() {
                         </g>
                       ))}
 
-                      {/* Egg-and-dart style trim above dentils */}
-                      <rect x={bldg.x} y={194.5} width={bldg.w} height="0.5" fill="#c0d0c0" opacity="1" />
+                      {/* Egg-and-dart style trim above dentils - shimmer effect */}
+                      <rect x={bldg.x} y={194.5} width={bldg.w} height="0.5" fill="#c0d0c0" opacity="1" className="ornament-trim" />
                       {Array.from({ length: Math.floor(bldg.w / 4) }).map((_, e) => (
                         <ellipse
                           key={`egg-${i}-${e}`}
+                          className="ornament-trim"
                           cx={bldg.x + 2 + e * 4}
                           cy={195.5}
                           rx="1"
                           ry="0.6"
                           fill="#d8e0d8"
                           opacity="0.8"
+                          style={{ animationDelay: `${e * 0.2}s` }}
                         />
                       ))}
 
