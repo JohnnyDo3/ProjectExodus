@@ -17,7 +17,6 @@ import {
   CheckCheck,
   Pencil,
   Trash2,
-  Smile,
   MoreVertical,
 } from 'lucide-react'
 import Link from 'next/link'
@@ -120,13 +119,11 @@ export function ConversationPanel({ userId, onBack }: ConversationPanelProps) {
   const [editingMessageId, setEditingMessageId] = useState<string | null>(null)
   const [editContent, setEditContent] = useState('')
   const [activeMenuId, setActiveMenuId] = useState<string | null>(null)
-  const [emojiPickerMsgId, setEmojiPickerMsgId] = useState<string | null>(null)
-  const [emojiPickerPosition, setEmojiPickerPosition] = useState<'above' | 'below'>('below')
   const [readMessageIds, setReadMessageIds] = useState<Set<string>>(new Set())
   const messagesContainerRef = useRef<HTMLDivElement>(null)
 
-  // Available reaction emojis
-  const reactionEmojis = ['👍', '❤️', '😂', '😮', '😢', '😡', '🎉', '🔥', '👏', '💯']
+  // Quick reaction emojis
+  const quickReactions = ['👍', '❤️', '😂', '😮', '😢', '🎉']
   const typingTimeoutRef = useRef<NodeJS.Timeout | null>(null)
 
   // Play notification sound
@@ -242,21 +239,8 @@ export function ConversationPanel({ userId, onBack }: ConversationPanelProps) {
     setEditContent('')
   }
 
-  // Open emoji picker with smart positioning
-  const openEmojiPicker = (messageId: string, buttonElement: HTMLButtonElement) => {
-    const rect = buttonElement.getBoundingClientRect()
-    const viewportHeight = window.innerHeight
-    const spaceBelow = viewportHeight - rect.bottom
-    const spaceAbove = rect.top
-
-    // If less than 200px below, show above
-    setEmojiPickerPosition(spaceBelow < 200 && spaceAbove > spaceBelow ? 'above' : 'below')
-    setEmojiPickerMsgId(messageId)
-  }
-
   // Add reaction to message
   const handleAddReaction = async (messageId: string, emoji: string) => {
-    setEmojiPickerMsgId(null) // Close picker
     try {
       await fetch(`/api/messages/${messageId}/reactions`, {
         method: 'POST',
@@ -584,46 +568,19 @@ export function ConversationPanel({ userId, onBack }: ConversationPanelProps) {
                           </div>
                         )}
 
-                        {/* Reaction button with emoji picker */}
+                        {/* Quick reactions - inline row below message */}
                         {!isDeleted && (
-                          <div className={`absolute top-1/2 -translate-y-1/2 opacity-0 group-hover:opacity-100 transition-opacity ${isOwnMessage ? 'left-full ml-1' : 'right-full mr-1'}`}>
-                            <div className="relative">
-                              <button
-                                onClick={(e) => openEmojiPicker(msg.id, e.currentTarget)}
-                                className="p-1.5 bg-[var(--card)] rounded-full shadow border border-[var(--border)] hover:bg-[var(--muted)] transition-colors"
-                              >
-                                <Smile className="w-4 h-4 text-theme-muted" />
-                              </button>
-
-                              {/* Emoji picker dropdown */}
-                              {emojiPickerMsgId === msg.id && (
-                                <>
-                                  {/* Backdrop to close picker */}
-                                  <div
-                                    className="fixed inset-0 z-40"
-                                    onClick={() => setEmojiPickerMsgId(null)}
-                                  />
-                                  <div
-                                    className={`absolute z-50 ${isOwnMessage ? 'right-0' : 'left-0'} ${
-                                      emojiPickerPosition === 'above' ? 'bottom-full mb-2' : 'top-full mt-2'
-                                    }`}
-                                  >
-                                    <div className="bg-[var(--card)] rounded-xl shadow-lg border border-[var(--border)] p-2">
-                                      <div className="grid grid-cols-5 gap-1">
-                                        {reactionEmojis.map((emoji) => (
-                                          <button
-                                            key={emoji}
-                                            onClick={() => handleAddReaction(msg.id, emoji)}
-                                            className="p-2 hover:bg-[var(--muted)] rounded-lg text-lg transition-colors"
-                                          >
-                                            {emoji}
-                                          </button>
-                                        ))}
-                                      </div>
-                                    </div>
-                                  </div>
-                                </>
-                              )}
+                          <div className={`absolute -bottom-3 opacity-0 group-hover:opacity-100 transition-opacity z-10 ${isOwnMessage ? 'right-0' : 'left-0'}`}>
+                            <div className="flex gap-0.5 bg-[var(--card)] rounded-full px-1.5 py-1 shadow-lg border border-[var(--border)]">
+                              {quickReactions.map((emoji) => (
+                                <button
+                                  key={emoji}
+                                  onClick={() => handleAddReaction(msg.id, emoji)}
+                                  className="p-1 hover:bg-[var(--muted)] rounded-full text-sm transition-colors hover:scale-110"
+                                >
+                                  {emoji}
+                                </button>
+                              ))}
                             </div>
                           </div>
                         )}
