@@ -397,7 +397,7 @@ export function ConversationPanel({ userId, onBack }: ConversationPanelProps) {
   }
 
   return (
-    <div className="h-full flex flex-col">
+    <div className="h-full flex flex-col overflow-hidden">
       {/* Notification Toast */}
       {notification && (
         <MessageNotification
@@ -459,7 +459,7 @@ export function ConversationPanel({ userId, onBack }: ConversationPanelProps) {
       {/* Messages */}
       <div
         ref={messagesContainerRef}
-        className="flex-1 overflow-y-auto p-4 space-y-4 bg-[var(--muted)]/50"
+        className="flex-1 overflow-y-auto overflow-x-hidden p-4 space-y-4 bg-[var(--muted)]/50"
       >
         {messages.length === 0 ? (
           <div className="h-full flex items-center justify-center">
@@ -531,6 +531,7 @@ export function ConversationPanel({ userId, onBack }: ConversationPanelProps) {
                               ? 'bg-[var(--primary)] text-[var(--primary-foreground)] rounded-tr-sm'
                               : 'bg-[var(--card)] text-[var(--foreground)] rounded-tl-sm border border-[var(--border)]'
                           } text-sm font-medium break-words`}
+                          style={{ overflowWrap: 'anywhere', wordBreak: 'break-word' }}
                         >
                           {msg.content}
                         </div>
