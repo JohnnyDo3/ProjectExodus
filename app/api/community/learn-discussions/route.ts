@@ -1,6 +1,26 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { prisma } from '@/lib/db/prisma'
 import { LearningLevel, LEARNING_LEVELS } from '@/types/learning'
+import { Prisma } from '@prisma/client'
+
+// Type for discussion with includes
+type DiscussionWithIncludes = Prisma.ModuleDiscussionGetPayload<{
+  include: {
+    author: { select: { id: true; name: true; image: true } }
+    article: { select: { id: true; title: true; slug: true; coverImage: true } }
+    _count: { select: { replies: true } }
+  }
+}>
+
+// Type for module with count
+type ModuleWithCount = Prisma.ArticleGetPayload<{
+  select: {
+    id: true
+    title: true
+    slug: true
+    _count: { select: { moduleDiscussions: true } }
+  }
+}>
 
 // GET /api/community/learn-discussions
 // Get all learning module discussions for the community page
@@ -85,7 +105,7 @@ export async function GET(request: NextRequest) {
     ])
 
     // Format discussions for community display
-    const formattedDiscussions = discussions.map(d => ({
+    const formattedDiscussions = discussions.map((d: DiscussionWithIncludes) => ({
       id: d.id,
       type: 'learn' as const,
       articleId: d.articleId,
@@ -119,7 +139,7 @@ export async function GET(request: NextRequest) {
       success: true,
       data: formattedDiscussions,
       filters: {
-        modules: modules.map(m => ({
+        modules: modules.map((m: ModuleWithCount) => ({
           id: m.id,
           title: m.title,
           slug: m.slug,
