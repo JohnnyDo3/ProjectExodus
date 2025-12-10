@@ -73,13 +73,13 @@ export function CircularCarousel({ items }: CircularCarouselProps) {
     // Using golden ratio for natural spacing: φ ≈ 1.618
     const phi = 1.618
     const angle = (position * 360) / items.length
-    const translateZ = 450 // Distance from center - slightly increased for depth
+    const translateZ = 350 // Distance from center - adjusted for compact view
     const rotateY = angle
 
     // Curvilinear motion - natural arc following fibonacci spiral principles
     const angleRad = (angle * Math.PI) / 180
-    const translateX = Math.sin(angleRad) * (600 * phi / 2)
-    const translateY = Math.cos(angleRad) * 25 - 25 // Gentle vertical curve
+    const translateX = Math.sin(angleRad) * (500 * phi / 2)
+    const translateY = Math.cos(angleRad) * 20 - 20 // Gentle vertical curve
 
     // Opacity and scale based on position - better visibility
     const distance = Math.abs(position)
@@ -103,11 +103,11 @@ export function CircularCarousel({ items }: CircularCarouselProps) {
   }
 
   return (
-    <div className="relative w-full overflow-hidden py-10 md:py-20">
+    <div className="relative w-full overflow-hidden py-4 md:py-6">
       {/* Carousel Container */}
       <div
         ref={containerRef}
-        className="relative mx-auto h-[400px] sm:h-[500px] md:h-[600px]"
+        className="relative mx-auto h-[320px] sm:h-[360px] md:h-[400px]"
         style={{
           perspective: '2000px',
           perspectiveOrigin: 'center center',
@@ -200,7 +200,7 @@ export function CircularCarousel({ items }: CircularCarouselProps) {
       </div>
 
       {/* Progress Indicators */}
-      <div className="flex items-center justify-center gap-3 mt-12">
+      <div className="flex items-center justify-center gap-2 mt-4">
         {items.map((item, index) => (
           <button
             key={item.number}
@@ -209,10 +209,10 @@ export function CircularCarousel({ items }: CircularCarouselProps) {
               setIsAutoPlaying(false)
             }}
             className={`
-              h-3 rounded-full transition-all duration-300
+              h-2 rounded-full transition-all duration-300
               ${index === currentIndex
-                ? 'w-12 bg-[var(--primary)]'
-                : 'w-3 bg-[var(--muted)] hover:bg-[var(--primary)]/50'
+                ? 'w-8 bg-[var(--primary)]'
+                : 'w-2 bg-[var(--muted)] hover:bg-[var(--primary)]/50'
               }
             `}
             aria-label={`Go to slide ${index + 1}`}
@@ -221,8 +221,8 @@ export function CircularCarousel({ items }: CircularCarouselProps) {
       </div>
 
       {/* Helper Text */}
-      <div className="text-center mt-6">
-        <p className="text-sm font-bold text-theme-muted">
+      <div className="text-center mt-2">
+        <p className="text-xs font-bold text-theme-muted">
           {isAutoPlaying ? (
             <>⟳ Auto-rotating • Hover to pause</>
           ) : (

@@ -362,12 +362,12 @@ export default function Home() {
       </section>
 
       {/* The Commandments of Sustainable Agriculture */}
-      <section className="py-16 bg-gradient-to-br from-[var(--primary)] via-[var(--accent)] to-[var(--secondary)] text-[var(--primary-foreground)]">
+      <section className="py-8 bg-gradient-to-br from-[var(--primary)] via-[var(--accent)] to-[var(--secondary)] text-[var(--primary-foreground)]">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
           <div className="max-w-6xl mx-auto">
-            <div className="text-center mb-12">
-              <h2 className="text-7xl font-black mb-8 text-[var(--primary-foreground)]">THE COMMANDMENTS</h2>
-              <p className="text-3xl font-bold text-[var(--primary-foreground)]">OF SUSTAINABLE AGRICULTURE</p>
+            <div className="text-center mb-4">
+              <h2 className="text-4xl md:text-5xl font-black mb-2 text-[var(--primary-foreground)]">THE COMMANDMENTS</h2>
+              <p className="text-xl md:text-2xl font-bold text-[var(--primary-foreground)]">OF SUSTAINABLE AGRICULTURE</p>
             </div>
 
             <CircularCarousel items={commandments} />
