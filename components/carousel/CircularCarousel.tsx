@@ -103,11 +103,11 @@ export function CircularCarousel({ items }: CircularCarouselProps) {
   }
 
   return (
-    <div className="relative w-full overflow-hidden py-4 md:py-6">
+    <div className="relative w-full overflow-hidden py-2 md:py-4">
       {/* Carousel Container */}
       <div
         ref={containerRef}
-        className="relative mx-auto h-[320px] sm:h-[360px] md:h-[400px]"
+        className="relative mx-auto h-[280px] sm:h-[320px] md:h-[360px]"
         style={{
           perspective: '2000px',
           perspectiveOrigin: 'center center',
