@@ -296,8 +296,8 @@ export default function Home() {
                 WebkitBackgroundClip: 'text',
                 WebkitTextFillColor: 'transparent',
                 fontWeight: 900
-              }}>SUSTAINABLE INNOVATIONS</span>{' '}
-              TO IMPLEMENT AS NEW ENVIRONMENTAL INFRASTRUCTURE
+              }}>SUSTAINABLE OFF-GRID SYSTEMS</span>{' '}
+              WITHIN BUILT ENVIRONMENTS
             </p>
 
             {/* Food, Water, Energy Icons */}
