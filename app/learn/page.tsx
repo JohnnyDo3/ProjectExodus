@@ -164,10 +164,16 @@ export default function LearnPage() {
       <TreeBranches />
       <FlyingBirds />
 
-      {/* Hero Section - Original "LEARN SUSTAINABILITY" */}
-      <section className="min-h-screen flex items-center justify-center bg-gradient-to-br from-[color-mix(in_srgb,var(--accent)_15%,var(--background))] via-[color-mix(in_srgb,var(--primary)_15%,var(--background))] to-[var(--muted)] relative overflow-hidden">
+      {/* Hero Section - Clean and Focused */}
+      <section className="min-h-[70vh] flex items-center justify-center bg-gradient-to-br from-[color-mix(in_srgb,var(--accent)_15%,var(--background))] via-[color-mix(in_srgb,var(--primary)_15%,var(--background))] to-[var(--muted)] relative overflow-hidden">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
           <div className="max-w-5xl mx-auto text-center space-y-8">
+            {/* Professor Sage Badge */}
+            <div className="inline-flex items-center gap-3 px-6 py-3 rounded-full bg-[color-mix(in_srgb,var(--primary)_20%,var(--background))] border-2 border-theme-primary">
+              <span className="text-3xl">🦉</span>
+              <span className="text-lg font-black text-theme-primary">PROFESSOR SAGE&apos;S CLASSROOM</span>
+            </div>
+
             <h1 className="text-[var(--foreground)]" style={{
               fontSize: 'clamp(3rem, 10vw, 7rem)',
               fontWeight: 900,
@@ -188,39 +194,8 @@ export default function LearnPage() {
             <div className="max-w-3xl mx-auto">
               <p className="text-xl font-semibold text-theme-muted">
                 Welcome to the most comprehensive sustainability education platform.
-                From beginner basics to advanced systems thinking—your journey to
+                Interactive lessons, hands-on activities, and expert knowledge—your journey to
                 becoming an environmental changemaker starts here.
-              </p>
-            </div>
-
-            {/* Grade Level Classroom Selector */}
-            <div className="max-w-4xl mx-auto pt-6">
-              <p className="text-lg font-bold text-theme-muted mb-4">
-                Select your learning level to customize all modules:
-              </p>
-              <div className="flex flex-wrap gap-2 justify-center">
-                {LEARNING_LEVEL_ORDER.map((level) => {
-                  const meta = LEARNING_LEVELS[level]
-                  const isSelected = level === selectedLevel
-                  return (
-                    <button
-                      key={level}
-                      onClick={() => setSelectedLevel(level)}
-                      className={`px-4 py-2 rounded-xl text-sm font-bold transition-all duration-200 flex items-center gap-2 ${
-                        isSelected
-                          ? 'bg-[var(--primary)] text-[var(--primary-foreground)] shadow-lg scale-105'
-                          : 'bg-[var(--muted)] text-[var(--foreground)] hover:bg-[var(--primary)]/20 hover:scale-102'
-                      }`}
-                    >
-                      <span className="text-lg">{meta.icon}</span>
-                      <span>{meta.shortLabel}</span>
-                      <span className="text-xs opacity-70">({meta.ageRange})</span>
-                    </button>
-                  )
-                })}
-              </div>
-              <p className="text-sm text-theme-muted mt-3">
-                Currently learning at: <span className="font-black text-theme-primary">{LEARNING_LEVELS[selectedLevel].icon} {LEARNING_LEVELS[selectedLevel].label}</span> level
               </p>
             </div>
 
@@ -228,7 +203,7 @@ export default function LearnPage() {
               <Button
                 size="lg"
                 className="text-lg px-8 py-6 rounded-xl font-black shadow-xl"
-                onClick={() => scrollToSection('learning-paths')}
+                onClick={() => scrollToSection('core-topics')}
               >
                 <Play className="w-5 h-5 mr-2" />
                 START LEARNING
@@ -237,9 +212,9 @@ export default function LearnPage() {
                 size="lg"
                 variant="outline"
                 className="text-lg px-8 py-6 rounded-xl font-bold border-2"
-                onClick={() => scrollToSection('core-topics')}
+                onClick={() => scrollToSection('learning-paths')}
               >
-                CORE TOPICS
+                VIEW LEARNING PATHS
               </Button>
             </div>
           </div>
@@ -339,20 +314,18 @@ export default function LearnPage() {
         </div>
       </section>
 
-      {/* Featured Modules */}
+      {/* Featured Modules - Available Now */}
       <section id="featured-modules" className="py-24 bg-[var(--muted)]">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-12 sm:mb-16">
+            <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-[color-mix(in_srgb,var(--accent)_20%,var(--background))] border-2 border-theme-accent mb-4">
+              <CheckCircle2 className="w-5 h-5 text-theme-accent" />
+              <span className="text-sm font-black text-theme-accent">AVAILABLE NOW</span>
+            </div>
             <h2 className="text-3xl sm:text-4xl md:text-5xl font-black mb-4 text-[var(--foreground)]">FEATURED MODULES</h2>
             <p className="text-base sm:text-lg md:text-xl font-semibold text-theme-muted px-4">
-              Dive deep with our most popular lessons
+              Start your learning journey with these fully interactive modules
             </p>
-            <div className="mt-4 inline-flex items-center gap-2 px-4 py-2 rounded-full bg-[color-mix(in_srgb,var(--primary)_20%,var(--background))]">
-              <span className="text-lg">{LEARNING_LEVELS[selectedLevel].icon}</span>
-              <span className="text-sm font-bold text-theme-primary">
-                Classroom Level: {LEARNING_LEVELS[selectedLevel].label}
-              </span>
-            </div>
           </div>
 
           <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6 max-w-7xl mx-auto">
@@ -437,35 +410,78 @@ export default function LearnPage() {
         </div>
       </section>
 
-      {/* Core Topics */}
+      {/* Core Topics - Main Learning Hub with Level Selector */}
       <section id="core-topics" className="py-24 bg-[var(--background)] scroll-mt-20">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="text-center mb-12 sm:mb-16">
+          <div className="text-center mb-8">
             <h2 className="text-3xl sm:text-4xl md:text-5xl font-black mb-4 text-[var(--foreground)]">CORE TOPICS</h2>
-            <p className="text-base sm:text-lg md:text-xl font-semibold text-theme-muted px-4">
-              Master the pillars of sustainability
+            <p className="text-base sm:text-lg md:text-xl font-semibold text-theme-muted px-4 mb-8">
+              Choose your classroom level and explore our comprehensive curriculum
             </p>
+
+            {/* Learning Level Selector - Moved here */}
+            <div className="max-w-5xl mx-auto mb-12">
+              <div className="bg-[color-mix(in_srgb,var(--primary)_10%,var(--background))] rounded-2xl p-6 border-2 border-theme-primary">
+                <div className="flex items-center justify-center gap-2 mb-4">
+                  <GraduationCap className="w-6 h-6 text-theme-primary" />
+                  <span className="text-lg font-black text-theme-primary">SELECT YOUR CLASSROOM LEVEL</span>
+                </div>
+                <div className="flex flex-wrap gap-2 justify-center">
+                  {LEARNING_LEVEL_ORDER.map((level) => {
+                    const meta = LEARNING_LEVELS[level]
+                    const isSelected = level === selectedLevel
+                    return (
+                      <button
+                        key={level}
+                        onClick={() => setSelectedLevel(level)}
+                        className={`px-4 py-3 rounded-xl text-sm font-bold transition-all duration-200 flex items-center gap-2 ${
+                          isSelected
+                            ? 'bg-[var(--primary)] text-[var(--primary-foreground)] shadow-lg scale-105 ring-2 ring-offset-2 ring-[var(--primary)]'
+                            : 'bg-[var(--card)] text-[var(--foreground)] hover:bg-[var(--primary)]/20 hover:scale-102 border border-[var(--border)]'
+                        }`}
+                      >
+                        <span className="text-xl">{meta.icon}</span>
+                        <div className="text-left">
+                          <div className="font-black">{meta.shortLabel}</div>
+                          <div className="text-xs opacity-70">{meta.ageRange}</div>
+                        </div>
+                      </button>
+                    )
+                  })}
+                </div>
+                <p className="text-sm text-theme-muted mt-4">
+                  All modules adapt to your level: <span className="font-black text-theme-primary">{LEARNING_LEVELS[selectedLevel].icon} {LEARNING_LEVELS[selectedLevel].label}</span>
+                </p>
+              </div>
+            </div>
           </div>
 
           <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8 max-w-7xl mx-auto">
             {topics.map((topic) => (
-              <Link key={topic.title} href={`/learn/topics/${topic.slug}`}>
-                <Card className="h-full border-4 border-theme-primary bg-gradient-to-br from-[color-mix(in_srgb,var(--primary)_15%,var(--background))] to-[var(--background)] transform hover:scale-105 hover:shadow-2xl transition-all duration-300 cursor-pointer">
+              <Link key={topic.title} href={`/learn/topics/${topic.slug}?level=${selectedLevel.toLowerCase()}`}>
+                <Card className="h-full border-4 border-theme-primary bg-gradient-to-br from-[color-mix(in_srgb,var(--primary)_15%,var(--background))] to-[var(--background)] transform hover:scale-105 hover:shadow-2xl transition-all duration-300 cursor-pointer group">
                   <CardContent className="p-8">
-                    <div className="w-20 h-20 mb-6 rounded-2xl bg-[color-mix(in_srgb,var(--primary)_20%,var(--background))] flex items-center justify-center">
-                      <topic.icon className="w-10 h-10 text-theme-primary" />
+                    <div className="flex items-start justify-between mb-4">
+                      <div className="w-20 h-20 rounded-2xl bg-[color-mix(in_srgb,var(--primary)_20%,var(--background))] flex items-center justify-center group-hover:scale-110 transition-transform">
+                        <topic.icon className="w-10 h-10 text-theme-primary" />
+                      </div>
+                      <div className="px-3 py-1 rounded-full bg-[color-mix(in_srgb,var(--primary)_15%,var(--background))] text-xs font-bold text-theme-primary flex items-center gap-1">
+                        <span>{LEARNING_LEVELS[selectedLevel].icon}</span>
+                        <span>{LEARNING_LEVELS[selectedLevel].shortLabel}</span>
+                      </div>
                     </div>
-                    <h3 className="text-2xl font-black mb-3 text-[var(--foreground)]">
+                    <h3 className="text-2xl font-black mb-3 text-[var(--foreground)] group-hover:text-theme-primary transition-colors">
                       {topic.title}
                     </h3>
                     <p className="text-base font-medium mb-4 text-theme-muted">
                       {topic.desc}
                     </p>
                     <div className="flex items-center justify-between">
-                      <span className="text-sm font-bold text-theme-muted">
-                        {topic.lessons} lessons
+                      <span className="text-sm font-bold text-theme-muted flex items-center gap-2">
+                        <BookOpen className="w-4 h-4" />
+                        {topic.lessons} modules
                       </span>
-                      <span className="text-theme-primary font-black text-sm flex items-center gap-1">
+                      <span className="text-theme-primary font-black text-sm flex items-center gap-1 group-hover:gap-2 transition-all">
                         EXPLORE <ChevronRight className="w-4 h-4" />
                       </span>
                     </div>
