@@ -611,5 +611,130 @@ export const waterSystemsModules: Module[] = [
       { title: 'EPA WaterSense', url: 'https://www.epa.gov/watersense', type: 'research' },
       { title: 'Alliance for Water Efficiency', url: 'https://www.allianceforwaterefficiency.org/', type: 'article' }
     ]
+  },
+  // Module 6: Groundwater Management
+  {
+    id: 'water-groundwater',
+    slug: 'groundwater-management',
+    title: 'Groundwater Management',
+    description: {
+      ELEMENTARY: 'Discover the hidden water underground that we drink!',
+      MIDDLE_SCHOOL: 'Learn about aquifers and how we use groundwater sustainably.',
+      HIGH_SCHOOL: 'Explore groundwater hydrology, wells, and aquifer management.',
+      UNDERGRADUATE: 'Analyze groundwater modeling, sustainable yield, and contamination.',
+      GRADUATE: 'Examine conjunctive use, managed aquifer recharge, and governance.',
+      PHD: 'Research groundwater-surface water interactions, modeling uncertainty, and policy.'
+    },
+    topic: 'water-systems',
+    category: 'GROUNDWATER',
+    icon: 'Layers',
+    color: 'ocean',
+    duration: { ELEMENTARY: 25, MIDDLE_SCHOOL: 35, HIGH_SCHOOL: 50, UNDERGRADUATE: 70, GRADUATE: 90, PHD: 120 },
+    isMasterclass: false,
+    lessons: [{ id: 'ws-gw-1', title: 'Water Underground', order: 1, duration: 15, hasActivity: true, activityType: 'SIMULATION', content: { ELEMENTARY: '<h2>Hidden Water!</h2><p>Under the ground, there is water hiding in rocks and sand called groundwater!</p>', MIDDLE_SCHOOL: '<h2>What is Groundwater?</h2><p>Water that fills spaces between underground rocks is called groundwater. Aquifers are layers that hold lots of this water.</p>', HIGH_SCHOOL: '<h2>Groundwater Hydrology</h2><p>Aquifers, water tables, recharge zones, and flow paths. Wells tap into this underground resource.</p>', UNDERGRADUATE: '<h2>Aquifer Management</h2><p>Sustainable yield, pumping tests, drawdown analysis, and contamination risk assessment.</p>', GRADUATE: '<h2>Managed Aquifer Recharge</h2><p>Intentionally recharging aquifers with surface water or treated wastewater for storage.</p>', PHD: '<h2>Research Frontiers</h2><p>Groundwater-surface water interactions, transboundary aquifers, and climate impacts.</p>' } }],
+    activities: [{ id: 'ws-gw-act-1', type: 'SIMULATION', title: { ELEMENTARY: 'Dig a Well!', MIDDLE_SCHOOL: 'Explore Aquifers', HIGH_SCHOOL: 'Well Design', UNDERGRADUATE: 'Yield Analysis', GRADUATE: 'Recharge Planning', PHD: 'Model Development' }, description: { ELEMENTARY: 'Find water underground!', MIDDLE_SCHOOL: 'Explore how aquifers store and move water.', HIGH_SCHOOL: 'Design a well for a community.', UNDERGRADUATE: 'Analyze sustainable pumping rates.', GRADUATE: 'Plan a managed aquifer recharge project.', PHD: 'Develop a groundwater flow model.' }, config: { ELEMENTARY: { complexity: 'basic', variables: 4 }, MIDDLE_SCHOOL: { complexity: 'simple', variables: 6 }, HIGH_SCHOOL: { complexity: 'intermediate', variables: 12 }, UNDERGRADUATE: { complexity: 'advanced', variables: 18 }, GRADUATE: { complexity: 'expert', variables: 25 }, PHD: { complexity: 'research', variables: 35 } } }],
+    game: { id: 'ws-gw-game', type: 'simulation', title: 'Aquifer Manager', description: 'Manage groundwater sustainably!', rounds: 5, timeLimit: 40, difficultyByLevel: { ELEMENTARY: 'easy', MIDDLE_SCHOOL: 'easy', HIGH_SCHOOL: 'medium', UNDERGRADUATE: 'medium', GRADUATE: 'hard', PHD: 'expert' } },
+    quiz: { id: 'ws-gw-quiz', passingScore: 80, questions: [{ id: 'wgwq1', question: { ELEMENTARY: 'Where is groundwater found?', MIDDLE_SCHOOL: 'What is an aquifer?', HIGH_SCHOOL: 'What is the water table?', UNDERGRADUATE: 'What is sustainable yield?', GRADUATE: 'What is MAR?', PHD: 'What complicates groundwater modeling?' }, options: { ELEMENTARY: ['Underground in rocks and sand', 'In clouds', 'On top of mountains', 'In the ocean only'], MIDDLE_SCHOOL: ['An underground layer holding water', 'A type of fish', 'A water tank', 'A river'], HIGH_SCHOOL: ['Top of saturated zone', 'Bottom of ocean', 'Surface of lakes', 'Cloud level'], UNDERGRADUATE: ['Pumping rate aquifer can sustain', 'Maximum possible pumping', 'Zero pumping', 'Unlimited pumping'], GRADUATE: ['Managed Aquifer Recharge', 'Maximum Annual Rainfall', 'Minimum Aquifer Recovery', 'Major Aquifer Region'], PHD: ['Heterogeneity and data uncertainty', 'Too simple', 'Perfect data available', 'No complications'] }, correctIndex: 0, explanation: { ELEMENTARY: 'Groundwater is found underground in spaces between rocks, sand, and soil!', MIDDLE_SCHOOL: 'An aquifer is an underground layer of rock or sediment that holds water.', HIGH_SCHOOL: 'The water table is the top of the saturated zone where all pores are filled with water.', UNDERGRADUATE: 'Sustainable yield is the pumping rate an aquifer can support without long-term depletion.', GRADUATE: 'MAR (Managed Aquifer Recharge) intentionally stores water underground for later use.', PHD: 'Aquifer heterogeneity and limited subsurface data create significant modeling uncertainty.' } }] },
+    externalResources: [{ title: 'USGS Groundwater', url: 'https://www.usgs.gov/mission-areas/water-resources', type: 'research' }]
+  },
+  // Module 7: Stormwater Management
+  {
+    id: 'water-stormwater',
+    slug: 'stormwater-management',
+    title: 'Stormwater Management',
+    description: {
+      ELEMENTARY: 'Learn what happens to rain when it lands on streets and parking lots!',
+      MIDDLE_SCHOOL: 'Discover how cities manage rainwater runoff to prevent pollution and flooding.',
+      HIGH_SCHOOL: 'Explore green infrastructure, detention systems, and low impact development.',
+      UNDERGRADUATE: 'Analyze stormwater modeling, BMP design, and regulatory compliance.',
+      GRADUATE: 'Examine integrated stormwater management, MS4 permits, and green-gray integration.',
+      PHD: 'Research urban hydrology, climate adaptation, and multi-objective optimization.'
+    },
+    topic: 'water-systems',
+    category: 'STORMWATER',
+    icon: 'CloudRain',
+    color: 'ocean',
+    duration: { ELEMENTARY: 25, MIDDLE_SCHOOL: 35, HIGH_SCHOOL: 50, UNDERGRADUATE: 70, GRADUATE: 90, PHD: 120 },
+    isMasterclass: false,
+    lessons: [{ id: 'ws-sw-1', title: 'Where Rain Goes', order: 1, duration: 15, hasActivity: true, activityType: 'SIMULATION', content: { ELEMENTARY: '<h2>Rain in the City!</h2><p>In cities, rain lands on hard surfaces like roads and parking lots and has to go somewhere!</p>', MIDDLE_SCHOOL: '<h2>Stormwater Runoff</h2><p>Hard surfaces prevent rain from soaking in. It runs off, picking up pollutants and causing flooding.</p>', HIGH_SCHOOL: '<h2>Green Infrastructure</h2><p>Rain gardens, bioswales, permeable pavement, and green roofs slow and filter stormwater naturally.</p>', UNDERGRADUATE: '<h2>BMP Design</h2><p>Best Management Practices sized for storm events, soil conditions, and pollutant removal targets.</p>', GRADUATE: '<h2>Integrated Management</h2><p>Combining green and gray infrastructure, regulatory requirements, and urban planning.</p>', PHD: '<h2>Research Frontiers</h2><p>Urban hydrology modeling, climate change adaptation, and ecosystem services valuation.</p>' } }],
+    activities: [{ id: 'ws-sw-act-1', type: 'SIMULATION', title: { ELEMENTARY: 'Stop the Flood!', MIDDLE_SCHOOL: 'Design a Rain Garden', HIGH_SCHOOL: 'BMP Selection', UNDERGRADUATE: 'System Sizing', GRADUATE: 'Permit Compliance', PHD: 'Multi-Objective Design' }, description: { ELEMENTARY: 'Help rain soak into the ground instead of flooding!', MIDDLE_SCHOOL: 'Design a rain garden to capture runoff.', HIGH_SCHOOL: 'Select BMPs for a development site.', UNDERGRADUATE: 'Size a stormwater system for design storms.', GRADUATE: 'Develop a stormwater management program for compliance.', PHD: 'Optimize green infrastructure for multiple objectives.' }, config: { ELEMENTARY: { complexity: 'basic', variables: 4 }, MIDDLE_SCHOOL: { complexity: 'simple', variables: 6 }, HIGH_SCHOOL: { complexity: 'intermediate', variables: 12 }, UNDERGRADUATE: { complexity: 'advanced', variables: 18 }, GRADUATE: { complexity: 'expert', variables: 25 }, PHD: { complexity: 'research', variables: 35 } } }],
+    game: { id: 'ws-sw-game', type: 'simulation', title: 'Stormwater Engineer', description: 'Design systems to manage urban runoff!', rounds: 5, timeLimit: 40, difficultyByLevel: { ELEMENTARY: 'easy', MIDDLE_SCHOOL: 'easy', HIGH_SCHOOL: 'medium', UNDERGRADUATE: 'medium', GRADUATE: 'hard', PHD: 'expert' } },
+    quiz: { id: 'ws-sw-quiz', passingScore: 80, questions: [{ id: 'wswq1', question: { ELEMENTARY: 'Why does rain cause problems in cities?', MIDDLE_SCHOOL: 'What is a rain garden?', HIGH_SCHOOL: 'What does permeable pavement do?', UNDERGRADUATE: 'What does BMP stand for?', GRADUATE: 'What is an MS4 permit?', PHD: 'What is LID?' }, options: { ELEMENTARY: ['Hard surfaces prevent it from soaking in', 'Rain is always bad', 'Cities have no rain', 'Rain only falls on grass'], MIDDLE_SCHOOL: ['A planted area that collects and filters runoff', 'A flower garden', 'An indoor garden', 'A vegetable garden'], HIGH_SCHOOL: ['Allows water to soak through', 'Blocks all water', 'Heats up water', 'Only for cars'], UNDERGRADUATE: ['Best Management Practice', 'Big Management Project', 'Building Material Permit', 'Basic Monitoring Plan'], GRADUATE: ['Municipal Separate Storm Sewer permit', 'Main Street 4 permit', 'Monitoring System 4', 'Maximum Storm 4'], PHD: ['Low Impact Development', 'Large Industrial Design', 'Limited Interior Drainage', 'Local Improvement District'] }, correctIndex: 0, explanation: { ELEMENTARY: 'Rain causes problems because hard surfaces like roads prevent it from soaking into the ground!', MIDDLE_SCHOOL: 'Rain gardens are planted depressions that collect runoff and let it soak in slowly while filtering pollutants.', HIGH_SCHOOL: 'Permeable pavement has gaps that allow water to pass through and infiltrate into the ground.', UNDERGRADUATE: 'BMP stands for Best Management Practice - techniques to manage stormwater quantity and quality.', GRADUATE: 'MS4 (Municipal Separate Storm Sewer System) permits regulate stormwater discharges from cities.', PHD: 'LID (Low Impact Development) mimics natural hydrology to manage stormwater at its source.' } }] },
+    externalResources: [{ title: 'EPA Stormwater', url: 'https://www.epa.gov/npdes/stormwater-discharges-municipal-sources', type: 'research' }]
+  },
+  // Module 8: Water Quality Monitoring
+  {
+    id: 'water-quality',
+    slug: 'water-quality-monitoring',
+    title: 'Water Quality Monitoring',
+    description: {
+      ELEMENTARY: 'Learn how scientists check if water is clean and safe!',
+      MIDDLE_SCHOOL: 'Discover the tests used to measure water quality in streams and lakes.',
+      HIGH_SCHOOL: 'Explore water quality parameters, testing methods, and indicator species.',
+      UNDERGRADUATE: 'Analyze monitoring program design, QA/QC, and data interpretation.',
+      GRADUATE: 'Examine regulatory standards, TMDL development, and adaptive management.',
+      PHD: 'Research sensor networks, real-time monitoring, and predictive modeling.'
+    },
+    topic: 'water-systems',
+    category: 'MONITORING',
+    icon: 'TestTube',
+    color: 'moss',
+    duration: { ELEMENTARY: 25, MIDDLE_SCHOOL: 35, HIGH_SCHOOL: 50, UNDERGRADUATE: 70, GRADUATE: 90, PHD: 120 },
+    isMasterclass: false,
+    lessons: [{ id: 'ws-wq-1', title: 'Is the Water Clean?', order: 1, duration: 15, hasActivity: true, activityType: 'SIMULATION', content: { ELEMENTARY: '<h2>Water Detectives!</h2><p>Scientists test water to make sure it is safe for drinking, swimming, and fish!</p>', MIDDLE_SCHOOL: '<h2>Testing Water Quality</h2><p>pH, dissolved oxygen, temperature, turbidity, and nutrients tell us about water health.</p>', HIGH_SCHOOL: '<h2>Water Quality Parameters</h2><p>Physical (temp, turbidity), chemical (pH, DO, nutrients), and biological (bacteria, macroinvertebrates) indicators.</p>', UNDERGRADUATE: '<h2>Monitoring Programs</h2><p>Sampling design, QA/QC protocols, chain of custody, and data management.</p>', GRADUATE: '<h2>Regulatory Framework</h2><p>Water quality standards, designated uses, TMDLs, and impaired waters listings.</p>', PHD: '<h2>Research Frontiers</h2><p>Real-time sensor networks, machine learning for prediction, and emerging contaminants.</p>' } }],
+    activities: [{ id: 'ws-wq-act-1', type: 'SIMULATION', title: { ELEMENTARY: 'Test the Water!', MIDDLE_SCHOOL: 'Stream Survey', HIGH_SCHOOL: 'Parameter Analysis', UNDERGRADUATE: 'Program Design', GRADUATE: 'TMDL Development', PHD: 'Sensor Network' }, description: { ELEMENTARY: 'Test water samples to see if they are clean!', MIDDLE_SCHOOL: 'Conduct a stream water quality survey.', HIGH_SCHOOL: 'Analyze multiple water quality parameters.', UNDERGRADUATE: 'Design a monitoring program for a watershed.', GRADUATE: 'Develop a TMDL for an impaired stream.', PHD: 'Design a real-time water quality sensor network.' }, config: { ELEMENTARY: { complexity: 'basic', variables: 4 }, MIDDLE_SCHOOL: { complexity: 'simple', variables: 6 }, HIGH_SCHOOL: { complexity: 'intermediate', variables: 12 }, UNDERGRADUATE: { complexity: 'advanced', variables: 18 }, GRADUATE: { complexity: 'expert', variables: 25 }, PHD: { complexity: 'research', variables: 35 } } }],
+    game: { id: 'ws-wq-game', type: 'puzzle', title: 'Water Detective', description: 'Solve water quality mysteries!', rounds: 5, timeLimit: 40, difficultyByLevel: { ELEMENTARY: 'easy', MIDDLE_SCHOOL: 'easy', HIGH_SCHOOL: 'medium', UNDERGRADUATE: 'medium', GRADUATE: 'hard', PHD: 'expert' } },
+    quiz: { id: 'ws-wq-quiz', passingScore: 80, questions: [{ id: 'wwqq1', question: { ELEMENTARY: 'Why do we test water?', MIDDLE_SCHOOL: 'What does dissolved oxygen tell us?', HIGH_SCHOOL: 'What are macroinvertebrates used for?', UNDERGRADUATE: 'What is QA/QC in monitoring?', GRADUATE: 'What is a TMDL?', PHD: 'What is a key challenge for real-time monitoring?' }, options: { ELEMENTARY: ['To make sure it is safe', 'For fun', 'To make it blue', 'To heat it up'], MIDDLE_SCHOOL: ['How much oxygen fish can breathe', 'Water color', 'Water taste', 'Water weight'], HIGH_SCHOOL: ['Biological indicators of water quality', 'Food for fish only', 'Decoration', 'Not used'], UNDERGRADUATE: ['Quality assurance and control', 'Questions and answers', 'Quick and quiet', 'Quantity and quality'], GRADUATE: ['Total Maximum Daily Load for pollutants', 'Temperature Maximum Daily Limit', 'Total Minimum Drainage Level', 'Test Method Development Lab'], PHD: ['Sensor fouling and calibration', 'Too easy', 'No power needed', 'Perfect accuracy always'] }, correctIndex: 0, explanation: { ELEMENTARY: 'We test water to make sure it is safe for people, animals, and plants!', MIDDLE_SCHOOL: 'Dissolved oxygen tells us how much oxygen is available for fish and other aquatic life.', HIGH_SCHOOL: 'Macroinvertebrates like insects and snails indicate long-term water quality conditions.', UNDERGRADUATE: 'QA/QC ensures data quality through protocols, calibration, and verification.', GRADUATE: 'A TMDL sets the maximum amount of a pollutant a water body can receive and still meet standards.', PHD: 'Sensor fouling from biofouling and sediment requires frequent maintenance and calibration.' } }] },
+    externalResources: [{ title: 'EPA Water Quality Standards', url: 'https://www.epa.gov/wqs-tech', type: 'research' }]
+  },
+  // Module 9: Aquaponics
+  {
+    id: 'water-aquaponics',
+    slug: 'aquaponics-systems',
+    title: 'Aquaponics Systems',
+    description: {
+      ELEMENTARY: 'Discover how fish and plants can grow together in one system!',
+      MIDDLE_SCHOOL: 'Learn how aquaponics combines fish farming and plant growing.',
+      HIGH_SCHOOL: 'Explore the nitrogen cycle, system types, and water chemistry in aquaponics.',
+      UNDERGRADUATE: 'Analyze aquaponic system design, fish-plant ratios, and economic viability.',
+      GRADUATE: 'Examine commercial aquaponics, food safety, and integrated production systems.',
+      PHD: 'Research nutrient dynamics, microbial communities, and system optimization.'
+    },
+    topic: 'water-systems',
+    category: 'AQUACULTURE',
+    icon: 'Fish',
+    color: 'moss',
+    duration: { ELEMENTARY: 25, MIDDLE_SCHOOL: 35, HIGH_SCHOOL: 50, UNDERGRADUATE: 70, GRADUATE: 90, PHD: 120 },
+    isMasterclass: false,
+    lessons: [{ id: 'ws-ap-1', title: 'Fish Feed Plants!', order: 1, duration: 15, hasActivity: true, activityType: 'SIMULATION', content: { ELEMENTARY: '<h2>Fish and Plants Together!</h2><p>In aquaponics, fish waste feeds plants, and plants clean the water for fish!</p>', MIDDLE_SCHOOL: '<h2>How Aquaponics Works</h2><p>Fish produce ammonia waste. Bacteria convert it to nitrates. Plants absorb nitrates as food. Clean water returns to fish.</p>', HIGH_SCHOOL: '<h2>The Nitrogen Cycle</h2><p>Ammonia → Nitrite → Nitrate through nitrifying bacteria. This cycle is the heart of aquaponics.</p>', UNDERGRADUATE: '<h2>System Design</h2><p>Fish tank sizing, biofilter capacity, grow bed ratios, and water flow calculations.</p>', GRADUATE: '<h2>Commercial Systems</h2><p>Scale-up challenges, food safety regulations, and economic feasibility analysis.</p>', PHD: '<h2>Research Frontiers</h2><p>Microbial ecology, nutrient optimization, and coupled system modeling.</p>' } }],
+    activities: [{ id: 'ws-ap-act-1', type: 'SIMULATION', title: { ELEMENTARY: 'Build a Fish Garden!', MIDDLE_SCHOOL: 'Balance the System', HIGH_SCHOOL: 'Nitrogen Cycle', UNDERGRADUATE: 'System Sizing', GRADUATE: 'Business Planning', PHD: 'Nutrient Modeling' }, description: { ELEMENTARY: 'Create an aquaponics system with fish and plants!', MIDDLE_SCHOOL: 'Balance fish and plants in an aquaponic system.', HIGH_SCHOOL: 'Manage the nitrogen cycle in aquaponics.', UNDERGRADUATE: 'Size an aquaponic system for a school.', GRADUATE: 'Develop a business plan for commercial aquaponics.', PHD: 'Model nutrient dynamics in coupled systems.' }, config: { ELEMENTARY: { complexity: 'basic', variables: 4 }, MIDDLE_SCHOOL: { complexity: 'simple', variables: 6 }, HIGH_SCHOOL: { complexity: 'intermediate', variables: 12 }, UNDERGRADUATE: { complexity: 'advanced', variables: 18 }, GRADUATE: { complexity: 'expert', variables: 25 }, PHD: { complexity: 'research', variables: 35 } } }],
+    game: { id: 'ws-ap-game', type: 'simulation', title: 'Aquaponics Farmer', description: 'Manage a thriving aquaponics system!', rounds: 5, timeLimit: 40, difficultyByLevel: { ELEMENTARY: 'easy', MIDDLE_SCHOOL: 'easy', HIGH_SCHOOL: 'medium', UNDERGRADUATE: 'medium', GRADUATE: 'hard', PHD: 'expert' } },
+    quiz: { id: 'ws-ap-quiz', passingScore: 80, questions: [{ id: 'wapq1', question: { ELEMENTARY: 'What do fish provide for plants in aquaponics?', MIDDLE_SCHOOL: 'What bacteria are essential in aquaponics?', HIGH_SCHOOL: 'What is the final form of nitrogen plants absorb?', UNDERGRADUATE: 'What determines fish tank to grow bed ratio?', GRADUATE: 'What is a key commercial challenge?', PHD: 'What microbial group converts ammonia?' }, options: { ELEMENTARY: ['Nutrients from their waste', 'Sunlight', 'Soil', 'Seeds'], MIDDLE_SCHOOL: ['Nitrifying bacteria', 'Harmful bacteria', 'No bacteria needed', 'Yeast'], HIGH_SCHOOL: ['Nitrate', 'Ammonia', 'Nitrogen gas', 'Protein'], UNDERGRADUATE: ['Fish feeding rate and plant uptake', 'Random selection', 'Tank color', 'Fish species only'], GRADUATE: ['Achieving consistent profitability', 'Too much demand', 'Too easy', 'No regulations'], PHD: ['Nitrosomonas and Nitrobacter', 'E. coli', 'Yeast', 'Algae only'] }, correctIndex: 0, explanation: { ELEMENTARY: 'Fish waste contains nutrients that plants use as food to grow!', MIDDLE_SCHOOL: 'Nitrifying bacteria convert toxic ammonia into plant-usable nitrates.', HIGH_SCHOOL: 'Plants absorb nitrogen as nitrate (NO3-) through their roots.', UNDERGRADUATE: 'The ratio balances fish waste production with plant nutrient uptake capacity.', GRADUATE: 'Consistent profitability is challenging due to energy costs and market access.', PHD: 'Nitrosomonas converts ammonia to nitrite; Nitrobacter converts nitrite to nitrate.' } }] },
+    externalResources: [{ title: 'Aquaponics Association', url: 'https://aquaponicsassociation.org/', type: 'research' }]
+  },
+  // Module 10: Desalination
+  {
+    id: 'water-desalination',
+    slug: 'desalination',
+    title: 'Desalination',
+    description: {
+      ELEMENTARY: 'Learn how we turn salty ocean water into fresh drinking water!',
+      MIDDLE_SCHOOL: 'Discover the technologies that remove salt from seawater.',
+      HIGH_SCHOOL: 'Explore reverse osmosis, thermal desalination, and energy requirements.',
+      UNDERGRADUATE: 'Analyze desalination plant design, energy optimization, and brine management.',
+      GRADUATE: 'Examine desalination policy, environmental impacts, and integration strategies.',
+      PHD: 'Research novel membranes, renewable energy integration, and zero liquid discharge.'
+    },
+    topic: 'water-systems',
+    category: 'TREATMENT',
+    icon: 'Waves',
+    color: 'ocean',
+    duration: { ELEMENTARY: 25, MIDDLE_SCHOOL: 35, HIGH_SCHOOL: 50, UNDERGRADUATE: 70, GRADUATE: 90, PHD: 120 },
+    isMasterclass: false,
+    lessons: [{ id: 'ws-desal-1', title: 'Fresh from Salt', order: 1, duration: 15, hasActivity: true, activityType: 'SIMULATION', content: { ELEMENTARY: '<h2>Making Fresh Water!</h2><p>The ocean is salty, but we can remove the salt to make water we can drink!</p>', MIDDLE_SCHOOL: '<h2>Desalination Methods</h2><p>Boiling water and collecting steam (thermal) or pushing water through special filters (reverse osmosis).</p>', HIGH_SCHOOL: '<h2>Reverse Osmosis</h2><p>High pressure forces water through membranes that block salt. Energy intensive but most common method today.</p>', UNDERGRADUATE: '<h2>Plant Design</h2><p>Pretreatment, RO arrays, energy recovery devices, and post-treatment for distribution.</p>', GRADUATE: '<h2>Sustainability Challenges</h2><p>Energy consumption, brine disposal, intake impacts, and cost relative to other supplies.</p>', PHD: '<h2>Research Frontiers</h2><p>Graphene membranes, forward osmosis, and renewable energy powered systems.</p>' } }],
+    activities: [{ id: 'ws-desal-act-1', type: 'SIMULATION', title: { ELEMENTARY: 'Remove the Salt!', MIDDLE_SCHOOL: 'Compare Methods', HIGH_SCHOOL: 'RO System', UNDERGRADUATE: 'Plant Design', GRADUATE: 'Impact Assessment', PHD: 'Innovation Analysis' }, description: { ELEMENTARY: 'See how salt gets removed from ocean water!', MIDDLE_SCHOOL: 'Compare different desalination technologies.', HIGH_SCHOOL: 'Design a reverse osmosis system.', UNDERGRADUATE: 'Design a desalination plant for a coastal city.', GRADUATE: 'Assess environmental impacts of desalination.', PHD: 'Analyze emerging desalination technologies.' }, config: { ELEMENTARY: { complexity: 'basic', variables: 4 }, MIDDLE_SCHOOL: { complexity: 'simple', variables: 6 }, HIGH_SCHOOL: { complexity: 'intermediate', variables: 12 }, UNDERGRADUATE: { complexity: 'advanced', variables: 18 }, GRADUATE: { complexity: 'expert', variables: 25 }, PHD: { complexity: 'research', variables: 35 } } }],
+    game: { id: 'ws-desal-game', type: 'simulation', title: 'Desalination Engineer', description: 'Design and operate desalination plants!', rounds: 5, timeLimit: 40, difficultyByLevel: { ELEMENTARY: 'easy', MIDDLE_SCHOOL: 'easy', HIGH_SCHOOL: 'medium', UNDERGRADUATE: 'medium', GRADUATE: 'hard', PHD: 'expert' } },
+    quiz: { id: 'ws-desal-quiz', passingScore: 80, questions: [{ id: 'wdslq1', question: { ELEMENTARY: 'What does desalination remove from water?', MIDDLE_SCHOOL: 'What are the two main desalination methods?', HIGH_SCHOOL: 'What does reverse osmosis use to separate salt?', UNDERGRADUATE: 'What recovers energy in RO plants?', GRADUATE: 'What is brine?', PHD: 'What emerging membrane material shows promise?' }, options: { ELEMENTARY: ['Salt', 'Fish', 'Sand', 'Color'], MIDDLE_SCHOOL: ['Thermal and membrane (RO)', 'Freezing and heating', 'Mixing and settling', 'Filtering and boiling only'], HIGH_SCHOOL: ['Pressure and membranes', 'Chemicals only', 'Magnets', 'Electricity only'], UNDERGRADUATE: ['Energy recovery devices (pressure exchangers)', 'Nothing - energy is lost', 'Solar panels', 'Wind turbines'], GRADUATE: ['Concentrated salt waste stream', 'Fresh water output', 'Clean air', 'Fish food'], PHD: ['Graphene', 'Paper', 'Cotton', 'Glass'] }, correctIndex: 0, explanation: { ELEMENTARY: 'Desalination removes salt from ocean water to make it drinkable!', MIDDLE_SCHOOL: 'The two main methods are thermal (boiling) and membrane (reverse osmosis).', HIGH_SCHOOL: 'RO uses high pressure to force water through semi-permeable membranes that block salt.', UNDERGRADUATE: 'Pressure exchangers and other ERDs recover energy from the high-pressure brine stream.', GRADUATE: 'Brine is the concentrated salt waste that must be carefully disposed of.', PHD: 'Graphene membranes promise higher flux and lower energy requirements.' } }] },
+    externalResources: [{ title: 'International Desalination Association', url: 'https://idadesal.org/', type: 'research' }]
   }
 ]
