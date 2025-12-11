@@ -2596,6 +2596,196 @@ export const organicFarmingPractices: Module = {
   }
 }
 
+export const smallScaleLivestock: Module = {
+  id: 'food-sov-livestock',
+  slug: 'small-scale-livestock',
+  title: 'Small-Scale Livestock',
+  description: {
+    [LearningLevel.ELEMENTARY]: 'Learn how farm animals help provide food and help gardens grow!',
+    [LearningLevel.MIDDLE_SCHOOL]: 'Discover how raising chickens, goats, and other animals fits into sustainable food systems.',
+    [LearningLevel.HIGH_SCHOOL]: 'Explore small-scale animal husbandry, animal welfare, and integrated farming systems.',
+    [LearningLevel.UNDERGRADUATE]: 'Analyze livestock in sustainable agriculture, examining ecological roles and ethical dimensions.',
+    [LearningLevel.GRADUATE]: 'Examine livestock production through agroecological and political ecology frameworks.',
+    [LearningLevel.PHD]: 'Investigate human-animal relations in food systems and debates over livestock sustainability.'
+  },
+  topic: 'food-sovereignty',
+  estimatedMinutes: {
+    [LearningLevel.ELEMENTARY]: 25,
+    [LearningLevel.MIDDLE_SCHOOL]: 35,
+    [LearningLevel.HIGH_SCHOOL]: 50,
+    [LearningLevel.UNDERGRADUATE]: 70,
+    [LearningLevel.GRADUATE]: 95,
+    [LearningLevel.PHD]: 125
+  },
+  lessons: [{
+    id: 'ssl-1',
+    title: 'Animals on the Farm',
+    content: {
+      [LearningLevel.ELEMENTARY]: '<h2>Farm Animal Friends!</h2><p>Farm animals help farmers grow food. Chickens give eggs, goats give milk, and their manure helps gardens grow!</p>',
+      [LearningLevel.MIDDLE_SCHOOL]: '<h2>Small-Scale Animal Husbandry</h2><p>Raising animals on a small scale provides food while using fewer resources than industrial operations. Animals provide eggs, milk, meat, and manure for gardens.</p>',
+      [LearningLevel.HIGH_SCHOOL]: '<h2>Integrated Livestock Systems</h2><p>In sustainable agriculture, livestock integrate with crops through rotational grazing, silvopasture, and chicken tractors to create resilient farming systems.</p>',
+      [LearningLevel.UNDERGRADUATE]: '<h2>Livestock in Agroecosystems</h2><p>Animals provide nutrient cycling, landscape management, waste valorization, and traction. Sustainability depends on production system choices.</p>',
+      [LearningLevel.GRADUATE]: '<h2>Political Ecology of Livestock</h2><p>The rise of CAFOs transformed human-animal relations with implications for rural communities, environmental justice, and public health.</p>',
+      [LearningLevel.PHD]: '<h2>Human-Animal Relations</h2><p>Critical animal studies challenge instrumental views, proposing relational approaches to agriculture\'s multispecies entanglements.</p>'
+    }
+  }],
+  activities: [{ id: 'ssl-act-1', title: 'Design an Integrated Farm', type: 'SIMULATION', description: 'Plan how livestock integrate with crops', estimatedMinutes: 25, interactiveContent: {} }],
+  game: { id: 'ssl-game', title: 'Farm Manager', type: 'simulation', description: 'Balance animal needs with farm productivity', difficulty: { [LearningLevel.ELEMENTARY]: { lives: 5, timeLimit: null, hints: true }, [LearningLevel.MIDDLE_SCHOOL]: { lives: 4, timeLimit: 300, hints: true }, [LearningLevel.HIGH_SCHOOL]: { lives: 3, timeLimit: 240, hints: false }, [LearningLevel.UNDERGRADUATE]: { lives: 3, timeLimit: 180, hints: false }, [LearningLevel.GRADUATE]: { lives: 2, timeLimit: 120, hints: false }, [LearningLevel.PHD]: { lives: 1, timeLimit: 90, hints: false } } },
+  quiz: { questions: [{ id: 'ssl-q1', question: 'What is a chicken tractor?', options: ['A tractor shaped like a chicken', 'A mobile coop that prepares garden beds', 'A machine for harvesting', 'A chicken-powered vehicle'], correctAnswer: 1, explanation: 'A chicken tractor is a mobile coop. Chickens scratch, eat pests, and deposit manure, preparing beds for planting.', difficulty: LearningLevel.MIDDLE_SCHOOL }] }
+}
+
+export const beekeepingPollinators: Module = {
+  id: 'food-sov-beekeeping',
+  slug: 'beekeeping-pollinators',
+  title: 'Beekeeping & Pollinators',
+  description: {
+    [LearningLevel.ELEMENTARY]: 'Learn about amazing bees and how they help our food grow!',
+    [LearningLevel.MIDDLE_SCHOOL]: 'Discover how bees and other pollinators are essential for food production.',
+    [LearningLevel.HIGH_SCHOOL]: 'Explore beekeeping basics, pollinator ecology, and threats to pollinator populations.',
+    [LearningLevel.UNDERGRADUATE]: 'Analyze pollinator ecology, ecosystem services valuation, and conservation strategies.',
+    [LearningLevel.GRADUATE]: 'Examine pollinator decline through political ecology and science-policy interfaces.',
+    [LearningLevel.PHD]: 'Investigate pollinator-human relations as multispecies assemblages.'
+  },
+  topic: 'food-sovereignty',
+  estimatedMinutes: {
+    [LearningLevel.ELEMENTARY]: 25,
+    [LearningLevel.MIDDLE_SCHOOL]: 35,
+    [LearningLevel.HIGH_SCHOOL]: 50,
+    [LearningLevel.UNDERGRADUATE]: 70,
+    [LearningLevel.GRADUATE]: 95,
+    [LearningLevel.PHD]: 125
+  },
+  lessons: [{
+    id: 'bp-1',
+    title: 'The World of Bees',
+    content: {
+      [LearningLevel.ELEMENTARY]: '<h2>Busy Bees!</h2><p>Bees visit flowers, carry pollen, and help plants make fruits and vegetables. Without bees, we wouldn\'t have many of our favorite foods!</p>',
+      [LearningLevel.MIDDLE_SCHOOL]: '<h2>Pollinators and Food</h2><p>About 75% of crop species benefit from animal pollination. Pollinators include bees, butterflies, birds, and bats.</p>',
+      [LearningLevel.HIGH_SCHOOL]: '<h2>Beekeeping and Conservation</h2><p>Beekeeping provides honey while supporting pollination. Both managed and wild pollinators face threats from pesticides, habitat loss, and disease.</p>',
+      [LearningLevel.UNDERGRADUATE]: '<h2>Ecosystem Services</h2><p>Pollination\'s estimated global value is $235-577 billion annually. Conservation strategies include habitat restoration and pesticide regulation.</p>',
+      [LearningLevel.GRADUATE]: '<h2>Pollinator Decline Politics</h2><p>Causes remain contested - pesticide industry, environmentalists, and scientists emphasize different factors. Policy responses range from bans to habitat programs.</p>',
+      [LearningLevel.PHD]: '<h2>Multispecies Approaches</h2><p>Moving beyond ecosystem services, we examine pollinators as agents in multispecies worlds and subjects of biopolitical governance.</p>'
+    }
+  }],
+  activities: [{ id: 'bp-act-1', title: 'Design a Pollinator Garden', type: 'SIMULATION', description: 'Plan a garden supporting pollinators year-round', estimatedMinutes: 20, interactiveContent: {} }],
+  game: { id: 'bp-game', title: 'Bee Colony Simulator', type: 'simulation', description: 'Manage a bee colony through seasons', difficulty: { [LearningLevel.ELEMENTARY]: { lives: 5, timeLimit: null, hints: true }, [LearningLevel.MIDDLE_SCHOOL]: { lives: 4, timeLimit: 300, hints: true }, [LearningLevel.HIGH_SCHOOL]: { lives: 3, timeLimit: 240, hints: false }, [LearningLevel.UNDERGRADUATE]: { lives: 3, timeLimit: 180, hints: false }, [LearningLevel.GRADUATE]: { lives: 2, timeLimit: 120, hints: false }, [LearningLevel.PHD]: { lives: 1, timeLimit: 90, hints: false } } },
+  quiz: { questions: [{ id: 'bp-q1', question: 'What percentage of crops benefit from animal pollination?', options: ['About 25%', 'About 50%', 'About 75%', 'About 90%'], correctAnswer: 2, explanation: 'Approximately 75% of crop species benefit from animal pollination.', difficulty: LearningLevel.MIDDLE_SCHOOL }] }
+}
+
+export const aquaponicsSystems: Module = {
+  id: 'food-sov-aquaponics',
+  slug: 'aquaponics-systems',
+  title: 'Aquaponics Systems',
+  description: {
+    [LearningLevel.ELEMENTARY]: 'Discover how fish and plants grow together in amazing systems!',
+    [LearningLevel.MIDDLE_SCHOOL]: 'Learn how aquaponics combines fish farming with plant growing.',
+    [LearningLevel.HIGH_SCHOOL]: 'Explore the science of aquaponics systems, including nitrogen cycling.',
+    [LearningLevel.UNDERGRADUATE]: 'Analyze aquaponics as integrated food production, examining efficiency and scalability.',
+    [LearningLevel.GRADUATE]: 'Examine aquaponics through food systems and sustainability science.',
+    [LearningLevel.PHD]: 'Investigate aquaponics as socio-technical innovation for food system transformation.'
+  },
+  topic: 'food-sovereignty',
+  estimatedMinutes: {
+    [LearningLevel.ELEMENTARY]: 25,
+    [LearningLevel.MIDDLE_SCHOOL]: 40,
+    [LearningLevel.HIGH_SCHOOL]: 55,
+    [LearningLevel.UNDERGRADUATE]: 75,
+    [LearningLevel.GRADUATE]: 100,
+    [LearningLevel.PHD]: 130
+  },
+  lessons: [{
+    id: 'aqua-1',
+    title: 'Fish and Plants Together',
+    content: {
+      [LearningLevel.ELEMENTARY]: '<h2>Fish Help Plants Grow!</h2><p>Fish poop feeds the plants, plants clean the water for fish. It\'s a circle of life in a tank!</p>',
+      [LearningLevel.MIDDLE_SCHOOL]: '<h2>Introduction to Aquaponics</h2><p>The nitrogen cycle: fish produce ammonia, bacteria convert it to nitrate, plants absorb nitrate, clean water returns to fish.</p>',
+      [LearningLevel.HIGH_SCHOOL]: '<h2>System Design</h2><p>System types include media bed, deep water culture, and nutrient film technique. pH compromise of 6.8-7.2 works for most systems.</p>',
+      [LearningLevel.UNDERGRADUATE]: '<h2>Efficiency Analysis</h2><p>Uses 90% less water than conventional agriculture, but has high startup costs and energy requirements.</p>',
+      [LearningLevel.GRADUATE]: '<h2>Food Systems Context</h2><p>Aquaponics shows promise for urban food production but scalability and impact on food security remain debated.</p>',
+      [LearningLevel.PHD]: '<h2>Socio-Technical Innovation</h2><p>Aquaponics designs embody different values: backyard systems emphasize autonomy, commercial systems prioritize efficiency.</p>'
+    }
+  }],
+  activities: [{ id: 'aqua-act-1', title: 'Design Your System', type: 'SIMULATION', description: 'Plan a balanced aquaponics system', estimatedMinutes: 25, interactiveContent: {} }],
+  game: { id: 'aqua-game', title: 'Aquaponics Balance', type: 'simulation', description: 'Keep fish, plants, and bacteria in balance', difficulty: { [LearningLevel.ELEMENTARY]: { lives: 5, timeLimit: null, hints: true }, [LearningLevel.MIDDLE_SCHOOL]: { lives: 4, timeLimit: 300, hints: true }, [LearningLevel.HIGH_SCHOOL]: { lives: 3, timeLimit: 240, hints: false }, [LearningLevel.UNDERGRADUATE]: { lives: 3, timeLimit: 180, hints: false }, [LearningLevel.GRADUATE]: { lives: 2, timeLimit: 120, hints: false }, [LearningLevel.PHD]: { lives: 1, timeLimit: 90, hints: false } } },
+  quiz: { questions: [{ id: 'aqua-q1', question: 'What do bacteria convert fish waste into?', options: ['Oxygen', 'Nitrate for plants', 'Clean drinking water', 'Fish food'], correctAnswer: 1, explanation: 'Bacteria convert ammonia to nitrate, which plants absorb as fertilizer.', difficulty: LearningLevel.MIDDLE_SCHOOL }] }
+}
+
+export const hydroponicsFundamentals: Module = {
+  id: 'food-sov-hydroponics',
+  slug: 'hydroponics-fundamentals',
+  title: 'Hydroponics Fundamentals',
+  description: {
+    [LearningLevel.ELEMENTARY]: 'Learn how to grow plants in water without any soil!',
+    [LearningLevel.MIDDLE_SCHOOL]: 'Discover the science of growing plants in nutrient-rich water.',
+    [LearningLevel.HIGH_SCHOOL]: 'Explore hydroponic systems, plant nutrition, and applications.',
+    [LearningLevel.UNDERGRADUATE]: 'Analyze hydroponic production systems and economic viability.',
+    [LearningLevel.GRADUATE]: 'Critically examine hydroponics within sustainable intensification debates.',
+    [LearningLevel.PHD]: 'Investigate hydroponics as technological fix and agrarian implications.'
+  },
+  topic: 'food-sovereignty',
+  estimatedMinutes: {
+    [LearningLevel.ELEMENTARY]: 20,
+    [LearningLevel.MIDDLE_SCHOOL]: 35,
+    [LearningLevel.HIGH_SCHOOL]: 50,
+    [LearningLevel.UNDERGRADUATE]: 70,
+    [LearningLevel.GRADUATE]: 95,
+    [LearningLevel.PHD]: 125
+  },
+  lessons: [{
+    id: 'hydro-1',
+    title: 'Growing Without Soil',
+    content: {
+      [LearningLevel.ELEMENTARY]: '<h2>Water Gardens!</h2><p>Plants can grow without dirt - they just need water with special plant food mixed in!</p>',
+      [LearningLevel.MIDDLE_SCHOOL]: '<h2>Introduction to Hydroponics</h2><p>Benefits: faster growth, 70-90% less water, space efficient, year-round growing. Plants need nitrogen, phosphorus, and potassium.</p>',
+      [LearningLevel.HIGH_SCHOOL]: '<h2>System Types</h2><p>DWC, NFT, ebb and flow, drip systems, aeroponics. Manage pH (5.5-6.5), EC, temperature, and oxygen.</p>',
+      [LearningLevel.UNDERGRADUATE]: '<h2>Efficiency Analysis</h2><p>High water efficiency but energy-intensive. Sustainability depends on energy sources and system design.</p>',
+      [LearningLevel.GRADUATE]: '<h2>Sustainable Intensification</h2><p>Proponents see resource efficiency; critics note energy intensity and disconnection from land.</p>',
+      [LearningLevel.PHD]: '<h2>Agrarian Futures</h2><p>Soilless agriculture challenges traditional farming identity and raises questions about technological control of food.</p>'
+    }
+  }],
+  activities: [{ id: 'hydro-act-1', title: 'Build Simple System', type: 'STEP_GUIDED', description: 'Build a basic DWC system', estimatedMinutes: 20, interactiveContent: {} }],
+  game: { id: 'hydro-game', title: 'Hydroponic Grower', type: 'simulation', description: 'Manage nutrients and grow plants', difficulty: { [LearningLevel.ELEMENTARY]: { lives: 5, timeLimit: null, hints: true }, [LearningLevel.MIDDLE_SCHOOL]: { lives: 4, timeLimit: 300, hints: true }, [LearningLevel.HIGH_SCHOOL]: { lives: 3, timeLimit: 240, hints: false }, [LearningLevel.UNDERGRADUATE]: { lives: 3, timeLimit: 180, hints: false }, [LearningLevel.GRADUATE]: { lives: 2, timeLimit: 120, hints: false }, [LearningLevel.PHD]: { lives: 1, timeLimit: 90, hints: false } } },
+  quiz: { questions: [{ id: 'hydro-q1', question: 'How much less water does hydroponics use?', options: ['10-20%', '30-40%', '50-60%', '70-90%'], correctAnswer: 3, explanation: 'Hydroponics uses 70-90% less water than conventional soil farming.', difficulty: LearningLevel.MIDDLE_SCHOOL }] }
+}
+
+export const mushroomCultivation: Module = {
+  id: 'food-sov-mushrooms',
+  slug: 'mushroom-cultivation',
+  title: 'Mushroom Cultivation',
+  description: {
+    [LearningLevel.ELEMENTARY]: 'Discover the magical world of growing mushrooms!',
+    [LearningLevel.MIDDLE_SCHOOL]: 'Learn how mushrooms grow and how to cultivate them at home.',
+    [LearningLevel.HIGH_SCHOOL]: 'Explore mushroom biology, cultivation techniques, and sustainable food systems.',
+    [LearningLevel.UNDERGRADUATE]: 'Analyze mushroom cultivation as biotechnology and market dynamics.',
+    [LearningLevel.GRADUATE]: 'Examine fungi through ecological lenses, including mycoremediation.',
+    [LearningLevel.PHD]: 'Investigate mushrooms within multispecies studies and more-than-human food.'
+  },
+  topic: 'food-sovereignty',
+  estimatedMinutes: {
+    [LearningLevel.ELEMENTARY]: 25,
+    [LearningLevel.MIDDLE_SCHOOL]: 35,
+    [LearningLevel.HIGH_SCHOOL]: 50,
+    [LearningLevel.UNDERGRADUATE]: 70,
+    [LearningLevel.GRADUATE]: 95,
+    [LearningLevel.PHD]: 125
+  },
+  lessons: [{
+    id: 'mush-1',
+    title: 'The World of Mushrooms',
+    content: {
+      [LearningLevel.ELEMENTARY]: '<h2>Mushrooms Are Amazing!</h2><p>Mushrooms aren\'t plants - they\'re fungi! They grow from underground networks called mycelium.</p>',
+      [LearningLevel.MIDDLE_SCHOOL]: '<h2>Understanding Fungi</h2><p>Mushroom anatomy: cap, gills, stem, mycelium, spores. Common cultivated: button, oyster, shiitake, lion\'s mane.</p>',
+      [LearningLevel.HIGH_SCHOOL]: '<h2>Cultivation Techniques</h2><p>Process: spawn production, substrate preparation, inoculation, incubation, fruiting, harvesting. Substrates: straw, sawdust, coffee grounds.</p>',
+      [LearningLevel.UNDERGRADUATE]: '<h2>Production Systems</h2><p>Scales from hobby to industrial. Sustainability: converts waste to food, low water/land needs, high protein.</p>',
+      [LearningLevel.GRADUATE]: '<h2>Fungi Beyond Food</h2><p>Mycoremediation for pollution cleanup. Mycelium materials for packaging, insulation, leather alternatives.</p>',
+      [LearningLevel.PHD]: '<h2>More-Than-Human Fungi</h2><p>Following Anna Tsing, fungi shape worlds through mycorrhizal networks - the "wood wide web" connecting forests.</p>'
+    }
+  }],
+  activities: [{ id: 'mush-act-1', title: 'Mushroom Growing Lab', type: 'STEP_GUIDED', description: 'Start your own mushroom project', estimatedMinutes: 20, interactiveContent: {} }],
+  game: { id: 'mush-game', title: 'Mushroom Farm', type: 'simulation', description: 'Manage conditions for healthy mushrooms', difficulty: { [LearningLevel.ELEMENTARY]: { lives: 5, timeLimit: null, hints: true }, [LearningLevel.MIDDLE_SCHOOL]: { lives: 4, timeLimit: 300, hints: true }, [LearningLevel.HIGH_SCHOOL]: { lives: 3, timeLimit: 240, hints: false }, [LearningLevel.UNDERGRADUATE]: { lives: 3, timeLimit: 180, hints: false }, [LearningLevel.GRADUATE]: { lives: 2, timeLimit: 120, hints: false }, [LearningLevel.PHD]: { lives: 1, timeLimit: 90, hints: false } } },
+  quiz: { questions: [{ id: 'mush-q1', question: 'What is mycelium?', options: ['The cap of a mushroom', 'Underground fungal network', 'Mushroom spores', 'A type of mushroom'], correctAnswer: 1, explanation: 'Mycelium is the underground network of fungal threads that form the main body of a fungus.', difficulty: LearningLevel.MIDDLE_SCHOOL }] }
+}
+
 // Export all Food Sovereignty modules
 export const foodSovereigntyModules: Module[] = [
   introToFoodSovereignty,
@@ -2612,5 +2802,10 @@ export const foodSovereigntyModules: Module[] = [
   foodJusticeEquity,
   seasonalNutritionalEating,
   traditionalFarmingMethods,
-  organicFarmingPractices
+  organicFarmingPractices,
+  smallScaleLivestock,
+  beekeepingPollinators,
+  aquaponicsSystems,
+  hydroponicsFundamentals,
+  mushroomCultivation
 ]
