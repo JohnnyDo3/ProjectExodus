@@ -121,6 +121,66 @@ export const energyEfficiency: Module = {
   quiz: { questions: [{ id: 'eff-q1', question: 'What label shows energy-efficient appliances?', options: ['ECO POWER', 'ENERGY STAR', 'GREEN SEAL', 'POWER PLUS'], correctAnswer: 1, explanation: 'ENERGY STAR is the EPA label for energy-efficient products.', difficulty: LearningLevel.ELEMENTARY }] }
 }
 
+// Module 14: Off-Grid Systems
+export const offGridSystems: Module = {
+  id: 'renewable-offgrid', slug: 'off-grid-systems', title: 'Off-Grid Systems',
+  description: { [LearningLevel.ELEMENTARY]: 'Learn how to have electricity without power lines!', [LearningLevel.MIDDLE_SCHOOL]: 'Discover how remote homes and cabins generate their own power.', [LearningLevel.HIGH_SCHOOL]: 'Explore off-grid system design, sizing, and component selection.', [LearningLevel.UNDERGRADUATE]: 'Analyze hybrid off-grid systems, reliability metrics, and economics.', [LearningLevel.GRADUATE]: 'Examine rural electrification models and mini-grid development.', [LearningLevel.PHD]: 'Research distributed generation optimization and energy access pathways.' },
+  topic: 'renewable-energy',
+  estimatedMinutes: { [LearningLevel.ELEMENTARY]: 20, [LearningLevel.MIDDLE_SCHOOL]: 35, [LearningLevel.HIGH_SCHOOL]: 50, [LearningLevel.UNDERGRADUATE]: 70, [LearningLevel.GRADUATE]: 95, [LearningLevel.PHD]: 125 },
+  lessons: [{ id: 'offgrid-1', title: 'Power Independence', content: { [LearningLevel.ELEMENTARY]: '<h2>No Power Lines!</h2><p>Some homes make all their own electricity with solar panels and batteries!</p>', [LearningLevel.MIDDLE_SCHOOL]: '<h2>Off-Grid Basics</h2><p>Solar + wind + batteries + generator backup. Must size for worst case.</p>', [LearningLevel.HIGH_SCHOOL]: '<h2>System Sizing</h2><p>Daily load analysis, days of autonomy, battery bank sizing, array sizing.</p>', [LearningLevel.UNDERGRADUATE]: '<h2>Reliability Analysis</h2><p>Loss of load probability, system availability, optimal component sizing.</p>', [LearningLevel.GRADUATE]: '<h2>Mini-Grids</h2><p>Serving multiple households, tariff design, community ownership models.</p>', [LearningLevel.PHD]: '<h2>Energy Access</h2><p>1 billion without electricity. Pathways to universal access by 2030.</p>' } }],
+  activities: [{ id: 'offgrid-act-1', title: 'Design Off-Grid Home', type: 'SIMULATION', description: 'Size an off-grid system', estimatedMinutes: 25, interactiveContent: {} }],
+  game: { id: 'offgrid-game', title: 'Off-Grid Survivor', type: 'simulation', description: 'Keep your cabin powered', difficulty: { [LearningLevel.ELEMENTARY]: { lives: 5, timeLimit: null, hints: true }, [LearningLevel.MIDDLE_SCHOOL]: { lives: 4, timeLimit: 300, hints: true }, [LearningLevel.HIGH_SCHOOL]: { lives: 3, timeLimit: 240, hints: false }, [LearningLevel.UNDERGRADUATE]: { lives: 3, timeLimit: 180, hints: false }, [LearningLevel.GRADUATE]: { lives: 2, timeLimit: 120, hints: false }, [LearningLevel.PHD]: { lives: 1, timeLimit: 90, hints: false } } },
+  quiz: { questions: [{ id: 'offgrid-q1', question: 'What stores power for off-grid homes at night?', options: ['Solar panels', 'Wind turbines', 'Batteries', 'Generators'], correctAnswer: 2, explanation: 'Batteries store solar/wind power for use when the sun isn\'t shining.', difficulty: LearningLevel.ELEMENTARY }] }
+}
+
+// Module 15: Electric Vehicles & Renewables
+export const electricVehiclesRenewables: Module = {
+  id: 'renewable-ev', slug: 'electric-vehicles-renewables', title: 'Electric Vehicles & Renewables',
+  description: { [LearningLevel.ELEMENTARY]: 'Learn how cars can run on sunshine and wind!', [LearningLevel.MIDDLE_SCHOOL]: 'Discover how electric vehicles connect to renewable energy.', [LearningLevel.HIGH_SCHOOL]: 'Explore EV charging infrastructure and renewable integration.', [LearningLevel.UNDERGRADUATE]: 'Analyze V2G technology, fleet electrification, and lifecycle emissions.', [LearningLevel.GRADUATE]: 'Examine EV grid impacts, managed charging, and transport decarbonization.', [LearningLevel.PHD]: 'Research autonomous EVs, mobility-as-a-service, and system optimization.' },
+  topic: 'renewable-energy',
+  estimatedMinutes: { [LearningLevel.ELEMENTARY]: 20, [LearningLevel.MIDDLE_SCHOOL]: 35, [LearningLevel.HIGH_SCHOOL]: 50, [LearningLevel.UNDERGRADUATE]: 70, [LearningLevel.GRADUATE]: 95, [LearningLevel.PHD]: 125 },
+  lessons: [{ id: 'ev-1', title: 'Clean Driving', content: { [LearningLevel.ELEMENTARY]: '<h2>Sun-Powered Cars!</h2><p>Electric cars can charge from solar panels - driving on sunshine!</p>', [LearningLevel.MIDDLE_SCHOOL]: '<h2>EV + Solar</h2><p>Charge EVs during sunny hours. Home solar can power your commute!</p>', [LearningLevel.HIGH_SCHOOL]: '<h2>Charging Infrastructure</h2><p>Level 1, 2, DC fast charging. Workplace and public charging networks.</p>', [LearningLevel.UNDERGRADUATE]: '<h2>Vehicle-to-Grid</h2><p>EV batteries as distributed storage. Bidirectional charging technology.</p>', [LearningLevel.GRADUATE]: '<h2>Fleet Electrification</h2><p>Buses, delivery vehicles, heavy trucks. Charging depot optimization.</p>', [LearningLevel.PHD]: '<h2>System Integration</h2><p>Transport + electricity coupling, autonomous ride-sharing, urban planning.</p>' } }],
+  activities: [{ id: 'ev-act-1', title: 'EV Charging Plan', type: 'SCENARIO', description: 'Plan EV charging from solar', estimatedMinutes: 20, interactiveContent: {} }],
+  game: { id: 'ev-game', title: 'EV Fleet Manager', type: 'simulation', description: 'Manage electric vehicle charging', difficulty: { [LearningLevel.ELEMENTARY]: { lives: 5, timeLimit: null, hints: true }, [LearningLevel.MIDDLE_SCHOOL]: { lives: 4, timeLimit: 300, hints: true }, [LearningLevel.HIGH_SCHOOL]: { lives: 3, timeLimit: 240, hints: false }, [LearningLevel.UNDERGRADUATE]: { lives: 3, timeLimit: 180, hints: false }, [LearningLevel.GRADUATE]: { lives: 2, timeLimit: 120, hints: false }, [LearningLevel.PHD]: { lives: 1, timeLimit: 90, hints: false } } },
+  quiz: { questions: [{ id: 'ev-q1', question: 'What does V2G stand for?', options: ['Vehicle 2 Go', 'Vehicle to Grid', 'Very 2 Green', 'Voltage 2 Gauge'], correctAnswer: 1, explanation: 'V2G means Vehicle-to-Grid, where EVs can send power back to the grid.', difficulty: LearningLevel.HIGH_SCHOOL }] }
+}
+
+// Module 16: Green Hydrogen
+export const greenHydrogen: Module = {
+  id: 'renewable-hydrogen', slug: 'green-hydrogen', title: 'Green Hydrogen',
+  description: { [LearningLevel.ELEMENTARY]: 'Learn how water can become clean fuel!', [LearningLevel.MIDDLE_SCHOOL]: 'Discover how renewable electricity splits water into hydrogen fuel.', [LearningLevel.HIGH_SCHOOL]: 'Explore electrolysis technology, hydrogen storage, and fuel cells.', [LearningLevel.UNDERGRADUATE]: 'Analyze green hydrogen economics, efficiency, and applications.', [LearningLevel.GRADUATE]: 'Examine hydrogen\'s role in hard-to-electrify sectors and P2X pathways.', [LearningLevel.PHD]: 'Research advanced electrolyzers, hydrogen carriers, and system integration.' },
+  topic: 'renewable-energy',
+  estimatedMinutes: { [LearningLevel.ELEMENTARY]: 20, [LearningLevel.MIDDLE_SCHOOL]: 35, [LearningLevel.HIGH_SCHOOL]: 55, [LearningLevel.UNDERGRADUATE]: 75, [LearningLevel.GRADUATE]: 100, [LearningLevel.PHD]: 130 },
+  lessons: [{ id: 'h2-1', title: 'Hydrogen Power', content: { [LearningLevel.ELEMENTARY]: '<h2>Water to Fuel!</h2><p>We can split water (H2O) into hydrogen gas using electricity. Clean fuel!</p>', [LearningLevel.MIDDLE_SCHOOL]: '<h2>Electrolysis</h2><p>Electricity splits water: 2H2O → 2H2 + O2. Green hydrogen uses renewable electricity.</p>', [LearningLevel.HIGH_SCHOOL]: '<h2>Hydrogen Technologies</h2><p>PEM and alkaline electrolyzers. Compressed/liquid storage. PEM fuel cells.</p>', [LearningLevel.UNDERGRADUATE]: '<h2>Hydrogen Economics</h2><p>~60-70% round-trip efficiency. Cost declining but higher than batteries for most uses.</p>', [LearningLevel.GRADUATE]: '<h2>Hard-to-Abate Sectors</h2><p>Steel, shipping, aviation, long-haul trucking where batteries struggle.</p>', [LearningLevel.PHD]: '<h2>P2X Pathways</h2><p>Power-to-hydrogen-to-ammonia/methanol/synthetic fuels. Global trade implications.</p>' } }],
+  activities: [{ id: 'h2-act-1', title: 'Hydrogen System', type: 'SIMULATION', description: 'Design a green hydrogen system', estimatedMinutes: 25, interactiveContent: {} }],
+  game: { id: 'h2-game', title: 'Hydrogen Factory', type: 'simulation', description: 'Produce and use green hydrogen', difficulty: { [LearningLevel.ELEMENTARY]: { lives: 5, timeLimit: null, hints: true }, [LearningLevel.MIDDLE_SCHOOL]: { lives: 4, timeLimit: 300, hints: true }, [LearningLevel.HIGH_SCHOOL]: { lives: 3, timeLimit: 240, hints: false }, [LearningLevel.UNDERGRADUATE]: { lives: 3, timeLimit: 180, hints: false }, [LearningLevel.GRADUATE]: { lives: 2, timeLimit: 120, hints: false }, [LearningLevel.PHD]: { lives: 1, timeLimit: 90, hints: false } } },
+  quiz: { questions: [{ id: 'h2-q1', question: 'What makes hydrogen "green"?', options: ['It\'s colored green', 'Made using renewable electricity', 'From plants', 'Natural color'], correctAnswer: 1, explanation: 'Green hydrogen is made by electrolysis using renewable electricity.', difficulty: LearningLevel.MIDDLE_SCHOOL }] }
+}
+
+// Module 17: Heat Pumps
+export const heatPumps: Module = {
+  id: 'renewable-heat-pumps', slug: 'heat-pumps', title: 'Heat Pumps',
+  description: { [LearningLevel.ELEMENTARY]: 'Learn about magical machines that move heat!', [LearningLevel.MIDDLE_SCHOOL]: 'Discover how heat pumps heat and cool buildings efficiently.', [LearningLevel.HIGH_SCHOOL]: 'Explore heat pump thermodynamics, types, and efficiency metrics.', [LearningLevel.UNDERGRADUATE]: 'Analyze air-source, ground-source, and industrial heat pumps.', [LearningLevel.GRADUATE]: 'Examine heat pump integration, sector coupling, and high-temp applications.', [LearningLevel.PHD]: 'Research natural refrigerants, ultra-low-temp operation, and system optimization.' },
+  topic: 'renewable-energy',
+  estimatedMinutes: { [LearningLevel.ELEMENTARY]: 20, [LearningLevel.MIDDLE_SCHOOL]: 30, [LearningLevel.HIGH_SCHOOL]: 45, [LearningLevel.UNDERGRADUATE]: 65, [LearningLevel.GRADUATE]: 90, [LearningLevel.PHD]: 120 },
+  lessons: [{ id: 'hp-1', title: 'Moving Heat', content: { [LearningLevel.ELEMENTARY]: '<h2>Heat Movers!</h2><p>Heat pumps move heat from outside to inside - even when it\'s cold out!</p>', [LearningLevel.MIDDLE_SCHOOL]: '<h2>How Heat Pumps Work</h2><p>Like a refrigerator in reverse. Use electricity to move heat, not create it.</p>', [LearningLevel.HIGH_SCHOOL]: '<h2>Efficiency Metrics</h2><p>COP (Coefficient of Performance) typically 3-4. Means 3-4x heat output vs electric input.</p>', [LearningLevel.UNDERGRADUATE]: '<h2>Heat Pump Types</h2><p>Air-source (most common), ground-source (highest efficiency), water-source.</p>', [LearningLevel.GRADUATE]: '<h2>Building Decarbonization</h2><p>Heat pumps key to electrifying heating. Cold climate performance improving.</p>', [LearningLevel.PHD]: '<h2>Industrial Heat</h2><p>High-temperature heat pumps for process heat. Up to 150°C+ emerging.</p>' } }],
+  activities: [{ id: 'hp-act-1', title: 'Heat Pump Sizing', type: 'SCENARIO', description: 'Size a heat pump for a home', estimatedMinutes: 20, interactiveContent: {} }],
+  game: { id: 'hp-game', title: 'Heat Mover', type: 'puzzle', description: 'Keep the building comfortable', difficulty: { [LearningLevel.ELEMENTARY]: { lives: 5, timeLimit: null, hints: true }, [LearningLevel.MIDDLE_SCHOOL]: { lives: 4, timeLimit: 300, hints: true }, [LearningLevel.HIGH_SCHOOL]: { lives: 3, timeLimit: 240, hints: false }, [LearningLevel.UNDERGRADUATE]: { lives: 3, timeLimit: 180, hints: false }, [LearningLevel.GRADUATE]: { lives: 2, timeLimit: 120, hints: false }, [LearningLevel.PHD]: { lives: 1, timeLimit: 90, hints: false } } },
+  quiz: { questions: [{ id: 'hp-q1', question: 'What does COP of 3 mean for a heat pump?', options: ['3 speed settings', '3x heat output vs electricity input', '3 years warranty', '3 refrigerants'], correctAnswer: 1, explanation: 'COP of 3 means 3 units of heat delivered for every 1 unit of electricity.', difficulty: LearningLevel.HIGH_SCHOOL }] }
+}
+
+// Module 18: Renewable Energy Policy
+export const renewableEnergyPolicy: Module = {
+  id: 'renewable-policy', slug: 'renewable-energy-policy', title: 'Renewable Energy Policy',
+  description: { [LearningLevel.ELEMENTARY]: 'Learn how governments help clean energy grow!', [LearningLevel.MIDDLE_SCHOOL]: 'Discover policies that encourage solar, wind, and other clean energy.', [LearningLevel.HIGH_SCHOOL]: 'Explore tax credits, renewable standards, and carbon pricing.', [LearningLevel.UNDERGRADUATE]: 'Analyze policy instruments, their effectiveness, and design considerations.', [LearningLevel.GRADUATE]: 'Examine policy interactions, political economy, and international frameworks.', [LearningLevel.PHD]: 'Research policy modeling, innovation systems, and governance transitions.' },
+  topic: 'renewable-energy',
+  estimatedMinutes: { [LearningLevel.ELEMENTARY]: 20, [LearningLevel.MIDDLE_SCHOOL]: 30, [LearningLevel.HIGH_SCHOOL]: 50, [LearningLevel.UNDERGRADUATE]: 70, [LearningLevel.GRADUATE]: 95, [LearningLevel.PHD]: 125 },
+  lessons: [{ id: 'policy-1', title: 'Clean Energy Rules', content: { [LearningLevel.ELEMENTARY]: '<h2>Helping Clean Energy!</h2><p>Governments make rules that help solar and wind grow faster!</p>', [LearningLevel.MIDDLE_SCHOOL]: '<h2>Policy Tools</h2><p>Tax credits, rebates, renewable standards, net metering help clean energy compete.</p>', [LearningLevel.HIGH_SCHOOL]: '<h2>Policy Mechanisms</h2><p>Feed-in tariffs, RPS, ITC/PTC, carbon pricing, green bonds.</p>', [LearningLevel.UNDERGRADUATE]: '<h2>Policy Design</h2><p>Technology-neutral vs. specific. Quantity-based vs. price-based. Federal vs. state.</p>', [LearningLevel.GRADUATE]: '<h2>Political Economy</h2><p>Incumbent resistance, coalition building, just transition considerations.</p>', [LearningLevel.PHD]: '<h2>Policy Modeling</h2><p>Agent-based models, policy feedback, innovation systems approaches.</p>' } }],
+  activities: [{ id: 'policy-act-1', title: 'Design a Policy', type: 'SCENARIO', description: 'Create renewable energy incentives', estimatedMinutes: 20, interactiveContent: {} }],
+  game: { id: 'policy-game', title: 'Policy Maker', type: 'simulation', description: 'Grow renewable energy with policy', difficulty: { [LearningLevel.ELEMENTARY]: { lives: 5, timeLimit: null, hints: true }, [LearningLevel.MIDDLE_SCHOOL]: { lives: 4, timeLimit: 300, hints: true }, [LearningLevel.HIGH_SCHOOL]: { lives: 3, timeLimit: 240, hints: false }, [LearningLevel.UNDERGRADUATE]: { lives: 3, timeLimit: 180, hints: false }, [LearningLevel.GRADUATE]: { lives: 2, timeLimit: 120, hints: false }, [LearningLevel.PHD]: { lives: 1, timeLimit: 90, hints: false } } },
+  quiz: { questions: [{ id: 'policy-q1', question: 'What does RPS stand for?', options: ['Renewable Power Standard', 'Renewable Portfolio Standard', 'Real Power System', 'Regional Power Supply'], correctAnswer: 1, explanation: 'RPS stands for Renewable Portfolio Standard, requiring utilities to source a percentage from renewables.', difficulty: LearningLevel.HIGH_SCHOOL }] }
+}
+
 export const renewableEnergyModules: Module[] = [
   hydropowerBasics,
   geothermalEnergy,
@@ -132,6 +192,11 @@ export const renewableEnergyModules: Module[] = [
   microgrids,
   gridIntegration,
   energyEfficiency,
+  offGridSystems,
+  electricVehiclesRenewables,
+  greenHydrogen,
+  heatPumps,
+  renewableEnergyPolicy,
   // Module 1: Solar Energy Basics
   {
     id: 'renewable-solar-basics',
