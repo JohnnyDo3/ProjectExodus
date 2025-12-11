@@ -3,6 +3,9 @@
 
 import { LearningLevel } from '@/types/learning'
 
+// Re-export LearningLevel for use in module files
+export { LearningLevel }
+
 // Module Types
 export interface ModuleLesson {
   id: string
