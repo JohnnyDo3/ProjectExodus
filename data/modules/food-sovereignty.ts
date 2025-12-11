@@ -7,28 +7,28 @@ export const introToFoodSovereignty: Module = {
   slug: 'introduction-to-food-sovereignty',
   title: 'Introduction to Food Sovereignty',
   description: {
-    ELEMENTARY: 'Learn how communities grow their own food and why it matters!',
-    MIDDLE_SCHOOL: 'Discover how communities take control of their food systems and why food independence is important.',
-    HIGH_SCHOOL: 'Explore the concept of food sovereignty and how communities worldwide are reclaiming control over their food systems.',
-    UNDERGRADUATE: 'Analyze the political, economic, and social dimensions of food sovereignty movements globally.',
-    GRADUATE: 'Critically examine food sovereignty as a framework for agrarian reform and alternatives to industrial food systems.',
-    PHD: 'Investigate the theoretical foundations and policy implications of food sovereignty within global governance structures.'
+    [LearningLevel.ELEMENTARY]: 'Learn how communities grow their own food and why it matters!',
+    [LearningLevel.MIDDLE_SCHOOL]: 'Discover how communities take control of their food systems and why food independence is important.',
+    [LearningLevel.HIGH_SCHOOL]: 'Explore the concept of food sovereignty and how communities worldwide are reclaiming control over their food systems.',
+    [LearningLevel.UNDERGRADUATE]: 'Analyze the political, economic, and social dimensions of food sovereignty movements globally.',
+    [LearningLevel.GRADUATE]: 'Critically examine food sovereignty as a framework for agrarian reform and alternatives to industrial food systems.',
+    [LearningLevel.PHD]: 'Investigate the theoretical foundations and policy implications of food sovereignty within global governance structures.'
   },
   topic: 'food-sovereignty',
   estimatedMinutes: {
-    ELEMENTARY: 20,
-    MIDDLE_SCHOOL: 30,
-    HIGH_SCHOOL: 45,
-    UNDERGRADUATE: 60,
-    GRADUATE: 90,
-    PHD: 120
+    [LearningLevel.ELEMENTARY]: 20,
+    [LearningLevel.MIDDLE_SCHOOL]: 30,
+    [LearningLevel.HIGH_SCHOOL]: 45,
+    [LearningLevel.UNDERGRADUATE]: 60,
+    [LearningLevel.GRADUATE]: 90,
+    [LearningLevel.PHD]: 120
   },
   lessons: [
     {
       id: 'fs-intro-1',
       title: 'What is Food Sovereignty?',
       content: {
-        ELEMENTARY: `
+        [LearningLevel.ELEMENTARY]: `
           <h2>🌽 Food Sovereignty: Communities Growing Together!</h2>
           <p>Have you ever grown a tomato or helped in a garden? When communities grow their own food, something magical happens!</p>
           <div class="key-concept">
@@ -47,7 +47,7 @@ export const introToFoodSovereignty: Module = {
             <li>💪 Communities become stronger</li>
           </ul>
         `,
-        MIDDLE_SCHOOL: `
+        [LearningLevel.MIDDLE_SCHOOL]: `
           <h2>Understanding Food Sovereignty</h2>
           <p>Food sovereignty is the right of peoples to healthy and culturally appropriate food produced through ecologically sound methods, and their right to define their own food and agriculture systems.</p>
           <div class="definition-box">
@@ -65,7 +65,7 @@ export const introToFoodSovereignty: Module = {
             <li><strong>Food is Sacred</strong> - Rejects treating food as just a commodity</li>
           </ol>
         `,
-        HIGH_SCHOOL: `
+        [LearningLevel.HIGH_SCHOOL]: `
           <h2>Food Sovereignty: A Global Movement</h2>
           <p>Food sovereignty emerged as a concept in 1996 when La Vía Campesina, an international peasant movement, introduced it at the World Food Summit. It represents an alternative to the dominant neoliberal food system.</p>
           <div class="historical-context">
@@ -98,7 +98,7 @@ export const introToFoodSovereignty: Module = {
             </tr>
           </table>
         `,
-        UNDERGRADUATE: `
+        [LearningLevel.UNDERGRADUATE]: `
           <h2>Theoretical Foundations of Food Sovereignty</h2>
           <p>Food sovereignty represents a paradigm shift in how we conceptualize food systems, moving beyond the market-oriented framework of food security to embrace a rights-based approach that centers the agency of food producers and consumers.</p>
           <h3>Conceptual Framework</h3>
@@ -116,7 +116,7 @@ export const introToFoodSovereignty: Module = {
             <p>Influenced by Arturo Escobar and others who critique Western development models, food sovereignty proposes alternatives rooted in local knowledge systems.</p>
           </div>
         `,
-        GRADUATE: `
+        [LearningLevel.GRADUATE]: `
           <h2>Critical Analysis of Food Sovereignty Discourse</h2>
           <p>This module examines food sovereignty through multiple analytical lenses, exploring its theoretical coherence, practical implementation challenges, and transformative potential within contemporary political economy.</p>
           <h3>Epistemological Foundations</h3>
@@ -137,7 +137,7 @@ export const introToFoodSovereignty: Module = {
             </ul>
           </div>
         `,
-        PHD: `
+        [LearningLevel.PHD]: `
           <h2>Food Sovereignty: Ontological Politics and Counter-Hegemonic Praxis</h2>
           <p>This doctoral-level examination situates food sovereignty within broader debates on ontological politics, examining how the movement constitutes alternative world-making practices that challenge the ontological assumptions underlying industrial food systems.</p>
           <h3>Theoretical Interventions</h3>
@@ -182,12 +182,12 @@ export const introToFoodSovereignty: Module = {
     type: 'simulation',
     description: 'Build a food sovereign community by making strategic decisions',
     difficulty: {
-      ELEMENTARY: { lives: 5, timeLimit: null, hints: true },
-      MIDDLE_SCHOOL: { lives: 4, timeLimit: 300, hints: true },
-      HIGH_SCHOOL: { lives: 3, timeLimit: 240, hints: false },
-      UNDERGRADUATE: { lives: 3, timeLimit: 180, hints: false },
-      GRADUATE: { lives: 2, timeLimit: 120, hints: false },
-      PHD: { lives: 1, timeLimit: 90, hints: false }
+      [LearningLevel.ELEMENTARY]: { lives: 5, timeLimit: null, hints: true },
+      [LearningLevel.MIDDLE_SCHOOL]: { lives: 4, timeLimit: 300, hints: true },
+      [LearningLevel.HIGH_SCHOOL]: { lives: 3, timeLimit: 240, hints: false },
+      [LearningLevel.UNDERGRADUATE]: { lives: 3, timeLimit: 180, hints: false },
+      [LearningLevel.GRADUATE]: { lives: 2, timeLimit: 120, hints: false },
+      [LearningLevel.PHD]: { lives: 1, timeLimit: 90, hints: false }
     }
   },
   quiz: {
@@ -222,28 +222,28 @@ export const seedSavingFundamentals: Module = {
   slug: 'seed-saving-fundamentals',
   title: 'Seed Saving Fundamentals',
   description: {
-    ELEMENTARY: 'Learn how to save seeds from your favorite fruits and vegetables!',
-    MIDDLE_SCHOOL: 'Discover the art and science of saving seeds to grow plants year after year.',
-    HIGH_SCHOOL: 'Master seed saving techniques and understand the importance of seed biodiversity.',
-    UNDERGRADUATE: 'Explore seed biology, preservation methods, and the political economy of seeds.',
-    GRADUATE: 'Analyze seed systems, intellectual property frameworks, and seed sovereignty movements.',
-    PHD: 'Investigate seed governance, biopolitics, and the co-evolution of seeds and societies.'
+    [LearningLevel.ELEMENTARY]: 'Learn how to save seeds from your favorite fruits and vegetables!',
+    [LearningLevel.MIDDLE_SCHOOL]: 'Discover the art and science of saving seeds to grow plants year after year.',
+    [LearningLevel.HIGH_SCHOOL]: 'Master seed saving techniques and understand the importance of seed biodiversity.',
+    [LearningLevel.UNDERGRADUATE]: 'Explore seed biology, preservation methods, and the political economy of seeds.',
+    [LearningLevel.GRADUATE]: 'Analyze seed systems, intellectual property frameworks, and seed sovereignty movements.',
+    [LearningLevel.PHD]: 'Investigate seed governance, biopolitics, and the co-evolution of seeds and societies.'
   },
   topic: 'food-sovereignty',
   estimatedMinutes: {
-    ELEMENTARY: 25,
-    MIDDLE_SCHOOL: 35,
-    HIGH_SCHOOL: 50,
-    UNDERGRADUATE: 70,
-    GRADUATE: 100,
-    PHD: 130
+    [LearningLevel.ELEMENTARY]: 25,
+    [LearningLevel.MIDDLE_SCHOOL]: 35,
+    [LearningLevel.HIGH_SCHOOL]: 50,
+    [LearningLevel.UNDERGRADUATE]: 70,
+    [LearningLevel.GRADUATE]: 100,
+    [LearningLevel.PHD]: 130
   },
   lessons: [
     {
       id: 'seeds-1',
       title: 'The Magic of Seeds',
       content: {
-        ELEMENTARY: `
+        [LearningLevel.ELEMENTARY]: `
           <h2>🌱 Seeds Are Amazing!</h2>
           <p>Every giant tree, every yummy tomato, and every beautiful flower started as a tiny seed!</p>
           <div class="activity-box">
@@ -267,7 +267,7 @@ export const seedSavingFundamentals: Module = {
             </ul>
           </div>
         `,
-        MIDDLE_SCHOOL: `
+        [LearningLevel.MIDDLE_SCHOOL]: `
           <h2>Understanding Seed Biology</h2>
           <p>Seeds are nature's time capsules, containing everything needed to create a new plant. Understanding how seeds work helps us save them successfully.</p>
           <h3>Parts of a Seed</h3>
@@ -287,7 +287,7 @@ export const seedSavingFundamentals: Module = {
             <tr><td>Biennial Seeds</td><td>Carrot, onion, beet</td><td>Advanced</td></tr>
           </table>
         `,
-        HIGH_SCHOOL: `
+        [LearningLevel.HIGH_SCHOOL]: `
           <h2>Seed Saving Science and Techniques</h2>
           <p>Successful seed saving requires understanding plant reproduction, genetics, and proper storage conditions.</p>
           <h3>Open-Pollinated vs. Hybrid Seeds</h3>
@@ -320,7 +320,7 @@ export const seedSavingFundamentals: Module = {
             <li><strong>Hand Pollination:</strong> Manually transfer pollen and protect flowers</li>
           </ul>
         `,
-        UNDERGRADUATE: `
+        [LearningLevel.UNDERGRADUATE]: `
           <h2>Seed Systems and Agrobiodiversity</h2>
           <p>This module examines seeds as both biological entities and social artifacts, exploring how seed systems shape and are shaped by political, economic, and cultural forces.</p>
           <h3>The Political Economy of Seeds</h3>
@@ -343,7 +343,7 @@ export const seedSavingFundamentals: Module = {
           <h3>Seed Sovereignty Movements</h3>
           <p>In response to corporate concentration, diverse movements have emerged advocating for farmer rights to save, exchange, and sell seeds. Key organizations include Navdanya (India), Seed Savers Exchange (USA), and the global Seed Freedom movement.</p>
         `,
-        GRADUATE: `
+        [LearningLevel.GRADUATE]: `
           <h2>Critical Seed Studies</h2>
           <p>This graduate seminar situates seeds within broader debates on biopolitics, commons governance, and post-capitalist transitions.</p>
           <h3>Seeds as Commons</h3>
@@ -360,7 +360,7 @@ export const seedSavingFundamentals: Module = {
           <h3>Seed Banks and Ex Situ Conservation</h3>
           <p>Critically analyze the role of gene banks (e.g., Svalbard Global Seed Vault) in agrobiodiversity conservation, examining debates about access, benefit-sharing, and the relationship between ex situ and in situ conservation.</p>
         `,
-        PHD: `
+        [LearningLevel.PHD]: `
           <h2>Seed Ontologies and Biopolitical Futures</h2>
           <p>This doctoral seminar explores seeds as sites where biological, legal, economic, and political forces intersect, examining how different "seed ontologies" produce different socio-ecological futures.</p>
           <h3>Seeds and Biopolitics</h3>
@@ -410,12 +410,12 @@ export const seedSavingFundamentals: Module = {
     type: 'simulation',
     description: 'Manage a seed library and preserve heirloom varieties',
     difficulty: {
-      ELEMENTARY: { lives: 5, timeLimit: null, hints: true },
-      MIDDLE_SCHOOL: { lives: 4, timeLimit: 300, hints: true },
-      HIGH_SCHOOL: { lives: 3, timeLimit: 240, hints: false },
-      UNDERGRADUATE: { lives: 3, timeLimit: 180, hints: false },
-      GRADUATE: { lives: 2, timeLimit: 120, hints: false },
-      PHD: { lives: 1, timeLimit: 90, hints: false }
+      [LearningLevel.ELEMENTARY]: { lives: 5, timeLimit: null, hints: true },
+      [LearningLevel.MIDDLE_SCHOOL]: { lives: 4, timeLimit: 300, hints: true },
+      [LearningLevel.HIGH_SCHOOL]: { lives: 3, timeLimit: 240, hints: false },
+      [LearningLevel.UNDERGRADUATE]: { lives: 3, timeLimit: 180, hints: false },
+      [LearningLevel.GRADUATE]: { lives: 2, timeLimit: 120, hints: false },
+      [LearningLevel.PHD]: { lives: 1, timeLimit: 90, hints: false }
     }
   },
   quiz: {
@@ -442,28 +442,28 @@ export const communityGardens: Module = {
   slug: 'community-gardens',
   title: 'Community Gardens',
   description: {
-    ELEMENTARY: 'Discover how neighbors work together to grow food in shared gardens!',
-    MIDDLE_SCHOOL: 'Learn how community gardens bring people together and provide fresh food for neighborhoods.',
-    HIGH_SCHOOL: 'Explore the social, environmental, and economic benefits of community gardening programs.',
-    UNDERGRADUATE: 'Analyze community gardens as sites of urban agriculture, social capital formation, and food justice.',
-    GRADUATE: 'Examine community gardens through lenses of urban political ecology, commons governance, and spatial justice.',
-    PHD: 'Investigate community gardens as laboratories for alternative urban futures and post-capitalist food provisioning.'
+    [LearningLevel.ELEMENTARY]: 'Discover how neighbors work together to grow food in shared gardens!',
+    [LearningLevel.MIDDLE_SCHOOL]: 'Learn how community gardens bring people together and provide fresh food for neighborhoods.',
+    [LearningLevel.HIGH_SCHOOL]: 'Explore the social, environmental, and economic benefits of community gardening programs.',
+    [LearningLevel.UNDERGRADUATE]: 'Analyze community gardens as sites of urban agriculture, social capital formation, and food justice.',
+    [LearningLevel.GRADUATE]: 'Examine community gardens through lenses of urban political ecology, commons governance, and spatial justice.',
+    [LearningLevel.PHD]: 'Investigate community gardens as laboratories for alternative urban futures and post-capitalist food provisioning.'
   },
   topic: 'food-sovereignty',
   estimatedMinutes: {
-    ELEMENTARY: 20,
-    MIDDLE_SCHOOL: 30,
-    HIGH_SCHOOL: 45,
-    UNDERGRADUATE: 60,
-    GRADUATE: 90,
-    PHD: 120
+    [LearningLevel.ELEMENTARY]: 20,
+    [LearningLevel.MIDDLE_SCHOOL]: 30,
+    [LearningLevel.HIGH_SCHOOL]: 45,
+    [LearningLevel.UNDERGRADUATE]: 60,
+    [LearningLevel.GRADUATE]: 90,
+    [LearningLevel.PHD]: 120
   },
   lessons: [
     {
       id: 'cg-1',
       title: 'What is a Community Garden?',
       content: {
-        ELEMENTARY: `
+        [LearningLevel.ELEMENTARY]: `
           <h2>🌻 Gardens Where Everyone Helps!</h2>
           <p>Imagine a big garden where all your neighbors come together to grow vegetables, fruits, and flowers. That's a community garden!</p>
           <div class="fun-activity">
@@ -481,7 +481,7 @@ export const communityGardens: Module = {
             <p>Some community gardens are on rooftops! Others are in empty lots that used to have nothing growing.</p>
           </div>
         `,
-        MIDDLE_SCHOOL: `
+        [LearningLevel.MIDDLE_SCHOOL]: `
           <h2>Community Gardens: Growing Together</h2>
           <p>Community gardens are shared spaces where people come together to grow food, flowers, and friendships. They transform unused land into productive green spaces.</p>
           <h3>Types of Community Gardens</h3>
@@ -500,7 +500,7 @@ export const communityGardens: Module = {
             <tr><td>Economic</td><td>Lower food costs, property values increase</td></tr>
           </table>
         `,
-        HIGH_SCHOOL: `
+        [LearningLevel.HIGH_SCHOOL]: `
           <h2>Community Gardens: Social Infrastructure</h2>
           <p>Community gardens serve as vital social infrastructure in urban environments, providing far more than just food production.</p>
           <h3>Historical Context</h3>
@@ -521,7 +521,7 @@ export const communityGardens: Module = {
             <li>Recruit gardeners and assign plots</li>
           </ol>
         `,
-        UNDERGRADUATE: `
+        [LearningLevel.UNDERGRADUATE]: `
           <h2>Community Gardens and Urban Food Systems</h2>
           <p>This module examines community gardens as multifunctional spaces that intersect with urban planning, public health, environmental justice, and community development.</p>
           <h3>Theoretical Frameworks</h3>
@@ -532,7 +532,7 @@ export const communityGardens: Module = {
           <h3>Food Justice Dimensions</h3>
           <p>Community gardens often emerge in "food deserts" - areas lacking access to fresh, affordable food. They represent grassroots responses to food system inequities, though scholars debate whether they address root causes or merely symptoms.</p>
         `,
-        GRADUATE: `
+        [LearningLevel.GRADUATE]: `
           <h2>Critical Perspectives on Community Gardens</h2>
           <p>This seminar applies critical urban theory to examine community gardens, exploring tensions between their emancipatory potential and their possible roles in gentrification and neoliberal urbanism.</p>
           <h3>The Gentrification Debate</h3>
@@ -545,7 +545,7 @@ export const communityGardens: Module = {
             <li>How do gardens navigate municipal regulations and liability concerns?</li>
           </ul>
         `,
-        PHD: `
+        [LearningLevel.PHD]: `
           <h2>Community Gardens as Prefigurative Politics</h2>
           <p>This doctoral seminar examines community gardens through the lens of prefigurative politics - practices that embody the social relations of a desired future society within present-day organizing.</p>
           <h3>Theoretical Approaches</h3>
@@ -579,12 +579,12 @@ export const communityGardens: Module = {
     type: 'simulation',
     description: 'Manage a community garden through the seasons',
     difficulty: {
-      ELEMENTARY: { lives: 5, timeLimit: null, hints: true },
-      MIDDLE_SCHOOL: { lives: 4, timeLimit: 300, hints: true },
-      HIGH_SCHOOL: { lives: 3, timeLimit: 240, hints: false },
-      UNDERGRADUATE: { lives: 3, timeLimit: 180, hints: false },
-      GRADUATE: { lives: 2, timeLimit: 120, hints: false },
-      PHD: { lives: 1, timeLimit: 90, hints: false }
+      [LearningLevel.ELEMENTARY]: { lives: 5, timeLimit: null, hints: true },
+      [LearningLevel.MIDDLE_SCHOOL]: { lives: 4, timeLimit: 300, hints: true },
+      [LearningLevel.HIGH_SCHOOL]: { lives: 3, timeLimit: 240, hints: false },
+      [LearningLevel.UNDERGRADUATE]: { lives: 3, timeLimit: 180, hints: false },
+      [LearningLevel.GRADUATE]: { lives: 2, timeLimit: 120, hints: false },
+      [LearningLevel.PHD]: { lives: 1, timeLimit: 90, hints: false }
     }
   },
   quiz: {
@@ -611,28 +611,28 @@ export const urbanFarming: Module = {
   slug: 'urban-farming-basics',
   title: 'Urban Farming Basics',
   description: {
-    ELEMENTARY: 'Learn how people grow food in cities - even on rooftops and walls!',
-    MIDDLE_SCHOOL: 'Discover innovative ways cities are becoming food producers through urban agriculture.',
-    HIGH_SCHOOL: 'Explore urban farming techniques, from rooftop gardens to vertical farms and aquaponics.',
-    UNDERGRADUATE: 'Analyze urban agriculture systems, their economic viability, and role in urban food security.',
-    GRADUATE: 'Examine urban farming through food systems analysis, urban metabolism, and sustainability transitions.',
-    PHD: 'Investigate urban agriculture as socio-technical innovation and its implications for urban futures.'
+    [LearningLevel.ELEMENTARY]: 'Learn how people grow food in cities - even on rooftops and walls!',
+    [LearningLevel.MIDDLE_SCHOOL]: 'Discover innovative ways cities are becoming food producers through urban agriculture.',
+    [LearningLevel.HIGH_SCHOOL]: 'Explore urban farming techniques, from rooftop gardens to vertical farms and aquaponics.',
+    [LearningLevel.UNDERGRADUATE]: 'Analyze urban agriculture systems, their economic viability, and role in urban food security.',
+    [LearningLevel.GRADUATE]: 'Examine urban farming through food systems analysis, urban metabolism, and sustainability transitions.',
+    [LearningLevel.PHD]: 'Investigate urban agriculture as socio-technical innovation and its implications for urban futures.'
   },
   topic: 'food-sovereignty',
   estimatedMinutes: {
-    ELEMENTARY: 25,
-    MIDDLE_SCHOOL: 35,
-    HIGH_SCHOOL: 50,
-    UNDERGRADUATE: 70,
-    GRADUATE: 100,
-    PHD: 130
+    [LearningLevel.ELEMENTARY]: 25,
+    [LearningLevel.MIDDLE_SCHOOL]: 35,
+    [LearningLevel.HIGH_SCHOOL]: 50,
+    [LearningLevel.UNDERGRADUATE]: 70,
+    [LearningLevel.GRADUATE]: 100,
+    [LearningLevel.PHD]: 130
   },
   lessons: [
     {
       id: 'uf-1',
       title: 'Farming in the City',
       content: {
-        ELEMENTARY: `
+        [LearningLevel.ELEMENTARY]: `
           <h2>🏙️ Farms in Surprising Places!</h2>
           <p>Did you know you can grow food in a city? People are growing vegetables in amazing places!</p>
           <h3>Where Can City Farms Be?</h3>
@@ -648,7 +648,7 @@ export const urbanFarming: Module = {
             <p>Some restaurants grow their vegetables on their own rooftop! The chef can pick fresh tomatoes right before cooking!</p>
           </div>
         `,
-        MIDDLE_SCHOOL: `
+        [LearningLevel.MIDDLE_SCHOOL]: `
           <h2>Urban Agriculture: Growing Food in Cities</h2>
           <p>Urban farming is the practice of growing food within cities. As cities grow and concerns about food systems increase, urban agriculture is becoming more important.</p>
           <h3>Types of Urban Farming</h3>
@@ -667,7 +667,7 @@ export const urbanFarming: Module = {
             <li>Reduces urban heat island effect</li>
           </ul>
         `,
-        HIGH_SCHOOL: `
+        [LearningLevel.HIGH_SCHOOL]: `
           <h2>Urban Agriculture Systems</h2>
           <p>Modern urban farming uses innovative technologies to maximize production in limited spaces.</p>
           <h3>Controlled Environment Agriculture (CEA)</h3>
@@ -686,7 +686,7 @@ export const urbanFarming: Module = {
             <tr><td>Aquaponics</td><td>Medium</td><td>Very Low</td><td>Medium</td></tr>
           </table>
         `,
-        UNDERGRADUATE: `
+        [LearningLevel.UNDERGRADUATE]: `
           <h2>Urban Agriculture Economics and Policy</h2>
           <p>This module examines the economic viability of urban farming operations and the policy frameworks that support or hinder urban agriculture development.</p>
           <h3>Economic Analysis</h3>
@@ -706,7 +706,7 @@ export const urbanFarming: Module = {
             <li>Tax incentives and subsidies</li>
           </ul>
         `,
-        GRADUATE: `
+        [LearningLevel.GRADUATE]: `
           <h2>Urban Food Systems and Sustainability Transitions</h2>
           <p>This seminar situates urban agriculture within broader frameworks of sustainability transitions and urban metabolism.</p>
           <h3>Multi-Level Perspective</h3>
@@ -719,7 +719,7 @@ export const urbanFarming: Module = {
           <h3>Urban Metabolism</h3>
           <p>Urban agriculture can be analyzed as an intervention in urban metabolism - the flows of materials and energy through cities. Questions include how urban ag affects nutrient cycling, waste streams, and energy use.</p>
         `,
-        PHD: `
+        [LearningLevel.PHD]: `
           <h2>Urban Agriculture Futures</h2>
           <p>This doctoral seminar examines divergent trajectories for urban agriculture development and their implications for urban sustainability and justice.</p>
           <h3>Competing Visions</h3>
@@ -756,12 +756,12 @@ export const urbanFarming: Module = {
     type: 'simulation',
     description: 'Build and manage your urban farming empire',
     difficulty: {
-      ELEMENTARY: { lives: 5, timeLimit: null, hints: true },
-      MIDDLE_SCHOOL: { lives: 4, timeLimit: 300, hints: true },
-      HIGH_SCHOOL: { lives: 3, timeLimit: 240, hints: false },
-      UNDERGRADUATE: { lives: 3, timeLimit: 180, hints: false },
-      GRADUATE: { lives: 2, timeLimit: 120, hints: false },
-      PHD: { lives: 1, timeLimit: 90, hints: false }
+      [LearningLevel.ELEMENTARY]: { lives: 5, timeLimit: null, hints: true },
+      [LearningLevel.MIDDLE_SCHOOL]: { lives: 4, timeLimit: 300, hints: true },
+      [LearningLevel.HIGH_SCHOOL]: { lives: 3, timeLimit: 240, hints: false },
+      [LearningLevel.UNDERGRADUATE]: { lives: 3, timeLimit: 180, hints: false },
+      [LearningLevel.GRADUATE]: { lives: 2, timeLimit: 120, hints: false },
+      [LearningLevel.PHD]: { lives: 1, timeLimit: 90, hints: false }
     }
   },
   quiz: {
@@ -788,28 +788,28 @@ export const foodPreservation: Module = {
   slug: 'food-preservation-techniques',
   title: 'Food Preservation Techniques',
   description: {
-    ELEMENTARY: 'Learn fun ways to make food last longer - like making pickles and jam!',
-    MIDDLE_SCHOOL: 'Discover the science behind food preservation methods used for thousands of years.',
-    HIGH_SCHOOL: 'Master various food preservation techniques and understand the biology behind them.',
-    UNDERGRADUATE: 'Analyze food preservation through food science, cultural practices, and food security lenses.',
-    GRADUATE: 'Examine food preservation as technology, tradition, and resistance to industrial food systems.',
-    PHD: 'Investigate food preservation as material culture and its role in food sovereignty movements.'
+    [LearningLevel.ELEMENTARY]: 'Learn fun ways to make food last longer - like making pickles and jam!',
+    [LearningLevel.MIDDLE_SCHOOL]: 'Discover the science behind food preservation methods used for thousands of years.',
+    [LearningLevel.HIGH_SCHOOL]: 'Master various food preservation techniques and understand the biology behind them.',
+    [LearningLevel.UNDERGRADUATE]: 'Analyze food preservation through food science, cultural practices, and food security lenses.',
+    [LearningLevel.GRADUATE]: 'Examine food preservation as technology, tradition, and resistance to industrial food systems.',
+    [LearningLevel.PHD]: 'Investigate food preservation as material culture and its role in food sovereignty movements.'
   },
   topic: 'food-sovereignty',
   estimatedMinutes: {
-    ELEMENTARY: 25,
-    MIDDLE_SCHOOL: 35,
-    HIGH_SCHOOL: 50,
-    UNDERGRADUATE: 70,
-    GRADUATE: 100,
-    PHD: 130
+    [LearningLevel.ELEMENTARY]: 25,
+    [LearningLevel.MIDDLE_SCHOOL]: 35,
+    [LearningLevel.HIGH_SCHOOL]: 50,
+    [LearningLevel.UNDERGRADUATE]: 70,
+    [LearningLevel.GRADUATE]: 100,
+    [LearningLevel.PHD]: 130
   },
   lessons: [
     {
       id: 'fp-1',
       title: 'Keeping Food Fresh',
       content: {
-        ELEMENTARY: `
+        [LearningLevel.ELEMENTARY]: `
           <h2>🥒 Making Food Last!</h2>
           <p>Have you ever wondered how we can eat strawberry jam in winter when strawberries only grow in summer? That's food preservation!</p>
           <h3>Ways to Keep Food</h3>
@@ -825,7 +825,7 @@ export const foodPreservation: Module = {
             <p>Put a grape in the freezer and another in the sun for a few days. What happens to each one?</p>
           </div>
         `,
-        MIDDLE_SCHOOL: `
+        [LearningLevel.MIDDLE_SCHOOL]: `
           <h2>The Science of Food Preservation</h2>
           <p>Food spoils because of microorganisms (bacteria, mold, yeast) and enzymes. Preservation methods stop or slow these processes.</p>
           <h3>How Preservation Works</h3>
@@ -840,7 +840,7 @@ export const foodPreservation: Module = {
           <h3>Why pH Matters</h3>
           <p>Acidity (measured by pH) is crucial in preservation. Most harmful bacteria can't survive below pH 4.6, which is why pickles and fermented foods are safe.</p>
         `,
-        HIGH_SCHOOL: `
+        [LearningLevel.HIGH_SCHOOL]: `
           <h2>Food Preservation Science and Safety</h2>
           <p>Understanding the science behind preservation is essential for food safety and quality.</p>
           <h3>Water Activity (aw)</h3>
@@ -858,7 +858,7 @@ export const foodPreservation: Module = {
             <li><strong>Low-acid foods (pH > 4.6):</strong> Must use pressure canning at 240°F</li>
           </ul>
         `,
-        UNDERGRADUATE: `
+        [LearningLevel.UNDERGRADUATE]: `
           <h2>Food Preservation: Science, Culture, and Security</h2>
           <p>This module examines food preservation as both technical practice and cultural tradition, exploring its role in food security and sovereignty.</p>
           <h3>Historical Significance</h3>
@@ -878,7 +878,7 @@ export const foodPreservation: Module = {
             <li>Introduction of chemical preservatives</li>
           </ul>
         `,
-        GRADUATE: `
+        [LearningLevel.GRADUATE]: `
           <h2>Food Preservation as Resistance</h2>
           <p>This seminar examines the revival of traditional food preservation as a form of resistance to industrial food systems and an assertion of food sovereignty.</p>
           <h3>Fermentation Revival</h3>
@@ -892,7 +892,7 @@ export const foodPreservation: Module = {
           <h3>Regulatory Tensions</h3>
           <p>Traditional preservation practices often conflict with food safety regulations designed for industrial production, raising questions about whose knowledge counts.</p>
         `,
-        PHD: `
+        [LearningLevel.PHD]: `
           <h2>Preservation, Temporality, and Food Futures</h2>
           <p>This doctoral seminar examines food preservation through lenses of temporality, material culture, and anticipatory governance.</p>
           <h3>Temporal Politics of Food</h3>
@@ -935,12 +935,12 @@ export const foodPreservation: Module = {
     type: 'timed_challenge',
     description: 'Preserve your harvest before it spoils!',
     difficulty: {
-      ELEMENTARY: { lives: 5, timeLimit: null, hints: true },
-      MIDDLE_SCHOOL: { lives: 4, timeLimit: 300, hints: true },
-      HIGH_SCHOOL: { lives: 3, timeLimit: 240, hints: false },
-      UNDERGRADUATE: { lives: 3, timeLimit: 180, hints: false },
-      GRADUATE: { lives: 2, timeLimit: 120, hints: false },
-      PHD: { lives: 1, timeLimit: 90, hints: false }
+      [LearningLevel.ELEMENTARY]: { lives: 5, timeLimit: null, hints: true },
+      [LearningLevel.MIDDLE_SCHOOL]: { lives: 4, timeLimit: 300, hints: true },
+      [LearningLevel.HIGH_SCHOOL]: { lives: 3, timeLimit: 240, hints: false },
+      [LearningLevel.UNDERGRADUATE]: { lives: 3, timeLimit: 180, hints: false },
+      [LearningLevel.GRADUATE]: { lives: 2, timeLimit: 120, hints: false },
+      [LearningLevel.PHD]: { lives: 1, timeLimit: 90, hints: false }
     }
   },
   quiz: {
@@ -967,28 +967,28 @@ export const fermentationCulturedFoods: Module = {
   slug: 'fermentation-cultured-foods',
   title: 'Fermentation & Cultured Foods',
   description: {
-    ELEMENTARY: 'Discover how tiny helpers called bacteria make yummy foods like yogurt and pickles!',
-    MIDDLE_SCHOOL: 'Learn the science of fermentation and how to make your own cultured foods at home.',
-    HIGH_SCHOOL: 'Explore the microbiology of fermentation and master traditional fermentation techniques.',
-    UNDERGRADUATE: 'Analyze fermentation science, health implications, and cultural significance of fermented foods.',
-    GRADUATE: 'Examine fermentation through lenses of food microbiology, traditional knowledge, and food sovereignty.',
-    PHD: 'Investigate fermentation as biocultural practice and its role in decolonizing food systems.'
+    [LearningLevel.ELEMENTARY]: 'Discover how tiny helpers called bacteria make yummy foods like yogurt and pickles!',
+    [LearningLevel.MIDDLE_SCHOOL]: 'Learn the science of fermentation and how to make your own cultured foods at home.',
+    [LearningLevel.HIGH_SCHOOL]: 'Explore the microbiology of fermentation and master traditional fermentation techniques.',
+    [LearningLevel.UNDERGRADUATE]: 'Analyze fermentation science, health implications, and cultural significance of fermented foods.',
+    [LearningLevel.GRADUATE]: 'Examine fermentation through lenses of food microbiology, traditional knowledge, and food sovereignty.',
+    [LearningLevel.PHD]: 'Investigate fermentation as biocultural practice and its role in decolonizing food systems.'
   },
   topic: 'food-sovereignty',
   estimatedMinutes: {
-    ELEMENTARY: 25,
-    MIDDLE_SCHOOL: 40,
-    HIGH_SCHOOL: 55,
-    UNDERGRADUATE: 75,
-    GRADUATE: 100,
-    PHD: 130
+    [LearningLevel.ELEMENTARY]: 25,
+    [LearningLevel.MIDDLE_SCHOOL]: 40,
+    [LearningLevel.HIGH_SCHOOL]: 55,
+    [LearningLevel.UNDERGRADUATE]: 75,
+    [LearningLevel.GRADUATE]: 100,
+    [LearningLevel.PHD]: 130
   },
   lessons: [
     {
       id: 'ferm-1',
       title: 'The Magic of Fermentation',
       content: {
-        ELEMENTARY: `
+        [LearningLevel.ELEMENTARY]: `
           <h2>🦠 Tiny Helpers Making Yummy Food!</h2>
           <p>Did you know there are tiny living things called bacteria that help make some of your favorite foods? They're so small you can't see them!</p>
           <h3>Foods Made by Tiny Helpers</h3>
@@ -1004,7 +1004,7 @@ export const fermentationCulturedFoods: Module = {
             <p>Mix warm water, sugar, and a packet of yeast. Watch the bubbles appear - that's the yeast eating sugar and burping out gas!</p>
           </div>
         `,
-        MIDDLE_SCHOOL: `
+        [LearningLevel.MIDDLE_SCHOOL]: `
           <h2>Understanding Fermentation</h2>
           <p>Fermentation is an ancient food preservation method where microorganisms (bacteria, yeast, or mold) transform food, creating new flavors and extending shelf life.</p>
           <h3>Types of Fermentation</h3>
@@ -1021,7 +1021,7 @@ export const fermentationCulturedFoods: Module = {
             <li>Create an environment too acidic for spoilage</li>
           </ul>
         `,
-        HIGH_SCHOOL: `
+        [LearningLevel.HIGH_SCHOOL]: `
           <h2>Fermentation Microbiology</h2>
           <p>Understanding the microorganisms involved in fermentation enables safe and successful fermentation practice.</p>
           <h3>Key Microorganisms</h3>
@@ -1040,7 +1040,7 @@ export const fermentationCulturedFoods: Module = {
             <li><strong>Time:</strong> Longer fermentation = stronger flavors</li>
           </ul>
         `,
-        UNDERGRADUATE: `
+        [LearningLevel.UNDERGRADUATE]: `
           <h2>Fermentation Science and Health</h2>
           <p>This module examines the biochemistry of fermentation, its health implications, and its role in traditional food systems.</p>
           <h3>Biochemistry of Lactic Acid Fermentation</h3>
@@ -1055,7 +1055,7 @@ export const fermentationCulturedFoods: Module = {
           <h3>Cultural Significance</h3>
           <p>Nearly every culture has traditional fermented foods, representing accumulated knowledge about local ingredients, climates, and microbial communities.</p>
         `,
-        GRADUATE: `
+        [LearningLevel.GRADUATE]: `
           <h2>Fermentation, Knowledge, and Power</h2>
           <p>This seminar examines fermentation through the lens of knowledge production, examining tensions between traditional practices and industrial food science.</p>
           <h3>Epistemological Questions</h3>
@@ -1068,7 +1068,7 @@ export const fermentationCulturedFoods: Module = {
           <h3>Regulation and Traditional Foods</h3>
           <p>Food safety regulations often conflict with traditional fermentation practices, privileging industrial production models and potentially threatening food sovereignty.</p>
         `,
-        PHD: `
+        [LearningLevel.PHD]: `
           <h2>Fermentation as Biocultural Practice</h2>
           <p>This doctoral seminar examines fermentation as a site where biology, culture, and politics intersect, drawing on multispecies studies and food sovereignty frameworks.</p>
           <h3>Multispecies Relations</h3>
@@ -1104,12 +1104,12 @@ export const fermentationCulturedFoods: Module = {
     type: 'simulation',
     description: 'Manage a fermentation kitchen and create perfect batches',
     difficulty: {
-      ELEMENTARY: { lives: 5, timeLimit: null, hints: true },
-      MIDDLE_SCHOOL: { lives: 4, timeLimit: 300, hints: true },
-      HIGH_SCHOOL: { lives: 3, timeLimit: 240, hints: false },
-      UNDERGRADUATE: { lives: 3, timeLimit: 180, hints: false },
-      GRADUATE: { lives: 2, timeLimit: 120, hints: false },
-      PHD: { lives: 1, timeLimit: 90, hints: false }
+      [LearningLevel.ELEMENTARY]: { lives: 5, timeLimit: null, hints: true },
+      [LearningLevel.MIDDLE_SCHOOL]: { lives: 4, timeLimit: 300, hints: true },
+      [LearningLevel.HIGH_SCHOOL]: { lives: 3, timeLimit: 240, hints: false },
+      [LearningLevel.UNDERGRADUATE]: { lives: 3, timeLimit: 180, hints: false },
+      [LearningLevel.GRADUATE]: { lives: 2, timeLimit: 120, hints: false },
+      [LearningLevel.PHD]: { lives: 1, timeLimit: 90, hints: false }
     }
   },
   quiz: {
@@ -1136,28 +1136,28 @@ export const localFoodNetworks: Module = {
   slug: 'local-food-networks',
   title: 'Local Food Networks',
   description: {
-    ELEMENTARY: 'Learn how farmers and neighbors share food in your community!',
-    MIDDLE_SCHOOL: 'Discover how local food systems connect farmers directly with people who eat their food.',
-    HIGH_SCHOOL: 'Explore alternative food networks including CSAs, farmers markets, and food hubs.',
-    UNDERGRADUATE: 'Analyze local food systems through supply chain, economic, and social movement lenses.',
-    GRADUATE: 'Examine alternative food networks as sites of contestation within dominant food regimes.',
-    PHD: 'Investigate the scalar politics of local food and its relationship to food sovereignty.'
+    [LearningLevel.ELEMENTARY]: 'Learn how farmers and neighbors share food in your community!',
+    [LearningLevel.MIDDLE_SCHOOL]: 'Discover how local food systems connect farmers directly with people who eat their food.',
+    [LearningLevel.HIGH_SCHOOL]: 'Explore alternative food networks including CSAs, farmers markets, and food hubs.',
+    [LearningLevel.UNDERGRADUATE]: 'Analyze local food systems through supply chain, economic, and social movement lenses.',
+    [LearningLevel.GRADUATE]: 'Examine alternative food networks as sites of contestation within dominant food regimes.',
+    [LearningLevel.PHD]: 'Investigate the scalar politics of local food and its relationship to food sovereignty.'
   },
   topic: 'food-sovereignty',
   estimatedMinutes: {
-    ELEMENTARY: 20,
-    MIDDLE_SCHOOL: 30,
-    HIGH_SCHOOL: 45,
-    UNDERGRADUATE: 65,
-    GRADUATE: 90,
-    PHD: 120
+    [LearningLevel.ELEMENTARY]: 20,
+    [LearningLevel.MIDDLE_SCHOOL]: 30,
+    [LearningLevel.HIGH_SCHOOL]: 45,
+    [LearningLevel.UNDERGRADUATE]: 65,
+    [LearningLevel.GRADUATE]: 90,
+    [LearningLevel.PHD]: 120
   },
   lessons: [
     {
       id: 'lfn-1',
       title: 'Connecting Farms to Families',
       content: {
-        ELEMENTARY: `
+        [LearningLevel.ELEMENTARY]: `
           <h2>🚜 From Farm to Your Table!</h2>
           <p>Have you ever wondered where your food comes from? Sometimes it travels thousands of miles! But there are ways to get food from farms near you.</p>
           <h3>Ways to Get Local Food</h3>
@@ -1172,7 +1172,7 @@ export const localFoodNetworks: Module = {
             <p>When you buy from a farmer at a market, they get to keep more money than when they sell to a big store!</p>
           </div>
         `,
-        MIDDLE_SCHOOL: `
+        [LearningLevel.MIDDLE_SCHOOL]: `
           <h2>Local Food Systems</h2>
           <p>Local food systems are networks that connect food producers directly with consumers in a geographic region, typically defined as within 100-400 miles.</p>
           <h3>Types of Direct-to-Consumer Sales</h3>
@@ -1191,7 +1191,7 @@ export const localFoodNetworks: Module = {
             <tr><td>Builds Relationships</td><td>Know who grows your food</td></tr>
           </table>
         `,
-        HIGH_SCHOOL: `
+        [LearningLevel.HIGH_SCHOOL]: `
           <h2>Alternative Food Networks</h2>
           <p>Alternative food networks (AFNs) represent efforts to create food systems outside the dominant industrial model.</p>
           <h3>Food Hub Models</h3>
@@ -1210,7 +1210,7 @@ export const localFoodNetworks: Module = {
             <li>Government facilities</li>
           </ul>
         `,
-        UNDERGRADUATE: `
+        [LearningLevel.UNDERGRADUATE]: `
           <h2>Economics of Local Food Systems</h2>
           <p>This module analyzes the economic dynamics of local food systems, examining their viability, impacts, and scalability.</p>
           <h3>Economic Analysis</h3>
@@ -1224,7 +1224,7 @@ export const localFoodNetworks: Module = {
           <h3>Scale and Efficiency Debates</h3>
           <p>Critics argue local food is less efficient than global supply chains. Defenders point to externalities not captured in price and non-economic values of local food systems.</p>
         `,
-        GRADUATE: `
+        [LearningLevel.GRADUATE]: `
           <h2>Critical Perspectives on Local Food</h2>
           <p>This seminar examines critiques of local food movements and their relationship to broader food system transformation.</p>
           <h3>The "Local Trap"</h3>
@@ -1237,7 +1237,7 @@ export const localFoodNetworks: Module = {
           <h3>Food Justice Critiques</h3>
           <p>Food justice scholars examine how local food movements often reproduce race and class exclusions, centering white, middle-class practices and aesthetics.</p>
         `,
-        PHD: `
+        [LearningLevel.PHD]: `
           <h2>Scalar Politics of Food</h2>
           <p>This doctoral seminar examines how scale is produced and contested in food system politics, moving beyond local/global binaries.</p>
           <h3>Scale as Social Construction</h3>
@@ -1277,12 +1277,12 @@ export const localFoodNetworks: Module = {
     type: 'simulation',
     description: 'Build connections between farms and communities',
     difficulty: {
-      ELEMENTARY: { lives: 5, timeLimit: null, hints: true },
-      MIDDLE_SCHOOL: { lives: 4, timeLimit: 300, hints: true },
-      HIGH_SCHOOL: { lives: 3, timeLimit: 240, hints: false },
-      UNDERGRADUATE: { lives: 3, timeLimit: 180, hints: false },
-      GRADUATE: { lives: 2, timeLimit: 120, hints: false },
-      PHD: { lives: 1, timeLimit: 90, hints: false }
+      [LearningLevel.ELEMENTARY]: { lives: 5, timeLimit: null, hints: true },
+      [LearningLevel.MIDDLE_SCHOOL]: { lives: 4, timeLimit: 300, hints: true },
+      [LearningLevel.HIGH_SCHOOL]: { lives: 3, timeLimit: 240, hints: false },
+      [LearningLevel.UNDERGRADUATE]: { lives: 3, timeLimit: 180, hints: false },
+      [LearningLevel.GRADUATE]: { lives: 2, timeLimit: 120, hints: false },
+      [LearningLevel.PHD]: { lives: 1, timeLimit: 90, hints: false }
     }
   },
   quiz: {
@@ -1309,28 +1309,28 @@ export const foodPolicyAdvocacy: Module = {
   slug: 'food-policy-advocacy',
   title: 'Food Policy & Advocacy',
   description: {
-    ELEMENTARY: 'Learn how rules about food are made and how you can help make them better!',
-    MIDDLE_SCHOOL: 'Discover how laws and policies shape our food system and how citizens can influence them.',
-    HIGH_SCHOOL: 'Explore food policy at local, national, and international levels and strategies for food system advocacy.',
-    UNDERGRADUATE: 'Analyze food policy frameworks, stakeholder dynamics, and advocacy strategies for food system change.',
-    GRADUATE: 'Examine food governance through policy analysis, political economy, and social movement theory.',
-    PHD: 'Investigate the politics of food policy-making and the role of civil society in food system governance.'
+    [LearningLevel.ELEMENTARY]: 'Learn how rules about food are made and how you can help make them better!',
+    [LearningLevel.MIDDLE_SCHOOL]: 'Discover how laws and policies shape our food system and how citizens can influence them.',
+    [LearningLevel.HIGH_SCHOOL]: 'Explore food policy at local, national, and international levels and strategies for food system advocacy.',
+    [LearningLevel.UNDERGRADUATE]: 'Analyze food policy frameworks, stakeholder dynamics, and advocacy strategies for food system change.',
+    [LearningLevel.GRADUATE]: 'Examine food governance through policy analysis, political economy, and social movement theory.',
+    [LearningLevel.PHD]: 'Investigate the politics of food policy-making and the role of civil society in food system governance.'
   },
   topic: 'food-sovereignty',
   estimatedMinutes: {
-    ELEMENTARY: 20,
-    MIDDLE_SCHOOL: 35,
-    HIGH_SCHOOL: 50,
-    UNDERGRADUATE: 70,
-    GRADUATE: 95,
-    PHD: 125
+    [LearningLevel.ELEMENTARY]: 20,
+    [LearningLevel.MIDDLE_SCHOOL]: 35,
+    [LearningLevel.HIGH_SCHOOL]: 50,
+    [LearningLevel.UNDERGRADUATE]: 70,
+    [LearningLevel.GRADUATE]: 95,
+    [LearningLevel.PHD]: 125
   },
   lessons: [
     {
       id: 'fpa-1',
       title: 'Food Rules and How They\'re Made',
       content: {
-        ELEMENTARY: `
+        [LearningLevel.ELEMENTARY]: `
           <h2>📜 Rules About Food</h2>
           <p>Just like your school has rules, there are rules about food too! These rules help keep food safe and make sure everyone can get food.</p>
           <h3>Some Food Rules</h3>
@@ -1350,7 +1350,7 @@ export const foodPolicyAdvocacy: Module = {
             </ul>
           </div>
         `,
-        MIDDLE_SCHOOL: `
+        [LearningLevel.MIDDLE_SCHOOL]: `
           <h2>Understanding Food Policy</h2>
           <p>Food policy includes all the laws, regulations, and government programs that affect how food is produced, distributed, and consumed.</p>
           <h3>Types of Food Policy</h3>
@@ -1368,7 +1368,7 @@ export const foodPolicyAdvocacy: Module = {
             <li>International bodies set standards</li>
           </ul>
         `,
-        HIGH_SCHOOL: `
+        [LearningLevel.HIGH_SCHOOL]: `
           <h2>Food Policy and Politics</h2>
           <p>Food policy reflects political choices about who benefits from the food system and how resources are distributed.</p>
           <h3>The Farm Bill</h3>
@@ -1388,7 +1388,7 @@ export const foodPolicyAdvocacy: Module = {
             <li>Grassroots organizing</li>
           </ul>
         `,
-        UNDERGRADUATE: `
+        [LearningLevel.UNDERGRADUATE]: `
           <h2>Food Policy Analysis</h2>
           <p>This module provides frameworks for analyzing food policy, examining stakeholders, policy instruments, and outcomes.</p>
           <h3>Policy Analysis Framework</h3>
@@ -1402,7 +1402,7 @@ export const foodPolicyAdvocacy: Module = {
           <h3>Power in Food Policy</h3>
           <p>Corporate concentration in food and agriculture creates power imbalances in policy-making. The concept of "regulatory capture" describes how regulated industries can come to dominate their regulators.</p>
         `,
-        GRADUATE: `
+        [LearningLevel.GRADUATE]: `
           <h2>Food Governance and Political Economy</h2>
           <p>This seminar examines food policy through political economy frameworks, analyzing how power shapes food governance at multiple scales.</p>
           <h3>Food Regime Theory</h3>
@@ -1416,7 +1416,7 @@ export const foodPolicyAdvocacy: Module = {
             <li>Local (food policy councils, zoning)</li>
           </ul>
         `,
-        PHD: `
+        [LearningLevel.PHD]: `
           <h2>The Politics of Food Policy-Making</h2>
           <p>This doctoral seminar examines how food policy is produced through political contestation, examining the role of social movements, policy entrepreneurs, and discursive politics.</p>
           <h3>Discourse and Food Policy</h3>
@@ -1457,12 +1457,12 @@ export const foodPolicyAdvocacy: Module = {
     type: 'simulation',
     description: 'Navigate the policy-making process to pass food legislation',
     difficulty: {
-      ELEMENTARY: { lives: 5, timeLimit: null, hints: true },
-      MIDDLE_SCHOOL: { lives: 4, timeLimit: 300, hints: true },
-      HIGH_SCHOOL: { lives: 3, timeLimit: 240, hints: false },
-      UNDERGRADUATE: { lives: 3, timeLimit: 180, hints: false },
-      GRADUATE: { lives: 2, timeLimit: 120, hints: false },
-      PHD: { lives: 1, timeLimit: 90, hints: false }
+      [LearningLevel.ELEMENTARY]: { lives: 5, timeLimit: null, hints: true },
+      [LearningLevel.MIDDLE_SCHOOL]: { lives: 4, timeLimit: 300, hints: true },
+      [LearningLevel.HIGH_SCHOOL]: { lives: 3, timeLimit: 240, hints: false },
+      [LearningLevel.UNDERGRADUATE]: { lives: 3, timeLimit: 180, hints: false },
+      [LearningLevel.GRADUATE]: { lives: 2, timeLimit: 120, hints: false },
+      [LearningLevel.PHD]: { lives: 1, timeLimit: 90, hints: false }
     }
   },
   quiz: {
@@ -1489,28 +1489,28 @@ export const landAccessRights: Module = {
   slug: 'land-access-rights',
   title: 'Land Access & Rights',
   description: {
-    ELEMENTARY: 'Learn why having land to grow food is so important for communities!',
-    MIDDLE_SCHOOL: 'Discover the challenges farmers face getting land and why land rights matter for food security.',
-    HIGH_SCHOOL: 'Explore land tenure systems, barriers to land access, and movements for land reform.',
-    UNDERGRADUATE: 'Analyze land tenure, property rights, and their relationship to food sovereignty and agrarian justice.',
-    GRADUATE: 'Examine land governance through political ecology, examining dispossession, enclosure, and resistance.',
-    PHD: 'Investigate land as contested terrain where questions of sovereignty, territory, and belonging intersect.'
+    [LearningLevel.ELEMENTARY]: 'Learn why having land to grow food is so important for communities!',
+    [LearningLevel.MIDDLE_SCHOOL]: 'Discover the challenges farmers face getting land and why land rights matter for food security.',
+    [LearningLevel.HIGH_SCHOOL]: 'Explore land tenure systems, barriers to land access, and movements for land reform.',
+    [LearningLevel.UNDERGRADUATE]: 'Analyze land tenure, property rights, and their relationship to food sovereignty and agrarian justice.',
+    [LearningLevel.GRADUATE]: 'Examine land governance through political ecology, examining dispossession, enclosure, and resistance.',
+    [LearningLevel.PHD]: 'Investigate land as contested terrain where questions of sovereignty, territory, and belonging intersect.'
   },
   topic: 'food-sovereignty',
   estimatedMinutes: {
-    ELEMENTARY: 20,
-    MIDDLE_SCHOOL: 35,
-    HIGH_SCHOOL: 50,
-    UNDERGRADUATE: 70,
-    GRADUATE: 100,
-    PHD: 130
+    [LearningLevel.ELEMENTARY]: 20,
+    [LearningLevel.MIDDLE_SCHOOL]: 35,
+    [LearningLevel.HIGH_SCHOOL]: 50,
+    [LearningLevel.UNDERGRADUATE]: 70,
+    [LearningLevel.GRADUATE]: 100,
+    [LearningLevel.PHD]: 130
   },
   lessons: [
     {
       id: 'lar-1',
       title: 'Land for Growing Food',
       content: {
-        ELEMENTARY: `
+        [LearningLevel.ELEMENTARY]: `
           <h2>🌍 Why Land Matters</h2>
           <p>To grow food, you need land! But not everyone has land to grow food on. Let's learn why this is important.</p>
           <h3>What Land Gives Us</h3>
@@ -1526,7 +1526,7 @@ export const landAccessRights: Module = {
             <p>What if you wanted to grow a garden but had no yard? Where could you grow food?</p>
           </div>
         `,
-        MIDDLE_SCHOOL: `
+        [LearningLevel.MIDDLE_SCHOOL]: `
           <h2>Land Access Challenges</h2>
           <p>Farmers need land to grow food, but getting land is becoming harder for many people, especially young and beginning farmers.</p>
           <h3>Barriers to Land Access</h3>
@@ -1544,7 +1544,7 @@ export const landAccessRights: Module = {
             <li>Urban land access programs</li>
           </ul>
         `,
-        HIGH_SCHOOL: `
+        [LearningLevel.HIGH_SCHOOL]: `
           <h2>Land Tenure and Food Systems</h2>
           <p>Land tenure - the rules governing land ownership and use - fundamentally shapes food systems and who can participate in them.</p>
           <h3>Types of Land Tenure</h3>
@@ -1563,7 +1563,7 @@ export const landAccessRights: Module = {
             <li>Japanese American land confiscation</li>
           </ul>
         `,
-        UNDERGRADUATE: `
+        [LearningLevel.UNDERGRADUATE]: `
           <h2>Land Rights and Agrarian Justice</h2>
           <p>This module examines land tenure through agrarian political economy, exploring how property relations shape rural livelihoods and food system outcomes.</p>
           <h3>Property Rights Theory</h3>
@@ -1577,7 +1577,7 @@ export const landAccessRights: Module = {
           <h3>Discrimination and Land Loss</h3>
           <p>Systematic discrimination has dispossessed communities of color from land in the U.S., including USDA discrimination documented in the Pigford cases.</p>
         `,
-        GRADUATE: `
+        [LearningLevel.GRADUATE]: `
           <h2>Political Ecology of Land</h2>
           <p>This seminar applies political ecology frameworks to examine land access, use, and governance, with attention to power, scale, and environmental change.</p>
           <h3>Accumulation by Dispossession</h3>
@@ -1585,7 +1585,7 @@ export const landAccessRights: Module = {
           <h3>Land Grabbing</h3>
           <p>Contemporary "land grabs" - large-scale land acquisitions by corporations, governments, and investors - represent a new wave of enclosure with implications for food sovereignty globally.</p>
         `,
-        PHD: `
+        [LearningLevel.PHD]: `
           <h2>Territory, Sovereignty, and Land</h2>
           <p>This doctoral seminar examines land through the lens of territory and sovereignty, exploring how control over land intersects with questions of political authority and belonging.</p>
           <h3>Indigenous Land and Food Sovereignty</h3>
@@ -1620,12 +1620,12 @@ export const landAccessRights: Module = {
     type: 'simulation',
     description: 'Navigate challenges of securing and stewarding farmland',
     difficulty: {
-      ELEMENTARY: { lives: 5, timeLimit: null, hints: true },
-      MIDDLE_SCHOOL: { lives: 4, timeLimit: 300, hints: true },
-      HIGH_SCHOOL: { lives: 3, timeLimit: 240, hints: false },
-      UNDERGRADUATE: { lives: 3, timeLimit: 180, hints: false },
-      GRADUATE: { lives: 2, timeLimit: 120, hints: false },
-      PHD: { lives: 1, timeLimit: 90, hints: false }
+      [LearningLevel.ELEMENTARY]: { lives: 5, timeLimit: null, hints: true },
+      [LearningLevel.MIDDLE_SCHOOL]: { lives: 4, timeLimit: 300, hints: true },
+      [LearningLevel.HIGH_SCHOOL]: { lives: 3, timeLimit: 240, hints: false },
+      [LearningLevel.UNDERGRADUATE]: { lives: 3, timeLimit: 180, hints: false },
+      [LearningLevel.GRADUATE]: { lives: 2, timeLimit: 120, hints: false },
+      [LearningLevel.PHD]: { lives: 1, timeLimit: 90, hints: false }
     }
   },
   quiz: {
@@ -1652,28 +1652,28 @@ export const agroecologyPrinciples: Module = {
   slug: 'agroecology-principles',
   title: 'Agroecology Principles',
   description: {
-    ELEMENTARY: 'Discover how farms can work with nature instead of against it!',
-    MIDDLE_SCHOOL: 'Learn how agroecology uses natural systems to grow food sustainably.',
-    HIGH_SCHOOL: 'Explore the science and practice of agroecology as an alternative to industrial agriculture.',
-    UNDERGRADUATE: 'Analyze agroecology as science, practice, and social movement for food system transformation.',
-    GRADUATE: 'Examine agroecology through transdisciplinary lenses, integrating ecological and social dimensions.',
-    PHD: 'Investigate agroecology as transformative praxis and its relationship to food sovereignty movements.'
+    [LearningLevel.ELEMENTARY]: 'Discover how farms can work with nature instead of against it!',
+    [LearningLevel.MIDDLE_SCHOOL]: 'Learn how agroecology uses natural systems to grow food sustainably.',
+    [LearningLevel.HIGH_SCHOOL]: 'Explore the science and practice of agroecology as an alternative to industrial agriculture.',
+    [LearningLevel.UNDERGRADUATE]: 'Analyze agroecology as science, practice, and social movement for food system transformation.',
+    [LearningLevel.GRADUATE]: 'Examine agroecology through transdisciplinary lenses, integrating ecological and social dimensions.',
+    [LearningLevel.PHD]: 'Investigate agroecology as transformative praxis and its relationship to food sovereignty movements.'
   },
   topic: 'food-sovereignty',
   estimatedMinutes: {
-    ELEMENTARY: 25,
-    MIDDLE_SCHOOL: 35,
-    HIGH_SCHOOL: 50,
-    UNDERGRADUATE: 75,
-    GRADUATE: 100,
-    PHD: 130
+    [LearningLevel.ELEMENTARY]: 25,
+    [LearningLevel.MIDDLE_SCHOOL]: 35,
+    [LearningLevel.HIGH_SCHOOL]: 50,
+    [LearningLevel.UNDERGRADUATE]: 75,
+    [LearningLevel.GRADUATE]: 100,
+    [LearningLevel.PHD]: 130
   },
   lessons: [
     {
       id: 'agro-1',
       title: 'Farming with Nature',
       content: {
-        ELEMENTARY: `
+        [LearningLevel.ELEMENTARY]: `
           <h2>🌿 Nature's Farm Team!</h2>
           <p>Did you know that nature has its own team of helpers that can make farms work better? Instead of fighting nature, smart farmers work WITH nature!</p>
           <h3>Nature's Helpers</h3>
@@ -1689,7 +1689,7 @@ export const agroecologyPrinciples: Module = {
             <p>Some farmers plant flowers between vegetable rows to invite helpful bugs. This is called "companion planting!"</p>
           </div>
         `,
-        MIDDLE_SCHOOL: `
+        [LearningLevel.MIDDLE_SCHOOL]: `
           <h2>Introduction to Agroecology</h2>
           <p>Agroecology applies ecological principles to farming, creating systems that work with natural processes rather than against them.</p>
           <h3>Key Agroecological Principles</h3>
@@ -1709,7 +1709,7 @@ export const agroecologyPrinciples: Module = {
             <tr><td>Local knowledge</td><td>External inputs</td></tr>
           </table>
         `,
-        HIGH_SCHOOL: `
+        [LearningLevel.HIGH_SCHOOL]: `
           <h2>Agroecology: Science and Practice</h2>
           <p>Agroecology is simultaneously a scientific discipline, a set of farming practices, and a social movement.</p>
           <h3>The 10 Elements of Agroecology (FAO)</h3>
@@ -1726,7 +1726,7 @@ export const agroecologyPrinciples: Module = {
             <li><strong>Circular and Solidarity Economy</strong> - Reconnecting producers and consumers</li>
           </ol>
         `,
-        UNDERGRADUATE: `
+        [LearningLevel.UNDERGRADUATE]: `
           <h2>Agroecology as Transdisciplinary Science</h2>
           <p>This module examines agroecology as a transdisciplinary field integrating ecological science, traditional knowledge, and social sciences.</p>
           <h3>Theoretical Foundations</h3>
@@ -1740,7 +1740,7 @@ export const agroecologyPrinciples: Module = {
           <h3>Agroecology and Yield</h3>
           <p>Debates about agroecological productivity require examining what we measure and value. While single-crop yields may be lower, agroecological systems often show higher total productivity, stability, and resource efficiency.</p>
         `,
-        GRADUATE: `
+        [LearningLevel.GRADUATE]: `
           <h2>Agroecology and Food System Transformation</h2>
           <p>This seminar examines agroecology as a pathway for food system transformation, analyzing scaling strategies and political dynamics.</p>
           <h3>Scaling Agroecology</h3>
@@ -1753,7 +1753,7 @@ export const agroecologyPrinciples: Module = {
           <h3>Political Agroecology</h3>
           <p>Scholars increasingly emphasize the political dimensions of agroecology - that technical practices alone cannot transform food systems without addressing power relations.</p>
         `,
-        PHD: `
+        [LearningLevel.PHD]: `
           <h2>Agroecology as Transformative Praxis</h2>
           <p>This doctoral seminar examines agroecology as transformative praxis - the unity of theory and practice aimed at food system transformation.</p>
           <h3>Agroecology and Food Sovereignty</h3>
@@ -1788,12 +1788,12 @@ export const agroecologyPrinciples: Module = {
     type: 'simulation',
     description: 'Design a balanced agroecological farming system',
     difficulty: {
-      ELEMENTARY: { lives: 5, timeLimit: null, hints: true },
-      MIDDLE_SCHOOL: { lives: 4, timeLimit: 300, hints: true },
-      HIGH_SCHOOL: { lives: 3, timeLimit: 240, hints: false },
-      UNDERGRADUATE: { lives: 3, timeLimit: 180, hints: false },
-      GRADUATE: { lives: 2, timeLimit: 120, hints: false },
-      PHD: { lives: 1, timeLimit: 90, hints: false }
+      [LearningLevel.ELEMENTARY]: { lives: 5, timeLimit: null, hints: true },
+      [LearningLevel.MIDDLE_SCHOOL]: { lives: 4, timeLimit: 300, hints: true },
+      [LearningLevel.HIGH_SCHOOL]: { lives: 3, timeLimit: 240, hints: false },
+      [LearningLevel.UNDERGRADUATE]: { lives: 3, timeLimit: 180, hints: false },
+      [LearningLevel.GRADUATE]: { lives: 2, timeLimit: 120, hints: false },
+      [LearningLevel.PHD]: { lives: 1, timeLimit: 90, hints: false }
     }
   },
   quiz: {
@@ -1820,28 +1820,28 @@ export const fairTradeSystems: Module = {
   slug: 'fair-trade-systems',
   title: 'Fair Trade Systems',
   description: {
-    ELEMENTARY: 'Learn how buying fair trade helps farmers around the world!',
-    MIDDLE_SCHOOL: 'Discover how fair trade certification ensures farmers get fair prices for their products.',
-    HIGH_SCHOOL: 'Explore the fair trade movement, certification systems, and debates about their effectiveness.',
-    UNDERGRADUATE: 'Analyze fair trade as market-based development, examining impacts, limitations, and alternatives.',
-    GRADUATE: 'Critically examine fair trade through commodity chain analysis and development theory.',
-    PHD: 'Investigate fair trade as ethical consumption and its relationship to systemic trade justice.'
+    [LearningLevel.ELEMENTARY]: 'Learn how buying fair trade helps farmers around the world!',
+    [LearningLevel.MIDDLE_SCHOOL]: 'Discover how fair trade certification ensures farmers get fair prices for their products.',
+    [LearningLevel.HIGH_SCHOOL]: 'Explore the fair trade movement, certification systems, and debates about their effectiveness.',
+    [LearningLevel.UNDERGRADUATE]: 'Analyze fair trade as market-based development, examining impacts, limitations, and alternatives.',
+    [LearningLevel.GRADUATE]: 'Critically examine fair trade through commodity chain analysis and development theory.',
+    [LearningLevel.PHD]: 'Investigate fair trade as ethical consumption and its relationship to systemic trade justice.'
   },
   topic: 'food-sovereignty',
   estimatedMinutes: {
-    ELEMENTARY: 20,
-    MIDDLE_SCHOOL: 30,
-    HIGH_SCHOOL: 45,
-    UNDERGRADUATE: 65,
-    GRADUATE: 90,
-    PHD: 120
+    [LearningLevel.ELEMENTARY]: 20,
+    [LearningLevel.MIDDLE_SCHOOL]: 30,
+    [LearningLevel.HIGH_SCHOOL]: 45,
+    [LearningLevel.UNDERGRADUATE]: 65,
+    [LearningLevel.GRADUATE]: 90,
+    [LearningLevel.PHD]: 120
   },
   lessons: [
     {
       id: 'ft-1',
       title: 'What is Fair Trade?',
       content: {
-        ELEMENTARY: `
+        [LearningLevel.ELEMENTARY]: `
           <h2>🤝 Fair Trade = Fair Pay!</h2>
           <p>When you buy chocolate or bananas, have you thought about who grew them? Fair trade means the farmers who grow our food get paid fairly!</p>
           <h3>How Fair Trade Helps</h3>
@@ -1856,7 +1856,7 @@ export const fairTradeSystems: Module = {
             <p>Fair trade products have special labels. Look for them on chocolate, bananas, coffee, and tea!</p>
           </div>
         `,
-        MIDDLE_SCHOOL: `
+        [LearningLevel.MIDDLE_SCHOOL]: `
           <h2>Understanding Fair Trade</h2>
           <p>Fair trade is a trading partnership that aims to achieve greater equity in international trade by offering better trading conditions to marginalized producers.</p>
           <h3>Fair Trade Principles</h3>
@@ -1876,7 +1876,7 @@ export const fairTradeSystems: Module = {
             <li>Cotton and textiles</li>
           </ul>
         `,
-        HIGH_SCHOOL: `
+        [LearningLevel.HIGH_SCHOOL]: `
           <h2>The Fair Trade Movement</h2>
           <p>Fair trade emerged in the mid-20th century as an alternative approach to conventional international trade, aiming to address inequities between producers in developing countries and consumers in wealthy nations.</p>
           <h3>Fair Trade Organizations</h3>
@@ -1893,7 +1893,7 @@ export const fairTradeSystems: Module = {
             <li>What are alternatives like direct trade?</li>
           </ul>
         `,
-        UNDERGRADUATE: `
+        [LearningLevel.UNDERGRADUATE]: `
           <h2>Fair Trade and Development</h2>
           <p>This module critically examines fair trade as a market-based approach to development, analyzing evidence of impacts and theoretical debates.</p>
           <h3>Impact Evidence</h3>
@@ -1911,7 +1911,7 @@ export const fairTradeSystems: Module = {
             <li><strong>Northern dominance:</strong> Standards set by consuming countries</li>
           </ul>
         `,
-        GRADUATE: `
+        [LearningLevel.GRADUATE]: `
           <h2>Global Value Chains and Fair Trade</h2>
           <p>This seminar examines fair trade through the lens of global value chain analysis, exploring how certification reshapes power relations in commodity networks.</p>
           <h3>Value Chain Analysis</h3>
@@ -1924,7 +1924,7 @@ export const fairTradeSystems: Module = {
           <h3>Alternative Trading Organizations</h3>
           <p>Some organizations pursue more radical trade justice models than mainstream fair trade certification, raising questions about reform vs. transformation.</p>
         `,
-        PHD: `
+        [LearningLevel.PHD]: `
           <h2>Ethical Consumption and Trade Justice</h2>
           <p>This doctoral seminar examines fair trade within broader debates about ethical consumption, moral economy, and the politics of global trade.</p>
           <h3>Governmentality and Ethical Consumption</h3>
@@ -1953,12 +1953,12 @@ export const fairTradeSystems: Module = {
     type: 'simulation',
     description: 'Make trading decisions that impact farmer communities',
     difficulty: {
-      ELEMENTARY: { lives: 5, timeLimit: null, hints: true },
-      MIDDLE_SCHOOL: { lives: 4, timeLimit: 300, hints: true },
-      HIGH_SCHOOL: { lives: 3, timeLimit: 240, hints: false },
-      UNDERGRADUATE: { lives: 3, timeLimit: 180, hints: false },
-      GRADUATE: { lives: 2, timeLimit: 120, hints: false },
-      PHD: { lives: 1, timeLimit: 90, hints: false }
+      [LearningLevel.ELEMENTARY]: { lives: 5, timeLimit: null, hints: true },
+      [LearningLevel.MIDDLE_SCHOOL]: { lives: 4, timeLimit: 300, hints: true },
+      [LearningLevel.HIGH_SCHOOL]: { lives: 3, timeLimit: 240, hints: false },
+      [LearningLevel.UNDERGRADUATE]: { lives: 3, timeLimit: 180, hints: false },
+      [LearningLevel.GRADUATE]: { lives: 2, timeLimit: 120, hints: false },
+      [LearningLevel.PHD]: { lives: 1, timeLimit: 90, hints: false }
     }
   },
   quiz: {
@@ -1985,28 +1985,28 @@ export const foodJusticeEquity: Module = {
   slug: 'food-justice-equity',
   title: 'Food Justice & Equity',
   description: {
-    ELEMENTARY: 'Learn why everyone deserves healthy, yummy food no matter where they live!',
-    MIDDLE_SCHOOL: 'Discover how some communities face unfair barriers to healthy food access.',
-    HIGH_SCHOOL: 'Explore the food justice movement and systemic inequities in food systems.',
-    UNDERGRADUATE: 'Analyze food justice through critical race theory, political economy, and social movement frameworks.',
-    GRADUATE: 'Examine intersections of food, race, class, and place in producing food system inequities.',
-    PHD: 'Investigate food justice as praxis, examining theory-practice relationships in movement building.'
+    [LearningLevel.ELEMENTARY]: 'Learn why everyone deserves healthy, yummy food no matter where they live!',
+    [LearningLevel.MIDDLE_SCHOOL]: 'Discover how some communities face unfair barriers to healthy food access.',
+    [LearningLevel.HIGH_SCHOOL]: 'Explore the food justice movement and systemic inequities in food systems.',
+    [LearningLevel.UNDERGRADUATE]: 'Analyze food justice through critical race theory, political economy, and social movement frameworks.',
+    [LearningLevel.GRADUATE]: 'Examine intersections of food, race, class, and place in producing food system inequities.',
+    [LearningLevel.PHD]: 'Investigate food justice as praxis, examining theory-practice relationships in movement building.'
   },
   topic: 'food-sovereignty',
   estimatedMinutes: {
-    ELEMENTARY: 20,
-    MIDDLE_SCHOOL: 35,
-    HIGH_SCHOOL: 50,
-    UNDERGRADUATE: 70,
-    GRADUATE: 95,
-    PHD: 125
+    [LearningLevel.ELEMENTARY]: 20,
+    [LearningLevel.MIDDLE_SCHOOL]: 35,
+    [LearningLevel.HIGH_SCHOOL]: 50,
+    [LearningLevel.UNDERGRADUATE]: 70,
+    [LearningLevel.GRADUATE]: 95,
+    [LearningLevel.PHD]: 125
   },
   lessons: [
     {
       id: 'fj-1',
       title: 'Food for Everyone',
       content: {
-        ELEMENTARY: `
+        [LearningLevel.ELEMENTARY]: `
           <h2>🍎 Healthy Food for All!</h2>
           <p>Everyone needs healthy food to grow strong, but not everyone can easily get it. Let's learn why this happens and how we can help!</p>
           <h3>What's Not Fair?</h3>
@@ -2026,7 +2026,7 @@ export const foodJusticeEquity: Module = {
             </ul>
           </div>
         `,
-        MIDDLE_SCHOOL: `
+        [LearningLevel.MIDDLE_SCHOOL]: `
           <h2>Understanding Food Injustice</h2>
           <p>Food justice is the idea that everyone, regardless of race, income, or location, deserves access to healthy, affordable, culturally appropriate food.</p>
           <h3>Food Deserts and Food Apartheid</h3>
@@ -2043,7 +2043,7 @@ export const foodJusticeEquity: Module = {
             <li>Recent immigrants</li>
           </ul>
         `,
-        HIGH_SCHOOL: `
+        [LearningLevel.HIGH_SCHOOL]: `
           <h2>The Food Justice Movement</h2>
           <p>Food justice emerged as a movement addressing the root causes of food inequity, centering the leadership of communities most affected by food system injustices.</p>
           <h3>Key Principles</h3>
@@ -2056,7 +2056,7 @@ export const foodJusticeEquity: Module = {
           <h3>Food Justice vs. Food Security</h3>
           <p>Food security focuses on access and availability. Food justice asks: Why don't some communities have access? Who decides what food is available? Who benefits from the current system?</p>
         `,
-        UNDERGRADUATE: `
+        [LearningLevel.UNDERGRADUATE]: `
           <h2>Critical Food Justice Studies</h2>
           <p>This module examines food justice through theoretical frameworks that illuminate how race, class, and place intersect in food systems.</p>
           <h3>Theoretical Frameworks</h3>
@@ -2069,7 +2069,7 @@ export const foodJusticeEquity: Module = {
           <h3>Historical Context</h3>
           <p>Current food inequities reflect historical processes including redlining, urban renewal, highway construction, supermarket redlining, and ongoing disinvestment in communities of color.</p>
         `,
-        GRADUATE: `
+        [LearningLevel.GRADUATE]: `
           <h2>Race, Space, and Food Systems</h2>
           <p>This seminar examines how racial capitalism produces and reproduces food system inequities, with attention to space, place, and scale.</p>
           <h3>Racialized Geographies of Food</h3>
@@ -2082,7 +2082,7 @@ export const foodJusticeEquity: Module = {
           <h3>Critiques Within Food Justice</h3>
           <p>Scholars critique how some food justice work may reproduce inequities by centering white leadership, imposing external solutions, or failing to address structural causes.</p>
         `,
-        PHD: `
+        [LearningLevel.PHD]: `
           <h2>Food Justice as Praxis</h2>
           <p>This doctoral seminar examines food justice as praxis - the unity of theory and practice - exploring how movements theorize and enact food system transformation.</p>
           <h3>Movement Building</h3>
@@ -2111,12 +2111,12 @@ export const foodJusticeEquity: Module = {
     type: 'simulation',
     description: 'Build community power to address food inequities',
     difficulty: {
-      ELEMENTARY: { lives: 5, timeLimit: null, hints: true },
-      MIDDLE_SCHOOL: { lives: 4, timeLimit: 300, hints: true },
-      HIGH_SCHOOL: { lives: 3, timeLimit: 240, hints: false },
-      UNDERGRADUATE: { lives: 3, timeLimit: 180, hints: false },
-      GRADUATE: { lives: 2, timeLimit: 120, hints: false },
-      PHD: { lives: 1, timeLimit: 90, hints: false }
+      [LearningLevel.ELEMENTARY]: { lives: 5, timeLimit: null, hints: true },
+      [LearningLevel.MIDDLE_SCHOOL]: { lives: 4, timeLimit: 300, hints: true },
+      [LearningLevel.HIGH_SCHOOL]: { lives: 3, timeLimit: 240, hints: false },
+      [LearningLevel.UNDERGRADUATE]: { lives: 3, timeLimit: 180, hints: false },
+      [LearningLevel.GRADUATE]: { lives: 2, timeLimit: 120, hints: false },
+      [LearningLevel.PHD]: { lives: 1, timeLimit: 90, hints: false }
     }
   },
   quiz: {
@@ -2143,28 +2143,28 @@ export const seasonalNutritionalEating: Module = {
   slug: 'seasonal-nutritional-eating',
   title: 'Seasonal & Nutritional Eating',
   description: {
-    ELEMENTARY: 'Discover which yummy foods grow in each season!',
-    MIDDLE_SCHOOL: 'Learn about eating with the seasons and the nutrition in whole foods.',
-    HIGH_SCHOOL: 'Explore the benefits of seasonal eating and whole food nutrition for health and environment.',
-    UNDERGRADUATE: 'Analyze seasonal foodways, nutritional ecology, and the politics of dietary guidance.',
-    GRADUATE: 'Examine the nutrition transition, dietary patterns, and food culture through anthropological lenses.',
-    PHD: 'Investigate food, nutrition, and health as biocultural phenomena shaped by political economy.'
+    [LearningLevel.ELEMENTARY]: 'Discover which yummy foods grow in each season!',
+    [LearningLevel.MIDDLE_SCHOOL]: 'Learn about eating with the seasons and the nutrition in whole foods.',
+    [LearningLevel.HIGH_SCHOOL]: 'Explore the benefits of seasonal eating and whole food nutrition for health and environment.',
+    [LearningLevel.UNDERGRADUATE]: 'Analyze seasonal foodways, nutritional ecology, and the politics of dietary guidance.',
+    [LearningLevel.GRADUATE]: 'Examine the nutrition transition, dietary patterns, and food culture through anthropological lenses.',
+    [LearningLevel.PHD]: 'Investigate food, nutrition, and health as biocultural phenomena shaped by political economy.'
   },
   topic: 'food-sovereignty',
   estimatedMinutes: {
-    ELEMENTARY: 20,
-    MIDDLE_SCHOOL: 30,
-    HIGH_SCHOOL: 45,
-    UNDERGRADUATE: 65,
-    GRADUATE: 90,
-    PHD: 120
+    [LearningLevel.ELEMENTARY]: 20,
+    [LearningLevel.MIDDLE_SCHOOL]: 30,
+    [LearningLevel.HIGH_SCHOOL]: 45,
+    [LearningLevel.UNDERGRADUATE]: 65,
+    [LearningLevel.GRADUATE]: 90,
+    [LearningLevel.PHD]: 120
   },
   lessons: [
     {
       id: 'sne-1',
       title: 'Eating with the Seasons',
       content: {
-        ELEMENTARY: `
+        [LearningLevel.ELEMENTARY]: `
           <h2>🍂 What's Growing Now?</h2>
           <p>Different foods grow at different times of year! Eating foods when they're in season means they taste the best!</p>
           <h3>Seasons and Foods</h3>
@@ -2179,7 +2179,7 @@ export const seasonalNutritionalEating: Module = {
             <p>Visit a farmers market and ask what's in season right now!</p>
           </div>
         `,
-        MIDDLE_SCHOOL: `
+        [LearningLevel.MIDDLE_SCHOOL]: `
           <h2>Why Eat Seasonally?</h2>
           <p>For most of human history, people ate what was available locally and in season. Today, we can buy almost any food year-round, but there are good reasons to eat seasonally.</p>
           <h3>Benefits of Seasonal Eating</h3>
@@ -2191,7 +2191,7 @@ export const seasonalNutritionalEating: Module = {
             <li><strong>Variety:</strong> Eating seasonally adds variety to your diet</li>
           </ul>
         `,
-        HIGH_SCHOOL: `
+        [LearningLevel.HIGH_SCHOOL]: `
           <h2>Seasonal Eating and Nutrition</h2>
           <p>Understanding seasonal eating connects to broader nutrition principles and food system sustainability.</p>
           <h3>Nutritional Benefits</h3>
@@ -2207,7 +2207,7 @@ export const seasonalNutritionalEating: Module = {
             <li>Eating with seasons supports crop rotation</li>
           </ul>
         `,
-        UNDERGRADUATE: `
+        [LearningLevel.UNDERGRADUATE]: `
           <h2>Nutritional Ecology and Food Culture</h2>
           <p>This module examines seasonal eating through ecological and cultural lenses, exploring how human diets co-evolved with local food environments.</p>
           <h3>Nutritional Ecology</h3>
@@ -2221,7 +2221,7 @@ export const seasonalNutritionalEating: Module = {
           <h3>Politics of Nutrition Science</h3>
           <p>Critical nutrition scholars examine how nutrition science is shaped by industry funding, reductionist paradigms, and cultural biases.</p>
         `,
-        GRADUATE: `
+        [LearningLevel.GRADUATE]: `
           <h2>Food, Diet, and Health Transitions</h2>
           <p>This seminar examines changing dietary patterns through the lens of the nutrition transition, exploring relationships between food systems, diets, and health outcomes.</p>
           <h3>The Nutrition Transition</h3>
@@ -2229,7 +2229,7 @@ export const seasonalNutritionalEating: Module = {
           <h3>Traditional Diets and Health</h3>
           <p>Research on traditional diets (Mediterranean, Okinawan, etc.) suggests health benefits, but translating these findings is complicated by cultural, social, and economic factors.</p>
         `,
-        PHD: `
+        [LearningLevel.PHD]: `
           <h2>Critical Nutrition Studies</h2>
           <p>This doctoral seminar examines nutrition as a biocultural phenomenon, analyzing how diet-health relationships are mediated by political economy, culture, and power.</p>
           <h3>Beyond Nutritionism</h3>
@@ -2259,12 +2259,12 @@ export const seasonalNutritionalEating: Module = {
     type: 'matching',
     description: 'Match foods to their peak seasons',
     difficulty: {
-      ELEMENTARY: { lives: 5, timeLimit: null, hints: true },
-      MIDDLE_SCHOOL: { lives: 4, timeLimit: 300, hints: true },
-      HIGH_SCHOOL: { lives: 3, timeLimit: 240, hints: false },
-      UNDERGRADUATE: { lives: 3, timeLimit: 180, hints: false },
-      GRADUATE: { lives: 2, timeLimit: 120, hints: false },
-      PHD: { lives: 1, timeLimit: 90, hints: false }
+      [LearningLevel.ELEMENTARY]: { lives: 5, timeLimit: null, hints: true },
+      [LearningLevel.MIDDLE_SCHOOL]: { lives: 4, timeLimit: 300, hints: true },
+      [LearningLevel.HIGH_SCHOOL]: { lives: 3, timeLimit: 240, hints: false },
+      [LearningLevel.UNDERGRADUATE]: { lives: 3, timeLimit: 180, hints: false },
+      [LearningLevel.GRADUATE]: { lives: 2, timeLimit: 120, hints: false },
+      [LearningLevel.PHD]: { lives: 1, timeLimit: 90, hints: false }
     }
   },
   quiz: {
@@ -2291,28 +2291,28 @@ export const traditionalFarmingMethods: Module = {
   slug: 'traditional-farming-methods',
   title: 'Traditional Farming Methods',
   description: {
-    ELEMENTARY: 'Learn about how people farmed before tractors and technology!',
-    MIDDLE_SCHOOL: 'Discover traditional farming techniques that have fed people for thousands of years.',
-    HIGH_SCHOOL: 'Explore traditional agricultural systems and their relevance to sustainable farming today.',
-    UNDERGRADUATE: 'Analyze traditional ecological knowledge in agriculture and its integration with modern science.',
-    GRADUATE: 'Examine traditional farming through ethnoecology and the politics of knowledge.',
-    PHD: 'Investigate traditional agriculture as biocultural heritage and site of epistemic struggle.'
+    [LearningLevel.ELEMENTARY]: 'Learn about how people farmed before tractors and technology!',
+    [LearningLevel.MIDDLE_SCHOOL]: 'Discover traditional farming techniques that have fed people for thousands of years.',
+    [LearningLevel.HIGH_SCHOOL]: 'Explore traditional agricultural systems and their relevance to sustainable farming today.',
+    [LearningLevel.UNDERGRADUATE]: 'Analyze traditional ecological knowledge in agriculture and its integration with modern science.',
+    [LearningLevel.GRADUATE]: 'Examine traditional farming through ethnoecology and the politics of knowledge.',
+    [LearningLevel.PHD]: 'Investigate traditional agriculture as biocultural heritage and site of epistemic struggle.'
   },
   topic: 'food-sovereignty',
   estimatedMinutes: {
-    ELEMENTARY: 25,
-    MIDDLE_SCHOOL: 35,
-    HIGH_SCHOOL: 50,
-    UNDERGRADUATE: 70,
-    GRADUATE: 95,
-    PHD: 125
+    [LearningLevel.ELEMENTARY]: 25,
+    [LearningLevel.MIDDLE_SCHOOL]: 35,
+    [LearningLevel.HIGH_SCHOOL]: 50,
+    [LearningLevel.UNDERGRADUATE]: 70,
+    [LearningLevel.GRADUATE]: 95,
+    [LearningLevel.PHD]: 125
   },
   lessons: [
     {
       id: 'tfm-1',
       title: 'Farming Through History',
       content: {
-        ELEMENTARY: `
+        [LearningLevel.ELEMENTARY]: `
           <h2>🌾 How People Farmed Long Ago</h2>
           <p>Before there were tractors and big machines, people used clever ways to grow food. Many of these old ways are still used today!</p>
           <h3>Old Farming Tricks That Work</h3>
@@ -2323,7 +2323,7 @@ export const traditionalFarmingMethods: Module = {
             <li>💩 <strong>Compost:</strong> Using old plants and animal waste to feed the soil</li>
           </ul>
         `,
-        MIDDLE_SCHOOL: `
+        [LearningLevel.MIDDLE_SCHOOL]: `
           <h2>Traditional Agricultural Systems</h2>
           <p>Traditional farming systems developed over thousands of years, representing accumulated wisdom about growing food sustainably in specific environments.</p>
           <h3>Examples of Traditional Systems</h3>
@@ -2342,7 +2342,7 @@ export const traditionalFarmingMethods: Module = {
             <li>Provide food security without expensive inputs</li>
           </ul>
         `,
-        HIGH_SCHOOL: `
+        [LearningLevel.HIGH_SCHOOL]: `
           <h2>Traditional Ecological Knowledge in Agriculture</h2>
           <p>Traditional ecological knowledge (TEK) refers to the knowledge, practices, and beliefs about the environment developed by indigenous and local peoples over generations.</p>
           <h3>Characteristics of Traditional Farming Systems</h3>
@@ -2356,7 +2356,7 @@ export const traditionalFarmingMethods: Module = {
           <h3>Traditional vs. Industrial</h3>
           <p>Industrial agriculture maximizes short-term yields but often degrades soil, water, and biodiversity. Traditional systems often demonstrate greater long-term sustainability.</p>
         `,
-        UNDERGRADUATE: `
+        [LearningLevel.UNDERGRADUATE]: `
           <h2>Agrobiodiversity and Traditional Knowledge</h2>
           <p>This module examines how traditional farming systems maintain agrobiodiversity and the challenges of integrating traditional and scientific knowledge.</p>
           <h3>In Situ Conservation</h3>
@@ -2369,7 +2369,7 @@ export const traditionalFarmingMethods: Module = {
             <li>Risks of extraction and appropriation</li>
           </ul>
         `,
-        GRADUATE: `
+        [LearningLevel.GRADUATE]: `
           <h2>Ethnoecology and Agricultural Knowledge</h2>
           <p>This seminar examines traditional agriculture through ethnoecological frameworks, analyzing how cultures perceive, classify, and interact with their environments.</p>
           <h3>Ethnoecological Approaches</h3>
@@ -2382,7 +2382,7 @@ export const traditionalFarmingMethods: Module = {
           <h3>Politics of Traditional Knowledge</h3>
           <p>Traditional knowledge is increasingly recognized in policy (CBD, FAO) but recognition raises questions about definition, ownership, and instrumentalization.</p>
         `,
-        PHD: `
+        [LearningLevel.PHD]: `
           <h2>Traditional Agriculture as Biocultural Heritage</h2>
           <p>This doctoral seminar examines traditional agricultural systems as biocultural heritage, exploring their conservation, transformation, and politicization.</p>
           <h3>Biocultural Diversity</h3>
@@ -2411,12 +2411,12 @@ export const traditionalFarmingMethods: Module = {
     type: 'simulation',
     description: 'Apply traditional methods to grow food sustainably',
     difficulty: {
-      ELEMENTARY: { lives: 5, timeLimit: null, hints: true },
-      MIDDLE_SCHOOL: { lives: 4, timeLimit: 300, hints: true },
-      HIGH_SCHOOL: { lives: 3, timeLimit: 240, hints: false },
-      UNDERGRADUATE: { lives: 3, timeLimit: 180, hints: false },
-      GRADUATE: { lives: 2, timeLimit: 120, hints: false },
-      PHD: { lives: 1, timeLimit: 90, hints: false }
+      [LearningLevel.ELEMENTARY]: { lives: 5, timeLimit: null, hints: true },
+      [LearningLevel.MIDDLE_SCHOOL]: { lives: 4, timeLimit: 300, hints: true },
+      [LearningLevel.HIGH_SCHOOL]: { lives: 3, timeLimit: 240, hints: false },
+      [LearningLevel.UNDERGRADUATE]: { lives: 3, timeLimit: 180, hints: false },
+      [LearningLevel.GRADUATE]: { lives: 2, timeLimit: 120, hints: false },
+      [LearningLevel.PHD]: { lives: 1, timeLimit: 90, hints: false }
     }
   },
   quiz: {
@@ -2443,28 +2443,28 @@ export const organicFarmingPractices: Module = {
   slug: 'organic-farming-practices',
   title: 'Organic Farming Practices',
   description: {
-    ELEMENTARY: 'Learn how organic farmers grow food without harmful chemicals!',
-    MIDDLE_SCHOOL: 'Discover the principles and practices of organic agriculture.',
-    HIGH_SCHOOL: 'Explore organic certification, farming methods, and debates about organic agriculture.',
-    UNDERGRADUATE: 'Analyze organic agriculture as alternative farming system, examining standards, impacts, and limitations.',
-    GRADUATE: 'Critically examine organic agriculture through political economy and environmental sociology.',
-    PHD: 'Investigate the conventionalization of organic and tensions in the organic movement.'
+    [LearningLevel.ELEMENTARY]: 'Learn how organic farmers grow food without harmful chemicals!',
+    [LearningLevel.MIDDLE_SCHOOL]: 'Discover the principles and practices of organic agriculture.',
+    [LearningLevel.HIGH_SCHOOL]: 'Explore organic certification, farming methods, and debates about organic agriculture.',
+    [LearningLevel.UNDERGRADUATE]: 'Analyze organic agriculture as alternative farming system, examining standards, impacts, and limitations.',
+    [LearningLevel.GRADUATE]: 'Critically examine organic agriculture through political economy and environmental sociology.',
+    [LearningLevel.PHD]: 'Investigate the conventionalization of organic and tensions in the organic movement.'
   },
   topic: 'food-sovereignty',
   estimatedMinutes: {
-    ELEMENTARY: 20,
-    MIDDLE_SCHOOL: 35,
-    HIGH_SCHOOL: 50,
-    UNDERGRADUATE: 70,
-    GRADUATE: 95,
-    PHD: 125
+    [LearningLevel.ELEMENTARY]: 20,
+    [LearningLevel.MIDDLE_SCHOOL]: 35,
+    [LearningLevel.HIGH_SCHOOL]: 50,
+    [LearningLevel.UNDERGRADUATE]: 70,
+    [LearningLevel.GRADUATE]: 95,
+    [LearningLevel.PHD]: 125
   },
   lessons: [
     {
       id: 'ofp-1',
       title: 'What is Organic Farming?',
       content: {
-        ELEMENTARY: `
+        [LearningLevel.ELEMENTARY]: `
           <h2>🌿 Farming the Natural Way!</h2>
           <p>Organic farmers grow food without using certain chemicals. They use nature's own ways to keep plants healthy!</p>
           <h3>How Organic Farmers Work</h3>
@@ -2480,7 +2480,7 @@ export const organicFarmingPractices: Module = {
             <p>Look for the organic label at the store. It often has a green and white circle!</p>
           </div>
         `,
-        MIDDLE_SCHOOL: `
+        [LearningLevel.MIDDLE_SCHOOL]: `
           <h2>Organic Agriculture Basics</h2>
           <p>Organic farming is a method of crop and livestock production that avoids synthetic chemicals and emphasizes ecological processes.</p>
           <h3>What Makes Farming Organic?</h3>
@@ -2494,7 +2494,7 @@ export const organicFarmingPractices: Module = {
           <h3>Organic Certification</h3>
           <p>In the US, the USDA certifies organic products. Farmers must follow organic practices for 3 years before certification.</p>
         `,
-        HIGH_SCHOOL: `
+        [LearningLevel.HIGH_SCHOOL]: `
           <h2>Organic Agriculture: Principles and Practice</h2>
           <p>Organic agriculture is based on principles of health, ecology, fairness, and care, as defined by IFOAM (International Federation of Organic Agriculture Movements).</p>
           <h3>The Four Principles of Organic Agriculture</h3>
@@ -2512,7 +2512,7 @@ export const organicFarmingPractices: Module = {
             <li>What about organic food imported from far away?</li>
           </ul>
         `,
-        UNDERGRADUATE: `
+        [LearningLevel.UNDERGRADUATE]: `
           <h2>Organic Agriculture: Systems Analysis</h2>
           <p>This module analyzes organic agriculture as an alternative production system, examining environmental impacts, economic viability, and systemic limitations.</p>
           <h3>Environmental Impacts</h3>
@@ -2531,7 +2531,7 @@ export const organicFarmingPractices: Module = {
             <li>Corporate entry changes market dynamics</li>
           </ul>
         `,
-        GRADUATE: `
+        [LearningLevel.GRADUATE]: `
           <h2>Political Economy of Organic Agriculture</h2>
           <p>This seminar examines organic agriculture through political economy lenses, analyzing the transformation of organic from social movement to market segment.</p>
           <h3>Conventionalization Thesis</h3>
@@ -2539,7 +2539,7 @@ export const organicFarmingPractices: Module = {
           <h3>Beyond Organic</h3>
           <p>Some farmers and movements reject organic certification, pursuing agroecology, regenerative agriculture, or food sovereignty frameworks as more transformative alternatives.</p>
         `,
-        PHD: `
+        [LearningLevel.PHD]: `
           <h2>Organic Agriculture and Alternative Food Systems</h2>
           <p>This doctoral seminar situates organic within broader debates about alternative food systems, examining contradictions between market-based and movement-based approaches.</p>
           <h3>Organic as Contested Terrain</h3>
@@ -2569,12 +2569,12 @@ export const organicFarmingPractices: Module = {
     type: 'simulation',
     description: 'Manage an organic farm through pest and fertility challenges',
     difficulty: {
-      ELEMENTARY: { lives: 5, timeLimit: null, hints: true },
-      MIDDLE_SCHOOL: { lives: 4, timeLimit: 300, hints: true },
-      HIGH_SCHOOL: { lives: 3, timeLimit: 240, hints: false },
-      UNDERGRADUATE: { lives: 3, timeLimit: 180, hints: false },
-      GRADUATE: { lives: 2, timeLimit: 120, hints: false },
-      PHD: { lives: 1, timeLimit: 90, hints: false }
+      [LearningLevel.ELEMENTARY]: { lives: 5, timeLimit: null, hints: true },
+      [LearningLevel.MIDDLE_SCHOOL]: { lives: 4, timeLimit: 300, hints: true },
+      [LearningLevel.HIGH_SCHOOL]: { lives: 3, timeLimit: 240, hints: false },
+      [LearningLevel.UNDERGRADUATE]: { lives: 3, timeLimit: 180, hints: false },
+      [LearningLevel.GRADUATE]: { lives: 2, timeLimit: 120, hints: false },
+      [LearningLevel.PHD]: { lives: 1, timeLimit: 90, hints: false }
     }
   },
   quiz: {
@@ -2601,36 +2601,36 @@ export const smallScaleLivestock: Module = {
   slug: 'small-scale-livestock',
   title: 'Small-Scale Livestock',
   description: {
-    ELEMENTARY: 'Learn how farm animals help provide food and help gardens grow!',
-    MIDDLE_SCHOOL: 'Discover how raising chickens, goats, and other animals fits into sustainable food systems.',
-    HIGH_SCHOOL: 'Explore small-scale animal husbandry, animal welfare, and integrated farming systems.',
-    UNDERGRADUATE: 'Analyze livestock in sustainable agriculture, examining ecological roles and ethical dimensions.',
-    GRADUATE: 'Examine livestock production through agroecological and political ecology frameworks.',
-    PHD: 'Investigate human-animal relations in food systems and debates over livestock sustainability.'
+    [LearningLevel.ELEMENTARY]: 'Learn how farm animals help provide food and help gardens grow!',
+    [LearningLevel.MIDDLE_SCHOOL]: 'Discover how raising chickens, goats, and other animals fits into sustainable food systems.',
+    [LearningLevel.HIGH_SCHOOL]: 'Explore small-scale animal husbandry, animal welfare, and integrated farming systems.',
+    [LearningLevel.UNDERGRADUATE]: 'Analyze livestock in sustainable agriculture, examining ecological roles and ethical dimensions.',
+    [LearningLevel.GRADUATE]: 'Examine livestock production through agroecological and political ecology frameworks.',
+    [LearningLevel.PHD]: 'Investigate human-animal relations in food systems and debates over livestock sustainability.'
   },
   topic: 'food-sovereignty',
   estimatedMinutes: {
-    ELEMENTARY: 25,
-    MIDDLE_SCHOOL: 35,
-    HIGH_SCHOOL: 50,
-    UNDERGRADUATE: 70,
-    GRADUATE: 95,
-    PHD: 125
+    [LearningLevel.ELEMENTARY]: 25,
+    [LearningLevel.MIDDLE_SCHOOL]: 35,
+    [LearningLevel.HIGH_SCHOOL]: 50,
+    [LearningLevel.UNDERGRADUATE]: 70,
+    [LearningLevel.GRADUATE]: 95,
+    [LearningLevel.PHD]: 125
   },
   lessons: [{
     id: 'ssl-1',
     title: 'Animals on the Farm',
     content: {
-      ELEMENTARY: '<h2>Farm Animal Friends!</h2><p>Farm animals help farmers grow food. Chickens give eggs, goats give milk, and their manure helps gardens grow!</p>',
-      MIDDLE_SCHOOL: '<h2>Small-Scale Animal Husbandry</h2><p>Raising animals on a small scale provides food while using fewer resources than industrial operations. Animals provide eggs, milk, meat, and manure for gardens.</p>',
-      HIGH_SCHOOL: '<h2>Integrated Livestock Systems</h2><p>In sustainable agriculture, livestock integrate with crops through rotational grazing, silvopasture, and chicken tractors to create resilient farming systems.</p>',
-      UNDERGRADUATE: '<h2>Livestock in Agroecosystems</h2><p>Animals provide nutrient cycling, landscape management, waste valorization, and traction. Sustainability depends on production system choices.</p>',
-      GRADUATE: '<h2>Political Ecology of Livestock</h2><p>The rise of CAFOs transformed human-animal relations with implications for rural communities, environmental justice, and public health.</p>',
-      PHD: '<h2>Human-Animal Relations</h2><p>Critical animal studies challenge instrumental views, proposing relational approaches to agriculture\'s multispecies entanglements.</p>'
+      [LearningLevel.ELEMENTARY]: '<h2>Farm Animal Friends!</h2><p>Farm animals help farmers grow food. Chickens give eggs, goats give milk, and their manure helps gardens grow!</p>',
+      [LearningLevel.MIDDLE_SCHOOL]: '<h2>Small-Scale Animal Husbandry</h2><p>Raising animals on a small scale provides food while using fewer resources than industrial operations. Animals provide eggs, milk, meat, and manure for gardens.</p>',
+      [LearningLevel.HIGH_SCHOOL]: '<h2>Integrated Livestock Systems</h2><p>In sustainable agriculture, livestock integrate with crops through rotational grazing, silvopasture, and chicken tractors to create resilient farming systems.</p>',
+      [LearningLevel.UNDERGRADUATE]: '<h2>Livestock in Agroecosystems</h2><p>Animals provide nutrient cycling, landscape management, waste valorization, and traction. Sustainability depends on production system choices.</p>',
+      [LearningLevel.GRADUATE]: '<h2>Political Ecology of Livestock</h2><p>The rise of CAFOs transformed human-animal relations with implications for rural communities, environmental justice, and public health.</p>',
+      [LearningLevel.PHD]: '<h2>Human-Animal Relations</h2><p>Critical animal studies challenge instrumental views, proposing relational approaches to agriculture\'s multispecies entanglements.</p>'
     }
   }],
   activities: [{ id: 'ssl-act-1', title: 'Design an Integrated Farm', type: 'SIMULATION', description: 'Plan how livestock integrate with crops', estimatedMinutes: 25, interactiveContent: {} }],
-  game: { id: 'ssl-game', title: 'Farm Manager', type: 'simulation', description: 'Balance animal needs with farm productivity', difficulty: { ELEMENTARY: { lives: 5, timeLimit: null, hints: true }, MIDDLE_SCHOOL: { lives: 4, timeLimit: 300, hints: true }, HIGH_SCHOOL: { lives: 3, timeLimit: 240, hints: false }, UNDERGRADUATE: { lives: 3, timeLimit: 180, hints: false }, GRADUATE: { lives: 2, timeLimit: 120, hints: false }, PHD: { lives: 1, timeLimit: 90, hints: false } } },
+  game: { id: 'ssl-game', title: 'Farm Manager', type: 'simulation', description: 'Balance animal needs with farm productivity', difficulty: { [LearningLevel.ELEMENTARY]: { lives: 5, timeLimit: null, hints: true }, [LearningLevel.MIDDLE_SCHOOL]: { lives: 4, timeLimit: 300, hints: true }, [LearningLevel.HIGH_SCHOOL]: { lives: 3, timeLimit: 240, hints: false }, [LearningLevel.UNDERGRADUATE]: { lives: 3, timeLimit: 180, hints: false }, [LearningLevel.GRADUATE]: { lives: 2, timeLimit: 120, hints: false }, [LearningLevel.PHD]: { lives: 1, timeLimit: 90, hints: false } } },
   quiz: { questions: [{ id: 'ssl-q1', question: 'What is a chicken tractor?', options: ['A tractor shaped like a chicken', 'A mobile coop that prepares garden beds', 'A machine for harvesting', 'A chicken-powered vehicle'], correctAnswer: 1, explanation: 'A chicken tractor is a mobile coop. Chickens scratch, eat pests, and deposit manure, preparing beds for planting.', difficulty: LearningLevel.MIDDLE_SCHOOL }] }
 }
 
@@ -2639,36 +2639,36 @@ export const beekeepingPollinators: Module = {
   slug: 'beekeeping-pollinators',
   title: 'Beekeeping & Pollinators',
   description: {
-    ELEMENTARY: 'Learn about amazing bees and how they help our food grow!',
-    MIDDLE_SCHOOL: 'Discover how bees and other pollinators are essential for food production.',
-    HIGH_SCHOOL: 'Explore beekeeping basics, pollinator ecology, and threats to pollinator populations.',
-    UNDERGRADUATE: 'Analyze pollinator ecology, ecosystem services valuation, and conservation strategies.',
-    GRADUATE: 'Examine pollinator decline through political ecology and science-policy interfaces.',
-    PHD: 'Investigate pollinator-human relations as multispecies assemblages.'
+    [LearningLevel.ELEMENTARY]: 'Learn about amazing bees and how they help our food grow!',
+    [LearningLevel.MIDDLE_SCHOOL]: 'Discover how bees and other pollinators are essential for food production.',
+    [LearningLevel.HIGH_SCHOOL]: 'Explore beekeeping basics, pollinator ecology, and threats to pollinator populations.',
+    [LearningLevel.UNDERGRADUATE]: 'Analyze pollinator ecology, ecosystem services valuation, and conservation strategies.',
+    [LearningLevel.GRADUATE]: 'Examine pollinator decline through political ecology and science-policy interfaces.',
+    [LearningLevel.PHD]: 'Investigate pollinator-human relations as multispecies assemblages.'
   },
   topic: 'food-sovereignty',
   estimatedMinutes: {
-    ELEMENTARY: 25,
-    MIDDLE_SCHOOL: 35,
-    HIGH_SCHOOL: 50,
-    UNDERGRADUATE: 70,
-    GRADUATE: 95,
-    PHD: 125
+    [LearningLevel.ELEMENTARY]: 25,
+    [LearningLevel.MIDDLE_SCHOOL]: 35,
+    [LearningLevel.HIGH_SCHOOL]: 50,
+    [LearningLevel.UNDERGRADUATE]: 70,
+    [LearningLevel.GRADUATE]: 95,
+    [LearningLevel.PHD]: 125
   },
   lessons: [{
     id: 'bp-1',
     title: 'The World of Bees',
     content: {
-      ELEMENTARY: '<h2>Busy Bees!</h2><p>Bees visit flowers, carry pollen, and help plants make fruits and vegetables. Without bees, we wouldn\'t have many of our favorite foods!</p>',
-      MIDDLE_SCHOOL: '<h2>Pollinators and Food</h2><p>About 75% of crop species benefit from animal pollination. Pollinators include bees, butterflies, birds, and bats.</p>',
-      HIGH_SCHOOL: '<h2>Beekeeping and Conservation</h2><p>Beekeeping provides honey while supporting pollination. Both managed and wild pollinators face threats from pesticides, habitat loss, and disease.</p>',
-      UNDERGRADUATE: '<h2>Ecosystem Services</h2><p>Pollination\'s estimated global value is $235-577 billion annually. Conservation strategies include habitat restoration and pesticide regulation.</p>',
-      GRADUATE: '<h2>Pollinator Decline Politics</h2><p>Causes remain contested - pesticide industry, environmentalists, and scientists emphasize different factors. Policy responses range from bans to habitat programs.</p>',
-      PHD: '<h2>Multispecies Approaches</h2><p>Moving beyond ecosystem services, we examine pollinators as agents in multispecies worlds and subjects of biopolitical governance.</p>'
+      [LearningLevel.ELEMENTARY]: '<h2>Busy Bees!</h2><p>Bees visit flowers, carry pollen, and help plants make fruits and vegetables. Without bees, we wouldn\'t have many of our favorite foods!</p>',
+      [LearningLevel.MIDDLE_SCHOOL]: '<h2>Pollinators and Food</h2><p>About 75% of crop species benefit from animal pollination. Pollinators include bees, butterflies, birds, and bats.</p>',
+      [LearningLevel.HIGH_SCHOOL]: '<h2>Beekeeping and Conservation</h2><p>Beekeeping provides honey while supporting pollination. Both managed and wild pollinators face threats from pesticides, habitat loss, and disease.</p>',
+      [LearningLevel.UNDERGRADUATE]: '<h2>Ecosystem Services</h2><p>Pollination\'s estimated global value is $235-577 billion annually. Conservation strategies include habitat restoration and pesticide regulation.</p>',
+      [LearningLevel.GRADUATE]: '<h2>Pollinator Decline Politics</h2><p>Causes remain contested - pesticide industry, environmentalists, and scientists emphasize different factors. Policy responses range from bans to habitat programs.</p>',
+      [LearningLevel.PHD]: '<h2>Multispecies Approaches</h2><p>Moving beyond ecosystem services, we examine pollinators as agents in multispecies worlds and subjects of biopolitical governance.</p>'
     }
   }],
   activities: [{ id: 'bp-act-1', title: 'Design a Pollinator Garden', type: 'SIMULATION', description: 'Plan a garden supporting pollinators year-round', estimatedMinutes: 20, interactiveContent: {} }],
-  game: { id: 'bp-game', title: 'Bee Colony Simulator', type: 'simulation', description: 'Manage a bee colony through seasons', difficulty: { ELEMENTARY: { lives: 5, timeLimit: null, hints: true }, MIDDLE_SCHOOL: { lives: 4, timeLimit: 300, hints: true }, HIGH_SCHOOL: { lives: 3, timeLimit: 240, hints: false }, UNDERGRADUATE: { lives: 3, timeLimit: 180, hints: false }, GRADUATE: { lives: 2, timeLimit: 120, hints: false }, PHD: { lives: 1, timeLimit: 90, hints: false } } },
+  game: { id: 'bp-game', title: 'Bee Colony Simulator', type: 'simulation', description: 'Manage a bee colony through seasons', difficulty: { [LearningLevel.ELEMENTARY]: { lives: 5, timeLimit: null, hints: true }, [LearningLevel.MIDDLE_SCHOOL]: { lives: 4, timeLimit: 300, hints: true }, [LearningLevel.HIGH_SCHOOL]: { lives: 3, timeLimit: 240, hints: false }, [LearningLevel.UNDERGRADUATE]: { lives: 3, timeLimit: 180, hints: false }, [LearningLevel.GRADUATE]: { lives: 2, timeLimit: 120, hints: false }, [LearningLevel.PHD]: { lives: 1, timeLimit: 90, hints: false } } },
   quiz: { questions: [{ id: 'bp-q1', question: 'What percentage of crops benefit from animal pollination?', options: ['About 25%', 'About 50%', 'About 75%', 'About 90%'], correctAnswer: 2, explanation: 'Approximately 75% of crop species benefit from animal pollination.', difficulty: LearningLevel.MIDDLE_SCHOOL }] }
 }
 
@@ -2677,36 +2677,36 @@ export const aquaponicsSystems: Module = {
   slug: 'aquaponics-systems',
   title: 'Aquaponics Systems',
   description: {
-    ELEMENTARY: 'Discover how fish and plants grow together in amazing systems!',
-    MIDDLE_SCHOOL: 'Learn how aquaponics combines fish farming with plant growing.',
-    HIGH_SCHOOL: 'Explore the science of aquaponics systems, including nitrogen cycling.',
-    UNDERGRADUATE: 'Analyze aquaponics as integrated food production, examining efficiency and scalability.',
-    GRADUATE: 'Examine aquaponics through food systems and sustainability science.',
-    PHD: 'Investigate aquaponics as socio-technical innovation for food system transformation.'
+    [LearningLevel.ELEMENTARY]: 'Discover how fish and plants grow together in amazing systems!',
+    [LearningLevel.MIDDLE_SCHOOL]: 'Learn how aquaponics combines fish farming with plant growing.',
+    [LearningLevel.HIGH_SCHOOL]: 'Explore the science of aquaponics systems, including nitrogen cycling.',
+    [LearningLevel.UNDERGRADUATE]: 'Analyze aquaponics as integrated food production, examining efficiency and scalability.',
+    [LearningLevel.GRADUATE]: 'Examine aquaponics through food systems and sustainability science.',
+    [LearningLevel.PHD]: 'Investigate aquaponics as socio-technical innovation for food system transformation.'
   },
   topic: 'food-sovereignty',
   estimatedMinutes: {
-    ELEMENTARY: 25,
-    MIDDLE_SCHOOL: 40,
-    HIGH_SCHOOL: 55,
-    UNDERGRADUATE: 75,
-    GRADUATE: 100,
-    PHD: 130
+    [LearningLevel.ELEMENTARY]: 25,
+    [LearningLevel.MIDDLE_SCHOOL]: 40,
+    [LearningLevel.HIGH_SCHOOL]: 55,
+    [LearningLevel.UNDERGRADUATE]: 75,
+    [LearningLevel.GRADUATE]: 100,
+    [LearningLevel.PHD]: 130
   },
   lessons: [{
     id: 'aqua-1',
     title: 'Fish and Plants Together',
     content: {
-      ELEMENTARY: '<h2>Fish Help Plants Grow!</h2><p>Fish poop feeds the plants, plants clean the water for fish. It\'s a circle of life in a tank!</p>',
-      MIDDLE_SCHOOL: '<h2>Introduction to Aquaponics</h2><p>The nitrogen cycle: fish produce ammonia, bacteria convert it to nitrate, plants absorb nitrate, clean water returns to fish.</p>',
-      HIGH_SCHOOL: '<h2>System Design</h2><p>System types include media bed, deep water culture, and nutrient film technique. pH compromise of 6.8-7.2 works for most systems.</p>',
-      UNDERGRADUATE: '<h2>Efficiency Analysis</h2><p>Uses 90% less water than conventional agriculture, but has high startup costs and energy requirements.</p>',
-      GRADUATE: '<h2>Food Systems Context</h2><p>Aquaponics shows promise for urban food production but scalability and impact on food security remain debated.</p>',
-      PHD: '<h2>Socio-Technical Innovation</h2><p>Aquaponics designs embody different values: backyard systems emphasize autonomy, commercial systems prioritize efficiency.</p>'
+      [LearningLevel.ELEMENTARY]: '<h2>Fish Help Plants Grow!</h2><p>Fish poop feeds the plants, plants clean the water for fish. It\'s a circle of life in a tank!</p>',
+      [LearningLevel.MIDDLE_SCHOOL]: '<h2>Introduction to Aquaponics</h2><p>The nitrogen cycle: fish produce ammonia, bacteria convert it to nitrate, plants absorb nitrate, clean water returns to fish.</p>',
+      [LearningLevel.HIGH_SCHOOL]: '<h2>System Design</h2><p>System types include media bed, deep water culture, and nutrient film technique. pH compromise of 6.8-7.2 works for most systems.</p>',
+      [LearningLevel.UNDERGRADUATE]: '<h2>Efficiency Analysis</h2><p>Uses 90% less water than conventional agriculture, but has high startup costs and energy requirements.</p>',
+      [LearningLevel.GRADUATE]: '<h2>Food Systems Context</h2><p>Aquaponics shows promise for urban food production but scalability and impact on food security remain debated.</p>',
+      [LearningLevel.PHD]: '<h2>Socio-Technical Innovation</h2><p>Aquaponics designs embody different values: backyard systems emphasize autonomy, commercial systems prioritize efficiency.</p>'
     }
   }],
   activities: [{ id: 'aqua-act-1', title: 'Design Your System', type: 'SIMULATION', description: 'Plan a balanced aquaponics system', estimatedMinutes: 25, interactiveContent: {} }],
-  game: { id: 'aqua-game', title: 'Aquaponics Balance', type: 'simulation', description: 'Keep fish, plants, and bacteria in balance', difficulty: { ELEMENTARY: { lives: 5, timeLimit: null, hints: true }, MIDDLE_SCHOOL: { lives: 4, timeLimit: 300, hints: true }, HIGH_SCHOOL: { lives: 3, timeLimit: 240, hints: false }, UNDERGRADUATE: { lives: 3, timeLimit: 180, hints: false }, GRADUATE: { lives: 2, timeLimit: 120, hints: false }, PHD: { lives: 1, timeLimit: 90, hints: false } } },
+  game: { id: 'aqua-game', title: 'Aquaponics Balance', type: 'simulation', description: 'Keep fish, plants, and bacteria in balance', difficulty: { [LearningLevel.ELEMENTARY]: { lives: 5, timeLimit: null, hints: true }, [LearningLevel.MIDDLE_SCHOOL]: { lives: 4, timeLimit: 300, hints: true }, [LearningLevel.HIGH_SCHOOL]: { lives: 3, timeLimit: 240, hints: false }, [LearningLevel.UNDERGRADUATE]: { lives: 3, timeLimit: 180, hints: false }, [LearningLevel.GRADUATE]: { lives: 2, timeLimit: 120, hints: false }, [LearningLevel.PHD]: { lives: 1, timeLimit: 90, hints: false } } },
   quiz: { questions: [{ id: 'aqua-q1', question: 'What do bacteria convert fish waste into?', options: ['Oxygen', 'Nitrate for plants', 'Clean drinking water', 'Fish food'], correctAnswer: 1, explanation: 'Bacteria convert ammonia to nitrate, which plants absorb as fertilizer.', difficulty: LearningLevel.MIDDLE_SCHOOL }] }
 }
 
@@ -2715,36 +2715,36 @@ export const hydroponicsFundamentals: Module = {
   slug: 'hydroponics-fundamentals',
   title: 'Hydroponics Fundamentals',
   description: {
-    ELEMENTARY: 'Learn how to grow plants in water without any soil!',
-    MIDDLE_SCHOOL: 'Discover the science of growing plants in nutrient-rich water.',
-    HIGH_SCHOOL: 'Explore hydroponic systems, plant nutrition, and applications.',
-    UNDERGRADUATE: 'Analyze hydroponic production systems and economic viability.',
-    GRADUATE: 'Critically examine hydroponics within sustainable intensification debates.',
-    PHD: 'Investigate hydroponics as technological fix and agrarian implications.'
+    [LearningLevel.ELEMENTARY]: 'Learn how to grow plants in water without any soil!',
+    [LearningLevel.MIDDLE_SCHOOL]: 'Discover the science of growing plants in nutrient-rich water.',
+    [LearningLevel.HIGH_SCHOOL]: 'Explore hydroponic systems, plant nutrition, and applications.',
+    [LearningLevel.UNDERGRADUATE]: 'Analyze hydroponic production systems and economic viability.',
+    [LearningLevel.GRADUATE]: 'Critically examine hydroponics within sustainable intensification debates.',
+    [LearningLevel.PHD]: 'Investigate hydroponics as technological fix and agrarian implications.'
   },
   topic: 'food-sovereignty',
   estimatedMinutes: {
-    ELEMENTARY: 20,
-    MIDDLE_SCHOOL: 35,
-    HIGH_SCHOOL: 50,
-    UNDERGRADUATE: 70,
-    GRADUATE: 95,
-    PHD: 125
+    [LearningLevel.ELEMENTARY]: 20,
+    [LearningLevel.MIDDLE_SCHOOL]: 35,
+    [LearningLevel.HIGH_SCHOOL]: 50,
+    [LearningLevel.UNDERGRADUATE]: 70,
+    [LearningLevel.GRADUATE]: 95,
+    [LearningLevel.PHD]: 125
   },
   lessons: [{
     id: 'hydro-1',
     title: 'Growing Without Soil',
     content: {
-      ELEMENTARY: '<h2>Water Gardens!</h2><p>Plants can grow without dirt - they just need water with special plant food mixed in!</p>',
-      MIDDLE_SCHOOL: '<h2>Introduction to Hydroponics</h2><p>Benefits: faster growth, 70-90% less water, space efficient, year-round growing. Plants need nitrogen, phosphorus, and potassium.</p>',
-      HIGH_SCHOOL: '<h2>System Types</h2><p>DWC, NFT, ebb and flow, drip systems, aeroponics. Manage pH (5.5-6.5), EC, temperature, and oxygen.</p>',
-      UNDERGRADUATE: '<h2>Efficiency Analysis</h2><p>High water efficiency but energy-intensive. Sustainability depends on energy sources and system design.</p>',
-      GRADUATE: '<h2>Sustainable Intensification</h2><p>Proponents see resource efficiency; critics note energy intensity and disconnection from land.</p>',
-      PHD: '<h2>Agrarian Futures</h2><p>Soilless agriculture challenges traditional farming identity and raises questions about technological control of food.</p>'
+      [LearningLevel.ELEMENTARY]: '<h2>Water Gardens!</h2><p>Plants can grow without dirt - they just need water with special plant food mixed in!</p>',
+      [LearningLevel.MIDDLE_SCHOOL]: '<h2>Introduction to Hydroponics</h2><p>Benefits: faster growth, 70-90% less water, space efficient, year-round growing. Plants need nitrogen, phosphorus, and potassium.</p>',
+      [LearningLevel.HIGH_SCHOOL]: '<h2>System Types</h2><p>DWC, NFT, ebb and flow, drip systems, aeroponics. Manage pH (5.5-6.5), EC, temperature, and oxygen.</p>',
+      [LearningLevel.UNDERGRADUATE]: '<h2>Efficiency Analysis</h2><p>High water efficiency but energy-intensive. Sustainability depends on energy sources and system design.</p>',
+      [LearningLevel.GRADUATE]: '<h2>Sustainable Intensification</h2><p>Proponents see resource efficiency; critics note energy intensity and disconnection from land.</p>',
+      [LearningLevel.PHD]: '<h2>Agrarian Futures</h2><p>Soilless agriculture challenges traditional farming identity and raises questions about technological control of food.</p>'
     }
   }],
   activities: [{ id: 'hydro-act-1', title: 'Build Simple System', type: 'STEP_GUIDED', description: 'Build a basic DWC system', estimatedMinutes: 20, interactiveContent: {} }],
-  game: { id: 'hydro-game', title: 'Hydroponic Grower', type: 'simulation', description: 'Manage nutrients and grow plants', difficulty: { ELEMENTARY: { lives: 5, timeLimit: null, hints: true }, MIDDLE_SCHOOL: { lives: 4, timeLimit: 300, hints: true }, HIGH_SCHOOL: { lives: 3, timeLimit: 240, hints: false }, UNDERGRADUATE: { lives: 3, timeLimit: 180, hints: false }, GRADUATE: { lives: 2, timeLimit: 120, hints: false }, PHD: { lives: 1, timeLimit: 90, hints: false } } },
+  game: { id: 'hydro-game', title: 'Hydroponic Grower', type: 'simulation', description: 'Manage nutrients and grow plants', difficulty: { [LearningLevel.ELEMENTARY]: { lives: 5, timeLimit: null, hints: true }, [LearningLevel.MIDDLE_SCHOOL]: { lives: 4, timeLimit: 300, hints: true }, [LearningLevel.HIGH_SCHOOL]: { lives: 3, timeLimit: 240, hints: false }, [LearningLevel.UNDERGRADUATE]: { lives: 3, timeLimit: 180, hints: false }, [LearningLevel.GRADUATE]: { lives: 2, timeLimit: 120, hints: false }, [LearningLevel.PHD]: { lives: 1, timeLimit: 90, hints: false } } },
   quiz: { questions: [{ id: 'hydro-q1', question: 'How much less water does hydroponics use?', options: ['10-20%', '30-40%', '50-60%', '70-90%'], correctAnswer: 3, explanation: 'Hydroponics uses 70-90% less water than conventional soil farming.', difficulty: LearningLevel.MIDDLE_SCHOOL }] }
 }
 
@@ -2753,179 +2753,179 @@ export const mushroomCultivation: Module = {
   slug: 'mushroom-cultivation',
   title: 'Mushroom Cultivation',
   description: {
-    ELEMENTARY: 'Discover the magical world of growing mushrooms!',
-    MIDDLE_SCHOOL: 'Learn how mushrooms grow and how to cultivate them at home.',
-    HIGH_SCHOOL: 'Explore mushroom biology, cultivation techniques, and sustainable food systems.',
-    UNDERGRADUATE: 'Analyze mushroom cultivation as biotechnology and market dynamics.',
-    GRADUATE: 'Examine fungi through ecological lenses, including mycoremediation.',
-    PHD: 'Investigate mushrooms within multispecies studies and more-than-human food.'
+    [LearningLevel.ELEMENTARY]: 'Discover the magical world of growing mushrooms!',
+    [LearningLevel.MIDDLE_SCHOOL]: 'Learn how mushrooms grow and how to cultivate them at home.',
+    [LearningLevel.HIGH_SCHOOL]: 'Explore mushroom biology, cultivation techniques, and sustainable food systems.',
+    [LearningLevel.UNDERGRADUATE]: 'Analyze mushroom cultivation as biotechnology and market dynamics.',
+    [LearningLevel.GRADUATE]: 'Examine fungi through ecological lenses, including mycoremediation.',
+    [LearningLevel.PHD]: 'Investigate mushrooms within multispecies studies and more-than-human food.'
   },
   topic: 'food-sovereignty',
   estimatedMinutes: {
-    ELEMENTARY: 25,
-    MIDDLE_SCHOOL: 35,
-    HIGH_SCHOOL: 50,
-    UNDERGRADUATE: 70,
-    GRADUATE: 95,
-    PHD: 125
+    [LearningLevel.ELEMENTARY]: 25,
+    [LearningLevel.MIDDLE_SCHOOL]: 35,
+    [LearningLevel.HIGH_SCHOOL]: 50,
+    [LearningLevel.UNDERGRADUATE]: 70,
+    [LearningLevel.GRADUATE]: 95,
+    [LearningLevel.PHD]: 125
   },
   lessons: [{
     id: 'mush-1',
     title: 'The World of Mushrooms',
     content: {
-      ELEMENTARY: '<h2>Mushrooms Are Amazing!</h2><p>Mushrooms aren\'t plants - they\'re fungi! They grow from underground networks called mycelium.</p>',
-      MIDDLE_SCHOOL: '<h2>Understanding Fungi</h2><p>Mushroom anatomy: cap, gills, stem, mycelium, spores. Common cultivated: button, oyster, shiitake, lion\'s mane.</p>',
-      HIGH_SCHOOL: '<h2>Cultivation Techniques</h2><p>Process: spawn production, substrate preparation, inoculation, incubation, fruiting, harvesting. Substrates: straw, sawdust, coffee grounds.</p>',
-      UNDERGRADUATE: '<h2>Production Systems</h2><p>Scales from hobby to industrial. Sustainability: converts waste to food, low water/land needs, high protein.</p>',
-      GRADUATE: '<h2>Fungi Beyond Food</h2><p>Mycoremediation for pollution cleanup. Mycelium materials for packaging, insulation, leather alternatives.</p>',
-      PHD: '<h2>More-Than-Human Fungi</h2><p>Following Anna Tsing, fungi shape worlds through mycorrhizal networks - the "wood wide web" connecting forests.</p>'
+      [LearningLevel.ELEMENTARY]: '<h2>Mushrooms Are Amazing!</h2><p>Mushrooms aren\'t plants - they\'re fungi! They grow from underground networks called mycelium.</p>',
+      [LearningLevel.MIDDLE_SCHOOL]: '<h2>Understanding Fungi</h2><p>Mushroom anatomy: cap, gills, stem, mycelium, spores. Common cultivated: button, oyster, shiitake, lion\'s mane.</p>',
+      [LearningLevel.HIGH_SCHOOL]: '<h2>Cultivation Techniques</h2><p>Process: spawn production, substrate preparation, inoculation, incubation, fruiting, harvesting. Substrates: straw, sawdust, coffee grounds.</p>',
+      [LearningLevel.UNDERGRADUATE]: '<h2>Production Systems</h2><p>Scales from hobby to industrial. Sustainability: converts waste to food, low water/land needs, high protein.</p>',
+      [LearningLevel.GRADUATE]: '<h2>Fungi Beyond Food</h2><p>Mycoremediation for pollution cleanup. Mycelium materials for packaging, insulation, leather alternatives.</p>',
+      [LearningLevel.PHD]: '<h2>More-Than-Human Fungi</h2><p>Following Anna Tsing, fungi shape worlds through mycorrhizal networks - the "wood wide web" connecting forests.</p>'
     }
   }],
   activities: [{ id: 'mush-act-1', title: 'Mushroom Growing Lab', type: 'STEP_GUIDED', description: 'Start your own mushroom project', estimatedMinutes: 20, interactiveContent: {} }],
-  game: { id: 'mush-game', title: 'Mushroom Farm', type: 'simulation', description: 'Manage conditions for healthy mushrooms', difficulty: { ELEMENTARY: { lives: 5, timeLimit: null, hints: true }, MIDDLE_SCHOOL: { lives: 4, timeLimit: 300, hints: true }, HIGH_SCHOOL: { lives: 3, timeLimit: 240, hints: false }, UNDERGRADUATE: { lives: 3, timeLimit: 180, hints: false }, GRADUATE: { lives: 2, timeLimit: 120, hints: false }, PHD: { lives: 1, timeLimit: 90, hints: false } } },
+  game: { id: 'mush-game', title: 'Mushroom Farm', type: 'simulation', description: 'Manage conditions for healthy mushrooms', difficulty: { [LearningLevel.ELEMENTARY]: { lives: 5, timeLimit: null, hints: true }, [LearningLevel.MIDDLE_SCHOOL]: { lives: 4, timeLimit: 300, hints: true }, [LearningLevel.HIGH_SCHOOL]: { lives: 3, timeLimit: 240, hints: false }, [LearningLevel.UNDERGRADUATE]: { lives: 3, timeLimit: 180, hints: false }, [LearningLevel.GRADUATE]: { lives: 2, timeLimit: 120, hints: false }, [LearningLevel.PHD]: { lives: 1, timeLimit: 90, hints: false } } },
   quiz: { questions: [{ id: 'mush-q1', question: 'What is mycelium?', options: ['The cap of a mushroom', 'Underground fungal network', 'Mushroom spores', 'A type of mushroom'], correctAnswer: 1, explanation: 'Mycelium is the underground network of fungal threads that form the main body of a fungus.', difficulty: LearningLevel.MIDDLE_SCHOOL }] }
 }
 
 export const edibleMedicinalPlants: Module = {
   id: 'food-sov-edible-plants', slug: 'edible-medicinal-plants', title: 'Edible & Medicinal Plants',
-  description: { ELEMENTARY: 'Discover plants you can eat and plants that help you feel better!', MIDDLE_SCHOOL: 'Learn to identify edible wild plants and common medicinal herbs.', HIGH_SCHOOL: 'Explore ethnobotany, plant identification, and safe foraging.', UNDERGRADUATE: 'Analyze traditional plant knowledge and intellectual property debates.', GRADUATE: 'Examine ethnobotany through decolonial frameworks.', PHD: 'Investigate plant knowledge as contested terrain in food sovereignty.' },
+  description: { [LearningLevel.ELEMENTARY]: 'Discover plants you can eat and plants that help you feel better!', [LearningLevel.MIDDLE_SCHOOL]: 'Learn to identify edible wild plants and common medicinal herbs.', [LearningLevel.HIGH_SCHOOL]: 'Explore ethnobotany, plant identification, and safe foraging.', [LearningLevel.UNDERGRADUATE]: 'Analyze traditional plant knowledge and intellectual property debates.', [LearningLevel.GRADUATE]: 'Examine ethnobotany through decolonial frameworks.', [LearningLevel.PHD]: 'Investigate plant knowledge as contested terrain in food sovereignty.' },
   topic: 'food-sovereignty',
-  estimatedMinutes: { ELEMENTARY: 25, MIDDLE_SCHOOL: 35, HIGH_SCHOOL: 50, UNDERGRADUATE: 70, GRADUATE: 95, PHD: 125 },
-  lessons: [{ id: 'emp-1', title: 'Plants Around Us', content: { ELEMENTARY: '<h2>Nature\'s Grocery!</h2><p>Many wild plants are food! Dandelions, clover, and berries can be eaten if identified safely.</p>', MIDDLE_SCHOOL: '<h2>Foraging Basics</h2><p>The golden rule: never eat anything you can\'t positively identify.</p>', HIGH_SCHOOL: '<h2>Ethnobotany</h2><p>Studies relationships between people and plants across cultures.</p>', UNDERGRADUATE: '<h2>Traditional Knowledge</h2><p>Issues include biopiracy, intellectual property, benefit-sharing.</p>', GRADUATE: '<h2>Decolonizing Plant Knowledge</h2><p>Food sovereignty movements assert rights to traditional plant resources.</p>', PHD: '<h2>Plants as Political</h2><p>Control over plants reflects broader power relations.</p>' } }],
+  estimatedMinutes: { [LearningLevel.ELEMENTARY]: 25, [LearningLevel.MIDDLE_SCHOOL]: 35, [LearningLevel.HIGH_SCHOOL]: 50, [LearningLevel.UNDERGRADUATE]: 70, [LearningLevel.GRADUATE]: 95, [LearningLevel.PHD]: 125 },
+  lessons: [{ id: 'emp-1', title: 'Plants Around Us', content: { [LearningLevel.ELEMENTARY]: '<h2>Nature\'s Grocery!</h2><p>Many wild plants are food! Dandelions, clover, and berries can be eaten if identified safely.</p>', [LearningLevel.MIDDLE_SCHOOL]: '<h2>Foraging Basics</h2><p>The golden rule: never eat anything you can\'t positively identify.</p>', [LearningLevel.HIGH_SCHOOL]: '<h2>Ethnobotany</h2><p>Studies relationships between people and plants across cultures.</p>', [LearningLevel.UNDERGRADUATE]: '<h2>Traditional Knowledge</h2><p>Issues include biopiracy, intellectual property, benefit-sharing.</p>', [LearningLevel.GRADUATE]: '<h2>Decolonizing Plant Knowledge</h2><p>Food sovereignty movements assert rights to traditional plant resources.</p>', [LearningLevel.PHD]: '<h2>Plants as Political</h2><p>Control over plants reflects broader power relations.</p>' } }],
   activities: [{ id: 'emp-act-1', title: 'Plant ID Practice', type: 'DRAG_DROP', description: 'Match plants to uses', estimatedMinutes: 20, interactiveContent: {} }],
-  game: { id: 'emp-game', title: 'Forager Quest', type: 'matching', description: 'Identify plants correctly', difficulty: { ELEMENTARY: { lives: 5, timeLimit: null, hints: true }, MIDDLE_SCHOOL: { lives: 4, timeLimit: 300, hints: true }, HIGH_SCHOOL: { lives: 3, timeLimit: 240, hints: false }, UNDERGRADUATE: { lives: 3, timeLimit: 180, hints: false }, GRADUATE: { lives: 2, timeLimit: 120, hints: false }, PHD: { lives: 1, timeLimit: 90, hints: false } } },
+  game: { id: 'emp-game', title: 'Forager Quest', type: 'matching', description: 'Identify plants correctly', difficulty: { [LearningLevel.ELEMENTARY]: { lives: 5, timeLimit: null, hints: true }, [LearningLevel.MIDDLE_SCHOOL]: { lives: 4, timeLimit: 300, hints: true }, [LearningLevel.HIGH_SCHOOL]: { lives: 3, timeLimit: 240, hints: false }, [LearningLevel.UNDERGRADUATE]: { lives: 3, timeLimit: 180, hints: false }, [LearningLevel.GRADUATE]: { lives: 2, timeLimit: 120, hints: false }, [LearningLevel.PHD]: { lives: 1, timeLimit: 90, hints: false } } },
   quiz: { questions: [{ id: 'emp-q1', question: 'Most important foraging rule?', options: ['Eat everything green', 'Never eat unidentified plants', 'All berries safe', 'Taste first'], correctAnswer: 1, explanation: 'Never eat wild plants unless positively identified.', difficulty: LearningLevel.MIDDLE_SCHOOL }] }
 }
 
 export const climateResilientCrops: Module = {
   id: 'food-sov-climate-crops', slug: 'climate-resilient-crops', title: 'Climate-Resilient Crops',
-  description: { ELEMENTARY: 'Learn about tough plants that grow even in challenging weather!', MIDDLE_SCHOOL: 'Discover crops that survive drought, heat, and extreme weather.', HIGH_SCHOOL: 'Explore climate adaptation through crop selection and breeding.', UNDERGRADUATE: 'Analyze climate-resilient agriculture and genetic resources.', GRADUATE: 'Examine climate adaptation through agrobiodiversity lenses.', PHD: 'Investigate crop genetic resources governance and climate justice.' },
+  description: { [LearningLevel.ELEMENTARY]: 'Learn about tough plants that grow even in challenging weather!', [LearningLevel.MIDDLE_SCHOOL]: 'Discover crops that survive drought, heat, and extreme weather.', [LearningLevel.HIGH_SCHOOL]: 'Explore climate adaptation through crop selection and breeding.', [LearningLevel.UNDERGRADUATE]: 'Analyze climate-resilient agriculture and genetic resources.', [LearningLevel.GRADUATE]: 'Examine climate adaptation through agrobiodiversity lenses.', [LearningLevel.PHD]: 'Investigate crop genetic resources governance and climate justice.' },
   topic: 'food-sovereignty',
-  estimatedMinutes: { ELEMENTARY: 20, MIDDLE_SCHOOL: 35, HIGH_SCHOOL: 50, UNDERGRADUATE: 70, GRADUATE: 95, PHD: 125 },
-  lessons: [{ id: 'crc-1', title: 'Crops That Survive', content: { ELEMENTARY: '<h2>Tough Plants!</h2><p>Some plants grow even when very hot, dry, or stormy.</p>', MIDDLE_SCHOOL: '<h2>Climate-Adapted Crops</h2><p>Traditional varieties often have built-in resilience.</p>', HIGH_SCHOOL: '<h2>Adaptation Strategies</h2><p>Select drought-tolerant varieties, diversify crops, adjust planting dates.</p>', UNDERGRADUATE: '<h2>Agrobiodiversity</h2><p>Crop diversity provides raw material for adaptation.</p>', GRADUATE: '<h2>Seed Systems</h2><p>Who controls seeds shapes adaptive capacity.</p>', PHD: '<h2>Climate Justice</h2><p>Those least responsible for climate change have fewest adaptation resources.</p>' } }],
+  estimatedMinutes: { [LearningLevel.ELEMENTARY]: 20, [LearningLevel.MIDDLE_SCHOOL]: 35, [LearningLevel.HIGH_SCHOOL]: 50, [LearningLevel.UNDERGRADUATE]: 70, [LearningLevel.GRADUATE]: 95, [LearningLevel.PHD]: 125 },
+  lessons: [{ id: 'crc-1', title: 'Crops That Survive', content: { [LearningLevel.ELEMENTARY]: '<h2>Tough Plants!</h2><p>Some plants grow even when very hot, dry, or stormy.</p>', [LearningLevel.MIDDLE_SCHOOL]: '<h2>Climate-Adapted Crops</h2><p>Traditional varieties often have built-in resilience.</p>', [LearningLevel.HIGH_SCHOOL]: '<h2>Adaptation Strategies</h2><p>Select drought-tolerant varieties, diversify crops, adjust planting dates.</p>', [LearningLevel.UNDERGRADUATE]: '<h2>Agrobiodiversity</h2><p>Crop diversity provides raw material for adaptation.</p>', [LearningLevel.GRADUATE]: '<h2>Seed Systems</h2><p>Who controls seeds shapes adaptive capacity.</p>', [LearningLevel.PHD]: '<h2>Climate Justice</h2><p>Those least responsible for climate change have fewest adaptation resources.</p>' } }],
   activities: [{ id: 'crc-act-1', title: 'Climate Crop Selection', type: 'SCENARIO', description: 'Choose crops for changing climate', estimatedMinutes: 20, interactiveContent: {} }],
-  game: { id: 'crc-game', title: 'Climate Farmer', type: 'simulation', description: 'Adapt to climate challenges', difficulty: { ELEMENTARY: { lives: 5, timeLimit: null, hints: true }, MIDDLE_SCHOOL: { lives: 4, timeLimit: 300, hints: true }, HIGH_SCHOOL: { lives: 3, timeLimit: 240, hints: false }, UNDERGRADUATE: { lives: 3, timeLimit: 180, hints: false }, GRADUATE: { lives: 2, timeLimit: 120, hints: false }, PHD: { lives: 1, timeLimit: 90, hints: false } } },
+  game: { id: 'crc-game', title: 'Climate Farmer', type: 'simulation', description: 'Adapt to climate challenges', difficulty: { [LearningLevel.ELEMENTARY]: { lives: 5, timeLimit: null, hints: true }, [LearningLevel.MIDDLE_SCHOOL]: { lives: 4, timeLimit: 300, hints: true }, [LearningLevel.HIGH_SCHOOL]: { lives: 3, timeLimit: 240, hints: false }, [LearningLevel.UNDERGRADUATE]: { lives: 3, timeLimit: 180, hints: false }, [LearningLevel.GRADUATE]: { lives: 2, timeLimit: 120, hints: false }, [LearningLevel.PHD]: { lives: 1, timeLimit: 90, hints: false } } },
   quiz: { questions: [{ id: 'crc-q1', question: 'Why are traditional varieties important for climate adaptation?', options: ['Easier to grow', 'Contain diverse genetic traits', 'Taste better', 'Cost less'], correctAnswer: 1, explanation: 'Traditional varieties contain diverse genetic traits for resilience.', difficulty: LearningLevel.HIGH_SCHOOL }] }
 }
 
 export const foodStorageRootCellars: Module = {
   id: 'food-sov-storage', slug: 'food-storage-root-cellars', title: 'Food Storage & Root Cellars',
-  description: { ELEMENTARY: 'Learn how people kept food fresh before refrigerators!', MIDDLE_SCHOOL: 'Discover traditional food storage methods including root cellars.', HIGH_SCHOOL: 'Explore the science of food storage and root cellar design.', UNDERGRADUATE: 'Analyze food storage for food security and resilience.', GRADUATE: 'Examine storage through material culture frameworks.', PHD: 'Investigate storage as sites of autonomy and preparedness.' },
+  description: { [LearningLevel.ELEMENTARY]: 'Learn how people kept food fresh before refrigerators!', [LearningLevel.MIDDLE_SCHOOL]: 'Discover traditional food storage methods including root cellars.', [LearningLevel.HIGH_SCHOOL]: 'Explore the science of food storage and root cellar design.', [LearningLevel.UNDERGRADUATE]: 'Analyze food storage for food security and resilience.', [LearningLevel.GRADUATE]: 'Examine storage through material culture frameworks.', [LearningLevel.PHD]: 'Investigate storage as sites of autonomy and preparedness.' },
   topic: 'food-sovereignty',
-  estimatedMinutes: { ELEMENTARY: 20, MIDDLE_SCHOOL: 30, HIGH_SCHOOL: 45, UNDERGRADUATE: 65, GRADUATE: 90, PHD: 120 },
-  lessons: [{ id: 'fsrc-1', title: 'Keeping Food Fresh', content: { ELEMENTARY: '<h2>Before Refrigerators!</h2><p>Root cellars kept vegetables fresh underground where it\'s cool and dark.</p>', MIDDLE_SCHOOL: '<h2>Root Cellar Basics</h2><p>Uses Earth\'s stable 50-55°F temperature. Key: temperature, humidity, ventilation.</p>', HIGH_SCHOOL: '<h2>Storage Science</h2><p>Different crops need different conditions. Potatoes: dark, humid. Onions: dry, cool.</p>', UNDERGRADUATE: '<h2>Storage and Security</h2><p>Extends harvest, reduces waste, builds food security without energy inputs.</p>', GRADUATE: '<h2>Material Culture</h2><p>Storage infrastructure shapes household food practices.</p>', PHD: '<h2>Storage and Autonomy</h2><p>Capacity relates to household autonomy from food markets.</p>' } }],
+  estimatedMinutes: { [LearningLevel.ELEMENTARY]: 20, [LearningLevel.MIDDLE_SCHOOL]: 30, [LearningLevel.HIGH_SCHOOL]: 45, [LearningLevel.UNDERGRADUATE]: 65, [LearningLevel.GRADUATE]: 90, [LearningLevel.PHD]: 120 },
+  lessons: [{ id: 'fsrc-1', title: 'Keeping Food Fresh', content: { [LearningLevel.ELEMENTARY]: '<h2>Before Refrigerators!</h2><p>Root cellars kept vegetables fresh underground where it\'s cool and dark.</p>', [LearningLevel.MIDDLE_SCHOOL]: '<h2>Root Cellar Basics</h2><p>Uses Earth\'s stable 50-55°F temperature. Key: temperature, humidity, ventilation.</p>', [LearningLevel.HIGH_SCHOOL]: '<h2>Storage Science</h2><p>Different crops need different conditions. Potatoes: dark, humid. Onions: dry, cool.</p>', [LearningLevel.UNDERGRADUATE]: '<h2>Storage and Security</h2><p>Extends harvest, reduces waste, builds food security without energy inputs.</p>', [LearningLevel.GRADUATE]: '<h2>Material Culture</h2><p>Storage infrastructure shapes household food practices.</p>', [LearningLevel.PHD]: '<h2>Storage and Autonomy</h2><p>Capacity relates to household autonomy from food markets.</p>' } }],
   activities: [{ id: 'fsrc-act-1', title: 'Design Root Cellar', type: 'SIMULATION', description: 'Plan storage for your climate', estimatedMinutes: 20, interactiveContent: {} }],
-  game: { id: 'fsrc-game', title: 'Storage Master', type: 'sorting', description: 'Match foods to proper storage', difficulty: { ELEMENTARY: { lives: 5, timeLimit: null, hints: true }, MIDDLE_SCHOOL: { lives: 4, timeLimit: 300, hints: true }, HIGH_SCHOOL: { lives: 3, timeLimit: 240, hints: false }, UNDERGRADUATE: { lives: 3, timeLimit: 180, hints: false }, GRADUATE: { lives: 2, timeLimit: 120, hints: false }, PHD: { lives: 1, timeLimit: 90, hints: false } } },
+  game: { id: 'fsrc-game', title: 'Storage Master', type: 'sorting', description: 'Match foods to proper storage', difficulty: { [LearningLevel.ELEMENTARY]: { lives: 5, timeLimit: null, hints: true }, [LearningLevel.MIDDLE_SCHOOL]: { lives: 4, timeLimit: 300, hints: true }, [LearningLevel.HIGH_SCHOOL]: { lives: 3, timeLimit: 240, hints: false }, [LearningLevel.UNDERGRADUATE]: { lives: 3, timeLimit: 180, hints: false }, [LearningLevel.GRADUATE]: { lives: 2, timeLimit: 120, hints: false }, [LearningLevel.PHD]: { lives: 1, timeLimit: 90, hints: false } } },
   quiz: { questions: [{ id: 'fsrc-q1', question: 'Root cellar temperature range?', options: ['32-40°F', '50-55°F', '65-70°F', '75-80°F'], correctAnswer: 1, explanation: 'Root cellars maintain about 50-55°F.', difficulty: LearningLevel.MIDDLE_SCHOOL }] }
 }
 
 export const canningPickling: Module = {
   id: 'food-sov-canning', slug: 'canning-pickling', title: 'Canning & Pickling',
-  description: { ELEMENTARY: 'Learn how to put summer vegetables in jars for winter!', MIDDLE_SCHOOL: 'Discover home canning and pickling.', HIGH_SCHOOL: 'Master canning safety and techniques.', UNDERGRADUATE: 'Analyze canning as technology and cultural practice.', GRADUATE: 'Examine canning cultures through food studies.', PHD: 'Investigate canning as gendered labor and resistance.' },
+  description: { [LearningLevel.ELEMENTARY]: 'Learn how to put summer vegetables in jars for winter!', [LearningLevel.MIDDLE_SCHOOL]: 'Discover home canning and pickling.', [LearningLevel.HIGH_SCHOOL]: 'Master canning safety and techniques.', [LearningLevel.UNDERGRADUATE]: 'Analyze canning as technology and cultural practice.', [LearningLevel.GRADUATE]: 'Examine canning cultures through food studies.', [LearningLevel.PHD]: 'Investigate canning as gendered labor and resistance.' },
   topic: 'food-sovereignty',
-  estimatedMinutes: { ELEMENTARY: 25, MIDDLE_SCHOOL: 40, HIGH_SCHOOL: 55, UNDERGRADUATE: 75, GRADUATE: 100, PHD: 130 },
-  lessons: [{ id: 'cp-1', title: 'Putting Food in Jars', content: { ELEMENTARY: '<h2>Jars of Summer!</h2><p>Save summer tomatoes and cucumbers in jars for winter!</p>', MIDDLE_SCHOOL: '<h2>Canning Basics</h2><p>Heat kills microorganisms, seals jars. Water bath for high-acid, pressure for low-acid.</p>', HIGH_SCHOOL: '<h2>Canning Safety</h2><p>Botulism prevention: use tested recipes, proper times, pressure can low-acid foods.</p>', UNDERGRADUATE: '<h2>Canning History</h2><p>Spread in early 1900s, peaked during WWII Victory Gardens, reviving today.</p>', GRADUATE: '<h2>Canning Cultures</h2><p>Encodes gender, class, regional identities.</p>', PHD: '<h2>Canning as Resistance</h2><p>Resistance to industrial food, but also unpaid domestic labor.</p>' } }],
+  estimatedMinutes: { [LearningLevel.ELEMENTARY]: 25, [LearningLevel.MIDDLE_SCHOOL]: 40, [LearningLevel.HIGH_SCHOOL]: 55, [LearningLevel.UNDERGRADUATE]: 75, [LearningLevel.GRADUATE]: 100, [LearningLevel.PHD]: 130 },
+  lessons: [{ id: 'cp-1', title: 'Putting Food in Jars', content: { [LearningLevel.ELEMENTARY]: '<h2>Jars of Summer!</h2><p>Save summer tomatoes and cucumbers in jars for winter!</p>', [LearningLevel.MIDDLE_SCHOOL]: '<h2>Canning Basics</h2><p>Heat kills microorganisms, seals jars. Water bath for high-acid, pressure for low-acid.</p>', [LearningLevel.HIGH_SCHOOL]: '<h2>Canning Safety</h2><p>Botulism prevention: use tested recipes, proper times, pressure can low-acid foods.</p>', [LearningLevel.UNDERGRADUATE]: '<h2>Canning History</h2><p>Spread in early 1900s, peaked during WWII Victory Gardens, reviving today.</p>', [LearningLevel.GRADUATE]: '<h2>Canning Cultures</h2><p>Encodes gender, class, regional identities.</p>', [LearningLevel.PHD]: '<h2>Canning as Resistance</h2><p>Resistance to industrial food, but also unpaid domestic labor.</p>' } }],
   activities: [{ id: 'cp-act-1', title: 'Canning Process', type: 'STEP_GUIDED', description: 'Follow safe canning steps', estimatedMinutes: 25, interactiveContent: {} }],
-  game: { id: 'cp-game', title: 'Canning Kitchen', type: 'simulation', description: 'Safely preserve harvest', difficulty: { ELEMENTARY: { lives: 5, timeLimit: null, hints: true }, MIDDLE_SCHOOL: { lives: 4, timeLimit: 300, hints: true }, HIGH_SCHOOL: { lives: 3, timeLimit: 240, hints: false }, UNDERGRADUATE: { lives: 3, timeLimit: 180, hints: false }, GRADUATE: { lives: 2, timeLimit: 120, hints: false }, PHD: { lives: 1, timeLimit: 90, hints: false } } },
+  game: { id: 'cp-game', title: 'Canning Kitchen', type: 'simulation', description: 'Safely preserve harvest', difficulty: { [LearningLevel.ELEMENTARY]: { lives: 5, timeLimit: null, hints: true }, [LearningLevel.MIDDLE_SCHOOL]: { lives: 4, timeLimit: 300, hints: true }, [LearningLevel.HIGH_SCHOOL]: { lives: 3, timeLimit: 240, hints: false }, [LearningLevel.UNDERGRADUATE]: { lives: 3, timeLimit: 180, hints: false }, [LearningLevel.GRADUATE]: { lives: 2, timeLimit: 120, hints: false }, [LearningLevel.PHD]: { lives: 1, timeLimit: 90, hints: false } } },
   quiz: { questions: [{ id: 'cp-q1', question: 'Why pressure can low-acid foods?', options: ['Faster', 'Higher temps kill botulism', 'Less energy', 'Tastes better'], correctAnswer: 1, explanation: 'Pressure canning reaches 240°F, killing botulism spores.', difficulty: LearningLevel.HIGH_SCHOOL }] }
 }
 
 export const homeDairyProcessing: Module = {
   id: 'food-sov-dairy', slug: 'home-dairy-processing', title: 'Home Dairy Processing',
-  description: { ELEMENTARY: 'Discover how milk becomes cheese, yogurt, and butter!', MIDDLE_SCHOOL: 'Learn to make dairy products at home.', HIGH_SCHOOL: 'Explore dairy processing science and fermentation.', UNDERGRADUATE: 'Analyze artisan dairy in alternative food systems.', GRADUATE: 'Examine raw milk politics and food safety governance.', PHD: 'Investigate dairy cultures as tradition and contested modernity.' },
+  description: { [LearningLevel.ELEMENTARY]: 'Discover how milk becomes cheese, yogurt, and butter!', [LearningLevel.MIDDLE_SCHOOL]: 'Learn to make dairy products at home.', [LearningLevel.HIGH_SCHOOL]: 'Explore dairy processing science and fermentation.', [LearningLevel.UNDERGRADUATE]: 'Analyze artisan dairy in alternative food systems.', [LearningLevel.GRADUATE]: 'Examine raw milk politics and food safety governance.', [LearningLevel.PHD]: 'Investigate dairy cultures as tradition and contested modernity.' },
   topic: 'food-sovereignty',
-  estimatedMinutes: { ELEMENTARY: 25, MIDDLE_SCHOOL: 35, HIGH_SCHOOL: 50, UNDERGRADUATE: 70, GRADUATE: 95, PHD: 125 },
-  lessons: [{ id: 'hdp-1', title: 'Milk Magic', content: { ELEMENTARY: '<h2>Milk Transformations!</h2><p>Shake cream for butter, add cultures for yogurt, use rennet for cheese!</p>', MIDDLE_SCHOOL: '<h2>Dairy Basics</h2><p>Butter: agitate cream. Yogurt: add cultures, keep warm. Cheese: add acid or rennet.</p>', HIGH_SCHOOL: '<h2>Dairy Science</h2><p>Milk contains proteins, fats, sugars. Processing uses heat, acid, enzymes, cultures.</p>', UNDERGRADUATE: '<h2>Artisan Dairy</h2><p>Small-scale competes with industrial. Raw milk sales restricted despite demand.</p>', GRADUATE: '<h2>Raw Milk Politics</h2><p>Debates pit food safety vs food sovereignty, risk vs consumer choice.</p>', PHD: '<h2>Dairy Cultures</h2><p>Traditional practices embody cultural knowledge and agrarian relations.</p>' } }],
+  estimatedMinutes: { [LearningLevel.ELEMENTARY]: 25, [LearningLevel.MIDDLE_SCHOOL]: 35, [LearningLevel.HIGH_SCHOOL]: 50, [LearningLevel.UNDERGRADUATE]: 70, [LearningLevel.GRADUATE]: 95, [LearningLevel.PHD]: 125 },
+  lessons: [{ id: 'hdp-1', title: 'Milk Magic', content: { [LearningLevel.ELEMENTARY]: '<h2>Milk Transformations!</h2><p>Shake cream for butter, add cultures for yogurt, use rennet for cheese!</p>', [LearningLevel.MIDDLE_SCHOOL]: '<h2>Dairy Basics</h2><p>Butter: agitate cream. Yogurt: add cultures, keep warm. Cheese: add acid or rennet.</p>', [LearningLevel.HIGH_SCHOOL]: '<h2>Dairy Science</h2><p>Milk contains proteins, fats, sugars. Processing uses heat, acid, enzymes, cultures.</p>', [LearningLevel.UNDERGRADUATE]: '<h2>Artisan Dairy</h2><p>Small-scale competes with industrial. Raw milk sales restricted despite demand.</p>', [LearningLevel.GRADUATE]: '<h2>Raw Milk Politics</h2><p>Debates pit food safety vs food sovereignty, risk vs consumer choice.</p>', [LearningLevel.PHD]: '<h2>Dairy Cultures</h2><p>Traditional practices embody cultural knowledge and agrarian relations.</p>' } }],
   activities: [{ id: 'hdp-act-1', title: 'Make Simple Cheese', type: 'STEP_GUIDED', description: 'Make ricotta at home', estimatedMinutes: 25, interactiveContent: {} }],
-  game: { id: 'hdp-game', title: 'Dairy Artisan', type: 'simulation', description: 'Transform milk into products', difficulty: { ELEMENTARY: { lives: 5, timeLimit: null, hints: true }, MIDDLE_SCHOOL: { lives: 4, timeLimit: 300, hints: true }, HIGH_SCHOOL: { lives: 3, timeLimit: 240, hints: false }, UNDERGRADUATE: { lives: 3, timeLimit: 180, hints: false }, GRADUATE: { lives: 2, timeLimit: 120, hints: false }, PHD: { lives: 1, timeLimit: 90, hints: false } } },
+  game: { id: 'hdp-game', title: 'Dairy Artisan', type: 'simulation', description: 'Transform milk into products', difficulty: { [LearningLevel.ELEMENTARY]: { lives: 5, timeLimit: null, hints: true }, [LearningLevel.MIDDLE_SCHOOL]: { lives: 4, timeLimit: 300, hints: true }, [LearningLevel.HIGH_SCHOOL]: { lives: 3, timeLimit: 240, hints: false }, [LearningLevel.UNDERGRADUATE]: { lives: 3, timeLimit: 180, hints: false }, [LearningLevel.GRADUATE]: { lives: 2, timeLimit: 120, hints: false }, [LearningLevel.PHD]: { lives: 1, timeLimit: 90, hints: false } } },
   quiz: { questions: [{ id: 'hdp-q1', question: 'What curdles milk for cheese?', options: ['Sugar', 'Salt', 'Acid or rennet', 'Water'], correctAnswer: 2, explanation: 'Acid or rennet causes milk proteins to coagulate.', difficulty: LearningLevel.MIDDLE_SCHOOL }] }
 }
 
 export const grainFlourProduction: Module = {
   id: 'food-sov-grain', slug: 'grain-flour-production', title: 'Grain & Flour Production',
-  description: { ELEMENTARY: 'Learn how wheat becomes the flour in your bread!', MIDDLE_SCHOOL: 'Discover how grains are grown, harvested, and milled into flour.', HIGH_SCHOOL: 'Explore grain production systems and small-scale milling.', UNDERGRADUATE: 'Analyze grain economies and the industrialization of bread.', GRADUATE: 'Examine grain systems through political economy and food regime theory.', PHD: 'Investigate grain as geopolitical commodity and local food sovereignty lever.' },
+  description: { [LearningLevel.ELEMENTARY]: 'Learn how wheat becomes the flour in your bread!', [LearningLevel.MIDDLE_SCHOOL]: 'Discover how grains are grown, harvested, and milled into flour.', [LearningLevel.HIGH_SCHOOL]: 'Explore grain production systems and small-scale milling.', [LearningLevel.UNDERGRADUATE]: 'Analyze grain economies and the industrialization of bread.', [LearningLevel.GRADUATE]: 'Examine grain systems through political economy and food regime theory.', [LearningLevel.PHD]: 'Investigate grain as geopolitical commodity and local food sovereignty lever.' },
   topic: 'food-sovereignty',
-  estimatedMinutes: { ELEMENTARY: 20, MIDDLE_SCHOOL: 35, HIGH_SCHOOL: 50, UNDERGRADUATE: 70, GRADUATE: 95, PHD: 125 },
-  lessons: [{ id: 'gfp-1', title: 'From Field to Flour', content: { ELEMENTARY: '<h2>Grain Magic!</h2><p>Farmers grow wheat, harvest kernels, grind into flour for bread!</p>', MIDDLE_SCHOOL: '<h2>Grain Basics</h2><p>Wheat, rye, oats, corn. Harvested, threshed, winnowed, milled.</p>', HIGH_SCHOOL: '<h2>Milling Science</h2><p>Stone grinding preserves nutrients. Roller mills separate bran, germ, endosperm.</p>', UNDERGRADUATE: '<h2>Grain Economies</h2><p>4 companies control 90% of global grain trade. Local milling rebuilds food sovereignty.</p>', GRADUATE: '<h2>Food Regimes</h2><p>Cheap grain underpins industrial food system. Alternative grains challenge hegemony.</p>', PHD: '<h2>Grain Geopolitics</h2><p>Grain exports as foreign policy tool. Local production as sovereignty strategy.</p>' } }],
+  estimatedMinutes: { [LearningLevel.ELEMENTARY]: 20, [LearningLevel.MIDDLE_SCHOOL]: 35, [LearningLevel.HIGH_SCHOOL]: 50, [LearningLevel.UNDERGRADUATE]: 70, [LearningLevel.GRADUATE]: 95, [LearningLevel.PHD]: 125 },
+  lessons: [{ id: 'gfp-1', title: 'From Field to Flour', content: { [LearningLevel.ELEMENTARY]: '<h2>Grain Magic!</h2><p>Farmers grow wheat, harvest kernels, grind into flour for bread!</p>', [LearningLevel.MIDDLE_SCHOOL]: '<h2>Grain Basics</h2><p>Wheat, rye, oats, corn. Harvested, threshed, winnowed, milled.</p>', [LearningLevel.HIGH_SCHOOL]: '<h2>Milling Science</h2><p>Stone grinding preserves nutrients. Roller mills separate bran, germ, endosperm.</p>', [LearningLevel.UNDERGRADUATE]: '<h2>Grain Economies</h2><p>4 companies control 90% of global grain trade. Local milling rebuilds food sovereignty.</p>', [LearningLevel.GRADUATE]: '<h2>Food Regimes</h2><p>Cheap grain underpins industrial food system. Alternative grains challenge hegemony.</p>', [LearningLevel.PHD]: '<h2>Grain Geopolitics</h2><p>Grain exports as foreign policy tool. Local production as sovereignty strategy.</p>' } }],
   activities: [{ id: 'gfp-act-1', title: 'Grain Journey', type: 'STEP_GUIDED', description: 'Follow grain from seed to bread', estimatedMinutes: 20, interactiveContent: {} }],
-  game: { id: 'gfp-game', title: 'Grain Grower', type: 'simulation', description: 'Grow and mill your grain', difficulty: { ELEMENTARY: { lives: 5, timeLimit: null, hints: true }, MIDDLE_SCHOOL: { lives: 4, timeLimit: 300, hints: true }, HIGH_SCHOOL: { lives: 3, timeLimit: 240, hints: false }, UNDERGRADUATE: { lives: 3, timeLimit: 180, hints: false }, GRADUATE: { lives: 2, timeLimit: 120, hints: false }, PHD: { lives: 1, timeLimit: 90, hints: false } } },
+  game: { id: 'gfp-game', title: 'Grain Grower', type: 'simulation', description: 'Grow and mill your grain', difficulty: { [LearningLevel.ELEMENTARY]: { lives: 5, timeLimit: null, hints: true }, [LearningLevel.MIDDLE_SCHOOL]: { lives: 4, timeLimit: 300, hints: true }, [LearningLevel.HIGH_SCHOOL]: { lives: 3, timeLimit: 240, hints: false }, [LearningLevel.UNDERGRADUATE]: { lives: 3, timeLimit: 180, hints: false }, [LearningLevel.GRADUATE]: { lives: 2, timeLimit: 120, hints: false }, [LearningLevel.PHD]: { lives: 1, timeLimit: 90, hints: false } } },
   quiz: { questions: [{ id: 'gfp-q1', question: 'What does stone grinding preserve compared to roller mills?', options: ['Color', 'Shape', 'Nutrients (bran and germ)', 'Water content'], correctAnswer: 2, explanation: 'Stone grinding keeps the nutritious bran and germ intact.', difficulty: LearningLevel.HIGH_SCHOOL }] }
 }
 
 export const communitySupportedAgriculture: Module = {
   id: 'food-sov-csa', slug: 'community-supported-agriculture', title: 'Community Supported Agriculture (CSA)',
-  description: { ELEMENTARY: 'Learn how families team up with farmers to share food!', MIDDLE_SCHOOL: 'Discover how CSAs connect consumers directly to local farms.', HIGH_SCHOOL: 'Explore CSA models, economics, and community building.', UNDERGRADUATE: 'Analyze CSAs as alternative food networks and social enterprises.', GRADUATE: 'Examine CSAs through embedded economy and community resilience frameworks.', PHD: 'Investigate CSAs as sites of prefigurative politics and food system transformation.' },
+  description: { [LearningLevel.ELEMENTARY]: 'Learn how families team up with farmers to share food!', [LearningLevel.MIDDLE_SCHOOL]: 'Discover how CSAs connect consumers directly to local farms.', [LearningLevel.HIGH_SCHOOL]: 'Explore CSA models, economics, and community building.', [LearningLevel.UNDERGRADUATE]: 'Analyze CSAs as alternative food networks and social enterprises.', [LearningLevel.GRADUATE]: 'Examine CSAs through embedded economy and community resilience frameworks.', [LearningLevel.PHD]: 'Investigate CSAs as sites of prefigurative politics and food system transformation.' },
   topic: 'food-sovereignty',
-  estimatedMinutes: { ELEMENTARY: 20, MIDDLE_SCHOOL: 30, HIGH_SCHOOL: 45, UNDERGRADUATE: 65, GRADUATE: 90, PHD: 120 },
-  lessons: [{ id: 'csa-1', title: 'Sharing the Harvest', content: { ELEMENTARY: '<h2>Farm Friends!</h2><p>Families pay farmers at the start. Get a box of fresh veggies every week!</p>', MIDDLE_SCHOOL: '<h2>How CSAs Work</h2><p>Members buy "shares" upfront. Share risk and reward with farmer. Get weekly boxes.</p>', HIGH_SCHOOL: '<h2>CSA Economics</h2><p>Upfront payment helps farmers buy seeds, pay workers. Members accept seasonal variety.</p>', UNDERGRADUATE: '<h2>Alternative Networks</h2><p>CSAs build relationships, not just transactions. Embed economy in community.</p>', GRADUATE: '<h2>Embedded Economy</h2><p>CSAs re-embed food exchange in social relations. Counter commodity fetishism.</p>', PHD: '<h2>Prefigurative Politics</h2><p>CSAs embody desired food system values in present practice.</p>' } }],
+  estimatedMinutes: { [LearningLevel.ELEMENTARY]: 20, [LearningLevel.MIDDLE_SCHOOL]: 30, [LearningLevel.HIGH_SCHOOL]: 45, [LearningLevel.UNDERGRADUATE]: 65, [LearningLevel.GRADUATE]: 90, [LearningLevel.PHD]: 120 },
+  lessons: [{ id: 'csa-1', title: 'Sharing the Harvest', content: { [LearningLevel.ELEMENTARY]: '<h2>Farm Friends!</h2><p>Families pay farmers at the start. Get a box of fresh veggies every week!</p>', [LearningLevel.MIDDLE_SCHOOL]: '<h2>How CSAs Work</h2><p>Members buy "shares" upfront. Share risk and reward with farmer. Get weekly boxes.</p>', [LearningLevel.HIGH_SCHOOL]: '<h2>CSA Economics</h2><p>Upfront payment helps farmers buy seeds, pay workers. Members accept seasonal variety.</p>', [LearningLevel.UNDERGRADUATE]: '<h2>Alternative Networks</h2><p>CSAs build relationships, not just transactions. Embed economy in community.</p>', [LearningLevel.GRADUATE]: '<h2>Embedded Economy</h2><p>CSAs re-embed food exchange in social relations. Counter commodity fetishism.</p>', [LearningLevel.PHD]: '<h2>Prefigurative Politics</h2><p>CSAs embody desired food system values in present practice.</p>' } }],
   activities: [{ id: 'csa-act-1', title: 'Plan a CSA', type: 'SIMULATION', description: 'Design your CSA model', estimatedMinutes: 20, interactiveContent: {} }],
-  game: { id: 'csa-game', title: 'CSA Manager', type: 'simulation', description: 'Run a successful CSA farm', difficulty: { ELEMENTARY: { lives: 5, timeLimit: null, hints: true }, MIDDLE_SCHOOL: { lives: 4, timeLimit: 300, hints: true }, HIGH_SCHOOL: { lives: 3, timeLimit: 240, hints: false }, UNDERGRADUATE: { lives: 3, timeLimit: 180, hints: false }, GRADUATE: { lives: 2, timeLimit: 120, hints: false }, PHD: { lives: 1, timeLimit: 90, hints: false } } },
+  game: { id: 'csa-game', title: 'CSA Manager', type: 'simulation', description: 'Run a successful CSA farm', difficulty: { [LearningLevel.ELEMENTARY]: { lives: 5, timeLimit: null, hints: true }, [LearningLevel.MIDDLE_SCHOOL]: { lives: 4, timeLimit: 300, hints: true }, [LearningLevel.HIGH_SCHOOL]: { lives: 3, timeLimit: 240, hints: false }, [LearningLevel.UNDERGRADUATE]: { lives: 3, timeLimit: 180, hints: false }, [LearningLevel.GRADUATE]: { lives: 2, timeLimit: 120, hints: false }, [LearningLevel.PHD]: { lives: 1, timeLimit: 90, hints: false } } },
   quiz: { questions: [{ id: 'csa-q1', question: 'What do CSA members share with farmers?', options: ['Only profits', 'Risk and reward', 'Seeds', 'Land'], correctAnswer: 1, explanation: 'CSA members share both risk (bad harvests) and rewards (abundance) with farmers.', difficulty: LearningLevel.MIDDLE_SCHOOL }] }
 }
 
 export const schoolYouthFoodPrograms: Module = {
   id: 'food-sov-youth', slug: 'school-youth-food-programs', title: 'School & Youth Food Programs',
-  description: { ELEMENTARY: 'Learn about school gardens and cooking classes for kids!', MIDDLE_SCHOOL: 'Discover programs that teach young people about food and farming.', HIGH_SCHOOL: 'Explore youth food education, school gardens, and farm-to-school programs.', UNDERGRADUATE: 'Analyze youth food programs as interventions in food system knowledge.', GRADUATE: 'Examine food education through critical pedagogy frameworks.', PHD: 'Investigate youth food programs as sites of food citizenship formation.' },
+  description: { [LearningLevel.ELEMENTARY]: 'Learn about school gardens and cooking classes for kids!', [LearningLevel.MIDDLE_SCHOOL]: 'Discover programs that teach young people about food and farming.', [LearningLevel.HIGH_SCHOOL]: 'Explore youth food education, school gardens, and farm-to-school programs.', [LearningLevel.UNDERGRADUATE]: 'Analyze youth food programs as interventions in food system knowledge.', [LearningLevel.GRADUATE]: 'Examine food education through critical pedagogy frameworks.', [LearningLevel.PHD]: 'Investigate youth food programs as sites of food citizenship formation.' },
   topic: 'food-sovereignty',
-  estimatedMinutes: { ELEMENTARY: 15, MIDDLE_SCHOOL: 25, HIGH_SCHOOL: 40, UNDERGRADUATE: 60, GRADUATE: 85, PHD: 115 },
-  lessons: [{ id: 'syfp-1', title: 'Growing Young Farmers', content: { ELEMENTARY: '<h2>Kids Growing Food!</h2><p>School gardens let you plant seeds, water plants, and eat what you grow!</p>', MIDDLE_SCHOOL: '<h2>Youth Programs</h2><p>School gardens, cooking clubs, farm visits, youth farming internships.</p>', HIGH_SCHOOL: '<h2>Farm-to-School</h2><p>Programs connect schools to local farms. Students learn growing, cooking, nutrition.</p>', UNDERGRADUATE: '<h2>Food Literacy</h2><p>Youth disconnected from food origins. Programs rebuild knowledge and skills.</p>', GRADUATE: '<h2>Critical Pedagogy</h2><p>Food education can reproduce or challenge dominant food system narratives.</p>', PHD: '<h2>Food Citizenship</h2><p>Youth programs shape future food citizens and potential food system change agents.</p>' } }],
+  estimatedMinutes: { [LearningLevel.ELEMENTARY]: 15, [LearningLevel.MIDDLE_SCHOOL]: 25, [LearningLevel.HIGH_SCHOOL]: 40, [LearningLevel.UNDERGRADUATE]: 60, [LearningLevel.GRADUATE]: 85, [LearningLevel.PHD]: 115 },
+  lessons: [{ id: 'syfp-1', title: 'Growing Young Farmers', content: { [LearningLevel.ELEMENTARY]: '<h2>Kids Growing Food!</h2><p>School gardens let you plant seeds, water plants, and eat what you grow!</p>', [LearningLevel.MIDDLE_SCHOOL]: '<h2>Youth Programs</h2><p>School gardens, cooking clubs, farm visits, youth farming internships.</p>', [LearningLevel.HIGH_SCHOOL]: '<h2>Farm-to-School</h2><p>Programs connect schools to local farms. Students learn growing, cooking, nutrition.</p>', [LearningLevel.UNDERGRADUATE]: '<h2>Food Literacy</h2><p>Youth disconnected from food origins. Programs rebuild knowledge and skills.</p>', [LearningLevel.GRADUATE]: '<h2>Critical Pedagogy</h2><p>Food education can reproduce or challenge dominant food system narratives.</p>', [LearningLevel.PHD]: '<h2>Food Citizenship</h2><p>Youth programs shape future food citizens and potential food system change agents.</p>' } }],
   activities: [{ id: 'syfp-act-1', title: 'Design Youth Program', type: 'SCENARIO', description: 'Create a food program for your school', estimatedMinutes: 20, interactiveContent: {} }],
-  game: { id: 'syfp-game', title: 'School Garden', type: 'simulation', description: 'Build and manage school garden', difficulty: { ELEMENTARY: { lives: 5, timeLimit: null, hints: true }, MIDDLE_SCHOOL: { lives: 4, timeLimit: 300, hints: true }, HIGH_SCHOOL: { lives: 3, timeLimit: 240, hints: false }, UNDERGRADUATE: { lives: 3, timeLimit: 180, hints: false }, GRADUATE: { lives: 2, timeLimit: 120, hints: false }, PHD: { lives: 1, timeLimit: 90, hints: false } } },
+  game: { id: 'syfp-game', title: 'School Garden', type: 'simulation', description: 'Build and manage school garden', difficulty: { [LearningLevel.ELEMENTARY]: { lives: 5, timeLimit: null, hints: true }, [LearningLevel.MIDDLE_SCHOOL]: { lives: 4, timeLimit: 300, hints: true }, [LearningLevel.HIGH_SCHOOL]: { lives: 3, timeLimit: 240, hints: false }, [LearningLevel.UNDERGRADUATE]: { lives: 3, timeLimit: 180, hints: false }, [LearningLevel.GRADUATE]: { lives: 2, timeLimit: 120, hints: false }, [LearningLevel.PHD]: { lives: 1, timeLimit: 90, hints: false } } },
   quiz: { questions: [{ id: 'syfp-q1', question: 'What does farm-to-school do?', options: ['Replaces cafeterias', 'Connects schools to local farms', 'Eliminates lunch', 'Only teaches farming'], correctAnswer: 1, explanation: 'Farm-to-school programs connect schools with local farms for education and fresh food.', difficulty: LearningLevel.MIDDLE_SCHOOL }] }
 }
 
 export const indigenousFoodSystems: Module = {
   id: 'food-sov-indigenous', slug: 'indigenous-food-systems', title: 'Indigenous Food Systems',
-  description: { ELEMENTARY: 'Learn how Native peoples have grown food for thousands of years!', MIDDLE_SCHOOL: 'Discover traditional food systems of Indigenous peoples around the world.', HIGH_SCHOOL: 'Explore Indigenous agricultural knowledge and food sovereignty movements.', UNDERGRADUATE: 'Analyze Indigenous food systems and decolonizing food sovereignty.', GRADUATE: 'Examine Indigenous food sovereignty through settler colonial and resurgence frameworks.', PHD: 'Investigate Indigenous food systems as decolonial praxis and self-determination.' },
+  description: { [LearningLevel.ELEMENTARY]: 'Learn how Native peoples have grown food for thousands of years!', [LearningLevel.MIDDLE_SCHOOL]: 'Discover traditional food systems of Indigenous peoples around the world.', [LearningLevel.HIGH_SCHOOL]: 'Explore Indigenous agricultural knowledge and food sovereignty movements.', [LearningLevel.UNDERGRADUATE]: 'Analyze Indigenous food systems and decolonizing food sovereignty.', [LearningLevel.GRADUATE]: 'Examine Indigenous food sovereignty through settler colonial and resurgence frameworks.', [LearningLevel.PHD]: 'Investigate Indigenous food systems as decolonial praxis and self-determination.' },
   topic: 'food-sovereignty',
-  estimatedMinutes: { ELEMENTARY: 20, MIDDLE_SCHOOL: 35, HIGH_SCHOOL: 55, UNDERGRADUATE: 80, GRADUATE: 110, PHD: 140 },
-  lessons: [{ id: 'ifs-1', title: 'Traditional Food Ways', content: { ELEMENTARY: '<h2>Ancient Wisdom!</h2><p>Three Sisters: corn, beans, squash grow together helping each other!</p>', MIDDLE_SCHOOL: '<h2>Indigenous Agriculture</h2><p>Three Sisters companion planting. Wild rice harvesting. Salmon management. Buffalo relationships.</p>', HIGH_SCHOOL: '<h2>Traditional Knowledge</h2><p>Indigenous peoples developed corn, potatoes, tomatoes, squash. Sophisticated land management.</p>', UNDERGRADUATE: '<h2>Food and Colonization</h2><p>Colonization disrupted food systems. Buffalo slaughter, fishing restrictions, land theft.</p>', GRADUATE: '<h2>Settler Colonialism</h2><p>Food system disruption as colonial strategy. Resurgence through traditional foods.</p>', PHD: '<h2>Decolonial Praxis</h2><p>Indigenous food sovereignty asserts self-determination beyond state frameworks.</p>' } }],
+  estimatedMinutes: { [LearningLevel.ELEMENTARY]: 20, [LearningLevel.MIDDLE_SCHOOL]: 35, [LearningLevel.HIGH_SCHOOL]: 55, [LearningLevel.UNDERGRADUATE]: 80, [LearningLevel.GRADUATE]: 110, [LearningLevel.PHD]: 140 },
+  lessons: [{ id: 'ifs-1', title: 'Traditional Food Ways', content: { [LearningLevel.ELEMENTARY]: '<h2>Ancient Wisdom!</h2><p>Three Sisters: corn, beans, squash grow together helping each other!</p>', [LearningLevel.MIDDLE_SCHOOL]: '<h2>Indigenous Agriculture</h2><p>Three Sisters companion planting. Wild rice harvesting. Salmon management. Buffalo relationships.</p>', [LearningLevel.HIGH_SCHOOL]: '<h2>Traditional Knowledge</h2><p>Indigenous peoples developed corn, potatoes, tomatoes, squash. Sophisticated land management.</p>', [LearningLevel.UNDERGRADUATE]: '<h2>Food and Colonization</h2><p>Colonization disrupted food systems. Buffalo slaughter, fishing restrictions, land theft.</p>', [LearningLevel.GRADUATE]: '<h2>Settler Colonialism</h2><p>Food system disruption as colonial strategy. Resurgence through traditional foods.</p>', [LearningLevel.PHD]: '<h2>Decolonial Praxis</h2><p>Indigenous food sovereignty asserts self-determination beyond state frameworks.</p>' } }],
   activities: [{ id: 'ifs-act-1', title: 'Three Sisters Garden', type: 'SIMULATION', description: 'Plant a traditional companion garden', estimatedMinutes: 25, interactiveContent: {} }],
-  game: { id: 'ifs-game', title: 'Traditional Harvest', type: 'simulation', description: 'Learn traditional food practices', difficulty: { ELEMENTARY: { lives: 5, timeLimit: null, hints: true }, MIDDLE_SCHOOL: { lives: 4, timeLimit: 300, hints: true }, HIGH_SCHOOL: { lives: 3, timeLimit: 240, hints: false }, UNDERGRADUATE: { lives: 3, timeLimit: 180, hints: false }, GRADUATE: { lives: 2, timeLimit: 120, hints: false }, PHD: { lives: 1, timeLimit: 90, hints: false } } },
+  game: { id: 'ifs-game', title: 'Traditional Harvest', type: 'simulation', description: 'Learn traditional food practices', difficulty: { [LearningLevel.ELEMENTARY]: { lives: 5, timeLimit: null, hints: true }, [LearningLevel.MIDDLE_SCHOOL]: { lives: 4, timeLimit: 300, hints: true }, [LearningLevel.HIGH_SCHOOL]: { lives: 3, timeLimit: 240, hints: false }, [LearningLevel.UNDERGRADUATE]: { lives: 3, timeLimit: 180, hints: false }, [LearningLevel.GRADUATE]: { lives: 2, timeLimit: 120, hints: false }, [LearningLevel.PHD]: { lives: 1, timeLimit: 90, hints: false } } },
   quiz: { questions: [{ id: 'ifs-q1', question: 'What are the Three Sisters?', options: ['Three farmers', 'Corn, beans, squash', 'Wheat, rice, oats', 'Three tribes'], correctAnswer: 1, explanation: 'The Three Sisters are corn, beans, and squash grown together in Indigenous agriculture.', difficulty: LearningLevel.ELEMENTARY }] }
 }
 
 export const foodCooperatives: Module = {
   id: 'food-sov-coops', slug: 'food-cooperatives', title: 'Food Cooperatives',
-  description: { ELEMENTARY: 'Learn about stores owned by the people who shop there!', MIDDLE_SCHOOL: 'Discover how food co-ops are owned and run by members.', HIGH_SCHOOL: 'Explore cooperative principles and food co-op business models.', UNDERGRADUATE: 'Analyze food cooperatives as alternative economic organizations.', GRADUATE: 'Examine food co-ops through cooperative economics and solidarity economy frameworks.', PHD: 'Investigate cooperatives as prefigurative economic democracy and food system transformation.' },
+  description: { [LearningLevel.ELEMENTARY]: 'Learn about stores owned by the people who shop there!', [LearningLevel.MIDDLE_SCHOOL]: 'Discover how food co-ops are owned and run by members.', [LearningLevel.HIGH_SCHOOL]: 'Explore cooperative principles and food co-op business models.', [LearningLevel.UNDERGRADUATE]: 'Analyze food cooperatives as alternative economic organizations.', [LearningLevel.GRADUATE]: 'Examine food co-ops through cooperative economics and solidarity economy frameworks.', [LearningLevel.PHD]: 'Investigate cooperatives as prefigurative economic democracy and food system transformation.' },
   topic: 'food-sovereignty',
-  estimatedMinutes: { ELEMENTARY: 20, MIDDLE_SCHOOL: 30, HIGH_SCHOOL: 45, UNDERGRADUATE: 65, GRADUATE: 90, PHD: 120 },
-  lessons: [{ id: 'fc-1', title: 'People-Owned Stores', content: { ELEMENTARY: '<h2>Our Store!</h2><p>In a co-op, shoppers own the store together. Everyone gets a say!</p>', MIDDLE_SCHOOL: '<h2>Co-op Basics</h2><p>Members own shares, vote on decisions, share profits. 7 cooperative principles.</p>', HIGH_SCHOOL: '<h2>Cooperative Principles</h2><p>Open membership, democratic control, member economic participation, autonomy, education, cooperation, community concern.</p>', UNDERGRADUATE: '<h2>Alternative Economics</h2><p>Co-ops prioritize member needs over profit maximization. Challenge investor-owned model.</p>', GRADUATE: '<h2>Solidarity Economy</h2><p>Co-ops part of broader movement for democratic, values-based economics.</p>', PHD: '<h2>Economic Democracy</h2><p>Food co-ops prefigure democratic control over food provisioning and economic life.</p>' } }],
+  estimatedMinutes: { [LearningLevel.ELEMENTARY]: 20, [LearningLevel.MIDDLE_SCHOOL]: 30, [LearningLevel.HIGH_SCHOOL]: 45, [LearningLevel.UNDERGRADUATE]: 65, [LearningLevel.GRADUATE]: 90, [LearningLevel.PHD]: 120 },
+  lessons: [{ id: 'fc-1', title: 'People-Owned Stores', content: { [LearningLevel.ELEMENTARY]: '<h2>Our Store!</h2><p>In a co-op, shoppers own the store together. Everyone gets a say!</p>', [LearningLevel.MIDDLE_SCHOOL]: '<h2>Co-op Basics</h2><p>Members own shares, vote on decisions, share profits. 7 cooperative principles.</p>', [LearningLevel.HIGH_SCHOOL]: '<h2>Cooperative Principles</h2><p>Open membership, democratic control, member economic participation, autonomy, education, cooperation, community concern.</p>', [LearningLevel.UNDERGRADUATE]: '<h2>Alternative Economics</h2><p>Co-ops prioritize member needs over profit maximization. Challenge investor-owned model.</p>', [LearningLevel.GRADUATE]: '<h2>Solidarity Economy</h2><p>Co-ops part of broader movement for democratic, values-based economics.</p>', [LearningLevel.PHD]: '<h2>Economic Democracy</h2><p>Food co-ops prefigure democratic control over food provisioning and economic life.</p>' } }],
   activities: [{ id: 'fc-act-1', title: 'Start a Co-op', type: 'SCENARIO', description: 'Plan your community food co-op', estimatedMinutes: 20, interactiveContent: {} }],
-  game: { id: 'fc-game', title: 'Co-op Manager', type: 'simulation', description: 'Run a democratic food store', difficulty: { ELEMENTARY: { lives: 5, timeLimit: null, hints: true }, MIDDLE_SCHOOL: { lives: 4, timeLimit: 300, hints: true }, HIGH_SCHOOL: { lives: 3, timeLimit: 240, hints: false }, UNDERGRADUATE: { lives: 3, timeLimit: 180, hints: false }, GRADUATE: { lives: 2, timeLimit: 120, hints: false }, PHD: { lives: 1, timeLimit: 90, hints: false } } },
+  game: { id: 'fc-game', title: 'Co-op Manager', type: 'simulation', description: 'Run a democratic food store', difficulty: { [LearningLevel.ELEMENTARY]: { lives: 5, timeLimit: null, hints: true }, [LearningLevel.MIDDLE_SCHOOL]: { lives: 4, timeLimit: 300, hints: true }, [LearningLevel.HIGH_SCHOOL]: { lives: 3, timeLimit: 240, hints: false }, [LearningLevel.UNDERGRADUATE]: { lives: 3, timeLimit: 180, hints: false }, [LearningLevel.GRADUATE]: { lives: 2, timeLimit: 120, hints: false }, [LearningLevel.PHD]: { lives: 1, timeLimit: 90, hints: false } } },
   quiz: { questions: [{ id: 'fc-q1', question: 'How many cooperative principles are there?', options: ['3', '5', '7', '10'], correctAnswer: 2, explanation: 'There are 7 internationally recognized cooperative principles.', difficulty: LearningLevel.MIDDLE_SCHOOL }] }
 }
 
 export const farmersMarketsDirectSales: Module = {
   id: 'food-sov-markets', slug: 'farmers-markets-direct-sales', title: 'Farmers Markets & Direct Sales',
-  description: { ELEMENTARY: 'Visit the farmers market where farmers sell food directly to you!', MIDDLE_SCHOOL: 'Discover how farmers markets and direct sales connect producers to consumers.', HIGH_SCHOOL: 'Explore direct marketing channels and their role in local food systems.', UNDERGRADUATE: 'Analyze farmers markets as alternative food networks and civic spaces.', GRADUATE: 'Examine direct sales through embeddedness and market sociology frameworks.', PHD: 'Investigate farmers markets as contested spaces of alternative and conventional food politics.' },
+  description: { [LearningLevel.ELEMENTARY]: 'Visit the farmers market where farmers sell food directly to you!', [LearningLevel.MIDDLE_SCHOOL]: 'Discover how farmers markets and direct sales connect producers to consumers.', [LearningLevel.HIGH_SCHOOL]: 'Explore direct marketing channels and their role in local food systems.', [LearningLevel.UNDERGRADUATE]: 'Analyze farmers markets as alternative food networks and civic spaces.', [LearningLevel.GRADUATE]: 'Examine direct sales through embeddedness and market sociology frameworks.', [LearningLevel.PHD]: 'Investigate farmers markets as contested spaces of alternative and conventional food politics.' },
   topic: 'food-sovereignty',
-  estimatedMinutes: { ELEMENTARY: 15, MIDDLE_SCHOOL: 30, HIGH_SCHOOL: 45, UNDERGRADUATE: 65, GRADUATE: 90, PHD: 120 },
-  lessons: [{ id: 'fmds-1', title: 'Meet Your Farmer', content: { ELEMENTARY: '<h2>Market Day!</h2><p>At farmers markets, farmers bring fresh food. You can ask them how they grew it!</p>', MIDDLE_SCHOOL: '<h2>Direct Sales</h2><p>Farmers markets, farm stands, U-pick, online ordering. Farmers keep more money, buyers get fresh food.</p>', HIGH_SCHOOL: '<h2>Direct Marketing</h2><p>Eliminates middlemen. Higher margins for farmers, transparency for buyers. Seasonal, local variety.</p>', UNDERGRADUATE: '<h2>Alternative Networks</h2><p>Markets build social capital, food literacy, community connections beyond transactions.</p>', GRADUATE: '<h2>Embedded Markets</h2><p>Exchange re-embedded in social relations. Trust, face-to-face interaction matter.</p>', PHD: '<h2>Market Politics</h2><p>Markets can reinforce privilege or expand access. Who sells, who shops, who regulates?</p>' } }],
+  estimatedMinutes: { [LearningLevel.ELEMENTARY]: 15, [LearningLevel.MIDDLE_SCHOOL]: 30, [LearningLevel.HIGH_SCHOOL]: 45, [LearningLevel.UNDERGRADUATE]: 65, [LearningLevel.GRADUATE]: 90, [LearningLevel.PHD]: 120 },
+  lessons: [{ id: 'fmds-1', title: 'Meet Your Farmer', content: { [LearningLevel.ELEMENTARY]: '<h2>Market Day!</h2><p>At farmers markets, farmers bring fresh food. You can ask them how they grew it!</p>', [LearningLevel.MIDDLE_SCHOOL]: '<h2>Direct Sales</h2><p>Farmers markets, farm stands, U-pick, online ordering. Farmers keep more money, buyers get fresh food.</p>', [LearningLevel.HIGH_SCHOOL]: '<h2>Direct Marketing</h2><p>Eliminates middlemen. Higher margins for farmers, transparency for buyers. Seasonal, local variety.</p>', [LearningLevel.UNDERGRADUATE]: '<h2>Alternative Networks</h2><p>Markets build social capital, food literacy, community connections beyond transactions.</p>', [LearningLevel.GRADUATE]: '<h2>Embedded Markets</h2><p>Exchange re-embedded in social relations. Trust, face-to-face interaction matter.</p>', [LearningLevel.PHD]: '<h2>Market Politics</h2><p>Markets can reinforce privilege or expand access. Who sells, who shops, who regulates?</p>' } }],
   activities: [{ id: 'fmds-act-1', title: 'Market Visit', type: 'SCENARIO', description: 'Plan a farmers market shopping trip', estimatedMinutes: 15, interactiveContent: {} }],
-  game: { id: 'fmds-game', title: 'Market Day', type: 'simulation', description: 'Run a farmers market booth', difficulty: { ELEMENTARY: { lives: 5, timeLimit: null, hints: true }, MIDDLE_SCHOOL: { lives: 4, timeLimit: 300, hints: true }, HIGH_SCHOOL: { lives: 3, timeLimit: 240, hints: false }, UNDERGRADUATE: { lives: 3, timeLimit: 180, hints: false }, GRADUATE: { lives: 2, timeLimit: 120, hints: false }, PHD: { lives: 1, timeLimit: 90, hints: false } } },
+  game: { id: 'fmds-game', title: 'Market Day', type: 'simulation', description: 'Run a farmers market booth', difficulty: { [LearningLevel.ELEMENTARY]: { lives: 5, timeLimit: null, hints: true }, [LearningLevel.MIDDLE_SCHOOL]: { lives: 4, timeLimit: 300, hints: true }, [LearningLevel.HIGH_SCHOOL]: { lives: 3, timeLimit: 240, hints: false }, [LearningLevel.UNDERGRADUATE]: { lives: 3, timeLimit: 180, hints: false }, [LearningLevel.GRADUATE]: { lives: 2, timeLimit: 120, hints: false }, [LearningLevel.PHD]: { lives: 1, timeLimit: 90, hints: false } } },
   quiz: { questions: [{ id: 'fmds-q1', question: 'Why do farmers earn more at direct sales?', options: ['Work less', 'No middlemen', 'Sell less', 'Free rent'], correctAnswer: 1, explanation: 'Direct sales eliminate middlemen, so farmers keep more of the final price.', difficulty: LearningLevel.MIDDLE_SCHOOL }] }
 }
 
 export const permacultureFoodForests: Module = {
   id: 'food-sov-food-forest', slug: 'permaculture-food-forests', title: 'Permaculture Food Forests',
-  description: { ELEMENTARY: 'Imagine a forest where everything you see is something you can eat!', MIDDLE_SCHOOL: 'Discover food forests - gardens designed to work like natural forests.', HIGH_SCHOOL: 'Explore permaculture food forest design and multi-story growing.', UNDERGRADUATE: 'Analyze food forests as agroecological systems and urban food strategy.', GRADUATE: 'Examine food forests through ecological design and commons frameworks.', PHD: 'Investigate food forests as decolonial land practice and ecological resistance.' },
+  description: { [LearningLevel.ELEMENTARY]: 'Imagine a forest where everything you see is something you can eat!', [LearningLevel.MIDDLE_SCHOOL]: 'Discover food forests - gardens designed to work like natural forests.', [LearningLevel.HIGH_SCHOOL]: 'Explore permaculture food forest design and multi-story growing.', [LearningLevel.UNDERGRADUATE]: 'Analyze food forests as agroecological systems and urban food strategy.', [LearningLevel.GRADUATE]: 'Examine food forests through ecological design and commons frameworks.', [LearningLevel.PHD]: 'Investigate food forests as decolonial land practice and ecological resistance.' },
   topic: 'food-sovereignty',
-  estimatedMinutes: { ELEMENTARY: 20, MIDDLE_SCHOOL: 35, HIGH_SCHOOL: 55, UNDERGRADUATE: 75, GRADUATE: 100, PHD: 130 },
-  lessons: [{ id: 'pff-1', title: 'Edible Forests', content: { ELEMENTARY: '<h2>Yummy Forest!</h2><p>Tall fruit trees, berry bushes, vegetables, herbs all growing together!</p>', MIDDLE_SCHOOL: '<h2>Food Forest Layers</h2><p>7 layers: canopy, understory, shrub, herbaceous, ground cover, vine, root.</p>', HIGH_SCHOOL: '<h2>Permaculture Design</h2><p>Mimic natural forest ecosystems. Self-sustaining once established. Minimal inputs needed.</p>', UNDERGRADUATE: '<h2>Urban Food Forests</h2><p>Transform vacant lots, parks. Community managed, increase access, build food sovereignty.</p>', GRADUATE: '<h2>Food Commons</h2><p>Public food forests as commons challenge private property food access norms.</p>', PHD: '<h2>Decolonial Practice</h2><p>Food forests embody Indigenous land relationships. Challenge colonial monoculture logic.</p>' } }],
+  estimatedMinutes: { [LearningLevel.ELEMENTARY]: 20, [LearningLevel.MIDDLE_SCHOOL]: 35, [LearningLevel.HIGH_SCHOOL]: 55, [LearningLevel.UNDERGRADUATE]: 75, [LearningLevel.GRADUATE]: 100, [LearningLevel.PHD]: 130 },
+  lessons: [{ id: 'pff-1', title: 'Edible Forests', content: { [LearningLevel.ELEMENTARY]: '<h2>Yummy Forest!</h2><p>Tall fruit trees, berry bushes, vegetables, herbs all growing together!</p>', [LearningLevel.MIDDLE_SCHOOL]: '<h2>Food Forest Layers</h2><p>7 layers: canopy, understory, shrub, herbaceous, ground cover, vine, root.</p>', [LearningLevel.HIGH_SCHOOL]: '<h2>Permaculture Design</h2><p>Mimic natural forest ecosystems. Self-sustaining once established. Minimal inputs needed.</p>', [LearningLevel.UNDERGRADUATE]: '<h2>Urban Food Forests</h2><p>Transform vacant lots, parks. Community managed, increase access, build food sovereignty.</p>', [LearningLevel.GRADUATE]: '<h2>Food Commons</h2><p>Public food forests as commons challenge private property food access norms.</p>', [LearningLevel.PHD]: '<h2>Decolonial Practice</h2><p>Food forests embody Indigenous land relationships. Challenge colonial monoculture logic.</p>' } }],
   activities: [{ id: 'pff-act-1', title: 'Design Food Forest', type: 'SIMULATION', description: 'Plan your 7-layer food forest', estimatedMinutes: 25, interactiveContent: {} }],
-  game: { id: 'pff-game', title: 'Forest Builder', type: 'simulation', description: 'Create and grow a food forest', difficulty: { ELEMENTARY: { lives: 5, timeLimit: null, hints: true }, MIDDLE_SCHOOL: { lives: 4, timeLimit: 300, hints: true }, HIGH_SCHOOL: { lives: 3, timeLimit: 240, hints: false }, UNDERGRADUATE: { lives: 3, timeLimit: 180, hints: false }, GRADUATE: { lives: 2, timeLimit: 120, hints: false }, PHD: { lives: 1, timeLimit: 90, hints: false } } },
+  game: { id: 'pff-game', title: 'Forest Builder', type: 'simulation', description: 'Create and grow a food forest', difficulty: { [LearningLevel.ELEMENTARY]: { lives: 5, timeLimit: null, hints: true }, [LearningLevel.MIDDLE_SCHOOL]: { lives: 4, timeLimit: 300, hints: true }, [LearningLevel.HIGH_SCHOOL]: { lives: 3, timeLimit: 240, hints: false }, [LearningLevel.UNDERGRADUATE]: { lives: 3, timeLimit: 180, hints: false }, [LearningLevel.GRADUATE]: { lives: 2, timeLimit: 120, hints: false }, [LearningLevel.PHD]: { lives: 1, timeLimit: 90, hints: false } } },
   quiz: { questions: [{ id: 'pff-q1', question: 'How many layers in a food forest?', options: ['3', '5', '7', '9'], correctAnswer: 2, explanation: 'Food forests have 7 layers from canopy to root.', difficulty: LearningLevel.MIDDLE_SCHOOL }] }
 }
 
 export const foodSovereigntyMasterclass: Module = {
   id: 'food-sov-masterclass', slug: 'food-sovereignty-masterclass', title: 'Food Sovereignty Masterclass',
-  description: { ELEMENTARY: 'Become a food hero by learning everything about growing and sharing food!', MIDDLE_SCHOOL: 'Master the complete picture of food sovereignty from farm to table.', HIGH_SCHOOL: 'Synthesize food sovereignty principles into comprehensive action plans.', UNDERGRADUATE: 'Integrate food sovereignty theory and practice for systems-level change.', GRADUATE: 'Develop advanced food sovereignty strategy and movement building skills.', PHD: 'Conduct original research contributing to food sovereignty scholarship and praxis.' },
+  description: { [LearningLevel.ELEMENTARY]: 'Become a food hero by learning everything about growing and sharing food!', [LearningLevel.MIDDLE_SCHOOL]: 'Master the complete picture of food sovereignty from farm to table.', [LearningLevel.HIGH_SCHOOL]: 'Synthesize food sovereignty principles into comprehensive action plans.', [LearningLevel.UNDERGRADUATE]: 'Integrate food sovereignty theory and practice for systems-level change.', [LearningLevel.GRADUATE]: 'Develop advanced food sovereignty strategy and movement building skills.', [LearningLevel.PHD]: 'Conduct original research contributing to food sovereignty scholarship and praxis.' },
   topic: 'food-sovereignty',
-  estimatedMinutes: { ELEMENTARY: 30, MIDDLE_SCHOOL: 50, HIGH_SCHOOL: 75, UNDERGRADUATE: 100, GRADUATE: 140, PHD: 180 },
-  lessons: [{ id: 'fsm-1', title: 'Food Sovereignty Integration', content: { ELEMENTARY: '<h2>Food Heroes!</h2><p>You learned about seeds, gardens, cooking, sharing. Now put it all together to help your community!</p>', MIDDLE_SCHOOL: '<h2>Bringing It Together</h2><p>Connect growing, preserving, cooking, sharing into a complete local food system.</p>', HIGH_SCHOOL: '<h2>Systems Thinking</h2><p>Food sovereignty requires policy, land access, knowledge, markets, culture. All interconnected.</p>', UNDERGRADUATE: '<h2>Theory to Practice</h2><p>La Via Campesina\'s 6 pillars: focus on food for people, value food providers, localize systems, build knowledge, work with nature, food as sacred.</p>', GRADUATE: '<h2>Movement Building</h2><p>Food sovereignty as social movement. Alliance building, policy campaigns, prefigurative politics.</p>', PHD: '<h2>Research Praxis</h2><p>Participatory action research. Scholar-activist methodologies. Theory building from movement knowledge.</p>' } }],
+  estimatedMinutes: { [LearningLevel.ELEMENTARY]: 30, [LearningLevel.MIDDLE_SCHOOL]: 50, [LearningLevel.HIGH_SCHOOL]: 75, [LearningLevel.UNDERGRADUATE]: 100, [LearningLevel.GRADUATE]: 140, [LearningLevel.PHD]: 180 },
+  lessons: [{ id: 'fsm-1', title: 'Food Sovereignty Integration', content: { [LearningLevel.ELEMENTARY]: '<h2>Food Heroes!</h2><p>You learned about seeds, gardens, cooking, sharing. Now put it all together to help your community!</p>', [LearningLevel.MIDDLE_SCHOOL]: '<h2>Bringing It Together</h2><p>Connect growing, preserving, cooking, sharing into a complete local food system.</p>', [LearningLevel.HIGH_SCHOOL]: '<h2>Systems Thinking</h2><p>Food sovereignty requires policy, land access, knowledge, markets, culture. All interconnected.</p>', [LearningLevel.UNDERGRADUATE]: '<h2>Theory to Practice</h2><p>La Via Campesina\'s 6 pillars: focus on food for people, value food providers, localize systems, build knowledge, work with nature, food as sacred.</p>', [LearningLevel.GRADUATE]: '<h2>Movement Building</h2><p>Food sovereignty as social movement. Alliance building, policy campaigns, prefigurative politics.</p>', [LearningLevel.PHD]: '<h2>Research Praxis</h2><p>Participatory action research. Scholar-activist methodologies. Theory building from movement knowledge.</p>' } }],
   activities: [{ id: 'fsm-act-1', title: 'Community Food Plan', type: 'SCENARIO', description: 'Design comprehensive food sovereignty strategy', estimatedMinutes: 35, interactiveContent: {} }],
-  game: { id: 'fsm-game', title: 'Sovereignty Strategist', type: 'simulation', description: 'Lead food sovereignty transformation', difficulty: { ELEMENTARY: { lives: 5, timeLimit: null, hints: true }, MIDDLE_SCHOOL: { lives: 4, timeLimit: 300, hints: true }, HIGH_SCHOOL: { lives: 3, timeLimit: 240, hints: false }, UNDERGRADUATE: { lives: 3, timeLimit: 180, hints: false }, GRADUATE: { lives: 2, timeLimit: 120, hints: false }, PHD: { lives: 1, timeLimit: 90, hints: false } } },
+  game: { id: 'fsm-game', title: 'Sovereignty Strategist', type: 'simulation', description: 'Lead food sovereignty transformation', difficulty: { [LearningLevel.ELEMENTARY]: { lives: 5, timeLimit: null, hints: true }, [LearningLevel.MIDDLE_SCHOOL]: { lives: 4, timeLimit: 300, hints: true }, [LearningLevel.HIGH_SCHOOL]: { lives: 3, timeLimit: 240, hints: false }, [LearningLevel.UNDERGRADUATE]: { lives: 3, timeLimit: 180, hints: false }, [LearningLevel.GRADUATE]: { lives: 2, timeLimit: 120, hints: false }, [LearningLevel.PHD]: { lives: 1, timeLimit: 90, hints: false } } },
   quiz: { questions: [{ id: 'fsm-q1', question: 'How many pillars does La Via Campesina identify for food sovereignty?', options: ['4', '5', '6', '7'], correctAnswer: 2, explanation: 'La Via Campesina identifies 6 pillars of food sovereignty.', difficulty: LearningLevel.UNDERGRADUATE }] }
 }
 
