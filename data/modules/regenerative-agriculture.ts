@@ -611,5 +611,130 @@ export const regenerativeAgricultureModules: Module[] = [
       { title: 'Practical Farmers of Iowa', url: 'https://practicalfarmers.org/', type: 'research' },
       { title: 'SARE Crop Rotation', url: 'https://www.sare.org/', type: 'article' }
     ]
+  },
+  // Module 6: Agroforestry
+  {
+    id: 'regen-agroforestry',
+    slug: 'agroforestry',
+    title: 'Agroforestry',
+    description: {
+      ELEMENTARY: 'Learn how farmers grow trees and crops together!',
+      MIDDLE_SCHOOL: 'Discover how combining trees with farming creates healthier land.',
+      HIGH_SCHOOL: 'Explore alley cropping, silvopasture, and forest farming systems.',
+      UNDERGRADUATE: 'Analyze agroforestry economics, design principles, and ecosystem services.',
+      GRADUATE: 'Examine agroforestry policy, carbon markets, and landscape integration.',
+      PHD: 'Research tree-crop interactions, modeling approaches, and climate adaptation.'
+    },
+    topic: 'regenerative-agriculture',
+    category: 'AGROFORESTRY',
+    icon: 'TreePine',
+    color: 'moss',
+    duration: { ELEMENTARY: 25, MIDDLE_SCHOOL: 35, HIGH_SCHOOL: 50, UNDERGRADUATE: 70, GRADUATE: 90, PHD: 120 },
+    isMasterclass: false,
+    lessons: [{ id: 'ra-af-1', title: 'Trees on Farms', order: 1, duration: 15, hasActivity: true, activityType: 'SIMULATION', content: { ELEMENTARY: '<h2>Farm Forests!</h2><p>Farmers can grow trees alongside their crops. Trees give shade, stop wind, and provide fruit and nuts!</p>', MIDDLE_SCHOOL: '<h2>Agroforestry Benefits</h2><p>Trees on farms provide shade for animals, windbreaks for crops, habitat for wildlife, and extra products to sell.</p>', HIGH_SCHOOL: '<h2>Agroforestry Systems</h2><p>Alley cropping (rows of trees with crops between), silvopasture (trees with livestock), and forest farming (products under tree canopy).</p>', UNDERGRADUATE: '<h2>System Design</h2><p>Species selection, spacing, orientation, and economic analysis of diverse product streams.</p>', GRADUATE: '<h2>Ecosystem Services</h2><p>Carbon sequestration, water quality improvement, biodiversity, and landscape connectivity.</p>', PHD: '<h2>Research Frontiers</h2><p>Competition and facilitation modeling, carbon certification, and climate resilience assessment.</p>' } }],
+    activities: [{ id: 'ra-af-act-1', type: 'SIMULATION', title: { ELEMENTARY: 'Plant a Tree Farm!', MIDDLE_SCHOOL: 'Design a Silvopasture', HIGH_SCHOOL: 'Alley Cropping Layout', UNDERGRADUATE: 'Economic Analysis', GRADUATE: 'Carbon Modeling', PHD: 'System Optimization' }, description: { ELEMENTARY: 'Plant trees alongside crops!', MIDDLE_SCHOOL: 'Design a system with trees and animals together.', HIGH_SCHOOL: 'Design an alley cropping system.', UNDERGRADUATE: 'Analyze the economics of agroforestry.', GRADUATE: 'Model carbon sequestration potential.', PHD: 'Optimize multi-objective agroforestry design.' }, config: { ELEMENTARY: { complexity: 'basic', variables: 4 }, MIDDLE_SCHOOL: { complexity: 'simple', variables: 6 }, HIGH_SCHOOL: { complexity: 'intermediate', variables: 12 }, UNDERGRADUATE: { complexity: 'advanced', variables: 18 }, GRADUATE: { complexity: 'expert', variables: 25 }, PHD: { complexity: 'research', variables: 35 } } }],
+    game: { id: 'ra-af-game', type: 'simulation', title: 'Agroforester', description: 'Design productive tree-crop systems!', rounds: 5, timeLimit: 40, difficultyByLevel: { ELEMENTARY: 'easy', MIDDLE_SCHOOL: 'easy', HIGH_SCHOOL: 'medium', UNDERGRADUATE: 'medium', GRADUATE: 'hard', PHD: 'expert' } },
+    quiz: { id: 'ra-af-quiz', passingScore: 80, questions: [{ id: 'rafq1', question: { ELEMENTARY: 'What is agroforestry?', MIDDLE_SCHOOL: 'What is silvopasture?', HIGH_SCHOOL: 'What is alley cropping?', UNDERGRADUATE: 'What drives agroforestry economics?', GRADUATE: 'What ecosystem service do trees provide for water?', PHD: 'What is a key modeling challenge in agroforestry?' }, options: { ELEMENTARY: ['Growing trees and crops together', 'Cutting down all trees', 'Only growing trees', 'Only growing crops'], MIDDLE_SCHOOL: ['Trees with grazing animals', 'Trees only', 'Pasture only', 'Fish farming'], HIGH_SCHOOL: ['Rows of trees with crops between', 'Only trees', 'Only crops', 'Random planting'], UNDERGRADUATE: ['Multiple product streams over time', 'Single crop only', 'No products', 'Government payments only'], GRADUATE: ['Filtering and slowing runoff', 'Increasing runoff', 'No water effects', 'Using more water'], PHD: ['Above and below ground competition dynamics', 'Too simple', 'No competition', 'Only above ground'] }, correctIndex: 0, explanation: { ELEMENTARY: 'Agroforestry means growing trees and crops (or animals) together on the same land!', MIDDLE_SCHOOL: 'Silvopasture combines trees with grazing animals like cattle or sheep.', HIGH_SCHOOL: 'Alley cropping plants rows of trees with annual crops grown in the alleys between.', UNDERGRADUATE: 'Agroforestry economics depend on diverse products (nuts, fruit, timber, crops) over different timeframes.', GRADUATE: 'Trees filter pollutants and slow runoff, improving water quality downstream.', PHD: 'Modeling competition for light, water, and nutrients above and below ground is complex.' } }] },
+    externalResources: [{ title: 'USDA Agroforestry', url: 'https://www.fs.usda.gov/nac/', type: 'research' }]
+  },
+  // Module 7: Holistic Grazing
+  {
+    id: 'regen-grazing',
+    slug: 'holistic-grazing',
+    title: 'Holistic Grazing',
+    description: {
+      ELEMENTARY: 'Learn how animals can help the land by eating grass!',
+      MIDDLE_SCHOOL: 'Discover how moving animals helps grass grow better.',
+      HIGH_SCHOOL: 'Explore rotational grazing, animal impact, and pasture recovery.',
+      UNDERGRADUATE: 'Analyze grazing management, stocking rates, and pasture productivity.',
+      GRADUATE: 'Examine adaptive multi-paddock grazing, carbon sequestration, and ranch economics.',
+      PHD: 'Research grazing-soil-plant interactions, methane dynamics, and landscape-scale impacts.'
+    },
+    topic: 'regenerative-agriculture',
+    category: 'GRAZING',
+    icon: 'Beef',
+    color: 'terra',
+    duration: { ELEMENTARY: 25, MIDDLE_SCHOOL: 35, HIGH_SCHOOL: 50, UNDERGRADUATE: 70, GRADUATE: 90, PHD: 120 },
+    isMasterclass: false,
+    lessons: [{ id: 'ra-gr-1', title: 'Moving the Herd', order: 1, duration: 15, hasActivity: true, activityType: 'SIMULATION', content: { ELEMENTARY: '<h2>Happy Cows, Healthy Land!</h2><p>When cows eat grass and move to new areas, the grass grows back even better!</p>', MIDDLE_SCHOOL: '<h2>Rotational Grazing</h2><p>Moving animals frequently gives grass time to recover. Short grazing, long rest makes pastures healthier.</p>', HIGH_SCHOOL: '<h2>Holistic Planned Grazing</h2><p>High density, short duration grazing followed by long recovery. Mimics wild herds avoiding predators.</p>', UNDERGRADUATE: '<h2>Grazing Management</h2><p>Stocking rate, stock density, grazing period, recovery period, and monitoring indicators.</p>', GRADUATE: '<h2>Adaptive Management</h2><p>Adjusting plans based on plant growth, weather, and monitoring. Multi-paddock systems and infrastructure.</p>', PHD: '<h2>Research Frontiers</h2><p>Soil carbon dynamics under grazing, methane and carbon balance, and ecosystem service quantification.</p>' } }],
+    activities: [{ id: 'ra-gr-act-1', type: 'SIMULATION', title: { ELEMENTARY: 'Move the Cows!', MIDDLE_SCHOOL: 'Paddock Rotation', HIGH_SCHOOL: 'Grazing Plan', UNDERGRADUATE: 'Stocking Calculator', GRADUATE: 'Adaptive Management', PHD: 'Carbon Modeling' }, description: { ELEMENTARY: 'Move animals to help grass grow!', MIDDLE_SCHOOL: 'Rotate animals through paddocks.', HIGH_SCHOOL: 'Create a grazing plan for a ranch.', UNDERGRADUATE: 'Calculate optimal stocking rates.', GRADUATE: 'Develop an adaptive grazing management plan.', PHD: 'Model carbon dynamics under different grazing regimes.' }, config: { ELEMENTARY: { complexity: 'basic', variables: 4 }, MIDDLE_SCHOOL: { complexity: 'simple', variables: 6 }, HIGH_SCHOOL: { complexity: 'intermediate', variables: 12 }, UNDERGRADUATE: { complexity: 'advanced', variables: 18 }, GRADUATE: { complexity: 'expert', variables: 25 }, PHD: { complexity: 'research', variables: 35 } } }],
+    game: { id: 'ra-gr-game', type: 'simulation', title: 'Grazing Manager', description: 'Manage livestock for healthy pastures!', rounds: 5, timeLimit: 40, difficultyByLevel: { ELEMENTARY: 'easy', MIDDLE_SCHOOL: 'easy', HIGH_SCHOOL: 'medium', UNDERGRADUATE: 'medium', GRADUATE: 'hard', PHD: 'expert' } },
+    quiz: { id: 'ra-gr-quiz', passingScore: 80, questions: [{ id: 'rgrq1', question: { ELEMENTARY: 'Why do farmers move their animals?', MIDDLE_SCHOOL: 'What does grass need after being grazed?', HIGH_SCHOOL: 'What does holistic grazing mimic?', UNDERGRADUATE: 'What is stock density?', GRADUATE: 'What is AMP grazing?', PHD: 'What complicates grazing carbon accounting?' }, options: { ELEMENTARY: ['To let grass grow back', 'For exercise', 'To confuse them', 'No reason'], MIDDLE_SCHOOL: ['Time to recover and regrow', 'More grazing immediately', 'Water only', 'Nothing'], HIGH_SCHOOL: ['Wild herds avoiding predators', 'Factory farming', 'Feedlot systems', 'Continuous grazing'], UNDERGRADUATE: ['Animals per unit area at one time', 'Total animals on ranch', 'Animal weight', 'Animal age'], GRADUATE: ['Adaptive Multi-Paddock grazing', 'All Morning Pasture', 'Animal Movement Program', 'Annual Maintenance Plan'], PHD: ['Belowground carbon dynamics and measurement', 'Too simple to measure', 'Only aboveground matters', 'No complications'] }, correctIndex: 0, explanation: { ELEMENTARY: 'Moving animals gives grass time to grow back healthy and strong!', MIDDLE_SCHOOL: 'Grass needs a recovery period after grazing to rebuild roots and leaves.', HIGH_SCHOOL: 'Holistic grazing mimics how wild herbivores moved in tight herds to avoid predators.', UNDERGRADUATE: 'Stock density is the number of animals per unit area at a single point in time.', GRADUATE: 'AMP (Adaptive Multi-Paddock) grazing uses many paddocks with flexible management.', PHD: 'Measuring soil carbon changes and methane emissions complicates net carbon accounting.' } }] },
+    externalResources: [{ title: 'Savory Institute', url: 'https://savory.global/', type: 'research' }]
+  },
+  // Module 8: Perennial Systems
+  {
+    id: 'regen-perennials',
+    slug: 'perennial-systems',
+    title: 'Perennial Systems',
+    description: {
+      ELEMENTARY: 'Learn about plants that come back year after year!',
+      MIDDLE_SCHOOL: 'Discover crops that do not need replanting every year.',
+      HIGH_SCHOOL: 'Explore perennial grains, polycultures, and food forests.',
+      UNDERGRADUATE: 'Analyze perennial agriculture economics, breeding, and system design.',
+      GRADUATE: 'Examine perennial systems for climate resilience, ecosystem services, and food security.',
+      PHD: 'Research perennial crop development, root system dynamics, and land use transitions.'
+    },
+    topic: 'regenerative-agriculture',
+    category: 'PERENNIALS',
+    icon: 'TreeDeciduous',
+    color: 'moss',
+    duration: { ELEMENTARY: 25, MIDDLE_SCHOOL: 35, HIGH_SCHOOL: 50, UNDERGRADUATE: 70, GRADUATE: 90, PHD: 120 },
+    isMasterclass: false,
+    lessons: [{ id: 'ra-per-1', title: 'Plants That Stay', order: 1, duration: 15, hasActivity: true, activityType: 'SIMULATION', content: { ELEMENTARY: '<h2>Plants That Keep Growing!</h2><p>Some plants come back every year without replanting. They have deep roots and protect the soil!</p>', MIDDLE_SCHOOL: '<h2>Annual vs Perennial</h2><p>Annuals die after one season (corn, wheat). Perennials live many years (apple trees, asparagus) with deeper roots.</p>', HIGH_SCHOOL: '<h2>Perennial Advantages</h2><p>No annual tillage, deeper roots, year-round cover, reduced erosion, and carbon sequestration.</p>', UNDERGRADUATE: '<h2>Perennial Agriculture</h2><p>Perennial grains (Kernza), food forests, and designed polycultures combining multiple perennial species.</p>', GRADUATE: '<h2>System Design</h2><p>Stacking functions, successional planting, and economic modeling of multi-year establishment.</p>', PHD: '<h2>Research Frontiers</h2><p>Perennial grain breeding, root carbon dynamics, and landscape-scale transitions.</p>' } }],
+    activities: [{ id: 'ra-per-act-1', type: 'SIMULATION', title: { ELEMENTARY: 'Perennial Garden!', MIDDLE_SCHOOL: 'Compare Plant Types', HIGH_SCHOOL: 'Food Forest Design', UNDERGRADUATE: 'Economic Analysis', GRADUATE: 'Transition Planning', PHD: 'Breeding Priorities' }, description: { ELEMENTARY: 'Grow plants that come back every year!', MIDDLE_SCHOOL: 'Compare annual and perennial plants.', HIGH_SCHOOL: 'Design a food forest with multiple layers.', UNDERGRADUATE: 'Analyze economics of perennial systems.', GRADUATE: 'Plan a transition from annual to perennial.', PHD: 'Identify perennial grain breeding priorities.' }, config: { ELEMENTARY: { complexity: 'basic', variables: 4 }, MIDDLE_SCHOOL: { complexity: 'simple', variables: 6 }, HIGH_SCHOOL: { complexity: 'intermediate', variables: 12 }, UNDERGRADUATE: { complexity: 'advanced', variables: 18 }, GRADUATE: { complexity: 'expert', variables: 25 }, PHD: { complexity: 'research', variables: 35 } } }],
+    game: { id: 'ra-per-game', type: 'simulation', title: 'Perennial Farmer', description: 'Build lasting food systems!', rounds: 5, timeLimit: 40, difficultyByLevel: { ELEMENTARY: 'easy', MIDDLE_SCHOOL: 'easy', HIGH_SCHOOL: 'medium', UNDERGRADUATE: 'medium', GRADUATE: 'hard', PHD: 'expert' } },
+    quiz: { id: 'ra-per-quiz', passingScore: 80, questions: [{ id: 'rperq1', question: { ELEMENTARY: 'What do perennial plants do?', MIDDLE_SCHOOL: 'How are perennial roots different?', HIGH_SCHOOL: 'What is a food forest?', UNDERGRADUATE: 'What is Kernza?', GRADUATE: 'What is a key economic challenge for perennials?', PHD: 'What trait is hardest to breed in perennial grains?' }, options: { ELEMENTARY: ['Come back every year', 'Die after one year', 'Never grow', 'Only grow in water'], MIDDLE_SCHOOL: ['Deeper and longer-lived', 'Shallower', 'Same as annuals', 'No roots'], HIGH_SCHOOL: ['Multi-layer perennial planting mimicking forest', 'Regular forest', 'Annual crop field', 'Greenhouse'], UNDERGRADUATE: ['Perennial wheat relative', 'Type of corn', 'Annual grain', 'Vegetable'], GRADUATE: ['Long establishment period before harvest', 'Too easy', 'No challenges', 'Immediate returns'], PHD: ['Seed yield while maintaining perenniality', 'Root depth', 'Disease resistance', 'Height'] }, correctIndex: 0, explanation: { ELEMENTARY: 'Perennial plants come back every year without replanting!', MIDDLE_SCHOOL: 'Perennial roots grow much deeper and live for many years.', HIGH_SCHOOL: 'A food forest stacks multiple layers of perennial food plants mimicking a natural forest.', UNDERGRADUATE: 'Kernza is a perennial grain developed from intermediate wheatgrass.', GRADUATE: 'Perennial systems require years of establishment before generating full returns.', PHD: 'Breeding perennial grains that produce high seed yield while remaining perennial is challenging.' } }] },
+    externalResources: [{ title: 'The Land Institute', url: 'https://landinstitute.org/', type: 'research' }]
+  },
+  // Module 9: Integrated Pest Management
+  {
+    id: 'regen-ipm',
+    slug: 'integrated-pest-management',
+    title: 'Integrated Pest Management',
+    description: {
+      ELEMENTARY: 'Learn how to fight pests with nature instead of chemicals!',
+      MIDDLE_SCHOOL: 'Discover how farmers control pests using natural methods.',
+      HIGH_SCHOOL: 'Explore IPM strategies, biological control, and monitoring.',
+      UNDERGRADUATE: 'Analyze IPM decision-making, economic thresholds, and pesticide reduction.',
+      GRADUATE: 'Examine area-wide IPM, climate impacts, and policy frameworks.',
+      PHD: 'Research pest ecology, resistance management, and systems approaches.'
+    },
+    topic: 'regenerative-agriculture',
+    category: 'PEST MANAGEMENT',
+    icon: 'Bug',
+    color: 'terra',
+    duration: { ELEMENTARY: 25, MIDDLE_SCHOOL: 35, HIGH_SCHOOL: 50, UNDERGRADUATE: 70, GRADUATE: 90, PHD: 120 },
+    isMasterclass: false,
+    lessons: [{ id: 'ra-ipm-1', title: 'Fighting Pests Naturally', order: 1, duration: 15, hasActivity: true, activityType: 'SIMULATION', content: { ELEMENTARY: '<h2>Good Bugs vs Bad Bugs!</h2><p>Some insects eat the pests that damage crops. Ladybugs eat aphids!</p>', MIDDLE_SCHOOL: '<h2>IPM Pyramid</h2><p>Prevention first, then monitoring, then biological control, then targeted pesticides only as last resort.</p>', HIGH_SCHOOL: '<h2>IPM Strategies</h2><p>Cultural controls (rotation, sanitation), biological controls (beneficial insects), and chemical controls (targeted, last resort).</p>', UNDERGRADUATE: '<h2>Economic Thresholds</h2><p>Treat only when pest levels exceed economic injury level. Monitor, identify, decide, evaluate.</p>', GRADUATE: '<h2>Area-Wide IPM</h2><p>Coordinated management across farms and landscapes for more effective control.</p>', PHD: '<h2>Research Frontiers</h2><p>Resistance evolution, climate change impacts, and ecological network approaches.</p>' } }],
+    activities: [{ id: 'ra-ipm-act-1', type: 'SIMULATION', title: { ELEMENTARY: 'Release the Ladybugs!', MIDDLE_SCHOOL: 'IPM Detective', HIGH_SCHOOL: 'Threshold Calculator', UNDERGRADUATE: 'IPM Plan', GRADUATE: 'Area-Wide Program', PHD: 'Resistance Modeling' }, description: { ELEMENTARY: 'Use good bugs to fight bad bugs!', MIDDLE_SCHOOL: 'Identify pests and choose control methods.', HIGH_SCHOOL: 'Calculate economic thresholds for treatment.', UNDERGRADUATE: 'Develop an IPM plan for a farm.', GRADUATE: 'Design an area-wide IPM program.', PHD: 'Model pesticide resistance evolution.' }, config: { ELEMENTARY: { complexity: 'basic', variables: 4 }, MIDDLE_SCHOOL: { complexity: 'simple', variables: 6 }, HIGH_SCHOOL: { complexity: 'intermediate', variables: 12 }, UNDERGRADUATE: { complexity: 'advanced', variables: 18 }, GRADUATE: { complexity: 'expert', variables: 25 }, PHD: { complexity: 'research', variables: 35 } } }],
+    game: { id: 'ra-ipm-game', type: 'puzzle', title: 'Pest Detective', description: 'Solve pest problems without harmful chemicals!', rounds: 5, timeLimit: 40, difficultyByLevel: { ELEMENTARY: 'easy', MIDDLE_SCHOOL: 'easy', HIGH_SCHOOL: 'medium', UNDERGRADUATE: 'medium', GRADUATE: 'hard', PHD: 'expert' } },
+    quiz: { id: 'ra-ipm-quiz', passingScore: 80, questions: [{ id: 'ripmq1', question: { ELEMENTARY: 'What do ladybugs eat?', MIDDLE_SCHOOL: 'What is the first step in IPM?', HIGH_SCHOOL: 'What is biological control?', UNDERGRADUATE: 'What is an economic threshold?', GRADUATE: 'What is area-wide IPM?', PHD: 'What accelerates pesticide resistance?' }, options: { ELEMENTARY: ['Aphids and other small pests', 'Leaves', 'Flowers', 'Seeds'], MIDDLE_SCHOOL: ['Prevention', 'Spraying chemicals', 'Ignoring pests', 'Removing crops'], HIGH_SCHOOL: ['Using living organisms to control pests', 'Chemical spraying', 'Removing all plants', 'Ignoring pests'], UNDERGRADUATE: ['Pest level where treatment cost equals damage cost', 'Any pest presence', 'Maximum pest level', 'Zero pests always'], GRADUATE: ['Coordinated management across multiple farms', 'Single farm only', 'One field only', 'Chemical spraying everywhere'], PHD: ['Frequent application of single mode of action', 'Never using pesticides', 'Rotating modes', 'Biological control'] }, correctIndex: 0, explanation: { ELEMENTARY: 'Ladybugs love to eat aphids and other small pest insects!', MIDDLE_SCHOOL: 'IPM starts with prevention - making conditions unfavorable for pests.', HIGH_SCHOOL: 'Biological control uses living organisms like predators or parasites to control pests.', UNDERGRADUATE: 'Economic threshold is when pest damage cost would exceed treatment cost.', GRADUATE: 'Area-wide IPM coordinates management across landscapes for better control.', PHD: 'Repeatedly using pesticides with the same mode of action accelerates resistance evolution.' } }] },
+    externalResources: [{ title: 'UC IPM', url: 'https://ipm.ucanr.edu/', type: 'research' }]
+  },
+  // Module 10: Soil Carbon Sequestration
+  {
+    id: 'regen-carbon',
+    slug: 'soil-carbon-sequestration',
+    title: 'Soil Carbon Sequestration',
+    description: {
+      ELEMENTARY: 'Learn how healthy soil captures carbon and helps our planet!',
+      MIDDLE_SCHOOL: 'Discover how farming practices can store carbon underground.',
+      HIGH_SCHOOL: 'Explore carbon cycling, soil organic matter, and climate mitigation.',
+      UNDERGRADUATE: 'Analyze soil carbon measurement, practices, and carbon markets.',
+      GRADUATE: 'Examine carbon market protocols, verification challenges, and policy.',
+      PHD: 'Research soil carbon dynamics, permanence, and quantification methods.'
+    },
+    topic: 'regenerative-agriculture',
+    category: 'CARBON',
+    icon: 'Leaf',
+    color: 'moss',
+    duration: { ELEMENTARY: 25, MIDDLE_SCHOOL: 35, HIGH_SCHOOL: 50, UNDERGRADUATE: 70, GRADUATE: 90, PHD: 120 },
+    isMasterclass: false,
+    lessons: [{ id: 'ra-carb-1', title: 'Carbon in Soil', order: 1, duration: 15, hasActivity: true, activityType: 'SIMULATION', content: { ELEMENTARY: '<h2>Soil Superpower!</h2><p>Healthy soil can capture carbon from the air and store it underground, helping fight climate change!</p>', MIDDLE_SCHOOL: '<h2>Carbon Cycle in Soil</h2><p>Plants capture CO2, roots feed soil organisms, and carbon gets stored in soil organic matter.</p>', HIGH_SCHOOL: '<h2>Building Soil Carbon</h2><p>Cover crops, reduced tillage, compost, and perennials increase soil organic carbon over time.</p>', UNDERGRADUATE: '<h2>Measuring Soil Carbon</h2><p>Sampling protocols, lab analysis, remote sensing, and modeling approaches.</p>', GRADUATE: '<h2>Carbon Markets</h2><p>Agricultural carbon credits, protocols, verification requirements, and market access.</p>', PHD: '<h2>Research Frontiers</h2><p>Carbon permanence, deep carbon dynamics, and improving measurement-reporting-verification.</p>' } }],
+    activities: [{ id: 'ra-carb-act-1', type: 'SIMULATION', title: { ELEMENTARY: 'Feed the Soil!', MIDDLE_SCHOOL: 'Carbon Pathway', HIGH_SCHOOL: 'Practice Comparison', UNDERGRADUATE: 'Sampling Design', GRADUATE: 'Credit Calculation', PHD: 'MRV System' }, description: { ELEMENTARY: 'Help soil capture carbon!', MIDDLE_SCHOOL: 'Follow carbon from air to soil.', HIGH_SCHOOL: 'Compare carbon sequestration of different practices.', UNDERGRADUATE: 'Design a soil carbon sampling plan.', GRADUATE: 'Calculate potential carbon credits for a farm.', PHD: 'Design a measurement-reporting-verification system.' }, config: { ELEMENTARY: { complexity: 'basic', variables: 4 }, MIDDLE_SCHOOL: { complexity: 'simple', variables: 6 }, HIGH_SCHOOL: { complexity: 'intermediate', variables: 12 }, UNDERGRADUATE: { complexity: 'advanced', variables: 18 }, GRADUATE: { complexity: 'expert', variables: 25 }, PHD: { complexity: 'research', variables: 35 } } }],
+    game: { id: 'ra-carb-game', type: 'simulation', title: 'Carbon Farmer', description: 'Build soil carbon and earn credits!', rounds: 5, timeLimit: 40, difficultyByLevel: { ELEMENTARY: 'easy', MIDDLE_SCHOOL: 'easy', HIGH_SCHOOL: 'medium', UNDERGRADUATE: 'medium', GRADUATE: 'hard', PHD: 'expert' } },
+    quiz: { id: 'ra-carb-quiz', passingScore: 80, questions: [{ id: 'rcarbq1', question: { ELEMENTARY: 'How does soil help with climate change?', MIDDLE_SCHOOL: 'How does carbon get into soil?', HIGH_SCHOOL: 'Which practice increases soil carbon?', UNDERGRADUATE: 'Why is soil carbon sampling challenging?', GRADUATE: 'What is additionality in carbon markets?', PHD: 'What is a key permanence concern?' }, options: { ELEMENTARY: ['Stores carbon underground', 'Releases carbon', 'Has no effect', 'Makes it worse'], MIDDLE_SCHOOL: ['Plants capture CO2 and roots add carbon to soil', 'Rain adds carbon', 'Wind adds carbon', 'Carbon just appears'], HIGH_SCHOOL: ['Cover cropping', 'Intensive tillage', 'Leaving soil bare', 'Removing all plants'], UNDERGRADUATE: ['High spatial variability', 'Too easy', 'Soil is uniform', 'No challenges'], GRADUATE: ['Carbon stored beyond business as usual', 'Any carbon storage', 'Total carbon', 'Historical carbon'], PHD: ['Carbon loss if practices change', 'Carbon is always permanent', 'No concerns', 'Easy to guarantee'] }, correctIndex: 0, explanation: { ELEMENTARY: 'Healthy soil stores carbon underground instead of letting it into the air!', MIDDLE_SCHOOL: 'Plants capture CO2 from air through photosynthesis and add carbon to soil through roots and residues.', HIGH_SCHOOL: 'Cover cropping adds organic matter and keeps living roots in soil, increasing carbon.', UNDERGRADUATE: 'Soil carbon varies greatly across fields, requiring many samples for accurate measurement.', GRADUATE: 'Additionality means the carbon would not have been stored without the incentive payment.', PHD: 'Carbon stored in soil can be released if management practices revert to tillage or bare fallows.' } }] },
+    externalResources: [{ title: 'Carbon Cycle Institute', url: 'https://www.carboncycle.org/', type: 'research' }]
   }
 ]
