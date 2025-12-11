@@ -611,5 +611,130 @@ export const foodSovereigntyModules: Module[] = [
       { title: 'NCHFP Home Food Preservation', url: 'https://nchfp.uga.edu/', type: 'research' },
       { title: 'Ball Canning', url: 'https://www.freshpreserving.com/', type: 'article' }
     ]
+  },
+  // Module 6: Urban Farming
+  {
+    id: 'food-sov-urban-farming',
+    slug: 'urban-farming',
+    title: 'Urban Farming',
+    description: {
+      ELEMENTARY: 'Grow food in the city - even on rooftops and balconies!',
+      MIDDLE_SCHOOL: 'Learn how cities can produce their own food in surprising places.',
+      HIGH_SCHOOL: 'Explore urban agriculture techniques, vertical farming, and city food systems.',
+      UNDERGRADUATE: 'Analyze urban farm economics, policy support, and integration with city planning.',
+      GRADUATE: 'Examine urban agriculture as food justice strategy and community development tool.',
+      PHD: 'Research urban farm productivity, environmental services, and policy effectiveness.'
+    },
+    topic: 'food-sovereignty',
+    category: 'URBAN AGRICULTURE',
+    icon: 'Building2',
+    color: 'moss',
+    duration: { ELEMENTARY: 25, MIDDLE_SCHOOL: 35, HIGH_SCHOOL: 50, UNDERGRADUATE: 65, GRADUATE: 85, PHD: 110 },
+    isMasterclass: false,
+    lessons: [{ id: 'fs-urban-1', title: 'City Farms', order: 1, duration: 15, hasActivity: true, activityType: 'SIMULATION', content: { ELEMENTARY: '<h2>Farms in the City!</h2><p>You can grow food anywhere - rooftops, balconies, even old parking lots!</p>', MIDDLE_SCHOOL: '<h2>Urban Agriculture</h2><p>Cities are finding creative spaces for food production: vacant lots, rooftops, vertical farms.</p>', HIGH_SCHOOL: '<h2>Urban Farming Methods</h2><p>Container gardening, rooftop farms, vertical farms, aquaponics, and community gardens transform cities.</p>', UNDERGRADUATE: '<h2>Urban Farm Economics</h2><p>Land costs, labor, market access, and policy support shape urban farm viability.</p>', GRADUATE: '<h2>Food Justice Applications</h2><p>Urban farms address food deserts, provide jobs, and build community resilience.</p>', PHD: '<h2>Research Questions</h2><p>Productivity optimization, environmental benefits, and policy evaluation methods.</p>' } }],
+    activities: [{ id: 'fs-urban-act-1', type: 'SIMULATION', title: { ELEMENTARY: 'Design a Rooftop Garden!', MIDDLE_SCHOOL: 'Plan an Urban Farm', HIGH_SCHOOL: 'Site Assessment', UNDERGRADUATE: 'Business Planning', GRADUATE: 'Impact Assessment', PHD: 'Research Design' }, description: { ELEMENTARY: 'Create a garden on top of a building!', MIDDLE_SCHOOL: 'Plan how to transform an empty lot into a farm.', HIGH_SCHOOL: 'Assess a site for urban farming potential.', UNDERGRADUATE: 'Develop a business plan for an urban farm.', GRADUATE: 'Assess community impacts of urban farming.', PHD: 'Design research on urban agriculture.' }, config: { ELEMENTARY: { complexity: 'basic', variables: 4 }, MIDDLE_SCHOOL: { complexity: 'simple', variables: 6 }, HIGH_SCHOOL: { complexity: 'intermediate', variables: 10 }, UNDERGRADUATE: { complexity: 'advanced', variables: 15 }, GRADUATE: { complexity: 'expert', variables: 20 }, PHD: { complexity: 'research', variables: 28 } } }],
+    game: { id: 'fs-urban-game', type: 'simulation', title: 'City Farmer', description: 'Build and manage an urban farm!', rounds: 5, timeLimit: 40, difficultyByLevel: { ELEMENTARY: 'easy', MIDDLE_SCHOOL: 'easy', HIGH_SCHOOL: 'medium', UNDERGRADUATE: 'medium', GRADUATE: 'hard', PHD: 'expert' } },
+    quiz: { id: 'fs-urban-quiz', passingScore: 80, questions: [{ id: 'fuq1', question: { ELEMENTARY: 'Where can you grow food in a city?', MIDDLE_SCHOOL: 'What is vertical farming?', HIGH_SCHOOL: 'What challenge do urban farms face?', UNDERGRADUATE: 'What policy supports urban farming?', GRADUATE: 'How do urban farms address food deserts?', PHD: 'What is a key research gap in urban agriculture?' }, options: { ELEMENTARY: ['Rooftops, balconies, empty lots', 'Only in the country', 'Nowhere', 'Underground'], MIDDLE_SCHOOL: ['Growing food in stacked layers', 'Farming on hills', 'Mountain farming', 'Deep farming'], HIGH_SCHOOL: ['Land costs and access', 'Too much rain', 'Too much space', 'No challenges'], UNDERGRADUATE: ['Zoning changes and incentives', 'No policy support exists', 'Only federal programs', 'Banning farming'], GRADUATE: ['Providing local fresh food access', 'Making food more expensive', 'Reducing jobs', 'Increasing transportation'], PHD: ['Long-term productivity data', 'How to plant seeds', 'Basic farming', 'Soil color'] }, correctIndex: 0, explanation: { ELEMENTARY: 'Cities have lots of spaces for growing food - rooftops, balconies, and empty lots!', MIDDLE_SCHOOL: 'Vertical farming grows food in stacked layers, often indoors with LED lights.', HIGH_SCHOOL: 'Urban farms face high land costs and competition for space.', UNDERGRADUATE: 'Zoning changes and incentives help urban farms get started and stay viable.', GRADUATE: 'Urban farms bring fresh, affordable produce to neighborhoods lacking grocery stores.', PHD: 'Long-term data on urban farm productivity and sustainability is limited.' } }] },
+    externalResources: [{ title: 'Urban Farming Institute', url: 'https://urbanfarminginstitute.org/', type: 'research' }]
+  },
+  // Module 7: Food Cooperatives
+  {
+    id: 'food-sov-cooperatives',
+    slug: 'food-cooperatives',
+    title: 'Food Cooperatives',
+    description: {
+      ELEMENTARY: 'Learn about stores owned by the community!',
+      MIDDLE_SCHOOL: 'Discover how food co-ops work and why people start them.',
+      HIGH_SCHOOL: 'Explore cooperative business models, governance, and community benefits.',
+      UNDERGRADUATE: 'Analyze co-op economics, membership structures, and market positioning.',
+      GRADUATE: 'Examine cooperatives as alternative food system institutions and movement building.',
+      PHD: 'Research cooperative effectiveness, scale challenges, and systemic change potential.'
+    },
+    topic: 'food-sovereignty',
+    category: 'COOPERATIVES',
+    icon: 'Users',
+    color: 'ocean',
+    duration: { ELEMENTARY: 20, MIDDLE_SCHOOL: 30, HIGH_SCHOOL: 45, UNDERGRADUATE: 60, GRADUATE: 80, PHD: 105 },
+    isMasterclass: false,
+    lessons: [{ id: 'fs-coop-1', title: 'People-Owned Stores', order: 1, duration: 15, hasActivity: true, activityType: 'SCENARIO', content: { ELEMENTARY: '<h2>Our Store!</h2><p>A co-op is a store owned by the people who shop there!</p>', MIDDLE_SCHOOL: '<h2>What is a Food Co-op?</h2><p>Members own the store together, share decisions, and often get discounts.</p>', HIGH_SCHOOL: '<h2>Cooperative Principles</h2><p>Open membership, democratic control, member economic participation, autonomy, education, cooperation, community concern.</p>', UNDERGRADUATE: '<h2>Co-op Business Models</h2><p>Consumer, producer, and worker cooperatives each serve different needs.</p>', GRADUATE: '<h2>Co-ops as Alternatives</h2><p>Cooperatives challenge corporate food retail and build community power.</p>', PHD: '<h2>Research Questions</h2><p>Scale vs values, competitive positioning, and systemic impact.</p>' } }],
+    activities: [{ id: 'fs-coop-act-1', type: 'SCENARIO', title: { ELEMENTARY: 'Start a Co-op!', MIDDLE_SCHOOL: 'Member Meeting', HIGH_SCHOOL: 'Governance Design', UNDERGRADUATE: 'Business Analysis', GRADUATE: 'Movement Building', PHD: 'Impact Research' }, description: { ELEMENTARY: 'Imagine starting a store with your neighbors!', MIDDLE_SCHOOL: 'Practice making decisions together as co-op members.', HIGH_SCHOOL: 'Design governance for a food cooperative.', UNDERGRADUATE: 'Analyze co-op business model viability.', GRADUATE: 'Explore how co-ops build food movement power.', PHD: 'Design research on cooperative impact.' }, config: { ELEMENTARY: { scenarios: 3, hints: true, timeLimit: null }, MIDDLE_SCHOOL: { scenarios: 4, hints: true, timeLimit: 120 }, HIGH_SCHOOL: { scenarios: 5, hints: false, timeLimit: 90 }, UNDERGRADUATE: { scenarios: 6, hints: false, timeLimit: 120 }, GRADUATE: { scenarios: 7, hints: false, timeLimit: 90 }, PHD: { scenarios: 8, hints: false, timeLimit: 60 } } }],
+    game: { id: 'fs-coop-game', type: 'simulation', title: 'Co-op Manager', description: 'Run a successful food cooperative!', rounds: 5, timeLimit: 40, difficultyByLevel: { ELEMENTARY: 'easy', MIDDLE_SCHOOL: 'easy', HIGH_SCHOOL: 'medium', UNDERGRADUATE: 'medium', GRADUATE: 'hard', PHD: 'expert' } },
+    quiz: { id: 'fs-coop-quiz', passingScore: 80, questions: [{ id: 'fcq1', question: { ELEMENTARY: 'Who owns a food co-op?', MIDDLE_SCHOOL: 'How do co-op members make decisions?', HIGH_SCHOOL: 'What is one cooperative principle?', UNDERGRADUATE: 'What is a consumer cooperative?', GRADUATE: 'How do co-ops challenge corporate food?', PHD: 'What tension exists as co-ops grow?' }, options: { ELEMENTARY: ['The members who shop there', 'One rich person', 'The government', 'Nobody'], MIDDLE_SCHOOL: ['Democratically - each member gets a vote', 'The manager decides everything', 'Random selection', 'No decisions needed'], HIGH_SCHOOL: ['Democratic member control', 'Maximum profit', 'Owner control', 'Government control'], UNDERGRADUATE: ['Owned by the customers who shop there', 'Owned by investors', 'Owned by workers only', 'Owned by suppliers'], GRADUATE: ['Community ownership vs corporate profit', 'They support corporations', 'No challenge', 'Same as regular stores'], PHD: ['Maintaining values while scaling', 'Too many customers', 'Too much profit', 'No tensions exist'] }, correctIndex: 0, explanation: { ELEMENTARY: 'Food co-ops are owned by the members - the people who shop there!', MIDDLE_SCHOOL: 'In a co-op, each member gets one vote, regardless of how much they buy.', HIGH_SCHOOL: 'Democratic member control means members make decisions together.', UNDERGRADUATE: 'Consumer cooperatives are owned by and serve their customer-members.', GRADUATE: 'Co-ops offer community-controlled alternatives to profit-driven corporate retailers.', PHD: 'Growing co-ops often struggle to maintain democratic values and mission focus.' } }] },
+    externalResources: [{ title: 'National Co-op Grocers', url: 'https://www.ncg.coop/', type: 'research' }]
+  },
+  // Module 8: Indigenous Food Systems
+  {
+    id: 'food-sov-indigenous',
+    slug: 'indigenous-food-systems',
+    title: 'Indigenous Food Systems',
+    description: {
+      ELEMENTARY: 'Learn about traditional foods and farming from indigenous peoples!',
+      MIDDLE_SCHOOL: 'Discover how indigenous communities have grown food for thousands of years.',
+      HIGH_SCHOOL: 'Explore traditional ecological knowledge, heritage crops, and food sovereignty movements.',
+      UNDERGRADUATE: 'Analyze indigenous food systems, colonization impacts, and revitalization efforts.',
+      GRADUATE: 'Examine indigenous food sovereignty as decolonization and self-determination.',
+      PHD: 'Research traditional knowledge systems, co-management, and indigenous research methodologies.'
+    },
+    topic: 'food-sovereignty',
+    category: 'INDIGENOUS SYSTEMS',
+    icon: 'Leaf',
+    color: 'terra',
+    duration: { ELEMENTARY: 25, MIDDLE_SCHOOL: 35, HIGH_SCHOOL: 50, UNDERGRADUATE: 65, GRADUATE: 85, PHD: 110 },
+    isMasterclass: false,
+    lessons: [{ id: 'fs-indig-1', title: 'Traditional Ways', order: 1, duration: 15, hasActivity: true, activityType: 'DRAG_DROP', content: { ELEMENTARY: '<h2>Ancient Wisdom!</h2><p>Indigenous peoples have grown food in harmony with nature for thousands of years.</p>', MIDDLE_SCHOOL: '<h2>Traditional Knowledge</h2><p>The Three Sisters (corn, beans, squash) is one example of indigenous agricultural genius.</p>', HIGH_SCHOOL: '<h2>Indigenous Food Sovereignty</h2><p>Reclaiming traditional foods, seeds, and land is central to indigenous self-determination.</p>', UNDERGRADUATE: '<h2>Colonization Impacts</h2><p>Food system disruption was a tool of colonization. Revitalization restores health and culture.</p>', GRADUATE: '<h2>Decolonizing Food</h2><p>Indigenous food sovereignty challenges colonial food systems and asserts self-determination.</p>', PHD: '<h2>Research Ethics</h2><p>Indigenous research methodologies center community benefit and sovereignty.</p>' } }],
+    activities: [{ id: 'fs-indig-act-1', type: 'DRAG_DROP', title: { ELEMENTARY: 'Three Sisters Garden!', MIDDLE_SCHOOL: 'Traditional Foods', HIGH_SCHOOL: 'Heritage Seeds', UNDERGRADUATE: 'System Analysis', GRADUATE: 'Sovereignty Framework', PHD: 'Ethical Research' }, description: { ELEMENTARY: 'Plant corn, beans, and squash together!', MIDDLE_SCHOOL: 'Match traditional foods to their origins.', HIGH_SCHOOL: 'Explore heritage seed varieties and their significance.', UNDERGRADUATE: 'Analyze indigenous food system disruption and revitalization.', GRADUATE: 'Apply indigenous food sovereignty frameworks.', PHD: 'Design community-centered research.' }, config: { ELEMENTARY: { items: 6, hints: true, timeLimit: null }, MIDDLE_SCHOOL: { items: 8, hints: true, timeLimit: 120 }, HIGH_SCHOOL: { items: 12, hints: false, timeLimit: 90 }, UNDERGRADUATE: { items: 15, hints: false, timeLimit: 120 }, GRADUATE: { items: 18, hints: false, timeLimit: 90 }, PHD: { items: 22, hints: false, timeLimit: 60 } } }],
+    game: { id: 'fs-indig-game', type: 'matching', title: 'Traditional Knowledge', description: 'Learn about indigenous food traditions!', rounds: 5, timeLimit: 35, difficultyByLevel: { ELEMENTARY: 'easy', MIDDLE_SCHOOL: 'easy', HIGH_SCHOOL: 'medium', UNDERGRADUATE: 'medium', GRADUATE: 'hard', PHD: 'expert' } },
+    quiz: { id: 'fs-indig-quiz', passingScore: 80, questions: [{ id: 'fiq1', question: { ELEMENTARY: 'What are the Three Sisters?', MIDDLE_SCHOOL: 'How do the Three Sisters help each other?', HIGH_SCHOOL: 'What is traditional ecological knowledge?', UNDERGRADUATE: 'How did colonization affect indigenous food systems?', GRADUATE: 'What does indigenous food sovereignty assert?', PHD: 'What is CBPR in indigenous research?' }, options: { ELEMENTARY: ['Corn, beans, and squash', 'Three actual sisters', 'Three rivers', 'Three mountains'], MIDDLE_SCHOOL: ['Corn supports beans, beans add nitrogen, squash shades soil', 'They do not help each other', 'They fight for space', 'They are planted separately'], HIGH_SCHOOL: ['Knowledge passed down about living with nature', 'Only book learning', 'Modern science only', 'No such thing'], UNDERGRADUATE: ['Disrupted food access, seeds, and practices', 'Improved everything', 'No impact', 'Only positive changes'], GRADUATE: ['Self-determination over food systems', 'Government control', 'Corporate ownership', 'Individual choice only'], PHD: ['Community-Based Participatory Research', 'Corporate Business Planning Research', 'Centralized Based Processing Research', 'None of these'] }, correctIndex: 0, explanation: { ELEMENTARY: 'The Three Sisters are corn, beans, and squash - planted together!', MIDDLE_SCHOOL: 'Corn gives beans a pole to climb, beans add nitrogen, squash leaves shade soil and prevent weeds.', HIGH_SCHOOL: 'Traditional ecological knowledge is wisdom about ecosystems passed down through generations.', UNDERGRADUATE: 'Colonization systematically disrupted indigenous food access, seed sovereignty, and traditional practices.', GRADUATE: 'Indigenous food sovereignty asserts the right to define and control food systems.', PHD: 'CBPR (Community-Based Participatory Research) centers community needs and governance.' } }] },
+    externalResources: [{ title: 'First Nations Development Institute', url: 'https://www.firstnations.org/', type: 'research' }]
+  },
+  // Module 9: Agroecology
+  {
+    id: 'food-sov-agroecology',
+    slug: 'agroecology',
+    title: 'Agroecology',
+    description: {
+      ELEMENTARY: 'Learn how farms can work like nature!',
+      MIDDLE_SCHOOL: 'Discover farming that copies nature\'s patterns and systems.',
+      HIGH_SCHOOL: 'Explore agroecological principles, practices, and transitions.',
+      UNDERGRADUATE: 'Analyze agroecology as science, practice, and social movement.',
+      GRADUATE: 'Examine agroecology in policy, research, and food system transformation.',
+      PHD: 'Research agroecological transitions, metrics, and political ecology.'
+    },
+    topic: 'food-sovereignty',
+    category: 'AGROECOLOGY',
+    icon: 'TreePine',
+    color: 'moss',
+    duration: { ELEMENTARY: 25, MIDDLE_SCHOOL: 35, HIGH_SCHOOL: 50, UNDERGRADUATE: 65, GRADUATE: 85, PHD: 110 },
+    isMasterclass: false,
+    lessons: [{ id: 'fs-agro-1', title: 'Farming Like Nature', order: 1, duration: 15, hasActivity: true, activityType: 'SIMULATION', content: { ELEMENTARY: '<h2>Nature\'s Farm!</h2><p>In nature, plants and animals help each other. Agroecology copies this!</p>', MIDDLE_SCHOOL: '<h2>What is Agroecology?</h2><p>Farming that uses ecological principles - diversity, natural pest control, healthy soil.</p>', HIGH_SCHOOL: '<h2>Agroecological Principles</h2><p>Enhance biodiversity, recycle nutrients, build soil, integrate crops and animals, reduce external inputs.</p>', UNDERGRADUATE: '<h2>Three Faces of Agroecology</h2><p>Scientific discipline, set of practices, and social movement for food system change.</p>', GRADUATE: '<h2>Agroecology in Policy</h2><p>FAO, IAASTD, and civil society promote agroecology for sustainable food systems.</p>', PHD: '<h2>Research Frontiers</h2><p>Transition pathways, territorial approaches, and political economy of agroecology.</p>' } }],
+    activities: [{ id: 'fs-agro-act-1', type: 'SIMULATION', title: { ELEMENTARY: 'Design an Eco-Farm!', MIDDLE_SCHOOL: 'Natural Pest Control', HIGH_SCHOOL: 'System Design', UNDERGRADUATE: 'Transition Planning', GRADUATE: 'Policy Analysis', PHD: 'Research Methods' }, description: { ELEMENTARY: 'Create a farm where plants help each other!', MIDDLE_SCHOOL: 'Use beneficial insects instead of pesticides.', HIGH_SCHOOL: 'Design an agroecological farm system.', UNDERGRADUATE: 'Plan a farm transition to agroecology.', GRADUATE: 'Analyze policies supporting agroecology.', PHD: 'Design participatory agroecology research.' }, config: { ELEMENTARY: { complexity: 'basic', variables: 4 }, MIDDLE_SCHOOL: { complexity: 'simple', variables: 6 }, HIGH_SCHOOL: { complexity: 'intermediate', variables: 10 }, UNDERGRADUATE: { complexity: 'advanced', variables: 15 }, GRADUATE: { complexity: 'expert', variables: 20 }, PHD: { complexity: 'research', variables: 28 } } }],
+    game: { id: 'fs-agro-game', type: 'simulation', title: 'Agroecology Farmer', description: 'Build a farm that works with nature!', rounds: 5, timeLimit: 40, difficultyByLevel: { ELEMENTARY: 'easy', MIDDLE_SCHOOL: 'easy', HIGH_SCHOOL: 'medium', UNDERGRADUATE: 'medium', GRADUATE: 'hard', PHD: 'expert' } },
+    quiz: { id: 'fs-agro-quiz', passingScore: 80, questions: [{ id: 'faq1', question: { ELEMENTARY: 'What does agroecology copy?', MIDDLE_SCHOOL: 'How does agroecology control pests?', HIGH_SCHOOL: 'What is one agroecological principle?', UNDERGRADUATE: 'What are the three faces of agroecology?', GRADUATE: 'What international body promotes agroecology?', PHD: 'What is a territorial approach to agroecology?' }, options: { ELEMENTARY: ['Nature\'s patterns', 'Factories', 'Cities', 'Nothing'], MIDDLE_SCHOOL: ['Beneficial insects and diversity', 'More pesticides', 'Ignoring pests', 'Removing all insects'], HIGH_SCHOOL: ['Enhance biodiversity', 'Maximize monoculture', 'Use more chemicals', 'Remove all animals'], UNDERGRADUATE: ['Science, practice, and social movement', 'Only science', 'Only farming', 'Only politics'], GRADUATE: ['FAO', 'WTO', 'IMF', 'World Bank only'], PHD: ['Landscape-scale coordinated transitions', 'Individual farm only', 'Single crop focus', 'Export orientation'] }, correctIndex: 0, explanation: { ELEMENTARY: 'Agroecology copies nature\'s patterns - how plants and animals help each other!', MIDDLE_SCHOOL: 'Agroecology uses beneficial insects, habitat diversity, and natural predators.', HIGH_SCHOOL: 'Enhancing biodiversity is a core agroecological principle.', UNDERGRADUATE: 'Agroecology encompasses scientific research, farming practices, and social movements.', GRADUATE: 'The FAO (UN Food and Agriculture Organization) has adopted agroecology.', PHD: 'Territorial approaches coordinate agroecological transitions across landscapes.' } }] },
+    externalResources: [{ title: 'Agroecology Fund', url: 'https://www.agroecologyfund.org/', type: 'research' }]
+  },
+  // Module 10: Food Justice
+  {
+    id: 'food-sov-food-justice',
+    slug: 'food-justice',
+    title: 'Food Justice',
+    description: {
+      ELEMENTARY: 'Learn why everyone deserves good food!',
+      MIDDLE_SCHOOL: 'Discover why some neighborhoods lack access to healthy food.',
+      HIGH_SCHOOL: 'Explore food deserts, food access inequities, and community solutions.',
+      UNDERGRADUATE: 'Analyze structural racism in food systems and food justice movements.',
+      GRADUATE: 'Examine food justice frameworks, organizing strategies, and policy change.',
+      PHD: 'Research food justice outcomes, intersectionality, and transformative approaches.'
+    },
+    topic: 'food-sovereignty',
+    category: 'FOOD JUSTICE',
+    icon: 'Scale',
+    color: 'terra',
+    duration: { ELEMENTARY: 20, MIDDLE_SCHOOL: 30, HIGH_SCHOOL: 45, UNDERGRADUATE: 60, GRADUATE: 80, PHD: 105 },
+    isMasterclass: false,
+    lessons: [{ id: 'fs-justice-1', title: 'Fair Food for All', order: 1, duration: 15, hasActivity: true, activityType: 'SCENARIO', content: { ELEMENTARY: '<h2>Food for Everyone!</h2><p>Everyone deserves healthy, tasty food - but not everyone can get it easily.</p>', MIDDLE_SCHOOL: '<h2>What is a Food Desert?</h2><p>Areas where fresh, healthy food is hard to find - often low-income neighborhoods.</p>', HIGH_SCHOOL: '<h2>Food Access Inequities</h2><p>Grocery store locations, transportation, income, and racism all affect food access.</p>', UNDERGRADUATE: '<h2>Structural Racism</h2><p>Redlining, disinvestment, and discrimination created many food deserts.</p>', GRADUATE: '<h2>Food Justice Movement</h2><p>Community-led organizing for equitable, sustainable, local food systems.</p>', PHD: '<h2>Research Approaches</h2><p>Participatory methods, intersectionality, and measuring justice outcomes.</p>' } }],
+    activities: [{ id: 'fs-justice-act-1', type: 'SCENARIO', title: { ELEMENTARY: 'Find the Food!', MIDDLE_SCHOOL: 'Map Food Access', HIGH_SCHOOL: 'Identify Barriers', UNDERGRADUATE: 'Analyze Causes', GRADUATE: 'Organizing Strategy', PHD: 'Justice Metrics' }, description: { ELEMENTARY: 'Help families find healthy food in their neighborhood!', MIDDLE_SCHOOL: 'Map where food is easy and hard to get.', HIGH_SCHOOL: 'Identify barriers to food access in a community.', UNDERGRADUATE: 'Analyze structural causes of food inequity.', GRADUATE: 'Develop a food justice organizing strategy.', PHD: 'Design food justice outcome measurement.' }, config: { ELEMENTARY: { scenarios: 3, hints: true, timeLimit: null }, MIDDLE_SCHOOL: { scenarios: 4, hints: true, timeLimit: 120 }, HIGH_SCHOOL: { scenarios: 5, hints: false, timeLimit: 90 }, UNDERGRADUATE: { scenarios: 6, hints: false, timeLimit: 120 }, GRADUATE: { scenarios: 7, hints: false, timeLimit: 90 }, PHD: { scenarios: 8, hints: false, timeLimit: 60 } } }],
+    game: { id: 'fs-justice-game', type: 'simulation', title: 'Food Justice Hero', description: 'Help communities get fair food access!', rounds: 5, timeLimit: 40, difficultyByLevel: { ELEMENTARY: 'easy', MIDDLE_SCHOOL: 'easy', HIGH_SCHOOL: 'medium', UNDERGRADUATE: 'medium', GRADUATE: 'hard', PHD: 'expert' } },
+    quiz: { id: 'fs-justice-quiz', passingScore: 80, questions: [{ id: 'fjq1', question: { ELEMENTARY: 'What does everyone deserve?', MIDDLE_SCHOOL: 'What is a food desert?', HIGH_SCHOOL: 'What affects food access?', UNDERGRADUATE: 'What created many food deserts?', GRADUATE: 'What is food justice organizing?', PHD: 'What is intersectionality in food justice?' }, options: { ELEMENTARY: ['Access to healthy food', 'Only fast food', 'No food', 'Expensive food'], MIDDLE_SCHOOL: ['An area with little access to healthy food', 'An actual desert', 'A food museum', 'A food festival'], HIGH_SCHOOL: ['Store locations, transportation, income, racism', 'Only personal choice', 'Weather only', 'Nothing affects it'], UNDERGRADUATE: ['Redlining, disinvestment, discrimination', 'Natural processes', 'Random chance', 'Personal choices only'], GRADUATE: ['Community-led work for equitable food systems', 'Corporate campaigns', 'Government only', 'Individual action only'], PHD: ['How multiple identities affect food access', 'Single factor analysis', 'No identity factors', 'Only income matters'] }, correctIndex: 0, explanation: { ELEMENTARY: 'Everyone deserves access to healthy, affordable, culturally appropriate food!', MIDDLE_SCHOOL: 'Food deserts are areas - often low-income - with little access to healthy food.', HIGH_SCHOOL: 'Food access is shaped by store locations, transportation, income, and systemic racism.', UNDERGRADUATE: 'Historical redlining and disinvestment created many of today\'s food deserts.', GRADUATE: 'Food justice organizing builds community power for equitable, sustainable food systems.', PHD: 'Intersectionality examines how race, class, gender, and other factors combine to affect food access.' } }] },
+    externalResources: [{ title: 'Food Research & Action Center', url: 'https://frac.org/', type: 'research' }]
   }
 ]
