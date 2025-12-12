@@ -30,12 +30,462 @@ export const zeroWasteModules: Module[] = [
         hasActivity: true,
         activityType: 'DRAG_DROP',
         content: {
-          ELEMENTARY: `<div class="lesson-content"><h2>🍂 Nature's Recycling!</h2><div class="intro"><p>In nature, nothing is wasted. When leaves fall and fruits drop, tiny creatures turn them back into soil. Composting is how we help this happen!</p></div><h3>What Can You Compost?</h3><div class="yes-no-grid"><div class="yes"><h4>✅ YES!</h4><ul><li>🍎 Fruit and veggie scraps</li><li>🥚 Eggshells</li><li>🍂 Leaves</li><li>🌱 Grass clippings</li><li>☕ Coffee grounds</li></ul></div><div class="no"><h4>❌ NO!</h4><ul><li>🥩 Meat</li><li>🧀 Dairy</li><li>🛢️ Oils</li><li>🐕 Pet waste</li></ul></div></div></div>`,
-          MIDDLE_SCHOOL: `<div class="lesson-content"><h2>The Science of Decomposition</h2><h3>What Happens in a Compost Pile?</h3><p>Billions of microorganisms break down organic matter through aerobic (with oxygen) decomposition.</p><h3>The Key Ingredients</h3><ul><li><strong>Greens (Nitrogen):</strong> Food scraps, grass, coffee grounds</li><li><strong>Browns (Carbon):</strong> Leaves, cardboard, straw</li><li><strong>Water:</strong> Moisture for microbes</li><li><strong>Air:</strong> Oxygen for aerobic decomposition</li></ul><h3>The Magic Ratio</h3><p>Aim for roughly 3 parts brown to 1 part green by volume for optimal composting.</p></div>`,
-          HIGH_SCHOOL: `<div class="lesson-content"><h2>Composting Chemistry</h2><h3>C:N Ratio</h3><p>The carbon to nitrogen ratio drives microbial activity:</p><ul><li>Ideal range: 25-30:1</li><li>Too high (>40:1): Slow decomposition</li><li>Too low (<20:1): Nitrogen loss, odors</li></ul><h3>Temperature Phases</h3><ol><li><strong>Mesophilic (20-40°C):</strong> Initial breakdown</li><li><strong>Thermophilic (40-70°C):</strong> Rapid decomposition, pathogen kill</li><li><strong>Cooling:</strong> Slower decomposition continues</li><li><strong>Curing:</strong> Stabilization and maturation</li></ol><h3>Common C:N Ratios</h3><table><tr><th>Material</th><th>C:N</th></tr><tr><td>Food scraps</td><td>15:1</td></tr><tr><td>Grass clippings</td><td>20:1</td></tr><tr><td>Leaves</td><td>50:1</td></tr><tr><td>Cardboard</td><td>350:1</td></tr></table></div>`,
-          UNDERGRADUATE: `<div class="lesson-content"><h2>Composting Systems Engineering</h2><h3>System Types</h3><ul><li><strong>Windrow:</strong> Long rows, periodic turning, large scale</li><li><strong>Aerated static pile:</strong> Forced aeration, less turning</li><li><strong>In-vessel:</strong> Enclosed systems, process control</li><li><strong>Vermicomposting:</strong> Worm-mediated, lower temperature</li></ul><h3>Process Parameters</h3><ul><li>Moisture: 50-60% optimal</li><li>Oxygen: >5% in pile</li><li>Temperature: 55-65°C for pathogen reduction</li><li>Time: Weeks to months depending on system</li></ul><h3>Quality Standards</h3><p>EPA 40 CFR Part 503 defines Class A (unrestricted use) and Class B compost standards.</p></div>`,
-          GRADUATE: `<div class="lesson-content"><h2>Industrial Organic Processing</h2><h3>Anaerobic Digestion</h3><p>Biogas production from organic waste:</p><ul><li>Methane yield: 200-400 m³/ton VS</li><li>Digestate as fertilizer</li><li>Energy balance considerations</li></ul><h3>Emissions Management</h3><ul><li>Methane from anaerobic zones</li><li>Nitrous oxide from nitrogen cycling</li><li>VOCs and odor control</li><li>Biofilter and cover systems</li></ul><h3>Integration with Waste Systems</h3><p>Source separation, contamination management, end-market development.</p></div>`,
-          PHD: `<div class="lesson-content"><h2>Organic Processing Research</h2><h3>Microbial Ecology</h3><ul><li>Succession during composting phases</li><li>Functional metagenomics of decomposition</li><li>Inoculant development</li></ul><h3>Emissions Quantification</h3><ul><li>Chamber and mass balance methods</li><li>Flux modeling</li><li>Climate impact assessment</li></ul><h3>Novel Technologies</h3><ul><li>Black soldier fly processing</li><li>Hydrothermal carbonization</li><li>Biorefinery integration</li></ul></div>`
+          ELEMENTARY: `<div class="lesson-content">
+<h2>The Amazing Banana Peel Adventure</h2>
+
+<p>Bella Banana Peel was feeling sad. Her family had finished eating the banana, and now she was being thrown away!</p>
+
+<p>"Is this the end for me?" Bella wondered. But then she landed somewhere special—a compost bin!</p>
+
+<div class="image-placeholder" data-caption="Bella the banana peel landing in a compost bin">
+[Image: A friendly cartoon banana peel falling into a compost bin surrounded by happy decomposers]
+</div>
+
+<h3>Welcome to the Compost Party!</h3>
+
+<p>"Hello, new friend!" said a tiny bacteria named Barry. "You're not garbage—you're going to become something amazing!"</p>
+
+<p>Bella met all kinds of new friends in the compost:</p>
+<ul>
+<li><strong>Barry Bacteria</strong> — billions of tiny helpers eating food scraps</li>
+<li><strong>Freddy Fungus</strong> — fuzzy friends breaking down tough stuff</li>
+<li><strong>Wally Worm</strong> — wiggling through and mixing everything up</li>
+<li><strong>Betty Beetle</strong> — chomping on big pieces</li>
+</ul>
+
+<blockquote class="scavenger-quote" data-quote-id="zw-elem-q1">
+<p>"In nature, nothing is wasted. Everything that was once alive becomes food for new life!"</p>
+<cite>— Planet Earth Recycling Team</cite>
+</blockquote>
+
+<h3>What Can Join the Compost Party?</h3>
+
+<table class="yes-no-table">
+<tr><th>YES! Welcome!</th><th>NO! Stay Out!</th></tr>
+<tr><td>Fruit and veggie scraps</td><td>Meat and bones</td></tr>
+<tr><td>Eggshells</td><td>Cheese and dairy</td></tr>
+<tr><td>Leaves and grass</td><td>Cooking oils</td></tr>
+<tr><td>Coffee grounds</td><td>Pet waste</td></tr>
+<tr><td>Paper and cardboard</td><td>Plastic and metal</td></tr>
+</table>
+
+<div class="image-placeholder" data-caption="What goes in compost vs. trash">
+[Image: Colorful illustration showing items sorted into compost-friendly and not compost-friendly categories]
+</div>
+
+<h3>Bella's Transformation</h3>
+
+<p>Weeks passed. Bella and her friends worked together, getting smaller and smaller. One day, she couldn't recognize herself anymore—she had become beautiful, dark, rich soil!</p>
+
+<blockquote class="scavenger-quote" data-quote-id="zw-elem-q2">
+<p>"Compost is like magic! Throw in scraps, wait a while, and out comes food for plants!"</p>
+<cite>— Kids Composting Club</cite>
+</blockquote>
+
+<p>A gardener scooped up the compost and spread it on a garden. Soon, new banana plants were growing!</p>
+
+<p>"I'm part of a new banana now!" Bella cheered. "The circle continues!"</p>
+
+<div class="key-concept">
+<h4>Remember!</h4>
+<p>Composting turns food scraps into plant food. It's nature's way of recycling!</p>
+</div>
+</div>`,
+
+          MIDDLE_SCHOOL: `<div class="lesson-content">
+<h2>The Science of Rot: How Composting Really Works</h2>
+
+<p>Every year, Americans throw away about 40 million tons of food. But here's the thing—food isn't really "waste." It's packed with nutrients that can feed new plants. Composting is how we unlock those nutrients.</p>
+
+<div class="image-placeholder" data-caption="The scale of food waste in America">
+[Image: Infographic showing food waste statistics with comparison visuals]
+</div>
+
+<h3>The Decomposition Dream Team</h3>
+
+<p>Composting isn't magic—it's biology! Billions of tiny organisms work together to break down organic matter:</p>
+
+<blockquote class="scavenger-quote" data-quote-id="zw-mid-q1">
+<p>"A single gram of compost can contain over a billion bacteria, 100,000 protozoa, and thousands of feet of fungal threads—all working to recycle nutrients."</p>
+<cite>— US Composting Council</cite>
+</blockquote>
+
+<h3>The Four Essential Ingredients</h3>
+
+<table class="ingredient-table">
+<tr><th>Ingredient</th><th>Purpose</th><th>Examples</th></tr>
+<tr><td>Greens (Nitrogen)</td><td>Fuel for microbes, building proteins</td><td>Food scraps, grass, coffee</td></tr>
+<tr><td>Browns (Carbon)</td><td>Energy source, creates air pockets</td><td>Leaves, cardboard, straw</td></tr>
+<tr><td>Water</td><td>Microbes need moisture to live</td><td>Rain, hose, wet materials</td></tr>
+<tr><td>Air (Oxygen)</td><td>Aerobic decomposition needs O2</td><td>Turning, pipe systems</td></tr>
+</table>
+
+<h3>The Golden Ratio</h3>
+
+<p>The secret to good compost is balance:</p>
+
+<blockquote class="scavenger-quote" data-quote-id="zw-mid-q2">
+<p>"Think of browns as the bread and greens as the filling. You want about 3 parts brown to 1 part green—like a really boring sandwich that microbes love!"</p>
+<cite>— Master Composter Training Program</cite>
+</blockquote>
+
+<div class="image-placeholder" data-caption="The brown-to-green ratio visualized">
+[Image: Visual showing 3:1 ratio of browns to greens with example materials]
+</div>
+
+<h3>What's Happening Inside the Pile?</h3>
+
+<ol>
+<li><strong>Day 1-7:</strong> Bacteria start breaking down easy stuff, pile heats up</li>
+<li><strong>Week 2-4:</strong> Temperature rises to 140°F+ killing weed seeds and pathogens</li>
+<li><strong>Month 2-3:</strong> Fungi take over, breaking down tough materials</li>
+<li><strong>Month 3-6:</strong> Cooling and curing, becoming stable compost</li>
+</ol>
+
+<h3>Troubleshooting Common Problems</h3>
+
+<ul>
+<li><strong>Smells bad?</strong> Too wet or too many greens—add dry browns and turn</li>
+<li><strong>Not heating up?</strong> Too dry or too many browns—add water and greens</li>
+<li><strong>Attracting pests?</strong> Bury food scraps deep, avoid meat/dairy</li>
+</ul>
+
+<div class="key-concept">
+<h4>Key Takeaway</h4>
+<p>Composting is controlled decomposition. Balance greens and browns, keep it moist, and let billions of microorganisms do the work of turning waste into garden gold.</p>
+</div>
+</div>`,
+
+          HIGH_SCHOOL: `<div class="lesson-content">
+<h2>Composting Chemistry: The Science of Controlled Decomposition</h2>
+
+<p>Composting has been practiced for thousands of years, but it wasn't until the 20th century that scientists understood the chemistry behind it. Sir Albert Howard, often called the father of modern composting, developed scientific methods in India in the 1930s that are still used today.</p>
+
+<div class="image-placeholder" data-caption="Sir Albert Howard's Indore composting method">
+[Image: Historical diagram of Howard's layered composting system alongside modern equivalent]
+</div>
+
+<h3>The C:N Ratio: The Master Variable</h3>
+
+<p>The single most important factor in composting is the carbon-to-nitrogen ratio (C:N). This ratio determines how fast decomposition occurs and what problems might arise.</p>
+
+<blockquote class="scavenger-quote" data-quote-id="zw-high-q1">
+<p>"Microorganisms need about 25-30 parts carbon for every part nitrogen. Carbon provides energy; nitrogen builds proteins. Get this ratio wrong, and your compost either stalls or smells terrible."</p>
+<cite>— Cornell Waste Management Institute</cite>
+</blockquote>
+
+<table class="cn-ratio-table">
+<thead>
+<tr><th>Material</th><th>C:N Ratio</th><th>Category</th></tr>
+</thead>
+<tbody>
+<tr><td>Food scraps</td><td>15:1</td><td>High N (green)</td></tr>
+<tr><td>Fresh grass</td><td>20:1</td><td>High N (green)</td></tr>
+<tr><td>Coffee grounds</td><td>20:1</td><td>High N (green)</td></tr>
+<tr><td>Dry leaves</td><td>50:1</td><td>High C (brown)</td></tr>
+<tr><td>Straw</td><td>80:1</td><td>High C (brown)</td></tr>
+<tr><td>Cardboard</td><td>350:1</td><td>Very high C</td></tr>
+<tr><td>Wood chips</td><td>400:1</td><td>Very high C</td></tr>
+</tbody>
+</table>
+
+<h3>Temperature Phases of Composting</h3>
+
+<p>A well-managed compost pile goes through distinct temperature phases:</p>
+
+<ol>
+<li><strong>Mesophilic Phase (20-40°C / 68-104°F):</strong> Initial colonization by bacteria, 1-3 days</li>
+<li><strong>Thermophilic Phase (40-70°C / 104-158°F):</strong> Rapid decomposition, pathogen and weed seed destruction, 1-4 weeks</li>
+<li><strong>Cooling Phase:</strong> Activity slows, fungi become more active</li>
+<li><strong>Curing Phase:</strong> Stabilization, development of humic substances, 1-3 months</li>
+</ol>
+
+<blockquote class="scavenger-quote" data-quote-id="zw-high-q2">
+<p>"The thermophilic phase is critical for sanitation. At 55°C (131°F) for three days, most human pathogens, plant diseases, and weed seeds are destroyed. This is why temperature monitoring matters."</p>
+<cite>— EPA Composting Guidelines</cite>
+</blockquote>
+
+<div class="image-placeholder" data-caption="Temperature profile of active composting">
+[Image: Graph showing temperature changes through composting phases over 8-12 weeks]
+</div>
+
+<h3>Aerobic vs. Anaerobic Decomposition</h3>
+
+<table class="comparison-table">
+<thead>
+<tr><th>Factor</th><th>Aerobic (with O2)</th><th>Anaerobic (without O2)</th></tr>
+</thead>
+<tbody>
+<tr><td>Speed</td><td>Faster</td><td>Slower</td></tr>
+<tr><td>Odor</td><td>Earthy, minimal</td><td>Foul, sulfurous</td></tr>
+<tr><td>Temperature</td><td>High (thermophilic)</td><td>Lower</td></tr>
+<tr><td>End products</td><td>CO2, water, humus</td><td>Methane, organic acids</td></tr>
+<tr><td>Best for</td><td>Traditional composting</td><td>Biogas production</td></tr>
+</tbody>
+</table>
+
+<blockquote class="scavenger-quote" data-quote-id="zw-high-q3">
+<p>"Turning your compost isn't about mixing—it's about introducing oxygen. Without oxygen, anaerobic bacteria take over, producing methane and hydrogen sulfide. That's why bad compost smells like rotten eggs."</p>
+<cite>— BioCycle Journal</cite>
+</blockquote>
+
+<div class="key-concept">
+<h4>Critical Thinking</h4>
+<p>Composting is applied microbiology and chemistry. Understanding C:N ratios, temperature phases, and oxygen requirements allows you to troubleshoot problems and optimize the process for any scale.</p>
+</div>
+</div>`,
+
+          UNDERGRADUATE: `<div class="lesson-content">
+<h2>Composting Systems: Engineering Organic Waste Processing</h2>
+
+<p>Organic waste represents approximately 30% of the municipal solid waste stream in developed countries. Diverting this material from landfills through composting reduces methane emissions, produces valuable soil amendments, and closes nutrient loops. Understanding composting system design requires integrating biology, engineering, and economics.</p>
+
+<h3>System Selection Framework</h3>
+
+<blockquote class="scavenger-quote" data-quote-id="zw-undergrad-q1">
+<p>"There is no single 'best' composting system. Optimal design depends on feedstock characteristics, throughput requirements, available land, capital constraints, and end-product markets. Technology selection requires systematic analysis."</p>
+<cite>— Solid Waste Association of North America (SWANA)</cite>
+</blockquote>
+
+<table class="system-comparison-table">
+<thead>
+<tr><th>System</th><th>Scale</th><th>Capital Cost</th><th>Land Needs</th><th>Process Time</th></tr>
+</thead>
+<tbody>
+<tr><td>Windrow</td><td>Medium-Large</td><td>Low</td><td>High</td><td>3-6 months</td></tr>
+<tr><td>Aerated Static Pile</td><td>Medium-Large</td><td>Medium</td><td>Medium</td><td>2-4 months</td></tr>
+<tr><td>In-Vessel</td><td>Any</td><td>High</td><td>Low</td><td>1-3 months</td></tr>
+<tr><td>Vermicomposting</td><td>Small-Medium</td><td>Low-Medium</td><td>Low</td><td>2-4 months</td></tr>
+</tbody>
+</table>
+
+<div class="image-placeholder" data-caption="Comparison of composting system designs">
+[Image: Technical diagrams of windrow, ASP, and in-vessel systems with key components labeled]
+</div>
+
+<h3>Process Engineering Parameters</h3>
+
+<h4>Critical Control Points:</h4>
+<ul>
+<li><strong>Moisture content:</strong> 50-60% optimal; below 40% microbes inactive, above 65% anaerobic</li>
+<li><strong>Oxygen concentration:</strong> >5% in pile interstitial air for aerobic conditions</li>
+<li><strong>Temperature:</strong> 55-65°C for PFRP (Process to Further Reduce Pathogens) compliance</li>
+<li><strong>Particle size:</strong> 1-3 inches optimal; smaller increases surface area, larger improves porosity</li>
+</ul>
+
+<blockquote class="scavenger-quote" data-quote-id="zw-undergrad-q2">
+<p>"The 'squeeze test' for moisture—material should feel like a wrung-out sponge, releasing only a few drops when squeezed hard—remains surprisingly effective even compared to laboratory methods."</p>
+<cite>— On-Farm Composting Handbook, NRAES</cite>
+</blockquote>
+
+<h3>Regulatory Framework</h3>
+
+<p>Composting operations must comply with various regulations:</p>
+
+<ul>
+<li><strong>EPA 40 CFR Part 503:</strong> Biosolids composting standards</li>
+<li><strong>State solid waste regulations:</strong> Permitting, setbacks, operating requirements</li>
+<li><strong>Air quality permits:</strong> VOC, odor, and dust controls</li>
+<li><strong>Water quality permits:</strong> Stormwater and leachate management</li>
+</ul>
+
+<h4>Class A Compost Requirements (Unrestricted Use):</h4>
+<ul>
+<li>Fecal coliform: <1000 MPN/g dry weight</li>
+<li>Salmonella: <3 MPN/4g dry weight</li>
+<li>Either: 55°C for 15 days with 5 turnings, OR enclosed system at 55°C for 3 days</li>
+</ul>
+
+<div class="image-placeholder" data-caption="Composting facility regulatory compliance flowchart">
+[Image: Decision flowchart showing regulatory pathways and compliance requirements]
+</div>
+
+<blockquote class="scavenger-quote" data-quote-id="zw-undergrad-q3">
+<p>"Contamination—plastics, glass, metals—is the Achilles heel of compost quality. Source separation is far more cost-effective than post-processing contamination removal."</p>
+<cite>— Institute for Local Self-Reliance</cite>
+</blockquote>
+
+<div class="key-concept">
+<h4>Engineering Perspective</h4>
+<p>Composting facility design requires balancing biological process requirements with practical constraints of land, capital, labor, and markets. The most elegant engineering often involves the simplest systems that reliably achieve process objectives.</p>
+</div>
+</div>`,
+
+          GRADUATE: `<div class="lesson-content">
+<h2>Industrial Organic Processing: Technologies, Emissions, and Circular Bioeconomy</h2>
+
+<p>Graduate-level analysis of organic waste processing extends beyond composting to examine the full spectrum of technologies, their environmental implications, and integration within circular economy frameworks.</p>
+
+<h3>Technology Spectrum</h3>
+
+<blockquote class="scavenger-quote" data-quote-id="zw-grad-q1">
+<p>"The choice between composting, anaerobic digestion, and other organic processing technologies should be based on life cycle assessment, not ideology. Each has appropriate applications depending on feedstock, energy context, and end-product needs."</p>
+<cite>— Journal of Cleaner Production</cite>
+</blockquote>
+
+<table class="technology-table">
+<thead>
+<tr><th>Technology</th><th>Primary Output</th><th>Energy Balance</th><th>Best Feedstocks</th></tr>
+</thead>
+<tbody>
+<tr><td>Aerobic Composting</td><td>Soil amendment</td><td>Net consumer</td><td>Yard waste, wood, mixed organics</td></tr>
+<tr><td>Anaerobic Digestion</td><td>Biogas + digestate</td><td>Net producer</td><td>Food waste, manure, wastewater solids</td></tr>
+<tr><td>Vermicomposting</td><td>High-value castings</td><td>Net consumer</td><td>Pre-consumer food, paper</td></tr>
+<tr><td>Black Soldier Fly</td><td>Protein + frass</td><td>Variable</td><td>Food waste, manure</td></tr>
+</tbody>
+</table>
+
+<div class="image-placeholder" data-caption="Organic waste processing technology comparison">
+[Image: System diagram showing inputs, processes, and outputs for each technology]
+</div>
+
+<h3>Greenhouse Gas Implications</h3>
+
+<h4>Emissions Sources and Mitigation:</h4>
+<ul>
+<li><strong>Methane (CH4):</strong> Anaerobic pockets in compost; mitigated by adequate aeration</li>
+<li><strong>Nitrous oxide (N2O):</strong> Nitrogen cycling; increases at high temperatures and moisture</li>
+<li><strong>Ammonia (NH3):</strong> Nitrogen volatilization; managed through C:N ratio and pH</li>
+<li><strong>VOCs:</strong> Odorous compounds; biofilters and covers for control</li>
+</ul>
+
+<blockquote class="scavenger-quote" data-quote-id="zw-grad-q2">
+<p>"Well-managed aerobic composting avoids the methane emissions of landfilling, but poorly managed composting can be a significant GHG source. Process control matters enormously for climate outcomes."</p>
+<cite>— IPCC Guidelines for National Greenhouse Gas Inventories</cite>
+</blockquote>
+
+<h3>Circular Bioeconomy Integration</h3>
+
+<p>Organic processing within broader material cycles:</p>
+
+<ul>
+<li><strong>Nutrient recovery:</strong> Phosphorus and nitrogen returned to agriculture</li>
+<li><strong>Carbon sequestration:</strong> Stable carbon in soil from compost application</li>
+<li><strong>Energy systems:</strong> Biogas as renewable natural gas or electricity</li>
+<li><strong>Product cascading:</strong> Sequential value extraction (protein → energy → nutrients)</li>
+</ul>
+
+<blockquote class="scavenger-quote" data-quote-id="zw-grad-q3">
+<p>"The circular bioeconomy reframes 'waste' as misplaced resources. Organic materials cycle through use, processing, and return to biological systems—but the design of these cycles determines whether they're sustainable."</p>
+<cite>— Ellen MacArthur Foundation</cite>
+</blockquote>
+
+<div class="image-placeholder" data-caption="Circular bioeconomy flows for organic materials">
+[Image: Circular flow diagram showing organic materials moving through production, consumption, processing, and return to land]
+</div>
+
+<h3>Policy and Market Drivers</h3>
+
+<ul>
+<li><strong>Landfill bans:</strong> Increasingly common for organic waste</li>
+<li><strong>Mandatory collection:</strong> California SB 1383, EU requirements</li>
+<li><strong>Carbon markets:</strong> Emerging credits for composting and soil carbon</li>
+<li><strong>Extended producer responsibility:</strong> Food industry responsibilities</li>
+</ul>
+
+<blockquote class="scavenger-quote" data-quote-id="zw-grad-q4">
+<p>"California's SB 1383 mandates 75% organic waste diversion by 2025. This single policy is driving more investment in composting and digestion infrastructure than any market force."</p>
+<cite>— CalRecycle</cite>
+</blockquote>
+
+<div class="key-concept">
+<h4>Research Directions</h4>
+<p>Graduate research in organic processing increasingly focuses on systems integration—how processing technologies fit within broader material and energy systems, how policy can drive circular outcomes, and how to quantify environmental benefits across full life cycles.</p>
+</div>
+</div>`,
+
+          PHD: `<div class="lesson-content">
+<h2>Organic Waste Processing: Microbial Ecology, Emissions Science, and Novel Technologies</h2>
+
+<p>Doctoral engagement with organic waste processing spans microbial ecology, atmospheric chemistry, process engineering, and sustainability science. This lesson examines research frontiers across these interconnected domains.</p>
+
+<h3>Microbial Ecology of Decomposition</h3>
+
+<blockquote class="scavenger-quote" data-quote-id="zw-phd-q1">
+<p>"Composting microbial communities undergo dramatic succession—from mesophilic bacteria to thermophilic specialists to fungal-dominated cooling phases. Understanding these dynamics enables process optimization and product engineering."</p>
+<cite>— Applied and Environmental Microbiology</cite>
+</blockquote>
+
+<h4>Research Frontiers:</h4>
+<ul>
+<li><strong>Functional metagenomics:</strong> Linking community composition to process function</li>
+<li><strong>Thermophilic enzymology:</strong> Heat-stable enzymes for industrial applications</li>
+<li><strong>Inoculant development:</strong> Designed communities for specific outcomes</li>
+<li><strong>Suppressive composts:</strong> Disease-preventing microbial communities</li>
+</ul>
+
+<div class="image-placeholder" data-caption="Microbial succession during composting">
+[Image: Temporal diagram showing microbial community shifts through composting phases with key functional groups highlighted]
+</div>
+
+<h3>Emissions Quantification and Modeling</h3>
+
+<h4>Methodological Challenges:</h4>
+<table class="methods-table">
+<thead>
+<tr><th>Method</th><th>Advantages</th><th>Limitations</th></tr>
+</thead>
+<tbody>
+<tr><td>Static chambers</td><td>Simple, inexpensive</td><td>Point measurements, disturbance</td></tr>
+<tr><td>Dynamic chambers</td><td>Continuous, controlled</td><td>Artificial conditions</td></tr>
+<tr><td>Mass balance</td><td>Integrated assessment</td><td>Requires complete accounting</td></tr>
+<tr><td>Micrometeorological</td><td>Non-intrusive, spatial integration</td><td>Complex, expensive, site requirements</td></tr>
+</tbody>
+</table>
+
+<blockquote class="scavenger-quote" data-quote-id="zw-phd-q2">
+<p>"Emission factors for composting vary by orders of magnitude in the literature—from 0.1 to 10 kg CH4 per ton processed. This uncertainty reflects both methodological differences and genuine process variability. Improving emission inventories requires standardized protocols."</p>
+<cite>— Waste Management</cite>
+</blockquote>
+
+<h4>Process-Based Modeling:</h4>
+<ul>
+<li>Heat and mass transfer models</li>
+<li>Kinetic models of decomposition</li>
+<li>Coupled C and N cycling</li>
+<li>Integration with atmospheric transport</li>
+</ul>
+
+<h3>Novel Processing Technologies</h3>
+
+<blockquote class="scavenger-quote" data-quote-id="zw-phd-q3">
+<p>"Insect-mediated bioconversion—particularly Black Soldier Fly larvae—represents a paradigm shift in organic processing. Unlike microbial composting, insect systems produce protein suitable for animal feed while generating processing residue comparable to compost."</p>
+<cite>— Annual Review of Entomology</cite>
+</blockquote>
+
+<h4>Emerging Technologies:</h4>
+<ul>
+<li><strong>Hydrothermal carbonization:</strong> Pressure + heat → hydrochar (biocoal)</li>
+<li><strong>Pyrolysis:</strong> Anaerobic heating → biochar + bio-oil + syngas</li>
+<li><strong>Torrefaction:</strong> Low-temperature thermal treatment</li>
+<li><strong>Enzymatic processing:</strong> Targeted decomposition of specific materials</li>
+</ul>
+
+<div class="image-placeholder" data-caption="Novel organic processing technologies comparison">
+[Image: Process flow diagrams for BSF, HTC, pyrolysis, and enzymatic systems]
+</div>
+
+<h3>Life Cycle Assessment Considerations</h3>
+
+<blockquote class="scavenger-quote" data-quote-id="zw-phd-q4">
+<p>"LCA of organic waste processing must consider displaced impacts—what would have happened to the waste otherwise, and what products the process outputs displace. A composting system that produces soil amendment displacing synthetic fertilizer has different impacts than one serving disposal functions only."</p>
+<cite>— International Journal of Life Cycle Assessment</cite>
+</blockquote>
+
+<h4>Methodological Issues:</h4>
+<ul>
+<li>System boundary definition</li>
+<li>Allocation procedures for multi-output processes</li>
+<li>Consequential vs. attributional approaches</li>
+<li>Carbon accounting and biogenic CO2</li>
+<li>Soil carbon dynamics and permanence</li>
+</ul>
+
+<div class="key-concept">
+<h4>Doctoral Research Orientation</h4>
+<p>Impactful doctoral research in organic waste processing bridges scales—from molecular mechanisms to facility operations to societal material flows. The field demands integration of microbiology, engineering, and sustainability assessment, with an eye toward both fundamental understanding and practical application in the urgent context of climate change and resource scarcity.</p>
+</div>
+</div>`
         }
       },
       {
