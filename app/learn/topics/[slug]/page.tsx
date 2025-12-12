@@ -6,12 +6,13 @@ import { Button } from '@/components/ui/Button'
 import {
   Zap, Droplet, Sprout, Recycle, Home, Leaf,
   ChevronRight, Clock, BookOpen, CheckCircle2,
-  ArrowLeft, GraduationCap, LucideIcon
+  ArrowLeft, GraduationCap, LucideIcon, Book, LayoutList
 } from 'lucide-react'
 import Link from 'next/link'
 import { useParams, useSearchParams } from 'next/navigation'
 import { getTopic, CoreTopic } from '@/data/modules'
 import { LearningLevel, LEARNING_LEVELS, LEARNING_LEVEL_ORDER } from '@/types/learning'
+import { TopicBookBrowser } from '@/components/learning/TopicBookBrowser'
 
 // Icon mapping for dynamic icon rendering
 const iconMap: Record<string, LucideIcon> = {
@@ -35,8 +36,13 @@ export default function TopicPage() {
 
   // Get level from URL or default to HIGH_SCHOOL
   const levelParam = searchParams.get('level')?.toUpperCase() as LearningLevel | undefined
+  const viewParam = searchParams.get('view') // 'books' or 'list'
   const [selectedLevel, setSelectedLevel] = useState<LearningLevel>(
     levelParam && LEARNING_LEVELS[levelParam] ? levelParam : 'HIGH_SCHOOL'
+  )
+  // Default to book view
+  const [viewMode, setViewMode] = useState<'books' | 'list'>(
+    viewParam === 'list' ? 'list' : 'books'
   )
 
   // Mock progress state - in production this would come from API
@@ -164,6 +170,43 @@ export default function TopicPage() {
             </div>
           </div>
 
+          {/* View Mode Toggle */}
+          <div className="flex items-center justify-center gap-2 mb-8">
+            <button
+              onClick={() => setViewMode('books')}
+              className={`flex items-center gap-2 px-4 py-2 rounded-lg font-medium transition-all ${
+                viewMode === 'books'
+                  ? 'bg-[var(--primary)] text-white shadow-lg'
+                  : 'bg-[var(--muted)] text-[var(--foreground)] hover:bg-[var(--border)]'
+              }`}
+            >
+              <Book className="w-4 h-4" />
+              Book View
+            </button>
+            <button
+              onClick={() => setViewMode('list')}
+              className={`flex items-center gap-2 px-4 py-2 rounded-lg font-medium transition-all ${
+                viewMode === 'list'
+                  ? 'bg-[var(--primary)] text-white shadow-lg'
+                  : 'bg-[var(--muted)] text-[var(--foreground)] hover:bg-[var(--border)]'
+              }`}
+            >
+              <LayoutList className="w-4 h-4" />
+              List View
+            </button>
+          </div>
+
+          {/* Book View */}
+          {viewMode === 'books' && (
+            <TopicBookBrowser
+              topicSlug={slug}
+              selectedLevel={selectedLevel}
+              completedModules={completedModules}
+            />
+          )}
+
+          {/* List View */}
+          {viewMode === 'list' && (
           <div className="grid lg:grid-cols-3 gap-12">
             {/* Main Content - Modules List */}
             <div className="lg:col-span-2 space-y-12">
@@ -299,6 +342,7 @@ export default function TopicPage() {
               </Card>
             </div>
           </div>
+          )}
         </div>
       </div>
     </div>
