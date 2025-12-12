@@ -11,7 +11,7 @@ import {
   BookOpen, Calculator, Download, Zap, Leaf,
   GraduationCap, Clock, ChevronRight,
   Lightbulb, Play, FileText, Droplet,
-  Recycle, Home, Sprout, Globe, Trophy
+  Recycle, Home, Sprout, Globe
 } from 'lucide-react'
 import Link from 'next/link'
 import type { TopicProgress } from '@/app/api/learn/topic-progress/route'
@@ -336,33 +336,23 @@ export default function LearnPage() {
 
               return (
                 <Link key={topic.title} href={`/learn/topics/${topic.slug}?level=${selectedLevel.toLowerCase()}`}>
-                  <Card className={`h-full border-4 ${isGraduated ? 'border-yellow-400 ring-2 ring-yellow-400/50' : 'border-theme-primary'} bg-gradient-to-br from-[color-mix(in_srgb,var(--primary)_15%,var(--background))] to-[var(--background)] transform hover:scale-105 hover:shadow-2xl transition-all duration-300 cursor-pointer group relative overflow-hidden`}>
-                    {/* Graduation Banner */}
-                    {isGraduated && (
-                      <div className="absolute top-0 right-0 bg-yellow-400 text-yellow-900 px-8 py-1 transform rotate-45 translate-x-6 translate-y-3 text-xs font-black">
-                        GRADUATED
-                      </div>
-                    )}
+                  <Card className="h-full border-4 border-theme-primary bg-gradient-to-br from-[color-mix(in_srgb,var(--primary)_15%,var(--background))] to-[var(--background)] transform hover:scale-105 hover:shadow-2xl transition-all duration-300 cursor-pointer group">
                     <CardContent className="p-8">
                       <div className="flex items-start justify-between mb-4">
-                        <div className="relative">
-                          <div className="w-20 h-20 rounded-2xl bg-[color-mix(in_srgb,var(--primary)_20%,var(--background))] flex items-center justify-center group-hover:scale-110 transition-transform">
-                            {isGraduated ? (
-                              <Trophy className="w-10 h-10 text-yellow-500" />
-                            ) : (
-                              <topic.icon className="w-10 h-10 text-theme-primary" />
-                            )}
-                          </div>
-                          {/* Progress Ring */}
-                          {progressPercent > 0 && !isGraduated && (
-                            <div className="absolute -bottom-2 -right-2 w-10 h-10 bg-[var(--background)] rounded-full flex items-center justify-center border-2 border-theme-primary">
-                              <span className="text-xs font-black text-theme-primary">{progressPercent}%</span>
+                        <div className="w-16 h-16 rounded-2xl bg-[color-mix(in_srgb,var(--primary)_20%,var(--background))] flex items-center justify-center group-hover:scale-110 transition-transform">
+                          <topic.icon className="w-8 h-8 text-theme-primary" />
+                        </div>
+                        <div className="flex items-center gap-2">
+                          {isGraduated && (
+                            <div className="px-2 py-1 rounded-full bg-green-500/20 text-green-600 text-xs font-black flex items-center gap-1">
+                              <GraduationCap className="w-3 h-3" />
+                              COMPLETE
                             </div>
                           )}
-                        </div>
-                        <div className="px-3 py-1 rounded-full bg-[color-mix(in_srgb,var(--primary)_15%,var(--background))] text-xs font-bold text-theme-primary flex items-center gap-1">
-                          <span>{LEARNING_LEVELS[selectedLevel].icon}</span>
-                          <span>{LEARNING_LEVELS[selectedLevel].shortLabel}</span>
+                          <div className="px-3 py-1 rounded-full bg-[color-mix(in_srgb,var(--primary)_15%,var(--background))] text-xs font-bold text-theme-primary flex items-center gap-1">
+                            <span>{LEARNING_LEVELS[selectedLevel].icon}</span>
+                            <span>{LEARNING_LEVELS[selectedLevel].shortLabel}</span>
+                          </div>
                         </div>
                       </div>
                       <h3 className="text-2xl font-black mb-3 text-[var(--foreground)] group-hover:text-theme-primary transition-colors">
@@ -372,36 +362,33 @@ export default function LearnPage() {
                         {topic.desc}
                       </p>
 
-                      {/* Progress Bar */}
-                      {progressPercent > 0 && (
-                        <div className="mb-4">
-                          <div className="h-2 bg-[var(--muted)] rounded-full overflow-hidden">
-                            <div
-                              className={`h-full rounded-full transition-all duration-500 ${isGraduated ? 'bg-yellow-400' : 'bg-theme-primary'}`}
-                              style={{ width: `${progressPercent}%` }}
-                            />
-                          </div>
-                          <div className="flex items-center justify-between mt-1 text-xs text-theme-muted">
-                            <span>{progress?.completedModules || 0}/{topic.modules} modules</span>
-                            {isGraduated && (
-                              <span className="text-yellow-600 font-bold flex items-center gap-1">
-                                <Trophy className="w-3 h-3" /> Mastered!
-                              </span>
-                            )}
-                          </div>
-                        </div>
-                      )}
-
                       <div className="flex items-center justify-between">
-                        <span className="text-sm font-bold text-theme-muted flex items-center gap-2">
-                          <BookOpen className="w-4 h-4" />
-                          {topic.modules} modules
-                        </span>
+                        <div className="flex items-center gap-3">
+                          <span className="text-sm font-bold text-theme-muted flex items-center gap-2">
+                            <BookOpen className="w-4 h-4" />
+                            {topic.modules} modules
+                          </span>
+                          {progressPercent > 0 && (
+                            <span className="text-sm font-black text-theme-primary">
+                              {progressPercent}%
+                            </span>
+                          )}
+                        </div>
                         <span className="text-theme-primary font-black text-sm flex items-center gap-1 group-hover:gap-2 transition-all">
                           {isGraduated ? 'REVIEW' : progressPercent > 0 ? 'CONTINUE' : 'EXPLORE'}
                           <ChevronRight className="w-4 h-4" />
                         </span>
                       </div>
+
+                      {/* Minimal Progress Bar - only show if started */}
+                      {progressPercent > 0 && (
+                        <div className="mt-3 h-1 bg-[var(--muted)] rounded-full overflow-hidden">
+                          <div
+                            className="h-full rounded-full transition-all duration-500 bg-[var(--primary)]"
+                            style={{ width: `${progressPercent}%` }}
+                          />
+                        </div>
+                      )}
                     </CardContent>
                   </Card>
                 </Link>
