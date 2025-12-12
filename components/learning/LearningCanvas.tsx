@@ -1,21 +1,19 @@
 'use client'
 
-import { useState, useEffect, useMemo, useCallback, useRef } from 'react'
-import { motion, AnimatePresence, useMotionValue, useTransform, useSpring } from 'framer-motion'
+import { useState, useEffect, useMemo, useCallback } from 'react'
+import { motion, AnimatePresence } from 'framer-motion'
 import Link from 'next/link'
 import {
-  ArrowLeft, Play, ChevronLeft, ChevronRight, X, MessageSquare,
+  ArrowLeft, Play, ChevronLeft, ChevronRight, X,
   Lightbulb, Sparkles, Pin, Paperclip, BookOpen, Pencil,
-  Eye, EyeOff, Zap, Heart, Star, Coffee, Leaf, Sun, Moon,
-  Quote, Clock, Trophy, Target, Search, GraduationCap, Layers
+  Eye, Zap, Heart, Star, Quote, Clock, Trophy, Target,
+  GraduationCap, Layers, CircleDot, CheckCircle2
 } from 'lucide-react'
 import { Button } from '@/components/ui/Button'
-import { sanitizeHtml } from '@/lib/utils/sanitize'
-import { LevelSelector } from '@/components/learn/levels/LevelSelector'
 import { LearningLevel, LEARNING_LEVELS } from '@/types/learning'
-import { Module, CoreTopic } from '@/data/modules'
+import { Module } from '@/data/modules'
 import { Founder } from '@/components/learning/FounderCard'
-import { detectPioneersInContent, SUSTAINABILITY_PIONEERS } from '@/data/sustainabilityPioneers'
+import { detectPioneersInContent } from '@/data/sustainabilityPioneers'
 import { PioneerModal } from '@/components/learning/PioneerModal'
 import { FlashcardStudy, FlashcardDeck, generateFlashcardsFromContent } from '@/components/learning/Flashcards'
 import dynamic from 'next/dynamic'
@@ -34,632 +32,628 @@ const EnergyFlowDiagram = dynamic(() => import('@/components/learning/diagrams/E
 const RainwaterHarvestingDiagram = dynamic(() => import('@/components/learning/diagrams/RainwaterHarvestingDiagram').then(mod => ({ default: mod.RainwaterHarvestingDiagram })), { ssr: false })
 const ThermalMassDiagram = dynamic(() => import('@/components/learning/diagrams/ThermalMassDiagram').then(mod => ({ default: mod.ThermalMassDiagram })), { ssr: false })
 
-const DIAGRAM_MAP: Record<string, React.ComponentType<{ animated?: boolean; showLabels?: boolean; className?: string }>> = {
-  'water-cycle': WaterCycleDiagram,
-  'solar-energy': SolarEnergyDiagram,
-  'soil-layers': SoilLayersDiagram,
-  'composting-process': CompostingProcessDiagram,
-  'food-web': FoodWebDiagram,
-  'passive-solar': PassiveSolarDiagram,
-  'waste-hierarchy': WasteHierarchyPyramid,
-  'photosynthesis': PhotosynthesisDiagram,
-  'carbon-cycle': CarbonCycleDiagram,
-  'energy-flow': EnergyFlowDiagram,
-  'rainwater-harvesting': RainwaterHarvestingDiagram,
-  'thermal-mass': ThermalMassDiagram,
+const DIAGRAM_MAP: Record<string, { component: React.ComponentType<{ animated?: boolean; showLabels?: boolean; className?: string }>, title: string, description: string }> = {
+  'water-cycle': {
+    component: WaterCycleDiagram,
+    title: 'The Water Cycle',
+    description: 'Watch how water moves through our planet - evaporating from oceans, forming clouds, falling as rain, and flowing back to the sea. This endless cycle sustains all life on Earth.'
+  },
+  'solar-energy': {
+    component: SolarEnergyDiagram,
+    title: 'Solar Energy Systems',
+    description: 'See how sunlight transforms into electricity! Photovoltaic cells capture photons and generate clean, renewable power for homes and communities.'
+  },
+  'soil-layers': {
+    component: SoilLayersDiagram,
+    title: 'Soil Horizons',
+    description: 'Explore the hidden world beneath our feet. Each layer of soil plays a vital role in supporting plant life and filtering water.'
+  },
+  'composting-process': {
+    component: CompostingProcessDiagram,
+    title: 'The Composting Process',
+    description: 'Nature\'s recycling system! Watch organic matter transform into nutrient-rich soil through the work of microorganisms and decomposers.'
+  },
+  'food-web': {
+    component: FoodWebDiagram,
+    title: 'Food Web Connections',
+    description: 'Every creature is connected! Trace the flow of energy from plants to herbivores to predators in this intricate web of life.'
+  },
+  'passive-solar': {
+    component: PassiveSolarDiagram,
+    title: 'Passive Solar Design',
+    description: 'Smart buildings that heat and cool themselves! Learn how orientation, thermal mass, and shading create comfortable spaces naturally.'
+  },
+  'waste-hierarchy': {
+    component: WasteHierarchyPyramid,
+    title: 'The Waste Hierarchy',
+    description: 'From refuse to resource! This pyramid guides us toward zero waste by prioritizing reduction, reuse, and recycling.'
+  },
+  'photosynthesis': {
+    component: PhotosynthesisDiagram,
+    title: 'Photosynthesis',
+    description: 'The miracle of green! Plants capture sunlight and transform it into food, releasing life-giving oxygen in the process.'
+  },
+  'carbon-cycle': {
+    component: CarbonCycleDiagram,
+    title: 'The Carbon Cycle',
+    description: 'Carbon is always on the move! Follow its journey through air, plants, animals, soil, and oceans in this global cycle.'
+  },
+  'energy-flow': {
+    component: EnergyFlowDiagram,
+    title: 'Energy Flow in Ecosystems',
+    description: 'Only 10% of energy passes to each level! Discover why ecosystems need so many plants to support a few top predators.'
+  },
+  'rainwater-harvesting': {
+    component: RainwaterHarvestingDiagram,
+    title: 'Rainwater Harvesting',
+    description: 'Capture the sky! Learn how to collect, filter, and store rainwater for gardens, toilets, and even drinking water.'
+  },
+  'thermal-mass': {
+    component: ThermalMassDiagram,
+    title: 'Thermal Mass',
+    description: 'Buildings that remember! Dense materials absorb heat during the day and release it at night, keeping spaces comfortable naturally.'
+  },
 }
 
-// Sticky note colors - warm, inviting, hand-picked
+// Sticky note colors
 const STICKY_COLORS = [
-  'bg-yellow-100 border-yellow-300 shadow-yellow-200/50',
-  'bg-orange-100 border-orange-300 shadow-orange-200/50',
-  'bg-pink-100 border-pink-300 shadow-pink-200/50',
-  'bg-blue-100 border-blue-300 shadow-blue-200/50',
-  'bg-green-100 border-green-300 shadow-green-200/50',
-  'bg-purple-100 border-purple-300 shadow-purple-200/50',
-  'bg-teal-100 border-teal-300 shadow-teal-200/50',
+  { bg: 'bg-yellow-100', border: 'border-yellow-300', shadow: 'shadow-yellow-200/50' },
+  { bg: 'bg-orange-100', border: 'border-orange-300', shadow: 'shadow-orange-200/50' },
+  { bg: 'bg-pink-100', border: 'border-pink-300', shadow: 'shadow-pink-200/50' },
+  { bg: 'bg-blue-100', border: 'border-blue-300', shadow: 'shadow-blue-200/50' },
+  { bg: 'bg-green-100', border: 'border-green-300', shadow: 'shadow-green-200/50' },
+  { bg: 'bg-purple-100', border: 'border-purple-300', shadow: 'shadow-purple-200/50' },
 ]
 
-// Paper textures and types
-type NoteStyle = 'sticky' | 'index-card' | 'torn-paper' | 'notebook' | 'polaroid' | 'postcard'
+// Handwritten font class
+const handwritten = "font-['Caveat',_cursive]"
 
-// Content block types for the canvas
-interface CanvasBlock {
+// Page structure for organized presentation
+interface CanvasPage {
   id: string
-  type: 'text' | 'quote' | 'fact' | 'question' | 'diagram' | 'pioneer' | 'insight' | 'activity'
-  content: string
-  title?: string
-  style: NoteStyle
-  colorIndex: number
-  rotation: number // degrees
-  position: { x: number; y: number } // percentage
-  size: 'small' | 'medium' | 'large'
-  pioneer?: Founder
-  diagramType?: string
-  isRevealed: boolean
-  connectedTo?: string[] // IDs of connected blocks
+  title: string
+  type: 'intro' | 'content' | 'diagram' | 'pioneer' | 'summary' | 'activity'
+  mainContent: string
+  bulletPoints?: string[]
+  diagram?: string
+  diagramExplanation?: string
+  pioneers?: Founder[]
+  keyTakeaway?: string
+  funFact?: string
 }
 
-// Handwritten-style font class
-const handwrittenClass = "font-['Caveat',_cursive] text-xl"
-
-// Parse content into organic canvas blocks
-function parseContentIntoBlocks(
+// Parse lesson content into organized pages
+function parseLessonIntoPages(
   content: string,
   lessonId: string,
   lessonTitle: string
-): CanvasBlock[] {
-  const blocks: CanvasBlock[] = []
-  let blockIndex = 0
+): CanvasPage[] {
+  const pages: CanvasPage[] = []
 
-  // Strip HTML to analyze content
-  const textContent = content.replace(/<[^>]*>/g, ' ').replace(/\s+/g, ' ').trim()
-
-  // Split into paragraphs/sections
-  const paragraphs = content.split(/<\/p>|<br\s*\/?>|<\/li>/).filter(p => {
-    const text = p.replace(/<[^>]*>/g, '').trim()
-    return text.length > 20
-  })
-
-  // Detect pioneers
-  const pioneers = detectPioneersInContent(content)
-
-  // Generate pseudo-random but consistent positions based on content
-  const generatePosition = (index: number, total: number) => {
-    const seed = (lessonId.charCodeAt(0) + index * 7) % 100
-    const row = Math.floor(index / 3)
-    const col = index % 3
-
-    return {
-      x: 5 + (col * 30) + ((seed % 15) - 7),
-      y: 5 + (row * 25) + ((seed % 10) - 5)
-    }
-  }
-
-  const generateRotation = (index: number) => {
-    const seed = (lessonId.charCodeAt(0) + index * 13) % 100
-    return ((seed % 12) - 6) // -6 to +6 degrees
-  }
-
-  // Title block
-  blocks.push({
-    id: `${lessonId}-title`,
-    type: 'text',
-    title: lessonTitle,
-    content: '',
-    style: 'torn-paper',
-    colorIndex: 0,
-    rotation: generateRotation(0),
-    position: { x: 35, y: 2 },
-    size: 'large',
-    isRevealed: true
-  })
-  blockIndex++
-
-  // Process paragraphs into different block types
-  paragraphs.forEach((para, idx) => {
-    const cleanText = para.replace(/<[^>]*>/g, '').trim()
-    if (cleanText.length < 30) return
-
-    // Detect content type
-    const isQuote = para.includes('<blockquote') || cleanText.startsWith('"') || cleanText.includes('said') || cleanText.includes('"')
-    const isQuestion = cleanText.includes('?') && cleanText.length < 200
-    const isFact = cleanText.toLowerCase().includes('percent') || cleanText.includes('%') || /\d+/.test(cleanText)
-    const isInsight = cleanText.toLowerCase().includes('important') || cleanText.toLowerCase().includes('key') || cleanText.toLowerCase().includes('remember')
-
-    let blockType: CanvasBlock['type'] = 'text'
-    let style: NoteStyle = 'sticky'
-
-    if (isQuote) {
-      blockType = 'quote'
-      style = 'postcard'
-    } else if (isQuestion) {
-      blockType = 'question'
-      style = 'notebook'
-    } else if (isFact) {
-      blockType = 'fact'
-      style = 'index-card'
-    } else if (isInsight) {
-      blockType = 'insight'
-      style = 'torn-paper'
-    }
-
-    // Truncate long content for better visual presentation
-    const displayContent = cleanText.length > 300
-      ? cleanText.substring(0, 280) + '...'
-      : cleanText
-
-    blocks.push({
-      id: `${lessonId}-block-${blockIndex}`,
-      type: blockType,
-      content: displayContent,
-      style,
-      colorIndex: blockIndex % STICKY_COLORS.length,
-      rotation: generateRotation(blockIndex),
-      position: generatePosition(blockIndex, paragraphs.length),
-      size: cleanText.length > 200 ? 'large' : cleanText.length > 100 ? 'medium' : 'small',
-      isRevealed: blockIndex < 3 // First 3 blocks start revealed
-    })
-    blockIndex++
-  })
-
-  // Add pioneer blocks
-  pioneers.forEach((pioneer, idx) => {
-    blocks.push({
-      id: `${lessonId}-pioneer-${pioneer.id}`,
-      type: 'pioneer',
-      content: pioneer.shortBio,
-      title: pioneer.name,
-      style: 'polaroid',
-      colorIndex: (blockIndex + idx) % STICKY_COLORS.length,
-      rotation: generateRotation(blockIndex + idx),
-      position: generatePosition(blocks.length + idx, blocks.length + pioneers.length),
-      size: 'medium',
-      pioneer,
-      isRevealed: false
-    })
-  })
-
-  // Detect and add diagram block
+  // Detect diagram type from content
   const lowerContent = content.toLowerCase()
   let diagramType: string | undefined
 
   if (lowerContent.includes('water cycle') || (lowerContent.includes('evaporation') && lowerContent.includes('precipitation'))) {
     diagramType = 'water-cycle'
-  } else if (lowerContent.includes('solar panel') || lowerContent.includes('photovoltaic')) {
+  } else if (lowerContent.includes('solar panel') || lowerContent.includes('photovoltaic') || lowerContent.includes('solar energy')) {
     diagramType = 'solar-energy'
-  } else if (lowerContent.includes('soil layer') || lowerContent.includes('topsoil')) {
+  } else if (lowerContent.includes('soil layer') || lowerContent.includes('topsoil') || lowerContent.includes('horizon')) {
     diagramType = 'soil-layers'
   } else if (lowerContent.includes('compost') || lowerContent.includes('decomposition')) {
     diagramType = 'composting-process'
   } else if (lowerContent.includes('food web') || lowerContent.includes('food chain')) {
     diagramType = 'food-web'
-  } else if (lowerContent.includes('passive solar')) {
+  } else if (lowerContent.includes('passive solar') || lowerContent.includes('thermal mass')) {
     diagramType = 'passive-solar'
-  } else if (lowerContent.includes('waste hierarchy')) {
+  } else if (lowerContent.includes('waste hierarchy') || lowerContent.includes('reduce, reuse')) {
     diagramType = 'waste-hierarchy'
-  } else if (lowerContent.includes('photosynthesis')) {
+  } else if (lowerContent.includes('photosynthesis') || lowerContent.includes('chlorophyll')) {
     diagramType = 'photosynthesis'
   } else if (lowerContent.includes('carbon cycle')) {
     diagramType = 'carbon-cycle'
-  } else if (lowerContent.includes('rainwater harvest')) {
+  } else if (lowerContent.includes('energy flow') || lowerContent.includes('trophic')) {
+    diagramType = 'energy-flow'
+  } else if (lowerContent.includes('rainwater harvest') || lowerContent.includes('cistern')) {
     diagramType = 'rainwater-harvesting'
+  } else if (lowerContent.includes('thermal mass') && !lowerContent.includes('passive solar')) {
+    diagramType = 'thermal-mass'
   }
 
-  if (diagramType) {
-    blocks.push({
-      id: `${lessonId}-diagram`,
-      type: 'diagram',
-      content: 'Interactive Diagram',
-      style: 'torn-paper',
-      colorIndex: 0,
-      rotation: 0,
-      position: { x: 55, y: 40 },
-      size: 'large',
-      diagramType,
-      isRevealed: false
+  // Detect pioneers
+  const pioneers = detectPioneersInContent(content)
+
+  // Split by headers
+  const headerRegex = /<h[23][^>]*>(.*?)<\/h[23]>/gi
+  const parts = content.split(headerRegex)
+
+  // Create intro page
+  const introText = parts[0]?.replace(/<[^>]*>/g, '').trim() || ''
+  if (introText.length > 50) {
+    pages.push({
+      id: `${lessonId}-intro`,
+      title: lessonTitle,
+      type: 'intro',
+      mainContent: introText.substring(0, 400) + (introText.length > 400 ? '...' : ''),
+      keyTakeaway: extractKeyTakeaway(introText)
+    })
+  } else {
+    // If no good intro, create a title page
+    pages.push({
+      id: `${lessonId}-intro`,
+      title: lessonTitle,
+      type: 'intro',
+      mainContent: `Welcome to this lesson on ${lessonTitle}. Let's explore together!`,
     })
   }
 
-  return blocks
+  // Process content sections
+  let pageIndex = 1
+  for (let i = 1; i < parts.length; i += 2) {
+    const sectionTitle = parts[i]?.replace(/<[^>]*>/g, '').trim()
+    const sectionContent = parts[i + 1]?.replace(/<[^>]*>/g, '').trim() || ''
+
+    if (!sectionTitle || sectionContent.length < 30) continue
+
+    // Extract bullet points if present
+    const bulletPoints = extractBulletPoints(parts[i + 1] || '')
+
+    pages.push({
+      id: `${lessonId}-page-${pageIndex}`,
+      title: sectionTitle,
+      type: 'content',
+      mainContent: sectionContent.substring(0, 500) + (sectionContent.length > 500 ? '...' : ''),
+      bulletPoints: bulletPoints.length > 0 ? bulletPoints : undefined,
+      funFact: extractFunFact(sectionContent)
+    })
+    pageIndex++
+  }
+
+  // Add diagram page if detected
+  if (diagramType && DIAGRAM_MAP[diagramType]) {
+    const diagramInfo = DIAGRAM_MAP[diagramType]
+    pages.push({
+      id: `${lessonId}-diagram`,
+      title: diagramInfo.title,
+      type: 'diagram',
+      mainContent: diagramInfo.description,
+      diagram: diagramType,
+      diagramExplanation: extractDiagramExplanation(content, diagramType)
+    })
+  }
+
+  // Add pioneer page if detected
+  if (pioneers.length > 0) {
+    pages.push({
+      id: `${lessonId}-pioneers`,
+      title: 'Changemakers',
+      type: 'pioneer',
+      mainContent: 'Meet the people who are making a difference in this field.',
+      pioneers
+    })
+  }
+
+  // Add summary page
+  pages.push({
+    id: `${lessonId}-summary`,
+    title: 'Key Takeaways',
+    type: 'summary',
+    mainContent: `You've completed ${lessonTitle}!`,
+    bulletPoints: extractKeyPoints(content),
+    keyTakeaway: 'Remember: Every small action counts toward a sustainable future!'
+  })
+
+  return pages
 }
 
-// Individual Note Component
-function CanvasNote({
-  block,
-  onReveal,
-  onPioneerClick,
-  isInteractive = true
-}: {
-  block: CanvasBlock
-  onReveal: (id: string) => void
-  onPioneerClick?: (pioneer: Founder) => void
-  isInteractive?: boolean
-}) {
-  const [isHovered, setIsHovered] = useState(false)
-  const [isExpanded, setIsExpanded] = useState(false)
+// Helper to extract bullet points from HTML
+function extractBulletPoints(html: string): string[] {
+  const liMatches = html.match(/<li[^>]*>(.*?)<\/li>/gi) || []
+  return liMatches
+    .map(li => li.replace(/<[^>]*>/g, '').trim())
+    .filter(text => text.length > 10 && text.length < 200)
+    .slice(0, 5)
+}
 
-  // Get style classes based on note type
-  const getStyleClasses = () => {
-    const baseClasses = 'absolute transform transition-all duration-300 cursor-pointer'
-    const colorClass = STICKY_COLORS[block.colorIndex] || STICKY_COLORS[0]
-
-    const sizeClasses = {
-      small: 'w-40 md:w-48',
-      medium: 'w-52 md:w-64',
-      large: 'w-64 md:w-80'
-    }
-
-    const styleSpecific = {
-      'sticky': `rounded-sm shadow-lg border-l-4 ${colorClass}`,
-      'index-card': 'bg-white rounded border-2 border-gray-300 shadow-md',
-      'torn-paper': 'bg-amber-50 rounded-none shadow-lg border border-amber-200',
-      'notebook': 'bg-white rounded border border-gray-200 shadow-md bg-[linear-gradient(transparent_31px,#e5e5e5_31px)] bg-[size:100%_32px]',
-      'polaroid': 'bg-white rounded p-2 pb-8 shadow-xl border border-gray-100',
-      'postcard': 'bg-gradient-to-br from-amber-50 to-orange-50 rounded shadow-lg border border-amber-300'
-    }
-
-    return `${baseClasses} ${sizeClasses[block.size]} ${styleSpecific[block.style]}`
-  }
-
-  const getTypeIcon = () => {
-    switch (block.type) {
-      case 'quote': return <Quote className="w-4 h-4 text-amber-600" />
-      case 'fact': return <Zap className="w-4 h-4 text-blue-600" />
-      case 'question': return <Lightbulb className="w-4 h-4 text-yellow-600" />
-      case 'insight': return <Star className="w-4 h-4 text-purple-600" />
-      case 'pioneer': return <Heart className="w-4 h-4 text-pink-600" />
-      case 'diagram': return <Eye className="w-4 h-4 text-green-600" />
-      default: return <Pencil className="w-4 h-4 text-gray-600" />
-    }
-  }
-
-  // Handle click/reveal
-  const handleClick = () => {
-    if (!block.isRevealed && isInteractive) {
-      onReveal(block.id)
-      return
-    }
-
-    if (block.type === 'pioneer' && block.pioneer && onPioneerClick) {
-      onPioneerClick(block.pioneer)
-    } else if (block.type === 'diagram') {
-      setIsExpanded(!isExpanded)
-    }
-  }
-
-  // Unrevealed state - mysterious silhouette
-  if (!block.isRevealed && isInteractive) {
-    return (
-      <motion.div
-        className={`${getStyleClasses()} overflow-hidden`}
-        style={{
-          left: `${block.position.x}%`,
-          top: `${block.position.y}%`,
-          rotate: `${block.rotation}deg`
-        }}
-        initial={{ opacity: 0, scale: 0.8 }}
-        animate={{ opacity: 1, scale: 1 }}
-        whileHover={{ scale: 1.05, zIndex: 50 }}
-        onClick={handleClick}
-      >
-        <div className="relative p-4 bg-gray-200/80 backdrop-blur-sm min-h-[80px] flex items-center justify-center">
-          <div className="absolute inset-0 bg-[repeating-linear-gradient(45deg,transparent,transparent_10px,rgba(0,0,0,0.03)_10px,rgba(0,0,0,0.03)_20px)]" />
-          <motion.div
-            animate={{
-              opacity: [0.5, 1, 0.5],
-              scale: [1, 1.1, 1]
-            }}
-            transition={{ repeat: Infinity, duration: 2 }}
-            className="flex flex-col items-center gap-2"
-          >
-            <Search className="w-6 h-6 text-gray-400" />
-            <span className="text-xs text-gray-500 font-medium">Click to discover</span>
-          </motion.div>
-        </div>
-        {/* Pin decoration */}
-        <div className="absolute -top-2 left-1/2 transform -translate-x-1/2">
-          <Pin className="w-6 h-6 text-red-500 drop-shadow-md" />
-        </div>
-      </motion.div>
-    )
-  }
-
-  // Diagram expanded view
-  if (block.type === 'diagram' && isExpanded && block.diagramType) {
-    const DiagramComponent = DIAGRAM_MAP[block.diagramType]
-
-    return (
-      <motion.div
-        className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 backdrop-blur-sm"
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
-        onClick={() => setIsExpanded(false)}
-      >
-        <motion.div
-          className="bg-white rounded-2xl p-6 max-w-4xl w-full mx-4 max-h-[90vh] overflow-auto"
-          initial={{ scale: 0.9, y: 20 }}
-          animate={{ scale: 1, y: 0 }}
-          onClick={e => e.stopPropagation()}
-        >
-          <div className="flex items-center justify-between mb-4">
-            <h3 className="text-xl font-bold text-gray-800">Interactive Diagram</h3>
-            <button
-              onClick={() => setIsExpanded(false)}
-              className="p-2 rounded-full hover:bg-gray-100"
-            >
-              <X className="w-5 h-5" />
-            </button>
-          </div>
-          {DiagramComponent && <DiagramComponent animated showLabels />}
-        </motion.div>
-      </motion.div>
-    )
-  }
-
-  // Revealed content
-  return (
-    <>
-      <motion.div
-        className={getStyleClasses()}
-        style={{
-          left: `${block.position.x}%`,
-          top: `${block.position.y}%`,
-          rotate: `${block.rotation}deg`,
-          zIndex: isHovered ? 40 : 10
-        }}
-        initial={{ opacity: 0, scale: 0, rotate: block.rotation - 180 }}
-        animate={{ opacity: 1, scale: 1, rotate: block.rotation }}
-        whileHover={{
-          scale: 1.08,
-          rotate: 0,
-          zIndex: 50,
-          boxShadow: '0 20px 40px rgba(0,0,0,0.2)'
-        }}
-        onHoverStart={() => setIsHovered(true)}
-        onHoverEnd={() => setIsHovered(false)}
-        onClick={handleClick}
-        transition={{ type: 'spring', stiffness: 300, damping: 20 }}
-      >
-        {/* Pin/clip decoration */}
-        {block.style === 'sticky' && (
-          <div className="absolute -top-2 left-4">
-            <Pin className="w-5 h-5 text-red-500 drop-shadow-sm transform rotate-12" />
-          </div>
-        )}
-        {block.style === 'polaroid' && (
-          <div className="absolute -top-1 -right-1">
-            <Paperclip className="w-6 h-6 text-gray-400 transform rotate-45" />
-          </div>
-        )}
-
-        {/* Content */}
-        <div className="p-4">
-          {/* Title for title block */}
-          {block.type === 'text' && block.title && !block.content && (
-            <h2 className={`${handwrittenClass} text-3xl font-bold text-gray-800 text-center`}>
-              {block.title}
-            </h2>
-          )}
-
-          {/* Type indicator */}
-          {block.type !== 'text' && (
-            <div className="flex items-center gap-2 mb-2">
-              {getTypeIcon()}
-              <span className="text-xs font-bold uppercase tracking-wide text-gray-500">
-                {block.type === 'pioneer' ? 'Changemaker' : block.type}
-              </span>
-            </div>
-          )}
-
-          {/* Pioneer content */}
-          {block.type === 'pioneer' && block.pioneer && (
-            <div className="text-center">
-              {block.pioneer.portrait && (
-                <div className="w-20 h-20 mx-auto mb-2 rounded-full overflow-hidden border-4 border-white shadow-inner">
-                  <img
-                    src={block.pioneer.portrait}
-                    alt={block.pioneer.name}
-                    className="w-full h-full object-cover"
-                  />
-                </div>
-              )}
-              <h4 className={`${handwrittenClass} text-lg font-bold text-gray-800`}>
-                {block.pioneer.name}
-              </h4>
-              <p className="text-xs text-gray-500 mt-1">{block.pioneer.title}</p>
-              <p className="text-xs text-blue-600 mt-2 underline">Click to learn more</p>
-            </div>
-          )}
-
-          {/* Diagram preview */}
-          {block.type === 'diagram' && (
-            <div className="flex flex-col items-center gap-3 py-4">
-              <Eye className="w-10 h-10 text-green-600" />
-              <span className={`${handwrittenClass} text-gray-700`}>
-                Click to explore diagram
-              </span>
-            </div>
-          )}
-
-          {/* Regular text content */}
-          {block.content && block.type !== 'pioneer' && block.type !== 'diagram' && (
-            <p className={`${block.style === 'notebook' ? handwrittenClass : 'text-sm'} text-gray-700 leading-relaxed`}>
-              {block.type === 'quote' && '"'}
-              {block.content}
-              {block.type === 'quote' && '"'}
-            </p>
-          )}
-
-          {/* Doodle decorations based on type */}
-          {block.type === 'insight' && (
-            <div className="absolute -bottom-1 -right-1 text-2xl">
-              {['💡', '✨', '🌟'][block.colorIndex % 3]}
-            </div>
-          )}
-          {block.type === 'fact' && (
-            <div className="absolute bottom-1 right-2 text-xs text-blue-400">
-              ═══
-            </div>
-          )}
-        </div>
-
-        {/* Tape decoration for torn paper */}
-        {block.style === 'torn-paper' && (
-          <>
-            <div className="absolute -top-2 left-1/4 w-12 h-4 bg-amber-200/60 transform -rotate-6 rounded-sm" />
-            <div className="absolute -top-2 right-1/4 w-10 h-4 bg-amber-200/60 transform rotate-3 rounded-sm" />
-          </>
-        )}
-      </motion.div>
-    </>
+// Helper to extract a key takeaway
+function extractKeyTakeaway(text: string): string | undefined {
+  const sentences = text.split(/[.!?]/).filter(s => s.trim().length > 20)
+  const importantSentence = sentences.find(s =>
+    s.toLowerCase().includes('important') ||
+    s.toLowerCase().includes('key') ||
+    s.toLowerCase().includes('remember') ||
+    s.toLowerCase().includes('essential')
   )
+  return importantSentence?.trim()
 }
 
-// Connection strings between related notes
-function ConnectionStrings({ blocks }: { blocks: CanvasBlock[] }) {
-  // Simple connections - can be expanded
-  return (
-    <svg className="absolute inset-0 w-full h-full pointer-events-none" style={{ zIndex: 1 }}>
-      {blocks.slice(0, -1).map((block, idx) => {
-        if (!block.isRevealed) return null
-        const nextBlock = blocks[idx + 1]
-        if (!nextBlock?.isRevealed) return null
-
-        return (
-          <motion.line
-            key={`${block.id}-${nextBlock.id}`}
-            x1={`${block.position.x + 10}%`}
-            y1={`${block.position.y + 5}%`}
-            x2={`${nextBlock.position.x + 10}%`}
-            y2={`${nextBlock.position.y + 5}%`}
-            stroke="#ef4444"
-            strokeWidth="2"
-            strokeDasharray="8,4"
-            opacity="0.3"
-            initial={{ pathLength: 0 }}
-            animate={{ pathLength: 1 }}
-            transition={{ duration: 1, delay: 0.5 }}
-          />
-        )
-      })}
-    </svg>
+// Helper to extract fun facts
+function extractFunFact(text: string): string | undefined {
+  const sentences = text.split(/[.!?]/).filter(s => s.trim().length > 20)
+  const factSentence = sentences.find(s =>
+    /\d+%/.test(s) ||
+    s.toLowerCase().includes('billion') ||
+    s.toLowerCase().includes('million') ||
+    s.toLowerCase().includes('amazing') ||
+    s.toLowerCase().includes('surprising')
   )
+  return factSentence?.trim()
 }
 
-// Progress tracker that looks like a to-do list
-function ProgressTracker({
-  totalBlocks,
-  revealedCount,
-  lessonTitle
+// Helper to extract diagram explanation
+function extractDiagramExplanation(content: string, diagramType: string): string {
+  const keywordMap: Record<string, string[]> = {
+    'water-cycle': ['evaporation', 'condensation', 'precipitation', 'collection'],
+    'solar-energy': ['photovoltaic', 'inverter', 'grid', 'panel'],
+    'soil-layers': ['topsoil', 'subsoil', 'bedrock', 'organic'],
+    'composting-process': ['decompose', 'bacteria', 'nitrogen', 'carbon'],
+    'food-web': ['producer', 'consumer', 'predator', 'prey'],
+  }
+
+  const keywords = keywordMap[diagramType] || []
+  const sentences = content.split(/[.!?]/).filter(s =>
+    keywords.some(k => s.toLowerCase().includes(k))
+  )
+
+  return sentences.slice(0, 2).join('. ').trim() || 'Explore the diagram to understand how each part works together!'
+}
+
+// Helper to extract key points for summary
+function extractKeyPoints(content: string): string[] {
+  const text = content.replace(/<[^>]*>/g, '')
+  const sentences = text.split(/[.!?]/).filter(s => s.trim().length > 30)
+
+  // Get sentences with key indicators
+  const keyIndicators = ['is', 'are', 'means', 'helps', 'creates', 'provides']
+  const keySentences = sentences.filter(s =>
+    keyIndicators.some(k => s.toLowerCase().includes(` ${k} `))
+  )
+
+  return keySentences.slice(0, 4).map(s => s.trim())
+}
+
+// Page component - organized layout with organic styling
+function CanvasPageView({
+  page,
+  pageNumber,
+  totalPages,
+  onPioneerClick
 }: {
-  totalBlocks: number
-  revealedCount: number
-  lessonTitle: string
+  page: CanvasPage
+  pageNumber: number
+  totalPages: number
+  onPioneerClick: (pioneer: Founder) => void
 }) {
-  const percentage = Math.round((revealedCount / totalBlocks) * 100)
+  const colorIndex = pageNumber % STICKY_COLORS.length
+  const color = STICKY_COLORS[colorIndex]
+
+  // Get diagram component if this is a diagram page
+  const DiagramInfo = page.diagram ? DIAGRAM_MAP[page.diagram] : null
+  const DiagramComponent = DiagramInfo?.component
 
   return (
     <motion.div
-      className="fixed bottom-6 right-6 bg-white rounded-xl shadow-2xl p-4 border-2 border-gray-100 z-40"
-      initial={{ x: 100, opacity: 0 }}
-      animate={{ x: 0, opacity: 1 }}
-      transition={{ delay: 1 }}
+      initial={{ opacity: 0, x: 50 }}
+      animate={{ opacity: 1, x: 0 }}
+      exit={{ opacity: 0, x: -50 }}
+      transition={{ duration: 0.4 }}
+      className="min-h-[calc(100vh-200px)] flex flex-col"
     >
-      <div className="flex items-center gap-3 mb-2">
-        <BookOpen className="w-5 h-5 text-[var(--primary)]" />
-        <span className={`${handwrittenClass} text-gray-800`}>Discovery Progress</span>
-      </div>
-
-      <div className="relative w-48 h-3 bg-gray-100 rounded-full overflow-hidden">
-        <motion.div
-          className="absolute left-0 top-0 h-full bg-gradient-to-r from-[var(--primary)] to-[var(--accent)] rounded-full"
-          initial={{ width: 0 }}
-          animate={{ width: `${percentage}%` }}
-          transition={{ duration: 0.5 }}
-        />
-      </div>
-
-      <div className="flex items-center justify-between mt-2 text-xs text-gray-500">
-        <span>{revealedCount} / {totalBlocks} discoveries</span>
-        <span className="font-bold text-[var(--primary)]">{percentage}%</span>
-      </div>
-    </motion.div>
-  )
-}
-
-// Welcome overlay
-function WelcomeOverlay({
-  moduleTitle,
-  lessonTitle,
-  level,
-  onStart
-}: {
-  moduleTitle: string
-  lessonTitle: string
-  level: LearningLevel
-  onStart: () => void
-}) {
-  return (
-    <motion.div
-      className="fixed inset-0 z-50 flex items-center justify-center bg-gradient-to-br from-amber-50 via-white to-blue-50"
-      initial={{ opacity: 0 }}
-      animate={{ opacity: 1 }}
-      exit={{ opacity: 0, y: -50 }}
-    >
-      {/* Scattered decorative elements */}
-      <div className="absolute inset-0 overflow-hidden pointer-events-none">
-        {[...Array(15)].map((_, i) => (
-          <motion.div
+      {/* Page number indicator */}
+      <div className="flex items-center justify-center gap-2 mb-6">
+        {Array.from({ length: totalPages }).map((_, i) => (
+          <div
             key={i}
-            className={`absolute ${STICKY_COLORS[i % STICKY_COLORS.length].split(' ')[0]} w-16 h-16 rounded shadow-lg`}
-            style={{
-              left: `${5 + (i * 7) % 90}%`,
-              top: `${10 + (i * 11) % 80}%`,
-              transform: `rotate(${(i * 23) % 30 - 15}deg)`
-            }}
-            initial={{ opacity: 0, scale: 0 }}
-            animate={{
-              opacity: 0.4,
-              scale: 1,
-              transition: { delay: i * 0.05 }
-            }}
+            className={`w-2 h-2 rounded-full transition-all ${
+              i === pageNumber - 1
+                ? 'w-8 bg-[var(--primary)]'
+                : i < pageNumber - 1
+                ? 'bg-green-400'
+                : 'bg-gray-300'
+            }`}
           />
         ))}
       </div>
 
-      <motion.div
-        className="relative bg-white rounded-3xl shadow-2xl p-8 md:p-12 max-w-2xl mx-4 text-center"
-        initial={{ scale: 0.8, y: 50 }}
-        animate={{ scale: 1, y: 0 }}
-        transition={{ type: 'spring', stiffness: 200, damping: 20 }}
-      >
-        {/* Decorative pins */}
-        <div className="absolute -top-3 left-1/4">
-          <Pin className="w-8 h-8 text-red-500 transform -rotate-12" />
-        </div>
-        <div className="absolute -top-3 right-1/4">
-          <Pin className="w-8 h-8 text-blue-500 transform rotate-12" />
-        </div>
+      {/* Main page content */}
+      <div className="flex-1 container mx-auto px-4 max-w-5xl">
 
-        <motion.div
-          initial={{ scale: 0 }}
-          animate={{ scale: 1 }}
-          transition={{ delay: 0.3, type: 'spring' }}
-          className="mb-6"
-        >
-          <Sparkles className="w-16 h-16 mx-auto text-[var(--primary)]" />
-        </motion.div>
+        {/* INTRO PAGE */}
+        {page.type === 'intro' && (
+          <div className="text-center py-8">
+            <motion.div
+              initial={{ scale: 0 }}
+              animate={{ scale: 1 }}
+              transition={{ type: 'spring', delay: 0.2 }}
+              className="mb-6"
+            >
+              <Sparkles className="w-16 h-16 mx-auto text-[var(--primary)]" />
+            </motion.div>
 
-        <h1 className={`${handwrittenClass} text-4xl md:text-5xl text-gray-800 mb-2`}>
-          {lessonTitle}
-        </h1>
-        <p className="text-gray-500 mb-6">{moduleTitle}</p>
+            <h1 className={`${handwritten} text-5xl md:text-6xl text-gray-800 mb-6`}>
+              {page.title}
+            </h1>
 
-        <div className="bg-amber-50 rounded-xl p-4 mb-6 border-2 border-dashed border-amber-200">
-          <p className={`${handwrittenClass} text-gray-700 text-lg`}>
-            Your learning board awaits!
-            <br />
-            Click on the hidden notes to discover knowledge.
-            <br />
-            <span className="text-[var(--primary)]">Every click reveals something new...</span>
-          </p>
-        </div>
+            <motion.div
+              initial={{ y: 20, opacity: 0 }}
+              animate={{ y: 0, opacity: 1 }}
+              transition={{ delay: 0.3 }}
+              className={`${color.bg} ${color.border} border-l-4 rounded-lg p-6 max-w-2xl mx-auto shadow-lg transform rotate-1`}
+            >
+              <p className={`${handwritten} text-2xl text-gray-700 leading-relaxed`}>
+                {page.mainContent}
+              </p>
+            </motion.div>
 
-        <div className="flex items-center justify-center gap-2 mb-6 text-sm text-gray-500">
-          <GraduationCap className="w-4 h-4" />
-          <span>Level: {LEARNING_LEVELS[level].icon} {LEARNING_LEVELS[level].label}</span>
-        </div>
+            {page.keyTakeaway && (
+              <motion.div
+                initial={{ y: 20, opacity: 0 }}
+                animate={{ y: 0, opacity: 1 }}
+                transition={{ delay: 0.5 }}
+                className="mt-6 inline-flex items-center gap-2 px-4 py-2 bg-amber-100 rounded-full"
+              >
+                <Lightbulb className="w-5 h-5 text-amber-600" />
+                <span className={`${handwritten} text-lg text-amber-800`}>
+                  {page.keyTakeaway}
+                </span>
+              </motion.div>
+            )}
+          </div>
+        )}
 
-        <Button
-          size="lg"
-          onClick={onStart}
-          className="text-xl px-8 py-4 rounded-xl font-bold shadow-xl hover:shadow-2xl transition-all"
-        >
-          <Play className="w-6 h-6 mr-2" />
-          Start Exploring
-        </Button>
-      </motion.div>
+        {/* CONTENT PAGE */}
+        {page.type === 'content' && (
+          <div className="py-6">
+            <motion.h2
+              initial={{ x: -20, opacity: 0 }}
+              animate={{ x: 0, opacity: 1 }}
+              className={`${handwritten} text-4xl text-gray-800 mb-6 flex items-center gap-3`}
+            >
+              <div className="w-10 h-10 rounded-full bg-[var(--primary)] text-white flex items-center justify-center font-bold">
+                {pageNumber}
+              </div>
+              {page.title}
+            </motion.h2>
+
+            <div className="grid md:grid-cols-2 gap-6">
+              {/* Main content card */}
+              <motion.div
+                initial={{ y: 20, opacity: 0 }}
+                animate={{ y: 0, opacity: 1 }}
+                transition={{ delay: 0.2 }}
+                className={`${color.bg} ${color.border} border-2 rounded-lg p-6 shadow-lg transform -rotate-1`}
+              >
+                <div className="absolute -top-2 left-4">
+                  <Pin className="w-6 h-6 text-red-500" />
+                </div>
+                <p className={`${handwritten} text-xl text-gray-700 leading-relaxed mt-2`}>
+                  {page.mainContent}
+                </p>
+              </motion.div>
+
+              {/* Bullet points card */}
+              {page.bulletPoints && page.bulletPoints.length > 0 && (
+                <motion.div
+                  initial={{ y: 20, opacity: 0 }}
+                  animate={{ y: 0, opacity: 1 }}
+                  transition={{ delay: 0.3 }}
+                  className="bg-white border-2 border-gray-200 rounded-lg p-6 shadow-lg transform rotate-1"
+                >
+                  <h3 className={`${handwritten} text-2xl text-gray-800 mb-4 flex items-center gap-2`}>
+                    <Star className="w-5 h-5 text-yellow-500" />
+                    Key Points
+                  </h3>
+                  <ul className="space-y-3">
+                    {page.bulletPoints.map((point, i) => (
+                      <motion.li
+                        key={i}
+                        initial={{ x: -20, opacity: 0 }}
+                        animate={{ x: 0, opacity: 1 }}
+                        transition={{ delay: 0.4 + i * 0.1 }}
+                        className="flex items-start gap-3"
+                      >
+                        <CircleDot className="w-4 h-4 text-[var(--primary)] mt-1 flex-shrink-0" />
+                        <span className="text-gray-700">{point}</span>
+                      </motion.li>
+                    ))}
+                  </ul>
+                </motion.div>
+              )}
+            </div>
+
+            {/* Fun fact */}
+            {page.funFact && (
+              <motion.div
+                initial={{ scale: 0.9, opacity: 0 }}
+                animate={{ scale: 1, opacity: 1 }}
+                transition={{ delay: 0.5 }}
+                className="mt-6 bg-gradient-to-r from-purple-100 to-pink-100 border-2 border-purple-200 rounded-lg p-4 max-w-md mx-auto transform rotate-1"
+              >
+                <div className="flex items-center gap-2 mb-2">
+                  <Zap className="w-5 h-5 text-purple-600" />
+                  <span className={`${handwritten} text-lg font-bold text-purple-800`}>Did you know?</span>
+                </div>
+                <p className="text-purple-700">{page.funFact}</p>
+              </motion.div>
+            )}
+          </div>
+        )}
+
+        {/* DIAGRAM PAGE */}
+        {page.type === 'diagram' && DiagramComponent && (
+          <div className="py-6">
+            <motion.h2
+              initial={{ y: -20, opacity: 0 }}
+              animate={{ y: 0, opacity: 1 }}
+              className={`${handwritten} text-4xl text-center text-gray-800 mb-4`}
+            >
+              {page.title}
+            </motion.h2>
+
+            <motion.p
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              transition={{ delay: 0.2 }}
+              className="text-center text-gray-600 mb-6 max-w-2xl mx-auto"
+            >
+              {page.mainContent}
+            </motion.p>
+
+            {/* Diagram with explanation */}
+            <div className="grid lg:grid-cols-3 gap-6">
+              {/* Explanation sidebar */}
+              <motion.div
+                initial={{ x: -30, opacity: 0 }}
+                animate={{ x: 0, opacity: 1 }}
+                transition={{ delay: 0.3 }}
+                className="lg:col-span-1 space-y-4"
+              >
+                <div className="bg-blue-50 border-2 border-blue-200 rounded-lg p-4 transform -rotate-2">
+                  <div className="flex items-center gap-2 mb-2">
+                    <Eye className="w-5 h-5 text-blue-600" />
+                    <span className={`${handwritten} text-xl font-bold text-blue-800`}>Look for:</span>
+                  </div>
+                  <p className="text-blue-700 text-sm">{page.diagramExplanation}</p>
+                </div>
+
+                <div className="bg-green-50 border-2 border-green-200 rounded-lg p-4 transform rotate-1">
+                  <div className="flex items-center gap-2 mb-2">
+                    <Lightbulb className="w-5 h-5 text-green-600" />
+                    <span className={`${handwritten} text-xl font-bold text-green-800`}>Think about:</span>
+                  </div>
+                  <p className="text-green-700 text-sm">How does each part connect to the whole system?</p>
+                </div>
+              </motion.div>
+
+              {/* Diagram */}
+              <motion.div
+                initial={{ scale: 0.9, opacity: 0 }}
+                animate={{ scale: 1, opacity: 1 }}
+                transition={{ delay: 0.4, type: 'spring' }}
+                className="lg:col-span-2 bg-white rounded-2xl shadow-xl p-6 border-4 border-gray-100"
+              >
+                <DiagramComponent animated showLabels className="w-full" />
+              </motion.div>
+            </div>
+          </div>
+        )}
+
+        {/* PIONEER PAGE */}
+        {page.type === 'pioneer' && page.pioneers && (
+          <div className="py-6">
+            <motion.h2
+              initial={{ y: -20, opacity: 0 }}
+              animate={{ y: 0, opacity: 1 }}
+              className={`${handwritten} text-4xl text-center text-gray-800 mb-2`}
+            >
+              <Heart className="w-10 h-10 inline-block text-pink-500 mr-2" />
+              {page.title}
+            </motion.h2>
+
+            <motion.p
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              transition={{ delay: 0.2 }}
+              className="text-center text-gray-600 mb-8"
+            >
+              {page.mainContent}
+            </motion.p>
+
+            <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
+              {page.pioneers.map((pioneer, i) => (
+                <motion.button
+                  key={pioneer.id}
+                  initial={{ y: 30, opacity: 0 }}
+                  animate={{ y: 0, opacity: 1 }}
+                  transition={{ delay: 0.3 + i * 0.1 }}
+                  onClick={() => onPioneerClick(pioneer)}
+                  className="bg-white rounded-lg shadow-lg p-6 border-2 border-gray-100 hover:border-pink-300 hover:shadow-xl transition-all transform hover:scale-105 text-left"
+                  style={{ transform: `rotate(${(i % 3 - 1) * 2}deg)` }}
+                >
+                  <div className="flex items-center gap-4 mb-3">
+                    <div className="w-16 h-16 rounded-full bg-gradient-to-br from-pink-100 to-purple-100 flex items-center justify-center overflow-hidden border-4 border-white shadow-inner">
+                      {pioneer.portrait ? (
+                        <img src={pioneer.portrait} alt={pioneer.name} className="w-full h-full object-cover" />
+                      ) : (
+                        <span className={`${handwritten} text-2xl text-gray-600`}>
+                          {pioneer.name.split(' ').map(n => n[0]).join('')}
+                        </span>
+                      )}
+                    </div>
+                    <div>
+                      <h3 className={`${handwritten} text-xl font-bold text-gray-800`}>{pioneer.name}</h3>
+                      <p className="text-sm text-gray-500">{pioneer.title}</p>
+                    </div>
+                  </div>
+                  <p className="text-sm text-gray-600 line-clamp-3">{pioneer.shortBio}</p>
+                  <p className="text-xs text-pink-600 mt-2 font-medium">Click to learn more →</p>
+                </motion.button>
+              ))}
+            </div>
+          </div>
+        )}
+
+        {/* SUMMARY PAGE */}
+        {page.type === 'summary' && (
+          <div className="py-8 text-center">
+            <motion.div
+              initial={{ scale: 0 }}
+              animate={{ scale: 1 }}
+              transition={{ type: 'spring' }}
+              className="mb-6"
+            >
+              <CheckCircle2 className="w-20 h-20 mx-auto text-green-500" />
+            </motion.div>
+
+            <h2 className={`${handwritten} text-4xl text-gray-800 mb-4`}>
+              {page.title}
+            </h2>
+
+            <p className={`${handwritten} text-2xl text-gray-600 mb-8`}>
+              {page.mainContent}
+            </p>
+
+            {page.bulletPoints && page.bulletPoints.length > 0 && (
+              <motion.div
+                initial={{ y: 20, opacity: 0 }}
+                animate={{ y: 0, opacity: 1 }}
+                transition={{ delay: 0.3 }}
+                className="bg-gradient-to-br from-green-50 to-teal-50 border-2 border-green-200 rounded-xl p-6 max-w-2xl mx-auto text-left"
+              >
+                <h3 className={`${handwritten} text-2xl text-green-800 mb-4`}>Remember these points:</h3>
+                <ul className="space-y-3">
+                  {page.bulletPoints.map((point, i) => (
+                    <motion.li
+                      key={i}
+                      initial={{ x: -20, opacity: 0 }}
+                      animate={{ x: 0, opacity: 1 }}
+                      transition={{ delay: 0.4 + i * 0.1 }}
+                      className="flex items-start gap-3"
+                    >
+                      <CheckCircle2 className="w-5 h-5 text-green-500 mt-0.5 flex-shrink-0" />
+                      <span className="text-gray-700">{point}</span>
+                    </motion.li>
+                  ))}
+                </ul>
+              </motion.div>
+            )}
+
+            {page.keyTakeaway && (
+              <motion.div
+                initial={{ y: 20, opacity: 0 }}
+                animate={{ y: 0, opacity: 1 }}
+                transition={{ delay: 0.6 }}
+                className="mt-8 inline-flex items-center gap-2 px-6 py-3 bg-yellow-100 border-2 border-yellow-300 rounded-full"
+              >
+                <Star className="w-6 h-6 text-yellow-600" />
+                <span className={`${handwritten} text-xl text-yellow-800`}>
+                  {page.keyTakeaway}
+                </span>
+              </motion.div>
+            )}
+          </div>
+        )}
+      </div>
     </motion.div>
   )
 }
@@ -705,8 +699,8 @@ export function LearningCanvas({
 }: LearningCanvasProps) {
   const [started, setStarted] = useState(false)
   const [currentLesson, setCurrentLesson] = useState(0)
+  const [currentPage, setCurrentPage] = useState(0)
   const [completedLessons, setCompletedLessons] = useState<Set<string>>(new Set())
-  const [blocks, setBlocks] = useState<CanvasBlock[]>([])
   const [showQuiz, setShowQuiz] = useState(false)
   const [showFlashcards, setShowFlashcards] = useState(false)
   const [selectedPioneer, setSelectedPioneer] = useState<Founder | null>(null)
@@ -715,29 +709,19 @@ export function LearningCanvas({
   const lesson = levelContent.lessons[currentLesson]
   const totalLessons = levelContent.lessons.length
 
-  // Parse lesson into blocks
-  useEffect(() => {
-    if (lesson) {
-      const newBlocks = parseContentIntoBlocks(lesson.content, lesson.id, lesson.title)
-      setBlocks(newBlocks)
-    }
+  // Parse lesson into pages
+  const lessonPages = useMemo(() => {
+    if (!lesson) return []
+    return parseLessonIntoPages(lesson.content, lesson.id, lesson.title)
   }, [lesson])
 
-  // Count revealed blocks
-  const revealedCount = blocks.filter(b => b.isRevealed).length
+  const totalPages = lessonPages.length
+  const currentPageData = lessonPages[currentPage]
 
-  // Reveal a block
-  const handleReveal = useCallback((id: string) => {
-    setBlocks(prev => prev.map(block =>
-      block.id === id ? { ...block, isRevealed: true } : block
-    ))
-  }, [])
-
-  // Pioneer click handler
-  const handlePioneerClick = useCallback((pioneer: Founder) => {
-    setSelectedPioneer(pioneer)
-    setShowPioneerModal(true)
-  }, [])
+  // Reset page when changing lessons
+  useEffect(() => {
+    setCurrentPage(0)
+  }, [currentLesson])
 
   // Generate flashcards
   const lessonFlashcards = useMemo<FlashcardDeck | null>(() => {
@@ -761,39 +745,82 @@ export function LearningCanvas({
     }
   }, [lesson, selectedLevel])
 
-  // Check if all blocks revealed - lesson complete
-  useEffect(() => {
-    if (blocks.length > 0 && revealedCount === blocks.length) {
-      setCompletedLessons(prev => new Set([...prev, lesson.id]))
-    }
-  }, [revealedCount, blocks.length, lesson?.id])
-
   // Navigation
-  const goToNextLesson = () => {
-    if (currentLesson < totalLessons - 1) {
-      setCurrentLesson(currentLesson + 1)
+  const goToNextPage = () => {
+    if (currentPage < totalPages - 1) {
+      setCurrentPage(currentPage + 1)
     } else {
-      setShowQuiz(true)
+      // Lesson complete
+      setCompletedLessons(prev => new Set([...prev, lesson.id]))
+      if (currentLesson < totalLessons - 1) {
+        setCurrentLesson(currentLesson + 1)
+        setCurrentPage(0)
+      } else {
+        setShowQuiz(true)
+      }
     }
   }
 
-  const goToPreviousLesson = () => {
-    if (currentLesson > 0) {
+  const goToPreviousPage = () => {
+    if (currentPage > 0) {
+      setCurrentPage(currentPage - 1)
+    } else if (currentLesson > 0) {
       setCurrentLesson(currentLesson - 1)
+      // Will go to last page of previous lesson
     }
   }
+
+  // Pioneer click
+  const handlePioneerClick = useCallback((pioneer: Founder) => {
+    setSelectedPioneer(pioneer)
+    setShowPioneerModal(true)
+  }, [])
 
   // Welcome screen
   if (!started) {
     return (
-      <AnimatePresence>
-        <WelcomeOverlay
-          moduleTitle={module.title}
-          lessonTitle={lesson.title}
-          level={selectedLevel}
-          onStart={() => setStarted(true)}
-        />
-      </AnimatePresence>
+      <div className="min-h-screen bg-gradient-to-br from-amber-50 via-white to-blue-50 flex items-center justify-center p-4">
+        <motion.div
+          initial={{ scale: 0.9, opacity: 0 }}
+          animate={{ scale: 1, opacity: 1 }}
+          className="bg-white rounded-3xl shadow-2xl p-8 md:p-12 max-w-2xl text-center relative"
+        >
+          <div className="absolute -top-4 left-1/4"><Pin className="w-8 h-8 text-red-500 transform -rotate-12" /></div>
+          <div className="absolute -top-4 right-1/4"><Pin className="w-8 h-8 text-blue-500 transform rotate-12" /></div>
+
+          <Sparkles className="w-16 h-16 mx-auto text-[var(--primary)] mb-6" />
+
+          <h1 className={`${handwritten} text-5xl text-gray-800 mb-4`}>
+            {module.title}
+          </h1>
+
+          <p className="text-gray-600 mb-6">{levelContent.description}</p>
+
+          <div className="flex items-center justify-center gap-6 mb-8 text-sm text-gray-500">
+            <span className="flex items-center gap-2">
+              <BookOpen className="w-5 h-5" />
+              {totalLessons} lessons
+            </span>
+            <span className="flex items-center gap-2">
+              <Clock className="w-5 h-5" />
+              {levelContent.duration} min
+            </span>
+            <span className="flex items-center gap-2">
+              <GraduationCap className="w-5 h-5" />
+              {LEARNING_LEVELS[selectedLevel].label}
+            </span>
+          </div>
+
+          <Button
+            size="lg"
+            onClick={() => setStarted(true)}
+            className="text-xl px-8 py-4 rounded-xl font-bold shadow-xl"
+          >
+            <Play className="w-6 h-6 mr-2" />
+            Start Learning
+          </Button>
+        </motion.div>
+      </div>
     )
   }
 
@@ -809,21 +836,15 @@ export function LearningCanvas({
           >
             <div className="text-center mb-8">
               <Trophy className="w-16 h-16 mx-auto text-yellow-500 mb-4" />
-              <h2 className={`${handwrittenClass} text-3xl text-gray-800 mb-2`}>
+              <h2 className={`${handwritten} text-4xl text-gray-800 mb-2`}>
                 Knowledge Check!
               </h2>
-              <p className="text-gray-500">
-                Let's see what you discovered...
-              </p>
             </div>
 
-            {/* Simple quiz display - can reuse existing quiz component */}
             <div className="space-y-4">
               {levelContent.quiz.questions.map((q, idx) => (
                 <div key={q.id} className="bg-gray-50 rounded-xl p-4">
-                  <p className="font-bold text-gray-800 mb-3">
-                    {idx + 1}. {q.question}
-                  </p>
+                  <p className="font-bold text-gray-800 mb-3">{idx + 1}. {q.question}</p>
                   <div className="space-y-2">
                     {q.options.map((opt, optIdx) => (
                       <button
@@ -841,11 +862,11 @@ export function LearningCanvas({
             <div className="mt-8 flex justify-between">
               <Button variant="outline" onClick={() => setShowQuiz(false)}>
                 <ArrowLeft className="w-4 h-4 mr-2" />
-                Back to Board
+                Back
               </Button>
               <Link href={`/learn/topics/${topicSlug}?level=${selectedLevel.toLowerCase()}`}>
                 <Button>
-                  Continue Learning
+                  Continue
                   <ChevronRight className="w-4 h-4 ml-2" />
                 </Button>
               </Link>
@@ -856,50 +877,32 @@ export function LearningCanvas({
     )
   }
 
-  // Main canvas view
+  // Main page view
   return (
-    <div className="min-h-screen bg-gradient-to-br from-amber-50 via-orange-50/30 to-yellow-50 relative overflow-hidden">
-      {/* Cork board texture overlay */}
-      <div
-        className="absolute inset-0 opacity-[0.02] pointer-events-none"
-        style={{
-          backgroundImage: `url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23000000' fill-opacity='1'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E")`
-        }}
-      />
-
-      {/* Header navigation */}
-      <div className="sticky top-0 z-30 bg-white/80 backdrop-blur-md border-b border-gray-200 px-4 py-3">
+    <div className="min-h-screen bg-gradient-to-br from-amber-50 via-orange-50/30 to-yellow-50">
+      {/* Header */}
+      <div className="sticky top-0 z-30 bg-white/90 backdrop-blur-md border-b border-gray-200 px-4 py-3">
         <div className="container mx-auto flex items-center justify-between">
           <Link
             href={`/learn/topics/${topicSlug}?level=${selectedLevel.toLowerCase()}`}
-            className="flex items-center gap-2 text-gray-600 hover:text-gray-900 font-medium"
+            className="flex items-center gap-2 text-gray-600 hover:text-gray-900"
           >
             <ArrowLeft className="w-4 h-4" />
-            <span className="hidden sm:inline">Back to Topic</span>
+            <span className="hidden sm:inline">Back</span>
           </Link>
 
-          <h1 className={`${handwrittenClass} text-xl text-gray-800`}>
-            {module.title}
+          <h1 className={`${handwritten} text-xl text-gray-800`}>
+            {lesson.title}
           </h1>
 
           <div className="flex items-center gap-2">
             {lessonFlashcards && (
-              <Button
-                size="sm"
-                variant="outline"
-                onClick={() => setShowFlashcards(true)}
-                className="text-xs"
-              >
+              <Button size="sm" variant="outline" onClick={() => setShowFlashcards(true)} className="text-xs">
                 <Layers className="w-4 h-4 mr-1" />
-                Flashcards
+                Cards
               </Button>
             )}
-            <Button
-              size="sm"
-              variant="outline"
-              onClick={() => setShowQuiz(true)}
-              className="text-xs"
-            >
+            <Button size="sm" variant="outline" onClick={() => setShowQuiz(true)} className="text-xs">
               <Trophy className="w-4 h-4 mr-1" />
               Quiz
             </Button>
@@ -913,11 +916,10 @@ export function LearningCanvas({
           {levelContent.lessons.map((les, idx) => {
             const isComplete = completedLessons.has(les.id)
             const isCurrent = idx === currentLesson
-
             return (
               <button
                 key={les.id}
-                onClick={() => setCurrentLesson(idx)}
+                onClick={() => { setCurrentLesson(idx); setCurrentPage(0); }}
                 className={`flex items-center gap-2 px-4 py-2 rounded-full text-sm font-medium whitespace-nowrap transition-all ${
                   isCurrent
                     ? 'bg-[var(--primary)] text-white shadow-lg'
@@ -933,69 +935,49 @@ export function LearningCanvas({
         </div>
       </div>
 
-      {/* Canvas area */}
-      <div className="relative min-h-[calc(100vh-180px)] p-4 md:p-8">
-        {/* Connection strings */}
-        <ConnectionStrings blocks={blocks} />
-
-        {/* Canvas blocks */}
-        {blocks.map(block => (
-          <CanvasNote
-            key={block.id}
-            block={block}
-            onReveal={handleReveal}
-            onPioneerClick={handlePioneerClick}
-          />
-        ))}
-
-        {/* Progress tracker */}
-        <ProgressTracker
-          totalBlocks={blocks.length}
-          revealedCount={revealedCount}
-          lessonTitle={lesson.title}
-        />
-
-        {/* Reveal all button (for accessibility) */}
-        {revealedCount < blocks.length && (
-          <motion.button
-            className="fixed bottom-6 left-6 bg-white rounded-xl shadow-lg px-4 py-2 flex items-center gap-2 text-sm text-gray-600 hover:bg-gray-50 z-40"
-            initial={{ opacity: 0, x: -20 }}
-            animate={{ opacity: 1, x: 0 }}
-            transition={{ delay: 2 }}
-            onClick={() => setBlocks(prev => prev.map(b => ({ ...b, isRevealed: true })))}
-          >
-            <Eye className="w-4 h-4" />
-            Reveal All
-          </motion.button>
-        )}
+      {/* Page content */}
+      <div className="py-6">
+        <AnimatePresence mode="wait">
+          {currentPageData && (
+            <CanvasPageView
+              key={currentPageData.id}
+              page={currentPageData}
+              pageNumber={currentPage + 1}
+              totalPages={totalPages}
+              onPioneerClick={handlePioneerClick}
+            />
+          )}
+        </AnimatePresence>
       </div>
 
       {/* Navigation footer */}
       <div className="sticky bottom-0 bg-white/90 backdrop-blur-md border-t border-gray-200 px-4 py-3 z-20">
-        <div className="container mx-auto flex items-center justify-between">
+        <div className="container mx-auto flex items-center justify-between max-w-4xl">
           <Button
             variant="outline"
-            onClick={goToPreviousLesson}
-            disabled={currentLesson === 0}
+            onClick={goToPreviousPage}
+            disabled={currentLesson === 0 && currentPage === 0}
           >
             <ChevronLeft className="w-4 h-4 mr-2" />
             Previous
           </Button>
 
           <div className="text-center">
-            <p className={`${handwrittenClass} text-gray-700`}>
-              Lesson {currentLesson + 1} of {totalLessons}
+            <p className={`${handwritten} text-lg text-gray-700`}>
+              Page {currentPage + 1} of {totalPages}
             </p>
             <p className="text-xs text-gray-500">
-              {revealedCount === blocks.length
-                ? '✨ All discoveries found!'
-                : `${blocks.length - revealedCount} hidden notes remaining`
-              }
+              Lesson {currentLesson + 1} of {totalLessons}
             </p>
           </div>
 
-          <Button onClick={goToNextLesson}>
-            {currentLesson === totalLessons - 1 ? 'Take Quiz' : 'Next Lesson'}
+          <Button onClick={goToNextPage}>
+            {currentPage === totalPages - 1 && currentLesson === totalLessons - 1
+              ? 'Take Quiz'
+              : currentPage === totalPages - 1
+              ? 'Next Lesson'
+              : 'Next'
+            }
             <ChevronRight className="w-4 h-4 ml-2" />
           </Button>
         </div>
@@ -1012,9 +994,9 @@ export function LearningCanvas({
           >
             <motion.div
               className="bg-white rounded-2xl p-6 max-w-2xl w-full mx-4 max-h-[90vh] overflow-auto"
-              initial={{ scale: 0.9, y: 20 }}
-              animate={{ scale: 1, y: 0 }}
-              exit={{ scale: 0.9, y: 20 }}
+              initial={{ scale: 0.9 }}
+              animate={{ scale: 1 }}
+              exit={{ scale: 0.9 }}
             >
               <FlashcardStudy
                 deck={lessonFlashcards}
