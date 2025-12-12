@@ -30,12 +30,553 @@ export const foodSovereigntyModules: Module[] = [
         hasActivity: true,
         activityType: 'DRAG_DROP',
         content: {
-          ELEMENTARY: `<div class="lesson-content"><h2>🌽 Food Sovereignty: Communities Growing Together!</h2><p>Have you ever grown a tomato or helped in a garden? When communities grow their own food, something magical happens!</p><h3>What is Food Sovereignty?</h3><p><strong>Food sovereignty</strong> means communities get to decide what food they grow and eat.</p><h3>Why Does It Matter?</h3><ul><li>🥕 Fresh vegetables taste better!</li><li>🤝 Neighbors help each other</li><li>🌍 It's good for the Earth</li><li>💪 Communities become stronger</li></ul></div>`,
-          MIDDLE_SCHOOL: `<div class="lesson-content"><h2>Understanding Food Sovereignty</h2><p>Food sovereignty is the right of peoples to healthy and culturally appropriate food produced through ecologically sound methods.</p><h3>The Seven Pillars</h3><ol><li><strong>Food for People</strong> - Food is a basic human right</li><li><strong>Values Food Providers</strong> - Respects farmers and food workers</li><li><strong>Localizes Food Systems</strong> - Keeps food production close to consumers</li><li><strong>Local Control</strong> - Communities make their own decisions</li><li><strong>Builds Knowledge</strong> - Passes down farming traditions</li><li><strong>Works with Nature</strong> - Uses sustainable practices</li><li><strong>Food is Sacred</strong> - Rejects treating food as just a commodity</li></ol></div>`,
-          HIGH_SCHOOL: `<div class="lesson-content"><h2>Food Sovereignty: A Global Movement</h2><p>Food sovereignty emerged in 1996 when La Vía Campesina introduced it at the World Food Summit as an alternative to the dominant neoliberal food system.</p><h3>Food Sovereignty vs. Food Security</h3><table><tr><th>Food Security</th><th>Food Sovereignty</th></tr><tr><td>Access to sufficient food</td><td>Control over food systems</td></tr><tr><td>Can rely on imports</td><td>Prioritizes local production</td></tr><tr><td>Quantity-focused</td><td>Quality and culture-focused</td></tr></table></div>`,
-          UNDERGRADUATE: `<div class="lesson-content"><h2>Theoretical Foundations</h2><p>Food sovereignty represents a paradigm shift from market-oriented food security to a rights-based approach centering producer and consumer agency.</p><h3>Conceptual Framework</h3><ul><li><strong>Market Fundamentalism:</strong> Questions whether free markets efficiently allocate food resources</li><li><strong>Comparative Advantage:</strong> Critiques specialization over diverse food production</li><li><strong>Technological Determinism:</strong> Challenges industrial technology as the only path</li></ul></div>`,
-          GRADUATE: `<div class="lesson-content"><h2>Critical Analysis of Food Sovereignty</h2><h3>Epistemological Foundations</h3><ul><li><strong>Indigenous Knowledge Systems:</strong> Recognizing traditional ecological knowledge</li><li><strong>Feminist Political Ecology:</strong> Analyzing gendered dimensions of food production</li><li><strong>Decolonial Theory:</strong> Interrogating colonial legacies in food regimes</li></ul><h3>The Scale Question</h3><p>Central tensions concern how local food movements interface with global capital flows and transnational governance.</p></div>`,
-          PHD: `<div class="lesson-content"><h2>Ontological Politics and Counter-Hegemonic Praxis</h2><h3>Theoretical Interventions</h3><p>Drawing on Latour's actor-network theory and Haraway's naturecultures, we analyze how food sovereignty movements perform alternative ontologies.</p><h3>Gramscian Analysis</h3><p>Food sovereignty as counter-hegemonic project challenging neoliberal food governance "common sense."</p></div>`
+          ELEMENTARY: `<div class="lesson-content">
+<h2>The Story of Maria's Garden</h2>
+
+<p>Maria lived in a small town where most food came from far, far away. One day, she bit into a tomato and thought, "This doesn't taste like Grandma's tomatoes at all!"</p>
+
+<p>Her grandmother smiled and said, "That's because it traveled thousands of miles to get here. Let me show you something special."</p>
+
+<div class="image-placeholder" data-caption="Maria and her grandmother looking at a community garden">
+[Image: A young girl and elderly woman standing at the entrance of a vibrant community garden]
+</div>
+
+<p>Grandma took Maria to a <strong>community garden</strong> where neighbors grew food together. The tomatoes there were red, juicy, and tasted like sunshine!</p>
+
+<blockquote class="scavenger-quote" data-quote-id="fs-elem-q1">
+<p>"When we grow our own food, we feed our bodies AND our community."</p>
+<cite>— Grandma Rosa, Community Gardener</cite>
+</blockquote>
+
+<h3>What is Food Sovereignty?</h3>
+
+<p><strong>Food sovereignty</strong> is a big phrase that means something simple: <em>Communities get to choose what food they grow and eat!</em></p>
+
+<p>Think about it like this:</p>
+<ul>
+<li>Your family decides what to cook for dinner</li>
+<li>Your neighborhood decides what to grow in the garden</li>
+<li>Your community decides how to share and sell food</li>
+</ul>
+
+<div class="image-placeholder" data-caption="Children helping plant seeds in a garden">
+[Image: Happy children of different backgrounds planting seeds together]
+</div>
+
+<h3>Why Does This Matter?</h3>
+
+<p>Maria learned that when communities grow their own food:</p>
+
+<ul>
+<li><strong>Food tastes better</strong> — it's fresh from the garden!</li>
+<li><strong>Neighbors become friends</strong> — they work together</li>
+<li><strong>The Earth stays healthy</strong> — less trucks driving food around</li>
+<li><strong>Everyone has enough to eat</strong> — the community shares</li>
+</ul>
+
+<blockquote class="scavenger-quote" data-quote-id="fs-elem-q2">
+<p>"Food sovereignty means the people who grow food and the people who eat food work together."</p>
+<cite>— La Vía Campesina, Farmers Organization</cite>
+</blockquote>
+
+<h3>Maria's Discovery</h3>
+
+<p>By the end of summer, Maria had grown her very first tomato plant. She shared tomatoes with her neighbors, saved seeds for next year, and even taught other kids how to garden.</p>
+
+<p>"I understand now, Grandma!" Maria said. "When we grow food together, everyone wins!"</p>
+
+<div class="key-concept">
+<h4>Remember!</h4>
+<p>Food sovereignty = Communities choosing their own food future</p>
+</div>
+</div>`,
+
+          MIDDLE_SCHOOL: `<div class="lesson-content">
+<h2>The Global Food Puzzle</h2>
+
+<p>Imagine you're eating breakfast. Your orange juice might come from Brazil. Your cereal grain from Canada. Your banana from Ecuador. Before you've even finished eating, your food has traveled more than you might travel in a whole year!</p>
+
+<p>This global food system seems convenient, but communities around the world are asking an important question: <em>Should we have more control over our own food?</em></p>
+
+<div class="image-placeholder" data-caption="World map showing food transportation routes">
+[Image: Interactive map showing how far common breakfast foods travel]
+</div>
+
+<h3>What is Food Sovereignty?</h3>
+
+<p><strong>Food sovereignty</strong> is the right of peoples to healthy, culturally appropriate food produced through ecologically sound and sustainable methods. It's about communities having control over their own food systems.</p>
+
+<blockquote class="scavenger-quote" data-quote-id="fs-mid-q1">
+<p>"Food sovereignty is the right of peoples to define their own food and agriculture systems."</p>
+<cite>— Declaration of Nyéléni, 2007</cite>
+</blockquote>
+
+<h3>The Seven Pillars of Food Sovereignty</h3>
+
+<p>In 2007, over 500 representatives from 80 countries met in Nyéléni, Mali to define food sovereignty. They created seven pillars:</p>
+
+<ol>
+<li><strong>Food for People</strong> — Food is a basic human right, not just a commodity to be traded</li>
+<li><strong>Values Food Providers</strong> — Farmers, fishers, and food workers deserve respect and fair treatment</li>
+<li><strong>Localizes Food Systems</strong> — Food should be produced close to where it's consumed when possible</li>
+<li><strong>Local Control</strong> — Communities make decisions about their own food systems</li>
+<li><strong>Builds Knowledge and Skills</strong> — Traditional farming knowledge is passed down through generations</li>
+<li><strong>Works with Nature</strong> — Food production methods protect the environment</li>
+<li><strong>Food is Sacred</strong> — Food is more than a product—it connects us to culture and community</li>
+</ol>
+
+<div class="image-placeholder" data-caption="The seven pillars of food sovereignty">
+[Image: Illustrated diagram showing the seven pillars as columns supporting a healthy community]
+</div>
+
+<h3>A Tale of Two Communities</h3>
+
+<p><strong>Community A</strong> relies entirely on imported food. When shipping costs rise or supply chains break, food becomes expensive or unavailable. Local farmers have disappeared because they couldn't compete with cheap imports.</p>
+
+<p><strong>Community B</strong> practices food sovereignty. Local farmers grow diverse crops, neighbors trade at farmers markets, and traditional recipes use local ingredients. When global problems arise, they still have food security.</p>
+
+<blockquote class="scavenger-quote" data-quote-id="fs-mid-q2">
+<p>"We are not just fighting for food. We are fighting for the right to continue existing as peoples."</p>
+<cite>— Indigenous farmer from Guatemala</cite>
+</blockquote>
+
+<h3>Why Should You Care?</h3>
+
+<p>Food sovereignty affects everyone:</p>
+<ul>
+<li><strong>Health:</strong> Local, fresh food is often more nutritious</li>
+<li><strong>Environment:</strong> Less transportation means less pollution</li>
+<li><strong>Economy:</strong> Money spent locally stays in the community</li>
+<li><strong>Culture:</strong> Traditional foods and farming knowledge are preserved</li>
+<li><strong>Security:</strong> Communities aren't dependent on distant supply chains</li>
+</ul>
+
+<div class="key-concept">
+<h4>Key Takeaway</h4>
+<p>Food sovereignty isn't about isolation—it's about communities having the power to make their own food decisions while still participating in broader food networks when they choose to.</p>
+</div>
+</div>`,
+
+          HIGH_SCHOOL: `<div class="lesson-content">
+<h2>Food Sovereignty: A Movement Born from Resistance</h2>
+
+<p>In 1996, while world leaders gathered at the World Food Summit in Rome to discuss hunger, a different conversation was happening outside. Farmers, peasants, and indigenous peoples from around the world came together to challenge the very foundations of the global food system.</p>
+
+<p>They didn't just want more food aid or better trade deals. They wanted something revolutionary: the right to control their own food systems.</p>
+
+<div class="image-placeholder" data-caption="La Vía Campesina founding members at the 1996 World Food Summit">
+[Image: Historical photo of farmers and activists gathering in Rome, 1996]
+</div>
+
+<h3>The Birth of a Concept</h3>
+
+<p><strong>La Vía Campesina</strong> (Spanish for "The Peasant Way"), an international movement of small-scale farmers, introduced the term "food sovereignty" as an alternative to the dominant model of food security.</p>
+
+<blockquote class="scavenger-quote" data-quote-id="fs-high-q1">
+<p>"Food sovereignty is the right of each nation to maintain and develop its own capacity to produce its basic foods respecting cultural and productive diversity."</p>
+<cite>— La Vía Campesina, Rome Declaration, 1996</cite>
+</blockquote>
+
+<h3>Food Security vs. Food Sovereignty: Understanding the Difference</h3>
+
+<table class="comparison-table">
+<thead>
+<tr><th>Food Security</th><th>Food Sovereignty</th></tr>
+</thead>
+<tbody>
+<tr><td>Focuses on <em>access</em> to sufficient food</td><td>Focuses on <em>control</em> over food systems</td></tr>
+<tr><td>Can be achieved through imports and aid</td><td>Prioritizes local production and decision-making</td></tr>
+<tr><td>Measures quantity of available food</td><td>Values quality, culture, and sustainability</td></tr>
+<tr><td>Works within existing trade structures</td><td>Challenges power imbalances in food systems</td></tr>
+<tr><td>Government and market-centered</td><td>Community and producer-centered</td></tr>
+</tbody>
+</table>
+
+<h3>The Nyéléni Declaration</h3>
+
+<p>In 2007, over 500 delegates from more than 80 countries gathered in Nyéléni, Mali—a village named after a legendary Malian woman farmer. This Forum for Food Sovereignty produced the most comprehensive definition of the concept.</p>
+
+<blockquote class="scavenger-quote" data-quote-id="fs-high-q2">
+<p>"Food sovereignty is the right of peoples to healthy and culturally appropriate food produced through ecologically sound and sustainable methods, and their right to define their own food and agriculture systems."</p>
+<cite>— Nyéléni Declaration, 2007</cite>
+</blockquote>
+
+<div class="image-placeholder" data-caption="Delegates at the Nyéléni Forum, Mali, 2007">
+[Image: Diverse group of farmers and activists from around the world at the historic gathering]
+</div>
+
+<h3>Case Study: Ecuador's Constitutional Revolution</h3>
+
+<p>In 2008, Ecuador became the first country to enshrine food sovereignty in its constitution. Article 281 states:</p>
+
+<blockquote class="scavenger-quote" data-quote-id="fs-high-q3">
+<p>"Food sovereignty constitutes a strategic objective and an obligation of the State to guarantee that individuals, communities, peoples and nations achieve self-sufficiency in healthy and culturally appropriate food on a permanent basis."</p>
+<cite>— Constitution of Ecuador, Article 281, 2008</cite>
+</blockquote>
+
+<p>This constitutional protection means Ecuador must:</p>
+<ul>
+<li>Promote sustainable small-scale farming</li>
+<li>Protect agricultural biodiversity and traditional knowledge</li>
+<li>Ensure access to land, water, and seeds for farmers</li>
+<li>Prevent food speculation and monopolies</li>
+</ul>
+
+<h3>Criticisms and Debates</h3>
+
+<p>Food sovereignty isn't without its critics. Some argue that:</p>
+<ul>
+<li><strong>Trade benefits consumers</strong> through lower prices and variety</li>
+<li><strong>Local production alone</strong> can't feed growing urban populations</li>
+<li><strong>Romanticizing small farms</strong> ignores efficiency gains from scale</li>
+<li><strong>National food self-sufficiency</strong> may not be realistic for all countries</li>
+</ul>
+
+<p>Proponents respond that food sovereignty doesn't mean complete isolation—it means communities having the <em>choice</em> to participate in global markets rather than being forced into dependence.</p>
+
+<div class="key-concept">
+<h4>Critical Thinking</h4>
+<p>Food sovereignty challenges us to ask: Who controls our food system, and whose interests does it serve? The answer shapes everything from environmental policy to human rights.</p>
+</div>
+</div>`,
+
+          UNDERGRADUATE: `<div class="lesson-content">
+<h2>Theorizing Food Sovereignty: Beyond the Agricultural Question</h2>
+
+<p>Food sovereignty emerges at the intersection of agrarian studies, political ecology, and development theory. Understanding its theoretical foundations requires examining how it challenges dominant paradigms in food system governance.</p>
+
+<h3>Historical Context: The Corporate Food Regime</h3>
+
+<p>Harriet Friedmann and Philip McMichael's <em>food regime analysis</em> provides crucial context. They identify three historical food regimes:</p>
+
+<ol>
+<li><strong>British Hegemonic Regime (1870-1914):</strong> Colonial extraction of food from periphery to core</li>
+<li><strong>US Hegemonic Regime (1945-1973):</strong> Food aid as geopolitical tool, Green Revolution technologies</li>
+<li><strong>Corporate Food Regime (1980s-present):</strong> Neoliberal restructuring, WTO governance, agribusiness consolidation</li>
+</ol>
+
+<blockquote class="scavenger-quote" data-quote-id="fs-undergrad-q1">
+<p>"The corporate food regime represents a historically specific constellation of governments, corporations, and international institutions aligned around neoliberal prescriptions for agriculture."</p>
+<cite>— Philip McMichael, "Food Regimes and Agrarian Questions," 2013</cite>
+</blockquote>
+
+<div class="image-placeholder" data-caption="Timeline of global food regimes">
+[Image: Visual timeline showing the three food regimes and key characteristics of each]
+</div>
+
+<h3>Challenging Market Fundamentalism</h3>
+
+<p>Food sovereignty fundamentally questions core assumptions of neoclassical economics as applied to agriculture:</p>
+
+<h4>Comparative Advantage Critique</h4>
+<p>Ricardo's theory suggests countries should specialize in producing goods where they have relative efficiency advantages. Food sovereignty advocates argue this:</p>
+<ul>
+<li>Ignores power asymmetries in global trade</li>
+<li>Creates dangerous dependencies on food imports</li>
+<li>Destroys agricultural biodiversity and traditional knowledge</li>
+<li>Externalizes environmental costs of long-distance food transport</li>
+</ul>
+
+<blockquote class="scavenger-quote" data-quote-id="fs-undergrad-q2">
+<p>"Comparative advantage in agriculture is not a natural fact but a political construction that benefits those with power to shape the terms of trade."</p>
+<cite>— Raj Patel, "Stuffed and Starved," 2007</cite>
+</blockquote>
+
+<h4>The Commodity Critique</h4>
+<p>Karl Polanyi's concept of "fictitious commodities" is central to food sovereignty theory. Land, labor, and food—unlike manufactured goods—were not produced for sale and cannot be treated as pure commodities without social dislocation.</p>
+
+<h3>The Via Campesina Framework</h3>
+
+<p>La Vía Campesina represents over 200 million farmers across 81 countries. Their approach synthesizes:</p>
+
+<ul>
+<li><strong>Agrarian populism:</strong> Defending peasant agriculture against capitalist transformation</li>
+<li><strong>Human rights discourse:</strong> Reframing food access as fundamental right</li>
+<li><strong>Ecological modernization:</strong> Agroecology as alternative to industrial agriculture</li>
+<li><strong>Feminist analysis:</strong> Recognizing women's central role in food systems</li>
+</ul>
+
+<div class="image-placeholder" data-caption="La Vía Campesina organizational structure">
+[Image: Diagram showing the global network of peasant organizations under La Vía Campesina]
+</div>
+
+<h3>Policy Frameworks and Tensions</h3>
+
+<p>Food sovereignty's translation into policy reveals inherent tensions:</p>
+
+<table class="analysis-table">
+<thead>
+<tr><th>Policy Area</th><th>Food Sovereignty Position</th><th>Implementation Challenges</th></tr>
+</thead>
+<tbody>
+<tr><td>Trade Policy</td><td>Right to protect domestic markets</td><td>WTO agreements limit tariff sovereignty</td></tr>
+<tr><td>Land Reform</td><td>Land to the tiller, limits on concentration</td><td>Property rights resistance, compensation costs</td></tr>
+<tr><td>Seed Systems</td><td>Farmer seed saving rights, no GMO patents</td><td>UPOV conventions, TRIPS agreement conflicts</td></tr>
+<tr><td>Public Procurement</td><td>Priority purchasing from small farmers</td><td>Efficiency arguments, trade agreement constraints</td></tr>
+</tbody>
+</table>
+
+<blockquote class="scavenger-quote" data-quote-id="fs-undergrad-q3">
+<p>"Food sovereignty is not just an alternative policy framework but a fundamentally different way of organizing social relations around food production and consumption."</p>
+<cite>— Hannah Wittman, "Food Sovereignty: Reconnecting Food, Nature and Community," 2010</cite>
+</blockquote>
+
+<h3>Analytical Framework for Assessment</h3>
+
+<p>When analyzing food sovereignty initiatives, consider:</p>
+<ol>
+<li><strong>Scale:</strong> Local, national, or transnational implementation?</li>
+<li><strong>Actors:</strong> Who defines sovereignty—states, communities, movements?</li>
+<li><strong>Mechanisms:</strong> Rights-based, market-based, or commons-based approaches?</li>
+<li><strong>Tensions:</strong> How are trade-offs between sovereignty, sustainability, and security managed?</li>
+</ol>
+
+<div class="key-concept">
+<h4>Research Questions</h4>
+<p>Critical inquiry into food sovereignty requires examining not just what it proposes, but how power relations are reproduced or transformed in its implementation. Whose sovereignty is advanced, and at what scales does meaningful food system change occur?</p>
+</div>
+</div>`,
+
+          GRADUATE: `<div class="lesson-content">
+<h2>Food Sovereignty: Epistemological Foundations and Counter-Hegemonic Potential</h2>
+
+<p>Graduate-level analysis of food sovereignty requires engagement with multiple theoretical traditions and critical examination of the concept's transformative potential and limitations. This lesson examines food sovereignty through lenses of agrarian political economy, postcolonial theory, and social movement studies.</p>
+
+<h3>Situating Food Sovereignty in Agrarian Political Economy</h3>
+
+<p>The "agrarian question"—concerning the fate of peasant agriculture under capitalism—remains central to food sovereignty discourse. Three interpretive traditions inform contemporary debates:</p>
+
+<ol>
+<li><strong>Classical Marxist:</strong> Inevitable proletarianization of peasantry (Lenin, Kautsky)</li>
+<li><strong>Chayanovian:</strong> Peasant economy operates on distinct, non-capitalist logic</li>
+<li><strong>Neo-populist:</strong> Peasant persistence as form of resistance (van der Ploeg, McMichael)</li>
+</ol>
+
+<p>Food sovereignty primarily draws on neo-populist interpretations, positioning peasant agriculture not as anachronism but as viable alternative to industrial food production.</p>
+
+<blockquote class="scavenger-quote" data-quote-id="fs-grad-q1">
+<p>"The persistence of peasant farming is not a residual phenomenon but represents active resistance to and partial autonomy from capitalist relations."</p>
+<cite>— Jan Douwe van der Ploeg, "The New Peasantries," 2008</cite>
+</blockquote>
+
+<div class="image-placeholder" data-caption="Theoretical traditions informing food sovereignty">
+[Image: Conceptual diagram showing intellectual genealogy of food sovereignty theory]
+</div>
+
+<h3>Postcolonial and Decolonial Perspectives</h3>
+
+<p>Food sovereignty's emergence from Global South movements necessitates engagement with postcolonial theory. Key considerations include:</p>
+
+<h4>Colonial Legacies in Food Systems</h4>
+<ul>
+<li><strong>Plantation economies:</strong> Export orientation over food self-sufficiency</li>
+<li><strong>Epistemicide:</strong> Destruction of indigenous agricultural knowledge</li>
+<li><strong>Land dispossession:</strong> Ongoing effects of colonial land grabs</li>
+<li><strong>Structural adjustment:</strong> Neocolonial conditions on food policy</li>
+</ul>
+
+<blockquote class="scavenger-quote" data-quote-id="fs-grad-q2">
+<p>"Food sovereignty represents an epistemic break from colonial frameworks that positioned the Global South as supplier of raw materials and importer of 'development.'"</p>
+<cite>— Raj Patel, "Food Sovereignty: Power, Gender, and the Right to Food," 2009</cite>
+</blockquote>
+
+<h4>Indigenous Food Sovereignty</h4>
+<p>Indigenous articulations of food sovereignty extend beyond La Vía Campesina's framework to encompass:</p>
+<ul>
+<li>Traditional food systems as expression of self-determination</li>
+<li>Sacred relationships with land, water, and food species</li>
+<li>Rejection of property frameworks incompatible with commons-based food systems</li>
+<li>Treaty rights and nation-to-nation relationships</li>
+</ul>
+
+<h3>Feminist Political Ecology and Food Sovereignty</h3>
+
+<p>Gender analysis reveals both opportunities and limitations in food sovereignty discourse:</p>
+
+<blockquote class="scavenger-quote" data-quote-id="fs-grad-q3">
+<p>"Without a feminist perspective, food sovereignty risks reproducing patriarchal relations within peasant households and movements."</p>
+<cite>— Bina Agarwal, "Gender and Green Governance," 2010</cite>
+</blockquote>
+
+<p>Critical gender questions include:</p>
+<ul>
+<li>Women produce 60-80% of food in developing countries but own less than 2% of land</li>
+<li>Romanticization of "family farming" obscures gendered divisions of labor</li>
+<li>Women's exclusion from farmer organizations and policy spaces</li>
+<li>Feminist economics revaluing reproductive and care work in food systems</li>
+</ul>
+
+<div class="image-placeholder" data-caption="Gendered dimensions of food sovereignty">
+[Image: Infographic showing women's roles in food production versus land ownership statistics]
+</div>
+
+<h3>The Scale Question: Local, National, Global</h3>
+
+<p>A central tension in food sovereignty theory concerns appropriate scales of governance and action:</p>
+
+<table class="theoretical-table">
+<thead>
+<tr><th>Scale</th><th>Opportunities</th><th>Limitations</th></tr>
+</thead>
+<tbody>
+<tr><td>Local/Community</td><td>Democratic participation, ecological adaptation</td><td>Limited resources, vulnerability to external shocks</td></tr>
+<tr><td>National/State</td><td>Policy tools, market regulation capacity</td><td>State capture by agribusiness, nationalism risks</td></tr>
+<tr><td>Transnational/Movement</td><td>Counter-hegemonic coordination, solidarity</td><td>Implementation gaps, representation challenges</td></tr>
+</tbody>
+</table>
+
+<h3>Counter-Hegemony and Gramscian Analysis</h3>
+
+<p>Applying Gramsci's theory of hegemony, food sovereignty can be analyzed as:</p>
+
+<ul>
+<li><strong>War of position:</strong> Long-term building of alternative institutions, knowledge systems, and common sense about food</li>
+<li><strong>Organic intellectuals:</strong> Peasant leaders articulating alternatives to neoliberal food governance</li>
+<li><strong>Counter-hegemonic bloc:</strong> Alliance building across peasants, consumers, environmentalists, indigenous peoples</li>
+<li><strong>Passive revolution risk:</strong> Co-optation through "sustainable intensification," "climate-smart agriculture"</li>
+</ul>
+
+<blockquote class="scavenger-quote" data-quote-id="fs-grad-q4">
+<p>"Food sovereignty represents a 'counter-hegemonic' challenge not merely to neoliberal policies but to the very 'common sense' that defines food as commodity rather than commons."</p>
+<cite>— Eric Holt-Giménez and Annie Shattuck, "Food Crises, Food Regimes and Food Movements," 2011</cite>
+</blockquote>
+
+<h3>Methodological Considerations</h3>
+
+<p>Researching food sovereignty requires methodological reflection:</p>
+<ul>
+<li><strong>Positionality:</strong> Researcher relationships to movements and communities studied</li>
+<li><strong>Participatory approaches:</strong> Collaborative research with movement actors</li>
+<li><strong>Multi-scalar analysis:</strong> Linking local practices to global processes</li>
+<li><strong>Engaged scholarship:</strong> Scholar-activist tensions and contributions</li>
+</ul>
+
+<div class="key-concept">
+<h4>Critical Research Agenda</h4>
+<p>Graduate research on food sovereignty should interrogate: Under what conditions do food sovereignty initiatives transform power relations versus merely ameliorate symptoms of the corporate food regime? How can we assess "actually existing" food sovereignty against normative aspirations?</p>
+</div>
+</div>`,
+
+          PHD: `<div class="lesson-content">
+<h2>Ontological Politics and the Pluriverse: Advanced Theoretical Frameworks for Food Sovereignty Analysis</h2>
+
+<p>Doctoral-level engagement with food sovereignty requires moving beyond policy analysis to examine fundamental ontological and epistemological questions. This lesson explores how food sovereignty movements enact alternative ways of knowing and being in relation to food, land, and nature.</p>
+
+<h3>Beyond Critique: Ontological Politics and Food Sovereignty</h3>
+
+<p>Drawing on Science and Technology Studies (STS) and political ontology, we can analyze food sovereignty not merely as alternative policy but as performance of different worlds.</p>
+
+<h4>Actor-Network Theory and Food Systems</h4>
+<p>Bruno Latour's actor-network theory (ANT) offers analytical tools for understanding how food sovereignty assembles heterogeneous actors—human and non-human—into alternative food networks:</p>
+
+<ul>
+<li><strong>Seeds as actors:</strong> Open-pollinated varieties vs. proprietary hybrids enact different socio-technical relations</li>
+<li><strong>Soil as participant:</strong> Agroecological practices vs. input-intensive farming produce different soils and ecologies</li>
+<li><strong>Translation:</strong> How food sovereignty movements enroll diverse actors into coherent networks</li>
+</ul>
+
+<blockquote class="scavenger-quote" data-quote-id="fs-phd-q1">
+<p>"What if, instead of analyzing food sovereignty as a demand for rights within existing political ontologies, we understood it as performing alternative ontologies—different ways of composing worlds with food, land, and community?"</p>
+<cite>— Arturo Escobar, "Designs for the Pluriverse," 2018</cite>
+</blockquote>
+
+<div class="image-placeholder" data-caption="Ontological mapping of food sovereignty">
+[Image: Complex network diagram showing human and non-human actors in food sovereignty assemblages]
+</div>
+
+<h3>Haraway's Naturecultures and Food Sovereignty</h3>
+
+<p>Donna Haraway's concept of "naturecultures" disrupts the nature/culture binary underlying both industrial agriculture and some alternative food movements:</p>
+
+<blockquote class="scavenger-quote" data-quote-id="fs-phd-q2">
+<p>"There is no way to disentangle the biological and the cultural in seed-saving practices; seeds are naturecultures, simultaneously genetic material and cultural heritage."</p>
+<cite>— Adapted from Donna Haraway, "Staying with the Trouble," 2016</cite>
+</blockquote>
+
+<p>Implications for food sovereignty analysis:</p>
+<ul>
+<li>Seed sovereignty involves not "preserving nature" but cultivating specific naturecultures</li>
+<li>Traditional agricultural knowledge is not "applied to" nature but emerges from human-nonhuman co-evolution</li>
+<li>The dichotomy between "natural" and "industrial" food obscures complex technological assemblages</li>
+</ul>
+
+<h3>Gramscian Hegemony Revisited: The Corporate Food Regime as Common Sense</h3>
+
+<p>Advanced Gramscian analysis examines how the corporate food regime achieves hegemony not through coercion alone but by becoming "common sense":</p>
+
+<h4>Elements of Food Regime Hegemony</h4>
+<ul>
+<li><strong>Productivism:</strong> Yield maximization as self-evident goal</li>
+<li><strong>Consumer sovereignty:</strong> "Choice" as primary food system value</li>
+<li><strong>Technological solutionism:</strong> Innovation as path to sustainability</li>
+<li><strong>Cheap food policy:</strong> Low prices naturalized, externalities invisible</li>
+</ul>
+
+<blockquote class="scavenger-quote" data-quote-id="fs-phd-q3">
+<p>"The power of the corporate food regime lies not primarily in coercion but in its capacity to define the very terms in which food policy debates are conducted—making alternatives appear utopian, inefficient, or backward."</p>
+<cite>— Philip McMichael, "Historicizing Food Sovereignty," 2014</cite>
+</blockquote>
+
+<h4>Counter-Hegemonic Strategies</h4>
+<p>Food sovereignty movements engage in what Gramsci called "war of position":</p>
+<ul>
+<li><strong>Alternative knowledge production:</strong> Agroecology, peasant-to-peasant learning</li>
+<li><strong>Institution building:</strong> Seed banks, farmers' markets, food policy councils</li>
+<li><strong>Narrative contestation:</strong> "Feeding the world" counter-narratives</li>
+<li><strong>Alliance formation:</strong> Linking agrarian, environmental, and food justice movements</li>
+</ul>
+
+<div class="image-placeholder" data-caption="Gramscian analysis of food system hegemony and counter-hegemony">
+[Image: Theoretical framework diagram showing hegemonic elements and counter-hegemonic strategies]
+</div>
+
+<h3>The Pluriverse and Beyond-Development</h3>
+
+<p>Arturo Escobar's concept of the "pluriverse"—a world where many worlds fit—provides a framework for understanding food sovereignty as part of broader "transitions" away from the development paradigm:</p>
+
+<blockquote class="scavenger-quote" data-quote-id="fs-phd-q4">
+<p>"Food sovereignty is not simply about producing food differently within the existing world but about defending and enacting different worlds—relational worlds where food, land, water, and community are not separable resources to be optimized but constitutive elements of being."</p>
+<cite>— Arturo Escobar, "Thinking-Feeling with the Earth," 2020</cite>
+</blockquote>
+
+<h4>Research Implications</h4>
+<ul>
+<li>Move from "food sovereignty studies" to studying how food sovereignty movements perform alternative ontologies</li>
+<li>Attend to what food sovereignty enables to exist—worlds, relations, beings—not just what it opposes</li>
+<li>Engage with non-Western and indigenous ontologies on their own terms, not as "cultural beliefs" about a single nature</li>
+</ul>
+
+<h3>Methodological Reflexivity: Decolonizing Food Sovereignty Research</h3>
+
+<p>Doctoral research requires critical examination of research practices themselves:</p>
+
+<table class="methodology-table">
+<thead>
+<tr><th>Conventional Approach</th><th>Decolonial Alternative</th></tr>
+</thead>
+<tbody>
+<tr><td>Researcher as expert extracting knowledge</td><td>Research as collaborative knowledge production</td></tr>
+<tr><td>Movements as objects of study</td><td>Movements as interlocutors and co-theorists</td></tr>
+<tr><td>Academic publications as primary output</td><td>Accountable scholarship serving movement needs</td></tr>
+<tr><td>Theory application to empirical cases</td><td>Theory emerging from situated practices</td></tr>
+</tbody>
+</table>
+
+<h3>Emerging Research Frontiers</h3>
+
+<ul>
+<li><strong>Multispecies food sovereignty:</strong> Centering non-human actors and ecological relations</li>
+<li><strong>Digital food sovereignty:</strong> Data, platforms, and algorithmic governance in food systems</li>
+<li><strong>Climate food sovereignty:</strong> Adaptation, mitigation, and just transitions</li>
+<li><strong>Urban food sovereignty:</strong> Translating peasant frameworks to city contexts</li>
+<li><strong>Metabolic rift:</strong> Food sovereignty and socioecological metabolism</li>
+</ul>
+
+<div class="key-concept">
+<h4>Doctoral Research Orientation</h4>
+<p>The doctoral researcher studying food sovereignty must navigate between rigorous theoretical engagement and accountability to movements. The challenge is not merely to analyze food sovereignty but to contribute to the epistemic work of articulating and defending alternative food futures against the totalizing claims of the corporate food regime.</p>
+</div>
+</div>`
         }
       }
     ],
@@ -116,12 +657,125 @@ export const foodSovereigntyModules: Module[] = [
             GRADUATE: 'Feminist Political Ecology analyzes the gendered dimensions of food production.',
             PHD: 'Gramscian counter-hegemony describes how movements challenge dominant ideologies.'
           }
+        },
+        {
+          id: 'fsq2',
+          question: {
+            ELEMENTARY: 'In the story, what did Maria grow in her garden?',
+            MIDDLE_SCHOOL: 'Where did the Nyéléni Declaration take place?',
+            HIGH_SCHOOL: 'Which country first put food sovereignty in its constitution?',
+            UNDERGRADUATE: 'Who authored "Stuffed and Starved" critiquing comparative advantage?',
+            GRADUATE: 'What does "epistemicide" refer to in food systems?',
+            PHD: 'Whose concept of "naturecultures" applies to seed sovereignty?'
+          },
+          options: {
+            ELEMENTARY: ['Tomatoes', 'Candy', 'Toys', 'Books'],
+            MIDDLE_SCHOOL: ['Mali', 'France', 'United States', 'Japan'],
+            HIGH_SCHOOL: ['Ecuador', 'United States', 'China', 'Brazil'],
+            UNDERGRADUATE: ['Raj Patel', 'Adam Smith', 'Karl Marx', 'John Keynes'],
+            GRADUATE: ['Destruction of indigenous knowledge', 'Study of diseases', 'Economic analysis', 'Population growth'],
+            PHD: ['Donna Haraway', 'Michel Foucault', 'Pierre Bourdieu', 'Max Weber']
+          },
+          correctIndex: 0,
+          explanation: {
+            ELEMENTARY: 'Maria grew tomatoes in her garden and shared them with neighbors!',
+            MIDDLE_SCHOOL: 'The 2007 Nyéléni Declaration was created in Mali, Africa.',
+            HIGH_SCHOOL: 'Ecuador became the first country to include food sovereignty in its constitution in 2008.',
+            UNDERGRADUATE: 'Raj Patel\'s "Stuffed and Starved" critiques how global food systems create both obesity and hunger.',
+            GRADUATE: 'Epistemicide refers to the colonial destruction of indigenous agricultural knowledge systems.',
+            PHD: 'Donna Haraway\'s concept of naturecultures helps understand seeds as both biological and cultural.'
+          }
+        },
+        {
+          id: 'fsq3',
+          question: {
+            ELEMENTARY: 'Why does food from community gardens taste better?',
+            MIDDLE_SCHOOL: 'How many pillars of food sovereignty are there?',
+            HIGH_SCHOOL: 'What organization introduced food sovereignty?',
+            UNDERGRADUATE: 'What is the "corporate food regime"?',
+            GRADUATE: 'What percentage of food do women produce in developing countries?',
+            PHD: 'What does Escobar\'s "pluriverse" concept suggest about food sovereignty?'
+          },
+          options: {
+            ELEMENTARY: ['It\'s fresh from the garden', 'It has more sugar', 'It\'s frozen', 'It comes from far away'],
+            MIDDLE_SCHOOL: ['Seven', 'Three', 'Ten', 'Two'],
+            HIGH_SCHOOL: ['La Vía Campesina', 'The United Nations', 'World Bank', 'McDonald\'s'],
+            UNDERGRADUATE: ['Neoliberal agribusiness consolidation since 1980s', 'Small farmer cooperatives', 'Government food programs', 'Traditional farming'],
+            GRADUATE: ['60-80%', '10-20%', '90-100%', '30-40%'],
+            PHD: ['It enacts different worlds, not just different policies', 'It\'s purely economic', 'It\'s only about food production', 'It rejects all technology']
+          },
+          correctIndex: 0,
+          explanation: {
+            ELEMENTARY: 'Fresh food from gardens tastes better because it was just picked!',
+            MIDDLE_SCHOOL: 'The seven pillars cover food for people, valuing providers, localizing systems, local control, knowledge building, working with nature, and food as sacred.',
+            HIGH_SCHOOL: 'La Vía Campesina, the international peasant movement, introduced food sovereignty in 1996.',
+            UNDERGRADUATE: 'The corporate food regime describes how governments, corporations, and international institutions align around neoliberal agricultural policies.',
+            GRADUATE: 'Women produce 60-80% of food in developing countries but own less than 2% of land.',
+            PHD: 'Escobar argues food sovereignty performs alternative ontologies—different ways of composing worlds with food, land, and community.'
+          }
+        },
+        {
+          id: 'fsq4',
+          question: {
+            ELEMENTARY: 'What happens when neighbors grow food together?',
+            MIDDLE_SCHOOL: 'What is one benefit of local food systems?',
+            HIGH_SCHOOL: 'What is the difference between food security and food sovereignty?',
+            UNDERGRADUATE: 'What did Karl Polanyi call land, labor, and food?',
+            GRADUATE: 'What is "war of position" in Gramscian analysis?',
+            PHD: 'What methodological shift does decolonial food research require?'
+          },
+          options: {
+            ELEMENTARY: ['They become friends and share', 'They fight over vegetables', 'Nothing happens', 'They stay strangers'],
+            MIDDLE_SCHOOL: ['Less pollution from transportation', 'More expensive food', 'Less variety', 'Longer shipping times'],
+            HIGH_SCHOOL: ['Sovereignty focuses on control, security on access', 'They mean the same thing', 'Security is more comprehensive', 'Sovereignty is about imports'],
+            UNDERGRADUATE: ['Fictitious commodities', 'Real commodities', 'Natural resources', 'Capital goods'],
+            GRADUATE: ['Long-term building of alternative institutions', 'Military strategy', 'Economic policy', 'Electoral politics'],
+            PHD: ['Research as collaborative knowledge production', 'Extractive data collection', 'Quantitative methods only', 'Avoiding movement engagement']
+          },
+          correctIndex: 0,
+          explanation: {
+            ELEMENTARY: 'When neighbors garden together, they become friends and share food with each other!',
+            MIDDLE_SCHOOL: 'Local food systems reduce pollution because food doesn\'t have to travel as far.',
+            HIGH_SCHOOL: 'Food sovereignty focuses on community control over food systems, while food security just measures if people have enough food.',
+            UNDERGRADUATE: 'Polanyi argued land, labor, and food are "fictitious commodities" that cannot be treated purely as market goods.',
+            GRADUATE: 'Gramsci\'s "war of position" describes the long-term building of alternative institutions and common sense.',
+            PHD: 'Decolonial research shifts from extracting knowledge to collaborative production with movement actors.'
+          }
+        },
+        {
+          id: 'fsq5',
+          question: {
+            ELEMENTARY: 'According to La Vía Campesina, who should work together on food?',
+            MIDDLE_SCHOOL: 'What is "food is sacred" pillar about?',
+            HIGH_SCHOOL: 'What must Ecuador do under its food sovereignty constitution?',
+            UNDERGRADUATE: 'How many farmers does La Vía Campesina represent globally?',
+            GRADUATE: 'What is "passive revolution" risk for food sovereignty?',
+            PHD: 'What are emerging frontiers in food sovereignty research?'
+          },
+          options: {
+            ELEMENTARY: ['People who grow food and people who eat food', 'Only farmers', 'Only stores', 'Only governments'],
+            MIDDLE_SCHOOL: ['Food connects us to culture, not just profit', 'Food should be expensive', 'Food is only for trading', 'Food is not important'],
+            HIGH_SCHOOL: ['Protect biodiversity and ensure farmer access to land', 'Import all food', 'Ban all farming', 'Only grow one crop'],
+            UNDERGRADUATE: ['Over 200 million', '1 million', '10 million', '50 million'],
+            GRADUATE: ['Co-optation through "climate-smart agriculture"', 'Total revolution', 'Policy implementation', 'Academic research'],
+            PHD: ['Digital, multispecies, climate, and urban food sovereignty', 'Only traditional farming', 'Purely economic analysis', 'Single-method research']
+          },
+          correctIndex: 0,
+          explanation: {
+            ELEMENTARY: 'La Vía Campesina says people who grow food and people who eat food should work together!',
+            MIDDLE_SCHOOL: 'The "food is sacred" pillar means food connects us to culture and community—it\'s not just something to buy and sell.',
+            HIGH_SCHOOL: 'Ecuador\'s constitution requires protecting biodiversity, traditional knowledge, and ensuring farmers have access to land, water, and seeds.',
+            UNDERGRADUATE: 'La Vía Campesina represents over 200 million farmers across 81 countries worldwide.',
+            GRADUATE: 'Passive revolution risk means food sovereignty ideas get co-opted into corporate-friendly frameworks like "sustainable intensification."',
+            PHD: 'Emerging research frontiers include digital food sovereignty, multispecies approaches, climate adaptation, and urban contexts.'
+          }
         }
       ]
     },
     externalResources: [
-      { title: 'La Via Campesina', url: 'https://viacampesina.org/', type: 'research' },
-      { title: 'Food Sovereignty Alliance', url: 'https://usfoodsovereigntyalliance.org/', type: 'article' }
+      { title: 'La Via Campesina - International Peasant Movement', url: 'https://viacampesina.org/', type: 'research' },
+      { title: 'US Food Sovereignty Alliance', url: 'https://usfoodsovereigntyalliance.org/', type: 'article' },
+      { title: 'Nyéléni Declaration on Food Sovereignty', url: 'https://nyeleni.org/spip.php?article290', type: 'research' }
     ]
   },
   // Module 2: Community Gardens
