@@ -6,7 +6,7 @@ import { Button } from '@/components/ui/Button'
 import {
   Zap, Droplet, Sprout, Recycle, Home, Leaf,
   ChevronRight, Clock, BookOpen, CheckCircle2,
-  ArrowLeft, GraduationCap, Trophy, Star, LucideIcon
+  ArrowLeft, GraduationCap, LucideIcon
 } from 'lucide-react'
 import Link from 'next/link'
 import { useParams, useSearchParams } from 'next/navigation'
@@ -83,75 +83,49 @@ export default function TopicPage() {
 
   return (
     <div className="min-h-screen bg-[var(--background)]">
-      {/* Hero Section */}
-      <section className="py-20 bg-gradient-to-br from-[var(--primary)] via-[var(--accent)] to-[var(--secondary)] text-[var(--primary-foreground)] relative overflow-hidden">
-        <div className="absolute inset-0 opacity-10">
-          <div className="absolute top-10 right-10 w-72 h-72 bg-white rounded-full blur-3xl" />
-          <div className="absolute bottom-10 left-10 w-96 h-96 bg-white rounded-full blur-3xl" />
-        </div>
-
-        <div className="container mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
-          <div className="max-w-4xl mx-auto">
-            <Link href="/learn" className="inline-flex items-center gap-2 text-[var(--primary-foreground)]/80 hover:text-[var(--primary-foreground)] mb-6 font-bold">
+      {/* Simple Header */}
+      <section className="py-12 bg-[var(--muted)] border-b border-[var(--border)]">
+        <div className="container mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="max-w-6xl mx-auto">
+            <Link href="/learn" className="inline-flex items-center gap-2 text-theme-muted hover:text-theme-primary mb-6 font-bold">
               <ArrowLeft className="w-5 h-5" />
               Back to Learn
             </Link>
 
-            <div className="flex items-center gap-6 mb-6">
-              <div className="text-8xl">{heroEmoji}</div>
-              <div className="flex-1">
-                <div className="flex items-center gap-3 mb-2">
-                  <h1 className="text-5xl font-black">{topic.title}</h1>
-                  {isGraduated && (
-                    <div className="flex items-center gap-2 px-4 py-2 bg-yellow-400 text-yellow-900 rounded-full">
-                      <Trophy className="w-5 h-5" />
-                      <span className="font-black">GRADUATED!</span>
-                    </div>
-                  )}
+            <div className="flex items-center justify-between flex-wrap gap-4">
+              <div className="flex items-center gap-4">
+                <div className="text-5xl">{heroEmoji}</div>
+                <div>
+                  <h1 className="text-3xl font-black text-[var(--foreground)]">{topic.title}</h1>
+                  <p className="text-theme-muted font-medium">{topic.description}</p>
                 </div>
-                <p className="text-xl font-medium opacity-90">{topic.description}</p>
               </div>
-            </div>
 
-            {/* Progress Bar */}
-            <div className="bg-white/20 backdrop-blur-sm rounded-2xl p-6 mt-8">
-              <div className="flex items-center justify-between mb-3">
-                <span className="font-bold flex items-center gap-2">
-                  <GraduationCap className="w-5 h-5" />
-                  Your Progress
-                </span>
-                <span className="font-black text-2xl">{progressPercent}%</span>
-              </div>
-              <div className="h-4 bg-white/30 rounded-full overflow-hidden">
-                <div
-                  className="h-full bg-white rounded-full transition-all duration-500"
-                  style={{ width: `${progressPercent}%` }}
-                />
-              </div>
-              <div className="flex items-center justify-between mt-3 text-sm opacity-80">
-                <span>{completedCount} of {totalModules} modules completed</span>
-                {isGraduated ? (
-                  <span className="flex items-center gap-1 font-bold">
-                    <Star className="w-4 h-4 fill-current" /> Topic Mastered!
+              <div className="flex items-center gap-4">
+                <div className="flex items-center gap-4 text-sm text-theme-muted">
+                  <span className="flex items-center gap-1">
+                    <BookOpen className="w-4 h-4" />
+                    {totalModules} modules
                   </span>
-                ) : (
-                  <span>{totalModules - completedCount} modules remaining</span>
+                  <span className="flex items-center gap-1">
+                    <Clock className="w-4 h-4" />
+                    ~{totalHours}h
+                  </span>
+                </div>
+                {progressPercent > 0 && (
+                  <div className="flex items-center gap-2">
+                    <div className="w-24 h-2 bg-[var(--border)] rounded-full overflow-hidden">
+                      <div
+                        className="h-full bg-[var(--primary)] rounded-full"
+                        style={{ width: `${progressPercent}%` }}
+                      />
+                    </div>
+                    <span className="text-sm font-bold text-theme-primary">{progressPercent}%</span>
+                    {isGraduated && (
+                      <span className="text-green-600 text-xs font-black">COMPLETE</span>
+                    )}
+                  </div>
                 )}
-              </div>
-            </div>
-
-            <div className="flex flex-wrap gap-6 mt-8">
-              <div className="flex items-center gap-2 bg-white/20 backdrop-blur-sm px-4 py-2 rounded-full">
-                <BookOpen className="w-5 h-5" />
-                <span className="font-bold">{totalModules} Modules</span>
-              </div>
-              <div className="flex items-center gap-2 bg-white/20 backdrop-blur-sm px-4 py-2 rounded-full">
-                <Clock className="w-5 h-5" />
-                <span className="font-bold">~{totalHours} hours</span>
-              </div>
-              <div className="flex items-center gap-2 bg-white/20 backdrop-blur-sm px-4 py-2 rounded-full">
-                <span className="text-lg">{LEARNING_LEVELS[selectedLevel].icon}</span>
-                <span className="font-bold">{LEARNING_LEVELS[selectedLevel].label}</span>
               </div>
             </div>
           </div>
@@ -269,54 +243,33 @@ export default function TopicPage() {
             {/* Sidebar */}
             <div className="space-y-8">
               {/* Progress Card */}
-              <Card className="border-4 border-theme-primary bg-gradient-to-br from-[color-mix(in_srgb,var(--primary)_15%,var(--background))] to-[var(--background)]">
-                <CardContent className="p-6 text-center">
-                  <div className="relative w-32 h-32 mx-auto mb-4">
-                    <svg className="w-full h-full transform -rotate-90">
-                      <circle
-                        cx="64"
-                        cy="64"
-                        r="56"
-                        stroke="currentColor"
-                        strokeWidth="12"
-                        fill="none"
-                        className="text-[var(--muted)]"
+              <Card className="border-2 border-[var(--border)]">
+                <CardContent className="p-6">
+                  <h3 className="text-lg font-black mb-3 text-[var(--foreground)]">Your Progress</h3>
+                  <div className="flex items-center gap-3 mb-3">
+                    <div className="flex-1 h-2 bg-[var(--muted)] rounded-full overflow-hidden">
+                      <div
+                        className="h-full bg-[var(--primary)] rounded-full"
+                        style={{ width: `${progressPercent}%` }}
                       />
-                      <circle
-                        cx="64"
-                        cy="64"
-                        r="56"
-                        stroke="currentColor"
-                        strokeWidth="12"
-                        fill="none"
-                        strokeDasharray={`${progressPercent * 3.52} 352`}
-                        className="text-theme-primary transition-all duration-500"
-                      />
-                    </svg>
-                    <div className="absolute inset-0 flex items-center justify-center">
-                      {isGraduated ? (
-                        <Trophy className="w-12 h-12 text-yellow-500" />
-                      ) : (
-                        <span className="text-3xl font-black">{progressPercent}%</span>
-                      )}
                     </div>
+                    <span className="text-sm font-bold text-theme-primary">{progressPercent}%</span>
                   </div>
-                  <h3 className="text-xl font-black mb-2 text-[var(--foreground)]">
-                    {isGraduated ? '🎓 Congratulations!' : 'Keep Going!'}
-                  </h3>
-                  <p className="text-theme-muted mb-4">
-                    {isGraduated
-                      ? `You've mastered all ${totalModules} modules in ${topic.title}!`
-                      : `Complete ${totalModules - completedCount} more module${totalModules - completedCount !== 1 ? 's' : ''} to graduate`
-                    }
+                  <p className="text-sm text-theme-muted mb-4">
+                    {completedCount} of {totalModules} modules completed
                   </p>
                   {!isGraduated && topic.modules.length > 0 && (
                     <Link href={`/learn/modules/${topic.modules[completedCount]?.slug || topic.modules[0].slug}?level=${selectedLevel.toLowerCase()}&topic=${topic.id}`}>
-                      <Button className="w-full font-bold">
-                        {completedCount === 0 ? 'Start Learning' : 'Continue Learning'}
+                      <Button className="w-full font-bold" size="sm">
+                        {completedCount === 0 ? 'Start Learning' : 'Continue'}
                         <ChevronRight className="w-4 h-4 ml-2" />
                       </Button>
                     </Link>
+                  )}
+                  {isGraduated && (
+                    <div className="text-center py-2 px-3 bg-green-500/10 rounded-lg text-green-600 font-bold text-sm">
+                      Topic Complete
+                    </div>
                   )}
                 </CardContent>
               </Card>

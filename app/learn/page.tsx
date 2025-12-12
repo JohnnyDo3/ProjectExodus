@@ -122,12 +122,6 @@ export default function LearnPage() {
       <section className="min-h-[70vh] flex items-center justify-center bg-gradient-to-br from-[color-mix(in_srgb,var(--accent)_15%,var(--background))] via-[color-mix(in_srgb,var(--primary)_15%,var(--background))] to-[var(--muted)] relative overflow-hidden">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
           <div className="max-w-5xl mx-auto text-center space-y-8">
-            {/* Professor Sage Badge */}
-            <div className="inline-flex items-center gap-3 px-6 py-3 rounded-full bg-[color-mix(in_srgb,var(--primary)_20%,var(--background))] border-2 border-theme-primary">
-              <span className="text-3xl">🦉</span>
-              <span className="text-lg font-black text-theme-primary">PROFESSOR SAGE&apos;S CLASSROOM</span>
-            </div>
-
             <h1 className="text-[var(--foreground)]" style={{
               fontSize: 'clamp(3rem, 10vw, 7rem)',
               fontWeight: 900,
