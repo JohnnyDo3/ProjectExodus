@@ -17,6 +17,9 @@ import { ModuleDiscussions } from '@/components/learn/discussions/ModuleDiscussi
 import { LearningLevel, LEARNING_LEVELS } from '@/types/learning'
 import { Module, CoreTopic } from '@/data/modules'
 import dynamic from 'next/dynamic'
+import { FounderCard, Founder } from '@/components/learning/FounderCard'
+import { detectPioneersInContent, SUSTAINABILITY_PIONEERS } from '@/data/sustainabilityPioneers'
+import { StoryIllustration, IllustrationTheme, detectIllustrationTheme } from '@/components/learning/StoryIllustration'
 
 // Dynamically import diagram components
 const WaterCycleDiagram = dynamic(() => import('@/components/learning/diagrams/WaterCycleDiagram').then(mod => ({ default: mod.WaterCycleDiagram })), { ssr: false })
@@ -54,6 +57,8 @@ interface LessonPage {
   title: string
   content: string
   diagram?: string // diagram type key
+  pioneers?: Founder[] // Detected pioneers mentioned in this page
+  illustration?: IllustrationTheme // Picture book illustration for younger learners
 }
 
 // Parse lesson content into pages based on h2/h3 headers
@@ -64,25 +69,30 @@ function parseLessonIntoPages(content: string, lessonId: string): LessonPage[] {
 
   if (parts.length <= 1) {
     // No headers found, return single page
+    const pioneers = detectPioneersInContent(content)
     return [{
       id: `${lessonId}-page-0`,
       title: 'Introduction',
       content: content,
-      diagram: extractDiagramFromContent(content)
+      diagram: extractDiagramFromContent(content),
+      pioneers: pioneers.length > 0 ? pioneers : undefined,
+      illustration: detectIllustrationTheme(content)
     }]
   }
 
   const pages: LessonPage[] = []
-  let currentContent = ''
   let pageIndex = 0
 
   // First part is content before first header (introduction)
   if (parts[0].trim()) {
+    const introPioneers = detectPioneersInContent(parts[0])
     pages.push({
       id: `${lessonId}-page-${pageIndex}`,
       title: 'Introduction',
       content: parts[0].trim(),
-      diagram: extractDiagramFromContent(parts[0])
+      diagram: extractDiagramFromContent(parts[0]),
+      pioneers: introPioneers.length > 0 ? introPioneers : undefined,
+      illustration: detectIllustrationTheme(parts[0])
     })
     pageIndex++
   }
@@ -93,11 +103,14 @@ function parseLessonIntoPages(content: string, lessonId: string): LessonPage[] {
     const sectionContent = parts[i + 1]?.trim() || ''
 
     if (title && sectionContent) {
+      const sectionPioneers = detectPioneersInContent(sectionContent)
       pages.push({
         id: `${lessonId}-page-${pageIndex}`,
         title,
         content: sectionContent,
-        diagram: extractDiagramFromContent(sectionContent)
+        diagram: extractDiagramFromContent(sectionContent),
+        pioneers: sectionPioneers.length > 0 ? sectionPioneers : undefined,
+        illustration: detectIllustrationTheme(sectionContent)
       })
       pageIndex++
     }
@@ -105,11 +118,14 @@ function parseLessonIntoPages(content: string, lessonId: string): LessonPage[] {
 
   // If no pages were created, return the whole content as one page
   if (pages.length === 0) {
+    const pioneers = detectPioneersInContent(content)
     return [{
       id: `${lessonId}-page-0`,
       title: 'Introduction',
       content: content,
-      diagram: extractDiagramFromContent(content)
+      diagram: extractDiagramFromContent(content),
+      pioneers: pioneers.length > 0 ? pioneers : undefined,
+      illustration: detectIllustrationTheme(content)
     }]
   }
 
@@ -638,6 +654,20 @@ export function InteractiveTextbook({
     setCompletedPages(new Set())
   }, [currentLesson])
 
+  // Scroll to top when starting the lesson
+  useEffect(() => {
+    if (started) {
+      window.scrollTo({ top: 0, behavior: 'smooth' })
+    }
+  }, [started])
+
+  // Scroll to top when showing quiz
+  useEffect(() => {
+    if (showQuiz) {
+      window.scrollTo({ top: 0, behavior: 'smooth' })
+    }
+  }, [showQuiz])
+
   // Mark lesson complete
   const markComplete = (lessonId: string) => {
     setCompletedLessons(prev => new Set([...prev, lessonId]))
@@ -1044,6 +1074,15 @@ export function InteractiveTextbook({
                   </motion.h3>
                 )}
 
+                {/* Picture Book Illustration (for elementary/middle school) */}
+                {currentPageData?.illustration && (
+                  <StoryIllustration
+                    theme={currentPageData.illustration}
+                    level={selectedLevel}
+                    caption={currentPageData.title !== 'Introduction' ? currentPageData.title : undefined}
+                  />
+                )}
+
                 {/* Diagram (if available for this page) */}
                 {currentPageData?.diagram && (
                   <DiagramRenderer diagramType={currentPageData.diagram} />
@@ -1063,6 +1102,32 @@ export function InteractiveTextbook({
                     dangerouslySetInnerHTML={{ __html: sanitizeHtml(currentPageData?.content || '') }}
                   />
                 </AnimatedSection>
+
+                {/* Pioneer Cards (if any pioneers mentioned) */}
+                {currentPageData?.pioneers && currentPageData.pioneers.length > 0 && (
+                  <AnimatedSection delay={0.2}>
+                    <div className="mt-8 pt-6 border-t border-[var(--border)]">
+                      <h4 className="font-bold text-[var(--foreground)] mb-4 flex items-center gap-2">
+                        <Award className="w-5 h-5 text-theme-primary" />
+                        Featured Pioneer{currentPageData.pioneers.length > 1 ? 's' : ''}
+                      </h4>
+                      <div className="grid gap-4 md:grid-cols-2">
+                        {currentPageData.pioneers.slice(0, 2).map((pioneer) => (
+                          <FounderCard
+                            key={pioneer.id}
+                            founder={pioneer}
+                            variant="compact"
+                          />
+                        ))}
+                      </div>
+                      {currentPageData.pioneers.length > 2 && (
+                        <p className="text-sm text-theme-muted mt-3">
+                          +{currentPageData.pioneers.length - 2} more pioneer{currentPageData.pioneers.length - 2 > 1 ? 's' : ''} mentioned
+                        </p>
+                      )}
+                    </div>
+                  </AnimatedSection>
+                )}
               </motion.div>
             </AnimatePresence>
 
