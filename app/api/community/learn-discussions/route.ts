@@ -1,26 +1,45 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { prisma } from '@/lib/db/prisma'
 import { LearningLevel, LEARNING_LEVELS } from '@/types/learning'
-import { Prisma } from '@prisma/client'
 
 // Type for discussion with includes
-type DiscussionWithIncludes = Prisma.ModuleDiscussionGetPayload<{
-  include: {
-    author: { select: { id: true; name: true; image: true } }
-    article: { select: { id: true; title: true; slug: true; coverImage: true } }
-    _count: { select: { replies: true } }
+type DiscussionWithIncludes = {
+  id: string
+  title: string
+  content: string
+  level: string
+  articleId: string
+  authorId: string
+  isPinned: boolean
+  isResolved: boolean
+  viewCount: number
+  createdAt: Date
+  updatedAt: Date
+  author: {
+    id: string
+    name: string | null
+    image: string | null
   }
-}>
+  article: {
+    id: string
+    title: string
+    slug: string
+    coverImage: string | null
+  }
+  _count: {
+    replies: number
+  }
+}
 
 // Type for module with count
-type ModuleWithCount = Prisma.ArticleGetPayload<{
-  select: {
-    id: true
-    title: true
-    slug: true
-    _count: { select: { moduleDiscussions: true } }
+type ModuleWithCount = {
+  id: string
+  title: string
+  slug: string
+  _count: {
+    moduleDiscussions: number
   }
-}>
+}
 
 // Type for level count from groupBy
 type LevelCountResult = {

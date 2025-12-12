@@ -1,6 +1,6 @@
 'use client'
 
-import { useState, useEffect, useRef } from 'react'
+import { useState, useEffect, useRef, useMemo } from 'react'
 import { motion, AnimatePresence, useInView } from 'framer-motion'
 import { Card, CardContent } from '@/components/ui/Card'
 import { Button } from '@/components/ui/Button'
@@ -16,6 +16,217 @@ import { LevelSelector } from '@/components/learn/levels/LevelSelector'
 import { ModuleDiscussions } from '@/components/learn/discussions/ModuleDiscussions'
 import { LearningLevel, LEARNING_LEVELS } from '@/types/learning'
 import { Module, CoreTopic } from '@/data/modules'
+import dynamic from 'next/dynamic'
+
+// Dynamically import diagram components
+const WaterCycleDiagram = dynamic(() => import('@/components/learning/diagrams/WaterCycleDiagram').then(mod => ({ default: mod.WaterCycleDiagram })), { ssr: false })
+const SolarEnergyDiagram = dynamic(() => import('@/components/learning/diagrams/SolarEnergyDiagram').then(mod => ({ default: mod.SolarEnergyDiagram })), { ssr: false })
+const SoilLayersDiagram = dynamic(() => import('@/components/learning/diagrams/SoilLayersDiagram').then(mod => ({ default: mod.SoilLayersDiagram })), { ssr: false })
+const CompostingProcessDiagram = dynamic(() => import('@/components/learning/diagrams/CompostingProcessDiagram').then(mod => ({ default: mod.CompostingProcessDiagram })), { ssr: false })
+const FoodWebDiagram = dynamic(() => import('@/components/learning/diagrams/FoodWebDiagram').then(mod => ({ default: mod.FoodWebDiagram })), { ssr: false })
+const PassiveSolarDiagram = dynamic(() => import('@/components/learning/diagrams/PassiveSolarDiagram').then(mod => ({ default: mod.PassiveSolarDiagram })), { ssr: false })
+const WasteHierarchyPyramid = dynamic(() => import('@/components/learning/diagrams/WasteHierarchyPyramid').then(mod => ({ default: mod.WasteHierarchyPyramid })), { ssr: false })
+const PhotosynthesisDiagram = dynamic(() => import('@/components/learning/diagrams/PhotosynthesisDiagram').then(mod => ({ default: mod.PhotosynthesisDiagram })), { ssr: false })
+const CarbonCycleDiagram = dynamic(() => import('@/components/learning/diagrams/CarbonCycleDiagram').then(mod => ({ default: mod.CarbonCycleDiagram })), { ssr: false })
+const EnergyFlowDiagram = dynamic(() => import('@/components/learning/diagrams/EnergyFlowDiagram').then(mod => ({ default: mod.EnergyFlowDiagram })), { ssr: false })
+const RainwaterHarvestingDiagram = dynamic(() => import('@/components/learning/diagrams/RainwaterHarvestingDiagram').then(mod => ({ default: mod.RainwaterHarvestingDiagram })), { ssr: false })
+const ThermalMassDiagram = dynamic(() => import('@/components/learning/diagrams/ThermalMassDiagram').then(mod => ({ default: mod.ThermalMassDiagram })), { ssr: false })
+
+// Diagram component mapping
+const DIAGRAM_MAP: Record<string, React.ComponentType<{ animated?: boolean; showLabels?: boolean; className?: string }>> = {
+  'water-cycle': WaterCycleDiagram,
+  'solar-energy': SolarEnergyDiagram,
+  'soil-layers': SoilLayersDiagram,
+  'composting-process': CompostingProcessDiagram,
+  'food-web': FoodWebDiagram,
+  'passive-solar': PassiveSolarDiagram,
+  'waste-hierarchy': WasteHierarchyPyramid,
+  'photosynthesis': PhotosynthesisDiagram,
+  'carbon-cycle': CarbonCycleDiagram,
+  'energy-flow': EnergyFlowDiagram,
+  'rainwater-harvesting': RainwaterHarvestingDiagram,
+  'thermal-mass': ThermalMassDiagram,
+}
+
+// Page structure for multi-page lessons
+interface LessonPage {
+  id: string
+  title: string
+  content: string
+  diagram?: string // diagram type key
+}
+
+// Parse lesson content into pages based on h2/h3 headers
+function parseLessonIntoPages(content: string, lessonId: string): LessonPage[] {
+  // Split content by h2 or h3 headers
+  const headerRegex = /<h[23][^>]*>(.*?)<\/h[23]>/gi
+  const parts = content.split(headerRegex)
+
+  if (parts.length <= 1) {
+    // No headers found, return single page
+    return [{
+      id: `${lessonId}-page-0`,
+      title: 'Introduction',
+      content: content,
+      diagram: extractDiagramFromContent(content)
+    }]
+  }
+
+  const pages: LessonPage[] = []
+  let currentContent = ''
+  let pageIndex = 0
+
+  // First part is content before first header (introduction)
+  if (parts[0].trim()) {
+    pages.push({
+      id: `${lessonId}-page-${pageIndex}`,
+      title: 'Introduction',
+      content: parts[0].trim(),
+      diagram: extractDiagramFromContent(parts[0])
+    })
+    pageIndex++
+  }
+
+  // Process remaining parts (alternating: header title, content)
+  for (let i = 1; i < parts.length; i += 2) {
+    const title = parts[i]?.replace(/<[^>]*>/g, '').trim() || `Section ${pageIndex + 1}`
+    const sectionContent = parts[i + 1]?.trim() || ''
+
+    if (title && sectionContent) {
+      pages.push({
+        id: `${lessonId}-page-${pageIndex}`,
+        title,
+        content: sectionContent,
+        diagram: extractDiagramFromContent(sectionContent)
+      })
+      pageIndex++
+    }
+  }
+
+  // If no pages were created, return the whole content as one page
+  if (pages.length === 0) {
+    return [{
+      id: `${lessonId}-page-0`,
+      title: 'Introduction',
+      content: content,
+      diagram: extractDiagramFromContent(content)
+    }]
+  }
+
+  return pages
+}
+
+// Extract diagram type from content based on data-diagram attribute or keywords
+function extractDiagramFromContent(content: string): string | undefined {
+  // Check for data-diagram attribute
+  const diagramMatch = content.match(/data-diagram=["']([^"']+)["']/i)
+  if (diagramMatch) {
+    return diagramMatch[1]
+  }
+
+  // Keyword-based detection for auto-assignment
+  const lowerContent = content.toLowerCase()
+
+  if (lowerContent.includes('water cycle') || lowerContent.includes('evaporation') && lowerContent.includes('precipitation')) {
+    return 'water-cycle'
+  }
+  if (lowerContent.includes('solar panel') || lowerContent.includes('photovoltaic') || lowerContent.includes('solar energy')) {
+    return 'solar-energy'
+  }
+  if (lowerContent.includes('soil layer') || lowerContent.includes('horizon') || lowerContent.includes('topsoil')) {
+    return 'soil-layers'
+  }
+  if (lowerContent.includes('compost') || lowerContent.includes('decomposition') && lowerContent.includes('organic')) {
+    return 'composting-process'
+  }
+  if (lowerContent.includes('food web') || lowerContent.includes('food chain') || lowerContent.includes('trophic')) {
+    return 'food-web'
+  }
+  if (lowerContent.includes('passive solar') || lowerContent.includes('solar gain') || lowerContent.includes('overhang')) {
+    return 'passive-solar'
+  }
+  if (lowerContent.includes('waste hierarchy') || lowerContent.includes('reduce, reuse, recycle')) {
+    return 'waste-hierarchy'
+  }
+  if (lowerContent.includes('photosynthesis') || lowerContent.includes('chlorophyll')) {
+    return 'photosynthesis'
+  }
+  if (lowerContent.includes('carbon cycle') || lowerContent.includes('carbon dioxide') && lowerContent.includes('atmosphere')) {
+    return 'carbon-cycle'
+  }
+  if (lowerContent.includes('energy flow') || lowerContent.includes('10% rule') || lowerContent.includes('energy pyramid')) {
+    return 'energy-flow'
+  }
+  if (lowerContent.includes('rainwater harvest') || lowerContent.includes('cistern') || lowerContent.includes('rain barrel')) {
+    return 'rainwater-harvesting'
+  }
+  if (lowerContent.includes('thermal mass') || lowerContent.includes('heat storage') || lowerContent.includes('concrete floor')) {
+    return 'thermal-mass'
+  }
+
+  return undefined
+}
+
+// Diagram Renderer Component
+function DiagramRenderer({ diagramType, className = '' }: { diagramType: string; className?: string }) {
+  const DiagramComponent = DIAGRAM_MAP[diagramType]
+
+  if (!DiagramComponent) {
+    return null
+  }
+
+  return (
+    <motion.div
+      initial={{ opacity: 0, scale: 0.95 }}
+      animate={{ opacity: 1, scale: 1 }}
+      transition={{ duration: 0.5, delay: 0.2 }}
+      className={`my-8 ${className}`}
+    >
+      <DiagramComponent animated={true} showLabels={true} />
+    </motion.div>
+  )
+}
+
+// Page Progress Dots Component
+function PageProgressDots({
+  totalPages,
+  currentPage,
+  completedPages,
+  onPageClick
+}: {
+  totalPages: number
+  currentPage: number
+  completedPages: Set<number>
+  onPageClick: (page: number) => void
+}) {
+  return (
+    <div className="flex items-center justify-center gap-2 my-6">
+      {Array.from({ length: totalPages }, (_, i) => {
+        const isCompleted = completedPages.has(i)
+        const isCurrent = i === currentPage
+
+        return (
+          <button
+            key={i}
+            onClick={() => onPageClick(i)}
+            className={`relative w-3 h-3 rounded-full transition-all duration-300 ${
+              isCurrent
+                ? 'w-8 bg-[var(--primary)]'
+                : isCompleted
+                ? 'bg-green-500'
+                : 'bg-[var(--muted)] hover:bg-[color-mix(in_srgb,var(--primary)_50%,var(--muted))]'
+            }`}
+            aria-label={`Go to page ${i + 1}`}
+          >
+            {isCompleted && !isCurrent && (
+              <CheckCircle2 className="absolute -top-0.5 -right-0.5 w-3 h-3 text-white" />
+            )}
+          </button>
+        )
+      })}
+    </div>
+  )
+}
 
 // Animated section wrapper
 function AnimatedSection({
@@ -398,7 +609,9 @@ export function InteractiveTextbook({
   topicSlug
 }: InteractiveTextbookProps) {
   const [currentLesson, setCurrentLesson] = useState(0)
+  const [currentPage, setCurrentPage] = useState(0)
   const [completedLessons, setCompletedLessons] = useState<Set<string>>(new Set())
+  const [completedPages, setCompletedPages] = useState<Set<number>>(new Set())
   const [showQuiz, setShowQuiz] = useState(false)
   const [quizPassed, setQuizPassed] = useState(false)
   const [quizScore, setQuizScore] = useState<number | null>(null)
@@ -410,6 +623,21 @@ export function InteractiveTextbook({
   const totalLessons = levelContent.lessons.length
   const progressPercent = Math.round((completedLessons.size / totalLessons) * 100)
 
+  // Parse current lesson into pages
+  const lessonPages = useMemo(() => {
+    if (!lesson) return []
+    return parseLessonIntoPages(lesson.content, lesson.id)
+  }, [lesson])
+
+  const currentPageData = lessonPages[currentPage]
+  const totalPages = lessonPages.length
+
+  // Reset page when changing lessons
+  useEffect(() => {
+    setCurrentPage(0)
+    setCompletedPages(new Set())
+  }, [currentLesson])
+
   // Mark lesson complete
   const markComplete = (lessonId: string) => {
     setCompletedLessons(prev => new Set([...prev, lessonId]))
@@ -420,7 +648,42 @@ export function InteractiveTextbook({
     setFoundQuotes(prev => new Set([...prev, quoteId]))
   }
 
-  // Navigate lessons
+  // Navigate pages within a lesson
+  const goToNextPage = () => {
+    // Mark current page as completed
+    setCompletedPages(prev => new Set([...prev, currentPage]))
+
+    if (currentPage < totalPages - 1) {
+      // Go to next page within this lesson
+      setCurrentPage(currentPage + 1)
+    } else {
+      // Lesson complete, go to next lesson or quiz
+      if (!completedLessons.has(lesson.id)) {
+        markComplete(lesson.id)
+      }
+      if (currentLesson < totalLessons - 1) {
+        setCurrentLesson(currentLesson + 1)
+        setCurrentPage(0)
+        setCompletedPages(new Set())
+      } else {
+        setShowQuiz(true)
+      }
+    }
+  }
+
+  const goToPreviousPage = () => {
+    if (currentPage > 0) {
+      // Go to previous page within this lesson
+      setCurrentPage(currentPage - 1)
+    } else if (currentLesson > 0) {
+      // Go to previous lesson's last page
+      setCurrentLesson(currentLesson - 1)
+      // Will reset to page 0 via useEffect, but we want last page
+      // We'll handle this specially
+    }
+  }
+
+  // Navigate lessons (for tab clicks)
   const goToNext = () => {
     if (!completedLessons.has(lesson.id)) {
       markComplete(lesson.id)
@@ -436,6 +699,11 @@ export function InteractiveTextbook({
     if (currentLesson > 0) {
       setCurrentLesson(currentLesson - 1)
     }
+  }
+
+  // Handle page dot click
+  const handlePageClick = (pageIndex: number) => {
+    setCurrentPage(pageIndex)
   }
 
   // Handle quiz completion
@@ -724,11 +992,12 @@ export function InteractiveTextbook({
           </button>
         </div>
 
-        {/* Lesson Content */}
+        {/* Lesson Content - Multi-Page View */}
         <Card className="border-2 border-[var(--border)] mb-4">
           <CardContent className="p-6 md:p-8">
+            {/* Lesson Header */}
             <AnimatedSection>
-              <h2 className="text-2xl font-black text-[var(--foreground)] mb-6 flex items-center gap-3">
+              <h2 className="text-2xl font-black text-[var(--foreground)] mb-2 flex items-center gap-3">
                 <div className="w-10 h-10 rounded-xl bg-[var(--primary)] text-white flex items-center justify-center font-black">
                   {currentLesson + 1}
                 </div>
@@ -736,22 +1005,69 @@ export function InteractiveTextbook({
               </h2>
             </AnimatedSection>
 
-            <AnimatedSection delay={0.1}>
-              <div
-                className="prose prose-lg max-w-none text-[var(--foreground)]
-                           prose-headings:text-[var(--foreground)] prose-headings:font-black
-                           prose-p:text-[var(--foreground)] prose-p:leading-relaxed
-                           prose-li:text-[var(--foreground)]
-                           prose-strong:text-[var(--foreground)]
-                           prose-a:text-theme-primary prose-a:font-semibold
-                           prose-blockquote:border-[var(--primary)] prose-blockquote:text-theme-muted
-                           prose-ul:space-y-2 prose-ol:space-y-2"
-                dangerouslySetInnerHTML={{ __html: sanitizeHtml(lesson.content) }}
-              />
-            </AnimatedSection>
+            {/* Page Progress Indicator */}
+            {totalPages > 1 && (
+              <div className="mb-6">
+                <div className="flex items-center justify-between text-sm text-theme-muted mb-2">
+                  <span>Page {currentPage + 1} of {totalPages}</span>
+                  <span className="font-bold">{currentPageData?.title}</span>
+                </div>
+                <PageProgressDots
+                  totalPages={totalPages}
+                  currentPage={currentPage}
+                  completedPages={completedPages}
+                  onPageClick={handlePageClick}
+                />
+              </div>
+            )}
 
-            {/* References at bottom of lesson */}
-            {module.externalResources.length > 0 && currentLesson === totalLessons - 1 && (
+            {/* Page Content with Animation */}
+            <AnimatePresence mode="wait">
+              <motion.div
+                key={`${lesson.id}-page-${currentPage}`}
+                initial={{ opacity: 0, x: 20 }}
+                animate={{ opacity: 1, x: 0 }}
+                exit={{ opacity: 0, x: -20 }}
+                transition={{ duration: 0.3 }}
+              >
+                {/* Page Title (if multi-page) */}
+                {totalPages > 1 && currentPageData && (
+                  <motion.h3
+                    initial={{ opacity: 0, y: -10 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    className="text-xl font-black text-theme-primary mb-6 flex items-center gap-2"
+                  >
+                    <div className="w-8 h-8 rounded-lg bg-[color-mix(in_srgb,var(--primary)_20%,var(--background))] flex items-center justify-center text-theme-primary font-bold text-sm">
+                      {currentPage + 1}
+                    </div>
+                    {currentPageData.title}
+                  </motion.h3>
+                )}
+
+                {/* Diagram (if available for this page) */}
+                {currentPageData?.diagram && (
+                  <DiagramRenderer diagramType={currentPageData.diagram} />
+                )}
+
+                {/* Page Text Content */}
+                <AnimatedSection delay={0.1}>
+                  <div
+                    className="prose prose-lg max-w-none text-[var(--foreground)]
+                               prose-headings:text-[var(--foreground)] prose-headings:font-black
+                               prose-p:text-[var(--foreground)] prose-p:leading-relaxed
+                               prose-li:text-[var(--foreground)]
+                               prose-strong:text-[var(--foreground)]
+                               prose-a:text-theme-primary prose-a:font-semibold
+                               prose-blockquote:border-[var(--primary)] prose-blockquote:text-theme-muted
+                               prose-ul:space-y-2 prose-ol:space-y-2"
+                    dangerouslySetInnerHTML={{ __html: sanitizeHtml(currentPageData?.content || '') }}
+                  />
+                </AnimatedSection>
+              </motion.div>
+            </AnimatePresence>
+
+            {/* References at bottom of last page of last lesson */}
+            {module.externalResources.length > 0 && currentLesson === totalLessons - 1 && currentPage === totalPages - 1 && (
               <AnimatedSection delay={0.2}>
                 <div className="mt-8 pt-8 border-t border-[var(--border)]">
                   <h3 className="font-black text-[var(--foreground)] mb-4 flex items-center gap-2">
@@ -775,27 +1091,41 @@ export function InteractiveTextbook({
           </CardContent>
         </Card>
 
-        {/* Navigation */}
+        {/* Page Navigation */}
         <div className="flex items-center justify-between mb-8">
           <Button
             variant="outline"
-            onClick={goToPrevious}
-            disabled={currentLesson === 0}
+            onClick={goToPreviousPage}
+            disabled={currentLesson === 0 && currentPage === 0}
             className="font-bold"
           >
             <ChevronLeft className="w-4 h-4 mr-2" />
-            Previous
+            {currentPage === 0 ? 'Previous Lesson' : 'Previous'}
           </Button>
 
-          <p className="text-sm text-theme-muted text-center px-4">
-            {currentLesson === totalLessons - 1
-              ? 'Ready for the scavenger hunt quiz!'
-              : `${totalLessons - currentLesson - 1} lessons remaining`
-            }
-          </p>
+          <div className="text-center px-4">
+            <p className="text-sm text-theme-muted">
+              {currentPage === totalPages - 1 && currentLesson === totalLessons - 1
+                ? 'Ready for the scavenger hunt quiz!'
+                : currentPage === totalPages - 1
+                ? 'Next: ' + (levelContent.lessons[currentLesson + 1]?.title || 'Quiz')
+                : `${totalPages - currentPage - 1} pages remaining in this lesson`
+              }
+            </p>
+            {totalPages > 1 && (
+              <p className="text-xs text-theme-muted mt-1">
+                Lesson {currentLesson + 1}/{totalLessons} • Page {currentPage + 1}/{totalPages}
+              </p>
+            )}
+          </div>
 
-          <Button onClick={goToNext} className="font-bold">
-            {currentLesson === totalLessons - 1 ? 'Take Quiz' : 'Next'}
+          <Button onClick={goToNextPage} className="font-bold">
+            {currentPage === totalPages - 1 && currentLesson === totalLessons - 1
+              ? 'Take Quiz'
+              : currentPage === totalPages - 1
+              ? 'Next Lesson'
+              : 'Next Page'
+            }
             <ChevronRight className="w-4 h-4 ml-2" />
           </Button>
         </div>

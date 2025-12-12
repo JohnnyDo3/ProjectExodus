@@ -1,6 +1,30 @@
 import { prisma } from '@/lib/db'
-import { AdminAction, AdminAlertType, AlertPriority } from '@prisma/client'
 import { pusherServer } from '@/lib/pusher'
+
+// Local type definitions for Prisma enums (until Prisma client is regenerated)
+type AdminAction =
+  | 'USER_BANNED'
+  | 'USER_UNBANNED'
+  | 'PRODUCT_APPROVED'
+  | 'PRODUCT_REJECTED'
+  | 'ARTICLE_PUBLISHED'
+  | 'ARTICLE_UNPUBLISHED'
+  | 'CONTENT_DELETED'
+  | 'REPORT_RESOLVED'
+  | 'SETTINGS_CHANGED'
+  | 'OTHER'
+
+type AdminAlertType =
+  | 'NEW_REPORT'
+  | 'USER_BANNED'
+  | 'SECURITY_ALERT'
+  | 'SYSTEM_ERROR'
+  | 'CONTENT_FLAGGED'
+  | 'PRODUCT_SUBMISSION'
+  | 'HIGH_PRIORITY_REPORT'
+  | 'ADMIN_ACTION'
+
+type AlertPriority = 'LOW' | 'MEDIUM' | 'HIGH' | 'CRITICAL'
 
 interface LogAdminActionParams {
   userId: string

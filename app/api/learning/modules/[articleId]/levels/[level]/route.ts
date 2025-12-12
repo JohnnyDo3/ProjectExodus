@@ -2,7 +2,21 @@ import { NextRequest, NextResponse } from 'next/server'
 import { prisma } from '@/lib/db/prisma'
 import { auth } from '@/auth'
 import { LearningLevel, LEARNING_LEVELS, LevelContent } from '@/types/learning'
-import { ActivityProgress } from '@prisma/client'
+
+// Local type for activity progress
+type ActivityProgressRecord = {
+  id: string
+  progressId: string
+  activityId: string
+  completed: boolean
+  score: number | null
+  attempts: number
+  bestScore: number | null
+  timeSpent: number | null
+  submissionData: unknown
+  createdAt: Date
+  updatedAt: Date
+}
 
 // GET /api/learning/modules/[articleId]/levels/[level]
 // Get level-specific content for a module
@@ -100,8 +114,8 @@ export async function GET(
           progressPercentage: userProgress.progressPercentage,
           currentSectionId: userProgress.currentSectionId,
           completedActivities: userProgress.activityProgress
-            .filter((ap: ActivityProgress) => ap.completed)
-            .map((ap: ActivityProgress) => ap.activityId),
+            .filter((ap: ActivityProgressRecord) => ap.completed)
+            .map((ap: ActivityProgressRecord) => ap.activityId),
           gameHighScore: userProgress.gameHighScore,
           gameStars: userProgress.gameStars,
           gamePassed: userProgress.gamePassed

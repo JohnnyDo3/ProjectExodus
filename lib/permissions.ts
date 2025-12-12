@@ -1,5 +1,7 @@
-import { UserRole } from '@prisma/client'
 import { prisma } from '@/lib/db'
+
+// Local type definition (until Prisma client is regenerated)
+type UserRole = 'USER' | 'EDITOR' | 'MODERATOR' | 'ADMIN' | 'SUPER_ADMIN'
 
 /**
  * All available permissions in the system

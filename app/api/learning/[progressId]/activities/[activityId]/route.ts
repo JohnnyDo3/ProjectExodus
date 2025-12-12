@@ -2,7 +2,21 @@ import { NextRequest, NextResponse } from 'next/server'
 import { prisma } from '@/lib/db/prisma'
 import { auth } from '@/auth'
 import { ActivityConfig, LearningLevel } from '@/types/learning'
-import { ActivityProgress } from '@prisma/client'
+
+// Local type for activity progress
+type ActivityProgressRecord = {
+  id: string
+  progressId: string
+  activityId: string
+  completed: boolean
+  score: number | null
+  attempts: number
+  bestScore: number | null
+  timeSpent: number | null
+  submissionData: unknown
+  createdAt: Date
+  updatedAt: Date
+}
 
 // POST /api/learning/[progressId]/activities/[activityId]
 // Submit an activity
@@ -119,7 +133,7 @@ export async function POST(
     })
 
     const requiredActivities = activities.filter(a => a.required)
-    const completedRequired = allActivityProgress.filter((ap: ActivityProgress) =>
+    const completedRequired = allActivityProgress.filter((ap: ActivityProgressRecord) =>
       requiredActivities.some(ra => ra.id === ap.activityId && ap.completed)
     ).length
 
