@@ -1364,7 +1364,7 @@ export const greenBuildingModules: Module[] = [
     externalResources: [
       { title: 'Passive House Institute', url: 'https://passivehouse.com/', type: 'research' },
       { title: 'DOE Building Technologies Office', url: 'https://www.energy.gov/eere/buildings', type: 'article' },
-      { title: 'Whole Building Design Guide - Passive Solar Heating', url: 'https://www.wbdg.org/resources/passive-solar-heating', type: 'guide' }
+      { title: 'Whole Building Design Guide - Passive Solar Heating', url: 'https://www.wbdg.org/resources/passive-solar-heating', type: 'article' }
     ]
   },
   // Module 2: Sustainable Building Materials
