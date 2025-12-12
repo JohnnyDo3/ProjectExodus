@@ -30,12 +30,508 @@ export const renewableEnergyModules: Module[] = [
         hasActivity: true,
         activityType: 'SIMULATION',
         content: {
-          ELEMENTARY: `<div class="lesson-content"><h2>☀️ Power from the Sun!</h2><p>The sun sends us free energy every day! Solar panels catch this energy and turn it into electricity.</p><h3>How It Works</h3><ul><li>☀️ Sunlight hits the solar panel</li><li>⚡ Special materials make electricity</li><li>🔌 Wires carry power to your home</li><li>💡 Lights turn on!</li></ul></div>`,
-          MIDDLE_SCHOOL: `<div class="lesson-content"><h2>Photovoltaic Energy</h2><h3>Solar Panel Basics</h3><p>Solar panels contain photovoltaic (PV) cells made of silicon. When light hits them, electrons start moving - that's electricity!</p><h3>Key Components</h3><ul><li><strong>Solar cells:</strong> Convert light to DC electricity</li><li><strong>Inverter:</strong> Changes DC to AC for your home</li><li><strong>Mounting:</strong> Holds panels at the right angle</li><li><strong>Meter:</strong> Tracks energy produced</li></ul></div>`,
-          HIGH_SCHOOL: `<div class="lesson-content"><h2>PV Technology</h2><h3>The Photovoltaic Effect</h3><p>When photons hit silicon, they knock electrons loose, creating current. P-N junctions create an electric field that directs electron flow.</p><h3>Cell Types</h3><ul><li><strong>Monocrystalline:</strong> 20-22% efficiency, highest cost</li><li><strong>Polycrystalline:</strong> 15-17% efficiency, lower cost</li><li><strong>Thin-film:</strong> 10-13% efficiency, flexible</li></ul></div>`,
-          UNDERGRADUATE: `<div class="lesson-content"><h2>PV System Engineering</h2><h3>System Design</h3><ul><li>Load analysis and sizing</li><li>Orientation and tilt optimization</li><li>String and inverter configuration</li><li>Shading analysis</li></ul><h3>Performance Metrics</h3><ul><li>Capacity factor (typically 15-25%)</li><li>Performance ratio</li><li>Levelized cost of energy (LCOE)</li></ul></div>`,
-          GRADUATE: `<div class="lesson-content"><h2>Advanced PV Systems</h2><h3>Emerging Technologies</h3><ul><li>Bifacial modules</li><li>Tracking systems</li><li>Building-integrated PV (BIPV)</li><li>Floating solar</li></ul><h3>Grid Integration</h3><p>Variability management, curtailment, and storage pairing.</p></div>`,
-          PHD: `<div class="lesson-content"><h2>PV Research Frontiers</h2><h3>Next-Generation Materials</h3><ul><li>Perovskites and stability challenges</li><li>Tandem cells approaching 30%</li><li>Quantum dots and hot carriers</li></ul><h3>Theoretical Limits</h3><p>Shockley-Queisser limit and strategies to exceed it.</p></div>`
+          ELEMENTARY: `<div class="lesson-content">
+<h2>Sunny's Big Adventure</h2>
+
+<p>High up in the sky, a tiny sunbeam named Sunny was getting ready for the most exciting trip ever—a journey all the way to Earth!</p>
+
+<p>"Today's the day!" Sunny said to the other sunbeams. "I'm going to help power someone's home!"</p>
+
+<div class="image-placeholder" data-caption="Sunny the sunbeam traveling from the sun to Earth">
+[Image: A friendly animated sunbeam character traveling through space toward Earth]
+</div>
+
+<h3>The Amazing Journey</h3>
+
+<p>Sunny zoomed through space for 8 whole minutes (that's how long it takes sunlight to reach Earth!). Then Sunny spotted something shiny on a rooftop—a <strong>solar panel</strong>!</p>
+
+<blockquote class="scavenger-quote" data-quote-id="re-elem-q1">
+<p>"Every hour, enough sunlight hits Earth to power the whole world for a year!"</p>
+<cite>— Dr. Elena Rodriguez, Solar Scientist</cite>
+</blockquote>
+
+<h3>How Solar Panels Work</h3>
+
+<p>When Sunny landed on the solar panel, something magical happened:</p>
+
+<ol>
+<li><strong>Sunny hits the panel</strong> — The shiny blue squares are called solar cells</li>
+<li><strong>Electrons wake up</strong> — Tiny particles inside start moving around</li>
+<li><strong>Electricity flows</strong> — The moving particles create electricity!</li>
+<li><strong>Power travels home</strong> — Wires carry the electricity inside</li>
+</ol>
+
+<div class="image-placeholder" data-caption="Inside a solar panel showing electrons moving">
+[Image: Cutaway diagram of a solar panel with animated electrons moving]
+</div>
+
+<h3>What Can Solar Power Do?</h3>
+
+<p>Thanks to Sunny and millions of other sunbeams, solar panels can power:</p>
+<ul>
+<li>Lights in your home</li>
+<li>Your refrigerator to keep food cold</li>
+<li>TVs, computers, and video games</li>
+<li>Even electric cars!</li>
+</ul>
+
+<blockquote class="scavenger-quote" data-quote-id="re-elem-q2">
+<p>"The sun gives us free energy every single day. We just need to catch it!"</p>
+<cite>— Kids Solar Club</cite>
+</blockquote>
+
+<h3>Sunny's Happy Ending</h3>
+
+<p>That night, when a little girl named Maya turned on her bedroom light, she didn't know that Sunny the sunbeam had helped make it glow. Sunny felt so proud!</p>
+
+<p>"See you tomorrow!" Sunny called as Maya fell asleep. And sure enough, the next day, more sunbeams made the same amazing journey.</p>
+
+<div class="key-concept">
+<h4>Remember!</h4>
+<p>Solar panels turn sunlight into electricity—clean energy from our friend the sun!</p>
+</div>
+</div>`,
+
+          MIDDLE_SCHOOL: `<div class="lesson-content">
+<h2>Capturing Starlight: The Science of Solar Energy</h2>
+
+<p>Every second, the sun releases more energy than humans have used in all of history. This isn't magic—it's nuclear fusion, and we've learned how to capture a tiny fraction of it to power our world.</p>
+
+<div class="image-placeholder" data-caption="The sun producing energy through nuclear fusion">
+[Image: Diagram showing the sun with fusion reactions in its core and energy radiating outward]
+</div>
+
+<h3>From Sunlight to Electricity</h3>
+
+<p>Solar panels use the <strong>photovoltaic effect</strong>, discovered in 1839 by French physicist Edmond Becquerel when he was only 19 years old!</p>
+
+<blockquote class="scavenger-quote" data-quote-id="re-mid-q1">
+<p>"I was experimenting with metal electrodes in a liquid when I noticed they produced more electricity when exposed to light."</p>
+<cite>— Edmond Becquerel, 1839</cite>
+</blockquote>
+
+<h3>Inside a Solar Cell</h3>
+
+<p>Most solar cells are made from <strong>silicon</strong>, the same element found in sand and computer chips. Here's how they work:</p>
+
+<ol>
+<li><strong>Photons arrive:</strong> Light particles from the sun hit the silicon</li>
+<li><strong>Electrons escape:</strong> The light energy knocks electrons loose from silicon atoms</li>
+<li><strong>Current flows:</strong> Special layers in the cell create a one-way path for electrons</li>
+<li><strong>Electricity generated:</strong> Moving electrons = electric current!</li>
+</ol>
+
+<div class="image-placeholder" data-caption="Diagram of photovoltaic effect in a solar cell">
+[Image: Cross-section of a solar cell showing photons hitting silicon and electrons flowing]
+</div>
+
+<h3>The Complete Solar System</h3>
+
+<p>A solar panel alone isn't enough. Here's what a home solar system includes:</p>
+
+<table class="component-table">
+<tr><th>Component</th><th>Purpose</th></tr>
+<tr><td>Solar Panels</td><td>Convert sunlight to DC (direct current) electricity</td></tr>
+<tr><td>Inverter</td><td>Converts DC to AC (alternating current) for home use</td></tr>
+<tr><td>Mounting System</td><td>Secures panels at optimal angle</td></tr>
+<tr><td>Meter</td><td>Tracks energy production and grid exchange</td></tr>
+<tr><td>Battery (optional)</td><td>Stores energy for use at night</td></tr>
+</table>
+
+<blockquote class="scavenger-quote" data-quote-id="re-mid-q2">
+<p>"Solar energy is now the cheapest electricity in history in many parts of the world."</p>
+<cite>— International Energy Agency, 2020</cite>
+</blockquote>
+
+<h3>Solar Power Today</h3>
+
+<p>Solar energy has grown incredibly fast:</p>
+<ul>
+<li>Global solar capacity has grown over 40% per year since 2010</li>
+<li>Solar panel costs have dropped 99% since 1976</li>
+<li>Over 130 countries now have solar power plants</li>
+<li>Solar employs over 4 million people worldwide</li>
+</ul>
+
+<div class="key-concept">
+<h4>Key Takeaway</h4>
+<p>Solar power converts sunlight directly into electricity using the photovoltaic effect—a technology that's becoming cheaper and more efficient every year.</p>
+</div>
+</div>`,
+
+          HIGH_SCHOOL: `<div class="lesson-content">
+<h2>Photovoltaic Technology: Engineering Electricity from Light</h2>
+
+<p>In 1954, Bell Labs scientists Daryl Chapin, Calvin Fuller, and Gerald Pearson created the first practical silicon solar cell. It was only 6% efficient, but it proved that semiconductors could turn sunlight into useful electricity. Today, that same basic technology powers satellites, homes, and entire cities.</p>
+
+<div class="image-placeholder" data-caption="Bell Labs scientists with the first practical solar cell, 1954">
+[Image: Historical photo of the Bell Labs team with their silicon solar cell]
+</div>
+
+<h3>The Photovoltaic Effect: Physics in Action</h3>
+
+<p>Understanding solar cells requires understanding semiconductors and quantum mechanics:</p>
+
+<blockquote class="scavenger-quote" data-quote-id="re-high-q1">
+<p>"The photovoltaic effect occurs when photons with sufficient energy excite electrons from the valence band to the conduction band, creating electron-hole pairs that can be separated by an internal electric field."</p>
+<cite>— Introduction to Semiconductor Physics</cite>
+</blockquote>
+
+<h4>The P-N Junction</h4>
+<p>Solar cells are built around a <strong>P-N junction</strong>—the boundary between two types of silicon:</p>
+
+<ul>
+<li><strong>N-type silicon:</strong> Doped with phosphorus, has extra electrons (negative carriers)</li>
+<li><strong>P-type silicon:</strong> Doped with boron, has "holes" (positive carriers)</li>
+<li><strong>Depletion zone:</strong> Where P and N meet, creating an electric field</li>
+</ul>
+
+<p>When light creates electron-hole pairs in this zone, the electric field pushes electrons one way and holes the other—that's current!</p>
+
+<div class="image-placeholder" data-caption="P-N junction in a solar cell showing electron flow">
+[Image: Detailed diagram of P-N junction with labeled regions and electron movement]
+</div>
+
+<h3>Solar Cell Technologies Compared</h3>
+
+<table class="comparison-table">
+<thead>
+<tr><th>Technology</th><th>Efficiency</th><th>Cost</th><th>Best Use</th></tr>
+</thead>
+<tbody>
+<tr><td>Monocrystalline Silicon</td><td>20-22%</td><td>Highest</td><td>Residential roofs (space-limited)</td></tr>
+<tr><td>Polycrystalline Silicon</td><td>15-17%</td><td>Medium</td><td>Large installations, cost-sensitive</td></tr>
+<tr><td>Thin-Film (CdTe, CIGS)</td><td>10-13%</td><td>Lowest</td><td>Utility scale, building-integrated</td></tr>
+<tr><td>Perovskite (emerging)</td><td>25%+ (lab)</td><td>Potentially low</td><td>Future: flexible, tandem cells</td></tr>
+</tbody>
+</table>
+
+<h3>System Design Principles</h3>
+
+<p>Designing a solar system involves optimizing several variables:</p>
+
+<blockquote class="scavenger-quote" data-quote-id="re-high-q2">
+<p>"Optimal panel orientation in the Northern Hemisphere is true south at a tilt angle roughly equal to latitude, though actual optimization depends on local weather patterns and time-of-use electricity rates."</p>
+<cite>— Solar Energy Engineering Handbook</cite>
+</blockquote>
+
+<h4>Key Design Factors:</h4>
+<ul>
+<li><strong>Orientation:</strong> Compass direction panels face (azimuth)</li>
+<li><strong>Tilt:</strong> Angle from horizontal (affects seasonal production)</li>
+<li><strong>Shading:</strong> Even partial shade dramatically reduces output</li>
+<li><strong>Temperature:</strong> Solar cells lose efficiency as they heat up</li>
+</ul>
+
+<h3>Energy Calculations</h3>
+
+<p>Solar energy output can be estimated using:</p>
+
+<code>Energy (kWh) = Panel Capacity (kW) × Peak Sun Hours × System Efficiency</code>
+
+<p>For example, a 6kW system in Phoenix (5.5 peak sun hours, 80% efficiency):</p>
+<p>6 kW × 5.5 hours × 0.80 = 26.4 kWh/day ≈ 9,600 kWh/year</p>
+
+<div class="key-concept">
+<h4>Critical Thinking</h4>
+<p>Solar technology continues advancing rapidly. The efficiency record for lab cells now exceeds 47% using multi-junction designs. How might continued efficiency gains and cost reductions change our energy landscape?</p>
+</div>
+</div>`,
+
+          UNDERGRADUATE: `<div class="lesson-content">
+<h2>Photovoltaic Systems Engineering: From Cell Physics to Grid Integration</h2>
+
+<p>The global solar industry installed over 230 GW of new capacity in 2022 alone—more than all other electricity sources combined. This unprecedented growth demands sophisticated engineering approaches that integrate semiconductor physics, power electronics, and systems design.</p>
+
+<h3>Semiconductor Physics Fundamentals</h3>
+
+<p>PV cell performance is governed by fundamental semiconductor physics:</p>
+
+<blockquote class="scavenger-quote" data-quote-id="re-undergrad-q1">
+<p>"The Shockley-Queisser limit establishes that a single-junction solar cell cannot exceed approximately 33.7% efficiency under standard solar illumination, due to thermodynamic constraints on photon absorption and carrier thermalization."</p>
+<cite>— Shockley & Queisser, "Detailed Balance Limit of Efficiency," 1961</cite>
+</blockquote>
+
+<h4>Loss Mechanisms in Solar Cells</h4>
+<ul>
+<li><strong>Sub-bandgap losses:</strong> Photons with energy below the bandgap pass through</li>
+<li><strong>Thermalization:</strong> Excess photon energy above bandgap is lost as heat</li>
+<li><strong>Recombination:</strong> Electron-hole pairs recombine before collection</li>
+<li><strong>Resistance:</strong> Ohmic losses in cell materials and contacts</li>
+<li><strong>Reflection:</strong> Light reflected from cell surface</li>
+</ul>
+
+<div class="image-placeholder" data-caption="Loss mechanisms in photovoltaic conversion">
+[Image: Sankey diagram showing energy losses from incident sunlight to electrical output]
+</div>
+
+<h3>System Design and Optimization</h3>
+
+<h4>String Sizing and Configuration</h4>
+<p>PV arrays are configured into strings that must match inverter specifications:</p>
+
+<table class="technical-table">
+<thead>
+<tr><th>Parameter</th><th>Design Consideration</th><th>Typical Range</th></tr>
+</thead>
+<tbody>
+<tr><td>V<sub>oc</sub> (string)</td><td>Must not exceed inverter max input voltage</td><td>200-600V (residential)</td></tr>
+<tr><td>V<sub>mp</sub> (string)</td><td>Should match inverter MPPT range</td><td>Inverter-specific</td></tr>
+<tr><td>I<sub>sc</sub> (parallel strings)</td><td>Must not exceed inverter max current</td><td>8-15A typical</td></tr>
+<tr><td>DC/AC ratio</td><td>Oversizing DC improves capacity factor</td><td>1.1-1.3 typical</td></tr>
+</tbody>
+</table>
+
+<blockquote class="scavenger-quote" data-quote-id="re-undergrad-q2">
+<p>"Modern inverters with wide MPPT ranges and multiple string inputs provide flexibility, but optimal system design still requires careful matching of array characteristics to inverter specifications across all operating temperatures."</p>
+<cite>— PV System Design Best Practices, NREL</cite>
+</blockquote>
+
+<h4>Performance Metrics</h4>
+<ul>
+<li><strong>Capacity Factor:</strong> Actual output / (Nameplate capacity × 8760 hours); typically 15-25% for fixed-tilt PV</li>
+<li><strong>Performance Ratio:</strong> Actual output / Expected output under STC; typically 75-85%</li>
+<li><strong>Specific Yield:</strong> Annual kWh per kW<sub>p</sub> installed; varies by location (1000-2000 kWh/kWp)</li>
+<li><strong>LCOE:</strong> Levelized cost incorporating capital, O&M, and financing over system lifetime</li>
+</ul>
+
+<div class="image-placeholder" data-caption="Global solar irradiance map with capacity factor zones">
+[Image: World map showing solar resource availability and typical capacity factors by region]
+</div>
+
+<h3>Economic Analysis Framework</h3>
+
+<p>PV project economics require comprehensive financial modeling:</p>
+
+<h4>LCOE Calculation:</h4>
+<code>LCOE = (Capital Cost × CRF + Annual O&M) / Annual Energy Production</code>
+
+<p>Where CRF (Capital Recovery Factor) = r(1+r)^n / ((1+r)^n - 1)</p>
+
+<blockquote class="scavenger-quote" data-quote-id="re-undergrad-q3">
+<p>"Utility-scale solar LCOE has fallen from $359/MWh in 2009 to $33/MWh in 2022—a 91% reduction driven by manufacturing scale, module efficiency gains, and soft cost reductions."</p>
+<cite>— Lazard's Levelized Cost of Energy Analysis, 2022</cite>
+</blockquote>
+
+<h3>Grid Integration Considerations</h3>
+
+<ul>
+<li><strong>Interconnection requirements:</strong> Utility standards, protection settings, metering</li>
+<li><strong>Power quality:</strong> Harmonic distortion, voltage regulation, power factor</li>
+<li><strong>Variability management:</strong> Ramp rate limits, forecasting integration</li>
+<li><strong>Curtailment risk:</strong> Grid constraints limiting energy delivery</li>
+</ul>
+
+<div class="key-concept">
+<h4>Engineering Perspective</h4>
+<p>PV system design balances technical optimization (maximizing energy harvest) with economic constraints (minimizing LCOE). As technology costs continue declining, soft costs—permitting, labor, customer acquisition—increasingly dominate system pricing.</p>
+</div>
+</div>`,
+
+          GRADUATE: `<div class="lesson-content">
+<h2>Advanced Photovoltaics: Technology Frontiers and Grid Transformation</h2>
+
+<p>The photovoltaic industry is undergoing rapid technological evolution while simultaneously transforming grid architecture and electricity markets. Graduate-level analysis requires understanding both the physics of next-generation technologies and the systems-level implications of high renewable penetration.</p>
+
+<h3>Emerging Cell Technologies</h3>
+
+<h4>Perovskite Solar Cells</h4>
+<p>Metal halide perovskites (typically methylammonium lead iodide, CH<sub>3</sub>NH<sub>3</sub>PbI<sub>3</sub>) have achieved remarkable efficiency gains since 2012:</p>
+
+<blockquote class="scavenger-quote" data-quote-id="re-grad-q1">
+<p>"Perovskite solar cells have progressed from 3.8% efficiency in 2009 to over 25% today—the fastest efficiency improvement of any PV technology in history. The key challenges now are stability and scaling."</p>
+<cite>— Nature Energy Review, 2023</cite>
+</blockquote>
+
+<p>Key research challenges:</p>
+<ul>
+<li><strong>Degradation mechanisms:</strong> Moisture, oxygen, heat, and light-induced instability</li>
+<li><strong>Lead toxicity:</strong> Encapsulation requirements and lead-free alternatives</li>
+<li><strong>Scale-up:</strong> Transitioning from small-area spin-coating to industrial deposition</li>
+<li><strong>Tandem integration:</strong> Perovskite-silicon tandems approaching 30% efficiency</li>
+</ul>
+
+<div class="image-placeholder" data-caption="Perovskite crystal structure and tandem cell architecture">
+[Image: Crystal structure of perovskite and cross-section of perovskite-silicon tandem cell]
+</div>
+
+<h4>Multi-Junction Concentrator Systems</h4>
+<p>III-V semiconductor multi-junction cells under concentration have achieved over 47% efficiency:</p>
+<ul>
+<li>GaInP/GaAs/Ge triple junction standard configuration</li>
+<li>Lattice-matched vs. metamorphic approaches</li>
+<li>Concentration ratios of 500-1000× using Fresnel lenses</li>
+<li>Tracking requirements and thermal management challenges</li>
+</ul>
+
+<h3>Bifacial and Tracking Systems</h3>
+
+<blockquote class="scavenger-quote" data-quote-id="re-grad-q2">
+<p>"Bifacial modules can capture 5-30% additional energy from rear-side irradiance depending on albedo, mounting height, and ground cover. Combined with single-axis tracking, bifacial systems achieve capacity factors exceeding 30% in high-resource locations."</p>
+<cite>— NREL Bifacial PV Workshop Proceedings</cite>
+</blockquote>
+
+<h3>Grid Integration at High Penetration</h3>
+
+<p>As solar approaches significant grid share, new challenges emerge:</p>
+
+<h4>The Duck Curve Problem</h4>
+<p>California's "duck curve" illustrates how midday solar generation creates:</p>
+<ul>
+<li>Minimum net load during peak solar hours</li>
+<li>Steep evening ramps as solar declines and demand increases</li>
+<li>Potential overgeneration requiring curtailment</li>
+<li>Reduced capacity factors for dispatchable generators</li>
+</ul>
+
+<div class="image-placeholder" data-caption="California duck curve showing net load evolution">
+[Image: Graph showing California net load curves from 2012-2023 illustrating the deepening duck curve]
+</div>
+
+<h4>Grid Services from Inverter-Based Resources</h4>
+<p>Modern smart inverters can provide grid-supportive functions:</p>
+
+<table class="services-table">
+<thead>
+<tr><th>Service</th><th>Capability</th><th>Standard</th></tr>
+</thead>
+<tbody>
+<tr><td>Volt-VAR</td><td>Reactive power for voltage regulation</td><td>IEEE 1547-2018</td></tr>
+<tr><td>Frequency response</td><td>Fast power adjustment to frequency deviations</td><td>NERC reliability standards</td></tr>
+<tr><td>Ramp rate control</td><td>Limiting output changes to specified rates</td><td>Utility-specific</td></tr>
+<tr><td>Curtailment response</td><td>Rapid power reduction on command</td><td>Grid operator protocols</td></tr>
+</tbody>
+</table>
+
+<blockquote class="scavenger-quote" data-quote-id="re-grad-q3">
+<p>"The transition from grid-following to grid-forming inverters represents a fundamental shift in how renewable resources interact with the power system—from passive generators to active participants in maintaining grid stability."</p>
+<cite>— IEEE Power Electronics Society</cite>
+</blockquote>
+
+<h3>Storage Integration and Hybrid Systems</h3>
+
+<p>Solar-plus-storage systems are increasingly economically attractive:</p>
+<ul>
+<li>Investment tax credit (ITC) applicability to paired storage</li>
+<li>Capacity firming and dispatchability value</li>
+<li>Arbitrage between low-price solar hours and high-price evening hours</li>
+<li>Resilience benefits for critical loads</li>
+</ul>
+
+<div class="key-concept">
+<h4>Research Directions</h4>
+<p>Graduate research in PV spans from materials science (novel absorbers, interface engineering) to power systems (stability with low inertia, market design) to policy (just transition, equity in solar access). Interdisciplinary approaches are essential as solar becomes a foundational grid resource.</p>
+</div>
+</div>`,
+
+          PHD: `<div class="lesson-content">
+<h2>Photovoltaic Science: Fundamental Limits, Novel Concepts, and Systemic Transformation</h2>
+
+<p>Doctoral-level engagement with photovoltaics requires rigorous examination of thermodynamic limits, quantum phenomena, and the sociotechnical systems that shape energy transitions. This lesson explores fundamental physics, breakthrough concepts, and critical analyses of solar's role in decarbonization pathways.</p>
+
+<h3>Thermodynamic Limits and Beyond</h3>
+
+<h4>The Shockley-Queisser Framework</h4>
+<p>The 1961 Shockley-Queisser analysis established efficiency limits using detailed balance:</p>
+
+<blockquote class="scavenger-quote" data-quote-id="re-phd-q1">
+<p>"The detailed balance limit assumes: (1) one electron-hole pair per absorbed photon, (2) radiative recombination only, (3) infinite carrier mobility, (4) step-function absorption at the bandgap. Real cells violate all these assumptions to varying degrees."</p>
+<cite>— Würfel, "Physics of Solar Cells," 2016</cite>
+</blockquote>
+
+<p>For AM1.5G solar spectrum, optimal single-junction bandgap is ~1.34 eV, yielding 33.7% maximum efficiency. However, several mechanisms can theoretically exceed this limit:</p>
+
+<h4>Third-Generation Concepts</h4>
+<ul>
+<li><strong>Multi-junction/tandem cells:</strong> Multiple bandgaps capture broader spectrum; current record 47.1%</li>
+<li><strong>Hot carrier cells:</strong> Collect carriers before thermalization; requires carrier cooling <1 ps</li>
+<li><strong>Multiple exciton generation:</strong> High-energy photons create multiple electron-hole pairs</li>
+<li><strong>Intermediate band cells:</strong> Sub-bandgap absorption via impurity or quantum dot states</li>
+<li><strong>Thermophotovoltaics:</strong> Thermal emitter + PV cell; can exceed Shockley-Queisser using selective emitters</li>
+</ul>
+
+<div class="image-placeholder" data-caption="Third-generation PV concepts and theoretical efficiency limits">
+[Image: Diagram comparing efficiency limits of various advanced PV concepts against Shockley-Queisser]
+</div>
+
+<h3>Perovskite Physics and Engineering Challenges</h3>
+
+<p>Halide perovskites exhibit exceptional optoelectronic properties:</p>
+
+<blockquote class="scavenger-quote" data-quote-id="re-phd-q2">
+<p>"The defect tolerance of lead halide perovskites—enabling high efficiency despite high defect densities—arises from their unusual band structure: antibonding states at the valence band maximum and a shallow nature of dominant intrinsic defects."</p>
+<cite>— Stranks & Snaith, Nature Nanotechnology, 2015</cite>
+</blockquote>
+
+<h4>Open Research Questions:</h4>
+<ul>
+<li>Ion migration and hysteresis mechanisms</li>
+<li>Phase stability in mixed-cation/mixed-halide compositions</li>
+<li>Scalable deposition maintaining small-area performance</li>
+<li>Environmental fate and lead sequestration strategies</li>
+<li>Accelerated lifetime testing protocols</li>
+</ul>
+
+<h3>Techno-Economic and Energy Systems Analysis</h3>
+
+<h4>Learning Curves and Technology Forecasting</h4>
+<p>PV exhibits consistent learning rates of approximately 20% cost reduction per doubling of cumulative capacity:</p>
+
+<blockquote class="scavenger-quote" data-quote-id="re-phd-q3">
+<p>"Solar PV has followed a remarkably consistent learning curve for over four decades. The implications are profound: if current learning rates continue, solar becomes the cheapest electricity source virtually everywhere by 2030, fundamentally reshaping optimal decarbonization pathways."</p>
+<cite>— Way et al., Joule, 2022</cite>
+</blockquote>
+
+<h4>Critical Systems Questions:</h4>
+<ul>
+<li>Grid architecture evolution with 50%+ renewable penetration</li>
+<li>Storage requirements and optimal capacity mixes</li>
+<li>Geographic and temporal complementarity</li>
+<li>Sector coupling (electrification of transport, heat, industry)</li>
+<li>Material constraints (silver, polysilicon, rare earths for magnets)</li>
+</ul>
+
+<div class="image-placeholder" data-caption="Solar learning curve and projected cost trajectories">
+[Image: Log-log plot of solar PV cost versus cumulative deployment showing learning curve]
+</div>
+
+<h3>Critical Political Economy Perspectives</h3>
+
+<p>Solar's expansion intersects with questions of justice, development, and power:</p>
+
+<blockquote class="scavenger-quote" data-quote-id="re-phd-q4">
+<p>"The geography of solar production—concentrated manufacturing in China, polysilicon from Xinjiang, cobalt from DRC—raises critical questions about whether the 'clean' energy transition reproduces extractive relationships and labor abuses."</p>
+<cite>— Mulvaney, "Solar Power: Innovation, Sustainability, and Environmental Justice," 2019</cite>
+</blockquote>
+
+<h4>Research Frontiers:</h4>
+<ul>
+<li>Supply chain transparency and ethical sourcing</li>
+<li>Circular economy: recycling, second-life applications</li>
+<li>Energy justice: equitable access to solar benefits</li>
+<li>Land use conflicts and agrivoltaics</li>
+<li>Post-colonial perspectives on energy transitions</li>
+</ul>
+
+<h3>Methodological Considerations for PV Research</h3>
+
+<table class="methodology-table">
+<thead>
+<tr><th>Research Domain</th><th>Key Methods</th><th>Emerging Tools</th></tr>
+</thead>
+<tbody>
+<tr><td>Device physics</td><td>SCAPS, PC1D, Sentaurus</td><td>Machine learning potentials, high-throughput DFT</td></tr>
+<tr><td>Systems modeling</td><td>SAM, PVSyst, REopt</td><td>Capacity expansion models with hourly resolution</td></tr>
+<tr><td>Resource assessment</td><td>NSRDB, PVGIS, ground stations</td><td>Satellite-derived irradiance, ML downscaling</td></tr>
+<tr><td>Social analysis</td><td>LCA, surveys, case studies</td><td>Agent-based adoption modeling, discourse analysis</td></tr>
+</tbody>
+</table>
+
+<div class="key-concept">
+<h4>Doctoral Research Orientation</h4>
+<p>PV research spans fundamental physics to global energy system transformation. Impactful doctoral work often bridges disciplines—connecting materials discovery to manufacturing scale-up, or device engineering to market and policy analysis. The urgency of climate change demands research that can accelerate deployment while critically examining whose interests are served.</p>
+</div>
+</div>`
         }
       }
     ],
@@ -116,12 +612,125 @@ export const renewableEnergyModules: Module[] = [
             GRADUATE: 'Bifacial modules can capture reflected light on their rear side.',
             PHD: 'The Shockley-Queisser limit is about 33% for single junction silicon cells.'
           }
+        },
+        {
+          id: 'rsq2',
+          question: {
+            ELEMENTARY: 'In the story, how long did it take Sunny to travel from the sun to Earth?',
+            MIDDLE_SCHOOL: 'Who discovered the photovoltaic effect in 1839?',
+            HIGH_SCHOOL: 'What year did Bell Labs create the first practical solar cell?',
+            UNDERGRADUATE: 'By what percentage has utility-scale solar LCOE fallen since 2009?',
+            GRADUATE: 'What is California\'s "duck curve" problem?',
+            PHD: 'What does "defect tolerance" in perovskites refer to?'
+          },
+          options: {
+            ELEMENTARY: ['8 minutes', '8 hours', '8 days', '8 seconds'],
+            MIDDLE_SCHOOL: ['Edmond Becquerel', 'Albert Einstein', 'Thomas Edison', 'Benjamin Franklin'],
+            HIGH_SCHOOL: ['1954', '1839', '1990', '2000'],
+            UNDERGRADUATE: ['91%', '50%', '25%', '10%'],
+            GRADUATE: ['Steep evening ramps as solar declines', 'Too much wind power', 'Not enough solar', 'Battery failures'],
+            PHD: ['High efficiency despite high defect densities', 'Zero defects required', 'Defects improve performance', 'Mechanical strength']
+          },
+          correctIndex: 0,
+          explanation: {
+            ELEMENTARY: 'Light from the sun takes about 8 minutes to reach Earth!',
+            MIDDLE_SCHOOL: 'French physicist Edmond Becquerel discovered the photovoltaic effect at age 19.',
+            HIGH_SCHOOL: 'Bell Labs scientists created the first practical silicon solar cell in 1954.',
+            UNDERGRADUATE: 'Solar LCOE fell 91% from $359/MWh in 2009 to $33/MWh in 2022.',
+            GRADUATE: 'The duck curve shows steep evening ramps when solar production drops and demand increases.',
+            PHD: 'Perovskites achieve high efficiency despite having many defects due to their unusual band structure.'
+          }
+        },
+        {
+          id: 'rsq3',
+          question: {
+            ELEMENTARY: 'What does an inverter do in a solar system?',
+            MIDDLE_SCHOOL: 'According to the lesson, how much have solar panel costs dropped since 1976?',
+            HIGH_SCHOOL: 'What is a P-N junction in a solar cell?',
+            UNDERGRADUATE: 'What is LCOE?',
+            GRADUATE: 'What is the difference between grid-following and grid-forming inverters?',
+            PHD: 'What third-generation concept uses multiple electron-hole pairs from single photons?'
+          },
+          options: {
+            ELEMENTARY: ['Changes DC to AC electricity', 'Stores sunlight', 'Makes panels spin', 'Cleans the panels'],
+            MIDDLE_SCHOOL: ['99%', '50%', '25%', '10%'],
+            HIGH_SCHOOL: ['Boundary between N-type and P-type silicon', 'The panel frame', 'The glass cover', 'The mounting brackets'],
+            UNDERGRADUATE: ['Levelized cost of energy over system lifetime', 'Light conversion output efficiency', 'Low cost operating expenses', 'Load capacity optimization estimate'],
+            GRADUATE: ['Grid-forming actively maintains stability', 'No difference', 'Grid-following is newer', 'Grid-forming is cheaper'],
+            PHD: ['Multiple exciton generation', 'Hot carrier cells', 'Tandem cells', 'Thermophotovoltaics']
+          },
+          correctIndex: 0,
+          explanation: {
+            ELEMENTARY: 'The inverter changes DC (direct current) electricity to AC (alternating current) that your home uses!',
+            MIDDLE_SCHOOL: 'Solar panel costs have dropped an amazing 99% since 1976.',
+            HIGH_SCHOOL: 'A P-N junction is where N-type silicon (extra electrons) meets P-type silicon (electron "holes"), creating an electric field.',
+            UNDERGRADUATE: 'LCOE is the levelized cost of energy, incorporating capital, operations, and financing over the system lifetime.',
+            GRADUATE: 'Grid-forming inverters actively participate in maintaining grid stability, while grid-following inverters passively follow grid signals.',
+            PHD: 'Multiple exciton generation creates multiple electron-hole pairs from single high-energy photons.'
+          }
+        },
+        {
+          id: 'rsq4',
+          question: {
+            ELEMENTARY: 'What can solar power run in your home?',
+            MIDDLE_SCHOOL: 'What component stores solar energy for use at night?',
+            HIGH_SCHOOL: 'What happens to solar cell efficiency when they get hot?',
+            UNDERGRADUATE: 'What does DC/AC ratio mean in system design?',
+            GRADUATE: 'What efficiency have perovskite-silicon tandem cells approached?',
+            PHD: 'What critical supply chain concern does the lesson raise about solar manufacturing?'
+          },
+          options: {
+            ELEMENTARY: ['Lights, refrigerators, TVs, and computers', 'Only outdoor lights', 'Nothing inside', 'Just the doorbell'],
+            MIDDLE_SCHOOL: ['Battery', 'Inverter', 'Meter', 'Mounting system'],
+            HIGH_SCHOOL: ['Efficiency decreases', 'Efficiency increases', 'No change', 'They stop working'],
+            UNDERGRADUATE: ['Oversizing DC relative to AC inverter capacity', 'Direct current to alternating current conversion', 'Daily capacity versus annual capacity', 'Design complexity versus actual complexity'],
+            GRADUATE: ['30%', '20%', '15%', '40%'],
+            PHD: ['Concentrated manufacturing and potential labor issues', 'Panel colors', 'Shipping costs', 'Warranty lengths']
+          },
+          correctIndex: 0,
+          explanation: {
+            ELEMENTARY: 'Solar power can run lights, refrigerators, TVs, computers, and even electric cars!',
+            MIDDLE_SCHOOL: 'A battery (optional in many systems) stores solar energy so you can use it at night.',
+            HIGH_SCHOOL: 'Solar cells lose efficiency as they heat up—that\'s why temperature is an important design factor.',
+            UNDERGRADUATE: 'DC/AC ratio (typically 1.1-1.3) means oversizing the DC array relative to inverter capacity to improve capacity factor.',
+            GRADUATE: 'Perovskite-silicon tandem cells are approaching 30% efficiency, combining the benefits of both technologies.',
+            PHD: 'The lesson raises concerns about concentrated manufacturing in China and polysilicon sourcing, questioning whether clean energy transitions reproduce extractive relationships.'
+          }
+        },
+        {
+          id: 'rsq5',
+          question: {
+            ELEMENTARY: 'According to the scientist quote, how much sunlight hits Earth in one hour?',
+            MIDDLE_SCHOOL: 'How many countries now have solar power plants?',
+            HIGH_SCHOOL: 'What is the optimal panel orientation in the Northern Hemisphere?',
+            UNDERGRADUATE: 'What is a typical performance ratio for a PV system?',
+            GRADUATE: 'What IEEE standard covers smart inverter grid support functions?',
+            PHD: 'What does the lesson say about solar learning curves?'
+          },
+          options: {
+            ELEMENTARY: ['Enough to power the world for a year', 'Enough for one house', 'A tiny amount', 'No one knows'],
+            MIDDLE_SCHOOL: ['Over 130', '10', '50', '5'],
+            HIGH_SCHOOL: ['True south at tilt equal to latitude', 'East facing', 'Flat on the roof', 'North facing'],
+            UNDERGRADUATE: ['75-85%', '50-60%', '90-100%', '30-40%'],
+            GRADUATE: ['IEEE 1547-2018', 'IEEE 802.11', 'IEEE 1394', 'IEEE 754'],
+            PHD: ['20% cost reduction per doubling of capacity', '10% reduction per year', '50% reduction per decade', 'Costs are increasing']
+          },
+          correctIndex: 0,
+          explanation: {
+            ELEMENTARY: 'Every hour, enough sunlight hits Earth to power the whole world for an entire year!',
+            MIDDLE_SCHOOL: 'Over 130 countries now have solar power plants.',
+            HIGH_SCHOOL: 'In the Northern Hemisphere, optimal orientation is true south at a tilt angle roughly equal to your latitude.',
+            UNDERGRADUATE: 'Performance ratio (actual vs. expected output under standard test conditions) typically ranges from 75-85%.',
+            GRADUATE: 'IEEE 1547-2018 covers smart inverter functions including Volt-VAR support and other grid services.',
+            PHD: 'Solar PV has followed a consistent learning curve of approximately 20% cost reduction per doubling of cumulative capacity for over four decades.'
+          }
         }
       ]
     },
     externalResources: [
       { title: 'NREL Solar Research', url: 'https://www.nrel.gov/solar/', type: 'research' },
-      { title: 'Solar Energy Industries Association', url: 'https://www.seia.org/', type: 'article' }
+      { title: 'Solar Energy Industries Association', url: 'https://www.seia.org/', type: 'article' },
+      { title: 'International Energy Agency - Solar PV', url: 'https://www.iea.org/energy-system/renewables/solar-pv', type: 'research' }
     ]
   },
   // Module 2: Wind Power
