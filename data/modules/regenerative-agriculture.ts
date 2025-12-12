@@ -30,12 +30,485 @@ export const regenerativeAgricultureModules: Module[] = [
         hasActivity: true,
         activityType: 'SIMULATION',
         content: {
-          ELEMENTARY: `<div class="lesson-content"><h2>🪱 Soil is Alive!</h2><p>Under our feet is a hidden world full of tiny creatures that help plants grow!</p><h3>Who Lives in Soil?</h3><ul><li>🪱 Earthworms - nature's plows</li><li>🐜 Insects and bugs</li><li>🍄 Fungi - underground networks</li><li>🦠 Billions of bacteria (too small to see!)</li></ul></div>`,
-          MIDDLE_SCHOOL: `<div class="lesson-content"><h2>The Soil Food Web</h2><h3>Life Underground</h3><p>Healthy soil teems with life! One teaspoon can contain billions of bacteria, miles of fungal threads, and thousands of protozoa.</p><h3>What They Do</h3><ul><li>Break down dead plants</li><li>Release nutrients for living plants</li><li>Create soil structure</li><li>Fight plant diseases</li></ul></div>`,
-          HIGH_SCHOOL: `<div class="lesson-content"><h2>Soil Biology</h2><h3>Key Organisms</h3><ul><li><strong>Bacteria:</strong> Decomposers, nitrogen fixers</li><li><strong>Fungi:</strong> Mycorrhizal networks, decomposers</li><li><strong>Protozoa:</strong> Nutrient cycling</li><li><strong>Nematodes:</strong> Various feeding groups</li></ul><h3>Soil Health Principles</h3><p>Minimize disturbance, maximize diversity, keep soil covered, maintain living roots.</p></div>`,
-          UNDERGRADUATE: `<div class="lesson-content"><h2>Soil Health Assessment</h2><h3>Key Indicators</h3><ul><li>Soil organic matter</li><li>Aggregate stability</li><li>Water infiltration</li><li>Biological activity (respiration)</li></ul><h3>Management Practices</h3><p>Cover crops, reduced tillage, diverse rotations, organic amendments.</p></div>`,
-          GRADUATE: `<div class="lesson-content"><h2>Ecosystem Services</h2><h3>Soil Functions</h3><ul><li>Carbon sequestration</li><li>Water filtration</li><li>Nutrient cycling</li><li>Biodiversity support</li></ul><h3>Measurement Challenges</h3><p>Spatial variability, temporal dynamics, indicator selection.</p></div>`,
-          PHD: `<div class="lesson-content"><h2>Research Frontiers</h2><h3>Microbiome Science</h3><ul><li>Metagenomics approaches</li><li>Functional diversity</li><li>Plant-microbe signaling</li></ul><h3>Carbon Dynamics</h3><p>Mineral-associated organic matter, microbial necromass, permanence questions.</p></div>`
+          ELEMENTARY: `<div class="lesson-content">
+<h2>Wally the Worm's Underground City</h2>
+
+<p>Deep underground, where it's dark and cool, lives a happy earthworm named Wally. His home isn't just dirt—it's a busy city full of amazing creatures!</p>
+
+<p>"Good morning, everyone!" Wally called as he wiggled through a tunnel. Everywhere he looked, his neighbors were hard at work.</p>
+
+<div class="image-placeholder" data-caption="Wally the worm in his underground soil city">
+[Image: A friendly cartoon earthworm waving in a colorful underground scene full of soil creatures]
+</div>
+
+<h3>Who Lives in Soil?</h3>
+
+<p>Wally introduced his friends:</p>
+
+<ul>
+<li><strong>The Bacteria Bunch</strong> — "There are BILLIONS of us! We're so tiny you can't see us, but we turn dead leaves into plant food!"</li>
+<li><strong>Freddy the Fungi</strong> — "My underground threads connect all the plants like a telephone network!"</li>
+<li><strong>Annie the Ant</strong> — "We dig tunnels that help water and air reach plant roots!"</li>
+<li><strong>The Beetle Crew</strong> — "We break down big things into little pieces!"</li>
+</ul>
+
+<blockquote class="scavenger-quote" data-quote-id="ra-elem-q1">
+<p>"One handful of healthy soil contains more living things than there are people on Earth!"</p>
+<cite>— Dr. Elaine Ingham, Soil Scientist</cite>
+</blockquote>
+
+<div class="image-placeholder" data-caption="Soil creatures working together">
+[Image: Cute illustrations of bacteria, fungi, worms, and insects working together underground]
+</div>
+
+<h3>What Do They Do?</h3>
+
+<p>All these creatures have important jobs:</p>
+
+<ol>
+<li><strong>They eat dead leaves and plants</strong> — turning them into dark, rich soil</li>
+<li><strong>They make tunnels</strong> — so water can soak in and roots can grow</li>
+<li><strong>They feed the plants</strong> — by releasing nutrients plants need</li>
+<li><strong>They keep plants healthy</strong> — good bugs fight the bad bugs!</li>
+</ol>
+
+<blockquote class="scavenger-quote" data-quote-id="ra-elem-q2">
+<p>"Earthworms are like nature's farmers. They plow the soil, mix it up, and make it perfect for plants!"</p>
+<cite>— The Earthworm Foundation</cite>
+</blockquote>
+
+<h3>Wally's Important Lesson</h3>
+
+<p>A farmer named Mr. Green stopped by to check on the soil. "Looking good, Wally!" he said. "When soil is alive and healthy, my vegetables grow big and delicious!"</p>
+
+<p>Wally smiled. "We work together! Take care of the soil, and the soil takes care of everyone!"</p>
+
+<div class="key-concept">
+<h4>Remember!</h4>
+<p>Soil isn't just dirt—it's a living city! Healthy soil = healthy plants = healthy food!</p>
+</div>
+</div>`,
+
+          MIDDLE_SCHOOL: `<div class="lesson-content">
+<h2>The Hidden Universe: Life in a Teaspoon of Soil</h2>
+
+<p>When you look at soil, you might just see brown dirt. But grab a magnifying glass—or better yet, a microscope—and you'll discover one of the most complex ecosystems on Earth.</p>
+
+<div class="image-placeholder" data-caption="Microscopic view of soil life">
+[Image: Microscopic photograph showing bacteria, fungi, and protozoa in soil with scale bars]
+</div>
+
+<h3>Mind-Blowing Soil Statistics</h3>
+
+<p>In just ONE TEASPOON of healthy soil, you can find:</p>
+
+<ul>
+<li><strong>1 billion bacteria</strong> — more than the population of India!</li>
+<li><strong>Several miles of fungal threads</strong> — called hyphae</li>
+<li><strong>Thousands of protozoa</strong> — single-celled hunters</li>
+<li><strong>Hundreds of nematodes</strong> — tiny worms with different jobs</li>
+<li><strong>Dozens of larger organisms</strong> — mites, springtails, earthworms</li>
+</ul>
+
+<blockquote class="scavenger-quote" data-quote-id="ra-mid-q1">
+<p>"A teaspoon of healthy soil contains more microorganisms than there are humans on Earth. We've identified less than 1% of these species."</p>
+<cite>— USDA Natural Resources Conservation Service</cite>
+</blockquote>
+
+<h3>The Soil Food Web</h3>
+
+<p>All these organisms are connected in a "food web" where everyone depends on everyone else:</p>
+
+<table class="food-web-table">
+<tr><th>Level</th><th>Organisms</th><th>What They Do</th></tr>
+<tr><td>1st (Decomposers)</td><td>Bacteria, Fungi</td><td>Break down dead plants and animals</td></tr>
+<tr><td>2nd (Grazers)</td><td>Protozoa, Nematodes</td><td>Eat bacteria and fungi, release nutrients</td></tr>
+<tr><td>3rd (Predators)</td><td>Predatory nematodes, mites</td><td>Control populations, cycle nutrients</td></tr>
+<tr><td>4th (Top Predators)</td><td>Earthworms, beetles</td><td>Mix soil, create structure</td></tr>
+</table>
+
+<div class="image-placeholder" data-caption="Soil food web diagram">
+[Image: Illustrated diagram showing connections between soil organisms and plants]
+</div>
+
+<h3>The Underground Internet</h3>
+
+<p>Perhaps the most amazing discovery is the <strong>mycorrhizal network</strong>—a web of fungi that connects plant roots underground.</p>
+
+<blockquote class="scavenger-quote" data-quote-id="ra-mid-q2">
+<p>"Trees use fungal networks to share nutrients with their seedlings and even warn each other about insect attacks. Scientists call it the 'Wood Wide Web.'"</p>
+<cite>— Dr. Suzanne Simard, Forest Ecologist</cite>
+</blockquote>
+
+<h3>Why Soil Life Matters</h3>
+
+<p>Healthy soil organisms provide essential services:</p>
+<ul>
+<li><strong>Nutrient cycling:</strong> Converting dead matter into plant food</li>
+<li><strong>Disease suppression:</strong> Good microbes outcompete bad ones</li>
+<li><strong>Soil structure:</strong> Creating spaces for air and water</li>
+<li><strong>Carbon storage:</strong> Locking carbon underground instead of in the atmosphere</li>
+</ul>
+
+<div class="key-concept">
+<h4>Key Takeaway</h4>
+<p>Soil is the most biodiverse ecosystem on Earth. Understanding and protecting this underground world is essential for growing food, fighting climate change, and maintaining healthy ecosystems.</p>
+</div>
+</div>`,
+
+          HIGH_SCHOOL: `<div class="lesson-content">
+<h2>Soil Biology: The Foundation of Regenerative Agriculture</h2>
+
+<p>In the 20th century, agriculture focused on chemistry—applying fertilizers to feed plants directly. But a revolution is underway. Scientists and farmers are rediscovering that healthy plants start with healthy soil biology. This shift from feeding plants to feeding soil life is the foundation of regenerative agriculture.</p>
+
+<div class="image-placeholder" data-caption="Comparison of conventional vs. regenerative soil">
+[Image: Side-by-side comparison showing lifeless gray soil versus dark, crumbly, living soil]
+</div>
+
+<h3>Key Soil Organisms</h3>
+
+<blockquote class="scavenger-quote" data-quote-id="ra-high-q1">
+<p>"Plants don't actually take up nutrients from the soil—they trade sugars with soil organisms in exchange for minerals. It's a marketplace, not a mine."</p>
+<cite>— Dr. David Montgomery, "Growing a Revolution"</cite>
+</blockquote>
+
+<h4>The Major Players:</h4>
+
+<table class="organism-table">
+<thead>
+<tr><th>Organism</th><th>Function</th><th>Importance</th></tr>
+</thead>
+<tbody>
+<tr><td>Bacteria</td><td>Decomposition, N-fixation</td><td>Rapid nutrient cycling</td></tr>
+<tr><td>Fungi (Saprophytic)</td><td>Decompose complex compounds</td><td>Break down woody material</td></tr>
+<tr><td>Fungi (Mycorrhizal)</td><td>Form root partnerships</td><td>Extend root reach 100-1000x</td></tr>
+<tr><td>Protozoa</td><td>Graze on bacteria</td><td>Release plant-available nutrients</td></tr>
+<tr><td>Nematodes</td><td>Various feeding guilds</td><td>Nutrient cycling, pest control</td></tr>
+<tr><td>Earthworms</td><td>Mix organic matter, create pores</td><td>Soil structure, water infiltration</td></tr>
+</tbody>
+</table>
+
+<h3>The Four Principles of Soil Health</h3>
+
+<p>The USDA identifies four core principles for building soil health:</p>
+
+<ol>
+<li><strong>Minimize Disturbance</strong> — Reduce tillage to protect soil structure and fungal networks</li>
+<li><strong>Maximize Diversity</strong> — Plant multiple species to feed diverse soil life</li>
+<li><strong>Keep Soil Covered</strong> — Use cover crops and residues to protect and feed soil</li>
+<li><strong>Maintain Living Roots</strong> — Year-round living plants feed soil organisms</li>
+</ol>
+
+<blockquote class="scavenger-quote" data-quote-id="ra-high-q2">
+<p>"Nature doesn't till, nature doesn't leave soil bare, and nature doesn't do monocultures. When we mimic nature, soil health improves dramatically."</p>
+<cite>— Gabe Brown, Regenerative Rancher</cite>
+</blockquote>
+
+<div class="image-placeholder" data-caption="The four soil health principles illustrated">
+[Image: Four-panel illustration showing each principle in practice on a farm]
+</div>
+
+<h3>Measuring Soil Health</h3>
+
+<p>Key indicators used to assess soil health:</p>
+
+<ul>
+<li><strong>Soil Organic Matter (SOM):</strong> Percentage of carbon-rich material; higher = healthier</li>
+<li><strong>Aggregate Stability:</strong> How well soil clumps hold together; protects against erosion</li>
+<li><strong>Water Infiltration:</strong> How fast water soaks in; indicates good structure</li>
+<li><strong>Biological Activity:</strong> CO2 respiration test measures microbial metabolism</li>
+</ul>
+
+<blockquote class="scavenger-quote" data-quote-id="ra-high-q3">
+<p>"For every 1% increase in soil organic matter, soil can hold an additional 20,000 gallons of water per acre. That's drought resilience you can build."</p>
+<cite>— NRCS Soil Health Division</cite>
+</blockquote>
+
+<div class="key-concept">
+<h4>Critical Thinking</h4>
+<p>The shift from chemical-based to biology-based agriculture represents a fundamental change in how we view soil. Instead of an inert medium that holds plants up, soil is a living ecosystem that, when properly managed, can provide most of what crops need.</p>
+</div>
+</div>`,
+
+          UNDERGRADUATE: `<div class="lesson-content">
+<h2>Soil Health: Assessment Frameworks and Management Approaches</h2>
+
+<p>Soil health—defined as the continued capacity of soil to function as a vital living ecosystem—has emerged as a central concept in sustainable agriculture. Understanding soil health requires integrating biology, chemistry, and physics while developing practical assessment and management strategies.</p>
+
+<h3>Conceptual Framework</h3>
+
+<blockquote class="scavenger-quote" data-quote-id="ra-undergrad-q1">
+<p>"Soil health encompasses biological, chemical, and physical properties that together determine a soil's ability to provide ecosystem services. No single indicator captures soil health—it requires multiple measurements interpreted in context."</p>
+<cite>— Soil Science Society of America</cite>
+</blockquote>
+
+<h4>Soil Functions Framework:</h4>
+<ul>
+<li><strong>Sustaining biological productivity:</strong> Supporting plant growth and yield</li>
+<li><strong>Maintaining environmental quality:</strong> Filtering water, cycling nutrients</li>
+<li><strong>Promoting plant and animal health:</strong> Disease suppression, nutrition</li>
+<li><strong>Supporting human health:</strong> Safe food, clean water</li>
+</ul>
+
+<div class="image-placeholder" data-caption="Soil health conceptual framework">
+[Image: Diagram showing interconnected biological, chemical, and physical components of soil health]
+</div>
+
+<h3>Soil Health Indicators</h3>
+
+<table class="indicator-table">
+<thead>
+<tr><th>Category</th><th>Indicator</th><th>Method</th><th>Interpretation</th></tr>
+</thead>
+<tbody>
+<tr><td>Physical</td><td>Aggregate stability</td><td>Wet sieving</td><td>>60% stable = good</td></tr>
+<tr><td>Physical</td><td>Infiltration rate</td><td>Ring infiltrometer</td><td>Site-specific baseline</td></tr>
+<tr><td>Chemical</td><td>Soil organic carbon</td><td>Loss on ignition/combustion</td><td>>3% in most soils = good</td></tr>
+<tr><td>Chemical</td><td>Active carbon</td><td>Permanganate oxidizable C</td><td>Labile C pool indicator</td></tr>
+<tr><td>Biological</td><td>Soil respiration</td><td>Solvita/CO2 burst</td><td>Microbial activity proxy</td></tr>
+<tr><td>Biological</td><td>Microbial biomass</td><td>Fumigation-extraction</td><td>Living biomass pool</td></tr>
+</tbody>
+</table>
+
+<h4>Comprehensive Assessment Tools:</h4>
+<ul>
+<li><strong>NRCS Soil Health Assessment:</strong> Standardized USDA protocol</li>
+<li><strong>Haney Test:</strong> Water-extractable nutrients + biological activity</li>
+<li><strong>Cornell Comprehensive Assessment:</strong> 39 indicators integrated</li>
+<li><strong>PLFA (Phospholipid Fatty Acid):</strong> Microbial community composition</li>
+</ul>
+
+<blockquote class="scavenger-quote" data-quote-id="ra-undergrad-q2">
+<p>"The challenge in soil health assessment isn't measuring individual properties—it's interpreting them in context. A sandy soil and a clay soil with identical organic matter percentages have very different management implications."</p>
+<cite>— Journal of Soil and Water Conservation</cite>
+</blockquote>
+
+<h3>Management Practices for Soil Health</h3>
+
+<h4>Evidence-Based Interventions:</h4>
+
+<table class="practice-table">
+<thead>
+<tr><th>Practice</th><th>Primary Benefit</th><th>Considerations</th></tr>
+</thead>
+<tbody>
+<tr><td>Cover crops</td><td>Living roots, organic matter</td><td>Species selection, termination timing</td></tr>
+<tr><td>Reduced/no-till</td><td>Structure preservation, fungal protection</td><td>Weed management transition</td></tr>
+<tr><td>Diverse rotations</td><td>Pest break, nutrient cycling</td><td>Market constraints</td></tr>
+<tr><td>Organic amendments</td><td>Carbon inputs, biology inoculation</td><td>Quality variation, contamination risk</td></tr>
+<tr><td>Integrated livestock</td><td>Nutrient cycling, residue management</td><td>Infrastructure, management complexity</td></tr>
+</tbody>
+</table>
+
+<div class="image-placeholder" data-caption="Soil health improvement trajectory">
+[Image: Graph showing typical soil health indicator improvements over 5-7 years of regenerative practices]
+</div>
+
+<blockquote class="scavenger-quote" data-quote-id="ra-undergrad-q3">
+<p>"Building soil health is not a quick fix—it typically takes 3-7 years of consistent practice to see substantial biological improvements. But the trajectory, once established, can continue for decades."</p>
+<cite>— Rodale Institute Long-Term Farming Systems Trial</cite>
+</blockquote>
+
+<div class="key-concept">
+<h4>Engineering Perspective</h4>
+<p>Soil health management requires systems thinking—understanding how practices interact and compound over time. The most successful approaches integrate multiple interventions tailored to specific soil types, climate, and farming systems.</p>
+</div>
+</div>`,
+
+          GRADUATE: `<div class="lesson-content">
+<h2>Soil Health: Ecosystem Services, Carbon Dynamics, and Agroecological Transitions</h2>
+
+<p>Graduate-level analysis of soil health extends beyond agronomic productivity to examine ecosystem service provision, carbon sequestration potential, and the socioeconomic dimensions of agroecological transitions.</p>
+
+<h3>Ecosystem Services Framework</h3>
+
+<blockquote class="scavenger-quote" data-quote-id="ra-grad-q1">
+<p>"Soils provide ecosystem services valued at trillions of dollars annually, yet these services remain largely invisible in economic decision-making. Valuing soil health is essential for policy that supports sustainable land management."</p>
+<cite>— FAO Status of the World's Soil Resources Report</cite>
+</blockquote>
+
+<h4>Soil-Mediated Ecosystem Services:</h4>
+
+<table class="services-table">
+<thead>
+<tr><th>Service Category</th><th>Specific Services</th><th>Soil Health Connection</th></tr>
+</thead>
+<tbody>
+<tr><td>Provisioning</td><td>Food, fiber, fuel production</td><td>Nutrient cycling, water provision</td></tr>
+<tr><td>Regulating</td><td>Climate regulation, water purification</td><td>Carbon storage, filtration</td></tr>
+<tr><td>Supporting</td><td>Nutrient cycling, habitat provision</td><td>Biological activity, biodiversity</td></tr>
+<tr><td>Cultural</td><td>Aesthetic, spiritual, educational</td><td>Landscape, heritage</td></tr>
+</tbody>
+</table>
+
+<div class="image-placeholder" data-caption="Soil ecosystem services valuation framework">
+[Image: Diagram showing ecosystem services flows from soil to human well-being]
+</div>
+
+<h3>Soil Carbon Dynamics</h3>
+
+<h4>Carbon Sequestration Mechanisms:</h4>
+<p>Understanding soil carbon requires distinguishing pools with different turnover times:</p>
+
+<ul>
+<li><strong>Particulate organic matter (POM):</strong> Recognizable plant fragments, rapid turnover (years-decades)</li>
+<li><strong>Mineral-associated organic matter (MAOM):</strong> Microbially-processed C bound to minerals, slow turnover (decades-centuries)</li>
+<li><strong>Pyrogenic carbon:</strong> Charred material, very slow turnover (centuries-millennia)</li>
+</ul>
+
+<blockquote class="scavenger-quote" data-quote-id="ra-grad-q2">
+<p>"The permanence of soil carbon depends critically on the mechanism of stabilization. Carbon protected within soil aggregates or bound to mineral surfaces can persist for centuries, while particulate organic matter can decompose within years."</p>
+<cite>— Nature Reviews Earth & Environment, 2021</cite>
+</blockquote>
+
+<h4>Sequestration Potential Debates:</h4>
+<p>Soil carbon sequestration as climate mitigation remains contested:</p>
+<ul>
+<li><strong>Technical potential:</strong> 1-3 Gt CO2/year globally (estimates vary widely)</li>
+<li><strong>Achievable potential:</strong> Constrained by adoption, economics, permanence</li>
+<li><strong>Additionality questions:</strong> What would have happened anyway?</li>
+<li><strong>Saturation dynamics:</strong> Soils may reach new equilibria</li>
+</ul>
+
+<h3>Soil Health Transitions</h3>
+
+<blockquote class="scavenger-quote" data-quote-id="ra-grad-q3">
+<p>"The transition to soil health-focused management often involves a 'yield dip' in years 2-4 as farmers reduce inputs before biological systems fully establish. Supporting farmers through this transition is critical for adoption."</p>
+<cite>— Journal of Soil and Water Conservation</cite>
+</blockquote>
+
+<h4>Transition Dynamics:</h4>
+<ul>
+<li><strong>Biological establishment:</strong> 3-7 years for microbial communities to shift</li>
+<li><strong>Economic break-even:</strong> Typically 3-5 years with reduced input costs</li>
+<li><strong>Knowledge acquisition:</strong> Ongoing learning and adaptation</li>
+<li><strong>System redesign:</strong> May require equipment, rotation, market changes</li>
+</ul>
+
+<div class="image-placeholder" data-caption="Soil health transition trajectory">
+[Image: Multi-year graph showing soil health indicators, yields, and profitability through transition]
+</div>
+
+<h3>Policy and Institutional Dimensions</h3>
+
+<blockquote class="scavenger-quote" data-quote-id="ra-grad-q4">
+<p>"Soil health practices generate public benefits—carbon storage, water quality, biodiversity—that farmers cannot capture in markets. This 'positive externality' justifies public investment in soil health transitions."</p>
+<cite>— Ecological Economics</cite>
+</blockquote>
+
+<h4>Policy Instruments:</h4>
+<ul>
+<li>Payment for ecosystem services (carbon, water quality)</li>
+<li>Crop insurance premium discounts for soil health practices</li>
+<li>Conservation program prioritization</li>
+<li>Technical assistance and demonstration networks</li>
+</ul>
+
+<div class="key-concept">
+<h4>Research Directions</h4>
+<p>Graduate research on soil health increasingly addresses the integration of biophysical science with socioeconomic analysis—understanding not just what practices improve soil health, but how transitions can be supported at scale through policy, markets, and knowledge systems.</p>
+</div>
+</div>`,
+
+          PHD: `<div class="lesson-content">
+<h2>Soil Microbiome Science: Frontiers in Understanding Belowground Complexity</h2>
+
+<p>Doctoral engagement with soil health requires navigating the intersection of microbial ecology, biogeochemistry, and agroecosystem science. Advances in molecular techniques have revealed extraordinary soil microbiome complexity while raising fundamental questions about function, stability, and management.</p>
+
+<h3>Microbiome Characterization Advances</h3>
+
+<blockquote class="scavenger-quote" data-quote-id="ra-phd-q1">
+<p>"The soil microbiome may be the most complex community on Earth—a gram of soil can contain 10,000 bacterial species. Yet linking this taxonomic diversity to functional outcomes remains the central challenge of soil microbial ecology."</p>
+<cite>— Fierer, "Embracing the Unknown: Disentangling the Complexities of the Soil Microbiome," Nature Reviews Microbiology, 2017</cite>
+</blockquote>
+
+<h4>Methodological Evolution:</h4>
+<ul>
+<li><strong>16S/ITS amplicon sequencing:</strong> Taxonomic community composition</li>
+<li><strong>Shotgun metagenomics:</strong> Functional gene potential</li>
+<li><strong>Metatranscriptomics:</strong> Active gene expression</li>
+<li><strong>Metabolomics:</strong> Metabolite profiles and fluxes</li>
+<li><strong>Stable isotope probing:</strong> Linking function to identity</li>
+</ul>
+
+<div class="image-placeholder" data-caption="Multi-omics approach to soil microbiome">
+[Image: Integrated diagram showing different molecular approaches and what they reveal about soil microbiomes]
+</div>
+
+<h3>Plant-Microbe Signaling</h3>
+
+<h4>Rhizosphere Communication:</h4>
+<p>Root exudates mediate complex plant-microbe relationships:</p>
+
+<blockquote class="scavenger-quote" data-quote-id="ra-phd-q2">
+<p>"Plants are not passive recipients of soil microbial communities. Through root exudates, they actively recruit beneficial microbes while suppressing pathogens—a phenomenon termed 'cry for help' when plants are stressed."</p>
+<cite>— Berendsen et al., "The Rhizosphere Microbiome and Plant Health," Trends in Plant Science</cite>
+</blockquote>
+
+<ul>
+<li><strong>Constitutive exudation:</strong> Baseline carbon provision selecting microbiome</li>
+<li><strong>Induced responses:</strong> Stress-triggered recruitment of beneficial microbes</li>
+<li><strong>Quorum sensing:</strong> Microbial communication affecting plant outcomes</li>
+<li><strong>Systemic signaling:</strong> Microbiome-induced plant defense priming</li>
+</ul>
+
+<h3>Carbon Stabilization Mechanisms</h3>
+
+<h4>From Organic Input to Persistent Storage:</h4>
+<p>Understanding soil carbon persistence requires mechanistic understanding:</p>
+
+<table class="mechanism-table">
+<thead>
+<tr><th>Mechanism</th><th>Process</th><th>Research Questions</th></tr>
+</thead>
+<tbody>
+<tr><td>Physical protection</td><td>Occlusion within aggregates</td><td>Aggregate dynamics under management</td></tr>
+<tr><td>Chemical protection</td><td>Organo-mineral associations</td><td>Saturation limits, mineral specificity</td></tr>
+<tr><td>Biochemical recalcitrance</td><td>Molecular structure resistance</td><td>Less important than previously thought</td></tr>
+<tr><td>Microbial necromass</td><td>Dead microbial cells persist</td><td>Quantification, management manipulation</td></tr>
+</tbody>
+</table>
+
+<blockquote class="scavenger-quote" data-quote-id="ra-phd-q3">
+<p>"The emerging view is that soil carbon persistence is primarily determined by environmental conditions and mineral associations rather than molecular structure. Microbial processing may actually increase carbon stability by producing mineral-binding compounds."</p>
+<cite>— Lehmann & Kleber, "The Contentious Nature of Soil Organic Matter," Nature, 2015</cite>
+</blockquote>
+
+<div class="image-placeholder" data-caption="Soil carbon stabilization mechanisms">
+[Image: Detailed diagram showing carbon pathways from fresh inputs through microbial processing to stable pools]
+</div>
+
+<h3>Methodological Challenges</h3>
+
+<blockquote class="scavenger-quote" data-quote-id="ra-phd-q4">
+<p>"The extreme spatial heterogeneity of soil—properties can vary by orders of magnitude within centimeters—challenges both sampling design and scaling from point measurements to field, landscape, and global predictions."</p>
+<cite>— Global Change Biology</cite>
+</blockquote>
+
+<h4>Scale Bridging:</h4>
+<ul>
+<li>Micro-scale processes (pores, aggregates)</li>
+<li>Profile variation (horizons, depth distributions)</li>
+<li>Field-scale heterogeneity (topography, management history)</li>
+<li>Landscape and regional patterns</li>
+<li>Global soil databases and earth system models</li>
+</ul>
+
+<h3>Emerging Research Frontiers</h3>
+
+<ul>
+<li><strong>Microbiome engineering:</strong> Can we design soil microbial communities?</li>
+<li><strong>Priming effects:</strong> Do fresh inputs accelerate or retard native C decomposition?</li>
+<li><strong>Deep soil carbon:</strong> Poorly characterized, potentially large pools</li>
+<li><strong>Soil viral ecology:</strong> Bacteriophage impacts on nutrient cycling</li>
+<li><strong>Digital soil mapping:</strong> Machine learning for spatial prediction</li>
+</ul>
+
+<div class="key-concept">
+<h4>Doctoral Research Orientation</h4>
+<p>Impactful doctoral research in soil science bridges molecular mechanisms to ecosystem outcomes. The field demands integration of cutting-edge molecular biology with classical biogeochemistry, and connection of fundamental understanding to urgent questions about agricultural sustainability and climate change mitigation.</p>
+</div>
+</div>`
         }
       }
     ],
