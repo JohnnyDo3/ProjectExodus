@@ -6,6 +6,24 @@ import { LearningLevel } from '@/types/learning'
 // Re-export LearningLevel for use in module files
 export type { LearningLevel }
 
+// Classroom/Category types for organizing lessons within topics
+export interface Classroom {
+  id: string
+  name: string
+  description: string
+  icon: string // lucide icon name
+  order: number
+}
+
+// Default classrooms available across topics
+export const DEFAULT_CLASSROOMS: Classroom[] = [
+  { id: 'fundamentals', name: 'Fundamentals', description: 'Core concepts and basic principles', icon: 'BookOpen', order: 1 },
+  { id: 'practical-skills', name: 'Practical Skills', description: 'Hands-on techniques and how-to guides', icon: 'Wrench', order: 2 },
+  { id: 'deep-dive', name: 'Deep Dive', description: 'Advanced theory and scientific understanding', icon: 'Microscope', order: 3 },
+  { id: 'real-world', name: 'Real World', description: 'Case studies and real-world applications', icon: 'Globe', order: 4 },
+  { id: 'projects', name: 'Projects', description: 'Hands-on projects and activities', icon: 'Hammer', order: 5 },
+]
+
 // Module Types
 export interface ModuleLesson {
   id: string
@@ -50,6 +68,7 @@ export interface Module {
   description: Record<LearningLevel, string>
   topic: CoreTopic
   category: string
+  classroom?: string // Classroom ID for categorization within topic (defaults to 'fundamentals')
   icon: string // lucide icon name
   color: 'moss' | 'ocean' | 'terra'
   duration: Record<LearningLevel, number> // total minutes by level
@@ -189,4 +208,37 @@ export function getModuleContentForLevel(module: Module, level: LearningLevel) {
       }))
     }
   }
+}
+
+// Helper function to get modules by classroom within a topic
+export function getModulesByClassroom(topicSlug: CoreTopic): Record<string, Module[]> {
+  const topic = getTopic(topicSlug)
+  if (!topic) return {}
+
+  const grouped: Record<string, Module[]> = {}
+
+  topic.modules.forEach(module => {
+    const classroomId = module.classroom || 'fundamentals'
+    if (!grouped[classroomId]) {
+      grouped[classroomId] = []
+    }
+    grouped[classroomId].push(module)
+  })
+
+  return grouped
+}
+
+// Helper function to get classrooms that have modules in a topic
+export function getTopicClassrooms(topicSlug: CoreTopic): Classroom[] {
+  const modulesByClassroom = getModulesByClassroom(topicSlug)
+  const classroomIds = Object.keys(modulesByClassroom)
+
+  return DEFAULT_CLASSROOMS
+    .filter(c => classroomIds.includes(c.id))
+    .sort((a, b) => a.order - b.order)
+}
+
+// Helper function to get a specific classroom
+export function getClassroom(classroomId: string): Classroom | undefined {
+  return DEFAULT_CLASSROOMS.find(c => c.id === classroomId)
 }

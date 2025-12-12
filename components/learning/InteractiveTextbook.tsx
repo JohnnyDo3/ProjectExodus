@@ -1,6 +1,6 @@
 'use client'
 
-import { useState, useEffect, useRef, useMemo } from 'react'
+import { useState, useEffect, useRef, useMemo, useCallback } from 'react'
 import { motion, AnimatePresence, useInView } from 'framer-motion'
 import { Card, CardContent } from '@/components/ui/Card'
 import { Button } from '@/components/ui/Button'
@@ -8,7 +8,7 @@ import {
   ChevronLeft, ChevronRight, CheckCircle2, Circle,
   BookOpen, Trophy, Clock, Target, ArrowLeft, Play, Quote,
   MessageSquare, GraduationCap, Sparkles, Search, ExternalLink,
-  Image as ImageIcon, ChevronDown, Star, Lightbulb, Award
+  Image as ImageIcon, ChevronDown, Star, Lightbulb, Award, User
 } from 'lucide-react'
 import Link from 'next/link'
 import { sanitizeHtml } from '@/lib/utils/sanitize'
@@ -18,8 +18,9 @@ import { LearningLevel, LEARNING_LEVELS } from '@/types/learning'
 import { Module, CoreTopic } from '@/data/modules'
 import dynamic from 'next/dynamic'
 import { FounderCard, Founder } from '@/components/learning/FounderCard'
-import { detectPioneersInContent, SUSTAINABILITY_PIONEERS } from '@/data/sustainabilityPioneers'
+import { detectPioneersInContent, SUSTAINABILITY_PIONEERS, findPioneerByName } from '@/data/sustainabilityPioneers'
 import { StoryIllustration, IllustrationTheme, detectIllustrationTheme } from '@/components/learning/StoryIllustration'
+import { PioneerModal } from '@/components/learning/PioneerModal'
 
 // Dynamically import diagram components
 const WaterCycleDiagram = dynamic(() => import('@/components/learning/diagrams/WaterCycleDiagram').then(mod => ({ default: mod.WaterCycleDiagram })), { ssr: false })
@@ -61,22 +62,51 @@ interface LessonPage {
   illustration?: IllustrationTheme // Picture book illustration for younger learners
 }
 
+// Check if content has meaningful text (not just whitespace or single words)
+function hasSubstantialContent(content: string): boolean {
+  // Strip HTML tags and whitespace
+  const textOnly = content.replace(/<[^>]*>/g, '').trim()
+  // Must have at least 50 characters of actual text to be substantial
+  return textOnly.length >= 50
+}
+
 // Parse lesson content into pages based on h2/h3 headers
-function parseLessonIntoPages(content: string, lessonId: string): LessonPage[] {
+// lessonIllustration is determined at the lesson level for story theming
+function parseLessonIntoPages(
+  content: string,
+  lessonId: string,
+  lessonTitle: string
+): LessonPage[] {
   // Split content by h2 or h3 headers
   const headerRegex = /<h[23][^>]*>(.*?)<\/h[23]>/gi
   const parts = content.split(headerRegex)
+
+  // Track used diagrams to prevent reuse within a lesson
+  const usedDiagrams = new Set<string>()
+
+  // Determine lesson-level illustration theme based on title and full content
+  const lessonIllustration = detectIllustrationTheme(lessonTitle + ' ' + content)
+
+  // Helper to get diagram if not already used
+  const getDiagramIfNew = (pageContent: string): string | undefined => {
+    const diagram = extractDiagramFromContent(pageContent)
+    if (diagram && !usedDiagrams.has(diagram)) {
+      usedDiagrams.add(diagram)
+      return diagram
+    }
+    return undefined
+  }
 
   if (parts.length <= 1) {
     // No headers found, return single page
     const pioneers = detectPioneersInContent(content)
     return [{
       id: `${lessonId}-page-0`,
-      title: 'Introduction',
+      title: lessonTitle,
       content: content,
-      diagram: extractDiagramFromContent(content),
+      diagram: getDiagramIfNew(content),
       pioneers: pioneers.length > 0 ? pioneers : undefined,
-      illustration: detectIllustrationTheme(content)
+      illustration: lessonIllustration
     }]
   }
 
@@ -84,15 +114,17 @@ function parseLessonIntoPages(content: string, lessonId: string): LessonPage[] {
   let pageIndex = 0
 
   // First part is content before first header (introduction)
-  if (parts[0].trim()) {
-    const introPioneers = detectPioneersInContent(parts[0])
+  // Only include if it has substantial content - skip empty/trivial intros
+  const introContent = parts[0].trim()
+  if (introContent && hasSubstantialContent(introContent)) {
+    const introPioneers = detectPioneersInContent(introContent)
     pages.push({
       id: `${lessonId}-page-${pageIndex}`,
       title: 'Introduction',
-      content: parts[0].trim(),
-      diagram: extractDiagramFromContent(parts[0]),
+      content: introContent,
+      diagram: getDiagramIfNew(introContent),
       pioneers: introPioneers.length > 0 ? introPioneers : undefined,
-      illustration: detectIllustrationTheme(parts[0])
+      illustration: lessonIllustration // First page gets the lesson illustration
     })
     pageIndex++
   }
@@ -108,9 +140,10 @@ function parseLessonIntoPages(content: string, lessonId: string): LessonPage[] {
         id: `${lessonId}-page-${pageIndex}`,
         title,
         content: sectionContent,
-        diagram: extractDiagramFromContent(sectionContent),
+        diagram: getDiagramIfNew(sectionContent),
         pioneers: sectionPioneers.length > 0 ? sectionPioneers : undefined,
-        illustration: detectIllustrationTheme(sectionContent)
+        // Only first non-intro page gets illustration if intro was skipped
+        illustration: pageIndex === 0 ? lessonIllustration : undefined
       })
       pageIndex++
     }
@@ -121,11 +154,11 @@ function parseLessonIntoPages(content: string, lessonId: string): LessonPage[] {
     const pioneers = detectPioneersInContent(content)
     return [{
       id: `${lessonId}-page-0`,
-      title: 'Introduction',
+      title: lessonTitle,
       content: content,
-      diagram: extractDiagramFromContent(content),
+      diagram: getDiagramIfNew(content),
       pioneers: pioneers.length > 0 ? pioneers : undefined,
-      illustration: detectIllustrationTheme(content)
+      illustration: lessonIllustration
     }]
   }
 
@@ -635,14 +668,21 @@ export function InteractiveTextbook({
   const [foundQuotes, setFoundQuotes] = useState<Set<string>>(new Set())
   const [showDiscussions, setShowDiscussions] = useState(false)
 
+  // Pioneer modal state
+  const [selectedPioneer, setSelectedPioneer] = useState<Founder | null>(null)
+  const [showPioneerModal, setShowPioneerModal] = useState(false)
+
+  // Ref for scrolling to content
+  const contentCardRef = useRef<HTMLDivElement>(null)
+
   const lesson = levelContent.lessons[currentLesson]
   const totalLessons = levelContent.lessons.length
   const progressPercent = Math.round((completedLessons.size / totalLessons) * 100)
 
-  // Parse current lesson into pages
+  // Parse current lesson into pages (with lesson title for story theming)
   const lessonPages = useMemo(() => {
     if (!lesson) return []
-    return parseLessonIntoPages(lesson.content, lesson.id)
+    return parseLessonIntoPages(lesson.content, lesson.id, lesson.title)
   }, [lesson])
 
   const currentPageData = lessonPages[currentPage]
@@ -667,6 +707,30 @@ export function InteractiveTextbook({
       window.scrollTo({ top: 0, behavior: 'smooth' })
     }
   }, [showQuiz])
+
+  // Scroll to content card when page changes (center the content)
+  useEffect(() => {
+    if (started && contentCardRef.current) {
+      const cardTop = contentCardRef.current.offsetTop
+      const cardHeight = contentCardRef.current.offsetHeight
+      const windowHeight = window.innerHeight
+      // Calculate position to center the card in viewport
+      const scrollTarget = Math.max(0, cardTop - (windowHeight - cardHeight) / 2 - 50)
+      window.scrollTo({ top: scrollTarget, behavior: 'smooth' })
+    }
+  }, [currentPage, started])
+
+  // Handle pioneer click to open modal
+  const handlePioneerClick = useCallback((pioneer: Founder) => {
+    setSelectedPioneer(pioneer)
+    setShowPioneerModal(true)
+  }, [])
+
+  // Close pioneer modal
+  const closePioneerModal = useCallback(() => {
+    setShowPioneerModal(false)
+    setSelectedPioneer(null)
+  }, [])
 
   // Mark lesson complete
   const markComplete = (lessonId: string) => {
@@ -1023,7 +1087,7 @@ export function InteractiveTextbook({
         </div>
 
         {/* Lesson Content - Multi-Page View */}
-        <Card className="border-2 border-[var(--border)] mb-4">
+        <Card ref={contentCardRef} className="border-2 border-[var(--border)] mb-4">
           <CardContent className="p-6 md:p-8">
             {/* Lesson Header */}
             <AnimatedSection>
@@ -1103,28 +1167,50 @@ export function InteractiveTextbook({
                   />
                 </AnimatedSection>
 
-                {/* Pioneer Cards (if any pioneers mentioned) */}
+                {/* Pioneer Quick Access (clickable to open modal) */}
                 {currentPageData?.pioneers && currentPageData.pioneers.length > 0 && (
                   <AnimatedSection delay={0.2}>
                     <div className="mt-8 pt-6 border-t border-[var(--border)]">
                       <h4 className="font-bold text-[var(--foreground)] mb-4 flex items-center gap-2">
-                        <Award className="w-5 h-5 text-theme-primary" />
-                        Featured Pioneer{currentPageData.pioneers.length > 1 ? 's' : ''}
+                        <User className="w-5 h-5 text-theme-primary" />
+                        People Mentioned
+                        <span className="text-xs text-theme-muted font-normal">(click to learn more)</span>
                       </h4>
-                      <div className="grid gap-4 md:grid-cols-2">
-                        {currentPageData.pioneers.slice(0, 2).map((pioneer) => (
-                          <FounderCard
+                      <div className="flex flex-wrap gap-2">
+                        {currentPageData.pioneers.map((pioneer) => (
+                          <button
                             key={pioneer.id}
-                            founder={pioneer}
-                            variant="compact"
-                          />
+                            onClick={() => handlePioneerClick(pioneer)}
+                            className="inline-flex items-center gap-2 px-3 py-2 rounded-xl bg-[color-mix(in_srgb,var(--primary)_10%,var(--background))] hover:bg-[color-mix(in_srgb,var(--primary)_20%,var(--background))] border border-[var(--border)] hover:border-[var(--primary)] transition-all group"
+                          >
+                            {/* Mini portrait */}
+                            <div className="w-8 h-8 rounded-full bg-[var(--primary)] text-white flex items-center justify-center text-xs font-bold overflow-hidden">
+                              {pioneer.portrait ? (
+                                <img
+                                  src={pioneer.portrait}
+                                  alt={pioneer.name}
+                                  className="w-full h-full object-cover"
+                                  onError={(e) => {
+                                    e.currentTarget.style.display = 'none'
+                                    e.currentTarget.nextElementSibling?.classList.remove('hidden')
+                                  }}
+                                />
+                              ) : null}
+                              <span className={pioneer.portrait ? 'hidden' : ''}>
+                                {pioneer.name.split(' ').map(n => n[0]).join('')}
+                              </span>
+                            </div>
+                            <div className="text-left">
+                              <span className="font-bold text-[var(--foreground)] group-hover:text-theme-primary transition-colors text-sm block">
+                                {pioneer.name}
+                              </span>
+                              <span className="text-xs text-theme-muted">
+                                {pioneer.title}
+                              </span>
+                            </div>
+                          </button>
                         ))}
                       </div>
-                      {currentPageData.pioneers.length > 2 && (
-                        <p className="text-sm text-theme-muted mt-3">
-                          +{currentPageData.pioneers.length - 2} more pioneer{currentPageData.pioneers.length - 2 > 1 ? 's' : ''} mentioned
-                        </p>
-                      )}
                     </div>
                   </AnimatedSection>
                 )}
@@ -1220,6 +1306,13 @@ export function InteractiveTextbook({
           </motion.div>
         )}
       </div>
+
+      {/* Pioneer Modal */}
+      <PioneerModal
+        pioneer={selectedPioneer}
+        isOpen={showPioneerModal}
+        onClose={closePioneerModal}
+      />
     </div>
   )
 }
