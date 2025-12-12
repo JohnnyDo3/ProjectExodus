@@ -30,12 +30,1142 @@ export const greenBuildingModules: Module[] = [
         hasActivity: true,
         activityType: 'SIMULATION',
         content: {
-          ELEMENTARY: `<div class="lesson-content"><h2>☀️ Sun-Powered Houses!</h2><div class="intro"><p>Did you know houses can stay warm using just sunshine? No heater needed!</p></div><h3>How It Works</h3><div class="steps"><div class="step"><span>🪟</span><p>Big windows face the sun</p></div><div class="step"><span>🧱</span><p>Thick walls store the warmth</p></div><div class="step"><span>🏠</span><p>The house stays cozy!</p></div></div><div class="fun-fact"><p>In summer, a roof overhang blocks the high sun to keep the house cool!</p></div></div>`,
-          MIDDLE_SCHOOL: `<div class="lesson-content"><h2>Passive Solar Basics</h2><h3>Key Principles</h3><ul><li><strong>Orientation:</strong> Main windows face south (Northern Hemisphere)</li><li><strong>Glazing:</strong> Large south windows, fewer on north</li><li><strong>Thermal mass:</strong> Heavy materials store heat</li><li><strong>Insulation:</strong> Keeps heat in (winter) or out (summer)</li><li><strong>Shading:</strong> Overhangs block summer sun</li></ul><h3>Sun Angles</h3><p>The sun is low in winter (more light enters) and high in summer (shading works).</p></div>`,
-          HIGH_SCHOOL: `<div class="lesson-content"><h2>Passive Solar Engineering</h2><h3>Direct Gain Systems</h3><p>Sunlight enters through windows and heats floor/wall mass directly.</p><h3>Indirect Gain</h3><ul><li><strong>Trombe wall:</strong> Mass wall behind glazing</li><li><strong>Sunspace:</strong> Attached greenhouse space</li><li><strong>Water wall:</strong> Water containers for thermal storage</li></ul><h3>Design Calculations</h3><ul><li>Solar heat gain: Q = I × A × SHGC × τ</li><li>Thermal mass sizing: m × c × ΔT = Q_stored</li><li>Heat loss: Q = U × A × ΔT</li></ul></div>`,
-          UNDERGRADUATE: `<div class="lesson-content"><h2>Building Energy Analysis</h2><h3>Heat Transfer Modes</h3><ul><li>Conduction through envelope</li><li>Convection (air movement)</li><li>Radiation (solar, infrared)</li></ul><h3>Energy Balance</h3><p>Q_gains = Q_losses at equilibrium:</p><ul><li>Solar gains + Internal gains = Envelope losses + Ventilation losses</li></ul><h3>Modeling Tools</h3><ul><li>EnergyPlus</li><li>PHPP (Passive House Planning Package)</li><li>DesignBuilder</li></ul></div>`,
-          GRADUATE: `<div class="lesson-content"><h2>Advanced Passive Strategies</h2><h3>Climate-Responsive Design</h3><p>Strategies vary by climate zone:</p><ul><li>Heating-dominated: Maximize solar gain, minimize losses</li><li>Cooling-dominated: Minimize gain, maximize ventilation</li><li>Mixed: Seasonal strategies needed</li></ul><h3>Natural Ventilation</h3><ul><li>Cross ventilation</li><li>Stack effect</li><li>Night cooling</li></ul><h3>Daylighting Integration</h3><p>Balancing light, heat, and glare.</p></div>`,
-          PHD: `<div class="lesson-content"><h2>Building Physics Research</h2><h3>Advanced Modeling</h3><ul><li>CFD for airflow</li><li>Coupled thermal-airflow models</li><li>Occupant behavior integration</li></ul><h3>Emerging Technologies</h3><ul><li>Thermochromic glazing</li><li>Phase change materials</li><li>Dynamic insulation</li></ul><h3>Comfort Research</h3><ul><li>Adaptive comfort models</li><li>Local thermal comfort</li><li>Non-energy benefits</li></ul></div>`
+          ELEMENTARY: `<div class="lesson-content">
+            <h2>Sunny's House-Warming Adventure</h2>
+
+            <div class="story-intro">
+              <p>Meet <strong>Sunny</strong>, a friendly sunbeam who loves helping people stay warm! Today, Sunny is going to show you an amazing secret about houses.</p>
+            </div>
+
+            <div class="image-placeholder" data-caption="Sunny the sunbeam shining down on a cozy house with big windows facing south">
+              [Image: Illustration of a cheerful sunbeam character approaching a house]
+            </div>
+
+            <h3>Chapter 1: The Cold House Problem</h3>
+
+            <p>One winter morning, Sunny floated down from the sky and saw a little girl named Maya shivering in her house.</p>
+
+            <p>"Why are you so cold?" asked Sunny.</p>
+
+            <p>"Our heater broke!" said Maya. "And it costs so much money to fix!"</p>
+
+            <blockquote class="scavenger-quote" data-quote-id="gb-elem-q1">
+              <p>"The best heater is already in the sky - we just need to invite it inside!"</p>
+              <cite>— Sunny the Sunbeam</cite>
+            </blockquote>
+
+            <p>Sunny had a brilliant idea. "I can help warm your house for FREE! We just need to make some changes."</p>
+
+            <h3>Chapter 2: The Magic of Big Windows</h3>
+
+            <p>Sunny explained the first secret: <strong>window direction matters!</strong></p>
+
+            <div class="key-concept">
+              <h4>Which Way Should Windows Face?</h4>
+              <p>In places like America, the sun travels across the southern sky. So big windows should face <strong>SOUTH</strong> to catch the most sunlight!</p>
+            </div>
+
+            <div class="image-placeholder" data-caption="Diagram showing how south-facing windows let in warm winter sunlight">
+              [Image: Simple diagram of house with arrows showing sun entering south windows]
+            </div>
+
+            <p>Maya's dad moved her playroom to the sunny side of the house. Now Sunny could stream right in through the big windows!</p>
+
+            <blockquote class="scavenger-quote" data-quote-id="gb-elem-q2">
+              <p>"A house that faces the sun is like a flower - it opens up to warmth and life!"</p>
+              <cite>— Mr. Chen, Green Builder</cite>
+            </blockquote>
+
+            <h3>Chapter 3: Walls That Remember Warmth</h3>
+
+            <p>But Maya noticed something strange. "Sunny, when you go away at night, it gets cold again!"</p>
+
+            <p>Sunny smiled. "That's where <strong>thermal mass</strong> comes in! It's like a warmth battery."</p>
+
+            <div class="activity-box">
+              <h4>Try This!</h4>
+              <p>Put a rock and a pillow in the sun for an hour. Then feel them both. The rock stays warm much longer! That's thermal mass!</p>
+            </div>
+
+            <p>Heavy things like stone floors, brick walls, and tile absorb heat during the day. Then at night, they slowly release that warmth back into the room!</p>
+
+            <div class="image-placeholder" data-caption="Stone floor absorbing sunshine during the day and releasing heat at night">
+              [Image: Two-panel illustration showing day (sun warming floor) and night (floor warming room)]
+            </div>
+
+            <h3>Chapter 4: The Summer Trick</h3>
+
+            <p>"But wait!" said Maya. "Won't we get TOO hot in summer?"</p>
+
+            <p>Sunny laughed. "Smart thinking! Here's the coolest trick of all."</p>
+
+            <blockquote class="scavenger-quote" data-quote-id="gb-elem-q3">
+              <p>"The sun takes a high path in summer and a low path in winter - and smart builders use this dance!"</p>
+              <cite>— Grandpa Joe, Solar Designer</cite>
+            </blockquote>
+
+            <p>In winter, the sun stays low in the sky, so sunlight goes deep into the house. But in summer, the sun is HIGH overhead!</p>
+
+            <div class="key-concept">
+              <h4>The Overhang Secret</h4>
+              <p>A roof overhang (like a hat brim for your house) blocks the high summer sun but lets the low winter sun in. It's automatic cooling!</p>
+            </div>
+
+            <div class="image-placeholder" data-caption="Roof overhang blocking summer sun but allowing winter sun to enter">
+              [Image: Side-by-side showing summer (sun blocked by overhang) and winter (sun entering under overhang)]
+            </div>
+
+            <h3>The Happy Ending</h3>
+
+            <p>Maya's family made these changes to their house:</p>
+
+            <div class="checklist">
+              <ul>
+                <li>Moved living spaces to the south side</li>
+                <li>Added bigger windows facing south</li>
+                <li>Put in a stone tile floor</li>
+                <li>Built a nice roof overhang</li>
+              </ul>
+            </div>
+
+            <p>Now their house stays warm in winter and cool in summer - using FREE sunshine!</p>
+
+            <blockquote class="scavenger-quote" data-quote-id="gb-elem-q4">
+              <p>"When we build with nature instead of against it, everyone wins - people, planet, and pocketbooks!"</p>
+              <cite>— Maya's Mom, after their home makeover</cite>
+            </blockquote>
+
+            <div class="fun-facts">
+              <h4>Cool Facts!</h4>
+              <ul>
+                <li>People have used passive solar design for over 2,000 years!</li>
+                <li>Ancient Greeks and Romans built their cities so houses faced south</li>
+                <li>A well-designed passive solar home can save up to 80% on heating!</li>
+              </ul>
+            </div>
+
+            <div class="chapter-summary">
+              <h4>What We Learned</h4>
+              <ul>
+                <li>Big windows should face SOUTH to catch winter sun</li>
+                <li>Heavy materials like stone store warmth (thermal mass)</li>
+                <li>Roof overhangs block summer sun automatically</li>
+                <li>Passive solar design uses FREE energy from the sun!</li>
+              </ul>
+            </div>
+          </div>`,
+
+          MIDDLE_SCHOOL: `<div class="lesson-content">
+            <h2>Harnessing the Sun: Passive Solar Design Basics</h2>
+
+            <div class="intro-section">
+              <p>Imagine heating and cooling your home without paying for electricity or gas. For thousands of years, people have designed buildings to work WITH the sun, not against it. This is called <strong>passive solar design</strong>.</p>
+            </div>
+
+            <div class="image-placeholder" data-caption="Modern passive solar home with large south-facing windows and roof overhangs">
+              [Image: Photo of contemporary passive solar house]
+            </div>
+
+            <h3>What Makes Solar Design "Passive"?</h3>
+
+            <p><strong>Active</strong> solar systems use machines like solar panels and pumps. <strong>Passive</strong> solar design works automatically through smart building choices - no machines needed!</p>
+
+            <blockquote class="scavenger-quote" data-quote-id="gb-mid-q1">
+              <p>"Passive solar design is about cooperation with nature - letting the building itself do the work that machines would otherwise do."</p>
+              <cite>— Edward Mazria, Architect and Environmental Advocate</cite>
+            </blockquote>
+
+            <h3>The Five Principles of Passive Solar</h3>
+
+            <div class="principles-section">
+              <div class="principle">
+                <h4>1. Orientation</h4>
+                <p>The building's position relative to the sun's path. In the Northern Hemisphere, the main living spaces and large windows face south.</p>
+              </div>
+
+              <div class="principle">
+                <h4>2. Glazing (Windows)</h4>
+                <p>Window placement and size matters! South-facing windows should be large, while north windows stay small to prevent heat loss.</p>
+              </div>
+
+              <div class="image-placeholder" data-caption="Diagram showing optimal window placement on different sides of a house">
+                [Image: House floor plan showing large south windows, medium east/west, small north]
+              </div>
+
+              <div class="principle">
+                <h4>3. Thermal Mass</h4>
+                <p>Heavy materials (concrete, brick, stone, tile, water) that absorb heat during the day and release it at night. Think of it as a "heat battery."</p>
+              </div>
+
+              <blockquote class="scavenger-quote" data-quote-id="gb-mid-q2">
+                <p>"Thermal mass is nature's thermostat - it smooths out temperature swings by storing energy when there's too much and releasing it when there's too little."</p>
+                <cite>— Dr. Sarah Chen, Building Scientist</cite>
+              </blockquote>
+
+              <div class="principle">
+                <h4>4. Insulation</h4>
+                <p>Keeps heat WHERE you want it. In winter, insulation keeps warmth inside. In summer, it keeps heat outside.</p>
+              </div>
+
+              <div class="principle">
+                <h4>5. Shading</h4>
+                <p>Overhangs, awnings, and trees that block unwanted summer sun while allowing winter sun to enter.</p>
+              </div>
+            </div>
+
+            <h3>Understanding Sun Angles</h3>
+
+            <p>The key to passive solar design is understanding how the sun moves differently across seasons:</p>
+
+            <div class="comparison-table">
+              <table>
+                <thead>
+                  <tr>
+                    <th>Season</th>
+                    <th>Sun Position</th>
+                    <th>What Happens</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td>Winter</td>
+                    <td>Low in southern sky</td>
+                    <td>Sunlight penetrates deep into south windows</td>
+                  </tr>
+                  <tr>
+                    <td>Summer</td>
+                    <td>High overhead</td>
+                    <td>Overhangs block direct sun from entering</td>
+                  </tr>
+                  <tr>
+                    <td>Spring/Fall</td>
+                    <td>Medium height</td>
+                    <td>Moderate solar gain - comfortable!</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+
+            <div class="image-placeholder" data-caption="Diagram showing sun angles in summer vs winter and how overhangs work">
+              [Image: Cross-section of house showing low winter sun entering, high summer sun blocked by overhang]
+            </div>
+
+            <h3>Real-World Example: The Earthship</h3>
+
+            <p>Earthships are homes built from recycled materials that use passive solar design to stay comfortable in any climate - even in the desert!</p>
+
+            <blockquote class="scavenger-quote" data-quote-id="gb-mid-q3">
+              <p>"An Earthship doesn't need to be hooked up to any utilities - it heats and cools itself, collects its own water, and grows its own food."</p>
+              <cite>— Michael Reynolds, Earthship Architect</cite>
+            </blockquote>
+
+            <p>Key Earthship features:</p>
+            <ul>
+              <li>South-facing glass greenhouse</li>
+              <li>Massive earth-bermed walls (thermal mass)</li>
+              <li>Natural ventilation tubes</li>
+              <li>Built into hillsides for insulation</li>
+            </ul>
+
+            <div class="image-placeholder" data-caption="Earthship home showing south-facing greenhouse and earth-bermed walls">
+              [Image: Photo or diagram of an Earthship design]
+            </div>
+
+            <h3>Does Location Matter?</h3>
+
+            <p>Absolutely! Passive solar strategies change based on climate:</p>
+
+            <ul>
+              <li><strong>Cold climates:</strong> Maximize south glazing, heavy thermal mass, super insulation</li>
+              <li><strong>Hot-dry climates:</strong> Smaller windows, thick adobe walls, night ventilation</li>
+              <li><strong>Hot-humid climates:</strong> Shade, cross-ventilation, raised floors, less thermal mass</li>
+            </ul>
+
+            <blockquote class="scavenger-quote" data-quote-id="gb-mid-q4">
+              <p>"There's no one-size-fits-all in passive design. The best building is one that's designed for its specific place on Earth."</p>
+              <cite>— Ken Yeang, Eco-Architect</cite>
+            </blockquote>
+
+            <div class="chapter-summary">
+              <h4>Key Takeaways</h4>
+              <ul>
+                <li>Passive solar uses building design (not machines) to heat and cool</li>
+                <li>Five principles: Orientation, Glazing, Thermal Mass, Insulation, Shading</li>
+                <li>Sun is low in winter (enters windows) and high in summer (blocked by overhangs)</li>
+                <li>Design strategies vary by climate zone</li>
+                <li>These techniques can reduce energy use by 50-80%!</li>
+              </ul>
+            </div>
+          </div>`,
+
+          HIGH_SCHOOL: `<div class="lesson-content">
+            <h2>The Physics of Passive Solar Design</h2>
+
+            <div class="intro-section">
+              <p>Passive solar design applies fundamental physics principles - heat transfer, thermodynamics, and solar geometry - to create buildings that naturally regulate temperature. Understanding the science behind these systems allows us to design truly efficient buildings.</p>
+            </div>
+
+            <div class="image-placeholder" data-caption="Cross-section of a passive solar home showing heat flow patterns">
+              [Image: Technical diagram of passive solar home with heat flow arrows]
+            </div>
+
+            <h3>Solar Geometry and Building Orientation</h3>
+
+            <p>The Earth's 23.5 degree axial tilt creates seasonal variations in solar altitude (the sun's angle above the horizon). This is the foundation of passive solar design.</p>
+
+            <blockquote class="scavenger-quote" data-quote-id="gb-hs-q1">
+              <p>"Understanding solar geometry is the first step in passive design - it tells us exactly where the sun will be at any hour of any day of the year."</p>
+              <cite>— Ralph Knowles, Professor of Architecture, USC</cite>
+            </blockquote>
+
+            <div class="formula-box">
+              <h4>Solar Altitude Angle</h4>
+              <p>At solar noon on the solstices:</p>
+              <ul>
+                <li><strong>Winter:</strong> Altitude = 90 - Latitude - 23.5 degrees</li>
+                <li><strong>Summer:</strong> Altitude = 90 - Latitude + 23.5 degrees</li>
+              </ul>
+              <p><em>Example: At 40 degrees N latitude, winter noon sun = 26.5 degrees, summer noon sun = 73.5 degrees</em></p>
+            </div>
+
+            <h3>Direct, Indirect, and Isolated Gain Systems</h3>
+
+            <div class="systems-section">
+              <div class="system">
+                <h4>Direct Gain</h4>
+                <p>Sunlight enters directly through windows and heats the interior thermal mass.</p>
+                <ul>
+                  <li>Simplest passive system</li>
+                  <li>South-facing glazing with thermal mass floors/walls</li>
+                  <li>Requires careful glare control</li>
+                </ul>
+              </div>
+
+              <div class="image-placeholder" data-caption="Direct gain system showing sunlight heating a concrete floor">
+                [Image: Diagram of direct gain passive solar system]
+              </div>
+
+              <div class="system">
+                <h4>Indirect Gain (Trombe Wall)</h4>
+                <p>A massive wall sits behind glass, absorbing heat and radiating it into the living space.</p>
+
+                <blockquote class="scavenger-quote" data-quote-id="gb-hs-q2">
+                  <p>"The Trombe wall acts as a thermal buffer - it absorbs solar radiation, stores it as heat, and releases it with a time delay of 8-10 hours."</p>
+                  <cite>— Felix Trombe, French Engineer (inventor)</cite>
+                </blockquote>
+
+                <p>Trombe wall specifications:</p>
+                <ul>
+                  <li>Typically 8-16 inches thick (20-40 cm)</li>
+                  <li>Dark-colored surface (high absorptivity)</li>
+                  <li>Optional vents for convective circulation</li>
+                  <li>Time lag: approximately 1 hour per inch of masonry thickness</li>
+                </ul>
+              </div>
+
+              <div class="system">
+                <h4>Isolated Gain (Sunspace)</h4>
+                <p>A separate greenhouse space collects heat that is then distributed to the main building.</p>
+                <ul>
+                  <li>Can be closed off in extreme temperatures</li>
+                  <li>Also provides growing space</li>
+                  <li>Requires vents or fans for heat distribution</li>
+                </ul>
+              </div>
+            </div>
+
+            <h3>Heat Transfer Calculations</h3>
+
+            <p>Understanding heat flow is essential for sizing passive solar systems.</p>
+
+            <div class="formula-box">
+              <h4>Key Equations</h4>
+
+              <p><strong>Solar Heat Gain:</strong></p>
+              <p>Q(solar) = I x A x SHGC x tau</p>
+              <ul>
+                <li>I = Solar irradiance (W/m squared)</li>
+                <li>A = Window area (m squared)</li>
+                <li>SHGC = Solar Heat Gain Coefficient</li>
+                <li>tau = Shading factor (0-1)</li>
+              </ul>
+
+              <p><strong>Conductive Heat Loss:</strong></p>
+              <p>Q(loss) = U x A x delta-T</p>
+              <ul>
+                <li>U = U-value (W/m squared K)</li>
+                <li>A = Surface area (m squared)</li>
+                <li>delta-T = Temperature difference (K or C)</li>
+              </ul>
+
+              <p><strong>Thermal Mass Storage:</strong></p>
+              <p>Q(stored) = m x c x delta-T</p>
+              <ul>
+                <li>m = Mass (kg)</li>
+                <li>c = Specific heat capacity (J/kg K)</li>
+                <li>delta-T = Temperature change (K or C)</li>
+              </ul>
+            </div>
+
+            <div class="image-placeholder" data-caption="Thermal properties comparison of common building materials">
+              [Image: Chart comparing thermal mass properties of concrete, brick, stone, water]
+            </div>
+
+            <h3>Material Properties for Thermal Mass</h3>
+
+            <table>
+              <thead>
+                <tr>
+                  <th>Material</th>
+                  <th>Density (kg/m3)</th>
+                  <th>Specific Heat (J/kg K)</th>
+                  <th>Thermal Capacity (kJ/m3 K)</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr><td>Concrete</td><td>2,400</td><td>880</td><td>2,112</td></tr>
+                <tr><td>Brick</td><td>1,700</td><td>800</td><td>1,360</td></tr>
+                <tr><td>Water</td><td>1,000</td><td>4,186</td><td>4,186</td></tr>
+                <tr><td>Stone</td><td>2,500</td><td>900</td><td>2,250</td></tr>
+                <tr><td>Adobe</td><td>1,550</td><td>900</td><td>1,395</td></tr>
+              </tbody>
+            </table>
+
+            <blockquote class="scavenger-quote" data-quote-id="gb-hs-q3">
+              <p>"Water has the highest heat capacity of any common material - a water wall stores twice as much heat per volume as concrete."</p>
+              <cite>— Steve Baer, Solar Pioneer</cite>
+            </blockquote>
+
+            <h3>Overhang Design</h3>
+
+            <p>Properly sized overhangs are critical for blocking summer sun while admitting winter sun.</p>
+
+            <div class="formula-box">
+              <h4>Overhang Sizing Formula</h4>
+              <p>D = H / tan(alpha)</p>
+              <ul>
+                <li>D = Overhang depth</li>
+                <li>H = Height from window top to overhang</li>
+                <li>alpha = Solar altitude angle to block</li>
+              </ul>
+            </div>
+
+            <p>Design goal: Block sun when altitude > 60 degrees (summer), admit when altitude < 35 degrees (winter)</p>
+
+            <h3>Passive House Standard</h3>
+
+            <p>The Passive House (Passivhaus) standard represents the most rigorous passive design certification:</p>
+
+            <ul>
+              <li>Heating demand: 15 kWh/m2/year or less</li>
+              <li>Primary energy demand: 120 kWh/m2/year or less</li>
+              <li>Airtightness: 0.6 ACH at 50 Pa or less</li>
+            </ul>
+
+            <blockquote class="scavenger-quote" data-quote-id="gb-hs-q4">
+              <p>"A Passive House uses 90% less energy for heating than a typical building - that's not incremental improvement, it's a paradigm shift."</p>
+              <cite>— Dr. Wolfgang Feist, Passive House Institute Founder</cite>
+            </blockquote>
+
+            <div class="chapter-summary">
+              <h4>Key Engineering Concepts</h4>
+              <ul>
+                <li>Solar altitude varies from approximately 27 degrees (winter) to 74 degrees (summer) at mid-latitudes</li>
+                <li>Three passive systems: Direct gain, Indirect gain (Trombe), Isolated gain (Sunspace)</li>
+                <li>Heat transfer equations: Solar gain, conductive loss, thermal storage</li>
+                <li>Water has 2x the thermal storage capacity of concrete by volume</li>
+                <li>Passive House standard: 15 kWh/m2/year heating demand or less</li>
+              </ul>
+            </div>
+          </div>`,
+
+          UNDERGRADUATE: `<div class="lesson-content">
+            <h2>Building Energy Analysis and Passive Design Integration</h2>
+
+            <div class="intro-section">
+              <p>At the undergraduate level, passive solar design is understood within the broader context of building energy systems. We analyze buildings as dynamic thermal systems, applying heat transfer theory, psychrometrics, and energy modeling to optimize passive performance.</p>
+            </div>
+
+            <div class="image-placeholder" data-caption="Energy flow diagram of a passive solar building showing all heat transfer mechanisms">
+              [Image: Comprehensive energy balance diagram]
+            </div>
+
+            <h3>Building Energy Balance</h3>
+
+            <p>A building's thermal behavior can be modeled as an energy balance equation:</p>
+
+            <div class="equation-box">
+              <p><strong>Steady-State Energy Balance:</strong></p>
+              <p>Q(solar) + Q(internal) = Q(envelope) + Q(ventilation) + Q(infiltration)</p>
+            </div>
+
+            <blockquote class="scavenger-quote" data-quote-id="gb-ug-q1">
+              <p>"Buildings are not static objects but dynamic thermal systems that respond to climate, occupancy, and time in complex ways."</p>
+              <cite>— Dr. Gregg Ander, FAIA, Southern California Edison</cite>
+            </blockquote>
+
+            <h4>Heat Gain Components</h4>
+            <ul>
+              <li><strong>Solar gains Q(solar):</strong> Through glazing, opaque surfaces, and skylights</li>
+              <li><strong>Internal gains Q(internal):</strong> Occupants (approximately 100W/person), lighting, equipment</li>
+              <li><strong>HVAC gains:</strong> Intentional heating input (when needed)</li>
+            </ul>
+
+            <h4>Heat Loss Components</h4>
+            <ul>
+              <li><strong>Envelope losses Q(envelope):</strong> Through walls, roof, floor, windows</li>
+              <li><strong>Ventilation Q(ventilation):</strong> Intentional air exchange</li>
+              <li><strong>Infiltration Q(infiltration):</strong> Uncontrolled air leakage</li>
+            </ul>
+
+            <h3>Advanced Heat Transfer Analysis</h3>
+
+            <div class="concept-section">
+              <h4>Overall Heat Transfer Coefficient</h4>
+
+              <p>For composite walls:</p>
+              <div class="equation-box">
+                <p>U = 1 / R(total)</p>
+                <p>R(total) = R(si) + Sum(d(n)/lambda(n)) + R(so)</p>
+              </div>
+
+              <table>
+                <thead>
+                  <tr>
+                    <th>Variable</th>
+                    <th>Description</th>
+                    <th>Typical Values</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr><td>R(si)</td><td>Internal surface resistance</td><td>0.13 m2K/W</td></tr>
+                  <tr><td>R(so)</td><td>External surface resistance</td><td>0.04 m2K/W</td></tr>
+                  <tr><td>d</td><td>Layer thickness</td><td>Variable (m)</td></tr>
+                  <tr><td>lambda</td><td>Thermal conductivity</td><td>Material dependent (W/mK)</td></tr>
+                </tbody>
+              </table>
+            </div>
+
+            <div class="image-placeholder" data-caption="Thermal resistance model of a composite wall assembly">
+              [Image: Diagram showing R-value layers through a wall section]
+            </div>
+
+            <h3>Glazing Performance Parameters</h3>
+
+            <blockquote class="scavenger-quote" data-quote-id="gb-ug-q2">
+              <p>"Window selection in passive solar design is a delicate balance - we want high solar heat gain in winter but low U-values to prevent heat loss."</p>
+              <cite>— Stephen Selkowitz, LBNL Windows Research</cite>
+            </blockquote>
+
+            <table>
+              <thead>
+                <tr>
+                  <th>Parameter</th>
+                  <th>Definition</th>
+                  <th>Passive Solar Goal</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>U-value</td>
+                  <td>Heat transfer coefficient</td>
+                  <td>Low (less than 1.0 W/m2K for triple glazing)</td>
+                </tr>
+                <tr>
+                  <td>SHGC</td>
+                  <td>Solar Heat Gain Coefficient</td>
+                  <td>High for south glass (greater than 0.5), Low for west (less than 0.3)</td>
+                </tr>
+                <tr>
+                  <td>VT</td>
+                  <td>Visible Transmittance</td>
+                  <td>High for daylighting (greater than 0.5)</td>
+                </tr>
+                <tr>
+                  <td>LSG</td>
+                  <td>Light-to-Solar Gain ratio (VT/SHGC)</td>
+                  <td>Greater than 1.0 for cooling climates</td>
+                </tr>
+              </tbody>
+            </table>
+
+            <h3>Building Energy Modeling</h3>
+
+            <p>Modern passive solar design relies on simulation tools for performance prediction:</p>
+
+            <div class="tools-section">
+              <h4>Industry-Standard Software</h4>
+              <ul>
+                <li><strong>EnergyPlus:</strong> DOE's flagship whole-building simulation engine</li>
+                <li><strong>PHPP:</strong> Passive House Planning Package - spreadsheet-based</li>
+                <li><strong>DesignBuilder:</strong> GUI front-end for EnergyPlus</li>
+                <li><strong>WUFI:</strong> Hygrothermal analysis (moisture + heat)</li>
+                <li><strong>Radiance:</strong> Daylighting simulation</li>
+              </ul>
+            </div>
+
+            <div class="image-placeholder" data-caption="EnergyPlus simulation output showing annual heating and cooling loads">
+              [Image: Graph of monthly energy demands from building simulation]
+            </div>
+
+            <h3>Thermal Comfort Considerations</h3>
+
+            <p>Passive solar buildings must maintain occupant comfort without mechanical systems:</p>
+
+            <blockquote class="scavenger-quote" data-quote-id="gb-ug-q3">
+              <p>"Thermal comfort in passive buildings follows adaptive principles - occupants accept wider temperature ranges when they have control over their environment."</p>
+              <cite>— Dr. Gail Brager, UC Berkeley Center for the Built Environment</cite>
+            </blockquote>
+
+            <div class="concept-section">
+              <h4>Adaptive Comfort Model (ASHRAE 55)</h4>
+              <p>T(comfort) = 0.31 x T(outdoor,mean) + 17.8 degrees C (plus or minus 3.5 degrees C acceptability range)</p>
+              <p>Applicable to naturally ventilated buildings where occupants can open windows.</p>
+            </div>
+
+            <h3>Daylighting Integration</h3>
+
+            <p>Passive solar glazing must balance thermal performance with daylight quality:</p>
+
+            <ul>
+              <li><strong>Daylight Factor (DF):</strong> Target 2-5% for most spaces</li>
+              <li><strong>Spatial Daylight Autonomy (sDA):</strong> Percentage of space with 300 lux for 50% of occupied hours</li>
+              <li><strong>Annual Sunlight Exposure (ASE):</strong> Glare metric - less than 10% area receiving 1000 lux for 250+ hours</li>
+            </ul>
+
+            <h3>Climate-Specific Design Strategies</h3>
+
+            <table>
+              <thead>
+                <tr>
+                  <th>Climate Zone</th>
+                  <th>Primary Strategy</th>
+                  <th>Key Metrics</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>Heating-dominated (4000+ HDD)</td>
+                  <td>Maximize solar gain, super insulation</td>
+                  <td>High SHGC south, low U-values</td>
+                </tr>
+                <tr>
+                  <td>Cooling-dominated (2000+ CDD)</td>
+                  <td>Minimize gain, natural ventilation</td>
+                  <td>Low SHGC all orientations, shading</td>
+                </tr>
+                <tr>
+                  <td>Mixed (similar HDD/CDD)</td>
+                  <td>Seasonal switching strategies</td>
+                  <td>Moderate SHGC, operable shading</td>
+                </tr>
+              </tbody>
+            </table>
+
+            <blockquote class="scavenger-quote" data-quote-id="gb-ug-q4">
+              <p>"The first law of sustainable design: Don't fight the climate - work with it. Every climate has free energy available; our job is to capture it."</p>
+              <cite>— Dr. Vivian Loftness, Carnegie Mellon University</cite>
+            </blockquote>
+
+            <div class="chapter-summary">
+              <h4>Technical Summary</h4>
+              <ul>
+                <li>Building energy analysis uses steady-state and dynamic balance equations</li>
+                <li>Composite wall R-value includes surface resistances and material layers</li>
+                <li>Glazing selection balances U-value, SHGC, and VT for specific orientations</li>
+                <li>Energy modeling tools (EnergyPlus, PHPP) enable performance prediction</li>
+                <li>Adaptive comfort standards allow wider temperature ranges in passive buildings</li>
+                <li>Design strategies must be tailored to specific climate zones</li>
+              </ul>
+            </div>
+          </div>`,
+
+          GRADUATE: `<div class="lesson-content">
+            <h2>Advanced Passive Strategies and Performance Optimization</h2>
+
+            <div class="intro-section">
+              <p>Graduate-level study of passive solar design extends beyond individual buildings to consider urban-scale implications, advanced modeling techniques, integration with active systems, and the policy frameworks that enable widespread adoption. We examine passive design through the lens of building physics research and real-world performance data.</p>
+            </div>
+
+            <div class="image-placeholder" data-caption="Urban-scale passive solar planning showing building spacing for solar access">
+              [Image: 3D model of neighborhood showing solar envelope analysis]
+            </div>
+
+            <h3>Performance Gap Analysis</h3>
+
+            <p>A critical issue in passive building research is the discrepancy between predicted and actual performance:</p>
+
+            <blockquote class="scavenger-quote" data-quote-id="gb-grad-q1">
+              <p>"Post-occupancy studies consistently show a 'performance gap' of 30-150% between designed and actual energy use. Understanding why is essential for advancing passive design."</p>
+              <cite>— Dr. Rajat Gupta, Oxford Brookes University</cite>
+            </blockquote>
+
+            <div class="concept-section">
+              <h4>Sources of Performance Gap</h4>
+              <ul>
+                <li><strong>Modeling assumptions:</strong> Standard schedules vs. actual occupancy</li>
+                <li><strong>Construction quality:</strong> Thermal bridges, air leakage paths</li>
+                <li><strong>Commissioning failures:</strong> Controls not optimized</li>
+                <li><strong>Occupant behavior:</strong> Window operation, thermostat settings</li>
+                <li><strong>Climate data:</strong> TMY vs. actual weather</li>
+              </ul>
+            </div>
+
+            <h3>Dynamic Thermal Modeling</h3>
+
+            <p>Advanced passive design requires time-varying analysis beyond steady-state calculations:</p>
+
+            <div class="equation-box">
+              <h4>Thermal Network Model</h4>
+              <p>C(dT/dt) = Q(gains) - Sum(UA)(T - T(adj))</p>
+              <p>Where C = thermal capacitance, capturing the dynamic response of thermal mass.</p>
+            </div>
+
+            <div class="image-placeholder" data-caption="Thermal network model showing RC circuits representing building zones">
+              [Image: Resistance-capacitance thermal network diagram]
+            </div>
+
+            <h4>Key Dynamic Parameters</h4>
+            <table>
+              <thead>
+                <tr>
+                  <th>Parameter</th>
+                  <th>Definition</th>
+                  <th>Significance</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>Time Constant (tau)</td>
+                  <td>RC product of zone</td>
+                  <td>How quickly zone responds to changes</td>
+                </tr>
+                <tr>
+                  <td>Decrement Factor</td>
+                  <td>Ratio of inside to outside temp amplitude</td>
+                  <td>Damping of external temperature swings</td>
+                </tr>
+                <tr>
+                  <td>Thermal Lag</td>
+                  <td>Time shift of peak temperature</td>
+                  <td>Can shift cooling load off-peak</td>
+                </tr>
+                <tr>
+                  <td>Admittance</td>
+                  <td>Heat flux per unit temp swing</td>
+                  <td>Effectiveness at moderating swings</td>
+                </tr>
+              </tbody>
+            </table>
+
+            <h3>Natural Ventilation Engineering</h3>
+
+            <p>Passive cooling through natural ventilation requires careful engineering analysis:</p>
+
+            <blockquote class="scavenger-quote" data-quote-id="gb-grad-q2">
+              <p>"Natural ventilation is not the absence of mechanical systems - it's a sophisticated engineering approach that requires as much analysis as HVAC design."</p>
+              <cite>— Dr. Malcolm Cook, Loughborough University</cite>
+            </blockquote>
+
+            <div class="concept-section">
+              <h4>Driving Forces</h4>
+
+              <p><strong>Wind-driven (Cross Ventilation):</strong></p>
+              <div class="equation-box">
+                <p>Q = Cd x A x v x sqrt(delta-Cp)</p>
+              </div>
+
+              <p><strong>Buoyancy-driven (Stack Effect):</strong></p>
+              <div class="equation-box">
+                <p>Q = Cd x A x sqrt(2gh(Ti-To)/To)</p>
+              </div>
+
+              <p>Design must account for both forces, which may work together or oppose each other.</p>
+            </div>
+
+            <h3>Phase Change Materials (PCM)</h3>
+
+            <p>Advanced thermal mass using latent heat storage:</p>
+
+            <div class="image-placeholder" data-caption="Phase change material integration in wall assembly showing melting/solidifying cycle">
+              [Image: Diagram of PCM wall panel with temperature cycle]
+            </div>
+
+            <table>
+              <thead>
+                <tr>
+                  <th>PCM Type</th>
+                  <th>Melting Point</th>
+                  <th>Latent Heat</th>
+                  <th>Applications</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>Paraffin waxes</td>
+                  <td>20-30 degrees C</td>
+                  <td>150-200 kJ/kg</td>
+                  <td>Wall panels, ceiling tiles</td>
+                </tr>
+                <tr>
+                  <td>Salt hydrates</td>
+                  <td>18-32 degrees C</td>
+                  <td>150-250 kJ/kg</td>
+                  <td>Thermal storage units</td>
+                </tr>
+                <tr>
+                  <td>Bio-based PCM</td>
+                  <td>21-28 degrees C</td>
+                  <td>140-180 kJ/kg</td>
+                  <td>Sustainable alternatives</td>
+                </tr>
+              </tbody>
+            </table>
+
+            <blockquote class="scavenger-quote" data-quote-id="gb-grad-q3">
+              <p>"A 1cm layer of PCM can provide equivalent thermal storage to 9cm of concrete, enabling high thermal mass in lightweight construction."</p>
+              <cite>— Dr. Luisa Cabeza, University of Lleida</cite>
+            </blockquote>
+
+            <h3>Urban Solar Access and Solar Envelopes</h3>
+
+            <p>At the urban scale, passive solar design requires consideration of overshadowing:</p>
+
+            <div class="concept-section">
+              <h4>Solar Envelope Method (Knowles)</h4>
+              <p>The solar envelope defines the maximum buildable volume that won't overshadow neighboring properties during specified hours.</p>
+
+              <ul>
+                <li><strong>Cut-off times:</strong> Typically 9am-3pm on winter solstice</li>
+                <li><strong>Factors:</strong> Latitude, street orientation, setbacks, desired shadow fence</li>
+                <li><strong>Tools:</strong> Ladybug/Honeybee, Rhino + Grasshopper, Autodesk Revit plugins</li>
+              </ul>
+            </div>
+
+            <h3>Policy and Standards Framework</h3>
+
+            <p>Passive design is increasingly codified in building regulations:</p>
+
+            <table>
+              <thead>
+                <tr>
+                  <th>Standard/Policy</th>
+                  <th>Region</th>
+                  <th>Key Requirements</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>Passive House (PHI)</td>
+                  <td>International</td>
+                  <td>15 kWh/m2a heating, 0.6 ACH50</td>
+                </tr>
+                <tr>
+                  <td>PHIUS+</td>
+                  <td>North America</td>
+                  <td>Climate-specific, source energy limits</td>
+                </tr>
+                <tr>
+                  <td>nZEB (EPBD)</td>
+                  <td>European Union</td>
+                  <td>Near-zero energy, high renewables</td>
+                </tr>
+                <tr>
+                  <td>NatHERS</td>
+                  <td>Australia</td>
+                  <td>Star ratings based on thermal performance</td>
+                </tr>
+              </tbody>
+            </table>
+
+            <blockquote class="scavenger-quote" data-quote-id="gb-grad-q4">
+              <p>"Building codes are the floor, not the ceiling. The Passive House standard shows what's technically and economically achievable today."</p>
+              <cite>— Katrin Klingenberg, PHIUS Executive Director</cite>
+            </blockquote>
+
+            <h3>Research Frontiers</h3>
+
+            <ul>
+              <li><strong>Machine learning for controls:</strong> Predictive algorithms for optimal window/shading operation</li>
+              <li><strong>Occupant-centric design:</strong> Personal comfort systems, adaptive opportunities</li>
+              <li><strong>Resilience:</strong> Passive survivability during grid outages</li>
+              <li><strong>Embodied carbon integration:</strong> Balancing operational and embodied impacts</li>
+              <li><strong>Climate change adaptation:</strong> Future-proofing designs for shifting climate zones</li>
+            </ul>
+
+            <div class="chapter-summary">
+              <h4>Graduate-Level Synthesis</h4>
+              <ul>
+                <li>Performance gap analysis reveals disconnect between predicted and actual energy use</li>
+                <li>Dynamic thermal modeling captures time-varying behavior of thermal mass</li>
+                <li>Natural ventilation design requires engineering analysis of wind and buoyancy forces</li>
+                <li>Phase change materials offer high thermal storage density for lightweight construction</li>
+                <li>Urban-scale solar access planning uses solar envelope methodology</li>
+                <li>International standards (PHI, PHIUS+, nZEB) are driving passive adoption</li>
+              </ul>
+            </div>
+          </div>`,
+
+          PHD: `<div class="lesson-content">
+            <h2>Building Physics Research and Next-Generation Passive Technologies</h2>
+
+            <div class="intro-section">
+              <p>Doctoral research in passive solar design pushes the boundaries of building physics, developing novel materials and systems while critically examining assumptions underlying current practice. This lesson surveys active research frontiers, emerging technologies, and the methodological frameworks used to advance the field.</p>
+            </div>
+
+            <div class="image-placeholder" data-caption="Research laboratory testing advanced glazing systems with spectrophotometry">
+              [Image: Photo of building science research laboratory]
+            </div>
+
+            <h3>Challenging Fundamental Assumptions</h3>
+
+            <p>Doctoral inquiry begins by questioning established paradigms:</p>
+
+            <blockquote class="scavenger-quote" data-quote-id="gb-phd-q1">
+              <p>"The passive solar principles developed in the 1970s were revolutionary, but they assumed a stable climate. We must now ask: how do we design passive systems for a climate that's actively changing?"</p>
+              <cite>— Dr. Shady Attia, University of Liege</cite>
+            </blockquote>
+
+            <div class="research-questions">
+              <h4>Open Research Questions</h4>
+              <ul>
+                <li>How will shifting climate zones affect the viability of current passive strategies?</li>
+                <li>Can passive buildings maintain comfort during extreme weather events?</li>
+                <li>How do we model occupant behavior in passive buildings at scale?</li>
+                <li>What is the true lifecycle carbon balance of high-performance passive envelopes?</li>
+                <li>How can passive principles be applied equitably across socioeconomic contexts?</li>
+              </ul>
+            </div>
+
+            <h3>Advanced Glazing Research</h3>
+
+            <p>Window technology is a critical research frontier, seeking to overcome the inherent tradeoffs in static glazing:</p>
+
+            <div class="technology-section">
+              <h4>Dynamic Glazing Technologies</h4>
+
+              <table>
+                <thead>
+                  <tr>
+                    <th>Technology</th>
+                    <th>Mechanism</th>
+                    <th>Current Research Focus</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td>Electrochromic</td>
+                    <td>Voltage-induced ion migration</td>
+                    <td>Switching speed, durability, independent VT/SHGC control</td>
+                  </tr>
+                  <tr>
+                    <td>Thermochromic</td>
+                    <td>Temperature-triggered phase change</td>
+                    <td>Transition temperature tuning, hysteresis reduction</td>
+                  </tr>
+                  <tr>
+                    <td>Photochromic</td>
+                    <td>Light-activated darkening</td>
+                    <td>Spectral selectivity, fatigue resistance</td>
+                  </tr>
+                  <tr>
+                    <td>PDLC</td>
+                    <td>Polymer-dispersed liquid crystals</td>
+                    <td>Privacy + thermal control, energy consumption</td>
+                  </tr>
+                  <tr>
+                    <td>SPD</td>
+                    <td>Suspended particle devices</td>
+                    <td>Response time, uniformity at large scale</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+
+            <div class="image-placeholder" data-caption="Spectral transmittance curves for electrochromic glazing in clear and tinted states">
+              [Image: Graph showing wavelength vs transmittance for EC glazing states]
+            </div>
+
+            <blockquote class="scavenger-quote" data-quote-id="gb-phd-q2">
+              <p>"The holy grail of glazing research is independent control of visible light and infrared radiation - admitting daylight while rejecting or admitting heat as needed."</p>
+              <cite>— Dr. Ariel Liebman, MIT Department of Mechanical Engineering</cite>
+            </blockquote>
+
+            <h3>Computational Fluid Dynamics in Natural Ventilation</h3>
+
+            <p>CFD modeling enables detailed airflow analysis but presents significant methodological challenges:</p>
+
+            <div class="concept-section">
+              <h4>Modeling Considerations</h4>
+              <ul>
+                <li><strong>Turbulence models:</strong> RANS (k-epsilon, k-omega, SST) vs. LES trade-offs</li>
+                <li><strong>Boundary conditions:</strong> ABL profiles, pressure coefficients from wind tunnel</li>
+                <li><strong>Grid resolution:</strong> Y+ requirements for near-wall treatment</li>
+                <li><strong>Validation:</strong> Full-scale measurement vs. scaled wind tunnel studies</li>
+                <li><strong>Coupled simulation:</strong> Thermal-airflow coupling, multizone-CFD integration</li>
+              </ul>
+            </div>
+
+            <div class="equation-box">
+              <h4>Reynolds-Averaged Navier-Stokes (RANS)</h4>
+              <p>The governing equations for turbulent flow simulation require closure models for the Reynolds stress term.</p>
+            </div>
+
+            <h3>Thermal Comfort Beyond PMV/PPD</h3>
+
+            <p>Passive buildings challenge conventional comfort models:</p>
+
+            <blockquote class="scavenger-quote" data-quote-id="gb-phd-q3">
+              <p>"Fanger's PMV model was developed for air-conditioned spaces. In passive buildings, psychological adaptation, perceived control, and air movement preferences fundamentally change comfort equations."</p>
+              <cite>— Dr. Richard de Dear, University of Sydney</cite>
+            </blockquote>
+
+            <div class="concept-section">
+              <h4>Emerging Comfort Frameworks</h4>
+              <ul>
+                <li><strong>Adaptive comfort:</strong> Context-dependent expectations (ASHRAE 55, EN 16798)</li>
+                <li><strong>Alliesthesia:</strong> Pleasure from dynamic thermal stimulation</li>
+                <li><strong>Personal comfort models:</strong> ML-based individual prediction</li>
+                <li><strong>Non-uniform environments:</strong> Local body segment analysis</li>
+                <li><strong>Multimodal comfort:</strong> Integration of thermal, visual, acoustic factors</li>
+              </ul>
+            </div>
+
+            <h3>Building-Integrated Photovoltaics (BIPV)</h3>
+
+            <p>The integration of passive design with active solar generation presents research opportunities:</p>
+
+            <div class="image-placeholder" data-caption="Semi-transparent BIPV glazing showing visible light transmission and power generation">
+              [Image: Photo of building with semi-transparent PV glazing]
+            </div>
+
+            <table>
+              <thead>
+                <tr>
+                  <th>BIPV Type</th>
+                  <th>Efficiency Range</th>
+                  <th>Research Challenges</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>Crystalline Si modules</td>
+                  <td>18-22%</td>
+                  <td>Thermal effects on efficiency, aesthetics</td>
+                </tr>
+                <tr>
+                  <td>Thin film (CIGS, CdTe)</td>
+                  <td>12-16%</td>
+                  <td>Flexible integration, color options</td>
+                </tr>
+                <tr>
+                  <td>Semi-transparent (a-Si)</td>
+                  <td>6-10%</td>
+                  <td>Balancing VT, SHGC, and power output</td>
+                </tr>
+                <tr>
+                  <td>Perovskite</td>
+                  <td>15-25%+</td>
+                  <td>Stability, scalability, toxicity</td>
+                </tr>
+                <tr>
+                  <td>DSC (dye-sensitized)</td>
+                  <td>8-12%</td>
+                  <td>Long-term stability, color tuning</td>
+                </tr>
+              </tbody>
+            </table>
+
+            <h3>Machine Learning in Passive Design</h3>
+
+            <p>AI/ML methods are transforming passive building research:</p>
+
+            <div class="concept-section">
+              <h4>Applications</h4>
+              <ul>
+                <li><strong>Surrogate modeling:</strong> Fast approximations of detailed simulations for optimization</li>
+                <li><strong>Occupancy prediction:</strong> Learning patterns for predictive control</li>
+                <li><strong>Fault detection:</strong> Identifying performance degradation in passive systems</li>
+                <li><strong>Generative design:</strong> ML-guided exploration of design space</li>
+                <li><strong>Digital twins:</strong> Continuous model calibration with real-time data</li>
+              </ul>
+            </div>
+
+            <blockquote class="scavenger-quote" data-quote-id="gb-phd-q4">
+              <p>"Machine learning doesn't replace physics-based models - it augments them. The future is hybrid models that combine physical understanding with data-driven calibration."</p>
+              <cite>— Dr. Zoltan Nagy, University of Texas at Austin</cite>
+            </blockquote>
+
+            <h3>Resilience and Climate Adaptation</h3>
+
+            <p>Critical research examines passive building performance during extreme events:</p>
+
+            <div class="concept-section">
+              <h4>Passive Survivability</h4>
+              <p>The ability of a building to maintain habitable conditions during extended power outages.</p>
+
+              <ul>
+                <li><strong>Thermal autonomy:</strong> Hours a building stays habitable without HVAC</li>
+                <li><strong>Critical thresholds:</strong> Wet-bulb temperatures for physiological limits</li>
+                <li><strong>Vulnerable populations:</strong> Age, health status, mobility considerations</li>
+                <li><strong>Future climate scenarios:</strong> RCP 4.5, RCP 8.5 projections</li>
+              </ul>
+            </div>
+
+            <h3>Methodological Frameworks</h3>
+
+            <p>Doctoral research requires rigorous methodological approaches:</p>
+
+            <table>
+              <thead>
+                <tr>
+                  <th>Method</th>
+                  <th>Application</th>
+                  <th>Key Considerations</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>Field monitoring</td>
+                  <td>Performance validation</td>
+                  <td>Sensor accuracy, temporal resolution, privacy</td>
+                </tr>
+                <tr>
+                  <td>Test cell experiments</td>
+                  <td>Controlled component testing</td>
+                  <td>Scaling laws, environmental chamber limits</td>
+                </tr>
+                <tr>
+                  <td>Parametric simulation</td>
+                  <td>Sensitivity analysis</td>
+                  <td>Uncertainty propagation, model validation</td>
+                </tr>
+                <tr>
+                  <td>Multi-objective optimization</td>
+                  <td>Design space exploration</td>
+                  <td>Pareto front interpretation, computational cost</td>
+                </tr>
+                <tr>
+                  <td>LCA/LCC</td>
+                  <td>Lifecycle impacts</td>
+                  <td>System boundaries, data quality, allocation</td>
+                </tr>
+              </tbody>
+            </table>
+
+            <div class="chapter-summary">
+              <h4>Research Frontiers Summary</h4>
+              <ul>
+                <li>Climate change challenges foundational assumptions of passive design</li>
+                <li>Dynamic glazing research seeks independent control of visible and infrared radiation</li>
+                <li>CFD modeling of natural ventilation requires careful turbulence model selection</li>
+                <li>Comfort research is moving beyond PMV to adaptive and personal models</li>
+                <li>BIPV integration balances energy generation with passive design functions</li>
+                <li>Machine learning enables hybrid physics-data modeling approaches</li>
+                <li>Resilience research examines passive survivability under extreme conditions</li>
+              </ul>
+            </div>
+          </div>`
         }
       }
     ],
@@ -92,36 +1222,149 @@ export const greenBuildingModules: Module[] = [
         {
           id: 'pq1',
           question: {
-            ELEMENTARY: 'Which direction should big windows face to get sun in winter?',
-            MIDDLE_SCHOOL: 'What is thermal mass?',
-            HIGH_SCHOOL: 'What does a Trombe wall do?',
-            UNDERGRADUATE: 'What software is commonly used for building energy simulation?',
-            GRADUATE: 'What passive strategy works best in hot-humid climates?',
-            PHD: 'What emerging technology enables dynamic control of solar heat gain?'
+            ELEMENTARY: 'According to Sunny, where is the best heater already located?',
+            MIDDLE_SCHOOL: 'What does Edward Mazria say passive solar design is about?',
+            HIGH_SCHOOL: 'According to Ralph Knowles, what is the first step in passive design?',
+            UNDERGRADUATE: 'What does Dr. Gregg Ander say buildings are?',
+            GRADUATE: 'According to Dr. Rajat Gupta, what percentage is the typical performance gap?',
+            PHD: 'What does Dr. Shady Attia say the 1970s passive principles assumed?'
           },
           options: {
-            ELEMENTARY: ['South', 'North', 'Down', 'Up'],
-            MIDDLE_SCHOOL: ['Heavy materials that store heat', 'Light curtains', 'Thin walls', 'Open windows'],
-            HIGH_SCHOOL: ['Absorbs and releases solar heat slowly', 'Blocks all light', 'Only works in summer', 'Creates electricity'],
-            UNDERGRADUATE: ['EnergyPlus', 'Microsoft Word', 'Photoshop', 'Excel'],
-            GRADUATE: ['Natural ventilation and shading', 'Maximum solar gain', 'No windows', 'Heavy thermal mass'],
-            PHD: ['Thermochromic/electrochromic glazing', 'Standard double glazing', 'Brick walls', 'Ceiling fans']
+            ELEMENTARY: ['In the sky', 'Underground', 'In the walls', 'In the basement'],
+            MIDDLE_SCHOOL: ['Cooperation with nature', 'Fighting against nature', 'Using lots of machines', 'Building underground'],
+            HIGH_SCHOOL: ['Understanding solar geometry', 'Buying expensive materials', 'Using thick walls', 'Installing air conditioning'],
+            UNDERGRADUATE: ['Dynamic thermal systems', 'Static objects', 'Simple boxes', 'Unchanging structures'],
+            GRADUATE: ['30-150%', '5-10%', '1-2%', '200-300%'],
+            PHD: ['A stable climate', 'Cheap energy forever', 'No building codes', 'Unlimited materials']
           },
           correctIndex: 0,
           explanation: {
-            ELEMENTARY: 'In the Northern Hemisphere, big windows facing south get the most winter sun!',
-            MIDDLE_SCHOOL: 'Thermal mass is heavy materials like concrete or brick that store heat and release it slowly.',
-            HIGH_SCHOOL: 'A Trombe wall is a south-facing mass wall that absorbs solar heat and releases it into the building.',
-            UNDERGRADUATE: 'EnergyPlus is the DOE\'s flagship building energy simulation engine.',
-            GRADUATE: 'Hot-humid climates need ventilation and shading more than thermal mass.',
-            PHD: 'Thermochromic and electrochromic glazing can dynamically change their solar heat gain properties.'
+            ELEMENTARY: 'Sunny said "The best heater is already in the sky - we just need to invite it inside!"',
+            MIDDLE_SCHOOL: 'Mazria said passive solar design is about "cooperation with nature - letting the building itself do the work."',
+            HIGH_SCHOOL: 'Knowles said "Understanding solar geometry is the first step in passive design."',
+            UNDERGRADUATE: 'Dr. Ander said "Buildings are not static objects but dynamic thermal systems."',
+            GRADUATE: 'Dr. Gupta noted that post-occupancy studies show a performance gap of 30-150%.',
+            PHD: 'Dr. Attia pointed out that 1970s passive principles assumed a stable climate that is now changing.'
+          }
+        },
+        {
+          id: 'pq2',
+          question: {
+            ELEMENTARY: 'What did Mr. Chen compare a house that faces the sun to?',
+            MIDDLE_SCHOOL: 'What does Dr. Sarah Chen call thermal mass?',
+            HIGH_SCHOOL: 'How long does Felix Trombe say a Trombe wall delays heat release?',
+            UNDERGRADUATE: 'What does Stephen Selkowitz say window selection requires?',
+            GRADUATE: 'According to Dr. Malcolm Cook, what does natural ventilation require?',
+            PHD: 'What does Dr. Ariel Liebman call the "holy grail" of glazing research?'
+          },
+          options: {
+            ELEMENTARY: ['A flower', 'A car', 'A computer', 'A refrigerator'],
+            MIDDLE_SCHOOL: ['Nature\'s thermostat', 'A heater', 'An air conditioner', 'A fan'],
+            HIGH_SCHOOL: ['8-10 hours', '1-2 minutes', '24 hours', '1 week'],
+            UNDERGRADUATE: ['A delicate balance', 'Random choices', 'The cheapest option', 'Maximum size always'],
+            GRADUATE: ['As much analysis as HVAC design', 'No engineering at all', 'Just opening windows', 'Basic calculations only'],
+            PHD: ['Independent control of visible light and infrared', 'Darker glass', 'Thicker panes', 'Smaller windows']
+          },
+          correctIndex: 0,
+          explanation: {
+            ELEMENTARY: 'Mr. Chen said "A house that faces the sun is like a flower - it opens up to warmth and life!"',
+            MIDDLE_SCHOOL: 'Dr. Chen called thermal mass "nature\'s thermostat" that smooths out temperature swings.',
+            HIGH_SCHOOL: 'Trombe said his wall "releases heat with a time delay of 8-10 hours."',
+            UNDERGRADUATE: 'Selkowitz said window selection is "a delicate balance" between solar gain and heat loss.',
+            GRADUATE: 'Dr. Cook said natural ventilation "requires as much analysis as HVAC design."',
+            PHD: 'Dr. Liebman called independent control of light and heat "the holy grail of glazing research."'
+          }
+        },
+        {
+          id: 'pq3',
+          question: {
+            ELEMENTARY: 'What does Grandpa Joe say the sun does differently in summer and winter?',
+            MIDDLE_SCHOOL: 'What did Michael Reynolds say Earthships don\'t need?',
+            HIGH_SCHOOL: 'According to Steve Baer, how does water compare to concrete for heat storage?',
+            UNDERGRADUATE: 'What does Dr. Gail Brager say about thermal comfort in passive buildings?',
+            GRADUATE: 'What does Dr. Luisa Cabeza say about 1cm of PCM compared to concrete?',
+            PHD: 'What does Dr. Richard de Dear say Fanger\'s PMV model was developed for?'
+          },
+          options: {
+            ELEMENTARY: ['Takes a high path in summer, low path in winter', 'Disappears in winter', 'Is brighter in summer', 'Changes color'],
+            MIDDLE_SCHOOL: ['To be hooked up to utilities', 'Windows', 'Doors', 'A roof'],
+            HIGH_SCHOOL: ['Water stores twice as much heat per volume', 'Concrete stores more heat', 'They are equal', 'Water loses heat faster'],
+            UNDERGRADUATE: ['Occupants accept wider temperature ranges with control', 'It must be exactly 72F', 'No comfort is possible', 'Only machines work'],
+            GRADUATE: ['Equivalent to 9cm of concrete', 'Half as effective', 'The same thermal storage', 'Ten times worse'],
+            PHD: ['Air-conditioned spaces', 'Passive buildings', 'Outdoor spaces', 'Hot climates only']
+          },
+          correctIndex: 0,
+          explanation: {
+            ELEMENTARY: 'Grandpa Joe explained that "the sun takes a high path in summer and a low path in winter."',
+            MIDDLE_SCHOOL: 'Reynolds said Earthships don\'t need "to be hooked up to any utilities."',
+            HIGH_SCHOOL: 'Baer said "water stores twice as much heat per volume as concrete."',
+            UNDERGRADUATE: 'Dr. Brager said "occupants accept wider temperature ranges when they have control."',
+            GRADUATE: 'Dr. Cabeza said "1cm of PCM can provide equivalent thermal storage to 9cm of concrete."',
+            PHD: 'Dr. de Dear noted that Fanger\'s PMV model was developed for air-conditioned spaces, not passive buildings.'
+          }
+        },
+        {
+          id: 'pq4',
+          question: {
+            ELEMENTARY: 'What did Maya\'s Mom say happens when we build with nature?',
+            MIDDLE_SCHOOL: 'According to Ken Yeang, what is the best building?',
+            HIGH_SCHOOL: 'What does Dr. Wolfgang Feist say about Passive House energy use?',
+            UNDERGRADUATE: 'What does Dr. Vivian Loftness call the first law of sustainable design?',
+            GRADUATE: 'What does Katrin Klingenberg say building codes are?',
+            PHD: 'What does Dr. Zoltan Nagy say about machine learning and physics models?'
+          },
+          options: {
+            ELEMENTARY: ['Everyone wins - people, planet, and pocketbooks', 'It costs more money', 'Buildings fall down', 'Nothing changes'],
+            MIDDLE_SCHOOL: ['One designed for its specific place on Earth', 'The biggest one', 'The most expensive one', 'A copy of other buildings'],
+            HIGH_SCHOOL: ['90% less energy than typical buildings', '10% less energy', 'The same energy', 'More energy'],
+            UNDERGRADUATE: ['Don\'t fight the climate - work with it', 'Use maximum energy', 'Ignore the weather', 'Build the same everywhere'],
+            GRADUATE: ['The floor, not the ceiling', 'The maximum requirement', 'Unnecessary', 'Too strict'],
+            PHD: ['ML augments physics models, doesn\'t replace them', 'ML replaces physics entirely', 'Physics is outdated', 'They cannot work together']
+          },
+          correctIndex: 0,
+          explanation: {
+            ELEMENTARY: 'Maya\'s Mom said "When we build with nature instead of against it, everyone wins!"',
+            MIDDLE_SCHOOL: 'Yeang said "The best building is one designed for its specific place on Earth."',
+            HIGH_SCHOOL: 'Dr. Feist said "A Passive House uses 90% less energy for heating than a typical building."',
+            UNDERGRADUATE: 'Dr. Loftness called it "Don\'t fight the climate - work with it."',
+            GRADUATE: 'Klingenberg said "Building codes are the floor, not the ceiling."',
+            PHD: 'Dr. Nagy said "Machine learning doesn\'t replace physics-based models - it augments them."'
+          }
+        },
+        {
+          id: 'pq5',
+          question: {
+            ELEMENTARY: 'What does a roof overhang do in the summer?',
+            MIDDLE_SCHOOL: 'What are the five principles of passive solar design?',
+            HIGH_SCHOOL: 'What is the Passive House heating demand standard?',
+            UNDERGRADUATE: 'What does the Adaptive Comfort Model allow in passive buildings?',
+            GRADUATE: 'What forces drive natural ventilation?',
+            PHD: 'What is "passive survivability"?'
+          },
+          options: {
+            ELEMENTARY: ['Blocks the high summer sun', 'Lets in more sun', 'Makes noise', 'Collects rainwater'],
+            MIDDLE_SCHOOL: ['Orientation, Glazing, Thermal Mass, Insulation, Shading', 'Windows, Doors, Walls, Roof, Floor', 'Heat, Cool, Light, Air, Water', 'Sun, Moon, Stars, Earth, Wind'],
+            HIGH_SCHOOL: ['15 kWh/m2/year or less', '100 kWh/m2/year', '500 kWh/m2/year', 'No limit'],
+            UNDERGRADUATE: ['Wider acceptable temperature ranges', 'Exact 72F always', 'Narrower ranges', 'No thermal comfort'],
+            GRADUATE: ['Wind pressure and buoyancy (stack effect)', 'Only mechanical fans', 'Only wind', 'Only temperature'],
+            PHD: ['Maintaining habitable conditions during power outages', 'Building without permits', 'Using no materials', 'Surviving construction']
+          },
+          correctIndex: 0,
+          explanation: {
+            ELEMENTARY: 'A roof overhang blocks the high summer sun but lets the low winter sun in!',
+            MIDDLE_SCHOOL: 'The five principles are Orientation, Glazing, Thermal Mass, Insulation, and Shading.',
+            HIGH_SCHOOL: 'The Passive House standard requires heating demand of 15 kWh/m2/year or less.',
+            UNDERGRADUATE: 'The Adaptive Comfort Model allows occupants to accept wider temperature ranges.',
+            GRADUATE: 'Natural ventilation is driven by wind pressure (cross ventilation) and buoyancy (stack effect).',
+            PHD: 'Passive survivability is the ability to maintain habitable conditions during extended power outages.'
           }
         }
       ]
     },
     externalResources: [
       { title: 'Passive House Institute', url: 'https://passivehouse.com/', type: 'research' },
-      { title: 'DOE Building Technologies Office', url: 'https://www.energy.gov/eere/buildings', type: 'article' }
+      { title: 'DOE Building Technologies Office', url: 'https://www.energy.gov/eere/buildings', type: 'article' },
+      { title: 'Whole Building Design Guide - Passive Solar Heating', url: 'https://www.wbdg.org/resources/passive-solar-heating', type: 'guide' }
     ]
   },
   // Module 2: Sustainable Building Materials
