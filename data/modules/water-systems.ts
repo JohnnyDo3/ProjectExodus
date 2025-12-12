@@ -30,12 +30,532 @@ export const waterSystemsModules: Module[] = [
         hasActivity: true,
         activityType: 'SIMULATION',
         content: {
-          ELEMENTARY: `<div class="lesson-content"><h2>🌧️ Free Water from the Sky!</h2><p>When it rains, all that water can be collected and saved!</p><h3>How We Catch Rain</h3><ul><li>☔ Rain falls on roofs</li><li>🏠 Gutters channel the water</li><li>🪣 Barrels store the water</li><li>🌱 Plants get watered!</li></ul></div>`,
-          MIDDLE_SCHOOL: `<div class="lesson-content"><h2>Rainwater Collection Systems</h2><h3>Basic Components</h3><ul><li><strong>Catchment:</strong> Roof surface</li><li><strong>Conveyance:</strong> Gutters and downspouts</li><li><strong>First flush:</strong> Diverts dirty first rain</li><li><strong>Storage:</strong> Tanks or cisterns</li><li><strong>Distribution:</strong> Pumps and pipes</li></ul></div>`,
-          HIGH_SCHOOL: `<div class="lesson-content"><h2>System Design</h2><h3>Calculating Potential</h3><p>Harvest = Rainfall × Roof Area × Collection Efficiency (typically 0.75-0.85)</p><h3>Water Quality</h3><ul><li>Roof material matters</li><li>First flush diversion essential</li><li>Filtration and treatment options</li><li>End use determines treatment level</li></ul></div>`,
-          UNDERGRADUATE: `<div class="lesson-content"><h2>Engineering Considerations</h2><h3>System Sizing</h3><ul><li>Supply-demand analysis</li><li>Dry period bridging</li><li>Tank optimization</li><li>Cost-benefit analysis</li></ul><h3>Treatment Trains</h3><p>Sediment → Carbon → UV/Chlorine for potable use.</p></div>`,
-          GRADUATE: `<div class="lesson-content"><h2>Policy and Scale</h2><h3>Regulatory Landscape</h3><ul><li>Incentive programs</li><li>Building code integration</li><li>Water rights issues</li></ul><h3>Community Systems</h3><p>Shared catchment, distributed storage, and stormwater integration.</p></div>`,
-          PHD: `<div class="lesson-content"><h2>Research Frontiers</h2><h3>Key Questions</h3><ul><li>Climate change impacts on reliability</li><li>Emerging contaminants</li><li>Smart system optimization</li><li>Life cycle assessment</li></ul></div>`
+          ELEMENTARY: `<div class="lesson-content">
+<h2>Drip's Amazing Adventure</h2>
+
+<p>High up in the clouds, a little raindrop named Drip was getting ready for the most exciting journey of her life!</p>
+
+<p>"Today I'm going to help a garden grow!" Drip said to her cloud friends. Then—WHOOOOSH—she fell from the sky!</p>
+
+<div class="image-placeholder" data-caption="Drip the raindrop falling from a cloud toward a house">
+[Image: A friendly cartoon raindrop with a smile falling from a fluffy cloud toward a house with a garden]
+</div>
+
+<h3>The Journey Begins</h3>
+
+<p>Drip landed on a rooftop—SPLAT! But instead of sitting there, she started sliding down into a gutter.</p>
+
+<p>"Wheeeee!" Drip shouted as she slid along with thousands of other raindrops. They all rushed down a pipe and into... a big blue barrel!</p>
+
+<blockquote class="scavenger-quote" data-quote-id="ws-elem-q1">
+<p>"Every drop of rain is a tiny gift from the sky. When we catch it, we save it for thirsty plants!"</p>
+<cite>— Grandpa Water Wise</cite>
+</blockquote>
+
+<h3>What is Rainwater Harvesting?</h3>
+
+<p><strong>Rainwater harvesting</strong> means catching rain and saving it for later! Here's how it works:</p>
+
+<ol>
+<li><strong>Rain falls on the roof</strong> — This is called the "catchment"</li>
+<li><strong>Gutters collect the water</strong> — Like tiny rivers on your house</li>
+<li><strong>Pipes carry it down</strong> — Into a storage container</li>
+<li><strong>A barrel or tank saves it</strong> — For when you need it!</li>
+</ol>
+
+<div class="image-placeholder" data-caption="Simple rainwater harvesting system on a house">
+[Image: Colorful diagram showing rain falling on a roof, flowing through gutters, and collecting in a rain barrel next to a garden]
+</div>
+
+<h3>Why Catch Rain?</h3>
+
+<p>Drip learned that saved rainwater can do amazing things:</p>
+<ul>
+<li>Water gardens and flowers</li>
+<li>Fill birdbaths for thirsty birds</li>
+<li>Wash outdoor toys and bikes</li>
+<li>Help during dry, sunny days when plants need extra water</li>
+</ul>
+
+<blockquote class="scavenger-quote" data-quote-id="ws-elem-q2">
+<p>"Rain is free water falling from the sky. Catching it is one of the smartest things we can do!"</p>
+<cite>— Kids Water Conservation Club</cite>
+</blockquote>
+
+<h3>Drip's Happy Ending</h3>
+
+<p>Drip waited in the barrel for a sunny day. Then a little girl named Sofia turned on the spigot. Drip flowed out and landed on a tomato plant's roots.</p>
+
+<p>"I did it!" Drip cheered. "I helped grow food!"</p>
+
+<div class="key-concept">
+<h4>Remember!</h4>
+<p>Rainwater harvesting = Catching rain + Saving it + Using it wisely!</p>
+</div>
+</div>`,
+
+          MIDDLE_SCHOOL: `<div class="lesson-content">
+<h2>Ancient Wisdom, Modern Solution</h2>
+
+<p>Imagine living 4,000 years ago in a desert. There's no faucet to turn on, no pipes bringing water to your home. Yet ancient civilizations thrived in some of the driest places on Earth. Their secret? Rainwater harvesting.</p>
+
+<div class="image-placeholder" data-caption="Ancient rainwater cistern from the Middle East">
+[Image: Archaeological photo of an ancient stone cistern with modern diagram overlay explaining the system]
+</div>
+
+<h3>A System as Old as Civilization</h3>
+
+<p>From the Roman Empire's aqueducts to ancient India's step wells, humans have harvested rain for millennia. Today, this ancient practice is more important than ever.</p>
+
+<blockquote class="scavenger-quote" data-quote-id="ws-mid-q1">
+<p>"Rainwater harvesting isn't new technology—it's old wisdom we're finally remembering. Ancient civilizations survived droughts by capturing every precious drop."</p>
+<cite>— World Water Council</cite>
+</blockquote>
+
+<h3>How Modern Systems Work</h3>
+
+<p>A complete rainwater harvesting system has five main components:</p>
+
+<table class="component-table">
+<tr><th>Component</th><th>Function</th><th>Example</th></tr>
+<tr><td>Catchment</td><td>Surface that collects rain</td><td>Roof, paved area</td></tr>
+<tr><td>Conveyance</td><td>Moves water to storage</td><td>Gutters, pipes</td></tr>
+<tr><td>First Flush Diverter</td><td>Removes initial dirty water</td><td>Diverter valve</td></tr>
+<tr><td>Storage</td><td>Holds harvested water</td><td>Tanks, cisterns, barrels</td></tr>
+<tr><td>Distribution</td><td>Delivers water for use</td><td>Pumps, gravity feed</td></tr>
+</table>
+
+<div class="image-placeholder" data-caption="Modern rainwater harvesting system components">
+[Image: Labeled diagram showing all five components of a home rainwater system]
+</div>
+
+<h3>The First Flush: Why It Matters</h3>
+
+<p>When rain first hits your roof, it washes away dust, bird droppings, leaves, and pollution. This "first flush" of dirty water needs to be diverted away from your storage.</p>
+
+<blockquote class="scavenger-quote" data-quote-id="ws-mid-q2">
+<p>"The first flush diverter is the unsung hero of rainwater systems. It ensures only clean water reaches your storage tank."</p>
+<cite>— Texas Water Development Board</cite>
+</blockquote>
+
+<h3>How Much Can You Collect?</h3>
+
+<p>You might be surprised how much rain a roof can catch! A simple formula:</p>
+
+<p><strong>Gallons = Roof Area (sq ft) × Rainfall (inches) × 0.623</strong></p>
+
+<p>For example, a 1,000 square foot roof with just 1 inch of rain collects about 623 gallons—enough to fill 12 bathtubs!</p>
+
+<h3>Uses for Harvested Rainwater</h3>
+
+<ul>
+<li><strong>Garden irrigation</strong> — Plants love rainwater (no chlorine!)</li>
+<li><strong>Lawn watering</strong> — Reduces water bills</li>
+<li><strong>Car washing</strong> — Soft water means no spots</li>
+<li><strong>Toilet flushing</strong> — With proper plumbing</li>
+<li><strong>Drinking</strong> — With advanced filtration and treatment</li>
+</ul>
+
+<div class="key-concept">
+<h4>Key Takeaway</h4>
+<p>Rainwater harvesting turns every rainstorm into an opportunity. With proper collection and storage, your roof becomes a water source that can supply thousands of gallons each year.</p>
+</div>
+</div>`,
+
+          HIGH_SCHOOL: `<div class="lesson-content">
+<h2>Engineering Water Security: The Science of Rainwater Harvesting</h2>
+
+<p>In 2018, Cape Town, South Africa nearly became the first major city to run out of water. "Day Zero"—when taps would run dry—was avoided partly through emergency rainwater collection. This crisis highlighted what engineers have long known: rainwater harvesting isn't just eco-friendly, it's essential infrastructure.</p>
+
+<div class="image-placeholder" data-caption="Cape Town Day Zero water crisis response">
+[Image: Split image showing empty reservoir and residents collecting rainwater during the crisis]
+</div>
+
+<h3>The Physics of Collection</h3>
+
+<p>Understanding rainwater harvesting requires basic hydrology:</p>
+
+<blockquote class="scavenger-quote" data-quote-id="ws-high-q1">
+<p>"The theoretical harvest from any catchment equals precipitation times area. But real-world efficiency rarely exceeds 85% due to evaporation, splash loss, absorption, and system inefficiencies."</p>
+<cite>— American Rainwater Catchment Systems Association</cite>
+</blockquote>
+
+<h4>The Collection Equation</h4>
+<p><code>V = R × A × Ce</code></p>
+<p>Where:</p>
+<ul>
+<li>V = Volume collected (gallons or liters)</li>
+<li>R = Rainfall depth</li>
+<li>A = Catchment area</li>
+<li>Ce = Collection efficiency (typically 0.75-0.85)</li>
+</ul>
+
+<h3>Roof Materials and Water Quality</h3>
+
+<table class="comparison-table">
+<thead>
+<tr><th>Roof Type</th><th>Collection Efficiency</th><th>Water Quality Concerns</th></tr>
+</thead>
+<tbody>
+<tr><td>Metal (galvanized)</td><td>90-95%</td><td>Zinc leaching initially</td></tr>
+<tr><td>Metal (coated/painted)</td><td>90-95%</td><td>Minimal if food-safe coating</td></tr>
+<tr><td>Asphalt shingles</td><td>75-85%</td><td>Petroleum compounds, granules</td></tr>
+<tr><td>Clay/concrete tiles</td><td>80-90%</td><td>Alkalinity, possible lead in old glazes</td></tr>
+<tr><td>Wooden shakes</td><td>70-80%</td><td>Tannins, possible preservatives</td></tr>
+</tbody>
+</table>
+
+<div class="image-placeholder" data-caption="Comparison of roof materials for rainwater harvesting">
+[Image: Side-by-side photos of different roof types with efficiency ratings]
+</div>
+
+<h3>First Flush Systems: Engineering Cleaner Water</h3>
+
+<blockquote class="scavenger-quote" data-quote-id="ws-high-q2">
+<p>"The first 0.5-1.0 mm of rainfall—approximately 10 gallons per 1,000 square feet of roof—should be diverted. This 'first flush' contains 70-90% of the total contaminant load from the catchment surface."</p>
+<cite>— EPA Rainwater Harvesting Guide</cite>
+</blockquote>
+
+<h4>First Flush Diverter Types:</h4>
+<ul>
+<li><strong>Standpipe:</strong> Simple vertical pipe that fills first, then overflows to tank</li>
+<li><strong>Ball valve:</strong> Floating ball seals diverter pipe after filling</li>
+<li><strong>Tipping bucket:</strong> Mechanical device diverts set volume</li>
+<li><strong>Volume-based:</strong> Calculated diversion based on roof area</li>
+</ul>
+
+<h3>Treatment for Different Uses</h3>
+
+<table class="treatment-table">
+<thead>
+<tr><th>End Use</th><th>Treatment Required</th><th>Quality Standard</th></tr>
+</thead>
+<tbody>
+<tr><td>Irrigation</td><td>Debris screen only</td><td>No standard</td></tr>
+<tr><td>Toilet flushing</td><td>Screen + sediment filter</td><td>Non-potable</td></tr>
+<tr><td>Laundry</td><td>Sediment + carbon filter</td><td>Non-potable</td></tr>
+<tr><td>Potable (drinking)</td><td>Sediment + carbon + UV/chlorine</td><td>EPA drinking water</td></tr>
+</tbody>
+</table>
+
+<h3>System Sizing: Matching Supply and Demand</h3>
+
+<blockquote class="scavenger-quote" data-quote-id="ws-high-q3">
+<p>"Optimal tank sizing depends not just on total rainfall, but on its distribution throughout the year. A system designed for average annual rainfall will fail during the months that matter most—the dry season."</p>
+<cite>— University of Arizona Water Resources Research Center</cite>
+</blockquote>
+
+<div class="key-concept">
+<h4>Critical Thinking</h4>
+<p>Rainwater harvesting demonstrates how engineering intersects with environmental science, public health, and policy. As climate change intensifies droughts, these systems become critical infrastructure—not just green features.</p>
+</div>
+</div>`,
+
+          UNDERGRADUATE: `<div class="lesson-content">
+<h2>Rainwater Harvesting Systems Engineering: Design, Analysis, and Optimization</h2>
+
+<p>As freshwater resources face increasing pressure from population growth and climate change, rainwater harvesting has evolved from simple barrel collection to sophisticated engineered systems. Understanding system design requires integrating hydrology, water quality engineering, and economic analysis.</p>
+
+<h3>Hydrological Analysis for System Design</h3>
+
+<blockquote class="scavenger-quote" data-quote-id="ws-undergrad-q1">
+<p>"Rainwater harvesting system design must account for stochastic rainfall variability. Using average precipitation leads to undersized systems that fail precisely when needed most—during dry periods."</p>
+<cite>— ASCE Journal of Water Resources Planning and Management</cite>
+</blockquote>
+
+<h4>Design Rainfall Analysis</h4>
+<p>System design requires statistical analysis of precipitation data:</p>
+<ul>
+<li><strong>Annual exceedance probability:</strong> What rainfall can be expected in X% of years?</li>
+<li><strong>Dry period analysis:</strong> Maximum consecutive days without significant rain</li>
+<li><strong>Monthly distribution:</strong> Seasonal patterns affecting supply</li>
+<li><strong>Return period events:</strong> Design for overflow management</li>
+</ul>
+
+<div class="image-placeholder" data-caption="Rainfall probability distribution and dry period analysis">
+[Image: Statistical charts showing rainfall probability distributions and dry period analysis for system sizing]
+</div>
+
+<h3>Mass Balance Modeling</h3>
+
+<p>Tank sizing requires daily or monthly mass balance simulation:</p>
+
+<p><code>S(t) = S(t-1) + Q(t) - D(t) - O(t)</code></p>
+
+<p>Where:</p>
+<ul>
+<li>S(t) = Storage volume at time t</li>
+<li>Q(t) = Inflow from catchment</li>
+<li>D(t) = Demand withdrawal</li>
+<li>O(t) = Overflow (when S > capacity)</li>
+</ul>
+
+<h4>Reliability Analysis</h4>
+<p>System reliability is typically expressed as:</p>
+<ul>
+<li><strong>Volumetric reliability:</strong> % of demand met over analysis period</li>
+<li><strong>Time-based reliability:</strong> % of time periods with full supply</li>
+<li><strong>Design reliability:</strong> Target performance level (e.g., 90%)</li>
+</ul>
+
+<blockquote class="scavenger-quote" data-quote-id="ws-undergrad-q2">
+<p>"A 90% reliable system will, on average, fail to meet full demand in 36.5 days per year. Whether this is acceptable depends entirely on the consequences of shortage and availability of backup supply."</p>
+<cite>— Water Resources Engineering, Mays 2010</cite>
+</blockquote>
+
+<h3>Water Quality Engineering</h3>
+
+<h4>Contaminant Sources and Treatment</h4>
+<table class="technical-table">
+<thead>
+<tr><th>Contaminant Category</th><th>Sources</th><th>Treatment Approach</th></tr>
+</thead>
+<tbody>
+<tr><td>Particulates</td><td>Dust, leaves, roof debris</td><td>Screening, sedimentation, filtration</td></tr>
+<tr><td>Microbiological</td><td>Bird/animal feces, biofilms</td><td>UV disinfection, chlorination</td></tr>
+<tr><td>Chemical (organic)</td><td>Roof coatings, atmospheric deposition</td><td>Activated carbon adsorption</td></tr>
+<tr><td>Chemical (inorganic)</td><td>Metal roofs, acid rain</td><td>pH adjustment, ion exchange</td></tr>
+</tbody>
+</table>
+
+<h4>Treatment Train Design</h4>
+<p>For potable use, typical treatment sequence:</p>
+<ol>
+<li>First flush diversion (10-25 gallons per 1000 sq ft)</li>
+<li>Inlet screen (≥1mm mesh)</li>
+<li>Sedimentation (in-tank or separate)</li>
+<li>Particulate filtration (5 micron nominal)</li>
+<li>Activated carbon (taste, odor, organics)</li>
+<li>Disinfection (UV: 40 mJ/cm², or chlorine: 0.2 mg/L residual)</li>
+</ol>
+
+<div class="image-placeholder" data-caption="Treatment train schematic for potable rainwater">
+[Image: Process flow diagram showing complete treatment train with equipment specifications]
+</div>
+
+<h3>Economic Analysis</h3>
+
+<blockquote class="scavenger-quote" data-quote-id="ws-undergrad-q3">
+<p>"Life cycle cost analysis of rainwater harvesting must include not only system capital and O&M costs but also the avoided costs of municipal water, stormwater management fees, and the value of supply resilience."</p>
+<cite>— Journal of Environmental Management</cite>
+</blockquote>
+
+<h4>Key Economic Parameters:</h4>
+<ul>
+<li><strong>Capital costs:</strong> Tank, treatment, plumbing, installation</li>
+<li><strong>Operating costs:</strong> Pump energy, filter replacement, maintenance</li>
+<li><strong>Avoided costs:</strong> Water purchase, stormwater fees, infrastructure sizing</li>
+<li><strong>Externalities:</strong> Reduced CSO events, aquifer recharge credits</li>
+</ul>
+
+<div class="key-concept">
+<h4>Engineering Perspective</h4>
+<p>Optimal rainwater harvesting design requires balancing reliability requirements against capital costs. Oversized tanks provide security but increase costs; undersized systems fail during droughts. Monte Carlo simulation with historical rainfall data enables probabilistic design that quantifies performance uncertainty.</p>
+</div>
+</div>`,
+
+          GRADUATE: `<div class="lesson-content">
+<h2>Rainwater Harvesting: Policy Frameworks, Urban Integration, and Climate Adaptation</h2>
+
+<p>Graduate-level analysis of rainwater harvesting extends beyond technical design to examine institutional frameworks, urban water cycle integration, and the role of decentralized systems in climate adaptation strategies.</p>
+
+<h3>Regulatory and Policy Landscape</h3>
+
+<h4>The Water Rights Question</h4>
+<blockquote class="scavenger-quote" data-quote-id="ws-grad-q1">
+<p>"In prior appropriation states of the American West, rainwater that falls on your roof is not legally 'yours' until it percolates to groundwater or flows to a stream. Colorado only legalized residential rain barrels in 2016, and still limits collection to two 55-gallon barrels."</p>
+<cite>— Colorado Water Law Review</cite>
+</blockquote>
+
+<p>Water rights frameworks affecting rainwater harvesting:</p>
+<ul>
+<li><strong>Prior appropriation:</strong> Historical rights to water flows may technically include rainwater</li>
+<li><strong>Riparian rights:</strong> Generally more permissive of on-site harvesting</li>
+<li><strong>Public trust doctrine:</strong> State interests in water resources</li>
+<li><strong>International frameworks:</strong> Human right to water considerations</li>
+</ul>
+
+<div class="image-placeholder" data-caption="Map of rainwater harvesting regulations across US states">
+[Image: US map showing varying state regulations from unrestricted to prohibited rainwater collection]
+</div>
+
+<h3>Incentive Program Design</h3>
+
+<h4>Policy Instrument Options:</h4>
+<table class="policy-table">
+<thead>
+<tr><th>Instrument</th><th>Mechanism</th><th>Effectiveness Evidence</th></tr>
+</thead>
+<tbody>
+<tr><td>Direct rebates</td><td>Cash back on system purchase</td><td>High uptake, cost-effective per gallon</td></tr>
+<tr><td>Tax credits</td><td>Income tax deduction</td><td>Benefits higher-income households</td></tr>
+<tr><td>Stormwater fee credits</td><td>Reduced utility fees</td><td>Ongoing incentive for maintenance</td></tr>
+<tr><td>Development requirements</td><td>Mandates for new construction</td><td>High compliance, increased development costs</td></tr>
+<tr><td>Expedited permitting</td><td>Fast-track for green buildings</td><td>Developer preference, variable uptake</td></tr>
+</tbody>
+</table>
+
+<blockquote class="scavenger-quote" data-quote-id="ws-grad-q2">
+<p>"Austin's rainwater harvesting rebate program achieved 85% higher adoption rates than neighboring cities with similar rainfall—demonstrating that policy design, not just incentive amount, drives uptake."</p>
+<cite>— Journal of the American Planning Association</cite>
+</blockquote>
+
+<h3>Urban Water Cycle Integration</h3>
+
+<h4>Rainwater Harvesting in Integrated Urban Water Management:</h4>
+<p>Modern urban water planning increasingly views rainwater as a resource within the urban water cycle:</p>
+<ul>
+<li><strong>Supply diversification:</strong> Reducing dependence on centralized sources</li>
+<li><strong>Stormwater management:</strong> Peak flow reduction, CSO mitigation</li>
+<li><strong>Groundwater recharge:</strong> Infiltration from overflow</li>
+<li><strong>Urban heat island mitigation:</strong> Through irrigation use</li>
+</ul>
+
+<div class="image-placeholder" data-caption="Integrated urban water cycle with rainwater harvesting">
+[Image: Systems diagram showing rainwater harvesting integrated with stormwater, potable supply, and wastewater systems]
+</div>
+
+<h3>Climate Adaptation Role</h3>
+
+<blockquote class="scavenger-quote" data-quote-id="ws-grad-q3">
+<p>"Climate projections suggest intensification of the hydrological cycle—more intense precipitation events separated by longer dry periods. Rainwater harvesting addresses both challenges: capturing intense rainfall while providing storage to bridge extended droughts."</p>
+<cite>— IPCC Special Report on Climate Change and Water</cite>
+</blockquote>
+
+<h4>Adaptation Considerations:</h4>
+<ul>
+<li>System design for non-stationary climate (changing rainfall patterns)</li>
+<li>Integration with other adaptive measures (efficiency, reuse, desalination)</li>
+<li>Vulnerability assessment for existing systems</li>
+<li>Adaptive management frameworks</li>
+</ul>
+
+<h3>Community-Scale Systems</h3>
+
+<p>Beyond individual buildings, district-scale rainwater harvesting offers advantages:</p>
+<ul>
+<li>Economies of scale in treatment and storage</li>
+<li>Catchment diversity reducing supply variability</li>
+<li>Professional operation and maintenance</li>
+<li>Integration with other water sources</li>
+</ul>
+
+<blockquote class="scavenger-quote" data-quote-id="ws-grad-q4">
+<p>"Singapore's ABC Waters program demonstrates that urban rainwater management can simultaneously address water supply, flood control, and urban livability—transforming drainage infrastructure into community amenities."</p>
+<cite>— Singapore PUB, National Water Agency</cite>
+</blockquote>
+
+<div class="key-concept">
+<h4>Research Directions</h4>
+<p>Graduate research on rainwater harvesting increasingly focuses on systems integration—how decentralized collection interacts with centralized infrastructure, how policy can accelerate adoption equitably, and how systems must adapt to climate change uncertainty.</p>
+</div>
+</div>`,
+
+          PHD: `<div class="lesson-content">
+<h2>Rainwater Harvesting: Advanced Research Frontiers and Systemic Analysis</h2>
+
+<p>Doctoral engagement with rainwater harvesting requires moving beyond system design to examine fundamental research questions in hydrology, water quality science, sociotechnical systems, and transitions theory.</p>
+
+<h3>Stochastic Hydrology and System Reliability</h3>
+
+<h4>Non-Stationary Design Challenges</h4>
+<blockquote class="scavenger-quote" data-quote-id="ws-phd-q1">
+<p>"Traditional hydrological design assumes stationarity—that statistical properties of rainfall remain constant. Climate change invalidates this assumption, requiring new frameworks that explicitly incorporate non-stationary processes and deep uncertainty."</p>
+<cite>— Milly et al., "Stationarity is Dead," Science, 2008</cite>
+</blockquote>
+
+<p>Research frontiers in system reliability:</p>
+<ul>
+<li><strong>Climate model downscaling:</strong> Translating GCM outputs to local rainfall scenarios</li>
+<li><strong>Ensemble methods:</strong> Designing for multiple climate futures</li>
+<li><strong>Adaptive design:</strong> Systems that can be modified as climate evolves</li>
+<li><strong>Decision scaling:</strong> Identifying system vulnerabilities to climate stressors</li>
+</ul>
+
+<div class="image-placeholder" data-caption="Non-stationary rainfall analysis for system design">
+[Image: Statistical plots showing shifting rainfall distributions under climate change scenarios]
+</div>
+
+<h3>Emerging Contaminants and Water Quality Research</h3>
+
+<h4>Research Questions:</h4>
+<ul>
+<li><strong>Atmospheric deposition:</strong> Microplastics, PFAS, emerging organic contaminants</li>
+<li><strong>Roof-water interactions:</strong> Leaching dynamics, biofilm development</li>
+<li><strong>Storage water quality:</strong> Stratification, residence time effects</li>
+<li><strong>Treatment efficacy:</strong> Novel contaminants and conventional treatment</li>
+</ul>
+
+<blockquote class="scavenger-quote" data-quote-id="ws-phd-q2">
+<p>"Microplastic contamination in rainwater harvesting systems remains largely uncharacterized. Preliminary studies suggest atmospheric deposition and roof runoff contribute significant microplastic loads, with implications for treatment design and human health risk assessment."</p>
+<cite>— Environmental Science & Technology, 2022</cite>
+</blockquote>
+
+<h3>Smart Systems and IoT Integration</h3>
+
+<h4>Cyber-Physical Rainwater Systems:</h4>
+<p>Emerging research on intelligent rainwater management:</p>
+<ul>
+<li><strong>Real-time control:</strong> Forecast-based storage management</li>
+<li><strong>Networked systems:</strong> Coordinated operation across buildings</li>
+<li><strong>Predictive maintenance:</strong> Sensor-based system monitoring</li>
+<li><strong>Digital twins:</strong> Simulation-based optimization</li>
+</ul>
+
+<blockquote class="scavenger-quote" data-quote-id="ws-phd-q3">
+<p>"Real-time controlled rainwater tanks that discharge before forecast storms can provide 40-60% greater stormwater detention benefit than passive systems of the same size, while maintaining equivalent supply reliability."</p>
+<cite>— Water Research, 2021</cite>
+</blockquote>
+
+<div class="image-placeholder" data-caption="Smart rainwater harvesting system architecture">
+[Image: Technical diagram showing sensors, controllers, cloud connectivity, and optimization algorithms]
+</div>
+
+<h3>Sociotechnical Transitions and Adoption</h3>
+
+<h4>Multi-Level Perspective Analysis</h4>
+<p>Understanding rainwater harvesting adoption through transitions theory:</p>
+<ul>
+<li><strong>Landscape pressures:</strong> Climate change, water scarcity, sustainability discourse</li>
+<li><strong>Regime resistance:</strong> Water utility business models, regulatory frameworks</li>
+<li><strong>Niche innovations:</strong> Technology development, demonstration projects</li>
+<li><strong>Transition pathways:</strong> Transformation, reconfiguration, substitution</li>
+</ul>
+
+<blockquote class="scavenger-quote" data-quote-id="ws-phd-q4">
+<p>"The transition to decentralized water systems faces significant regime resistance from utilities whose revenue models depend on volumetric sales. Research must examine not just technical feasibility but the political economy of infrastructure transitions."</p>
+<cite>— Environmental Innovation and Societal Transitions</cite>
+</blockquote>
+
+<h3>Life Cycle Assessment and Sustainability</h3>
+
+<h4>Research Gaps in LCA:</h4>
+<ul>
+<li>Comparative LCA with alternative supply sources</li>
+<li>Spatial variation in environmental impacts</li>
+<li>Dynamic LCA under climate change</li>
+<li>Social LCA and equity considerations</li>
+</ul>
+
+<h3>Methodological Considerations</h3>
+
+<table class="methodology-table">
+<thead>
+<tr><th>Research Domain</th><th>Key Methods</th><th>Data Requirements</th></tr>
+</thead>
+<tbody>
+<tr><td>System reliability</td><td>Monte Carlo simulation, copulas</td><td>Long-term daily precipitation records</td></tr>
+<tr><td>Water quality</td><td>Event-based sampling, qPCR</td><td>Roof runoff characterization</td></tr>
+<tr><td>Adoption dynamics</td><td>Agent-based modeling, surveys</td><td>Household decision factors</td></tr>
+<tr><td>Policy analysis</td><td>Comparative case studies, QCA</td><td>Program outcomes data</td></tr>
+</tbody>
+</table>
+
+<div class="key-concept">
+<h4>Doctoral Research Orientation</h4>
+<p>Impactful doctoral research on rainwater harvesting bridges disciplines—connecting hydrological science to policy analysis, water quality engineering to public health, and technology development to sociotechnical transitions. The field demands researchers who can navigate between rigorous technical analysis and systems-level thinking about water infrastructure transformation.</p>
+</div>
+</div>`
         }
       }
     ],
