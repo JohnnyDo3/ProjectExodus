@@ -368,5 +368,180 @@ export const greenBuildingModules: Module[] = [
       { title: 'US Green Building Council', url: 'https://www.usgbc.org/', type: 'research' },
       { title: 'Living Building Challenge', url: 'https://living-future.org/lbc/', type: 'article' }
     ]
+  },
+  // Module 4: Sustainable Materials
+  {
+    id: 'green-materials',
+    slug: 'sustainable-materials',
+    title: 'Sustainable Materials',
+    description: {
+      ELEMENTARY: 'Learn about eco-friendly materials for building!',
+      MIDDLE_SCHOOL: 'Discover materials that are better for the environment.',
+      HIGH_SCHOOL: 'Explore embodied carbon, life cycle assessment, and material selection.',
+      UNDERGRADUATE: 'Analyze material LCA, EPDs, and sustainable procurement strategies.',
+      GRADUATE: 'Examine circular economy in construction, bio-based materials, and supply chains.',
+      PHD: 'Research novel sustainable materials, carbon storage potential, and system-level impacts.'
+    },
+    topic: 'green-building',
+    category: 'MATERIALS',
+    icon: 'Boxes',
+    color: 'terra',
+    duration: { ELEMENTARY: 25, MIDDLE_SCHOOL: 35, HIGH_SCHOOL: 50, UNDERGRADUATE: 70, GRADUATE: 90, PHD: 120 },
+    isMasterclass: false,
+    lessons: [{ id: 'gb-mat-1', title: 'Building Better', order: 1, duration: 15, hasActivity: true, activityType: 'DRAG_DROP', content: { ELEMENTARY: '<h2>Earth-Friendly Building!</h2><p>Some building materials are better for our planet - like bamboo, recycled wood, and natural stone!</p>', MIDDLE_SCHOOL: '<h2>Material Choices Matter</h2><p>Every building material takes energy to make and transport. Choosing wisely helps the environment.</p>', HIGH_SCHOOL: '<h2>Embodied Carbon</h2><p>The carbon emitted to manufacture, transport, install, and eventually dispose of materials. Often 20-50% of a building lifecycle carbon.</p>', UNDERGRADUATE: '<h2>Life Cycle Assessment</h2><p>Cradle-to-grave analysis of material environmental impacts. EPDs (Environmental Product Declarations) standardize reporting.</p>', GRADUATE: '<h2>Circular Construction</h2><p>Design for disassembly, material passports, and reuse markets to keep materials in use.</p>', PHD: '<h2>Research Frontiers</h2><p>Bio-based materials, carbon-storing concrete, and system-level material flow modeling.</p>' } }],
+    activities: [{ id: 'gb-mat-act-1', type: 'DRAG_DROP', title: { ELEMENTARY: 'Sort the Materials!', MIDDLE_SCHOOL: 'Compare Impacts', HIGH_SCHOOL: 'Calculate Embodied Carbon', UNDERGRADUATE: 'EPD Analysis', GRADUATE: 'Circular Design', PHD: 'LCA Modeling' }, description: { ELEMENTARY: 'Sort materials into eco-friendly and not!', MIDDLE_SCHOOL: 'Compare environmental impacts of different materials.', HIGH_SCHOOL: 'Calculate embodied carbon for a building.', UNDERGRADUATE: 'Analyze EPDs to select materials.', GRADUATE: 'Design for material circularity.', PHD: 'Model system-level material impacts.' }, config: { ELEMENTARY: { items: 8, hints: true, timeLimit: null }, MIDDLE_SCHOOL: { items: 10, hints: true, timeLimit: 120 }, HIGH_SCHOOL: { items: 12, hints: false, timeLimit: 90 }, UNDERGRADUATE: { items: 15, hints: false, timeLimit: 120 }, GRADUATE: { items: 18, hints: false, timeLimit: 90 }, PHD: { items: 22, hints: false, timeLimit: 60 } } }],
+    game: { id: 'gb-mat-game', type: 'matching', title: 'Material Master', description: 'Choose the best materials for green buildings!', rounds: 5, timeLimit: 40, difficultyByLevel: { ELEMENTARY: 'easy', MIDDLE_SCHOOL: 'easy', HIGH_SCHOOL: 'medium', UNDERGRADUATE: 'medium', GRADUATE: 'hard', PHD: 'expert' } },
+    quiz: { id: 'gb-mat-quiz', passingScore: 80, questions: [{ id: 'gbmq1', question: { ELEMENTARY: 'Which is an eco-friendly building material?', MIDDLE_SCHOOL: 'What does "embodied" mean for materials?', HIGH_SCHOOL: 'What percentage of building carbon is embodied?', UNDERGRADUATE: 'What is an EPD?', GRADUATE: 'What is design for disassembly?', PHD: 'What are bio-based materials?' }, options: { ELEMENTARY: ['Bamboo', 'Plastic', 'Styrofoam', 'Oil'], MIDDLE_SCHOOL: ['Carbon used to make and transport it', 'How it looks', 'Its weight', 'Its color'], HIGH_SCHOOL: ['20-50%', '1-5%', '90-100%', '0%'], UNDERGRADUATE: ['Environmental Product Declaration', 'Energy Power Distribution', 'Electric Product Design', 'None of these'], GRADUATE: ['Designing so buildings can be taken apart for reuse', 'Building to last forever', 'Random construction', 'Using glue everywhere'], PHD: ['Materials derived from biological sources', 'Only metal materials', 'Only concrete', 'Synthetic only'] }, correctIndex: 0, explanation: { ELEMENTARY: 'Bamboo grows fast and is a sustainable, eco-friendly building material!', MIDDLE_SCHOOL: 'Embodied carbon is the carbon emissions from making and transporting a material.', HIGH_SCHOOL: 'Embodied carbon typically accounts for 20-50% of a building\'s total lifecycle carbon.', UNDERGRADUATE: 'EPDs (Environmental Product Declarations) standardize environmental impact reporting for materials.', GRADUATE: 'Design for disassembly allows buildings to be taken apart so materials can be reused.', PHD: 'Bio-based materials are derived from biological sources like wood, bamboo, or hemp.' } }] },
+    externalResources: [{ title: 'Building Transparency', url: 'https://www.buildingtransparency.org/', type: 'research' }]
+  },
+  // Module 5: Water Efficient Buildings
+  {
+    id: 'green-water',
+    slug: 'water-efficient-buildings',
+    title: 'Water Efficient Buildings',
+    description: {
+      ELEMENTARY: 'Learn how buildings can save water!',
+      MIDDLE_SCHOOL: 'Discover fixtures and systems that use less water.',
+      HIGH_SCHOOL: 'Explore water-efficient technologies, rainwater harvesting, and greywater reuse.',
+      UNDERGRADUATE: 'Analyze water balance, net-zero water strategies, and system integration.',
+      GRADUATE: 'Examine water-energy nexus, regulatory frameworks, and building-scale treatment.',
+      PHD: 'Research integrated water management, emerging technologies, and resilience.'
+    },
+    topic: 'green-building',
+    category: 'WATER',
+    icon: 'Droplets',
+    color: 'ocean',
+    duration: { ELEMENTARY: 25, MIDDLE_SCHOOL: 35, HIGH_SCHOOL: 50, UNDERGRADUATE: 70, GRADUATE: 90, PHD: 120 },
+    isMasterclass: false,
+    lessons: [{ id: 'gb-water-1', title: 'Saving Every Drop', order: 1, duration: 15, hasActivity: true, activityType: 'SIMULATION', content: { ELEMENTARY: '<h2>Water-Smart Buildings!</h2><p>Buildings can save water with special toilets, faucets, and by collecting rain!</p>', MIDDLE_SCHOOL: '<h2>Water Efficiency</h2><p>Low-flow fixtures, efficient appliances, and smart irrigation can cut water use by 30-50%.</p>', HIGH_SCHOOL: '<h2>Water Systems</h2><p>Rainwater harvesting, greywater reuse, and on-site treatment can dramatically reduce municipal water demand.</p>', UNDERGRADUATE: '<h2>Net Zero Water</h2><p>Buildings that capture, treat, and reuse water to eliminate net water withdrawal from offsite.</p>', GRADUATE: '<h2>Water-Energy Nexus</h2><p>Water and energy are interconnected. Saving water saves energy; efficient treatment saves both.</p>', PHD: '<h2>Research Frontiers</h2><p>Building-scale water treatment, atmospheric water harvesting, and climate resilience.</p>' } }],
+    activities: [{ id: 'gb-water-act-1', type: 'SIMULATION', title: { ELEMENTARY: 'Fix the Leaks!', MIDDLE_SCHOOL: 'Water Audit', HIGH_SCHOOL: 'System Design', UNDERGRADUATE: 'Water Balance', GRADUATE: 'Integrated Design', PHD: 'Resilience Modeling' }, description: { ELEMENTARY: 'Find and fix water waste in a building!', MIDDLE_SCHOOL: 'Conduct a water audit of a building.', HIGH_SCHOOL: 'Design rainwater and greywater systems.', UNDERGRADUATE: 'Create a building water balance.', GRADUATE: 'Design an integrated water-energy system.', PHD: 'Model water system resilience.' }, config: { ELEMENTARY: { complexity: 'basic', variables: 4 }, MIDDLE_SCHOOL: { complexity: 'simple', variables: 6 }, HIGH_SCHOOL: { complexity: 'intermediate', variables: 12 }, UNDERGRADUATE: { complexity: 'advanced', variables: 18 }, GRADUATE: { complexity: 'expert', variables: 25 }, PHD: { complexity: 'research', variables: 35 } } }],
+    game: { id: 'gb-water-game', type: 'puzzle', title: 'Water Saver', description: 'Design water-efficient buildings!', rounds: 5, timeLimit: 40, difficultyByLevel: { ELEMENTARY: 'easy', MIDDLE_SCHOOL: 'easy', HIGH_SCHOOL: 'medium', UNDERGRADUATE: 'medium', GRADUATE: 'hard', PHD: 'expert' } },
+    quiz: { id: 'gb-water-quiz', passingScore: 80, questions: [{ id: 'gbwq1', question: { ELEMENTARY: 'How can buildings save water?', MIDDLE_SCHOOL: 'How much can efficient fixtures save?', HIGH_SCHOOL: 'What is greywater?', UNDERGRADUATE: 'What is net zero water?', GRADUATE: 'How are water and energy connected?', PHD: 'What is atmospheric water harvesting?' }, options: { ELEMENTARY: ['Low-flow toilets and faucets', 'Running water constantly', 'Bigger pipes', 'More faucets'], MIDDLE_SCHOOL: ['30-50%', '5%', '90%', '0%'], HIGH_SCHOOL: ['Water from sinks and showers', 'Toilet water', 'Drinking water', 'Rain water'], UNDERGRADUATE: ['No net withdrawal from offsite sources', 'Using only municipal water', 'Maximum water use', 'No water at all'], GRADUATE: ['Treating and moving water requires energy', 'No connection', 'Water makes electricity', 'Energy makes water'], PHD: ['Capturing water from humid air', 'Collecting rain', 'Well water', 'Ocean water'] }, correctIndex: 0, explanation: { ELEMENTARY: 'Low-flow toilets and faucets use much less water than regular ones!', MIDDLE_SCHOOL: 'Efficient fixtures and appliances can reduce water use by 30-50%.', HIGH_SCHOOL: 'Greywater is relatively clean wastewater from sinks, showers, and laundry.', UNDERGRADUATE: 'Net zero water buildings capture and treat enough water to eliminate net withdrawal.', GRADUATE: 'Water and energy are interconnected - pumping, heating, and treating water requires significant energy.', PHD: 'Atmospheric water harvesting captures water vapor from humid air for drinking water.' } }] },
+    externalResources: [{ title: 'Alliance for Water Efficiency', url: 'https://www.allianceforwaterefficiency.org/', type: 'research' }]
+  },
+  // Module 6: Indoor Air Quality
+  {
+    id: 'green-iaq',
+    slug: 'indoor-air-quality',
+    title: 'Indoor Air Quality',
+    description: {
+      ELEMENTARY: 'Learn why fresh air in buildings is so important!',
+      MIDDLE_SCHOOL: 'Discover what makes indoor air healthy or unhealthy.',
+      HIGH_SCHOOL: 'Explore ventilation, filtration, and source control strategies.',
+      UNDERGRADUATE: 'Analyze IAQ standards, monitoring, and HVAC system design.',
+      GRADUATE: 'Examine health impacts, productivity research, and building performance.',
+      PHD: 'Research IAQ-health relationships, emerging contaminants, and ventilation optimization.'
+    },
+    topic: 'green-building',
+    category: 'HEALTH',
+    icon: 'Wind',
+    color: 'ocean',
+    duration: { ELEMENTARY: 25, MIDDLE_SCHOOL: 35, HIGH_SCHOOL: 50, UNDERGRADUATE: 70, GRADUATE: 90, PHD: 120 },
+    isMasterclass: false,
+    lessons: [{ id: 'gb-iaq-1', title: 'Breathing Easy', order: 1, duration: 15, hasActivity: true, activityType: 'SIMULATION', content: { ELEMENTARY: '<h2>Clean Air Inside!</h2><p>We spend most of our time indoors. Fresh, clean air keeps us healthy and happy!</p>', MIDDLE_SCHOOL: '<h2>What is Indoor Air Quality?</h2><p>IAQ measures how clean and healthy the air inside buildings is. Good ventilation and few pollutants make good IAQ.</p>', HIGH_SCHOOL: '<h2>IAQ Factors</h2><p>Ventilation rates, filtration, source control (low-emitting materials), humidity, and CO2 levels.</p>', UNDERGRADUATE: '<h2>IAQ Engineering</h2><p>ASHRAE standards, ACH rates, filtration (MERV ratings), and demand-controlled ventilation.</p>', GRADUATE: '<h2>Health and Productivity</h2><p>Research shows better IAQ improves cognitive function, reduces illness, and increases productivity.</p>', PHD: '<h2>Research Frontiers</h2><p>Personalized exposure, real-time monitoring networks, and ventilation-infection relationships.</p>' } }],
+    activities: [{ id: 'gb-iaq-act-1', type: 'SIMULATION', title: { ELEMENTARY: 'Fresh Air Hunt!', MIDDLE_SCHOOL: 'Pollutant Detective', HIGH_SCHOOL: 'Ventilation Design', UNDERGRADUATE: 'System Optimization', GRADUATE: 'Health Impact Study', PHD: 'Monitoring Network' }, description: { ELEMENTARY: 'Find ways to bring fresh air into rooms!', MIDDLE_SCHOOL: 'Identify indoor air pollutants and sources.', HIGH_SCHOOL: 'Design ventilation for a building.', UNDERGRADUATE: 'Optimize HVAC for IAQ and energy.', GRADUATE: 'Study IAQ impacts on health and productivity.', PHD: 'Design an IAQ monitoring network.' }, config: { ELEMENTARY: { complexity: 'basic', variables: 4 }, MIDDLE_SCHOOL: { complexity: 'simple', variables: 6 }, HIGH_SCHOOL: { complexity: 'intermediate', variables: 12 }, UNDERGRADUATE: { complexity: 'advanced', variables: 18 }, GRADUATE: { complexity: 'expert', variables: 25 }, PHD: { complexity: 'research', variables: 35 } } }],
+    game: { id: 'gb-iaq-game', type: 'puzzle', title: 'Air Quality Manager', description: 'Keep indoor air clean and healthy!', rounds: 5, timeLimit: 40, difficultyByLevel: { ELEMENTARY: 'easy', MIDDLE_SCHOOL: 'easy', HIGH_SCHOOL: 'medium', UNDERGRADUATE: 'medium', GRADUATE: 'hard', PHD: 'expert' } },
+    quiz: { id: 'gb-iaq-quiz', passingScore: 80, questions: [{ id: 'gbiaq1', question: { ELEMENTARY: 'What makes indoor air healthy?', MIDDLE_SCHOOL: 'What is a common indoor air pollutant?', HIGH_SCHOOL: 'What does MERV rate?', UNDERGRADUATE: 'What does ACH stand for?', GRADUATE: 'How does IAQ affect productivity?', PHD: 'What is demand-controlled ventilation?' }, options: { ELEMENTARY: ['Fresh air from outside', 'Keeping windows sealed', 'Using air fresheners', 'Ignoring it'], MIDDLE_SCHOOL: ['Dust and VOCs', 'Only outdoor pollution', 'Nothing - indoor air is clean', 'Pure oxygen'], HIGH_SCHOOL: ['Filter efficiency', 'Air speed', 'Humidity', 'Temperature'], UNDERGRADUATE: ['Air Changes per Hour', 'Air Control Handler', 'Automatic Cooling and Heating', 'None of these'], GRADUATE: ['Better IAQ improves cognitive function', 'No effect', 'Decreases productivity', 'Only affects comfort'], PHD: ['Adjusting ventilation based on occupancy/CO2', 'Fixed ventilation always', 'No ventilation', 'Random adjustment'] }, correctIndex: 0, explanation: { ELEMENTARY: 'Fresh air from outside helps keep indoor air healthy and clean!', MIDDLE_SCHOOL: 'Dust, VOCs (volatile organic compounds), and CO2 are common indoor pollutants.', HIGH_SCHOOL: 'MERV (Minimum Efficiency Reporting Value) rates how well filters capture particles.', UNDERGRADUATE: 'ACH (Air Changes per Hour) measures how many times room air is replaced per hour.', GRADUATE: 'Research shows improved IAQ increases cognitive function and productivity significantly.', PHD: 'Demand-controlled ventilation adjusts airflow based on real-time CO2 or occupancy sensing.' } }] },
+    externalResources: [{ title: 'EPA Indoor Air Quality', url: 'https://www.epa.gov/indoor-air-quality-iaq', type: 'research' }]
+  },
+  // Module 7: Building-Integrated Renewables
+  {
+    id: 'green-renewables',
+    slug: 'building-integrated-renewables',
+    title: 'Building-Integrated Renewables',
+    description: {
+      ELEMENTARY: 'Learn how buildings can make their own energy!',
+      MIDDLE_SCHOOL: 'Discover solar panels, wind turbines, and other renewables on buildings.',
+      HIGH_SCHOOL: 'Explore BIPV, small wind, and building-scale renewable systems.',
+      UNDERGRADUATE: 'Analyze renewable system sizing, integration, and grid connection.',
+      GRADUATE: 'Examine net-zero energy buildings, storage integration, and policy incentives.',
+      PHD: 'Research advanced BIPV, building-to-grid integration, and optimization.'
+    },
+    topic: 'green-building',
+    category: 'ENERGY',
+    icon: 'Sun',
+    color: 'terra',
+    duration: { ELEMENTARY: 25, MIDDLE_SCHOOL: 35, HIGH_SCHOOL: 50, UNDERGRADUATE: 70, GRADUATE: 90, PHD: 120 },
+    isMasterclass: false,
+    lessons: [{ id: 'gb-ren-1', title: 'Power from Buildings', order: 1, duration: 15, hasActivity: true, activityType: 'SIMULATION', content: { ELEMENTARY: '<h2>Buildings That Make Energy!</h2><p>Solar panels on roofs can make electricity from sunlight. Some buildings make all the energy they need!</p>', MIDDLE_SCHOOL: '<h2>Renewables on Buildings</h2><p>Rooftop solar is most common. Some buildings also use small wind, solar thermal, or ground-source heat pumps.</p>', HIGH_SCHOOL: '<h2>Building-Integrated PV</h2><p>BIPV replaces conventional materials - solar shingles, facade panels, and solar glass that generate power.</p>', UNDERGRADUATE: '<h2>System Design</h2><p>Load matching, sizing for net-zero, inverter selection, and grid interconnection requirements.</p>', GRADUATE: '<h2>Net-Zero Energy</h2><p>Buildings that produce as much energy as they consume annually through efficiency and on-site renewables.</p>', PHD: '<h2>Research Frontiers</h2><p>Advanced BIPV materials, building-grid interaction optimization, and distributed energy systems.</p>' } }],
+    activities: [{ id: 'gb-ren-act-1', type: 'SIMULATION', title: { ELEMENTARY: 'Add Solar Panels!', MIDDLE_SCHOOL: 'Design a Solar Roof', HIGH_SCHOOL: 'System Sizing', UNDERGRADUATE: 'Grid Integration', GRADUATE: 'Net-Zero Design', PHD: 'Optimization Model' }, description: { ELEMENTARY: 'Add solar panels to power a building!', MIDDLE_SCHOOL: 'Design a rooftop solar system.', HIGH_SCHOOL: 'Size a renewable system for building loads.', UNDERGRADUATE: 'Design grid-connected building renewables.', GRADUATE: 'Design a net-zero energy building.', PHD: 'Optimize building-grid energy flows.' }, config: { ELEMENTARY: { complexity: 'basic', variables: 4 }, MIDDLE_SCHOOL: { complexity: 'simple', variables: 6 }, HIGH_SCHOOL: { complexity: 'intermediate', variables: 12 }, UNDERGRADUATE: { complexity: 'advanced', variables: 18 }, GRADUATE: { complexity: 'expert', variables: 25 }, PHD: { complexity: 'research', variables: 35 } } }],
+    game: { id: 'gb-ren-game', type: 'simulation', title: 'Renewable Builder', description: 'Power buildings with renewable energy!', rounds: 5, timeLimit: 40, difficultyByLevel: { ELEMENTARY: 'easy', MIDDLE_SCHOOL: 'easy', HIGH_SCHOOL: 'medium', UNDERGRADUATE: 'medium', GRADUATE: 'hard', PHD: 'expert' } },
+    quiz: { id: 'gb-ren-quiz', passingScore: 80, questions: [{ id: 'gbrq1', question: { ELEMENTARY: 'What do solar panels on buildings do?', MIDDLE_SCHOOL: 'What is the most common building renewable?', HIGH_SCHOOL: 'What is BIPV?', UNDERGRADUATE: 'What is load matching?', GRADUATE: 'What is a net-zero energy building?', PHD: 'What is advanced BIPV?' }, options: { ELEMENTARY: ['Make electricity from sunlight', 'Make the building taller', 'Provide shade only', 'Nothing'], MIDDLE_SCHOOL: ['Rooftop solar PV', 'Nuclear', 'Coal', 'Natural gas'], HIGH_SCHOOL: ['Building-Integrated Photovoltaics', 'Big Industrial Power Vault', 'Building Interior Power View', 'None of these'], UNDERGRADUATE: ['Aligning generation with building demand', 'Maximum output always', 'No connection to load', 'Random generation'], GRADUATE: ['Produces as much energy as it consumes annually', 'Uses no energy', 'Produces maximum energy', 'Uses maximum energy'], PHD: ['Solar materials integrated into building surfaces', 'Larger panels', 'Only rooftop', 'No integration'] }, correctIndex: 0, explanation: { ELEMENTARY: 'Solar panels convert sunlight into electricity to power the building!', MIDDLE_SCHOOL: 'Rooftop solar PV is by far the most common renewable technology on buildings.', HIGH_SCHOOL: 'BIPV (Building-Integrated Photovoltaics) replaces building materials with power-generating surfaces.', UNDERGRADUATE: 'Load matching aligns renewable generation timing with building electricity demand.', GRADUATE: 'Net-zero energy buildings produce as much energy as they consume over a year.', PHD: 'Advanced BIPV integrates solar cells into facades, windows, and surfaces as building materials.' } }] },
+    externalResources: [{ title: 'NREL Buildings', url: 'https://www.nrel.gov/buildings/', type: 'research' }]
+  },
+  // Module 8: Green Roofs and Walls
+  {
+    id: 'green-roofs-walls',
+    slug: 'green-roofs-and-walls',
+    title: 'Green Roofs and Walls',
+    description: {
+      ELEMENTARY: 'Learn about plants growing on buildings!',
+      MIDDLE_SCHOOL: 'Discover how rooftop gardens and living walls help buildings.',
+      HIGH_SCHOOL: 'Explore green roof types, benefits, and installation considerations.',
+      UNDERGRADUATE: 'Analyze green infrastructure performance, stormwater benefits, and thermal impacts.',
+      GRADUATE: 'Examine urban heat island mitigation, biodiversity, and policy incentives.',
+      PHD: 'Research plant-building interactions, performance modeling, and long-term outcomes.'
+    },
+    topic: 'green-building',
+    category: 'LANDSCAPING',
+    icon: 'Leaf',
+    color: 'moss',
+    duration: { ELEMENTARY: 25, MIDDLE_SCHOOL: 35, HIGH_SCHOOL: 50, UNDERGRADUATE: 70, GRADUATE: 90, PHD: 120 },
+    isMasterclass: false,
+    lessons: [{ id: 'gb-gr-1', title: 'Living Buildings', order: 1, duration: 15, hasActivity: true, activityType: 'SIMULATION', content: { ELEMENTARY: '<h2>Gardens in the Sky!</h2><p>Some buildings have gardens on their roofs! Plants keep buildings cool and give birds and bees a home.</p>', MIDDLE_SCHOOL: '<h2>Green Roofs and Walls</h2><p>Living plants on buildings reduce heat, capture rainwater, clean air, and provide habitat.</p>', HIGH_SCHOOL: '<h2>Green Roof Types</h2><p>Extensive (shallow, low maintenance), intensive (deeper, more plants), and semi-intensive (in between).</p>', UNDERGRADUATE: '<h2>Performance Analysis</h2><p>Stormwater retention, thermal performance, energy savings, and maintenance requirements.</p>', GRADUATE: '<h2>Urban Benefits</h2><p>Heat island mitigation, air quality improvement, biodiversity corridors, and property values.</p>', PHD: '<h2>Research Frontiers</h2><p>Long-term performance data, plant selection optimization, and integrated systems.</p>' } }],
+    activities: [{ id: 'gb-gr-act-1', type: 'SIMULATION', title: { ELEMENTARY: 'Plant a Rooftop Garden!', MIDDLE_SCHOOL: 'Design Green Infrastructure', HIGH_SCHOOL: 'System Selection', UNDERGRADUATE: 'Performance Analysis', GRADUATE: 'Urban Planning', PHD: 'Long-Term Modeling' }, description: { ELEMENTARY: 'Create a garden on top of a building!', MIDDLE_SCHOOL: 'Design green roofs and walls for a building.', HIGH_SCHOOL: 'Select appropriate green roof systems.', UNDERGRADUATE: 'Analyze green roof stormwater performance.', GRADUATE: 'Plan green infrastructure at city scale.', PHD: 'Model long-term green roof performance.' }, config: { ELEMENTARY: { complexity: 'basic', variables: 4 }, MIDDLE_SCHOOL: { complexity: 'simple', variables: 6 }, HIGH_SCHOOL: { complexity: 'intermediate', variables: 12 }, UNDERGRADUATE: { complexity: 'advanced', variables: 18 }, GRADUATE: { complexity: 'expert', variables: 25 }, PHD: { complexity: 'research', variables: 35 } } }],
+    game: { id: 'gb-gr-game', type: 'simulation', title: 'Rooftop Gardener', description: 'Design green roofs and living walls!', rounds: 5, timeLimit: 40, difficultyByLevel: { ELEMENTARY: 'easy', MIDDLE_SCHOOL: 'easy', HIGH_SCHOOL: 'medium', UNDERGRADUATE: 'medium', GRADUATE: 'hard', PHD: 'expert' } },
+    quiz: { id: 'gb-gr-quiz', passingScore: 80, questions: [{ id: 'gbgrq1', question: { ELEMENTARY: 'What grows on a green roof?', MIDDLE_SCHOOL: 'What do green roofs do for rain?', HIGH_SCHOOL: 'What is an extensive green roof?', UNDERGRADUATE: 'How do green roofs save energy?', GRADUATE: 'What is the heat island effect?', PHD: 'What is a key research gap for green roofs?' }, options: { ELEMENTARY: ['Plants', 'Cars', 'Houses', 'Nothing'], MIDDLE_SCHOOL: ['Absorb and slow it down', 'Make more rain', 'Ignore it', 'Speed it up'], HIGH_SCHOOL: ['Shallow with low-maintenance plants', 'Deep with trees', 'No plants', 'Only grass'], UNDERGRADUATE: ['Insulation and evaporative cooling', 'Using more energy', 'No energy effect', 'Heating the building'], GRADUATE: ['Cities being hotter than surrounding areas', 'Islands getting hot', 'No effect', 'Cities being cooler'], PHD: ['Long-term performance data', 'Too much data', 'No questions left', 'Easy installation'] }, correctIndex: 0, explanation: { ELEMENTARY: 'Green roofs have living plants growing on them!', MIDDLE_SCHOOL: 'Green roofs absorb rainwater like a sponge, reducing runoff.', HIGH_SCHOOL: 'Extensive green roofs are shallow (2-6 inches) with hardy, low-maintenance plants.', UNDERGRADUATE: 'Green roofs provide insulation and evaporative cooling, reducing heating and cooling energy.', GRADUATE: 'Urban heat island effect makes cities significantly hotter than surrounding rural areas.', PHD: 'Long-term performance data under different climates remains a key research gap.' } }] },
+    externalResources: [{ title: 'Green Roofs for Healthy Cities', url: 'https://greenroofs.org/', type: 'research' }]
+  },
+  // Module 9: Building Retrofits
+  {
+    id: 'green-retrofits',
+    slug: 'building-retrofits',
+    title: 'Building Retrofits',
+    description: {
+      ELEMENTARY: 'Learn how to make old buildings green!',
+      MIDDLE_SCHOOL: 'Discover ways to improve existing buildings.',
+      HIGH_SCHOOL: 'Explore energy audits, weatherization, and system upgrades.',
+      UNDERGRADUATE: 'Analyze deep retrofits, cost-benefit, and project planning.',
+      GRADUATE: 'Examine portfolio approaches, financing mechanisms, and policy drivers.',
+      PHD: 'Research retrofit effectiveness, decision support, and scaling strategies.'
+    },
+    topic: 'green-building',
+    category: 'RENOVATION',
+    icon: 'Wrench',
+    color: 'terra',
+    duration: { ELEMENTARY: 25, MIDDLE_SCHOOL: 35, HIGH_SCHOOL: 50, UNDERGRADUATE: 70, GRADUATE: 90, PHD: 120 },
+    isMasterclass: false,
+    lessons: [{ id: 'gb-ret-1', title: 'Making Buildings Better', order: 1, duration: 15, hasActivity: true, activityType: 'STEP_GUIDED', content: { ELEMENTARY: '<h2>Fix Up, Green Up!</h2><p>Old buildings can become green buildings! Adding insulation, better windows, and efficient appliances helps.</p>', MIDDLE_SCHOOL: '<h2>Building Improvements</h2><p>Most buildings already exist. Retrofitting them is essential - insulation, air sealing, efficient HVAC, and lighting.</p>', HIGH_SCHOOL: '<h2>Energy Audits</h2><p>Assessments identify improvement opportunities. Blower door tests, thermal imaging, and utility analysis guide retrofits.</p>', UNDERGRADUATE: '<h2>Deep Retrofits</h2><p>Comprehensive improvements achieving 50%+ energy reduction. Envelope, systems, and controls all upgraded together.</p>', GRADUATE: '<h2>Scaling Retrofits</h2><p>Portfolio approaches, PACE financing, energy service agreements, and building performance standards.</p>', PHD: '<h2>Research Frontiers</h2><p>Retrofit effectiveness studies, decision support tools, and scaling barriers.</p>' } }],
+    activities: [{ id: 'gb-ret-act-1', type: 'STEP_GUIDED', title: { ELEMENTARY: 'Fix the Building!', MIDDLE_SCHOOL: 'Plan Improvements', HIGH_SCHOOL: 'Energy Audit', UNDERGRADUATE: 'Deep Retrofit', GRADUATE: 'Portfolio Strategy', PHD: 'Decision Tool' }, description: { ELEMENTARY: 'Help make an old building more efficient!', MIDDLE_SCHOOL: 'Plan energy improvements for a building.', HIGH_SCHOOL: 'Conduct an energy audit.', UNDERGRADUATE: 'Design a deep retrofit project.', GRADUATE: 'Develop a portfolio retrofit strategy.', PHD: 'Create a retrofit decision support tool.' }, config: { ELEMENTARY: { steps: 5, hints: true, timeLimit: null }, MIDDLE_SCHOOL: { steps: 8, hints: true, timeLimit: 180 }, HIGH_SCHOOL: { steps: 10, hints: false, timeLimit: 150 }, UNDERGRADUATE: { steps: 12, hints: false, timeLimit: 180 }, GRADUATE: { steps: 15, hints: false, timeLimit: 120 }, PHD: { steps: 20, hints: false, timeLimit: 90 } } }],
+    game: { id: 'gb-ret-game', type: 'puzzle', title: 'Retrofit Master', description: 'Upgrade buildings for efficiency!', rounds: 5, timeLimit: 40, difficultyByLevel: { ELEMENTARY: 'easy', MIDDLE_SCHOOL: 'easy', HIGH_SCHOOL: 'medium', UNDERGRADUATE: 'medium', GRADUATE: 'hard', PHD: 'expert' } },
+    quiz: { id: 'gb-ret-quiz', passingScore: 80, questions: [{ id: 'gbretq1', question: { ELEMENTARY: 'How can you make an old building greener?', MIDDLE_SCHOOL: 'What is the first step in a retrofit?', HIGH_SCHOOL: 'What does a blower door test measure?', UNDERGRADUATE: 'What is a deep retrofit?', GRADUATE: 'What is PACE financing?', PHD: 'What limits retrofit scaling?' }, options: { ELEMENTARY: ['Add insulation and efficient appliances', 'Tear it down', 'Paint it green', 'Ignore it'], MIDDLE_SCHOOL: ['Energy audit to find opportunities', 'Tear down walls', 'Add more rooms', 'Change the address'], HIGH_SCHOOL: ['Building air leakage', 'Water pressure', 'Foundation strength', 'Roof height'], UNDERGRADUATE: ['50%+ energy reduction through comprehensive upgrades', 'Minor changes only', 'Only lighting', 'Only HVAC'], GRADUATE: ['Property tax-based repayment for improvements', 'Personal loan', 'Grant only', 'No financing needed'], PHD: ['Split incentives, upfront costs, disruption', 'Too easy', 'No limits', 'Technology only'] }, correctIndex: 0, explanation: { ELEMENTARY: 'Adding insulation, better windows, and efficient appliances makes old buildings greener!', MIDDLE_SCHOOL: 'An energy audit identifies the best opportunities for improving building efficiency.', HIGH_SCHOOL: 'Blower door tests pressurize buildings to measure air leakage rates.', UNDERGRADUATE: 'Deep retrofits achieve 50%+ energy reduction through comprehensive envelope and system upgrades.', GRADUATE: 'PACE (Property Assessed Clean Energy) allows repayment through property tax bills.', PHD: 'Split incentives (tenant/owner), high upfront costs, and occupant disruption limit retrofit scaling.' } }] },
+    externalResources: [{ title: 'Energy Star Buildings', url: 'https://www.energystar.gov/buildings', type: 'research' }]
+  },
+  // Module 10: Green Building Certifications
+  {
+    id: 'green-certifications',
+    slug: 'green-building-certifications',
+    title: 'Green Building Certifications',
+    description: {
+      ELEMENTARY: 'Learn about special awards for green buildings!',
+      MIDDLE_SCHOOL: 'Discover how buildings earn green certifications.',
+      HIGH_SCHOOL: 'Explore LEED, BREEAM, and other rating systems.',
+      UNDERGRADUATE: 'Analyze certification requirements, costs, and market impacts.',
+      GRADUATE: 'Examine certification effectiveness, policy integration, and market transformation.',
+      PHD: 'Research certification outcomes, system comparison, and next-generation frameworks.'
+    },
+    topic: 'green-building',
+    category: 'CERTIFICATION',
+    icon: 'Award',
+    color: 'terra',
+    duration: { ELEMENTARY: 25, MIDDLE_SCHOOL: 35, HIGH_SCHOOL: 50, UNDERGRADUATE: 70, GRADUATE: 90, PHD: 120 },
+    isMasterclass: false,
+    lessons: [{ id: 'gb-cert-1', title: 'Green Awards', order: 1, duration: 15, hasActivity: true, activityType: 'DRAG_DROP', content: { ELEMENTARY: '<h2>Green Building Badges!</h2><p>Buildings can earn special badges to show they are good for the environment - like getting a gold star!</p>', MIDDLE_SCHOOL: '<h2>Green Certifications</h2><p>LEED, BREEAM, and other systems rate buildings on energy, water, materials, and health. Higher levels mean greener buildings.</p>', HIGH_SCHOOL: '<h2>LEED Rating System</h2><p>Categories: Location, Energy, Water, Materials, Indoor Quality, Innovation. Points earn Certified, Silver, Gold, or Platinum.</p>', UNDERGRADUATE: '<h2>Certification Process</h2><p>Registration, documentation, verification, and ongoing performance reporting for some systems.</p>', GRADUATE: '<h2>Market Impact</h2><p>Green certifications command rent premiums, attract tenants, and may be required by policy or investors.</p>', PHD: '<h2>Research Questions</h2><p>Do certified buildings actually perform better? Cost-effectiveness and market transformation.</p>' } }],
+    activities: [{ id: 'gb-cert-act-1', type: 'DRAG_DROP', title: { ELEMENTARY: 'Earn the Badge!', MIDDLE_SCHOOL: 'LEED Categories', HIGH_SCHOOL: 'Certification Path', UNDERGRADUATE: 'Cost-Benefit Analysis', GRADUATE: 'Policy Design', PHD: 'Performance Verification' }, description: { ELEMENTARY: 'Help a building earn its green badge!', MIDDLE_SCHOOL: 'Match LEED categories to building features.', HIGH_SCHOOL: 'Plan a path to LEED certification.', UNDERGRADUATE: 'Analyze certification costs and benefits.', GRADUATE: 'Design certification policy for a city.', PHD: 'Design performance verification study.' }, config: { ELEMENTARY: { items: 6, hints: true, timeLimit: null }, MIDDLE_SCHOOL: { items: 10, hints: true, timeLimit: 120 }, HIGH_SCHOOL: { items: 12, hints: false, timeLimit: 90 }, UNDERGRADUATE: { items: 15, hints: false, timeLimit: 120 }, GRADUATE: { items: 18, hints: false, timeLimit: 90 }, PHD: { items: 22, hints: false, timeLimit: 60 } } }],
+    game: { id: 'gb-cert-game', type: 'matching', title: 'Certification Expert', description: 'Guide buildings to green certifications!', rounds: 5, timeLimit: 40, difficultyByLevel: { ELEMENTARY: 'easy', MIDDLE_SCHOOL: 'easy', HIGH_SCHOOL: 'medium', UNDERGRADUATE: 'medium', GRADUATE: 'hard', PHD: 'expert' } },
+    quiz: { id: 'gb-cert-quiz', passingScore: 80, questions: [{ id: 'gbcertq1', question: { ELEMENTARY: 'What do green buildings earn?', MIDDLE_SCHOOL: 'What is LEED?', HIGH_SCHOOL: 'What are LEED certification levels?', UNDERGRADUATE: 'What drives certification demand?', GRADUATE: 'Do certified buildings rent for more?', PHD: 'What is a key research question about certifications?' }, options: { ELEMENTARY: ['Special badges showing they are green', 'Money prizes', 'Paint', 'Nothing'], MIDDLE_SCHOOL: ['A green building rating system', 'A type of plant', 'A building material', 'An architect'], HIGH_SCHOOL: ['Certified, Silver, Gold, Platinum', 'A, B, C, D', 'First, Second, Third', 'Good, Better, Best'], UNDERGRADUATE: ['Tenant demand, policy, and investor requirements', 'No demand exists', 'Only cost savings', 'Only marketing'], GRADUATE: ['Yes, studies show rental premiums', 'No premium', 'Lower rents', 'No data'], PHD: ['Do certified buildings actually perform better operationally?', 'Too many questions', 'All answered', 'No questions'] }, correctIndex: 0, explanation: { ELEMENTARY: 'Green buildings earn special badges or certifications showing they help the environment!', MIDDLE_SCHOOL: 'LEED (Leadership in Energy and Environmental Design) is the most widely used green building rating system.', HIGH_SCHOOL: 'LEED has four certification levels based on points earned: Certified, Silver, Gold, and Platinum.', UNDERGRADUATE: 'Tenant preferences, policy requirements, and investor ESG criteria drive certification demand.', GRADUATE: 'Studies consistently show certified buildings command 3-10% rental premiums.', PHD: 'Whether certified buildings actually achieve predicted performance in operation is a key research question.' } }] },
+    externalResources: [{ title: 'USGBC LEED', url: 'https://www.usgbc.org/leed', type: 'research' }]
   }
 ]
