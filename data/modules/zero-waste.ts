@@ -384,5 +384,180 @@ export const zeroWasteModules: Module[] = [
       { title: 'Zero Waste International Alliance', url: 'https://zwia.org/', type: 'research' },
       { title: 'Story of Stuff Project', url: 'https://www.storyofstuff.org/', type: 'video' }
     ]
+  },
+  // Module 4: Composting
+  {
+    id: 'zw-composting',
+    slug: 'composting-fundamentals',
+    title: 'Composting Fundamentals',
+    description: {
+      ELEMENTARY: 'Learn how food scraps become soil!',
+      MIDDLE_SCHOOL: 'Discover the science of turning waste into compost.',
+      HIGH_SCHOOL: 'Explore composting methods, carbon-nitrogen ratios, and troubleshooting.',
+      UNDERGRADUATE: 'Analyze composting systems, facility design, and end-product quality.',
+      GRADUATE: 'Examine municipal composting, policy frameworks, and contamination management.',
+      PHD: 'Research microbial dynamics, process optimization, and climate implications.'
+    },
+    topic: 'zero-waste',
+    category: 'COMPOSTING',
+    icon: 'Leaf',
+    color: 'moss',
+    duration: { ELEMENTARY: 25, MIDDLE_SCHOOL: 35, HIGH_SCHOOL: 50, UNDERGRADUATE: 70, GRADUATE: 90, PHD: 120 },
+    isMasterclass: false,
+    lessons: [{ id: 'zw-comp-1', title: 'Nature\'s Recyclers', order: 1, duration: 15, hasActivity: true, activityType: 'SIMULATION', content: { ELEMENTARY: '<h2>Magic Dirt!</h2><p>Banana peels, apple cores, and leaves can turn into rich soil for growing plants!</p>', MIDDLE_SCHOOL: '<h2>How Composting Works</h2><p>Microorganisms break down organic matter into humus. Greens (nitrogen) + Browns (carbon) + air + water = compost!</p>', HIGH_SCHOOL: '<h2>Composting Science</h2><p>C:N ratio (25-30:1 ideal), oxygen, moisture, and temperature control. Hot composting vs. cold composting.</p>', UNDERGRADUATE: '<h2>Composting Systems</h2><p>Windrow, aerated static pile, in-vessel, and vermicomposting. Scale, feedstocks, and end-use considerations.</p>', GRADUATE: '<h2>Municipal Programs</h2><p>Collection logistics, processing capacity, contamination, and compost markets.</p>', PHD: '<h2>Research Frontiers</h2><p>Microbial community dynamics, greenhouse gas emissions, and emerging contaminants (PFAS, microplastics).</p>' } }],
+    activities: [{ id: 'zw-comp-act-1', type: 'SIMULATION', title: { ELEMENTARY: 'Build a Compost Pile!', MIDDLE_SCHOOL: 'Balance the Recipe', HIGH_SCHOOL: 'Troubleshoot Problems', UNDERGRADUATE: 'Design a Facility', GRADUATE: 'Program Planning', PHD: 'Process Optimization' }, description: { ELEMENTARY: 'Layer materials to make compost!', MIDDLE_SCHOOL: 'Balance greens and browns for perfect compost.', HIGH_SCHOOL: 'Diagnose and fix composting problems.', UNDERGRADUATE: 'Design a community composting facility.', GRADUATE: 'Plan a municipal composting program.', PHD: 'Optimize composting for emissions and quality.' }, config: { ELEMENTARY: { complexity: 'basic', variables: 4 }, MIDDLE_SCHOOL: { complexity: 'simple', variables: 6 }, HIGH_SCHOOL: { complexity: 'intermediate', variables: 12 }, UNDERGRADUATE: { complexity: 'advanced', variables: 18 }, GRADUATE: { complexity: 'expert', variables: 25 }, PHD: { complexity: 'research', variables: 35 } } }],
+    game: { id: 'zw-comp-game', type: 'simulation', title: 'Compost Master', description: 'Create perfect compost!', rounds: 5, timeLimit: 40, difficultyByLevel: { ELEMENTARY: 'easy', MIDDLE_SCHOOL: 'easy', HIGH_SCHOOL: 'medium', UNDERGRADUATE: 'medium', GRADUATE: 'hard', PHD: 'expert' } },
+    quiz: { id: 'zw-comp-quiz', passingScore: 80, questions: [{ id: 'zwcq1', question: { ELEMENTARY: 'What breaks down food scraps into compost?', MIDDLE_SCHOOL: 'What ratio of carbon to nitrogen is ideal?', HIGH_SCHOOL: 'What causes a compost pile to smell bad?', UNDERGRADUATE: 'What is vermicomposting?', GRADUATE: 'What is the biggest challenge for municipal composting?', PHD: 'What emerging contaminant concerns exist for compost?' }, options: { ELEMENTARY: ['Tiny living things (microorganisms)', 'Magic', 'Sunlight alone', 'Water alone'], MIDDLE_SCHOOL: ['25-30:1', '1:1', '100:1', '5:1'], HIGH_SCHOOL: ['Too much nitrogen or not enough air', 'Too much carbon', 'Perfect balance', 'Too dry'], UNDERGRADUATE: ['Using worms to make compost', 'Using machines', 'Burning waste', 'Landfilling'], GRADUATE: ['Contamination in feedstocks', 'Too much supply', 'No demand', 'Weather'], PHD: ['PFAS and microplastics', 'Too much nitrogen', 'Good bacteria', 'Moisture'] }, correctIndex: 0, explanation: { ELEMENTARY: 'Microorganisms - tiny living things like bacteria and fungi - break down organic matter!', MIDDLE_SCHOOL: 'A carbon to nitrogen ratio of 25-30:1 provides ideal conditions for composting microbes.', HIGH_SCHOOL: 'Odors usually indicate excess nitrogen (ammonia) or anaerobic conditions (not enough oxygen).', UNDERGRADUATE: 'Vermicomposting uses earthworms to process organic matter into nutrient-rich castings.', GRADUATE: 'Contamination (plastics, glass, non-compostables) is the biggest challenge for municipal programs.', PHD: 'PFAS (forever chemicals) and microplastics in compost feedstocks raise quality and safety concerns.' } }] },
+    externalResources: [{ title: 'US Composting Council', url: 'https://www.compostingcouncil.org/', type: 'research' }]
+  },
+  // Module 5: Recycling Systems
+  {
+    id: 'zw-recycling',
+    slug: 'recycling-systems',
+    title: 'Recycling Systems',
+    description: {
+      ELEMENTARY: 'Learn how to recycle the right way!',
+      MIDDLE_SCHOOL: 'Discover what happens to recyclables after collection.',
+      HIGH_SCHOOL: 'Explore MRFs, material markets, and recycling challenges.',
+      UNDERGRADUATE: 'Analyze recycling economics, contamination, and system design.',
+      GRADUATE: 'Examine global recycling markets, policy tools, and circular economy.',
+      PHD: 'Research recycling system optimization, material flows, and future scenarios.'
+    },
+    topic: 'zero-waste',
+    category: 'RECYCLING',
+    icon: 'Recycle',
+    color: 'ocean',
+    duration: { ELEMENTARY: 25, MIDDLE_SCHOOL: 35, HIGH_SCHOOL: 50, UNDERGRADUATE: 70, GRADUATE: 90, PHD: 120 },
+    isMasterclass: false,
+    lessons: [{ id: 'zw-rec-1', title: 'The Recycling Journey', order: 1, duration: 15, hasActivity: true, activityType: 'DRAG_DROP', content: { ELEMENTARY: '<h2>Recycling Right!</h2><p>When we recycle correctly, bottles become new bottles, paper becomes new paper!</p>', MIDDLE_SCHOOL: '<h2>What Gets Recycled?</h2><p>Paper, cardboard, metal cans, glass, and certain plastics (#1, #2). Check local rules - they vary!</p>', HIGH_SCHOOL: '<h2>Recycling Infrastructure</h2><p>MRFs (Material Recovery Facilities) sort recyclables. Contamination and "wishcycling" cause problems.</p>', UNDERGRADUATE: '<h2>Recycling Economics</h2><p>Commodity markets, processing costs, and the economics of recycled vs. virgin materials.</p>', GRADUATE: '<h2>System Design</h2><p>Single-stream vs. source-separated, EPR, deposit return systems, and market development.</p>', PHD: '<h2>Research Frontiers</h2><p>Chemical recycling, material flow analysis, and modeling circular systems.</p>' } }],
+    activities: [{ id: 'zw-rec-act-1', type: 'DRAG_DROP', title: { ELEMENTARY: 'Sort the Recycling!', MIDDLE_SCHOOL: 'Follow the Material', HIGH_SCHOOL: 'MRF Simulation', UNDERGRADUATE: 'Economic Analysis', GRADUATE: 'System Design', PHD: 'Flow Modeling' }, description: { ELEMENTARY: 'Put items in the right recycling bins!', MIDDLE_SCHOOL: 'Follow materials from bin to new product.', HIGH_SCHOOL: 'Run a material recovery facility.', UNDERGRADUATE: 'Analyze recycling economics for a city.', GRADUATE: 'Design an improved recycling system.', PHD: 'Model material flows in a circular economy.' }, config: { ELEMENTARY: { items: 10, hints: true, timeLimit: null }, MIDDLE_SCHOOL: { items: 12, hints: true, timeLimit: 120 }, HIGH_SCHOOL: { items: 15, hints: false, timeLimit: 90 }, UNDERGRADUATE: { items: 18, hints: false, timeLimit: 120 }, GRADUATE: { items: 20, hints: false, timeLimit: 90 }, PHD: { items: 25, hints: false, timeLimit: 60 } } }],
+    game: { id: 'zw-rec-game', type: 'matching', title: 'Recycling Sorter', description: 'Sort materials correctly and efficiently!', rounds: 5, timeLimit: 40, difficultyByLevel: { ELEMENTARY: 'easy', MIDDLE_SCHOOL: 'easy', HIGH_SCHOOL: 'medium', UNDERGRADUATE: 'medium', GRADUATE: 'hard', PHD: 'expert' } },
+    quiz: { id: 'zw-rec-quiz', passingScore: 80, questions: [{ id: 'zwrq1', question: { ELEMENTARY: 'What can usually be recycled?', MIDDLE_SCHOOL: 'What is wishcycling?', HIGH_SCHOOL: 'What is a MRF?', UNDERGRADUATE: 'What drives recycling economics?', GRADUATE: 'What is EPR?', PHD: 'What is chemical recycling?' }, options: { ELEMENTARY: ['Clean bottles, cans, paper, cardboard', 'Dirty diapers', 'Food waste', 'Plastic bags'], MIDDLE_SCHOOL: ['Putting non-recyclables in hoping they get recycled', 'Wishing for less waste', 'Recycling correctly', 'A type of sorting'], HIGH_SCHOOL: ['Material Recovery Facility', 'Main Recycling Facility', 'Metal Reclamation Fund', 'Municipal Refuse Factory'], UNDERGRADUATE: ['Commodity prices for materials', 'Collection convenience', 'Public desire', 'Government mandates only'], GRADUATE: ['Extended Producer Responsibility', 'Environmental Protection Regulation', 'Energy Production Requirement', 'Excess Packaging Rules'], PHD: ['Breaking polymers into monomers for re-polymerization', 'Traditional mechanical recycling', 'Composting plastics', 'Burning for energy'] }, correctIndex: 0, explanation: { ELEMENTARY: 'Clean bottles, cans, paper, and cardboard can usually be recycled!', MIDDLE_SCHOOL: 'Wishcycling is putting non-recyclables in the recycling bin hoping they will be recycled - it causes contamination.', HIGH_SCHOOL: 'A MRF (Material Recovery Facility) is where recyclables are sorted into separate material streams.', UNDERGRADUATE: 'Commodity prices for recycled materials determine whether recycling is economically viable.', GRADUATE: 'EPR (Extended Producer Responsibility) makes producers responsible for end-of-life product management.', PHD: 'Chemical recycling breaks polymers back into monomers that can be re-polymerized into new plastics.' } }] },
+    externalResources: [{ title: 'EPA Recycling', url: 'https://www.epa.gov/recycle', type: 'research' }]
+  },
+  // Module 6: Product Lifecycle Design
+  {
+    id: 'zw-lifecycle',
+    slug: 'product-lifecycle-design',
+    title: 'Product Lifecycle Design',
+    description: {
+      ELEMENTARY: 'Learn how products can be made to last and not become waste!',
+      MIDDLE_SCHOOL: 'Discover how design choices affect whether things become waste.',
+      HIGH_SCHOOL: 'Explore design for environment, durability, and repairability.',
+      UNDERGRADUATE: 'Analyze lifecycle assessment, eco-design principles, and material selection.',
+      GRADUATE: 'Examine circular design strategies, business model innovation, and policy.',
+      PHD: 'Research design for circularity, system dynamics, and transition pathways.'
+    },
+    topic: 'zero-waste',
+    category: 'DESIGN',
+    icon: 'Pencil',
+    color: 'terra',
+    duration: { ELEMENTARY: 25, MIDDLE_SCHOOL: 35, HIGH_SCHOOL: 50, UNDERGRADUATE: 70, GRADUATE: 90, PHD: 120 },
+    isMasterclass: false,
+    lessons: [{ id: 'zw-life-1', title: 'Designing Out Waste', order: 1, duration: 15, hasActivity: true, activityType: 'SIMULATION', content: { ELEMENTARY: '<h2>Smart Design!</h2><p>Some products are designed to be fixed and used for a long time. Others are designed to be thrown away quickly.</p>', MIDDLE_SCHOOL: '<h2>Design Matters</h2><p>Designers choose materials, durability, and whether products can be repaired. These choices determine waste.</p>', HIGH_SCHOOL: '<h2>Design for Environment</h2><p>DfE principles: durability, repairability, recyclability, non-toxicity, and minimal materials.</p>', UNDERGRADUATE: '<h2>Lifecycle Assessment</h2><p>LCA evaluates environmental impacts from raw material extraction through disposal. Guides design decisions.</p>', GRADUATE: '<h2>Circular Design</h2><p>Designing for multiple use cycles, component recovery, and closed-loop systems.</p>', PHD: '<h2>Research Frontiers</h2><p>Design for circular economy, material passports, and system-level optimization.</p>' } }],
+    activities: [{ id: 'zw-life-act-1', type: 'SIMULATION', title: { ELEMENTARY: 'Design a Toy!', MIDDLE_SCHOOL: 'Compare Products', HIGH_SCHOOL: 'Redesign Challenge', UNDERGRADUATE: 'LCA Study', GRADUATE: 'Business Model', PHD: 'System Design' }, description: { ELEMENTARY: 'Design a toy that lasts a long time!', MIDDLE_SCHOOL: 'Compare short-lived vs. durable products.', HIGH_SCHOOL: 'Redesign a disposable product to be reusable.', UNDERGRADUATE: 'Conduct a lifecycle assessment of a product.', GRADUATE: 'Design a circular business model.', PHD: 'Design a system for circular material flows.' }, config: { ELEMENTARY: { complexity: 'basic', variables: 4 }, MIDDLE_SCHOOL: { complexity: 'simple', variables: 6 }, HIGH_SCHOOL: { complexity: 'intermediate', variables: 12 }, UNDERGRADUATE: { complexity: 'advanced', variables: 18 }, GRADUATE: { complexity: 'expert', variables: 25 }, PHD: { complexity: 'research', variables: 35 } } }],
+    game: { id: 'zw-life-game', type: 'puzzle', title: 'Product Designer', description: 'Design products that minimize waste!', rounds: 5, timeLimit: 40, difficultyByLevel: { ELEMENTARY: 'easy', MIDDLE_SCHOOL: 'easy', HIGH_SCHOOL: 'medium', UNDERGRADUATE: 'medium', GRADUATE: 'hard', PHD: 'expert' } },
+    quiz: { id: 'zw-life-quiz', passingScore: 80, questions: [{ id: 'zwlq1', question: { ELEMENTARY: 'What makes a good product design for reducing waste?', MIDDLE_SCHOOL: 'What is planned obsolescence?', HIGH_SCHOOL: 'What does DfE stand for?', UNDERGRADUATE: 'What does LCA measure?', GRADUATE: 'What is a product-service system?', PHD: 'What is a material passport?' }, options: { ELEMENTARY: ['Made to last and be fixed', 'Made to break quickly', 'Made with lots of different parts', 'Made to be thrown away'], MIDDLE_SCHOOL: ['Designing products to break or become outdated', 'Making products last forever', 'Recycling old products', 'Using recycled materials'], HIGH_SCHOOL: ['Design for Environment', 'Direct Factory Export', 'Durable Finished Equipment', 'Design for Excellence'], UNDERGRADUATE: ['Environmental impacts across a product\'s life', 'Only manufacturing impacts', 'Only disposal impacts', 'Product cost'], GRADUATE: ['Selling services instead of products', 'Selling more products', 'Planned obsolescence', 'Lower quality'], PHD: ['Digital record of materials in a product', 'Travel document', 'Manufacturing date', 'Brand certification'] }, correctIndex: 0, explanation: { ELEMENTARY: 'Products designed to last a long time and be repaired create less waste!', MIDDLE_SCHOOL: 'Planned obsolescence is intentionally designing products to break or become outdated quickly.', HIGH_SCHOOL: 'DfE (Design for Environment) is designing products to minimize environmental impact.', UNDERGRADUATE: 'LCA (Lifecycle Assessment) measures environmental impacts from raw materials through disposal.', GRADUATE: 'Product-service systems sell outcomes (e.g., lighting) instead of products (e.g., lightbulbs).', PHD: 'Material passports are digital records of materials in products to enable recovery and reuse.' } }] },
+    externalResources: [{ title: 'Ellen MacArthur Foundation', url: 'https://ellenmacarthurfoundation.org/', type: 'research' }]
+  },
+  // Module 7: Food Waste Reduction
+  {
+    id: 'zw-food-waste',
+    slug: 'food-waste-reduction',
+    title: 'Food Waste Reduction',
+    description: {
+      ELEMENTARY: 'Learn why wasting food is bad and how to waste less!',
+      MIDDLE_SCHOOL: 'Discover the impacts of food waste and solutions.',
+      HIGH_SCHOOL: 'Explore food waste across the supply chain and reduction strategies.',
+      UNDERGRADUATE: 'Analyze food loss measurement, causes, and intervention design.',
+      GRADUATE: 'Examine food waste policy, food recovery hierarchy, and system change.',
+      PHD: 'Research food system modeling, behavior change, and climate implications.'
+    },
+    topic: 'zero-waste',
+    category: 'FOOD WASTE',
+    icon: 'Apple',
+    color: 'moss',
+    duration: { ELEMENTARY: 25, MIDDLE_SCHOOL: 35, HIGH_SCHOOL: 50, UNDERGRADUATE: 70, GRADUATE: 90, PHD: 120 },
+    isMasterclass: false,
+    lessons: [{ id: 'zw-food-1', title: 'Don\'t Waste Food!', order: 1, duration: 15, hasActivity: true, activityType: 'SIMULATION', content: { ELEMENTARY: '<h2>Food is Precious!</h2><p>When we throw away food, we waste the water, energy, and work that made it. Let us eat what we take!</p>', MIDDLE_SCHOOL: '<h2>Food Waste Facts</h2><p>About 1/3 of food is wasted globally. In homes, we waste food by buying too much, not eating leftovers, and confusion about dates.</p>', HIGH_SCHOOL: '<h2>Supply Chain Waste</h2><p>Food is lost on farms, in processing, retail, and homes. Different solutions needed at each stage.</p>', UNDERGRADUATE: '<h2>Measuring Food Waste</h2><p>Quantification methods, waste characterization, and identifying intervention points.</p>', GRADUATE: '<h2>Food Recovery Hierarchy</h2><p>Prevention > Feed people > Feed animals > Industrial uses > Composting > Disposal.</p>', PHD: '<h2>Research Frontiers</h2><p>Food-climate modeling, behavior intervention design, and system optimization.</p>' } }],
+    activities: [{ id: 'zw-food-act-1', type: 'SIMULATION', title: { ELEMENTARY: 'Save the Food!', MIDDLE_SCHOOL: 'Meal Planning', HIGH_SCHOOL: 'Supply Chain Analysis', UNDERGRADUATE: 'Intervention Design', GRADUATE: 'Policy Development', PHD: 'System Modeling' }, description: { ELEMENTARY: 'Make choices to waste less food!', MIDDLE_SCHOOL: 'Plan meals to use all the food you buy.', HIGH_SCHOOL: 'Analyze food waste across the supply chain.', UNDERGRADUATE: 'Design a food waste intervention.', GRADUATE: 'Develop food waste reduction policy.', PHD: 'Model food system waste dynamics.' }, config: { ELEMENTARY: { complexity: 'basic', variables: 4 }, MIDDLE_SCHOOL: { complexity: 'simple', variables: 6 }, HIGH_SCHOOL: { complexity: 'intermediate', variables: 12 }, UNDERGRADUATE: { complexity: 'advanced', variables: 18 }, GRADUATE: { complexity: 'expert', variables: 25 }, PHD: { complexity: 'research', variables: 35 } } }],
+    game: { id: 'zw-food-game', type: 'simulation', title: 'Food Saver', description: 'Reduce food waste at home and beyond!', rounds: 5, timeLimit: 40, difficultyByLevel: { ELEMENTARY: 'easy', MIDDLE_SCHOOL: 'easy', HIGH_SCHOOL: 'medium', UNDERGRADUATE: 'medium', GRADUATE: 'hard', PHD: 'expert' } },
+    quiz: { id: 'zw-food-quiz', passingScore: 80, questions: [{ id: 'zwfq1', question: { ELEMENTARY: 'Why is wasting food bad?', MIDDLE_SCHOOL: 'How much food is wasted globally?', HIGH_SCHOOL: 'Where does most household food waste occur?', UNDERGRADUATE: 'What is the best way to handle surplus food?', GRADUATE: 'What is the food recovery hierarchy?', PHD: 'What is a key challenge in food waste research?' }, options: { ELEMENTARY: ['It wastes water, energy, and work', 'It does not matter', 'Food grows on trees easily', 'There is always more'], MIDDLE_SCHOOL: ['About 1/3', 'Almost none', 'About 1/10', '90%'], HIGH_SCHOOL: ['In the kitchen - preparation and leftovers', 'In the store', 'On the farm', 'In the factory'], UNDERGRADUATE: ['Prevent it or feed hungry people', 'Send to landfill', 'Burn it', 'Flush it'], GRADUATE: ['Prioritized uses from prevention to disposal', 'All options are equal', 'Landfill is best', 'No hierarchy exists'], PHD: ['Accurate measurement and behavior change', 'Too simple', 'No challenges', 'Technology only'] }, correctIndex: 0, explanation: { ELEMENTARY: 'Wasting food wastes all the water, energy, and work that went into growing and making it!', MIDDLE_SCHOOL: 'About one-third of all food produced globally is lost or wasted.', HIGH_SCHOOL: 'Most household food waste happens in the kitchen during preparation and from uneaten leftovers.', UNDERGRADUATE: 'The best options are preventing waste or donating edible surplus to feed people.', GRADUATE: 'The food recovery hierarchy prioritizes options from prevention (best) through disposal (worst).', PHD: 'Accurately measuring food waste and designing effective behavior change interventions remain challenging.' } }] },
+    externalResources: [{ title: 'EPA Food Waste', url: 'https://www.epa.gov/sustainable-management-food', type: 'research' }]
+  },
+  // Module 8: Plastic-Free Living
+  {
+    id: 'zw-plastic-free',
+    slug: 'plastic-free-living',
+    title: 'Plastic-Free Living',
+    description: {
+      ELEMENTARY: 'Learn how to use less plastic!',
+      MIDDLE_SCHOOL: 'Discover alternatives to single-use plastics.',
+      HIGH_SCHOOL: 'Explore the plastic pollution problem and solutions.',
+      UNDERGRADUATE: 'Analyze plastic lifecycle, alternatives assessment, and policy options.',
+      GRADUATE: 'Examine global plastic agreements, corporate responsibility, and system change.',
+      PHD: 'Research plastic fate, microplastics, and sociotechnical transitions.'
+    },
+    topic: 'zero-waste',
+    category: 'PLASTICS',
+    icon: 'Ban',
+    color: 'ocean',
+    duration: { ELEMENTARY: 25, MIDDLE_SCHOOL: 35, HIGH_SCHOOL: 50, UNDERGRADUATE: 70, GRADUATE: 90, PHD: 120 },
+    isMasterclass: false,
+    lessons: [{ id: 'zw-pf-1', title: 'Beyond Plastic', order: 1, duration: 15, hasActivity: true, activityType: 'DRAG_DROP', content: { ELEMENTARY: '<h2>Plastic Problems!</h2><p>Plastic lasts for hundreds of years. Using reusable bottles, bags, and containers helps protect nature!</p>', MIDDLE_SCHOOL: '<h2>Single-Use Plastics</h2><p>Bags, bottles, straws, and packaging are used once then thrown away. Most are not recycled.</p>', HIGH_SCHOOL: '<h2>Plastic Pollution</h2><p>Ocean plastic, microplastics, and chemical additives. Only 9% of plastic ever made has been recycled.</p>', UNDERGRADUATE: '<h2>Alternatives Assessment</h2><p>Evaluating alternatives requires lifecycle thinking. Paper is not always better than plastic.</p>', GRADUATE: '<h2>Policy Approaches</h2><p>Bans, fees, EPR, plastic treaties, and voluntary commitments from companies.</p>', PHD: '<h2>Research Frontiers</h2><p>Microplastic fate and effects, degradation pathways, and sociotechnical transition.</p>' } }],
+    activities: [{ id: 'zw-pf-act-1', type: 'DRAG_DROP', title: { ELEMENTARY: 'Swap the Plastic!', MIDDLE_SCHOOL: 'Plastic Audit', HIGH_SCHOOL: 'Alternatives Analysis', UNDERGRADUATE: 'LCA Comparison', GRADUATE: 'Policy Design', PHD: 'System Modeling' }, description: { ELEMENTARY: 'Find reusable alternatives to plastic items!', MIDDLE_SCHOOL: 'Audit plastics in your daily life.', HIGH_SCHOOL: 'Analyze alternatives to common plastics.', UNDERGRADUATE: 'Compare lifecycles of plastic vs. alternatives.', GRADUATE: 'Design plastic reduction policy.', PHD: 'Model plastic system transitions.' }, config: { ELEMENTARY: { items: 8, hints: true, timeLimit: null }, MIDDLE_SCHOOL: { items: 12, hints: true, timeLimit: 120 }, HIGH_SCHOOL: { items: 15, hints: false, timeLimit: 90 }, UNDERGRADUATE: { items: 18, hints: false, timeLimit: 120 }, GRADUATE: { items: 20, hints: false, timeLimit: 90 }, PHD: { items: 25, hints: false, timeLimit: 60 } } }],
+    game: { id: 'zw-pf-game', type: 'matching', title: 'Plastic Swapper', description: 'Find alternatives to single-use plastics!', rounds: 5, timeLimit: 40, difficultyByLevel: { ELEMENTARY: 'easy', MIDDLE_SCHOOL: 'easy', HIGH_SCHOOL: 'medium', UNDERGRADUATE: 'medium', GRADUATE: 'hard', PHD: 'expert' } },
+    quiz: { id: 'zw-pf-quiz', passingScore: 80, questions: [{ id: 'zwpfq1', question: { ELEMENTARY: 'What is better than a plastic bag?', MIDDLE_SCHOOL: 'What percentage of plastic has been recycled?', HIGH_SCHOOL: 'What are microplastics?', UNDERGRADUATE: 'Why is paper not always better than plastic?', GRADUATE: 'What is a plastic treaty?', PHD: 'What is a key microplastics research question?' }, options: { ELEMENTARY: ['A reusable bag', 'More plastic bags', 'Throwing it on the ground', 'Nothing'], MIDDLE_SCHOOL: ['About 9%', '90%', '50%', '75%'], HIGH_SCHOOL: ['Tiny plastic pieces under 5mm', 'Big plastic items', 'Recycled plastic', 'Clean plastic'], UNDERGRADUATE: ['Paper has its own impacts (forests, water, energy)', 'Paper is always better', 'Plastic is always better', 'They are identical'], GRADUATE: ['International agreement to address plastic pollution', 'A type of plastic', 'A recycling program', 'A plastic ban'], PHD: ['Health effects of microplastic exposure', 'Too simple', 'All questions answered', 'No concerns'] }, correctIndex: 0, explanation: { ELEMENTARY: 'Reusable bags can be used hundreds of times instead of throwing away plastic bags!', MIDDLE_SCHOOL: 'Only about 9% of all plastic ever made has been recycled. Most ends up in landfills or nature.', HIGH_SCHOOL: 'Microplastics are tiny plastic pieces smaller than 5mm that are found in water, air, and organisms.', UNDERGRADUATE: 'Paper production requires forests, water, and energy - LCA shows tradeoffs between materials.', GRADUATE: 'A global plastic treaty is being negotiated to address plastic pollution internationally.', PHD: 'Understanding human and ecological health effects of microplastic exposure is a key research gap.' } }] },
+    externalResources: [{ title: 'Plastic Free Foundation', url: 'https://www.plasticfreefoundation.org/', type: 'research' }]
+  },
+  // Module 9: Community Waste Solutions
+  {
+    id: 'zw-community',
+    slug: 'community-waste-solutions',
+    title: 'Community Waste Solutions',
+    description: {
+      ELEMENTARY: 'Learn how communities can work together to reduce waste!',
+      MIDDLE_SCHOOL: 'Discover sharing, repair, and reuse programs in communities.',
+      HIGH_SCHOOL: 'Explore community-based waste reduction models and social enterprise.',
+      UNDERGRADUATE: 'Analyze community waste systems, social capital, and collaborative consumption.',
+      GRADUATE: 'Examine community-based social marketing, collective action, and scaling.',
+      PHD: 'Research community transition dynamics, social innovation, and intervention design.'
+    },
+    topic: 'zero-waste',
+    category: 'COMMUNITY',
+    icon: 'Users',
+    color: 'terra',
+    duration: { ELEMENTARY: 25, MIDDLE_SCHOOL: 35, HIGH_SCHOOL: 50, UNDERGRADUATE: 70, GRADUATE: 90, PHD: 120 },
+    isMasterclass: false,
+    lessons: [{ id: 'zw-comm-1', title: 'Together for Zero Waste', order: 1, duration: 15, hasActivity: true, activityType: 'SIMULATION', content: { ELEMENTARY: '<h2>Sharing is Caring!</h2><p>When neighbors share tools, toys, and things they don\'t use, we need to buy less and throw away less!</p>', MIDDLE_SCHOOL: '<h2>Community Programs</h2><p>Tool libraries, repair cafes, swap meets, and community gardens help people share and reuse.</p>', HIGH_SCHOOL: '<h2>Collaborative Consumption</h2><p>Sharing economy, library of things, and community reuse centers extend product life.</p>', UNDERGRADUATE: '<h2>Social Infrastructure</h2><p>Building social capital, trust, and networks that enable sharing and collective action.</p>', GRADUATE: '<h2>Scaling Solutions</h2><p>Community-based social marketing, network effects, and replicating successful models.</p>', PHD: '<h2>Research Frontiers</h2><p>Community transition dynamics, social innovation, and measuring collective impact.</p>' } }],
+    activities: [{ id: 'zw-comm-act-1', type: 'SIMULATION', title: { ELEMENTARY: 'Start a Swap!', MIDDLE_SCHOOL: 'Plan a Repair Cafe', HIGH_SCHOOL: 'Design a Tool Library', UNDERGRADUATE: 'Community Assessment', GRADUATE: 'Program Scaling', PHD: 'Intervention Design' }, description: { ELEMENTARY: 'Organize a toy and book swap!', MIDDLE_SCHOOL: 'Plan a community repair event.', HIGH_SCHOOL: 'Design a tool lending library.', UNDERGRADUATE: 'Assess community readiness for sharing programs.', GRADUATE: 'Plan to scale a community program.', PHD: 'Design a community-based intervention study.' }, config: { ELEMENTARY: { complexity: 'basic', variables: 4 }, MIDDLE_SCHOOL: { complexity: 'simple', variables: 6 }, HIGH_SCHOOL: { complexity: 'intermediate', variables: 12 }, UNDERGRADUATE: { complexity: 'advanced', variables: 18 }, GRADUATE: { complexity: 'expert', variables: 25 }, PHD: { complexity: 'research', variables: 35 } } }],
+    game: { id: 'zw-comm-game', type: 'simulation', title: 'Community Builder', description: 'Build sharing and reuse programs!', rounds: 5, timeLimit: 40, difficultyByLevel: { ELEMENTARY: 'easy', MIDDLE_SCHOOL: 'easy', HIGH_SCHOOL: 'medium', UNDERGRADUATE: 'medium', GRADUATE: 'hard', PHD: 'expert' } },
+    quiz: { id: 'zw-comm-quiz', passingScore: 80, questions: [{ id: 'zwcmq1', question: { ELEMENTARY: 'How can sharing help reduce waste?', MIDDLE_SCHOOL: 'What is a repair cafe?', HIGH_SCHOOL: 'What is a tool library?', UNDERGRADUATE: 'What enables community sharing programs?', GRADUATE: 'What is community-based social marketing?', PHD: 'What is a key challenge in scaling community programs?' }, options: { ELEMENTARY: ['We buy less when we share', 'It creates more waste', 'It does not help', 'Sharing is bad'], MIDDLE_SCHOOL: ['A place where volunteers help fix broken items', 'A coffee shop', 'A place to buy tools', 'A recycling center'], HIGH_SCHOOL: ['A place to borrow tools instead of buying', 'A tool store', 'A workshop', 'A factory'], UNDERGRADUATE: ['Social capital, trust, and networks', 'Just money', 'Only government', 'Technology alone'], GRADUATE: ['Using social science to promote sustainable behaviors', 'Advertising', 'Regulations only', 'Market competition'], PHD: ['Maintaining fidelity while adapting to context', 'Too easy to scale', 'No challenges', 'One size fits all'] }, correctIndex: 0, explanation: { ELEMENTARY: 'When we share things, we do not each need to buy our own, so less stuff gets made and thrown away!', MIDDLE_SCHOOL: 'A repair cafe is an event where volunteers help people fix broken items like clothes, electronics, and furniture.', HIGH_SCHOOL: 'A tool library lets people borrow tools they need occasionally instead of buying them.', UNDERGRADUATE: 'Social capital - trust, networks, and norms of reciprocity - enables community sharing programs.', GRADUATE: 'CBSM uses behavioral science to design community-level interventions for sustainable behaviors.', PHD: 'Maintaining program fidelity while adapting to different community contexts is a key scaling challenge.' } }] },
+    externalResources: [{ title: 'Repair Cafe Foundation', url: 'https://www.repaircafe.org/', type: 'research' }]
+  },
+  // Module 10: Extended Producer Responsibility
+  {
+    id: 'zw-epr',
+    slug: 'extended-producer-responsibility',
+    title: 'Extended Producer Responsibility',
+    description: {
+      ELEMENTARY: 'Learn why companies should help deal with their products when we are done!',
+      MIDDLE_SCHOOL: 'Discover how producers can be responsible for product end-of-life.',
+      HIGH_SCHOOL: 'Explore EPR programs for packaging, electronics, and other products.',
+      UNDERGRADUATE: 'Analyze EPR policy design, fee structures, and governance.',
+      GRADUATE: 'Examine EPR effectiveness, international models, and design incentives.',
+      PHD: 'Research EPR system dynamics, design optimization, and policy innovation.'
+    },
+    topic: 'zero-waste',
+    category: 'POLICY',
+    icon: 'Building',
+    color: 'ocean',
+    duration: { ELEMENTARY: 25, MIDDLE_SCHOOL: 35, HIGH_SCHOOL: 50, UNDERGRADUATE: 70, GRADUATE: 90, PHD: 120 },
+    isMasterclass: false,
+    lessons: [{ id: 'zw-epr-1', title: 'Producer Responsibility', order: 1, duration: 15, hasActivity: true, activityType: 'SIMULATION', content: { ELEMENTARY: '<h2>Companies Should Help!</h2><p>Companies that make things should help collect and recycle them when we are finished using them.</p>', MIDDLE_SCHOOL: '<h2>What is EPR?</h2><p>Extended Producer Responsibility makes companies responsible for their products through the whole lifecycle, including disposal.</p>', HIGH_SCHOOL: '<h2>EPR Programs</h2><p>Deposit return systems, packaging EPR, electronics take-back, and tire recycling are common EPR programs.</p>', UNDERGRADUATE: '<h2>EPR Design</h2><p>Fee structures, eco-modulation, governance models, and performance targets shape EPR effectiveness.</p>', GRADUATE: '<h2>International Models</h2><p>European EPR frameworks, comparative policy analysis, and lessons learned.</p>', PHD: '<h2>Research Frontiers</h2><p>EPR effectiveness evaluation, design incentives for circularity, and system optimization.</p>' } }],
+    activities: [{ id: 'zw-epr-act-1', type: 'SIMULATION', title: { ELEMENTARY: 'Return the Bottles!', MIDDLE_SCHOOL: 'Design Take-Back', HIGH_SCHOOL: 'Compare Programs', UNDERGRADUATE: 'Fee Structure Design', GRADUATE: 'Policy Evaluation', PHD: 'System Optimization' }, description: { ELEMENTARY: 'Return bottles to get your deposit back!', MIDDLE_SCHOOL: 'Design a product take-back program.', HIGH_SCHOOL: 'Compare EPR programs for different products.', UNDERGRADUATE: 'Design EPR fee structures.', GRADUATE: 'Evaluate EPR policy effectiveness.', PHD: 'Optimize EPR system design.' }, config: { ELEMENTARY: { complexity: 'basic', variables: 4 }, MIDDLE_SCHOOL: { complexity: 'simple', variables: 6 }, HIGH_SCHOOL: { complexity: 'intermediate', variables: 12 }, UNDERGRADUATE: { complexity: 'advanced', variables: 18 }, GRADUATE: { complexity: 'expert', variables: 25 }, PHD: { complexity: 'research', variables: 35 } } }],
+    game: { id: 'zw-epr-game', type: 'simulation', title: 'Policy Designer', description: 'Design effective producer responsibility!', rounds: 5, timeLimit: 40, difficultyByLevel: { ELEMENTARY: 'easy', MIDDLE_SCHOOL: 'easy', HIGH_SCHOOL: 'medium', UNDERGRADUATE: 'medium', GRADUATE: 'hard', PHD: 'expert' } },
+    quiz: { id: 'zw-epr-quiz', passingScore: 80, questions: [{ id: 'zweprq1', question: { ELEMENTARY: 'What happens when you return a bottle with a deposit?', MIDDLE_SCHOOL: 'What does EPR stand for?', HIGH_SCHOOL: 'What products commonly have EPR programs?', UNDERGRADUATE: 'What is eco-modulation?', GRADUATE: 'Where did EPR policy originate?', PHD: 'What is a key EPR research question?' }, options: { ELEMENTARY: ['You get money back', 'Nothing happens', 'You pay more', 'It goes to landfill'], MIDDLE_SCHOOL: ['Extended Producer Responsibility', 'Extra Packaging Required', 'Environmental Protection Rules', 'Energy Power Reduction'], HIGH_SCHOOL: ['Packaging, electronics, tires', 'Only food', 'Only paper', 'Nothing'], UNDERGRADUATE: ['Adjusting fees based on environmental design', 'Same fee for everything', 'No fees', 'Only government pays'], GRADUATE: ['Europe, especially Germany and Sweden', 'United States', 'China', 'No specific origin'], PHD: ['How to design fees that incentivize circularity', 'Too simple', 'All questions answered', 'No research needed'] }, correctIndex: 0, explanation: { ELEMENTARY: 'When you return a bottle with a deposit, you get your money back and the bottle gets recycled!', MIDDLE_SCHOOL: 'EPR stands for Extended Producer Responsibility - making producers responsible for end-of-life.', HIGH_SCHOOL: 'Packaging, electronics (e-waste), tires, batteries, and paint commonly have EPR programs.', UNDERGRADUATE: 'Eco-modulation adjusts producer fees based on product design - lower fees for recyclable designs.', GRADUATE: 'EPR policy originated in Europe, particularly Germany and Scandinavian countries in the 1990s.', PHD: 'Designing fee structures that effectively incentivize design for circularity is a key research question.' } }] },
+    externalResources: [{ title: 'Product Stewardship Institute', url: 'https://www.productstewardship.us/', type: 'research' }]
   }
 ]
