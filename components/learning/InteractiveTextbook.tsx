@@ -8,7 +8,7 @@ import {
   ChevronLeft, ChevronRight, CheckCircle2, Circle,
   BookOpen, Trophy, Clock, Target, ArrowLeft, Play, Quote,
   MessageSquare, GraduationCap, Sparkles, Search, ExternalLink,
-  Image as ImageIcon, ChevronDown, Star, Lightbulb, Award, User
+  Image as ImageIcon, ChevronDown, Star, Lightbulb, Award, User, Layers
 } from 'lucide-react'
 import Link from 'next/link'
 import { sanitizeHtml } from '@/lib/utils/sanitize'
@@ -21,6 +21,7 @@ import { FounderCard, Founder } from '@/components/learning/FounderCard'
 import { detectPioneersInContent, SUSTAINABILITY_PIONEERS, findPioneerByName } from '@/data/sustainabilityPioneers'
 import { StoryIllustration, IllustrationTheme, detectIllustrationTheme } from '@/components/learning/StoryIllustration'
 import { PioneerModal } from '@/components/learning/PioneerModal'
+import { FlashcardStudy, FlashcardDeck, generateFlashcardsFromContent, FlashcardButton } from '@/components/learning/Flashcards'
 
 // Dynamically import diagram components
 const WaterCycleDiagram = dynamic(() => import('@/components/learning/diagrams/WaterCycleDiagram').then(mod => ({ default: mod.WaterCycleDiagram })), { ssr: false })
@@ -672,6 +673,9 @@ export function InteractiveTextbook({
   const [selectedPioneer, setSelectedPioneer] = useState<Founder | null>(null)
   const [showPioneerModal, setShowPioneerModal] = useState(false)
 
+  // Flashcard state
+  const [showFlashcards, setShowFlashcards] = useState(false)
+
   // Ref for scrolling to content
   const contentCardRef = useRef<HTMLDivElement>(null)
 
@@ -684,6 +688,39 @@ export function InteractiveTextbook({
     if (!lesson) return []
     return parseLessonIntoPages(lesson.content, lesson.id, lesson.title)
   }, [lesson])
+
+  // Generate flashcards for the current lesson
+  const lessonFlashcards = useMemo<FlashcardDeck | null>(() => {
+    if (!lesson) return null
+
+    // Collect all pioneers mentioned across all pages
+    const allPioneers = lessonPages.flatMap(p => p.pioneers || [])
+    const uniquePioneers = allPioneers.reduce((acc, p) => {
+      if (!acc.some(existing => existing.id === p.id)) {
+        acc.push(p)
+      }
+      return acc
+    }, [] as Founder[])
+
+    const cards = generateFlashcardsFromContent(
+      lesson.id,
+      lesson.title,
+      lesson.content,
+      selectedLevel,
+      uniquePioneers
+    )
+
+    if (cards.length === 0) return null
+
+    return {
+      id: `${lesson.id}-flashcards`,
+      title: `${lesson.title} Flashcards`,
+      description: `Study key concepts from this lesson`,
+      lessonId: lesson.id,
+      cards,
+      level: selectedLevel
+    }
+  }, [lesson, lessonPages, selectedLevel])
 
   const currentPageData = lessonPages[currentPage]
   const totalPages = lessonPages.length
@@ -1077,6 +1114,23 @@ export function InteractiveTextbook({
               </button>
             )
           })}
+          {/* Flashcard Button */}
+          {lessonFlashcards && lessonFlashcards.cards.length > 0 && (
+            <button
+              onClick={() => setShowFlashcards(true)}
+              className={`flex items-center gap-2 px-4 py-2 rounded-lg font-bold text-sm whitespace-nowrap transition-all ${
+                showFlashcards
+                  ? 'bg-[var(--primary)] text-white'
+                  : 'bg-gradient-to-r from-[color-mix(in_srgb,var(--primary)_15%,var(--background))] to-[color-mix(in_srgb,var(--accent)_15%,var(--background))] text-theme-primary hover:from-[color-mix(in_srgb,var(--primary)_25%,var(--background))] hover:to-[color-mix(in_srgb,var(--accent)_25%,var(--background))]'
+              }`}
+            >
+              <Layers className="w-4 h-4" />
+              Flashcards
+              <span className="px-1.5 py-0.5 rounded-full bg-[var(--primary)] text-white text-xs">
+                {lessonFlashcards.cards.length}
+              </span>
+            </button>
+          )}
           <button
             onClick={() => setShowQuiz(true)}
             className="flex items-center gap-2 px-4 py-2 rounded-lg font-bold text-sm whitespace-nowrap bg-[color-mix(in_srgb,var(--accent)_15%,var(--background))] text-theme-accent hover:bg-[color-mix(in_srgb,var(--accent)_25%,var(--background))]"
@@ -1085,6 +1139,21 @@ export function InteractiveTextbook({
             Quiz
           </button>
         </div>
+
+        {/* Flashcard Study Mode */}
+        {showFlashcards && lessonFlashcards && (
+          <Card className="border-2 border-[var(--primary)] mb-4">
+            <CardContent className="p-6 md:p-8">
+              <FlashcardStudy
+                deck={lessonFlashcards}
+                onComplete={(results) => {
+                  console.log('Flashcard study complete:', results)
+                }}
+                onClose={() => setShowFlashcards(false)}
+              />
+            </CardContent>
+          </Card>
+        )}
 
         {/* Lesson Content - Multi-Page View */}
         <Card ref={contentCardRef} className="border-2 border-[var(--border)] mb-4">

@@ -882,3 +882,23 @@ html {
     gap: 1.5rem;
   }
 }
+
+/* Flashcard 3D Flip Animation */
+.perspective-1000 {
+  perspective: 1000px;
+}
+
+.preserve-3d {
+  transform-style: preserve-3d;
+}
+
+.backface-hidden {
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
+}
+
+/* Flashcard hover effect */
+.flashcard-hover:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 20px 40px -12px rgba(0, 0, 0, 0.2);
+}
