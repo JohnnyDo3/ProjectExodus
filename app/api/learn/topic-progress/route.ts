@@ -52,7 +52,9 @@ export async function GET() {
 
     // Create a set of completed module slugs
     const completedSlugs = new Set(
-      completedProgress.map(p => p.article?.slug).filter(Boolean)
+      completedProgress
+        .map((p: { article: { slug: string } | null }) => p.article?.slug)
+        .filter((slug): slug is string => Boolean(slug))
     )
 
     // Calculate progress for each topic
