@@ -1,6 +1,6 @@
 'use client'
 
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { Card, CardContent } from '@/components/ui/Card'
 import { Button } from '@/components/ui/Button'
 import { CompactLiveImpactStats } from '@/components/learn/CompactLiveImpactStats'
@@ -8,15 +8,38 @@ import { TreeBranches } from '@/components/decorative/TreeBranches'
 import { FlyingBirds } from '@/components/decorative/FlyingBirds'
 import { LearningLevel, LEARNING_LEVELS, LEARNING_LEVEL_ORDER } from '@/types/learning'
 import {
-  BookOpen, Video, Calculator, Download, Zap, Leaf,
-  GraduationCap, Target, Clock, Users, Star, ChevronRight,
-  Lightbulb, TrendingUp, Award, Play, FileText, Droplet,
-  Sun, Wind, Recycle, Home, Sprout, Heart, Globe, CheckCircle2, Lock
+  BookOpen, Calculator, Download, Zap, Leaf,
+  GraduationCap, Clock, ChevronRight,
+  Lightbulb, Play, FileText, Droplet,
+  Recycle, Home, Sprout, Globe, Trophy
 } from 'lucide-react'
 import Link from 'next/link'
+import type { TopicProgress } from '@/app/api/learn/topic-progress/route'
+import type { CoreTopic } from '@/data/modules'
 
 export default function LearnPage() {
   const [selectedLevel, setSelectedLevel] = useState<LearningLevel>('HIGH_SCHOOL')
+  const [topicProgress, setTopicProgress] = useState<Map<CoreTopic, TopicProgress>>(new Map())
+
+  // Fetch topic progress on mount
+  useEffect(() => {
+    async function fetchProgress() {
+      try {
+        const response = await fetch('/api/learn/topic-progress')
+        const data = await response.json()
+        if (data.success && Array.isArray(data.data)) {
+          const progressMap = new Map<CoreTopic, TopicProgress>()
+          data.data.forEach((p: TopicProgress) => {
+            progressMap.set(p.topicId, p)
+          })
+          setTopicProgress(progressMap)
+        }
+      } catch (error) {
+        console.error('Failed to fetch topic progress:', error)
+      }
+    }
+    fetchProgress()
+  }, [])
   // Auto-scroll handlers
   const scrollToSection = (sectionId: string) => {
     const element = document.getElementById(sectionId)
@@ -64,75 +87,6 @@ export default function LearnPage() {
     }
   ]
 
-  const featuredModules = [
-    {
-      title: 'Understanding Your Carbon Footprint',
-      slug: 'carbon-footprint',
-      description: 'Learn how to measure, track, and reduce your personal environmental impact with practical tools and strategies.',
-      category: 'FUNDAMENTALS',
-      duration: '45 min',
-      type: 'Interactive Lesson',
-      icon: Target,
-      color: 'moss',
-      available: true
-    },
-    {
-      title: 'The Water Cycle & Conservation',
-      slug: 'water-conservation',
-      description: 'Explore how water systems work and discover innovative techniques for conservation at home and in your community.',
-      category: 'WATER SYSTEMS',
-      duration: '60 min',
-      type: 'Video + Quiz',
-      icon: Droplet,
-      color: 'ocean',
-      available: true
-    },
-    {
-      title: 'Solar Energy Basics',
-      slug: 'solar-energy',
-      description: 'Everything you need to know about solar power - from how panels work to evaluating if solar is right for your home.',
-      category: 'RENEWABLE ENERGY',
-      duration: '55 min',
-      type: 'Comprehensive Guide',
-      icon: Sun,
-      color: 'terra',
-      available: true
-    },
-    {
-      title: 'Composting Masterclass',
-      slug: 'composting',
-      description: 'Turn waste into gold! Master the art of composting with our step-by-step guide to creating nutrient-rich soil.',
-      category: 'ZERO WASTE',
-      duration: '40 min',
-      type: 'Practical Workshop',
-      icon: Recycle,
-      color: 'moss',
-      available: true
-    },
-    {
-      title: 'Regenerative Agriculture Principles',
-      slug: 'regenerative-agriculture',
-      description: 'Discover farming practices that heal the land, sequester carbon, and produce healthier food for communities.',
-      category: 'FOOD SYSTEMS',
-      duration: '75 min',
-      type: 'Deep Dive',
-      icon: Sprout,
-      color: 'ocean',
-      available: true
-    },
-    {
-      title: 'Building a Sustainable Wardrobe',
-      slug: 'sustainable-wardrobe',
-      description: 'Transform your closet with ethical fashion choices, capsule wardrobes, and understanding textile sustainability.',
-      category: 'SUSTAINABLE FASHION',
-      duration: '50 min',
-      type: 'Style Guide',
-      icon: Heart,
-      color: 'terra',
-      available: true
-    }
-  ]
-
   const quickFacts = [
     { fact: 'The average person generates 4.4 lbs of trash per day', source: 'EPA' },
     { fact: 'Solar energy costs have dropped 89% since 2010', source: 'IRENA' },
@@ -143,12 +97,12 @@ export default function LearnPage() {
   ]
 
   const topics = [
-    { title: 'RENEWABLE ENERGY', desc: 'Solar, wind, and clean energy systems for homes and communities', icon: Zap, slug: 'renewable-energy', color: 'moss', lessons: 24 },
-    { title: 'WATER SYSTEMS', desc: 'Conservation, harvesting, and sustainable water management', icon: Droplet, slug: 'water-systems', color: 'ocean', lessons: 18 },
-    { title: 'REGENERATIVE AGRICULTURE', desc: 'Farming practices that restore ecosystems and sequester carbon', icon: Sprout, slug: 'agriculture', color: 'terra', lessons: 32 },
-    { title: 'ZERO WASTE LIVING', desc: 'Practical strategies to minimize waste and live lighter', icon: Recycle, slug: 'zero-waste', color: 'moss', lessons: 21 },
-    { title: 'GREEN BUILDING', desc: 'Sustainable architecture, materials, and energy-efficient design', icon: Home, slug: 'green-building', color: 'ocean', lessons: 28 },
-    { title: 'FOOD SOVEREIGNTY', desc: 'Local food systems, gardening, and community nutrition', icon: Leaf, slug: 'food-sovereignty', color: 'terra', lessons: 26 },
+    { title: 'RENEWABLE ENERGY', desc: 'Solar, wind, and clean energy systems for homes and communities', icon: Zap, slug: 'renewable-energy', color: 'moss', modules: 33 },
+    { title: 'WATER SYSTEMS', desc: 'Conservation, harvesting, and sustainable water management', icon: Droplet, slug: 'water-systems', color: 'ocean', modules: 33 },
+    { title: 'REGENERATIVE AGRICULTURE', desc: 'Farming practices that restore ecosystems and sequester carbon', icon: Sprout, slug: 'regenerative-agriculture', color: 'terra', modules: 33 },
+    { title: 'ZERO WASTE LIVING', desc: 'Practical strategies to minimize waste and live lighter', icon: Recycle, slug: 'zero-waste', color: 'moss', modules: 33 },
+    { title: 'GREEN BUILDING', desc: 'Sustainable architecture, materials, and energy-efficient design', icon: Home, slug: 'green-building', color: 'ocean', modules: 33 },
+    { title: 'FOOD SOVEREIGNTY', desc: 'Local food systems, gardening, and community nutrition', icon: Leaf, slug: 'food-sovereignty', color: 'terra', modules: 33 },
   ]
 
   const resourceTypes = [
@@ -314,88 +268,6 @@ export default function LearnPage() {
         </div>
       </section>
 
-      {/* Featured Modules - Available Now */}
-      <section id="featured-modules" className="py-24 bg-[var(--muted)]">
-        <div className="container mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="text-center mb-12 sm:mb-16">
-            <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-[color-mix(in_srgb,var(--accent)_20%,var(--background))] border-2 border-theme-accent mb-4">
-              <CheckCircle2 className="w-5 h-5 text-theme-accent" />
-              <span className="text-sm font-black text-theme-accent">AVAILABLE NOW</span>
-            </div>
-            <h2 className="text-3xl sm:text-4xl md:text-5xl font-black mb-4 text-[var(--foreground)]">FEATURED MODULES</h2>
-            <p className="text-base sm:text-lg md:text-xl font-semibold text-theme-muted px-4">
-              Start your learning journey with these fully interactive modules
-            </p>
-          </div>
-
-          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6 max-w-7xl mx-auto">
-            {featuredModules.map((module, i) => {
-              const ModuleCard = (
-                <Card
-                  className={`border-2 ${module.available ? 'border-[var(--border)] hover:border-theme-primary cursor-pointer' : 'border-dashed border-[var(--border)]'} bg-[var(--card)] transform ${module.available ? 'hover:-translate-y-2' : ''} transition-all duration-300 group relative`}
-                >
-                  {!module.available && (
-                    <div className="absolute top-3 right-3 px-3 py-1.5 bg-slate-200 dark:bg-slate-700 rounded-lg text-xs font-black text-slate-600 dark:text-slate-300 flex items-center gap-1.5">
-                      <Lock className="w-3 h-3" />
-                      LOCKED
-                    </div>
-                  )}
-                  {module.available && (
-                    <div className="absolute top-3 right-3 px-2 py-1 bg-[color-mix(in_srgb,var(--primary)_15%,var(--background))] rounded-lg text-xs font-bold text-theme-primary flex items-center gap-1">
-                      <span>{LEARNING_LEVELS[selectedLevel].icon}</span>
-                      <span>{LEARNING_LEVELS[selectedLevel].shortLabel}</span>
-                    </div>
-                  )}
-                  <CardContent className="p-6">
-                    <div className="flex items-start justify-between mb-4">
-                      <span className={`px-3 py-1 rounded-full text-xs font-black ${module.available ? 'bg-[color-mix(in_srgb,var(--primary)_20%,var(--background))] text-theme-primary' : 'bg-slate-100 dark:bg-slate-800 text-slate-500 dark:text-slate-400'}`}>
-                        {module.category}
-                      </span>
-                      <div className={`w-12 h-12 rounded-xl ${module.available ? 'bg-[color-mix(in_srgb,var(--primary)_20%,var(--background))]' : 'bg-slate-100 dark:bg-slate-800'} flex items-center justify-center ${module.available ? 'group-hover:scale-110' : ''} transition-transform`}>
-                        <module.icon className={`w-6 h-6 ${module.available ? 'text-theme-primary' : 'text-slate-400 dark:text-slate-500'}`} />
-                      </div>
-                    </div>
-
-                    <h3 className={`text-lg font-black mb-2 ${module.available ? 'text-[var(--foreground)] group-hover:text-theme-primary' : 'text-slate-600 dark:text-slate-300'} transition-colors`}>
-                      {module.title}
-                    </h3>
-
-                    <p className={`text-sm font-medium mb-4 ${module.available ? 'text-theme-muted' : 'text-slate-500 dark:text-slate-400'}`}>
-                      {module.description}
-                    </p>
-
-                    <div className="flex items-center justify-between text-sm">
-                      <span className={`font-bold flex items-center gap-2 ${module.available ? 'text-theme-muted' : 'text-slate-400 dark:text-slate-500'}`}>
-                        <Clock className="w-4 h-4" />
-                        {module.duration}
-                      </span>
-                      <span className={`font-black flex items-center gap-1 ${module.available ? 'text-theme-primary' : 'text-slate-400 dark:text-slate-500'}`}>
-                        {module.available ? 'START MODULE' : 'COMING SOON'}
-                        {module.available ? <ChevronRight className="w-4 h-4" /> : <Lock className="w-4 h-4" />}
-                      </span>
-                    </div>
-                  </CardContent>
-                </Card>
-              )
-
-              return module.available ? (
-                <Link key={i} href={`/learn/modules/${module.slug}?level=${selectedLevel.toLowerCase()}`}>
-                  {ModuleCard}
-                </Link>
-              ) : (
-                <div key={i}>{ModuleCard}</div>
-              )
-            })}
-          </div>
-
-          <div className="text-center mt-12">
-            <Button size="lg" variant="outline" className="text-lg px-10 py-6 font-black border-2">
-              VIEW ALL MODULES
-            </Button>
-          </div>
-        </div>
-      </section>
-
       {/* Quick Facts Marquee */}
       <section className="py-12 bg-[var(--primary)] overflow-hidden">
         <div className="flex gap-12 animate-scroll">
@@ -457,38 +329,84 @@ export default function LearnPage() {
           </div>
 
           <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8 max-w-7xl mx-auto">
-            {topics.map((topic) => (
-              <Link key={topic.title} href={`/learn/topics/${topic.slug}?level=${selectedLevel.toLowerCase()}`}>
-                <Card className="h-full border-4 border-theme-primary bg-gradient-to-br from-[color-mix(in_srgb,var(--primary)_15%,var(--background))] to-[var(--background)] transform hover:scale-105 hover:shadow-2xl transition-all duration-300 cursor-pointer group">
-                  <CardContent className="p-8">
-                    <div className="flex items-start justify-between mb-4">
-                      <div className="w-20 h-20 rounded-2xl bg-[color-mix(in_srgb,var(--primary)_20%,var(--background))] flex items-center justify-center group-hover:scale-110 transition-transform">
-                        <topic.icon className="w-10 h-10 text-theme-primary" />
+            {topics.map((topic) => {
+              const progress = topicProgress.get(topic.slug as CoreTopic)
+              const progressPercent = progress?.progressPercent || 0
+              const isGraduated = progress?.isGraduated || false
+
+              return (
+                <Link key={topic.title} href={`/learn/topics/${topic.slug}?level=${selectedLevel.toLowerCase()}`}>
+                  <Card className={`h-full border-4 ${isGraduated ? 'border-yellow-400 ring-2 ring-yellow-400/50' : 'border-theme-primary'} bg-gradient-to-br from-[color-mix(in_srgb,var(--primary)_15%,var(--background))] to-[var(--background)] transform hover:scale-105 hover:shadow-2xl transition-all duration-300 cursor-pointer group relative overflow-hidden`}>
+                    {/* Graduation Banner */}
+                    {isGraduated && (
+                      <div className="absolute top-0 right-0 bg-yellow-400 text-yellow-900 px-8 py-1 transform rotate-45 translate-x-6 translate-y-3 text-xs font-black">
+                        GRADUATED
                       </div>
-                      <div className="px-3 py-1 rounded-full bg-[color-mix(in_srgb,var(--primary)_15%,var(--background))] text-xs font-bold text-theme-primary flex items-center gap-1">
-                        <span>{LEARNING_LEVELS[selectedLevel].icon}</span>
-                        <span>{LEARNING_LEVELS[selectedLevel].shortLabel}</span>
+                    )}
+                    <CardContent className="p-8">
+                      <div className="flex items-start justify-between mb-4">
+                        <div className="relative">
+                          <div className="w-20 h-20 rounded-2xl bg-[color-mix(in_srgb,var(--primary)_20%,var(--background))] flex items-center justify-center group-hover:scale-110 transition-transform">
+                            {isGraduated ? (
+                              <Trophy className="w-10 h-10 text-yellow-500" />
+                            ) : (
+                              <topic.icon className="w-10 h-10 text-theme-primary" />
+                            )}
+                          </div>
+                          {/* Progress Ring */}
+                          {progressPercent > 0 && !isGraduated && (
+                            <div className="absolute -bottom-2 -right-2 w-10 h-10 bg-[var(--background)] rounded-full flex items-center justify-center border-2 border-theme-primary">
+                              <span className="text-xs font-black text-theme-primary">{progressPercent}%</span>
+                            </div>
+                          )}
+                        </div>
+                        <div className="px-3 py-1 rounded-full bg-[color-mix(in_srgb,var(--primary)_15%,var(--background))] text-xs font-bold text-theme-primary flex items-center gap-1">
+                          <span>{LEARNING_LEVELS[selectedLevel].icon}</span>
+                          <span>{LEARNING_LEVELS[selectedLevel].shortLabel}</span>
+                        </div>
                       </div>
-                    </div>
-                    <h3 className="text-2xl font-black mb-3 text-[var(--foreground)] group-hover:text-theme-primary transition-colors">
-                      {topic.title}
-                    </h3>
-                    <p className="text-base font-medium mb-4 text-theme-muted">
-                      {topic.desc}
-                    </p>
-                    <div className="flex items-center justify-between">
-                      <span className="text-sm font-bold text-theme-muted flex items-center gap-2">
-                        <BookOpen className="w-4 h-4" />
-                        {topic.lessons} modules
-                      </span>
-                      <span className="text-theme-primary font-black text-sm flex items-center gap-1 group-hover:gap-2 transition-all">
-                        EXPLORE <ChevronRight className="w-4 h-4" />
-                      </span>
-                    </div>
-                  </CardContent>
-                </Card>
-              </Link>
-            ))}
+                      <h3 className="text-2xl font-black mb-3 text-[var(--foreground)] group-hover:text-theme-primary transition-colors">
+                        {topic.title}
+                      </h3>
+                      <p className="text-base font-medium mb-4 text-theme-muted">
+                        {topic.desc}
+                      </p>
+
+                      {/* Progress Bar */}
+                      {progressPercent > 0 && (
+                        <div className="mb-4">
+                          <div className="h-2 bg-[var(--muted)] rounded-full overflow-hidden">
+                            <div
+                              className={`h-full rounded-full transition-all duration-500 ${isGraduated ? 'bg-yellow-400' : 'bg-theme-primary'}`}
+                              style={{ width: `${progressPercent}%` }}
+                            />
+                          </div>
+                          <div className="flex items-center justify-between mt-1 text-xs text-theme-muted">
+                            <span>{progress?.completedModules || 0}/{topic.modules} modules</span>
+                            {isGraduated && (
+                              <span className="text-yellow-600 font-bold flex items-center gap-1">
+                                <Trophy className="w-3 h-3" /> Mastered!
+                              </span>
+                            )}
+                          </div>
+                        </div>
+                      )}
+
+                      <div className="flex items-center justify-between">
+                        <span className="text-sm font-bold text-theme-muted flex items-center gap-2">
+                          <BookOpen className="w-4 h-4" />
+                          {topic.modules} modules
+                        </span>
+                        <span className="text-theme-primary font-black text-sm flex items-center gap-1 group-hover:gap-2 transition-all">
+                          {isGraduated ? 'REVIEW' : progressPercent > 0 ? 'CONTINUE' : 'EXPLORE'}
+                          <ChevronRight className="w-4 h-4" />
+                        </span>
+                      </div>
+                    </CardContent>
+                  </Card>
+                </Link>
+              )
+            })}
           </div>
         </div>
       </section>
