@@ -1121,8 +1121,11 @@ export function GradedQuiz({
   if (quizComplete) {
     const finalScore = answers.filter(a => a.correct).length
     const percentage = Math.round((finalScore / 5) * 100)
+    // Tier thresholds: Gold 90%+, Silver 70-89%, Bronze 60-69%
+    const isGold = percentage >= 90
+    const isSilver = percentage >= 70 && percentage < 90
+    const isBronze = percentage >= 60 && percentage < 70
     const passed = percentage >= 60
-    const excellent = percentage >= 90
 
     return (
       <div className={cn('h-full flex flex-col items-center justify-center p-4', className)}>
@@ -1136,16 +1139,18 @@ export function GradedQuiz({
             className={cn(
               'w-20 h-20 rounded-full flex items-center justify-center mx-auto mb-3',
               'border-4',
-              excellent ? 'border-emerald-500 bg-emerald-500/10' :
-              passed ? 'border-blue-500 bg-blue-500/10' :
-              'border-orange-500 bg-orange-500/10'
+              isGold ? 'border-yellow-500 bg-yellow-500/10' :
+              isSilver ? 'border-slate-400 bg-slate-400/10' :
+              isBronze ? 'border-amber-600 bg-amber-600/10' :
+              'border-red-500 bg-red-500/10'
             )}
           >
             <span className={cn(
               'text-2xl font-bold',
-              excellent ? 'text-emerald-600' :
-              passed ? 'text-blue-600' :
-              'text-orange-600'
+              isGold ? 'text-yellow-600' :
+              isSilver ? 'text-slate-500' :
+              isBronze ? 'text-amber-700' :
+              'text-red-600'
             )}>
               {percentage}%
             </span>
@@ -1153,8 +1158,9 @@ export function GradedQuiz({
 
           {/* Result Message */}
           <h3 className="text-sm font-bold text-[var(--foreground)] mb-1">
-            {excellent ? '🏆 Excellent!' :
-             passed ? '✅ Passed!' :
+            {isGold ? '🥇 Gold!' :
+             isSilver ? '🥈 Silver!' :
+             isBronze ? '🥉 Bronze!' :
              '📚 Keep Learning!'}
           </h3>
           <p className="text-[10px] text-[var(--muted-foreground)] mb-1">
@@ -1165,19 +1171,24 @@ export function GradedQuiz({
           </p>
 
           {/* Badge Progress Hint */}
-          {excellent && (
-            <div className="text-[9px] text-emerald-600 bg-emerald-500/10 px-2 py-1 rounded mb-3">
-              🎖️ Badge progress: Gold tier!
+          {isGold && (
+            <div className="text-[9px] text-yellow-600 bg-yellow-500/10 px-2 py-1 rounded mb-3">
+              🏆 Badge progress: Gold tier earned!
             </div>
           )}
-          {!excellent && passed && (
-            <div className="text-[9px] text-blue-600 bg-blue-500/10 px-2 py-1 rounded mb-3">
-              🥈 Badge progress: Silver tier
+          {isSilver && (
+            <div className="text-[9px] text-slate-600 bg-slate-400/10 px-2 py-1 rounded mb-3">
+              🥈 Badge progress: Silver tier earned!
+            </div>
+          )}
+          {isBronze && (
+            <div className="text-[9px] text-amber-700 bg-amber-600/10 px-2 py-1 rounded mb-3">
+              🥉 Badge progress: Bronze tier earned!
             </div>
           )}
           {!passed && (
-            <div className="text-[9px] text-orange-600 bg-orange-500/10 px-2 py-1 rounded mb-3">
-              📖 Review content & try again
+            <div className="text-[9px] text-red-600 bg-red-500/10 px-2 py-1 rounded mb-3">
+              📖 Review content & try again for a badge
             </div>
           )}
 
