@@ -481,14 +481,18 @@ export function DigitalTextbook({
             chapterIndex={page.chapterIndex ?? 0}
             side={side}
           >
-            <div className="prose prose-sm dark:prose-invert max-w-none font-serif">
-              {typeof page.content === 'string' ? (
-                <div dangerouslySetInnerHTML={{ __html: page.content }} />
-              ) : (
-                page.content
-              )}
+            <div className="h-full flex flex-col">
+              <div className="flex-1 prose prose-base dark:prose-invert max-w-none font-serif prose-p:leading-relaxed prose-headings:font-bold">
+                {typeof page.content === 'string' ? (
+                  <div dangerouslySetInnerHTML={{ __html: page.content }} />
+                ) : (
+                  page.content
+                )}
+              </div>
+              <div className="mt-auto pt-4">
+                <AncientPageNumber number={currentPageIndex + 1} total={totalPages} />
+              </div>
             </div>
-            <AncientPageNumber number={currentPageIndex + 1} total={totalPages} />
           </BookPage>
         )
 
