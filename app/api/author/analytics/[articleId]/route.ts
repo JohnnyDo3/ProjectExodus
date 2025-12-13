@@ -156,7 +156,7 @@ export async function GET(
     const recentProgress = readingProgress.filter((p: ReadingProgressItem) => p.updatedAt >= periodStart)
     const engagementByDate = new Map<string, { views: number; reads: number; timeSpent: number }>()
 
-    recentProgress.forEach(progress => {
+    recentProgress.forEach((progress: ReadingProgressItem) => {
       const dateStr = progress.updatedAt.toISOString().split('T')[0]
       const existing = engagementByDate.get(dateStr) || { views: 0, reads: 0, timeSpent: 0 }
       existing.views++
