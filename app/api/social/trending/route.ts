@@ -36,7 +36,7 @@ export async function GET(request: NextRequest) {
         contentHashtags.forEach((tag: string) => {
           const normalizedTag = tag.toLowerCase()
           // Only count if not already counted from the array
-          if (!post.hashtags?.some(h => h.toLowerCase() === normalizedTag || `#${h.toLowerCase()}` === normalizedTag)) {
+          if (!post.hashtags?.some((h: string) => h.toLowerCase() === normalizedTag || `#${h.toLowerCase()}` === normalizedTag)) {
             hashtagCounts[normalizedTag] = (hashtagCounts[normalizedTag] || 0) + 1
           }
         })

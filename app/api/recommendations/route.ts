@@ -16,6 +16,10 @@ type FollowingItem = {
   followingId: string
 }
 
+type ArticleIdItem = {
+  id: string
+}
+
 type RecommendationItem = {
   id: string
   score: number
@@ -283,7 +287,7 @@ async function generateRecommendations(userId: string) {
         select: { id: true }
       })
 
-      followedAuthorArticles.forEach((article, index) => {
+      followedAuthorArticles.forEach((article: ArticleIdItem, index: number) => {
         recommendations.push({
           articleId: article.id,
           score: 0.9 - (index * 0.02),
@@ -305,8 +309,8 @@ async function generateRecommendations(userId: string) {
         select: { id: true }
       })
 
-      categoryArticles.forEach((article, index) => {
-        if (!recommendations.find(r => r.articleId === article.id)) {
+      categoryArticles.forEach((article: ArticleIdItem, index: number) => {
+        if (!recommendations.find((r: { articleId: string }) => r.articleId === article.id)) {
           recommendations.push({
             articleId: article.id,
             score: 0.8 - (index * 0.02),
@@ -328,8 +332,8 @@ async function generateRecommendations(userId: string) {
       select: { id: true }
     })
 
-    trendingArticles.forEach((article, index) => {
-      if (!recommendations.find(r => r.articleId === article.id)) {
+    trendingArticles.forEach((article: ArticleIdItem, index: number) => {
+      if (!recommendations.find((r: { articleId: string }) => r.articleId === article.id)) {
         recommendations.push({
           articleId: article.id,
           score: 0.7 - (index * 0.02),
@@ -351,8 +355,8 @@ async function generateRecommendations(userId: string) {
       select: { id: true }
     })
 
-    highlyRatedArticles.forEach((article, index) => {
-      if (!recommendations.find(r => r.articleId === article.id)) {
+    highlyRatedArticles.forEach((article: ArticleIdItem, index: number) => {
+      if (!recommendations.find((r: { articleId: string }) => r.articleId === article.id)) {
         recommendations.push({
           articleId: article.id,
           score: 0.6 - (index * 0.02),

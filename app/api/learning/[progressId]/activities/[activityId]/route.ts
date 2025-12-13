@@ -75,7 +75,7 @@ export async function POST(
 
     // Find the activity
     const activities = levelContent.activities as ActivityConfig[]
-    const activity = activities.find(a => a.id === activityId)
+    const activity = activities.find((a: ActivityConfig) => a.id === activityId)
 
     if (!activity) {
       return NextResponse.json(
@@ -339,7 +339,7 @@ function validatePuzzle(
     const order = submission.order as string[] || []
     total = items.length
     for (let i = 0; i < items.length; i++) {
-      const item = items.find(it => it.id === order[i])
+      const item = items.find((it: { id: string; correctPosition: number }) => it.id === order[i])
       if (item && item.correctPosition === i) {
         correct++
       }
@@ -362,7 +362,7 @@ function validateScenario(
 ): ValidationResult {
   const config = (activity as { config: { choices: { id: string; points: number; isOptimal: boolean }[] } }).config
   const choiceId = submission.choiceId as string
-  const choice = config.choices.find(c => c.id === choiceId)
+  const choice = config.choices.find((c: { id: string; points: number; isOptimal: boolean }) => c.id === choiceId)
 
   if (!choice) {
     return { score: 0, passed: false, feedback: 'Invalid choice' }

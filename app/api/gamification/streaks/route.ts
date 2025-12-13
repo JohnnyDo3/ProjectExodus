@@ -79,7 +79,7 @@ export async function GET(request: NextRequest) {
 
     // Calculate milestones
     const milestones = [7, 14, 30, 60, 100, 365]
-    const nextMilestone = milestones.find(m => m > streak.currentStreak) || milestones[milestones.length - 1]
+    const nextMilestone = milestones.find((m: number) => m > streak.currentStreak) || milestones[milestones.length - 1]
     const progressToMilestone = Math.round((streak.currentStreak / nextMilestone) * 100)
 
     return NextResponse.json({
