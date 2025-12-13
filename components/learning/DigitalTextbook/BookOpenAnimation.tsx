@@ -187,14 +187,13 @@ export function BookOpenAnimation({
       // Small delay before starting
       const animationTimer = setTimeout(runAnimation, 100)
 
-      // Failsafe: If animation doesn't complete within 5 seconds, force completion
+      // Quick failsafe: If animation doesn't complete within 1.5 seconds, force completion
       const failsafeTimer = setTimeout(() => {
         if (phase !== 'complete') {
-          console.warn('[BookOpenAnimation] Animation timeout - forcing completion')
           setPhase('complete')
           onAnimationComplete()
         }
-      }, 5000)
+      }, 1500)
 
       return () => {
         clearTimeout(animationTimer)
@@ -207,14 +206,6 @@ export function BookOpenAnimation({
   // RENDER
   // ============================================
 
-  // Skip animation handler
-  const skipAnimation = useCallback(() => {
-    if (phase !== 'complete') {
-      setPhase('complete')
-      onAnimationComplete()
-    }
-  }, [phase, onAnimationComplete])
-
   if (reducedMotion) {
     return null // Instantly show the book without animation
   }
@@ -224,12 +215,8 @@ export function BookOpenAnimation({
       className={cn(
         'fixed inset-0 z-[100] flex items-center justify-center',
         'bg-black/80 backdrop-blur-md',
-        'cursor-pointer',
         className
       )}
-      onClick={skipAnimation}
-      role="button"
-      aria-label="Click to skip animation"
     >
       {/* Ambient light effect */}
       <div
@@ -426,25 +413,15 @@ export function BookOpenAnimation({
 
       {/* Sacred quote at bottom */}
       <motion.div
-        className="absolute bottom-12 left-1/2 -translate-x-1/2 text-center"
+        className="absolute bottom-8 left-1/2 -translate-x-1/2 text-center"
         initial={{ opacity: 0 }}
         animate={{ opacity: phase !== 'descent' ? 0.6 : 0 }}
-        transition={{ delay: 0.5 }}
+        transition={{ delay: 0.3 }}
       >
         <p className="text-white/50 text-sm italic font-serif">
           "And the book was opened..."
         </p>
         <p className="text-white/30 text-xs mt-1">— Revelation 20:12</p>
-      </motion.div>
-
-      {/* Skip hint */}
-      <motion.div
-        className="absolute bottom-4 left-1/2 -translate-x-1/2"
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 0.4 }}
-        transition={{ delay: 1.5 }}
-      >
-        <p className="text-white/40 text-xs">Click anywhere to skip</p>
       </motion.div>
     </div>
   )

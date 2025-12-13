@@ -630,64 +630,67 @@ export function DigitalTextbook({
             <PageEdges pageCount={totalPages} />
           </BookWrapper>
 
-          {/* Navigation Footer */}
-          <div className="absolute bottom-4 left-1/2 -translate-x-1/2 flex items-center gap-4 z-30">
+          {/* Navigation Footer - Higher contrast */}
+          <div className="absolute bottom-6 sm:bottom-8 left-1/2 -translate-x-1/2 flex items-center gap-3 sm:gap-6 z-30 bg-[var(--card)]/95 backdrop-blur-sm rounded-full px-4 py-2 sm:px-6 sm:py-3 border border-[var(--border)] shadow-lg">
             <button
               onClick={prevPage}
               disabled={currentPageIndex === 0}
-              className="p-2 rounded-full bg-black/20 hover:bg-black/30 text-white disabled:opacity-30 transition-all"
+              className="p-2 sm:p-3 rounded-full bg-[var(--primary)] text-[var(--primary-foreground)] hover:opacity-80 disabled:opacity-30 disabled:bg-[var(--muted)] transition-all"
               aria-label="Previous page"
             >
-              <ChevronLeft className="w-5 h-5" />
+              <ChevronLeft className="w-5 h-5 sm:w-6 sm:h-6" />
             </button>
 
-            <span className="text-white/70 text-sm font-mono">
+            <span className="text-[var(--foreground)] text-sm sm:text-base font-bold min-w-[80px] text-center">
               {currentPageIndex + 1} / {totalPages}
             </span>
 
             <button
               onClick={nextPage}
               disabled={currentPageIndex >= totalPages - 1}
-              className="p-2 rounded-full bg-black/20 hover:bg-black/30 text-white disabled:opacity-30 transition-all"
+              className="p-2 sm:p-3 rounded-full bg-[var(--primary)] text-[var(--primary-foreground)] hover:opacity-80 disabled:opacity-30 disabled:bg-[var(--muted)] transition-all"
               aria-label="Next page"
             >
-              <ChevronRight className="w-5 h-5" />
+              <ChevronRight className="w-5 h-5 sm:w-6 sm:h-6" />
             </button>
           </div>
 
-          {/* Settings Button */}
-          <button
-            onClick={() => setShowSettings(!showSettings)}
-            className="absolute top-4 right-16 p-2 rounded-full bg-black/20 hover:bg-black/30 text-white/70 transition-all z-30"
-            aria-label="Settings"
-          >
-            <Settings className="w-5 h-5" />
-          </button>
+          {/* Top Control Bar */}
+          <div className="absolute top-4 sm:top-6 right-4 sm:right-6 flex items-center gap-2 z-30">
+            {/* Sound Toggle */}
+            <button
+              onClick={() => bookState.updatePreferences({ soundEnabled: !bookState.preferences.soundEnabled })}
+              className="p-2 rounded-full bg-[var(--card)]/90 text-[var(--foreground)] hover:bg-[var(--muted)] border border-[var(--border)] transition-all"
+              aria-label={bookState.preferences.soundEnabled ? 'Mute sounds' : 'Enable sounds'}
+            >
+              {bookState.preferences.soundEnabled ? (
+                <Volume2 className="w-4 h-4 sm:w-5 sm:h-5" />
+              ) : (
+                <VolumeX className="w-4 h-4 sm:w-5 sm:h-5" />
+              )}
+            </button>
 
-          {/* Sound Toggle */}
-          <button
-            onClick={() => bookState.updatePreferences({ soundEnabled: !bookState.preferences.soundEnabled })}
-            className="absolute top-4 right-28 p-2 rounded-full bg-black/20 hover:bg-black/30 text-white/70 transition-all z-30"
-            aria-label={bookState.preferences.soundEnabled ? 'Mute sounds' : 'Enable sounds'}
-          >
-            {bookState.preferences.soundEnabled ? (
-              <Volume2 className="w-5 h-5" />
-            ) : (
-              <VolumeX className="w-5 h-5" />
-            )}
-          </button>
+            {/* Settings Button */}
+            <button
+              onClick={() => setShowSettings(!showSettings)}
+              className="p-2 rounded-full bg-[var(--card)]/90 text-[var(--foreground)] hover:bg-[var(--muted)] border border-[var(--border)] transition-all"
+              aria-label="Settings"
+            >
+              <Settings className="w-4 h-4 sm:w-5 sm:h-5" />
+            </button>
 
-          {/* Close Button */}
-          <button
-            onClick={() => {
-              bookState.closeBook()
-              onClose()
-            }}
-            className="absolute top-4 right-4 p-2 rounded-full bg-black/20 hover:bg-black/30 text-white/70 transition-all z-30"
-            aria-label="Close book"
-          >
-            <X className="w-5 h-5" />
-          </button>
+            {/* Close Button */}
+            <button
+              onClick={() => {
+                bookState.closeBook()
+                onClose()
+              }}
+              className="p-2 rounded-full bg-red-500/90 text-white hover:bg-red-600 transition-all"
+              aria-label="Close book"
+            >
+              <X className="w-4 h-4 sm:w-5 sm:h-5" />
+            </button>
+          </div>
         </BookContainer>
       )}
     </>
