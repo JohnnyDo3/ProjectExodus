@@ -2,6 +2,12 @@ import { NextRequest, NextResponse } from 'next/server'
 import { auth } from '@/auth'
 import { prisma } from '@/lib/db'
 import { handlePrismaError } from '@/lib/utils/prisma-errors'
+import {
+  checkRateLimit,
+  RATE_LIMITS,
+  isValidUUID,
+  detectBot,
+} from '@/lib/security'
 
 // POST /api/users/[id]/follow - Follow a user
 export async function POST(
@@ -9,6 +15,15 @@ export async function POST(
   { params }: { params: Promise<{ id: string }> }
 ) {
   try {
+    // Bot detection
+    const botCheck = detectBot(request)
+    if (botCheck.isBot && !botCheck.isLegitimateBot && botCheck.confidence === 'high') {
+      return NextResponse.json(
+        { success: false, error: 'Request blocked' },
+        { status: 403 }
+      )
+    }
+
     const session = await auth()
     const { id } = await params
 
@@ -19,8 +34,34 @@ export async function POST(
       )
     }
 
+    // Rate limiting - 30 follows per minute
+    const rateLimitResult = checkRateLimit(session.user.id, 'follow', RATE_LIMITS.follow)
+    if (!rateLimitResult.success) {
+      return NextResponse.json(
+        {
+          success: false,
+          error: `Too many follow requests. Please try again in ${rateLimitResult.retryAfter} seconds.`,
+        },
+        {
+          status: 429,
+          headers: {
+            'Retry-After': String(rateLimitResult.retryAfter),
+            'X-RateLimit-Remaining': '0',
+          },
+        }
+      )
+    }
+
     const targetUserId = id
     const currentUserId = session.user.id
+
+    // Validate UUID format
+    if (!isValidUUID(targetUserId)) {
+      return NextResponse.json(
+        { success: false, error: 'Invalid user ID format' },
+        { status: 400 }
+      )
+    }
 
     // Can't follow yourself
     if (targetUserId === currentUserId) {
@@ -81,8 +122,33 @@ export async function DELETE(
       )
     }
 
+    // Rate limiting - 30 unfollows per minute
+    const rateLimitResult = checkRateLimit(session.user.id, 'follow', RATE_LIMITS.follow)
+    if (!rateLimitResult.success) {
+      return NextResponse.json(
+        {
+          success: false,
+          error: `Too many requests. Please try again in ${rateLimitResult.retryAfter} seconds.`,
+        },
+        {
+          status: 429,
+          headers: {
+            'Retry-After': String(rateLimitResult.retryAfter),
+          },
+        }
+      )
+    }
+
     const targetUserId = id
     const currentUserId = session.user.id
+
+    // Validate UUID format
+    if (!isValidUUID(targetUserId)) {
+      return NextResponse.json(
+        { success: false, error: 'Invalid user ID format' },
+        { status: 400 }
+      )
+    }
 
     // Delete follow relationship
     await prisma.userFollow.delete({

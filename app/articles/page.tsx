@@ -74,10 +74,15 @@ interface Article {
 
 type SortOption = 'all' | 'newest' | 'oldest' | 'most_read' | 'read'
 
+interface TrendingArticle extends Article {
+  trendingScore?: number
+}
+
 export default function ArticlesPage() {
   const { data: session } = useSession()
   const [articles, setArticles] = useState<Article[]>([])
   const [featuredArticle, setFeaturedArticle] = useState<Article | null>(null)
+  const [trendingArticles, setTrendingArticles] = useState<TrendingArticle[]>([])
   const [isLoading, setIsLoading] = useState(true)
   const [error, setError] = useState<string | null>(null)
   const [searchQuery, setSearchQuery] = useState('')
@@ -85,6 +90,8 @@ export default function ArticlesPage() {
   const [showFilters, setShowFilters] = useState(false)
   const [hasMore, setHasMore] = useState(true)
   const [offset, setOffset] = useState(0)
+  const [totalArticles, setTotalArticles] = useState(0)
+  const [totalViews, setTotalViews] = useState(0)
   const loadMoreRef = useRef<HTMLDivElement>(null)
 
   const sortOptions: { value: SortOption; label: string; icon: any }[] = [
@@ -97,6 +104,34 @@ export default function ArticlesPage() {
 
   // Use ref for offset to avoid stale closure issues
   const offsetRef = useRef(0)
+
+  // Fetch trending articles (most views in recent timeframe)
+  const fetchTrendingArticles = useCallback(async () => {
+    try {
+      const res = await fetch('/api/articles?limit=3&sort=most_read')
+      if (res.ok) {
+        const data = await res.json()
+        if (data.success && data.data) {
+          // Calculate trending score based on views and recency
+          const trending = data.data.map((article: Article) => {
+            const daysSincePublished = Math.max(1, Math.floor((Date.now() - new Date(article.publishedAt).getTime()) / (1000 * 60 * 60 * 24)))
+            const trendingScore = article.views / daysSincePublished
+            return { ...article, trendingScore }
+          }).sort((a: TrendingArticle, b: TrendingArticle) => (b.trendingScore || 0) - (a.trendingScore || 0))
+          setTrendingArticles(trending)
+
+          // Calculate totals
+          const totalViewsCount = data.data.reduce((sum: number, a: Article) => sum + a.views, 0)
+          setTotalViews(totalViewsCount)
+          if (data.pagination?.total) {
+            setTotalArticles(data.pagination.total)
+          }
+        }
+      }
+    } catch (err) {
+      console.error('[Articles] Error fetching trending:', err)
+    }
+  }, [])
 
   const fetchArticles = useCallback(async (reset = false) => {
     console.log('[Articles] fetchArticles called, reset:', reset)
@@ -160,6 +195,11 @@ export default function ArticlesPage() {
       setIsLoading(false)
     }
   }, [activeSort, searchQuery])
+
+  // Fetch trending on mount
+  useEffect(() => {
+    fetchTrendingArticles()
+  }, [fetchTrendingArticles])
 
   useEffect(() => {
     setIsLoading(true)
@@ -240,6 +280,122 @@ export default function ArticlesPage() {
           </div>
         </div>
       </div>
+
+      {/* Trending Spotlight Section */}
+      {trendingArticles.length > 0 && !searchQuery && activeSort === 'all' && (
+        <div className="bg-gradient-to-b from-[var(--card)] to-[var(--background)] border-b border-[var(--border)]">
+          <div className="container mx-auto px-4 py-8 sm:py-12">
+            {/* Section Header */}
+            <div className="flex items-center justify-between mb-6">
+              <div className="flex items-center gap-3">
+                <div className="p-2 bg-gradient-to-br from-orange-500 to-red-500 rounded-xl">
+                  <TrendingUp className="w-5 h-5 sm:w-6 sm:h-6 text-white" />
+                </div>
+                <div>
+                  <h2 className="text-xl sm:text-2xl font-black text-[var(--foreground)]">
+                    TRENDING NOW
+                  </h2>
+                  <p className="text-xs sm:text-sm text-theme-muted font-medium">
+                    Most popular articles this week
+                  </p>
+                </div>
+              </div>
+
+              {/* Stats Pills */}
+              <div className="hidden sm:flex items-center gap-3">
+                <div className="px-4 py-2 bg-[var(--muted)] rounded-xl">
+                  <span className="text-xs font-bold text-theme-muted">
+                    {totalArticles > 0 ? totalArticles : articles.length + (featuredArticle ? 1 : 0)} Articles
+                  </span>
+                </div>
+                <div className="px-4 py-2 bg-[var(--muted)] rounded-xl">
+                  <span className="text-xs font-bold text-theme-muted">
+                    {totalViews.toLocaleString()} Total Views
+                  </span>
+                </div>
+              </div>
+            </div>
+
+            {/* Trending Cards */}
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-4 sm:gap-6">
+              {trendingArticles.slice(0, 3).map((article, index) => {
+                const authorTheme = getAuthorTheme(article.author.guardianArchetype)
+                const rankColors = ['from-yellow-400 to-orange-500', 'from-gray-300 to-gray-400', 'from-amber-600 to-amber-700']
+                const rankLabels = ['#1 TRENDING', '#2 POPULAR', '#3 HOT']
+
+                return (
+                  <Link key={article.id} href={`/articles/${article.slug}`}>
+                    <Card className="h-full border-2 border-[var(--border)] hover:border-orange-400 hover:shadow-xl transition-all group cursor-pointer overflow-hidden relative">
+                      {/* Rank Badge */}
+                      <div className={`absolute top-3 left-3 z-10 px-2 py-1 bg-gradient-to-r ${rankColors[index]} text-white font-black text-[10px] sm:text-xs rounded-full shadow-lg`}>
+                        {rankLabels[index]}
+                      </div>
+
+                      {/* Cover Image */}
+                      <div className="relative h-32 sm:h-40 overflow-hidden bg-gradient-to-br from-[var(--primary)] to-[var(--accent)]">
+                        {article.coverImage ? (
+                          <img
+                            src={article.coverImage}
+                            alt={article.title}
+                            className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+                          />
+                        ) : (
+                          <div className="w-full h-full flex items-center justify-center">
+                            <BookOpen className="w-12 h-12 text-white/30" />
+                          </div>
+                        )}
+                        <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent" />
+
+                        {/* View count overlay */}
+                        <div className="absolute bottom-2 right-2 flex items-center gap-1 px-2 py-1 bg-black/50 rounded-full backdrop-blur-sm">
+                          <Eye className="w-3 h-3 text-white" />
+                          <span className="text-[10px] sm:text-xs text-white font-bold">{article.views}</span>
+                        </div>
+                      </div>
+
+                      <CardContent className="p-3 sm:p-4">
+                        {/* Category */}
+                        <span className="px-2 py-0.5 bg-orange-100 text-orange-700 font-bold text-[10px] sm:text-xs rounded-md">
+                          {article.category.name}
+                        </span>
+
+                        {/* Title */}
+                        <h3 className="text-sm sm:text-base font-black text-[var(--foreground)] mt-2 mb-2 group-hover:text-orange-500 transition-colors line-clamp-2">
+                          {article.title}
+                        </h3>
+
+                        {/* Author & Stats */}
+                        <div className="flex items-center justify-between text-[10px] sm:text-xs text-theme-muted">
+                          <div className="flex items-center gap-1.5">
+                            <div className={`w-5 h-5 rounded-full bg-gradient-to-br ${authorTheme.gradient} flex items-center justify-center`}>
+                              {article.author.image ? (
+                                <img src={article.author.image} alt="" className="w-full h-full rounded-full object-cover" />
+                              ) : (
+                                <User className="w-2.5 h-2.5 text-white" />
+                              )}
+                            </div>
+                            <span className="font-medium truncate max-w-[80px]">{article.author.name}</span>
+                          </div>
+                          <div className="flex items-center gap-2">
+                            <span className="flex items-center gap-0.5">
+                              <Clock className="w-3 h-3" />
+                              {article.readTime}m
+                            </span>
+                            <span className="flex items-center gap-0.5">
+                              <MessageCircle className="w-3 h-3" />
+                              {article._count.comments}
+                            </span>
+                          </div>
+                        </div>
+                      </CardContent>
+                    </Card>
+                  </Link>
+                )
+              })}
+            </div>
+          </div>
+        </div>
+      )}
 
       {/* Filter Bar */}
       <div className="sticky top-16 sm:top-20 z-40 bg-[var(--card)] border-b-2 border-[var(--border)] shadow-sm">

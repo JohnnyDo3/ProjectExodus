@@ -2,6 +2,15 @@ import { NextRequest, NextResponse } from 'next/server'
 import { auth } from '@/auth'
 import { prisma } from '@/lib/db'
 import { handlePrismaError } from '@/lib/utils/prisma-errors'
+import {
+  checkRateLimit,
+  RATE_LIMITS,
+  isValidUUID,
+  detectBot,
+  sanitizeForDatabase,
+  validateLength,
+  detectSpamPatterns,
+} from '@/lib/security'
 
 // POST /api/users/[id]/connect - Send connection request
 export async function POST(
@@ -9,6 +18,15 @@ export async function POST(
   { params }: { params: Promise<{ id: string }> }
 ) {
   try {
+    // Bot detection
+    const botCheck = detectBot(request)
+    if (botCheck.isBot && !botCheck.isLegitimateBot && botCheck.confidence === 'high') {
+      return NextResponse.json(
+        { success: false, error: 'Request blocked' },
+        { status: 403 }
+      )
+    }
+
     const session = await auth()
     const { id } = await params
 
@@ -19,10 +37,60 @@ export async function POST(
       )
     }
 
+    // Rate limiting - 20 connection requests per hour
+    const rateLimitResult = checkRateLimit(session.user.id, 'connection-request', RATE_LIMITS.connectionRequest)
+    if (!rateLimitResult.success) {
+      return NextResponse.json(
+        {
+          success: false,
+          error: `Too many connection requests. Please try again in ${rateLimitResult.retryAfter} seconds.`,
+        },
+        {
+          status: 429,
+          headers: {
+            'Retry-After': String(rateLimitResult.retryAfter),
+            'X-RateLimit-Remaining': '0',
+          },
+        }
+      )
+    }
+
     const targetUserId = id
     const currentUserId = session.user.id
+
+    // Validate UUID format
+    if (!isValidUUID(targetUserId)) {
+      return NextResponse.json(
+        { success: false, error: 'Invalid user ID format' },
+        { status: 400 }
+      )
+    }
+
     const body = await request.json()
     const { message } = body
+
+    // Validate and sanitize message if provided
+    let sanitizedMessage: string | null = null
+    if (message) {
+      const messageValidation = validateLength(message, { min: 1, max: 500 })
+      if (!messageValidation.valid) {
+        return NextResponse.json(
+          { success: false, error: `Message: ${messageValidation.error}` },
+          { status: 400 }
+        )
+      }
+
+      // Check for spam patterns
+      const spamCheck = detectSpamPatterns(message)
+      if (spamCheck.isSpam) {
+        return NextResponse.json(
+          { success: false, error: 'Message contains inappropriate content' },
+          { status: 400 }
+        )
+      }
+
+      sanitizedMessage = sanitizeForDatabase(message)
+    }
 
     // Can't connect with yourself
     if (targetUserId === currentUserId) {
@@ -74,7 +142,7 @@ export async function POST(
         userId: currentUserId,
         connectedUserId: targetUserId,
         status: 'PENDING',
-        message: message || null,
+        message: sanitizedMessage,
       },
       include: {
         user: {

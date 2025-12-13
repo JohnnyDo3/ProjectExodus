@@ -1,6 +1,16 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { prisma } from '@/lib/db'
 import { auth } from '@/auth'
+import {
+  checkRateLimit,
+  RATE_LIMITS,
+  getClientIP,
+  sanitizeForDatabase,
+  validateMeetingLink,
+  validateLength,
+  validateDate,
+  detectBot,
+} from '@/lib/security'
 
 // GET /api/events - Get all events
 export async function GET(request: NextRequest) {
@@ -67,11 +77,38 @@ export async function GET(request: NextRequest) {
 // POST /api/events - Create a new event
 export async function POST(request: NextRequest) {
   try {
+    // Bot detection
+    const botCheck = detectBot(request)
+    if (botCheck.isBot && !botCheck.isLegitimateBot && botCheck.confidence === 'high') {
+      return NextResponse.json(
+        { success: false, error: 'Request blocked' },
+        { status: 403 }
+      )
+    }
+
     const session = await auth()
     if (!session?.user) {
       return NextResponse.json(
         { success: false, error: 'Unauthorized - Please sign in to create events' },
         { status: 401 }
+      )
+    }
+
+    // Rate limiting - 5 events per hour per user
+    const rateLimitResult = checkRateLimit(session.user.id, 'create-event', RATE_LIMITS.createEvent)
+    if (!rateLimitResult.success) {
+      return NextResponse.json(
+        {
+          success: false,
+          error: `Too many events created. Please try again in ${rateLimitResult.retryAfter} seconds.`,
+        },
+        {
+          status: 429,
+          headers: {
+            'Retry-After': String(rateLimitResult.retryAfter),
+            'X-RateLimit-Remaining': '0',
+          },
+        }
       )
     }
 
@@ -88,10 +125,44 @@ export async function POST(request: NextRequest) {
       coverImage,
     } = body
 
-    // Validation
-    if (!title || !description || !type || !startDate) {
+    // Input validation with length limits
+    const titleValidation = validateLength(title, { min: 3, max: 200 })
+    if (!titleValidation.valid) {
       return NextResponse.json(
-        { success: false, error: 'Title, description, type, and start date are required' },
+        { success: false, error: `Title: ${titleValidation.error}` },
+        { status: 400 }
+      )
+    }
+
+    const descValidation = validateLength(description, { min: 10, max: 5000 })
+    if (!descValidation.valid) {
+      return NextResponse.json(
+        { success: false, error: `Description: ${descValidation.error}` },
+        { status: 400 }
+      )
+    }
+
+    // Validate event type
+    if (!['VIRTUAL', 'IN_PERSON', 'HYBRID'].includes(type)) {
+      return NextResponse.json(
+        { success: false, error: 'Invalid event type' },
+        { status: 400 }
+      )
+    }
+
+    // Validate start date
+    const startDateValidation = validateDate(startDate)
+    if (!startDateValidation.valid) {
+      return NextResponse.json(
+        { success: false, error: startDateValidation.error },
+        { status: 400 }
+      )
+    }
+
+    // Ensure start date is in the future
+    if (startDateValidation.date && startDateValidation.date < new Date()) {
+      return NextResponse.json(
+        { success: false, error: 'Event start date must be in the future' },
         { status: 400 }
       )
     }
@@ -103,22 +174,40 @@ export async function POST(request: NextRequest) {
       )
     }
 
-    if (type === 'VIRTUAL' && !meetingLink) {
+    // Validate meeting link for virtual/hybrid events
+    let validatedMeetingLink: string | null = null
+    if (type === 'VIRTUAL' || type === 'HYBRID') {
+      if (!meetingLink) {
+        return NextResponse.json(
+          { success: false, error: 'Meeting link is required for virtual events' },
+          { status: 400 }
+        )
+      }
+
+      const meetingValidation = validateMeetingLink(meetingLink)
+      if (!meetingValidation.valid) {
+        return NextResponse.json(
+          { success: false, error: 'Invalid meeting link. Please provide a valid URL.' },
+          { status: 400 }
+        )
+      }
+      validatedMeetingLink = meetingValidation.url
+    }
+
+    if (type === 'HYBRID' && !location) {
       return NextResponse.json(
-        { success: false, error: 'Meeting link is required for virtual events' },
+        { success: false, error: 'Location is required for hybrid events' },
         { status: 400 }
       )
     }
 
-    if (type === 'HYBRID' && (!location || !meetingLink)) {
-      return NextResponse.json(
-        { success: false, error: 'Both location and meeting link are required for hybrid events' },
-        { status: 400 }
-      )
-    }
+    // Sanitize inputs for database storage
+    const sanitizedTitle = sanitizeForDatabase(title)
+    const sanitizedDescription = sanitizeForDatabase(description)
+    const sanitizedLocation = location ? sanitizeForDatabase(location) : null
 
     // Generate slug from title
-    const slug = title
+    const slug = sanitizedTitle
       .toLowerCase()
       .replace(/[^a-z0-9]+/g, '-')
       .replace(/^-|-$/g, '')
@@ -126,15 +215,15 @@ export async function POST(request: NextRequest) {
 
     const event = await prisma.event.create({
       data: {
-        title,
+        title: sanitizedTitle,
         slug,
-        description,
+        description: sanitizedDescription,
         type,
-        location: location || null,
-        meetingLink: meetingLink || null,
-        startDate: new Date(startDate),
+        location: sanitizedLocation,
+        meetingLink: validatedMeetingLink,
+        startDate: startDateValidation.date!,
         endDate: endDate ? new Date(endDate) : null,
-        maxCapacity: maxCapacity ? parseInt(maxCapacity) : null,
+        maxCapacity: maxCapacity ? Math.min(parseInt(maxCapacity), 10000) : null, // Cap at 10k
         coverImage: coverImage || null,
         creatorId: session.user.id,
       },

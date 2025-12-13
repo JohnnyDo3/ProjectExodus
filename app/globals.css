@@ -710,16 +710,28 @@ html {
   text-size-adjust: 100%;
 }
 
+/* GLOBAL: Prevent horizontal scroll across all screen sizes */
+html, body {
+  overflow-x: hidden;
+  max-width: 100vw;
+}
+
+/* Prevent elements from causing horizontal overflow */
+main, section, article, aside, header, footer, nav, div {
+  max-width: 100%;
+}
+
+/* Fix 100vw causing horizontal scroll (accounts for scrollbar width) */
+.w-screen, .full-width {
+  width: 100%;
+  max-width: 100vw;
+}
+
 /* Improve tap targets for mobile */
 @media (max-width: 768px) {
   button:not(.no-min-size),
   a:not(.no-min-size) {
     min-height: 44px;
-  }
-
-  /* Prevent horizontal scroll on mobile */
-  body {
-    overflow-x: hidden;
   }
 
   /* Make images responsive */
