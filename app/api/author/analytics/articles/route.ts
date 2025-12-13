@@ -2,6 +2,45 @@ import { NextRequest, NextResponse } from 'next/server'
 import { prisma } from '@/lib/db'
 import { auth } from '@/auth'
 
+type ArticleWithRelations = {
+  id: string
+  title: string
+  slug: string
+  status: string
+  publishedAt: Date | null
+  coverImage: string | null
+  views: number
+  readTime: number | null
+  category: { id: string; name: string; slug: string } | null
+  _count: {
+    comments: number
+    peerReviews: number
+    readingProgress: number
+  }
+}
+
+type ReadingStatsGroup = {
+  articleId: string
+  _count: { id: number }
+  _sum: { timeSpent: number | null }
+  _avg: { scrollProgress: number | null }
+}
+
+type CompletedReadsGroup = {
+  articleId: string
+  _count: { id: number }
+}
+
+type ReviewRatingsGroup = {
+  articleId: string
+  _avg: {
+    clarity: number | null
+    accuracy: number | null
+    depth: number | null
+    originality: number | null
+  }
+}
+
 // GET /api/author/analytics/articles - Get detailed analytics for all author's articles
 export async function GET(request: NextRequest) {
   try {
@@ -61,7 +100,7 @@ export async function GET(request: NextRequest) {
     })
 
     // Get reading progress stats for each article
-    const articleIds = articles.map(a => a.id)
+    const articleIds = articles.map((a: ArticleWithRelations) => a.id)
     const readingStats = await prisma.articleReadingProgress.groupBy({
       by: ['articleId'],
       where: { articleId: { in: articleIds } },
@@ -92,9 +131,9 @@ export async function GET(request: NextRequest) {
     })
 
     // Map stats to articles
-    const statsMap = new Map(readingStats.map(s => [s.articleId, s]))
-    const completedMap = new Map(completedReads.map(s => [s.articleId, s._count.id]))
-    const ratingsMap = new Map(reviewRatings.map(r => [r.articleId, {
+    const statsMap = new Map(readingStats.map((s: ReadingStatsGroup) => [s.articleId, s]))
+    const completedMap = new Map(completedReads.map((s: CompletedReadsGroup) => [s.articleId, s._count.id]))
+    const ratingsMap = new Map(reviewRatings.map((r: ReviewRatingsGroup) => [r.articleId, {
       clarity: r._avg.clarity,
       accuracy: r._avg.accuracy,
       depth: r._avg.depth,
@@ -102,7 +141,7 @@ export async function GET(request: NextRequest) {
       overall: ((r._avg.clarity || 0) + (r._avg.accuracy || 0) + (r._avg.depth || 0) + (r._avg.originality || 0)) / 4
     }]))
 
-    const articlesWithStats = articles.map(article => {
+    const articlesWithStats = articles.map((article: ArticleWithRelations) => {
       const stats = statsMap.get(article.id)
       const completed = completedMap.get(article.id) || 0
       const ratings = ratingsMap.get(article.id)
