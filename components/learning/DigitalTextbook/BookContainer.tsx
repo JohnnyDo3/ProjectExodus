@@ -236,8 +236,12 @@ export function PageContainer({ children, side, className }: PageContainerProps)
         'relative',
         // Page dimensions
         isDesktop ? 'w-1/2 h-full' : 'w-full h-full',
-        // Tighter padding - closer to edges and centerfold
-        'p-3 sm:p-4',
+        // Asymmetric padding for book layout:
+        // - More padding on OUTER edge (far from centerfold)
+        // - Less padding on INNER edge (close to centerfold)
+        side === 'left' && isDesktop && 'pl-6 pr-2 py-3', // Left page: more padding on left, tight on right (centerfold)
+        side === 'right' && isDesktop && 'pl-2 pr-6 py-3', // Right page: tight on left (centerfold), more padding on right
+        !isDesktop && 'p-3', // Mobile: uniform padding
         // Page styling
         'bg-[var(--book-paper,var(--card))]',
         // Side-specific styling

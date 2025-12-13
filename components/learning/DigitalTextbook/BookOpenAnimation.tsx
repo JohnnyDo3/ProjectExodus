@@ -3,14 +3,13 @@
 // ============================================
 // BOOK OPEN ANIMATION
 // "And the book was opened..." - Revelation 20:12
-// Simple, reliable animation sequence
+// Flow: Descend → Cover opens → Instructions → Title → Complete
 // ============================================
 
-import { motion } from 'framer-motion'
+import { motion, AnimatePresence } from 'framer-motion'
 import { useEffect, useRef, useState } from 'react'
 import { cn } from '@/lib/utils/cn'
 import { BOOK_DIMENSIONS, CORE_TOPIC_ICONS, getDeviceType } from './bookConstants'
-import { X } from 'lucide-react'
 
 // ============================================
 // TYPES
@@ -19,11 +18,14 @@ import { X } from 'lucide-react'
 interface BookOpenAnimationProps {
   topicSlug: string
   topicTitle: string
+  topicDescription?: string
   targetPage: number
   onAnimationComplete: () => void
   reducedMotion?: boolean
   className?: string
 }
+
+type AnimationPhase = 'descend' | 'opening' | 'instructions' | 'title' | 'complete'
 
 // ============================================
 // MAIN COMPONENT
@@ -32,13 +34,13 @@ interface BookOpenAnimationProps {
 export function BookOpenAnimation({
   topicSlug,
   topicTitle,
+  topicDescription,
   onAnimationComplete,
   reducedMotion = false,
   className,
 }: BookOpenAnimationProps) {
-  const [isAnimating, setIsAnimating] = useState(true)
+  const [phase, setPhase] = useState<AnimationPhase>('descend')
   const [coverOpen, setCoverOpen] = useState(false)
-  const [showContent, setShowContent] = useState(false)
   const completedRef = useRef(false)
   const [dimensions, setDimensions] = useState(BOOK_DIMENSIONS.desktop)
 
@@ -55,12 +57,28 @@ export function BookOpenAnimation({
     return () => window.removeEventListener('resize', updateDimensions)
   }, [])
 
-  // Handle completion
+  // Handle final completion
   const handleComplete = () => {
     if (!completedRef.current) {
       completedRef.current = true
-      setIsAnimating(false)
+      setPhase('complete')
       onAnimationComplete()
+    }
+  }
+
+  // Handle proceed from instructions to title
+  const handleProceedToTitle = (e: React.MouseEvent) => {
+    e.stopPropagation()
+    if (phase === 'instructions') {
+      setPhase('title')
+    }
+  }
+
+  // Handle proceed from title to complete
+  const handleContinue = (e: React.MouseEvent) => {
+    e.stopPropagation()
+    if (phase === 'title') {
+      handleComplete()
     }
   }
 
@@ -71,49 +89,50 @@ export function BookOpenAnimation({
     }
   }, [reducedMotion])
 
-  // Auto-advance animation sequence - a processional pace
+  // Animation timeline: descend → opening → instructions (wait for click)
   useEffect(() => {
     if (reducedMotion || completedRef.current) return
 
-    // Timeline (slower, more ceremonial):
+    // Timeline:
     // 0ms: Book starts descending
-    // 1500ms: Book lands with gentle bounce, pause to admire
-    // 3000ms: Cover begins opening slowly
-    // 5000ms: Show inside, allow reading
-    // 6500ms: Complete (or user clicks/presses key)
+    // 1500ms: Cover starts opening
+    // 3300ms: Cover fully open, show instructions
 
     const openCoverTimer = setTimeout(() => {
       setCoverOpen(true)
+      setPhase('opening')
     }, 1500)
 
-    const showContentTimer = setTimeout(() => {
-      setShowContent(true)
-    }, 3500)
-
-    const completeTimer = setTimeout(() => {
-      handleComplete()
-    }, 5500)
+    const showInstructionsTimer = setTimeout(() => {
+      setPhase('instructions')
+    }, 3300)
 
     return () => {
       clearTimeout(openCoverTimer)
-      clearTimeout(showContentTimer)
-      clearTimeout(completeTimer)
+      clearTimeout(showInstructionsTimer)
     }
   }, [reducedMotion])
 
-  // Keyboard controls
+  // Keyboard controls - skip entire animation
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
-      if (e.key === ' ' || e.key === 'Escape' || e.key === 'Enter') {
+      if (e.key === 'Escape') {
         e.preventDefault()
         handleComplete()
+      } else if (e.key === ' ' || e.key === 'Enter') {
+        e.preventDefault()
+        if (phase === 'instructions') {
+          setPhase('title')
+        } else if (phase === 'title') {
+          handleComplete()
+        }
       }
     }
     window.addEventListener('keydown', handleKeyDown)
     return () => window.removeEventListener('keydown', handleKeyDown)
-  }, [])
+  }, [phase])
 
-  if (reducedMotion || !isAnimating) {
+  if (reducedMotion || phase === 'complete') {
     return null
   }
 
@@ -124,9 +143,8 @@ export function BookOpenAnimation({
         'bg-black/80 backdrop-blur-md',
         className
       )}
-      onClick={handleComplete}
     >
-      {/* Skip button */}
+      {/* Skip button - always visible */}
       <button
         onClick={(e) => {
           e.stopPropagation()
@@ -145,9 +163,10 @@ export function BookOpenAnimation({
         animate={{ opacity: 1, y: 0 }}
         transition={{ delay: 0.3, duration: 0.5 }}
       >
-        {!coverOpen && 'The book descends...'}
-        {coverOpen && !showContent && 'The revelation begins...'}
-        {showContent && 'Enter the sacred text...'}
+        {phase === 'descend' && 'The book descends...'}
+        {phase === 'opening' && 'The revelation begins...'}
+        {phase === 'instructions' && 'Learn the sacred ways...'}
+        {phase === 'title' && 'Your journey awaits...'}
       </motion.div>
 
       {/* Book Container - matches main book dimensions */}
@@ -172,8 +191,8 @@ export function BookOpenAnimation({
             opacity: 1
           }}
           transition={{
-            duration: 1.4, // Slower, more majestic descent
-            ease: [0.22, 1, 0.36, 1], // Smoother easing
+            duration: 1.4,
+            ease: [0.22, 1, 0.36, 1],
           }}
         >
           {/* Book body wrapper for 3D */}
@@ -184,36 +203,147 @@ export function BookOpenAnimation({
               boxShadow: '0 50px 100px -20px rgba(0, 0, 0, 0.5), 0 30px 60px -30px rgba(0, 0, 0, 0.3)',
             }}
           >
-            {/* Back cover / Inside pages */}
+            {/* Back cover / Revealed page content */}
             <div
               className="absolute inset-0 rounded-lg"
               style={{
-                background: showContent
+                background: phase === 'title'
                   ? 'linear-gradient(135deg, #f5f0e8 0%, #e8e0d4 100%)'
                   : 'linear-gradient(135deg, #1a1612 0%, #2a2420 50%, #1a1612 100%)',
-                transition: 'background 0.5s ease',
+                transition: 'background 0.8s ease',
               }}
             >
-              {/* Inside pages preview when cover opens */}
-              {showContent && (
-                <motion.div
-                  className="absolute inset-0 flex items-center justify-center p-12"
-                  initial={{ opacity: 0 }}
-                  animate={{ opacity: 1 }}
-                  transition={{ duration: 0.5 }}
-                >
-                  <div className="text-center max-w-lg">
-                    <div className="text-6xl mb-6">{topicIcon}</div>
-                    <h2 className="text-3xl font-serif font-bold text-gray-800 mb-4">
-                      {topicTitle}
-                    </h2>
-                    <div className="w-32 h-0.5 mx-auto bg-gradient-to-r from-transparent via-amber-600 to-transparent mb-4" />
-                    <p className="text-gray-600 italic font-serif">
-                      Click anywhere to begin your journey
-                    </p>
-                  </div>
-                </motion.div>
-              )}
+              {/* INSTRUCTIONS PAGE - Dark background with keyboard hints */}
+              <AnimatePresence>
+                {phase === 'instructions' && (
+                  <motion.div
+                    className="absolute inset-0 flex items-center justify-center p-8"
+                    initial={{ opacity: 0 }}
+                    animate={{ opacity: 1 }}
+                    exit={{ opacity: 0 }}
+                    transition={{ duration: 0.5 }}
+                  >
+                    <div className="text-center max-w-lg space-y-8">
+                      {/* Title */}
+                      <div>
+                        <p className="text-amber-500/80 text-sm uppercase tracking-[0.3em] font-serif mb-2">
+                          Navigation Guide
+                        </p>
+                        <div className="w-32 h-0.5 mx-auto bg-gradient-to-r from-transparent via-amber-600/50 to-transparent" />
+                      </div>
+
+                      {/* Keyboard shortcuts */}
+                      <div className="grid grid-cols-2 gap-x-8 gap-y-4 text-amber-100/80">
+                        {/* Spacebar */}
+                        <div className="flex items-center gap-3 justify-end">
+                          <span className="text-sm text-amber-100/60">Flip page</span>
+                          <kbd className="px-4 py-2 bg-amber-900/30 rounded-lg text-sm font-mono border border-amber-700/30 min-w-[70px] text-center">
+                            Space
+                          </kbd>
+                        </div>
+
+                        {/* Escape */}
+                        <div className="flex items-center gap-3">
+                          <kbd className="px-4 py-2 bg-amber-900/30 rounded-lg text-sm font-mono border border-amber-700/30 min-w-[70px] text-center">
+                            Esc
+                          </kbd>
+                          <span className="text-sm text-amber-100/60">Close book</span>
+                        </div>
+
+                        {/* Left/Right arrows */}
+                        <div className="flex items-center gap-3 justify-end">
+                          <span className="text-sm text-amber-100/60">Previous / Next</span>
+                          <div className="flex gap-1">
+                            <kbd className="px-3 py-2 bg-amber-900/30 rounded-lg text-sm font-mono border border-amber-700/30">
+                              ←
+                            </kbd>
+                            <kbd className="px-3 py-2 bg-amber-900/30 rounded-lg text-sm font-mono border border-amber-700/30">
+                              →
+                            </kbd>
+                          </div>
+                        </div>
+
+                        {/* Up/Down arrows */}
+                        <div className="flex items-center gap-3">
+                          <div className="flex gap-1">
+                            <kbd className="px-3 py-2 bg-amber-900/30 rounded-lg text-sm font-mono border border-amber-700/30">
+                              ↑
+                            </kbd>
+                            <kbd className="px-3 py-2 bg-amber-900/30 rounded-lg text-sm font-mono border border-amber-700/30">
+                              ↓
+                            </kbd>
+                          </div>
+                          <span className="text-sm text-amber-100/60">Scroll content</span>
+                        </div>
+
+                        {/* Number keys - full width */}
+                        <div className="col-span-2 flex items-center justify-center gap-4 pt-4 mt-2 border-t border-amber-700/20">
+                          <div className="flex gap-1">
+                            {[1, 2, 3, 4, 5, 6, 7].map((n) => (
+                              <kbd key={n} className="w-8 h-8 bg-amber-900/30 rounded text-xs font-mono border border-amber-700/30 flex items-center justify-center">
+                                {n}
+                              </kbd>
+                            ))}
+                          </div>
+                          <span className="text-sm text-amber-100/60">Jump to chapter</span>
+                        </div>
+                      </div>
+
+                      {/* Click to proceed */}
+                      <button
+                        onClick={handleProceedToTitle}
+                        className="mt-8 px-8 py-3 rounded-lg bg-amber-700/30 hover:bg-amber-700/50 border border-amber-600/40 text-amber-100 font-serif transition-all"
+                      >
+                        Click to Proceed
+                      </button>
+                    </div>
+                  </motion.div>
+                )}
+              </AnimatePresence>
+
+              {/* TITLE PAGE - Light paper background */}
+              <AnimatePresence>
+                {phase === 'title' && (
+                  <motion.div
+                    className="absolute inset-0 flex items-center justify-center p-8"
+                    initial={{ opacity: 0 }}
+                    animate={{ opacity: 1 }}
+                    exit={{ opacity: 0 }}
+                    transition={{ duration: 0.5 }}
+                  >
+                    <div className="text-center max-w-lg">
+                      {/* Icon */}
+                      <div className="text-7xl mb-6">{topicIcon}</div>
+
+                      {/* Decorative line */}
+                      <div className="w-40 h-0.5 mx-auto bg-gradient-to-r from-transparent via-amber-700 to-transparent mb-6" />
+
+                      {/* Title */}
+                      <h2 className="text-4xl font-serif font-bold text-gray-800 mb-4">
+                        {topicTitle}
+                      </h2>
+
+                      {/* Description/Overview */}
+                      {topicDescription && (
+                        <p className="text-gray-600 font-serif leading-relaxed mb-6 max-w-md mx-auto">
+                          {topicDescription}
+                        </p>
+                      )}
+
+                      {/* Decorative line */}
+                      <div className="w-40 h-0.5 mx-auto bg-gradient-to-r from-transparent via-amber-700 to-transparent mb-8" />
+
+                      {/* Click to continue */}
+                      <button
+                        onClick={handleContinue}
+                        className="px-8 py-3 rounded-lg bg-amber-600 hover:bg-amber-700 text-white font-serif transition-all shadow-lg"
+                      >
+                        Begin Reading
+                      </button>
+                    </div>
+                  </motion.div>
+                )}
+              </AnimatePresence>
             </div>
 
             {/* Front cover - flips open */}
@@ -227,8 +357,8 @@ export function BookOpenAnimation({
               initial={{ rotateY: 0 }}
               animate={{ rotateY: coverOpen ? -160 : 0 }}
               transition={{
-                duration: 1.8, // Slow, reverent cover opening
-                ease: [0.25, 0.1, 0.25, 1], // Gentle easing
+                duration: 1.8,
+                ease: [0.25, 0.1, 0.25, 1],
               }}
             >
               {/* Cover front face */}
@@ -276,7 +406,7 @@ export function BookOpenAnimation({
                 </p>
               </div>
 
-              {/* Cover back face (inside front cover) */}
+              {/* Cover back face (inside front cover) - dark */}
               <div
                 className="absolute inset-0 rounded-lg"
                 style={{
