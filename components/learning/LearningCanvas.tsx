@@ -348,12 +348,12 @@ function CanvasPageView({
       transition={{ duration: 0.4 }}
       className="h-full flex flex-col"
     >
-      {/* Main page content */}
-      <div className="flex-1 container mx-auto px-4 max-w-5xl flex flex-col justify-center">
+      {/* Main page content - constrained to viewport with internal scroll if needed */}
+      <div className="flex-1 min-h-0 container mx-auto px-4 max-w-5xl flex flex-col justify-center overflow-hidden">
 
         {/* INTRO PAGE - Ancient carved aesthetic - Responsive WYSIWYG */}
         {page.type === 'intro' && (
-          <div className="h-full flex flex-col items-center justify-center text-center relative">
+          <div className="h-full flex flex-col items-center justify-center text-center relative overflow-y-auto">
             <CharcoalFilters />
 
             {/* Decorative top ornament */}
@@ -467,7 +467,7 @@ function CanvasPageView({
 
         {/* CONTENT PAGE - Responsive WYSIWYG */}
         {page.type === 'content' && (
-          <div className="h-full flex flex-col">
+          <div className="h-full flex flex-col overflow-y-auto">
             <motion.h2
               initial={{ x: -20, opacity: 0 }}
               animate={{ x: 0, opacity: 1 }}
@@ -545,7 +545,7 @@ function CanvasPageView({
 
         {/* DIAGRAM PAGE - Charcoal carved aesthetic */}
         {page.type === 'diagram' && DiagramComponent && (
-          <div className="relative">
+          <div className="relative h-full overflow-y-auto">
             <CharcoalFilters />
 
             {/* Aged parchment background */}
@@ -677,7 +677,7 @@ function CanvasPageView({
 
         {/* PIONEER PAGE - Responsive WYSIWYG */}
         {page.type === 'pioneer' && page.pioneers && (
-          <div className="h-full flex flex-col">
+          <div className="h-full flex flex-col overflow-y-auto">
             <motion.h2
               initial={{ y: -20, opacity: 0 }}
               animate={{ y: 0, opacity: 1 }}
@@ -732,7 +732,7 @@ function CanvasPageView({
 
         {/* SUMMARY PAGE - Responsive WYSIWYG */}
         {page.type === 'summary' && (
-          <div className="h-full flex flex-col items-center justify-center text-center">
+          <div className="h-full flex flex-col items-center justify-center text-center overflow-y-auto">
             <motion.div
               initial={{ scale: 0 }}
               animate={{ scale: 1 }}
