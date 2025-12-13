@@ -131,9 +131,9 @@ export async function GET(request: NextRequest) {
     })
 
     // Map stats to articles
-    const statsMap = new Map(readingStats.map((s: ReadingStatsGroup) => [s.articleId, s]))
-    const completedMap = new Map(completedReads.map((s: CompletedReadsGroup) => [s.articleId, s._count.id]))
-    const ratingsMap = new Map(reviewRatings.map((r: ReviewRatingsGroup) => [r.articleId, {
+    const statsMap = new Map<string, ReadingStatsGroup>(readingStats.map((s: ReadingStatsGroup) => [s.articleId, s]))
+    const completedMap = new Map<string, number>(completedReads.map((s: CompletedReadsGroup) => [s.articleId, s._count.id]))
+    const ratingsMap = new Map<string, { clarity: number | null; accuracy: number | null; depth: number | null; originality: number | null; overall: number }>(reviewRatings.map((r: ReviewRatingsGroup) => [r.articleId, {
       clarity: r._avg.clarity,
       accuracy: r._avg.accuracy,
       depth: r._avg.depth,
