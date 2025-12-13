@@ -76,7 +76,7 @@ export default function ModulePage() {
   // Use the revolutionary LearningCanvas by default
   if (viewMode === 'canvas') {
     return (
-      <>
+      <div className="h-screen overflow-hidden">
         {/* View Toggle - small button in corner */}
         <button
           onClick={() => setViewMode('classic')}
@@ -93,13 +93,13 @@ export default function ModulePage() {
           onLevelChange={setSelectedLevel}
           topicSlug={topicParam || module.topic}
         />
-      </>
+      </div>
     )
   }
 
   // Classic InteractiveTextbook view
   return (
-    <>
+    <div className="h-screen overflow-hidden">
       {/* View Toggle - small button in corner */}
       <button
         onClick={() => setViewMode('canvas')}
@@ -116,6 +116,6 @@ export default function ModulePage() {
         onLevelChange={setSelectedLevel}
         topicSlug={topicParam || module.topic}
       />
-    </>
+    </div>
   )
 }

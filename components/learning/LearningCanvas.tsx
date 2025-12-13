@@ -1067,30 +1067,30 @@ export function LearningCanvas({
 
   // Main page view - full viewport, no scroll
   return (
-    <div className="h-full flex flex-col bg-gradient-to-br from-amber-50 via-orange-50/30 to-yellow-50 overflow-hidden">
+    <div className="h-full flex flex-col bg-gradient-to-br from-stone-50 via-amber-50/20 to-emerald-50/10 overflow-hidden">
       {/* Header */}
-      <div className="flex-shrink-0 bg-white/90 backdrop-blur-md border-b border-gray-200 px-4 py-2">
+      <div className="flex-shrink-0 bg-white/80 backdrop-blur-md border-b border-stone-200 px-4 py-2">
         <div className="container mx-auto flex items-center justify-between">
           <Link
             href={`/learn/topics/${topicSlug}?level=${selectedLevel.toLowerCase()}`}
-            className="flex items-center gap-2 text-gray-600 hover:text-gray-900"
+            className="flex items-center gap-2 text-stone-600 hover:text-emerald-700"
           >
             <ArrowLeft className="w-4 h-4" />
-            <span className="hidden sm:inline text-sm">Back</span>
+            <span className="hidden sm:inline text-sm font-medium">Back</span>
           </Link>
 
-          <h1 className={`${handwritten} text-lg text-gray-800`}>
+          <h1 className={`${handwritten} text-lg text-stone-800`}>
             {lesson.title}
           </h1>
 
           <div className="flex items-center gap-2">
             {lessonFlashcards && (
-              <Button size="sm" variant="outline" onClick={() => setShowFlashcards(true)} className="text-xs py-1 px-2">
+              <Button size="sm" variant="outline" onClick={() => setShowFlashcards(true)} className="text-xs py-1 px-2 border-amber-300 text-amber-700 hover:bg-amber-50">
                 <Layers className="w-3 h-3 mr-1" />
                 Cards
               </Button>
             )}
-            <Button size="sm" variant="outline" onClick={() => setShowQuiz(true)} className="text-xs py-1 px-2">
+            <Button size="sm" variant="outline" onClick={() => setShowQuiz(true)} className="text-xs py-1 px-2 border-teal-300 text-teal-700 hover:bg-teal-50">
               <Trophy className="w-3 h-3 mr-1" />
               Quiz
             </Button>
@@ -1099,7 +1099,7 @@ export function LearningCanvas({
       </div>
 
       {/* Lesson tabs */}
-      <div className="flex-shrink-0 bg-white/50 border-b border-gray-200 px-4 py-1.5 overflow-x-auto">
+      <div className="flex-shrink-0 bg-white/50 border-b border-stone-200 px-4 py-1.5 overflow-x-auto">
         <div className="container mx-auto flex gap-2">
           {levelContent.lessons.map((les, idx) => {
             const isComplete = completedLessons.has(les.id)
@@ -1110,10 +1110,10 @@ export function LearningCanvas({
                 onClick={() => { setCurrentLesson(idx); setCurrentPage(0); }}
                 className={`flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-medium whitespace-nowrap transition-all ${
                   isCurrent
-                    ? 'bg-[var(--primary)] text-white shadow-lg'
+                    ? 'bg-emerald-600 text-white shadow-md'
                     : isComplete
-                    ? 'bg-green-100 text-green-800'
-                    : 'bg-gray-100 text-gray-600 hover:bg-gray-200'
+                    ? 'bg-emerald-100 text-emerald-700'
+                    : 'bg-stone-100 text-stone-600 hover:bg-stone-200'
                 }`}
               >
                 {isComplete ? '✓' : idx + 1}. {les.title}

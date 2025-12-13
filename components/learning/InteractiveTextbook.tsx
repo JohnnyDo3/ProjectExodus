@@ -1052,27 +1052,27 @@ export function InteractiveTextbook({
     )
   }
 
-  // Main lesson view
+  // Main lesson view - WYSIWYG viewport constrained
   return (
-    <div className="min-h-screen bg-[var(--background)] py-8">
-      <div className="container mx-auto px-4 max-w-5xl">
-        {/* Header */}
-        <div className="flex items-center justify-between mb-4">
+    <div className="h-full flex flex-col bg-gradient-to-b from-stone-50 to-amber-50/30 overflow-hidden">
+      <div className="container mx-auto px-4 max-w-5xl flex-1 min-h-0 flex flex-col py-4">
+        {/* Header - Fixed */}
+        <div className="flex items-center justify-between mb-3 shrink-0">
           <Link
             href={`/learn/topics/${topicSlug}?level=${selectedLevel.toLowerCase()}`}
-            className="inline-flex items-center gap-2 text-theme-primary font-bold hover:underline"
+            className="inline-flex items-center gap-2 text-emerald-700 font-bold hover:underline"
           >
             <ArrowLeft className="w-4 h-4" />
             Back
           </Link>
 
-          <div className="flex items-center gap-4">
-            <span className="text-sm font-bold text-theme-muted">
+          <div className="flex items-center gap-3">
+            <span className="text-sm font-bold text-stone-500">
               {progressPercent}%
             </span>
-            <div className="w-32 h-2 bg-[var(--muted)] rounded-full overflow-hidden">
+            <div className="w-24 h-1.5 bg-stone-200 rounded-full overflow-hidden">
               <motion.div
-                className="h-full bg-gradient-to-r from-[var(--primary)] to-[var(--accent)] rounded-full"
+                className="h-full bg-gradient-to-r from-emerald-500 to-teal-500 rounded-full"
                 initial={{ width: 0 }}
                 animate={{ width: `${progressPercent}%` }}
               />
@@ -1080,19 +1080,19 @@ export function InteractiveTextbook({
           </div>
         </div>
 
-        {/* Module Info */}
-        <div className="mb-4">
+        {/* Module Info - Fixed */}
+        <div className="mb-3 shrink-0">
           <div className="flex items-center gap-2 mb-1">
-            <span className="text-sm font-bold text-theme-primary">{module.category}</span>
-            <span className="text-xs px-2 py-0.5 rounded-full bg-[color-mix(in_srgb,var(--primary)_15%,var(--background))] text-theme-primary">
+            <span className="text-sm font-bold text-emerald-700">{module.category}</span>
+            <span className="text-xs px-2 py-0.5 rounded-full bg-emerald-100 text-emerald-700">
               {LEARNING_LEVELS[selectedLevel].icon} {LEARNING_LEVELS[selectedLevel].shortLabel}
             </span>
           </div>
-          <h1 className="text-2xl font-black text-[var(--foreground)]">{module.title}</h1>
+          <h1 className="text-xl font-black text-stone-800">{module.title}</h1>
         </div>
 
-        {/* Lesson Tabs */}
-        <div className="flex gap-2 mb-4 overflow-x-auto pb-2">
+        {/* Lesson Tabs - Fixed */}
+        <div className="flex gap-2 mb-3 overflow-x-auto pb-1 shrink-0">
           {levelContent.lessons.map((les, idx) => {
             const isCompleted = completedLessons.has(les.id)
             const isCurrent = idx === currentLesson
@@ -1101,15 +1101,15 @@ export function InteractiveTextbook({
               <button
                 key={les.id}
                 onClick={() => setCurrentLesson(idx)}
-                className={`flex items-center gap-2 px-4 py-2 rounded-lg font-bold text-sm whitespace-nowrap transition-all ${
+                className={`flex items-center gap-2 px-3 py-1.5 rounded-lg font-bold text-xs whitespace-nowrap transition-all ${
                   isCurrent
-                    ? 'bg-[var(--primary)] text-[var(--primary-foreground)]'
+                    ? 'bg-emerald-600 text-white shadow-md'
                     : isCompleted
-                    ? 'bg-[color-mix(in_srgb,var(--primary)_20%,var(--background))] text-theme-primary'
-                    : 'bg-[var(--muted)] text-theme-muted hover:bg-[color-mix(in_srgb,var(--primary)_10%,var(--muted))]'
+                    ? 'bg-emerald-100 text-emerald-700'
+                    : 'bg-stone-100 text-stone-500 hover:bg-stone-200'
                 }`}
               >
-                {isCompleted ? <CheckCircle2 className="w-4 h-4" /> : <Circle className="w-4 h-4" />}
+                {isCompleted ? <CheckCircle2 className="w-3.5 h-3.5" /> : <Circle className="w-3.5 h-3.5" />}
                 {idx + 1}. {les.title}
               </button>
             )
@@ -1118,32 +1118,32 @@ export function InteractiveTextbook({
           {lessonFlashcards && lessonFlashcards.cards.length > 0 && (
             <button
               onClick={() => setShowFlashcards(true)}
-              className={`flex items-center gap-2 px-4 py-2 rounded-lg font-bold text-sm whitespace-nowrap transition-all ${
+              className={`flex items-center gap-2 px-3 py-1.5 rounded-lg font-bold text-xs whitespace-nowrap transition-all ${
                 showFlashcards
-                  ? 'bg-[var(--primary)] text-white'
-                  : 'bg-gradient-to-r from-[color-mix(in_srgb,var(--primary)_15%,var(--background))] to-[color-mix(in_srgb,var(--accent)_15%,var(--background))] text-theme-primary hover:from-[color-mix(in_srgb,var(--primary)_25%,var(--background))] hover:to-[color-mix(in_srgb,var(--accent)_25%,var(--background))]'
+                  ? 'bg-amber-600 text-white'
+                  : 'bg-amber-100 text-amber-700 hover:bg-amber-200'
               }`}
             >
-              <Layers className="w-4 h-4" />
-              Flashcards
-              <span className="px-1.5 py-0.5 rounded-full bg-[var(--primary)] text-white text-xs">
+              <Layers className="w-3.5 h-3.5" />
+              Cards
+              <span className="px-1.5 py-0.5 rounded-full bg-amber-600 text-white text-[10px]">
                 {lessonFlashcards.cards.length}
               </span>
             </button>
           )}
           <button
             onClick={() => setShowQuiz(true)}
-            className="flex items-center gap-2 px-4 py-2 rounded-lg font-bold text-sm whitespace-nowrap bg-[color-mix(in_srgb,var(--accent)_15%,var(--background))] text-theme-accent hover:bg-[color-mix(in_srgb,var(--accent)_25%,var(--background))]"
+            className="flex items-center gap-2 px-3 py-1.5 rounded-lg font-bold text-xs whitespace-nowrap bg-teal-100 text-teal-700 hover:bg-teal-200"
           >
-            <Trophy className="w-4 h-4" />
+            <Trophy className="w-3.5 h-3.5" />
             Quiz
           </button>
         </div>
 
         {/* Flashcard Study Mode */}
         {showFlashcards && lessonFlashcards && (
-          <Card className="border-2 border-[var(--primary)] mb-4">
-            <CardContent className="p-6 md:p-8">
+          <Card className="border-2 border-amber-300 mb-3 shrink-0">
+            <CardContent className="p-4">
               <FlashcardStudy
                 deck={lessonFlashcards}
                 onComplete={(results) => {
@@ -1155,13 +1155,13 @@ export function InteractiveTextbook({
           </Card>
         )}
 
-        {/* Lesson Content - Multi-Page View */}
-        <Card ref={contentCardRef} className="border-2 border-[var(--border)] mb-4">
-          <CardContent className="p-6 md:p-8">
+        {/* Lesson Content - Scrollable within viewport */}
+        <Card ref={contentCardRef} className="border border-stone-200 bg-white/80 backdrop-blur-sm flex-1 min-h-0 flex flex-col overflow-hidden">
+          <CardContent className="p-4 flex-1 min-h-0 overflow-y-auto">
             {/* Lesson Header */}
             <AnimatedSection>
-              <h2 className="text-2xl font-black text-[var(--foreground)] mb-2 flex items-center gap-3">
-                <div className="w-10 h-10 rounded-xl bg-[var(--primary)] text-white flex items-center justify-center font-black">
+              <h2 className="text-lg sm:text-xl font-black text-stone-800 mb-2 flex items-center gap-2">
+                <div className="w-8 h-8 rounded-lg bg-emerald-600 text-white flex items-center justify-center font-black text-sm">
                   {currentLesson + 1}
                 </div>
                 {lesson.title}
@@ -1170,10 +1170,10 @@ export function InteractiveTextbook({
 
             {/* Page Progress Indicator */}
             {totalPages > 1 && (
-              <div className="mb-6">
-                <div className="flex items-center justify-between text-sm text-theme-muted mb-2">
+              <div className="mb-4">
+                <div className="flex items-center justify-between text-xs text-stone-500 mb-2">
                   <span>Page {currentPage + 1} of {totalPages}</span>
-                  <span className="font-bold">{currentPageData?.title}</span>
+                  <span className="font-bold text-stone-700">{currentPageData?.title}</span>
                 </div>
                 <PageProgressDots
                   totalPages={totalPages}
@@ -1198,9 +1198,9 @@ export function InteractiveTextbook({
                   <motion.h3
                     initial={{ opacity: 0, y: -10 }}
                     animate={{ opacity: 1, y: 0 }}
-                    className="text-xl font-black text-theme-primary mb-6 flex items-center gap-2"
+                    className="text-lg font-black text-emerald-700 mb-4 flex items-center gap-2"
                   >
-                    <div className="w-8 h-8 rounded-lg bg-[color-mix(in_srgb,var(--primary)_20%,var(--background))] flex items-center justify-center text-theme-primary font-bold text-sm">
+                    <div className="w-7 h-7 rounded-lg bg-emerald-100 flex items-center justify-center text-emerald-700 font-bold text-xs">
                       {currentPage + 1}
                     </div>
                     {currentPageData.title}
@@ -1224,14 +1224,14 @@ export function InteractiveTextbook({
                 {/* Page Text Content */}
                 <AnimatedSection delay={0.1}>
                   <div
-                    className="prose prose-lg max-w-none text-[var(--foreground)]
-                               prose-headings:text-[var(--foreground)] prose-headings:font-black
-                               prose-p:text-[var(--foreground)] prose-p:leading-relaxed
-                               prose-li:text-[var(--foreground)]
-                               prose-strong:text-[var(--foreground)]
-                               prose-a:text-theme-primary prose-a:font-semibold
-                               prose-blockquote:border-[var(--primary)] prose-blockquote:text-theme-muted
-                               prose-ul:space-y-2 prose-ol:space-y-2"
+                    className="prose prose-sm sm:prose-base max-w-none text-stone-700
+                               prose-headings:text-stone-800 prose-headings:font-bold
+                               prose-p:text-stone-700 prose-p:leading-relaxed
+                               prose-li:text-stone-700
+                               prose-strong:text-stone-800
+                               prose-a:text-emerald-600 prose-a:font-semibold prose-a:no-underline hover:prose-a:underline
+                               prose-blockquote:border-emerald-500 prose-blockquote:text-stone-600 prose-blockquote:bg-emerald-50/50 prose-blockquote:rounded-r-lg prose-blockquote:py-2
+                               prose-ul:space-y-1 prose-ol:space-y-1"
                     dangerouslySetInnerHTML={{ __html: sanitizeHtml(currentPageData?.content || '') }}
                   />
                 </AnimatedSection>
@@ -1239,21 +1239,21 @@ export function InteractiveTextbook({
                 {/* Pioneer Quick Access (clickable to open modal) */}
                 {currentPageData?.pioneers && currentPageData.pioneers.length > 0 && (
                   <AnimatedSection delay={0.2}>
-                    <div className="mt-8 pt-6 border-t border-[var(--border)]">
-                      <h4 className="font-bold text-[var(--foreground)] mb-4 flex items-center gap-2">
-                        <User className="w-5 h-5 text-theme-primary" />
+                    <div className="mt-6 pt-4 border-t border-stone-200">
+                      <h4 className="font-bold text-stone-700 mb-3 flex items-center gap-2 text-sm">
+                        <User className="w-4 h-4 text-emerald-600" />
                         People Mentioned
-                        <span className="text-xs text-theme-muted font-normal">(click to learn more)</span>
+                        <span className="text-xs text-stone-400 font-normal">(click to learn more)</span>
                       </h4>
                       <div className="flex flex-wrap gap-2">
                         {currentPageData.pioneers.map((pioneer) => (
                           <button
                             key={pioneer.id}
                             onClick={() => handlePioneerClick(pioneer)}
-                            className="inline-flex items-center gap-2 px-3 py-2 rounded-xl bg-[color-mix(in_srgb,var(--primary)_10%,var(--background))] hover:bg-[color-mix(in_srgb,var(--primary)_20%,var(--background))] border border-[var(--border)] hover:border-[var(--primary)] transition-all group"
+                            className="inline-flex items-center gap-2 px-2 py-1.5 rounded-lg bg-stone-100 hover:bg-emerald-100 border border-stone-200 hover:border-emerald-300 transition-all group"
                           >
                             {/* Mini portrait */}
-                            <div className="w-8 h-8 rounded-full bg-[var(--primary)] text-white flex items-center justify-center text-xs font-bold overflow-hidden">
+                            <div className="w-6 h-6 rounded-full bg-emerald-600 text-white flex items-center justify-center text-[10px] font-bold overflow-hidden">
                               {pioneer.portrait ? (
                                 <img
                                   src={pioneer.portrait}
@@ -1270,10 +1270,10 @@ export function InteractiveTextbook({
                               </span>
                             </div>
                             <div className="text-left">
-                              <span className="font-bold text-[var(--foreground)] group-hover:text-theme-primary transition-colors text-sm block">
+                              <span className="font-bold text-stone-700 group-hover:text-emerald-700 transition-colors text-xs block">
                                 {pioneer.name}
                               </span>
-                              <span className="text-xs text-theme-muted">
+                              <span className="text-[10px] text-stone-500">
                                 {pioneer.title}
                               </span>
                             </div>
@@ -1289,13 +1289,13 @@ export function InteractiveTextbook({
             {/* References at bottom of last page of last lesson */}
             {module.externalResources.length > 0 && currentLesson === totalLessons - 1 && currentPage === totalPages - 1 && (
               <AnimatedSection delay={0.2}>
-                <div className="mt-8 pt-8 border-t border-[var(--border)]">
-                  <h3 className="font-black text-[var(--foreground)] mb-4 flex items-center gap-2">
-                    <ExternalLink className="w-5 h-5 text-theme-primary" />
+                <div className="mt-6 pt-4 border-t border-stone-200">
+                  <h3 className="font-bold text-stone-700 mb-3 flex items-center gap-2 text-sm">
+                    <ExternalLink className="w-4 h-4 text-emerald-600" />
                     References & Further Reading
                   </h3>
-                  <div className="space-y-2">
-                    {module.externalResources.map((resource, idx) => (
+                  <div className="space-y-1.5">
+                    {module.externalResources.slice(0, 3).map((resource, idx) => (
                       <ReferenceLink
                         key={resource.url}
                         title={resource.title}
@@ -1311,69 +1311,43 @@ export function InteractiveTextbook({
           </CardContent>
         </Card>
 
-        {/* Page Navigation */}
-        <div className="flex items-center justify-between mb-8">
+        {/* Page Navigation - Fixed at bottom */}
+        <div className="flex items-center justify-between py-3 shrink-0 bg-white/50 backdrop-blur-sm rounded-lg px-3">
           <Button
             variant="outline"
             onClick={goToPreviousPage}
             disabled={currentLesson === 0 && currentPage === 0}
-            className="font-bold"
+            className="font-bold text-xs border-stone-300 text-stone-600 hover:bg-stone-100"
+            size="sm"
           >
-            <ChevronLeft className="w-4 h-4 mr-2" />
-            {currentPage === 0 ? 'Previous Lesson' : 'Previous'}
+            <ChevronLeft className="w-3.5 h-3.5 mr-1" />
+            {currentPage === 0 ? 'Prev Lesson' : 'Previous'}
           </Button>
 
-          <div className="text-center px-4">
-            <p className="text-sm text-theme-muted">
+          <div className="text-center px-2 hidden sm:block">
+            <p className="text-xs text-stone-500">
               {currentPage === totalPages - 1 && currentLesson === totalLessons - 1
-                ? 'Ready for the scavenger hunt quiz!'
-                : currentPage === totalPages - 1
-                ? 'Next: ' + (levelContent.lessons[currentLesson + 1]?.title || 'Quiz')
-                : `${totalPages - currentPage - 1} pages remaining in this lesson`
+                ? 'Ready for quiz!'
+                : `${totalPages - currentPage - 1} pages left`
               }
             </p>
             {totalPages > 1 && (
-              <p className="text-xs text-theme-muted mt-1">
+              <p className="text-[10px] text-stone-400">
                 Lesson {currentLesson + 1}/{totalLessons} • Page {currentPage + 1}/{totalPages}
               </p>
             )}
           </div>
 
-          <Button onClick={goToNextPage} className="font-bold">
+          <Button onClick={goToNextPage} className="font-bold text-xs bg-emerald-600 hover:bg-emerald-700" size="sm">
             {currentPage === totalPages - 1 && currentLesson === totalLessons - 1
               ? 'Take Quiz'
               : currentPage === totalPages - 1
               ? 'Next Lesson'
-              : 'Next Page'
+              : 'Next'
             }
-            <ChevronRight className="w-4 h-4 ml-2" />
+            <ChevronRight className="w-3.5 h-3.5 ml-1" />
           </Button>
         </div>
-
-        {/* Discussions */}
-        <button
-          onClick={() => setShowDiscussions(!showDiscussions)}
-          className="w-full flex items-center justify-between p-4 rounded-xl bg-[var(--card)] border-2 border-[var(--border)] hover:border-[var(--primary)] transition-colors"
-        >
-          <div className="flex items-center gap-3">
-            <MessageSquare className="w-5 h-5 text-theme-primary" />
-            <span className="font-bold text-[var(--foreground)]">Module Discussions</span>
-          </div>
-          <ChevronDown className={`w-5 h-5 text-theme-muted transition-transform ${showDiscussions ? 'rotate-180' : ''}`} />
-        </button>
-
-        {showDiscussions && (
-          <motion.div
-            initial={{ opacity: 0, height: 0 }}
-            animate={{ opacity: 1, height: 'auto' }}
-            className="mt-4"
-          >
-            <ModuleDiscussions
-              articleId={module.id}
-              currentLevel={selectedLevel}
-            />
-          </motion.div>
-        )}
       </div>
 
       {/* Pioneer Modal */}
