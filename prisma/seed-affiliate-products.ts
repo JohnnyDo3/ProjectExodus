@@ -939,21 +939,36 @@ export async function seedAffiliateProducts() {
     const existingProduct = await prisma.product.findUnique({ where: { slug: product.slug } })
 
     if (existingProduct) {
-      // Update existing
+      // Update existing product
       await prisma.product.update({
         where: { slug: product.slug },
         data: {
           name: product.name,
           description: product.description,
           price: product.price,
-          purchaseLink: product.purchaseLink,
+          purchaseLink: product.affiliateLink || product.purchaseLink,
           featured: product.featured,
+          status: 'PUBLISHED', // Ensure it's published
           vendorId: vendor.id,
           categoryId: category.id,
         },
       })
+
+      // Upsert sustainability metrics for existing product
+      await prisma.sustainabilityMetric.upsert({
+        where: { productId: existingProduct.id },
+        create: {
+          productId: existingProduct.id,
+          sustainabilityScore: product.sustainabilityScore,
+          carbonSavings: product.carbonSavings,
+        },
+        update: {
+          sustainabilityScore: product.sustainabilityScore,
+          carbonSavings: product.carbonSavings,
+        },
+      })
     } else {
-      // Create new
+      // Create new product
       const newProduct = await prisma.product.create({
         data: {
           name: product.name,
@@ -968,7 +983,7 @@ export async function seedAffiliateProducts() {
         },
       })
 
-      // Create sustainability metrics
+      // Create sustainability metrics for new product
       await prisma.sustainabilityMetric.create({
         data: {
           productId: newProduct.id,
