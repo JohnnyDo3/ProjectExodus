@@ -19,6 +19,16 @@ import { BookPage, PageContent, VerseHeader, ChapterDivider } from './BookPage'
 import { PageFlip, RapidPageFlip, usePageTurnSound } from './PageFlip'
 import { BookOpenAnimation } from './BookOpenAnimation'
 import { useBookState } from './useBookState'
+import { BookGameSelector } from './BookGames'
+import { CrosswordPuzzle } from './CrosswordPuzzle'
+
+// Game item type for interactive activities
+interface GameItem {
+  id: string
+  term: string
+  definition: string
+  hint?: string
+}
 import {
   GUARDIAN_RIBBONS,
   RIBBON_ORDER,
@@ -44,7 +54,7 @@ interface DigitalTextbookProps {
 }
 
 interface BookContent {
-  type: 'cover' | 'inside-cover' | 'toc' | 'chapter-divider' | 'verse' | 'content' | 'blank'
+  type: 'cover' | 'inside-cover' | 'toc' | 'chapter-divider' | 'chapter-intro' | 'verse' | 'content' | 'blank' | 'games'
   chapterIndex?: number
   verseIndex?: number
   pageIndex?: number
@@ -52,6 +62,7 @@ interface BookContent {
   title?: string
   subtitle?: string
   module?: Module
+  gameItems?: GameItem[]
 }
 
 // ============================================
@@ -239,10 +250,14 @@ export function DigitalTextbook({
 
     chaptersToShow.forEach((module, chapterIndex) => {
       // ============================================
-      // ENSURE CHAPTER DIVIDERS LAND ON LEFT PAGE
-      // Even indices = left page, Odd indices = right page
-      // If pages.length is odd, add a blank page to push chapter divider to left
+      // CHAPTER SPREAD LAYOUT:
+      // 1. Chapter divider on LEFT page (even index)
+      // 2. Chapter intro on RIGHT page (same spread)
+      // 3. Blank page with games/notes (LEFT after flip)
+      // 4. Content starts on RIGHT page
       // ============================================
+
+      // Ensure chapter divider lands on LEFT page (even index)
       if (pages.length % 2 !== 0) {
         pages.push({
           type: 'blank',
@@ -250,7 +265,17 @@ export function DigitalTextbook({
         })
       }
 
-      // Chapter divider page (now guaranteed to be on left/even index)
+      // Generate game items from module lessons for this chapter
+      const chapterGameItems: GameItem[] = module.lessons.slice(0, 10).map((lesson, idx) => ({
+        id: `${module.id}-term-${idx}`,
+        term: lesson.title,
+        definition: typeof module.description === 'string'
+          ? module.description
+          : (module.description[selectedLevel] || module.description.HIGH_SCHOOL || lesson.title),
+        hint: module.title,
+      }))
+
+      // Chapter divider page - LEFT page of spread
       pages.push({
         type: 'chapter-divider',
         chapterIndex,
@@ -258,22 +283,40 @@ export function DigitalTextbook({
         title: module.title,
       })
 
+      // Chapter intro page - RIGHT page of same spread
+      pages.push({
+        type: 'chapter-intro',
+        chapterIndex,
+        module,
+        title: module.title,
+      })
+
+      // Blank page for notes/discussion - LEFT page after flipping chapter spread
+      pages.push({
+        type: 'blank',
+        chapterIndex,
+        module,
+      })
+
+      // Games page - RIGHT page (paired with notes on left)
+      pages.push({
+        type: 'games',
+        chapterIndex,
+        module,
+        gameItems: chapterGameItems,
+      })
+
       // Verses (lessons) within chapter
       module.lessons.forEach((lesson, verseIndex) => {
-        // Verse header page
-        pages.push({
-          type: 'verse',
-          chapterIndex,
-          verseIndex,
-          title: lesson.title,
-          module,
-        })
+        // For first verse, it will land on RIGHT page (after blank on left)
+        // For subsequent verses, add verse header if needed
 
         // Content pages for this verse
-        // Split long content into multiple pages (smaller chunks for better readability)
+        // Split long content into multiple pages
         const content = lesson.content[selectedLevel] || lesson.content.HIGH_SCHOOL
         const contentChunks = splitContentIntoPages(content, 450)
 
+        // First chunk gets verse header integrated
         contentChunks.forEach((chunk, pageIndex) => {
           pages.push({
             type: 'content',
@@ -281,6 +324,7 @@ export function DigitalTextbook({
             verseIndex,
             pageIndex,
             content: chunk,
+            title: pageIndex === 0 ? lesson.title : undefined,
             module,
           })
         })
@@ -524,6 +568,125 @@ export function DigitalTextbook({
               versesCount={page.module?.lessons.length ?? 0}
               guardianQuote={getGuardianQuote(page.chapterIndex ?? 0)}
             />
+          </div>
+        )
+
+      case 'chapter-intro':
+        // Right side of chapter spread - shows learning objectives and chapter overview
+        const introRibbon = page.chapterIndex !== undefined && RIBBON_ORDER[page.chapterIndex]
+          ? GUARDIAN_RIBBONS[RIBBON_ORDER[page.chapterIndex]]
+          : null
+        const introColor = introRibbon?.colors.from || 'var(--primary)'
+        return (
+          <div className="w-full h-full flex flex-col relative overflow-hidden">
+            <AncientBorder />
+
+            {/* Header */}
+            <div className="text-center pt-6 pb-4 shrink-0">
+              <h3 className="text-lg font-serif font-bold text-[var(--foreground)] mb-2">
+                What You&apos;ll Learn
+              </h3>
+              <div
+                className="w-24 h-0.5 mx-auto"
+                style={{
+                  background: `linear-gradient(to right, transparent, ${introColor}, transparent)`,
+                }}
+              />
+            </div>
+
+            {/* Learning objectives list */}
+            <div className="flex-1 px-4 overflow-y-auto">
+              <div className="space-y-3">
+                {page.module?.lessons.slice(0, 6).map((lesson, idx) => (
+                  <div
+                    key={lesson.id || idx}
+                    className="flex items-start gap-3"
+                  >
+                    <div
+                      className="w-6 h-6 rounded-full flex items-center justify-center text-white text-xs font-bold shrink-0 mt-0.5"
+                      style={{ background: introColor }}
+                    >
+                      {idx + 1}
+                    </div>
+                    <div>
+                      <p className="text-sm font-medium text-[var(--foreground)]">
+                        {lesson.title}
+                      </p>
+                    </div>
+                  </div>
+                ))}
+              </div>
+
+              {/* Module description */}
+              {page.module && (
+                <div className="mt-6 p-3 rounded-lg bg-[var(--muted)]/30 border border-[var(--border)]/30">
+                  <p className="text-xs italic text-[var(--muted-foreground)] leading-relaxed">
+                    {typeof page.module.description === 'string'
+                      ? page.module.description
+                      : page.module.description[selectedLevel] || page.module.description.HIGH_SCHOOL}
+                  </p>
+                </div>
+              )}
+            </div>
+
+            {/* Footer prompt */}
+            <div className="shrink-0 text-center py-4">
+              <div
+                className="w-16 h-0.5 mx-auto mb-3"
+                style={{
+                  background: `linear-gradient(to right, transparent, ${introColor}, transparent)`,
+                }}
+              />
+              <p className="text-xs text-[var(--muted-foreground)]">
+                Turn the page to begin your journey →
+              </p>
+            </div>
+          </div>
+        )
+
+      case 'games':
+        // Interactive learning games page
+        const gamesRibbon = page.chapterIndex !== undefined && RIBBON_ORDER[page.chapterIndex]
+          ? GUARDIAN_RIBBONS[RIBBON_ORDER[page.chapterIndex]]
+          : null
+        const gameItems = page.gameItems || []
+        return (
+          <div className="w-full h-full flex flex-col relative overflow-hidden">
+            <AncientBorder />
+
+            {/* Header */}
+            <div className="text-center pt-3 pb-2 shrink-0">
+              <div className="flex items-center justify-center gap-2 mb-1">
+                <span className="text-base">🎮</span>
+                <h3 className="text-sm font-serif font-bold text-[var(--foreground)]">
+                  Practice Activities
+                </h3>
+              </div>
+              <p className="text-[9px] text-[var(--muted-foreground)]">
+                Test your knowledge of Chapter {(page.chapterIndex ?? 0) + 1}
+              </p>
+            </div>
+
+            {/* Games selector */}
+            <div className="flex-1 min-h-0 px-2 pb-2">
+              {gameItems.length > 0 ? (
+                <BookGameSelector
+                  items={gameItems}
+                  topicColor={gamesRibbon?.colors.from}
+                  level={selectedLevel}
+                  onComplete={(score) => {
+                    // Could save score to bookState
+                    console.log(`Game completed with score: ${score}`)
+                  }}
+                />
+              ) : (
+                <div className="h-full flex items-center justify-center">
+                  <p className="text-xs text-[var(--muted-foreground)]">
+                    Activities coming soon...
+                  </p>
+                </div>
+              )}
+            </div>
           </div>
         )
 

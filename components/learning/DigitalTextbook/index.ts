@@ -82,6 +82,16 @@ export { RibbonBookmarks } from './RibbonBookmarks'
 // Opening Animation
 export { BookOpenAnimation } from './BookOpenAnimation'
 
+// Interactive Learning Games
+export {
+  MatchingGame,
+  BookFlashcards,
+  WordScramble,
+  FillInBlank,
+  BookGameSelector,
+} from './BookGames'
+export { CrosswordPuzzle } from './CrosswordPuzzle'
+
 // State Management
 export { useBookState, type UseBookStateReturn } from './useBookState'
 export type { ReadingPosition, TopicProgress, BookUnlockState, BookPreferences, BookState } from './useBookState'
