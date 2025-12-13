@@ -7,7 +7,7 @@
 // ============================================
 
 import { motion, AnimatePresence, useAnimation } from 'framer-motion'
-import { useState, useEffect, useCallback } from 'react'
+import { useState, useEffect, useCallback, useRef } from 'react'
 import { cn } from '@/lib/utils/cn'
 import { ANIMATION_TIMINGS, CORE_TOPIC_ICONS } from './bookConstants'
 
@@ -98,6 +98,8 @@ export function BookOpenAnimation({
   const [flippingPage, setFlippingPage] = useState(0)
   const bookControls = useAnimation()
   const coverControls = useAnimation()
+  const animationCompleteRef = useRef(false)
+  const hasStartedRef = useRef(false)
 
   const topicIcon = CORE_TOPIC_ICONS[topicSlug] || '📖'
 
@@ -117,90 +119,118 @@ export function BookOpenAnimation({
   // ============================================
 
   const runAnimation = useCallback(async () => {
-    // Act I: The Descent
-    setPhase('descent')
-    await bookControls.start({
-      y: 0,
-      rotateX: 0,
-      scale: 1,
-      transition: {
-        duration: ANIMATION_TIMINGS.descent.duration / 1000,
-        ease: [0.25, 0.46, 0.45, 0.94], // Gravity-like easing
-      },
-    })
+    // Prevent double-running
+    if (hasStartedRef.current || animationCompleteRef.current) return
+    hasStartedRef.current = true
 
-    // Landing bounce
-    setPhase('landing')
-    setShowDust(true)
-    await bookControls.start({
-      y: [0, -15, 0, -5, 0],
-      transition: {
-        duration: 0.4,
-        times: [0, 0.3, 0.5, 0.8, 1],
-        ease: 'easeOut',
-      },
-    })
-    setTimeout(() => setShowDust(false), 500)
+    try {
+      // Act I: The Descent
+      setPhase('descent')
+      await bookControls.start({
+        y: 0,
+        rotateX: 0,
+        scale: 1,
+        transition: {
+          duration: ANIMATION_TIMINGS.descent.duration / 1000,
+          ease: [0.25, 0.46, 0.45, 0.94], // Gravity-like easing
+        },
+      })
 
-    // Act II: The Pause
-    setPhase('pause')
-    await new Promise((resolve) =>
-      setTimeout(resolve, ANIMATION_TIMINGS.pause.duration)
-    )
+      if (animationCompleteRef.current) return
 
-    // Act III: The Opening
-    setPhase('opening')
-    await coverControls.start({
-      rotateY: -180,
-      transition: {
-        duration: ANIMATION_TIMINGS.opening.duration / 1000,
-        ease: [0.4, 0, 0.2, 1],
-      },
-    })
+      // Landing bounce
+      setPhase('landing')
+      setShowDust(true)
+      await bookControls.start({
+        y: [0, -15, 0, -5, 0],
+        transition: {
+          duration: 0.4,
+          times: [0, 0.3, 0.5, 0.8, 1],
+          ease: 'easeOut',
+        },
+      })
+      setTimeout(() => setShowDust(false), 500)
 
-    // Act IV: The Seeking (flip to target page)
-    if (targetPage > 1) {
-      setPhase('seeking')
-      const pagesToFlip = Math.floor((targetPage - 1) / 2)
+      if (animationCompleteRef.current) return
 
-      for (let i = 0; i < pagesToFlip; i++) {
-        setFlippingPage(i + 1)
-        // Accelerating flip speed
-        const progress = i / pagesToFlip
-        const flipTime = Math.max(
-          ANIMATION_TIMINGS.seeking.minFlipTime,
-          ANIMATION_TIMINGS.seeking.basePageFlip *
-            Math.pow(ANIMATION_TIMINGS.seeking.acceleration, progress * 5)
-        )
-        await new Promise((resolve) => setTimeout(resolve, flipTime))
+      // Act II: The Pause
+      setPhase('pause')
+      await new Promise((resolve) =>
+        setTimeout(resolve, ANIMATION_TIMINGS.pause.duration)
+      )
+
+      if (animationCompleteRef.current) return
+
+      // Act III: The Opening
+      setPhase('opening')
+      await coverControls.start({
+        rotateY: -180,
+        transition: {
+          duration: ANIMATION_TIMINGS.opening.duration / 1000,
+          ease: [0.4, 0, 0.2, 1],
+        },
+      })
+
+      if (animationCompleteRef.current) return
+
+      // Act IV: The Seeking (flip to target page)
+      if (targetPage > 1) {
+        setPhase('seeking')
+        const pagesToFlip = Math.floor((targetPage - 1) / 2)
+
+        for (let i = 0; i < pagesToFlip; i++) {
+          if (animationCompleteRef.current) return
+          setFlippingPage(i + 1)
+          // Accelerating flip speed
+          const progress = i / pagesToFlip
+          const flipTime = Math.max(
+            ANIMATION_TIMINGS.seeking.minFlipTime,
+            ANIMATION_TIMINGS.seeking.basePageFlip *
+              Math.pow(ANIMATION_TIMINGS.seeking.acceleration, progress * 5)
+          )
+          await new Promise((resolve) => setTimeout(resolve, flipTime))
+        }
+      }
+
+      // Complete - only call once
+      if (!animationCompleteRef.current) {
+        animationCompleteRef.current = true
+        setPhase('complete')
+        onAnimationComplete()
+      }
+    } catch (error) {
+      // If animation fails, complete anyway
+      console.error('Book animation error:', error)
+      if (!animationCompleteRef.current) {
+        animationCompleteRef.current = true
+        setPhase('complete')
+        onAnimationComplete()
       }
     }
-
-    // Complete
-    setPhase('complete')
-    onAnimationComplete()
   }, [bookControls, coverControls, targetPage, onAnimationComplete])
 
   // Start animation on mount
   useEffect(() => {
-    if (!reducedMotion) {
+    if (!reducedMotion && !hasStartedRef.current) {
       // Small delay before starting
       const animationTimer = setTimeout(runAnimation, 100)
 
-      // Quick failsafe: If animation doesn't complete within 1.5 seconds, force completion
+      // Failsafe: If animation doesn't complete within 3 seconds, force completion
       const failsafeTimer = setTimeout(() => {
-        if (phase !== 'complete') {
+        if (!animationCompleteRef.current) {
+          console.warn('Book animation failsafe triggered')
+          animationCompleteRef.current = true
           setPhase('complete')
           onAnimationComplete()
         }
-      }, 1500)
+      }, 3000)
 
       return () => {
         clearTimeout(animationTimer)
         clearTimeout(failsafeTimer)
       }
     }
-  }, [runAnimation, reducedMotion, phase, onAnimationComplete])
+  }, [runAnimation, reducedMotion, onAnimationComplete])
 
   // ============================================
   // RENDER
