@@ -1,6 +1,7 @@
 import { PrismaClient } from '@prisma/client'
 import * as crypto from 'crypto'
 import * as bcrypt from 'bcrypt'
+import { seedAffiliateProducts } from './seed-affiliate-products'
 
 const prisma = new PrismaClient()
 
@@ -400,6 +401,9 @@ The sun is the most abundant energy source we have. Let's use it wisely.
   })
 
   console.log('✓ Created project memberships')
+
+  // Seed affiliate products and vendors
+  await seedAffiliateProducts()
 
   console.log('\n✅ Seeding complete!')
   console.log(`   - ${await prisma.category.count()} product categories`)
