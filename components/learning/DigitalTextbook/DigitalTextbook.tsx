@@ -424,7 +424,7 @@ export function DigitalTextbook({
 
       case 'toc':
         return (
-          <div className="w-full h-full flex flex-col p-3">
+          <div className="w-full h-full flex flex-col">
             <AncientBorder />
             {/* TOC Header */}
             <div className="text-center mb-8">
@@ -487,7 +487,7 @@ export function DigitalTextbook({
       case 'verse':
         const verseRibbon = RIBBON_ORDER[page.chapterIndex ?? 0] ? GUARDIAN_RIBBONS[RIBBON_ORDER[page.chapterIndex ?? 0]] : null
         return (
-          <div className="w-full h-full flex flex-col items-center justify-center p-4">
+          <div className="w-full h-full flex flex-col items-center justify-center">
             <AncientBorder />
             {/* Verse presentation - fills the page */}
             <div className="text-center max-w-md">
