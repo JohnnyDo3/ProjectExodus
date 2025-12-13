@@ -153,24 +153,9 @@ export function PageFlip({
 
   // ============================================
   // KEYBOARD NAVIGATION
+  // Keyboard navigation is handled by parent (DigitalTextbook)
+  // to allow single-page navigation instead of spread-based
   // ============================================
-
-  useEffect(() => {
-    function handleKeyDown(e: KeyboardEvent) {
-      if (isAnimating) return
-
-      if (A11Y_CONFIG.keyboardNav.nextPage.includes(e.key)) {
-        e.preventDefault()
-        flipToNext()
-      } else if (A11Y_CONFIG.keyboardNav.prevPage.includes(e.key)) {
-        e.preventDefault()
-        flipToPrev()
-      }
-    }
-
-    window.addEventListener('keydown', handleKeyDown)
-    return () => window.removeEventListener('keydown', handleKeyDown)
-  }, [flipToNext, flipToPrev, isAnimating])
 
   // ============================================
   // RENDER - DESKTOP (TWO-PAGE SPREAD)

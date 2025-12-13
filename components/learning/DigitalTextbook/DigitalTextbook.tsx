@@ -44,7 +44,7 @@ interface DigitalTextbookProps {
 }
 
 interface BookContent {
-  type: 'cover' | 'inside-cover' | 'toc' | 'chapter-divider' | 'verse' | 'content'
+  type: 'cover' | 'inside-cover' | 'toc' | 'chapter-divider' | 'verse' | 'content' | 'blank'
   chapterIndex?: number
   verseIndex?: number
   pageIndex?: number
@@ -178,6 +178,30 @@ export function DigitalTextbook({
   const bookState = useBookState()
   const playPageTurn = usePageTurnSound(bookState.preferences.soundEnabled)
 
+  // Notes state - persisted to localStorage
+  const [pageNotes, setPageNotes] = useState<Record<string, string>>({})
+
+  // Load notes from localStorage on mount
+  useEffect(() => {
+    const savedNotes = localStorage.getItem(`book-notes-${topic.id}`)
+    if (savedNotes) {
+      try {
+        setPageNotes(JSON.parse(savedNotes))
+      } catch (e) {
+        // Ignore parse errors
+      }
+    }
+  }, [topic.id])
+
+  // Save note for a specific page
+  const saveNote = useCallback((pageKey: string, content: string) => {
+    setPageNotes(prev => {
+      const updated = { ...prev, [pageKey]: content }
+      localStorage.setItem(`book-notes-${topic.id}`, JSON.stringify(updated))
+      return updated
+    })
+  }, [topic.id])
+
   // ============================================
   // RESPONSIVE
   // ============================================
@@ -214,7 +238,19 @@ export function DigitalTextbook({
     const chaptersToShow = modules.slice(0, 7)
 
     chaptersToShow.forEach((module, chapterIndex) => {
-      // Chapter divider page
+      // ============================================
+      // ENSURE CHAPTER DIVIDERS LAND ON LEFT PAGE
+      // Even indices = left page, Odd indices = right page
+      // If pages.length is odd, add a blank page to push chapter divider to left
+      // ============================================
+      if (pages.length % 2 !== 0) {
+        pages.push({
+          type: 'blank',
+          chapterIndex: chapterIndex > 0 ? chapterIndex - 1 : undefined,
+        })
+      }
+
+      // Chapter divider page (now guaranteed to be on left/even index)
       pages.push({
         type: 'chapter-divider',
         chapterIndex,
@@ -592,6 +628,97 @@ export function DigitalTextbook({
               )}
             </div>
           </BookPage>
+        )
+
+      case 'blank':
+        // Interactive blank page with notes and discussion
+        const blankRibbon = page.chapterIndex !== undefined && RIBBON_ORDER[page.chapterIndex]
+          ? GUARDIAN_RIBBONS[RIBBON_ORDER[page.chapterIndex]]
+          : null
+        const chapterTitle = page.chapterIndex !== undefined && page.chapterIndex < modules.length
+          ? modules[page.chapterIndex].title
+          : 'General'
+        const noteKey = `chapter-${page.chapterIndex ?? 'general'}-notes`
+        return (
+          <div className="w-full h-full flex flex-col relative overflow-hidden">
+            <AncientBorder />
+
+            {/* Header */}
+            <div className="text-center pt-4 pb-2 shrink-0">
+              <div className="flex items-center justify-center gap-2 mb-1">
+                <span className="text-lg">📝</span>
+                <h3 className="text-sm font-serif font-bold text-[var(--foreground)]">
+                  Personal Notes
+                </h3>
+              </div>
+              <p className="text-[10px] text-[var(--muted-foreground)] italic">
+                Reflections on {chapterTitle}
+              </p>
+            </div>
+
+            {/* Divider */}
+            <div
+              className="w-3/4 h-px mx-auto mb-3 shrink-0"
+              style={{
+                background: `linear-gradient(to right, transparent, ${blankRibbon?.colors.from || 'var(--border)'}60, transparent)`,
+              }}
+            />
+
+            {/* Notes textarea */}
+            <div className="flex-1 px-4 pb-2 min-h-0">
+              <textarea
+                className={cn(
+                  "w-full h-full resize-none",
+                  "bg-transparent",
+                  "border border-dashed border-[var(--border)]/40 rounded-lg",
+                  "p-3 text-sm font-serif",
+                  "text-[var(--foreground)]",
+                  "placeholder:text-[var(--muted-foreground)]/40 placeholder:italic",
+                  "focus:outline-none focus:border-[var(--primary)]/50",
+                  "transition-colors",
+                  // Lined paper effect
+                  "bg-[linear-gradient(transparent_95%,var(--border)_95%)]",
+                  "bg-[length:100%_1.5em]"
+                )}
+                placeholder="Write your thoughts, insights, and reflections here..."
+                value={pageNotes[noteKey] || ''}
+                onChange={(e) => saveNote(noteKey, e.target.value)}
+                style={{
+                  lineHeight: '1.5em',
+                }}
+              />
+            </div>
+
+            {/* Discussion Section */}
+            <div className="shrink-0 px-4 pb-4">
+              <div
+                className="w-full h-px mb-3"
+                style={{
+                  background: `linear-gradient(to right, transparent, ${blankRibbon?.colors.from || 'var(--border)'}60, transparent)`,
+                }}
+              />
+
+              <button
+                className={cn(
+                  "w-full flex items-center justify-center gap-2 py-2 px-3 rounded-lg",
+                  "bg-[var(--muted)]/50 hover:bg-[var(--muted)]",
+                  "border border-[var(--border)]/50",
+                  "text-[var(--foreground)] text-xs font-medium",
+                  "transition-all hover:scale-[1.01]"
+                )}
+                onClick={() => window.open(`/community/forum?topic=${topic.id}`, '_blank')}
+              >
+                <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z" />
+                </svg>
+                <span>Join {topic.title} Discussion</span>
+              </button>
+
+              <p className="text-[9px] text-center text-[var(--muted-foreground)]/60 mt-2 italic">
+                Connect with fellow learners in the community forum
+              </p>
+            </div>
+          </div>
         )
 
       default:
