@@ -29,6 +29,9 @@ interface GameItem {
   definition: string
   hint?: string
 }
+
+// Import term extraction utilities
+import { extractTermsFromModule, KEY_TERMS_BY_TOPIC } from '@/lib/learning/termExtractor'
 import {
   GUARDIAN_RIBBONS,
   RIBBON_ORDER,
@@ -265,15 +268,25 @@ export function DigitalTextbook({
         })
       }
 
-      // Generate game items from module lessons for this chapter
-      const chapterGameItems: GameItem[] = module.lessons.slice(0, 10).map((lesson, idx) => ({
-        id: `${module.id}-term-${idx}`,
-        term: lesson.title,
-        definition: typeof module.description === 'string'
-          ? module.description
-          : (module.description[selectedLevel] || module.description.HIGH_SCHOOL || lesson.title),
-        hint: module.title,
-      }))
+      // Generate game items from module content using term extraction
+      // First try to extract terms from actual content, then fall back to predefined terms
+      const extractedTerms = extractTermsFromModule(module, selectedLevel, 12)
+      const fallbackTerms = KEY_TERMS_BY_TOPIC[topic.id] || []
+
+      // Combine extracted terms with fallbacks, prioritizing extracted
+      const chapterGameItems: GameItem[] = extractedTerms.length >= 5
+        ? extractedTerms.map(t => ({
+            id: t.id,
+            term: t.term,
+            definition: t.definition,
+            hint: t.hint || module.title,
+          }))
+        : [...extractedTerms, ...fallbackTerms.slice(0, 12 - extractedTerms.length)].map(t => ({
+            id: t.id,
+            term: t.term,
+            definition: t.definition,
+            hint: t.hint || module.title,
+          }))
 
       // Chapter divider page - LEFT page of spread
       pages.push({
