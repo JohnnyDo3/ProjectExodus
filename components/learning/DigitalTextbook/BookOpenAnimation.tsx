@@ -6,8 +6,8 @@
 // The Revelation Sequence: Descent → Pause → Opening → Seeking
 // ============================================
 
-import { motion, AnimatePresence, useAnimation } from 'framer-motion'
-import { useState, useEffect, useCallback, useRef } from 'react'
+import { motion, AnimatePresence } from 'framer-motion'
+import { useState, useEffect, useRef } from 'react'
 import { cn } from '@/lib/utils/cn'
 import { ANIMATION_TIMINGS, CORE_TOPIC_ICONS } from './bookConstants'
 
@@ -95,11 +95,8 @@ export function BookOpenAnimation({
 }: BookOpenAnimationProps) {
   const [phase, setPhase] = useState<AnimationPhase>('waiting')
   const [showDust, setShowDust] = useState(false)
-  const [flippingPage, setFlippingPage] = useState(0)
-  const bookControls = useAnimation()
-  const coverControls = useAnimation()
+  const [coverOpen, setCoverOpen] = useState(false)
   const animationCompleteRef = useRef(false)
-  const hasStartedRef = useRef(false)
 
   const topicIcon = CORE_TOPIC_ICONS[topicSlug] || '📖'
 
@@ -109,128 +106,98 @@ export function BookOpenAnimation({
 
   useEffect(() => {
     if (reducedMotion) {
-      setPhase('complete')
       onAnimationComplete()
     }
   }, [reducedMotion, onAnimationComplete])
 
   // ============================================
-  // ANIMATION SEQUENCE
+  // ANIMATION SEQUENCE - State-based approach
   // ============================================
 
-  const runAnimation = useCallback(async () => {
-    // Prevent double-running
-    if (hasStartedRef.current || animationCompleteRef.current) return
-    hasStartedRef.current = true
-
-    try {
-      // Act I: The Descent
-      setPhase('descent')
-      await bookControls.start({
-        y: 0,
-        rotateX: 0,
-        scale: 1,
-        transition: {
-          duration: ANIMATION_TIMINGS.descent.duration / 1000,
-          ease: [0.25, 0.46, 0.45, 0.94], // Gravity-like easing
-        },
-      })
-
-      if (animationCompleteRef.current) return
-
-      // Landing bounce
-      setPhase('landing')
-      setShowDust(true)
-      await bookControls.start({
-        y: [0, -15, 0, -5, 0],
-        transition: {
-          duration: 0.4,
-          times: [0, 0.3, 0.5, 0.8, 1],
-          ease: 'easeOut',
-        },
-      })
-      setTimeout(() => setShowDust(false), 500)
-
-      if (animationCompleteRef.current) return
-
-      // Act II: The Pause
-      setPhase('pause')
-      await new Promise((resolve) =>
-        setTimeout(resolve, ANIMATION_TIMINGS.pause.duration)
-      )
-
-      if (animationCompleteRef.current) return
-
-      // Act III: The Opening
-      setPhase('opening')
-      await coverControls.start({
-        rotateY: -180,
-        transition: {
-          duration: ANIMATION_TIMINGS.opening.duration / 1000,
-          ease: [0.4, 0, 0.2, 1],
-        },
-      })
-
-      if (animationCompleteRef.current) return
-
-      // Act IV: The Seeking (flip to target page)
-      if (targetPage > 1) {
-        setPhase('seeking')
-        const pagesToFlip = Math.floor((targetPage - 1) / 2)
-
-        for (let i = 0; i < pagesToFlip; i++) {
-          if (animationCompleteRef.current) return
-          setFlippingPage(i + 1)
-          // Accelerating flip speed
-          const progress = i / pagesToFlip
-          const flipTime = Math.max(
-            ANIMATION_TIMINGS.seeking.minFlipTime,
-            ANIMATION_TIMINGS.seeking.basePageFlip *
-              Math.pow(ANIMATION_TIMINGS.seeking.acceleration, progress * 5)
-          )
-          await new Promise((resolve) => setTimeout(resolve, flipTime))
-        }
-      }
-
-      // Complete - only call once
-      if (!animationCompleteRef.current) {
-        animationCompleteRef.current = true
-        setPhase('complete')
-        onAnimationComplete()
-      }
-    } catch (error) {
-      // If animation fails, complete anyway
-      console.error('Book animation error:', error)
-      if (!animationCompleteRef.current) {
-        animationCompleteRef.current = true
-        setPhase('complete')
-        onAnimationComplete()
-      }
-    }
-  }, [bookControls, coverControls, targetPage, onAnimationComplete])
-
-  // Start animation on mount
   useEffect(() => {
-    if (!reducedMotion && !hasStartedRef.current) {
-      // Small delay before starting
-      const animationTimer = setTimeout(runAnimation, 100)
+    if (reducedMotion || animationCompleteRef.current) return
 
-      // Failsafe: If animation doesn't complete within 3 seconds, force completion
-      const failsafeTimer = setTimeout(() => {
-        if (!animationCompleteRef.current) {
-          console.warn('Book animation failsafe triggered')
-          animationCompleteRef.current = true
-          setPhase('complete')
-          onAnimationComplete()
-        }
-      }, 3000)
+    // Start descent immediately
+    const startTimer = setTimeout(() => {
+      setPhase('descent')
+    }, 100)
 
-      return () => {
-        clearTimeout(animationTimer)
-        clearTimeout(failsafeTimer)
-      }
+    return () => clearTimeout(startTimer)
+  }, [reducedMotion])
+
+  // Handle phase transitions
+  useEffect(() => {
+    if (reducedMotion || animationCompleteRef.current) return
+
+    let timer: NodeJS.Timeout
+
+    switch (phase) {
+      case 'descent':
+        // After descent animation completes, move to landing
+        timer = setTimeout(() => {
+          setPhase('landing')
+          setShowDust(true)
+          setTimeout(() => setShowDust(false), 500)
+        }, ANIMATION_TIMINGS.descent.duration)
+        break
+
+      case 'landing':
+        // After landing bounce, move to pause
+        timer = setTimeout(() => {
+          setPhase('pause')
+        }, 400)
+        break
+
+      case 'pause':
+        // After pause, open the cover
+        timer = setTimeout(() => {
+          setPhase('opening')
+          setCoverOpen(true)
+        }, ANIMATION_TIMINGS.pause.duration)
+        break
+
+      case 'opening':
+        // After cover opens, complete
+        timer = setTimeout(() => {
+          if (!animationCompleteRef.current) {
+            animationCompleteRef.current = true
+            setPhase('complete')
+            onAnimationComplete()
+          }
+        }, ANIMATION_TIMINGS.opening.duration)
+        break
     }
-  }, [runAnimation, reducedMotion, onAnimationComplete])
+
+    return () => {
+      if (timer) clearTimeout(timer)
+    }
+  }, [phase, reducedMotion, onAnimationComplete])
+
+  // Failsafe timeout
+  useEffect(() => {
+    if (reducedMotion) return
+
+    const failsafeTimer = setTimeout(() => {
+      if (!animationCompleteRef.current) {
+        console.warn('Book animation failsafe triggered')
+        animationCompleteRef.current = true
+        onAnimationComplete()
+      }
+    }, 5000)
+
+    return () => clearTimeout(failsafeTimer)
+  }, [reducedMotion, onAnimationComplete])
+
+  // Compute book animation values based on phase
+  const bookAnimateValues = {
+    waiting: { y: '-100vh', rotateX: 15, scale: 0.8 },
+    descent: { y: 0, rotateX: 0, scale: 1 },
+    landing: { y: 0, rotateX: 0, scale: 1 },
+    pause: { y: 0, rotateX: 0, scale: 1 },
+    opening: { y: 0, rotateX: 0, scale: 1 },
+    seeking: { y: 0, rotateX: 0, scale: 1 },
+    complete: { y: 0, rotateX: 0, scale: 1 },
+  }
 
   // ============================================
   // RENDER
@@ -273,7 +240,6 @@ export function BookOpenAnimation({
           {phase === 'landing' && 'It arrives.'}
           {phase === 'pause' && 'Awaiting the seeker...'}
           {phase === 'opening' && 'The revelation begins...'}
-          {phase === 'seeking' && `Turning to your path... (${flippingPage})`}
         </motion.div>
       </AnimatePresence>
 
@@ -287,12 +253,12 @@ export function BookOpenAnimation({
           maxHeight: '600px',
           perspective: '2000px',
         }}
-        initial={{
-          y: '-100vh',
-          rotateX: 15,
-          scale: 0.8,
+        initial={{ y: '-100vh', rotateX: 15, scale: 0.8 }}
+        animate={bookAnimateValues[phase]}
+        transition={{
+          duration: phase === 'descent' ? ANIMATION_TIMINGS.descent.duration / 1000 : 0.4,
+          ease: phase === 'descent' ? [0.25, 0.46, 0.45, 0.94] : 'easeOut',
         }}
-        animate={bookControls}
       >
         {/* Book body */}
         <div
@@ -335,7 +301,11 @@ export function BookOpenAnimation({
               backfaceVisibility: 'hidden',
             }}
             initial={{ rotateY: 0 }}
-            animate={coverControls}
+            animate={{ rotateY: coverOpen ? -180 : 0 }}
+            transition={{
+              duration: ANIMATION_TIMINGS.opening.duration / 1000,
+              ease: [0.4, 0, 0.2, 1],
+            }}
           >
             {/* Cover front */}
             <div
