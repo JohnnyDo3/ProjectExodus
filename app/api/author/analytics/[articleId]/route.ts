@@ -17,6 +17,23 @@ type ReadingProgressItem = {
   updatedAt: Date
 }
 
+type PeerReviewItem = {
+  clarity: number
+  accuracy: number
+  depth: number
+  originality: number
+  summary: string | null
+  strengths: string | null
+  improvements: string | null
+  createdAt: Date
+  user: {
+    id: string
+    name: string | null
+    image: string | null
+    guardianArchetype: string | null
+  }
+}
+
 // GET /api/author/analytics/[articleId] - Get detailed analytics for a single article
 export async function GET(
   request: NextRequest,
@@ -113,7 +130,7 @@ export async function GET(
 
     // Calculate rating distribution
     const ratingBuckets = { 1: 0, 2: 0, 3: 0, 4: 0, 5: 0 }
-    peerReviews.forEach(review => {
+    peerReviews.forEach((review: PeerReviewItem) => {
       const avg = (review.clarity + review.accuracy + review.depth + review.originality) / 4
       const bucket = Math.round(avg) as 1 | 2 | 3 | 4 | 5
       if (ratingBuckets[bucket] !== undefined) {
@@ -123,11 +140,11 @@ export async function GET(
 
     // Calculate average ratings
     const avgRatings = peerReviews.length > 0 ? {
-      clarity: peerReviews.reduce((sum, r) => sum + r.clarity, 0) / peerReviews.length,
-      accuracy: peerReviews.reduce((sum, r) => sum + r.accuracy, 0) / peerReviews.length,
-      depth: peerReviews.reduce((sum, r) => sum + r.depth, 0) / peerReviews.length,
-      originality: peerReviews.reduce((sum, r) => sum + r.originality, 0) / peerReviews.length,
-      overall: peerReviews.reduce((sum, r) =>
+      clarity: peerReviews.reduce((sum: number, r: PeerReviewItem) => sum + r.clarity, 0) / peerReviews.length,
+      accuracy: peerReviews.reduce((sum: number, r: PeerReviewItem) => sum + r.accuracy, 0) / peerReviews.length,
+      depth: peerReviews.reduce((sum: number, r: PeerReviewItem) => sum + r.depth, 0) / peerReviews.length,
+      originality: peerReviews.reduce((sum: number, r: PeerReviewItem) => sum + r.originality, 0) / peerReviews.length,
+      overall: peerReviews.reduce((sum: number, r: PeerReviewItem) =>
         sum + (r.clarity + r.accuracy + r.depth + r.originality) / 4, 0
       ) / peerReviews.length
     } : null
