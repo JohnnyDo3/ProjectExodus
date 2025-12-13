@@ -1,19 +1,28 @@
 'use client'
 
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { Card, CardContent } from '@/components/ui/Card'
 import { Button } from '@/components/ui/Button'
 import {
   Zap, Droplet, Sprout, Recycle, Home, Leaf,
   ChevronRight, Clock, BookOpen, CheckCircle2,
-  ArrowLeft, GraduationCap, LucideIcon, Book, LayoutList
+  ArrowLeft, GraduationCap, LucideIcon, Book, LayoutList,
+  Sparkles
 } from 'lucide-react'
 import Link from 'next/link'
-import { useParams, useSearchParams } from 'next/navigation'
+import { useParams, useSearchParams, useRouter } from 'next/navigation'
 import { getTopic, CoreTopic } from '@/data/modules'
 import { LearningLevel, LEARNING_LEVELS, LEARNING_LEVEL_ORDER } from '@/types/learning'
 import { TopicBookBrowser } from '@/components/learning/TopicBookBrowser'
 import { DEFAULT_CLASSROOMS, Classroom, Module } from '@/data/modules'
+import { AnimatePresence } from 'framer-motion'
+import dynamic from 'next/dynamic'
+
+// Dynamically import the DigitalTextbook to reduce initial bundle size
+const DigitalTextbook = dynamic(
+  () => import('@/components/learning/DigitalTextbook').then(mod => mod.DigitalTextbook),
+  { ssr: false }
+)
 
 // Icon mapping for dynamic icon rendering
 const iconMap: Record<string, LucideIcon> = {
@@ -33,6 +42,7 @@ const heroEmojis: Record<CoreTopic, string> = {
 export default function TopicPage() {
   const params = useParams()
   const searchParams = useSearchParams()
+  const router = useRouter()
   const slug = params.slug as CoreTopic
 
   // Get level from URL or default to HIGH_SCHOOL
@@ -45,6 +55,18 @@ export default function TopicPage() {
   const [viewMode, setViewMode] = useState<'books' | 'list'>(
     viewParam === 'list' ? 'list' : 'books'
   )
+
+  // Sacred Digital Textbook state
+  const [isBookOpen, setIsBookOpen] = useState(false)
+  const [isBookUnlocked, setIsBookUnlocked] = useState(false)
+
+  // Check if book experience is unlocked
+  useEffect(() => {
+    if (typeof window !== 'undefined') {
+      const unlocked = localStorage.getItem('exodus_book_experience_unlocked') === 'true'
+      setIsBookUnlocked(unlocked)
+    }
+  }, [])
 
   // Mock progress state - in production this would come from API
   // TODO: Replace with actual API call to fetch user's progress
@@ -133,11 +155,39 @@ export default function TopicPage() {
                     )}
                   </div>
                 )}
+
+                {/* Sacred Book Button */}
+                <Button
+                  onClick={() => setIsBookOpen(true)}
+                  className="bg-gradient-to-r from-amber-600 to-orange-600 hover:from-amber-700 hover:to-orange-700 text-white font-bold shadow-lg"
+                  size="sm"
+                >
+                  <Sparkles className="w-4 h-4 mr-2" />
+                  {isBookUnlocked ? 'Open Sacred Book' : 'Start Learning'}
+                </Button>
               </div>
             </div>
           </div>
         </div>
       </section>
+
+      {/* Sacred Digital Textbook Modal */}
+      <AnimatePresence>
+        {isBookOpen && topic && (
+          <DigitalTextbook
+            topic={topic}
+            modules={topic.modules.slice(0, 7)} // Max 7 chapters for 7 Guardian ribbons
+            initialLevel={selectedLevel}
+            onClose={() => {
+              setIsBookOpen(false)
+              setIsBookUnlocked(true)
+              if (typeof window !== 'undefined') {
+                localStorage.setItem('exodus_book_experience_unlocked', 'true')
+              }
+            }}
+          />
+        )}
+      </AnimatePresence>
 
       <div className="container mx-auto px-4 sm:px-6 lg:px-8 py-12">
         <div className="max-w-6xl mx-auto">
