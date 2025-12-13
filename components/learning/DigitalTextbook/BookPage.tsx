@@ -121,7 +121,7 @@ export const BookPage = forwardRef<HTMLDivElement, BookPageProps>(
         {/* Page header with chapter indicator */}
         <div
           className={cn(
-            'shrink-0 px-6 py-3 border-b border-[var(--border)]/30',
+            'shrink-0 px-3 py-2 border-b border-[var(--border)]/30',
             'flex items-center justify-between',
             'text-xs text-[var(--muted-foreground)]'
           )}
@@ -140,14 +140,14 @@ export const BookPage = forwardRef<HTMLDivElement, BookPageProps>(
         </div>
 
         {/* Main content area */}
-        <div className="flex-1 min-h-0 overflow-auto px-6 py-4">
+        <div className="flex-1 min-h-0 overflow-auto px-3 py-2">
           {children}
         </div>
 
         {/* Page footer */}
         <div
           className={cn(
-            'shrink-0 px-6 py-2 border-t border-[var(--border)]/20',
+            'shrink-0 px-3 py-1.5 border-t border-[var(--border)]/20',
             'flex items-center justify-center',
             'text-[10px] text-[var(--muted-foreground)]/50'
           )}

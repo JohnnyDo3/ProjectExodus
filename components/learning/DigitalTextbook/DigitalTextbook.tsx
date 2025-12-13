@@ -174,6 +174,7 @@ export function DigitalTextbook({
   const [showOpenAnimation, setShowOpenAnimation] = useState(true)
   const [isRapidFlipping, setIsRapidFlipping] = useState(false)
   const [showSettings, setShowSettings] = useState(false)
+  const [showKeyboardHints, setShowKeyboardHints] = useState(false)
 
   const bookState = useBookState()
   const playPageTurn = usePageTurnSound(bookState.preferences.soundEnabled)
@@ -330,6 +331,11 @@ export function DigitalTextbook({
   // ============================================
 
   const handleKeyDown = useCallback((e: React.KeyboardEvent) => {
+    // Hide keyboard hints on any keypress
+    if (showKeyboardHints) {
+      setShowKeyboardHints(false)
+    }
+
     if (A11Y_CONFIG.keyboardNav.closeBook.includes(e.key)) {
       e.preventDefault()
       onClose()
@@ -350,7 +356,7 @@ export function DigitalTextbook({
         goToChapter(chapterNum - 1)
       }
     }
-  }, [onClose, nextPage, prevPage, continueReading, goToChapter])
+  }, [onClose, nextPage, prevPage, continueReading, goToChapter, showKeyboardHints])
 
   // ============================================
   // UNLOCK & OPEN ANIMATION
@@ -365,6 +371,10 @@ export function DigitalTextbook({
 
   const handleAnimationComplete = useCallback(() => {
     setShowOpenAnimation(false)
+    // Show keyboard hints for a few seconds
+    setShowKeyboardHints(true)
+    setTimeout(() => setShowKeyboardHints(false), 5000)
+
     // Jump to continue position if exists
     const position = bookState.getContinuePosition(topic.id)
     if (position.chapter > 0 || position.verse > 0 || position.page > 0) {
@@ -424,7 +434,7 @@ export function DigitalTextbook({
 
       case 'toc':
         return (
-          <div className="w-full h-full flex flex-col p-6">
+          <div className="w-full h-full flex flex-col p-3">
             <AncientBorder />
             {/* TOC Header */}
             <div className="text-center mb-8">
@@ -487,7 +497,7 @@ export function DigitalTextbook({
       case 'verse':
         const verseRibbon = RIBBON_ORDER[page.chapterIndex ?? 0] ? GUARDIAN_RIBBONS[RIBBON_ORDER[page.chapterIndex ?? 0]] : null
         return (
-          <div className="w-full h-full flex flex-col items-center justify-center p-8">
+          <div className="w-full h-full flex flex-col items-center justify-center p-4">
             <AncientBorder />
             {/* Verse presentation - fills the page */}
             <div className="text-center max-w-md">
@@ -586,7 +596,7 @@ export function DigitalTextbook({
                 )}
               </div>
               {/* Page number at bottom */}
-              <div className="pt-4 border-t border-[var(--border)]/20">
+              <div className="pt-2 border-t border-[var(--border)]/20">
                 <AncientPageNumber number={currentPageIndex + 1} total={totalPages} />
               </div>
             </div>
@@ -651,6 +661,97 @@ export function DigitalTextbook({
               toSpread={Math.floor(currentPageIndex / 2)}
               onComplete={() => setIsRapidFlipping(false)}
             />
+          </motion.div>
+        )}
+      </AnimatePresence>
+
+      {/* Keyboard Hints Overlay - Ghost/Blurred instructions */}
+      <AnimatePresence>
+        {showKeyboardHints && !showOpenAnimation && (
+          <motion.div
+            className="fixed inset-0 z-[70] pointer-events-none flex items-center justify-center"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            transition={{ duration: 0.5 }}
+          >
+            {/* Blurred ghost container */}
+            <motion.div
+              className="bg-black/30 backdrop-blur-md rounded-2xl px-10 py-8 border border-white/10 shadow-2xl"
+              initial={{ scale: 0.9, y: 20 }}
+              animate={{ scale: 1, y: 0 }}
+              exit={{ scale: 0.9, y: 20, opacity: 0 }}
+              transition={{ duration: 0.4 }}
+            >
+              <div className="text-center space-y-6">
+                {/* Title */}
+                <p className="text-white/60 text-sm uppercase tracking-widest font-serif">
+                  Navigation Guide
+                </p>
+
+                {/* Keyboard shortcuts grid */}
+                <div className="grid grid-cols-2 gap-x-10 gap-y-4 text-white/80">
+                  {/* Spacebar */}
+                  <div className="flex items-center gap-3">
+                    <kbd className="px-4 py-2 bg-white/10 rounded-lg text-sm font-mono border border-white/20 min-w-[80px] text-center">
+                      Space
+                    </kbd>
+                    <span className="text-sm">Flip page</span>
+                  </div>
+
+                  {/* Left/Right arrows */}
+                  <div className="flex items-center gap-3">
+                    <div className="flex gap-1">
+                      <kbd className="px-3 py-2 bg-white/10 rounded-lg text-sm font-mono border border-white/20">
+                        ←
+                      </kbd>
+                      <kbd className="px-3 py-2 bg-white/10 rounded-lg text-sm font-mono border border-white/20">
+                        →
+                      </kbd>
+                    </div>
+                    <span className="text-sm">Previous / Next</span>
+                  </div>
+
+                  {/* Up/Down arrows */}
+                  <div className="flex items-center gap-3">
+                    <div className="flex gap-1">
+                      <kbd className="px-3 py-2 bg-white/10 rounded-lg text-sm font-mono border border-white/20">
+                        ↑
+                      </kbd>
+                      <kbd className="px-3 py-2 bg-white/10 rounded-lg text-sm font-mono border border-white/20">
+                        ↓
+                      </kbd>
+                    </div>
+                    <span className="text-sm">Scroll content</span>
+                  </div>
+
+                  {/* Escape */}
+                  <div className="flex items-center gap-3">
+                    <kbd className="px-4 py-2 bg-white/10 rounded-lg text-sm font-mono border border-white/20 min-w-[80px] text-center">
+                      Esc
+                    </kbd>
+                    <span className="text-sm">Close book</span>
+                  </div>
+
+                  {/* Number keys */}
+                  <div className="col-span-2 flex items-center justify-center gap-3 pt-2 border-t border-white/10">
+                    <div className="flex gap-1">
+                      {[1, 2, 3, 4, 5, 6, 7].map((n) => (
+                        <kbd key={n} className="w-8 h-8 bg-white/10 rounded text-xs font-mono border border-white/20 flex items-center justify-center">
+                          {n}
+                        </kbd>
+                      ))}
+                    </div>
+                    <span className="text-sm">Jump to chapter</span>
+                  </div>
+                </div>
+
+                {/* Dismiss hint */}
+                <p className="text-white/40 text-xs italic">
+                  Press any key to dismiss
+                </p>
+              </div>
+            </motion.div>
           </motion.div>
         )}
       </AnimatePresence>

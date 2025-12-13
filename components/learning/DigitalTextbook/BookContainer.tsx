@@ -236,8 +236,8 @@ export function PageContainer({ children, side, className }: PageContainerProps)
         'relative',
         // Page dimensions
         isDesktop ? 'w-1/2 h-full' : 'w-full h-full',
-        // Inner padding
-        'p-6 sm:p-8',
+        // Tighter padding - closer to edges and centerfold
+        'p-3 sm:p-4',
         // Page styling
         'bg-[var(--book-paper,var(--card))]',
         // Side-specific styling

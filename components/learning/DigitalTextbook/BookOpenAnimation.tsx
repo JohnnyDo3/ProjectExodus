@@ -71,28 +71,28 @@ export function BookOpenAnimation({
     }
   }, [reducedMotion])
 
-  // Auto-advance animation sequence
+  // Auto-advance animation sequence - a processional pace
   useEffect(() => {
     if (reducedMotion || completedRef.current) return
 
-    // Timeline:
+    // Timeline (slower, more ceremonial):
     // 0ms: Book starts descending
-    // 800ms: Book lands, start opening cover
-    // 800ms: Cover opens
-    // 1800ms: Show inside briefly
-    // 2300ms: Complete
+    // 1500ms: Book lands with gentle bounce, pause to admire
+    // 3000ms: Cover begins opening slowly
+    // 5000ms: Show inside, allow reading
+    // 6500ms: Complete (or user clicks/presses key)
 
     const openCoverTimer = setTimeout(() => {
       setCoverOpen(true)
-    }, 800)
+    }, 1500)
 
     const showContentTimer = setTimeout(() => {
       setShowContent(true)
-    }, 1600)
+    }, 3500)
 
     const completeTimer = setTimeout(() => {
       handleComplete()
-    }, 2200)
+    }, 5500)
 
     return () => {
       clearTimeout(openCoverTimer)
@@ -172,8 +172,8 @@ export function BookOpenAnimation({
             opacity: 1
           }}
           transition={{
-            duration: 0.8,
-            ease: [0.34, 1.56, 0.64, 1], // Bounce easing
+            duration: 1.4, // Slower, more majestic descent
+            ease: [0.22, 1, 0.36, 1], // Smoother easing
           }}
         >
           {/* Book body wrapper for 3D */}
@@ -227,8 +227,8 @@ export function BookOpenAnimation({
               initial={{ rotateY: 0 }}
               animate={{ rotateY: coverOpen ? -160 : 0 }}
               transition={{
-                duration: 0.8,
-                ease: [0.4, 0, 0.2, 1],
+                duration: 1.8, // Slow, reverent cover opening
+                ease: [0.25, 0.1, 0.25, 1], // Gentle easing
               }}
             >
               {/* Cover front face */}
