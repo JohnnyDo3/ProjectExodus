@@ -9,7 +9,7 @@
 import { useState, useEffect, useCallback, useMemo, ReactNode } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import { cn } from '@/lib/utils/cn'
-import { X, Volume2, VolumeX, Maximize2, Minimize2, ChevronLeft, ChevronRight } from 'lucide-react'
+import { X, Volume2, VolumeX, Maximize2, Minimize2, ChevronLeft, ChevronRight, GripVertical, MessageCircle } from 'lucide-react'
 
 // Book components
 import BookContainer, { BookWrapper, PageContainer, BookSpine, PageEdges } from './BookContainer'
@@ -206,6 +206,14 @@ export function DigitalTextbook({
 
   // Notes state - persisted to localStorage
   const [pageNotes, setPageNotes] = useState<Record<string, string>>({})
+
+  // Game completion tracking per chapter (required to unlock quiz)
+  const [completedGames, setCompletedGames] = useState<Record<number, boolean>>({})
+
+  // Discussion modal state
+  const [showDiscussion, setShowDiscussion] = useState(false)
+  const [discussionPosition, setDiscussionPosition] = useState({ x: 100, y: 100 })
+  const [isDragging, setIsDragging] = useState(false)
 
   // Load notes from localStorage on mount
   useEffect(() => {
@@ -703,6 +711,8 @@ export function DigitalTextbook({
           ? GUARDIAN_RIBBONS[RIBBON_ORDER[page.chapterIndex]]
           : null
         const gameItems = page.gameItems || []
+        const chapterIdx = page.chapterIndex ?? 0
+        const gamesCompleted = completedGames[chapterIdx] ?? false
         return (
           <div className="w-full h-full flex flex-col relative overflow-hidden">
             <AncientBorder />
@@ -710,13 +720,13 @@ export function DigitalTextbook({
             {/* Header */}
             <div className="text-center pt-3 pb-2 shrink-0">
               <div className="flex items-center justify-center gap-2 mb-1">
-                <span className="text-base">🎮</span>
+                <span className="text-base">{gamesCompleted ? '✅' : '🎮'}</span>
                 <h3 className="text-sm font-serif font-bold text-[var(--foreground)]">
                   Practice Activities
                 </h3>
               </div>
               <p className="text-[9px] text-[var(--muted-foreground)]">
-                Test your knowledge of Chapter {(page.chapterIndex ?? 0) + 1}
+                {gamesCompleted ? 'Completed! Quiz unlocked →' : `Complete to unlock Chapter ${chapterIdx + 1} Quiz`}
               </p>
             </div>
 
@@ -728,7 +738,8 @@ export function DigitalTextbook({
                   topicColor={gamesRibbon?.colors.from}
                   level={selectedLevel}
                   onComplete={(score) => {
-                    // Could save score to bookState
+                    // Mark games as completed for this chapter
+                    setCompletedGames(prev => ({ ...prev, [chapterIdx]: true }))
                     console.log(`Game completed with score: ${score}`)
                   }}
                 />
@@ -823,17 +834,17 @@ export function DigitalTextbook({
             <div
               className={cn(
                 "w-full h-full",
-                "prose prose-sm sm:prose-base dark:prose-invert max-w-none",
+                "prose prose-xs sm:prose-sm dark:prose-invert max-w-none",
                 "font-serif",
-                // Typography for book-like appearance - responsive sizing
-                "prose-p:text-sm sm:prose-p:text-base prose-p:leading-relaxed prose-p:mb-4 prose-p:text-justify prose-p:hyphens-auto",
-                "prose-headings:font-bold prose-headings:mb-3",
-                "prose-h2:text-xl sm:prose-h2:text-2xl prose-h3:text-lg sm:prose-h3:text-xl",
+                // Typography for book-like appearance - compact sizing
+                "prose-p:text-xs sm:prose-p:text-sm prose-p:leading-relaxed prose-p:mb-3 prose-p:text-justify prose-p:hyphens-auto",
+                "prose-headings:font-bold prose-headings:mb-2",
+                "prose-h2:text-lg sm:prose-h2:text-xl prose-h3:text-base sm:prose-h3:text-lg",
                 "prose-strong:font-bold",
-                "prose-ul:space-y-1 prose-ol:space-y-1",
-                "prose-li:text-sm sm:prose-li:text-base prose-li:leading-relaxed",
-                // First paragraph drop cap effect
-                "[&>div>p:first-of-type]:first-letter:float-left [&>div>p:first-of-type]:first-letter:text-4xl sm:[&>div>p:first-of-type]:first-letter:text-5xl [&>div>p:first-of-type]:first-letter:font-bold [&>div>p:first-of-type]:first-letter:mr-2 [&>div>p:first-of-type]:first-letter:mt-0.5",
+                "prose-ul:space-y-0.5 prose-ol:space-y-0.5",
+                "prose-li:text-xs sm:prose-li:text-sm prose-li:leading-relaxed",
+                // First paragraph drop cap effect - smaller
+                "[&>div>p:first-of-type]:first-letter:float-left [&>div>p:first-of-type]:first-letter:text-3xl sm:[&>div>p:first-of-type]:first-letter:text-4xl [&>div>p:first-of-type]:first-letter:font-bold [&>div>p:first-of-type]:first-letter:mr-1.5 [&>div>p:first-of-type]:first-letter:mt-0.5",
                 "[&>div>p:first-of-type]:first-letter:text-[var(--primary)]",
               )}
             >
@@ -922,16 +933,14 @@ export function DigitalTextbook({
                   "text-[var(--foreground)] text-xs font-medium",
                   "transition-all hover:scale-[1.01]"
                 )}
-                onClick={() => window.open(`/community/forum?topic=${topic.id}`, '_blank')}
+                onClick={() => setShowDiscussion(true)}
               >
-                <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z" />
-                </svg>
-                <span>Join {topic.title} Discussion</span>
+                <MessageCircle className="w-4 h-4" />
+                <span>Open Discussion</span>
               </button>
 
               <p className="text-[9px] text-center text-[var(--muted-foreground)]/60 mt-2 italic">
-                Connect with fellow learners in the community forum
+                Discuss with fellow learners
               </p>
             </div>
           </div>
@@ -943,6 +952,8 @@ export function DigitalTextbook({
           ? GUARDIAN_RIBBONS[RIBBON_ORDER[page.chapterIndex]]
           : null
         const quizItems = page.gameItems || []
+        const quizChapterIdx = page.chapterIndex ?? 0
+        const isQuizUnlocked = completedGames[quizChapterIdx] ?? false
 
         return (
           <div className="w-full h-full flex flex-col relative overflow-hidden">
@@ -951,24 +962,42 @@ export function DigitalTextbook({
             {/* Header */}
             <div className="text-center pt-3 pb-2 shrink-0">
               <div className="flex items-center justify-center gap-2 mb-1">
-                <span className="text-base">📝</span>
+                <span className="text-base">{isQuizUnlocked ? '📝' : '🔒'}</span>
                 <h3 className="text-sm font-serif font-bold text-[var(--foreground)]">
                   Chapter Quiz
                 </h3>
               </div>
               <p className="text-[9px] text-[var(--muted-foreground)]">
-                5 Questions • Graded Assessment
+                {isQuizUnlocked ? '5 Questions • Graded Assessment' : 'Complete Practice Activities to unlock'}
               </p>
             </div>
 
             {/* Quiz Component */}
             <div className="flex-1 min-h-0 px-2 pb-2">
-              {quizItems.length >= 5 ? (
+              {!isQuizUnlocked ? (
+                <div className="h-full flex flex-col items-center justify-center text-center p-4">
+                  <div className="w-16 h-16 rounded-full bg-[var(--muted)] flex items-center justify-center mb-4">
+                    <span className="text-3xl">🔒</span>
+                  </div>
+                  <h4 className="text-sm font-bold text-[var(--foreground)] mb-2">
+                    Quiz Locked
+                  </h4>
+                  <p className="text-xs text-[var(--muted-foreground)] mb-4 max-w-[200px]">
+                    Complete at least one Practice Activity to unlock this chapter&apos;s graded quiz.
+                  </p>
+                  <button
+                    onClick={() => prevPage()}
+                    className="px-4 py-2 rounded-lg bg-[var(--primary)] text-[var(--primary-foreground)] text-xs font-medium"
+                  >
+                    ← Go to Practice Activities
+                  </button>
+                </div>
+              ) : quizItems.length >= 5 ? (
                 <GradedQuiz
                   items={quizItems}
                   topicColor={quizRibbon?.colors.from}
                   level={selectedLevel}
-                  chapterIndex={page.chapterIndex ?? 0}
+                  chapterIndex={quizChapterIdx}
                   onComplete={(score, total) => {
                     const percentage = Math.round((score / total) * 100)
                     console.log(`Quiz completed: ${score}/${total} (${percentage}%)`)
@@ -1126,28 +1155,28 @@ export function DigitalTextbook({
             <PageEdges pageCount={totalPages} />
           </BookWrapper>
 
-          {/* Navigation Footer - Higher contrast */}
-          <div className="absolute bottom-6 sm:bottom-8 left-1/2 -translate-x-1/2 flex items-center gap-3 sm:gap-6 z-30 bg-[var(--card)]/95 backdrop-blur-sm rounded-full px-4 py-2 sm:px-6 sm:py-3 border border-[var(--border)] shadow-lg">
+          {/* Navigation Footer - Minimal, shows on hover */}
+          <div className="absolute bottom-4 left-1/2 -translate-x-1/2 flex items-center gap-2 z-30 opacity-30 hover:opacity-100 transition-opacity duration-300">
             <button
               onClick={prevPage}
               disabled={currentPageIndex === 0}
-              className="p-2 sm:p-3 rounded-full bg-[var(--primary)] text-[var(--primary-foreground)] hover:opacity-80 disabled:opacity-30 disabled:bg-[var(--muted)] transition-all"
+              className="p-1.5 rounded-full bg-[var(--card)]/80 text-[var(--foreground)] hover:bg-[var(--primary)] hover:text-[var(--primary-foreground)] disabled:opacity-20 transition-all border border-[var(--border)]/50"
               aria-label="Previous page"
             >
-              <ChevronLeft className="w-5 h-5 sm:w-6 sm:h-6" />
+              <ChevronLeft className="w-4 h-4" />
             </button>
 
-            <span className="text-[var(--foreground)] text-sm sm:text-base font-bold min-w-[80px] text-center">
-              {currentPageIndex + 1} / {totalPages}
+            <span className="text-[var(--muted-foreground)] text-[10px] font-medium min-w-[50px] text-center">
+              {currentPageIndex + 1}/{totalPages}
             </span>
 
             <button
               onClick={nextPage}
               disabled={currentPageIndex >= totalPages - 1}
-              className="p-2 sm:p-3 rounded-full bg-[var(--primary)] text-[var(--primary-foreground)] hover:opacity-80 disabled:opacity-30 disabled:bg-[var(--muted)] transition-all"
+              className="p-1.5 rounded-full bg-[var(--card)]/80 text-[var(--foreground)] hover:bg-[var(--primary)] hover:text-[var(--primary-foreground)] disabled:opacity-20 transition-all border border-[var(--border)]/50"
               aria-label="Next page"
             >
-              <ChevronRight className="w-5 h-5 sm:w-6 sm:h-6" />
+              <ChevronRight className="w-4 h-4" />
             </button>
           </div>
 
@@ -1193,6 +1222,117 @@ export function DigitalTextbook({
           </div>
         </BookContainer>
       )}
+
+      {/* Draggable Discussion Modal - Reddit-style overlay */}
+      <AnimatePresence>
+        {showDiscussion && (
+          <motion.div
+            className="fixed z-[60] bg-[var(--card)] rounded-xl shadow-2xl border border-[var(--border)] overflow-hidden"
+            style={{
+              left: discussionPosition.x,
+              top: discussionPosition.y,
+              width: 'min(320px, 25vw)',
+              height: 'min(400px, 40vh)',
+            }}
+            initial={{ opacity: 0, scale: 0.9 }}
+            animate={{ opacity: 1, scale: 1 }}
+            exit={{ opacity: 0, scale: 0.9 }}
+            drag
+            dragMomentum={false}
+            onDragStart={() => setIsDragging(true)}
+            onDragEnd={(_, info) => {
+              setIsDragging(false)
+              setDiscussionPosition(prev => ({
+                x: prev.x + info.offset.x,
+                y: prev.y + info.offset.y,
+              }))
+            }}
+          >
+            {/* Drag Handle Header */}
+            <div
+              className={cn(
+                "flex items-center justify-between px-3 py-2 bg-[var(--muted)] border-b border-[var(--border)]",
+                "cursor-move select-none"
+              )}
+            >
+              <div className="flex items-center gap-2">
+                <GripVertical className="w-4 h-4 text-[var(--muted-foreground)]" />
+                <span className="text-xs font-bold text-[var(--foreground)]">
+                  {topic.title} Discussion
+                </span>
+              </div>
+              <button
+                onClick={() => setShowDiscussion(false)}
+                className="p-1 rounded hover:bg-[var(--background)] transition-colors"
+              >
+                <X className="w-3 h-3 text-[var(--muted-foreground)]" />
+              </button>
+            </div>
+
+            {/* Discussion Content - Reddit-style feed */}
+            <div className="flex flex-col h-[calc(100%-40px)]">
+              {/* Messages Area */}
+              <div className="flex-1 overflow-y-auto p-3 space-y-3">
+                {/* Sample discussion posts */}
+                <div className="p-2 rounded-lg bg-[var(--muted)]/50 border border-[var(--border)]/50">
+                  <div className="flex items-center gap-2 mb-1">
+                    <div className="w-5 h-5 rounded-full bg-[var(--primary)] flex items-center justify-center">
+                      <span className="text-[8px] text-white font-bold">E</span>
+                    </div>
+                    <span className="text-[10px] font-medium text-[var(--foreground)]">EcoLearner</span>
+                    <span className="text-[8px] text-[var(--muted-foreground)]">2h ago</span>
+                  </div>
+                  <p className="text-[10px] text-[var(--foreground)] leading-relaxed">
+                    This chapter really opened my eyes to sustainable practices. Anyone else trying the techniques at home?
+                  </p>
+                  <div className="flex items-center gap-3 mt-2">
+                    <button className="text-[8px] text-[var(--muted-foreground)] hover:text-[var(--foreground)]">↑ 12</button>
+                    <button className="text-[8px] text-[var(--muted-foreground)] hover:text-[var(--foreground)]">Reply</button>
+                  </div>
+                </div>
+
+                <div className="p-2 rounded-lg bg-[var(--muted)]/50 border border-[var(--border)]/50">
+                  <div className="flex items-center gap-2 mb-1">
+                    <div className="w-5 h-5 rounded-full bg-green-500 flex items-center justify-center">
+                      <span className="text-[8px] text-white font-bold">G</span>
+                    </div>
+                    <span className="text-[10px] font-medium text-[var(--foreground)]">GreenThumb</span>
+                    <span className="text-[8px] text-[var(--muted-foreground)]">5h ago</span>
+                  </div>
+                  <p className="text-[10px] text-[var(--foreground)] leading-relaxed">
+                    The quiz was challenging but fair. Got Silver on my first try!
+                  </p>
+                  <div className="flex items-center gap-3 mt-2">
+                    <button className="text-[8px] text-[var(--muted-foreground)] hover:text-[var(--foreground)]">↑ 8</button>
+                    <button className="text-[8px] text-[var(--muted-foreground)] hover:text-[var(--foreground)]">Reply</button>
+                  </div>
+                </div>
+
+                <p className="text-[9px] text-center text-[var(--muted-foreground)] py-2">
+                  Join the full discussion in the community forum
+                </p>
+              </div>
+
+              {/* Input Area */}
+              <div className="p-2 border-t border-[var(--border)]">
+                <div className="flex gap-2">
+                  <input
+                    type="text"
+                    placeholder="Add a comment..."
+                    className="flex-1 px-2 py-1.5 text-[10px] rounded-lg bg-[var(--muted)] border border-[var(--border)] focus:outline-none focus:border-[var(--primary)]"
+                  />
+                  <button
+                    onClick={() => window.open(`/community/forum?topic=${topic.id}`, '_blank')}
+                    className="px-3 py-1.5 text-[9px] font-medium rounded-lg bg-[var(--primary)] text-[var(--primary-foreground)]"
+                  >
+                    Open Full
+                  </button>
+                </div>
+              </div>
+            </div>
+          </motion.div>
+        )}
+      </AnimatePresence>
     </>
   )
 }

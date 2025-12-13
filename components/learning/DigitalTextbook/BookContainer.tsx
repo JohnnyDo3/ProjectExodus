@@ -253,10 +253,9 @@ export function PageContainer({ children, side, className }: PageContainerProps)
         'w-full h-full',
         // Asymmetric padding for book layout:
         // - More padding on OUTER edge (far from centerfold)
-        // - Extra cushion padding on INNER edge (centerfold) for spine clearance
-        // Increased inner padding to prevent text cutoff at spine
-        side === 'left' && isDesktop && 'pl-5 pr-10 py-3',  // Left page: outer=5, inner(centerfold)=10 (40px)
-        side === 'right' && isDesktop && 'pl-10 pr-5 py-3', // Right page: inner(centerfold)=10 (40px), outer=5
+        // - Moderate cushion padding on INNER edge (centerfold) - close but not hidden
+        side === 'left' && isDesktop && 'pl-4 pr-7 py-3',  // Left page: outer=4, inner(centerfold)=7 (28px)
+        side === 'right' && isDesktop && 'pl-7 pr-4 py-3', // Right page: inner(centerfold)=7 (28px), outer=4
         !isDesktop && 'p-3',
         // Page styling
         'bg-[var(--book-paper,var(--card))]',

@@ -143,9 +143,12 @@ function Ribbon({
   onMouseEnter,
   onMouseLeave,
 }: RibbonProps) {
-  const dimensions = BOOK_DIMENSIONS[deviceType]
   const Icon = ribbon.icon
   const isDesktop = deviceType === 'desktop'
+
+  // Enhanced dimensions for better visibility
+  const ribbonWidth = isDesktop ? 28 : 32
+  const ribbonHeight = isDesktop ? 90 : 40
 
   return (
     <motion.button
@@ -159,29 +162,29 @@ function Ribbon({
         !isDesktop && 'rounded-md'
       )}
       style={{
-        width: dimensions.ribbonWidth,
-        height: dimensions.ribbonHeight,
+        width: ribbonWidth,
+        height: ribbonHeight,
         background: ribbon.colors.gradient,
         // Desktop: pointed ribbon shape
         ...(isDesktop && {
           clipPath: 'polygon(0 0, 100% 0, 100% 85%, 50% 100%, 0 85%)',
         }),
-        // Active glow
+        // Active glow - enhanced
         boxShadow: isActive
-          ? `0 0 20px ${ribbon.colors.from}, 0 0 40px ${ribbon.colors.from}40`
+          ? `0 0 25px ${ribbon.colors.from}, 0 0 50px ${ribbon.colors.from}50, inset 0 0 10px rgba(255,255,255,0.2)`
           : isHovered
-          ? `0 4px 12px ${ribbon.colors.from}60`
-          : '2px 2px 8px rgba(0,0,0,0.3)',
+          ? `0 6px 20px ${ribbon.colors.from}80, inset 0 0 8px rgba(255,255,255,0.15)`
+          : '2px 4px 10px rgba(0,0,0,0.4)',
       }}
       onClick={onClick}
       onMouseEnter={onMouseEnter}
       onMouseLeave={onMouseLeave}
-      whileHover={isDesktop ? { y: 10 } : { scale: 1.1 }}
+      whileHover={isDesktop ? { y: 12, scale: 1.05 } : { scale: 1.15 }}
       whileTap={{ scale: 0.95 }}
       animate={
         isActive
           ? {
-              y: isDesktop ? [0, 5, 0] : 0,
+              y: isDesktop ? [0, 6, 0] : 0,
             }
           : {}
       }
@@ -200,16 +203,16 @@ function Ribbon({
       aria-current={isActive ? 'page' : undefined}
       title={`${ribbon.title} - ${ribbon.value}`}
     >
-      {/* Icon */}
+      {/* Icon - more visible */}
       {isDesktop ? (
-        <Icon className="w-3 h-3 text-white/90 mb-0.5" strokeWidth={2.5} />
+        <Icon className="w-4 h-4 text-white drop-shadow-md mb-0.5" strokeWidth={2.5} />
       ) : (
-        <Icon className="w-4 h-4 text-white/90" strokeWidth={2.5} />
+        <Icon className="w-5 h-5 text-white drop-shadow-md" strokeWidth={2.5} />
       )}
 
-      {/* Chapter number (desktop only) */}
+      {/* Chapter number (desktop only) - more visible */}
       {isDesktop && (
-        <span className="text-[8px] font-bold text-white/80">
+        <span className="text-[9px] font-bold text-white drop-shadow-sm">
           {ribbon.chapterIndex + 1}
         </span>
       )}
@@ -217,27 +220,68 @@ function Ribbon({
       {/* Completed checkmark */}
       {isCompleted && (
         <motion.div
-          className="absolute -top-1 -right-1 w-3 h-3 bg-green-500 rounded-full flex items-center justify-center"
+          className="absolute -top-1 -right-1 w-4 h-4 bg-green-500 rounded-full flex items-center justify-center shadow-lg"
           initial={{ scale: 0 }}
           animate={{ scale: 1 }}
         >
-          <svg className="w-2 h-2 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={3}>
+          <svg className="w-2.5 h-2.5 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={3}>
             <path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" />
           </svg>
         </motion.div>
       )}
 
-      {/* Tooltip on hover (desktop only) */}
+      {/* Enhanced Tooltip with Archetype Logo on hover (desktop only) */}
       <AnimatePresence>
         {isHovered && isDesktop && (
           <motion.div
-            className="absolute left-full ml-2 top-1/2 -translate-y-1/2 px-3 py-2 rounded-lg bg-black/90 text-white text-xs whitespace-nowrap z-50"
-            initial={{ opacity: 0, x: -10 }}
-            animate={{ opacity: 1, x: 0 }}
-            exit={{ opacity: 0, x: -10 }}
+            className="absolute left-full ml-3 top-1/2 -translate-y-1/2 z-50"
+            initial={{ opacity: 0, x: -15, scale: 0.9 }}
+            animate={{ opacity: 1, x: 0, scale: 1 }}
+            exit={{ opacity: 0, x: -15, scale: 0.9 }}
+            transition={{ type: 'spring', stiffness: 400, damping: 25 }}
           >
-            <div className="font-bold">{ribbon.name}</div>
-            <div className="text-white/70">{ribbon.title}</div>
+            {/* Archetype Card with Logo */}
+            <div
+              className="px-4 py-3 rounded-xl backdrop-blur-md border border-white/20 shadow-2xl min-w-[140px]"
+              style={{
+                background: `linear-gradient(135deg, ${ribbon.colors.from}dd, ${ribbon.colors.to}dd)`,
+              }}
+            >
+              {/* Large Archetype Icon */}
+              <div className="flex items-center justify-center mb-2">
+                <div
+                  className="w-10 h-10 rounded-full flex items-center justify-center"
+                  style={{
+                    background: 'rgba(255,255,255,0.2)',
+                    boxShadow: `0 0 20px ${ribbon.colors.from}60`,
+                  }}
+                >
+                  <Icon className="w-6 h-6 text-white drop-shadow-lg" strokeWidth={2} />
+                </div>
+              </div>
+
+              {/* Guardian Name */}
+              <div className="text-center">
+                <div className="font-black text-white text-sm tracking-wider drop-shadow-md">
+                  {ribbon.name}
+                </div>
+                <div className="text-white/80 text-[10px] font-medium mt-0.5">
+                  {ribbon.title}
+                </div>
+                <div
+                  className="text-[9px] font-bold mt-1 px-2 py-0.5 rounded-full inline-block"
+                  style={{ background: 'rgba(255,255,255,0.2)' }}
+                >
+                  {ribbon.value}
+                </div>
+              </div>
+            </div>
+
+            {/* Arrow pointing to ribbon */}
+            <div
+              className="absolute left-0 top-1/2 -translate-x-1 -translate-y-1/2 w-2 h-2 rotate-45"
+              style={{ background: `${ribbon.colors.from}dd` }}
+            />
           </motion.div>
         )}
       </AnimatePresence>
