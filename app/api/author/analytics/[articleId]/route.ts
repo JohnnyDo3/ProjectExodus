@@ -249,7 +249,7 @@ export async function GET(
         ratingDistribution: ratingBuckets,
         scrollDistribution: scrollBuckets,
         engagementTrend,
-        recentReviews: peerReviews.slice(0, 5).map(review => ({
+        recentReviews: peerReviews.slice(0, 5).map((review: PeerReviewItem) => ({
           ...review,
           avgRating: (review.clarity + review.accuracy + review.depth + review.originality) / 4
         })),
