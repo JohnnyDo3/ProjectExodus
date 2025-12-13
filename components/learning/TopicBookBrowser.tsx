@@ -30,23 +30,109 @@ interface TopicBookProps {
   completedModules?: string[]
 }
 
-// Group lessons (modules in code) into Learning Modules by their category
-function groupLessonsIntoLearningModules(modules: Module[]): { learningModule: string; lessons: Module[] }[] {
-  const groups: Record<string, Module[]> = {}
+// Learning Module definitions for each core topic - exactly 7 modules per topic
+const LEARNING_MODULE_MAPPING: Record<string, { name: string; categories: string[] }[]> = {
+  'renewable-energy': [
+    { name: 'Solar Energy Systems', categories: ['SOLAR'] },
+    { name: 'Wind, Hydro & Ocean Power', categories: ['WIND', 'HYDRO', 'OCEAN'] },
+    { name: 'Alternative Energy Sources', categories: ['GEOTHERMAL', 'BIOMASS', 'HYDROGEN'] },
+    { name: 'Energy Storage & Grid', categories: ['STORAGE', 'GRID', 'MICROGRIDS', 'DISTRIBUTED'] },
+    { name: 'Transportation & Buildings', categories: ['TRANSPORTATION', 'BUILDINGS', 'EFFICIENCY', 'HYBRID'] },
+    { name: 'Community & Policy', categories: ['COMMUNITY', 'POLICY', 'FINANCE', 'EQUITY'] },
+    { name: 'Energy Transition', categories: ['TRANSITION', 'RESILIENCE'] },
+  ],
+  'water-systems': [
+    { name: 'Water Collection & Harvesting', categories: ['COLLECTION', 'STORMWATER', 'GREEN'] },
+    { name: 'Treatment & Reuse', categories: ['TREATMENT', 'REUSE', 'GROUNDWATER'] },
+    { name: 'Irrigation & Aquaculture', categories: ['IRRIGATION', 'AQUACULTURE'] },
+    { name: 'Ecosystems & Conservation', categories: ['ECOSYSTEMS', 'CONSERVATION'] },
+    { name: 'Monitoring & Technology', categories: ['MONITORING', 'TECHNOLOGY'] },
+    { name: 'Policy & Economics', categories: ['POLICY', 'ECONOMICS', 'ECONOMY', 'GOVERNANCE'] },
+    { name: 'Future Water Systems', categories: ['INTEGRATED', 'SECURITY', 'RESILIENCE', 'CLIMATE', 'URBAN', 'NEXUS', 'TRADITIONAL', 'FUTURES'] },
+  ],
+  'regenerative-agriculture': [
+    { name: 'Soil Health Fundamentals', categories: ['SOIL HEALTH', 'SOIL_HEALTH', 'SOIL_MANAGEMENT'] },
+    { name: 'Cover Crops & Rotation', categories: ['COVER CROPS', 'TILLAGE', 'ROTATION'] },
+    { name: 'Composting & Organic Matter', categories: ['COMPOSTING'] },
+    { name: 'Agroforestry & Perennials', categories: ['AGROFORESTRY', 'PERENNIALS', 'PERENNIAL'] },
+    { name: 'Livestock & Grazing', categories: ['LIVESTOCK', 'GRAZING'] },
+    { name: 'Pest & Water Management', categories: ['PEST MANAGEMENT', 'PEST_MANAGEMENT', 'WATER', 'BIODIVERSITY'] },
+    { name: 'Economics & Future Systems', categories: ['ECONOMICS', 'SEEDS', 'CARBON', 'SYSTEMS', 'COMMUNITY', 'MONITORING', 'CLIMATE', 'LANDSCAPE', 'FUTURE'] },
+  ],
+  'zero-waste': [
+    { name: 'Composting & Food Waste', categories: ['COMPOSTING', 'FOOD WASTE'] },
+    { name: 'Recycling & Materials', categories: ['RECYCLING', 'MATERIALS', 'PLASTICS'] },
+    { name: 'Design & Prevention', categories: ['DESIGN', 'PREVENTION'] },
+    { name: 'Circular Economy', categories: ['CIRCULAR ECONOMY', 'CIRCULAR', 'REUSE'] },
+    { name: 'Industry & Technology', categories: ['INDUSTRY', 'TECHNOLOGY', 'ELECTRONICS', 'TEXTILES'] },
+    { name: 'Community & Policy', categories: ['COMMUNITY', 'POLICY', 'SAFETY', 'DATA', 'CAREERS'] },
+    { name: 'Systems & Future', categories: ['SYSTEMS', 'MASTERCLASS', 'FUTURE'] },
+  ],
+  'green-building': [
+    { name: 'Passive Design Principles', categories: ['PASSIVE DESIGN'] },
+    { name: 'Sustainable Materials', categories: ['MATERIALS'] },
+    { name: 'Energy & Efficiency', categories: ['ENERGY', 'EFFICIENCY', 'NET ZERO', 'LIGHTING'] },
+    { name: 'Water & Landscaping', categories: ['WATER', 'LANDSCAPING', 'LANDSCAPE'] },
+    { name: 'Health & Wellness', categories: ['HEALTH', 'WELLNESS', 'QUALITY', 'COMFORT'] },
+    { name: 'Certification & Carbon', categories: ['CERTIFICATION', 'CARBON', 'MASTERCLASS'] },
+    { name: 'Renovation & Future', categories: ['RENOVATION', 'RESILIENCE', 'TECHNOLOGY', 'PRESERVATION', 'OPERATIONS', 'FUTURE'] },
+  ],
+  'food-sovereignty': [
+    { name: 'Foundations & Philosophy', categories: ['FOUNDATIONS', 'FOOD JUSTICE', 'EQUITY'] },
+    { name: 'Urban Agriculture', categories: ['URBAN AGRICULTURE'] },
+    { name: 'Seed & Production Systems', categories: ['SEED SYSTEMS', 'PRODUCTION', 'AGROECOLOGY'] },
+    { name: 'Local Markets & Cooperatives', categories: ['LOCAL MARKETS', 'COOPERATIVES', 'COOPERATIVE', 'LOCAL FOOD'] },
+    { name: 'Preservation & Processing', categories: ['PRESERVATION', 'PROCESSING', 'WASTE'] },
+    { name: 'Indigenous & Cultural Knowledge', categories: ['INDIGENOUS SYSTEMS', 'INDIGENOUS', 'CULTURE'] },
+    { name: 'Policy & Future', categories: ['POLICY', 'EDUCATION', 'CLIMATE', 'BIODIVERSITY', 'REGENERATIVE', 'RESILIENCE', 'FINANCE', 'FUTURES'] },
+  ],
+}
 
-  modules.forEach(module => {
-    // Use category as the learning module name
-    const learningModule = module.category || 'General'
-    if (!groups[learningModule]) {
-      groups[learningModule] = []
+// Group lessons (modules in code) into exactly 7 Learning Modules
+function groupLessonsIntoLearningModules(modules: Module[], topicSlug: string): { learningModule: string; lessons: Module[] }[] {
+  const mapping = LEARNING_MODULE_MAPPING[topicSlug]
+
+  if (!mapping) {
+    // Fallback: group by category if no mapping defined
+    const groups: Record<string, Module[]> = {}
+    modules.forEach(module => {
+      const learningModule = module.category || 'General'
+      if (!groups[learningModule]) groups[learningModule] = []
+      groups[learningModule].push(module)
+    })
+    return Object.entries(groups)
+      .map(([learningModule, lessons]) => ({ learningModule, lessons }))
+      .sort((a, b) => a.learningModule.localeCompare(b.learningModule))
+  }
+
+  // Use the defined 7-module mapping
+  const result: { learningModule: string; lessons: Module[] }[] = []
+  const assignedModuleIds = new Set<string>()
+
+  mapping.forEach(({ name, categories }) => {
+    const lessonsInModule = modules.filter(m => {
+      const cat = (m.category || '').toUpperCase()
+      return categories.some(c => c.toUpperCase() === cat) && !assignedModuleIds.has(m.id)
+    })
+
+    lessonsInModule.forEach(m => assignedModuleIds.add(m.id))
+
+    if (lessonsInModule.length > 0) {
+      result.push({ learningModule: name, lessons: lessonsInModule })
     }
-    groups[learningModule].push(module)
   })
 
-  // Convert to array and sort alphabetically
-  return Object.entries(groups)
-    .map(([learningModule, lessons]) => ({ learningModule, lessons }))
-    .sort((a, b) => a.learningModule.localeCompare(b.learningModule))
+  // Add any unassigned modules to the last category or create "Additional Topics"
+  const unassigned = modules.filter(m => !assignedModuleIds.has(m.id))
+  if (unassigned.length > 0) {
+    if (result.length > 0) {
+      result[result.length - 1].lessons.push(...unassigned)
+    } else {
+      result.push({ learningModule: 'Additional Topics', lessons: unassigned })
+    }
+  }
+
+  return result
 }
 
 // Learning Module Section Component (themed group containing lessons)
@@ -216,7 +302,7 @@ export function TopicBookBrowser({ topicSlug, selectedLevel, completedModules = 
   const topic = getTopic(topicSlug)
   if (!topic) return null
 
-  const learningModules = groupLessonsIntoLearningModules(topic.modules)
+  const learningModules = groupLessonsIntoLearningModules(topic.modules, topicSlug)
 
   // Calculate total stats
   const totalLessons = topic.modules.length

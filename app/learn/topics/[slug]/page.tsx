@@ -15,6 +15,106 @@ import { LearningLevel, LEARNING_LEVELS, LEARNING_LEVEL_ORDER } from '@/types/le
 import { TopicBookBrowser } from '@/components/learning/TopicBookBrowser'
 import { DEFAULT_CLASSROOMS, Classroom, Module } from '@/data/modules'
 
+// Learning Module definitions for each core topic - exactly 7 modules per topic
+const LEARNING_MODULE_MAPPING: Record<string, { name: string; categories: string[] }[]> = {
+  'renewable-energy': [
+    { name: 'Solar Energy Systems', categories: ['SOLAR'] },
+    { name: 'Wind, Hydro & Ocean Power', categories: ['WIND', 'HYDRO', 'OCEAN'] },
+    { name: 'Alternative Energy Sources', categories: ['GEOTHERMAL', 'BIOMASS', 'HYDROGEN'] },
+    { name: 'Energy Storage & Grid', categories: ['STORAGE', 'GRID', 'MICROGRIDS', 'DISTRIBUTED'] },
+    { name: 'Transportation & Buildings', categories: ['TRANSPORTATION', 'BUILDINGS', 'EFFICIENCY', 'HYBRID'] },
+    { name: 'Community & Policy', categories: ['COMMUNITY', 'POLICY', 'FINANCE', 'EQUITY'] },
+    { name: 'Energy Transition', categories: ['TRANSITION', 'RESILIENCE'] },
+  ],
+  'water-systems': [
+    { name: 'Water Collection & Harvesting', categories: ['COLLECTION', 'STORMWATER', 'GREEN'] },
+    { name: 'Treatment & Reuse', categories: ['TREATMENT', 'REUSE', 'GROUNDWATER'] },
+    { name: 'Irrigation & Aquaculture', categories: ['IRRIGATION', 'AQUACULTURE'] },
+    { name: 'Ecosystems & Conservation', categories: ['ECOSYSTEMS', 'CONSERVATION'] },
+    { name: 'Monitoring & Technology', categories: ['MONITORING', 'TECHNOLOGY'] },
+    { name: 'Policy & Economics', categories: ['POLICY', 'ECONOMICS', 'ECONOMY', 'GOVERNANCE'] },
+    { name: 'Future Water Systems', categories: ['INTEGRATED', 'SECURITY', 'RESILIENCE', 'CLIMATE', 'URBAN', 'NEXUS', 'TRADITIONAL', 'FUTURES'] },
+  ],
+  'regenerative-agriculture': [
+    { name: 'Soil Health Fundamentals', categories: ['SOIL HEALTH', 'SOIL_HEALTH', 'SOIL_MANAGEMENT'] },
+    { name: 'Cover Crops & Rotation', categories: ['COVER CROPS', 'TILLAGE', 'ROTATION'] },
+    { name: 'Composting & Organic Matter', categories: ['COMPOSTING'] },
+    { name: 'Agroforestry & Perennials', categories: ['AGROFORESTRY', 'PERENNIALS', 'PERENNIAL'] },
+    { name: 'Livestock & Grazing', categories: ['LIVESTOCK', 'GRAZING'] },
+    { name: 'Pest & Water Management', categories: ['PEST MANAGEMENT', 'PEST_MANAGEMENT', 'WATER', 'BIODIVERSITY'] },
+    { name: 'Economics & Future Systems', categories: ['ECONOMICS', 'SEEDS', 'CARBON', 'SYSTEMS', 'COMMUNITY', 'MONITORING', 'CLIMATE', 'LANDSCAPE', 'FUTURE'] },
+  ],
+  'zero-waste': [
+    { name: 'Composting & Food Waste', categories: ['COMPOSTING', 'FOOD WASTE'] },
+    { name: 'Recycling & Materials', categories: ['RECYCLING', 'MATERIALS', 'PLASTICS'] },
+    { name: 'Design & Prevention', categories: ['DESIGN', 'PREVENTION'] },
+    { name: 'Circular Economy', categories: ['CIRCULAR ECONOMY', 'CIRCULAR', 'REUSE'] },
+    { name: 'Industry & Technology', categories: ['INDUSTRY', 'TECHNOLOGY', 'ELECTRONICS', 'TEXTILES'] },
+    { name: 'Community & Policy', categories: ['COMMUNITY', 'POLICY', 'SAFETY', 'DATA', 'CAREERS'] },
+    { name: 'Systems & Future', categories: ['SYSTEMS', 'MASTERCLASS', 'FUTURE'] },
+  ],
+  'green-building': [
+    { name: 'Passive Design Principles', categories: ['PASSIVE DESIGN'] },
+    { name: 'Sustainable Materials', categories: ['MATERIALS'] },
+    { name: 'Energy & Efficiency', categories: ['ENERGY', 'EFFICIENCY', 'NET ZERO', 'LIGHTING'] },
+    { name: 'Water & Landscaping', categories: ['WATER', 'LANDSCAPING', 'LANDSCAPE'] },
+    { name: 'Health & Wellness', categories: ['HEALTH', 'WELLNESS', 'QUALITY', 'COMFORT'] },
+    { name: 'Certification & Carbon', categories: ['CERTIFICATION', 'CARBON', 'MASTERCLASS'] },
+    { name: 'Renovation & Future', categories: ['RENOVATION', 'RESILIENCE', 'TECHNOLOGY', 'PRESERVATION', 'OPERATIONS', 'FUTURE'] },
+  ],
+  'food-sovereignty': [
+    { name: 'Foundations & Philosophy', categories: ['FOUNDATIONS', 'FOOD JUSTICE', 'EQUITY'] },
+    { name: 'Urban Agriculture', categories: ['URBAN AGRICULTURE'] },
+    { name: 'Seed & Production Systems', categories: ['SEED SYSTEMS', 'PRODUCTION', 'AGROECOLOGY'] },
+    { name: 'Local Markets & Cooperatives', categories: ['LOCAL MARKETS', 'COOPERATIVES', 'COOPERATIVE', 'LOCAL FOOD'] },
+    { name: 'Preservation & Processing', categories: ['PRESERVATION', 'PROCESSING', 'WASTE'] },
+    { name: 'Indigenous & Cultural Knowledge', categories: ['INDIGENOUS SYSTEMS', 'INDIGENOUS', 'CULTURE'] },
+    { name: 'Policy & Future', categories: ['POLICY', 'EDUCATION', 'CLIMATE', 'BIODIVERSITY', 'REGENERATIVE', 'RESILIENCE', 'FINANCE', 'FUTURES'] },
+  ],
+}
+
+// Group lessons into exactly 7 Learning Modules using the mapping
+function groupLessonsIntoLearningModules(modules: Module[], topicSlug: string): { name: string; lessons: Module[] }[] {
+  const mapping = LEARNING_MODULE_MAPPING[topicSlug]
+
+  if (!mapping) {
+    const groups: Record<string, Module[]> = {}
+    modules.forEach(module => {
+      const learningModule = module.category || 'General'
+      if (!groups[learningModule]) groups[learningModule] = []
+      groups[learningModule].push(module)
+    })
+    return Object.entries(groups)
+      .map(([name, lessons]) => ({ name, lessons }))
+      .sort((a, b) => a.name.localeCompare(b.name))
+  }
+
+  const result: { name: string; lessons: Module[] }[] = []
+  const assignedModuleIds = new Set<string>()
+
+  mapping.forEach(({ name, categories }) => {
+    const lessonsInModule = modules.filter(m => {
+      const cat = (m.category || '').toUpperCase()
+      return categories.some(c => c.toUpperCase() === cat) && !assignedModuleIds.has(m.id)
+    })
+    lessonsInModule.forEach(m => assignedModuleIds.add(m.id))
+    if (lessonsInModule.length > 0) {
+      result.push({ name, lessons: lessonsInModule })
+    }
+  })
+
+  const unassigned = modules.filter(m => !assignedModuleIds.has(m.id))
+  if (unassigned.length > 0) {
+    if (result.length > 0) {
+      result[result.length - 1].lessons.push(...unassigned)
+    } else {
+      result.push({ name: 'Additional Topics', lessons: unassigned })
+    }
+  }
+
+  return result
+}
+
 // Icon mapping for dynamic icon rendering
 const iconMap: Record<string, LucideIcon> = {
   Zap, Droplet, Sprout, Recycle, Home, Leaf
@@ -89,47 +189,47 @@ export default function TopicPage() {
     : ['regenerative-agriculture', 'zero-waste']
 
   return (
-    <div className="min-h-screen bg-[var(--background)]">
-      {/* Simple Header */}
-      <section className="py-12 bg-[var(--muted)] border-b border-[var(--border)]">
+    <div className="h-screen flex flex-col bg-[var(--background)] overflow-hidden">
+      {/* Compact Header */}
+      <section className="shrink-0 py-4 sm:py-6 bg-[var(--muted)] border-b border-[var(--border)]">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
           <div className="max-w-6xl mx-auto">
-            <Link href="/learn" className="inline-flex items-center gap-2 text-theme-muted hover:text-theme-primary mb-6 font-bold">
-              <ArrowLeft className="w-5 h-5" />
+            <Link href="/learn" className="inline-flex items-center gap-2 text-theme-muted hover:text-theme-primary mb-3 font-bold text-sm">
+              <ArrowLeft className="w-4 h-4" />
               Back to Learn
             </Link>
 
-            <div className="flex items-center justify-between flex-wrap gap-4">
-              <div className="flex items-center gap-4">
-                <div className="text-5xl">{heroEmoji}</div>
+            <div className="flex items-center justify-between flex-wrap gap-3">
+              <div className="flex items-center gap-3">
+                <div className="text-3xl sm:text-4xl">{heroEmoji}</div>
                 <div>
-                  <h1 className="text-3xl font-black text-[var(--foreground)]">{topic.title}</h1>
-                  <p className="text-theme-muted font-medium">{topic.description}</p>
+                  <h1 className="text-xl sm:text-2xl font-black text-[var(--foreground)]">{topic.title}</h1>
+                  <p className="text-theme-muted font-medium text-sm hidden sm:block">{topic.description}</p>
                 </div>
               </div>
 
-              <div className="flex items-center gap-4">
-                <div className="flex items-center gap-4 text-sm text-theme-muted">
+              <div className="flex items-center gap-3">
+                <div className="flex items-center gap-3 text-xs sm:text-sm text-theme-muted">
                   <span className="flex items-center gap-1">
-                    <BookOpen className="w-4 h-4" />
+                    <BookOpen className="w-3.5 h-3.5" />
                     {totalModules} lessons
                   </span>
                   <span className="flex items-center gap-1">
-                    <Clock className="w-4 h-4" />
+                    <Clock className="w-3.5 h-3.5" />
                     ~{totalHours}h
                   </span>
                 </div>
                 {progressPercent > 0 && (
                   <div className="flex items-center gap-2">
-                    <div className="w-24 h-2 bg-[var(--border)] rounded-full overflow-hidden">
+                    <div className="w-16 sm:w-20 h-1.5 bg-[var(--border)] rounded-full overflow-hidden">
                       <div
                         className="h-full bg-[var(--primary)] rounded-full"
                         style={{ width: `${progressPercent}%` }}
                       />
                     </div>
-                    <span className="text-sm font-bold text-theme-primary">{progressPercent}%</span>
+                    <span className="text-xs font-bold text-theme-primary">{progressPercent}%</span>
                     {isGraduated && (
-                      <span className="text-green-600 text-xs font-black">COMPLETE</span>
+                      <span className="text-green-600 text-[10px] font-black">COMPLETE</span>
                     )}
                   </div>
                 )}
@@ -139,94 +239,86 @@ export default function TopicPage() {
         </div>
       </section>
 
-      <div className="container mx-auto px-4 sm:px-6 lg:px-8 py-12">
-        <div className="max-w-6xl mx-auto">
-          {/* Level Selector */}
-          <div className="mb-8">
-            <div className="bg-[color-mix(in_srgb,var(--primary)_10%,var(--background))] rounded-2xl p-6 border-2 border-theme-primary">
-              <div className="flex items-center justify-center gap-2 mb-4">
-                <GraduationCap className="w-5 h-5 text-theme-primary" />
-                <span className="font-black text-theme-primary">SELECT YOUR LEVEL</span>
-              </div>
-              <div className="flex flex-wrap gap-2 justify-center">
-                {LEARNING_LEVEL_ORDER.map((level) => {
-                  const meta = LEARNING_LEVELS[level]
-                  const isSelected = level === selectedLevel
-                  return (
+      {/* Main Content - Flex 1 to fill remaining space */}
+      <div className="flex-1 min-h-0 overflow-hidden">
+        <div className="container mx-auto px-4 sm:px-6 lg:px-8 py-4 h-full flex flex-col">
+          <div className="max-w-6xl mx-auto w-full flex-1 min-h-0 flex flex-col">
+            {/* Level Selector - Compact */}
+            <div className="shrink-0 mb-3">
+              <div className="bg-[color-mix(in_srgb,var(--primary)_10%,var(--background))] rounded-xl p-3 border-2 border-theme-primary">
+                <div className="flex items-center justify-between flex-wrap gap-2">
+                  <div className="flex items-center gap-2">
+                    <GraduationCap className="w-4 h-4 text-theme-primary" />
+                    <span className="font-bold text-theme-primary text-sm">LEVEL:</span>
+                  </div>
+                  <div className="flex flex-wrap gap-1.5">
+                    {LEARNING_LEVEL_ORDER.map((level) => {
+                      const meta = LEARNING_LEVELS[level]
+                      const isSelected = level === selectedLevel
+                      return (
+                        <button
+                          key={level}
+                          onClick={() => setSelectedLevel(level)}
+                          className={`px-2 py-1 rounded-lg text-xs font-bold transition-all duration-200 flex items-center gap-1 ${
+                            isSelected
+                              ? 'bg-[var(--primary)] text-[var(--primary-foreground)] shadow-md'
+                              : 'bg-[var(--card)] text-[var(--foreground)] hover:bg-[var(--primary)]/20 border border-[var(--border)]'
+                          }`}
+                        >
+                          <span>{meta.icon}</span>
+                          <span className="hidden sm:inline">{meta.shortLabel}</span>
+                        </button>
+                      )
+                    })}
+                  </div>
+                  {/* View Mode Toggle - Inline */}
+                  <div className="flex items-center gap-1">
                     <button
-                      key={level}
-                      onClick={() => setSelectedLevel(level)}
-                      className={`px-3 py-2 rounded-xl text-sm font-bold transition-all duration-200 flex items-center gap-2 ${
-                        isSelected
-                          ? 'bg-[var(--primary)] text-[var(--primary-foreground)] shadow-lg scale-105'
-                          : 'bg-[var(--card)] text-[var(--foreground)] hover:bg-[var(--primary)]/20 border border-[var(--border)]'
+                      onClick={() => setViewMode('books')}
+                      className={`flex items-center gap-1 px-2 py-1 rounded-lg font-medium transition-all text-xs ${
+                        viewMode === 'books'
+                          ? 'bg-[var(--primary)] text-white shadow-md'
+                          : 'bg-[var(--muted)] text-[var(--foreground)] hover:bg-[var(--border)]'
                       }`}
                     >
-                      <span>{meta.icon}</span>
-                      <span>{meta.shortLabel}</span>
+                      <Book className="w-3.5 h-3.5" />
+                      <span className="hidden sm:inline">Book</span>
                     </button>
-                  )
-                })}
+                    <button
+                      onClick={() => setViewMode('list')}
+                      className={`flex items-center gap-1 px-2 py-1 rounded-lg font-medium transition-all text-xs ${
+                        viewMode === 'list'
+                          ? 'bg-[var(--primary)] text-white shadow-md'
+                          : 'bg-[var(--muted)] text-[var(--foreground)] hover:bg-[var(--border)]'
+                      }`}
+                    >
+                      <LayoutList className="w-3.5 h-3.5" />
+                      <span className="hidden sm:inline">List</span>
+                    </button>
+                  </div>
+                </div>
               </div>
             </div>
-          </div>
 
-          {/* View Mode Toggle */}
-          <div className="flex items-center justify-center gap-2 mb-8">
-            <button
-              onClick={() => setViewMode('books')}
-              className={`flex items-center gap-2 px-4 py-2 rounded-lg font-medium transition-all ${
-                viewMode === 'books'
-                  ? 'bg-[var(--primary)] text-white shadow-lg'
-                  : 'bg-[var(--muted)] text-[var(--foreground)] hover:bg-[var(--border)]'
-              }`}
-            >
-              <Book className="w-4 h-4" />
-              Book View
-            </button>
-            <button
-              onClick={() => setViewMode('list')}
-              className={`flex items-center gap-2 px-4 py-2 rounded-lg font-medium transition-all ${
-                viewMode === 'list'
-                  ? 'bg-[var(--primary)] text-white shadow-lg'
-                  : 'bg-[var(--muted)] text-[var(--foreground)] hover:bg-[var(--border)]'
-              }`}
-            >
-              <LayoutList className="w-4 h-4" />
-              List View
-            </button>
-          </div>
+            {/* Book View - Scrollable container */}
+            {viewMode === 'books' && (
+              <div className="flex-1 min-h-0 overflow-y-auto">
+                <TopicBookBrowser
+                  topicSlug={slug}
+                  selectedLevel={selectedLevel}
+                  completedModules={completedModules}
+                />
+              </div>
+            )}
 
-          {/* Book View */}
-          {viewMode === 'books' && (
-            <TopicBookBrowser
-              topicSlug={slug}
-              selectedLevel={selectedLevel}
-              completedModules={completedModules}
-            />
-          )}
-
-          {/* List View - Hierarchical: Learning Module > Lesson > Pages */}
-          {viewMode === 'list' && (
-          <div className="grid lg:grid-cols-3 gap-12">
-            {/* Main Content - Organized by Learning Module (category) */}
-            <div className="lg:col-span-2 space-y-8 max-h-[70vh] overflow-y-auto pr-2">
-              {/* Group lessons by category into Learning Modules */}
+            {/* List View - Hierarchical: Learning Module > Lesson > Pages */}
+            {viewMode === 'list' && (
+              <div className="flex-1 min-h-0 grid lg:grid-cols-3 gap-6 overflow-hidden">
+            {/* Main Content - Organized by Learning Module (7 per topic) */}
+            <div className="lg:col-span-2 space-y-4 overflow-y-auto pr-2">
+              {/* Group lessons into 7 Learning Modules using mapping */}
               {(() => {
-                // Group modules (lessons) by category into Learning Modules
-                const learningModules: Record<string, typeof topic.modules> = {}
-                topic.modules.forEach(module => {
-                  const learningModuleName = module.category || 'General'
-                  if (!learningModules[learningModuleName]) {
-                    learningModules[learningModuleName] = []
-                  }
-                  learningModules[learningModuleName].push(module)
-                })
-
-                // Convert to sorted array
-                const sortedLearningModules = Object.entries(learningModules)
-                  .map(([name, lessons]) => ({ name, lessons }))
-                  .sort((a, b) => a.name.localeCompare(b.name))
+                const sortedLearningModules = groupLessonsIntoLearningModules(topic.modules, topic.id)
 
                 return sortedLearningModules.map((learningModule, lmIdx) => {
                   const totalPages = learningModule.lessons.reduce((acc, m) => acc + m.lessons.length, 0)
@@ -342,52 +434,38 @@ export default function TopicPage() {
               })()}
             </div>
 
-            {/* Sidebar */}
-            <div className="space-y-8">
+            {/* Sidebar - Scrollable */}
+            <div className="space-y-4 overflow-y-auto">
               {/* Progress Card */}
               <Card className="border-2 border-[var(--border)]">
                 <CardContent className="p-6">
                   <h3 className="text-lg font-black mb-3 text-[var(--foreground)]">Your Progress</h3>
 
                   {/* Learning Modules Progress */}
-                  <div className="mb-4">
-                    <div className="flex items-center justify-between text-xs mb-1">
-                      <span className="text-theme-muted">Learning Modules</span>
-                      <span className="font-bold text-[var(--foreground)]">
-                        {(() => {
-                          const lms: Record<string, typeof topic.modules> = {}
-                          topic.modules.forEach(m => {
-                            const name = m.category || 'General'
-                            if (!lms[name]) lms[name] = []
-                            lms[name].push(m)
-                          })
-                          const completed = Object.values(lms).filter(lessons =>
-                            lessons.every(l => completedModules.includes(l.id))
-                          ).length
-                          return `${completed} / ${Object.keys(lms).length}`
-                        })()}
-                      </span>
-                    </div>
-                    <div className="h-2 bg-[var(--muted)] rounded-full overflow-hidden">
-                      <div
-                        className="h-full bg-green-500 rounded-full"
-                        style={{
-                          width: (() => {
-                            const lms: Record<string, typeof topic.modules> = {}
-                            topic.modules.forEach(m => {
-                              const name = m.category || 'General'
-                              if (!lms[name]) lms[name] = []
-                              lms[name].push(m)
-                            })
-                            const completed = Object.values(lms).filter(lessons =>
-                              lessons.every(l => completedModules.includes(l.id))
-                            ).length
-                            return `${Object.keys(lms).length > 0 ? (completed / Object.keys(lms).length) * 100 : 0}%`
-                          })()
-                        }}
-                      />
-                    </div>
-                  </div>
+                  {(() => {
+                    const lms = groupLessonsIntoLearningModules(topic.modules, topic.id)
+                    const completedLms = lms.filter(lm =>
+                      lm.lessons.every(l => completedModules.includes(l.id))
+                    ).length
+                    const progressWidth = lms.length > 0 ? (completedLms / lms.length) * 100 : 0
+
+                    return (
+                      <div className="mb-4">
+                        <div className="flex items-center justify-between text-xs mb-1">
+                          <span className="text-theme-muted">Learning Modules</span>
+                          <span className="font-bold text-[var(--foreground)]">
+                            {completedLms} / {lms.length}
+                          </span>
+                        </div>
+                        <div className="h-2 bg-[var(--muted)] rounded-full overflow-hidden">
+                          <div
+                            className="h-full bg-green-500 rounded-full"
+                            style={{ width: `${progressWidth}%` }}
+                          />
+                        </div>
+                      </div>
+                    )
+                  })()}
 
                   {/* Lessons Progress */}
                   <div className="mb-4">
@@ -442,9 +520,10 @@ export default function TopicPage() {
                   </div>
                 </CardContent>
               </Card>
+              </div>
             </div>
+            )}
           </div>
-          )}
         </div>
       </div>
     </div>

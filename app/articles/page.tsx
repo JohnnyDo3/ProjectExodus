@@ -237,165 +237,118 @@ export default function ArticlesPage() {
 
   return (
     <div className="min-h-screen bg-[var(--background)]">
-      {/* Hero Header */}
+      {/* Hero Header with Integrated Trending */}
       <div className="bg-gradient-to-br from-[var(--primary)] via-[var(--accent)] to-[var(--secondary)] text-white">
-        <div className="container mx-auto px-4 py-10 sm:py-16">
-          <div className="max-w-4xl mx-auto text-center">
-            <h1 className="text-3xl sm:text-5xl md:text-6xl font-black mb-3 sm:mb-4 tracking-tight">
-              FEATURED ARTICLES
-            </h1>
-            <p className="text-base sm:text-xl font-medium opacity-90 mb-3 sm:mb-4 px-4">
-              Case studies, insights, and knowledge from our community
-            </p>
-            <p className="text-sm sm:text-base font-medium opacity-75 mb-6 sm:mb-8 max-w-2xl mx-auto px-4 hidden sm:block">
-              Articles are in-depth explorations of ideas, experiences, and lessons learned on our collective journey toward building a better future.
-            </p>
+        <div className="container mx-auto px-4 py-8 sm:py-12">
+          <div className="max-w-6xl mx-auto">
+            {/* Title Section */}
+            <div className="text-center mb-6 sm:mb-8">
+              <h1 className="text-3xl sm:text-5xl md:text-6xl font-black mb-2 sm:mb-3 tracking-tight">
+                FEATURED ARTICLES
+              </h1>
+              <p className="text-base sm:text-xl font-medium opacity-90 px-4">
+                Case studies, insights, and knowledge from our community
+              </p>
 
-            {/* Search Bar */}
-            <form onSubmit={handleSearch} className="max-w-2xl mx-auto relative px-4 sm:px-0">
-              <input
-                type="text"
-                value={searchQuery}
-                onChange={(e) => setSearchQuery(e.target.value)}
-                placeholder="Search articles..."
-                className="w-full px-4 sm:px-6 py-3 sm:py-4 rounded-xl sm:rounded-2xl bg-white/10 backdrop-blur-sm border-2 border-white/20 text-white placeholder-white/60 font-medium focus:outline-none focus:border-white/50 transition-colors text-sm sm:text-base"
-              />
-              <button
-                type="submit"
-                className="absolute right-5 sm:right-2 top-1/2 -translate-y-1/2 p-2 sm:p-3 bg-white/20 hover:bg-white/30 rounded-lg sm:rounded-xl transition-colors"
-              >
-                <Search className="w-4 h-4 sm:w-5 sm:h-5" />
-              </button>
-            </form>
+              {/* Stats Pills in Hero */}
+              <div className="flex items-center justify-center gap-3 mt-3 sm:mt-4">
+                <div className="px-3 py-1.5 bg-white/10 backdrop-blur-sm rounded-full">
+                  <span className="text-xs font-bold text-white/90">
+                    {totalArticles > 0 ? totalArticles : articles.length + (featuredArticle ? 1 : 0)} Articles
+                  </span>
+                </div>
+                <div className="px-3 py-1.5 bg-white/10 backdrop-blur-sm rounded-full">
+                  <span className="text-xs font-bold text-white/90">
+                    {totalViews.toLocaleString()} Views
+                  </span>
+                </div>
+              </div>
+            </div>
 
-            {/* Write Article CTA - Desktop only */}
-            {session && (
-              <Link href="/articles/write" className="hidden sm:inline-block">
-                <Button className="mt-6 bg-white text-[var(--primary)] hover:bg-white/90 font-black text-lg px-8 py-6 rounded-xl shadow-lg">
-                  <PenSquare className="w-5 h-5 mr-2" />
-                  WRITE AN ARTICLE
-                </Button>
-              </Link>
+            {/* Search Bar + Write Button Row */}
+            <div className="flex items-center gap-3 max-w-3xl mx-auto mb-6 sm:mb-8 px-4 sm:px-0">
+              <form onSubmit={handleSearch} className="flex-1 relative">
+                <input
+                  type="text"
+                  value={searchQuery}
+                  onChange={(e) => setSearchQuery(e.target.value)}
+                  placeholder="Search articles..."
+                  className="w-full px-4 sm:px-5 py-2.5 sm:py-3 rounded-xl bg-white/10 backdrop-blur-sm border-2 border-white/20 text-white placeholder-white/60 font-medium focus:outline-none focus:border-white/50 transition-colors text-sm sm:text-base"
+                />
+                <button
+                  type="submit"
+                  className="absolute right-2 top-1/2 -translate-y-1/2 p-2 bg-white/20 hover:bg-white/30 rounded-lg transition-colors"
+                >
+                  <Search className="w-4 h-4" />
+                </button>
+              </form>
+              {session && (
+                <Link href="/articles/write" className="hidden sm:block">
+                  <Button className="bg-white text-[var(--primary)] hover:bg-white/90 font-black px-5 py-2.5 rounded-xl shadow-lg whitespace-nowrap">
+                    <PenSquare className="w-4 h-4 mr-2" />
+                    WRITE
+                  </Button>
+                </Link>
+              )}
+            </div>
+
+            {/* Trending Cards - Integrated in Hero */}
+            {trendingArticles.length > 0 && !searchQuery && activeSort === 'all' && (
+              <div className="px-4 sm:px-0">
+                <div className="flex items-center justify-center gap-2 mb-4">
+                  <TrendingUp className="w-4 h-4 sm:w-5 sm:h-5 text-white/80" />
+                  <span className="text-sm sm:text-base font-bold text-white/90">TRENDING NOW</span>
+                </div>
+                <div className="grid grid-cols-1 md:grid-cols-3 gap-3 sm:gap-4">
+                  {trendingArticles.slice(0, 3).map((article, index) => {
+                    const authorTheme = getAuthorTheme(article.author.guardianArchetype)
+                    const rankColors = ['from-yellow-400 to-orange-500', 'from-gray-300 to-gray-400', 'from-amber-600 to-amber-700']
+                    const rankLabels = ['#1', '#2', '#3']
+
+                    return (
+                      <Link key={article.id} href={`/articles/${article.slug}`}>
+                        <div className="bg-white/10 backdrop-blur-sm border border-white/20 rounded-xl p-3 hover:bg-white/20 transition-all group cursor-pointer">
+                          <div className="flex items-start gap-3">
+                            {/* Rank Badge */}
+                            <div className={`shrink-0 w-8 h-8 bg-gradient-to-br ${rankColors[index]} rounded-lg flex items-center justify-center shadow-lg`}>
+                              <span className="text-white font-black text-sm">{rankLabels[index]}</span>
+                            </div>
+
+                            <div className="flex-1 min-w-0">
+                              {/* Category */}
+                              <span className="px-1.5 py-0.5 bg-white/20 text-white font-bold text-[10px] rounded">
+                                {article.category.name}
+                              </span>
+
+                              {/* Title */}
+                              <h3 className="text-sm font-bold text-white mt-1 line-clamp-2 group-hover:underline">
+                                {article.title}
+                              </h3>
+
+                              {/* Stats */}
+                              <div className="flex items-center gap-3 mt-1.5 text-[10px] text-white/70">
+                                <span className="flex items-center gap-1">
+                                  <Eye className="w-3 h-3" />
+                                  {article.views}
+                                </span>
+                                <span className="flex items-center gap-1">
+                                  <Clock className="w-3 h-3" />
+                                  {article.readTime}m
+                                </span>
+                                <span className="font-medium truncate">{article.author.name}</span>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </Link>
+                    )
+                  })}
+                </div>
+              </div>
             )}
           </div>
         </div>
       </div>
-
-      {/* Trending Spotlight Section */}
-      {trendingArticles.length > 0 && !searchQuery && activeSort === 'all' && (
-        <div className="bg-gradient-to-b from-[var(--card)] to-[var(--background)] border-b border-[var(--border)]">
-          <div className="container mx-auto px-4 py-8 sm:py-12">
-            {/* Section Header */}
-            <div className="flex items-center justify-between mb-6">
-              <div className="flex items-center gap-3">
-                <div className="p-2 bg-gradient-to-br from-orange-500 to-red-500 rounded-xl">
-                  <TrendingUp className="w-5 h-5 sm:w-6 sm:h-6 text-white" />
-                </div>
-                <div>
-                  <h2 className="text-xl sm:text-2xl font-black text-[var(--foreground)]">
-                    TRENDING NOW
-                  </h2>
-                  <p className="text-xs sm:text-sm text-theme-muted font-medium">
-                    Most popular articles this week
-                  </p>
-                </div>
-              </div>
-
-              {/* Stats Pills */}
-              <div className="hidden sm:flex items-center gap-3">
-                <div className="px-4 py-2 bg-[var(--muted)] rounded-xl">
-                  <span className="text-xs font-bold text-theme-muted">
-                    {totalArticles > 0 ? totalArticles : articles.length + (featuredArticle ? 1 : 0)} Articles
-                  </span>
-                </div>
-                <div className="px-4 py-2 bg-[var(--muted)] rounded-xl">
-                  <span className="text-xs font-bold text-theme-muted">
-                    {totalViews.toLocaleString()} Total Views
-                  </span>
-                </div>
-              </div>
-            </div>
-
-            {/* Trending Cards */}
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-4 sm:gap-6">
-              {trendingArticles.slice(0, 3).map((article, index) => {
-                const authorTheme = getAuthorTheme(article.author.guardianArchetype)
-                const rankColors = ['from-yellow-400 to-orange-500', 'from-gray-300 to-gray-400', 'from-amber-600 to-amber-700']
-                const rankLabels = ['#1 TRENDING', '#2 POPULAR', '#3 HOT']
-
-                return (
-                  <Link key={article.id} href={`/articles/${article.slug}`}>
-                    <Card className="h-full border-2 border-[var(--border)] hover:border-orange-400 hover:shadow-xl transition-all group cursor-pointer overflow-hidden relative">
-                      {/* Rank Badge */}
-                      <div className={`absolute top-3 left-3 z-10 px-2 py-1 bg-gradient-to-r ${rankColors[index]} text-white font-black text-[10px] sm:text-xs rounded-full shadow-lg`}>
-                        {rankLabels[index]}
-                      </div>
-
-                      {/* Cover Image */}
-                      <div className="relative h-32 sm:h-40 overflow-hidden bg-gradient-to-br from-[var(--primary)] to-[var(--accent)]">
-                        {article.coverImage ? (
-                          <img
-                            src={article.coverImage}
-                            alt={article.title}
-                            className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
-                          />
-                        ) : (
-                          <div className="w-full h-full flex items-center justify-center">
-                            <BookOpen className="w-12 h-12 text-white/30" />
-                          </div>
-                        )}
-                        <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent" />
-
-                        {/* View count overlay */}
-                        <div className="absolute bottom-2 right-2 flex items-center gap-1 px-2 py-1 bg-black/50 rounded-full backdrop-blur-sm">
-                          <Eye className="w-3 h-3 text-white" />
-                          <span className="text-[10px] sm:text-xs text-white font-bold">{article.views}</span>
-                        </div>
-                      </div>
-
-                      <CardContent className="p-3 sm:p-4">
-                        {/* Category */}
-                        <span className="px-2 py-0.5 bg-orange-100 text-orange-700 font-bold text-[10px] sm:text-xs rounded-md">
-                          {article.category.name}
-                        </span>
-
-                        {/* Title */}
-                        <h3 className="text-sm sm:text-base font-black text-[var(--foreground)] mt-2 mb-2 group-hover:text-orange-500 transition-colors line-clamp-2">
-                          {article.title}
-                        </h3>
-
-                        {/* Author & Stats */}
-                        <div className="flex items-center justify-between text-[10px] sm:text-xs text-theme-muted">
-                          <div className="flex items-center gap-1.5">
-                            <div className={`w-5 h-5 rounded-full bg-gradient-to-br ${authorTheme.gradient} flex items-center justify-center`}>
-                              {article.author.image ? (
-                                <img src={article.author.image} alt="" className="w-full h-full rounded-full object-cover" />
-                              ) : (
-                                <User className="w-2.5 h-2.5 text-white" />
-                              )}
-                            </div>
-                            <span className="font-medium truncate max-w-[80px]">{article.author.name}</span>
-                          </div>
-                          <div className="flex items-center gap-2">
-                            <span className="flex items-center gap-0.5">
-                              <Clock className="w-3 h-3" />
-                              {article.readTime}m
-                            </span>
-                            <span className="flex items-center gap-0.5">
-                              <MessageCircle className="w-3 h-3" />
-                              {article._count.comments}
-                            </span>
-                          </div>
-                        </div>
-                      </CardContent>
-                    </Card>
-                  </Link>
-                )
-              })}
-            </div>
-          </div>
-        </div>
-      )}
 
       {/* Filter Bar */}
       <div className="sticky top-16 sm:top-20 z-40 bg-[var(--card)] border-b-2 border-[var(--border)] shadow-sm">
