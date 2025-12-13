@@ -234,9 +234,9 @@ export function DigitalTextbook({
         })
 
         // Content pages for this verse
-        // Split long content into multiple pages (roughly 500 chars per page)
+        // Split long content into multiple pages (smaller chunks for better readability)
         const content = lesson.content[selectedLevel] || lesson.content.HIGH_SCHOOL
-        const contentChunks = splitContentIntoPages(content, 800)
+        const contentChunks = splitContentIntoPages(content, 450)
 
         contentChunks.forEach((chunk, pageIndex) => {
           pages.push({
@@ -424,29 +424,52 @@ export function DigitalTextbook({
 
       case 'toc':
         return (
-          <div className="w-full h-full p-4">
+          <div className="w-full h-full flex flex-col p-6">
             <AncientBorder />
-            <h2 className="text-xl font-serif font-bold text-center mb-6">Table of Contents</h2>
+            {/* TOC Header */}
+            <div className="text-center mb-8">
+              <h2 className="text-3xl font-serif font-bold text-[var(--foreground)] mb-2">
+                Table of Contents
+              </h2>
+              <p className="text-sm text-[var(--muted-foreground)] italic font-serif">
+                The Seven Paths of Knowledge
+              </p>
+            </div>
             <HieroglyphicDivider color={currentRibbon?.colors.from} />
-            <div className="space-y-3">
+            {/* Chapter List - fills available space */}
+            <div className="flex-1 flex flex-col justify-center space-y-4 py-4">
               {modules.slice(0, 7).map((module, i) => {
                 const ribbon = RIBBON_ORDER[i] ? GUARDIAN_RIBBONS[RIBBON_ORDER[i]] : null
                 return (
                   <button
                     key={module.id}
                     onClick={() => goToChapter(i)}
-                    className="w-full flex items-center gap-3 p-2 rounded-lg hover:bg-[var(--muted)] transition-colors text-left"
+                    className="w-full flex items-center gap-4 p-4 rounded-xl hover:bg-[var(--muted)] transition-colors text-left group border border-transparent hover:border-[var(--border)]"
                   >
                     <div
-                      className="w-6 h-6 rounded flex items-center justify-center text-white text-xs font-bold"
+                      className="w-10 h-10 rounded-lg flex items-center justify-center text-white text-base font-bold shadow-md"
                       style={{ background: ribbon?.colors.gradient }}
                     >
                       {i + 1}
                     </div>
-                    <span className="flex-1 font-serif text-sm">{module.title}</span>
+                    <div className="flex-1">
+                      <span className="text-xs uppercase tracking-wider text-[var(--muted-foreground)] block mb-0.5">
+                        Chapter {i + 1}
+                      </span>
+                      <span className="font-serif text-lg text-[var(--foreground)] group-hover:text-[var(--primary)] transition-colors">
+                        {module.title}
+                      </span>
+                    </div>
+                    <ChevronRight className="w-5 h-5 text-[var(--muted-foreground)] group-hover:text-[var(--primary)] transition-colors" />
                   </button>
                 )
               })}
+            </div>
+            {/* Footer */}
+            <div className="text-center pt-4 border-t border-[var(--border)]/20">
+              <p className="text-xs text-[var(--muted-foreground)]">
+                Click a chapter to begin reading
+              </p>
             </div>
           </div>
         )
@@ -462,14 +485,68 @@ export function DigitalTextbook({
         )
 
       case 'verse':
+        const verseRibbon = RIBBON_ORDER[page.chapterIndex ?? 0] ? GUARDIAN_RIBBONS[RIBBON_ORDER[page.chapterIndex ?? 0]] : null
         return (
-          <div className="w-full h-full flex flex-col items-center justify-center">
+          <div className="w-full h-full flex flex-col items-center justify-center p-8">
             <AncientBorder />
-            <VerseHeader
-              verseNumber={(page.verseIndex ?? 0) + 1}
-              verseName={page.title || ''}
-              chapterIndex={page.chapterIndex ?? 0}
-            />
+            {/* Verse presentation - fills the page */}
+            <div className="text-center max-w-md">
+              {/* Chapter indicator */}
+              <div
+                className="inline-block px-4 py-1 rounded-full text-xs uppercase tracking-wider mb-6"
+                style={{
+                  background: verseRibbon ? `${verseRibbon.colors.from}20` : 'var(--muted)',
+                  color: verseRibbon?.colors.from || 'var(--muted-foreground)',
+                }}
+              >
+                Chapter {(page.chapterIndex ?? 0) + 1}
+              </div>
+
+              {/* Decorative element */}
+              <div
+                className="w-16 h-0.5 mx-auto mb-8"
+                style={{
+                  background: verseRibbon
+                    ? `linear-gradient(to right, transparent, ${verseRibbon.colors.from}, transparent)`
+                    : 'var(--border)',
+                }}
+              />
+
+              {/* Verse number */}
+              <div className="text-sm text-[var(--muted-foreground)] tracking-[0.3em] uppercase mb-4">
+                Verse {(page.verseIndex ?? 0) + 1}
+              </div>
+
+              {/* Verse title */}
+              <h2
+                className="text-3xl sm:text-4xl font-serif font-bold mb-6"
+                style={{ color: verseRibbon?.colors.from || 'var(--foreground)' }}
+              >
+                {page.title}
+              </h2>
+
+              {/* Description if available */}
+              {page.module && (
+                <p className="text-base text-[var(--muted-foreground)] font-serif italic leading-relaxed mb-8">
+                  {page.module.description.HIGH_SCHOOL || page.module.description}
+                </p>
+              )}
+
+              {/* Decorative element */}
+              <div
+                className="w-16 h-0.5 mx-auto"
+                style={{
+                  background: verseRibbon
+                    ? `linear-gradient(to right, transparent, ${verseRibbon.colors.from}, transparent)`
+                    : 'var(--border)',
+                }}
+              />
+
+              {/* Continue prompt */}
+              <p className="mt-8 text-sm text-[var(--muted-foreground)]">
+                Turn the page to begin →
+              </p>
+            </div>
           </div>
         )
 
@@ -481,15 +558,33 @@ export function DigitalTextbook({
             chapterIndex={page.chapterIndex ?? 0}
             side={side}
           >
-            <div className="h-full flex flex-col">
-              <div className="flex-1 prose prose-base dark:prose-invert max-w-none font-serif prose-p:leading-relaxed prose-headings:font-bold">
+            <div className="h-full flex flex-col justify-between">
+              {/* Content area - fills the page */}
+              <div
+                className={cn(
+                  "flex-1",
+                  "prose prose-lg dark:prose-invert max-w-none",
+                  "font-serif",
+                  // Typography for book-like appearance
+                  "prose-p:text-[1.1rem] prose-p:leading-[1.8] prose-p:mb-6 prose-p:text-justify prose-p:hyphens-auto",
+                  "prose-headings:font-bold prose-headings:mb-4",
+                  "prose-h2:text-2xl prose-h3:text-xl",
+                  "prose-strong:font-bold",
+                  "prose-ul:space-y-2 prose-ol:space-y-2",
+                  "prose-li:text-base prose-li:leading-relaxed",
+                  // First paragraph drop cap effect
+                  "[&>div>p:first-of-type]:first-letter:float-left [&>div>p:first-of-type]:first-letter:text-5xl [&>div>p:first-of-type]:first-letter:font-bold [&>div>p:first-of-type]:first-letter:mr-2 [&>div>p:first-of-type]:first-letter:mt-1",
+                  "[&>div>p:first-of-type]:first-letter:text-[var(--primary)]",
+                )}
+              >
                 {typeof page.content === 'string' ? (
                   <div dangerouslySetInnerHTML={{ __html: page.content }} />
                 ) : (
                   page.content
                 )}
               </div>
-              <div className="mt-auto pt-4">
+              {/* Page number at bottom */}
+              <div className="pt-4 border-t border-[var(--border)]/20">
                 <AncientPageNumber number={currentPageIndex + 1} total={totalPages} />
               </div>
             </div>
@@ -717,18 +812,25 @@ function splitContentIntoPages(content: string, charsPerPage: number): string[] 
       break
     }
 
-    // Find a good break point (end of paragraph or sentence)
+    // Find a good break point (end of paragraph preferred)
     let breakPoint = remaining.lastIndexOf('</p>', charsPerPage)
-    if (breakPoint === -1 || breakPoint < charsPerPage * 0.5) {
+    if (breakPoint === -1 || breakPoint < charsPerPage * 0.3) {
+      // Try to break at a sentence
       breakPoint = remaining.lastIndexOf('. ', charsPerPage)
+      if (breakPoint !== -1) breakPoint += 2 // Include the period and space
     }
-    if (breakPoint === -1 || breakPoint < charsPerPage * 0.5) {
+    if (breakPoint === -1 || breakPoint < charsPerPage * 0.3) {
+      // Last resort: break at word boundary
+      breakPoint = remaining.lastIndexOf(' ', charsPerPage)
+    }
+    if (breakPoint === -1 || breakPoint < charsPerPage * 0.3) {
       breakPoint = charsPerPage
-    } else {
-      breakPoint += 1 // Include the closing tag or period
     }
 
-    pages.push(remaining.slice(0, breakPoint))
+    const pageContent = remaining.slice(0, breakPoint).trim()
+    if (pageContent) {
+      pages.push(pageContent)
+    }
     remaining = remaining.slice(breakPoint).trim()
   }
 

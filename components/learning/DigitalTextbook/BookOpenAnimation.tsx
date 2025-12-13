@@ -3,13 +3,13 @@
 // ============================================
 // BOOK OPEN ANIMATION
 // "And the book was opened..." - Revelation 20:12
-// The Revelation Sequence: Descent → Pause → Opening → Seeking
+// Simple, reliable animation sequence
 // ============================================
 
-import { motion, AnimatePresence } from 'framer-motion'
-import { useState, useEffect, useRef } from 'react'
+import { motion } from 'framer-motion'
+import { useEffect, useRef, useState } from 'react'
 import { cn } from '@/lib/utils/cn'
-import { ANIMATION_TIMINGS, CORE_TOPIC_ICONS } from './bookConstants'
+import { BOOK_DIMENSIONS, CORE_TOPIC_ICONS, getDeviceType } from './bookConstants'
 import { X } from 'lucide-react'
 
 // ============================================
@@ -25,208 +25,96 @@ interface BookOpenAnimationProps {
   className?: string
 }
 
-type AnimationPhase = 'waiting' | 'descent' | 'landing' | 'pause' | 'opening' | 'seeking' | 'complete'
-
 // ============================================
-// DUST PARTICLES
-// Subtle dust effect on book landing
-// ============================================
-
-function DustParticles({ isActive }: { isActive: boolean }) {
-  const particles = Array.from({ length: 12 }, (_, i) => ({
-    id: i,
-    x: (Math.random() - 0.5) * 200,
-    y: Math.random() * -50,
-    size: Math.random() * 4 + 2,
-    delay: Math.random() * 0.3,
-    duration: Math.random() * 0.5 + 0.5,
-  }))
-
-  return (
-    <AnimatePresence>
-      {isActive && (
-        <div className="absolute bottom-0 left-1/2 -translate-x-1/2 pointer-events-none">
-          {particles.map((particle) => (
-            <motion.div
-              key={particle.id}
-              className="absolute rounded-full bg-[var(--muted-foreground)]"
-              style={{
-                width: particle.size,
-                height: particle.size,
-                left: '50%',
-                bottom: 0,
-              }}
-              initial={{
-                x: 0,
-                y: 0,
-                opacity: 0.6,
-                scale: 0,
-              }}
-              animate={{
-                x: particle.x,
-                y: particle.y,
-                opacity: 0,
-                scale: 1,
-              }}
-              transition={{
-                duration: particle.duration,
-                delay: particle.delay,
-                ease: 'easeOut',
-              }}
-              exit={{ opacity: 0 }}
-            />
-          ))}
-        </div>
-      )}
-    </AnimatePresence>
-  )
-}
-
-// ============================================
-// MAIN ANIMATION COMPONENT
+// MAIN COMPONENT
 // ============================================
 
 export function BookOpenAnimation({
   topicSlug,
   topicTitle,
-  targetPage,
   onAnimationComplete,
   reducedMotion = false,
   className,
 }: BookOpenAnimationProps) {
-  const [phase, setPhase] = useState<AnimationPhase>('waiting')
-  const [showDust, setShowDust] = useState(false)
+  const [isAnimating, setIsAnimating] = useState(true)
   const [coverOpen, setCoverOpen] = useState(false)
-  const animationCompleteRef = useRef(false)
+  const [showContent, setShowContent] = useState(false)
+  const completedRef = useRef(false)
+  const [dimensions, setDimensions] = useState(BOOK_DIMENSIONS.desktop)
 
   const topicIcon = CORE_TOPIC_ICONS[topicSlug] || '📖'
 
-  // ============================================
-  // REDUCED MOTION - Skip animations
-  // ============================================
+  // Get responsive dimensions
+  useEffect(() => {
+    function updateDimensions() {
+      const device = getDeviceType()
+      setDimensions(BOOK_DIMENSIONS[device])
+    }
+    updateDimensions()
+    window.addEventListener('resize', updateDimensions)
+    return () => window.removeEventListener('resize', updateDimensions)
+  }, [])
 
+  // Handle completion
+  const handleComplete = () => {
+    if (!completedRef.current) {
+      completedRef.current = true
+      setIsAnimating(false)
+      onAnimationComplete()
+    }
+  }
+
+  // Reduced motion - skip immediately
   useEffect(() => {
     if (reducedMotion) {
-      onAnimationComplete()
+      handleComplete()
     }
-  }, [reducedMotion, onAnimationComplete])
-
-  // ============================================
-  // ANIMATION SEQUENCE - State-based approach
-  // ============================================
-
-  useEffect(() => {
-    if (reducedMotion || animationCompleteRef.current) return
-
-    // Start descent immediately
-    const startTimer = setTimeout(() => {
-      setPhase('descent')
-    }, 100)
-
-    return () => clearTimeout(startTimer)
   }, [reducedMotion])
 
-  // Handle phase transitions
+  // Auto-advance animation sequence
   useEffect(() => {
-    if (reducedMotion || animationCompleteRef.current) return
+    if (reducedMotion || completedRef.current) return
 
-    let timer: NodeJS.Timeout
+    // Timeline:
+    // 0ms: Book starts descending
+    // 800ms: Book lands, start opening cover
+    // 800ms: Cover opens
+    // 1800ms: Show inside briefly
+    // 2300ms: Complete
 
-    switch (phase) {
-      case 'descent':
-        // After descent animation completes, move to landing
-        timer = setTimeout(() => {
-          setPhase('landing')
-          setShowDust(true)
-          setTimeout(() => setShowDust(false), 500)
-        }, ANIMATION_TIMINGS.descent.duration)
-        break
+    const openCoverTimer = setTimeout(() => {
+      setCoverOpen(true)
+    }, 800)
 
-      case 'landing':
-        // After landing bounce, move to pause
-        timer = setTimeout(() => {
-          setPhase('pause')
-        }, 400)
-        break
+    const showContentTimer = setTimeout(() => {
+      setShowContent(true)
+    }, 1600)
 
-      case 'pause':
-        // After pause, open the cover
-        timer = setTimeout(() => {
-          setPhase('opening')
-          setCoverOpen(true)
-        }, ANIMATION_TIMINGS.pause.duration)
-        break
-
-      case 'opening':
-        // After cover opens, complete
-        timer = setTimeout(() => {
-          if (!animationCompleteRef.current) {
-            animationCompleteRef.current = true
-            setPhase('complete')
-            onAnimationComplete()
-          }
-        }, ANIMATION_TIMINGS.opening.duration)
-        break
-    }
+    const completeTimer = setTimeout(() => {
+      handleComplete()
+    }, 2200)
 
     return () => {
-      if (timer) clearTimeout(timer)
+      clearTimeout(openCoverTimer)
+      clearTimeout(showContentTimer)
+      clearTimeout(completeTimer)
     }
-  }, [phase, reducedMotion, onAnimationComplete])
+  }, [reducedMotion])
 
-  // Failsafe timeout
-  useEffect(() => {
-    if (reducedMotion) return
-
-    const failsafeTimer = setTimeout(() => {
-      if (!animationCompleteRef.current) {
-        console.warn('Book animation failsafe triggered')
-        animationCompleteRef.current = true
-        onAnimationComplete()
-      }
-    }, 5000)
-
-    return () => clearTimeout(failsafeTimer)
-  }, [reducedMotion, onAnimationComplete])
-
-  // Compute book animation values based on phase
-  const bookAnimateValues = {
-    waiting: { y: '-100vh', rotateX: 15, scale: 0.8 },
-    descent: { y: 0, rotateX: 0, scale: 1 },
-    landing: { y: 0, rotateX: 0, scale: 1 },
-    pause: { y: 0, rotateX: 0, scale: 1 },
-    opening: { y: 0, rotateX: 0, scale: 1 },
-    seeking: { y: 0, rotateX: 0, scale: 1 },
-    complete: { y: 0, rotateX: 0, scale: 1 },
-  }
-
-  // Skip animation handler
-  const handleSkip = () => {
-    if (!animationCompleteRef.current) {
-      animationCompleteRef.current = true
-      onAnimationComplete()
-    }
-  }
-
-  // Keyboard controls - Space to skip, Escape to skip
+  // Keyboard controls
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
       if (e.key === ' ' || e.key === 'Escape' || e.key === 'Enter') {
         e.preventDefault()
-        handleSkip()
+        handleComplete()
       }
     }
-
     window.addEventListener('keydown', handleKeyDown)
     return () => window.removeEventListener('keydown', handleKeyDown)
-  }, []) // handleSkip is stable due to ref
+  }, [])
 
-  // ============================================
-  // RENDER
-  // ============================================
-
-  if (reducedMotion) {
-    return null // Instantly show the book without animation
+  if (reducedMotion || !isAnimating) {
+    return null
   }
 
   return (
@@ -236,194 +124,203 @@ export function BookOpenAnimation({
         'bg-black/80 backdrop-blur-md',
         className
       )}
+      onClick={handleComplete}
     >
       {/* Skip button */}
       <button
-        onClick={handleSkip}
-        className="absolute top-4 right-4 z-10 p-2 rounded-full bg-white/10 hover:bg-white/20 text-white/60 hover:text-white transition-all"
+        onClick={(e) => {
+          e.stopPropagation()
+          handleComplete()
+        }}
+        className="absolute top-6 right-6 z-20 px-4 py-2 rounded-lg bg-white/10 hover:bg-white/20 text-white/80 hover:text-white transition-all text-sm font-medium"
         aria-label="Skip animation"
       >
-        <X className="w-5 h-5" />
+        Skip <span className="opacity-60 ml-1">ESC</span>
       </button>
 
-      {/* Ambient light effect */}
-      <div
-        className="absolute inset-0 pointer-events-none"
-        style={{
-          background: `
-            radial-gradient(circle at 50% 30%, rgba(255,255,255,0.1) 0%, transparent 50%),
-            radial-gradient(circle at 50% 70%, rgba(0,0,0,0.3) 0%, transparent 50%)
-          `,
-        }}
-      />
-
       {/* Phase text */}
-      <AnimatePresence mode="wait">
-        <motion.div
-          key={phase}
-          className="absolute top-1/4 left-1/2 -translate-x-1/2 text-white/60 text-sm tracking-widest uppercase"
-          initial={{ opacity: 0, y: 10 }}
-          animate={{ opacity: 1, y: 0 }}
-          exit={{ opacity: 0, y: -10 }}
-          transition={{ duration: 0.3 }}
-        >
-          {phase === 'descent' && 'The book descends...'}
-          {phase === 'landing' && 'It arrives.'}
-          {phase === 'pause' && 'Awaiting the seeker...'}
-          {phase === 'opening' && 'The revelation begins...'}
-        </motion.div>
-      </AnimatePresence>
+      <motion.div
+        className="absolute top-1/4 left-1/2 -translate-x-1/2 text-white/70 text-lg tracking-widest uppercase font-serif"
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ delay: 0.3, duration: 0.5 }}
+      >
+        {!coverOpen && 'The book descends...'}
+        {coverOpen && !showContent && 'The revelation begins...'}
+        {showContent && 'Enter the sacred text...'}
+      </motion.div>
 
-      {/* The Book - Perspective wrapper */}
+      {/* Book Container - matches main book dimensions */}
       <div
         style={{
-          width: '60vw',
-          maxWidth: '800px',
-          height: '50vh',
-          maxHeight: '600px',
-          perspective: '2000px',
+          width: dimensions.width,
+          maxWidth: dimensions.maxWidth,
+          height: dimensions.height,
+          maxHeight: dimensions.maxHeight,
+          perspective: '2500px',
         }}
       >
+        {/* Animated Book */}
         <motion.div
           className="relative w-full h-full"
-          style={{
-            transformStyle: 'preserve-3d',
+          style={{ transformStyle: 'preserve-3d' }}
+          initial={{ y: '-120%', rotateX: 25, scale: 0.7, opacity: 0 }}
+          animate={{
+            y: 0,
+            rotateX: 0,
+            scale: 1,
+            opacity: 1
           }}
-          initial={{ y: '-100vh', rotateX: 15, scale: 0.8 }}
-          animate={bookAnimateValues[phase]}
           transition={{
-            duration: phase === 'descent' ? ANIMATION_TIMINGS.descent.duration / 1000 : 0.4,
-            ease: phase === 'descent' ? [0.25, 0.46, 0.45, 0.94] : 'easeOut',
+            duration: 0.8,
+            ease: [0.34, 1.56, 0.64, 1], // Bounce easing
           }}
         >
-          {/* Back cover (visible) */}
+          {/* Book body wrapper for 3D */}
           <div
-            className="absolute inset-0 rounded-lg"
-            style={{
-              background: `
-                linear-gradient(135deg,
-                  #1a1612 0%,
-                  #2a2420 30%,
-                  #1a1612 50%,
-                  #0f0d0a 100%
-                )
-              `,
-              boxShadow: '0 25px 50px -12px rgba(0, 0, 0, 0.5)',
-              transform: 'translateZ(-20px)',
-            }}
-          />
-
-          {/* Pages stack */}
-          <div
-            className="absolute inset-2 rounded-r-lg"
-            style={{
-              background: 'linear-gradient(to right, #e8e0d4, #f5f0e8)',
-              transform: 'translateZ(-10px)',
-            }}
-          />
-
-          {/* Front cover (animates open) */}
-          <motion.div
-            className="absolute inset-0 rounded-lg origin-left"
+            className="relative w-full h-full rounded-lg overflow-hidden"
             style={{
               transformStyle: 'preserve-3d',
-              backfaceVisibility: 'hidden',
-            }}
-            initial={{ rotateY: 0 }}
-            animate={{ rotateY: coverOpen ? -180 : 0 }}
-            transition={{
-              duration: ANIMATION_TIMINGS.opening.duration / 1000,
-              ease: [0.4, 0, 0.2, 1],
+              boxShadow: '0 50px 100px -20px rgba(0, 0, 0, 0.5), 0 30px 60px -30px rgba(0, 0, 0, 0.3)',
             }}
           >
-            {/* Cover front */}
-            <div
-              className="absolute inset-0 rounded-lg overflow-hidden"
-              style={{
-                background: `
-                  linear-gradient(135deg,
-                    #1a1612 0%,
-                    #2a2420 30%,
-                    #1a1612 50%,
-                    #0f0d0a 100%
-                  )
-                `,
-                backfaceVisibility: 'hidden',
-              }}
-            >
-              {/* Gold border */}
-              <div
-                className="absolute inset-4 border-2 rounded-sm"
-                style={{
-                  borderColor: 'rgba(212, 175, 55, 0.4)',
-                }}
-              />
-
-              {/* Title */}
-              <div className="absolute inset-0 flex flex-col items-center justify-center p-8 text-center">
-                <span className="text-5xl mb-4">{topicIcon}</span>
-                <div
-                  className="w-24 h-0.5 mb-4"
-                  style={{
-                    background: 'linear-gradient(to right, transparent, rgba(212, 175, 55, 0.6), transparent)',
-                  }}
-                />
-                <h2
-                  className="text-xl font-serif tracking-wide"
-                  style={{ color: '#d4af37' }}
-                >
-                  THE BOOK OF
-                </h2>
-                <h1
-                  className="text-3xl font-serif font-black mt-1"
-                  style={{ color: '#f4e5c2' }}
-                >
-                  {topicTitle.toUpperCase()}
-                </h1>
-              </div>
-            </div>
-
-            {/* Cover back (inside) */}
+            {/* Back cover / Inside pages */}
             <div
               className="absolute inset-0 rounded-lg"
               style={{
-                background: '#2a2420',
-                transform: 'rotateY(180deg)',
+                background: showContent
+                  ? 'linear-gradient(135deg, #f5f0e8 0%, #e8e0d4 100%)'
+                  : 'linear-gradient(135deg, #1a1612 0%, #2a2420 50%, #1a1612 100%)',
+                transition: 'background 0.5s ease',
+              }}
+            >
+              {/* Inside pages preview when cover opens */}
+              {showContent && (
+                <motion.div
+                  className="absolute inset-0 flex items-center justify-center p-12"
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 1 }}
+                  transition={{ duration: 0.5 }}
+                >
+                  <div className="text-center max-w-lg">
+                    <div className="text-6xl mb-6">{topicIcon}</div>
+                    <h2 className="text-3xl font-serif font-bold text-gray-800 mb-4">
+                      {topicTitle}
+                    </h2>
+                    <div className="w-32 h-0.5 mx-auto bg-gradient-to-r from-transparent via-amber-600 to-transparent mb-4" />
+                    <p className="text-gray-600 italic font-serif">
+                      Click anywhere to begin your journey
+                    </p>
+                  </div>
+                </motion.div>
+              )}
+            </div>
+
+            {/* Front cover - flips open */}
+            <motion.div
+              className="absolute inset-0 rounded-lg"
+              style={{
+                transformStyle: 'preserve-3d',
+                transformOrigin: 'left center',
                 backfaceVisibility: 'hidden',
               }}
-            />
-          </motion.div>
+              initial={{ rotateY: 0 }}
+              animate={{ rotateY: coverOpen ? -160 : 0 }}
+              transition={{
+                duration: 0.8,
+                ease: [0.4, 0, 0.2, 1],
+              }}
+            >
+              {/* Cover front face */}
+              <div
+                className="absolute inset-0 rounded-lg flex flex-col items-center justify-center p-8"
+                style={{
+                  background: 'linear-gradient(135deg, #1a1612 0%, #2a2420 30%, #1a1612 50%, #0f0d0a 100%)',
+                  backfaceVisibility: 'hidden',
+                }}
+              >
+                {/* Gold border */}
+                <div
+                  className="absolute inset-6 border-2 rounded pointer-events-none"
+                  style={{ borderColor: 'rgba(212, 175, 55, 0.4)' }}
+                />
 
-          {/* Dust particles on landing */}
-          <DustParticles isActive={showDust} />
+                {/* Decorative corners */}
+                <div className="absolute top-8 left-8 w-12 h-12 border-t-2 border-l-2" style={{ borderColor: 'rgba(212, 175, 55, 0.3)' }} />
+                <div className="absolute top-8 right-8 w-12 h-12 border-t-2 border-r-2" style={{ borderColor: 'rgba(212, 175, 55, 0.3)' }} />
+                <div className="absolute bottom-8 left-8 w-12 h-12 border-b-2 border-l-2" style={{ borderColor: 'rgba(212, 175, 55, 0.3)' }} />
+                <div className="absolute bottom-8 right-8 w-12 h-12 border-b-2 border-r-2" style={{ borderColor: 'rgba(212, 175, 55, 0.3)' }} />
+
+                {/* Content */}
+                <span className="text-7xl mb-6">{topicIcon}</span>
+
+                <div className="w-40 h-0.5 mb-6" style={{
+                  background: 'linear-gradient(to right, transparent, rgba(212, 175, 55, 0.6), transparent)'
+                }} />
+
+                <div className="text-xl font-serif tracking-wide" style={{ color: '#d4af37' }}>
+                  THE SACRED BOOK OF
+                </div>
+
+                <h1 className="text-4xl font-serif font-black mt-2 text-center px-8" style={{ color: '#f4e5c2' }}>
+                  {topicTitle.toUpperCase()}
+                </h1>
+
+                <div className="w-40 h-0.5 mt-6" style={{
+                  background: 'linear-gradient(to right, transparent, rgba(212, 175, 55, 0.6), transparent)'
+                }} />
+
+                {/* Subtitle */}
+                <p className="mt-6 text-sm font-serif italic" style={{ color: 'rgba(244, 229, 194, 0.6)' }}>
+                  A Journey of Discovery
+                </p>
+              </div>
+
+              {/* Cover back face (inside front cover) */}
+              <div
+                className="absolute inset-0 rounded-lg"
+                style={{
+                  background: '#2a2420',
+                  transform: 'rotateY(180deg)',
+                  backfaceVisibility: 'hidden',
+                }}
+              />
+            </motion.div>
+
+            {/* Book spine effect on left side */}
+            <div
+              className="absolute top-0 left-0 bottom-0 w-4 pointer-events-none"
+              style={{
+                background: 'linear-gradient(to right, rgba(0,0,0,0.3), transparent)',
+              }}
+            />
+          </div>
 
           {/* Book shadow */}
           <motion.div
-            className="absolute -bottom-4 left-1/2 -translate-x-1/2 w-3/4 h-4 rounded-[50%]"
+            className="absolute -bottom-8 left-1/2 -translate-x-1/2 w-4/5 h-8 rounded-[50%]"
             style={{
               background: 'rgba(0, 0, 0, 0.4)',
-              filter: 'blur(8px)',
+              filter: 'blur(12px)',
             }}
-            animate={{
-              scaleX: phase === 'descent' ? 0.5 : 1,
-              opacity: phase === 'descent' ? 0.3 : 0.6,
-            }}
-            transition={{ duration: 0.3 }}
+            initial={{ opacity: 0.3, scaleX: 0.5 }}
+            animate={{ opacity: 0.6, scaleX: 1 }}
+            transition={{ duration: 0.8 }}
           />
         </motion.div>
       </div>
 
       {/* Sacred quote at bottom */}
       <motion.div
-        className="absolute bottom-8 left-1/2 -translate-x-1/2 text-center"
-        initial={{ opacity: 0 }}
-        animate={{ opacity: phase !== 'descent' ? 0.6 : 0 }}
-        transition={{ delay: 0.3 }}
+        className="absolute bottom-12 left-1/2 -translate-x-1/2 text-center"
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 0.7, y: 0 }}
+        transition={{ delay: 0.5, duration: 0.5 }}
       >
-        <p className="text-white/50 text-sm italic font-serif">
+        <p className="text-white/60 text-base italic font-serif">
           "And the book was opened..."
         </p>
-        <p className="text-white/30 text-xs mt-1">— Revelation 20:12</p>
+        <p className="text-white/40 text-sm mt-2">— Revelation 20:12</p>
       </motion.div>
     </div>
   )
