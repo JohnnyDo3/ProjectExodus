@@ -1,5 +1,11 @@
 'use client'
 
+// ============================================
+// THE LIBRARY
+// "Wisdom is not consumed - it is received.
+//  A text offers its truth; a reader brings their readiness to understand."
+// ============================================
+
 import { useState, useEffect, useRef, useCallback } from 'react'
 import { useSession } from 'next-auth/react'
 import Link from 'next/link'
@@ -21,26 +27,22 @@ import {
   BookOpen,
   ArrowRight,
   Calendar,
-  Sword,
-  MessageCircle as MessageIcon,
-  Stethoscope,
-  Lightbulb,
-  HeartHandshake,
-  Flower2,
-  Scale,
   CheckCircle2,
   Loader2,
+  ScrollText,
+  Flame,
+  Star,
 } from 'lucide-react'
 
-// Guardian archetypes for author theming
-const GUARDIAN_ARCHETYPES: Record<string, { gradient: string; icon: any; accentColor: string }> = {
-  michael: { gradient: 'from-red-600 to-orange-500', icon: Sword, accentColor: 'text-red-500' },
-  gabriel: { gradient: 'from-sky-500 to-blue-600', icon: MessageIcon, accentColor: 'text-sky-500' },
-  raphael: { gradient: 'from-emerald-500 to-green-600', icon: Stethoscope, accentColor: 'text-emerald-500' },
-  uriel: { gradient: 'from-amber-500 to-yellow-500', icon: Lightbulb, accentColor: 'text-amber-500' },
-  camael: { gradient: 'from-pink-500 to-rose-600', icon: HeartHandshake, accentColor: 'text-pink-500' },
-  jophiel: { gradient: 'from-violet-500 to-purple-600', icon: Flower2, accentColor: 'text-violet-500' },
-  zadkiel: { gradient: 'from-indigo-500 to-blue-700', icon: Scale, accentColor: 'text-indigo-500' },
+// Archetype traits for author theming (traits only, no names)
+const ARCHETYPE_TRAITS: Record<string, { gradient: string; trait: string; accentColor: string }> = {
+  michael: { gradient: 'from-red-600 to-orange-500', trait: 'Strength', accentColor: 'text-red-500' },
+  gabriel: { gradient: 'from-sky-500 to-blue-600', trait: 'Truth', accentColor: 'text-sky-500' },
+  raphael: { gradient: 'from-emerald-500 to-green-600', trait: 'Healing', accentColor: 'text-emerald-500' },
+  uriel: { gradient: 'from-amber-500 to-yellow-500', trait: 'Wisdom', accentColor: 'text-amber-500' },
+  camael: { gradient: 'from-pink-500 to-rose-600', trait: 'Love', accentColor: 'text-pink-500' },
+  jophiel: { gradient: 'from-violet-500 to-purple-600', trait: 'Creativity', accentColor: 'text-violet-500' },
+  zadkiel: { gradient: 'from-indigo-500 to-blue-700', trait: 'Grace', accentColor: 'text-indigo-500' },
 }
 
 interface Article {
@@ -95,11 +97,11 @@ export default function ArticlesPage() {
   const loadMoreRef = useRef<HTMLDivElement>(null)
 
   const sortOptions: { value: SortOption; label: string; icon: any }[] = [
-    { value: 'all', label: 'All Articles', icon: BookOpen },
-    { value: 'newest', label: 'Newest', icon: Sparkles },
-    { value: 'oldest', label: 'Oldest', icon: History },
-    { value: 'most_read', label: 'Most Read', icon: TrendingUp },
-    { value: 'read', label: 'Already Read', icon: CheckCircle2 },
+    { value: 'all', label: 'All Texts', icon: BookOpen },
+    { value: 'newest', label: 'Recent', icon: Sparkles },
+    { value: 'oldest', label: 'Classic', icon: History },
+    { value: 'most_read', label: 'Popular', icon: TrendingUp },
+    { value: 'read', label: 'Studied', icon: CheckCircle2 },
   ]
 
   // Use ref for offset to avoid stale closure issues
@@ -232,34 +234,48 @@ export default function ArticlesPage() {
   }
 
   const getAuthorTheme = (archetype: string | null) => {
-    return GUARDIAN_ARCHETYPES[archetype || 'michael'] || GUARDIAN_ARCHETYPES.michael
+    return ARCHETYPE_TRAITS[archetype || 'uriel'] || ARCHETYPE_TRAITS.uriel
   }
 
   return (
     <div className="min-h-screen bg-[var(--background)]">
-      {/* Hero Header with Integrated Trending - Theme synced */}
-      <div className="bg-[var(--primary)] text-white">
-        <div className="container mx-auto px-4 py-8 sm:py-12">
+      {/* Hero Header - The Library */}
+      <div className="relative bg-[var(--primary)] text-white overflow-hidden">
+        {/* Decorative book spines pattern */}
+        <div className="absolute inset-0 opacity-5 pointer-events-none">
+          <div className="absolute top-0 left-[10%] w-px h-full bg-white" />
+          <div className="absolute top-0 left-[20%] w-px h-full bg-white" />
+          <div className="absolute top-0 left-[30%] w-px h-full bg-white" />
+          <div className="absolute top-0 left-[70%] w-px h-full bg-white" />
+          <div className="absolute top-0 left-[80%] w-px h-full bg-white" />
+          <div className="absolute top-0 left-[90%] w-px h-full bg-white" />
+        </div>
+
+        <div className="container mx-auto px-4 py-8 sm:py-12 relative">
           <div className="max-w-6xl mx-auto">
             {/* Title Section */}
             <div className="text-center mb-6 sm:mb-8">
-              <h1 className="text-3xl sm:text-5xl md:text-6xl font-black mb-2 sm:mb-3 tracking-tight">
-                FEATURED ARTICLES
+              <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-white/10 backdrop-blur-sm mb-4">
+                <ScrollText className="w-4 h-4" />
+                <span className="text-xs font-bold uppercase tracking-wider">The Library</span>
+              </div>
+              <h1 className="text-3xl sm:text-4xl md:text-5xl font-black mb-2 sm:mb-3 tracking-tight">
+                Knowledge Shared
               </h1>
-              <p className="text-base sm:text-xl font-medium opacity-80 px-4">
-                Case studies, insights, and knowledge from our community
+              <p className="text-sm sm:text-base font-medium opacity-80 px-4 max-w-lg mx-auto italic">
+                "Wisdom is not consumed - it is received."
               </p>
 
               {/* Stats Pills in Hero */}
-              <div className="flex items-center justify-center gap-3 mt-3 sm:mt-4">
+              <div className="flex items-center justify-center gap-3 mt-4">
                 <div className="px-3 py-1.5 bg-black/20 backdrop-blur-sm rounded-full border border-white/20">
                   <span className="text-xs font-bold opacity-90">
-                    {totalArticles > 0 ? totalArticles : articles.length + (featuredArticle ? 1 : 0)} Articles
+                    {totalArticles > 0 ? totalArticles : articles.length + (featuredArticle ? 1 : 0)} texts
                   </span>
                 </div>
                 <div className="px-3 py-1.5 bg-black/20 backdrop-blur-sm rounded-full border border-white/20">
                   <span className="text-xs font-bold opacity-90">
-                    {totalViews.toLocaleString()} Views
+                    {totalViews.toLocaleString()} readers
                   </span>
                 </div>
               </div>
@@ -272,8 +288,8 @@ export default function ArticlesPage() {
                   type="text"
                   value={searchQuery}
                   onChange={(e) => setSearchQuery(e.target.value)}
-                  placeholder="Search articles..."
-                  className="w-full px-4 sm:px-5 py-2.5 sm:py-3 rounded-xl bg-black/20 backdrop-blur-sm border-2 border-white/20 text-white placeholder-white/50 font-medium focus:outline-none focus:border-white/40 transition-colors text-sm sm:text-base"
+                  placeholder="Search the library..."
+                  className="w-full px-4 sm:px-5 py-2.5 sm:py-3 rounded-xl bg-black/20 backdrop-blur-sm border border-white/20 text-white placeholder-white/50 font-medium focus:outline-none focus:border-white/40 transition-colors text-sm sm:text-base"
                 />
                 <button
                   type="submit"
@@ -284,20 +300,20 @@ export default function ArticlesPage() {
               </form>
               {session && (
                 <Link href="/articles/write" className="hidden sm:block">
-                  <Button className="bg-white text-[var(--primary)] hover:bg-white/90 font-black px-5 py-2.5 rounded-xl shadow-lg whitespace-nowrap">
+                  <Button className="bg-white text-[var(--primary)] hover:bg-white/90 font-bold px-5 py-2.5 rounded-xl shadow-lg whitespace-nowrap">
                     <PenSquare className="w-4 h-4 mr-2" />
-                    WRITE
+                    Write
                   </Button>
                 </Link>
               )}
             </div>
 
-            {/* Trending Cards - Integrated in Hero */}
+            {/* Most Sought Texts - Integrated in Hero */}
             {trendingArticles.length > 0 && !searchQuery && activeSort === 'all' && (
               <div className="px-4 sm:px-0">
                 <div className="flex items-center justify-center gap-2 mb-4">
-                  <TrendingUp className="w-4 h-4 sm:w-5 sm:h-5 opacity-80" />
-                  <span className="text-sm sm:text-base font-bold opacity-80">TRENDING NOW</span>
+                  <Flame className="w-4 h-4 sm:w-5 sm:h-5 opacity-80" />
+                  <span className="text-sm sm:text-base font-bold opacity-80">Most Sought</span>
                 </div>
                 <div className="grid grid-cols-1 md:grid-cols-3 gap-3 sm:gap-4">
                   {trendingArticles.slice(0, 3).map((article, index) => {
@@ -351,7 +367,7 @@ export default function ArticlesPage() {
       </div>
 
       {/* Filter Bar */}
-      <div className="sticky top-16 sm:top-20 z-40 bg-[var(--card)] border-b-2 border-[var(--border)] shadow-sm">
+      <div className="sticky top-16 sm:top-20 z-40 bg-[var(--card)] border-b border-[var(--border)]">
         <div className="container mx-auto px-4">
           <div className="flex items-center py-3 sm:py-4 gap-2">
             {/* Sort Options - Horizontal scroll on mobile */}
@@ -364,12 +380,12 @@ export default function ArticlesPage() {
                     key={option.value}
                     onClick={() => setActiveSort(option.value)}
                     disabled={option.value === 'read' && !session}
-                    className={`flex items-center gap-1.5 sm:gap-2 px-3 sm:px-4 py-1.5 sm:py-2 rounded-lg sm:rounded-xl font-bold text-xs sm:text-sm whitespace-nowrap transition-all flex-shrink-0 ${
+                    className={`flex items-center gap-1.5 sm:gap-2 px-3 sm:px-4 py-1.5 sm:py-2 rounded-full font-bold text-xs sm:text-sm whitespace-nowrap transition-all flex-shrink-0 ${
                       isActive
-                        ? 'bg-[var(--primary)] text-white shadow-lg'
-                        : 'bg-[var(--muted)] text-[var(--foreground)] hover:bg-[var(--primary)]/20'
+                        ? 'bg-[var(--primary)] text-white'
+                        : 'bg-[var(--muted)] text-[var(--foreground)] hover:bg-[var(--primary)]/10'
                     } ${option.value === 'read' && !session ? 'opacity-50 cursor-not-allowed' : ''}`}
-                    title={option.value === 'read' && !session ? 'Sign in to see read articles' : ''}
+                    title={option.value === 'read' && !session ? 'Sign in to see studied texts' : ''}
                   >
                     <Icon className="w-3.5 h-3.5 sm:w-4 sm:h-4" />
                     <span className="hidden xs:inline">{option.label}</span>
@@ -406,20 +422,22 @@ export default function ArticlesPage() {
           </div>
         ) : articles.length === 0 && !featuredArticle ? (
           <div className="text-center py-16 sm:py-20 px-4">
-            <BookOpen className="w-16 h-16 sm:w-20 sm:h-20 text-theme-muted mx-auto mb-3 sm:mb-4 opacity-50" />
-            <h2 className="text-xl sm:text-2xl font-black text-[var(--foreground)] mb-2">No Articles Yet</h2>
+            <div className="w-16 h-16 sm:w-20 sm:h-20 mx-auto mb-4 rounded-full border-4 border-[var(--muted)] flex items-center justify-center">
+              <ScrollText className="w-8 h-8 sm:w-10 sm:h-10 text-theme-muted opacity-50" />
+            </div>
+            <h2 className="text-xl sm:text-2xl font-black text-[var(--foreground)] mb-2">No Texts Found</h2>
             <p className="text-sm sm:text-base text-theme-muted font-medium mb-6">
               {searchQuery
-                ? `No articles found for "${searchQuery}"`
+                ? `No texts match "${searchQuery}"`
                 : activeSort === 'read'
-                ? "You haven't read any articles yet"
-                : 'Be the first to share your knowledge!'}
+                ? "You haven't studied any texts yet"
+                : 'Be the first to share your wisdom'}
             </p>
             {session && (
               <Link href="/articles/write">
-                <Button className="font-black text-sm sm:text-base">
+                <Button className="font-bold text-sm sm:text-base">
                   <PenSquare className="w-4 h-4 mr-2" />
-                  Write the First Article
+                  Write the First Text
                 </Button>
               </Link>
             )}
@@ -460,7 +478,7 @@ export default function ArticlesPage() {
                         {featuredArticle.hasRead && (
                           <span className="flex items-center gap-1 text-emerald-500 text-[10px] sm:text-xs font-bold">
                             <CheckCircle2 className="w-3 h-3" />
-                            Read
+                            Studied
                           </span>
                         )}
                       </div>
@@ -507,7 +525,7 @@ export default function ArticlesPage() {
                       </div>
 
                       <div className="mt-4 sm:mt-6 flex items-center text-theme-primary font-bold group-hover:gap-3 gap-2 transition-all text-sm sm:text-base">
-                        Read Article
+                        Begin Reading
                         <ArrowRight className="w-4 h-4" />
                       </div>
                     </CardContent>
@@ -536,7 +554,7 @@ export default function ArticlesPage() {
                             <div className="absolute top-2 right-2 sm:top-3 sm:right-3">
                               <span className="flex items-center gap-1 px-1.5 sm:px-2 py-0.5 sm:py-1 bg-emerald-500 text-white text-[10px] sm:text-xs font-bold rounded-full">
                                 <CheckCircle2 className="w-2.5 h-2.5 sm:w-3 sm:h-3" />
-                                Read
+                                Studied
                               </span>
                             </div>
                           )}
@@ -552,7 +570,7 @@ export default function ArticlesPage() {
                           {!article.coverImage && article.hasRead && (
                             <span className="flex items-center gap-1 text-emerald-500 text-[10px] sm:text-xs font-bold">
                               <CheckCircle2 className="w-2.5 h-2.5 sm:w-3 sm:h-3" />
-                              Read
+                              Studied
                             </span>
                           )}
                         </div>
