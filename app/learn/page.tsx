@@ -180,6 +180,96 @@ export default function LearnPage() {
         </div>
       </section>
 
+      {/* Our Philosophy - Learning is a Relationship */}
+      <section className="py-20 bg-gradient-to-b from-[var(--background)] to-[var(--muted)]">
+        <div className="container mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="max-w-4xl mx-auto">
+            {/* Sacred divider */}
+            <div className="flex items-center justify-center gap-4 mb-8">
+              <div className="flex-1 h-px bg-gradient-to-r from-transparent via-[var(--primary)] to-transparent" />
+              <span className="text-2xl text-[var(--primary)]">☥</span>
+              <div className="flex-1 h-px bg-gradient-to-l from-transparent via-[var(--primary)] to-transparent" />
+            </div>
+
+            {/* Mission Title */}
+            <h2 className="text-3xl sm:text-4xl font-black text-center mb-8 text-[var(--foreground)]">
+              OUR PHILOSOPHY
+            </h2>
+
+            {/* The Sacred Covenant */}
+            <div className="relative">
+              {/* Decorative corners */}
+              <div className="absolute top-0 left-0 w-8 h-8 border-t-2 border-l-2 border-[var(--primary)]/30" />
+              <div className="absolute top-0 right-0 w-8 h-8 border-t-2 border-r-2 border-[var(--primary)]/30" />
+              <div className="absolute bottom-0 left-0 w-8 h-8 border-b-2 border-l-2 border-[var(--primary)]/30" />
+              <div className="absolute bottom-0 right-0 w-8 h-8 border-b-2 border-r-2 border-[var(--primary)]/30" />
+
+              <div className="px-8 py-12 text-center space-y-6">
+                {/* The Core Message */}
+                <p className="text-xl sm:text-2xl font-serif italic text-[var(--foreground)] leading-relaxed">
+                  "Learning is a relationship. A teacher provides information and a student brings the will to learn."
+                </p>
+
+                {/* Expanded Philosophy */}
+                <p className="text-lg text-[var(--muted-foreground)] leading-relaxed max-w-2xl mx-auto">
+                  We at Project Exodus believe that <span className="font-bold text-[var(--foreground)]">knowledge belongs to everyone</span>.
+                  No certificates. No paywalls. No gatekeepers standing between you and understanding.
+                </p>
+
+                <p className="text-lg text-[var(--muted-foreground)] leading-relaxed max-w-2xl mx-auto">
+                  The traditional systems demand credentials before they trust you to learn.
+                  We believe the opposite: <span className="font-bold text-[var(--foreground)]">your will to learn is the only credential you need</span>.
+                </p>
+
+                {/* The Covenant */}
+                <div className="pt-6 space-y-4">
+                  <h3 className="text-lg font-black text-[var(--primary)] uppercase tracking-wider">
+                    Our Covenant
+                  </h3>
+
+                  <div className="grid sm:grid-cols-2 gap-4 max-w-2xl mx-auto text-left">
+                    <div className="p-4 bg-[var(--card)] rounded-xl border border-[var(--border)]">
+                      <p className="font-bold text-[var(--foreground)] mb-1">We Provide:</p>
+                      <ul className="text-sm text-[var(--muted-foreground)] space-y-1">
+                        <li>• The knowledge, sourced and cited</li>
+                        <li>• The structure, thoughtfully designed</li>
+                        <li>• The tools, freely accessible</li>
+                      </ul>
+                    </div>
+
+                    <div className="p-4 bg-[var(--card)] rounded-xl border border-[var(--border)]">
+                      <p className="font-bold text-[var(--foreground)] mb-1">You Bring:</p>
+                      <ul className="text-sm text-[var(--muted-foreground)] space-y-1">
+                        <li>• The will to learn</li>
+                        <li>• The curiosity to question</li>
+                        <li>• The courage to act</li>
+                      </ul>
+                    </div>
+                  </div>
+                </div>
+
+                {/* Final Statement */}
+                <p className="text-base text-[var(--muted-foreground)] italic pt-4">
+                  This is not a platform. It is a partnership.
+                </p>
+
+                {/* Attribution */}
+                <p className="text-xs text-[var(--muted-foreground)]/60 tracking-widest uppercase pt-4">
+                  — The Project Exodus Vision
+                </p>
+              </div>
+            </div>
+
+            {/* Sacred divider */}
+            <div className="flex items-center justify-center gap-4 mt-8">
+              <div className="flex-1 h-px bg-gradient-to-r from-transparent via-[var(--primary)] to-transparent" />
+              <span className="text-2xl text-[var(--primary)]">✦</span>
+              <div className="flex-1 h-px bg-gradient-to-l from-transparent via-[var(--primary)] to-transparent" />
+            </div>
+          </div>
+        </div>
+      </section>
+
       {/* The Planet in Numbers - Compact Stats */}
       <section className="min-h-screen flex items-center justify-center bg-[var(--background)] py-8 sm:py-12">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
