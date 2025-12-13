@@ -2,6 +2,29 @@ import { NextRequest, NextResponse } from 'next/server'
 import { prisma } from '@/lib/db'
 import { auth } from '@/auth'
 
+type AchievementItem = {
+  id: string
+  name: string
+  description: string
+  icon: string | null
+  category: string
+  rarity: string
+  points: number
+  secret: boolean
+  requirement: number
+  createdAt: Date
+}
+
+type UserAchievementItem = {
+  id: string
+  achievementId: string
+  userId: string
+  progress: number
+  completed: boolean
+  completedAt: Date | null
+  notified: boolean
+}
+
 // GET /api/gamification/achievements - Get all achievements and user progress
 export async function GET(request: NextRequest) {
   try {
@@ -41,12 +64,12 @@ export async function GET(request: NextRequest) {
     }
 
     // Map user progress to achievements
-    const userProgressMap = new Map(
-      userAchievements.map(ua => [ua.achievementId, ua])
+    const userProgressMap = new Map<string, UserAchievementItem>(
+      userAchievements.map((ua: UserAchievementItem) => [ua.achievementId, ua])
     )
 
     const achievementsWithProgress = achievements
-      .filter(achievement => {
+      .filter((achievement: AchievementItem) => {
         // Filter out secret achievements the user hasn't unlocked
         if (achievement.secret) {
           const progress = userProgressMap.get(achievement.id)
@@ -54,7 +77,7 @@ export async function GET(request: NextRequest) {
         }
         return true
       })
-      .map(achievement => {
+      .map((achievement: AchievementItem) => {
         const userProgress = userProgressMap.get(achievement.id)
         return {
           ...achievement,
@@ -81,12 +104,12 @@ export async function GET(request: NextRequest) {
     }, {} as Record<string, typeof finalAchievements>)
 
     // Calculate stats
-    const totalAchievements = achievements.filter(a => !a.secret).length
-    const unlockedCount = userAchievements.filter(ua => ua.completed).length
+    const totalAchievements = achievements.filter((a: AchievementItem) => !a.secret).length
+    const unlockedCount = userAchievements.filter((ua: UserAchievementItem) => ua.completed).length
     const totalPoints = userAchievements
-      .filter(ua => ua.completed)
-      .reduce((sum, ua) => {
-        const achievement = achievements.find(a => a.id === ua.achievementId)
+      .filter((ua: UserAchievementItem) => ua.completed)
+      .reduce((sum: number, ua: UserAchievementItem) => {
+        const achievement = achievements.find((a: AchievementItem) => a.id === ua.achievementId)
         return sum + (achievement?.points || 0)
       }, 0)
 
