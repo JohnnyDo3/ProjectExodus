@@ -9,7 +9,7 @@
 import { useState, useEffect, useCallback, useMemo, ReactNode } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import { cn } from '@/lib/utils/cn'
-import { X, Volume2, VolumeX, Settings, ChevronLeft, ChevronRight } from 'lucide-react'
+import { X, Volume2, VolumeX, Maximize2, Minimize2, ChevronLeft, ChevronRight } from 'lucide-react'
 
 // Book components
 import BookContainer, { BookWrapper, PageContainer, BookSpine, PageEdges } from './BookContainer'
@@ -187,7 +187,19 @@ export function DigitalTextbook({
   const [selectedLevel, setSelectedLevel] = useState<LearningLevel>(initialLevel)
   const [showOpenAnimation, setShowOpenAnimation] = useState(true)
   const [isRapidFlipping, setIsRapidFlipping] = useState(false)
-  const [showSettings, setShowSettings] = useState(false)
+  const [isExpanded, setIsExpanded] = useState(false)
+
+  // Toggle body class to hide site header when expanded
+  useEffect(() => {
+    if (isExpanded) {
+      document.body.classList.add('textbook-fullscreen')
+    } else {
+      document.body.classList.remove('textbook-fullscreen')
+    }
+    return () => {
+      document.body.classList.remove('textbook-fullscreen')
+    }
+  }, [isExpanded])
 
   const bookState = useBookState()
   const playPageTurn = usePageTurnSound(bookState.preferences.soundEnabled)
@@ -964,6 +976,7 @@ export function DigitalTextbook({
       {!showOpenAnimation && (
         <BookContainer
           isOpen={bookState.isBookOpen}
+          isExpanded={isExpanded}
           onKeyDown={handleKeyDown}
           className={className}
         >
@@ -1076,13 +1089,17 @@ export function DigitalTextbook({
               )}
             </button>
 
-            {/* Settings Button */}
+            {/* Expand/Minimize Button */}
             <button
-              onClick={() => setShowSettings(!showSettings)}
+              onClick={() => setIsExpanded(!isExpanded)}
               className="p-2 rounded-full bg-[var(--card)]/90 text-[var(--foreground)] hover:bg-[var(--muted)] border border-[var(--border)] transition-all"
-              aria-label="Settings"
+              aria-label={isExpanded ? 'Exit fullscreen' : 'Enter fullscreen'}
             >
-              <Settings className="w-4 h-4 sm:w-5 sm:h-5" />
+              {isExpanded ? (
+                <Minimize2 className="w-4 h-4 sm:w-5 sm:h-5" />
+              ) : (
+                <Maximize2 className="w-4 h-4 sm:w-5 sm:h-5" />
+              )}
             </button>
 
             {/* Close Button */}

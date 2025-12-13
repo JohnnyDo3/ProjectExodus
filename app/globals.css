@@ -1193,3 +1193,20 @@ main, section, article, aside, header, footer, nav, div {
   transform: translateY(-4px);
   box-shadow: 0 20px 40px -12px rgba(0, 0, 0, 0.2);
 }
+
+/* ============================================
+   TEXTBOOK FULLSCREEN MODE
+   Hides site header for immersive reading
+   ============================================ */
+body.textbook-fullscreen header {
+  display: none !important;
+}
+
+body.textbook-fullscreen {
+  overflow: hidden;
+}
+
+/* Ensure the textbook takes full viewport when expanded */
+body.textbook-fullscreen .fixed.inset-0.z-50 {
+  border-radius: 0;
+}

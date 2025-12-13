@@ -10,15 +10,29 @@ import { motion } from 'framer-motion'
 import { cn } from '@/lib/utils/cn'
 import { BOOK_DIMENSIONS, PERSPECTIVE_CONFIG, A11Y_CONFIG, getDeviceType } from './bookConstants'
 
+// Fullscreen dimensions when expanded
+const FULLSCREEN_DIMENSIONS = {
+  width: '100vw',
+  maxWidth: '100vw',
+  height: '100vh',
+  maxHeight: '100vh',
+  pageWidth: '50%',
+  spineWidth: '40px',
+  ribbonTop: '-60px',
+  ribbonWidth: '24px',
+  ribbonHeight: '80px',
+}
+
 interface BookContainerProps {
   children: ReactNode
   isOpen: boolean
+  isExpanded?: boolean
   className?: string
   onKeyDown?: (e: React.KeyboardEvent) => void
 }
 
 export const BookContainer = forwardRef<HTMLDivElement, BookContainerProps>(
-  function BookContainer({ children, isOpen, className, onKeyDown }, ref) {
+  function BookContainer({ children, isOpen, isExpanded = false, className, onKeyDown }, ref) {
     const containerRef = useRef<HTMLDivElement>(null)
     const [dimensions, setDimensions] = useState(BOOK_DIMENSIONS.desktop)
     const [deviceType, setDeviceType] = useState<'desktop' | 'tablet' | 'mobile'>('desktop')
@@ -31,13 +45,14 @@ export const BookContainer = forwardRef<HTMLDivElement, BookContainerProps>(
       function updateDimensions() {
         const type = getDeviceType()
         setDeviceType(type)
-        setDimensions(BOOK_DIMENSIONS[type])
+        // Use fullscreen dimensions when expanded, otherwise responsive
+        setDimensions(isExpanded ? FULLSCREEN_DIMENSIONS : BOOK_DIMENSIONS[type])
       }
 
       updateDimensions()
       window.addEventListener('resize', updateDimensions)
       return () => window.removeEventListener('resize', updateDimensions)
-    }, [])
+    }, [isExpanded])
 
     // ============================================
     // FOCUS MANAGEMENT
