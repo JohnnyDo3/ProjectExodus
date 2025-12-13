@@ -112,7 +112,7 @@ export default function TopicPage() {
                 <div className="flex items-center gap-4 text-sm text-theme-muted">
                   <span className="flex items-center gap-1">
                     <BookOpen className="w-4 h-4" />
-                    {totalModules} modules
+                    {totalModules} lessons
                   </span>
                   <span className="flex items-center gap-1">
                     <Clock className="w-4 h-4" />
@@ -206,128 +206,133 @@ export default function TopicPage() {
             />
           )}
 
-          {/* List View - Hierarchical: Classroom > Module > Lessons */}
+          {/* List View - Hierarchical: Learning Module > Lesson > Pages */}
           {viewMode === 'list' && (
           <div className="grid lg:grid-cols-3 gap-12">
-            {/* Main Content - Organized by Classroom */}
-            <div className="lg:col-span-2 space-y-10">
-              {/* Group modules by classroom */}
+            {/* Main Content - Organized by Learning Module (category) */}
+            <div className="lg:col-span-2 space-y-8 max-h-[70vh] overflow-y-auto pr-2">
+              {/* Group lessons by category into Learning Modules */}
               {(() => {
-                // Group modules by classroom
-                const modulesByClassroom: Record<string, typeof topic.modules> = {}
+                // Group modules (lessons) by category into Learning Modules
+                const learningModules: Record<string, typeof topic.modules> = {}
                 topic.modules.forEach(module => {
-                  const classroomId = module.classroom || 'fundamentals'
-                  if (!modulesByClassroom[classroomId]) {
-                    modulesByClassroom[classroomId] = []
+                  const learningModuleName = module.category || 'General'
+                  if (!learningModules[learningModuleName]) {
+                    learningModules[learningModuleName] = []
                   }
-                  modulesByClassroom[classroomId].push(module)
+                  learningModules[learningModuleName].push(module)
                 })
 
-                // Get ordered classrooms that have modules
-                const orderedClassrooms = DEFAULT_CLASSROOMS
-                  .filter(c => modulesByClassroom[c.id]?.length > 0)
-                  .sort((a, b) => a.order - b.order)
+                // Convert to sorted array
+                const sortedLearningModules = Object.entries(learningModules)
+                  .map(([name, lessons]) => ({ name, lessons }))
+                  .sort((a, b) => a.name.localeCompare(b.name))
 
-                return orderedClassrooms.map((classroom, classroomIdx) => {
-                  const classroomModules = modulesByClassroom[classroom.id] || []
-                  const classroomLessonCount = classroomModules.reduce((acc, m) => acc + m.lessons.length, 0)
+                return sortedLearningModules.map((learningModule, lmIdx) => {
+                  const totalPages = learningModule.lessons.reduce((acc, m) => acc + m.lessons.length, 0)
+                  const completedLessonsInModule = learningModule.lessons.filter(l => completedModules.includes(l.id)).length
+                  const moduleProgress = learningModule.lessons.length > 0
+                    ? Math.round((completedLessonsInModule / learningModule.lessons.length) * 100)
+                    : 0
+                  const isModuleComplete = moduleProgress === 100
 
                   return (
-                    <section key={classroom.id}>
-                      {/* Classroom Header */}
-                      <div className="mb-6">
-                        <div className="flex items-center gap-3 mb-2">
-                          <div className="w-10 h-10 rounded-lg bg-[color-mix(in_srgb,var(--primary)_15%,var(--background))] flex items-center justify-center">
-                            <span className="text-xl font-black text-theme-primary">{classroomIdx + 1}</span>
+                    <section key={learningModule.name} className={`p-4 rounded-xl border-2 ${isModuleComplete ? 'border-green-400 bg-green-50/50 dark:bg-green-950/20' : 'border-[var(--border)] bg-[var(--card)]'}`}>
+                      {/* Learning Module Header */}
+                      <div className="mb-4">
+                        <div className="flex items-center justify-between mb-2">
+                          <div className="flex items-center gap-3">
+                            <div className={`w-10 h-10 rounded-lg ${isModuleComplete ? 'bg-green-500' : 'bg-[var(--primary)]'} flex items-center justify-center`}>
+                              {isModuleComplete ? (
+                                <CheckCircle2 className="w-5 h-5 text-white" />
+                              ) : (
+                                <span className="text-lg font-black text-white">{lmIdx + 1}</span>
+                              )}
+                            </div>
+                            <div>
+                              <p className="text-xs font-bold uppercase tracking-wider text-theme-muted mb-0.5">
+                                Learning Module {lmIdx + 1}
+                              </p>
+                              <h2 className="text-xl font-black text-[var(--foreground)]">{learningModule.name}</h2>
+                            </div>
                           </div>
-                          <div>
-                            <h2 className="text-2xl font-black text-[var(--foreground)]">{classroom.name}</h2>
-                            <p className="text-sm text-theme-muted">{classroom.description}</p>
+                          <div className="text-right">
+                            <div className="flex items-center gap-2">
+                              <div className="w-20 h-2 bg-[var(--muted)] rounded-full overflow-hidden">
+                                <div
+                                  className={`h-full ${isModuleComplete ? 'bg-green-500' : 'bg-amber-500'} rounded-full`}
+                                  style={{ width: `${moduleProgress}%` }}
+                                />
+                              </div>
+                              <span className={`text-xs font-bold ${isModuleComplete ? 'text-green-600' : 'text-theme-muted'}`}>
+                                {moduleProgress}%
+                              </span>
+                            </div>
                           </div>
                         </div>
                         <div className="flex items-center gap-4 text-xs text-theme-muted ml-13">
-                          <span>{classroomModules.length} module{classroomModules.length !== 1 ? 's' : ''}</span>
-                          <span>{classroomLessonCount} lesson{classroomLessonCount !== 1 ? 's' : ''}</span>
+                          <span>{learningModule.lessons.length} lesson{learningModule.lessons.length !== 1 ? 's' : ''}</span>
+                          <span>{totalPages} page{totalPages !== 1 ? 's' : ''}</span>
                         </div>
                       </div>
 
-                      {/* Modules within this Classroom */}
-                      <div className="space-y-4 pl-4 border-l-2 border-[var(--border)]">
-                        {classroomModules.map((module, moduleIdx) => {
-                          const isCompleted = completedModules.includes(module.id)
-                          const isMasterclass = module.isMasterclass
-                          const moduleNumber = `${classroomIdx + 1}.${moduleIdx + 1}`
+                      {/* Lessons within this Learning Module */}
+                      <div className="space-y-3 pl-4 border-l-2 border-[var(--border)]">
+                        {learningModule.lessons.map((lesson, lessonIdx) => {
+                          const isLessonCompleted = completedModules.includes(lesson.id)
+                          const isMasterclass = lesson.isMasterclass
+                          const lessonNumber = `${lmIdx + 1}.${lessonIdx + 1}`
 
                           return (
-                            <div key={module.id} className="space-y-2">
-                              {/* Module Header */}
-                              <Card className={`border-2 ${isCompleted ? 'border-green-500 bg-green-50 dark:bg-green-950/20' : 'border-[var(--border)]'} ${isMasterclass ? 'ring-2 ring-yellow-400' : ''}`}>
-                                <CardContent className="p-4">
-                                  <div className="flex items-start gap-3">
-                                    <div className={`w-10 h-10 rounded-lg ${isCompleted ? 'bg-green-500' : 'bg-[color-mix(in_srgb,var(--primary)_20%,var(--background))]'} flex items-center justify-center flex-shrink-0`}>
-                                      {isCompleted ? (
-                                        <CheckCircle2 className="w-5 h-5 text-white" />
-                                      ) : (
-                                        <span className="text-sm font-black text-theme-primary">{moduleNumber}</span>
-                                      )}
-                                    </div>
-                                    <div className="flex-1">
-                                      <div className="flex items-center gap-2 mb-1">
-                                        {isMasterclass && (
-                                          <span className="px-2 py-0.5 bg-yellow-400 text-yellow-900 text-xs font-black rounded">
-                                            MASTERCLASS
-                                          </span>
-                                        )}
-                                        <span className="px-2 py-0.5 bg-[color-mix(in_srgb,var(--primary)_20%,var(--background))] text-theme-primary text-xs font-bold rounded">
-                                          Module
-                                        </span>
-                                      </div>
-                                      <h3 className="text-lg font-black text-[var(--foreground)]">
-                                        {module.title}
-                                      </h3>
-                                      <p className="text-theme-muted text-sm mb-2">
-                                        {module.description[selectedLevel]}
-                                      </p>
-                                      <div className="flex items-center gap-4 text-sm text-theme-muted">
-                                        <span className="flex items-center gap-1">
-                                          <Clock className="w-4 h-4" />
-                                          {module.duration[selectedLevel]} min
-                                        </span>
-                                        <span className="flex items-center gap-1">
-                                          <BookOpen className="w-4 h-4" />
-                                          {module.lessons.length} lesson{module.lessons.length !== 1 ? 's' : ''}
-                                        </span>
-                                      </div>
-                                    </div>
-                                  </div>
-                                </CardContent>
-                              </Card>
-
-                              {/* Lessons within Module */}
-                              <div className="pl-6 space-y-1">
-                                {module.lessons.map((lesson, lessonIdx) => (
-                                  <Link
-                                    key={lesson.id}
-                                    href={`/learn/modules/${module.slug}?level=${selectedLevel.toLowerCase()}&topic=${topic.id}&lesson=${lessonIdx}`}
-                                    className="flex items-center gap-3 p-3 rounded-lg bg-[var(--muted)]/50 hover:bg-[color-mix(in_srgb,var(--primary)_10%,var(--background))] transition-colors group"
-                                  >
-                                    <span className="w-6 h-6 rounded-full bg-[var(--border)] text-[var(--foreground)] text-xs flex items-center justify-center font-bold">
-                                      {lessonIdx + 1}
-                                    </span>
-                                    <div className="flex-1">
-                                      <span className="text-sm font-medium text-[var(--foreground)] group-hover:text-theme-primary">
-                                        {lesson.title}
+                            <Link
+                              key={lesson.id}
+                              href={`/learn/modules/${lesson.slug}?level=${selectedLevel.toLowerCase()}&topic=${topic.id}`}
+                              className={`block p-3 rounded-lg border ${isLessonCompleted ? 'border-green-400 bg-green-50 dark:bg-green-950/30' : 'border-[var(--border)] bg-[var(--background)]'} hover:shadow-md transition-all group`}
+                            >
+                              <div className="flex items-start gap-3">
+                                <div className={`w-8 h-8 rounded-full ${isLessonCompleted ? 'bg-green-500' : 'bg-[var(--primary)]'} flex items-center justify-center flex-shrink-0`}>
+                                  {isLessonCompleted ? (
+                                    <CheckCircle2 className="w-4 h-4 text-white" />
+                                  ) : (
+                                    <span className="text-xs font-black text-white">{lessonNumber}</span>
+                                  )}
+                                </div>
+                                <div className="flex-1 min-w-0">
+                                  <div className="flex items-center gap-2 mb-1 flex-wrap">
+                                    {isMasterclass && (
+                                      <span className="px-2 py-0.5 bg-yellow-400 text-yellow-900 text-[10px] font-black rounded">
+                                        MASTERCLASS
                                       </span>
-                                      <div className="flex items-center gap-2 text-xs text-theme-muted">
-                                        <Clock className="w-3 h-3" />
-                                        <span>{lesson.duration} min</span>
-                                      </div>
-                                    </div>
-                                    <ChevronRight className="w-4 h-4 text-theme-primary opacity-0 group-hover:opacity-100 transition-opacity" />
-                                  </Link>
-                                ))}
+                                    )}
+                                    <span className="px-2 py-0.5 bg-[var(--muted)] text-theme-muted text-[10px] font-bold rounded">
+                                      LESSON
+                                    </span>
+                                    {isLessonCompleted && (
+                                      <span className="px-2 py-0.5 bg-green-100 text-green-700 text-[10px] font-bold rounded">
+                                        COMPLETE
+                                      </span>
+                                    )}
+                                  </div>
+                                  <h3 className="text-base font-black text-[var(--foreground)] group-hover:text-theme-primary">
+                                    {lesson.title}
+                                  </h3>
+                                  <p className="text-theme-muted text-xs line-clamp-2 mb-2">
+                                    {lesson.description[selectedLevel]}
+                                  </p>
+                                  <div className="flex items-center gap-3 text-xs text-theme-muted">
+                                    <span className="flex items-center gap-1">
+                                      <Clock className="w-3 h-3" />
+                                      {lesson.duration[selectedLevel]} min
+                                    </span>
+                                    <span className="flex items-center gap-1">
+                                      <BookOpen className="w-3 h-3" />
+                                      {lesson.lessons.length} page{lesson.lessons.length !== 1 ? 's' : ''}
+                                    </span>
+                                  </div>
+                                </div>
+                                <ChevronRight className="w-5 h-5 text-theme-primary opacity-0 group-hover:opacity-100 transition-opacity flex-shrink-0" />
                               </div>
-                            </div>
+                            </Link>
                           )
                         })}
                       </div>
@@ -343,18 +348,61 @@ export default function TopicPage() {
               <Card className="border-2 border-[var(--border)]">
                 <CardContent className="p-6">
                   <h3 className="text-lg font-black mb-3 text-[var(--foreground)]">Your Progress</h3>
-                  <div className="flex items-center gap-3 mb-3">
-                    <div className="flex-1 h-2 bg-[var(--muted)] rounded-full overflow-hidden">
+
+                  {/* Learning Modules Progress */}
+                  <div className="mb-4">
+                    <div className="flex items-center justify-between text-xs mb-1">
+                      <span className="text-theme-muted">Learning Modules</span>
+                      <span className="font-bold text-[var(--foreground)]">
+                        {(() => {
+                          const lms: Record<string, typeof topic.modules> = {}
+                          topic.modules.forEach(m => {
+                            const name = m.category || 'General'
+                            if (!lms[name]) lms[name] = []
+                            lms[name].push(m)
+                          })
+                          const completed = Object.values(lms).filter(lessons =>
+                            lessons.every(l => completedModules.includes(l.id))
+                          ).length
+                          return `${completed} / ${Object.keys(lms).length}`
+                        })()}
+                      </span>
+                    </div>
+                    <div className="h-2 bg-[var(--muted)] rounded-full overflow-hidden">
+                      <div
+                        className="h-full bg-green-500 rounded-full"
+                        style={{
+                          width: (() => {
+                            const lms: Record<string, typeof topic.modules> = {}
+                            topic.modules.forEach(m => {
+                              const name = m.category || 'General'
+                              if (!lms[name]) lms[name] = []
+                              lms[name].push(m)
+                            })
+                            const completed = Object.values(lms).filter(lessons =>
+                              lessons.every(l => completedModules.includes(l.id))
+                            ).length
+                            return `${Object.keys(lms).length > 0 ? (completed / Object.keys(lms).length) * 100 : 0}%`
+                          })()
+                        }}
+                      />
+                    </div>
+                  </div>
+
+                  {/* Lessons Progress */}
+                  <div className="mb-4">
+                    <div className="flex items-center justify-between text-xs mb-1">
+                      <span className="text-theme-muted">Total Lessons</span>
+                      <span className="font-bold text-[var(--foreground)]">{completedCount} / {totalModules}</span>
+                    </div>
+                    <div className="h-2 bg-[var(--muted)] rounded-full overflow-hidden">
                       <div
                         className="h-full bg-[var(--primary)] rounded-full"
                         style={{ width: `${progressPercent}%` }}
                       />
                     </div>
-                    <span className="text-sm font-bold text-theme-primary">{progressPercent}%</span>
                   </div>
-                  <p className="text-sm text-theme-muted mb-4">
-                    {completedCount} of {totalModules} modules completed
-                  </p>
+
                   {!isGraduated && topic.modules.length > 0 && (
                     <Link href={`/learn/modules/${topic.modules[completedCount]?.slug || topic.modules[0].slug}?level=${selectedLevel.toLowerCase()}&topic=${topic.id}`}>
                       <Button className="w-full font-bold" size="sm">
@@ -365,7 +413,7 @@ export default function TopicPage() {
                   )}
                   {isGraduated && (
                     <div className="text-center py-2 px-3 bg-green-500/10 rounded-lg text-green-600 font-bold text-sm">
-                      Topic Complete
+                      🎉 Topic Complete!
                     </div>
                   )}
                 </CardContent>
