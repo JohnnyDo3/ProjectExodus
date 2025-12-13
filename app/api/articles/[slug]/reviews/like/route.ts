@@ -147,7 +147,7 @@ export async function GET(
 
     // Combine data
     const result: Record<string, { likeCount: number; liked: boolean }> = {}
-    reviewIds.forEach(id => {
+    reviewIds.forEach((id: string) => {
       result[id] = {
         likeCount: countsMap[id] || 0,
         liked: userLikesMap[id] || false

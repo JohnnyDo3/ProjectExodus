@@ -170,7 +170,7 @@ export async function GET(request: NextRequest) {
           slug: m.slug,
           discussionCount: m._count.moduleDiscussions
         })),
-        levels: Object.keys(LEARNING_LEVELS).map(level => ({
+        levels: Object.keys(LEARNING_LEVELS).map((level: string) => ({
           level,
           meta: LEARNING_LEVELS[level as LearningLevel],
           count: levelCounts.find((lc: LevelCountResult) => lc.level === level)?._count || 0

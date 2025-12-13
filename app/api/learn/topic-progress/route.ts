@@ -3,6 +3,10 @@ import { auth } from '@/auth'
 import { prisma } from '@/lib/db/prisma'
 import { TOPICS, CoreTopic } from '@/data/modules'
 
+// Type for topic structure
+type TopicModule = { slug: string }
+type Topic = { id: CoreTopic; modules: TopicModule[] }
+
 export interface TopicProgress {
   topicId: CoreTopic
   totalModules: number
@@ -17,7 +21,7 @@ export async function GET() {
 
     // If not logged in, return empty progress
     if (!session?.user?.id) {
-      const emptyProgress: TopicProgress[] = TOPICS.map(topic => ({
+      const emptyProgress: TopicProgress[] = TOPICS.map((topic: Topic) => ({
         topicId: topic.id,
         totalModules: topic.modules.length,
         completedModules: 0,
@@ -58,8 +62,8 @@ export async function GET() {
     )
 
     // Calculate progress for each topic
-    const topicProgress: TopicProgress[] = TOPICS.map(topic => {
-      const completedInTopic = topic.modules.filter(m =>
+    const topicProgress: TopicProgress[] = TOPICS.map((topic: Topic) => {
+      const completedInTopic = topic.modules.filter((m: TopicModule) =>
         completedSlugs.has(m.slug)
       ).length
 

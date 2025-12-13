@@ -128,20 +128,20 @@ export async function GET(request: NextRequest) {
     }
 
     // Format user signups for chart
-    const userSignupsData = dates.map(date => ({
+    const userSignupsData = dates.map((date: string) => ({
       date,
       signups: usersByDay[date] || 0
     }))
 
     // Calculate cumulative users
     let cumulative = totalUsers - users.length
-    const cumulativeUsersData = userSignupsData.map(d => {
+    const cumulativeUsersData = userSignupsData.map((d: { date: string; signups: number }) => {
       cumulative += d.signups
       return { date: d.date, total: cumulative }
     })
 
     // Format content for chart
-    const contentData = dates.map(date => ({
+    const contentData = dates.map((date: string) => ({
       date,
       articles: contentByDay[date]?.articles || 0,
       products: contentByDay[date]?.products || 0,

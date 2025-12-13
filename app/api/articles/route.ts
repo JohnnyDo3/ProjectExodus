@@ -171,7 +171,7 @@ export async function GET(request: NextRequest) {
       readArticleIds = reads.map((r: { articleId: string }) => r.articleId)
     }
 
-    const articlesWithReadStatus = articles.map(article => ({
+    const articlesWithReadStatus = articles.map((article: ArticleQueryResult) => ({
       ...article,
       hasRead: readArticleIds.includes(article.id),
     }))

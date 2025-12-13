@@ -2,6 +2,43 @@ import { NextRequest, NextResponse } from 'next/server'
 import { prisma } from '@/lib/db'
 import { auth } from '@/auth'
 
+// Type definitions
+type ReadProgressItem = {
+  articleId: string
+  article: {
+    id: string
+    categoryId: string | null
+    authorId: string
+  }
+}
+
+type FollowingItem = {
+  followingId: string
+}
+
+type RecommendationItem = {
+  id: string
+  score: number
+  reason: string
+  seen: boolean
+  clicked: boolean
+  article: {
+    id: string
+    title: string
+    slug: string
+    excerpt: string | null
+    coverImage: string | null
+    author: {
+      id: string
+      name: string | null
+      image: string | null
+      guardianArchetype: string | null
+    }
+    category: { id: string; name: string; slug: string } | null
+    _count?: { comments: number; peerReviews: number }
+  }
+}
+
 // GET /api/recommendations - Get personalized article recommendations
 export async function GET(request: NextRequest) {
   try {
@@ -156,11 +193,11 @@ export async function POST(request: NextRequest) {
 }
 
 // Helper to format recommendations response
-function formatRecommendations(recommendations: any[]) {
+function formatRecommendations(recommendations: RecommendationItem[]) {
   return NextResponse.json({
     success: true,
     data: {
-      recommendations: recommendations.map(rec => ({
+      recommendations: recommendations.map((rec: RecommendationItem) => ({
         id: rec.id,
         score: rec.score,
         reason: rec.reason,
@@ -219,16 +256,16 @@ async function generateRecommendations(userId: string) {
     })
 
     // Get categories and authors the user has engaged with
-    const engagedCategories = [...new Set(readProgress.map(p => p.article.categoryId).filter(Boolean))]
-    const engagedAuthors = [...new Set(readProgress.map(p => p.article.authorId))]
-    const readArticleIds = readProgress.map(p => p.articleId)
+    const engagedCategories = [...new Set(readProgress.map((p: ReadProgressItem) => p.article.categoryId).filter(Boolean))]
+    const engagedAuthors = [...new Set(readProgress.map((p: ReadProgressItem) => p.article.authorId))]
+    const readArticleIds = readProgress.map((p: ReadProgressItem) => p.articleId)
 
     // Get users the current user follows
     const following = await prisma.connection.findMany({
       where: { followerId: userId },
       select: { followingId: true }
     })
-    const followedUserIds = following.map(f => f.followingId)
+    const followedUserIds = following.map((f: FollowingItem) => f.followingId)
 
     // Recommendations pool
     const recommendations: { articleId: string; score: number; reason: string }[] = []

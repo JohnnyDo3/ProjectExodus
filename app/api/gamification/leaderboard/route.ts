@@ -2,6 +2,44 @@ import { NextRequest, NextResponse } from 'next/server'
 import { prisma } from '@/lib/db'
 import { auth } from '@/auth'
 
+// Type definitions
+type LeaderboardEntry = {
+  id: string
+  userId: string
+  totalPoints: number
+  currentPoints: number
+  weeklyPoints: number
+  monthlyPoints: number
+  allTimePoints: number
+  level: number
+  levelProgress: number
+  createdAt: Date
+  updatedAt: Date
+  user: {
+    id: string
+    name: string | null
+    image: string | null
+    guardianArchetype: string | null
+  }
+}
+
+type StreakEntry = {
+  id: string
+  userId: string
+  currentStreak: number
+  longestStreak: number
+  lastReadDate: Date | null
+  totalDaysRead: number
+  createdAt: Date
+  updatedAt: Date
+  user: {
+    id: string
+    name: string | null
+    image: string | null
+    guardianArchetype: string | null
+  }
+}
+
 // GET /api/gamification/leaderboard - Get points leaderboard
 export async function GET(request: NextRequest) {
   try {
@@ -40,7 +78,7 @@ export async function GET(request: NextRequest) {
     })
 
     // Format leaderboard entries
-    const leaderboard = topUsers.map((entry, index) => ({
+    const leaderboard = topUsers.map((entry: LeaderboardEntry, index: number) => ({
       rank: index + 1,
       userId: entry.user.id,
       name: entry.user.name,
@@ -152,7 +190,7 @@ export async function POST(request: NextRequest) {
     })
 
     // Format leaderboard
-    const leaderboard = topStreaks.map((entry, index) => ({
+    const leaderboard = topStreaks.map((entry: StreakEntry, index: number) => ({
       rank: index + 1,
       userId: entry.user.id,
       name: entry.user.name,

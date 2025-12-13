@@ -66,7 +66,8 @@ export async function GET(request: NextRequest) {
       _sum: { amount: true }
     })
 
-    const breakdown = pointsByReason.reduce((acc, item) => {
+    type PointsByReasonGroup = { reason: string; _sum: { amount: number | null } }
+    const breakdown = pointsByReason.reduce((acc: Record<string, number>, item: PointsByReasonGroup) => {
       acc[item.reason] = item._sum.amount || 0
       return acc
     }, {} as Record<string, number>)

@@ -122,7 +122,8 @@ export async function GET() {
     ])
 
     // Transform user signups for chart
-    const signupsData = (userSignups as any[]).map(row => ({
+    type SignupRow = { date: string; count: number | string }
+    const signupsData = (userSignups as SignupRow[]).map((row: SignupRow) => ({
       date: row.date,
       count: Number(row.count)
     }))

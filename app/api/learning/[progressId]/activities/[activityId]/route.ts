@@ -132,9 +132,9 @@ export async function POST(
       where: { progressId }
     })
 
-    const requiredActivities = activities.filter(a => a.required)
+    const requiredActivities = activities.filter((a: ActivityConfig) => a.required)
     const completedRequired = allActivityProgress.filter((ap: ActivityProgressRecord) =>
-      requiredActivities.some(ra => ra.id === ap.activityId && ap.completed)
+      requiredActivities.some((ra: ActivityConfig) => ra.id === ap.activityId && ap.completed)
     ).length
 
     const progressPercentage = requiredActivities.length > 0

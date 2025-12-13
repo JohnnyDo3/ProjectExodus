@@ -206,7 +206,7 @@ export async function POST(
         percentage,
         stars,
         passed,
-        correctAnswers: updatedAnswers.filter(a => a.isCorrect).length,
+        correctAnswers: updatedAnswers.filter((a: GameRoundResult) => a.isCorrect).length,
         totalRounds: updatedAnswers.length,
         longestStreak: newMaxStreak,
         totalTimeTaken: Math.floor((Date.now() - gameSession.startedAt.getTime()) / 1000),

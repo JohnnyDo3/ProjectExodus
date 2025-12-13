@@ -70,7 +70,7 @@ export async function GET(
         moduleTitle: article.title,
         moduleSlug: article.slug,
         availableLevels,
-        allLevels: LEARNING_LEVEL_ORDER.map(level => ({
+        allLevels: LEARNING_LEVEL_ORDER.map((level: LearningLevel) => ({
           level,
           meta: LEARNING_LEVELS[level],
           isAvailable: availableLevels.some((al: { level: LearningLevel }) => al.level === level)
