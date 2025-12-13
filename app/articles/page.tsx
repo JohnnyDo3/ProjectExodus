@@ -237,28 +237,28 @@ export default function ArticlesPage() {
 
   return (
     <div className="min-h-screen bg-[var(--background)]">
-      {/* Hero Header with Integrated Trending - Natural earthy tones */}
-      <div className="bg-gradient-to-br from-[#4a5d3a] via-[#5d6b4d] to-[#6b7a5a] text-[#f5f1e8]">
+      {/* Hero Header with Integrated Trending - Theme synced */}
+      <div className="bg-[var(--primary)] text-white">
         <div className="container mx-auto px-4 py-8 sm:py-12">
           <div className="max-w-6xl mx-auto">
             {/* Title Section */}
             <div className="text-center mb-6 sm:mb-8">
-              <h1 className="text-3xl sm:text-5xl md:text-6xl font-black mb-2 sm:mb-3 tracking-tight text-[#f5f1e8]">
+              <h1 className="text-3xl sm:text-5xl md:text-6xl font-black mb-2 sm:mb-3 tracking-tight">
                 FEATURED ARTICLES
               </h1>
-              <p className="text-base sm:text-xl font-medium text-[#d4cbb8] px-4">
+              <p className="text-base sm:text-xl font-medium opacity-80 px-4">
                 Case studies, insights, and knowledge from our community
               </p>
 
               {/* Stats Pills in Hero */}
               <div className="flex items-center justify-center gap-3 mt-3 sm:mt-4">
-                <div className="px-3 py-1.5 bg-[#3d4a2d]/40 backdrop-blur-sm rounded-full border border-[#8a9a7a]/30">
-                  <span className="text-xs font-bold text-[#d4cbb8]">
+                <div className="px-3 py-1.5 bg-black/20 backdrop-blur-sm rounded-full border border-white/20">
+                  <span className="text-xs font-bold opacity-90">
                     {totalArticles > 0 ? totalArticles : articles.length + (featuredArticle ? 1 : 0)} Articles
                   </span>
                 </div>
-                <div className="px-3 py-1.5 bg-[#3d4a2d]/40 backdrop-blur-sm rounded-full border border-[#8a9a7a]/30">
-                  <span className="text-xs font-bold text-[#d4cbb8]">
+                <div className="px-3 py-1.5 bg-black/20 backdrop-blur-sm rounded-full border border-white/20">
+                  <span className="text-xs font-bold opacity-90">
                     {totalViews.toLocaleString()} Views
                   </span>
                 </div>
@@ -273,18 +273,18 @@ export default function ArticlesPage() {
                   value={searchQuery}
                   onChange={(e) => setSearchQuery(e.target.value)}
                   placeholder="Search articles..."
-                  className="w-full px-4 sm:px-5 py-2.5 sm:py-3 rounded-xl bg-[#3d4a2d]/40 backdrop-blur-sm border-2 border-[#8a9a7a]/30 text-[#f5f1e8] placeholder-[#a0a090] font-medium focus:outline-none focus:border-[#c5d4a8]/50 transition-colors text-sm sm:text-base"
+                  className="w-full px-4 sm:px-5 py-2.5 sm:py-3 rounded-xl bg-black/20 backdrop-blur-sm border-2 border-white/20 text-white placeholder-white/50 font-medium focus:outline-none focus:border-white/40 transition-colors text-sm sm:text-base"
                 />
                 <button
                   type="submit"
-                  className="absolute right-2 top-1/2 -translate-y-1/2 p-2 bg-[#3d4a2d]/50 hover:bg-[#3d4a2d]/70 rounded-lg transition-colors text-[#d4cbb8]"
+                  className="absolute right-2 top-1/2 -translate-y-1/2 p-2 bg-black/30 hover:bg-black/50 rounded-lg transition-colors"
                 >
                   <Search className="w-4 h-4" />
                 </button>
               </form>
               {session && (
                 <Link href="/articles/write" className="hidden sm:block">
-                  <Button className="bg-[#f5f1e8] text-[#3d4a2d] hover:bg-[#e8e2d5] font-black px-5 py-2.5 rounded-xl shadow-lg whitespace-nowrap">
+                  <Button className="bg-white text-[var(--primary)] hover:bg-white/90 font-black px-5 py-2.5 rounded-xl shadow-lg whitespace-nowrap">
                     <PenSquare className="w-4 h-4 mr-2" />
                     WRITE
                   </Button>
@@ -296,37 +296,37 @@ export default function ArticlesPage() {
             {trendingArticles.length > 0 && !searchQuery && activeSort === 'all' && (
               <div className="px-4 sm:px-0">
                 <div className="flex items-center justify-center gap-2 mb-4">
-                  <TrendingUp className="w-4 h-4 sm:w-5 sm:h-5 text-[#c5d4a8]" />
-                  <span className="text-sm sm:text-base font-bold text-[#d4cbb8]">TRENDING NOW</span>
+                  <TrendingUp className="w-4 h-4 sm:w-5 sm:h-5 opacity-80" />
+                  <span className="text-sm sm:text-base font-bold opacity-80">TRENDING NOW</span>
                 </div>
                 <div className="grid grid-cols-1 md:grid-cols-3 gap-3 sm:gap-4">
                   {trendingArticles.slice(0, 3).map((article, index) => {
                     const authorTheme = getAuthorTheme(article.author.guardianArchetype)
-                    const rankColors = ['from-[#c4a574] to-[#a08050]', 'from-[#9a9a8a] to-[#7a7a6a]', 'from-[#8a7050] to-[#6a5030]']
+                    const rankColors = ['from-yellow-500 to-amber-600', 'from-gray-400 to-gray-500', 'from-orange-600 to-amber-700']
                     const rankLabels = ['#1', '#2', '#3']
 
                     return (
                       <Link key={article.id} href={`/articles/${article.slug}`}>
-                        <div className="bg-[#3d4a2d]/40 backdrop-blur-sm border border-[#8a9a7a]/30 rounded-xl p-3 hover:bg-[#3d4a2d]/60 transition-all group cursor-pointer">
+                        <div className="bg-black/20 backdrop-blur-sm border border-white/20 rounded-xl p-3 hover:bg-black/30 transition-all group cursor-pointer">
                           <div className="flex items-start gap-3">
                             {/* Rank Badge */}
                             <div className={`shrink-0 w-8 h-8 bg-gradient-to-br ${rankColors[index]} rounded-lg flex items-center justify-center shadow-lg`}>
-                              <span className="text-[#f5f1e8] font-black text-sm">{rankLabels[index]}</span>
+                              <span className="text-white font-black text-sm">{rankLabels[index]}</span>
                             </div>
 
                             <div className="flex-1 min-w-0">
                               {/* Category */}
-                              <span className="px-1.5 py-0.5 bg-[#5d6b4d]/60 text-[#d4cbb8] font-bold text-[10px] rounded">
+                              <span className="px-1.5 py-0.5 bg-white/20 font-bold text-[10px] rounded">
                                 {article.category.name}
                               </span>
 
                               {/* Title */}
-                              <h3 className="text-sm font-bold text-[#f5f1e8] mt-1 line-clamp-2 group-hover:underline">
+                              <h3 className="text-sm font-bold mt-1 line-clamp-2 group-hover:underline">
                                 {article.title}
                               </h3>
 
                               {/* Stats */}
-                              <div className="flex items-center gap-3 mt-1.5 text-[10px] text-[#a0a090]">
+                              <div className="flex items-center gap-3 mt-1.5 text-[10px] opacity-70">
                                 <span className="flex items-center gap-1">
                                   <Eye className="w-3 h-3" />
                                   {article.views}
