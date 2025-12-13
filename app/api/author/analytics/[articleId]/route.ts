@@ -8,6 +8,15 @@ type Params = {
   }>
 }
 
+type ReadingProgressItem = {
+  scrollProgress: number
+  timeSpent: number
+  completed: boolean
+  completedAt: Date | null
+  createdAt: Date
+  updatedAt: Date
+}
+
 // GET /api/author/analytics/[articleId] - Get detailed analytics for a single article
 export async function GET(
   request: NextRequest,
@@ -71,11 +80,11 @@ export async function GET(
     })
 
     const totalReaders = readingProgress.length
-    const completedReads = readingProgress.filter(p => p.completed).length
+    const completedReads = readingProgress.filter((p: ReadingProgressItem) => p.completed).length
     const avgScrollProgress = totalReaders > 0
-      ? readingProgress.reduce((sum, p) => sum + p.scrollProgress, 0) / totalReaders
+      ? readingProgress.reduce((sum: number, p: ReadingProgressItem) => sum + p.scrollProgress, 0) / totalReaders
       : 0
-    const totalTimeSpent = readingProgress.reduce((sum, p) => sum + p.timeSpent, 0)
+    const totalTimeSpent = readingProgress.reduce((sum: number, p: ReadingProgressItem) => sum + p.timeSpent, 0)
     const avgTimeSpent = totalReaders > 0 ? Math.round(totalTimeSpent / totalReaders) : 0
 
     // Get peer reviews with ratings
@@ -127,7 +136,7 @@ export async function GET(
     const periodStart = new Date()
     periodStart.setDate(periodStart.getDate() - period)
 
-    const recentProgress = readingProgress.filter(p => p.updatedAt >= periodStart)
+    const recentProgress = readingProgress.filter((p: ReadingProgressItem) => p.updatedAt >= periodStart)
     const engagementByDate = new Map<string, { views: number; reads: number; timeSpent: number }>()
 
     recentProgress.forEach(progress => {
@@ -153,7 +162,7 @@ export async function GET(
       '90-100': 0
     }
 
-    readingProgress.forEach(p => {
+    readingProgress.forEach((p: ReadingProgressItem) => {
       const progress = p.scrollProgress
       if (progress <= 10) scrollBuckets['0-10']++
       else if (progress <= 25) scrollBuckets['10-25']++
