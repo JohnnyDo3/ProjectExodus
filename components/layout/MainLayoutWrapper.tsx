@@ -31,9 +31,28 @@ export function MainLayoutWrapper({
   // Full-screen pages that should not have footer and should not scroll
   const isFullScreenPage = pathname === '/messages' || pathname === '/notifications'
 
+  // Learning module pages - no footer, full viewport height, no scroll
+  const isLearningPage = pathname?.startsWith('/learn/modules/')
+
   if (isAdminRoute) {
     // Admin pages - completely clean, no theming decorations
     return <>{children}</>
+  }
+
+  // Learning pages get minimal UI - no footer, no scroll
+  if (isLearningPage) {
+    return (
+      <>
+        {skyBackground}
+        <div className="relative z-10 h-screen overflow-hidden flex flex-col">
+          <Header />
+          <div className="flex-1 overflow-hidden">
+            {children}
+          </div>
+        </div>
+        {aiAssistant}
+      </>
+    )
   }
 
   // Regular pages get all the bells and whistles

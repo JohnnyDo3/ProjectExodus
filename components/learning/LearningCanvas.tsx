@@ -17,6 +17,7 @@ import { detectPioneersInContent } from '@/data/sustainabilityPioneers'
 import { PioneerModal } from '@/components/learning/PioneerModal'
 import { FlashcardStudy, FlashcardDeck, generateFlashcardsFromContent } from '@/components/learning/Flashcards'
 import dynamic from 'next/dynamic'
+import { CharcoalFrame, CharcoalFilters, MountainLandscape, WaterLandscape, GardenLandscape, ANCIENT_COLORS } from './CharcoalIllustrations'
 
 // Dynamically import diagrams
 const WaterCycleDiagram = dynamic(() => import('@/components/learning/diagrams/WaterCycleDiagram').then(mod => ({ default: mod.WaterCycleDiagram })), { ssr: false })
@@ -350,29 +351,93 @@ function CanvasPageView({
       {/* Main page content */}
       <div className="flex-1 container mx-auto px-4 max-w-5xl flex flex-col justify-center">
 
-        {/* INTRO PAGE */}
+        {/* INTRO PAGE - Ancient carved aesthetic */}
         {page.type === 'intro' && (
-          <div className="text-center">
+          <div className="text-center relative">
+            <CharcoalFilters />
+
+            {/* Decorative top ornament */}
             <motion.div
-              initial={{ scale: 0 }}
-              animate={{ scale: 1 }}
+              initial={{ scale: 0, opacity: 0 }}
+              animate={{ scale: 1, opacity: 1 }}
               transition={{ type: 'spring', delay: 0.2 }}
-              className="mb-4"
+              className="mb-6"
             >
-              <Sparkles className="w-12 h-12 mx-auto text-[var(--primary)]" />
+              <svg className="w-24 h-24 mx-auto" viewBox="0 0 100 100">
+                {/* Lotus-inspired ornament */}
+                <circle cx="50" cy="50" r="35" fill="none" stroke={ANCIENT_COLORS.ochre} strokeWidth="1.5" opacity="0.4" />
+                <circle cx="50" cy="50" r="25" fill="none" stroke={ANCIENT_COLORS.terracotta} strokeWidth="1" opacity="0.3" />
+                <circle cx="50" cy="50" r="8" fill={ANCIENT_COLORS.ochre} opacity="0.5" />
+                {/* Rays */}
+                {[0, 45, 90, 135, 180, 225, 270, 315].map((angle, i) => (
+                  <line
+                    key={i}
+                    x1={50 + Math.cos(angle * Math.PI / 180) * 12}
+                    y1={50 + Math.sin(angle * Math.PI / 180) * 12}
+                    x2={50 + Math.cos(angle * Math.PI / 180) * 22}
+                    y2={50 + Math.sin(angle * Math.PI / 180) * 22}
+                    stroke={ANCIENT_COLORS.ochre}
+                    strokeWidth="1.5"
+                    opacity="0.5"
+                    strokeLinecap="round"
+                  />
+                ))}
+              </svg>
             </motion.div>
 
-            <h1 className={`${handwritten} text-4xl md:text-5xl text-gray-800 mb-4`}>
+            <h1
+              className={`${handwritten} text-4xl md:text-5xl mb-4 tracking-wide`}
+              style={{ color: ANCIENT_COLORS.charcoal }}
+            >
               {page.title}
             </h1>
+
+            {/* Decorative divider */}
+            <svg className="w-40 h-4 mx-auto mb-6 opacity-30" viewBox="0 0 160 16">
+              <path
+                d="M0,8 L60,8 M100,8 L160,8"
+                stroke={ANCIENT_COLORS.charcoal}
+                strokeWidth="1"
+              />
+              <circle cx="80" cy="8" r="4" fill="none" stroke={ANCIENT_COLORS.terracotta} strokeWidth="1" />
+            </svg>
 
             <motion.div
               initial={{ y: 20, opacity: 0 }}
               animate={{ y: 0, opacity: 1 }}
               transition={{ delay: 0.3 }}
-              className={`${color.bg} ${color.border} border-l-4 rounded-lg p-4 max-w-2xl mx-auto shadow-lg transform rotate-1`}
+              className="max-w-2xl mx-auto p-6 rounded-sm relative"
+              style={{
+                backgroundColor: `${ANCIENT_COLORS.papyrus}`,
+                boxShadow: `inset 0 0 30px ${ANCIENT_COLORS.sand}40`
+              }}
             >
-              <p className={`${handwritten} text-xl text-gray-700 leading-relaxed`}>
+              {/* Corner decorations */}
+              {['tl', 'tr', 'bl', 'br'].map((corner) => (
+                <svg
+                  key={corner}
+                  className={`absolute w-6 h-6 ${
+                    corner === 'tl' ? 'top-2 left-2' :
+                    corner === 'tr' ? 'top-2 right-2 -scale-x-100' :
+                    corner === 'bl' ? 'bottom-2 left-2 -scale-y-100' :
+                    'bottom-2 right-2 -scale-x-100 -scale-y-100'
+                  }`}
+                  viewBox="0 0 24 24"
+                >
+                  <path
+                    d="M4,4 L4,16 M4,4 L16,4"
+                    fill="none"
+                    stroke={ANCIENT_COLORS.sienna}
+                    strokeWidth="1"
+                    opacity="0.3"
+                  />
+                </svg>
+              ))}
+
+              <p
+                className={`${handwritten} text-xl leading-relaxed`}
+                style={{ color: ANCIENT_COLORS.charcoal }}
+              >
                 {page.mainContent}
               </p>
             </motion.div>
@@ -382,10 +447,17 @@ function CanvasPageView({
                 initial={{ y: 20, opacity: 0 }}
                 animate={{ y: 0, opacity: 1 }}
                 transition={{ delay: 0.5 }}
-                className="mt-4 inline-flex items-center gap-2 px-4 py-2 bg-amber-100 rounded-full"
+                className="mt-6 inline-flex items-center gap-3 px-5 py-3 rounded-sm border"
+                style={{
+                  backgroundColor: `${ANCIENT_COLORS.ochre}15`,
+                  borderColor: `${ANCIENT_COLORS.ochre}40`
+                }}
               >
-                <Lightbulb className="w-4 h-4 text-amber-600" />
-                <span className={`${handwritten} text-base text-amber-800`}>
+                <Lightbulb className="w-5 h-5" style={{ color: ANCIENT_COLORS.deepOchre }} />
+                <span
+                  className={`${handwritten} text-lg`}
+                  style={{ color: ANCIENT_COLORS.sienna }}
+                >
                   {page.keyTakeaway}
                 </span>
               </motion.div>
@@ -471,62 +543,135 @@ function CanvasPageView({
           </div>
         )}
 
-        {/* DIAGRAM PAGE */}
+        {/* DIAGRAM PAGE - Charcoal carved aesthetic */}
         {page.type === 'diagram' && DiagramComponent && (
-          <div>
-            <motion.h2
-              initial={{ y: -20, opacity: 0 }}
-              animate={{ y: 0, opacity: 1 }}
-              className={`${handwritten} text-3xl text-center text-gray-800 mb-2`}
-            >
-              {page.title}
-            </motion.h2>
+          <div className="relative">
+            <CharcoalFilters />
 
-            <motion.p
+            {/* Aged parchment background */}
+            <motion.div
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
-              transition={{ delay: 0.2 }}
-              className="text-center text-gray-600 mb-4 max-w-2xl mx-auto text-sm"
-            >
-              {page.mainContent}
-            </motion.p>
+              className="absolute inset-0 bg-gradient-to-br from-[#f8f4e9] via-[#f5f0e1] to-[#efe8d8] rounded-lg -z-10"
+            />
 
-            {/* Diagram with explanation */}
+            {/* Decorative header with hieroglyphic styling */}
+            <motion.div
+              initial={{ y: -20, opacity: 0 }}
+              animate={{ y: 0, opacity: 1 }}
+              className="text-center mb-4"
+            >
+              {/* Decorative top border */}
+              <svg className="w-48 h-4 mx-auto mb-3 opacity-40" viewBox="0 0 200 16">
+                <path
+                  d="M10,8 Q50,4 100,8 Q150,12 190,8"
+                  fill="none"
+                  stroke={ANCIENT_COLORS.sienna}
+                  strokeWidth="1.5"
+                  strokeLinecap="round"
+                />
+                <circle cx="100" cy="8" r="3" fill={ANCIENT_COLORS.ochre} opacity="0.6" />
+              </svg>
+
+              <h2 className={`${handwritten} text-3xl sm:text-4xl tracking-wide`}
+                style={{ color: ANCIENT_COLORS.charcoal }}
+              >
+                {page.title}
+              </h2>
+
+              <motion.p
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                transition={{ delay: 0.2 }}
+                className={`${handwritten} text-lg italic mt-2 max-w-xl mx-auto`}
+                style={{ color: `${ANCIENT_COLORS.sienna}cc` }}
+              >
+                {page.mainContent}
+              </motion.p>
+            </motion.div>
+
+            {/* Diagram in charcoal frame */}
             <div className="grid lg:grid-cols-4 gap-4">
-              {/* Explanation sidebar */}
+              {/* Explanation sidebar - styled as marginalia */}
               <motion.div
                 initial={{ x: -30, opacity: 0 }}
                 animate={{ x: 0, opacity: 1 }}
                 transition={{ delay: 0.3 }}
                 className="lg:col-span-1 space-y-3"
               >
-                <div className="bg-blue-50 border-2 border-blue-200 rounded-lg p-3 transform -rotate-1">
-                  <div className="flex items-center gap-2 mb-1">
-                    <Eye className="w-4 h-4 text-blue-600" />
-                    <span className={`${handwritten} text-lg font-bold text-blue-800`}>Look for:</span>
+                <div
+                  className="relative p-4 rounded-sm border-l-2"
+                  style={{
+                    backgroundColor: `${ANCIENT_COLORS.turquoise}15`,
+                    borderColor: ANCIENT_COLORS.turquoise
+                  }}
+                >
+                  <div className="flex items-center gap-2 mb-2">
+                    <Eye className="w-4 h-4" style={{ color: ANCIENT_COLORS.teal }} />
+                    <span className={`${handwritten} text-lg`} style={{ color: ANCIENT_COLORS.teal }}>
+                      Observe:
+                    </span>
                   </div>
-                  <p className="text-blue-700 text-xs">{page.diagramExplanation}</p>
+                  <p className={`${handwritten} text-base`} style={{ color: ANCIENT_COLORS.charcoal }}>
+                    {page.diagramExplanation}
+                  </p>
                 </div>
 
-                <div className="bg-green-50 border-2 border-green-200 rounded-lg p-3 transform rotate-1">
-                  <div className="flex items-center gap-2 mb-1">
-                    <Lightbulb className="w-4 h-4 text-green-600" />
-                    <span className={`${handwritten} text-lg font-bold text-green-800`}>Think about:</span>
+                <div
+                  className="relative p-4 rounded-sm border-l-2"
+                  style={{
+                    backgroundColor: `${ANCIENT_COLORS.terracotta}15`,
+                    borderColor: ANCIENT_COLORS.terracotta
+                  }}
+                >
+                  <div className="flex items-center gap-2 mb-2">
+                    <Lightbulb className="w-4 h-4" style={{ color: ANCIENT_COLORS.rust }} />
+                    <span className={`${handwritten} text-lg`} style={{ color: ANCIENT_COLORS.rust }}>
+                      Contemplate:
+                    </span>
                   </div>
-                  <p className="text-green-700 text-xs">How does each part connect to the whole system?</p>
+                  <p className={`${handwritten} text-base`} style={{ color: ANCIENT_COLORS.charcoal }}>
+                    How does each element connect to the whole system?
+                  </p>
                 </div>
               </motion.div>
 
-              {/* Diagram */}
+              {/* Diagram - wrapped in charcoal frame */}
               <motion.div
-                initial={{ scale: 0.9, opacity: 0 }}
+                initial={{ scale: 0.95, opacity: 0 }}
                 animate={{ scale: 1, opacity: 1 }}
-                transition={{ delay: 0.4, type: 'spring' }}
-                className="lg:col-span-3 bg-white rounded-xl shadow-xl p-4 border-2 border-gray-100"
+                transition={{ delay: 0.4, duration: 0.5 }}
+                className="lg:col-span-3"
               >
-                <DiagramComponent animated showLabels className="w-full max-h-[50vh]" />
+                <CharcoalFrame title="">
+                  <div
+                    className="relative overflow-hidden rounded"
+                    style={{ filter: 'sepia(0.08) contrast(1.02)' }}
+                  >
+                    <DiagramComponent animated={false} showLabels className="w-full max-h-[45vh]" />
+                  </div>
+                </CharcoalFrame>
               </motion.div>
             </div>
+
+            {/* Decorative footer border */}
+            <motion.div
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              transition={{ delay: 0.6 }}
+              className="mt-4 flex justify-center"
+            >
+              <svg className="w-32 h-6 opacity-30" viewBox="0 0 128 24">
+                <path
+                  d="M10,12 L50,12 M78,12 L118,12"
+                  fill="none"
+                  stroke={ANCIENT_COLORS.charcoal}
+                  strokeWidth="1"
+                />
+                <circle cx="64" cy="12" r="6" fill="none" stroke={ANCIENT_COLORS.ochre} strokeWidth="1" />
+                <circle cx="64" cy="12" r="2" fill={ANCIENT_COLORS.ochre} opacity="0.5" />
+              </svg>
+            </motion.div>
           </div>
         )}
 
