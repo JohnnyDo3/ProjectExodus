@@ -609,7 +609,7 @@ interface AnimatedQuoteProps {
 }
 
 export function AnimatedQuote({ quote, author, source, color = 'var(--primary)', className }: AnimatedQuoteProps) {
-  const ref = useRef<HTMLDivElement>(null)
+  const ref = useRef<HTMLQuoteElement>(null)
   const isInView = useInView(ref, { once: true, margin: '-50px' })
 
   return (
