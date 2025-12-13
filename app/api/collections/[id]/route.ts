@@ -8,6 +8,13 @@ type Params = {
   }>
 }
 
+type CollectionArticleItem = {
+  article: Record<string, unknown>
+  note: string | null
+  order: number
+  addedAt: Date
+}
+
 // GET /api/collections/[id] - Get a single collection with articles
 export async function GET(
   request: NextRequest,
@@ -133,7 +140,7 @@ export async function GET(
       success: true,
       data: {
         ...collection,
-        articles: collection.articles.map(ca => ({
+        articles: collection.articles.map((ca: CollectionArticleItem) => ({
           ...ca.article,
           note: ca.note,
           order: ca.order,
