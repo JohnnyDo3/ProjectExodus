@@ -8,11 +8,18 @@ type Params = {
   }>
 }
 
+// Type for review items
+type ReviewItem = {
+  id: string
+  parentId: string | null
+  [key: string]: unknown
+}
+
 // Recursive function to build nested reply structure
-function buildReplyTree(reviews: any[], parentId: string | null = null): any[] {
+function buildReplyTree(reviews: ReviewItem[], parentId: string | null = null): (ReviewItem & { replies: unknown[] })[] {
   return reviews
-    .filter(review => review.parentId === parentId)
-    .map(review => ({
+    .filter((review: ReviewItem) => review.parentId === parentId)
+    .map((review: ReviewItem) => ({
       ...review,
       replies: buildReplyTree(reviews, review.id)
     }))
