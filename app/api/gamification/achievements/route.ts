@@ -25,6 +25,15 @@ type UserAchievementItem = {
   notified: boolean
 }
 
+type AchievementWithProgress = AchievementItem & {
+  userProgress: {
+    progress: number
+    completed: boolean
+    completedAt: Date | null
+    notified: boolean
+  } | null
+}
+
 // GET /api/gamification/achievements - Get all achievements and user progress
 export async function GET(request: NextRequest) {
   try {
@@ -92,16 +101,16 @@ export async function GET(request: NextRequest) {
 
     // Filter to only unlocked if requested
     const finalAchievements = unlockedOnly
-      ? achievementsWithProgress.filter(a => a.userProgress?.completed)
+      ? achievementsWithProgress.filter((a: AchievementWithProgress) => a.userProgress?.completed)
       : achievementsWithProgress
 
     // Group by category
-    const grouped = finalAchievements.reduce((acc, achievement) => {
+    const grouped = finalAchievements.reduce((acc: Record<string, AchievementWithProgress[]>, achievement: AchievementWithProgress) => {
       const cat = achievement.category
       if (!acc[cat]) acc[cat] = []
       acc[cat].push(achievement)
       return acc
-    }, {} as Record<string, typeof finalAchievements>)
+    }, {} as Record<string, AchievementWithProgress[]>)
 
     // Calculate stats
     const totalAchievements = achievements.filter((a: AchievementItem) => !a.secret).length
