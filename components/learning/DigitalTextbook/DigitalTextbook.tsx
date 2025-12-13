@@ -57,7 +57,7 @@ interface DigitalTextbookProps {
 }
 
 interface BookContent {
-  type: 'cover' | 'inside-cover' | 'toc' | 'chapter-divider' | 'chapter-intro' | 'verse' | 'content' | 'blank' | 'games' | 'quiz'
+  type: 'cover' | 'inside-cover' | 'toc' | 'learning-mission' | 'chapter-divider' | 'chapter-intro' | 'verse' | 'content' | 'blank' | 'games' | 'quiz'
   chapterIndex?: number
   verseIndex?: number
   pageIndex?: number
@@ -259,14 +259,23 @@ export function DigitalTextbook({
   const bookPages = useMemo(() => {
     const pages: BookContent[] = []
 
-    // Cover page
+    // ============================================
+    // OPENING SPREAD 1: Title + Select Path
+    // ============================================
+    // Cover page (LEFT) - Title page with topic icon
     pages.push({ type: 'cover' })
 
-    // Inside cover with level selection
+    // Inside cover (RIGHT) - Level selection / "Select Your Path"
     pages.push({ type: 'inside-cover' })
 
-    // Table of Contents
+    // ============================================
+    // OPENING SPREAD 2: Table of Contents + Learning Mission
+    // ============================================
+    // Table of Contents (LEFT)
     pages.push({ type: 'toc' })
+
+    // Learning Mission (RIGHT) - Place for initial reflections
+    pages.push({ type: 'learning-mission' })
 
     // Build chapters from modules (max 7 for the 7 Guardian ribbons)
     const chaptersToShow = modules.slice(0, 7)
@@ -511,8 +520,8 @@ export function DigitalTextbook({
     if (position.chapter > 0 || position.verse > 0 || position.page > 0) {
       continueReading()
     } else {
-      // Start at inside cover for level selection
-      setCurrentPageIndex(1)
+      // Start at cover page (spread shows cover + level selection)
+      setCurrentPageIndex(0)
     }
   }, [bookState, topic.id, continueReading])
 
@@ -563,7 +572,7 @@ export function DigitalTextbook({
               pageCount={totalPages}
               selectedLevel={selectedLevel}
               onLevelSelect={(level) => setSelectedLevel(level as LearningLevel)}
-              onStartReading={() => goToPage(3)}
+              onStartReading={() => goToPage(4)}
             />
           </div>
         )
@@ -615,6 +624,92 @@ export function DigitalTextbook({
             <div className="text-center py-2 border-t border-[var(--border)]/20 shrink-0">
               <p className="text-[10px] text-[var(--muted-foreground)]">
                 Click a chapter to begin reading
+              </p>
+            </div>
+          </div>
+        )
+
+      case 'learning-mission':
+        // Learning Mission page - initial reflections before beginning
+        const missionNoteKey = 'learning-mission-reflection'
+        return (
+          <div className="w-full h-full flex flex-col relative overflow-hidden">
+            <AncientBorder />
+
+            {/* Header */}
+            <div className="text-center pt-6 pb-3 shrink-0">
+              <div className="flex items-center justify-center gap-2 mb-2">
+                <span className="text-2xl">🎯</span>
+              </div>
+              <h3 className="text-xl font-serif font-bold text-[var(--foreground)] mb-1">
+                Learning Mission
+              </h3>
+              <p className="text-xs text-[var(--muted-foreground)] italic max-w-[250px] mx-auto">
+                Before you begin, take a moment to reflect on your learning journey
+              </p>
+            </div>
+
+            {/* Divider */}
+            <div
+              className="w-3/4 h-px mx-auto mb-4 shrink-0"
+              style={{
+                background: `linear-gradient(to right, transparent, ${currentRibbon?.colors.from || 'var(--border)'}60, transparent)`,
+              }}
+            />
+
+            {/* Mission Prompts */}
+            <div className="px-4 mb-3 shrink-0">
+              <div className="space-y-2">
+                <div className="flex items-start gap-2">
+                  <span className="text-sm">✨</span>
+                  <p className="text-xs text-[var(--muted-foreground)]">
+                    What do you hope to learn from {topic.title}?
+                  </p>
+                </div>
+                <div className="flex items-start gap-2">
+                  <span className="text-sm">💭</span>
+                  <p className="text-xs text-[var(--muted-foreground)]">
+                    What do you already know about this topic?
+                  </p>
+                </div>
+                <div className="flex items-start gap-2">
+                  <span className="text-sm">🌱</span>
+                  <p className="text-xs text-[var(--muted-foreground)]">
+                    How will you apply this knowledge?
+                  </p>
+                </div>
+              </div>
+            </div>
+
+            {/* Reflection textarea */}
+            <div className="flex-1 px-4 pb-4 min-h-0">
+              <textarea
+                className={cn(
+                  "w-full h-full resize-none",
+                  "bg-transparent",
+                  "border border-dashed border-[var(--border)]/40 rounded-lg",
+                  "p-3 text-sm font-serif",
+                  "text-[var(--foreground)]",
+                  "placeholder:text-[var(--muted-foreground)]/40 placeholder:italic",
+                  "focus:outline-none focus:border-[var(--primary)]/50",
+                  "transition-colors"
+                )}
+                placeholder="Write your intentions, goals, and starting thoughts here..."
+                value={pageNotes[missionNoteKey] || ''}
+                onChange={(e) => saveNote(missionNoteKey, e.target.value)}
+                style={{
+                  lineHeight: '1.75em',
+                  backgroundImage: 'linear-gradient(to bottom, transparent 90%, var(--border) 90%, var(--border) 92%, transparent 92%)',
+                  backgroundSize: '100% 1.75em',
+                  backgroundPosition: '0 0.25em',
+                }}
+              />
+            </div>
+
+            {/* Footer hint */}
+            <div className="shrink-0 text-center pb-4">
+              <p className="text-[9px] text-[var(--muted-foreground)]">
+                Turn the page to begin Chapter 1 →
               </p>
             </div>
           </div>
@@ -902,16 +997,17 @@ export function DigitalTextbook({
                   "text-[var(--foreground)]",
                   "placeholder:text-[var(--muted-foreground)]/40 placeholder:italic",
                   "focus:outline-none focus:border-[var(--primary)]/50",
-                  "transition-colors",
-                  // Lined paper effect
-                  "bg-[linear-gradient(transparent_95%,var(--border)_95%)]",
-                  "bg-[length:100%_1.5em]"
+                  "transition-colors"
                 )}
                 placeholder="Write your thoughts, insights, and reflections here..."
                 value={pageNotes[noteKey] || ''}
                 onChange={(e) => saveNote(noteKey, e.target.value)}
                 style={{
-                  lineHeight: '1.5em',
+                  lineHeight: '1.75em',
+                  // Lined paper effect - text sits above the line
+                  backgroundImage: 'linear-gradient(to bottom, transparent 90%, var(--border) 90%, var(--border) 92%, transparent 92%)',
+                  backgroundSize: '100% 1.75em',
+                  backgroundPosition: '0 0.25em', // Offset to align text above lines
                 }}
               />
             </div>
@@ -1093,6 +1189,7 @@ export function DigitalTextbook({
             onChapterClick={goToChapter}
             onContinueClick={continueReading}
             continuePosition={bookState.currentPosition || undefined}
+            isExpanded={isExpanded}
           />
 
           {/* Book Wrapper */}
@@ -1223,7 +1320,7 @@ export function DigitalTextbook({
         </BookContainer>
       )}
 
-      {/* Draggable Discussion Modal - Reddit-style overlay */}
+      {/* Draggable Discussion Modal - Sacred Book Community */}
       <AnimatePresence>
         {showDiscussion && (
           <motion.div
@@ -1231,8 +1328,8 @@ export function DigitalTextbook({
             style={{
               left: discussionPosition.x,
               top: discussionPosition.y,
-              width: 'min(320px, 25vw)',
-              height: 'min(400px, 40vh)',
+              width: 'min(600px, 60vw)',
+              height: 'min(500px, 60vh)',
             }}
             initial={{ opacity: 0, scale: 0.9 }}
             animate={{ opacity: 1, scale: 1 }}
@@ -1251,82 +1348,70 @@ export function DigitalTextbook({
             {/* Drag Handle Header */}
             <div
               className={cn(
-                "flex items-center justify-between px-3 py-2 bg-[var(--muted)] border-b border-[var(--border)]",
+                "flex items-center justify-between px-4 py-3 bg-[var(--muted)] border-b border-[var(--border)]",
                 "cursor-move select-none"
               )}
             >
-              <div className="flex items-center gap-2">
-                <GripVertical className="w-4 h-4 text-[var(--muted-foreground)]" />
-                <span className="text-xs font-bold text-[var(--foreground)]">
-                  {topic.title} Discussion
-                </span>
+              <div className="flex items-center gap-3">
+                <GripVertical className="w-5 h-5 text-[var(--muted-foreground)]" />
+                <div>
+                  <span className="text-sm font-bold text-[var(--foreground)]">
+                    {topic.title} Discussion
+                  </span>
+                  <p className="text-[10px] text-[var(--muted-foreground)]">
+                    Connect with fellow sacred book learners
+                  </p>
+                </div>
               </div>
               <button
                 onClick={() => setShowDiscussion(false)}
-                className="p-1 rounded hover:bg-[var(--background)] transition-colors"
+                className="p-1.5 rounded-lg hover:bg-[var(--background)] transition-colors"
               >
-                <X className="w-3 h-3 text-[var(--muted-foreground)]" />
+                <X className="w-4 h-4 text-[var(--muted-foreground)]" />
               </button>
             </div>
 
-            {/* Discussion Content - Reddit-style feed */}
-            <div className="flex flex-col h-[calc(100%-40px)]">
-              {/* Messages Area */}
-              <div className="flex-1 overflow-y-auto p-3 space-y-3">
-                {/* Sample discussion posts */}
-                <div className="p-2 rounded-lg bg-[var(--muted)]/50 border border-[var(--border)]/50">
-                  <div className="flex items-center gap-2 mb-1">
-                    <div className="w-5 h-5 rounded-full bg-[var(--primary)] flex items-center justify-center">
-                      <span className="text-[8px] text-white font-bold">E</span>
-                    </div>
-                    <span className="text-[10px] font-medium text-[var(--foreground)]">EcoLearner</span>
-                    <span className="text-[8px] text-[var(--muted-foreground)]">2h ago</span>
+            {/* Discussion Content */}
+            <div className="flex flex-col h-[calc(100%-60px)]">
+              {/* Messages Area - Empty state for real discussions */}
+              <div className="flex-1 overflow-y-auto p-4">
+                <div className="h-full flex flex-col items-center justify-center text-center">
+                  <div className="w-16 h-16 rounded-full bg-[var(--muted)] flex items-center justify-center mb-4">
+                    <MessageCircle className="w-8 h-8 text-[var(--muted-foreground)]" />
                   </div>
-                  <p className="text-[10px] text-[var(--foreground)] leading-relaxed">
-                    This chapter really opened my eyes to sustainable practices. Anyone else trying the techniques at home?
+                  <h4 className="text-base font-bold text-[var(--foreground)] mb-2">
+                    Sacred Book Discussions
+                  </h4>
+                  <p className="text-sm text-[var(--muted-foreground)] max-w-[300px] mb-4">
+                    Share insights, ask questions, and connect with others studying {topic.title}.
                   </p>
-                  <div className="flex items-center gap-3 mt-2">
-                    <button className="text-[8px] text-[var(--muted-foreground)] hover:text-[var(--foreground)]">↑ 12</button>
-                    <button className="text-[8px] text-[var(--muted-foreground)] hover:text-[var(--foreground)]">Reply</button>
-                  </div>
-                </div>
-
-                <div className="p-2 rounded-lg bg-[var(--muted)]/50 border border-[var(--border)]/50">
-                  <div className="flex items-center gap-2 mb-1">
-                    <div className="w-5 h-5 rounded-full bg-green-500 flex items-center justify-center">
-                      <span className="text-[8px] text-white font-bold">G</span>
-                    </div>
-                    <span className="text-[10px] font-medium text-[var(--foreground)]">GreenThumb</span>
-                    <span className="text-[8px] text-[var(--muted-foreground)]">5h ago</span>
-                  </div>
-                  <p className="text-[10px] text-[var(--foreground)] leading-relaxed">
-                    The quiz was challenging but fair. Got Silver on my first try!
+                  <p className="text-xs text-[var(--muted-foreground)]/70">
+                    Discussions sync with the community forum
                   </p>
-                  <div className="flex items-center gap-3 mt-2">
-                    <button className="text-[8px] text-[var(--muted-foreground)] hover:text-[var(--foreground)]">↑ 8</button>
-                    <button className="text-[8px] text-[var(--muted-foreground)] hover:text-[var(--foreground)]">Reply</button>
-                  </div>
                 </div>
-
-                <p className="text-[9px] text-center text-[var(--muted-foreground)] py-2">
-                  Join the full discussion in the community forum
-                </p>
               </div>
 
               {/* Input Area */}
-              <div className="p-2 border-t border-[var(--border)]">
-                <div className="flex gap-2">
-                  <input
-                    type="text"
-                    placeholder="Add a comment..."
-                    className="flex-1 px-2 py-1.5 text-[10px] rounded-lg bg-[var(--muted)] border border-[var(--border)] focus:outline-none focus:border-[var(--primary)]"
+              <div className="p-4 border-t border-[var(--border)] bg-[var(--muted)]/30">
+                <div className="flex gap-3">
+                  <textarea
+                    placeholder="Share your thoughts on this chapter..."
+                    className="flex-1 px-3 py-2 text-sm rounded-lg bg-[var(--background)] border border-[var(--border)] focus:outline-none focus:border-[var(--primary)] resize-none"
+                    rows={2}
                   />
-                  <button
-                    onClick={() => window.open(`/community/forum?topic=${topic.id}`, '_blank')}
-                    className="px-3 py-1.5 text-[9px] font-medium rounded-lg bg-[var(--primary)] text-[var(--primary-foreground)]"
-                  >
-                    Open Full
-                  </button>
+                  <div className="flex flex-col gap-2">
+                    <button
+                      className="px-4 py-2 text-xs font-medium rounded-lg bg-[var(--primary)] text-[var(--primary-foreground)]"
+                    >
+                      Post
+                    </button>
+                    <button
+                      onClick={() => window.open(`/community/forum?topic=${topic.id}`, '_blank')}
+                      className="px-4 py-2 text-xs font-medium rounded-lg border border-[var(--border)] text-[var(--foreground)] hover:bg-[var(--muted)]"
+                    >
+                      Open Forum
+                    </button>
+                  </div>
                 </div>
               </div>
             </div>

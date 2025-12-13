@@ -34,6 +34,7 @@ interface RibbonBookmarksProps {
     verse: number
     page: number
   }
+  isExpanded?: boolean
   className?: string
 }
 
@@ -47,6 +48,7 @@ export function RibbonBookmarks({
   onChapterClick,
   onContinueClick,
   continuePosition,
+  isExpanded = false,
   className,
 }: RibbonBookmarksProps) {
   const [deviceType, setDeviceType] = useState<'desktop' | 'tablet' | 'mobile'>('desktop')
@@ -72,8 +74,10 @@ export function RibbonBookmarks({
     <div
       className={cn(
         'z-40',
-        // Desktop: vertical ribbons extending upward from top of book
-        isDesktop && 'absolute -top-16 left-8 flex flex-row gap-2',
+        // Desktop: vertical ribbons - position differently for expanded vs normal
+        isDesktop && !isExpanded && 'absolute -top-16 left-8 flex flex-row gap-2',
+        // Desktop expanded: fixed position at top-left of screen, inside viewport
+        isDesktop && isExpanded && 'fixed top-4 left-4 flex flex-row gap-2 bg-black/30 backdrop-blur-sm rounded-xl p-2',
         // Tablet: horizontal strip at top
         deviceType === 'tablet' && 'flex flex-row justify-center gap-1 py-2 bg-[var(--muted)]',
         // Mobile: compact horizontal strip

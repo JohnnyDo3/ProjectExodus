@@ -171,10 +171,26 @@ export function PageFlip({
           perspectiveOrigin: 'center center',
         }}
       >
-        {/* Left Page (static verso) */}
-        <div className="absolute left-0 top-0 w-1/2 h-full">
+        {/* Left Page (static verso) - hidden during flip-next since the flipping page back reveals new left */}
+        <div
+          className="absolute left-0 top-0 w-1/2 h-full"
+          style={{
+            // When flipping next, hide current left page so flipping page back (new left) can show cleanly
+            visibility: flipState === 'flipping-next' ? 'hidden' : 'visible',
+          }}
+        >
           {flipState === 'flipping-prev' ? prevLeftPage : leftPage}
         </div>
+
+        {/* New left page visible behind during flip-next (under the flipping page) */}
+        {flipState === 'flipping-next' && (
+          <div
+            className="absolute left-0 top-0 w-1/2 h-full"
+            style={{ zIndex: 5 }}
+          >
+            {nextLeftPage}
+          </div>
+        )}
 
         {/* Right Page (static recto - visible when not flipping) */}
         <div
@@ -185,6 +201,16 @@ export function PageFlip({
         >
           {rightPage}
         </div>
+
+        {/* Previous right page visible behind during flip-prev */}
+        {flipState === 'flipping-prev' && (
+          <div
+            className="absolute right-0 top-0 w-1/2 h-full"
+            style={{ zIndex: 5 }}
+          >
+            {prevRightPage}
+          </div>
+        )}
 
         {/* Flipping Page Layer */}
         {flipState !== 'idle' && (
