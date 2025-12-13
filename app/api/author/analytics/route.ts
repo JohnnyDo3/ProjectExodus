@@ -2,6 +2,35 @@ import { NextRequest, NextResponse } from 'next/server'
 import { prisma } from '@/lib/db'
 import { auth } from '@/auth'
 
+type ArticleItem = {
+  id: string
+  title: string
+  slug: string
+  status: string
+  views: number
+  categoryId: string | null
+  category: { id: string; name: string; slug: string } | null
+  _count: { comments: number; peerReviews: number }
+}
+
+type PeerReviewRating = {
+  clarity: number
+  accuracy: number
+  depth: number
+  originality: number
+}
+
+type ReadingProgressItem = {
+  completed: boolean
+  timeSpent: number
+  scrollProgress: number
+}
+
+type RecentProgressItem = {
+  updatedAt: Date
+  completed: boolean
+}
+
 // GET /api/author/analytics - Get author's analytics dashboard data
 export async function GET(request: NextRequest) {
   try {
@@ -45,11 +74,11 @@ export async function GET(request: NextRequest) {
 
     // Calculate totals
     const totalArticles = articles.length
-    const publishedArticles = articles.filter(a => a.status === 'PUBLISHED').length
-    const draftArticles = articles.filter(a => a.status === 'DRAFT').length
-    const totalViews = articles.reduce((sum, a) => sum + a.views, 0)
-    const totalComments = articles.reduce((sum, a) => sum + a._count.comments, 0)
-    const totalReviews = articles.reduce((sum, a) => sum + a._count.peerReviews, 0)
+    const publishedArticles = articles.filter((a: ArticleItem) => a.status === 'PUBLISHED').length
+    const draftArticles = articles.filter((a: ArticleItem) => a.status === 'DRAFT').length
+    const totalViews = articles.reduce((sum: number, a: ArticleItem) => sum + a.views, 0)
+    const totalComments = articles.reduce((sum: number, a: ArticleItem) => sum + a._count.comments, 0)
+    const totalReviews = articles.reduce((sum: number, a: ArticleItem) => sum + a._count.peerReviews, 0)
 
     // Get peer reviews with ratings
     const peerReviews = await prisma.peerReview.findMany({
@@ -62,7 +91,7 @@ export async function GET(request: NextRequest) {
     // Calculate average rating
     let avgRating = null
     if (peerReviews.length > 0) {
-      const totalRating = peerReviews.reduce((sum, review) => {
+      const totalRating = peerReviews.reduce((sum: number, review: PeerReviewRating) => {
         const reviewAvg = (review.clarity + review.accuracy + review.depth + review.originality) / 4
         return sum + reviewAvg
       }, 0)
@@ -81,10 +110,10 @@ export async function GET(request: NextRequest) {
       }
     })
 
-    const totalReads = readingProgress.filter(p => p.completed).length
-    const totalTimeSpent = readingProgress.reduce((sum, p) => sum + p.timeSpent, 0)
+    const totalReads = readingProgress.filter((p: ReadingProgressItem) => p.completed).length
+    const totalTimeSpent = readingProgress.reduce((sum: number, p: ReadingProgressItem) => sum + p.timeSpent, 0)
     const avgCompletion = readingProgress.length > 0
-      ? readingProgress.reduce((sum, p) => sum + p.scrollProgress, 0) / readingProgress.length
+      ? readingProgress.reduce((sum: number, p: ReadingProgressItem) => sum + p.scrollProgress, 0) / readingProgress.length
       : null
 
     // Get follower count
@@ -93,7 +122,7 @@ export async function GET(request: NextRequest) {
     })
 
     // Top articles
-    const topArticles = articles.slice(0, 5).map(article => ({
+    const topArticles = articles.slice(0, 5).map((article: ArticleItem) => ({
       id: article.id,
       title: article.title,
       slug: article.slug,
@@ -105,7 +134,7 @@ export async function GET(request: NextRequest) {
 
     // Category breakdown
     const categoryMap = new Map<string, { categoryId: string; categoryName: string; articleCount: number; views: number }>()
-    articles.forEach(article => {
+    articles.forEach((article: ArticleItem) => {
       if (article.categoryId && article.category) {
         const existing = categoryMap.get(article.categoryId)
         if (existing) {
@@ -143,7 +172,7 @@ export async function GET(request: NextRequest) {
 
     // Group by date
     const engagementByDate = new Map<string, { views: number; reads: number }>()
-    recentProgress.forEach(progress => {
+    recentProgress.forEach((progress: RecentProgressItem) => {
       const dateStr = progress.updatedAt.toISOString().split('T')[0]
       const existing = engagementByDate.get(dateStr) || { views: 0, reads: 0 }
       existing.views++
