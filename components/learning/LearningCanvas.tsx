@@ -7,7 +7,7 @@ import {
   ArrowLeft, Play, ChevronLeft, ChevronRight, X,
   Lightbulb, Sparkles, Pin, Paperclip, BookOpen, Pencil,
   Eye, Zap, Heart, Star, Quote, Clock, Trophy, Target,
-  GraduationCap, Layers, CircleDot, CheckCircle2
+  GraduationCap, Layers, CircleDot, CheckCircle2, MessageSquare
 } from 'lucide-react'
 import { Button } from '@/components/ui/Button'
 import { LearningLevel, LEARNING_LEVELS } from '@/types/learning'
@@ -16,6 +16,7 @@ import { Founder } from '@/components/learning/FounderCard'
 import { detectPioneersInContent } from '@/data/sustainabilityPioneers'
 import { PioneerModal } from '@/components/learning/PioneerModal'
 import { FlashcardStudy, FlashcardDeck, generateFlashcardsFromContent } from '@/components/learning/Flashcards'
+import { ModuleDiscussions } from '@/components/learn/discussions/ModuleDiscussions'
 import dynamic from 'next/dynamic'
 import { CharcoalFrame, CharcoalFilters, MountainLandscape, WaterLandscape, GardenLandscape, ANCIENT_COLORS } from './CharcoalIllustrations'
 
@@ -881,6 +882,7 @@ export function LearningCanvas({
   const [completedLessons, setCompletedLessons] = useState<Set<string>>(new Set())
   const [showQuiz, setShowQuiz] = useState(false)
   const [showFlashcards, setShowFlashcards] = useState(false)
+  const [showDiscussions, setShowDiscussions] = useState(false)
   const [selectedPioneer, setSelectedPioneer] = useState<Founder | null>(null)
   const [showPioneerModal, setShowPioneerModal] = useState(false)
 
@@ -1065,66 +1067,76 @@ export function LearningCanvas({
 
   const canGoBack = currentLesson > 0 || currentPage > 0
 
-  // Main page view - full viewport with theme-synced colors
+  // Main page view - COMPACT NO-SCROLL layout, everything above the fold
   return (
-    <div className="h-full flex flex-col bg-[var(--background)] overflow-hidden">
-      {/* Header */}
-      <div className="flex-shrink-0 bg-[var(--muted)] border-b border-[var(--border)] px-4 py-2">
-        <div className="container mx-auto flex items-center justify-between">
+    <div className="h-screen flex flex-col bg-[var(--background)] overflow-hidden">
+      {/* Ultra-compact Header - 40px */}
+      <div className="h-10 shrink-0 bg-[var(--muted)] border-b border-[var(--border)] px-2 sm:px-4 flex items-center">
+        <div className="w-full flex items-center justify-between gap-2">
           <Link
             href={`/learn/topics/${topicSlug}?level=${selectedLevel.toLowerCase()}`}
-            className="flex items-center gap-2 text-[var(--primary)] hover:opacity-80"
+            className="inline-flex items-center gap-1 text-[var(--primary)] font-bold hover:underline text-xs shrink-0"
           >
-            <ArrowLeft className="w-4 h-4" />
-            <span className="hidden sm:inline text-sm font-medium">Back</span>
+            <ArrowLeft className="w-3.5 h-3.5" />
+            <span className="hidden sm:inline">Back</span>
           </Link>
 
-          <h1 className={`${handwritten} text-lg text-[var(--foreground)]`}>
+          <h1 className="text-sm font-black text-[var(--foreground)] truncate flex-1 text-center px-2">
             {lesson.title}
           </h1>
 
-          <div className="flex items-center gap-2">
+          <div className="flex items-center gap-1.5 shrink-0">
+            <div className="flex gap-0.5">
+              {Array.from({ length: Math.min(totalPages, 8) }).map((_, i) => (
+                <div
+                  key={i}
+                  className={`w-1.5 h-1.5 rounded-full ${
+                    i === currentPage ? 'bg-[var(--primary)] w-3' : i < currentPage ? 'bg-green-500' : 'bg-[var(--border)]'
+                  }`}
+                />
+              ))}
+            </div>
+            <button onClick={() => setShowDiscussions(true)} className="p-1 rounded bg-blue-500/20 text-blue-700 dark:text-blue-300" title="Discussion">
+              <MessageSquare className="w-3 h-3" />
+            </button>
             {lessonFlashcards && (
-              <Button size="sm" variant="outline" onClick={() => setShowFlashcards(true)} className="text-xs py-1 px-2">
-                <Layers className="w-3 h-3 mr-1" />
-                Cards
-              </Button>
+              <button onClick={() => setShowFlashcards(true)} className="p-1 rounded bg-[var(--accent)] text-[var(--accent-foreground)]" title="Flashcards">
+                <Layers className="w-3 h-3" />
+              </button>
             )}
-            <Button size="sm" variant="outline" onClick={() => setShowQuiz(true)} className="text-xs py-1 px-2">
-              <Trophy className="w-3 h-3 mr-1" />
-              Quiz
-            </Button>
+            <button onClick={() => setShowQuiz(true)} className="p-1 rounded bg-[var(--secondary)] text-[var(--secondary-foreground)]" title="Quiz">
+              <Trophy className="w-3 h-3" />
+            </button>
           </div>
         </div>
       </div>
 
-      {/* Lesson tabs */}
-      <div className="flex-shrink-0 bg-[color-mix(in_srgb,var(--muted)_50%,var(--background))] border-b border-[var(--border)] px-4 py-1.5 overflow-x-auto">
-        <div className="container mx-auto flex gap-2">
-          {levelContent.lessons.map((les, idx) => {
-            const isComplete = completedLessons.has(les.id)
-            const isCurrent = idx === currentLesson
-            return (
-              <button
-                key={les.id}
-                onClick={() => { setCurrentLesson(idx); setCurrentPage(0); }}
-                className={`flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-medium whitespace-nowrap transition-all ${
-                  isCurrent
-                    ? 'bg-[var(--primary)] text-white shadow-md'
-                    : isComplete
-                    ? 'bg-green-500/20 text-green-700 dark:text-green-400'
-                    : 'bg-[var(--muted)] text-[var(--muted-foreground)] hover:bg-[var(--accent)]'
-                }`}
-              >
-                {isComplete ? '✓' : idx + 1}. {les.title}
-              </button>
-            )
-          })}
-        </div>
+      {/* Compact Lesson Tabs - 32px */}
+      <div className="h-8 shrink-0 bg-[var(--card)] border-b border-[var(--border)] px-2 flex items-center gap-1 overflow-x-auto scrollbar-hide">
+        {levelContent.lessons.map((les, idx) => {
+          const isComplete = completedLessons.has(les.id)
+          const isCurrent = idx === currentLesson
+          return (
+            <button
+              key={les.id}
+              onClick={() => { setCurrentLesson(idx); setCurrentPage(0); }}
+              className={`flex items-center gap-1 px-2 py-1 rounded text-[10px] font-bold whitespace-nowrap transition-all ${
+                isCurrent
+                  ? 'bg-[var(--primary)] text-white'
+                  : isComplete
+                  ? 'bg-green-500/20 text-green-700 dark:text-green-400'
+                  : 'bg-[var(--muted)] text-[var(--muted-foreground)] hover:bg-[var(--accent)]'
+              }`}
+            >
+              {isComplete ? <CheckCircle2 className="w-2.5 h-2.5" /> : <span>{idx + 1}</span>}
+              <span className="hidden sm:inline truncate max-w-[80px]">{les.title}</span>
+            </button>
+          )
+        })}
       </div>
 
-      {/* Page content - takes remaining space */}
-      <div className="flex-1 overflow-hidden">
+      {/* Content Area - fills remaining space, NO scroll */}
+      <div className="flex-1 min-h-0 flex flex-col overflow-hidden">
         <AnimatePresence mode="wait">
           {currentPageData && (
             <CanvasPageView
@@ -1142,7 +1154,47 @@ export function LearningCanvas({
         </AnimatePresence>
       </div>
 
-      {/* Flashcard modal - properly centered */}
+      {/* Discussion Modal */}
+      <AnimatePresence>
+        {showDiscussions && (
+          <motion.div
+            className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/50 backdrop-blur-sm"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            onClick={() => setShowDiscussions(false)}
+          >
+            <motion.div
+              className="bg-[var(--card)] rounded-xl w-full max-w-2xl max-h-[85vh] overflow-hidden shadow-2xl flex flex-col"
+              initial={{ scale: 0.9, y: 20 }}
+              animate={{ scale: 1, y: 0 }}
+              exit={{ scale: 0.9, y: 20 }}
+              onClick={e => e.stopPropagation()}
+            >
+              <div className="flex items-center justify-between px-4 py-3 border-b border-[var(--border)] bg-[var(--muted)]">
+                <h2 className="font-black text-[var(--foreground)] flex items-center gap-2">
+                  <MessageSquare className="w-4 h-4 text-[var(--primary)]" />
+                  Discussion
+                </h2>
+                <button
+                  onClick={() => setShowDiscussions(false)}
+                  className="p-1 rounded hover:bg-[var(--accent)] text-[var(--muted-foreground)]"
+                >
+                  ✕
+                </button>
+              </div>
+              <div className="flex-1 overflow-auto p-4">
+                <ModuleDiscussions
+                  articleId={module.id}
+                  currentLevel={selectedLevel}
+                />
+              </div>
+            </motion.div>
+          </motion.div>
+        )}
+      </AnimatePresence>
+
+      {/* Flashcard modal */}
       <AnimatePresence>
         {showFlashcards && lessonFlashcards && (
           <motion.div
@@ -1153,7 +1205,7 @@ export function LearningCanvas({
             onClick={() => setShowFlashcards(false)}
           >
             <motion.div
-              className="bg-white rounded-2xl p-6 w-full max-w-xl shadow-2xl"
+              className="bg-[var(--card)] rounded-xl p-4 w-full max-w-lg max-h-[80vh] overflow-auto shadow-2xl"
               initial={{ scale: 0.9, y: 20 }}
               animate={{ scale: 1, y: 0 }}
               exit={{ scale: 0.9, y: 20 }}

@@ -1052,255 +1052,256 @@ export function InteractiveTextbook({
     )
   }
 
-  // Main lesson view - Fixed layout with internal content scroll, using theme variables
+  // Main lesson view - COMPACT NO-SCROLL layout, everything above the fold
   return (
-    <div className="h-screen bg-[var(--background)] flex flex-col">
-      {/* Fixed Header Bar - 52px */}
-      <div className="h-[52px] shrink-0 bg-[var(--muted)] border-b border-[var(--border)] px-4 flex items-center">
-        <div className="max-w-5xl mx-auto w-full flex items-center justify-between">
+    <div className="h-screen bg-[var(--background)] flex flex-col overflow-hidden">
+      {/* Ultra-compact Header - 40px */}
+      <div className="h-10 shrink-0 bg-[var(--muted)] border-b border-[var(--border)] px-2 sm:px-4 flex items-center">
+        <div className="w-full flex items-center justify-between gap-2">
           <Link
             href={`/learn/topics/${topicSlug}?level=${selectedLevel.toLowerCase()}`}
-            className="inline-flex items-center gap-2 text-[var(--primary)] font-bold hover:underline text-sm"
+            className="inline-flex items-center gap-1 text-[var(--primary)] font-bold hover:underline text-xs shrink-0"
           >
-            <ArrowLeft className="w-4 h-4" />
-            Back
+            <ArrowLeft className="w-3.5 h-3.5" />
+            <span className="hidden sm:inline">Back</span>
           </Link>
 
-          <h1 className="text-base font-bold text-[var(--foreground)] truncate mx-4">{module.title}</h1>
+          <h1 className="text-sm font-black text-[var(--foreground)] truncate flex-1 text-center px-2">{module.title}</h1>
 
-          <div className="flex items-center gap-2">
-            <div className="w-20 h-1.5 bg-[var(--border)] rounded-full overflow-hidden">
-              <motion.div
-                className="h-full bg-[var(--primary)] rounded-full"
-                initial={{ width: 0 }}
-                animate={{ width: `${progressPercent}%` }}
-              />
+          <div className="flex items-center gap-1.5 shrink-0">
+            <div className="w-12 h-1 bg-[var(--border)] rounded-full overflow-hidden">
+              <div className="h-full bg-[var(--primary)] rounded-full" style={{ width: `${progressPercent}%` }} />
             </div>
-            <span className="text-xs font-bold text-[var(--primary)]">{progressPercent}%</span>
+            <span className="text-[10px] font-bold text-[var(--primary)]">{progressPercent}%</span>
+            <button onClick={() => setShowDiscussions(true)} className="p-1 rounded bg-blue-500/20 text-blue-700 dark:text-blue-300" title="Discussion">
+              <MessageSquare className="w-3 h-3" />
+            </button>
+            {lessonFlashcards && lessonFlashcards.cards.length > 0 && (
+              <button onClick={() => setShowFlashcards(true)} className="p-1 rounded bg-[var(--accent)] text-[var(--accent-foreground)]" title="Flashcards">
+                <Layers className="w-3 h-3" />
+              </button>
+            )}
+            <button onClick={() => setShowQuiz(true)} className="p-1 rounded bg-[var(--secondary)] text-[var(--secondary-foreground)]" title="Quiz">
+              <Trophy className="w-3 h-3" />
+            </button>
           </div>
         </div>
       </div>
 
-      {/* Fixed Lesson Tabs - 44px */}
-      <div className="h-[44px] shrink-0 bg-[color-mix(in_srgb,var(--muted)_50%,var(--background))] border-b border-[var(--border)] px-4 flex items-center overflow-x-auto">
-        <div className="max-w-5xl mx-auto w-full flex gap-2">
-          {levelContent.lessons.map((les, idx) => {
-            const isCompleted = completedLessons.has(les.id)
-            const isCurrent = idx === currentLesson
-
-            return (
-              <button
-                key={les.id}
-                onClick={() => setCurrentLesson(idx)}
-                className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg font-bold text-xs whitespace-nowrap transition-all ${
-                  isCurrent
-                    ? 'bg-[var(--primary)] text-white shadow-md'
-                    : isCompleted
-                    ? 'bg-green-500/20 text-green-700 dark:text-green-400'
-                    : 'bg-[var(--muted)] text-[var(--muted-foreground)] hover:bg-[var(--accent)]'
-                }`}
-              >
-                {isCompleted ? <CheckCircle2 className="w-3 h-3" /> : <Circle className="w-3 h-3" />}
-                {idx + 1}. {les.title}
-              </button>
-            )
-          })}
-          {lessonFlashcards && lessonFlashcards.cards.length > 0 && (
+      {/* Compact Lesson Tabs - 32px */}
+      <div className="h-8 shrink-0 bg-[var(--card)] border-b border-[var(--border)] px-2 flex items-center gap-1 overflow-x-auto scrollbar-hide">
+        {levelContent.lessons.map((les, idx) => {
+          const isCompleted = completedLessons.has(les.id)
+          const isCurrent = idx === currentLesson
+          return (
             <button
-              onClick={() => setShowFlashcards(true)}
-              className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg font-bold text-xs whitespace-nowrap bg-[var(--accent)] text-[var(--accent-foreground)] hover:opacity-80"
+              key={les.id}
+              onClick={() => setCurrentLesson(idx)}
+              className={`flex items-center gap-1 px-2 py-1 rounded text-[10px] font-bold whitespace-nowrap transition-all ${
+                isCurrent
+                  ? 'bg-[var(--primary)] text-white'
+                  : isCompleted
+                  ? 'bg-green-500/20 text-green-700 dark:text-green-400'
+                  : 'bg-[var(--muted)] text-[var(--muted-foreground)] hover:bg-[var(--accent)]'
+              }`}
             >
-              <Layers className="w-3 h-3" />
-              Cards
+              {isCompleted ? <CheckCircle2 className="w-2.5 h-2.5" /> : <span>{idx + 1}</span>}
+              <span className="hidden sm:inline truncate max-w-[80px]">{les.title}</span>
             </button>
-          )}
-          <button
-            onClick={() => setShowQuiz(true)}
-            className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg font-bold text-xs whitespace-nowrap bg-[var(--secondary)] text-[var(--secondary-foreground)] hover:opacity-80"
-          >
-            <Trophy className="w-3 h-3" />
-            Quiz
-          </button>
-        </div>
+          )
+        })}
       </div>
 
-      {/* Main Content Area - fills remaining space */}
-      <div className="flex-1 min-h-0 p-4">
-        <div className="max-w-4xl mx-auto h-full flex flex-col">
-          {/* Flashcard Study Mode */}
-          {showFlashcards && lessonFlashcards && (
-            <div className="mb-4 p-4 bg-[var(--card)] border border-[var(--border)] rounded-xl shrink-0">
+      {/* Content Area - fills remaining space, NO scroll */}
+      <div className="flex-1 min-h-0 flex flex-col p-2 sm:p-3">
+        {/* Flashcard Modal Overlay */}
+        {showFlashcards && lessonFlashcards && (
+          <div className="absolute inset-0 z-50 bg-black/50 flex items-center justify-center p-4">
+            <div className="bg-[var(--card)] rounded-xl p-4 max-w-lg w-full max-h-[80vh] overflow-auto">
               <FlashcardStudy
                 deck={lessonFlashcards}
                 onComplete={(results) => console.log('Flashcard study complete:', results)}
                 onClose={() => setShowFlashcards(false)}
               />
             </div>
-          )}
+          </div>
+        )}
 
-          {/* Lesson Content Card with INTERNAL SCROLL */}
-          <div ref={contentCardRef} className="flex-1 min-h-0 bg-[var(--card)] border border-[var(--border)] rounded-xl shadow-sm flex flex-col">
-            {/* Lesson Title - Fixed at top of card */}
-            <div className="shrink-0 p-4 border-b border-[var(--border)]">
-              <h2 className="text-lg sm:text-xl font-bold text-[var(--foreground)] flex items-center gap-3">
-                <div className="w-8 h-8 rounded-lg bg-[var(--primary)] text-white flex items-center justify-center font-bold text-sm">
-                  {currentLesson + 1}
-                </div>
-                {lesson.title}
-              </h2>
-
-              {/* Page Progress Indicator */}
+        {/* Main Content Card - NO internal scroll, content truncated */}
+        <div ref={contentCardRef} className="flex-1 min-h-0 bg-[var(--card)] border border-[var(--border)] rounded-lg shadow-sm flex flex-col overflow-hidden">
+          {/* Page Header - compact */}
+          <div className="shrink-0 px-3 py-2 border-b border-[var(--border)] flex items-center justify-between bg-[var(--muted)]/50">
+            <div className="flex items-center gap-2">
+              <div className="w-6 h-6 rounded bg-[var(--primary)] text-white flex items-center justify-center font-bold text-xs">
+                {currentLesson + 1}.{currentPage + 1}
+              </div>
+              <div>
+                <h2 className="text-sm font-black text-[var(--foreground)] line-clamp-1">{lesson.title}</h2>
+                {totalPages > 1 && currentPageData && (
+                  <p className="text-[10px] text-[var(--muted-foreground)]">{currentPageData.title}</p>
+                )}
+              </div>
+            </div>
+            <div className="flex items-center gap-1">
               {totalPages > 1 && (
-                <div className="mt-3">
-                  <div className="flex items-center justify-between text-xs text-[var(--muted-foreground)] mb-2">
-                    <span>Page {currentPage + 1} of {totalPages}</span>
-                    <span className="font-medium text-[var(--foreground)]">{currentPageData?.title}</span>
-                  </div>
-                  <PageProgressDots
-                    totalPages={totalPages}
-                    currentPage={currentPage}
-                    completedPages={completedPages}
-                    onPageClick={handlePageClick}
-                  />
+                <div className="flex gap-0.5">
+                  {Array.from({ length: Math.min(totalPages, 10) }).map((_, i) => (
+                    <button
+                      key={i}
+                      onClick={() => handlePageClick(i)}
+                      className={`w-1.5 h-1.5 rounded-full transition-all ${
+                        i === currentPage ? 'bg-[var(--primary)] w-3' : completedPages.has(i) ? 'bg-green-500' : 'bg-[var(--border)]'
+                      }`}
+                    />
+                  ))}
+                  {totalPages > 10 && <span className="text-[8px] text-[var(--muted-foreground)]">+{totalPages - 10}</span>}
                 </div>
               )}
             </div>
+          </div>
 
-            {/* SCROLLABLE Content Area - THIS IS THE INTERNAL SCROLL */}
-            <div className="flex-1 min-h-0 overflow-y-auto p-4 sm:p-5">
-              {/* Page Content with Animation */}
-              <AnimatePresence mode="wait">
-                <motion.div
-                  key={`${lesson.id}-page-${currentPage}`}
-                  initial={{ opacity: 0, x: 20 }}
-                  animate={{ opacity: 1, x: 0 }}
-                  exit={{ opacity: 0, x: -20 }}
-                  transition={{ duration: 0.3 }}
-                >
-                  {/* Page Title (if multi-page) */}
-                  {totalPages > 1 && currentPageData && (
-                    <motion.h3
-                      initial={{ opacity: 0, y: -10 }}
-                      animate={{ opacity: 1, y: 0 }}
-                      className="text-base font-bold text-[var(--primary)] mb-3 flex items-center gap-2"
-                    >
-                      <div className="w-6 h-6 rounded-lg bg-[var(--muted)] flex items-center justify-center text-[var(--primary)] font-bold text-xs">
-                        {currentPage + 1}
-                      </div>
-                      {currentPageData.title}
-                    </motion.h3>
-                  )}
-
-                  {/* Picture Book Illustration (for elementary/middle school) */}
-                  {currentPageData?.illustration && (
+          {/* Content Display - fits in remaining space, uses line-clamp for overflow */}
+          <div className="flex-1 min-h-0 p-3 sm:p-4 overflow-hidden">
+            <AnimatePresence mode="wait">
+              <motion.div
+                key={`${lesson.id}-page-${currentPage}`}
+                initial={{ opacity: 0, x: 10 }}
+                animate={{ opacity: 1, x: 0 }}
+                exit={{ opacity: 0, x: -10 }}
+                transition={{ duration: 0.2 }}
+                className="h-full flex flex-col"
+              >
+                {/* Illustration - compact */}
+                {currentPageData?.illustration && (
+                  <div className="shrink-0 mb-2 h-24 sm:h-32 overflow-hidden rounded-lg">
                     <StoryIllustration
                       theme={currentPageData.illustration}
                       level={selectedLevel}
                       caption={currentPageData.title !== 'Introduction' ? currentPageData.title : undefined}
                     />
-                  )}
+                  </div>
+                )}
 
-                  {/* Diagram (if available for this page) */}
-                  {currentPageData?.diagram && (
+                {/* Diagram - compact */}
+                {currentPageData?.diagram && (
+                  <div className="shrink-0 mb-2 h-32 sm:h-40 overflow-hidden">
                     <DiagramRenderer diagramType={currentPageData.diagram} />
-                  )}
+                  </div>
+                )}
 
-                  {/* Page Text Content */}
-                  <div
-                    className="prose prose-sm max-w-none text-[var(--foreground)]
-                               prose-headings:text-[var(--foreground)] prose-headings:font-bold prose-headings:text-base
-                               prose-p:text-[var(--foreground)] prose-p:leading-relaxed prose-p:text-sm
-                               prose-li:text-[var(--foreground)] prose-li:text-sm
-                               prose-strong:text-[var(--foreground)]
-                               prose-a:text-[var(--primary)] prose-a:font-semibold prose-a:no-underline hover:prose-a:underline
-                               prose-blockquote:border-[var(--primary)] prose-blockquote:text-[var(--muted-foreground)] prose-blockquote:bg-[var(--muted)] prose-blockquote:rounded-r-lg prose-blockquote:py-2
-                               prose-ul:space-y-1 prose-ol:space-y-1"
-                    dangerouslySetInnerHTML={{ __html: sanitizeHtml(currentPageData?.content || '') }}
-                  />
+                {/* Text Content - auto-height with overflow hidden */}
+                <div
+                  className="flex-1 min-h-0 overflow-hidden prose prose-sm max-w-none text-[var(--foreground)]
+                             prose-headings:text-[var(--foreground)] prose-headings:font-black prose-headings:text-sm prose-headings:mb-1
+                             prose-p:text-[var(--foreground)] prose-p:leading-snug prose-p:text-xs prose-p:mb-2
+                             prose-li:text-[var(--foreground)] prose-li:text-xs
+                             prose-strong:text-[var(--foreground)] prose-strong:font-black
+                             prose-a:text-[var(--primary)] prose-a:font-bold
+                             prose-blockquote:border-[var(--primary)] prose-blockquote:text-[var(--muted-foreground)] prose-blockquote:bg-[var(--muted)] prose-blockquote:text-xs prose-blockquote:py-1 prose-blockquote:my-2"
+                  dangerouslySetInnerHTML={{ __html: sanitizeHtml(currentPageData?.content || '') }}
+                />
 
-                  {/* Pioneer Quick Access */}
-                  {currentPageData?.pioneers && currentPageData.pioneers.length > 0 && (
-                    <div className="mt-5 pt-4 border-t border-[var(--border)]">
-                      <h4 className="font-bold text-[var(--foreground)] mb-2 flex items-center gap-2 text-xs">
-                        <User className="w-3.5 h-3.5 text-[var(--primary)]" />
-                        People Mentioned
-                      </h4>
-                      <div className="flex flex-wrap gap-2">
-                        {currentPageData.pioneers.map((pioneer) => (
-                          <button
-                            key={pioneer.id}
-                            onClick={() => handlePioneerClick(pioneer)}
-                            className="inline-flex items-center gap-2 px-2 py-1 rounded-lg bg-[var(--muted)] hover:bg-[var(--accent)] border border-[var(--border)] transition-all group"
-                          >
-                            <div className="w-5 h-5 rounded-full bg-[var(--primary)] text-white flex items-center justify-center text-[9px] font-bold overflow-hidden">
-                              {pioneer.portrait ? (
-                                <img src={pioneer.portrait} alt={pioneer.name} className="w-full h-full object-cover" />
-                              ) : (
-                                <span>{pioneer.name.split(' ').map(n => n[0]).join('')}</span>
-                              )}
-                            </div>
-                            <span className="font-bold text-[var(--foreground)] group-hover:text-[var(--primary)] text-xs">
-                              {pioneer.name}
-                            </span>
-                          </button>
-                        ))}
-                      </div>
-                    </div>
-                  )}
+                {/* Pioneers - inline compact row */}
+                {currentPageData?.pioneers && currentPageData.pioneers.length > 0 && (
+                  <div className="shrink-0 mt-2 pt-2 border-t border-[var(--border)] flex items-center gap-2 flex-wrap">
+                    <span className="text-[10px] font-bold text-[var(--muted-foreground)]">Featured:</span>
+                    {currentPageData.pioneers.slice(0, 3).map((pioneer) => (
+                      <button
+                        key={pioneer.id}
+                        onClick={() => handlePioneerClick(pioneer)}
+                        className="inline-flex items-center gap-1 px-1.5 py-0.5 rounded bg-[var(--muted)] hover:bg-[var(--accent)] text-[10px] font-bold"
+                      >
+                        <div className="w-4 h-4 rounded-full bg-[var(--primary)] text-white flex items-center justify-center text-[8px] font-bold">
+                          {pioneer.name.split(' ').map(n => n[0]).join('')}
+                        </div>
+                        <span className="hidden sm:inline">{pioneer.name.split(' ')[0]}</span>
+                      </button>
+                    ))}
+                  </div>
+                )}
+              </motion.div>
+            </AnimatePresence>
+          </div>
 
-                  {/* References */}
-                  {module.externalResources.length > 0 && currentLesson === totalLessons - 1 && currentPage === totalPages - 1 && (
-                    <div className="mt-5 pt-4 border-t border-[var(--border)]">
-                      <h3 className="font-bold text-[var(--foreground)] mb-2 flex items-center gap-2 text-xs">
-                        <ExternalLink className="w-3.5 h-3.5 text-[var(--primary)]" />
-                        References & Further Reading
-                      </h3>
-                      <div className="space-y-2">
-                        {module.externalResources.slice(0, 3).map((resource, idx) => (
-                          <ReferenceLink key={resource.url} title={resource.title} url={resource.url} type={resource.type} index={idx} />
-                        ))}
-                      </div>
-                    </div>
-                  )}
-                </motion.div>
-              </AnimatePresence>
+          {/* Fixed Navigation Footer - 44px */}
+          <div className="shrink-0 h-11 px-3 border-t border-[var(--border)] flex items-center justify-between bg-[var(--muted)]/30">
+            <Button
+              variant="outline"
+              size="sm"
+              onClick={goToPreviousPage}
+              disabled={currentLesson === 0 && currentPage === 0}
+              className="font-bold text-xs h-7 px-2"
+            >
+              <ChevronLeft className="w-3 h-3" />
+              <span className="hidden sm:inline ml-1">{currentPage === 0 ? 'Prev' : 'Back'}</span>
+            </Button>
+
+            <div className="flex items-center gap-2 text-[10px] text-[var(--muted-foreground)]">
+              <span className="font-bold">L{currentLesson + 1} P{currentPage + 1}/{totalPages}</span>
+              <span className="hidden sm:inline">•</span>
+              <span className="hidden sm:inline">
+                {currentPage === totalPages - 1 && currentLesson === totalLessons - 1 ? 'Final page!' : `${totalPages - currentPage - 1} left`}
+              </span>
             </div>
 
-            {/* Fixed Navigation at bottom of card */}
-            <div className="shrink-0 p-3 border-t border-[var(--border)] flex items-center justify-between">
-              <Button
-                variant="outline"
-                onClick={goToPreviousPage}
-                disabled={currentLesson === 0 && currentPage === 0}
-                className="font-bold text-xs h-8 px-3"
-              >
-                <ChevronLeft className="w-3 h-3 mr-1" />
-                {currentPage === 0 ? 'Prev' : 'Back'}
-              </Button>
-
-              <span className="text-xs text-[var(--muted-foreground)]">
-                {currentPage === totalPages - 1 && currentLesson === totalLessons - 1
-                  ? 'Ready for quiz!'
-                  : `${totalPages - currentPage - 1} pages left`
-                }
-              </span>
-
-              <Button
-                onClick={goToNextPage}
-                className="font-bold text-xs h-8 px-3"
-              >
+            <Button
+              size="sm"
+              onClick={goToNextPage}
+              className="font-bold text-xs h-7 px-2"
+            >
+              <span className="hidden sm:inline mr-1">
                 {currentPage === totalPages - 1 && currentLesson === totalLessons - 1
                   ? 'Quiz'
                   : currentPage === totalPages - 1
-                  ? 'Next Lesson'
+                  ? 'Next'
                   : 'Next'
                 }
-                <ChevronRight className="w-3 h-3 ml-1" />
-              </Button>
-            </div>
+              </span>
+              <ChevronRight className="w-3 h-3" />
+            </Button>
           </div>
         </div>
       </div>
+
+      {/* Discussion Modal */}
+      <AnimatePresence>
+        {showDiscussions && (
+          <motion.div
+            className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/50 backdrop-blur-sm"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            onClick={() => setShowDiscussions(false)}
+          >
+            <motion.div
+              className="bg-[var(--card)] rounded-xl w-full max-w-2xl max-h-[85vh] overflow-hidden shadow-2xl flex flex-col"
+              initial={{ scale: 0.9, y: 20 }}
+              animate={{ scale: 1, y: 0 }}
+              exit={{ scale: 0.9, y: 20 }}
+              onClick={e => e.stopPropagation()}
+            >
+              <div className="flex items-center justify-between px-4 py-3 border-b border-[var(--border)] bg-[var(--muted)]">
+                <h2 className="font-black text-[var(--foreground)] flex items-center gap-2">
+                  <MessageSquare className="w-4 h-4 text-[var(--primary)]" />
+                  Discussion
+                </h2>
+                <button
+                  onClick={() => setShowDiscussions(false)}
+                  className="p-1 rounded hover:bg-[var(--accent)] text-[var(--muted-foreground)]"
+                >
+                  ✕
+                </button>
+              </div>
+              <div className="flex-1 overflow-auto p-4">
+                <ModuleDiscussions
+                  articleId={module.id}
+                  currentLevel={selectedLevel}
+                />
+              </div>
+            </motion.div>
+          </motion.div>
+        )}
+      </AnimatePresence>
 
       {/* Pioneer Modal */}
       <PioneerModal

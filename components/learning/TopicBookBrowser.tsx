@@ -13,15 +13,15 @@ import { LearningLevel, LEARNING_LEVELS } from '@/types/learning'
 // Handwritten font
 const handwritten = "font-['Caveat',_cursive]"
 
-// Learning Module color themes
+// Learning Module color themes - using theme-compatible colors
 const MODULE_COLORS = [
-  { bg: 'bg-amber-50', border: 'border-amber-300', text: 'text-amber-900', accent: 'bg-amber-700', light: 'bg-amber-100' },
-  { bg: 'bg-emerald-50', border: 'border-emerald-300', text: 'text-emerald-900', accent: 'bg-emerald-700', light: 'bg-emerald-100' },
-  { bg: 'bg-blue-50', border: 'border-blue-300', text: 'text-blue-900', accent: 'bg-blue-700', light: 'bg-blue-100' },
-  { bg: 'bg-purple-50', border: 'border-purple-300', text: 'text-purple-900', accent: 'bg-purple-700', light: 'bg-purple-100' },
-  { bg: 'bg-rose-50', border: 'border-rose-300', text: 'text-rose-900', accent: 'bg-rose-700', light: 'bg-rose-100' },
-  { bg: 'bg-cyan-50', border: 'border-cyan-300', text: 'text-cyan-900', accent: 'bg-cyan-700', light: 'bg-cyan-100' },
-  { bg: 'bg-orange-50', border: 'border-orange-300', text: 'text-orange-900', accent: 'bg-orange-700', light: 'bg-orange-100' },
+  { bg: 'bg-amber-100 dark:bg-amber-900/30', border: 'border-amber-400 dark:border-amber-600', text: 'text-amber-900 dark:text-amber-100', accent: 'bg-amber-600', light: 'bg-amber-50 dark:bg-amber-900/20' },
+  { bg: 'bg-emerald-100 dark:bg-emerald-900/30', border: 'border-emerald-400 dark:border-emerald-600', text: 'text-emerald-900 dark:text-emerald-100', accent: 'bg-emerald-600', light: 'bg-emerald-50 dark:bg-emerald-900/20' },
+  { bg: 'bg-blue-100 dark:bg-blue-900/30', border: 'border-blue-400 dark:border-blue-600', text: 'text-blue-900 dark:text-blue-100', accent: 'bg-blue-600', light: 'bg-blue-50 dark:bg-blue-900/20' },
+  { bg: 'bg-purple-100 dark:bg-purple-900/30', border: 'border-purple-400 dark:border-purple-600', text: 'text-purple-900 dark:text-purple-100', accent: 'bg-purple-600', light: 'bg-purple-50 dark:bg-purple-900/20' },
+  { bg: 'bg-rose-100 dark:bg-rose-900/30', border: 'border-rose-400 dark:border-rose-600', text: 'text-rose-900 dark:text-rose-100', accent: 'bg-rose-600', light: 'bg-rose-50 dark:bg-rose-900/20' },
+  { bg: 'bg-cyan-100 dark:bg-cyan-900/30', border: 'border-cyan-400 dark:border-cyan-600', text: 'text-cyan-900 dark:text-cyan-100', accent: 'bg-cyan-600', light: 'bg-cyan-50 dark:bg-cyan-900/20' },
+  { bg: 'bg-orange-100 dark:bg-orange-900/30', border: 'border-orange-400 dark:border-orange-600', text: 'text-orange-900 dark:text-orange-100', accent: 'bg-orange-600', light: 'bg-orange-50 dark:bg-orange-900/20' },
 ]
 
 interface TopicBookProps {
@@ -188,13 +188,13 @@ function LearningModuleSection({
                 )}
               </div>
               <div className="text-left">
-                <p className={`text-xs font-bold uppercase tracking-wider ${colors.text} opacity-60 mb-0.5`}>
+                <p className={`text-xs font-black uppercase tracking-wider ${colors.text} opacity-70 mb-0.5`}>
                   Learning Module {moduleNumber}
                 </p>
-                <h3 className={`${handwritten} text-xl sm:text-2xl ${colors.text}`}>
+                <h3 className={`text-xl sm:text-2xl font-black ${colors.text}`}>
                   {learningModuleName}
                 </h3>
-                <p className="text-xs sm:text-sm text-gray-600 mt-0.5">
+                <p className="text-xs sm:text-sm text-[var(--muted-foreground)] font-medium mt-0.5">
                   {lessons.length} lesson{lessons.length !== 1 ? 's' : ''} • {totalPages} page{totalPages !== 1 ? 's' : ''}
                 </p>
               </div>
@@ -230,7 +230,7 @@ function LearningModuleSection({
             transition={{ duration: 0.3 }}
             className="overflow-hidden"
           >
-            <div className={`mt-2 ${colors.light} ${colors.border} border-2 rounded-xl p-3 sm:p-4 max-h-[400px] overflow-y-auto`}>
+            <div className={`mt-2 ${colors.light} ${colors.border} border-2 rounded-xl p-3 sm:p-4`}>
               <div className="grid gap-3">
                 {lessons.map((lesson, lessonIdx) => {
                   const isLessonCompleted = completedLessons.includes(lesson.id)
@@ -254,27 +254,27 @@ function LearningModuleSection({
                         </div>
 
                         <div className="flex-1 min-w-0">
-                          <div className="flex items-center gap-2 mb-1">
-                            <h4 className={`${handwritten} text-lg sm:text-xl font-bold ${colors.text} group-hover:underline`}>
+                          <div className="flex items-center gap-2 mb-1 flex-wrap">
+                            <h4 className={`text-base sm:text-lg font-black ${colors.text} group-hover:underline`}>
                               {lesson.title}
                             </h4>
                             {isLessonCompleted && (
-                              <span className="text-[10px] font-bold text-green-600 bg-green-100 px-1.5 py-0.5 rounded">
+                              <span className="text-[10px] font-bold text-green-700 dark:text-green-300 bg-green-100 dark:bg-green-900/50 px-1.5 py-0.5 rounded">
                                 COMPLETE
                               </span>
                             )}
                           </div>
 
-                          <p className="text-xs sm:text-sm text-gray-600 line-clamp-2 mb-2">
+                          <p className="text-xs sm:text-sm text-[var(--muted-foreground)] line-clamp-2 mb-2">
                             {lesson.description[selectedLevel]}
                           </p>
 
-                          <div className="flex items-center gap-3 text-xs text-gray-500">
-                            <span className="flex items-center gap-1">
+                          <div className="flex items-center gap-3 text-xs text-[var(--muted-foreground)]">
+                            <span className="flex items-center gap-1 font-medium">
                               <Layers className="w-3 h-3" />
                               {lessonPages} page{lessonPages !== 1 ? 's' : ''}
                             </span>
-                            <span className="flex items-center gap-1">
+                            <span className="flex items-center gap-1 font-medium">
                               <Clock className="w-3 h-3" />
                               {lessonDuration} min
                             </span>

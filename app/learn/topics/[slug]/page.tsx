@@ -209,8 +209,8 @@ export default function TopicPage() {
           {/* List View - Hierarchical: Learning Module > Lesson > Pages */}
           {viewMode === 'list' && (
           <div className="grid lg:grid-cols-3 gap-12">
-            {/* Main Content - Organized by Learning Module (category) */}
-            <div className="lg:col-span-2 space-y-8 max-h-[70vh] overflow-y-auto pr-2">
+            {/* Main Content - Organized by Learning Module (category) - uses natural page scroll */}
+            <div className="lg:col-span-2 space-y-8">
               {/* Group lessons by category into Learning Modules */}
               {(() => {
                 // Group modules (lessons) by category into Learning Modules
