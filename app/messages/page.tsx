@@ -156,7 +156,7 @@ export default function MessagesPage() {
 
   if (status === 'loading' || isLoading) {
     return (
-      <div className="h-[calc(100vh-4rem)] flex items-center justify-center bg-[var(--background)]">
+      <div className="h-full flex items-center justify-center bg-[var(--background)]">
         <div className="text-center space-y-4">
           <div className="w-16 h-16 border-4 border-theme-primary border-t-transparent rounded-full animate-spin mx-auto" />
           <p className="text-lg font-bold text-theme-muted">Loading messages...</p>
@@ -170,7 +170,7 @@ export default function MessagesPage() {
   }
 
   return (
-    <div className="h-[calc(100vh-4rem)] flex flex-col overflow-hidden bg-[var(--background)]">
+    <div className="h-full flex flex-col overflow-hidden bg-[var(--background)]">
       {/* Header */}
       <div className="flex-shrink-0 bg-gradient-to-r from-[var(--primary)]/95 via-[var(--accent)]/95 to-[var(--secondary)]/95 backdrop-blur-sm border-b-2 border-theme-primary">
         <div className="container mx-auto px-6 py-3">
@@ -195,8 +195,8 @@ export default function MessagesPage() {
         </div>
       </div>
 
-      {/* Main Content */}
-      <div className="flex-1 flex gap-4 p-4 overflow-hidden">
+      {/* Main Content - Internal scroll only */}
+      <div className="flex-1 flex gap-3 sm:gap-4 p-3 sm:p-4 overflow-hidden min-h-0">
         {/* Contacts/Conversations Sidebar */}
         <div className={`${selectedUserId ? 'hidden md:flex' : 'flex'} w-full md:w-80 lg:w-96 h-full flex-col bg-[var(--card)] rounded-2xl border-2 border-theme-primary shadow-lg overflow-hidden flex-shrink-0`}>
           {/* Tab Header */}

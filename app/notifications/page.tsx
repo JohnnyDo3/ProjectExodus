@@ -168,7 +168,7 @@ export default function NotificationsPage() {
   // Show loading state while checking auth
   if (status === 'loading' || loading) {
     return (
-      <div className="h-[calc(100vh-4rem)] flex flex-col overflow-hidden" style={{ background: 'var(--background)' }}>
+      <div className="h-full flex flex-col overflow-hidden" style={{ background: 'var(--background)' }}>
         <div className="flex-1 flex items-center justify-center">
           <div
             className="text-lg font-medium"
@@ -187,8 +187,8 @@ export default function NotificationsPage() {
   }
 
   return (
-    <div className="h-[calc(100vh-4rem)] flex flex-col overflow-hidden" style={{ background: 'var(--background)' }}>
-      <div className="max-w-4xl mx-auto w-full px-4 flex flex-col h-full">
+    <div className="h-full flex flex-col overflow-hidden" style={{ background: 'var(--background)' }}>
+      <div className="max-w-4xl mx-auto w-full px-4 flex flex-col h-full min-h-0">
         {/* Header - fixed at top */}
         <div className="py-6 flex-shrink-0">
           <div className="flex items-center justify-between mb-2">
@@ -227,7 +227,7 @@ export default function NotificationsPage() {
         </div>
 
         {/* Notifications List - scrollable area */}
-        <div className="flex-1 overflow-y-auto pb-4">
+        <div className="flex-1 overflow-y-auto pb-4 min-h-0">
           {notifications.length === 0 ? (
             // Empty State
             <Card className="p-12">

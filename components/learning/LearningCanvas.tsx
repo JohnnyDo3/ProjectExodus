@@ -351,9 +351,9 @@ function CanvasPageView({
       {/* Main page content */}
       <div className="flex-1 container mx-auto px-4 max-w-5xl flex flex-col justify-center">
 
-        {/* INTRO PAGE - Ancient carved aesthetic */}
+        {/* INTRO PAGE - Ancient carved aesthetic - Responsive WYSIWYG */}
         {page.type === 'intro' && (
-          <div className="text-center relative">
+          <div className="h-full flex flex-col items-center justify-center text-center relative">
             <CharcoalFilters />
 
             {/* Decorative top ornament */}
@@ -361,9 +361,9 @@ function CanvasPageView({
               initial={{ scale: 0, opacity: 0 }}
               animate={{ scale: 1, opacity: 1 }}
               transition={{ type: 'spring', delay: 0.2 }}
-              className="mb-6"
+              className="mb-3 sm:mb-4 md:mb-6 flex-shrink-0"
             >
-              <svg className="w-24 h-24 mx-auto" viewBox="0 0 100 100">
+              <svg className="w-16 h-16 sm:w-20 sm:h-20 md:w-24 md:h-24 mx-auto" viewBox="0 0 100 100">
                 {/* Lotus-inspired ornament */}
                 <circle cx="50" cy="50" r="35" fill="none" stroke={ANCIENT_COLORS.ochre} strokeWidth="1.5" opacity="0.4" />
                 <circle cx="50" cy="50" r="25" fill="none" stroke={ANCIENT_COLORS.terracotta} strokeWidth="1" opacity="0.3" />
@@ -386,14 +386,14 @@ function CanvasPageView({
             </motion.div>
 
             <h1
-              className={`${handwritten} text-4xl md:text-5xl mb-4 tracking-wide`}
+              className={`${handwritten} text-2xl sm:text-3xl md:text-4xl lg:text-5xl mb-2 sm:mb-3 md:mb-4 tracking-wide flex-shrink-0`}
               style={{ color: ANCIENT_COLORS.charcoal }}
             >
               {page.title}
             </h1>
 
             {/* Decorative divider */}
-            <svg className="w-40 h-4 mx-auto mb-6 opacity-30" viewBox="0 0 160 16">
+            <svg className="w-28 sm:w-32 md:w-40 h-3 sm:h-4 mx-auto mb-3 sm:mb-4 md:mb-6 opacity-30 flex-shrink-0" viewBox="0 0 160 16">
               <path
                 d="M0,8 L60,8 M100,8 L160,8"
                 stroke={ANCIENT_COLORS.charcoal}
@@ -406,21 +406,21 @@ function CanvasPageView({
               initial={{ y: 20, opacity: 0 }}
               animate={{ y: 0, opacity: 1 }}
               transition={{ delay: 0.3 }}
-              className="max-w-2xl mx-auto p-6 rounded-sm relative"
+              className="max-w-xl sm:max-w-2xl mx-auto p-3 sm:p-4 md:p-6 rounded-sm relative flex-shrink-0"
               style={{
                 backgroundColor: `${ANCIENT_COLORS.papyrus}`,
                 boxShadow: `inset 0 0 30px ${ANCIENT_COLORS.sand}40`
               }}
             >
-              {/* Corner decorations */}
+              {/* Corner decorations - hidden on mobile */}
               {['tl', 'tr', 'bl', 'br'].map((corner) => (
                 <svg
                   key={corner}
-                  className={`absolute w-6 h-6 ${
-                    corner === 'tl' ? 'top-2 left-2' :
-                    corner === 'tr' ? 'top-2 right-2 -scale-x-100' :
-                    corner === 'bl' ? 'bottom-2 left-2 -scale-y-100' :
-                    'bottom-2 right-2 -scale-x-100 -scale-y-100'
+                  className={`absolute w-4 h-4 sm:w-5 sm:h-5 md:w-6 md:h-6 hidden sm:block ${
+                    corner === 'tl' ? 'top-1.5 sm:top-2 left-1.5 sm:left-2' :
+                    corner === 'tr' ? 'top-1.5 sm:top-2 right-1.5 sm:right-2 -scale-x-100' :
+                    corner === 'bl' ? 'bottom-1.5 sm:bottom-2 left-1.5 sm:left-2 -scale-y-100' :
+                    'bottom-1.5 sm:bottom-2 right-1.5 sm:right-2 -scale-x-100 -scale-y-100'
                   }`}
                   viewBox="0 0 24 24"
                 >
@@ -435,7 +435,7 @@ function CanvasPageView({
               ))}
 
               <p
-                className={`${handwritten} text-xl leading-relaxed`}
+                className={`${handwritten} text-base sm:text-lg md:text-xl leading-relaxed line-clamp-[6] sm:line-clamp-[8]`}
                 style={{ color: ANCIENT_COLORS.charcoal }}
               >
                 {page.mainContent}
@@ -447,15 +447,15 @@ function CanvasPageView({
                 initial={{ y: 20, opacity: 0 }}
                 animate={{ y: 0, opacity: 1 }}
                 transition={{ delay: 0.5 }}
-                className="mt-6 inline-flex items-center gap-3 px-5 py-3 rounded-sm border"
+                className="mt-3 sm:mt-4 md:mt-6 inline-flex items-center gap-2 sm:gap-3 px-3 sm:px-4 md:px-5 py-2 sm:py-2.5 md:py-3 rounded-sm border flex-shrink-0"
                 style={{
                   backgroundColor: `${ANCIENT_COLORS.ochre}15`,
                   borderColor: `${ANCIENT_COLORS.ochre}40`
                 }}
               >
-                <Lightbulb className="w-5 h-5" style={{ color: ANCIENT_COLORS.deepOchre }} />
+                <Lightbulb className="w-4 h-4 sm:w-5 sm:h-5 flex-shrink-0" style={{ color: ANCIENT_COLORS.deepOchre }} />
                 <span
-                  className={`${handwritten} text-lg`}
+                  className={`${handwritten} text-sm sm:text-base md:text-lg line-clamp-1`}
                   style={{ color: ANCIENT_COLORS.sienna }}
                 >
                   {page.keyTakeaway}
@@ -465,32 +465,32 @@ function CanvasPageView({
           </div>
         )}
 
-        {/* CONTENT PAGE */}
+        {/* CONTENT PAGE - Responsive WYSIWYG */}
         {page.type === 'content' && (
-          <div>
+          <div className="h-full flex flex-col">
             <motion.h2
               initial={{ x: -20, opacity: 0 }}
               animate={{ x: 0, opacity: 1 }}
-              className={`${handwritten} text-3xl text-gray-800 mb-4 flex items-center gap-3`}
+              className={`${handwritten} text-xl sm:text-2xl md:text-3xl text-gray-800 mb-2 sm:mb-3 md:mb-4 flex items-center gap-2 sm:gap-3 flex-shrink-0`}
             >
-              <div className="w-8 h-8 rounded-full bg-[var(--primary)] text-white flex items-center justify-center font-bold text-sm">
+              <div className="w-6 h-6 sm:w-7 sm:h-7 md:w-8 md:h-8 rounded-full bg-[var(--primary)] text-white flex items-center justify-center font-bold text-xs sm:text-sm flex-shrink-0">
                 {pageNumber}
               </div>
-              {page.title}
+              <span className="line-clamp-1">{page.title}</span>
             </motion.h2>
 
-            <div className="grid md:grid-cols-2 gap-4">
+            <div className="grid sm:grid-cols-2 gap-2 sm:gap-3 md:gap-4 flex-1 min-h-0">
               {/* Main content card */}
               <motion.div
                 initial={{ y: 20, opacity: 0 }}
                 animate={{ y: 0, opacity: 1 }}
                 transition={{ delay: 0.2 }}
-                className={`${color.bg} ${color.border} border-2 rounded-lg p-4 shadow-lg transform -rotate-1 relative`}
+                className={`${color.bg} ${color.border} border sm:border-2 rounded-lg p-2.5 sm:p-3 md:p-4 shadow-lg transform sm:-rotate-1 relative overflow-hidden`}
               >
-                <div className="absolute -top-2 left-4">
-                  <Pin className="w-5 h-5 text-red-500" />
+                <div className="absolute -top-1.5 sm:-top-2 left-3 sm:left-4">
+                  <Pin className="w-4 h-4 sm:w-5 sm:h-5 text-red-500" />
                 </div>
-                <p className={`${handwritten} text-lg text-gray-700 leading-relaxed mt-1`}>
+                <p className={`${handwritten} text-sm sm:text-base md:text-lg text-gray-700 leading-relaxed mt-1 line-clamp-[8] sm:line-clamp-[10]`}>
                   {page.mainContent}
                 </p>
               </motion.div>
@@ -501,23 +501,23 @@ function CanvasPageView({
                   initial={{ y: 20, opacity: 0 }}
                   animate={{ y: 0, opacity: 1 }}
                   transition={{ delay: 0.3 }}
-                  className="bg-white border-2 border-gray-200 rounded-lg p-4 shadow-lg transform rotate-1"
+                  className="bg-white border sm:border-2 border-gray-200 rounded-lg p-2.5 sm:p-3 md:p-4 shadow-lg transform sm:rotate-1 overflow-hidden"
                 >
-                  <h3 className={`${handwritten} text-xl text-gray-800 mb-2 flex items-center gap-2`}>
-                    <Star className="w-4 h-4 text-yellow-500" />
+                  <h3 className={`${handwritten} text-base sm:text-lg md:text-xl text-gray-800 mb-1.5 sm:mb-2 flex items-center gap-1.5 sm:gap-2`}>
+                    <Star className="w-3 h-3 sm:w-4 sm:h-4 text-yellow-500" />
                     Key Points
                   </h3>
-                  <ul className="space-y-2">
-                    {page.bulletPoints.slice(0, 4).map((point, i) => (
+                  <ul className="space-y-1 sm:space-y-1.5 md:space-y-2">
+                    {page.bulletPoints.slice(0, 3).map((point, i) => (
                       <motion.li
                         key={i}
                         initial={{ x: -20, opacity: 0 }}
                         animate={{ x: 0, opacity: 1 }}
                         transition={{ delay: 0.4 + i * 0.1 }}
-                        className="flex items-start gap-2"
+                        className="flex items-start gap-1.5 sm:gap-2"
                       >
-                        <CircleDot className="w-3 h-3 text-[var(--primary)] mt-1.5 flex-shrink-0" />
-                        <span className="text-sm text-gray-700">{point}</span>
+                        <CircleDot className="w-2.5 h-2.5 sm:w-3 sm:h-3 text-[var(--primary)] mt-1 sm:mt-1.5 flex-shrink-0" />
+                        <span className="text-xs sm:text-sm text-gray-700 line-clamp-2">{point}</span>
                       </motion.li>
                     ))}
                   </ul>
@@ -525,19 +525,19 @@ function CanvasPageView({
               )}
             </div>
 
-            {/* Fun fact */}
+            {/* Fun fact - only show on larger screens or if no bullet points */}
             {page.funFact && (
               <motion.div
                 initial={{ scale: 0.9, opacity: 0 }}
                 animate={{ scale: 1, opacity: 1 }}
                 transition={{ delay: 0.5 }}
-                className="mt-4 bg-gradient-to-r from-purple-100 to-pink-100 border-2 border-purple-200 rounded-lg p-3 max-w-md mx-auto transform rotate-1"
+                className="mt-2 sm:mt-3 md:mt-4 bg-gradient-to-r from-purple-100 to-pink-100 border sm:border-2 border-purple-200 rounded-lg p-2 sm:p-3 max-w-md mx-auto transform sm:rotate-1 flex-shrink-0"
               >
-                <div className="flex items-center gap-2 mb-1">
-                  <Zap className="w-4 h-4 text-purple-600" />
-                  <span className={`${handwritten} text-base font-bold text-purple-800`}>Did you know?</span>
+                <div className="flex items-center gap-1.5 sm:gap-2 mb-0.5 sm:mb-1">
+                  <Zap className="w-3 h-3 sm:w-4 sm:h-4 text-purple-600" />
+                  <span className={`${handwritten} text-sm sm:text-base font-bold text-purple-800`}>Did you know?</span>
                 </div>
-                <p className="text-sm text-purple-700">{page.funFact}</p>
+                <p className="text-xs sm:text-sm text-purple-700 line-clamp-2">{page.funFact}</p>
               </motion.div>
             )}
           </div>
@@ -675,15 +675,15 @@ function CanvasPageView({
           </div>
         )}
 
-        {/* PIONEER PAGE */}
+        {/* PIONEER PAGE - Responsive WYSIWYG */}
         {page.type === 'pioneer' && page.pioneers && (
-          <div>
+          <div className="h-full flex flex-col">
             <motion.h2
               initial={{ y: -20, opacity: 0 }}
               animate={{ y: 0, opacity: 1 }}
-              className={`${handwritten} text-3xl text-center text-gray-800 mb-2`}
+              className={`${handwritten} text-xl sm:text-2xl md:text-3xl text-center text-gray-800 mb-1 sm:mb-2 flex-shrink-0`}
             >
-              <Heart className="w-8 h-8 inline-block text-pink-500 mr-2" />
+              <Heart className="w-5 h-5 sm:w-6 sm:h-6 md:w-8 md:h-8 inline-block text-pink-500 mr-1 sm:mr-2" />
               {page.title}
             </motion.h2>
 
@@ -691,12 +691,12 @@ function CanvasPageView({
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               transition={{ delay: 0.2 }}
-              className="text-center text-gray-600 mb-4 text-sm"
+              className="text-center text-gray-600 mb-2 sm:mb-3 md:mb-4 text-xs sm:text-sm flex-shrink-0"
             >
               {page.mainContent}
             </motion.p>
 
-            <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-4">
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-2 sm:gap-3 md:gap-4 flex-1 min-h-0">
               {page.pioneers.slice(0, 3).map((pioneer, i) => (
                 <motion.button
                   key={pioneer.id}
@@ -704,49 +704,49 @@ function CanvasPageView({
                   animate={{ y: 0, opacity: 1 }}
                   transition={{ delay: 0.3 + i * 0.1 }}
                   onClick={() => onPioneerClick(pioneer)}
-                  className="bg-white rounded-lg shadow-lg p-4 border-2 border-gray-100 hover:border-pink-300 hover:shadow-xl transition-all transform hover:scale-105 text-left"
-                  style={{ transform: `rotate(${(i % 3 - 1) * 2}deg)` }}
+                  className="bg-white rounded-lg shadow-lg p-2.5 sm:p-3 md:p-4 border sm:border-2 border-gray-100 hover:border-pink-300 hover:shadow-xl transition-all transform hover:scale-[1.02] text-left"
+                  style={{ transform: `rotate(${(i % 3 - 1) * 1}deg)` }}
                 >
-                  <div className="flex items-center gap-3 mb-2">
-                    <div className="w-12 h-12 rounded-full bg-gradient-to-br from-pink-100 to-purple-100 flex items-center justify-center overflow-hidden border-2 border-white shadow-inner flex-shrink-0">
+                  <div className="flex items-center gap-2 sm:gap-3 mb-1.5 sm:mb-2">
+                    <div className="w-8 h-8 sm:w-10 sm:h-10 md:w-12 md:h-12 rounded-full bg-gradient-to-br from-pink-100 to-purple-100 flex items-center justify-center overflow-hidden border-2 border-white shadow-inner flex-shrink-0">
                       {pioneer.portrait ? (
                         <img src={pioneer.portrait} alt={pioneer.name} className="w-full h-full object-cover" />
                       ) : (
-                        <span className={`${handwritten} text-lg text-gray-600`}>
+                        <span className={`${handwritten} text-sm sm:text-base md:text-lg text-gray-600`}>
                           {pioneer.name.split(' ').map(n => n[0]).join('')}
                         </span>
                       )}
                     </div>
-                    <div>
-                      <h3 className={`${handwritten} text-lg font-bold text-gray-800`}>{pioneer.name}</h3>
-                      <p className="text-xs text-gray-500">{pioneer.title}</p>
+                    <div className="min-w-0">
+                      <h3 className={`${handwritten} text-sm sm:text-base md:text-lg font-bold text-gray-800 truncate`}>{pioneer.name}</h3>
+                      <p className="text-[10px] sm:text-xs text-gray-500 truncate">{pioneer.title}</p>
                     </div>
                   </div>
-                  <p className="text-xs text-gray-600 line-clamp-2">{pioneer.shortBio}</p>
-                  <p className="text-xs text-pink-600 mt-1 font-medium">Click to learn more →</p>
+                  <p className="text-[10px] sm:text-xs text-gray-600 line-clamp-2">{pioneer.shortBio}</p>
+                  <p className="text-[10px] sm:text-xs text-pink-600 mt-1 font-medium">Click to learn more →</p>
                 </motion.button>
               ))}
             </div>
           </div>
         )}
 
-        {/* SUMMARY PAGE */}
+        {/* SUMMARY PAGE - Responsive WYSIWYG */}
         {page.type === 'summary' && (
-          <div className="text-center">
+          <div className="h-full flex flex-col items-center justify-center text-center">
             <motion.div
               initial={{ scale: 0 }}
               animate={{ scale: 1 }}
               transition={{ type: 'spring' }}
-              className="mb-4"
+              className="mb-2 sm:mb-3 md:mb-4 flex-shrink-0"
             >
-              <CheckCircle2 className="w-14 h-14 mx-auto text-green-500" />
+              <CheckCircle2 className="w-10 h-10 sm:w-12 sm:h-12 md:w-14 md:h-14 mx-auto text-green-500" />
             </motion.div>
 
-            <h2 className={`${handwritten} text-3xl text-gray-800 mb-2`}>
+            <h2 className={`${handwritten} text-xl sm:text-2xl md:text-3xl text-gray-800 mb-1 sm:mb-2 flex-shrink-0`}>
               {page.title}
             </h2>
 
-            <p className={`${handwritten} text-xl text-gray-600 mb-4`}>
+            <p className={`${handwritten} text-base sm:text-lg md:text-xl text-gray-600 mb-2 sm:mb-3 md:mb-4 flex-shrink-0`}>
               {page.mainContent}
             </p>
 
@@ -755,20 +755,20 @@ function CanvasPageView({
                 initial={{ y: 20, opacity: 0 }}
                 animate={{ y: 0, opacity: 1 }}
                 transition={{ delay: 0.3 }}
-                className="bg-gradient-to-br from-green-50 to-teal-50 border-2 border-green-200 rounded-xl p-4 max-w-xl mx-auto text-left"
+                className="bg-gradient-to-br from-green-50 to-teal-50 border sm:border-2 border-green-200 rounded-lg sm:rounded-xl p-3 sm:p-4 max-w-xl mx-auto text-left flex-shrink-0"
               >
-                <h3 className={`${handwritten} text-xl text-green-800 mb-3`}>Remember these points:</h3>
-                <ul className="space-y-2">
+                <h3 className={`${handwritten} text-base sm:text-lg md:text-xl text-green-800 mb-2 sm:mb-3`}>Remember these points:</h3>
+                <ul className="space-y-1.5 sm:space-y-2">
                   {page.bulletPoints.slice(0, 3).map((point, i) => (
                     <motion.li
                       key={i}
                       initial={{ x: -20, opacity: 0 }}
                       animate={{ x: 0, opacity: 1 }}
                       transition={{ delay: 0.4 + i * 0.1 }}
-                      className="flex items-start gap-2"
+                      className="flex items-start gap-1.5 sm:gap-2"
                     >
-                      <CheckCircle2 className="w-4 h-4 text-green-500 mt-0.5 flex-shrink-0" />
-                      <span className="text-sm text-gray-700">{point}</span>
+                      <CheckCircle2 className="w-3 h-3 sm:w-4 sm:h-4 text-green-500 mt-0.5 flex-shrink-0" />
+                      <span className="text-xs sm:text-sm text-gray-700 line-clamp-2">{point}</span>
                     </motion.li>
                   ))}
                 </ul>
@@ -780,10 +780,10 @@ function CanvasPageView({
                 initial={{ y: 20, opacity: 0 }}
                 animate={{ y: 0, opacity: 1 }}
                 transition={{ delay: 0.6 }}
-                className="mt-4 inline-flex items-center gap-2 px-4 py-2 bg-yellow-100 border-2 border-yellow-300 rounded-full"
+                className="mt-2 sm:mt-3 md:mt-4 inline-flex items-center gap-1.5 sm:gap-2 px-3 sm:px-4 py-1.5 sm:py-2 bg-yellow-100 border sm:border-2 border-yellow-300 rounded-full flex-shrink-0"
               >
-                <Star className="w-5 h-5 text-yellow-600" />
-                <span className={`${handwritten} text-base text-yellow-800`}>
+                <Star className="w-4 h-4 sm:w-5 sm:h-5 text-yellow-600 flex-shrink-0" />
+                <span className={`${handwritten} text-sm sm:text-base text-yellow-800 line-clamp-1`}>
                   {page.keyTakeaway}
                 </span>
               </motion.div>
@@ -792,32 +792,32 @@ function CanvasPageView({
         )}
       </div>
 
-      {/* Navigation controls inside page */}
-      <div className="flex items-center justify-between px-4 py-4 mt-auto">
+      {/* Navigation controls inside page - Responsive */}
+      <div className="flex items-center justify-between px-2 sm:px-4 py-2 sm:py-3 md:py-4 mt-auto flex-shrink-0 bg-white/50">
         <button
           onClick={onPrevious}
           disabled={!canGoBack}
-          className={`flex items-center gap-2 px-4 py-2 rounded-full font-medium transition-all ${
+          className={`flex items-center gap-1 sm:gap-2 px-2.5 sm:px-4 py-1.5 sm:py-2 rounded-full text-xs sm:text-sm font-medium transition-all ${
             canGoBack
               ? 'bg-gray-100 text-gray-700 hover:bg-gray-200'
               : 'bg-gray-50 text-gray-300 cursor-not-allowed'
           }`}
         >
-          <ChevronLeft className="w-4 h-4" />
-          Previous
+          <ChevronLeft className="w-3 h-3 sm:w-4 sm:h-4" />
+          <span className="hidden sm:inline">Previous</span>
         </button>
 
-        {/* Page dots */}
-        <div className="flex items-center gap-1.5">
+        {/* Page dots - compact on mobile */}
+        <div className="flex items-center gap-1 sm:gap-1.5">
           {Array.from({ length: totalPages }).map((_, i) => (
             <div
               key={i}
-              className={`h-1.5 rounded-full transition-all ${
+              className={`h-1 sm:h-1.5 rounded-full transition-all ${
                 i === pageNumber - 1
-                  ? 'w-6 bg-[var(--primary)]'
+                  ? 'w-4 sm:w-6 bg-[var(--primary)]'
                   : i < pageNumber - 1
-                  ? 'w-1.5 bg-green-400'
-                  : 'w-1.5 bg-gray-300'
+                  ? 'w-1 sm:w-1.5 bg-green-400'
+                  : 'w-1 sm:w-1.5 bg-gray-300'
               }`}
             />
           ))}
@@ -825,10 +825,11 @@ function CanvasPageView({
 
         <button
           onClick={onNext}
-          className="flex items-center gap-2 px-4 py-2 rounded-full font-medium bg-[var(--primary)] text-white hover:opacity-90 transition-all"
+          className="flex items-center gap-1 sm:gap-2 px-2.5 sm:px-4 py-1.5 sm:py-2 rounded-full text-xs sm:text-sm font-medium bg-[var(--primary)] text-white hover:opacity-90 transition-all"
         >
-          {nextLabel}
-          <ChevronRight className="w-4 h-4" />
+          <span className="hidden sm:inline">{nextLabel}</span>
+          <span className="sm:hidden">{nextLabel === 'Quiz' ? 'Quiz' : 'Next'}</span>
+          <ChevronRight className="w-3 h-3 sm:w-4 sm:h-4" />
         </button>
       </div>
     </motion.div>
@@ -953,37 +954,37 @@ export function LearningCanvas({
     setShowPioneerModal(true)
   }, [])
 
-  // Welcome screen
+  // Welcome screen - WYSIWYG viewport fit
   if (!started) {
     return (
-      <div className="min-h-screen bg-gradient-to-br from-amber-50 via-white to-blue-50 flex items-center justify-center p-4">
+      <div className="h-full flex items-center justify-center bg-gradient-to-br from-amber-50 via-white to-blue-50 p-4">
         <motion.div
           initial={{ scale: 0.9, opacity: 0 }}
           animate={{ scale: 1, opacity: 1 }}
-          className="bg-white rounded-3xl shadow-2xl p-8 md:p-12 max-w-2xl text-center relative"
+          className="bg-white rounded-2xl sm:rounded-3xl shadow-2xl p-5 sm:p-8 md:p-10 max-w-xl sm:max-w-2xl text-center relative w-full"
         >
-          <div className="absolute -top-4 left-1/4"><Pin className="w-8 h-8 text-red-500 transform -rotate-12" /></div>
-          <div className="absolute -top-4 right-1/4"><Pin className="w-8 h-8 text-blue-500 transform rotate-12" /></div>
+          <div className="absolute -top-3 sm:-top-4 left-1/4"><Pin className="w-6 h-6 sm:w-8 sm:h-8 text-red-500 transform -rotate-12" /></div>
+          <div className="absolute -top-3 sm:-top-4 right-1/4"><Pin className="w-6 h-6 sm:w-8 sm:h-8 text-blue-500 transform rotate-12" /></div>
 
-          <Sparkles className="w-16 h-16 mx-auto text-[var(--primary)] mb-6" />
+          <Sparkles className="w-10 h-10 sm:w-12 sm:h-12 md:w-16 md:h-16 mx-auto text-[var(--primary)] mb-3 sm:mb-4 md:mb-6" />
 
-          <h1 className={`${handwritten} text-5xl text-gray-800 mb-4`}>
+          <h1 className={`${handwritten} text-3xl sm:text-4xl md:text-5xl text-gray-800 mb-2 sm:mb-3 md:mb-4`}>
             {module.title}
           </h1>
 
-          <p className="text-gray-600 mb-6">{levelContent.description}</p>
+          <p className="text-sm sm:text-base text-gray-600 mb-4 sm:mb-5 md:mb-6 line-clamp-3">{levelContent.description}</p>
 
-          <div className="flex items-center justify-center gap-6 mb-8 text-sm text-gray-500">
-            <span className="flex items-center gap-2">
-              <BookOpen className="w-5 h-5" />
+          <div className="flex items-center justify-center gap-3 sm:gap-4 md:gap-6 mb-4 sm:mb-6 md:mb-8 text-xs sm:text-sm text-gray-500 flex-wrap">
+            <span className="flex items-center gap-1 sm:gap-2">
+              <BookOpen className="w-4 h-4 sm:w-5 sm:h-5" />
               {totalLessons} lessons
             </span>
-            <span className="flex items-center gap-2">
-              <Clock className="w-5 h-5" />
+            <span className="flex items-center gap-1 sm:gap-2">
+              <Clock className="w-4 h-4 sm:w-5 sm:h-5" />
               {levelContent.duration} min
             </span>
-            <span className="flex items-center gap-2">
-              <GraduationCap className="w-5 h-5" />
+            <span className="flex items-center gap-1 sm:gap-2">
+              <GraduationCap className="w-4 h-4 sm:w-5 sm:h-5" />
               {LEARNING_LEVELS[selectedLevel].label}
             </span>
           </div>
@@ -991,9 +992,9 @@ export function LearningCanvas({
           <Button
             size="lg"
             onClick={() => setStarted(true)}
-            className="text-xl px-8 py-4 rounded-xl font-bold shadow-xl"
+            className="text-base sm:text-lg md:text-xl px-6 sm:px-8 py-3 sm:py-4 rounded-xl font-bold shadow-xl"
           >
-            <Play className="w-6 h-6 mr-2" />
+            <Play className="w-5 h-5 sm:w-6 sm:h-6 mr-2" />
             Start Learning
           </Button>
         </motion.div>
@@ -1001,32 +1002,33 @@ export function LearningCanvas({
     )
   }
 
-  // Quiz screen
+  // Quiz screen - WYSIWYG viewport fit
   if (showQuiz) {
     return (
-      <div className="min-h-screen bg-gradient-to-br from-amber-50 via-white to-blue-50 py-12">
-        <div className="container mx-auto px-4 max-w-3xl">
+      <div className="h-full flex flex-col bg-gradient-to-br from-amber-50 via-white to-blue-50 p-3 sm:p-4">
+        <div className="container mx-auto max-w-3xl flex-1 flex flex-col min-h-0">
           <motion.div
-            className="bg-white rounded-3xl shadow-2xl p-8"
+            className="bg-white rounded-2xl sm:rounded-3xl shadow-2xl p-4 sm:p-6 md:p-8 flex-1 flex flex-col min-h-0"
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
           >
-            <div className="text-center mb-8">
-              <Trophy className="w-16 h-16 mx-auto text-yellow-500 mb-4" />
-              <h2 className={`${handwritten} text-4xl text-gray-800 mb-2`}>
+            <div className="text-center mb-3 sm:mb-4 md:mb-6 flex-shrink-0">
+              <Trophy className="w-10 h-10 sm:w-12 sm:h-12 md:w-16 md:h-16 mx-auto text-yellow-500 mb-2 sm:mb-3" />
+              <h2 className={`${handwritten} text-2xl sm:text-3xl md:text-4xl text-gray-800`}>
                 Knowledge Check!
               </h2>
             </div>
 
-            <div className="space-y-4">
+            {/* Scrollable questions area */}
+            <div className="flex-1 overflow-y-auto min-h-0 space-y-3 sm:space-y-4 pr-1">
               {levelContent.quiz.questions.map((q, idx) => (
-                <div key={q.id} className="bg-gray-50 rounded-xl p-4">
-                  <p className="font-bold text-gray-800 mb-3">{idx + 1}. {q.question}</p>
-                  <div className="space-y-2">
+                <div key={q.id} className="bg-gray-50 rounded-lg sm:rounded-xl p-3 sm:p-4">
+                  <p className="font-bold text-gray-800 mb-2 sm:mb-3 text-sm sm:text-base">{idx + 1}. {q.question}</p>
+                  <div className="space-y-1.5 sm:space-y-2">
                     {q.options.map((opt, optIdx) => (
                       <button
                         key={optIdx}
-                        className="w-full text-left p-3 rounded-lg border-2 border-gray-200 hover:border-[var(--primary)] hover:bg-[color-mix(in_srgb,var(--primary)_5%,white)] transition-all"
+                        className="w-full text-left p-2 sm:p-3 rounded-lg border-2 border-gray-200 hover:border-[var(--primary)] hover:bg-[color-mix(in_srgb,var(--primary)_5%,white)] transition-all text-xs sm:text-sm"
                       >
                         {opt}
                       </button>
@@ -1036,15 +1038,15 @@ export function LearningCanvas({
               ))}
             </div>
 
-            <div className="mt-8 flex justify-between">
-              <Button variant="outline" onClick={() => setShowQuiz(false)}>
-                <ArrowLeft className="w-4 h-4 mr-2" />
+            <div className="mt-4 sm:mt-6 flex justify-between flex-shrink-0 pt-2 border-t border-gray-100">
+              <Button variant="outline" onClick={() => setShowQuiz(false)} className="text-xs sm:text-sm">
+                <ArrowLeft className="w-3 h-3 sm:w-4 sm:h-4 mr-1 sm:mr-2" />
                 Back
               </Button>
               <Link href={`/learn/topics/${topicSlug}?level=${selectedLevel.toLowerCase()}`}>
-                <Button>
+                <Button className="text-xs sm:text-sm">
                   Continue
-                  <ChevronRight className="w-4 h-4 ml-2" />
+                  <ChevronRight className="w-3 h-3 sm:w-4 sm:h-4 ml-1 sm:ml-2" />
                 </Button>
               </Link>
             </div>

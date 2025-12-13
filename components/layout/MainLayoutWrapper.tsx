@@ -55,6 +55,22 @@ export function MainLayoutWrapper({
     )
   }
 
+  // Full-screen pages (messages, notifications) - no footer, viewport height with internal scroll only
+  if (isFullScreenPage) {
+    return (
+      <>
+        {skyBackground}
+        <div className="relative z-10 h-screen flex flex-col overflow-hidden">
+          <Header />
+          <div className="flex-1 overflow-hidden">
+            {children}
+          </div>
+        </div>
+        {aiAssistant}
+      </>
+    )
+  }
+
   // Regular pages get all the bells and whistles
   return (
     <>
@@ -63,7 +79,7 @@ export function MainLayoutWrapper({
       <div className="relative z-10">
         <Header />
         {children}
-        {!isFullScreenPage && <Footer />}
+        <Footer />
       </div>
       {aiAssistant}
     </>
