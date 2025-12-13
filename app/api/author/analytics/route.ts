@@ -213,7 +213,7 @@ export async function GET(request: NextRequest) {
           totalViews,
           totalReads,
           totalTimeSpent,
-          avgReadCompletion,
+          avgReadCompletion: avgCompletion,
           avgRating,
           totalReviews,
           totalComments,
