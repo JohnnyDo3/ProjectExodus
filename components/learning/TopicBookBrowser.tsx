@@ -5,7 +5,7 @@ import { motion, AnimatePresence } from 'framer-motion'
 import Link from 'next/link'
 import {
   BookOpen, ChevronRight, ChevronDown, Clock,
-  CheckCircle2, Bookmark, GraduationCap, FolderOpen
+  CheckCircle2, Bookmark, GraduationCap, BookMarked
 } from 'lucide-react'
 import { Module, CoreTopic, getTopic } from '@/data/modules'
 import { LearningLevel, LEARNING_LEVELS } from '@/types/learning'
@@ -13,14 +13,15 @@ import { LearningLevel, LEARNING_LEVELS } from '@/types/learning'
 // Handwritten font
 const handwritten = "font-['Caveat',_cursive]"
 
-// Sub-topic color themes
-const SUBTOPIC_COLORS = [
-  { bg: 'bg-amber-50', border: 'border-amber-300', text: 'text-amber-900', accent: 'bg-amber-600', light: 'bg-amber-100' },
-  { bg: 'bg-emerald-50', border: 'border-emerald-300', text: 'text-emerald-900', accent: 'bg-emerald-600', light: 'bg-emerald-100' },
-  { bg: 'bg-blue-50', border: 'border-blue-300', text: 'text-blue-900', accent: 'bg-blue-600', light: 'bg-blue-100' },
-  { bg: 'bg-purple-50', border: 'border-purple-300', text: 'text-purple-900', accent: 'bg-purple-600', light: 'bg-purple-100' },
-  { bg: 'bg-rose-50', border: 'border-rose-300', text: 'text-rose-900', accent: 'bg-rose-600', light: 'bg-rose-100' },
-  { bg: 'bg-cyan-50', border: 'border-cyan-300', text: 'text-cyan-900', accent: 'bg-cyan-600', light: 'bg-cyan-100' },
+// Chapter color themes
+const CHAPTER_COLORS = [
+  { bg: 'bg-amber-50', border: 'border-amber-300', text: 'text-amber-900', accent: 'bg-amber-700', light: 'bg-amber-100' },
+  { bg: 'bg-emerald-50', border: 'border-emerald-300', text: 'text-emerald-900', accent: 'bg-emerald-700', light: 'bg-emerald-100' },
+  { bg: 'bg-blue-50', border: 'border-blue-300', text: 'text-blue-900', accent: 'bg-blue-700', light: 'bg-blue-100' },
+  { bg: 'bg-purple-50', border: 'border-purple-300', text: 'text-purple-900', accent: 'bg-purple-700', light: 'bg-purple-100' },
+  { bg: 'bg-rose-50', border: 'border-rose-300', text: 'text-rose-900', accent: 'bg-rose-700', light: 'bg-rose-100' },
+  { bg: 'bg-cyan-50', border: 'border-cyan-300', text: 'text-cyan-900', accent: 'bg-cyan-700', light: 'bg-cyan-100' },
+  { bg: 'bg-orange-50', border: 'border-orange-300', text: 'text-orange-900', accent: 'bg-orange-700', light: 'bg-orange-100' },
 ]
 
 interface TopicBookProps {
@@ -29,50 +30,52 @@ interface TopicBookProps {
   completedModules?: string[]
 }
 
-// Group modules by their category (sub-topic)
-function groupModulesBySubtopic(modules: Module[]): { subtopic: string; modules: Module[] }[] {
+// Group modules by their category (chapters)
+function groupModulesIntoChapters(modules: Module[]): { chapter: string; lessons: Module[] }[] {
   const groups: Record<string, Module[]> = {}
 
   modules.forEach(module => {
-    const subtopic = module.category || 'General'
-    if (!groups[subtopic]) {
-      groups[subtopic] = []
+    const chapter = module.category || 'General'
+    if (!groups[chapter]) {
+      groups[chapter] = []
     }
-    groups[subtopic].push(module)
+    groups[chapter].push(module)
   })
 
-  // Convert to array and sort alphabetically by subtopic name
+  // Convert to array and sort alphabetically by chapter name
   return Object.entries(groups)
-    .map(([subtopic, mods]) => ({ subtopic, modules: mods }))
-    .sort((a, b) => a.subtopic.localeCompare(b.subtopic))
+    .map(([chapter, lessons]) => ({ chapter, lessons }))
+    .sort((a, b) => a.chapter.localeCompare(b.chapter))
 }
 
-// Sub-topic Section Component
-function SubtopicSection({
-  subtopic,
-  modules,
-  subtopicIndex,
+// Chapter Section Component
+function ChapterSection({
+  chapter,
+  chapterNumber,
+  lessons,
+  chapterIndex,
   selectedLevel,
   topicSlug,
   completedModules = [],
   isExpanded,
   onToggle
 }: {
-  subtopic: string
-  modules: Module[]
-  subtopicIndex: number
+  chapter: string
+  chapterNumber: number
+  lessons: Module[]
+  chapterIndex: number
   selectedLevel: LearningLevel
   topicSlug: CoreTopic
   completedModules: string[]
   isExpanded: boolean
   onToggle: () => void
 }) {
-  const colors = SUBTOPIC_COLORS[subtopicIndex % SUBTOPIC_COLORS.length]
+  const colors = CHAPTER_COLORS[chapterIndex % CHAPTER_COLORS.length]
 
-  // Calculate progress for this subtopic
-  const completedCount = modules.filter(m => completedModules.includes(m.id)).length
-  const totalLessons = modules.reduce((acc, m) => acc + m.lessons.length, 0)
-  const progress = modules.length > 0 ? Math.round((completedCount / modules.length) * 100) : 0
+  // Calculate progress for this chapter
+  const completedCount = lessons.filter(m => completedModules.includes(m.id)).length
+  const totalPages = lessons.reduce((acc, m) => acc + m.lessons.length, 0)
+  const progress = lessons.length > 0 ? Math.round((completedCount / lessons.length) * 100) : 0
 
   return (
     <motion.div
@@ -81,7 +84,7 @@ function SubtopicSection({
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
     >
-      {/* Sub-topic Header */}
+      {/* Chapter Header */}
       <button
         onClick={onToggle}
         className={`w-full ${colors.bg} ${colors.border} border-2 rounded-xl shadow-md hover:shadow-lg transition-all overflow-hidden`}
@@ -89,15 +92,18 @@ function SubtopicSection({
         <div className="p-4">
           <div className="flex items-start justify-between">
             <div className="flex items-center gap-3">
-              <div className={`w-10 h-10 ${colors.accent} rounded-lg flex items-center justify-center`}>
-                <FolderOpen className="w-5 h-5 text-white" />
+              <div className={`w-12 h-12 ${colors.accent} rounded-lg flex items-center justify-center flex-shrink-0`}>
+                <span className="text-white font-bold text-lg">{chapterNumber}</span>
               </div>
               <div className="text-left">
+                <p className={`text-xs font-bold uppercase tracking-wider ${colors.text} opacity-60 mb-0.5`}>
+                  Chapter {chapterNumber}
+                </p>
                 <h3 className={`${handwritten} text-xl sm:text-2xl ${colors.text}`}>
-                  {subtopic}
+                  {chapter}
                 </h3>
-                <p className="text-xs sm:text-sm text-gray-600">
-                  {modules.length} module{modules.length !== 1 ? 's' : ''} • {totalLessons} lesson{totalLessons !== 1 ? 's' : ''}
+                <p className="text-xs sm:text-sm text-gray-600 mt-0.5">
+                  {lessons.length} lesson{lessons.length !== 1 ? 's' : ''} • {totalPages} page{totalPages !== 1 ? 's' : ''}
                 </p>
               </div>
             </div>
@@ -122,7 +128,7 @@ function SubtopicSection({
         </div>
       </button>
 
-      {/* Expanded Modules */}
+      {/* Expanded Lessons */}
       <AnimatePresence>
         {isExpanded && (
           <motion.div
@@ -134,45 +140,45 @@ function SubtopicSection({
           >
             <div className={`mt-2 ${colors.light} ${colors.border} border-2 rounded-xl p-3 sm:p-4`}>
               <div className="grid gap-3">
-                {modules.map((module, moduleIdx) => {
-                  const isModuleCompleted = completedModules.includes(module.id)
-                  const moduleLessons = module.lessons.length
-                  const moduleDuration = module.duration[selectedLevel]
+                {lessons.map((lesson, lessonIdx) => {
+                  const isLessonCompleted = completedModules.includes(lesson.id)
+                  const lessonPages = lesson.lessons.length
+                  const lessonDuration = lesson.duration[selectedLevel]
 
                   return (
                     <Link
-                      key={module.id}
-                      href={`/learn/modules/${module.slug}?level=${selectedLevel.toLowerCase()}&topic=${topicSlug}`}
+                      key={lesson.id}
+                      href={`/learn/modules/${lesson.slug}?level=${selectedLevel.toLowerCase()}&topic=${topicSlug}`}
                       className={`${colors.bg} border ${colors.border} rounded-lg p-3 sm:p-4 hover:shadow-md transition-all group`}
                     >
                       <div className="flex items-start gap-3">
-                        {/* Module number badge */}
-                        <div className={`w-8 h-8 ${colors.accent} rounded-lg text-white flex items-center justify-center font-bold text-sm flex-shrink-0`}>
-                          {moduleIdx + 1}
+                        {/* Lesson number badge */}
+                        <div className={`w-8 h-8 ${colors.accent} rounded-full text-white flex items-center justify-center font-bold text-sm flex-shrink-0`}>
+                          {chapterNumber}.{lessonIdx + 1}
                         </div>
 
                         <div className="flex-1 min-w-0">
                           <div className="flex items-center gap-2 mb-1">
-                            <h4 className={`${handwritten} text-lg sm:text-xl font-bold ${colors.text} group-hover:underline truncate`}>
-                              {module.title}
+                            <h4 className={`${handwritten} text-lg sm:text-xl font-bold ${colors.text} group-hover:underline`}>
+                              {lesson.title}
                             </h4>
-                            {isModuleCompleted && (
+                            {isLessonCompleted && (
                               <CheckCircle2 className="w-4 h-4 text-green-500 flex-shrink-0" />
                             )}
                           </div>
 
                           <p className="text-xs sm:text-sm text-gray-600 line-clamp-2 mb-2">
-                            {module.description[selectedLevel]}
+                            {lesson.description[selectedLevel]}
                           </p>
 
                           <div className="flex items-center gap-3 text-xs text-gray-500">
                             <span className="flex items-center gap-1">
                               <BookOpen className="w-3 h-3" />
-                              {moduleLessons} lesson{moduleLessons !== 1 ? 's' : ''}
+                              {lessonPages} page{lessonPages !== 1 ? 's' : ''}
                             </span>
                             <span className="flex items-center gap-1">
                               <Clock className="w-3 h-3" />
-                              {moduleDuration} min
+                              {lessonDuration} min
                             </span>
                           </div>
                         </div>
@@ -193,31 +199,31 @@ function SubtopicSection({
 
 // Main Topic Book Browser
 export function TopicBookBrowser({ topicSlug, selectedLevel, completedModules = [] }: TopicBookProps) {
-  const [expandedSubtopic, setExpandedSubtopic] = useState<string | null>(null)
+  const [expandedChapter, setExpandedChapter] = useState<string | null>(null)
 
   const topic = getTopic(topicSlug)
   if (!topic) return null
 
-  const subtopicGroups = groupModulesBySubtopic(topic.modules)
+  const chapters = groupModulesIntoChapters(topic.modules)
 
   // Calculate total stats
-  const totalModules = topic.modules.length
-  const totalLessons = topic.modules.reduce((acc, m) => acc + m.lessons.length, 0)
-  const completedModuleCount = completedModules.filter(id => topic.modules.some(m => m.id === id)).length
-  const progressPercent = totalModules > 0 ? Math.round((completedModuleCount / totalModules) * 100) : 0
+  const totalLessons = topic.modules.length
+  const totalPages = topic.modules.reduce((acc, m) => acc + m.lessons.length, 0)
+  const completedLessonCount = completedModules.filter(id => topic.modules.some(m => m.id === id)).length
+  const progressPercent = totalLessons > 0 ? Math.round((completedLessonCount / totalLessons) * 100) : 0
 
   return (
     <div className="space-y-4 sm:space-y-6">
       {/* Header */}
       <div className="text-center mb-4 sm:mb-6">
         <div className="flex items-center justify-center gap-2 mb-2">
-          <BookOpen className="w-6 h-6 sm:w-8 sm:h-8 text-[var(--primary)]" />
+          <BookMarked className="w-6 h-6 sm:w-8 sm:h-8 text-[var(--primary)]" />
           <h2 className={`${handwritten} text-2xl sm:text-3xl md:text-4xl text-gray-800 dark:text-gray-200`}>
             {topic.title}
           </h2>
         </div>
         <p className="text-sm sm:text-base text-gray-600 dark:text-gray-400">
-          {subtopicGroups.length} sub-topic{subtopicGroups.length !== 1 ? 's' : ''} • {totalModules} module{totalModules !== 1 ? 's' : ''} • {totalLessons} lesson{totalLessons !== 1 ? 's' : ''}
+          {chapters.length} chapter{chapters.length !== 1 ? 's' : ''} • {totalLessons} lesson{totalLessons !== 1 ? 's' : ''} • {totalPages} page{totalPages !== 1 ? 's' : ''}
         </p>
         <div className="flex items-center justify-center gap-2 mt-2 text-xs sm:text-sm text-gray-500">
           <GraduationCap className="w-4 h-4" />
@@ -225,20 +231,21 @@ export function TopicBookBrowser({ topicSlug, selectedLevel, completedModules = 
         </div>
       </div>
 
-      {/* Sub-topic Sections */}
+      {/* Chapter Sections */}
       <div className="grid gap-3 sm:gap-4">
-        {subtopicGroups.map((group, idx) => (
-          <SubtopicSection
-            key={group.subtopic}
-            subtopic={group.subtopic}
-            modules={group.modules}
-            subtopicIndex={idx}
+        {chapters.map((group, idx) => (
+          <ChapterSection
+            key={group.chapter}
+            chapter={group.chapter}
+            chapterNumber={idx + 1}
+            lessons={group.lessons}
+            chapterIndex={idx}
             selectedLevel={selectedLevel}
             topicSlug={topicSlug}
             completedModules={completedModules}
-            isExpanded={expandedSubtopic === group.subtopic}
-            onToggle={() => setExpandedSubtopic(
-              expandedSubtopic === group.subtopic ? null : group.subtopic
+            isExpanded={expandedChapter === group.chapter}
+            onToggle={() => setExpandedChapter(
+              expandedChapter === group.chapter ? null : group.chapter
             )}
           />
         ))}
@@ -258,11 +265,11 @@ export function TopicBookBrowser({ topicSlug, selectedLevel, completedModules = 
             />
           </div>
           <span className="text-xs sm:text-sm font-bold text-amber-800 dark:text-amber-200 whitespace-nowrap">
-            {completedModuleCount} / {totalModules}
+            {completedLessonCount} / {totalLessons}
           </span>
         </div>
         <p className="text-xs text-amber-700 dark:text-amber-300 mt-2">
-          {progressPercent === 100 ? 'Congratulations! You have completed all modules.' :
+          {progressPercent === 100 ? 'Congratulations! You have completed all lessons.' :
            progressPercent > 0 ? `${100 - progressPercent}% remaining to complete this topic.` :
            'Begin your learning journey through this topic.'}
         </p>
