@@ -528,7 +528,9 @@ export function DigitalTextbook({
               {/* Description if available */}
               {page.module && (
                 <p className="text-base text-[var(--muted-foreground)] font-serif italic leading-relaxed mb-8">
-                  {page.module.description.HIGH_SCHOOL || page.module.description}
+                  {typeof page.module.description === 'string'
+                    ? page.module.description
+                    : page.module.description[selectedLevel] || page.module.description.HIGH_SCHOOL}
                 </p>
               )}
 
