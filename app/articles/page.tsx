@@ -4,6 +4,10 @@
 // THE LIBRARY
 // "Wisdom is not consumed - it is received.
 //  A text offers its truth; a reader brings their readiness to understand."
+//
+// Articles are case studies and sustainability journeys -
+// accessible to anyone regardless of age, knowledge, or experience.
+// Every reader brings their own readiness. Every writer shares their truth.
 // ============================================
 
 import { useState, useEffect, useRef, useCallback } from 'react'
@@ -32,6 +36,12 @@ import {
   ScrollText,
   Flame,
   Star,
+  Leaf,
+  Heart,
+  GraduationCap,
+  Lightbulb,
+  Compass,
+  X,
 } from 'lucide-react'
 
 // Archetype traits for author theming (traits only, no names)
@@ -43,6 +53,33 @@ const ARCHETYPE_TRAITS: Record<string, { gradient: string; trait: string; accent
   camael: { gradient: 'from-pink-500 to-rose-600', trait: 'Love', accentColor: 'text-pink-500' },
   jophiel: { gradient: 'from-violet-500 to-purple-600', trait: 'Creativity', accentColor: 'text-violet-500' },
   zadkiel: { gradient: 'from-indigo-500 to-blue-700', trait: 'Grace', accentColor: 'text-indigo-500' },
+}
+
+// Reading depth indicators - experiential rather than explicit difficulty levels
+// Helps readers find content that matches their available time and focus
+const getReadingDepth = (readTime: number): { label: string; icon: any; color: string; bgColor: string } => {
+  if (readTime <= 3) {
+    return {
+      label: 'Quick Insight',
+      icon: Lightbulb,
+      color: 'text-emerald-500',
+      bgColor: 'bg-emerald-500/10'
+    }
+  } else if (readTime <= 8) {
+    return {
+      label: 'Guided Path',
+      icon: Compass,
+      color: 'text-amber-500',
+      bgColor: 'bg-amber-500/10'
+    }
+  } else {
+    return {
+      label: 'Deep Study',
+      icon: GraduationCap,
+      color: 'text-violet-500',
+      bgColor: 'bg-violet-500/10'
+    }
+  }
 }
 
 interface Article {
@@ -94,7 +131,33 @@ export default function ArticlesPage() {
   const [offset, setOffset] = useState(0)
   const [totalArticles, setTotalArticles] = useState(0)
   const [totalViews, setTotalViews] = useState(0)
+  const [showContributorInvite, setShowContributorInvite] = useState(false)
+  const [showWelcomeGuide, setShowWelcomeGuide] = useState(false)
   const loadMoreRef = useRef<HTMLDivElement>(null)
+
+  // Check if first-time visitor (no articles read yet, no localStorage flag)
+  useEffect(() => {
+    const hasVisited = localStorage.getItem('library-visited')
+    const hasDismissedInvite = localStorage.getItem('library-invite-dismissed')
+
+    if (!hasVisited) {
+      setShowWelcomeGuide(true)
+      localStorage.setItem('library-visited', 'true')
+    }
+
+    if (!hasDismissedInvite && session) {
+      setShowContributorInvite(true)
+    }
+  }, [session])
+
+  const dismissContributorInvite = () => {
+    setShowContributorInvite(false)
+    localStorage.setItem('library-invite-dismissed', 'true')
+  }
+
+  const dismissWelcomeGuide = () => {
+    setShowWelcomeGuide(false)
+  }
 
   const sortOptions: { value: SortOption; label: string; icon: any }[] = [
     { value: 'all', label: 'All Texts', icon: BookOpen },
@@ -265,6 +328,9 @@ export default function ArticlesPage() {
               <p className="text-sm sm:text-base font-medium opacity-80 px-4 max-w-lg mx-auto italic">
                 "Wisdom is not consumed - it is received."
               </p>
+              <p className="text-xs sm:text-sm font-medium opacity-60 mt-2 px-4 max-w-md mx-auto">
+                Case studies and sustainability journeys from those who walk the path
+              </p>
 
               {/* Stats Pills in Hero */}
               <div className="flex items-center justify-center gap-3 mt-4">
@@ -366,6 +432,86 @@ export default function ArticlesPage() {
         </div>
       </div>
 
+      {/* Welcome Guide for First-Time Visitors */}
+      {showWelcomeGuide && (
+        <div className="bg-gradient-to-r from-emerald-500/10 via-[var(--primary)]/10 to-violet-500/10 border-b border-[var(--border)]">
+          <div className="container mx-auto px-4 py-4 sm:py-5">
+            <div className="max-w-4xl mx-auto">
+              <div className="flex items-start gap-4">
+                <div className="shrink-0 w-10 h-10 sm:w-12 sm:h-12 rounded-full bg-gradient-to-br from-emerald-500 to-teal-600 flex items-center justify-center">
+                  <Leaf className="w-5 h-5 sm:w-6 sm:h-6 text-white" />
+                </div>
+                <div className="flex-1 min-w-0">
+                  <h3 className="text-sm sm:text-base font-bold text-[var(--foreground)] mb-1">
+                    Welcome to the Library
+                  </h3>
+                  <p className="text-xs sm:text-sm text-theme-muted font-medium mb-3">
+                    These texts are sustainability case studies and personal journeys - written to be accessible regardless of your background.
+                    Start anywhere. Every path leads somewhere meaningful.
+                  </p>
+                  <div className="flex flex-wrap items-center gap-2 text-xs">
+                    <span className="inline-flex items-center gap-1 px-2 py-1 rounded-full bg-emerald-500/10 text-emerald-600 font-medium">
+                      <Lightbulb className="w-3 h-3" />
+                      Quick Insight — 3 min or less
+                    </span>
+                    <span className="inline-flex items-center gap-1 px-2 py-1 rounded-full bg-amber-500/10 text-amber-600 font-medium">
+                      <Compass className="w-3 h-3" />
+                      Guided Path — 4-8 min
+                    </span>
+                    <span className="inline-flex items-center gap-1 px-2 py-1 rounded-full bg-violet-500/10 text-violet-600 font-medium">
+                      <GraduationCap className="w-3 h-3" />
+                      Deep Study — 9+ min
+                    </span>
+                  </div>
+                </div>
+                <button
+                  onClick={dismissWelcomeGuide}
+                  className="shrink-0 p-1.5 rounded-full hover:bg-[var(--muted)] transition-colors"
+                >
+                  <X className="w-4 h-4 text-theme-muted" />
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* Contributor Invite Banner */}
+      {showContributorInvite && session && !showWelcomeGuide && (
+        <div className="bg-gradient-to-r from-[var(--primary)]/5 to-[var(--accent)]/5 border-b border-[var(--border)]">
+          <div className="container mx-auto px-4 py-3 sm:py-4">
+            <div className="flex items-center justify-between gap-4 max-w-4xl mx-auto">
+              <div className="flex items-center gap-3">
+                <div className="shrink-0 w-8 h-8 sm:w-10 sm:h-10 rounded-full bg-gradient-to-br from-[var(--primary)] to-[var(--accent)] flex items-center justify-center">
+                  <Heart className="w-4 h-4 sm:w-5 sm:h-5 text-white" />
+                </div>
+                <div>
+                  <p className="text-xs sm:text-sm font-bold text-[var(--foreground)]">
+                    Your journey matters
+                  </p>
+                  <p className="text-[10px] sm:text-xs text-theme-muted font-medium">
+                    Share a case study or lesson from your sustainability experience
+                  </p>
+                </div>
+              </div>
+              <div className="flex items-center gap-2">
+                <Link href="/articles/write">
+                  <Button size="sm" className="bg-[var(--primary)] text-white hover:bg-[var(--accent)] font-bold text-xs px-3 py-1.5 rounded-lg">
+                    Share Your Story
+                  </Button>
+                </Link>
+                <button
+                  onClick={dismissContributorInvite}
+                  className="p-1.5 rounded-full hover:bg-[var(--muted)] transition-colors"
+                >
+                  <X className="w-4 h-4 text-theme-muted" />
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
+
       {/* Filter Bar */}
       <div className="sticky top-16 sm:top-20 z-40 bg-[var(--card)] border-b border-[var(--border)]">
         <div className="container mx-auto px-4">
@@ -422,22 +568,45 @@ export default function ArticlesPage() {
           </div>
         ) : articles.length === 0 && !featuredArticle ? (
           <div className="text-center py-16 sm:py-20 px-4">
-            <div className="w-16 h-16 sm:w-20 sm:h-20 mx-auto mb-4 rounded-full border-4 border-[var(--muted)] flex items-center justify-center">
-              <ScrollText className="w-8 h-8 sm:w-10 sm:h-10 text-theme-muted opacity-50" />
+            <div className="w-16 h-16 sm:w-20 sm:h-20 mx-auto mb-4 rounded-full bg-gradient-to-br from-emerald-500/20 to-teal-500/20 border-2 border-emerald-500/30 flex items-center justify-center">
+              <Leaf className="w-8 h-8 sm:w-10 sm:h-10 text-emerald-500" />
             </div>
-            <h2 className="text-xl sm:text-2xl font-black text-[var(--foreground)] mb-2">No Texts Found</h2>
-            <p className="text-sm sm:text-base text-theme-muted font-medium mb-6">
+            <h2 className="text-xl sm:text-2xl font-black text-[var(--foreground)] mb-2">
               {searchQuery
-                ? `No texts match "${searchQuery}"`
+                ? 'No Matching Texts'
                 : activeSort === 'read'
-                ? "You haven't studied any texts yet"
-                : 'Be the first to share your wisdom'}
+                ? 'Your Journey Awaits'
+                : 'The First Page'}
+            </h2>
+            <p className="text-sm sm:text-base text-theme-muted font-medium mb-2 max-w-md mx-auto">
+              {searchQuery
+                ? `No texts match "${searchQuery}" — try broader terms`
+                : activeSort === 'read'
+                ? "You haven't studied any texts yet. Every journey begins with curiosity."
+                : 'This library grows through shared experience.'}
             </p>
-            {session && (
+            {!searchQuery && activeSort !== 'read' && (
+              <p className="text-xs text-theme-muted font-medium mb-6 max-w-sm mx-auto opacity-70">
+                Case studies, lessons learned, and sustainability journeys —
+                your experience could help someone just starting out.
+              </p>
+            )}
+            {activeSort === 'read' && (
+              <p className="text-xs text-theme-muted font-medium mb-6 max-w-sm mx-auto opacity-70">
+                Browse the library and find something that speaks to where you are right now.
+              </p>
+            )}
+            {session ? (
               <Link href="/articles/write">
                 <Button className="font-bold text-sm sm:text-base">
                   <PenSquare className="w-4 h-4 mr-2" />
-                  Write the First Text
+                  Share Your Journey
+                </Button>
+              </Link>
+            ) : (
+              <Link href="/auth/signin">
+                <Button variant="outline" className="font-bold text-sm sm:text-base">
+                  Sign in to contribute
                 </Button>
               </Link>
             )}
@@ -445,7 +614,10 @@ export default function ArticlesPage() {
         ) : (
           <>
             {/* Featured Article Hero */}
-            {featuredArticle && (
+            {featuredArticle && (() => {
+              const featuredDepth = getReadingDepth(featuredArticle.readTime)
+              const FeaturedDepthIcon = featuredDepth.icon
+              return (
               <Link href={`/articles/${featuredArticle.slug}`}>
                 <Card className="mb-6 sm:mb-8 border-2 sm:border-4 border-theme-primary overflow-hidden hover:shadow-theme-2xl transition-all group cursor-pointer">
                   <div className="flex flex-col md:grid md:grid-cols-2 gap-0">
@@ -462,9 +634,13 @@ export default function ArticlesPage() {
                           <BookOpen className="w-16 h-16 sm:w-24 sm:h-24 text-white/50" />
                         </div>
                       )}
-                      <div className="absolute top-3 left-3 sm:top-4 sm:left-4">
+                      <div className="absolute top-3 left-3 sm:top-4 sm:left-4 flex items-center gap-2">
                         <span className="px-3 py-1.5 sm:px-4 sm:py-2 bg-[var(--secondary)] text-white font-black text-xs sm:text-sm rounded-full shadow-lg">
                           FEATURED
+                        </span>
+                        <span className={`flex items-center gap-1 px-2 py-1 ${featuredDepth.bgColor} backdrop-blur-sm ${featuredDepth.color} text-xs font-bold rounded-full border border-white/20`}>
+                          <FeaturedDepthIcon className="w-3 h-3" />
+                          <span className="hidden sm:inline">{featuredDepth.label}</span>
                         </span>
                       </div>
                     </div>
@@ -532,12 +708,15 @@ export default function ArticlesPage() {
                   </div>
                 </Card>
               </Link>
-            )}
+              )
+            })()}
 
             {/* Article Grid */}
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6">
               {articles.map((article) => {
                 const authorTheme = getAuthorTheme(article.author.guardianArchetype)
+                const readingDepth = getReadingDepth(article.readTime)
+                const DepthIcon = readingDepth.icon
 
                 return (
                   <Link key={article.id} href={`/articles/${article.slug}`}>
@@ -550,6 +729,13 @@ export default function ArticlesPage() {
                             alt={article.title}
                             className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
                           />
+                          {/* Reading Depth Badge */}
+                          <div className="absolute top-2 left-2 sm:top-3 sm:left-3">
+                            <span className={`flex items-center gap-1 px-1.5 sm:px-2 py-0.5 sm:py-1 ${readingDepth.bgColor} backdrop-blur-sm ${readingDepth.color} text-[10px] sm:text-xs font-bold rounded-full border border-white/20`}>
+                              <DepthIcon className="w-2.5 h-2.5 sm:w-3 sm:h-3" />
+                              <span className="hidden sm:inline">{readingDepth.label}</span>
+                            </span>
+                          </div>
                           {article.hasRead && (
                             <div className="absolute top-2 right-2 sm:top-3 sm:right-3">
                               <span className="flex items-center gap-1 px-1.5 sm:px-2 py-0.5 sm:py-1 bg-emerald-500 text-white text-[10px] sm:text-xs font-bold rounded-full">
@@ -562,11 +748,18 @@ export default function ArticlesPage() {
                       )}
 
                       <CardContent className="p-3 sm:p-5">
-                        {/* Category */}
+                        {/* Category + Reading Depth (when no cover image) */}
                         <div className="flex items-center justify-between mb-2 sm:mb-3">
-                          <span className="px-2 py-0.5 sm:py-1 bg-[var(--muted)] text-theme-muted font-bold text-[10px] sm:text-xs rounded-md sm:rounded-lg">
-                            {article.category.name}
-                          </span>
+                          <div className="flex items-center gap-2">
+                            <span className="px-2 py-0.5 sm:py-1 bg-[var(--muted)] text-theme-muted font-bold text-[10px] sm:text-xs rounded-md sm:rounded-lg">
+                              {article.category.name}
+                            </span>
+                            {!article.coverImage && (
+                              <span className={`flex items-center gap-1 px-1.5 py-0.5 ${readingDepth.bgColor} ${readingDepth.color} text-[10px] font-medium rounded-full`}>
+                                <DepthIcon className="w-2.5 h-2.5" />
+                              </span>
+                            )}
+                          </div>
                           {!article.coverImage && article.hasRead && (
                             <span className="flex items-center gap-1 text-emerald-500 text-[10px] sm:text-xs font-bold">
                               <CheckCircle2 className="w-2.5 h-2.5 sm:w-3 sm:h-3" />
