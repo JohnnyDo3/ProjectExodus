@@ -107,6 +107,26 @@ model User {
   moduleDiscussionReplies   ModuleDiscussionReply[] @relation("ModuleDiscussionReplyAuthor")
   discussionHelpfulVotes    DiscussionHelpfulVote[] @relation("DiscussionHelpfulVoter")
 
+  // Article reading experience
+  readingProgress           ArticleReadingProgress[] @relation("ArticleReadingProgress")
+  articleBookmarks          ArticleBookmark[]        @relation("ArticleBookmarks")
+  articleHighlights         ArticleHighlight[]       @relation("ArticleHighlights")
+
+  // Reading collections
+  readingCollections        ReadingCollection[]      @relation("ReadingCollections")
+  collectionFollows         CollectionFollow[]       @relation("CollectionFollows")
+
+  // Gamification
+  userAchievements          UserAchievement[]        @relation("UserAchievements")
+  readingStreak             ReadingStreak?           @relation("ReadingStreak")
+  userPoints                UserPoints?              @relation("UserPoints")
+
+  // Author analytics
+  authorAnalytics           AuthorAnalytics?         @relation("AuthorAnalytics")
+
+  // Recommendations
+  articleRecommendations    ArticleRecommendation[]  @relation("ArticleRecommendations")
+
   @@index([email])
   @@index([role])
 }
@@ -404,6 +424,17 @@ model Article {
   // Multi-level learning system
   levelContents     ModuleLevelContent[]
   moduleDiscussions ModuleDiscussion[]
+
+  // Reading experience relations
+  readingProgress     ArticleReadingProgress[] @relation("ArticleReadingProgress")
+  bookmarks           ArticleBookmark[]        @relation("ArticleBookmarks")
+  highlights          ArticleHighlight[]       @relation("ArticleHighlights")
+
+  // Collections
+  inCollections       CollectionArticle[]      @relation("CollectionArticles")
+
+  // Recommendations
+  recommendations     ArticleRecommendation[]  @relation("ArticleRecommendations")
 
   @@index([slug])
   @@index([authorId])
@@ -1334,5 +1365,303 @@ model UserBan {
 
   @@index([userId])
   @@index([active])
+  @@index([expiresAt])
+}
+
+// ============================================
+// ARTICLE READING EXPERIENCE
+// Progress tracking, bookmarks, highlights
+// ============================================
+
+model ArticleReadingProgress {
+  id             String    @id @default(cuid())
+  userId         String
+  articleId      String
+  scrollProgress Float     @default(0)    // 0-100 percentage
+  timeSpent      Int       @default(0)    // seconds spent reading
+  lastPosition   Int?                      // paragraph/section index
+  completed      Boolean   @default(false)
+  completedAt    DateTime?
+  user           User      @relation("ArticleReadingProgress", fields: [userId], references: [id], onDelete: Cascade)
+  article        Article   @relation("ArticleReadingProgress", fields: [articleId], references: [id], onDelete: Cascade)
+  createdAt      DateTime  @default(now())
+  updatedAt      DateTime  @updatedAt
+
+  @@unique([userId, articleId])
+  @@index([userId])
+  @@index([articleId])
+  @@index([completed])
+}
+
+model ArticleBookmark {
+  id        String   @id @default(cuid())
+  userId    String
+  articleId String
+  position  Int                           // Paragraph or section index
+  title     String?                       // Optional bookmark title
+  note      String?  @db.Text            // Optional note
+  user      User     @relation("ArticleBookmarks", fields: [userId], references: [id], onDelete: Cascade)
+  article   Article  @relation("ArticleBookmarks", fields: [articleId], references: [id], onDelete: Cascade)
+  createdAt DateTime @default(now())
+
+  @@index([userId])
+  @@index([articleId])
+}
+
+model ArticleHighlight {
+  id         String   @id @default(cuid())
+  userId     String
+  articleId  String
+  startPos   Int                          // Start character position
+  endPos     Int                          // End character position
+  text       String   @db.Text           // The highlighted text
+  color      String   @default("yellow") // yellow, green, blue, pink, purple
+  note       String?  @db.Text           // Optional annotation
+  user       User     @relation("ArticleHighlights", fields: [userId], references: [id], onDelete: Cascade)
+  article    Article  @relation("ArticleHighlights", fields: [articleId], references: [id], onDelete: Cascade)
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
+
+  @@index([userId])
+  @@index([articleId])
+}
+
+// ============================================
+// READING COLLECTIONS & LISTS
+// Curated article collections and reading lists
+// ============================================
+
+model ReadingCollection {
+  id          String              @id @default(cuid())
+  userId      String
+  name        String
+  slug        String              @unique
+  description String?             @db.Text
+  coverImage  String?
+  isPublic    Boolean             @default(false)
+  isFeatured  Boolean             @default(false)
+  user        User                @relation("ReadingCollections", fields: [userId], references: [id], onDelete: Cascade)
+  articles    CollectionArticle[]
+  followers   CollectionFollow[]
+  createdAt   DateTime            @default(now())
+  updatedAt   DateTime            @updatedAt
+
+  @@index([userId])
+  @@index([isPublic])
+  @@index([isFeatured])
+  @@index([slug])
+}
+
+model CollectionArticle {
+  id           String            @id @default(cuid())
+  collectionId String
+  articleId    String
+  order        Int               @default(0)
+  note         String?           @db.Text // Curator's note for this article
+  collection   ReadingCollection @relation(fields: [collectionId], references: [id], onDelete: Cascade)
+  article      Article           @relation("CollectionArticles", fields: [articleId], references: [id], onDelete: Cascade)
+  addedAt      DateTime          @default(now())
+
+  @@unique([collectionId, articleId])
+  @@index([collectionId])
+  @@index([articleId])
+}
+
+model CollectionFollow {
+  id           String            @id @default(cuid())
+  userId       String
+  collectionId String
+  user         User              @relation("CollectionFollows", fields: [userId], references: [id], onDelete: Cascade)
+  collection   ReadingCollection @relation(fields: [collectionId], references: [id], onDelete: Cascade)
+  createdAt    DateTime          @default(now())
+
+  @@unique([userId, collectionId])
+  @@index([userId])
+  @@index([collectionId])
+}
+
+// ============================================
+// GAMIFICATION SYSTEM
+// Achievements, streaks, points, leaderboards
+// ============================================
+
+model Achievement {
+  id               String              @id @default(cuid())
+  slug             String              @unique
+  name             String
+  description      String
+  icon             String                            // Emoji or icon name
+  category         AchievementCategory
+  points           Int                 @default(10)
+  requirement      Json                              // {type: 'articles_read', count: 10}
+  rarity           AchievementRarity   @default(COMMON)
+  secret           Boolean             @default(false) // Hidden until earned
+  userAchievements UserAchievement[]
+  createdAt        DateTime            @default(now())
+
+  @@index([category])
+  @@index([rarity])
+}
+
+enum AchievementCategory {
+  READING       // Reading milestones
+  CONTRIBUTION  // Writing, reviewing
+  ENGAGEMENT    // Comments, likes, discussions
+  STREAK        // Consistency streaks
+  EXPLORATION   // Categories, topics explored
+  SOCIAL        // Following, sharing, connecting
+  MASTERY       // Deep expertise in areas
+}
+
+enum AchievementRarity {
+  COMMON      // Easy to get
+  UNCOMMON    // Some effort required
+  RARE        // Significant achievement
+  EPIC        // Major accomplishment
+  LEGENDARY   // Exceptional dedication
+}
+
+model UserAchievement {
+  id            String      @id @default(cuid())
+  userId        String
+  achievementId String
+  progress      Int         @default(0)           // Progress toward requirement
+  completed     Boolean     @default(false)
+  completedAt   DateTime?
+  notified      Boolean     @default(false)       // Has user seen the notification
+  user          User        @relation("UserAchievements", fields: [userId], references: [id], onDelete: Cascade)
+  achievement   Achievement @relation(fields: [achievementId], references: [id], onDelete: Cascade)
+  createdAt     DateTime    @default(now())
+  updatedAt     DateTime    @updatedAt
+
+  @@unique([userId, achievementId])
+  @@index([userId])
+  @@index([achievementId])
+  @@index([completed])
+}
+
+model ReadingStreak {
+  id              String    @id @default(cuid())
+  userId          String    @unique
+  currentStreak   Int       @default(0)
+  longestStreak   Int       @default(0)
+  lastReadDate    DateTime?
+  totalDaysRead   Int       @default(0)
+  weekStartStreak Int       @default(0)          // Streak at start of week
+  freezesUsed     Int       @default(0)          // Streak freezes used this month
+  freezesAvailable Int      @default(2)          // Streak freezes available
+  user            User      @relation("ReadingStreak", fields: [userId], references: [id], onDelete: Cascade)
+  createdAt       DateTime  @default(now())
+  updatedAt       DateTime  @updatedAt
+
+  @@index([currentStreak])
+  @@index([longestStreak])
+}
+
+model UserPoints {
+  id            String             @id @default(cuid())
+  userId        String             @unique
+  totalPoints   Int                @default(0)
+  weeklyPoints  Int                @default(0)
+  monthlyPoints Int                @default(0)
+  allTimePoints Int                @default(0)
+  level         Int                @default(1)
+  levelProgress Int                @default(0)    // Progress to next level (0-100)
+  user          User               @relation("UserPoints", fields: [userId], references: [id], onDelete: Cascade)
+  transactions  PointTransaction[]
+  createdAt     DateTime           @default(now())
+  updatedAt     DateTime           @updatedAt
+
+  @@index([totalPoints])
+  @@index([level])
+}
+
+model PointTransaction {
+  id           String     @id @default(cuid())
+  userPointsId String
+  amount       Int                              // Can be negative for deductions
+  reason       PointReason
+  description  String?                          // Human-readable description
+  referenceId  String?                          // Related article, review, etc.
+  referenceType String?                         // 'article', 'review', 'achievement', etc.
+  userPoints   UserPoints @relation(fields: [userPointsId], references: [id], onDelete: Cascade)
+  createdAt    DateTime   @default(now())
+
+  @@index([userPointsId])
+  @@index([reason])
+  @@index([createdAt])
+}
+
+enum PointReason {
+  ARTICLE_READ
+  ARTICLE_COMPLETED
+  REVIEW_WRITTEN
+  REVIEW_HELPFUL         // Review received likes
+  COMMENT_POSTED
+  ACHIEVEMENT_EARNED
+  STREAK_BONUS
+  DAILY_LOGIN
+  FIRST_OF_DAY          // First article of the day bonus
+  COLLECTION_CREATED
+  ARTICLE_PUBLISHED
+  REFERRAL_BONUS
+}
+
+// ============================================
+// AUTHOR ANALYTICS
+// Cached analytics for author dashboards
+// ============================================
+
+model AuthorAnalytics {
+  id                 String   @id @default(cuid())
+  userId             String   @unique
+  totalArticles      Int      @default(0)
+  totalViews         Int      @default(0)
+  totalReads         Int      @default(0)     // Completed reads
+  totalTimeSpent     Int      @default(0)     // Total seconds readers spent
+  avgReadCompletion  Float?                   // Average completion percentage
+  avgRating          Float?                   // Average peer review rating
+  totalReviews       Int      @default(0)
+  totalComments      Int      @default(0)
+  followerCount      Int      @default(0)
+  // Time-based metrics
+  viewsToday         Int      @default(0)
+  viewsThisWeek      Int      @default(0)
+  viewsThisMonth     Int      @default(0)
+  readsToday         Int      @default(0)
+  readsThisWeek      Int      @default(0)
+  readsThisMonth     Int      @default(0)
+  // Category performance
+  topCategories      Json?                    // [{categoryId, categoryName, articleCount, views}]
+  topArticles        Json?                    // [{articleId, title, views, rating}]
+  // Engagement trends
+  engagementTrend    Json?                    // [{date, views, reads, reviews}]
+  user               User     @relation("AuthorAnalytics", fields: [userId], references: [id], onDelete: Cascade)
+  updatedAt          DateTime @updatedAt
+}
+
+// ============================================
+// ARTICLE RECOMMENDATIONS
+// For personalized content discovery
+// ============================================
+
+model ArticleRecommendation {
+  id          String   @id @default(cuid())
+  userId      String
+  articleId   String
+  score       Float                          // Recommendation score (0-1)
+  reason      String                         // 'similar_content', 'popular_in_category', 'followed_author', etc.
+  seen        Boolean  @default(false)
+  clicked     Boolean  @default(false)
+  dismissed   Boolean  @default(false)
+  user        User     @relation("ArticleRecommendations", fields: [userId], references: [id], onDelete: Cascade)
+  article     Article  @relation("ArticleRecommendations", fields: [articleId], references: [id], onDelete: Cascade)
+  createdAt   DateTime @default(now())
+  expiresAt   DateTime                       // Recommendations expire after some time
+
+  @@unique([userId, articleId])
+  @@index([userId])
+  @@index([articleId])
+  @@index([score])
   @@index([expiresAt])
 }

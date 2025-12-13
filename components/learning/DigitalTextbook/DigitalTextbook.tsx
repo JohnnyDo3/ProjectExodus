@@ -424,7 +424,7 @@ export function DigitalTextbook({
 
       case 'toc':
         return (
-          <div className="w-full h-full flex flex-col">
+          <div className="w-full h-full flex flex-col overflow-y-auto">
             <AncientBorder />
             {/* TOC Header */}
             <div className="text-center mb-8">
@@ -487,7 +487,7 @@ export function DigitalTextbook({
       case 'verse':
         const verseRibbon = RIBBON_ORDER[page.chapterIndex ?? 0] ? GUARDIAN_RIBBONS[RIBBON_ORDER[page.chapterIndex ?? 0]] : null
         return (
-          <div className="w-full h-full flex flex-col items-center justify-center">
+          <div className="w-full h-full flex flex-col items-center justify-center overflow-y-auto">
             <AncientBorder />
             {/* Verse presentation - fills the page */}
             <div className="text-center max-w-md">
@@ -560,35 +560,29 @@ export function DigitalTextbook({
             chapterIndex={page.chapterIndex ?? 0}
             side={side}
           >
-            <div className="h-full flex flex-col justify-between">
-              {/* Content area - fills the page */}
-              <div
-                className={cn(
-                  "flex-1",
-                  "prose prose-lg dark:prose-invert max-w-none",
-                  "font-serif",
-                  // Typography for book-like appearance
-                  "prose-p:text-[1.1rem] prose-p:leading-[1.8] prose-p:mb-6 prose-p:text-justify prose-p:hyphens-auto",
-                  "prose-headings:font-bold prose-headings:mb-4",
-                  "prose-h2:text-2xl prose-h3:text-xl",
-                  "prose-strong:font-bold",
-                  "prose-ul:space-y-2 prose-ol:space-y-2",
-                  "prose-li:text-base prose-li:leading-relaxed",
-                  // First paragraph drop cap effect
-                  "[&>div>p:first-of-type]:first-letter:float-left [&>div>p:first-of-type]:first-letter:text-5xl [&>div>p:first-of-type]:first-letter:font-bold [&>div>p:first-of-type]:first-letter:mr-2 [&>div>p:first-of-type]:first-letter:mt-1",
-                  "[&>div>p:first-of-type]:first-letter:text-[var(--primary)]",
-                )}
-              >
-                {typeof page.content === 'string' ? (
-                  <div dangerouslySetInnerHTML={{ __html: page.content }} />
-                ) : (
-                  page.content
-                )}
-              </div>
-              {/* Page number at bottom */}
-              <div className="pt-2 border-t border-[var(--border)]/20">
-                <AncientPageNumber number={currentPageIndex + 1} total={totalPages} />
-              </div>
+            {/* Content area - fills full width */}
+            <div
+              className={cn(
+                "w-full",
+                "prose prose-lg dark:prose-invert max-w-none",
+                "font-serif",
+                // Typography for book-like appearance
+                "prose-p:text-[1.1rem] prose-p:leading-[1.8] prose-p:mb-6 prose-p:text-justify prose-p:hyphens-auto",
+                "prose-headings:font-bold prose-headings:mb-4",
+                "prose-h2:text-2xl prose-h3:text-xl",
+                "prose-strong:font-bold",
+                "prose-ul:space-y-2 prose-ol:space-y-2",
+                "prose-li:text-base prose-li:leading-relaxed",
+                // First paragraph drop cap effect
+                "[&>div>p:first-of-type]:first-letter:float-left [&>div>p:first-of-type]:first-letter:text-5xl [&>div>p:first-of-type]:first-letter:font-bold [&>div>p:first-of-type]:first-letter:mr-2 [&>div>p:first-of-type]:first-letter:mt-1",
+                "[&>div>p:first-of-type]:first-letter:text-[var(--primary)]",
+              )}
+            >
+              {typeof page.content === 'string' ? (
+                <div dangerouslySetInnerHTML={{ __html: page.content }} />
+              ) : (
+                page.content
+              )}
             </div>
           </BookPage>
         )

@@ -139,8 +139,8 @@ export const BookPage = forwardRef<HTMLDivElement, BookPageProps>(
           )}
         </div>
 
-        {/* Main content area - full width, PageContainer handles edge padding */}
-        <div className="flex-1 min-h-0 overflow-auto py-2">
+        {/* Main content area - full width with vertical scroll */}
+        <div className="flex-1 min-h-0 overflow-y-auto overflow-x-hidden py-2">
           {children}
         </div>
 

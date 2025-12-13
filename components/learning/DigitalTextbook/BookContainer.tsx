@@ -262,8 +262,8 @@ export function PageContainer({ children, side, className }: PageContainerProps)
         ? A11Y_CONFIG.ariaLabels.leftPage
         : A11Y_CONFIG.ariaLabels.rightPage}
     >
-      {/* Page content - fills entire page with scrolling if needed */}
-      <div className="relative w-full h-full overflow-y-auto overflow-x-hidden">
+      {/* Page content - fills entire page, child handles scrolling */}
+      <div className="relative w-full h-full">
         {children}
       </div>
 
