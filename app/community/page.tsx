@@ -494,7 +494,7 @@ export default async function CommunityPage() {
                     <UserPlus className="w-3.5 h-3.5 text-theme-primary" />
                     Suggested
                   </h3>
-                  <Link href="/community/users" className="text-[10px] text-theme-primary hover:underline">
+                  <Link href="/network" className="text-[10px] text-theme-primary hover:underline">
                     See all
                   </Link>
                 </div>

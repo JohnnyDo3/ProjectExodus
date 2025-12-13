@@ -2,7 +2,7 @@ import { NextRequest, NextResponse } from 'next/server'
 import { prisma } from '@/lib/db'
 import { auth } from '@/auth'
 
-// GET /api/users/following - Get users the current user is following
+// GET /api/users/followers - Get users who follow the current user
 export async function GET(request: NextRequest) {
   try {
     const session = await auth()
@@ -13,12 +13,12 @@ export async function GET(request: NextRequest) {
       )
     }
 
-    const following = await prisma.userFollow.findMany({
+    const followers = await prisma.userFollow.findMany({
       where: {
-        followerId: session.user.id,
+        followingId: session.user.id,
       },
       include: {
-        following: {
+        follower: {
           select: {
             id: true,
             name: true,
@@ -50,16 +50,16 @@ export async function GET(request: NextRequest) {
       },
     })
 
-    const followingUsers = following.map((f: any) => f.following)
+    const followerUsers = followers.map((f: any) => f.follower)
 
     return NextResponse.json({
       success: true,
-      data: followingUsers,
+      data: followerUsers,
     })
   } catch (error) {
-    console.error('Error fetching following users:', error)
+    console.error('Error fetching followers:', error)
     return NextResponse.json(
-      { success: false, error: 'Failed to fetch following users' },
+      { success: false, error: 'Failed to fetch followers' },
       { status: 500 }
     )
   }
