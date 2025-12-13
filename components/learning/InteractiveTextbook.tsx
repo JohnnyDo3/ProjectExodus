@@ -1052,47 +1052,38 @@ export function InteractiveTextbook({
     )
   }
 
-  // Main lesson view - WYSIWYG viewport constrained
+  // Main lesson view - WYSIWYG viewport constrained with proper scrolling
   return (
-    <div className="h-full flex flex-col bg-gradient-to-b from-stone-50 to-amber-50/30 overflow-hidden">
-      <div className="container mx-auto px-4 max-w-5xl flex-1 min-h-0 flex flex-col py-4">
-        {/* Header - Fixed */}
-        <div className="flex items-center justify-between mb-3 shrink-0">
+    <div className="h-full flex flex-col bg-gradient-to-b from-[#f5f1e8] to-[#ebe5d8]">
+      {/* Fixed Header Bar */}
+      <div className="shrink-0 bg-[#e8e2d5] border-b border-[#d4cbb8] px-4 py-2">
+        <div className="max-w-5xl mx-auto flex items-center justify-between">
           <Link
             href={`/learn/topics/${topicSlug}?level=${selectedLevel.toLowerCase()}`}
-            className="inline-flex items-center gap-2 text-emerald-700 font-bold hover:underline"
+            className="inline-flex items-center gap-2 text-[#5d6b4d] font-bold hover:underline text-sm"
           >
             <ArrowLeft className="w-4 h-4" />
             Back
           </Link>
 
-          <div className="flex items-center gap-3">
-            <span className="text-sm font-bold text-stone-500">
-              {progressPercent}%
-            </span>
-            <div className="w-24 h-1.5 bg-stone-200 rounded-full overflow-hidden">
+          <h1 className="text-base font-bold text-[#3d3d3d] truncate mx-4">{module.title}</h1>
+
+          <div className="flex items-center gap-2">
+            <div className="w-20 h-1.5 bg-[#d4cbb8] rounded-full overflow-hidden">
               <motion.div
-                className="h-full bg-gradient-to-r from-emerald-500 to-teal-500 rounded-full"
+                className="h-full bg-[#5d6b4d] rounded-full"
                 initial={{ width: 0 }}
                 animate={{ width: `${progressPercent}%` }}
               />
             </div>
+            <span className="text-xs font-bold text-[#5d6b4d]">{progressPercent}%</span>
           </div>
         </div>
+      </div>
 
-        {/* Module Info - Fixed */}
-        <div className="mb-3 shrink-0">
-          <div className="flex items-center gap-2 mb-1">
-            <span className="text-sm font-bold text-emerald-700">{module.category}</span>
-            <span className="text-xs px-2 py-0.5 rounded-full bg-emerald-100 text-emerald-700">
-              {LEARNING_LEVELS[selectedLevel].icon} {LEARNING_LEVELS[selectedLevel].shortLabel}
-            </span>
-          </div>
-          <h1 className="text-xl font-black text-stone-800">{module.title}</h1>
-        </div>
-
-        {/* Lesson Tabs - Fixed */}
-        <div className="flex gap-2 mb-3 overflow-x-auto pb-1 shrink-0">
+      {/* Fixed Lesson Tabs */}
+      <div className="shrink-0 bg-[#ebe5d8] border-b border-[#d4cbb8] px-4 py-2 overflow-x-auto">
+        <div className="max-w-5xl mx-auto flex gap-2">
           {levelContent.lessons.map((les, idx) => {
             const isCompleted = completedLessons.has(les.id)
             const isCurrent = idx === currentLesson
@@ -1101,252 +1092,223 @@ export function InteractiveTextbook({
               <button
                 key={les.id}
                 onClick={() => setCurrentLesson(idx)}
-                className={`flex items-center gap-2 px-3 py-1.5 rounded-lg font-bold text-xs whitespace-nowrap transition-all ${
+                className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg font-bold text-xs whitespace-nowrap transition-all ${
                   isCurrent
-                    ? 'bg-emerald-600 text-white shadow-md'
+                    ? 'bg-[#5d6b4d] text-[#f5f1e8] shadow-md'
                     : isCompleted
-                    ? 'bg-emerald-100 text-emerald-700'
-                    : 'bg-stone-100 text-stone-500 hover:bg-stone-200'
+                    ? 'bg-[#c5d4a8] text-[#3d4a2d]'
+                    : 'bg-[#e0d9ca] text-[#6b6b6b] hover:bg-[#d4cbb8]'
                 }`}
               >
-                {isCompleted ? <CheckCircle2 className="w-3.5 h-3.5" /> : <Circle className="w-3.5 h-3.5" />}
+                {isCompleted ? <CheckCircle2 className="w-3 h-3" /> : <Circle className="w-3 h-3" />}
                 {idx + 1}. {les.title}
               </button>
             )
           })}
-          {/* Flashcard Button */}
           {lessonFlashcards && lessonFlashcards.cards.length > 0 && (
             <button
               onClick={() => setShowFlashcards(true)}
-              className={`flex items-center gap-2 px-3 py-1.5 rounded-lg font-bold text-xs whitespace-nowrap transition-all ${
-                showFlashcards
-                  ? 'bg-amber-600 text-white'
-                  : 'bg-amber-100 text-amber-700 hover:bg-amber-200'
-              }`}
+              className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg font-bold text-xs whitespace-nowrap bg-[#d4a574] text-[#3d2d1a] hover:bg-[#c49464]"
             >
-              <Layers className="w-3.5 h-3.5" />
+              <Layers className="w-3 h-3" />
               Cards
-              <span className="px-1.5 py-0.5 rounded-full bg-amber-600 text-white text-[10px]">
-                {lessonFlashcards.cards.length}
-              </span>
             </button>
           )}
           <button
             onClick={() => setShowQuiz(true)}
-            className="flex items-center gap-2 px-3 py-1.5 rounded-lg font-bold text-xs whitespace-nowrap bg-teal-100 text-teal-700 hover:bg-teal-200"
+            className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg font-bold text-xs whitespace-nowrap bg-[#7a9a8a] text-[#f5f1e8] hover:bg-[#6a8a7a]"
           >
-            <Trophy className="w-3.5 h-3.5" />
+            <Trophy className="w-3 h-3" />
             Quiz
           </button>
         </div>
+      </div>
 
-        {/* Flashcard Study Mode */}
-        {showFlashcards && lessonFlashcards && (
-          <Card className="border-2 border-amber-300 mb-3 shrink-0">
-            <CardContent className="p-4">
+      {/* Scrollable Content Area - THIS IS THE KEY */}
+      <div className="flex-1 overflow-y-auto">
+        <div className="max-w-4xl mx-auto px-4 py-6">
+          {/* Flashcard Study Mode */}
+          {showFlashcards && lessonFlashcards && (
+            <div className="mb-6 p-4 bg-[#f8f4eb] border border-[#d4cbb8] rounded-xl">
               <FlashcardStudy
                 deck={lessonFlashcards}
-                onComplete={(results) => {
-                  console.log('Flashcard study complete:', results)
-                }}
+                onComplete={(results) => console.log('Flashcard study complete:', results)}
                 onClose={() => setShowFlashcards(false)}
               />
-            </CardContent>
-          </Card>
-        )}
+            </div>
+          )}
 
-        {/* Lesson Content - Scrollable within viewport */}
-        <Card ref={contentCardRef} className="border border-stone-200 bg-white/80 backdrop-blur-sm flex-1 min-h-0 flex flex-col overflow-hidden">
-          <CardContent className="p-4 flex-1 min-h-0 overflow-y-auto">
-            {/* Lesson Header */}
-            <AnimatedSection>
-              <h2 className="text-lg sm:text-xl font-black text-stone-800 mb-2 flex items-center gap-2">
-                <div className="w-8 h-8 rounded-lg bg-emerald-600 text-white flex items-center justify-center font-black text-sm">
-                  {currentLesson + 1}
-                </div>
-                {lesson.title}
-              </h2>
-            </AnimatedSection>
-
-            {/* Page Progress Indicator */}
-            {totalPages > 1 && (
-              <div className="mb-4">
-                <div className="flex items-center justify-between text-xs text-stone-500 mb-2">
-                  <span>Page {currentPage + 1} of {totalPages}</span>
-                  <span className="font-bold text-stone-700">{currentPageData?.title}</span>
-                </div>
-                <PageProgressDots
-                  totalPages={totalPages}
-                  currentPage={currentPage}
-                  completedPages={completedPages}
-                  onPageClick={handlePageClick}
-                />
-              </div>
-            )}
-
-            {/* Page Content with Animation */}
-            <AnimatePresence mode="wait">
-              <motion.div
-                key={`${lesson.id}-page-${currentPage}`}
-                initial={{ opacity: 0, x: 20 }}
-                animate={{ opacity: 1, x: 0 }}
-                exit={{ opacity: 0, x: -20 }}
-                transition={{ duration: 0.3 }}
-              >
-                {/* Page Title (if multi-page) */}
-                {totalPages > 1 && currentPageData && (
-                  <motion.h3
-                    initial={{ opacity: 0, y: -10 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    className="text-lg font-black text-emerald-700 mb-4 flex items-center gap-2"
-                  >
-                    <div className="w-7 h-7 rounded-lg bg-emerald-100 flex items-center justify-center text-emerald-700 font-bold text-xs">
-                      {currentPage + 1}
-                    </div>
-                    {currentPageData.title}
-                  </motion.h3>
-                )}
-
-                {/* Picture Book Illustration (for elementary/middle school) */}
-                {currentPageData?.illustration && (
-                  <StoryIllustration
-                    theme={currentPageData.illustration}
-                    level={selectedLevel}
-                    caption={currentPageData.title !== 'Introduction' ? currentPageData.title : undefined}
-                  />
-                )}
-
-                {/* Diagram (if available for this page) */}
-                {currentPageData?.diagram && (
-                  <DiagramRenderer diagramType={currentPageData.diagram} />
-                )}
-
-                {/* Page Text Content */}
-                <AnimatedSection delay={0.1}>
-                  <div
-                    className="prose prose-sm sm:prose-base max-w-none text-stone-700
-                               prose-headings:text-stone-800 prose-headings:font-bold
-                               prose-p:text-stone-700 prose-p:leading-relaxed
-                               prose-li:text-stone-700
-                               prose-strong:text-stone-800
-                               prose-a:text-emerald-600 prose-a:font-semibold prose-a:no-underline hover:prose-a:underline
-                               prose-blockquote:border-emerald-500 prose-blockquote:text-stone-600 prose-blockquote:bg-emerald-50/50 prose-blockquote:rounded-r-lg prose-blockquote:py-2
-                               prose-ul:space-y-1 prose-ol:space-y-1"
-                    dangerouslySetInnerHTML={{ __html: sanitizeHtml(currentPageData?.content || '') }}
-                  />
-                </AnimatedSection>
-
-                {/* Pioneer Quick Access (clickable to open modal) */}
-                {currentPageData?.pioneers && currentPageData.pioneers.length > 0 && (
-                  <AnimatedSection delay={0.2}>
-                    <div className="mt-6 pt-4 border-t border-stone-200">
-                      <h4 className="font-bold text-stone-700 mb-3 flex items-center gap-2 text-sm">
-                        <User className="w-4 h-4 text-emerald-600" />
-                        People Mentioned
-                        <span className="text-xs text-stone-400 font-normal">(click to learn more)</span>
-                      </h4>
-                      <div className="flex flex-wrap gap-2">
-                        {currentPageData.pioneers.map((pioneer) => (
-                          <button
-                            key={pioneer.id}
-                            onClick={() => handlePioneerClick(pioneer)}
-                            className="inline-flex items-center gap-2 px-2 py-1.5 rounded-lg bg-stone-100 hover:bg-emerald-100 border border-stone-200 hover:border-emerald-300 transition-all group"
-                          >
-                            {/* Mini portrait */}
-                            <div className="w-6 h-6 rounded-full bg-emerald-600 text-white flex items-center justify-center text-[10px] font-bold overflow-hidden">
-                              {pioneer.portrait ? (
-                                <img
-                                  src={pioneer.portrait}
-                                  alt={pioneer.name}
-                                  className="w-full h-full object-cover"
-                                  onError={(e) => {
-                                    e.currentTarget.style.display = 'none'
-                                    e.currentTarget.nextElementSibling?.classList.remove('hidden')
-                                  }}
-                                />
-                              ) : null}
-                              <span className={pioneer.portrait ? 'hidden' : ''}>
-                                {pioneer.name.split(' ').map(n => n[0]).join('')}
-                              </span>
-                            </div>
-                            <div className="text-left">
-                              <span className="font-bold text-stone-700 group-hover:text-emerald-700 transition-colors text-xs block">
-                                {pioneer.name}
-                              </span>
-                              <span className="text-[10px] text-stone-500">
-                                {pioneer.title}
-                              </span>
-                            </div>
-                          </button>
-                        ))}
-                      </div>
-                    </div>
-                  </AnimatedSection>
-                )}
-              </motion.div>
-            </AnimatePresence>
-
-            {/* References at bottom of last page of last lesson */}
-            {module.externalResources.length > 0 && currentLesson === totalLessons - 1 && currentPage === totalPages - 1 && (
-              <AnimatedSection delay={0.2}>
-                <div className="mt-6 pt-4 border-t border-stone-200">
-                  <h3 className="font-bold text-stone-700 mb-3 flex items-center gap-2 text-sm">
-                    <ExternalLink className="w-4 h-4 text-emerald-600" />
-                    References & Further Reading
-                  </h3>
-                  <div className="space-y-1.5">
-                    {module.externalResources.slice(0, 3).map((resource, idx) => (
-                      <ReferenceLink
-                        key={resource.url}
-                        title={resource.title}
-                        url={resource.url}
-                        type={resource.type}
-                        index={idx}
-                      />
-                    ))}
+          {/* Lesson Content Card */}
+          <div ref={contentCardRef} className="bg-[#faf8f3] border border-[#d4cbb8] rounded-xl shadow-sm">
+            <div className="p-5 sm:p-6">
+              {/* Lesson Header */}
+              <AnimatedSection>
+                <h2 className="text-xl sm:text-2xl font-bold text-[#2d2d2d] mb-4 flex items-center gap-3">
+                  <div className="w-9 h-9 rounded-lg bg-[#5d6b4d] text-[#f5f1e8] flex items-center justify-center font-bold text-sm">
+                    {currentLesson + 1}
                   </div>
-                </div>
+                  {lesson.title}
+                </h2>
               </AnimatedSection>
-            )}
-          </CardContent>
-        </Card>
 
-        {/* Page Navigation - Fixed at bottom */}
-        <div className="flex items-center justify-between py-3 shrink-0 bg-white/50 backdrop-blur-sm rounded-lg px-3">
-          <Button
-            variant="outline"
-            onClick={goToPreviousPage}
-            disabled={currentLesson === 0 && currentPage === 0}
-            className="font-bold text-xs border-stone-300 text-stone-600 hover:bg-stone-100"
-            size="sm"
-          >
-            <ChevronLeft className="w-3.5 h-3.5 mr-1" />
-            {currentPage === 0 ? 'Prev Lesson' : 'Previous'}
-          </Button>
+              {/* Page Progress Indicator */}
+              {totalPages > 1 && (
+                <div className="mb-5">
+                  <div className="flex items-center justify-between text-sm text-[#6b6b6b] mb-2">
+                    <span>Page {currentPage + 1} of {totalPages}</span>
+                    <span className="font-medium text-[#4d4d4d]">{currentPageData?.title}</span>
+                  </div>
+                  <PageProgressDots
+                    totalPages={totalPages}
+                    currentPage={currentPage}
+                    completedPages={completedPages}
+                    onPageClick={handlePageClick}
+                  />
+                </div>
+              )}
 
-          <div className="text-center px-2 hidden sm:block">
-            <p className="text-xs text-stone-500">
-              {currentPage === totalPages - 1 && currentLesson === totalLessons - 1
-                ? 'Ready for quiz!'
-                : `${totalPages - currentPage - 1} pages left`
-              }
-            </p>
-            {totalPages > 1 && (
-              <p className="text-[10px] text-stone-400">
-                Lesson {currentLesson + 1}/{totalLessons} • Page {currentPage + 1}/{totalPages}
-              </p>
-            )}
+              {/* Page Content with Animation */}
+              <AnimatePresence mode="wait">
+                <motion.div
+                  key={`${lesson.id}-page-${currentPage}`}
+                  initial={{ opacity: 0, x: 20 }}
+                  animate={{ opacity: 1, x: 0 }}
+                  exit={{ opacity: 0, x: -20 }}
+                  transition={{ duration: 0.3 }}
+                >
+                  {/* Page Title (if multi-page) */}
+                  {totalPages > 1 && currentPageData && (
+                    <motion.h3
+                      initial={{ opacity: 0, y: -10 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      className="text-lg font-bold text-[#5d6b4d] mb-4 flex items-center gap-2"
+                    >
+                      <div className="w-7 h-7 rounded-lg bg-[#e8e2d5] flex items-center justify-center text-[#5d6b4d] font-bold text-xs">
+                        {currentPage + 1}
+                      </div>
+                      {currentPageData.title}
+                    </motion.h3>
+                  )}
+
+                  {/* Picture Book Illustration (for elementary/middle school) */}
+                  {currentPageData?.illustration && (
+                    <StoryIllustration
+                      theme={currentPageData.illustration}
+                      level={selectedLevel}
+                      caption={currentPageData.title !== 'Introduction' ? currentPageData.title : undefined}
+                    />
+                  )}
+
+                  {/* Diagram (if available for this page) */}
+                  {currentPageData?.diagram && (
+                    <DiagramRenderer diagramType={currentPageData.diagram} />
+                  )}
+
+                  {/* Page Text Content */}
+                  <AnimatedSection delay={0.1}>
+                    <div
+                      className="prose prose-base max-w-none text-[#3d3d3d]
+                                 prose-headings:text-[#2d2d2d] prose-headings:font-bold
+                                 prose-p:text-[#3d3d3d] prose-p:leading-relaxed
+                                 prose-li:text-[#3d3d3d]
+                                 prose-strong:text-[#2d2d2d]
+                                 prose-a:text-[#5d6b4d] prose-a:font-semibold prose-a:no-underline hover:prose-a:underline
+                                 prose-blockquote:border-[#5d6b4d] prose-blockquote:text-[#5d5d5d] prose-blockquote:bg-[#f0ebe0] prose-blockquote:rounded-r-lg prose-blockquote:py-2
+                                 prose-ul:space-y-1 prose-ol:space-y-1"
+                      dangerouslySetInnerHTML={{ __html: sanitizeHtml(currentPageData?.content || '') }}
+                    />
+                  </AnimatedSection>
+
+                  {/* Pioneer Quick Access */}
+                  {currentPageData?.pioneers && currentPageData.pioneers.length > 0 && (
+                    <AnimatedSection delay={0.2}>
+                      <div className="mt-6 pt-5 border-t border-[#d4cbb8]">
+                        <h4 className="font-bold text-[#4d4d4d] mb-3 flex items-center gap-2 text-sm">
+                          <User className="w-4 h-4 text-[#5d6b4d]" />
+                          People Mentioned
+                        </h4>
+                        <div className="flex flex-wrap gap-2">
+                          {currentPageData.pioneers.map((pioneer) => (
+                            <button
+                              key={pioneer.id}
+                              onClick={() => handlePioneerClick(pioneer)}
+                              className="inline-flex items-center gap-2 px-2.5 py-1.5 rounded-lg bg-[#f0ebe0] hover:bg-[#e8e2d5] border border-[#d4cbb8] transition-all group"
+                            >
+                              <div className="w-6 h-6 rounded-full bg-[#5d6b4d] text-[#f5f1e8] flex items-center justify-center text-[10px] font-bold overflow-hidden">
+                                {pioneer.portrait ? (
+                                  <img src={pioneer.portrait} alt={pioneer.name} className="w-full h-full object-cover" />
+                                ) : (
+                                  <span>{pioneer.name.split(' ').map(n => n[0]).join('')}</span>
+                                )}
+                              </div>
+                              <div className="text-left">
+                                <span className="font-bold text-[#3d3d3d] group-hover:text-[#5d6b4d] text-xs block">
+                                  {pioneer.name}
+                                </span>
+                                <span className="text-[10px] text-[#6b6b6b]">{pioneer.title}</span>
+                              </div>
+                            </button>
+                          ))}
+                        </div>
+                      </div>
+                    </AnimatedSection>
+                  )}
+                </motion.div>
+              </AnimatePresence>
+
+              {/* References */}
+              {module.externalResources.length > 0 && currentLesson === totalLessons - 1 && currentPage === totalPages - 1 && (
+                <AnimatedSection delay={0.2}>
+                  <div className="mt-6 pt-5 border-t border-[#d4cbb8]">
+                    <h3 className="font-bold text-[#4d4d4d] mb-3 flex items-center gap-2 text-sm">
+                      <ExternalLink className="w-4 h-4 text-[#5d6b4d]" />
+                      References & Further Reading
+                    </h3>
+                    <div className="space-y-2">
+                      {module.externalResources.slice(0, 3).map((resource, idx) => (
+                        <ReferenceLink key={resource.url} title={resource.title} url={resource.url} type={resource.type} index={idx} />
+                      ))}
+                    </div>
+                  </div>
+                </AnimatedSection>
+              )}
+            </div>
           </div>
 
-          <Button onClick={goToNextPage} className="font-bold text-xs bg-emerald-600 hover:bg-emerald-700" size="sm">
-            {currentPage === totalPages - 1 && currentLesson === totalLessons - 1
-              ? 'Take Quiz'
-              : currentPage === totalPages - 1
-              ? 'Next Lesson'
-              : 'Next'
-            }
-            <ChevronRight className="w-3.5 h-3.5 ml-1" />
-          </Button>
+          {/* Page Navigation */}
+          <div className="flex items-center justify-between mt-6 py-4">
+            <Button
+              variant="outline"
+              onClick={goToPreviousPage}
+              disabled={currentLesson === 0 && currentPage === 0}
+              className="font-bold text-sm border-[#d4cbb8] text-[#5d5d5d] bg-[#f5f1e8] hover:bg-[#e8e2d5]"
+            >
+              <ChevronLeft className="w-4 h-4 mr-1" />
+              {currentPage === 0 ? 'Prev Lesson' : 'Previous'}
+            </Button>
+
+            <div className="text-center px-4">
+              <p className="text-sm text-[#6b6b6b]">
+                {currentPage === totalPages - 1 && currentLesson === totalLessons - 1
+                  ? 'Ready for quiz!'
+                  : `${totalPages - currentPage - 1} pages left`
+                }
+              </p>
+            </div>
+
+            <Button
+              onClick={goToNextPage}
+              className="font-bold text-sm bg-[#5d6b4d] hover:bg-[#4d5b3d] text-[#f5f1e8]"
+            >
+              {currentPage === totalPages - 1 && currentLesson === totalLessons - 1
+                ? 'Take Quiz'
+                : currentPage === totalPages - 1
+                ? 'Next Lesson'
+                : 'Next'
+              }
+              <ChevronRight className="w-4 h-4 ml-1" />
+            </Button>
+          </div>
         </div>
       </div>
 
