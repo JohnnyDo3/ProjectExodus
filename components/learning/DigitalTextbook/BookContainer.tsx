@@ -228,20 +228,20 @@ export function PageContainer({ children, side, className }: PageContainerProps)
   }, [])
 
   const isDesktop = deviceType === 'desktop'
-  const dimensions = BOOK_DIMENSIONS[deviceType]
 
   return (
     <div
       className={cn(
         'relative',
-        // Page dimensions
-        isDesktop ? 'w-1/2 h-full' : 'w-full h-full',
+        // IMPORTANT: PageFlip already positions this in a w-1/2 container
+        // so we need w-full h-full here to fill that container
+        'w-full h-full',
         // Asymmetric padding for book layout:
         // - More padding on OUTER edge (far from centerfold)
         // - Less padding on INNER edge (close to centerfold)
-        side === 'left' && isDesktop && 'pl-6 pr-2 py-3', // Left page: more padding on left, tight on right (centerfold)
-        side === 'right' && isDesktop && 'pl-2 pr-6 py-3', // Right page: tight on left (centerfold), more padding on right
-        !isDesktop && 'p-3', // Mobile: uniform padding
+        side === 'left' && isDesktop && 'pl-4 pr-3 py-3',
+        side === 'right' && isDesktop && 'pl-3 pr-4 py-3',
+        !isDesktop && 'p-3',
         // Page styling
         'bg-[var(--book-paper,var(--card))]',
         // Side-specific styling
@@ -262,17 +262,17 @@ export function PageContainer({ children, side, className }: PageContainerProps)
         ? A11Y_CONFIG.ariaLabels.leftPage
         : A11Y_CONFIG.ariaLabels.rightPage}
     >
-      {/* Page content - fills entire page, child handles scrolling */}
-      <div className="relative w-full h-full">
+      {/* Page content - fills entire page height, centered content */}
+      <div className="relative w-full h-full flex flex-col">
         {children}
       </div>
 
       {/* Page curl shadow effect for left page */}
       {side === 'left' && isDesktop && (
         <div
-          className="absolute inset-y-0 right-0 w-8 pointer-events-none"
+          className="absolute inset-y-0 right-0 w-6 pointer-events-none"
           style={{
-            background: 'linear-gradient(to right, transparent, rgba(0,0,0,0.05))',
+            background: 'linear-gradient(to right, transparent, rgba(0,0,0,0.04))',
           }}
         />
       )}
@@ -280,9 +280,9 @@ export function PageContainer({ children, side, className }: PageContainerProps)
       {/* Page fold shadow for right page */}
       {side === 'right' && isDesktop && (
         <div
-          className="absolute inset-y-0 left-0 w-4 pointer-events-none"
+          className="absolute inset-y-0 left-0 w-3 pointer-events-none"
           style={{
-            background: 'linear-gradient(to left, transparent, rgba(0,0,0,0.08))',
+            background: 'linear-gradient(to left, transparent, rgba(0,0,0,0.06))',
           }}
         />
       )}

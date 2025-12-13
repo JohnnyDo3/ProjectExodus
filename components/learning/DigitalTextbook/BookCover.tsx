@@ -332,18 +332,18 @@ export function InsideCover({
 
   const levels = [
     { id: 'ELEMENTARY', label: 'Elementary', icon: '🌱' },
-    { id: 'MIDDLE_SCHOOL', label: 'Middle School', icon: '📚' },
+    { id: 'MIDDLE_SCHOOL', label: 'Middle', icon: '📚' },
     { id: 'HIGH_SCHOOL', label: 'High School', icon: '🎓' },
     { id: 'UNDERGRADUATE', label: 'College', icon: '🔬' },
     { id: 'GRADUATE', label: 'Graduate', icon: '📊' },
-    { id: 'PHD', label: 'Professional', icon: '🧬' },
+    { id: 'PHD', label: 'Pro', icon: '🧬' },
   ]
 
   return (
     <div
       className={cn(
-        'w-full h-full flex flex-col items-center justify-center p-8',
-        'text-center',
+        'w-full h-full flex flex-col items-center justify-center px-4 py-4',
+        'text-center overflow-y-auto',
         className
       )}
       style={{
@@ -351,52 +351,58 @@ export function InsideCover({
       }}
     >
       {/* Decorative stars */}
-      <div className="flex items-center gap-3 mb-6">
-        <span className="text-amber-500/60">✦</span>
-        <span className="text-4xl">{topicIcon}</span>
-        <span className="text-amber-500/60">✦</span>
+      <div className="flex items-center gap-2 mb-3 shrink-0">
+        <span className="text-amber-500/60 text-sm">✦</span>
+        <span className="text-3xl">{topicIcon}</span>
+        <span className="text-amber-500/60 text-sm">✦</span>
       </div>
 
       {/* Title */}
       <h2
-        className="text-2xl sm:text-3xl font-serif font-bold tracking-wide mb-2"
+        className="text-xl sm:text-2xl font-serif font-bold tracking-wide mb-1 shrink-0"
         style={{ color: 'var(--primary)' }}
       >
-        THE BOOK OF {topicTitle.toUpperCase()}
+        THE BOOK OF
       </h2>
+      <h3
+        className="text-lg sm:text-xl font-serif font-bold tracking-wider mb-2 shrink-0"
+        style={{ color: 'var(--foreground)' }}
+      >
+        {topicTitle.toUpperCase()}
+      </h3>
 
       {/* Dedication quote */}
-      <p className="text-sm italic text-[var(--muted-foreground)] mb-8 max-w-sm">
-        "A sustainability journey for those who seek to understand"
+      <p className="text-xs italic text-[var(--muted-foreground)] mb-4 max-w-[200px] shrink-0">
+        "A sustainability journey for those who seek"
       </p>
 
       {/* Divider */}
       <div
-        className="w-48 h-px mb-8"
+        className="w-32 h-px mb-4 shrink-0"
         style={{
           background: 'linear-gradient(to right, transparent, var(--border), transparent)',
         }}
       />
 
       {/* Level selection */}
-      <div className="mb-8">
-        <h3 className="text-sm font-bold text-[var(--muted-foreground)] mb-4 tracking-wider">
-          SELECT YOUR PATH
+      <div className="mb-4 w-full max-w-[280px] shrink-0">
+        <h3 className="text-[10px] font-bold text-[var(--muted-foreground)] mb-2 tracking-wider uppercase">
+          Select Your Path
         </h3>
-        <div className="grid grid-cols-2 sm:grid-cols-3 gap-2">
+        <div className="grid grid-cols-3 gap-1.5">
           {levels.map((level) => (
             <button
               key={level.id}
               onClick={() => onLevelSelect?.(level.id)}
               className={cn(
-                'px-4 py-2 rounded-lg text-sm font-medium transition-all',
+                'px-2 py-1.5 rounded text-[10px] font-medium transition-all',
                 'border',
                 selectedLevel === level.id
                   ? 'border-[var(--primary)] bg-[var(--primary)] text-[var(--primary-foreground)]'
                   : 'border-[var(--border)] hover:border-[var(--primary)] hover:bg-[var(--muted)]'
               )}
             >
-              <span className="mr-1">{level.icon}</span>
+              <span className="block text-base mb-0.5">{level.icon}</span>
               {level.label}
             </button>
           ))}
@@ -405,14 +411,14 @@ export function InsideCover({
 
       {/* Divider */}
       <div
-        className="w-48 h-px mb-6"
+        className="w-32 h-px mb-3 shrink-0"
         style={{
           background: 'linear-gradient(to right, transparent, var(--border), transparent)',
         }}
       />
 
       {/* Book stats */}
-      <p className="text-xs text-[var(--muted-foreground)] mb-8">
+      <p className="text-[10px] text-[var(--muted-foreground)] mb-4 shrink-0">
         {chapterCount} Chapters • {verseCount} Verses • {pageCount} Pages
       </p>
 
@@ -420,7 +426,7 @@ export function InsideCover({
       <motion.button
         onClick={onStartReading}
         className={cn(
-          'px-8 py-3 rounded-lg text-sm font-bold tracking-wider',
+          'px-6 py-2 rounded-lg text-xs font-bold tracking-wider shrink-0',
           'bg-[var(--primary)] text-[var(--primary-foreground)]',
           'hover:opacity-90 transition-opacity',
           'flex items-center gap-2'
@@ -428,7 +434,7 @@ export function InsideCover({
         whileHover={{ scale: 1.02 }}
         whileTap={{ scale: 0.98 }}
       >
-        BEGIN YOUR JOURNEY
+        BEGIN JOURNEY
         <span>→</span>
       </motion.button>
     </div>

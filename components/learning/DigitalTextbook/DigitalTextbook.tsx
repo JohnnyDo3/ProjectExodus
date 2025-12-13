@@ -399,75 +399,80 @@ export function DigitalTextbook({
       case 'cover':
         return (
           <div className="w-full h-full flex items-center justify-center">
-            <div className="text-center">
-              <span className="text-6xl">{CORE_TOPIC_ICONS[topic.id] || '📖'}</span>
-              <h1 className="text-2xl font-serif font-bold mt-4" style={{ color: currentRibbon?.colors.from }}>
+            <div className="text-center px-4">
+              <span className="text-7xl block mb-6">{CORE_TOPIC_ICONS[topic.id] || '📖'}</span>
+              <h1 className="text-3xl sm:text-4xl font-serif font-bold" style={{ color: currentRibbon?.colors.from }}>
                 {topic.title}
               </h1>
+              <p className="text-sm text-[var(--muted-foreground)] mt-4 italic">
+                A Sacred Journey of Knowledge
+              </p>
             </div>
           </div>
         )
 
       case 'inside-cover':
         return (
-          <InsideCover
-            topicSlug={topic.id}
-            topicTitle={topic.title}
-            chapterCount={Math.min(modules.length, 7)}
-            verseCount={modules.reduce((acc, m) => acc + m.lessons.length, 0)}
-            pageCount={totalPages}
-            selectedLevel={selectedLevel}
-            onLevelSelect={(level) => setSelectedLevel(level as LearningLevel)}
-            onStartReading={() => goToPage(3)} // Go to first chapter
-          />
+          <div className="w-full h-full">
+            <InsideCover
+              topicSlug={topic.id}
+              topicTitle={topic.title}
+              chapterCount={Math.min(modules.length, 7)}
+              verseCount={modules.reduce((acc, m) => acc + m.lessons.length, 0)}
+              pageCount={totalPages}
+              selectedLevel={selectedLevel}
+              onLevelSelect={(level) => setSelectedLevel(level as LearningLevel)}
+              onStartReading={() => goToPage(3)}
+            />
+          </div>
         )
 
       case 'toc':
         return (
-          <div className="w-full h-full flex flex-col overflow-y-auto">
+          <div className="w-full h-full flex flex-col px-2">
             <AncientBorder />
             {/* TOC Header */}
-            <div className="text-center mb-8">
-              <h2 className="text-3xl font-serif font-bold text-[var(--foreground)] mb-2">
+            <div className="text-center py-4 shrink-0">
+              <h2 className="text-2xl sm:text-3xl font-serif font-bold text-[var(--foreground)] mb-1">
                 Table of Contents
               </h2>
-              <p className="text-sm text-[var(--muted-foreground)] italic font-serif">
+              <p className="text-xs text-[var(--muted-foreground)] italic font-serif">
                 The Seven Paths of Knowledge
               </p>
             </div>
             <HieroglyphicDivider color={currentRibbon?.colors.from} />
-            {/* Chapter List - fills available space */}
-            <div className="flex-1 flex flex-col justify-center space-y-4 py-4">
+            {/* Chapter List - fills available space with scroll if needed */}
+            <div className="flex-1 overflow-y-auto space-y-2 py-2">
               {modules.slice(0, 7).map((module, i) => {
                 const ribbon = RIBBON_ORDER[i] ? GUARDIAN_RIBBONS[RIBBON_ORDER[i]] : null
                 return (
                   <button
                     key={module.id}
                     onClick={() => goToChapter(i)}
-                    className="w-full flex items-center gap-4 p-4 rounded-xl hover:bg-[var(--muted)] transition-colors text-left group border border-transparent hover:border-[var(--border)]"
+                    className="w-full flex items-center gap-3 p-3 rounded-lg hover:bg-[var(--muted)] transition-colors text-left group border border-transparent hover:border-[var(--border)]"
                   >
                     <div
-                      className="w-10 h-10 rounded-lg flex items-center justify-center text-white text-base font-bold shadow-md"
+                      className="w-8 h-8 rounded-lg flex items-center justify-center text-white text-sm font-bold shadow-md shrink-0"
                       style={{ background: ribbon?.colors.gradient }}
                     >
                       {i + 1}
                     </div>
-                    <div className="flex-1">
-                      <span className="text-xs uppercase tracking-wider text-[var(--muted-foreground)] block mb-0.5">
+                    <div className="flex-1 min-w-0">
+                      <span className="text-[10px] uppercase tracking-wider text-[var(--muted-foreground)] block">
                         Chapter {i + 1}
                       </span>
-                      <span className="font-serif text-lg text-[var(--foreground)] group-hover:text-[var(--primary)] transition-colors">
+                      <span className="font-serif text-base text-[var(--foreground)] group-hover:text-[var(--primary)] transition-colors truncate block">
                         {module.title}
                       </span>
                     </div>
-                    <ChevronRight className="w-5 h-5 text-[var(--muted-foreground)] group-hover:text-[var(--primary)] transition-colors" />
+                    <ChevronRight className="w-4 h-4 text-[var(--muted-foreground)] group-hover:text-[var(--primary)] transition-colors shrink-0" />
                   </button>
                 )
               })}
             </div>
             {/* Footer */}
-            <div className="text-center pt-4 border-t border-[var(--border)]/20">
-              <p className="text-xs text-[var(--muted-foreground)]">
+            <div className="text-center py-2 border-t border-[var(--border)]/20 shrink-0">
+              <p className="text-[10px] text-[var(--muted-foreground)]">
                 Click a chapter to begin reading
               </p>
             </div>
@@ -476,24 +481,26 @@ export function DigitalTextbook({
 
       case 'chapter-divider':
         return (
-          <ChapterDivider
-            chapterIndex={page.chapterIndex ?? 0}
-            chapterTitle={page.title || ''}
-            versesCount={page.module?.lessons.length ?? 0}
-            guardianQuote={getGuardianQuote(page.chapterIndex ?? 0)}
-          />
+          <div className="w-full h-full">
+            <ChapterDivider
+              chapterIndex={page.chapterIndex ?? 0}
+              chapterTitle={page.title || ''}
+              versesCount={page.module?.lessons.length ?? 0}
+              guardianQuote={getGuardianQuote(page.chapterIndex ?? 0)}
+            />
+          </div>
         )
 
       case 'verse':
         const verseRibbon = RIBBON_ORDER[page.chapterIndex ?? 0] ? GUARDIAN_RIBBONS[RIBBON_ORDER[page.chapterIndex ?? 0]] : null
         return (
-          <div className="w-full h-full flex flex-col items-center justify-center overflow-y-auto">
+          <div className="w-full h-full flex flex-col items-center justify-center px-4">
             <AncientBorder />
-            {/* Verse presentation - fills the page */}
-            <div className="text-center max-w-md">
+            {/* Verse presentation - centered on page */}
+            <div className="text-center w-full max-w-sm">
               {/* Chapter indicator */}
               <div
-                className="inline-block px-4 py-1 rounded-full text-xs uppercase tracking-wider mb-6"
+                className="inline-block px-3 py-1 rounded-full text-[10px] uppercase tracking-wider mb-4"
                 style={{
                   background: verseRibbon ? `${verseRibbon.colors.from}20` : 'var(--muted)',
                   color: verseRibbon?.colors.from || 'var(--muted-foreground)',
@@ -504,7 +511,7 @@ export function DigitalTextbook({
 
               {/* Decorative element */}
               <div
-                className="w-16 h-0.5 mx-auto mb-8"
+                className="w-12 h-0.5 mx-auto mb-6"
                 style={{
                   background: verseRibbon
                     ? `linear-gradient(to right, transparent, ${verseRibbon.colors.from}, transparent)`
@@ -513,13 +520,13 @@ export function DigitalTextbook({
               />
 
               {/* Verse number */}
-              <div className="text-sm text-[var(--muted-foreground)] tracking-[0.3em] uppercase mb-4">
+              <div className="text-xs text-[var(--muted-foreground)] tracking-[0.3em] uppercase mb-3">
                 Verse {(page.verseIndex ?? 0) + 1}
               </div>
 
               {/* Verse title */}
               <h2
-                className="text-3xl sm:text-4xl font-serif font-bold mb-6"
+                className="text-2xl sm:text-3xl font-serif font-bold mb-4"
                 style={{ color: verseRibbon?.colors.from || 'var(--foreground)' }}
               >
                 {page.title}
@@ -527,7 +534,7 @@ export function DigitalTextbook({
 
               {/* Description if available */}
               {page.module && (
-                <p className="text-base text-[var(--muted-foreground)] font-serif italic leading-relaxed mb-8">
+                <p className="text-sm text-[var(--muted-foreground)] font-serif italic leading-relaxed mb-6">
                   {typeof page.module.description === 'string'
                     ? page.module.description
                     : page.module.description[selectedLevel] || page.module.description.HIGH_SCHOOL}
@@ -536,7 +543,7 @@ export function DigitalTextbook({
 
               {/* Decorative element */}
               <div
-                className="w-16 h-0.5 mx-auto"
+                className="w-12 h-0.5 mx-auto"
                 style={{
                   background: verseRibbon
                     ? `linear-gradient(to right, transparent, ${verseRibbon.colors.from}, transparent)`
@@ -545,7 +552,7 @@ export function DigitalTextbook({
               />
 
               {/* Continue prompt */}
-              <p className="mt-8 text-sm text-[var(--muted-foreground)]">
+              <p className="mt-6 text-xs text-[var(--muted-foreground)]">
                 Turn the page to begin →
               </p>
             </div>
@@ -560,21 +567,21 @@ export function DigitalTextbook({
             chapterIndex={page.chapterIndex ?? 0}
             side={side}
           >
-            {/* Content area - fills full width */}
+            {/* Content area - fills full page width */}
             <div
               className={cn(
-                "w-full",
-                "prose prose-lg dark:prose-invert max-w-none",
+                "w-full h-full",
+                "prose prose-sm sm:prose-base dark:prose-invert max-w-none",
                 "font-serif",
-                // Typography for book-like appearance
-                "prose-p:text-[1.1rem] prose-p:leading-[1.8] prose-p:mb-6 prose-p:text-justify prose-p:hyphens-auto",
-                "prose-headings:font-bold prose-headings:mb-4",
-                "prose-h2:text-2xl prose-h3:text-xl",
+                // Typography for book-like appearance - responsive sizing
+                "prose-p:text-sm sm:prose-p:text-base prose-p:leading-relaxed prose-p:mb-4 prose-p:text-justify prose-p:hyphens-auto",
+                "prose-headings:font-bold prose-headings:mb-3",
+                "prose-h2:text-xl sm:prose-h2:text-2xl prose-h3:text-lg sm:prose-h3:text-xl",
                 "prose-strong:font-bold",
-                "prose-ul:space-y-2 prose-ol:space-y-2",
-                "prose-li:text-base prose-li:leading-relaxed",
+                "prose-ul:space-y-1 prose-ol:space-y-1",
+                "prose-li:text-sm sm:prose-li:text-base prose-li:leading-relaxed",
                 // First paragraph drop cap effect
-                "[&>div>p:first-of-type]:first-letter:float-left [&>div>p:first-of-type]:first-letter:text-5xl [&>div>p:first-of-type]:first-letter:font-bold [&>div>p:first-of-type]:first-letter:mr-2 [&>div>p:first-of-type]:first-letter:mt-1",
+                "[&>div>p:first-of-type]:first-letter:float-left [&>div>p:first-of-type]:first-letter:text-4xl sm:[&>div>p:first-of-type]:first-letter:text-5xl [&>div>p:first-of-type]:first-letter:font-bold [&>div>p:first-of-type]:first-letter:mr-2 [&>div>p:first-of-type]:first-letter:mt-0.5",
                 "[&>div>p:first-of-type]:first-letter:text-[var(--primary)]",
               )}
             >
