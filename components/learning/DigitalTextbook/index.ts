@@ -1,10 +1,53 @@
 // ============================================
 // THE SACRED DIGITAL TEXTBOOK
-// Central Exports
+// Central Exports - Ancient manuscript meets digital revelation
 // ============================================
 
 // Main Component
 export { DigitalTextbook, default } from './DigitalTextbook'
+
+// Sacred Book Illustrations
+export {
+  IlluminatedLetter,
+  CircularEconomyDiagram,
+  CarbonCycleDiagram,
+  EnergyFlowDiagram,
+  EcosystemDiagram,
+  OrnamentalDivider,
+  AnimatedQuote,
+  StepFlowDiagram,
+  StatCard,
+  type IlluminatedLetterProps,
+  type CircularDiagramProps,
+  type OrnamentalDividerProps,
+  type AnimatedQuoteProps,
+  type StepFlowProps,
+  type StatCardProps,
+} from './BookIllustrations'
+
+// Page Content Animations
+export {
+  AnimatedParagraph,
+  StaggeredContent,
+  SacredTitle,
+  MarginOrnament,
+  GlowingEmphasis,
+  AnimatedList,
+  VerseNumberBadge,
+  PageCornerFlourish,
+  AnimatedDivider,
+  ContentFade,
+  type AnimatedParagraphProps,
+  type StaggeredContentProps,
+  type SacredTitleProps,
+  type MarginOrnamentProps,
+  type GlowingEmphasisProps,
+  type AnimatedListProps,
+  type VerseNumberBadgeProps,
+  type PageCornerFlourishProps,
+  type AnimatedDividerProps,
+  type ContentFadeProps,
+} from './PageAnimations'
 
 // Book Container & Structure
 export {

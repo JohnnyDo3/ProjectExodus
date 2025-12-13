@@ -456,54 +456,187 @@ function IllustrationBlock({ illustration }: IllustrationBlockProps) {
 // ============================================
 // VERSE HEADER
 // For starting a new verse (lesson) within a chapter
+// Enhanced with sacred scroll animations
 // ============================================
 
 interface VerseHeaderProps {
   verseNumber: number
   verseName: string
   chapterIndex: number
+  animated?: boolean
 }
 
-export function VerseHeader({ verseNumber, verseName, chapterIndex }: VerseHeaderProps) {
+export function VerseHeader({ verseNumber, verseName, chapterIndex, animated = true }: VerseHeaderProps) {
   const ribbon = RIBBON_ORDER[chapterIndex] ? GUARDIAN_RIBBONS[RIBBON_ORDER[chapterIndex]] : null
+  const color = ribbon?.colors.from || 'var(--primary)'
+
+  if (!animated) {
+    return (
+      <div className="text-center py-8 space-y-3">
+        <div
+          className="w-24 h-0.5 mx-auto"
+          style={{
+            background: `linear-gradient(to right, transparent, ${color}, transparent)`,
+          }}
+        />
+        <div className="text-sm text-[var(--muted-foreground)] tracking-widest uppercase">
+          Verse {verseNumber}
+        </div>
+        <h3 className="text-xl font-serif font-bold text-[var(--foreground)]">
+          {verseName}
+        </h3>
+        <div
+          className="w-24 h-0.5 mx-auto"
+          style={{
+            background: `linear-gradient(to right, transparent, ${color}, transparent)`,
+          }}
+        />
+      </div>
+    )
+  }
 
   return (
-    <div className="text-center py-8 space-y-3">
-      {/* Decorative line */}
-      <div
-        className="w-24 h-0.5 mx-auto"
-        style={{
-          background: ribbon
-            ? `linear-gradient(to right, transparent, ${ribbon.colors.from}, transparent)`
-            : 'linear-gradient(to right, transparent, var(--primary), transparent)',
-        }}
-      />
+    <motion.div
+      className="text-center py-8 space-y-4"
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      transition={{ duration: 0.5 }}
+    >
+      {/* Top decorative SVG flourish */}
+      <motion.svg
+        className="w-48 h-8 mx-auto"
+        viewBox="0 0 192 32"
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        transition={{ delay: 0.1 }}
+      >
+        {/* Left line */}
+        <motion.path
+          d="M8 16 L56 16"
+          stroke={color}
+          strokeWidth="1"
+          strokeLinecap="round"
+          opacity={0.4}
+          initial={{ pathLength: 0 }}
+          animate={{ pathLength: 1 }}
+          transition={{ duration: 0.5, delay: 0.2 }}
+        />
+        {/* Left decorative curl */}
+        <motion.path
+          d="M56 16 Q64 8 72 16 Q64 24 56 16"
+          fill="none"
+          stroke={color}
+          strokeWidth="1"
+          opacity={0.5}
+          initial={{ pathLength: 0 }}
+          animate={{ pathLength: 1 }}
+          transition={{ duration: 0.4, delay: 0.4 }}
+        />
+        {/* Center ornament */}
+        <motion.circle
+          cx="96" cy="16" r="6"
+          fill={`${color}20`}
+          stroke={color}
+          strokeWidth="1"
+          initial={{ scale: 0 }}
+          animate={{ scale: 1 }}
+          transition={{ duration: 0.3, delay: 0.5, type: 'spring' }}
+        />
+        <motion.circle
+          cx="96" cy="16" r="3"
+          fill={color}
+          opacity={0.6}
+          initial={{ scale: 0 }}
+          animate={{ scale: 1 }}
+          transition={{ duration: 0.3, delay: 0.6, type: 'spring' }}
+        />
+        {/* Right decorative curl */}
+        <motion.path
+          d="M136 16 Q128 8 120 16 Q128 24 136 16"
+          fill="none"
+          stroke={color}
+          strokeWidth="1"
+          opacity={0.5}
+          initial={{ pathLength: 0 }}
+          animate={{ pathLength: 1 }}
+          transition={{ duration: 0.4, delay: 0.4 }}
+        />
+        {/* Right line */}
+        <motion.path
+          d="M136 16 L184 16"
+          stroke={color}
+          strokeWidth="1"
+          strokeLinecap="round"
+          opacity={0.4}
+          initial={{ pathLength: 0 }}
+          animate={{ pathLength: 1 }}
+          transition={{ duration: 0.5, delay: 0.2 }}
+        />
+      </motion.svg>
 
-      {/* Verse number */}
-      <div className="text-sm text-[var(--muted-foreground)] tracking-widest uppercase">
-        Verse {verseNumber}
-      </div>
+      {/* Verse number with decorative frame */}
+      <motion.div
+        className="inline-flex items-center gap-2"
+        initial={{ opacity: 0, y: 10 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ delay: 0.3 }}
+      >
+        <span className="text-lg opacity-40" style={{ color }}>❧</span>
+        <span
+          className="text-sm tracking-[0.3em] uppercase font-medium"
+          style={{ color }}
+        >
+          Verse {verseNumber}
+        </span>
+        <span className="text-lg opacity-40 rotate-180" style={{ color }}>❧</span>
+      </motion.div>
 
-      {/* Verse name */}
-      <h3 className="text-xl font-serif font-bold text-[var(--foreground)]">
+      {/* Verse name with reveal animation */}
+      <motion.h3
+        className="text-xl sm:text-2xl font-serif font-bold text-[var(--foreground)]"
+        initial={{ opacity: 0, y: 10 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ delay: 0.4 }}
+      >
         {verseName}
-      </h3>
+      </motion.h3>
 
-      {/* Decorative line */}
-      <div
-        className="w-24 h-0.5 mx-auto"
-        style={{
-          background: ribbon
-            ? `linear-gradient(to right, transparent, ${ribbon.colors.from}, transparent)`
-            : 'linear-gradient(to right, transparent, var(--primary), transparent)',
-        }}
-      />
-    </div>
+      {/* Bottom decorative element */}
+      <motion.div
+        className="flex items-center justify-center gap-3"
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        transition={{ delay: 0.5 }}
+      >
+        <motion.div
+          className="w-8 h-px"
+          style={{ background: `linear-gradient(to right, transparent, ${color})` }}
+          initial={{ scaleX: 0, originX: 1 }}
+          animate={{ scaleX: 1 }}
+          transition={{ delay: 0.6, duration: 0.3 }}
+        />
+        <motion.div
+          className="w-2 h-2 rounded-full"
+          style={{ background: color, opacity: 0.5 }}
+          initial={{ scale: 0 }}
+          animate={{ scale: 1 }}
+          transition={{ delay: 0.65, type: 'spring' }}
+        />
+        <motion.div
+          className="w-8 h-px"
+          style={{ background: `linear-gradient(to left, transparent, ${color})` }}
+          initial={{ scaleX: 0, originX: 0 }}
+          animate={{ scaleX: 1 }}
+          transition={{ delay: 0.6, duration: 0.3 }}
+        />
+      </motion.div>
+    </motion.div>
   )
 }
 
 // ============================================
 // CHAPTER DIVIDER PAGE
+// Enhanced with sacred manuscript styling
 // ============================================
 
 interface ChapterDividerProps {
@@ -511,6 +644,7 @@ interface ChapterDividerProps {
   chapterTitle: string
   versesCount: number
   guardianQuote?: string
+  animated?: boolean
 }
 
 export function ChapterDivider({
@@ -518,64 +652,436 @@ export function ChapterDivider({
   chapterTitle,
   versesCount,
   guardianQuote,
+  animated = true,
 }: ChapterDividerProps) {
   const ribbon = RIBBON_ORDER[chapterIndex] ? GUARDIAN_RIBBONS[RIBBON_ORDER[chapterIndex]] : null
   const Icon = ribbon?.icon
+  const color = ribbon?.colors.from || 'var(--primary)'
+
+  const MotionWrapper = animated ? motion.div : 'div'
+  const wrapperProps = animated ? {
+    initial: { opacity: 0 },
+    animate: { opacity: 1 },
+    transition: { duration: 0.6 },
+  } : {}
 
   return (
-    <div className="w-full h-full flex flex-col items-center justify-center text-center">
-      {/* Guardian Icon */}
-      {Icon && (
-        <div
-          className="w-20 h-20 rounded-full flex items-center justify-center mb-6"
-          style={{ background: ribbon?.colors.gradient }}
+    <MotionWrapper
+      className="w-full h-full flex flex-col items-center justify-center text-center relative px-4"
+      {...wrapperProps}
+    >
+      {/* Corner decorations */}
+      {animated && (
+        <>
+          <motion.svg
+            className="absolute top-4 left-4 w-16 h-16"
+            viewBox="0 0 64 64"
+            initial={{ opacity: 0, scale: 0.5 }}
+            animate={{ opacity: 1, scale: 1 }}
+            transition={{ delay: 0.3 }}
+          >
+            <motion.path
+              d="M4 40 L4 4 L40 4"
+              fill="none"
+              stroke={color}
+              strokeWidth="1.5"
+              strokeLinecap="round"
+              opacity={0.3}
+              initial={{ pathLength: 0 }}
+              animate={{ pathLength: 1 }}
+              transition={{ duration: 0.6, delay: 0.4 }}
+            />
+            <motion.path
+              d="M4 4 L20 20"
+              fill="none"
+              stroke={color}
+              strokeWidth="1"
+              opacity={0.2}
+              initial={{ pathLength: 0 }}
+              animate={{ pathLength: 1 }}
+              transition={{ duration: 0.4, delay: 0.6 }}
+            />
+            <circle cx="8" cy="8" r="3" fill={color} opacity={0.4} />
+          </motion.svg>
+          <motion.svg
+            className="absolute top-4 right-4 w-16 h-16"
+            viewBox="0 0 64 64"
+            initial={{ opacity: 0, scale: 0.5 }}
+            animate={{ opacity: 1, scale: 1 }}
+            transition={{ delay: 0.3 }}
+          >
+            <motion.path
+              d="M60 40 L60 4 L24 4"
+              fill="none"
+              stroke={color}
+              strokeWidth="1.5"
+              strokeLinecap="round"
+              opacity={0.3}
+              initial={{ pathLength: 0 }}
+              animate={{ pathLength: 1 }}
+              transition={{ duration: 0.6, delay: 0.4 }}
+            />
+            <motion.path
+              d="M60 4 L44 20"
+              fill="none"
+              stroke={color}
+              strokeWidth="1"
+              opacity={0.2}
+              initial={{ pathLength: 0 }}
+              animate={{ pathLength: 1 }}
+              transition={{ duration: 0.4, delay: 0.6 }}
+            />
+            <circle cx="56" cy="8" r="3" fill={color} opacity={0.4} />
+          </motion.svg>
+          <motion.svg
+            className="absolute bottom-4 left-4 w-16 h-16"
+            viewBox="0 0 64 64"
+            initial={{ opacity: 0, scale: 0.5 }}
+            animate={{ opacity: 1, scale: 1 }}
+            transition={{ delay: 0.3 }}
+          >
+            <motion.path
+              d="M4 24 L4 60 L40 60"
+              fill="none"
+              stroke={color}
+              strokeWidth="1.5"
+              strokeLinecap="round"
+              opacity={0.3}
+              initial={{ pathLength: 0 }}
+              animate={{ pathLength: 1 }}
+              transition={{ duration: 0.6, delay: 0.4 }}
+            />
+            <motion.path
+              d="M4 60 L20 44"
+              fill="none"
+              stroke={color}
+              strokeWidth="1"
+              opacity={0.2}
+              initial={{ pathLength: 0 }}
+              animate={{ pathLength: 1 }}
+              transition={{ duration: 0.4, delay: 0.6 }}
+            />
+            <circle cx="8" cy="56" r="3" fill={color} opacity={0.4} />
+          </motion.svg>
+          <motion.svg
+            className="absolute bottom-4 right-4 w-16 h-16"
+            viewBox="0 0 64 64"
+            initial={{ opacity: 0, scale: 0.5 }}
+            animate={{ opacity: 1, scale: 1 }}
+            transition={{ delay: 0.3 }}
+          >
+            <motion.path
+              d="M60 24 L60 60 L24 60"
+              fill="none"
+              stroke={color}
+              strokeWidth="1.5"
+              strokeLinecap="round"
+              opacity={0.3}
+              initial={{ pathLength: 0 }}
+              animate={{ pathLength: 1 }}
+              transition={{ duration: 0.6, delay: 0.4 }}
+            />
+            <motion.path
+              d="M60 60 L44 44"
+              fill="none"
+              stroke={color}
+              strokeWidth="1"
+              opacity={0.2}
+              initial={{ pathLength: 0 }}
+              animate={{ pathLength: 1 }}
+              transition={{ duration: 0.4, delay: 0.6 }}
+            />
+            <circle cx="56" cy="56" r="3" fill={color} opacity={0.4} />
+          </motion.svg>
+        </>
+      )}
+
+      {/* Top decorative border */}
+      {animated ? (
+        <motion.svg
+          className="w-64 h-6 mb-8"
+          viewBox="0 0 256 24"
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ delay: 0.2 }}
         >
-          <Icon className="w-10 h-10 text-white" strokeWidth={1.5} />
+          <motion.path
+            d="M8 12 L80 12"
+            stroke={color}
+            strokeWidth="1"
+            opacity={0.3}
+            initial={{ pathLength: 0 }}
+            animate={{ pathLength: 1 }}
+            transition={{ duration: 0.5, delay: 0.3 }}
+          />
+          <motion.path
+            d="M88 12 Q104 4 120 12 Q104 20 88 12"
+            fill="none"
+            stroke={color}
+            strokeWidth="1"
+            opacity={0.4}
+            initial={{ pathLength: 0 }}
+            animate={{ pathLength: 1 }}
+            transition={{ duration: 0.4, delay: 0.5 }}
+          />
+          <motion.circle
+            cx="128" cy="12" r="4"
+            fill={color}
+            opacity={0.5}
+            initial={{ scale: 0 }}
+            animate={{ scale: 1 }}
+            transition={{ delay: 0.6, type: 'spring' }}
+          />
+          <motion.path
+            d="M168 12 Q152 4 136 12 Q152 20 168 12"
+            fill="none"
+            stroke={color}
+            strokeWidth="1"
+            opacity={0.4}
+            initial={{ pathLength: 0 }}
+            animate={{ pathLength: 1 }}
+            transition={{ duration: 0.4, delay: 0.5 }}
+          />
+          <motion.path
+            d="M176 12 L248 12"
+            stroke={color}
+            strokeWidth="1"
+            opacity={0.3}
+            initial={{ pathLength: 0 }}
+            animate={{ pathLength: 1 }}
+            transition={{ duration: 0.5, delay: 0.3 }}
+          />
+        </motion.svg>
+      ) : (
+        <div className="w-64 h-6 mb-8" />
+      )}
+
+      {/* Guardian Icon with glow effect */}
+      {Icon && (
+        animated ? (
+          <motion.div
+            className="relative mb-6"
+            initial={{ scale: 0, rotate: -180 }}
+            animate={{ scale: 1, rotate: 0 }}
+            transition={{ duration: 0.6, delay: 0.4, type: 'spring' }}
+          >
+            {/* Outer glow ring */}
+            <motion.div
+              className="absolute inset-0 rounded-full"
+              style={{
+                background: `radial-gradient(circle, ${color}40 0%, transparent 70%)`,
+                transform: 'scale(1.5)',
+              }}
+              animate={{ opacity: [0.3, 0.6, 0.3] }}
+              transition={{ duration: 3, repeat: Infinity }}
+            />
+            {/* Icon container */}
+            <div
+              className="relative w-24 h-24 rounded-full flex items-center justify-center shadow-xl"
+              style={{ background: ribbon?.colors.gradient }}
+            >
+              <Icon className="w-12 h-12 text-white" strokeWidth={1.5} />
+            </div>
+            {/* Decorative ring */}
+            <svg className="absolute inset-0 w-24 h-24" viewBox="0 0 96 96">
+              <motion.circle
+                cx="48" cy="48" r="44"
+                fill="none"
+                stroke="white"
+                strokeWidth="1"
+                strokeDasharray="4 4"
+                opacity={0.3}
+                animate={{ rotate: 360 }}
+                transition={{ duration: 20, repeat: Infinity, ease: 'linear' }}
+                style={{ transformOrigin: 'center' }}
+              />
+            </svg>
+          </motion.div>
+        ) : (
+          <div
+            className="w-24 h-24 rounded-full flex items-center justify-center mb-6 shadow-xl"
+            style={{ background: ribbon?.colors.gradient }}
+          >
+            <Icon className="w-12 h-12 text-white" strokeWidth={1.5} />
+          </div>
+        )
+      )}
+
+      {/* Chapter number with ornate styling */}
+      {animated ? (
+        <motion.div
+          className="mb-3"
+          initial={{ opacity: 0, y: 10 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.5 }}
+        >
+          <span className="inline-flex items-center gap-3">
+            <span className="text-xl opacity-40" style={{ color }}>✦</span>
+            <span className="text-sm tracking-[0.3em] uppercase font-medium text-[var(--muted-foreground)]">
+              Chapter {chapterIndex + 1}
+            </span>
+            <span className="text-xl opacity-40" style={{ color }}>✦</span>
+          </span>
+        </motion.div>
+      ) : (
+        <div className="text-sm text-[var(--muted-foreground)] tracking-[0.3em] uppercase mb-3">
+          Chapter {chapterIndex + 1}
         </div>
       )}
 
-      {/* Chapter number */}
-      <div className="text-sm text-[var(--muted-foreground)] tracking-[0.3em] uppercase mb-2">
-        Chapter {chapterIndex + 1}
-      </div>
-
-      {/* Chapter title */}
-      <h2
-        className="text-3xl sm:text-4xl font-serif font-bold mb-4"
-        style={{ color: ribbon?.colors.from || 'var(--foreground)' }}
-      >
-        {chapterTitle}
-      </h2>
+      {/* Chapter title with reveal */}
+      {animated ? (
+        <motion.h2
+          className="text-3xl sm:text-4xl font-serif font-bold mb-4"
+          style={{ color }}
+          initial={{ opacity: 0, y: 10 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.6 }}
+        >
+          {chapterTitle}
+        </motion.h2>
+      ) : (
+        <h2
+          className="text-3xl sm:text-4xl font-serif font-bold mb-4"
+          style={{ color }}
+        >
+          {chapterTitle}
+        </h2>
+      )}
 
       {/* Guardian name */}
       {ribbon && (
-        <div className="text-sm text-[var(--muted-foreground)] mb-6">
-          The Way of <span className="font-bold">{ribbon.value}</span>
+        animated ? (
+          <motion.div
+            className="text-sm text-[var(--muted-foreground)] mb-6"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ delay: 0.7 }}
+          >
+            The Way of <span className="font-bold" style={{ color }}>{ribbon.value}</span>
+          </motion.div>
+        ) : (
+          <div className="text-sm text-[var(--muted-foreground)] mb-6">
+            The Way of <span className="font-bold" style={{ color }}>{ribbon.value}</span>
+          </div>
+        )
+      )}
+
+      {/* Decorative divider line */}
+      {animated ? (
+        <motion.div
+          className="flex items-center gap-2 mb-6"
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ delay: 0.75 }}
+        >
+          <motion.div
+            className="w-12 h-px"
+            style={{ background: `linear-gradient(to right, transparent, ${color})` }}
+            initial={{ scaleX: 0, originX: 1 }}
+            animate={{ scaleX: 1 }}
+            transition={{ delay: 0.8, duration: 0.4 }}
+          />
+          <motion.div
+            className="w-3 h-3 rotate-45 border"
+            style={{ borderColor: color, opacity: 0.5 }}
+            initial={{ scale: 0, rotate: 0 }}
+            animate={{ scale: 1, rotate: 45 }}
+            transition={{ delay: 0.85, type: 'spring' }}
+          />
+          <motion.div
+            className="w-12 h-px"
+            style={{ background: `linear-gradient(to left, transparent, ${color})` }}
+            initial={{ scaleX: 0, originX: 0 }}
+            animate={{ scaleX: 1 }}
+            transition={{ delay: 0.8, duration: 0.4 }}
+          />
+        </motion.div>
+      ) : (
+        <div
+          className="w-32 h-0.5 mb-6"
+          style={{
+            background: `linear-gradient(to right, transparent, ${color}, transparent)`,
+          }}
+        />
+      )}
+
+      {/* Guardian quote with reveal */}
+      {guardianQuote && (
+        animated ? (
+          <motion.blockquote
+            className="text-base italic text-[var(--muted-foreground)] max-w-sm mb-6 font-serif leading-relaxed"
+            initial={{ opacity: 0, y: 10 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.9 }}
+          >
+            <span className="text-2xl opacity-30 mr-1" style={{ color }}>"</span>
+            {guardianQuote}
+            <span className="text-2xl opacity-30 ml-1" style={{ color }}>"</span>
+          </motion.blockquote>
+        ) : (
+          <blockquote className="text-base italic text-[var(--muted-foreground)] max-w-sm mb-6 font-serif">
+            "{guardianQuote}"
+          </blockquote>
+        )
+      )}
+
+      {/* Verse count with badge styling */}
+      {animated ? (
+        <motion.div
+          className="mt-4"
+          initial={{ opacity: 0, y: 10 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 1 }}
+        >
+          <span
+            className="inline-flex items-center gap-2 px-4 py-2 rounded-full text-xs font-medium"
+            style={{
+              background: `${color}15`,
+              color: color,
+              border: `1px solid ${color}30`,
+            }}
+          >
+            <span className="w-1.5 h-1.5 rounded-full" style={{ background: color }} />
+            {versesCount} Verses to explore
+          </span>
+        </motion.div>
+      ) : (
+        <div className="mt-4 text-xs text-[var(--muted-foreground)]">
+          {versesCount} Verses to explore
         </div>
       )}
 
-      {/* Decorative line */}
-      <div
-        className="w-32 h-0.5 mb-6"
-        style={{
-          background: ribbon
-            ? `linear-gradient(to right, transparent, ${ribbon.colors.from}, ${ribbon.colors.to}, transparent)`
-            : 'var(--border)',
-        }}
-      />
-
-      {/* Guardian quote */}
-      {guardianQuote && (
-        <blockquote className="text-sm italic text-[var(--muted-foreground)] max-w-sm">
-          "{guardianQuote}"
-        </blockquote>
+      {/* Bottom decorative element */}
+      {animated && (
+        <motion.div
+          className="absolute bottom-20 left-1/2 -translate-x-1/2"
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ delay: 1.1 }}
+        >
+          <svg className="w-24 h-6" viewBox="0 0 96 24">
+            <motion.path
+              d="M8 12 L88 12"
+              stroke={color}
+              strokeWidth="0.5"
+              opacity={0.2}
+              initial={{ pathLength: 0 }}
+              animate={{ pathLength: 1 }}
+              transition={{ duration: 0.6, delay: 1.2 }}
+            />
+            <motion.circle
+              cx="48" cy="12" r="2"
+              fill={color}
+              opacity={0.3}
+              initial={{ scale: 0 }}
+              animate={{ scale: 1 }}
+              transition={{ delay: 1.4 }}
+            />
+          </svg>
+        </motion.div>
       )}
-
-      {/* Verse count */}
-      <div className="mt-8 text-xs text-[var(--muted-foreground)]">
-        {versesCount} Verses to explore
-      </div>
-    </div>
+    </MotionWrapper>
   )
 }
 
