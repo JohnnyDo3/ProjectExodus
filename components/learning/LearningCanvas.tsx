@@ -1067,7 +1067,7 @@ export function LearningCanvas({
 
   // Main page view - full viewport, no scroll
   return (
-    <div className="h-screen flex flex-col bg-gradient-to-br from-amber-50 via-orange-50/30 to-yellow-50 overflow-hidden">
+    <div className="h-full flex flex-col bg-gradient-to-br from-amber-50 via-orange-50/30 to-yellow-50 overflow-hidden">
       {/* Header */}
       <div className="flex-shrink-0 bg-white/90 backdrop-blur-md border-b border-gray-200 px-4 py-2">
         <div className="container mx-auto flex items-center justify-between">
