@@ -10,6 +10,7 @@ import { motion, AnimatePresence } from 'framer-motion'
 import { useState, useEffect, useRef } from 'react'
 import { cn } from '@/lib/utils/cn'
 import { ANIMATION_TIMINGS, CORE_TOPIC_ICONS } from './bookConstants'
+import { X } from 'lucide-react'
 
 // ============================================
 // TYPES
@@ -199,6 +200,27 @@ export function BookOpenAnimation({
     complete: { y: 0, rotateX: 0, scale: 1 },
   }
 
+  // Skip animation handler
+  const handleSkip = () => {
+    if (!animationCompleteRef.current) {
+      animationCompleteRef.current = true
+      onAnimationComplete()
+    }
+  }
+
+  // Keyboard controls - Space to skip, Escape to skip
+  useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.key === ' ' || e.key === 'Escape' || e.key === 'Enter') {
+        e.preventDefault()
+        handleSkip()
+      }
+    }
+
+    window.addEventListener('keydown', handleKeyDown)
+    return () => window.removeEventListener('keydown', handleKeyDown)
+  }, []) // handleSkip is stable due to ref
+
   // ============================================
   // RENDER
   // ============================================
@@ -215,6 +237,15 @@ export function BookOpenAnimation({
         className
       )}
     >
+      {/* Skip button */}
+      <button
+        onClick={handleSkip}
+        className="absolute top-4 right-4 z-10 p-2 rounded-full bg-white/10 hover:bg-white/20 text-white/60 hover:text-white transition-all"
+        aria-label="Skip animation"
+      >
+        <X className="w-5 h-5" />
+      </button>
+
       {/* Ambient light effect */}
       <div
         className="absolute inset-0 pointer-events-none"
@@ -243,9 +274,8 @@ export function BookOpenAnimation({
         </motion.div>
       </AnimatePresence>
 
-      {/* The Book */}
-      <motion.div
-        className="relative"
+      {/* The Book - Perspective wrapper */}
+      <div
         style={{
           width: '60vw',
           maxWidth: '800px',
@@ -253,18 +283,17 @@ export function BookOpenAnimation({
           maxHeight: '600px',
           perspective: '2000px',
         }}
-        initial={{ y: '-100vh', rotateX: 15, scale: 0.8 }}
-        animate={bookAnimateValues[phase]}
-        transition={{
-          duration: phase === 'descent' ? ANIMATION_TIMINGS.descent.duration / 1000 : 0.4,
-          ease: phase === 'descent' ? [0.25, 0.46, 0.45, 0.94] : 'easeOut',
-        }}
       >
-        {/* Book body */}
-        <div
+        <motion.div
           className="relative w-full h-full"
           style={{
             transformStyle: 'preserve-3d',
+          }}
+          initial={{ y: '-100vh', rotateX: 15, scale: 0.8 }}
+          animate={bookAnimateValues[phase]}
+          transition={{
+            duration: phase === 'descent' ? ANIMATION_TIMINGS.descent.duration / 1000 : 0.4,
+            ease: phase === 'descent' ? [0.25, 0.46, 0.45, 0.94] : 'easeOut',
           }}
         >
           {/* Back cover (visible) */}
@@ -365,51 +394,24 @@ export function BookOpenAnimation({
             />
           </motion.div>
 
-          {/* Seeking animation overlay */}
-          <AnimatePresence>
-            {phase === 'seeking' && (
-              <motion.div
-                className="absolute inset-0 flex items-center justify-center"
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
-                exit={{ opacity: 0 }}
-              >
-                <motion.div
-                  className="text-4xl"
-                  animate={{
-                    rotateY: [0, -30, 0],
-                    x: [-5, 5, -5],
-                  }}
-                  transition={{
-                    duration: 0.15,
-                    repeat: Infinity,
-                    ease: 'linear',
-                  }}
-                >
-                  📄
-                </motion.div>
-              </motion.div>
-            )}
-          </AnimatePresence>
-        </div>
+          {/* Dust particles on landing */}
+          <DustParticles isActive={showDust} />
 
-        {/* Dust particles on landing */}
-        <DustParticles isActive={showDust} />
-
-        {/* Book shadow */}
-        <motion.div
-          className="absolute -bottom-4 left-1/2 -translate-x-1/2 w-3/4 h-4 rounded-[50%]"
-          style={{
-            background: 'rgba(0, 0, 0, 0.4)',
-            filter: 'blur(8px)',
-          }}
-          animate={{
-            scaleX: phase === 'descent' ? 0.5 : 1,
-            opacity: phase === 'descent' ? 0.3 : 0.6,
-          }}
-          transition={{ duration: 0.3 }}
-        />
-      </motion.div>
+          {/* Book shadow */}
+          <motion.div
+            className="absolute -bottom-4 left-1/2 -translate-x-1/2 w-3/4 h-4 rounded-[50%]"
+            style={{
+              background: 'rgba(0, 0, 0, 0.4)',
+              filter: 'blur(8px)',
+            }}
+            animate={{
+              scaleX: phase === 'descent' ? 0.5 : 1,
+              opacity: phase === 'descent' ? 0.3 : 0.6,
+            }}
+            transition={{ duration: 0.3 }}
+          />
+        </motion.div>
+      </div>
 
       {/* Sacred quote at bottom */}
       <motion.div
