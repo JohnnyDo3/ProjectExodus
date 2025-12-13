@@ -1001,4 +1001,285 @@ export function BookGameSelector({
   )
 }
 
+// ============================================
+// GRADED QUIZ
+// 5-question assessment with percentage scoring
+// ============================================
+
+interface GradedQuizProps {
+  items: GameItem[]
+  topicColor?: string
+  level: LearningLevel
+  chapterIndex: number
+  onComplete?: (score: number, total: number) => void
+  className?: string
+}
+
+interface QuizQuestion {
+  id: string
+  question: string
+  correctAnswer: string
+  options: string[]
+  type: 'definition' | 'term'
+}
+
+function shuffleArray<T>(array: T[]): T[] {
+  const shuffled = [...array]
+  for (let i = shuffled.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1))
+    ;[shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]]
+  }
+  return shuffled
+}
+
+export function GradedQuiz({
+  items,
+  topicColor = 'var(--primary)',
+  level,
+  chapterIndex,
+  onComplete,
+  className,
+}: GradedQuizProps) {
+  const [currentQuestion, setCurrentQuestion] = useState(0)
+  const [selectedAnswer, setSelectedAnswer] = useState<string | null>(null)
+  const [showResult, setShowResult] = useState(false)
+  const [answers, setAnswers] = useState<{ correct: boolean; questionId: string }[]>([])
+  const [quizComplete, setQuizComplete] = useState(false)
+
+  // Generate 5 quiz questions from the items
+  const questions = useMemo((): QuizQuestion[] => {
+    if (items.length < 5) return []
+
+    // Shuffle and take 5 items
+    const selectedItems = shuffleArray(items).slice(0, 5)
+
+    return selectedItems.map((item, idx) => {
+      // Alternate between asking for definition and asking for term
+      const askForDefinition = idx % 2 === 0
+
+      // Generate wrong options from other items
+      const otherItems = items.filter(i => i.id !== item.id)
+      const wrongOptions = shuffleArray(otherItems)
+        .slice(0, 3)
+        .map(i => askForDefinition ? i.definition : i.term)
+
+      const correctAnswer = askForDefinition ? item.definition : item.term
+      const options = shuffleArray([correctAnswer, ...wrongOptions])
+
+      return {
+        id: item.id,
+        question: askForDefinition
+          ? `What is the definition of "${item.term}"?`
+          : `Which term matches: "${item.definition.length > 80 ? item.definition.slice(0, 80) + '...' : item.definition}"`,
+        correctAnswer,
+        options,
+        type: askForDefinition ? 'definition' : 'term',
+      }
+    })
+  }, [items])
+
+  const handleAnswer = useCallback((answer: string) => {
+    if (showResult) return
+    setSelectedAnswer(answer)
+    setShowResult(true)
+
+    const isCorrect = answer === questions[currentQuestion].correctAnswer
+    setAnswers(prev => [...prev, { correct: isCorrect, questionId: questions[currentQuestion].id }])
+  }, [showResult, questions, currentQuestion])
+
+  const nextQuestion = useCallback(() => {
+    if (currentQuestion < questions.length - 1) {
+      setCurrentQuestion(prev => prev + 1)
+      setSelectedAnswer(null)
+      setShowResult(false)
+    } else {
+      setQuizComplete(true)
+      const score = answers.filter(a => a.correct).length + (selectedAnswer === questions[currentQuestion].correctAnswer ? 1 : 0)
+      onComplete?.(score, 5)
+    }
+  }, [currentQuestion, questions.length, answers, selectedAnswer, onComplete])
+
+  const restartQuiz = useCallback(() => {
+    setCurrentQuestion(0)
+    setSelectedAnswer(null)
+    setShowResult(false)
+    setAnswers([])
+    setQuizComplete(false)
+  }, [])
+
+  if (questions.length < 5) {
+    return (
+      <div className={cn('h-full flex items-center justify-center', className)}>
+        <p className="text-xs text-[var(--muted-foreground)]">
+          Not enough terms for quiz
+        </p>
+      </div>
+    )
+  }
+
+  // Show final results
+  if (quizComplete) {
+    const finalScore = answers.filter(a => a.correct).length
+    const percentage = Math.round((finalScore / 5) * 100)
+    const passed = percentage >= 60
+    const excellent = percentage >= 90
+
+    return (
+      <div className={cn('h-full flex flex-col items-center justify-center p-4', className)}>
+        <motion.div
+          initial={{ scale: 0 }}
+          animate={{ scale: 1 }}
+          className="text-center"
+        >
+          {/* Score Circle */}
+          <div
+            className={cn(
+              'w-20 h-20 rounded-full flex items-center justify-center mx-auto mb-3',
+              'border-4',
+              excellent ? 'border-emerald-500 bg-emerald-500/10' :
+              passed ? 'border-blue-500 bg-blue-500/10' :
+              'border-orange-500 bg-orange-500/10'
+            )}
+          >
+            <span className={cn(
+              'text-2xl font-bold',
+              excellent ? 'text-emerald-600' :
+              passed ? 'text-blue-600' :
+              'text-orange-600'
+            )}>
+              {percentage}%
+            </span>
+          </div>
+
+          {/* Result Message */}
+          <h3 className="text-sm font-bold text-[var(--foreground)] mb-1">
+            {excellent ? '🏆 Excellent!' :
+             passed ? '✅ Passed!' :
+             '📚 Keep Learning!'}
+          </h3>
+          <p className="text-[10px] text-[var(--muted-foreground)] mb-1">
+            {finalScore}/5 Correct Answers
+          </p>
+          <p className="text-[10px] text-[var(--muted-foreground)] mb-3">
+            Chapter {chapterIndex + 1} Quiz
+          </p>
+
+          {/* Badge Progress Hint */}
+          {excellent && (
+            <div className="text-[9px] text-emerald-600 bg-emerald-500/10 px-2 py-1 rounded mb-3">
+              🎖️ Badge progress: Gold tier!
+            </div>
+          )}
+          {!excellent && passed && (
+            <div className="text-[9px] text-blue-600 bg-blue-500/10 px-2 py-1 rounded mb-3">
+              🥈 Badge progress: Silver tier
+            </div>
+          )}
+          {!passed && (
+            <div className="text-[9px] text-orange-600 bg-orange-500/10 px-2 py-1 rounded mb-3">
+              📖 Review content & try again
+            </div>
+          )}
+
+          <button
+            onClick={restartQuiz}
+            className="px-4 py-1.5 rounded text-[10px] font-medium bg-[var(--primary)] text-[var(--primary-foreground)]"
+          >
+            <RotateCcw className="w-3 h-3 inline mr-1" />
+            Try Again
+          </button>
+        </motion.div>
+      </div>
+    )
+  }
+
+  const question = questions[currentQuestion]
+
+  return (
+    <div className={cn('h-full flex flex-col', className)}>
+      {/* Progress */}
+      <div className="flex items-center gap-2 mb-2">
+        <div className="flex-1 h-1.5 bg-[var(--muted)] rounded-full overflow-hidden">
+          <motion.div
+            className="h-full rounded-full"
+            style={{ backgroundColor: topicColor }}
+            initial={{ width: 0 }}
+            animate={{ width: `${((currentQuestion + 1) / 5) * 100}%` }}
+          />
+        </div>
+        <span className="text-[10px] font-medium text-[var(--muted-foreground)]">
+          {currentQuestion + 1}/5
+        </span>
+      </div>
+
+      {/* Question */}
+      <div className="mb-3">
+        <p className="text-xs font-medium text-[var(--foreground)] leading-relaxed">
+          {question.question}
+        </p>
+      </div>
+
+      {/* Options */}
+      <div className="flex-1 space-y-2 overflow-y-auto">
+        {question.options.map((option, idx) => {
+          const isSelected = selectedAnswer === option
+          const isCorrect = option === question.correctAnswer
+          const showCorrect = showResult && isCorrect
+          const showWrong = showResult && isSelected && !isCorrect
+
+          return (
+            <motion.button
+              key={idx}
+              onClick={() => handleAnswer(option)}
+              disabled={showResult}
+              className={cn(
+                'w-full p-2 rounded-lg border text-left transition-all',
+                'text-[10px] leading-relaxed',
+                !showResult && 'hover:bg-[var(--muted)] border-[var(--border)]',
+                showCorrect && 'bg-emerald-500/20 border-emerald-500 text-emerald-700',
+                showWrong && 'bg-red-500/20 border-red-500 text-red-700',
+                isSelected && !showResult && 'border-[var(--primary)] bg-[var(--primary)]/10'
+              )}
+              whileHover={!showResult ? { scale: 1.01 } : {}}
+              whileTap={!showResult ? { scale: 0.99 } : {}}
+            >
+              <span className="flex items-start gap-2">
+                <span className={cn(
+                  'shrink-0 w-4 h-4 rounded-full border flex items-center justify-center text-[8px] font-bold mt-0.5',
+                  showCorrect && 'bg-emerald-500 border-emerald-500 text-white',
+                  showWrong && 'bg-red-500 border-red-500 text-white',
+                  !showResult && 'border-[var(--border)]'
+                )}>
+                  {showCorrect ? <Check className="w-2.5 h-2.5" /> :
+                   showWrong ? <X className="w-2.5 h-2.5" /> :
+                   String.fromCharCode(65 + idx)}
+                </span>
+                <span className="flex-1">
+                  {option.length > 100 ? option.slice(0, 100) + '...' : option}
+                </span>
+              </span>
+            </motion.button>
+          )
+        })}
+      </div>
+
+      {/* Next Button */}
+      {showResult && (
+        <motion.div
+          initial={{ opacity: 0, y: 10 }}
+          animate={{ opacity: 1, y: 0 }}
+          className="mt-3 flex justify-center"
+        >
+          <button
+            onClick={nextQuestion}
+            className="px-4 py-1.5 rounded text-[10px] font-medium bg-[var(--primary)] text-[var(--primary-foreground)]"
+          >
+            {currentQuestion < 4 ? 'Next Question →' : 'See Results'}
+          </button>
+        </motion.div>
+      )}
+    </div>
+  )
+}
+
 export default BookGameSelector

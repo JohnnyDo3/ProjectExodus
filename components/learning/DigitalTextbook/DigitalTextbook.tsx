@@ -19,7 +19,7 @@ import { BookPage, PageContent, VerseHeader, ChapterDivider } from './BookPage'
 import { PageFlip, RapidPageFlip, usePageTurnSound } from './PageFlip'
 import { BookOpenAnimation } from './BookOpenAnimation'
 import { useBookState } from './useBookState'
-import { BookGameSelector } from './BookGames'
+import { BookGameSelector, GradedQuiz } from './BookGames'
 import { CrosswordPuzzle } from './CrosswordPuzzle'
 
 // Game item type for interactive activities
@@ -57,7 +57,7 @@ interface DigitalTextbookProps {
 }
 
 interface BookContent {
-  type: 'cover' | 'inside-cover' | 'toc' | 'chapter-divider' | 'chapter-intro' | 'verse' | 'content' | 'blank' | 'games'
+  type: 'cover' | 'inside-cover' | 'toc' | 'chapter-divider' | 'chapter-intro' | 'verse' | 'content' | 'blank' | 'games' | 'quiz'
   chapterIndex?: number
   verseIndex?: number
   pageIndex?: number
@@ -265,11 +265,12 @@ export function DigitalTextbook({
 
     chaptersToShow.forEach((module, chapterIndex) => {
       // ============================================
-      // CHAPTER SPREAD LAYOUT:
+      // CHAPTER SPREAD LAYOUT (Learning Flow):
       // 1. Chapter divider on LEFT page (even index)
       // 2. Chapter intro on RIGHT page (same spread)
-      // 3. Blank page with games/notes (LEFT after flip)
-      // 4. Content starts on RIGHT page
+      // 3. CONTENT PAGES (Information FIRST - read and learn)
+      // 4. Games page (reinforce and ingrain knowledge)
+      // 5. Graded Quiz (5 questions for assessment)
       // ============================================
 
       // Ensure chapter divider lands on LEFT page (even index)
@@ -316,26 +317,11 @@ export function DigitalTextbook({
         title: module.title,
       })
 
-      // Blank page for notes/discussion - LEFT page after flipping chapter spread
-      pages.push({
-        type: 'blank',
-        chapterIndex,
-        module,
-      })
-
-      // Games page - RIGHT page (paired with notes on left)
-      pages.push({
-        type: 'games',
-        chapterIndex,
-        module,
-        gameItems: chapterGameItems,
-      })
-
-      // Verses (lessons) within chapter
+      // ============================================
+      // STEP 1: CONTENT PAGES (Information First!)
+      // Users read and absorb information before games
+      // ============================================
       module.lessons.forEach((lesson, verseIndex) => {
-        // For first verse, it will land on RIGHT page (after blank on left)
-        // For subsequent verses, add verse header if needed
-
         // Content pages for this verse
         // Split long content into multiple pages
         const content = lesson.content[selectedLevel] || lesson.content.HIGH_SCHOOL
@@ -353,6 +339,48 @@ export function DigitalTextbook({
             module,
           })
         })
+      })
+
+      // ============================================
+      // STEP 2: GAMES (Reinforce & Ingrain)
+      // After reading, practice with interactive games
+      // ============================================
+
+      // Ensure games land on a good spread position
+      if (pages.length % 2 !== 0) {
+        pages.push({
+          type: 'blank',
+          chapterIndex,
+          module,
+        })
+      }
+
+      // Notes page - LEFT side for personal notes while playing
+      pages.push({
+        type: 'blank',
+        chapterIndex,
+        module,
+      })
+
+      // Games page - RIGHT page (practice what you learned)
+      pages.push({
+        type: 'games',
+        chapterIndex,
+        module,
+        gameItems: chapterGameItems,
+      })
+
+      // ============================================
+      // STEP 3: GRADED QUIZ (Assessment)
+      // 5-question quiz graded for percentage accuracy
+      // ============================================
+
+      // Quiz page - graded assessment
+      pages.push({
+        type: 'quiz',
+        chapterIndex,
+        module,
+        gameItems: chapterGameItems, // Use same terms for quiz questions
       })
     })
 
@@ -905,6 +933,55 @@ export function DigitalTextbook({
               <p className="text-[9px] text-center text-[var(--muted-foreground)]/60 mt-2 italic">
                 Connect with fellow learners in the community forum
               </p>
+            </div>
+          </div>
+        )
+
+      case 'quiz':
+        // Graded 5-question quiz for assessment
+        const quizRibbon = page.chapterIndex !== undefined && RIBBON_ORDER[page.chapterIndex]
+          ? GUARDIAN_RIBBONS[RIBBON_ORDER[page.chapterIndex]]
+          : null
+        const quizItems = page.gameItems || []
+
+        return (
+          <div className="w-full h-full flex flex-col relative overflow-hidden">
+            <AncientBorder />
+
+            {/* Header */}
+            <div className="text-center pt-3 pb-2 shrink-0">
+              <div className="flex items-center justify-center gap-2 mb-1">
+                <span className="text-base">📝</span>
+                <h3 className="text-sm font-serif font-bold text-[var(--foreground)]">
+                  Chapter Quiz
+                </h3>
+              </div>
+              <p className="text-[9px] text-[var(--muted-foreground)]">
+                5 Questions • Graded Assessment
+              </p>
+            </div>
+
+            {/* Quiz Component */}
+            <div className="flex-1 min-h-0 px-2 pb-2">
+              {quizItems.length >= 5 ? (
+                <GradedQuiz
+                  items={quizItems}
+                  topicColor={quizRibbon?.colors.from}
+                  level={selectedLevel}
+                  chapterIndex={page.chapterIndex ?? 0}
+                  onComplete={(score, total) => {
+                    const percentage = Math.round((score / total) * 100)
+                    console.log(`Quiz completed: ${score}/${total} (${percentage}%)`)
+                    // TODO: Save quiz result for badge progress
+                  }}
+                />
+              ) : (
+                <div className="h-full flex items-center justify-center">
+                  <p className="text-xs text-[var(--muted-foreground)]">
+                    Quiz requires at least 5 terms...
+                  </p>
+                </div>
+              )}
             </div>
           </div>
         )
