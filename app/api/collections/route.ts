@@ -2,6 +2,31 @@ import { NextRequest, NextResponse } from 'next/server'
 import { prisma } from '@/lib/db'
 import { auth } from '@/auth'
 
+type CollectionItem = {
+  id: string
+  userId: string
+  name: string
+  slug: string
+  description: string | null
+  coverImage: string | null
+  isPublic: boolean
+  isFeatured: boolean
+  createdAt: Date
+  updatedAt: Date
+  user: {
+    id: string
+    name: string | null
+    image: string | null
+    guardianArchetype: string | null
+  }
+  _count: { articles: number; followers: number }
+  articles: { article: Record<string, unknown> }[]
+}
+
+type FollowItem = {
+  collectionId: string
+}
+
 // Helper to generate slug from name
 function generateSlug(name: string): string {
   return name
@@ -108,20 +133,20 @@ export async function GET(request: NextRequest) {
       const follows = await prisma.collectionFollow.findMany({
         where: {
           userId: session.user.id,
-          collectionId: { in: collections.map(c => c.id) }
+          collectionId: { in: collections.map((c: CollectionItem) => c.id) }
         },
         select: { collectionId: true }
       })
-      followedIds = new Set(follows.map(f => f.collectionId))
+      followedIds = new Set(follows.map((f: FollowItem) => f.collectionId))
     }
 
-    const collectionsWithMeta = collections.map(collection => ({
+    const collectionsWithMeta = collections.map((collection: CollectionItem) => ({
       ...collection,
       articleCount: collection._count.articles,
       followerCount: collection._count.followers,
       isFollowing: followedIds.has(collection.id),
       isOwner: session?.user?.id === collection.userId,
-      previewArticles: collection.articles.map(ca => ca.article),
+      previewArticles: collection.articles.map((ca: { article: Record<string, unknown> }) => ca.article),
       _count: undefined,
       articles: undefined
     }))
