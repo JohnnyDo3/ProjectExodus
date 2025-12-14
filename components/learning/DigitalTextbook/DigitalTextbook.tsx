@@ -57,7 +57,7 @@ interface DigitalTextbookProps {
 }
 
 interface BookContent {
-  type: 'cover' | 'inside-cover' | 'toc' | 'learning-mission' | 'chapter-divider' | 'chapter-intro' | 'verse' | 'content' | 'chapter-summary' | 'key-terms' | 'fun-facts' | 'real-world' | 'notes' | 'games' | 'quiz'
+  type: 'cover' | 'inside-cover' | 'toc' | 'learning-mission' | 'chapter-divider' | 'chapter-intro' | 'verse' | 'content' | 'chapter-review' | 'notes-enhanced' | 'games' | 'quiz'
   chapterIndex?: number
   verseIndex?: number
   pageIndex?: number
@@ -296,11 +296,18 @@ export function DigitalTextbook({
       // ============================================
 
       // Ensure chapter divider lands on LEFT page (even index)
+      // Use previous chapter's review page as padding if needed
       if (pages.length % 2 !== 0) {
+        const prevChapter = chapterIndex > 0 ? chapterIndex - 1 : 0
+        const prevModule = modules[prevChapter]
+        const prevGameItems = extractTermsFromModule(prevModule, selectedLevel, 6)
         pages.push({
-          type: 'notes',
-          chapterIndex: chapterIndex > 0 ? chapterIndex - 1 : undefined,
-          module: chapterIndex > 0 ? modules[chapterIndex - 1] : undefined,
+          type: 'chapter-review',
+          chapterIndex: prevChapter,
+          module: prevModule,
+          keyTerms: prevGameItems.map(t => ({ term: t.term, definition: t.definition })),
+          funFacts: generateFunFacts(prevModule, selectedLevel, topic.id).slice(0, 2),
+          summaryPoints: generateSummaryPoints(prevModule, selectedLevel).slice(0, 2),
         })
       }
 
@@ -365,50 +372,43 @@ export function DigitalTextbook({
       })
 
       // ============================================
-      // STEP 2: ENRICHMENT PAGES (Deepen Understanding)
-      // Key terms, fun facts, real-world applications
+      // STEP 2: CHAPTER REVIEW + NOTES (Condensed Enrichment)
+      // Single review page combines: Key Terms, Fun Facts, Summary
+      // Enhanced notes page includes: Real World Actions + Notes
       // ============================================
 
-      // Ensure enrichment pages land on a good spread position
+      // Ensure review pages land on a good spread position
       if (pages.length % 2 !== 0) {
+        // Add chapter review on odd page to make it land on left
         pages.push({
-          type: 'chapter-summary',
+          type: 'chapter-review',
           chapterIndex,
           module,
-          summaryPoints: generateSummaryPoints(module, selectedLevel),
+          keyTerms: chapterGameItems.slice(0, 6).map(item => ({
+            term: item.term,
+            definition: item.definition,
+          })),
+          funFacts: generateFunFacts(module, selectedLevel, topic.id).slice(0, 3),
+          summaryPoints: generateSummaryPoints(module, selectedLevel).slice(0, 3),
         })
       }
 
-      // Key Terms page - LEFT (vocabulary review)
+      // Chapter Review page (LEFT) - combines Key Terms, Fun Facts, Summary
       pages.push({
-        type: 'key-terms',
+        type: 'chapter-review',
         chapterIndex,
         module,
-        keyTerms: chapterGameItems.slice(0, 8).map(item => ({
+        keyTerms: chapterGameItems.slice(0, 6).map(item => ({
           term: item.term,
           definition: item.definition,
         })),
+        funFacts: generateFunFacts(module, selectedLevel, topic.id).slice(0, 3),
+        summaryPoints: generateSummaryPoints(module, selectedLevel).slice(0, 3),
       })
 
-      // Fun Facts page - RIGHT (engaging tidbits)
+      // Enhanced Notes page (RIGHT) - includes Real World Actions + Notes + Discussion
       pages.push({
-        type: 'fun-facts',
-        chapterIndex,
-        module,
-        funFacts: generateFunFacts(module, selectedLevel, topic.id),
-      })
-
-      // Chapter Summary page - LEFT (key takeaways)
-      pages.push({
-        type: 'chapter-summary',
-        chapterIndex,
-        module,
-        summaryPoints: generateSummaryPoints(module, selectedLevel),
-      })
-
-      // Real World Applications page - RIGHT
-      pages.push({
-        type: 'real-world',
+        type: 'notes-enhanced',
         chapterIndex,
         module,
         realWorldExamples: generateRealWorldExamples(module, selectedLevel, topic.id),
@@ -418,13 +418,6 @@ export function DigitalTextbook({
       // STEP 3: GAMES (Reinforce & Ingrain)
       // After reading, practice with interactive games
       // ============================================
-
-      // Notes page - LEFT side for personal notes while playing
-      pages.push({
-        type: 'notes',
-        chapterIndex,
-        module,
-      })
 
       // Games page - RIGHT page (practice what you learned)
       pages.push({
@@ -1007,182 +1000,91 @@ export function DigitalTextbook({
           </BookPage>
         )
 
-      case 'key-terms':
-        // Vocabulary/Glossary page
-        const termsRibbon = page.chapterIndex !== undefined && RIBBON_ORDER[page.chapterIndex]
+      case 'chapter-review':
+        // Combined Chapter Review: Key Terms + Fun Facts + Summary on ONE page
+        const reviewRibbon = page.chapterIndex !== undefined && RIBBON_ORDER[page.chapterIndex]
           ? GUARDIAN_RIBBONS[RIBBON_ORDER[page.chapterIndex]]
           : null
-        const termsColor = termsRibbon?.colors.from || 'var(--primary)'
+        const reviewColor = reviewRibbon?.colors.from || 'var(--primary)'
         return (
           <div className="w-full h-full flex flex-col relative overflow-hidden">
             <AncientBorder />
 
             {/* Header */}
-            <div className="text-center pt-4 pb-2 shrink-0">
-              <div className="flex items-center justify-center gap-2 mb-1">
-                <span className="text-lg">📖</span>
-                <h3 className="text-sm font-serif font-bold text-[var(--foreground)]">
-                  Key Terms
-                </h3>
-              </div>
-              <p className="text-[10px] text-[var(--muted-foreground)] italic">
-                Vocabulary to remember
-              </p>
+            <div className="text-center pt-3 pb-2 shrink-0">
+              <h3 className="text-sm font-serif font-bold text-[var(--foreground)]">
+                📚 Chapter Review
+              </h3>
             </div>
 
             <div
-              className="w-3/4 h-px mx-auto mb-3 shrink-0"
-              style={{ background: `linear-gradient(to right, transparent, ${termsColor}60, transparent)` }}
+              className="w-3/4 h-px mx-auto mb-2 shrink-0"
+              style={{ background: `linear-gradient(to right, transparent, ${reviewColor}60, transparent)` }}
             />
 
-            {/* Terms List */}
-            <div className="flex-1 px-3 pb-3 overflow-y-auto">
-              <div className="space-y-2">
-                {(page.keyTerms || []).map((item, idx) => (
-                  <div
-                    key={idx}
-                    className="p-2 rounded-lg bg-[var(--muted)]/30 border border-[var(--border)]/30"
-                  >
-                    <div className="flex items-start gap-2">
-                      <span
-                        className="w-5 h-5 rounded-full flex items-center justify-center text-[10px] font-bold text-white shrink-0 mt-0.5"
-                        style={{ background: termsColor }}
-                      >
-                        {idx + 1}
-                      </span>
-                      <div>
-                        <p className="text-xs font-bold text-[var(--foreground)]">{item.term}</p>
-                        <p className="text-[10px] text-[var(--muted-foreground)] leading-relaxed">{item.definition}</p>
-                      </div>
-                    </div>
-                  </div>
-                ))}
-              </div>
-            </div>
-
-            {/* Footer */}
-            <div className="shrink-0 text-center py-2 border-t border-[var(--border)]/20">
-              <p className="text-[9px] text-[var(--muted-foreground)]">
-                Review these terms before the quiz!
-              </p>
-            </div>
-          </div>
-        )
-
-      case 'fun-facts':
-        // Did You Know / Fun Facts page
-        const factsRibbon = page.chapterIndex !== undefined && RIBBON_ORDER[page.chapterIndex]
-          ? GUARDIAN_RIBBONS[RIBBON_ORDER[page.chapterIndex]]
-          : null
-        const factsColor = factsRibbon?.colors.from || 'var(--primary)'
-        return (
-          <div className="w-full h-full flex flex-col relative overflow-hidden">
-            <AncientBorder />
-
-            {/* Header */}
-            <div className="text-center pt-4 pb-2 shrink-0">
-              <div className="flex items-center justify-center gap-2 mb-1">
-                <span className="text-lg">💡</span>
-                <h3 className="text-sm font-serif font-bold text-[var(--foreground)]">
-                  Did You Know?
-                </h3>
-              </div>
-              <p className="text-[10px] text-[var(--muted-foreground)] italic">
-                Amazing facts about {page.module?.title || 'this topic'}
-              </p>
-            </div>
-
-            <div
-              className="w-3/4 h-px mx-auto mb-3 shrink-0"
-              style={{ background: `linear-gradient(to right, transparent, ${factsColor}60, transparent)` }}
-            />
-
-            {/* Facts List */}
-            <div className="flex-1 px-3 pb-3 overflow-y-auto">
-              <div className="space-y-3">
-                {(page.funFacts || []).map((fact, idx) => (
-                  <div
-                    key={idx}
-                    className="p-3 rounded-lg border-l-4"
-                    style={{
-                      borderColor: factsColor,
-                      background: `linear-gradient(to right, ${factsColor}10, transparent)`,
-                    }}
-                  >
-                    <p className="text-xs text-[var(--foreground)] leading-relaxed">
-                      {fact}
-                    </p>
-                  </div>
-                ))}
-              </div>
-            </div>
-
-            {/* Footer */}
-            <div className="shrink-0 text-center py-2 border-t border-[var(--border)]/20">
-              <p className="text-[9px] text-[var(--muted-foreground)]">
-                Share these facts with friends! 🌟
-              </p>
-            </div>
-          </div>
-        )
-
-      case 'chapter-summary':
-        // Chapter Summary / Key Takeaways page
-        const summaryRibbon = page.chapterIndex !== undefined && RIBBON_ORDER[page.chapterIndex]
-          ? GUARDIAN_RIBBONS[RIBBON_ORDER[page.chapterIndex]]
-          : null
-        const summaryColor = summaryRibbon?.colors.from || 'var(--primary)'
-        return (
-          <div className="w-full h-full flex flex-col relative overflow-hidden">
-            <AncientBorder />
-
-            {/* Header */}
-            <div className="text-center pt-4 pb-2 shrink-0">
-              <div className="flex items-center justify-center gap-2 mb-1">
-                <span className="text-lg">📋</span>
-                <h3 className="text-sm font-serif font-bold text-[var(--foreground)]">
-                  Chapter Summary
-                </h3>
-              </div>
-              <p className="text-[10px] text-[var(--muted-foreground)] italic">
-                Key takeaways from {page.module?.title || 'this chapter'}
-              </p>
-            </div>
-
-            <div
-              className="w-3/4 h-px mx-auto mb-3 shrink-0"
-              style={{ background: `linear-gradient(to right, transparent, ${summaryColor}60, transparent)` }}
-            />
-
-            {/* Summary Points */}
-            <div className="flex-1 px-3 pb-3 overflow-y-auto">
-              <div className="space-y-2">
-                {(page.summaryPoints || []).map((point, idx) => (
-                  <div
-                    key={idx}
-                    className="flex items-start gap-2 p-2"
-                  >
-                    <span
-                      className="w-5 h-5 rounded-full flex items-center justify-center text-white text-[10px] font-bold shrink-0"
-                      style={{ background: summaryColor }}
+            {/* Scrollable Content */}
+            <div className="flex-1 px-2 pb-2 overflow-y-auto">
+              {/* Key Terms Section */}
+              <div className="mb-3">
+                <p className="text-[10px] font-bold text-[var(--foreground)] mb-1.5 flex items-center gap-1">
+                  <span>📖</span> Key Terms
+                </p>
+                <div className="grid grid-cols-2 gap-1">
+                  {(page.keyTerms || []).slice(0, 6).map((item, idx) => (
+                    <div
+                      key={idx}
+                      className="p-1.5 rounded bg-[var(--muted)]/30 border border-[var(--border)]/20"
                     >
-                      ✓
-                    </span>
-                    <p className="text-xs text-[var(--foreground)] leading-relaxed">
-                      {point}
-                    </p>
-                  </div>
-                ))}
+                      <p className="text-[9px] font-bold text-[var(--foreground)] truncate">{item.term}</p>
+                      <p className="text-[8px] text-[var(--muted-foreground)] line-clamp-2">{item.definition}</p>
+                    </div>
+                  ))}
+                </div>
+              </div>
+
+              {/* Fun Facts Section */}
+              <div className="mb-3">
+                <p className="text-[10px] font-bold text-[var(--foreground)] mb-1.5 flex items-center gap-1">
+                  <span>💡</span> Did You Know?
+                </p>
+                <div className="space-y-1">
+                  {(page.funFacts || []).slice(0, 3).map((fact, idx) => (
+                    <div
+                      key={idx}
+                      className="p-1.5 rounded-lg border-l-2 text-[8px] text-[var(--foreground)]"
+                      style={{ borderColor: reviewColor, background: `${reviewColor}08` }}
+                    >
+                      {fact}
+                    </div>
+                  ))}
+                </div>
+              </div>
+
+              {/* Summary Section */}
+              <div>
+                <p className="text-[10px] font-bold text-[var(--foreground)] mb-1.5 flex items-center gap-1">
+                  <span>✓</span> Key Takeaways
+                </p>
+                <div className="space-y-1">
+                  {(page.summaryPoints || []).slice(0, 3).map((point, idx) => (
+                    <div key={idx} className="flex items-start gap-1">
+                      <span
+                        className="w-3 h-3 rounded-full flex items-center justify-center text-white text-[7px] shrink-0 mt-0.5"
+                        style={{ background: reviewColor }}
+                      >
+                        ✓
+                      </span>
+                      <p className="text-[8px] text-[var(--foreground)]">{point}</p>
+                    </div>
+                  ))}
+                </div>
               </div>
             </div>
 
-            {/* Footer motivation */}
-            <div className="shrink-0 px-4 pb-4">
-              <div
-                className="p-3 rounded-lg text-center"
-                style={{ background: `${summaryColor}15` }}
-              >
-                <p className="text-[10px] text-[var(--foreground)] italic">
+            {/* Footer Quote */}
+            <div className="shrink-0 px-2 pb-2">
+              <div className="p-2 rounded text-center" style={{ background: `${reviewColor}10` }}>
+                <p className="text-[8px] text-[var(--foreground)] italic">
                   &ldquo;{getGuardianQuote(page.chapterIndex ?? 0)}&rdquo;
                 </p>
               </div>
@@ -1190,157 +1092,88 @@ export function DigitalTextbook({
           </div>
         )
 
-      case 'real-world':
-        // Real World Applications page
-        const realWorldRibbon = page.chapterIndex !== undefined && RIBBON_ORDER[page.chapterIndex]
+      case 'notes-enhanced':
+        // Enhanced Notes: Real World Actions + Notes + Discussion on ONE page
+        const enhancedRibbon = page.chapterIndex !== undefined && RIBBON_ORDER[page.chapterIndex]
           ? GUARDIAN_RIBBONS[RIBBON_ORDER[page.chapterIndex]]
           : null
-        const realWorldColor = realWorldRibbon?.colors.from || 'var(--primary)'
+        const enhancedColor = enhancedRibbon?.colors.from || 'var(--primary)'
+        const enhancedChapterTitle = page.chapterIndex !== undefined && page.chapterIndex < modules.length
+          ? modules[page.chapterIndex].title
+          : 'General'
+        const enhancedNoteKey = `chapter-${page.chapterIndex ?? 'general'}-notes`
         return (
           <div className="w-full h-full flex flex-col relative overflow-hidden">
             <AncientBorder />
 
             {/* Header */}
-            <div className="text-center pt-4 pb-2 shrink-0">
-              <div className="flex items-center justify-center gap-2 mb-1">
-                <span className="text-lg">🌍</span>
-                <h3 className="text-sm font-serif font-bold text-[var(--foreground)]">
-                  Real World Applications
-                </h3>
-              </div>
-              <p className="text-[10px] text-[var(--muted-foreground)] italic">
-                Put your knowledge into action
-              </p>
+            <div className="text-center pt-3 pb-1 shrink-0">
+              <h3 className="text-sm font-serif font-bold text-[var(--foreground)]">
+                🎯 Apply & Reflect
+              </h3>
+              <p className="text-[8px] text-[var(--muted-foreground)]">{enhancedChapterTitle}</p>
             </div>
 
             <div
-              className="w-3/4 h-px mx-auto mb-3 shrink-0"
-              style={{ background: `linear-gradient(to right, transparent, ${realWorldColor}60, transparent)` }}
+              className="w-3/4 h-px mx-auto mb-2 shrink-0"
+              style={{ background: `linear-gradient(to right, transparent, ${enhancedColor}60, transparent)` }}
             />
 
-            {/* Applications */}
-            <div className="flex-1 px-3 pb-3 overflow-y-auto">
-              <div className="space-y-3">
-                {(page.realWorldExamples || []).map((example, idx) => (
+            {/* Real World Actions - Compact */}
+            <div className="px-2 mb-2 shrink-0">
+              <p className="text-[9px] font-bold text-[var(--foreground)] mb-1">🌍 Try This:</p>
+              <div className="flex gap-1">
+                {(page.realWorldExamples || []).slice(0, 3).map((ex, idx) => (
                   <div
                     key={idx}
-                    className="p-3 rounded-lg bg-[var(--muted)]/30 border border-[var(--border)]/30"
+                    className="flex-1 p-1.5 rounded bg-[var(--muted)]/30 border border-[var(--border)]/20 text-center"
                   >
-                    <div className="flex items-start gap-2">
-                      <span className="text-2xl">{example.icon}</span>
-                      <div>
-                        <p className="text-xs font-bold text-[var(--foreground)] mb-1">
-                          {example.title}
-                        </p>
-                        <p className="text-[10px] text-[var(--muted-foreground)] leading-relaxed">
-                          {example.description}
-                        </p>
-                      </div>
-                    </div>
+                    <span className="text-sm block">{ex.icon}</span>
+                    <p className="text-[7px] font-medium text-[var(--foreground)]">{ex.title}</p>
                   </div>
                 ))}
               </div>
             </div>
 
-            {/* Action prompt */}
-            <div className="shrink-0 px-4 pb-4">
-              <div
-                className="p-3 rounded-lg text-center border"
-                style={{ borderColor: `${realWorldColor}50` }}
-              >
-                <p className="text-[10px] font-medium text-[var(--foreground)]">
-                  🎯 Challenge: Try one of these actions this week!
-                </p>
-              </div>
-            </div>
-          </div>
-        )
-
-      case 'notes':
-        // Personal Notes page with discussion
-        const notesRibbon = page.chapterIndex !== undefined && RIBBON_ORDER[page.chapterIndex]
-          ? GUARDIAN_RIBBONS[RIBBON_ORDER[page.chapterIndex]]
-          : null
-        const notesChapterTitle = page.chapterIndex !== undefined && page.chapterIndex < modules.length
-          ? modules[page.chapterIndex].title
-          : 'General'
-        const noteKey = `chapter-${page.chapterIndex ?? 'general'}-notes`
-        return (
-          <div className="w-full h-full flex flex-col relative overflow-hidden">
-            <AncientBorder />
-
-            {/* Header */}
-            <div className="text-center pt-4 pb-2 shrink-0">
-              <div className="flex items-center justify-center gap-2 mb-1">
-                <span className="text-lg">📝</span>
-                <h3 className="text-sm font-serif font-bold text-[var(--foreground)]">
-                  Personal Notes
-                </h3>
-              </div>
-              <p className="text-[10px] text-[var(--muted-foreground)] italic">
-                Reflections on {notesChapterTitle}
-              </p>
-            </div>
-
-            {/* Divider */}
-            <div
-              className="w-3/4 h-px mx-auto mb-3 shrink-0"
-              style={{
-                background: `linear-gradient(to right, transparent, ${notesRibbon?.colors.from || 'var(--border)'}60, transparent)`,
-              }}
-            />
-
-            {/* Notes textarea */}
-            <div className="flex-1 px-4 pb-2 min-h-0">
+            {/* Notes textarea - takes remaining space */}
+            <div className="flex-1 px-2 pb-1 min-h-0">
+              <p className="text-[9px] font-bold text-[var(--foreground)] mb-1">📝 Your Notes:</p>
               <textarea
                 className={cn(
-                  "w-full h-full resize-none",
+                  "w-full h-[calc(100%-16px)] resize-none",
                   "bg-transparent",
-                  "border border-dashed border-[var(--border)]/40 rounded-lg",
-                  "p-3 text-sm font-serif",
+                  "border border-dashed border-[var(--border)]/40 rounded",
+                  "p-2 text-[10px] font-serif",
                   "text-[var(--foreground)]",
                   "placeholder:text-[var(--muted-foreground)]/40 placeholder:italic",
-                  "focus:outline-none focus:border-[var(--primary)]/50",
-                  "transition-colors"
+                  "focus:outline-none focus:border-[var(--primary)]/50"
                 )}
-                placeholder="Write your thoughts, insights, and reflections here..."
-                value={pageNotes[noteKey] || ''}
-                onChange={(e) => saveNote(noteKey, e.target.value)}
+                placeholder="Write your reflections..."
+                value={pageNotes[enhancedNoteKey] || ''}
+                onChange={(e) => saveNote(enhancedNoteKey, e.target.value)}
                 style={{
-                  lineHeight: '1.75em',
-                  backgroundImage: 'linear-gradient(to bottom, transparent 90%, var(--border) 90%, var(--border) 92%, transparent 92%)',
-                  backgroundSize: '100% 1.75em',
-                  backgroundPosition: '0 0.25em',
+                  lineHeight: '1.5em',
+                  backgroundImage: 'linear-gradient(to bottom, transparent 85%, var(--border) 85%, var(--border) 88%, transparent 88%)',
+                  backgroundSize: '100% 1.5em',
+                  backgroundPosition: '0 0.2em',
                 }}
               />
             </div>
 
-            {/* Discussion Section */}
-            <div className="shrink-0 px-4 pb-4">
-              <div
-                className="w-full h-px mb-3"
-                style={{
-                  background: `linear-gradient(to right, transparent, ${notesRibbon?.colors.from || 'var(--border)'}60, transparent)`,
-                }}
-              />
-
+            {/* Discussion Button - Compact */}
+            <div className="shrink-0 px-2 pb-2">
               <button
                 className={cn(
-                  "w-full flex items-center justify-center gap-2 py-2 px-3 rounded-lg",
+                  "w-full flex items-center justify-center gap-1 py-1.5 px-2 rounded",
                   "bg-[var(--muted)]/50 hover:bg-[var(--muted)]",
                   "border border-[var(--border)]/50",
-                  "text-[var(--foreground)] text-xs font-medium",
-                  "transition-all hover:scale-[1.01]"
+                  "text-[var(--foreground)] text-[9px] font-medium"
                 )}
                 onClick={() => setShowDiscussion(true)}
               >
-                <MessageCircle className="w-4 h-4" />
-                <span>Open Discussion</span>
+                <MessageCircle className="w-3 h-3" />
+                <span>Discussion</span>
               </button>
-
-              <p className="text-[9px] text-center text-[var(--muted-foreground)]/60 mt-2 italic">
-                Discuss with fellow learners
-              </p>
             </div>
           </div>
         )
