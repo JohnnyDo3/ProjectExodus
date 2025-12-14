@@ -471,22 +471,30 @@ export function DigitalTextbook({
   // ============================================
 
   const goToPage = useCallback((pageIndex: number) => {
-    const clampedIndex = Math.max(0, Math.min(pageIndex, totalPages - 1))
+    // On desktop, ensure we always land on an even index (left page of spread)
+    let targetIndex = pageIndex
+    if (isDesktop && pageIndex % 2 !== 0) {
+      targetIndex = pageIndex - 1 // Snap to left page of spread
+    }
+    const clampedIndex = Math.max(0, Math.min(targetIndex, totalPages - 1))
     setCurrentPageIndex(clampedIndex)
     playPageTurn()
-  }, [totalPages, playPageTurn])
+  }, [totalPages, playPageTurn, isDesktop])
 
+  // Navigate by full spread on desktop (2 pages), single page on mobile
   const nextPage = useCallback(() => {
-    if (currentPageIndex < totalPages - 1) {
-      goToPage(currentPageIndex + 1)
+    const increment = isDesktop ? 2 : 1
+    if (currentPageIndex < totalPages - increment) {
+      goToPage(currentPageIndex + increment)
     }
-  }, [currentPageIndex, totalPages, goToPage])
+  }, [currentPageIndex, totalPages, goToPage, isDesktop])
 
   const prevPage = useCallback(() => {
-    if (currentPageIndex > 0) {
-      goToPage(currentPageIndex - 1)
+    const decrement = isDesktop ? 2 : 1
+    if (currentPageIndex >= decrement) {
+      goToPage(currentPageIndex - decrement)
     }
-  }, [currentPageIndex, goToPage])
+  }, [currentPageIndex, goToPage, isDesktop])
 
   const goToChapter = useCallback((chapterIndex: number) => {
     // Find the chapter divider page for this chapter
