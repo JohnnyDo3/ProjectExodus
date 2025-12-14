@@ -57,7 +57,7 @@ interface DigitalTextbookProps {
 }
 
 interface BookContent {
-  type: 'cover' | 'inside-cover' | 'toc' | 'learning-mission' | 'chapter-divider' | 'chapter-intro' | 'verse' | 'content' | 'blank' | 'games' | 'quiz'
+  type: 'cover' | 'inside-cover' | 'toc' | 'learning-mission' | 'chapter-divider' | 'chapter-intro' | 'verse' | 'content' | 'chapter-summary' | 'key-terms' | 'fun-facts' | 'real-world' | 'notes' | 'games' | 'quiz'
   chapterIndex?: number
   verseIndex?: number
   pageIndex?: number
@@ -66,6 +66,11 @@ interface BookContent {
   subtitle?: string
   module?: Module
   gameItems?: GameItem[]
+  // Additional data for enriched pages
+  keyTerms?: Array<{ term: string; definition: string }>
+  funFacts?: string[]
+  realWorldExamples?: Array<{ title: string; description: string; icon: string }>
+  summaryPoints?: string[]
 }
 
 // ============================================
@@ -293,8 +298,9 @@ export function DigitalTextbook({
       // Ensure chapter divider lands on LEFT page (even index)
       if (pages.length % 2 !== 0) {
         pages.push({
-          type: 'blank',
+          type: 'notes',
           chapterIndex: chapterIndex > 0 ? chapterIndex - 1 : undefined,
+          module: chapterIndex > 0 ? modules[chapterIndex - 1] : undefined,
         })
       }
 
@@ -359,22 +365,63 @@ export function DigitalTextbook({
       })
 
       // ============================================
-      // STEP 2: GAMES (Reinforce & Ingrain)
-      // After reading, practice with interactive games
+      // STEP 2: ENRICHMENT PAGES (Deepen Understanding)
+      // Key terms, fun facts, real-world applications
       // ============================================
 
-      // Ensure games land on a good spread position
+      // Ensure enrichment pages land on a good spread position
       if (pages.length % 2 !== 0) {
         pages.push({
-          type: 'blank',
+          type: 'chapter-summary',
           chapterIndex,
           module,
+          summaryPoints: generateSummaryPoints(module, selectedLevel),
         })
       }
 
+      // Key Terms page - LEFT (vocabulary review)
+      pages.push({
+        type: 'key-terms',
+        chapterIndex,
+        module,
+        keyTerms: chapterGameItems.slice(0, 8).map(item => ({
+          term: item.term,
+          definition: item.definition,
+        })),
+      })
+
+      // Fun Facts page - RIGHT (engaging tidbits)
+      pages.push({
+        type: 'fun-facts',
+        chapterIndex,
+        module,
+        funFacts: generateFunFacts(module, selectedLevel, topic.id),
+      })
+
+      // Chapter Summary page - LEFT (key takeaways)
+      pages.push({
+        type: 'chapter-summary',
+        chapterIndex,
+        module,
+        summaryPoints: generateSummaryPoints(module, selectedLevel),
+      })
+
+      // Real World Applications page - RIGHT
+      pages.push({
+        type: 'real-world',
+        chapterIndex,
+        module,
+        realWorldExamples: generateRealWorldExamples(module, selectedLevel, topic.id),
+      })
+
+      // ============================================
+      // STEP 3: GAMES (Reinforce & Ingrain)
+      // After reading, practice with interactive games
+      // ============================================
+
       // Notes page - LEFT side for personal notes while playing
       pages.push({
-        type: 'blank',
+        type: 'notes',
         chapterIndex,
         module,
       })
@@ -388,7 +435,7 @@ export function DigitalTextbook({
       })
 
       // ============================================
-      // STEP 3: GRADED QUIZ (Assessment)
+      // STEP 4: GRADED QUIZ (Assessment)
       // 5-question quiz graded for percentage accuracy
       // ============================================
 
@@ -952,12 +999,261 @@ export function DigitalTextbook({
           </BookPage>
         )
 
-      case 'blank':
-        // Interactive blank page with notes and discussion
-        const blankRibbon = page.chapterIndex !== undefined && RIBBON_ORDER[page.chapterIndex]
+      case 'key-terms':
+        // Vocabulary/Glossary page
+        const termsRibbon = page.chapterIndex !== undefined && RIBBON_ORDER[page.chapterIndex]
           ? GUARDIAN_RIBBONS[RIBBON_ORDER[page.chapterIndex]]
           : null
-        const chapterTitle = page.chapterIndex !== undefined && page.chapterIndex < modules.length
+        const termsColor = termsRibbon?.colors.from || 'var(--primary)'
+        return (
+          <div className="w-full h-full flex flex-col relative overflow-hidden">
+            <AncientBorder />
+
+            {/* Header */}
+            <div className="text-center pt-4 pb-2 shrink-0">
+              <div className="flex items-center justify-center gap-2 mb-1">
+                <span className="text-lg">📖</span>
+                <h3 className="text-sm font-serif font-bold text-[var(--foreground)]">
+                  Key Terms
+                </h3>
+              </div>
+              <p className="text-[10px] text-[var(--muted-foreground)] italic">
+                Vocabulary to remember
+              </p>
+            </div>
+
+            <div
+              className="w-3/4 h-px mx-auto mb-3 shrink-0"
+              style={{ background: `linear-gradient(to right, transparent, ${termsColor}60, transparent)` }}
+            />
+
+            {/* Terms List */}
+            <div className="flex-1 px-3 pb-3 overflow-y-auto">
+              <div className="space-y-2">
+                {(page.keyTerms || []).map((item, idx) => (
+                  <div
+                    key={idx}
+                    className="p-2 rounded-lg bg-[var(--muted)]/30 border border-[var(--border)]/30"
+                  >
+                    <div className="flex items-start gap-2">
+                      <span
+                        className="w-5 h-5 rounded-full flex items-center justify-center text-[10px] font-bold text-white shrink-0 mt-0.5"
+                        style={{ background: termsColor }}
+                      >
+                        {idx + 1}
+                      </span>
+                      <div>
+                        <p className="text-xs font-bold text-[var(--foreground)]">{item.term}</p>
+                        <p className="text-[10px] text-[var(--muted-foreground)] leading-relaxed">{item.definition}</p>
+                      </div>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </div>
+
+            {/* Footer */}
+            <div className="shrink-0 text-center py-2 border-t border-[var(--border)]/20">
+              <p className="text-[9px] text-[var(--muted-foreground)]">
+                Review these terms before the quiz!
+              </p>
+            </div>
+          </div>
+        )
+
+      case 'fun-facts':
+        // Did You Know / Fun Facts page
+        const factsRibbon = page.chapterIndex !== undefined && RIBBON_ORDER[page.chapterIndex]
+          ? GUARDIAN_RIBBONS[RIBBON_ORDER[page.chapterIndex]]
+          : null
+        const factsColor = factsRibbon?.colors.from || 'var(--primary)'
+        return (
+          <div className="w-full h-full flex flex-col relative overflow-hidden">
+            <AncientBorder />
+
+            {/* Header */}
+            <div className="text-center pt-4 pb-2 shrink-0">
+              <div className="flex items-center justify-center gap-2 mb-1">
+                <span className="text-lg">💡</span>
+                <h3 className="text-sm font-serif font-bold text-[var(--foreground)]">
+                  Did You Know?
+                </h3>
+              </div>
+              <p className="text-[10px] text-[var(--muted-foreground)] italic">
+                Amazing facts about {page.module?.title || 'this topic'}
+              </p>
+            </div>
+
+            <div
+              className="w-3/4 h-px mx-auto mb-3 shrink-0"
+              style={{ background: `linear-gradient(to right, transparent, ${factsColor}60, transparent)` }}
+            />
+
+            {/* Facts List */}
+            <div className="flex-1 px-3 pb-3 overflow-y-auto">
+              <div className="space-y-3">
+                {(page.funFacts || []).map((fact, idx) => (
+                  <div
+                    key={idx}
+                    className="p-3 rounded-lg border-l-4"
+                    style={{
+                      borderColor: factsColor,
+                      background: `linear-gradient(to right, ${factsColor}10, transparent)`,
+                    }}
+                  >
+                    <p className="text-xs text-[var(--foreground)] leading-relaxed">
+                      {fact}
+                    </p>
+                  </div>
+                ))}
+              </div>
+            </div>
+
+            {/* Footer */}
+            <div className="shrink-0 text-center py-2 border-t border-[var(--border)]/20">
+              <p className="text-[9px] text-[var(--muted-foreground)]">
+                Share these facts with friends! 🌟
+              </p>
+            </div>
+          </div>
+        )
+
+      case 'chapter-summary':
+        // Chapter Summary / Key Takeaways page
+        const summaryRibbon = page.chapterIndex !== undefined && RIBBON_ORDER[page.chapterIndex]
+          ? GUARDIAN_RIBBONS[RIBBON_ORDER[page.chapterIndex]]
+          : null
+        const summaryColor = summaryRibbon?.colors.from || 'var(--primary)'
+        return (
+          <div className="w-full h-full flex flex-col relative overflow-hidden">
+            <AncientBorder />
+
+            {/* Header */}
+            <div className="text-center pt-4 pb-2 shrink-0">
+              <div className="flex items-center justify-center gap-2 mb-1">
+                <span className="text-lg">📋</span>
+                <h3 className="text-sm font-serif font-bold text-[var(--foreground)]">
+                  Chapter Summary
+                </h3>
+              </div>
+              <p className="text-[10px] text-[var(--muted-foreground)] italic">
+                Key takeaways from {page.module?.title || 'this chapter'}
+              </p>
+            </div>
+
+            <div
+              className="w-3/4 h-px mx-auto mb-3 shrink-0"
+              style={{ background: `linear-gradient(to right, transparent, ${summaryColor}60, transparent)` }}
+            />
+
+            {/* Summary Points */}
+            <div className="flex-1 px-3 pb-3 overflow-y-auto">
+              <div className="space-y-2">
+                {(page.summaryPoints || []).map((point, idx) => (
+                  <div
+                    key={idx}
+                    className="flex items-start gap-2 p-2"
+                  >
+                    <span
+                      className="w-5 h-5 rounded-full flex items-center justify-center text-white text-[10px] font-bold shrink-0"
+                      style={{ background: summaryColor }}
+                    >
+                      ✓
+                    </span>
+                    <p className="text-xs text-[var(--foreground)] leading-relaxed">
+                      {point}
+                    </p>
+                  </div>
+                ))}
+              </div>
+            </div>
+
+            {/* Footer motivation */}
+            <div className="shrink-0 px-4 pb-4">
+              <div
+                className="p-3 rounded-lg text-center"
+                style={{ background: `${summaryColor}15` }}
+              >
+                <p className="text-[10px] text-[var(--foreground)] italic">
+                  &ldquo;{getGuardianQuote(page.chapterIndex ?? 0)}&rdquo;
+                </p>
+              </div>
+            </div>
+          </div>
+        )
+
+      case 'real-world':
+        // Real World Applications page
+        const realWorldRibbon = page.chapterIndex !== undefined && RIBBON_ORDER[page.chapterIndex]
+          ? GUARDIAN_RIBBONS[RIBBON_ORDER[page.chapterIndex]]
+          : null
+        const realWorldColor = realWorldRibbon?.colors.from || 'var(--primary)'
+        return (
+          <div className="w-full h-full flex flex-col relative overflow-hidden">
+            <AncientBorder />
+
+            {/* Header */}
+            <div className="text-center pt-4 pb-2 shrink-0">
+              <div className="flex items-center justify-center gap-2 mb-1">
+                <span className="text-lg">🌍</span>
+                <h3 className="text-sm font-serif font-bold text-[var(--foreground)]">
+                  Real World Applications
+                </h3>
+              </div>
+              <p className="text-[10px] text-[var(--muted-foreground)] italic">
+                Put your knowledge into action
+              </p>
+            </div>
+
+            <div
+              className="w-3/4 h-px mx-auto mb-3 shrink-0"
+              style={{ background: `linear-gradient(to right, transparent, ${realWorldColor}60, transparent)` }}
+            />
+
+            {/* Applications */}
+            <div className="flex-1 px-3 pb-3 overflow-y-auto">
+              <div className="space-y-3">
+                {(page.realWorldExamples || []).map((example, idx) => (
+                  <div
+                    key={idx}
+                    className="p-3 rounded-lg bg-[var(--muted)]/30 border border-[var(--border)]/30"
+                  >
+                    <div className="flex items-start gap-2">
+                      <span className="text-2xl">{example.icon}</span>
+                      <div>
+                        <p className="text-xs font-bold text-[var(--foreground)] mb-1">
+                          {example.title}
+                        </p>
+                        <p className="text-[10px] text-[var(--muted-foreground)] leading-relaxed">
+                          {example.description}
+                        </p>
+                      </div>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </div>
+
+            {/* Action prompt */}
+            <div className="shrink-0 px-4 pb-4">
+              <div
+                className="p-3 rounded-lg text-center border"
+                style={{ borderColor: `${realWorldColor}50` }}
+              >
+                <p className="text-[10px] font-medium text-[var(--foreground)]">
+                  🎯 Challenge: Try one of these actions this week!
+                </p>
+              </div>
+            </div>
+          </div>
+        )
+
+      case 'notes':
+        // Personal Notes page with discussion
+        const notesRibbon = page.chapterIndex !== undefined && RIBBON_ORDER[page.chapterIndex]
+          ? GUARDIAN_RIBBONS[RIBBON_ORDER[page.chapterIndex]]
+          : null
+        const notesChapterTitle = page.chapterIndex !== undefined && page.chapterIndex < modules.length
           ? modules[page.chapterIndex].title
           : 'General'
         const noteKey = `chapter-${page.chapterIndex ?? 'general'}-notes`
@@ -974,7 +1270,7 @@ export function DigitalTextbook({
                 </h3>
               </div>
               <p className="text-[10px] text-[var(--muted-foreground)] italic">
-                Reflections on {chapterTitle}
+                Reflections on {notesChapterTitle}
               </p>
             </div>
 
@@ -982,7 +1278,7 @@ export function DigitalTextbook({
             <div
               className="w-3/4 h-px mx-auto mb-3 shrink-0"
               style={{
-                background: `linear-gradient(to right, transparent, ${blankRibbon?.colors.from || 'var(--border)'}60, transparent)`,
+                background: `linear-gradient(to right, transparent, ${notesRibbon?.colors.from || 'var(--border)'}60, transparent)`,
               }}
             />
 
@@ -1004,10 +1300,9 @@ export function DigitalTextbook({
                 onChange={(e) => saveNote(noteKey, e.target.value)}
                 style={{
                   lineHeight: '1.75em',
-                  // Lined paper effect - text sits above the line
                   backgroundImage: 'linear-gradient(to bottom, transparent 90%, var(--border) 90%, var(--border) 92%, transparent 92%)',
                   backgroundSize: '100% 1.75em',
-                  backgroundPosition: '0 0.25em', // Offset to align text above lines
+                  backgroundPosition: '0 0.25em',
                 }}
               />
             </div>
@@ -1017,7 +1312,7 @@ export function DigitalTextbook({
               <div
                 className="w-full h-px mb-3"
                 style={{
-                  background: `linear-gradient(to right, transparent, ${blankRibbon?.colors.from || 'var(--border)'}60, transparent)`,
+                  background: `linear-gradient(to right, transparent, ${notesRibbon?.colors.from || 'var(--border)'}60, transparent)`,
                 }}
               />
 
@@ -1474,6 +1769,230 @@ function getGuardianQuote(chapterIndex: number): string {
     6: "Mercy is the bridge between justice and grace, where healing begins.",
   }
   return quotes[chapterIndex] || "The journey of a thousand miles begins with a single step."
+}
+
+// Generate summary points based on level
+function generateSummaryPoints(module: Module, level: LearningLevel): string[] {
+  const basePoints = [
+    `${module.title} is essential for sustainable living`,
+    `Key concepts covered in this chapter will help you understand real-world applications`,
+    `Practice activities reinforce your learning`,
+  ]
+
+  const levelSpecific: Record<LearningLevel, string[]> = {
+    ELEMENTARY: [
+      '🌟 You learned something amazing today!',
+      '🎯 Remember the key words from this chapter',
+      '🌱 Small actions make big differences',
+      '💡 Share what you learned with friends and family',
+    ],
+    MIDDLE_SCHOOL: [
+      'Understanding the basics helps build stronger knowledge',
+      'Real-world examples show how this applies to daily life',
+      'Critical thinking helps us make better decisions',
+      'Every expert was once a beginner',
+    ],
+    HIGH_SCHOOL: [
+      'Systems thinking reveals interconnected relationships',
+      'Data and evidence support informed decision-making',
+      'Historical context provides perspective on current challenges',
+      'Innovation requires both creativity and scientific understanding',
+    ],
+    UNDERGRADUATE: [
+      'Interdisciplinary approaches yield comprehensive solutions',
+      'Policy implications extend beyond immediate applications',
+      'Economic factors influence adoption and scalability',
+      'Research methodology strengthens analytical capabilities',
+    ],
+    GRADUATE: [
+      'Advanced analysis reveals nuanced relationships',
+      'Peer-reviewed literature provides foundational evidence',
+      'Methodological rigor ensures valid conclusions',
+      'Synthesis of multiple perspectives enhances understanding',
+    ],
+    PHD: [
+      'Cutting-edge research pushes boundaries of knowledge',
+      'Theoretical frameworks guide empirical investigation',
+      'Publication contributes to the broader scientific discourse',
+      'Mentorship extends impact beyond individual research',
+    ],
+  }
+
+  return [...basePoints, ...levelSpecific[level].slice(0, 2)]
+}
+
+// Generate fun facts based on topic and level
+function generateFunFacts(module: Module, level: LearningLevel, topicId: string): string[] {
+  const funFactsByTopic: Record<string, Record<LearningLevel, string[]>> = {
+    'renewable-energy': {
+      ELEMENTARY: [
+        '☀️ The sun produces enough energy in ONE SECOND to power Earth for 500,000 years!',
+        '💨 Wind turbines can be as tall as the Statue of Liberty!',
+        '🌊 The ocean has enough energy to power millions of homes!',
+        '🔋 A single solar panel can power a refrigerator for a whole day!',
+        '🦅 Birds can fly between wind turbine blades safely!',
+      ],
+      MIDDLE_SCHOOL: [
+        'Solar panels on just 0.6% of the US could power the entire country',
+        'Wind energy has been used for over 5,000 years, starting with sailboats',
+        'The largest solar farm covers 56 square kilometers in India',
+        'One wind turbine can power 1,500 homes for a year',
+        'Germany sometimes produces so much renewable energy they PAY people to use it!',
+      ],
+      HIGH_SCHOOL: [
+        'Solar panel efficiency has improved from 6% in 1954 to over 47% in lab conditions today',
+        'Offshore wind turbines can generate up to 15 megawatts each',
+        'The energy payback time for solar panels is now under 2 years',
+        'Renewable energy jobs grew 500% faster than total US employment in 2019',
+        'Perovskite solar cells could revolutionize the industry with lower costs',
+      ],
+      UNDERGRADUATE: [
+        'Levelized cost of solar dropped 89% between 2010-2020, faster than any energy source in history',
+        'Floating offshore wind platforms can access winds 60% stronger than near-shore installations',
+        'Bifacial solar panels can increase energy yield by 10-20% by capturing reflected light',
+        'Grid-scale battery storage costs fell 87% in the last decade',
+        'Agrivoltaics (combining farming and solar) can increase land productivity by 160%',
+      ],
+      GRADUATE: [
+        'Tandem perovskite-silicon cells have achieved 29.8% efficiency, approaching theoretical limits',
+        'Machine learning optimization has improved wind farm output by 20% in field trials',
+        'Power-to-X technologies enable seasonal storage of renewable energy as hydrogen or ammonia',
+        'Virtual power plants aggregate distributed resources to provide grid services',
+        'Wake steering in wind farms can increase total output by 3-4% through coordinated control',
+      ],
+      PHD: [
+        'Hot carrier solar cells could theoretically achieve 66% efficiency by harvesting excess photon energy',
+        'Topological insulators show promise for lossless energy transmission',
+        'Quantum dots enable tunable bandgaps for multi-junction solar cells',
+        'Metamaterial wind turbine blades could reduce noise while increasing efficiency',
+        'Thermophotovoltaic systems can achieve 40%+ efficiency converting heat to electricity',
+      ],
+    },
+    'zero-waste': {
+      ELEMENTARY: [
+        '♻️ Recycling one aluminum can saves enough energy to run a TV for 3 hours!',
+        '🐢 Plastic bags can take 1,000 years to break down!',
+        '🍌 Banana peels make great plant food!',
+        '📦 Cardboard can be recycled 7 times before the fibers get too short!',
+        '🌍 If everyone composted, we could reduce trash by 30%!',
+      ],
+      MIDDLE_SCHOOL: [
+        'The average person generates 4.5 pounds of trash daily',
+        'Glass can be recycled forever without losing quality',
+        'Landfills are the third-largest source of methane emissions in the US',
+        'Japan recycles 84% of its plastic, one of the highest rates globally',
+        'A single reusable bag can replace 700 disposable bags over its lifetime',
+      ],
+      HIGH_SCHOOL: [
+        'Circular economy principles could unlock $4.5 trillion in economic growth by 2030',
+        'Extended Producer Responsibility laws exist in 400+ jurisdictions worldwide',
+        'Sweden imports trash from other countries to fuel its waste-to-energy plants',
+        'Microplastics have been found in 94% of tap water samples in the US',
+        'Zero-waste grocery stores have grown 300% in the last 5 years',
+      ],
+      UNDERGRADUATE: [
+        'Life Cycle Assessment reveals that product disposal accounts for only 5% of total environmental impact',
+        'Industrial symbiosis in Kalundborg, Denmark saves 635,000 tons of CO2 annually',
+        'Pyrolysis can convert plastic waste back into fuel oil with 80% efficiency',
+        'Chemical recycling technologies can process mixed plastics previously destined for landfills',
+        'Blockchain is enabling transparent waste tracking and recycling verification',
+      ],
+      GRADUATE: [
+        'Material flow analysis of global plastic shows only 9% has ever been recycled',
+        'Enzymatic plastic degradation using PETase shows promise for biological recycling',
+        'Urban mining recovers more gold per ton than traditional ore mining',
+        'Decentralized waste processing with IoT optimization reduces collection emissions by 40%',
+        'Bioplastic end-of-life pathways require careful system design to avoid contamination',
+      ],
+      PHD: [
+        'Thermochemical conversion of mixed waste streams achieves 85% carbon utilization efficiency',
+        'Machine learning contamination detection improves recycling stream purity to 99.5%',
+        'Closed-loop textile recycling using ionic liquids preserves fiber quality across cycles',
+        'Cradle-to-cradle certification requires full material health assessment and recyclability planning',
+        'Agent-based modeling reveals optimal intervention points for circular economy transitions',
+      ],
+    },
+  }
+
+  // Default facts if topic not found
+  const defaultFacts: Record<LearningLevel, string[]> = {
+    ELEMENTARY: [
+      '🌍 Our planet is amazing and needs our help!',
+      '🌱 Small changes can make a big difference!',
+      '💚 Nature has incredible solutions to problems!',
+      '🤝 Working together helps everyone!',
+    ],
+    MIDDLE_SCHOOL: [
+      'Sustainable practices have been used by indigenous cultures for thousands of years',
+      'Young people are leading many environmental movements today',
+      'Technology is making sustainable solutions more accessible than ever',
+      'Every action, no matter how small, contributes to positive change',
+    ],
+    HIGH_SCHOOL: [
+      'The UN Sustainable Development Goals guide global environmental efforts',
+      'Green jobs are among the fastest-growing employment sectors',
+      'Biomimicry draws inspiration from nature to solve human challenges',
+      'Systems thinking reveals how everything is connected',
+    ],
+    UNDERGRADUATE: [
+      'Transdisciplinary approaches are essential for addressing complex sustainability challenges',
+      'Social license to operate increasingly depends on environmental performance',
+      'Natural capital accounting is being integrated into national GDP calculations',
+      'Behavioral economics insights improve environmental program effectiveness',
+    ],
+    GRADUATE: [
+      'Planetary boundaries framework identifies nine critical Earth system thresholds',
+      'Doughnut economics provides a visual model for sustainable development',
+      'Environmental justice research reveals disproportionate impacts on marginalized communities',
+      'Transition management theory guides societal shifts toward sustainability',
+    ],
+    PHD: [
+      'Earth system models integrate human and natural systems at global scales',
+      'Leverage points analysis identifies high-impact intervention opportunities',
+      'Post-normal science addresses issues with high stakes and high uncertainty',
+      'Sustainability science is emerging as a distinct transdisciplinary field',
+    ],
+  }
+
+  return funFactsByTopic[topicId]?.[level] || defaultFacts[level]
+}
+
+// Generate real-world examples based on topic and level
+function generateRealWorldExamples(module: Module, level: LearningLevel, topicId: string): Array<{ title: string; description: string; icon: string }> {
+  const examplesByLevel: Record<LearningLevel, Array<{ title: string; description: string; icon: string }>> = {
+    ELEMENTARY: [
+      { title: 'At Home', description: 'Turn off lights when you leave a room to save energy!', icon: '🏠' },
+      { title: 'At School', description: 'Use both sides of paper and recycle when done!', icon: '🏫' },
+      { title: 'Outside', description: 'Plant a tree or start a small garden!', icon: '🌳' },
+    ],
+    MIDDLE_SCHOOL: [
+      { title: 'Community Projects', description: 'Join local clean-up events or start a recycling program at school.', icon: '🤝' },
+      { title: 'Smart Shopping', description: 'Choose products with less packaging and bring reusable bags.', icon: '🛒' },
+      { title: 'Tech Solutions', description: 'Use apps to track your carbon footprint and find ways to reduce it.', icon: '📱' },
+    ],
+    HIGH_SCHOOL: [
+      { title: 'Career Exploration', description: 'Green jobs in engineering, science, and policy are growing rapidly.', icon: '💼' },
+      { title: 'Civic Engagement', description: 'Advocate for sustainable policies in your local government.', icon: '🗳️' },
+      { title: 'Innovation', description: 'Enter sustainability competitions or start an eco-business.', icon: '💡' },
+    ],
+    UNDERGRADUATE: [
+      { title: 'Research Opportunities', description: 'Join labs working on sustainability solutions and contribute to publications.', icon: '🔬' },
+      { title: 'Internships', description: 'Gain experience with renewable energy companies or environmental NGOs.', icon: '📋' },
+      { title: 'Consulting', description: 'Help organizations measure and reduce their environmental impact.', icon: '📊' },
+    ],
+    GRADUATE: [
+      { title: 'Policy Analysis', description: 'Evaluate effectiveness of environmental regulations and propose improvements.', icon: '📜' },
+      { title: 'Industry Leadership', description: 'Drive sustainability initiatives within corporations and supply chains.', icon: '🏢' },
+      { title: 'Academic Contribution', description: 'Publish research that advances the field and informs practice.', icon: '📚' },
+    ],
+    PHD: [
+      { title: 'Breakthrough Research', description: 'Develop novel technologies or frameworks that transform the field.', icon: '🧬' },
+      { title: 'Expert Advisory', description: 'Advise governments, international bodies, and major corporations.', icon: '🌐' },
+      { title: 'Knowledge Transfer', description: 'Bridge academia and practice through partnerships and entrepreneurship.', icon: '🔗' },
+    ],
+  }
+
+  return examplesByLevel[level]
 }
 
 export default DigitalTextbook
