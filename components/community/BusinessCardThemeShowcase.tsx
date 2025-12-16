@@ -223,7 +223,7 @@ export function BusinessCardThemeShowcase() {
         animate={{ opacity: [0.6, 0.9, 0.6] }}
         transition={{ duration: 4, repeat: Infinity }}
       >
-        7 themes • Your identity
+        Choose your guardian theme
       </motion.p>
     </div>
   )

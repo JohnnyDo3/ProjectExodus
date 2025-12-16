@@ -15,9 +15,34 @@ export function Header() {
   const [communityMenuOpen, setCommunityMenuOpen] = useState(false)
   const [isHeaderVisible, setIsHeaderVisible] = useState(true)
   const lastScrollY = useRef(0)
+  const communityHoverTimeout = useRef<NodeJS.Timeout | null>(null)
   const pathname = usePathname()
   const { data: session, status } = useSession()
   const { isScrollOpen } = useDigitalScrollContext()
+
+  // Community dropdown hover handlers
+  const handleCommunityMouseEnter = () => {
+    if (communityHoverTimeout.current) {
+      clearTimeout(communityHoverTimeout.current)
+      communityHoverTimeout.current = null
+    }
+    setCommunityMenuOpen(true)
+  }
+
+  const handleCommunityMouseLeave = () => {
+    communityHoverTimeout.current = setTimeout(() => {
+      setCommunityMenuOpen(false)
+    }, 150) // Small delay to prevent accidental closing
+  }
+
+  // Cleanup hover timeout on unmount
+  useEffect(() => {
+    return () => {
+      if (communityHoverTimeout.current) {
+        clearTimeout(communityHoverTimeout.current)
+      }
+    }
+  }, [])
 
   // Close menus on route change
   useEffect(() => {
@@ -110,14 +135,19 @@ export function Header() {
             {navigation.map((item) => {
               const isActive = pathname === item.href || (item.name === 'Community' && pathname.startsWith('/community'))
 
-              // Community gets a dropdown
+              // Community gets a hover dropdown
               if (item.name === 'Community') {
                 return (
-                  <div key={item.name} className="relative">
+                  <div
+                    key={item.name}
+                    className="relative"
+                    onMouseEnter={handleCommunityMouseEnter}
+                    onMouseLeave={handleCommunityMouseLeave}
+                  >
                     <button
                       onClick={() => setCommunityMenuOpen(!communityMenuOpen)}
                       className={`font-bold text-sm xl:text-base transition-all uppercase tracking-wide flex items-center gap-1 ${
-                        isActive
+                        isActive || communityMenuOpen
                           ? 'text-theme-primary'
                           : 'text-[var(--foreground)] hover:text-theme-primary'
                       }`}
@@ -127,63 +157,80 @@ export function Header() {
                       }}
                     >
                       {item.name}
-                      <ChevronDown className={`w-4 h-4 transition-transform ${communityMenuOpen ? 'rotate-180' : ''}`} />
+                      <ChevronDown className={`w-4 h-4 transition-transform duration-200 ${communityMenuOpen ? 'rotate-180' : ''}`} />
                     </button>
 
-                    {communityMenuOpen && (
-                      <>
-                        <div
-                          className="fixed inset-0 z-[200]"
-                          onClick={() => setCommunityMenuOpen(false)}
-                        />
-                        <div className="absolute top-full left-0 mt-2 w-64 bg-[var(--card)] rounded-xl shadow-theme-lg border-2 border-theme-primary overflow-hidden z-[201]">
-                          <div className="p-2">
-                            {communityMenuItems.map((menuItem) => {
-                              const Icon = menuItem.icon
-                              const isLocked = !session && menuItem.label !== 'Discussions'
+                    {/* Dropdown menu with theme-aware styling */}
+                    <div
+                      className={`absolute top-full left-0 mt-2 w-72 rounded-xl overflow-hidden z-[201] transition-all duration-200 origin-top ${
+                        communityMenuOpen
+                          ? 'opacity-100 scale-100 translate-y-0'
+                          : 'opacity-0 scale-95 -translate-y-2 pointer-events-none'
+                      }`}
+                    >
+                      {/* Theme-aware container with glassmorphism */}
+                      <div className="bg-[var(--card)]/95 backdrop-blur-xl border border-[var(--border)] shadow-2xl rounded-xl overflow-hidden">
+                        {/* Decorative top gradient bar */}
+                        <div className="h-1 bg-gradient-to-r from-[var(--primary)] via-[var(--accent)] to-[var(--secondary)]" />
 
-                              return (
-                                <div key={menuItem.label}>
-                                  {isLocked ? (
-                                    <div className="flex items-center gap-3 px-4 py-3 rounded-lg bg-[var(--muted)]/30 opacity-60 cursor-not-allowed">
-                                      <div className="relative">
-                                        <Icon className="w-5 h-5 text-[var(--muted-foreground)]" />
-                                        <Lock className="w-2.5 h-2.5 absolute -bottom-0.5 -right-0.5 text-[var(--muted-foreground)]" />
-                                      </div>
-                                      <div className="flex-1">
-                                        <span className="font-bold text-sm text-[var(--muted-foreground)]">{menuItem.label}</span>
-                                        <p className="text-xs text-[var(--muted-foreground)]">Sign in to access</p>
-                                      </div>
+                        {/* Day/Night aware inner glow */}
+                        <div className="day-only absolute inset-0 bg-gradient-to-br from-amber-500/5 to-transparent pointer-events-none" />
+                        <div className="night-only absolute inset-0 bg-gradient-to-br from-indigo-500/5 to-transparent pointer-events-none" />
+
+                        <div className="p-2 relative">
+                          {communityMenuItems.map((menuItem, idx) => {
+                            const Icon = menuItem.icon
+                            const isLocked = !session && menuItem.label !== 'Discussions'
+
+                            return (
+                              <div
+                                key={menuItem.label}
+                                className={idx < communityMenuItems.length - 1 ? 'mb-1' : ''}
+                              >
+                                {isLocked ? (
+                                  <div className="flex items-center gap-3 px-4 py-3 rounded-lg bg-[var(--muted)]/20 opacity-50 cursor-not-allowed border border-[var(--border)]/30">
+                                    <div className="relative">
+                                      <Icon className="w-5 h-5 text-[var(--muted-foreground)]" />
+                                      <Lock className="w-2.5 h-2.5 absolute -bottom-0.5 -right-0.5 text-[var(--muted-foreground)]" />
                                     </div>
-                                  ) : (
-                                    <Link
-                                      href={menuItem.href}
-                                      className="flex items-center gap-3 px-4 py-3 rounded-lg hover:bg-[var(--muted)] transition-colors group"
-                                      onClick={() => setCommunityMenuOpen(false)}
-                                    >
-                                      <Icon className="w-5 h-5 text-theme-primary" />
-                                      <div className="flex-1">
-                                        <span className="font-bold text-sm text-[var(--foreground)] group-hover:text-theme-primary">{menuItem.label}</span>
-                                        <p className="text-xs text-[var(--muted-foreground)]">{menuItem.description}</p>
-                                      </div>
-                                    </Link>
-                                  )}
-                                </div>
-                              )
-                            })}
-                          </div>
-                          <div className="border-t border-[var(--border)] p-2">
-                            <Link
-                              href="/community"
-                              className="flex items-center justify-center gap-2 px-4 py-2 rounded-lg bg-theme-primary/10 hover:bg-theme-primary/20 transition-colors text-theme-primary font-medium text-sm"
-                              onClick={() => setCommunityMenuOpen(false)}
-                            >
-                              View Community Hub
-                            </Link>
-                          </div>
+                                    <div className="flex-1">
+                                      <span className="font-bold text-sm text-[var(--muted-foreground)]">{menuItem.label}</span>
+                                      <p className="text-xs text-[var(--muted-foreground)]">Sign in to access</p>
+                                    </div>
+                                  </div>
+                                ) : (
+                                  <Link
+                                    href={menuItem.href}
+                                    className="flex items-center gap-3 px-4 py-3 rounded-lg hover:bg-[var(--muted)]/50 transition-all duration-150 group border border-transparent hover:border-[var(--primary)]/20"
+                                    onClick={() => setCommunityMenuOpen(false)}
+                                  >
+                                    <div className="w-9 h-9 rounded-lg bg-gradient-to-br from-[var(--primary)]/10 to-[var(--accent)]/10 flex items-center justify-center group-hover:from-[var(--primary)]/20 group-hover:to-[var(--accent)]/20 transition-all border border-[var(--primary)]/10">
+                                      <Icon className="w-4.5 h-4.5 text-[var(--primary)]" />
+                                    </div>
+                                    <div className="flex-1">
+                                      <span className="font-bold text-sm text-[var(--foreground)] group-hover:text-[var(--primary)] transition-colors">{menuItem.label}</span>
+                                      <p className="text-xs text-[var(--muted-foreground)]">{menuItem.description}</p>
+                                    </div>
+                                  </Link>
+                                )}
+                              </div>
+                            )
+                          })}
                         </div>
-                      </>
-                    )}
+
+                        {/* Footer with theme-aware styling */}
+                        <div className="border-t border-[var(--border)]/50 p-2 bg-[var(--muted)]/20">
+                          <Link
+                            href="/community"
+                            className="flex items-center justify-center gap-2 px-4 py-2.5 rounded-lg bg-gradient-to-r from-[var(--primary)] to-[var(--accent)] hover:opacity-90 transition-all text-white font-semibold text-sm shadow-sm hover:shadow-md"
+                            onClick={() => setCommunityMenuOpen(false)}
+                          >
+                            View Community Hub
+                            <ChevronRight className="w-4 h-4" />
+                          </Link>
+                        </div>
+                      </div>
+                    </div>
                   </div>
                 )
               }
