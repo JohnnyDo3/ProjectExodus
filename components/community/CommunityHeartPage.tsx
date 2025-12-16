@@ -1,11 +1,13 @@
 'use client'
 
+import { useState } from 'react'
 import { motion } from 'framer-motion'
 import {
   Shield, Crown, Sparkles, TrendingUp,
   User, Briefcase, FileText, BookOpen, Users, MessageCircle, Leaf,
-  Star, Lock, Globe, Zap, Heart
+  Star, Lock, Globe, Zap, Heart, ArrowRight
 } from 'lucide-react'
+import Link from 'next/link'
 import { BusinessCardThemeShowcase } from './BusinessCardThemeShowcase'
 import { FeaturedGuardiansCarousel } from './FeaturedGuardiansCarousel'
 import { AnimatedStatsBar } from './AnimatedStatsBar'
@@ -121,17 +123,19 @@ const businessCardFeatures = [
 ]
 
 export function CommunityHeartPage({ isAuthenticated }: CommunityHeartPageProps) {
+  const [isVolitionFlipped, setIsVolitionFlipped] = useState(false)
+
   return (
     <div className="h-[calc(100vh-5rem)] bg-[var(--background)] relative overflow-hidden flex flex-col">
       {/* Ambient animated background */}
       <AmbientBackground />
 
-      {/* Tagline bar - Enhanced */}
+      {/* Tagline bar with auth buttons */}
       <motion.div
         initial={{ opacity: 0, y: -10 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.5 }}
-        className="relative z-20 flex items-center justify-center px-4 py-2.5 bg-gradient-to-r from-[var(--primary)]/5 via-[var(--accent)]/10 to-[var(--secondary)]/5 border-b border-[var(--border)]/30 overflow-hidden"
+        className="relative z-20 flex items-center justify-between px-4 py-2.5 bg-gradient-to-r from-[var(--primary)]/5 via-[var(--accent)]/10 to-[var(--secondary)]/5 border-b border-[var(--border)]/30 overflow-hidden"
       >
         {/* Animated background line */}
         <motion.div
@@ -140,18 +144,19 @@ export function CommunityHeartPage({ isAuthenticated }: CommunityHeartPageProps)
           transition={{ duration: 8, repeat: Infinity, ease: 'linear' }}
         />
 
-        {/* Decorative dots */}
-        <motion.div
-          className="absolute left-4 w-1 h-1 rounded-full bg-[var(--primary)]/30"
-          animate={{ scale: [1, 1.5, 1], opacity: [0.3, 0.6, 0.3] }}
-          transition={{ duration: 2, repeat: Infinity }}
-        />
-        <motion.div
-          className="absolute right-4 w-1 h-1 rounded-full bg-[var(--secondary)]/30"
-          animate={{ scale: [1, 1.5, 1], opacity: [0.3, 0.6, 0.3] }}
-          transition={{ duration: 2, repeat: Infinity, delay: 1 }}
-        />
+        {/* Join Free button */}
+        <Link href="/auth/signup" className="relative z-10">
+          <motion.button
+            className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-gradient-to-r from-[var(--primary)] to-[var(--accent)] text-white text-xs font-semibold shadow-sm hover:shadow-md transition-all"
+            whileHover={{ scale: 1.02 }}
+            whileTap={{ scale: 0.98 }}
+          >
+            Join Free
+            <ArrowRight className="w-3 h-3" />
+          </motion.button>
+        </Link>
 
+        {/* Center tagline */}
         <motion.div
           className="relative flex items-center gap-3"
           animate={{ opacity: [0.8, 1, 0.8] }}
@@ -164,7 +169,7 @@ export function CommunityHeartPage({ isAuthenticated }: CommunityHeartPageProps)
             <Sparkles className="w-4 h-4 text-[var(--primary)]" />
           </motion.div>
 
-          <span className="text-sm font-semibold text-[var(--foreground)] tracking-wide">
+          <span className="text-sm font-semibold text-[var(--foreground)] tracking-wide hidden sm:block">
             Where ideas become action
           </span>
 
@@ -175,6 +180,17 @@ export function CommunityHeartPage({ isAuthenticated }: CommunityHeartPageProps)
             <Sparkles className="w-4 h-4 text-[var(--primary)]" />
           </motion.div>
         </motion.div>
+
+        {/* Sign In button */}
+        <Link href="/auth/signin" className="relative z-10">
+          <motion.button
+            className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg border-2 border-[var(--primary)] text-[var(--primary)] text-xs font-semibold hover:bg-[var(--primary)]/10 transition-all"
+            whileHover={{ scale: 1.02 }}
+            whileTap={{ scale: 0.98 }}
+          >
+            Sign In
+          </motion.button>
+        </Link>
       </motion.div>
 
       {/* Main content - fills viewport */}
@@ -364,120 +380,220 @@ export function CommunityHeartPage({ isAuthenticated }: CommunityHeartPageProps)
           transition={{ duration: 0.6, delay: 0.3 }}
           className="lg:col-span-3 flex flex-col gap-2 min-h-0"
         >
-          {/* Volition Marketing Card - Enhanced with decorations */}
-          <motion.div
-            className="relative flex-1 bg-gradient-to-br from-[var(--primary)] via-[var(--accent)] to-[var(--secondary)] rounded-xl p-3 text-white overflow-hidden"
+          {/* Volition Marketing Card - Flip Card with Philosophy */}
+          <div
+            className="relative flex-1"
+            style={{ perspective: '1000px' }}
+            onMouseEnter={() => setIsVolitionFlipped(true)}
+            onMouseLeave={() => setIsVolitionFlipped(false)}
           >
-            {/* Decorative corner elements */}
-            <svg className="absolute top-0 left-0 w-12 h-12 opacity-20" viewBox="0 0 48 48">
-              <motion.path
-                d="M0 0 L24 0 L24 4 L4 4 L4 24 L0 24 Z"
-                fill="white"
-                animate={{ opacity: [0.1, 0.3, 0.1] }}
-                transition={{ duration: 3, repeat: Infinity }}
-              />
-            </svg>
-            <svg className="absolute bottom-0 right-0 w-12 h-12 opacity-20 rotate-180" viewBox="0 0 48 48">
-              <motion.path
-                d="M0 0 L24 0 L24 4 L4 4 L4 24 L0 24 Z"
-                fill="white"
-                animate={{ opacity: [0.1, 0.3, 0.1] }}
-                transition={{ duration: 3, repeat: Infinity, delay: 1.5 }}
-              />
-            </svg>
-
-            {/* Animated shine */}
             <motion.div
-              className="absolute inset-0 bg-gradient-to-r from-transparent via-white/15 to-transparent"
-              animate={{ x: ['-100%', '200%'] }}
-              transition={{ duration: 3, repeat: Infinity, repeatDelay: 4 }}
-            />
-
-            {/* Floating sparkles */}
-            <motion.div
-              className="absolute top-3 right-6"
-              animate={{ y: [0, -5, 0], opacity: [0.3, 0.7, 0.3] }}
-              transition={{ duration: 3, repeat: Infinity }}
+              className="relative w-full h-full"
+              style={{ transformStyle: 'preserve-3d' }}
+              animate={{ rotateY: isVolitionFlipped ? 180 : 0 }}
+              transition={{ duration: 0.6, ease: 'easeInOut' }}
             >
-              <Sparkles className="w-3 h-3 text-white/50" />
-            </motion.div>
-            <motion.div
-              className="absolute bottom-6 left-4"
-              animate={{ y: [0, 5, 0], opacity: [0.3, 0.7, 0.3] }}
-              transition={{ duration: 4, repeat: Infinity, delay: 1 }}
-            >
-              <Star className="w-2.5 h-2.5 text-white/40" />
-            </motion.div>
+              {/* Front Side - Features */}
+              <motion.div
+                className="absolute inset-0 bg-gradient-to-br from-[var(--primary)] via-[var(--accent)] to-[var(--secondary)] rounded-xl p-3 text-white overflow-hidden"
+                style={{ backfaceVisibility: 'hidden' }}
+              >
+                {/* Decorative corner elements */}
+                <svg className="absolute top-0 left-0 w-12 h-12 opacity-20" viewBox="0 0 48 48">
+                  <motion.path
+                    d="M0 0 L24 0 L24 4 L4 4 L4 24 L0 24 Z"
+                    fill="white"
+                    animate={{ opacity: [0.1, 0.3, 0.1] }}
+                    transition={{ duration: 3, repeat: Infinity }}
+                  />
+                </svg>
+                <svg className="absolute bottom-0 right-0 w-12 h-12 opacity-20 rotate-180" viewBox="0 0 48 48">
+                  <motion.path
+                    d="M0 0 L24 0 L24 4 L4 4 L4 24 L0 24 Z"
+                    fill="white"
+                    animate={{ opacity: [0.1, 0.3, 0.1] }}
+                    transition={{ duration: 3, repeat: Infinity, delay: 1.5 }}
+                  />
+                </svg>
 
-            <div className="relative z-10 h-full flex flex-col">
-              {/* Header with icon badge */}
-              <div className="flex items-center gap-2 mb-1">
+                {/* Animated shine */}
                 <motion.div
-                  className="w-6 h-6 rounded-lg bg-white/20 flex items-center justify-center backdrop-blur-sm"
-                  animate={{
-                    boxShadow: ['0 0 0 0 rgba(255,255,255,0.2)', '0 0 10px 2px rgba(255,255,255,0.3)', '0 0 0 0 rgba(255,255,255,0.2)']
-                  }}
+                  className="absolute inset-0 bg-gradient-to-r from-transparent via-white/15 to-transparent"
+                  animate={{ x: ['-100%', '200%'] }}
+                  transition={{ duration: 3, repeat: Infinity, repeatDelay: 4 }}
+                />
+
+                {/* Floating sparkles */}
+                <motion.div
+                  className="absolute top-3 right-6"
+                  animate={{ y: [0, -5, 0], opacity: [0.3, 0.7, 0.3] }}
                   transition={{ duration: 3, repeat: Infinity }}
                 >
-                  <TrendingUp className="w-3.5 h-3.5" />
+                  <Sparkles className="w-3 h-3 text-white/50" />
                 </motion.div>
-                <h3 className="font-bold text-sm tracking-tight">Volition</h3>
-              </div>
-
-              {/* Description */}
-              <p className="text-[9px] opacity-80 mb-2 leading-relaxed pl-0.5">
-                Track your stock in Project Exodus
-              </p>
-
-              {/* Decorative line */}
-              <motion.div
-                className="h-px bg-gradient-to-r from-white/30 via-white/50 to-white/30 mb-2"
-                animate={{ opacity: [0.3, 0.6, 0.3] }}
-                transition={{ duration: 3, repeat: Infinity }}
-              />
-
-              {/* 7 Lanes Grid - Enhanced */}
-              <div className="flex-1 grid grid-cols-2 gap-1">
-                {volitionLanes.map((lane, i) => {
-                  const Icon = lane.icon
-                  return (
-                    <motion.div
-                      key={lane.label}
-                      className="flex items-center gap-1.5 bg-white/10 rounded-lg px-2 py-1 border border-white/5 backdrop-blur-sm"
-                      initial={{ opacity: 0, x: -10 }}
-                      animate={{ opacity: 1, x: 0 }}
-                      transition={{ delay: 0.5 + i * 0.05 }}
-                      whileHover={{
-                        backgroundColor: 'rgba(255,255,255,0.25)',
-                        scale: 1.02,
-                        borderColor: 'rgba(255,255,255,0.2)'
-                      }}
-                    >
-                      <Icon className={`w-3 h-3 ${lane.color}`} />
-                      <span className="text-[9px] font-medium opacity-95">{lane.label}</span>
-                    </motion.div>
-                  )
-                })}
-                {/* Extra slot for Impact highlight */}
                 <motion.div
-                  className="col-span-2 flex items-center justify-center gap-1.5 bg-white/15 rounded-lg py-1.5 border border-white/10"
-                  initial={{ opacity: 0 }}
-                  animate={{ opacity: 1 }}
-                  transition={{ delay: 0.9 }}
-                  whileHover={{ backgroundColor: 'rgba(255,255,255,0.25)' }}
+                  className="absolute bottom-6 left-4"
+                  animate={{ y: [0, 5, 0], opacity: [0.3, 0.7, 0.3] }}
+                  transition={{ duration: 4, repeat: Infinity, delay: 1 }}
                 >
-                  <motion.div
-                    animate={{ rotate: 360 }}
-                    transition={{ duration: 20, repeat: Infinity, ease: 'linear' }}
-                  >
-                    <Globe className="w-3.5 h-3.5 text-emerald-300" />
-                  </motion.div>
-                  <span className="text-[9px] font-semibold">Environmental Impact</span>
-                  <Zap className="w-2.5 h-2.5 text-yellow-300" />
+                  <Star className="w-2.5 h-2.5 text-white/40" />
                 </motion.div>
-              </div>
-            </div>
-          </motion.div>
+
+                <div className="relative z-10 h-full flex flex-col">
+                  {/* Header with icon badge */}
+                  <div className="flex items-center gap-2 mb-1">
+                    <motion.div
+                      className="w-6 h-6 rounded-lg bg-white/20 flex items-center justify-center backdrop-blur-sm"
+                      animate={{
+                        boxShadow: ['0 0 0 0 rgba(255,255,255,0.2)', '0 0 10px 2px rgba(255,255,255,0.3)', '0 0 0 0 rgba(255,255,255,0.2)']
+                      }}
+                      transition={{ duration: 3, repeat: Infinity }}
+                    >
+                      <TrendingUp className="w-3.5 h-3.5" />
+                    </motion.div>
+                    <h3 className="font-bold text-sm tracking-tight">Volition</h3>
+                  </div>
+
+                  {/* Description */}
+                  <p className="text-[9px] opacity-80 mb-2 leading-relaxed pl-0.5">
+                    Track your stock in Project Exodus
+                  </p>
+
+                  {/* Decorative line */}
+                  <motion.div
+                    className="h-px bg-gradient-to-r from-white/30 via-white/50 to-white/30 mb-2"
+                    animate={{ opacity: [0.3, 0.6, 0.3] }}
+                    transition={{ duration: 3, repeat: Infinity }}
+                  />
+
+                  {/* 7 Lanes Grid - Enhanced */}
+                  <div className="flex-1 grid grid-cols-2 gap-1">
+                    {volitionLanes.map((lane, i) => {
+                      const Icon = lane.icon
+                      return (
+                        <motion.div
+                          key={lane.label}
+                          className="flex items-center gap-1.5 bg-white/10 rounded-lg px-2 py-1 border border-white/5 backdrop-blur-sm"
+                          initial={{ opacity: 0, x: -10 }}
+                          animate={{ opacity: 1, x: 0 }}
+                          transition={{ delay: 0.5 + i * 0.05 }}
+                        >
+                          <Icon className={`w-3 h-3 ${lane.color}`} />
+                          <span className="text-[9px] font-medium opacity-95">{lane.label}</span>
+                        </motion.div>
+                      )
+                    })}
+                    {/* Extra slot for Impact highlight */}
+                    <motion.div
+                      className="col-span-2 flex items-center justify-center gap-1.5 bg-white/15 rounded-lg py-1.5 border border-white/10"
+                      initial={{ opacity: 0 }}
+                      animate={{ opacity: 1 }}
+                      transition={{ delay: 0.9 }}
+                    >
+                      <motion.div
+                        animate={{ rotate: 360 }}
+                        transition={{ duration: 20, repeat: Infinity, ease: 'linear' }}
+                      >
+                        <Globe className="w-3.5 h-3.5 text-emerald-300" />
+                      </motion.div>
+                      <span className="text-[9px] font-semibold">Environmental Impact</span>
+                      <Zap className="w-2.5 h-2.5 text-yellow-300" />
+                    </motion.div>
+                  </div>
+
+                  {/* Hover hint */}
+                  <motion.p
+                    className="text-[8px] text-center opacity-50 mt-1"
+                    animate={{ opacity: [0.3, 0.6, 0.3] }}
+                    transition={{ duration: 2, repeat: Infinity }}
+                  >
+                    Hover to learn more
+                  </motion.p>
+                </div>
+              </motion.div>
+
+              {/* Back Side - Philosophy */}
+              <motion.div
+                className="absolute inset-0 bg-gradient-to-br from-[var(--card)] via-[var(--muted)] to-[var(--card)] rounded-xl p-3 overflow-hidden border border-[var(--primary)]/30"
+                style={{ backfaceVisibility: 'hidden', transform: 'rotateY(180deg)' }}
+              >
+                {/* Decorative glow */}
+                <motion.div
+                  className="absolute inset-0 bg-gradient-to-br from-[var(--primary)]/10 via-transparent to-[var(--accent)]/10"
+                  animate={{ opacity: [0.3, 0.5, 0.3] }}
+                  transition={{ duration: 4, repeat: Infinity }}
+                />
+
+                {/* Corner ornaments */}
+                <CornerOrnament position="tl" />
+                <CornerOrnament position="br" />
+
+                <div className="relative z-10 h-full flex flex-col">
+                  {/* Header */}
+                  <div className="flex items-center gap-2 mb-2">
+                    <motion.div
+                      className="w-6 h-6 rounded-lg bg-gradient-to-br from-[var(--primary)] to-[var(--accent)] flex items-center justify-center"
+                      animate={{ scale: [1, 1.05, 1] }}
+                      transition={{ duration: 2, repeat: Infinity }}
+                    >
+                      <Sparkles className="w-3.5 h-3.5 text-white" />
+                    </motion.div>
+                    <h3 className="font-bold text-sm text-[var(--foreground)] tracking-tight">The Philosophy</h3>
+                  </div>
+
+                  <DecorativeDivider className="mb-2" />
+
+                  {/* Philosophy content */}
+                  <div className="flex-1 space-y-2 overflow-hidden">
+                    <motion.div
+                      className="bg-[var(--primary)]/10 rounded-lg p-2 border border-[var(--primary)]/20"
+                      initial={{ opacity: 0, y: 10 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      transition={{ delay: 0.2 }}
+                    >
+                      <p className="text-[10px] font-semibold text-[var(--primary)] mb-1 flex items-center gap-1">
+                        <TrendingUp className="w-3 h-3" />
+                        You Are The Asset
+                      </p>
+                      <p className="text-[8px] text-[var(--muted-foreground)] leading-relaxed">
+                        Your STOCK score reflects your growth, contributions, and impact within the community.
+                      </p>
+                    </motion.div>
+
+                    <motion.div
+                      className="bg-[var(--accent)]/10 rounded-lg p-2 border border-[var(--accent)]/20"
+                      initial={{ opacity: 0, y: 10 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      transition={{ delay: 0.3 }}
+                    >
+                      <p className="text-[10px] font-semibold text-[var(--accent)] mb-1 flex items-center gap-1">
+                        <Briefcase className="w-3 h-3" />
+                        7 Lanes of Life
+                      </p>
+                      <p className="text-[8px] text-[var(--muted-foreground)] leading-relaxed">
+                        A Kanban dashboard organizing your identity, projects, learning, network, and environmental impact.
+                      </p>
+                    </motion.div>
+
+                    <motion.div
+                      className="bg-emerald-500/10 rounded-lg p-2 border border-emerald-500/20"
+                      initial={{ opacity: 0, y: 10 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      transition={{ delay: 0.4 }}
+                    >
+                      <p className="text-[10px] font-semibold text-emerald-600 dark:text-emerald-400 mb-1 flex items-center gap-1">
+                        <Leaf className="w-3 h-3" />
+                        Meaningful Progress
+                      </p>
+                      <p className="text-[8px] text-[var(--muted-foreground)] leading-relaxed">
+                        Track real growth that matters - not vanity metrics, but genuine sustainable impact.
+                      </p>
+                    </motion.div>
+                  </div>
+                </div>
+              </motion.div>
+            </motion.div>
+          </div>
 
           {/* Trust Indicators - Enhanced */}
           <motion.div

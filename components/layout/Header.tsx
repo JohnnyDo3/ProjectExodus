@@ -135,7 +135,7 @@ export function Header() {
             {navigation.map((item) => {
               const isActive = pathname === item.href || (item.name === 'Community' && pathname.startsWith('/community'))
 
-              // Community gets a hover dropdown
+              // Community gets a hover dropdown - click navigates to page
               if (item.name === 'Community') {
                 return (
                   <div
@@ -144,8 +144,8 @@ export function Header() {
                     onMouseEnter={handleCommunityMouseEnter}
                     onMouseLeave={handleCommunityMouseLeave}
                   >
-                    <button
-                      onClick={() => setCommunityMenuOpen(!communityMenuOpen)}
+                    <Link
+                      href="/community"
                       className={`font-bold text-sm xl:text-base transition-all uppercase tracking-wide flex items-center gap-1 ${
                         isActive || communityMenuOpen
                           ? 'text-theme-primary'
@@ -158,57 +158,56 @@ export function Header() {
                     >
                       {item.name}
                       <ChevronDown className={`w-4 h-4 transition-transform duration-200 ${communityMenuOpen ? 'rotate-180' : ''}`} />
-                    </button>
+                    </Link>
 
                     {/* Dropdown menu with theme-aware styling */}
                     <div
-                      className={`absolute top-full left-0 mt-2 w-72 rounded-xl overflow-hidden z-[201] transition-all duration-200 origin-top ${
+                      className={`absolute top-full left-0 mt-2 w-80 rounded-xl overflow-hidden z-[201] transition-all duration-200 origin-top ${
                         communityMenuOpen
                           ? 'opacity-100 scale-100 translate-y-0'
                           : 'opacity-0 scale-95 -translate-y-2 pointer-events-none'
                       }`}
                     >
                       {/* Theme-aware container with glassmorphism */}
-                      <div className="bg-[var(--card)]/95 backdrop-blur-xl border border-[var(--border)] shadow-2xl rounded-xl overflow-hidden">
+                      <div className="bg-[var(--card)]/95 backdrop-blur-xl border-2 border-theme-primary shadow-2xl rounded-xl overflow-hidden">
                         {/* Decorative top gradient bar */}
                         <div className="h-1 bg-gradient-to-r from-[var(--primary)] via-[var(--accent)] to-[var(--secondary)]" />
 
                         {/* Day/Night aware inner glow */}
-                        <div className="day-only absolute inset-0 bg-gradient-to-br from-amber-500/5 to-transparent pointer-events-none" />
-                        <div className="night-only absolute inset-0 bg-gradient-to-br from-indigo-500/5 to-transparent pointer-events-none" />
+                        <div className="day-only absolute inset-0 bg-gradient-to-br from-amber-500/5 to-transparent pointer-events-none rounded-xl" />
+                        <div className="night-only absolute inset-0 bg-gradient-to-br from-indigo-500/5 to-transparent pointer-events-none rounded-xl" />
 
-                        <div className="p-2 relative">
-                          {communityMenuItems.map((menuItem, idx) => {
+                        <div className="p-3 space-y-1 relative">
+                          {communityMenuItems.map((menuItem) => {
                             const Icon = menuItem.icon
-                            const isLocked = !session && menuItem.label !== 'Discussions'
+                            const isLocked = !session // All items locked for non-users
 
                             return (
-                              <div
-                                key={menuItem.label}
-                                className={idx < communityMenuItems.length - 1 ? 'mb-1' : ''}
-                              >
+                              <div key={menuItem.label}>
                                 {isLocked ? (
-                                  <div className="flex items-center gap-3 px-4 py-3 rounded-lg bg-[var(--muted)]/20 opacity-50 cursor-not-allowed border border-[var(--border)]/30">
-                                    <div className="relative">
-                                      <Icon className="w-5 h-5 text-[var(--muted-foreground)]" />
-                                      <Lock className="w-2.5 h-2.5 absolute -bottom-0.5 -right-0.5 text-[var(--muted-foreground)]" />
+                                  <div className="flex items-center gap-4 px-4 py-3 rounded-lg bg-[var(--muted)]/20 opacity-50 cursor-not-allowed border border-[var(--border)]/30">
+                                    <div className="relative flex-shrink-0">
+                                      <div className="w-10 h-10 rounded-lg bg-[var(--muted)] flex items-center justify-center">
+                                        <Icon className="w-5 h-5 text-[var(--muted-foreground)]" />
+                                      </div>
+                                      <Lock className="w-3 h-3 absolute -bottom-0.5 -right-0.5 text-[var(--muted-foreground)]" />
                                     </div>
-                                    <div className="flex-1">
-                                      <span className="font-bold text-sm text-[var(--muted-foreground)]">{menuItem.label}</span>
+                                    <div className="flex-1 min-w-0">
+                                      <span className="block font-bold text-sm text-[var(--muted-foreground)]">{menuItem.label}</span>
                                       <p className="text-xs text-[var(--muted-foreground)]">Sign in to access</p>
                                     </div>
                                   </div>
                                 ) : (
                                   <Link
                                     href={menuItem.href}
-                                    className="flex items-center gap-3 px-4 py-3 rounded-lg hover:bg-[var(--muted)]/50 transition-all duration-150 group border border-transparent hover:border-[var(--primary)]/20"
+                                    className="flex items-center gap-4 px-4 py-3 rounded-lg hover:bg-[var(--muted)]/50 transition-all duration-150 group border border-transparent hover:border-[var(--primary)]/20"
                                     onClick={() => setCommunityMenuOpen(false)}
                                   >
-                                    <div className="w-9 h-9 rounded-lg bg-gradient-to-br from-[var(--primary)]/10 to-[var(--accent)]/10 flex items-center justify-center group-hover:from-[var(--primary)]/20 group-hover:to-[var(--accent)]/20 transition-all border border-[var(--primary)]/10">
-                                      <Icon className="w-4.5 h-4.5 text-[var(--primary)]" />
+                                    <div className="w-10 h-10 rounded-lg bg-gradient-to-br from-[var(--primary)]/10 to-[var(--accent)]/10 flex items-center justify-center group-hover:from-[var(--primary)]/20 group-hover:to-[var(--accent)]/20 transition-all border border-[var(--primary)]/10 flex-shrink-0">
+                                      <Icon className="w-5 h-5 text-[var(--primary)]" />
                                     </div>
-                                    <div className="flex-1">
-                                      <span className="font-bold text-sm text-[var(--foreground)] group-hover:text-[var(--primary)] transition-colors">{menuItem.label}</span>
+                                    <div className="flex-1 min-w-0">
+                                      <span className="block font-bold text-sm text-[var(--foreground)] group-hover:text-[var(--primary)] transition-colors">{menuItem.label}</span>
                                       <p className="text-xs text-[var(--muted-foreground)]">{menuItem.description}</p>
                                     </div>
                                   </Link>
@@ -422,7 +421,7 @@ export function Header() {
                 <div className="grid grid-cols-2 gap-2">
                   {communityMenuItems.map((menuItem) => {
                     const Icon = menuItem.icon
-                    const isLocked = !session && menuItem.label !== 'Discussions'
+                    const isLocked = !session // All items locked for non-users
 
                     if (isLocked) {
                       return (
