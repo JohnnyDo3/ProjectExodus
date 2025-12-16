@@ -28,6 +28,7 @@ interface TopicBookProps {
   topicSlug: CoreTopic
   selectedLevel: LearningLevel
   completedModules?: string[]
+  onOpenDigitalScroll?: (chapterIndex: number) => void
 }
 
 // Learning Module definitions for each core topic - exactly 7 modules per topic
@@ -145,7 +146,8 @@ function LearningModuleSection({
   topicSlug,
   completedLessons = [],
   isExpanded,
-  onToggle
+  onToggle,
+  onOpenDigitalScroll
 }: {
   learningModuleName: string
   moduleNumber: number
@@ -156,6 +158,7 @@ function LearningModuleSection({
   completedLessons: string[]
   isExpanded: boolean
   onToggle: () => void
+  onOpenDigitalScroll?: (chapterIndex: number) => void
 }) {
   const colors = MODULE_COLORS[moduleIndex % MODULE_COLORS.length]
 
@@ -236,53 +239,72 @@ function LearningModuleSection({
                   const isLessonCompleted = completedLessons.includes(lesson.id)
                   const lessonPages = lesson.lessons.length
                   const lessonDuration = lesson.duration[selectedLevel]
+                  const cardClassName = `${colors.bg} border ${colors.border} rounded-lg p-3 sm:p-4 hover:shadow-md transition-all group ${isLessonCompleted ? 'ring-1 ring-green-400' : ''} w-full text-left block`
+
+                  const cardContent = (
+                    <div className="flex items-start gap-3">
+                      {/* Lesson number badge */}
+                      <div className={`w-8 h-8 ${isLessonCompleted ? 'bg-green-500' : colors.accent} rounded-full text-white flex items-center justify-center font-bold text-sm flex-shrink-0`}>
+                        {isLessonCompleted ? (
+                          <CheckCircle2 className="w-4 h-4" />
+                        ) : (
+                          <span>{moduleNumber}.{lessonIdx + 1}</span>
+                        )}
+                      </div>
+
+                      <div className="flex-1 min-w-0">
+                        <div className="flex items-center gap-2 mb-1 flex-wrap">
+                          <h4 className={`text-base sm:text-lg font-black ${colors.text} group-hover:underline`}>
+                            {lesson.title}
+                          </h4>
+                          {isLessonCompleted && (
+                            <span className="text-[10px] font-bold text-green-700 dark:text-green-300 bg-green-100 dark:bg-green-900/50 px-1.5 py-0.5 rounded">
+                              COMPLETE
+                            </span>
+                          )}
+                        </div>
+
+                        <p className="text-xs sm:text-sm text-[var(--muted-foreground)] line-clamp-2 mb-2">
+                          {lesson.description[selectedLevel]}
+                        </p>
+
+                        <div className="flex items-center gap-3 text-xs text-[var(--muted-foreground)]">
+                          <span className="flex items-center gap-1 font-medium">
+                            <Layers className="w-3 h-3" />
+                            {lessonPages} page{lessonPages !== 1 ? 's' : ''}
+                          </span>
+                          <span className="flex items-center gap-1 font-medium">
+                            <Clock className="w-3 h-3" />
+                            {lessonDuration} min
+                          </span>
+                        </div>
+                      </div>
+
+                      <ChevronRight className={`w-5 h-5 ${colors.text} opacity-0 group-hover:opacity-100 transition-opacity flex-shrink-0`} />
+                    </div>
+                  )
+
+                  // If onOpenDigitalScroll is provided, use a button to open the Digital Scroll
+                  if (onOpenDigitalScroll) {
+                    return (
+                      <button
+                        key={lesson.id}
+                        onClick={() => onOpenDigitalScroll(moduleIndex)}
+                        type="button"
+                        className={cardClassName}
+                      >
+                        {cardContent}
+                      </button>
+                    )
+                  }
 
                   return (
                     <Link
                       key={lesson.id}
                       href={`/learn/modules/${lesson.slug}?level=${selectedLevel.toLowerCase()}&topic=${topicSlug}`}
-                      className={`${colors.bg} border ${colors.border} rounded-lg p-3 sm:p-4 hover:shadow-md transition-all group ${isLessonCompleted ? 'ring-1 ring-green-400' : ''}`}
+                      className={cardClassName}
                     >
-                      <div className="flex items-start gap-3">
-                        {/* Lesson number badge */}
-                        <div className={`w-8 h-8 ${isLessonCompleted ? 'bg-green-500' : colors.accent} rounded-full text-white flex items-center justify-center font-bold text-sm flex-shrink-0`}>
-                          {isLessonCompleted ? (
-                            <CheckCircle2 className="w-4 h-4" />
-                          ) : (
-                            <span>{moduleNumber}.{lessonIdx + 1}</span>
-                          )}
-                        </div>
-
-                        <div className="flex-1 min-w-0">
-                          <div className="flex items-center gap-2 mb-1 flex-wrap">
-                            <h4 className={`text-base sm:text-lg font-black ${colors.text} group-hover:underline`}>
-                              {lesson.title}
-                            </h4>
-                            {isLessonCompleted && (
-                              <span className="text-[10px] font-bold text-green-700 dark:text-green-300 bg-green-100 dark:bg-green-900/50 px-1.5 py-0.5 rounded">
-                                COMPLETE
-                              </span>
-                            )}
-                          </div>
-
-                          <p className="text-xs sm:text-sm text-[var(--muted-foreground)] line-clamp-2 mb-2">
-                            {lesson.description[selectedLevel]}
-                          </p>
-
-                          <div className="flex items-center gap-3 text-xs text-[var(--muted-foreground)]">
-                            <span className="flex items-center gap-1 font-medium">
-                              <Layers className="w-3 h-3" />
-                              {lessonPages} page{lessonPages !== 1 ? 's' : ''}
-                            </span>
-                            <span className="flex items-center gap-1 font-medium">
-                              <Clock className="w-3 h-3" />
-                              {lessonDuration} min
-                            </span>
-                          </div>
-                        </div>
-
-                        <ChevronRight className={`w-5 h-5 ${colors.text} opacity-0 group-hover:opacity-100 transition-opacity flex-shrink-0`} />
-                      </div>
+                      {cardContent}
                     </Link>
                   )
                 })}
@@ -296,7 +318,7 @@ function LearningModuleSection({
 }
 
 // Main Topic Book Browser
-export function TopicBookBrowser({ topicSlug, selectedLevel, completedModules = [] }: TopicBookProps) {
+export function TopicBookBrowser({ topicSlug, selectedLevel, completedModules = [], onOpenDigitalScroll }: TopicBookProps) {
   const [expandedModule, setExpandedModule] = useState<string | null>(null)
 
   const topic = getTopic(topicSlug)
@@ -382,6 +404,7 @@ export function TopicBookBrowser({ topicSlug, selectedLevel, completedModules = 
             onToggle={() => setExpandedModule(
               expandedModule === group.learningModule ? null : group.learningModule
             )}
+            onOpenDigitalScroll={onOpenDigitalScroll}
           />
         ))}
       </div>

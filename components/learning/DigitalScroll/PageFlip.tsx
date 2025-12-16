@@ -8,7 +8,7 @@
 import { motion, useAnimation, PanInfo } from 'framer-motion'
 import { useState, useRef, useEffect, useCallback, ReactNode } from 'react'
 import { cn } from '@/lib/utils/cn'
-import { ANIMATION_TIMINGS, PERSPECTIVE_CONFIG, A11Y_CONFIG, getDeviceType } from './bookConstants'
+import { ANIMATION_TIMINGS, PERSPECTIVE_CONFIG, A11Y_CONFIG, getDeviceType } from './scrollConstants'
 
 // ============================================
 // TYPES
@@ -153,7 +153,7 @@ export function PageFlip({
 
   // ============================================
   // KEYBOARD NAVIGATION
-  // Keyboard navigation is handled by parent (DigitalTextbook)
+  // Keyboard navigation is handled by parent (DigitalScroll)
   // to allow single-page navigation instead of spread-based
   // ============================================
 

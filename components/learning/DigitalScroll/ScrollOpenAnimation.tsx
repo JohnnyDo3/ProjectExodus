@@ -1,21 +1,20 @@
 'use client'
 
 // ============================================
-// BOOK OPEN ANIMATION
-// "And the book was opened..." - Revelation 20:12
+// SCROLL OPEN ANIMATION
 // Flow: Descend → Cover opens → Instructions → Title → Complete
 // ============================================
 
 import { motion, AnimatePresence } from 'framer-motion'
 import { useEffect, useRef, useState } from 'react'
 import { cn } from '@/lib/utils/cn'
-import { BOOK_DIMENSIONS, CORE_TOPIC_ICONS, getDeviceType } from './bookConstants'
+import { SCROLL_DIMENSIONS, CORE_TOPIC_ICONS, getDeviceType } from './scrollConstants'
 
 // ============================================
 // TYPES
 // ============================================
 
-interface BookOpenAnimationProps {
+interface ScrollOpenAnimationProps {
   topicSlug: string
   topicTitle: string
   topicDescription?: string
@@ -31,18 +30,18 @@ type AnimationPhase = 'descend' | 'opening' | 'instructions' | 'title' | 'comple
 // MAIN COMPONENT
 // ============================================
 
-export function BookOpenAnimation({
+export function ScrollOpenAnimation({
   topicSlug,
   topicTitle,
   topicDescription,
   onAnimationComplete,
   reducedMotion = false,
   className,
-}: BookOpenAnimationProps) {
+}: ScrollOpenAnimationProps) {
   const [phase, setPhase] = useState<AnimationPhase>('descend')
   const [coverOpen, setCoverOpen] = useState(false)
   const completedRef = useRef(false)
-  const [dimensions, setDimensions] = useState(BOOK_DIMENSIONS.desktop)
+  const [dimensions, setDimensions] = useState(SCROLL_DIMENSIONS.desktop)
 
   const topicIcon = CORE_TOPIC_ICONS[topicSlug] || '📖'
 
@@ -50,7 +49,7 @@ export function BookOpenAnimation({
   useEffect(() => {
     function updateDimensions() {
       const device = getDeviceType()
-      setDimensions(BOOK_DIMENSIONS[device])
+      setDimensions(SCROLL_DIMENSIONS[device])
     }
     updateDimensions()
     window.addEventListener('resize', updateDimensions)
@@ -440,7 +439,7 @@ export function BookOpenAnimation({
         </motion.div>
       </div>
 
-      {/* Sacred quote at bottom */}
+      {/* Inspirational quote at bottom */}
       <motion.div
         className="absolute bottom-12 left-1/2 -translate-x-1/2 text-center"
         initial={{ opacity: 0, y: 20 }}
@@ -456,4 +455,4 @@ export function BookOpenAnimation({
   )
 }
 
-export default BookOpenAnimation
+export default ScrollOpenAnimation

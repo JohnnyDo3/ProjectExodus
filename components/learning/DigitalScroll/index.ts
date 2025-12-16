@@ -1,12 +1,12 @@
 // ============================================
-// THE SACRED DIGITAL TEXTBOOK
+// THE DIGITAL SCROLL
 // Central Exports - Ancient manuscript meets digital revelation
 // ============================================
 
 // Main Component
-export { DigitalTextbook, default } from './DigitalTextbook'
+export { DigitalScroll, default } from './DigitalScroll'
 
-// Sacred Book Illustrations
+// Scroll Illustrations
 export {
   IlluminatedLetter,
   CircularEconomyDiagram,
@@ -23,13 +23,13 @@ export {
   type AnimatedQuoteProps,
   type StepFlowProps,
   type StatCardProps,
-} from './BookIllustrations'
+} from './ScrollIllustrations'
 
 // Page Content Animations
 export {
   AnimatedParagraph,
   StaggeredContent,
-  SacredTitle,
+  ScrollTitle,
   MarginOrnament,
   GlowingEmphasis,
   AnimatedList,
@@ -39,7 +39,7 @@ export {
   ContentFade,
   type AnimatedParagraphProps,
   type StaggeredContentProps,
-  type SacredTitleProps,
+  type ScrollTitleProps,
   type MarginOrnamentProps,
   type GlowingEmphasisProps,
   type AnimatedListProps,
@@ -49,25 +49,25 @@ export {
   type ContentFadeProps,
 } from './PageAnimations'
 
-// Book Container & Structure
+// Scroll Container & Structure
 export {
-  BookContainer,
-  BookWrapper,
+  ScrollContainer,
+  ScrollWrapper,
   PageContainer,
-  BookSpine,
+  ScrollSpine,
   PageEdges,
-} from './BookContainer'
+} from './ScrollContainer'
 
-// Book Cover
-export { BookCover, InsideCover } from './BookCover'
+// Scroll Cover
+export { ScrollCover, InsideCover } from './ScrollCover'
 
-// Book Pages
+// Scroll Pages
 export {
-  BookPage,
+  ScrollPage,
   PageContent,
   VerseHeader,
   ChapterDivider,
-} from './BookPage'
+} from './ScrollPage'
 
 // Page Flip Animation
 export {
@@ -80,21 +80,32 @@ export {
 export { RibbonBookmarks } from './RibbonBookmarks'
 
 // Opening Animation
-export { BookOpenAnimation } from './BookOpenAnimation'
+export { ScrollOpenAnimation } from './ScrollOpenAnimation'
 
 // Interactive Learning Games
 export {
   MatchingGame,
-  BookFlashcards,
+  ScrollFlashcards,
   WordScramble,
   FillInBlank,
-  BookGameSelector,
-} from './BookGames'
+  ScrollGameSelector,
+} from './ScrollGames'
 export { CrosswordPuzzle } from './CrosswordPuzzle'
 
+// Inline Activity Selector
+export {
+  ActivitySelector,
+  ActivityCompletionBadge,
+  type ActivityItem,
+  type ActivityType,
+} from './ActivitySelector'
+
 // State Management
-export { useBookState, type UseBookStateReturn } from './useBookState'
-export type { ReadingPosition, TopicProgress, BookUnlockState, BookPreferences, BookState } from './useBookState'
+export { useScrollState, type UseScrollStateReturn } from './useScrollState'
+
+// Context for header auto-hide
+export { DigitalScrollProvider, useDigitalScrollContext } from './DigitalScrollContext'
+export type { ReadingPosition, TopicProgress, ScrollUnlockState, ScrollPreferences, ScrollState } from './useScrollState'
 
 // Constants
 export {
@@ -104,15 +115,15 @@ export {
   YIN_YANG_RIBBON,
   type GuardianRibbon,
 
-  // Book Dimensions
-  BOOK_DIMENSIONS,
+  // Scroll Dimensions
+  SCROLL_DIMENSIONS,
 
   // Animation Timings
   ANIMATION_TIMINGS,
 
   // Theme Colors
-  BOOK_THEME,
-  BOOK_CSS_VARS,
+  SCROLL_THEME,
+  SCROLL_CSS_VARS,
 
   // Perspective
   PERSPECTIVE_CONFIG,
@@ -137,4 +148,4 @@ export {
   getChapterTitle,
   getDeviceType,
   getDimensions,
-} from './bookConstants'
+} from './scrollConstants'

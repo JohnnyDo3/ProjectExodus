@@ -13,12 +13,12 @@ import {
   GUARDIAN_RIBBONS,
   RIBBON_ORDER,
   YIN_YANG_RIBBON,
-  BOOK_DIMENSIONS,
+  SCROLL_DIMENSIONS,
   ANIMATION_TIMINGS,
   A11Y_CONFIG,
   getDeviceType,
   type GuardianRibbon,
-} from './bookConstants'
+} from './scrollConstants'
 
 // ============================================
 // TYPES
@@ -63,7 +63,7 @@ export function RibbonBookmarks({
     return () => window.removeEventListener('resize', updateDevice)
   }, [])
 
-  const dimensions = BOOK_DIMENSIONS[deviceType]
+  const dimensions = SCROLL_DIMENSIONS[deviceType]
   const isDesktop = deviceType === 'desktop'
 
   // ============================================
@@ -320,7 +320,7 @@ function YinYangRibbon({
   onMouseLeave,
   isHovered,
 }: YinYangRibbonProps) {
-  const dimensions = BOOK_DIMENSIONS[deviceType]
+  const dimensions = SCROLL_DIMENSIONS[deviceType]
   const isDesktop = deviceType === 'desktop'
 
   // Animated gradient for yin-yang effect

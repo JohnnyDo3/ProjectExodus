@@ -2,8 +2,8 @@
 
 // ============================================
 // PAGE CONTENT ANIMATIONS
-// Sacred scroll-reveal effects and visual flourishes
-// For the Digital Textbook learning experience
+// Scroll-reveal effects and visual flourishes
+// For the Digital Scroll learning experience
 // ============================================
 
 import { motion, useInView, Variants } from 'framer-motion'
@@ -12,7 +12,7 @@ import { cn } from '@/lib/utils/cn'
 
 // ============================================
 // ANIMATED PARAGRAPH
-// Reveals text with a sacred scroll effect
+// Reveals text with a scroll effect
 // ============================================
 
 interface AnimatedParagraphProps {
@@ -96,11 +96,11 @@ export function StaggeredContent({ children, staggerDelay = 0.1, className }: St
 }
 
 // ============================================
-// SACRED TITLE REVEAL
+// SCROLL TITLE REVEAL
 // Animated title with decorative flourishes
 // ============================================
 
-interface SacredTitleProps {
+interface ScrollTitleProps {
   children: ReactNode
   subtitle?: string
   color?: string
@@ -108,7 +108,7 @@ interface SacredTitleProps {
   className?: string
 }
 
-export function SacredTitle({ children, subtitle, color, size = 'lg', className }: SacredTitleProps) {
+export function ScrollTitle({ children, subtitle, color, size = 'lg', className }: ScrollTitleProps) {
   const ref = useRef<HTMLDivElement>(null)
   const isInView = useInView(ref, { once: true, margin: '-30px' })
 
@@ -700,7 +700,7 @@ export function ContentFade({
 export {
   type AnimatedParagraphProps,
   type StaggeredContentProps,
-  type SacredTitleProps,
+  type ScrollTitleProps,
   type MarginOrnamentProps,
   type GlowingEmphasisProps,
   type AnimatedListProps,

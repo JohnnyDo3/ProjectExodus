@@ -17,10 +17,11 @@ import { TopicBookBrowser } from '@/components/learning/TopicBookBrowser'
 import { DEFAULT_CLASSROOMS, Classroom, Module } from '@/data/modules'
 import { AnimatePresence } from 'framer-motion'
 import dynamic from 'next/dynamic'
+import { useDigitalScrollContext } from '@/components/learning/DigitalScroll/DigitalScrollContext'
 
-// Dynamically import the DigitalTextbook to reduce initial bundle size
-const DigitalTextbook = dynamic(
-  () => import('@/components/learning/DigitalTextbook').then(mod => mod.DigitalTextbook),
+// Dynamically import the DigitalScroll to reduce initial bundle size
+const DigitalScroll = dynamic(
+  () => import('@/components/learning/DigitalScroll').then(mod => mod.DigitalScroll),
   { ssr: false }
 )
 
@@ -51,15 +52,24 @@ export default function TopicPage() {
     levelParam && LEARNING_LEVELS[levelParam] ? levelParam : 'HIGH_SCHOOL'
   )
 
-  // Sacred Digital Textbook state
-  const [isBookOpen, setIsBookOpen] = useState(false)
-  const [isBookUnlocked, setIsBookUnlocked] = useState(false)
+  // Digital Scroll state
+  const [isScrollOpen, setIsScrollOpen] = useState(false)
+  const [isScrollUnlocked, setIsScrollUnlocked] = useState(false)
+  const [initialChapter, setInitialChapter] = useState<number>(0)
+  const { setScrollOpen } = useDigitalScrollContext()
 
-  // Check if book experience is unlocked
+  // Handler for opening Digital Scroll to a specific chapter
+  const handleOpenDigitalScroll = (chapterIndex: number = 0) => {
+    setInitialChapter(chapterIndex)
+    setIsScrollOpen(true)
+    setScrollOpen(true) // Notify context to hide header
+  }
+
+  // Check if scroll experience is unlocked
   useEffect(() => {
     if (typeof window !== 'undefined') {
       const unlocked = localStorage.getItem('exodus_book_experience_unlocked') === 'true'
-      setIsBookUnlocked(unlocked)
+      setIsScrollUnlocked(unlocked)
     }
   }, [])
 
@@ -151,14 +161,14 @@ export default function TopicPage() {
                   </div>
                 )}
 
-                {/* Sacred Book Button */}
+                {/* Digital Scroll Button */}
                 <Button
-                  onClick={() => setIsBookOpen(true)}
+                  onClick={() => handleOpenDigitalScroll(0)}
                   className="bg-gradient-to-r from-amber-600 to-orange-600 hover:from-amber-700 hover:to-orange-700 text-white font-bold shadow-lg"
                   size="sm"
                 >
                   <Sparkles className="w-4 h-4 mr-2" />
-                  {isBookUnlocked ? 'Open Sacred Book' : 'Start Learning'}
+                  {isScrollUnlocked ? 'Open Digital Scroll' : 'Start Learning'}
                 </Button>
               </div>
             </div>
@@ -166,16 +176,19 @@ export default function TopicPage() {
         </div>
       </section>
 
-      {/* Sacred Digital Textbook Modal */}
+      {/* Digital Scroll Modal */}
       <AnimatePresence>
-        {isBookOpen && topic && (
-          <DigitalTextbook
+        {isScrollOpen && topic && (
+          <DigitalScroll
             topic={topic}
             modules={topic.modules.slice(0, 7)} // Max 7 chapters for 7 Guardian ribbons
             initialLevel={selectedLevel}
+            initialChapter={initialChapter}
             onClose={() => {
-              setIsBookOpen(false)
-              setIsBookUnlocked(true)
+              setIsScrollOpen(false)
+              setIsScrollUnlocked(true)
+              setInitialChapter(0) // Reset for next open
+              setScrollOpen(false) // Notify context to show header
               if (typeof window !== 'undefined') {
                 localStorage.setItem('exodus_book_experience_unlocked', 'true')
               }
@@ -216,11 +229,12 @@ export default function TopicPage() {
             </div>
           </div>
 
-          {/* Book Browser - Shows lessons as book covers, opens Sacred Book on click */}
+          {/* Book Browser - Shows lessons as book covers, opens Digital Scroll on click */}
           <TopicBookBrowser
             topicSlug={slug}
             selectedLevel={selectedLevel}
             completedModules={completedModules}
+            onOpenDigitalScroll={handleOpenDigitalScroll}
           />
         </div>
       </div>

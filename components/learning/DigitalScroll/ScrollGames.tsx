@@ -301,7 +301,7 @@ export function MatchingGame({
 // FLASHCARDS
 // ============================================
 
-export function BookFlashcards({
+export function ScrollFlashcards({
   items,
   topicColor = 'var(--primary)',
   level,
@@ -930,7 +930,7 @@ interface GameSelectorProps {
   defaultGame?: GameType
 }
 
-export function BookGameSelector({
+export function ScrollGameSelector({
   items,
   topicColor,
   level,
@@ -978,7 +978,7 @@ export function BookGameSelector({
 
   const GameComponent = {
     matching: MatchingGame,
-    flashcards: BookFlashcards,
+    flashcards: ScrollFlashcards,
     scramble: WordScramble,
     'fill-blank': FillInBlank,
   }[selectedGame]
@@ -1293,4 +1293,4 @@ export function GradedQuiz({
   )
 }
 
-export default BookGameSelector
+export default ScrollGameSelector

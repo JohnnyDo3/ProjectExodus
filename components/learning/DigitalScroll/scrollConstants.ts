@@ -159,7 +159,7 @@ export const YIN_YANG_RIBBON = {
 // BOOK DIMENSIONS & LAYOUT
 // ============================================
 
-export const BOOK_DIMENSIONS = {
+export const SCROLL_DIMENSIONS = {
   // Desktop two-page spread
   desktop: {
     width: '85vw',
@@ -244,7 +244,7 @@ export const ANIMATION_TIMINGS = {
 // THEME COLORS (Day/Night Sync)
 // ============================================
 
-export const BOOK_THEME = {
+export const SCROLL_THEME = {
   day: {
     paper: '#faf8f5',      // Warm cream
     text: '#2d2d2d',       // Dark charcoal
@@ -264,7 +264,7 @@ export const BOOK_THEME = {
 }
 
 // CSS variables for theme integration
-export const BOOK_CSS_VARS = {
+export const SCROLL_CSS_VARS = {
   paper: 'var(--book-paper, var(--card))',
   text: 'var(--book-text, var(--foreground))',
   shadow: 'var(--book-shadow, rgba(0, 0, 0, 0.2))',
@@ -328,12 +328,12 @@ export const A11Y_CONFIG = {
   keyboardNav: {
     nextPage: ['ArrowRight', 'ArrowDown', 'Space'],
     prevPage: ['ArrowLeft', 'ArrowUp'],
-    closeBook: ['Escape'],
+    closeScroll: ['Escape'],
     jumpToChapter: ['1', '2', '3', '4', '5', '6', '7'],
     continueReading: ['0', 'c'],
   },
   ariaLabels: {
-    book: 'Digital Textbook',
+    book: 'Digital Scroll',
     cover: 'Book Cover',
     spine: 'Book Spine',
     leftPage: 'Left page (verso)',
@@ -394,5 +394,5 @@ export function getDeviceType(): 'desktop' | 'tablet' | 'mobile' {
 
 export function getDimensions() {
   const device = getDeviceType()
-  return BOOK_DIMENSIONS[device]
+  return SCROLL_DIMENSIONS[device]
 }

@@ -11,6 +11,7 @@ import { auth } from "@/auth";
 import { Toaster } from "react-hot-toast";
 import { headers } from "next/headers";
 import { MainLayoutWrapper } from "@/components/layout/MainLayoutWrapper";
+import { DigitalScrollProvider } from "@/components/learning/DigitalScroll/DigitalScrollContext";
 
 // Viewport configuration for mobile responsiveness
 export const viewport: Viewport = {
@@ -135,38 +136,40 @@ export default async function RootLayout({
         <SessionProvider session={session}>
           <TimeThemeProvider>
             <SkyThemeProvider>
-              <MainLayoutWrapper
-                skyBackground={<SkyBackground />}
-                decorativeBranches={<DecorativeBranches />}
-                aiAssistant={<ProjectExodusAI />}
-              >
-                {children}
-              </MainLayoutWrapper>
-              {/* Toast Notifications */}
-              <Toaster
-                position="top-right"
-                toastOptions={{
-                  duration: 4000,
-                  style: {
-                    background: 'var(--card)',
-                    color: 'var(--foreground)',
-                    border: '2px solid var(--border)',
-                    fontWeight: '600',
-                  },
-                  success: {
-                    iconTheme: {
-                      primary: 'var(--primary)',
-                      secondary: 'white',
+              <DigitalScrollProvider>
+                <MainLayoutWrapper
+                  skyBackground={<SkyBackground />}
+                  decorativeBranches={<DecorativeBranches />}
+                  aiAssistant={<ProjectExodusAI />}
+                >
+                  {children}
+                </MainLayoutWrapper>
+                {/* Toast Notifications */}
+                <Toaster
+                  position="top-right"
+                  toastOptions={{
+                    duration: 4000,
+                    style: {
+                      background: 'var(--card)',
+                      color: 'var(--foreground)',
+                      border: '2px solid var(--border)',
+                      fontWeight: '600',
                     },
-                  },
-                  error: {
-                    iconTheme: {
-                      primary: 'var(--destructive)',
-                      secondary: 'white',
+                    success: {
+                      iconTheme: {
+                        primary: 'var(--primary)',
+                        secondary: 'white',
+                      },
                     },
-                  },
-                }}
-              />
+                    error: {
+                      iconTheme: {
+                        primary: 'var(--destructive)',
+                        secondary: 'white',
+                      },
+                    },
+                  }}
+                />
+              </DigitalScrollProvider>
             </SkyThemeProvider>
           </TimeThemeProvider>
         </SessionProvider>

@@ -4,7 +4,7 @@
 // ============================================
 
 import { useState, useEffect, useCallback } from 'react'
-import { STORAGE_KEYS } from './bookConstants'
+import { STORAGE_KEYS } from './scrollConstants'
 
 // ============================================
 // TYPES
@@ -23,21 +23,21 @@ export interface TopicProgress {
   overallProgress: number       // Percentage 0-100
 }
 
-export interface BookUnlockState {
+export interface ScrollUnlockState {
   isUnlocked: boolean
   unlockedAt: string | null
   unlockedFromTopic: string | null
 }
 
-export interface BookPreferences {
+export interface ScrollPreferences {
   soundEnabled: boolean
   reducedMotion: boolean
   autoAdvance: boolean
 }
 
-export interface BookState {
+export interface ScrollState {
   // Unlock state (permanent once unlocked)
-  unlockState: BookUnlockState
+  unlockState: ScrollUnlockState
 
   // Reading positions (per topic)
   readingPositions: Record<string, ReadingPosition>
@@ -46,12 +46,12 @@ export interface BookState {
   topicProgress: Record<string, TopicProgress>
 
   // User preferences
-  preferences: BookPreferences
+  preferences: ScrollPreferences
 
   // Current session state
   currentTopic: string | null
   currentPosition: ReadingPosition | null
-  isBookOpen: boolean
+  isScrollOpen: boolean
   isAnimating: boolean
 }
 
@@ -66,13 +66,13 @@ const DEFAULT_POSITION: ReadingPosition = {
   lastRead: new Date().toISOString(),
 }
 
-const DEFAULT_PREFERENCES: BookPreferences = {
+const DEFAULT_PREFERENCES: ScrollPreferences = {
   soundEnabled: false,
   reducedMotion: false,
   autoAdvance: false,
 }
 
-const INITIAL_STATE: BookState = {
+const INITIAL_STATE: ScrollState = {
   unlockState: {
     isUnlocked: false,
     unlockedAt: null,
@@ -83,7 +83,7 @@ const INITIAL_STATE: BookState = {
   preferences: DEFAULT_PREFERENCES,
   currentTopic: null,
   currentPosition: null,
-  isBookOpen: false,
+  isScrollOpen: false,
   isAnimating: false,
 }
 
@@ -114,8 +114,8 @@ function setToStorage<T>(key: string, value: T): void {
 // THE HOOK
 // ============================================
 
-export function useBookState() {
-  const [state, setState] = useState<BookState>(INITIAL_STATE)
+export function useScrollState() {
+  const [state, setState] = useState<ScrollState>(INITIAL_STATE)
   const [isHydrated, setIsHydrated] = useState(false)
 
   // ============================================
@@ -123,7 +123,7 @@ export function useBookState() {
   // ============================================
 
   useEffect(() => {
-    const unlockState: BookUnlockState = {
+    const unlockState: ScrollUnlockState = {
       isUnlocked: getFromStorage(STORAGE_KEYS.bookUnlocked, false),
       unlockedAt: getFromStorage(STORAGE_KEYS.unlockedAt, null),
       unlockedFromTopic: getFromStorage(STORAGE_KEYS.unlockedFromTopic, null),
@@ -134,7 +134,7 @@ export function useBookState() {
       {}
     )
 
-    const preferences = getFromStorage<BookPreferences>(
+    const preferences = getFromStorage<ScrollPreferences>(
       STORAGE_KEYS.preferences,
       DEFAULT_PREFERENCES
     )
@@ -160,7 +160,7 @@ export function useBookState() {
   // Once unlocked, stays unlocked forever
   // ============================================
 
-  const unlockBook = useCallback((fromTopic: string) => {
+  const unlockScroll = useCallback((fromTopic: string) => {
     const now = new Date().toISOString()
 
     setToStorage(STORAGE_KEYS.bookUnlocked, true)
@@ -183,14 +183,14 @@ export function useBookState() {
   // OPEN THE BOOK
   // ============================================
 
-  const openBook = useCallback((topic: string) => {
+  const openScroll = useCallback((topic: string) => {
     const position = state.readingPositions[topic] || { ...DEFAULT_POSITION }
 
     setState(prev => ({
       ...prev,
       currentTopic: topic,
       currentPosition: position,
-      isBookOpen: true,
+      isScrollOpen: true,
       isAnimating: true,
     }))
   }, [state.readingPositions])
@@ -199,7 +199,7 @@ export function useBookState() {
   // CLOSE THE BOOK
   // ============================================
 
-  const closeBook = useCallback(() => {
+  const closeScroll = useCallback(() => {
     // Save current position before closing
     if (state.currentTopic && state.currentPosition) {
       const updatedPositions = {
@@ -214,7 +214,7 @@ export function useBookState() {
 
     setState(prev => ({
       ...prev,
-      isBookOpen: false,
+      isScrollOpen: false,
       isAnimating: true,
     }))
   }, [state.currentTopic, state.currentPosition, state.readingPositions])
@@ -364,7 +364,7 @@ export function useBookState() {
   // PREFERENCES
   // ============================================
 
-  const updatePreferences = useCallback((updates: Partial<BookPreferences>) => {
+  const updatePreferences = useCallback((updates: Partial<ScrollPreferences>) => {
     setState(prev => {
       const newPreferences = { ...prev.preferences, ...updates }
       setToStorage(STORAGE_KEYS.preferences, newPreferences)
@@ -382,11 +382,11 @@ export function useBookState() {
     isHydrated,
 
     // Unlock
-    unlockBook,
+    unlockScroll,
 
     // Book open/close
-    openBook,
-    closeBook,
+    openScroll,
+    closeScroll,
 
     // Navigation
     goToPosition,
@@ -411,4 +411,4 @@ export function useBookState() {
   }
 }
 
-export type UseBookStateReturn = ReturnType<typeof useBookState>
+export type UseScrollStateReturn = ReturnType<typeof useScrollState>

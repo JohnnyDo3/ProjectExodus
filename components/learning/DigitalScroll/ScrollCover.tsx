@@ -9,9 +9,9 @@
 import { motion, useAnimation } from 'framer-motion'
 import { useState, useEffect } from 'react'
 import { cn } from '@/lib/utils/cn'
-import { ANIMATION_TIMINGS, CORE_TOPIC_ICONS, A11Y_CONFIG } from './bookConstants'
+import { ANIMATION_TIMINGS, CORE_TOPIC_ICONS, A11Y_CONFIG } from './scrollConstants'
 
-interface BookCoverProps {
+interface ScrollCoverProps {
   topicSlug: string
   topicTitle: string
   isOpen: boolean
@@ -20,14 +20,14 @@ interface BookCoverProps {
   className?: string
 }
 
-export function BookCover({
+export function ScrollCover({
   topicSlug,
   topicTitle,
   isOpen,
   isAnimating,
   onOpenComplete,
   className,
-}: BookCoverProps) {
+}: ScrollCoverProps) {
   const controls = useAnimation()
   const [coverState, setCoverState] = useState<'closed' | 'opening' | 'open'>('closed')
 
@@ -203,7 +203,7 @@ export function BookCover({
             animate={{ opacity: 1 }}
             transition={{ delay: 0.9, duration: 0.5 }}
           >
-            A Sacred Journey of Understanding
+            A Journey of Understanding
           </motion.p>
 
           {/* Project Exodus mark */}
@@ -441,4 +441,4 @@ export function InsideCover({
   )
 }
 
-export default BookCover
+export default ScrollCover

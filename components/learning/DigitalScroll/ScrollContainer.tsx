@@ -8,7 +8,7 @@
 import { useRef, useEffect, useState, forwardRef, ReactNode } from 'react'
 import { motion } from 'framer-motion'
 import { cn } from '@/lib/utils/cn'
-import { BOOK_DIMENSIONS, PERSPECTIVE_CONFIG, A11Y_CONFIG, getDeviceType } from './bookConstants'
+import { SCROLL_DIMENSIONS, PERSPECTIVE_CONFIG, A11Y_CONFIG, getDeviceType } from './scrollConstants'
 
 // Fullscreen dimensions when expanded
 const FULLSCREEN_DIMENSIONS = {
@@ -23,7 +23,7 @@ const FULLSCREEN_DIMENSIONS = {
   ribbonHeight: '80px',
 }
 
-interface BookContainerProps {
+interface ScrollContainerProps {
   children: ReactNode
   isOpen: boolean
   isExpanded?: boolean
@@ -31,10 +31,10 @@ interface BookContainerProps {
   onKeyDown?: (e: React.KeyboardEvent) => void
 }
 
-export const BookContainer = forwardRef<HTMLDivElement, BookContainerProps>(
-  function BookContainer({ children, isOpen, isExpanded = false, className, onKeyDown }, ref) {
+export const ScrollContainer = forwardRef<HTMLDivElement, ScrollContainerProps>(
+  function ScrollContainer({ children, isOpen, isExpanded = false, className, onKeyDown }, ref) {
     const containerRef = useRef<HTMLDivElement>(null)
-    const [dimensions, setDimensions] = useState(BOOK_DIMENSIONS.desktop)
+    const [dimensions, setDimensions] = useState(SCROLL_DIMENSIONS.desktop)
     const [deviceType, setDeviceType] = useState<'desktop' | 'tablet' | 'mobile'>('desktop')
 
     // ============================================
@@ -46,7 +46,7 @@ export const BookContainer = forwardRef<HTMLDivElement, BookContainerProps>(
         const type = getDeviceType()
         setDeviceType(type)
         // Use fullscreen dimensions when expanded, otherwise responsive
-        setDimensions(isExpanded ? FULLSCREEN_DIMENSIONS : BOOK_DIMENSIONS[type])
+        setDimensions(isExpanded ? FULLSCREEN_DIMENSIONS : SCROLL_DIMENSIONS[type])
       }
 
       updateDimensions()
@@ -176,12 +176,12 @@ export const BookContainer = forwardRef<HTMLDivElement, BookContainerProps>(
 // BOOK WRAPPER - Contains Left/Right Pages
 // ============================================
 
-interface BookWrapperProps {
+interface ScrollWrapperProps {
   children: ReactNode
   className?: string
 }
 
-export function BookWrapper({ children, className }: BookWrapperProps) {
+export function ScrollWrapper({ children, className }: ScrollWrapperProps) {
   const [deviceType, setDeviceType] = useState<'desktop' | 'tablet' | 'mobile'>('desktop')
 
   useEffect(() => {
@@ -309,11 +309,11 @@ export function PageContainer({ children, side, className }: PageContainerProps)
 // BOOK SPINE
 // ============================================
 
-interface BookSpineProps {
+interface ScrollSpineProps {
   className?: string
 }
 
-export function BookSpine({ className }: BookSpineProps) {
+export function ScrollSpine({ className }: ScrollSpineProps) {
   const [deviceType, setDeviceType] = useState<'desktop' | 'tablet' | 'mobile'>('desktop')
 
   useEffect(() => {
@@ -336,7 +336,7 @@ export function BookSpine({ className }: BookSpineProps) {
         className
       )}
       style={{
-        width: BOOK_DIMENSIONS.desktop.spineWidth,
+        width: SCROLL_DIMENSIONS.desktop.spineWidth,
       }}
       aria-label={A11Y_CONFIG.ariaLabels.spine}
     >
@@ -429,4 +429,4 @@ export function PageEdges({ pageCount = 50, className }: PageEdgesProps) {
   )
 }
 
-export default BookContainer
+export default ScrollContainer

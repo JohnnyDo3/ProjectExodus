@@ -1,7 +1,7 @@
 'use client'
 
 // ============================================
-// THE SACRED DIGITAL TEXTBOOK
+// THE DIGITAL SCROLL
 // "In the beginning was the Word..."
 // Ancient manuscript meets digital revelation
 // ============================================
@@ -11,16 +11,17 @@ import { motion, AnimatePresence } from 'framer-motion'
 import { cn } from '@/lib/utils/cn'
 import { X, Volume2, VolumeX, Maximize2, Minimize2, ChevronLeft, ChevronRight, GripVertical, MessageCircle } from 'lucide-react'
 
-// Book components
-import BookContainer, { BookWrapper, PageContainer, BookSpine, PageEdges } from './BookContainer'
-import { BookCover, InsideCover } from './BookCover'
+// Scroll components
+import ScrollContainer, { ScrollWrapper, PageContainer, ScrollSpine, PageEdges } from './ScrollContainer'
+import { ScrollCover, InsideCover } from './ScrollCover'
 import { RibbonBookmarks } from './RibbonBookmarks'
-import { BookPage, PageContent, VerseHeader, ChapterDivider } from './BookPage'
+import { ScrollPage, PageContent, VerseHeader, ChapterDivider } from './ScrollPage'
 import { PageFlip, RapidPageFlip, usePageTurnSound } from './PageFlip'
-import { BookOpenAnimation } from './BookOpenAnimation'
-import { useBookState } from './useBookState'
-import { BookGameSelector, GradedQuiz } from './BookGames'
+import { ScrollOpenAnimation } from './ScrollOpenAnimation'
+import { useScrollState } from './useScrollState'
+import { ScrollGameSelector, GradedQuiz } from './ScrollGames'
 import { CrosswordPuzzle } from './CrosswordPuzzle'
+import { ActivitySelector } from './ActivitySelector'
 
 // Game item type for interactive activities
 interface GameItem {
@@ -38,7 +39,7 @@ import {
   A11Y_CONFIG,
   getDeviceType,
   CORE_TOPIC_ICONS,
-} from './bookConstants'
+} from './scrollConstants'
 
 // Learning data
 import type { Module, TopicDefinition, CoreTopic } from '@/data/modules'
@@ -48,15 +49,16 @@ import type { LearningLevel } from '@/types/learning'
 // TYPES
 // ============================================
 
-interface DigitalTextbookProps {
+interface DigitalScrollProps {
   topic: TopicDefinition
   modules: Module[]
   initialLevel?: LearningLevel
+  initialChapter?: number
   onClose: () => void
   className?: string
 }
 
-interface BookContent {
+interface ScrollContent {
   type: 'cover' | 'inside-cover' | 'toc' | 'learning-mission' | 'chapter-divider' | 'chapter-intro' | 'verse' | 'content' | 'chapter-review' | 'notes-enhanced' | 'games' | 'quiz'
   chapterIndex?: number
   verseIndex?: number
@@ -181,13 +183,14 @@ function AncientPageNumber({ number, total }: { number: number; total: number })
 // MAIN DIGITAL TEXTBOOK COMPONENT
 // ============================================
 
-export function DigitalTextbook({
+export function DigitalScroll({
   topic,
   modules,
   initialLevel = 'HIGH_SCHOOL',
+  initialChapter,
   onClose,
   className,
-}: DigitalTextbookProps) {
+}: DigitalScrollProps) {
   const [deviceType, setDeviceType] = useState<'desktop' | 'tablet' | 'mobile'>('desktop')
   const [selectedLevel, setSelectedLevel] = useState<LearningLevel>(initialLevel)
   const [showOpenAnimation, setShowOpenAnimation] = useState(true)
@@ -206,8 +209,8 @@ export function DigitalTextbook({
     }
   }, [isExpanded])
 
-  const bookState = useBookState()
-  const playPageTurn = usePageTurnSound(bookState.preferences.soundEnabled)
+  const scrollState = useScrollState()
+  const playPageTurn = usePageTurnSound(scrollState.preferences.soundEnabled)
 
   // Notes state - persisted to localStorage
   const [pageNotes, setPageNotes] = useState<Record<string, string>>({})
@@ -262,7 +265,7 @@ export function DigitalTextbook({
   // ============================================
 
   const bookPages = useMemo(() => {
-    const pages: BookContent[] = []
+    const pages: ScrollContent[] = []
 
     // ============================================
     // OPENING SPREAD 1: Title + Select Path
@@ -509,7 +512,7 @@ export function DigitalTextbook({
   }, [bookPages, currentPageIndex, goToPage])
 
   const continueReading = useCallback(() => {
-    const position = bookState.getContinuePosition(topic.id)
+    const position = scrollState.getContinuePosition(topic.id)
     // Convert position to page index
     const pageIndex = bookPages.findIndex(
       (page) =>
@@ -521,14 +524,14 @@ export function DigitalTextbook({
     if (pageIndex !== -1) {
       goToPage(pageIndex)
     }
-  }, [bookState, topic.id, bookPages, goToPage])
+  }, [scrollState, topic.id, bookPages, goToPage])
 
   // ============================================
   // KEYBOARD NAVIGATION
   // ============================================
 
   const handleKeyDown = useCallback((e: React.KeyboardEvent) => {
-    if (A11Y_CONFIG.keyboardNav.closeBook.includes(e.key)) {
+    if (A11Y_CONFIG.keyboardNav.closeScroll.includes(e.key)) {
       e.preventDefault()
       onClose()
     } else if (A11Y_CONFIG.keyboardNav.nextPage.includes(e.key)) {
@@ -555,23 +558,23 @@ export function DigitalTextbook({
   // ============================================
 
   useEffect(() => {
-    if (!bookState.unlockState.isUnlocked) {
-      bookState.unlockBook(topic.id)
+    if (!scrollState.unlockState.isUnlocked) {
+      scrollState.unlockScroll(topic.id)
     }
-    bookState.openBook(topic.id)
-  }, [topic.id, bookState])
+    scrollState.openScroll(topic.id)
+  }, [topic.id, scrollState])
 
   const handleAnimationComplete = useCallback(() => {
     setShowOpenAnimation(false)
     // Jump to continue position if exists
-    const position = bookState.getContinuePosition(topic.id)
+    const position = scrollState.getContinuePosition(topic.id)
     if (position.chapter > 0 || position.verse > 0 || position.page > 0) {
       continueReading()
     } else {
       // Start at cover page (spread shows cover + level selection)
       setCurrentPageIndex(0)
     }
-  }, [bookState, topic.id, continueReading])
+  }, [scrollState, topic.id, continueReading])
 
   // ============================================
   // SAVE POSITION ON PAGE CHANGE
@@ -580,19 +583,19 @@ export function DigitalTextbook({
   useEffect(() => {
     const page = bookPages[currentPageIndex]
     if (page && page.type === 'content') {
-      bookState.goToPosition({
+      scrollState.goToPosition({
         chapter: page.chapterIndex ?? 0,
         verse: page.verseIndex ?? 0,
         page: page.pageIndex ?? 0,
       })
     }
-  }, [currentPageIndex, bookPages, bookState])
+  }, [currentPageIndex, bookPages, scrollState])
 
   // ============================================
   // RENDER PAGE CONTENT
   // ============================================
 
-  const renderPageContent = (page: BookContent, side: 'left' | 'right') => {
+  const renderPageContent = (page: ScrollContent, side: 'left' | 'right') => {
     switch (page.type) {
       case 'cover':
         return (
@@ -603,7 +606,7 @@ export function DigitalTextbook({
                 {topic.title}
               </h1>
               <p className="text-sm text-[var(--muted-foreground)] mt-4 italic">
-                A Sacred Journey of Knowledge
+                A Journey of Knowledge
               </p>
             </div>
           </div>
@@ -876,7 +879,7 @@ export function DigitalTextbook({
             {/* Games selector */}
             <div className="flex-1 min-h-0 px-2 pb-2">
               {gameItems.length > 0 ? (
-                <BookGameSelector
+                <ScrollGameSelector
                   items={gameItems}
                   topicColor={gamesRibbon?.colors.from}
                   level={selectedLevel}
@@ -967,7 +970,7 @@ export function DigitalTextbook({
 
       case 'content':
         return (
-          <BookPage
+          <ScrollPage
             pageNumber={currentPageIndex + 1}
             totalPages={totalPages}
             chapterIndex={page.chapterIndex ?? 0}
@@ -997,7 +1000,7 @@ export function DigitalTextbook({
                 page.content
               )}
             </div>
-          </BookPage>
+          </ScrollPage>
         )
 
       case 'chapter-review':
@@ -1079,6 +1082,21 @@ export function DigitalTextbook({
                   ))}
                 </div>
               </div>
+
+              {/* Inline Practice Activities */}
+              {(page.keyTerms || []).length >= 2 && (
+                <ActivitySelector
+                  pageId={`chapter-${page.chapterIndex ?? 0}-review`}
+                  items={(page.keyTerms || []).map((item, idx) => ({
+                    id: `term-${idx}`,
+                    term: item.term,
+                    definition: item.definition,
+                  }))}
+                  topicColor={reviewColor}
+                  level={selectedLevel}
+                  compact
+                />
+              )}
             </div>
 
             {/* Footer Quote */}
@@ -1268,9 +1286,9 @@ export function DigitalTextbook({
   // ============================================
 
   const completedChapters = useMemo(() => {
-    const progress = bookState.topicProgress[topic.id]
+    const progress = scrollState.topicProgress[topic.id]
     return progress?.completedChapters || []
-  }, [bookState.topicProgress, topic.id])
+  }, [scrollState.topicProgress, topic.id])
 
   // ============================================
   // RENDER
@@ -1281,13 +1299,13 @@ export function DigitalTextbook({
       {/* Opening Animation */}
       <AnimatePresence>
         {showOpenAnimation && (
-          <BookOpenAnimation
+          <ScrollOpenAnimation
             topicSlug={topic.id}
             topicTitle={topic.title}
             topicDescription={topic.description}
             targetPage={currentPageIndex}
             onAnimationComplete={handleAnimationComplete}
-            reducedMotion={bookState.preferences.reducedMotion}
+            reducedMotion={scrollState.preferences.reducedMotion}
           />
         )}
       </AnimatePresence>
@@ -1312,8 +1330,8 @@ export function DigitalTextbook({
 
       {/* Main Book */}
       {!showOpenAnimation && (
-        <BookContainer
-          isOpen={bookState.isBookOpen}
+        <ScrollContainer
+          isOpen={scrollState.isScrollOpen}
           isExpanded={isExpanded}
           onKeyDown={handleKeyDown}
           className={className}
@@ -1324,12 +1342,12 @@ export function DigitalTextbook({
             completedChapters={completedChapters}
             onChapterClick={goToChapter}
             onContinueClick={continueReading}
-            continuePosition={bookState.currentPosition || undefined}
+            continuePosition={scrollState.currentPosition || undefined}
             isExpanded={isExpanded}
           />
 
           {/* Book Wrapper */}
-          <BookWrapper>
+          <ScrollWrapper>
             {/* Page Flip Container */}
             <PageFlip
               leftPage={
@@ -1382,11 +1400,11 @@ export function DigitalTextbook({
             />
 
             {/* Book Spine */}
-            <BookSpine />
+            <ScrollSpine />
 
             {/* Page Edges */}
             <PageEdges pageCount={totalPages} />
-          </BookWrapper>
+          </ScrollWrapper>
 
           {/* Navigation Footer - Minimal, shows on hover */}
           <div className="absolute bottom-4 left-1/2 -translate-x-1/2 flex items-center gap-2 z-30 opacity-30 hover:opacity-100 transition-opacity duration-300">
@@ -1417,11 +1435,11 @@ export function DigitalTextbook({
           <div className="absolute top-4 sm:top-6 right-4 sm:right-6 flex items-center gap-2 z-30">
             {/* Sound Toggle */}
             <button
-              onClick={() => bookState.updatePreferences({ soundEnabled: !bookState.preferences.soundEnabled })}
+              onClick={() => scrollState.updatePreferences({ soundEnabled: !scrollState.preferences.soundEnabled })}
               className="p-2 rounded-full bg-[var(--card)]/90 text-[var(--foreground)] hover:bg-[var(--muted)] border border-[var(--border)] transition-all"
-              aria-label={bookState.preferences.soundEnabled ? 'Mute sounds' : 'Enable sounds'}
+              aria-label={scrollState.preferences.soundEnabled ? 'Mute sounds' : 'Enable sounds'}
             >
-              {bookState.preferences.soundEnabled ? (
+              {scrollState.preferences.soundEnabled ? (
                 <Volume2 className="w-4 h-4 sm:w-5 sm:h-5" />
               ) : (
                 <VolumeX className="w-4 h-4 sm:w-5 sm:h-5" />
@@ -1444,19 +1462,19 @@ export function DigitalTextbook({
             {/* Close Button */}
             <button
               onClick={() => {
-                bookState.closeBook()
+                scrollState.closeScroll()
                 onClose()
               }}
               className="p-2 rounded-full bg-red-500/90 text-white hover:bg-red-600 transition-all"
-              aria-label="Close book"
+              aria-label="Close scroll"
             >
               <X className="w-4 h-4 sm:w-5 sm:h-5" />
             </button>
           </div>
-        </BookContainer>
+        </ScrollContainer>
       )}
 
-      {/* Draggable Discussion Modal - Sacred Book Community */}
+      {/* Draggable Discussion Modal - Digital Scroll Community */}
       <AnimatePresence>
         {showDiscussion && (
           <motion.div
@@ -1495,7 +1513,7 @@ export function DigitalTextbook({
                     {topic.title} Discussion
                   </span>
                   <p className="text-[10px] text-[var(--muted-foreground)]">
-                    Connect with fellow sacred book learners
+                    Connect with fellow Digital Scroll learners
                   </p>
                 </div>
               </div>
@@ -1516,7 +1534,7 @@ export function DigitalTextbook({
                     <MessageCircle className="w-8 h-8 text-[var(--muted-foreground)]" />
                   </div>
                   <h4 className="text-base font-bold text-[var(--foreground)] mb-2">
-                    Sacred Book Discussions
+                    Digital Scroll Discussions
                   </h4>
                   <p className="text-sm text-[var(--muted-foreground)] max-w-[300px] mb-4">
                     Share insights, ask questions, and connect with others studying {topic.title}.
@@ -1836,4 +1854,4 @@ function generateRealWorldExamples(module: Module, level: LearningLevel, topicId
   return examplesByLevel[level]
 }
 
-export default DigitalTextbook
+export default DigitalScroll

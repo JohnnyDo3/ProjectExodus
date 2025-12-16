@@ -15,13 +15,13 @@ import {
   RIBBON_ORDER,
   A11Y_CONFIG,
   getDeviceType,
-} from './bookConstants'
+} from './scrollConstants'
 
 // ============================================
 // TYPES
 // ============================================
 
-interface BookPageProps {
+interface ScrollPageProps {
   children: ReactNode
   pageNumber: number
   totalPages: number
@@ -78,8 +78,8 @@ interface Illustration {
 // BOOK PAGE COMPONENT
 // ============================================
 
-export const BookPage = forwardRef<HTMLDivElement, BookPageProps>(
-  function BookPage(
+export const ScrollPage = forwardRef<HTMLDivElement, ScrollPageProps>(
+  function ScrollPage(
     { children, pageNumber, totalPages, chapterIndex, side, showWatermark = true, className },
     ref
   ) {
@@ -1085,4 +1085,4 @@ export function ChapterDivider({
   )
 }
 
-export default BookPage
+export default ScrollPage

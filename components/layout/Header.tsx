@@ -2,17 +2,21 @@
 
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useRef } from 'react'
 import { useSession, signOut } from 'next-auth/react'
 import { ThemeToggle } from '@/components/ui/ThemeToggle'
 import { Menu, X, Leaf, User, LogOut, Settings, Users, Calendar, LayoutDashboard, ChevronRight, MessageCircle, Bell } from 'lucide-react'
 import NotificationBell from '@/components/notifications/NotificationBell'
+import { useDigitalScrollContext } from '@/components/learning/DigitalScroll/DigitalScrollContext'
 
 export function Header() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
   const [userMenuOpen, setUserMenuOpen] = useState(false)
+  const [isHeaderVisible, setIsHeaderVisible] = useState(true)
+  const lastScrollY = useRef(0)
   const pathname = usePathname()
   const { data: session, status } = useSession()
+  const { isScrollOpen } = useDigitalScrollContext()
 
   // Close mobile menu on route change
   useEffect(() => {
@@ -31,6 +35,35 @@ export function Header() {
     }
   }, [mobileMenuOpen])
 
+  // Auto-hide header when Digital Scroll is open, show on scroll up
+  useEffect(() => {
+    if (!isScrollOpen) {
+      // Scroll is closed - show header immediately
+      setIsHeaderVisible(true)
+      return
+    }
+
+    // Scroll is open - hide header immediately
+    setIsHeaderVisible(false)
+
+    const handleScroll = () => {
+      const currentScrollY = window.scrollY
+
+      // Show header when scrolling up
+      if (currentScrollY < lastScrollY.current && currentScrollY > 50) {
+        setIsHeaderVisible(true)
+      } else if (currentScrollY > lastScrollY.current) {
+        // Hide when scrolling down
+        setIsHeaderVisible(false)
+      }
+
+      lastScrollY.current = currentScrollY
+    }
+
+    window.addEventListener('scroll', handleScroll, { passive: true })
+    return () => window.removeEventListener('scroll', handleScroll)
+  }, [isScrollOpen])
+
   const navigation = [
     { name: 'Home', href: '/' },
     { name: 'Products', href: '/products' },
@@ -44,7 +77,13 @@ export function Header() {
   }
 
   return (
-    <header className="sticky top-0 z-[100] bg-[var(--card)] border-b-4 border-theme-primary shadow-sm transition-colors safe-area-top">
+    <header
+      className="sticky top-0 z-[100] bg-[var(--card)] border-b-4 border-theme-primary shadow-sm transition-all duration-300 safe-area-top"
+      style={{
+        transform: isHeaderVisible ? 'translateY(0)' : 'translateY(-100%)',
+        opacity: isHeaderVisible ? 1 : 0,
+      }}
+    >
       <nav className="container mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between h-16 sm:h-20">
           {/* Logo */}

@@ -2,7 +2,7 @@
 
 // ============================================
 // LEARNING JOURNEY SUMMARY
-// Sacred book experience activity tracker for Volition page
+// Digital Scroll experience activity tracker for Volition page
 // Shows all topic books, reading progress, and learning achievements
 // ============================================
 
@@ -23,13 +23,13 @@ import {
   Star,
 } from 'lucide-react'
 
-// Import book state utilities
+// Import scroll state utilities
 import {
   STORAGE_KEYS,
   GUARDIAN_RIBBONS,
   RIBBON_ORDER,
   CORE_TOPIC_ICONS,
-} from '@/components/learning/DigitalTextbook/bookConstants'
+} from '@/components/learning/DigitalScroll/scrollConstants'
 
 // ============================================
 // TYPES
@@ -385,10 +385,10 @@ export function LearningJourneySummary({ className, isCompact = false }: Learnin
           </div>
           <div className="flex-1">
             <p className="text-sm font-bold text-[var(--foreground)]">
-              Sacred Book Experience Unlocked
+              Digital Scroll Experience Unlocked
             </p>
             <p className="text-xs text-[var(--muted-foreground)]">
-              You have access to the immersive learning textbooks
+              You have access to the immersive learning scrolls
             </p>
           </div>
         </motion.div>
