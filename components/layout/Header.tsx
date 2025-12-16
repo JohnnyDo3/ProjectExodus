@@ -5,22 +5,24 @@ import { usePathname } from 'next/navigation'
 import { useState, useEffect, useRef } from 'react'
 import { useSession, signOut } from 'next-auth/react'
 import { ThemeToggle } from '@/components/ui/ThemeToggle'
-import { Menu, X, Leaf, User, LogOut, Settings, Users, Calendar, LayoutDashboard, ChevronRight, MessageCircle, Bell } from 'lucide-react'
+import { Menu, X, Leaf, User, LogOut, Settings, Users, Calendar, LayoutDashboard, ChevronRight, MessageCircle, Bell, ChevronDown, Lock, Rocket, GraduationCap } from 'lucide-react'
 import NotificationBell from '@/components/notifications/NotificationBell'
 import { useDigitalScrollContext } from '@/components/learning/DigitalScroll/DigitalScrollContext'
 
 export function Header() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
   const [userMenuOpen, setUserMenuOpen] = useState(false)
+  const [communityMenuOpen, setCommunityMenuOpen] = useState(false)
   const [isHeaderVisible, setIsHeaderVisible] = useState(true)
   const lastScrollY = useRef(0)
   const pathname = usePathname()
   const { data: session, status } = useSession()
   const { isScrollOpen } = useDigitalScrollContext()
 
-  // Close mobile menu on route change
+  // Close menus on route change
   useEffect(() => {
     setMobileMenuOpen(false)
+    setCommunityMenuOpen(false)
   }, [pathname])
 
   // Prevent body scroll when mobile menu is open
@@ -72,6 +74,13 @@ export function Header() {
     { name: 'Community', href: '/community' },
   ]
 
+  const communityMenuItems = [
+    { icon: MessageCircle, label: 'Discussions', href: '/community/discussions', description: 'Join conversations' },
+    { icon: Rocket, label: 'Projects', href: '/community/projects', description: 'Collaborative work' },
+    { icon: Users, label: 'Network', href: '/network', description: 'Build connections' },
+    { icon: GraduationCap, label: 'Courses', href: '/learn/courses', description: 'Structured learning' },
+  ]
+
   const handleSignOut = async () => {
     await signOut({ callbackUrl: '/' })
   }
@@ -99,7 +108,86 @@ export function Header() {
           {/* Desktop Navigation */}
           <div className="hidden lg:flex items-center gap-6 xl:gap-8">
             {navigation.map((item) => {
-              const isActive = pathname === item.href
+              const isActive = pathname === item.href || (item.name === 'Community' && pathname.startsWith('/community'))
+
+              // Community gets a dropdown
+              if (item.name === 'Community') {
+                return (
+                  <div key={item.name} className="relative">
+                    <button
+                      onClick={() => setCommunityMenuOpen(!communityMenuOpen)}
+                      className={`font-bold text-sm xl:text-base transition-all uppercase tracking-wide flex items-center gap-1 ${
+                        isActive
+                          ? 'text-theme-primary'
+                          : 'text-[var(--foreground)] hover:text-theme-primary'
+                      }`}
+                      style={{
+                        borderBottom: isActive ? '3px solid currentColor' : 'none',
+                        paddingBottom: '4px'
+                      }}
+                    >
+                      {item.name}
+                      <ChevronDown className={`w-4 h-4 transition-transform ${communityMenuOpen ? 'rotate-180' : ''}`} />
+                    </button>
+
+                    {communityMenuOpen && (
+                      <>
+                        <div
+                          className="fixed inset-0 z-[200]"
+                          onClick={() => setCommunityMenuOpen(false)}
+                        />
+                        <div className="absolute top-full left-0 mt-2 w-64 bg-[var(--card)] rounded-xl shadow-theme-lg border-2 border-theme-primary overflow-hidden z-[201]">
+                          <div className="p-2">
+                            {communityMenuItems.map((menuItem) => {
+                              const Icon = menuItem.icon
+                              const isLocked = !session && menuItem.label !== 'Discussions'
+
+                              return (
+                                <div key={menuItem.label}>
+                                  {isLocked ? (
+                                    <div className="flex items-center gap-3 px-4 py-3 rounded-lg bg-[var(--muted)]/30 opacity-60 cursor-not-allowed">
+                                      <div className="relative">
+                                        <Icon className="w-5 h-5 text-[var(--muted-foreground)]" />
+                                        <Lock className="w-2.5 h-2.5 absolute -bottom-0.5 -right-0.5 text-[var(--muted-foreground)]" />
+                                      </div>
+                                      <div className="flex-1">
+                                        <span className="font-bold text-sm text-[var(--muted-foreground)]">{menuItem.label}</span>
+                                        <p className="text-xs text-[var(--muted-foreground)]">Sign in to access</p>
+                                      </div>
+                                    </div>
+                                  ) : (
+                                    <Link
+                                      href={menuItem.href}
+                                      className="flex items-center gap-3 px-4 py-3 rounded-lg hover:bg-[var(--muted)] transition-colors group"
+                                      onClick={() => setCommunityMenuOpen(false)}
+                                    >
+                                      <Icon className="w-5 h-5 text-theme-primary" />
+                                      <div className="flex-1">
+                                        <span className="font-bold text-sm text-[var(--foreground)] group-hover:text-theme-primary">{menuItem.label}</span>
+                                        <p className="text-xs text-[var(--muted-foreground)]">{menuItem.description}</p>
+                                      </div>
+                                    </Link>
+                                  )}
+                                </div>
+                              )
+                            })}
+                          </div>
+                          <div className="border-t border-[var(--border)] p-2">
+                            <Link
+                              href="/community"
+                              className="flex items-center justify-center gap-2 px-4 py-2 rounded-lg bg-theme-primary/10 hover:bg-theme-primary/20 transition-colors text-theme-primary font-medium text-sm"
+                              onClick={() => setCommunityMenuOpen(false)}
+                            >
+                              View Community Hub
+                            </Link>
+                          </div>
+                        </div>
+                      </>
+                    )}
+                  </div>
+                )
+              }
+
               return (
                 <Link
                   key={item.name}
@@ -262,7 +350,7 @@ export function Header() {
               {/* Navigation Links */}
               <div className="space-y-2">
                 {navigation.map((item) => {
-                  const isActive = pathname === item.href
+                  const isActive = pathname === item.href || (item.name === 'Community' && pathname.startsWith('/community'))
                   return (
                     <Link
                       key={item.name}
@@ -279,6 +367,44 @@ export function Header() {
                     </Link>
                   )
                 })}
+              </div>
+
+              {/* Community Quick Links */}
+              <div className="space-y-2">
+                <p className="text-xs font-semibold text-[var(--muted-foreground)] uppercase tracking-wide px-2">Community Features</p>
+                <div className="grid grid-cols-2 gap-2">
+                  {communityMenuItems.map((menuItem) => {
+                    const Icon = menuItem.icon
+                    const isLocked = !session && menuItem.label !== 'Discussions'
+
+                    if (isLocked) {
+                      return (
+                        <div
+                          key={menuItem.label}
+                          className="flex flex-col items-center gap-1 py-3 px-2 rounded-xl bg-[var(--muted)]/50 opacity-50"
+                        >
+                          <div className="relative">
+                            <Icon className="w-5 h-5 text-[var(--muted-foreground)]" />
+                            <Lock className="w-2.5 h-2.5 absolute -bottom-0.5 -right-0.5 text-[var(--muted-foreground)]" />
+                          </div>
+                          <span className="text-xs font-medium text-[var(--muted-foreground)]">{menuItem.label}</span>
+                        </div>
+                      )
+                    }
+
+                    return (
+                      <Link
+                        key={menuItem.label}
+                        href={menuItem.href}
+                        className="flex flex-col items-center gap-1 py-3 px-2 rounded-xl bg-[var(--muted)] hover:bg-theme-primary/10 transition-colors"
+                        onClick={() => setMobileMenuOpen(false)}
+                      >
+                        <Icon className="w-5 h-5 text-theme-primary" />
+                        <span className="text-xs font-medium text-[var(--foreground)]">{menuItem.label}</span>
+                      </Link>
+                    )
+                  })}
+                </div>
               </div>
 
               {/* Divider */}
