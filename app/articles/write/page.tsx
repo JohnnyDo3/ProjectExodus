@@ -28,8 +28,11 @@ import {
   CheckCircle,
   AlertCircle,
   Loader2,
+  BookOpen,
+  Sparkles,
 } from 'lucide-react'
 import toast from 'react-hot-toast'
+import { parseCitation, type ParsedCitation } from '@/components/editor/TipTapEditor'
 
 // Dynamically import TipTap editor to avoid SSR issues
 const TipTapEditor = dynamic(
@@ -96,6 +99,8 @@ export default function WriteArticlePage() {
 
   // Preview state
   const [showPreview, setShowPreview] = useState(false)
+  const [hasViewedPreview, setHasViewedPreview] = useState(false)
+  const [detectedCitations, setDetectedCitations] = useState<ParsedCitation[]>([])
 
   // Dialog state
   const [showPublishDialog, setShowPublishDialog] = useState(false)
@@ -333,6 +338,39 @@ export default function WriteArticlePage() {
     setFormData(prev => ({ ...prev, content }))
   }
 
+  // Handle citation paste from editor
+  const handleCitationPaste = (text: string) => {
+    const citation = parseCitation(text)
+    if (citation) {
+      // Check if we already have this citation
+      const exists = detectedCitations.some(c => c.raw === citation.raw)
+      if (!exists) {
+        setDetectedCitations(prev => [...prev, citation])
+
+        // Auto-add to references
+        const newRef: Reference = {
+          id: crypto.randomUUID(),
+          title: citation.title,
+          url: citation.url || '',
+          description: `${citation.authors}${citation.year ? ` (${citation.year})` : ''}${citation.publisher ? `. ${citation.publisher}` : ''}`,
+        }
+        setReferences(prev => [...prev, newRef])
+        toast.success(`${citation.format} citation detected and added to references!`, {
+          icon: <BookOpen className="w-4 h-4" />,
+          duration: 4000,
+        })
+      }
+    }
+  }
+
+  // Toggle preview and track that user has viewed it
+  const togglePreview = () => {
+    if (!showPreview) {
+      setHasViewedPreview(true)
+    }
+    setShowPreview(!showPreview)
+  }
+
   const handleCoverImageChange = (url: string) => {
     setFormData(prev => ({ ...prev, coverImage: url }))
   }
@@ -341,9 +379,21 @@ export default function WriteArticlePage() {
   const canProceedFromStep = (step: number): boolean => {
     switch (step) {
       case 0: return formData.title.trim().length > 0
-      case 1: return formData.content.trim().length > 0
+      case 1: return formData.content.trim().length > 0 && hasViewedPreview
       case 2: return formData.excerpt.trim().length > 0
       default: return true
+    }
+  }
+
+  // Get validation message for current step
+  const getStepValidationMessage = (step: number): string | null => {
+    switch (step) {
+      case 1:
+        if (!formData.content.trim()) return 'Please write some content'
+        if (!hasViewedPreview) return 'Please preview your content before continuing'
+        return null
+      default:
+        return null
     }
   }
 
@@ -435,14 +485,23 @@ export default function WriteArticlePage() {
                 Delete
               </Button>
               {currentStep === 1 && (
-                <Button
-                  variant="outline"
-                  size="sm"
-                  onClick={() => setShowPreview(!showPreview)}
-                >
-                  {showPreview ? <EyeOff className="w-4 h-4 mr-2" /> : <Eye className="w-4 h-4 mr-2" />}
-                  {showPreview ? 'Hide' : 'Preview'}
-                </Button>
+                <div className="flex items-center gap-2">
+                  {hasViewedPreview && (
+                    <span className="flex items-center gap-1 text-xs text-green-600">
+                      <CheckCircle className="w-3 h-3" />
+                      Preview viewed
+                    </span>
+                  )}
+                  <Button
+                    variant={!hasViewedPreview ? 'primary' : 'outline'}
+                    size="sm"
+                    onClick={togglePreview}
+                    className={!hasViewedPreview ? 'animate-pulse' : ''}
+                  >
+                    {showPreview ? <EyeOff className="w-4 h-4 mr-2" /> : <Eye className="w-4 h-4 mr-2" />}
+                    {showPreview ? 'Hide Preview' : hasViewedPreview ? 'Preview' : 'Preview (Required)'}
+                  </Button>
+                </div>
               )}
             </div>
           </div>
@@ -509,6 +568,25 @@ export default function WriteArticlePage() {
           {/* Step 2: Content Editor */}
           {currentStep === 1 && (
             <div className="space-y-6">
+              {/* Preview requirement notice */}
+              {!hasViewedPreview && (
+                <div className="flex items-center gap-3 p-4 bg-gradient-to-r from-[var(--primary)]/10 to-[var(--accent)]/10 border border-[var(--primary)]/20 rounded-lg">
+                  <Eye className="w-5 h-5 text-[var(--primary)]" />
+                  <div>
+                    <p className="text-sm font-medium text-[var(--foreground)]">Preview required before continuing</p>
+                    <p className="text-xs text-[var(--muted-foreground)]">Click the Preview button above to review your content before proceeding</p>
+                  </div>
+                </div>
+              )}
+
+              {/* Citation format info */}
+              <div className="flex items-start gap-3 p-3 bg-[var(--muted)]/50 border border-[var(--border)] rounded-lg">
+                <Sparkles className="w-4 h-4 text-[var(--primary)] mt-0.5" />
+                <div className="text-xs text-[var(--muted-foreground)]">
+                  <strong className="text-[var(--foreground)]">Smart Citation Detection:</strong> Paste MLA, APA, or Chicago formatted citations and they'll be automatically recognized and added to your references.
+                </div>
+              </div>
+
               {showPreview ? (
                 <div className="grid lg:grid-cols-2 gap-6">
                   <div>
@@ -516,12 +594,16 @@ export default function WriteArticlePage() {
                     <TipTapEditor
                       content={formData.content}
                       onChange={handleContentChange}
+                      onPaste={handleCitationPaste}
                       placeholder="Start writing your article..."
                     />
                   </div>
                   <div>
-                    <h3 className="text-sm font-medium text-[var(--muted-foreground)] mb-3">Preview</h3>
-                    <Card className="h-[500px] overflow-auto border-2 border-[var(--primary)]">
+                    <h3 className="text-sm font-medium text-[var(--muted-foreground)] mb-3 flex items-center gap-2">
+                      <CheckCircle className="w-4 h-4 text-green-600" />
+                      Preview
+                    </h3>
+                    <Card className="h-[500px] overflow-auto border-2 border-green-500/50">
                       <CardContent className="p-6">
                         <article
                           className="prose prose-lg max-w-none"
@@ -535,8 +617,29 @@ export default function WriteArticlePage() {
                 <TipTapEditor
                   content={formData.content}
                   onChange={handleContentChange}
+                  onPaste={handleCitationPaste}
                   placeholder="Start writing your article..."
                 />
+              )}
+
+              {/* Detected citations summary */}
+              {detectedCitations.length > 0 && (
+                <div className="p-4 bg-[var(--primary)]/5 border border-[var(--primary)]/20 rounded-lg">
+                  <h4 className="text-sm font-medium text-[var(--foreground)] mb-2 flex items-center gap-2">
+                    <BookOpen className="w-4 h-4 text-[var(--primary)]" />
+                    Detected Citations ({detectedCitations.length})
+                  </h4>
+                  <div className="space-y-2">
+                    {detectedCitations.map((citation, idx) => (
+                      <div key={idx} className="text-xs text-[var(--muted-foreground)] flex items-start gap-2">
+                        <span className="px-1.5 py-0.5 bg-[var(--primary)]/20 text-[var(--primary)] rounded text-[10px] font-bold">
+                          {citation.format}
+                        </span>
+                        <span className="truncate">{citation.title}</span>
+                      </div>
+                    ))}
+                  </div>
+                </div>
               )}
             </div>
           )}
@@ -711,6 +814,13 @@ export default function WriteArticlePage() {
               Previous
             </Button>
             <div className="flex items-center gap-3">
+              {/* Validation message */}
+              {currentStep === 1 && !canProceedFromStep(1) && formData.content.trim() && (
+                <span className="text-xs text-amber-600 flex items-center gap-1">
+                  <Eye className="w-3 h-3" />
+                  Preview required
+                </span>
+              )}
               <Button variant="outline" onClick={() => handleSubmit(false)} disabled={saving}>
                 <Save className="w-4 h-4 mr-2" />
                 Save Draft
@@ -721,7 +831,11 @@ export default function WriteArticlePage() {
                   Publish
                 </Button>
               ) : (
-                <Button onClick={goToNextStep} disabled={!canProceedFromStep(currentStep)}>
+                <Button
+                  onClick={goToNextStep}
+                  disabled={!canProceedFromStep(currentStep)}
+                  title={getStepValidationMessage(currentStep) || undefined}
+                >
                   Next
                   <ArrowRight className="w-4 h-4 ml-2" />
                 </Button>

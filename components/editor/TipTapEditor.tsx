@@ -6,6 +6,13 @@ import Link from '@tiptap/extension-link'
 import Image from '@tiptap/extension-image'
 import Placeholder from '@tiptap/extension-placeholder'
 import Underline from '@tiptap/extension-underline'
+import TextAlign from '@tiptap/extension-text-align'
+import Highlight from '@tiptap/extension-highlight'
+import Subscript from '@tiptap/extension-subscript'
+import Superscript from '@tiptap/extension-superscript'
+import { TextStyle } from '@tiptap/extension-text-style'
+import { Color } from '@tiptap/extension-color'
+import { useCallback, useEffect, useState } from 'react'
 import {
   Bold,
   Italic,
@@ -23,24 +30,121 @@ import {
   Redo,
   Code,
   Minus,
+  AlignLeft,
+  AlignCenter,
+  AlignRight,
+  AlignJustify,
+  IndentIncrease,
+  IndentDecrease,
+  Highlighter,
+  Subscript as SubIcon,
+  Superscript as SuperIcon,
+  Palette,
+  FileCode,
+  BookOpen,
+  Sparkles,
 } from 'lucide-react'
 
 interface TipTapEditorProps {
   content: string
   onChange: (content: string) => void
   placeholder?: string
+  onPaste?: (text: string) => void
+}
+
+// Citation format patterns
+const citationPatterns = {
+  // MLA: Author Last, First. "Title." Container, vol. #, no. #, Year, pp. #-#.
+  mla: /^([A-Z][a-z]+(?:,\s+[A-Z][a-z]+)?(?:\s+et\s+al\.)?)\.\s+"([^"]+)"\.\s*([^,]+)(?:,\s*vol\.\s*(\d+))?(?:,\s*no\.\s*(\d+))?(?:,\s*(\d{4}))?(?:,\s*pp?\.\s*([\d-]+))?\.?$/i,
+
+  // APA: Author, A. A. (Year). Title of work. Publisher. DOI/URL
+  apa: /^([A-Z][a-z]+(?:,\s+[A-Z]\.(?:\s+[A-Z]\.)?)?(?:\s+&\s+[A-Z][a-z]+(?:,\s+[A-Z]\.(?:\s+[A-Z]\.)?)?)*)\s+\((\d{4})\)\.\s+(.+?)(?:\.\s+([^.]+?))?(?:\.\s+(https?:\/\/[^\s]+|doi:[^\s]+))?\.?$/i,
+
+  // Chicago: Author Last, First. Title of Work. Place: Publisher, Year.
+  chicago: /^([A-Z][a-z]+(?:,\s+[A-Z][a-z]+)?(?:\s+and\s+[A-Z][a-z]+(?:,\s+[A-Z][a-z]+)?)?)\.\s+(.+?)(?:\.\s+([^:]+):\s+([^,]+),?\s*)?(\d{4})\.?$/i,
+}
+
+export interface ParsedCitation {
+  format: 'MLA' | 'APA' | 'Chicago' | 'Unknown'
+  authors: string
+  title: string
+  year?: string
+  publisher?: string
+  volume?: string
+  issue?: string
+  pages?: string
+  url?: string
+  raw: string
+}
+
+export function parseCitation(text: string): ParsedCitation | null {
+  const trimmed = text.trim()
+
+  // Try MLA
+  const mlaMatch = trimmed.match(citationPatterns.mla)
+  if (mlaMatch) {
+    return {
+      format: 'MLA',
+      authors: mlaMatch[1],
+      title: mlaMatch[2],
+      publisher: mlaMatch[3],
+      volume: mlaMatch[4],
+      issue: mlaMatch[5],
+      year: mlaMatch[6],
+      pages: mlaMatch[7],
+      raw: trimmed,
+    }
+  }
+
+  // Try APA
+  const apaMatch = trimmed.match(citationPatterns.apa)
+  if (apaMatch) {
+    return {
+      format: 'APA',
+      authors: apaMatch[1],
+      year: apaMatch[2],
+      title: apaMatch[3],
+      publisher: apaMatch[4],
+      url: apaMatch[5],
+      raw: trimmed,
+    }
+  }
+
+  // Try Chicago
+  const chicagoMatch = trimmed.match(citationPatterns.chicago)
+  if (chicagoMatch) {
+    return {
+      format: 'Chicago',
+      authors: chicagoMatch[1],
+      title: chicagoMatch[2],
+      publisher: chicagoMatch[4] || chicagoMatch[3],
+      year: chicagoMatch[5],
+      raw: trimmed,
+    }
+  }
+
+  return null
 }
 
 export default function TipTapEditor({
   content,
   onChange,
   placeholder = 'Start writing your article...',
+  onPaste,
 }: TipTapEditorProps) {
+  const [showColorPicker, setShowColorPicker] = useState(false)
+  const [citationNotification, setCitationNotification] = useState<ParsedCitation | null>(null)
+
   const editor = useEditor({
     extensions: [
       StarterKit.configure({
         heading: {
           levels: [1, 2, 3],
+        },
+        codeBlock: {
+          HTMLAttributes: {
+            class: 'code-block',
+          },
         },
       }),
       Link.configure({
@@ -58,6 +162,16 @@ export default function TipTapEditor({
         placeholder,
       }),
       Underline,
+      TextAlign.configure({
+        types: ['heading', 'paragraph'],
+      }),
+      Highlight.configure({
+        multicolor: true,
+      }),
+      Subscript,
+      Superscript,
+      TextStyle,
+      Color,
     ],
     content,
     onUpdate: ({ editor }) => {
@@ -68,8 +182,27 @@ export default function TipTapEditor({
         class:
           'prose prose-lg max-w-none min-h-[400px] focus:outline-none p-4',
       },
+      handlePaste: (view, event) => {
+        const text = event.clipboardData?.getData('text/plain')
+        if (text && onPaste) {
+          // Check for citation format
+          const citation = parseCitation(text)
+          if (citation) {
+            setCitationNotification(citation)
+            onPaste(text)
+            // Auto-dismiss after 5 seconds
+            setTimeout(() => setCitationNotification(null), 5000)
+          }
+        }
+        return false // Let TipTap handle the paste normally
+      },
     },
   })
+
+  // Dismiss citation notification
+  const dismissCitation = useCallback(() => {
+    setCitationNotification(null)
+  }, [])
 
   if (!editor) {
     return (
@@ -94,15 +227,66 @@ export default function TipTapEditor({
     }
   }
 
+  const setColor = (color: string) => {
+    editor.chain().focus().setColor(color).run()
+    setShowColorPicker(false)
+  }
+
+  // Indent/Outdent using margin classes
+  const indent = () => {
+    // Get current selection and wrap in a div with indent class or update existing
+    const { from, to } = editor.state.selection
+    const currentNode = editor.state.doc.nodeAt(from)
+
+    // For now, we'll use blockquote as a semantic indent
+    // This is a common pattern in rich text editors
+    if (!editor.isActive('blockquote')) {
+      editor.chain().focus().setBlockquote().run()
+    }
+  }
+
+  const outdent = () => {
+    if (editor.isActive('blockquote')) {
+      editor.chain().focus().unsetBlockquote().run()
+    }
+  }
+
+  const colors = [
+    '#000000', '#374151', '#6B7280', '#9CA3AF',
+    '#EF4444', '#F97316', '#EAB308', '#22C55E',
+    '#14B8A6', '#3B82F6', '#8B5CF6', '#EC4899',
+  ]
+
   return (
     <div className="tiptap-editor">
+      {/* Citation Detection Notification */}
+      {citationNotification && (
+        <div className="citation-notification">
+          <div className="citation-header">
+            <BookOpen size={16} />
+            <span>{citationNotification.format} Citation Detected!</span>
+            <button onClick={dismissCitation} className="citation-dismiss">×</button>
+          </div>
+          <div className="citation-details">
+            <p><strong>Author:</strong> {citationNotification.authors}</p>
+            <p><strong>Title:</strong> {citationNotification.title}</p>
+            {citationNotification.year && <p><strong>Year:</strong> {citationNotification.year}</p>}
+            {citationNotification.publisher && <p><strong>Publisher:</strong> {citationNotification.publisher}</p>}
+          </div>
+          <p className="citation-hint">
+            <Sparkles size={12} /> This will be added to your references automatically
+          </p>
+        </div>
+      )}
+
       <div className="editor-toolbar">
+        {/* Text Formatting */}
         <div className="toolbar-group">
           <button
             type="button"
             onClick={() => editor.chain().focus().toggleBold().run()}
             className={`toolbar-btn ${editor.isActive('bold') ? 'active' : ''}`}
-            title="Bold"
+            title="Bold (Ctrl+B)"
           >
             <Bold size={18} />
           </button>
@@ -110,7 +294,7 @@ export default function TipTapEditor({
             type="button"
             onClick={() => editor.chain().focus().toggleItalic().run()}
             className={`toolbar-btn ${editor.isActive('italic') ? 'active' : ''}`}
-            title="Italic"
+            title="Italic (Ctrl+I)"
           >
             <Italic size={18} />
           </button>
@@ -118,7 +302,7 @@ export default function TipTapEditor({
             type="button"
             onClick={() => editor.chain().focus().toggleUnderline().run()}
             className={`toolbar-btn ${editor.isActive('underline') ? 'active' : ''}`}
-            title="Underline"
+            title="Underline (Ctrl+U)"
           >
             <UnderlineIcon size={18} />
           </button>
@@ -130,18 +314,65 @@ export default function TipTapEditor({
           >
             <Strikethrough size={18} />
           </button>
-          <button
-            type="button"
-            onClick={() => editor.chain().focus().toggleCode().run()}
-            className={`toolbar-btn ${editor.isActive('code') ? 'active' : ''}`}
-            title="Inline Code"
-          >
-            <Code size={18} />
-          </button>
         </div>
 
         <div className="toolbar-divider" />
 
+        {/* Advanced Formatting */}
+        <div className="toolbar-group">
+          <button
+            type="button"
+            onClick={() => editor.chain().focus().toggleHighlight({ color: '#fef08a' }).run()}
+            className={`toolbar-btn ${editor.isActive('highlight') ? 'active' : ''}`}
+            title="Highlight"
+          >
+            <Highlighter size={18} />
+          </button>
+          <button
+            type="button"
+            onClick={() => editor.chain().focus().toggleSubscript().run()}
+            className={`toolbar-btn ${editor.isActive('subscript') ? 'active' : ''}`}
+            title="Subscript"
+          >
+            <SubIcon size={18} />
+          </button>
+          <button
+            type="button"
+            onClick={() => editor.chain().focus().toggleSuperscript().run()}
+            className={`toolbar-btn ${editor.isActive('superscript') ? 'active' : ''}`}
+            title="Superscript"
+          >
+            <SuperIcon size={18} />
+          </button>
+          <div className="color-picker-wrapper">
+            <button
+              type="button"
+              onClick={() => setShowColorPicker(!showColorPicker)}
+              className="toolbar-btn"
+              title="Text Color"
+            >
+              <Palette size={18} />
+            </button>
+            {showColorPicker && (
+              <div className="color-picker-dropdown">
+                {colors.map((color) => (
+                  <button
+                    key={color}
+                    type="button"
+                    onClick={() => setColor(color)}
+                    className="color-swatch"
+                    style={{ backgroundColor: color }}
+                    title={color}
+                  />
+                ))}
+              </div>
+            )}
+          </div>
+        </div>
+
+        <div className="toolbar-divider" />
+
+        {/* Headings */}
         <div className="toolbar-group">
           <button
             type="button"
@@ -177,6 +408,45 @@ export default function TipTapEditor({
 
         <div className="toolbar-divider" />
 
+        {/* Text Alignment */}
+        <div className="toolbar-group">
+          <button
+            type="button"
+            onClick={() => editor.chain().focus().setTextAlign('left').run()}
+            className={`toolbar-btn ${editor.isActive({ textAlign: 'left' }) ? 'active' : ''}`}
+            title="Align Left"
+          >
+            <AlignLeft size={18} />
+          </button>
+          <button
+            type="button"
+            onClick={() => editor.chain().focus().setTextAlign('center').run()}
+            className={`toolbar-btn ${editor.isActive({ textAlign: 'center' }) ? 'active' : ''}`}
+            title="Align Center"
+          >
+            <AlignCenter size={18} />
+          </button>
+          <button
+            type="button"
+            onClick={() => editor.chain().focus().setTextAlign('right').run()}
+            className={`toolbar-btn ${editor.isActive({ textAlign: 'right' }) ? 'active' : ''}`}
+            title="Align Right"
+          >
+            <AlignRight size={18} />
+          </button>
+          <button
+            type="button"
+            onClick={() => editor.chain().focus().setTextAlign('justify').run()}
+            className={`toolbar-btn ${editor.isActive({ textAlign: 'justify' }) ? 'active' : ''}`}
+            title="Justify"
+          >
+            <AlignJustify size={18} />
+          </button>
+        </div>
+
+        <div className="toolbar-divider" />
+
+        {/* Lists & Indent */}
         <div className="toolbar-group">
           <button
             type="button"
@@ -196,11 +466,49 @@ export default function TipTapEditor({
           </button>
           <button
             type="button"
+            onClick={indent}
+            className={`toolbar-btn ${editor.isActive('blockquote') ? 'active' : ''}`}
+            title="Indent (Quote)"
+          >
+            <IndentIncrease size={18} />
+          </button>
+          <button
+            type="button"
+            onClick={outdent}
+            className="toolbar-btn"
+            title="Outdent"
+          >
+            <IndentDecrease size={18} />
+          </button>
+        </div>
+
+        <div className="toolbar-divider" />
+
+        {/* Blocks */}
+        <div className="toolbar-group">
+          <button
+            type="button"
             onClick={() => editor.chain().focus().toggleBlockquote().run()}
             className={`toolbar-btn ${editor.isActive('blockquote') ? 'active' : ''}`}
             title="Quote"
           >
             <Quote size={18} />
+          </button>
+          <button
+            type="button"
+            onClick={() => editor.chain().focus().toggleCode().run()}
+            className={`toolbar-btn ${editor.isActive('code') ? 'active' : ''}`}
+            title="Inline Code"
+          >
+            <Code size={18} />
+          </button>
+          <button
+            type="button"
+            onClick={() => editor.chain().focus().toggleCodeBlock().run()}
+            className={`toolbar-btn ${editor.isActive('codeBlock') ? 'active' : ''}`}
+            title="Code Block"
+          >
+            <FileCode size={18} />
           </button>
           <button
             type="button"
@@ -214,6 +522,7 @@ export default function TipTapEditor({
 
         <div className="toolbar-divider" />
 
+        {/* Media */}
         <div className="toolbar-group">
           <button
             type="button"
@@ -235,13 +544,14 @@ export default function TipTapEditor({
 
         <div className="toolbar-divider" />
 
+        {/* History */}
         <div className="toolbar-group">
           <button
             type="button"
             onClick={() => editor.chain().focus().undo().run()}
             disabled={!editor.can().undo()}
             className="toolbar-btn"
-            title="Undo"
+            title="Undo (Ctrl+Z)"
           >
             <Undo size={18} />
           </button>
@@ -250,7 +560,7 @@ export default function TipTapEditor({
             onClick={() => editor.chain().focus().redo().run()}
             disabled={!editor.can().redo()}
             className="toolbar-btn"
-            title="Redo"
+            title="Redo (Ctrl+Y)"
           >
             <Redo size={18} />
           </button>
@@ -265,6 +575,67 @@ export default function TipTapEditor({
           border: 1px solid var(--border);
           border-radius: 12px;
           overflow: hidden;
+        }
+
+        .citation-notification {
+          background: linear-gradient(135deg, var(--primary)/10, var(--accent)/10);
+          border-bottom: 1px solid var(--primary)/30;
+          padding: 12px 16px;
+          animation: slideDown 0.3s ease;
+        }
+
+        @keyframes slideDown {
+          from {
+            opacity: 0;
+            transform: translateY(-10px);
+          }
+          to {
+            opacity: 1;
+            transform: translateY(0);
+          }
+        }
+
+        .citation-header {
+          display: flex;
+          align-items: center;
+          gap: 8px;
+          font-weight: 600;
+          color: var(--primary);
+          margin-bottom: 8px;
+        }
+
+        .citation-dismiss {
+          margin-left: auto;
+          background: none;
+          border: none;
+          font-size: 18px;
+          cursor: pointer;
+          color: var(--muted-foreground);
+          padding: 0 4px;
+        }
+
+        .citation-dismiss:hover {
+          color: var(--foreground);
+        }
+
+        .citation-details {
+          font-size: 13px;
+          color: var(--foreground);
+          padding-left: 24px;
+        }
+
+        .citation-details p {
+          margin: 4px 0;
+        }
+
+        .citation-hint {
+          display: flex;
+          align-items: center;
+          gap: 6px;
+          font-size: 11px;
+          color: var(--muted-foreground);
+          margin-top: 8px;
+          padding-left: 24px;
         }
 
         .editor-toolbar {
@@ -316,6 +687,39 @@ export default function TipTapEditor({
         .toolbar-btn:disabled {
           opacity: 0.4;
           cursor: not-allowed;
+        }
+
+        .color-picker-wrapper {
+          position: relative;
+        }
+
+        .color-picker-dropdown {
+          position: absolute;
+          top: 100%;
+          left: 0;
+          z-index: 50;
+          display: grid;
+          grid-template-columns: repeat(4, 1fr);
+          gap: 4px;
+          padding: 8px;
+          background: var(--card);
+          border: 1px solid var(--border);
+          border-radius: 8px;
+          box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+          margin-top: 4px;
+        }
+
+        .color-swatch {
+          width: 24px;
+          height: 24px;
+          border-radius: 4px;
+          border: 1px solid var(--border);
+          cursor: pointer;
+          transition: transform 0.15s ease;
+        }
+
+        .color-swatch:hover {
+          transform: scale(1.15);
         }
 
         .editor-loading {
@@ -412,9 +816,14 @@ export default function TipTapEditor({
         .editor-content .ProseMirror blockquote {
           border-left: 4px solid var(--primary);
           padding-left: 1em;
-          margin: 1em 0;
+          margin: 1em 0 1em 1em;
           color: var(--muted-foreground);
           font-style: italic;
+        }
+
+        /* Nested blockquotes for indent levels */
+        .editor-content .ProseMirror blockquote blockquote {
+          margin-left: 1em;
         }
 
         .editor-content .ProseMirror code {
@@ -430,6 +839,12 @@ export default function TipTapEditor({
           padding: 1em;
           border-radius: 8px;
           overflow-x: auto;
+          font-family: 'Fira Code', 'Consolas', monospace;
+        }
+
+        .editor-content .ProseMirror pre code {
+          background: none;
+          padding: 0;
         }
 
         .editor-content .ProseMirror hr {
@@ -448,6 +863,37 @@ export default function TipTapEditor({
         .editor-content .ProseMirror a {
           color: var(--primary);
           text-decoration: underline;
+        }
+
+        /* Text alignment styles */
+        .editor-content .ProseMirror [style*="text-align: center"] {
+          text-align: center;
+        }
+
+        .editor-content .ProseMirror [style*="text-align: right"] {
+          text-align: right;
+        }
+
+        .editor-content .ProseMirror [style*="text-align: justify"] {
+          text-align: justify;
+        }
+
+        /* Highlight styles */
+        .editor-content .ProseMirror mark {
+          background-color: #fef08a;
+          padding: 0.1em 0.2em;
+          border-radius: 2px;
+        }
+
+        /* Subscript and Superscript */
+        .editor-content .ProseMirror sub {
+          font-size: 0.75em;
+          vertical-align: sub;
+        }
+
+        .editor-content .ProseMirror sup {
+          font-size: 0.75em;
+          vertical-align: super;
         }
       `}</style>
     </div>
