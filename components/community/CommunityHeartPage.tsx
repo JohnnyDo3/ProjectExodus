@@ -501,14 +501,17 @@ export function CommunityHeartPage({ isAuthenticated }: CommunityHeartPageProps)
                     </motion.div>
                   </div>
 
-                  {/* Hover hint */}
-                  <motion.p
-                    className="text-[8px] text-center opacity-50 mt-1"
-                    animate={{ opacity: [0.3, 0.6, 0.3] }}
-                    transition={{ duration: 2, repeat: Infinity }}
-                  >
-                    Hover to learn more
-                  </motion.p>
+                  {/* Get Started CTA - always visible */}
+                  <Link href="/auth/signup" className="block mt-1">
+                    <motion.div
+                      className="flex items-center justify-center gap-1 text-[9px] font-semibold text-white/90 bg-white/15 rounded-md py-1 border border-white/20"
+                      whileHover={{ scale: 1.02, backgroundColor: 'rgba(255,255,255,0.25)' }}
+                      whileTap={{ scale: 0.98 }}
+                    >
+                      Get Started
+                      <ArrowRight className="w-3 h-3" />
+                    </motion.div>
+                  </Link>
                 </div>
               </motion.div>
 

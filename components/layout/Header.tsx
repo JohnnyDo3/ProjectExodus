@@ -204,10 +204,10 @@ export function Header() {
                             return isLocked ? (
                               <div
                                 key={menuItem.label}
-                                className="flex items-center justify-between px-3 py-2 rounded-lg text-[var(--muted-foreground)] opacity-50 cursor-not-allowed"
+                                className="flex items-center justify-between px-3 py-2 rounded-lg text-[var(--muted-foreground)] opacity-60 cursor-not-allowed"
                               >
                                 <span className="text-sm font-medium">{menuItem.label}</span>
-                                <Lock className="w-3 h-3" />
+                                <Lock className="w-3.5 h-3.5 text-[var(--muted-foreground)]" />
                               </div>
                             ) : (
                               <Link
@@ -263,18 +263,6 @@ export function Header() {
                             </div>
                           </>
                         )}
-
-                        {/* Footer */}
-                        <div className="border-t border-[var(--border)]/50 p-2 bg-[var(--muted)]/20">
-                          <Link
-                            href="/community"
-                            className="flex items-center justify-center gap-2 px-3 py-2 rounded-lg bg-gradient-to-r from-[var(--primary)] to-[var(--accent)] hover:opacity-90 transition-all text-white font-semibold text-xs"
-                            onClick={() => setCommunityMenuOpen(false)}
-                          >
-                            View Community Hub
-                            <ChevronRight className="w-3.5 h-3.5" />
-                          </Link>
-                        </div>
                       </div>
                     </div>
                   </div>
@@ -473,10 +461,10 @@ export function Header() {
                       return (
                         <div
                           key={menuItem.label}
-                          className="flex items-center justify-center gap-1 py-3 px-2 rounded-xl bg-[var(--muted)]/50 opacity-50"
+                          className="flex items-center justify-center gap-1 py-3 px-2 rounded-xl bg-[var(--muted)]/50 opacity-60"
                         >
                           <span className="text-xs font-medium text-[var(--muted-foreground)]">{menuItem.label}</span>
-                          <Lock className="w-3 h-3 text-[var(--muted-foreground)]" />
+                          <Lock className="w-3.5 h-3.5 text-[var(--muted-foreground)]" />
                         </div>
                       )
                     }

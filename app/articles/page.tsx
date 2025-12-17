@@ -302,122 +302,166 @@ export default function ArticlesPage() {
 
   return (
     <div className="min-h-screen bg-[var(--background)]">
-      {/* Hero Header - The Library */}
-      <div className="relative bg-[var(--primary)] text-white overflow-hidden">
-        {/* Decorative book spines pattern */}
-        <div className="absolute inset-0 opacity-5 pointer-events-none">
-          <div className="absolute top-0 left-[10%] w-px h-full bg-white" />
-          <div className="absolute top-0 left-[20%] w-px h-full bg-white" />
-          <div className="absolute top-0 left-[30%] w-px h-full bg-white" />
-          <div className="absolute top-0 left-[70%] w-px h-full bg-white" />
-          <div className="absolute top-0 left-[80%] w-px h-full bg-white" />
-          <div className="absolute top-0 left-[90%] w-px h-full bg-white" />
+      {/* Hero Header - The Library with One-Point Perspective */}
+      <div className="relative bg-gradient-to-b from-[var(--primary)] via-[var(--primary)] to-amber-900/80 text-white overflow-hidden min-h-[70vh] sm:min-h-[75vh]">
+        {/* One-Point Perspective Library Background */}
+        <div className="absolute inset-0 overflow-hidden">
+          {/* Vanishing point at center-top, converging lines create library hallway effect */}
+          <div className="absolute inset-0" style={{ perspective: '1000px', perspectiveOrigin: '50% 20%' }}>
+            {/* Floor - warm wood tone */}
+            <div
+              className="absolute bottom-0 left-0 right-0 h-[40%] bg-gradient-to-t from-amber-900/60 via-amber-800/40 to-transparent"
+              style={{
+                transform: 'rotateX(60deg)',
+                transformOrigin: 'center bottom',
+              }}
+            />
+
+            {/* Ceiling beams effect */}
+            <div
+              className="absolute top-0 left-0 right-0 h-[30%] bg-gradient-to-b from-amber-950/40 to-transparent"
+              style={{
+                transform: 'rotateX(-45deg)',
+                transformOrigin: 'center top',
+              }}
+            />
+          </div>
+
+          {/* Converging vertical bookshelf lines - Left side */}
+          <svg className="absolute inset-0 w-full h-full opacity-20 pointer-events-none" preserveAspectRatio="none">
+            {/* Left converging lines - bookshelves receding into distance */}
+            <line x1="0%" y1="100%" x2="50%" y2="15%" stroke="currentColor" strokeWidth="2" className="text-amber-200"/>
+            <line x1="5%" y1="100%" x2="50%" y2="15%" stroke="currentColor" strokeWidth="1.5" className="text-amber-200"/>
+            <line x1="12%" y1="100%" x2="50%" y2="15%" stroke="currentColor" strokeWidth="1.5" className="text-amber-300"/>
+            <line x1="20%" y1="100%" x2="50%" y2="15%" stroke="currentColor" strokeWidth="1" className="text-amber-200"/>
+            <line x1="30%" y1="100%" x2="50%" y2="15%" stroke="currentColor" strokeWidth="1" className="text-amber-300"/>
+            <line x1="40%" y1="100%" x2="50%" y2="15%" stroke="currentColor" strokeWidth="0.5" className="text-amber-200"/>
+
+            {/* Right converging lines - mirror */}
+            <line x1="100%" y1="100%" x2="50%" y2="15%" stroke="currentColor" strokeWidth="2" className="text-amber-200"/>
+            <line x1="95%" y1="100%" x2="50%" y2="15%" stroke="currentColor" strokeWidth="1.5" className="text-amber-200"/>
+            <line x1="88%" y1="100%" x2="50%" y2="15%" stroke="currentColor" strokeWidth="1.5" className="text-amber-300"/>
+            <line x1="80%" y1="100%" x2="50%" y2="15%" stroke="currentColor" strokeWidth="1" className="text-amber-200"/>
+            <line x1="70%" y1="100%" x2="50%" y2="15%" stroke="currentColor" strokeWidth="1" className="text-amber-300"/>
+            <line x1="60%" y1="100%" x2="50%" y2="15%" stroke="currentColor" strokeWidth="0.5" className="text-amber-200"/>
+
+            {/* Horizontal shelf lines at different depths */}
+            <line x1="5%" y1="85%" x2="95%" y2="85%" stroke="currentColor" strokeWidth="2" className="text-amber-400/50"/>
+            <line x1="15%" y1="70%" x2="85%" y2="70%" stroke="currentColor" strokeWidth="1.5" className="text-amber-400/40"/>
+            <line x1="25%" y1="55%" x2="75%" y2="55%" stroke="currentColor" strokeWidth="1" className="text-amber-400/30"/>
+            <line x1="35%" y1="40%" x2="65%" y2="40%" stroke="currentColor" strokeWidth="0.5" className="text-amber-400/20"/>
+          </svg>
+
+          {/* Ambient library glow - warm light from vanishing point */}
+          <div className="absolute top-[10%] left-1/2 -translate-x-1/2 w-32 h-32 bg-amber-200/20 rounded-full blur-3xl" />
+          <div className="absolute top-[15%] left-1/2 -translate-x-1/2 w-48 h-16 bg-amber-100/10 rounded-full blur-2xl" />
         </div>
 
-        <div className="container mx-auto px-4 py-8 sm:py-12 relative">
+        <div className="container mx-auto px-4 py-6 sm:py-8 relative z-10">
           <div className="max-w-6xl mx-auto">
-            {/* Title Section */}
-            <div className="text-center mb-6 sm:mb-8">
-              <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-white/10 backdrop-blur-sm mb-4">
-                <ScrollText className="w-4 h-4" />
-                <span className="text-xs font-bold uppercase tracking-wider">The Library</span>
+            {/* Title Section - Positioned at the "entrance" */}
+            <div className="text-center mb-4 sm:mb-6">
+              <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-amber-900/40 backdrop-blur-sm border border-amber-400/30 mb-3">
+                <ScrollText className="w-4 h-4 text-amber-200" />
+                <span className="text-xs font-bold uppercase tracking-wider text-amber-100">The Library</span>
               </div>
-              <h1 className="text-3xl sm:text-4xl md:text-5xl font-black mb-2 sm:mb-3 tracking-tight">
+              <h1 className="text-3xl sm:text-4xl md:text-5xl font-black mb-2 tracking-tight drop-shadow-lg">
                 Knowledge Shared
               </h1>
-              <p className="text-sm sm:text-base font-medium opacity-80 px-4 max-w-lg mx-auto italic">
+              <p className="text-sm sm:text-base font-medium opacity-90 px-4 max-w-lg mx-auto italic text-amber-100">
                 "Wisdom is not consumed - it is received."
               </p>
-              <p className="text-xs sm:text-sm font-medium opacity-60 mt-2 px-4 max-w-md mx-auto">
-                Case studies and sustainability journeys from those who walk the path
-              </p>
 
-              {/* Stats Pills in Hero */}
-              <div className="flex items-center justify-center gap-3 mt-4">
-                <div className="px-3 py-1.5 bg-black/20 backdrop-blur-sm rounded-full border border-white/20">
-                  <span className="text-xs font-bold opacity-90">
+              {/* Stats Pills */}
+              <div className="flex items-center justify-center gap-3 mt-3">
+                <div className="px-3 py-1.5 bg-amber-900/50 backdrop-blur-sm rounded-full border border-amber-400/30">
+                  <span className="text-xs font-bold text-amber-100">
                     {totalArticles > 0 ? totalArticles : articles.length + (featuredArticle ? 1 : 0)} texts
                   </span>
                 </div>
-                <div className="px-3 py-1.5 bg-black/20 backdrop-blur-sm rounded-full border border-white/20">
-                  <span className="text-xs font-bold opacity-90">
+                <div className="px-3 py-1.5 bg-amber-900/50 backdrop-blur-sm rounded-full border border-amber-400/30">
+                  <span className="text-xs font-bold text-amber-100">
                     {totalViews.toLocaleString()} readers
                   </span>
                 </div>
               </div>
             </div>
 
-            {/* Search Bar + Write Button Row */}
-            <div className="flex items-center gap-3 max-w-3xl mx-auto mb-6 sm:mb-8 px-4 sm:px-0">
-              <form onSubmit={handleSearch} className="flex-1 relative">
-                <input
-                  type="text"
-                  value={searchQuery}
-                  onChange={(e) => setSearchQuery(e.target.value)}
-                  placeholder="Search the library..."
-                  className="w-full px-4 sm:px-5 py-2.5 sm:py-3 rounded-xl bg-black/20 backdrop-blur-sm border border-white/20 text-white placeholder-white/50 font-medium focus:outline-none focus:border-white/40 transition-colors text-sm sm:text-base"
-                />
-                <button
-                  type="submit"
-                  className="absolute right-2 top-1/2 -translate-y-1/2 p-2 bg-black/30 hover:bg-black/50 rounded-lg transition-colors"
-                >
-                  <Search className="w-4 h-4" />
-                </button>
-              </form>
-              {session && (
-                <Link href="/articles/write" className="hidden sm:block">
-                  <Button className="bg-white text-[var(--primary)] hover:bg-white/90 font-bold px-5 py-2.5 rounded-xl shadow-lg whitespace-nowrap">
-                    <PenSquare className="w-4 h-4 mr-2" />
-                    Write
-                  </Button>
-                </Link>
-              )}
-            </div>
-
-            {/* Most Sought Texts - Integrated in Hero */}
+            {/* Bookshelf Display - Featured "Books" on perspective shelves */}
             {trendingArticles.length > 0 && !searchQuery && activeSort === 'all' && (
-              <div className="px-4 sm:px-0">
-                <div className="flex items-center justify-center gap-2 mb-4">
-                  <Flame className="w-4 h-4 sm:w-5 sm:h-5 opacity-80" />
-                  <span className="text-sm sm:text-base font-bold opacity-80">Most Sought</span>
+              <div className="relative mb-6">
+                {/* Shelf Label */}
+                <div className="flex items-center justify-center gap-2 mb-3">
+                  <div className="h-px flex-1 max-w-16 bg-gradient-to-r from-transparent to-amber-400/50" />
+                  <div className="flex items-center gap-2 px-3 py-1 bg-amber-900/60 rounded-full border border-amber-500/40">
+                    <Flame className="w-3.5 h-3.5 text-amber-300" />
+                    <span className="text-xs font-bold text-amber-100 uppercase tracking-wide">Most Sought Volumes</span>
+                  </div>
+                  <div className="h-px flex-1 max-w-16 bg-gradient-to-l from-transparent to-amber-400/50" />
                 </div>
-                <div className="grid grid-cols-1 md:grid-cols-3 gap-3 sm:gap-4">
+
+                {/* Books on Shelf - styled as book spines */}
+                <div className="flex justify-center items-end gap-1 sm:gap-2 px-4" style={{ perspective: '800px' }}>
                   {trendingArticles.slice(0, 3).map((article, index) => {
                     const authorTheme = getAuthorTheme(article.author.guardianArchetype)
-                    const rankColors = ['from-yellow-500 to-amber-600', 'from-gray-400 to-gray-500', 'from-orange-600 to-amber-700']
-                    const rankLabels = ['#1', '#2', '#3']
+                    const bookColors = [
+                      'from-amber-700 via-amber-600 to-amber-700',
+                      'from-emerald-800 via-emerald-700 to-emerald-800',
+                      'from-rose-800 via-rose-700 to-rose-800'
+                    ]
+                    const spineHeights = ['h-36 sm:h-44', 'h-32 sm:h-40', 'h-34 sm:h-42']
 
                     return (
-                      <Link key={article.id} href={`/articles/${article.slug}`}>
-                        <div className="bg-black/20 backdrop-blur-sm border border-white/20 rounded-xl p-3 hover:bg-black/30 transition-all group cursor-pointer">
-                          <div className="flex items-start gap-3">
-                            {/* Rank Badge */}
-                            <div className={`shrink-0 w-8 h-8 bg-gradient-to-br ${rankColors[index]} rounded-lg flex items-center justify-center shadow-lg`}>
-                              <span className="text-white font-black text-sm">{rankLabels[index]}</span>
+                      <Link key={article.id} href={`/articles/${article.slug}`} className="group">
+                        <div
+                          className={`relative ${spineHeights[index]} w-20 sm:w-28 bg-gradient-to-b ${bookColors[index]} rounded-sm shadow-xl cursor-pointer transition-all duration-300 group-hover:-translate-y-2 group-hover:shadow-2xl`}
+                          style={{
+                            transformStyle: 'preserve-3d',
+                            transform: `rotateY(${index === 0 ? -5 : index === 2 ? 5 : 0}deg)`,
+                          }}
+                        >
+                          {/* Book spine edge highlight */}
+                          <div className="absolute inset-y-0 left-0 w-1 bg-gradient-to-b from-white/30 via-white/10 to-white/30 rounded-l-sm" />
+
+                          {/* Rank badge on spine */}
+                          <div className="absolute top-2 left-1/2 -translate-x-1/2">
+                            <div className={`w-6 h-6 rounded-full bg-gradient-to-br ${index === 0 ? 'from-yellow-400 to-amber-500' : index === 1 ? 'from-gray-300 to-gray-400' : 'from-orange-400 to-amber-600'} flex items-center justify-center shadow-lg border border-white/30`}>
+                              <span className="text-[10px] font-black text-white">#{index + 1}</span>
                             </div>
+                          </div>
 
-                            <div className="flex-1 min-w-0">
-                              {/* Category */}
-                              <span className="px-1.5 py-0.5 bg-white/20 font-bold text-[10px] rounded">
-                                {article.category.name}
-                              </span>
+                          {/* Book title on spine - rotated */}
+                          <div className="absolute inset-x-2 top-10 bottom-8 flex items-center justify-center overflow-hidden">
+                            <span
+                              className="text-[10px] sm:text-xs font-bold text-white/90 text-center leading-tight line-clamp-4 px-1"
+                              style={{ writingMode: 'vertical-rl', textOrientation: 'mixed', transform: 'rotate(180deg)' }}
+                            >
+                              {article.title}
+                            </span>
+                          </div>
 
-                              {/* Title */}
-                              <h3 className="text-sm font-bold mt-1 line-clamp-2 group-hover:underline">
-                                {article.title}
-                              </h3>
+                          {/* Author at bottom */}
+                          <div className="absolute bottom-2 left-1/2 -translate-x-1/2 text-center">
+                            <span className="text-[8px] text-white/70 font-medium truncate block max-w-16 sm:max-w-20">
+                              {article.author.name.split(' ')[0]}
+                            </span>
+                          </div>
 
-                              {/* Stats */}
-                              <div className="flex items-center gap-3 mt-1.5 text-[10px] opacity-70">
-                                <span className="flex items-center gap-1">
-                                  <Eye className="w-3 h-3" />
-                                  {article.views}
+                          {/* Book page edges (right side) */}
+                          <div className="absolute inset-y-1 -right-0.5 w-1 bg-gradient-to-r from-amber-100/50 to-amber-50/30 rounded-r-sm"
+                               style={{ transform: 'translateZ(-2px)' }} />
+
+                          {/* Hover tooltip */}
+                          <div className="absolute -bottom-16 left-1/2 -translate-x-1/2 w-40 sm:w-48 opacity-0 group-hover:opacity-100 transition-opacity z-20 pointer-events-none">
+                            <div className="bg-black/90 backdrop-blur-sm rounded-lg p-2 text-center shadow-xl">
+                              <p className="text-[10px] text-white font-bold line-clamp-2">{article.title}</p>
+                              <div className="flex items-center justify-center gap-2 mt-1 text-[9px] text-white/70">
+                                <span className="flex items-center gap-0.5">
+                                  <Eye className="w-2.5 h-2.5" />{article.views}
                                 </span>
-                                <span className="flex items-center gap-1">
-                                  <Clock className="w-3 h-3" />
-                                  {article.readTime}m
+                                <span className="flex items-center gap-0.5">
+                                  <Clock className="w-2.5 h-2.5" />{article.readTime}m
                                 </span>
-                                <span className="font-medium truncate">{article.author.name}</span>
                               </div>
                             </div>
                           </div>
@@ -426,10 +470,73 @@ export default function ArticlesPage() {
                     )
                   })}
                 </div>
+
+                {/* Shelf surface */}
+                <div className="relative h-3 mx-auto max-w-md mt-1">
+                  <div className="absolute inset-0 bg-gradient-to-b from-amber-800 via-amber-700 to-amber-900 rounded-sm shadow-lg" />
+                  <div className="absolute inset-x-0 top-0 h-px bg-amber-500/50" />
+                  <div className="absolute inset-x-0 bottom-0 h-1 bg-amber-950/50 rounded-b-sm" />
+                </div>
               </div>
             )}
+
+            {/* Card Catalog Search - The Baseboard */}
+            <div className="relative max-w-3xl mx-auto px-4 sm:px-0">
+              {/* Catalog Cabinet Frame */}
+              <div className="relative bg-gradient-to-b from-amber-800 to-amber-900 rounded-t-lg p-1 shadow-2xl border-t-2 border-amber-600/50">
+                {/* Catalog Label */}
+                <div className="absolute -top-3 left-1/2 -translate-x-1/2 px-4 py-1 bg-amber-700 rounded-full border border-amber-500/50 shadow-lg">
+                  <span className="text-[10px] font-bold text-amber-100 uppercase tracking-widest">Card Catalog</span>
+                </div>
+
+                {/* Drawer front */}
+                <div className="bg-gradient-to-b from-amber-700 via-amber-600 to-amber-700 rounded-lg p-3 sm:p-4 border border-amber-500/30">
+                  {/* Drawer handle */}
+                  <div className="absolute top-1/2 -translate-y-1/2 left-3 w-2 h-8 bg-gradient-to-b from-amber-400 via-amber-500 to-amber-600 rounded-full shadow-inner border border-amber-300/50" />
+                  <div className="absolute top-1/2 -translate-y-1/2 right-3 w-2 h-8 bg-gradient-to-b from-amber-400 via-amber-500 to-amber-600 rounded-full shadow-inner border border-amber-300/50" />
+
+                  {/* Search input styled as index card */}
+                  <form onSubmit={handleSearch} className="flex items-center gap-2 sm:gap-3">
+                    <div className="flex-1 relative">
+                      <div className="absolute inset-0 bg-amber-50 rounded-lg shadow-inner" />
+                      <input
+                        type="text"
+                        value={searchQuery}
+                        onChange={(e) => setSearchQuery(e.target.value)}
+                        placeholder="Search the catalog..."
+                        className="relative w-full px-4 sm:px-5 py-2.5 sm:py-3 rounded-lg bg-transparent text-amber-900 placeholder-amber-600/60 font-medium focus:outline-none text-sm sm:text-base border-2 border-amber-300/50 focus:border-amber-400"
+                        style={{ fontFamily: 'Georgia, serif' }}
+                      />
+                      <button
+                        type="submit"
+                        className="absolute right-2 top-1/2 -translate-y-1/2 p-2 bg-amber-700 hover:bg-amber-600 rounded-lg transition-colors shadow-md"
+                      >
+                        <Search className="w-4 h-4 text-amber-100" />
+                      </button>
+                    </div>
+                    {session && (
+                      <Link href="/articles/write" className="hidden sm:block">
+                        <Button className="bg-emerald-700 text-white hover:bg-emerald-600 font-bold px-4 py-2.5 rounded-lg shadow-lg whitespace-nowrap border border-emerald-500/50">
+                          <PenSquare className="w-4 h-4 mr-2" />
+                          Contribute
+                        </Button>
+                      </Link>
+                    )}
+                  </form>
+                </div>
+              </div>
+
+              {/* Catalog base/feet */}
+              <div className="flex justify-between px-8">
+                <div className="w-8 h-2 bg-gradient-to-b from-amber-900 to-amber-950 rounded-b-md" />
+                <div className="w-8 h-2 bg-gradient-to-b from-amber-900 to-amber-950 rounded-b-md" />
+              </div>
+            </div>
           </div>
         </div>
+
+        {/* Bottom fade to content area */}
+        <div className="absolute bottom-0 left-0 right-0 h-16 bg-gradient-to-t from-[var(--background)] to-transparent" />
       </div>
 
       {/* Welcome Guide for First-Time Visitors */}
