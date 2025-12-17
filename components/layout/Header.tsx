@@ -391,7 +391,7 @@ export function Header() {
                 </Link>
                 <Link
                   href="/auth/signup"
-                  className="inline-flex items-center justify-center rounded-lg font-medium transition-all duration-200 px-3 py-1.5 text-sm bg-[var(--primary)] text-[var(--primary-foreground)] hover:opacity-90 shadow-sm hover:shadow-md"
+                  className="inline-flex items-center justify-center rounded-lg font-medium transition-all duration-200 px-3 py-1.5 text-sm bg-gradient-to-r from-emerald-600 to-teal-600 text-white hover:from-emerald-500 hover:to-teal-500 shadow-sm hover:shadow-md"
                 >
                   Get Started
                 </Link>
