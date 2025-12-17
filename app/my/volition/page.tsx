@@ -12,6 +12,7 @@ import {
   Users,
   MessageCircle,
   Leaf,
+  Rocket,
   Maximize2,
   Minimize2,
   RotateCcw,
@@ -36,6 +37,7 @@ import { QuickActionsBar } from '@/components/volition/QuickActionsBar'
 import { ProfileCard } from '@/components/volition/cards/ProfileCard'
 import { ProfileBusinessCard } from '@/components/profile/ProfileBusinessCard'
 import { ProjectCard } from '@/components/volition/cards/ProjectCard'
+import { ProjectPreviewModal } from '@/components/volition/cards/ProjectPreviewModal'
 import { ArticleCard } from '@/components/volition/cards/ArticleCard'
 import { LearningCard } from '@/components/volition/cards/LearningCard'
 import { NetworkCard } from '@/components/volition/cards/NetworkCard'
@@ -50,6 +52,7 @@ const iconMap = {
   Users,
   MessageCircle,
   Leaf,
+  Rocket,
 }
 
 export default function MyVolitionPage() {
@@ -102,6 +105,9 @@ export default function MyVolitionPage() {
 
   // Business card modal
   const [showBusinessCardModal, setShowBusinessCardModal] = useState(false)
+
+  // Project preview modal
+  const [previewProject, setPreviewProject] = useState<any | null>(null)
 
   // Fetch functions
   const fetchProjects = useCallback(async () => {
@@ -340,6 +346,7 @@ export default function MyVolitionPage() {
                 project={project}
                 userId={user.id}
                 isCompact={isCompact}
+                onPreview={(p) => setPreviewProject(p)}
                 onDelete={(id) =>
                   setDeleteModal({
                     isOpen: true,
@@ -891,6 +898,14 @@ export default function MyVolitionPage() {
           </div>
         </div>
       )}
+
+      {/* Project Preview Modal */}
+      <ProjectPreviewModal
+        project={previewProject}
+        isOpen={!!previewProject}
+        onClose={() => setPreviewProject(null)}
+        userId={user.id}
+      />
 
       <style jsx global>{`
         .scrollbar-none::-webkit-scrollbar {

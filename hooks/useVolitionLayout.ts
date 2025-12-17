@@ -22,7 +22,7 @@ export interface LaneDefinition {
 
 export const DEFAULT_LANES: LaneDefinition[] = [
   { id: 'profile', title: 'Identity', icon: 'User', gradient: 'from-[var(--primary)] to-[var(--accent)]', enabled: true },
-  { id: 'projects', title: 'Projects', icon: 'Briefcase', gradient: 'from-[var(--secondary)] to-[var(--primary)]', enabled: true },
+  { id: 'projects', title: 'Projects', icon: 'Rocket', gradient: 'from-violet-500 to-purple-600', enabled: true }, // Distinct branch - collaboration hub
   { id: 'articles', title: 'Articles', icon: 'FileText', gradient: 'from-[var(--accent)] to-[var(--secondary)]', enabled: true },
   { id: 'learning', title: 'Learning', icon: 'BookOpen', gradient: 'from-[var(--primary)] to-[var(--secondary)]', enabled: true },
   { id: 'network', title: 'Network', icon: 'Users', gradient: 'from-[var(--accent)] to-[var(--primary)]', enabled: true },

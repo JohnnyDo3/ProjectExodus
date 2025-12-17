@@ -1,8 +1,14 @@
 'use client'
 
-import { Users, Target, Calendar, MoreHorizontal, Eye, Edit, Trash2 } from 'lucide-react'
+import { Users, Target, Calendar, MoreHorizontal, Eye, Edit, Trash2, Award, MessageSquare, FileText, BookOpen, TrendingUp } from 'lucide-react'
 import Link from 'next/link'
 import { useState } from 'react'
+
+interface ProjectMemberData {
+  role: 'VIEWER' | 'CONTRIBUTOR' | 'MODERATOR' | 'ADMIN' | 'OWNER'
+  contributionScore?: number
+  recognitions?: { badge: string }[]
+}
 
 interface ProjectCardProps {
   project: {
@@ -16,11 +22,18 @@ interface ProjectCardProps {
     createdAt: string | Date
     _count?: {
       members?: number
+      discussions?: number
+      researchPosts?: number
+      learningModules?: number
     }
+    // User's membership in this project
+    membership?: ProjectMemberData
   }
   userId?: string
   isCompact?: boolean
   onDelete?: (id: string) => void
+  onPreview?: (project: any) => void // Show preview modal instead of navigating
+  showContributions?: boolean // New: show contribution summary
   className?: string
 }
 
@@ -41,6 +54,18 @@ const statusColors: Record<string, { bg: string; text: string }> = {
     bg: 'bg-[var(--foreground)]/10',
     text: 'text-[var(--foreground)]/60',
   },
+  ARCHIVED: {
+    bg: 'bg-[var(--muted)]',
+    text: 'text-[var(--muted-foreground)]',
+  },
+}
+
+const roleColors: Record<string, { bg: string; text: string; label: string }> = {
+  OWNER: { bg: 'bg-amber-500/10', text: 'text-amber-500', label: 'Owner' },
+  ADMIN: { bg: 'bg-purple-500/10', text: 'text-purple-500', label: 'Admin' },
+  MODERATOR: { bg: 'bg-blue-500/10', text: 'text-blue-500', label: 'Mod' },
+  CONTRIBUTOR: { bg: 'bg-green-500/10', text: 'text-green-500', label: 'Contributor' },
+  VIEWER: { bg: 'bg-gray-500/10', text: 'text-gray-500', label: 'Viewer' },
 }
 
 export function ProjectCard({
@@ -48,33 +73,64 @@ export function ProjectCard({
   userId,
   isCompact = false,
   onDelete,
+  onPreview,
+  showContributions = false,
   className = '',
 }: ProjectCardProps) {
   const [showMenu, setShowMenu] = useState(false)
   const isOwner = project.creatorId === userId
   const colors = statusColors[project.status] || statusColors.PLANNING
+  const membership = project.membership
+  const role = membership?.role || (isOwner ? 'OWNER' : undefined)
+  const roleInfo = role ? roleColors[role] : null
 
   if (isCompact) {
+    const compactContent = (
+      <>
+        <div className="flex items-center justify-between mb-1">
+          <span className={`px-2 py-0.5 rounded text-[10px] font-bold uppercase ${colors.bg} ${colors.text}`}>
+            {project.status}
+          </span>
+          {roleInfo && (
+            <span className={`px-2 py-0.5 rounded text-[10px] font-bold uppercase ${roleInfo.bg} ${roleInfo.text}`}>
+              {roleInfo.label}
+            </span>
+          )}
+        </div>
+        <h4 className="font-bold text-[var(--foreground)] truncate mb-1">{project.name}</h4>
+        <div className="flex items-center gap-3 text-xs text-[var(--foreground)]/50">
+          <span className="flex items-center gap-1">
+            <Users className="w-3 h-3" />
+            {project._count?.members || 0}
+          </span>
+          {membership?.contributionScore !== undefined && membership.contributionScore > 0 && (
+            <span className="flex items-center gap-1 text-[var(--primary)]">
+              <TrendingUp className="w-3 h-3" />
+              {membership.contributionScore}
+            </span>
+          )}
+        </div>
+      </>
+    )
+
+    // If onPreview is provided, use a button to show modal; otherwise use Link
+    if (onPreview) {
+      return (
+        <button
+          onClick={() => onPreview(project)}
+          className={`block w-full text-left bg-[var(--muted)] rounded-xl p-3 hover:bg-[var(--muted)]/80 transition-colors ${className}`}
+        >
+          {compactContent}
+        </button>
+      )
+    }
+
     return (
       <Link
         href={`/community/projects/${project.slug}`}
         className={`block bg-[var(--muted)] rounded-xl p-3 hover:bg-[var(--muted)]/80 transition-colors ${className}`}
       >
-        <div className="flex items-center justify-between mb-1">
-          <span className={`px-2 py-0.5 rounded text-[10px] font-bold uppercase ${colors.bg} ${colors.text}`}>
-            {project.status}
-          </span>
-          {isOwner && (
-            <span className="px-2 py-0.5 rounded text-[10px] font-bold uppercase bg-[var(--accent)]/10 text-[var(--accent)]">
-              OWNER
-            </span>
-          )}
-        </div>
-        <h4 className="font-bold text-[var(--foreground)] truncate mb-1">{project.name}</h4>
-        <div className="flex items-center gap-2 text-xs text-[var(--foreground)]/50">
-          <Users className="w-3 h-3" />
-          <span>{project._count?.members || 0} members</span>
-        </div>
+        {compactContent}
       </Link>
     )
   }
@@ -88,9 +144,9 @@ export function ProjectCard({
             <span className={`px-2.5 py-1 rounded-lg text-[10px] font-bold uppercase ${colors.bg} ${colors.text}`}>
               {project.status}
             </span>
-            {isOwner && (
-              <span className="px-2.5 py-1 rounded-lg text-[10px] font-bold uppercase bg-[var(--accent)]/10 text-[var(--accent)]">
-                OWNER
+            {roleInfo && (
+              <span className={`px-2.5 py-1 rounded-lg text-[10px] font-bold uppercase ${roleInfo.bg} ${roleInfo.text}`}>
+                {roleInfo.label}
               </span>
             )}
           </div>
@@ -167,6 +223,51 @@ export function ProjectCard({
         )}
       </div>
 
+      {/* Contribution Stats (optional) */}
+      {showContributions && membership && (
+        <div className="px-4 py-3 border-t border-[var(--border)] bg-[var(--background)]/50">
+          <div className="flex items-center justify-between mb-2">
+            <span className="text-xs font-medium text-[var(--foreground)]/70">Your Contributions</span>
+            {membership.contributionScore !== undefined && (
+              <span className="flex items-center gap-1 text-xs font-bold text-[var(--primary)]">
+                <TrendingUp className="w-3 h-3" />
+                {membership.contributionScore} pts
+              </span>
+            )}
+          </div>
+          {membership.recognitions && membership.recognitions.length > 0 && (
+            <div className="flex items-center gap-1">
+              <Award className="w-3.5 h-3.5 text-amber-500" />
+              <span className="text-xs text-[var(--foreground)]/60">
+                {membership.recognitions.length} badge{membership.recognitions.length !== 1 ? 's' : ''} earned
+              </span>
+            </div>
+          )}
+        </div>
+      )}
+
+      {/* Project Stats */}
+      {showContributions && (
+        <div className="px-4 py-2 border-t border-[var(--border)] grid grid-cols-4 gap-2">
+          <div className="text-center">
+            <p className="text-sm font-bold">{project._count?.members || 0}</p>
+            <p className="text-[10px] text-[var(--foreground)]/50">Members</p>
+          </div>
+          <div className="text-center">
+            <p className="text-sm font-bold">{project._count?.discussions || 0}</p>
+            <p className="text-[10px] text-[var(--foreground)]/50">Discussions</p>
+          </div>
+          <div className="text-center">
+            <p className="text-sm font-bold">{project._count?.researchPosts || 0}</p>
+            <p className="text-[10px] text-[var(--foreground)]/50">Research</p>
+          </div>
+          <div className="text-center">
+            <p className="text-sm font-bold">{project._count?.learningModules || 0}</p>
+            <p className="text-[10px] text-[var(--foreground)]/50">Modules</p>
+          </div>
+        </div>
+      )}
+
       {/* Footer */}
       <div className="px-4 py-3 border-t border-[var(--border)] flex items-center justify-between">
         <div className="flex items-center gap-3 text-xs text-[var(--foreground)]/50">
@@ -180,12 +281,22 @@ export function ProjectCard({
           </div>
         </div>
 
-        <Link
-          href={`/community/projects/${project.slug}`}
-          className="px-3 py-1.5 rounded-lg bg-[var(--primary)]/10 text-[var(--primary)] text-xs font-bold hover:bg-[var(--primary)]/20 transition-colors"
-        >
-          View
-        </Link>
+        <div className="flex items-center gap-2">
+          {onPreview && (
+            <button
+              onClick={() => onPreview(project)}
+              className="px-3 py-1.5 rounded-lg bg-[var(--muted)] text-[var(--foreground)]/70 text-xs font-bold hover:bg-[var(--muted)]/80 transition-colors"
+            >
+              Preview
+            </button>
+          )}
+          <Link
+            href={`/community/projects/${project.slug}`}
+            className="px-3 py-1.5 rounded-lg bg-[var(--primary)]/10 text-[var(--primary)] text-xs font-bold hover:bg-[var(--primary)]/20 transition-colors"
+          >
+            {onPreview ? 'Expand' : 'View'}
+          </Link>
+        </div>
       </div>
     </div>
   )
