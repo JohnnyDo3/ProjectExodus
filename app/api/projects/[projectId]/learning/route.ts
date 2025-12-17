@@ -38,18 +38,18 @@ export async function GET(
       const userProgress = await prisma.projectLearningProgress.findMany({
         where: {
           userId: session.user.id,
-          moduleId: { in: modules.map((m) => m.id) },
+          moduleId: { in: modules.map((m: { id: string }) => m.id) },
         },
       })
 
       const progressMap = new Map(
-        userProgress.map((p) => [p.moduleId, p])
+        userProgress.map((p: { moduleId: string }) => [p.moduleId, p])
       )
 
-      modulesWithProgress = modules.map((m) => ({
+      modulesWithProgress = modules.map((m: typeof modules[number]) => ({
         ...m,
         userProgress: progressMap.get(m.id) || null,
-      }))
+      })) as typeof modules
     }
 
     return NextResponse.json({
