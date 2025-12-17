@@ -127,6 +127,22 @@ model User {
   // Recommendations
   articleRecommendations    ArticleRecommendation[]  @relation("ArticleRecommendations")
 
+  // Enhanced Project Relations
+  subgroupLeaderships       SubgroupLeader[]         @relation("SubgroupLeaders")
+  subgroupMemberships       SubgroupMember[]         @relation("SubgroupMembers")
+  subgroupJoinRequests      SubgroupJoinRequest[]    @relation("SubgroupJoinRequests")
+  projectDiscussions        ProjectDiscussion[]      @relation("ProjectDiscussionAuthor")
+  projectDiscussionReplies  ProjectDiscussionReply[] @relation("ProjectDiscussionReplyAuthor")
+  subgroupDiscussions       SubgroupDiscussion[]     @relation("SubgroupDiscussionAuthor")
+  subgroupDiscussionReplies SubgroupDiscussionReply[] @relation("SubgroupDiscussionReplyAuthor")
+  projectResearchPosts      ProjectResearch[]        @relation("ProjectResearchAuthor")
+  projectResearchComments   ProjectResearchComment[] @relation("ProjectResearchCommentAuthor")
+  projectModuleProgress     ProjectModuleProgress[]  @relation("ProjectModuleProgress")
+  projectWaivers            ProjectPrerequisiteWaiver[] @relation("ProjectWaivers")
+  projectWaiversApproved    ProjectPrerequisiteWaiver[] @relation("ProjectWaiversApproved")
+  projectContributions      ProjectContribution[]    @relation("ProjectContributions")
+  projectNotifications      ProjectNotification[]    @relation("ProjectNotifications")
+
   @@index([email])
   @@index([role])
 }
@@ -960,7 +976,8 @@ model SocialLike {
 }
 
 // ============================================
-// PROJECT COLLABORATION MODELS
+// PROJECT COLLABORATION MODELS (Enhanced)
+// Full-featured project system with Sage AI assistance
 // ============================================
 
 model Project {
@@ -970,17 +987,35 @@ model Project {
   description String          @db.Text
   goal        String?         @db.Text
   status      ProjectStatus   @default(ACTIVE)
+  visibility  ProjectVisibility @default(PUBLIC)
   coverImage  String?
+
+  // Customizable layout configuration (JSON)
+  layoutConfig Json?          @default("{}")
+
+  // Creator/Owner
   creatorId   String
   creator     User            @relation("ProjectCreator", fields: [creatorId], references: [id])
-  members     ProjectMember[]
-  messages    ProjectMessage[]
+
+  // Relations
+  members             ProjectMember[]
+  messages            ProjectMessage[]
+  subgroups           ProjectSubgroup[]
+  discussions         ProjectDiscussion[]
+  researchPosts       ProjectResearch[]
+  learningModules     ProjectLearningModule[]
+  prerequisites       ProjectPrerequisite[]
+  waivers             ProjectPrerequisiteWaiver[]
+  contributions       ProjectContribution[]
+  projectNotifications ProjectNotification[]
+
   createdAt   DateTime        @default(now())
   updatedAt   DateTime        @updatedAt
 
   @@index([slug])
   @@index([creatorId])
   @@index([status])
+  @@index([visibility])
 }
 
 enum ProjectStatus {
@@ -990,20 +1025,52 @@ enum ProjectStatus {
   ARCHIVED
 }
 
+enum ProjectVisibility {
+  PUBLIC      // Everyone can view
+  UNLISTED    // Only with direct link
+}
+
 model ProjectMember {
-  id        String        @id @default(cuid())
+  id        String              @id @default(cuid())
   projectId String
   userId    String
-  role      ProjectRole   @default(MEMBER)
-  project   Project       @relation(fields: [projectId], references: [id], onDelete: Cascade)
-  user      User          @relation(fields: [userId], references: [id], onDelete: Cascade)
-  joinedAt  DateTime      @default(now())
+  role      ProjectMemberRole   @default(VIEWER)
+
+  // Personalization - member's custom view arrangement
+  layoutPreferences Json?       @default("{}")
+
+  // Opt-in notifications
+  notifyDiscussions Boolean     @default(false)
+  notifyResearch    Boolean     @default(false)
+  notifyUpdates     Boolean     @default(false)
+  notifyMentions    Boolean     @default(true)
+
+  // Contribution tracking
+  contributionScore Int         @default(0)
+
+  project   Project             @relation(fields: [projectId], references: [id], onDelete: Cascade)
+  user      User                @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  // Recognition badges
+  recognitions ProjectMemberRecognition[]
+
+  joinedAt  DateTime            @default(now())
 
   @@unique([projectId, userId])
   @@index([projectId])
   @@index([userId])
+  @@index([role])
 }
 
+enum ProjectMemberRole {
+  VIEWER        // Can view, pending approval or prerequisites not met
+  CONTRIBUTOR   // Can contribute to project
+  MODERATOR     // Can moderate discussions, approve content
+  ADMIN         // Full admin rights (layout, members, settings)
+  OWNER         // Project creator - cannot be removed
+}
+
+// Legacy ProjectRole kept for backwards compatibility
 enum ProjectRole {
   MEMBER
   MODERATOR
@@ -1023,6 +1090,467 @@ model ProjectMessage {
   @@index([projectId])
   @@index([userId])
   @@index([createdAt])
+}
+
+// ============================================
+// PROJECT SUBGROUPS
+// Teams/working groups within projects
+// ============================================
+
+model ProjectSubgroup {
+  id                String              @id @default(cuid())
+  projectId         String
+  name              String
+  description       String?             @db.Text
+  goal              String?             @db.Text
+  isPrivate         Boolean             @default(false)
+
+  // Subgroup-specific learning requirements
+  requiresLearning  Boolean             @default(false)
+  requiredModuleIds String[]            @default([])
+
+  project           Project             @relation(fields: [projectId], references: [id], onDelete: Cascade)
+  leaders           SubgroupLeader[]
+  members           SubgroupMember[]
+  discussions       SubgroupDiscussion[]
+  joinRequests      SubgroupJoinRequest[]
+
+  createdAt         DateTime            @default(now())
+  updatedAt         DateTime            @updatedAt
+
+  @@index([projectId])
+  @@index([isPrivate])
+}
+
+model SubgroupLeader {
+  id          String          @id @default(cuid())
+  subgroupId  String
+  userId      String
+  subgroup    ProjectSubgroup @relation(fields: [subgroupId], references: [id], onDelete: Cascade)
+  user        User            @relation("SubgroupLeaders", fields: [userId], references: [id], onDelete: Cascade)
+  assignedAt  DateTime        @default(now())
+
+  @@unique([subgroupId, userId])
+  @@index([subgroupId])
+  @@index([userId])
+}
+
+model SubgroupMember {
+  id            String          @id @default(cuid())
+  subgroupId    String
+  userId        String
+  canContribute Boolean         @default(true)  // false = learning/viewing only
+  subgroup      ProjectSubgroup @relation(fields: [subgroupId], references: [id], onDelete: Cascade)
+  user          User            @relation("SubgroupMembers", fields: [userId], references: [id], onDelete: Cascade)
+  joinedAt      DateTime        @default(now())
+
+  @@unique([subgroupId, userId])
+  @@index([subgroupId])
+  @@index([userId])
+}
+
+model SubgroupJoinRequest {
+  id          String              @id @default(cuid())
+  subgroupId  String
+  userId      String
+  status      JoinRequestStatus   @default(PENDING)
+  message     String?             @db.Text
+  subgroup    ProjectSubgroup     @relation(fields: [subgroupId], references: [id], onDelete: Cascade)
+  user        User                @relation("SubgroupJoinRequests", fields: [userId], references: [id], onDelete: Cascade)
+  createdAt   DateTime            @default(now())
+  reviewedAt  DateTime?
+  reviewedBy  String?
+
+  @@unique([subgroupId, userId])
+  @@index([subgroupId])
+  @@index([userId])
+  @@index([status])
+}
+
+enum JoinRequestStatus {
+  PENDING
+  APPROVED
+  DENIED
+}
+
+// ============================================
+// PROJECT DISCUSSIONS
+// Forum-style discussions within projects
+// ============================================
+
+model ProjectDiscussion {
+  id          String              @id @default(cuid())
+  projectId   String
+  title       String
+  content     String              @db.Text
+  isPinned    Boolean             @default(false)
+  isLocked    Boolean             @default(false)
+  viewCount   Int                 @default(0)
+  authorId    String
+
+  project     Project             @relation(fields: [projectId], references: [id], onDelete: Cascade)
+  author      User                @relation("ProjectDiscussionAuthor", fields: [authorId], references: [id], onDelete: Cascade)
+  replies     ProjectDiscussionReply[]
+
+  createdAt   DateTime            @default(now())
+  updatedAt   DateTime            @updatedAt
+
+  @@index([projectId])
+  @@index([authorId])
+  @@index([isPinned])
+  @@index([createdAt])
+}
+
+model ProjectDiscussionReply {
+  id            String              @id @default(cuid())
+  discussionId  String
+  content       String              @db.Text
+  authorId      String
+  parentId      String?             // For nested replies
+
+  discussion    ProjectDiscussion   @relation(fields: [discussionId], references: [id], onDelete: Cascade)
+  author        User                @relation("ProjectDiscussionReplyAuthor", fields: [authorId], references: [id], onDelete: Cascade)
+  parent        ProjectDiscussionReply?  @relation("DiscussionReplyThread", fields: [parentId], references: [id], onDelete: Cascade)
+  children      ProjectDiscussionReply[] @relation("DiscussionReplyThread")
+
+  createdAt     DateTime            @default(now())
+  updatedAt     DateTime            @updatedAt
+
+  @@index([discussionId])
+  @@index([authorId])
+  @@index([parentId])
+}
+
+// Subgroup-specific discussions
+model SubgroupDiscussion {
+  id          String              @id @default(cuid())
+  subgroupId  String
+  title       String
+  content     String              @db.Text
+  isPinned    Boolean             @default(false)
+  authorId    String
+
+  subgroup    ProjectSubgroup     @relation(fields: [subgroupId], references: [id], onDelete: Cascade)
+  author      User                @relation("SubgroupDiscussionAuthor", fields: [authorId], references: [id], onDelete: Cascade)
+  replies     SubgroupDiscussionReply[]
+
+  createdAt   DateTime            @default(now())
+  updatedAt   DateTime            @updatedAt
+
+  @@index([subgroupId])
+  @@index([authorId])
+}
+
+model SubgroupDiscussionReply {
+  id            String              @id @default(cuid())
+  discussionId  String
+  content       String              @db.Text
+  authorId      String
+
+  discussion    SubgroupDiscussion  @relation(fields: [discussionId], references: [id], onDelete: Cascade)
+  author        User                @relation("SubgroupDiscussionReplyAuthor", fields: [authorId], references: [id], onDelete: Cascade)
+
+  createdAt     DateTime            @default(now())
+  updatedAt     DateTime            @updatedAt
+
+  @@index([discussionId])
+  @@index([authorId])
+}
+
+// ============================================
+// PROJECT RESEARCH (Article-style posts)
+// News article format with heading, summary, source
+// ============================================
+
+model ProjectResearch {
+  id          String              @id @default(cuid())
+  projectId   String
+
+  // Article-style structure
+  heading     String
+  summary     String              @db.Text
+  fullContent String?             @db.Text
+  sourceUrl   String?
+  sourceTitle String?
+
+  // Metadata
+  authorId    String
+  tags        String[]            @default([])
+  isPinned    Boolean             @default(false)
+  viewCount   Int                 @default(0)
+
+  project     Project             @relation(fields: [projectId], references: [id], onDelete: Cascade)
+  author      User                @relation("ProjectResearchAuthor", fields: [authorId], references: [id], onDelete: Cascade)
+  comments    ProjectResearchComment[]
+
+  createdAt   DateTime            @default(now())
+  updatedAt   DateTime            @updatedAt
+
+  @@index([projectId])
+  @@index([authorId])
+  @@index([isPinned])
+  @@index([createdAt])
+}
+
+model ProjectResearchComment {
+  id          String            @id @default(cuid())
+  researchId  String
+  content     String            @db.Text
+  authorId    String
+
+  research    ProjectResearch   @relation(fields: [researchId], references: [id], onDelete: Cascade)
+  author      User              @relation("ProjectResearchCommentAuthor", fields: [authorId], references: [id], onDelete: Cascade)
+
+  createdAt   DateTime          @default(now())
+  updatedAt   DateTime          @updatedAt
+
+  @@index([researchId])
+  @@index([authorId])
+}
+
+// ============================================
+// PROJECT LEARNING MODULES
+// Built-in courses from basic to current state
+// ============================================
+
+model ProjectLearningModule {
+  id          String                  @id @default(cuid())
+  projectId   String
+
+  title       String
+  description String?                 @db.Text
+  order       Int                     @default(0)
+
+  // Content
+  videoUrl    String?
+  textContent String?                 @db.Text
+
+  // Accreditation
+  isAccredited Boolean                @default(false)
+  difficulty  ProjectModuleDifficulty @default(BEGINNER)
+  estimatedMinutes Int?
+
+  project     Project                 @relation(fields: [projectId], references: [id], onDelete: Cascade)
+  progress    ProjectModuleProgress[]
+
+  createdAt   DateTime                @default(now())
+  updatedAt   DateTime                @updatedAt
+
+  @@index([projectId])
+  @@index([order])
+  @@index([difficulty])
+}
+
+enum ProjectModuleDifficulty {
+  BEGINNER
+  INTERMEDIATE
+  ADVANCED
+  CURRENT_STATE  // Catches up to where project is now
+}
+
+model ProjectModuleProgress {
+  id          String                      @id @default(cuid())
+  moduleId    String
+  userId      String
+  status      ProjectModuleProgressStatus @default(NOT_STARTED)
+  progress    Int                         @default(0)  // 0-100
+
+  module      ProjectLearningModule       @relation(fields: [moduleId], references: [id], onDelete: Cascade)
+  user        User                        @relation("ProjectModuleProgress", fields: [userId], references: [id], onDelete: Cascade)
+
+  startedAt   DateTime?
+  completedAt DateTime?
+
+  @@unique([moduleId, userId])
+  @@index([moduleId])
+  @@index([userId])
+  @@index([status])
+}
+
+enum ProjectModuleProgressStatus {
+  NOT_STARTED
+  IN_PROGRESS
+  COMPLETED
+}
+
+// ============================================
+// PROJECT PREREQUISITES
+// Course requirements for contribution access
+// ============================================
+
+model ProjectPrerequisite {
+  id                  String              @id @default(cuid())
+  projectId           String
+
+  // Type of prerequisite
+  type                PrerequisiteType
+
+  // For EXODUS_COURSE type - reference to Exodus Academy article/module
+  exodusCourseId      String?
+
+  // For PROJECT_MODULE type - reference to project's own learning module
+  projectModuleId     String?
+
+  // For TAG_MATCH type - courses matching this tag
+  requiredTag         String?
+
+  // For STOCK_LEVEL type - minimum STOCK score
+  minStockScore       Int?
+
+  // Description for display
+  displayName         String?
+  description         String?             @db.Text
+
+  project             Project             @relation(fields: [projectId], references: [id], onDelete: Cascade)
+
+  createdAt           DateTime            @default(now())
+
+  @@index([projectId])
+  @@index([type])
+}
+
+enum PrerequisiteType {
+  EXODUS_COURSE       // Specific Exodus Academy course
+  PROJECT_MODULE      // Project's own learning module
+  TAG_MATCH           // Courses matching a tag
+  STOCK_LEVEL         // Minimum STOCK score
+}
+
+// ============================================
+// PREREQUISITE WAIVERS
+// Admin-granted exceptions with AI assistance
+// ============================================
+
+model ProjectPrerequisiteWaiver {
+  id          String              @id @default(cuid())
+  projectId   String
+  userId      String
+
+  // Who approved
+  approvedById String
+  aiAssisted  Boolean             @default(false)
+  aiConfidence Int?               // 0-100 confidence score from Sage
+  reason      String?             @db.Text
+
+  project     Project             @relation(fields: [projectId], references: [id], onDelete: Cascade)
+  user        User                @relation("ProjectWaivers", fields: [userId], references: [id], onDelete: Cascade)
+  approvedBy  User                @relation("ProjectWaiversApproved", fields: [approvedById], references: [id], onDelete: Cascade)
+
+  createdAt   DateTime            @default(now())
+
+  @@unique([projectId, userId])
+  @@index([projectId])
+  @@index([userId])
+}
+
+// ============================================
+// MEMBER RECOGNITION (Badges)
+// Non-star ranking system
+// ============================================
+
+model ProjectMemberRecognition {
+  id          String              @id @default(cuid())
+  memberId    String              // ProjectMember ID
+  badge       ProjectRecognitionBadge
+
+  member      ProjectMember       @relation(fields: [memberId], references: [id], onDelete: Cascade)
+
+  earnedAt    DateTime            @default(now())
+
+  @@unique([memberId, badge])
+  @@index([memberId])
+  @@index([badge])
+}
+
+enum ProjectRecognitionBadge {
+  PIONEER           // Early contributor to the project
+  ARCHITECT         // Significant structural contributions
+  SCHOLAR           // Completed all learning + contributing
+  MENTOR            // Helping others learn
+  RESEARCHER        // Active in research sections
+  PATHFINDER        // Finding and sharing new resources
+  STEWARD           // Long-term consistent contributor
+  CATALYST          // Sparking productive discussions
+  RISING_STAR       // Learning the process, showing growth
+  TOP_CONTRIBUTOR   // Highest contribution score
+}
+
+// ============================================
+// CONTRIBUTION TRACKING
+// Track all project contributions for STOCK
+// ============================================
+
+model ProjectContribution {
+  id          String              @id @default(cuid())
+  projectId   String
+  userId      String
+
+  type        ProjectContributionType
+  referenceId String?             // ID of the thing contributed
+  points      Int                 @default(1)
+
+  project     Project             @relation(fields: [projectId], references: [id], onDelete: Cascade)
+  user        User                @relation("ProjectContributions", fields: [userId], references: [id], onDelete: Cascade)
+
+  createdAt   DateTime            @default(now())
+
+  @@index([projectId])
+  @@index([userId])
+  @@index([type])
+  @@index([createdAt])
+}
+
+enum ProjectContributionType {
+  DISCUSSION_STARTED
+  DISCUSSION_REPLY
+  RESEARCH_POSTED
+  RESEARCH_COMMENT
+  MODULE_CREATED
+  MODULE_COMPLETED
+  SUBGROUP_CREATED
+  MEMBER_MENTORED
+  RESOURCE_SHARED
+}
+
+// ============================================
+// PROJECT NOTIFICATIONS (Opt-in)
+// Granular notification system
+// ============================================
+
+model ProjectNotification {
+  id          String                      @id @default(cuid())
+  projectId   String
+  userId      String
+
+  type        ProjectNotificationType
+  title       String
+  content     String?
+  referenceId String?
+  isRead      Boolean                     @default(false)
+
+  project     Project                     @relation(fields: [projectId], references: [id], onDelete: Cascade)
+  user        User                        @relation("ProjectNotifications", fields: [userId], references: [id], onDelete: Cascade)
+
+  createdAt   DateTime                    @default(now())
+
+  @@index([projectId])
+  @@index([userId])
+  @@index([isRead])
+  @@index([createdAt])
+}
+
+enum ProjectNotificationType {
+  DISCUSSION_REPLY
+  DISCUSSION_MENTION
+  RESEARCH_UPDATE
+  RESEARCH_COMMENT
+  SUBGROUP_UPDATE
+  SUBGROUP_INVITE
+  ROLE_CHANGE
+  BADGE_EARNED
+  WAIVER_APPROVED
+  WAIVER_DENIED
+  PROJECT_ANNOUNCEMENT
 }
 
 // ============================================
