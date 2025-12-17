@@ -132,11 +132,14 @@ const gradeLevels = [
   { id: 'PHD', label: 'PhD', color: 'from-indigo-400 to-blue-600', icon: '🔬', ages: 'Doctoral' },
 ]
 
-// Curriculum highlights
+// Curriculum highlights - expanded
 const curriculumHighlights = [
   { name: 'Food Sovereignty', icon: Leaf, color: 'text-emerald-500' },
   { name: 'Sustainable Living', icon: Globe, color: 'text-blue-500' },
   { name: 'Environmental Science', icon: Brain, color: 'text-purple-500' },
+  { name: 'Renewable Energy', icon: Zap, color: 'text-amber-500' },
+  { name: 'Green Building', icon: Shield, color: 'text-teal-500' },
+  { name: 'Climate Action', icon: TrendingUp, color: 'text-rose-500' },
 ]
 
 export function CommunityHeartPage({ isAuthenticated }: CommunityHeartPageProps) {
@@ -216,7 +219,7 @@ export function CommunityHeartPage({ isAuthenticated }: CommunityHeartPageProps)
       <div className="flex-1 relative z-10 grid grid-cols-1 lg:grid-cols-12 gap-2 p-2 sm:p-3 overflow-hidden min-h-0">
         {/* Left column: BizID Showcase - Flip Card */}
         <div
-          className="lg:col-span-4 min-h-0"
+          className="lg:col-span-4 min-h-0 h-full"
           style={{ perspective: '1000px' }}
           onMouseEnter={() => setIsBizIDFlipped(true)}
           onMouseLeave={() => setIsBizIDFlipped(false)}
@@ -347,84 +350,53 @@ export function CommunityHeartPage({ isAuthenticated }: CommunityHeartPageProps)
               </motion.div>
             </GlowingBorder>
 
-            {/* Back Side - BizID Philosophy */}
+            {/* Back Side - BizID Philosophy (Centered with decorative elements) */}
             <div
-              className="absolute inset-0 bg-gradient-to-br from-[var(--card)] via-[var(--muted)] to-[var(--card)] rounded-xl p-3 overflow-hidden border border-[var(--primary)]/30"
+              className="absolute inset-0 bg-gradient-to-br from-stone-100 via-amber-50/80 to-stone-100 dark:from-stone-900 dark:via-amber-950/80 dark:to-stone-900 rounded-xl p-3 overflow-hidden border border-amber-300/30 dark:border-amber-700/30"
               style={{ backfaceVisibility: 'hidden', transform: 'rotateY(180deg)' }}
             >
               {/* Decorative glow */}
               <motion.div
-                className="absolute inset-0 bg-gradient-to-br from-[var(--primary)]/10 via-transparent to-[var(--accent)]/10"
+                className="absolute inset-0 bg-gradient-to-br from-amber-300/10 via-transparent to-emerald-300/10 dark:from-amber-600/10 dark:to-emerald-600/10"
                 animate={{ opacity: [0.3, 0.5, 0.3] }}
                 transition={{ duration: 4, repeat: Infinity }}
               />
 
-              {/* Corner ornaments */}
-              <CornerOrnament position="tl" />
-              <CornerOrnament position="br" />
+              <div className="relative z-10 h-full flex flex-col items-center justify-center">
+                {/* Top decorative ivy scroll */}
+                <svg className="w-full h-8 mb-2 opacity-25" viewBox="0 0 200 32" preserveAspectRatio="none">
+                  <path d="M0 16 Q30 8 60 16 Q90 24 120 16 Q150 8 180 16 Q195 20 200 16" fill="none" stroke="#166534" strokeWidth="1.5"/>
+                  <path d="M95 12 Q100 8 105 12 Q100 16 95 12" fill="#15803d"/>
+                  <path d="M100 16 L100 24" stroke="#166534" strokeWidth="1"/>
+                  <circle cx="100" cy="26" r="2" fill="#166534"/>
+                </svg>
 
-              <div className="relative z-10 h-full flex flex-col">
-                {/* Header */}
-                <div className="flex items-center gap-2 mb-2">
+                {/* Centered Philosophy content */}
+                <div className="flex-1 flex flex-col items-center justify-center space-y-2 px-2">
                   <motion.div
-                    className="w-6 h-6 rounded-lg bg-gradient-to-br from-[var(--primary)] to-[var(--accent)] flex items-center justify-center"
-                    animate={{ scale: [1, 1.05, 1] }}
-                    transition={{ duration: 2, repeat: Infinity }}
+                    className="w-8 h-8 rounded-full bg-amber-500/20 dark:bg-amber-600/30 flex items-center justify-center mb-1"
+                    animate={{ scale: [1, 1.1, 1] }}
+                    transition={{ duration: 3, repeat: Infinity }}
                   >
-                    <Heart className="w-3.5 h-3.5 text-white" />
+                    <Shield className="w-4 h-4 text-amber-600 dark:text-amber-400" />
                   </motion.div>
-                  <h3 className="font-bold text-sm text-[var(--foreground)] tracking-tight">The Philosophy</h3>
+                  <h3 className="font-bold text-sm text-[var(--foreground)] text-center">The Philosophy</h3>
+
+                  <div className="space-y-1.5 text-center">
+                    <p className="text-[9px] text-amber-700 dark:text-amber-300 font-medium">Guardian Identity</p>
+                    <p className="text-[8px] text-[var(--muted-foreground)] leading-relaxed max-w-[200px]">
+                      7 archetypes reflecting your values. Your declaration of purpose. Values-first connections with aligned community members.
+                    </p>
+                  </div>
                 </div>
 
-                <DecorativeDivider className="mb-2" />
-
-                {/* Philosophy content */}
-                <div className="flex-1 space-y-2 overflow-hidden">
-                  <motion.div
-                    className="bg-[var(--primary)]/10 rounded-lg p-2 border border-[var(--primary)]/20"
-                    initial={{ opacity: 0, y: 10 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    transition={{ delay: 0.2 }}
-                  >
-                    <p className="text-[10px] font-semibold text-[var(--primary)] mb-1 flex items-center gap-1">
-                      <Shield className="w-3 h-3" />
-                      Guardian Identity
-                    </p>
-                    <p className="text-[8px] text-[var(--muted-foreground)] leading-relaxed">
-                      Choose from 7 archetypes that reflect your values and approach to sustainability - not labels, but expressions of who you are.
-                    </p>
-                  </motion.div>
-
-                  <motion.div
-                    className="bg-[var(--accent)]/10 rounded-lg p-2 border border-[var(--accent)]/20"
-                    initial={{ opacity: 0, y: 10 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    transition={{ delay: 0.3 }}
-                  >
-                    <p className="text-[10px] font-semibold text-[var(--accent)] mb-1 flex items-center gap-1">
-                      <Star className="w-3 h-3" />
-                      Your Declaration
-                    </p>
-                    <p className="text-[8px] text-[var(--muted-foreground)] leading-relaxed">
-                      A personal statement of purpose - your commitment to the cause, visible to those who share your vision.
-                    </p>
-                  </motion.div>
-
-                  <motion.div
-                    className="bg-pink-500/10 rounded-lg p-2 border border-pink-500/20"
-                    initial={{ opacity: 0, y: 10 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    transition={{ delay: 0.4 }}
-                  >
-                    <p className="text-[10px] font-semibold text-pink-600 dark:text-pink-400 mb-1 flex items-center gap-1">
-                      <Heart className="w-3 h-3" />
-                      Values-First Connection
-                    </p>
-                    <p className="text-[8px] text-[var(--muted-foreground)] leading-relaxed">
-                      Network with people who share your principles. Your BizID is your introduction to a community aligned by purpose.
-                    </p>
-                  </motion.div>
-                </div>
+                {/* Bottom decorative ivy scroll */}
+                <svg className="w-full h-8 mt-2 opacity-25" viewBox="0 0 200 32" preserveAspectRatio="none">
+                  <path d="M0 16 Q30 24 60 16 Q90 8 120 16 Q150 24 180 16 Q195 12 200 16" fill="none" stroke="#166534" strokeWidth="1.5"/>
+                  <path d="M95 20 Q100 24 105 20 Q100 16 95 20" fill="#15803d"/>
+                  <path d="M100 16 L100 8" stroke="#166534" strokeWidth="1"/>
+                  <circle cx="100" cy="6" r="2" fill="#166534"/>
+                </svg>
               </div>
             </div>
           </motion.div>
@@ -570,49 +542,46 @@ export function CommunityHeartPage({ isAuthenticated }: CommunityHeartPageProps)
 
                 <DecorativeDivider className="mb-2" />
 
-                {/* Grade Levels Grid */}
-                <div className="relative z-10 mb-3">
+                {/* Grade Levels - Horizontal Timeline */}
+                <div className="relative z-10 mb-2">
                   <p className="text-[9px] text-[var(--muted-foreground)] font-medium mb-1.5 uppercase tracking-wide">Grade Levels</p>
-                  <div className="grid grid-cols-3 gap-1.5">
+                  <div className="relative flex items-center justify-between px-1">
+                    {/* Timeline connector line */}
+                    <div className="absolute top-1/2 left-2 right-2 h-0.5 bg-gradient-to-r from-green-400 via-purple-400 to-indigo-500 opacity-30 -translate-y-1/2" />
+
                     {gradeLevels.map((level, i) => (
                       <motion.div
                         key={level.id}
-                        className={`relative px-2 py-1.5 rounded-lg bg-gradient-to-r ${level.color} shadow-sm cursor-pointer overflow-hidden`}
-                        initial={{ opacity: 0, scale: 0.9 }}
-                        animate={{ opacity: 1, scale: 1 }}
+                        className="relative flex flex-col items-center z-10"
+                        initial={{ opacity: 0, y: 5 }}
+                        animate={{ opacity: 1, y: 0 }}
                         transition={{ delay: 0.1 + i * 0.05 }}
-                        whileHover={{ scale: 1.05, y: -1 }}
                       >
-                        <div className="absolute inset-0 bg-white/10" />
-                        <div className="relative flex items-center gap-1">
-                          <span className="text-sm">{level.icon}</span>
-                          <div className="flex-1 min-w-0">
-                            <p className="text-[8px] font-bold text-white truncate">{level.label}</p>
-                            <p className="text-[7px] text-white/70">{level.ages}</p>
-                          </div>
+                        <div className={`w-6 h-6 rounded-full bg-gradient-to-br ${level.color} flex items-center justify-center shadow-sm`}>
+                          <span className="text-[10px]">{level.icon}</span>
                         </div>
+                        <p className="text-[7px] font-medium text-[var(--muted-foreground)] mt-0.5 text-center leading-tight">{level.ages}</p>
                       </motion.div>
                     ))}
                   </div>
                 </div>
 
-                {/* Curriculum Highlights */}
-                <div className="relative z-10 mb-3">
-                  <p className="text-[9px] text-[var(--muted-foreground)] font-medium mb-1.5 uppercase tracking-wide">Curriculum</p>
-                  <div className="flex flex-wrap gap-1.5">
+                {/* Curriculum Highlights - Expanded Grid */}
+                <div className="relative z-10 flex-1 mb-2">
+                  <p className="text-[9px] text-[var(--muted-foreground)] font-medium mb-1 uppercase tracking-wide">Curriculum Topics</p>
+                  <div className="grid grid-cols-2 gap-1">
                     {curriculumHighlights.map((item, i) => {
                       const Icon = item.icon
                       return (
                         <motion.div
                           key={item.name}
-                          className="flex items-center gap-1 px-2 py-1 rounded-md bg-[var(--muted)]/50 border border-[var(--border)]/50"
+                          className="flex items-center gap-1.5 px-2 py-1.5 rounded-lg bg-[var(--muted)]/40 border border-[var(--border)]/30"
                           initial={{ opacity: 0, x: -10 }}
                           animate={{ opacity: 1, x: 0 }}
-                          transition={{ delay: 0.3 + i * 0.1 }}
-                          whileHover={{ scale: 1.02 }}
+                          transition={{ delay: 0.2 + i * 0.05 }}
                         >
-                          <Icon className={`w-3 h-3 ${item.color}`} />
-                          <span className="text-[9px] font-medium text-[var(--foreground)]">{item.name}</span>
+                          <Icon className={`w-3.5 h-3.5 ${item.color}`} />
+                          <span className="text-[8px] font-medium text-[var(--foreground)]">{item.name}</span>
                         </motion.div>
                       )
                     })}
@@ -620,20 +589,20 @@ export function CommunityHeartPage({ isAuthenticated }: CommunityHeartPageProps)
                 </div>
 
                 {/* Key Features - Inline compact row */}
-                <div className="relative z-10 flex items-center justify-center gap-3 py-1">
+                <div className="relative z-10 flex items-center justify-center gap-2 py-1 bg-[var(--muted)]/30 rounded-lg">
                   <div className="flex items-center gap-1">
-                    <Gamepad2 className="w-3.5 h-3.5 text-amber-500" />
-                    <span className="text-[8px] font-medium text-[var(--muted-foreground)]">Games</span>
+                    <Gamepad2 className="w-3 h-3 text-amber-500" />
+                    <span className="text-[7px] font-medium text-[var(--muted-foreground)]">Games</span>
                   </div>
-                  <div className="w-px h-3 bg-[var(--border)]" />
+                  <div className="w-px h-2.5 bg-[var(--border)]" />
                   <div className="flex items-center gap-1">
-                    <Brain className="w-3.5 h-3.5 text-cyan-500" />
-                    <span className="text-[8px] font-medium text-[var(--muted-foreground)]">Adaptive</span>
+                    <Brain className="w-3 h-3 text-cyan-500" />
+                    <span className="text-[7px] font-medium text-[var(--muted-foreground)]">Adaptive</span>
                   </div>
-                  <div className="w-px h-3 bg-[var(--border)]" />
+                  <div className="w-px h-2.5 bg-[var(--border)]" />
                   <div className="flex items-center gap-1">
-                    <Award className="w-3.5 h-3.5 text-purple-500" />
-                    <span className="text-[8px] font-medium text-[var(--muted-foreground)]">Certificates</span>
+                    <Award className="w-3 h-3 text-purple-500" />
+                    <span className="text-[7px] font-medium text-[var(--muted-foreground)]">Certificates</span>
                   </div>
                 </div>
 
@@ -653,99 +622,59 @@ export function CommunityHeartPage({ isAuthenticated }: CommunityHeartPageProps)
                 </div>
               </div>
 
-              {/* Back Side - Learning Philosophy */}
+              {/* Back Side - Learning Philosophy (Centered with decorative elements) */}
               <div
-                className="absolute inset-0 bg-gradient-to-br from-[var(--card)] via-[var(--muted)] to-[var(--card)] rounded-xl p-3 overflow-hidden border border-blue-500/30"
+                className="absolute inset-0 bg-gradient-to-br from-emerald-50/95 via-sky-50/90 to-emerald-50/95 dark:from-emerald-950/95 dark:via-sky-950/90 dark:to-emerald-950/95 rounded-xl p-3 overflow-hidden border border-sky-300/30 dark:border-sky-700/30"
                 style={{ backfaceVisibility: 'hidden', transform: 'rotateY(180deg)' }}
               >
                 {/* Decorative glow */}
                 <motion.div
-                  className="absolute inset-0 bg-gradient-to-br from-blue-500/10 via-transparent to-purple-500/10"
+                  className="absolute inset-0 bg-gradient-to-br from-sky-300/10 via-transparent to-emerald-300/10 dark:from-sky-600/10 dark:to-emerald-600/10"
                   animate={{ opacity: [0.3, 0.5, 0.3] }}
                   transition={{ duration: 4, repeat: Infinity }}
                 />
 
-                {/* Corner ornaments */}
-                <CornerOrnament position="tl" />
-                <CornerOrnament position="br" />
+                <div className="relative z-10 h-full flex flex-col items-center justify-center">
+                  {/* Top decorative cherry blossom element */}
+                  <svg className="w-full h-10 mb-2 opacity-30" viewBox="0 0 300 40" preserveAspectRatio="none">
+                    <path d="M0 20 Q50 10 100 20 Q150 30 200 20 Q250 10 300 20" fill="none" stroke="#0ea5e9" strokeWidth="1"/>
+                    {/* Cherry blossoms */}
+                    <circle cx="75" cy="15" r="4" fill="#fce7f3" stroke="#f9a8d4" strokeWidth="0.5"/>
+                    <circle cx="150" cy="20" r="5" fill="#fce7f3" stroke="#f9a8d4" strokeWidth="0.5"/>
+                    <circle cx="225" cy="15" r="4" fill="#fce7f3" stroke="#f9a8d4" strokeWidth="0.5"/>
+                    <circle cx="75" cy="15" r="1.5" fill="#fda4af"/>
+                    <circle cx="150" cy="20" r="2" fill="#fda4af"/>
+                    <circle cx="225" cy="15" r="1.5" fill="#fda4af"/>
+                  </svg>
 
-                <div className="relative z-10 h-full flex flex-col">
-                  {/* Header */}
-                  <div className="flex items-center gap-2 mb-2">
+                  {/* Centered Philosophy content */}
+                  <div className="flex-1 flex flex-col items-center justify-center space-y-2 px-4">
                     <motion.div
-                      className="w-6 h-6 rounded-lg bg-gradient-to-br from-blue-500 to-purple-600 flex items-center justify-center"
-                      animate={{ scale: [1, 1.05, 1] }}
-                      transition={{ duration: 2, repeat: Infinity }}
+                      className="w-10 h-10 rounded-full bg-sky-500/20 dark:bg-sky-600/30 flex items-center justify-center mb-1"
+                      animate={{ scale: [1, 1.1, 1] }}
+                      transition={{ duration: 3, repeat: Infinity }}
                     >
-                      <BookOpen className="w-3.5 h-3.5 text-white" />
+                      <GraduationCap className="w-5 h-5 text-sky-600 dark:text-sky-400" />
                     </motion.div>
-                    <h3 className="font-bold text-sm text-[var(--foreground)] tracking-tight">Learning Philosophy</h3>
+                    <h3 className="font-bold text-sm text-[var(--foreground)] text-center">Learning Philosophy</h3>
+
+                    <div className="space-y-1 text-center max-w-[280px]">
+                      <p className="text-[9px] text-sky-700 dark:text-sky-300 font-medium">Education for All Ages</p>
+                      <p className="text-[8px] text-[var(--muted-foreground)] leading-relaxed">
+                        From K-5 to PhD, adaptive learning meets you where you are. Games, simulations, real-world projects, and certificates that contribute to your STOCK score.
+                      </p>
+                    </div>
                   </div>
 
-                  <DecorativeDivider className="mb-2" />
-
-                  {/* Philosophy content */}
-                  <div className="flex-1 space-y-2 overflow-auto">
-                    <motion.div
-                      className="bg-blue-500/10 rounded-lg p-2 border border-blue-500/20"
-                      initial={{ opacity: 0, y: 10 }}
-                      animate={{ opacity: 1, y: 0 }}
-                      transition={{ delay: 0.2 }}
-                    >
-                      <p className="text-[10px] font-semibold text-blue-600 dark:text-blue-400 mb-1 flex items-center gap-1">
-                        <GraduationCap className="w-3 h-3" />
-                        Education for All Ages
-                      </p>
-                      <p className="text-[8px] text-[var(--muted-foreground)] leading-relaxed">
-                        From K-5 to PhD, we believe sustainability education should be accessible at every stage of life. Content adapts to your level.
-                      </p>
-                    </motion.div>
-
-                    <motion.div
-                      className="bg-purple-500/10 rounded-lg p-2 border border-purple-500/20"
-                      initial={{ opacity: 0, y: 10 }}
-                      animate={{ opacity: 1, y: 0 }}
-                      transition={{ delay: 0.3 }}
-                    >
-                      <p className="text-[10px] font-semibold text-purple-600 dark:text-purple-400 mb-1 flex items-center gap-1">
-                        <Brain className="w-3 h-3" />
-                        Adaptive Learning
-                      </p>
-                      <p className="text-[8px] text-[var(--muted-foreground)] leading-relaxed">
-                        Our system learns your pace and style. Games, simulations, and interactive content meet you where you are.
-                      </p>
-                    </motion.div>
-
-                    <motion.div
-                      className="bg-emerald-500/10 rounded-lg p-2 border border-emerald-500/20"
-                      initial={{ opacity: 0, y: 10 }}
-                      animate={{ opacity: 1, y: 0 }}
-                      transition={{ delay: 0.4 }}
-                    >
-                      <p className="text-[10px] font-semibold text-emerald-600 dark:text-emerald-400 mb-1 flex items-center gap-1">
-                        <Target className="w-3 h-3" />
-                        Real-World Application
-                      </p>
-                      <p className="text-[8px] text-[var(--muted-foreground)] leading-relaxed">
-                        Every lesson connects to actionable change. Learn food sovereignty, then grow your own garden. Theory meets practice.
-                      </p>
-                    </motion.div>
-
-                    <motion.div
-                      className="bg-amber-500/10 rounded-lg p-2 border border-amber-500/20"
-                      initial={{ opacity: 0, y: 10 }}
-                      animate={{ opacity: 1, y: 0 }}
-                      transition={{ delay: 0.5 }}
-                    >
-                      <p className="text-[10px] font-semibold text-amber-600 dark:text-amber-400 mb-1 flex items-center gap-1">
-                        <Award className="w-3 h-3" />
-                        Recognition & Growth
-                      </p>
-                      <p className="text-[8px] text-[var(--muted-foreground)] leading-relaxed">
-                        Earn certificates, badges, and track your impact. Your learning journey contributes to your STOCK score.
-                      </p>
-                    </motion.div>
-                  </div>
+                  {/* Bottom decorative lotus element */}
+                  <svg className="w-full h-10 mt-2 opacity-30" viewBox="0 0 300 40" preserveAspectRatio="none">
+                    <path d="M0 20 Q50 30 100 20 Q150 10 200 20 Q250 30 300 20" fill="none" stroke="#0ea5e9" strokeWidth="1"/>
+                    {/* Lotus */}
+                    <path d="M150 25 Q145 18 150 10 Q155 18 150 25" fill="#fce7f3" stroke="#f9a8d4" strokeWidth="0.3"/>
+                    <path d="M150 25 Q142 20 138 14 Q146 18 150 25" fill="#fbcfe8" stroke="#f9a8d4" strokeWidth="0.3"/>
+                    <path d="M150 25 Q158 20 162 14 Q154 18 150 25" fill="#fbcfe8" stroke="#f9a8d4" strokeWidth="0.3"/>
+                    <circle cx="150" cy="20" r="2" fill="#fcd34d"/>
+                  </svg>
                 </div>
               </div>
             </motion.div>
@@ -905,99 +834,56 @@ export function CommunityHeartPage({ isAuthenticated }: CommunityHeartPageProps)
                       <Leaf className="w-2.5 h-2.5 text-emerald-400" />
                     </motion.div>
                   </div>
-
-                  {/* Get Started CTA */}
-                  <Link href="/auth/signup" className="block mt-1">
-                    <motion.div
-                      className="flex items-center justify-center gap-1 text-[9px] font-semibold text-emerald-100 bg-emerald-700/40 rounded-md py-1 border border-emerald-600/30"
-                      whileHover={{ scale: 1.02, backgroundColor: 'rgba(5, 150, 105, 0.4)' }}
-                      whileTap={{ scale: 0.98 }}
-                    >
-                      Get Started
-                      <ArrowRight className="w-3 h-3" />
-                    </motion.div>
-                  </Link>
                 </div>
               </motion.div>
 
-              {/* Back Side - Philosophy */}
+              {/* Back Side - Philosophy (Centered with decorative elements) */}
               <motion.div
-                className="absolute inset-0 bg-gradient-to-br from-[var(--card)] via-[var(--muted)] to-[var(--card)] rounded-xl p-3 overflow-hidden border border-[var(--primary)]/30"
+                className="absolute inset-0 bg-gradient-to-br from-slate-800 via-emerald-900/80 to-slate-900 rounded-xl p-3 overflow-hidden border border-emerald-700/30"
                 style={{ backfaceVisibility: 'hidden', transform: 'rotateY(180deg)' }}
               >
                 {/* Decorative glow */}
                 <motion.div
-                  className="absolute inset-0 bg-gradient-to-br from-[var(--primary)]/10 via-transparent to-[var(--accent)]/10"
+                  className="absolute inset-0 bg-gradient-to-br from-emerald-500/10 via-transparent to-teal-500/10"
                   animate={{ opacity: [0.3, 0.5, 0.3] }}
                   transition={{ duration: 4, repeat: Infinity }}
                 />
 
-                {/* Corner ornaments */}
-                <CornerOrnament position="tl" />
-                <CornerOrnament position="br" />
+                <div className="relative z-10 h-full flex flex-col items-center justify-center">
+                  {/* Top decorative element */}
+                  <svg className="w-full h-6 mb-2 opacity-30" viewBox="0 0 200 24" preserveAspectRatio="none">
+                    <path d="M0 12 Q25 6 50 12 Q75 18 100 12 Q125 6 150 12 Q175 18 200 12" fill="none" stroke="#10b981" strokeWidth="1"/>
+                    <circle cx="100" cy="12" r="3" fill="#10b981"/>
+                    <circle cx="50" cy="12" r="2" fill="#10b981" opacity="0.5"/>
+                    <circle cx="150" cy="12" r="2" fill="#10b981" opacity="0.5"/>
+                  </svg>
 
-                <div className="relative z-10 h-full flex flex-col">
-                  {/* Header */}
-                  <div className="flex items-center gap-2 mb-2">
+                  {/* Centered Philosophy content */}
+                  <div className="flex-1 flex flex-col items-center justify-center space-y-2 px-2">
                     <motion.div
-                      className="w-6 h-6 rounded-lg bg-gradient-to-br from-[var(--primary)] to-[var(--accent)] flex items-center justify-center"
-                      animate={{ scale: [1, 1.05, 1] }}
-                      transition={{ duration: 2, repeat: Infinity }}
+                      className="w-8 h-8 rounded-full bg-emerald-600/30 flex items-center justify-center mb-1"
+                      animate={{ scale: [1, 1.1, 1] }}
+                      transition={{ duration: 3, repeat: Infinity }}
                     >
-                      <Sparkles className="w-3.5 h-3.5 text-white" />
+                      <Sparkles className="w-4 h-4 text-emerald-300" />
                     </motion.div>
-                    <h3 className="font-bold text-sm text-[var(--foreground)] tracking-tight">The Philosophy</h3>
+                    <h3 className="font-bold text-sm text-emerald-100 text-center">The Philosophy</h3>
+
+                    <div className="space-y-1.5 text-center">
+                      <p className="text-[9px] text-emerald-200 font-medium">You Are The Asset</p>
+                      <p className="text-[8px] text-slate-300/80 leading-relaxed max-w-[180px]">
+                        Your STOCK score reflects growth, contributions, and impact. Track 7 lanes of life through a values-first approach.
+                      </p>
+                    </div>
                   </div>
 
-                  <DecorativeDivider className="mb-2" />
-
-                  {/* Philosophy content */}
-                  <div className="flex-1 space-y-2 overflow-hidden">
-                    <motion.div
-                      className="bg-[var(--primary)]/10 rounded-lg p-2 border border-[var(--primary)]/20"
-                      initial={{ opacity: 0, y: 10 }}
-                      animate={{ opacity: 1, y: 0 }}
-                      transition={{ delay: 0.2 }}
-                    >
-                      <p className="text-[10px] font-semibold text-[var(--primary)] mb-1 flex items-center gap-1">
-                        <TrendingUp className="w-3 h-3" />
-                        You Are The Asset
-                      </p>
-                      <p className="text-[8px] text-[var(--muted-foreground)] leading-relaxed">
-                        Your STOCK score reflects your growth, contributions, and impact within the community.
-                      </p>
-                    </motion.div>
-
-                    <motion.div
-                      className="bg-[var(--accent)]/10 rounded-lg p-2 border border-[var(--accent)]/20"
-                      initial={{ opacity: 0, y: 10 }}
-                      animate={{ opacity: 1, y: 0 }}
-                      transition={{ delay: 0.3 }}
-                    >
-                      <p className="text-[10px] font-semibold text-[var(--accent)] mb-1 flex items-center gap-1">
-                        <Briefcase className="w-3 h-3" />
-                        7 Lanes of Life
-                      </p>
-                      <p className="text-[8px] text-[var(--muted-foreground)] leading-relaxed">
-                        A Kanban dashboard organizing your identity, projects, learning, network, and environmental impact.
-                      </p>
-                    </motion.div>
-
-                    <motion.div
-                      className="bg-emerald-500/10 rounded-lg p-2 border border-emerald-500/20"
-                      initial={{ opacity: 0, y: 10 }}
-                      animate={{ opacity: 1, y: 0 }}
-                      transition={{ delay: 0.4 }}
-                    >
-                      <p className="text-[10px] font-semibold text-emerald-600 dark:text-emerald-400 mb-1 flex items-center gap-1">
-                        <Leaf className="w-3 h-3" />
-                        Meaningful Progress
-                      </p>
-                      <p className="text-[8px] text-[var(--muted-foreground)] leading-relaxed">
-                        Track real growth that matters - not vanity metrics, but genuine sustainable impact.
-                      </p>
-                    </motion.div>
-                  </div>
+                  {/* Bottom decorative element */}
+                  <svg className="w-full h-6 mt-2 opacity-30" viewBox="0 0 200 24" preserveAspectRatio="none">
+                    <path d="M0 12 Q25 18 50 12 Q75 6 100 12 Q125 18 150 12 Q175 6 200 12" fill="none" stroke="#10b981" strokeWidth="1"/>
+                    <circle cx="100" cy="12" r="3" fill="#10b981"/>
+                    <circle cx="50" cy="12" r="2" fill="#10b981" opacity="0.5"/>
+                    <circle cx="150" cy="12" r="2" fill="#10b981" opacity="0.5"/>
+                  </svg>
                 </div>
               </motion.div>
             </motion.div>

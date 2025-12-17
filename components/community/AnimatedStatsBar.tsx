@@ -112,10 +112,15 @@ export function AnimatedStatsBar() {
         {[1, 2, 3, 4].map((i) => (
           <motion.div
             key={i}
-            className="w-20 h-12 bg-[var(--muted)] rounded-lg"
-            animate={{ opacity: [0.3, 0.5, 0.3] }}
-            transition={{ duration: 1.5, repeat: Infinity, delay: i * 0.1 }}
-          />
+            className="flex flex-col items-center gap-1"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: [0.2, 0.4, 0.2] }}
+            transition={{ duration: 2, repeat: Infinity, delay: i * 0.15 }}
+          >
+            <div className="w-8 h-8 rounded-full bg-[var(--muted)]/50" />
+            <div className="w-12 h-2 rounded bg-[var(--muted)]/30" />
+            <div className="w-8 h-1.5 rounded bg-[var(--muted)]/20" />
+          </motion.div>
         ))}
       </div>
     )
