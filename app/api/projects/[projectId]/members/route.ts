@@ -68,7 +68,7 @@ export async function GET(
       data: {
         members: filteredMembers,
         roleCounts: Object.fromEntries(
-          roleCounts.map((r) => [r.role, r._count.role])
+          roleCounts.map((r: { role: string; _count: { role: number } }) => [r.role, r._count.role])
         ),
         total: members.length,
       },
