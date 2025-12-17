@@ -82,9 +82,9 @@ function DecorativeDivider({ className = '' }: { className?: string }) {
 }
 
 // Glowing border component
-function GlowingBorder({ children, className = '' }: { children: React.ReactNode; className?: string }) {
+function GlowingBorder({ children, className = '', style }: { children: React.ReactNode; className?: string; style?: React.CSSProperties }) {
   return (
-    <div className={`relative ${className}`}>
+    <div className={`relative ${className}`} style={style}>
       {/* Outer glow */}
       <motion.div
         className="absolute -inset-[1px] rounded-xl bg-gradient-to-r from-[var(--primary)]/20 via-[var(--accent)]/20 to-[var(--secondary)]/20 blur-sm"
@@ -124,6 +124,7 @@ const businessCardFeatures = [
 
 export function CommunityHeartPage({ isAuthenticated }: CommunityHeartPageProps) {
   const [isVolitionFlipped, setIsVolitionFlipped] = useState(false)
+  const [isBizIDFlipped, setIsBizIDFlipped] = useState(false)
 
   return (
     <div className="h-[calc(100vh-5rem)] bg-[var(--background)] relative overflow-hidden flex flex-col">
@@ -195,104 +196,199 @@ export function CommunityHeartPage({ isAuthenticated }: CommunityHeartPageProps)
 
       {/* Main content - fills viewport */}
       <div className="flex-1 relative z-10 grid grid-cols-1 lg:grid-cols-12 gap-2 p-2 sm:p-3 overflow-hidden min-h-0">
-        {/* Left column: BizID Showcase (Enhanced with decorations) */}
-        <GlowingBorder className="lg:col-span-4 min-h-0">
+        {/* Left column: BizID Showcase - Flip Card */}
+        <div
+          className="lg:col-span-4 min-h-0"
+          style={{ perspective: '1000px' }}
+          onMouseEnter={() => setIsBizIDFlipped(true)}
+          onMouseLeave={() => setIsBizIDFlipped(false)}
+        >
           <motion.div
             initial={{ opacity: 0, x: -30 }}
-            animate={{ opacity: 1, x: 0 }}
-            transition={{ duration: 0.6, delay: 0.1 }}
-            className="relative h-full bg-[var(--card)]/90 backdrop-blur-md border border-[var(--border)]/50 rounded-xl p-3 overflow-hidden flex flex-col"
+            animate={{ opacity: 1, x: 0, rotateY: isBizIDFlipped ? 180 : 0 }}
+            transition={{ duration: 0.6, ease: 'easeInOut' }}
+            className="relative w-full h-full"
+            style={{ transformStyle: 'preserve-3d' }}
           >
-            {/* Corner ornaments */}
-            <CornerOrnament position="tl" />
-            <CornerOrnament position="tr" />
-            <CornerOrnament position="bl" />
-            <CornerOrnament position="br" />
+            {/* Front Side - BizID Features */}
+            <GlowingBorder className="absolute inset-0" style={{ backfaceVisibility: 'hidden' }}>
+              <motion.div
+                className="relative h-full bg-[var(--card)]/90 backdrop-blur-md border border-[var(--border)]/50 rounded-xl p-3 overflow-hidden flex flex-col"
+              >
+                {/* Corner ornaments */}
+                <CornerOrnament position="tl" />
+                <CornerOrnament position="tr" />
+                <CornerOrnament position="bl" />
+                <CornerOrnament position="br" />
 
-            {/* Inner glow effect */}
-            <motion.div
-              className="absolute inset-0 rounded-xl pointer-events-none"
-              style={{
-                background: 'radial-gradient(ellipse at center, var(--primary)/5 0%, transparent 70%)',
-              }}
-              animate={{ opacity: [0.3, 0.5, 0.3] }}
-              transition={{ duration: 4, repeat: Infinity }}
-            />
-
-            {/* Header with decorative underline */}
-            <div className="relative z-10">
-              <div className="flex items-center justify-between mb-1">
-                <h2 className="text-sm font-bold text-[var(--foreground)] flex items-center gap-2">
-                  <motion.div
-                    className="w-5 h-5 rounded-md bg-gradient-to-br from-[var(--primary)] to-[var(--accent)] flex items-center justify-center shadow-sm"
-                    animate={{ rotate: [0, 5, 0, -5, 0] }}
-                    transition={{ duration: 4, repeat: Infinity, ease: 'easeInOut' }}
-                  >
-                    <Shield className="w-3 h-3 text-white" />
-                  </motion.div>
-                  BizID
-                </h2>
-                <motion.span
-                  className="text-[9px] px-2 py-0.5 bg-gradient-to-r from-[var(--primary)]/20 to-[var(--accent)]/20 rounded-full text-[var(--primary)] font-semibold border border-[var(--primary)]/20"
-                  animate={{
-                    scale: [1, 1.02, 1],
-                    borderColor: ['rgba(var(--primary-rgb), 0.2)', 'rgba(var(--primary-rgb), 0.4)', 'rgba(var(--primary-rgb), 0.2)']
+                {/* Inner glow effect */}
+                <motion.div
+                  className="absolute inset-0 rounded-xl pointer-events-none"
+                  style={{
+                    background: 'radial-gradient(ellipse at center, var(--primary)/5 0%, transparent 70%)',
                   }}
-                  transition={{ duration: 2, repeat: Infinity }}
-                >
-                  7 Themes
-                </motion.span>
-              </div>
-              <DecorativeDivider className="mb-2" />
-            </div>
+                  animate={{ opacity: [0.3, 0.5, 0.3] }}
+                  transition={{ duration: 4, repeat: Infinity }}
+                />
 
-            {/* Features row - enhanced */}
-            <div className="relative z-10 flex items-center justify-between mb-2 px-1">
-              {businessCardFeatures.map((feature, i) => {
-                const Icon = feature.icon
-                return (
+                {/* Header with decorative underline */}
+                <div className="relative z-10">
+                  <div className="flex items-center justify-between mb-1">
+                    <h2 className="text-sm font-bold text-[var(--foreground)] flex items-center gap-2">
+                      <motion.div
+                        className="w-5 h-5 rounded-md bg-gradient-to-br from-[var(--primary)] to-[var(--accent)] flex items-center justify-center shadow-sm"
+                        animate={{ rotate: [0, 5, 0, -5, 0] }}
+                        transition={{ duration: 4, repeat: Infinity, ease: 'easeInOut' }}
+                      >
+                        <Shield className="w-3 h-3 text-white" />
+                      </motion.div>
+                      BizID
+                    </h2>
+                    <motion.span
+                      className="text-[9px] px-2 py-0.5 bg-gradient-to-r from-[var(--primary)]/20 to-[var(--accent)]/20 rounded-full text-[var(--primary)] font-semibold border border-[var(--primary)]/20"
+                      animate={{
+                        scale: [1, 1.02, 1],
+                        borderColor: ['rgba(var(--primary-rgb), 0.2)', 'rgba(var(--primary-rgb), 0.4)', 'rgba(var(--primary-rgb), 0.2)']
+                      }}
+                      transition={{ duration: 2, repeat: Infinity }}
+                    >
+                      7 Themes
+                    </motion.span>
+                  </div>
+                  <DecorativeDivider className="mb-2" />
+                </div>
+
+                {/* Features row - enhanced */}
+                <div className="relative z-10 flex items-center justify-between mb-2 px-1">
+                  {businessCardFeatures.map((feature, i) => {
+                    const Icon = feature.icon
+                    return (
+                      <motion.div
+                        key={feature.label}
+                        className="flex flex-col items-center gap-0.5 group cursor-pointer"
+                        initial={{ opacity: 0, y: 10 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        transition={{ delay: 0.3 + i * 0.1 }}
+                        whileHover={{ scale: 1.1, y: -2 }}
+                      >
+                        <motion.div
+                          className="w-7 h-7 rounded-lg bg-gradient-to-br from-[var(--muted)] to-[var(--muted)]/50 flex items-center justify-center border border-[var(--border)]/50 shadow-sm group-hover:shadow-md group-hover:border-[var(--primary)]/30 transition-all"
+                          whileHover={{
+                            background: 'linear-gradient(135deg, var(--primary)/20, var(--accent)/20)'
+                          }}
+                        >
+                          <Icon className="w-3.5 h-3.5 text-[var(--muted-foreground)] group-hover:text-[var(--primary)] transition-colors" />
+                        </motion.div>
+                        <span className="text-[7px] text-[var(--muted-foreground)] font-medium">{feature.label}</span>
+                      </motion.div>
+                    )
+                  })}
+                </div>
+
+                {/* Card showcase */}
+                <div className="relative z-10 flex-1 min-h-0 overflow-hidden">
+                  <BusinessCardThemeShowcase />
+                </div>
+
+                {/* Bottom - Get Started CTA */}
+                <div className="relative z-10 mt-1 pt-1">
+                  <DecorativeDivider className="mb-1" />
+                  <Link href="/auth/signup" className="block">
+                    <motion.div
+                      className="flex items-center justify-center gap-1 text-[9px] font-semibold text-[var(--primary)] bg-[var(--primary)]/10 rounded-md py-1 border border-[var(--primary)]/20"
+                      whileHover={{ scale: 1.02, backgroundColor: 'var(--primary)/20' }}
+                      whileTap={{ scale: 0.98 }}
+                    >
+                      Get Started
+                      <ArrowRight className="w-3 h-3" />
+                    </motion.div>
+                  </Link>
+                </div>
+              </motion.div>
+            </GlowingBorder>
+
+            {/* Back Side - BizID Philosophy */}
+            <div
+              className="absolute inset-0 bg-gradient-to-br from-[var(--card)] via-[var(--muted)] to-[var(--card)] rounded-xl p-3 overflow-hidden border border-[var(--primary)]/30"
+              style={{ backfaceVisibility: 'hidden', transform: 'rotateY(180deg)' }}
+            >
+              {/* Decorative glow */}
+              <motion.div
+                className="absolute inset-0 bg-gradient-to-br from-[var(--primary)]/10 via-transparent to-[var(--accent)]/10"
+                animate={{ opacity: [0.3, 0.5, 0.3] }}
+                transition={{ duration: 4, repeat: Infinity }}
+              />
+
+              {/* Corner ornaments */}
+              <CornerOrnament position="tl" />
+              <CornerOrnament position="br" />
+
+              <div className="relative z-10 h-full flex flex-col">
+                {/* Header */}
+                <div className="flex items-center gap-2 mb-2">
                   <motion.div
-                    key={feature.label}
-                    className="flex flex-col items-center gap-0.5 group cursor-pointer"
+                    className="w-6 h-6 rounded-lg bg-gradient-to-br from-[var(--primary)] to-[var(--accent)] flex items-center justify-center"
+                    animate={{ scale: [1, 1.05, 1] }}
+                    transition={{ duration: 2, repeat: Infinity }}
+                  >
+                    <Heart className="w-3.5 h-3.5 text-white" />
+                  </motion.div>
+                  <h3 className="font-bold text-sm text-[var(--foreground)] tracking-tight">The Philosophy</h3>
+                </div>
+
+                <DecorativeDivider className="mb-2" />
+
+                {/* Philosophy content */}
+                <div className="flex-1 space-y-2 overflow-hidden">
+                  <motion.div
+                    className="bg-[var(--primary)]/10 rounded-lg p-2 border border-[var(--primary)]/20"
                     initial={{ opacity: 0, y: 10 }}
                     animate={{ opacity: 1, y: 0 }}
-                    transition={{ delay: 0.3 + i * 0.1 }}
-                    whileHover={{ scale: 1.1, y: -2 }}
+                    transition={{ delay: 0.2 }}
                   >
-                    <motion.div
-                      className="w-7 h-7 rounded-lg bg-gradient-to-br from-[var(--muted)] to-[var(--muted)]/50 flex items-center justify-center border border-[var(--border)]/50 shadow-sm group-hover:shadow-md group-hover:border-[var(--primary)]/30 transition-all"
-                      whileHover={{
-                        background: 'linear-gradient(135deg, var(--primary)/20, var(--accent)/20)'
-                      }}
-                    >
-                      <Icon className="w-3.5 h-3.5 text-[var(--muted-foreground)] group-hover:text-[var(--primary)] transition-colors" />
-                    </motion.div>
-                    <span className="text-[7px] text-[var(--muted-foreground)] font-medium">{feature.label}</span>
+                    <p className="text-[10px] font-semibold text-[var(--primary)] mb-1 flex items-center gap-1">
+                      <Shield className="w-3 h-3" />
+                      Guardian Identity
+                    </p>
+                    <p className="text-[8px] text-[var(--muted-foreground)] leading-relaxed">
+                      Choose from 7 archetypes that reflect your values and approach to sustainability - not labels, but expressions of who you are.
+                    </p>
                   </motion.div>
-                )
-              })}
-            </div>
 
-            {/* Card showcase */}
-            <div className="relative z-10 flex-1 min-h-0 overflow-hidden">
-              <BusinessCardThemeShowcase />
-            </div>
+                  <motion.div
+                    className="bg-[var(--accent)]/10 rounded-lg p-2 border border-[var(--accent)]/20"
+                    initial={{ opacity: 0, y: 10 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ delay: 0.3 }}
+                  >
+                    <p className="text-[10px] font-semibold text-[var(--accent)] mb-1 flex items-center gap-1">
+                      <Star className="w-3 h-3" />
+                      Your Declaration
+                    </p>
+                    <p className="text-[8px] text-[var(--muted-foreground)] leading-relaxed">
+                      A personal statement of purpose - your commitment to the cause, visible to those who share your vision.
+                    </p>
+                  </motion.div>
 
-            {/* Bottom tagline with decorative elements */}
-            <div className="relative z-10 mt-1 pt-1">
-              <DecorativeDivider className="mb-1" />
-              <motion.p
-                className="text-[9px] text-center text-[var(--muted-foreground)] flex items-center justify-center gap-1"
-                animate={{ opacity: [0.5, 0.8, 0.5] }}
-                transition={{ duration: 4, repeat: Infinity }}
-              >
-                <Heart className="w-2.5 h-2.5 text-pink-400" />
-                Values-first networking
-                <Heart className="w-2.5 h-2.5 text-pink-400" />
-              </motion.p>
+                  <motion.div
+                    className="bg-pink-500/10 rounded-lg p-2 border border-pink-500/20"
+                    initial={{ opacity: 0, y: 10 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ delay: 0.4 }}
+                  >
+                    <p className="text-[10px] font-semibold text-pink-600 dark:text-pink-400 mb-1 flex items-center gap-1">
+                      <Heart className="w-3 h-3" />
+                      Values-First Connection
+                    </p>
+                    <p className="text-[8px] text-[var(--muted-foreground)] leading-relaxed">
+                      Network with people who share your principles. Your BizID is your introduction to a community aligned by purpose.
+                    </p>
+                  </motion.div>
+                </div>
+              </div>
             </div>
           </motion.div>
-        </GlowingBorder>
+        </div>
 
         {/* Center column: Featured Members (Top 10 Grid) + Activity (compact) */}
         <motion.div

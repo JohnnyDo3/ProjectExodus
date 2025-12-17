@@ -302,166 +302,220 @@ export default function ArticlesPage() {
 
   return (
     <div className="min-h-screen bg-[var(--background)]">
-      {/* Hero Header - The Library with One-Point Perspective */}
-      <div className="relative bg-gradient-to-b from-[var(--primary)] via-[var(--primary)] to-amber-900/80 text-white overflow-hidden min-h-[70vh] sm:min-h-[75vh]">
-        {/* One-Point Perspective Library Background */}
+      {/* Hero Header - Ancient Library Chamber */}
+      <div className="relative bg-gradient-to-b from-slate-900 via-indigo-950 to-slate-900 text-white overflow-hidden min-h-[70vh] sm:min-h-[75vh]">
+        {/* Ancient Chamber Background */}
         <div className="absolute inset-0 overflow-hidden">
-          {/* Vanishing point at center-top, converging lines create library hallway effect */}
-          <div className="absolute inset-0" style={{ perspective: '1000px', perspectiveOrigin: '50% 20%' }}>
-            {/* Floor - warm wood tone */}
-            <div
-              className="absolute bottom-0 left-0 right-0 h-[40%] bg-gradient-to-t from-amber-900/60 via-amber-800/40 to-transparent"
-              style={{
-                transform: 'rotateX(60deg)',
-                transformOrigin: 'center bottom',
-              }}
-            />
+          {/* Stone texture overlay */}
+          <div
+            className="absolute inset-0 opacity-[0.03]"
+            style={{
+              backgroundImage: `url("data:image/svg+xml,%3Csvg viewBox='0 0 100 100' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E")`,
+            }}
+          />
 
-            {/* Ceiling beams effect */}
-            <div
-              className="absolute top-0 left-0 right-0 h-[30%] bg-gradient-to-b from-amber-950/40 to-transparent"
-              style={{
-                transform: 'rotateX(-45deg)',
-                transformOrigin: 'center top',
-              }}
-            />
+          {/* Torch glow effects - warm ambient lighting */}
+          <div className="absolute top-[15%] left-[8%] w-24 h-32 bg-gradient-to-b from-amber-500/30 via-orange-500/20 to-transparent rounded-full blur-2xl animate-pulse" />
+          <div className="absolute top-[15%] right-[8%] w-24 h-32 bg-gradient-to-b from-amber-500/30 via-orange-500/20 to-transparent rounded-full blur-2xl animate-pulse" style={{ animationDelay: '1s' }} />
+          <div className="absolute top-[10%] left-1/2 -translate-x-1/2 w-64 h-24 bg-gradient-to-b from-amber-400/20 to-transparent rounded-full blur-3xl" />
+
+          {/* Original parallel vertical lines as stone pillars/columns */}
+          <div className="absolute inset-0 opacity-10 pointer-events-none">
+            {/* Left side pillars */}
+            <div className="absolute top-0 left-[10%] w-[3px] h-full bg-gradient-to-b from-amber-200/80 via-amber-100/60 to-amber-200/80" />
+            <div className="absolute top-0 left-[20%] w-[2px] h-full bg-gradient-to-b from-amber-200/60 via-amber-100/40 to-amber-200/60" />
+            <div className="absolute top-0 left-[30%] w-[1px] h-full bg-gradient-to-b from-amber-200/40 via-amber-100/20 to-amber-200/40" />
+            {/* Right side pillars */}
+            <div className="absolute top-0 right-[10%] w-[3px] h-full bg-gradient-to-b from-amber-200/80 via-amber-100/60 to-amber-200/80" />
+            <div className="absolute top-0 right-[20%] w-[2px] h-full bg-gradient-to-b from-amber-200/60 via-amber-100/40 to-amber-200/60" />
+            <div className="absolute top-0 right-[30%] w-[1px] h-full bg-gradient-to-b from-amber-200/40 via-amber-100/20 to-amber-200/40" />
           </div>
 
-          {/* Converging vertical bookshelf lines - Left side */}
-          <svg className="absolute inset-0 w-full h-full opacity-20 pointer-events-none" preserveAspectRatio="none">
-            {/* Left converging lines - bookshelves receding into distance */}
-            <line x1="0%" y1="100%" x2="50%" y2="15%" stroke="currentColor" strokeWidth="2" className="text-amber-200"/>
-            <line x1="5%" y1="100%" x2="50%" y2="15%" stroke="currentColor" strokeWidth="1.5" className="text-amber-200"/>
-            <line x1="12%" y1="100%" x2="50%" y2="15%" stroke="currentColor" strokeWidth="1.5" className="text-amber-300"/>
-            <line x1="20%" y1="100%" x2="50%" y2="15%" stroke="currentColor" strokeWidth="1" className="text-amber-200"/>
-            <line x1="30%" y1="100%" x2="50%" y2="15%" stroke="currentColor" strokeWidth="1" className="text-amber-300"/>
-            <line x1="40%" y1="100%" x2="50%" y2="15%" stroke="currentColor" strokeWidth="0.5" className="text-amber-200"/>
-
-            {/* Right converging lines - mirror */}
-            <line x1="100%" y1="100%" x2="50%" y2="15%" stroke="currentColor" strokeWidth="2" className="text-amber-200"/>
-            <line x1="95%" y1="100%" x2="50%" y2="15%" stroke="currentColor" strokeWidth="1.5" className="text-amber-200"/>
-            <line x1="88%" y1="100%" x2="50%" y2="15%" stroke="currentColor" strokeWidth="1.5" className="text-amber-300"/>
-            <line x1="80%" y1="100%" x2="50%" y2="15%" stroke="currentColor" strokeWidth="1" className="text-amber-200"/>
-            <line x1="70%" y1="100%" x2="50%" y2="15%" stroke="currentColor" strokeWidth="1" className="text-amber-300"/>
-            <line x1="60%" y1="100%" x2="50%" y2="15%" stroke="currentColor" strokeWidth="0.5" className="text-amber-200"/>
-
-            {/* Horizontal shelf lines at different depths */}
-            <line x1="5%" y1="85%" x2="95%" y2="85%" stroke="currentColor" strokeWidth="2" className="text-amber-400/50"/>
-            <line x1="15%" y1="70%" x2="85%" y2="70%" stroke="currentColor" strokeWidth="1.5" className="text-amber-400/40"/>
-            <line x1="25%" y1="55%" x2="75%" y2="55%" stroke="currentColor" strokeWidth="1" className="text-amber-400/30"/>
-            <line x1="35%" y1="40%" x2="65%" y2="40%" stroke="currentColor" strokeWidth="0.5" className="text-amber-400/20"/>
+          {/* Ornate top border - Greek key pattern */}
+          <svg className="absolute top-0 left-0 right-0 h-8 opacity-30" preserveAspectRatio="none">
+            <defs>
+              <pattern id="greekKey" x="0" y="0" width="32" height="16" patternUnits="userSpaceOnUse">
+                <path d="M0 8 L8 8 L8 0 L16 0 L16 8 L24 8 L24 16 L32 16 L32 8" fill="none" stroke="url(#goldGradient)" strokeWidth="2"/>
+              </pattern>
+              <linearGradient id="goldGradient" x1="0%" y1="0%" x2="100%" y2="0%">
+                <stop offset="0%" stopColor="#fbbf24"/>
+                <stop offset="50%" stopColor="#f59e0b"/>
+                <stop offset="100%" stopColor="#fbbf24"/>
+              </linearGradient>
+            </defs>
+            <rect x="0" y="0" width="100%" height="16" fill="url(#greekKey)"/>
           </svg>
 
-          {/* Ambient library glow - warm light from vanishing point */}
-          <div className="absolute top-[10%] left-1/2 -translate-x-1/2 w-32 h-32 bg-amber-200/20 rounded-full blur-3xl" />
-          <div className="absolute top-[15%] left-1/2 -translate-x-1/2 w-48 h-16 bg-amber-100/10 rounded-full blur-2xl" />
+          {/* Ornate corner flourishes */}
+          <svg className="absolute top-2 left-2 w-16 h-16 opacity-20" viewBox="0 0 64 64">
+            <path d="M8 8 Q32 8 32 32 Q8 32 8 8" fill="none" stroke="#fbbf24" strokeWidth="1.5"/>
+            <circle cx="8" cy="8" r="3" fill="#fbbf24"/>
+            <path d="M4 16 Q16 16 16 4" fill="none" stroke="#f59e0b" strokeWidth="1"/>
+          </svg>
+          <svg className="absolute top-2 right-2 w-16 h-16 opacity-20" viewBox="0 0 64 64" style={{ transform: 'scaleX(-1)' }}>
+            <path d="M8 8 Q32 8 32 32 Q8 32 8 8" fill="none" stroke="#fbbf24" strokeWidth="1.5"/>
+            <circle cx="8" cy="8" r="3" fill="#fbbf24"/>
+            <path d="M4 16 Q16 16 16 4" fill="none" stroke="#f59e0b" strokeWidth="1"/>
+          </svg>
+
+          {/* Decorative vine motif along sides */}
+          <div className="absolute top-20 left-4 bottom-20 w-6 opacity-15">
+            <svg viewBox="0 0 24 200" className="h-full w-full" preserveAspectRatio="none">
+              <path d="M12 0 Q18 25 12 50 Q6 75 12 100 Q18 125 12 150 Q6 175 12 200" fill="none" stroke="#10b981" strokeWidth="2"/>
+              <circle cx="12" cy="50" r="4" fill="#10b981"/>
+              <circle cx="12" cy="100" r="4" fill="#10b981"/>
+              <circle cx="12" cy="150" r="4" fill="#10b981"/>
+            </svg>
+          </div>
+          <div className="absolute top-20 right-4 bottom-20 w-6 opacity-15" style={{ transform: 'scaleX(-1)' }}>
+            <svg viewBox="0 0 24 200" className="h-full w-full" preserveAspectRatio="none">
+              <path d="M12 0 Q18 25 12 50 Q6 75 12 100 Q18 125 12 150 Q6 175 12 200" fill="none" stroke="#10b981" strokeWidth="2"/>
+              <circle cx="12" cy="50" r="4" fill="#10b981"/>
+              <circle cx="12" cy="100" r="4" fill="#10b981"/>
+              <circle cx="12" cy="150" r="4" fill="#10b981"/>
+            </svg>
+          </div>
         </div>
 
         <div className="container mx-auto px-4 py-6 sm:py-8 relative z-10">
           <div className="max-w-6xl mx-auto">
-            {/* Title Section - Positioned at the "entrance" */}
-            <div className="text-center mb-4 sm:mb-6">
-              <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-amber-900/40 backdrop-blur-sm border border-amber-400/30 mb-3">
-                <ScrollText className="w-4 h-4 text-amber-200" />
-                <span className="text-xs font-bold uppercase tracking-wider text-amber-100">The Library</span>
+            {/* Title Section - Chamber entrance */}
+            <div className="text-center mb-6 sm:mb-8">
+              {/* Ornate header badge */}
+              <div className="inline-flex items-center gap-2 px-5 py-2.5 rounded-none bg-gradient-to-r from-amber-900/60 via-amber-800/80 to-amber-900/60 border-y-2 border-amber-500/50 mb-4 relative">
+                {/* Decorative end caps */}
+                <div className="absolute -left-2 top-1/2 -translate-y-1/2 w-4 h-4 bg-amber-500/30 rotate-45 border border-amber-400/50" />
+                <div className="absolute -right-2 top-1/2 -translate-y-1/2 w-4 h-4 bg-amber-500/30 rotate-45 border border-amber-400/50" />
+                <ScrollText className="w-4 h-4 text-amber-300" />
+                <span className="text-xs font-bold uppercase tracking-[0.2em] text-amber-200">The Ancient Library</span>
               </div>
-              <h1 className="text-3xl sm:text-4xl md:text-5xl font-black mb-2 tracking-tight drop-shadow-lg">
+
+              <h1 className="text-3xl sm:text-4xl md:text-5xl font-black mb-3 tracking-tight" style={{ fontFamily: 'Georgia, serif', textShadow: '0 2px 20px rgba(251, 191, 36, 0.3)' }}>
                 Knowledge Shared
               </h1>
-              <p className="text-sm sm:text-base font-medium opacity-90 px-4 max-w-lg mx-auto italic text-amber-100">
-                "Wisdom is not consumed - it is received."
+
+              {/* Decorative divider */}
+              <div className="flex items-center justify-center gap-3 mb-3">
+                <div className="h-px w-16 bg-gradient-to-r from-transparent to-amber-500/50" />
+                <div className="w-2 h-2 bg-amber-500 rotate-45" />
+                <div className="h-px w-16 bg-gradient-to-l from-transparent to-amber-500/50" />
+              </div>
+
+              <p className="text-sm sm:text-base font-medium opacity-90 px-4 max-w-lg mx-auto" style={{ fontFamily: 'Georgia, serif', fontStyle: 'italic', color: '#fde68a' }}>
+                "Wisdom is not consumed — it is received."
               </p>
 
-              {/* Stats Pills */}
-              <div className="flex items-center justify-center gap-3 mt-3">
-                <div className="px-3 py-1.5 bg-amber-900/50 backdrop-blur-sm rounded-full border border-amber-400/30">
-                  <span className="text-xs font-bold text-amber-100">
-                    {totalArticles > 0 ? totalArticles : articles.length + (featuredArticle ? 1 : 0)} texts
+              {/* Stats in ornate frames */}
+              <div className="flex items-center justify-center gap-4 mt-4">
+                <div className="relative px-4 py-2 bg-gradient-to-b from-slate-800/80 to-slate-900/80 border border-amber-600/40 rounded-sm">
+                  <div className="absolute inset-0 bg-gradient-to-r from-amber-500/5 via-amber-500/10 to-amber-500/5" />
+                  <span className="text-xs font-bold text-amber-200 relative">
+                    {totalArticles > 0 ? totalArticles : articles.length + (featuredArticle ? 1 : 0)} Scrolls
                   </span>
                 </div>
-                <div className="px-3 py-1.5 bg-amber-900/50 backdrop-blur-sm rounded-full border border-amber-400/30">
-                  <span className="text-xs font-bold text-amber-100">
-                    {totalViews.toLocaleString()} readers
+                <div className="relative px-4 py-2 bg-gradient-to-b from-slate-800/80 to-slate-900/80 border border-amber-600/40 rounded-sm">
+                  <div className="absolute inset-0 bg-gradient-to-r from-amber-500/5 via-amber-500/10 to-amber-500/5" />
+                  <span className="text-xs font-bold text-amber-200 relative">
+                    {totalViews.toLocaleString()} Readers
                   </span>
                 </div>
               </div>
             </div>
 
-            {/* Bookshelf Display - Featured "Books" on perspective shelves */}
+            {/* Ancient Scroll Widgets - Featured Articles */}
             {trendingArticles.length > 0 && !searchQuery && activeSort === 'all' && (
-              <div className="relative mb-6">
-                {/* Shelf Label */}
-                <div className="flex items-center justify-center gap-2 mb-3">
-                  <div className="h-px flex-1 max-w-16 bg-gradient-to-r from-transparent to-amber-400/50" />
-                  <div className="flex items-center gap-2 px-3 py-1 bg-amber-900/60 rounded-full border border-amber-500/40">
-                    <Flame className="w-3.5 h-3.5 text-amber-300" />
-                    <span className="text-xs font-bold text-amber-100 uppercase tracking-wide">Most Sought Volumes</span>
+              <div className="relative mb-8">
+                {/* Section header with ornate styling */}
+                <div className="flex items-center justify-center gap-3 mb-5">
+                  <div className="flex items-center gap-1">
+                    <div className="w-8 h-px bg-gradient-to-r from-transparent to-amber-500/60" />
+                    <div className="w-1.5 h-1.5 bg-amber-500 rotate-45" />
                   </div>
-                  <div className="h-px flex-1 max-w-16 bg-gradient-to-l from-transparent to-amber-400/50" />
+                  <div className="flex items-center gap-2 px-4 py-1.5 bg-gradient-to-r from-rose-900/50 via-rose-800/70 to-rose-900/50 border border-rose-500/30 rounded-sm">
+                    <Flame className="w-4 h-4 text-rose-400" />
+                    <span className="text-xs font-bold text-rose-200 uppercase tracking-wider">Most Sought Scrolls</span>
+                  </div>
+                  <div className="flex items-center gap-1">
+                    <div className="w-1.5 h-1.5 bg-amber-500 rotate-45" />
+                    <div className="w-8 h-px bg-gradient-to-l from-transparent to-amber-500/60" />
+                  </div>
                 </div>
 
-                {/* Books on Shelf - styled as book spines */}
-                <div className="flex justify-center items-end gap-1 sm:gap-2 px-4" style={{ perspective: '800px' }}>
+                {/* Scroll widgets - horizontal ancient scrolls */}
+                <div className="grid grid-cols-1 md:grid-cols-3 gap-4 px-4 sm:px-0">
                   {trendingArticles.slice(0, 3).map((article, index) => {
-                    const authorTheme = getAuthorTheme(article.author.guardianArchetype)
-                    const bookColors = [
-                      'from-amber-700 via-amber-600 to-amber-700',
-                      'from-emerald-800 via-emerald-700 to-emerald-800',
-                      'from-rose-800 via-rose-700 to-rose-800'
+                    const scrollColors = [
+                      { bg: 'from-amber-100 via-amber-50 to-amber-100', rod: 'from-amber-700 via-amber-600 to-amber-800', seal: 'from-yellow-500 to-amber-600' },
+                      { bg: 'from-emerald-50 via-green-50 to-emerald-50', rod: 'from-emerald-800 via-emerald-700 to-emerald-900', seal: 'from-gray-300 to-gray-500' },
+                      { bg: 'from-rose-50 via-pink-50 to-rose-50', rod: 'from-rose-800 via-rose-700 to-rose-900', seal: 'from-orange-500 to-amber-700' }
                     ]
-                    const spineHeights = ['h-36 sm:h-44', 'h-32 sm:h-40', 'h-34 sm:h-42']
+                    const colors = scrollColors[index]
 
                     return (
                       <Link key={article.id} href={`/articles/${article.slug}`} className="group">
-                        <div
-                          className={`relative ${spineHeights[index]} w-20 sm:w-28 bg-gradient-to-b ${bookColors[index]} rounded-sm shadow-xl cursor-pointer transition-all duration-300 group-hover:-translate-y-2 group-hover:shadow-2xl`}
-                          style={{
-                            transformStyle: 'preserve-3d',
-                            transform: `rotateY(${index === 0 ? -5 : index === 2 ? 5 : 0}deg)`,
-                          }}
-                        >
-                          {/* Book spine edge highlight */}
-                          <div className="absolute inset-y-0 left-0 w-1 bg-gradient-to-b from-white/30 via-white/10 to-white/30 rounded-l-sm" />
-
-                          {/* Rank badge on spine */}
-                          <div className="absolute top-2 left-1/2 -translate-x-1/2">
-                            <div className={`w-6 h-6 rounded-full bg-gradient-to-br ${index === 0 ? 'from-yellow-400 to-amber-500' : index === 1 ? 'from-gray-300 to-gray-400' : 'from-orange-400 to-amber-600'} flex items-center justify-center shadow-lg border border-white/30`}>
-                              <span className="text-[10px] font-black text-white">#{index + 1}</span>
+                        <div className="relative cursor-pointer transition-all duration-300 group-hover:-translate-y-1 group-hover:scale-[1.02]">
+                          {/* Scroll container */}
+                          <div className="relative">
+                            {/* Left scroll rod */}
+                            <div className={`absolute -left-2 top-0 bottom-0 w-4 bg-gradient-to-b ${colors.rod} rounded-full shadow-lg z-10`}>
+                              <div className="absolute top-1 left-1/2 -translate-x-1/2 w-2 h-2 bg-amber-300/60 rounded-full" />
+                              <div className="absolute bottom-1 left-1/2 -translate-x-1/2 w-2 h-2 bg-amber-300/60 rounded-full" />
                             </div>
-                          </div>
 
-                          {/* Book title on spine - rotated */}
-                          <div className="absolute inset-x-2 top-10 bottom-8 flex items-center justify-center overflow-hidden">
-                            <span
-                              className="text-[10px] sm:text-xs font-bold text-white/90 text-center leading-tight line-clamp-4 px-1"
-                              style={{ writingMode: 'vertical-rl', textOrientation: 'mixed', transform: 'rotate(180deg)' }}
-                            >
-                              {article.title}
-                            </span>
-                          </div>
+                            {/* Right scroll rod */}
+                            <div className={`absolute -right-2 top-0 bottom-0 w-4 bg-gradient-to-b ${colors.rod} rounded-full shadow-lg z-10`}>
+                              <div className="absolute top-1 left-1/2 -translate-x-1/2 w-2 h-2 bg-amber-300/60 rounded-full" />
+                              <div className="absolute bottom-1 left-1/2 -translate-x-1/2 w-2 h-2 bg-amber-300/60 rounded-full" />
+                            </div>
 
-                          {/* Author at bottom */}
-                          <div className="absolute bottom-2 left-1/2 -translate-x-1/2 text-center">
-                            <span className="text-[8px] text-white/70 font-medium truncate block max-w-16 sm:max-w-20">
-                              {article.author.name.split(' ')[0]}
-                            </span>
-                          </div>
+                            {/* Parchment/papyrus surface */}
+                            <div className={`relative bg-gradient-to-r ${colors.bg} rounded-sm px-6 py-4 shadow-xl border border-amber-200/30 min-h-[120px]`}>
+                              {/* Parchment texture */}
+                              <div
+                                className="absolute inset-0 opacity-30 rounded-sm"
+                                style={{
+                                  backgroundImage: `url("data:image/svg+xml,%3Csvg viewBox='0 0 100 100' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='paper'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.04' numOctaves='5'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23paper)' opacity='0.3'/%3E%3C/svg%3E")`,
+                                }}
+                              />
 
-                          {/* Book page edges (right side) */}
-                          <div className="absolute inset-y-1 -right-0.5 w-1 bg-gradient-to-r from-amber-100/50 to-amber-50/30 rounded-r-sm"
-                               style={{ transform: 'translateZ(-2px)' }} />
+                              {/* Wax seal with rank */}
+                              <div className="absolute -top-3 -right-1 z-20">
+                                <div className={`w-10 h-10 rounded-full bg-gradient-to-br ${colors.seal} shadow-lg flex items-center justify-center border-2 border-white/30`}>
+                                  <span className="text-xs font-black text-white drop-shadow-md">#{index + 1}</span>
+                                </div>
+                              </div>
 
-                          {/* Hover tooltip */}
-                          <div className="absolute -bottom-16 left-1/2 -translate-x-1/2 w-40 sm:w-48 opacity-0 group-hover:opacity-100 transition-opacity z-20 pointer-events-none">
-                            <div className="bg-black/90 backdrop-blur-sm rounded-lg p-2 text-center shadow-xl">
-                              <p className="text-[10px] text-white font-bold line-clamp-2">{article.title}</p>
-                              <div className="flex items-center justify-center gap-2 mt-1 text-[9px] text-white/70">
-                                <span className="flex items-center gap-0.5">
-                                  <Eye className="w-2.5 h-2.5" />{article.views}
+                              {/* Scroll content */}
+                              <div className="relative z-10">
+                                {/* Category tag */}
+                                <span className="inline-block px-2 py-0.5 bg-amber-800/20 text-amber-900 text-[10px] font-bold rounded mb-2 border border-amber-800/20">
+                                  {article.category.name}
                                 </span>
-                                <span className="flex items-center gap-0.5">
-                                  <Clock className="w-2.5 h-2.5" />{article.readTime}m
-                                </span>
+
+                                {/* Title - elegant serif font */}
+                                <h3 className="text-sm font-bold text-slate-800 leading-snug mb-2 line-clamp-2 group-hover:text-amber-900 transition-colors" style={{ fontFamily: 'Georgia, serif' }}>
+                                  {article.title}
+                                </h3>
+
+                                {/* Author & stats */}
+                                <div className="flex items-center justify-between text-[10px] text-slate-600">
+                                  <span className="font-medium">{article.author.name}</span>
+                                  <div className="flex items-center gap-2">
+                                    <span className="flex items-center gap-0.5">
+                                      <Eye className="w-3 h-3" />{article.views}
+                                    </span>
+                                    <span className="flex items-center gap-0.5">
+                                      <Clock className="w-3 h-3" />{article.readTime}m
+                                    </span>
+                                  </div>
+                                </div>
+                              </div>
+
+                              {/* Decorative corner flourish */}
+                              <div className="absolute bottom-1 left-2 w-6 h-6 opacity-20">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="#92400e" strokeWidth="1">
+                                  <path d="M2 22 Q12 22 12 12 Q12 2 22 2" />
+                                </svg>
                               </div>
                             </div>
                           </div>
@@ -470,73 +524,63 @@ export default function ArticlesPage() {
                     )
                   })}
                 </div>
-
-                {/* Shelf surface */}
-                <div className="relative h-3 mx-auto max-w-md mt-1">
-                  <div className="absolute inset-0 bg-gradient-to-b from-amber-800 via-amber-700 to-amber-900 rounded-sm shadow-lg" />
-                  <div className="absolute inset-x-0 top-0 h-px bg-amber-500/50" />
-                  <div className="absolute inset-x-0 bottom-0 h-1 bg-amber-950/50 rounded-b-sm" />
-                </div>
               </div>
             )}
 
-            {/* Card Catalog Search - The Baseboard */}
+            {/* Search Catalog - Ancient stone tablet style */}
             <div className="relative max-w-3xl mx-auto px-4 sm:px-0">
-              {/* Catalog Cabinet Frame */}
-              <div className="relative bg-gradient-to-b from-amber-800 to-amber-900 rounded-t-lg p-1 shadow-2xl border-t-2 border-amber-600/50">
-                {/* Catalog Label */}
-                <div className="absolute -top-3 left-1/2 -translate-x-1/2 px-4 py-1 bg-amber-700 rounded-full border border-amber-500/50 shadow-lg">
-                  <span className="text-[10px] font-bold text-amber-100 uppercase tracking-widest">Card Catalog</span>
+              {/* Stone tablet frame */}
+              <div className="relative bg-gradient-to-b from-slate-700 via-slate-800 to-slate-900 rounded-lg p-1 shadow-2xl border border-amber-600/30">
+                {/* Ornate top edge */}
+                <div className="absolute -top-1 left-4 right-4 h-2 bg-gradient-to-r from-transparent via-amber-500/40 to-transparent" />
+
+                {/* Carved label */}
+                <div className="absolute -top-4 left-1/2 -translate-x-1/2 px-5 py-1.5 bg-gradient-to-b from-slate-600 to-slate-800 rounded border border-amber-500/40 shadow-lg">
+                  <span className="text-[10px] font-bold text-amber-300 uppercase tracking-[0.15em]">Search the Archives</span>
                 </div>
 
-                {/* Drawer front */}
-                <div className="bg-gradient-to-b from-amber-700 via-amber-600 to-amber-700 rounded-lg p-3 sm:p-4 border border-amber-500/30">
-                  {/* Drawer handle */}
-                  <div className="absolute top-1/2 -translate-y-1/2 left-3 w-2 h-8 bg-gradient-to-b from-amber-400 via-amber-500 to-amber-600 rounded-full shadow-inner border border-amber-300/50" />
-                  <div className="absolute top-1/2 -translate-y-1/2 right-3 w-2 h-8 bg-gradient-to-b from-amber-400 via-amber-500 to-amber-600 rounded-full shadow-inner border border-amber-300/50" />
+                {/* Inner carved area */}
+                <div className="bg-gradient-to-b from-slate-800 via-slate-850 to-slate-900 rounded-md p-4 border border-slate-600/50">
+                  {/* Decorative corner gems */}
+                  <div className="absolute top-3 left-3 w-2 h-2 bg-emerald-500/60 rounded-full shadow-lg shadow-emerald-500/30" />
+                  <div className="absolute top-3 right-3 w-2 h-2 bg-rose-500/60 rounded-full shadow-lg shadow-rose-500/30" />
+                  <div className="absolute bottom-3 left-3 w-2 h-2 bg-amber-500/60 rounded-full shadow-lg shadow-amber-500/30" />
+                  <div className="absolute bottom-3 right-3 w-2 h-2 bg-violet-500/60 rounded-full shadow-lg shadow-violet-500/30" />
 
-                  {/* Search input styled as index card */}
-                  <form onSubmit={handleSearch} className="flex items-center gap-2 sm:gap-3">
+                  <form onSubmit={handleSearch} className="flex items-center gap-3">
                     <div className="flex-1 relative">
-                      <div className="absolute inset-0 bg-amber-50 rounded-lg shadow-inner" />
                       <input
                         type="text"
                         value={searchQuery}
                         onChange={(e) => setSearchQuery(e.target.value)}
-                        placeholder="Search the catalog..."
-                        className="relative w-full px-4 sm:px-5 py-2.5 sm:py-3 rounded-lg bg-transparent text-amber-900 placeholder-amber-600/60 font-medium focus:outline-none text-sm sm:text-base border-2 border-amber-300/50 focus:border-amber-400"
+                        placeholder="Search ancient texts..."
+                        className="w-full px-5 py-3 rounded-md bg-slate-900/80 text-amber-100 placeholder-slate-500 font-medium focus:outline-none focus:ring-2 focus:ring-amber-500/50 text-sm border border-slate-600/50"
                         style={{ fontFamily: 'Georgia, serif' }}
                       />
                       <button
                         type="submit"
-                        className="absolute right-2 top-1/2 -translate-y-1/2 p-2 bg-amber-700 hover:bg-amber-600 rounded-lg transition-colors shadow-md"
+                        className="absolute right-2 top-1/2 -translate-y-1/2 p-2 bg-gradient-to-br from-amber-600 to-amber-800 hover:from-amber-500 hover:to-amber-700 rounded-md transition-all shadow-lg"
                       >
                         <Search className="w-4 h-4 text-amber-100" />
                       </button>
                     </div>
                     {session && (
                       <Link href="/articles/write" className="hidden sm:block">
-                        <Button className="bg-emerald-700 text-white hover:bg-emerald-600 font-bold px-4 py-2.5 rounded-lg shadow-lg whitespace-nowrap border border-emerald-500/50">
+                        <Button className="bg-gradient-to-br from-emerald-700 to-emerald-900 text-white hover:from-emerald-600 hover:to-emerald-800 font-bold px-5 py-3 rounded-md shadow-lg whitespace-nowrap border border-emerald-500/30">
                           <PenSquare className="w-4 h-4 mr-2" />
-                          Contribute
+                          Inscribe
                         </Button>
                       </Link>
                     )}
                   </form>
                 </div>
               </div>
-
-              {/* Catalog base/feet */}
-              <div className="flex justify-between px-8">
-                <div className="w-8 h-2 bg-gradient-to-b from-amber-900 to-amber-950 rounded-b-md" />
-                <div className="w-8 h-2 bg-gradient-to-b from-amber-900 to-amber-950 rounded-b-md" />
-              </div>
             </div>
           </div>
         </div>
 
         {/* Bottom fade to content area */}
-        <div className="absolute bottom-0 left-0 right-0 h-16 bg-gradient-to-t from-[var(--background)] to-transparent" />
+        <div className="absolute bottom-0 left-0 right-0 h-20 bg-gradient-to-t from-[var(--background)] to-transparent" />
       </div>
 
       {/* Welcome Guide for First-Time Visitors */}
