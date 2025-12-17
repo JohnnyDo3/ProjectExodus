@@ -5,7 +5,7 @@ import { usePathname } from 'next/navigation'
 import { useState, useEffect, useRef } from 'react'
 import { useSession, signOut } from 'next-auth/react'
 import { ThemeToggle } from '@/components/ui/ThemeToggle'
-import { Menu, X, Leaf, User, LogOut, Settings, Users, Calendar, LayoutDashboard, ChevronRight, MessageCircle, Bell, ChevronDown, Lock, Rocket, GraduationCap, Crown, TrendingUp } from 'lucide-react'
+import { Menu, X, Leaf, User, LogOut, Settings, Users, Calendar, LayoutDashboard, ChevronRight, MessageCircle, Bell, ChevronDown, Lock, Crown } from 'lucide-react'
 import NotificationBell from '@/components/notifications/NotificationBell'
 import { useDigitalScrollContext } from '@/components/learning/DigitalScroll/DigitalScrollContext'
 
@@ -125,10 +125,9 @@ export function Header() {
   ]
 
   const communityMenuItems = [
-    { icon: MessageCircle, label: 'Discussions', href: '/community/discussions', description: 'Join conversations' },
-    { icon: Rocket, label: 'Projects', href: '/community/projects', description: 'Collaborative work' },
-    { icon: Users, label: 'Network', href: '/network', description: 'Build connections' },
-    { icon: GraduationCap, label: 'Courses', href: '/learn/courses', description: 'Structured learning' },
+    { label: 'Discussions', href: '/community/discussions' },
+    { label: 'Projects', href: '/community/projects' },
+    { label: 'Network', href: '/network' },
   ]
 
   const handleSignOut = async () => {
@@ -468,20 +467,16 @@ export function Header() {
                 <p className="text-xs font-semibold text-[var(--muted-foreground)] uppercase tracking-wide px-2">Community Features</p>
                 <div className="grid grid-cols-2 gap-2">
                   {communityMenuItems.map((menuItem) => {
-                    const Icon = menuItem.icon
                     const isLocked = !session // All items locked for non-users
 
                     if (isLocked) {
                       return (
                         <div
                           key={menuItem.label}
-                          className="flex flex-col items-center gap-1 py-3 px-2 rounded-xl bg-[var(--muted)]/50 opacity-50"
+                          className="flex items-center justify-center gap-1 py-3 px-2 rounded-xl bg-[var(--muted)]/50 opacity-50"
                         >
-                          <div className="relative">
-                            <Icon className="w-5 h-5 text-[var(--muted-foreground)]" />
-                            <Lock className="w-2.5 h-2.5 absolute -bottom-0.5 -right-0.5 text-[var(--muted-foreground)]" />
-                          </div>
                           <span className="text-xs font-medium text-[var(--muted-foreground)]">{menuItem.label}</span>
+                          <Lock className="w-3 h-3 text-[var(--muted-foreground)]" />
                         </div>
                       )
                     }
@@ -490,10 +485,9 @@ export function Header() {
                       <Link
                         key={menuItem.label}
                         href={menuItem.href}
-                        className="flex flex-col items-center gap-1 py-3 px-2 rounded-xl bg-[var(--muted)] hover:bg-theme-primary/10 transition-colors"
+                        className="flex items-center justify-center py-3 px-2 rounded-xl bg-[var(--muted)] hover:bg-theme-primary/10 transition-colors"
                         onClick={() => setMobileMenuOpen(false)}
                       >
-                        <Icon className="w-5 h-5 text-theme-primary" />
                         <span className="text-xs font-medium text-[var(--foreground)]">{menuItem.label}</span>
                       </Link>
                     )

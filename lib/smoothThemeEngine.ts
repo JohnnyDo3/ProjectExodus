@@ -22,8 +22,11 @@ export interface ThemeColors {
   background: string
   foreground: string
   primary: string
+  primaryForeground: string
   secondary: string
+  secondaryForeground: string
   accent: string
+  accentForeground: string
   muted: string
   mutedForeground: string
   card: string
@@ -167,8 +170,11 @@ export function interpolateThemeColors(
     background: interpolateColor(colors1.background, colors2.background, t),
     foreground: interpolateColor(colors1.foreground, colors2.foreground, t),
     primary: interpolateColor(colors1.primary, colors2.primary, t),
+    primaryForeground: interpolateColor(colors1.primaryForeground, colors2.primaryForeground, t),
     secondary: interpolateColor(colors1.secondary, colors2.secondary, t),
+    secondaryForeground: interpolateColor(colors1.secondaryForeground, colors2.secondaryForeground, t),
     accent: interpolateColor(colors1.accent, colors2.accent, t),
+    accentForeground: interpolateColor(colors1.accentForeground, colors2.accentForeground, t),
     muted: interpolateColor(colors1.muted, colors2.muted, t),
     mutedForeground: interpolateColor(colors1.mutedForeground, colors2.mutedForeground, t),
     card: interpolateColor(colors1.card, colors2.card, t),
@@ -210,6 +216,10 @@ const AURORA_CYAN = '#7fdbca'
 const STARLIGHT = '#f0f0ff'
 const STARLIGHT_MUTED = '#8888aa'
 
+// Foreground colors for buttons/badges
+const WHITE = '#ffffff'
+const DARK_FG = '#1a1a1a'
+
 /**
  * 24 keyframes for smooth day-long color transitions
  * These represent key moments in the day cycle
@@ -223,8 +233,11 @@ export const TIME_KEYFRAMES: TimeKeyframe[] = [
       background: GALAXY_BLACK,
       foreground: STARLIGHT,
       primary: STAR_BLUE,
+      primaryForeground: DARK_FG,
       secondary: NEBULA_PURPLE,
+      secondaryForeground: DARK_FG,
       accent: AURORA_CYAN,
+      accentForeground: DARK_FG,
       muted: GALAXY_MUTED,
       mutedForeground: STARLIGHT_MUTED,
       card: GALAXY_DEEP,
@@ -239,8 +252,11 @@ export const TIME_KEYFRAMES: TimeKeyframe[] = [
       background: GALAXY_BLACK,
       foreground: STARLIGHT,
       primary: STAR_BLUE,
+      primaryForeground: DARK_FG,
       secondary: NEBULA_PURPLE,
+      secondaryForeground: DARK_FG,
       accent: AURORA_CYAN,
+      accentForeground: DARK_FG,
       muted: GALAXY_MUTED,
       mutedForeground: STARLIGHT_MUTED,
       card: GALAXY_DEEP,
@@ -256,8 +272,11 @@ export const TIME_KEYFRAMES: TimeKeyframe[] = [
       background: '#2a2520',
       foreground: '#d4cfc9',
       primary: '#6a7a70',
+      primaryForeground: WHITE,
       secondary: '#9b6a5a',
+      secondaryForeground: WHITE,
       accent: '#6a8a8a',
+      accentForeground: WHITE,
       muted: '#3a3530',
       mutedForeground: '#a5a095',
       card: '#322d28',
@@ -273,8 +292,11 @@ export const TIME_KEYFRAMES: TimeKeyframe[] = [
       background: '#4a3a3a',
       foreground: '#e5d5d0',
       primary: '#c47080',
+      primaryForeground: WHITE,
       secondary: '#d08070',
+      secondaryForeground: WHITE,
       accent: '#7090a0',
+      accentForeground: WHITE,
       muted: '#5a4a4a',
       mutedForeground: '#b0a5a0',
       card: '#524545',
@@ -289,8 +311,11 @@ export const TIME_KEYFRAMES: TimeKeyframe[] = [
       background: '#f5e0e0',
       foreground: EARTH_800,
       primary: '#e07090',
+      primaryForeground: WHITE,
       secondary: '#e09080',
+      secondaryForeground: WHITE,
       accent: '#80a0b0',
+      accentForeground: WHITE,
       muted: '#ead0d0',
       mutedForeground: EARTH_600,
       card: '#fff0f0',
@@ -306,8 +331,11 @@ export const TIME_KEYFRAMES: TimeKeyframe[] = [
       background: '#fff5f0',
       foreground: EARTH_800,
       primary: '#ff8ba7',
+      primaryForeground: WHITE,
       secondary: '#ffb4a2',
+      secondaryForeground: WHITE,
       accent: '#87b8c7',
+      accentForeground: WHITE,
       muted: '#ffe8dd',
       mutedForeground: EARTH_600,
       card: '#fffaf7',
@@ -322,8 +350,11 @@ export const TIME_KEYFRAMES: TimeKeyframe[] = [
       background: '#fff8f0',
       foreground: EARTH_800,
       primary: '#e8a05d',
+      primaryForeground: WHITE,
       secondary: '#e89b8f',
+      secondaryForeground: WHITE,
       accent: '#7eb8b8',
+      accentForeground: WHITE,
       muted: '#f9e8d9',
       mutedForeground: EARTH_600,
       card: '#fffbf5',
@@ -339,8 +370,11 @@ export const TIME_KEYFRAMES: TimeKeyframe[] = [
       background: '#faf9f5',
       foreground: EARTH_800,
       primary: '#d09050',
+      primaryForeground: WHITE,
       secondary: '#d08878',
+      secondaryForeground: WHITE,
       accent: '#70a8a8',
+      accentForeground: WHITE,
       muted: '#f0e8d8',
       mutedForeground: EARTH_600,
       card: '#fefcf8',
@@ -355,8 +389,11 @@ export const TIME_KEYFRAMES: TimeKeyframe[] = [
       background: '#f8f8f4',
       foreground: EARTH_900,
       primary: '#608858',
+      primaryForeground: WHITE,
       secondary: TERRA_500,
+      secondaryForeground: WHITE,
       accent: OCEAN_500,
+      accentForeground: WHITE,
       muted: '#ece8e0',
       mutedForeground: EARTH_600,
       card: '#fcfcfa',
@@ -372,8 +409,11 @@ export const TIME_KEYFRAMES: TimeKeyframe[] = [
       background: SAND_50,
       foreground: EARTH_900,
       primary: MOSS_600,
+      primaryForeground: WHITE,
       secondary: TERRA_500,
+      secondaryForeground: WHITE,
       accent: OCEAN_500,
+      accentForeground: WHITE,
       muted: SAND_200,
       mutedForeground: EARTH_600,
       card: '#ffffff',
@@ -388,8 +428,11 @@ export const TIME_KEYFRAMES: TimeKeyframe[] = [
       background: SAND_50,
       foreground: EARTH_900,
       primary: MOSS_600,
+      primaryForeground: WHITE,
       secondary: TERRA_500,
+      secondaryForeground: WHITE,
       accent: OCEAN_500,
+      accentForeground: WHITE,
       muted: SAND_200,
       mutedForeground: EARTH_600,
       card: '#ffffff',
@@ -404,8 +447,11 @@ export const TIME_KEYFRAMES: TimeKeyframe[] = [
       background: SAND_50,
       foreground: EARTH_900,
       primary: MOSS_600,
+      primaryForeground: WHITE,
       secondary: TERRA_500,
+      secondaryForeground: WHITE,
       accent: OCEAN_500,
+      accentForeground: WHITE,
       muted: SAND_200,
       mutedForeground: EARTH_600,
       card: '#ffffff',
@@ -421,8 +467,11 @@ export const TIME_KEYFRAMES: TimeKeyframe[] = [
       background: '#fff9e6',
       foreground: EARTH_900,
       primary: '#e89550',
+      primaryForeground: WHITE,
       secondary: '#d88855',
+      secondaryForeground: WHITE,
       accent: '#8fa89f',
+      accentForeground: WHITE,
       muted: '#f4ebcd',
       mutedForeground: EARTH_700,
       card: '#fffcf0',
@@ -437,8 +486,11 @@ export const TIME_KEYFRAMES: TimeKeyframe[] = [
       background: '#fff5dc',
       foreground: EARTH_900,
       primary: '#e08040',
+      primaryForeground: WHITE,
       secondary: '#d07545',
+      secondaryForeground: WHITE,
       accent: '#9a9a8a',
+      accentForeground: WHITE,
       muted: '#f0e0b8',
       mutedForeground: EARTH_700,
       card: '#fff8e8',
@@ -454,8 +506,11 @@ export const TIME_KEYFRAMES: TimeKeyframe[] = [
       background: '#f8ede0',
       foreground: EARTH_900,
       primary: '#d87048',
+      primaryForeground: WHITE,
       secondary: '#c86548',
+      secondaryForeground: WHITE,
       accent: '#8a7a6a',
+      accentForeground: WHITE,
       muted: '#e8d8c0',
       mutedForeground: EARTH_700,
       card: '#fcf5ec',
@@ -471,8 +526,11 @@ export const TIME_KEYFRAMES: TimeKeyframe[] = [
       background: '#f5ebe0',
       foreground: EARTH_900,
       primary: '#d67050',
+      primaryForeground: WHITE,
       secondary: '#c45f40',
+      secondaryForeground: WHITE,
       accent: '#8b7565',
+      accentForeground: WHITE,
       muted: '#e8d5c4',
       mutedForeground: EARTH_700,
       card: '#faf3ea',
@@ -487,8 +545,11 @@ export const TIME_KEYFRAMES: TimeKeyframe[] = [
       background: '#f0e5d8',
       foreground: EARTH_900,
       primary: '#d06545',
+      primaryForeground: WHITE,
       secondary: '#b85838',
+      secondaryForeground: WHITE,
       accent: '#806858',
+      accentForeground: WHITE,
       muted: '#e0d0c0',
       mutedForeground: EARTH_700,
       card: '#f5ede4',
@@ -504,8 +565,11 @@ export const TIME_KEYFRAMES: TimeKeyframe[] = [
       background: '#ebe0d8',
       foreground: EARTH_900,
       primary: TERRA_600,
+      primaryForeground: WHITE,
       secondary: '#9b6f8f',
+      secondaryForeground: WHITE,
       accent: '#7a6a5f',
+      accentForeground: WHITE,
       muted: '#ddd0c4',
       mutedForeground: EARTH_700,
       card: '#f0e8e0',
@@ -520,8 +584,11 @@ export const TIME_KEYFRAMES: TimeKeyframe[] = [
       background: '#e0d5d0',
       foreground: EARTH_900,
       primary: '#b05848',
+      primaryForeground: WHITE,
       secondary: '#8a6080',
+      secondaryForeground: WHITE,
       accent: '#6a5a50',
+      accentForeground: WHITE,
       muted: '#d0c0b8',
       mutedForeground: EARTH_700,
       card: '#e8dcd5',
@@ -529,37 +596,43 @@ export const TIME_KEYFRAMES: TimeKeyframe[] = [
       border: '#c0b0a0',
     }
   },
-  // EVENING (8pm - 9pm)
+  // EVENING (8pm - 9pm) - Critical transition zone - improved contrast
   {
     hour: 20.5,
     label: 'Early Evening',
     colors: {
-      background: '#c0b0a8',
-      foreground: '#3a3430',
-      primary: '#905048',
-      secondary: '#7a5070',
-      accent: '#5a4a45',
-      muted: '#a89890',
-      mutedForeground: '#605850',
-      card: '#b8a8a0',
-      cardForeground: '#3a3430',
-      border: '#988880',
+      background: '#4a4038',
+      foreground: '#e8e0d8',
+      primary: '#c87058',
+      primaryForeground: WHITE,
+      secondary: '#a07080',
+      secondaryForeground: WHITE,
+      accent: '#7a9090',
+      accentForeground: WHITE,
+      muted: '#3a3530',
+      mutedForeground: '#b0a898',
+      card: '#423830',
+      cardForeground: '#e8e0d8',
+      border: '#5a5048',
     }
   },
   {
     hour: 21,
     label: 'Evening',
     colors: {
-      background: '#584840',
-      foreground: '#d8d0c8',
-      primary: '#7a8a6a',
-      secondary: '#a07060',
-      accent: '#6a8080',
-      muted: '#504038',
+      background: '#2a2520',
+      foreground: '#e0d8d0',
+      primary: '#7a9a6a',
+      primaryForeground: WHITE,
+      secondary: '#b07060',
+      secondaryForeground: WHITE,
+      accent: '#6a9090',
+      accentForeground: WHITE,
+      muted: '#3a3530',
       mutedForeground: '#a8a098',
-      card: '#504540',
-      cardForeground: '#d8d0c8',
-      border: '#484038',
+      card: '#322d28',
+      cardForeground: '#e0d8d0',
+      border: '#4a4540',
     }
   },
   // NIGHT (9pm - 12am)
@@ -570,8 +643,11 @@ export const TIME_KEYFRAMES: TimeKeyframe[] = [
       background: GALAXY_BLACK,
       foreground: STARLIGHT,
       primary: STAR_BLUE,
+      primaryForeground: DARK_FG,
       secondary: NEBULA_PURPLE,
+      secondaryForeground: DARK_FG,
       accent: AURORA_CYAN,
+      accentForeground: DARK_FG,
       muted: GALAXY_MUTED,
       mutedForeground: STARLIGHT_MUTED,
       card: GALAXY_DEEP,
@@ -586,8 +662,11 @@ export const TIME_KEYFRAMES: TimeKeyframe[] = [
       background: GALAXY_BLACK,
       foreground: STARLIGHT,
       primary: STAR_BLUE,
+      primaryForeground: DARK_FG,
       secondary: NEBULA_PURPLE,
+      secondaryForeground: DARK_FG,
       accent: AURORA_CYAN,
+      accentForeground: DARK_FG,
       muted: GALAXY_MUTED,
       mutedForeground: STARLIGHT_MUTED,
       card: GALAXY_DEEP,
@@ -728,8 +807,11 @@ export function applyThemeColors(colors: ThemeColors): void {
   root.style.setProperty('--background', colors.background)
   root.style.setProperty('--foreground', colors.foreground)
   root.style.setProperty('--primary', colors.primary)
+  root.style.setProperty('--primary-foreground', colors.primaryForeground)
   root.style.setProperty('--secondary', colors.secondary)
+  root.style.setProperty('--secondary-foreground', colors.secondaryForeground)
   root.style.setProperty('--accent', colors.accent)
+  root.style.setProperty('--accent-foreground', colors.accentForeground)
   root.style.setProperty('--muted', colors.muted)
   root.style.setProperty('--muted-foreground', colors.mutedForeground)
   root.style.setProperty('--card', colors.card)
@@ -746,8 +828,11 @@ export function clearThemeColors(): void {
   root.style.removeProperty('--background')
   root.style.removeProperty('--foreground')
   root.style.removeProperty('--primary')
+  root.style.removeProperty('--primary-foreground')
   root.style.removeProperty('--secondary')
+  root.style.removeProperty('--secondary-foreground')
   root.style.removeProperty('--accent')
+  root.style.removeProperty('--accent-foreground')
   root.style.removeProperty('--muted')
   root.style.removeProperty('--muted-foreground')
   root.style.removeProperty('--card')
