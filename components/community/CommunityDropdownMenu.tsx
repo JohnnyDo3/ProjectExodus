@@ -1,12 +1,12 @@
 'use client'
 
 import { useState, useRef, useEffect } from 'react'
+import { useRouter } from 'next/navigation'
 import { motion, AnimatePresence } from 'framer-motion'
 import {
   ChevronDown, MessageSquare, Rocket, Users, BookOpen, Lock,
   Sparkles
 } from 'lucide-react'
-import Link from 'next/link'
 
 interface CommunityDropdownMenuProps {
   isAuthenticated: boolean
@@ -40,6 +40,7 @@ const menuItems = [
 ]
 
 export function CommunityDropdownMenu({ isAuthenticated }: CommunityDropdownMenuProps) {
+  const router = useRouter()
   const [isOpen, setIsOpen] = useState(false)
   const dropdownRef = useRef<HTMLDivElement>(null)
 
@@ -84,57 +85,61 @@ export function CommunityDropdownMenu({ isAuthenticated }: CommunityDropdownMenu
             <div className="p-2">
               {menuItems.map((item, index) => {
                 const Icon = item.icon
+                const handleClick = () => {
+                  setIsOpen(false)
+                  router.push(isAuthenticated ? item.href : '/auth/signin')
+                }
 
                 if (isAuthenticated) {
                   // Unlocked state - fully functional
                   return (
-                    <Link key={item.label} href={item.href} onClick={() => setIsOpen(false)}>
-                      <motion.div
-                        initial={{ opacity: 0, x: -10 }}
-                        animate={{ opacity: 1, x: 0 }}
-                        transition={{ delay: index * 0.05 }}
-                        className="flex items-center gap-3 p-3 rounded-lg hover:bg-[var(--muted)] transition-colors cursor-pointer group"
-                      >
-                        <div className="w-9 h-9 rounded-lg bg-[var(--primary)]/10 flex items-center justify-center group-hover:bg-[var(--primary)]/20 transition-colors">
-                          <Icon className="w-4 h-4 text-[var(--primary)]" />
+                    <motion.div
+                      key={item.label}
+                      initial={{ opacity: 0, x: -10 }}
+                      animate={{ opacity: 1, x: 0 }}
+                      transition={{ delay: index * 0.05 }}
+                      onClick={handleClick}
+                      className="flex items-center gap-3 p-3 rounded-lg hover:bg-[var(--muted)] transition-colors cursor-pointer group"
+                    >
+                      <div className="w-9 h-9 rounded-lg bg-[var(--primary)]/10 flex items-center justify-center group-hover:bg-[var(--primary)]/20 transition-colors">
+                        <Icon className="w-4 h-4 text-[var(--primary)]" />
+                      </div>
+                      <div className="flex-1">
+                        <div className="font-medium text-[var(--foreground)] text-sm">
+                          {item.label}
                         </div>
-                        <div className="flex-1">
-                          <div className="font-medium text-[var(--foreground)] text-sm">
-                            {item.label}
-                          </div>
-                          <div className="text-xs text-[var(--muted-foreground)]">
-                            {item.description}
-                          </div>
+                        <div className="text-xs text-[var(--muted-foreground)]">
+                          {item.description}
                         </div>
-                      </motion.div>
-                    </Link>
+                      </div>
+                    </motion.div>
                   )
                 } else {
                   // Locked state - ghost appearance
                   return (
-                    <Link key={item.label} href="/auth/signin" onClick={() => setIsOpen(false)}>
-                      <motion.div
-                        initial={{ opacity: 0, x: -10 }}
-                        animate={{ opacity: 1, x: 0 }}
-                        transition={{ delay: index * 0.05 }}
-                        className="flex items-center gap-3 p-3 rounded-lg hover:bg-[var(--muted)]/50 transition-colors cursor-pointer group"
-                      >
-                        <div className="w-9 h-9 rounded-lg bg-[var(--muted)] flex items-center justify-center relative">
-                          <Icon className="w-4 h-4 text-[var(--muted-foreground)]/50" />
-                          <div className="absolute -bottom-1 -right-1 w-4 h-4 rounded-full bg-[var(--card)] border border-[var(--border)] flex items-center justify-center">
-                            <Lock className="w-2.5 h-2.5 text-[var(--muted-foreground)]" />
-                          </div>
+                    <motion.div
+                      key={item.label}
+                      initial={{ opacity: 0, x: -10 }}
+                      animate={{ opacity: 1, x: 0 }}
+                      transition={{ delay: index * 0.05 }}
+                      onClick={handleClick}
+                      className="flex items-center gap-3 p-3 rounded-lg hover:bg-[var(--muted)]/50 transition-colors cursor-pointer group"
+                    >
+                      <div className="w-9 h-9 rounded-lg bg-[var(--muted)] flex items-center justify-center relative">
+                        <Icon className="w-4 h-4 text-[var(--muted-foreground)]/50" />
+                        <div className="absolute -bottom-1 -right-1 w-4 h-4 rounded-full bg-[var(--card)] border border-[var(--border)] flex items-center justify-center">
+                          <Lock className="w-2.5 h-2.5 text-[var(--muted-foreground)]" />
                         </div>
-                        <div className="flex-1 opacity-50">
-                          <div className="font-medium text-[var(--muted-foreground)] text-sm">
-                            {item.label}
-                          </div>
-                          <div className="text-xs text-[var(--muted-foreground)]/70">
-                            Sign in to access
-                          </div>
+                      </div>
+                      <div className="flex-1 opacity-50">
+                        <div className="font-medium text-[var(--muted-foreground)] text-sm">
+                          {item.label}
                         </div>
-                      </motion.div>
-                    </Link>
+                        <div className="text-xs text-[var(--muted-foreground)]/70">
+                          Sign in to access
+                        </div>
+                      </div>
+                    </motion.div>
                   )
                 }
               })}
