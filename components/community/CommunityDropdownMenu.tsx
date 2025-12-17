@@ -4,7 +4,7 @@ import { useState, useRef, useEffect } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import {
   ChevronDown, MessageSquare, Rocket, Users, BookOpen, Lock,
-  Sparkles, MessagesSquare
+  Sparkles
 } from 'lucide-react'
 import Link from 'next/link'
 
@@ -14,16 +14,10 @@ interface CommunityDropdownMenuProps {
 
 const menuItems = [
   {
-    label: 'Feed',
+    label: 'Discussions',
     href: '/community/feed',
     icon: MessageSquare,
-    description: 'Social posts and updates'
-  },
-  {
-    label: 'Forum',
-    href: '/community/forum',
-    icon: MessagesSquare,
-    description: 'Community discussions'
+    description: 'Join the conversation'
   },
   {
     label: 'Projects',
