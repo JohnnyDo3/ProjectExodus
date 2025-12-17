@@ -103,11 +103,11 @@ export async function GET(
         case 'EXODUS_COURSE':
           if (prereq.exodusCourseId) {
             const courseProgress = user?.learningProgress?.find(
-              (p) => p.moduleId === prereq.exodusCourseId && p.completedAt !== null
+              (p: { moduleId: string; completedAt: Date | null }) => p.moduleId === prereq.exodusCourseId && p.completedAt !== null
             )
             met = !!courseProgress
             details = met
-              ? `Completed ${courseProgress?.module?.title || 'course'}`
+              ? `Completed ${(courseProgress as { module?: { title?: string } })?.module?.title || 'course'}`
               : 'Course not completed'
           }
           break
@@ -115,7 +115,7 @@ export async function GET(
         case 'PROJECT_MODULE':
           if (prereq.projectModuleId) {
             const moduleProgress = projectLearningProgress.find(
-              (p) => p.moduleId === prereq.projectModuleId && p.completedAt !== null
+              (p: { moduleId: string; completedAt: Date | null }) => p.moduleId === prereq.projectModuleId && p.completedAt !== null
             )
             met = !!moduleProgress
             details = met
@@ -129,7 +129,7 @@ export async function GET(
             const userTags = [...(user?.interests || []), ...(user?.expertise || [])]
             const matchedTags = prereq.requiredTags.filter((tag: string) =>
               userTags.some(
-                (ut) => ut.toLowerCase().includes(tag.toLowerCase()) || tag.toLowerCase().includes(ut.toLowerCase())
+                (ut: string) => ut.toLowerCase().includes(tag.toLowerCase()) || tag.toLowerCase().includes(ut.toLowerCase())
               )
             )
             // Need at least 1 tag match
@@ -178,7 +178,7 @@ export async function GET(
       }
     }
 
-    const allMet = results.every((r) => r.met)
+    const allMet = results.every((r: { met: boolean }) => r.met)
 
     return NextResponse.json({
       success: true,

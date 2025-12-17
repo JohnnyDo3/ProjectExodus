@@ -44,7 +44,7 @@ export async function GET(
     // Merge with user's preferences
     const userPrefs = membership.notificationPreferences as Record<string, boolean> | null
 
-    const preferences = availableTypes.map((type) => ({
+    const preferences = availableTypes.map((type: typeof availableTypes[number]) => ({
       ...type,
       enabled: userPrefs?.[type.type.toLowerCase()] ?? type.defaultEnabled,
     }))

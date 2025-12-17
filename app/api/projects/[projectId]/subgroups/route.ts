@@ -53,18 +53,18 @@ export async function GET(
       const userMemberships = await prisma.subgroupMember.findMany({
         where: {
           userId: session.user.id,
-          subgroupId: { in: subgroups.map((s) => s.id) },
+          subgroupId: { in: subgroups.map((s: { id: string }) => s.id) },
         },
       })
 
       const membershipMap = new Map(
-        userMemberships.map((m) => [m.subgroupId, m])
+        userMemberships.map((m: { subgroupId: string }) => [m.subgroupId, m])
       )
 
-      subgroupsWithMembership = subgroups.map((sg) => ({
+      subgroupsWithMembership = subgroups.map((sg: typeof subgroups[number]) => ({
         ...sg,
         userMembership: membershipMap.get(sg.id) || null,
-      }))
+      })) as typeof subgroups
     }
 
     return NextResponse.json({

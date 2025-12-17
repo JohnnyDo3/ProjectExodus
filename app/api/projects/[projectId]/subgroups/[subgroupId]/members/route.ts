@@ -64,9 +64,9 @@ export async function GET(
       where: { subgroupId },
     })
 
-    const leaderUserIds = new Set(leaders.map((l) => l.userId))
+    const leaderUserIds = new Set(leaders.map((l: { userId: string }) => l.userId))
 
-    const membersWithLeaderStatus = members.map((m) => ({
+    const membersWithLeaderStatus = members.map((m: typeof members[number]) => ({
       ...m,
       isLeader: leaderUserIds.has(m.userId),
     }))

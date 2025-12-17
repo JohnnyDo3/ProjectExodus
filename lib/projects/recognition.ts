@@ -165,7 +165,7 @@ async function getMemberStats(
     _count: { type: true },
   })
 
-  const contribMap = new Map(contributions.map((c) => [c.type, c._count.type]))
+  const contribMap = new Map(contributions.map((c: { type: string; _count: { type: number } }) => [c.type, c._count.type]))
 
   // Get learning progress
   const learningCompleted = await prisma.projectLearningProgress.count({
@@ -186,11 +186,11 @@ async function getMemberStats(
     },
   })
 
-  const userIndex = allMembers.findIndex((m) => m.userId === userId)
+  const userIndex = allMembers.findIndex((m: { userId: string }) => m.userId === userId)
   const sortedByScore = [...allMembers].sort(
-    (a, b) => (b.contributionScore || 0) - (a.contributionScore || 0)
+    (a: { contributionScore: number | null }, b: { contributionScore: number | null }) => (b.contributionScore || 0) - (a.contributionScore || 0)
   )
-  const scoreRank = sortedByScore.findIndex((m) => m.userId === userId) + 1
+  const scoreRank = sortedByScore.findIndex((m: { userId: string }) => m.userId === userId) + 1
 
   const daysSinceJoin = Math.floor(
     (Date.now() - new Date(member.joinedAt).getTime()) / (1000 * 60 * 60 * 24)
@@ -224,7 +224,7 @@ export async function checkAndAwardBadges(
       select: { badge: true },
     })
 
-    const existingSet = new Set(existingBadges.map((b) => b.badge))
+    const existingSet = new Set(existingBadges.map((b: { badge: string }) => b.badge))
     const newBadges: RecognitionBadge[] = []
 
     // Check each badge criteria
@@ -286,7 +286,7 @@ export async function awardBadge(
       return false // Already has badge
     }
 
-    const criteria = BADGE_CRITERIA.find((c) => c.badge === badge)
+    const criteria = BADGE_CRITERIA.find((c: { badge: string }) => c.badge === badge)
 
     await prisma.projectMemberRecognition.create({
       data: {
@@ -323,8 +323,8 @@ export async function getMemberBadges(projectId: string, userId: string) {
     orderBy: { earnedAt: 'desc' },
   })
 
-  return badges.map((b) => {
-    const criteria = BADGE_CRITERIA.find((c) => c.badge === b.badge)
+  return badges.map((b: typeof badges[number]) => {
+    const criteria = BADGE_CRITERIA.find((c: { badge: string }) => c.badge === b.badge)
     return {
       ...b,
       name: criteria?.name || b.badge,
@@ -359,11 +359,11 @@ export async function getProjectLeaderboard(
     },
   })
 
-  return members.map((m, index) => ({
+  return members.map((m: typeof members[number], index: number) => ({
     rank: index + 1,
     user: m.user,
     contributionScore: m.contributionScore || 0,
     role: m.role,
-    badges: m.recognitions.map((r) => r.badge),
+    badges: m.recognitions.map((r: { badge: string }) => r.badge),
   }))
 }

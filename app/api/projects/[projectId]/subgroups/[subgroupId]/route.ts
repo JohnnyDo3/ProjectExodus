@@ -74,7 +74,7 @@ export async function GET(
       })
 
       const isLeader = subgroup.leaders.some(
-        (l) => l.userId === session.user.id
+        (l: { userId: string }) => l.userId === session.user.id
       )
 
       if (!membership && !isLeader) {
@@ -109,7 +109,7 @@ export async function GET(
       })
       userMembership = membership
 
-      isLeader = subgroup.leaders.some((l) => l.userId === session.user.id)
+      isLeader = subgroup.leaders.some((l: { userId: string }) => l.userId === session.user.id)
     }
 
     return NextResponse.json({

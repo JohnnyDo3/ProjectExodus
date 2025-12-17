@@ -64,7 +64,7 @@ export async function GET(
       select: { tags: true },
     })
 
-    const allTags = [...new Set(allPosts.flatMap((p) => p.tags || []))]
+    const allTags = [...new Set(allPosts.flatMap((p: { tags: string[] | null }) => p.tags || []))]
 
     return NextResponse.json({
       success: true,

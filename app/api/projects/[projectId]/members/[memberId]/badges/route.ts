@@ -20,7 +20,7 @@ export async function GET(
     const badges = await getMemberBadges(projectId, memberId)
 
     // Get available badges for reference
-    const availableBadges = BADGE_CRITERIA.map((c) => ({
+    const availableBadges = BADGE_CRITERIA.map((c: { badge: string; name: string; description: string }) => ({
       badge: c.badge,
       name: c.name,
       description: c.description,
