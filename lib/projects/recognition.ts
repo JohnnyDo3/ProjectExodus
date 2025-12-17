@@ -165,7 +165,7 @@ async function getMemberStats(
     _count: { type: true },
   })
 
-  const contribMap = new Map(contributions.map((c: { type: string; _count: { type: number } }) => [c.type, c._count.type]))
+  const contribMap = new Map<string, number>(contributions.map((c: { type: string; _count: { type: number } }) => [c.type, c._count.type]))
 
   // Get learning progress
   const learningCompleted = await prisma.projectLearningProgress.count({
