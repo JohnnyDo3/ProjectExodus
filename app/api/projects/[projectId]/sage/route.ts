@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { auth } from '@/auth'
 import { prisma } from '@/lib/db/prisma'
-import { rateLimit } from '@/lib/rate-limit'
+import { rateLimit, rateLimitResponse } from '@/lib/rate-limit'
 import {
   generateProjectSystemPrompt,
   SageProjectMode,
@@ -25,11 +25,12 @@ interface SageRequest {
   }
 }
 
-// Rate limit: 20 messages per minute for project Sage
-const limiter = rateLimit({
-  interval: 60 * 1000, // 1 minute
-  uniqueTokenPerInterval: 500,
-})
+// Rate limit config: 20 messages per minute for project Sage
+const SAGE_RATE_LIMIT = {
+  id: 'project-sage',
+  limit: 20,
+  windowSeconds: 60,
+}
 
 export async function POST(
   request: NextRequest,
@@ -47,15 +48,10 @@ export async function POST(
       )
     }
 
-    // Rate limiting
-    const ip = request.headers.get('x-forwarded-for') || 'anonymous'
-    try {
-      await limiter.check(20, ip)
-    } catch {
-      return NextResponse.json(
-        { error: 'Rate limit exceeded. Please wait a moment.' },
-        { status: 429 }
-      )
+    // Rate limiting - protect against abuse
+    const rateLimitResult = await rateLimit(request, SAGE_RATE_LIMIT)
+    if (!rateLimitResult.success) {
+      return rateLimitResponse(rateLimitResult.reset)
     }
 
     // Parse request body
@@ -90,7 +86,7 @@ export async function POST(
     }
 
     // Check if user is a member (or admin) - they need access to use Sage
-    const membership = project.members.find(m => m.userId === session.user.id)
+    const membership = project.members.find((m: { userId: string }) => m.userId === session.user.id)
     const isCreator = project.creatorId === session.user.id
 
     if (!membership && !isCreator) {
@@ -145,19 +141,19 @@ export async function POST(
 
         // Find relevant courses based on project prerequisites
         const prereqTags = project.prerequisites
-          .filter(p => p.requiredTag)
-          .map(p => p.requiredTag as string)
+          .filter((p: { requiredTag: string | null }) => p.requiredTag)
+          .map((p: { requiredTag: string | null }) => p.requiredTag as string)
 
         const relevantCourses = targetUser.learningProgress
-          .filter(lp => {
+          .filter((lp: { article: { title: string } | null }) => {
             if (!lp.article) return false
             // Check if article tags match any prerequisite tags
             // This is simplified - in production you'd have proper tag matching
-            return prereqTags.some(tag =>
-              lp.article.title.toLowerCase().includes(tag.toLowerCase())
+            return prereqTags.some((tag: string) =>
+              lp.article!.title.toLowerCase().includes(tag.toLowerCase())
             )
           })
-          .map(lp => lp.article.title)
+          .map((lp: { article: { title: string } }) => lp.article.title)
 
         waiverContext = {
           userId: targetUser.id,
@@ -166,7 +162,7 @@ export async function POST(
           userCoursesCompleted: targetUser.learningProgress.length,
           userMemberSince: targetUser.createdAt,
           relevantCoursesCompleted: relevantCourses,
-          projectPrerequisites: project.prerequisites.map(p => p.displayName || p.type)
+          projectPrerequisites: project.prerequisites.map((p: { displayName: string | null; type: string }) => p.displayName || p.type)
         }
       }
     }
@@ -226,7 +222,7 @@ async function callGeminiAPI(systemPrompt: string, messages: Message[]): Promise
   const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash-lite:generateContent?key=${GEMINI_API_KEY}`
 
   // Build conversation history
-  const conversationParts = messages.map(msg => ({
+  const conversationParts = messages.map((msg: Message) => ({
     role: msg.role === 'user' ? 'user' : 'model',
     parts: [{ text: msg.content }]
   }))
