@@ -5,7 +5,7 @@ import { motion } from 'framer-motion'
 import {
   Shield, Crown, Sparkles, TrendingUp,
   User, Briefcase, FileText, BookOpen, Users, MessageCircle, Leaf,
-  Star, Lock, Globe, Zap, Heart, ArrowRight
+  Star, Lock, Globe, Zap, Heart, ArrowRight, GraduationCap, Gamepad2, Brain, Target, Award
 } from 'lucide-react'
 import Link from 'next/link'
 import { BusinessCardThemeShowcase } from './BusinessCardThemeShowcase'
@@ -122,9 +122,27 @@ const businessCardFeatures = [
   { icon: Lock, label: 'Privacy Controls' },
 ]
 
+// Grade levels data
+const gradeLevels = [
+  { id: 'ELEMENTARY', label: 'Elementary', color: 'from-green-400 to-emerald-500', icon: '🌱', ages: 'K-5' },
+  { id: 'MIDDLE_SCHOOL', label: 'Middle School', color: 'from-blue-400 to-cyan-500', icon: '📚', ages: '6-8' },
+  { id: 'HIGH_SCHOOL', label: 'High School', color: 'from-purple-400 to-violet-500', icon: '🎓', ages: '9-12' },
+  { id: 'UNDERGRADUATE', label: 'Undergraduate', color: 'from-orange-400 to-amber-500', icon: '🏛️', ages: 'College' },
+  { id: 'GRADUATE', label: 'Graduate', color: 'from-rose-400 to-pink-500', icon: '📖', ages: 'Masters' },
+  { id: 'PHD', label: 'PhD', color: 'from-indigo-400 to-blue-600', icon: '🔬', ages: 'Doctoral' },
+]
+
+// Curriculum highlights
+const curriculumHighlights = [
+  { name: 'Food Sovereignty', icon: Leaf, color: 'text-emerald-500' },
+  { name: 'Sustainable Living', icon: Globe, color: 'text-blue-500' },
+  { name: 'Environmental Science', icon: Brain, color: 'text-purple-500' },
+]
+
 export function CommunityHeartPage({ isAuthenticated }: CommunityHeartPageProps) {
   const [isVolitionFlipped, setIsVolitionFlipped] = useState(false)
   const [isBizIDFlipped, setIsBizIDFlipped] = useState(false)
+  const [isLearningFlipped, setIsLearningFlipped] = useState(false)
 
   return (
     <div className="h-[calc(100vh-5rem)] bg-[var(--background)] relative overflow-hidden flex flex-col">
@@ -390,63 +408,348 @@ export function CommunityHeartPage({ isAuthenticated }: CommunityHeartPageProps)
           </motion.div>
         </div>
 
-        {/* Center column: Featured Members (Top 10 Grid) + Activity (compact) */}
+        {/* Center column: Learning Academy + Activity (compact) */}
         <motion.div
           initial={{ opacity: 0, y: 30 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.6, delay: 0.2 }}
           className="lg:col-span-5 flex flex-col gap-2 min-h-0"
         >
-          {/* Featured Members - Top 10 Grid with decorations */}
-          <div className="relative flex-[2] bg-[var(--card)]/90 backdrop-blur-md border border-[var(--border)]/50 rounded-xl p-3 overflow-hidden flex flex-col min-h-0">
-            {/* Decorative pattern overlay */}
-            <div
-              className="absolute inset-0 opacity-[0.015] pointer-events-none"
-              style={{
-                backgroundImage: `url("data:image/svg+xml,%3Csvg width='20' height='20' viewBox='0 0 20 20' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='%23000' fill-opacity='1'%3E%3Ccircle cx='1' cy='1' r='1'/%3E%3C/g%3E%3C/svg%3E")`,
-              }}
-            />
-
-            {/* Header with crown decoration */}
-            <div className="relative z-10 flex items-center justify-between mb-2">
-              <h2 className="text-sm font-bold text-[var(--foreground)] flex items-center gap-2">
-                <motion.div
-                  className="relative"
-                  animate={{ y: [0, -2, 0] }}
-                  transition={{ duration: 2, repeat: Infinity, ease: 'easeInOut' }}
-                >
-                  <Crown className="w-4 h-4 text-amber-500" />
-                  <motion.div
-                    className="absolute -top-0.5 -right-0.5 w-2 h-2 bg-amber-400 rounded-full"
-                    animate={{ scale: [0.8, 1.2, 0.8], opacity: [0.5, 1, 0.5] }}
-                    transition={{ duration: 1.5, repeat: Infinity }}
-                  />
-                </motion.div>
-                Top 10 Members
-              </h2>
-              <motion.div className="flex items-center gap-1.5 px-2 py-0.5 rounded-full bg-emerald-500/10 border border-emerald-500/20">
-                <motion.div
-                  className="w-1.5 h-1.5 rounded-full bg-emerald-500"
-                  animate={{ scale: [1, 1.3, 1], opacity: [1, 0.6, 1] }}
-                  transition={{ duration: 2, repeat: Infinity }}
-                />
-                <span className="text-[9px] text-emerald-600 dark:text-emerald-400 font-medium">Leaderboard</span>
-              </motion.div>
-            </div>
-
-            <DecorativeDivider className="mb-2" />
-
-            {/* Featured members grid */}
-            <div className="relative z-10 flex-1 min-h-0">
-              <FeaturedGuardiansCarousel />
-            </div>
-
-            {/* Bottom decorative element */}
+          {/* Learning Academy - Flip Card with Philosophy */}
+          <div
+            className="relative flex-[2] min-h-0"
+            style={{ perspective: '1000px' }}
+            onMouseEnter={() => setIsLearningFlipped(true)}
+            onMouseLeave={() => setIsLearningFlipped(false)}
+          >
             <motion.div
-              className="absolute bottom-0 left-1/2 -translate-x-1/2 w-1/3 h-px bg-gradient-to-r from-transparent via-[var(--primary)]/30 to-transparent"
-              animate={{ width: ['20%', '40%', '20%'] }}
-              transition={{ duration: 4, repeat: Infinity, ease: 'easeInOut' }}
-            />
+              className="relative w-full h-full"
+              style={{ transformStyle: 'preserve-3d' }}
+              animate={{ rotateY: isLearningFlipped ? 180 : 0 }}
+              transition={{ duration: 0.6, ease: 'easeInOut' }}
+            >
+              {/* Front Side - Learning Features with Zen Garden Mural */}
+              <div
+                className="absolute inset-0 bg-gradient-to-br from-emerald-50/90 via-[var(--card)]/95 to-sky-50/90 dark:from-emerald-950/90 dark:via-[var(--card)]/95 dark:to-sky-950/90 backdrop-blur-md border border-emerald-200/30 dark:border-emerald-800/30 rounded-xl p-3 overflow-hidden flex flex-col"
+                style={{ backfaceVisibility: 'hidden' }}
+              >
+                {/* Zen Garden Mural Background */}
+                <div className="absolute inset-0 pointer-events-none overflow-hidden rounded-xl">
+                  {/* Soft gradient sky */}
+                  <div className="absolute inset-0 bg-gradient-to-b from-sky-100/30 via-transparent to-emerald-100/20 dark:from-sky-900/20 dark:to-emerald-900/20" />
+
+                  {/* Bamboo stalks - left side */}
+                  <svg className="absolute left-0 top-0 h-full w-12 opacity-20" viewBox="0 0 48 200" preserveAspectRatio="none">
+                    <defs>
+                      <linearGradient id="bambooGreen" x1="0%" y1="0%" x2="100%" y2="0%">
+                        <stop offset="0%" stopColor="#22c55e"/>
+                        <stop offset="50%" stopColor="#16a34a"/>
+                        <stop offset="100%" stopColor="#22c55e"/>
+                      </linearGradient>
+                    </defs>
+                    {/* Bamboo stalk 1 */}
+                    <rect x="8" y="0" width="6" height="200" fill="url(#bambooGreen)" rx="3"/>
+                    <line x1="8" y1="30" x2="14" y2="30" stroke="#15803d" strokeWidth="1"/>
+                    <line x1="8" y1="70" x2="14" y2="70" stroke="#15803d" strokeWidth="1"/>
+                    <line x1="8" y1="110" x2="14" y2="110" stroke="#15803d" strokeWidth="1"/>
+                    <line x1="8" y1="150" x2="14" y2="150" stroke="#15803d" strokeWidth="1"/>
+                    {/* Bamboo stalk 2 */}
+                    <rect x="22" y="20" width="5" height="180" fill="url(#bambooGreen)" rx="2.5"/>
+                    <line x1="22" y1="50" x2="27" y2="50" stroke="#15803d" strokeWidth="1"/>
+                    <line x1="22" y1="90" x2="27" y2="90" stroke="#15803d" strokeWidth="1"/>
+                    <line x1="22" y1="130" x2="27" y2="130" stroke="#15803d" strokeWidth="1"/>
+                    {/* Bamboo leaves */}
+                    <path d="M14 25 Q20 20 26 28" fill="none" stroke="#22c55e" strokeWidth="1.5"/>
+                    <path d="M14 65 Q22 58 30 68" fill="none" stroke="#22c55e" strokeWidth="1.5"/>
+                    <path d="M27 85 Q35 78 40 90" fill="none" stroke="#22c55e" strokeWidth="1.5"/>
+                  </svg>
+
+                  {/* Cherry blossom branch - top right */}
+                  <svg className="absolute right-0 top-0 w-24 h-20 opacity-25" viewBox="0 0 100 80">
+                    {/* Branch */}
+                    <path d="M100 10 Q70 15 50 30 Q35 40 20 35" fill="none" stroke="#78350f" strokeWidth="2"/>
+                    <path d="M50 30 Q45 45 35 50" fill="none" stroke="#78350f" strokeWidth="1.5"/>
+                    {/* Blossoms */}
+                    <circle cx="48" cy="28" r="6" fill="#fce7f3" stroke="#f9a8d4" strokeWidth="0.5"/>
+                    <circle cx="35" cy="36" r="5" fill="#fce7f3" stroke="#f9a8d4" strokeWidth="0.5"/>
+                    <circle cx="55" cy="22" r="4" fill="#fbcfe8" stroke="#f9a8d4" strokeWidth="0.5"/>
+                    <circle cx="25" cy="32" r="5" fill="#fce7f3" stroke="#f9a8d4" strokeWidth="0.5"/>
+                    <circle cx="40" cy="48" r="4" fill="#fbcfe8" stroke="#f9a8d4" strokeWidth="0.5"/>
+                    {/* Blossom centers */}
+                    <circle cx="48" cy="28" r="1.5" fill="#fda4af"/>
+                    <circle cx="35" cy="36" r="1.5" fill="#fda4af"/>
+                    <circle cx="25" cy="32" r="1.5" fill="#fda4af"/>
+                  </svg>
+
+                  {/* Zen sand ripples - bottom */}
+                  <svg className="absolute bottom-0 left-0 right-0 h-16 opacity-10" viewBox="0 0 400 60" preserveAspectRatio="none">
+                    <defs>
+                      <pattern id="sandRipple" patternUnits="userSpaceOnUse" width="40" height="20">
+                        <path d="M0 10 Q10 5 20 10 Q30 15 40 10" fill="none" stroke="#a16207" strokeWidth="0.5"/>
+                      </pattern>
+                    </defs>
+                    <rect x="0" y="0" width="400" height="60" fill="url(#sandRipple)"/>
+                    {/* Zen stone */}
+                    <ellipse cx="350" cy="40" rx="15" ry="8" fill="#78716c" opacity="0.5"/>
+                    <ellipse cx="330" cy="45" rx="10" ry="5" fill="#a8a29e" opacity="0.4"/>
+                  </svg>
+
+                  {/* Distant mountains silhouette */}
+                  <svg className="absolute bottom-8 left-0 right-0 h-12 opacity-[0.07]" viewBox="0 0 400 50" preserveAspectRatio="none">
+                    <path d="M0 50 L30 25 L60 40 L100 15 L150 35 L200 10 L250 30 L300 20 L350 35 L400 25 L400 50 Z" fill="#1e3a5f"/>
+                  </svg>
+
+                  {/* Floating lotus - bottom right */}
+                  <svg className="absolute bottom-2 right-8 w-14 h-10 opacity-20" viewBox="0 0 60 40">
+                    {/* Water ripple */}
+                    <ellipse cx="30" cy="35" rx="25" ry="4" fill="none" stroke="#0ea5e9" strokeWidth="0.5" opacity="0.5"/>
+                    {/* Lotus petals */}
+                    <path d="M30 30 Q25 20 30 10 Q35 20 30 30" fill="#fce7f3" stroke="#f9a8d4" strokeWidth="0.3"/>
+                    <path d="M30 30 Q20 25 15 18 Q25 22 30 30" fill="#fbcfe8" stroke="#f9a8d4" strokeWidth="0.3"/>
+                    <path d="M30 30 Q40 25 45 18 Q35 22 30 30" fill="#fbcfe8" stroke="#f9a8d4" strokeWidth="0.3"/>
+                    <path d="M30 30 Q18 28 12 24 Q22 27 30 30" fill="#fdf2f8" stroke="#f9a8d4" strokeWidth="0.3"/>
+                    <path d="M30 30 Q42 28 48 24 Q38 27 30 30" fill="#fdf2f8" stroke="#f9a8d4" strokeWidth="0.3"/>
+                    {/* Lotus center */}
+                    <circle cx="30" cy="25" r="3" fill="#fcd34d"/>
+                  </svg>
+
+                  {/* Koi fish - subtle */}
+                  <svg className="absolute bottom-4 left-1/4 w-8 h-5 opacity-15" viewBox="0 0 40 25">
+                    <path d="M5 12 Q15 5 30 12 Q35 12 38 15 Q35 12 30 12 Q15 19 5 12" fill="#f97316"/>
+                    <circle cx="8" cy="11" r="1" fill="#1f2937"/>
+                    <path d="M32 8 Q38 5 35 12 Q38 19 32 16" fill="#f97316" opacity="0.8"/>
+                  </svg>
+                </div>
+
+                {/* Corner ornaments */}
+                <CornerOrnament position="tl" />
+                <CornerOrnament position="tr" />
+
+                {/* Header */}
+                <div className="relative z-10 flex items-center justify-between mb-2">
+                  <h2 className="text-sm font-bold text-[var(--foreground)] flex items-center gap-2">
+                    <motion.div
+                      className="w-5 h-5 rounded-md bg-gradient-to-br from-blue-500 to-purple-600 flex items-center justify-center shadow-sm"
+                      animate={{ rotate: [0, 5, 0, -5, 0] }}
+                      transition={{ duration: 4, repeat: Infinity, ease: 'easeInOut' }}
+                    >
+                      <GraduationCap className="w-3 h-3 text-white" />
+                    </motion.div>
+                    Exodus Academy
+                  </h2>
+                  <motion.span
+                    className="text-[9px] px-2 py-0.5 bg-gradient-to-r from-blue-500/20 to-purple-500/20 rounded-full text-blue-600 dark:text-blue-400 font-semibold border border-blue-500/20"
+                    animate={{ scale: [1, 1.02, 1] }}
+                    transition={{ duration: 2, repeat: Infinity }}
+                  >
+                    6 Levels
+                  </motion.span>
+                </div>
+
+                <DecorativeDivider className="mb-2" />
+
+                {/* Grade Levels Grid */}
+                <div className="relative z-10 mb-3">
+                  <p className="text-[9px] text-[var(--muted-foreground)] font-medium mb-1.5 uppercase tracking-wide">Grade Levels</p>
+                  <div className="grid grid-cols-3 gap-1.5">
+                    {gradeLevels.map((level, i) => (
+                      <motion.div
+                        key={level.id}
+                        className={`relative px-2 py-1.5 rounded-lg bg-gradient-to-r ${level.color} shadow-sm cursor-pointer overflow-hidden`}
+                        initial={{ opacity: 0, scale: 0.9 }}
+                        animate={{ opacity: 1, scale: 1 }}
+                        transition={{ delay: 0.1 + i * 0.05 }}
+                        whileHover={{ scale: 1.05, y: -1 }}
+                      >
+                        <div className="absolute inset-0 bg-white/10" />
+                        <div className="relative flex items-center gap-1">
+                          <span className="text-sm">{level.icon}</span>
+                          <div className="flex-1 min-w-0">
+                            <p className="text-[8px] font-bold text-white truncate">{level.label}</p>
+                            <p className="text-[7px] text-white/70">{level.ages}</p>
+                          </div>
+                        </div>
+                      </motion.div>
+                    ))}
+                  </div>
+                </div>
+
+                {/* Curriculum Highlights */}
+                <div className="relative z-10 mb-3">
+                  <p className="text-[9px] text-[var(--muted-foreground)] font-medium mb-1.5 uppercase tracking-wide">Curriculum</p>
+                  <div className="flex flex-wrap gap-1.5">
+                    {curriculumHighlights.map((item, i) => {
+                      const Icon = item.icon
+                      return (
+                        <motion.div
+                          key={item.name}
+                          className="flex items-center gap-1 px-2 py-1 rounded-md bg-[var(--muted)]/50 border border-[var(--border)]/50"
+                          initial={{ opacity: 0, x: -10 }}
+                          animate={{ opacity: 1, x: 0 }}
+                          transition={{ delay: 0.3 + i * 0.1 }}
+                          whileHover={{ scale: 1.02 }}
+                        >
+                          <Icon className={`w-3 h-3 ${item.color}`} />
+                          <span className="text-[9px] font-medium text-[var(--foreground)]">{item.name}</span>
+                        </motion.div>
+                      )
+                    })}
+                  </div>
+                </div>
+
+                {/* Key Features */}
+                <div className="relative z-10 flex-1 flex items-center justify-around">
+                  <motion.div
+                    className="flex flex-col items-center gap-1"
+                    whileHover={{ scale: 1.1 }}
+                  >
+                    <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-amber-400 to-orange-500 flex items-center justify-center shadow-sm">
+                      <Gamepad2 className="w-4 h-4 text-white" />
+                    </div>
+                    <span className="text-[8px] font-medium text-[var(--muted-foreground)]">Games</span>
+                  </motion.div>
+                  <motion.div
+                    className="flex flex-col items-center gap-1"
+                    whileHover={{ scale: 1.1 }}
+                  >
+                    <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-cyan-400 to-blue-500 flex items-center justify-center shadow-sm">
+                      <Brain className="w-4 h-4 text-white" />
+                    </div>
+                    <span className="text-[8px] font-medium text-[var(--muted-foreground)]">Adaptive</span>
+                  </motion.div>
+                  <motion.div
+                    className="flex flex-col items-center gap-1"
+                    whileHover={{ scale: 1.1 }}
+                  >
+                    <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-emerald-400 to-green-500 flex items-center justify-center shadow-sm">
+                      <Target className="w-4 h-4 text-white" />
+                    </div>
+                    <span className="text-[8px] font-medium text-[var(--muted-foreground)]">Goals</span>
+                  </motion.div>
+                  <motion.div
+                    className="flex flex-col items-center gap-1"
+                    whileHover={{ scale: 1.1 }}
+                  >
+                    <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-purple-400 to-violet-500 flex items-center justify-center shadow-sm">
+                      <Award className="w-4 h-4 text-white" />
+                    </div>
+                    <span className="text-[8px] font-medium text-[var(--muted-foreground)]">Certificates</span>
+                  </motion.div>
+                </div>
+
+                {/* CTA Button */}
+                <div className="relative z-10 mt-2 pt-1">
+                  <DecorativeDivider className="mb-1" />
+                  <Link href="/learn" className="block">
+                    <motion.div
+                      className="flex items-center justify-center gap-1 text-[9px] font-semibold text-blue-600 dark:text-blue-400 bg-blue-500/10 rounded-md py-1.5 border border-blue-500/20"
+                      whileHover={{ scale: 1.02, backgroundColor: 'rgba(59, 130, 246, 0.2)' }}
+                      whileTap={{ scale: 0.98 }}
+                    >
+                      <BookOpen className="w-3 h-3" />
+                      Explore Courses
+                      <ArrowRight className="w-3 h-3" />
+                    </motion.div>
+                  </Link>
+                </div>
+              </div>
+
+              {/* Back Side - Learning Philosophy */}
+              <div
+                className="absolute inset-0 bg-gradient-to-br from-[var(--card)] via-[var(--muted)] to-[var(--card)] rounded-xl p-3 overflow-hidden border border-blue-500/30"
+                style={{ backfaceVisibility: 'hidden', transform: 'rotateY(180deg)' }}
+              >
+                {/* Decorative glow */}
+                <motion.div
+                  className="absolute inset-0 bg-gradient-to-br from-blue-500/10 via-transparent to-purple-500/10"
+                  animate={{ opacity: [0.3, 0.5, 0.3] }}
+                  transition={{ duration: 4, repeat: Infinity }}
+                />
+
+                {/* Corner ornaments */}
+                <CornerOrnament position="tl" />
+                <CornerOrnament position="br" />
+
+                <div className="relative z-10 h-full flex flex-col">
+                  {/* Header */}
+                  <div className="flex items-center gap-2 mb-2">
+                    <motion.div
+                      className="w-6 h-6 rounded-lg bg-gradient-to-br from-blue-500 to-purple-600 flex items-center justify-center"
+                      animate={{ scale: [1, 1.05, 1] }}
+                      transition={{ duration: 2, repeat: Infinity }}
+                    >
+                      <BookOpen className="w-3.5 h-3.5 text-white" />
+                    </motion.div>
+                    <h3 className="font-bold text-sm text-[var(--foreground)] tracking-tight">Learning Philosophy</h3>
+                  </div>
+
+                  <DecorativeDivider className="mb-2" />
+
+                  {/* Philosophy content */}
+                  <div className="flex-1 space-y-2 overflow-auto">
+                    <motion.div
+                      className="bg-blue-500/10 rounded-lg p-2 border border-blue-500/20"
+                      initial={{ opacity: 0, y: 10 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      transition={{ delay: 0.2 }}
+                    >
+                      <p className="text-[10px] font-semibold text-blue-600 dark:text-blue-400 mb-1 flex items-center gap-1">
+                        <GraduationCap className="w-3 h-3" />
+                        Education for All Ages
+                      </p>
+                      <p className="text-[8px] text-[var(--muted-foreground)] leading-relaxed">
+                        From K-5 to PhD, we believe sustainability education should be accessible at every stage of life. Content adapts to your level.
+                      </p>
+                    </motion.div>
+
+                    <motion.div
+                      className="bg-purple-500/10 rounded-lg p-2 border border-purple-500/20"
+                      initial={{ opacity: 0, y: 10 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      transition={{ delay: 0.3 }}
+                    >
+                      <p className="text-[10px] font-semibold text-purple-600 dark:text-purple-400 mb-1 flex items-center gap-1">
+                        <Brain className="w-3 h-3" />
+                        Adaptive Learning
+                      </p>
+                      <p className="text-[8px] text-[var(--muted-foreground)] leading-relaxed">
+                        Our system learns your pace and style. Games, simulations, and interactive content meet you where you are.
+                      </p>
+                    </motion.div>
+
+                    <motion.div
+                      className="bg-emerald-500/10 rounded-lg p-2 border border-emerald-500/20"
+                      initial={{ opacity: 0, y: 10 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      transition={{ delay: 0.4 }}
+                    >
+                      <p className="text-[10px] font-semibold text-emerald-600 dark:text-emerald-400 mb-1 flex items-center gap-1">
+                        <Target className="w-3 h-3" />
+                        Real-World Application
+                      </p>
+                      <p className="text-[8px] text-[var(--muted-foreground)] leading-relaxed">
+                        Every lesson connects to actionable change. Learn food sovereignty, then grow your own garden. Theory meets practice.
+                      </p>
+                    </motion.div>
+
+                    <motion.div
+                      className="bg-amber-500/10 rounded-lg p-2 border border-amber-500/20"
+                      initial={{ opacity: 0, y: 10 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      transition={{ delay: 0.5 }}
+                    >
+                      <p className="text-[10px] font-semibold text-amber-600 dark:text-amber-400 mb-1 flex items-center gap-1">
+                        <Award className="w-3 h-3" />
+                        Recognition & Growth
+                      </p>
+                      <p className="text-[8px] text-[var(--muted-foreground)] leading-relaxed">
+                        Earn certificates, badges, and track your impact. Your learning journey contributes to your STOCK score.
+                      </p>
+                    </motion.div>
+                  </div>
+                </div>
+              </div>
+            </motion.div>
           </div>
 
           {/* Live Activity - compact with decorations */}
