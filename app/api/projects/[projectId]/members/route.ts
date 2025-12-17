@@ -50,7 +50,7 @@ export async function GET(
     if (search) {
       const searchLower = search.toLowerCase()
       filteredMembers = members.filter(
-        (m) =>
+        (m: typeof members[number]) =>
           m.user.name?.toLowerCase().includes(searchLower) ||
           m.user.username?.toLowerCase().includes(searchLower)
       )
