@@ -6,7 +6,7 @@ import {
   Shield, Crown, Sparkles, TrendingUp,
   User, Briefcase, FileText, BookOpen, Users, MessageCircle, Leaf,
   Star, Lock, Globe, Zap, Heart, ArrowRight, GraduationCap, Gamepad2, Brain, Target, Award,
-  Droplet, Sprout, Recycle, Home
+  Droplet, Sprout, Recycle, Home, FlaskConical, Play, Puzzle, Calculator, Map, Trophy
 } from 'lucide-react'
 import Link from 'next/link'
 import { BusinessCardThemeShowcase } from './BusinessCardThemeShowcase'
@@ -141,6 +141,16 @@ const coreLearnTopics = [
   { name: 'Zero Waste', icon: Recycle, color: 'text-green-500', bgColor: 'bg-green-500/10' },
   { name: 'Green Building', icon: Home, color: 'text-teal-500', bgColor: 'bg-teal-500/10' },
   { name: 'Food Sovereignty', icon: Leaf, color: 'text-lime-500', bgColor: 'bg-lime-500/10' },
+]
+
+// Interactive learning tools
+const interactiveTools = [
+  { name: 'Simulations', icon: FlaskConical, color: 'text-purple-500' },
+  { name: 'Video Lessons', icon: Play, color: 'text-rose-500' },
+  { name: 'Challenges', icon: Puzzle, color: 'text-orange-500' },
+  { name: 'Calculators', icon: Calculator, color: 'text-blue-500' },
+  { name: 'Virtual Tours', icon: Map, color: 'text-teal-500' },
+  { name: 'Achievements', icon: Trophy, color: 'text-amber-500' },
 ]
 
 // Fake user ID previews to showcase different guardian archetypes
@@ -312,47 +322,47 @@ export function CommunityHeartPage({ isAuthenticated }: CommunityHeartPageProps)
                   {/* Ancient Scroll / Ivy Mural Background */}
                   <div className="absolute inset-0 pointer-events-none overflow-hidden rounded-xl">
                     {/* Parchment texture gradient */}
-                    <div className="absolute inset-0 bg-gradient-to-br from-amber-100/20 via-transparent to-stone-200/20 dark:from-amber-900/10 dark:to-stone-800/10" />
+                    <div className="absolute inset-0 bg-gradient-to-br from-[var(--primary)]/5 via-transparent to-[var(--muted)]/20" />
 
-                    {/* Ivy vine - left side */}
-                    <svg className="absolute left-0 top-0 h-full w-10 opacity-20" viewBox="0 0 40 200" preserveAspectRatio="none">
-                      <defs>
-                        <linearGradient id="ivyGreen" x1="0%" y1="0%" x2="100%" y2="100%">
-                          <stop offset="0%" stopColor="#166534"/>
-                          <stop offset="100%" stopColor="#15803d"/>
-                        </linearGradient>
-                      </defs>
-                      {/* Main vine */}
-                      <path d="M5 0 Q15 30 8 60 Q2 90 12 120 Q18 150 6 180 Q3 195 8 200" fill="none" stroke="#166534" strokeWidth="2"/>
-                      {/* Ivy leaves */}
-                      <path d="M8 25 Q15 20 12 30 Q8 35 8 25" fill="url(#ivyGreen)"/>
-                      <path d="M6 55 Q-2 50 2 60 Q6 68 6 55" fill="url(#ivyGreen)"/>
-                      <path d="M10 85 Q18 78 15 90 Q10 98 10 85" fill="url(#ivyGreen)"/>
-                      <path d="M14 115 Q22 110 18 122 Q12 128 14 115" fill="url(#ivyGreen)"/>
-                      <path d="M8 145 Q0 140 4 152 Q10 158 8 145" fill="url(#ivyGreen)"/>
-                      <path d="M5 175 Q12 168 10 180 Q4 188 5 175" fill="url(#ivyGreen)"/>
-                    </svg>
+                    {/* Ivy vine - left side - using theme colors */}
+                    <div className="absolute left-0 top-0 h-full w-10 text-emerald-600 dark:text-emerald-500 opacity-20">
+                      <svg className="h-full w-full" viewBox="0 0 40 200" preserveAspectRatio="none">
+                        {/* Main vine */}
+                        <path d="M5 0 Q15 30 8 60 Q2 90 12 120 Q18 150 6 180 Q3 195 8 200" fill="none" stroke="currentColor" strokeWidth="2"/>
+                        {/* Ivy leaves */}
+                        <path d="M8 25 Q15 20 12 30 Q8 35 8 25" fill="currentColor"/>
+                        <path d="M6 55 Q-2 50 2 60 Q6 68 6 55" fill="currentColor"/>
+                        <path d="M10 85 Q18 78 15 90 Q10 98 10 85" fill="currentColor"/>
+                        <path d="M14 115 Q22 110 18 122 Q12 128 14 115" fill="currentColor"/>
+                        <path d="M8 145 Q0 140 4 152 Q10 158 8 145" fill="currentColor"/>
+                        <path d="M5 175 Q12 168 10 180 Q4 188 5 175" fill="currentColor"/>
+                      </svg>
+                    </div>
 
                     {/* Ivy vine - right side */}
-                    <svg className="absolute right-0 top-0 h-full w-10 opacity-15" viewBox="0 0 40 200" preserveAspectRatio="none">
-                      <path d="M35 0 Q25 25 32 55 Q38 85 28 115 Q22 145 34 175 Q37 190 32 200" fill="none" stroke="#166534" strokeWidth="1.5"/>
-                      <path d="M32 30 Q25 25 28 35 Q34 40 32 30" fill="#15803d"/>
-                      <path d="M30 70 Q38 65 35 75 Q28 82 30 70" fill="#15803d"/>
-                      <path d="M26 110 Q18 105 22 115 Q28 122 26 110" fill="#15803d"/>
-                      <path d="M32 150 Q40 145 36 155 Q30 162 32 150" fill="#15803d"/>
-                    </svg>
+                    <div className="absolute right-0 top-0 h-full w-10 text-emerald-600 dark:text-emerald-500 opacity-15">
+                      <svg className="h-full w-full" viewBox="0 0 40 200" preserveAspectRatio="none">
+                        <path d="M35 0 Q25 25 32 55 Q38 85 28 115 Q22 145 34 175 Q37 190 32 200" fill="none" stroke="currentColor" strokeWidth="1.5"/>
+                        <path d="M32 30 Q25 25 28 35 Q34 40 32 30" fill="currentColor"/>
+                        <path d="M30 70 Q38 65 35 75 Q28 82 30 70" fill="currentColor"/>
+                        <path d="M26 110 Q18 105 22 115 Q28 122 26 110" fill="currentColor"/>
+                        <path d="M32 150 Q40 145 36 155 Q30 162 32 150" fill="currentColor"/>
+                      </svg>
+                    </div>
 
                     {/* Decorative Greek key border - top */}
-                    <svg className="absolute top-0 left-8 right-8 h-3 opacity-10" viewBox="0 0 200 12" preserveAspectRatio="none">
-                      <pattern id="greekKey" patternUnits="userSpaceOnUse" width="24" height="12">
-                        <path d="M0 6 L6 6 L6 0 L12 0 L12 6 L18 6 L18 12 L24 12 M24 6 L18 6" fill="none" stroke="#78716c" strokeWidth="1"/>
-                      </pattern>
-                      <rect x="0" y="0" width="200" height="12" fill="url(#greekKey)"/>
-                    </svg>
+                    <div className="absolute top-0 left-8 right-8 h-3 text-[var(--muted-foreground)] opacity-10">
+                      <svg className="h-full w-full" viewBox="0 0 200 12" preserveAspectRatio="none">
+                        <pattern id="greekKey" patternUnits="userSpaceOnUse" width="24" height="12">
+                          <path d="M0 6 L6 6 L6 0 L12 0 L12 6 L18 6 L18 12 L24 12 M24 6 L18 6" fill="none" stroke="currentColor" strokeWidth="1"/>
+                        </pattern>
+                        <rect x="0" y="0" width="200" height="12" fill="url(#greekKey)"/>
+                      </svg>
+                    </div>
 
-                    {/* Soft golden corner glow */}
-                    <div className="absolute -top-4 -right-4 w-20 h-20 rounded-full bg-amber-300/10 dark:bg-amber-600/10 blur-2xl" />
-                    <div className="absolute -bottom-4 -left-4 w-16 h-16 rounded-full bg-emerald-300/10 dark:bg-emerald-700/10 blur-xl" />
+                    {/* Soft corner glows - theme aware */}
+                    <div className="absolute -top-4 -right-4 w-20 h-20 rounded-full bg-[var(--primary)]/10 blur-2xl" />
+                    <div className="absolute -bottom-4 -left-4 w-16 h-16 rounded-full bg-[var(--accent)]/10 blur-xl" />
                   </div>
 
                   {/* Corner ornaments */}
@@ -468,12 +478,12 @@ export function CommunityHeartPage({ isAuthenticated }: CommunityHeartPageProps)
                 </motion.div>
 
                 {/* Network Activity - Bottom Section */}
-                <div className="relative flex-[2] bg-gradient-to-br from-[var(--card)]/95 via-cyan-50/10 to-[var(--card)]/95 dark:from-[var(--card)]/95 dark:via-cyan-950/10 dark:to-[var(--card)]/95 backdrop-blur-md border border-[var(--border)]/50 rounded-xl overflow-hidden">
-                  {/* Subtle wave artwork */}
-                  <div className="absolute inset-0 pointer-events-none overflow-hidden rounded-xl">
-                    <svg className="absolute bottom-0 left-0 right-0 h-8 opacity-[0.08]" viewBox="0 0 400 30" preserveAspectRatio="none">
-                      <path d="M0 20 Q50 10 100 20 Q150 30 200 20 Q250 10 300 20 Q350 30 400 20 L400 30 L0 30 Z" fill="#0891b2"/>
-                      <path d="M0 25 Q50 18 100 25 Q150 32 200 25 Q250 18 300 25 Q350 32 400 25 L400 30 L0 30 Z" fill="#06b6d4" opacity="0.5"/>
+                <div className="relative flex-[2] bg-gradient-to-br from-[var(--card)]/95 via-[var(--accent)]/5 to-[var(--card)]/95 backdrop-blur-md border border-[var(--border)]/50 rounded-xl overflow-hidden">
+                  {/* Subtle wave artwork - theme aware */}
+                  <div className="absolute inset-0 pointer-events-none overflow-hidden rounded-xl text-[var(--accent)]">
+                    <svg className="absolute bottom-0 left-0 right-0 h-8 opacity-[0.12]" viewBox="0 0 400 30" preserveAspectRatio="none">
+                      <path d="M0 20 Q50 10 100 20 Q150 30 200 20 Q250 10 300 20 Q350 30 400 20 L400 30 L0 30 Z" fill="currentColor"/>
+                      <path d="M0 25 Q50 18 100 25 Q150 32 200 25 Q250 18 300 25 Q350 32 400 25 L400 30 L0 30 Z" fill="currentColor" opacity="0.5"/>
                     </svg>
                   </div>
 
@@ -503,48 +513,48 @@ export function CommunityHeartPage({ isAuthenticated }: CommunityHeartPageProps)
             >
               {/* Ivy Mural Background - Full */}
               <div className="absolute inset-0 pointer-events-none overflow-hidden rounded-xl">
-                {/* Parchment texture */}
-                <div className="absolute inset-0 bg-gradient-to-br from-amber-100/30 via-transparent to-stone-200/30 dark:from-amber-900/20 dark:to-stone-800/20" />
+                {/* Parchment texture - theme aware */}
+                <div className="absolute inset-0 bg-gradient-to-br from-[var(--primary)]/10 via-transparent to-[var(--muted)]/30" />
 
-                {/* Ivy vine - left side - fuller */}
-                <svg className="absolute left-0 top-0 h-full w-12 opacity-25" viewBox="0 0 48 300" preserveAspectRatio="none">
-                  <defs>
-                    <linearGradient id="ivyGreenBack" x1="0%" y1="0%" x2="100%" y2="100%">
-                      <stop offset="0%" stopColor="#166534"/>
-                      <stop offset="100%" stopColor="#15803d"/>
-                    </linearGradient>
-                  </defs>
-                  <path d="M5 0 Q18 40 8 80 Q2 120 15 160 Q22 200 8 240 Q3 270 10 300" fill="none" stroke="#166534" strokeWidth="2.5"/>
-                  <path d="M10 35 Q20 28 16 42 Q10 50 10 35" fill="url(#ivyGreenBack)"/>
-                  <path d="M6 75 Q-4 68 2 82 Q8 92 6 75" fill="url(#ivyGreenBack)"/>
-                  <path d="M14 115 Q24 106 20 120 Q14 130 14 115" fill="url(#ivyGreenBack)"/>
-                  <path d="M18 155 Q28 148 24 162 Q16 172 18 155" fill="url(#ivyGreenBack)"/>
-                  <path d="M10 195 Q0 188 6 202 Q14 212 10 195" fill="url(#ivyGreenBack)"/>
-                  <path d="M6 235 Q16 228 12 242 Q4 252 6 235" fill="url(#ivyGreenBack)"/>
-                  <path d="M12 275 Q22 268 18 282 Q10 292 12 275" fill="url(#ivyGreenBack)"/>
-                </svg>
+                {/* Ivy vine - left side - fuller - theme aware */}
+                <div className="absolute left-0 top-0 h-full w-12 text-emerald-600 dark:text-emerald-500 opacity-25">
+                  <svg className="h-full w-full" viewBox="0 0 48 300" preserveAspectRatio="none">
+                    <path d="M5 0 Q18 40 8 80 Q2 120 15 160 Q22 200 8 240 Q3 270 10 300" fill="none" stroke="currentColor" strokeWidth="2.5"/>
+                    <path d="M10 35 Q20 28 16 42 Q10 50 10 35" fill="currentColor"/>
+                    <path d="M6 75 Q-4 68 2 82 Q8 92 6 75" fill="currentColor"/>
+                    <path d="M14 115 Q24 106 20 120 Q14 130 14 115" fill="currentColor"/>
+                    <path d="M18 155 Q28 148 24 162 Q16 172 18 155" fill="currentColor"/>
+                    <path d="M10 195 Q0 188 6 202 Q14 212 10 195" fill="currentColor"/>
+                    <path d="M6 235 Q16 228 12 242 Q4 252 6 235" fill="currentColor"/>
+                    <path d="M12 275 Q22 268 18 282 Q10 292 12 275" fill="currentColor"/>
+                  </svg>
+                </div>
 
-                {/* Ivy vine - right side - fuller */}
-                <svg className="absolute right-0 top-0 h-full w-12 opacity-20" viewBox="0 0 48 300" preserveAspectRatio="none">
-                  <path d="M40 0 Q28 35 38 75 Q44 115 32 155 Q26 195 40 235 Q44 270 36 300" fill="none" stroke="#166534" strokeWidth="2"/>
-                  <path d="M38 45 Q28 38 32 52 Q40 60 38 45" fill="#15803d"/>
-                  <path d="M34 95 Q44 88 40 102 Q32 112 34 95" fill="#15803d"/>
-                  <path d="M30 145 Q20 138 26 152 Q34 162 30 145" fill="#15803d"/>
-                  <path d="M38 195 Q48 188 44 202 Q36 212 38 195" fill="#15803d"/>
-                  <path d="M32 245 Q22 238 28 252 Q36 262 32 245" fill="#15803d"/>
-                </svg>
+                {/* Ivy vine - right side - fuller - theme aware */}
+                <div className="absolute right-0 top-0 h-full w-12 text-emerald-600 dark:text-emerald-500 opacity-20">
+                  <svg className="h-full w-full" viewBox="0 0 48 300" preserveAspectRatio="none">
+                    <path d="M40 0 Q28 35 38 75 Q44 115 32 155 Q26 195 40 235 Q44 270 36 300" fill="none" stroke="currentColor" strokeWidth="2"/>
+                    <path d="M38 45 Q28 38 32 52 Q40 60 38 45" fill="currentColor"/>
+                    <path d="M34 95 Q44 88 40 102 Q32 112 34 95" fill="currentColor"/>
+                    <path d="M30 145 Q20 138 26 152 Q34 162 30 145" fill="currentColor"/>
+                    <path d="M38 195 Q48 188 44 202 Q36 212 38 195" fill="currentColor"/>
+                    <path d="M32 245 Q22 238 28 252 Q36 262 32 245" fill="currentColor"/>
+                  </svg>
+                </div>
 
-                {/* Greek key border - top and bottom */}
-                <svg className="absolute top-0 left-10 right-10 h-4 opacity-15" viewBox="0 0 200 16" preserveAspectRatio="none">
-                  <pattern id="greekKeyBack" patternUnits="userSpaceOnUse" width="24" height="12">
-                    <path d="M0 6 L6 6 L6 0 L12 0 L12 6 L18 6 L18 12 L24 12 M24 6 L18 6" fill="none" stroke="#78716c" strokeWidth="1"/>
-                  </pattern>
-                  <rect x="0" y="0" width="200" height="12" fill="url(#greekKeyBack)"/>
-                </svg>
+                {/* Greek key border - top - theme aware */}
+                <div className="absolute top-0 left-10 right-10 h-4 text-[var(--muted-foreground)] opacity-15">
+                  <svg className="h-full w-full" viewBox="0 0 200 16" preserveAspectRatio="none">
+                    <pattern id="greekKeyBack" patternUnits="userSpaceOnUse" width="24" height="12">
+                      <path d="M0 6 L6 6 L6 0 L12 0 L12 6 L18 6 L18 12 L24 12 M24 6 L18 6" fill="none" stroke="currentColor" strokeWidth="1"/>
+                    </pattern>
+                    <rect x="0" y="0" width="200" height="12" fill="url(#greekKeyBack)"/>
+                  </svg>
+                </div>
 
-                {/* Soft golden glows */}
-                <div className="absolute -top-6 -right-6 w-28 h-28 rounded-full bg-amber-300/15 dark:bg-amber-600/15 blur-2xl" />
-                <div className="absolute -bottom-6 -left-6 w-24 h-24 rounded-full bg-emerald-300/15 dark:bg-emerald-700/15 blur-2xl" />
+                {/* Soft glows - theme aware */}
+                <div className="absolute -top-6 -right-6 w-28 h-28 rounded-full bg-[var(--primary)]/15 blur-2xl" />
+                <div className="absolute -bottom-6 -left-6 w-24 h-24 rounded-full bg-[var(--accent)]/15 blur-2xl" />
               </div>
 
               <div className="relative z-10 h-full flex flex-col">
@@ -623,101 +633,106 @@ export function CommunityHeartPage({ isAuthenticated }: CommunityHeartPageProps)
                 className="absolute inset-0 bg-gradient-to-br from-emerald-50/90 via-[var(--card)]/95 to-sky-50/90 dark:from-emerald-950/90 dark:via-[var(--card)]/95 dark:to-sky-950/90 backdrop-blur-md border border-emerald-200/30 dark:border-emerald-800/30 rounded-xl p-4 overflow-hidden flex flex-col"
                 style={{ backfaceVisibility: 'hidden' }}
               >
-                {/* Zen Garden Mural Background */}
+                {/* Zen Garden Mural Background - Theme Aware */}
                 <div className="absolute inset-0 pointer-events-none overflow-hidden rounded-xl">
-                  {/* Soft gradient sky */}
-                  <div className="absolute inset-0 bg-gradient-to-b from-sky-100/30 via-transparent to-emerald-100/20 dark:from-sky-900/20 dark:to-emerald-900/20" />
+                  {/* Soft gradient sky - theme aware */}
+                  <div className="absolute inset-0 bg-gradient-to-b from-[var(--accent)]/10 via-transparent to-[var(--primary)]/10" />
 
-                  {/* Bamboo stalks - left side */}
-                  <svg className="absolute left-0 top-0 h-full w-14 opacity-20" viewBox="0 0 56 300" preserveAspectRatio="none">
-                    <defs>
-                      <linearGradient id="bambooGreen" x1="0%" y1="0%" x2="100%" y2="0%">
-                        <stop offset="0%" stopColor="#22c55e"/>
-                        <stop offset="50%" stopColor="#16a34a"/>
-                        <stop offset="100%" stopColor="#22c55e"/>
-                      </linearGradient>
-                    </defs>
-                    {/* Bamboo stalk 1 */}
-                    <rect x="8" y="0" width="7" height="300" fill="url(#bambooGreen)" rx="3.5"/>
-                    <line x1="8" y1="40" x2="15" y2="40" stroke="#15803d" strokeWidth="1.5"/>
-                    <line x1="8" y1="90" x2="15" y2="90" stroke="#15803d" strokeWidth="1.5"/>
-                    <line x1="8" y1="140" x2="15" y2="140" stroke="#15803d" strokeWidth="1.5"/>
-                    <line x1="8" y1="190" x2="15" y2="190" stroke="#15803d" strokeWidth="1.5"/>
-                    <line x1="8" y1="240" x2="15" y2="240" stroke="#15803d" strokeWidth="1.5"/>
-                    {/* Bamboo stalk 2 */}
-                    <rect x="26" y="30" width="6" height="270" fill="url(#bambooGreen)" rx="3"/>
-                    <line x1="26" y1="70" x2="32" y2="70" stroke="#15803d" strokeWidth="1"/>
-                    <line x1="26" y1="120" x2="32" y2="120" stroke="#15803d" strokeWidth="1"/>
-                    <line x1="26" y1="170" x2="32" y2="170" stroke="#15803d" strokeWidth="1"/>
-                    <line x1="26" y1="220" x2="32" y2="220" stroke="#15803d" strokeWidth="1"/>
-                    {/* Bamboo leaves */}
-                    <path d="M15 35 Q25 28 32 40" fill="none" stroke="#22c55e" strokeWidth="2"/>
-                    <path d="M15 85 Q28 75 38 90" fill="none" stroke="#22c55e" strokeWidth="2"/>
-                    <path d="M32 115 Q42 105 48 120" fill="none" stroke="#22c55e" strokeWidth="1.5"/>
-                    <path d="M15 185 Q25 175 35 188" fill="none" stroke="#22c55e" strokeWidth="2"/>
-                  </svg>
+                  {/* Bamboo stalks - left side - theme aware */}
+                  <div className="absolute left-0 top-0 h-full w-14 text-emerald-600 dark:text-emerald-500 opacity-20">
+                    <svg className="h-full w-full" viewBox="0 0 56 300" preserveAspectRatio="none">
+                      {/* Bamboo stalk 1 */}
+                      <rect x="8" y="0" width="7" height="300" fill="currentColor" rx="3.5"/>
+                      <line x1="8" y1="40" x2="15" y2="40" stroke="currentColor" strokeWidth="1.5" opacity="0.7"/>
+                      <line x1="8" y1="90" x2="15" y2="90" stroke="currentColor" strokeWidth="1.5" opacity="0.7"/>
+                      <line x1="8" y1="140" x2="15" y2="140" stroke="currentColor" strokeWidth="1.5" opacity="0.7"/>
+                      <line x1="8" y1="190" x2="15" y2="190" stroke="currentColor" strokeWidth="1.5" opacity="0.7"/>
+                      <line x1="8" y1="240" x2="15" y2="240" stroke="currentColor" strokeWidth="1.5" opacity="0.7"/>
+                      {/* Bamboo stalk 2 */}
+                      <rect x="26" y="30" width="6" height="270" fill="currentColor" rx="3" opacity="0.8"/>
+                      <line x1="26" y1="70" x2="32" y2="70" stroke="currentColor" strokeWidth="1" opacity="0.6"/>
+                      <line x1="26" y1="120" x2="32" y2="120" stroke="currentColor" strokeWidth="1" opacity="0.6"/>
+                      <line x1="26" y1="170" x2="32" y2="170" stroke="currentColor" strokeWidth="1" opacity="0.6"/>
+                      <line x1="26" y1="220" x2="32" y2="220" stroke="currentColor" strokeWidth="1" opacity="0.6"/>
+                      {/* Bamboo leaves */}
+                      <path d="M15 35 Q25 28 32 40" fill="none" stroke="currentColor" strokeWidth="2"/>
+                      <path d="M15 85 Q28 75 38 90" fill="none" stroke="currentColor" strokeWidth="2"/>
+                      <path d="M32 115 Q42 105 48 120" fill="none" stroke="currentColor" strokeWidth="1.5"/>
+                      <path d="M15 185 Q25 175 35 188" fill="none" stroke="currentColor" strokeWidth="2"/>
+                    </svg>
+                  </div>
 
-                  {/* Cherry blossom branch - top right */}
-                  <svg className="absolute right-0 top-0 w-32 h-28 opacity-25" viewBox="0 0 130 110">
-                    {/* Branch */}
-                    <path d="M130 12 Q90 18 65 38 Q45 52 25 45" fill="none" stroke="#78350f" strokeWidth="2.5"/>
-                    <path d="M65 38 Q58 58 45 65" fill="none" stroke="#78350f" strokeWidth="2"/>
-                    {/* Blossoms */}
-                    <circle cx="62" cy="35" r="8" fill="#fce7f3" stroke="#f9a8d4" strokeWidth="0.5"/>
-                    <circle cx="45" cy="46" r="7" fill="#fce7f3" stroke="#f9a8d4" strokeWidth="0.5"/>
-                    <circle cx="72" cy="28" r="6" fill="#fbcfe8" stroke="#f9a8d4" strokeWidth="0.5"/>
-                    <circle cx="30" cy="42" r="7" fill="#fce7f3" stroke="#f9a8d4" strokeWidth="0.5"/>
-                    <circle cx="52" cy="62" r="6" fill="#fbcfe8" stroke="#f9a8d4" strokeWidth="0.5"/>
-                    <circle cx="85" cy="22" r="5" fill="#fdf2f8" stroke="#f9a8d4" strokeWidth="0.5"/>
-                    {/* Blossom centers */}
-                    <circle cx="62" cy="35" r="2" fill="#fda4af"/>
-                    <circle cx="45" cy="46" r="2" fill="#fda4af"/>
-                    <circle cx="30" cy="42" r="2" fill="#fda4af"/>
-                  </svg>
+                  {/* Cherry blossom branch - top right - theme aware */}
+                  <div className="absolute right-0 top-0 w-32 h-28 opacity-25">
+                    <svg className="w-full h-full" viewBox="0 0 130 110">
+                      {/* Branch - using muted foreground */}
+                      <path d="M130 12 Q90 18 65 38 Q45 52 25 45" fill="none" className="stroke-[var(--muted-foreground)]" strokeWidth="2.5"/>
+                      <path d="M65 38 Q58 58 45 65" fill="none" className="stroke-[var(--muted-foreground)]" strokeWidth="2"/>
+                      {/* Blossoms - using primary with opacity */}
+                      <circle cx="62" cy="35" r="8" className="fill-pink-200 dark:fill-pink-300/50 stroke-pink-300 dark:stroke-pink-400/50" strokeWidth="0.5"/>
+                      <circle cx="45" cy="46" r="7" className="fill-pink-200 dark:fill-pink-300/50 stroke-pink-300 dark:stroke-pink-400/50" strokeWidth="0.5"/>
+                      <circle cx="72" cy="28" r="6" className="fill-pink-100 dark:fill-pink-200/50 stroke-pink-300 dark:stroke-pink-400/50" strokeWidth="0.5"/>
+                      <circle cx="30" cy="42" r="7" className="fill-pink-200 dark:fill-pink-300/50 stroke-pink-300 dark:stroke-pink-400/50" strokeWidth="0.5"/>
+                      <circle cx="52" cy="62" r="6" className="fill-pink-100 dark:fill-pink-200/50 stroke-pink-300 dark:stroke-pink-400/50" strokeWidth="0.5"/>
+                      <circle cx="85" cy="22" r="5" className="fill-pink-50 dark:fill-pink-100/50 stroke-pink-300 dark:stroke-pink-400/50" strokeWidth="0.5"/>
+                      {/* Blossom centers */}
+                      <circle cx="62" cy="35" r="2" className="fill-[var(--primary)]" opacity="0.6"/>
+                      <circle cx="45" cy="46" r="2" className="fill-[var(--primary)]" opacity="0.6"/>
+                      <circle cx="30" cy="42" r="2" className="fill-[var(--primary)]" opacity="0.6"/>
+                    </svg>
+                  </div>
 
-                  {/* Zen sand ripples - bottom */}
-                  <svg className="absolute bottom-0 left-0 right-0 h-20 opacity-10" viewBox="0 0 500 80" preserveAspectRatio="none">
-                    <defs>
-                      <pattern id="sandRipple" patternUnits="userSpaceOnUse" width="50" height="25">
-                        <path d="M0 12 Q12.5 6 25 12 Q37.5 18 50 12" fill="none" stroke="#a16207" strokeWidth="0.8"/>
-                      </pattern>
-                    </defs>
-                    <rect x="0" y="0" width="500" height="80" fill="url(#sandRipple)"/>
-                    {/* Zen stones */}
-                    <ellipse cx="420" cy="55" rx="20" ry="10" fill="#78716c" opacity="0.6"/>
-                    <ellipse cx="395" cy="62" rx="14" ry="7" fill="#a8a29e" opacity="0.5"/>
-                    <ellipse cx="450" cy="60" rx="10" ry="5" fill="#57534e" opacity="0.4"/>
-                  </svg>
+                  {/* Zen sand ripples - bottom - theme aware */}
+                  <div className="absolute bottom-0 left-0 right-0 h-20 text-[var(--muted-foreground)] opacity-10">
+                    <svg className="w-full h-full" viewBox="0 0 500 80" preserveAspectRatio="none">
+                      <defs>
+                        <pattern id="sandRipple" patternUnits="userSpaceOnUse" width="50" height="25">
+                          <path d="M0 12 Q12.5 6 25 12 Q37.5 18 50 12" fill="none" stroke="currentColor" strokeWidth="0.8"/>
+                        </pattern>
+                      </defs>
+                      <rect x="0" y="0" width="500" height="80" fill="url(#sandRipple)"/>
+                      {/* Zen stones - theme aware */}
+                      <ellipse cx="420" cy="55" rx="20" ry="10" fill="currentColor" opacity="0.4"/>
+                      <ellipse cx="395" cy="62" rx="14" ry="7" fill="currentColor" opacity="0.3"/>
+                      <ellipse cx="450" cy="60" rx="10" ry="5" fill="currentColor" opacity="0.25"/>
+                    </svg>
+                  </div>
 
-                  {/* Distant mountains silhouette */}
-                  <svg className="absolute bottom-16 left-0 right-0 h-16 opacity-[0.08]" viewBox="0 0 500 60" preserveAspectRatio="none">
-                    <path d="M0 60 L40 30 L80 50 L130 18 L190 42 L260 12 L330 35 L400 22 L460 40 L500 30 L500 60 Z" fill="#1e3a5f"/>
-                  </svg>
+                  {/* Distant mountains silhouette - theme aware */}
+                  <div className="absolute bottom-16 left-0 right-0 h-16 text-[var(--foreground)] opacity-[0.06]">
+                    <svg className="w-full h-full" viewBox="0 0 500 60" preserveAspectRatio="none">
+                      <path d="M0 60 L40 30 L80 50 L130 18 L190 42 L260 12 L330 35 L400 22 L460 40 L500 30 L500 60 Z" fill="currentColor"/>
+                    </svg>
+                  </div>
 
-                  {/* Floating lotus - bottom right */}
-                  <svg className="absolute bottom-4 right-10 w-18 h-14 opacity-20" viewBox="0 0 75 55">
-                    {/* Water ripple */}
-                    <ellipse cx="38" cy="48" rx="32" ry="5" fill="none" stroke="#0ea5e9" strokeWidth="0.8" opacity="0.5"/>
-                    {/* Lotus petals */}
-                    <path d="M38 42 Q32 28 38 12 Q44 28 38 42" fill="#fce7f3" stroke="#f9a8d4" strokeWidth="0.5"/>
-                    <path d="M38 42 Q24 34 18 24 Q30 30 38 42" fill="#fbcfe8" stroke="#f9a8d4" strokeWidth="0.5"/>
-                    <path d="M38 42 Q52 34 58 24 Q46 30 38 42" fill="#fbcfe8" stroke="#f9a8d4" strokeWidth="0.5"/>
-                    <path d="M38 42 Q20 38 14 32 Q26 36 38 42" fill="#fdf2f8" stroke="#f9a8d4" strokeWidth="0.5"/>
-                    <path d="M38 42 Q56 38 62 32 Q50 36 38 42" fill="#fdf2f8" stroke="#f9a8d4" strokeWidth="0.5"/>
-                    {/* Lotus center */}
-                    <circle cx="38" cy="32" r="4" fill="#fcd34d"/>
-                  </svg>
+                  {/* Floating lotus - bottom right - theme aware */}
+                  <div className="absolute bottom-4 right-10 w-18 h-14 opacity-20">
+                    <svg className="w-full h-full" viewBox="0 0 75 55">
+                      {/* Water ripple */}
+                      <ellipse cx="38" cy="48" rx="32" ry="5" fill="none" className="stroke-[var(--accent)]" strokeWidth="0.8" opacity="0.5"/>
+                      {/* Lotus petals */}
+                      <path d="M38 42 Q32 28 38 12 Q44 28 38 42" className="fill-pink-100 dark:fill-pink-200/40 stroke-pink-300 dark:stroke-pink-400/40" strokeWidth="0.5"/>
+                      <path d="M38 42 Q24 34 18 24 Q30 30 38 42" className="fill-pink-50 dark:fill-pink-100/40 stroke-pink-300 dark:stroke-pink-400/40" strokeWidth="0.5"/>
+                      <path d="M38 42 Q52 34 58 24 Q46 30 38 42" className="fill-pink-50 dark:fill-pink-100/40 stroke-pink-300 dark:stroke-pink-400/40" strokeWidth="0.5"/>
+                      <path d="M38 42 Q20 38 14 32 Q26 36 38 42" className="fill-pink-50/80 dark:fill-pink-50/30 stroke-pink-300 dark:stroke-pink-400/40" strokeWidth="0.5"/>
+                      <path d="M38 42 Q56 38 62 32 Q50 36 38 42" className="fill-pink-50/80 dark:fill-pink-50/30 stroke-pink-300 dark:stroke-pink-400/40" strokeWidth="0.5"/>
+                      {/* Lotus center */}
+                      <circle cx="38" cy="32" r="4" className="fill-[var(--primary)]" opacity="0.5"/>
+                    </svg>
+                  </div>
 
-                  {/* Koi fish - subtle */}
-                  <svg className="absolute bottom-6 left-1/3 w-12 h-8 opacity-15" viewBox="0 0 50 32">
-                    <path d="M6 16 Q18 6 38 16 Q44 16 48 20 Q44 16 38 16 Q18 26 6 16" fill="#f97316"/>
-                    <circle cx="10" cy="14" r="1.5" fill="#1f2937"/>
-                    <path d="M40 10 Q48 6 44 16 Q48 26 40 22" fill="#f97316" opacity="0.8"/>
-                  </svg>
+                  {/* Koi fish - subtle - theme aware */}
+                  <div className="absolute bottom-6 left-1/3 w-12 h-8 text-orange-500 dark:text-orange-400 opacity-15">
+                    <svg className="w-full h-full" viewBox="0 0 50 32">
+                      <path d="M6 16 Q18 6 38 16 Q44 16 48 20 Q44 16 38 16 Q18 26 6 16" fill="currentColor"/>
+                      <circle cx="10" cy="14" r="1.5" className="fill-[var(--foreground)]" opacity="0.5"/>
+                      <path d="M40 10 Q48 6 44 16 Q48 26 40 22" fill="currentColor" opacity="0.8"/>
+                    </svg>
+                  </div>
 
-                  {/* Soft corner glows */}
-                  <div className="absolute -top-4 -right-4 w-24 h-24 rounded-full bg-sky-300/10 dark:bg-sky-600/10 blur-2xl" />
-                  <div className="absolute -bottom-4 -left-4 w-20 h-20 rounded-full bg-emerald-300/10 dark:bg-emerald-700/10 blur-xl" />
+                  {/* Soft corner glows - theme aware */}
+                  <div className="absolute -top-4 -right-4 w-24 h-24 rounded-full bg-[var(--accent)]/10 blur-2xl" />
+                  <div className="absolute -bottom-4 -left-4 w-20 h-20 rounded-full bg-[var(--primary)]/10 blur-xl" />
                 </div>
 
                 {/* Corner ornaments */}
@@ -774,26 +789,52 @@ export function CommunityHeartPage({ isAuthenticated }: CommunityHeartPageProps)
                   </div>
                 </div>
 
-                {/* Core Learn Topics - From Learn Page - Larger */}
-                <div className="relative z-10 flex-1 min-h-0 mb-2 overflow-hidden">
-                  <p className="text-[9px] text-[var(--muted-foreground)] font-medium mb-1.5 uppercase tracking-wide flex-shrink-0">Core Topics</p>
-                  <div className="grid grid-cols-2 gap-1.5 overflow-y-auto">
-                    {coreLearnTopics.map((topic, i) => {
-                      const Icon = topic.icon
-                      return (
-                        <motion.div
-                          key={topic.name}
-                          className={`flex items-center gap-2 px-2.5 py-2 rounded-lg ${topic.bgColor} border border-[var(--border)]/20`}
-                          initial={{ opacity: 0, x: -10 }}
-                          animate={{ opacity: 1, x: 0 }}
-                          transition={{ delay: 0.2 + i * 0.05 }}
-                          whileHover={{ scale: 1.02 }}
-                        >
-                          <Icon className={`w-4 h-4 ${topic.color} flex-shrink-0`} />
-                          <span className="text-[9px] font-semibold text-[var(--foreground)] truncate">{topic.name}</span>
-                        </motion.div>
-                      )
-                    })}
+                {/* Core Topics and Interactive Tools - Two column layout */}
+                <div className="relative z-10 flex-1 min-h-0 mb-2 grid grid-cols-2 gap-3">
+                  {/* Core Learn Topics - Left column */}
+                  <div className="flex flex-col min-h-0">
+                    <p className="text-[9px] text-[var(--muted-foreground)] font-medium mb-1.5 uppercase tracking-wide flex-shrink-0">Core Topics</p>
+                    <div className="flex-1 min-h-0 flex flex-col gap-1 overflow-y-auto pr-1">
+                      {coreLearnTopics.map((topic, i) => {
+                        const Icon = topic.icon
+                        return (
+                          <motion.div
+                            key={topic.name}
+                            className={`flex items-center gap-2 px-2 py-1.5 rounded-lg ${topic.bgColor} border border-[var(--border)]/20`}
+                            initial={{ opacity: 0, x: -10 }}
+                            animate={{ opacity: 1, x: 0 }}
+                            transition={{ delay: 0.2 + i * 0.05 }}
+                            whileHover={{ scale: 1.02 }}
+                          >
+                            <Icon className={`w-3.5 h-3.5 ${topic.color} flex-shrink-0`} />
+                            <span className="text-[8px] font-semibold text-[var(--foreground)] truncate">{topic.name}</span>
+                          </motion.div>
+                        )
+                      })}
+                    </div>
+                  </div>
+
+                  {/* Interactive Tools - Right column */}
+                  <div className="flex flex-col min-h-0">
+                    <p className="text-[9px] text-[var(--muted-foreground)] font-medium mb-1.5 uppercase tracking-wide flex-shrink-0">Interactive Tools</p>
+                    <div className="flex-1 min-h-0 flex flex-col gap-1 overflow-y-auto pr-1">
+                      {interactiveTools.map((tool, i) => {
+                        const Icon = tool.icon
+                        return (
+                          <motion.div
+                            key={tool.name}
+                            className="flex items-center gap-2 px-2 py-1.5 rounded-lg bg-[var(--muted)]/40 border border-[var(--border)]/20"
+                            initial={{ opacity: 0, x: 10 }}
+                            animate={{ opacity: 1, x: 0 }}
+                            transition={{ delay: 0.3 + i * 0.05 }}
+                            whileHover={{ scale: 1.02, backgroundColor: 'var(--muted)' }}
+                          >
+                            <Icon className={`w-3.5 h-3.5 ${tool.color} flex-shrink-0`} />
+                            <span className="text-[8px] font-semibold text-[var(--foreground)] truncate">{tool.name}</span>
+                          </motion.div>
+                        )
+                      })}
+                    </div>
                   </div>
                 </div>
 
@@ -821,26 +862,30 @@ export function CommunityHeartPage({ isAuthenticated }: CommunityHeartPageProps)
                 className="absolute inset-0 bg-gradient-to-br from-emerald-50/95 via-sky-50/90 to-emerald-50/95 dark:from-emerald-950/95 dark:via-sky-950/90 dark:to-emerald-950/95 rounded-xl p-4 overflow-hidden border border-sky-300/30 dark:border-sky-700/30"
                 style={{ backfaceVisibility: 'hidden', transform: 'rotateY(180deg)' }}
               >
-                {/* Zen Mural Background for back */}
+                {/* Zen Mural Background for back - theme aware */}
                 <div className="absolute inset-0 pointer-events-none overflow-hidden rounded-xl">
-                  <div className="absolute inset-0 bg-gradient-to-b from-sky-100/40 via-transparent to-emerald-100/30 dark:from-sky-900/30 dark:to-emerald-900/30" />
+                  <div className="absolute inset-0 bg-gradient-to-b from-[var(--accent)]/15 via-transparent to-[var(--primary)]/10" />
 
-                  {/* Bamboo on back */}
-                  <svg className="absolute left-0 top-0 h-full w-10 opacity-15" viewBox="0 0 40 300" preserveAspectRatio="none">
-                    <rect x="8" y="0" width="6" height="300" fill="#22c55e" rx="3"/>
-                    <rect x="22" y="20" width="5" height="280" fill="#16a34a" rx="2.5"/>
-                  </svg>
+                  {/* Bamboo on back - theme aware */}
+                  <div className="absolute left-0 top-0 h-full w-10 text-emerald-600 dark:text-emerald-500 opacity-15">
+                    <svg className="w-full h-full" viewBox="0 0 40 300" preserveAspectRatio="none">
+                      <rect x="8" y="0" width="6" height="300" fill="currentColor" rx="3"/>
+                      <rect x="22" y="20" width="5" height="280" fill="currentColor" rx="2.5" opacity="0.8"/>
+                    </svg>
+                  </div>
 
-                  {/* Cherry blossoms scattered */}
-                  <svg className="absolute right-0 top-0 w-24 h-20 opacity-20" viewBox="0 0 100 80">
-                    <circle cx="48" cy="28" r="6" fill="#fce7f3" stroke="#f9a8d4" strokeWidth="0.5"/>
-                    <circle cx="35" cy="36" r="5" fill="#fce7f3" stroke="#f9a8d4" strokeWidth="0.5"/>
-                    <circle cx="65" cy="22" r="4" fill="#fbcfe8" stroke="#f9a8d4" strokeWidth="0.5"/>
-                  </svg>
+                  {/* Cherry blossoms scattered - theme aware */}
+                  <div className="absolute right-0 top-0 w-24 h-20 opacity-20">
+                    <svg className="w-full h-full" viewBox="0 0 100 80">
+                      <circle cx="48" cy="28" r="6" className="fill-pink-200 dark:fill-pink-300/50 stroke-pink-300 dark:stroke-pink-400/50" strokeWidth="0.5"/>
+                      <circle cx="35" cy="36" r="5" className="fill-pink-200 dark:fill-pink-300/50 stroke-pink-300 dark:stroke-pink-400/50" strokeWidth="0.5"/>
+                      <circle cx="65" cy="22" r="4" className="fill-pink-100 dark:fill-pink-200/50 stroke-pink-300 dark:stroke-pink-400/50" strokeWidth="0.5"/>
+                    </svg>
+                  </div>
 
-                  {/* Soft glows */}
-                  <div className="absolute -top-6 -right-6 w-28 h-28 rounded-full bg-sky-300/15 dark:bg-sky-600/15 blur-2xl" />
-                  <div className="absolute -bottom-6 -left-6 w-24 h-24 rounded-full bg-emerald-300/15 dark:bg-emerald-700/15 blur-2xl" />
+                  {/* Soft glows - theme aware */}
+                  <div className="absolute -top-6 -right-6 w-28 h-28 rounded-full bg-[var(--accent)]/15 blur-2xl" />
+                  <div className="absolute -bottom-6 -left-6 w-24 h-24 rounded-full bg-[var(--primary)]/15 blur-2xl" />
                 </div>
 
                 <div className="relative z-10 h-full flex flex-col">
@@ -925,63 +970,73 @@ export function CommunityHeartPage({ isAuthenticated }: CommunityHeartPageProps)
                 className="absolute inset-0 bg-gradient-to-br from-indigo-50/90 via-[var(--card)]/95 to-slate-100/90 dark:from-indigo-950/90 dark:via-[var(--card)]/95 dark:to-slate-950/90 rounded-xl p-4 overflow-hidden border border-indigo-200/30 dark:border-indigo-800/30"
                 style={{ backfaceVisibility: 'hidden' }}
               >
-                {/* Forest Mural Background */}
+                {/* Forest Mural Background - Theme Aware */}
                 <div className="absolute inset-0 pointer-events-none overflow-hidden rounded-xl">
-                  {/* Night sky gradient */}
-                  <div className="absolute inset-0 bg-gradient-to-b from-indigo-100/30 via-transparent to-slate-200/20 dark:from-indigo-900/30 dark:to-slate-800/20" />
+                  {/* Night sky gradient - theme aware */}
+                  <div className="absolute inset-0 bg-gradient-to-b from-[var(--accent)]/10 via-transparent to-[var(--muted)]/20" />
 
-                  {/* Twinkling stars - top area */}
-                  <svg className="absolute top-0 left-0 right-0 h-20 opacity-20 dark:opacity-30" viewBox="0 0 200 80">
-                    <circle cx="25" cy="15" r="1" fill="#fcd34d"/>
-                    <circle cx="60" cy="25" r="0.8" fill="#fde68a"/>
-                    <circle cx="95" cy="12" r="1.2" fill="#fef3c7"/>
-                    <circle cx="130" cy="30" r="0.6" fill="#fcd34d"/>
-                    <circle cx="165" cy="18" r="1" fill="#fde68a"/>
-                    <circle cx="45" cy="40" r="0.7" fill="#fef3c7"/>
-                    <circle cx="110" cy="45" r="0.9" fill="#fcd34d"/>
-                    <circle cx="175" cy="38" r="0.8" fill="#fde68a"/>
-                    <circle cx="80" cy="55" r="0.6" fill="#fef3c7"/>
-                    <circle cx="150" cy="50" r="1" fill="#fcd34d"/>
-                  </svg>
+                  {/* Twinkling stars - top area - theme aware */}
+                  <div className="absolute top-0 left-0 right-0 h-20 text-[var(--primary)] opacity-20 dark:opacity-30">
+                    <svg className="w-full h-full" viewBox="0 0 200 80">
+                      <circle cx="25" cy="15" r="1" fill="currentColor"/>
+                      <circle cx="60" cy="25" r="0.8" fill="currentColor" opacity="0.8"/>
+                      <circle cx="95" cy="12" r="1.2" fill="currentColor"/>
+                      <circle cx="130" cy="30" r="0.6" fill="currentColor" opacity="0.7"/>
+                      <circle cx="165" cy="18" r="1" fill="currentColor" opacity="0.8"/>
+                      <circle cx="45" cy="40" r="0.7" fill="currentColor" opacity="0.9"/>
+                      <circle cx="110" cy="45" r="0.9" fill="currentColor"/>
+                      <circle cx="175" cy="38" r="0.8" fill="currentColor" opacity="0.8"/>
+                      <circle cx="80" cy="55" r="0.6" fill="currentColor" opacity="0.7"/>
+                      <circle cx="150" cy="50" r="1" fill="currentColor"/>
+                    </svg>
+                  </div>
 
-                  {/* Distant mountains silhouette */}
-                  <svg className="absolute bottom-12 left-0 right-0 h-20 opacity-[0.12]" viewBox="0 0 200 80" preserveAspectRatio="none">
-                    <path d="M0 80 L20 45 L45 60 L70 30 L100 50 L130 25 L160 55 L180 40 L200 55 L200 80 Z" fill="#4338ca"/>
-                    <path d="M0 80 L30 55 L60 65 L90 45 L120 60 L150 42 L200 60 L200 80 Z" fill="#6366f1" opacity="0.7"/>
-                  </svg>
+                  {/* Distant mountains silhouette - theme aware */}
+                  <div className="absolute bottom-12 left-0 right-0 h-20 text-[var(--accent)] opacity-[0.12]">
+                    <svg className="w-full h-full" viewBox="0 0 200 80" preserveAspectRatio="none">
+                      <path d="M0 80 L20 45 L45 60 L70 30 L100 50 L130 25 L160 55 L180 40 L200 55 L200 80 Z" fill="currentColor"/>
+                      <path d="M0 80 L30 55 L60 65 L90 45 L120 60 L150 42 L200 60 L200 80 Z" fill="currentColor" opacity="0.7"/>
+                    </svg>
+                  </div>
 
-                  {/* Pine trees - left side */}
-                  <svg className="absolute left-0 bottom-0 h-32 w-16 opacity-20" viewBox="0 0 64 130">
-                    {/* Tree 1 - tall */}
-                    <path d="M20 130 L20 85 L8 95 L20 75 L6 88 L20 65 L4 80 L20 50 L14 58 L20 40 L26 58 L20 50 L36 80 L20 65 L34 88 L20 75 L32 95 L20 85 L20 130" fill="#166534" opacity="0.9"/>
-                    <rect x="18" y="115" width="4" height="15" fill="#78350f"/>
-                    {/* Tree 2 - shorter */}
-                    <path d="M45 130 L45 100 L38 108 L45 90 L36 100 L45 78 L42 84 L45 70 L48 84 L45 78 L54 100 L45 90 L52 108 L45 100 L45 130" fill="#15803d" opacity="0.8"/>
-                    <rect x="43" y="120" width="4" height="10" fill="#78350f"/>
-                  </svg>
+                  {/* Pine trees - left side - theme aware */}
+                  <div className="absolute left-0 bottom-0 h-32 w-16 text-emerald-600 dark:text-emerald-500 opacity-20">
+                    <svg className="w-full h-full" viewBox="0 0 64 130">
+                      {/* Tree 1 - tall */}
+                      <path d="M20 130 L20 85 L8 95 L20 75 L6 88 L20 65 L4 80 L20 50 L14 58 L20 40 L26 58 L20 50 L36 80 L20 65 L34 88 L20 75 L32 95 L20 85 L20 130" fill="currentColor" opacity="0.9"/>
+                      <rect x="18" y="115" width="4" height="15" className="fill-[var(--muted-foreground)]" opacity="0.4"/>
+                      {/* Tree 2 - shorter */}
+                      <path d="M45 130 L45 100 L38 108 L45 90 L36 100 L45 78 L42 84 L45 70 L48 84 L45 78 L54 100 L45 90 L52 108 L45 100 L45 130" fill="currentColor" opacity="0.8"/>
+                      <rect x="43" y="120" width="4" height="10" className="fill-[var(--muted-foreground)]" opacity="0.4"/>
+                    </svg>
+                  </div>
 
-                  {/* Pine trees - right side */}
-                  <svg className="absolute right-0 bottom-0 h-28 w-14 opacity-15" viewBox="0 0 56 115">
-                    {/* Tree 1 */}
-                    <path d="M35 115 L35 82 L26 92 L35 70 L24 84 L35 58 L30 66 L35 48 L40 66 L35 58 L46 84 L35 70 L44 92 L35 82 L35 115" fill="#166534" opacity="0.9"/>
-                    <rect x="33" y="105" width="4" height="10" fill="#78350f"/>
-                    {/* Tree 2 - smaller */}
-                    <path d="M15 115 L15 95 L10 100 L15 85 L8 92 L15 75 L12 80 L15 68 L18 80 L15 75 L22 92 L15 85 L20 100 L15 95 L15 115" fill="#15803d" opacity="0.7"/>
-                    <rect x="13" y="108" width="4" height="7" fill="#78350f"/>
-                  </svg>
+                  {/* Pine trees - right side - theme aware */}
+                  <div className="absolute right-0 bottom-0 h-28 w-14 text-emerald-600 dark:text-emerald-500 opacity-15">
+                    <svg className="w-full h-full" viewBox="0 0 56 115">
+                      {/* Tree 1 */}
+                      <path d="M35 115 L35 82 L26 92 L35 70 L24 84 L35 58 L30 66 L35 48 L40 66 L35 58 L46 84 L35 70 L44 92 L35 82 L35 115" fill="currentColor" opacity="0.9"/>
+                      <rect x="33" y="105" width="4" height="10" className="fill-[var(--muted-foreground)]" opacity="0.4"/>
+                      {/* Tree 2 - smaller */}
+                      <path d="M15 115 L15 95 L10 100 L15 85 L8 92 L15 75 L12 80 L15 68 L18 80 L15 75 L22 92 L15 85 L20 100 L15 95 L15 115" fill="currentColor" opacity="0.7"/>
+                      <rect x="13" y="108" width="4" height="7" className="fill-[var(--muted-foreground)]" opacity="0.4"/>
+                    </svg>
+                  </div>
 
-                  {/* Flying birds - V formation */}
-                  <svg className="absolute top-8 right-8 w-16 h-10 opacity-20" viewBox="0 0 65 40">
-                    <path d="M5 20 Q10 15 15 20 Q10 17 5 20" fill="none" stroke="#4338ca" strokeWidth="1.5"/>
-                    <path d="M20 15 Q26 9 32 15 Q26 11 20 15" fill="none" stroke="#4338ca" strokeWidth="1.5"/>
-                    <path d="M35 22 Q40 17 45 22 Q40 19 35 22" fill="none" stroke="#4338ca" strokeWidth="1.2"/>
-                    <path d="M50 12 Q54 8 58 12 Q54 9 50 12" fill="none" stroke="#4338ca" strokeWidth="1"/>
-                    <path d="M28 28 Q32 24 36 28 Q32 25 28 28" fill="none" stroke="#4338ca" strokeWidth="1"/>
-                  </svg>
+                  {/* Flying birds - V formation - theme aware */}
+                  <div className="absolute top-8 right-8 w-16 h-10 text-[var(--foreground)] opacity-20">
+                    <svg className="w-full h-full" viewBox="0 0 65 40">
+                      <path d="M5 20 Q10 15 15 20 Q10 17 5 20" fill="none" stroke="currentColor" strokeWidth="1.5"/>
+                      <path d="M20 15 Q26 9 32 15 Q26 11 20 15" fill="none" stroke="currentColor" strokeWidth="1.5"/>
+                      <path d="M35 22 Q40 17 45 22 Q40 19 35 22" fill="none" stroke="currentColor" strokeWidth="1.2"/>
+                      <path d="M50 12 Q54 8 58 12 Q54 9 50 12" fill="none" stroke="currentColor" strokeWidth="1"/>
+                      <path d="M28 28 Q32 24 36 28 Q32 25 28 28" fill="none" stroke="currentColor" strokeWidth="1"/>
+                    </svg>
+                  </div>
 
-                  {/* Soft corner glows */}
-                  <div className="absolute -top-4 -right-4 w-20 h-20 rounded-full bg-indigo-300/15 dark:bg-indigo-600/15 blur-2xl" />
-                  <div className="absolute -bottom-4 -left-4 w-18 h-18 rounded-full bg-emerald-300/10 dark:bg-emerald-700/10 blur-xl" />
+                  {/* Soft corner glows - theme aware */}
+                  <div className="absolute -top-4 -right-4 w-20 h-20 rounded-full bg-[var(--accent)]/15 blur-2xl" />
+                  <div className="absolute -bottom-4 -left-4 w-18 h-18 rounded-full bg-[var(--primary)]/10 blur-xl" />
                 </div>
 
                 {/* Corner ornaments */}
@@ -1058,34 +1113,40 @@ export function CommunityHeartPage({ isAuthenticated }: CommunityHeartPageProps)
                 className="absolute inset-0 bg-gradient-to-br from-indigo-50/95 via-slate-50/90 to-indigo-50/95 dark:from-indigo-950/95 dark:via-slate-950/90 dark:to-indigo-950/95 rounded-xl p-4 overflow-hidden border border-indigo-300/30 dark:border-indigo-700/30"
                 style={{ backfaceVisibility: 'hidden', transform: 'rotateY(180deg)' }}
               >
-                {/* Forest Mural Background for back */}
+                {/* Forest Mural Background for back - theme aware */}
                 <div className="absolute inset-0 pointer-events-none overflow-hidden rounded-xl">
-                  <div className="absolute inset-0 bg-gradient-to-b from-indigo-100/40 via-transparent to-slate-200/30 dark:from-indigo-900/30 dark:to-slate-800/30" />
+                  <div className="absolute inset-0 bg-gradient-to-b from-[var(--accent)]/15 via-transparent to-[var(--muted)]/20" />
 
-                  {/* Stars for back */}
-                  <svg className="absolute top-0 left-0 right-0 h-16 opacity-25 dark:opacity-35" viewBox="0 0 200 65">
-                    <circle cx="20" cy="12" r="0.8" fill="#fcd34d"/>
-                    <circle cx="55" cy="20" r="1" fill="#fde68a"/>
-                    <circle cx="90" cy="8" r="0.7" fill="#fef3c7"/>
-                    <circle cx="125" cy="25" r="0.9" fill="#fcd34d"/>
-                    <circle cx="160" cy="15" r="0.8" fill="#fde68a"/>
-                    <circle cx="180" cy="30" r="0.6" fill="#fef3c7"/>
-                  </svg>
+                  {/* Stars for back - theme aware */}
+                  <div className="absolute top-0 left-0 right-0 h-16 text-[var(--primary)] opacity-25 dark:opacity-35">
+                    <svg className="w-full h-full" viewBox="0 0 200 65">
+                      <circle cx="20" cy="12" r="0.8" fill="currentColor"/>
+                      <circle cx="55" cy="20" r="1" fill="currentColor" opacity="0.8"/>
+                      <circle cx="90" cy="8" r="0.7" fill="currentColor" opacity="0.9"/>
+                      <circle cx="125" cy="25" r="0.9" fill="currentColor"/>
+                      <circle cx="160" cy="15" r="0.8" fill="currentColor" opacity="0.8"/>
+                      <circle cx="180" cy="30" r="0.6" fill="currentColor" opacity="0.9"/>
+                    </svg>
+                  </div>
 
-                  {/* Pine trees silhouette - back */}
-                  <svg className="absolute left-0 bottom-0 h-24 w-12 opacity-15" viewBox="0 0 48 100">
-                    <path d="M16 100 L16 70 L8 78 L16 60 L6 72 L16 48 L12 54 L16 38 L20 54 L16 48 L26 72 L16 60 L24 78 L16 70 L16 100" fill="#166534"/>
-                    <rect x="14" y="90" width="4" height="10" fill="#78350f"/>
-                  </svg>
+                  {/* Pine trees silhouette - back - theme aware */}
+                  <div className="absolute left-0 bottom-0 h-24 w-12 text-emerald-600 dark:text-emerald-500 opacity-15">
+                    <svg className="w-full h-full" viewBox="0 0 48 100">
+                      <path d="M16 100 L16 70 L8 78 L16 60 L6 72 L16 48 L12 54 L16 38 L20 54 L16 48 L26 72 L16 60 L24 78 L16 70 L16 100" fill="currentColor"/>
+                      <rect x="14" y="90" width="4" height="10" className="fill-[var(--muted-foreground)]" opacity="0.4"/>
+                    </svg>
+                  </div>
 
-                  <svg className="absolute right-0 bottom-0 h-20 w-10 opacity-12" viewBox="0 0 40 80">
-                    <path d="M25 80 L25 58 L19 64 L25 48 L17 56 L25 38 L22 43 L25 30 L28 43 L25 38 L33 56 L25 48 L31 64 L25 58 L25 80" fill="#15803d"/>
-                    <rect x="23" y="72" width="4" height="8" fill="#78350f"/>
-                  </svg>
+                  <div className="absolute right-0 bottom-0 h-20 w-10 text-emerald-600 dark:text-emerald-500 opacity-12">
+                    <svg className="w-full h-full" viewBox="0 0 40 80">
+                      <path d="M25 80 L25 58 L19 64 L25 48 L17 56 L25 38 L22 43 L25 30 L28 43 L25 38 L33 56 L25 48 L31 64 L25 58 L25 80" fill="currentColor"/>
+                      <rect x="23" y="72" width="4" height="8" className="fill-[var(--muted-foreground)]" opacity="0.4"/>
+                    </svg>
+                  </div>
 
-                  {/* Soft glows */}
-                  <div className="absolute -top-6 -right-6 w-24 h-24 rounded-full bg-indigo-300/20 dark:bg-indigo-600/20 blur-2xl" />
-                  <div className="absolute -bottom-6 -left-6 w-20 h-20 rounded-full bg-emerald-300/15 dark:bg-emerald-700/15 blur-xl" />
+                  {/* Soft glows - theme aware */}
+                  <div className="absolute -top-6 -right-6 w-24 h-24 rounded-full bg-[var(--accent)]/20 blur-2xl" />
+                  <div className="absolute -bottom-6 -left-6 w-20 h-20 rounded-full bg-[var(--primary)]/15 blur-xl" />
                 </div>
 
                 <div className="relative z-10 h-full flex flex-col">
@@ -1107,8 +1168,8 @@ export function CommunityHeartPage({ isAuthenticated }: CommunityHeartPageProps)
                   {/* Decorative divider */}
                   <div className="h-px bg-gradient-to-r from-transparent via-indigo-500/40 to-transparent mb-3 flex-shrink-0" />
 
-                  {/* Scrollable content - Larger text */}
-                  <div className="flex-1 overflow-y-auto pr-2 space-y-3">
+                  {/* Scrollable content - Larger text - min-h-0 for proper scrolling */}
+                  <div className="flex-1 min-h-0 overflow-y-auto pr-2 space-y-3 scrollbar-thin scrollbar-thumb-indigo-300/50 scrollbar-track-transparent">
                     <p className="text-sm text-[var(--foreground)] leading-relaxed">
                       Traditional systems measure what you <span className="font-semibold text-indigo-600 dark:text-indigo-400">have</span>. Volition measures who you are <span className="font-semibold text-indigo-600 dark:text-indigo-400">becoming</span>.
                     </p>
