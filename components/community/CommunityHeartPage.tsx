@@ -1065,7 +1065,7 @@ export function CommunityHeartPage({ isAuthenticated }: CommunityHeartPageProps)
       </div>
 
       {/* Stats Banner - Directly under the fold */}
-      <div className="relative z-20 border-y border-[var(--border)]/20 bg-[var(--muted)]/30 backdrop-blur-sm">
+      <div className="relative z-20 mt-[100px] border-y border-[var(--border)]/20 bg-[var(--muted)]/30 backdrop-blur-sm">
         <AnimatedStatsBar />
       </div>
     </div>
