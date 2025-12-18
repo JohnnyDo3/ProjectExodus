@@ -219,7 +219,7 @@ export function AnimatedStatsBar() {
       >
         <Quote className="w-3 h-3 text-[var(--primary)]/60 flex-shrink-0" />
         <p className="text-[11px] text-[var(--muted-foreground)] italic text-center leading-relaxed">
-          The small are mighty through vigilance. We will succeed no matter how big or small—<span className="font-semibold text-[var(--primary)]">even if it&apos;s just me.</span>
+          Every great change begins with one. Through conviction and purpose, we will make our mark—<span className="font-semibold text-[var(--primary)]">even if it&apos;s just me.</span>
         </p>
         <Quote className="w-3 h-3 text-[var(--primary)]/60 flex-shrink-0 rotate-180" />
       </motion.div>
