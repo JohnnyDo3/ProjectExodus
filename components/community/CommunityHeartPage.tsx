@@ -1,11 +1,12 @@
 'use client'
 
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { motion } from 'framer-motion'
 import {
   Shield, Crown, Sparkles, TrendingUp,
   User, Briefcase, FileText, BookOpen, Users, MessageCircle, Leaf,
-  Star, Lock, Globe, Zap, Heart, ArrowRight, GraduationCap, Gamepad2, Brain, Target, Award
+  Star, Lock, Globe, Zap, Heart, ArrowRight, GraduationCap, Gamepad2, Brain, Target, Award,
+  Droplet, Sprout, Recycle, Home
 } from 'lucide-react'
 import Link from 'next/link'
 import { BusinessCardThemeShowcase } from './BusinessCardThemeShowcase'
@@ -132,20 +133,90 @@ const gradeLevels = [
   { id: 'PHD', label: 'PhD', color: 'from-indigo-400 to-blue-600', icon: '🔬', ages: 'Doctoral' },
 ]
 
-// Curriculum highlights - expanded
-const curriculumHighlights = [
-  { name: 'Food Sovereignty', icon: Leaf, color: 'text-emerald-500' },
-  { name: 'Sustainable Living', icon: Globe, color: 'text-blue-500' },
-  { name: 'Environmental Science', icon: Brain, color: 'text-purple-500' },
-  { name: 'Renewable Energy', icon: Zap, color: 'text-amber-500' },
-  { name: 'Green Building', icon: Shield, color: 'text-teal-500' },
-  { name: 'Climate Action', icon: TrendingUp, color: 'text-rose-500' },
+// Core learning topics from the Learn page
+const coreLearnTopics = [
+  { name: 'Renewable Energy', icon: Zap, color: 'text-amber-500', bgColor: 'bg-amber-500/10' },
+  { name: 'Water Systems', icon: Droplet, color: 'text-cyan-500', bgColor: 'bg-cyan-500/10' },
+  { name: 'Regenerative Ag', icon: Sprout, color: 'text-emerald-500', bgColor: 'bg-emerald-500/10' },
+  { name: 'Zero Waste', icon: Recycle, color: 'text-green-500', bgColor: 'bg-green-500/10' },
+  { name: 'Green Building', icon: Home, color: 'text-teal-500', bgColor: 'bg-teal-500/10' },
+  { name: 'Food Sovereignty', icon: Leaf, color: 'text-lime-500', bgColor: 'bg-lime-500/10' },
+]
+
+// Fake user ID previews to showcase different guardian archetypes
+const fakeUserPreviews = [
+  {
+    name: 'Maya Chen',
+    declaration: 'Building bridges to tomorrow',
+    theme: 'strength',
+    gradient: 'from-red-500 via-orange-500 to-amber-500',
+    accentColor: 'text-red-400',
+    stock: 847
+  },
+  {
+    name: 'Jordan Rivers',
+    declaration: 'Knowledge lights the way',
+    theme: 'revelation',
+    gradient: 'from-sky-400 via-blue-500 to-cyan-500',
+    accentColor: 'text-sky-400',
+    stock: 562
+  },
+  {
+    name: 'Sage Willows',
+    declaration: 'Healing the world together',
+    theme: 'healing',
+    gradient: 'from-emerald-400 via-teal-500 to-green-500',
+    accentColor: 'text-emerald-400',
+    stock: 723
+  },
+  {
+    name: 'Phoenix Hart',
+    declaration: 'Wisdom guides every step',
+    theme: 'wisdom',
+    gradient: 'from-amber-400 via-yellow-500 to-orange-400',
+    accentColor: 'text-amber-400',
+    stock: 491
+  },
+  {
+    name: 'River Stone',
+    declaration: 'Love conquers all barriers',
+    theme: 'love',
+    gradient: 'from-pink-400 via-rose-500 to-red-400',
+    accentColor: 'text-pink-400',
+    stock: 634
+  },
+  {
+    name: 'Luna Grace',
+    declaration: 'Beauty in sustainability',
+    theme: 'beauty',
+    gradient: 'from-violet-400 via-purple-500 to-fuchsia-500',
+    accentColor: 'text-violet-400',
+    stock: 578
+  },
+  {
+    name: 'Kai Mercer',
+    declaration: 'Compassion drives change',
+    theme: 'mercy',
+    gradient: 'from-indigo-400 via-blue-600 to-purple-500',
+    accentColor: 'text-indigo-400',
+    stock: 412
+  },
 ]
 
 export function CommunityHeartPage({ isAuthenticated }: CommunityHeartPageProps) {
   const [isVolitionFlipped, setIsVolitionFlipped] = useState(false)
   const [isBizIDFlipped, setIsBizIDFlipped] = useState(false)
   const [isLearningFlipped, setIsLearningFlipped] = useState(false)
+  const [activeUserIndex, setActiveUserIndex] = useState(0)
+
+  // Auto-cycle through fake user previews
+  useEffect(() => {
+    if (isBizIDFlipped) return
+    const interval = setInterval(() => {
+      setActiveUserIndex((prev) => (prev + 1) % fakeUserPreviews.length)
+    }, 2500)
+    return () => clearInterval(interval)
+  }, [isBizIDFlipped])
 
   return (
     <div className="h-[calc(100vh-5rem)] bg-[var(--background)] relative overflow-hidden flex flex-col">
@@ -342,15 +413,97 @@ export function CommunityHeartPage({ isAuthenticated }: CommunityHeartPageProps)
                   })}
                 </div>
 
-                {/* Card showcase */}
-                <div className="relative z-10 flex-1 min-h-0 overflow-hidden">
-                  <BusinessCardThemeShowcase />
+                {/* Fake User ID Previews - Showcasing different archetypes */}
+                <div className="relative z-10 flex-1 min-h-0 flex flex-col">
+                  {/* Theme selector dots */}
+                  <div className="flex justify-center gap-1.5 mb-2">
+                    {fakeUserPreviews.map((user, index) => (
+                      <motion.button
+                        key={user.theme}
+                        onClick={() => setActiveUserIndex(index)}
+                        className={`w-2.5 h-2.5 rounded-full bg-gradient-to-r ${user.gradient} transition-all duration-300`}
+                        animate={{
+                          scale: index === activeUserIndex ? 1.4 : 1,
+                          opacity: index === activeUserIndex ? 1 : 0.4,
+                        }}
+                        whileHover={{ scale: 1.3, opacity: 0.8 }}
+                      />
+                    ))}
+                  </div>
+
+                  {/* User ID Card Preview */}
+                  <div className="flex-1 flex items-center justify-center min-h-0">
+                    <motion.div
+                      key={activeUserIndex}
+                      initial={{ opacity: 0, scale: 0.95, rotateY: -10 }}
+                      animate={{ opacity: 1, scale: 1, rotateY: 0 }}
+                      exit={{ opacity: 0, scale: 0.95, rotateY: 10 }}
+                      transition={{ duration: 0.4, ease: 'easeOut' }}
+                      className="relative w-full max-w-[200px]"
+                    >
+                      {/* Ambient glow */}
+                      <motion.div
+                        className={`absolute inset-2 rounded-xl blur-xl opacity-30 bg-gradient-to-br ${fakeUserPreviews[activeUserIndex].gradient}`}
+                        animate={{ scale: [1, 1.05, 1], opacity: [0.2, 0.35, 0.2] }}
+                        transition={{ duration: 3, repeat: Infinity }}
+                      />
+
+                      {/* Card */}
+                      <div className="relative bg-[var(--card)] border border-[var(--border)]/50 rounded-xl overflow-hidden shadow-lg">
+                        {/* Gradient header */}
+                        <div className={`h-10 bg-gradient-to-r ${fakeUserPreviews[activeUserIndex].gradient} relative overflow-hidden`}>
+                          <motion.div
+                            className="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent"
+                            animate={{ x: ['-100%', '200%'] }}
+                            transition={{ duration: 2, repeat: Infinity, repeatDelay: 1.5 }}
+                          />
+                          <div className="absolute top-1.5 right-1.5 w-5 h-5 rounded-md bg-white/20 backdrop-blur-sm flex items-center justify-center">
+                            <Shield className="w-2.5 h-2.5 text-white" />
+                          </div>
+                        </div>
+
+                        {/* Avatar overlapping header */}
+                        <div className="relative -mt-5 px-2.5">
+                          <motion.div
+                            className={`w-10 h-10 rounded-lg bg-gradient-to-br ${fakeUserPreviews[activeUserIndex].gradient} p-0.5 shadow-md`}
+                            animate={{ boxShadow: ['0 4px 15px rgba(0,0,0,0.15)', '0 6px 20px rgba(0,0,0,0.25)', '0 4px 15px rgba(0,0,0,0.15)'] }}
+                            transition={{ duration: 2.5, repeat: Infinity }}
+                          >
+                            <div className="w-full h-full rounded-md bg-[var(--card)] flex items-center justify-center">
+                              <User className={`w-4 h-4 ${fakeUserPreviews[activeUserIndex].accentColor}`} />
+                            </div>
+                          </motion.div>
+                        </div>
+
+                        {/* Content */}
+                        <div className="p-2.5 pt-1">
+                          <p className="font-bold text-xs text-[var(--foreground)] mb-0.5">{fakeUserPreviews[activeUserIndex].name}</p>
+                          <p className={`text-[9px] ${fakeUserPreviews[activeUserIndex].accentColor} italic mb-1.5 flex items-center gap-1`}>
+                            <Star className="w-2 h-2" />
+                            <span>"{fakeUserPreviews[activeUserIndex].declaration}"</span>
+                          </p>
+                          <div className={`flex items-center justify-between py-1 px-1.5 rounded bg-gradient-to-r ${fakeUserPreviews[activeUserIndex].gradient}/10`}>
+                            <span className="text-[9px] font-medium text-[var(--muted-foreground)]">STOCK</span>
+                            <div className="flex items-center gap-0.5">
+                              <TrendingUp className={`w-2.5 h-2.5 ${fakeUserPreviews[activeUserIndex].accentColor}`} />
+                              <span className={`text-[10px] font-bold ${fakeUserPreviews[activeUserIndex].accentColor}`}>{fakeUserPreviews[activeUserIndex].stock}</span>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </motion.div>
+                  </div>
+
+                  {/* Tagline */}
+                  <p className="text-[9px] text-center text-[var(--muted-foreground)] mt-1">
+                    7 Guardian Themes • Express Your Values
+                  </p>
                 </div>
 
               </motion.div>
             </GlowingBorder>
 
-            {/* Back Side - BizID Philosophy (Centered with decorative elements) */}
+            {/* Back Side - BizID Philosophy (Larger text with internal scroll) */}
             <div
               className="absolute inset-0 bg-gradient-to-br from-stone-100 via-amber-50/80 to-stone-100 dark:from-stone-900 dark:via-amber-950/80 dark:to-stone-900 rounded-xl p-3 overflow-hidden border border-amber-300/30 dark:border-amber-700/30"
               style={{ backfaceVisibility: 'hidden', transform: 'rotateY(180deg)' }}
@@ -362,50 +515,52 @@ export function CommunityHeartPage({ isAuthenticated }: CommunityHeartPageProps)
                 transition={{ duration: 4, repeat: Infinity }}
               />
 
-              <div className="relative z-10 h-full flex flex-col items-center justify-center overflow-y-auto">
-                {/* Top decorative ivy scroll */}
-                <svg className="w-full h-5 flex-shrink-0 opacity-25" viewBox="0 0 200 32" preserveAspectRatio="none">
-                  <path d="M0 16 Q30 8 60 16 Q90 24 120 16 Q150 8 180 16 Q195 20 200 16" fill="none" stroke="#166534" strokeWidth="1.5"/>
-                  <path d="M95 12 Q100 8 105 12 Q100 16 95 12" fill="#15803d"/>
-                </svg>
-
-                {/* Centered Philosophy content */}
-                <div className="flex-1 flex flex-col items-center justify-center space-y-1.5 px-2 py-1 overflow-y-auto">
+              <div className="relative z-10 h-full flex flex-col">
+                {/* Header */}
+                <div className="flex items-center gap-2 mb-2 flex-shrink-0">
                   <motion.div
-                    className="w-7 h-7 rounded-full bg-amber-500/20 dark:bg-amber-600/30 flex items-center justify-center flex-shrink-0"
+                    className="w-8 h-8 rounded-full bg-amber-500/20 dark:bg-amber-600/30 flex items-center justify-center"
                     animate={{ scale: [1, 1.1, 1] }}
                     transition={{ duration: 3, repeat: Infinity }}
                   >
-                    <Shield className="w-3.5 h-3.5 text-amber-600 dark:text-amber-400" />
+                    <Shield className="w-4 h-4 text-amber-600 dark:text-amber-400" />
                   </motion.div>
-                  <h3 className="font-bold text-xs text-[var(--foreground)] text-center">Guardian Identity</h3>
-
-                  <div className="space-y-1 text-center max-w-[220px]">
-                    <p className="text-[8px] text-amber-700 dark:text-amber-300 font-semibold uppercase tracking-wide">Your Values Define You</p>
-                    <p className="text-[8px] text-[var(--muted-foreground)] leading-relaxed">
-                      Choose from 7 Guardian archetypes that reflect your core values: Steward, Pioneer, Sage, Warrior, Healer, Creator, or Connector. Each represents a unique approach to building a sustainable future.
-                    </p>
-                    <p className="text-[8px] text-[var(--muted-foreground)] leading-relaxed">
-                      Your BizID becomes your declaration—a living statement of purpose that evolves with your journey. Connect with others who share your values and build meaningful relationships grounded in shared vision.
-                    </p>
-                    <div className="flex items-center justify-center gap-2 pt-1">
-                      <div className="flex items-center gap-0.5">
-                        <Heart className="w-2.5 h-2.5 text-rose-500" />
-                        <span className="text-[7px] text-[var(--muted-foreground)]">Values-First</span>
-                      </div>
-                      <div className="flex items-center gap-0.5">
-                        <Users className="w-2.5 h-2.5 text-blue-500" />
-                        <span className="text-[7px] text-[var(--muted-foreground)]">Aligned</span>
-                      </div>
-                    </div>
+                  <div>
+                    <h3 className="font-bold text-sm text-[var(--foreground)]">Guardian Identity</h3>
+                    <p className="text-[10px] text-amber-700 dark:text-amber-300 font-semibold uppercase tracking-wide">Your Values Define You</p>
                   </div>
                 </div>
 
-                {/* Bottom decorative ivy scroll */}
-                <svg className="w-full h-5 flex-shrink-0 opacity-25" viewBox="0 0 200 32" preserveAspectRatio="none">
-                  <path d="M0 16 Q30 24 60 16 Q90 8 120 16 Q150 24 180 16 Q195 12 200 16" fill="none" stroke="#166534" strokeWidth="1.5"/>
-                  <path d="M95 20 Q100 24 105 20 Q100 16 95 20" fill="#15803d"/>
-                </svg>
+                {/* Decorative divider */}
+                <div className="h-px bg-gradient-to-r from-transparent via-amber-500/30 to-transparent mb-2 flex-shrink-0" />
+
+                {/* Scrollable content */}
+                <div className="flex-1 overflow-y-auto pr-1 space-y-2.5">
+                  <p className="text-xs text-[var(--foreground)] leading-relaxed">
+                    Choose from <span className="font-semibold text-amber-600 dark:text-amber-400">7 Guardian archetypes</span> that reflect your core values: Steward, Pioneer, Sage, Warrior, Healer, Creator, or Connector.
+                  </p>
+                  <p className="text-xs text-[var(--muted-foreground)] leading-relaxed">
+                    Each archetype represents a unique approach to building a sustainable future. Your theme colors, badges, and visual identity all flow from this foundational choice.
+                  </p>
+                  <p className="text-xs text-[var(--muted-foreground)] leading-relaxed">
+                    Your BizID becomes your declaration—a living statement of purpose that evolves with your journey. Connect with others who share your values and build meaningful relationships grounded in shared vision.
+                  </p>
+                  <p className="text-xs text-[var(--muted-foreground)] leading-relaxed">
+                    The STOCK score tracks your growth across all platform activities, creating a holistic picture of your contribution to the sustainability movement.
+                  </p>
+                </div>
+
+                {/* Footer badges */}
+                <div className="flex items-center justify-center gap-3 pt-2 mt-2 border-t border-amber-500/20 flex-shrink-0">
+                  <div className="flex items-center gap-1 px-2 py-1 rounded-full bg-rose-500/10">
+                    <Heart className="w-3 h-3 text-rose-500" />
+                    <span className="text-[10px] font-medium text-rose-600 dark:text-rose-400">Values-First</span>
+                  </div>
+                  <div className="flex items-center gap-1 px-2 py-1 rounded-full bg-blue-500/10">
+                    <Users className="w-3 h-3 text-blue-500" />
+                    <span className="text-[10px] font-medium text-blue-600 dark:text-blue-400">Community</span>
+                  </div>
+                </div>
               </div>
             </div>
           </motion.div>
@@ -575,22 +730,23 @@ export function CommunityHeartPage({ isAuthenticated }: CommunityHeartPageProps)
                   </div>
                 </div>
 
-                {/* Curriculum Highlights - Compact Grid */}
+                {/* Core Learn Topics - From Learn Page */}
                 <div className="relative z-10 flex-1 min-h-0 mb-1.5 overflow-hidden">
-                  <p className="text-[8px] text-[var(--muted-foreground)] font-medium mb-1 uppercase tracking-wide flex-shrink-0">Curriculum Topics</p>
-                  <div className="grid grid-cols-2 gap-0.5 overflow-y-auto">
-                    {curriculumHighlights.map((item, i) => {
-                      const Icon = item.icon
+                  <p className="text-[8px] text-[var(--muted-foreground)] font-medium mb-1 uppercase tracking-wide flex-shrink-0">Core Topics</p>
+                  <div className="grid grid-cols-2 gap-1 overflow-y-auto">
+                    {coreLearnTopics.map((topic, i) => {
+                      const Icon = topic.icon
                       return (
                         <motion.div
-                          key={item.name}
-                          className="flex items-center gap-1 px-1.5 py-1 rounded-md bg-[var(--muted)]/40 border border-[var(--border)]/30"
+                          key={topic.name}
+                          className={`flex items-center gap-1.5 px-2 py-1.5 rounded-lg ${topic.bgColor} border border-[var(--border)]/20`}
                           initial={{ opacity: 0, x: -10 }}
                           animate={{ opacity: 1, x: 0 }}
                           transition={{ delay: 0.2 + i * 0.05 }}
+                          whileHover={{ scale: 1.02 }}
                         >
-                          <Icon className={`w-3 h-3 ${item.color} flex-shrink-0`} />
-                          <span className="text-[7px] font-medium text-[var(--foreground)] truncate">{item.name}</span>
+                          <Icon className={`w-3.5 h-3.5 ${topic.color} flex-shrink-0`} />
+                          <span className="text-[8px] font-semibold text-[var(--foreground)] truncate">{topic.name}</span>
                         </motion.div>
                       )
                     })}
@@ -616,7 +772,7 @@ export function CommunityHeartPage({ isAuthenticated }: CommunityHeartPageProps)
                 </div>
               </div>
 
-              {/* Back Side - Learning Philosophy (Centered with decorative elements) */}
+              {/* Back Side - Learning Philosophy (Larger text with internal scroll) */}
               <div
                 className="absolute inset-0 bg-gradient-to-br from-emerald-50/95 via-sky-50/90 to-emerald-50/95 dark:from-emerald-950/95 dark:via-sky-950/90 dark:to-emerald-950/95 rounded-xl p-3 overflow-hidden border border-sky-300/30 dark:border-sky-700/30"
                 style={{ backfaceVisibility: 'hidden', transform: 'rotateY(180deg)' }}
@@ -628,62 +784,56 @@ export function CommunityHeartPage({ isAuthenticated }: CommunityHeartPageProps)
                   transition={{ duration: 4, repeat: Infinity }}
                 />
 
-                <div className="relative z-10 h-full flex flex-col items-center justify-center overflow-y-auto">
-                  {/* Top decorative cherry blossom element */}
-                  <svg className="w-full h-6 flex-shrink-0 opacity-30" viewBox="0 0 300 40" preserveAspectRatio="none">
-                    <path d="M0 20 Q50 10 100 20 Q150 30 200 20 Q250 10 300 20" fill="none" stroke="#0ea5e9" strokeWidth="1"/>
-                    <circle cx="75" cy="15" r="4" fill="#fce7f3" stroke="#f9a8d4" strokeWidth="0.5"/>
-                    <circle cx="150" cy="20" r="5" fill="#fce7f3" stroke="#f9a8d4" strokeWidth="0.5"/>
-                    <circle cx="225" cy="15" r="4" fill="#fce7f3" stroke="#f9a8d4" strokeWidth="0.5"/>
-                    <circle cx="75" cy="15" r="1.5" fill="#fda4af"/>
-                    <circle cx="150" cy="20" r="2" fill="#fda4af"/>
-                    <circle cx="225" cy="15" r="1.5" fill="#fda4af"/>
-                  </svg>
-
-                  {/* Centered Philosophy content */}
-                  <div className="flex-1 flex flex-col items-center justify-center space-y-1.5 px-3 py-1 overflow-y-auto">
+                <div className="relative z-10 h-full flex flex-col">
+                  {/* Header */}
+                  <div className="flex items-center gap-2 mb-2 flex-shrink-0">
                     <motion.div
-                      className="w-7 h-7 rounded-full bg-sky-500/20 dark:bg-sky-600/30 flex items-center justify-center flex-shrink-0"
+                      className="w-8 h-8 rounded-full bg-sky-500/20 dark:bg-sky-600/30 flex items-center justify-center"
                       animate={{ scale: [1, 1.1, 1] }}
                       transition={{ duration: 3, repeat: Infinity }}
                     >
-                      <GraduationCap className="w-3.5 h-3.5 text-sky-600 dark:text-sky-400" />
+                      <GraduationCap className="w-4 h-4 text-sky-600 dark:text-sky-400" />
                     </motion.div>
-                    <h3 className="font-bold text-xs text-[var(--foreground)] text-center">Learning Philosophy</h3>
-
-                    <div className="space-y-1 text-center max-w-[340px]">
-                      <p className="text-[8px] text-sky-700 dark:text-sky-300 font-semibold uppercase tracking-wide">Education Without Boundaries</p>
-                      <p className="text-[8px] text-[var(--muted-foreground)] leading-relaxed">
-                        Exodus Academy believes sustainability education should meet every learner where they are. From elementary explorers to doctoral researchers, our adaptive curriculum grows with you—adjusting complexity, depth, and delivery to match your unique learning journey.
-                      </p>
-                      <p className="text-[8px] text-[var(--muted-foreground)] leading-relaxed">
-                        Learn through interactive games, hands-on simulations, and real-world projects that create tangible environmental impact. Every completed module earns certificates that build your STOCK score—proof of your growing expertise and commitment to our planet.
-                      </p>
-                      <div className="flex items-center justify-center gap-3 pt-1">
-                        <div className="flex items-center gap-0.5">
-                          <Gamepad2 className="w-2.5 h-2.5 text-amber-500" />
-                          <span className="text-[7px] text-[var(--muted-foreground)]">Interactive</span>
-                        </div>
-                        <div className="flex items-center gap-0.5">
-                          <Target className="w-2.5 h-2.5 text-emerald-500" />
-                          <span className="text-[7px] text-[var(--muted-foreground)]">Adaptive</span>
-                        </div>
-                        <div className="flex items-center gap-0.5">
-                          <Award className="w-2.5 h-2.5 text-purple-500" />
-                          <span className="text-[7px] text-[var(--muted-foreground)]">Certified</span>
-                        </div>
-                      </div>
+                    <div>
+                      <h3 className="font-bold text-sm text-[var(--foreground)]">Learning Philosophy</h3>
+                      <p className="text-[10px] text-sky-700 dark:text-sky-300 font-semibold uppercase tracking-wide">Education Without Boundaries</p>
                     </div>
                   </div>
 
-                  {/* Bottom decorative lotus element */}
-                  <svg className="w-full h-6 flex-shrink-0 opacity-30" viewBox="0 0 300 40" preserveAspectRatio="none">
-                    <path d="M0 20 Q50 30 100 20 Q150 10 200 20 Q250 30 300 20" fill="none" stroke="#0ea5e9" strokeWidth="1"/>
-                    <path d="M150 25 Q145 18 150 10 Q155 18 150 25" fill="#fce7f3" stroke="#f9a8d4" strokeWidth="0.3"/>
-                    <path d="M150 25 Q142 20 138 14 Q146 18 150 25" fill="#fbcfe8" stroke="#f9a8d4" strokeWidth="0.3"/>
-                    <path d="M150 25 Q158 20 162 14 Q154 18 150 25" fill="#fbcfe8" stroke="#f9a8d4" strokeWidth="0.3"/>
-                    <circle cx="150" cy="20" r="2" fill="#fcd34d"/>
-                  </svg>
+                  {/* Decorative divider */}
+                  <div className="h-px bg-gradient-to-r from-transparent via-sky-500/30 to-transparent mb-2 flex-shrink-0" />
+
+                  {/* Scrollable content */}
+                  <div className="flex-1 overflow-y-auto pr-1 space-y-2.5">
+                    <p className="text-xs text-[var(--foreground)] leading-relaxed">
+                      Exodus Academy believes sustainability education should meet every learner where they are. From <span className="font-semibold text-sky-600 dark:text-sky-400">elementary explorers</span> to <span className="font-semibold text-sky-600 dark:text-sky-400">doctoral researchers</span>.
+                    </p>
+                    <p className="text-xs text-[var(--muted-foreground)] leading-relaxed">
+                      Our adaptive curriculum grows with you—adjusting complexity, depth, and delivery to match your unique learning journey. No one gets left behind or held back.
+                    </p>
+                    <p className="text-xs text-[var(--muted-foreground)] leading-relaxed">
+                      Learn through interactive games, hands-on simulations, and real-world projects that create tangible environmental impact.
+                    </p>
+                    <p className="text-xs text-[var(--muted-foreground)] leading-relaxed">
+                      Every completed module earns certificates that build your STOCK score—proof of your growing expertise and commitment to our planet.
+                    </p>
+                  </div>
+
+                  {/* Footer badges */}
+                  <div className="flex items-center justify-center gap-2 pt-2 mt-2 border-t border-sky-500/20 flex-shrink-0">
+                    <div className="flex items-center gap-1 px-2 py-1 rounded-full bg-amber-500/10">
+                      <Gamepad2 className="w-3 h-3 text-amber-500" />
+                      <span className="text-[10px] font-medium text-amber-600 dark:text-amber-400">Interactive</span>
+                    </div>
+                    <div className="flex items-center gap-1 px-2 py-1 rounded-full bg-emerald-500/10">
+                      <Target className="w-3 h-3 text-emerald-500" />
+                      <span className="text-[10px] font-medium text-emerald-600 dark:text-emerald-400">Adaptive</span>
+                    </div>
+                    <div className="flex items-center gap-1 px-2 py-1 rounded-full bg-purple-500/10">
+                      <Award className="w-3 h-3 text-purple-500" />
+                      <span className="text-[10px] font-medium text-purple-600 dark:text-purple-400">Certified</span>
+                    </div>
+                  </div>
                 </div>
               </div>
             </motion.div>
@@ -846,7 +996,7 @@ export function CommunityHeartPage({ isAuthenticated }: CommunityHeartPageProps)
                 </div>
               </motion.div>
 
-              {/* Back Side - Philosophy (Centered with decorative elements) */}
+              {/* Back Side - Philosophy (Larger text with internal scroll) */}
               <motion.div
                 className="absolute inset-0 bg-gradient-to-br from-slate-800 via-emerald-900/80 to-slate-900 rounded-xl p-3 overflow-hidden border border-emerald-700/30"
                 style={{ backfaceVisibility: 'hidden', transform: 'rotateY(180deg)' }}
@@ -858,50 +1008,49 @@ export function CommunityHeartPage({ isAuthenticated }: CommunityHeartPageProps)
                   transition={{ duration: 4, repeat: Infinity }}
                 />
 
-                <div className="relative z-10 h-full flex flex-col items-center justify-center overflow-y-auto">
-                  {/* Top decorative element */}
-                  <svg className="w-full h-3 flex-shrink-0 opacity-30" viewBox="0 0 200 24" preserveAspectRatio="none">
-                    <path d="M0 12 Q25 6 50 12 Q75 18 100 12 Q125 6 150 12 Q175 18 200 12" fill="none" stroke="#10b981" strokeWidth="1"/>
-                    <circle cx="100" cy="12" r="3" fill="#10b981"/>
-                  </svg>
-
-                  {/* Centered Philosophy content */}
-                  <div className="flex-1 flex flex-col items-center justify-center space-y-1 px-2 py-1 overflow-y-auto">
+                <div className="relative z-10 h-full flex flex-col">
+                  {/* Header */}
+                  <div className="flex items-center gap-2 mb-2 flex-shrink-0">
                     <motion.div
-                      className="w-6 h-6 rounded-full bg-emerald-600/30 flex items-center justify-center flex-shrink-0"
+                      className="w-7 h-7 rounded-full bg-emerald-600/30 flex items-center justify-center"
                       animate={{ scale: [1, 1.1, 1] }}
                       transition={{ duration: 3, repeat: Infinity }}
                     >
-                      <Sparkles className="w-3 h-3 text-emerald-300" />
+                      <Sparkles className="w-3.5 h-3.5 text-emerald-300" />
                     </motion.div>
-                    <h3 className="font-bold text-[10px] text-emerald-100 text-center">You Are The Asset</h3>
-
-                    <div className="space-y-1 text-center max-w-[200px]">
-                      <p className="text-[7px] text-emerald-200 font-semibold uppercase tracking-wide">Beyond Traditional Metrics</p>
-                      <p className="text-[7px] text-slate-300/90 leading-relaxed">
-                        Traditional systems measure what you have. Volition measures who you are becoming. Your STOCK score captures growth across 7 interconnected lanes of life.
-                      </p>
-                      <p className="text-[7px] text-slate-300/90 leading-relaxed">
-                        Every connection made, lesson learned, and impact created adds to your evolving value. Sustainable change starts with investing in yourself.
-                      </p>
-                      <div className="flex items-center justify-center gap-2 pt-0.5">
-                        <div className="flex items-center gap-0.5">
-                          <TrendingUp className="w-2 h-2 text-emerald-400" />
-                          <span className="text-[6px] text-slate-400">Growth</span>
-                        </div>
-                        <div className="flex items-center gap-0.5">
-                          <Leaf className="w-2 h-2 text-green-400" />
-                          <span className="text-[6px] text-slate-400">Impact</span>
-                        </div>
-                      </div>
+                    <div>
+                      <h3 className="font-bold text-sm text-emerald-100">You Are The Asset</h3>
+                      <p className="text-[9px] text-emerald-300 font-semibold uppercase tracking-wide">Beyond Traditional Metrics</p>
                     </div>
                   </div>
 
-                  {/* Bottom decorative element */}
-                  <svg className="w-full h-3 flex-shrink-0 opacity-30" viewBox="0 0 200 24" preserveAspectRatio="none">
-                    <path d="M0 12 Q25 18 50 12 Q75 6 100 12 Q125 18 150 12 Q175 6 200 12" fill="none" stroke="#10b981" strokeWidth="1"/>
-                    <circle cx="100" cy="12" r="3" fill="#10b981"/>
-                  </svg>
+                  {/* Decorative divider */}
+                  <div className="h-px bg-gradient-to-r from-transparent via-emerald-500/30 to-transparent mb-2 flex-shrink-0" />
+
+                  {/* Scrollable content */}
+                  <div className="flex-1 overflow-y-auto pr-1 space-y-2">
+                    <p className="text-[11px] text-emerald-50 leading-relaxed">
+                      Traditional systems measure what you <span className="font-semibold text-emerald-400">have</span>. Volition measures who you are <span className="font-semibold text-emerald-400">becoming</span>.
+                    </p>
+                    <p className="text-[11px] text-slate-300/90 leading-relaxed">
+                      Your STOCK score captures growth across 7 interconnected lanes of life: Identity, Projects, Articles, Learning, Network, Feed, and Impact.
+                    </p>
+                    <p className="text-[11px] text-slate-300/90 leading-relaxed">
+                      Every connection made, lesson learned, and impact created adds to your evolving value. Sustainable change starts with investing in yourself.
+                    </p>
+                  </div>
+
+                  {/* Footer badges */}
+                  <div className="flex items-center justify-center gap-2 pt-2 mt-1 border-t border-emerald-500/20 flex-shrink-0">
+                    <div className="flex items-center gap-1 px-2 py-0.5 rounded-full bg-emerald-500/20">
+                      <TrendingUp className="w-2.5 h-2.5 text-emerald-400" />
+                      <span className="text-[9px] font-medium text-emerald-300">Growth</span>
+                    </div>
+                    <div className="flex items-center gap-1 px-2 py-0.5 rounded-full bg-green-500/20">
+                      <Leaf className="w-2.5 h-2.5 text-green-400" />
+                      <span className="text-[9px] font-medium text-green-300">Impact</span>
+                    </div>
+                  </div>
                 </div>
               </motion.div>
             </motion.div>
