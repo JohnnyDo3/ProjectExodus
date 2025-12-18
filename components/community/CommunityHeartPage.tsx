@@ -364,51 +364,47 @@ export function CommunityHeartPage({ isAuthenticated }: CommunityHeartPageProps)
 
               <div className="relative z-10 h-full flex flex-col items-center justify-center overflow-y-auto">
                 {/* Top decorative ivy scroll */}
-                <svg className="w-full h-6 flex-shrink-0 opacity-25" viewBox="0 0 200 32" preserveAspectRatio="none">
+                <svg className="w-full h-5 flex-shrink-0 opacity-25" viewBox="0 0 200 32" preserveAspectRatio="none">
                   <path d="M0 16 Q30 8 60 16 Q90 24 120 16 Q150 8 180 16 Q195 20 200 16" fill="none" stroke="#166534" strokeWidth="1.5"/>
                   <path d="M95 12 Q100 8 105 12 Q100 16 95 12" fill="#15803d"/>
-                  <path d="M100 16 L100 24" stroke="#166534" strokeWidth="1"/>
-                  <circle cx="100" cy="26" r="2" fill="#166534"/>
                 </svg>
 
                 {/* Centered Philosophy content */}
-                <div className="flex-1 flex flex-col items-center justify-center space-y-1.5 px-2 py-1">
+                <div className="flex-1 flex flex-col items-center justify-center space-y-2 px-3 py-2 overflow-y-auto">
                   <motion.div
-                    className="w-7 h-7 rounded-full bg-amber-500/20 dark:bg-amber-600/30 flex items-center justify-center flex-shrink-0"
+                    className="w-10 h-10 rounded-full bg-amber-500/20 dark:bg-amber-600/30 flex items-center justify-center flex-shrink-0"
                     animate={{ scale: [1, 1.1, 1] }}
                     transition={{ duration: 3, repeat: Infinity }}
                   >
-                    <Shield className="w-3.5 h-3.5 text-amber-600 dark:text-amber-400" />
+                    <Shield className="w-5 h-5 text-amber-600 dark:text-amber-400" />
                   </motion.div>
-                  <h3 className="font-bold text-xs text-[var(--foreground)] text-center">Guardian Identity</h3>
+                  <h3 className="font-bold text-base text-[var(--foreground)] text-center">Guardian Identity</h3>
 
-                  <div className="space-y-1.5 text-center max-w-[220px]">
-                    <p className="text-[8px] text-amber-700 dark:text-amber-300 font-semibold uppercase tracking-wide">Your Values Define You</p>
-                    <p className="text-[7px] text-[var(--muted-foreground)] leading-relaxed">
+                  <div className="space-y-2 text-center max-w-[280px]">
+                    <p className="text-xs text-amber-700 dark:text-amber-300 font-semibold uppercase tracking-wide">Your Values Define You</p>
+                    <p className="text-[11px] text-[var(--muted-foreground)] leading-relaxed">
                       Choose from 7 Guardian archetypes that reflect your core values: Steward, Pioneer, Sage, Warrior, Healer, Creator, or Connector. Each represents a unique approach to building a sustainable future.
                     </p>
-                    <p className="text-[7px] text-[var(--muted-foreground)] leading-relaxed">
+                    <p className="text-[11px] text-[var(--muted-foreground)] leading-relaxed">
                       Your BizID becomes your declaration—a living statement of purpose that evolves with your journey. Connect with others who share your values and build meaningful relationships grounded in shared vision.
                     </p>
-                    <div className="flex items-center justify-center gap-2 pt-1">
+                    <div className="flex items-center justify-center gap-3 pt-2">
                       <div className="flex items-center gap-1">
-                        <Heart className="w-2.5 h-2.5 text-rose-500" />
-                        <span className="text-[6px] text-[var(--muted-foreground)]">Values-First</span>
+                        <Heart className="w-3.5 h-3.5 text-rose-500" />
+                        <span className="text-[10px] text-[var(--muted-foreground)]">Values-First</span>
                       </div>
                       <div className="flex items-center gap-1">
-                        <Users className="w-2.5 h-2.5 text-blue-500" />
-                        <span className="text-[6px] text-[var(--muted-foreground)]">Aligned Connections</span>
+                        <Users className="w-3.5 h-3.5 text-blue-500" />
+                        <span className="text-[10px] text-[var(--muted-foreground)]">Aligned</span>
                       </div>
                     </div>
                   </div>
                 </div>
 
                 {/* Bottom decorative ivy scroll */}
-                <svg className="w-full h-6 flex-shrink-0 opacity-25" viewBox="0 0 200 32" preserveAspectRatio="none">
+                <svg className="w-full h-5 flex-shrink-0 opacity-25" viewBox="0 0 200 32" preserveAspectRatio="none">
                   <path d="M0 16 Q30 24 60 16 Q90 8 120 16 Q150 24 180 16 Q195 12 200 16" fill="none" stroke="#166534" strokeWidth="1.5"/>
                   <path d="M95 20 Q100 24 105 20 Q100 16 95 20" fill="#15803d"/>
-                  <path d="M100 16 L100 8" stroke="#166534" strokeWidth="1"/>
-                  <circle cx="100" cy="6" r="2" fill="#166534"/>
                 </svg>
               </div>
             </div>
@@ -533,7 +529,7 @@ export function CommunityHeartPage({ isAuthenticated }: CommunityHeartPageProps)
                 <CornerOrnament position="tr" />
 
                 {/* Header */}
-                <div className="relative z-10 flex items-center justify-between mb-2">
+                <div className="relative z-10 flex items-center justify-between mb-1.5 flex-shrink-0">
                   <h2 className="text-sm font-bold text-[var(--foreground)] flex items-center gap-2">
                     <motion.div
                       className="w-5 h-5 rounded-md bg-gradient-to-br from-blue-500 to-purple-600 flex items-center justify-center shadow-sm"
@@ -553,11 +549,11 @@ export function CommunityHeartPage({ isAuthenticated }: CommunityHeartPageProps)
                   </motion.span>
                 </div>
 
-                <DecorativeDivider className="mb-2" />
+                <DecorativeDivider className="mb-1.5 flex-shrink-0" />
 
                 {/* Grade Levels - Horizontal Timeline */}
-                <div className="relative z-10 mb-2">
-                  <p className="text-[9px] text-[var(--muted-foreground)] font-medium mb-1.5 uppercase tracking-wide">Grade Levels</p>
+                <div className="relative z-10 mb-1.5 flex-shrink-0">
+                  <p className="text-[8px] text-[var(--muted-foreground)] font-medium mb-1 uppercase tracking-wide">Grade Levels</p>
                   <div className="relative flex items-center justify-between px-1">
                     {/* Timeline connector line */}
                     <div className="absolute top-1/2 left-2 right-2 h-0.5 bg-gradient-to-r from-green-400 via-purple-400 to-indigo-500 opacity-30 -translate-y-1/2" />
@@ -570,31 +566,31 @@ export function CommunityHeartPage({ isAuthenticated }: CommunityHeartPageProps)
                         animate={{ opacity: 1, y: 0 }}
                         transition={{ delay: 0.1 + i * 0.05 }}
                       >
-                        <div className={`w-6 h-6 rounded-full bg-gradient-to-br ${level.color} flex items-center justify-center shadow-sm`}>
-                          <span className="text-[10px]">{level.icon}</span>
+                        <div className={`w-5 h-5 rounded-full bg-gradient-to-br ${level.color} flex items-center justify-center shadow-sm`}>
+                          <span className="text-[9px]">{level.icon}</span>
                         </div>
-                        <p className="text-[7px] font-medium text-[var(--muted-foreground)] mt-0.5 text-center leading-tight">{level.ages}</p>
+                        <p className="text-[6px] font-medium text-[var(--muted-foreground)] mt-0.5 text-center leading-tight">{level.ages}</p>
                       </motion.div>
                     ))}
                   </div>
                 </div>
 
-                {/* Curriculum Highlights - Expanded Grid */}
-                <div className="relative z-10 flex-1 mb-2">
-                  <p className="text-[9px] text-[var(--muted-foreground)] font-medium mb-1 uppercase tracking-wide">Curriculum Topics</p>
-                  <div className="grid grid-cols-2 gap-1">
+                {/* Curriculum Highlights - Compact Grid */}
+                <div className="relative z-10 flex-1 min-h-0 mb-1.5 overflow-hidden">
+                  <p className="text-[8px] text-[var(--muted-foreground)] font-medium mb-1 uppercase tracking-wide flex-shrink-0">Curriculum Topics</p>
+                  <div className="grid grid-cols-2 gap-0.5 overflow-y-auto">
                     {curriculumHighlights.map((item, i) => {
                       const Icon = item.icon
                       return (
                         <motion.div
                           key={item.name}
-                          className="flex items-center gap-1.5 px-2 py-1.5 rounded-lg bg-[var(--muted)]/40 border border-[var(--border)]/30"
+                          className="flex items-center gap-1 px-1.5 py-1 rounded-md bg-[var(--muted)]/40 border border-[var(--border)]/30"
                           initial={{ opacity: 0, x: -10 }}
                           animate={{ opacity: 1, x: 0 }}
                           transition={{ delay: 0.2 + i * 0.05 }}
                         >
-                          <Icon className={`w-3.5 h-3.5 ${item.color}`} />
-                          <span className="text-[8px] font-medium text-[var(--foreground)]">{item.name}</span>
+                          <Icon className={`w-3 h-3 ${item.color} flex-shrink-0`} />
+                          <span className="text-[7px] font-medium text-[var(--foreground)] truncate">{item.name}</span>
                         </motion.div>
                       )
                     })}
@@ -602,34 +598,34 @@ export function CommunityHeartPage({ isAuthenticated }: CommunityHeartPageProps)
                 </div>
 
                 {/* Key Features - Inline compact row */}
-                <div className="relative z-10 flex items-center justify-center gap-2 py-1 bg-[var(--muted)]/30 rounded-lg">
-                  <div className="flex items-center gap-1">
-                    <Gamepad2 className="w-3 h-3 text-amber-500" />
-                    <span className="text-[7px] font-medium text-[var(--muted-foreground)]">Games</span>
+                <div className="relative z-10 flex items-center justify-center gap-2 py-1 bg-[var(--muted)]/30 rounded-lg flex-shrink-0">
+                  <div className="flex items-center gap-0.5">
+                    <Gamepad2 className="w-2.5 h-2.5 text-amber-500" />
+                    <span className="text-[6px] font-medium text-[var(--muted-foreground)]">Games</span>
                   </div>
-                  <div className="w-px h-2.5 bg-[var(--border)]" />
-                  <div className="flex items-center gap-1">
-                    <Brain className="w-3 h-3 text-cyan-500" />
-                    <span className="text-[7px] font-medium text-[var(--muted-foreground)]">Adaptive</span>
+                  <div className="w-px h-2 bg-[var(--border)]" />
+                  <div className="flex items-center gap-0.5">
+                    <Brain className="w-2.5 h-2.5 text-cyan-500" />
+                    <span className="text-[6px] font-medium text-[var(--muted-foreground)]">Adaptive</span>
                   </div>
-                  <div className="w-px h-2.5 bg-[var(--border)]" />
-                  <div className="flex items-center gap-1">
-                    <Award className="w-3 h-3 text-purple-500" />
-                    <span className="text-[7px] font-medium text-[var(--muted-foreground)]">Certificates</span>
+                  <div className="w-px h-2 bg-[var(--border)]" />
+                  <div className="flex items-center gap-0.5">
+                    <Award className="w-2.5 h-2.5 text-purple-500" />
+                    <span className="text-[6px] font-medium text-[var(--muted-foreground)]">Certs</span>
                   </div>
                 </div>
 
                 {/* CTA Button */}
-                <div className="relative z-10 mt-auto pt-1">
+                <div className="relative z-10 mt-auto pt-1 flex-shrink-0">
                   <Link href="/learn" className="block">
                     <motion.div
-                      className="flex items-center justify-center gap-1 text-[9px] font-semibold text-blue-600 dark:text-blue-400 bg-blue-500/10 rounded-md py-1 border border-blue-500/20"
+                      className="flex items-center justify-center gap-1 text-[8px] font-semibold text-blue-600 dark:text-blue-400 bg-blue-500/10 rounded-md py-1 border border-blue-500/20"
                       whileHover={{ scale: 1.02, backgroundColor: 'rgba(59, 130, 246, 0.2)' }}
                       whileTap={{ scale: 0.98 }}
                     >
-                      <BookOpen className="w-3 h-3" />
+                      <BookOpen className="w-2.5 h-2.5" />
                       Explore Courses
-                      <ArrowRight className="w-3 h-3" />
+                      <ArrowRight className="w-2.5 h-2.5" />
                     </motion.div>
                   </Link>
                 </div>
@@ -649,7 +645,7 @@ export function CommunityHeartPage({ isAuthenticated }: CommunityHeartPageProps)
 
                 <div className="relative z-10 h-full flex flex-col items-center justify-center overflow-y-auto">
                   {/* Top decorative cherry blossom element */}
-                  <svg className="w-full h-8 flex-shrink-0 opacity-30" viewBox="0 0 300 40" preserveAspectRatio="none">
+                  <svg className="w-full h-6 flex-shrink-0 opacity-30" viewBox="0 0 300 40" preserveAspectRatio="none">
                     <path d="M0 20 Q50 10 100 20 Q150 30 200 20 Q250 10 300 20" fill="none" stroke="#0ea5e9" strokeWidth="1"/>
                     <circle cx="75" cy="15" r="4" fill="#fce7f3" stroke="#f9a8d4" strokeWidth="0.5"/>
                     <circle cx="150" cy="20" r="5" fill="#fce7f3" stroke="#f9a8d4" strokeWidth="0.5"/>
@@ -660,43 +656,43 @@ export function CommunityHeartPage({ isAuthenticated }: CommunityHeartPageProps)
                   </svg>
 
                   {/* Centered Philosophy content */}
-                  <div className="flex-1 flex flex-col items-center justify-center space-y-1.5 px-3 py-1">
+                  <div className="flex-1 flex flex-col items-center justify-center space-y-2 px-4 py-2 overflow-y-auto">
                     <motion.div
-                      className="w-8 h-8 rounded-full bg-sky-500/20 dark:bg-sky-600/30 flex items-center justify-center flex-shrink-0"
+                      className="w-10 h-10 rounded-full bg-sky-500/20 dark:bg-sky-600/30 flex items-center justify-center flex-shrink-0"
                       animate={{ scale: [1, 1.1, 1] }}
                       transition={{ duration: 3, repeat: Infinity }}
                     >
-                      <GraduationCap className="w-4 h-4 text-sky-600 dark:text-sky-400" />
+                      <GraduationCap className="w-5 h-5 text-sky-600 dark:text-sky-400" />
                     </motion.div>
-                    <h3 className="font-bold text-xs text-[var(--foreground)] text-center">Learning Philosophy</h3>
+                    <h3 className="font-bold text-base text-[var(--foreground)] text-center">Learning Philosophy</h3>
 
-                    <div className="space-y-1.5 text-center max-w-[320px]">
-                      <p className="text-[8px] text-sky-700 dark:text-sky-300 font-semibold uppercase tracking-wide">Education Without Boundaries</p>
-                      <p className="text-[7px] text-[var(--muted-foreground)] leading-relaxed">
+                    <div className="space-y-2 text-center max-w-[380px]">
+                      <p className="text-xs text-sky-700 dark:text-sky-300 font-semibold uppercase tracking-wide">Education Without Boundaries</p>
+                      <p className="text-[11px] text-[var(--muted-foreground)] leading-relaxed">
                         Exodus Academy believes sustainability education should meet every learner where they are. From elementary explorers to doctoral researchers, our adaptive curriculum grows with you—adjusting complexity, depth, and delivery to match your unique learning journey.
                       </p>
-                      <p className="text-[7px] text-[var(--muted-foreground)] leading-relaxed">
+                      <p className="text-[11px] text-[var(--muted-foreground)] leading-relaxed">
                         Learn through interactive games, hands-on simulations, and real-world projects that create tangible environmental impact. Every completed module earns certificates that build your STOCK score—proof of your growing expertise and commitment to our planet.
                       </p>
-                      <div className="flex items-center justify-center gap-3 pt-1">
+                      <div className="flex items-center justify-center gap-4 pt-2">
                         <div className="flex items-center gap-1">
-                          <Gamepad2 className="w-2.5 h-2.5 text-amber-500" />
-                          <span className="text-[6px] text-[var(--muted-foreground)]">Interactive</span>
+                          <Gamepad2 className="w-3.5 h-3.5 text-amber-500" />
+                          <span className="text-[10px] text-[var(--muted-foreground)]">Interactive</span>
                         </div>
                         <div className="flex items-center gap-1">
-                          <Target className="w-2.5 h-2.5 text-emerald-500" />
-                          <span className="text-[6px] text-[var(--muted-foreground)]">Adaptive</span>
+                          <Target className="w-3.5 h-3.5 text-emerald-500" />
+                          <span className="text-[10px] text-[var(--muted-foreground)]">Adaptive</span>
                         </div>
                         <div className="flex items-center gap-1">
-                          <Award className="w-2.5 h-2.5 text-purple-500" />
-                          <span className="text-[6px] text-[var(--muted-foreground)]">Certified</span>
+                          <Award className="w-3.5 h-3.5 text-purple-500" />
+                          <span className="text-[10px] text-[var(--muted-foreground)]">Certified</span>
                         </div>
                       </div>
                     </div>
                   </div>
 
                   {/* Bottom decorative lotus element */}
-                  <svg className="w-full h-8 flex-shrink-0 opacity-30" viewBox="0 0 300 40" preserveAspectRatio="none">
+                  <svg className="w-full h-6 flex-shrink-0 opacity-30" viewBox="0 0 300 40" preserveAspectRatio="none">
                     <path d="M0 20 Q50 30 100 20 Q150 10 200 20 Q250 30 300 20" fill="none" stroke="#0ea5e9" strokeWidth="1"/>
                     <path d="M150 25 Q145 18 150 10 Q155 18 150 25" fill="#fce7f3" stroke="#f9a8d4" strokeWidth="0.3"/>
                     <path d="M150 25 Q142 20 138 14 Q146 18 150 25" fill="#fbcfe8" stroke="#f9a8d4" strokeWidth="0.3"/>
@@ -879,51 +875,47 @@ export function CommunityHeartPage({ isAuthenticated }: CommunityHeartPageProps)
 
                 <div className="relative z-10 h-full flex flex-col items-center justify-center overflow-y-auto">
                   {/* Top decorative element */}
-                  <svg className="w-full h-5 flex-shrink-0 opacity-30" viewBox="0 0 200 24" preserveAspectRatio="none">
+                  <svg className="w-full h-4 flex-shrink-0 opacity-30" viewBox="0 0 200 24" preserveAspectRatio="none">
                     <path d="M0 12 Q25 6 50 12 Q75 18 100 12 Q125 6 150 12 Q175 18 200 12" fill="none" stroke="#10b981" strokeWidth="1"/>
                     <circle cx="100" cy="12" r="3" fill="#10b981"/>
-                    <circle cx="50" cy="12" r="2" fill="#10b981" opacity="0.5"/>
-                    <circle cx="150" cy="12" r="2" fill="#10b981" opacity="0.5"/>
                   </svg>
 
                   {/* Centered Philosophy content */}
-                  <div className="flex-1 flex flex-col items-center justify-center space-y-1.5 px-2 py-1">
+                  <div className="flex-1 flex flex-col items-center justify-center space-y-2 px-3 py-2 overflow-y-auto">
                     <motion.div
-                      className="w-7 h-7 rounded-full bg-emerald-600/30 flex items-center justify-center flex-shrink-0"
+                      className="w-9 h-9 rounded-full bg-emerald-600/30 flex items-center justify-center flex-shrink-0"
                       animate={{ scale: [1, 1.1, 1] }}
                       transition={{ duration: 3, repeat: Infinity }}
                     >
-                      <Sparkles className="w-3.5 h-3.5 text-emerald-300" />
+                      <Sparkles className="w-4.5 h-4.5 text-emerald-300" />
                     </motion.div>
-                    <h3 className="font-bold text-xs text-emerald-100 text-center">You Are The Asset</h3>
+                    <h3 className="font-bold text-sm text-emerald-100 text-center">You Are The Asset</h3>
 
-                    <div className="space-y-1.5 text-center max-w-[200px]">
-                      <p className="text-[8px] text-emerald-200 font-semibold uppercase tracking-wide">Beyond Traditional Metrics</p>
-                      <p className="text-[7px] text-slate-300/80 leading-relaxed">
-                        Traditional systems measure what you have. Volition measures who you are becoming. Your STOCK score captures growth across 7 interconnected lanes of life—Identity, Projects, Articles, Learning, Network, Feed, and Impact.
+                    <div className="space-y-2 text-center max-w-[220px]">
+                      <p className="text-[10px] text-emerald-200 font-semibold uppercase tracking-wide">Beyond Traditional Metrics</p>
+                      <p className="text-[10px] text-slate-300/90 leading-relaxed">
+                        Traditional systems measure what you have. Volition measures who you are becoming. Your STOCK score captures growth across 7 interconnected lanes of life.
                       </p>
-                      <p className="text-[7px] text-slate-300/80 leading-relaxed">
-                        Every connection made, lesson learned, project contributed to, and positive impact created adds to your evolving value. This isn't about competition—it's about recognizing that sustainable change starts with investing in yourself.
+                      <p className="text-[10px] text-slate-300/90 leading-relaxed">
+                        Every connection made, lesson learned, and impact created adds to your evolving value. Sustainable change starts with investing in yourself.
                       </p>
-                      <div className="flex items-center justify-center gap-2 pt-1">
+                      <div className="flex items-center justify-center gap-3 pt-1">
                         <div className="flex items-center gap-1">
-                          <TrendingUp className="w-2.5 h-2.5 text-emerald-400" />
-                          <span className="text-[6px] text-slate-400">Growth</span>
+                          <TrendingUp className="w-3 h-3 text-emerald-400" />
+                          <span className="text-[9px] text-slate-400">Growth</span>
                         </div>
                         <div className="flex items-center gap-1">
-                          <Leaf className="w-2.5 h-2.5 text-green-400" />
-                          <span className="text-[6px] text-slate-400">Impact</span>
+                          <Leaf className="w-3 h-3 text-green-400" />
+                          <span className="text-[9px] text-slate-400">Impact</span>
                         </div>
                       </div>
                     </div>
                   </div>
 
                   {/* Bottom decorative element */}
-                  <svg className="w-full h-5 flex-shrink-0 opacity-30" viewBox="0 0 200 24" preserveAspectRatio="none">
+                  <svg className="w-full h-4 flex-shrink-0 opacity-30" viewBox="0 0 200 24" preserveAspectRatio="none">
                     <path d="M0 12 Q25 18 50 12 Q75 6 100 12 Q125 18 150 12 Q175 6 200 12" fill="none" stroke="#10b981" strokeWidth="1"/>
                     <circle cx="100" cy="12" r="3" fill="#10b981"/>
-                    <circle cx="50" cy="12" r="2" fill="#10b981" opacity="0.5"/>
-                    <circle cx="150" cy="12" r="2" fill="#10b981" opacity="0.5"/>
                   </svg>
                 </div>
               </motion.div>

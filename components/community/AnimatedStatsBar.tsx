@@ -2,7 +2,7 @@
 
 import { useState, useEffect, useRef } from 'react'
 import { motion } from 'framer-motion'
-import { Users, Rocket, BookOpen, MessageSquare, TrendingUp } from 'lucide-react'
+import { Users, Rocket, BookOpen, MessageSquare, TrendingUp, Quote } from 'lucide-react'
 
 interface StatData {
   members: { total: number; thisWeek: number }
@@ -79,9 +79,18 @@ function GrowthBadge({ value, label }: { value: number; label: string }) {
   )
 }
 
+// Default stats to show while loading - ensures real data is always visible
+const defaultStats: StatData = {
+  members: { total: 1, thisWeek: 0 },
+  projects: { total: 0, thisWeek: 0 },
+  articles: { total: 0, thisWeek: 0 },
+  courses: { total: 6 },
+  discussions: { activeThisWeek: 0 },
+}
+
 export function AnimatedStatsBar() {
-  const [stats, setStats] = useState<StatData | null>(null)
-  const [isLoading, setIsLoading] = useState(true)
+  const [stats, setStats] = useState<StatData>(defaultStats)
+  const [hasLoaded, setHasLoaded] = useState(false)
 
   useEffect(() => {
     async function fetchStats() {
@@ -89,13 +98,14 @@ export function AnimatedStatsBar() {
         const res = await fetch('/api/community/public-stats')
         const data = await res.json()
 
-        if (data.success) {
+        if (data.success && data.data) {
           setStats(data.data)
         }
       } catch (error) {
         console.error('Error fetching stats:', error)
+        // Keep default stats on error
       } finally {
-        setIsLoading(false)
+        setHasLoaded(true)
       }
     }
 
@@ -105,26 +115,6 @@ export function AnimatedStatsBar() {
     const interval = setInterval(fetchStats, 5 * 60 * 1000)
     return () => clearInterval(interval)
   }, [])
-
-  if (isLoading || !stats) {
-    return (
-      <div className="flex items-center justify-center gap-6 py-3">
-        {[1, 2, 3, 4].map((i) => (
-          <motion.div
-            key={i}
-            className="flex flex-col items-center gap-1"
-            initial={{ opacity: 0 }}
-            animate={{ opacity: [0.2, 0.4, 0.2] }}
-            transition={{ duration: 2, repeat: Infinity, delay: i * 0.15 }}
-          >
-            <div className="w-8 h-8 rounded-full bg-[var(--muted)]/50" />
-            <div className="w-12 h-2 rounded bg-[var(--muted)]/30" />
-            <div className="w-8 h-1.5 rounded bg-[var(--muted)]/20" />
-          </motion.div>
-        ))}
-      </div>
-    )
-  }
 
   const statItems = [
     {
@@ -167,55 +157,72 @@ export function AnimatedStatsBar() {
 
   return (
     <motion.div
-      className="flex items-center justify-center gap-3 sm:gap-6 py-2 px-4 overflow-x-auto"
+      className="flex flex-col items-center py-2 px-4"
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.6, ease: 'easeOut' }}
     >
-      {statItems.map((stat, index) => {
-        const Icon = stat.icon
+      {/* Stats row */}
+      <div className="flex items-center justify-center gap-3 sm:gap-6 overflow-x-auto w-full">
+        {statItems.map((stat, index) => {
+          const Icon = stat.icon
 
-        return (
-          <motion.div
-            key={stat.label}
-            className="flex flex-col items-center min-w-[70px]"
-            initial={{ opacity: 0, scale: 0.8 }}
-            animate={{ opacity: 1, scale: 1 }}
-            transition={{ delay: index * 0.1, duration: 0.4 }}
-          >
-            {/* Icon with pulsing background */}
+          return (
             <motion.div
-              className={`w-10 h-10 rounded-xl ${stat.bgColor} flex items-center justify-center mb-1.5`}
-              animate={{
-                scale: [1, 1.05, 1],
-              }}
-              transition={{
-                duration: 4,
-                repeat: Infinity,
-                delay: index * 0.5,
-                ease: 'easeInOut',
-              }}
+              key={stat.label}
+              className="flex flex-col items-center min-w-[70px]"
+              initial={{ opacity: 0, scale: 0.8 }}
+              animate={{ opacity: 1, scale: 1 }}
+              transition={{ delay: index * 0.1, duration: 0.4 }}
             >
-              <Icon className={`w-5 h-5 ${stat.color}`} />
+              {/* Icon with pulsing background */}
+              <motion.div
+                className={`w-10 h-10 rounded-xl ${stat.bgColor} flex items-center justify-center mb-1.5`}
+                animate={{
+                  scale: [1, 1.05, 1],
+                }}
+                transition={{
+                  duration: 4,
+                  repeat: Infinity,
+                  delay: index * 0.5,
+                  ease: 'easeInOut',
+                }}
+              >
+                <Icon className={`w-5 h-5 ${stat.color}`} />
+              </motion.div>
+
+              {/* Value with animated counter */}
+              <div className="text-lg font-bold text-[var(--foreground)]">
+                <AnimatedCounter value={stat.value} duration={2000 + index * 300} />
+              </div>
+
+              {/* Label */}
+              <div className="text-[10px] text-[var(--muted-foreground)] whitespace-nowrap">
+                {stat.label}
+              </div>
+
+              {/* Growth badge */}
+              <div className="h-5 mt-0.5">
+                <GrowthBadge value={stat.growth} label={stat.growthLabel} />
+              </div>
             </motion.div>
+          )
+        })}
+      </div>
 
-            {/* Value with animated counter */}
-            <div className="text-lg font-bold text-[var(--foreground)]">
-              <AnimatedCounter value={stat.value} duration={2000 + index * 300} />
-            </div>
-
-            {/* Label */}
-            <div className="text-[10px] text-[var(--muted-foreground)] whitespace-nowrap">
-              {stat.label}
-            </div>
-
-            {/* Growth badge */}
-            <div className="h-5 mt-0.5">
-              <GrowthBadge value={stat.growth} label={stat.growthLabel} />
-            </div>
-          </motion.div>
-        )
-      })}
+      {/* Philosophical quote - "The small are mighty" */}
+      <motion.div
+        className="flex items-center justify-center gap-2 mt-2 pt-2 border-t border-[var(--border)]/20 w-full max-w-xl"
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        transition={{ delay: 0.8, duration: 0.6 }}
+      >
+        <Quote className="w-3 h-3 text-[var(--primary)]/60 flex-shrink-0" />
+        <p className="text-[11px] text-[var(--muted-foreground)] italic text-center leading-relaxed">
+          The small are mighty through vigilance. We will succeed no matter how big or small—<span className="font-semibold text-[var(--primary)]">even if it&apos;s just me.</span>
+        </p>
+        <Quote className="w-3 h-3 text-[var(--primary)]/60 flex-shrink-0 rotate-180" />
+      </motion.div>
     </motion.div>
   )
 }
