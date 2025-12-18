@@ -317,7 +317,7 @@ export function CommunityHeartPage({ isAuthenticated }: CommunityHeartPageProps)
               <div className="relative h-full flex flex-col gap-2">
                 {/* BizID Card - Top Section with Ivy Mural */}
                 <motion.div
-                  className="relative flex-[3] bg-gradient-to-br from-stone-100/95 via-[var(--card)]/95 to-amber-50/90 dark:from-stone-900/95 dark:via-[var(--card)]/95 dark:to-amber-950/90 backdrop-blur-md border border-stone-300/30 dark:border-stone-700/30 rounded-xl p-3 overflow-hidden flex flex-col"
+                  className="relative flex-[3] bg-gradient-to-br from-[var(--card)]/95 via-[var(--muted)]/50 to-[var(--card)]/90 backdrop-blur-md border border-[var(--border)]/30 rounded-xl p-3 overflow-hidden flex flex-col"
                 >
                   {/* Ancient Scroll / Ivy Mural Background */}
                   <div className="absolute inset-0 pointer-events-none overflow-hidden rounded-xl">
@@ -508,7 +508,7 @@ export function CommunityHeartPage({ isAuthenticated }: CommunityHeartPageProps)
 
             {/* Back Side - Full Height BizID Philosophy with Ivy Mural */}
             <div
-              className="absolute inset-0 bg-gradient-to-br from-stone-100 via-amber-50/80 to-stone-100 dark:from-stone-900 dark:via-amber-950/80 dark:to-stone-900 rounded-xl p-4 overflow-hidden border border-amber-300/30 dark:border-amber-700/30"
+              className="absolute inset-0 bg-gradient-to-br from-[var(--card)] via-[var(--muted)]/50 to-[var(--card)] rounded-xl p-4 overflow-hidden border border-[var(--border)]/30"
               style={{ backfaceVisibility: 'hidden', transform: 'rotateY(180deg)' }}
             >
               {/* Ivy Mural Background - Full */}
@@ -630,7 +630,7 @@ export function CommunityHeartPage({ isAuthenticated }: CommunityHeartPageProps)
             >
               {/* Front Side - Learning Features with Zen Garden Mural */}
               <div
-                className="absolute inset-0 bg-gradient-to-br from-emerald-50/90 via-[var(--card)]/95 to-sky-50/90 dark:from-emerald-950/90 dark:via-[var(--card)]/95 dark:to-sky-950/90 backdrop-blur-md border border-emerald-200/30 dark:border-emerald-800/30 rounded-xl p-4 overflow-hidden flex flex-col"
+                className="absolute inset-0 bg-gradient-to-br from-[var(--card)]/90 via-[var(--muted)]/40 to-[var(--card)]/90 backdrop-blur-md border border-[var(--border)]/30 rounded-xl p-4 overflow-hidden flex flex-col"
                 style={{ backfaceVisibility: 'hidden' }}
               >
                 {/* Zen Garden Mural Background - Theme Aware */}
@@ -769,7 +769,7 @@ export function CommunityHeartPage({ isAuthenticated }: CommunityHeartPageProps)
                   <p className="text-[9px] text-[var(--muted-foreground)] font-medium mb-1.5 uppercase tracking-wide">Grade Levels</p>
                   <div className="relative flex items-center justify-between px-2">
                     {/* Timeline connector line */}
-                    <div className="absolute top-1/2 left-3 right-3 h-0.5 bg-gradient-to-r from-green-400 via-purple-400 to-indigo-500 opacity-40 -translate-y-1/2" />
+                    <div className="absolute top-1/2 left-3 right-3 h-0.5 bg-gradient-to-r from-[var(--primary)] via-[var(--accent)] to-[var(--secondary)] opacity-40 -translate-y-1/2" />
 
                     {gradeLevels.map((level, i) => (
                       <motion.div
@@ -841,7 +841,7 @@ export function CommunityHeartPage({ isAuthenticated }: CommunityHeartPageProps)
                 {/* Key Features - Larger row */}
                 <div className="relative z-10 flex items-center justify-center gap-4 py-2 bg-[var(--muted)]/30 rounded-lg flex-shrink-0">
                   <div className="flex items-center gap-1">
-                    <Gamepad2 className="w-3.5 h-3.5 text-amber-500" />
+                    <Gamepad2 className="w-3.5 h-3.5 text-[var(--primary)]" />
                     <span className="text-[8px] font-medium text-[var(--muted-foreground)]">Games</span>
                   </div>
                   <div className="w-px h-3 bg-[var(--border)]" />
@@ -859,7 +859,7 @@ export function CommunityHeartPage({ isAuthenticated }: CommunityHeartPageProps)
 
               {/* Back Side - Learning Philosophy with Zen Mural */}
               <div
-                className="absolute inset-0 bg-gradient-to-br from-emerald-50/95 via-sky-50/90 to-emerald-50/95 dark:from-emerald-950/95 dark:via-sky-950/90 dark:to-emerald-950/95 rounded-xl p-4 overflow-hidden border border-sky-300/30 dark:border-sky-700/30"
+                className="absolute inset-0 bg-gradient-to-br from-[var(--card)]/95 via-[var(--muted)]/40 to-[var(--card)]/95 rounded-xl p-4 overflow-hidden border border-[var(--border)]/30"
                 style={{ backfaceVisibility: 'hidden', transform: 'rotateY(180deg)' }}
               >
                 {/* Zen Mural Background for back - theme aware */}
@@ -954,20 +954,20 @@ export function CommunityHeartPage({ isAuthenticated }: CommunityHeartPageProps)
         >
           {/* Volition Marketing Card - Flip Card with Philosophy */}
           <div
-            className="relative flex-1"
+            className="relative flex-1 min-h-0"
             style={{ perspective: '1000px' }}
             onMouseEnter={() => setIsVolitionFlipped(true)}
             onMouseLeave={() => setIsVolitionFlipped(false)}
           >
             <motion.div
-              className="relative w-full h-full"
+              className="absolute inset-0"
               style={{ transformStyle: 'preserve-3d' }}
               animate={{ rotateY: isVolitionFlipped ? 180 : 0 }}
               transition={{ duration: 0.6, ease: 'easeInOut' }}
             >
               {/* Front Side - Features with Forest Mural */}
               <motion.div
-                className="absolute inset-0 bg-gradient-to-br from-indigo-50/90 via-[var(--card)]/95 to-slate-100/90 dark:from-indigo-950/90 dark:via-[var(--card)]/95 dark:to-slate-950/90 rounded-xl p-4 overflow-hidden border border-indigo-200/30 dark:border-indigo-800/30"
+                className="absolute inset-0 bg-gradient-to-br from-[var(--card)]/90 via-[var(--muted)]/40 to-[var(--card)]/90 rounded-xl p-4 overflow-hidden border border-[var(--border)]/30"
                 style={{ backfaceVisibility: 'hidden' }}
               >
                 {/* Forest Mural Background - Theme Aware */}
@@ -1050,7 +1050,7 @@ export function CommunityHeartPage({ isAuthenticated }: CommunityHeartPageProps)
                   <div className="flex items-center justify-between mb-2">
                     <div className="flex items-center gap-2">
                       <motion.div
-                        className="w-7 h-7 rounded-lg bg-gradient-to-br from-indigo-500 to-purple-600 flex items-center justify-center shadow-sm"
+                        className="w-7 h-7 rounded-lg bg-gradient-to-br from-[var(--primary)] to-[var(--accent)] flex items-center justify-center shadow-sm"
                         animate={{ scale: [1, 1.05, 1] }}
                         transition={{ duration: 3, repeat: Infinity }}
                       >
@@ -1059,7 +1059,7 @@ export function CommunityHeartPage({ isAuthenticated }: CommunityHeartPageProps)
                       <h3 className="font-bold text-base tracking-tight text-[var(--foreground)]">Volition</h3>
                     </div>
                     <motion.span
-                      className="text-[10px] px-2.5 py-1 bg-gradient-to-r from-indigo-500/20 to-purple-500/20 rounded-full text-indigo-600 dark:text-indigo-400 font-semibold border border-indigo-500/20"
+                      className="text-[10px] px-2.5 py-1 bg-gradient-to-r from-[var(--primary)]/20 to-[var(--accent)]/20 rounded-full text-[var(--primary)] font-semibold border border-[var(--primary)]/20"
                       animate={{ scale: [1, 1.02, 1] }}
                       transition={{ duration: 2, repeat: Infinity }}
                     >
@@ -1095,14 +1095,14 @@ export function CommunityHeartPage({ isAuthenticated }: CommunityHeartPageProps)
                     })}
                     {/* Extra slot for Impact highlight */}
                     <motion.div
-                      className="col-span-2 flex items-center justify-center gap-2 bg-gradient-to-r from-indigo-500/15 to-purple-500/15 rounded-lg py-2 border border-indigo-500/20"
+                      className="col-span-2 flex items-center justify-center gap-2 bg-gradient-to-r from-[var(--primary)]/15 to-[var(--accent)]/15 rounded-lg py-2 border border-[var(--primary)]/20"
                       initial={{ opacity: 0 }}
                       animate={{ opacity: 1 }}
                       transition={{ delay: 0.9 }}
                     >
-                      <Globe className="w-4 h-4 text-indigo-500" />
-                      <span className="text-[10px] font-bold text-indigo-600 dark:text-indigo-400">Environmental Impact</span>
-                      <Leaf className="w-3 h-3 text-emerald-500" />
+                      <Globe className="w-4 h-4 text-[var(--primary)]" />
+                      <span className="text-[10px] font-bold text-[var(--primary)]">Environmental Impact</span>
+                      <Leaf className="w-3 h-3 text-[var(--accent)]" />
                     </motion.div>
                   </div>
                 </div>
@@ -1118,7 +1118,7 @@ export function CommunityHeartPage({ isAuthenticated }: CommunityHeartPageProps)
                   <div className="absolute inset-0 bg-gradient-to-b from-[var(--accent)]/15 via-transparent to-[var(--muted)]/20" />
 
                   {/* Stars for back - theme aware */}
-                  <div className="absolute top-0 left-0 right-0 h-16 text-[var(--primary)] opacity-25 dark:opacity-35">
+                  <div className="absolute top-0 left-0 right-0 h-16 text-[var(--primary)] opacity-30">
                     <svg className="w-full h-full" viewBox="0 0 200 65">
                       <circle cx="20" cy="12" r="0.8" fill="currentColor"/>
                       <circle cx="55" cy="20" r="1" fill="currentColor" opacity="0.8"/>
