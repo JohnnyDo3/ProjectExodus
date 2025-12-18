@@ -4,7 +4,7 @@ import { useState, useEffect } from 'react'
 import { motion } from 'framer-motion'
 import {
   Shield, Crown, Sparkles, TrendingUp,
-  User, Briefcase, FileText, BookOpen, Users, MessageCircle, Leaf,
+  User, Briefcase, FileText, BookOpen, Users, MessageCircle, MessageSquare, Leaf,
   Star, Lock, Globe, Zap, Heart, ArrowRight, GraduationCap, Gamepad2, Brain, Target, Award,
   Droplet, Sprout, Recycle, Home, FlaskConical, Play, Puzzle, Calculator, Map, Trophy
 } from 'lucide-react'
