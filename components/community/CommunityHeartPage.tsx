@@ -1151,7 +1151,7 @@ export function CommunityHeartPage({ isAuthenticated }: CommunityHeartPageProps)
 
                 <div className="relative z-10 h-full flex flex-col">
                   {/* Header */}
-                  <div className="flex items-center gap-3 mb-3">
+                  <div className="flex items-center gap-3 mb-3 flex-shrink-0">
                     <motion.div
                       className="w-10 h-10 rounded-full bg-[var(--accent)]/20 flex items-center justify-center"
                       animate={{ scale: [1, 1.1, 1] }}
@@ -1166,20 +1166,26 @@ export function CommunityHeartPage({ isAuthenticated }: CommunityHeartPageProps)
                   </div>
 
                   {/* Decorative divider */}
-                  <div className="h-px bg-gradient-to-r from-transparent via-[var(--accent)]/40 to-transparent mb-3" />
+                  <div className="h-px bg-gradient-to-r from-transparent via-[var(--accent)]/40 to-transparent mb-3 flex-shrink-0" />
 
-                  {/* Simple content */}
-                  <div className="flex-1 space-y-2">
+                  {/* Scrollable content */}
+                  <div className="flex-1 min-h-0 overflow-y-auto space-y-3 pr-1">
                     <p className="text-sm text-[var(--foreground)] leading-relaxed">
                       Track growth across <span className="font-semibold text-[var(--accent)]">7 lanes</span>: Identity, Projects, Articles, Learning, Network, Feed, and Impact.
                     </p>
                     <p className="text-sm text-[var(--muted-foreground)] leading-relaxed">
                       Your STOCK score rises as you contribute authentically to the sustainability movement.
                     </p>
+                    <p className="text-sm text-[var(--muted-foreground)] leading-relaxed">
+                      Every connection made, lesson learned, and impact created adds to your evolving value.
+                    </p>
+                    <p className="text-sm text-[var(--muted-foreground)] leading-relaxed">
+                      Watch your personal stock rise as you engage with a community dedicated to positive transformation.
+                    </p>
                   </div>
 
                   {/* Footer badges */}
-                  <div className="flex items-center justify-center gap-3 pt-3 border-t border-[var(--accent)]/30">
+                  <div className="flex items-center justify-center gap-3 pt-3 mt-auto border-t border-[var(--accent)]/30 flex-shrink-0">
                     <div className="flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-[var(--accent)]/15">
                       <TrendingUp className="w-4 h-4 text-[var(--accent)]" />
                       <span className="text-xs font-medium text-[var(--accent)]">Growth</span>
