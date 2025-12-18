@@ -100,6 +100,62 @@ export async function POST(request: NextRequest) {
       },
     })
 
+    // Create prerequisites if provided
+    if (body.prerequisites && Array.isArray(body.prerequisites) && body.prerequisites.length > 0) {
+      await prisma.projectPrerequisite.createMany({
+        data: body.prerequisites.map((prereq: {
+          type: string
+          displayName: string
+          description: string
+          requiredTag?: string
+          isRequired: boolean
+        }, index: number) => ({
+          projectId: project.id,
+          type: prereq.type,
+          displayName: prereq.displayName,
+          description: prereq.description,
+          requiredTag: prereq.requiredTag || null,
+          isRequired: prereq.isRequired,
+          order: index,
+        })),
+      })
+    }
+
+    // Create subgroups if provided
+    if (body.subgroups && Array.isArray(body.subgroups) && body.subgroups.length > 0) {
+      await prisma.projectSubgroup.createMany({
+        data: body.subgroups.map((group: {
+          name: string
+          description: string
+          memberLimit: number | null
+        }) => ({
+          projectId: project.id,
+          name: group.name,
+          description: group.description,
+          memberLimit: group.memberLimit,
+        })),
+      })
+    }
+
+    // Create learning modules if provided
+    if (body.learningModules && Array.isArray(body.learningModules) && body.learningModules.length > 0) {
+      await prisma.projectLearningModule.createMany({
+        data: body.learningModules.map((module: {
+          title: string
+          description: string
+          contentType: string
+          externalUrl?: string
+        }, index: number) => ({
+          projectId: project.id,
+          title: module.title,
+          description: module.description,
+          contentType: module.contentType,
+          externalUrl: module.externalUrl || null,
+          order: index,
+        })),
+      })
+    }
+
     return NextResponse.json({
       success: true,
       data: project,
