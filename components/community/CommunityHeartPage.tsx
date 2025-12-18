@@ -219,7 +219,7 @@ export function CommunityHeartPage({ isAuthenticated }: CommunityHeartPageProps)
   }, [isBizIDFlipped])
 
   return (
-    <div className="h-[calc(100vh-5rem)] bg-[var(--background)] relative overflow-hidden flex flex-col">
+    <div className="min-h-screen bg-[var(--background)] relative overflow-y-auto flex flex-col">
       {/* Ambient animated background */}
       <AmbientBackground />
 
@@ -286,11 +286,11 @@ export function CommunityHeartPage({ isAuthenticated }: CommunityHeartPageProps)
         </Link>
       </motion.div>
 
-      {/* Main content - fills viewport */}
-      <div className="flex-1 relative z-10 grid grid-cols-1 lg:grid-cols-12 gap-2 p-2 sm:p-3 overflow-hidden min-h-0">
+      {/* Main content - extended widgets section */}
+      <div className="relative z-10 grid grid-cols-1 lg:grid-cols-12 gap-3 p-3 sm:p-4 min-h-[85vh] lg:min-h-[90vh]">
         {/* Left column: BizID Showcase - Flip Card */}
         <div
-          className="lg:col-span-4 min-h-0 h-full"
+          className="lg:col-span-4 min-h-[400px] lg:min-h-[500px] h-full"
           style={{ perspective: '1000px' }}
           onMouseEnter={() => setIsBizIDFlipped(true)}
           onMouseLeave={() => setIsBizIDFlipped(false)}
@@ -566,16 +566,16 @@ export function CommunityHeartPage({ isAuthenticated }: CommunityHeartPageProps)
           </motion.div>
         </div>
 
-        {/* Center column: Learning Academy + Activity (compact) */}
+        {/* Center column: Learning Academy + Activity */}
         <motion.div
           initial={{ opacity: 0, y: 30 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.6, delay: 0.2 }}
-          className="lg:col-span-5 flex flex-col gap-2 min-h-0"
+          className="lg:col-span-5 flex flex-col gap-3 min-h-[400px] lg:min-h-[500px]"
         >
           {/* Learning Academy - Flip Card with Philosophy */}
           <div
-            className="relative flex-[2] min-h-0"
+            className="relative flex-[2] min-h-[280px] lg:min-h-[320px]"
             style={{ perspective: '1000px' }}
             onMouseEnter={() => setIsLearningFlipped(true)}
             onMouseLeave={() => setIsLearningFlipped(false)}
@@ -839,8 +839,8 @@ export function CommunityHeartPage({ isAuthenticated }: CommunityHeartPageProps)
             </motion.div>
           </div>
 
-          {/* Live Activity - compact with subtle water ripple artwork */}
-          <div className="relative flex-1 bg-gradient-to-br from-[var(--card)]/95 via-cyan-50/10 to-[var(--card)]/95 dark:from-[var(--card)]/95 dark:via-cyan-950/10 dark:to-[var(--card)]/95 backdrop-blur-md border border-[var(--border)]/50 rounded-xl overflow-hidden flex flex-col min-h-0 max-h-[160px]">
+          {/* Live Activity - with subtle water ripple artwork */}
+          <div className="relative flex-1 min-h-[180px] lg:min-h-[200px] bg-gradient-to-br from-[var(--card)]/95 via-cyan-50/10 to-[var(--card)]/95 dark:from-[var(--card)]/95 dark:via-cyan-950/10 dark:to-[var(--card)]/95 backdrop-blur-md border border-[var(--border)]/50 rounded-xl overflow-hidden flex flex-col">
             {/* Subtle wave artwork */}
             <div className="absolute inset-0 pointer-events-none overflow-hidden rounded-xl">
               <svg className="absolute bottom-0 left-0 right-0 h-8 opacity-[0.08]" viewBox="0 0 400 30" preserveAspectRatio="none">
@@ -872,7 +872,7 @@ export function CommunityHeartPage({ isAuthenticated }: CommunityHeartPageProps)
           initial={{ opacity: 0, x: 30 }}
           animate={{ opacity: 1, x: 0 }}
           transition={{ duration: 0.6, delay: 0.3 }}
-          className="lg:col-span-3 flex flex-col gap-2 min-h-0"
+          className="lg:col-span-3 flex flex-col gap-3 min-h-[400px] lg:min-h-[500px]"
         >
           {/* Volition Marketing Card - Flip Card with Philosophy */}
           <div
@@ -1091,12 +1091,13 @@ export function CommunityHeartPage({ isAuthenticated }: CommunityHeartPageProps)
         </motion.div>
       </div>
 
-      {/* Footer: Stats Bar - Enhanced */}
-      <motion.footer
-        initial={{ opacity: 0, y: 20 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.5, delay: 0.5 }}
-        className="relative z-20 border-t border-[var(--border)]/30 bg-[var(--card)]/90 backdrop-blur-md overflow-hidden"
+      {/* Stats Section - Below the fold */}
+      <motion.section
+        initial={{ opacity: 0, y: 30 }}
+        whileInView={{ opacity: 1, y: 0 }}
+        viewport={{ once: true, margin: "-50px" }}
+        transition={{ duration: 0.6 }}
+        className="relative z-20 border-t border-[var(--border)]/30 bg-gradient-to-b from-[var(--card)]/95 to-[var(--background)] backdrop-blur-md overflow-hidden py-6 px-4"
       >
         {/* Decorative top edge glow */}
         <motion.div
@@ -1112,8 +1113,22 @@ export function CommunityHeartPage({ isAuthenticated }: CommunityHeartPageProps)
           transition={{ duration: 10, repeat: Infinity, repeatDelay: 5 }}
         />
 
-        <AnimatedStatsBar />
-      </motion.footer>
+        {/* Section heading */}
+        <div className="relative z-10 max-w-5xl mx-auto">
+          <motion.div
+            className="text-center mb-4"
+            initial={{ opacity: 0 }}
+            whileInView={{ opacity: 1 }}
+            viewport={{ once: true }}
+            transition={{ delay: 0.2 }}
+          >
+            <h2 className="text-lg font-bold text-[var(--foreground)] mb-1">Join the Movement</h2>
+            <p className="text-sm text-[var(--muted-foreground)]">Be part of something bigger</p>
+          </motion.div>
+
+          <AnimatedStatsBar />
+        </div>
+      </motion.section>
     </div>
   )
 }
