@@ -300,13 +300,13 @@ export default function ArticlesPage() {
     return ARCHETYPE_TRAITS[archetype || 'uriel'] || ARCHETYPE_TRAITS.uriel
   }
 
-  // Non-authenticated view - Frozen Hero Page
+  // Non-authenticated view - WYSIWYG Frozen Hero Page (shows exactly what users see, just non-interactive)
   if (!session) {
     return (
       <div className="min-h-screen bg-[var(--background)]">
-        {/* Frozen Hero Header - Ancient Library Chamber (Non-Interactive) */}
-        <div className="relative bg-gradient-to-b from-slate-900 via-indigo-950 to-slate-900 text-white overflow-hidden min-h-screen">
-          {/* Ancient Chamber Background */}
+        {/* Frozen Hero Header - Same as authenticated but with overlay */}
+        <div className="relative bg-gradient-to-b from-slate-900 via-indigo-950 to-slate-900 text-white overflow-hidden min-h-[70vh] sm:min-h-[75vh]">
+          {/* Ancient Chamber Background - Same as authenticated */}
           <div className="absolute inset-0 overflow-hidden">
             {/* Stone texture overlay */}
             <div
@@ -316,7 +316,7 @@ export default function ArticlesPage() {
               }}
             />
 
-            {/* Torch glow effects - warm ambient lighting */}
+            {/* Torch glow effects */}
             <div className="absolute top-[15%] left-[8%] w-24 h-32 bg-gradient-to-b from-amber-500/30 via-orange-500/20 to-transparent rounded-full blur-2xl animate-pulse" />
             <div className="absolute top-[15%] right-[8%] w-24 h-32 bg-gradient-to-b from-amber-500/30 via-orange-500/20 to-transparent rounded-full blur-2xl animate-pulse" style={{ animationDelay: '1s' }} />
             <div className="absolute top-[10%] left-1/2 -translate-x-1/2 w-64 h-24 bg-gradient-to-b from-amber-400/20 to-transparent rounded-full blur-3xl" />
@@ -325,9 +325,26 @@ export default function ArticlesPage() {
             <div className="absolute inset-0 opacity-10 pointer-events-none">
               <div className="absolute top-0 left-[10%] w-[3px] h-full bg-gradient-to-b from-amber-200/80 via-amber-100/60 to-amber-200/80" />
               <div className="absolute top-0 left-[20%] w-[2px] h-full bg-gradient-to-b from-amber-200/60 via-amber-100/40 to-amber-200/60" />
+              <div className="absolute top-0 left-[30%] w-[1px] h-full bg-gradient-to-b from-amber-200/40 via-amber-100/20 to-amber-200/40" />
               <div className="absolute top-0 right-[10%] w-[3px] h-full bg-gradient-to-b from-amber-200/80 via-amber-100/60 to-amber-200/80" />
               <div className="absolute top-0 right-[20%] w-[2px] h-full bg-gradient-to-b from-amber-200/60 via-amber-100/40 to-amber-200/60" />
+              <div className="absolute top-0 right-[30%] w-[1px] h-full bg-gradient-to-b from-amber-200/40 via-amber-100/20 to-amber-200/40" />
             </div>
+
+            {/* Ornate top border */}
+            <svg className="absolute top-0 left-0 right-0 h-8 opacity-30" preserveAspectRatio="none">
+              <defs>
+                <pattern id="greekKey" x="0" y="0" width="32" height="16" patternUnits="userSpaceOnUse">
+                  <path d="M0 8 L8 8 L8 0 L16 0 L16 8 L24 8 L24 16 L32 16 L32 8" fill="none" stroke="url(#goldGradient)" strokeWidth="2"/>
+                </pattern>
+                <linearGradient id="goldGradient" x1="0%" y1="0%" x2="100%" y2="0%">
+                  <stop offset="0%" stopColor="#fbbf24"/>
+                  <stop offset="50%" stopColor="#f59e0b"/>
+                  <stop offset="100%" stopColor="#fbbf24"/>
+                </linearGradient>
+              </defs>
+              <rect x="0" y="0" width="100%" height="16" fill="url(#greekKey)"/>
+            </svg>
 
             {/* Decorative vines */}
             <div className="absolute top-20 left-4 bottom-20 w-6 opacity-15">
@@ -348,113 +365,161 @@ export default function ArticlesPage() {
             </div>
           </div>
 
-          <div className="container mx-auto px-4 py-16 sm:py-24 relative z-10">
-            <div className="max-w-4xl mx-auto text-center">
-              {/* Title Section - Grand entrance */}
-              <div className="mb-12">
-                {/* Ornate header badge */}
-                <div className="inline-flex items-center gap-2 px-6 py-3 rounded-none bg-gradient-to-r from-amber-900/60 via-amber-800/80 to-amber-900/60 border-y-2 border-amber-500/50 mb-6 relative">
-                  <div className="absolute -left-3 top-1/2 -translate-y-1/2 w-5 h-5 bg-amber-500/30 rotate-45 border border-amber-400/50" />
-                  <div className="absolute -right-3 top-1/2 -translate-y-1/2 w-5 h-5 bg-amber-500/30 rotate-45 border border-amber-400/50" />
-                  <ScrollText className="w-5 h-5 text-amber-300" />
-                  <span className="text-sm font-bold uppercase tracking-[0.2em] text-amber-200">The Ancient Library</span>
+          <div className="container mx-auto px-4 py-6 sm:py-8 relative z-10">
+            <div className="max-w-6xl mx-auto">
+              {/* Title Section - Same as authenticated */}
+              <div className="text-center mb-6 sm:mb-8">
+                <div className="inline-flex items-center gap-2 px-5 py-2.5 rounded-none bg-gradient-to-r from-amber-900/60 via-amber-800/80 to-amber-900/60 border-y-2 border-amber-500/50 mb-4 relative">
+                  <div className="absolute -left-2 top-1/2 -translate-y-1/2 w-4 h-4 bg-amber-500/30 rotate-45 border border-amber-400/50" />
+                  <div className="absolute -right-2 top-1/2 -translate-y-1/2 w-4 h-4 bg-amber-500/30 rotate-45 border border-amber-400/50" />
+                  <ScrollText className="w-4 h-4 text-amber-300" />
+                  <span className="text-xs font-bold uppercase tracking-[0.2em] text-amber-200">The Ancient Library</span>
                 </div>
 
-                <h1 className="text-4xl sm:text-5xl md:text-6xl font-black mb-4 tracking-tight" style={{ fontFamily: 'Georgia, serif', textShadow: '0 2px 20px rgba(251, 191, 36, 0.3)' }}>
-                  Knowledge Awaits
+                <h1 className="text-3xl sm:text-4xl md:text-5xl font-black mb-3 tracking-tight" style={{ fontFamily: 'Georgia, serif', textShadow: '0 2px 20px rgba(251, 191, 36, 0.3)' }}>
+                  Knowledge Shared
                 </h1>
 
-                {/* Decorative divider */}
-                <div className="flex items-center justify-center gap-4 mb-4">
-                  <div className="h-px w-20 bg-gradient-to-r from-transparent to-amber-500/50" />
-                  <div className="w-3 h-3 bg-amber-500 rotate-45" />
-                  <div className="h-px w-20 bg-gradient-to-l from-transparent to-amber-500/50" />
+                <div className="flex items-center justify-center gap-3 mb-3">
+                  <div className="h-px w-16 bg-gradient-to-r from-transparent to-amber-500/50" />
+                  <div className="w-2 h-2 bg-amber-500 rotate-45" />
+                  <div className="h-px w-16 bg-gradient-to-l from-transparent to-amber-500/50" />
                 </div>
 
-                <p className="text-lg sm:text-xl font-medium opacity-90 px-4 max-w-2xl mx-auto mb-8" style={{ fontFamily: 'Georgia, serif', fontStyle: 'italic', color: '#fde68a' }}>
-                  "Wisdom is not consumed — it is received. A text offers its truth; a reader brings their readiness to understand."
+                <p className="text-sm sm:text-base font-medium opacity-90 px-4 max-w-lg mx-auto" style={{ fontFamily: 'Georgia, serif', fontStyle: 'italic', color: '#fde68a' }}>
+                  "Wisdom is not consumed — it is received."
                 </p>
+
+                {/* Stats preview - same as authenticated */}
+                <div className="flex items-center justify-center gap-4 mt-4">
+                  <div className="relative px-4 py-2 bg-gradient-to-b from-slate-800/80 to-slate-900/80 border border-amber-600/40 rounded-sm">
+                    <div className="absolute inset-0 bg-gradient-to-r from-amber-500/5 via-amber-500/10 to-amber-500/5" />
+                    <span className="text-xs font-bold text-amber-200 relative">??? Scrolls</span>
+                  </div>
+                  <div className="relative px-4 py-2 bg-gradient-to-b from-slate-800/80 to-slate-900/80 border border-amber-600/40 rounded-sm">
+                    <div className="absolute inset-0 bg-gradient-to-r from-amber-500/5 via-amber-500/10 to-amber-500/5" />
+                    <span className="text-xs font-bold text-amber-200 relative">??? Readers</span>
+                  </div>
+                </div>
+
+                {/* Author Button Preview - disabled state */}
+                <div className="mt-6">
+                  <div className="inline-flex items-center gap-3 px-8 py-4 bg-gradient-to-r from-slate-700 via-slate-600 to-slate-700 text-slate-400 font-bold text-base rounded-lg shadow-lg border-2 border-slate-500/40 cursor-not-allowed opacity-60">
+                    <PenSquare className="w-5 h-5" />
+                    <span className="tracking-wide">Inscribe Your Wisdom</span>
+                  </div>
+                  <p className="mt-2 text-xs text-slate-400/60 font-medium">
+                    Sign in to share your case study or sustainability journey
+                  </p>
+                </div>
               </div>
 
-              {/* Frozen Scroll Display - Static preview */}
-              <div className="relative mb-12">
-                {/* Stone shelf */}
-                <div className="relative max-w-3xl mx-auto">
-                  <div className="absolute inset-x-0 top-1/2 -translate-y-1/2 h-20 bg-gradient-to-b from-slate-700/40 via-slate-800/60 to-slate-900/40 rounded-xl" />
+              {/* Scroll Library Preview - Same layout but static */}
+              <div className="relative mb-8">
+                <div className="flex items-center justify-center gap-3 mb-4">
+                  <div className="flex items-center gap-1">
+                    <div className="w-10 h-px bg-gradient-to-r from-transparent to-amber-500/60" />
+                    <div className="w-1.5 h-1.5 bg-amber-500 rotate-45" />
+                  </div>
+                  <div className="flex items-center gap-2 px-3 py-1 bg-gradient-to-r from-amber-900/60 via-amber-800/80 to-amber-900/60 border-y border-amber-500/40">
+                    <Flame className="w-3 h-3 text-amber-300" />
+                    <span className="text-[10px] font-bold text-amber-200 uppercase tracking-[0.15em]">Most Sought Scrolls</span>
+                  </div>
+                  <div className="flex items-center gap-1">
+                    <div className="w-1.5 h-1.5 bg-amber-500 rotate-45" />
+                    <div className="w-10 h-px bg-gradient-to-l from-transparent to-amber-500/60" />
+                  </div>
+                </div>
 
-                  {/* Static scrolls - no hover, just display */}
-                  <div className="relative flex items-center justify-center gap-6 py-6">
+                <div className="relative max-w-4xl mx-auto">
+                  <div className="absolute inset-x-0 top-1/2 -translate-y-1/2 h-16 bg-gradient-to-b from-slate-700/40 via-slate-800/60 to-slate-900/40 rounded-lg" />
+
+                  {/* Static scrolls - same visual as authenticated */}
+                  <div className="relative flex items-center justify-center gap-3 sm:gap-4 py-4 px-4">
                     {[0, 1, 2, 3, 4].map((i) => {
-                      const scrollColors = [
-                        { end: 'from-amber-600 via-amber-500 to-amber-700', parchment: 'bg-amber-100/80' },
-                        { end: 'from-emerald-700 via-emerald-600 to-emerald-800', parchment: 'bg-emerald-50/80' },
-                        { end: 'from-rose-700 via-rose-600 to-rose-800', parchment: 'bg-rose-50/80' },
-                        { end: 'from-slate-600 via-slate-500 to-slate-700', parchment: 'bg-slate-200/60' },
-                        { end: 'from-slate-600 via-slate-500 to-slate-700', parchment: 'bg-slate-200/60' },
+                      const scrollThemes = [
+                        { end: 'from-amber-600 via-amber-500 to-amber-700', parchment: 'bg-amber-100' },
+                        { end: 'from-emerald-700 via-emerald-600 to-emerald-800', parchment: 'bg-emerald-50' },
+                        { end: 'from-rose-700 via-rose-600 to-rose-800', parchment: 'bg-rose-50' },
+                        { end: 'from-slate-600 via-slate-500 to-slate-700', parchment: 'bg-slate-200' },
+                        { end: 'from-slate-600 via-slate-500 to-slate-700', parchment: 'bg-slate-200' },
                       ]
-                      const colors = scrollColors[i]
-                      const isFaded = i >= 3
+                      const theme = scrollThemes[i]
+                      const isEmptySlot = i >= 3
 
                       return (
-                        <div key={i} className={`relative w-14 h-24 ${isFaded ? 'opacity-30' : 'opacity-70'}`}>
-                          {/* Rolled parchment */}
-                          <div className={`absolute inset-x-1 top-4 bottom-4 ${colors.parchment} rounded-sm shadow-inner`} />
-                          {/* Top cap */}
-                          <div className={`absolute top-0 left-0 right-0 h-5 bg-gradient-to-b ${colors.end} rounded-t-sm shadow-md`}>
-                            <div className="absolute top-1.5 left-1/2 -translate-x-1/2 w-2 h-2 bg-amber-300/50 rounded-full" />
+                        <div key={i} className={`relative w-12 h-20 ${isEmptySlot ? 'opacity-40' : 'opacity-70'}`}>
+                          <div className={`absolute inset-x-1 top-3 bottom-3 ${theme.parchment} rounded-sm shadow-inner`} />
+                          <div className={`absolute top-0 left-0 right-0 h-4 bg-gradient-to-b ${theme.end} rounded-t-sm shadow-md`}>
+                            <div className="absolute top-1 left-1/2 -translate-x-1/2 w-1.5 h-1.5 bg-amber-300/60 rounded-full" />
                           </div>
-                          {/* Bottom cap */}
-                          <div className={`absolute bottom-0 left-0 right-0 h-5 bg-gradient-to-t ${colors.end} rounded-b-sm shadow-md`}>
-                            <div className="absolute bottom-1.5 left-1/2 -translate-x-1/2 w-2 h-2 bg-amber-300/50 rounded-full" />
+                          <div className={`absolute bottom-0 left-0 right-0 h-4 bg-gradient-to-t ${theme.end} rounded-b-sm shadow-md`}>
+                            <div className="absolute bottom-1 left-1/2 -translate-x-1/2 w-1.5 h-1.5 bg-amber-300/60 rounded-full" />
                           </div>
                         </div>
                       )
                     })}
                   </div>
+                </div>
+              </div>
 
-                  {/* Lock overlay */}
-                  <div className="absolute inset-0 flex items-center justify-center">
-                    <div className="px-4 py-2 bg-slate-900/80 backdrop-blur-sm rounded-lg border border-amber-500/30">
-                      <span className="text-xs font-bold text-amber-300 uppercase tracking-wider">Sealed Until Admission</span>
+              {/* Search Preview - disabled state */}
+              <div className="relative max-w-3xl mx-auto px-4 sm:px-0 mb-8">
+                <div className="relative bg-gradient-to-b from-slate-700 via-slate-800 to-slate-900 rounded-lg p-1 shadow-2xl border border-amber-600/30 opacity-60">
+                  <div className="absolute -top-1 left-4 right-4 h-2 bg-gradient-to-r from-transparent via-amber-500/40 to-transparent" />
+                  <div className="absolute -top-4 left-1/2 -translate-x-1/2 px-5 py-1.5 bg-gradient-to-b from-slate-600 to-slate-800 rounded border border-amber-500/40 shadow-lg">
+                    <span className="text-[10px] font-bold text-amber-300 uppercase tracking-[0.15em]">Search the Archives</span>
+                  </div>
+                  <div className="bg-gradient-to-b from-slate-800 via-slate-850 to-slate-900 rounded-md p-4 border border-slate-600/50">
+                    <div className="flex items-center gap-3">
+                      <div className="flex-1 relative">
+                        <input
+                          type="text"
+                          disabled
+                          placeholder="Sign in to search ancient texts..."
+                          className="w-full px-5 py-3 rounded-md bg-slate-900/80 text-slate-500 placeholder-slate-600 font-medium text-sm border border-slate-600/50 cursor-not-allowed"
+                          style={{ fontFamily: 'Georgia, serif' }}
+                        />
+                        <div className="absolute right-2 top-1/2 -translate-y-1/2 p-2 bg-gradient-to-br from-slate-600 to-slate-700 rounded-md">
+                          <Search className="w-4 h-4 text-slate-400" />
+                        </div>
+                      </div>
                     </div>
                   </div>
                 </div>
               </div>
-
-              {/* CTA Section */}
-              <div className="space-y-6">
-                <p className="text-base text-amber-200/80 font-medium max-w-xl mx-auto">
-                  Join the community of seekers. Access case studies, sustainability journeys, and wisdom from practitioners around the world.
-                </p>
-
-                <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
-                  <Link href="/auth/signup">
-                    <Button className="bg-gradient-to-r from-amber-600 to-amber-700 hover:from-amber-500 hover:to-amber-600 text-white font-bold px-8 py-6 text-lg rounded-lg shadow-xl border border-amber-400/30">
-                      <Star className="w-5 h-5 mr-2" />
-                      Enter the Library
-                    </Button>
-                  </Link>
-                  <Link href="/auth/signin">
-                    <Button variant="outline" className="border-2 border-amber-500/50 text-amber-200 hover:bg-amber-500/10 font-bold px-8 py-6 text-lg rounded-lg">
-                      Already a Member? Sign In
-                    </Button>
-                  </Link>
-                </div>
-
-                <p className="text-xs text-amber-400/50 font-medium">
-                  Free to join • Contribute your own wisdom • Learn from fellow practitioners
-                </p>
-              </div>
-
-              {/* Decorative bottom flourish */}
-              <div className="mt-16 flex items-center justify-center">
-                <svg className="w-40 h-8 opacity-30" viewBox="0 0 160 32">
-                  <path d="M0 16 Q20 8 40 16 Q60 24 80 16 Q100 8 120 16 Q140 24 160 16" fill="none" stroke="#fbbf24" strokeWidth="1"/>
-                  <circle cx="80" cy="16" r="4" fill="#fbbf24"/>
-                  <path d="M75 16 Q80 10 85 16 Q80 22 75 16" fill="#fbbf24" opacity="0.5"/>
-                </svg>
-              </div>
             </div>
+          </div>
+
+          {/* Bottom fade */}
+          <div className="absolute bottom-0 left-0 right-0 h-20 bg-gradient-to-t from-[var(--background)] to-transparent" />
+        </div>
+
+        {/* CTA Section - Below the fold */}
+        <div className="bg-[var(--background)] py-16">
+          <div className="container mx-auto px-4 text-center max-w-2xl">
+            <h2 className="text-2xl sm:text-3xl font-black text-[var(--foreground)] mb-4">
+              Ready to Enter the Library?
+            </h2>
+            <p className="text-base text-theme-muted font-medium mb-8">
+              Join a community of seekers. Access case studies, sustainability journeys, and wisdom from practitioners around the world.
+            </p>
+            <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
+              <Link href="/auth/signup">
+                <Button className="bg-gradient-to-r from-amber-600 to-amber-700 hover:from-amber-500 hover:to-amber-600 text-white font-bold px-8 py-6 text-lg rounded-lg shadow-xl border border-amber-400/30">
+                  <Star className="w-5 h-5 mr-2" />
+                  Join Free & Start Reading
+                </Button>
+              </Link>
+              <Link href="/auth/signin">
+                <Button variant="outline" className="border-2 border-[var(--border)] text-[var(--foreground)] hover:bg-[var(--muted)] font-bold px-8 py-6 text-lg rounded-lg">
+                  Already a Member? Sign In
+                </Button>
+              </Link>
+            </div>
+            <p className="mt-6 text-xs text-theme-muted">
+              Free to join • Contribute your own wisdom • Learn from fellow practitioners
+            </p>
           </div>
         </div>
       </div>
@@ -581,6 +646,28 @@ export default function ArticlesPage() {
                     {totalViews.toLocaleString()} Readers
                   </span>
                 </div>
+              </div>
+
+              {/* Prominent Author Button */}
+              <div className="mt-6">
+                <Link href="/articles/write">
+                  <button className="group relative inline-flex items-center gap-3 px-8 py-4 bg-gradient-to-r from-emerald-700 via-emerald-600 to-emerald-700 hover:from-emerald-600 hover:via-emerald-500 hover:to-emerald-600 text-white font-bold text-base rounded-lg shadow-2xl border-2 border-emerald-400/40 hover:border-emerald-300/60 transition-all duration-300 hover:scale-105 hover:shadow-emerald-500/30">
+                    {/* Decorative quill icon */}
+                    <div className="relative">
+                      <PenSquare className="w-5 h-5" />
+                      <div className="absolute -top-1 -right-1 w-2 h-2 bg-amber-400 rounded-full animate-pulse" />
+                    </div>
+                    <span className="tracking-wide">Inscribe Your Wisdom</span>
+                    {/* Decorative corner accents */}
+                    <div className="absolute top-1 left-1 w-2 h-2 border-l-2 border-t-2 border-emerald-300/50" />
+                    <div className="absolute top-1 right-1 w-2 h-2 border-r-2 border-t-2 border-emerald-300/50" />
+                    <div className="absolute bottom-1 left-1 w-2 h-2 border-l-2 border-b-2 border-emerald-300/50" />
+                    <div className="absolute bottom-1 right-1 w-2 h-2 border-r-2 border-b-2 border-emerald-300/50" />
+                  </button>
+                </Link>
+                <p className="mt-2 text-xs text-amber-300/60 font-medium">
+                  Share a case study, lesson, or sustainability journey
+                </p>
               </div>
             </div>
 
