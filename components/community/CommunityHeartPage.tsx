@@ -12,7 +12,6 @@ import Link from 'next/link'
 import { BusinessCardThemeShowcase } from './BusinessCardThemeShowcase'
 import { FeaturedGuardiansCarousel } from './FeaturedGuardiansCarousel'
 import { AnimatedStatsBar } from './AnimatedStatsBar'
-import { LiveActivityStream } from './LiveActivityStream'
 import { AmbientBackground } from './AmbientBackground'
 
 interface CommunityHeartPageProps {
@@ -839,32 +838,6 @@ export function CommunityHeartPage({ isAuthenticated }: CommunityHeartPageProps)
             </motion.div>
           </div>
 
-          {/* Live Activity - with subtle water ripple artwork */}
-          <div className="relative flex-1 min-h-[100px] lg:min-h-[120px] bg-gradient-to-br from-[var(--card)]/95 via-cyan-50/10 to-[var(--card)]/95 dark:from-[var(--card)]/95 dark:via-cyan-950/10 dark:to-[var(--card)]/95 backdrop-blur-md border border-[var(--border)]/50 rounded-xl overflow-hidden flex flex-col">
-            {/* Subtle wave artwork */}
-            <div className="absolute inset-0 pointer-events-none overflow-hidden rounded-xl">
-              <svg className="absolute bottom-0 left-0 right-0 h-8 opacity-[0.08]" viewBox="0 0 400 30" preserveAspectRatio="none">
-                <path d="M0 20 Q50 10 100 20 Q150 30 200 20 Q250 10 300 20 Q350 30 400 20 L400 30 L0 30 Z" fill="#0891b2"/>
-                <path d="M0 25 Q50 18 100 25 Q150 32 200 25 Q250 18 300 25 Q350 32 400 25 L400 30 L0 30 Z" fill="#06b6d4" opacity="0.5"/>
-              </svg>
-            </div>
-
-            {/* Pulsing corner indicator */}
-            <motion.div
-              className="absolute top-2 right-2 w-2 h-2 rounded-full bg-red-500 z-20"
-              animate={{
-                scale: [1, 1.3, 1],
-                opacity: [0.8, 0.4, 0.8],
-                boxShadow: ['0 0 0 0 rgba(239, 68, 68, 0.4)', '0 0 0 6px rgba(239, 68, 68, 0)', '0 0 0 0 rgba(239, 68, 68, 0.4)']
-              }}
-              transition={{ duration: 2, repeat: Infinity }}
-            />
-
-            <LiveActivityStream />
-
-            {/* Gradient fade at bottom */}
-            <div className="absolute bottom-0 left-0 right-0 h-6 bg-gradient-to-t from-[var(--card)] to-transparent pointer-events-none" />
-          </div>
         </motion.div>
 
         {/* Right column: Volition Marketing (Enhanced) + Trust */}
@@ -1091,44 +1064,10 @@ export function CommunityHeartPage({ isAuthenticated }: CommunityHeartPageProps)
         </motion.div>
       </div>
 
-      {/* Stats Section - Below the fold */}
-      <motion.section
-        initial={{ opacity: 0, y: 30 }}
-        whileInView={{ opacity: 1, y: 0 }}
-        viewport={{ once: true, margin: "-50px" }}
-        transition={{ duration: 0.6 }}
-        className="relative z-20 border-t border-[var(--border)]/30 bg-gradient-to-b from-[var(--card)]/95 to-[var(--background)] backdrop-blur-md overflow-hidden py-6 px-4"
-      >
-        {/* Decorative top edge glow */}
-        <motion.div
-          className="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-[var(--primary)]/40 to-transparent"
-          animate={{ opacity: [0.3, 0.6, 0.3] }}
-          transition={{ duration: 3, repeat: Infinity }}
-        />
-
-        {/* Subtle animated shine */}
-        <motion.div
-          className="absolute inset-0 bg-gradient-to-r from-transparent via-[var(--primary)]/3 to-transparent pointer-events-none"
-          animate={{ x: ['-100%', '200%'] }}
-          transition={{ duration: 10, repeat: Infinity, repeatDelay: 5 }}
-        />
-
-        {/* Section heading */}
-        <div className="relative z-10 max-w-5xl mx-auto">
-          <motion.div
-            className="text-center mb-4"
-            initial={{ opacity: 0 }}
-            whileInView={{ opacity: 1 }}
-            viewport={{ once: true }}
-            transition={{ delay: 0.2 }}
-          >
-            <h2 className="text-lg font-bold text-[var(--foreground)] mb-1">Join the Movement</h2>
-            <p className="text-sm text-[var(--muted-foreground)]">Be part of something bigger</p>
-          </motion.div>
-
-          <AnimatedStatsBar />
-        </div>
-      </motion.section>
+      {/* Stats Banner - Directly under the fold */}
+      <div className="relative z-20 border-y border-[var(--border)]/20 bg-[var(--muted)]/30 backdrop-blur-sm">
+        <AnimatedStatsBar />
+      </div>
     </div>
   )
 }
