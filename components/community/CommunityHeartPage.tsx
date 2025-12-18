@@ -325,7 +325,7 @@ export function CommunityHeartPage({ isAuthenticated }: CommunityHeartPageProps)
                     <div className="absolute inset-0 bg-gradient-to-br from-[var(--primary)]/5 via-transparent to-[var(--muted)]/20" />
 
                     {/* Ivy vine - left side - using theme colors */}
-                    <div className="absolute left-0 top-0 h-full w-10 text-emerald-600 dark:text-emerald-500 opacity-20">
+                    <div className="absolute left-0 top-0 h-full w-10 text-[var(--primary)] opacity-20">
                       <svg className="h-full w-full" viewBox="0 0 40 200" preserveAspectRatio="none">
                         {/* Main vine */}
                         <path d="M5 0 Q15 30 8 60 Q2 90 12 120 Q18 150 6 180 Q3 195 8 200" fill="none" stroke="currentColor" strokeWidth="2"/>
@@ -340,7 +340,7 @@ export function CommunityHeartPage({ isAuthenticated }: CommunityHeartPageProps)
                     </div>
 
                     {/* Ivy vine - right side */}
-                    <div className="absolute right-0 top-0 h-full w-10 text-emerald-600 dark:text-emerald-500 opacity-15">
+                    <div className="absolute right-0 top-0 h-full w-10 text-[var(--primary)] opacity-15">
                       <svg className="h-full w-full" viewBox="0 0 40 200" preserveAspectRatio="none">
                         <path d="M35 0 Q25 25 32 55 Q38 85 28 115 Q22 145 34 175 Q37 190 32 200" fill="none" stroke="currentColor" strokeWidth="1.5"/>
                         <path d="M32 30 Q25 25 28 35 Q34 40 32 30" fill="currentColor"/>
@@ -517,7 +517,7 @@ export function CommunityHeartPage({ isAuthenticated }: CommunityHeartPageProps)
                 <div className="absolute inset-0 bg-gradient-to-br from-[var(--primary)]/10 via-transparent to-[var(--muted)]/30" />
 
                 {/* Ivy vine - left side - fuller - theme aware */}
-                <div className="absolute left-0 top-0 h-full w-12 text-emerald-600 dark:text-emerald-500 opacity-25">
+                <div className="absolute left-0 top-0 h-full w-12 text-[var(--primary)] opacity-25">
                   <svg className="h-full w-full" viewBox="0 0 48 300" preserveAspectRatio="none">
                     <path d="M5 0 Q18 40 8 80 Q2 120 15 160 Q22 200 8 240 Q3 270 10 300" fill="none" stroke="currentColor" strokeWidth="2.5"/>
                     <path d="M10 35 Q20 28 16 42 Q10 50 10 35" fill="currentColor"/>
@@ -531,7 +531,7 @@ export function CommunityHeartPage({ isAuthenticated }: CommunityHeartPageProps)
                 </div>
 
                 {/* Ivy vine - right side - fuller - theme aware */}
-                <div className="absolute right-0 top-0 h-full w-12 text-emerald-600 dark:text-emerald-500 opacity-20">
+                <div className="absolute right-0 top-0 h-full w-12 text-[var(--primary)] opacity-20">
                   <svg className="h-full w-full" viewBox="0 0 48 300" preserveAspectRatio="none">
                     <path d="M40 0 Q28 35 38 75 Q44 115 32 155 Q26 195 40 235 Q44 270 36 300" fill="none" stroke="currentColor" strokeWidth="2"/>
                     <path d="M38 45 Q28 38 32 52 Q40 60 38 45" fill="currentColor"/>
@@ -561,25 +561,25 @@ export function CommunityHeartPage({ isAuthenticated }: CommunityHeartPageProps)
                 {/* Header */}
                 <div className="flex items-center gap-3 mb-3 flex-shrink-0">
                   <motion.div
-                    className="w-10 h-10 rounded-full bg-amber-500/20 dark:bg-amber-600/30 flex items-center justify-center"
+                    className="w-10 h-10 rounded-full bg-[var(--primary)]/20 flex items-center justify-center"
                     animate={{ scale: [1, 1.1, 1] }}
                     transition={{ duration: 3, repeat: Infinity }}
                   >
-                    <Shield className="w-5 h-5 text-amber-600 dark:text-amber-400" />
+                    <Shield className="w-5 h-5 text-[var(--primary)]" />
                   </motion.div>
                   <div>
                     <h3 className="font-bold text-base text-[var(--foreground)]">Guardian Identity</h3>
-                    <p className="text-[11px] text-amber-700 dark:text-amber-300 font-semibold uppercase tracking-wide">Your Values Define You</p>
+                    <p className="text-[11px] text-[var(--primary)] font-semibold uppercase tracking-wide">Your Values Define You</p>
                   </div>
                 </div>
 
                 {/* Decorative divider */}
-                <div className="h-px bg-gradient-to-r from-transparent via-amber-500/40 to-transparent mb-3 flex-shrink-0" />
+                <div className="h-px bg-gradient-to-r from-transparent via-[var(--primary)]/40 to-transparent mb-3 flex-shrink-0" />
 
                 {/* Scrollable content - larger text */}
                 <div className="flex-1 overflow-y-auto pr-2 space-y-3">
                   <p className="text-sm text-[var(--foreground)] leading-relaxed">
-                    Choose from <span className="font-semibold text-amber-600 dark:text-amber-400">7 Guardian archetypes</span> that reflect your core values: Steward, Pioneer, Sage, Warrior, Healer, Creator, or Connector.
+                    Choose from <span className="font-semibold text-[var(--primary)]">7 Guardian archetypes</span> that reflect your core values: Steward, Pioneer, Sage, Warrior, Healer, Creator, or Connector.
                   </p>
                   <p className="text-sm text-[var(--muted-foreground)] leading-relaxed">
                     Each archetype represents a unique approach to building a sustainable future. Your theme colors, badges, and visual identity all flow from this foundational choice.
@@ -593,14 +593,14 @@ export function CommunityHeartPage({ isAuthenticated }: CommunityHeartPageProps)
                 </div>
 
                 {/* Footer badges */}
-                <div className="flex items-center justify-center gap-4 pt-3 mt-3 border-t border-amber-500/30 flex-shrink-0">
-                  <div className="flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-rose-500/15">
-                    <Heart className="w-4 h-4 text-rose-500" />
-                    <span className="text-xs font-medium text-rose-600 dark:text-rose-400">Values-First</span>
+                <div className="flex items-center justify-center gap-4 pt-3 mt-3 border-t border-[var(--primary)]/30 flex-shrink-0">
+                  <div className="flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-[var(--accent)]/15">
+                    <Heart className="w-4 h-4 text-[var(--accent)]" />
+                    <span className="text-xs font-medium text-[var(--accent)]">Values-First</span>
                   </div>
-                  <div className="flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-blue-500/15">
-                    <Users className="w-4 h-4 text-blue-500" />
-                    <span className="text-xs font-medium text-blue-600 dark:text-blue-400">Community</span>
+                  <div className="flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-[var(--primary)]/15">
+                    <Users className="w-4 h-4 text-[var(--primary)]" />
+                    <span className="text-xs font-medium text-[var(--primary)]">Community</span>
                   </div>
                 </div>
               </div>
@@ -639,7 +639,7 @@ export function CommunityHeartPage({ isAuthenticated }: CommunityHeartPageProps)
                   <div className="absolute inset-0 bg-gradient-to-b from-[var(--accent)]/10 via-transparent to-[var(--primary)]/10" />
 
                   {/* Bamboo stalks - left side - theme aware */}
-                  <div className="absolute left-0 top-0 h-full w-14 text-emerald-600 dark:text-emerald-500 opacity-20">
+                  <div className="absolute left-0 top-0 h-full w-14 text-[var(--primary)] opacity-20">
                     <svg className="h-full w-full" viewBox="0 0 56 300" preserveAspectRatio="none">
                       {/* Bamboo stalk 1 */}
                       <rect x="8" y="0" width="7" height="300" fill="currentColor" rx="3.5"/>
@@ -668,13 +668,13 @@ export function CommunityHeartPage({ isAuthenticated }: CommunityHeartPageProps)
                       {/* Branch - using muted foreground */}
                       <path d="M130 12 Q90 18 65 38 Q45 52 25 45" fill="none" className="stroke-[var(--muted-foreground)]" strokeWidth="2.5"/>
                       <path d="M65 38 Q58 58 45 65" fill="none" className="stroke-[var(--muted-foreground)]" strokeWidth="2"/>
-                      {/* Blossoms - using primary with opacity */}
-                      <circle cx="62" cy="35" r="8" className="fill-pink-200 dark:fill-pink-300/50 stroke-pink-300 dark:stroke-pink-400/50" strokeWidth="0.5"/>
-                      <circle cx="45" cy="46" r="7" className="fill-pink-200 dark:fill-pink-300/50 stroke-pink-300 dark:stroke-pink-400/50" strokeWidth="0.5"/>
-                      <circle cx="72" cy="28" r="6" className="fill-pink-100 dark:fill-pink-200/50 stroke-pink-300 dark:stroke-pink-400/50" strokeWidth="0.5"/>
-                      <circle cx="30" cy="42" r="7" className="fill-pink-200 dark:fill-pink-300/50 stroke-pink-300 dark:stroke-pink-400/50" strokeWidth="0.5"/>
-                      <circle cx="52" cy="62" r="6" className="fill-pink-100 dark:fill-pink-200/50 stroke-pink-300 dark:stroke-pink-400/50" strokeWidth="0.5"/>
-                      <circle cx="85" cy="22" r="5" className="fill-pink-50 dark:fill-pink-100/50 stroke-pink-300 dark:stroke-pink-400/50" strokeWidth="0.5"/>
+                      {/* Blossoms - using accent with opacity */}
+                      <circle cx="62" cy="35" r="8" className="fill-[var(--accent)]/30 stroke-[var(--accent)]/50" strokeWidth="0.5"/>
+                      <circle cx="45" cy="46" r="7" className="fill-[var(--accent)]/30 stroke-[var(--accent)]/50" strokeWidth="0.5"/>
+                      <circle cx="72" cy="28" r="6" className="fill-[var(--accent)]/20 stroke-[var(--accent)]/50" strokeWidth="0.5"/>
+                      <circle cx="30" cy="42" r="7" className="fill-[var(--accent)]/30 stroke-[var(--accent)]/50" strokeWidth="0.5"/>
+                      <circle cx="52" cy="62" r="6" className="fill-[var(--accent)]/20 stroke-[var(--accent)]/50" strokeWidth="0.5"/>
+                      <circle cx="85" cy="22" r="5" className="fill-[var(--accent)]/15 stroke-[var(--accent)]/50" strokeWidth="0.5"/>
                       {/* Blossom centers */}
                       <circle cx="62" cy="35" r="2" className="fill-[var(--primary)]" opacity="0.6"/>
                       <circle cx="45" cy="46" r="2" className="fill-[var(--primary)]" opacity="0.6"/>
@@ -711,18 +711,18 @@ export function CommunityHeartPage({ isAuthenticated }: CommunityHeartPageProps)
                       {/* Water ripple */}
                       <ellipse cx="38" cy="48" rx="32" ry="5" fill="none" className="stroke-[var(--accent)]" strokeWidth="0.8" opacity="0.5"/>
                       {/* Lotus petals */}
-                      <path d="M38 42 Q32 28 38 12 Q44 28 38 42" className="fill-pink-100 dark:fill-pink-200/40 stroke-pink-300 dark:stroke-pink-400/40" strokeWidth="0.5"/>
-                      <path d="M38 42 Q24 34 18 24 Q30 30 38 42" className="fill-pink-50 dark:fill-pink-100/40 stroke-pink-300 dark:stroke-pink-400/40" strokeWidth="0.5"/>
-                      <path d="M38 42 Q52 34 58 24 Q46 30 38 42" className="fill-pink-50 dark:fill-pink-100/40 stroke-pink-300 dark:stroke-pink-400/40" strokeWidth="0.5"/>
-                      <path d="M38 42 Q20 38 14 32 Q26 36 38 42" className="fill-pink-50/80 dark:fill-pink-50/30 stroke-pink-300 dark:stroke-pink-400/40" strokeWidth="0.5"/>
-                      <path d="M38 42 Q56 38 62 32 Q50 36 38 42" className="fill-pink-50/80 dark:fill-pink-50/30 stroke-pink-300 dark:stroke-pink-400/40" strokeWidth="0.5"/>
+                      <path d="M38 42 Q32 28 38 12 Q44 28 38 42" className="fill-[var(--accent)]/25 stroke-[var(--accent)]/40" strokeWidth="0.5"/>
+                      <path d="M38 42 Q24 34 18 24 Q30 30 38 42" className="fill-[var(--accent)]/20 stroke-[var(--accent)]/40" strokeWidth="0.5"/>
+                      <path d="M38 42 Q52 34 58 24 Q46 30 38 42" className="fill-[var(--accent)]/20 stroke-[var(--accent)]/40" strokeWidth="0.5"/>
+                      <path d="M38 42 Q20 38 14 32 Q26 36 38 42" className="fill-[var(--accent)]/15 stroke-[var(--accent)]/40" strokeWidth="0.5"/>
+                      <path d="M38 42 Q56 38 62 32 Q50 36 38 42" className="fill-[var(--accent)]/15 stroke-[var(--accent)]/40" strokeWidth="0.5"/>
                       {/* Lotus center */}
                       <circle cx="38" cy="32" r="4" className="fill-[var(--primary)]" opacity="0.5"/>
                     </svg>
                   </div>
 
                   {/* Koi fish - subtle - theme aware */}
-                  <div className="absolute bottom-6 left-1/3 w-12 h-8 text-orange-500 dark:text-orange-400 opacity-15">
+                  <div className="absolute bottom-6 left-1/3 w-12 h-8 text-[var(--accent)] opacity-15">
                     <svg className="w-full h-full" viewBox="0 0 50 32">
                       <path d="M6 16 Q18 6 38 16 Q44 16 48 20 Q44 16 38 16 Q18 26 6 16" fill="currentColor"/>
                       <circle cx="10" cy="14" r="1.5" className="fill-[var(--foreground)]" opacity="0.5"/>
@@ -867,7 +867,7 @@ export function CommunityHeartPage({ isAuthenticated }: CommunityHeartPageProps)
                   <div className="absolute inset-0 bg-gradient-to-b from-[var(--accent)]/15 via-transparent to-[var(--primary)]/10" />
 
                   {/* Bamboo on back - theme aware */}
-                  <div className="absolute left-0 top-0 h-full w-10 text-emerald-600 dark:text-emerald-500 opacity-15">
+                  <div className="absolute left-0 top-0 h-full w-10 text-[var(--primary)] opacity-15">
                     <svg className="w-full h-full" viewBox="0 0 40 300" preserveAspectRatio="none">
                       <rect x="8" y="0" width="6" height="300" fill="currentColor" rx="3"/>
                       <rect x="22" y="20" width="5" height="280" fill="currentColor" rx="2.5" opacity="0.8"/>
@@ -877,9 +877,9 @@ export function CommunityHeartPage({ isAuthenticated }: CommunityHeartPageProps)
                   {/* Cherry blossoms scattered - theme aware */}
                   <div className="absolute right-0 top-0 w-24 h-20 opacity-20">
                     <svg className="w-full h-full" viewBox="0 0 100 80">
-                      <circle cx="48" cy="28" r="6" className="fill-pink-200 dark:fill-pink-300/50 stroke-pink-300 dark:stroke-pink-400/50" strokeWidth="0.5"/>
-                      <circle cx="35" cy="36" r="5" className="fill-pink-200 dark:fill-pink-300/50 stroke-pink-300 dark:stroke-pink-400/50" strokeWidth="0.5"/>
-                      <circle cx="65" cy="22" r="4" className="fill-pink-100 dark:fill-pink-200/50 stroke-pink-300 dark:stroke-pink-400/50" strokeWidth="0.5"/>
+                      <circle cx="48" cy="28" r="6" className="fill-[var(--accent)]/30 stroke-[var(--accent)]/50" strokeWidth="0.5"/>
+                      <circle cx="35" cy="36" r="5" className="fill-[var(--accent)]/30 stroke-[var(--accent)]/50" strokeWidth="0.5"/>
+                      <circle cx="65" cy="22" r="4" className="fill-[var(--accent)]/20 stroke-[var(--accent)]/50" strokeWidth="0.5"/>
                     </svg>
                   </div>
 
@@ -892,25 +892,25 @@ export function CommunityHeartPage({ isAuthenticated }: CommunityHeartPageProps)
                   {/* Header */}
                   <div className="flex items-center gap-3 mb-3 flex-shrink-0">
                     <motion.div
-                      className="w-10 h-10 rounded-full bg-sky-500/20 dark:bg-sky-600/30 flex items-center justify-center"
+                      className="w-10 h-10 rounded-full bg-[var(--accent)]/20 flex items-center justify-center"
                       animate={{ scale: [1, 1.1, 1] }}
                       transition={{ duration: 3, repeat: Infinity }}
                     >
-                      <GraduationCap className="w-5 h-5 text-sky-600 dark:text-sky-400" />
+                      <GraduationCap className="w-5 h-5 text-[var(--accent)]" />
                     </motion.div>
                     <div>
                       <h3 className="font-bold text-base text-[var(--foreground)]">Learning Philosophy</h3>
-                      <p className="text-[11px] text-sky-700 dark:text-sky-300 font-semibold uppercase tracking-wide">Education Without Boundaries</p>
+                      <p className="text-[11px] text-[var(--accent)] font-semibold uppercase tracking-wide">Education Without Boundaries</p>
                     </div>
                   </div>
 
                   {/* Decorative divider */}
-                  <div className="h-px bg-gradient-to-r from-transparent via-sky-500/40 to-transparent mb-3 flex-shrink-0" />
+                  <div className="h-px bg-gradient-to-r from-transparent via-[var(--accent)]/40 to-transparent mb-3 flex-shrink-0" />
 
                   {/* Scrollable content - larger text */}
                   <div className="flex-1 overflow-y-auto pr-2 space-y-3">
                     <p className="text-sm text-[var(--foreground)] leading-relaxed">
-                      Exodus Academy believes sustainability education should meet every learner where they are. From <span className="font-semibold text-sky-600 dark:text-sky-400">elementary explorers</span> to <span className="font-semibold text-sky-600 dark:text-sky-400">doctoral researchers</span>.
+                      Exodus Academy believes sustainability education should meet every learner where they are. From <span className="font-semibold text-[var(--accent)]">elementary explorers</span> to <span className="font-semibold text-[var(--accent)]">doctoral researchers</span>.
                     </p>
                     <p className="text-sm text-[var(--muted-foreground)] leading-relaxed">
                       Our adaptive curriculum grows with you—adjusting complexity, depth, and delivery to match your unique learning journey. No one gets left behind or held back.
@@ -924,18 +924,18 @@ export function CommunityHeartPage({ isAuthenticated }: CommunityHeartPageProps)
                   </div>
 
                   {/* Footer badges - larger */}
-                  <div className="flex items-center justify-center gap-3 pt-3 mt-3 border-t border-sky-500/30 flex-shrink-0">
-                    <div className="flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-amber-500/15">
-                      <Gamepad2 className="w-4 h-4 text-amber-500" />
-                      <span className="text-xs font-medium text-amber-600 dark:text-amber-400">Interactive</span>
+                  <div className="flex items-center justify-center gap-3 pt-3 mt-3 border-t border-[var(--accent)]/30 flex-shrink-0">
+                    <div className="flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-[var(--primary)]/15">
+                      <Gamepad2 className="w-4 h-4 text-[var(--primary)]" />
+                      <span className="text-xs font-medium text-[var(--primary)]">Interactive</span>
                     </div>
-                    <div className="flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-emerald-500/15">
-                      <Target className="w-4 h-4 text-emerald-500" />
-                      <span className="text-xs font-medium text-emerald-600 dark:text-emerald-400">Adaptive</span>
+                    <div className="flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-[var(--accent)]/15">
+                      <Target className="w-4 h-4 text-[var(--accent)]" />
+                      <span className="text-xs font-medium text-[var(--accent)]">Adaptive</span>
                     </div>
-                    <div className="flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-purple-500/15">
-                      <Award className="w-4 h-4 text-purple-500" />
-                      <span className="text-xs font-medium text-purple-600 dark:text-purple-400">Certified</span>
+                    <div className="flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-[var(--secondary)]/15">
+                      <Award className="w-4 h-4 text-[var(--secondary)]" />
+                      <span className="text-xs font-medium text-[var(--secondary)]">Certified</span>
                     </div>
                   </div>
                 </div>
@@ -1000,7 +1000,7 @@ export function CommunityHeartPage({ isAuthenticated }: CommunityHeartPageProps)
                   </div>
 
                   {/* Pine trees - left side - theme aware */}
-                  <div className="absolute left-0 bottom-0 h-32 w-16 text-emerald-600 dark:text-emerald-500 opacity-20">
+                  <div className="absolute left-0 bottom-0 h-32 w-16 text-[var(--primary)] opacity-20">
                     <svg className="w-full h-full" viewBox="0 0 64 130">
                       {/* Tree 1 - tall */}
                       <path d="M20 130 L20 85 L8 95 L20 75 L6 88 L20 65 L4 80 L20 50 L14 58 L20 40 L26 58 L20 50 L36 80 L20 65 L34 88 L20 75 L32 95 L20 85 L20 130" fill="currentColor" opacity="0.9"/>
@@ -1012,7 +1012,7 @@ export function CommunityHeartPage({ isAuthenticated }: CommunityHeartPageProps)
                   </div>
 
                   {/* Pine trees - right side - theme aware */}
-                  <div className="absolute right-0 bottom-0 h-28 w-14 text-emerald-600 dark:text-emerald-500 opacity-15">
+                  <div className="absolute right-0 bottom-0 h-28 w-14 text-[var(--primary)] opacity-15">
                     <svg className="w-full h-full" viewBox="0 0 56 115">
                       {/* Tree 1 */}
                       <path d="M35 115 L35 82 L26 92 L35 70 L24 84 L35 58 L30 66 L35 48 L40 66 L35 58 L46 84 L35 70 L44 92 L35 82 L35 115" fill="currentColor" opacity="0.9"/>
@@ -1110,7 +1110,7 @@ export function CommunityHeartPage({ isAuthenticated }: CommunityHeartPageProps)
 
               {/* Back Side - Philosophy with Forest Mural (Larger text with internal scroll) */}
               <motion.div
-                className="absolute inset-0 bg-gradient-to-br from-indigo-50/95 via-slate-50/90 to-indigo-50/95 dark:from-indigo-950/95 dark:via-slate-950/90 dark:to-indigo-950/95 rounded-xl p-4 overflow-hidden border border-indigo-300/30 dark:border-indigo-700/30"
+                className="absolute inset-0 bg-gradient-to-br from-[var(--card)]/95 via-[var(--muted)]/30 to-[var(--card)]/95 rounded-xl p-4 border border-[var(--border)]/30 flex flex-col"
                 style={{ backfaceVisibility: 'hidden', transform: 'rotateY(180deg)' }}
               >
                 {/* Forest Mural Background for back - theme aware */}
@@ -1130,14 +1130,14 @@ export function CommunityHeartPage({ isAuthenticated }: CommunityHeartPageProps)
                   </div>
 
                   {/* Pine trees silhouette - back - theme aware */}
-                  <div className="absolute left-0 bottom-0 h-24 w-12 text-emerald-600 dark:text-emerald-500 opacity-15">
+                  <div className="absolute left-0 bottom-0 h-24 w-12 text-[var(--primary)] opacity-15">
                     <svg className="w-full h-full" viewBox="0 0 48 100">
                       <path d="M16 100 L16 70 L8 78 L16 60 L6 72 L16 48 L12 54 L16 38 L20 54 L16 48 L26 72 L16 60 L24 78 L16 70 L16 100" fill="currentColor"/>
                       <rect x="14" y="90" width="4" height="10" className="fill-[var(--muted-foreground)]" opacity="0.4"/>
                     </svg>
                   </div>
 
-                  <div className="absolute right-0 bottom-0 h-20 w-10 text-emerald-600 dark:text-emerald-500 opacity-12">
+                  <div className="absolute right-0 bottom-0 h-20 w-10 text-[var(--primary)] opacity-[0.12]">
                     <svg className="w-full h-full" viewBox="0 0 40 80">
                       <path d="M25 80 L25 58 L19 64 L25 48 L17 56 L25 38 L22 43 L25 30 L28 43 L25 38 L33 56 L25 48 L31 64 L25 58 L25 80" fill="currentColor"/>
                       <rect x="23" y="72" width="4" height="8" className="fill-[var(--muted-foreground)]" opacity="0.4"/>
@@ -1149,29 +1149,29 @@ export function CommunityHeartPage({ isAuthenticated }: CommunityHeartPageProps)
                   <div className="absolute -bottom-6 -left-6 w-20 h-20 rounded-full bg-[var(--primary)]/15 blur-xl" />
                 </div>
 
-                <div className="relative z-10 h-full flex flex-col">
+                <div className="relative z-10 flex-1 min-h-0 flex flex-col">
                   {/* Header - Larger */}
                   <div className="flex items-center gap-3 mb-3 flex-shrink-0">
                     <motion.div
-                      className="w-10 h-10 rounded-full bg-indigo-500/20 dark:bg-indigo-600/30 flex items-center justify-center"
+                      className="w-10 h-10 rounded-full bg-[var(--accent)]/20 flex items-center justify-center"
                       animate={{ scale: [1, 1.1, 1] }}
                       transition={{ duration: 3, repeat: Infinity }}
                     >
-                      <Sparkles className="w-5 h-5 text-indigo-600 dark:text-indigo-400" />
+                      <Sparkles className="w-5 h-5 text-[var(--accent)]" />
                     </motion.div>
                     <div>
                       <h3 className="font-bold text-base text-[var(--foreground)]">You Are The Asset</h3>
-                      <p className="text-[11px] text-indigo-700 dark:text-indigo-300 font-semibold uppercase tracking-wide">Beyond Traditional Metrics</p>
+                      <p className="text-[11px] text-[var(--accent)] font-semibold uppercase tracking-wide">Beyond Traditional Metrics</p>
                     </div>
                   </div>
 
                   {/* Decorative divider */}
-                  <div className="h-px bg-gradient-to-r from-transparent via-indigo-500/40 to-transparent mb-3 flex-shrink-0" />
+                  <div className="h-px bg-gradient-to-r from-transparent via-[var(--accent)]/40 to-transparent mb-3 flex-shrink-0" />
 
                   {/* Scrollable content - Larger text - min-h-0 for proper scrolling */}
-                  <div className="flex-1 min-h-0 overflow-y-auto pr-2 space-y-3 scrollbar-thin scrollbar-thumb-indigo-300/50 scrollbar-track-transparent">
+                  <div className="flex-1 min-h-0 overflow-y-auto pr-2 space-y-3 scrollbar-thin scrollbar-thumb-[var(--accent)]/50 scrollbar-track-transparent">
                     <p className="text-sm text-[var(--foreground)] leading-relaxed">
-                      Traditional systems measure what you <span className="font-semibold text-indigo-600 dark:text-indigo-400">have</span>. Volition measures who you are <span className="font-semibold text-indigo-600 dark:text-indigo-400">becoming</span>.
+                      Traditional systems measure what you <span className="font-semibold text-[var(--accent)]">have</span>. Volition measures who you are <span className="font-semibold text-[var(--accent)]">becoming</span>.
                     </p>
                     <p className="text-sm text-[var(--muted-foreground)] leading-relaxed">
                       Your STOCK score captures growth across 7 interconnected lanes of life: Identity, Projects, Articles, Learning, Network, Feed, and Impact.
@@ -1185,14 +1185,14 @@ export function CommunityHeartPage({ isAuthenticated }: CommunityHeartPageProps)
                   </div>
 
                   {/* Footer badges - Larger */}
-                  <div className="flex items-center justify-center gap-3 pt-3 mt-3 border-t border-indigo-500/30 flex-shrink-0">
-                    <div className="flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-indigo-500/15">
-                      <TrendingUp className="w-4 h-4 text-indigo-500" />
-                      <span className="text-xs font-medium text-indigo-600 dark:text-indigo-400">Growth</span>
+                  <div className="flex items-center justify-center gap-3 pt-3 mt-3 border-t border-[var(--accent)]/30 flex-shrink-0">
+                    <div className="flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-[var(--accent)]/15">
+                      <TrendingUp className="w-4 h-4 text-[var(--accent)]" />
+                      <span className="text-xs font-medium text-[var(--accent)]">Growth</span>
                     </div>
-                    <div className="flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-emerald-500/15">
-                      <Leaf className="w-4 h-4 text-emerald-500" />
-                      <span className="text-xs font-medium text-emerald-600 dark:text-emerald-400">Impact</span>
+                    <div className="flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-[var(--primary)]/15">
+                      <Leaf className="w-4 h-4 text-[var(--primary)]" />
+                      <span className="text-xs font-medium text-[var(--primary)]">Impact</span>
                     </div>
                   </div>
                 </div>

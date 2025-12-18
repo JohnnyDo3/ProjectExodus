@@ -18,13 +18,13 @@ interface ActivityItem {
 }
 
 const activityConfig: Record<string, { icon: typeof Activity; color: string; bgColor: string }> = {
-  new_user: { icon: UserPlus, color: 'text-emerald-500', bgColor: 'bg-emerald-500/10' },
-  new_post: { icon: MessageSquare, color: 'text-blue-500', bgColor: 'bg-blue-500/10' },
-  new_project: { icon: Rocket, color: 'text-orange-500', bgColor: 'bg-orange-500/10' },
-  new_article: { icon: BookOpen, color: 'text-purple-500', bgColor: 'bg-purple-500/10' },
-  new_event: { icon: Calendar, color: 'text-pink-500', bgColor: 'bg-pink-500/10' },
-  new_follow: { icon: UserCheck, color: 'text-cyan-500', bgColor: 'bg-cyan-500/10' },
-  new_comment: { icon: Reply, color: 'text-amber-500', bgColor: 'bg-amber-500/10' },
+  new_user: { icon: UserPlus, color: 'text-[var(--primary)]', bgColor: 'bg-[var(--primary)]/10' },
+  new_post: { icon: MessageSquare, color: 'text-[var(--accent)]', bgColor: 'bg-[var(--accent)]/10' },
+  new_project: { icon: Rocket, color: 'text-[var(--primary)]', bgColor: 'bg-[var(--primary)]/10' },
+  new_article: { icon: BookOpen, color: 'text-[var(--accent)]', bgColor: 'bg-[var(--accent)]/10' },
+  new_event: { icon: Calendar, color: 'text-[var(--primary)]', bgColor: 'bg-[var(--primary)]/10' },
+  new_follow: { icon: UserCheck, color: 'text-[var(--accent)]', bgColor: 'bg-[var(--accent)]/10' },
+  new_comment: { icon: Reply, color: 'text-[var(--primary)]', bgColor: 'bg-[var(--primary)]/10' },
 }
 
 function formatTimeAgo(dateString: string): string {
@@ -54,17 +54,20 @@ function getActivityText(type: string, targetName?: string): string {
 export function LiveActivityStream() {
   const [activities, setActivities] = useState<ActivityItem[]>([])
   const [isLoading, setIsLoading] = useState(true)
-  const [visibleIndex, setVisibleIndex] = useState(0)
 
   // Fetch activity data
   useEffect(() => {
     async function fetchActivity() {
       try {
-        const res = await fetch('/api/activity/feed?limit=15')
+        const res = await fetch('/api/activity/feed?limit=10')
         const data = await res.json()
 
         if (data.success && data.data) {
-          setActivities(data.data)
+          // Sort by createdAt descending (newest first)
+          const sorted = [...data.data].sort((a: ActivityItem, b: ActivityItem) =>
+            new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()
+          )
+          setActivities(sorted)
         }
       } catch (error) {
         console.error('Error fetching activity:', error)
@@ -74,20 +77,10 @@ export function LiveActivityStream() {
     }
 
     fetchActivity()
+    // Refresh every 30 seconds to get new updates
     const interval = setInterval(fetchActivity, 30000)
     return () => clearInterval(interval)
   }, [])
-
-  // Auto-cycle through activities
-  useEffect(() => {
-    if (activities.length === 0) return
-
-    const interval = setInterval(() => {
-      setVisibleIndex((prev) => (prev + 1) % Math.max(1, activities.length - 4))
-    }, 4000)
-
-    return () => clearInterval(interval)
-  }, [activities.length])
 
   if (isLoading) {
     return (
@@ -124,8 +117,8 @@ export function LiveActivityStream() {
     )
   }
 
-  // Show 5 activities at a time
-  const visibleActivities = activities.slice(visibleIndex, visibleIndex + 5)
+  // Show up to 6 most recent activities (newest first, no cycling)
+  const recentActivities = activities.slice(0, 6)
 
   return (
     <div className="h-full flex flex-col">
@@ -133,30 +126,30 @@ export function LiveActivityStream() {
       <div className="flex items-center justify-between px-3 py-2 border-b border-[var(--border)]">
         <div className="flex items-center gap-1.5">
           <motion.div
-            className="w-1.5 h-1.5 rounded-full bg-emerald-500"
+            className="w-1.5 h-1.5 rounded-full bg-[var(--primary)]"
             animate={{ scale: [1, 1.3, 1], opacity: [1, 0.6, 1] }}
             transition={{ duration: 2, repeat: Infinity, ease: 'easeInOut' }}
           />
           <span className="text-[10px] font-semibold text-[var(--foreground)]">Live Activity</span>
         </div>
-        <span className="text-[9px] text-[var(--muted-foreground)]">{activities.length} recent</span>
+        <span className="text-[9px] text-[var(--muted-foreground)]">Latest updates</span>
       </div>
 
-      {/* Activity list - compact */}
-      <div className="flex-1 overflow-hidden p-1.5">
+      {/* Activity list - newest first, static display */}
+      <div className="flex-1 overflow-y-auto p-1.5">
         <AnimatePresence mode="popLayout">
-          {visibleActivities.map((activity, index) => {
+          {recentActivities.map((activity, index) => {
             const config = activityConfig[activity.type] || activityConfig.new_post
             const Icon = config.icon
 
             return (
               <motion.div
-                key={`${activity.id}-${visibleIndex}`}
+                key={activity.id}
                 layout
-                initial={{ opacity: 0, x: -10 }}
-                animate={{ opacity: 1 - index * 0.15, x: 0 }}
-                exit={{ opacity: 0, x: 10 }}
-                transition={{ duration: 0.3, ease: 'easeOut' }}
+                initial={{ opacity: 0, y: -10 }}
+                animate={{ opacity: 1, y: 0 }}
+                exit={{ opacity: 0, y: 10 }}
+                transition={{ duration: 0.3, ease: 'easeOut', delay: index * 0.05 }}
                 className="flex items-center gap-2 px-2 py-1.5 rounded hover:bg-[var(--muted)]/30 transition-colors"
               >
                 {/* Icon */}
@@ -183,7 +176,7 @@ export function LiveActivityStream() {
                   {formatTimeAgo(activity.createdAt)}
                 </span>
 
-                {/* NEW badge for first item */}
+                {/* NEW badge for first item (most recent) */}
                 {index === 0 && (
                   <motion.span
                     className="text-[8px] px-1 py-0.5 rounded bg-[var(--primary)]/10 text-[var(--primary)] font-medium"
@@ -197,24 +190,6 @@ export function LiveActivityStream() {
             )
           })}
         </AnimatePresence>
-      </div>
-
-      {/* Progress indicator */}
-      <div className="px-3 py-1.5 border-t border-[var(--border)]">
-        <div className="flex gap-0.5">
-          {Array.from({ length: Math.ceil(activities.length / 5) }).map((_, i) => (
-            <motion.div
-              key={i}
-              className="h-0.5 flex-1 rounded-full bg-[var(--muted)]"
-              animate={{
-                backgroundColor: i === Math.floor(visibleIndex / 5)
-                  ? 'var(--primary)'
-                  : 'var(--muted)',
-              }}
-              transition={{ duration: 0.3 }}
-            />
-          ))}
-        </div>
       </div>
     </div>
   )
