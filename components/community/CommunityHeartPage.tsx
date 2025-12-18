@@ -1149,9 +1149,9 @@ export function CommunityHeartPage({ isAuthenticated }: CommunityHeartPageProps)
                   <div className="absolute -bottom-6 -left-6 w-20 h-20 rounded-full bg-[var(--primary)]/15 blur-xl" />
                 </div>
 
-                <div className="relative z-10 h-full flex flex-col overflow-hidden">
-                  {/* Header - Larger */}
-                  <div className="flex items-center gap-3 mb-3 flex-shrink-0">
+                <div className="relative z-10 h-full flex flex-col">
+                  {/* Header */}
+                  <div className="flex items-center gap-3 mb-3">
                     <motion.div
                       className="w-10 h-10 rounded-full bg-[var(--accent)]/20 flex items-center justify-center"
                       animate={{ scale: [1, 1.1, 1] }}
@@ -1166,29 +1166,20 @@ export function CommunityHeartPage({ isAuthenticated }: CommunityHeartPageProps)
                   </div>
 
                   {/* Decorative divider */}
-                  <div className="h-px bg-gradient-to-r from-transparent via-[var(--accent)]/40 to-transparent mb-3 flex-shrink-0" />
+                  <div className="h-px bg-gradient-to-r from-transparent via-[var(--accent)]/40 to-transparent mb-3" />
 
-                  {/* Scrollable content - with explicit overflow */}
-                  <div className="flex-1 overflow-y-auto overflow-x-hidden pr-2 space-y-3">
+                  {/* Simple content */}
+                  <div className="flex-1 space-y-2">
                     <p className="text-sm text-[var(--foreground)] leading-relaxed">
-                      Traditional systems measure what you <span className="font-semibold text-[var(--accent)]">have</span>. Volition measures who you are <span className="font-semibold text-[var(--accent)]">becoming</span>.
+                      Track growth across <span className="font-semibold text-[var(--accent)]">7 lanes</span>: Identity, Projects, Articles, Learning, Network, Feed, and Impact.
                     </p>
                     <p className="text-sm text-[var(--muted-foreground)] leading-relaxed">
-                      Your STOCK score captures growth across 7 interconnected lanes of life: Identity, Projects, Articles, Learning, Network, Feed, and Impact.
-                    </p>
-                    <p className="text-sm text-[var(--muted-foreground)] leading-relaxed">
-                      Every connection made, lesson learned, and impact created adds to your evolving value. Sustainable change starts with investing in yourself.
-                    </p>
-                    <p className="text-sm text-[var(--muted-foreground)] leading-relaxed">
-                      Watch your personal stock rise as you engage authentically with a community dedicated to positive transformation.
-                    </p>
-                    <p className="text-sm text-[var(--muted-foreground)] leading-relaxed">
-                      Join thousands of guardians who have discovered that true wealth comes from contribution, connection, and continuous growth.
+                      Your STOCK score rises as you contribute authentically to the sustainability movement.
                     </p>
                   </div>
 
-                  {/* Footer badges - Larger */}
-                  <div className="flex items-center justify-center gap-3 pt-3 mt-auto border-t border-[var(--accent)]/30 flex-shrink-0">
+                  {/* Footer badges */}
+                  <div className="flex items-center justify-center gap-3 pt-3 border-t border-[var(--accent)]/30">
                     <div className="flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-[var(--accent)]/15">
                       <TrendingUp className="w-4 h-4 text-[var(--accent)]" />
                       <span className="text-xs font-medium text-[var(--accent)]">Growth</span>
