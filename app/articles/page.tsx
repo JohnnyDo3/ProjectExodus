@@ -372,8 +372,8 @@ export default function ArticlesPage() {
                 <div className="inline-flex items-center gap-2 px-5 py-2.5 rounded-none bg-gradient-to-r from-amber-900/60 via-amber-800/80 to-amber-900/60 border-y-2 border-amber-500/50 mb-4 relative">
                   <div className="absolute -left-2 top-1/2 -translate-y-1/2 w-4 h-4 bg-amber-500/30 rotate-45 border border-amber-400/50" />
                   <div className="absolute -right-2 top-1/2 -translate-y-1/2 w-4 h-4 bg-amber-500/30 rotate-45 border border-amber-400/50" />
-                  <ScrollText className="w-4 h-4 text-amber-300" />
-                  <span className="text-xs font-bold uppercase tracking-[0.2em] text-amber-200">The Ancient Library</span>
+                  <BookOpen className="w-4 h-4 text-amber-300" />
+                  <span className="text-xs font-bold uppercase tracking-[0.2em] text-amber-200">Articles</span>
                 </div>
 
                 <h1 className="text-3xl sm:text-4xl md:text-5xl font-black mb-3 tracking-tight" style={{ fontFamily: 'Georgia, serif', textShadow: '0 2px 20px rgba(251, 191, 36, 0.3)' }}>
@@ -394,11 +394,11 @@ export default function ArticlesPage() {
                 <div className="flex items-center justify-center gap-4 mt-4">
                   <div className="relative px-4 py-2 bg-gradient-to-b from-slate-800/80 to-slate-900/80 border border-amber-600/40 rounded-sm">
                     <div className="absolute inset-0 bg-gradient-to-r from-amber-500/5 via-amber-500/10 to-amber-500/5" />
-                    <span className="text-xs font-bold text-amber-200 relative">??? Scrolls</span>
+                    <span className="text-xs font-bold text-amber-200 relative">{totalArticles || '???'} Articles</span>
                   </div>
                   <div className="relative px-4 py-2 bg-gradient-to-b from-slate-800/80 to-slate-900/80 border border-amber-600/40 rounded-sm">
                     <div className="absolute inset-0 bg-gradient-to-r from-amber-500/5 via-amber-500/10 to-amber-500/5" />
-                    <span className="text-xs font-bold text-amber-200 relative">??? Readers</span>
+                    <span className="text-xs font-bold text-amber-200 relative">{totalViews?.toLocaleString() || '???'} Readers</span>
                   </div>
                 </div>
 
@@ -424,7 +424,7 @@ export default function ArticlesPage() {
                   </div>
                   <div className="flex items-center gap-2 px-4 py-1.5 bg-gradient-to-r from-amber-900/70 via-amber-800/90 to-amber-900/70 border-y-2 border-amber-500/50 shadow-lg">
                     <Flame className="w-3.5 h-3.5 text-amber-300" />
-                    <span className="text-[11px] font-bold text-amber-200 uppercase tracking-[0.2em]">The Sacred Archives</span>
+                    <span className="text-[11px] font-bold text-amber-200 uppercase tracking-[0.2em]">Recent Articles</span>
                     <Flame className="w-3.5 h-3.5 text-amber-300" />
                   </div>
                   <div className="flex items-center gap-1">
@@ -525,7 +525,7 @@ export default function ArticlesPage() {
                         <input
                           type="text"
                           disabled
-                          placeholder="Sign in to search ancient texts..."
+                          placeholder="Sign in to search articles..."
                           className="w-full px-5 py-3 rounded-md bg-slate-900/80 text-slate-500 placeholder-slate-600 font-medium text-sm border border-slate-600/50 cursor-not-allowed"
                           style={{ fontFamily: 'Georgia, serif' }}
                         />
@@ -686,7 +686,7 @@ export default function ArticlesPage() {
                 <div className="relative px-4 py-2 bg-gradient-to-b from-slate-800/80 to-slate-900/80 border border-amber-600/40 rounded-sm">
                   <div className="absolute inset-0 bg-gradient-to-r from-amber-500/5 via-amber-500/10 to-amber-500/5" />
                   <span className="text-xs font-bold text-amber-200 relative">
-                    {totalArticles > 0 ? totalArticles : articles.length + (featuredArticle ? 1 : 0)} Scrolls
+                    {totalArticles > 0 ? totalArticles : articles.length + (featuredArticle ? 1 : 0)} Articles
                   </span>
                 </div>
                 <div className="relative px-4 py-2 bg-gradient-to-b from-slate-800/80 to-slate-900/80 border border-amber-600/40 rounded-sm">
@@ -731,7 +731,7 @@ export default function ArticlesPage() {
                   </div>
                   <div className="flex items-center gap-2 px-4 py-1.5 bg-gradient-to-r from-amber-900/70 via-amber-800/90 to-amber-900/70 border-y-2 border-amber-500/50 shadow-lg">
                     <Flame className="w-3.5 h-3.5 text-amber-300 animate-pulse" />
-                    <span className="text-[11px] font-bold text-amber-200 uppercase tracking-[0.2em]">The Sacred Archives</span>
+                    <span className="text-[11px] font-bold text-amber-200 uppercase tracking-[0.2em]">Recent Articles</span>
                     <Flame className="w-3.5 h-3.5 text-amber-300 animate-pulse" style={{ animationDelay: '0.5s' }} />
                   </div>
                   <div className="flex items-center gap-1">
@@ -1198,7 +1198,7 @@ export default function ArticlesPage() {
                         type="text"
                         value={searchQuery}
                         onChange={(e) => setSearchQuery(e.target.value)}
-                        placeholder="Search ancient texts..."
+                        placeholder="Search articles..."
                         className="w-full px-5 py-3 rounded-md bg-slate-900/80 text-amber-100 placeholder-slate-500 font-medium focus:outline-none focus:ring-2 focus:ring-amber-500/50 text-sm border border-slate-600/50"
                         style={{ fontFamily: 'Georgia, serif' }}
                       />
@@ -1239,7 +1239,7 @@ export default function ArticlesPage() {
                 </div>
                 <div className="flex-1 min-w-0">
                   <h3 className="text-sm sm:text-base font-bold text-[var(--foreground)] mb-1">
-                    Welcome to the Library
+                    Welcome to Articles
                   </h3>
                   <p className="text-xs sm:text-sm text-theme-muted font-medium mb-3">
                     These texts are sustainability case studies and personal journeys - written to be accessible regardless of your background.

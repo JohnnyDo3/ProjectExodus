@@ -1,6 +1,7 @@
 'use client'
 
 import { useState, useEffect } from 'react'
+import { useSession } from 'next-auth/react'
 import { Card, CardContent } from '@/components/ui/Card'
 import { Button } from '@/components/ui/Button'
 import { CompactLiveImpactStats } from '@/components/learn/CompactLiveImpactStats'
@@ -11,13 +12,15 @@ import {
   BookOpen, Calculator, Download, Zap, Leaf,
   GraduationCap, Clock, ChevronRight,
   Lightbulb, Play, FileText, Droplet,
-  Recycle, Home, Sprout, Globe
+  Recycle, Home, Sprout, Globe, Lock
 } from 'lucide-react'
 import Link from 'next/link'
 import type { TopicProgress } from '@/app/api/learn/topic-progress/route'
 import type { CoreTopic } from '@/data/modules'
 
 export default function LearnPage() {
+  const { data: session, status } = useSession()
+  const isAuthenticated = status === 'authenticated' && !!session?.user
   const [selectedLevel, setSelectedLevel] = useState<LearningLevel>('HIGH_SCHOOL')
   const [topicProgress, setTopicProgress] = useState<Map<CoreTopic, TopicProgress>>(new Map())
 
@@ -297,6 +300,31 @@ export default function LearnPage() {
           </div>
         </div>
       </section>
+
+      {/* View-only overlay for non-authenticated users */}
+      {!isAuthenticated && (
+        <div className="sticky top-0 z-50 bg-gradient-to-b from-[var(--background)] via-[var(--background)]/95 to-transparent py-4">
+          <div className="container mx-auto px-4">
+            <div className="flex items-center justify-center gap-3 p-4 rounded-2xl bg-[var(--card)] border-2 border-[var(--primary)] shadow-xl max-w-2xl mx-auto">
+              <div className="w-10 h-10 rounded-full bg-[var(--primary)]/20 flex items-center justify-center">
+                <Lock className="w-5 h-5 text-[var(--primary)]" />
+              </div>
+              <div className="flex-1">
+                <p className="text-sm font-bold text-[var(--foreground)]">Preview Mode</p>
+                <p className="text-xs text-[var(--muted-foreground)]">Sign in to access all learning content and track your progress</p>
+              </div>
+              <Link href="/auth/login">
+                <Button size="sm" className="font-bold">
+                  Sign In
+                </Button>
+              </Link>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* Content wrapper - view-only for non-authenticated users */}
+      <div className={!isAuthenticated ? 'pointer-events-none select-none opacity-90' : ''}>
 
       {/* Learning Paths */}
       <section id="learning-paths" className="min-h-screen flex items-center justify-center py-12 sm:py-16 lg:py-20 bg-[var(--background)] scroll-mt-20">
@@ -587,6 +615,8 @@ export default function LearnPage() {
           </div>
         </div>
       </section>
+
+      </div>{/* End view-only wrapper */}
     </div>
   )
 }
