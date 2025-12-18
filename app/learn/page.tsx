@@ -305,19 +305,40 @@ export default function LearnPage() {
       {!isAuthenticated && (
         <div className="sticky top-0 z-50 bg-gradient-to-b from-[var(--background)] via-[var(--background)]/95 to-transparent py-4">
           <div className="container mx-auto px-4">
-            <div className="flex items-center justify-center gap-3 p-4 rounded-2xl bg-[var(--card)] border-2 border-[var(--primary)] shadow-xl max-w-2xl mx-auto">
-              <div className="w-10 h-10 rounded-full bg-[var(--primary)]/20 flex items-center justify-center">
-                <Lock className="w-5 h-5 text-[var(--primary)]" />
+            <div className="flex flex-col gap-3 p-4 rounded-2xl bg-[var(--card)] border-2 border-[var(--primary)] shadow-xl max-w-3xl mx-auto">
+              {/* Header row */}
+              <div className="flex items-center justify-between gap-3">
+                <div className="flex items-center gap-3">
+                  <div className="w-10 h-10 rounded-full bg-[var(--primary)]/20 flex items-center justify-center">
+                    <Lock className="w-5 h-5 text-[var(--primary)]" />
+                  </div>
+                  <div>
+                    <p className="text-sm font-bold text-[var(--foreground)]">Preview Mode</p>
+                    <p className="text-xs text-[var(--muted-foreground)]">Explore what awaits inside</p>
+                  </div>
+                </div>
+                <Link href="/auth/login">
+                  <Button size="sm" className="font-bold">
+                    Sign In
+                  </Button>
+                </Link>
               </div>
-              <div className="flex-1">
-                <p className="text-sm font-bold text-[var(--foreground)]">Preview Mode</p>
-                <p className="text-xs text-[var(--muted-foreground)]">Sign in to access all learning content and track your progress</p>
+
+              {/* Philosophy icons with minimal text */}
+              <div className="flex items-center justify-center gap-6 pt-2 border-t border-[var(--border)]/50">
+                <div className="flex items-center gap-1.5 text-[var(--muted-foreground)]">
+                  <BookOpen className="w-4 h-4 text-[var(--primary)]" />
+                  <span className="text-[10px] font-medium">No paywalls</span>
+                </div>
+                <div className="flex items-center gap-1.5 text-[var(--muted-foreground)]">
+                  <GraduationCap className="w-4 h-4 text-[var(--primary)]" />
+                  <span className="text-[10px] font-medium">No certificates required</span>
+                </div>
+                <div className="flex items-center gap-1.5 text-[var(--muted-foreground)]">
+                  <Sprout className="w-4 h-4 text-[var(--primary)]" />
+                  <span className="text-[10px] font-medium">Just your will to learn</span>
+                </div>
               </div>
-              <Link href="/auth/login">
-                <Button size="sm" className="font-bold">
-                  Sign In
-                </Button>
-              </Link>
             </div>
           </div>
         </div>
