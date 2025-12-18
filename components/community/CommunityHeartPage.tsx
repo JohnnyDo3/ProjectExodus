@@ -287,10 +287,10 @@ export function CommunityHeartPage({ isAuthenticated }: CommunityHeartPageProps)
       </motion.div>
 
       {/* Main content - extended widgets section */}
-      <div className="relative z-10 grid grid-cols-1 lg:grid-cols-12 gap-3 p-3 sm:p-4 min-h-[85vh] lg:min-h-[90vh]">
+      <div className="relative z-10 grid grid-cols-1 lg:grid-cols-12 gap-3 p-3 sm:p-4 min-h-[55vh] lg:min-h-[60vh]">
         {/* Left column: BizID Showcase - Flip Card */}
         <div
-          className="lg:col-span-4 min-h-[400px] lg:min-h-[500px] h-full"
+          className="lg:col-span-4 min-h-[260px] lg:min-h-[360px] h-full"
           style={{ perspective: '1000px' }}
           onMouseEnter={() => setIsBizIDFlipped(true)}
           onMouseLeave={() => setIsBizIDFlipped(false)}
@@ -571,11 +571,11 @@ export function CommunityHeartPage({ isAuthenticated }: CommunityHeartPageProps)
           initial={{ opacity: 0, y: 30 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.6, delay: 0.2 }}
-          className="lg:col-span-5 flex flex-col gap-3 min-h-[400px] lg:min-h-[500px]"
+          className="lg:col-span-5 flex flex-col gap-3 min-h-[260px] lg:min-h-[360px]"
         >
           {/* Learning Academy - Flip Card with Philosophy */}
           <div
-            className="relative flex-[2] min-h-[280px] lg:min-h-[320px]"
+            className="relative flex-[2] min-h-[180px] lg:min-h-[220px]"
             style={{ perspective: '1000px' }}
             onMouseEnter={() => setIsLearningFlipped(true)}
             onMouseLeave={() => setIsLearningFlipped(false)}
@@ -840,7 +840,7 @@ export function CommunityHeartPage({ isAuthenticated }: CommunityHeartPageProps)
           </div>
 
           {/* Live Activity - with subtle water ripple artwork */}
-          <div className="relative flex-1 min-h-[180px] lg:min-h-[200px] bg-gradient-to-br from-[var(--card)]/95 via-cyan-50/10 to-[var(--card)]/95 dark:from-[var(--card)]/95 dark:via-cyan-950/10 dark:to-[var(--card)]/95 backdrop-blur-md border border-[var(--border)]/50 rounded-xl overflow-hidden flex flex-col">
+          <div className="relative flex-1 min-h-[100px] lg:min-h-[120px] bg-gradient-to-br from-[var(--card)]/95 via-cyan-50/10 to-[var(--card)]/95 dark:from-[var(--card)]/95 dark:via-cyan-950/10 dark:to-[var(--card)]/95 backdrop-blur-md border border-[var(--border)]/50 rounded-xl overflow-hidden flex flex-col">
             {/* Subtle wave artwork */}
             <div className="absolute inset-0 pointer-events-none overflow-hidden rounded-xl">
               <svg className="absolute bottom-0 left-0 right-0 h-8 opacity-[0.08]" viewBox="0 0 400 30" preserveAspectRatio="none">
@@ -872,7 +872,7 @@ export function CommunityHeartPage({ isAuthenticated }: CommunityHeartPageProps)
           initial={{ opacity: 0, x: 30 }}
           animate={{ opacity: 1, x: 0 }}
           transition={{ duration: 0.6, delay: 0.3 }}
-          className="lg:col-span-3 flex flex-col gap-3 min-h-[400px] lg:min-h-[500px]"
+          className="lg:col-span-3 flex flex-col gap-3 min-h-[260px] lg:min-h-[360px]"
         >
           {/* Volition Marketing Card - Flip Card with Philosophy */}
           <div
