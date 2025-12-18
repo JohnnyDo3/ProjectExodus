@@ -1149,7 +1149,7 @@ export function CommunityHeartPage({ isAuthenticated }: CommunityHeartPageProps)
                   <div className="absolute -bottom-6 -left-6 w-20 h-20 rounded-full bg-[var(--primary)]/15 blur-xl" />
                 </div>
 
-                <div className="relative z-10 flex-1 min-h-0 flex flex-col">
+                <div className="relative z-10 h-full flex flex-col overflow-hidden">
                   {/* Header - Larger */}
                   <div className="flex items-center gap-3 mb-3 flex-shrink-0">
                     <motion.div
@@ -1168,8 +1168,8 @@ export function CommunityHeartPage({ isAuthenticated }: CommunityHeartPageProps)
                   {/* Decorative divider */}
                   <div className="h-px bg-gradient-to-r from-transparent via-[var(--accent)]/40 to-transparent mb-3 flex-shrink-0" />
 
-                  {/* Scrollable content - Larger text - min-h-0 for proper scrolling */}
-                  <div className="flex-1 min-h-0 overflow-y-auto pr-2 space-y-3 scrollbar-thin scrollbar-thumb-[var(--accent)]/50 scrollbar-track-transparent">
+                  {/* Scrollable content - with explicit overflow */}
+                  <div className="flex-1 overflow-y-auto overflow-x-hidden pr-2 space-y-3">
                     <p className="text-sm text-[var(--foreground)] leading-relaxed">
                       Traditional systems measure what you <span className="font-semibold text-[var(--accent)]">have</span>. Volition measures who you are <span className="font-semibold text-[var(--accent)]">becoming</span>.
                     </p>
@@ -1182,10 +1182,13 @@ export function CommunityHeartPage({ isAuthenticated }: CommunityHeartPageProps)
                     <p className="text-sm text-[var(--muted-foreground)] leading-relaxed">
                       Watch your personal stock rise as you engage authentically with a community dedicated to positive transformation.
                     </p>
+                    <p className="text-sm text-[var(--muted-foreground)] leading-relaxed">
+                      Join thousands of guardians who have discovered that true wealth comes from contribution, connection, and continuous growth.
+                    </p>
                   </div>
 
                   {/* Footer badges - Larger */}
-                  <div className="flex items-center justify-center gap-3 pt-3 mt-3 border-t border-[var(--accent)]/30 flex-shrink-0">
+                  <div className="flex items-center justify-center gap-3 pt-3 mt-auto border-t border-[var(--accent)]/30 flex-shrink-0">
                     <div className="flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-[var(--accent)]/15">
                       <TrendingUp className="w-4 h-4 text-[var(--accent)]" />
                       <span className="text-xs font-medium text-[var(--accent)]">Growth</span>
@@ -1230,7 +1233,7 @@ export function CommunityHeartPage({ isAuthenticated }: CommunityHeartPageProps)
       </div>
 
       {/* Stats Banner - Directly under the fold */}
-      <div className="relative z-20 mt-[100px] border-y border-[var(--border)]/20 bg-[var(--muted)]/30 backdrop-blur-sm">
+      <div className="relative z-20 mt-[90px] border-y border-[var(--border)]/20 bg-[var(--muted)]/30 backdrop-blur-sm">
         <AnimatedStatsBar />
       </div>
     </div>
