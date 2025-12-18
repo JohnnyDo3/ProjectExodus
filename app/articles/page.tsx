@@ -300,6 +300,168 @@ export default function ArticlesPage() {
     return ARCHETYPE_TRAITS[archetype || 'uriel'] || ARCHETYPE_TRAITS.uriel
   }
 
+  // Non-authenticated view - Frozen Hero Page
+  if (!session) {
+    return (
+      <div className="min-h-screen bg-[var(--background)]">
+        {/* Frozen Hero Header - Ancient Library Chamber (Non-Interactive) */}
+        <div className="relative bg-gradient-to-b from-slate-900 via-indigo-950 to-slate-900 text-white overflow-hidden min-h-screen">
+          {/* Ancient Chamber Background */}
+          <div className="absolute inset-0 overflow-hidden">
+            {/* Stone texture overlay */}
+            <div
+              className="absolute inset-0 opacity-[0.03]"
+              style={{
+                backgroundImage: `url("data:image/svg+xml,%3Csvg viewBox='0 0 100 100' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E")`,
+              }}
+            />
+
+            {/* Torch glow effects - warm ambient lighting */}
+            <div className="absolute top-[15%] left-[8%] w-24 h-32 bg-gradient-to-b from-amber-500/30 via-orange-500/20 to-transparent rounded-full blur-2xl animate-pulse" />
+            <div className="absolute top-[15%] right-[8%] w-24 h-32 bg-gradient-to-b from-amber-500/30 via-orange-500/20 to-transparent rounded-full blur-2xl animate-pulse" style={{ animationDelay: '1s' }} />
+            <div className="absolute top-[10%] left-1/2 -translate-x-1/2 w-64 h-24 bg-gradient-to-b from-amber-400/20 to-transparent rounded-full blur-3xl" />
+
+            {/* Stone pillars */}
+            <div className="absolute inset-0 opacity-10 pointer-events-none">
+              <div className="absolute top-0 left-[10%] w-[3px] h-full bg-gradient-to-b from-amber-200/80 via-amber-100/60 to-amber-200/80" />
+              <div className="absolute top-0 left-[20%] w-[2px] h-full bg-gradient-to-b from-amber-200/60 via-amber-100/40 to-amber-200/60" />
+              <div className="absolute top-0 right-[10%] w-[3px] h-full bg-gradient-to-b from-amber-200/80 via-amber-100/60 to-amber-200/80" />
+              <div className="absolute top-0 right-[20%] w-[2px] h-full bg-gradient-to-b from-amber-200/60 via-amber-100/40 to-amber-200/60" />
+            </div>
+
+            {/* Decorative vines */}
+            <div className="absolute top-20 left-4 bottom-20 w-6 opacity-15">
+              <svg viewBox="0 0 24 200" className="h-full w-full" preserveAspectRatio="none">
+                <path d="M12 0 Q18 25 12 50 Q6 75 12 100 Q18 125 12 150 Q6 175 12 200" fill="none" stroke="#10b981" strokeWidth="2"/>
+                <circle cx="12" cy="50" r="4" fill="#10b981"/>
+                <circle cx="12" cy="100" r="4" fill="#10b981"/>
+                <circle cx="12" cy="150" r="4" fill="#10b981"/>
+              </svg>
+            </div>
+            <div className="absolute top-20 right-4 bottom-20 w-6 opacity-15" style={{ transform: 'scaleX(-1)' }}>
+              <svg viewBox="0 0 24 200" className="h-full w-full" preserveAspectRatio="none">
+                <path d="M12 0 Q18 25 12 50 Q6 75 12 100 Q18 125 12 150 Q6 175 12 200" fill="none" stroke="#10b981" strokeWidth="2"/>
+                <circle cx="12" cy="50" r="4" fill="#10b981"/>
+                <circle cx="12" cy="100" r="4" fill="#10b981"/>
+                <circle cx="12" cy="150" r="4" fill="#10b981"/>
+              </svg>
+            </div>
+          </div>
+
+          <div className="container mx-auto px-4 py-16 sm:py-24 relative z-10">
+            <div className="max-w-4xl mx-auto text-center">
+              {/* Title Section - Grand entrance */}
+              <div className="mb-12">
+                {/* Ornate header badge */}
+                <div className="inline-flex items-center gap-2 px-6 py-3 rounded-none bg-gradient-to-r from-amber-900/60 via-amber-800/80 to-amber-900/60 border-y-2 border-amber-500/50 mb-6 relative">
+                  <div className="absolute -left-3 top-1/2 -translate-y-1/2 w-5 h-5 bg-amber-500/30 rotate-45 border border-amber-400/50" />
+                  <div className="absolute -right-3 top-1/2 -translate-y-1/2 w-5 h-5 bg-amber-500/30 rotate-45 border border-amber-400/50" />
+                  <ScrollText className="w-5 h-5 text-amber-300" />
+                  <span className="text-sm font-bold uppercase tracking-[0.2em] text-amber-200">The Ancient Library</span>
+                </div>
+
+                <h1 className="text-4xl sm:text-5xl md:text-6xl font-black mb-4 tracking-tight" style={{ fontFamily: 'Georgia, serif', textShadow: '0 2px 20px rgba(251, 191, 36, 0.3)' }}>
+                  Knowledge Awaits
+                </h1>
+
+                {/* Decorative divider */}
+                <div className="flex items-center justify-center gap-4 mb-4">
+                  <div className="h-px w-20 bg-gradient-to-r from-transparent to-amber-500/50" />
+                  <div className="w-3 h-3 bg-amber-500 rotate-45" />
+                  <div className="h-px w-20 bg-gradient-to-l from-transparent to-amber-500/50" />
+                </div>
+
+                <p className="text-lg sm:text-xl font-medium opacity-90 px-4 max-w-2xl mx-auto mb-8" style={{ fontFamily: 'Georgia, serif', fontStyle: 'italic', color: '#fde68a' }}>
+                  "Wisdom is not consumed — it is received. A text offers its truth; a reader brings their readiness to understand."
+                </p>
+              </div>
+
+              {/* Frozen Scroll Display - Static preview */}
+              <div className="relative mb-12">
+                {/* Stone shelf */}
+                <div className="relative max-w-3xl mx-auto">
+                  <div className="absolute inset-x-0 top-1/2 -translate-y-1/2 h-20 bg-gradient-to-b from-slate-700/40 via-slate-800/60 to-slate-900/40 rounded-xl" />
+
+                  {/* Static scrolls - no hover, just display */}
+                  <div className="relative flex items-center justify-center gap-6 py-6">
+                    {[0, 1, 2, 3, 4].map((i) => {
+                      const scrollColors = [
+                        { end: 'from-amber-600 via-amber-500 to-amber-700', parchment: 'bg-amber-100/80' },
+                        { end: 'from-emerald-700 via-emerald-600 to-emerald-800', parchment: 'bg-emerald-50/80' },
+                        { end: 'from-rose-700 via-rose-600 to-rose-800', parchment: 'bg-rose-50/80' },
+                        { end: 'from-slate-600 via-slate-500 to-slate-700', parchment: 'bg-slate-200/60' },
+                        { end: 'from-slate-600 via-slate-500 to-slate-700', parchment: 'bg-slate-200/60' },
+                      ]
+                      const colors = scrollColors[i]
+                      const isFaded = i >= 3
+
+                      return (
+                        <div key={i} className={`relative w-14 h-24 ${isFaded ? 'opacity-30' : 'opacity-70'}`}>
+                          {/* Rolled parchment */}
+                          <div className={`absolute inset-x-1 top-4 bottom-4 ${colors.parchment} rounded-sm shadow-inner`} />
+                          {/* Top cap */}
+                          <div className={`absolute top-0 left-0 right-0 h-5 bg-gradient-to-b ${colors.end} rounded-t-sm shadow-md`}>
+                            <div className="absolute top-1.5 left-1/2 -translate-x-1/2 w-2 h-2 bg-amber-300/50 rounded-full" />
+                          </div>
+                          {/* Bottom cap */}
+                          <div className={`absolute bottom-0 left-0 right-0 h-5 bg-gradient-to-t ${colors.end} rounded-b-sm shadow-md`}>
+                            <div className="absolute bottom-1.5 left-1/2 -translate-x-1/2 w-2 h-2 bg-amber-300/50 rounded-full" />
+                          </div>
+                        </div>
+                      )
+                    })}
+                  </div>
+
+                  {/* Lock overlay */}
+                  <div className="absolute inset-0 flex items-center justify-center">
+                    <div className="px-4 py-2 bg-slate-900/80 backdrop-blur-sm rounded-lg border border-amber-500/30">
+                      <span className="text-xs font-bold text-amber-300 uppercase tracking-wider">Sealed Until Admission</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              {/* CTA Section */}
+              <div className="space-y-6">
+                <p className="text-base text-amber-200/80 font-medium max-w-xl mx-auto">
+                  Join the community of seekers. Access case studies, sustainability journeys, and wisdom from practitioners around the world.
+                </p>
+
+                <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
+                  <Link href="/auth/signup">
+                    <Button className="bg-gradient-to-r from-amber-600 to-amber-700 hover:from-amber-500 hover:to-amber-600 text-white font-bold px-8 py-6 text-lg rounded-lg shadow-xl border border-amber-400/30">
+                      <Star className="w-5 h-5 mr-2" />
+                      Enter the Library
+                    </Button>
+                  </Link>
+                  <Link href="/auth/signin">
+                    <Button variant="outline" className="border-2 border-amber-500/50 text-amber-200 hover:bg-amber-500/10 font-bold px-8 py-6 text-lg rounded-lg">
+                      Already a Member? Sign In
+                    </Button>
+                  </Link>
+                </div>
+
+                <p className="text-xs text-amber-400/50 font-medium">
+                  Free to join • Contribute your own wisdom • Learn from fellow practitioners
+                </p>
+              </div>
+
+              {/* Decorative bottom flourish */}
+              <div className="mt-16 flex items-center justify-center">
+                <svg className="w-40 h-8 opacity-30" viewBox="0 0 160 32">
+                  <path d="M0 16 Q20 8 40 16 Q60 24 80 16 Q100 8 120 16 Q140 24 160 16" fill="none" stroke="#fbbf24" strokeWidth="1"/>
+                  <circle cx="80" cy="16" r="4" fill="#fbbf24"/>
+                  <path d="M75 16 Q80 10 85 16 Q80 22 75 16" fill="#fbbf24" opacity="0.5"/>
+                </svg>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    )
+  }
+
+  // Authenticated view - Full interactive page
   return (
     <div className="min-h-screen bg-[var(--background)]">
       {/* Hero Header - Ancient Library Chamber */}
@@ -422,107 +584,170 @@ export default function ArticlesPage() {
               </div>
             </div>
 
-            {/* Ancient Scroll Widgets - Featured Articles */}
-            {trendingArticles.length > 0 && !searchQuery && activeSort === 'all' && (
+            {/* Ancient Scroll Library - Featured Articles */}
+            {!searchQuery && activeSort === 'all' && (
               <div className="relative mb-8">
-                {/* Section header with ornate styling */}
-                <div className="flex items-center justify-center gap-3 mb-5">
+                {/* Section header - Ancient Tomb Library style */}
+                <div className="flex items-center justify-center gap-3 mb-4">
                   <div className="flex items-center gap-1">
-                    <div className="w-8 h-px bg-gradient-to-r from-transparent to-amber-500/60" />
+                    <div className="w-10 h-px bg-gradient-to-r from-transparent to-amber-500/60" />
                     <div className="w-1.5 h-1.5 bg-amber-500 rotate-45" />
                   </div>
-                  <div className="flex items-center gap-2 px-4 py-1.5 bg-gradient-to-r from-rose-900/50 via-rose-800/70 to-rose-900/50 border border-rose-500/30 rounded-sm">
-                    <Flame className="w-4 h-4 text-rose-400" />
-                    <span className="text-xs font-bold text-rose-200 uppercase tracking-wider">Most Sought Scrolls</span>
+                  <div className="flex items-center gap-2 px-3 py-1 bg-gradient-to-r from-amber-900/60 via-amber-800/80 to-amber-900/60 border-y border-amber-500/40">
+                    <Flame className="w-3 h-3 text-amber-300" />
+                    <span className="text-[10px] font-bold text-amber-200 uppercase tracking-[0.15em]">Most Sought Scrolls</span>
                   </div>
                   <div className="flex items-center gap-1">
                     <div className="w-1.5 h-1.5 bg-amber-500 rotate-45" />
-                    <div className="w-8 h-px bg-gradient-to-l from-transparent to-amber-500/60" />
+                    <div className="w-10 h-px bg-gradient-to-l from-transparent to-amber-500/60" />
                   </div>
                 </div>
 
-                {/* Scroll widgets - horizontal ancient scrolls */}
-                <div className="grid grid-cols-1 md:grid-cols-3 gap-4 px-4 sm:px-0">
-                  {trendingArticles.slice(0, 3).map((article, index) => {
-                    const scrollColors = [
-                      { bg: 'from-amber-100 via-amber-50 to-amber-100', rod: 'from-amber-700 via-amber-600 to-amber-800', seal: 'from-yellow-500 to-amber-600' },
-                      { bg: 'from-emerald-50 via-green-50 to-emerald-50', rod: 'from-emerald-800 via-emerald-700 to-emerald-900', seal: 'from-gray-300 to-gray-500' },
-                      { bg: 'from-rose-50 via-pink-50 to-rose-50', rod: 'from-rose-800 via-rose-700 to-rose-900', seal: 'from-orange-500 to-amber-700' }
-                    ]
-                    const colors = scrollColors[index]
+                {/* Ancient Library Shelf - Horizontal scrolls in alcoves */}
+                <div className="relative max-w-4xl mx-auto">
+                  {/* Stone shelf background */}
+                  <div className="absolute inset-x-0 top-1/2 -translate-y-1/2 h-16 bg-gradient-to-b from-slate-700/40 via-slate-800/60 to-slate-900/40 rounded-lg" />
 
-                    return (
-                      <Link key={article.id} href={`/articles/${article.slug}`} className="group">
-                        <div className="relative cursor-pointer transition-all duration-300 group-hover:-translate-y-1 group-hover:scale-[1.02]">
-                          {/* Scroll container */}
-                          <div className="relative">
-                            {/* Left scroll rod */}
-                            <div className={`absolute -left-2 top-0 bottom-0 w-4 bg-gradient-to-b ${colors.rod} rounded-full shadow-lg z-10`}>
-                              <div className="absolute top-1 left-1/2 -translate-x-1/2 w-2 h-2 bg-amber-300/60 rounded-full" />
-                              <div className="absolute bottom-1 left-1/2 -translate-x-1/2 w-2 h-2 bg-amber-300/60 rounded-full" />
+                  {/* Scrolls container */}
+                  <div className="relative flex items-center justify-center gap-3 sm:gap-4 py-4 px-4">
+                    {/* Create array with 5 slots - 3 for articles, 2 for empty */}
+                    {[0, 1, 2, 3, 4].map((slotIndex) => {
+                      const article = trendingArticles[slotIndex]
+                      const isEmptySlot = !article
+
+                      // Scroll colors with better legibility
+                      const scrollThemes = [
+                        { end: 'from-amber-600 via-amber-500 to-amber-700', parchment: 'bg-amber-100', text: 'text-amber-950', seal: 'bg-gradient-to-br from-red-600 to-red-800' },
+                        { end: 'from-emerald-700 via-emerald-600 to-emerald-800', parchment: 'bg-emerald-50', text: 'text-emerald-950', seal: 'bg-gradient-to-br from-silver-400 to-gray-500' },
+                        { end: 'from-rose-700 via-rose-600 to-rose-800', parchment: 'bg-rose-50', text: 'text-rose-950', seal: 'bg-gradient-to-br from-amber-500 to-amber-700' },
+                        { end: 'from-slate-600 via-slate-500 to-slate-700', parchment: 'bg-slate-200', text: 'text-slate-700', seal: 'bg-gradient-to-br from-slate-400 to-slate-600' },
+                        { end: 'from-slate-600 via-slate-500 to-slate-700', parchment: 'bg-slate-200', text: 'text-slate-700', seal: 'bg-gradient-to-br from-slate-400 to-slate-600' },
+                      ]
+                      const theme = scrollThemes[slotIndex]
+
+                      if (isEmptySlot) {
+                        // Empty scroll slot - ghost placeholder
+                        return (
+                          <div key={`empty-${slotIndex}`} className="group relative">
+                            {/* Compact rolled scroll - empty slot */}
+                            <div className="relative w-12 h-20 opacity-40">
+                              {/* Rolled parchment cylinder */}
+                              <div className={`absolute inset-x-1 top-3 bottom-3 ${theme.parchment} rounded-sm opacity-50`} />
+                              {/* Top end cap */}
+                              <div className={`absolute top-0 left-0 right-0 h-4 bg-gradient-to-b ${theme.end} rounded-t-sm shadow-md`}>
+                                <div className="absolute top-1 left-1/2 -translate-x-1/2 w-1.5 h-1.5 bg-amber-300/40 rounded-full" />
+                              </div>
+                              {/* Bottom end cap */}
+                              <div className={`absolute bottom-0 left-0 right-0 h-4 bg-gradient-to-t ${theme.end} rounded-b-sm shadow-md`}>
+                                <div className="absolute bottom-1 left-1/2 -translate-x-1/2 w-1.5 h-1.5 bg-amber-300/40 rounded-full" />
+                              </div>
                             </div>
-
-                            {/* Right scroll rod */}
-                            <div className={`absolute -right-2 top-0 bottom-0 w-4 bg-gradient-to-b ${colors.rod} rounded-full shadow-lg z-10`}>
-                              <div className="absolute top-1 left-1/2 -translate-x-1/2 w-2 h-2 bg-amber-300/60 rounded-full" />
-                              <div className="absolute bottom-1 left-1/2 -translate-x-1/2 w-2 h-2 bg-amber-300/60 rounded-full" />
-                            </div>
-
-                            {/* Parchment/papyrus surface */}
-                            <div className={`relative bg-gradient-to-r ${colors.bg} rounded-sm px-6 py-4 shadow-xl border border-amber-200/30 min-h-[120px]`}>
-                              {/* Parchment texture */}
-                              <div
-                                className="absolute inset-0 opacity-30 rounded-sm"
-                                style={{
-                                  backgroundImage: `url("data:image/svg+xml,%3Csvg viewBox='0 0 100 100' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='paper'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.04' numOctaves='5'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23paper)' opacity='0.3'/%3E%3C/svg%3E")`,
-                                }}
-                              />
-
-                              {/* Wax seal with rank */}
-                              <div className="absolute -top-3 -right-1 z-20">
-                                <div className={`w-10 h-10 rounded-full bg-gradient-to-br ${colors.seal} shadow-lg flex items-center justify-center border-2 border-white/30`}>
-                                  <span className="text-xs font-black text-white drop-shadow-md">#{index + 1}</span>
-                                </div>
-                              </div>
-
-                              {/* Scroll content */}
-                              <div className="relative z-10">
-                                {/* Category tag */}
-                                <span className="inline-block px-2 py-0.5 bg-amber-800/20 text-amber-900 text-[10px] font-bold rounded mb-2 border border-amber-800/20">
-                                  {article.category.name}
-                                </span>
-
-                                {/* Title - elegant serif font */}
-                                <h3 className="text-sm font-bold text-slate-800 leading-snug mb-2 line-clamp-2 group-hover:text-amber-900 transition-colors" style={{ fontFamily: 'Georgia, serif' }}>
-                                  {article.title}
-                                </h3>
-
-                                {/* Author & stats */}
-                                <div className="flex items-center justify-between text-[10px] text-slate-600">
-                                  <span className="font-medium">{article.author.name}</span>
-                                  <div className="flex items-center gap-2">
-                                    <span className="flex items-center gap-0.5">
-                                      <Eye className="w-3 h-3" />{article.views}
-                                    </span>
-                                    <span className="flex items-center gap-0.5">
-                                      <Clock className="w-3 h-3" />{article.readTime}m
-                                    </span>
-                                  </div>
-                                </div>
-                              </div>
-
-                              {/* Decorative corner flourish */}
-                              <div className="absolute bottom-1 left-2 w-6 h-6 opacity-20">
-                                <svg viewBox="0 0 24 24" fill="none" stroke="#92400e" strokeWidth="1">
-                                  <path d="M2 22 Q12 22 12 12 Q12 2 22 2" />
-                                </svg>
-                              </div>
+                            {/* Empty slot label */}
+                            <div className="absolute -bottom-5 left-1/2 -translate-x-1/2 whitespace-nowrap">
+                              <span className="text-[8px] text-amber-400/50 font-medium">Empty</span>
                             </div>
                           </div>
+                        )
+                      }
+
+                      // Filled scroll with article
+                      return (
+                        <div key={article.id} className="group relative">
+                          {/* Compact rolled scroll */}
+                          <div className="relative w-12 h-20 cursor-pointer transition-all duration-300 group-hover:scale-110">
+                            {/* Rolled parchment cylinder */}
+                            <div className={`absolute inset-x-1 top-3 bottom-3 ${theme.parchment} rounded-sm shadow-inner`}>
+                              {/* Parchment texture */}
+                              <div className="absolute inset-0 opacity-20" style={{
+                                backgroundImage: `url("data:image/svg+xml,%3Csvg viewBox='0 0 100 100' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='p'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.1' numOctaves='3'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23p)'/%3E%3C/svg%3E")`,
+                              }} />
+                            </div>
+                            {/* Top end cap with decorative knob */}
+                            <div className={`absolute top-0 left-0 right-0 h-4 bg-gradient-to-b ${theme.end} rounded-t-sm shadow-md`}>
+                              <div className="absolute top-1 left-1/2 -translate-x-1/2 w-1.5 h-1.5 bg-amber-300/60 rounded-full" />
+                            </div>
+                            {/* Bottom end cap with decorative knob */}
+                            <div className={`absolute bottom-0 left-0 right-0 h-4 bg-gradient-to-t ${theme.end} rounded-b-sm shadow-md`}>
+                              <div className="absolute bottom-1 left-1/2 -translate-x-1/2 w-1.5 h-1.5 bg-amber-300/60 rounded-full" />
+                            </div>
+                            {/* Wax seal with rank */}
+                            <div className={`absolute -right-1 top-1/2 -translate-y-1/2 w-5 h-5 ${theme.seal} rounded-full shadow-lg flex items-center justify-center border border-white/20 z-10`}>
+                              <span className="text-[8px] font-black text-white">#{slotIndex + 1}</span>
+                            </div>
+                          </div>
+
+                          {/* Hover overlay - Expanded scroll widget */}
+                          <div className="absolute left-1/2 -translate-x-1/2 top-full mt-2 w-64 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-300 z-50 pointer-events-none group-hover:pointer-events-auto">
+                            <Link href={`/articles/${article.slug}`}>
+                              <div className="relative bg-gradient-to-br from-slate-800 via-slate-850 to-slate-900 rounded-lg shadow-2xl border border-amber-500/30 overflow-hidden">
+                                {/* Ornate top border */}
+                                <div className="h-1 bg-gradient-to-r from-amber-600 via-amber-400 to-amber-600" />
+
+                                <div className="p-4">
+                                  {/* Category */}
+                                  <span className="inline-block px-2 py-0.5 bg-amber-500/20 text-amber-300 text-[9px] font-bold rounded mb-2 border border-amber-500/30">
+                                    {article.category.name}
+                                  </span>
+
+                                  {/* Title */}
+                                  <h3 className="text-sm font-bold text-amber-100 leading-snug mb-2 line-clamp-2 hover:text-amber-300 transition-colors" style={{ fontFamily: 'Georgia, serif' }}>
+                                    {article.title}
+                                  </h3>
+
+                                  {/* Author & stats */}
+                                  <div className="flex items-center justify-between text-[10px] text-amber-200/70">
+                                    <span className="font-medium truncate max-w-[100px]">{article.author.name}</span>
+                                    <div className="flex items-center gap-2">
+                                      <span className="flex items-center gap-0.5">
+                                        <Eye className="w-2.5 h-2.5" />{article.views}
+                                      </span>
+                                      <span className="flex items-center gap-0.5">
+                                        <Clock className="w-2.5 h-2.5" />{article.readTime}m
+                                      </span>
+                                    </div>
+                                  </div>
+
+                                  {/* Read prompt */}
+                                  <div className="mt-3 pt-2 border-t border-amber-500/20 flex items-center justify-center gap-1 text-amber-400 text-[10px] font-bold">
+                                    <BookOpen className="w-3 h-3" />
+                                    <span>Unroll & Read</span>
+                                    <ArrowRight className="w-3 h-3" />
+                                  </div>
+                                </div>
+
+                                {/* Decorative corners */}
+                                <div className="absolute top-2 left-2 w-3 h-3 border-l border-t border-amber-500/30" />
+                                <div className="absolute top-2 right-2 w-3 h-3 border-r border-t border-amber-500/30" />
+                                <div className="absolute bottom-2 left-2 w-3 h-3 border-l border-b border-amber-500/30" />
+                                <div className="absolute bottom-2 right-2 w-3 h-3 border-r border-b border-amber-500/30" />
+                              </div>
+                            </Link>
+                          </div>
+
+                          {/* Scroll label underneath */}
+                          <div className="absolute -bottom-5 left-1/2 -translate-x-1/2 whitespace-nowrap max-w-[60px]">
+                            <span className="text-[8px] text-amber-300/80 font-medium truncate block text-center">{article.category.name}</span>
+                          </div>
                         </div>
-                      </Link>
-                    )
-                  })}
+                      )
+                    })}
+                  </div>
+
+                  {/* Dust particles effect */}
+                  <div className="absolute inset-0 pointer-events-none overflow-hidden opacity-30">
+                    {[...Array(6)].map((_, i) => (
+                      <div
+                        key={i}
+                        className="absolute w-0.5 h-0.5 bg-amber-300 rounded-full animate-pulse"
+                        style={{
+                          left: `${15 + i * 14}%`,
+                          top: `${30 + (i % 3) * 20}%`,
+                          animationDelay: `${i * 0.5}s`,
+                          animationDuration: '3s'
+                        }}
+                      />
+                    ))}
+                  </div>
                 </div>
               </div>
             )}
