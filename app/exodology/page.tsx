@@ -525,6 +525,104 @@ export default function ExodologyPage() {
         </div>
       </section>
 
+      {/* Academic Resources Section */}
+      <section className="py-20">
+        <div className="container mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="text-center mb-12">
+            <motion.h2
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              className="text-3xl sm:text-4xl font-black text-[var(--foreground)] mb-4"
+            >
+              ACADEMIC RESOURCES
+            </motion.h2>
+            <motion.p
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ delay: 0.1 }}
+              className="text-lg text-[var(--muted-foreground)] max-w-2xl mx-auto"
+            >
+              Scholarly foundations for rigorous study and practice
+            </motion.p>
+          </div>
+
+          <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-6 max-w-6xl mx-auto">
+            {[
+              {
+                title: 'Research Hub',
+                description: 'Case studies, bibliography, and working papers',
+                href: '/exodology/research',
+                icon: BookOpen,
+                gradient: 'from-indigo-500 to-purple-600'
+              },
+              {
+                title: 'Founding Documents',
+                description: 'Charter, ethics, and academic standards',
+                href: '/exodology/about/charter',
+                icon: Scale,
+                gradient: 'from-violet-500 to-indigo-600'
+              },
+              {
+                title: 'Practitioner Directory',
+                description: 'Connect with scholars and practitioners',
+                href: '/exodology/community/directory',
+                icon: Users,
+                gradient: 'from-teal-500 to-cyan-600'
+              },
+              {
+                title: 'Discussion Forum',
+                description: 'Academic discourse and knowledge exchange',
+                href: '/exodology/community/discussions',
+                icon: Globe,
+                gradient: 'from-blue-500 to-indigo-600'
+              }
+            ].map((resource, i) => (
+              <motion.div
+                key={resource.href}
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ delay: i * 0.1 }}
+              >
+                <Link href={resource.href}>
+                  <Card className="h-full border-2 border-[var(--border)] hover:border-[var(--primary)]/50 transition-all cursor-pointer group">
+                    <CardContent className="p-6">
+                      <div className={`w-12 h-12 rounded-xl bg-gradient-to-br ${resource.gradient} flex items-center justify-center mb-4 group-hover:scale-110 transition-transform`}>
+                        <resource.icon className="w-6 h-6 text-white" />
+                      </div>
+                      <h3 className="font-bold text-[var(--foreground)] mb-2 group-hover:text-[var(--primary)] transition-colors">
+                        {resource.title}
+                      </h3>
+                      <p className="text-sm text-[var(--muted-foreground)]">
+                        {resource.description}
+                      </p>
+                    </CardContent>
+                  </Card>
+                </Link>
+              </motion.div>
+            ))}
+          </div>
+
+          {/* Quick links */}
+          <div className="flex flex-wrap justify-center gap-4 mt-8">
+            {[
+              { label: 'Historical Timeline', href: '/exodology/about/timeline' },
+              { label: 'Ethics Guidelines', href: '/exodology/about/ethics' },
+              { label: 'Style Guide', href: '/exodology/about/style-guide' },
+              { label: 'Certifications', href: '/exodology/certifications' }
+            ].map(link => (
+              <Link key={link.href} href={link.href}>
+                <span className="text-sm text-[var(--muted-foreground)] hover:text-[var(--primary)] transition-colors">
+                  {link.label}
+                </span>
+              </Link>
+            ))}
+          </div>
+        </div>
+      </section>
+
       {/* Cross-link to Sustainability */}
       <section className="py-12 bg-[var(--muted)]/30">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">

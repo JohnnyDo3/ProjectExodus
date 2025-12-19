@@ -173,7 +173,7 @@ const certifications = [
   {
     id: 'exodology-master',
     name: 'Master Exodologist',
-    description: 'The highest credential in Exodology, demonstrating complete mastery of all three pillars.',
+    description: 'The highest credential in Exodology, demonstrating complete mastery of all three pillars plus original research contribution.',
     pathId: null,
     icon: Crown,
     color: 'yellow',
@@ -182,7 +182,9 @@ const certifications = [
     requirements: [
       'Earn Exodological Literacy certification',
       'Earn Exodological Application certification',
-      'Earn Exodological Stewardship certification'
+      'Earn Exodological Stewardship certification',
+      'Complete and defend a capstone project (original case study or research contribution)',
+      'Receive approval from peer review committee'
     ]
   }
 ]

@@ -146,6 +146,9 @@ model User {
   // Exodology learning progress
   exodologyProgress         ExodologyProgress[]      @relation("ExodologyProgress")
   exodologyCertifications   ExodologyCertification[] @relation("ExodologyCertifications")
+  exodologyStreak           ExodologyStreak?         @relation("ExodologyStreak")
+  exodologyNotes            ExodologyNote[]          @relation("ExodologyNotes")
+  exodologyReviews          ExodologyReview[]        @relation("ExodologyReviews")
 
   @@index([email])
   @@index([role])
