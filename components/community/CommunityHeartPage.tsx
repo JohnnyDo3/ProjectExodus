@@ -104,15 +104,26 @@ function GlowingBorder({ children, className = '', style }: { children: React.Re
   )
 }
 
-// Volition lane icons and labels
+// Volition lane icons and labels with descriptions
 const volitionLanes = [
-  { icon: User, label: 'Identity', color: 'text-blue-400' },
-  { icon: Briefcase, label: 'Projects', color: 'text-orange-400' },
-  { icon: FileText, label: 'Articles', color: 'text-purple-400' },
-  { icon: BookOpen, label: 'Learning', color: 'text-emerald-400' },
-  { icon: Users, label: 'Network', color: 'text-cyan-400' },
-  { icon: MessageCircle, label: 'Feed', color: 'text-pink-400' },
-  { icon: Leaf, label: 'Impact', color: 'text-green-400' },
+  { icon: User, label: 'Identity', color: 'text-blue-400', desc: 'Your BizID profile, guardian archetype, and personal brand' },
+  { icon: Briefcase, label: 'Projects', color: 'text-orange-400', desc: 'Products you create, sell, or support in the marketplace' },
+  { icon: FileText, label: 'Articles', color: 'text-purple-400', desc: 'Case studies, research, and sustainability journeys you share' },
+  { icon: BookOpen, label: 'Learning', color: 'text-emerald-400', desc: 'Courses completed, skills gained, and certifications earned' },
+  { icon: Users, label: 'Network', color: 'text-cyan-400', desc: 'Connections, collaborations, and community engagement' },
+  { icon: MessageCircle, label: 'Feed', color: 'text-pink-400', desc: 'Discussions, comments, and forum contributions' },
+  { icon: Leaf, label: 'Impact', color: 'text-green-400', desc: 'Your measurable environmental footprint and positive actions' },
+]
+
+// Guardian archetype definitions with meanings
+const guardianArchetypes = [
+  { emoji: '🛡️', name: 'Protector', desc: 'Defends nature and vulnerable ecosystems' },
+  { emoji: '🧭', name: 'Navigator', desc: 'Guides others toward sustainable paths' },
+  { emoji: '📖', name: 'Chronicler', desc: 'Documents knowledge and shares wisdom' },
+  { emoji: '⚔️', name: 'Champion', desc: 'Fights for environmental justice' },
+  { emoji: '💚', name: 'Healer', desc: 'Restores damaged environments' },
+  { emoji: '✨', name: 'Visionary', desc: 'Imagines and builds better futures' },
+  { emoji: '🤝', name: 'Unifier', desc: 'Builds bridges between communities' },
 ]
 
 // Business card features
@@ -218,6 +229,8 @@ export function CommunityHeartPage({ isAuthenticated }: CommunityHeartPageProps)
   const [isBizIDFlipped, setIsBizIDFlipped] = useState(false)
   const [isLearningFlipped, setIsLearningFlipped] = useState(false)
   const [activeUserIndex, setActiveUserIndex] = useState(0)
+  const [activeLaneIndex, setActiveLaneIndex] = useState(0)
+  const [hoveredArchetype, setHoveredArchetype] = useState<number | null>(null)
 
   // Auto-cycle through fake user previews
   useEffect(() => {
@@ -227,6 +240,15 @@ export function CommunityHeartPage({ isAuthenticated }: CommunityHeartPageProps)
     }, 2500)
     return () => clearInterval(interval)
   }, [isBizIDFlipped])
+
+  // Auto-cycle through volition lanes when flipped
+  useEffect(() => {
+    if (!isVolitionFlipped) return
+    const interval = setInterval(() => {
+      setActiveLaneIndex((prev) => (prev + 1) % volitionLanes.length)
+    }, 2500)
+    return () => clearInterval(interval)
+  }, [isVolitionFlipped])
 
   return (
     <div className="min-h-screen bg-[var(--background)] relative overflow-y-auto flex flex-col">
@@ -557,63 +579,82 @@ export function CommunityHeartPage({ isAuthenticated }: CommunityHeartPageProps)
                 <div className="absolute -bottom-6 -left-6 w-24 h-24 rounded-full bg-[var(--accent)]/15 blur-2xl" />
               </div>
 
-              <div className="relative z-10 h-full flex flex-col items-center justify-center text-center">
-                {/* Large centered number */}
-                <motion.div
-                  className="relative mb-2"
-                  animate={{ scale: [1, 1.05, 1] }}
-                  transition={{ duration: 3, repeat: Infinity }}
-                >
-                  <span className="text-5xl font-black bg-gradient-to-br from-[var(--primary)] to-[var(--accent)] bg-clip-text text-transparent">7</span>
-                  <motion.div
-                    className="absolute -inset-3 rounded-full bg-[var(--primary)]/10 blur-xl -z-10"
-                    animate={{ opacity: [0.3, 0.6, 0.3] }}
-                    transition={{ duration: 2, repeat: Infinity }}
-                  />
-                </motion.div>
+              <div className="relative z-10 h-full flex flex-col items-center justify-center text-center px-2">
+                {/* Header */}
+                <h3 className="text-base font-bold text-[var(--foreground)] mb-1">Your Professional Identity</h3>
+                <p className="text-[10px] text-[var(--muted-foreground)] mb-3 max-w-[200px]">A verified business card that represents your values and contributions</p>
 
-                <h3 className="text-lg font-bold text-[var(--foreground)] mb-1">Guardian Archetypes</h3>
-                <p className="text-xs text-[var(--muted-foreground)] mb-4">Choose Your Path</p>
-
-                {/* Archetype icons in a creative arc */}
-                <div className="flex items-center justify-center gap-2 mb-4">
-                  {['🛡️', '🧭', '📖', '⚔️', '💚', '✨', '🤝'].map((emoji, i) => (
+                {/* Archetype icons with hover reveal */}
+                <div className="flex items-center justify-center gap-1.5 mb-3">
+                  {guardianArchetypes.map((archetype, i) => (
                     <motion.div
                       key={i}
-                      className="w-8 h-8 rounded-full bg-[var(--muted)]/50 flex items-center justify-center text-sm border border-[var(--border)]/30"
-                      initial={{ opacity: 0, y: 10 }}
-                      animate={{ opacity: 1, y: 0 }}
-                      transition={{ delay: i * 0.05 }}
-                      whileHover={{ scale: 1.2, y: -3 }}
+                      className="relative"
+                      onMouseEnter={() => setHoveredArchetype(i)}
+                      onMouseLeave={() => setHoveredArchetype(null)}
                     >
-                      {emoji}
+                      <motion.div
+                        className={`w-7 h-7 rounded-full flex items-center justify-center text-sm border cursor-pointer transition-all ${
+                          hoveredArchetype === i
+                            ? 'bg-[var(--primary)]/30 border-[var(--primary)]/50 scale-110'
+                            : 'bg-[var(--muted)]/50 border-[var(--border)]/30'
+                        }`}
+                        whileHover={{ y: -2 }}
+                      >
+                        {archetype.emoji}
+                      </motion.div>
+                      {/* Hover tooltip */}
+                      {hoveredArchetype === i && (
+                        <motion.div
+                          initial={{ opacity: 0, y: 5 }}
+                          animate={{ opacity: 1, y: 0 }}
+                          className="absolute -bottom-14 left-1/2 -translate-x-1/2 w-24 p-1.5 bg-[var(--card)] border border-[var(--border)] rounded-lg shadow-lg z-20"
+                        >
+                          <p className="text-[8px] font-bold text-[var(--foreground)]">{archetype.name}</p>
+                          <p className="text-[7px] text-[var(--muted-foreground)] leading-tight">{archetype.desc}</p>
+                        </motion.div>
+                      )}
                     </motion.div>
                   ))}
                 </div>
 
-                {/* Quote-style declaration */}
-                <div className="relative px-4 py-2 mb-4">
-                  <div className="absolute left-0 top-0 text-2xl text-[var(--primary)]/30">"</div>
-                  <p className="text-sm italic text-[var(--foreground)]">Your values define your identity</p>
-                  <div className="absolute right-0 bottom-0 text-2xl text-[var(--primary)]/30">"</div>
+                {/* Quote */}
+                <div className="relative px-3 py-1.5 mb-3 bg-[var(--muted)]/30 rounded-lg">
+                  <p className="text-[10px] italic text-[var(--foreground)]">"Your values define your identity"</p>
                 </div>
 
-                {/* Visual badges row */}
-                <div className="flex items-center gap-3">
-                  <div className="flex flex-col items-center">
-                    <Shield className="w-5 h-5 text-[var(--primary)] mb-1" />
-                    <span className="text-[9px] text-[var(--muted-foreground)]">Theme</span>
-                  </div>
-                  <div className="w-px h-6 bg-[var(--border)]/30" />
-                  <div className="flex flex-col items-center">
-                    <Star className="w-5 h-5 text-[var(--accent)] mb-1" />
-                    <span className="text-[9px] text-[var(--muted-foreground)]">Badges</span>
-                  </div>
-                  <div className="w-px h-6 bg-[var(--border)]/30" />
-                  <div className="flex flex-col items-center">
-                    <TrendingUp className="w-5 h-5 text-[var(--primary)] mb-1" />
-                    <span className="text-[9px] text-[var(--muted-foreground)]">STOCK</span>
-                  </div>
+                {/* Feature explanations */}
+                <div className="w-full space-y-1.5">
+                  <motion.div
+                    className="flex items-center gap-2 px-2 py-1.5 rounded-lg bg-[var(--muted)]/30 border border-[var(--border)]/20"
+                    whileHover={{ scale: 1.02, backgroundColor: 'var(--muted)' }}
+                  >
+                    <Shield className="w-4 h-4 text-[var(--primary)] flex-shrink-0" />
+                    <div className="text-left">
+                      <p className="text-[9px] font-bold text-[var(--foreground)]">Guardian Theme</p>
+                      <p className="text-[7px] text-[var(--muted-foreground)]">Visual identity based on your archetype</p>
+                    </div>
+                  </motion.div>
+                  <motion.div
+                    className="flex items-center gap-2 px-2 py-1.5 rounded-lg bg-[var(--muted)]/30 border border-[var(--border)]/20"
+                    whileHover={{ scale: 1.02, backgroundColor: 'var(--muted)' }}
+                  >
+                    <Star className="w-4 h-4 text-[var(--accent)] flex-shrink-0" />
+                    <div className="text-left">
+                      <p className="text-[9px] font-bold text-[var(--foreground)]">Achievement Badges</p>
+                      <p className="text-[7px] text-[var(--muted-foreground)]">Earn recognition for your contributions</p>
+                    </div>
+                  </motion.div>
+                  <motion.div
+                    className="flex items-center gap-2 px-2 py-1.5 rounded-lg bg-[var(--muted)]/30 border border-[var(--border)]/20"
+                    whileHover={{ scale: 1.02, backgroundColor: 'var(--muted)' }}
+                  >
+                    <TrendingUp className="w-4 h-4 text-[var(--primary)] flex-shrink-0" />
+                    <div className="text-left">
+                      <p className="text-[9px] font-bold text-[var(--foreground)]">STOCK Score</p>
+                      <p className="text-[7px] text-[var(--muted-foreground)]">Track your sustainable value over time</p>
+                    </div>
+                  </motion.div>
                 </div>
               </div>
             </div>
@@ -900,79 +941,90 @@ export function CommunityHeartPage({ isAuthenticated }: CommunityHeartPageProps)
                   <div className="absolute -bottom-6 -left-6 w-24 h-24 rounded-full bg-[var(--primary)]/15 blur-2xl" />
                 </div>
 
-                <div className="relative z-10 h-full flex flex-col items-center justify-center">
+                <div className="relative z-10 h-full flex flex-col items-center justify-center px-2">
+                  {/* Header */}
+                  <h3 className="text-base font-bold text-[var(--foreground)] mb-1">Education Without Barriers</h3>
+                  <p className="text-[10px] text-[var(--muted-foreground)] mb-3 max-w-[280px]">Free, comprehensive sustainability education for all ages and backgrounds</p>
+
                   {/* Visual learning journey */}
-                  <div className="flex items-center gap-1 mb-4">
-                    {['🌱', '📚', '🎓', '🔬', '🌍', '🏆'].map((emoji, i) => (
+                  <div className="flex items-center gap-1 mb-3">
+                    {[
+                      { emoji: '🌱', label: 'Begin' },
+                      { emoji: '📚', label: 'Study' },
+                      { emoji: '🎓', label: 'Master' },
+                      { emoji: '🔬', label: 'Research' },
+                      { emoji: '🌍', label: 'Apply' },
+                      { emoji: '🏆', label: 'Lead' },
+                    ].map((stage, i) => (
                       <motion.div
                         key={i}
                         className="flex flex-col items-center"
                         initial={{ opacity: 0, scale: 0.8 }}
                         animate={{ opacity: 1, scale: 1 }}
-                        transition={{ delay: i * 0.08 }}
+                        transition={{ delay: i * 0.06 }}
+                        whileHover={{ y: -2 }}
                       >
-                        <span className="text-lg">{emoji}</span>
+                        <span className="text-base">{stage.emoji}</span>
+                        <span className="text-[6px] text-[var(--muted-foreground)]">{stage.label}</span>
                         {i < 5 && (
                           <motion.div
-                            className="w-4 h-0.5 bg-gradient-to-r from-[var(--primary)] to-[var(--accent)] mt-1"
+                            className="absolute w-3 h-0.5 bg-gradient-to-r from-[var(--primary)] to-[var(--accent)] -right-2 top-2"
                             initial={{ scaleX: 0 }}
                             animate={{ scaleX: 1 }}
-                            transition={{ delay: i * 0.08 + 0.2 }}
+                            transition={{ delay: i * 0.06 + 0.2 }}
                           />
                         )}
                       </motion.div>
                     ))}
                   </div>
 
-                  <h3 className="text-lg font-bold text-[var(--foreground)] mb-1">Your Learning Journey</h3>
-                  <p className="text-xs text-[var(--muted-foreground)] mb-4">From Curious to Expert</p>
-
-                  {/* Stats row */}
-                  <div className="flex items-center justify-center gap-4 mb-4">
-                    <motion.div
-                      className="text-center"
-                      whileHover={{ scale: 1.1 }}
-                    >
-                      <span className="text-2xl font-black text-[var(--primary)]">6</span>
-                      <p className="text-[9px] text-[var(--muted-foreground)]">Levels</p>
-                    </motion.div>
-                    <div className="w-px h-8 bg-[var(--border)]/30" />
-                    <motion.div
-                      className="text-center"
-                      whileHover={{ scale: 1.1 }}
-                    >
-                      <span className="text-2xl font-black text-[var(--accent)]">∞</span>
-                      <p className="text-[9px] text-[var(--muted-foreground)]">Topics</p>
-                    </motion.div>
-                    <div className="w-px h-8 bg-[var(--border)]/30" />
-                    <motion.div
-                      className="text-center"
-                      whileHover={{ scale: 1.1 }}
-                    >
-                      <span className="text-2xl font-black text-[var(--primary)]">🏅</span>
-                      <p className="text-[9px] text-[var(--muted-foreground)]">Certified</p>
-                    </motion.div>
+                  {/* Philosophy statement */}
+                  <div className="relative px-3 py-1.5 mb-3 bg-[var(--muted)]/30 rounded-lg">
+                    <p className="text-[9px] italic text-[var(--foreground)]">"Knowledge belongs to everyone"</p>
                   </div>
 
-                  {/* Feature pills */}
-                  <div className="flex flex-wrap justify-center gap-2">
-                    {[
-                      { icon: Gamepad2, label: 'Games' },
-                      { icon: Brain, label: 'Adaptive' },
-                      { icon: Award, label: 'Certs' },
-                    ].map(({ icon: Icon, label }, i) => (
-                      <motion.div
-                        key={label}
-                        className="flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-[var(--muted)]/40 border border-[var(--border)]/30"
-                        initial={{ opacity: 0, x: -10 }}
-                        animate={{ opacity: 1, x: 0 }}
-                        transition={{ delay: i * 0.1 }}
-                        whileHover={{ scale: 1.05 }}
-                      >
-                        <Icon className="w-3.5 h-3.5 text-[var(--accent)]" />
-                        <span className="text-[10px] font-medium text-[var(--foreground)]">{label}</span>
-                      </motion.div>
-                    ))}
+                  {/* Feature explanations */}
+                  <div className="w-full grid grid-cols-2 gap-1.5">
+                    <motion.div
+                      className="flex items-center gap-2 px-2 py-1.5 rounded-lg bg-[var(--muted)]/30 border border-[var(--border)]/20"
+                      whileHover={{ scale: 1.02 }}
+                    >
+                      <GraduationCap className="w-3.5 h-3.5 text-[var(--primary)] flex-shrink-0" />
+                      <div className="text-left">
+                        <p className="text-[8px] font-bold text-[var(--foreground)]">6 Grade Levels</p>
+                        <p className="text-[6px] text-[var(--muted-foreground)]">K-12 to PhD adapted</p>
+                      </div>
+                    </motion.div>
+                    <motion.div
+                      className="flex items-center gap-2 px-2 py-1.5 rounded-lg bg-[var(--muted)]/30 border border-[var(--border)]/20"
+                      whileHover={{ scale: 1.02 }}
+                    >
+                      <Gamepad2 className="w-3.5 h-3.5 text-purple-500 flex-shrink-0" />
+                      <div className="text-left">
+                        <p className="text-[8px] font-bold text-[var(--foreground)]">Interactive Games</p>
+                        <p className="text-[6px] text-[var(--muted-foreground)]">Learn through play</p>
+                      </div>
+                    </motion.div>
+                    <motion.div
+                      className="flex items-center gap-2 px-2 py-1.5 rounded-lg bg-[var(--muted)]/30 border border-[var(--border)]/20"
+                      whileHover={{ scale: 1.02 }}
+                    >
+                      <Brain className="w-3.5 h-3.5 text-cyan-500 flex-shrink-0" />
+                      <div className="text-left">
+                        <p className="text-[8px] font-bold text-[var(--foreground)]">Adaptive Learning</p>
+                        <p className="text-[6px] text-[var(--muted-foreground)]">Adjusts to your pace</p>
+                      </div>
+                    </motion.div>
+                    <motion.div
+                      className="flex items-center gap-2 px-2 py-1.5 rounded-lg bg-[var(--muted)]/30 border border-[var(--border)]/20"
+                      whileHover={{ scale: 1.02 }}
+                    >
+                      <Award className="w-3.5 h-3.5 text-[var(--accent)] flex-shrink-0" />
+                      <div className="text-left">
+                        <p className="text-[8px] font-bold text-[var(--foreground)]">Certifications</p>
+                        <p className="text-[6px] text-[var(--muted-foreground)]">Earn credentials</p>
+                      </div>
+                    </motion.div>
                   </div>
                 </div>
               </div>
@@ -1185,59 +1237,75 @@ export function CommunityHeartPage({ isAuthenticated }: CommunityHeartPageProps)
                   <div className="absolute -bottom-6 -left-6 w-20 h-20 rounded-full bg-[var(--primary)]/15 blur-xl" />
                 </div>
 
-                <div className="relative z-10 h-full flex flex-col items-center justify-center text-center">
-                  {/* STOCK acronym visual */}
-                  <motion.div
-                    className="mb-3"
-                    animate={{ scale: [1, 1.02, 1] }}
-                    transition={{ duration: 3, repeat: Infinity }}
-                  >
-                    <div className="flex items-center justify-center gap-0.5">
-                      {['S', 'T', 'O', 'C', 'K'].map((letter, i) => (
-                        <motion.span
+                <div className="relative z-10 h-full flex flex-col items-center justify-center text-center px-2">
+                  {/* Header */}
+                  <h3 className="text-base font-bold text-[var(--foreground)] mb-1">Your Sustainable Value</h3>
+                  <p className="text-[10px] text-[var(--muted-foreground)] mb-3 max-w-[200px]">Track and grow your contributions across 7 impact lanes</p>
+
+                  {/* Lane Carousel */}
+                  <div className="relative w-full mb-3">
+                    {/* Lane indicator dots */}
+                    <div className="flex items-center justify-center gap-1 mb-2">
+                      {volitionLanes.map((_, i) => (
+                        <motion.button
                           key={i}
-                          className="text-3xl font-black bg-gradient-to-b from-[var(--primary)] to-[var(--accent)] bg-clip-text text-transparent"
-                          initial={{ opacity: 0, y: -10 }}
-                          animate={{ opacity: 1, y: 0 }}
-                          transition={{ delay: i * 0.1 }}
-                        >
-                          {letter}
-                        </motion.span>
+                          className={`w-1.5 h-1.5 rounded-full transition-all ${
+                            activeLaneIndex === i
+                              ? 'bg-[var(--primary)] w-3'
+                              : 'bg-[var(--muted-foreground)]/30'
+                          }`}
+                          onClick={() => setActiveLaneIndex(i)}
+                          whileHover={{ scale: 1.3 }}
+                        />
                       ))}
                     </div>
-                    <p className="text-[10px] text-[var(--muted-foreground)] tracking-widest">SUSTAINABLE TOTAL OUTCOME CAPITAL KNOWLEDGE</p>
-                  </motion.div>
 
-                  {/* Visual lanes grid */}
-                  <div className="grid grid-cols-4 gap-2 mb-4">
-                    {[
-                      { icon: User, label: 'ID' },
-                      { icon: Briefcase, label: 'Work' },
-                      { icon: FileText, label: 'Write' },
-                      { icon: BookOpen, label: 'Learn' },
-                      { icon: Users, label: 'Net' },
-                      { icon: MessageSquare, label: 'Feed' },
-                      { icon: Globe, label: 'Impact' },
-                    ].map(({ icon: Icon, label }, i) => (
-                      <motion.div
-                        key={label}
-                        className={`flex flex-col items-center p-2 rounded-lg bg-[var(--muted)]/30 border border-[var(--border)]/20 ${i === 6 ? 'col-span-4 flex-row justify-center gap-2' : ''}`}
-                        initial={{ opacity: 0, scale: 0.8 }}
-                        animate={{ opacity: 1, scale: 1 }}
-                        transition={{ delay: i * 0.05 }}
-                        whileHover={{ scale: 1.05, backgroundColor: 'var(--muted)' }}
-                      >
-                        <Icon className={`w-4 h-4 ${i === 6 ? 'text-[var(--accent)]' : 'text-[var(--primary)]'}`} />
-                        <span className="text-[9px] text-[var(--muted-foreground)]">{label}</span>
-                      </motion.div>
-                    ))}
+                    {/* Active lane display */}
+                    <motion.div
+                      key={activeLaneIndex}
+                      initial={{ opacity: 0, x: 20 }}
+                      animate={{ opacity: 1, x: 0 }}
+                      exit={{ opacity: 0, x: -20 }}
+                      className="bg-[var(--muted)]/40 rounded-xl p-3 border border-[var(--border)]/30"
+                    >
+                      <div className="flex items-center justify-center gap-2 mb-2">
+                        {(() => {
+                          const lane = volitionLanes[activeLaneIndex]
+                          const Icon = lane.icon
+                          return (
+                            <>
+                              <div className={`w-10 h-10 rounded-full bg-[var(--card)] flex items-center justify-center border-2 border-[var(--primary)]/30`}>
+                                <Icon className={`w-5 h-5 ${lane.color}`} />
+                              </div>
+                              <div className="text-left">
+                                <p className="text-sm font-bold text-[var(--foreground)]">{lane.label}</p>
+                                <p className="text-[8px] text-[var(--muted-foreground)]">Lane {activeLaneIndex + 1} of 7</p>
+                              </div>
+                            </>
+                          )
+                        })()}
+                      </div>
+                      <p className="text-[9px] text-[var(--muted-foreground)] leading-relaxed">
+                        {volitionLanes[activeLaneIndex].desc}
+                      </p>
+                    </motion.div>
                   </div>
 
+                  {/* STOCK acronym */}
+                  <div className="flex items-center gap-0.5 mb-2">
+                    {['S', 'T', 'O', 'C', 'K'].map((letter, i) => (
+                      <span key={i} className="text-lg font-black bg-gradient-to-b from-[var(--primary)] to-[var(--accent)] bg-clip-text text-transparent">
+                        {letter}
+                      </span>
+                    ))}
+                  </div>
+                  <p className="text-[7px] text-[var(--muted-foreground)] tracking-wider mb-2">SUSTAINABLE TOTAL OUTCOME CAPITAL KNOWLEDGE</p>
+
                   {/* Growth indicator */}
-                  <div className="flex items-center gap-2 px-4 py-2 rounded-full bg-gradient-to-r from-[var(--primary)]/10 to-[var(--accent)]/10 border border-[var(--primary)]/20">
-                    <TrendingUp className="w-4 h-4 text-[var(--accent)]" />
-                    <span className="text-xs font-semibold text-[var(--foreground)]">You Are The Asset</span>
-                    <Sparkles className="w-4 h-4 text-[var(--primary)]" />
+                  <div className="flex items-center gap-2 px-3 py-1.5 rounded-full bg-gradient-to-r from-[var(--primary)]/10 to-[var(--accent)]/10 border border-[var(--primary)]/20">
+                    <TrendingUp className="w-3.5 h-3.5 text-[var(--accent)]" />
+                    <span className="text-[10px] font-semibold text-[var(--foreground)]">You Are The Asset</span>
+                    <Sparkles className="w-3.5 h-3.5 text-[var(--primary)]" />
                   </div>
                 </div>
               </motion.div>
