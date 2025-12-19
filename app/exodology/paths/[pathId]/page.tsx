@@ -1846,16 +1846,70 @@ const pathsData: Record<string, ExodologyPath> = {
 // PAGE COMPONENT
 // ============================================================================
 
+// Type for progress data
+type LessonProgressData = {
+  lessonId: string
+  status: 'NOT_STARTED' | 'IN_PROGRESS' | 'COMPLETED'
+}
+
 export default function ExodologyPathPage() {
   const params = useParams()
   const pathId = params.pathId as string
   const path = pathsData[pathId]
   const { data: session } = useSession()
   const [expandedModules, setExpandedModules] = useState<Set<string>>(new Set())
+  const [userProgress, setUserProgress] = useState<LessonProgressData[]>([])
+  const [progressLoading, setProgressLoading] = useState(false)
+
+  // Fetch user progress
+  useEffect(() => {
+    async function fetchProgress() {
+      if (!session?.user) return
+      setProgressLoading(true)
+      try {
+        const res = await fetch(`/api/exodology/progress?pathId=${pathId}`)
+        if (res.ok) {
+          const data = await res.json()
+          setUserProgress(data.progress || [])
+        }
+      } catch (error) {
+        console.error('Error fetching progress:', error)
+      } finally {
+        setProgressLoading(false)
+      }
+    }
+    fetchProgress()
+  }, [session, pathId])
 
   if (!path) {
     notFound()
   }
+
+  // Helper to check if a lesson is completed
+  const isLessonCompleted = (lessonId: string) => {
+    return userProgress.some((p: LessonProgressData) => p.lessonId === lessonId && p.status === 'COMPLETED')
+  }
+
+  // Helper to check if a lesson is in progress
+  const isLessonInProgress = (lessonId: string) => {
+    return userProgress.some((p: LessonProgressData) => p.lessonId === lessonId && p.status === 'IN_PROGRESS')
+  }
+
+  // Get first incomplete lesson for "Continue Learning"
+  const getNextLesson = () => {
+    for (const module of path.modules) {
+      for (const lesson of module.lessons) {
+        if (!isLessonCompleted(lesson.id)) {
+          return lesson.id
+        }
+      }
+    }
+    return path.modules[0]?.lessons[0]?.id || 'f-m1-l1'
+  }
+
+  // Calculate completion stats
+  const completedCount = userProgress.filter((p: LessonProgressData) => p.status === 'COMPLETED').length
+  const hasProgress = completedCount > 0
 
   const toggleModule = (moduleId: string) => {
     setExpandedModules(prev => {
@@ -2039,22 +2093,30 @@ export default function ExodologyPathPage() {
                                         {module.lessons.map((lesson, i) => {
                                           const LessonIcon = getLessonIcon(lesson.type)
                                           const isLocked = !session || !lesson.available
+                                          const completed = isLessonCompleted(lesson.id)
+                                          const inProgress = isLessonInProgress(lesson.id)
 
                                           const lessonContent = (
                                             <div
                                               className={`flex items-center gap-3 p-3 rounded-lg border transition-all ${
                                                 isLocked
                                                   ? 'bg-[var(--muted)]/30 border-[var(--border)] cursor-not-allowed opacity-60'
-                                                  : 'bg-[var(--card)] border-[var(--border)] hover:border-[var(--primary)]/50 hover:bg-[var(--primary)]/5 cursor-pointer group'
+                                                  : completed
+                                                    ? 'bg-green-500/5 border-green-500/30 hover:border-green-500/50 cursor-pointer group'
+                                                    : 'bg-[var(--card)] border-[var(--border)] hover:border-[var(--primary)]/50 hover:bg-[var(--primary)]/5 cursor-pointer group'
                                               }`}
                                             >
                                               <div className={`w-10 h-10 rounded-xl flex items-center justify-center transition-all ${
                                                 isLocked
                                                   ? 'bg-[var(--muted)]'
-                                                  : `bg-gradient-to-br ${path.gradient} shadow-lg group-hover:scale-110`
+                                                  : completed
+                                                    ? 'bg-gradient-to-br from-green-500 to-emerald-600 shadow-lg'
+                                                    : `bg-gradient-to-br ${path.gradient} shadow-lg group-hover:scale-110`
                                               }`}>
                                                 {isLocked ? (
                                                   <Lock className="w-4 h-4 text-[var(--muted-foreground)]" />
+                                                ) : completed ? (
+                                                  <CheckCircle2 className="w-5 h-5 text-white" />
                                                 ) : (
                                                   <LessonIcon className="w-5 h-5 text-white" />
                                                 )}
@@ -2064,15 +2126,25 @@ export default function ExodologyPathPage() {
                                                   <p className={`text-sm font-bold truncate ${
                                                     isLocked ? 'text-[var(--muted-foreground)]' : 'text-[var(--foreground)]'
                                                   }`}>{lesson.title}</p>
-                                                  <span className={`px-2 py-0.5 rounded-full text-[10px] font-bold uppercase ${
-                                                    lesson.type === 'instruction' ? 'bg-blue-500/20 text-blue-600' :
-                                                    lesson.type === 'interactive' ? 'bg-purple-500/20 text-purple-600' :
-                                                    lesson.type === 'reflection' ? 'bg-amber-500/20 text-amber-600' :
-                                                    lesson.type === 'game' ? 'bg-green-500/20 text-green-600' :
-                                                    'bg-red-500/20 text-red-600'
-                                                  }`}>
-                                                    {lesson.type}
-                                                  </span>
+                                                  {completed ? (
+                                                    <span className="px-2 py-0.5 rounded-full text-[10px] font-bold uppercase bg-green-500/20 text-green-600">
+                                                      Complete
+                                                    </span>
+                                                  ) : inProgress ? (
+                                                    <span className="px-2 py-0.5 rounded-full text-[10px] font-bold uppercase bg-amber-500/20 text-amber-600">
+                                                      In Progress
+                                                    </span>
+                                                  ) : (
+                                                    <span className={`px-2 py-0.5 rounded-full text-[10px] font-bold uppercase ${
+                                                      lesson.type === 'instruction' ? 'bg-blue-500/20 text-blue-600' :
+                                                      lesson.type === 'interactive' ? 'bg-purple-500/20 text-purple-600' :
+                                                      lesson.type === 'reflection' ? 'bg-amber-500/20 text-amber-600' :
+                                                      lesson.type === 'game' ? 'bg-green-500/20 text-green-600' :
+                                                      'bg-red-500/20 text-red-600'
+                                                    }`}>
+                                                      {lesson.type}
+                                                    </span>
+                                                  )}
                                                 </div>
                                                 <p className="text-xs text-[var(--muted-foreground)] truncate">{lesson.description}</p>
                                               </div>
@@ -2081,7 +2153,7 @@ export default function ExodologyPathPage() {
                                                   {lesson.duration}
                                                 </span>
                                                 {!isLocked && (
-                                                  <ChevronRight className="w-5 h-5 text-[var(--primary)] group-hover:translate-x-1 transition-transform" />
+                                                  <ChevronRight className={`w-5 h-5 ${completed ? 'text-green-500' : 'text-[var(--primary)]'} group-hover:translate-x-1 transition-transform`} />
                                                 )}
                                               </div>
                                             </div>
@@ -2190,13 +2262,40 @@ export default function ExodologyPathPage() {
                 <Card className={`border-4 border-${path.color}-400 bg-gradient-to-br from-${path.color}-50 to-white dark:from-[var(--card)] dark:to-[var(--muted)]`}>
                   <CardContent className="p-6 text-center">
                     <div className="text-5xl mb-4">{path.heroEmoji}</div>
-                    <h3 className="text-xl font-black mb-2 text-[var(--foreground)]">Start This Path</h3>
-                    <p className="text-[var(--muted-foreground)] mb-4">
-                      {totalModules} modules • {totalLessons} lessons
-                    </p>
-                    <Link href={`/exodology/paths/${pathId}/lessons/${path.modules[0]?.lessons[0]?.id || 'f-m1-l1'}`}>
+                    <h3 className="text-xl font-black mb-2 text-[var(--foreground)]">
+                      {hasProgress ? 'Continue Learning' : 'Start This Path'}
+                    </h3>
+
+                    {/* Progress Stats */}
+                    {hasProgress ? (
+                      <div className="mb-4">
+                        <div className="flex justify-between text-sm mb-2">
+                          <span className="text-[var(--muted-foreground)]">Progress</span>
+                          <span className="font-bold text-[var(--foreground)]">
+                            {completedCount}/{totalLessons} lessons
+                          </span>
+                        </div>
+                        <div className="w-full h-3 bg-[var(--muted)] rounded-full overflow-hidden">
+                          <motion.div
+                            initial={{ width: 0 }}
+                            animate={{ width: `${(completedCount / totalLessons) * 100}%` }}
+                            transition={{ duration: 0.5 }}
+                            className={`h-full bg-gradient-to-r ${path.gradient}`}
+                          />
+                        </div>
+                        <p className="text-xs text-[var(--muted-foreground)] mt-2">
+                          {Math.round((completedCount / totalLessons) * 100)}% complete
+                        </p>
+                      </div>
+                    ) : (
+                      <p className="text-[var(--muted-foreground)] mb-4">
+                        {totalModules} modules • {totalLessons} lessons
+                      </p>
+                    )}
+
+                    <Link href={`/exodology/paths/${pathId}/lessons/${hasProgress ? getNextLesson() : (path.modules[0]?.lessons[0]?.id || 'f-m1-l1')}`}>
                       <Button className={`w-full font-bold text-lg py-6 bg-gradient-to-r ${path.gradient}`}>
-                        Begin Learning <ChevronRight className="w-5 h-5 ml-2" />
+                        {hasProgress ? 'Continue' : 'Begin Learning'} <ChevronRight className="w-5 h-5 ml-2" />
                       </Button>
                     </Link>
                   </CardContent>

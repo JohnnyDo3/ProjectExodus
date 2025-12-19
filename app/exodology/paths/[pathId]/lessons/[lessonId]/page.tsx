@@ -188,6 +188,34 @@ const pathMeta = {
 }
 
 // ============================================================================
+// LESSON NAVIGATION HELPER
+// ============================================================================
+
+type LessonMap = Record<string, { id: string; title: string; duration: string; type: string }>
+
+function getLessonNavigation(pathId: string, currentLessonId: string) {
+  // Get all lessons for this path in order
+  const lessonsMap: LessonMap = pathId === 'foundations' ? foundationsLessons as LessonMap :
+                     pathId === 'applied' ? appliedLessons as LessonMap :
+                     pathId === 'strategic' ? strategicLessons as LessonMap : {}
+
+  const lessonIds = Object.keys(lessonsMap)
+  const currentIndex = lessonIds.indexOf(currentLessonId)
+
+  const prevLesson = currentIndex > 0 ? {
+    id: lessonIds[currentIndex - 1],
+    title: lessonsMap[lessonIds[currentIndex - 1]]?.title || 'Previous'
+  } : null
+
+  const nextLesson = currentIndex < lessonIds.length - 1 ? {
+    id: lessonIds[currentIndex + 1],
+    title: lessonsMap[lessonIds[currentIndex + 1]]?.title || 'Next'
+  } : null
+
+  return { prevLesson, nextLesson, currentIndex, totalLessons: lessonIds.length }
+}
+
+// ============================================================================
 // LESSON COMPONENTS
 // ============================================================================
 
@@ -1021,6 +1049,9 @@ export default function LessonPage() {
 
   const TypeIcon = getLessonTypeIcon(lessonData.type)
 
+  // Get prev/next lesson navigation
+  const { prevLesson, nextLesson, currentIndex, totalLessons } = getLessonNavigation(pathId, lessonId)
+
   return (
     <div className="min-h-screen bg-[var(--background)]">
       {/* Header */}
@@ -1172,48 +1203,89 @@ export default function LessonPage() {
                 </CardContent>
               </Card>
 
-              {/* Navigation */}
-              <div className="flex justify-between mt-8">
-                <Button
-                  variant="outline"
-                  onClick={() => router.push(`/exodology/paths/${pathId}`)}
-                >
-                  <ArrowLeft className="w-4 h-4 mr-2" />
-                  Back to Path
-                </Button>
+              {/* Lesson Progress Indicator */}
+              <div className="flex items-center justify-center gap-2 mt-8 mb-4">
+                <span className="text-sm text-[var(--muted-foreground)]">
+                  Lesson {currentIndex + 1} of {totalLessons}
+                </span>
+                <div className="flex-1 max-w-xs h-2 bg-[var(--muted)] rounded-full overflow-hidden">
+                  <div
+                    className={`h-full bg-gradient-to-r ${meta.gradient} transition-all duration-300`}
+                    style={{ width: `${((currentIndex + 1) / totalLessons) * 100}%` }}
+                  />
+                </div>
+              </div>
 
-                {progress?.status === 'COMPLETED' ? (
-                  <div className="flex items-center gap-3">
+              {/* Navigation */}
+              <div className="flex items-center justify-between mt-4 gap-4">
+                {/* Previous Lesson */}
+                {prevLesson ? (
+                  <Link href={`/exodology/paths/${pathId}/lessons/${prevLesson.id}`} className="flex-1">
+                    <Button variant="outline" className="w-full justify-start">
+                      <ArrowLeft className="w-4 h-4 mr-2 flex-shrink-0" />
+                      <span className="truncate text-left">
+                        <span className="text-xs text-[var(--muted-foreground)] block">Previous</span>
+                        <span className="text-sm">{prevLesson.title}</span>
+                      </span>
+                    </Button>
+                  </Link>
+                ) : (
+                  <Link href={`/exodology/paths/${pathId}`} className="flex-1">
+                    <Button variant="outline" className="w-full justify-start">
+                      <ArrowLeft className="w-4 h-4 mr-2" />
+                      Back to Path
+                    </Button>
+                  </Link>
+                )}
+
+                {/* Complete / Status */}
+                <div className="flex-shrink-0">
+                  {progress?.status === 'COMPLETED' ? (
                     <div className="flex items-center gap-2 px-4 py-2 rounded-full bg-green-500/20 text-green-600 font-bold">
                       <Trophy className="w-5 h-5" />
-                      Completed
+                      <span className="hidden sm:inline">Completed</span>
                     </div>
+                  ) : (
                     <Button
-                      variant="outline"
-                      onClick={() => router.push(`/exodology/paths/${pathId}`)}
+                      className={`bg-gradient-to-r ${meta.gradient}`}
+                      onClick={() => markCompleted()}
+                      disabled={saving}
                     >
-                      Next Lesson
+                      {saving ? (
+                        <Loader2 className="w-4 h-4 animate-spin" />
+                      ) : (
+                        <>
+                          <Check className="w-4 h-4 sm:mr-2" />
+                          <span className="hidden sm:inline">Mark Complete</span>
+                        </>
+                      )}
+                    </Button>
+                  )}
+                </div>
+
+                {/* Next Lesson */}
+                {nextLesson ? (
+                  <Link href={`/exodology/paths/${pathId}/lessons/${nextLesson.id}`} className="flex-1">
+                    <Button
+                      variant={progress?.status === 'COMPLETED' ? 'primary' : 'outline'}
+                      className={`w-full justify-end ${progress?.status === 'COMPLETED' ? `bg-gradient-to-r ${meta.gradient}` : ''}`}
+                    >
+                      <span className="truncate text-right">
+                        <span className="text-xs text-[var(--muted-foreground)] block">Next</span>
+                        <span className="text-sm">{nextLesson.title}</span>
+                      </span>
+                      <ArrowRight className="w-4 h-4 ml-2 flex-shrink-0" />
+                    </Button>
+                  </Link>
+                ) : (
+                  <Link href={`/exodology/paths/${pathId}`} className="flex-1">
+                    <Button
+                      className={`w-full justify-end bg-gradient-to-r ${meta.gradient}`}
+                    >
+                      <span className="truncate text-right">Path Complete!</span>
                       <ArrowRight className="w-4 h-4 ml-2" />
                     </Button>
-                  </div>
-                ) : (
-                  <Button
-                    className={`bg-gradient-to-r ${meta.gradient}`}
-                    onClick={() => markCompleted()}
-                    disabled={saving}
-                  >
-                    {saving ? (
-                      <>
-                        <Loader2 className="w-4 h-4 mr-2 animate-spin" />
-                        Saving...
-                      </>
-                    ) : (
-                      <>
-                        Mark Complete
-                        <Check className="w-4 h-4 ml-2" />
-                      </>
-                    )}
-                  </Button>
+                  </Link>
                 )}
               </div>
             </div>

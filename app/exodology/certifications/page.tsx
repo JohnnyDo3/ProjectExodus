@@ -1,15 +1,124 @@
 'use client'
 
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useCallback, useRef } from 'react'
 import { useSession } from 'next-auth/react'
 import { Card, CardContent } from '@/components/ui/Card'
 import { Button } from '@/components/ui/Button'
-import { motion } from 'framer-motion'
+import { motion, AnimatePresence } from 'framer-motion'
 import {
   ArrowLeft, Award, Trophy, Lock, ChevronRight, CheckCircle2,
   Loader2, Compass, Map, Target, Crown, Star, Download
 } from 'lucide-react'
 import Link from 'next/link'
+
+// ============================================================================
+// CONFETTI COMPONENT
+// ============================================================================
+
+interface ConfettiPiece {
+  x: number
+  y: number
+  rotation: number
+  color: string
+  speedX: number
+  speedY: number
+  size: number
+}
+
+function Confetti({ active, duration = 3000 }: { active: boolean; duration?: number }) {
+  const canvasRef = useRef<HTMLCanvasElement>(null)
+  const [pieces, setPieces] = useState<ConfettiPiece[]>([])
+  const animationRef = useRef<number | null>(null)
+
+  const colors = ['#f59e0b', '#10b981', '#8b5cf6', '#ef4444', '#3b82f6', '#ec4899', '#06b6d4']
+
+  const createPieces = useCallback(() => {
+    const newPieces: ConfettiPiece[] = []
+    for (let i = 0; i < 150; i++) {
+      newPieces.push({
+        x: Math.random() * window.innerWidth,
+        y: -20 - Math.random() * 100,
+        rotation: Math.random() * 360,
+        color: colors[Math.floor(Math.random() * colors.length)],
+        speedX: (Math.random() - 0.5) * 4,
+        speedY: Math.random() * 3 + 2,
+        size: Math.random() * 10 + 5
+      })
+    }
+    setPieces(newPieces)
+  }, [])
+
+  useEffect(() => {
+    if (!active) {
+      setPieces([])
+      return
+    }
+
+    createPieces()
+
+    const timeout = setTimeout(() => {
+      setPieces([])
+    }, duration)
+
+    return () => clearTimeout(timeout)
+  }, [active, duration, createPieces])
+
+  useEffect(() => {
+    const canvas = canvasRef.current
+    if (!canvas || pieces.length === 0) return
+
+    const ctx = canvas.getContext('2d')
+    if (!ctx) return
+
+    canvas.width = window.innerWidth
+    canvas.height = window.innerHeight
+
+    let localPieces = [...pieces]
+
+    const animate = () => {
+      ctx.clearRect(0, 0, canvas.width, canvas.height)
+
+      localPieces = localPieces.map(piece => ({
+        ...piece,
+        x: piece.x + piece.speedX,
+        y: piece.y + piece.speedY,
+        rotation: piece.rotation + 3,
+        speedY: piece.speedY + 0.1
+      })).filter(piece => piece.y < canvas.height + 20)
+
+      localPieces.forEach(piece => {
+        ctx.save()
+        ctx.translate(piece.x, piece.y)
+        ctx.rotate((piece.rotation * Math.PI) / 180)
+        ctx.fillStyle = piece.color
+        ctx.fillRect(-piece.size / 2, -piece.size / 2, piece.size, piece.size * 0.6)
+        ctx.restore()
+      })
+
+      if (localPieces.length > 0) {
+        animationRef.current = requestAnimationFrame(animate)
+      }
+    }
+
+    animate()
+
+    return () => {
+      if (animationRef.current) {
+        cancelAnimationFrame(animationRef.current)
+      }
+    }
+  }, [pieces])
+
+  if (!active && pieces.length === 0) return null
+
+  return (
+    <canvas
+      ref={canvasRef}
+      className="fixed inset-0 pointer-events-none z-50"
+      style={{ width: '100vw', height: '100vh' }}
+    />
+  )
+}
 
 // ============================================================================
 // CERTIFICATION DATA
@@ -99,6 +208,8 @@ export default function CertificationsPage() {
   } | null>(null)
   const [loading, setLoading] = useState(true)
   const [claiming, setClaiming] = useState<string | null>(null)
+  const [showConfetti, setShowConfetti] = useState(false)
+  const [celebrationMessage, setCelebrationMessage] = useState<string | null>(null)
 
   // Fetch certification data
   useEffect(() => {
@@ -137,7 +248,13 @@ export default function CertificationsPage() {
         if (refreshRes.ok) {
           setCertData(await refreshRes.json())
         }
-        alert(data.message)
+        // Trigger celebration
+        setShowConfetti(true)
+        setCelebrationMessage(data.message)
+        setTimeout(() => {
+          setShowConfetti(false)
+          setCelebrationMessage(null)
+        }, 5000)
       } else {
         const error = await res.json()
         alert(error.error)
@@ -181,6 +298,27 @@ export default function CertificationsPage() {
 
   return (
     <div className="min-h-screen bg-[var(--background)]">
+      {/* Confetti Celebration */}
+      <Confetti active={showConfetti} duration={5000} />
+
+      {/* Celebration Message Overlay */}
+      <AnimatePresence>
+        {celebrationMessage && (
+          <motion.div
+            initial={{ opacity: 0, scale: 0.8 }}
+            animate={{ opacity: 1, scale: 1 }}
+            exit={{ opacity: 0, scale: 0.8 }}
+            className="fixed inset-0 z-40 flex items-center justify-center pointer-events-none"
+          >
+            <div className="bg-gradient-to-br from-amber-500 via-orange-500 to-purple-600 text-white px-8 py-6 rounded-2xl shadow-2xl text-center max-w-md mx-4">
+              <Trophy className="w-16 h-16 mx-auto mb-4 animate-bounce" />
+              <h2 className="text-2xl font-black mb-2">Certification Earned!</h2>
+              <p className="text-white/90">{celebrationMessage}</p>
+            </div>
+          </motion.div>
+        )}
+      </AnimatePresence>
+
       {/* Header */}
       <header className="py-12 bg-gradient-to-br from-amber-500 via-orange-500 to-purple-600 text-white">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
