@@ -1955,6 +1955,61 @@ export default function ExodologyPathPage() {
     }
   }
 
+  // Calculate module completion
+  const getModuleProgress = (module: Module) => {
+    const completedInModule = module.lessons.filter(lesson => isLessonCompleted(lesson.id)).length
+    return {
+      completed: completedInModule,
+      total: module.lessons.length,
+      percentage: module.lessons.length > 0 ? (completedInModule / module.lessons.length) * 100 : 0
+    }
+  }
+
+  // Progress Ring Component
+  const ProgressRing = ({ progress, size = 40, strokeWidth = 3 }: { progress: number; size?: number; strokeWidth?: number }) => {
+    const radius = (size - strokeWidth) / 2
+    const circumference = radius * 2 * Math.PI
+    const offset = circumference - (progress / 100) * circumference
+
+    return (
+      <div className="relative" style={{ width: size, height: size }}>
+        <svg className="transform -rotate-90" width={size} height={size}>
+          <circle
+            className="text-[var(--muted)]"
+            strokeWidth={strokeWidth}
+            stroke="currentColor"
+            fill="transparent"
+            r={radius}
+            cx={size / 2}
+            cy={size / 2}
+          />
+          <circle
+            className={progress === 100 ? 'text-green-500' : `text-${path.color}-500`}
+            strokeWidth={strokeWidth}
+            strokeDasharray={circumference}
+            strokeDashoffset={offset}
+            strokeLinecap="round"
+            stroke="currentColor"
+            fill="transparent"
+            r={radius}
+            cx={size / 2}
+            cy={size / 2}
+            style={{ transition: 'stroke-dashoffset 0.5s ease' }}
+          />
+        </svg>
+        <div className="absolute inset-0 flex items-center justify-center">
+          {progress === 100 ? (
+            <CheckCircle2 className="w-4 h-4 text-green-500" />
+          ) : (
+            <span className="text-[10px] font-bold text-[var(--foreground)]">
+              {Math.round(progress)}%
+            </span>
+          )}
+        </div>
+      </div>
+    )
+  }
+
   return (
     <div className="min-h-screen bg-[var(--background)]">
       {/* Hero Section */}
@@ -2051,23 +2106,37 @@ export default function ExodologyPathPage() {
                           const Icon = module.icon
                           const isExpanded = expandedModules.has(module.id)
 
+                          const moduleProgress = getModuleProgress(module)
+
                           return (
-                            <div key={module.id} className="border-2 border-[var(--border)] rounded-xl overflow-hidden">
+                            <div key={module.id} className={`border-2 rounded-xl overflow-hidden ${
+                              moduleProgress.percentage === 100
+                                ? 'border-green-500/50 bg-green-500/5'
+                                : 'border-[var(--border)]'
+                            }`}>
                               {/* Module Header */}
                               <button
                                 onClick={() => toggleModule(module.id)}
                                 className="w-full flex items-center gap-4 p-4 bg-[var(--card)] hover:bg-[var(--muted)]/50 transition-colors text-left"
                               >
-                                <div className={`w-12 h-12 rounded-xl bg-gradient-to-br ${path.gradient} flex items-center justify-center shadow-lg`}>
-                                  <Icon className="w-6 h-6 text-white" />
+                                <div className={`w-12 h-12 rounded-xl bg-gradient-to-br ${
+                                  moduleProgress.percentage === 100 ? 'from-green-500 to-emerald-600' : path.gradient
+                                } flex items-center justify-center shadow-lg`}>
+                                  {moduleProgress.percentage === 100 ? (
+                                    <CheckCircle2 className="w-6 h-6 text-white" />
+                                  ) : (
+                                    <Icon className="w-6 h-6 text-white" />
+                                  )}
                                 </div>
                                 <div className="flex-1">
                                   <h4 className="font-bold text-[var(--foreground)]">{module.title}</h4>
                                   <p className="text-sm text-[var(--muted-foreground)]">{module.subtitle}</p>
                                 </div>
                                 <div className="flex items-center gap-4">
+                                  {/* Progress Ring */}
+                                  {session && <ProgressRing progress={moduleProgress.percentage} />}
                                   <span className="text-sm text-[var(--muted-foreground)]">
-                                    {module.lessons.length} lessons
+                                    {moduleProgress.completed}/{module.lessons.length}
                                   </span>
                                   <ChevronDown className={`w-5 h-5 text-[var(--muted-foreground)] transition-transform ${isExpanded ? 'rotate-180' : ''}`} />
                                 </div>

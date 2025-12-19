@@ -9,7 +9,7 @@ import {
   ArrowLeft, ArrowRight, BookOpen, Clock, CheckCircle2,
   Lightbulb, ChevronRight, Play, Brain, Gamepad2, FileText,
   Quote, ExternalLink, RefreshCw, Check, X, Shuffle, Timer,
-  Target, Lock, Loader2, Trophy
+  Target, Lock, Loader2, Trophy, Keyboard, StickyNote, Save
 } from 'lucide-react'
 import Link from 'next/link'
 import { notFound, useParams, useRouter } from 'next/navigation'
@@ -120,6 +120,84 @@ function useProgress(pathId: string, lessonId: string) {
 }
 
 // ============================================================================
+// NOTES HOOK
+// ============================================================================
+
+function useNotes(pathId: string, lessonId: string) {
+  const [note, setNote] = useState<string>('')
+  const [originalNote, setOriginalNote] = useState<string>('')
+  const [loading, setLoading] = useState(true)
+  const [saving, setSaving] = useState(false)
+  const [lastSaved, setLastSaved] = useState<Date | null>(null)
+
+  // Fetch note on mount
+  useEffect(() => {
+    async function fetchNote() {
+      try {
+        const res = await fetch(`/api/exodology/notes?pathId=${pathId}&lessonId=${lessonId}`)
+        if (res.ok) {
+          const data = await res.json()
+          if (data.note) {
+            setNote(data.note.content)
+            setOriginalNote(data.note.content)
+          }
+        }
+      } catch (error) {
+        console.error('Error fetching note:', error)
+      } finally {
+        setLoading(false)
+      }
+    }
+    fetchNote()
+  }, [pathId, lessonId])
+
+  // Save note
+  const saveNote = useCallback(async () => {
+    if (note === originalNote) return // No changes
+
+    setSaving(true)
+    try {
+      const res = await fetch('/api/exodology/notes', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ pathId, lessonId, content: note })
+      })
+      if (res.ok) {
+        setOriginalNote(note)
+        setLastSaved(new Date())
+      }
+    } catch (error) {
+      console.error('Error saving note:', error)
+    } finally {
+      setSaving(false)
+    }
+  }, [pathId, lessonId, note, originalNote])
+
+  // Auto-save after 2 seconds of inactivity
+  useEffect(() => {
+    if (note === originalNote) return
+
+    const timer = setTimeout(() => {
+      saveNote()
+    }, 2000)
+
+    return () => clearTimeout(timer)
+  }, [note, originalNote, saveNote])
+
+  const hasChanges = note !== originalNote
+
+  return {
+    note,
+    setNote,
+    loading,
+    saving,
+    saveNote,
+    hasChanges,
+    lastSaved
+  }
+}
+
+// ============================================================================
 // TYPE DEFINITIONS
 // ============================================================================
 
@@ -216,6 +294,68 @@ function getLessonNavigation(pathId: string, currentLessonId: string) {
 }
 
 // ============================================================================
+// GLOSSARY TOOLTIP COMPONENT
+// ============================================================================
+
+// Build a map of glossary terms for quick lookup
+const glossaryTermsMap = Object.entries(exodologyGlossary).reduce((acc, [key, value]) => {
+  acc[value.term.toLowerCase()] = value
+  return acc
+}, {} as Record<string, { term: string; definition: string; level: string }>)
+
+function GlossaryText({ text }: { text: string }) {
+  const [activeTooltip, setActiveTooltip] = useState<string | null>(null)
+
+  // Find all glossary terms in the text
+  const terms = Object.values(exodologyGlossary).map(g => g.term)
+  const termPattern = new RegExp(`\\b(${terms.join('|')})\\b`, 'gi')
+
+  const parts = text.split(termPattern)
+
+  return (
+    <span className="relative">
+      {parts.map((part, i) => {
+        const lowerPart = part.toLowerCase()
+        const glossaryEntry = glossaryTermsMap[lowerPart]
+
+        if (glossaryEntry) {
+          return (
+            <span
+              key={i}
+              className="relative inline-block"
+              onMouseEnter={() => setActiveTooltip(lowerPart)}
+              onMouseLeave={() => setActiveTooltip(null)}
+            >
+              <span className="border-b-2 border-dotted border-[var(--primary)] cursor-help text-[var(--primary)] font-medium">
+                {part}
+              </span>
+              {activeTooltip === lowerPart && (
+                <motion.div
+                  initial={{ opacity: 0, y: 5 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  className="absolute z-50 bottom-full left-1/2 transform -translate-x-1/2 mb-2 px-3 py-2 bg-[var(--card)] border border-[var(--border)] rounded-lg shadow-xl max-w-xs text-left"
+                >
+                  <div className="text-sm font-bold text-[var(--foreground)] mb-1">
+                    {glossaryEntry.term}
+                  </div>
+                  <div className="text-xs text-[var(--muted-foreground)]">
+                    {glossaryEntry.definition}
+                  </div>
+                  <div className="absolute top-full left-1/2 transform -translate-x-1/2 -mt-1">
+                    <div className="border-4 border-transparent border-t-[var(--border)]" />
+                  </div>
+                </motion.div>
+              )}
+            </span>
+          )
+        }
+        return <span key={i}>{part}</span>
+      })}
+    </span>
+  )
+}
+
+// ============================================================================
 // LESSON COMPONENTS
 // ============================================================================
 
@@ -229,7 +369,7 @@ function InstructionContent({ content }: { content: NonNullable<LessonData['cont
         <div className="prose prose-lg max-w-none text-[var(--foreground)]">
           {content.introduction.split('\n\n').map((paragraph, i) => (
             <p key={i} className="text-[var(--muted-foreground)] leading-relaxed">
-              {paragraph}
+              <GlossaryText text={paragraph} />
             </p>
           ))}
         </div>
@@ -280,10 +420,18 @@ function InstructionContent({ content }: { content: NonNullable<LessonData['cont
                   </ol>
                 )
               }
+              // Handle bold text with regex, then wrap with GlossaryText
+              const boldProcessed = paragraph.replace(/\*\*(.+?)\*\*/g, '<<BOLD>>$1<</BOLD>>')
               return (
-                <p key={j} className="text-[var(--muted-foreground)] leading-relaxed" dangerouslySetInnerHTML={{
-                  __html: paragraph.replace(/\*\*(.+?)\*\*/g, '<strong class="text-[var(--foreground)]">$1</strong>')
-                }} />
+                <p key={j} className="text-[var(--muted-foreground)] leading-relaxed">
+                  {boldProcessed.split(/<<BOLD>>|<\/BOLD>>/).map((segment, si) => {
+                    // Every odd segment (1, 3, 5...) was bold
+                    if (si % 2 === 1) {
+                      return <strong key={si} className="text-[var(--foreground)]"><GlossaryText text={segment} /></strong>
+                    }
+                    return <GlossaryText key={si} text={segment} />
+                  })}
+                </p>
               )
             })}
           </div>
@@ -925,6 +1073,9 @@ export default function LessonPage() {
   // Progress tracking (must be before conditional returns)
   const { progress, loading: progressLoading, saving, markStarted, markCompleted, updateCompletionData } = useProgress(pathId, lessonId)
 
+  // Notes (must be before conditional returns)
+  const { note, setNote, loading: notesLoading, saving: notesSaving, saveNote, hasChanges: notesHasChanges, lastSaved } = useNotes(pathId, lessonId)
+
   // Mark as started when user views the lesson
   useEffect(() => {
     if (session && !progressLoading) {
@@ -1052,8 +1203,81 @@ export default function LessonPage() {
   // Get prev/next lesson navigation
   const { prevLesson, nextLesson, currentIndex, totalLessons } = getLessonNavigation(pathId, lessonId)
 
+  // Keyboard navigation
+  useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      // Don't trigger if user is typing in an input/textarea
+      if (e.target instanceof HTMLInputElement || e.target instanceof HTMLTextAreaElement) {
+        return
+      }
+
+      switch (e.key) {
+        case 'ArrowLeft':
+          if (prevLesson) {
+            router.push(`/exodology/paths/${pathId}/lessons/${prevLesson.id}`)
+          }
+          break
+        case 'ArrowRight':
+          if (nextLesson) {
+            router.push(`/exodology/paths/${pathId}/lessons/${nextLesson.id}`)
+          }
+          break
+        case ' ': // Space key
+          e.preventDefault()
+          if (progress?.status !== 'COMPLETED' && !saving) {
+            markCompleted()
+          }
+          break
+        case 'Escape':
+          router.push(`/exodology/paths/${pathId}`)
+          break
+      }
+    }
+
+    window.addEventListener('keydown', handleKeyDown)
+    return () => window.removeEventListener('keydown', handleKeyDown)
+  }, [prevLesson, nextLesson, pathId, router, progress, saving, markCompleted])
+
+  // State for showing keyboard shortcuts hint
+  const [showKeyboardHint, setShowKeyboardHint] = useState(true)
+
+  // Hide keyboard hint after 5 seconds
+  useEffect(() => {
+    const timer = setTimeout(() => setShowKeyboardHint(false), 5000)
+    return () => clearTimeout(timer)
+  }, [])
+
   return (
     <div className="min-h-screen bg-[var(--background)]">
+      {/* Keyboard Shortcuts Hint */}
+      <AnimatePresence>
+        {showKeyboardHint && (
+          <motion.div
+            initial={{ opacity: 0, y: 50 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: 50 }}
+            className="fixed bottom-4 right-4 z-50 bg-[var(--card)] border border-[var(--border)] rounded-lg shadow-lg p-3 max-w-xs"
+          >
+            <div className="flex items-center gap-2 mb-2">
+              <Keyboard className="w-4 h-4 text-[var(--primary)]" />
+              <span className="text-sm font-bold text-[var(--foreground)]">Keyboard Shortcuts</span>
+              <button
+                onClick={() => setShowKeyboardHint(false)}
+                className="ml-auto text-[var(--muted-foreground)] hover:text-[var(--foreground)]"
+              >
+                <X className="w-4 h-4" />
+              </button>
+            </div>
+            <div className="text-xs text-[var(--muted-foreground)] space-y-1">
+              <div><kbd className="px-1.5 py-0.5 bg-[var(--muted)] rounded text-[10px] font-mono">←</kbd> Previous lesson</div>
+              <div><kbd className="px-1.5 py-0.5 bg-[var(--muted)] rounded text-[10px] font-mono">→</kbd> Next lesson</div>
+              <div><kbd className="px-1.5 py-0.5 bg-[var(--muted)] rounded text-[10px] font-mono">Space</kbd> Mark complete</div>
+              <div><kbd className="px-1.5 py-0.5 bg-[var(--muted)] rounded text-[10px] font-mono">Esc</kbd> Back to path</div>
+            </div>
+          </motion.div>
+        )}
+      </AnimatePresence>
+
       {/* Header */}
       <header className={`py-6 bg-gradient-to-r ${meta.gradient} text-white`}>
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
@@ -1132,6 +1356,51 @@ export default function LessonPage() {
                   </CardContent>
                 </Card>
               )}
+
+              {/* Personal Notes */}
+              <Card className="border-2 border-[var(--border)]">
+                <CardContent className="p-4">
+                  <div className="flex items-center justify-between mb-3">
+                    <h3 className="font-bold text-[var(--foreground)] flex items-center gap-2">
+                      <StickyNote className="w-4 h-4 text-[var(--primary)]" />
+                      My Notes
+                    </h3>
+                    {notesSaving && (
+                      <span className="text-xs text-[var(--muted-foreground)] flex items-center gap-1">
+                        <Loader2 className="w-3 h-3 animate-spin" />
+                        Saving...
+                      </span>
+                    )}
+                    {!notesSaving && lastSaved && (
+                      <span className="text-xs text-green-600 flex items-center gap-1">
+                        <Check className="w-3 h-3" />
+                        Saved
+                      </span>
+                    )}
+                  </div>
+                  <textarea
+                    value={note}
+                    onChange={(e) => setNote(e.target.value)}
+                    placeholder="Jot down your thoughts, key insights, or questions..."
+                    rows={4}
+                    className="w-full p-3 rounded-lg border border-[var(--border)] bg-[var(--background)] text-[var(--foreground)] placeholder:text-[var(--muted-foreground)] focus:border-[var(--primary)] focus:outline-none resize-none text-sm"
+                  />
+                  {notesHasChanges && !notesSaving && (
+                    <Button
+                      variant="outline"
+                      size="sm"
+                      onClick={saveNote}
+                      className="w-full mt-2"
+                    >
+                      <Save className="w-3 h-3 mr-1" />
+                      Save Notes
+                    </Button>
+                  )}
+                  <p className="text-xs text-[var(--muted-foreground)] mt-2">
+                    Notes auto-save after 2 seconds
+                  </p>
+                </CardContent>
+              </Card>
             </aside>
 
             {/* Main Lesson Content */}

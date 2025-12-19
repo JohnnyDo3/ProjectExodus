@@ -1435,6 +1435,57 @@ model ExodologyCertification {
   @@index([certificationId])
 }
 
+// User's learning streak tracking
+model ExodologyStreak {
+  id              String                    @id @default(cuid())
+  userId          String                    @unique
+  currentStreak   Int                       @default(0)
+  longestStreak   Int                       @default(0)
+  lastActivityDate DateTime?
+  streakStartDate DateTime?
+  totalLearningDays Int                     @default(0)
+
+  user            User                      @relation("ExodologyStreak", fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId])
+}
+
+// User's notes on lessons
+model ExodologyNote {
+  id              String                    @id @default(cuid())
+  userId          String
+  pathId          String
+  lessonId        String
+  content         String                    @db.Text
+  createdAt       DateTime                  @default(now())
+  updatedAt       DateTime                  @updatedAt
+
+  user            User                      @relation("ExodologyNotes", fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([userId, pathId, lessonId])
+  @@index([userId])
+  @@index([lessonId])
+}
+
+// Spaced repetition review schedule
+model ExodologyReview {
+  id              String                    @id @default(cuid())
+  userId          String
+  pathId          String
+  lessonId        String
+  nextReviewDate  DateTime
+  interval        Int                       @default(1)  // days until next review
+  easeFactor      Float                     @default(2.5) // SM-2 algorithm factor
+  reviewCount     Int                       @default(0)
+  lastReviewDate  DateTime?
+
+  user            User                      @relation("ExodologyReviews", fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([userId, pathId, lessonId])
+  @@index([userId])
+  @@index([nextReviewDate])
+}
+
 // ============================================
 // PROJECT PREREQUISITES
 // Course requirements for contribution access

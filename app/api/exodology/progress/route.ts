@@ -9,6 +9,123 @@ type ProgressRecord = {
   status: string
 }
 
+// Helper to check if two dates are on the same day
+function isSameDay(date1: Date, date2: Date): boolean {
+  return (
+    date1.getFullYear() === date2.getFullYear() &&
+    date1.getMonth() === date2.getMonth() &&
+    date1.getDate() === date2.getDate()
+  )
+}
+
+// Helper to check if date1 is yesterday relative to date2
+function isYesterday(date1: Date, date2: Date): boolean {
+  const yesterday = new Date(date2)
+  yesterday.setDate(yesterday.getDate() - 1)
+  return isSameDay(date1, yesterday)
+}
+
+// Helper to update streak
+async function updateStreak(userId: string, activityType: string) {
+  const today = new Date()
+
+  // Get or create streak record
+  let streak = await prisma.exodologyStreak.findUnique({
+    where: { userId }
+  })
+
+  if (!streak) {
+    // First activity - create streak
+    await prisma.exodologyStreak.create({
+      data: {
+        userId,
+        currentStreak: 1,
+        longestStreak: 1,
+        totalLearningDays: 1,
+        lastActivityDate: today,
+        streakStartDate: today
+      }
+    })
+    return
+  }
+
+  // Check last activity date
+  const lastActivity = streak.lastActivityDate ? new Date(streak.lastActivityDate) : null
+  const isActiveToday = lastActivity ? isSameDay(lastActivity, today) : false
+  const wasActiveYesterday = lastActivity ? isYesterday(lastActivity, today) : false
+
+  if (isActiveToday) {
+    // Already active today, no update needed
+    return
+  }
+
+  let newCurrentStreak = streak.currentStreak
+  let newLongestStreak = streak.longestStreak
+  let newTotalDays = streak.totalLearningDays + 1
+  let streakStartDate = streak.streakStartDate
+
+  if (wasActiveYesterday || !lastActivity) {
+    // Continuing streak
+    newCurrentStreak++
+    if (newCurrentStreak > newLongestStreak) {
+      newLongestStreak = newCurrentStreak
+    }
+    if (!streakStartDate) {
+      streakStartDate = today
+    }
+  } else {
+    // Streak broken - start new streak
+    newCurrentStreak = 1
+    streakStartDate = today
+  }
+
+  // Update streak
+  await prisma.exodologyStreak.update({
+    where: { userId },
+    data: {
+      currentStreak: newCurrentStreak,
+      longestStreak: newLongestStreak,
+      totalLearningDays: newTotalDays,
+      lastActivityDate: today,
+      streakStartDate: streakStartDate
+    }
+  })
+}
+
+// Helper to schedule a spaced repetition review
+async function scheduleReview(userId: string, pathId: string, lessonId: string) {
+  const INITIAL_INTERVAL = 1 // days
+  const DEFAULT_EASE_FACTOR = 2.5
+
+  const nextReviewDate = new Date()
+  nextReviewDate.setDate(nextReviewDate.getDate() + INITIAL_INTERVAL)
+
+  // Only create if doesn't exist (don't overwrite existing review schedule)
+  const existing = await prisma.exodologyReview.findUnique({
+    where: {
+      userId_pathId_lessonId: {
+        userId,
+        pathId,
+        lessonId
+      }
+    }
+  })
+
+  if (!existing) {
+    await prisma.exodologyReview.create({
+      data: {
+        userId,
+        pathId,
+        lessonId,
+        nextReviewDate,
+        interval: INITIAL_INTERVAL,
+        easeFactor: DEFAULT_EASE_FACTOR,
+        reviewCount: 0
+      }
+    })
+  }
+}
+
 // GET - Fetch user's progress for a path or all paths
 export async function GET(request: NextRequest) {
   try {
@@ -122,6 +239,24 @@ export async function POST(request: NextRequest) {
         lastAccessedAt: new Date()
       }
     })
+
+    // Update streak on any progress (completion counts more)
+    try {
+      await updateStreak(session.user.id, status === 'COMPLETED' ? 'lesson_completed' : 'lesson_started')
+    } catch (streakError) {
+      console.error('Error updating streak:', streakError)
+      // Don't fail the request if streak update fails
+    }
+
+    // Schedule spaced repetition review when lesson is completed
+    if (status === 'COMPLETED') {
+      try {
+        await scheduleReview(session.user.id, pathId, lessonId)
+      } catch (reviewError) {
+        console.error('Error scheduling review:', reviewError)
+        // Don't fail the request if review scheduling fails
+      }
+    }
 
     // Check if path is complete (for certification)
     if (status === 'COMPLETED') {

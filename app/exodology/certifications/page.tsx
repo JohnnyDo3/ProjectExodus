@@ -489,13 +489,23 @@ export default function CertificationsPage() {
                             <div className="flex gap-3">
                               {earned ? (
                                 <>
-                                  <Button variant="outline" size="sm">
-                                    <Download className="w-4 h-4 mr-2" />
-                                    Download Certificate
-                                  </Button>
-                                  <Button variant="outline" size="sm">
+                                  <Link href={`/exodology/certifications/${cert.id}`}>
+                                    <Button variant="outline" size="sm">
+                                      <Download className="w-4 h-4 mr-2" />
+                                      View Certificate
+                                    </Button>
+                                  </Link>
+                                  <Button variant="outline" size="sm" onClick={() => {
+                                    if (navigator.share) {
+                                      navigator.share({
+                                        title: `${cert.name} Certificate`,
+                                        text: `I just earned my ${cert.name} certification from Project Exodus!`,
+                                        url: `${window.location.origin}/exodology/certifications/${cert.id}`
+                                      })
+                                    }
+                                  }}>
                                     <Star className="w-4 h-4 mr-2" />
-                                    Share Achievement
+                                    Share
                                   </Button>
                                 </>
                               ) : canClaim ? (
