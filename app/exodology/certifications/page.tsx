@@ -115,7 +115,7 @@ function Confetti({ active, duration = 3000 }: { active: boolean; duration?: num
     <canvas
       ref={canvasRef}
       className="fixed inset-0 pointer-events-none z-50"
-      style={{ width: '100vw', height: '100vh' }}
+      style={{ width: '100%', height: '100%' }}
     />
   )
 }

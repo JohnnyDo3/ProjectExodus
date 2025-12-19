@@ -156,7 +156,7 @@ export function Header() {
           </Link>
 
           {/* Desktop Navigation */}
-          <div className="hidden lg:flex items-center gap-6 xl:gap-8">
+          <div className="hidden lg:flex items-center gap-4 xl:gap-6">
             {navigation.map((item) => {
               const isActive = pathname === item.href || (item.name === 'Community' && pathname.startsWith('/community'))
 
