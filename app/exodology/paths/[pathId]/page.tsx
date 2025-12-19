@@ -2038,27 +2038,64 @@ export default function ExodologyPathPage() {
                                       <div className="space-y-2">
                                         {module.lessons.map((lesson, i) => {
                                           const LessonIcon = getLessonIcon(lesson.type)
-                                          return (
+                                          const isLocked = !session || !lesson.available
+
+                                          const lessonContent = (
                                             <div
-                                              key={lesson.id}
-                                              className="flex items-center gap-3 p-3 rounded-lg bg-[var(--card)] border border-[var(--border)]"
+                                              className={`flex items-center gap-3 p-3 rounded-lg border transition-all ${
+                                                isLocked
+                                                  ? 'bg-[var(--muted)]/30 border-[var(--border)] cursor-not-allowed opacity-60'
+                                                  : 'bg-[var(--card)] border-[var(--border)] hover:border-[var(--primary)]/50 hover:bg-[var(--primary)]/5 cursor-pointer group'
+                                              }`}
                                             >
-                                              <div className={`w-8 h-8 rounded-lg bg-[var(--muted)] flex items-center justify-center`}>
-                                                <LessonIcon className={`w-4 h-4 ${getLessonColor(lesson.type)}`} />
-                                              </div>
-                                              <div className="flex-1">
-                                                <p className="text-sm font-medium text-[var(--foreground)]">{lesson.title}</p>
-                                                <p className="text-xs text-[var(--muted-foreground)]">{lesson.description}</p>
-                                              </div>
-                                              <div className="flex items-center gap-2">
-                                                <span className="text-xs text-[var(--muted-foreground)]">{lesson.duration}</span>
-                                                {lesson.available ? (
-                                                  <ChevronRight className="w-4 h-4 text-[var(--muted-foreground)]" />
-                                                ) : (
+                                              <div className={`w-10 h-10 rounded-xl flex items-center justify-center transition-all ${
+                                                isLocked
+                                                  ? 'bg-[var(--muted)]'
+                                                  : `bg-gradient-to-br ${path.gradient} shadow-lg group-hover:scale-110`
+                                              }`}>
+                                                {isLocked ? (
                                                   <Lock className="w-4 h-4 text-[var(--muted-foreground)]" />
+                                                ) : (
+                                                  <LessonIcon className="w-5 h-5 text-white" />
+                                                )}
+                                              </div>
+                                              <div className="flex-1 min-w-0">
+                                                <div className="flex items-center gap-2">
+                                                  <p className={`text-sm font-bold truncate ${
+                                                    isLocked ? 'text-[var(--muted-foreground)]' : 'text-[var(--foreground)]'
+                                                  }`}>{lesson.title}</p>
+                                                  <span className={`px-2 py-0.5 rounded-full text-[10px] font-bold uppercase ${
+                                                    lesson.type === 'instruction' ? 'bg-blue-500/20 text-blue-600' :
+                                                    lesson.type === 'interactive' ? 'bg-purple-500/20 text-purple-600' :
+                                                    lesson.type === 'reflection' ? 'bg-amber-500/20 text-amber-600' :
+                                                    lesson.type === 'game' ? 'bg-green-500/20 text-green-600' :
+                                                    'bg-red-500/20 text-red-600'
+                                                  }`}>
+                                                    {lesson.type}
+                                                  </span>
+                                                </div>
+                                                <p className="text-xs text-[var(--muted-foreground)] truncate">{lesson.description}</p>
+                                              </div>
+                                              <div className="flex items-center gap-3 flex-shrink-0">
+                                                <span className="text-xs text-[var(--muted-foreground)] bg-[var(--muted)]/50 px-2 py-1 rounded-full">
+                                                  {lesson.duration}
+                                                </span>
+                                                {!isLocked && (
+                                                  <ChevronRight className="w-5 h-5 text-[var(--primary)] group-hover:translate-x-1 transition-transform" />
                                                 )}
                                               </div>
                                             </div>
+                                          )
+
+                                          return isLocked ? (
+                                            <div key={lesson.id}>{lessonContent}</div>
+                                          ) : (
+                                            <Link
+                                              key={lesson.id}
+                                              href={`/exodology/paths/${pathId}/lessons/${lesson.id}`}
+                                            >
+                                              {lessonContent}
+                                            </Link>
                                           )
                                         })}
                                       </div>
@@ -2111,19 +2148,44 @@ export default function ExodologyPathPage() {
 
             {/* Sidebar */}
             <div className="space-y-8">
-              {/* Enroll CTA */}
-              <Card className={`border-4 border-${path.color}-400 bg-gradient-to-br from-${path.color}-50 to-white dark:from-[var(--card)] dark:to-[var(--muted)]`}>
-                <CardContent className="p-6 text-center">
-                  <div className="text-5xl mb-4">{path.heroEmoji}</div>
-                  <h3 className="text-xl font-black mb-2 text-[var(--foreground)]">Start This Path</h3>
-                  <p className="text-[var(--muted-foreground)] mb-4">
-                    {totalModules} modules • {totalLessons} lessons
-                  </p>
-                  <Button className={`w-full font-bold text-lg py-6 bg-gradient-to-r ${path.gradient}`}>
-                    Begin Learning <ChevronRight className="w-5 h-5 ml-2" />
-                  </Button>
-                </CardContent>
-              </Card>
+              {/* Sign In / Enroll CTA */}
+              {!session ? (
+                <Card className="border-4 border-[var(--primary)]/50 bg-gradient-to-br from-[var(--primary)]/10 to-[var(--accent)]/10">
+                  <CardContent className="p-6 text-center">
+                    <div className="w-16 h-16 mx-auto mb-4 rounded-2xl bg-[var(--primary)]/20 flex items-center justify-center">
+                      <Lock className="w-8 h-8 text-[var(--primary)]" />
+                    </div>
+                    <h3 className="text-xl font-black mb-2 text-[var(--foreground)]">Sign In to Learn</h3>
+                    <p className="text-[var(--muted-foreground)] mb-4 text-sm">
+                      Create a free account to access all {totalLessons} lessons and track your progress.
+                    </p>
+                    <Link href="/auth/signin">
+                      <Button className={`w-full font-bold text-lg py-6 bg-gradient-to-r ${path.gradient}`}>
+                        Sign In to Start <ChevronRight className="w-5 h-5 ml-2" />
+                      </Button>
+                    </Link>
+                    <p className="text-xs text-[var(--muted-foreground)] mt-3">
+                      Don't have an account?{' '}
+                      <Link href="/auth/register" className="text-[var(--primary)] font-bold hover:underline">
+                        Register free
+                      </Link>
+                    </p>
+                  </CardContent>
+                </Card>
+              ) : (
+                <Card className={`border-4 border-${path.color}-400 bg-gradient-to-br from-${path.color}-50 to-white dark:from-[var(--card)] dark:to-[var(--muted)]`}>
+                  <CardContent className="p-6 text-center">
+                    <div className="text-5xl mb-4">{path.heroEmoji}</div>
+                    <h3 className="text-xl font-black mb-2 text-[var(--foreground)]">Start This Path</h3>
+                    <p className="text-[var(--muted-foreground)] mb-4">
+                      {totalModules} modules • {totalLessons} lessons
+                    </p>
+                    <Button className={`w-full font-bold text-lg py-6 bg-gradient-to-r ${path.gradient}`}>
+                      Begin Learning <ChevronRight className="w-5 h-5 ml-2" />
+                    </Button>
+                  </CardContent>
+                </Card>
+              )}
 
               {/* Certification */}
               <Card className="border-2 border-[var(--border)]">
