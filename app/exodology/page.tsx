@@ -8,7 +8,7 @@ import { motion } from 'framer-motion'
 import {
   Compass, Map, Target, BookOpen, Droplet, Zap, Wheat,
   ChevronRight, Award, CheckCircle2, Lock, ArrowRight,
-  Users, Globe, Shield, Layers, GitBranch, Scale
+  Users, Globe, Shield, Layers, GitBranch, Scale, Play, Sparkles, HelpCircle
 } from 'lucide-react'
 import Link from 'next/link'
 
@@ -167,6 +167,84 @@ export default function ExodologyPage() {
                 </div>
               ))}
             </motion.div>
+
+            {/* Getting Started CTAs */}
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.5 }}
+              className="flex flex-wrap justify-center gap-4"
+            >
+              <Link href="/exodology/start">
+                <Button size="lg" className="bg-gradient-to-r from-amber-500 via-teal-500 to-purple-500 text-white border-0 font-bold">
+                  <Sparkles className="w-5 h-5 mr-2" />
+                  Find My Path
+                </Button>
+              </Link>
+              <Link href="/exodology/preview">
+                <Button size="lg" variant="outline" className="font-bold">
+                  <Play className="w-5 h-5 mr-2" />
+                  Try Sample Lesson
+                </Button>
+              </Link>
+            </motion.div>
+          </div>
+        </div>
+      </section>
+
+      {/* Getting Started Section */}
+      <section className="py-12 bg-gradient-to-r from-amber-500/5 via-teal-500/5 to-purple-500/5 border-y border-[var(--border)]">
+        <div className="container mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="max-w-4xl mx-auto">
+            <div className="grid sm:grid-cols-3 gap-4">
+              {[
+                {
+                  href: '/exodology/guide',
+                  icon: BookOpen,
+                  title: 'Quick Guide',
+                  subtitle: 'New here? Start with a 2-min overview',
+                  color: 'text-amber-500'
+                },
+                {
+                  href: '/exodology/start',
+                  icon: HelpCircle,
+                  title: 'Path Quiz',
+                  subtitle: 'Answer 4 questions to find your path',
+                  color: 'text-teal-500'
+                },
+                {
+                  href: '/exodology/glossary',
+                  icon: Layers,
+                  title: 'Glossary',
+                  subtitle: 'Learn the language of transitions',
+                  color: 'text-purple-500'
+                }
+              ].map((item, i) => (
+                <motion.div
+                  key={item.href}
+                  initial={{ opacity: 0, y: 20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ delay: 0.1 + i * 0.1 }}
+                >
+                  <Link href={item.href}>
+                    <Card className="h-full border border-[var(--border)] hover:border-[var(--primary)]/50 transition-all cursor-pointer group">
+                      <CardContent className="p-4 flex items-center gap-4">
+                        <div className="w-12 h-12 rounded-xl bg-[var(--muted)] flex items-center justify-center group-hover:scale-110 transition-transform">
+                          <item.icon className={`w-6 h-6 ${item.color}`} />
+                        </div>
+                        <div className="flex-1 min-w-0">
+                          <h3 className="font-bold text-[var(--foreground)] group-hover:text-[var(--primary)] transition-colors">
+                            {item.title}
+                          </h3>
+                          <p className="text-xs text-[var(--muted-foreground)]">{item.subtitle}</p>
+                        </div>
+                        <ChevronRight className="w-5 h-5 text-[var(--muted-foreground)] group-hover:text-[var(--primary)] group-hover:translate-x-1 transition-all" />
+                      </CardContent>
+                    </Card>
+                  </Link>
+                </motion.div>
+              ))}
+            </div>
           </div>
         </div>
       </section>
