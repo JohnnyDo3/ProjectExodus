@@ -651,10 +651,252 @@ export default function ArticlesPage() {
               <circle cx="12" cy="150" r="4" fill="#10b981"/>
             </svg>
           </div>
+
+          {/* ========================================== */}
+          {/* GRAND LIBRARY ENTRANCE - Side Bookshelves */}
+          {/* ========================================== */}
+
+          {/* Left Vertical Bookshelf - 20% width */}
+          <div className="hidden lg:block absolute left-0 top-0 bottom-0 w-[18%] z-20 pointer-events-none">
+            {/* Bookshelf frame */}
+            <div className="absolute inset-0 bg-gradient-to-r from-amber-950/95 via-amber-900/90 to-amber-950/80 border-r-4 border-amber-700/60">
+              {/* Wood grain texture */}
+              <div className="absolute inset-0 opacity-20" style={{
+                backgroundImage: `url("data:image/svg+xml,%3Csvg viewBox='0 0 100 400' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M20 0 Q30 100 20 200 Q10 300 20 400' fill='none' stroke='%23000' stroke-width='0.5' opacity='0.3'/%3E%3Cpath d='M50 0 Q60 100 50 200 Q40 300 50 400' fill='none' stroke='%23000' stroke-width='0.5' opacity='0.3'/%3E%3Cpath d='M80 0 Q70 100 80 200 Q90 300 80 400' fill='none' stroke='%23000' stroke-width='0.5' opacity='0.3'/%3E%3C/svg%3E")`,
+              }} />
+
+              {/* Horizontal shelf dividers with books and ghost slots */}
+              {[15, 35, 55, 75].map((top, shelfIndex) => (
+                <div key={`left-shelf-${shelfIndex}`} className="absolute left-0 right-0" style={{ top: `${top}%` }}>
+                  {/* Shelf surface with realistic wood grain */}
+                  <div className="h-4 bg-gradient-to-b from-amber-700 via-amber-800 to-amber-950 border-t-2 border-amber-500/40 shadow-lg relative overflow-hidden">
+                    <div className="absolute inset-0 opacity-30" style={{
+                      backgroundImage: `url("data:image/svg+xml,%3Csvg viewBox='0 0 100 10' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M0 5 Q25 3 50 5 Q75 7 100 5' fill='none' stroke='%23000' stroke-width='0.5'/%3E%3C/svg%3E")`,
+                    }} />
+                    {/* Shelf edge highlight */}
+                    <div className="absolute top-0 left-0 right-0 h-1 bg-gradient-to-b from-amber-400/20 to-transparent" />
+                  </div>
+
+                  {/* Books and ghost slots on this shelf */}
+                  <div className="absolute bottom-4 left-2 right-3 flex items-end justify-start gap-0.5 h-14">
+                    {[
+                      { color: 'from-red-800 to-red-950', h: 'h-12', w: 'w-2.5', filled: true },
+                      { color: 'from-emerald-800 to-emerald-950', h: 'h-10', w: 'w-2', filled: true },
+                      { h: 'h-11', w: 'w-2', filled: false }, // Ghost slot
+                      { color: 'from-amber-700 to-amber-900', h: 'h-13', w: 'w-2.5', filled: true },
+                      { h: 'h-10', w: 'w-2', filled: false }, // Ghost slot
+                      { color: 'from-blue-800 to-blue-950', h: 'h-9', w: 'w-2', filled: shelfIndex < 2 },
+                      { h: 'h-12', w: 'w-2.5', filled: false }, // Ghost slot
+                    ].slice(0, shelfIndex === 3 ? 4 : 6).map((book, i) => (
+                      book.filled ? (
+                        <div
+                          key={i}
+                          className={`${book.w} ${book.h} bg-gradient-to-r ${book.color} rounded-t-sm shadow-md relative`}
+                          style={{ transform: `rotate(${(i % 3 - 1) * 1.5}deg)` }}
+                        >
+                          {/* Realistic book spine details */}
+                          <div className="absolute inset-0 rounded-t-sm overflow-hidden">
+                            {/* Embossed title area */}
+                            <div className="absolute top-2 left-1/2 -translate-x-1/2 w-1 h-3 bg-amber-300/20 rounded-full" />
+                            {/* Spine ridges */}
+                            <div className="absolute top-1 left-0 right-0 h-px bg-black/20" />
+                            <div className="absolute bottom-3 left-0 right-0 h-px bg-black/20" />
+                            {/* Gilded edges hint */}
+                            <div className="absolute bottom-1 left-1/2 -translate-x-1/2 w-1.5 h-1.5 bg-amber-400/30 rounded-full" />
+                          </div>
+                          {/* Book shadow */}
+                          <div className="absolute -right-0.5 top-1 bottom-0 w-0.5 bg-black/30" />
+                        </div>
+                      ) : (
+                        <div
+                          key={i}
+                          className={`${book.w} ${book.h} relative opacity-40`}
+                          style={{ transform: `rotate(${(i % 2) * 1}deg)` }}
+                        >
+                          {/* Ghost book outline */}
+                          <div className="absolute inset-0 border-2 border-dashed border-amber-400/40 rounded-t-sm bg-amber-900/20" />
+                          {/* Glowing hint */}
+                          <div className="absolute inset-1 bg-gradient-to-t from-amber-500/10 to-transparent rounded-sm" />
+                        </div>
+                      )
+                    ))}
+                  </div>
+                </div>
+              ))}
+
+              {/* Decorative torch sconce */}
+              <div className="absolute top-[8%] right-2 w-6">
+                <div className="w-3 h-10 bg-gradient-to-b from-amber-700 to-amber-900 mx-auto rounded-b-sm" />
+                <div className="w-6 h-8 bg-gradient-to-t from-orange-500/60 via-amber-400/40 to-transparent rounded-full blur-sm animate-pulse absolute -top-4 left-0" />
+              </div>
+
+              {/* Carved ornamental top */}
+              <div className="absolute top-0 left-0 right-0 h-8 bg-gradient-to-b from-amber-800 to-amber-900 border-b-2 border-amber-600/50">
+                <svg className="absolute inset-0 w-full h-full opacity-30" preserveAspectRatio="none">
+                  <pattern id="leftCarving" x="0" y="0" width="24" height="16" patternUnits="userSpaceOnUse">
+                    <path d="M0 8 Q6 4 12 8 Q18 12 24 8" fill="none" stroke="#fbbf24" strokeWidth="1"/>
+                  </pattern>
+                  <rect width="100%" height="100%" fill="url(#leftCarving)"/>
+                </svg>
+              </div>
+            </div>
+          </div>
+
+          {/* Right Vertical Bookshelf - 20% width */}
+          <div className="hidden lg:block absolute right-0 top-0 bottom-0 w-[18%] z-20 pointer-events-none">
+            {/* Bookshelf frame */}
+            <div className="absolute inset-0 bg-gradient-to-l from-amber-950/95 via-amber-900/90 to-amber-950/80 border-l-4 border-amber-700/60">
+              {/* Wood grain texture */}
+              <div className="absolute inset-0 opacity-20" style={{
+                backgroundImage: `url("data:image/svg+xml,%3Csvg viewBox='0 0 100 400' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M20 0 Q30 100 20 200 Q10 300 20 400' fill='none' stroke='%23000' stroke-width='0.5' opacity='0.3'/%3E%3Cpath d='M50 0 Q60 100 50 200 Q40 300 50 400' fill='none' stroke='%23000' stroke-width='0.5' opacity='0.3'/%3E%3Cpath d='M80 0 Q70 100 80 200 Q90 300 80 400' fill='none' stroke='%23000' stroke-width='0.5' opacity='0.3'/%3E%3C/svg%3E")`,
+              }} />
+
+              {/* Horizontal shelf dividers with books and ghost slots */}
+              {[15, 35, 55, 75].map((top, shelfIndex) => (
+                <div key={`right-shelf-${shelfIndex}`} className="absolute left-0 right-0" style={{ top: `${top}%` }}>
+                  {/* Shelf surface with realistic wood grain */}
+                  <div className="h-4 bg-gradient-to-b from-amber-700 via-amber-800 to-amber-950 border-t-2 border-amber-500/40 shadow-lg relative overflow-hidden">
+                    <div className="absolute inset-0 opacity-30" style={{
+                      backgroundImage: `url("data:image/svg+xml,%3Csvg viewBox='0 0 100 10' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M0 5 Q25 3 50 5 Q75 7 100 5' fill='none' stroke='%23000' stroke-width='0.5'/%3E%3C/svg%3E")`,
+                    }} />
+                    {/* Shelf edge highlight */}
+                    <div className="absolute top-0 left-0 right-0 h-1 bg-gradient-to-b from-amber-400/20 to-transparent" />
+                  </div>
+
+                  {/* Books and ghost slots on this shelf */}
+                  <div className="absolute bottom-4 left-3 right-2 flex items-end justify-end gap-0.5 h-14">
+                    {[
+                      { h: 'h-11', w: 'w-2', filled: false }, // Ghost slot
+                      { color: 'from-indigo-800 to-indigo-950', h: 'h-11', w: 'w-2.5', filled: true },
+                      { color: 'from-teal-800 to-teal-950', h: 'h-9', w: 'w-2', filled: true },
+                      { h: 'h-12', w: 'w-2', filled: false }, // Ghost slot
+                      { color: 'from-orange-700 to-orange-900', h: 'h-12', w: 'w-2.5', filled: true },
+                      { color: 'from-purple-800 to-purple-950', h: 'h-10', w: 'w-2', filled: shelfIndex < 3 },
+                      { h: 'h-10', w: 'w-2.5', filled: false }, // Ghost slot
+                    ].slice(0, shelfIndex === 2 ? 5 : 6).map((book, i) => (
+                      book.filled ? (
+                        <div
+                          key={i}
+                          className={`${book.w} ${book.h} bg-gradient-to-r ${book.color} rounded-t-sm shadow-md relative`}
+                          style={{ transform: `rotate(${(i % 3 - 1) * -1.5}deg)` }}
+                        >
+                          {/* Realistic book spine details */}
+                          <div className="absolute inset-0 rounded-t-sm overflow-hidden">
+                            {/* Embossed title area */}
+                            <div className="absolute top-2 left-1/2 -translate-x-1/2 w-1 h-3 bg-amber-300/20 rounded-full" />
+                            {/* Spine ridges */}
+                            <div className="absolute top-1 left-0 right-0 h-px bg-black/20" />
+                            <div className="absolute bottom-3 left-0 right-0 h-px bg-black/20" />
+                            {/* Gilded edges hint */}
+                            <div className="absolute bottom-1 left-1/2 -translate-x-1/2 w-1.5 h-1.5 bg-amber-400/30 rounded-full" />
+                          </div>
+                          {/* Book shadow */}
+                          <div className="absolute -left-0.5 top-1 bottom-0 w-0.5 bg-black/30" />
+                        </div>
+                      ) : (
+                        <div
+                          key={i}
+                          className={`${book.w} ${book.h} relative opacity-40`}
+                          style={{ transform: `rotate(${(i % 2) * -1}deg)` }}
+                        >
+                          {/* Ghost book outline */}
+                          <div className="absolute inset-0 border-2 border-dashed border-amber-400/40 rounded-t-sm bg-amber-900/20" />
+                          {/* Glowing hint */}
+                          <div className="absolute inset-1 bg-gradient-to-t from-amber-500/10 to-transparent rounded-sm" />
+                        </div>
+                      )
+                    ))}
+                    {/* Decorative mini scroll on one shelf */}
+                    {shelfIndex === 1 && (
+                      <div className="w-3 h-5 bg-gradient-to-b from-amber-200 to-amber-300 rounded-sm mr-1 shadow transform -rotate-6 opacity-70" />
+                    )}
+                  </div>
+                </div>
+              ))}
+
+              {/* Decorative torch sconce */}
+              <div className="absolute top-[8%] left-2 w-6">
+                <div className="w-3 h-10 bg-gradient-to-b from-amber-700 to-amber-900 mx-auto rounded-b-sm" />
+                <div className="w-6 h-8 bg-gradient-to-t from-orange-500/60 via-amber-400/40 to-transparent rounded-full blur-sm animate-pulse absolute -top-4 left-0" style={{ animationDelay: '0.7s' }} />
+              </div>
+
+              {/* Carved ornamental top */}
+              <div className="absolute top-0 left-0 right-0 h-8 bg-gradient-to-b from-amber-800 to-amber-900 border-b-2 border-amber-600/50">
+                <svg className="absolute inset-0 w-full h-full opacity-30" preserveAspectRatio="none">
+                  <pattern id="rightCarving" x="0" y="0" width="24" height="16" patternUnits="userSpaceOnUse">
+                    <path d="M0 8 Q6 4 12 8 Q18 12 24 8" fill="none" stroke="#fbbf24" strokeWidth="1"/>
+                  </pattern>
+                  <rect width="100%" height="100%" fill="url(#rightCarving)"/>
+                </svg>
+              </div>
+            </div>
+          </div>
+
+          {/* ========================================== */}
+          {/* CONNECTING ARCH - Spans middle 60% */}
+          {/* ========================================== */}
+          <div className="hidden lg:block absolute top-0 left-[18%] right-[18%] h-24 z-30 pointer-events-none">
+            {/* Stone arch structure */}
+            <svg className="absolute inset-0 w-full h-full" viewBox="0 0 400 80" preserveAspectRatio="none">
+              <defs>
+                {/* Stone gradient */}
+                <linearGradient id="archStone" x1="0%" y1="0%" x2="0%" y2="100%">
+                  <stop offset="0%" stopColor="#78350f" stopOpacity="0.95"/>
+                  <stop offset="50%" stopColor="#451a03" stopOpacity="0.9"/>
+                  <stop offset="100%" stopColor="#1c0a00" stopOpacity="0.85"/>
+                </linearGradient>
+                {/* Gold accent gradient */}
+                <linearGradient id="archGold" x1="0%" y1="0%" x2="100%" y2="0%">
+                  <stop offset="0%" stopColor="#fbbf24" stopOpacity="0.3"/>
+                  <stop offset="50%" stopColor="#f59e0b" stopOpacity="0.5"/>
+                  <stop offset="100%" stopColor="#fbbf24" stopOpacity="0.3"/>
+                </linearGradient>
+              </defs>
+
+              {/* Main arch shape */}
+              <path
+                d="M0 80 L0 35 Q0 0 40 0 L360 0 Q400 0 400 35 L400 80 L380 80 L380 40 Q380 15 350 15 L50 15 Q20 15 20 40 L20 80 Z"
+                fill="url(#archStone)"
+              />
+
+              {/* Inner arch opening highlight */}
+              <path
+                d="M20 80 L20 45 Q20 20 55 20 L345 20 Q380 20 380 45 L380 80"
+                fill="none"
+                stroke="url(#archGold)"
+                strokeWidth="2"
+              />
+
+              {/* Keystone */}
+              <path
+                d="M180 0 L220 0 L225 20 L175 20 Z"
+                fill="#78350f"
+                stroke="#fbbf24"
+                strokeWidth="1"
+                opacity="0.9"
+              />
+
+              {/* Keystone emblem */}
+              <circle cx="200" cy="10" r="6" fill="none" stroke="#fbbf24" strokeWidth="1" opacity="0.6"/>
+              <circle cx="200" cy="10" r="3" fill="#fbbf24" opacity="0.4"/>
+
+              {/* Decorative voussoirs (arch stones) */}
+              {[40, 80, 120, 280, 320, 360].map((x, i) => (
+                <line key={i} x1={x} y1="0" x2={x + (i < 3 ? 5 : -5)} y2="20" stroke="#451a03" strokeWidth="1" opacity="0.5"/>
+              ))}
+            </svg>
+
+            {/* Arch inscription */}
+            <div className="absolute bottom-2 left-1/2 -translate-x-1/2 px-6 py-1 bg-gradient-to-r from-transparent via-amber-900/60 to-transparent">
+              <span className="text-[10px] font-bold text-amber-300/70 uppercase tracking-[0.3em]" style={{ fontFamily: 'Georgia, serif' }}>
+                Wisdom Awaits Within
+              </span>
+            </div>
+          </div>
         </div>
 
-        <div className="container mx-auto px-4 py-6 sm:py-8 relative z-10">
-          <div className="max-w-6xl mx-auto">
+        <div className="container mx-auto px-4 py-6 sm:py-8 relative z-10 lg:px-[20%]">
+          <div className="max-w-6xl mx-auto lg:pt-16">
             {/* Title Section - Chamber entrance */}
             <div className="text-center mb-6 sm:mb-8">
               {/* Ornate header badge */}
@@ -822,11 +1064,40 @@ export default function ArticlesPage() {
 
                           if (isEmptySlot) {
                             return (
-                              <div key={`empty-top-${slotIndex}`} className="relative w-14 sm:w-16 h-28 sm:h-32 opacity-30">
-                                {/* Ghost scroll outline */}
-                                <div className="absolute inset-x-2 top-4 bottom-4 border-2 border-dashed border-amber-500/30 rounded-sm" />
-                                <div className="absolute top-0 left-0 right-0 h-5 border-2 border-dashed border-amber-500/30 rounded-t-sm" />
-                                <div className="absolute bottom-0 left-0 right-0 h-5 border-2 border-dashed border-amber-500/30 rounded-b-sm" />
+                              <div key={`empty-top-${slotIndex}`} className="relative w-14 sm:w-16 h-28 sm:h-32 group/ghost">
+                                {/* Realistic ghost scroll with holder */}
+                                <div className="absolute inset-0 opacity-50 group-hover/ghost:opacity-70 transition-opacity">
+                                  {/* Scroll holder cradle */}
+                                  <div className="absolute bottom-0 left-1 right-1 h-3 bg-gradient-to-t from-amber-800/60 to-amber-700/40 rounded-t-sm border-t border-amber-500/30" />
+
+                                  {/* Ghost parchment body */}
+                                  <div className="absolute inset-x-2 top-5 bottom-5 border-2 border-dashed border-amber-400/50 rounded-sm bg-gradient-to-b from-amber-100/10 via-amber-50/5 to-amber-100/10">
+                                    {/* Faint text lines */}
+                                    <div className="absolute inset-2 space-y-1.5 opacity-30">
+                                      <div className="h-px bg-amber-400/40 w-3/4" />
+                                      <div className="h-px bg-amber-400/30 w-full" />
+                                      <div className="h-px bg-amber-400/30 w-2/3" />
+                                    </div>
+                                  </div>
+
+                                  {/* Ghost top rod */}
+                                  <div className="absolute top-0 left-0.5 right-0.5 h-5 border-2 border-dashed border-amber-500/40 rounded-t-sm bg-amber-700/20">
+                                    <div className="absolute top-1 left-1/2 -translate-x-1/2 w-2 h-2 border border-dashed border-amber-400/50 rounded-full" />
+                                  </div>
+
+                                  {/* Ghost bottom rod */}
+                                  <div className="absolute bottom-0 left-0.5 right-0.5 h-5 border-2 border-dashed border-amber-500/40 rounded-b-sm bg-amber-700/20">
+                                    <div className="absolute bottom-1 left-1/2 -translate-x-1/2 w-2 h-2 border border-dashed border-amber-400/50 rounded-full" />
+                                  </div>
+
+                                  {/* Subtle glow pulse */}
+                                  <div className="absolute inset-0 bg-amber-400/5 rounded-sm animate-pulse" style={{ animationDuration: '3s' }} />
+
+                                  {/* "Your article here" hint */}
+                                  <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 text-[7px] text-amber-400/60 font-medium whitespace-nowrap rotate-90">
+                                    +
+                                  </div>
+                                </div>
                               </div>
                             )
                           }
@@ -841,84 +1112,111 @@ export default function ArticlesPage() {
                                 if (modal) modal.classList.remove('hidden')
                               }}
                             >
-                              {/* Ultra-detailed scroll */}
-                              <div className="relative w-14 sm:w-16 h-28 sm:h-32 transition-all duration-500 group-hover:scale-110 group-hover:-translate-y-2 group-hover:rotate-0">
-                                {/* Drop shadow */}
-                                <div className="absolute -bottom-2 left-1 right-1 h-4 bg-black/40 blur-md rounded-full" />
+                              {/* Ultra-detailed realistic scroll */}
+                              <div className="relative w-14 sm:w-16 h-28 sm:h-32 transition-all duration-500 group-hover:scale-110 group-hover:-translate-y-3 group-hover:rotate-0">
+                                {/* Multi-layered drop shadow for depth */}
+                                <div className="absolute -bottom-2 left-2 right-2 h-3 bg-black/50 blur-md rounded-full" />
+                                <div className="absolute -bottom-1 left-1 right-1 h-2 bg-black/30 blur-sm rounded-full" />
 
-                                {/* Rolled parchment body with texture */}
-                                <div className={`absolute inset-x-1.5 top-5 bottom-5 bg-gradient-to-r ${theme.parchment} rounded-sm shadow-inner overflow-hidden`}>
-                                  {/* Parchment aged texture */}
+                                {/* Scroll holder/cradle at bottom */}
+                                <div className="absolute bottom-0 left-0.5 right-0.5 h-3 bg-gradient-to-t from-amber-800/80 to-amber-700/60 rounded-t-sm border-t border-amber-500/40 z-5" />
+
+                                {/* Rolled parchment body with enhanced texture */}
+                                <div className={`absolute inset-x-1.5 top-6 bottom-6 bg-gradient-to-r ${theme.parchment} rounded-sm shadow-inner overflow-hidden`}>
+                                  {/* Parchment aged texture - more prominent */}
                                   <div className={`absolute inset-0 ${theme.age}`} style={{
                                     backgroundImage: `url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='paper'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.04' numOctaves='5' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23paper)'/%3E%3C/svg%3E")`,
                                   }} />
-                                  {/* Age spots */}
-                                  <div className="absolute top-1/4 left-1/4 w-2 h-2 bg-amber-700/20 rounded-full blur-sm" />
-                                  <div className="absolute bottom-1/3 right-1/4 w-1.5 h-1.5 bg-amber-800/15 rounded-full blur-sm" />
-                                  {/* Scroll lines hint */}
-                                  <div className="absolute inset-x-1 top-1/3 h-px bg-amber-900/10" />
-                                  <div className="absolute inset-x-1 top-1/2 h-px bg-amber-900/10" />
-                                  <div className="absolute inset-x-1 top-2/3 h-px bg-amber-900/10" />
+                                  {/* Realistic age spots and wear */}
+                                  <div className="absolute top-1/5 left-1/4 w-2.5 h-2.5 bg-amber-700/25 rounded-full blur-sm" />
+                                  <div className="absolute bottom-1/4 right-1/5 w-2 h-2 bg-amber-800/20 rounded-full blur-sm" />
+                                  <div className="absolute top-2/3 left-1/3 w-1.5 h-1.5 bg-amber-900/15 rounded-full blur-sm" />
+                                  {/* Ink lines - text hints */}
+                                  <div className="absolute inset-x-1.5 top-1/4 space-y-1">
+                                    <div className="h-px bg-amber-900/15 w-4/5" />
+                                    <div className="h-px bg-amber-900/12 w-full" />
+                                    <div className="h-px bg-amber-900/12 w-3/5" />
+                                    <div className="h-px bg-amber-900/10 w-4/5" />
+                                  </div>
+                                  {/* Parchment edge curl effect */}
+                                  <div className="absolute right-0 top-0 bottom-0 w-1 bg-gradient-to-l from-amber-200/40 to-transparent" />
                                 </div>
 
-                                {/* Top wooden rod with extreme detail */}
+                                {/* Top wooden rod with extreme realistic detail */}
                                 <div className={`absolute top-0 left-0 right-0 h-6 bg-gradient-to-b ${theme.wood} rounded-t-sm shadow-lg overflow-hidden`}>
-                                  {/* Wood grain texture */}
-                                  <div className="absolute inset-0 opacity-30" style={{
-                                    backgroundImage: `url("data:image/svg+xml,%3Csvg viewBox='0 0 100 20' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M0 10 Q25 8 50 10 Q75 12 100 10' fill='none' stroke='%23000' stroke-width='0.5' opacity='0.3'/%3E%3Cpath d='M0 5 Q25 3 50 5 Q75 7 100 5' fill='none' stroke='%23000' stroke-width='0.3' opacity='0.2'/%3E%3Cpath d='M0 15 Q25 13 50 15 Q75 17 100 15' fill='none' stroke='%23000' stroke-width='0.3' opacity='0.2'/%3E%3C/svg%3E")`,
+                                  {/* Wood grain texture - enhanced */}
+                                  <div className="absolute inset-0 opacity-40" style={{
+                                    backgroundImage: `url("data:image/svg+xml,%3Csvg viewBox='0 0 100 20' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M0 10 Q25 8 50 10 Q75 12 100 10' fill='none' stroke='%23000' stroke-width='0.5' opacity='0.4'/%3E%3Cpath d='M0 5 Q25 3 50 5 Q75 7 100 5' fill='none' stroke='%23000' stroke-width='0.3' opacity='0.25'/%3E%3Cpath d='M0 15 Q25 13 50 15 Q75 17 100 15' fill='none' stroke='%23000' stroke-width='0.3' opacity='0.25'/%3E%3C/svg%3E")`,
                                   }} />
-                                  {/* Center decorative brass knob */}
-                                  <div className={`absolute top-1 left-1/2 -translate-x-1/2 w-3 h-3 bg-gradient-to-br ${theme.metal} rounded-full shadow-lg border border-white/30`}>
-                                    <div className="absolute inset-0.5 rounded-full bg-gradient-to-br from-white/40 to-transparent" />
+                                  {/* Top edge highlight */}
+                                  <div className="absolute top-0 left-0 right-0 h-1 bg-gradient-to-b from-white/20 to-transparent" />
+                                  {/* Center decorative brass finial */}
+                                  <div className={`absolute top-0.5 left-1/2 -translate-x-1/2 w-3.5 h-3.5 bg-gradient-to-br ${theme.metal} rounded-full shadow-lg border border-white/40`}>
+                                    <div className="absolute inset-0.5 rounded-full bg-gradient-to-br from-white/50 to-transparent" />
+                                    <div className="absolute inset-1 rounded-full bg-gradient-to-br from-transparent to-black/10" />
                                   </div>
-                                  {/* Side brass rings */}
-                                  <div className={`absolute top-1/2 -translate-y-1/2 left-0.5 w-1.5 h-2.5 bg-gradient-to-r ${theme.metal} rounded-sm shadow`} />
-                                  <div className={`absolute top-1/2 -translate-y-1/2 right-0.5 w-1.5 h-2.5 bg-gradient-to-l ${theme.metal} rounded-sm shadow`} />
+                                  {/* Ornate side caps */}
+                                  <div className={`absolute top-1/2 -translate-y-1/2 -left-0.5 w-2 h-3 bg-gradient-to-r ${theme.metal} rounded-l-sm shadow-lg border-l border-white/30`} />
+                                  <div className={`absolute top-1/2 -translate-y-1/2 -right-0.5 w-2 h-3 bg-gradient-to-l ${theme.metal} rounded-r-sm shadow-lg border-r border-white/30`} />
                                 </div>
 
                                 {/* Bottom wooden rod */}
                                 <div className={`absolute bottom-0 left-0 right-0 h-6 bg-gradient-to-t ${theme.wood} rounded-b-sm shadow-lg overflow-hidden`}>
                                   {/* Wood grain */}
-                                  <div className="absolute inset-0 opacity-30" style={{
-                                    backgroundImage: `url("data:image/svg+xml,%3Csvg viewBox='0 0 100 20' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M0 10 Q25 12 50 10 Q75 8 100 10' fill='none' stroke='%23000' stroke-width='0.5' opacity='0.3'/%3E%3C/svg%3E")`,
+                                  <div className="absolute inset-0 opacity-40" style={{
+                                    backgroundImage: `url("data:image/svg+xml,%3Csvg viewBox='0 0 100 20' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M0 10 Q25 12 50 10 Q75 8 100 10' fill='none' stroke='%23000' stroke-width='0.5' opacity='0.4'/%3E%3C/svg%3E")`,
                                   }} />
-                                  <div className={`absolute bottom-1 left-1/2 -translate-x-1/2 w-3 h-3 bg-gradient-to-br ${theme.metal} rounded-full shadow-lg border border-white/30`}>
-                                    <div className="absolute inset-0.5 rounded-full bg-gradient-to-br from-white/40 to-transparent" />
+                                  {/* Bottom edge shadow */}
+                                  <div className="absolute bottom-0 left-0 right-0 h-1 bg-gradient-to-t from-black/20 to-transparent" />
+                                  <div className={`absolute bottom-0.5 left-1/2 -translate-x-1/2 w-3.5 h-3.5 bg-gradient-to-br ${theme.metal} rounded-full shadow-lg border border-white/40`}>
+                                    <div className="absolute inset-0.5 rounded-full bg-gradient-to-br from-white/50 to-transparent" />
                                   </div>
-                                  <div className={`absolute top-1/2 -translate-y-1/2 left-0.5 w-1.5 h-2.5 bg-gradient-to-r ${theme.metal} rounded-sm shadow`} />
-                                  <div className={`absolute top-1/2 -translate-y-1/2 right-0.5 w-1.5 h-2.5 bg-gradient-to-l ${theme.metal} rounded-sm shadow`} />
+                                  <div className={`absolute top-1/2 -translate-y-1/2 -left-0.5 w-2 h-3 bg-gradient-to-r ${theme.metal} rounded-l-sm shadow`} />
+                                  <div className={`absolute top-1/2 -translate-y-1/2 -right-0.5 w-2 h-3 bg-gradient-to-l ${theme.metal} rounded-r-sm shadow`} />
                                 </div>
 
-                                {/* Leather binding strap */}
-                                <div className={`absolute left-1/2 -translate-x-1/2 top-1/2 -translate-y-1/2 w-10 h-2.5 ${theme.leather} rounded-sm shadow-md z-10`}>
-                                  {/* Strap texture */}
-                                  <div className="absolute inset-0 opacity-20" style={{
-                                    backgroundImage: `url("data:image/svg+xml,%3Csvg viewBox='0 0 20 10' xmlns='http://www.w3.org/2000/svg'%3E%3Crect x='2' y='2' width='1' height='6' fill='%23000' opacity='0.3'/%3E%3Crect x='6' y='2' width='1' height='6' fill='%23000' opacity='0.3'/%3E%3Crect x='10' y='2' width='1' height='6' fill='%23000' opacity='0.3'/%3E%3Crect x='14' y='2' width='1' height='6' fill='%23000' opacity='0.3'/%3E%3C/svg%3E")`,
-                                  }} />
-                                  {/* Brass buckle */}
-                                  <div className={`absolute right-0 top-1/2 -translate-y-1/2 w-2.5 h-3 bg-gradient-to-r ${theme.metal} rounded-sm shadow border border-white/20`} />
+                                {/* Leather binding strap - enhanced */}
+                                <div className={`absolute left-1/2 -translate-x-1/2 top-1/2 -translate-y-1/2 w-11 h-3 ${theme.leather} rounded-sm shadow-lg z-10 border border-black/20`}>
+                                  {/* Stitching detail */}
+                                  <div className="absolute top-0.5 left-1 right-3 h-px bg-amber-400/30" />
+                                  <div className="absolute bottom-0.5 left-1 right-3 h-px bg-amber-400/30" />
+                                  {/* Brass buckle with detail */}
+                                  <div className={`absolute -right-1 top-1/2 -translate-y-1/2 w-3 h-4 bg-gradient-to-r ${theme.metal} rounded-sm shadow-lg border border-white/30`}>
+                                    <div className="absolute inset-0.5 rounded-sm bg-gradient-to-br from-white/30 to-transparent" />
+                                    <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-1 h-2 bg-black/20 rounded-sm" />
+                                  </div>
                                 </div>
 
-                                {/* Ornate wax seal */}
-                                <div className={`absolute -right-2 top-1/2 -translate-y-1/2 w-7 h-7 bg-gradient-to-br ${theme.seal} rounded-full shadow-xl z-20 border-2 border-white/10 overflow-hidden`}>
-                                  {/* Seal texture and embossing */}
+                                {/* Ornate wax seal - enhanced with more detail */}
+                                <div className={`absolute -right-2.5 top-1/2 -translate-y-1/2 w-8 h-8 bg-gradient-to-br ${theme.seal} rounded-full shadow-xl z-20 border-2 border-white/15 overflow-hidden`}>
+                                  {/* Seal rim detail */}
+                                  <div className="absolute inset-0.5 rounded-full border border-white/10" />
+                                  {/* Embossed pattern */}
                                   <div className="absolute inset-0" style={{
-                                    backgroundImage: `url("data:image/svg+xml,%3Csvg viewBox='0 0 30 30' xmlns='http://www.w3.org/2000/svg'%3E%3Ccircle cx='15' cy='15' r='10' fill='none' stroke='%23fff' stroke-width='0.5' opacity='0.2'/%3E%3Ccircle cx='15' cy='15' r='6' fill='none' stroke='%23fff' stroke-width='0.5' opacity='0.3'/%3E%3C/svg%3E")`,
+                                    backgroundImage: `url("data:image/svg+xml,%3Csvg viewBox='0 0 30 30' xmlns='http://www.w3.org/2000/svg'%3E%3Ccircle cx='15' cy='15' r='11' fill='none' stroke='%23fff' stroke-width='0.5' opacity='0.15'/%3E%3Ccircle cx='15' cy='15' r='7' fill='none' stroke='%23fff' stroke-width='0.5' opacity='0.25'/%3E%3Ccircle cx='15' cy='15' r='3' fill='none' stroke='%23fff' stroke-width='0.5' opacity='0.35'/%3E%3C/svg%3E")`,
                                   }} />
-                                  {/* Rank number */}
+                                  {/* Rank number with embossed effect */}
                                   <div className="absolute inset-0 flex items-center justify-center">
-                                    <span className="text-[10px] font-black text-white drop-shadow-lg">#{slotIndex + 1}</span>
+                                    <span className="text-[11px] font-black text-white drop-shadow-lg" style={{ textShadow: '0 1px 2px rgba(0,0,0,0.5)' }}>#{slotIndex + 1}</span>
                                   </div>
-                                  {/* Seal drip effect */}
-                                  <div className={`absolute -bottom-1 left-1/2 -translate-x-1/2 w-2 h-2 bg-gradient-to-b ${theme.seal} rounded-b-full`} />
+                                  {/* Realistic wax drip */}
+                                  <div className={`absolute -bottom-1.5 left-1/2 -translate-x-1/2 w-2.5 h-3 bg-gradient-to-b ${theme.seal} rounded-b-full`}>
+                                    <div className="absolute top-0 left-1/2 -translate-x-1/2 w-1.5 h-1.5 bg-white/10 rounded-full blur-sm" />
+                                  </div>
+                                  {/* Secondary drip */}
+                                  <div className={`absolute -bottom-0.5 left-1/3 w-1.5 h-2 bg-gradient-to-b ${theme.seal} rounded-b-full opacity-80`} />
                                 </div>
 
-                                {/* Decorative ribbon */}
-                                <div className={`absolute -left-1 top-1/3 w-6 h-1 ${theme.ribbon} rounded-sm shadow transform -rotate-12 opacity-80`} />
+                                {/* Decorative silk ribbon - enhanced */}
+                                <div className={`absolute -left-1.5 top-1/3 w-7 h-1.5 ${theme.ribbon} rounded-sm shadow-md transform -rotate-15 opacity-90`}>
+                                  <div className="absolute inset-0 bg-gradient-to-b from-white/20 to-transparent rounded-sm" />
+                                  <div className="absolute -right-1 top-0 w-2 h-full bg-gradient-to-l from-transparent to-current opacity-50 transform skew-x-12" />
+                                </div>
                               </div>
 
-                              {/* Glow effect on hover */}
-                              <div className="absolute inset-0 bg-amber-400/0 group-hover:bg-amber-400/20 rounded-lg transition-all duration-300 blur-xl -z-10" />
+                              {/* Enhanced glow effect on hover */}
+                              <div className="absolute inset-0 bg-amber-400/0 group-hover:bg-amber-400/25 rounded-lg transition-all duration-300 blur-xl -z-10" />
+                              <div className="absolute -inset-2 bg-amber-300/0 group-hover:bg-amber-300/10 rounded-2xl transition-all duration-500 blur-2xl -z-20" />
                             </div>
                           )
                         })}
@@ -947,16 +1245,38 @@ export default function ArticlesPage() {
                         }}
                       />
 
-                      {/* Empty scroll slots - ghost placeholders */}
-                      <div className="relative flex items-end justify-center gap-6 sm:gap-8 py-5 px-6">
+                      {/* Enhanced ghost scroll slots - showing article positions */}
+                      <div className="relative flex items-end justify-center gap-5 sm:gap-7 py-5 px-6">
                         {[0, 1, 2, 3].map((i) => (
-                          <div key={`empty-middle-${i}`} className="relative w-12 sm:w-14 h-24 sm:h-28 opacity-25">
-                            <div className="absolute inset-x-1.5 top-4 bottom-4 border-2 border-dashed border-amber-400/40 rounded-sm bg-amber-900/10" />
-                            <div className="absolute top-0 left-0 right-0 h-5 border-2 border-dashed border-amber-400/40 rounded-t-sm" />
-                            <div className="absolute bottom-0 left-0 right-0 h-5 border-2 border-dashed border-amber-400/40 rounded-b-sm" />
-                            {/* Empty label */}
-                            <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2">
-                              <span className="text-[8px] text-amber-400/50 font-medium">?</span>
+                          <div key={`empty-middle-${i}`} className="relative w-12 sm:w-14 h-24 sm:h-28 group/ghost">
+                            <div className="absolute inset-0 opacity-35 group-hover/ghost:opacity-55 transition-opacity duration-300">
+                              {/* Scroll holder cradle */}
+                              <div className="absolute bottom-0 left-0.5 right-0.5 h-2.5 bg-gradient-to-t from-amber-700/50 to-amber-600/30 rounded-t-sm border-t border-amber-500/20" />
+
+                              {/* Ghost parchment body */}
+                              <div className="absolute inset-x-1.5 top-4 bottom-4 border-2 border-dashed border-amber-400/40 rounded-sm bg-gradient-to-b from-amber-100/8 via-amber-50/4 to-amber-100/8">
+                                <div className="absolute inset-1.5 space-y-1 opacity-25">
+                                  <div className="h-px bg-amber-400/30 w-2/3" />
+                                  <div className="h-px bg-amber-400/20 w-full" />
+                                  <div className="h-px bg-amber-400/20 w-1/2" />
+                                </div>
+                              </div>
+
+                              {/* Ghost rods */}
+                              <div className="absolute top-0 left-0 right-0 h-4 border-2 border-dashed border-amber-500/35 rounded-t-sm bg-amber-700/15">
+                                <div className="absolute top-0.5 left-1/2 -translate-x-1/2 w-1.5 h-1.5 border border-dashed border-amber-400/40 rounded-full" />
+                              </div>
+                              <div className="absolute bottom-0 left-0 right-0 h-4 border-2 border-dashed border-amber-500/35 rounded-b-sm bg-amber-700/15">
+                                <div className="absolute bottom-0.5 left-1/2 -translate-x-1/2 w-1.5 h-1.5 border border-dashed border-amber-400/40 rounded-full" />
+                              </div>
+
+                              {/* Subtle awaiting glow */}
+                              <div className="absolute inset-0 bg-amber-400/3 rounded-sm animate-pulse" style={{ animationDuration: '4s', animationDelay: `${i * 0.5}s` }} />
+
+                              {/* + indicator */}
+                              <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 text-[8px] text-amber-400/50 font-bold">
+                                +
+                              </div>
                             </div>
                           </div>
                         ))}
@@ -976,13 +1296,29 @@ export default function ArticlesPage() {
                         }}
                       />
 
-                      {/* More empty ghost slots */}
-                      <div className="relative flex items-end justify-center gap-5 sm:gap-6 py-4 px-6">
+                      {/* Bottom shelf ghost slots - deepest, most mysterious */}
+                      <div className="relative flex items-end justify-center gap-4 sm:gap-5 py-4 px-6">
                         {[0, 1, 2, 3, 4].map((i) => (
-                          <div key={`empty-bottom-${i}`} className="relative w-10 sm:w-12 h-20 sm:h-24 opacity-15">
-                            <div className="absolute inset-x-1 top-3 bottom-3 border border-dashed border-amber-500/30 rounded-sm bg-amber-950/20" />
-                            <div className="absolute top-0 left-0 right-0 h-4 border border-dashed border-amber-500/30 rounded-t-sm" />
-                            <div className="absolute bottom-0 left-0 right-0 h-4 border border-dashed border-amber-500/30 rounded-b-sm" />
+                          <div key={`empty-bottom-${i}`} className="relative w-10 sm:w-12 h-20 sm:h-24 group/ghost">
+                            <div className="absolute inset-0 opacity-25 group-hover/ghost:opacity-40 transition-opacity duration-300">
+                              {/* Mysterious deep shadow */}
+                              <div className="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent rounded-sm" />
+
+                              {/* Ghost parchment - faded with age */}
+                              <div className="absolute inset-x-1 top-3 bottom-3 border border-dashed border-amber-500/25 rounded-sm bg-gradient-to-b from-amber-100/5 to-amber-200/3">
+                                <div className="absolute inset-1 space-y-0.5 opacity-15">
+                                  <div className="h-px bg-amber-400/20 w-1/2" />
+                                  <div className="h-px bg-amber-400/15 w-3/4" />
+                                </div>
+                              </div>
+
+                              {/* Ancient rods */}
+                              <div className="absolute top-0 left-0 right-0 h-3 border border-dashed border-amber-500/25 rounded-t-sm bg-amber-800/10" />
+                              <div className="absolute bottom-0 left-0 right-0 h-3 border border-dashed border-amber-500/25 rounded-b-sm bg-amber-800/10" />
+
+                              {/* Very subtle pulse */}
+                              <div className="absolute inset-0 bg-amber-400/2 rounded-sm animate-pulse" style={{ animationDuration: '5s', animationDelay: `${i * 0.7}s` }} />
+                            </div>
                           </div>
                         ))}
                       </div>
