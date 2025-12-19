@@ -143,6 +143,10 @@ model User {
   projectContributions      ProjectContribution[]    @relation("ProjectContributions")
   projectNotifications      ProjectNotification[]    @relation("ProjectNotifications")
 
+  // Exodology learning progress
+  exodologyProgress         ExodologyProgress[]      @relation("ExodologyProgress")
+  exodologyCertifications   ExodologyCertification[] @relation("ExodologyCertifications")
+
   @@index([email])
   @@index([role])
 }
@@ -1371,6 +1375,64 @@ enum ProjectModuleProgressStatus {
   NOT_STARTED
   IN_PROGRESS
   COMPLETED
+}
+
+// ============================================
+// EXODOLOGY LEARNING PROGRESS
+// Tracks user progress through Exodology curriculum
+// ============================================
+
+model ExodologyProgress {
+  id              String                    @id @default(cuid())
+  userId          String
+
+  // Path tracking (foundations, applied, strategic)
+  pathId          String
+
+  // Lesson tracking
+  lessonId        String
+  status          ExodologyLessonStatus     @default(NOT_STARTED)
+
+  // Game/exercise completion data (JSON for flexibility)
+  completionData  Json?                     // Stores mastered cards, matched pairs, etc.
+
+  // Timestamps
+  startedAt       DateTime?
+  completedAt     DateTime?
+  lastAccessedAt  DateTime                  @default(now())
+
+  user            User                      @relation("ExodologyProgress", fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([userId, pathId, lessonId])
+  @@index([userId])
+  @@index([pathId])
+  @@index([lessonId])
+  @@index([status])
+}
+
+enum ExodologyLessonStatus {
+  NOT_STARTED
+  IN_PROGRESS
+  COMPLETED
+}
+
+model ExodologyCertification {
+  id              String                    @id @default(cuid())
+  userId          String
+
+  // Which certification (foundations, applied, strategic, or master)
+  certificationId String
+  pathId          String?                   // null for master certification
+
+  // Certificate details
+  issuedAt        DateTime                  @default(now())
+  certificateNumber String                  @unique @default(cuid())
+
+  user            User                      @relation("ExodologyCertifications", fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([userId, certificationId])
+  @@index([userId])
+  @@index([certificationId])
 }
 
 // ============================================

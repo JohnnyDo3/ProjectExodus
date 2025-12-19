@@ -2102,13 +2102,27 @@ export default function ExodologyPathPage() {
 
                                       {/* Module Assessment */}
                                       {module.assessment && (
-                                        <div className="mt-4 p-3 rounded-lg bg-gradient-to-r from-[var(--primary)]/10 to-[var(--accent)]/10 border border-[var(--primary)]/20">
-                                          <div className="flex items-center gap-2">
-                                            <Award className="w-4 h-4 text-[var(--primary)]" />
-                                            <span className="text-sm font-bold text-[var(--foreground)]">{module.assessment.title}</span>
+                                        <Link
+                                          href={session ? `/exodology/paths/${pathId}/assessments/${module.id}` : '#'}
+                                          className={session ? '' : 'pointer-events-none'}
+                                        >
+                                          <div className={`mt-4 p-3 rounded-lg bg-gradient-to-r from-[var(--primary)]/10 to-[var(--accent)]/10 border border-[var(--primary)]/20 transition-all ${
+                                            session ? 'hover:border-[var(--primary)]/50 hover:shadow-md cursor-pointer' : 'opacity-60'
+                                          }`}>
+                                            <div className="flex items-center justify-between">
+                                              <div className="flex items-center gap-2">
+                                                <Award className="w-4 h-4 text-[var(--primary)]" />
+                                                <span className="text-sm font-bold text-[var(--foreground)]">{module.assessment.title}</span>
+                                              </div>
+                                              {session ? (
+                                                <ChevronRight className="w-4 h-4 text-[var(--primary)]" />
+                                              ) : (
+                                                <Lock className="w-4 h-4 text-[var(--muted-foreground)]" />
+                                              )}
+                                            </div>
+                                            <p className="text-xs text-[var(--muted-foreground)] mt-1">{module.assessment.description}</p>
                                           </div>
-                                          <p className="text-xs text-[var(--muted-foreground)] mt-1">{module.assessment.description}</p>
-                                        </div>
+                                        </Link>
                                       )}
                                     </div>
                                   </motion.div>
@@ -2180,9 +2194,11 @@ export default function ExodologyPathPage() {
                     <p className="text-[var(--muted-foreground)] mb-4">
                       {totalModules} modules • {totalLessons} lessons
                     </p>
-                    <Button className={`w-full font-bold text-lg py-6 bg-gradient-to-r ${path.gradient}`}>
-                      Begin Learning <ChevronRight className="w-5 h-5 ml-2" />
-                    </Button>
+                    <Link href={`/exodology/paths/${pathId}/lessons/${path.modules[0]?.lessons[0]?.id || 'f-m1-l1'}`}>
+                      <Button className={`w-full font-bold text-lg py-6 bg-gradient-to-r ${path.gradient}`}>
+                        Begin Learning <ChevronRight className="w-5 h-5 ml-2" />
+                      </Button>
+                    </Link>
                   </CardContent>
                 </Card>
               )}

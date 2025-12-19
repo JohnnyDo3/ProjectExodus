@@ -1,6 +1,6 @@
 'use client'
 
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useCallback } from 'react'
 import { useSession } from 'next-auth/react'
 import { Card, CardContent } from '@/components/ui/Card'
 import { Button } from '@/components/ui/Button'
@@ -9,7 +9,7 @@ import {
   ArrowLeft, ArrowRight, BookOpen, Clock, CheckCircle2,
   Lightbulb, ChevronRight, Play, Brain, Gamepad2, FileText,
   Quote, ExternalLink, RefreshCw, Check, X, Shuffle, Timer,
-  Target, Lock
+  Target, Lock, Loader2, Trophy
 } from 'lucide-react'
 import Link from 'next/link'
 import { notFound, useParams, useRouter } from 'next/navigation'
@@ -19,6 +19,105 @@ import {
   strategicLessons,
   exodologyGlossary
 } from '@/data/exodology-curriculum'
+
+// ============================================================================
+// PROGRESS HOOK
+// ============================================================================
+
+interface ProgressData {
+  status: 'NOT_STARTED' | 'IN_PROGRESS' | 'COMPLETED'
+  completionData?: {
+    masteredCards?: number[]
+    matchedPairs?: number[]
+    selectedOptions?: string[]
+    reflectionResponses?: Record<number, string>
+    exerciseResponses?: Record<number, string>
+  }
+}
+
+function useProgress(pathId: string, lessonId: string) {
+  const [progress, setProgress] = useState<ProgressData | null>(null)
+  const [loading, setLoading] = useState(true)
+  const [saving, setSaving] = useState(false)
+
+  // Fetch progress on mount
+  useEffect(() => {
+    async function fetchProgress() {
+      try {
+        const res = await fetch(`/api/exodology/progress?pathId=${pathId}&lessonId=${lessonId}`)
+        if (res.ok) {
+          const data = await res.json()
+          if (data.progress) {
+            setProgress({
+              status: data.progress.status,
+              completionData: data.progress.completionData
+            })
+          }
+        }
+      } catch (error) {
+        console.error('Error fetching progress:', error)
+      } finally {
+        setLoading(false)
+      }
+    }
+    fetchProgress()
+  }, [pathId, lessonId])
+
+  // Save progress
+  const saveProgress = useCallback(async (status: ProgressData['status'], completionData?: ProgressData['completionData']) => {
+    setSaving(true)
+    try {
+      const res = await fetch('/api/exodology/progress', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          pathId,
+          lessonId,
+          status,
+          completionData
+        })
+      })
+      if (res.ok) {
+        const data = await res.json()
+        setProgress({
+          status: data.progress.status,
+          completionData: data.progress.completionData
+        })
+        return data
+      }
+    } catch (error) {
+      console.error('Error saving progress:', error)
+    } finally {
+      setSaving(false)
+    }
+  }, [pathId, lessonId])
+
+  // Mark as started
+  const markStarted = useCallback(() => {
+    if (!progress || progress.status === 'NOT_STARTED') {
+      saveProgress('IN_PROGRESS')
+    }
+  }, [progress, saveProgress])
+
+  // Mark as completed
+  const markCompleted = useCallback((completionData?: ProgressData['completionData']) => {
+    return saveProgress('COMPLETED', completionData)
+  }, [saveProgress])
+
+  // Update completion data without changing status
+  const updateCompletionData = useCallback((completionData: ProgressData['completionData']) => {
+    return saveProgress(progress?.status || 'IN_PROGRESS', completionData)
+  }, [progress, saveProgress])
+
+  return {
+    progress,
+    loading,
+    saving,
+    markStarted,
+    markCompleted,
+    updateCompletionData
+  }
+}
 
 // ============================================================================
 // TYPE DEFINITIONS
@@ -795,6 +894,16 @@ export default function LessonPage() {
 
   const meta = pathMeta[pathId as keyof typeof pathMeta]
 
+  // Progress tracking (must be before conditional returns)
+  const { progress, loading: progressLoading, saving, markStarted, markCompleted, updateCompletionData } = useProgress(pathId, lessonId)
+
+  // Mark as started when user views the lesson
+  useEffect(() => {
+    if (session && !progressLoading) {
+      markStarted()
+    }
+  }, [session, progressLoading, markStarted])
+
   if (!lessonData || !meta) {
     notFound()
   }
@@ -1072,10 +1181,40 @@ export default function LessonPage() {
                   <ArrowLeft className="w-4 h-4 mr-2" />
                   Back to Path
                 </Button>
-                <Button className={`bg-gradient-to-r ${meta.gradient}`}>
-                  Mark Complete
-                  <Check className="w-4 h-4 ml-2" />
-                </Button>
+
+                {progress?.status === 'COMPLETED' ? (
+                  <div className="flex items-center gap-3">
+                    <div className="flex items-center gap-2 px-4 py-2 rounded-full bg-green-500/20 text-green-600 font-bold">
+                      <Trophy className="w-5 h-5" />
+                      Completed
+                    </div>
+                    <Button
+                      variant="outline"
+                      onClick={() => router.push(`/exodology/paths/${pathId}`)}
+                    >
+                      Next Lesson
+                      <ArrowRight className="w-4 h-4 ml-2" />
+                    </Button>
+                  </div>
+                ) : (
+                  <Button
+                    className={`bg-gradient-to-r ${meta.gradient}`}
+                    onClick={() => markCompleted()}
+                    disabled={saving}
+                  >
+                    {saving ? (
+                      <>
+                        <Loader2 className="w-4 h-4 mr-2 animate-spin" />
+                        Saving...
+                      </>
+                    ) : (
+                      <>
+                        Mark Complete
+                        <Check className="w-4 h-4 ml-2" />
+                      </>
+                    )}
+                  </Button>
+                )}
               </div>
             </div>
           </div>
