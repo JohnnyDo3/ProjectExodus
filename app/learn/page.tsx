@@ -12,7 +12,7 @@ import {
   BookOpen, Calculator, Download, Zap, Leaf,
   GraduationCap, Clock, ChevronRight,
   Lightbulb, Play, FileText, Droplet,
-  Recycle, Home, Sprout, Globe, Lock
+  Recycle, Home, Sprout, Globe, Lock, Compass, ArrowRight
 } from 'lucide-react'
 import Link from 'next/link'
 import type { TopicProgress } from '@/app/api/learn/topic-progress/route'
@@ -610,6 +610,42 @@ export default function LearnPage() {
                 </Card>
               </Link>
             ))}
+          </div>
+        </div>
+      </section>
+
+      {/* Exodology Cross-link */}
+      <section className="py-12 sm:py-16 lg:py-20 bg-gradient-to-br from-amber-900/10 via-[var(--background)] to-purple-900/10">
+        <div className="container mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="max-w-4xl mx-auto">
+            <Card className="border-2 border-amber-500/30 bg-gradient-to-br from-amber-500/5 via-[var(--card)] to-purple-500/5 overflow-hidden">
+              <div className="h-1 bg-gradient-to-r from-amber-500 via-teal-500 to-purple-500" />
+              <div className="p-6 sm:p-8 lg:p-10">
+                <div className="flex flex-col lg:flex-row items-center gap-6">
+                  <div className="w-20 h-20 rounded-2xl bg-gradient-to-br from-amber-500 to-purple-600 flex items-center justify-center shadow-lg flex-shrink-0">
+                    <Compass className="w-10 h-10 text-white" />
+                  </div>
+                  <div className="flex-1 text-center lg:text-left">
+                    <span className="text-xs font-bold uppercase tracking-wider text-amber-500">Advanced Discipline</span>
+                    <h3 className="text-2xl sm:text-3xl font-black text-[var(--foreground)] mt-1 mb-2">EXODOLOGY</h3>
+                    <p className="text-[var(--muted-foreground)] mb-4">
+                      When sustainability reaches its limits, Exodology provides frameworks for designing ethical exits from systems that no longer serve people or the planet.
+                    </p>
+                    <div className="flex flex-wrap gap-2 justify-center lg:justify-start mb-4">
+                      <span className="text-xs px-3 py-1 rounded-full bg-amber-500/20 text-amber-600 font-semibold">Food Systems</span>
+                      <span className="text-xs px-3 py-1 rounded-full bg-teal-500/20 text-teal-600 font-semibold">Water Systems</span>
+                      <span className="text-xs px-3 py-1 rounded-full bg-purple-500/20 text-purple-600 font-semibold">Energy Systems</span>
+                    </div>
+                  </div>
+                  <Link href="/exodology">
+                    <Button className="font-bold bg-gradient-to-r from-amber-500 to-purple-500 hover:from-amber-600 hover:to-purple-600 flex-shrink-0">
+                      Explore Exodology
+                      <ArrowRight className="w-4 h-4 ml-2" />
+                    </Button>
+                  </Link>
+                </div>
+              </div>
+            </Card>
           </div>
         </div>
       </section>

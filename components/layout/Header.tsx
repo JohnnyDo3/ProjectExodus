@@ -120,6 +120,7 @@ export function Header() {
     { name: 'Home', href: '/' },
     { name: 'Products', href: '/products' },
     { name: 'Learn', href: '/learn' },
+    { name: 'Exodology', href: '/exodology' },
     { name: 'Articles', href: '/articles' },
     { name: 'Community', href: '/community' },
   ]
