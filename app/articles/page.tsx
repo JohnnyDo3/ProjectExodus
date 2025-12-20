@@ -13,6 +13,7 @@
 import { useState, useEffect, useRef, useCallback } from 'react'
 import { useSession } from 'next-auth/react'
 import Link from 'next/link'
+import { motion, AnimatePresence } from 'framer-motion'
 import { Card, CardContent } from '@/components/ui/Card'
 import { Button } from '@/components/ui/Button'
 import {
@@ -42,7 +43,39 @@ import {
   Lightbulb,
   Compass,
   X,
+  Droplets,
+  Zap,
+  Recycle,
+  TreePine,
+  Home,
+  Lock,
+  Feather,
 } from 'lucide-react'
+import { useTimeTheme } from '@/components/providers/TimeThemeProvider'
+
+// Category data for interactive bookshelves
+const BOOK_CATEGORIES = [
+  { id: 'sustainability', name: 'Sustainability', color: 'from-emerald-700 to-emerald-900', icon: Leaf, slug: 'sustainability' },
+  { id: 'water', name: 'Water', color: 'from-blue-700 to-blue-900', icon: Droplets, slug: 'water' },
+  { id: 'energy', name: 'Energy', color: 'from-amber-600 to-amber-800', icon: Zap, slug: 'energy' },
+  { id: 'waste', name: 'Waste', color: 'from-stone-600 to-stone-800', icon: Recycle, slug: 'waste' },
+  { id: 'nature', name: 'Nature', color: 'from-green-700 to-green-900', icon: TreePine, slug: 'nature' },
+  { id: 'building', name: 'Building', color: 'from-orange-700 to-orange-900', icon: Home, slug: 'building' },
+  { id: 'food', name: 'Food', color: 'from-red-700 to-red-900', icon: Heart, slug: 'food' },
+  { id: 'community', name: 'Community', color: 'from-purple-700 to-purple-900', icon: User, slug: 'community' },
+]
+
+// Category color mapping for scrolls
+const CATEGORY_SCROLL_THEMES: Record<string, { seal: string; ribbon: string; parchment: string }> = {
+  sustainability: { seal: 'from-emerald-600 to-emerald-800', ribbon: 'bg-emerald-700', parchment: 'from-emerald-50 via-stone-50 to-emerald-50' },
+  water: { seal: 'from-blue-600 to-blue-800', ribbon: 'bg-blue-700', parchment: 'from-blue-50 via-stone-50 to-blue-50' },
+  energy: { seal: 'from-amber-500 to-amber-700', ribbon: 'bg-amber-600', parchment: 'from-amber-50 via-stone-50 to-amber-50' },
+  waste: { seal: 'from-stone-500 to-stone-700', ribbon: 'bg-stone-600', parchment: 'from-stone-100 via-stone-50 to-stone-100' },
+  nature: { seal: 'from-green-600 to-green-800', ribbon: 'bg-green-700', parchment: 'from-green-50 via-stone-50 to-green-50' },
+  building: { seal: 'from-orange-600 to-orange-800', ribbon: 'bg-orange-700', parchment: 'from-orange-50 via-stone-50 to-orange-50' },
+  food: { seal: 'from-red-600 to-red-800', ribbon: 'bg-red-700', parchment: 'from-red-50 via-stone-50 to-red-50' },
+  community: { seal: 'from-purple-600 to-purple-800', ribbon: 'bg-purple-700', parchment: 'from-purple-50 via-stone-50 to-purple-50' },
+}
 
 // Archetype traits for author theming (traits only, no names)
 const ARCHETYPE_TRAITS: Record<string, { gradient: string; trait: string; accentColor: string }> = {
@@ -134,6 +167,45 @@ export default function ArticlesPage() {
   const [showContributorInvite, setShowContributorInvite] = useState(false)
   const [showWelcomeGuide, setShowWelcomeGuide] = useState(false)
   const loadMoreRef = useRef<HTMLDivElement>(null)
+
+  // New state for enhanced library features
+  const [mobileDoorsOpen, setMobileDoorsOpen] = useState(false)
+  const [libraryEntered, setLibraryEntered] = useState(false)
+  const [savedArticles, setSavedArticles] = useState<string[]>([])
+  const [hoveredBook, setHoveredBook] = useState<string | null>(null)
+
+  // Time-based theme for dynamic lighting
+  const { phase: timePhase } = useTimeTheme()
+  const isNightTime = ['night', 'midnight', 'evening', 'dusk'].includes(timePhase)
+
+  // Trigger entrance animation after mount
+  useEffect(() => {
+    const timer = setTimeout(() => setLibraryEntered(true), 100)
+    return () => clearTimeout(timer)
+  }, [])
+
+  // Load saved articles from localStorage
+  useEffect(() => {
+    const saved = localStorage.getItem('saved-articles')
+    if (saved) {
+      try {
+        setSavedArticles(JSON.parse(saved))
+      } catch (e) {
+        console.error('Error loading saved articles:', e)
+      }
+    }
+  }, [])
+
+  // Save article to personal collection
+  const toggleSaveArticle = (articleId: string) => {
+    setSavedArticles(prev => {
+      const newSaved = prev.includes(articleId)
+        ? prev.filter(id => id !== articleId)
+        : [...prev, articleId]
+      localStorage.setItem('saved-articles', JSON.stringify(newSaved))
+      return newSaved
+    })
+  }
 
   // Check if first-time visitor (no articles read yet, no localStorage flag)
   useEffect(() => {
@@ -656,8 +728,13 @@ export default function ArticlesPage() {
           {/* GRAND LIBRARY ENTRANCE - Side Bookshelves */}
           {/* ========================================== */}
 
-          {/* Left Vertical Bookshelf - 20% width */}
-          <div className="hidden lg:block absolute left-0 top-0 bottom-0 w-[18%] z-20 pointer-events-none">
+          {/* Left Vertical Bookshelf - 20% width - INTERACTIVE with entrance animation */}
+          <motion.div
+            initial={{ x: '-100%', opacity: 0 }}
+            animate={libraryEntered ? { x: 0, opacity: 1 } : { x: '-100%', opacity: 0 }}
+            transition={{ duration: 0.8, ease: 'easeOut', delay: 0.2 }}
+            className="hidden lg:block absolute left-0 top-0 bottom-0 w-[18%] z-20"
+          >
             {/* Bookshelf frame */}
             <div className="absolute inset-0 bg-gradient-to-r from-amber-950/95 via-amber-900/90 to-amber-950/80 border-r-4 border-amber-700/60">
               {/* Wood grain texture */}
@@ -665,7 +742,7 @@ export default function ArticlesPage() {
                 backgroundImage: `url("data:image/svg+xml,%3Csvg viewBox='0 0 100 400' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M20 0 Q30 100 20 200 Q10 300 20 400' fill='none' stroke='%23000' stroke-width='0.5' opacity='0.3'/%3E%3Cpath d='M50 0 Q60 100 50 200 Q40 300 50 400' fill='none' stroke='%23000' stroke-width='0.5' opacity='0.3'/%3E%3Cpath d='M80 0 Q70 100 80 200 Q90 300 80 400' fill='none' stroke='%23000' stroke-width='0.5' opacity='0.3'/%3E%3C/svg%3E")`,
               }} />
 
-              {/* Horizontal shelf dividers with books and ghost slots */}
+              {/* Interactive Category Books on Shelves */}
               {[15, 35, 55, 75].map((top, shelfIndex) => (
                 <div key={`left-shelf-${shelfIndex}`} className="absolute left-0 right-0" style={{ top: `${top}%` }}>
                   {/* Shelf surface with realistic wood grain */}
@@ -673,58 +750,49 @@ export default function ArticlesPage() {
                     <div className="absolute inset-0 opacity-30" style={{
                       backgroundImage: `url("data:image/svg+xml,%3Csvg viewBox='0 0 100 10' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M0 5 Q25 3 50 5 Q75 7 100 5' fill='none' stroke='%23000' stroke-width='0.5'/%3E%3C/svg%3E")`,
                     }} />
-                    {/* Shelf edge highlight */}
                     <div className="absolute top-0 left-0 right-0 h-1 bg-gradient-to-b from-amber-400/20 to-transparent" />
                   </div>
 
-                  {/* Books and ghost slots on this shelf */}
+                  {/* Interactive category books */}
                   <div className="absolute bottom-4 left-2 right-3 flex items-end justify-start gap-0.5 h-14">
-                    {[
-                      { color: 'from-red-800 to-red-950', h: 'h-12', w: 'w-2.5', filled: true },
-                      { color: 'from-emerald-800 to-emerald-950', h: 'h-10', w: 'w-2', filled: true },
-                      { h: 'h-11', w: 'w-2', filled: false }, // Ghost slot
-                      { color: 'from-amber-700 to-amber-900', h: 'h-13', w: 'w-2.5', filled: true },
-                      { h: 'h-10', w: 'w-2', filled: false }, // Ghost slot
-                      { color: 'from-blue-800 to-blue-950', h: 'h-9', w: 'w-2', filled: shelfIndex < 2 },
-                      { h: 'h-12', w: 'w-2.5', filled: false }, // Ghost slot
-                    ].slice(0, shelfIndex === 3 ? 4 : 6).map((book, i) => (
-                      book.filled ? (
-                        <div
-                          key={i}
-                          className={`${book.w} ${book.h} bg-gradient-to-r ${book.color} rounded-t-sm shadow-md relative`}
-                          style={{ transform: `rotate(${(i % 3 - 1) * 1.5}deg)` }}
+                    {BOOK_CATEGORIES.slice(shelfIndex * 2, shelfIndex * 2 + 2).map((category, i) => {
+                      const heights = ['h-12', 'h-10', 'h-11', 'h-13']
+                      const CategoryIcon = category.icon
+                      const isHovered = hoveredBook === `left-${category.id}`
+                      return (
+                        <Link
+                          key={category.id}
+                          href={`/articles?category=${category.slug}`}
+                          className={`w-6 ${heights[i % 4]} bg-gradient-to-r ${category.color} rounded-t-sm shadow-md relative cursor-pointer transition-all duration-300 ${isHovered ? 'scale-110 -translate-y-1 z-10' : ''}`}
+                          style={{ transform: `rotate(${(i % 2 - 0.5) * 2}deg)` }}
+                          onMouseEnter={() => setHoveredBook(`left-${category.id}`)}
+                          onMouseLeave={() => setHoveredBook(null)}
                         >
-                          {/* Realistic book spine details */}
-                          <div className="absolute inset-0 rounded-t-sm overflow-hidden">
-                            {/* Embossed title area */}
-                            <div className="absolute top-2 left-1/2 -translate-x-1/2 w-1 h-3 bg-amber-300/20 rounded-full" />
-                            {/* Spine ridges */}
-                            <div className="absolute top-1 left-0 right-0 h-px bg-black/20" />
-                            <div className="absolute bottom-3 left-0 right-0 h-px bg-black/20" />
-                            {/* Gilded edges hint */}
-                            <div className="absolute bottom-1 left-1/2 -translate-x-1/2 w-1.5 h-1.5 bg-amber-400/30 rounded-full" />
+                          {/* Book spine with icon */}
+                          <div className="absolute inset-0 rounded-t-sm overflow-hidden flex items-center justify-center">
+                            <CategoryIcon className="w-3 h-3 text-white/60" />
                           </div>
-                          {/* Book shadow */}
+                          {/* Gilded edges */}
+                          <div className="absolute bottom-1 left-1/2 -translate-x-1/2 w-2 h-2 bg-amber-400/40 rounded-full" />
                           <div className="absolute -right-0.5 top-1 bottom-0 w-0.5 bg-black/30" />
-                        </div>
-                      ) : (
-                        <div
-                          key={i}
-                          className={`${book.w} ${book.h} relative opacity-40`}
-                          style={{ transform: `rotate(${(i % 2) * 1}deg)` }}
-                        >
-                          {/* Ghost book outline */}
-                          <div className="absolute inset-0 border-2 border-dashed border-amber-400/40 rounded-t-sm bg-amber-900/20" />
-                          {/* Glowing hint */}
-                          <div className="absolute inset-1 bg-gradient-to-t from-amber-500/10 to-transparent rounded-sm" />
-                        </div>
+                          {/* Hover tooltip */}
+                          {isHovered && (
+                            <div className="absolute -top-8 left-1/2 -translate-x-1/2 px-2 py-1 bg-amber-900/95 text-amber-100 text-[9px] font-bold rounded whitespace-nowrap z-50 shadow-lg">
+                              {category.name}
+                            </div>
+                          )}
+                        </Link>
                       )
-                    ))}
+                    })}
+                    {/* Ghost slot */}
+                    <div className="w-5 h-10 relative opacity-40">
+                      <div className="absolute inset-0 border-2 border-dashed border-amber-400/40 rounded-t-sm bg-amber-900/20" />
+                    </div>
                   </div>
                 </div>
               ))}
 
-              {/* Decorative torch sconce */}
+              {/* Decorative torch sconce with time-based lighting */}
               <div className="absolute top-[8%] right-2 w-6">
                 <div className="w-3 h-10 bg-gradient-to-b from-amber-700 to-amber-900 mx-auto rounded-b-sm" />
                 <div className="w-6 h-8 bg-gradient-to-t from-orange-500/60 via-amber-400/40 to-transparent rounded-full blur-sm animate-pulse absolute -top-4 left-0" />
