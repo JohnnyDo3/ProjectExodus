@@ -2166,6 +2166,143 @@ export default function ArticlesPage() {
               )
             })()}
 
+            {/* Personal Bookshelf - Saved Articles */}
+            {savedArticles.length > 0 && (
+              <div className="mb-8 sm:mb-12">
+                {/* Section Header */}
+                <div className="flex items-center gap-4 mb-6">
+                  <div className="flex-shrink-0 w-12 h-12 rounded-full bg-gradient-to-br from-amber-600 to-amber-800 flex items-center justify-center shadow-lg border-2 border-amber-400/30">
+                    <Bookmark className="w-6 h-6 text-amber-100" />
+                  </div>
+                  <div>
+                    <h2 className="text-xl sm:text-2xl font-bold text-[var(--foreground)]" style={{ fontFamily: 'Georgia, serif' }}>
+                      Your Personal Bookshelf
+                    </h2>
+                    <p className="text-sm text-[var(--muted)]">
+                      {savedArticles.length} scroll{savedArticles.length !== 1 ? 's' : ''} preserved for later reading
+                    </p>
+                  </div>
+                </div>
+
+                {/* Bookshelf Visual */}
+                <div className="relative bg-gradient-to-b from-amber-900/20 via-amber-800/10 to-amber-900/20 rounded-lg border-2 border-amber-700/30 p-4 sm:p-6 overflow-hidden">
+                  {/* Wood texture */}
+                  <div className="absolute inset-0 opacity-10" style={{
+                    backgroundImage: `url("data:image/svg+xml,%3Csvg viewBox='0 0 100 100' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M0 20 Q50 15 100 20' fill='none' stroke='%23000' stroke-width='0.3'/%3E%3Cpath d='M0 40 Q50 35 100 40' fill='none' stroke='%23000' stroke-width='0.3'/%3E%3Cpath d='M0 60 Q50 55 100 60' fill='none' stroke='%23000' stroke-width='0.3'/%3E%3Cpath d='M0 80 Q50 75 100 80' fill='none' stroke='%23000' stroke-width='0.3'/%3E%3C/svg%3E")`,
+                  }} />
+
+                  {/* Shelf edge highlight */}
+                  <div className="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-transparent via-amber-500/30 to-transparent" />
+                  <div className="absolute bottom-0 left-0 right-0 h-1 bg-gradient-to-r from-transparent via-amber-700/30 to-transparent" />
+
+                  {/* Saved articles as horizontal scrolls */}
+                  <div className="relative flex gap-4 overflow-x-auto pb-2 scrollbar-thin scrollbar-thumb-amber-600/50 scrollbar-track-amber-900/20">
+                    {articles
+                      .filter(a => savedArticles.includes(a.id))
+                      .map((article) => {
+                        const authorTheme = getAuthorTheme(article.author.guardianArchetype)
+                        const categorySlug = article.category?.slug || 'default'
+                        const categoryTheme = CATEGORY_SCROLL_THEMES[categorySlug] || CATEGORY_SCROLL_THEMES.sustainability
+                        const articleProg = readingProgress[article.id]
+                        const progPercent = articleProg?.scrollProgress || 0
+                        const isRead = articleProg?.completed || false
+
+                        return (
+                          <Link
+                            key={article.id}
+                            href={`/articles/${article.slug}`}
+                            className="flex-shrink-0 group"
+                          >
+                            <div className="relative w-24 sm:w-28 cursor-pointer transition-all duration-300 hover:scale-105 hover:-translate-y-1">
+                              {/* Scroll visual */}
+                              <div className="relative h-32 sm:h-36">
+                                {/* Parchment body */}
+                                <div className={`absolute inset-x-1 top-3 bottom-3 bg-gradient-to-b ${categoryTheme.parchment} rounded shadow-lg border border-amber-600/20 overflow-hidden`}>
+                                  {/* Progress fill */}
+                                  {progPercent > 0 && (
+                                    <div
+                                      className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-emerald-400/30 to-emerald-300/10"
+                                      style={{ height: `${progPercent}%` }}
+                                    />
+                                  )}
+                                  {/* Text lines suggestion */}
+                                  <div className="absolute inset-2 flex flex-col gap-1.5 opacity-30">
+                                    <div className="h-1 bg-amber-900/40 rounded-full w-full" />
+                                    <div className="h-1 bg-amber-900/40 rounded-full w-4/5" />
+                                    <div className="h-1 bg-amber-900/40 rounded-full w-full" />
+                                    <div className="h-1 bg-amber-900/40 rounded-full w-3/4" />
+                                  </div>
+                                </div>
+
+                                {/* Top rod */}
+                                <div className="absolute top-0 left-0 right-0 h-4 bg-gradient-to-b from-amber-600 via-amber-700 to-amber-800 rounded-t shadow-md">
+                                  <div className="absolute top-1 left-1/2 -translate-x-1/2 w-2 h-2 bg-amber-400/60 rounded-full" />
+                                  <div className="absolute top-1 left-2 w-1.5 h-1.5 bg-amber-400/40 rounded-full" />
+                                  <div className="absolute top-1 right-2 w-1.5 h-1.5 bg-amber-400/40 rounded-full" />
+                                </div>
+
+                                {/* Bottom rod */}
+                                <div className="absolute bottom-0 left-0 right-0 h-4 bg-gradient-to-t from-amber-600 via-amber-700 to-amber-800 rounded-b shadow-md">
+                                  <div className="absolute bottom-1 left-1/2 -translate-x-1/2 w-2 h-2 bg-amber-400/60 rounded-full" />
+                                </div>
+
+                                {/* Wax seal */}
+                                <div className="absolute -right-1 top-1/2 -translate-y-1/2 w-5 h-5">
+                                  <div className={`w-full h-full bg-gradient-to-br ${isRead ? 'from-emerald-500 to-emerald-700' : categoryTheme.seal} rounded-full shadow-lg border border-white/30 flex items-center justify-center`}>
+                                    {isRead ? (
+                                      <svg className="w-2.5 h-2.5 text-white" fill="currentColor" viewBox="0 0 20 20">
+                                        <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
+                                      </svg>
+                                    ) : (
+                                      <Bookmark className="w-2.5 h-2.5 text-white/80" />
+                                    )}
+                                  </div>
+                                </div>
+
+                                {/* Remove from saved button */}
+                                <button
+                                  onClick={(e) => {
+                                    e.preventDefault()
+                                    e.stopPropagation()
+                                    toggleSaveArticle(article.id)
+                                  }}
+                                  className="absolute -top-1 -left-1 w-5 h-5 bg-red-500/80 hover:bg-red-500 text-white rounded-full shadow-lg opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center"
+                                  title="Remove from bookshelf"
+                                >
+                                  <X className="w-3 h-3" />
+                                </button>
+                              </div>
+
+                              {/* Title below scroll */}
+                              <p className="mt-2 text-[10px] sm:text-xs text-center font-medium text-[var(--foreground)] line-clamp-2 leading-tight px-1">
+                                {article.title}
+                              </p>
+
+                              {/* Progress text */}
+                              {progPercent > 0 && (
+                                <p className="text-[9px] text-center text-emerald-600 mt-0.5">
+                                  {isRead ? 'Completed' : `${Math.round(progPercent)}% read`}
+                                </p>
+                              )}
+                            </div>
+                          </Link>
+                        )
+                      })}
+
+                    {/* Empty state if saved articles not in current list */}
+                    {articles.filter(a => savedArticles.includes(a.id)).length === 0 && (
+                      <div className="w-full py-8 text-center">
+                        <Bookmark className="w-10 h-10 mx-auto text-amber-600/40 mb-3" />
+                        <p className="text-sm text-[var(--muted)]">
+                          Your saved scrolls will appear here once loaded
+                        </p>
+                      </div>
+                    )}
+                  </div>
+                </div>
+              </div>
+            )}
+
             {/* Article Grid */}
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6">
               {articles.map((article) => {
@@ -2173,34 +2310,37 @@ export default function ArticlesPage() {
                 const readingDepth = getReadingDepth(article.readTime)
                 const DepthIcon = readingDepth.icon
 
+                const isSaved = savedArticles.includes(article.id)
+
                 return (
-                  <Link key={article.id} href={`/articles/${article.slug}`}>
-                    <Card className={`h-full border-2 border-[var(--border)] hover:border-theme-primary hover:shadow-theme-xl transition-all group cursor-pointer overflow-hidden ${article.hasRead ? 'opacity-75' : ''}`}>
-                      {/* Cover Image */}
-                      {article.coverImage && (
-                        <div className="relative h-36 sm:h-48 overflow-hidden">
-                          <img
-                            src={article.coverImage}
-                            alt={article.title}
-                            className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
-                          />
-                          {/* Reading Depth Badge */}
-                          <div className="absolute top-2 left-2 sm:top-3 sm:left-3">
-                            <span className={`flex items-center gap-1 px-1.5 sm:px-2 py-0.5 sm:py-1 ${readingDepth.bgColor} backdrop-blur-sm ${readingDepth.color} text-[10px] sm:text-xs font-bold rounded-full border border-white/20`}>
-                              <DepthIcon className="w-2.5 h-2.5 sm:w-3 sm:h-3" />
-                              <span className="hidden sm:inline">{readingDepth.label}</span>
-                            </span>
-                          </div>
-                          {article.hasRead && (
-                            <div className="absolute top-2 right-2 sm:top-3 sm:right-3">
-                              <span className="flex items-center gap-1 px-1.5 sm:px-2 py-0.5 sm:py-1 bg-emerald-500 text-white text-[10px] sm:text-xs font-bold rounded-full">
-                                <CheckCircle2 className="w-2.5 h-2.5 sm:w-3 sm:h-3" />
-                                Studied
+                  <div key={article.id} className="relative group/card">
+                    <Link href={`/articles/${article.slug}`}>
+                      <Card className={`h-full border-2 border-[var(--border)] hover:border-theme-primary hover:shadow-theme-xl transition-all group cursor-pointer overflow-hidden ${article.hasRead ? 'opacity-75' : ''}`}>
+                        {/* Cover Image */}
+                        {article.coverImage && (
+                          <div className="relative h-36 sm:h-48 overflow-hidden">
+                            <img
+                              src={article.coverImage}
+                              alt={article.title}
+                              className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+                            />
+                            {/* Reading Depth Badge */}
+                            <div className="absolute top-2 left-2 sm:top-3 sm:left-3">
+                              <span className={`flex items-center gap-1 px-1.5 sm:px-2 py-0.5 sm:py-1 ${readingDepth.bgColor} backdrop-blur-sm ${readingDepth.color} text-[10px] sm:text-xs font-bold rounded-full border border-white/20`}>
+                                <DepthIcon className="w-2.5 h-2.5 sm:w-3 sm:h-3" />
+                                <span className="hidden sm:inline">{readingDepth.label}</span>
                               </span>
                             </div>
-                          )}
-                        </div>
-                      )}
+                            {article.hasRead && (
+                              <div className="absolute top-2 right-10 sm:top-3 sm:right-12">
+                                <span className="flex items-center gap-1 px-1.5 sm:px-2 py-0.5 sm:py-1 bg-emerald-500 text-white text-[10px] sm:text-xs font-bold rounded-full">
+                                  <CheckCircle2 className="w-2.5 h-2.5 sm:w-3 sm:h-3" />
+                                  Studied
+                                </span>
+                              </div>
+                            )}
+                          </div>
+                        )}
 
                       <CardContent className="p-3 sm:p-5">
                         {/* Category + Reading Depth (when no cover image) */}
@@ -2269,6 +2409,23 @@ export default function ArticlesPage() {
                       </CardContent>
                     </Card>
                   </Link>
+                  {/* Save to Bookshelf Button */}
+                  <button
+                    onClick={(e) => {
+                      e.preventDefault()
+                      e.stopPropagation()
+                      toggleSaveArticle(article.id)
+                    }}
+                    className={`absolute top-2 right-2 sm:top-3 sm:right-3 w-7 h-7 sm:w-8 sm:h-8 rounded-full flex items-center justify-center transition-all shadow-lg ${
+                      isSaved
+                        ? 'bg-amber-500 text-white'
+                        : 'bg-white/90 hover:bg-amber-500 text-amber-700 hover:text-white opacity-0 group-hover/card:opacity-100'
+                    }`}
+                    title={isSaved ? 'Remove from bookshelf' : 'Save to bookshelf'}
+                  >
+                    <Bookmark className={`w-3.5 h-3.5 sm:w-4 sm:h-4 ${isSaved ? 'fill-current' : ''}`} />
+                  </button>
+                </div>
                 )
               })}
             </div>
