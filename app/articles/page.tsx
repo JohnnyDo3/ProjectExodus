@@ -1294,16 +1294,16 @@ export default function ArticlesPage() {
           </motion.div>
 
           {/* ========================================== */}
-          {/* BOTTOM CONNECTING SHELF - Spans middle     */}
-          {/* Connects left and right bookshelves        */}
+          {/* BOTTOM CONNECTING SHELF - Full width       */}
+          {/* Connects across entire page                */}
           {/* ========================================== */}
           <motion.div
             initial={{ y: 50, opacity: 0 }}
             animate={libraryEntered ? { y: 0, opacity: 1 } : { y: 50, opacity: 0 }}
             transition={{ duration: 0.6, ease: 'easeOut', delay: 0.7 }}
-            className="hidden lg:block absolute bottom-0 left-[16%] right-[16%] h-6 z-25 pointer-events-none"
+            className="hidden lg:block absolute bottom-0 left-0 right-0 h-6 z-25"
           >
-            {/* Shelf surface - matching side bookshelves exactly */}
+            {/* Shelf surface - full width wooden shelf */}
             <div className="absolute inset-0 bg-gradient-to-b from-amber-700 via-amber-800 to-amber-950 border-t-2 border-amber-500/40 shadow-lg overflow-hidden">
               {/* Wood grain texture */}
               <div className="absolute inset-0 opacity-30" style={{
@@ -1312,9 +1312,54 @@ export default function ArticlesPage() {
               {/* Top highlight */}
               <div className="absolute top-0 left-0 right-0 h-1 bg-gradient-to-b from-amber-400/30 to-transparent" />
             </div>
-            {/* Seamless blend into side shelves */}
-            <div className="absolute -left-4 top-0 bottom-0 w-8 bg-gradient-to-r from-amber-900 via-amber-800 to-amber-700" />
-            <div className="absolute -right-4 top-0 bottom-0 w-8 bg-gradient-to-l from-amber-900 via-amber-800 to-amber-700" />
+          </motion.div>
+
+          {/* ========================================== */}
+          {/* ADDITIONAL SHELF 1 - Full width below      */}
+          {/* First of two shelves below connecting      */}
+          {/* ========================================== */}
+          <motion.div
+            initial={{ y: 50, opacity: 0 }}
+            animate={libraryEntered ? { y: 0, opacity: 1 } : { y: 50, opacity: 0 }}
+            transition={{ duration: 0.6, ease: 'easeOut', delay: 0.8 }}
+            className="hidden lg:block absolute bottom-[-80px] left-0 right-0 h-6 z-25"
+          >
+            {/* Shelf surface */}
+            <div className="absolute inset-0 bg-gradient-to-b from-amber-700 via-amber-800 to-amber-950 border-t-2 border-amber-500/40 shadow-lg overflow-hidden">
+              {/* Wood grain texture */}
+              <div className="absolute inset-0 opacity-30" style={{
+                backgroundImage: `url("data:image/svg+xml,%3Csvg viewBox='0 0 100 10' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M0 5 Q25 3 50 5 Q75 7 100 5' fill='none' stroke='%23000' stroke-width='0.5'/%3E%3C/svg%3E")`,
+              }} />
+              {/* Top highlight */}
+              <div className="absolute top-0 left-0 right-0 h-1 bg-gradient-to-b from-amber-400/30 to-transparent" />
+            </div>
+            {/* Decorative brass brackets */}
+            <div className="absolute left-[10%] top-0 bottom-0 w-3 bg-gradient-to-b from-yellow-600 via-yellow-700 to-amber-800 rounded-b-sm shadow-md" />
+            <div className="absolute right-[10%] top-0 bottom-0 w-3 bg-gradient-to-b from-yellow-600 via-yellow-700 to-amber-800 rounded-b-sm shadow-md" />
+          </motion.div>
+
+          {/* ========================================== */}
+          {/* ADDITIONAL SHELF 2 - Full width below      */}
+          {/* Second of two shelves below connecting     */}
+          {/* ========================================== */}
+          <motion.div
+            initial={{ y: 50, opacity: 0 }}
+            animate={libraryEntered ? { y: 0, opacity: 1 } : { y: 50, opacity: 0 }}
+            transition={{ duration: 0.6, ease: 'easeOut', delay: 0.9 }}
+            className="hidden lg:block absolute bottom-[-160px] left-0 right-0 h-6 z-25"
+          >
+            {/* Shelf surface */}
+            <div className="absolute inset-0 bg-gradient-to-b from-amber-700 via-amber-800 to-amber-950 border-t-2 border-amber-500/40 shadow-lg overflow-hidden">
+              {/* Wood grain texture */}
+              <div className="absolute inset-0 opacity-30" style={{
+                backgroundImage: `url("data:image/svg+xml,%3Csvg viewBox='0 0 100 10' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M0 5 Q25 3 50 5 Q75 7 100 5' fill='none' stroke='%23000' stroke-width='0.5'/%3E%3C/svg%3E")`,
+              }} />
+              {/* Top highlight */}
+              <div className="absolute top-0 left-0 right-0 h-1 bg-gradient-to-b from-amber-400/30 to-transparent" />
+            </div>
+            {/* Decorative brass brackets */}
+            <div className="absolute left-[10%] top-0 bottom-0 w-3 bg-gradient-to-b from-yellow-600 via-yellow-700 to-amber-800 rounded-b-sm shadow-md" />
+            <div className="absolute right-[10%] top-0 bottom-0 w-3 bg-gradient-to-b from-yellow-600 via-yellow-700 to-amber-800 rounded-b-sm shadow-md" />
           </motion.div>
         </div>
 
