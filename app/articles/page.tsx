@@ -1491,111 +1491,251 @@ export default function ArticlesPage() {
           backgroundImage: `url("data:image/svg+xml,%3Csvg viewBox='0 0 100 400' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M20 0 Q30 100 20 200 Q10 300 20 400' fill='none' stroke='%23000' stroke-width='0.5' opacity='0.3'/%3E%3Cpath d='M50 0 Q60 100 50 200 Q40 300 50 400' fill='none' stroke='%23000' stroke-width='0.5' opacity='0.3'/%3E%3Cpath d='M80 0 Q70 100 80 200 Q90 300 80 400' fill='none' stroke='%23000' stroke-width='0.5' opacity='0.3'/%3E%3C/svg%3E")`,
         }} />
 
-        {/* Roman pilaster columns on sides */}
-        <div className="absolute left-0 top-0 bottom-0 w-6 bg-gradient-to-r from-amber-900 via-amber-850 to-amber-900/50 z-10 border-r-2 border-amber-700/40">
-          {/* Corinthian capital top */}
-          <div className="absolute top-0 left-0 right-0 h-8 bg-gradient-to-b from-amber-700 to-amber-800">
-            <svg viewBox="0 0 24 32" className="w-full h-full text-amber-500/50">
-              <path d="M4 28 Q12 20 12 8 Q12 20 20 28" fill="none" stroke="currentColor" strokeWidth="1"/>
-              <circle cx="12" cy="6" r="3" fill="none" stroke="currentColor" strokeWidth="0.8"/>
-              <path d="M6 24 Q8 22 12 20 Q16 22 18 24" fill="none" stroke="currentColor" strokeWidth="0.8"/>
+        {/* Roman pilaster columns on sides - Enhanced with Corinthian details */}
+        <div className="absolute left-0 top-0 bottom-0 w-8 bg-gradient-to-r from-amber-900 via-amber-850 to-amber-900/50 z-10 border-r-2 border-amber-700/40 shadow-lg">
+          {/* Ornate Corinthian capital with acanthus leaves */}
+          <div className="absolute top-0 left-0 right-0 h-12 bg-gradient-to-b from-amber-700 via-amber-750 to-amber-800 border-b border-amber-600/40">
+            <svg viewBox="0 0 32 48" className="w-full h-full text-amber-400/60">
+              {/* Volutes (scrolls at top) */}
+              <ellipse cx="6" cy="8" rx="4" ry="3" fill="none" stroke="currentColor" strokeWidth="0.8"/>
+              <ellipse cx="26" cy="8" rx="4" ry="3" fill="none" stroke="currentColor" strokeWidth="0.8"/>
+              {/* Acanthus leaves */}
+              <path d="M16 44 Q8 36 8 28 Q12 32 16 28 Q20 32 24 28 Q24 36 16 44" fill="none" stroke="currentColor" strokeWidth="0.8"/>
+              <path d="M16 12 Q12 18 12 24 M16 12 Q20 18 20 24" fill="none" stroke="currentColor" strokeWidth="0.6"/>
+              {/* Central rosette */}
+              <circle cx="16" cy="18" r="4" fill="none" stroke="currentColor" strokeWidth="0.8"/>
+              <circle cx="16" cy="18" r="2" fill="currentColor" opacity="0.4"/>
+              {/* Decorative spirals */}
+              <path d="M4 12 Q8 16 6 22" fill="none" stroke="currentColor" strokeWidth="0.5"/>
+              <path d="M28 12 Q24 16 26 22" fill="none" stroke="currentColor" strokeWidth="0.5"/>
             </svg>
           </div>
-          {/* Fluting lines */}
-          <div className="absolute top-10 bottom-4 left-1 right-1 flex justify-between opacity-30">
-            <div className="w-px bg-gradient-to-b from-amber-600 via-amber-500 to-amber-600" />
-            <div className="w-px bg-gradient-to-b from-amber-600 via-amber-500 to-amber-600" />
-            <div className="w-px bg-gradient-to-b from-amber-600 via-amber-500 to-amber-600" />
+          {/* Column shaft with fluting */}
+          <div className="absolute top-14 bottom-6 left-0 right-0 overflow-hidden">
+            {/* Fluting channels - precise vertical grooves */}
+            <div className="absolute inset-1 flex justify-around opacity-40">
+              {[0, 1, 2, 3].map((i) => (
+                <div key={`left-flute-${i}`} className="w-1 h-full bg-gradient-to-r from-amber-950/50 via-amber-800/20 to-amber-950/50 rounded-full" />
+              ))}
+            </div>
+            {/* Highlight reflection */}
+            <div className="absolute inset-y-0 left-0 w-1 bg-gradient-to-r from-amber-400/10 to-transparent" />
+          </div>
+          {/* Attic base (bottom) */}
+          <div className="absolute bottom-0 left-0 right-0 h-6 bg-gradient-to-t from-amber-800 via-amber-750 to-amber-700 border-t border-amber-600/30">
+            <div className="absolute top-1 left-1 right-1 h-1 bg-gradient-to-b from-amber-600/40 to-transparent rounded-full" />
+            <div className="absolute bottom-1 left-0 right-0 h-2 bg-gradient-to-t from-amber-900 to-transparent" />
           </div>
         </div>
-        <div className="absolute right-0 top-0 bottom-0 w-6 bg-gradient-to-l from-amber-900 via-amber-850 to-amber-900/50 z-10 border-l-2 border-amber-700/40">
-          {/* Corinthian capital top */}
-          <div className="absolute top-0 left-0 right-0 h-8 bg-gradient-to-b from-amber-700 to-amber-800">
-            <svg viewBox="0 0 24 32" className="w-full h-full text-amber-500/50">
-              <path d="M4 28 Q12 20 12 8 Q12 20 20 28" fill="none" stroke="currentColor" strokeWidth="1"/>
-              <circle cx="12" cy="6" r="3" fill="none" stroke="currentColor" strokeWidth="0.8"/>
-              <path d="M6 24 Q8 22 12 20 Q16 22 18 24" fill="none" stroke="currentColor" strokeWidth="0.8"/>
+        <div className="absolute right-0 top-0 bottom-0 w-8 bg-gradient-to-l from-amber-900 via-amber-850 to-amber-900/50 z-10 border-l-2 border-amber-700/40 shadow-lg">
+          {/* Ornate Corinthian capital with acanthus leaves */}
+          <div className="absolute top-0 left-0 right-0 h-12 bg-gradient-to-b from-amber-700 via-amber-750 to-amber-800 border-b border-amber-600/40">
+            <svg viewBox="0 0 32 48" className="w-full h-full text-amber-400/60">
+              {/* Volutes (scrolls at top) */}
+              <ellipse cx="6" cy="8" rx="4" ry="3" fill="none" stroke="currentColor" strokeWidth="0.8"/>
+              <ellipse cx="26" cy="8" rx="4" ry="3" fill="none" stroke="currentColor" strokeWidth="0.8"/>
+              {/* Acanthus leaves */}
+              <path d="M16 44 Q8 36 8 28 Q12 32 16 28 Q20 32 24 28 Q24 36 16 44" fill="none" stroke="currentColor" strokeWidth="0.8"/>
+              <path d="M16 12 Q12 18 12 24 M16 12 Q20 18 20 24" fill="none" stroke="currentColor" strokeWidth="0.6"/>
+              {/* Central rosette */}
+              <circle cx="16" cy="18" r="4" fill="none" stroke="currentColor" strokeWidth="0.8"/>
+              <circle cx="16" cy="18" r="2" fill="currentColor" opacity="0.4"/>
+              {/* Decorative spirals */}
+              <path d="M4 12 Q8 16 6 22" fill="none" stroke="currentColor" strokeWidth="0.5"/>
+              <path d="M28 12 Q24 16 26 22" fill="none" stroke="currentColor" strokeWidth="0.5"/>
             </svg>
           </div>
-          {/* Fluting lines */}
-          <div className="absolute top-10 bottom-4 left-1 right-1 flex justify-between opacity-30">
-            <div className="w-px bg-gradient-to-b from-amber-600 via-amber-500 to-amber-600" />
-            <div className="w-px bg-gradient-to-b from-amber-600 via-amber-500 to-amber-600" />
-            <div className="w-px bg-gradient-to-b from-amber-600 via-amber-500 to-amber-600" />
+          {/* Column shaft with fluting */}
+          <div className="absolute top-14 bottom-6 left-0 right-0 overflow-hidden">
+            {/* Fluting channels - precise vertical grooves */}
+            <div className="absolute inset-1 flex justify-around opacity-40">
+              {[0, 1, 2, 3].map((i) => (
+                <div key={`right-flute-${i}`} className="w-1 h-full bg-gradient-to-r from-amber-950/50 via-amber-800/20 to-amber-950/50 rounded-full" />
+              ))}
+            </div>
+            {/* Highlight reflection */}
+            <div className="absolute inset-y-0 right-0 w-1 bg-gradient-to-l from-amber-400/10 to-transparent" />
+          </div>
+          {/* Attic base (bottom) */}
+          <div className="absolute bottom-0 left-0 right-0 h-6 bg-gradient-to-t from-amber-800 via-amber-750 to-amber-700 border-t border-amber-600/30">
+            <div className="absolute top-1 left-1 right-1 h-1 bg-gradient-to-b from-amber-600/40 to-transparent rounded-full" />
+            <div className="absolute bottom-1 left-0 right-0 h-2 bg-gradient-to-t from-amber-900 to-transparent" />
           </div>
         </div>
 
-        {/* Ornate wall candle sconces - Left side */}
+        {/* Ornate wall candle sconces - Left side - Enhanced with realistic details */}
         {[18, 50, 82].map((topPercent, i) => (
-          <div key={`hshelf-left-candle-${i}`} className="absolute left-8 z-20" style={{ top: `${topPercent}%` }}>
-            <div className="relative w-6 h-8">
-              <div className="absolute inset-0 bg-gradient-to-b from-yellow-600 via-amber-700 to-amber-800 rounded-t-full rounded-b-lg shadow-lg border border-yellow-500/30">
-                <div className="absolute top-0.5 left-1/2 -translate-x-1/2 w-3 h-3">
-                  <svg viewBox="0 0 12 12" className="w-full h-full text-yellow-400/50">
-                    <path d="M6 1 Q9 4 6 7 Q3 4 6 1" fill="none" stroke="currentColor" strokeWidth="0.6"/>
+          <div key={`hshelf-left-candle-${i}`} className="absolute left-10 z-20" style={{ top: `${topPercent}%`, transform: 'translateY(-50%)' }}>
+            <div className="relative w-8 h-12">
+              {/* Cast shadow on wall */}
+              <div className="absolute -left-1 top-2 w-10 h-14 bg-gradient-to-br from-amber-950/40 to-transparent rounded-full blur-sm" />
+              {/* Ornate brass backplate with embossed design */}
+              <div className="absolute inset-0 bg-gradient-to-b from-yellow-500 via-amber-600 to-amber-800 rounded-t-full rounded-b-lg shadow-xl border border-yellow-400/40 overflow-hidden">
+                {/* Hammered brass texture */}
+                <div className="absolute inset-0 opacity-20" style={{
+                  backgroundImage: `url("data:image/svg+xml,%3Csvg viewBox='0 0 20 20' xmlns='http://www.w3.org/2000/svg'%3E%3Ccircle cx='5' cy='5' r='2' fill='%23fff' opacity='0.3'/%3E%3Ccircle cx='15' cy='10' r='1.5' fill='%23fff' opacity='0.2'/%3E%3Ccircle cx='8' cy='15' r='1' fill='%23fff' opacity='0.25'/%3E%3C/svg%3E")`,
+                }} />
+                {/* Embossed acanthus leaf motif */}
+                <div className="absolute top-1 left-1/2 -translate-x-1/2 w-5 h-5">
+                  <svg viewBox="0 0 20 20" className="w-full h-full text-yellow-300/60">
+                    <path d="M10 2 Q15 6 10 12 Q5 6 10 2" fill="none" stroke="currentColor" strokeWidth="1"/>
+                    <path d="M10 4 Q12 6 10 9 Q8 6 10 4" fill="currentColor" opacity="0.3"/>
+                    <circle cx="10" cy="6" r="1.5" fill="currentColor" opacity="0.5"/>
                   </svg>
                 </div>
+                {/* Lower scroll detail */}
+                <div className="absolute bottom-1.5 left-1/2 -translate-x-1/2 w-4 h-2">
+                  <svg viewBox="0 0 16 8" className="w-full h-full text-yellow-400/50">
+                    <path d="M2 4 Q4 2 8 4 Q12 6 14 4" fill="none" stroke="currentColor" strokeWidth="0.8"/>
+                  </svg>
+                </div>
+                {/* Highlight edge */}
+                <div className="absolute top-0 left-0 right-0 h-2 bg-gradient-to-b from-yellow-300/30 to-transparent rounded-t-full" />
               </div>
-              <div className="absolute -top-3 left-1/2 -translate-x-1/2 w-1.5 h-4 bg-gradient-to-b from-amber-50 to-amber-100 rounded-t-sm" />
-              <div className={`absolute -top-5 left-1/2 -translate-x-1/2 w-3 h-3 ${isNightTime ? 'opacity-90' : 'opacity-60'}`}>
-                <div className="w-2 h-3 bg-gradient-to-t from-orange-400 via-yellow-300 to-transparent rounded-full blur-[1px] animate-pulse mx-auto" style={{ animationDelay: `${i * 0.4}s` }} />
+              {/* Candle holder cup/bobeche */}
+              <div className="absolute bottom-3 left-1/2 -translate-x-1/2 w-5 h-2.5 bg-gradient-to-b from-yellow-500 to-amber-700 rounded-b-sm border-t border-yellow-300/50 shadow-inner">
+                <div className="absolute top-0 left-1/2 -translate-x-1/2 w-3 h-0.5 bg-yellow-300/30 rounded-full" />
               </div>
-              <div className={`absolute -top-4 left-1/2 -translate-x-1/2 w-6 h-6 bg-gradient-radial from-orange-400/30 to-transparent rounded-full blur-md ${isNightTime ? 'opacity-70' : 'opacity-30'}`} />
+              {/* Realistic candle with texture */}
+              <div className="absolute -top-5 left-1/2 -translate-x-1/2 w-2.5">
+                {/* Candle body with wax texture */}
+                <div className="w-2.5 h-6 bg-gradient-to-b from-amber-50 via-amber-100 to-amber-200 rounded-t-sm shadow-md relative overflow-hidden">
+                  {/* Wax ridges */}
+                  <div className="absolute inset-0 opacity-40" style={{
+                    backgroundImage: 'repeating-linear-gradient(0deg, transparent, transparent 2px, rgba(255,255,255,0.3) 2px, rgba(255,255,255,0.3) 3px)',
+                  }} />
+                  {/* Side highlight */}
+                  <div className="absolute left-0 inset-y-0 w-0.5 bg-gradient-to-r from-white/40 to-transparent" />
+                </div>
+                {/* Dripping wax - multiple drips */}
+                <div className="absolute top-2 -left-0.5 w-1.5 h-3 bg-gradient-to-b from-amber-100 to-amber-200 rounded-full opacity-80" />
+                <div className="absolute top-4 left-2 w-1 h-2 bg-gradient-to-b from-amber-100 to-amber-200 rounded-full opacity-70" />
+                {/* Wick */}
+                <div className="absolute -top-1.5 left-1/2 -translate-x-1/2 w-0.5 h-2 bg-gradient-to-t from-gray-800 to-gray-600" />
+              </div>
+              {/* Realistic flame with multiple layers */}
+              <div className={`absolute -top-9 left-1/2 -translate-x-1/2 ${isNightTime ? 'opacity-100' : 'opacity-70'}`}>
+                {/* Outer glow */}
+                <div className="absolute -inset-2 bg-gradient-radial from-orange-400/20 via-orange-300/10 to-transparent rounded-full blur-md" />
+                {/* Flame body - outer orange */}
+                <div className={`w-3 h-5 bg-gradient-to-t from-orange-500 via-orange-400 to-yellow-200 rounded-full blur-[1px] animate-pulse`} style={{ animationDelay: `${i * 0.35}s`, animationDuration: '0.8s' }} />
+                {/* Flame core - inner yellow/white */}
+                <div className="absolute top-1 left-1/2 -translate-x-1/2 w-1.5 h-2.5 bg-gradient-to-t from-yellow-300 via-yellow-100 to-white rounded-full animate-pulse blur-[0.5px]" style={{ animationDelay: `${i * 0.35 + 0.1}s`, animationDuration: '0.6s' }} />
+              </div>
+              {/* Ambient light cast */}
+              <div className={`absolute -top-6 left-1/2 -translate-x-1/2 w-12 h-12 bg-gradient-radial from-orange-400/40 via-amber-500/20 to-transparent rounded-full blur-lg ${isNightTime ? 'opacity-90' : 'opacity-40'}`} />
             </div>
           </div>
         ))}
 
-        {/* Ornate wall candle sconces - Right side */}
+        {/* Ornate wall candle sconces - Right side - Enhanced with realistic details */}
         {[18, 50, 82].map((topPercent, i) => (
-          <div key={`hshelf-right-candle-${i}`} className="absolute right-8 z-20" style={{ top: `${topPercent}%` }}>
-            <div className="relative w-6 h-8">
-              <div className="absolute inset-0 bg-gradient-to-b from-yellow-600 via-amber-700 to-amber-800 rounded-t-full rounded-b-lg shadow-lg border border-yellow-500/30">
-                <div className="absolute top-0.5 left-1/2 -translate-x-1/2 w-3 h-3">
-                  <svg viewBox="0 0 12 12" className="w-full h-full text-yellow-400/50">
-                    <path d="M6 1 Q9 4 6 7 Q3 4 6 1" fill="none" stroke="currentColor" strokeWidth="0.6"/>
+          <div key={`hshelf-right-candle-${i}`} className="absolute right-10 z-20" style={{ top: `${topPercent}%`, transform: 'translateY(-50%)' }}>
+            <div className="relative w-8 h-12">
+              {/* Cast shadow on wall */}
+              <div className="absolute -right-1 top-2 w-10 h-14 bg-gradient-to-bl from-amber-950/40 to-transparent rounded-full blur-sm" />
+              {/* Ornate brass backplate with embossed design */}
+              <div className="absolute inset-0 bg-gradient-to-b from-yellow-500 via-amber-600 to-amber-800 rounded-t-full rounded-b-lg shadow-xl border border-yellow-400/40 overflow-hidden">
+                {/* Hammered brass texture */}
+                <div className="absolute inset-0 opacity-20" style={{
+                  backgroundImage: `url("data:image/svg+xml,%3Csvg viewBox='0 0 20 20' xmlns='http://www.w3.org/2000/svg'%3E%3Ccircle cx='5' cy='5' r='2' fill='%23fff' opacity='0.3'/%3E%3Ccircle cx='15' cy='10' r='1.5' fill='%23fff' opacity='0.2'/%3E%3Ccircle cx='8' cy='15' r='1' fill='%23fff' opacity='0.25'/%3E%3C/svg%3E")`,
+                }} />
+                {/* Embossed acanthus leaf motif */}
+                <div className="absolute top-1 left-1/2 -translate-x-1/2 w-5 h-5">
+                  <svg viewBox="0 0 20 20" className="w-full h-full text-yellow-300/60">
+                    <path d="M10 2 Q15 6 10 12 Q5 6 10 2" fill="none" stroke="currentColor" strokeWidth="1"/>
+                    <path d="M10 4 Q12 6 10 9 Q8 6 10 4" fill="currentColor" opacity="0.3"/>
+                    <circle cx="10" cy="6" r="1.5" fill="currentColor" opacity="0.5"/>
                   </svg>
                 </div>
+                {/* Lower scroll detail */}
+                <div className="absolute bottom-1.5 left-1/2 -translate-x-1/2 w-4 h-2">
+                  <svg viewBox="0 0 16 8" className="w-full h-full text-yellow-400/50">
+                    <path d="M2 4 Q4 2 8 4 Q12 6 14 4" fill="none" stroke="currentColor" strokeWidth="0.8"/>
+                  </svg>
+                </div>
+                {/* Highlight edge */}
+                <div className="absolute top-0 left-0 right-0 h-2 bg-gradient-to-b from-yellow-300/30 to-transparent rounded-t-full" />
               </div>
-              <div className="absolute -top-3 left-1/2 -translate-x-1/2 w-1.5 h-4 bg-gradient-to-b from-amber-50 to-amber-100 rounded-t-sm" />
-              <div className={`absolute -top-5 left-1/2 -translate-x-1/2 w-3 h-3 ${isNightTime ? 'opacity-90' : 'opacity-60'}`}>
-                <div className="w-2 h-3 bg-gradient-to-t from-orange-400 via-yellow-300 to-transparent rounded-full blur-[1px] animate-pulse mx-auto" style={{ animationDelay: `${i * 0.4 + 0.2}s` }} />
+              {/* Candle holder cup/bobeche */}
+              <div className="absolute bottom-3 left-1/2 -translate-x-1/2 w-5 h-2.5 bg-gradient-to-b from-yellow-500 to-amber-700 rounded-b-sm border-t border-yellow-300/50 shadow-inner">
+                <div className="absolute top-0 left-1/2 -translate-x-1/2 w-3 h-0.5 bg-yellow-300/30 rounded-full" />
               </div>
-              <div className={`absolute -top-4 left-1/2 -translate-x-1/2 w-6 h-6 bg-gradient-radial from-orange-400/30 to-transparent rounded-full blur-md ${isNightTime ? 'opacity-70' : 'opacity-30'}`} />
+              {/* Realistic candle with texture */}
+              <div className="absolute -top-5 left-1/2 -translate-x-1/2 w-2.5">
+                {/* Candle body with wax texture */}
+                <div className="w-2.5 h-6 bg-gradient-to-b from-amber-50 via-amber-100 to-amber-200 rounded-t-sm shadow-md relative overflow-hidden">
+                  {/* Wax ridges */}
+                  <div className="absolute inset-0 opacity-40" style={{
+                    backgroundImage: 'repeating-linear-gradient(0deg, transparent, transparent 2px, rgba(255,255,255,0.3) 2px, rgba(255,255,255,0.3) 3px)',
+                  }} />
+                  {/* Side highlight */}
+                  <div className="absolute right-0 inset-y-0 w-0.5 bg-gradient-to-l from-white/40 to-transparent" />
+                </div>
+                {/* Dripping wax - multiple drips */}
+                <div className="absolute top-3 left-2 w-1.5 h-2.5 bg-gradient-to-b from-amber-100 to-amber-200 rounded-full opacity-80" />
+                <div className="absolute top-1.5 -left-0.5 w-1 h-2 bg-gradient-to-b from-amber-100 to-amber-200 rounded-full opacity-70" />
+                {/* Wick */}
+                <div className="absolute -top-1.5 left-1/2 -translate-x-1/2 w-0.5 h-2 bg-gradient-to-t from-gray-800 to-gray-600" />
+              </div>
+              {/* Realistic flame with multiple layers */}
+              <div className={`absolute -top-9 left-1/2 -translate-x-1/2 ${isNightTime ? 'opacity-100' : 'opacity-70'}`}>
+                {/* Outer glow */}
+                <div className="absolute -inset-2 bg-gradient-radial from-orange-400/20 via-orange-300/10 to-transparent rounded-full blur-md" />
+                {/* Flame body - outer orange */}
+                <div className={`w-3 h-5 bg-gradient-to-t from-orange-500 via-orange-400 to-yellow-200 rounded-full blur-[1px] animate-pulse`} style={{ animationDelay: `${i * 0.35 + 0.2}s`, animationDuration: '0.8s' }} />
+                {/* Flame core - inner yellow/white */}
+                <div className="absolute top-1 left-1/2 -translate-x-1/2 w-1.5 h-2.5 bg-gradient-to-t from-yellow-300 via-yellow-100 to-white rounded-full animate-pulse blur-[0.5px]" style={{ animationDelay: `${i * 0.35 + 0.3}s`, animationDuration: '0.6s' }} />
+              </div>
+              {/* Ambient light cast */}
+              <div className={`absolute -top-6 left-1/2 -translate-x-1/2 w-12 h-12 bg-gradient-radial from-orange-400/40 via-amber-500/20 to-transparent rounded-full blur-lg ${isNightTime ? 'opacity-90' : 'opacity-40'}`} />
             </div>
           </div>
         ))}
 
         {/* ============ SHELF 1 ============ */}
-        <div className="relative pt-4 pb-2">
-          {/* Category filter bar */}
-          <div className="flex items-center justify-between px-8 mb-2">
-            <div className="flex items-center gap-2">
-              <span className="text-[10px] font-bold text-amber-400/70 uppercase tracking-wider">Shelf I</span>
-              <div className="w-12 h-px bg-gradient-to-r from-amber-500/50 to-transparent" />
-            </div>
-            <div className="flex items-center gap-1">
-              <button
-                onClick={() => setShelf1Category(null)}
-                className={`px-2 py-0.5 text-[9px] font-bold rounded transition-all ${!shelf1Category ? 'bg-amber-600/60 text-amber-100' : 'text-amber-400/60 hover:text-amber-300'}`}
-              >
-                All
-              </button>
-              {BOOK_CATEGORIES.slice(0, 4).map(cat => (
+        <div className="relative pt-6 pb-2">
+          {/* Centered Category filter bar with Roman styling */}
+          <div className="flex items-center justify-center px-12 mb-3">
+            <div className="flex items-center gap-3 px-4 py-1.5 bg-gradient-to-r from-amber-900/40 via-amber-800/60 to-amber-900/40 rounded-sm border-y border-amber-600/30">
+              {/* Left decorative element */}
+              <div className="flex items-center gap-2">
+                <svg viewBox="0 0 16 8" className="w-4 h-2 text-amber-500/50">
+                  <path d="M0 4 L6 4 M8 0 L8 8" stroke="currentColor" strokeWidth="1" fill="none"/>
+                </svg>
+                <span className="text-[10px] font-bold text-amber-300/80 uppercase tracking-[0.15em]" style={{ fontFamily: 'Georgia, serif' }}>Shelf I</span>
+              </div>
+              {/* Divider */}
+              <div className="w-px h-4 bg-gradient-to-b from-transparent via-amber-500/40 to-transparent" />
+              {/* Category buttons - centered */}
+              <div className="flex items-center gap-1.5">
                 <button
-                  key={cat.slug}
-                  onClick={() => setShelf1Category(shelf1Category === cat.slug ? null : cat.slug)}
-                  className={`px-2 py-0.5 text-[9px] font-bold rounded transition-all flex items-center gap-1 ${shelf1Category === cat.slug ? 'bg-amber-600/60 text-amber-100' : 'text-amber-400/60 hover:text-amber-300'}`}
+                  onClick={() => setShelf1Category(null)}
+                  className={`px-2.5 py-1 text-[9px] font-bold rounded-sm transition-all border ${!shelf1Category ? 'bg-amber-700/70 text-amber-100 border-amber-500/50 shadow-inner' : 'text-amber-400/70 border-transparent hover:text-amber-300 hover:bg-amber-800/30'}`}
                 >
-                  <cat.icon className="w-2.5 h-2.5" />
-                  {cat.name}
+                  All
                 </button>
-              ))}
+                {BOOK_CATEGORIES.slice(0, 4).map(cat => (
+                  <button
+                    key={cat.slug}
+                    onClick={() => setShelf1Category(shelf1Category === cat.slug ? null : cat.slug)}
+                    className={`px-2.5 py-1 text-[9px] font-bold rounded-sm transition-all flex items-center gap-1 border ${shelf1Category === cat.slug ? 'bg-amber-700/70 text-amber-100 border-amber-500/50 shadow-inner' : 'text-amber-400/70 border-transparent hover:text-amber-300 hover:bg-amber-800/30'}`}
+                  >
+                    <cat.icon className="w-2.5 h-2.5" />
+                    {cat.name}
+                  </button>
+                ))}
+              </div>
+              {/* Right decorative element */}
+              <svg viewBox="0 0 16 8" className="w-4 h-2 text-amber-500/50 scale-x-[-1]">
+                <path d="M0 4 L6 4 M8 0 L8 8" stroke="currentColor" strokeWidth="1" fill="none"/>
+              </svg>
             </div>
           </div>
 
           {/* Scrolls container - sits ON the shelf */}
-          <div className="relative mx-6">
-            <div className="flex items-end justify-start gap-3 px-4 pb-0 min-h-[80px] overflow-x-auto scrollbar-thin scrollbar-thumb-amber-600/50 scrollbar-track-transparent">
+          <div className="relative mx-10">
+            <div className="flex items-end justify-center gap-2.5 px-6 pb-0 min-h-[85px] overflow-x-auto scrollbar-thin scrollbar-thumb-amber-600/50 scrollbar-track-transparent">
               {getShelfArticles(0, shelf1Category).map((article, idx) => {
                 const categorySlug = article.category?.slug || 'default'
                 const categoryTheme = CATEGORY_SCROLL_THEMES[categorySlug] || CATEGORY_SCROLL_THEMES.sustainability
@@ -1608,109 +1748,164 @@ export default function ArticlesPage() {
                 return (
                   <div
                     key={`shelf1-${article.id}`}
-                    className={`flex-shrink-0 relative w-7 cursor-pointer transition-all duration-300 ${isHovered ? 'scale-110 -translate-y-3 z-30' : 'z-10'}`}
-                    style={{ marginBottom: '-2px' }}
+                    className={`flex-shrink-0 relative w-8 cursor-pointer transition-all duration-300 ${isHovered ? 'scale-110 -translate-y-4 z-30' : 'z-10'}`}
+                    style={{ marginBottom: '0px' }}
                     onMouseEnter={() => handleScrollHover(article)}
                     onMouseLeave={handleScrollLeave}
                     onClick={() => setPreviewArticle(article)}
                   >
+                    {/* Scroll shadow on shelf */}
+                    <div className="absolute bottom-0 left-1/2 -translate-x-1/2 w-6 h-2 bg-gradient-to-t from-amber-950/60 to-transparent blur-sm rounded-full" />
                     {/* Scroll sitting on shelf */}
-                    <div className="relative h-[70px]" style={{ transform: `rotate(${rotation}deg)` }}>
-                      {/* Parchment body */}
-                      <div className={`absolute inset-x-0.5 top-3 bottom-3 bg-gradient-to-r ${categoryTheme.parchment} rounded-sm shadow-md overflow-hidden`}>
+                    <div className="relative h-[75px]" style={{ transform: `rotate(${rotation}deg)` }}>
+                      {/* Parchment body with texture */}
+                      <div className={`absolute inset-x-0.5 top-4 bottom-4 bg-gradient-to-r ${categoryTheme.parchment} rounded-sm shadow-lg overflow-hidden`}>
+                        {/* Parchment texture */}
+                        <div className="absolute inset-0 opacity-20" style={{
+                          backgroundImage: `url("data:image/svg+xml,%3Csvg viewBox='0 0 20 20' xmlns='http://www.w3.org/2000/svg'%3E%3Crect x='2' y='2' width='1' height='1' fill='%23000' opacity='0.1'/%3E%3Crect x='12' y='8' width='1' height='1' fill='%23000' opacity='0.08'/%3E%3Crect x='6' y='14' width='1' height='1' fill='%23000' opacity='0.12'/%3E%3C/svg%3E")`,
+                        }} />
+                        {/* Reading progress fill */}
                         {progressPercent > 0 && (
-                          <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-emerald-300/50 to-emerald-200/20" style={{ height: `${progressPercent}%` }} />
+                          <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-emerald-400/50 via-emerald-300/30 to-emerald-200/10 transition-all duration-500" style={{ height: `${progressPercent}%` }} />
                         )}
+                        {/* Center line detail */}
+                        <div className="absolute left-1/2 -translate-x-1/2 top-1 bottom-1 w-px bg-gradient-to-b from-amber-600/20 via-amber-500/10 to-amber-600/20" />
                       </div>
-                      {/* Top rod with finial */}
-                      <div className="absolute top-0 left-0 right-0 h-3.5 bg-gradient-to-b from-amber-600 via-amber-700 to-amber-800 rounded-t-sm shadow-lg">
-                        <div className="absolute top-0 left-1/2 -translate-x-1/2 w-2.5 h-2.5 bg-gradient-to-br from-yellow-500 to-amber-600 rounded-full shadow" />
+                      {/* Top rod with ornate finial */}
+                      <div className="absolute top-0 left-0 right-0 h-4 bg-gradient-to-b from-amber-500 via-amber-600 to-amber-800 rounded-t-sm shadow-lg">
+                        {/* Rod highlight */}
+                        <div className="absolute top-0 left-0 right-0 h-1 bg-gradient-to-b from-amber-400/40 to-transparent rounded-t-sm" />
+                        {/* Finial with detail */}
+                        <div className="absolute -top-0.5 left-1/2 -translate-x-1/2 w-3 h-3 bg-gradient-to-br from-yellow-400 via-yellow-500 to-amber-600 rounded-full shadow-md border border-yellow-300/40">
+                          <div className="absolute top-0.5 left-0.5 w-1 h-1 bg-white/40 rounded-full" />
+                        </div>
                       </div>
-                      {/* Bottom rod with finial */}
-                      <div className="absolute bottom-0 left-0 right-0 h-3.5 bg-gradient-to-t from-amber-600 via-amber-700 to-amber-800 rounded-b-sm shadow-lg">
-                        <div className="absolute bottom-0 left-1/2 -translate-x-1/2 w-2.5 h-2.5 bg-gradient-to-br from-yellow-500 to-amber-600 rounded-full shadow" />
+                      {/* Bottom rod with ornate finial */}
+                      <div className="absolute bottom-0 left-0 right-0 h-4 bg-gradient-to-t from-amber-500 via-amber-600 to-amber-800 rounded-b-sm shadow-lg">
+                        {/* Rod shadow */}
+                        <div className="absolute bottom-0 left-0 right-0 h-1 bg-gradient-to-t from-amber-900/40 to-transparent rounded-b-sm" />
+                        {/* Finial with detail */}
+                        <div className="absolute -bottom-0.5 left-1/2 -translate-x-1/2 w-3 h-3 bg-gradient-to-br from-yellow-400 via-yellow-500 to-amber-600 rounded-full shadow-md border border-yellow-300/40">
+                          <div className="absolute top-0.5 left-0.5 w-1 h-1 bg-white/40 rounded-full" />
+                        </div>
                       </div>
-                      {/* Wax seal with completion indicator */}
-                      <div className="absolute -right-1.5 top-1/2 -translate-y-1/2 w-5 h-5">
-                        <div className={`w-full h-full bg-gradient-to-br ${isCompleted ? 'from-emerald-500 to-emerald-700' : categoryTheme.seal} rounded-full shadow-lg border border-white/30 flex items-center justify-center`}>
-                          {isCompleted && <svg className="w-2.5 h-2.5 text-white" fill="currentColor" viewBox="0 0 20 20"><path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" /></svg>}
+                      {/* Wax seal with detailed design */}
+                      <div className="absolute -right-2 top-1/2 -translate-y-1/2 w-6 h-6">
+                        {/* Seal shadow */}
+                        <div className="absolute inset-0 translate-x-0.5 translate-y-0.5 bg-amber-950/50 rounded-full blur-sm" />
+                        {/* Main seal */}
+                        <div className={`relative w-full h-full bg-gradient-to-br ${isCompleted ? 'from-emerald-400 via-emerald-500 to-emerald-700' : categoryTheme.seal} rounded-full shadow-lg border border-white/20 flex items-center justify-center overflow-hidden`}>
+                          {/* Wax texture */}
+                          <div className="absolute inset-0 opacity-30" style={{
+                            backgroundImage: 'radial-gradient(circle at 30% 30%, rgba(255,255,255,0.3) 0%, transparent 50%)',
+                          }} />
+                          {/* Seal impression */}
+                          {isCompleted ? (
+                            <svg className="w-3 h-3 text-white drop-shadow" fill="currentColor" viewBox="0 0 20 20">
+                              <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
+                            </svg>
+                          ) : (
+                            <div className="w-2.5 h-2.5 border border-white/30 rounded-full" />
+                          )}
                         </div>
                       </div>
                     </div>
                   </div>
                 )
               })}
-              {/* Ghost slots for empty positions */}
+              {/* Ghost slots for empty positions - refined styling */}
               {Array.from({ length: Math.max(0, 12 - getShelfArticles(0, shelf1Category).length) }).map((_, i) => (
-                <div key={`ghost-shelf1-${i}`} className="flex-shrink-0 w-7 relative" style={{ marginBottom: '-2px' }}>
-                  <div className="h-[70px] relative">
-                    <div className="absolute inset-x-0.5 top-3 bottom-3 border-2 border-dashed border-amber-500/30 rounded-sm bg-amber-900/20" />
-                    <div className="absolute top-0 left-0 right-0 h-3.5 border-2 border-dashed border-amber-500/20 rounded-t-sm" />
-                    <div className="absolute bottom-0 left-0 right-0 h-3.5 border-2 border-dashed border-amber-500/20 rounded-b-sm" />
-                  </div>
-                </div>
-            ))}
-            </div>
-
-            {/* Ornate Roman shelf surface - Full width */}
-            <div className="h-8 bg-gradient-to-b from-amber-700 via-amber-800 to-amber-950 border-t-2 border-amber-500/40 shadow-xl relative overflow-hidden">
-              {/* Wood grain texture */}
-              <div className="absolute inset-0 opacity-30" style={{
-                backgroundImage: `url("data:image/svg+xml,%3Csvg viewBox='0 0 100 10' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M0 5 Q25 3 50 5 Q75 7 100 5' fill='none' stroke='%23000' stroke-width='0.5'/%3E%3C/svg%3E")`,
-              }} />
-              {/* Gold inlay stripe */}
-              <div className="absolute top-1 left-0 right-0 h-px bg-gradient-to-r from-amber-600/30 via-amber-400/50 to-amber-600/30" />
-              {/* Decorative brass rosettes */}
-              {[5, 20, 35, 50, 65, 80, 95].map((pos, i) => (
-                <div key={`shelf1-rosette-${i}`} className="absolute top-3" style={{ left: `${pos}%` }}>
-                  <div className="w-2.5 h-2.5 bg-gradient-to-br from-yellow-400 to-yellow-600 rounded-full shadow-sm border border-yellow-300/30">
-                    <div className="absolute top-0.5 left-0.5 w-1.5 h-1.5 bg-gradient-to-br from-yellow-300/60 to-transparent rounded-full" />
+                <div key={`ghost-shelf1-${i}`} className="flex-shrink-0 w-8 relative" style={{ marginBottom: '0px' }}>
+                  <div className="h-[75px] relative opacity-40">
+                    <div className="absolute inset-x-1 top-4 bottom-4 border border-dashed border-amber-400/40 rounded-sm bg-gradient-to-b from-amber-900/10 to-amber-800/20" />
+                    <div className="absolute top-0 left-0.5 right-0.5 h-4 border border-dashed border-amber-400/30 rounded-t-sm" />
+                    <div className="absolute bottom-0 left-0.5 right-0.5 h-4 border border-dashed border-amber-400/30 rounded-b-sm" />
+                    {/* Ghost seal */}
+                    <div className="absolute -right-2 top-1/2 -translate-y-1/2 w-5 h-5 border border-dashed border-amber-400/30 rounded-full" />
                   </div>
                 </div>
               ))}
-              {/* Egg-and-dart carved edge */}
-              <svg className="absolute bottom-0 left-0 right-0 h-2 opacity-50" preserveAspectRatio="none">
-                <pattern id="shelfEdge1b" x="0" y="0" width="20" height="8" patternUnits="userSpaceOnUse">
-                  <ellipse cx="6" cy="4" rx="4" ry="3" fill="none" stroke="#fbbf24" strokeWidth="0.6"/>
-                  <path d="M14 1 L15 6 L16 1" fill="none" stroke="#fbbf24" strokeWidth="0.6"/>
+            </div>
+
+            {/* Ornate Roman shelf surface - Enhanced with depth and symmetry */}
+            <div className="h-10 bg-gradient-to-b from-amber-650 via-amber-750 to-amber-950 border-t-2 border-amber-400/50 shadow-2xl relative overflow-hidden">
+              {/* Top surface highlight */}
+              <div className="absolute top-0 left-0 right-0 h-2 bg-gradient-to-b from-amber-500/30 to-transparent" />
+              {/* Enhanced wood grain texture */}
+              <div className="absolute inset-0 opacity-25" style={{
+                backgroundImage: `url("data:image/svg+xml,%3Csvg viewBox='0 0 200 20' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M0 8 Q50 5 100 8 Q150 11 200 8' fill='none' stroke='%23000' stroke-width='0.5'/%3E%3Cpath d='M0 14 Q50 12 100 14 Q150 16 200 14' fill='none' stroke='%23000' stroke-width='0.4'/%3E%3C/svg%3E")`,
+              }} />
+              {/* Centered gold inlay stripe */}
+              <div className="absolute top-1.5 left-4 right-4 h-px bg-gradient-to-r from-transparent via-amber-400/60 to-transparent" />
+              {/* Decorative brass rosettes - perfectly symmetric */}
+              {[4, 15, 26, 37, 50, 63, 74, 85, 96].map((pos, i) => (
+                <div key={`shelf1-rosette-${i}`} className="absolute top-3.5 -translate-x-1/2" style={{ left: `${pos}%` }}>
+                  <div className="w-3 h-3 bg-gradient-to-br from-yellow-400 via-yellow-500 to-amber-600 rounded-full shadow-md border border-yellow-300/40 relative overflow-hidden">
+                    {/* Rosette shine */}
+                    <div className="absolute top-0.5 left-0.5 w-1.5 h-1.5 bg-gradient-to-br from-yellow-200/70 to-transparent rounded-full" />
+                    {/* Center dot */}
+                    <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-1 h-1 bg-amber-700/50 rounded-full" />
+                  </div>
+                </div>
+              ))}
+              {/* Egg-and-dart carved edge - refined */}
+              <svg className="absolute bottom-0 left-0 right-0 h-2.5 opacity-60" preserveAspectRatio="none">
+                <pattern id="shelfEdge1refined" x="0" y="0" width="24" height="10" patternUnits="userSpaceOnUse">
+                  <ellipse cx="7" cy="5" rx="5" ry="4" fill="none" stroke="#fbbf24" strokeWidth="0.7"/>
+                  <ellipse cx="7" cy="5" rx="2.5" ry="2" fill="#fbbf24" opacity="0.2"/>
+                  <path d="M17 1 L18.5 8 L20 1" fill="none" stroke="#fbbf24" strokeWidth="0.7"/>
                 </pattern>
-                <rect width="100%" height="100%" fill="url(#shelfEdge1b)"/>
+                <rect width="100%" height="100%" fill="url(#shelfEdge1refined)"/>
               </svg>
+              {/* Bottom shadow */}
+              <div className="absolute bottom-0 left-0 right-0 h-1 bg-gradient-to-t from-amber-950 to-transparent" />
             </div>
           </div>
         </div>
 
         {/* ============ SHELF 2 ============ */}
-        <div className="relative pt-4 pb-2">
-          {/* Category filter bar */}
-          <div className="flex items-center justify-between px-8 mb-2">
-            <div className="flex items-center gap-2">
-              <span className="text-[10px] font-bold text-amber-400/70 uppercase tracking-wider">Shelf II</span>
-              <div className="w-12 h-px bg-gradient-to-r from-amber-500/50 to-transparent" />
-            </div>
-            <div className="flex items-center gap-1">
-              <button
-                onClick={() => setShelf2Category(null)}
-                className={`px-2 py-0.5 text-[9px] font-bold rounded transition-all ${!shelf2Category ? 'bg-amber-600/60 text-amber-100' : 'text-amber-400/60 hover:text-amber-300'}`}
-              >
-                All
-              </button>
-              {BOOK_CATEGORIES.slice(4, 8).map(cat => (
+        <div className="relative pt-6 pb-2">
+          {/* Centered Category filter bar with Roman styling */}
+          <div className="flex items-center justify-center px-12 mb-3">
+            <div className="flex items-center gap-3 px-4 py-1.5 bg-gradient-to-r from-amber-900/40 via-amber-800/60 to-amber-900/40 rounded-sm border-y border-amber-600/30">
+              {/* Left decorative element */}
+              <div className="flex items-center gap-2">
+                <svg viewBox="0 0 16 8" className="w-4 h-2 text-amber-500/50">
+                  <path d="M0 4 L6 4 M8 0 L8 8" stroke="currentColor" strokeWidth="1" fill="none"/>
+                </svg>
+                <span className="text-[10px] font-bold text-amber-300/80 uppercase tracking-[0.15em]" style={{ fontFamily: 'Georgia, serif' }}>Shelf II</span>
+              </div>
+              {/* Divider */}
+              <div className="w-px h-4 bg-gradient-to-b from-transparent via-amber-500/40 to-transparent" />
+              {/* Category buttons - centered */}
+              <div className="flex items-center gap-1.5">
                 <button
-                  key={cat.slug}
-                  onClick={() => setShelf2Category(shelf2Category === cat.slug ? null : cat.slug)}
-                  className={`px-2 py-0.5 text-[9px] font-bold rounded transition-all flex items-center gap-1 ${shelf2Category === cat.slug ? 'bg-amber-600/60 text-amber-100' : 'text-amber-400/60 hover:text-amber-300'}`}
+                  onClick={() => setShelf2Category(null)}
+                  className={`px-2.5 py-1 text-[9px] font-bold rounded-sm transition-all border ${!shelf2Category ? 'bg-amber-700/70 text-amber-100 border-amber-500/50 shadow-inner' : 'text-amber-400/70 border-transparent hover:text-amber-300 hover:bg-amber-800/30'}`}
                 >
-                  <cat.icon className="w-2.5 h-2.5" />
-                  {cat.name}
+                  All
                 </button>
-              ))}
+                {BOOK_CATEGORIES.slice(4, 8).map(cat => (
+                  <button
+                    key={cat.slug}
+                    onClick={() => setShelf2Category(shelf2Category === cat.slug ? null : cat.slug)}
+                    className={`px-2.5 py-1 text-[9px] font-bold rounded-sm transition-all flex items-center gap-1 border ${shelf2Category === cat.slug ? 'bg-amber-700/70 text-amber-100 border-amber-500/50 shadow-inner' : 'text-amber-400/70 border-transparent hover:text-amber-300 hover:bg-amber-800/30'}`}
+                  >
+                    <cat.icon className="w-2.5 h-2.5" />
+                    {cat.name}
+                  </button>
+                ))}
+              </div>
+              {/* Right decorative element */}
+              <svg viewBox="0 0 16 8" className="w-4 h-2 text-amber-500/50 scale-x-[-1]">
+                <path d="M0 4 L6 4 M8 0 L8 8" stroke="currentColor" strokeWidth="1" fill="none"/>
+              </svg>
             </div>
           </div>
 
           {/* Scrolls container */}
-          <div className="relative mx-6">
-            <div className="flex items-end justify-start gap-3 px-4 pb-0 min-h-[80px] overflow-x-auto scrollbar-thin scrollbar-thumb-amber-600/50 scrollbar-track-transparent">
+          <div className="relative mx-10">
+            <div className="flex items-end justify-center gap-2.5 px-6 pb-0 min-h-[85px] overflow-x-auto scrollbar-thin scrollbar-thumb-amber-600/50 scrollbar-track-transparent">
               {getShelfArticles(1, shelf2Category).map((article, idx) => {
                 const categorySlug = article.category?.slug || 'default'
                 const categoryTheme = CATEGORY_SCROLL_THEMES[categorySlug] || CATEGORY_SCROLL_THEMES.sustainability
@@ -1723,108 +1918,162 @@ export default function ArticlesPage() {
                 return (
                   <div
                     key={`shelf2-${article.id}`}
-                    className={`flex-shrink-0 relative w-7 cursor-pointer transition-all duration-300 ${isHovered ? 'scale-110 -translate-y-3 z-30' : 'z-10'}`}
-                    style={{ marginBottom: '-2px' }}
+                    className={`flex-shrink-0 relative w-8 cursor-pointer transition-all duration-300 ${isHovered ? 'scale-110 -translate-y-4 z-30' : 'z-10'}`}
+                    style={{ marginBottom: '0px' }}
                     onMouseEnter={() => handleScrollHover(article)}
                     onMouseLeave={handleScrollLeave}
                     onClick={() => setPreviewArticle(article)}
                   >
-                    <div className="relative h-[70px]" style={{ transform: `rotate(${rotation}deg)` }}>
-                      <div className={`absolute inset-x-0.5 top-3 bottom-3 bg-gradient-to-r ${categoryTheme.parchment} rounded-sm shadow-md overflow-hidden`}>
+                    {/* Scroll shadow on shelf */}
+                    <div className="absolute bottom-0 left-1/2 -translate-x-1/2 w-6 h-2 bg-gradient-to-t from-amber-950/60 to-transparent blur-sm rounded-full" />
+                    <div className="relative h-[75px]" style={{ transform: `rotate(${rotation}deg)` }}>
+                      {/* Parchment body with texture */}
+                      <div className={`absolute inset-x-0.5 top-4 bottom-4 bg-gradient-to-r ${categoryTheme.parchment} rounded-sm shadow-lg overflow-hidden`}>
+                        <div className="absolute inset-0 opacity-20" style={{
+                          backgroundImage: `url("data:image/svg+xml,%3Csvg viewBox='0 0 20 20' xmlns='http://www.w3.org/2000/svg'%3E%3Crect x='2' y='2' width='1' height='1' fill='%23000' opacity='0.1'/%3E%3Crect x='12' y='8' width='1' height='1' fill='%23000' opacity='0.08'/%3E%3Crect x='6' y='14' width='1' height='1' fill='%23000' opacity='0.12'/%3E%3C/svg%3E")`,
+                        }} />
                         {progressPercent > 0 && (
-                          <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-emerald-300/50 to-emerald-200/20" style={{ height: `${progressPercent}%` }} />
+                          <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-emerald-400/50 via-emerald-300/30 to-emerald-200/10 transition-all duration-500" style={{ height: `${progressPercent}%` }} />
                         )}
+                        <div className="absolute left-1/2 -translate-x-1/2 top-1 bottom-1 w-px bg-gradient-to-b from-amber-600/20 via-amber-500/10 to-amber-600/20" />
                       </div>
-                      <div className="absolute top-0 left-0 right-0 h-3.5 bg-gradient-to-b from-amber-600 via-amber-700 to-amber-800 rounded-t-sm shadow-lg">
-                        <div className="absolute top-0 left-1/2 -translate-x-1/2 w-2.5 h-2.5 bg-gradient-to-br from-yellow-500 to-amber-600 rounded-full shadow" />
+                      {/* Top rod with ornate finial */}
+                      <div className="absolute top-0 left-0 right-0 h-4 bg-gradient-to-b from-amber-500 via-amber-600 to-amber-800 rounded-t-sm shadow-lg">
+                        <div className="absolute top-0 left-0 right-0 h-1 bg-gradient-to-b from-amber-400/40 to-transparent rounded-t-sm" />
+                        <div className="absolute -top-0.5 left-1/2 -translate-x-1/2 w-3 h-3 bg-gradient-to-br from-yellow-400 via-yellow-500 to-amber-600 rounded-full shadow-md border border-yellow-300/40">
+                          <div className="absolute top-0.5 left-0.5 w-1 h-1 bg-white/40 rounded-full" />
+                        </div>
                       </div>
-                      <div className="absolute bottom-0 left-0 right-0 h-3.5 bg-gradient-to-t from-amber-600 via-amber-700 to-amber-800 rounded-b-sm shadow-lg">
-                        <div className="absolute bottom-0 left-1/2 -translate-x-1/2 w-2.5 h-2.5 bg-gradient-to-br from-yellow-500 to-amber-600 rounded-full shadow" />
+                      {/* Bottom rod with ornate finial */}
+                      <div className="absolute bottom-0 left-0 right-0 h-4 bg-gradient-to-t from-amber-500 via-amber-600 to-amber-800 rounded-b-sm shadow-lg">
+                        <div className="absolute bottom-0 left-0 right-0 h-1 bg-gradient-to-t from-amber-900/40 to-transparent rounded-b-sm" />
+                        <div className="absolute -bottom-0.5 left-1/2 -translate-x-1/2 w-3 h-3 bg-gradient-to-br from-yellow-400 via-yellow-500 to-amber-600 rounded-full shadow-md border border-yellow-300/40">
+                          <div className="absolute top-0.5 left-0.5 w-1 h-1 bg-white/40 rounded-full" />
+                        </div>
                       </div>
-                      <div className="absolute -right-1.5 top-1/2 -translate-y-1/2 w-5 h-5">
-                        <div className={`w-full h-full bg-gradient-to-br ${isCompleted ? 'from-emerald-500 to-emerald-700' : categoryTheme.seal} rounded-full shadow-lg border border-white/30 flex items-center justify-center`}>
-                          {isCompleted && <svg className="w-2.5 h-2.5 text-white" fill="currentColor" viewBox="0 0 20 20"><path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" /></svg>}
+                      {/* Wax seal with detailed design */}
+                      <div className="absolute -right-2 top-1/2 -translate-y-1/2 w-6 h-6">
+                        <div className="absolute inset-0 translate-x-0.5 translate-y-0.5 bg-amber-950/50 rounded-full blur-sm" />
+                        <div className={`relative w-full h-full bg-gradient-to-br ${isCompleted ? 'from-emerald-400 via-emerald-500 to-emerald-700' : categoryTheme.seal} rounded-full shadow-lg border border-white/20 flex items-center justify-center overflow-hidden`}>
+                          <div className="absolute inset-0 opacity-30" style={{
+                            backgroundImage: 'radial-gradient(circle at 30% 30%, rgba(255,255,255,0.3) 0%, transparent 50%)',
+                          }} />
+                          {isCompleted ? (
+                            <svg className="w-3 h-3 text-white drop-shadow" fill="currentColor" viewBox="0 0 20 20">
+                              <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
+                            </svg>
+                          ) : (
+                            <div className="w-2.5 h-2.5 border border-white/30 rounded-full" />
+                          )}
                         </div>
                       </div>
                     </div>
                   </div>
                 )
               })}
-              {/* Ghost slots */}
+              {/* Ghost slots - refined styling */}
               {Array.from({ length: Math.max(0, 12 - getShelfArticles(1, shelf2Category).length) }).map((_, i) => (
-                <div key={`ghost-shelf2-${i}`} className="flex-shrink-0 w-7 relative" style={{ marginBottom: '-2px' }}>
-                  <div className="h-[70px] relative">
-                    <div className="absolute inset-x-0.5 top-3 bottom-3 border-2 border-dashed border-amber-500/30 rounded-sm bg-amber-900/20" />
-                    <div className="absolute top-0 left-0 right-0 h-3.5 border-2 border-dashed border-amber-500/20 rounded-t-sm" />
-                    <div className="absolute bottom-0 left-0 right-0 h-3.5 border-2 border-dashed border-amber-500/20 rounded-b-sm" />
+                <div key={`ghost-shelf2-${i}`} className="flex-shrink-0 w-8 relative" style={{ marginBottom: '0px' }}>
+                  <div className="h-[75px] relative opacity-40">
+                    <div className="absolute inset-x-1 top-4 bottom-4 border border-dashed border-amber-400/40 rounded-sm bg-gradient-to-b from-amber-900/10 to-amber-800/20" />
+                    <div className="absolute top-0 left-0.5 right-0.5 h-4 border border-dashed border-amber-400/30 rounded-t-sm" />
+                    <div className="absolute bottom-0 left-0.5 right-0.5 h-4 border border-dashed border-amber-400/30 rounded-b-sm" />
+                    <div className="absolute -right-2 top-1/2 -translate-y-1/2 w-5 h-5 border border-dashed border-amber-400/30 rounded-full" />
                   </div>
                 </div>
               ))}
             </div>
 
-            {/* Center decorative medallion */}
-            <div className="absolute left-1/2 -translate-x-1/2 -bottom-1 w-10 h-10 z-30">
-              <div className="w-full h-full bg-gradient-to-br from-yellow-500 via-yellow-600 to-amber-700 rounded-full shadow-lg border-2 border-yellow-400/50 flex items-center justify-center">
-                <div className="w-5 h-5 bg-gradient-to-br from-amber-800 to-amber-900 rounded-full border border-yellow-500/30 flex items-center justify-center">
-                  <svg viewBox="0 0 12 12" className="w-3 h-3 text-yellow-400/60">
-                    <path d="M6 1 L7 4 L10 5 L7 6 L6 9 L5 6 L2 5 L5 4 Z" fill="currentColor"/>
+            {/* Center decorative medallion - enhanced */}
+            <div className="absolute left-1/2 -translate-x-1/2 -bottom-2 w-12 h-12 z-30">
+              {/* Medallion shadow */}
+              <div className="absolute inset-0 translate-y-1 bg-amber-950/50 rounded-full blur-md" />
+              <div className="relative w-full h-full bg-gradient-to-br from-yellow-400 via-yellow-500 to-amber-700 rounded-full shadow-xl border-2 border-yellow-300/50 flex items-center justify-center overflow-hidden">
+                {/* Hammered texture */}
+                <div className="absolute inset-0 opacity-20" style={{
+                  backgroundImage: `url("data:image/svg+xml,%3Csvg viewBox='0 0 20 20' xmlns='http://www.w3.org/2000/svg'%3E%3Ccircle cx='5' cy='5' r='2' fill='%23fff' opacity='0.3'/%3E%3Ccircle cx='15' cy='10' r='1.5' fill='%23fff' opacity='0.2'/%3E%3C/svg%3E")`,
+                }} />
+                <div className="w-6 h-6 bg-gradient-to-br from-amber-700 to-amber-900 rounded-full border-2 border-yellow-400/40 flex items-center justify-center shadow-inner">
+                  <svg viewBox="0 0 16 16" className="w-4 h-4 text-yellow-400/70">
+                    <path d="M8 1 L9.5 5.5 L14 7 L9.5 8.5 L8 13 L6.5 8.5 L2 7 L6.5 5.5 Z" fill="currentColor"/>
+                    <circle cx="8" cy="7" r="1.5" fill="currentColor" opacity="0.5"/>
                   </svg>
                 </div>
               </div>
             </div>
 
-            {/* Ornate Roman shelf surface */}
-            <div className="h-8 bg-gradient-to-b from-amber-700 via-amber-800 to-amber-950 border-t-2 border-amber-500/40 shadow-xl relative overflow-hidden">
-              <div className="absolute inset-0 opacity-30" style={{
-                backgroundImage: `url("data:image/svg+xml,%3Csvg viewBox='0 0 100 10' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M0 5 Q25 3 50 5 Q75 7 100 5' fill='none' stroke='%23000' stroke-width='0.5'/%3E%3C/svg%3E")`,
+            {/* Ornate Roman shelf surface - Enhanced */}
+            <div className="h-10 bg-gradient-to-b from-amber-650 via-amber-750 to-amber-950 border-t-2 border-amber-400/50 shadow-2xl relative overflow-hidden">
+              <div className="absolute top-0 left-0 right-0 h-2 bg-gradient-to-b from-amber-500/30 to-transparent" />
+              <div className="absolute inset-0 opacity-25" style={{
+                backgroundImage: `url("data:image/svg+xml,%3Csvg viewBox='0 0 200 20' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M0 8 Q50 5 100 8 Q150 11 200 8' fill='none' stroke='%23000' stroke-width='0.5'/%3E%3Cpath d='M0 14 Q50 12 100 14 Q150 16 200 14' fill='none' stroke='%23000' stroke-width='0.4'/%3E%3C/svg%3E")`,
               }} />
-              <div className="absolute top-1 left-0 right-0 h-px bg-gradient-to-r from-amber-600/30 via-amber-400/50 to-amber-600/30" />
-              {[8, 25, 42, 58, 75, 92].map((pos, i) => (
-                <div key={`shelf2-rosette-${i}`} className="absolute top-3" style={{ left: `${pos}%` }}>
-                  <div className="w-2.5 h-2.5 bg-gradient-to-br from-yellow-400 to-yellow-600 rounded-full shadow-sm border border-yellow-300/30" />
+              <div className="absolute top-1.5 left-4 right-4 h-px bg-gradient-to-r from-transparent via-amber-400/60 to-transparent" />
+              {/* Symmetric rosettes */}
+              {[4, 15, 26, 37, 50, 63, 74, 85, 96].map((pos, i) => (
+                <div key={`shelf2-rosette-${i}`} className="absolute top-3.5 -translate-x-1/2" style={{ left: `${pos}%` }}>
+                  <div className="w-3 h-3 bg-gradient-to-br from-yellow-400 via-yellow-500 to-amber-600 rounded-full shadow-md border border-yellow-300/40 relative overflow-hidden">
+                    <div className="absolute top-0.5 left-0.5 w-1.5 h-1.5 bg-gradient-to-br from-yellow-200/70 to-transparent rounded-full" />
+                    <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-1 h-1 bg-amber-700/50 rounded-full" />
+                  </div>
                 </div>
               ))}
-              <svg className="absolute bottom-0 left-0 right-0 h-2 opacity-50" preserveAspectRatio="none">
-                <pattern id="shelfEdge2b" x="0" y="0" width="20" height="8" patternUnits="userSpaceOnUse">
-                  <ellipse cx="6" cy="4" rx="4" ry="3" fill="none" stroke="#fbbf24" strokeWidth="0.6"/>
-                  <path d="M14 1 L15 6 L16 1" fill="none" stroke="#fbbf24" strokeWidth="0.6"/>
+              <svg className="absolute bottom-0 left-0 right-0 h-2.5 opacity-60" preserveAspectRatio="none">
+                <pattern id="shelfEdge2refined" x="0" y="0" width="24" height="10" patternUnits="userSpaceOnUse">
+                  <ellipse cx="7" cy="5" rx="5" ry="4" fill="none" stroke="#fbbf24" strokeWidth="0.7"/>
+                  <ellipse cx="7" cy="5" rx="2.5" ry="2" fill="#fbbf24" opacity="0.2"/>
+                  <path d="M17 1 L18.5 8 L20 1" fill="none" stroke="#fbbf24" strokeWidth="0.7"/>
                 </pattern>
-                <rect width="100%" height="100%" fill="url(#shelfEdge2b)"/>
+                <rect width="100%" height="100%" fill="url(#shelfEdge2refined)"/>
               </svg>
+              <div className="absolute bottom-0 left-0 right-0 h-1 bg-gradient-to-t from-amber-950 to-transparent" />
             </div>
           </div>
         </div>
 
         {/* ============ SHELF 3 ============ */}
-        <div className="relative pt-4 pb-2">
-          {/* Category filter bar */}
-          <div className="flex items-center justify-between px-8 mb-2">
-            <div className="flex items-center gap-2">
-              <span className="text-[10px] font-bold text-amber-400/70 uppercase tracking-wider">Shelf III</span>
-              <div className="w-12 h-px bg-gradient-to-r from-amber-500/50 to-transparent" />
-            </div>
-            <div className="flex items-center gap-1">
-              <button
-                onClick={() => setShelf3Category(null)}
-                className={`px-2 py-0.5 text-[9px] font-bold rounded transition-all ${!shelf3Category ? 'bg-amber-600/60 text-amber-100' : 'text-amber-400/60 hover:text-amber-300'}`}
-              >
-                All
-              </button>
-              {BOOK_CATEGORIES.map(cat => (
+        <div className="relative pt-6 pb-2">
+          {/* Centered Category filter bar with Roman styling */}
+          <div className="flex items-center justify-center px-12 mb-3">
+            <div className="flex items-center gap-3 px-4 py-1.5 bg-gradient-to-r from-amber-900/40 via-amber-800/60 to-amber-900/40 rounded-sm border-y border-amber-600/30">
+              {/* Left decorative element */}
+              <div className="flex items-center gap-2">
+                <svg viewBox="0 0 16 8" className="w-4 h-2 text-amber-500/50">
+                  <path d="M0 4 L6 4 M8 0 L8 8" stroke="currentColor" strokeWidth="1" fill="none"/>
+                </svg>
+                <span className="text-[10px] font-bold text-amber-300/80 uppercase tracking-[0.15em]" style={{ fontFamily: 'Georgia, serif' }}>Shelf III</span>
+              </div>
+              {/* Divider */}
+              <div className="w-px h-4 bg-gradient-to-b from-transparent via-amber-500/40 to-transparent" />
+              {/* Category buttons - all icons for this row */}
+              <div className="flex items-center gap-1.5">
                 <button
-                  key={cat.slug}
-                  onClick={() => setShelf3Category(shelf3Category === cat.slug ? null : cat.slug)}
-                  className={`px-2 py-0.5 text-[9px] font-bold rounded transition-all flex items-center gap-1 ${shelf3Category === cat.slug ? 'bg-amber-600/60 text-amber-100' : 'text-amber-400/60 hover:text-amber-300'}`}
+                  onClick={() => setShelf3Category(null)}
+                  className={`px-2.5 py-1 text-[9px] font-bold rounded-sm transition-all border ${!shelf3Category ? 'bg-amber-700/70 text-amber-100 border-amber-500/50 shadow-inner' : 'text-amber-400/70 border-transparent hover:text-amber-300 hover:bg-amber-800/30'}`}
                 >
-                  <cat.icon className="w-2.5 h-2.5" />
+                  All
                 </button>
-              ))}
+                {BOOK_CATEGORIES.map(cat => (
+                  <button
+                    key={cat.slug}
+                    onClick={() => setShelf3Category(shelf3Category === cat.slug ? null : cat.slug)}
+                    className={`p-1.5 rounded-sm transition-all border ${shelf3Category === cat.slug ? 'bg-amber-700/70 text-amber-100 border-amber-500/50 shadow-inner' : 'text-amber-400/70 border-transparent hover:text-amber-300 hover:bg-amber-800/30'}`}
+                    title={cat.name}
+                  >
+                    <cat.icon className="w-3 h-3" />
+                  </button>
+                ))}
+              </div>
+              {/* Right decorative element */}
+              <svg viewBox="0 0 16 8" className="w-4 h-2 text-amber-500/50 scale-x-[-1]">
+                <path d="M0 4 L6 4 M8 0 L8 8" stroke="currentColor" strokeWidth="1" fill="none"/>
+              </svg>
             </div>
           </div>
 
           {/* Scrolls container */}
-          <div className="relative mx-6">
-            <div className="flex items-end justify-start gap-3 px-4 pb-0 min-h-[80px] overflow-x-auto scrollbar-thin scrollbar-thumb-amber-600/50 scrollbar-track-transparent">
+          <div className="relative mx-10">
+            <div className="flex items-end justify-center gap-2.5 px-6 pb-0 min-h-[85px] overflow-x-auto scrollbar-thin scrollbar-thumb-amber-600/50 scrollbar-track-transparent">
               {getShelfArticles(2, shelf3Category).map((article, idx) => {
                 const categorySlug = article.category?.slug || 'default'
                 const categoryTheme = CATEGORY_SCROLL_THEMES[categorySlug] || CATEGORY_SCROLL_THEMES.sustainability
@@ -1837,94 +2086,137 @@ export default function ArticlesPage() {
                 return (
                   <div
                     key={`shelf3-${article.id}`}
-                    className={`flex-shrink-0 relative w-7 cursor-pointer transition-all duration-300 ${isHovered ? 'scale-110 -translate-y-3 z-30' : 'z-10'}`}
-                    style={{ marginBottom: '-2px' }}
+                    className={`flex-shrink-0 relative w-8 cursor-pointer transition-all duration-300 ${isHovered ? 'scale-110 -translate-y-4 z-30' : 'z-10'}`}
+                    style={{ marginBottom: '0px' }}
                     onMouseEnter={() => handleScrollHover(article)}
                     onMouseLeave={handleScrollLeave}
                     onClick={() => setPreviewArticle(article)}
                   >
-                    <div className="relative h-[70px]" style={{ transform: `rotate(${rotation}deg)` }}>
-                      <div className={`absolute inset-x-0.5 top-3 bottom-3 bg-gradient-to-r ${categoryTheme.parchment} rounded-sm shadow-md overflow-hidden`}>
+                    {/* Scroll shadow on shelf */}
+                    <div className="absolute bottom-0 left-1/2 -translate-x-1/2 w-6 h-2 bg-gradient-to-t from-amber-950/60 to-transparent blur-sm rounded-full" />
+                    <div className="relative h-[75px]" style={{ transform: `rotate(${rotation}deg)` }}>
+                      {/* Parchment body with texture */}
+                      <div className={`absolute inset-x-0.5 top-4 bottom-4 bg-gradient-to-r ${categoryTheme.parchment} rounded-sm shadow-lg overflow-hidden`}>
+                        <div className="absolute inset-0 opacity-20" style={{
+                          backgroundImage: `url("data:image/svg+xml,%3Csvg viewBox='0 0 20 20' xmlns='http://www.w3.org/2000/svg'%3E%3Crect x='2' y='2' width='1' height='1' fill='%23000' opacity='0.1'/%3E%3Crect x='12' y='8' width='1' height='1' fill='%23000' opacity='0.08'/%3E%3Crect x='6' y='14' width='1' height='1' fill='%23000' opacity='0.12'/%3E%3C/svg%3E")`,
+                        }} />
                         {progressPercent > 0 && (
-                          <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-emerald-300/50 to-emerald-200/20" style={{ height: `${progressPercent}%` }} />
+                          <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-emerald-400/50 via-emerald-300/30 to-emerald-200/10 transition-all duration-500" style={{ height: `${progressPercent}%` }} />
                         )}
+                        <div className="absolute left-1/2 -translate-x-1/2 top-1 bottom-1 w-px bg-gradient-to-b from-amber-600/20 via-amber-500/10 to-amber-600/20" />
                       </div>
-                      <div className="absolute top-0 left-0 right-0 h-3.5 bg-gradient-to-b from-amber-600 via-amber-700 to-amber-800 rounded-t-sm shadow-lg">
-                        <div className="absolute top-0 left-1/2 -translate-x-1/2 w-2.5 h-2.5 bg-gradient-to-br from-yellow-500 to-amber-600 rounded-full shadow" />
+                      {/* Top rod with ornate finial */}
+                      <div className="absolute top-0 left-0 right-0 h-4 bg-gradient-to-b from-amber-500 via-amber-600 to-amber-800 rounded-t-sm shadow-lg">
+                        <div className="absolute top-0 left-0 right-0 h-1 bg-gradient-to-b from-amber-400/40 to-transparent rounded-t-sm" />
+                        <div className="absolute -top-0.5 left-1/2 -translate-x-1/2 w-3 h-3 bg-gradient-to-br from-yellow-400 via-yellow-500 to-amber-600 rounded-full shadow-md border border-yellow-300/40">
+                          <div className="absolute top-0.5 left-0.5 w-1 h-1 bg-white/40 rounded-full" />
+                        </div>
                       </div>
-                      <div className="absolute bottom-0 left-0 right-0 h-3.5 bg-gradient-to-t from-amber-600 via-amber-700 to-amber-800 rounded-b-sm shadow-lg">
-                        <div className="absolute bottom-0 left-1/2 -translate-x-1/2 w-2.5 h-2.5 bg-gradient-to-br from-yellow-500 to-amber-600 rounded-full shadow" />
+                      {/* Bottom rod with ornate finial */}
+                      <div className="absolute bottom-0 left-0 right-0 h-4 bg-gradient-to-t from-amber-500 via-amber-600 to-amber-800 rounded-b-sm shadow-lg">
+                        <div className="absolute bottom-0 left-0 right-0 h-1 bg-gradient-to-t from-amber-900/40 to-transparent rounded-b-sm" />
+                        <div className="absolute -bottom-0.5 left-1/2 -translate-x-1/2 w-3 h-3 bg-gradient-to-br from-yellow-400 via-yellow-500 to-amber-600 rounded-full shadow-md border border-yellow-300/40">
+                          <div className="absolute top-0.5 left-0.5 w-1 h-1 bg-white/40 rounded-full" />
+                        </div>
                       </div>
-                      <div className="absolute -right-1.5 top-1/2 -translate-y-1/2 w-5 h-5">
-                        <div className={`w-full h-full bg-gradient-to-br ${isCompleted ? 'from-emerald-500 to-emerald-700' : categoryTheme.seal} rounded-full shadow-lg border border-white/30 flex items-center justify-center`}>
-                          {isCompleted && <svg className="w-2.5 h-2.5 text-white" fill="currentColor" viewBox="0 0 20 20"><path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" /></svg>}
+                      {/* Wax seal with detailed design */}
+                      <div className="absolute -right-2 top-1/2 -translate-y-1/2 w-6 h-6">
+                        <div className="absolute inset-0 translate-x-0.5 translate-y-0.5 bg-amber-950/50 rounded-full blur-sm" />
+                        <div className={`relative w-full h-full bg-gradient-to-br ${isCompleted ? 'from-emerald-400 via-emerald-500 to-emerald-700' : categoryTheme.seal} rounded-full shadow-lg border border-white/20 flex items-center justify-center overflow-hidden`}>
+                          <div className="absolute inset-0 opacity-30" style={{
+                            backgroundImage: 'radial-gradient(circle at 30% 30%, rgba(255,255,255,0.3) 0%, transparent 50%)',
+                          }} />
+                          {isCompleted ? (
+                            <svg className="w-3 h-3 text-white drop-shadow" fill="currentColor" viewBox="0 0 20 20">
+                              <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
+                            </svg>
+                          ) : (
+                            <div className="w-2.5 h-2.5 border border-white/30 rounded-full" />
+                          )}
                         </div>
                       </div>
                     </div>
                   </div>
                 )
               })}
-              {/* Ghost slots */}
+              {/* Ghost slots - refined styling */}
               {Array.from({ length: Math.max(0, 12 - getShelfArticles(2, shelf3Category).length) }).map((_, i) => (
-                <div key={`ghost-shelf3-${i}`} className="flex-shrink-0 w-7 relative" style={{ marginBottom: '-2px' }}>
-                  <div className="h-[70px] relative">
-                    <div className="absolute inset-x-0.5 top-3 bottom-3 border-2 border-dashed border-amber-500/30 rounded-sm bg-amber-900/20" />
-                    <div className="absolute top-0 left-0 right-0 h-3.5 border-2 border-dashed border-amber-500/20 rounded-t-sm" />
-                    <div className="absolute bottom-0 left-0 right-0 h-3.5 border-2 border-dashed border-amber-500/20 rounded-b-sm" />
+                <div key={`ghost-shelf3-${i}`} className="flex-shrink-0 w-8 relative" style={{ marginBottom: '0px' }}>
+                  <div className="h-[75px] relative opacity-40">
+                    <div className="absolute inset-x-1 top-4 bottom-4 border border-dashed border-amber-400/40 rounded-sm bg-gradient-to-b from-amber-900/10 to-amber-800/20" />
+                    <div className="absolute top-0 left-0.5 right-0.5 h-4 border border-dashed border-amber-400/30 rounded-t-sm" />
+                    <div className="absolute bottom-0 left-0.5 right-0.5 h-4 border border-dashed border-amber-400/30 rounded-b-sm" />
+                    <div className="absolute -right-2 top-1/2 -translate-y-1/2 w-5 h-5 border border-dashed border-amber-400/30 rounded-full" />
                   </div>
                 </div>
               ))}
             </div>
 
-            {/* Ornate Roman shelf surface with acanthus leaf corners */}
-            <div className="h-8 bg-gradient-to-b from-amber-700 via-amber-800 to-amber-950 border-t-2 border-amber-500/40 shadow-xl relative overflow-hidden">
-              <div className="absolute inset-0 opacity-30" style={{
-                backgroundImage: `url("data:image/svg+xml,%3Csvg viewBox='0 0 100 10' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M0 5 Q25 3 50 5 Q75 7 100 5' fill='none' stroke='%23000' stroke-width='0.5'/%3E%3C/svg%3E")`,
+            {/* Ornate Roman shelf surface with acanthus leaf corners - Enhanced */}
+            <div className="h-10 bg-gradient-to-b from-amber-650 via-amber-750 to-amber-950 border-t-2 border-amber-400/50 shadow-2xl relative overflow-hidden">
+              <div className="absolute top-0 left-0 right-0 h-2 bg-gradient-to-b from-amber-500/30 to-transparent" />
+              <div className="absolute inset-0 opacity-25" style={{
+                backgroundImage: `url("data:image/svg+xml,%3Csvg viewBox='0 0 200 20' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M0 8 Q50 5 100 8 Q150 11 200 8' fill='none' stroke='%23000' stroke-width='0.5'/%3E%3Cpath d='M0 14 Q50 12 100 14 Q150 16 200 14' fill='none' stroke='%23000' stroke-width='0.4'/%3E%3C/svg%3E")`,
               }} />
-              <div className="absolute top-1 left-0 right-0 h-px bg-gradient-to-r from-amber-600/30 via-amber-400/50 to-amber-600/30" />
-              {/* Acanthus leaf corner decorations */}
-              <svg className="absolute left-2 top-1 w-6 h-6 text-amber-500/40" viewBox="0 0 24 24">
-                <path d="M4 20 Q8 14 12 12 Q8 10 4 4" fill="none" stroke="currentColor" strokeWidth="1.2"/>
-                <path d="M6 16 Q10 14 12 13" fill="none" stroke="currentColor" strokeWidth="0.8"/>
+              <div className="absolute top-1.5 left-4 right-4 h-px bg-gradient-to-r from-transparent via-amber-400/60 to-transparent" />
+              {/* Enhanced acanthus leaf corner decorations */}
+              <svg className="absolute left-2 top-0.5 w-8 h-8 text-amber-500/50" viewBox="0 0 32 32">
+                <path d="M4 28 Q10 20 16 16 Q10 12 4 4" fill="none" stroke="currentColor" strokeWidth="1.5"/>
+                <path d="M6 22 Q12 18 16 15" fill="none" stroke="currentColor" strokeWidth="1"/>
+                <path d="M8 16 Q12 14 14 13" fill="none" stroke="currentColor" strokeWidth="0.8"/>
+                <circle cx="16" cy="16" r="2" fill="currentColor" opacity="0.3"/>
               </svg>
-              <svg className="absolute right-2 top-1 w-6 h-6 text-amber-500/40 scale-x-[-1]" viewBox="0 0 24 24">
-                <path d="M4 20 Q8 14 12 12 Q8 10 4 4" fill="none" stroke="currentColor" strokeWidth="1.2"/>
-                <path d="M6 16 Q10 14 12 13" fill="none" stroke="currentColor" strokeWidth="0.8"/>
+              <svg className="absolute right-2 top-0.5 w-8 h-8 text-amber-500/50 scale-x-[-1]" viewBox="0 0 32 32">
+                <path d="M4 28 Q10 20 16 16 Q10 12 4 4" fill="none" stroke="currentColor" strokeWidth="1.5"/>
+                <path d="M6 22 Q12 18 16 15" fill="none" stroke="currentColor" strokeWidth="1"/>
+                <path d="M8 16 Q12 14 14 13" fill="none" stroke="currentColor" strokeWidth="0.8"/>
+                <circle cx="16" cy="16" r="2" fill="currentColor" opacity="0.3"/>
               </svg>
-              {[12, 30, 50, 70, 88].map((pos, i) => (
-                <div key={`shelf3-rosette-${i}`} className="absolute top-3" style={{ left: `${pos}%` }}>
-                  <div className="w-2.5 h-2.5 bg-gradient-to-br from-yellow-400 to-yellow-600 rounded-full shadow-sm border border-yellow-300/30" />
+              {/* Symmetric rosettes */}
+              {[4, 15, 26, 37, 50, 63, 74, 85, 96].map((pos, i) => (
+                <div key={`shelf3-rosette-${i}`} className="absolute top-3.5 -translate-x-1/2" style={{ left: `${pos}%` }}>
+                  <div className="w-3 h-3 bg-gradient-to-br from-yellow-400 via-yellow-500 to-amber-600 rounded-full shadow-md border border-yellow-300/40 relative overflow-hidden">
+                    <div className="absolute top-0.5 left-0.5 w-1.5 h-1.5 bg-gradient-to-br from-yellow-200/70 to-transparent rounded-full" />
+                    <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-1 h-1 bg-amber-700/50 rounded-full" />
+                  </div>
                 </div>
               ))}
-              <svg className="absolute bottom-0 left-0 right-0 h-2 opacity-50" preserveAspectRatio="none">
-                <pattern id="shelfEdge3b" x="0" y="0" width="20" height="8" patternUnits="userSpaceOnUse">
-                  <ellipse cx="6" cy="4" rx="4" ry="3" fill="none" stroke="#fbbf24" strokeWidth="0.6"/>
-                  <path d="M14 1 L15 6 L16 1" fill="none" stroke="#fbbf24" strokeWidth="0.6"/>
+              <svg className="absolute bottom-0 left-0 right-0 h-2.5 opacity-60" preserveAspectRatio="none">
+                <pattern id="shelfEdge3refined" x="0" y="0" width="24" height="10" patternUnits="userSpaceOnUse">
+                  <ellipse cx="7" cy="5" rx="5" ry="4" fill="none" stroke="#fbbf24" strokeWidth="0.7"/>
+                  <ellipse cx="7" cy="5" rx="2.5" ry="2" fill="#fbbf24" opacity="0.2"/>
+                  <path d="M17 1 L18.5 8 L20 1" fill="none" stroke="#fbbf24" strokeWidth="0.7"/>
                 </pattern>
-                <rect width="100%" height="100%" fill="url(#shelfEdge3b)"/>
+                <rect width="100%" height="100%" fill="url(#shelfEdge3refined)"/>
               </svg>
+              <div className="absolute bottom-0 left-0 right-0 h-1 bg-gradient-to-t from-amber-950 to-transparent" />
             </div>
           </div>
         </div>
 
-        {/* Roman-inspired bottom plinth with dentil molding */}
-        <div className="h-10 bg-gradient-to-t from-amber-800 via-amber-850 to-amber-900 border-t-2 border-amber-600/40 relative">
-          {/* Dentil molding row */}
-          <div className="absolute top-0 left-0 right-0 h-3 flex justify-center">
-            <div className="flex gap-1">
-              {Array.from({ length: 60 }).map((_, i) => (
-                <div key={`dentil-${i}`} className="w-2 h-3 bg-gradient-to-b from-amber-600 to-amber-800 shadow-sm" />
-              ))}
+        {/* Roman-inspired bottom plinth with dentil molding - Enhanced */}
+        <div className="h-12 bg-gradient-to-t from-amber-800 via-amber-850 to-amber-900 border-t-2 border-amber-600/40 relative overflow-hidden">
+          {/* Top highlight */}
+          <div className="absolute top-0 left-0 right-0 h-1 bg-gradient-to-b from-amber-600/30 to-transparent" />
+          {/* Dentil molding row - full width */}
+          <div className="absolute top-1 left-0 right-0 h-3 overflow-hidden">
+            <div className="flex justify-center">
+              <div className="flex gap-0.5">
+                {Array.from({ length: 80 }).map((_, i) => (
+                  <div key={`dentil-${i}`} className="w-2 h-3 bg-gradient-to-b from-amber-500 via-amber-600 to-amber-800 shadow-sm rounded-b-sm" />
+                ))}
+              </div>
             </div>
           </div>
-          {/* Carved wave pattern */}
-          <svg className="absolute bottom-0 left-0 right-0 h-4 opacity-40" preserveAspectRatio="none">
-            <pattern id="bottomWave" x="0" y="0" width="40" height="16" patternUnits="userSpaceOnUse">
-              <path d="M0 8 Q10 2 20 8 Q30 14 40 8" fill="none" stroke="#fbbf24" strokeWidth="1"/>
+          {/* Carved wave pattern - refined */}
+          <svg className="absolute bottom-0 left-0 right-0 h-5 opacity-50" preserveAspectRatio="none">
+            <pattern id="bottomWaveRefined" x="0" y="0" width="48" height="20" patternUnits="userSpaceOnUse">
+              <path d="M0 10 Q12 4 24 10 Q36 16 48 10" fill="none" stroke="#fbbf24" strokeWidth="1.2"/>
+              <path d="M0 15 Q12 10 24 15 Q36 20 48 15" fill="none" stroke="#fbbf24" strokeWidth="0.8" opacity="0.5"/>
             </pattern>
-            <rect width="100%" height="100%" fill="url(#bottomWave)"/>
+            <rect width="100%" height="100%" fill="url(#bottomWaveRefined)"/>
           </svg>
-          {/* Center ornament */}
+          {/* Center ornament - enhanced */}
           <div className="absolute left-1/2 -translate-x-1/2 top-4 w-8 h-4 flex items-center justify-center">
             <div className="w-6 h-3 bg-gradient-to-r from-transparent via-amber-500/40 to-transparent rounded-full" />
           </div>
