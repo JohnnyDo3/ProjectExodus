@@ -650,6 +650,84 @@ export default function ArticlesPage() {
   // Authenticated view - Full interactive page
   return (
     <div className="min-h-screen bg-[var(--background)]">
+      {/* ========================================== */}
+      {/* MOBILE LIBRARY DOORS - Entrance Experience */}
+      {/* ========================================== */}
+      <AnimatePresence>
+        {!mobileDoorsOpen && (
+          <motion.div
+            initial={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            transition={{ duration: 0.5 }}
+            className="lg:hidden fixed inset-0 z-50 flex items-center justify-center bg-gradient-to-b from-amber-950 via-stone-900 to-amber-950"
+            onClick={() => setMobileDoorsOpen(true)}
+          >
+            {/* Library doors background texture */}
+            <div className="absolute inset-0 opacity-20" style={{
+              backgroundImage: `url("data:image/svg+xml,%3Csvg viewBox='0 0 100 100' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='wood'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.03' numOctaves='4'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23wood)'/%3E%3C/svg%3E")`,
+            }} />
+
+            {/* Left door */}
+            <motion.div
+              initial={{ x: 0 }}
+              exit={{ x: '-100%' }}
+              transition={{ duration: 0.8, ease: 'easeInOut' }}
+              className="absolute left-0 top-0 bottom-0 w-1/2 bg-gradient-to-r from-amber-900 to-amber-800 border-r-4 border-amber-600/50"
+            >
+              {/* Door panel details */}
+              <div className="absolute inset-4 border-2 border-amber-600/30 rounded-sm">
+                <div className="absolute inset-4 border border-amber-500/20 rounded-sm" />
+              </div>
+              {/* Door handle */}
+              <div className="absolute right-4 top-1/2 -translate-y-1/2 w-4 h-16 bg-gradient-to-b from-amber-400 to-amber-600 rounded-full shadow-lg border-2 border-amber-300/50" />
+              {/* Decorative carvings */}
+              <div className="absolute top-1/4 left-1/2 -translate-x-1/2 w-16 h-16 border-2 border-amber-500/30 rotate-45" />
+              <div className="absolute bottom-1/4 left-1/2 -translate-x-1/2 w-12 h-12 border-2 border-amber-500/30 rotate-45" />
+            </motion.div>
+
+            {/* Right door */}
+            <motion.div
+              initial={{ x: 0 }}
+              exit={{ x: '100%' }}
+              transition={{ duration: 0.8, ease: 'easeInOut' }}
+              className="absolute right-0 top-0 bottom-0 w-1/2 bg-gradient-to-l from-amber-900 to-amber-800 border-l-4 border-amber-600/50"
+            >
+              {/* Door panel details */}
+              <div className="absolute inset-4 border-2 border-amber-600/30 rounded-sm">
+                <div className="absolute inset-4 border border-amber-500/20 rounded-sm" />
+              </div>
+              {/* Door handle */}
+              <div className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-16 bg-gradient-to-b from-amber-400 to-amber-600 rounded-full shadow-lg border-2 border-amber-300/50" />
+              {/* Decorative carvings */}
+              <div className="absolute top-1/4 left-1/2 -translate-x-1/2 w-16 h-16 border-2 border-amber-500/30 rotate-45" />
+              <div className="absolute bottom-1/4 left-1/2 -translate-x-1/2 w-12 h-12 border-2 border-amber-500/30 rotate-45" />
+            </motion.div>
+
+            {/* Center content - above doors */}
+            <div className="relative z-10 text-center px-6">
+              {/* Library crest */}
+              <div className="w-20 h-20 mx-auto mb-6 rounded-full bg-gradient-to-br from-amber-500 to-amber-700 flex items-center justify-center shadow-2xl border-4 border-amber-400/50">
+                <ScrollText className="w-10 h-10 text-amber-100" />
+              </div>
+              <h2 className="text-2xl font-bold text-amber-100 mb-2" style={{ fontFamily: 'Georgia, serif' }}>
+                The Ancient Library
+              </h2>
+              <p className="text-amber-300/70 text-sm mb-6">
+                Wisdom awaits within
+              </p>
+              <motion.div
+                animate={{ y: [0, 8, 0] }}
+                transition={{ duration: 1.5, repeat: Infinity, ease: 'easeInOut' }}
+                className="text-amber-400/80"
+              >
+                <p className="text-xs uppercase tracking-widest mb-2">Tap to Enter</p>
+                <ChevronDown className="w-6 h-6 mx-auto" />
+              </motion.div>
+            </div>
+          </motion.div>
+        )}
+      </AnimatePresence>
+
       {/* Hero Header - Ancient Library Chamber */}
       <div className="relative bg-gradient-to-b from-slate-900 via-indigo-950 to-slate-900 text-white overflow-hidden min-h-[70vh] sm:min-h-[75vh]">
         {/* Ancient Chamber Background */}
@@ -1513,13 +1591,19 @@ export default function ArticlesPage() {
                   }
                 }}
               >
-                {/* Backdrop */}
-                <div className="absolute inset-0 bg-black/70 backdrop-blur-sm" />
+                {/* Backdrop - clickable to close */}
+                <div
+                  className="absolute inset-0 bg-black/80 backdrop-blur-md cursor-pointer"
+                  onClick={() => document.getElementById(`scroll-modal-${article.id}`)?.classList.add('hidden')}
+                />
 
                 {/* Modal Content - Unrolled Scroll Style */}
-                <div className="relative w-full max-w-md animate-in fade-in zoom-in duration-300">
+                <div
+                  className="relative w-full max-w-md animate-in fade-in zoom-in duration-300 z-10"
+                  onClick={(e) => e.stopPropagation()}
+                >
                   {/* Scroll unfurl visual */}
-                  <div className="relative bg-gradient-to-b from-amber-100 via-amber-50 to-amber-100 rounded-lg shadow-2xl overflow-hidden border-4 border-amber-700/40">
+                  <div className="relative bg-gradient-to-b from-amber-100 via-amber-50 to-amber-100 rounded-lg shadow-2xl overflow-hidden border-4 border-amber-700/60" style={{ boxShadow: '0 25px 50px -12px rgba(0, 0, 0, 0.5), 0 0 0 1px rgba(180, 83, 9, 0.3)' }}>
                     {/* Parchment texture */}
                     <div className="absolute inset-0 opacity-30" style={{
                       backgroundImage: `url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='parch'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.04' numOctaves='5' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23parch)'/%3E%3C/svg%3E")`,
