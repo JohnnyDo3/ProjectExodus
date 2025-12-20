@@ -1446,6 +1446,90 @@ export default function ArticlesPage() {
                   </div>
                 </div>
 
+                {/* ========================================== */}
+                {/* ORNATE TOGGLE SWITCH FILTERS               */}
+                {/* Styled as antique mechanisms with labels   */}
+                {/* ========================================== */}
+                <div className="flex flex-wrap items-center justify-center gap-3 mb-6 px-4">
+                  {/* "All" filter toggle */}
+                  <div className="relative group/toggle">
+                    <button
+                      onClick={() => setActiveCategoryFilter(null)}
+                      className={`relative flex items-center gap-2 px-3 py-2 rounded-lg border-2 transition-all duration-300 ${
+                        activeCategoryFilter === null
+                          ? 'bg-gradient-to-b from-amber-600 to-amber-800 border-yellow-500/60 shadow-lg shadow-amber-500/30'
+                          : 'bg-gradient-to-b from-stone-700 to-stone-800 border-amber-700/40 hover:border-amber-500/50'
+                      }`}
+                    >
+                      {/* Toggle mechanism visual */}
+                      <div className={`w-4 h-4 rounded-full border-2 flex items-center justify-center transition-all ${
+                        activeCategoryFilter === null
+                          ? 'bg-yellow-400 border-yellow-300 shadow-inner'
+                          : 'bg-stone-600 border-stone-500'
+                      }`}>
+                        {activeCategoryFilter === null && (
+                          <div className="w-1.5 h-1.5 rounded-full bg-amber-800" />
+                        )}
+                      </div>
+                      <span className={`text-xs font-bold uppercase tracking-wider ${
+                        activeCategoryFilter === null ? 'text-amber-100' : 'text-amber-300/70'
+                      }`}>All</span>
+                      {/* Decorative bolts */}
+                      <div className="absolute -left-0.5 top-1/2 -translate-y-1/2 w-1.5 h-1.5 rounded-full bg-gradient-to-br from-yellow-400 to-yellow-600 border border-yellow-300/50" />
+                      <div className="absolute -right-0.5 top-1/2 -translate-y-1/2 w-1.5 h-1.5 rounded-full bg-gradient-to-br from-yellow-400 to-yellow-600 border border-yellow-300/50" />
+                    </button>
+                    {/* Hover label */}
+                    <div className="absolute -bottom-8 left-1/2 -translate-x-1/2 px-2 py-1 bg-amber-900/95 text-amber-100 text-[9px] font-bold rounded whitespace-nowrap opacity-0 group-hover/toggle:opacity-100 transition-opacity shadow-lg z-50">
+                      View All Scrolls
+                    </div>
+                  </div>
+
+                  {/* Category filter toggles */}
+                  {BOOK_CATEGORIES.map((category) => {
+                    const isActive = activeCategoryFilter === category.slug
+                    const CategoryIcon = category.icon
+                    const categoryCount = articlesByCategory[category.slug]?.length || 0
+
+                    return (
+                      <div key={category.id} className="relative group/toggle">
+                        <button
+                          onClick={() => setActiveCategoryFilter(isActive ? null : category.slug)}
+                          className={`relative flex items-center gap-2 px-3 py-2 rounded-lg border-2 transition-all duration-300 ${
+                            isActive
+                              ? `bg-gradient-to-b ${category.color} border-white/30 shadow-lg`
+                              : 'bg-gradient-to-b from-stone-700 to-stone-800 border-amber-700/40 hover:border-amber-500/50'
+                          }`}
+                        >
+                          {/* Toggle mechanism with category icon */}
+                          <div className={`w-5 h-5 rounded-full border-2 flex items-center justify-center transition-all ${
+                            isActive
+                              ? 'bg-white/20 border-white/40 shadow-inner'
+                              : 'bg-stone-600 border-stone-500'
+                          }`}>
+                            <CategoryIcon className={`w-2.5 h-2.5 ${isActive ? 'text-white' : 'text-amber-400/60'}`} />
+                          </div>
+                          <span className={`text-xs font-bold uppercase tracking-wider hidden sm:inline ${
+                            isActive ? 'text-white' : 'text-amber-300/70'
+                          }`}>{category.name}</span>
+                          {/* Count badge */}
+                          {categoryCount > 0 && (
+                            <span className={`text-[9px] px-1.5 py-0.5 rounded-full font-bold ${
+                              isActive ? 'bg-white/20 text-white' : 'bg-amber-800/50 text-amber-300/70'
+                            }`}>{categoryCount}</span>
+                          )}
+                          {/* Decorative bolts */}
+                          <div className="absolute -left-0.5 top-1/2 -translate-y-1/2 w-1.5 h-1.5 rounded-full bg-gradient-to-br from-yellow-400 to-yellow-600 border border-yellow-300/50" />
+                          <div className="absolute -right-0.5 top-1/2 -translate-y-1/2 w-1.5 h-1.5 rounded-full bg-gradient-to-br from-yellow-400 to-yellow-600 border border-yellow-300/50" />
+                        </button>
+                        {/* Hover label */}
+                        <div className="absolute -bottom-8 left-1/2 -translate-x-1/2 px-2 py-1 bg-amber-900/95 text-amber-100 text-[9px] font-bold rounded whitespace-nowrap opacity-0 group-hover/toggle:opacity-100 transition-opacity shadow-lg z-50">
+                          {category.name} Scrolls ({categoryCount})
+                        </div>
+                      </div>
+                    )
+                  })}
+                </div>
+
                 {/* Grand Library Structure - Multi-level wooden shelving */}
                 <div className="relative max-w-5xl mx-auto">
                   {/* Ambient lighting effects */}
@@ -2743,6 +2827,99 @@ export default function ArticlesPage() {
                     )}
                   </div>
                     </div>
+                  </div>
+                </div>
+              </div>
+            )}
+
+            {/* ========================================== */}
+            {/* RECOMMENDED FOR YOU SHELF                  */}
+            {/* Smart recommendations based on reading     */}
+            {/* ========================================== */}
+            {session && getRecommendedArticles().length > 0 && (
+              <div className="mb-8 sm:mb-12">
+                {/* Section Header with subtle glow effect */}
+                <div className="flex items-center gap-4 mb-6">
+                  <div className="relative flex-shrink-0">
+                    <div className="absolute inset-0 w-14 h-14 bg-violet-500/30 rounded-full blur-lg animate-pulse" />
+                    <div className="relative w-12 h-12 rounded-full bg-gradient-to-br from-violet-600 to-purple-800 flex items-center justify-center shadow-lg border-2 border-violet-400/30">
+                      <Sparkles className="w-6 h-6 text-violet-100" />
+                    </div>
+                  </div>
+                  <div>
+                    <h2 className="text-xl sm:text-2xl font-bold text-[var(--foreground)]" style={{ fontFamily: 'Georgia, serif' }}>
+                      Scrolls You May Enjoy
+                    </h2>
+                    <p className="text-sm text-[var(--muted)]">
+                      Based on your reading journey
+                    </p>
+                  </div>
+                </div>
+
+                {/* Recommended shelf with special styling */}
+                <div className="relative bg-gradient-to-r from-violet-950/30 via-purple-900/20 to-violet-950/30 rounded-xl border-2 border-violet-600/30 p-4 sm:p-6 overflow-hidden">
+                  {/* Magical glow effect */}
+                  <div className="absolute inset-0 bg-gradient-to-r from-violet-500/5 via-purple-500/10 to-violet-500/5 pointer-events-none" />
+
+                  {/* Scrolls row */}
+                  <div className="relative flex gap-4 overflow-x-auto pb-2 scrollbar-thin scrollbar-thumb-violet-600/50 scrollbar-track-violet-900/20">
+                    {getRecommendedArticles().map((article, index) => {
+                      const categorySlug = article.category?.slug || 'default'
+                      const categoryTheme = CATEGORY_SCROLL_THEMES[categorySlug] || CATEGORY_SCROLL_THEMES.sustainability
+
+                      return (
+                        <div
+                          key={article.id}
+                          className="flex-shrink-0 group cursor-pointer"
+                          onMouseEnter={() => handleScrollHover(article)}
+                          onMouseLeave={handleScrollLeave}
+                          onClick={() => setPreviewArticle(article)}
+                        >
+                          <motion.div
+                            initial={{ opacity: 0, y: 20 }}
+                            animate={{ opacity: 1, y: 0 }}
+                            transition={{ delay: index * 0.1 }}
+                            className="relative w-20 sm:w-24 transition-all duration-300 group-hover:scale-105 group-hover:-translate-y-2"
+                          >
+                            {/* Recommendation glow */}
+                            <div className="absolute -inset-1 bg-gradient-to-r from-violet-500/0 via-violet-500/20 to-violet-500/0 rounded-lg opacity-0 group-hover:opacity-100 blur-sm transition-opacity" />
+
+                            {/* Scroll visual */}
+                            <div className="relative h-28 sm:h-32">
+                              {/* Parchment */}
+                              <div className={`absolute inset-x-1 top-2 bottom-2 bg-gradient-to-b ${categoryTheme.parchment} rounded shadow-lg border border-violet-400/20`}>
+                                {/* Sparkle accents */}
+                                <div className="absolute top-2 right-2 w-1 h-1 rounded-full bg-violet-400/60 animate-pulse" />
+                                <div className="absolute bottom-4 left-2 w-0.5 h-0.5 rounded-full bg-purple-400/60 animate-pulse" style={{ animationDelay: '0.5s' }} />
+                              </div>
+
+                              {/* Top rod */}
+                              <div className="absolute top-0 left-0 right-0 h-3 bg-gradient-to-b from-violet-700 via-purple-700 to-violet-800 rounded-t shadow-md">
+                                <div className="absolute top-0.5 left-1/2 -translate-x-1/2 w-1.5 h-1.5 bg-violet-300/60 rounded-full" />
+                              </div>
+
+                              {/* Bottom rod */}
+                              <div className="absolute bottom-0 left-0 right-0 h-3 bg-gradient-to-t from-violet-700 via-purple-700 to-violet-800 rounded-b shadow-md">
+                                <div className="absolute bottom-0.5 left-1/2 -translate-x-1/2 w-1.5 h-1.5 bg-violet-300/60 rounded-full" />
+                              </div>
+
+                              {/* Wax seal */}
+                              <div className={`absolute -right-1 top-1/2 -translate-y-1/2 w-4 h-4 bg-gradient-to-br ${categoryTheme.seal} rounded-full shadow-lg border border-white/30`} />
+
+                              {/* "Recommended" sparkle badge */}
+                              <div className="absolute -top-1 -left-1 w-5 h-5 bg-gradient-to-br from-violet-400 to-purple-600 rounded-full flex items-center justify-center shadow-lg border border-white/30">
+                                <Sparkles className="w-2.5 h-2.5 text-white" />
+                              </div>
+                            </div>
+
+                            {/* Title below */}
+                            <p className="mt-2 text-[9px] sm:text-[10px] text-center font-medium text-[var(--foreground)] line-clamp-2 leading-tight px-1">
+                              {article.title}
+                            </p>
+                          </motion.div>
+                        </div>
+                      )
+                    })}
                   </div>
                 </div>
               </div>
