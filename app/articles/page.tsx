@@ -10,7 +10,7 @@
 // Every reader brings their own readiness. Every writer shares their truth.
 // ============================================
 
-import { useState, useEffect, useRef, useCallback } from 'react'
+import { useState, useEffect, useRef, useCallback, useMemo } from 'react'
 import { useSession } from 'next-auth/react'
 import Link from 'next/link'
 import { motion, AnimatePresence } from 'framer-motion'
@@ -175,9 +175,101 @@ export default function ArticlesPage() {
   const [hoveredBook, setHoveredBook] = useState<string | null>(null)
   const [readingProgress, setReadingProgress] = useState<Record<string, { scrollProgress: number; completed: boolean }>>({})
 
+  // Grand Library state
+  const [activeCategoryFilter, setActiveCategoryFilter] = useState<string | null>(null)
+  const [previewArticle, setPreviewArticle] = useState<Article | null>(null)
+  const [previewTimeout, setPreviewTimeout] = useState<NodeJS.Timeout | null>(null)
+  const [isMobile, setIsMobile] = useState(false)
+
   // Time-based theme for dynamic lighting
   const { phase: timePhase } = useTimeTheme()
   const isNightTime = ['night', 'midnight', 'evening', 'dusk'].includes(timePhase)
+
+  // Detect mobile for disabling dust particles
+  useEffect(() => {
+    const checkMobile = () => setIsMobile(window.innerWidth < 1024)
+    checkMobile()
+    window.addEventListener('resize', checkMobile)
+    return () => window.removeEventListener('resize', checkMobile)
+  }, [])
+
+  // Handle scroll hover with 300ms delay for preview
+  const handleScrollHover = (article: Article) => {
+    if (previewTimeout) clearTimeout(previewTimeout)
+    const timeout = setTimeout(() => {
+      setPreviewArticle(article)
+    }, 300)
+    setPreviewTimeout(timeout)
+    setHoveredBook(article.id)
+  }
+
+  const handleScrollLeave = () => {
+    if (previewTimeout) clearTimeout(previewTimeout)
+    setPreviewTimeout(null)
+    setHoveredBook(null)
+  }
+
+  const closePreview = () => {
+    setPreviewArticle(null)
+  }
+
+  // Get recommended articles based on reading history
+  const getRecommendedArticles = useCallback(() => {
+    if (!articles.length) return []
+
+    // Get user's most-read categories from completed articles
+    const readCategories: Record<string, number> = {}
+    articles.forEach(article => {
+      const progress = readingProgress[article.id]
+      if (progress?.completed || progress?.scrollProgress > 50) {
+        const cat = article.category?.slug || 'default'
+        readCategories[cat] = (readCategories[cat] || 0) + 1
+      }
+    })
+
+    // Sort by preference
+    const sortedCategories = Object.entries(readCategories)
+      .sort((a, b) => b[1] - a[1])
+      .map(([cat]) => cat)
+
+    // Get unread articles from preferred categories, then trending
+    const unreadArticles = articles.filter(a => {
+      const progress = readingProgress[a.id]
+      return !progress?.completed && (progress?.scrollProgress || 0) < 50
+    })
+
+    // Prioritize preferred categories, then by views
+    return unreadArticles
+      .sort((a, b) => {
+        const aCatIndex = sortedCategories.indexOf(a.category?.slug || '')
+        const bCatIndex = sortedCategories.indexOf(b.category?.slug || '')
+        if (aCatIndex !== -1 && bCatIndex === -1) return -1
+        if (bCatIndex !== -1 && aCatIndex === -1) return 1
+        if (aCatIndex !== bCatIndex) return aCatIndex - bCatIndex
+        return (b.views || 0) - (a.views || 0)
+      })
+      .slice(0, 7)
+  }, [articles, readingProgress])
+
+  // Group articles by category
+  const articlesByCategory = useMemo(() => {
+    const grouped: Record<string, Article[]> = {}
+    articles.forEach(article => {
+      const cat = article.category?.slug || 'uncategorized'
+      if (!grouped[cat]) grouped[cat] = []
+      grouped[cat].push(article)
+    })
+    return grouped
+  }, [articles])
+
+  // Get scroll age (weathering effect based on publish date)
+  const getScrollAge = (publishedAt: string): 'new' | 'recent' | 'aged' | 'ancient' => {
+    const days = Math.floor((Date.now() - new Date(publishedAt).getTime()) / (1000 * 60 * 60 * 24))
+    if (days < 7) return 'new'
+    if (days < 30) return 'recent'
+    if (days < 90) return 'aged'
+    return 'ancient'
+  }
 
   // Trigger entrance animation after mount
   useEffect(() => {
@@ -865,7 +957,7 @@ export default function ArticlesPage() {
                     <div className="absolute bottom-4 left-1 right-2 flex items-end justify-start gap-1 h-16">
                       {shelfArticles.map((article, i) => {
                         const colors = scrollColors[i % 2]
-                        const isHovered = hoveredBook === `left-article-${article.id}`
+                        const isHovered = hoveredBook === article.id
                         const categorySlug = article.category?.slug || 'default'
                         const categoryTheme = CATEGORY_SCROLL_THEMES[categorySlug] || CATEGORY_SCROLL_THEMES.sustainability
 
@@ -873,14 +965,18 @@ export default function ArticlesPage() {
                         const progressPercent = articleProgress?.scrollProgress || 0
                         const isCompleted = articleProgress?.completed || false
 
+                        // Scroll age weathering effect
+                        const scrollAge = getScrollAge(article.publishedAt)
+                        const ageOpacity = scrollAge === 'new' ? 'opacity-0' : scrollAge === 'recent' ? 'opacity-10' : scrollAge === 'aged' ? 'opacity-20' : 'opacity-30'
+
                         return (
-                          <Link
+                          <div
                             key={article.id}
-                            href={`/articles/${article.slug}`}
                             className={`relative w-5 h-14 cursor-pointer transition-all duration-300 ${isHovered ? 'scale-110 -translate-y-2 z-10' : ''}`}
                             style={{ transform: `rotate(${(i % 2 - 0.5) * 3}deg)` }}
-                            onMouseEnter={() => setHoveredBook(`left-article-${article.id}`)}
-                            onMouseLeave={() => setHoveredBook(null)}
+                            onMouseEnter={() => handleScrollHover(article)}
+                            onMouseLeave={handleScrollLeave}
+                            onClick={() => setPreviewArticle(article)}
                           >
                             {/* Mini scroll */}
                             <div className="absolute inset-0">
@@ -937,8 +1033,10 @@ export default function ArticlesPage() {
                                 </div>
                               </div>
                             </div>
+                            {/* Age weathering overlay */}
+                            <div className={`absolute inset-0 bg-gradient-to-b from-amber-900/0 via-amber-800/10 to-amber-900/20 pointer-events-none rounded-sm ${ageOpacity}`} />
                             {/* Hover tooltip with progress */}
-                            {isHovered && (
+                            {isHovered && !previewArticle && (
                               <div className="absolute -top-12 left-1/2 -translate-x-1/2 px-2 py-1.5 bg-amber-900/95 text-amber-100 text-[8px] font-bold rounded whitespace-nowrap z-50 shadow-lg">
                                 <div className="max-w-24 truncate">{article.title}</div>
                                 {progressPercent > 0 && (
@@ -948,7 +1046,7 @@ export default function ArticlesPage() {
                                 )}
                               </div>
                             )}
-                          </Link>
+                          </div>
                         )
                       })}
                       {/* Ghost slots for empty positions */}
@@ -1035,7 +1133,7 @@ export default function ArticlesPage() {
                       ))}
                       {shelfArticles.map((article, i) => {
                         const colors = scrollColors[i % 2]
-                        const isHovered = hoveredBook === `right-article-${article.id}`
+                        const isHovered = hoveredBook === article.id
                         const categorySlug = article.category?.slug || 'default'
                         const categoryTheme = CATEGORY_SCROLL_THEMES[categorySlug] || CATEGORY_SCROLL_THEMES.sustainability
 
@@ -1043,14 +1141,18 @@ export default function ArticlesPage() {
                         const progressPercent = articleProgress?.scrollProgress || 0
                         const isCompleted = articleProgress?.completed || false
 
+                        // Scroll age weathering effect
+                        const scrollAge = getScrollAge(article.publishedAt)
+                        const ageOpacity = scrollAge === 'new' ? 'opacity-0' : scrollAge === 'recent' ? 'opacity-10' : scrollAge === 'aged' ? 'opacity-20' : 'opacity-30'
+
                         return (
-                          <Link
+                          <div
                             key={article.id}
-                            href={`/articles/${article.slug}`}
                             className={`relative w-5 h-14 cursor-pointer transition-all duration-300 ${isHovered ? 'scale-110 -translate-y-2 z-10' : ''}`}
                             style={{ transform: `rotate(${(i % 2 - 0.5) * -3}deg)` }}
-                            onMouseEnter={() => setHoveredBook(`right-article-${article.id}`)}
-                            onMouseLeave={() => setHoveredBook(null)}
+                            onMouseEnter={() => handleScrollHover(article)}
+                            onMouseLeave={handleScrollLeave}
+                            onClick={() => setPreviewArticle(article)}
                           >
                             {/* Mini scroll */}
                             <div className="absolute inset-0">
@@ -1107,8 +1209,10 @@ export default function ArticlesPage() {
                                 </div>
                               </div>
                             </div>
+                            {/* Age weathering overlay */}
+                            <div className={`absolute inset-0 bg-gradient-to-b from-amber-900/0 via-amber-800/10 to-amber-900/20 pointer-events-none rounded-sm ${ageOpacity}`} />
                             {/* Hover tooltip with progress */}
-                            {isHovered && (
+                            {isHovered && !previewArticle && (
                               <div className="absolute -top-12 left-1/2 -translate-x-1/2 px-2 py-1.5 bg-amber-900/95 text-amber-100 text-[8px] font-bold rounded whitespace-nowrap z-50 shadow-lg">
                                 <div className="max-w-24 truncate">{article.title}</div>
                                 {progressPercent > 0 && (
@@ -1118,7 +1222,7 @@ export default function ArticlesPage() {
                                 )}
                               </div>
                             )}
-                          </Link>
+                          </div>
                         )
                       })}
                     </div>
@@ -1886,6 +1990,189 @@ export default function ArticlesPage() {
         {/* Bottom fade to content area */}
         <div className="absolute bottom-0 left-0 right-0 h-20 bg-gradient-to-t from-[var(--background)] to-transparent" />
       </div>
+
+      {/* ========================================== */}
+      {/* 75% OVERLAY PREVIEW - Scroll Unfurling    */}
+      {/* ========================================== */}
+      <AnimatePresence>
+        {previewArticle && (
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            transition={{ duration: 0.3 }}
+            className="fixed inset-0 z-[200] flex items-center justify-center"
+            onClick={closePreview}
+          >
+            {/* Backdrop - 75% coverage with blur */}
+            <motion.div
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              className="absolute inset-0 bg-black/75 backdrop-blur-md"
+            />
+
+            {/* Scroll Preview Content */}
+            <motion.div
+              initial={{ scale: 0.8, opacity: 0, rotateX: -15 }}
+              animate={{ scale: 1, opacity: 1, rotateX: 0 }}
+              exit={{ scale: 0.8, opacity: 0, rotateX: 15 }}
+              transition={{ duration: 0.4, ease: 'easeOut' }}
+              className="relative w-full max-w-2xl mx-4 max-h-[85vh] overflow-hidden"
+              onClick={(e) => e.stopPropagation()}
+            >
+              {/* Unfurling scroll visual */}
+              <div className="relative bg-gradient-to-b from-amber-100 via-amber-50 to-amber-100 rounded-lg shadow-2xl overflow-hidden"
+                style={{ boxShadow: '0 50px 100px -20px rgba(0, 0, 0, 0.6), 0 0 0 2px rgba(180, 83, 9, 0.4)' }}
+              >
+                {/* Parchment texture */}
+                <div className="absolute inset-0 opacity-20" style={{
+                  backgroundImage: `url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='parchPreview'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.04' numOctaves='5' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23parchPreview)'/%3E%3C/svg%3E")`,
+                }} />
+
+                {/* Top scroll rod with ornate details */}
+                <div className="h-12 bg-gradient-to-b from-amber-700 via-amber-800 to-amber-900 border-b-4 border-amber-600/50 relative flex items-center justify-center">
+                  {/* Left finial */}
+                  <div className="absolute left-4 top-1/2 -translate-y-1/2 w-6 h-6 bg-gradient-to-br from-yellow-400 to-yellow-600 rounded-full shadow-lg border-2 border-yellow-300/50" />
+                  {/* Center medallion */}
+                  <div className="w-8 h-8 bg-gradient-to-br from-yellow-300 to-yellow-500 rounded-full shadow-lg border-2 border-yellow-200/50 flex items-center justify-center">
+                    <ScrollText className="w-4 h-4 text-amber-800" />
+                  </div>
+                  {/* Right finial */}
+                  <div className="absolute right-4 top-1/2 -translate-y-1/2 w-6 h-6 bg-gradient-to-br from-yellow-400 to-yellow-600 rounded-full shadow-lg border-2 border-yellow-300/50" />
+                  {/* Close button */}
+                  <button
+                    onClick={closePreview}
+                    className="absolute right-14 top-1/2 -translate-y-1/2 w-8 h-8 bg-amber-900/80 hover:bg-amber-800 text-amber-100 rounded-full flex items-center justify-center transition-colors shadow-lg"
+                  >
+                    <X className="w-4 h-4" />
+                  </button>
+                </div>
+
+                {/* Content area */}
+                <div className="relative p-6 sm:p-8 max-h-[60vh] overflow-y-auto">
+                  {/* Category badge */}
+                  <div className="flex items-center justify-center mb-4">
+                    <span className={`px-4 py-1.5 bg-gradient-to-r ${CATEGORY_SCROLL_THEMES[previewArticle.category?.slug || 'sustainability']?.seal || 'from-emerald-600 to-emerald-800'} text-white text-xs font-bold rounded-full shadow-lg`}>
+                      {previewArticle.category?.name || 'Article'}
+                    </span>
+                  </div>
+
+                  {/* Cover image if exists */}
+                  {previewArticle.coverImage && (
+                    <div className="relative w-full h-48 sm:h-56 rounded-lg overflow-hidden mb-6 shadow-lg border-2 border-amber-700/30">
+                      <img
+                        src={previewArticle.coverImage}
+                        alt={previewArticle.title}
+                        className="w-full h-full object-cover"
+                      />
+                      <div className="absolute inset-0 bg-gradient-to-t from-amber-900/50 to-transparent" />
+                    </div>
+                  )}
+
+                  {/* Title */}
+                  <h2 className="text-2xl sm:text-3xl font-bold text-amber-950 text-center mb-4 leading-tight" style={{ fontFamily: 'Georgia, serif' }}>
+                    {previewArticle.title}
+                  </h2>
+
+                  {/* Decorative divider */}
+                  <div className="flex items-center justify-center gap-3 mb-4">
+                    <div className="w-16 h-px bg-gradient-to-r from-transparent to-amber-700/50" />
+                    <div className="w-2 h-2 bg-amber-700 rotate-45" />
+                    <div className="w-16 h-px bg-gradient-to-l from-transparent to-amber-700/50" />
+                  </div>
+
+                  {/* Excerpt */}
+                  <p className="text-sm sm:text-base text-amber-900/80 text-center mb-6 leading-relaxed" style={{ fontFamily: 'Georgia, serif' }}>
+                    {previewArticle.excerpt}
+                  </p>
+
+                  {/* Author section */}
+                  <div className="flex items-center justify-center gap-4 mb-6 py-4 border-y border-amber-700/20">
+                    <div className={`w-12 h-12 rounded-full bg-gradient-to-br ${getAuthorTheme(previewArticle.author?.guardianArchetype).gradient} flex items-center justify-center shadow-lg`}>
+                      {previewArticle.author?.image ? (
+                        <img src={previewArticle.author.image} alt={previewArticle.author.name} className="w-full h-full rounded-full object-cover" />
+                      ) : (
+                        <User className="w-6 h-6 text-white" />
+                      )}
+                    </div>
+                    <div className="text-center">
+                      <p className="font-bold text-amber-950 text-base">{previewArticle.author?.name || 'Anonymous'}</p>
+                      <p className="text-xs text-amber-800/70">
+                        {new Date(previewArticle.publishedAt).toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' })}
+                      </p>
+                    </div>
+                  </div>
+
+                  {/* Stats row */}
+                  <div className="flex items-center justify-center gap-6 mb-6">
+                    <div className="flex items-center gap-2 text-amber-800">
+                      <Clock className="w-4 h-4" />
+                      <span className="text-sm font-bold">{previewArticle.readTime} min</span>
+                    </div>
+                    <div className="flex items-center gap-2 text-amber-800">
+                      <Eye className="w-4 h-4" />
+                      <span className="text-sm font-bold">{previewArticle.views} views</span>
+                    </div>
+                    <div className="flex items-center gap-2 text-amber-800">
+                      <MessageCircle className="w-4 h-4" />
+                      <span className="text-sm font-bold">{previewArticle._count?.comments || 0}</span>
+                    </div>
+                  </div>
+
+                  {/* Reading progress if exists */}
+                  {readingProgress[previewArticle.id] && (
+                    <div className="mb-6 p-3 bg-emerald-50 rounded-lg border border-emerald-200">
+                      <div className="flex items-center justify-between mb-2">
+                        <span className="text-xs font-bold text-emerald-800">Your Progress</span>
+                        <span className="text-xs font-bold text-emerald-600">
+                          {readingProgress[previewArticle.id].completed ? 'Completed' : `${Math.round(readingProgress[previewArticle.id].scrollProgress)}%`}
+                        </span>
+                      </div>
+                      <div className="h-2 bg-emerald-200 rounded-full overflow-hidden">
+                        <div
+                          className="h-full bg-gradient-to-r from-emerald-500 to-emerald-600 rounded-full transition-all"
+                          style={{ width: `${readingProgress[previewArticle.id].scrollProgress}%` }}
+                        />
+                      </div>
+                    </div>
+                  )}
+
+                  {/* Action buttons */}
+                  <div className="flex items-center justify-center gap-4">
+                    <Link href={`/articles/${previewArticle.slug}`} onClick={closePreview}>
+                      <Button className="bg-gradient-to-r from-amber-600 to-amber-700 hover:from-amber-500 hover:to-amber-600 text-white font-bold px-8 py-3 rounded-lg shadow-lg">
+                        <BookOpen className="w-4 h-4 mr-2" />
+                        Begin Reading
+                      </Button>
+                    </Link>
+                    <button
+                      onClick={(e) => {
+                        e.stopPropagation()
+                        toggleSaveArticle(previewArticle.id)
+                      }}
+                      className={`p-3 rounded-lg shadow-lg transition-colors ${
+                        savedArticles.includes(previewArticle.id)
+                          ? 'bg-amber-500 text-white'
+                          : 'bg-white hover:bg-amber-100 text-amber-700 border border-amber-300'
+                      }`}
+                    >
+                      <Bookmark className={`w-5 h-5 ${savedArticles.includes(previewArticle.id) ? 'fill-current' : ''}`} />
+                    </button>
+                  </div>
+                </div>
+
+                {/* Bottom scroll rod */}
+                <div className="h-10 bg-gradient-to-t from-amber-700 via-amber-800 to-amber-900 border-t-4 border-amber-600/50 relative">
+                  <div className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 bg-gradient-to-br from-yellow-400 to-yellow-600 rounded-full shadow-lg border border-yellow-300/50" />
+                  <div className="absolute right-4 top-1/2 -translate-y-1/2 w-5 h-5 bg-gradient-to-br from-yellow-400 to-yellow-600 rounded-full shadow-lg border border-yellow-300/50" />
+                  <div className="absolute left-1/2 -translate-x-1/2 top-1/2 -translate-y-1/2 w-6 h-6 bg-gradient-to-br from-yellow-300 to-yellow-500 rounded-full shadow-lg border-2 border-yellow-200/50" />
+                </div>
+              </div>
+            </motion.div>
+          </motion.div>
+        )}
+      </AnimatePresence>
 
       {/* Welcome Guide for First-Time Visitors */}
       {showWelcomeGuide && (
