@@ -770,7 +770,7 @@ export default function ArticlesPage() {
       </AnimatePresence>
 
       {/* Hero Header - Ancient Library Chamber */}
-      <div className="relative bg-gradient-to-b from-slate-900 via-indigo-950 to-slate-900 text-white overflow-hidden min-h-[70vh] sm:min-h-[75vh]">
+      <div className="relative bg-gradient-to-b from-slate-900 via-indigo-950 to-slate-900 text-white min-h-[70vh] sm:min-h-[75vh]">
         {/* Ancient Chamber Background */}
         <div className="absolute inset-0 overflow-hidden">
           {/* Stone texture overlay */}
@@ -1225,7 +1225,7 @@ export default function ArticlesPage() {
             initial={{ y: -100, opacity: 0 }}
             animate={libraryEntered ? { y: 0, opacity: 1 } : { y: -100, opacity: 0 }}
             transition={{ duration: 0.6, ease: 'easeOut', delay: 0.5 }}
-            className="hidden lg:block absolute top-0 left-[16%] right-[16%] h-24 z-25 pointer-events-none"
+            className="hidden lg:block absolute top-0 left-[18%] right-[18%] h-16 z-30 pointer-events-none"
           >
             {/* Wood/Stone arch structure - matches bookshelf color */}
             <svg className="absolute inset-0 w-full h-full" viewBox="0 0 400 80" preserveAspectRatio="none">
