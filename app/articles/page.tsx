@@ -728,7 +728,7 @@ export default function ArticlesPage() {
           {/* GRAND LIBRARY ENTRANCE - Side Bookshelves */}
           {/* ========================================== */}
 
-          {/* Left Vertical Bookshelf - 20% width - INTERACTIVE with entrance animation */}
+          {/* Left Vertical Bookshelf - Shows actual published articles as mini scrolls */}
           <motion.div
             initial={{ x: '-100%', opacity: 0 }}
             animate={libraryEntered ? { x: 0, opacity: 1 } : { x: '-100%', opacity: 0 }}
@@ -742,60 +742,87 @@ export default function ArticlesPage() {
                 backgroundImage: `url("data:image/svg+xml,%3Csvg viewBox='0 0 100 400' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M20 0 Q30 100 20 200 Q10 300 20 400' fill='none' stroke='%23000' stroke-width='0.5' opacity='0.3'/%3E%3Cpath d='M50 0 Q60 100 50 200 Q40 300 50 400' fill='none' stroke='%23000' stroke-width='0.5' opacity='0.3'/%3E%3Cpath d='M80 0 Q70 100 80 200 Q90 300 80 400' fill='none' stroke='%23000' stroke-width='0.5' opacity='0.3'/%3E%3C/svg%3E")`,
               }} />
 
-              {/* Interactive Category Books on Shelves */}
-              {[15, 35, 55, 75].map((top, shelfIndex) => (
-                <div key={`left-shelf-${shelfIndex}`} className="absolute left-0 right-0" style={{ top: `${top}%` }}>
-                  {/* Shelf surface with realistic wood grain */}
-                  <div className="h-4 bg-gradient-to-b from-amber-700 via-amber-800 to-amber-950 border-t-2 border-amber-500/40 shadow-lg relative overflow-hidden">
-                    <div className="absolute inset-0 opacity-30" style={{
-                      backgroundImage: `url("data:image/svg+xml,%3Csvg viewBox='0 0 100 10' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M0 5 Q25 3 50 5 Q75 7 100 5' fill='none' stroke='%23000' stroke-width='0.5'/%3E%3C/svg%3E")`,
-                    }} />
-                    <div className="absolute top-0 left-0 right-0 h-1 bg-gradient-to-b from-amber-400/20 to-transparent" />
-                  </div>
+              {/* Shelves with actual article scrolls */}
+              {[15, 35, 55, 75].map((top, shelfIndex) => {
+                // Get articles for this shelf (2 per shelf from left side)
+                const shelfArticles = articles.slice(shelfIndex * 2, shelfIndex * 2 + 2)
+                const scrollColors = [
+                  { wood: 'from-amber-700 to-amber-900', parchment: 'from-amber-100 to-amber-50', seal: 'from-red-600 to-red-800' },
+                  { wood: 'from-emerald-700 to-emerald-900', parchment: 'from-emerald-50 to-stone-50', seal: 'from-emerald-600 to-emerald-800' },
+                ]
 
-                  {/* Interactive category books */}
-                  <div className="absolute bottom-4 left-2 right-3 flex items-end justify-start gap-0.5 h-14">
-                    {BOOK_CATEGORIES.slice(shelfIndex * 2, shelfIndex * 2 + 2).map((category, i) => {
-                      const heights = ['h-12', 'h-10', 'h-11', 'h-13']
-                      const CategoryIcon = category.icon
-                      const isHovered = hoveredBook === `left-${category.id}`
-                      return (
-                        <Link
-                          key={category.id}
-                          href={`/articles?category=${category.slug}`}
-                          className={`w-6 ${heights[i % 4]} bg-gradient-to-r ${category.color} rounded-t-sm shadow-md relative cursor-pointer transition-all duration-300 ${isHovered ? 'scale-110 -translate-y-1 z-10' : ''}`}
-                          style={{ transform: `rotate(${(i % 2 - 0.5) * 2}deg)` }}
-                          onMouseEnter={() => setHoveredBook(`left-${category.id}`)}
-                          onMouseLeave={() => setHoveredBook(null)}
-                        >
-                          {/* Book spine with icon */}
-                          <div className="absolute inset-0 rounded-t-sm overflow-hidden flex items-center justify-center">
-                            <CategoryIcon className="w-3 h-3 text-white/60" />
-                          </div>
-                          {/* Gilded edges */}
-                          <div className="absolute bottom-1 left-1/2 -translate-x-1/2 w-2 h-2 bg-amber-400/40 rounded-full" />
-                          <div className="absolute -right-0.5 top-1 bottom-0 w-0.5 bg-black/30" />
-                          {/* Hover tooltip */}
-                          {isHovered && (
-                            <div className="absolute -top-8 left-1/2 -translate-x-1/2 px-2 py-1 bg-amber-900/95 text-amber-100 text-[9px] font-bold rounded whitespace-nowrap z-50 shadow-lg">
-                              {category.name}
+                return (
+                  <div key={`left-shelf-${shelfIndex}`} className="absolute left-0 right-0" style={{ top: `${top}%` }}>
+                    {/* Shelf surface */}
+                    <div className="h-4 bg-gradient-to-b from-amber-700 via-amber-800 to-amber-950 border-t-2 border-amber-500/40 shadow-lg relative overflow-hidden">
+                      <div className="absolute inset-0 opacity-30" style={{
+                        backgroundImage: `url("data:image/svg+xml,%3Csvg viewBox='0 0 100 10' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M0 5 Q25 3 50 5 Q75 7 100 5' fill='none' stroke='%23000' stroke-width='0.5'/%3E%3C/svg%3E")`,
+                      }} />
+                      <div className="absolute top-0 left-0 right-0 h-1 bg-gradient-to-b from-amber-400/20 to-transparent" />
+                    </div>
+
+                    {/* Interactive article scrolls */}
+                    <div className="absolute bottom-4 left-1 right-2 flex items-end justify-start gap-1 h-16">
+                      {shelfArticles.map((article, i) => {
+                        const colors = scrollColors[i % 2]
+                        const isHovered = hoveredBook === `left-article-${article.id}`
+                        const categorySlug = article.category?.slug || 'default'
+                        const categoryTheme = CATEGORY_SCROLL_THEMES[categorySlug] || CATEGORY_SCROLL_THEMES.sustainability
+
+                        return (
+                          <Link
+                            key={article.id}
+                            href={`/articles/${article.slug}`}
+                            className={`relative w-5 h-14 cursor-pointer transition-all duration-300 ${isHovered ? 'scale-110 -translate-y-2 z-10' : ''}`}
+                            style={{ transform: `rotate(${(i % 2 - 0.5) * 3}deg)` }}
+                            onMouseEnter={() => setHoveredBook(`left-article-${article.id}`)}
+                            onMouseLeave={() => setHoveredBook(null)}
+                          >
+                            {/* Mini scroll */}
+                            <div className="absolute inset-0">
+                              {/* Parchment body */}
+                              <div className={`absolute inset-x-0.5 top-2 bottom-2 bg-gradient-to-r ${categoryTheme.parchment} rounded-sm shadow-inner`} />
+                              {/* Top rod */}
+                              <div className={`absolute top-0 left-0 right-0 h-2.5 bg-gradient-to-b ${colors.wood} rounded-t-sm shadow`}>
+                                <div className="absolute top-0.5 left-1/2 -translate-x-1/2 w-1.5 h-1.5 bg-amber-400/50 rounded-full" />
+                              </div>
+                              {/* Bottom rod */}
+                              <div className={`absolute bottom-0 left-0 right-0 h-2.5 bg-gradient-to-t ${colors.wood} rounded-b-sm shadow`}>
+                                <div className="absolute bottom-0.5 left-1/2 -translate-x-1/2 w-1.5 h-1.5 bg-amber-400/50 rounded-full" />
+                              </div>
+                              {/* Mini wax seal */}
+                              <div className={`absolute -right-1 top-1/2 -translate-y-1/2 w-3 h-3 bg-gradient-to-br ${categoryTheme.seal} rounded-full shadow-md border border-white/20`} />
                             </div>
-                          )}
-                        </Link>
-                      )
-                    })}
-                    {/* Ghost slot */}
-                    <div className="w-5 h-10 relative opacity-40">
-                      <div className="absolute inset-0 border-2 border-dashed border-amber-400/40 rounded-t-sm bg-amber-900/20" />
+                            {/* Hover tooltip */}
+                            {isHovered && (
+                              <div className="absolute -top-10 left-1/2 -translate-x-1/2 px-2 py-1 bg-amber-900/95 text-amber-100 text-[8px] font-bold rounded whitespace-nowrap z-50 shadow-lg max-w-24 truncate">
+                                {article.title}
+                              </div>
+                            )}
+                          </Link>
+                        )
+                      })}
+                      {/* Ghost slots for empty positions */}
+                      {Array.from({ length: Math.max(0, 2 - shelfArticles.length) }).map((_, i) => (
+                        <div key={`ghost-left-${shelfIndex}-${i}`} className="w-5 h-12 relative opacity-30">
+                          <div className="absolute inset-0 border border-dashed border-amber-400/40 rounded-sm bg-amber-900/10" />
+                          <div className="absolute top-0 left-0 right-0 h-2 border border-dashed border-amber-500/30 rounded-t-sm" />
+                          <div className="absolute bottom-0 left-0 right-0 h-2 border border-dashed border-amber-500/30 rounded-b-sm" />
+                        </div>
+                      ))}
+                      {/* Decorative bookend */}
+                      {shelfIndex === 0 && (
+                        <div className="w-2 h-10 bg-gradient-to-b from-amber-600 to-amber-800 rounded-t-sm shadow-lg ml-1" />
+                      )}
                     </div>
                   </div>
-                </div>
-              ))}
+                )
+              })}
 
               {/* Decorative torch sconce with time-based lighting */}
               <div className="absolute top-[8%] right-2 w-6">
                 <div className="w-3 h-10 bg-gradient-to-b from-amber-700 to-amber-900 mx-auto rounded-b-sm" />
-                <div className="w-6 h-8 bg-gradient-to-t from-orange-500/60 via-amber-400/40 to-transparent rounded-full blur-sm animate-pulse absolute -top-4 left-0" />
+                <div className={`w-6 h-8 bg-gradient-to-t ${isNightTime ? 'from-orange-400/80 via-amber-300/60' : 'from-orange-500/60 via-amber-400/40'} to-transparent rounded-full blur-sm animate-pulse absolute -top-4 left-0`} />
               </div>
 
               {/* Carved ornamental top */}
@@ -810,8 +837,13 @@ export default function ArticlesPage() {
             </div>
           </motion.div>
 
-          {/* Right Vertical Bookshelf - 20% width */}
-          <div className="hidden lg:block absolute right-0 top-0 bottom-0 w-[18%] z-20 pointer-events-none">
+          {/* Right Vertical Bookshelf - Shows actual published articles as mini scrolls */}
+          <motion.div
+            initial={{ x: '100%', opacity: 0 }}
+            animate={libraryEntered ? { x: 0, opacity: 1 } : { x: '100%', opacity: 0 }}
+            transition={{ duration: 0.8, ease: 'easeOut', delay: 0.3 }}
+            className="hidden lg:block absolute right-0 top-0 bottom-0 w-[18%] z-20"
+          >
             {/* Bookshelf frame */}
             <div className="absolute inset-0 bg-gradient-to-l from-amber-950/95 via-amber-900/90 to-amber-950/80 border-l-4 border-amber-700/60">
               {/* Wood grain texture */}
@@ -819,73 +851,87 @@ export default function ArticlesPage() {
                 backgroundImage: `url("data:image/svg+xml,%3Csvg viewBox='0 0 100 400' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M20 0 Q30 100 20 200 Q10 300 20 400' fill='none' stroke='%23000' stroke-width='0.5' opacity='0.3'/%3E%3Cpath d='M50 0 Q60 100 50 200 Q40 300 50 400' fill='none' stroke='%23000' stroke-width='0.5' opacity='0.3'/%3E%3Cpath d='M80 0 Q70 100 80 200 Q90 300 80 400' fill='none' stroke='%23000' stroke-width='0.5' opacity='0.3'/%3E%3C/svg%3E")`,
               }} />
 
-              {/* Horizontal shelf dividers with books and ghost slots */}
-              {[15, 35, 55, 75].map((top, shelfIndex) => (
-                <div key={`right-shelf-${shelfIndex}`} className="absolute left-0 right-0" style={{ top: `${top}%` }}>
-                  {/* Shelf surface with realistic wood grain */}
-                  <div className="h-4 bg-gradient-to-b from-amber-700 via-amber-800 to-amber-950 border-t-2 border-amber-500/40 shadow-lg relative overflow-hidden">
-                    <div className="absolute inset-0 opacity-30" style={{
-                      backgroundImage: `url("data:image/svg+xml,%3Csvg viewBox='0 0 100 10' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M0 5 Q25 3 50 5 Q75 7 100 5' fill='none' stroke='%23000' stroke-width='0.5'/%3E%3C/svg%3E")`,
-                    }} />
-                    {/* Shelf edge highlight */}
-                    <div className="absolute top-0 left-0 right-0 h-1 bg-gradient-to-b from-amber-400/20 to-transparent" />
-                  </div>
+              {/* Shelves with actual article scrolls */}
+              {[15, 35, 55, 75].map((top, shelfIndex) => {
+                // Get articles for this shelf (2 per shelf from right side, offset by 8)
+                const shelfArticles = articles.slice(8 + shelfIndex * 2, 8 + shelfIndex * 2 + 2)
+                const scrollColors = [
+                  { wood: 'from-violet-700 to-violet-900', parchment: 'from-violet-50 to-rose-50', seal: 'from-violet-600 to-violet-800' },
+                  { wood: 'from-teal-700 to-teal-900', parchment: 'from-teal-50 to-stone-50', seal: 'from-teal-600 to-teal-800' },
+                ]
 
-                  {/* Books and ghost slots on this shelf */}
-                  <div className="absolute bottom-4 left-3 right-2 flex items-end justify-end gap-0.5 h-14">
-                    {[
-                      { h: 'h-11', w: 'w-2', filled: false }, // Ghost slot
-                      { color: 'from-indigo-800 to-indigo-950', h: 'h-11', w: 'w-2.5', filled: true },
-                      { color: 'from-teal-800 to-teal-950', h: 'h-9', w: 'w-2', filled: true },
-                      { h: 'h-12', w: 'w-2', filled: false }, // Ghost slot
-                      { color: 'from-orange-700 to-orange-900', h: 'h-12', w: 'w-2.5', filled: true },
-                      { color: 'from-purple-800 to-purple-950', h: 'h-10', w: 'w-2', filled: shelfIndex < 3 },
-                      { h: 'h-10', w: 'w-2.5', filled: false }, // Ghost slot
-                    ].slice(0, shelfIndex === 2 ? 5 : 6).map((book, i) => (
-                      book.filled ? (
-                        <div
-                          key={i}
-                          className={`${book.w} ${book.h} bg-gradient-to-r ${book.color} rounded-t-sm shadow-md relative`}
-                          style={{ transform: `rotate(${(i % 3 - 1) * -1.5}deg)` }}
-                        >
-                          {/* Realistic book spine details */}
-                          <div className="absolute inset-0 rounded-t-sm overflow-hidden">
-                            {/* Embossed title area */}
-                            <div className="absolute top-2 left-1/2 -translate-x-1/2 w-1 h-3 bg-amber-300/20 rounded-full" />
-                            {/* Spine ridges */}
-                            <div className="absolute top-1 left-0 right-0 h-px bg-black/20" />
-                            <div className="absolute bottom-3 left-0 right-0 h-px bg-black/20" />
-                            {/* Gilded edges hint */}
-                            <div className="absolute bottom-1 left-1/2 -translate-x-1/2 w-1.5 h-1.5 bg-amber-400/30 rounded-full" />
-                          </div>
-                          {/* Book shadow */}
-                          <div className="absolute -left-0.5 top-1 bottom-0 w-0.5 bg-black/30" />
-                        </div>
-                      ) : (
-                        <div
-                          key={i}
-                          className={`${book.w} ${book.h} relative opacity-40`}
-                          style={{ transform: `rotate(${(i % 2) * -1}deg)` }}
-                        >
-                          {/* Ghost book outline */}
-                          <div className="absolute inset-0 border-2 border-dashed border-amber-400/40 rounded-t-sm bg-amber-900/20" />
-                          {/* Glowing hint */}
-                          <div className="absolute inset-1 bg-gradient-to-t from-amber-500/10 to-transparent rounded-sm" />
-                        </div>
-                      )
-                    ))}
-                    {/* Decorative mini scroll on one shelf */}
-                    {shelfIndex === 1 && (
-                      <div className="w-3 h-5 bg-gradient-to-b from-amber-200 to-amber-300 rounded-sm mr-1 shadow transform -rotate-6 opacity-70" />
-                    )}
-                  </div>
-                </div>
-              ))}
+                return (
+                  <div key={`right-shelf-${shelfIndex}`} className="absolute left-0 right-0" style={{ top: `${top}%` }}>
+                    {/* Shelf surface */}
+                    <div className="h-4 bg-gradient-to-b from-amber-700 via-amber-800 to-amber-950 border-t-2 border-amber-500/40 shadow-lg relative overflow-hidden">
+                      <div className="absolute inset-0 opacity-30" style={{
+                        backgroundImage: `url("data:image/svg+xml,%3Csvg viewBox='0 0 100 10' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M0 5 Q25 3 50 5 Q75 7 100 5' fill='none' stroke='%23000' stroke-width='0.5'/%3E%3C/svg%3E")`,
+                      }} />
+                      <div className="absolute top-0 left-0 right-0 h-1 bg-gradient-to-b from-amber-400/20 to-transparent" />
+                    </div>
 
-              {/* Decorative torch sconce */}
+                    {/* Interactive article scrolls */}
+                    <div className="absolute bottom-4 left-2 right-1 flex items-end justify-end gap-1 h-16">
+                      {/* Decorative bookend on first shelf */}
+                      {shelfIndex === 0 && (
+                        <div className="w-2 h-10 bg-gradient-to-b from-amber-600 to-amber-800 rounded-t-sm shadow-lg mr-1" />
+                      )}
+                      {/* Ghost slots for empty positions */}
+                      {Array.from({ length: Math.max(0, 2 - shelfArticles.length) }).map((_, i) => (
+                        <div key={`ghost-right-${shelfIndex}-${i}`} className="w-5 h-12 relative opacity-30">
+                          <div className="absolute inset-0 border border-dashed border-amber-400/40 rounded-sm bg-amber-900/10" />
+                          <div className="absolute top-0 left-0 right-0 h-2 border border-dashed border-amber-500/30 rounded-t-sm" />
+                          <div className="absolute bottom-0 left-0 right-0 h-2 border border-dashed border-amber-500/30 rounded-b-sm" />
+                        </div>
+                      ))}
+                      {shelfArticles.map((article, i) => {
+                        const colors = scrollColors[i % 2]
+                        const isHovered = hoveredBook === `right-article-${article.id}`
+                        const categorySlug = article.category?.slug || 'default'
+                        const categoryTheme = CATEGORY_SCROLL_THEMES[categorySlug] || CATEGORY_SCROLL_THEMES.sustainability
+
+                        return (
+                          <Link
+                            key={article.id}
+                            href={`/articles/${article.slug}`}
+                            className={`relative w-5 h-14 cursor-pointer transition-all duration-300 ${isHovered ? 'scale-110 -translate-y-2 z-10' : ''}`}
+                            style={{ transform: `rotate(${(i % 2 - 0.5) * -3}deg)` }}
+                            onMouseEnter={() => setHoveredBook(`right-article-${article.id}`)}
+                            onMouseLeave={() => setHoveredBook(null)}
+                          >
+                            {/* Mini scroll */}
+                            <div className="absolute inset-0">
+                              {/* Parchment body */}
+                              <div className={`absolute inset-x-0.5 top-2 bottom-2 bg-gradient-to-r ${categoryTheme.parchment} rounded-sm shadow-inner`} />
+                              {/* Top rod */}
+                              <div className={`absolute top-0 left-0 right-0 h-2.5 bg-gradient-to-b ${colors.wood} rounded-t-sm shadow`}>
+                                <div className="absolute top-0.5 left-1/2 -translate-x-1/2 w-1.5 h-1.5 bg-amber-400/50 rounded-full" />
+                              </div>
+                              {/* Bottom rod */}
+                              <div className={`absolute bottom-0 left-0 right-0 h-2.5 bg-gradient-to-t ${colors.wood} rounded-b-sm shadow`}>
+                                <div className="absolute bottom-0.5 left-1/2 -translate-x-1/2 w-1.5 h-1.5 bg-amber-400/50 rounded-full" />
+                              </div>
+                              {/* Mini wax seal */}
+                              <div className={`absolute -left-1 top-1/2 -translate-y-1/2 w-3 h-3 bg-gradient-to-br ${categoryTheme.seal} rounded-full shadow-md border border-white/20`} />
+                            </div>
+                            {/* Hover tooltip */}
+                            {isHovered && (
+                              <div className="absolute -top-10 left-1/2 -translate-x-1/2 px-2 py-1 bg-amber-900/95 text-amber-100 text-[8px] font-bold rounded whitespace-nowrap z-50 shadow-lg max-w-24 truncate">
+                                {article.title}
+                              </div>
+                            )}
+                          </Link>
+                        )
+                      })}
+                    </div>
+                  </div>
+                )
+              })}
+
+              {/* Decorative torch sconce with time-based lighting */}
               <div className="absolute top-[8%] left-2 w-6">
                 <div className="w-3 h-10 bg-gradient-to-b from-amber-700 to-amber-900 mx-auto rounded-b-sm" />
-                <div className="w-6 h-8 bg-gradient-to-t from-orange-500/60 via-amber-400/40 to-transparent rounded-full blur-sm animate-pulse absolute -top-4 left-0" style={{ animationDelay: '0.7s' }} />
+                <div className={`w-6 h-8 bg-gradient-to-t ${isNightTime ? 'from-orange-400/80 via-amber-300/60' : 'from-orange-500/60 via-amber-400/40'} to-transparent rounded-full blur-sm animate-pulse absolute -top-4 left-0`} style={{ animationDelay: '0.7s' }} />
               </div>
 
               {/* Carved ornamental top */}
@@ -898,12 +944,17 @@ export default function ArticlesPage() {
                 </svg>
               </div>
             </div>
-          </div>
+          </motion.div>
 
           {/* ========================================== */}
-          {/* CONNECTING ARCH - Spans middle 60% */}
+          {/* CONNECTING ARCH - Spans middle 60% with entrance animation */}
           {/* ========================================== */}
-          <div className="hidden lg:block absolute top-0 left-[18%] right-[18%] h-24 z-30 pointer-events-none">
+          <motion.div
+            initial={{ y: -100, opacity: 0 }}
+            animate={libraryEntered ? { y: 0, opacity: 1 } : { y: -100, opacity: 0 }}
+            transition={{ duration: 0.6, ease: 'easeOut', delay: 0.5 }}
+            className="hidden lg:block absolute top-0 left-[18%] right-[18%] h-24 z-30 pointer-events-none"
+          >
             {/* Stone arch structure */}
             <svg className="absolute inset-0 w-full h-full" viewBox="0 0 400 80" preserveAspectRatio="none">
               <defs>
@@ -960,7 +1011,7 @@ export default function ArticlesPage() {
                 Wisdom Awaits Within
               </span>
             </div>
-          </div>
+          </motion.div>
         </div>
 
         <div className="container mx-auto px-4 py-6 sm:py-8 relative z-10 lg:px-[20%]">
