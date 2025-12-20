@@ -2441,11 +2441,14 @@ export default function ArticlesPage() {
         </motion.div>
       )}
 
-      {/* Filter Bar */}
-      <div className="sticky top-16 sm:top-20 z-40 bg-[var(--card)] border-b border-[var(--border)]">
+      {/* Filter Bar - Styled as bookshelf drawer */}
+      <div className="sticky top-16 sm:top-20 z-40 bg-gradient-to-b from-amber-950 to-stone-900 border-b-4 border-amber-700/60">
         <div className="container mx-auto px-4">
           <div className="flex items-center py-3 sm:py-4 gap-2">
-            {/* Sort Options - Horizontal scroll on mobile */}
+            {/* Decorative left bracket */}
+            <div className="hidden sm:block w-8 h-8 border-l-2 border-t-2 border-amber-500/40 rounded-tl-lg" />
+
+            {/* Sort Options - Styled as brass toggles */}
             <div className="flex items-center gap-1.5 sm:gap-2 overflow-x-auto pb-1 sm:pb-0 flex-1 scrollbar-hide -mx-1 px-1">
               {sortOptions.map((option) => {
                 const Icon = option.icon
@@ -2455,10 +2458,10 @@ export default function ArticlesPage() {
                     key={option.value}
                     onClick={() => setActiveSort(option.value)}
                     disabled={option.value === 'read' && !session}
-                    className={`flex items-center gap-1.5 sm:gap-2 px-3 sm:px-4 py-1.5 sm:py-2 rounded-full font-bold text-xs sm:text-sm whitespace-nowrap transition-all flex-shrink-0 ${
+                    className={`flex items-center gap-1.5 sm:gap-2 px-3 sm:px-4 py-1.5 sm:py-2 rounded-lg font-bold text-xs sm:text-sm whitespace-nowrap transition-all flex-shrink-0 border-2 ${
                       isActive
-                        ? 'bg-[var(--primary)] text-white'
-                        : 'bg-[var(--muted)] text-[var(--foreground)] hover:bg-[var(--primary)]/10'
+                        ? 'bg-gradient-to-b from-amber-600 to-amber-800 border-yellow-500/50 text-amber-100 shadow-lg'
+                        : 'bg-gradient-to-b from-stone-700 to-stone-800 border-amber-700/30 text-amber-300/70 hover:border-amber-500/50'
                     } ${option.value === 'read' && !session ? 'opacity-50 cursor-not-allowed' : ''}`}
                     title={option.value === 'read' && !session ? 'Sign in to see studied texts' : ''}
                   >
@@ -2469,12 +2472,27 @@ export default function ArticlesPage() {
                 )
               })}
             </div>
+
+            {/* Decorative right bracket */}
+            <div className="hidden sm:block w-8 h-8 border-r-2 border-t-2 border-amber-500/40 rounded-tr-lg" />
           </div>
         </div>
       </div>
 
-      {/* Main Content */}
-      <div className="container mx-auto px-4 py-6 sm:py-8">
+      {/* ========================================================= */}
+      {/* GRAND LIBRARY - Full Width Bookshelf Content Area         */}
+      {/* ========================================================= */}
+      <div className="relative bg-gradient-to-b from-stone-900 via-amber-950/50 to-stone-900 min-h-screen">
+        {/* Wood panel background texture */}
+        <div className="absolute inset-0 opacity-10" style={{
+          backgroundImage: `url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M0 50 Q100 45 200 50' fill='none' stroke='%23000' stroke-width='0.5'/%3E%3Cpath d='M0 100 Q100 95 200 100' fill='none' stroke='%23000' stroke-width='0.5'/%3E%3Cpath d='M0 150 Q100 145 200 150' fill='none' stroke='%23000' stroke-width='0.5'/%3E%3C/svg%3E")`,
+        }} />
+
+        {/* Ambient torch lighting from sides */}
+        <div className="absolute top-20 left-0 w-32 h-64 bg-gradient-to-r from-amber-500/20 to-transparent blur-3xl pointer-events-none" />
+        <div className="absolute top-20 right-0 w-32 h-64 bg-gradient-to-l from-amber-500/20 to-transparent blur-3xl pointer-events-none" />
+
+        <div className="container mx-auto px-4 py-6 sm:py-8 relative">
         {error ? (
           <div className="flex items-center justify-center py-16 sm:py-20">
             <div className="text-center">
@@ -2491,58 +2509,126 @@ export default function ArticlesPage() {
         ) : isLoading && articles.length === 0 ? (
           <div className="flex items-center justify-center py-16 sm:py-20">
             <div className="text-center">
-              <Loader2 className="w-10 h-10 sm:w-12 sm:h-12 text-theme-primary animate-spin mx-auto mb-3 sm:mb-4" />
-              <p className="text-base sm:text-lg font-bold text-theme-muted">Loading articles...</p>
+              <Loader2 className="w-8 h-8 sm:w-10 sm:h-10 mx-auto mb-4 animate-spin text-amber-500" />
+              <p className="text-sm sm:text-base text-amber-300/70 font-medium">Loading the library...</p>
             </div>
-          </div>
-        ) : articles.length === 0 && !featuredArticle ? (
-          <div className="text-center py-16 sm:py-20 px-4">
-            <div className="w-16 h-16 sm:w-20 sm:h-20 mx-auto mb-4 rounded-full bg-gradient-to-br from-emerald-500/20 to-teal-500/20 border-2 border-emerald-500/30 flex items-center justify-center">
-              <Leaf className="w-8 h-8 sm:w-10 sm:h-10 text-emerald-500" />
-            </div>
-            <h2 className="text-xl sm:text-2xl font-black text-[var(--foreground)] mb-2">
-              {searchQuery
-                ? 'No Matching Texts'
-                : activeSort === 'read'
-                ? 'Your Journey Awaits'
-                : 'The First Page'}
-            </h2>
-            <p className="text-sm sm:text-base text-theme-muted font-medium mb-2 max-w-md mx-auto">
-              {searchQuery
-                ? `No texts match "${searchQuery}" — try broader terms`
-                : activeSort === 'read'
-                ? "You haven't studied any texts yet. Every journey begins with curiosity."
-                : 'This library grows through shared experience.'}
-            </p>
-            {!searchQuery && activeSort !== 'read' && (
-              <p className="text-xs text-theme-muted font-medium mb-6 max-w-sm mx-auto opacity-70">
-                Case studies, lessons learned, and sustainability journeys —
-                your experience could help someone just starting out.
-              </p>
-            )}
-            {activeSort === 'read' && (
-              <p className="text-xs text-theme-muted font-medium mb-6 max-w-sm mx-auto opacity-70">
-                Browse the library and find something that speaks to where you are right now.
-              </p>
-            )}
-            {session ? (
-              <Link href="/articles/write">
-                <Button className="font-bold text-sm sm:text-base">
-                  <PenSquare className="w-4 h-4 mr-2" />
-                  Share Your Journey
-                </Button>
-              </Link>
-            ) : (
-              <Link href="/auth/signin">
-                <Button variant="outline" className="font-bold text-sm sm:text-base">
-                  Sign in to contribute
-                </Button>
-              </Link>
-            )}
           </div>
         ) : (
           <>
-            {/* Featured Article Hero */}
+            {/* ========================================== */}
+            {/* ORNATE TOGGLE SWITCH CATEGORY FILTERS     */}
+            {/* ========================================== */}
+            <div className="mb-8">
+              <div className="flex flex-wrap items-center justify-center gap-3 px-4">
+                {/* "All" filter toggle */}
+                <div className="relative group/toggle">
+                  <button
+                    onClick={() => setActiveCategoryFilter(null)}
+                    className={`relative flex items-center gap-2 px-3 py-2 rounded-lg border-2 transition-all duration-300 ${
+                      activeCategoryFilter === null
+                        ? 'bg-gradient-to-b from-amber-600 to-amber-800 border-yellow-500/60 shadow-lg shadow-amber-500/30'
+                        : 'bg-gradient-to-b from-stone-700 to-stone-800 border-amber-700/40 hover:border-amber-500/50'
+                    }`}
+                  >
+                    <div className={`w-4 h-4 rounded-full border-2 flex items-center justify-center transition-all ${
+                      activeCategoryFilter === null
+                        ? 'bg-yellow-400 border-yellow-300 shadow-inner'
+                        : 'bg-stone-600 border-stone-500'
+                    }`}>
+                      {activeCategoryFilter === null && (
+                        <div className="w-1.5 h-1.5 rounded-full bg-amber-800" />
+                      )}
+                    </div>
+                    <span className={`text-xs font-bold uppercase tracking-wider ${
+                      activeCategoryFilter === null ? 'text-amber-100' : 'text-amber-300/70'
+                    }`}>All</span>
+                    <div className="absolute -left-0.5 top-1/2 -translate-y-1/2 w-1.5 h-1.5 rounded-full bg-gradient-to-br from-yellow-400 to-yellow-600 border border-yellow-300/50" />
+                    <div className="absolute -right-0.5 top-1/2 -translate-y-1/2 w-1.5 h-1.5 rounded-full bg-gradient-to-br from-yellow-400 to-yellow-600 border border-yellow-300/50" />
+                  </button>
+                  <div className="absolute -bottom-8 left-1/2 -translate-x-1/2 px-2 py-1 bg-amber-900/95 text-amber-100 text-[9px] font-bold rounded whitespace-nowrap opacity-0 group-hover/toggle:opacity-100 transition-opacity shadow-lg z-50">
+                    View All Scrolls
+                  </div>
+                </div>
+
+                {BOOK_CATEGORIES.map((category) => {
+                  const isActive = activeCategoryFilter === category.slug
+                  const CategoryIcon = category.icon
+                  const categoryCount = articlesByCategory[category.slug]?.length || 0
+
+                  return (
+                    <div key={category.id} className="relative group/toggle">
+                      <button
+                        onClick={() => setActiveCategoryFilter(isActive ? null : category.slug)}
+                        className={`relative flex items-center gap-2 px-3 py-2 rounded-lg border-2 transition-all duration-300 ${
+                          isActive
+                            ? `bg-gradient-to-b ${category.color} border-white/30 shadow-lg`
+                            : 'bg-gradient-to-b from-stone-700 to-stone-800 border-amber-700/40 hover:border-amber-500/50'
+                        }`}
+                      >
+                        <div className={`w-5 h-5 rounded-full border-2 flex items-center justify-center transition-all ${
+                          isActive
+                            ? 'bg-white/20 border-white/40 shadow-inner'
+                            : 'bg-stone-600 border-stone-500'
+                        }`}>
+                          <CategoryIcon className={`w-2.5 h-2.5 ${isActive ? 'text-white' : 'text-amber-400/60'}`} />
+                        </div>
+                        <span className={`text-xs font-bold uppercase tracking-wider hidden sm:inline ${
+                          isActive ? 'text-white' : 'text-amber-300/70'
+                        }`}>{category.name}</span>
+                        {categoryCount > 0 && (
+                          <span className={`text-[9px] px-1.5 py-0.5 rounded-full font-bold ${
+                            isActive ? 'bg-white/20 text-white' : 'bg-amber-800/50 text-amber-300/70'
+                          }`}>{categoryCount}</span>
+                        )}
+                        <div className="absolute -left-0.5 top-1/2 -translate-y-1/2 w-1.5 h-1.5 rounded-full bg-gradient-to-br from-yellow-400 to-yellow-600 border border-yellow-300/50" />
+                        <div className="absolute -right-0.5 top-1/2 -translate-y-1/2 w-1.5 h-1.5 rounded-full bg-gradient-to-br from-yellow-400 to-yellow-600 border border-yellow-300/50" />
+                      </button>
+                      <div className="absolute -bottom-8 left-1/2 -translate-x-1/2 px-2 py-1 bg-amber-900/95 text-amber-100 text-[9px] font-bold rounded whitespace-nowrap opacity-0 group-hover/toggle:opacity-100 transition-opacity shadow-lg z-50">
+                        {category.name} ({categoryCount})
+                      </div>
+                    </div>
+                  )
+                })}
+              </div>
+            </div>
+
+            {/* ========================================== */}
+            {/* GRAND BOOKSHELF STRUCTURE                 */}
+            {/* Full-width wooden shelving with scrolls    */}
+            {/* ========================================== */}
+            <div className="relative bg-gradient-to-b from-amber-950/90 via-stone-900/95 to-amber-950/90 rounded-xl border-4 border-amber-700/50 shadow-2xl overflow-hidden"
+              style={{ boxShadow: '0 0 60px rgba(0, 0, 0, 0.5), inset 0 0 30px rgba(0, 0, 0, 0.3)' }}
+            >
+              {/* Ornate carved top trim */}
+              <div className="h-8 bg-gradient-to-b from-amber-800 to-amber-900 border-b-4 border-amber-600/50 relative overflow-hidden">
+                <svg className="absolute inset-0 w-full h-full opacity-40" preserveAspectRatio="none">
+                  <pattern id="shelfCarving" x="0" y="0" width="60" height="32" patternUnits="userSpaceOnUse">
+                    <path d="M0 16 Q15 8 30 16 Q45 24 60 16" fill="none" stroke="#fbbf24" strokeWidth="1.5"/>
+                    <circle cx="30" cy="16" r="4" fill="none" stroke="#f59e0b" strokeWidth="1"/>
+                  </pattern>
+                  <rect width="100%" height="100%" fill="url(#shelfCarving)"/>
+                </svg>
+                {/* Corner finials */}
+                <div className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 bg-gradient-to-br from-yellow-400 to-yellow-600 rounded-full shadow-lg border-2 border-yellow-300/50" />
+                <div className="absolute right-4 top-1/2 -translate-y-1/2 w-4 h-4 bg-gradient-to-br from-yellow-400 to-yellow-600 rounded-full shadow-lg border-2 border-yellow-300/50" />
+                <div className="absolute left-1/2 -translate-x-1/2 top-1/2 -translate-y-1/2 w-6 h-6 bg-gradient-to-br from-yellow-300 to-yellow-500 rounded-full shadow-lg border-2 border-yellow-200/50 flex items-center justify-center">
+                  <ScrollText className="w-3 h-3 text-amber-800" />
+                </div>
+              </div>
+
+              {/* Torch sconces on sides */}
+              <div className="absolute top-16 left-4 w-8 z-30">
+                <div className="w-3 h-12 bg-gradient-to-b from-amber-700 to-amber-900 mx-auto rounded-b-sm" />
+                <div className={`w-8 h-10 bg-gradient-to-t ${isNightTime ? 'from-orange-400/80 via-amber-300/60' : 'from-orange-500/50 via-amber-400/30'} to-transparent rounded-full blur-sm animate-pulse absolute -top-6 left-0`} />
+              </div>
+              <div className="absolute top-16 right-4 w-8 z-30">
+                <div className="w-3 h-12 bg-gradient-to-b from-amber-700 to-amber-900 mx-auto rounded-b-sm" />
+                <div className={`w-8 h-10 bg-gradient-to-t ${isNightTime ? 'from-orange-400/80 via-amber-300/60' : 'from-orange-500/50 via-amber-400/30'} to-transparent rounded-full blur-sm animate-pulse absolute -top-6 left-0`} style={{ animationDelay: '0.5s' }} />
+              </div>
+
+              {/* Bookshelf content area */}
+              <div className="p-4 sm:p-6 lg:p-8">
+                {/* Featured Article Hero */}
             {featuredArticle && (() => {
               const featuredDepth = getReadingDepth(featuredArticle.readTime)
               const FeaturedDepthIcon = featuredDepth.icon
@@ -2925,132 +3011,335 @@ export default function ArticlesPage() {
               </div>
             )}
 
-            {/* Article Grid */}
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6">
-              {articles.map((article) => {
-                const authorTheme = getAuthorTheme(article.author.guardianArchetype)
-                const readingDepth = getReadingDepth(article.readTime)
-                const DepthIcon = readingDepth.icon
+            {/* ========================================== */}
+            {/* CATEGORY-ORGANIZED SHELVES WITH SCROLLS   */}
+            {/* ========================================== */}
+            <div className="space-y-8">
+              {/* If a category filter is active, show only that category */}
+              {activeCategoryFilter ? (
+                <div className="relative">
+                  {/* Category Shelf */}
+                  {(() => {
+                    const category = BOOK_CATEGORIES.find(c => c.slug === activeCategoryFilter)
+                    const categoryArticles = articles.filter(a => a.category?.slug === activeCategoryFilter)
+                    if (!category || categoryArticles.length === 0) return null
+                    const CategoryIcon = category.icon
 
-                const isSaved = savedArticles.includes(article.id)
-
-                return (
-                  <div key={article.id} className="relative group/card">
-                    <Link href={`/articles/${article.slug}`}>
-                      <Card className={`h-full border-2 border-[var(--border)] hover:border-theme-primary hover:shadow-theme-xl transition-all group cursor-pointer overflow-hidden ${article.hasRead ? 'opacity-75' : ''}`}>
-                        {/* Cover Image */}
-                        {article.coverImage && (
-                          <div className="relative h-36 sm:h-48 overflow-hidden">
-                            <img
-                              src={article.coverImage}
-                              alt={article.title}
-                              className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
-                            />
-                            {/* Reading Depth Badge */}
-                            <div className="absolute top-2 left-2 sm:top-3 sm:left-3">
-                              <span className={`flex items-center gap-1 px-1.5 sm:px-2 py-0.5 sm:py-1 ${readingDepth.bgColor} backdrop-blur-sm ${readingDepth.color} text-[10px] sm:text-xs font-bold rounded-full border border-white/20`}>
-                                <DepthIcon className="w-2.5 h-2.5 sm:w-3 sm:h-3" />
-                                <span className="hidden sm:inline">{readingDepth.label}</span>
-                              </span>
-                            </div>
-                            {article.hasRead && (
-                              <div className="absolute top-2 right-10 sm:top-3 sm:right-12">
-                                <span className="flex items-center gap-1 px-1.5 sm:px-2 py-0.5 sm:py-1 bg-emerald-500 text-white text-[10px] sm:text-xs font-bold rounded-full">
-                                  <CheckCircle2 className="w-2.5 h-2.5 sm:w-3 sm:h-3" />
-                                  Studied
-                                </span>
-                              </div>
-                            )}
+                    return (
+                      <div className="relative bg-gradient-to-b from-amber-900/60 via-amber-800/40 to-amber-900/60 rounded-xl border-2 border-amber-700/50 overflow-hidden"
+                        style={{ boxShadow: 'inset 0 0 30px rgba(0, 0, 0, 0.3)' }}
+                      >
+                        {/* Carved category label */}
+                        <div className="flex items-center gap-3 px-4 sm:px-6 py-3 bg-gradient-to-r from-amber-800/80 via-amber-700/60 to-amber-800/80 border-b-2 border-amber-600/40">
+                          <div className={`w-8 h-8 rounded-lg bg-gradient-to-br ${category.color} flex items-center justify-center shadow-lg border border-white/20`}>
+                            <CategoryIcon className="w-4 h-4 text-white" />
                           </div>
-                        )}
-
-                      <CardContent className="p-3 sm:p-5">
-                        {/* Category + Reading Depth (when no cover image) */}
-                        <div className="flex items-center justify-between mb-2 sm:mb-3">
-                          <div className="flex items-center gap-2">
-                            <span className="px-2 py-0.5 sm:py-1 bg-[var(--muted)] text-theme-muted font-bold text-[10px] sm:text-xs rounded-md sm:rounded-lg">
-                              {article.category.name}
-                            </span>
-                            {!article.coverImage && (
-                              <span className={`flex items-center gap-1 px-1.5 py-0.5 ${readingDepth.bgColor} ${readingDepth.color} text-[10px] font-medium rounded-full`}>
-                                <DepthIcon className="w-2.5 h-2.5" />
-                              </span>
-                            )}
+                          <div>
+                            <h3 className="text-base sm:text-lg font-bold text-amber-100 tracking-wide" style={{ fontFamily: 'Georgia, serif' }}>
+                              {category.name}
+                            </h3>
+                            <p className="text-[10px] sm:text-xs text-amber-300/60">{categoryArticles.length} scroll{categoryArticles.length !== 1 ? 's' : ''}</p>
                           </div>
-                          {!article.coverImage && article.hasRead && (
-                            <span className="flex items-center gap-1 text-emerald-500 text-[10px] sm:text-xs font-bold">
-                              <CheckCircle2 className="w-2.5 h-2.5 sm:w-3 sm:h-3" />
-                              Studied
-                            </span>
-                          )}
-                        </div>
-
-                        {/* Title */}
-                        <h3 className="text-base sm:text-lg font-black text-[var(--foreground)] mb-1.5 sm:mb-2 group-hover:text-theme-primary transition-colors line-clamp-2">
-                          {article.title}
-                        </h3>
-
-                        {/* Excerpt */}
-                        <p className="text-xs sm:text-sm text-theme-muted font-medium mb-3 sm:mb-4 line-clamp-2">
-                          {article.excerpt}
-                        </p>
-
-                        {/* Author Row */}
-                        <div className="flex items-center gap-2 mb-2 sm:mb-3">
-                          <div className={`w-6 h-6 sm:w-8 sm:h-8 rounded-full bg-gradient-to-br ${authorTheme.gradient} flex items-center justify-center flex-shrink-0`}>
-                            {article.author.image ? (
-                              <img src={article.author.image} alt={article.author.name} className="w-full h-full rounded-full object-cover" />
-                            ) : (
-                              <User className="w-3 h-3 sm:w-4 sm:h-4 text-white" />
-                            )}
-                          </div>
-                          <div className="flex-1 min-w-0">
-                            <p className="text-xs sm:text-sm font-bold text-[var(--foreground)] truncate">{article.author.name}</p>
+                          {/* Decorative carving */}
+                          <div className="flex-1 flex items-center justify-end">
+                            <svg className="w-24 h-6 opacity-40" viewBox="0 0 96 24">
+                              <path d="M0 12 Q24 6 48 12 Q72 18 96 12" fill="none" stroke="#fbbf24" strokeWidth="1.5"/>
+                              <circle cx="48" cy="12" r="3" fill="#f59e0b"/>
+                            </svg>
                           </div>
                         </div>
 
-                        {/* Stats Row */}
-                        <div className="flex items-center justify-between text-[10px] sm:text-xs text-theme-muted pt-2 sm:pt-3 border-t border-[var(--border)]">
-                          <span className="flex items-center gap-1">
-                            <Calendar className="w-2.5 h-2.5 sm:w-3 sm:h-3" />
-                            {new Date(article.publishedAt).toLocaleDateString('en-US', { month: 'short', day: 'numeric' })}
-                          </span>
-                          <span className="flex items-center gap-1">
-                            <Clock className="w-2.5 h-2.5 sm:w-3 sm:h-3" />
-                            {article.readTime}m
-                          </span>
-                          <span className="flex items-center gap-1">
-                            <Eye className="w-2.5 h-2.5 sm:w-3 sm:h-3" />
-                            {article.views}
-                          </span>
-                          <span className="flex items-center gap-1">
-                            <MessageCircle className="w-2.5 h-2.5 sm:w-3 sm:h-3" />
-                            {article._count.comments}
-                          </span>
+                        {/* Shelf wood grain */}
+                        <div className="absolute inset-0 opacity-10 pointer-events-none" style={{
+                          backgroundImage: `url("data:image/svg+xml,%3Csvg viewBox='0 0 100 100' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M0 25 Q50 22 100 25' fill='none' stroke='%23000' stroke-width='0.3'/%3E%3Cpath d='M0 50 Q50 47 100 50' fill='none' stroke='%23000' stroke-width='0.3'/%3E%3Cpath d='M0 75 Q50 72 100 75' fill='none' stroke='%23000' stroke-width='0.3'/%3E%3C/svg%3E")`,
+                        }} />
+
+                        {/* Scrolls container */}
+                        <div className="p-4 sm:p-6">
+                          <div className="flex flex-wrap gap-4 sm:gap-6 justify-start">
+                            {categoryArticles.map((article) => {
+                              const categoryTheme = CATEGORY_SCROLL_THEMES[activeCategoryFilter] || CATEGORY_SCROLL_THEMES.sustainability
+                              const articleProg = readingProgress[article.id]
+                              const progPercent = articleProg?.scrollProgress || 0
+                              const isRead = articleProg?.completed || false
+                              const isSaved = savedArticles.includes(article.id)
+                              const scrollAge = getScrollAge(article.publishedAt)
+
+                              return (
+                                <div
+                                  key={article.id}
+                                  className="group/scroll cursor-pointer"
+                                  onMouseEnter={() => handleScrollHover(article)}
+                                  onMouseLeave={handleScrollLeave}
+                                  onClick={() => setPreviewArticle(article)}
+                                >
+                                  <div className="relative w-24 sm:w-28 transition-all duration-300 group-hover/scroll:scale-105 group-hover/scroll:-translate-y-2">
+                                    {/* Scroll visual with age weathering */}
+                                    <div className={`relative h-32 sm:h-36 ${scrollAge === 'ancient' ? 'opacity-80' : scrollAge === 'aged' ? 'opacity-90' : ''}`}>
+                                      {/* Parchment body */}
+                                      <div className={`absolute inset-x-1 top-3 bottom-3 bg-gradient-to-b ${categoryTheme.parchment} rounded shadow-lg border border-amber-600/20 overflow-hidden ${scrollAge === 'ancient' ? 'saturate-75' : ''}`}>
+                                        {/* Age spots for old scrolls */}
+                                        {scrollAge === 'ancient' && (
+                                          <>
+                                            <div className="absolute top-2 left-2 w-1.5 h-1.5 rounded-full bg-amber-700/30" />
+                                            <div className="absolute bottom-4 right-3 w-1 h-1 rounded-full bg-amber-700/20" />
+                                          </>
+                                        )}
+                                        {/* Progress fill */}
+                                        {progPercent > 0 && (
+                                          <div
+                                            className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-emerald-400/30 to-emerald-300/10"
+                                            style={{ height: `${progPercent}%` }}
+                                          />
+                                        )}
+                                        {/* Text lines suggestion */}
+                                        <div className="absolute inset-2 flex flex-col gap-1.5 opacity-30">
+                                          <div className="h-1 bg-amber-900/40 rounded-full w-full" />
+                                          <div className="h-1 bg-amber-900/40 rounded-full w-4/5" />
+                                          <div className="h-1 bg-amber-900/40 rounded-full w-full" />
+                                          <div className="h-1 bg-amber-900/40 rounded-full w-3/4" />
+                                        </div>
+                                      </div>
+
+                                      {/* Top rod */}
+                                      <div className="absolute top-0 left-0 right-0 h-4 bg-gradient-to-b from-amber-600 via-amber-700 to-amber-800 rounded-t shadow-md">
+                                        <div className="absolute top-1 left-1/2 -translate-x-1/2 w-2 h-2 bg-amber-400/60 rounded-full" />
+                                        <div className="absolute top-1 left-2 w-1.5 h-1.5 bg-amber-400/40 rounded-full" />
+                                        <div className="absolute top-1 right-2 w-1.5 h-1.5 bg-amber-400/40 rounded-full" />
+                                      </div>
+
+                                      {/* Bottom rod */}
+                                      <div className="absolute bottom-0 left-0 right-0 h-4 bg-gradient-to-t from-amber-600 via-amber-700 to-amber-800 rounded-b shadow-md">
+                                        <div className="absolute bottom-1 left-1/2 -translate-x-1/2 w-2 h-2 bg-amber-400/60 rounded-full" />
+                                      </div>
+
+                                      {/* Wax seal */}
+                                      <div className="absolute -right-1 top-1/2 -translate-y-1/2 w-5 h-5">
+                                        <div className={`w-full h-full bg-gradient-to-br ${isRead ? 'from-emerald-500 to-emerald-700' : categoryTheme.seal} rounded-full shadow-lg border border-white/30 flex items-center justify-center`}>
+                                          {isRead ? (
+                                            <svg className="w-2.5 h-2.5 text-white" fill="currentColor" viewBox="0 0 20 20">
+                                              <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
+                                            </svg>
+                                          ) : (
+                                            <ScrollText className="w-2.5 h-2.5 text-white/80" />
+                                          )}
+                                        </div>
+                                      </div>
+
+                                      {/* New badge for recent scrolls */}
+                                      {scrollAge === 'new' && (
+                                        <div className="absolute -top-1 -left-1 w-5 h-5 bg-gradient-to-br from-emerald-400 to-emerald-600 rounded-full flex items-center justify-center shadow-lg border border-white/30">
+                                          <Sparkles className="w-2.5 h-2.5 text-white" />
+                                        </div>
+                                      )}
+
+                                      {/* Save button */}
+                                      <button
+                                        onClick={(e) => {
+                                          e.preventDefault()
+                                          e.stopPropagation()
+                                          toggleSaveArticle(article.id)
+                                        }}
+                                        className={`absolute -top-1 -right-1 w-5 h-5 rounded-full flex items-center justify-center shadow-lg transition-all ${
+                                          isSaved
+                                            ? 'bg-amber-500 text-white'
+                                            : 'bg-amber-900/80 hover:bg-amber-500 text-amber-300 hover:text-white opacity-0 group-hover/scroll:opacity-100'
+                                        }`}
+                                        title={isSaved ? 'Remove from collection' : 'Save to collection'}
+                                      >
+                                        <Bookmark className={`w-2.5 h-2.5 ${isSaved ? 'fill-current' : ''}`} />
+                                      </button>
+                                    </div>
+
+                                    {/* Title below scroll */}
+                                    <p className="mt-2 text-[10px] sm:text-xs text-center font-medium text-[var(--foreground)] line-clamp-2 leading-tight px-1">
+                                      {article.title}
+                                    </p>
+
+                                    {/* Progress indicator */}
+                                    {progPercent > 0 && (
+                                      <p className="text-[9px] text-center text-emerald-600 mt-0.5">
+                                        {isRead ? 'Completed' : `${Math.round(progPercent)}% read`}
+                                      </p>
+                                    )}
+                                  </div>
+                                </div>
+                              )
+                            })}
+                          </div>
                         </div>
-                      </CardContent>
-                    </Card>
-                  </Link>
-                  {/* Save to Bookshelf Button */}
-                  <button
-                    onClick={(e) => {
-                      e.preventDefault()
-                      e.stopPropagation()
-                      toggleSaveArticle(article.id)
-                    }}
-                    className={`absolute top-2 right-2 sm:top-3 sm:right-3 w-7 h-7 sm:w-8 sm:h-8 rounded-full flex items-center justify-center transition-all shadow-lg ${
-                      isSaved
-                        ? 'bg-amber-500 text-white'
-                        : 'bg-white/90 hover:bg-amber-500 text-amber-700 hover:text-white opacity-0 group-hover/card:opacity-100'
-                    }`}
-                    title={isSaved ? 'Remove from bookshelf' : 'Save to bookshelf'}
-                  >
-                    <Bookmark className={`w-3.5 h-3.5 sm:w-4 sm:h-4 ${isSaved ? 'fill-current' : ''}`} />
-                  </button>
+
+                        {/* Shelf edge shadow */}
+                        <div className="h-2 bg-gradient-to-b from-amber-950 to-transparent" />
+                      </div>
+                    )
+                  })()}
                 </div>
-                )
-              })}
+              ) : (
+                /* Show all categories as separate shelves */
+                BOOK_CATEGORIES.map((category) => {
+                  const categoryArticles = articles.filter(a => a.category?.slug === category.slug)
+                  if (categoryArticles.length === 0) return null
+                  const CategoryIcon = category.icon
+                  const categoryTheme = CATEGORY_SCROLL_THEMES[category.slug] || CATEGORY_SCROLL_THEMES.sustainability
+
+                  return (
+                    <div key={category.id} className="relative bg-gradient-to-b from-amber-900/60 via-amber-800/40 to-amber-900/60 rounded-xl border-2 border-amber-700/50 overflow-hidden"
+                      style={{ boxShadow: 'inset 0 0 30px rgba(0, 0, 0, 0.3)' }}
+                    >
+                      {/* Carved category label */}
+                      <div className="flex items-center gap-3 px-4 sm:px-6 py-3 bg-gradient-to-r from-amber-800/80 via-amber-700/60 to-amber-800/80 border-b-2 border-amber-600/40">
+                        <div className={`w-8 h-8 rounded-lg bg-gradient-to-br ${category.color} flex items-center justify-center shadow-lg border border-white/20`}>
+                          <CategoryIcon className="w-4 h-4 text-white" />
+                        </div>
+                        <div>
+                          <h3 className="text-base sm:text-lg font-bold text-amber-100 tracking-wide" style={{ fontFamily: 'Georgia, serif' }}>
+                            {category.name}
+                          </h3>
+                          <p className="text-[10px] sm:text-xs text-amber-300/60">{categoryArticles.length} scroll{categoryArticles.length !== 1 ? 's' : ''}</p>
+                        </div>
+                        {/* Decorative carving */}
+                        <div className="flex-1 flex items-center justify-end">
+                          <svg className="w-24 h-6 opacity-40" viewBox="0 0 96 24">
+                            <path d="M0 12 Q24 6 48 12 Q72 18 96 12" fill="none" stroke="#fbbf24" strokeWidth="1.5"/>
+                            <circle cx="48" cy="12" r="3" fill="#f59e0b"/>
+                          </svg>
+                        </div>
+                      </div>
+
+                      {/* Shelf wood grain */}
+                      <div className="absolute inset-0 opacity-10 pointer-events-none" style={{
+                        backgroundImage: `url("data:image/svg+xml,%3Csvg viewBox='0 0 100 100' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M0 25 Q50 22 100 25' fill='none' stroke='%23000' stroke-width='0.3'/%3E%3Cpath d='M0 50 Q50 47 100 50' fill='none' stroke='%23000' stroke-width='0.3'/%3E%3Cpath d='M0 75 Q50 72 100 75' fill='none' stroke='%23000' stroke-width='0.3'/%3E%3C/svg%3E")`,
+                      }} />
+
+                      {/* Scrolls container - horizontal scroll */}
+                      <div className="p-4 sm:p-6">
+                        <div className="flex gap-4 sm:gap-5 overflow-x-auto pb-2 scrollbar-thin scrollbar-thumb-amber-600/50 scrollbar-track-amber-900/20">
+                          {categoryArticles.map((article) => {
+                            const articleProg = readingProgress[article.id]
+                            const progPercent = articleProg?.scrollProgress || 0
+                            const isRead = articleProg?.completed || false
+                            const isSaved = savedArticles.includes(article.id)
+                            const scrollAge = getScrollAge(article.publishedAt)
+
+                            return (
+                              <div
+                                key={article.id}
+                                className="flex-shrink-0 group/scroll cursor-pointer"
+                                onMouseEnter={() => handleScrollHover(article)}
+                                onMouseLeave={handleScrollLeave}
+                                onClick={() => setPreviewArticle(article)}
+                              >
+                                <div className="relative w-24 sm:w-28 transition-all duration-300 group-hover/scroll:scale-105 group-hover/scroll:-translate-y-2">
+                                  {/* Scroll visual with age weathering */}
+                                  <div className={`relative h-32 sm:h-36 ${scrollAge === 'ancient' ? 'opacity-80' : scrollAge === 'aged' ? 'opacity-90' : ''}`}>
+                                    {/* Parchment body */}
+                                    <div className={`absolute inset-x-1 top-3 bottom-3 bg-gradient-to-b ${categoryTheme.parchment} rounded shadow-lg border border-amber-600/20 overflow-hidden ${scrollAge === 'ancient' ? 'saturate-75' : ''}`}>
+                                      {scrollAge === 'ancient' && (
+                                        <>
+                                          <div className="absolute top-2 left-2 w-1.5 h-1.5 rounded-full bg-amber-700/30" />
+                                          <div className="absolute bottom-4 right-3 w-1 h-1 rounded-full bg-amber-700/20" />
+                                        </>
+                                      )}
+                                      {progPercent > 0 && (
+                                        <div
+                                          className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-emerald-400/30 to-emerald-300/10"
+                                          style={{ height: `${progPercent}%` }}
+                                        />
+                                      )}
+                                      <div className="absolute inset-2 flex flex-col gap-1.5 opacity-30">
+                                        <div className="h-1 bg-amber-900/40 rounded-full w-full" />
+                                        <div className="h-1 bg-amber-900/40 rounded-full w-4/5" />
+                                        <div className="h-1 bg-amber-900/40 rounded-full w-full" />
+                                        <div className="h-1 bg-amber-900/40 rounded-full w-3/4" />
+                                      </div>
+                                    </div>
+
+                                    {/* Top rod */}
+                                    <div className="absolute top-0 left-0 right-0 h-4 bg-gradient-to-b from-amber-600 via-amber-700 to-amber-800 rounded-t shadow-md">
+                                      <div className="absolute top-1 left-1/2 -translate-x-1/2 w-2 h-2 bg-amber-400/60 rounded-full" />
+                                      <div className="absolute top-1 left-2 w-1.5 h-1.5 bg-amber-400/40 rounded-full" />
+                                      <div className="absolute top-1 right-2 w-1.5 h-1.5 bg-amber-400/40 rounded-full" />
+                                    </div>
+
+                                    {/* Bottom rod */}
+                                    <div className="absolute bottom-0 left-0 right-0 h-4 bg-gradient-to-t from-amber-600 via-amber-700 to-amber-800 rounded-b shadow-md">
+                                      <div className="absolute bottom-1 left-1/2 -translate-x-1/2 w-2 h-2 bg-amber-400/60 rounded-full" />
+                                    </div>
+
+                                    {/* Wax seal */}
+                                    <div className="absolute -right-1 top-1/2 -translate-y-1/2 w-5 h-5">
+                                      <div className={`w-full h-full bg-gradient-to-br ${isRead ? 'from-emerald-500 to-emerald-700' : categoryTheme.seal} rounded-full shadow-lg border border-white/30 flex items-center justify-center`}>
+                                        {isRead ? (
+                                          <svg className="w-2.5 h-2.5 text-white" fill="currentColor" viewBox="0 0 20 20">
+                                            <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
+                                          </svg>
+                                        ) : (
+                                          <ScrollText className="w-2.5 h-2.5 text-white/80" />
+                                        )}
+                                      </div>
+                                    </div>
+
+                                    {scrollAge === 'new' && (
+                                      <div className="absolute -top-1 -left-1 w-5 h-5 bg-gradient-to-br from-emerald-400 to-emerald-600 rounded-full flex items-center justify-center shadow-lg border border-white/30">
+                                        <Sparkles className="w-2.5 h-2.5 text-white" />
+                                      </div>
+                                    )}
+
+                                    <button
+                                      onClick={(e) => {
+                                        e.preventDefault()
+                                        e.stopPropagation()
+                                        toggleSaveArticle(article.id)
+                                      }}
+                                      className={`absolute -top-1 -right-1 w-5 h-5 rounded-full flex items-center justify-center shadow-lg transition-all ${
+                                        isSaved
+                                          ? 'bg-amber-500 text-white'
+                                          : 'bg-amber-900/80 hover:bg-amber-500 text-amber-300 hover:text-white opacity-0 group-hover/scroll:opacity-100'
+                                      }`}
+                                      title={isSaved ? 'Remove from collection' : 'Save to collection'}
+                                    >
+                                      <Bookmark className={`w-2.5 h-2.5 ${isSaved ? 'fill-current' : ''}`} />
+                                    </button>
+                                  </div>
+
+                                  <p className="mt-2 text-[10px] sm:text-xs text-center font-medium text-[var(--foreground)] line-clamp-2 leading-tight px-1">
+                                    {article.title}
+                                  </p>
+
+                                  {progPercent > 0 && (
+                                    <p className="text-[9px] text-center text-emerald-600 mt-0.5">
+                                      {isRead ? 'Completed' : `${Math.round(progPercent)}% read`}
+                                    </p>
+                                  )}
+                                </div>
+                              </div>
+                            )
+                          })}
+                        </div>
+                      </div>
+
+                      {/* Shelf edge shadow */}
+                      <div className="h-2 bg-gradient-to-b from-amber-950 to-transparent" />
+                    </div>
+                  )
+                })
+              )}
             </div>
+
+            {/* Bottom bookshelf trim */}
+            <div className="h-6 bg-gradient-to-t from-amber-800 to-amber-900 rounded-b-lg mt-8 relative overflow-hidden">
+              <svg className="absolute inset-0 w-full h-full opacity-40" preserveAspectRatio="none">
+                <pattern id="shelfBottomCarving" x="0" y="0" width="60" height="24" patternUnits="userSpaceOnUse">
+                  <path d="M0 12 Q15 6 30 12 Q45 18 60 12" fill="none" stroke="#fbbf24" strokeWidth="1.5"/>
+                </pattern>
+                <rect width="100%" height="100%" fill="url(#shelfBottomCarving)"/>
+              </svg>
+            </div>
+              </div>
+              {/* End bookshelf content area */}
+            </div>
+            {/* End Grand Bookshelf Structure */}
 
             {/* Load More Trigger */}
             <div ref={loadMoreRef} className="py-6 sm:py-8 flex justify-center">
@@ -3068,6 +3357,7 @@ export default function ArticlesPage() {
             </div>
           </>
         )}
+        </div>
       </div>
 
       {/* Floating Write Button (Mobile) */}
