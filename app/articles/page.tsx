@@ -769,8 +769,8 @@ export default function ArticlesPage() {
         )}
       </AnimatePresence>
 
-      {/* Hero Header - Ancient Library Chamber */}
-      <div className="relative bg-gradient-to-b from-slate-900 via-indigo-950 to-slate-900 text-white min-h-[70vh] sm:min-h-[75vh]">
+      {/* Hero Header - U-Shaped Bookshelf Frame */}
+      <div className="relative bg-gradient-to-b from-slate-900 via-indigo-950 to-slate-900 text-white pb-8">
         {/* Ancient Chamber Background */}
         <div className="absolute inset-0 overflow-hidden">
           {/* Stone texture overlay */}
@@ -1407,51 +1407,38 @@ export default function ArticlesPage() {
               </svg>
             </div>
 
-            {/* ========================================== */}
-            {/* HORIZONTAL CONNECTING SHELVES             */}
-            {/* Full-width shelves connecting the sides   */}
-            {/* ========================================== */}
-            <div className="hidden lg:block relative -mx-[25%] mb-6">
-              {/* First connecting shelf */}
-              <div className="h-6 bg-gradient-to-b from-amber-700 via-amber-800 to-amber-950 border-t-2 border-amber-500/40 shadow-lg relative overflow-hidden">
-                {/* Wood grain texture */}
-                <div className="absolute inset-0 opacity-30" style={{
-                  backgroundImage: `url("data:image/svg+xml,%3Csvg viewBox='0 0 100 10' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M0 5 Q25 3 50 5 Q75 7 100 5' fill='none' stroke='%23000' stroke-width='0.5'/%3E%3C/svg%3E")`,
-                }} />
-                {/* Top highlight */}
-                <div className="absolute top-0 left-0 right-0 h-1 bg-gradient-to-b from-amber-400/30 to-transparent" />
-                {/* Decorative brass brackets */}
-                <div className="absolute left-[12%] top-0 bottom-0 w-3 bg-gradient-to-b from-yellow-600 via-yellow-700 to-amber-800 rounded-b-sm shadow-md" />
-                <div className="absolute right-[12%] top-0 bottom-0 w-3 bg-gradient-to-b from-yellow-600 via-yellow-700 to-amber-800 rounded-b-sm shadow-md" />
-                <div className="absolute left-1/2 -translate-x-1/2 top-0 bottom-0 w-4 bg-gradient-to-b from-yellow-500 via-yellow-600 to-amber-700 rounded-b-sm shadow-md" />
-              </div>
+          </div>
+        </div>
 
-              {/* Second connecting shelf - slightly below */}
-              <div className="h-6 mt-16 bg-gradient-to-b from-amber-700 via-amber-800 to-amber-950 border-t-2 border-amber-500/40 shadow-lg relative overflow-hidden">
-                {/* Wood grain texture */}
-                <div className="absolute inset-0 opacity-30" style={{
-                  backgroundImage: `url("data:image/svg+xml,%3Csvg viewBox='0 0 100 10' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M0 5 Q25 3 50 5 Q75 7 100 5' fill='none' stroke='%23000' stroke-width='0.5'/%3E%3C/svg%3E")`,
-                }} />
-                {/* Top highlight */}
-                <div className="absolute top-0 left-0 right-0 h-1 bg-gradient-to-b from-amber-400/30 to-transparent" />
-                {/* Decorative brass brackets */}
-                <div className="absolute left-[12%] top-0 bottom-0 w-3 bg-gradient-to-b from-yellow-600 via-yellow-700 to-amber-800 rounded-b-sm shadow-md" />
-                <div className="absolute right-[12%] top-0 bottom-0 w-3 bg-gradient-to-b from-yellow-600 via-yellow-700 to-amber-800 rounded-b-sm shadow-md" />
-              </div>
+        {/* ========================================== */}
+        {/* BOTTOM CONNECTING SHELF - Forms bottom of U */}
+        {/* Full-width shelf connecting the side bookshelves */}
+        {/* ========================================== */}
+        <div className="hidden lg:block absolute bottom-0 left-0 right-0 h-8 z-25">
+          {/* Main shelf surface */}
+          <div className="absolute inset-0 bg-gradient-to-b from-amber-700 via-amber-800 to-amber-950 border-t-2 border-amber-500/40 shadow-lg overflow-hidden">
+            {/* Wood grain texture */}
+            <div className="absolute inset-0 opacity-30" style={{
+              backgroundImage: `url("data:image/svg+xml,%3Csvg viewBox='0 0 100 10' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M0 5 Q25 3 50 5 Q75 7 100 5' fill='none' stroke='%23000' stroke-width='0.5'/%3E%3C/svg%3E")`,
+            }} />
+            {/* Top highlight */}
+            <div className="absolute top-0 left-0 right-0 h-1 bg-gradient-to-b from-amber-400/30 to-transparent" />
+          </div>
+          {/* Decorative brass brackets */}
+          <div className="absolute left-[10%] top-0 bottom-0 w-4 bg-gradient-to-b from-yellow-600 via-yellow-700 to-amber-800 rounded-b-sm shadow-md" />
+          <div className="absolute right-[10%] top-0 bottom-0 w-4 bg-gradient-to-b from-yellow-600 via-yellow-700 to-amber-800 rounded-b-sm shadow-md" />
+          <div className="absolute left-1/2 -translate-x-1/2 top-0 bottom-0 w-6 bg-gradient-to-b from-yellow-500 via-yellow-600 to-amber-700 rounded-b-sm shadow-md border-x border-yellow-400/30" />
+        </div>
+      </div>
+      {/* END OF HERO U-FRAME */}
 
-              {/* Third connecting shelf */}
-              <div className="h-6 mt-16 bg-gradient-to-b from-amber-700 via-amber-800 to-amber-950 border-t-2 border-amber-500/40 shadow-lg relative overflow-hidden">
-                {/* Wood grain texture */}
-                <div className="absolute inset-0 opacity-30" style={{
-                  backgroundImage: `url("data:image/svg+xml,%3Csvg viewBox='0 0 100 10' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M0 5 Q25 3 50 5 Q75 7 100 5' fill='none' stroke='%23000' stroke-width='0.5'/%3E%3C/svg%3E")`,
-                }} />
-                {/* Top highlight */}
-                <div className="absolute top-0 left-0 right-0 h-1 bg-gradient-to-b from-amber-400/30 to-transparent" />
-                {/* Decorative brass brackets */}
-                <div className="absolute left-[12%] top-0 bottom-0 w-3 bg-gradient-to-b from-yellow-600 via-yellow-700 to-amber-800 rounded-b-sm shadow-md" />
-                <div className="absolute right-[12%] top-0 bottom-0 w-3 bg-gradient-to-b from-yellow-600 via-yellow-700 to-amber-800 rounded-b-sm shadow-md" />
-              </div>
-            </div>
+      {/* ========================================== */}
+      {/* CONTENT SECTION - Below the U-frame       */}
+      {/* Search, Categories, and Article Shelves   */}
+      {/* ========================================== */}
+      <div className="relative bg-gradient-to-b from-amber-950 via-stone-900 to-amber-950">
+        <div className="container mx-auto px-4 py-8 relative z-10 lg:px-[20%]">
+          <div className="max-w-6xl mx-auto">
 
             {/* Centered Modal Popups for each scroll */}
             {trendingArticles.map((article, index) => (
