@@ -2441,6 +2441,60 @@ export default function ArticlesPage() {
         </motion.div>
       )}
 
+      {/* ========================================================= */}
+      {/* FLIPPED ARCH - Transition to Horizontal Bookshelves       */}
+      {/* ========================================================= */}
+      <div className="relative hidden lg:block h-20 z-30 -mt-2">
+        <svg className="absolute inset-0 w-full h-full" viewBox="0 0 400 80" preserveAspectRatio="none">
+          <defs>
+            <linearGradient id="archStoneFlipped" x1="0%" y1="100%" x2="0%" y2="0%">
+              <stop offset="0%" stopColor="#78350f" stopOpacity="0.95"/>
+              <stop offset="50%" stopColor="#451a03" stopOpacity="0.9"/>
+              <stop offset="100%" stopColor="#1c0a00" stopOpacity="0.85"/>
+            </linearGradient>
+            <linearGradient id="archGoldFlipped" x1="0%" y1="0%" x2="100%" y2="0%">
+              <stop offset="0%" stopColor="#fbbf24" stopOpacity="0.3"/>
+              <stop offset="50%" stopColor="#f59e0b" stopOpacity="0.5"/>
+              <stop offset="100%" stopColor="#fbbf24" stopOpacity="0.3"/>
+            </linearGradient>
+          </defs>
+
+          {/* Flipped arch shape - curves at bottom */}
+          <path
+            d="M0 0 L0 45 Q0 80 40 80 L360 80 Q400 80 400 45 L400 0 L380 0 L380 40 Q380 65 350 65 L50 65 Q20 65 20 40 L20 0 Z"
+            fill="url(#archStoneFlipped)"
+          />
+
+          {/* Inner arch opening highlight */}
+          <path
+            d="M20 0 L20 35 Q20 60 55 60 L345 60 Q380 60 380 35 L380 0"
+            fill="none"
+            stroke="url(#archGoldFlipped)"
+            strokeWidth="2"
+          />
+
+          {/* Inverted keystone */}
+          <path
+            d="M180 80 L220 80 L225 60 L175 60 Z"
+            fill="#78350f"
+            stroke="#fbbf24"
+            strokeWidth="1"
+            opacity="0.9"
+          />
+
+          {/* Keystone emblem */}
+          <circle cx="200" cy="70" r="6" fill="none" stroke="#fbbf24" strokeWidth="1" opacity="0.6"/>
+          <circle cx="200" cy="70" r="3" fill="#fbbf24" opacity="0.4"/>
+        </svg>
+
+        {/* Arch inscription */}
+        <div className="absolute top-2 left-1/2 -translate-x-1/2 px-6 py-1 bg-gradient-to-r from-transparent via-amber-900/60 to-transparent">
+          <span className="text-[10px] font-bold text-amber-300/70 uppercase tracking-[0.3em]" style={{ fontFamily: 'Georgia, serif' }}>
+            The Great Library Below
+          </span>
+        </div>
+      </div>
+
       {/* Filter Bar - Styled as bookshelf drawer */}
       <div className="sticky top-16 sm:top-20 z-40 bg-gradient-to-b from-amber-950 to-stone-900 border-b-4 border-amber-700/60">
         <div className="container mx-auto px-4">
@@ -2480,17 +2534,52 @@ export default function ArticlesPage() {
       </div>
 
       {/* ========================================================= */}
-      {/* GRAND LIBRARY - Full Width Bookshelf Content Area         */}
+      {/* HORIZONTAL BOOKSHELF - Matching Side Bookshelf Style      */}
       {/* ========================================================= */}
-      <div className="relative bg-gradient-to-b from-stone-900 via-amber-950/50 to-stone-900 min-h-screen">
-        {/* Wood panel background texture */}
-        <div className="absolute inset-0 opacity-10" style={{
-          backgroundImage: `url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M0 50 Q100 45 200 50' fill='none' stroke='%23000' stroke-width='0.5'/%3E%3Cpath d='M0 100 Q100 95 200 100' fill='none' stroke='%23000' stroke-width='0.5'/%3E%3Cpath d='M0 150 Q100 145 200 150' fill='none' stroke='%23000' stroke-width='0.5'/%3E%3C/svg%3E")`,
-        }} />
+      <div className="relative min-h-screen">
+        {/* Full-width bookshelf frame - matching side bookshelf styling */}
+        <div className="relative bg-gradient-to-b from-amber-950/95 via-amber-900/90 to-amber-950/95 border-x-4 border-amber-700/60"
+          style={{ boxShadow: 'inset 0 0 60px rgba(0, 0, 0, 0.5)' }}
+        >
+          {/* Wood grain texture - matching side bookshelves */}
+          <div className="absolute inset-0 opacity-20" style={{
+            backgroundImage: `url("data:image/svg+xml,%3Csvg viewBox='0 0 400 100' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M0 20 Q100 15 200 20 Q300 25 400 20' fill='none' stroke='%23000' stroke-width='0.5' opacity='0.3'/%3E%3Cpath d='M0 50 Q100 45 200 50 Q300 55 400 50' fill='none' stroke='%23000' stroke-width='0.5' opacity='0.3'/%3E%3Cpath d='M0 80 Q100 75 200 80 Q300 85 400 80' fill='none' stroke='%23000' stroke-width='0.5' opacity='0.3'/%3E%3C/svg%3E")`,
+          }} />
 
-        {/* Ambient torch lighting from sides */}
-        <div className="absolute top-20 left-0 w-32 h-64 bg-gradient-to-r from-amber-500/20 to-transparent blur-3xl pointer-events-none" />
-        <div className="absolute top-20 right-0 w-32 h-64 bg-gradient-to-l from-amber-500/20 to-transparent blur-3xl pointer-events-none" />
+          {/* Carved ornamental top - matching side bookshelves */}
+          <div className="h-10 bg-gradient-to-b from-amber-800 to-amber-900 border-b-2 border-amber-600/50 relative overflow-hidden">
+            <svg className="absolute inset-0 w-full h-full opacity-30" preserveAspectRatio="none">
+              <pattern id="horizontalShelfCarving" x="0" y="0" width="60" height="40" patternUnits="userSpaceOnUse">
+                <path d="M0 20 Q15 10 30 20 Q45 30 60 20" fill="none" stroke="#fbbf24" strokeWidth="1.5"/>
+                <circle cx="30" cy="20" r="4" fill="none" stroke="#f59e0b" strokeWidth="0.8"/>
+              </pattern>
+              <rect width="100%" height="100%" fill="url(#horizontalShelfCarving)"/>
+            </svg>
+            {/* Center emblem */}
+            <div className="absolute left-1/2 -translate-x-1/2 top-1/2 -translate-y-1/2 flex items-center gap-6">
+              <div className="w-4 h-4 bg-gradient-to-br from-yellow-400 to-yellow-600 rounded-full shadow-lg border-2 border-yellow-300/50" />
+              <div className="w-6 h-6 bg-gradient-to-br from-yellow-300 to-yellow-500 rounded-full shadow-lg border-2 border-yellow-200/50 flex items-center justify-center">
+                <ScrollText className="w-3 h-3 text-amber-800" />
+              </div>
+              <div className="w-4 h-4 bg-gradient-to-br from-yellow-400 to-yellow-600 rounded-full shadow-lg border-2 border-yellow-300/50" />
+            </div>
+          </div>
+
+          {/* Left torch sconce - matching side bookshelves */}
+          <div className="absolute top-20 left-6 w-8 z-30 hidden sm:block">
+            <div className="w-4 h-12 bg-gradient-to-b from-amber-700 to-amber-900 mx-auto rounded-b-sm" />
+            <div className={`w-8 h-10 bg-gradient-to-t ${isNightTime ? 'from-orange-400/80 via-amber-300/60' : 'from-orange-500/60 via-amber-400/40'} to-transparent rounded-full blur-sm animate-pulse absolute -top-5 left-0`} />
+          </div>
+
+          {/* Right torch sconce - matching side bookshelves */}
+          <div className="absolute top-20 right-6 w-8 z-30 hidden sm:block">
+            <div className="w-4 h-12 bg-gradient-to-b from-amber-700 to-amber-900 mx-auto rounded-b-sm" />
+            <div className={`w-8 h-10 bg-gradient-to-t ${isNightTime ? 'from-orange-400/80 via-amber-300/60' : 'from-orange-500/60 via-amber-400/40'} to-transparent rounded-full blur-sm animate-pulse absolute -top-5 left-0`} style={{ animationDelay: '0.5s' }} />
+          </div>
+
+          {/* Ambient torch lighting from sides */}
+          <div className="absolute top-24 left-0 w-40 h-80 bg-gradient-to-r from-amber-500/20 to-transparent blur-3xl pointer-events-none" />
+          <div className="absolute top-24 right-0 w-40 h-80 bg-gradient-to-l from-amber-500/20 to-transparent blur-3xl pointer-events-none" />
 
         <div className="container mx-auto px-4 py-6 sm:py-8 relative">
         {error ? (
@@ -3358,7 +3447,22 @@ export default function ArticlesPage() {
           </>
         )}
         </div>
+        {/* End container */}
+
+        {/* Carved ornamental bottom - matching side bookshelves */}
+        <div className="h-8 bg-gradient-to-t from-amber-800 to-amber-900 border-t-2 border-amber-600/50 relative overflow-hidden mt-8">
+          <svg className="absolute inset-0 w-full h-full opacity-30" preserveAspectRatio="none">
+            <pattern id="horizontalShelfCarvingBottom" x="0" y="0" width="60" height="32" patternUnits="userSpaceOnUse">
+              <path d="M0 16 Q15 24 30 16 Q45 8 60 16" fill="none" stroke="#fbbf24" strokeWidth="1.5"/>
+              <circle cx="30" cy="16" r="3" fill="none" stroke="#f59e0b" strokeWidth="0.8"/>
+            </pattern>
+            <rect width="100%" height="100%" fill="url(#horizontalShelfCarvingBottom)"/>
+          </svg>
+        </div>
+        </div>
+        {/* End bookshelf frame */}
       </div>
+      {/* End horizontal bookshelf wrapper */}
 
       {/* Floating Write Button (Mobile) */}
       {session && (
