@@ -1213,22 +1213,23 @@ export default function ArticlesPage() {
           </motion.div>
 
           {/* ========================================== */}
-          {/* CONNECTING ARCH - Spans middle 60% with entrance animation */}
+          {/* CONNECTING ARCH - Blends into side bookshelves */}
           {/* ========================================== */}
           <motion.div
             initial={{ y: -100, opacity: 0 }}
             animate={libraryEntered ? { y: 0, opacity: 1 } : { y: -100, opacity: 0 }}
             transition={{ duration: 0.6, ease: 'easeOut', delay: 0.5 }}
-            className="hidden lg:block absolute top-0 left-[18%] right-[18%] h-24 z-30 pointer-events-none"
+            className="hidden lg:block absolute top-0 left-[16%] right-[16%] h-24 z-25 pointer-events-none"
           >
-            {/* Stone arch structure */}
+            {/* Wood/Stone arch structure - matches bookshelf color */}
             <svg className="absolute inset-0 w-full h-full" viewBox="0 0 400 80" preserveAspectRatio="none">
               <defs>
-                {/* Stone gradient */}
-                <linearGradient id="archStone" x1="0%" y1="0%" x2="0%" y2="100%">
-                  <stop offset="0%" stopColor="#78350f" stopOpacity="0.95"/>
-                  <stop offset="50%" stopColor="#451a03" stopOpacity="0.9"/>
-                  <stop offset="100%" stopColor="#1c0a00" stopOpacity="0.85"/>
+                {/* Wood gradient matching side bookshelves */}
+                <linearGradient id="archWood" x1="0%" y1="0%" x2="0%" y2="100%">
+                  <stop offset="0%" stopColor="#78350f" stopOpacity="1"/>
+                  <stop offset="30%" stopColor="#92400e" stopOpacity="0.98"/>
+                  <stop offset="70%" stopColor="#78350f" stopOpacity="0.95"/>
+                  <stop offset="100%" stopColor="#451a03" stopOpacity="0.9"/>
                 </linearGradient>
                 {/* Gold accent gradient */}
                 <linearGradient id="archGold" x1="0%" y1="0%" x2="100%" y2="0%">
@@ -1238,15 +1239,15 @@ export default function ArticlesPage() {
                 </linearGradient>
               </defs>
 
-              {/* Main arch shape */}
+              {/* Main arch shape - extends to blend with side shelves */}
               <path
-                d="M0 80 L0 35 Q0 0 40 0 L360 0 Q400 0 400 35 L400 80 L380 80 L380 40 Q380 15 350 15 L50 15 Q20 15 20 40 L20 80 Z"
-                fill="url(#archStone)"
+                d="M0 80 L0 0 L400 0 L400 80 L380 80 L380 35 Q380 15 350 15 L50 15 Q20 15 20 35 L20 80 Z"
+                fill="url(#archWood)"
               />
 
               {/* Inner arch opening highlight */}
               <path
-                d="M20 80 L20 45 Q20 20 55 20 L345 20 Q380 20 380 45 L380 80"
+                d="M20 80 L20 40 Q20 20 55 20 L345 20 Q380 20 380 40 L380 80"
                 fill="none"
                 stroke="url(#archGold)"
                 strokeWidth="2"
@@ -1265,11 +1266,18 @@ export default function ArticlesPage() {
               <circle cx="200" cy="10" r="6" fill="none" stroke="#fbbf24" strokeWidth="1" opacity="0.6"/>
               <circle cx="200" cy="10" r="3" fill="#fbbf24" opacity="0.4"/>
 
+              {/* Wood grain texture lines */}
+              <path d="M0 25 Q100 22 200 25 Q300 28 400 25" fill="none" stroke="#451a03" strokeWidth="0.5" opacity="0.3"/>
+              <path d="M0 45 Q100 42 200 45 Q300 48 400 45" fill="none" stroke="#451a03" strokeWidth="0.5" opacity="0.3"/>
+
               {/* Decorative voussoirs (arch stones) */}
               {[40, 80, 120, 280, 320, 360].map((x, i) => (
                 <line key={i} x1={x} y1="0" x2={x + (i < 3 ? 5 : -5)} y2="20" stroke="#451a03" strokeWidth="1" opacity="0.5"/>
               ))}
             </svg>
+
+            {/* Carved border at bottom edge */}
+            <div className="absolute bottom-0 left-5 right-5 h-1 bg-gradient-to-r from-amber-600/40 via-amber-500/60 to-amber-600/40" />
 
             {/* Arch inscription */}
             <div className="absolute bottom-2 left-1/2 -translate-x-1/2 px-6 py-1 bg-gradient-to-r from-transparent via-amber-900/60 to-transparent">
@@ -1277,6 +1285,30 @@ export default function ArticlesPage() {
                 Wisdom Awaits Within
               </span>
             </div>
+          </motion.div>
+
+          {/* ========================================== */}
+          {/* BOTTOM CONNECTING SHELF - Spans middle     */}
+          {/* Connects left and right bookshelves        */}
+          {/* ========================================== */}
+          <motion.div
+            initial={{ y: 50, opacity: 0 }}
+            animate={libraryEntered ? { y: 0, opacity: 1 } : { y: 50, opacity: 0 }}
+            transition={{ duration: 0.6, ease: 'easeOut', delay: 0.7 }}
+            className="hidden lg:block absolute bottom-0 left-[16%] right-[16%] h-6 z-25 pointer-events-none"
+          >
+            {/* Shelf surface - matching side bookshelves exactly */}
+            <div className="absolute inset-0 bg-gradient-to-b from-amber-700 via-amber-800 to-amber-950 border-t-2 border-amber-500/40 shadow-lg overflow-hidden">
+              {/* Wood grain texture */}
+              <div className="absolute inset-0 opacity-30" style={{
+                backgroundImage: `url("data:image/svg+xml,%3Csvg viewBox='0 0 100 10' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M0 5 Q25 3 50 5 Q75 7 100 5' fill='none' stroke='%23000' stroke-width='0.5'/%3E%3C/svg%3E")`,
+              }} />
+              {/* Top highlight */}
+              <div className="absolute top-0 left-0 right-0 h-1 bg-gradient-to-b from-amber-400/30 to-transparent" />
+            </div>
+            {/* Seamless blend into side shelves */}
+            <div className="absolute -left-4 top-0 bottom-0 w-8 bg-gradient-to-r from-amber-900 via-amber-800 to-amber-700" />
+            <div className="absolute -right-4 top-0 bottom-0 w-8 bg-gradient-to-l from-amber-900 via-amber-800 to-amber-700" />
           </motion.div>
         </div>
 
