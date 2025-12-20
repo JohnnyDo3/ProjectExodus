@@ -859,6 +859,49 @@ export default function ArticlesPage() {
           <div className="absolute top-[15%] right-[8%] w-24 h-32 bg-gradient-to-b from-amber-500/30 via-orange-500/20 to-transparent rounded-full blur-2xl animate-pulse" style={{ animationDelay: '1s' }} />
           <div className="absolute top-[10%] left-1/2 -translate-x-1/2 w-64 h-24 bg-gradient-to-b from-amber-400/20 to-transparent rounded-full blur-3xl" />
 
+          {/* Ambient dust particles - subtle, hidden on mobile for performance */}
+          {!isMobile && (
+            <div className="absolute inset-0 overflow-hidden pointer-events-none">
+              {[...Array(15)].map((_, i) => (
+                <motion.div
+                  key={`dust-${i}`}
+                  className="absolute w-1 h-1 rounded-full bg-amber-300/30"
+                  initial={{
+                    x: `${10 + (i * 6) % 80}%`,
+                    y: `${5 + (i * 7) % 90}%`,
+                    opacity: 0.1
+                  }}
+                  animate={{
+                    y: [`${5 + (i * 7) % 90}%`, `${10 + (i * 7) % 85}%`, `${5 + (i * 7) % 90}%`],
+                    x: [`${10 + (i * 6) % 80}%`, `${12 + (i * 6) % 78}%`, `${10 + (i * 6) % 80}%`],
+                    opacity: [0.1, 0.3, 0.1],
+                    scale: [1, 1.2, 1]
+                  }}
+                  transition={{
+                    duration: 4 + (i % 3) * 2,
+                    repeat: Infinity,
+                    ease: 'easeInOut',
+                    delay: i * 0.3
+                  }}
+                />
+              ))}
+            </div>
+          )}
+
+          {/* Torch flicker shadow effect */}
+          <div className="absolute inset-0 pointer-events-none overflow-hidden">
+            <motion.div
+              className="absolute top-[10%] left-[5%] w-40 h-60 bg-gradient-to-b from-black/5 to-transparent blur-lg"
+              animate={{ opacity: [0.3, 0.5, 0.3], x: [-5, 5, -5] }}
+              transition={{ duration: 3, repeat: Infinity, ease: 'easeInOut' }}
+            />
+            <motion.div
+              className="absolute top-[10%] right-[5%] w-40 h-60 bg-gradient-to-b from-black/5 to-transparent blur-lg"
+              animate={{ opacity: [0.3, 0.5, 0.3], x: [5, -5, 5] }}
+              transition={{ duration: 3, repeat: Infinity, ease: 'easeInOut', delay: 1.5 }}
+            />
+          </div>
+
           {/* Original parallel vertical lines as stone pillars/columns */}
           <div className="absolute inset-0 opacity-10 pointer-events-none">
             {/* Left side pillars */}
@@ -2513,34 +2556,87 @@ export default function ArticlesPage() {
               )
             })()}
 
-            {/* Personal Bookshelf - Saved Articles */}
+            {/* Personal Bookshelf - Saved Articles with Gilded Frame */}
             {savedArticles.length > 0 && (
               <div className="mb-8 sm:mb-12">
-                {/* Section Header */}
-                <div className="flex items-center gap-4 mb-6">
-                  <div className="flex-shrink-0 w-12 h-12 rounded-full bg-gradient-to-br from-amber-600 to-amber-800 flex items-center justify-center shadow-lg border-2 border-amber-400/30">
-                    <Bookmark className="w-6 h-6 text-amber-100" />
-                  </div>
-                  <div>
-                    <h2 className="text-xl sm:text-2xl font-bold text-[var(--foreground)]" style={{ fontFamily: 'Georgia, serif' }}>
-                      Your Personal Bookshelf
-                    </h2>
-                    <p className="text-sm text-[var(--muted)]">
-                      {savedArticles.length} scroll{savedArticles.length !== 1 ? 's' : ''} preserved for later reading
-                    </p>
-                  </div>
-                </div>
+                {/* Ornate decorative frame container */}
+                <div className="relative">
+                  {/* Gilded gold frame - outer border */}
+                  <div className="absolute inset-0 rounded-xl bg-gradient-to-b from-yellow-400/20 via-amber-500/10 to-yellow-600/20 blur-sm" />
 
-                {/* Bookshelf Visual */}
-                <div className="relative bg-gradient-to-b from-amber-900/20 via-amber-800/10 to-amber-900/20 rounded-lg border-2 border-amber-700/30 p-4 sm:p-6 overflow-hidden">
-                  {/* Wood texture */}
-                  <div className="absolute inset-0 opacity-10" style={{
-                    backgroundImage: `url("data:image/svg+xml,%3Csvg viewBox='0 0 100 100' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M0 20 Q50 15 100 20' fill='none' stroke='%23000' stroke-width='0.3'/%3E%3Cpath d='M0 40 Q50 35 100 40' fill='none' stroke='%23000' stroke-width='0.3'/%3E%3Cpath d='M0 60 Q50 55 100 60' fill='none' stroke='%23000' stroke-width='0.3'/%3E%3Cpath d='M0 80 Q50 75 100 80' fill='none' stroke='%23000' stroke-width='0.3'/%3E%3C/svg%3E")`,
-                  }} />
+                  {/* Main frame with carved wood and vine motifs */}
+                  <div className="relative rounded-xl border-4 border-amber-600/60 bg-gradient-to-b from-amber-950/90 via-stone-900/95 to-amber-950/90 p-1 shadow-2xl overflow-hidden"
+                    style={{ boxShadow: '0 0 30px rgba(251, 191, 36, 0.15), inset 0 0 20px rgba(0, 0, 0, 0.3)' }}
+                  >
+                    {/* Ornate corner flourishes - gilded gold */}
+                    <svg className="absolute top-0 left-0 w-16 h-16 text-yellow-500/60" viewBox="0 0 64 64">
+                      <path d="M8 56 L8 24 Q8 8 24 8 L56 8" fill="none" stroke="currentColor" strokeWidth="2"/>
+                      <circle cx="8" cy="8" r="4" fill="currentColor"/>
+                      <path d="M16 40 Q16 20 36 16" fill="none" stroke="currentColor" strokeWidth="1.5" opacity="0.6"/>
+                      <circle cx="8" cy="56" r="3" fill="currentColor" opacity="0.6"/>
+                      <circle cx="56" cy="8" r="3" fill="currentColor" opacity="0.6"/>
+                    </svg>
+                    <svg className="absolute top-0 right-0 w-16 h-16 text-yellow-500/60" viewBox="0 0 64 64" style={{ transform: 'scaleX(-1)' }}>
+                      <path d="M8 56 L8 24 Q8 8 24 8 L56 8" fill="none" stroke="currentColor" strokeWidth="2"/>
+                      <circle cx="8" cy="8" r="4" fill="currentColor"/>
+                      <path d="M16 40 Q16 20 36 16" fill="none" stroke="currentColor" strokeWidth="1.5" opacity="0.6"/>
+                    </svg>
+                    <svg className="absolute bottom-0 left-0 w-16 h-16 text-yellow-500/60" viewBox="0 0 64 64" style={{ transform: 'scaleY(-1)' }}>
+                      <path d="M8 56 L8 24 Q8 8 24 8 L56 8" fill="none" stroke="currentColor" strokeWidth="2"/>
+                      <circle cx="8" cy="8" r="4" fill="currentColor"/>
+                    </svg>
+                    <svg className="absolute bottom-0 right-0 w-16 h-16 text-yellow-500/60" viewBox="0 0 64 64" style={{ transform: 'scale(-1, -1)' }}>
+                      <path d="M8 56 L8 24 Q8 8 24 8 L56 8" fill="none" stroke="currentColor" strokeWidth="2"/>
+                      <circle cx="8" cy="8" r="4" fill="currentColor"/>
+                    </svg>
 
-                  {/* Shelf edge highlight */}
-                  <div className="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-transparent via-amber-500/30 to-transparent" />
-                  <div className="absolute bottom-0 left-0 right-0 h-1 bg-gradient-to-r from-transparent via-amber-700/30 to-transparent" />
+                    {/* Leaf/vine carved border pattern */}
+                    <svg className="absolute top-2 left-16 right-16 h-4 opacity-40" preserveAspectRatio="none">
+                      <pattern id="leafBorderTop" x="0" y="0" width="48" height="16" patternUnits="userSpaceOnUse">
+                        <path d="M0 8 Q12 4 24 8 Q36 12 48 8" fill="none" stroke="#10b981" strokeWidth="1.5"/>
+                        <circle cx="24" cy="8" r="2" fill="#10b981"/>
+                        <path d="M18 6 Q20 4 22 6" fill="none" stroke="#10b981" strokeWidth="1"/>
+                        <path d="M26 10 Q28 12 30 10" fill="none" stroke="#10b981" strokeWidth="1"/>
+                      </pattern>
+                      <rect width="100%" height="100%" fill="url(#leafBorderTop)"/>
+                    </svg>
+                    <svg className="absolute bottom-2 left-16 right-16 h-4 opacity-40" preserveAspectRatio="none" style={{ transform: 'scaleY(-1)' }}>
+                      <rect width="100%" height="100%" fill="url(#leafBorderTop)"/>
+                    </svg>
+
+                    {/* Personal crest emblem at top center */}
+                    <div className="absolute -top-1 left-1/2 -translate-x-1/2 z-20">
+                      <div className="relative px-6 py-2 bg-gradient-to-b from-amber-700 to-amber-900 border-2 border-yellow-500/50 rounded-b-lg shadow-lg">
+                        <div className="flex items-center gap-2">
+                          <div className="w-6 h-6 rounded-full bg-gradient-to-br from-yellow-400 to-yellow-600 flex items-center justify-center shadow-inner border border-yellow-300/50">
+                            <Bookmark className="w-3 h-3 text-amber-900" />
+                          </div>
+                          <span className="text-xs font-bold text-amber-100 uppercase tracking-[0.15em]" style={{ fontFamily: 'Georgia, serif' }}>
+                            Your Collection
+                          </span>
+                        </div>
+                        {/* Hanging decorative elements */}
+                        <div className="absolute -bottom-2 left-4 w-1 h-3 bg-gradient-to-b from-yellow-500 to-yellow-700 rounded-b-full" />
+                        <div className="absolute -bottom-2 right-4 w-1 h-3 bg-gradient-to-b from-yellow-500 to-yellow-700 rounded-b-full" />
+                      </div>
+                    </div>
+
+                    {/* Inner bookshelf area */}
+                    <div className="relative bg-gradient-to-b from-amber-900/40 via-amber-800/30 to-amber-900/40 rounded-lg p-4 sm:p-6 mt-8 overflow-hidden">
+                      {/* Wood texture */}
+                      <div className="absolute inset-0 opacity-15" style={{
+                        backgroundImage: `url("data:image/svg+xml,%3Csvg viewBox='0 0 100 100' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M0 20 Q50 15 100 20' fill='none' stroke='%23000' stroke-width='0.3'/%3E%3Cpath d='M0 40 Q50 35 100 40' fill='none' stroke='%23000' stroke-width='0.3'/%3E%3Cpath d='M0 60 Q50 55 100 60' fill='none' stroke='%23000' stroke-width='0.3'/%3E%3Cpath d='M0 80 Q50 75 100 80' fill='none' stroke='%23000' stroke-width='0.3'/%3E%3C/svg%3E")`,
+                      }} />
+
+                      {/* Shelf surface highlight */}
+                      <div className="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-yellow-500/20 via-amber-400/40 to-yellow-500/20" />
+
+                      {/* Count indicator */}
+                      <div className="absolute top-2 right-4 px-2 py-1 bg-amber-800/60 rounded-full">
+                        <span className="text-[10px] font-bold text-amber-200">
+                          {savedArticles.length} scroll{savedArticles.length !== 1 ? 's' : ''}
+                        </span>
+                      </div>
 
                   {/* Saved articles as horizontal scrolls */}
                   <div className="relative flex gap-4 overflow-x-auto pb-2 scrollbar-thin scrollbar-thumb-amber-600/50 scrollbar-track-amber-900/20">
@@ -2645,6 +2741,8 @@ export default function ArticlesPage() {
                         </p>
                       </div>
                     )}
+                  </div>
+                    </div>
                   </div>
                 </div>
               </div>
