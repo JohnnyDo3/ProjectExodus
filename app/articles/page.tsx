@@ -808,7 +808,7 @@ export default function ArticlesPage() {
                 </svg>
               </div>
             </div>
-          </div>
+          </motion.div>
 
           {/* Right Vertical Bookshelf - 20% width */}
           <div className="hidden lg:block absolute right-0 top-0 bottom-0 w-[18%] z-20 pointer-events-none">
