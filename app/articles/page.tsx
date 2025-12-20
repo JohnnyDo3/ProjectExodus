@@ -1931,40 +1931,100 @@ export default function ArticlesPage() {
         </div>
       )}
 
-      {/* Contributor Invite Banner */}
+      {/* Contributor Invite Banner with Animated Quill */}
       {showContributorInvite && session && !showWelcomeGuide && (
-        <div className="bg-gradient-to-r from-[var(--primary)]/5 to-[var(--accent)]/5 border-b border-[var(--border)]">
-          <div className="container mx-auto px-4 py-3 sm:py-4">
+        <motion.div
+          initial={{ opacity: 0, y: -20 }}
+          animate={{ opacity: 1, y: 0 }}
+          exit={{ opacity: 0, y: -20 }}
+          className="bg-gradient-to-r from-amber-900/10 via-amber-800/5 to-amber-900/10 border-b-2 border-amber-600/20 overflow-hidden relative"
+        >
+          {/* Parchment texture overlay */}
+          <div className="absolute inset-0 opacity-5" style={{
+            backgroundImage: `url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='4'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E")`,
+          }} />
+
+          {/* Ink splatter decorations */}
+          <div className="absolute left-[10%] top-1/2 -translate-y-1/2 w-2 h-2 rounded-full bg-amber-600/20 blur-sm" />
+          <div className="absolute left-[15%] top-1/3 w-1 h-1 rounded-full bg-amber-700/30" />
+          <div className="absolute right-[20%] bottom-1/4 w-1.5 h-1.5 rounded-full bg-amber-500/20 blur-sm" />
+
+          <div className="container mx-auto px-4 py-3 sm:py-4 relative">
             <div className="flex items-center justify-between gap-4 max-w-4xl mx-auto">
-              <div className="flex items-center gap-3">
-                <div className="shrink-0 w-8 h-8 sm:w-10 sm:h-10 rounded-full bg-gradient-to-br from-[var(--primary)] to-[var(--accent)] flex items-center justify-center">
-                  <Heart className="w-4 h-4 sm:w-5 sm:h-5 text-white" />
+              <div className="flex items-center gap-3 sm:gap-4">
+                {/* Animated Quill Icon */}
+                <div className="shrink-0 relative">
+                  <div className="w-10 h-10 sm:w-12 sm:h-12 rounded-full bg-gradient-to-br from-amber-600 to-amber-800 flex items-center justify-center shadow-lg border-2 border-amber-400/30">
+                    {/* Animated quill SVG */}
+                    <motion.svg
+                      className="w-5 h-5 sm:w-6 sm:h-6 text-amber-100"
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      stroke="currentColor"
+                      strokeWidth="2"
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      animate={{ rotate: [-5, 5, -5] }}
+                      transition={{ duration: 2, repeat: Infinity, ease: "easeInOut" }}
+                    >
+                      <path d="m9 11-6 6v3h9l3-3" />
+                      <path d="m22 2-1.5 1.5" />
+                      <path d="M19 5.5 9.5 15" />
+                      <path d="M22 2c-1.5 2-3.5 3-6 3" />
+                      <path d="M2 22c2-1.5 3-3.5 3-6" />
+                    </motion.svg>
+                  </div>
+                  {/* Writing animation effect */}
+                  <motion.div
+                    className="absolute -bottom-1 -right-1 w-3 h-3"
+                    animate={{ scale: [1, 1.2, 1], opacity: [0.5, 1, 0.5] }}
+                    transition={{ duration: 1.5, repeat: Infinity }}
+                  >
+                    <div className="w-full h-full rounded-full bg-gradient-to-br from-amber-400 to-amber-600 shadow-lg" />
+                  </motion.div>
                 </div>
+
                 <div>
-                  <p className="text-xs sm:text-sm font-bold text-[var(--foreground)]">
-                    Your journey matters
+                  <p className="text-sm sm:text-base font-bold text-[var(--foreground)]" style={{ fontFamily: 'Georgia, serif' }}>
+                    Become a Scribe of Wisdom
                   </p>
                   <p className="text-[10px] sm:text-xs text-theme-muted font-medium">
-                    Share a case study or lesson from your sustainability experience
+                    Your knowledge can illuminate paths for fellow seekers
                   </p>
                 </div>
               </div>
-              <div className="flex items-center gap-2">
+
+              <div className="flex items-center gap-2 sm:gap-3">
                 <Link href="/articles/write">
-                  <Button size="sm" className="bg-[var(--primary)] text-white hover:bg-[var(--accent)] font-bold text-xs px-3 py-1.5 rounded-lg">
-                    Share Your Story
-                  </Button>
+                  <motion.div
+                    whileHover={{ scale: 1.05 }}
+                    whileTap={{ scale: 0.95 }}
+                  >
+                    <Button size="sm" className="bg-gradient-to-r from-amber-600 to-amber-700 hover:from-amber-500 hover:to-amber-600 text-white font-bold text-xs sm:text-sm px-4 py-2 rounded-lg shadow-lg border border-amber-400/30 flex items-center gap-2">
+                      <PenSquare className="w-3.5 h-3.5 sm:w-4 sm:h-4" />
+                      <span className="hidden sm:inline">Begin Writing</span>
+                      <span className="sm:hidden">Write</span>
+                    </Button>
+                  </motion.div>
                 </Link>
                 <button
                   onClick={dismissContributorInvite}
-                  className="p-1.5 rounded-full hover:bg-[var(--muted)] transition-colors"
+                  className="p-1.5 rounded-full hover:bg-amber-900/20 transition-colors"
                 >
                   <X className="w-4 h-4 text-theme-muted" />
                 </button>
               </div>
             </div>
           </div>
-        </div>
+
+          {/* Decorative ink line */}
+          <motion.div
+            className="absolute bottom-0 left-0 h-0.5 bg-gradient-to-r from-transparent via-amber-600/40 to-transparent"
+            initial={{ width: 0 }}
+            animate={{ width: '100%' }}
+            transition={{ duration: 2, delay: 0.5 }}
+          />
+        </motion.div>
       )}
 
       {/* Filter Bar */}
