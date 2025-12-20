@@ -50,6 +50,7 @@ import {
   Home,
   Lock,
   Feather,
+  ArrowUpDown,
 } from 'lucide-react'
 import { useTimeTheme } from '@/components/providers/TimeThemeProvider'
 
@@ -180,6 +181,11 @@ export default function ArticlesPage() {
   const [previewArticle, setPreviewArticle] = useState<Article | null>(null)
   const [previewTimeout, setPreviewTimeout] = useState<NodeJS.Timeout | null>(null)
   const [isMobile, setIsMobile] = useState(false)
+  const [openShelfDropdown, setOpenShelfDropdown] = useState<string | null>(null)
+  const [shelfSortOptions, setShelfSortOptions] = useState<Record<string, string>>({
+    personal: 'newest',
+    recommended: 'newest',
+  })
 
   // Time-based theme for dynamic lighting
   const { phase: timePhase } = useTimeTheme()
@@ -2130,15 +2136,63 @@ export default function ArticlesPage() {
                 {/* ========================================== */}
                 {savedArticles.length > 0 && (
                   <div className="relative px-4">
-                    {/* Shelf label carved into wood */}
-                    <div className="flex items-center gap-2 mb-2">
+                    {/* Shelf label with dropdown filter - carved wood style */}
+                    <div className="flex items-center gap-2 mb-2 relative">
                       <div className="w-6 h-6 rounded-full bg-gradient-to-br from-yellow-400 to-yellow-600 flex items-center justify-center shadow-lg border border-yellow-300/50">
                         <Bookmark className="w-3 h-3 text-amber-900" />
                       </div>
-                      <span className="text-xs font-bold text-amber-100 uppercase tracking-[0.1em]" style={{ fontFamily: 'Georgia, serif' }}>
-                        Your Collection
-                      </span>
-                      <span className="text-[10px] text-amber-300/60">({savedArticles.length})</span>
+
+                      {/* Clickable label with dropdown */}
+                      <button
+                        onClick={() => setOpenShelfDropdown(openShelfDropdown === 'personal' ? null : 'personal')}
+                        className="flex items-center gap-1 px-2 py-1 bg-gradient-to-b from-amber-800/60 to-amber-900/60 border border-amber-600/40 rounded hover:border-amber-500/60 transition-colors group"
+                      >
+                        <span className="text-xs font-bold text-amber-100 uppercase tracking-[0.1em]" style={{ fontFamily: 'Georgia, serif' }}>
+                          Your Collection
+                        </span>
+                        <span className="text-[10px] text-amber-300/60">({savedArticles.length})</span>
+                        <ChevronDown className={`w-3 h-3 text-amber-300/60 transition-transform ${openShelfDropdown === 'personal' ? 'rotate-180' : ''}`} />
+                      </button>
+
+                      {/* Dropdown menu - brass/wood themed */}
+                      {openShelfDropdown === 'personal' && (
+                        <div className="absolute top-full left-8 mt-1 z-50 min-w-32 bg-gradient-to-b from-amber-900 to-amber-950 border-2 border-amber-600/50 rounded-lg shadow-xl overflow-hidden">
+                          {/* Dropdown header */}
+                          <div className="px-3 py-1.5 bg-amber-800/50 border-b border-amber-600/30">
+                            <span className="text-[9px] text-amber-300/60 uppercase tracking-wider font-bold">Sort By</span>
+                          </div>
+                          {/* Options */}
+                          {[
+                            { value: 'newest', label: 'Newest First', icon: Clock },
+                            { value: 'oldest', label: 'Oldest First', icon: Clock },
+                            { value: 'az', label: 'A → Z', icon: ArrowUpDown },
+                            { value: 'za', label: 'Z → A', icon: ArrowUpDown },
+                          ].map((opt) => {
+                            const OptIcon = opt.icon
+                            const isActive = shelfSortOptions.personal === opt.value
+                            return (
+                              <button
+                                key={opt.value}
+                                onClick={() => {
+                                  setShelfSortOptions(prev => ({ ...prev, personal: opt.value }))
+                                  setOpenShelfDropdown(null)
+                                }}
+                                className={`w-full flex items-center gap-2 px-3 py-2 text-left transition-colors ${
+                                  isActive
+                                    ? 'bg-amber-700/50 text-amber-100'
+                                    : 'text-amber-200/80 hover:bg-amber-800/40'
+                                }`}
+                              >
+                                <OptIcon className="w-3 h-3" />
+                                <span className="text-[10px] font-medium">{opt.label}</span>
+                                {isActive && (
+                                  <div className="ml-auto w-1.5 h-1.5 rounded-full bg-amber-400" />
+                                )}
+                              </button>
+                            )
+                          })}
+                        </div>
+                      )}
                     </div>
 
                     {/* Mini scrolls on shelf */}
@@ -2209,15 +2263,58 @@ export default function ArticlesPage() {
                 {/* ========================================== */}
                 {session && getRecommendedArticles().length > 0 && (
                   <div className="relative px-4 mt-4">
-                    {/* Shelf label */}
-                    <div className="flex items-center gap-2 mb-2">
+                    {/* Shelf label with dropdown filter - violet themed */}
+                    <div className="flex items-center gap-2 mb-2 relative">
                       <div className="w-6 h-6 rounded-full bg-gradient-to-br from-violet-500 to-purple-700 flex items-center justify-center shadow-lg border border-violet-300/50">
                         <Sparkles className="w-3 h-3 text-white" />
                       </div>
-                      <span className="text-xs font-bold text-violet-100 uppercase tracking-[0.1em]" style={{ fontFamily: 'Georgia, serif' }}>
-                        Recommended
-                      </span>
-                      <span className="text-[10px] text-violet-300/60">({getRecommendedArticles().length})</span>
+
+                      {/* Clickable label with dropdown */}
+                      <button
+                        onClick={() => setOpenShelfDropdown(openShelfDropdown === 'recommended' ? null : 'recommended')}
+                        className="flex items-center gap-1 px-2 py-1 bg-gradient-to-b from-violet-800/60 to-purple-900/60 border border-violet-500/40 rounded hover:border-violet-400/60 transition-colors group"
+                      >
+                        <span className="text-xs font-bold text-violet-100 uppercase tracking-[0.1em]" style={{ fontFamily: 'Georgia, serif' }}>
+                          Recommended
+                        </span>
+                        <span className="text-[10px] text-violet-300/60">({getRecommendedArticles().length})</span>
+                        <ChevronDown className={`w-3 h-3 text-violet-300/60 transition-transform ${openShelfDropdown === 'recommended' ? 'rotate-180' : ''}`} />
+                      </button>
+
+                      {/* Dropdown menu - violet/wood themed */}
+                      {openShelfDropdown === 'recommended' && (
+                        <div className="absolute top-full left-8 mt-1 z-50 min-w-32 bg-gradient-to-b from-violet-900 to-purple-950 border-2 border-violet-500/50 rounded-lg shadow-xl overflow-hidden">
+                          <div className="px-3 py-1.5 bg-violet-800/50 border-b border-violet-500/30">
+                            <span className="text-[9px] text-violet-300/60 uppercase tracking-wider font-bold">Sort By</span>
+                          </div>
+                          {[
+                            { value: 'newest', label: 'Newest First', icon: Clock },
+                            { value: 'oldest', label: 'Oldest First', icon: Clock },
+                            { value: 'az', label: 'A → Z', icon: ArrowUpDown },
+                          ].map((opt) => {
+                            const OptIcon = opt.icon
+                            const isActive = shelfSortOptions.recommended === opt.value
+                            return (
+                              <button
+                                key={opt.value}
+                                onClick={() => {
+                                  setShelfSortOptions(prev => ({ ...prev, recommended: opt.value }))
+                                  setOpenShelfDropdown(null)
+                                }}
+                                className={`w-full flex items-center gap-2 px-3 py-2 text-left transition-colors ${
+                                  isActive
+                                    ? 'bg-violet-700/50 text-violet-100'
+                                    : 'text-violet-200/80 hover:bg-violet-800/40'
+                                }`}
+                              >
+                                <OptIcon className="w-3 h-3" />
+                                <span className="text-[10px] font-medium">{opt.label}</span>
+                                {isActive && <div className="ml-auto w-1.5 h-1.5 rounded-full bg-violet-400" />}
+                              </button>
+                            )
+                          })}
+                        </div>
+                      )}
                     </div>
 
                     {/* Mini scrolls on shelf */}
@@ -2286,15 +2383,57 @@ export default function ArticlesPage() {
 
                     return (
                       <div key={category.id} className="relative px-4">
-                        {/* Shelf label */}
-                        <div className="flex items-center gap-2 mb-2">
+                        {/* Shelf label with dropdown filter */}
+                        <div className="flex items-center gap-2 mb-2 relative">
                           <div className={`w-6 h-6 rounded-full bg-gradient-to-br ${category.color} flex items-center justify-center shadow-lg border border-white/30`}>
                             <CategoryIcon className="w-3 h-3 text-white" />
                           </div>
-                          <span className="text-xs font-bold text-amber-100 uppercase tracking-[0.1em]" style={{ fontFamily: 'Georgia, serif' }}>
-                            {category.name}
-                          </span>
-                          <span className="text-[10px] text-amber-300/60">({categoryArticles.length})</span>
+
+                          {/* Clickable label with dropdown */}
+                          <button
+                            onClick={() => setOpenShelfDropdown(openShelfDropdown === category.slug ? null : category.slug)}
+                            className="flex items-center gap-1 px-2 py-1 bg-gradient-to-b from-amber-800/60 to-amber-900/60 border border-amber-600/40 rounded hover:border-amber-500/60 transition-colors"
+                          >
+                            <span className="text-xs font-bold text-amber-100 uppercase tracking-[0.1em]" style={{ fontFamily: 'Georgia, serif' }}>
+                              {category.name}
+                            </span>
+                            <span className="text-[10px] text-amber-300/60">({categoryArticles.length})</span>
+                            <ChevronDown className={`w-3 h-3 text-amber-300/60 transition-transform ${openShelfDropdown === category.slug ? 'rotate-180' : ''}`} />
+                          </button>
+
+                          {/* Dropdown menu */}
+                          {openShelfDropdown === category.slug && (
+                            <div className="absolute top-full left-8 mt-1 z-50 min-w-32 bg-gradient-to-b from-amber-900 to-amber-950 border-2 border-amber-600/50 rounded-lg shadow-xl overflow-hidden">
+                              <div className="px-3 py-1.5 bg-amber-800/50 border-b border-amber-600/30">
+                                <span className="text-[9px] text-amber-300/60 uppercase tracking-wider font-bold">Sort By</span>
+                              </div>
+                              {[
+                                { value: 'newest', label: 'Newest', icon: Clock },
+                                { value: 'oldest', label: 'Oldest', icon: Clock },
+                                { value: 'az', label: 'A → Z', icon: ArrowUpDown },
+                              ].map((opt) => {
+                                const OptIcon = opt.icon
+                                const currentSort = shelfSortOptions[category.slug] || 'newest'
+                                const isActive = currentSort === opt.value
+                                return (
+                                  <button
+                                    key={opt.value}
+                                    onClick={() => {
+                                      setShelfSortOptions(prev => ({ ...prev, [category.slug]: opt.value }))
+                                      setOpenShelfDropdown(null)
+                                    }}
+                                    className={`w-full flex items-center gap-2 px-3 py-2 text-left transition-colors ${
+                                      isActive ? 'bg-amber-700/50 text-amber-100' : 'text-amber-200/80 hover:bg-amber-800/40'
+                                    }`}
+                                  >
+                                    <OptIcon className="w-3 h-3" />
+                                    <span className="text-[10px] font-medium">{opt.label}</span>
+                                    {isActive && <div className="ml-auto w-1.5 h-1.5 rounded-full bg-amber-400" />}
+                                  </button>
+                                )
+                              })}
+                            </div>
+                          )}
                         </div>
 
                         {/* Mini scrolls on shelf */}
