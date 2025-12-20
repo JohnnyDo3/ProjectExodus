@@ -173,6 +173,7 @@ export default function ArticlesPage() {
   const [libraryEntered, setLibraryEntered] = useState(false)
   const [savedArticles, setSavedArticles] = useState<string[]>([])
   const [hoveredBook, setHoveredBook] = useState<string | null>(null)
+  const [readingProgress, setReadingProgress] = useState<Record<string, { scrollProgress: number; completed: boolean }>>({})
 
   // Time-based theme for dynamic lighting
   const { phase: timePhase } = useTimeTheme()
@@ -206,6 +207,27 @@ export default function ArticlesPage() {
       return newSaved
     })
   }
+
+  // Fetch reading progress for displayed articles
+  useEffect(() => {
+    if (!session) return
+
+    const fetchReadingProgress = async () => {
+      try {
+        const response = await fetch('/api/articles/progress')
+        if (response.ok) {
+          const data = await response.json()
+          if (data.success) {
+            setReadingProgress(data.data)
+          }
+        }
+      } catch (error) {
+        console.error('Error fetching reading progress:', error)
+      }
+    }
+
+    fetchReadingProgress()
+  }, [session, articles])
 
   // Check if first-time visitor (no articles read yet, no localStorage flag)
   useEffect(() => {
@@ -847,6 +869,10 @@ export default function ArticlesPage() {
                         const categorySlug = article.category?.slug || 'default'
                         const categoryTheme = CATEGORY_SCROLL_THEMES[categorySlug] || CATEGORY_SCROLL_THEMES.sustainability
 
+                        const articleProgress = readingProgress[article.id]
+                        const progressPercent = articleProgress?.scrollProgress || 0
+                        const isCompleted = articleProgress?.completed || false
+
                         return (
                           <Link
                             key={article.id}
@@ -858,8 +884,16 @@ export default function ArticlesPage() {
                           >
                             {/* Mini scroll */}
                             <div className="absolute inset-0">
-                              {/* Parchment body */}
-                              <div className={`absolute inset-x-0.5 top-2 bottom-2 bg-gradient-to-r ${categoryTheme.parchment} rounded-sm shadow-inner`} />
+                              {/* Parchment body with progress fill */}
+                              <div className={`absolute inset-x-0.5 top-2 bottom-2 bg-gradient-to-r ${categoryTheme.parchment} rounded-sm shadow-inner overflow-hidden`}>
+                                {/* Progress fill from bottom */}
+                                {progressPercent > 0 && (
+                                  <div
+                                    className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-emerald-300/40 to-emerald-200/20 transition-all duration-500"
+                                    style={{ height: `${progressPercent}%` }}
+                                  />
+                                )}
+                              </div>
                               {/* Top rod */}
                               <div className={`absolute top-0 left-0 right-0 h-2.5 bg-gradient-to-b ${colors.wood} rounded-t-sm shadow`}>
                                 <div className="absolute top-0.5 left-1/2 -translate-x-1/2 w-1.5 h-1.5 bg-amber-400/50 rounded-full" />
@@ -868,13 +902,50 @@ export default function ArticlesPage() {
                               <div className={`absolute bottom-0 left-0 right-0 h-2.5 bg-gradient-to-t ${colors.wood} rounded-b-sm shadow`}>
                                 <div className="absolute bottom-0.5 left-1/2 -translate-x-1/2 w-1.5 h-1.5 bg-amber-400/50 rounded-full" />
                               </div>
-                              {/* Mini wax seal */}
-                              <div className={`absolute -right-1 top-1/2 -translate-y-1/2 w-3 h-3 bg-gradient-to-br ${categoryTheme.seal} rounded-full shadow-md border border-white/20`} />
+                              {/* Mini wax seal with progress ring */}
+                              <div className="absolute -right-1 top-1/2 -translate-y-1/2 w-4 h-4">
+                                {/* Progress ring SVG */}
+                                {progressPercent > 0 && !isCompleted && (
+                                  <svg className="absolute inset-0 w-4 h-4 -rotate-90" viewBox="0 0 16 16">
+                                    <circle
+                                      cx="8"
+                                      cy="8"
+                                      r="6"
+                                      fill="none"
+                                      stroke="rgba(255,255,255,0.3)"
+                                      strokeWidth="1.5"
+                                    />
+                                    <circle
+                                      cx="8"
+                                      cy="8"
+                                      r="6"
+                                      fill="none"
+                                      stroke="#10b981"
+                                      strokeWidth="1.5"
+                                      strokeDasharray={`${(progressPercent / 100) * 37.7} 37.7`}
+                                      strokeLinecap="round"
+                                    />
+                                  </svg>
+                                )}
+                                {/* Seal center */}
+                                <div className={`absolute inset-0.5 bg-gradient-to-br ${isCompleted ? 'from-emerald-500 to-emerald-700' : categoryTheme.seal} rounded-full shadow-md border border-white/20 flex items-center justify-center`}>
+                                  {isCompleted && (
+                                    <svg className="w-2 h-2 text-white" fill="currentColor" viewBox="0 0 20 20">
+                                      <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
+                                    </svg>
+                                  )}
+                                </div>
+                              </div>
                             </div>
-                            {/* Hover tooltip */}
+                            {/* Hover tooltip with progress */}
                             {isHovered && (
-                              <div className="absolute -top-10 left-1/2 -translate-x-1/2 px-2 py-1 bg-amber-900/95 text-amber-100 text-[8px] font-bold rounded whitespace-nowrap z-50 shadow-lg max-w-24 truncate">
-                                {article.title}
+                              <div className="absolute -top-12 left-1/2 -translate-x-1/2 px-2 py-1.5 bg-amber-900/95 text-amber-100 text-[8px] font-bold rounded whitespace-nowrap z-50 shadow-lg">
+                                <div className="max-w-24 truncate">{article.title}</div>
+                                {progressPercent > 0 && (
+                                  <div className="text-[7px] text-emerald-300 mt-0.5">
+                                    {isCompleted ? '✓ Complete' : `${Math.round(progressPercent)}% read`}
+                                  </div>
+                                )}
                               </div>
                             )}
                           </Link>
@@ -968,6 +1039,10 @@ export default function ArticlesPage() {
                         const categorySlug = article.category?.slug || 'default'
                         const categoryTheme = CATEGORY_SCROLL_THEMES[categorySlug] || CATEGORY_SCROLL_THEMES.sustainability
 
+                        const articleProgress = readingProgress[article.id]
+                        const progressPercent = articleProgress?.scrollProgress || 0
+                        const isCompleted = articleProgress?.completed || false
+
                         return (
                           <Link
                             key={article.id}
@@ -979,8 +1054,16 @@ export default function ArticlesPage() {
                           >
                             {/* Mini scroll */}
                             <div className="absolute inset-0">
-                              {/* Parchment body */}
-                              <div className={`absolute inset-x-0.5 top-2 bottom-2 bg-gradient-to-r ${categoryTheme.parchment} rounded-sm shadow-inner`} />
+                              {/* Parchment body with progress fill */}
+                              <div className={`absolute inset-x-0.5 top-2 bottom-2 bg-gradient-to-r ${categoryTheme.parchment} rounded-sm shadow-inner overflow-hidden`}>
+                                {/* Progress fill from bottom */}
+                                {progressPercent > 0 && (
+                                  <div
+                                    className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-emerald-300/40 to-emerald-200/20 transition-all duration-500"
+                                    style={{ height: `${progressPercent}%` }}
+                                  />
+                                )}
+                              </div>
                               {/* Top rod */}
                               <div className={`absolute top-0 left-0 right-0 h-2.5 bg-gradient-to-b ${colors.wood} rounded-t-sm shadow`}>
                                 <div className="absolute top-0.5 left-1/2 -translate-x-1/2 w-1.5 h-1.5 bg-amber-400/50 rounded-full" />
@@ -989,13 +1072,50 @@ export default function ArticlesPage() {
                               <div className={`absolute bottom-0 left-0 right-0 h-2.5 bg-gradient-to-t ${colors.wood} rounded-b-sm shadow`}>
                                 <div className="absolute bottom-0.5 left-1/2 -translate-x-1/2 w-1.5 h-1.5 bg-amber-400/50 rounded-full" />
                               </div>
-                              {/* Mini wax seal */}
-                              <div className={`absolute -left-1 top-1/2 -translate-y-1/2 w-3 h-3 bg-gradient-to-br ${categoryTheme.seal} rounded-full shadow-md border border-white/20`} />
+                              {/* Mini wax seal with progress ring */}
+                              <div className="absolute -left-1 top-1/2 -translate-y-1/2 w-4 h-4">
+                                {/* Progress ring SVG */}
+                                {progressPercent > 0 && !isCompleted && (
+                                  <svg className="absolute inset-0 w-4 h-4 -rotate-90" viewBox="0 0 16 16">
+                                    <circle
+                                      cx="8"
+                                      cy="8"
+                                      r="6"
+                                      fill="none"
+                                      stroke="rgba(255,255,255,0.3)"
+                                      strokeWidth="1.5"
+                                    />
+                                    <circle
+                                      cx="8"
+                                      cy="8"
+                                      r="6"
+                                      fill="none"
+                                      stroke="#10b981"
+                                      strokeWidth="1.5"
+                                      strokeDasharray={`${(progressPercent / 100) * 37.7} 37.7`}
+                                      strokeLinecap="round"
+                                    />
+                                  </svg>
+                                )}
+                                {/* Seal center */}
+                                <div className={`absolute inset-0.5 bg-gradient-to-br ${isCompleted ? 'from-emerald-500 to-emerald-700' : categoryTheme.seal} rounded-full shadow-md border border-white/20 flex items-center justify-center`}>
+                                  {isCompleted && (
+                                    <svg className="w-2 h-2 text-white" fill="currentColor" viewBox="0 0 20 20">
+                                      <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
+                                    </svg>
+                                  )}
+                                </div>
+                              </div>
                             </div>
-                            {/* Hover tooltip */}
+                            {/* Hover tooltip with progress */}
                             {isHovered && (
-                              <div className="absolute -top-10 left-1/2 -translate-x-1/2 px-2 py-1 bg-amber-900/95 text-amber-100 text-[8px] font-bold rounded whitespace-nowrap z-50 shadow-lg max-w-24 truncate">
-                                {article.title}
+                              <div className="absolute -top-12 left-1/2 -translate-x-1/2 px-2 py-1.5 bg-amber-900/95 text-amber-100 text-[8px] font-bold rounded whitespace-nowrap z-50 shadow-lg">
+                                <div className="max-w-24 truncate">{article.title}</div>
+                                {progressPercent > 0 && (
+                                  <div className="text-[7px] text-emerald-300 mt-0.5">
+                                    {isCompleted ? '✓ Complete' : `${Math.round(progressPercent)}% read`}
+                                  </div>
+                                )}
                               </div>
                             )}
                           </Link>
