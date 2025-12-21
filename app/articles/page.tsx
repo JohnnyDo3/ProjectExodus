@@ -929,6 +929,60 @@ export default function ArticlesPage() {
                 backgroundImage: `url("data:image/svg+xml,%3Csvg viewBox='0 0 100 400' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M20 0 Q30 100 20 200 Q10 300 20 400' fill='none' stroke='%23000' stroke-width='0.5' opacity='0.3'/%3E%3Cpath d='M50 0 Q60 100 50 200 Q40 300 50 400' fill='none' stroke='%23000' stroke-width='0.5' opacity='0.3'/%3E%3Cpath d='M80 0 Q70 100 80 200 Q90 300 80 400' fill='none' stroke='%23000' stroke-width='0.5' opacity='0.3'/%3E%3C/svg%3E")`,
               }} />
 
+              {/* ====== OUTER ORNATE PILASTER BORDER (Left Edge) ====== */}
+              <div className="absolute left-0 top-0 bottom-0 w-6 bg-gradient-to-r from-amber-800 via-amber-850 to-amber-900/50 z-10 border-r border-amber-700/40 shadow-lg">
+                {/* Corinthian capital at top */}
+                <div className="absolute top-0 left-0 right-0 h-10 bg-gradient-to-b from-amber-700 via-amber-750 to-amber-800 border-b border-amber-600/40">
+                  <svg viewBox="0 0 24 40" className="w-full h-full text-amber-400/50">
+                    <ellipse cx="6" cy="6" rx="3" ry="2" fill="none" stroke="currentColor" strokeWidth="0.6"/>
+                    <ellipse cx="18" cy="6" rx="3" ry="2" fill="none" stroke="currentColor" strokeWidth="0.6"/>
+                    <path d="M12 36 Q6 30 6 24 Q9 27 12 24 Q15 27 18 24 Q18 30 12 36" fill="none" stroke="currentColor" strokeWidth="0.6"/>
+                    <circle cx="12" cy="14" r="3" fill="none" stroke="currentColor" strokeWidth="0.6"/>
+                    <circle cx="12" cy="14" r="1.5" fill="currentColor" opacity="0.3"/>
+                  </svg>
+                </div>
+                {/* Column shaft with fluting */}
+                <div className="absolute top-12 bottom-8 left-0 right-0 overflow-hidden">
+                  <div className="absolute inset-0.5 flex justify-around opacity-30">
+                    {[0, 1, 2].map((i) => (
+                      <div key={`left-outer-flute-${i}`} className="w-0.5 h-full bg-gradient-to-r from-amber-950/50 via-amber-800/20 to-amber-950/50 rounded-full" />
+                    ))}
+                  </div>
+                  <div className="absolute inset-y-0 left-0 w-0.5 bg-gradient-to-r from-amber-400/10 to-transparent" />
+                </div>
+                {/* Attic base */}
+                <div className="absolute bottom-0 left-0 right-0 h-8 bg-gradient-to-t from-amber-800 via-amber-750 to-amber-700 border-t border-amber-600/30">
+                  <div className="absolute top-1 left-0.5 right-0.5 h-0.5 bg-gradient-to-b from-amber-600/40 to-transparent rounded-full" />
+                </div>
+              </div>
+
+              {/* ====== INNER ORNATE BORDER (Right Edge - facing content) ====== */}
+              <div className="absolute right-0 top-0 bottom-0 w-6 bg-gradient-to-l from-amber-800 via-amber-850 to-amber-900/50 z-10 border-l border-amber-600/40 shadow-lg">
+                {/* Corinthian capital at top */}
+                <div className="absolute top-0 left-0 right-0 h-10 bg-gradient-to-b from-amber-700 via-amber-750 to-amber-800 border-b border-amber-600/40">
+                  <svg viewBox="0 0 24 40" className="w-full h-full text-amber-400/50">
+                    <ellipse cx="6" cy="6" rx="3" ry="2" fill="none" stroke="currentColor" strokeWidth="0.6"/>
+                    <ellipse cx="18" cy="6" rx="3" ry="2" fill="none" stroke="currentColor" strokeWidth="0.6"/>
+                    <path d="M12 36 Q6 30 6 24 Q9 27 12 24 Q15 27 18 24 Q18 30 12 36" fill="none" stroke="currentColor" strokeWidth="0.6"/>
+                    <circle cx="12" cy="14" r="3" fill="none" stroke="currentColor" strokeWidth="0.6"/>
+                    <circle cx="12" cy="14" r="1.5" fill="currentColor" opacity="0.3"/>
+                  </svg>
+                </div>
+                {/* Column shaft with fluting */}
+                <div className="absolute top-12 bottom-8 left-0 right-0 overflow-hidden">
+                  <div className="absolute inset-0.5 flex justify-around opacity-30">
+                    {[0, 1, 2].map((i) => (
+                      <div key={`left-inner-flute-${i}`} className="w-0.5 h-full bg-gradient-to-r from-amber-950/50 via-amber-800/20 to-amber-950/50 rounded-full" />
+                    ))}
+                  </div>
+                  <div className="absolute inset-y-0 right-0 w-0.5 bg-gradient-to-l from-amber-400/10 to-transparent" />
+                </div>
+                {/* Attic base */}
+                <div className="absolute bottom-0 left-0 right-0 h-8 bg-gradient-to-t from-amber-800 via-amber-750 to-amber-700 border-t border-amber-600/30">
+                  <div className="absolute top-1 left-0.5 right-0.5 h-0.5 bg-gradient-to-b from-amber-600/40 to-transparent rounded-full" />
+                </div>
+              </div>
+
               {/* Shelves with actual article scrolls - adjusted positions for better spacing */}
               {[20, 40, 60, 80].map((top, shelfIndex) => {
                 // Get articles for this shelf (2 per shelf from left side)
@@ -1122,6 +1176,60 @@ export default function ArticlesPage() {
               <div className="absolute inset-0 opacity-20" style={{
                 backgroundImage: `url("data:image/svg+xml,%3Csvg viewBox='0 0 100 400' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M20 0 Q30 100 20 200 Q10 300 20 400' fill='none' stroke='%23000' stroke-width='0.5' opacity='0.3'/%3E%3Cpath d='M50 0 Q60 100 50 200 Q40 300 50 400' fill='none' stroke='%23000' stroke-width='0.5' opacity='0.3'/%3E%3Cpath d='M80 0 Q70 100 80 200 Q90 300 80 400' fill='none' stroke='%23000' stroke-width='0.5' opacity='0.3'/%3E%3C/svg%3E")`,
               }} />
+
+              {/* ====== OUTER ORNATE PILASTER BORDER (Right Edge) ====== */}
+              <div className="absolute right-0 top-0 bottom-0 w-6 bg-gradient-to-l from-amber-800 via-amber-850 to-amber-900/50 z-10 border-l border-amber-700/40 shadow-lg">
+                {/* Corinthian capital at top */}
+                <div className="absolute top-0 left-0 right-0 h-10 bg-gradient-to-b from-amber-700 via-amber-750 to-amber-800 border-b border-amber-600/40">
+                  <svg viewBox="0 0 24 40" className="w-full h-full text-amber-400/50">
+                    <ellipse cx="6" cy="6" rx="3" ry="2" fill="none" stroke="currentColor" strokeWidth="0.6"/>
+                    <ellipse cx="18" cy="6" rx="3" ry="2" fill="none" stroke="currentColor" strokeWidth="0.6"/>
+                    <path d="M12 36 Q6 30 6 24 Q9 27 12 24 Q15 27 18 24 Q18 30 12 36" fill="none" stroke="currentColor" strokeWidth="0.6"/>
+                    <circle cx="12" cy="14" r="3" fill="none" stroke="currentColor" strokeWidth="0.6"/>
+                    <circle cx="12" cy="14" r="1.5" fill="currentColor" opacity="0.3"/>
+                  </svg>
+                </div>
+                {/* Column shaft with fluting */}
+                <div className="absolute top-12 bottom-8 left-0 right-0 overflow-hidden">
+                  <div className="absolute inset-0.5 flex justify-around opacity-30">
+                    {[0, 1, 2].map((i) => (
+                      <div key={`right-outer-flute-${i}`} className="w-0.5 h-full bg-gradient-to-r from-amber-950/50 via-amber-800/20 to-amber-950/50 rounded-full" />
+                    ))}
+                  </div>
+                  <div className="absolute inset-y-0 right-0 w-0.5 bg-gradient-to-l from-amber-400/10 to-transparent" />
+                </div>
+                {/* Attic base */}
+                <div className="absolute bottom-0 left-0 right-0 h-8 bg-gradient-to-t from-amber-800 via-amber-750 to-amber-700 border-t border-amber-600/30">
+                  <div className="absolute top-1 left-0.5 right-0.5 h-0.5 bg-gradient-to-b from-amber-600/40 to-transparent rounded-full" />
+                </div>
+              </div>
+
+              {/* ====== INNER ORNATE BORDER (Left Edge - facing content) ====== */}
+              <div className="absolute left-0 top-0 bottom-0 w-6 bg-gradient-to-r from-amber-800 via-amber-850 to-amber-900/50 z-10 border-r border-amber-600/40 shadow-lg">
+                {/* Corinthian capital at top */}
+                <div className="absolute top-0 left-0 right-0 h-10 bg-gradient-to-b from-amber-700 via-amber-750 to-amber-800 border-b border-amber-600/40">
+                  <svg viewBox="0 0 24 40" className="w-full h-full text-amber-400/50">
+                    <ellipse cx="6" cy="6" rx="3" ry="2" fill="none" stroke="currentColor" strokeWidth="0.6"/>
+                    <ellipse cx="18" cy="6" rx="3" ry="2" fill="none" stroke="currentColor" strokeWidth="0.6"/>
+                    <path d="M12 36 Q6 30 6 24 Q9 27 12 24 Q15 27 18 24 Q18 30 12 36" fill="none" stroke="currentColor" strokeWidth="0.6"/>
+                    <circle cx="12" cy="14" r="3" fill="none" stroke="currentColor" strokeWidth="0.6"/>
+                    <circle cx="12" cy="14" r="1.5" fill="currentColor" opacity="0.3"/>
+                  </svg>
+                </div>
+                {/* Column shaft with fluting */}
+                <div className="absolute top-12 bottom-8 left-0 right-0 overflow-hidden">
+                  <div className="absolute inset-0.5 flex justify-around opacity-30">
+                    {[0, 1, 2].map((i) => (
+                      <div key={`right-inner-flute-${i}`} className="w-0.5 h-full bg-gradient-to-r from-amber-950/50 via-amber-800/20 to-amber-950/50 rounded-full" />
+                    ))}
+                  </div>
+                  <div className="absolute inset-y-0 left-0 w-0.5 bg-gradient-to-r from-amber-400/10 to-transparent" />
+                </div>
+                {/* Attic base */}
+                <div className="absolute bottom-0 left-0 right-0 h-8 bg-gradient-to-t from-amber-800 via-amber-750 to-amber-700 border-t border-amber-600/30">
+                  <div className="absolute top-1 left-0.5 right-0.5 h-0.5 bg-gradient-to-b from-amber-600/40 to-transparent rounded-full" />
+                </div>
+              </div>
 
               {/* Shelves with actual article scrolls - adjusted positions for better spacing */}
               {[20, 40, 60, 80].map((top, shelfIndex) => {
@@ -1729,7 +1837,7 @@ export default function ArticlesPage() {
               </div>
               {/* Divider */}
               <div className="w-px h-4 bg-gradient-to-b from-transparent via-amber-500/40 to-transparent" />
-              {/* Category buttons - centered */}
+              {/* Category buttons - icon only style matching Shelf 3 */}
               <div className="flex items-center gap-1.5">
                 <button
                   onClick={() => setShelf1Category(null)}
@@ -1737,14 +1845,14 @@ export default function ArticlesPage() {
                 >
                   All
                 </button>
-                {BOOK_CATEGORIES.slice(0, 4).map(cat => (
+                {BOOK_CATEGORIES.map(cat => (
                   <button
                     key={cat.slug}
                     onClick={() => setShelf1Category(shelf1Category === cat.slug ? null : cat.slug)}
-                    className={`px-2.5 py-1 text-[9px] font-bold rounded-sm transition-all flex items-center gap-1 border ${shelf1Category === cat.slug ? 'bg-amber-700/70 text-amber-100 border-amber-500/50 shadow-inner' : 'text-amber-400/70 border-transparent hover:text-amber-300 hover:bg-amber-800/30'}`}
+                    className={`p-1.5 rounded-sm transition-all border ${shelf1Category === cat.slug ? 'bg-amber-700/70 text-amber-100 border-amber-500/50 shadow-inner' : 'text-amber-400/70 border-transparent hover:text-amber-300 hover:bg-amber-800/30'}`}
+                    title={cat.name}
                   >
-                    <cat.icon className="w-2.5 h-2.5" />
-                    {cat.name}
+                    <cat.icon className="w-3 h-3" />
                   </button>
                 ))}
               </div>
@@ -1899,7 +2007,7 @@ export default function ArticlesPage() {
               </div>
               {/* Divider */}
               <div className="w-px h-4 bg-gradient-to-b from-transparent via-amber-500/40 to-transparent" />
-              {/* Category buttons - centered */}
+              {/* Category buttons - icon only style matching Shelf 3 */}
               <div className="flex items-center gap-1.5">
                 <button
                   onClick={() => setShelf2Category(null)}
@@ -1907,14 +2015,14 @@ export default function ArticlesPage() {
                 >
                   All
                 </button>
-                {BOOK_CATEGORIES.slice(4, 8).map(cat => (
+                {BOOK_CATEGORIES.map(cat => (
                   <button
                     key={cat.slug}
                     onClick={() => setShelf2Category(shelf2Category === cat.slug ? null : cat.slug)}
-                    className={`px-2.5 py-1 text-[9px] font-bold rounded-sm transition-all flex items-center gap-1 border ${shelf2Category === cat.slug ? 'bg-amber-700/70 text-amber-100 border-amber-500/50 shadow-inner' : 'text-amber-400/70 border-transparent hover:text-amber-300 hover:bg-amber-800/30'}`}
+                    className={`p-1.5 rounded-sm transition-all border ${shelf2Category === cat.slug ? 'bg-amber-700/70 text-amber-100 border-amber-500/50 shadow-inner' : 'text-amber-400/70 border-transparent hover:text-amber-300 hover:bg-amber-800/30'}`}
+                    title={cat.name}
                   >
-                    <cat.icon className="w-2.5 h-2.5" />
-                    {cat.name}
+                    <cat.icon className="w-3 h-3" />
                   </button>
                 ))}
               </div>
@@ -2916,434 +3024,218 @@ export default function ArticlesPage() {
             </div>
 
             {/* ========================================== */}
-            {/* GRAND BOOKSHELF STRUCTURE                 */}
-            {/* Full-width wooden shelving with scrolls    */}
+            {/* ARTICLE GRID - Modern Card Layout         */}
+            {/* Clean, theme-aware article display        */}
             {/* ========================================== */}
-            <div className="relative bg-gradient-to-b from-amber-950/90 via-stone-900/95 to-amber-950/90 rounded-xl border-4 border-amber-700/50 shadow-2xl overflow-hidden"
-              style={{ boxShadow: '0 0 60px rgba(0, 0, 0, 0.5), inset 0 0 30px rgba(0, 0, 0, 0.3)' }}
-            >
-              {/* Ornate carved top trim */}
-              <div className="h-8 bg-gradient-to-b from-amber-800 to-amber-900 border-b-4 border-amber-600/50 relative overflow-hidden">
-                <svg className="absolute inset-0 w-full h-full opacity-40" preserveAspectRatio="none">
-                  <pattern id="shelfCarving" x="0" y="0" width="60" height="32" patternUnits="userSpaceOnUse">
-                    <path d="M0 16 Q15 8 30 16 Q45 24 60 16" fill="none" stroke="#fbbf24" strokeWidth="1.5"/>
-                    <circle cx="30" cy="16" r="4" fill="none" stroke="#f59e0b" strokeWidth="1"/>
-                  </pattern>
-                  <rect width="100%" height="100%" fill="url(#shelfCarving)"/>
-                </svg>
-                {/* Corner finials */}
-                <div className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 bg-gradient-to-br from-yellow-400 to-yellow-600 rounded-full shadow-lg border-2 border-yellow-300/50" />
-                <div className="absolute right-4 top-1/2 -translate-y-1/2 w-4 h-4 bg-gradient-to-br from-yellow-400 to-yellow-600 rounded-full shadow-lg border-2 border-yellow-300/50" />
-                <div className="absolute left-1/2 -translate-x-1/2 top-1/2 -translate-y-1/2 w-6 h-6 bg-gradient-to-br from-yellow-300 to-yellow-500 rounded-full shadow-lg border-2 border-yellow-200/50 flex items-center justify-center">
-                  <ScrollText className="w-3 h-3 text-amber-800" />
-                </div>
-              </div>
+            <div className="space-y-8">
 
-              {/* Torch sconces on sides */}
-              <div className="absolute top-16 left-4 w-8 z-30">
-                <div className="w-3 h-12 bg-gradient-to-b from-amber-700 to-amber-900 mx-auto rounded-b-sm" />
-                <div className={`w-8 h-10 bg-gradient-to-t ${isNightTime ? 'from-orange-400/80 via-amber-300/60' : 'from-orange-500/50 via-amber-400/30'} to-transparent rounded-full blur-sm animate-pulse absolute -top-6 left-0`} />
-              </div>
-              <div className="absolute top-16 right-4 w-8 z-30">
-                <div className="w-3 h-12 bg-gradient-to-b from-amber-700 to-amber-900 mx-auto rounded-b-sm" />
-                <div className={`w-8 h-10 bg-gradient-to-t ${isNightTime ? 'from-orange-400/80 via-amber-300/60' : 'from-orange-500/50 via-amber-400/30'} to-transparent rounded-full blur-sm animate-pulse absolute -top-6 left-0`} style={{ animationDelay: '0.5s' }} />
-              </div>
-
-              {/* Bookshelf content area - matching side bookshelf style */}
-              <div className="py-6 space-y-2">
-
-                {/* ========================================== */}
-                {/* PERSONAL COLLECTION SHELF                  */}
-                {/* Mini scrolls matching side bookshelf style */}
-                {/* ========================================== */}
-                {savedArticles.length > 0 && (
-                  <div className="relative px-4">
-                    {/* Shelf label with dropdown filter - carved wood style */}
-                    <div className="flex items-center gap-2 mb-2 relative">
-                      <div className="w-6 h-6 rounded-full bg-gradient-to-br from-yellow-400 to-yellow-600 flex items-center justify-center shadow-lg border border-yellow-300/50">
-                        <Bookmark className="w-3 h-3 text-amber-900" />
+              {/* ========================================== */}
+              {/* YOUR COLLECTION - Modern Card Row         */}
+              {/* ========================================== */}
+              {savedArticles.length > 0 && (
+                <div className="bg-[var(--card)]/50 backdrop-blur-sm rounded-xl p-6 border border-[var(--border)]">
+                  <div className="flex items-center justify-between mb-4">
+                    <div className="flex items-center gap-3">
+                      <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-amber-500 to-amber-700 flex items-center justify-center shadow-lg">
+                        <Bookmark className="w-5 h-5 text-white" />
                       </div>
-
-                      {/* Clickable label with dropdown */}
-                      <button
-                        onClick={() => setOpenShelfDropdown(openShelfDropdown === 'personal' ? null : 'personal')}
-                        className="flex items-center gap-1 px-2 py-1 bg-gradient-to-b from-amber-800/60 to-amber-900/60 border border-amber-600/40 rounded hover:border-amber-500/60 transition-colors group"
-                      >
-                        <span className="text-xs font-bold text-amber-100 uppercase tracking-[0.1em]" style={{ fontFamily: 'Georgia, serif' }}>
-                          Your Collection
-                        </span>
-                        <span className="text-[10px] text-amber-300/60">({savedArticles.length})</span>
-                        <ChevronDown className={`w-3 h-3 text-amber-300/60 transition-transform ${openShelfDropdown === 'personal' ? 'rotate-180' : ''}`} />
-                      </button>
-
-                      {/* Dropdown menu - brass/wood themed */}
-                      {openShelfDropdown === 'personal' && (
-                        <div className="absolute top-full left-8 mt-1 z-50 min-w-32 bg-gradient-to-b from-amber-900 to-amber-950 border-2 border-amber-600/50 rounded-lg shadow-xl overflow-hidden">
-                          {/* Dropdown header */}
-                          <div className="px-3 py-1.5 bg-amber-800/50 border-b border-amber-600/30">
-                            <span className="text-[9px] text-amber-300/60 uppercase tracking-wider font-bold">Sort By</span>
-                          </div>
-                          {/* Options */}
-                          {[
-                            { value: 'newest', label: 'Newest First', icon: Clock },
-                            { value: 'oldest', label: 'Oldest First', icon: Clock },
-                            { value: 'az', label: 'A → Z', icon: ArrowUpDown },
-                            { value: 'za', label: 'Z → A', icon: ArrowUpDown },
-                          ].map((opt) => {
-                            const OptIcon = opt.icon
-                            const isActive = shelfSortOptions.personal === opt.value
-                            return (
-                              <button
-                                key={opt.value}
-                                onClick={() => {
-                                  setShelfSortOptions(prev => ({ ...prev, personal: opt.value }))
-                                  setOpenShelfDropdown(null)
-                                }}
-                                className={`w-full flex items-center gap-2 px-3 py-2 text-left transition-colors ${
-                                  isActive
-                                    ? 'bg-amber-700/50 text-amber-100'
-                                    : 'text-amber-200/80 hover:bg-amber-800/40'
-                                }`}
-                              >
-                                <OptIcon className="w-3 h-3" />
-                                <span className="text-[10px] font-medium">{opt.label}</span>
-                                {isActive && (
-                                  <div className="ml-auto w-1.5 h-1.5 rounded-full bg-amber-400" />
-                                )}
-                              </button>
-                            )
-                          })}
-                        </div>
-                      )}
-                    </div>
-
-                    {/* Mini scrolls on shelf */}
-                    <div className="flex items-end gap-1 overflow-x-auto pb-1 min-h-[60px] scrollbar-thin scrollbar-thumb-amber-600/50 scrollbar-track-amber-900/20">
-                      {articles
-                        .filter(a => savedArticles.includes(a.id))
-                        .map((article, idx) => {
-                          const categorySlug = article.category?.slug || 'default'
-                          const categoryTheme = CATEGORY_SCROLL_THEMES[categorySlug] || CATEGORY_SCROLL_THEMES.sustainability
-                          const articleProg = readingProgress[article.id]
-                          const progPercent = articleProg?.scrollProgress || 0
-                          const isRead = articleProg?.completed || false
-                          const rotation = ((idx * 17) % 7) - 3
-
-                          return (
-                            <div
-                              key={article.id}
-                              className="flex-shrink-0 group/scroll cursor-pointer relative"
-                              onMouseEnter={() => handleScrollHover(article)}
-                              onMouseLeave={handleScrollLeave}
-                              onClick={() => setPreviewArticle(article)}
-                            >
-                              <div className={`relative w-5 h-14 transition-all duration-300 group-hover/scroll:scale-110 group-hover/scroll:-translate-y-2`}
-                                style={{ transform: `rotate(${rotation}deg)` }}
-                              >
-                                {/* Parchment body */}
-                                <div className={`absolute inset-x-0.5 top-2 bottom-2 bg-gradient-to-r ${categoryTheme.parchment} rounded-sm shadow-inner overflow-hidden`}>
-                                  {progPercent > 0 && (
-                                    <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-emerald-300/40 to-emerald-200/20" style={{ height: `${progPercent}%` }} />
-                                  )}
-                                </div>
-                                {/* Top rod */}
-                                <div className="absolute top-0 left-0 right-0 h-2.5 bg-gradient-to-b from-amber-600 via-amber-700 to-amber-800 rounded-t-sm shadow">
-                                  <div className="absolute top-0.5 left-1/2 -translate-x-1/2 w-1.5 h-1.5 bg-amber-400/50 rounded-full" />
-                                </div>
-                                {/* Bottom rod */}
-                                <div className="absolute bottom-0 left-0 right-0 h-2.5 bg-gradient-to-t from-amber-600 via-amber-700 to-amber-800 rounded-b-sm shadow">
-                                  <div className="absolute bottom-0.5 left-1/2 -translate-x-1/2 w-1.5 h-1.5 bg-amber-400/50 rounded-full" />
-                                </div>
-                                {/* Wax seal */}
-                                <div className="absolute -right-1 top-1/2 -translate-y-1/2 w-3.5 h-3.5">
-                                  <div className={`w-full h-full bg-gradient-to-br ${isRead ? 'from-emerald-500 to-emerald-700' : categoryTheme.seal} rounded-full shadow-md border border-white/20 flex items-center justify-center`}>
-                                    {isRead && <svg className="w-2 h-2 text-white" fill="currentColor" viewBox="0 0 20 20"><path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" /></svg>}
-                                  </div>
-                                </div>
-                              </div>
-                              {/* Hover tooltip */}
-                              <div className="absolute -top-8 left-1/2 -translate-x-1/2 px-2 py-1 bg-amber-900/95 text-amber-100 text-[8px] font-bold rounded whitespace-nowrap opacity-0 group-hover/scroll:opacity-100 transition-opacity z-50 shadow-lg max-w-16 truncate pointer-events-none">
-                                {article.title}
-                              </div>
-                            </div>
-                          )
-                        })}
-                    </div>
-
-                    {/* Shelf surface */}
-                    <div className="h-4 bg-gradient-to-b from-amber-700 via-amber-800 to-amber-950 border-t-2 border-amber-500/40 shadow-lg relative overflow-hidden">
-                      <div className="absolute inset-0 opacity-30" style={{
-                        backgroundImage: `url("data:image/svg+xml,%3Csvg viewBox='0 0 100 10' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M0 5 Q25 3 50 5 Q75 7 100 5' fill='none' stroke='%23000' stroke-width='0.5'/%3E%3C/svg%3E")`,
-                      }} />
+                      <div>
+                        <h3 className="text-lg font-bold text-[var(--foreground)]">Your Collection</h3>
+                        <p className="text-sm text-theme-muted">{savedArticles.length} saved articles</p>
+                      </div>
                     </div>
                   </div>
-                )}
-
-                {/* ========================================== */}
-                {/* RECOMMENDED SHELF                          */}
-                {/* Mini scrolls matching side bookshelf style */}
-                {/* ========================================== */}
-                {session && getRecommendedArticles().length > 0 && (
-                  <div className="relative px-4 mt-4">
-                    {/* Shelf label with dropdown filter - violet themed */}
-                    <div className="flex items-center gap-2 mb-2 relative">
-                      <div className="w-6 h-6 rounded-full bg-gradient-to-br from-violet-500 to-purple-700 flex items-center justify-center shadow-lg border border-violet-300/50">
-                        <Sparkles className="w-3 h-3 text-white" />
-                      </div>
-
-                      {/* Clickable label with dropdown */}
-                      <button
-                        onClick={() => setOpenShelfDropdown(openShelfDropdown === 'recommended' ? null : 'recommended')}
-                        className="flex items-center gap-1 px-2 py-1 bg-gradient-to-b from-violet-800/60 to-purple-900/60 border border-violet-500/40 rounded hover:border-violet-400/60 transition-colors group"
-                      >
-                        <span className="text-xs font-bold text-violet-100 uppercase tracking-[0.1em]" style={{ fontFamily: 'Georgia, serif' }}>
-                          Recommended
-                        </span>
-                        <span className="text-[10px] text-violet-300/60">({getRecommendedArticles().length})</span>
-                        <ChevronDown className={`w-3 h-3 text-violet-300/60 transition-transform ${openShelfDropdown === 'recommended' ? 'rotate-180' : ''}`} />
-                      </button>
-
-                      {/* Dropdown menu - violet/wood themed */}
-                      {openShelfDropdown === 'recommended' && (
-                        <div className="absolute top-full left-8 mt-1 z-50 min-w-32 bg-gradient-to-b from-violet-900 to-purple-950 border-2 border-violet-500/50 rounded-lg shadow-xl overflow-hidden">
-                          <div className="px-3 py-1.5 bg-violet-800/50 border-b border-violet-500/30">
-                            <span className="text-[9px] text-violet-300/60 uppercase tracking-wider font-bold">Sort By</span>
-                          </div>
-                          {[
-                            { value: 'newest', label: 'Newest First', icon: Clock },
-                            { value: 'oldest', label: 'Oldest First', icon: Clock },
-                            { value: 'az', label: 'A → Z', icon: ArrowUpDown },
-                          ].map((opt) => {
-                            const OptIcon = opt.icon
-                            const isActive = shelfSortOptions.recommended === opt.value
-                            return (
-                              <button
-                                key={opt.value}
-                                onClick={() => {
-                                  setShelfSortOptions(prev => ({ ...prev, recommended: opt.value }))
-                                  setOpenShelfDropdown(null)
-                                }}
-                                className={`w-full flex items-center gap-2 px-3 py-2 text-left transition-colors ${
-                                  isActive
-                                    ? 'bg-violet-700/50 text-violet-100'
-                                    : 'text-violet-200/80 hover:bg-violet-800/40'
-                                }`}
-                              >
-                                <OptIcon className="w-3 h-3" />
-                                <span className="text-[10px] font-medium">{opt.label}</span>
-                                {isActive && <div className="ml-auto w-1.5 h-1.5 rounded-full bg-violet-400" />}
-                              </button>
-                            )
-                          })}
-                        </div>
-                      )}
-                    </div>
-
-                    {/* Mini scrolls on shelf */}
-                    <div className="flex items-end gap-1 overflow-x-auto pb-1 min-h-[60px] scrollbar-thin scrollbar-thumb-violet-600/50 scrollbar-track-violet-900/20">
-                      {getRecommendedArticles().map((article, idx) => {
-                        const categorySlug = article.category?.slug || 'default'
-                        const categoryTheme = CATEGORY_SCROLL_THEMES[categorySlug] || CATEGORY_SCROLL_THEMES.sustainability
-                        const rotation = ((idx * 17 + 5) % 7) - 3
-
+                  <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
+                    {articles
+                      .filter(a => savedArticles.includes(a.id))
+                      .slice(0, 4)
+                      .map((article) => {
+                        const articleProg = readingProgress[article.id]
+                        const progPercent = articleProg?.scrollProgress || 0
+                        const isCompleted = articleProg?.completed || false
                         return (
                           <div
                             key={article.id}
-                            className="flex-shrink-0 group/scroll cursor-pointer relative"
-                            onMouseEnter={() => handleScrollHover(article)}
-                            onMouseLeave={handleScrollLeave}
                             onClick={() => setPreviewArticle(article)}
+                            className="group cursor-pointer bg-[var(--card)] rounded-lg overflow-hidden border border-[var(--border)] hover:border-[var(--primary)]/50 transition-all hover:shadow-lg hover:-translate-y-1"
                           >
-                            <div className={`relative w-5 h-14 transition-all duration-300 group-hover/scroll:scale-110 group-hover/scroll:-translate-y-2`}
-                              style={{ transform: `rotate(${rotation}deg)` }}
-                            >
-                              {/* Parchment body */}
-                              <div className={`absolute inset-x-0.5 top-2 bottom-2 bg-gradient-to-r ${categoryTheme.parchment} rounded-sm shadow-inner`} />
-                              {/* Top rod - violet themed */}
-                              <div className="absolute top-0 left-0 right-0 h-2.5 bg-gradient-to-b from-violet-600 via-violet-700 to-purple-800 rounded-t-sm shadow">
-                                <div className="absolute top-0.5 left-1/2 -translate-x-1/2 w-1.5 h-1.5 bg-violet-300/50 rounded-full" />
+                            {article.coverImage && (
+                              <div className="relative h-32 overflow-hidden">
+                                <img src={article.coverImage} alt={article.title} className="w-full h-full object-cover group-hover:scale-105 transition-transform" />
+                                <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent" />
+                                {isCompleted && (
+                                  <div className="absolute top-2 right-2 w-6 h-6 rounded-full bg-emerald-500 flex items-center justify-center">
+                                    <svg className="w-3 h-3 text-white" fill="currentColor" viewBox="0 0 20 20">
+                                      <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
+                                    </svg>
+                                  </div>
+                                )}
                               </div>
-                              {/* Bottom rod */}
-                              <div className="absolute bottom-0 left-0 right-0 h-2.5 bg-gradient-to-t from-violet-600 via-violet-700 to-purple-800 rounded-b-sm shadow">
-                                <div className="absolute bottom-0.5 left-1/2 -translate-x-1/2 w-1.5 h-1.5 bg-violet-300/50 rounded-full" />
-                              </div>
-                              {/* Wax seal */}
-                              <div className={`absolute -right-1 top-1/2 -translate-y-1/2 w-3.5 h-3.5 bg-gradient-to-br ${categoryTheme.seal} rounded-full shadow-md border border-white/20`} />
-                              {/* Sparkle badge */}
-                              <div className="absolute -top-1 -left-1 w-3 h-3 bg-gradient-to-br from-violet-400 to-purple-600 rounded-full flex items-center justify-center shadow border border-white/30">
-                                <Sparkles className="w-1.5 h-1.5 text-white" />
-                              </div>
-                            </div>
-                            {/* Hover tooltip */}
-                            <div className="absolute -top-8 left-1/2 -translate-x-1/2 px-2 py-1 bg-violet-900/95 text-violet-100 text-[8px] font-bold rounded whitespace-nowrap opacity-0 group-hover/scroll:opacity-100 transition-opacity z-50 shadow-lg max-w-16 truncate pointer-events-none">
-                              {article.title}
+                            )}
+                            <div className="p-4">
+                              <span className="text-xs font-semibold text-[var(--primary)] uppercase tracking-wide">{article.category?.name || 'Article'}</span>
+                              <h4 className="font-bold text-[var(--foreground)] mt-1 line-clamp-2 group-hover:text-[var(--primary)] transition-colors">{article.title}</h4>
+                              {progPercent > 0 && !isCompleted && (
+                                <div className="mt-2 h-1 bg-[var(--muted)] rounded-full overflow-hidden">
+                                  <div className="h-full bg-emerald-500 transition-all" style={{ width: `${progPercent}%` }} />
+                                </div>
+                              )}
                             </div>
                           </div>
                         )
                       })}
-                    </div>
+                  </div>
+                </div>
+              )}
 
-                    {/* Shelf surface - violet themed */}
-                    <div className="h-4 bg-gradient-to-b from-violet-700 via-purple-800 to-violet-950 border-t-2 border-violet-400/40 shadow-lg relative overflow-hidden">
-                      <div className="absolute inset-0 opacity-30" style={{
-                        backgroundImage: `url("data:image/svg+xml,%3Csvg viewBox='0 0 100 10' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M0 5 Q25 3 50 5 Q75 7 100 5' fill='none' stroke='%23000' stroke-width='0.5'/%3E%3C/svg%3E")`,
-                      }} />
+              {/* ========================================== */}
+              {/* RECOMMENDED FOR YOU - Modern Card Row     */}
+              {/* ========================================== */}
+              {session && getRecommendedArticles().length > 0 && (
+                <div className="bg-gradient-to-br from-violet-500/10 to-purple-500/10 backdrop-blur-sm rounded-xl p-6 border border-violet-500/20">
+                  <div className="flex items-center justify-between mb-4">
+                    <div className="flex items-center gap-3">
+                      <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-violet-500 to-purple-700 flex items-center justify-center shadow-lg">
+                        <Sparkles className="w-5 h-5 text-white" />
+                      </div>
+                      <div>
+                        <h3 className="text-lg font-bold text-[var(--foreground)]">Recommended For You</h3>
+                        <p className="text-sm text-theme-muted">Based on your reading history</p>
+                      </div>
                     </div>
                   </div>
-                )}
+                  <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
+                    {getRecommendedArticles().slice(0, 4).map((article) => (
+                      <div
+                        key={article.id}
+                        onClick={() => setPreviewArticle(article)}
+                        className="group cursor-pointer bg-[var(--card)] rounded-lg overflow-hidden border border-[var(--border)] hover:border-violet-500/50 transition-all hover:shadow-lg hover:shadow-violet-500/10 hover:-translate-y-1"
+                      >
+                        {article.coverImage && (
+                          <div className="relative h-32 overflow-hidden">
+                            <img src={article.coverImage} alt={article.title} className="w-full h-full object-cover group-hover:scale-105 transition-transform" />
+                            <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent" />
+                            <div className="absolute top-2 left-2 px-2 py-0.5 bg-violet-500/90 rounded-full">
+                              <span className="text-[10px] font-bold text-white flex items-center gap-1">
+                                <Sparkles className="w-2.5 h-2.5" /> Recommended
+                              </span>
+                            </div>
+                          </div>
+                        )}
+                        <div className="p-4">
+                          <span className="text-xs font-semibold text-violet-500 uppercase tracking-wide">{article.category?.name || 'Article'}</span>
+                          <h4 className="font-bold text-[var(--foreground)] mt-1 line-clamp-2 group-hover:text-violet-500 transition-colors">{article.title}</h4>
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              )}
 
-                {/* ========================================== */}
-                {/* CATEGORY SHELVES                           */}
-                {/* Mini scrolls matching side bookshelf style */}
-                {/* ========================================== */}
-                <div className="space-y-4 mt-4">
-                  {BOOK_CATEGORIES.map((category, catIdx) => {
-                    const categoryArticles = articles.filter(a => a.category?.slug === category.slug)
-                    if (categoryArticles.length === 0) return null
-                    const CategoryIcon = category.icon
-                    const categoryTheme = CATEGORY_SCROLL_THEMES[category.slug] || CATEGORY_SCROLL_THEMES.sustainability
+              {/* ========================================== */}
+              {/* ALL ARTICLES - Responsive Card Grid       */}
+              {/* ========================================== */}
+              <div>
+                <div className="flex items-center justify-between mb-6">
+                  <h3 className="text-xl font-bold text-[var(--foreground)]">All Articles</h3>
+                  <span className="text-sm text-theme-muted">{articles.length} articles</span>
+                </div>
+                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+                  {articles.map((article) => {
+                    const articleProg = readingProgress[article.id]
+                    const progPercent = articleProg?.scrollProgress || 0
+                    const isCompleted = articleProg?.completed || false
+                    const isSaved = savedArticles.includes(article.id)
+                    const scrollAge = getScrollAge(article.publishedAt)
+                    const category = BOOK_CATEGORIES.find(c => c.slug === article.category?.slug)
 
                     return (
-                      <div key={category.id} className="relative px-4">
-                        {/* Shelf label with dropdown filter */}
-                        <div className="flex items-center gap-2 mb-2 relative">
-                          <div className={`w-6 h-6 rounded-full bg-gradient-to-br ${category.color} flex items-center justify-center shadow-lg border border-white/30`}>
-                            <CategoryIcon className="w-3 h-3 text-white" />
-                          </div>
-
-                          {/* Clickable label with dropdown */}
-                          <button
-                            onClick={() => setOpenShelfDropdown(openShelfDropdown === category.slug ? null : category.slug)}
-                            className="flex items-center gap-1 px-2 py-1 bg-gradient-to-b from-amber-800/60 to-amber-900/60 border border-amber-600/40 rounded hover:border-amber-500/60 transition-colors"
-                          >
-                            <span className="text-xs font-bold text-amber-100 uppercase tracking-[0.1em]" style={{ fontFamily: 'Georgia, serif' }}>
-                              {category.name}
-                            </span>
-                            <span className="text-[10px] text-amber-300/60">({categoryArticles.length})</span>
-                            <ChevronDown className={`w-3 h-3 text-amber-300/60 transition-transform ${openShelfDropdown === category.slug ? 'rotate-180' : ''}`} />
-                          </button>
-
-                          {/* Dropdown menu */}
-                          {openShelfDropdown === category.slug && (
-                            <div className="absolute top-full left-8 mt-1 z-50 min-w-32 bg-gradient-to-b from-amber-900 to-amber-950 border-2 border-amber-600/50 rounded-lg shadow-xl overflow-hidden">
-                              <div className="px-3 py-1.5 bg-amber-800/50 border-b border-amber-600/30">
-                                <span className="text-[9px] text-amber-300/60 uppercase tracking-wider font-bold">Sort By</span>
-                              </div>
-                              {[
-                                { value: 'newest', label: 'Newest', icon: Clock },
-                                { value: 'oldest', label: 'Oldest', icon: Clock },
-                                { value: 'az', label: 'A → Z', icon: ArrowUpDown },
-                              ].map((opt) => {
-                                const OptIcon = opt.icon
-                                const currentSort = shelfSortOptions[category.slug] || 'newest'
-                                const isActive = currentSort === opt.value
-                                return (
-                                  <button
-                                    key={opt.value}
-                                    onClick={() => {
-                                      setShelfSortOptions(prev => ({ ...prev, [category.slug]: opt.value }))
-                                      setOpenShelfDropdown(null)
-                                    }}
-                                    className={`w-full flex items-center gap-2 px-3 py-2 text-left transition-colors ${
-                                      isActive ? 'bg-amber-700/50 text-amber-100' : 'text-amber-200/80 hover:bg-amber-800/40'
-                                    }`}
-                                  >
-                                    <OptIcon className="w-3 h-3" />
-                                    <span className="text-[10px] font-medium">{opt.label}</span>
-                                    {isActive && <div className="ml-auto w-1.5 h-1.5 rounded-full bg-amber-400" />}
-                                  </button>
-                                )
-                              })}
+                      <div
+                        key={article.id}
+                        onClick={() => setPreviewArticle(article)}
+                        className="group cursor-pointer bg-[var(--card)] rounded-xl overflow-hidden border border-[var(--border)] hover:border-[var(--primary)]/50 transition-all hover:shadow-xl hover:-translate-y-1"
+                      >
+                        {/* Cover Image */}
+                        <div className="relative h-40 overflow-hidden bg-[var(--muted)]">
+                          {article.coverImage ? (
+                            <img src={article.coverImage} alt={article.title} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300" />
+                          ) : (
+                            <div className={`w-full h-full bg-gradient-to-br ${category?.color || 'from-emerald-500 to-emerald-700'} flex items-center justify-center`}>
+                              {category && <category.icon className="w-12 h-12 text-white/30" />}
                             </div>
                           )}
-                        </div>
+                          <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/20 to-transparent" />
 
-                        {/* Mini scrolls on shelf */}
-                        <div className="flex items-end gap-1 overflow-x-auto pb-1 min-h-[60px] scrollbar-thin scrollbar-thumb-amber-600/50 scrollbar-track-amber-900/20">
-                          {categoryArticles.map((article, idx) => {
-                            const articleProg = readingProgress[article.id]
-                            const progPercent = articleProg?.scrollProgress || 0
-                            const isRead = articleProg?.completed || false
-                            const isSaved = savedArticles.includes(article.id)
-                            const scrollAge = getScrollAge(article.publishedAt)
-                            const rotation = ((idx * 17 + catIdx * 5) % 7) - 3
-
-                            return (
-                              <div
-                                key={article.id}
-                                className="flex-shrink-0 group/scroll cursor-pointer relative"
-                                onMouseEnter={() => handleScrollHover(article)}
-                                onMouseLeave={handleScrollLeave}
-                                onClick={() => setPreviewArticle(article)}
-                              >
-                                <div className={`relative w-5 h-14 transition-all duration-300 group-hover/scroll:scale-110 group-hover/scroll:-translate-y-2 ${scrollAge === 'ancient' ? 'opacity-80' : scrollAge === 'aged' ? 'opacity-90' : ''}`}
-                                  style={{ transform: `rotate(${rotation}deg)` }}
-                                >
-                                  {/* Parchment body */}
-                                  <div className={`absolute inset-x-0.5 top-2 bottom-2 bg-gradient-to-r ${categoryTheme.parchment} rounded-sm shadow-inner overflow-hidden`}>
-                                    {progPercent > 0 && (
-                                      <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-emerald-300/40 to-emerald-200/20" style={{ height: `${progPercent}%` }} />
-                                    )}
-                                  </div>
-                                  {/* Top rod */}
-                                  <div className="absolute top-0 left-0 right-0 h-2.5 bg-gradient-to-b from-amber-600 via-amber-700 to-amber-800 rounded-t-sm shadow">
-                                    <div className="absolute top-0.5 left-1/2 -translate-x-1/2 w-1.5 h-1.5 bg-amber-400/50 rounded-full" />
-                                  </div>
-                                  {/* Bottom rod */}
-                                  <div className="absolute bottom-0 left-0 right-0 h-2.5 bg-gradient-to-t from-amber-600 via-amber-700 to-amber-800 rounded-b-sm shadow">
-                                    <div className="absolute bottom-0.5 left-1/2 -translate-x-1/2 w-1.5 h-1.5 bg-amber-400/50 rounded-full" />
-                                  </div>
-                                  {/* Wax seal */}
-                                  <div className="absolute -right-1 top-1/2 -translate-y-1/2 w-3.5 h-3.5">
-                                    <div className={`w-full h-full bg-gradient-to-br ${isRead ? 'from-emerald-500 to-emerald-700' : categoryTheme.seal} rounded-full shadow-md border border-white/20 flex items-center justify-center`}>
-                                      {isRead && <svg className="w-2 h-2 text-white" fill="currentColor" viewBox="0 0 20 20"><path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" /></svg>}
-                                    </div>
-                                  </div>
-                                  {/* New badge */}
-                                  {scrollAge === 'new' && (
-                                    <div className="absolute -top-1 -left-1 w-3 h-3 bg-gradient-to-br from-emerald-400 to-emerald-600 rounded-full flex items-center justify-center shadow border border-white/30">
-                                      <Sparkles className="w-1.5 h-1.5 text-white" />
-                                    </div>
-                                  )}
-                                  {/* Save indicator */}
-                                  {isSaved && (
-                                    <div className="absolute -top-1 -right-1 w-3 h-3 bg-gradient-to-br from-yellow-400 to-yellow-600 rounded-full flex items-center justify-center shadow">
-                                      <Bookmark className="w-1.5 h-1.5 text-amber-900 fill-current" />
-                                    </div>
-                                  )}
-                                </div>
-                                {/* Hover tooltip */}
-                                <div className="absolute -top-8 left-1/2 -translate-x-1/2 px-2 py-1 bg-amber-900/95 text-amber-100 text-[8px] font-bold rounded whitespace-nowrap opacity-0 group-hover/scroll:opacity-100 transition-opacity z-50 shadow-lg max-w-16 truncate pointer-events-none">
-                                  {article.title}
-                                </div>
+                          {/* Badges */}
+                          <div className="absolute top-3 left-3 flex items-center gap-2">
+                            {scrollAge === 'new' && (
+                              <span className="px-2 py-0.5 bg-emerald-500 text-white text-[10px] font-bold rounded-full">NEW</span>
+                            )}
+                          </div>
+                          <div className="absolute top-3 right-3 flex items-center gap-2">
+                            {isSaved && (
+                              <div className="w-7 h-7 rounded-full bg-amber-500 flex items-center justify-center shadow-lg">
+                                <Bookmark className="w-3.5 h-3.5 text-white fill-current" />
                               </div>
-                            )
-                          })}
+                            )}
+                            {isCompleted && (
+                              <div className="w-7 h-7 rounded-full bg-emerald-500 flex items-center justify-center shadow-lg">
+                                <svg className="w-3.5 h-3.5 text-white" fill="currentColor" viewBox="0 0 20 20">
+                                  <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
+                                </svg>
+                              </div>
+                            )}
+                          </div>
+
+                          {/* Category badge at bottom of image */}
+                          <div className="absolute bottom-3 left-3">
+                            <span className={`px-2.5 py-1 rounded-full text-xs font-bold text-white bg-gradient-to-r ${category?.color || 'from-emerald-500 to-emerald-700'} shadow-lg`}>
+                              {article.category?.name || 'Article'}
+                            </span>
+                          </div>
                         </div>
 
-                        {/* Shelf surface */}
-                        <div className="h-4 bg-gradient-to-b from-amber-700 via-amber-800 to-amber-950 border-t-2 border-amber-500/40 shadow-lg relative overflow-hidden">
-                          <div className="absolute inset-0 opacity-30" style={{
-                            backgroundImage: `url("data:image/svg+xml,%3Csvg viewBox='0 0 100 10' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M0 5 Q25 3 50 5 Q75 7 100 5' fill='none' stroke='%23000' stroke-width='0.5'/%3E%3C/svg%3E")`,
-                          }} />
+                        {/* Content */}
+                        <div className="p-5">
+                          <h4 className="font-bold text-[var(--foreground)] text-lg leading-tight line-clamp-2 group-hover:text-[var(--primary)] transition-colors mb-2">{article.title}</h4>
+                          <p className="text-sm text-theme-muted line-clamp-2 mb-4">{article.excerpt}</p>
+
+                          {/* Meta */}
+                          <div className="flex items-center justify-between text-xs text-theme-muted">
+                            <div className="flex items-center gap-3">
+                              <span className="flex items-center gap-1">
+                                <Clock className="w-3.5 h-3.5" />
+                                {article.readTime} min
+                              </span>
+                              <span className="flex items-center gap-1">
+                                <Eye className="w-3.5 h-3.5" />
+                                {article.views}
+                              </span>
+                            </div>
+                            {article.author && (
+                              <span className="font-medium truncate max-w-[100px]">{article.author.name}</span>
+                            )}
+                          </div>
+
+                          {/* Reading Progress */}
+                          {progPercent > 0 && !isCompleted && (
+                            <div className="mt-3">
+                              <div className="flex items-center justify-between text-xs mb-1">
+                                <span className="text-emerald-500 font-medium">{Math.round(progPercent)}% read</span>
+                              </div>
+                              <div className="h-1.5 bg-[var(--muted)] rounded-full overflow-hidden">
+                                <div className="h-full bg-gradient-to-r from-emerald-500 to-emerald-400 transition-all rounded-full" style={{ width: `${progPercent}%` }} />
+                              </div>
+                            </div>
+                          )}
                         </div>
                       </div>
                     )
                   })}
                 </div>
               </div>
-
-              {/* Bottom bookshelf trim */}
-              <div className="h-6 bg-gradient-to-t from-amber-800 to-amber-900 rounded-b-lg mt-4 relative overflow-hidden">
-                <svg className="absolute inset-0 w-full h-full opacity-40" preserveAspectRatio="none">
-                  <pattern id="shelfBottomCarving" x="0" y="0" width="60" height="24" patternUnits="userSpaceOnUse">
-                    <path d="M0 12 Q15 6 30 12 Q45 18 60 12" fill="none" stroke="#fbbf24" strokeWidth="1.5"/>
-                  </pattern>
-                  <rect width="100%" height="100%" fill="url(#shelfBottomCarving)"/>
-                </svg>
-              </div>
             </div>
-            {/* End Grand Bookshelf Structure */}
+            {/* End Article Grid */}
 
             {/* Load More Trigger */}
             <div ref={loadMoreRef} className="py-6 sm:py-8 flex justify-center">
