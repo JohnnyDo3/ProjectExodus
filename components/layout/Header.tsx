@@ -164,8 +164,9 @@ export function Header() {
     <header
       className="sticky top-0 z-[100] bg-[var(--card)] border-b-4 border-theme-primary shadow-sm transition-all duration-300 safe-area-top"
       style={{
-        transform: isHeaderVisible ? 'translateY(0)' : 'translateY(-100%)',
-        opacity: isHeaderVisible ? 1 : 0,
+        // When mobile menu is open, disable transform to prevent breaking fixed positioning of menu
+        transform: mobileMenuOpen ? 'none' : (isHeaderVisible ? 'translateY(0)' : 'translateY(-100%)'),
+        opacity: mobileMenuOpen ? 1 : (isHeaderVisible ? 1 : 0),
       }}
     >
       <nav className="container mx-auto px-4 sm:px-6 lg:px-8">
@@ -519,12 +520,12 @@ export function Header() {
         <>
           {/* Backdrop */}
           <div
-            className="lg:hidden fixed inset-0 bg-black/50 backdrop-blur-sm z-[98]"
+            className="lg:hidden fixed inset-0 bg-black/50 backdrop-blur-sm z-[101]"
             onClick={() => setMobileMenuOpen(false)}
           />
 
           {/* Slide-in Menu */}
-          <div className="lg:hidden fixed top-16 sm:top-20 left-0 right-0 bottom-0 bg-[var(--card)] z-[99] overflow-y-auto safe-area-inset">
+          <div className="lg:hidden fixed top-16 sm:top-20 left-0 right-0 bottom-0 bg-[var(--card)] z-[102] overflow-y-auto safe-area-inset">
             <div className="container mx-auto px-4 py-6 space-y-6">
               {/* Navigation Links */}
               <div className="space-y-2">

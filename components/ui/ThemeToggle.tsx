@@ -81,10 +81,10 @@ export function ThemeToggle() {
       {dropdownOpen && (
         <>
           <div
-            className="fixed inset-0 z-40"
+            className="fixed inset-0 z-[199]"
             onClick={() => setDropdownOpen(false)}
           />
-          <div className="absolute right-0 mt-2 w-72 bg-[var(--card)] rounded-xl shadow-theme-lg border-2 border-theme-primary overflow-hidden z-50">
+          <div className="absolute right-0 sm:right-0 mt-2 w-[calc(100vw-2rem)] sm:w-72 max-w-72 bg-[var(--card)] rounded-xl shadow-theme-lg border-2 border-theme-primary overflow-hidden z-[200]">
             <div className="p-3 border-b-2 border-[var(--border)] bg-[var(--muted)]">
               <div className="flex items-center gap-2">
                 {getCurrentIcon('w-5 h-5 text-theme-primary')}

@@ -566,15 +566,28 @@ export function DigitalScroll({
 
   const handleAnimationComplete = useCallback(() => {
     setShowOpenAnimation(false)
-    // Jump to continue position if exists
-    const position = scrollState.getContinuePosition(topic.id)
-    if (position.chapter > 0 || position.verse > 0 || position.page > 0) {
-      continueReading()
+
+    // If initialChapter is explicitly provided:
+    // - initialChapter > 0: navigate to that specific chapter
+    // - initialChapter === 0: explicitly go to first page (cover), ignore continue position
+    if (initialChapter !== undefined) {
+      if (initialChapter > 0) {
+        goToChapter(initialChapter)
+      } else {
+        // initialChapter === 0 means "start fresh from cover page"
+        setCurrentPageIndex(0)
+      }
     } else {
-      // Start at cover page (spread shows cover + level selection)
-      setCurrentPageIndex(0)
+      // No initialChapter specified - use continue position if exists
+      const position = scrollState.getContinuePosition(topic.id)
+      if (position.chapter > 0 || position.verse > 0 || position.page > 0) {
+        continueReading()
+      } else {
+        // Start at cover page (spread shows cover + level selection)
+        setCurrentPageIndex(0)
+      }
     }
-  }, [scrollState, topic.id, continueReading])
+  }, [scrollState, topic.id, continueReading, initialChapter, goToChapter])
 
   // ============================================
   // SAVE POSITION ON PAGE CHANGE
