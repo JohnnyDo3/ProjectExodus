@@ -1545,34 +1545,39 @@ export default function ArticlesPage() {
                 <div className="absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-amber-400/50 to-transparent" />
               </div>
 
-              {/* ===== FRIEZE (Middle) - Decorated horizontal band ===== */}
+              {/* ===== FRIEZE (Middle) - Decorated horizontal band with Latin inscription ===== */}
               <div className="relative h-10 bg-gradient-to-b from-amber-800 via-amber-850 to-amber-900 overflow-hidden">
-                {/* Continuous palmette/anthemion frieze pattern */}
-                <div className="absolute inset-x-0 top-1/2 -translate-y-1/2 flex justify-center">
-                  <div className="flex items-center gap-6">
-                    {/* Left palmettes */}
-                    {[0, 1, 2, 3, 4].map((i) => (
-                      <svg key={`palmette-l-${i}`} viewBox="0 0 20 20" className="w-5 h-5 text-amber-500/50">
-                        <path d="M10 18 Q6 14 6 10 Q8 12 10 8 Q12 12 14 10 Q14 14 10 18" fill="none" stroke="currentColor" strokeWidth="0.8"/>
-                        <path d="M10 8 L10 4" stroke="currentColor" strokeWidth="0.6"/>
-                        <circle cx="10" cy="3" r="1.5" fill="currentColor" opacity="0.5"/>
-                      </svg>
-                    ))}
-                    {/* Center laurel accent */}
-                    <svg viewBox="0 0 24 16" className="w-8 h-5 text-amber-400/60">
-                      <path d="M12 2 C8 2 5 5 5 8 c0 2 1 3 2 4" fill="none" stroke="currentColor" strokeWidth="0.8"/>
-                      <path d="M12 2 c4 0 7 3 7 6 c0 2-1 3-2 4" fill="none" stroke="currentColor" strokeWidth="0.8"/>
-                      <circle cx="12" cy="8" r="2" fill="currentColor" opacity="0.4"/>
-                    </svg>
-                    {/* Right palmettes */}
-                    {[0, 1, 2, 3, 4].map((i) => (
-                      <svg key={`palmette-r-${i}`} viewBox="0 0 20 20" className="w-5 h-5 text-amber-500/50">
+                {/* Background palmette pattern - subtle, behind text */}
+                <div className="absolute inset-x-0 top-1/2 -translate-y-1/2 flex justify-between px-8">
+                  {/* Left palmettes */}
+                  <div className="flex items-center gap-3">
+                    {[0, 1, 2].map((i) => (
+                      <svg key={`palmette-l-${i}`} viewBox="0 0 20 20" className="w-4 h-4 text-amber-500/30">
                         <path d="M10 18 Q6 14 6 10 Q8 12 10 8 Q12 12 14 10 Q14 14 10 18" fill="none" stroke="currentColor" strokeWidth="0.8"/>
                         <path d="M10 8 L10 4" stroke="currentColor" strokeWidth="0.6"/>
                         <circle cx="10" cy="3" r="1.5" fill="currentColor" opacity="0.5"/>
                       </svg>
                     ))}
                   </div>
+                  {/* Right palmettes */}
+                  <div className="flex items-center gap-3">
+                    {[0, 1, 2].map((i) => (
+                      <svg key={`palmette-r-${i}`} viewBox="0 0 20 20" className="w-4 h-4 text-amber-500/30">
+                        <path d="M10 18 Q6 14 6 10 Q8 12 10 8 Q12 12 14 10 Q14 14 10 18" fill="none" stroke="currentColor" strokeWidth="0.8"/>
+                        <path d="M10 8 L10 4" stroke="currentColor" strokeWidth="0.6"/>
+                        <circle cx="10" cy="3" r="1.5" fill="currentColor" opacity="0.5"/>
+                      </svg>
+                    ))}
+                  </div>
+                </div>
+                {/* Central Latin inscription - prominent and unobstructed */}
+                <div className="absolute inset-x-0 top-1/2 -translate-y-1/2 flex justify-center items-center">
+                  <span
+                    className="text-xs font-bold tracking-[0.25em] text-amber-300/80 uppercase"
+                    style={{ fontFamily: 'Georgia, serif', textShadow: '0 1px 2px rgba(0,0,0,0.5)' }}
+                  >
+                    Sapientia Aeterna Manet
+                  </span>
                 </div>
                 {/* Subtle horizontal lines */}
                 <div className="absolute inset-x-0 top-1 h-px bg-gradient-to-r from-transparent via-amber-600/30 to-transparent" />
@@ -1763,6 +1768,76 @@ export default function ArticlesPage() {
             <div className="absolute top-5 left-3 right-3 h-1 bg-gradient-to-b from-amber-500/30 to-transparent rounded-full" />
             <div className="absolute bottom-2 left-0 right-0 h-3 bg-gradient-to-t from-amber-900 to-transparent" />
           </div>
+
+          {/* Integrated candle sconces - emerging from pilaster */}
+          {[18, 50, 82].map((topPercent, i) => (
+            <div key={`left-pilaster-sconce-${i}`} className="absolute -right-12 z-30" style={{ top: `${topPercent}%`, transform: 'translateY(-50%)' }}>
+              <div className="relative w-16 h-20">
+                {/* Cast shadow */}
+                <div className="absolute left-3 top-4 w-10 h-14 bg-gradient-to-br from-amber-950/30 to-transparent rounded-full blur-sm" />
+
+                {/* Ornate brass backplate attached to pilaster */}
+                <div className="absolute left-0 top-1/2 -translate-y-1/2 w-8 h-14 bg-gradient-to-r from-yellow-500 via-amber-600 to-amber-700 rounded-r-lg shadow-xl border-r-2 border-y-2 border-yellow-400/50 overflow-hidden">
+                  {/* Hammered brass texture */}
+                  <div className="absolute inset-0 opacity-20" style={{
+                    backgroundImage: `url("data:image/svg+xml,%3Csvg viewBox='0 0 20 20' xmlns='http://www.w3.org/2000/svg'%3E%3Ccircle cx='5' cy='5' r='2' fill='%23fff' opacity='0.3'/%3E%3Ccircle cx='15' cy='10' r='1.5' fill='%23fff' opacity='0.2'/%3E%3C/svg%3E")`,
+                  }} />
+                  {/* Embossed acanthus leaf motif */}
+                  <svg viewBox="0 0 24 36" className="absolute inset-1 w-6 h-12 text-yellow-300/50">
+                    <path d="M12 4 Q18 10 12 18 Q6 10 12 4" fill="none" stroke="currentColor" strokeWidth="0.8"/>
+                    <path d="M12 7 Q15 10 12 14 Q9 10 12 7" fill="currentColor" opacity="0.3"/>
+                    <circle cx="12" cy="10" r="2" fill="currentColor" opacity="0.4"/>
+                    <path d="M6 22 Q12 27 18 22" fill="none" stroke="currentColor" strokeWidth="0.6"/>
+                    <path d="M8 28 Q12 32 16 28" fill="none" stroke="currentColor" strokeWidth="0.5"/>
+                  </svg>
+                  {/* Highlight edge */}
+                  <div className="absolute top-0 left-0 right-0 h-2 bg-gradient-to-b from-yellow-300/30 to-transparent" />
+                </div>
+
+                {/* Curved decorative arm extending outward */}
+                <div className="absolute left-7 top-1/2 w-6 h-3 bg-gradient-to-b from-yellow-500 via-amber-600 to-amber-700 rounded-full shadow-md" style={{ transform: 'translateY(-50%) rotate(-5deg)' }}>
+                  <div className="absolute right-0 top-0 w-2 h-3 bg-gradient-to-l from-amber-700 to-yellow-600 rounded-full" />
+                </div>
+
+                {/* Candle holder cup/bobeche at end of arm */}
+                <div className="absolute left-11 top-1/2 w-5 h-3 bg-gradient-to-b from-yellow-400 via-yellow-500 to-amber-600 rounded-b-sm border-t-2 border-yellow-300/60 shadow-lg" style={{ transform: 'translateY(-60%)' }}>
+                  <div className="absolute top-0 left-1/2 -translate-x-1/2 w-3 h-0.5 bg-yellow-200/40 rounded-full" />
+                  {/* Drip tray rim */}
+                  <div className="absolute -bottom-0.5 left-0 right-0 h-1 bg-gradient-to-b from-amber-600 to-amber-700 rounded-b" />
+                </div>
+
+                {/* Candle sitting IN the cup */}
+                <div className="absolute left-11 top-1/2 w-3" style={{ transform: 'translate(15%, -145%)' }}>
+                  {/* Candle body */}
+                  <div className="w-3 h-7 bg-gradient-to-b from-amber-50 via-amber-100 to-amber-200 rounded-t-sm shadow-md relative overflow-hidden">
+                    {/* Wax ridges */}
+                    <div className="absolute inset-0 opacity-30" style={{
+                      backgroundImage: 'repeating-linear-gradient(0deg, transparent, transparent 2px, rgba(255,255,255,0.4) 2px, rgba(255,255,255,0.4) 3px)',
+                    }} />
+                    {/* Side highlight */}
+                    <div className="absolute left-0 inset-y-0 w-0.5 bg-gradient-to-r from-white/50 to-transparent" />
+                  </div>
+                  {/* Dripping wax */}
+                  <div className="absolute top-3 -left-0.5 w-1.5 h-2.5 bg-gradient-to-b from-amber-100 to-amber-200 rounded-full opacity-70" />
+                  {/* Wick */}
+                  <div className="absolute -top-1.5 left-1/2 -translate-x-1/2 w-0.5 h-2 bg-gradient-to-t from-gray-700 to-gray-500" />
+                </div>
+
+                {/* Realistic flame */}
+                <div className={`absolute left-10 ${isNightTime ? 'opacity-100' : 'opacity-60'}`} style={{ top: '50%', transform: 'translate(0%, -270%)' }}>
+                  {/* Outer glow */}
+                  <div className="absolute -inset-3 bg-gradient-radial from-orange-400/30 via-orange-300/15 to-transparent rounded-full blur-md" />
+                  {/* Flame body */}
+                  <div className="w-4 h-6 bg-gradient-to-t from-orange-500 via-orange-400 to-yellow-200 rounded-full blur-[1px] animate-pulse mx-auto" style={{ animationDelay: `${i * 0.3}s`, animationDuration: '0.7s' }} />
+                  {/* Flame core */}
+                  <div className="absolute top-1.5 left-1/2 -translate-x-1/2 w-2 h-3.5 bg-gradient-to-t from-yellow-300 via-yellow-100 to-white rounded-full animate-pulse blur-[0.5px]" style={{ animationDelay: `${i * 0.3 + 0.1}s`, animationDuration: '0.5s' }} />
+                </div>
+
+                {/* Ambient light */}
+                <div className={`absolute left-6 w-16 h-16 bg-gradient-radial from-orange-400/40 via-amber-500/20 to-transparent rounded-full blur-xl ${isNightTime ? 'opacity-100' : 'opacity-40'}`} style={{ top: '50%', transform: 'translate(0%, -200%)' }} />
+              </div>
+            </div>
+          ))}
         </div>
         <div className="absolute right-0 top-0 bottom-0 w-16 bg-gradient-to-l from-amber-800 via-amber-700 to-amber-800 z-10 border-l-4 border-amber-600/60 shadow-2xl">
           {/* Ornate Corinthian capital with acanthus leaves - enlarged */}
@@ -1807,137 +1882,77 @@ export default function ArticlesPage() {
             <div className="absolute top-5 left-3 right-3 h-1 bg-gradient-to-b from-amber-500/30 to-transparent rounded-full" />
             <div className="absolute bottom-2 left-0 right-0 h-3 bg-gradient-to-t from-amber-900 to-transparent" />
           </div>
+
+          {/* Integrated candle sconces - emerging from right pilaster */}
+          {[18, 50, 82].map((topPercent, i) => (
+            <div key={`right-pilaster-sconce-${i}`} className="absolute -left-12 z-30" style={{ top: `${topPercent}%`, transform: 'translateY(-50%)' }}>
+              <div className="relative w-16 h-20">
+                {/* Cast shadow */}
+                <div className="absolute right-3 top-4 w-10 h-14 bg-gradient-to-bl from-amber-950/30 to-transparent rounded-full blur-sm" />
+
+                {/* Ornate brass backplate attached to pilaster */}
+                <div className="absolute right-0 top-1/2 -translate-y-1/2 w-8 h-14 bg-gradient-to-l from-yellow-500 via-amber-600 to-amber-700 rounded-l-lg shadow-xl border-l-2 border-y-2 border-yellow-400/50 overflow-hidden">
+                  {/* Hammered brass texture */}
+                  <div className="absolute inset-0 opacity-20" style={{
+                    backgroundImage: `url("data:image/svg+xml,%3Csvg viewBox='0 0 20 20' xmlns='http://www.w3.org/2000/svg'%3E%3Ccircle cx='5' cy='5' r='2' fill='%23fff' opacity='0.3'/%3E%3Ccircle cx='15' cy='10' r='1.5' fill='%23fff' opacity='0.2'/%3E%3C/svg%3E")`,
+                  }} />
+                  {/* Embossed acanthus leaf motif */}
+                  <svg viewBox="0 0 24 36" className="absolute inset-1 w-6 h-12 text-yellow-300/50">
+                    <path d="M12 4 Q18 10 12 18 Q6 10 12 4" fill="none" stroke="currentColor" strokeWidth="0.8"/>
+                    <path d="M12 7 Q15 10 12 14 Q9 10 12 7" fill="currentColor" opacity="0.3"/>
+                    <circle cx="12" cy="10" r="2" fill="currentColor" opacity="0.4"/>
+                    <path d="M6 22 Q12 27 18 22" fill="none" stroke="currentColor" strokeWidth="0.6"/>
+                    <path d="M8 28 Q12 32 16 28" fill="none" stroke="currentColor" strokeWidth="0.5"/>
+                  </svg>
+                  {/* Highlight edge */}
+                  <div className="absolute top-0 left-0 right-0 h-2 bg-gradient-to-b from-yellow-300/30 to-transparent" />
+                </div>
+
+                {/* Curved decorative arm extending outward */}
+                <div className="absolute right-7 top-1/2 w-6 h-3 bg-gradient-to-b from-yellow-500 via-amber-600 to-amber-700 rounded-full shadow-md" style={{ transform: 'translateY(-50%) rotate(5deg)' }}>
+                  <div className="absolute left-0 top-0 w-2 h-3 bg-gradient-to-r from-amber-700 to-yellow-600 rounded-full" />
+                </div>
+
+                {/* Candle holder cup/bobeche at end of arm */}
+                <div className="absolute right-11 top-1/2 w-5 h-3 bg-gradient-to-b from-yellow-400 via-yellow-500 to-amber-600 rounded-b-sm border-t-2 border-yellow-300/60 shadow-lg" style={{ transform: 'translateY(-60%)' }}>
+                  <div className="absolute top-0 left-1/2 -translate-x-1/2 w-3 h-0.5 bg-yellow-200/40 rounded-full" />
+                  {/* Drip tray rim */}
+                  <div className="absolute -bottom-0.5 left-0 right-0 h-1 bg-gradient-to-b from-amber-600 to-amber-700 rounded-b" />
+                </div>
+
+                {/* Candle sitting IN the cup */}
+                <div className="absolute right-11 top-1/2 w-3" style={{ transform: 'translate(-15%, -145%)' }}>
+                  {/* Candle body */}
+                  <div className="w-3 h-7 bg-gradient-to-b from-amber-50 via-amber-100 to-amber-200 rounded-t-sm shadow-md relative overflow-hidden">
+                    {/* Wax ridges */}
+                    <div className="absolute inset-0 opacity-30" style={{
+                      backgroundImage: 'repeating-linear-gradient(0deg, transparent, transparent 2px, rgba(255,255,255,0.4) 2px, rgba(255,255,255,0.4) 3px)',
+                    }} />
+                    {/* Side highlight */}
+                    <div className="absolute right-0 inset-y-0 w-0.5 bg-gradient-to-l from-white/50 to-transparent" />
+                  </div>
+                  {/* Dripping wax */}
+                  <div className="absolute top-3 left-2 w-1.5 h-2.5 bg-gradient-to-b from-amber-100 to-amber-200 rounded-full opacity-70" />
+                  {/* Wick */}
+                  <div className="absolute -top-1.5 left-1/2 -translate-x-1/2 w-0.5 h-2 bg-gradient-to-t from-gray-700 to-gray-500" />
+                </div>
+
+                {/* Realistic flame */}
+                <div className={`absolute right-10 ${isNightTime ? 'opacity-100' : 'opacity-60'}`} style={{ top: '50%', transform: 'translate(0%, -270%)' }}>
+                  {/* Outer glow */}
+                  <div className="absolute -inset-3 bg-gradient-radial from-orange-400/30 via-orange-300/15 to-transparent rounded-full blur-md" />
+                  {/* Flame body */}
+                  <div className="w-4 h-6 bg-gradient-to-t from-orange-500 via-orange-400 to-yellow-200 rounded-full blur-[1px] animate-pulse mx-auto" style={{ animationDelay: `${i * 0.3 + 0.2}s`, animationDuration: '0.7s' }} />
+                  {/* Flame core */}
+                  <div className="absolute top-1.5 left-1/2 -translate-x-1/2 w-2 h-3.5 bg-gradient-to-t from-yellow-300 via-yellow-100 to-white rounded-full animate-pulse blur-[0.5px]" style={{ animationDelay: `${i * 0.3 + 0.3}s`, animationDuration: '0.5s' }} />
+                </div>
+
+                {/* Ambient light */}
+                <div className={`absolute right-6 w-16 h-16 bg-gradient-radial from-orange-400/40 via-amber-500/20 to-transparent rounded-full blur-xl ${isNightTime ? 'opacity-100' : 'opacity-40'}`} style={{ top: '50%', transform: 'translate(0%, -200%)' }} />
+              </div>
+            </div>
+          ))}
         </div>
-
-        {/* Ornate wall candle sconces - Left side - Enhanced with realistic details */}
-        {[18, 50, 82].map((topPercent, i) => (
-          <div key={`hshelf-left-candle-${i}`} className="absolute left-[72px] z-20" style={{ top: `${topPercent}%`, transform: 'translateY(-50%)' }}>
-            <div className="relative w-8 h-12">
-              {/* Cast shadow on wall */}
-              <div className="absolute -left-1 top-2 w-10 h-14 bg-gradient-to-br from-amber-950/40 to-transparent rounded-full blur-sm" />
-              {/* Ornate brass backplate with embossed design */}
-              <div className="absolute inset-0 bg-gradient-to-b from-yellow-500 via-amber-600 to-amber-800 rounded-t-full rounded-b-lg shadow-xl border border-yellow-400/40 overflow-hidden">
-                {/* Hammered brass texture */}
-                <div className="absolute inset-0 opacity-20" style={{
-                  backgroundImage: `url("data:image/svg+xml,%3Csvg viewBox='0 0 20 20' xmlns='http://www.w3.org/2000/svg'%3E%3Ccircle cx='5' cy='5' r='2' fill='%23fff' opacity='0.3'/%3E%3Ccircle cx='15' cy='10' r='1.5' fill='%23fff' opacity='0.2'/%3E%3Ccircle cx='8' cy='15' r='1' fill='%23fff' opacity='0.25'/%3E%3C/svg%3E")`,
-                }} />
-                {/* Embossed acanthus leaf motif */}
-                <div className="absolute top-1 left-1/2 -translate-x-1/2 w-5 h-5">
-                  <svg viewBox="0 0 20 20" className="w-full h-full text-yellow-300/60">
-                    <path d="M10 2 Q15 6 10 12 Q5 6 10 2" fill="none" stroke="currentColor" strokeWidth="1"/>
-                    <path d="M10 4 Q12 6 10 9 Q8 6 10 4" fill="currentColor" opacity="0.3"/>
-                    <circle cx="10" cy="6" r="1.5" fill="currentColor" opacity="0.5"/>
-                  </svg>
-                </div>
-                {/* Lower scroll detail */}
-                <div className="absolute bottom-1.5 left-1/2 -translate-x-1/2 w-4 h-2">
-                  <svg viewBox="0 0 16 8" className="w-full h-full text-yellow-400/50">
-                    <path d="M2 4 Q4 2 8 4 Q12 6 14 4" fill="none" stroke="currentColor" strokeWidth="0.8"/>
-                  </svg>
-                </div>
-                {/* Highlight edge */}
-                <div className="absolute top-0 left-0 right-0 h-2 bg-gradient-to-b from-yellow-300/30 to-transparent rounded-t-full" />
-              </div>
-              {/* Candle holder cup/bobeche */}
-              <div className="absolute bottom-3 left-1/2 -translate-x-1/2 w-5 h-2.5 bg-gradient-to-b from-yellow-500 to-amber-700 rounded-b-sm border-t border-yellow-300/50 shadow-inner">
-                <div className="absolute top-0 left-1/2 -translate-x-1/2 w-3 h-0.5 bg-yellow-300/30 rounded-full" />
-              </div>
-              {/* Realistic candle with texture */}
-              <div className="absolute -top-5 left-1/2 -translate-x-1/2 w-2.5">
-                {/* Candle body with wax texture */}
-                <div className="w-2.5 h-6 bg-gradient-to-b from-amber-50 via-amber-100 to-amber-200 rounded-t-sm shadow-md relative overflow-hidden">
-                  {/* Wax ridges */}
-                  <div className="absolute inset-0 opacity-40" style={{
-                    backgroundImage: 'repeating-linear-gradient(0deg, transparent, transparent 2px, rgba(255,255,255,0.3) 2px, rgba(255,255,255,0.3) 3px)',
-                  }} />
-                  {/* Side highlight */}
-                  <div className="absolute left-0 inset-y-0 w-0.5 bg-gradient-to-r from-white/40 to-transparent" />
-                </div>
-                {/* Dripping wax - multiple drips */}
-                <div className="absolute top-2 -left-0.5 w-1.5 h-3 bg-gradient-to-b from-amber-100 to-amber-200 rounded-full opacity-80" />
-                <div className="absolute top-4 left-2 w-1 h-2 bg-gradient-to-b from-amber-100 to-amber-200 rounded-full opacity-70" />
-                {/* Wick */}
-                <div className="absolute -top-1.5 left-1/2 -translate-x-1/2 w-0.5 h-2 bg-gradient-to-t from-gray-800 to-gray-600" />
-              </div>
-              {/* Realistic flame with multiple layers */}
-              <div className={`absolute -top-9 left-1/2 -translate-x-1/2 ${isNightTime ? 'opacity-100' : 'opacity-70'}`}>
-                {/* Outer glow */}
-                <div className="absolute -inset-2 bg-gradient-radial from-orange-400/20 via-orange-300/10 to-transparent rounded-full blur-md" />
-                {/* Flame body - outer orange */}
-                <div className={`w-3 h-5 bg-gradient-to-t from-orange-500 via-orange-400 to-yellow-200 rounded-full blur-[1px] animate-pulse`} style={{ animationDelay: `${i * 0.35}s`, animationDuration: '0.8s' }} />
-                {/* Flame core - inner yellow/white */}
-                <div className="absolute top-1 left-1/2 -translate-x-1/2 w-1.5 h-2.5 bg-gradient-to-t from-yellow-300 via-yellow-100 to-white rounded-full animate-pulse blur-[0.5px]" style={{ animationDelay: `${i * 0.35 + 0.1}s`, animationDuration: '0.6s' }} />
-              </div>
-              {/* Ambient light cast */}
-              <div className={`absolute -top-6 left-1/2 -translate-x-1/2 w-12 h-12 bg-gradient-radial from-orange-400/40 via-amber-500/20 to-transparent rounded-full blur-lg ${isNightTime ? 'opacity-90' : 'opacity-40'}`} />
-            </div>
-          </div>
-        ))}
-
-        {/* Ornate wall candle sconces - Right side - Enhanced with realistic details */}
-        {[18, 50, 82].map((topPercent, i) => (
-          <div key={`hshelf-right-candle-${i}`} className="absolute right-[72px] z-20" style={{ top: `${topPercent}%`, transform: 'translateY(-50%)' }}>
-            <div className="relative w-8 h-12">
-              {/* Cast shadow on wall */}
-              <div className="absolute -right-1 top-2 w-10 h-14 bg-gradient-to-bl from-amber-950/40 to-transparent rounded-full blur-sm" />
-              {/* Ornate brass backplate with embossed design */}
-              <div className="absolute inset-0 bg-gradient-to-b from-yellow-500 via-amber-600 to-amber-800 rounded-t-full rounded-b-lg shadow-xl border border-yellow-400/40 overflow-hidden">
-                {/* Hammered brass texture */}
-                <div className="absolute inset-0 opacity-20" style={{
-                  backgroundImage: `url("data:image/svg+xml,%3Csvg viewBox='0 0 20 20' xmlns='http://www.w3.org/2000/svg'%3E%3Ccircle cx='5' cy='5' r='2' fill='%23fff' opacity='0.3'/%3E%3Ccircle cx='15' cy='10' r='1.5' fill='%23fff' opacity='0.2'/%3E%3Ccircle cx='8' cy='15' r='1' fill='%23fff' opacity='0.25'/%3E%3C/svg%3E")`,
-                }} />
-                {/* Embossed acanthus leaf motif */}
-                <div className="absolute top-1 left-1/2 -translate-x-1/2 w-5 h-5">
-                  <svg viewBox="0 0 20 20" className="w-full h-full text-yellow-300/60">
-                    <path d="M10 2 Q15 6 10 12 Q5 6 10 2" fill="none" stroke="currentColor" strokeWidth="1"/>
-                    <path d="M10 4 Q12 6 10 9 Q8 6 10 4" fill="currentColor" opacity="0.3"/>
-                    <circle cx="10" cy="6" r="1.5" fill="currentColor" opacity="0.5"/>
-                  </svg>
-                </div>
-                {/* Lower scroll detail */}
-                <div className="absolute bottom-1.5 left-1/2 -translate-x-1/2 w-4 h-2">
-                  <svg viewBox="0 0 16 8" className="w-full h-full text-yellow-400/50">
-                    <path d="M2 4 Q4 2 8 4 Q12 6 14 4" fill="none" stroke="currentColor" strokeWidth="0.8"/>
-                  </svg>
-                </div>
-                {/* Highlight edge */}
-                <div className="absolute top-0 left-0 right-0 h-2 bg-gradient-to-b from-yellow-300/30 to-transparent rounded-t-full" />
-              </div>
-              {/* Candle holder cup/bobeche */}
-              <div className="absolute bottom-3 left-1/2 -translate-x-1/2 w-5 h-2.5 bg-gradient-to-b from-yellow-500 to-amber-700 rounded-b-sm border-t border-yellow-300/50 shadow-inner">
-                <div className="absolute top-0 left-1/2 -translate-x-1/2 w-3 h-0.5 bg-yellow-300/30 rounded-full" />
-              </div>
-              {/* Realistic candle with texture */}
-              <div className="absolute -top-5 left-1/2 -translate-x-1/2 w-2.5">
-                {/* Candle body with wax texture */}
-                <div className="w-2.5 h-6 bg-gradient-to-b from-amber-50 via-amber-100 to-amber-200 rounded-t-sm shadow-md relative overflow-hidden">
-                  {/* Wax ridges */}
-                  <div className="absolute inset-0 opacity-40" style={{
-                    backgroundImage: 'repeating-linear-gradient(0deg, transparent, transparent 2px, rgba(255,255,255,0.3) 2px, rgba(255,255,255,0.3) 3px)',
-                  }} />
-                  {/* Side highlight */}
-                  <div className="absolute right-0 inset-y-0 w-0.5 bg-gradient-to-l from-white/40 to-transparent" />
-                </div>
-                {/* Dripping wax - multiple drips */}
-                <div className="absolute top-3 left-2 w-1.5 h-2.5 bg-gradient-to-b from-amber-100 to-amber-200 rounded-full opacity-80" />
-                <div className="absolute top-1.5 -left-0.5 w-1 h-2 bg-gradient-to-b from-amber-100 to-amber-200 rounded-full opacity-70" />
-                {/* Wick */}
-                <div className="absolute -top-1.5 left-1/2 -translate-x-1/2 w-0.5 h-2 bg-gradient-to-t from-gray-800 to-gray-600" />
-              </div>
-              {/* Realistic flame with multiple layers */}
-              <div className={`absolute -top-9 left-1/2 -translate-x-1/2 ${isNightTime ? 'opacity-100' : 'opacity-70'}`}>
-                {/* Outer glow */}
-                <div className="absolute -inset-2 bg-gradient-radial from-orange-400/20 via-orange-300/10 to-transparent rounded-full blur-md" />
-                {/* Flame body - outer orange */}
-                <div className={`w-3 h-5 bg-gradient-to-t from-orange-500 via-orange-400 to-yellow-200 rounded-full blur-[1px] animate-pulse`} style={{ animationDelay: `${i * 0.35 + 0.2}s`, animationDuration: '0.8s' }} />
-                {/* Flame core - inner yellow/white */}
-                <div className="absolute top-1 left-1/2 -translate-x-1/2 w-1.5 h-2.5 bg-gradient-to-t from-yellow-300 via-yellow-100 to-white rounded-full animate-pulse blur-[0.5px]" style={{ animationDelay: `${i * 0.35 + 0.3}s`, animationDuration: '0.6s' }} />
-              </div>
-              {/* Ambient light cast */}
-              <div className={`absolute -top-6 left-1/2 -translate-x-1/2 w-12 h-12 bg-gradient-radial from-orange-400/40 via-amber-500/20 to-transparent rounded-full blur-lg ${isNightTime ? 'opacity-90' : 'opacity-40'}`} />
-            </div>
-          </div>
-        ))}
 
         {/* ============ SHELF 1 ============ */}
         <div className="relative pt-6 pb-2">
