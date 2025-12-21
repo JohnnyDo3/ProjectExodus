@@ -8,6 +8,7 @@ import { ThemeToggle } from '@/components/ui/ThemeToggle'
 import { Menu, X, Leaf, User, LogOut, Settings, Users, Calendar, LayoutDashboard, ChevronRight, MessageCircle, Bell, ChevronDown, Lock, Crown, GraduationCap } from 'lucide-react'
 import NotificationBell from '@/components/notifications/NotificationBell'
 import { useDigitalScrollContext } from '@/components/learning/DigitalScroll/DigitalScrollContext'
+import { useSageContextSafe } from '@/components/ai/SageContext'
 
 interface LeaderboardUser {
   userId: string
@@ -30,6 +31,7 @@ export function Header() {
   const pathname = usePathname()
   const { data: session, status } = useSession()
   const { isScrollOpen } = useDigitalScrollContext()
+  const sageContext = useSageContextSafe()
 
   // Fetch top users for dropdown
   useEffect(() => {
@@ -170,15 +172,38 @@ export function Header() {
     >
       <nav className="container mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between h-16 sm:h-20">
-          {/* Logo */}
-          <Link href="/" className="flex items-center gap-2 sm:gap-3 group flex-shrink-0">
-            <div className="w-10 h-10 sm:w-12 sm:h-12 rounded-full bg-gradient-to-br from-moss-600 to-ocean-600 flex items-center justify-center pulse-alive shadow-lg">
+          {/* Logo - Icon separated from text for Sage nap integration */}
+          <div className="flex items-center gap-2 sm:gap-3 flex-shrink-0">
+            {/* Sage's home - the leaf icon */}
+            <div
+              ref={sageContext?.headerLogoRef}
+              onClick={sageContext?.isNapping ? sageContext.wakeUp : undefined}
+              className={`relative w-10 h-10 sm:w-12 sm:h-12 rounded-full bg-gradient-to-br from-moss-600 to-ocean-600 flex items-center justify-center shadow-lg transition-all ${
+                sageContext?.isNapping
+                  ? 'cursor-pointer sage-sleeping sage-wake-indicator hover:scale-110'
+                  : 'pulse-alive'
+              }`}
+              title={sageContext?.isNapping ? 'Click to wake Sage' : undefined}
+            >
               <Leaf className="w-5 h-5 sm:w-7 sm:h-7 text-white" />
+
+              {/* Zzz animation when Sage is napping */}
+              {sageContext?.isNapping && (
+                <>
+                  <span className="sage-zzz sage-zzz-1">z</span>
+                  <span className="sage-zzz sage-zzz-2">z</span>
+                  <span className="sage-zzz sage-zzz-3">z</span>
+                </>
+              )}
             </div>
-            <span className="text-base sm:text-2xl font-black text-[var(--foreground)] group-hover:text-theme-primary transition-colors tracking-tight">
-              PROJECT EXODUS
-            </span>
-          </Link>
+
+            {/* PROJECT EXODUS text - links to home */}
+            <Link href="/" className="group">
+              <span className="text-base sm:text-2xl font-black text-[var(--foreground)] group-hover:text-theme-primary transition-colors tracking-tight">
+                PROJECT EXODUS
+              </span>
+            </Link>
+          </div>
 
           {/* Desktop Navigation */}
           <div className="hidden lg:flex items-center gap-4 xl:gap-6">

@@ -12,6 +12,7 @@ import { Toaster } from "react-hot-toast";
 import { headers } from "next/headers";
 import { MainLayoutWrapper } from "@/components/layout/MainLayoutWrapper";
 import { DigitalScrollProvider } from "@/components/learning/DigitalScroll/DigitalScrollContext";
+import { SageProvider } from "@/components/ai/SageContext";
 
 // Viewport configuration for mobile responsiveness
 export const viewport: Viewport = {
@@ -137,13 +138,15 @@ export default async function RootLayout({
           <TimeThemeProvider>
             <SkyThemeProvider>
               <DigitalScrollProvider>
-                <MainLayoutWrapper
-                  skyBackground={<SkyBackground />}
-                  decorativeBranches={<DecorativeBranches />}
-                  aiAssistant={<ProjectExodusAI />}
-                >
-                  {children}
-                </MainLayoutWrapper>
+                <SageProvider>
+                  <MainLayoutWrapper
+                    skyBackground={<SkyBackground />}
+                    decorativeBranches={<DecorativeBranches />}
+                    aiAssistant={<ProjectExodusAI />}
+                  >
+                    {children}
+                  </MainLayoutWrapper>
+                </SageProvider>
                 {/* Toast Notifications */}
                 <Toaster
                   position="top-right"

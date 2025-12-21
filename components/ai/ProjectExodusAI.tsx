@@ -2,8 +2,9 @@
 
 import { useState, useEffect, useRef } from 'react'
 import { usePathname } from 'next/navigation'
-import { MessageCircle, X, Send, Leaf, Sparkles } from 'lucide-react'
+import { MessageCircle, X, Send, Leaf, Sparkles, Moon } from 'lucide-react'
 import { Button } from '@/components/ui/Button'
+import { useSageContextSafe } from './SageContext'
 
 interface Message {
   role: 'user' | 'assistant'
@@ -19,6 +20,24 @@ export function ProjectExodusAI() {
   const [inputValue, setInputValue] = useState('')
   const [hasGreeted, setHasGreeted] = useState(false)
   const messagesEndRef = useRef<HTMLDivElement>(null)
+  const buttonRef = useRef<HTMLButtonElement>(null)
+  const sageContext = useSageContextSafe()
+
+  // Register the button ref with context
+  useEffect(() => {
+    if (sageContext && buttonRef.current) {
+      sageContext.sageButtonRef.current = buttonRef.current
+    }
+  }, [sageContext])
+
+  // Handle nap - close chat first if open
+  const handleStartNap = () => {
+    if (!sageContext) return
+    if (isOpen) {
+      setIsOpen(false)
+    }
+    sageContext.startNap()
+  }
 
   // Prepare greeting on homepage load (but don't auto-open)
   useEffect(() => {
@@ -153,11 +172,15 @@ export function ProjectExodusAI() {
     return "I'm here to help you on your sustainability journey! 🌱 I can guide you through:\n\n⚡ Renewable Energy (solar, wind, storage)\n👕 Sustainable Fashion (circular economy, ethical brands)\n🌾 Regenerative Agriculture (soil health, carbon sequestration)\n♻️ Zero Waste Living (the 5 R's, composting)\n🏡 Green Building (Passive House, LEED)\n💧 Water Conservation (efficiency, rainwater harvesting)\n🚀 Emerging Technologies (carbon capture, green H₂, AI)\n✅ Success Stories (real-world proof)\n📊 Carbon Calculator (measure your impact)\n\nWhat would you like to explore? Or ask me about specific products, certifications, or practices!"
   }
 
+  // Don't render anything if Sage is napping
+  const isNapping = sageContext?.isNapping ?? false
+
   return (
     <>
-      {/* Chat Widget Button */}
-      {!isOpen && (
+      {/* Chat Widget Button - Hidden when napping */}
+      {!isOpen && !isNapping && (
         <button
+          ref={buttonRef}
           onClick={() => setIsOpen(true)}
           className="fixed bottom-4 right-4 sm:bottom-6 sm:right-6 z-50 w-14 h-14 sm:w-16 sm:h-16 group"
           aria-label="Open Sage"
@@ -173,6 +196,20 @@ export function ProjectExodusAI() {
             {messages.length > 0 && (
               <div className="absolute -top-1 -right-1 w-5 h-5 bg-gradient-to-br from-red-500 to-orange-500 rounded-full flex items-center justify-center shadow-lg animate-pulse">
                 <span className="text-white text-xs font-bold">1</span>
+              </div>
+            )}
+
+            {/* Sleep button - appears on hover, opposite corner from notification */}
+            {sageContext && (
+              <div
+                onClick={(e) => {
+                  e.stopPropagation()
+                  handleStartNap()
+                }}
+                className="absolute -top-1 -left-1 w-5 h-5 rounded-full bg-gradient-to-br from-indigo-500 to-purple-600 flex items-center justify-center shadow-lg opacity-0 group-hover:opacity-100 transition-opacity cursor-pointer hover:scale-110"
+                title="Let Sage nap"
+              >
+                <Moon className="w-2.5 h-2.5 text-white" />
               </div>
             )}
           </div>
