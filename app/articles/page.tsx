@@ -1137,26 +1137,6 @@ export default function ArticlesPage() {
                       <div className="absolute top-0 left-0 right-0 h-1 bg-gradient-to-b from-amber-400/20 to-transparent" />
                     </div>
 
-                    {/* Decorative wood inlay on shelf back */}
-                    <div className="absolute bottom-4 left-0 right-0 h-16 pointer-events-none">
-                      <div className="absolute inset-0 bg-gradient-to-b from-amber-950/40 to-amber-900/20">
-                        {/* Decorative inlay pattern */}
-                        <svg className="absolute inset-0 w-full h-full opacity-30" preserveAspectRatio="none">
-                          <defs>
-                            <pattern id={`inlayLeft${shelfIndex}`} x="0" y="0" width="20" height="16" patternUnits="userSpaceOnUse">
-                              <path d="M10 0 L20 8 L10 16 L0 8 Z" fill="none" stroke="#fbbf24" strokeWidth="0.5"/>
-                              <circle cx="10" cy="8" r="2" fill="none" stroke="#f59e0b" strokeWidth="0.3"/>
-                            </pattern>
-                          </defs>
-                          <rect width="100%" height="100%" fill={`url(#inlayLeft${shelfIndex})`}/>
-                        </svg>
-                        {/* Center medallion accent */}
-                        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-6 h-6 rounded-full border border-amber-500/30 bg-gradient-to-br from-amber-800/20 to-amber-900/40">
-                          <div className="absolute inset-1 rounded-full border border-amber-400/20" />
-                        </div>
-                      </div>
-                    </div>
-
                     {/* Interactive article scrolls */}
                     <div className="absolute bottom-4 left-1 right-1 flex items-end justify-center gap-1 h-16">
                       {shelfArticles.map((article, i) => {
@@ -1533,26 +1513,6 @@ export default function ArticlesPage() {
                       <div className="absolute top-0 left-0 right-0 h-1 bg-gradient-to-b from-amber-400/20 to-transparent" />
                     </div>
 
-                    {/* Decorative wood inlay on shelf back */}
-                    <div className="absolute bottom-4 left-0 right-0 h-16 pointer-events-none">
-                      <div className="absolute inset-0 bg-gradient-to-b from-amber-950/40 to-amber-900/20">
-                        {/* Decorative inlay pattern */}
-                        <svg className="absolute inset-0 w-full h-full opacity-30" preserveAspectRatio="none">
-                          <defs>
-                            <pattern id={`inlayRight${shelfIndex}`} x="0" y="0" width="20" height="16" patternUnits="userSpaceOnUse">
-                              <path d="M10 0 L20 8 L10 16 L0 8 Z" fill="none" stroke="#fbbf24" strokeWidth="0.5"/>
-                              <circle cx="10" cy="8" r="2" fill="none" stroke="#f59e0b" strokeWidth="0.3"/>
-                            </pattern>
-                          </defs>
-                          <rect width="100%" height="100%" fill={`url(#inlayRight${shelfIndex})`}/>
-                        </svg>
-                        {/* Center medallion accent */}
-                        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-6 h-6 rounded-full border border-amber-500/30 bg-gradient-to-br from-amber-800/20 to-amber-900/40">
-                          <div className="absolute inset-1 rounded-full border border-amber-400/20" />
-                        </div>
-                      </div>
-                    </div>
-
                     {/* Interactive article scrolls */}
                     <div className="absolute bottom-4 left-1 right-1 flex items-end justify-center gap-1 h-16">
                       {/* Ghost scrolls - transparent white, filling the shelf */}
@@ -1897,7 +1857,7 @@ export default function ArticlesPage() {
           <div className="max-w-6xl mx-auto lg:pt-40">
             {/* Title Section - Below the entablature */}
             <div className="text-center mb-6 sm:mb-8">
-              <h1 className="text-3xl sm:text-4xl md:text-5xl font-black mb-3 tracking-tight" style={{ fontFamily: 'Georgia, serif', textShadow: '0 2px 20px rgba(251, 191, 36, 0.3)' }}>
+              <h1 className="text-3xl sm:text-4xl md:text-5xl font-black mb-3 tracking-tight text-white" style={{ fontFamily: 'Georgia, serif', textShadow: '0 2px 20px rgba(251, 191, 36, 0.3)' }}>
                 Knowledge Shared
               </h1>
 
