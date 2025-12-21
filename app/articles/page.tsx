@@ -1719,81 +1719,99 @@ export default function ArticlesPage() {
           backgroundImage: `url("data:image/svg+xml,%3Csvg viewBox='0 0 100 400' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M20 0 Q30 100 20 200 Q10 300 20 400' fill='none' stroke='%23000' stroke-width='0.5' opacity='0.3'/%3E%3Cpath d='M50 0 Q60 100 50 200 Q40 300 50 400' fill='none' stroke='%23000' stroke-width='0.5' opacity='0.3'/%3E%3Cpath d='M80 0 Q70 100 80 200 Q90 300 80 400' fill='none' stroke='%23000' stroke-width='0.5' opacity='0.3'/%3E%3C/svg%3E")`,
         }} />
 
-        {/* Roman pilaster columns on sides - Enhanced with Corinthian details */}
-        <div className="absolute left-0 top-0 bottom-0 w-8 bg-gradient-to-r from-amber-800 via-amber-700 to-amber-800 z-10 border-r-2 border-amber-600/60 shadow-xl">
-          {/* Ornate Corinthian capital with acanthus leaves */}
-          <div className="absolute top-0 left-0 right-0 h-12 bg-gradient-to-b from-amber-700 via-amber-750 to-amber-800 border-b border-amber-600/40">
-            <svg viewBox="0 0 32 48" className="w-full h-full text-amber-400/60">
+        {/* Roman pilaster columns on sides - LARGE pillars supporting the library above */}
+        <div className="absolute left-0 top-0 bottom-0 w-16 bg-gradient-to-r from-amber-800 via-amber-700 to-amber-800 z-10 border-r-4 border-amber-600/60 shadow-2xl">
+          {/* Ornate Corinthian capital with acanthus leaves - enlarged */}
+          <div className="absolute top-0 left-0 right-0 h-20 bg-gradient-to-b from-amber-700 via-amber-750 to-amber-800 border-b-2 border-amber-600/40">
+            <svg viewBox="0 0 64 80" className="w-full h-full text-amber-400/60">
               {/* Volutes (scrolls at top) */}
-              <ellipse cx="6" cy="8" rx="4" ry="3" fill="none" stroke="currentColor" strokeWidth="0.8"/>
-              <ellipse cx="26" cy="8" rx="4" ry="3" fill="none" stroke="currentColor" strokeWidth="0.8"/>
-              {/* Acanthus leaves */}
-              <path d="M16 44 Q8 36 8 28 Q12 32 16 28 Q20 32 24 28 Q24 36 16 44" fill="none" stroke="currentColor" strokeWidth="0.8"/>
-              <path d="M16 12 Q12 18 12 24 M16 12 Q20 18 20 24" fill="none" stroke="currentColor" strokeWidth="0.6"/>
+              <ellipse cx="10" cy="12" rx="7" ry="5" fill="none" stroke="currentColor" strokeWidth="1.2"/>
+              <ellipse cx="54" cy="12" rx="7" ry="5" fill="none" stroke="currentColor" strokeWidth="1.2"/>
+              <path d="M10 17 Q10 22 16 24" fill="none" stroke="currentColor" strokeWidth="0.8"/>
+              <path d="M54 17 Q54 22 48 24" fill="none" stroke="currentColor" strokeWidth="0.8"/>
+              {/* Large acanthus leaves */}
+              <path d="M32 72 Q16 58 16 44 Q24 52 32 44 Q40 52 48 44 Q48 58 32 72" fill="none" stroke="currentColor" strokeWidth="1"/>
+              <path d="M32 18 Q24 30 24 42 M32 18 Q40 30 40 42" fill="none" stroke="currentColor" strokeWidth="0.8"/>
+              <path d="M20 28 Q28 36 28 48 M44 28 Q36 36 36 48" fill="none" stroke="currentColor" strokeWidth="0.6"/>
               {/* Central rosette */}
-              <circle cx="16" cy="18" r="4" fill="none" stroke="currentColor" strokeWidth="0.8"/>
-              <circle cx="16" cy="18" r="2" fill="currentColor" opacity="0.4"/>
+              <circle cx="32" cy="32" r="8" fill="none" stroke="currentColor" strokeWidth="1"/>
+              <circle cx="32" cy="32" r="4" fill="currentColor" opacity="0.4"/>
+              <circle cx="32" cy="32" r="2" fill="currentColor" opacity="0.6"/>
               {/* Decorative spirals */}
-              <path d="M4 12 Q8 16 6 22" fill="none" stroke="currentColor" strokeWidth="0.5"/>
-              <path d="M28 12 Q24 16 26 22" fill="none" stroke="currentColor" strokeWidth="0.5"/>
+              <path d="M6 20 Q14 28 10 38" fill="none" stroke="currentColor" strokeWidth="0.6"/>
+              <path d="M58 20 Q50 28 54 38" fill="none" stroke="currentColor" strokeWidth="0.6"/>
+              {/* Additional leaf details */}
+              <path d="M24 56 Q28 52 32 56 Q36 52 40 56" fill="none" stroke="currentColor" strokeWidth="0.5"/>
             </svg>
           </div>
-          {/* Column shaft with fluting */}
-          <div className="absolute top-14 bottom-6 left-0 right-0 overflow-hidden">
-            {/* Fluting channels - precise vertical grooves */}
-            <div className="absolute inset-1 flex justify-around opacity-40">
-              {[0, 1, 2, 3].map((i) => (
-                <div key={`left-flute-${i}`} className="w-1 h-full bg-gradient-to-r from-amber-950/50 via-amber-800/20 to-amber-950/50 rounded-full" />
+          {/* Column shaft with fluting - more channels */}
+          <div className="absolute top-24 bottom-12 left-0 right-0 overflow-hidden">
+            {/* Fluting channels - more grooves for larger column */}
+            <div className="absolute inset-2 flex justify-around opacity-40">
+              {[0, 1, 2, 3, 4, 5, 6, 7].map((i) => (
+                <div key={`left-hshelf-flute-${i}`} className="w-1.5 h-full bg-gradient-to-r from-amber-950/50 via-amber-800/20 to-amber-950/50 rounded-full" />
               ))}
             </div>
             {/* Highlight reflection */}
-            <div className="absolute inset-y-0 left-0 w-1 bg-gradient-to-r from-amber-400/10 to-transparent" />
+            <div className="absolute inset-y-0 left-0 w-2 bg-gradient-to-r from-amber-400/15 to-transparent" />
+            {/* Inner shadow */}
+            <div className="absolute inset-y-0 right-0 w-2 bg-gradient-to-l from-amber-950/20 to-transparent" />
           </div>
-          {/* Attic base (bottom) */}
-          <div className="absolute bottom-0 left-0 right-0 h-6 bg-gradient-to-t from-amber-800 via-amber-750 to-amber-700 border-t border-amber-600/30">
-            <div className="absolute top-1 left-1 right-1 h-1 bg-gradient-to-b from-amber-600/40 to-transparent rounded-full" />
-            <div className="absolute bottom-1 left-0 right-0 h-2 bg-gradient-to-t from-amber-900 to-transparent" />
+          {/* Attic base (bottom) - larger */}
+          <div className="absolute bottom-0 left-0 right-0 h-12 bg-gradient-to-t from-amber-800 via-amber-750 to-amber-700 border-t-2 border-amber-600/40">
+            <div className="absolute top-2 left-2 right-2 h-1.5 bg-gradient-to-b from-amber-600/50 to-transparent rounded-full" />
+            <div className="absolute top-5 left-3 right-3 h-1 bg-gradient-to-b from-amber-500/30 to-transparent rounded-full" />
+            <div className="absolute bottom-2 left-0 right-0 h-3 bg-gradient-to-t from-amber-900 to-transparent" />
           </div>
         </div>
-        <div className="absolute right-0 top-0 bottom-0 w-8 bg-gradient-to-l from-amber-800 via-amber-700 to-amber-800 z-10 border-l-2 border-amber-600/60 shadow-xl">
-          {/* Ornate Corinthian capital with acanthus leaves */}
-          <div className="absolute top-0 left-0 right-0 h-12 bg-gradient-to-b from-amber-700 via-amber-750 to-amber-800 border-b border-amber-600/40">
-            <svg viewBox="0 0 32 48" className="w-full h-full text-amber-400/60">
+        <div className="absolute right-0 top-0 bottom-0 w-16 bg-gradient-to-l from-amber-800 via-amber-700 to-amber-800 z-10 border-l-4 border-amber-600/60 shadow-2xl">
+          {/* Ornate Corinthian capital with acanthus leaves - enlarged */}
+          <div className="absolute top-0 left-0 right-0 h-20 bg-gradient-to-b from-amber-700 via-amber-750 to-amber-800 border-b-2 border-amber-600/40">
+            <svg viewBox="0 0 64 80" className="w-full h-full text-amber-400/60">
               {/* Volutes (scrolls at top) */}
-              <ellipse cx="6" cy="8" rx="4" ry="3" fill="none" stroke="currentColor" strokeWidth="0.8"/>
-              <ellipse cx="26" cy="8" rx="4" ry="3" fill="none" stroke="currentColor" strokeWidth="0.8"/>
-              {/* Acanthus leaves */}
-              <path d="M16 44 Q8 36 8 28 Q12 32 16 28 Q20 32 24 28 Q24 36 16 44" fill="none" stroke="currentColor" strokeWidth="0.8"/>
-              <path d="M16 12 Q12 18 12 24 M16 12 Q20 18 20 24" fill="none" stroke="currentColor" strokeWidth="0.6"/>
+              <ellipse cx="10" cy="12" rx="7" ry="5" fill="none" stroke="currentColor" strokeWidth="1.2"/>
+              <ellipse cx="54" cy="12" rx="7" ry="5" fill="none" stroke="currentColor" strokeWidth="1.2"/>
+              <path d="M10 17 Q10 22 16 24" fill="none" stroke="currentColor" strokeWidth="0.8"/>
+              <path d="M54 17 Q54 22 48 24" fill="none" stroke="currentColor" strokeWidth="0.8"/>
+              {/* Large acanthus leaves */}
+              <path d="M32 72 Q16 58 16 44 Q24 52 32 44 Q40 52 48 44 Q48 58 32 72" fill="none" stroke="currentColor" strokeWidth="1"/>
+              <path d="M32 18 Q24 30 24 42 M32 18 Q40 30 40 42" fill="none" stroke="currentColor" strokeWidth="0.8"/>
+              <path d="M20 28 Q28 36 28 48 M44 28 Q36 36 36 48" fill="none" stroke="currentColor" strokeWidth="0.6"/>
               {/* Central rosette */}
-              <circle cx="16" cy="18" r="4" fill="none" stroke="currentColor" strokeWidth="0.8"/>
-              <circle cx="16" cy="18" r="2" fill="currentColor" opacity="0.4"/>
+              <circle cx="32" cy="32" r="8" fill="none" stroke="currentColor" strokeWidth="1"/>
+              <circle cx="32" cy="32" r="4" fill="currentColor" opacity="0.4"/>
+              <circle cx="32" cy="32" r="2" fill="currentColor" opacity="0.6"/>
               {/* Decorative spirals */}
-              <path d="M4 12 Q8 16 6 22" fill="none" stroke="currentColor" strokeWidth="0.5"/>
-              <path d="M28 12 Q24 16 26 22" fill="none" stroke="currentColor" strokeWidth="0.5"/>
+              <path d="M6 20 Q14 28 10 38" fill="none" stroke="currentColor" strokeWidth="0.6"/>
+              <path d="M58 20 Q50 28 54 38" fill="none" stroke="currentColor" strokeWidth="0.6"/>
+              {/* Additional leaf details */}
+              <path d="M24 56 Q28 52 32 56 Q36 52 40 56" fill="none" stroke="currentColor" strokeWidth="0.5"/>
             </svg>
           </div>
-          {/* Column shaft with fluting */}
-          <div className="absolute top-14 bottom-6 left-0 right-0 overflow-hidden">
-            {/* Fluting channels - precise vertical grooves */}
-            <div className="absolute inset-1 flex justify-around opacity-40">
-              {[0, 1, 2, 3].map((i) => (
-                <div key={`right-flute-${i}`} className="w-1 h-full bg-gradient-to-r from-amber-950/50 via-amber-800/20 to-amber-950/50 rounded-full" />
+          {/* Column shaft with fluting - more channels */}
+          <div className="absolute top-24 bottom-12 left-0 right-0 overflow-hidden">
+            {/* Fluting channels - more grooves for larger column */}
+            <div className="absolute inset-2 flex justify-around opacity-40">
+              {[0, 1, 2, 3, 4, 5, 6, 7].map((i) => (
+                <div key={`right-hshelf-flute-${i}`} className="w-1.5 h-full bg-gradient-to-r from-amber-950/50 via-amber-800/20 to-amber-950/50 rounded-full" />
               ))}
             </div>
             {/* Highlight reflection */}
-            <div className="absolute inset-y-0 right-0 w-1 bg-gradient-to-l from-amber-400/10 to-transparent" />
+            <div className="absolute inset-y-0 right-0 w-2 bg-gradient-to-l from-amber-400/15 to-transparent" />
+            {/* Inner shadow */}
+            <div className="absolute inset-y-0 left-0 w-2 bg-gradient-to-r from-amber-950/20 to-transparent" />
           </div>
-          {/* Attic base (bottom) */}
-          <div className="absolute bottom-0 left-0 right-0 h-6 bg-gradient-to-t from-amber-800 via-amber-750 to-amber-700 border-t border-amber-600/30">
-            <div className="absolute top-1 left-1 right-1 h-1 bg-gradient-to-b from-amber-600/40 to-transparent rounded-full" />
-            <div className="absolute bottom-1 left-0 right-0 h-2 bg-gradient-to-t from-amber-900 to-transparent" />
+          {/* Attic base (bottom) - larger */}
+          <div className="absolute bottom-0 left-0 right-0 h-12 bg-gradient-to-t from-amber-800 via-amber-750 to-amber-700 border-t-2 border-amber-600/40">
+            <div className="absolute top-2 left-2 right-2 h-1.5 bg-gradient-to-b from-amber-600/50 to-transparent rounded-full" />
+            <div className="absolute top-5 left-3 right-3 h-1 bg-gradient-to-b from-amber-500/30 to-transparent rounded-full" />
+            <div className="absolute bottom-2 left-0 right-0 h-3 bg-gradient-to-t from-amber-900 to-transparent" />
           </div>
         </div>
 
         {/* Ornate wall candle sconces - Left side - Enhanced with realistic details */}
         {[18, 50, 82].map((topPercent, i) => (
-          <div key={`hshelf-left-candle-${i}`} className="absolute left-10 z-20" style={{ top: `${topPercent}%`, transform: 'translateY(-50%)' }}>
+          <div key={`hshelf-left-candle-${i}`} className="absolute left-[72px] z-20" style={{ top: `${topPercent}%`, transform: 'translateY(-50%)' }}>
             <div className="relative w-8 h-12">
               {/* Cast shadow on wall */}
               <div className="absolute -left-1 top-2 w-10 h-14 bg-gradient-to-br from-amber-950/40 to-transparent rounded-full blur-sm" />
@@ -1858,7 +1876,7 @@ export default function ArticlesPage() {
 
         {/* Ornate wall candle sconces - Right side - Enhanced with realistic details */}
         {[18, 50, 82].map((topPercent, i) => (
-          <div key={`hshelf-right-candle-${i}`} className="absolute right-10 z-20" style={{ top: `${topPercent}%`, transform: 'translateY(-50%)' }}>
+          <div key={`hshelf-right-candle-${i}`} className="absolute right-[72px] z-20" style={{ top: `${topPercent}%`, transform: 'translateY(-50%)' }}>
             <div className="relative w-8 h-12">
               {/* Cast shadow on wall */}
               <div className="absolute -right-1 top-2 w-10 h-14 bg-gradient-to-bl from-amber-950/40 to-transparent rounded-full blur-sm" />
