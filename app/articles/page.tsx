@@ -900,10 +900,29 @@ export default function ArticlesPage() {
           >
             {/* Bookshelf frame */}
             <div className="absolute inset-0 bg-gradient-to-r from-amber-950/95 via-amber-900/90 to-amber-950/80 border-r-4 border-amber-700/60">
-              {/* Wood grain texture */}
-              <div className="absolute inset-0 opacity-20" style={{
-                backgroundImage: `url("data:image/svg+xml,%3Csvg viewBox='0 0 100 400' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M20 0 Q30 100 20 200 Q10 300 20 400' fill='none' stroke='%23000' stroke-width='0.5' opacity='0.3'/%3E%3Cpath d='M50 0 Q60 100 50 200 Q40 300 50 400' fill='none' stroke='%23000' stroke-width='0.5' opacity='0.3'/%3E%3Cpath d='M80 0 Q70 100 80 200 Q90 300 80 400' fill='none' stroke='%23000' stroke-width='0.5' opacity='0.3'/%3E%3C/svg%3E")`,
-              }} />
+              {/* Minimal wood panel background */}
+              <div className="absolute inset-0 overflow-hidden">
+                {/* Panel frame pattern */}
+                <div className="absolute inset-8 border-2 border-amber-700/30 rounded-sm" style={{
+                  boxShadow: 'inset 2px 2px 4px rgba(0,0,0,0.2), inset -1px -1px 2px rgba(251,191,36,0.1)'
+                }}>
+                  {/* Inner bevel */}
+                  <div className="absolute inset-2 border border-amber-800/40 rounded-sm" />
+                  {/* Subtle carved centerline */}
+                  <div className="absolute left-1/2 top-4 bottom-4 w-px bg-gradient-to-b from-transparent via-amber-600/20 to-transparent" />
+                </div>
+                {/* Corner rosettes */}
+                <svg className="absolute top-6 left-6 w-4 h-4 text-amber-600/25" viewBox="0 0 16 16">
+                  <circle cx="8" cy="8" r="6" fill="none" stroke="currentColor" strokeWidth="0.5"/>
+                  <circle cx="8" cy="8" r="3" fill="none" stroke="currentColor" strokeWidth="0.3"/>
+                  <circle cx="8" cy="8" r="1" fill="currentColor" opacity="0.5"/>
+                </svg>
+                <svg className="absolute bottom-6 left-6 w-4 h-4 text-amber-600/25" viewBox="0 0 16 16">
+                  <circle cx="8" cy="8" r="6" fill="none" stroke="currentColor" strokeWidth="0.5"/>
+                  <circle cx="8" cy="8" r="3" fill="none" stroke="currentColor" strokeWidth="0.3"/>
+                  <circle cx="8" cy="8" r="1" fill="currentColor" opacity="0.5"/>
+                </svg>
+              </div>
 
               {/* ====== OUTER ORNATE PILASTER BORDER (Left Edge) ====== */}
               <div className="absolute left-0 top-0 bottom-0 w-8 bg-gradient-to-r from-amber-800 via-amber-700 to-amber-800 z-10 border-r-2 border-amber-600/60 shadow-xl">
@@ -1181,10 +1200,29 @@ export default function ArticlesPage() {
           >
             {/* Bookshelf frame */}
             <div className="absolute inset-0 bg-gradient-to-l from-amber-950/95 via-amber-900/90 to-amber-950/80 border-l-4 border-amber-700/60">
-              {/* Wood grain texture */}
-              <div className="absolute inset-0 opacity-20" style={{
-                backgroundImage: `url("data:image/svg+xml,%3Csvg viewBox='0 0 100 400' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M20 0 Q30 100 20 200 Q10 300 20 400' fill='none' stroke='%23000' stroke-width='0.5' opacity='0.3'/%3E%3Cpath d='M50 0 Q60 100 50 200 Q40 300 50 400' fill='none' stroke='%23000' stroke-width='0.5' opacity='0.3'/%3E%3Cpath d='M80 0 Q70 100 80 200 Q90 300 80 400' fill='none' stroke='%23000' stroke-width='0.5' opacity='0.3'/%3E%3C/svg%3E")`,
-              }} />
+              {/* Minimal wood panel background */}
+              <div className="absolute inset-0 overflow-hidden">
+                {/* Panel frame pattern */}
+                <div className="absolute inset-8 border-2 border-amber-700/30 rounded-sm" style={{
+                  boxShadow: 'inset 2px 2px 4px rgba(0,0,0,0.2), inset -1px -1px 2px rgba(251,191,36,0.1)'
+                }}>
+                  {/* Inner bevel */}
+                  <div className="absolute inset-2 border border-amber-800/40 rounded-sm" />
+                  {/* Subtle carved centerline */}
+                  <div className="absolute left-1/2 top-4 bottom-4 w-px bg-gradient-to-b from-transparent via-amber-600/20 to-transparent" />
+                </div>
+                {/* Corner rosettes */}
+                <svg className="absolute top-6 right-6 w-4 h-4 text-amber-600/25" viewBox="0 0 16 16">
+                  <circle cx="8" cy="8" r="6" fill="none" stroke="currentColor" strokeWidth="0.5"/>
+                  <circle cx="8" cy="8" r="3" fill="none" stroke="currentColor" strokeWidth="0.3"/>
+                  <circle cx="8" cy="8" r="1" fill="currentColor" opacity="0.5"/>
+                </svg>
+                <svg className="absolute bottom-6 right-6 w-4 h-4 text-amber-600/25" viewBox="0 0 16 16">
+                  <circle cx="8" cy="8" r="6" fill="none" stroke="currentColor" strokeWidth="0.5"/>
+                  <circle cx="8" cy="8" r="3" fill="none" stroke="currentColor" strokeWidth="0.3"/>
+                  <circle cx="8" cy="8" r="1" fill="currentColor" opacity="0.5"/>
+                </svg>
+              </div>
 
               {/* ====== OUTER ORNATE PILASTER BORDER (Right Edge) ====== */}
               <div className="absolute right-0 top-0 bottom-0 w-8 bg-gradient-to-l from-amber-800 via-amber-700 to-amber-800 z-10 border-l-2 border-amber-600/60 shadow-xl">
@@ -1463,98 +1501,193 @@ export default function ArticlesPage() {
             transition={{ duration: 0.6, ease: 'easeOut', delay: 0.5 }}
             className="hidden lg:block absolute left-[18%] right-[18%] top-0 z-10 pointer-events-none"
           >
-            {/* Main Entablature Structure */}
+            {/* Main Entablature Structure - Refined Classical Roman */}
             <div className="relative">
-              {/* ===== CORNICE (Top) - Projecting crown molding ===== */}
-              <div className="relative h-6 bg-gradient-to-b from-amber-600 via-amber-700 to-amber-800 border-b border-amber-500/40 shadow-lg">
-                {/* Corona (projecting part) */}
-                <div className="absolute inset-x-0 top-0 h-2 bg-gradient-to-b from-amber-500 to-amber-600 border-b border-amber-400/50" />
-                {/* Cyma recta molding profile */}
-                <div className="absolute inset-x-0 top-2 h-1 bg-gradient-to-b from-amber-700 to-amber-800" />
-                {/* Dentil band - small rectangular blocks */}
-                <div className="absolute inset-x-0 bottom-0 h-3 flex justify-center">
-                  <div className="flex items-end gap-1 px-4">
-                    {Array.from({ length: 40 }).map((_, i) => (
-                      <div key={`dentil-${i}`} className="w-1.5 h-2 bg-gradient-to-b from-amber-600 to-amber-800 border-x border-amber-500/30" />
-                    ))}
-                  </div>
+              {/* ===== SIMA (Crown Molding) - Decorative top edge ===== */}
+              <div className="relative h-3 bg-gradient-to-b from-amber-500 via-amber-600 to-amber-650 overflow-hidden">
+                {/* Lion head water spouts pattern */}
+                <div className="absolute inset-x-0 top-0 flex justify-around px-12">
+                  {Array.from({ length: 8 }).map((_, i) => (
+                    <svg key={`lion-${i}`} viewBox="0 0 16 12" className="w-4 h-3 text-amber-400/50">
+                      <circle cx="8" cy="5" r="4" fill="none" stroke="currentColor" strokeWidth="0.8"/>
+                      <circle cx="6" cy="4" r="1" fill="currentColor" opacity="0.4"/>
+                      <circle cx="10" cy="4" r="1" fill="currentColor" opacity="0.4"/>
+                      <path d="M6 7 Q8 9 10 7" fill="none" stroke="currentColor" strokeWidth="0.5"/>
+                    </svg>
+                  ))}
                 </div>
-                {/* Top edge highlight */}
-                <div className="absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-amber-400/50 to-transparent" />
+                {/* Top gold edge */}
+                <div className="absolute inset-x-0 top-0 h-0.5 bg-gradient-to-r from-amber-400/30 via-yellow-400/60 to-amber-400/30" />
               </div>
 
-              {/* ===== FRIEZE (Middle) - Decorated horizontal band with Latin inscription ===== */}
-              <div className="relative h-10 bg-gradient-to-b from-amber-800 via-amber-850 to-amber-900 overflow-hidden">
-                {/* Background palmette pattern - subtle, behind text */}
-                <div className="absolute inset-x-0 top-1/2 -translate-y-1/2 flex justify-between px-8">
-                  {/* Left palmettes */}
-                  <div className="flex items-center gap-3">
-                    {[0, 1, 2].map((i) => (
-                      <svg key={`palmette-l-${i}`} viewBox="0 0 20 20" className="w-4 h-4 text-amber-500/30">
-                        <path d="M10 18 Q6 14 6 10 Q8 12 10 8 Q12 12 14 10 Q14 14 10 18" fill="none" stroke="currentColor" strokeWidth="0.8"/>
-                        <path d="M10 8 L10 4" stroke="currentColor" strokeWidth="0.6"/>
-                        <circle cx="10" cy="3" r="1.5" fill="currentColor" opacity="0.5"/>
-                      </svg>
-                    ))}
-                  </div>
-                  {/* Right palmettes */}
-                  <div className="flex items-center gap-3">
-                    {[0, 1, 2].map((i) => (
-                      <svg key={`palmette-r-${i}`} viewBox="0 0 20 20" className="w-4 h-4 text-amber-500/30">
-                        <path d="M10 18 Q6 14 6 10 Q8 12 10 8 Q12 12 14 10 Q14 14 10 18" fill="none" stroke="currentColor" strokeWidth="0.8"/>
-                        <path d="M10 8 L10 4" stroke="currentColor" strokeWidth="0.6"/>
-                        <circle cx="10" cy="3" r="1.5" fill="currentColor" opacity="0.5"/>
-                      </svg>
-                    ))}
-                  </div>
-                </div>
-                {/* Central Latin inscription - prominent and unobstructed */}
-                <div className="absolute inset-x-0 top-1/2 -translate-y-1/2 flex justify-center items-center">
-                  <span
-                    className="text-xs font-bold tracking-[0.25em] text-amber-300/80 uppercase"
-                    style={{ fontFamily: 'Georgia, serif', textShadow: '0 1px 2px rgba(0,0,0,0.5)' }}
-                  >
-                    Sapientia Aeterna Manet
-                  </span>
-                </div>
-                {/* Subtle horizontal lines */}
-                <div className="absolute inset-x-0 top-1 h-px bg-gradient-to-r from-transparent via-amber-600/30 to-transparent" />
-                <div className="absolute inset-x-0 bottom-1 h-px bg-gradient-to-r from-transparent via-amber-600/30 to-transparent" />
-              </div>
-
-              {/* ===== ARCHITRAVE (Bottom) - Main supporting beam ===== */}
-              <div className="relative h-8 bg-gradient-to-b from-amber-800 via-amber-700 to-amber-800 border-t border-amber-600/40">
-                {/* Three fascia bands (traditional Roman architrave) */}
-                <div className="absolute inset-x-0 top-0 h-2 bg-gradient-to-b from-amber-700 to-amber-750 border-b border-amber-600/30" />
-                <div className="absolute inset-x-0 top-2 h-2 bg-gradient-to-b from-amber-750 to-amber-800 border-b border-amber-600/20" />
-                <div className="absolute inset-x-0 top-4 h-4 bg-gradient-to-b from-amber-800 to-amber-850" />
-
-                {/* Taenia (flat band at bottom) */}
-                <div className="absolute inset-x-0 bottom-0 h-2 bg-gradient-to-b from-amber-700 via-amber-800 to-amber-900 border-t border-amber-600/40 border-b-2 border-amber-950/80">
-                  {/* Regulae (small blocks under taenia) */}
-                  <div className="absolute inset-x-0 -bottom-1.5 flex justify-around px-8">
-                    {Array.from({ length: 12 }).map((_, i) => (
-                      <div key={`regula-${i}`} className="w-4 h-1.5 bg-gradient-to-b from-amber-700 to-amber-900 rounded-b-sm shadow-sm" />
-                    ))}
-                  </div>
-                  {/* Guttae (drops) under regulae */}
-                  <div className="absolute inset-x-0 -bottom-3 flex justify-around px-8">
-                    {Array.from({ length: 12 }).map((_, i) => (
-                      <div key={`guttae-group-${i}`} className="flex gap-0.5">
-                        {[0, 1, 2].map((g) => (
-                          <div key={`gutta-${i}-${g}`} className="w-1 h-1 bg-amber-800 rounded-full shadow-sm" />
-                        ))}
+              {/* ===== CORONA (Projecting Cornice) ===== */}
+              <div className="relative h-4 bg-gradient-to-b from-amber-600 via-amber-700 to-amber-750 shadow-md">
+                {/* Cavetto molding (concave profile) */}
+                <div className="absolute inset-x-0 top-0 h-1.5 bg-gradient-to-b from-amber-550 to-amber-650 border-b border-amber-500/40" />
+                {/* Ovolo molding with egg-and-dart pattern */}
+                <div className="absolute inset-x-0 bottom-0 h-2.5 flex justify-center items-center overflow-hidden">
+                  <div className="flex items-center gap-2 px-4">
+                    {Array.from({ length: 30 }).map((_, i) => (
+                      <div key={`egg-${i}`} className="flex items-center gap-0.5">
+                        {/* Egg */}
+                        <div className="w-2 h-2.5 bg-gradient-to-b from-amber-500 to-amber-700 rounded-full border border-amber-400/30" />
+                        {/* Dart */}
+                        <svg viewBox="0 0 4 8" className="w-1 h-2 text-amber-600/60">
+                          <path d="M2 0 L4 8 L0 8 Z" fill="currentColor"/>
+                        </svg>
                       </div>
                     ))}
                   </div>
                 </div>
+                {/* Drip edge shadow line */}
+                <div className="absolute inset-x-0 bottom-0 h-px bg-amber-900/40" />
+              </div>
 
+              {/* ===== DENTIL COURSE ===== */}
+              <div className="relative h-4 bg-gradient-to-b from-amber-750 via-amber-800 to-amber-800 flex justify-center items-center">
+                {/* Dentil blocks */}
+                <div className="flex items-end gap-1.5 px-6">
+                  {Array.from({ length: 35 }).map((_, i) => (
+                    <div key={`dentil-${i}`} className="w-2 h-3 bg-gradient-to-b from-amber-650 via-amber-700 to-amber-800 border-x border-amber-500/20 shadow-sm" style={{
+                      boxShadow: 'inset 1px 0 0 rgba(251,191,36,0.15), inset -1px 0 0 rgba(0,0,0,0.2)'
+                    }} />
+                  ))}
+                </div>
+                {/* Top shadow from corona */}
+                <div className="absolute inset-x-0 top-0 h-1 bg-gradient-to-b from-amber-900/30 to-transparent" />
+              </div>
+
+              {/* ===== FRIEZE - THE ARCHIVES Title Band ===== */}
+              <div className="relative h-14 bg-gradient-to-b from-amber-800 via-amber-850 to-amber-900 overflow-hidden">
+                {/* Carved relief background texture */}
+                <div className="absolute inset-0 opacity-20" style={{
+                  backgroundImage: `url("data:image/svg+xml,%3Csvg viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M30 5 Q40 15 30 25 Q20 15 30 5' fill='none' stroke='%23fbbf24' stroke-width='0.3'/%3E%3Ccircle cx='30' cy='30' r='8' fill='none' stroke='%23fbbf24' stroke-width='0.2'/%3E%3C/svg%3E")`,
+                  backgroundSize: '30px 30px'
+                }} />
+
+                {/* Left decorative scroll/acanthus carvings */}
+                <div className="absolute left-4 top-1/2 -translate-y-1/2 flex items-center gap-2">
+                  <svg viewBox="0 0 40 28" className="w-10 h-7 text-amber-500/50">
+                    <path d="M38 14 Q30 8 25 14 Q30 20 38 14" fill="none" stroke="currentColor" strokeWidth="0.8"/>
+                    <path d="M25 14 Q18 6 10 14 Q18 22 25 14" fill="none" stroke="currentColor" strokeWidth="0.8"/>
+                    <circle cx="6" cy="14" r="4" fill="none" stroke="currentColor" strokeWidth="0.6"/>
+                    <circle cx="6" cy="14" r="2" fill="currentColor" opacity="0.3"/>
+                  </svg>
+                  <svg viewBox="0 0 20 24" className="w-5 h-6 text-amber-400/40">
+                    <path d="M10 2 Q16 8 10 14 Q4 8 10 2" fill="none" stroke="currentColor" strokeWidth="0.6"/>
+                    <path d="M10 10 L10 22" stroke="currentColor" strokeWidth="0.4"/>
+                    <path d="M6 18 Q10 22 14 18" fill="none" stroke="currentColor" strokeWidth="0.4"/>
+                  </svg>
+                </div>
+
+                {/* Right decorative scroll/acanthus carvings (mirrored) */}
+                <div className="absolute right-4 top-1/2 -translate-y-1/2 flex items-center gap-2 scale-x-[-1]">
+                  <svg viewBox="0 0 40 28" className="w-10 h-7 text-amber-500/50">
+                    <path d="M38 14 Q30 8 25 14 Q30 20 38 14" fill="none" stroke="currentColor" strokeWidth="0.8"/>
+                    <path d="M25 14 Q18 6 10 14 Q18 22 25 14" fill="none" stroke="currentColor" strokeWidth="0.8"/>
+                    <circle cx="6" cy="14" r="4" fill="none" stroke="currentColor" strokeWidth="0.6"/>
+                    <circle cx="6" cy="14" r="2" fill="currentColor" opacity="0.3"/>
+                  </svg>
+                  <svg viewBox="0 0 20 24" className="w-5 h-6 text-amber-400/40">
+                    <path d="M10 2 Q16 8 10 14 Q4 8 10 2" fill="none" stroke="currentColor" strokeWidth="0.6"/>
+                    <path d="M10 10 L10 22" stroke="currentColor" strokeWidth="0.4"/>
+                    <path d="M6 18 Q10 22 14 18" fill="none" stroke="currentColor" strokeWidth="0.4"/>
+                  </svg>
+                </div>
+
+                {/* THE ARCHIVES - Central inscription with scroll icon */}
+                <div className="absolute inset-x-0 top-1/2 -translate-y-1/2 flex justify-center items-center">
+                  <div className="flex items-center gap-3 px-6 py-1.5 bg-gradient-to-r from-transparent via-amber-900/40 to-transparent">
+                    {/* Left flourish */}
+                    <svg viewBox="0 0 24 8" className="w-6 h-2 text-amber-400/60">
+                      <path d="M0 4 Q6 2 12 4 Q18 6 24 4" fill="none" stroke="currentColor" strokeWidth="0.8"/>
+                      <circle cx="22" cy="4" r="1.5" fill="currentColor" opacity="0.5"/>
+                    </svg>
+
+                    {/* Scroll icon */}
+                    <ScrollText className="w-5 h-5 text-amber-400/80" />
+
+                    {/* Title text */}
+                    <span
+                      className="text-sm font-bold tracking-[0.3em] text-amber-200 uppercase"
+                      style={{ fontFamily: 'Georgia, serif', textShadow: '0 2px 4px rgba(0,0,0,0.6), 0 0 20px rgba(251,191,36,0.3)' }}
+                    >
+                      The Archives
+                    </span>
+
+                    {/* Right flourish */}
+                    <svg viewBox="0 0 24 8" className="w-6 h-2 text-amber-400/60 scale-x-[-1]">
+                      <path d="M0 4 Q6 2 12 4 Q18 6 24 4" fill="none" stroke="currentColor" strokeWidth="0.8"/>
+                      <circle cx="22" cy="4" r="1.5" fill="currentColor" opacity="0.5"/>
+                    </svg>
+                  </div>
+                </div>
+
+                {/* Top carved bead molding */}
+                <div className="absolute inset-x-0 top-0 h-1.5 flex justify-center items-center">
+                  <div className="flex items-center gap-1 px-8">
+                    {Array.from({ length: 50 }).map((_, i) => (
+                      <div key={`bead-t-${i}`} className="w-1.5 h-1.5 bg-gradient-to-b from-amber-600 to-amber-800 rounded-full border border-amber-500/20" />
+                    ))}
+                  </div>
+                </div>
+                {/* Bottom carved bead molding */}
+                <div className="absolute inset-x-0 bottom-0 h-1.5 flex justify-center items-center">
+                  <div className="flex items-center gap-1 px-8">
+                    {Array.from({ length: 50 }).map((_, i) => (
+                      <div key={`bead-b-${i}`} className="w-1.5 h-1.5 bg-gradient-to-b from-amber-700 to-amber-900 rounded-full border border-amber-600/20" />
+                    ))}
+                  </div>
+                </div>
+              </div>
+
+              {/* ===== ARCHITRAVE - Three Fascia Bands ===== */}
+              <div className="relative h-6 bg-gradient-to-b from-amber-800 to-amber-850">
+                {/* First fascia (largest, bottom) */}
+                <div className="absolute inset-x-0 bottom-0 h-3 bg-gradient-to-b from-amber-750 to-amber-850 border-t border-amber-600/30">
+                  {/* Carved leaf pattern */}
+                  <div className="absolute inset-0 flex justify-center items-center opacity-30">
+                    {Array.from({ length: 20 }).map((_, i) => (
+                      <svg key={`leaf-${i}`} viewBox="0 0 16 12" className="w-4 h-3 text-amber-500">
+                        <path d="M8 1 Q12 4 8 11 Q4 4 8 1" fill="none" stroke="currentColor" strokeWidth="0.5"/>
+                        <path d="M8 3 L8 9" stroke="currentColor" strokeWidth="0.3"/>
+                      </svg>
+                    ))}
+                  </div>
+                </div>
+                {/* Second fascia (middle) */}
+                <div className="absolute inset-x-0 top-1 h-2 bg-gradient-to-b from-amber-700 to-amber-800 border-b border-amber-600/20" />
+                {/* Third fascia (smallest, top) */}
+                <div className="absolute inset-x-0 top-0 h-1 bg-gradient-to-b from-amber-650 to-amber-750 border-b border-amber-500/30" />
                 {/* Gold accent line */}
-                <div className="absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-amber-500/40 to-transparent" />
+                <div className="absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-amber-400/40 to-transparent" />
+              </div>
+
+              {/* ===== TAENIA & REGULAE (Bottom trim with drops) ===== */}
+              <div className="relative h-3 bg-gradient-to-b from-amber-850 via-amber-900 to-amber-950">
+                {/* Taenia band */}
+                <div className="absolute inset-x-0 top-0 h-1.5 bg-gradient-to-b from-amber-800 to-amber-900 border-t border-amber-600/30" />
+                {/* Regulae blocks */}
+                <div className="absolute inset-x-0 bottom-0 flex justify-around px-12">
+                  {Array.from({ length: 15 }).map((_, i) => (
+                    <div key={`regula-${i}`} className="w-5 h-1.5 bg-gradient-to-b from-amber-750 to-amber-900 rounded-b-sm shadow-sm border-x border-amber-600/20" />
+                  ))}
+                </div>
+              </div>
+
+              {/* Guttae (drops below regulae) */}
+              <div className="absolute -bottom-2 inset-x-0 flex justify-around px-12 z-10">
+                {Array.from({ length: 15 }).map((_, i) => (
+                  <div key={`guttae-${i}`} className="flex gap-1">
+                    {[0, 1, 2].map((g) => (
+                      <div key={`gutta-${i}-${g}`} className="w-1.5 h-1.5 bg-gradient-to-b from-amber-700 to-amber-900 rounded-full shadow-md" />
+                    ))}
+                  </div>
+                ))}
               </div>
 
               {/* Bottom shadow for depth */}
-              <div className="absolute -bottom-2 inset-x-0 h-4 bg-gradient-to-b from-amber-950/60 to-transparent blur-sm" />
+              <div className="absolute -bottom-3 inset-x-0 h-6 bg-gradient-to-b from-amber-950/70 to-transparent blur-sm" />
             </div>
           </motion.div>
 
@@ -1564,15 +1697,6 @@ export default function ArticlesPage() {
           <div className="max-w-6xl mx-auto lg:pt-16">
             {/* Title Section - Chamber entrance */}
             <div className="text-center mb-6 sm:mb-8">
-              {/* Ornate header badge */}
-              <div className="inline-flex items-center gap-2 px-5 py-2.5 rounded-none bg-gradient-to-r from-amber-900/60 via-amber-800/80 to-amber-900/60 border-y-2 border-amber-500/50 mb-4 relative">
-                {/* Decorative end caps */}
-                <div className="absolute -left-2 top-1/2 -translate-y-1/2 w-4 h-4 bg-amber-500/30 rotate-45 border border-amber-400/50" />
-                <div className="absolute -right-2 top-1/2 -translate-y-1/2 w-4 h-4 bg-amber-500/30 rotate-45 border border-amber-400/50" />
-                <ScrollText className="w-4 h-4 text-amber-300" />
-                <span className="text-xs font-bold uppercase tracking-[0.2em] text-amber-200">The Archives</span>
-              </div>
-
               <h1 className="text-3xl sm:text-4xl md:text-5xl font-black mb-3 tracking-tight" style={{ fontFamily: 'Georgia, serif', textShadow: '0 2px 20px rgba(251, 191, 36, 0.3)' }}>
                 Knowledge Shared
               </h1>
@@ -2577,7 +2701,7 @@ export default function ArticlesPage() {
               className="absolute inset-0 bg-black/75 backdrop-blur-md"
             />
 
-            {/* Scroll Preview Content */}
+            {/* Scroll Preview Content - Unrolling ancient scroll */}
             <motion.div
               initial={{ scale: 0.8, opacity: 0, rotateX: -15 }}
               animate={{ scale: 1, opacity: 1, rotateX: 0 }}
@@ -2586,169 +2710,179 @@ export default function ArticlesPage() {
               className="relative w-full max-w-2xl mx-4 max-h-[85vh] overflow-hidden"
               onClick={(e) => e.stopPropagation()}
             >
-              {/* Ancient manuscript visual */}
-              <div className="relative bg-gradient-to-b from-stone-100 via-stone-50 to-stone-100 rounded-sm shadow-2xl overflow-hidden border-2 border-stone-400/50"
-                style={{ boxShadow: '0 50px 100px -20px rgba(0, 0, 0, 0.7), inset 0 0 60px rgba(0, 0, 0, 0.05)' }}
-              >
-                {/* Aged paper texture */}
-                <div className="absolute inset-0 opacity-30" style={{
-                  backgroundImage: `url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='manuscriptTexture'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.03' numOctaves='4' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23manuscriptTexture)'/%3E%3C/svg%3E")`,
-                }} />
-                {/* Edge aging effect */}
-                <div className="absolute inset-0 bg-gradient-to-r from-stone-400/20 via-transparent to-stone-400/20 pointer-events-none" />
-                <div className="absolute inset-0 bg-gradient-to-b from-stone-400/10 via-transparent to-stone-400/20 pointer-events-none" />
-
-                {/* Ornate manuscript header border */}
-                <div className="h-10 bg-stone-200/80 border-b-2 border-stone-400/50 relative flex items-center justify-center">
-                  {/* Decorative corner flourish - left */}
-                  <svg className="absolute left-2 top-1/2 -translate-y-1/2 w-8 h-6 text-stone-600/60" viewBox="0 0 32 24">
-                    <path d="M2 12 Q8 6 16 12 Q8 18 2 12" fill="none" stroke="currentColor" strokeWidth="1"/>
-                    <path d="M4 12 Q8 8 12 12" fill="none" stroke="currentColor" strokeWidth="0.5"/>
-                  </svg>
-                  {/* Center ornament */}
-                  <div className="flex items-center gap-2">
-                    <div className="w-3 h-px bg-stone-500/60" />
-                    <div className="w-2 h-2 border border-stone-500/60 rotate-45" />
-                    <div className="w-3 h-px bg-stone-500/60" />
+              {/* Scroll container with rolled ends */}
+              <div className="relative">
+                {/* Top scroll roller - wooden rod */}
+                <div className="relative h-8 z-20">
+                  <div className="absolute inset-x-0 top-0 h-6 bg-gradient-to-b from-amber-700 via-amber-800 to-amber-900 rounded-t-full shadow-lg border-t-2 border-amber-600/60">
+                    {/* Wood grain texture */}
+                    <div className="absolute inset-0 opacity-30 rounded-t-full overflow-hidden" style={{
+                      backgroundImage: `repeating-linear-gradient(90deg, transparent, transparent 3px, rgba(0,0,0,0.1) 3px, rgba(0,0,0,0.1) 4px)`,
+                    }} />
                   </div>
-                  {/* Decorative corner flourish - right */}
-                  <svg className="absolute right-2 top-1/2 -translate-y-1/2 w-8 h-6 text-stone-600/60 scale-x-[-1]" viewBox="0 0 32 24">
-                    <path d="M2 12 Q8 6 16 12 Q8 18 2 12" fill="none" stroke="currentColor" strokeWidth="1"/>
-                    <path d="M4 12 Q8 8 12 12" fill="none" stroke="currentColor" strokeWidth="0.5"/>
-                  </svg>
-                  {/* Close button */}
+                  {/* Brass end caps */}
+                  <div className="absolute left-2 top-0 w-8 h-6 bg-gradient-to-b from-yellow-500 via-yellow-600 to-amber-700 rounded-t-lg shadow-md border-t border-yellow-400/50" />
+                  <div className="absolute right-2 top-0 w-8 h-6 bg-gradient-to-b from-yellow-500 via-yellow-600 to-amber-700 rounded-t-lg shadow-md border-t border-yellow-400/50" />
+                  {/* Close button on roller */}
                   <button
                     onClick={closePreview}
-                    className="absolute right-12 top-1/2 -translate-y-1/2 w-7 h-7 bg-stone-300/80 hover:bg-stone-400/80 text-stone-700 rounded-full flex items-center justify-center transition-colors shadow"
+                    className="absolute right-14 top-0.5 w-5 h-5 bg-amber-600/80 hover:bg-amber-500 text-amber-100 rounded-full flex items-center justify-center transition-colors shadow z-30"
                   >
-                    <X className="w-3.5 h-3.5" />
+                    <X className="w-3 h-3" />
                   </button>
                 </div>
 
-                {/* Content area - manuscript style */}
-                <div className="relative p-6 sm:p-8 max-h-[60vh] overflow-y-auto">
-                  {/* Category - small caps style */}
-                  <div className="flex items-center justify-center mb-4">
-                    <span className="px-3 py-1 text-[10px] font-bold text-stone-600 uppercase tracking-[0.2em] border border-stone-400/40 bg-stone-200/50" style={{ fontFamily: 'Georgia, serif', fontVariant: 'small-caps' }}>
-                      {previewArticle.category?.name || 'Article'}
-                    </span>
-                  </div>
+                {/* Parchment body */}
+                <div className="relative bg-gradient-to-b from-amber-100 via-amber-50 to-amber-100 shadow-2xl overflow-hidden"
+                  style={{ boxShadow: '0 25px 80px -15px rgba(0, 0, 0, 0.6), inset 0 0 40px rgba(139, 69, 19, 0.08)' }}
+                >
+                  {/* Aged parchment texture */}
+                  <div className="absolute inset-0 opacity-40" style={{
+                    backgroundImage: `url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='parchmentNoise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.04' numOctaves='3' stitchTiles='stitch'/%3E%3CfeColorMatrix type='matrix' values='0 0 0 0 0.55 0 0 0 0 0.35 0 0 0 0 0.2 0 0 0 0.3 0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23parchmentNoise)'/%3E%3C/svg%3E")`,
+                  }} />
+                  {/* Edge wear/aging */}
+                  <div className="absolute inset-y-0 left-0 w-8 bg-gradient-to-r from-amber-300/30 to-transparent pointer-events-none" />
+                  <div className="absolute inset-y-0 right-0 w-8 bg-gradient-to-l from-amber-300/30 to-transparent pointer-events-none" />
+                  {/* Scroll shadow from rollers */}
+                  <div className="absolute top-0 inset-x-0 h-6 bg-gradient-to-b from-amber-900/20 to-transparent pointer-events-none" />
+                  <div className="absolute bottom-0 inset-x-0 h-6 bg-gradient-to-t from-amber-900/20 to-transparent pointer-events-none" />
 
-                  {/* Cover image if exists - with manuscript border */}
-                  {previewArticle.coverImage && (
-                    <div className="relative w-full h-48 sm:h-56 overflow-hidden mb-6 border-4 border-double border-stone-400/60">
-                      <img
-                        src={previewArticle.coverImage}
-                        alt={previewArticle.title}
-                        className="w-full h-full object-cover grayscale-[30%] sepia-[10%]"
-                      />
-                      <div className="absolute inset-0 bg-gradient-to-t from-stone-900/30 to-transparent" />
+                  {/* Content area */}
+                  <div className="relative p-6 sm:p-8 max-h-[55vh] overflow-y-auto">
+                    {/* Category seal */}
+                    <div className="flex items-center justify-center mb-5">
+                      <span className="px-4 py-1.5 text-[10px] font-bold text-amber-800 uppercase tracking-[0.2em] border-2 border-amber-600/50 bg-amber-200/60 rounded-sm shadow-sm" style={{ fontFamily: 'Georgia, serif' }}>
+                        {previewArticle.category?.name || 'Article'}
+                      </span>
                     </div>
-                  )}
 
-                  {/* Title - blackletter inspired */}
-                  <h2 className="text-2xl sm:text-3xl font-bold text-stone-900 text-center mb-4 leading-tight tracking-tight" style={{ fontFamily: 'Georgia, serif' }}>
-                    {previewArticle.title}
-                  </h2>
-
-                  {/* Decorative divider - manuscript style */}
-                  <div className="flex items-center justify-center gap-3 mb-4">
-                    <svg className="w-20 h-3 text-stone-500/60" viewBox="0 0 80 12">
-                      <path d="M0 6 L30 6 M35 3 L40 6 L35 9 M45 3 L40 6 L45 9 M50 6 L80 6" fill="none" stroke="currentColor" strokeWidth="1"/>
-                    </svg>
-                  </div>
-
-                  {/* Excerpt - elegant serif */}
-                  <p className="text-sm sm:text-base text-stone-700 text-center mb-6 leading-relaxed" style={{ fontFamily: 'Georgia, serif', lineHeight: '1.8' }}>
-                    {previewArticle.excerpt}
-                  </p>
-
-                  {/* Author section - manuscript attribution */}
-                  <div className="flex items-center justify-center gap-4 mb-6 py-4 border-y border-stone-300/60">
-                    <div className="w-12 h-12 rounded-full bg-stone-200 border-2 border-stone-400/50 flex items-center justify-center shadow overflow-hidden">
-                      {previewArticle.author?.image ? (
-                        <img src={previewArticle.author.image} alt={previewArticle.author.name} className="w-full h-full rounded-full object-cover grayscale-[20%]" />
-                      ) : (
-                        <User className="w-6 h-6 text-stone-600" />
-                      )}
-                    </div>
-                    <div className="text-center">
-                      <p className="font-bold text-stone-800 text-base" style={{ fontFamily: 'Georgia, serif', fontStyle: 'italic' }}>
-                        {previewArticle.author?.name || 'Anonymous'}
-                      </p>
-                      <p className="text-xs text-stone-600" style={{ fontFamily: 'Georgia, serif' }}>
-                        {new Date(previewArticle.publishedAt).toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' })}
-                      </p>
-                    </div>
-                  </div>
-
-                  {/* Stats row - subtle manuscript style */}
-                  <div className="flex items-center justify-center gap-6 mb-6 text-stone-600">
-                    <div className="flex items-center gap-2">
-                      <Clock className="w-4 h-4" />
-                      <span className="text-xs" style={{ fontFamily: 'Georgia, serif' }}>{previewArticle.readTime} min</span>
-                    </div>
-                    <div className="w-1 h-1 bg-stone-400 rounded-full" />
-                    <div className="flex items-center gap-2">
-                      <Eye className="w-4 h-4" />
-                      <span className="text-xs" style={{ fontFamily: 'Georgia, serif' }}>{previewArticle.views} views</span>
-                    </div>
-                    <div className="w-1 h-1 bg-stone-400 rounded-full" />
-                    <div className="flex items-center gap-2">
-                      <MessageCircle className="w-4 h-4" />
-                      <span className="text-xs" style={{ fontFamily: 'Georgia, serif' }}>{previewArticle._count?.comments || 0}</span>
-                    </div>
-                  </div>
-
-                  {/* Reading progress if exists */}
-                  {readingProgress[previewArticle.id] && (
-                    <div className="mb-6 p-3 bg-stone-200/50 border border-stone-300/60">
-                      <div className="flex items-center justify-between mb-2">
-                        <span className="text-xs text-stone-700" style={{ fontFamily: 'Georgia, serif', fontStyle: 'italic' }}>Your Progress</span>
-                        <span className="text-xs font-bold text-stone-800">
-                          {readingProgress[previewArticle.id].completed ? 'Completed' : `${Math.round(readingProgress[previewArticle.id].scrollProgress)}%`}
-                        </span>
-                      </div>
-                      <div className="h-1.5 bg-stone-300 overflow-hidden">
-                        <div
-                          className="h-full bg-stone-600 transition-all"
-                          style={{ width: `${readingProgress[previewArticle.id].scrollProgress}%` }}
+                    {/* Cover image with parchment frame */}
+                    {previewArticle.coverImage && (
+                      <div className="relative w-full h-48 sm:h-56 overflow-hidden mb-6 border-4 border-amber-700/40 shadow-lg">
+                        <img
+                          src={previewArticle.coverImage}
+                          alt={previewArticle.title}
+                          className="w-full h-full object-cover sepia-[20%]"
                         />
+                        <div className="absolute inset-0 bg-gradient-to-t from-amber-900/40 to-transparent" />
+                      </div>
+                    )}
+
+                    {/* Title - rich sepia ink */}
+                    <h2 className="text-2xl sm:text-3xl font-bold text-amber-950 text-center mb-4 leading-tight tracking-tight" style={{ fontFamily: 'Georgia, serif' }}>
+                      {previewArticle.title}
+                    </h2>
+
+                    {/* Decorative scroll divider */}
+                    <div className="flex items-center justify-center gap-3 mb-4">
+                      <div className="h-px w-16 bg-gradient-to-r from-transparent to-amber-600/50" />
+                      <svg className="w-6 h-6 text-amber-600/70" viewBox="0 0 24 24">
+                        <path d="M12 4 L16 8 L12 12 L8 8 Z" fill="none" stroke="currentColor" strokeWidth="1"/>
+                        <circle cx="12" cy="8" r="2" fill="currentColor" opacity="0.5"/>
+                      </svg>
+                      <div className="h-px w-16 bg-gradient-to-l from-transparent to-amber-600/50" />
+                    </div>
+
+                    {/* Excerpt - elegant calligraphy style */}
+                    <p className="text-sm sm:text-base text-amber-900/90 text-center mb-6 leading-relaxed italic" style={{ fontFamily: 'Georgia, serif', lineHeight: '1.9' }}>
+                      "{previewArticle.excerpt}"
+                    </p>
+
+                    {/* Author attribution - manuscript style */}
+                    <div className="flex items-center justify-center gap-4 mb-6 py-4 border-y-2 border-amber-600/30">
+                      <div className="w-12 h-12 rounded-full bg-amber-200 border-2 border-amber-600/50 flex items-center justify-center shadow-md overflow-hidden">
+                        {previewArticle.author?.image ? (
+                          <img src={previewArticle.author.image} alt={previewArticle.author.name} className="w-full h-full rounded-full object-cover sepia-[15%]" />
+                        ) : (
+                          <User className="w-6 h-6 text-amber-700" />
+                        )}
+                      </div>
+                      <div className="text-center">
+                        <p className="font-bold text-amber-900 text-base" style={{ fontFamily: 'Georgia, serif' }}>
+                          {previewArticle.author?.name || 'Anonymous Scribe'}
+                        </p>
+                        <p className="text-xs text-amber-700" style={{ fontFamily: 'Georgia, serif', fontStyle: 'italic' }}>
+                          {new Date(previewArticle.publishedAt).toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' })}
+                        </p>
                       </div>
                     </div>
-                  )}
 
-                  {/* Action buttons - manuscript style */}
-                  <div className="flex items-center justify-center gap-4">
-                    <Link href={`/articles/${previewArticle.slug}`} onClick={closePreview}>
-                      <Button className="bg-stone-800 hover:bg-stone-700 text-stone-100 font-bold px-8 py-3 rounded-none shadow-lg border border-stone-600" style={{ fontFamily: 'Georgia, serif', letterSpacing: '0.05em' }}>
-                        <BookOpen className="w-4 h-4 mr-2" />
-                        Begin Reading
-                      </Button>
-                    </Link>
-                    <button
-                      onClick={(e) => {
-                        e.stopPropagation()
-                        toggleSaveArticle(previewArticle.id)
-                      }}
-                      className={`p-3 rounded-none shadow transition-colors border ${
-                        savedArticles.includes(previewArticle.id)
-                          ? 'bg-stone-700 text-stone-100 border-stone-600'
-                          : 'bg-stone-100 hover:bg-stone-200 text-stone-700 border-stone-400'
-                      }`}
-                    >
-                      <Bookmark className={`w-5 h-5 ${savedArticles.includes(previewArticle.id) ? 'fill-current' : ''}`} />
-                    </button>
+                    {/* Stats - parchment ink style */}
+                    <div className="flex items-center justify-center gap-6 mb-6 text-amber-800">
+                      <div className="flex items-center gap-2">
+                        <Clock className="w-4 h-4" />
+                        <span className="text-xs font-medium" style={{ fontFamily: 'Georgia, serif' }}>{previewArticle.readTime} min</span>
+                      </div>
+                      <div className="w-1.5 h-1.5 bg-amber-600/60 rounded-full" />
+                      <div className="flex items-center gap-2">
+                        <Eye className="w-4 h-4" />
+                        <span className="text-xs font-medium" style={{ fontFamily: 'Georgia, serif' }}>{previewArticle.views} views</span>
+                      </div>
+                      <div className="w-1.5 h-1.5 bg-amber-600/60 rounded-full" />
+                      <div className="flex items-center gap-2">
+                        <MessageCircle className="w-4 h-4" />
+                        <span className="text-xs font-medium" style={{ fontFamily: 'Georgia, serif' }}>{previewArticle._count?.comments || 0}</span>
+                      </div>
+                    </div>
+
+                    {/* Reading progress if exists */}
+                    {readingProgress[previewArticle.id] && (
+                      <div className="mb-6 p-3 bg-amber-200/50 border-2 border-amber-600/40 rounded-sm">
+                        <div className="flex items-center justify-between mb-2">
+                          <span className="text-xs text-amber-800 italic" style={{ fontFamily: 'Georgia, serif' }}>Your Progress</span>
+                          <span className="text-xs font-bold text-amber-900">
+                            {readingProgress[previewArticle.id].completed ? 'Completed' : `${Math.round(readingProgress[previewArticle.id].scrollProgress)}%`}
+                          </span>
+                        </div>
+                        <div className="h-2 bg-amber-300/60 rounded-full overflow-hidden">
+                          <div
+                            className="h-full bg-gradient-to-r from-amber-600 to-amber-700 transition-all rounded-full"
+                            style={{ width: `${readingProgress[previewArticle.id].scrollProgress}%` }}
+                          />
+                        </div>
+                      </div>
+                    )}
+
+                    {/* Action buttons - brass/wood style */}
+                    <div className="flex items-center justify-center gap-4">
+                      <Link href={`/articles/${previewArticle.slug}`} onClick={closePreview}>
+                        <Button className="bg-gradient-to-b from-amber-700 via-amber-800 to-amber-900 hover:from-amber-600 hover:via-amber-700 hover:to-amber-800 text-amber-100 font-bold px-8 py-3 rounded-sm shadow-lg border border-amber-600/60" style={{ fontFamily: 'Georgia, serif', letterSpacing: '0.05em' }}>
+                          <BookOpen className="w-4 h-4 mr-2" />
+                          Unroll Scroll
+                        </Button>
+                      </Link>
+                      <button
+                        onClick={(e) => {
+                          e.stopPropagation()
+                          toggleSaveArticle(previewArticle.id)
+                        }}
+                        className={`p-3 rounded-sm shadow-md transition-colors border-2 ${
+                          savedArticles.includes(previewArticle.id)
+                            ? 'bg-gradient-to-b from-amber-600 to-amber-800 text-amber-100 border-amber-500/60'
+                            : 'bg-amber-100 hover:bg-amber-200 text-amber-800 border-amber-500/50'
+                        }`}
+                      >
+                        <Bookmark className={`w-5 h-5 ${savedArticles.includes(previewArticle.id) ? 'fill-current' : ''}`} />
+                      </button>
+                    </div>
                   </div>
                 </div>
 
-                {/* Bottom manuscript border */}
-                <div className="h-8 bg-stone-200/80 border-t-2 border-stone-400/50 relative flex items-center justify-center">
-                  {/* Decorative end flourish */}
-                  <svg className="w-24 h-4 text-stone-500/50" viewBox="0 0 96 16">
-                    <path d="M8 8 Q16 4 24 8 Q32 12 40 8 L56 8 Q64 4 72 8 Q80 12 88 8" fill="none" stroke="currentColor" strokeWidth="1"/>
-                    <circle cx="48" cy="8" r="2" fill="currentColor" opacity="0.5"/>
-                  </svg>
+                {/* Bottom scroll roller - wooden rod */}
+                <div className="relative h-8 z-20">
+                  <div className="absolute inset-x-0 bottom-0 h-6 bg-gradient-to-t from-amber-700 via-amber-800 to-amber-900 rounded-b-full shadow-lg border-b-2 border-amber-600/60">
+                    {/* Wood grain texture */}
+                    <div className="absolute inset-0 opacity-30 rounded-b-full overflow-hidden" style={{
+                      backgroundImage: `repeating-linear-gradient(90deg, transparent, transparent 3px, rgba(0,0,0,0.1) 3px, rgba(0,0,0,0.1) 4px)`,
+                    }} />
+                  </div>
+                  {/* Brass end caps */}
+                  <div className="absolute left-2 bottom-0 w-8 h-6 bg-gradient-to-t from-yellow-500 via-yellow-600 to-amber-700 rounded-b-lg shadow-md border-b border-yellow-400/50" />
+                  <div className="absolute right-2 bottom-0 w-8 h-6 bg-gradient-to-t from-yellow-500 via-yellow-600 to-amber-700 rounded-b-lg shadow-md border-b border-yellow-400/50" />
+                  {/* Decorative center medallion */}
+                  <div className="absolute left-1/2 -translate-x-1/2 bottom-0.5 w-10 h-5 bg-gradient-to-t from-yellow-500 to-yellow-600 rounded-b-full flex items-center justify-center border-b border-yellow-400/50">
+                    <div className="w-3 h-3 rounded-full bg-amber-800/50 border border-yellow-400/60" />
+                  </div>
                 </div>
               </div>
             </motion.div>
