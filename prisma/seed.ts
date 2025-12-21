@@ -248,19 +248,32 @@ async function main() {
 
   console.log('✓ Created Big Berkey Water Filter')
 
-  // Create Article Categories
-  const energyCategory = await prisma.articleCategory.upsert({
-    where: { slug: 'energy-systems' },
-    update: {},
-    create: {
-      name: 'Energy Systems',
-      slug: 'energy-systems',
-      description: 'Learn about renewable energy and sustainable power solutions',
-      icon: 'zap',
-    },
-  })
+  // Create Article Categories - matching bookshelf filter categories
+  const articleCategories = [
+    { name: 'Sustainability', slug: 'sustainability', description: 'General sustainability practices and eco-friendly living', icon: 'leaf' },
+    { name: 'Water', slug: 'water', description: 'Water conservation, filtration, and management', icon: 'droplets' },
+    { name: 'Energy', slug: 'energy', description: 'Renewable energy and sustainable power solutions', icon: 'zap' },
+    { name: 'Waste', slug: 'waste', description: 'Waste reduction, recycling, and composting', icon: 'recycle' },
+    { name: 'Nature', slug: 'nature', description: 'Biodiversity, ecosystems, and natural conservation', icon: 'tree-pine' },
+    { name: 'Building', slug: 'building', description: 'Sustainable architecture and green building practices', icon: 'home' },
+    { name: 'Food', slug: 'food', description: 'Sustainable food systems, nutrition, and agriculture', icon: 'heart' },
+    { name: 'Community', slug: 'community', description: 'Community initiatives and social sustainability', icon: 'user' },
+  ]
 
-  console.log('✓ Created article categories')
+  const createdCategories: Record<string, { id: string }> = {}
+  for (const cat of articleCategories) {
+    const category = await prisma.articleCategory.upsert({
+      where: { slug: cat.slug },
+      update: { name: cat.name, description: cat.description, icon: cat.icon },
+      create: cat,
+    })
+    createdCategories[cat.slug] = category
+  }
+
+  // Keep reference for backward compatibility
+  const energyCategory = createdCategories['energy']
+
+  console.log('✓ Created article categories (8 categories matching bookshelf filters)')
 
   // Create Sample Article
   const article1 = await prisma.article.create({
