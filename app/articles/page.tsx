@@ -921,38 +921,7 @@ export default function ArticlesPage() {
                   <div className="absolute top-1/4 left-6 right-6 h-px bg-gradient-to-r from-transparent via-amber-600/20 to-transparent" />
                   <div className="absolute top-1/2 left-4 right-4 h-px bg-gradient-to-r from-transparent via-amber-500/30 to-transparent" />
                   <div className="absolute top-3/4 left-6 right-6 h-px bg-gradient-to-r from-transparent via-amber-600/20 to-transparent" />
-
-                  {/* Diamond inlay pattern at center */}
-                  <svg className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 w-12 h-12 opacity-25" viewBox="0 0 48 48">
-                    <path d="M24 4 L44 24 L24 44 L4 24 Z" fill="none" stroke="#fbbf24" strokeWidth="1"/>
-                    <path d="M24 12 L36 24 L24 36 L12 24 Z" fill="none" stroke="#f59e0b" strokeWidth="0.6"/>
-                    <circle cx="24" cy="24" r="4" fill="none" stroke="#fbbf24" strokeWidth="0.5"/>
-                    <circle cx="24" cy="24" r="2" fill="#fbbf24" opacity="0.3"/>
-                  </svg>
                 </div>
-
-                {/* Enhanced corner rosettes with acanthus detail */}
-                <svg className={`absolute top-4 left-4 w-6 h-6 ${isNightTime ? 'text-amber-500/40' : 'text-amber-600/30'}`} viewBox="0 0 24 24">
-                  <circle cx="12" cy="12" r="10" fill="none" stroke="currentColor" strokeWidth="0.6"/>
-                  <circle cx="12" cy="12" r="7" fill="none" stroke="currentColor" strokeWidth="0.4"/>
-                  <circle cx="12" cy="12" r="4" fill="none" stroke="currentColor" strokeWidth="0.3"/>
-                  <circle cx="12" cy="12" r="2" fill="currentColor" opacity="0.4"/>
-                  {/* Petal details */}
-                  <path d="M12 2 Q14 6 12 10 Q10 6 12 2" fill="none" stroke="currentColor" strokeWidth="0.3"/>
-                  <path d="M22 12 Q18 14 14 12 Q18 10 22 12" fill="none" stroke="currentColor" strokeWidth="0.3"/>
-                  <path d="M12 22 Q10 18 12 14 Q14 18 12 22" fill="none" stroke="currentColor" strokeWidth="0.3"/>
-                  <path d="M2 12 Q6 10 10 12 Q6 14 2 12" fill="none" stroke="currentColor" strokeWidth="0.3"/>
-                </svg>
-                <svg className={`absolute bottom-4 left-4 w-6 h-6 ${isNightTime ? 'text-amber-500/40' : 'text-amber-600/30'}`} viewBox="0 0 24 24">
-                  <circle cx="12" cy="12" r="10" fill="none" stroke="currentColor" strokeWidth="0.6"/>
-                  <circle cx="12" cy="12" r="7" fill="none" stroke="currentColor" strokeWidth="0.4"/>
-                  <circle cx="12" cy="12" r="4" fill="none" stroke="currentColor" strokeWidth="0.3"/>
-                  <circle cx="12" cy="12" r="2" fill="currentColor" opacity="0.4"/>
-                  <path d="M12 2 Q14 6 12 10 Q10 6 12 2" fill="none" stroke="currentColor" strokeWidth="0.3"/>
-                  <path d="M22 12 Q18 14 14 12 Q18 10 22 12" fill="none" stroke="currentColor" strokeWidth="0.3"/>
-                  <path d="M12 22 Q10 18 12 14 Q14 18 12 22" fill="none" stroke="currentColor" strokeWidth="0.3"/>
-                  <path d="M2 12 Q6 10 10 12 Q6 14 2 12" fill="none" stroke="currentColor" strokeWidth="0.3"/>
-                </svg>
 
                 {/* ====== AMBIENT CANDLELIGHT AWARENESS ====== */}
                 {/* Warm light pools cast from sconces at 20%, 40%, 60%, 80% */}
@@ -1124,20 +1093,20 @@ export default function ArticlesPage() {
                       {/* Candle holder cup */}
                       <div className="absolute right-5 top-1/2 w-4 h-2.5 bg-gradient-to-b from-yellow-400 to-amber-600 rounded-b-sm border-t-2 border-yellow-300/60 shadow-lg" style={{ transform: 'translateY(-50%)' }} />
 
-                      {/* Candle - sits on holder cup */}
-                      <div className="absolute right-5 top-1/2 w-2.5" style={{ transform: 'translate(10%, -95%)' }}>
+                      {/* Candle - sits perfectly on holder cup, centered */}
+                      <div className="absolute right-5 top-1/2 w-2.5" style={{ transform: 'translate(18%, -130%)' }}>
                         <div className="w-2.5 h-5 bg-gradient-to-b from-amber-50 via-amber-100 to-amber-200 rounded-t-sm shadow-md" />
                         <div className="absolute -top-1 left-1/2 -translate-x-1/2 w-0.5 h-1.5 bg-gradient-to-t from-gray-700 to-gray-500" />
                       </div>
 
                       {/* Flame - at top of candle */}
-                      <div className={`absolute right-4 ${isNightTime ? 'opacity-100' : 'opacity-60'}`} style={{ top: '50%', transform: 'translate(0%, -185%)' }}>
+                      <div className={`absolute right-4 ${isNightTime ? 'opacity-100' : 'opacity-60'}`} style={{ top: '50%', transform: 'translate(8%, -220%)' }}>
                         <div className="absolute -inset-2 bg-gradient-radial from-orange-400/30 via-orange-300/15 to-transparent rounded-full blur-md" />
                         <div className="w-3 h-4 bg-gradient-to-t from-orange-500 via-orange-400 to-yellow-200 rounded-full blur-[1px] animate-pulse" style={{ animationDelay: `${i * 0.3}s`, animationDuration: '0.7s' }} />
                       </div>
 
                       {/* Ambient light */}
-                      <div className={`absolute right-2 w-12 h-12 bg-gradient-radial from-orange-400/40 via-amber-500/20 to-transparent rounded-full blur-xl ${isNightTime ? 'opacity-100' : 'opacity-40'}`} style={{ top: '50%', transform: 'translate(0%, -145%)' }} />
+                      <div className={`absolute right-2 w-12 h-12 bg-gradient-radial from-orange-400/40 via-amber-500/20 to-transparent rounded-full blur-xl ${isNightTime ? 'opacity-100' : 'opacity-40'}`} style={{ top: '50%', transform: 'translate(0%, -180%)' }} />
                     </div>
                   </div>
                 ))}
@@ -1348,38 +1317,7 @@ export default function ArticlesPage() {
                   <div className="absolute top-1/4 left-6 right-6 h-px bg-gradient-to-r from-transparent via-amber-600/20 to-transparent" />
                   <div className="absolute top-1/2 left-4 right-4 h-px bg-gradient-to-r from-transparent via-amber-500/30 to-transparent" />
                   <div className="absolute top-3/4 left-6 right-6 h-px bg-gradient-to-r from-transparent via-amber-600/20 to-transparent" />
-
-                  {/* Diamond inlay pattern at center */}
-                  <svg className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 w-12 h-12 opacity-25" viewBox="0 0 48 48">
-                    <path d="M24 4 L44 24 L24 44 L4 24 Z" fill="none" stroke="#fbbf24" strokeWidth="1"/>
-                    <path d="M24 12 L36 24 L24 36 L12 24 Z" fill="none" stroke="#f59e0b" strokeWidth="0.6"/>
-                    <circle cx="24" cy="24" r="4" fill="none" stroke="#fbbf24" strokeWidth="0.5"/>
-                    <circle cx="24" cy="24" r="2" fill="#fbbf24" opacity="0.3"/>
-                  </svg>
                 </div>
-
-                {/* Enhanced corner rosettes with acanthus detail */}
-                <svg className={`absolute top-4 right-4 w-6 h-6 ${isNightTime ? 'text-amber-500/40' : 'text-amber-600/30'}`} viewBox="0 0 24 24">
-                  <circle cx="12" cy="12" r="10" fill="none" stroke="currentColor" strokeWidth="0.6"/>
-                  <circle cx="12" cy="12" r="7" fill="none" stroke="currentColor" strokeWidth="0.4"/>
-                  <circle cx="12" cy="12" r="4" fill="none" stroke="currentColor" strokeWidth="0.3"/>
-                  <circle cx="12" cy="12" r="2" fill="currentColor" opacity="0.4"/>
-                  {/* Petal details */}
-                  <path d="M12 2 Q14 6 12 10 Q10 6 12 2" fill="none" stroke="currentColor" strokeWidth="0.3"/>
-                  <path d="M22 12 Q18 14 14 12 Q18 10 22 12" fill="none" stroke="currentColor" strokeWidth="0.3"/>
-                  <path d="M12 22 Q10 18 12 14 Q14 18 12 22" fill="none" stroke="currentColor" strokeWidth="0.3"/>
-                  <path d="M2 12 Q6 10 10 12 Q6 14 2 12" fill="none" stroke="currentColor" strokeWidth="0.3"/>
-                </svg>
-                <svg className={`absolute bottom-4 right-4 w-6 h-6 ${isNightTime ? 'text-amber-500/40' : 'text-amber-600/30'}`} viewBox="0 0 24 24">
-                  <circle cx="12" cy="12" r="10" fill="none" stroke="currentColor" strokeWidth="0.6"/>
-                  <circle cx="12" cy="12" r="7" fill="none" stroke="currentColor" strokeWidth="0.4"/>
-                  <circle cx="12" cy="12" r="4" fill="none" stroke="currentColor" strokeWidth="0.3"/>
-                  <circle cx="12" cy="12" r="2" fill="currentColor" opacity="0.4"/>
-                  <path d="M12 2 Q14 6 12 10 Q10 6 12 2" fill="none" stroke="currentColor" strokeWidth="0.3"/>
-                  <path d="M22 12 Q18 14 14 12 Q18 10 22 12" fill="none" stroke="currentColor" strokeWidth="0.3"/>
-                  <path d="M12 22 Q10 18 12 14 Q14 18 12 22" fill="none" stroke="currentColor" strokeWidth="0.3"/>
-                  <path d="M2 12 Q6 10 10 12 Q6 14 2 12" fill="none" stroke="currentColor" strokeWidth="0.3"/>
-                </svg>
 
                 {/* ====== AMBIENT CANDLELIGHT AWARENESS (Mirrored) ====== */}
                 {/* Warm light pools cast from sconces at 20%, 40%, 60%, 80% */}
@@ -1551,20 +1489,20 @@ export default function ArticlesPage() {
                       {/* Candle holder cup */}
                       <div className="absolute left-5 top-1/2 w-4 h-2.5 bg-gradient-to-b from-yellow-400 to-amber-600 rounded-b-sm border-t-2 border-yellow-300/60 shadow-lg" style={{ transform: 'translateY(-50%)' }} />
 
-                      {/* Candle - sits on holder cup */}
-                      <div className="absolute left-5 top-1/2 w-2.5" style={{ transform: 'translate(-10%, -95%)' }}>
+                      {/* Candle - sits perfectly on holder cup, centered */}
+                      <div className="absolute left-5 top-1/2 w-2.5" style={{ transform: 'translate(-18%, -130%)' }}>
                         <div className="w-2.5 h-5 bg-gradient-to-b from-amber-50 via-amber-100 to-amber-200 rounded-t-sm shadow-md" />
                         <div className="absolute -top-1 left-1/2 -translate-x-1/2 w-0.5 h-1.5 bg-gradient-to-t from-gray-700 to-gray-500" />
                       </div>
 
                       {/* Flame - at top of candle */}
-                      <div className={`absolute left-4 ${isNightTime ? 'opacity-100' : 'opacity-60'}`} style={{ top: '50%', transform: 'translate(0%, -185%)' }}>
+                      <div className={`absolute left-4 ${isNightTime ? 'opacity-100' : 'opacity-60'}`} style={{ top: '50%', transform: 'translate(-8%, -220%)' }}>
                         <div className="absolute -inset-2 bg-gradient-radial from-orange-400/30 via-orange-300/15 to-transparent rounded-full blur-md" />
                         <div className="w-3 h-4 bg-gradient-to-t from-orange-500 via-orange-400 to-yellow-200 rounded-full blur-[1px] animate-pulse" style={{ animationDelay: `${i * 0.3 + 0.5}s`, animationDuration: '0.7s' }} />
                       </div>
 
                       {/* Ambient light */}
-                      <div className={`absolute left-2 w-12 h-12 bg-gradient-radial from-orange-400/40 via-amber-500/20 to-transparent rounded-full blur-xl ${isNightTime ? 'opacity-100' : 'opacity-40'}`} style={{ top: '50%', transform: 'translate(0%, -145%)' }} />
+                      <div className={`absolute left-2 w-12 h-12 bg-gradient-radial from-orange-400/40 via-amber-500/20 to-transparent rounded-full blur-xl ${isNightTime ? 'opacity-100' : 'opacity-40'}`} style={{ top: '50%', transform: 'translate(0%, -180%)' }} />
                     </div>
                   </div>
                 ))}
@@ -1849,9 +1787,17 @@ export default function ArticlesPage() {
                   </svg>
                 </div>
 
-                {/* THE ARCHIVES - Central inscription with scroll icon */}
-                <div className="absolute inset-x-0 top-1/2 -translate-y-1/2 flex justify-center items-center">
-                  <div className="flex items-center gap-3 px-6 py-1.5 bg-gradient-to-r from-transparent via-amber-900/40 to-transparent">
+                {/* Classical Roman inscription - Latin motto above, The Archives below */}
+                <div className="absolute inset-x-0 top-1/2 -translate-y-1/2 flex flex-col justify-center items-center gap-0.5">
+                  {/* Latin inscription */}
+                  <span
+                    className="text-[10px] font-semibold tracking-[0.4em] text-amber-400/70 uppercase"
+                    style={{ fontFamily: 'Georgia, serif', letterSpacing: '0.5em' }}
+                  >
+                    SAPIENTIA • VERITAS • SCIENTIA
+                  </span>
+
+                  <div className="flex items-center gap-3 px-6 py-0.5 bg-gradient-to-r from-transparent via-amber-900/40 to-transparent">
                     {/* Left flourish */}
                     <svg viewBox="0 0 24 8" className="w-6 h-2 text-amber-400/60">
                       <path d="M0 4 Q6 2 12 4 Q18 6 24 4" fill="none" stroke="currentColor" strokeWidth="0.8"/>
@@ -1859,9 +1805,9 @@ export default function ArticlesPage() {
                     </svg>
 
                     {/* Scroll icon */}
-                    <ScrollText className="w-5 h-5 text-amber-400/80" />
+                    <ScrollText className="w-4 h-4 text-amber-400/80" />
 
-                    {/* Title text */}
+                    {/* The Archives text */}
                     <span
                       className="text-sm font-bold tracking-[0.3em] text-amber-200 uppercase"
                       style={{ fontFamily: 'Georgia, serif', textShadow: '0 2px 4px rgba(0,0,0,0.6), 0 0 20px rgba(251,191,36,0.3)' }}

@@ -5,7 +5,7 @@ import { usePathname } from 'next/navigation'
 import { useState, useEffect, useRef } from 'react'
 import { useSession, signOut } from 'next-auth/react'
 import { ThemeToggle } from '@/components/ui/ThemeToggle'
-import { Menu, X, Leaf, User, LogOut, Settings, Users, Calendar, LayoutDashboard, ChevronRight, MessageCircle, Bell, ChevronDown, Lock, Crown } from 'lucide-react'
+import { Menu, X, Leaf, User, LogOut, Settings, Users, Calendar, LayoutDashboard, ChevronRight, MessageCircle, Bell, ChevronDown, Lock, Crown, GraduationCap } from 'lucide-react'
 import NotificationBell from '@/components/notifications/NotificationBell'
 import { useDigitalScrollContext } from '@/components/learning/DigitalScroll/DigitalScrollContext'
 
@@ -146,7 +146,6 @@ export function Header() {
   ]
 
   const learnMenuItems = [
-    { label: 'Learning Modules', href: '/learn', requiresAuth: false },
     { label: 'Exodology', href: '/exodology', requiresAuth: true },
   ]
 
@@ -213,9 +212,9 @@ export function Header() {
                       <ChevronDown className={`w-4 h-4 transition-transform duration-200 ${learnMenuOpen ? 'rotate-180' : ''}`} />
                     </Link>
 
-                    {/* Learn Dropdown menu */}
+                    {/* Learn Dropdown menu - centered */}
                     <div
-                      className={`absolute top-full left-0 mt-2 w-52 rounded-xl overflow-hidden z-[201] transition-all duration-200 origin-top ${
+                      className={`absolute top-full left-1/2 -translate-x-1/2 mt-2 w-44 rounded-xl overflow-hidden z-[201] transition-all duration-200 origin-top ${
                         learnMenuOpen
                           ? 'opacity-100 scale-100 translate-y-0'
                           : 'opacity-0 scale-95 -translate-y-2 pointer-events-none'
@@ -225,7 +224,7 @@ export function Header() {
                         {/* Decorative top gradient bar */}
                         <div className="h-1 bg-gradient-to-r from-emerald-500 via-teal-500 to-cyan-500" />
 
-                        {/* Navigation links */}
+                        {/* Navigation link - Exodology only */}
                         <div className="p-2">
                           {learnMenuItems.map((menuItem) => {
                             const isLocked = menuItem.requiresAuth && !session
@@ -233,20 +232,20 @@ export function Header() {
                             return isLocked ? (
                               <div
                                 key={menuItem.label}
-                                className="flex items-center gap-2 px-3 py-2 rounded-lg text-[var(--muted-foreground)] opacity-60 cursor-not-allowed"
+                                className="flex items-center justify-center gap-2 px-4 py-2.5 rounded-lg text-[var(--muted-foreground)] opacity-60 cursor-not-allowed"
                                 title="Sign in to access"
                               >
-                                <Lock className="w-3.5 h-3.5 flex-shrink-0" />
-                                <span className="text-sm font-medium">{menuItem.label}</span>
+                                <Lock className="w-4 h-4 flex-shrink-0" />
+                                <span className="text-sm font-semibold">{menuItem.label}</span>
                               </div>
                             ) : (
                               <Link
                                 key={menuItem.label}
                                 href={menuItem.href}
-                                className="flex items-center gap-2 px-3 py-2 rounded-lg text-sm font-medium text-[var(--foreground)] hover:bg-[var(--muted)]/50 hover:text-[var(--primary)] transition-colors"
+                                className="flex items-center justify-center gap-2 px-4 py-2.5 rounded-lg text-sm font-semibold text-[var(--foreground)] hover:bg-[var(--muted)]/50 hover:text-[var(--primary)] transition-colors"
                                 onClick={() => setLearnMenuOpen(false)}
                               >
-                                <span className="w-3.5" /> {/* Spacer for alignment */}
+                                <GraduationCap className="w-4 h-4" />
                                 <span>{menuItem.label}</span>
                               </Link>
                             )
@@ -551,10 +550,10 @@ export function Header() {
                 })}
               </div>
 
-              {/* Learn Quick Links - Exodology for logged-in users */}
+              {/* Learn Quick Links - Exodology */}
               <div className="space-y-2">
                 <p className="text-xs font-semibold text-[var(--muted-foreground)] uppercase tracking-wide px-2">Learning</p>
-                <div className="grid grid-cols-2 gap-2">
+                <div className="flex justify-center">
                   {learnMenuItems.map((menuItem) => {
                     const isLocked = menuItem.requiresAuth && !session
 
@@ -562,10 +561,10 @@ export function Header() {
                       return (
                         <div
                           key={menuItem.label}
-                          className="flex items-center justify-center gap-1.5 py-3 px-2 rounded-xl bg-[var(--muted)]/50 opacity-60"
+                          className="flex items-center justify-center gap-2 py-3 px-6 rounded-xl bg-[var(--muted)]/50 opacity-60"
                         >
-                          <Lock className="w-3 h-3 flex-shrink-0 text-[var(--muted-foreground)]" />
-                          <span className="text-xs font-medium text-[var(--muted-foreground)]">{menuItem.label}</span>
+                          <Lock className="w-4 h-4 flex-shrink-0 text-[var(--muted-foreground)]" />
+                          <span className="text-sm font-semibold text-[var(--muted-foreground)]">{menuItem.label}</span>
                         </div>
                       )
                     }
@@ -574,10 +573,11 @@ export function Header() {
                       <Link
                         key={menuItem.label}
                         href={menuItem.href}
-                        className="flex items-center justify-center py-3 px-2 rounded-xl bg-[var(--muted)] hover:bg-theme-primary/10 transition-colors"
+                        className="flex items-center justify-center gap-2 py-3 px-6 rounded-xl bg-[var(--muted)] hover:bg-theme-primary/10 transition-colors"
                         onClick={() => setMobileMenuOpen(false)}
                       >
-                        <span className="text-xs font-medium text-[var(--foreground)]">{menuItem.label}</span>
+                        <GraduationCap className="w-4 h-4 text-[var(--foreground)]" />
+                        <span className="text-sm font-semibold text-[var(--foreground)]">{menuItem.label}</span>
                       </Link>
                     )
                   })}
