@@ -776,7 +776,7 @@ export default function ArticlesPage() {
                 <ScrollText className="w-10 h-10 text-amber-100" />
               </div>
               <h2 className="text-2xl font-bold text-amber-100 mb-2" style={{ fontFamily: 'Georgia, serif' }}>
-                The Ancient Library
+                The Archives
               </h2>
               <p className="text-amber-300/70 text-sm mb-6">
                 Wisdom awaits within
@@ -930,56 +930,87 @@ export default function ArticlesPage() {
               }} />
 
               {/* ====== OUTER ORNATE PILASTER BORDER (Left Edge) ====== */}
-              <div className="absolute left-0 top-0 bottom-0 w-6 bg-gradient-to-r from-amber-800 via-amber-850 to-amber-900/50 z-10 border-r border-amber-700/40 shadow-lg">
+              <div className="absolute left-0 top-0 bottom-0 w-8 bg-gradient-to-r from-amber-800 via-amber-700 to-amber-800 z-10 border-r-2 border-amber-600/60 shadow-xl">
                 {/* Corinthian capital at top */}
-                <div className="absolute top-0 left-0 right-0 h-10 bg-gradient-to-b from-amber-700 via-amber-750 to-amber-800 border-b border-amber-600/40">
-                  <svg viewBox="0 0 24 40" className="w-full h-full text-amber-400/50">
-                    <ellipse cx="6" cy="6" rx="3" ry="2" fill="none" stroke="currentColor" strokeWidth="0.6"/>
-                    <ellipse cx="18" cy="6" rx="3" ry="2" fill="none" stroke="currentColor" strokeWidth="0.6"/>
-                    <path d="M12 36 Q6 30 6 24 Q9 27 12 24 Q15 27 18 24 Q18 30 12 36" fill="none" stroke="currentColor" strokeWidth="0.6"/>
-                    <circle cx="12" cy="14" r="3" fill="none" stroke="currentColor" strokeWidth="0.6"/>
-                    <circle cx="12" cy="14" r="1.5" fill="currentColor" opacity="0.3"/>
+                <div className="absolute top-0 left-0 right-0 h-12 bg-gradient-to-b from-amber-600 via-amber-700 to-amber-800 border-b-2 border-amber-500/50">
+                  <svg viewBox="0 0 32 48" className="w-full h-full text-amber-400">
+                    <ellipse cx="8" cy="8" rx="4" ry="3" fill="none" stroke="currentColor" strokeWidth="0.8" opacity="0.6"/>
+                    <ellipse cx="24" cy="8" rx="4" ry="3" fill="none" stroke="currentColor" strokeWidth="0.8" opacity="0.6"/>
+                    <path d="M16 44 Q8 36 8 28 Q12 32 16 28 Q20 32 24 28 Q24 36 16 44" fill="none" stroke="currentColor" strokeWidth="0.8" opacity="0.5"/>
+                    <circle cx="16" cy="18" r="4" fill="none" stroke="currentColor" strokeWidth="0.8" opacity="0.5"/>
+                    <circle cx="16" cy="18" r="2" fill="currentColor" opacity="0.3"/>
                   </svg>
                 </div>
                 {/* Column shaft with fluting */}
-                <div className="absolute top-12 bottom-8 left-0 right-0 overflow-hidden">
-                  <div className="absolute inset-0.5 flex justify-around opacity-30">
-                    {[0, 1, 2].map((i) => (
-                      <div key={`left-outer-flute-${i}`} className="w-0.5 h-full bg-gradient-to-r from-amber-950/50 via-amber-800/20 to-amber-950/50 rounded-full" />
+                <div className="absolute top-14 bottom-10 left-0 right-0 overflow-hidden bg-gradient-to-b from-amber-750 via-amber-800 to-amber-750">
+                  <div className="absolute inset-1 flex justify-around">
+                    {[0, 1, 2, 3].map((i) => (
+                      <div key={`left-outer-flute-${i}`} className="w-1 h-full bg-gradient-to-r from-amber-900 via-amber-950/80 to-amber-900 rounded-full" />
                     ))}
                   </div>
-                  <div className="absolute inset-y-0 left-0 w-0.5 bg-gradient-to-r from-amber-400/10 to-transparent" />
+                  <div className="absolute inset-y-0 left-0 w-1 bg-gradient-to-r from-amber-500/30 to-transparent" />
+                  <div className="absolute inset-y-0 right-0 w-1 bg-gradient-to-l from-amber-600/20 to-transparent" />
                 </div>
                 {/* Attic base */}
-                <div className="absolute bottom-0 left-0 right-0 h-8 bg-gradient-to-t from-amber-800 via-amber-750 to-amber-700 border-t border-amber-600/30">
-                  <div className="absolute top-1 left-0.5 right-0.5 h-0.5 bg-gradient-to-b from-amber-600/40 to-transparent rounded-full" />
+                <div className="absolute bottom-0 left-0 right-0 h-10 bg-gradient-to-t from-amber-700 via-amber-750 to-amber-800 border-t-2 border-amber-500/40">
+                  <div className="absolute top-2 left-1 right-1 h-1 bg-gradient-to-b from-amber-500/40 to-transparent rounded-full" />
+                  <div className="absolute bottom-2 left-1 right-1 h-1 bg-gradient-to-t from-amber-600/30 to-transparent rounded-full" />
                 </div>
               </div>
 
-              {/* ====== INNER ORNATE BORDER (Right Edge - facing content) ====== */}
-              <div className="absolute right-0 top-0 bottom-0 w-6 bg-gradient-to-l from-amber-800 via-amber-850 to-amber-900/50 z-10 border-l border-amber-600/40 shadow-lg">
+              {/* ====== INNER ORNATE BORDER (Right Edge - facing content) with INTEGRATED SCONCES ====== */}
+              <div className="absolute right-0 top-0 bottom-0 w-8 bg-gradient-to-l from-amber-800 via-amber-700 to-amber-800 z-10 border-l-2 border-amber-500/50 shadow-xl">
                 {/* Corinthian capital at top */}
-                <div className="absolute top-0 left-0 right-0 h-10 bg-gradient-to-b from-amber-700 via-amber-750 to-amber-800 border-b border-amber-600/40">
-                  <svg viewBox="0 0 24 40" className="w-full h-full text-amber-400/50">
-                    <ellipse cx="6" cy="6" rx="3" ry="2" fill="none" stroke="currentColor" strokeWidth="0.6"/>
-                    <ellipse cx="18" cy="6" rx="3" ry="2" fill="none" stroke="currentColor" strokeWidth="0.6"/>
-                    <path d="M12 36 Q6 30 6 24 Q9 27 12 24 Q15 27 18 24 Q18 30 12 36" fill="none" stroke="currentColor" strokeWidth="0.6"/>
-                    <circle cx="12" cy="14" r="3" fill="none" stroke="currentColor" strokeWidth="0.6"/>
-                    <circle cx="12" cy="14" r="1.5" fill="currentColor" opacity="0.3"/>
+                <div className="absolute top-0 left-0 right-0 h-12 bg-gradient-to-b from-amber-600 via-amber-700 to-amber-800 border-b-2 border-amber-500/50">
+                  <svg viewBox="0 0 32 48" className="w-full h-full text-amber-400">
+                    <ellipse cx="8" cy="8" rx="4" ry="3" fill="none" stroke="currentColor" strokeWidth="0.8" opacity="0.6"/>
+                    <ellipse cx="24" cy="8" rx="4" ry="3" fill="none" stroke="currentColor" strokeWidth="0.8" opacity="0.6"/>
+                    <path d="M16 44 Q8 36 8 28 Q12 32 16 28 Q20 32 24 28 Q24 36 16 44" fill="none" stroke="currentColor" strokeWidth="0.8" opacity="0.5"/>
+                    <circle cx="16" cy="18" r="4" fill="none" stroke="currentColor" strokeWidth="0.8" opacity="0.5"/>
+                    <circle cx="16" cy="18" r="2" fill="currentColor" opacity="0.3"/>
                   </svg>
                 </div>
-                {/* Column shaft with fluting */}
-                <div className="absolute top-12 bottom-8 left-0 right-0 overflow-hidden">
-                  <div className="absolute inset-0.5 flex justify-around opacity-30">
-                    {[0, 1, 2].map((i) => (
-                      <div key={`left-inner-flute-${i}`} className="w-0.5 h-full bg-gradient-to-r from-amber-950/50 via-amber-800/20 to-amber-950/50 rounded-full" />
+                {/* Column shaft with fluting and INTEGRATED SCONCES */}
+                <div className="absolute top-14 bottom-10 left-0 right-0 overflow-hidden bg-gradient-to-b from-amber-750 via-amber-800 to-amber-750">
+                  <div className="absolute inset-1 flex justify-around">
+                    {[0, 1, 2, 3].map((i) => (
+                      <div key={`left-inner-flute-${i}`} className="w-1 h-full bg-gradient-to-r from-amber-900 via-amber-950/80 to-amber-900 rounded-full" />
                     ))}
                   </div>
-                  <div className="absolute inset-y-0 right-0 w-0.5 bg-gradient-to-l from-amber-400/10 to-transparent" />
+                  <div className="absolute inset-y-0 right-0 w-1 bg-gradient-to-l from-amber-500/30 to-transparent" />
+                  <div className="absolute inset-y-0 left-0 w-1 bg-gradient-to-r from-amber-600/20 to-transparent" />
+
+                  {/* Integrated candle sconces - built into the pilaster */}
+                  {[15, 40, 65, 90].map((topPercent, i) => (
+                    <div key={`left-sconce-${i}`} className="absolute -left-4 w-10" style={{ top: `${topPercent}%`, transform: 'translateY(-50%)' }}>
+                      {/* Sconce bracket emerging from pilaster */}
+                      <div className="relative">
+                        {/* Mounting plate integrated into pilaster */}
+                        <div className="absolute right-0 top-1/2 -translate-y-1/2 w-4 h-6 bg-gradient-to-l from-amber-700 via-amber-600 to-amber-700 rounded-l-sm border-l border-y border-amber-500/50 shadow-md" />
+                        {/* Curved arm */}
+                        <div className="absolute right-3 top-1/2 -translate-y-1/2 w-5 h-1.5 bg-gradient-to-b from-yellow-600 via-amber-700 to-amber-800 rounded-full shadow-md" style={{ transform: 'translateY(-50%) rotate(-5deg)' }} />
+                        {/* Candle cup */}
+                        <div className="absolute right-6 top-1/2 -translate-y-1/2 w-3 h-2 bg-gradient-to-b from-yellow-500 via-amber-600 to-amber-700 rounded-b-sm border-t border-yellow-400/40" style={{ transform: 'translateY(-30%)' }} />
+                        {/* Candle */}
+                        <div className="absolute right-6 top-1/2 w-2 h-6 -translate-y-full" style={{ transform: 'translate(-25%, -60%)' }}>
+                          <div className="w-full h-full bg-gradient-to-b from-amber-50 via-amber-100 to-amber-200 rounded-t-sm shadow" />
+                          <div className="absolute top-0 left-0.5 w-1 h-2 bg-gradient-to-b from-amber-100 to-amber-200 rounded-full opacity-60" />
+                        </div>
+                        {/* Flame */}
+                        <div className={`absolute right-5 w-4 h-5 ${isNightTime ? 'opacity-100' : 'opacity-70'}`} style={{ top: '50%', transform: 'translate(-25%, -180%)' }}>
+                          <div className="w-3 h-4 bg-gradient-to-t from-orange-500 via-yellow-400 to-transparent rounded-full blur-[1px] animate-pulse mx-auto" style={{ animationDelay: `${i * 0.3}s` }} />
+                          <div className="absolute top-0.5 left-1/2 -translate-x-1/2 w-1.5 h-2 bg-gradient-to-t from-yellow-300 to-white rounded-full animate-pulse blur-[0.5px]" style={{ animationDelay: `${i * 0.3}s` }} />
+                        </div>
+                        {/* Ambient glow */}
+                        <div className={`absolute right-4 w-8 h-8 bg-gradient-radial from-orange-400/40 to-transparent rounded-full blur-md ${isNightTime ? 'opacity-90' : 'opacity-50'}`} style={{ top: '50%', transform: 'translate(-25%, -160%)' }} />
+                      </div>
+                    </div>
+                  ))}
                 </div>
                 {/* Attic base */}
-                <div className="absolute bottom-0 left-0 right-0 h-8 bg-gradient-to-t from-amber-800 via-amber-750 to-amber-700 border-t border-amber-600/30">
-                  <div className="absolute top-1 left-0.5 right-0.5 h-0.5 bg-gradient-to-b from-amber-600/40 to-transparent rounded-full" />
+                <div className="absolute bottom-0 left-0 right-0 h-10 bg-gradient-to-t from-amber-700 via-amber-750 to-amber-800 border-t-2 border-amber-500/40">
+                  <div className="absolute top-2 left-1 right-1 h-1 bg-gradient-to-b from-amber-500/40 to-transparent rounded-full" />
+                  <div className="absolute bottom-2 left-1 right-1 h-1 bg-gradient-to-t from-amber-600/30 to-transparent rounded-full" />
                 </div>
               </div>
 
@@ -993,7 +1024,7 @@ export default function ArticlesPage() {
                 ]
 
                 return (
-                  <div key={`left-shelf-${shelfIndex}`} className="absolute left-0 right-0" style={{ top: `${top}%` }}>
+                  <div key={`left-shelf-${shelfIndex}`} className="absolute left-8 right-8" style={{ top: `${top}%` }}>
                     {/* Shelf surface */}
                     <div className="h-4 bg-gradient-to-b from-amber-700 via-amber-800 to-amber-950 border-t-2 border-amber-500/40 shadow-lg relative overflow-hidden">
                       <div className="absolute inset-0 opacity-30" style={{
@@ -1002,8 +1033,54 @@ export default function ArticlesPage() {
                       <div className="absolute top-0 left-0 right-0 h-1 bg-gradient-to-b from-amber-400/20 to-transparent" />
                     </div>
 
-                    {/* Interactive article scrolls */}
-                    <div className="absolute bottom-4 left-1 right-2 flex items-end justify-start gap-1 h-16">
+                    {/* Interactive article scrolls with decorative bookends */}
+                    <div className="absolute bottom-4 left-1 right-1 flex items-end justify-center gap-1 h-16">
+                      {/* Decorative bookend sculptures - placed on specific shelves */}
+                      {shelfIndex === 0 && (
+                        <div className="w-4 h-10 relative flex-shrink-0">
+                          {/* Owl figurine - symbol of wisdom */}
+                          <div className="absolute bottom-0 w-4 h-8 bg-gradient-to-t from-stone-600 via-stone-500 to-stone-400 rounded-t-full shadow-md">
+                            <div className="absolute top-1 left-1/2 -translate-x-1/2 w-2.5 h-2 flex gap-0.5">
+                              <div className="w-1 h-1 rounded-full bg-amber-400 shadow-sm" />
+                              <div className="w-1 h-1 rounded-full bg-amber-400 shadow-sm" />
+                            </div>
+                            <div className="absolute top-2.5 left-1/2 -translate-x-1/2 w-1 h-0.5 bg-amber-600 rounded-full" />
+                          </div>
+                        </div>
+                      )}
+                      {shelfIndex === 1 && (
+                        <div className="w-4 h-12 relative flex-shrink-0">
+                          {/* Hourglass */}
+                          <div className="absolute bottom-0 w-4 h-11">
+                            <div className="absolute bottom-0 w-full h-2 bg-gradient-to-t from-amber-800 via-amber-700 to-amber-600 rounded-t-sm shadow" />
+                            <div className="absolute bottom-1.5 left-1/2 -translate-x-1/2 w-3 h-3 bg-gradient-to-t from-amber-200 via-amber-100 to-amber-50 rounded-b-full opacity-80" />
+                            <div className="absolute bottom-3.5 left-1/2 -translate-x-1/2 w-1 h-2 bg-amber-200/50" />
+                            <div className="absolute bottom-5 left-1/2 -translate-x-1/2 w-3 h-3 bg-gradient-to-b from-amber-200 via-amber-100 to-transparent rounded-t-full opacity-80" />
+                            <div className="absolute top-0 w-full h-2 bg-gradient-to-b from-amber-800 via-amber-700 to-amber-600 rounded-b-sm shadow" />
+                          </div>
+                        </div>
+                      )}
+                      {shelfIndex === 2 && (
+                        <div className="w-5 h-12 relative flex-shrink-0">
+                          {/* Classical marble bust */}
+                          <div className="absolute bottom-0 w-4 h-2 bg-gradient-to-t from-stone-500 to-stone-400 rounded-t-sm mx-0.5" />
+                          <div className="absolute bottom-2 left-1/2 -translate-x-1/2 w-3 h-7 bg-gradient-to-t from-stone-300 via-stone-200 to-stone-100 rounded-t-full shadow-inner" />
+                          <div className="absolute bottom-7 left-1/2 -translate-x-1/2 w-4 h-4 bg-gradient-to-br from-stone-100 to-stone-300 rounded-full shadow-md" />
+                        </div>
+                      )}
+                      {shelfIndex === 3 && (
+                        <div className="w-5 h-10 relative flex-shrink-0">
+                          {/* Laurel wreath bookend */}
+                          <div className="absolute bottom-0 w-4 h-8 mx-0.5">
+                            <div className="absolute bottom-0 w-full h-2 bg-gradient-to-t from-stone-600 to-stone-500 rounded-t-sm shadow" />
+                            <svg viewBox="0 0 16 24" className="absolute bottom-1.5 w-full h-6 text-emerald-600">
+                              <path d="M8 4 C4 4 2 8 2 12 c0 2 1 4 3 5" fill="none" stroke="currentColor" strokeWidth="1" />
+                              <path d="M8 4 c4 0 6 4 6 8 c0 2-1 4-3 5" fill="none" stroke="currentColor" strokeWidth="1" />
+                              <circle cx="8" cy="12" r="2" fill="none" stroke="#fbbf24" strokeWidth="0.8" />
+                            </svg>
+                          </div>
+                        </div>
+                      )}
                       {shelfArticles.map((article, i) => {
                         const colors = scrollColors[i % 2]
                         const isHovered = hoveredBook === article.id
@@ -1115,42 +1192,6 @@ export default function ArticlesPage() {
                 )
               })}
 
-              {/* Ornate wall-mounted candle sconces - Roman style */}
-              {[10, 30, 50, 70, 90].map((topPercent, i) => (
-                <div key={`left-candle-${i}`} className="absolute right-1" style={{ top: `${topPercent}%` }}>
-                  {/* Ornate brass sconce backplate */}
-                  <div className="relative w-8 h-10">
-                    {/* Decorative backplate with acanthus leaf design */}
-                    <div className="absolute inset-0 bg-gradient-to-b from-yellow-600 via-amber-700 to-amber-800 rounded-t-full rounded-b-lg shadow-lg border border-yellow-500/30">
-                      {/* Embossed detail */}
-                      <div className="absolute top-1 left-1/2 -translate-x-1/2 w-4 h-4">
-                        <svg viewBox="0 0 16 16" className="w-full h-full text-yellow-400/50">
-                          <path d="M8 2 Q12 6 8 10 Q4 6 8 2" fill="none" stroke="currentColor" strokeWidth="0.8"/>
-                          <circle cx="8" cy="6" r="1.5" fill="currentColor" opacity="0.6"/>
-                        </svg>
-                      </div>
-                      {/* Lower flourish */}
-                      <div className="absolute bottom-1 left-1/2 -translate-x-1/2 w-3 h-1 bg-gradient-to-r from-transparent via-yellow-400/40 to-transparent rounded-full" />
-                    </div>
-                    {/* Candle holder cup */}
-                    <div className="absolute bottom-2 left-1/2 -translate-x-1/2 w-4 h-2 bg-gradient-to-b from-yellow-600 to-amber-700 rounded-b-sm border-t border-yellow-400/40" />
-                    {/* Candle */}
-                    <div className="absolute -top-4 left-1/2 -translate-x-1/2 w-2">
-                      <div className="w-2 h-5 bg-gradient-to-b from-amber-50 via-amber-100 to-amber-200 rounded-t-sm shadow-inner" />
-                      {/* Dripping wax */}
-                      <div className="absolute top-3 -left-0.5 w-1 h-2 bg-gradient-to-b from-amber-100 to-amber-200 rounded-full opacity-70" />
-                    </div>
-                    {/* Flame with glow */}
-                    <div className={`absolute -top-7 left-1/2 -translate-x-1/2 w-4 h-5 ${isNightTime ? 'opacity-90' : 'opacity-60'}`}>
-                      <div className={`w-3 h-4 bg-gradient-to-t from-orange-400 via-yellow-300 to-transparent rounded-full blur-[2px] animate-pulse mx-auto`} style={{ animationDelay: `${i * 0.3}s` }} />
-                      <div className="absolute top-0.5 left-1/2 -translate-x-1/2 w-1.5 h-2 bg-gradient-to-t from-yellow-200 to-white rounded-full animate-pulse blur-[1px]" style={{ animationDelay: `${i * 0.3}s` }} />
-                    </div>
-                    {/* Ambient glow */}
-                    <div className={`absolute -top-6 left-1/2 -translate-x-1/2 w-8 h-8 bg-gradient-radial from-orange-400/30 to-transparent rounded-full blur-md ${isNightTime ? 'opacity-80' : 'opacity-40'}`} />
-                  </div>
-                </div>
-              ))}
-
               {/* Carved ornamental top */}
               <div className="absolute top-0 left-0 right-0 h-8 bg-gradient-to-b from-amber-800 to-amber-900 border-b-2 border-amber-600/50">
                 <svg className="absolute inset-0 w-full h-full opacity-30" preserveAspectRatio="none">
@@ -1178,56 +1219,87 @@ export default function ArticlesPage() {
               }} />
 
               {/* ====== OUTER ORNATE PILASTER BORDER (Right Edge) ====== */}
-              <div className="absolute right-0 top-0 bottom-0 w-6 bg-gradient-to-l from-amber-800 via-amber-850 to-amber-900/50 z-10 border-l border-amber-700/40 shadow-lg">
+              <div className="absolute right-0 top-0 bottom-0 w-8 bg-gradient-to-l from-amber-800 via-amber-700 to-amber-800 z-10 border-l-2 border-amber-600/60 shadow-xl">
                 {/* Corinthian capital at top */}
-                <div className="absolute top-0 left-0 right-0 h-10 bg-gradient-to-b from-amber-700 via-amber-750 to-amber-800 border-b border-amber-600/40">
-                  <svg viewBox="0 0 24 40" className="w-full h-full text-amber-400/50">
-                    <ellipse cx="6" cy="6" rx="3" ry="2" fill="none" stroke="currentColor" strokeWidth="0.6"/>
-                    <ellipse cx="18" cy="6" rx="3" ry="2" fill="none" stroke="currentColor" strokeWidth="0.6"/>
-                    <path d="M12 36 Q6 30 6 24 Q9 27 12 24 Q15 27 18 24 Q18 30 12 36" fill="none" stroke="currentColor" strokeWidth="0.6"/>
-                    <circle cx="12" cy="14" r="3" fill="none" stroke="currentColor" strokeWidth="0.6"/>
-                    <circle cx="12" cy="14" r="1.5" fill="currentColor" opacity="0.3"/>
+                <div className="absolute top-0 left-0 right-0 h-12 bg-gradient-to-b from-amber-600 via-amber-700 to-amber-800 border-b-2 border-amber-500/50">
+                  <svg viewBox="0 0 32 48" className="w-full h-full text-amber-400">
+                    <ellipse cx="8" cy="8" rx="4" ry="3" fill="none" stroke="currentColor" strokeWidth="0.8" opacity="0.6"/>
+                    <ellipse cx="24" cy="8" rx="4" ry="3" fill="none" stroke="currentColor" strokeWidth="0.8" opacity="0.6"/>
+                    <path d="M16 44 Q8 36 8 28 Q12 32 16 28 Q20 32 24 28 Q24 36 16 44" fill="none" stroke="currentColor" strokeWidth="0.8" opacity="0.5"/>
+                    <circle cx="16" cy="18" r="4" fill="none" stroke="currentColor" strokeWidth="0.8" opacity="0.5"/>
+                    <circle cx="16" cy="18" r="2" fill="currentColor" opacity="0.3"/>
                   </svg>
                 </div>
                 {/* Column shaft with fluting */}
-                <div className="absolute top-12 bottom-8 left-0 right-0 overflow-hidden">
-                  <div className="absolute inset-0.5 flex justify-around opacity-30">
-                    {[0, 1, 2].map((i) => (
-                      <div key={`right-outer-flute-${i}`} className="w-0.5 h-full bg-gradient-to-r from-amber-950/50 via-amber-800/20 to-amber-950/50 rounded-full" />
+                <div className="absolute top-14 bottom-10 left-0 right-0 overflow-hidden bg-gradient-to-b from-amber-750 via-amber-800 to-amber-750">
+                  <div className="absolute inset-1 flex justify-around">
+                    {[0, 1, 2, 3].map((i) => (
+                      <div key={`right-outer-flute-${i}`} className="w-1 h-full bg-gradient-to-r from-amber-900 via-amber-950/80 to-amber-900 rounded-full" />
                     ))}
                   </div>
-                  <div className="absolute inset-y-0 right-0 w-0.5 bg-gradient-to-l from-amber-400/10 to-transparent" />
+                  <div className="absolute inset-y-0 right-0 w-1 bg-gradient-to-l from-amber-500/30 to-transparent" />
+                  <div className="absolute inset-y-0 left-0 w-1 bg-gradient-to-r from-amber-600/20 to-transparent" />
                 </div>
                 {/* Attic base */}
-                <div className="absolute bottom-0 left-0 right-0 h-8 bg-gradient-to-t from-amber-800 via-amber-750 to-amber-700 border-t border-amber-600/30">
-                  <div className="absolute top-1 left-0.5 right-0.5 h-0.5 bg-gradient-to-b from-amber-600/40 to-transparent rounded-full" />
+                <div className="absolute bottom-0 left-0 right-0 h-10 bg-gradient-to-t from-amber-700 via-amber-750 to-amber-800 border-t-2 border-amber-500/40">
+                  <div className="absolute top-2 left-1 right-1 h-1 bg-gradient-to-b from-amber-500/40 to-transparent rounded-full" />
+                  <div className="absolute bottom-2 left-1 right-1 h-1 bg-gradient-to-t from-amber-600/30 to-transparent rounded-full" />
                 </div>
               </div>
 
-              {/* ====== INNER ORNATE BORDER (Left Edge - facing content) ====== */}
-              <div className="absolute left-0 top-0 bottom-0 w-6 bg-gradient-to-r from-amber-800 via-amber-850 to-amber-900/50 z-10 border-r border-amber-600/40 shadow-lg">
+              {/* ====== INNER ORNATE BORDER (Left Edge - facing content) with INTEGRATED SCONCES ====== */}
+              <div className="absolute left-0 top-0 bottom-0 w-8 bg-gradient-to-r from-amber-800 via-amber-700 to-amber-800 z-10 border-r-2 border-amber-500/50 shadow-xl">
                 {/* Corinthian capital at top */}
-                <div className="absolute top-0 left-0 right-0 h-10 bg-gradient-to-b from-amber-700 via-amber-750 to-amber-800 border-b border-amber-600/40">
-                  <svg viewBox="0 0 24 40" className="w-full h-full text-amber-400/50">
-                    <ellipse cx="6" cy="6" rx="3" ry="2" fill="none" stroke="currentColor" strokeWidth="0.6"/>
-                    <ellipse cx="18" cy="6" rx="3" ry="2" fill="none" stroke="currentColor" strokeWidth="0.6"/>
-                    <path d="M12 36 Q6 30 6 24 Q9 27 12 24 Q15 27 18 24 Q18 30 12 36" fill="none" stroke="currentColor" strokeWidth="0.6"/>
-                    <circle cx="12" cy="14" r="3" fill="none" stroke="currentColor" strokeWidth="0.6"/>
-                    <circle cx="12" cy="14" r="1.5" fill="currentColor" opacity="0.3"/>
+                <div className="absolute top-0 left-0 right-0 h-12 bg-gradient-to-b from-amber-600 via-amber-700 to-amber-800 border-b-2 border-amber-500/50">
+                  <svg viewBox="0 0 32 48" className="w-full h-full text-amber-400">
+                    <ellipse cx="8" cy="8" rx="4" ry="3" fill="none" stroke="currentColor" strokeWidth="0.8" opacity="0.6"/>
+                    <ellipse cx="24" cy="8" rx="4" ry="3" fill="none" stroke="currentColor" strokeWidth="0.8" opacity="0.6"/>
+                    <path d="M16 44 Q8 36 8 28 Q12 32 16 28 Q20 32 24 28 Q24 36 16 44" fill="none" stroke="currentColor" strokeWidth="0.8" opacity="0.5"/>
+                    <circle cx="16" cy="18" r="4" fill="none" stroke="currentColor" strokeWidth="0.8" opacity="0.5"/>
+                    <circle cx="16" cy="18" r="2" fill="currentColor" opacity="0.3"/>
                   </svg>
                 </div>
-                {/* Column shaft with fluting */}
-                <div className="absolute top-12 bottom-8 left-0 right-0 overflow-hidden">
-                  <div className="absolute inset-0.5 flex justify-around opacity-30">
-                    {[0, 1, 2].map((i) => (
-                      <div key={`right-inner-flute-${i}`} className="w-0.5 h-full bg-gradient-to-r from-amber-950/50 via-amber-800/20 to-amber-950/50 rounded-full" />
+                {/* Column shaft with fluting and INTEGRATED SCONCES */}
+                <div className="absolute top-14 bottom-10 left-0 right-0 overflow-hidden bg-gradient-to-b from-amber-750 via-amber-800 to-amber-750">
+                  <div className="absolute inset-1 flex justify-around">
+                    {[0, 1, 2, 3].map((i) => (
+                      <div key={`right-inner-flute-${i}`} className="w-1 h-full bg-gradient-to-r from-amber-900 via-amber-950/80 to-amber-900 rounded-full" />
                     ))}
                   </div>
-                  <div className="absolute inset-y-0 left-0 w-0.5 bg-gradient-to-r from-amber-400/10 to-transparent" />
+                  <div className="absolute inset-y-0 left-0 w-1 bg-gradient-to-r from-amber-500/30 to-transparent" />
+                  <div className="absolute inset-y-0 right-0 w-1 bg-gradient-to-l from-amber-600/20 to-transparent" />
+
+                  {/* Integrated candle sconces - built into the pilaster (mirrored for right side) */}
+                  {[15, 40, 65, 90].map((topPercent, i) => (
+                    <div key={`right-sconce-${i}`} className="absolute -right-4 w-10" style={{ top: `${topPercent}%`, transform: 'translateY(-50%)' }}>
+                      {/* Sconce bracket emerging from pilaster */}
+                      <div className="relative">
+                        {/* Mounting plate integrated into pilaster */}
+                        <div className="absolute left-0 top-1/2 -translate-y-1/2 w-4 h-6 bg-gradient-to-r from-amber-700 via-amber-600 to-amber-700 rounded-r-sm border-r border-y border-amber-500/50 shadow-md" />
+                        {/* Curved arm */}
+                        <div className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-1.5 bg-gradient-to-b from-yellow-600 via-amber-700 to-amber-800 rounded-full shadow-md" style={{ transform: 'translateY(-50%) rotate(5deg)' }} />
+                        {/* Candle cup */}
+                        <div className="absolute left-6 top-1/2 -translate-y-1/2 w-3 h-2 bg-gradient-to-b from-yellow-500 via-amber-600 to-amber-700 rounded-b-sm border-t border-yellow-400/40" style={{ transform: 'translateY(-30%)' }} />
+                        {/* Candle */}
+                        <div className="absolute left-6 top-1/2 w-2 h-6 -translate-y-full" style={{ transform: 'translate(25%, -60%)' }}>
+                          <div className="w-full h-full bg-gradient-to-b from-amber-50 via-amber-100 to-amber-200 rounded-t-sm shadow" />
+                          <div className="absolute top-0 right-0.5 w-1 h-2 bg-gradient-to-b from-amber-100 to-amber-200 rounded-full opacity-60" />
+                        </div>
+                        {/* Flame */}
+                        <div className={`absolute left-5 w-4 h-5 ${isNightTime ? 'opacity-100' : 'opacity-70'}`} style={{ top: '50%', transform: 'translate(25%, -180%)' }}>
+                          <div className="w-3 h-4 bg-gradient-to-t from-orange-500 via-yellow-400 to-transparent rounded-full blur-[1px] animate-pulse mx-auto" style={{ animationDelay: `${i * 0.3 + 0.5}s` }} />
+                          <div className="absolute top-0.5 left-1/2 -translate-x-1/2 w-1.5 h-2 bg-gradient-to-t from-yellow-300 to-white rounded-full animate-pulse blur-[0.5px]" style={{ animationDelay: `${i * 0.3 + 0.5}s` }} />
+                        </div>
+                        {/* Ambient glow */}
+                        <div className={`absolute left-4 w-8 h-8 bg-gradient-radial from-orange-400/40 to-transparent rounded-full blur-md ${isNightTime ? 'opacity-90' : 'opacity-50'}`} style={{ top: '50%', transform: 'translate(25%, -160%)' }} />
+                      </div>
+                    </div>
+                  ))}
                 </div>
                 {/* Attic base */}
-                <div className="absolute bottom-0 left-0 right-0 h-8 bg-gradient-to-t from-amber-800 via-amber-750 to-amber-700 border-t border-amber-600/30">
-                  <div className="absolute top-1 left-0.5 right-0.5 h-0.5 bg-gradient-to-b from-amber-600/40 to-transparent rounded-full" />
+                <div className="absolute bottom-0 left-0 right-0 h-10 bg-gradient-to-t from-amber-700 via-amber-750 to-amber-800 border-t-2 border-amber-500/40">
+                  <div className="absolute top-2 left-1 right-1 h-1 bg-gradient-to-b from-amber-500/40 to-transparent rounded-full" />
+                  <div className="absolute bottom-2 left-1 right-1 h-1 bg-gradient-to-t from-amber-600/30 to-transparent rounded-full" />
                 </div>
               </div>
 
@@ -1241,7 +1313,7 @@ export default function ArticlesPage() {
                 ]
 
                 return (
-                  <div key={`right-shelf-${shelfIndex}`} className="absolute left-0 right-0" style={{ top: `${top}%` }}>
+                  <div key={`right-shelf-${shelfIndex}`} className="absolute left-8 right-8" style={{ top: `${top}%` }}>
                     {/* Shelf surface */}
                     <div className="h-4 bg-gradient-to-b from-amber-700 via-amber-800 to-amber-950 border-t-2 border-amber-500/40 shadow-lg relative overflow-hidden">
                       <div className="absolute inset-0 opacity-30" style={{
@@ -1250,11 +1322,43 @@ export default function ArticlesPage() {
                       <div className="absolute top-0 left-0 right-0 h-1 bg-gradient-to-b from-amber-400/20 to-transparent" />
                     </div>
 
-                    {/* Interactive article scrolls */}
-                    <div className="absolute bottom-4 left-2 right-1 flex items-end justify-end gap-1 h-16">
-                      {/* Decorative bookend on first shelf */}
+                    {/* Interactive article scrolls with decorative bookends */}
+                    <div className="absolute bottom-4 left-1 right-1 flex items-end justify-center gap-1 h-16">
+                      {/* Decorative bookend sculptures - placed on specific shelves */}
                       {shelfIndex === 0 && (
-                        <div className="w-2 h-10 bg-gradient-to-b from-amber-600 to-amber-800 rounded-t-sm shadow-lg mr-1" />
+                        <div className="w-5 h-12 relative flex-shrink-0">
+                          {/* Globe on brass stand */}
+                          <div className="absolute bottom-0 w-3 h-1.5 bg-gradient-to-t from-amber-700 to-amber-600 mx-1 rounded-t-sm" />
+                          <div className="absolute bottom-1 left-1/2 -translate-x-1/2 w-0.5 h-4 bg-gradient-to-t from-amber-600 to-amber-500" />
+                          <div className="absolute bottom-4 left-1/2 -translate-x-1/2 w-4 h-4 bg-gradient-to-br from-emerald-400 via-blue-400 to-emerald-600 rounded-full shadow-lg border border-amber-400/30">
+                            <div className="absolute inset-0 opacity-40" style={{ backgroundImage: 'linear-gradient(90deg, transparent 45%, #fbbf24 50%, transparent 55%)' }} />
+                          </div>
+                        </div>
+                      )}
+                      {shelfIndex === 1 && (
+                        <div className="w-5 h-10 relative flex-shrink-0">
+                          {/* Quill in inkwell */}
+                          <div className="absolute bottom-0 w-3 h-3 bg-gradient-to-t from-stone-800 via-stone-700 to-stone-600 rounded-t-sm mx-1 shadow-md">
+                            <div className="absolute top-0.5 left-1/2 -translate-x-1/2 w-2 h-0.5 bg-stone-900 rounded-full" />
+                          </div>
+                          <div className="absolute bottom-2 left-1/2 w-0.5 h-7 bg-gradient-to-t from-stone-500 to-amber-100 origin-bottom" style={{ transform: 'translateX(-50%) rotate(-15deg)' }}>
+                            <div className="absolute -top-1 w-2 h-3 bg-gradient-to-t from-amber-100 via-amber-50 to-white -left-0.5" style={{ clipPath: 'polygon(50% 0%, 100% 100%, 0% 100%)' }} />
+                          </div>
+                        </div>
+                      )}
+                      {shelfIndex === 3 && (
+                        <div className="w-5 h-11 relative flex-shrink-0">
+                          {/* Small lyre/harp */}
+                          <div className="absolute bottom-0 w-4 h-10 mx-0.5">
+                            <div className="absolute bottom-0 w-full h-3 bg-gradient-to-t from-amber-800 via-amber-700 to-amber-600 rounded-t-full shadow-md" />
+                            <svg viewBox="0 0 16 28" className="absolute bottom-2 w-full h-8 text-amber-500">
+                              <path d="M3 24 Q3 8 8 2 Q13 8 13 24" fill="none" stroke="currentColor" strokeWidth="1.5" />
+                              <line x1="5" y1="22" x2="5" y2="8" stroke="currentColor" strokeWidth="0.3" opacity="0.6" />
+                              <line x1="8" y1="22" x2="8" y2="4" stroke="currentColor" strokeWidth="0.3" opacity="0.6" />
+                              <line x1="11" y1="22" x2="11" y2="8" stroke="currentColor" strokeWidth="0.3" opacity="0.6" />
+                            </svg>
+                          </div>
+                        </div>
                       )}
                       {/* Ghost slots for empty positions */}
                       {Array.from({ length: Math.max(0, 2 - shelfArticles.length) }).map((_, i) => (
@@ -1363,42 +1467,6 @@ export default function ArticlesPage() {
                 )
               })}
 
-              {/* Ornate wall-mounted candle sconces - Roman style (mirrored for right side) */}
-              {[10, 30, 50, 70, 90].map((topPercent, i) => (
-                <div key={`right-candle-${i}`} className="absolute left-1" style={{ top: `${topPercent}%` }}>
-                  {/* Ornate brass sconce backplate */}
-                  <div className="relative w-8 h-10">
-                    {/* Decorative backplate with acanthus leaf design */}
-                    <div className="absolute inset-0 bg-gradient-to-b from-yellow-600 via-amber-700 to-amber-800 rounded-t-full rounded-b-lg shadow-lg border border-yellow-500/30">
-                      {/* Embossed detail */}
-                      <div className="absolute top-1 left-1/2 -translate-x-1/2 w-4 h-4">
-                        <svg viewBox="0 0 16 16" className="w-full h-full text-yellow-400/50">
-                          <path d="M8 2 Q12 6 8 10 Q4 6 8 2" fill="none" stroke="currentColor" strokeWidth="0.8"/>
-                          <circle cx="8" cy="6" r="1.5" fill="currentColor" opacity="0.6"/>
-                        </svg>
-                      </div>
-                      {/* Lower flourish */}
-                      <div className="absolute bottom-1 left-1/2 -translate-x-1/2 w-3 h-1 bg-gradient-to-r from-transparent via-yellow-400/40 to-transparent rounded-full" />
-                    </div>
-                    {/* Candle holder cup */}
-                    <div className="absolute bottom-2 left-1/2 -translate-x-1/2 w-4 h-2 bg-gradient-to-b from-yellow-600 to-amber-700 rounded-b-sm border-t border-yellow-400/40" />
-                    {/* Candle */}
-                    <div className="absolute -top-4 left-1/2 -translate-x-1/2 w-2">
-                      <div className="w-2 h-5 bg-gradient-to-b from-amber-50 via-amber-100 to-amber-200 rounded-t-sm shadow-inner" />
-                      {/* Dripping wax */}
-                      <div className="absolute top-2 left-1.5 w-1 h-2.5 bg-gradient-to-b from-amber-100 to-amber-200 rounded-full opacity-70" />
-                    </div>
-                    {/* Flame with glow */}
-                    <div className={`absolute -top-7 left-1/2 -translate-x-1/2 w-4 h-5 ${isNightTime ? 'opacity-90' : 'opacity-60'}`}>
-                      <div className={`w-3 h-4 bg-gradient-to-t from-orange-400 via-yellow-300 to-transparent rounded-full blur-[2px] animate-pulse mx-auto`} style={{ animationDelay: `${i * 0.25 + 0.15}s` }} />
-                      <div className="absolute top-0.5 left-1/2 -translate-x-1/2 w-1.5 h-2 bg-gradient-to-t from-yellow-200 to-white rounded-full animate-pulse blur-[1px]" style={{ animationDelay: `${i * 0.25 + 0.15}s` }} />
-                    </div>
-                    {/* Ambient glow */}
-                    <div className={`absolute -top-6 left-1/2 -translate-x-1/2 w-8 h-8 bg-gradient-radial from-orange-400/30 to-transparent rounded-full blur-md ${isNightTime ? 'opacity-80' : 'opacity-40'}`} />
-                  </div>
-                </div>
-              ))}
-
               {/* Carved ornamental top */}
               <div className="absolute top-0 left-0 right-0 h-8 bg-gradient-to-b from-amber-800 to-amber-900 border-b-2 border-amber-600/50">
                 <svg className="absolute inset-0 w-full h-full opacity-30" preserveAspectRatio="none">
@@ -1412,15 +1480,15 @@ export default function ArticlesPage() {
           </motion.div>
 
           {/* ========================================== */}
-          {/* CONNECTING ARCH - Merges from first shelf of vertical bookshelves */}
-          {/* Roman-inspired arch with keystone at apex */}
+          {/* CONNECTING ARCH - Frames top area between vertical bookshelves */}
+          {/* Roman-inspired arch that sits below title, connects from shelf level */}
           {/* ========================================== */}
           <motion.div
             initial={{ opacity: 0, scale: 0.9 }}
             animate={libraryEntered ? { opacity: 1, scale: 1 } : { opacity: 0, scale: 0.9 }}
             transition={{ duration: 0.6, ease: 'easeOut', delay: 0.5 }}
-            className="hidden lg:block absolute top-0 left-[18%] right-[18%] z-15 pointer-events-none"
-            style={{ height: '22%' }}
+            className="hidden lg:block absolute left-[18%] right-[18%] z-10 pointer-events-none"
+            style={{ top: '12%', height: '12%' }}
           >
             {/* SVG Arch that connects from first shelf level on both sides */}
             <svg className="absolute inset-0 w-full h-full" viewBox="0 0 100 100" preserveAspectRatio="none">
@@ -1529,7 +1597,7 @@ export default function ArticlesPage() {
                 <div className="absolute -left-2 top-1/2 -translate-y-1/2 w-4 h-4 bg-amber-500/30 rotate-45 border border-amber-400/50" />
                 <div className="absolute -right-2 top-1/2 -translate-y-1/2 w-4 h-4 bg-amber-500/30 rotate-45 border border-amber-400/50" />
                 <ScrollText className="w-4 h-4 text-amber-300" />
-                <span className="text-xs font-bold uppercase tracking-[0.2em] text-amber-200">The Ancient Library</span>
+                <span className="text-xs font-bold uppercase tracking-[0.2em] text-amber-200">The Archives</span>
               </div>
 
               <h1 className="text-3xl sm:text-4xl md:text-5xl font-black mb-3 tracking-tight" style={{ fontFamily: 'Georgia, serif', textShadow: '0 2px 20px rgba(251, 191, 36, 0.3)' }}>
@@ -1865,7 +1933,7 @@ export default function ArticlesPage() {
 
           {/* Scrolls container - sits ON the shelf */}
           <div className="relative mx-10">
-            <div className="flex items-end justify-center gap-2.5 px-6 pb-0 min-h-[85px] overflow-x-auto scrollbar-thin scrollbar-thumb-amber-600/50 scrollbar-track-transparent">
+            <div className="flex items-end justify-center gap-2.5 px-6 pb-0 min-h-[85px] flex-wrap overflow-hidden">
               {getShelfArticles(0, shelf1Category).map((article, idx) => {
                 const categorySlug = article.category?.slug || 'default'
                 const categoryTheme = CATEGORY_SCROLL_THEMES[categorySlug] || CATEGORY_SCROLL_THEMES.sustainability
@@ -2035,7 +2103,7 @@ export default function ArticlesPage() {
 
           {/* Scrolls container */}
           <div className="relative mx-10">
-            <div className="flex items-end justify-center gap-2.5 px-6 pb-0 min-h-[85px] overflow-x-auto scrollbar-thin scrollbar-thumb-amber-600/50 scrollbar-track-transparent">
+            <div className="flex items-end justify-center gap-2.5 px-6 pb-0 min-h-[85px] flex-wrap overflow-hidden">
               {getShelfArticles(1, shelf2Category).map((article, idx) => {
                 const categorySlug = article.category?.slug || 'default'
                 const categoryTheme = CATEGORY_SCROLL_THEMES[categorySlug] || CATEGORY_SCROLL_THEMES.sustainability
@@ -2203,7 +2271,7 @@ export default function ArticlesPage() {
 
           {/* Scrolls container */}
           <div className="relative mx-10">
-            <div className="flex items-end justify-center gap-2.5 px-6 pb-0 min-h-[85px] overflow-x-auto scrollbar-thin scrollbar-thumb-amber-600/50 scrollbar-track-transparent">
+            <div className="flex items-end justify-center gap-2.5 px-6 pb-0 min-h-[85px] flex-wrap overflow-hidden">
               {getShelfArticles(2, shelf3Category).map((article, idx) => {
                 const categorySlug = article.category?.slug || 'default'
                 const categoryTheme = CATEGORY_SCROLL_THEMES[categorySlug] || CATEGORY_SCROLL_THEMES.sustainability
