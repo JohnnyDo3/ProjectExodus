@@ -533,14 +533,14 @@ export default function ArticlesPage() {
               }}
             />
 
-            {/* Stone pillars */}
+            {/* Stone pillars - wood-carved tan look */}
             <div className="absolute inset-0 opacity-10 pointer-events-none">
-              <div className="absolute top-0 left-[10%] w-[3px] h-full bg-gradient-to-b from-amber-200/80 via-amber-100/60 to-amber-200/80" />
-              <div className="absolute top-0 left-[20%] w-[2px] h-full bg-gradient-to-b from-amber-200/60 via-amber-100/40 to-amber-200/60" />
-              <div className="absolute top-0 left-[30%] w-[1px] h-full bg-gradient-to-b from-amber-200/40 via-amber-100/20 to-amber-200/40" />
-              <div className="absolute top-0 right-[10%] w-[3px] h-full bg-gradient-to-b from-amber-200/80 via-amber-100/60 to-amber-200/80" />
-              <div className="absolute top-0 right-[20%] w-[2px] h-full bg-gradient-to-b from-amber-200/60 via-amber-100/40 to-amber-200/60" />
-              <div className="absolute top-0 right-[30%] w-[1px] h-full bg-gradient-to-b from-amber-200/40 via-amber-100/20 to-amber-200/40" />
+              <div className="absolute top-0 left-[10%] w-[3px] h-full bg-gradient-to-b from-amber-700/80 via-amber-600/60 to-amber-700/80" />
+              <div className="absolute top-0 left-[20%] w-[2px] h-full bg-gradient-to-b from-amber-700/60 via-amber-600/40 to-amber-700/60" />
+              <div className="absolute top-0 left-[30%] w-[1px] h-full bg-gradient-to-b from-amber-700/40 via-amber-600/20 to-amber-700/40" />
+              <div className="absolute top-0 right-[10%] w-[3px] h-full bg-gradient-to-b from-amber-700/80 via-amber-600/60 to-amber-700/80" />
+              <div className="absolute top-0 right-[20%] w-[2px] h-full bg-gradient-to-b from-amber-700/60 via-amber-600/40 to-amber-700/60" />
+              <div className="absolute top-0 right-[30%] w-[1px] h-full bg-gradient-to-b from-amber-700/40 via-amber-600/20 to-amber-700/40" />
             </div>
 
             {/* Ornate top border */}
@@ -830,16 +830,16 @@ export default function ArticlesPage() {
             </div>
           )}
 
-          {/* Original parallel vertical lines as stone pillars/columns */}
+          {/* Original parallel vertical lines as stone pillars/columns - wood-carved tan look */}
           <div className="absolute inset-0 opacity-10 pointer-events-none">
             {/* Left side pillars */}
-            <div className="absolute top-0 left-[10%] w-[3px] h-full bg-gradient-to-b from-amber-200/80 via-amber-100/60 to-amber-200/80" />
-            <div className="absolute top-0 left-[20%] w-[2px] h-full bg-gradient-to-b from-amber-200/60 via-amber-100/40 to-amber-200/60" />
-            <div className="absolute top-0 left-[30%] w-[1px] h-full bg-gradient-to-b from-amber-200/40 via-amber-100/20 to-amber-200/40" />
+            <div className="absolute top-0 left-[10%] w-[3px] h-full bg-gradient-to-b from-amber-700/80 via-amber-600/60 to-amber-700/80" />
+            <div className="absolute top-0 left-[20%] w-[2px] h-full bg-gradient-to-b from-amber-700/60 via-amber-600/40 to-amber-700/60" />
+            <div className="absolute top-0 left-[30%] w-[1px] h-full bg-gradient-to-b from-amber-700/40 via-amber-600/20 to-amber-700/40" />
             {/* Right side pillars */}
-            <div className="absolute top-0 right-[10%] w-[3px] h-full bg-gradient-to-b from-amber-200/80 via-amber-100/60 to-amber-200/80" />
-            <div className="absolute top-0 right-[20%] w-[2px] h-full bg-gradient-to-b from-amber-200/60 via-amber-100/40 to-amber-200/60" />
-            <div className="absolute top-0 right-[30%] w-[1px] h-full bg-gradient-to-b from-amber-200/40 via-amber-100/20 to-amber-200/40" />
+            <div className="absolute top-0 right-[10%] w-[3px] h-full bg-gradient-to-b from-amber-700/80 via-amber-600/60 to-amber-700/80" />
+            <div className="absolute top-0 right-[20%] w-[2px] h-full bg-gradient-to-b from-amber-700/60 via-amber-600/40 to-amber-700/60" />
+            <div className="absolute top-0 right-[30%] w-[1px] h-full bg-gradient-to-b from-amber-700/40 via-amber-600/20 to-amber-700/40" />
           </div>
 
           {/* Ornate top border - Greek key pattern */}
@@ -1894,8 +1894,8 @@ export default function ArticlesPage() {
         </div>
 
         <div className="container mx-auto px-4 py-6 sm:py-8 relative z-10 lg:px-[20%]">
-          <div className="max-w-6xl mx-auto lg:pt-16">
-            {/* Title Section - Chamber entrance */}
+          <div className="max-w-6xl mx-auto lg:pt-40">
+            {/* Title Section - Below the entablature */}
             <div className="text-center mb-6 sm:mb-8">
               <h1 className="text-3xl sm:text-4xl md:text-5xl font-black mb-3 tracking-tight" style={{ fontFamily: 'Georgia, serif', textShadow: '0 2px 20px rgba(251, 191, 36, 0.3)' }}>
                 Knowledge Shared
