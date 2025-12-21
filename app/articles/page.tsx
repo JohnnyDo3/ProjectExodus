@@ -900,80 +900,207 @@ export default function ArticlesPage() {
           >
             {/* Bookshelf frame */}
             <div className="absolute inset-0 bg-gradient-to-r from-amber-950/95 via-amber-900/90 to-amber-950/80 border-r-4 border-amber-700/60">
-              {/* Minimal wood panel background */}
+              {/* Refined wood panel background with enhanced carving details */}
               <div className="absolute inset-0 overflow-hidden">
-                {/* Panel frame pattern */}
-                <div className="absolute inset-8 border-2 border-amber-700/30 rounded-sm" style={{
-                  boxShadow: 'inset 2px 2px 4px rgba(0,0,0,0.2), inset -1px -1px 2px rgba(251,191,36,0.1)'
+                {/* Outer panel frame with chamfered edges */}
+                <div className="absolute inset-6 border-2 border-amber-700/40 rounded-sm" style={{
+                  boxShadow: 'inset 3px 3px 6px rgba(0,0,0,0.25), inset -2px -2px 4px rgba(251,191,36,0.15), 0 0 8px rgba(0,0,0,0.2)'
                 }}>
-                  {/* Inner bevel */}
-                  <div className="absolute inset-2 border border-amber-800/40 rounded-sm" />
-                  {/* Subtle carved centerline */}
-                  <div className="absolute left-1/2 top-4 bottom-4 w-px bg-gradient-to-b from-transparent via-amber-600/20 to-transparent" />
+                  {/* Inner bevel with refined edges */}
+                  <div className="absolute inset-2 border border-amber-800/50 rounded-sm" style={{
+                    boxShadow: 'inset 1px 1px 2px rgba(0,0,0,0.15)'
+                  }} />
+                  {/* Secondary inner frame */}
+                  <div className="absolute inset-4 border border-amber-700/25 rounded-sm" />
+
+                  {/* Vertical carved accent lines */}
+                  <div className="absolute left-1/3 top-6 bottom-6 w-px bg-gradient-to-b from-transparent via-amber-600/25 to-transparent" />
+                  <div className="absolute left-2/3 top-6 bottom-6 w-px bg-gradient-to-b from-transparent via-amber-600/25 to-transparent" />
+
+                  {/* Horizontal carved accent lines */}
+                  <div className="absolute top-1/4 left-6 right-6 h-px bg-gradient-to-r from-transparent via-amber-600/20 to-transparent" />
+                  <div className="absolute top-1/2 left-4 right-4 h-px bg-gradient-to-r from-transparent via-amber-500/30 to-transparent" />
+                  <div className="absolute top-3/4 left-6 right-6 h-px bg-gradient-to-r from-transparent via-amber-600/20 to-transparent" />
+
+                  {/* Diamond inlay pattern at center */}
+                  <svg className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 w-12 h-12 opacity-25" viewBox="0 0 48 48">
+                    <path d="M24 4 L44 24 L24 44 L4 24 Z" fill="none" stroke="#fbbf24" strokeWidth="1"/>
+                    <path d="M24 12 L36 24 L24 36 L12 24 Z" fill="none" stroke="#f59e0b" strokeWidth="0.6"/>
+                    <circle cx="24" cy="24" r="4" fill="none" stroke="#fbbf24" strokeWidth="0.5"/>
+                    <circle cx="24" cy="24" r="2" fill="#fbbf24" opacity="0.3"/>
+                  </svg>
                 </div>
-                {/* Corner rosettes */}
-                <svg className="absolute top-6 left-6 w-4 h-4 text-amber-600/25" viewBox="0 0 16 16">
-                  <circle cx="8" cy="8" r="6" fill="none" stroke="currentColor" strokeWidth="0.5"/>
-                  <circle cx="8" cy="8" r="3" fill="none" stroke="currentColor" strokeWidth="0.3"/>
-                  <circle cx="8" cy="8" r="1" fill="currentColor" opacity="0.5"/>
+
+                {/* Enhanced corner rosettes with acanthus detail */}
+                <svg className={`absolute top-4 left-4 w-6 h-6 ${isNightTime ? 'text-amber-500/40' : 'text-amber-600/30'}`} viewBox="0 0 24 24">
+                  <circle cx="12" cy="12" r="10" fill="none" stroke="currentColor" strokeWidth="0.6"/>
+                  <circle cx="12" cy="12" r="7" fill="none" stroke="currentColor" strokeWidth="0.4"/>
+                  <circle cx="12" cy="12" r="4" fill="none" stroke="currentColor" strokeWidth="0.3"/>
+                  <circle cx="12" cy="12" r="2" fill="currentColor" opacity="0.4"/>
+                  {/* Petal details */}
+                  <path d="M12 2 Q14 6 12 10 Q10 6 12 2" fill="none" stroke="currentColor" strokeWidth="0.3"/>
+                  <path d="M22 12 Q18 14 14 12 Q18 10 22 12" fill="none" stroke="currentColor" strokeWidth="0.3"/>
+                  <path d="M12 22 Q10 18 12 14 Q14 18 12 22" fill="none" stroke="currentColor" strokeWidth="0.3"/>
+                  <path d="M2 12 Q6 10 10 12 Q6 14 2 12" fill="none" stroke="currentColor" strokeWidth="0.3"/>
                 </svg>
-                <svg className="absolute bottom-6 left-6 w-4 h-4 text-amber-600/25" viewBox="0 0 16 16">
-                  <circle cx="8" cy="8" r="6" fill="none" stroke="currentColor" strokeWidth="0.5"/>
-                  <circle cx="8" cy="8" r="3" fill="none" stroke="currentColor" strokeWidth="0.3"/>
-                  <circle cx="8" cy="8" r="1" fill="currentColor" opacity="0.5"/>
+                <svg className={`absolute bottom-4 left-4 w-6 h-6 ${isNightTime ? 'text-amber-500/40' : 'text-amber-600/30'}`} viewBox="0 0 24 24">
+                  <circle cx="12" cy="12" r="10" fill="none" stroke="currentColor" strokeWidth="0.6"/>
+                  <circle cx="12" cy="12" r="7" fill="none" stroke="currentColor" strokeWidth="0.4"/>
+                  <circle cx="12" cy="12" r="4" fill="none" stroke="currentColor" strokeWidth="0.3"/>
+                  <circle cx="12" cy="12" r="2" fill="currentColor" opacity="0.4"/>
+                  <path d="M12 2 Q14 6 12 10 Q10 6 12 2" fill="none" stroke="currentColor" strokeWidth="0.3"/>
+                  <path d="M22 12 Q18 14 14 12 Q18 10 22 12" fill="none" stroke="currentColor" strokeWidth="0.3"/>
+                  <path d="M12 22 Q10 18 12 14 Q14 18 12 22" fill="none" stroke="currentColor" strokeWidth="0.3"/>
+                  <path d="M2 12 Q6 10 10 12 Q6 14 2 12" fill="none" stroke="currentColor" strokeWidth="0.3"/>
                 </svg>
+
+                {/* ====== AMBIENT CANDLELIGHT AWARENESS ====== */}
+                {/* Warm light pools cast from sconces at 20%, 40%, 60%, 80% */}
+                {[20, 40, 60, 80].map((topPercent, i) => (
+                  <div key={`left-ambient-light-${i}`} className="absolute right-0 pointer-events-none" style={{ top: `${topPercent}%`, transform: 'translateY(-50%)' }}>
+                    {/* Primary warm glow pool - spreads across shelf area */}
+                    <div
+                      className={`absolute right-0 w-48 h-32 ${isNightTime ? 'opacity-45' : 'opacity-20'}`}
+                      style={{
+                        background: 'radial-gradient(ellipse 100% 80% at 100% 50%, rgba(251,191,36,0.35) 0%, rgba(245,158,11,0.2) 30%, rgba(217,119,6,0.1) 50%, transparent 70%)',
+                        filter: 'blur(8px)',
+                        transform: 'translateX(10%)',
+                      }}
+                    />
+                    {/* Secondary softer ambient fill */}
+                    <div
+                      className={`absolute right-0 w-64 h-48 ${isNightTime ? 'opacity-30' : 'opacity-12'}`}
+                      style={{
+                        background: 'radial-gradient(ellipse 120% 100% at 100% 50%, rgba(251,191,36,0.2) 0%, rgba(245,158,11,0.1) 40%, transparent 65%)',
+                        filter: 'blur(16px)',
+                        transform: 'translateX(15%)',
+                      }}
+                    />
+                    {/* Flickering highlight - subtle animation */}
+                    <div
+                      className={`absolute right-0 w-24 h-20 animate-pulse ${isNightTime ? 'opacity-50' : 'opacity-25'}`}
+                      style={{
+                        background: 'radial-gradient(ellipse 80% 70% at 100% 50%, rgba(253,224,71,0.4) 0%, rgba(251,191,36,0.2) 40%, transparent 70%)',
+                        filter: 'blur(4px)',
+                        animationDuration: `${1.2 + i * 0.15}s`,
+                      }}
+                    />
+                    {/* Hot spot near flame source */}
+                    <div
+                      className={`absolute right-0 w-12 h-12 ${isNightTime ? 'opacity-60' : 'opacity-30'}`}
+                      style={{
+                        background: 'radial-gradient(circle at 100% 50%, rgba(253,224,71,0.5) 0%, rgba(251,191,36,0.3) 30%, transparent 60%)',
+                        filter: 'blur(2px)',
+                      }}
+                    />
+                  </div>
+                ))}
+
+                {/* Warm ambient wash over entire bookshelf - environmental awareness */}
+                <div
+                  className={`absolute inset-0 pointer-events-none ${isNightTime ? 'opacity-35' : 'opacity-15'}`}
+                  style={{
+                    background: 'linear-gradient(to left, rgba(251,191,36,0.15) 0%, rgba(245,158,11,0.08) 40%, transparent 70%)',
+                  }}
+                />
               </div>
 
-              {/* ====== OUTER ORNATE PILASTER BORDER (Left Edge) ====== */}
+              {/* ====== OUTER ORNATE PILASTER BORDER (Left Edge) - Enhanced ====== */}
               <div className="absolute left-0 top-0 bottom-0 w-8 bg-gradient-to-r from-amber-800 via-amber-700 to-amber-800 z-10 border-r-2 border-amber-600/60 shadow-xl">
-                {/* Corinthian capital at top */}
-                <div className="absolute top-0 left-0 right-0 h-12 bg-gradient-to-b from-amber-600 via-amber-700 to-amber-800 border-b-2 border-amber-500/50">
-                  <svg viewBox="0 0 32 48" className="w-full h-full text-amber-400">
-                    <ellipse cx="8" cy="8" rx="4" ry="3" fill="none" stroke="currentColor" strokeWidth="0.8" opacity="0.6"/>
-                    <ellipse cx="24" cy="8" rx="4" ry="3" fill="none" stroke="currentColor" strokeWidth="0.8" opacity="0.6"/>
-                    <path d="M16 44 Q8 36 8 28 Q12 32 16 28 Q20 32 24 28 Q24 36 16 44" fill="none" stroke="currentColor" strokeWidth="0.8" opacity="0.5"/>
-                    <circle cx="16" cy="18" r="4" fill="none" stroke="currentColor" strokeWidth="0.8" opacity="0.5"/>
-                    <circle cx="16" cy="18" r="2" fill="currentColor" opacity="0.3"/>
+                {/* Enhanced Corinthian capital with detailed acanthus leaves */}
+                <div className={`absolute top-0 left-0 right-0 h-14 bg-gradient-to-b from-amber-600 via-amber-700 to-amber-800 border-b-2 border-amber-500/50 ${isNightTime ? 'brightness-110' : ''}`}>
+                  <svg viewBox="0 0 32 56" className={`w-full h-full ${isNightTime ? 'text-amber-400' : 'text-amber-500/80'}`}>
+                    {/* Volutes (spiral scrolls) at top */}
+                    <ellipse cx="6" cy="6" rx="4" ry="3" fill="none" stroke="currentColor" strokeWidth="0.9"/>
+                    <path d="M6 9 Q6 12 10 14" fill="none" stroke="currentColor" strokeWidth="0.5"/>
+                    <ellipse cx="26" cy="6" rx="4" ry="3" fill="none" stroke="currentColor" strokeWidth="0.9"/>
+                    <path d="M26 9 Q26 12 22 14" fill="none" stroke="currentColor" strokeWidth="0.5"/>
+                    {/* Abacus plate */}
+                    <rect x="2" y="1" width="28" height="3" fill="none" stroke="currentColor" strokeWidth="0.4" opacity="0.5"/>
+                    {/* Acanthus leaves - main */}
+                    <path d="M16 52 Q6 40 6 28 Q11 34 16 28 Q21 34 26 28 Q26 40 16 52" fill="none" stroke="currentColor" strokeWidth="0.9"/>
+                    <path d="M16 16 Q10 26 10 38 M16 16 Q22 26 22 38" fill="none" stroke="currentColor" strokeWidth="0.6"/>
+                    {/* Caulicoli (leaf stems) */}
+                    <path d="M8 22 Q12 28 12 36" fill="none" stroke="currentColor" strokeWidth="0.5"/>
+                    <path d="M24 22 Q20 28 20 36" fill="none" stroke="currentColor" strokeWidth="0.5"/>
+                    {/* Central rosette */}
+                    <circle cx="16" cy="20" r="5" fill="none" stroke="currentColor" strokeWidth="0.8"/>
+                    <circle cx="16" cy="20" r="3" fill="none" stroke="currentColor" strokeWidth="0.5"/>
+                    <circle cx="16" cy="20" r="1.5" fill="currentColor" opacity="0.5"/>
+                    {/* Leaf tip details */}
+                    <path d="M10 44 Q13 40 16 44 Q19 40 22 44" fill="none" stroke="currentColor" strokeWidth="0.4"/>
                   </svg>
+                  {/* Light-aware highlight on capital */}
+                  <div className={`absolute inset-0 bg-gradient-to-b from-amber-400/20 to-transparent ${isNightTime ? 'opacity-40' : 'opacity-20'}`} />
                 </div>
-                {/* Column shaft with fluting */}
-                <div className="absolute top-14 bottom-10 left-0 right-0 overflow-hidden bg-gradient-to-b from-amber-750 via-amber-800 to-amber-750">
-                  <div className="absolute inset-1 flex justify-around">
-                    {[0, 1, 2, 3].map((i) => (
-                      <div key={`left-outer-flute-${i}`} className="w-1 h-full bg-gradient-to-r from-amber-900 via-amber-950/80 to-amber-900 rounded-full" />
+                {/* Enhanced column shaft with deeper fluting */}
+                <div className="absolute top-16 bottom-12 left-0 right-0 overflow-hidden bg-gradient-to-b from-amber-750 via-amber-800 to-amber-750">
+                  <div className="absolute inset-0.5 flex justify-around">
+                    {[0, 1, 2, 3, 4].map((i) => (
+                      <div key={`left-outer-flute-${i}`} className="w-1 h-full bg-gradient-to-r from-amber-950/60 via-amber-900/80 to-amber-950/60 rounded-full shadow-inner" />
                     ))}
                   </div>
-                  <div className="absolute inset-y-0 left-0 w-1 bg-gradient-to-r from-amber-500/30 to-transparent" />
-                  <div className="absolute inset-y-0 right-0 w-1 bg-gradient-to-l from-amber-600/20 to-transparent" />
+                  {/* Astragal ring moldings */}
+                  <div className="absolute top-4 left-0 right-0 h-1.5 bg-gradient-to-b from-amber-600/50 via-amber-500/30 to-amber-700/40 border-y border-amber-500/30" />
+                  <div className="absolute bottom-4 left-0 right-0 h-1.5 bg-gradient-to-b from-amber-600/50 via-amber-500/30 to-amber-700/40 border-y border-amber-500/30" />
+                  {/* Light reflections */}
+                  <div className={`absolute inset-y-0 left-0 w-1.5 bg-gradient-to-r from-amber-500/30 to-transparent ${isNightTime ? 'opacity-60' : 'opacity-30'}`} />
+                  <div className="absolute inset-y-0 right-0 w-1 bg-gradient-to-l from-amber-700/30 to-transparent" />
                 </div>
-                {/* Attic base */}
-                <div className="absolute bottom-0 left-0 right-0 h-10 bg-gradient-to-t from-amber-700 via-amber-750 to-amber-800 border-t-2 border-amber-500/40">
-                  <div className="absolute top-2 left-1 right-1 h-1 bg-gradient-to-b from-amber-500/40 to-transparent rounded-full" />
-                  <div className="absolute bottom-2 left-1 right-1 h-1 bg-gradient-to-t from-amber-600/30 to-transparent rounded-full" />
+                {/* Enhanced Attic base with torus and scotia moldings */}
+                <div className="absolute bottom-0 left-0 right-0 h-12 bg-gradient-to-t from-amber-700 via-amber-750 to-amber-800 border-t-2 border-amber-500/40">
+                  {/* Upper torus */}
+                  <div className="absolute top-1.5 left-0.5 right-0.5 h-2 bg-gradient-to-b from-amber-600/60 via-amber-500/40 to-amber-700/50 rounded-full" />
+                  {/* Scotia (concave) */}
+                  <div className="absolute top-4 left-1 right-1 h-2 bg-gradient-to-b from-amber-800/60 to-amber-700/40" style={{ boxShadow: 'inset 0 2px 3px rgba(0,0,0,0.2)' }} />
+                  {/* Lower torus */}
+                  <div className="absolute top-7 left-0 right-0 h-2 bg-gradient-to-b from-amber-600/50 via-amber-500/30 to-amber-700/40 rounded-full" />
+                  {/* Plinth */}
+                  <div className="absolute bottom-0 left-0 right-0 h-2.5 bg-gradient-to-t from-amber-800 to-amber-750 border-t border-amber-600/30" />
                 </div>
               </div>
 
-              {/* ====== INNER ORNATE BORDER (Right Edge - facing content) with INTEGRATED SCONCES ====== */}
+              {/* ====== INNER ORNATE BORDER (Right Edge - facing content) with INTEGRATED SCONCES - Enhanced ====== */}
               <div className="absolute right-0 top-0 bottom-0 w-8 bg-gradient-to-l from-amber-800 via-amber-700 to-amber-800 z-10 border-l-2 border-amber-500/50 shadow-xl overflow-visible">
-                {/* Corinthian capital at top */}
-                <div className="absolute top-0 left-0 right-0 h-12 bg-gradient-to-b from-amber-600 via-amber-700 to-amber-800 border-b-2 border-amber-500/50">
-                  <svg viewBox="0 0 32 48" className="w-full h-full text-amber-400">
-                    <ellipse cx="8" cy="8" rx="4" ry="3" fill="none" stroke="currentColor" strokeWidth="0.8" opacity="0.6"/>
-                    <ellipse cx="24" cy="8" rx="4" ry="3" fill="none" stroke="currentColor" strokeWidth="0.8" opacity="0.6"/>
-                    <path d="M16 44 Q8 36 8 28 Q12 32 16 28 Q20 32 24 28 Q24 36 16 44" fill="none" stroke="currentColor" strokeWidth="0.8" opacity="0.5"/>
-                    <circle cx="16" cy="18" r="4" fill="none" stroke="currentColor" strokeWidth="0.8" opacity="0.5"/>
-                    <circle cx="16" cy="18" r="2" fill="currentColor" opacity="0.3"/>
+                {/* Enhanced Corinthian capital with detailed acanthus leaves */}
+                <div className={`absolute top-0 left-0 right-0 h-14 bg-gradient-to-b from-amber-600 via-amber-700 to-amber-800 border-b-2 border-amber-500/50 ${isNightTime ? 'brightness-110' : ''}`}>
+                  <svg viewBox="0 0 32 56" className={`w-full h-full ${isNightTime ? 'text-amber-400' : 'text-amber-500/80'}`}>
+                    {/* Volutes (spiral scrolls) at top */}
+                    <ellipse cx="6" cy="6" rx="4" ry="3" fill="none" stroke="currentColor" strokeWidth="0.9"/>
+                    <path d="M6 9 Q6 12 10 14" fill="none" stroke="currentColor" strokeWidth="0.5"/>
+                    <ellipse cx="26" cy="6" rx="4" ry="3" fill="none" stroke="currentColor" strokeWidth="0.9"/>
+                    <path d="M26 9 Q26 12 22 14" fill="none" stroke="currentColor" strokeWidth="0.5"/>
+                    {/* Abacus plate */}
+                    <rect x="2" y="1" width="28" height="3" fill="none" stroke="currentColor" strokeWidth="0.4" opacity="0.5"/>
+                    {/* Acanthus leaves - main */}
+                    <path d="M16 52 Q6 40 6 28 Q11 34 16 28 Q21 34 26 28 Q26 40 16 52" fill="none" stroke="currentColor" strokeWidth="0.9"/>
+                    <path d="M16 16 Q10 26 10 38 M16 16 Q22 26 22 38" fill="none" stroke="currentColor" strokeWidth="0.6"/>
+                    {/* Caulicoli (leaf stems) */}
+                    <path d="M8 22 Q12 28 12 36" fill="none" stroke="currentColor" strokeWidth="0.5"/>
+                    <path d="M24 22 Q20 28 20 36" fill="none" stroke="currentColor" strokeWidth="0.5"/>
+                    {/* Central rosette */}
+                    <circle cx="16" cy="20" r="5" fill="none" stroke="currentColor" strokeWidth="0.8"/>
+                    <circle cx="16" cy="20" r="3" fill="none" stroke="currentColor" strokeWidth="0.5"/>
+                    <circle cx="16" cy="20" r="1.5" fill="currentColor" opacity="0.5"/>
+                    {/* Leaf tip details */}
+                    <path d="M10 44 Q13 40 16 44 Q19 40 22 44" fill="none" stroke="currentColor" strokeWidth="0.4"/>
                   </svg>
+                  {/* Light-aware highlight on capital */}
+                  <div className={`absolute inset-0 bg-gradient-to-b from-amber-400/20 to-transparent ${isNightTime ? 'opacity-40' : 'opacity-20'}`} />
                 </div>
-                {/* Column shaft with fluting */}
-                <div className="absolute top-14 bottom-10 left-0 right-0 bg-gradient-to-b from-amber-750 via-amber-800 to-amber-750">
-                  <div className="absolute inset-1 flex justify-around">
-                    {[0, 1, 2, 3].map((i) => (
-                      <div key={`left-inner-flute-${i}`} className="w-1 h-full bg-gradient-to-r from-amber-900 via-amber-950/80 to-amber-900 rounded-full" />
+                {/* Enhanced column shaft with deeper fluting */}
+                <div className="absolute top-16 bottom-12 left-0 right-0 bg-gradient-to-b from-amber-750 via-amber-800 to-amber-750 overflow-hidden">
+                  <div className="absolute inset-0.5 flex justify-around">
+                    {[0, 1, 2, 3, 4].map((i) => (
+                      <div key={`left-inner-flute-${i}`} className="w-1 h-full bg-gradient-to-r from-amber-950/60 via-amber-900/80 to-amber-950/60 rounded-full shadow-inner" />
                     ))}
                   </div>
-                  <div className="absolute inset-y-0 right-0 w-1 bg-gradient-to-l from-amber-500/30 to-transparent" />
-                  <div className="absolute inset-y-0 left-0 w-1 bg-gradient-to-r from-amber-600/20 to-transparent" />
+                  {/* Astragal ring moldings */}
+                  <div className="absolute top-4 left-0 right-0 h-1.5 bg-gradient-to-b from-amber-600/50 via-amber-500/30 to-amber-700/40 border-y border-amber-500/30" />
+                  <div className="absolute bottom-4 left-0 right-0 h-1.5 bg-gradient-to-b from-amber-600/50 via-amber-500/30 to-amber-700/40 border-y border-amber-500/30" />
+                  {/* Light reflections */}
+                  <div className={`absolute inset-y-0 right-0 w-1.5 bg-gradient-to-l from-amber-500/30 to-transparent ${isNightTime ? 'opacity-60' : 'opacity-30'}`} />
+                  <div className="absolute inset-y-0 left-0 w-1 bg-gradient-to-r from-amber-700/30 to-transparent" />
                 </div>
 
                 {/* Integrated sconces - built into pilaster border */}
@@ -1200,80 +1327,207 @@ export default function ArticlesPage() {
           >
             {/* Bookshelf frame */}
             <div className="absolute inset-0 bg-gradient-to-l from-amber-950/95 via-amber-900/90 to-amber-950/80 border-l-4 border-amber-700/60">
-              {/* Minimal wood panel background */}
+              {/* Refined wood panel background with enhanced carving details */}
               <div className="absolute inset-0 overflow-hidden">
-                {/* Panel frame pattern */}
-                <div className="absolute inset-8 border-2 border-amber-700/30 rounded-sm" style={{
-                  boxShadow: 'inset 2px 2px 4px rgba(0,0,0,0.2), inset -1px -1px 2px rgba(251,191,36,0.1)'
+                {/* Outer panel frame with chamfered edges */}
+                <div className="absolute inset-6 border-2 border-amber-700/40 rounded-sm" style={{
+                  boxShadow: 'inset 3px 3px 6px rgba(0,0,0,0.25), inset -2px -2px 4px rgba(251,191,36,0.15), 0 0 8px rgba(0,0,0,0.2)'
                 }}>
-                  {/* Inner bevel */}
-                  <div className="absolute inset-2 border border-amber-800/40 rounded-sm" />
-                  {/* Subtle carved centerline */}
-                  <div className="absolute left-1/2 top-4 bottom-4 w-px bg-gradient-to-b from-transparent via-amber-600/20 to-transparent" />
+                  {/* Inner bevel with refined edges */}
+                  <div className="absolute inset-2 border border-amber-800/50 rounded-sm" style={{
+                    boxShadow: 'inset 1px 1px 2px rgba(0,0,0,0.15)'
+                  }} />
+                  {/* Secondary inner frame */}
+                  <div className="absolute inset-4 border border-amber-700/25 rounded-sm" />
+
+                  {/* Vertical carved accent lines */}
+                  <div className="absolute left-1/3 top-6 bottom-6 w-px bg-gradient-to-b from-transparent via-amber-600/25 to-transparent" />
+                  <div className="absolute left-2/3 top-6 bottom-6 w-px bg-gradient-to-b from-transparent via-amber-600/25 to-transparent" />
+
+                  {/* Horizontal carved accent lines */}
+                  <div className="absolute top-1/4 left-6 right-6 h-px bg-gradient-to-r from-transparent via-amber-600/20 to-transparent" />
+                  <div className="absolute top-1/2 left-4 right-4 h-px bg-gradient-to-r from-transparent via-amber-500/30 to-transparent" />
+                  <div className="absolute top-3/4 left-6 right-6 h-px bg-gradient-to-r from-transparent via-amber-600/20 to-transparent" />
+
+                  {/* Diamond inlay pattern at center */}
+                  <svg className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 w-12 h-12 opacity-25" viewBox="0 0 48 48">
+                    <path d="M24 4 L44 24 L24 44 L4 24 Z" fill="none" stroke="#fbbf24" strokeWidth="1"/>
+                    <path d="M24 12 L36 24 L24 36 L12 24 Z" fill="none" stroke="#f59e0b" strokeWidth="0.6"/>
+                    <circle cx="24" cy="24" r="4" fill="none" stroke="#fbbf24" strokeWidth="0.5"/>
+                    <circle cx="24" cy="24" r="2" fill="#fbbf24" opacity="0.3"/>
+                  </svg>
                 </div>
-                {/* Corner rosettes */}
-                <svg className="absolute top-6 right-6 w-4 h-4 text-amber-600/25" viewBox="0 0 16 16">
-                  <circle cx="8" cy="8" r="6" fill="none" stroke="currentColor" strokeWidth="0.5"/>
-                  <circle cx="8" cy="8" r="3" fill="none" stroke="currentColor" strokeWidth="0.3"/>
-                  <circle cx="8" cy="8" r="1" fill="currentColor" opacity="0.5"/>
+
+                {/* Enhanced corner rosettes with acanthus detail */}
+                <svg className={`absolute top-4 right-4 w-6 h-6 ${isNightTime ? 'text-amber-500/40' : 'text-amber-600/30'}`} viewBox="0 0 24 24">
+                  <circle cx="12" cy="12" r="10" fill="none" stroke="currentColor" strokeWidth="0.6"/>
+                  <circle cx="12" cy="12" r="7" fill="none" stroke="currentColor" strokeWidth="0.4"/>
+                  <circle cx="12" cy="12" r="4" fill="none" stroke="currentColor" strokeWidth="0.3"/>
+                  <circle cx="12" cy="12" r="2" fill="currentColor" opacity="0.4"/>
+                  {/* Petal details */}
+                  <path d="M12 2 Q14 6 12 10 Q10 6 12 2" fill="none" stroke="currentColor" strokeWidth="0.3"/>
+                  <path d="M22 12 Q18 14 14 12 Q18 10 22 12" fill="none" stroke="currentColor" strokeWidth="0.3"/>
+                  <path d="M12 22 Q10 18 12 14 Q14 18 12 22" fill="none" stroke="currentColor" strokeWidth="0.3"/>
+                  <path d="M2 12 Q6 10 10 12 Q6 14 2 12" fill="none" stroke="currentColor" strokeWidth="0.3"/>
                 </svg>
-                <svg className="absolute bottom-6 right-6 w-4 h-4 text-amber-600/25" viewBox="0 0 16 16">
-                  <circle cx="8" cy="8" r="6" fill="none" stroke="currentColor" strokeWidth="0.5"/>
-                  <circle cx="8" cy="8" r="3" fill="none" stroke="currentColor" strokeWidth="0.3"/>
-                  <circle cx="8" cy="8" r="1" fill="currentColor" opacity="0.5"/>
+                <svg className={`absolute bottom-4 right-4 w-6 h-6 ${isNightTime ? 'text-amber-500/40' : 'text-amber-600/30'}`} viewBox="0 0 24 24">
+                  <circle cx="12" cy="12" r="10" fill="none" stroke="currentColor" strokeWidth="0.6"/>
+                  <circle cx="12" cy="12" r="7" fill="none" stroke="currentColor" strokeWidth="0.4"/>
+                  <circle cx="12" cy="12" r="4" fill="none" stroke="currentColor" strokeWidth="0.3"/>
+                  <circle cx="12" cy="12" r="2" fill="currentColor" opacity="0.4"/>
+                  <path d="M12 2 Q14 6 12 10 Q10 6 12 2" fill="none" stroke="currentColor" strokeWidth="0.3"/>
+                  <path d="M22 12 Q18 14 14 12 Q18 10 22 12" fill="none" stroke="currentColor" strokeWidth="0.3"/>
+                  <path d="M12 22 Q10 18 12 14 Q14 18 12 22" fill="none" stroke="currentColor" strokeWidth="0.3"/>
+                  <path d="M2 12 Q6 10 10 12 Q6 14 2 12" fill="none" stroke="currentColor" strokeWidth="0.3"/>
                 </svg>
+
+                {/* ====== AMBIENT CANDLELIGHT AWARENESS (Mirrored) ====== */}
+                {/* Warm light pools cast from sconces at 20%, 40%, 60%, 80% */}
+                {[20, 40, 60, 80].map((topPercent, i) => (
+                  <div key={`right-ambient-light-${i}`} className="absolute left-0 pointer-events-none" style={{ top: `${topPercent}%`, transform: 'translateY(-50%)' }}>
+                    {/* Primary warm glow pool - spreads across shelf area */}
+                    <div
+                      className={`absolute left-0 w-48 h-32 ${isNightTime ? 'opacity-45' : 'opacity-20'}`}
+                      style={{
+                        background: 'radial-gradient(ellipse 100% 80% at 0% 50%, rgba(251,191,36,0.35) 0%, rgba(245,158,11,0.2) 30%, rgba(217,119,6,0.1) 50%, transparent 70%)',
+                        filter: 'blur(8px)',
+                        transform: 'translateX(-10%)',
+                      }}
+                    />
+                    {/* Secondary softer ambient fill */}
+                    <div
+                      className={`absolute left-0 w-64 h-48 ${isNightTime ? 'opacity-30' : 'opacity-12'}`}
+                      style={{
+                        background: 'radial-gradient(ellipse 120% 100% at 0% 50%, rgba(251,191,36,0.2) 0%, rgba(245,158,11,0.1) 40%, transparent 65%)',
+                        filter: 'blur(16px)',
+                        transform: 'translateX(-15%)',
+                      }}
+                    />
+                    {/* Flickering highlight - subtle animation */}
+                    <div
+                      className={`absolute left-0 w-24 h-20 animate-pulse ${isNightTime ? 'opacity-50' : 'opacity-25'}`}
+                      style={{
+                        background: 'radial-gradient(ellipse 80% 70% at 0% 50%, rgba(253,224,71,0.4) 0%, rgba(251,191,36,0.2) 40%, transparent 70%)',
+                        filter: 'blur(4px)',
+                        animationDuration: `${1.3 + i * 0.12}s`,
+                      }}
+                    />
+                    {/* Hot spot near flame source */}
+                    <div
+                      className={`absolute left-0 w-12 h-12 ${isNightTime ? 'opacity-60' : 'opacity-30'}`}
+                      style={{
+                        background: 'radial-gradient(circle at 0% 50%, rgba(253,224,71,0.5) 0%, rgba(251,191,36,0.3) 30%, transparent 60%)',
+                        filter: 'blur(2px)',
+                      }}
+                    />
+                  </div>
+                ))}
+
+                {/* Warm ambient wash over entire bookshelf - environmental awareness */}
+                <div
+                  className={`absolute inset-0 pointer-events-none ${isNightTime ? 'opacity-35' : 'opacity-15'}`}
+                  style={{
+                    background: 'linear-gradient(to right, rgba(251,191,36,0.15) 0%, rgba(245,158,11,0.08) 40%, transparent 70%)',
+                  }}
+                />
               </div>
 
-              {/* ====== OUTER ORNATE PILASTER BORDER (Right Edge) ====== */}
+              {/* ====== OUTER ORNATE PILASTER BORDER (Right Edge) - Enhanced ====== */}
               <div className="absolute right-0 top-0 bottom-0 w-8 bg-gradient-to-l from-amber-800 via-amber-700 to-amber-800 z-10 border-l-2 border-amber-600/60 shadow-xl">
-                {/* Corinthian capital at top */}
-                <div className="absolute top-0 left-0 right-0 h-12 bg-gradient-to-b from-amber-600 via-amber-700 to-amber-800 border-b-2 border-amber-500/50">
-                  <svg viewBox="0 0 32 48" className="w-full h-full text-amber-400">
-                    <ellipse cx="8" cy="8" rx="4" ry="3" fill="none" stroke="currentColor" strokeWidth="0.8" opacity="0.6"/>
-                    <ellipse cx="24" cy="8" rx="4" ry="3" fill="none" stroke="currentColor" strokeWidth="0.8" opacity="0.6"/>
-                    <path d="M16 44 Q8 36 8 28 Q12 32 16 28 Q20 32 24 28 Q24 36 16 44" fill="none" stroke="currentColor" strokeWidth="0.8" opacity="0.5"/>
-                    <circle cx="16" cy="18" r="4" fill="none" stroke="currentColor" strokeWidth="0.8" opacity="0.5"/>
-                    <circle cx="16" cy="18" r="2" fill="currentColor" opacity="0.3"/>
+                {/* Enhanced Corinthian capital with detailed acanthus leaves */}
+                <div className={`absolute top-0 left-0 right-0 h-14 bg-gradient-to-b from-amber-600 via-amber-700 to-amber-800 border-b-2 border-amber-500/50 ${isNightTime ? 'brightness-110' : ''}`}>
+                  <svg viewBox="0 0 32 56" className={`w-full h-full ${isNightTime ? 'text-amber-400' : 'text-amber-500/80'}`}>
+                    {/* Volutes (spiral scrolls) at top */}
+                    <ellipse cx="6" cy="6" rx="4" ry="3" fill="none" stroke="currentColor" strokeWidth="0.9"/>
+                    <path d="M6 9 Q6 12 10 14" fill="none" stroke="currentColor" strokeWidth="0.5"/>
+                    <ellipse cx="26" cy="6" rx="4" ry="3" fill="none" stroke="currentColor" strokeWidth="0.9"/>
+                    <path d="M26 9 Q26 12 22 14" fill="none" stroke="currentColor" strokeWidth="0.5"/>
+                    {/* Abacus plate */}
+                    <rect x="2" y="1" width="28" height="3" fill="none" stroke="currentColor" strokeWidth="0.4" opacity="0.5"/>
+                    {/* Acanthus leaves - main */}
+                    <path d="M16 52 Q6 40 6 28 Q11 34 16 28 Q21 34 26 28 Q26 40 16 52" fill="none" stroke="currentColor" strokeWidth="0.9"/>
+                    <path d="M16 16 Q10 26 10 38 M16 16 Q22 26 22 38" fill="none" stroke="currentColor" strokeWidth="0.6"/>
+                    {/* Caulicoli (leaf stems) */}
+                    <path d="M8 22 Q12 28 12 36" fill="none" stroke="currentColor" strokeWidth="0.5"/>
+                    <path d="M24 22 Q20 28 20 36" fill="none" stroke="currentColor" strokeWidth="0.5"/>
+                    {/* Central rosette */}
+                    <circle cx="16" cy="20" r="5" fill="none" stroke="currentColor" strokeWidth="0.8"/>
+                    <circle cx="16" cy="20" r="3" fill="none" stroke="currentColor" strokeWidth="0.5"/>
+                    <circle cx="16" cy="20" r="1.5" fill="currentColor" opacity="0.5"/>
+                    {/* Leaf tip details */}
+                    <path d="M10 44 Q13 40 16 44 Q19 40 22 44" fill="none" stroke="currentColor" strokeWidth="0.4"/>
                   </svg>
+                  {/* Light-aware highlight on capital */}
+                  <div className={`absolute inset-0 bg-gradient-to-b from-amber-400/20 to-transparent ${isNightTime ? 'opacity-40' : 'opacity-20'}`} />
                 </div>
-                {/* Column shaft with fluting */}
-                <div className="absolute top-14 bottom-10 left-0 right-0 overflow-hidden bg-gradient-to-b from-amber-750 via-amber-800 to-amber-750">
-                  <div className="absolute inset-1 flex justify-around">
-                    {[0, 1, 2, 3].map((i) => (
-                      <div key={`right-outer-flute-${i}`} className="w-1 h-full bg-gradient-to-r from-amber-900 via-amber-950/80 to-amber-900 rounded-full" />
+                {/* Enhanced column shaft with deeper fluting */}
+                <div className="absolute top-16 bottom-12 left-0 right-0 overflow-hidden bg-gradient-to-b from-amber-750 via-amber-800 to-amber-750">
+                  <div className="absolute inset-0.5 flex justify-around">
+                    {[0, 1, 2, 3, 4].map((i) => (
+                      <div key={`right-outer-flute-${i}`} className="w-1 h-full bg-gradient-to-r from-amber-950/60 via-amber-900/80 to-amber-950/60 rounded-full shadow-inner" />
                     ))}
                   </div>
-                  <div className="absolute inset-y-0 right-0 w-1 bg-gradient-to-l from-amber-500/30 to-transparent" />
-                  <div className="absolute inset-y-0 left-0 w-1 bg-gradient-to-r from-amber-600/20 to-transparent" />
+                  {/* Astragal ring moldings */}
+                  <div className="absolute top-4 left-0 right-0 h-1.5 bg-gradient-to-b from-amber-600/50 via-amber-500/30 to-amber-700/40 border-y border-amber-500/30" />
+                  <div className="absolute bottom-4 left-0 right-0 h-1.5 bg-gradient-to-b from-amber-600/50 via-amber-500/30 to-amber-700/40 border-y border-amber-500/30" />
+                  {/* Light reflections */}
+                  <div className={`absolute inset-y-0 right-0 w-1.5 bg-gradient-to-l from-amber-500/30 to-transparent ${isNightTime ? 'opacity-60' : 'opacity-30'}`} />
+                  <div className="absolute inset-y-0 left-0 w-1 bg-gradient-to-r from-amber-700/30 to-transparent" />
                 </div>
-                {/* Attic base */}
-                <div className="absolute bottom-0 left-0 right-0 h-10 bg-gradient-to-t from-amber-700 via-amber-750 to-amber-800 border-t-2 border-amber-500/40">
-                  <div className="absolute top-2 left-1 right-1 h-1 bg-gradient-to-b from-amber-500/40 to-transparent rounded-full" />
-                  <div className="absolute bottom-2 left-1 right-1 h-1 bg-gradient-to-t from-amber-600/30 to-transparent rounded-full" />
+                {/* Enhanced Attic base with torus and scotia moldings */}
+                <div className="absolute bottom-0 left-0 right-0 h-12 bg-gradient-to-t from-amber-700 via-amber-750 to-amber-800 border-t-2 border-amber-500/40">
+                  {/* Upper torus */}
+                  <div className="absolute top-1.5 left-0.5 right-0.5 h-2 bg-gradient-to-b from-amber-600/60 via-amber-500/40 to-amber-700/50 rounded-full" />
+                  {/* Scotia (concave) */}
+                  <div className="absolute top-4 left-1 right-1 h-2 bg-gradient-to-b from-amber-800/60 to-amber-700/40" style={{ boxShadow: 'inset 0 2px 3px rgba(0,0,0,0.2)' }} />
+                  {/* Lower torus */}
+                  <div className="absolute top-7 left-0 right-0 h-2 bg-gradient-to-b from-amber-600/50 via-amber-500/30 to-amber-700/40 rounded-full" />
+                  {/* Plinth */}
+                  <div className="absolute bottom-0 left-0 right-0 h-2.5 bg-gradient-to-t from-amber-800 to-amber-750 border-t border-amber-600/30" />
                 </div>
               </div>
 
-              {/* ====== INNER ORNATE BORDER (Left Edge - facing content) with INTEGRATED SCONCES ====== */}
+              {/* ====== INNER ORNATE BORDER (Left Edge - facing content) with INTEGRATED SCONCES - Enhanced ====== */}
               <div className="absolute left-0 top-0 bottom-0 w-8 bg-gradient-to-r from-amber-800 via-amber-700 to-amber-800 z-10 border-r-2 border-amber-500/50 shadow-xl overflow-visible">
-                {/* Corinthian capital at top */}
-                <div className="absolute top-0 left-0 right-0 h-12 bg-gradient-to-b from-amber-600 via-amber-700 to-amber-800 border-b-2 border-amber-500/50">
-                  <svg viewBox="0 0 32 48" className="w-full h-full text-amber-400">
-                    <ellipse cx="8" cy="8" rx="4" ry="3" fill="none" stroke="currentColor" strokeWidth="0.8" opacity="0.6"/>
-                    <ellipse cx="24" cy="8" rx="4" ry="3" fill="none" stroke="currentColor" strokeWidth="0.8" opacity="0.6"/>
-                    <path d="M16 44 Q8 36 8 28 Q12 32 16 28 Q20 32 24 28 Q24 36 16 44" fill="none" stroke="currentColor" strokeWidth="0.8" opacity="0.5"/>
-                    <circle cx="16" cy="18" r="4" fill="none" stroke="currentColor" strokeWidth="0.8" opacity="0.5"/>
-                    <circle cx="16" cy="18" r="2" fill="currentColor" opacity="0.3"/>
+                {/* Enhanced Corinthian capital with detailed acanthus leaves */}
+                <div className={`absolute top-0 left-0 right-0 h-14 bg-gradient-to-b from-amber-600 via-amber-700 to-amber-800 border-b-2 border-amber-500/50 ${isNightTime ? 'brightness-110' : ''}`}>
+                  <svg viewBox="0 0 32 56" className={`w-full h-full ${isNightTime ? 'text-amber-400' : 'text-amber-500/80'}`}>
+                    {/* Volutes (spiral scrolls) at top */}
+                    <ellipse cx="6" cy="6" rx="4" ry="3" fill="none" stroke="currentColor" strokeWidth="0.9"/>
+                    <path d="M6 9 Q6 12 10 14" fill="none" stroke="currentColor" strokeWidth="0.5"/>
+                    <ellipse cx="26" cy="6" rx="4" ry="3" fill="none" stroke="currentColor" strokeWidth="0.9"/>
+                    <path d="M26 9 Q26 12 22 14" fill="none" stroke="currentColor" strokeWidth="0.5"/>
+                    {/* Abacus plate */}
+                    <rect x="2" y="1" width="28" height="3" fill="none" stroke="currentColor" strokeWidth="0.4" opacity="0.5"/>
+                    {/* Acanthus leaves - main */}
+                    <path d="M16 52 Q6 40 6 28 Q11 34 16 28 Q21 34 26 28 Q26 40 16 52" fill="none" stroke="currentColor" strokeWidth="0.9"/>
+                    <path d="M16 16 Q10 26 10 38 M16 16 Q22 26 22 38" fill="none" stroke="currentColor" strokeWidth="0.6"/>
+                    {/* Caulicoli (leaf stems) */}
+                    <path d="M8 22 Q12 28 12 36" fill="none" stroke="currentColor" strokeWidth="0.5"/>
+                    <path d="M24 22 Q20 28 20 36" fill="none" stroke="currentColor" strokeWidth="0.5"/>
+                    {/* Central rosette */}
+                    <circle cx="16" cy="20" r="5" fill="none" stroke="currentColor" strokeWidth="0.8"/>
+                    <circle cx="16" cy="20" r="3" fill="none" stroke="currentColor" strokeWidth="0.5"/>
+                    <circle cx="16" cy="20" r="1.5" fill="currentColor" opacity="0.5"/>
+                    {/* Leaf tip details */}
+                    <path d="M10 44 Q13 40 16 44 Q19 40 22 44" fill="none" stroke="currentColor" strokeWidth="0.4"/>
                   </svg>
+                  {/* Light-aware highlight on capital */}
+                  <div className={`absolute inset-0 bg-gradient-to-b from-amber-400/20 to-transparent ${isNightTime ? 'opacity-40' : 'opacity-20'}`} />
                 </div>
-                {/* Column shaft with fluting */}
-                <div className="absolute top-14 bottom-10 left-0 right-0 bg-gradient-to-b from-amber-750 via-amber-800 to-amber-750">
-                  <div className="absolute inset-1 flex justify-around">
-                    {[0, 1, 2, 3].map((i) => (
-                      <div key={`right-inner-flute-${i}`} className="w-1 h-full bg-gradient-to-r from-amber-900 via-amber-950/80 to-amber-900 rounded-full" />
+                {/* Enhanced column shaft with deeper fluting */}
+                <div className="absolute top-16 bottom-12 left-0 right-0 bg-gradient-to-b from-amber-750 via-amber-800 to-amber-750 overflow-hidden">
+                  <div className="absolute inset-0.5 flex justify-around">
+                    {[0, 1, 2, 3, 4].map((i) => (
+                      <div key={`right-inner-flute-${i}`} className="w-1 h-full bg-gradient-to-r from-amber-950/60 via-amber-900/80 to-amber-950/60 rounded-full shadow-inner" />
                     ))}
                   </div>
-                  <div className="absolute inset-y-0 left-0 w-1 bg-gradient-to-r from-amber-500/30 to-transparent" />
-                  <div className="absolute inset-y-0 right-0 w-1 bg-gradient-to-l from-amber-600/20 to-transparent" />
+                  {/* Astragal ring moldings */}
+                  <div className="absolute top-4 left-0 right-0 h-1.5 bg-gradient-to-b from-amber-600/50 via-amber-500/30 to-amber-700/40 border-y border-amber-500/30" />
+                  <div className="absolute bottom-4 left-0 right-0 h-1.5 bg-gradient-to-b from-amber-600/50 via-amber-500/30 to-amber-700/40 border-y border-amber-500/30" />
+                  {/* Light reflections */}
+                  <div className={`absolute inset-y-0 left-0 w-1.5 bg-gradient-to-r from-amber-500/30 to-transparent ${isNightTime ? 'opacity-60' : 'opacity-30'}`} />
+                  <div className="absolute inset-y-0 right-0 w-1 bg-gradient-to-l from-amber-700/30 to-transparent" />
                 </div>
 
                 {/* Integrated sconces - built into pilaster border (mirrored) */}
