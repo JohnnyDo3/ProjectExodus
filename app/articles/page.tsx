@@ -1440,108 +1440,117 @@ export default function ArticlesPage() {
           </motion.div>
 
           {/* ========================================== */}
-          {/* CONNECTING ARCH - Frames top area between vertical bookshelves */}
-          {/* Roman-inspired arch that sits below title, connects from shelf level */}
+          {/* ENTABLATURE - Classical horizontal beam spanning between vertical bookshelves */}
+          {/* Covers from top of page down to its bottom border */}
           {/* ========================================== */}
           <motion.div
-            initial={{ opacity: 0, scale: 0.9 }}
-            animate={libraryEntered ? { opacity: 1, scale: 1 } : { opacity: 0, scale: 0.9 }}
+            initial={{ opacity: 0, y: -20 }}
+            animate={libraryEntered ? { opacity: 1, y: 0 } : { opacity: 0, y: -20 }}
             transition={{ duration: 0.6, ease: 'easeOut', delay: 0.5 }}
-            className="hidden lg:block absolute left-[18%] right-[18%] z-10 pointer-events-none"
-            style={{ top: '12%', height: '12%' }}
+            className="hidden lg:block absolute left-[18%] right-[18%] top-0 z-10 pointer-events-none"
           >
-            {/* SVG Arch that connects from first shelf level on both sides */}
-            <svg className="absolute inset-0 w-full h-full" viewBox="0 0 100 100" preserveAspectRatio="none">
-              <defs>
-                {/* Wood gradient for arch */}
-                <linearGradient id="archWoodGrad" x1="0%" y1="0%" x2="0%" y2="100%">
-                  <stop offset="0%" stopColor="#92400e" />
-                  <stop offset="50%" stopColor="#78350f" />
-                  <stop offset="100%" stopColor="#451a03" />
-                </linearGradient>
-                {/* Inner shadow gradient */}
-                <linearGradient id="archInnerGrad" x1="0%" y1="0%" x2="0%" y2="100%">
-                  <stop offset="0%" stopColor="#451a03" />
-                  <stop offset="100%" stopColor="#1c0a00" />
-                </linearGradient>
-                {/* Gold accent gradient */}
-                <linearGradient id="archGoldGrad" x1="0%" y1="0%" x2="100%" y2="0%">
-                  <stop offset="0%" stopColor="#fbbf24" stopOpacity="0.3" />
-                  <stop offset="50%" stopColor="#f59e0b" stopOpacity="0.6" />
-                  <stop offset="100%" stopColor="#fbbf24" stopOpacity="0.3" />
-                </linearGradient>
-              </defs>
-
-              {/* Outer arch frame - thick wooden beam */}
-              <path
-                d="M0 95 L0 70 Q0 20 50 5 Q100 20 100 70 L100 95"
-                fill="url(#archWoodGrad)"
-                stroke="#b45309"
-                strokeWidth="0.5"
-              />
-
-              {/* Inner arch cutout - creates the opening */}
-              <path
-                d="M8 95 L8 72 Q8 30 50 15 Q92 30 92 72 L92 95"
-                fill="url(#archInnerGrad)"
-              />
-
-              {/* Gold inlay line on inner edge */}
-              <path
-                d="M10 95 L10 73 Q10 32 50 17 Q90 32 90 73 L90 95"
-                fill="none"
-                stroke="url(#archGoldGrad)"
-                strokeWidth="0.8"
-              />
-
-              {/* Decorative egg-and-dart pattern along outer edge */}
-              <g opacity="0.5">
-                {[0, 15, 30, 45, 60, 75, 90].map((angle, i) => {
-                  const rad = (angle - 45) * Math.PI / 180
-                  const x = 50 + 44 * Math.sin(rad)
-                  const y = 55 - 40 * Math.cos(rad)
-                  return (
-                    <ellipse key={i} cx={x} cy={y} rx="2" ry="1.5" fill="none" stroke="#fbbf24" strokeWidth="0.3" />
-                  )
-                })}
-              </g>
-            </svg>
-
-            {/* Keystone at apex of arch */}
-            <div className="absolute top-0 left-1/2 -translate-x-1/2 w-16 h-14 z-20">
-              <div className="w-full h-full bg-gradient-to-b from-amber-700 via-amber-800 to-amber-900 rounded-b-lg border-2 border-amber-600/50 flex items-center justify-center shadow-xl" style={{ clipPath: 'polygon(15% 0, 85% 0, 100% 100%, 0% 100%)' }}>
-                {/* Laurel wreath emblem */}
-                <svg viewBox="0 0 32 32" className="w-10 h-10 text-amber-400/70">
-                  <path d="M16 4 C10 4 5 10 5 16 c0 3 2 6 5 8" fill="none" stroke="currentColor" strokeWidth="1.2" strokeLinecap="round"/>
-                  <path d="M16 4 c6 0 11 6 11 12 c0 3-2 6-5 8" fill="none" stroke="currentColor" strokeWidth="1.2" strokeLinecap="round"/>
-                  <circle cx="16" cy="16" r="4" fill="none" stroke="currentColor" strokeWidth="1.2"/>
-                  <path d="M7 12 c2-2 4-2 6 0 M25 12 c-2-2-4-2-6 0" fill="none" stroke="currentColor" strokeWidth="0.8"/>
-                  <path d="M9 18 c2 0 3 0 3-2 M23 18 c-2 0-3 0-3-2" fill="none" stroke="currentColor" strokeWidth="0.8"/>
-                  {/* Center star */}
-                  <path d="M16 14 L17 16 L16 18 L15 16 Z" fill="currentColor" opacity="0.6"/>
-                </svg>
+            {/* Main Entablature Structure */}
+            <div className="relative">
+              {/* ===== CORNICE (Top) - Projecting crown molding ===== */}
+              <div className="relative h-6 bg-gradient-to-b from-amber-600 via-amber-700 to-amber-800 border-b border-amber-500/40 shadow-lg">
+                {/* Corona (projecting part) */}
+                <div className="absolute inset-x-0 top-0 h-2 bg-gradient-to-b from-amber-500 to-amber-600 border-b border-amber-400/50" />
+                {/* Cyma recta molding profile */}
+                <div className="absolute inset-x-0 top-2 h-1 bg-gradient-to-b from-amber-700 to-amber-800" />
+                {/* Dentil band - small rectangular blocks */}
+                <div className="absolute inset-x-0 bottom-0 h-3 flex justify-center">
+                  <div className="flex items-end gap-1 px-4">
+                    {Array.from({ length: 40 }).map((_, i) => (
+                      <div key={`dentil-${i}`} className="w-1.5 h-2 bg-gradient-to-b from-amber-600 to-amber-800 border-x border-amber-500/30" />
+                    ))}
+                  </div>
+                </div>
+                {/* Top edge highlight */}
+                <div className="absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-amber-400/50 to-transparent" />
               </div>
-              {/* Keystone shadow */}
-              <div className="absolute -bottom-2 left-1/2 -translate-x-1/2 w-12 h-2 bg-gradient-to-b from-amber-950/60 to-transparent blur-sm" />
-            </div>
 
-            {/* Left springer/impost block where arch meets shelf */}
-            <div className="absolute bottom-0 left-0 w-8 h-8 bg-gradient-to-br from-amber-700 via-amber-800 to-amber-900 border-r-2 border-b-2 border-amber-600/50 shadow-lg">
-              <div className="absolute inset-1 border border-amber-500/30 rounded-sm" />
-              <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-3 h-3 bg-gradient-to-br from-yellow-400/50 to-amber-600/50 rounded-full" />
-            </div>
+              {/* ===== FRIEZE (Middle) - Decorated horizontal band ===== */}
+              <div className="relative h-12 bg-gradient-to-b from-amber-800 via-amber-850 to-amber-900 overflow-hidden">
+                {/* Central medallion with laurel wreath */}
+                <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-16 h-10 z-10">
+                  <div className="w-full h-full bg-gradient-to-b from-amber-700 via-amber-800 to-amber-900 rounded-sm border border-amber-600/50 flex items-center justify-center shadow-lg">
+                    <svg viewBox="0 0 32 24" className="w-12 h-8 text-amber-400/70">
+                      {/* Laurel branches */}
+                      <path d="M16 4 C10 4 6 8 6 12 c0 2 1 4 3 5" fill="none" stroke="currentColor" strokeWidth="1" strokeLinecap="round"/>
+                      <path d="M16 4 c6 0 10 4 10 8 c0 2-1 4-3 5" fill="none" stroke="currentColor" strokeWidth="1" strokeLinecap="round"/>
+                      {/* Leaves */}
+                      <path d="M7 9 c1-1 2-1 3 0 M25 9 c-1-1-2-1-3 0" fill="none" stroke="currentColor" strokeWidth="0.6"/>
+                      <path d="M8 13 c1 0 2 0 2-1 M24 13 c-1 0-2 0-2-1" fill="none" stroke="currentColor" strokeWidth="0.6"/>
+                      {/* Center element */}
+                      <circle cx="16" cy="12" r="3" fill="none" stroke="currentColor" strokeWidth="0.8"/>
+                      <path d="M16 10 L17 12 L16 14 L15 12 Z" fill="currentColor" opacity="0.5"/>
+                    </svg>
+                  </div>
+                </div>
 
-            {/* Right springer/impost block where arch meets shelf */}
-            <div className="absolute bottom-0 right-0 w-8 h-8 bg-gradient-to-bl from-amber-700 via-amber-800 to-amber-900 border-l-2 border-b-2 border-amber-600/50 shadow-lg">
-              <div className="absolute inset-1 border border-amber-500/30 rounded-sm" />
-              <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-3 h-3 bg-gradient-to-br from-yellow-400/50 to-amber-600/50 rounded-full" />
-            </div>
+                {/* Repeating palmette/anthemion pattern - left side */}
+                <div className="absolute left-4 top-1/2 -translate-y-1/2 flex gap-8">
+                  {[0, 1, 2, 3].map((i) => (
+                    <svg key={`palmette-l-${i}`} viewBox="0 0 20 20" className="w-6 h-6 text-amber-500/40">
+                      <path d="M10 18 Q6 14 6 10 Q8 12 10 8 Q12 12 14 10 Q14 14 10 18" fill="none" stroke="currentColor" strokeWidth="0.8"/>
+                      <path d="M10 8 L10 4" stroke="currentColor" strokeWidth="0.6"/>
+                      <circle cx="10" cy="3" r="1.5" fill="currentColor" opacity="0.5"/>
+                    </svg>
+                  ))}
+                </div>
 
-            {/* Latin inscription along arch */}
-            <div className="absolute bottom-6 left-1/2 -translate-x-1/2 whitespace-nowrap">
-              <span className="text-[8px] font-bold text-amber-400/50 uppercase tracking-[0.3em]" style={{ fontFamily: 'Georgia, serif' }}>
-                · Sapientia · Aeterna · Manet ·
-              </span>
+                {/* Repeating palmette/anthemion pattern - right side */}
+                <div className="absolute right-4 top-1/2 -translate-y-1/2 flex gap-8">
+                  {[0, 1, 2, 3].map((i) => (
+                    <svg key={`palmette-r-${i}`} viewBox="0 0 20 20" className="w-6 h-6 text-amber-500/40">
+                      <path d="M10 18 Q6 14 6 10 Q8 12 10 8 Q12 12 14 10 Q14 14 10 18" fill="none" stroke="currentColor" strokeWidth="0.8"/>
+                      <path d="M10 8 L10 4" stroke="currentColor" strokeWidth="0.6"/>
+                      <circle cx="10" cy="3" r="1.5" fill="currentColor" opacity="0.5"/>
+                    </svg>
+                  ))}
+                </div>
+
+                {/* Latin inscription */}
+                <div className="absolute bottom-1 left-1/2 -translate-x-1/2 whitespace-nowrap">
+                  <span className="text-[7px] font-bold text-amber-400/40 uppercase tracking-[0.25em]" style={{ fontFamily: 'Georgia, serif' }}>
+                    · Sapientia · Aeterna · Manet ·
+                  </span>
+                </div>
+              </div>
+
+              {/* ===== ARCHITRAVE (Bottom) - Main supporting beam ===== */}
+              <div className="relative h-8 bg-gradient-to-b from-amber-800 via-amber-700 to-amber-800 border-t border-amber-600/40">
+                {/* Three fascia bands (traditional Roman architrave) */}
+                <div className="absolute inset-x-0 top-0 h-2 bg-gradient-to-b from-amber-700 to-amber-750 border-b border-amber-600/30" />
+                <div className="absolute inset-x-0 top-2 h-2 bg-gradient-to-b from-amber-750 to-amber-800 border-b border-amber-600/20" />
+                <div className="absolute inset-x-0 top-4 h-4 bg-gradient-to-b from-amber-800 to-amber-850" />
+
+                {/* Taenia (flat band at bottom) */}
+                <div className="absolute inset-x-0 bottom-0 h-2 bg-gradient-to-b from-amber-700 via-amber-800 to-amber-900 border-t border-amber-600/40 border-b-2 border-amber-950/80">
+                  {/* Regulae (small blocks under taenia) */}
+                  <div className="absolute inset-x-0 -bottom-1.5 flex justify-around px-8">
+                    {Array.from({ length: 12 }).map((_, i) => (
+                      <div key={`regula-${i}`} className="w-4 h-1.5 bg-gradient-to-b from-amber-700 to-amber-900 rounded-b-sm shadow-sm" />
+                    ))}
+                  </div>
+                  {/* Guttae (drops) under regulae */}
+                  <div className="absolute inset-x-0 -bottom-3 flex justify-around px-8">
+                    {Array.from({ length: 12 }).map((_, i) => (
+                      <div key={`guttae-group-${i}`} className="flex gap-0.5">
+                        {[0, 1, 2].map((g) => (
+                          <div key={`gutta-${i}-${g}`} className="w-1 h-1 bg-amber-800 rounded-full shadow-sm" />
+                        ))}
+                      </div>
+                    ))}
+                  </div>
+                </div>
+
+                {/* Gold accent line */}
+                <div className="absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-amber-500/40 to-transparent" />
+              </div>
+
+              {/* Bottom shadow for depth */}
+              <div className="absolute -bottom-2 inset-x-0 h-4 bg-gradient-to-b from-amber-950/60 to-transparent blur-sm" />
             </div>
           </motion.div>
 
