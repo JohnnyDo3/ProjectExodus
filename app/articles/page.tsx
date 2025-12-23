@@ -1110,14 +1110,14 @@ export default function ArticlesPage() {
                       {/* Candle holder cup */}
                       <div className="absolute right-5 top-1/2 w-4 h-2.5 bg-gradient-to-b from-yellow-400 to-amber-600 rounded-b-sm border-t-2 border-yellow-300/60 shadow-lg" style={{ transform: 'translateY(-50%)' }} />
 
-                      {/* Candle - sits perfectly on holder cup, centered */}
-                      <div className="absolute right-5 top-1/2 w-2.5" style={{ transform: 'translate(18%, -130%)' }}>
+                      {/* Candle - sits on holder cup */}
+                      <div className="absolute right-5 top-1/2 w-2.5" style={{ transform: 'translate(18%, -95%)' }}>
                         <div className="w-2.5 h-5 bg-gradient-to-b from-amber-50 via-amber-100 to-amber-200 rounded-t-sm shadow-md" />
                         <div className="absolute -top-1 left-1/2 -translate-x-1/2 w-0.5 h-1.5 bg-gradient-to-t from-gray-700 to-gray-500" />
                       </div>
 
                       {/* Flame - at top of candle */}
-                      <div className={`absolute right-4 ${isNightTime ? 'opacity-100' : 'opacity-60'}`} style={{ top: '50%', transform: 'translate(8%, -220%)' }}>
+                      <div className={`absolute right-4 ${isNightTime ? 'opacity-100' : 'opacity-60'}`} style={{ top: '50%', transform: 'translate(8%, -175%)' }}>
                         <div className="absolute -inset-2 bg-gradient-radial from-orange-400/30 via-orange-300/15 to-transparent rounded-full blur-md" />
                         <div className="w-3 h-4 bg-gradient-to-t from-orange-500 via-orange-400 to-yellow-200 rounded-full blur-[1px] animate-pulse" style={{ animationDelay: `${i * 0.3}s`, animationDuration: '0.7s' }} />
                       </div>
@@ -1490,14 +1490,14 @@ export default function ArticlesPage() {
                       {/* Candle holder cup */}
                       <div className="absolute left-5 top-1/2 w-4 h-2.5 bg-gradient-to-b from-yellow-400 to-amber-600 rounded-b-sm border-t-2 border-yellow-300/60 shadow-lg" style={{ transform: 'translateY(-50%)' }} />
 
-                      {/* Candle - sits perfectly on holder cup, centered */}
-                      <div className="absolute left-5 top-1/2 w-2.5" style={{ transform: 'translate(-18%, -130%)' }}>
+                      {/* Candle - sits on holder cup */}
+                      <div className="absolute left-5 top-1/2 w-2.5" style={{ transform: 'translate(-18%, -95%)' }}>
                         <div className="w-2.5 h-5 bg-gradient-to-b from-amber-50 via-amber-100 to-amber-200 rounded-t-sm shadow-md" />
                         <div className="absolute -top-1 left-1/2 -translate-x-1/2 w-0.5 h-1.5 bg-gradient-to-t from-gray-700 to-gray-500" />
                       </div>
 
                       {/* Flame - at top of candle */}
-                      <div className={`absolute left-4 ${isNightTime ? 'opacity-100' : 'opacity-60'}`} style={{ top: '50%', transform: 'translate(-8%, -220%)' }}>
+                      <div className={`absolute left-4 ${isNightTime ? 'opacity-100' : 'opacity-60'}`} style={{ top: '50%', transform: 'translate(-8%, -175%)' }}>
                         <div className="absolute -inset-2 bg-gradient-radial from-orange-400/30 via-orange-300/15 to-transparent rounded-full blur-md" />
                         <div className="w-3 h-4 bg-gradient-to-t from-orange-500 via-orange-400 to-yellow-200 rounded-full blur-[1px] animate-pulse" style={{ animationDelay: `${i * 0.3 + 0.5}s`, animationDuration: '0.7s' }} />
                       </div>
@@ -2268,6 +2268,57 @@ export default function ArticlesPage() {
               <div className="absolute inset-0 opacity-20" style={{
                 backgroundImage: `url("data:image/svg+xml,%3Csvg viewBox='0 0 200 40' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M0 8 Q50 5 100 8 Q150 11 200 8' fill='none' stroke='%23000' stroke-width='0.5'/%3E%3Cpath d='M0 16 Q50 14 100 16 Q150 18 200 16' fill='none' stroke='%23000' stroke-width='0.4'/%3E%3Cpath d='M0 24 Q60 22 120 24 Q180 26 200 24' fill='none' stroke='%23000' stroke-width='0.4'/%3E%3Cpath d='M0 32 Q40 30 80 32 Q120 34 160 32 Q200 30 200 32' fill='none' stroke='%23000' stroke-width='0.3'/%3E%3C/svg%3E")`,
               }} />
+
+              {/* === CENTRAL DIAMOND INLAY - moved from bookshelf panels === */}
+              <svg className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 w-16 h-16 opacity-35 z-20" viewBox="0 0 48 48">
+                <path d="M24 4 L44 24 L24 44 L4 24 Z" fill="none" stroke="#fbbf24" strokeWidth="1.2"/>
+                <path d="M24 12 L36 24 L24 36 L12 24 Z" fill="none" stroke="#f59e0b" strokeWidth="0.8"/>
+                <circle cx="24" cy="24" r="5" fill="none" stroke="#fbbf24" strokeWidth="0.6"/>
+                <circle cx="24" cy="24" r="2.5" fill="#fbbf24" opacity="0.4"/>
+              </svg>
+
+              {/* === CORNER ROSETTES with acanthus detail - moved from bookshelf panels === */}
+              <svg className={`absolute top-2 left-3 w-8 h-8 ${isNightTime ? 'text-amber-400/50' : 'text-amber-500/40'} z-10`} viewBox="0 0 24 24">
+                <circle cx="12" cy="12" r="10" fill="none" stroke="currentColor" strokeWidth="0.7"/>
+                <circle cx="12" cy="12" r="7" fill="none" stroke="currentColor" strokeWidth="0.5"/>
+                <circle cx="12" cy="12" r="4" fill="none" stroke="currentColor" strokeWidth="0.4"/>
+                <circle cx="12" cy="12" r="2" fill="currentColor" opacity="0.5"/>
+                {/* Petal details */}
+                <path d="M12 2 Q14 6 12 10 Q10 6 12 2" fill="none" stroke="currentColor" strokeWidth="0.4"/>
+                <path d="M22 12 Q18 14 14 12 Q18 10 22 12" fill="none" stroke="currentColor" strokeWidth="0.4"/>
+                <path d="M12 22 Q10 18 12 14 Q14 18 12 22" fill="none" stroke="currentColor" strokeWidth="0.4"/>
+                <path d="M2 12 Q6 10 10 12 Q6 14 2 12" fill="none" stroke="currentColor" strokeWidth="0.4"/>
+              </svg>
+              <svg className={`absolute top-2 right-3 w-8 h-8 ${isNightTime ? 'text-amber-400/50' : 'text-amber-500/40'} z-10`} viewBox="0 0 24 24">
+                <circle cx="12" cy="12" r="10" fill="none" stroke="currentColor" strokeWidth="0.7"/>
+                <circle cx="12" cy="12" r="7" fill="none" stroke="currentColor" strokeWidth="0.5"/>
+                <circle cx="12" cy="12" r="4" fill="none" stroke="currentColor" strokeWidth="0.4"/>
+                <circle cx="12" cy="12" r="2" fill="currentColor" opacity="0.5"/>
+                <path d="M12 2 Q14 6 12 10 Q10 6 12 2" fill="none" stroke="currentColor" strokeWidth="0.4"/>
+                <path d="M22 12 Q18 14 14 12 Q18 10 22 12" fill="none" stroke="currentColor" strokeWidth="0.4"/>
+                <path d="M12 22 Q10 18 12 14 Q14 18 12 22" fill="none" stroke="currentColor" strokeWidth="0.4"/>
+                <path d="M2 12 Q6 10 10 12 Q6 14 2 12" fill="none" stroke="currentColor" strokeWidth="0.4"/>
+              </svg>
+              <svg className={`absolute bottom-2 left-3 w-8 h-8 ${isNightTime ? 'text-amber-400/50' : 'text-amber-500/40'} z-10`} viewBox="0 0 24 24">
+                <circle cx="12" cy="12" r="10" fill="none" stroke="currentColor" strokeWidth="0.7"/>
+                <circle cx="12" cy="12" r="7" fill="none" stroke="currentColor" strokeWidth="0.5"/>
+                <circle cx="12" cy="12" r="4" fill="none" stroke="currentColor" strokeWidth="0.4"/>
+                <circle cx="12" cy="12" r="2" fill="currentColor" opacity="0.5"/>
+                <path d="M12 2 Q14 6 12 10 Q10 6 12 2" fill="none" stroke="currentColor" strokeWidth="0.4"/>
+                <path d="M22 12 Q18 14 14 12 Q18 10 22 12" fill="none" stroke="currentColor" strokeWidth="0.4"/>
+                <path d="M12 22 Q10 18 12 14 Q14 18 12 22" fill="none" stroke="currentColor" strokeWidth="0.4"/>
+                <path d="M2 12 Q6 10 10 12 Q6 14 2 12" fill="none" stroke="currentColor" strokeWidth="0.4"/>
+              </svg>
+              <svg className={`absolute bottom-2 right-3 w-8 h-8 ${isNightTime ? 'text-amber-400/50' : 'text-amber-500/40'} z-10`} viewBox="0 0 24 24">
+                <circle cx="12" cy="12" r="10" fill="none" stroke="currentColor" strokeWidth="0.7"/>
+                <circle cx="12" cy="12" r="7" fill="none" stroke="currentColor" strokeWidth="0.5"/>
+                <circle cx="12" cy="12" r="4" fill="none" stroke="currentColor" strokeWidth="0.4"/>
+                <circle cx="12" cy="12" r="2" fill="currentColor" opacity="0.5"/>
+                <path d="M12 2 Q14 6 12 10 Q10 6 12 2" fill="none" stroke="currentColor" strokeWidth="0.4"/>
+                <path d="M22 12 Q18 14 14 12 Q18 10 22 12" fill="none" stroke="currentColor" strokeWidth="0.4"/>
+                <path d="M12 22 Q10 18 12 14 Q14 18 12 22" fill="none" stroke="currentColor" strokeWidth="0.4"/>
+                <path d="M2 12 Q6 10 10 12 Q6 14 2 12" fill="none" stroke="currentColor" strokeWidth="0.4"/>
+              </svg>
 
               {/* === UPPER DECORATIVE BAND - Guilloche pattern === */}
               <div className="absolute top-1 left-4 right-4 h-4 overflow-hidden">
