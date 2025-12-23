@@ -1107,23 +1107,25 @@ export default function ArticlesPage() {
                       {/* Curved arm extending from bracket */}
                       <div className="absolute right-3 top-1/2 w-4 h-2 bg-gradient-to-b from-yellow-500 via-amber-600 to-amber-700 rounded-full shadow-md" style={{ transform: 'translateY(-50%)' }} />
 
-                      {/* Candle holder cup */}
-                      <div className="absolute right-5 top-1/2 w-4 h-2.5 bg-gradient-to-b from-yellow-400 to-amber-600 rounded-b-sm border-t-2 border-yellow-300/60 shadow-lg" style={{ transform: 'translateY(-50%)' }} />
-
-                      {/* Candle - sits on holder cup */}
-                      <div className="absolute right-5 top-1/2 w-2.5" style={{ transform: 'translate(18%, -95%)' }}>
-                        <div className="w-2.5 h-5 bg-gradient-to-b from-amber-50 via-amber-100 to-amber-200 rounded-t-sm shadow-md" />
-                        <div className="absolute -top-1 left-1/2 -translate-x-1/2 w-0.5 h-1.5 bg-gradient-to-t from-gray-700 to-gray-500" />
+                      {/* Candle holder cup (bobeche) with candle sitting inside */}
+                      <div className="absolute right-5 top-1/2 -translate-y-1/2 w-4 flex flex-col items-center">
+                        {/* Candle - positioned to sit in the bobeche */}
+                        <div className="relative w-2.5 -mb-1.5 z-10">
+                          <div className="w-2.5 h-5 bg-gradient-to-b from-amber-50 via-amber-100 to-amber-200 rounded-t-sm shadow-md" />
+                          {/* Wick */}
+                          <div className="absolute -top-1 left-1/2 -translate-x-1/2 w-0.5 h-1.5 bg-gradient-to-t from-gray-700 to-gray-500" />
+                          {/* Flame - sits on wick */}
+                          <div className={`absolute -top-5 left-1/2 -translate-x-1/2 ${isNightTime ? 'opacity-100' : 'opacity-60'}`}>
+                            <div className="absolute -inset-2 bg-gradient-radial from-orange-400/30 via-orange-300/15 to-transparent rounded-full blur-md" />
+                            <div className="w-3 h-4 bg-gradient-to-t from-orange-500 via-orange-400 to-yellow-200 rounded-full blur-[1px] animate-pulse" style={{ animationDelay: `${i * 0.3}s`, animationDuration: '0.7s' }} />
+                          </div>
+                        </div>
+                        {/* Bobeche (cup) - candle sits into this */}
+                        <div className="w-4 h-2.5 bg-gradient-to-b from-yellow-400 to-amber-600 rounded-b-sm border-t-2 border-yellow-300/60 shadow-lg" />
                       </div>
 
-                      {/* Flame - at top of candle */}
-                      <div className={`absolute right-4 ${isNightTime ? 'opacity-100' : 'opacity-60'}`} style={{ top: '50%', transform: 'translate(8%, -175%)' }}>
-                        <div className="absolute -inset-2 bg-gradient-radial from-orange-400/30 via-orange-300/15 to-transparent rounded-full blur-md" />
-                        <div className="w-3 h-4 bg-gradient-to-t from-orange-500 via-orange-400 to-yellow-200 rounded-full blur-[1px] animate-pulse" style={{ animationDelay: `${i * 0.3}s`, animationDuration: '0.7s' }} />
-                      </div>
-
-                      {/* Ambient light */}
-                      <div className={`absolute right-2 w-12 h-12 bg-gradient-radial from-orange-400/40 via-amber-500/20 to-transparent rounded-full blur-xl ${isNightTime ? 'opacity-100' : 'opacity-40'}`} style={{ top: '50%', transform: 'translate(0%, -180%)' }} />
+                      {/* Ambient light - positioned relative to flame */}
+                      <div className={`absolute right-3 w-12 h-12 bg-gradient-radial from-orange-400/40 via-amber-500/20 to-transparent rounded-full blur-xl ${isNightTime ? 'opacity-100' : 'opacity-40'}`} style={{ top: '15%' }} />
                     </div>
                   </div>
                 ))}
@@ -1487,23 +1489,25 @@ export default function ArticlesPage() {
                       {/* Curved arm extending from bracket */}
                       <div className="absolute left-3 top-1/2 w-4 h-2 bg-gradient-to-b from-yellow-500 via-amber-600 to-amber-700 rounded-full shadow-md" style={{ transform: 'translateY(-50%)' }} />
 
-                      {/* Candle holder cup */}
-                      <div className="absolute left-5 top-1/2 w-4 h-2.5 bg-gradient-to-b from-yellow-400 to-amber-600 rounded-b-sm border-t-2 border-yellow-300/60 shadow-lg" style={{ transform: 'translateY(-50%)' }} />
-
-                      {/* Candle - sits on holder cup */}
-                      <div className="absolute left-5 top-1/2 w-2.5" style={{ transform: 'translate(-18%, -95%)' }}>
-                        <div className="w-2.5 h-5 bg-gradient-to-b from-amber-50 via-amber-100 to-amber-200 rounded-t-sm shadow-md" />
-                        <div className="absolute -top-1 left-1/2 -translate-x-1/2 w-0.5 h-1.5 bg-gradient-to-t from-gray-700 to-gray-500" />
+                      {/* Candle holder cup (bobeche) with candle sitting inside */}
+                      <div className="absolute left-5 top-1/2 -translate-y-1/2 w-4 flex flex-col items-center">
+                        {/* Candle - positioned to sit in the bobeche */}
+                        <div className="relative w-2.5 -mb-1.5 z-10">
+                          <div className="w-2.5 h-5 bg-gradient-to-b from-amber-50 via-amber-100 to-amber-200 rounded-t-sm shadow-md" />
+                          {/* Wick */}
+                          <div className="absolute -top-1 left-1/2 -translate-x-1/2 w-0.5 h-1.5 bg-gradient-to-t from-gray-700 to-gray-500" />
+                          {/* Flame - sits on wick */}
+                          <div className={`absolute -top-5 left-1/2 -translate-x-1/2 ${isNightTime ? 'opacity-100' : 'opacity-60'}`}>
+                            <div className="absolute -inset-2 bg-gradient-radial from-orange-400/30 via-orange-300/15 to-transparent rounded-full blur-md" />
+                            <div className="w-3 h-4 bg-gradient-to-t from-orange-500 via-orange-400 to-yellow-200 rounded-full blur-[1px] animate-pulse" style={{ animationDelay: `${i * 0.3 + 0.5}s`, animationDuration: '0.7s' }} />
+                          </div>
+                        </div>
+                        {/* Bobeche (cup) - candle sits into this */}
+                        <div className="w-4 h-2.5 bg-gradient-to-b from-yellow-400 to-amber-600 rounded-b-sm border-t-2 border-yellow-300/60 shadow-lg" />
                       </div>
 
-                      {/* Flame - at top of candle */}
-                      <div className={`absolute left-4 ${isNightTime ? 'opacity-100' : 'opacity-60'}`} style={{ top: '50%', transform: 'translate(-8%, -175%)' }}>
-                        <div className="absolute -inset-2 bg-gradient-radial from-orange-400/30 via-orange-300/15 to-transparent rounded-full blur-md" />
-                        <div className="w-3 h-4 bg-gradient-to-t from-orange-500 via-orange-400 to-yellow-200 rounded-full blur-[1px] animate-pulse" style={{ animationDelay: `${i * 0.3 + 0.5}s`, animationDuration: '0.7s' }} />
-                      </div>
-
-                      {/* Ambient light */}
-                      <div className={`absolute left-2 w-12 h-12 bg-gradient-radial from-orange-400/40 via-amber-500/20 to-transparent rounded-full blur-xl ${isNightTime ? 'opacity-100' : 'opacity-40'}`} style={{ top: '50%', transform: 'translate(0%, -180%)' }} />
+                      {/* Ambient light - positioned relative to flame */}
+                      <div className={`absolute left-3 w-12 h-12 bg-gradient-radial from-orange-400/40 via-amber-500/20 to-transparent rounded-full blur-xl ${isNightTime ? 'opacity-100' : 'opacity-40'}`} style={{ top: '15%' }} />
                     </div>
                   </div>
                 ))}
