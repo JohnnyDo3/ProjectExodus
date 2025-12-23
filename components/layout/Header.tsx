@@ -178,12 +178,11 @@ export function Header() {
             <div
               ref={sageContext?.headerLogoRef}
               onClick={sageContext?.isNapping && !sageContext?.isAnimating ? sageContext.wakeUp : undefined}
-              className={`relative w-10 h-10 sm:w-12 sm:h-12 rounded-full bg-gradient-to-br from-moss-600 to-ocean-600 flex items-center justify-center shadow-lg transition-all ${
+              className={`group relative w-10 h-10 sm:w-12 sm:h-12 rounded-full bg-gradient-to-br from-moss-600 to-ocean-600 flex items-center justify-center shadow-lg transition-all ${
                 sageContext?.isNapping && !sageContext?.isAnimating
                   ? 'cursor-pointer sage-sleeping sage-wake-indicator hover:scale-110'
                   : 'pulse-alive'
               }`}
-              title={sageContext?.isNapping && !sageContext?.isAnimating ? 'Click to wake Sage' : undefined}
             >
               <Leaf className="w-5 h-5 sm:w-7 sm:h-7 text-white" />
 
@@ -193,6 +192,15 @@ export function Header() {
                   <span className="sage-zzz sage-zzz-1">z</span>
                   <span className="sage-zzz sage-zzz-2">z</span>
                   <span className="sage-zzz sage-zzz-3">z</span>
+
+                  {/* Hover tooltip - "Click to wake" */}
+                  <div className="absolute -bottom-10 left-1/2 -translate-x-1/2 opacity-0 group-hover:opacity-100 transition-opacity duration-200 pointer-events-none z-50">
+                    <div className="px-3 py-1.5 bg-[var(--card)] border-2 border-moss-500 rounded-lg shadow-lg whitespace-nowrap">
+                      <span className="text-xs font-semibold text-moss-600 dark:text-moss-400">Click to wake</span>
+                    </div>
+                    {/* Tooltip arrow */}
+                    <div className="absolute -top-1 left-1/2 -translate-x-1/2 w-2 h-2 bg-[var(--card)] border-l-2 border-t-2 border-moss-500 rotate-45" />
+                  </div>
                 </>
               )}
             </div>
