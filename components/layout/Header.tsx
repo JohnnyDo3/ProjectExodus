@@ -177,18 +177,18 @@ export function Header() {
             {/* Sage's home - the leaf icon */}
             <div
               ref={sageContext?.headerLogoRef}
-              onClick={sageContext?.isNapping ? sageContext.wakeUp : undefined}
+              onClick={sageContext?.isNapping && !sageContext?.isAnimating ? sageContext.wakeUp : undefined}
               className={`relative w-10 h-10 sm:w-12 sm:h-12 rounded-full bg-gradient-to-br from-moss-600 to-ocean-600 flex items-center justify-center shadow-lg transition-all ${
-                sageContext?.isNapping
+                sageContext?.isNapping && !sageContext?.isAnimating
                   ? 'cursor-pointer sage-sleeping sage-wake-indicator hover:scale-110'
                   : 'pulse-alive'
               }`}
-              title={sageContext?.isNapping ? 'Click to wake Sage' : undefined}
+              title={sageContext?.isNapping && !sageContext?.isAnimating ? 'Click to wake Sage' : undefined}
             >
               <Leaf className="w-5 h-5 sm:w-7 sm:h-7 text-white" />
 
-              {/* Zzz animation when Sage is napping */}
-              {sageContext?.isNapping && (
+              {/* Zzz animation when Sage is napping (not during animation) */}
+              {sageContext?.isNapping && !sageContext?.isAnimating && (
                 <>
                   <span className="sage-zzz sage-zzz-1">z</span>
                   <span className="sage-zzz sage-zzz-2">z</span>

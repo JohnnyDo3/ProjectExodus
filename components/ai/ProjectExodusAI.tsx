@@ -5,6 +5,7 @@ import { usePathname } from 'next/navigation'
 import { MessageCircle, X, Send, Leaf, Sparkles, Moon } from 'lucide-react'
 import { Button } from '@/components/ui/Button'
 import { useSageContextSafe } from './SageContext'
+import { SageNapAnimation } from './SageNapAnimation'
 
 interface Message {
   role: 'user' | 'assistant'
@@ -172,17 +173,26 @@ export function ProjectExodusAI() {
     return "I'm here to help you on your sustainability journey! 🌱 I can guide you through:\n\n⚡ Renewable Energy (solar, wind, storage)\n👕 Sustainable Fashion (circular economy, ethical brands)\n🌾 Regenerative Agriculture (soil health, carbon sequestration)\n♻️ Zero Waste Living (the 5 R's, composting)\n🏡 Green Building (Passive House, LEED)\n💧 Water Conservation (efficiency, rainwater harvesting)\n🚀 Emerging Technologies (carbon capture, green H₂, AI)\n✅ Success Stories (real-world proof)\n📊 Carbon Calculator (measure your impact)\n\nWhat would you like to explore? Or ask me about specific products, certifications, or practices!"
   }
 
-  // Don't render anything if Sage is napping
+  // Don't render anything if Sage is napping or animating to nap
   const isNapping = sageContext?.isNapping ?? false
+  const isAnimating = sageContext?.isAnimating ?? false
+  const animationPhase = sageContext?.animationPhase ?? 'idle'
+
+  // Hide button when napping or during going-to-nap animation
+  // Show button during waking-up animation (so it appears to return to position)
+  const shouldShowButton = !isNapping && animationPhase !== 'going-to-nap'
 
   return (
     <>
-      {/* Chat Widget Button - Hidden when napping */}
-      {!isOpen && !isNapping && (
+      {/* Nap Animation Overlay */}
+      <SageNapAnimation />
+
+      {/* Chat Widget Button - Hidden when napping or animating to nap */}
+      {!isOpen && shouldShowButton && (
         <button
           ref={buttonRef}
-          onClick={() => setIsOpen(true)}
-          className="fixed bottom-4 right-4 sm:bottom-6 sm:right-6 z-50 w-14 h-14 sm:w-16 sm:h-16 group"
+          onClick={() => !isAnimating && setIsOpen(true)}
+          className={`fixed bottom-4 right-4 sm:bottom-6 sm:right-6 z-50 w-14 h-14 sm:w-16 sm:h-16 group ${animationPhase === 'waking-up' ? 'opacity-0' : ''}`}
           aria-label="Open Sage"
         >
           {/* Pulsing ring animation - pointer-events-none so it doesn't expand hover area */}
