@@ -601,7 +601,7 @@ export default function ArticlesPage() {
                   <span className="text-xs font-bold uppercase tracking-[0.2em] text-amber-200">Articles</span>
                 </div>
 
-                <h1 className="text-3xl sm:text-4xl md:text-5xl font-black mb-3 tracking-tight" style={{ fontFamily: 'Georgia, serif', textShadow: '0 2px 20px rgba(251, 191, 36, 0.3)' }}>
+                <h1 className="text-3xl sm:text-4xl md:text-5xl font-black mb-3 tracking-tight text-white" style={{ fontFamily: 'Georgia, serif', textShadow: '0 2px 20px rgba(251, 191, 36, 0.3)' }}>
                   Knowledge Shared
                 </h1>
 
@@ -3106,8 +3106,8 @@ export default function ArticlesPage() {
                   <div className="absolute top-0 inset-x-0 h-6 bg-gradient-to-b from-amber-900/20 to-transparent pointer-events-none" />
                   <div className="absolute bottom-0 inset-x-0 h-6 bg-gradient-to-t from-amber-900/20 to-transparent pointer-events-none" />
 
-                  {/* Content area */}
-                  <div className="relative p-6 sm:p-8 max-h-[55vh] overflow-y-auto">
+                  {/* Content area - WYSIWYG, no internal scroll */}
+                  <div className="relative p-6 sm:p-8">
                     {/* Category seal */}
                     <div className="flex items-center justify-center mb-5">
                       <span className="px-4 py-1.5 text-[10px] font-bold text-amber-800 uppercase tracking-[0.2em] border-2 border-amber-600/50 bg-amber-200/60 rounded-sm shadow-sm" style={{ fontFamily: 'Georgia, serif' }}>
