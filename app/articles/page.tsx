@@ -1256,20 +1256,20 @@ export default function ArticlesPage() {
                           </div>
                         )
                       })}
-                      {/* Ghost scrolls - transparent white, filling the shelf */}
+                      {/* Ghost scrolls - transparent tan, filling the shelf */}
                       {Array.from({ length: Math.max(0, 6 - shelfArticles.length) }).map((_, i) => (
                         <div key={`ghost-left-${shelfIndex}-${i}`} className="w-4 h-12 relative opacity-20 hover:opacity-30 transition-opacity">
                           {/* Ghost scroll body */}
-                          <div className="absolute inset-x-0.5 top-2 bottom-2 bg-white/10 rounded-sm border border-white/20" />
+                          <div className="absolute inset-x-0.5 top-2 bottom-2 bg-amber-600/15 rounded-sm border border-amber-600/25" />
                           {/* Top rod */}
-                          <div className="absolute top-0 left-0 right-0 h-2 bg-white/15 rounded-t-sm border border-white/25" />
+                          <div className="absolute top-0 left-0 right-0 h-2 bg-amber-600/20 rounded-t-sm border border-amber-600/30" />
                           {/* Bottom rod */}
-                          <div className="absolute bottom-0 left-0 right-0 h-2 bg-white/15 rounded-b-sm border border-white/25" />
+                          <div className="absolute bottom-0 left-0 right-0 h-2 bg-amber-600/20 rounded-b-sm border border-amber-600/30" />
                           {/* Subtle text lines */}
                           <div className="absolute inset-x-1 top-3 bottom-3 flex flex-col justify-center gap-0.5">
-                            <div className="h-px bg-white/15" />
-                            <div className="h-px bg-white/10 w-3/4" />
-                            <div className="h-px bg-white/15" />
+                            <div className="h-px bg-amber-600/20" />
+                            <div className="h-px bg-amber-600/15 w-3/4" />
+                            <div className="h-px bg-amber-600/20" />
                           </div>
                         </div>
                       ))}
@@ -1540,20 +1540,20 @@ export default function ArticlesPage() {
 
                     {/* Interactive article scrolls */}
                     <div className="absolute bottom-4 left-1 right-1 flex items-end justify-center gap-1 h-16">
-                      {/* Ghost scrolls - transparent white, filling the shelf */}
+                      {/* Ghost scrolls - transparent tan, filling the shelf */}
                       {Array.from({ length: Math.max(0, 6 - shelfArticles.length) }).map((_, i) => (
                         <div key={`ghost-right-${shelfIndex}-${i}`} className="w-4 h-12 relative opacity-20 hover:opacity-30 transition-opacity">
                           {/* Ghost scroll body */}
-                          <div className="absolute inset-x-0.5 top-2 bottom-2 bg-white/10 rounded-sm border border-white/20" />
+                          <div className="absolute inset-x-0.5 top-2 bottom-2 bg-amber-600/15 rounded-sm border border-amber-600/25" />
                           {/* Top rod */}
-                          <div className="absolute top-0 left-0 right-0 h-2 bg-white/15 rounded-t-sm border border-white/25" />
+                          <div className="absolute top-0 left-0 right-0 h-2 bg-amber-600/20 rounded-t-sm border border-amber-600/30" />
                           {/* Bottom rod */}
-                          <div className="absolute bottom-0 left-0 right-0 h-2 bg-white/15 rounded-b-sm border border-white/25" />
+                          <div className="absolute bottom-0 left-0 right-0 h-2 bg-amber-600/20 rounded-b-sm border border-amber-600/30" />
                           {/* Subtle text lines */}
                           <div className="absolute inset-x-1 top-3 bottom-3 flex flex-col justify-center gap-0.5">
-                            <div className="h-px bg-white/15" />
-                            <div className="h-px bg-white/10 w-3/4" />
-                            <div className="h-px bg-white/15" />
+                            <div className="h-px bg-amber-600/20" />
+                            <div className="h-px bg-amber-600/15 w-3/4" />
+                            <div className="h-px bg-amber-600/20" />
                           </div>
                         </div>
                       ))}
@@ -2427,25 +2427,25 @@ export default function ArticlesPage() {
                   </div>
                 )
               })}
-              {/* Ghost scrolls - transparent white, filling the shelf */}
+              {/* Ghost scrolls - transparent tan, filling the shelf */}
               {Array.from({ length: Math.max(0, 16 - getShelfArticles(0, shelf1Category).length) }).map((_, i) => (
                 <div key={`ghost-shelf1-${i}`} className="flex-shrink-0 w-6 relative opacity-15 hover:opacity-25 transition-opacity" style={{ marginBottom: '0px' }}>
                   <div className="h-[75px] relative">
                     {/* Ghost scroll body */}
-                    <div className="absolute inset-x-0.5 top-4 bottom-4 bg-white/10 rounded-sm border border-white/20" />
+                    <div className="absolute inset-x-0.5 top-4 bottom-4 bg-amber-600/15 rounded-sm border border-amber-600/25" />
                     {/* Top rod */}
-                    <div className="absolute top-0 left-0 right-0 h-4 bg-white/15 rounded-t-sm border border-white/25" />
+                    <div className="absolute top-0 left-0 right-0 h-4 bg-amber-600/20 rounded-t-sm border border-amber-600/30" />
                     {/* Bottom rod */}
-                    <div className="absolute bottom-0 left-0 right-0 h-4 bg-white/15 rounded-b-sm border border-white/25" />
+                    <div className="absolute bottom-0 left-0 right-0 h-4 bg-amber-600/20 rounded-b-sm border border-amber-600/30" />
                     {/* Subtle text lines */}
                     <div className="absolute inset-x-1 top-5 bottom-5 flex flex-col justify-center gap-1">
-                      <div className="h-px bg-white/20" />
-                      <div className="h-px bg-white/15 w-4/5" />
-                      <div className="h-px bg-white/20" />
-                      <div className="h-px bg-white/15 w-3/5" />
+                      <div className="h-px bg-amber-600/25" />
+                      <div className="h-px bg-amber-600/20 w-4/5" />
+                      <div className="h-px bg-amber-600/25" />
+                      <div className="h-px bg-amber-600/20 w-3/5" />
                     </div>
                     {/* Ghost seal */}
-                    <div className="absolute -right-1.5 top-1/2 -translate-y-1/2 w-4 h-4 border border-white/25 rounded-full bg-white/5" />
+                    <div className="absolute -right-1.5 top-1/2 -translate-y-1/2 w-4 h-4 border border-amber-600/30 rounded-full bg-amber-600/10" />
                   </div>
                 </div>
               ))}
@@ -2592,25 +2592,25 @@ export default function ArticlesPage() {
                   </div>
                 )
               })}
-              {/* Ghost scrolls - transparent white, filling the shelf */}
+              {/* Ghost scrolls - transparent tan, filling the shelf */}
               {Array.from({ length: Math.max(0, 16 - getShelfArticles(1, shelf2Category).length) }).map((_, i) => (
                 <div key={`ghost-shelf2-${i}`} className="flex-shrink-0 w-6 relative opacity-15 hover:opacity-25 transition-opacity" style={{ marginBottom: '0px' }}>
                   <div className="h-[75px] relative">
                     {/* Ghost scroll body */}
-                    <div className="absolute inset-x-0.5 top-4 bottom-4 bg-white/10 rounded-sm border border-white/20" />
+                    <div className="absolute inset-x-0.5 top-4 bottom-4 bg-amber-600/15 rounded-sm border border-amber-600/25" />
                     {/* Top rod */}
-                    <div className="absolute top-0 left-0 right-0 h-4 bg-white/15 rounded-t-sm border border-white/25" />
+                    <div className="absolute top-0 left-0 right-0 h-4 bg-amber-600/20 rounded-t-sm border border-amber-600/30" />
                     {/* Bottom rod */}
-                    <div className="absolute bottom-0 left-0 right-0 h-4 bg-white/15 rounded-b-sm border border-white/25" />
+                    <div className="absolute bottom-0 left-0 right-0 h-4 bg-amber-600/20 rounded-b-sm border border-amber-600/30" />
                     {/* Subtle text lines */}
                     <div className="absolute inset-x-1 top-5 bottom-5 flex flex-col justify-center gap-1">
-                      <div className="h-px bg-white/20" />
-                      <div className="h-px bg-white/15 w-4/5" />
-                      <div className="h-px bg-white/20" />
-                      <div className="h-px bg-white/15 w-3/5" />
+                      <div className="h-px bg-amber-600/25" />
+                      <div className="h-px bg-amber-600/20 w-4/5" />
+                      <div className="h-px bg-amber-600/25" />
+                      <div className="h-px bg-amber-600/20 w-3/5" />
                     </div>
                     {/* Ghost seal */}
-                    <div className="absolute -right-1.5 top-1/2 -translate-y-1/2 w-4 h-4 border border-white/25 rounded-full bg-white/5" />
+                    <div className="absolute -right-1.5 top-1/2 -translate-y-1/2 w-4 h-4 border border-amber-600/30 rounded-full bg-amber-600/10" />
                   </div>
                 </div>
               ))}
@@ -2775,25 +2775,25 @@ export default function ArticlesPage() {
                   </div>
                 )
               })}
-              {/* Ghost scrolls - transparent white, filling the shelf */}
+              {/* Ghost scrolls - transparent tan, filling the shelf */}
               {Array.from({ length: Math.max(0, 16 - getShelfArticles(2, shelf3Category).length) }).map((_, i) => (
                 <div key={`ghost-shelf3-${i}`} className="flex-shrink-0 w-6 relative opacity-15 hover:opacity-25 transition-opacity" style={{ marginBottom: '0px' }}>
                   <div className="h-[75px] relative">
                     {/* Ghost scroll body */}
-                    <div className="absolute inset-x-0.5 top-4 bottom-4 bg-white/10 rounded-sm border border-white/20" />
+                    <div className="absolute inset-x-0.5 top-4 bottom-4 bg-amber-600/15 rounded-sm border border-amber-600/25" />
                     {/* Top rod */}
-                    <div className="absolute top-0 left-0 right-0 h-4 bg-white/15 rounded-t-sm border border-white/25" />
+                    <div className="absolute top-0 left-0 right-0 h-4 bg-amber-600/20 rounded-t-sm border border-amber-600/30" />
                     {/* Bottom rod */}
-                    <div className="absolute bottom-0 left-0 right-0 h-4 bg-white/15 rounded-b-sm border border-white/25" />
+                    <div className="absolute bottom-0 left-0 right-0 h-4 bg-amber-600/20 rounded-b-sm border border-amber-600/30" />
                     {/* Subtle text lines */}
                     <div className="absolute inset-x-1 top-5 bottom-5 flex flex-col justify-center gap-1">
-                      <div className="h-px bg-white/20" />
-                      <div className="h-px bg-white/15 w-4/5" />
-                      <div className="h-px bg-white/20" />
-                      <div className="h-px bg-white/15 w-3/5" />
+                      <div className="h-px bg-amber-600/25" />
+                      <div className="h-px bg-amber-600/20 w-4/5" />
+                      <div className="h-px bg-amber-600/25" />
+                      <div className="h-px bg-amber-600/20 w-3/5" />
                     </div>
                     {/* Ghost seal */}
-                    <div className="absolute -right-1.5 top-1/2 -translate-y-1/2 w-4 h-4 border border-white/25 rounded-full bg-white/5" />
+                    <div className="absolute -right-1.5 top-1/2 -translate-y-1/2 w-4 h-4 border border-amber-600/30 rounded-full bg-amber-600/10" />
                   </div>
                 </div>
               ))}
