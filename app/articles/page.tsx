@@ -192,6 +192,9 @@ export default function ArticlesPage() {
   const [shelf2Category, setShelf2Category] = useState<string | null>(null)
   const [shelf3Category, setShelf3Category] = useState<string | null>(null)
 
+  // Scroll highlight state - glows scrolls when user clicks stat display
+  const [highlightScrolls, setHighlightScrolls] = useState(false)
+
   // Time-based theme for dynamic lighting
   const { phase: timePhase } = useTimeTheme()
   const isNightTime = ['night', 'midnight', 'evening', 'dusk'].includes(timePhase)
@@ -507,6 +510,16 @@ export default function ArticlesPage() {
     return () => observer.disconnect()
   }, [hasMore, isLoading, fetchArticles])
 
+  // Auto-dismiss scroll highlight after 3 seconds
+  useEffect(() => {
+    if (highlightScrolls) {
+      const timer = setTimeout(() => {
+        setHighlightScrolls(false)
+      }, 3000)
+      return () => clearTimeout(timer)
+    }
+  }, [highlightScrolls])
+
   const handleSearch = (e: React.FormEvent) => {
     e.preventDefault()
     setOffset(0)
@@ -602,13 +615,17 @@ export default function ArticlesPage() {
                   "Wisdom is not consumed — it is received."
                 </p>
 
-                {/* Stats preview - same as authenticated */}
-                <div className="flex items-center justify-center gap-4 mt-4">
-                  <div className="relative px-4 py-2 bg-gradient-to-b from-slate-800/80 to-slate-900/80 border border-amber-600/40 rounded-sm">
+                {/* Stats preview - clickable to highlight scrolls */}
+                <div
+                  className={`flex items-center justify-center gap-4 mt-4 cursor-pointer group transition-all duration-300 ${highlightScrolls ? 'scale-105' : 'hover:scale-102'}`}
+                  onClick={() => setHighlightScrolls(prev => !prev)}
+                  title="Click to highlight article scrolls on the shelves"
+                >
+                  <div className={`relative px-4 py-2 bg-gradient-to-b from-slate-800/80 to-slate-900/80 border rounded-sm transition-all duration-300 ${highlightScrolls ? 'border-amber-400 shadow-[0_0_15px_rgba(251,191,36,0.4)]' : 'border-amber-600/40 group-hover:border-amber-500/60'}`}>
                     <div className="absolute inset-0 bg-gradient-to-r from-amber-500/5 via-amber-500/10 to-amber-500/5" />
                     <span className="text-xs font-bold text-amber-200 relative">{totalArticles || '???'} Articles</span>
                   </div>
-                  <div className="relative px-4 py-2 bg-gradient-to-b from-slate-800/80 to-slate-900/80 border border-amber-600/40 rounded-sm">
+                  <div className={`relative px-4 py-2 bg-gradient-to-b from-slate-800/80 to-slate-900/80 border rounded-sm transition-all duration-300 ${highlightScrolls ? 'border-amber-400 shadow-[0_0_15px_rgba(251,191,36,0.4)]' : 'border-amber-600/40 group-hover:border-amber-500/60'}`}>
                     <div className="absolute inset-0 bg-gradient-to-r from-amber-500/5 via-amber-500/10 to-amber-500/5" />
                     <span className="text-xs font-bold text-amber-200 relative">{totalViews?.toLocaleString() || '???'} Readers</span>
                   </div>
@@ -1156,12 +1173,16 @@ export default function ArticlesPage() {
                         return (
                           <div
                             key={article.id}
-                            className={`relative w-5 h-14 cursor-pointer transition-all duration-300 ${isHovered ? 'scale-110 -translate-y-2 z-10' : ''}`}
+                            className={`relative w-5 h-14 cursor-pointer transition-all duration-300 ${isHovered ? 'scale-110 -translate-y-2 z-10' : ''} ${highlightScrolls ? 'scroll-highlight-glow' : ''}`}
                             style={{ transform: `rotate(${(i % 2 - 0.5) * 3}deg)` }}
                             onMouseEnter={() => handleScrollHover(article)}
                             onMouseLeave={handleScrollLeave}
                             onClick={() => setPreviewArticle(article)}
                           >
+                            {/* Highlight glow halo */}
+                            {highlightScrolls && (
+                              <div className="absolute -inset-1 bg-amber-400/40 rounded-lg blur-md animate-pulse" />
+                            )}
                             {/* Mini scroll */}
                             <div className="absolute inset-0">
                               {/* Parchment body with progress fill */}
@@ -1549,12 +1570,16 @@ export default function ArticlesPage() {
                         return (
                           <div
                             key={article.id}
-                            className={`relative w-5 h-14 cursor-pointer transition-all duration-300 ${isHovered ? 'scale-110 -translate-y-2 z-10' : ''}`}
+                            className={`relative w-5 h-14 cursor-pointer transition-all duration-300 ${isHovered ? 'scale-110 -translate-y-2 z-10' : ''} ${highlightScrolls ? 'scroll-highlight-glow' : ''}`}
                             style={{ transform: `rotate(${(i % 2 - 0.5) * -3}deg)` }}
                             onMouseEnter={() => handleScrollHover(article)}
                             onMouseLeave={handleScrollLeave}
                             onClick={() => setPreviewArticle(article)}
                           >
+                            {/* Highlight glow halo */}
+                            {highlightScrolls && (
+                              <div className="absolute -inset-1 bg-amber-400/40 rounded-lg blur-md animate-pulse" />
+                            )}
                             {/* Mini scroll */}
                             <div className="absolute inset-0">
                               {/* Parchment body with progress fill */}
@@ -1872,15 +1897,19 @@ export default function ArticlesPage() {
                 "Wisdom is not consumed — it is received."
               </p>
 
-              {/* Stats in ornate frames */}
-              <div className="flex items-center justify-center gap-4 mt-4">
-                <div className="relative px-4 py-2 bg-gradient-to-b from-slate-800/80 to-slate-900/80 border border-amber-600/40 rounded-sm">
+              {/* Stats in ornate frames - clickable to highlight scrolls */}
+              <div
+                className={`flex items-center justify-center gap-4 mt-4 cursor-pointer group transition-all duration-300 ${highlightScrolls ? 'scale-105' : 'hover:scale-102'}`}
+                onClick={() => setHighlightScrolls(prev => !prev)}
+                title="Click to highlight article scrolls on the shelves"
+              >
+                <div className={`relative px-4 py-2 bg-gradient-to-b from-slate-800/80 to-slate-900/80 border rounded-sm transition-all duration-300 ${highlightScrolls ? 'border-amber-400 shadow-[0_0_15px_rgba(251,191,36,0.4)]' : 'border-amber-600/40 group-hover:border-amber-500/60'}`}>
                   <div className="absolute inset-0 bg-gradient-to-r from-amber-500/5 via-amber-500/10 to-amber-500/5" />
                   <span className="text-xs font-bold text-amber-200 relative">
                     {totalArticles > 0 ? totalArticles : articles.length + (featuredArticle ? 1 : 0)} Articles
                   </span>
                 </div>
-                <div className="relative px-4 py-2 bg-gradient-to-b from-slate-800/80 to-slate-900/80 border border-amber-600/40 rounded-sm">
+                <div className={`relative px-4 py-2 bg-gradient-to-b from-slate-800/80 to-slate-900/80 border rounded-sm transition-all duration-300 ${highlightScrolls ? 'border-amber-400 shadow-[0_0_15px_rgba(251,191,36,0.4)]' : 'border-amber-600/40 group-hover:border-amber-500/60'}`}>
                   <div className="absolute inset-0 bg-gradient-to-r from-amber-500/5 via-amber-500/10 to-amber-500/5" />
                   <span className="text-xs font-bold text-amber-200 relative">
                     {totalViews.toLocaleString()} Readers
@@ -2137,12 +2166,16 @@ export default function ArticlesPage() {
                 return (
                   <div
                     key={`shelf1-${article.id}`}
-                    className={`flex-shrink-0 relative w-8 cursor-pointer transition-all duration-300 ${isHovered ? 'scale-110 -translate-y-4 z-30' : 'z-10'}`}
+                    className={`flex-shrink-0 relative w-8 cursor-pointer transition-all duration-300 ${isHovered ? 'scale-110 -translate-y-4 z-30' : 'z-10'} ${highlightScrolls ? 'scroll-highlight-glow' : ''}`}
                     style={{ marginBottom: '0px' }}
                     onMouseEnter={() => handleScrollHover(article)}
                     onMouseLeave={handleScrollLeave}
                     onClick={() => setPreviewArticle(article)}
                   >
+                    {/* Highlight glow halo */}
+                    {highlightScrolls && (
+                      <div className="absolute -inset-2 bg-amber-400/40 rounded-lg blur-md animate-pulse" />
+                    )}
                     {/* Scroll shadow on shelf */}
                     <div className="absolute bottom-0 left-1/2 -translate-x-1/2 w-6 h-2 bg-gradient-to-t from-amber-950/60 to-transparent blur-sm rounded-full" />
                     {/* Scroll sitting on shelf */}
@@ -2420,12 +2453,16 @@ export default function ArticlesPage() {
                 return (
                   <div
                     key={`shelf2-${article.id}`}
-                    className={`flex-shrink-0 relative w-8 cursor-pointer transition-all duration-300 ${isHovered ? 'scale-110 -translate-y-4 z-30' : 'z-10'}`}
+                    className={`flex-shrink-0 relative w-8 cursor-pointer transition-all duration-300 ${isHovered ? 'scale-110 -translate-y-4 z-30' : 'z-10'} ${highlightScrolls ? 'scroll-highlight-glow' : ''}`}
                     style={{ marginBottom: '0px' }}
                     onMouseEnter={() => handleScrollHover(article)}
                     onMouseLeave={handleScrollLeave}
                     onClick={() => setPreviewArticle(article)}
                   >
+                    {/* Highlight glow halo */}
+                    {highlightScrolls && (
+                      <div className="absolute -inset-2 bg-amber-400/40 rounded-lg blur-md animate-pulse" />
+                    )}
                     {/* Scroll shadow on shelf */}
                     <div className="absolute bottom-0 left-1/2 -translate-x-1/2 w-6 h-2 bg-gradient-to-t from-amber-950/60 to-transparent blur-sm rounded-full" />
                     <div className="relative h-[75px]" style={{ transform: `rotate(${rotation}deg)` }}>
@@ -2599,12 +2636,16 @@ export default function ArticlesPage() {
                 return (
                   <div
                     key={`shelf3-${article.id}`}
-                    className={`flex-shrink-0 relative w-8 cursor-pointer transition-all duration-300 ${isHovered ? 'scale-110 -translate-y-4 z-30' : 'z-10'}`}
+                    className={`flex-shrink-0 relative w-8 cursor-pointer transition-all duration-300 ${isHovered ? 'scale-110 -translate-y-4 z-30' : 'z-10'} ${highlightScrolls ? 'scroll-highlight-glow' : ''}`}
                     style={{ marginBottom: '0px' }}
                     onMouseEnter={() => handleScrollHover(article)}
                     onMouseLeave={handleScrollLeave}
                     onClick={() => setPreviewArticle(article)}
                   >
+                    {/* Highlight glow halo */}
+                    {highlightScrolls && (
+                      <div className="absolute -inset-2 bg-amber-400/40 rounded-lg blur-md animate-pulse" />
+                    )}
                     {/* Scroll shadow on shelf */}
                     <div className="absolute bottom-0 left-1/2 -translate-x-1/2 w-6 h-2 bg-gradient-to-t from-amber-950/60 to-transparent blur-sm rounded-full" />
                     <div className="relative h-[75px]" style={{ transform: `rotate(${rotation}deg)` }}>
