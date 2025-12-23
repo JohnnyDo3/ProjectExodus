@@ -30,15 +30,20 @@ export function SageNapAnimation() {
     const numSparkles = 8
     const newSparkles: Sparkle[] = []
 
+    // Calculate arc that stays within viewport (matching animation)
+    const horizontalDist = Math.abs(endX - startX)
+    const verticalDist = Math.abs(endY - startY)
+    const arcHeight = Math.min(horizontalDist * 0.3, 150, verticalDist * 0.25)
+    const midX = (startX + endX) / 2
+    const midYBase = (startY + endY) / 2
+    const midY = Math.max(60, midYBase - arcHeight)
+
     for (let i = 0; i < numSparkles; i++) {
       const progress = i / numSparkles
-      // Arc path calculation (quadratic bezier approximation)
-      const arcHeight = Math.abs(endY - startY) * 0.3
-      const midY = Math.min(startY, endY) - arcHeight
 
       // Bezier curve point
       const t = progress
-      const x = (1 - t) * (1 - t) * startX + 2 * (1 - t) * t * ((startX + endX) / 2) + t * t * endX
+      const x = (1 - t) * (1 - t) * startX + 2 * (1 - t) * t * midX + t * t * endX
       const y = (1 - t) * (1 - t) * startY + 2 * (1 - t) * t * midY + t * t * endY
 
       newSparkles.push({
@@ -46,7 +51,7 @@ export function SageNapAnimation() {
         x: x + (Math.random() - 0.5) * 20,
         y: y + (Math.random() - 0.5) * 20,
         size: 4 + Math.random() * 8,
-        delay: progress * 0.6,
+        delay: progress * 1.2, // Adjusted for slower animation
       })
     }
 
@@ -80,9 +85,19 @@ export function SageNapAnimation() {
       // Generate sparkles along path
       generateSparkles(startPos.x, startPos.y, endPos.x, endPos.y)
 
-      // Calculate arc control point (higher than midpoint for yawn-like curve)
-      const arcHeight = Math.abs(endPos.y - startPos.y) * 0.4
-      const midY = Math.min(startPos.y, endPos.y) - arcHeight
+      // Calculate arc control point - gentle curve that stays within viewport
+      // Arc height is proportional to horizontal distance, not vertical
+      const horizontalDist = Math.abs(endPos.x - startPos.x)
+      const verticalDist = Math.abs(endPos.y - startPos.y)
+      // Use smaller of horizontal distance or 150px for arc height
+      const arcHeight = Math.min(horizontalDist * 0.3, 150, verticalDist * 0.25)
+
+      // Calculate midpoint
+      const midX = (startPos.x + endPos.x) / 2
+      const midYBase = (startPos.y + endPos.y) / 2
+
+      // Arc curves upward but stays within viewport (minimum 60px from top)
+      const midY = Math.max(60, midYBase - arcHeight)
 
       // Calculate scale based on direction
       const startScale = animationPhase === 'going-to-nap' ? 1 : 0.6
@@ -96,12 +111,12 @@ export function SageNapAnimation() {
         : [0, 0, 0.2, 1] // ease-out (decelerates toward end)
 
       await controls.start({
-        x: [startPos.x, (startPos.x + endPos.x) / 2, endPos.x],
+        x: [startPos.x, midX, endPos.x],
         y: [startPos.y, midY, endPos.y],
         scale: [startScale, (startScale + endScale) / 2, endScale],
         opacity: [1, 1, animationPhase === 'going-to-nap' ? 0.8 : 1],
         transition: {
-          duration: 0.9,
+          duration: 1.8,
           ease: easing as [number, number, number, number],
           times: [0, 0.5, 1],
         }
