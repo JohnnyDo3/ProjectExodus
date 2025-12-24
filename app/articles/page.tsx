@@ -673,14 +673,14 @@ export default function ArticlesPage() {
                   <span className="text-xs font-bold uppercase tracking-[0.2em] text-amber-200">Articles</span>
                 </div>
 
-                <h1 className="text-3xl sm:text-4xl md:text-5xl font-black mb-3 tracking-tight text-white" style={{ fontFamily: 'Georgia, serif', textShadow: '0 2px 20px rgba(251, 191, 36, 0.3)' }}>
+                <h1 className="text-3xl sm:text-4xl md:text-5xl font-black mb-3 tracking-tight" style={{ fontFamily: 'Georgia, serif', textShadow: '0 2px 20px rgba(251, 191, 36, 0.3)', color: '#ffffff' }}>
                   Knowledge Shared
                 </h1>
 
                 <div className="flex items-center justify-center gap-3 mb-3">
-                  <div className="h-px w-16 bg-gradient-to-r from-transparent to-amber-500/50" />
-                  <div className="w-2 h-2 bg-amber-500 rotate-45" />
-                  <div className="h-px w-16 bg-gradient-to-l from-transparent to-amber-500/50" />
+                  <div className="h-px w-16" style={{ background: 'linear-gradient(to right, transparent, rgba(245, 158, 11, 0.5))' }} />
+                  <div className="w-2 h-2 rotate-45" style={{ backgroundColor: '#f59e0b' }} />
+                  <div className="h-px w-16" style={{ background: 'linear-gradient(to left, transparent, rgba(245, 158, 11, 0.5))' }} />
                 </div>
 
                 <p className="text-sm sm:text-base font-medium opacity-90 px-4 max-w-lg mx-auto" style={{ fontFamily: 'Georgia, serif', fontStyle: 'italic', color: '#fde68a' }}>
@@ -2407,15 +2407,15 @@ export default function ArticlesPage() {
           <div className="max-w-6xl mx-auto lg:pt-40">
             {/* Title Section - Below the entablature */}
             <div className="text-center mb-6 sm:mb-8">
-              <h1 className="text-3xl sm:text-4xl md:text-5xl font-black mb-3 tracking-tight text-white" style={{ fontFamily: 'Georgia, serif', textShadow: '0 2px 20px rgba(251, 191, 36, 0.3)' }}>
+              <h1 className="text-3xl sm:text-4xl md:text-5xl font-black mb-3 tracking-tight" style={{ fontFamily: 'Georgia, serif', textShadow: '0 2px 20px rgba(251, 191, 36, 0.3)', color: '#ffffff' }}>
                 Knowledge Shared
               </h1>
 
               {/* Decorative divider */}
               <div className="flex items-center justify-center gap-3 mb-3">
-                <div className="h-px w-16 bg-gradient-to-r from-transparent to-amber-500/50" />
-                <div className="w-2 h-2 bg-amber-500 rotate-45" />
-                <div className="h-px w-16 bg-gradient-to-l from-transparent to-amber-500/50" />
+                <div className="h-px w-16" style={{ background: 'linear-gradient(to right, transparent, rgba(245, 158, 11, 0.5))' }} />
+                <div className="w-2 h-2 rotate-45" style={{ backgroundColor: '#f59e0b' }} />
+                <div className="h-px w-16" style={{ background: 'linear-gradient(to left, transparent, rgba(245, 158, 11, 0.5))' }} />
               </div>
 
               <p className="text-sm sm:text-base font-medium opacity-90 px-4 max-w-lg mx-auto" style={{ fontFamily: 'Georgia, serif', fontStyle: 'italic', color: '#fde68a' }}>
