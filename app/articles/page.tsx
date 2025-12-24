@@ -2549,21 +2549,27 @@ export default function ArticlesPage() {
                   </svg>
                 </div>
               </div>
-              {/* Bobeche (candle cup) - matches pilaster sconce style */}
-              <div className={`absolute bottom-3 left-1/2 -translate-x-1/2 w-5 h-2.5 bg-gradient-to-b from-yellow-400 to-amber-600 rounded-b-sm border-t-2 border-yellow-300/60 shadow-lg ${isNightTime ? 'brightness-110' : ''}`} />
-              {/* Candle body - standardized h-5 to match pilaster sconces */}
-              <div className="absolute -top-4 left-1/2 -translate-x-1/2 w-2.5 h-5 bg-gradient-to-b from-amber-50 via-amber-100 to-amber-200 rounded-t-sm shadow-md" />
-              {/* Wick - standardized color to match pilaster sconces */}
-              <div className="absolute -top-5 left-1/2 -translate-x-1/2 w-0.5 h-1.5 bg-gradient-to-t from-gray-700 to-gray-500" />
-              {/* Flame assembly - standardized to match pilaster sconces */}
-              <div className={`absolute -top-8 left-1/2 -translate-x-1/2 ${isNightTime ? 'opacity-100' : 'opacity-60'}`}>
-                {/* Flame halo - now present to match pilaster sconces */}
-                <div className="absolute -inset-2 bg-gradient-radial from-orange-400/30 via-orange-300/15 to-transparent rounded-full blur-md" />
-                {/* Flame - standardized h-4 and timing to match pilaster sconces */}
-                <div className="w-3 h-4 bg-gradient-to-t from-orange-500 via-orange-400 to-yellow-200 rounded-full blur-[1px] animate-pulse" style={{ animationDelay: `${i * 0.3}s`, animationDuration: '0.7s' }} />
+              {/* Candle assembly - using flex column so candle sits in bobeche */}
+              <div className="absolute bottom-1 left-1/2 -translate-x-1/2 flex flex-col items-center">
+                {/* Candle body with wick and flame - sits into bobeche with negative margin */}
+                <div className="relative w-2.5 -mb-1.5 z-10">
+                  {/* Candle body */}
+                  <div className="w-2.5 h-5 bg-gradient-to-b from-amber-50 via-amber-100 to-amber-200 rounded-t-sm shadow-md" />
+                  {/* Wax pool in bobeche */}
+                  <div className="absolute -bottom-0.5 left-1/2 -translate-x-1/2 w-3 h-0.5 bg-amber-100/50 rounded-full blur-[0.5px]" />
+                  {/* Wick */}
+                  <div className="absolute -top-1 left-1/2 -translate-x-1/2 w-0.5 h-1.5 bg-gradient-to-t from-gray-700 to-gray-500" />
+                  {/* Flame assembly */}
+                  <div className={`absolute -top-5 left-1/2 -translate-x-1/2 ${isNightTime ? 'opacity-100' : 'opacity-60'}`}>
+                    <div className="absolute -inset-2 bg-gradient-radial from-orange-400/30 via-orange-300/15 to-transparent rounded-full blur-md" />
+                    <div className="w-3 h-4 bg-gradient-to-t from-orange-500 via-orange-400 to-yellow-200 rounded-full blur-[1px] animate-pulse" style={{ animationDelay: `${i * 0.3}s`, animationDuration: '0.7s' }} />
+                  </div>
+                </div>
+                {/* Bobeche (cup) - candle sits into this */}
+                <div className={`w-5 h-2.5 bg-gradient-to-b from-yellow-400 to-amber-600 rounded-b-sm border-t-2 border-yellow-300/60 shadow-lg ${isNightTime ? 'brightness-110' : ''}`} />
               </div>
-              {/* Ambient glow - standardized blur-xl and opacity to match pilaster sconces */}
-              <div className={`absolute -top-5 left-1/2 -translate-x-1/2 w-12 h-12 bg-gradient-radial from-orange-400/40 via-amber-500/20 to-transparent rounded-full blur-xl ${isNightTime ? 'opacity-100' : 'opacity-40'}`} />
+              {/* Ambient glow */}
+              <div className={`absolute -top-3 left-1/2 -translate-x-1/2 w-12 h-12 bg-gradient-radial from-orange-400/40 via-amber-500/20 to-transparent rounded-full blur-xl ${isNightTime ? 'opacity-100' : 'opacity-40'}`} />
             </div>
           </div>
         ))}
@@ -2581,21 +2587,27 @@ export default function ArticlesPage() {
                   </svg>
                 </div>
               </div>
-              {/* Bobeche (candle cup) - matches pilaster sconce style */}
-              <div className={`absolute bottom-3 left-1/2 -translate-x-1/2 w-5 h-2.5 bg-gradient-to-b from-yellow-400 to-amber-600 rounded-b-sm border-t-2 border-yellow-300/60 shadow-lg ${isNightTime ? 'brightness-110' : ''}`} />
-              {/* Candle body - standardized h-5 to match pilaster sconces */}
-              <div className="absolute -top-4 left-1/2 -translate-x-1/2 w-2.5 h-5 bg-gradient-to-b from-amber-50 via-amber-100 to-amber-200 rounded-t-sm shadow-md" />
-              {/* Wick - standardized color to match pilaster sconces */}
-              <div className="absolute -top-5 left-1/2 -translate-x-1/2 w-0.5 h-1.5 bg-gradient-to-t from-gray-700 to-gray-500" />
-              {/* Flame assembly - standardized to match pilaster sconces */}
-              <div className={`absolute -top-8 left-1/2 -translate-x-1/2 ${isNightTime ? 'opacity-100' : 'opacity-60'}`}>
-                {/* Flame halo - now present to match pilaster sconces */}
-                <div className="absolute -inset-2 bg-gradient-radial from-orange-400/30 via-orange-300/15 to-transparent rounded-full blur-md" />
-                {/* Flame - standardized h-4 and timing; offset +0.5s for organic variation like right pilaster */}
-                <div className="w-3 h-4 bg-gradient-to-t from-orange-500 via-orange-400 to-yellow-200 rounded-full blur-[1px] animate-pulse" style={{ animationDelay: `${i * 0.3 + 0.5}s`, animationDuration: '0.7s' }} />
+              {/* Candle assembly - using flex column so candle sits in bobeche */}
+              <div className="absolute bottom-1 left-1/2 -translate-x-1/2 flex flex-col items-center">
+                {/* Candle body with wick and flame - sits into bobeche with negative margin */}
+                <div className="relative w-2.5 -mb-1.5 z-10">
+                  {/* Candle body */}
+                  <div className="w-2.5 h-5 bg-gradient-to-b from-amber-50 via-amber-100 to-amber-200 rounded-t-sm shadow-md" />
+                  {/* Wax pool in bobeche */}
+                  <div className="absolute -bottom-0.5 left-1/2 -translate-x-1/2 w-3 h-0.5 bg-amber-100/50 rounded-full blur-[0.5px]" />
+                  {/* Wick */}
+                  <div className="absolute -top-1 left-1/2 -translate-x-1/2 w-0.5 h-1.5 bg-gradient-to-t from-gray-700 to-gray-500" />
+                  {/* Flame assembly */}
+                  <div className={`absolute -top-5 left-1/2 -translate-x-1/2 ${isNightTime ? 'opacity-100' : 'opacity-60'}`}>
+                    <div className="absolute -inset-2 bg-gradient-radial from-orange-400/30 via-orange-300/15 to-transparent rounded-full blur-md" />
+                    <div className="w-3 h-4 bg-gradient-to-t from-orange-500 via-orange-400 to-yellow-200 rounded-full blur-[1px] animate-pulse" style={{ animationDelay: `${i * 0.3 + 0.5}s`, animationDuration: '0.7s' }} />
+                  </div>
+                </div>
+                {/* Bobeche (cup) - candle sits into this */}
+                <div className={`w-5 h-2.5 bg-gradient-to-b from-yellow-400 to-amber-600 rounded-b-sm border-t-2 border-yellow-300/60 shadow-lg ${isNightTime ? 'brightness-110' : ''}`} />
               </div>
-              {/* Ambient glow - standardized blur-xl and opacity to match pilaster sconces */}
-              <div className={`absolute -top-5 left-1/2 -translate-x-1/2 w-12 h-12 bg-gradient-radial from-orange-400/40 via-amber-500/20 to-transparent rounded-full blur-xl ${isNightTime ? 'opacity-100' : 'opacity-40'}`} />
+              {/* Ambient glow */}
+              <div className={`absolute -top-3 left-1/2 -translate-x-1/2 w-12 h-12 bg-gradient-radial from-orange-400/40 via-amber-500/20 to-transparent rounded-full blur-xl ${isNightTime ? 'opacity-100' : 'opacity-40'}`} />
             </div>
           </div>
         ))}
