@@ -1368,7 +1368,7 @@ export default function ArticlesPage() {
                   <div className="absolute inset-y-0 right-0 w-1 bg-gradient-to-l from-amber-700/30 to-transparent" />
                 </div>
                 {/* Enhanced Attic base with torus and scotia moldings */}
-                <div className="absolute bottom-0 left-0 right-0 h-12 bg-gradient-to-t from-amber-700 via-amber-750 to-amber-800 border-t-2 border-amber-500/40">
+                <div className="absolute bottom-0 left-0 right-0 h-12" style={{ background: 'linear-gradient(to top, #b45309, #a16207, #92400e)', borderTop: '2px solid rgba(245, 158, 11, 0.4)' }}>
                   {/* Upper torus */}
                   <div className="absolute top-1.5 left-0.5 right-0.5 h-2 bg-gradient-to-b from-amber-600/60 via-amber-500/40 to-amber-700/50 rounded-full" />
                   {/* Scotia (concave) */}
@@ -1510,7 +1510,7 @@ export default function ArticlesPage() {
                 ))}
 
                 {/* Attic base */}
-                <div className="absolute bottom-0 left-0 right-0 h-10 bg-gradient-to-t from-amber-700 via-amber-750 to-amber-800 border-t-2 border-amber-500/40">
+                <div className="absolute bottom-0 left-0 right-0 h-10" style={{ background: 'linear-gradient(to top, #b45309, #a16207, #92400e)', borderTop: '2px solid rgba(245, 158, 11, 0.4)' }}>
                   <div className="absolute top-2 left-1 right-1 h-1 bg-gradient-to-b from-amber-500/40 to-transparent rounded-full" />
                   <div className="absolute bottom-2 left-1 right-1 h-1 bg-gradient-to-t from-amber-600/30 to-transparent rounded-full" />
                 </div>
@@ -1528,11 +1528,11 @@ export default function ArticlesPage() {
                 return (
                   <div key={`left-shelf-${shelfIndex}`} className="absolute left-8 right-8" style={{ top: `${top}%` }}>
                     {/* Shelf surface */}
-                    <div className="h-4 bg-gradient-to-b from-amber-700 via-amber-800 to-amber-950 border-t-2 border-amber-500/40 shadow-lg relative overflow-hidden">
+                    <div className="h-4 shadow-lg relative overflow-hidden" style={{ background: 'linear-gradient(to bottom, #b45309, #92400e, #451a03)', borderTop: '2px solid rgba(245, 158, 11, 0.4)' }}>
                       <div className="absolute inset-0 opacity-30" style={{
                         backgroundImage: `url("data:image/svg+xml,%3Csvg viewBox='0 0 100 10' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M0 5 Q25 3 50 5 Q75 7 100 5' fill='none' stroke='%23000' stroke-width='0.5'/%3E%3C/svg%3E")`,
                       }} />
-                      <div className="absolute top-0 left-0 right-0 h-1 bg-gradient-to-b from-amber-400/20 to-transparent" />
+                      <div className="absolute top-0 left-0 right-0 h-1" style={{ background: 'linear-gradient(to bottom, rgba(251, 191, 36, 0.2), transparent)' }} />
                     </div>
 
                     {/* Interactive article scrolls */}
@@ -1855,7 +1855,7 @@ export default function ArticlesPage() {
                   <div className="absolute inset-y-0 left-0 w-1 bg-gradient-to-r from-amber-700/30 to-transparent" />
                 </div>
                 {/* Enhanced Attic base with torus and scotia moldings */}
-                <div className="absolute bottom-0 left-0 right-0 h-12 bg-gradient-to-t from-amber-700 via-amber-750 to-amber-800 border-t-2 border-amber-500/40">
+                <div className="absolute bottom-0 left-0 right-0 h-12" style={{ background: 'linear-gradient(to top, #b45309, #a16207, #92400e)', borderTop: '2px solid rgba(245, 158, 11, 0.4)' }}>
                   {/* Upper torus */}
                   <div className="absolute top-1.5 left-0.5 right-0.5 h-2 bg-gradient-to-b from-amber-600/60 via-amber-500/40 to-amber-700/50 rounded-full" />
                   {/* Scotia (concave) */}
@@ -1997,7 +1997,7 @@ export default function ArticlesPage() {
                 ))}
 
                 {/* Attic base */}
-                <div className="absolute bottom-0 left-0 right-0 h-10 bg-gradient-to-t from-amber-700 via-amber-750 to-amber-800 border-t-2 border-amber-500/40">
+                <div className="absolute bottom-0 left-0 right-0 h-10" style={{ background: 'linear-gradient(to top, #b45309, #a16207, #92400e)', borderTop: '2px solid rgba(245, 158, 11, 0.4)' }}>
                   <div className="absolute top-2 left-1 right-1 h-1 bg-gradient-to-b from-amber-500/40 to-transparent rounded-full" />
                   <div className="absolute bottom-2 left-1 right-1 h-1 bg-gradient-to-t from-amber-600/30 to-transparent rounded-full" />
                 </div>
@@ -2015,11 +2015,11 @@ export default function ArticlesPage() {
                 return (
                   <div key={`right-shelf-${shelfIndex}`} className="absolute left-8 right-8" style={{ top: `${top}%` }}>
                     {/* Shelf surface */}
-                    <div className="h-4 bg-gradient-to-b from-amber-700 via-amber-800 to-amber-950 border-t-2 border-amber-500/40 shadow-lg relative overflow-hidden">
+                    <div className="h-4 shadow-lg relative overflow-hidden" style={{ background: 'linear-gradient(to bottom, #b45309, #92400e, #451a03)', borderTop: '2px solid rgba(245, 158, 11, 0.4)' }}>
                       <div className="absolute inset-0 opacity-30" style={{
                         backgroundImage: `url("data:image/svg+xml,%3Csvg viewBox='0 0 100 10' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M0 5 Q25 3 50 5 Q75 7 100 5' fill='none' stroke='%23000' stroke-width='0.5'/%3E%3C/svg%3E")`,
                       }} />
-                      <div className="absolute top-0 left-0 right-0 h-1 bg-gradient-to-b from-amber-400/20 to-transparent" />
+                      <div className="absolute top-0 left-0 right-0 h-1" style={{ background: 'linear-gradient(to bottom, rgba(251, 191, 36, 0.2), transparent)' }} />
                     </div>
 
                     {/* Interactive article scrolls */}
@@ -2474,13 +2474,13 @@ export default function ArticlesPage() {
         {/* ========================================== */}
         <div className="hidden lg:block absolute bottom-0 left-0 right-0 h-8 z-25">
           {/* Main shelf surface */}
-          <div className="absolute inset-0 bg-gradient-to-b from-amber-700 via-amber-800 to-amber-950 border-t-2 border-amber-500/40 shadow-lg overflow-hidden">
+          <div className="absolute inset-0 shadow-lg overflow-hidden" style={{ background: 'linear-gradient(to bottom, #b45309, #92400e, #451a03)', borderTop: '2px solid rgba(245, 158, 11, 0.4)' }}>
             {/* Wood grain texture */}
             <div className="absolute inset-0 opacity-30" style={{
               backgroundImage: `url("data:image/svg+xml,%3Csvg viewBox='0 0 100 10' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M0 5 Q25 3 50 5 Q75 7 100 5' fill='none' stroke='%23000' stroke-width='0.5'/%3E%3C/svg%3E")`,
             }} />
             {/* Top highlight */}
-            <div className="absolute top-0 left-0 right-0 h-1 bg-gradient-to-b from-amber-400/30 to-transparent" />
+            <div className="absolute top-0 left-0 right-0 h-1" style={{ background: 'linear-gradient(to bottom, rgba(251, 191, 36, 0.3), transparent)' }} />
           </div>
           {/* Decorative brass brackets */}
           <div className="absolute left-[10%] top-0 bottom-0 w-4 bg-gradient-to-b from-yellow-600 via-yellow-700 to-amber-800 rounded-b-sm shadow-md" />
@@ -2655,9 +2655,9 @@ export default function ArticlesPage() {
         ))}
 
         {/* ============ KEYSTONE DIVIDER - Grand ornate Roman shelf between vertical bookshelves and horizontal shelves ============ */}
-        <div className="h-20 bg-gradient-to-b from-amber-600 via-amber-700 to-amber-950 border-t-2 border-amber-400/60 shadow-2xl relative overflow-hidden mx-10">
+        <div className="h-20 shadow-2xl relative overflow-hidden mx-10" style={{ background: 'linear-gradient(to bottom, #d97706, #b45309, #451a03)', borderTop: '2px solid rgba(251, 191, 36, 0.6)' }}>
           {/* Top surface highlight band */}
-          <div className="absolute top-0 left-0 right-0 h-3 bg-gradient-to-b from-amber-500/40 via-amber-600/20 to-transparent" />
+          <div className="absolute top-0 left-0 right-0 h-3" style={{ background: 'linear-gradient(to bottom, rgba(245, 158, 11, 0.4), rgba(217, 119, 6, 0.2), transparent)' }} />
 
           {/* Enhanced wood grain texture across full depth */}
           <div className="absolute inset-0 opacity-20" style={{
@@ -2991,8 +2991,8 @@ export default function ArticlesPage() {
             </div>
 
             {/* Simple Roman shelf surface - matching Shelf 2/3 style */}
-            <div className="h-10 bg-gradient-to-b from-amber-650 via-amber-750 to-amber-950 border-t-2 border-amber-400/50 shadow-2xl relative overflow-hidden">
-              <div className="absolute top-0 left-0 right-0 h-2 bg-gradient-to-b from-amber-500/30 to-transparent" />
+            <div className="h-10 shadow-2xl relative overflow-hidden" style={{ background: 'linear-gradient(to bottom, #ca8a04, #a16207, #451a03)', borderTop: '2px solid rgba(251, 191, 36, 0.5)' }}>
+              <div className="absolute top-0 left-0 right-0 h-2" style={{ background: 'linear-gradient(to bottom, rgba(245, 158, 11, 0.3), transparent)' }} />
               <div className="absolute inset-0 opacity-25" style={{
                 backgroundImage: `url("data:image/svg+xml,%3Csvg viewBox='0 0 200 20' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M0 8 Q50 5 100 8 Q150 11 200 8' fill='none' stroke='%23000' stroke-width='0.5'/%3E%3Cpath d='M0 14 Q50 12 100 14 Q150 16 200 14' fill='none' stroke='%23000' stroke-width='0.4'/%3E%3C/svg%3E")`,
               }} />
