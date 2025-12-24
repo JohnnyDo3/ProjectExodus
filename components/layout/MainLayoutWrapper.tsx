@@ -44,7 +44,7 @@ export function MainLayoutWrapper({
     return (
       <>
         {skyBackground}
-        <div className="relative z-10 h-screen overflow-hidden flex flex-col">
+        <div className="relative z-10 h-screen flex flex-col">
           <Header />
           <div className="flex-1 overflow-hidden">
             {children}
@@ -60,7 +60,7 @@ export function MainLayoutWrapper({
     return (
       <>
         {skyBackground}
-        <div className="relative z-10 h-screen flex flex-col overflow-hidden">
+        <div className="relative z-10 h-screen flex flex-col">
           <Header />
           <div className="flex-1 overflow-hidden">
             {children}

@@ -1387,11 +1387,11 @@ export default function ArticlesPage() {
                     ))}
                   </div>
                   {/* Astragal ring moldings */}
-                  <div className="absolute top-4 left-0 right-0 h-1.5 bg-gradient-to-b from-amber-700/50 via-amber-600/30 to-amber-800/40 border-y border-amber-700/30" />
-                  <div className="absolute bottom-4 left-0 right-0 h-1.5 bg-gradient-to-b from-amber-700/50 via-amber-600/30 to-amber-800/40 border-y border-amber-700/30" />
+                  <div className="absolute top-4 left-0 right-0 h-1.5 bg-gradient-to-b from-amber-600 via-amber-500/60 to-amber-700/80 border-y border-amber-600/60" />
+                  <div className="absolute bottom-4 left-0 right-0 h-1.5 bg-gradient-to-b from-amber-600 via-amber-500/60 to-amber-700/80 border-y border-amber-600/60" />
                   {/* Light reflections */}
-                  <div className={`absolute inset-y-0 left-0 w-1.5 bg-gradient-to-r from-amber-700/30 to-transparent ${isNightTime ? 'opacity-60' : 'opacity-30'}`} />
-                  <div className="absolute inset-y-0 right-0 w-1 bg-gradient-to-l from-amber-700/30 to-transparent" />
+                  <div className={`absolute inset-y-0 left-0 w-1.5 bg-gradient-to-r from-amber-600/60 to-transparent ${isNightTime ? 'opacity-80' : 'opacity-60'}`} />
+                  <div className="absolute inset-y-0 right-0 w-1 bg-gradient-to-l from-amber-600/60 to-transparent" />
                 </div>
                 {/* Enhanced Attic base with torus and scotia moldings */}
                 <div className="absolute bottom-0 left-0 right-0 h-12" style={{ background: 'linear-gradient(to top, #b45309, #a16207, #92400e)', borderTop: '2px solid rgba(245, 158, 11, 0.4)' }}>
@@ -1485,8 +1485,8 @@ export default function ArticlesPage() {
                   <div className="absolute top-4 left-0 right-0 h-1.5 bg-gradient-to-b from-amber-700/50 via-amber-600/30 to-amber-800/40 border-y border-amber-700/30" />
                   <div className="absolute bottom-4 left-0 right-0 h-1.5 bg-gradient-to-b from-amber-700/50 via-amber-600/30 to-amber-800/40 border-y border-amber-700/30" />
                   {/* Light reflections */}
-                  <div className={`absolute inset-y-0 right-0 w-1.5 bg-gradient-to-l from-amber-500/30 to-transparent ${isNightTime ? 'opacity-60' : 'opacity-30'}`} />
-                  <div className="absolute inset-y-0 left-0 w-1 bg-gradient-to-r from-amber-700/30 to-transparent" />
+                  <div className={`absolute inset-y-0 right-0 w-1.5 bg-gradient-to-l from-amber-500/60 to-transparent ${isNightTime ? 'opacity-80' : 'opacity-60'}`} />
+                  <div className="absolute inset-y-0 left-0 w-1 bg-gradient-to-r from-amber-600/60 to-transparent" />
                 </div>
 
                 {/* Integrated sconces - built into pilaster border */}
@@ -1738,23 +1738,6 @@ export default function ArticlesPage() {
                           </div>
                         )
                       })}
-                      {/* Ghost scrolls - transparent tan, filling the shelf */}
-                      {Array.from({ length: Math.max(0, 6 - shelfArticles.length) }).map((_, i) => (
-                        <div key={`ghost-left-${shelfIndex}-${i}`} className="w-4 h-12 relative opacity-20 hover:opacity-30 transition-opacity">
-                          {/* Ghost scroll body */}
-                          <div className="absolute inset-x-0.5 top-2 bottom-2 bg-amber-600/15 rounded-sm border border-amber-600/25" />
-                          {/* Top rod */}
-                          <div className="absolute top-0 left-0 right-0 h-2 bg-amber-600/20 rounded-t-sm border border-amber-600/30" />
-                          {/* Bottom rod */}
-                          <div className="absolute bottom-0 left-0 right-0 h-2 bg-amber-600/20 rounded-b-sm border border-amber-600/30" />
-                          {/* Subtle text lines */}
-                          <div className="absolute inset-x-1 top-3 bottom-3 flex flex-col justify-center gap-0.5">
-                            <div className="h-px bg-amber-600/20" />
-                            <div className="h-px bg-amber-600/15 w-3/4" />
-                            <div className="h-px bg-amber-600/20" />
-                          </div>
-                        </div>
-                      ))}
                     </div>
                   </div>
                 )
@@ -1949,8 +1932,8 @@ export default function ArticlesPage() {
                   <div className="absolute top-4 left-0 right-0 h-1.5 bg-gradient-to-b from-amber-700/50 via-amber-600/30 to-amber-800/40 border-y border-amber-700/30" />
                   <div className="absolute bottom-4 left-0 right-0 h-1.5 bg-gradient-to-b from-amber-700/50 via-amber-600/30 to-amber-800/40 border-y border-amber-700/30" />
                   {/* Light reflections */}
-                  <div className={`absolute inset-y-0 right-0 w-1.5 bg-gradient-to-l from-amber-500/30 to-transparent ${isNightTime ? 'opacity-60' : 'opacity-30'}`} />
-                  <div className="absolute inset-y-0 left-0 w-1 bg-gradient-to-r from-amber-700/30 to-transparent" />
+                  <div className={`absolute inset-y-0 right-0 w-1.5 bg-gradient-to-l from-amber-500/60 to-transparent ${isNightTime ? 'opacity-80' : 'opacity-60'}`} />
+                  <div className="absolute inset-y-0 left-0 w-1 bg-gradient-to-r from-amber-600/60 to-transparent" />
                 </div>
                 {/* Enhanced Attic base with torus and scotia moldings */}
                 <div className="absolute bottom-0 left-0 right-0 h-12" style={{ background: 'linear-gradient(to top, #b45309, #a16207, #92400e)', borderTop: '2px solid rgba(245, 158, 11, 0.4)' }}>
@@ -2041,11 +2024,11 @@ export default function ArticlesPage() {
                     ))}
                   </div>
                   {/* Astragal ring moldings */}
-                  <div className="absolute top-4 left-0 right-0 h-1.5 bg-gradient-to-b from-amber-700/50 via-amber-600/30 to-amber-800/40 border-y border-amber-700/30" />
-                  <div className="absolute bottom-4 left-0 right-0 h-1.5 bg-gradient-to-b from-amber-700/50 via-amber-600/30 to-amber-800/40 border-y border-amber-700/30" />
+                  <div className="absolute top-4 left-0 right-0 h-1.5 bg-gradient-to-b from-amber-600 via-amber-500/60 to-amber-700/80 border-y border-amber-600/60" />
+                  <div className="absolute bottom-4 left-0 right-0 h-1.5 bg-gradient-to-b from-amber-600 via-amber-500/60 to-amber-700/80 border-y border-amber-600/60" />
                   {/* Light reflections */}
-                  <div className={`absolute inset-y-0 left-0 w-1.5 bg-gradient-to-r from-amber-700/30 to-transparent ${isNightTime ? 'opacity-60' : 'opacity-30'}`} />
-                  <div className="absolute inset-y-0 right-0 w-1 bg-gradient-to-l from-amber-700/30 to-transparent" />
+                  <div className={`absolute inset-y-0 left-0 w-1.5 bg-gradient-to-r from-amber-600/60 to-transparent ${isNightTime ? 'opacity-80' : 'opacity-60'}`} />
+                  <div className="absolute inset-y-0 right-0 w-1 bg-gradient-to-l from-amber-600/60 to-transparent" />
                 </div>
 
                 {/* Integrated sconces - built into pilaster border (mirrored) */}
@@ -2162,23 +2145,6 @@ export default function ArticlesPage() {
 
                     {/* Interactive article scrolls */}
                     <div className="absolute bottom-4 left-1 right-1 flex items-end justify-center gap-1 h-16">
-                      {/* Ghost scrolls - transparent tan, filling the shelf */}
-                      {Array.from({ length: Math.max(0, 6 - shelfArticles.length) }).map((_, i) => (
-                        <div key={`ghost-right-${shelfIndex}-${i}`} className="w-4 h-12 relative opacity-20 hover:opacity-30 transition-opacity">
-                          {/* Ghost scroll body */}
-                          <div className="absolute inset-x-0.5 top-2 bottom-2 bg-amber-600/15 rounded-sm border border-amber-600/25" />
-                          {/* Top rod */}
-                          <div className="absolute top-0 left-0 right-0 h-2 bg-amber-600/20 rounded-t-sm border border-amber-600/30" />
-                          {/* Bottom rod */}
-                          <div className="absolute bottom-0 left-0 right-0 h-2 bg-amber-600/20 rounded-b-sm border border-amber-600/30" />
-                          {/* Subtle text lines */}
-                          <div className="absolute inset-x-1 top-3 bottom-3 flex flex-col justify-center gap-0.5">
-                            <div className="h-px bg-amber-600/20" />
-                            <div className="h-px bg-amber-600/15 w-3/4" />
-                            <div className="h-px bg-amber-600/20" />
-                          </div>
-                        </div>
-                      ))}
                       {shelfArticles.map((article, i) => {
                         const colors = scrollColors[i % 2]
                         const isHovered = hoveredBook === article.id
@@ -2640,28 +2606,77 @@ export default function ArticlesPage() {
 
         {/* Roman pilaster columns on sides - LARGE pillars supporting the library above */}
         <div className="absolute left-0 top-0 bottom-0 w-16 bg-gradient-to-r from-amber-800 via-amber-700 to-amber-800 z-10 border-r-4 border-amber-600/60 shadow-2xl">
-          {/* Ornate Corinthian capital with acanthus leaves - enlarged */}
-          <div className="absolute top-0 left-0 right-0 h-20 bg-gradient-to-b from-amber-700 via-amber-750 to-amber-800 border-b-2 border-amber-600/40">
-            <svg viewBox="0 0 64 80" className="w-full h-full text-amber-400/60">
-              {/* Volutes (scrolls at top) */}
-              <ellipse cx="10" cy="12" rx="7" ry="5" fill="none" stroke="currentColor" strokeWidth="1.2"/>
-              <ellipse cx="54" cy="12" rx="7" ry="5" fill="none" stroke="currentColor" strokeWidth="1.2"/>
-              <path d="M10 17 Q10 22 16 24" fill="none" stroke="currentColor" strokeWidth="0.8"/>
-              <path d="M54 17 Q54 22 48 24" fill="none" stroke="currentColor" strokeWidth="0.8"/>
-              {/* Large acanthus leaves */}
-              <path d="M32 72 Q16 58 16 44 Q24 52 32 44 Q40 52 48 44 Q48 58 32 72" fill="none" stroke="currentColor" strokeWidth="1"/>
-              <path d="M32 18 Q24 30 24 42 M32 18 Q40 30 40 42" fill="none" stroke="currentColor" strokeWidth="0.8"/>
-              <path d="M20 28 Q28 36 28 48 M44 28 Q36 36 36 48" fill="none" stroke="currentColor" strokeWidth="0.6"/>
-              {/* Central rosette */}
-              <circle cx="32" cy="32" r="8" fill="none" stroke="currentColor" strokeWidth="1"/>
-              <circle cx="32" cy="32" r="4" fill="currentColor" opacity="0.4"/>
-              <circle cx="32" cy="32" r="2" fill="currentColor" opacity="0.6"/>
-              {/* Decorative spirals */}
-              <path d="M6 20 Q14 28 10 38" fill="none" stroke="currentColor" strokeWidth="0.6"/>
-              <path d="M58 20 Q50 28 54 38" fill="none" stroke="currentColor" strokeWidth="0.6"/>
-              {/* Additional leaf details */}
-              <path d="M24 56 Q28 52 32 56 Q36 52 40 56" fill="none" stroke="currentColor" strokeWidth="0.5"/>
+          {/* Architecturally Accurate Corinthian Capital - Enlarged */}
+          <div className={`absolute top-0 left-0 right-0 h-20 bg-gradient-to-b from-amber-600 via-amber-700 to-amber-800 border-b-2 border-amber-600/50 ${isNightTime ? 'brightness-110' : ''}`}>
+            <svg viewBox="0 0 64 80" className={`w-full h-full ${isNightTime ? 'text-amber-400' : 'text-amber-500/80'}`} preserveAspectRatio="xMidYMid meet">
+              {/* === ABACUS (Top plate with concave sides) === */}
+              <path d="M2 0 L62 0 L62 5 Q48 7 32 7 Q16 7 2 5 Z" fill="currentColor" opacity="0.3" stroke="currentColor" strokeWidth="0.4"/>
+              <path d="M4 3 L60 3" stroke="currentColor" strokeWidth="0.5" opacity="0.6"/>
+
+              {/* === VOLUTES (Corner spirals - larger) === */}
+              {/* Left volute */}
+              <path d="M6 8 Q2 8 2 12 Q2 16 6 16 Q10 16 10 12 Q10 10 8 10" fill="none" stroke="currentColor" strokeWidth="1"/>
+              <circle cx="7" cy="12" r="1.5" fill="currentColor" opacity="0.4"/>
+              {/* Right volute */}
+              <path d="M58 8 Q62 8 62 12 Q62 16 58 16 Q54 16 54 12 Q54 10 56 10" fill="none" stroke="currentColor" strokeWidth="1"/>
+              <circle cx="57" cy="12" r="1.5" fill="currentColor" opacity="0.4"/>
+
+              {/* === HELICES (Small spirals under volutes) === */}
+              <path d="M10 16 Q14 20 12 24 Q10 26 8 24" fill="none" stroke="currentColor" strokeWidth="0.7"/>
+              <path d="M54 16 Q50 20 52 24 Q54 26 56 24" fill="none" stroke="currentColor" strokeWidth="0.7"/>
+
+              {/* === CENTRAL FLEURON (Flower/rosette - larger) === */}
+              <circle cx="32" cy="16" r="6" fill="currentColor" opacity="0.15"/>
+              <circle cx="32" cy="16" r="4.5" fill="none" stroke="currentColor" strokeWidth="0.7"/>
+              <circle cx="32" cy="16" r="2" fill="currentColor" opacity="0.5"/>
+              {/* Fleuron petals */}
+              <path d="M32 9 Q34 13 32 15 Q30 13 32 9" fill="currentColor" opacity="0.3"/>
+              <path d="M25 16 Q29 18 31 16 Q29 14 25 16" fill="currentColor" opacity="0.3"/>
+              <path d="M39 16 Q35 18 33 16 Q35 14 39 16" fill="currentColor" opacity="0.3"/>
+              <path d="M32 23 Q34 19 32 17 Q30 19 32 23" fill="currentColor" opacity="0.3"/>
+
+              {/* === CAULICOLI (Stems emerging from leaves) === */}
+              <path d="M14 22 Q16 30 12 38 Q10 42 12 46" fill="none" stroke="currentColor" strokeWidth="0.8"/>
+              <path d="M50 22 Q48 30 52 38 Q54 42 52 46" fill="none" stroke="currentColor" strokeWidth="0.8"/>
+
+              {/* === SECOND ROW ACANTHUS LEAVES (6 leaves) === */}
+              {/* Left outer leaf */}
+              <path d="M4 28 Q2 38 6 48 Q8 52 10 50 Q6 44 8 36 Q10 30 8 28 Z" fill="currentColor" opacity="0.2" stroke="currentColor" strokeWidth="0.5"/>
+              {/* Left-center leaf */}
+              <path d="M18 26 Q14 36 18 46 Q20 50 22 48 Q18 42 20 34 Q22 28 20 26 Z" fill="currentColor" opacity="0.2" stroke="currentColor" strokeWidth="0.5"/>
+              {/* Center-left leaf */}
+              <path d="M28 25 Q26 35 28 45 Q30 48 32 46 Q28 40 30 33 Q32 27 30 25 Z" fill="currentColor" opacity="0.2" stroke="currentColor" strokeWidth="0.5"/>
+              {/* Center-right leaf */}
+              <path d="M36 25 Q38 35 36 45 Q34 48 32 46 Q36 40 34 33 Q32 27 34 25 Z" fill="currentColor" opacity="0.2" stroke="currentColor" strokeWidth="0.5"/>
+              {/* Right-center leaf */}
+              <path d="M46 26 Q50 36 46 46 Q44 50 42 48 Q46 42 44 34 Q42 28 44 26 Z" fill="currentColor" opacity="0.2" stroke="currentColor" strokeWidth="0.5"/>
+              {/* Right outer leaf */}
+              <path d="M60 28 Q62 38 58 48 Q56 52 54 50 Q58 44 56 36 Q54 30 56 28 Z" fill="currentColor" opacity="0.2" stroke="currentColor" strokeWidth="0.5"/>
+
+              {/* === FIRST ROW ACANTHUS LEAVES (5 larger base leaves) === */}
+              {/* Far left leaf */}
+              <path d="M2 48 Q0 58 4 68 Q6 74 10 72 Q4 64 6 56 Q8 50 6 48 Z" fill="currentColor" opacity="0.25" stroke="currentColor" strokeWidth="0.6"/>
+              <path d="M6 58 Q4 62 6 66" fill="none" stroke="currentColor" strokeWidth="0.4" opacity="0.6"/>
+              {/* Left leaf */}
+              <path d="M16 46 Q12 56 16 66 Q18 72 22 70 Q16 62 18 54 Q20 48 18 46 Z" fill="currentColor" opacity="0.25" stroke="currentColor" strokeWidth="0.6"/>
+              <path d="M18 56 Q16 60 18 64" fill="none" stroke="currentColor" strokeWidth="0.4" opacity="0.6"/>
+              {/* Center leaf */}
+              <path d="M32 44 Q26 54 30 66 Q32 72 34 66 Q38 54 32 44 Z" fill="currentColor" opacity="0.25" stroke="currentColor" strokeWidth="0.6"/>
+              <path d="M30 56 Q32 52 34 56" fill="none" stroke="currentColor" strokeWidth="0.4" opacity="0.6"/>
+              {/* Right leaf */}
+              <path d="M48 46 Q52 56 48 66 Q46 72 42 70 Q48 62 46 54 Q44 48 46 46 Z" fill="currentColor" opacity="0.25" stroke="currentColor" strokeWidth="0.6"/>
+              <path d="M46 56 Q48 60 46 64" fill="none" stroke="currentColor" strokeWidth="0.4" opacity="0.6"/>
+              {/* Far right leaf */}
+              <path d="M62 48 Q64 58 60 68 Q58 74 54 72 Q60 64 58 56 Q56 50 58 48 Z" fill="currentColor" opacity="0.25" stroke="currentColor" strokeWidth="0.6"/>
+              <path d="M58 58 Q60 62 58 66" fill="none" stroke="currentColor" strokeWidth="0.4" opacity="0.6"/>
+
+              {/* === BELL (Kalathos) outline visible between leaves === */}
+              <path d="M12 72 Q12 64 16 56 Q20 48 28 42 M52 72 Q52 64 48 56 Q44 48 36 42" fill="none" stroke="currentColor" strokeWidth="0.4" opacity="0.4"/>
             </svg>
+            {/* Depth shadow at bottom of capital */}
+            <div className="absolute bottom-0 left-0 right-0 h-3 bg-gradient-to-t from-amber-900/40 to-transparent" />
+            {/* Light-aware highlight on capital */}
+            <div className={`absolute inset-0 bg-gradient-to-b from-amber-700/20 to-transparent ${isNightTime ? 'opacity-50' : 'opacity-25'}`} />
           </div>
           {/* Column shaft with fluting - more channels */}
           <div className="absolute top-24 bottom-12 left-0 right-0 overflow-hidden">
@@ -2684,28 +2699,77 @@ export default function ArticlesPage() {
           </div>
         </div>
         <div className="absolute right-0 top-0 bottom-0 w-16 bg-gradient-to-l from-amber-800 via-amber-700 to-amber-800 z-10 border-l-4 border-amber-600/60 shadow-2xl">
-          {/* Ornate Corinthian capital with acanthus leaves - enlarged */}
-          <div className="absolute top-0 left-0 right-0 h-20 bg-gradient-to-b from-amber-700 via-amber-750 to-amber-800 border-b-2 border-amber-600/40">
-            <svg viewBox="0 0 64 80" className="w-full h-full text-amber-400/60">
-              {/* Volutes (scrolls at top) */}
-              <ellipse cx="10" cy="12" rx="7" ry="5" fill="none" stroke="currentColor" strokeWidth="1.2"/>
-              <ellipse cx="54" cy="12" rx="7" ry="5" fill="none" stroke="currentColor" strokeWidth="1.2"/>
-              <path d="M10 17 Q10 22 16 24" fill="none" stroke="currentColor" strokeWidth="0.8"/>
-              <path d="M54 17 Q54 22 48 24" fill="none" stroke="currentColor" strokeWidth="0.8"/>
-              {/* Large acanthus leaves */}
-              <path d="M32 72 Q16 58 16 44 Q24 52 32 44 Q40 52 48 44 Q48 58 32 72" fill="none" stroke="currentColor" strokeWidth="1"/>
-              <path d="M32 18 Q24 30 24 42 M32 18 Q40 30 40 42" fill="none" stroke="currentColor" strokeWidth="0.8"/>
-              <path d="M20 28 Q28 36 28 48 M44 28 Q36 36 36 48" fill="none" stroke="currentColor" strokeWidth="0.6"/>
-              {/* Central rosette */}
-              <circle cx="32" cy="32" r="8" fill="none" stroke="currentColor" strokeWidth="1"/>
-              <circle cx="32" cy="32" r="4" fill="currentColor" opacity="0.4"/>
-              <circle cx="32" cy="32" r="2" fill="currentColor" opacity="0.6"/>
-              {/* Decorative spirals */}
-              <path d="M6 20 Q14 28 10 38" fill="none" stroke="currentColor" strokeWidth="0.6"/>
-              <path d="M58 20 Q50 28 54 38" fill="none" stroke="currentColor" strokeWidth="0.6"/>
-              {/* Additional leaf details */}
-              <path d="M24 56 Q28 52 32 56 Q36 52 40 56" fill="none" stroke="currentColor" strokeWidth="0.5"/>
+          {/* Architecturally Accurate Corinthian Capital - Enlarged */}
+          <div className={`absolute top-0 left-0 right-0 h-20 bg-gradient-to-b from-amber-600 via-amber-700 to-amber-800 border-b-2 border-amber-600/50 ${isNightTime ? 'brightness-110' : ''}`}>
+            <svg viewBox="0 0 64 80" className={`w-full h-full ${isNightTime ? 'text-amber-400' : 'text-amber-500/80'}`} preserveAspectRatio="xMidYMid meet">
+              {/* === ABACUS (Top plate with concave sides) === */}
+              <path d="M2 0 L62 0 L62 5 Q48 7 32 7 Q16 7 2 5 Z" fill="currentColor" opacity="0.3" stroke="currentColor" strokeWidth="0.4"/>
+              <path d="M4 3 L60 3" stroke="currentColor" strokeWidth="0.5" opacity="0.6"/>
+
+              {/* === VOLUTES (Corner spirals - larger) === */}
+              {/* Left volute */}
+              <path d="M6 8 Q2 8 2 12 Q2 16 6 16 Q10 16 10 12 Q10 10 8 10" fill="none" stroke="currentColor" strokeWidth="1"/>
+              <circle cx="7" cy="12" r="1.5" fill="currentColor" opacity="0.4"/>
+              {/* Right volute */}
+              <path d="M58 8 Q62 8 62 12 Q62 16 58 16 Q54 16 54 12 Q54 10 56 10" fill="none" stroke="currentColor" strokeWidth="1"/>
+              <circle cx="57" cy="12" r="1.5" fill="currentColor" opacity="0.4"/>
+
+              {/* === HELICES (Small spirals under volutes) === */}
+              <path d="M10 16 Q14 20 12 24 Q10 26 8 24" fill="none" stroke="currentColor" strokeWidth="0.7"/>
+              <path d="M54 16 Q50 20 52 24 Q54 26 56 24" fill="none" stroke="currentColor" strokeWidth="0.7"/>
+
+              {/* === CENTRAL FLEURON (Flower/rosette - larger) === */}
+              <circle cx="32" cy="16" r="6" fill="currentColor" opacity="0.15"/>
+              <circle cx="32" cy="16" r="4.5" fill="none" stroke="currentColor" strokeWidth="0.7"/>
+              <circle cx="32" cy="16" r="2" fill="currentColor" opacity="0.5"/>
+              {/* Fleuron petals */}
+              <path d="M32 9 Q34 13 32 15 Q30 13 32 9" fill="currentColor" opacity="0.3"/>
+              <path d="M25 16 Q29 18 31 16 Q29 14 25 16" fill="currentColor" opacity="0.3"/>
+              <path d="M39 16 Q35 18 33 16 Q35 14 39 16" fill="currentColor" opacity="0.3"/>
+              <path d="M32 23 Q34 19 32 17 Q30 19 32 23" fill="currentColor" opacity="0.3"/>
+
+              {/* === CAULICOLI (Stems emerging from leaves) === */}
+              <path d="M14 22 Q16 30 12 38 Q10 42 12 46" fill="none" stroke="currentColor" strokeWidth="0.8"/>
+              <path d="M50 22 Q48 30 52 38 Q54 42 52 46" fill="none" stroke="currentColor" strokeWidth="0.8"/>
+
+              {/* === SECOND ROW ACANTHUS LEAVES (6 leaves) === */}
+              {/* Left outer leaf */}
+              <path d="M4 28 Q2 38 6 48 Q8 52 10 50 Q6 44 8 36 Q10 30 8 28 Z" fill="currentColor" opacity="0.2" stroke="currentColor" strokeWidth="0.5"/>
+              {/* Left-center leaf */}
+              <path d="M18 26 Q14 36 18 46 Q20 50 22 48 Q18 42 20 34 Q22 28 20 26 Z" fill="currentColor" opacity="0.2" stroke="currentColor" strokeWidth="0.5"/>
+              {/* Center-left leaf */}
+              <path d="M28 25 Q26 35 28 45 Q30 48 32 46 Q28 40 30 33 Q32 27 30 25 Z" fill="currentColor" opacity="0.2" stroke="currentColor" strokeWidth="0.5"/>
+              {/* Center-right leaf */}
+              <path d="M36 25 Q38 35 36 45 Q34 48 32 46 Q36 40 34 33 Q32 27 34 25 Z" fill="currentColor" opacity="0.2" stroke="currentColor" strokeWidth="0.5"/>
+              {/* Right-center leaf */}
+              <path d="M46 26 Q50 36 46 46 Q44 50 42 48 Q46 42 44 34 Q42 28 44 26 Z" fill="currentColor" opacity="0.2" stroke="currentColor" strokeWidth="0.5"/>
+              {/* Right outer leaf */}
+              <path d="M60 28 Q62 38 58 48 Q56 52 54 50 Q58 44 56 36 Q54 30 56 28 Z" fill="currentColor" opacity="0.2" stroke="currentColor" strokeWidth="0.5"/>
+
+              {/* === FIRST ROW ACANTHUS LEAVES (5 larger base leaves) === */}
+              {/* Far left leaf */}
+              <path d="M2 48 Q0 58 4 68 Q6 74 10 72 Q4 64 6 56 Q8 50 6 48 Z" fill="currentColor" opacity="0.25" stroke="currentColor" strokeWidth="0.6"/>
+              <path d="M6 58 Q4 62 6 66" fill="none" stroke="currentColor" strokeWidth="0.4" opacity="0.6"/>
+              {/* Left leaf */}
+              <path d="M16 46 Q12 56 16 66 Q18 72 22 70 Q16 62 18 54 Q20 48 18 46 Z" fill="currentColor" opacity="0.25" stroke="currentColor" strokeWidth="0.6"/>
+              <path d="M18 56 Q16 60 18 64" fill="none" stroke="currentColor" strokeWidth="0.4" opacity="0.6"/>
+              {/* Center leaf */}
+              <path d="M32 44 Q26 54 30 66 Q32 72 34 66 Q38 54 32 44 Z" fill="currentColor" opacity="0.25" stroke="currentColor" strokeWidth="0.6"/>
+              <path d="M30 56 Q32 52 34 56" fill="none" stroke="currentColor" strokeWidth="0.4" opacity="0.6"/>
+              {/* Right leaf */}
+              <path d="M48 46 Q52 56 48 66 Q46 72 42 70 Q48 62 46 54 Q44 48 46 46 Z" fill="currentColor" opacity="0.25" stroke="currentColor" strokeWidth="0.6"/>
+              <path d="M46 56 Q48 60 46 64" fill="none" stroke="currentColor" strokeWidth="0.4" opacity="0.6"/>
+              {/* Far right leaf */}
+              <path d="M62 48 Q64 58 60 68 Q58 74 54 72 Q60 64 58 56 Q56 50 58 48 Z" fill="currentColor" opacity="0.25" stroke="currentColor" strokeWidth="0.6"/>
+              <path d="M58 58 Q60 62 58 66" fill="none" stroke="currentColor" strokeWidth="0.4" opacity="0.6"/>
+
+              {/* === BELL (Kalathos) outline visible between leaves === */}
+              <path d="M12 72 Q12 64 16 56 Q20 48 28 42 M52 72 Q52 64 48 56 Q44 48 36 42" fill="none" stroke="currentColor" strokeWidth="0.4" opacity="0.4"/>
             </svg>
+            {/* Depth shadow at bottom of capital */}
+            <div className="absolute bottom-0 left-0 right-0 h-3 bg-gradient-to-t from-amber-900/40 to-transparent" />
+            {/* Light-aware highlight on capital */}
+            <div className={`absolute inset-0 bg-gradient-to-b from-amber-700/20 to-transparent ${isNightTime ? 'opacity-50' : 'opacity-25'}`} />
           </div>
           {/* Column shaft with fluting - more channels */}
           <div className="absolute top-24 bottom-12 left-0 right-0 overflow-hidden">
@@ -2866,7 +2930,7 @@ export default function ArticlesPage() {
           </svg>
 
           {/* === UPPER DECORATIVE BAND - Guilloche pattern === */}
-          <div className="absolute top-1 left-4 right-4 h-4 overflow-hidden">
+          <div className="absolute top-1 left-0 right-0 h-4 overflow-hidden">
             <svg className="w-full h-full opacity-50" preserveAspectRatio="none">
               <defs>
                 <pattern id="keystoneDividerGuilloche" x="0" y="0" width="32" height="16" patternUnits="userSpaceOnUse">
@@ -2883,7 +2947,7 @@ export default function ArticlesPage() {
           </div>
 
           {/* Gold inlay accent line below guilloche */}
-          <div className="absolute top-5 left-6 right-6 h-px bg-gradient-to-r from-transparent via-amber-400/70 to-transparent" />
+          <div className="absolute top-5 left-0 right-0 h-px bg-gradient-to-r from-transparent via-amber-400/70 to-transparent" />
 
           {/* === CENTRAL CARVED FRIEZE - Acanthus scrollwork === */}
           <div className="absolute top-6 left-0 right-0 h-6">
@@ -2932,7 +2996,7 @@ export default function ArticlesPage() {
           ))}
 
           {/* === DENTIL COURSE === */}
-          <div className="absolute top-[52px] left-2 right-2 h-2">
+          <div className="absolute top-[52px] left-0 right-0 h-2">
             <svg className="w-full h-full opacity-50" preserveAspectRatio="none">
               <defs>
                 <pattern id="keystoneDividerDentil" x="0" y="0" width="12" height="8" patternUnits="userSpaceOnUse">
@@ -3804,17 +3868,32 @@ export default function ArticlesPage() {
 
             {/* Scroll Preview Content - Unrolling ancient scroll */}
             <motion.div
-              initial={{ scale: 0.8, opacity: 0, rotateX: -15 }}
-              animate={{ scale: 1, opacity: 1, rotateX: 0 }}
-              exit={{ scale: 0.8, opacity: 0, rotateX: 15 }}
-              transition={{ duration: 0.4, ease: 'easeOut' }}
-              className="relative w-full max-w-2xl mx-4 max-h-[85vh] overflow-hidden"
+              initial={{ scaleY: 0.1, scaleX: 0.95, opacity: 0, y: -50 }}
+              animate={{ scaleY: 1, scaleX: 1, opacity: 1, y: 0 }}
+              exit={{
+                scaleY: 0.05,
+                scaleX: 0.98,
+                opacity: 0,
+                y: -30,
+                transition: {
+                  duration: 0.35,
+                  ease: [0.4, 0, 0.8, 0.2],
+                  scaleY: { duration: 0.3, ease: [0.6, 0, 1, 0.4] }
+                }
+              }}
+              transition={{
+                duration: 0.5,
+                ease: [0.2, 0.8, 0.3, 1],
+                scaleY: { duration: 0.45, ease: [0.1, 0.9, 0.3, 1] }
+              }}
+              style={{ transformOrigin: 'top center', perspective: '1000px' }}
+              className="relative w-full max-w-2xl mx-4 flex flex-col max-h-[85vh]"
               onClick={(e) => e.stopPropagation()}
             >
-              {/* Scroll container with rolled ends */}
-              <div className="relative">
+              {/* Scroll container with rolled ends - flex column for proper sizing */}
+              <div className="relative flex flex-col min-h-0 max-h-full">
                 {/* Top scroll roller - wooden rod */}
-                <div className="relative h-8 z-20">
+                <div className="relative h-8 z-20 flex-shrink-0">
                   <div className="absolute inset-x-0 top-0 h-6 bg-gradient-to-b from-amber-700 via-amber-800 to-amber-900 rounded-t-full shadow-lg border-t-2 border-amber-600/60">
                     {/* Wood grain texture */}
                     <div className="absolute inset-0 opacity-30 rounded-t-full overflow-hidden" style={{
@@ -3833,8 +3912,8 @@ export default function ArticlesPage() {
                   </button>
                 </div>
 
-                {/* Parchment body */}
-                <div className="relative bg-gradient-to-b from-amber-100 via-amber-50 to-amber-100 shadow-2xl overflow-hidden"
+                {/* Parchment body - flex-1 with min-h-0 for proper shrinking, overflow-auto for scrollable content */}
+                <div className="relative flex-1 min-h-0 bg-gradient-to-b from-amber-100 via-amber-50 to-amber-100 shadow-2xl overflow-y-auto overflow-x-hidden scrollbar-thin scrollbar-thumb-amber-600/40 scrollbar-track-transparent"
                   style={{ boxShadow: '0 25px 80px -15px rgba(0, 0, 0, 0.6), inset 0 0 40px rgba(139, 69, 19, 0.08)' }}
                 >
                   {/* Aged parchment texture */}
@@ -3848,18 +3927,18 @@ export default function ArticlesPage() {
                   <div className="absolute top-0 inset-x-0 h-6 bg-gradient-to-b from-amber-900/20 to-transparent pointer-events-none" />
                   <div className="absolute bottom-0 inset-x-0 h-6 bg-gradient-to-t from-amber-900/20 to-transparent pointer-events-none" />
 
-                  {/* Content area - WYSIWYG, no internal scroll */}
-                  <div className="relative p-6 sm:p-8">
-                    {/* Category seal */}
-                    <div className="flex items-center justify-center mb-5">
-                      <span className="px-4 py-1.5 text-[10px] font-bold text-amber-800 uppercase tracking-[0.2em] border-2 border-amber-600/50 bg-amber-200/60 rounded-sm shadow-sm" style={{ fontFamily: 'Georgia, serif' }}>
+                  {/* Content area - compact padding for better fit */}
+                  <div className="relative p-4 sm:p-6">
+                    {/* Category seal - compact */}
+                    <div className="flex items-center justify-center mb-3">
+                      <span className="px-3 py-1 text-[9px] font-bold text-amber-800 uppercase tracking-[0.15em] border border-amber-600/50 bg-amber-200/60 rounded-sm shadow-sm" style={{ fontFamily: 'Georgia, serif' }}>
                         {previewArticle.category?.name || 'Article'}
                       </span>
                     </div>
 
-                    {/* Cover image with parchment frame */}
+                    {/* Cover image with parchment frame - compact height */}
                     {previewArticle.coverImage && (
-                      <div className="relative w-full h-48 sm:h-56 overflow-hidden mb-6 border-4 border-amber-700/40 shadow-lg">
+                      <div className="relative w-full h-32 sm:h-40 overflow-hidden mb-4 border-3 border-amber-700/40 shadow-lg">
                         <img
                           src={previewArticle.coverImage}
                           alt={previewArticle.title}
@@ -3870,28 +3949,28 @@ export default function ArticlesPage() {
                     )}
 
                     {/* Title - rich sepia ink with ink fade-in effect */}
-                    <h2 className="text-2xl sm:text-3xl font-bold text-amber-950 text-center mb-4 leading-tight tracking-tight ink-text" style={{ fontFamily: 'Georgia, serif', animationDelay: '0.2s' }}>
+                    <h2 className="text-xl sm:text-2xl font-bold text-amber-950 text-center mb-3 leading-tight tracking-tight ink-text" style={{ fontFamily: 'Georgia, serif', animationDelay: '0.2s' }}>
                       {previewArticle.title}
                     </h2>
 
                     {/* Decorative scroll divider with ink fade */}
-                    <div className="flex items-center justify-center gap-3 mb-4 ink-text" style={{ animationDelay: '0.4s' }}>
-                      <div className="h-px w-16 bg-gradient-to-r from-transparent to-amber-600/50" />
-                      <svg className="w-6 h-6 text-amber-600/70" viewBox="0 0 24 24">
+                    <div className="flex items-center justify-center gap-2 mb-3 ink-text" style={{ animationDelay: '0.4s' }}>
+                      <div className="h-px w-12 bg-gradient-to-r from-transparent to-amber-600/50" />
+                      <svg className="w-5 h-5 text-amber-600/70" viewBox="0 0 24 24">
                         <path d="M12 4 L16 8 L12 12 L8 8 Z" fill="none" stroke="currentColor" strokeWidth="1"/>
                         <circle cx="12" cy="8" r="2" fill="currentColor" opacity="0.5"/>
                       </svg>
-                      <div className="h-px w-16 bg-gradient-to-l from-transparent to-amber-600/50" />
+                      <div className="h-px w-12 bg-gradient-to-l from-transparent to-amber-600/50" />
                     </div>
 
-                    {/* Excerpt - elegant calligraphy style with ink fade-in */}
-                    <p className="text-sm sm:text-base text-amber-900/90 text-center mb-6 leading-relaxed italic ink-text" style={{ fontFamily: 'Georgia, serif', lineHeight: '1.9', animationDelay: '0.5s' }}>
+                    {/* Excerpt - elegant calligraphy style with ink fade-in, line clamp for long excerpts */}
+                    <p className="text-sm text-amber-900/90 text-center mb-4 leading-relaxed italic ink-text line-clamp-3" style={{ fontFamily: 'Georgia, serif', lineHeight: '1.7', animationDelay: '0.5s' }}>
                       "{previewArticle.excerpt}"
                     </p>
 
-                    {/* Author attribution - manuscript style */}
-                    <div className="flex items-center justify-center gap-4 mb-6 py-4 border-y-2 border-amber-600/30">
-                      <div className="w-12 h-12 rounded-full bg-amber-200 border-2 border-amber-600/50 flex items-center justify-center shadow-md overflow-hidden">
+                    {/* Author attribution - manuscript style - compact */}
+                    <div className="flex items-center justify-center gap-3 mb-4 py-3 border-y border-amber-600/30">
+                      <div className="w-10 h-10 rounded-full bg-amber-200 border-2 border-amber-600/50 flex items-center justify-center shadow-md overflow-hidden">
                         {previewArticle.author?.image ? (
                           <img src={previewArticle.author.image} alt={previewArticle.author.name} className="w-full h-full rounded-full object-cover sepia-[15%]" />
                         ) : (
@@ -3908,8 +3987,8 @@ export default function ArticlesPage() {
                       </div>
                     </div>
 
-                    {/* Stats - parchment ink style */}
-                    <div className="flex items-center justify-center gap-6 mb-6 text-amber-800">
+                    {/* Stats - parchment ink style - compact */}
+                    <div className="flex items-center justify-center gap-4 mb-4 text-amber-800">
                       <div className="flex items-center gap-2">
                         <Clock className="w-4 h-4" />
                         <span className="text-xs font-medium" style={{ fontFamily: 'Georgia, serif' }}>{previewArticle.readTime} min</span>
@@ -3926,9 +4005,9 @@ export default function ArticlesPage() {
                       </div>
                     </div>
 
-                    {/* Reading progress if exists */}
+                    {/* Reading progress if exists - compact */}
                     {readingProgress[previewArticle.id] && (
-                      <div className="mb-6 p-3 bg-amber-200/50 border-2 border-amber-600/40 rounded-sm">
+                      <div className="mb-4 p-2 bg-amber-200/50 border border-amber-600/40 rounded-sm">
                         <div className="flex items-center justify-between mb-2">
                           <span className="text-xs text-amber-800 italic" style={{ fontFamily: 'Georgia, serif' }}>Your Progress</span>
                           <span className="text-xs font-bold text-amber-900">
@@ -3970,7 +4049,7 @@ export default function ArticlesPage() {
                 </div>
 
                 {/* Bottom scroll roller - wooden rod */}
-                <div className="relative h-8 z-20">
+                <div className="relative h-8 z-20 flex-shrink-0">
                   <div className="absolute inset-x-0 bottom-0 h-6 bg-gradient-to-t from-amber-700 via-amber-800 to-amber-900 rounded-b-full shadow-lg border-b-2 border-amber-600/60">
                     {/* Wood grain texture */}
                     <div className="absolute inset-0 opacity-30 rounded-b-full overflow-hidden" style={{

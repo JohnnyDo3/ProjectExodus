@@ -175,7 +175,7 @@ export function SageNapAnimation() {
       {/* Flying Sage Icon */}
       <motion.div
         className="absolute"
-        initial={{ opacity: 0 }}
+        initial={{ opacity: 1 }}
         animate={controls}
         style={{
           translateX: '-50%',

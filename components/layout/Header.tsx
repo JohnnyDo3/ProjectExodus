@@ -152,7 +152,7 @@ export function Header() {
   ]
 
   const communityMenuItems = [
-    { label: 'Discussions', href: '/community/discussions' },
+    { label: 'Discussions', href: '/community/feed' },
     { label: 'Projects', href: '/community/projects' },
     { label: 'Network', href: '/network' },
   ]
@@ -247,7 +247,7 @@ export function Header() {
 
                     {/* Learn Dropdown menu - centered */}
                     <div
-                      className={`absolute top-full left-1/2 -translate-x-1/2 mt-2 w-44 rounded-xl overflow-hidden z-[201] transition-all duration-200 origin-top ${
+                      className={`absolute top-full left-1/2 -translate-x-1/2 mt-2 w-48 rounded-xl overflow-hidden z-[201] transition-all duration-200 origin-top ${
                         learnMenuOpen
                           ? 'opacity-100 scale-100 translate-y-0'
                           : 'opacity-0 scale-95 -translate-y-2 pointer-events-none'
@@ -265,21 +265,21 @@ export function Header() {
                             return isLocked ? (
                               <div
                                 key={menuItem.label}
-                                className="flex items-center justify-center gap-2 px-4 py-2.5 rounded-lg text-[var(--muted-foreground)] opacity-60 cursor-not-allowed"
+                                className="flex items-center justify-center gap-2 px-3 py-2.5 rounded-lg text-[var(--muted-foreground)] opacity-60 cursor-not-allowed w-full"
                                 title="Sign in to access"
                               >
                                 <Lock className="w-4 h-4 flex-shrink-0" />
-                                <span className="text-sm font-semibold">{menuItem.label}</span>
+                                <span className="text-sm font-semibold truncate">{menuItem.label}</span>
                               </div>
                             ) : (
                               <Link
                                 key={menuItem.label}
                                 href={menuItem.href}
-                                className="flex items-center justify-center gap-2 px-4 py-2.5 rounded-lg text-sm font-semibold text-[var(--foreground)] hover:bg-[var(--muted)]/50 hover:text-[var(--primary)] transition-colors"
+                                className="flex items-center justify-center gap-2 px-3 py-2.5 rounded-lg text-sm font-semibold text-[var(--foreground)] hover:bg-[var(--muted)]/50 hover:text-[var(--primary)] transition-colors w-full"
                                 onClick={() => setLearnMenuOpen(false)}
                               >
-                                <GraduationCap className="w-4 h-4" />
-                                <span>{menuItem.label}</span>
+                                <GraduationCap className="w-4 h-4 flex-shrink-0" />
+                                <span className="truncate">{menuItem.label}</span>
                               </Link>
                             )
                           })}
