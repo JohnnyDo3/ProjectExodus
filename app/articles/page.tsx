@@ -202,8 +202,6 @@ export default function ArticlesPage() {
   // Dust puff particles on click
   const [dustPuffPosition, setDustPuffPosition] = useState<{ x: number; y: number; active: boolean }>({ x: 0, y: 0, active: false })
 
-  // Secret compartment state
-  const [secretCompartmentOpen, setSecretCompartmentOpen] = useState(false)
 
   // Adjacent scroll wobble tracking
   const [wobblingScrolls, setWobblingScrolls] = useState<Set<string>>(new Set())
@@ -1179,42 +1177,6 @@ export default function ArticlesPage() {
             </div>
           )}
 
-          {/* Secret Compartment - hidden drawer in bookshelf area */}
-          <div
-            className="absolute bottom-[15%] left-[3%] w-[12%] h-8 cursor-pointer z-25 hidden lg:block"
-            onClick={() => setSecretCompartmentOpen(!secretCompartmentOpen)}
-          >
-            {/* Disguised as wood panel */}
-            <div className={`absolute inset-0 bg-gradient-to-b from-amber-800 to-amber-900 rounded-sm border border-amber-700/50 transition-transform duration-500 ${secretCompartmentOpen ? 'compartment-slide' : ''}`}
-              style={{ transformOrigin: 'left center' }}
-            >
-              {/* Wood grain */}
-              <div className="absolute inset-1 opacity-20">
-                <svg className="w-full h-full" preserveAspectRatio="none" viewBox="0 0 40 12">
-                  <path d="M0 3 Q10 2 20 4 Q30 6 40 3" fill="none" stroke="#d97706" strokeWidth="0.5" />
-                  <path d="M0 8 Q15 7 25 9 Q35 11 40 8" fill="none" stroke="#d97706" strokeWidth="0.5" />
-                </svg>
-              </div>
-              {/* Subtle keyhole hint */}
-              <div className="absolute right-2 top-1/2 -translate-y-1/2 w-1.5 h-2.5 bg-amber-950/60 rounded-full border border-amber-600/30" />
-            </div>
-            {/* Compartment interior (visible when open) */}
-            {secretCompartmentOpen && (
-              <div className="absolute inset-0 bg-gradient-to-r from-amber-950 to-amber-900 rounded-sm overflow-hidden">
-                {/* Hidden scroll inside */}
-                <div className="absolute inset-1 flex items-center justify-center">
-                  <div className="text-amber-400/70 text-[8px] font-serif italic">
-                    ✧ Rare Finds ✧
-                  </div>
-                </div>
-              </div>
-            )}
-            {/* Hover tooltip */}
-            <div className="absolute -top-8 left-1/2 -translate-x-1/2 px-2 py-1 bg-amber-900/95 text-amber-200 text-[9px] rounded opacity-0 hover:opacity-100 transition-opacity whitespace-nowrap">
-              Click to discover...
-            </div>
-          </div>
-
           {/* ========================================== */}
           {/* GRAND LIBRARY ENTRANCE - Side Bookshelves */}
           {/* ========================================== */}
@@ -1343,7 +1305,7 @@ export default function ArticlesPage() {
                     <path d="M10 44 Q13 40 16 44 Q19 40 22 44" fill="none" stroke="currentColor" strokeWidth="0.4"/>
                   </svg>
                   {/* Light-aware highlight on capital */}
-                  <div className={`absolute inset-0 bg-gradient-to-b from-amber-400/20 to-transparent ${isNightTime ? 'opacity-40' : 'opacity-20'}`} />
+                  <div className={`absolute inset-0 bg-gradient-to-b from-amber-700/25 to-transparent ${isNightTime ? 'opacity-40' : 'opacity-20'}`} />
                 </div>
                 {/* Enhanced column shaft with deeper fluting */}
                 <div className="absolute top-16 bottom-12 left-0 right-0 overflow-hidden bg-gradient-to-b from-amber-750 via-amber-800 to-amber-750">
@@ -1353,20 +1315,20 @@ export default function ArticlesPage() {
                     ))}
                   </div>
                   {/* Astragal ring moldings */}
-                  <div className="absolute top-4 left-0 right-0 h-1.5 bg-gradient-to-b from-amber-600/50 via-amber-500/30 to-amber-700/40 border-y border-amber-500/30" />
-                  <div className="absolute bottom-4 left-0 right-0 h-1.5 bg-gradient-to-b from-amber-600/50 via-amber-500/30 to-amber-700/40 border-y border-amber-500/30" />
+                  <div className="absolute top-4 left-0 right-0 h-1.5 bg-gradient-to-b from-amber-700/50 via-amber-600/30 to-amber-800/40 border-y border-amber-700/30" />
+                  <div className="absolute bottom-4 left-0 right-0 h-1.5 bg-gradient-to-b from-amber-700/50 via-amber-600/30 to-amber-800/40 border-y border-amber-700/30" />
                   {/* Light reflections */}
-                  <div className={`absolute inset-y-0 left-0 w-1.5 bg-gradient-to-r from-amber-500/30 to-transparent ${isNightTime ? 'opacity-60' : 'opacity-30'}`} />
+                  <div className={`absolute inset-y-0 left-0 w-1.5 bg-gradient-to-r from-amber-700/30 to-transparent ${isNightTime ? 'opacity-60' : 'opacity-30'}`} />
                   <div className="absolute inset-y-0 right-0 w-1 bg-gradient-to-l from-amber-700/30 to-transparent" />
                 </div>
                 {/* Enhanced Attic base with torus and scotia moldings */}
                 <div className="absolute bottom-0 left-0 right-0 h-12" style={{ background: 'linear-gradient(to top, #b45309, #a16207, #92400e)', borderTop: '2px solid rgba(245, 158, 11, 0.4)' }}>
                   {/* Upper torus */}
-                  <div className="absolute top-1.5 left-0.5 right-0.5 h-2 bg-gradient-to-b from-amber-600/60 via-amber-500/40 to-amber-700/50 rounded-full" />
+                  <div className="absolute top-1.5 left-0.5 right-0.5 h-2 bg-gradient-to-b from-amber-700/60 via-amber-600/40 to-amber-800/50 rounded-full" />
                   {/* Scotia (concave) */}
                   <div className="absolute top-4 left-1 right-1 h-2 bg-gradient-to-b from-amber-800/60 to-amber-700/40" style={{ boxShadow: 'inset 0 2px 3px rgba(0,0,0,0.2)' }} />
                   {/* Lower torus */}
-                  <div className="absolute top-7 left-0 right-0 h-2 bg-gradient-to-b from-amber-600/50 via-amber-500/30 to-amber-700/40 rounded-full" />
+                  <div className="absolute top-7 left-0 right-0 h-2 bg-gradient-to-b from-amber-700/50 via-amber-600/30 to-amber-800/40 rounded-full" />
                   {/* Plinth */}
                   <div className="absolute bottom-0 left-0 right-0 h-2.5 bg-gradient-to-t from-amber-800 to-amber-750 border-t border-amber-600/30" />
                 </div>
@@ -1398,7 +1360,7 @@ export default function ArticlesPage() {
                     <path d="M10 44 Q13 40 16 44 Q19 40 22 44" fill="none" stroke="currentColor" strokeWidth="0.4"/>
                   </svg>
                   {/* Light-aware highlight on capital */}
-                  <div className={`absolute inset-0 bg-gradient-to-b from-amber-400/20 to-transparent ${isNightTime ? 'opacity-40' : 'opacity-20'}`} />
+                  <div className={`absolute inset-0 bg-gradient-to-b from-amber-700/25 to-transparent ${isNightTime ? 'opacity-40' : 'opacity-20'}`} />
                 </div>
                 {/* Enhanced column shaft with deeper fluting */}
                 <div className="absolute top-16 bottom-12 left-0 right-0 bg-gradient-to-b from-amber-750 via-amber-800 to-amber-750 overflow-hidden">
@@ -1408,8 +1370,8 @@ export default function ArticlesPage() {
                     ))}
                   </div>
                   {/* Astragal ring moldings */}
-                  <div className="absolute top-4 left-0 right-0 h-1.5 bg-gradient-to-b from-amber-600/50 via-amber-500/30 to-amber-700/40 border-y border-amber-500/30" />
-                  <div className="absolute bottom-4 left-0 right-0 h-1.5 bg-gradient-to-b from-amber-600/50 via-amber-500/30 to-amber-700/40 border-y border-amber-500/30" />
+                  <div className="absolute top-4 left-0 right-0 h-1.5 bg-gradient-to-b from-amber-700/50 via-amber-600/30 to-amber-800/40 border-y border-amber-700/30" />
+                  <div className="absolute bottom-4 left-0 right-0 h-1.5 bg-gradient-to-b from-amber-700/50 via-amber-600/30 to-amber-800/40 border-y border-amber-700/30" />
                   {/* Light reflections */}
                   <div className={`absolute inset-y-0 right-0 w-1.5 bg-gradient-to-l from-amber-500/30 to-transparent ${isNightTime ? 'opacity-60' : 'opacity-30'}`} />
                   <div className="absolute inset-y-0 left-0 w-1 bg-gradient-to-r from-amber-700/30 to-transparent" />
@@ -1822,7 +1784,7 @@ export default function ArticlesPage() {
                     <path d="M10 44 Q13 40 16 44 Q19 40 22 44" fill="none" stroke="currentColor" strokeWidth="0.4"/>
                   </svg>
                   {/* Light-aware highlight on capital */}
-                  <div className={`absolute inset-0 bg-gradient-to-b from-amber-400/20 to-transparent ${isNightTime ? 'opacity-40' : 'opacity-20'}`} />
+                  <div className={`absolute inset-0 bg-gradient-to-b from-amber-700/25 to-transparent ${isNightTime ? 'opacity-40' : 'opacity-20'}`} />
                 </div>
                 {/* Enhanced column shaft with deeper fluting */}
                 <div className="absolute top-16 bottom-12 left-0 right-0 overflow-hidden bg-gradient-to-b from-amber-750 via-amber-800 to-amber-750">
@@ -1832,8 +1794,8 @@ export default function ArticlesPage() {
                     ))}
                   </div>
                   {/* Astragal ring moldings */}
-                  <div className="absolute top-4 left-0 right-0 h-1.5 bg-gradient-to-b from-amber-600/50 via-amber-500/30 to-amber-700/40 border-y border-amber-500/30" />
-                  <div className="absolute bottom-4 left-0 right-0 h-1.5 bg-gradient-to-b from-amber-600/50 via-amber-500/30 to-amber-700/40 border-y border-amber-500/30" />
+                  <div className="absolute top-4 left-0 right-0 h-1.5 bg-gradient-to-b from-amber-700/50 via-amber-600/30 to-amber-800/40 border-y border-amber-700/30" />
+                  <div className="absolute bottom-4 left-0 right-0 h-1.5 bg-gradient-to-b from-amber-700/50 via-amber-600/30 to-amber-800/40 border-y border-amber-700/30" />
                   {/* Light reflections */}
                   <div className={`absolute inset-y-0 right-0 w-1.5 bg-gradient-to-l from-amber-500/30 to-transparent ${isNightTime ? 'opacity-60' : 'opacity-30'}`} />
                   <div className="absolute inset-y-0 left-0 w-1 bg-gradient-to-r from-amber-700/30 to-transparent" />
@@ -1841,11 +1803,11 @@ export default function ArticlesPage() {
                 {/* Enhanced Attic base with torus and scotia moldings */}
                 <div className="absolute bottom-0 left-0 right-0 h-12" style={{ background: 'linear-gradient(to top, #b45309, #a16207, #92400e)', borderTop: '2px solid rgba(245, 158, 11, 0.4)' }}>
                   {/* Upper torus */}
-                  <div className="absolute top-1.5 left-0.5 right-0.5 h-2 bg-gradient-to-b from-amber-600/60 via-amber-500/40 to-amber-700/50 rounded-full" />
+                  <div className="absolute top-1.5 left-0.5 right-0.5 h-2 bg-gradient-to-b from-amber-700/60 via-amber-600/40 to-amber-800/50 rounded-full" />
                   {/* Scotia (concave) */}
                   <div className="absolute top-4 left-1 right-1 h-2 bg-gradient-to-b from-amber-800/60 to-amber-700/40" style={{ boxShadow: 'inset 0 2px 3px rgba(0,0,0,0.2)' }} />
                   {/* Lower torus */}
-                  <div className="absolute top-7 left-0 right-0 h-2 bg-gradient-to-b from-amber-600/50 via-amber-500/30 to-amber-700/40 rounded-full" />
+                  <div className="absolute top-7 left-0 right-0 h-2 bg-gradient-to-b from-amber-700/50 via-amber-600/30 to-amber-800/40 rounded-full" />
                   {/* Plinth */}
                   <div className="absolute bottom-0 left-0 right-0 h-2.5 bg-gradient-to-t from-amber-800 to-amber-750 border-t border-amber-600/30" />
                 </div>
@@ -1877,7 +1839,7 @@ export default function ArticlesPage() {
                     <path d="M10 44 Q13 40 16 44 Q19 40 22 44" fill="none" stroke="currentColor" strokeWidth="0.4"/>
                   </svg>
                   {/* Light-aware highlight on capital */}
-                  <div className={`absolute inset-0 bg-gradient-to-b from-amber-400/20 to-transparent ${isNightTime ? 'opacity-40' : 'opacity-20'}`} />
+                  <div className={`absolute inset-0 bg-gradient-to-b from-amber-700/25 to-transparent ${isNightTime ? 'opacity-40' : 'opacity-20'}`} />
                 </div>
                 {/* Enhanced column shaft with deeper fluting */}
                 <div className="absolute top-16 bottom-12 left-0 right-0 bg-gradient-to-b from-amber-750 via-amber-800 to-amber-750 overflow-hidden">
@@ -1887,10 +1849,10 @@ export default function ArticlesPage() {
                     ))}
                   </div>
                   {/* Astragal ring moldings */}
-                  <div className="absolute top-4 left-0 right-0 h-1.5 bg-gradient-to-b from-amber-600/50 via-amber-500/30 to-amber-700/40 border-y border-amber-500/30" />
-                  <div className="absolute bottom-4 left-0 right-0 h-1.5 bg-gradient-to-b from-amber-600/50 via-amber-500/30 to-amber-700/40 border-y border-amber-500/30" />
+                  <div className="absolute top-4 left-0 right-0 h-1.5 bg-gradient-to-b from-amber-700/50 via-amber-600/30 to-amber-800/40 border-y border-amber-700/30" />
+                  <div className="absolute bottom-4 left-0 right-0 h-1.5 bg-gradient-to-b from-amber-700/50 via-amber-600/30 to-amber-800/40 border-y border-amber-700/30" />
                   {/* Light reflections */}
-                  <div className={`absolute inset-y-0 left-0 w-1.5 bg-gradient-to-r from-amber-500/30 to-transparent ${isNightTime ? 'opacity-60' : 'opacity-30'}`} />
+                  <div className={`absolute inset-y-0 left-0 w-1.5 bg-gradient-to-r from-amber-700/30 to-transparent ${isNightTime ? 'opacity-60' : 'opacity-30'}`} />
                   <div className="absolute inset-y-0 right-0 w-1 bg-gradient-to-l from-amber-700/30 to-transparent" />
                 </div>
 
