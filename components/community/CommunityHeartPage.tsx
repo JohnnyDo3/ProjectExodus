@@ -225,7 +225,7 @@ const fakeUserPreviews = [
 ]
 
 export function CommunityHeartPage({ isAuthenticated }: CommunityHeartPageProps) {
-  const [isVolitionFlipped, setIsVolitionFlipped] = useState(false)
+  const [isVolitionFlipped, setIsVolitionFlipped] = useState(true)
   const [isBizIDFlipped, setIsBizIDFlipped] = useState(false)
   const [isLearningFlipped, setIsLearningFlipped] = useState(false)
   const [activeUserIndex, setActiveUserIndex] = useState(0)
@@ -1044,8 +1044,8 @@ export function CommunityHeartPage({ isAuthenticated }: CommunityHeartPageProps)
           <div
             className="relative flex-1 min-h-0"
             style={{ perspective: '1000px' }}
-            onMouseEnter={() => setIsVolitionFlipped(true)}
-            onMouseLeave={() => setIsVolitionFlipped(false)}
+            onMouseEnter={() => setIsVolitionFlipped(false)}
+            onMouseLeave={() => setIsVolitionFlipped(true)}
           >
             <motion.div
               className="absolute inset-0"
@@ -1239,7 +1239,7 @@ export function CommunityHeartPage({ isAuthenticated }: CommunityHeartPageProps)
 
                 <div className="relative z-10 h-full flex flex-col items-center justify-center text-center px-2">
                   {/* Header */}
-                  <h3 className="text-base font-bold text-[var(--foreground)] mb-1">Your Sustainable Value</h3>
+                  <h3 className="text-lg font-bold text-[var(--foreground)] mb-1">Volition</h3>
                   <p className="text-[10px] text-[var(--muted-foreground)] mb-3 max-w-[200px]">Track and grow your contributions across 7 impact lanes</p>
 
                   {/* Lane Carousel */}
