@@ -979,6 +979,29 @@ export default function ArticlesPage() {
                         filter: 'blur(2px)',
                       }}
                     />
+                    {/* Floating dust motes in candlelight - only visible at night */}
+                    {isNightTime && (
+                      <>
+                        {[0, 1, 2, 3, 4].map((moteIndex) => (
+                          <div
+                            key={`left-dust-${i}-${moteIndex}`}
+                            className="absolute dust-mote pointer-events-none"
+                            style={{
+                              right: `${10 + moteIndex * 15}px`,
+                              top: `${30 + (moteIndex * 17) % 40}%`,
+                              width: `${2 + (moteIndex % 3)}px`,
+                              height: `${2 + (moteIndex % 3)}px`,
+                              background: 'radial-gradient(circle, rgba(253,224,71,0.8), rgba(251,191,36,0.4))',
+                              borderRadius: '50%',
+                              '--dust-dx': `${5 + moteIndex * 3}px`,
+                              '--dust-dy': `${-15 - moteIndex * 5}px`,
+                              '--dust-duration': `${6 + moteIndex * 1.5 + i}s`,
+                              '--dust-delay': `${moteIndex * 1.2 + i * 0.5}s`,
+                            } as React.CSSProperties}
+                          />
+                        ))}
+                      </>
+                    )}
                   </div>
                 ))}
 
@@ -1109,20 +1132,65 @@ export default function ArticlesPage() {
 
                       {/* Candle holder cup (bobeche) with candle sitting inside */}
                       <div className="absolute right-5 top-1/2 -translate-y-1/2 w-4 flex flex-col items-center">
-                        {/* Candle - positioned to sit in the bobeche */}
+                        {/* Candle - positioned to sit in the bobeche, varying heights for realism */}
                         <div className="relative w-2.5 -mb-1.5 z-10">
-                          <div className="w-2.5 h-5 bg-gradient-to-b from-amber-50 via-amber-100 to-amber-200 rounded-t-sm shadow-md" />
+                          {/* Candle body - height varies by position (4.5-5.5 range) */}
+                          <div
+                            className="w-2.5 bg-gradient-to-b from-amber-50 via-amber-100 to-amber-200 rounded-t-sm shadow-md"
+                            style={{ height: `${1.25 + (i % 3) * 0.125}rem` }}
+                          />
+                          {/* Wax drip details */}
+                          <svg className="absolute top-1 -right-0.5 w-1.5 h-3 text-amber-100/80" viewBox="0 0 6 12">
+                            <path d="M3 0 Q4 3 3 6 Q2 8 3 10 Q3.5 11 3 12" fill="currentColor" />
+                          </svg>
+                          {i % 2 === 0 && (
+                            <svg className="absolute top-2 -left-0.5 w-1 h-2 text-amber-100/70" viewBox="0 0 4 8">
+                              <path d="M2 0 Q3 2 2 4 Q1.5 6 2 8" fill="currentColor" />
+                            </svg>
+                          )}
+                          {/* Wax pool in bobeche */}
+                          <div className="absolute -bottom-0.5 left-1/2 -translate-x-1/2 w-3 h-0.5 bg-amber-100/50 rounded-full blur-[0.5px]" />
                           {/* Wick */}
                           <div className="absolute -top-1 left-1/2 -translate-x-1/2 w-0.5 h-1.5 bg-gradient-to-t from-gray-700 to-gray-500" />
                           {/* Flame - sits on wick */}
                           <div className={`absolute -top-5 left-1/2 -translate-x-1/2 ${isNightTime ? 'opacity-100' : 'opacity-60'}`}>
                             <div className="absolute -inset-2 bg-gradient-radial from-orange-400/30 via-orange-300/15 to-transparent rounded-full blur-md" />
                             <div className="w-3 h-4 bg-gradient-to-t from-orange-500 via-orange-400 to-yellow-200 rounded-full blur-[1px] animate-pulse" style={{ animationDelay: `${i * 0.3}s`, animationDuration: '0.7s' }} />
+                            {/* Smoke wisps - subtle, more visible during day when flames are dimmer */}
+                            <div className={`absolute -top-3 left-1/2 -translate-x-1/2 w-2 h-4 pointer-events-none ${isNightTime ? 'opacity-15' : 'opacity-30'}`}>
+                              <div
+                                className="absolute w-1.5 h-3 rounded-full"
+                                style={{
+                                  background: 'linear-gradient(to top, rgba(180,180,180,0.3), rgba(200,200,200,0.1), transparent)',
+                                  animation: `smoke-rise ${2.5 + i * 0.3}s ease-out infinite`,
+                                  animationDelay: `${i * 0.4}s`,
+                                }}
+                              />
+                              <div
+                                className="absolute left-0.5 w-1 h-2.5 rounded-full"
+                                style={{
+                                  background: 'linear-gradient(to top, rgba(180,180,180,0.2), transparent)',
+                                  animation: `smoke-rise ${3 + i * 0.2}s ease-out infinite`,
+                                  animationDelay: `${0.5 + i * 0.3}s`,
+                                }}
+                              />
+                            </div>
                           </div>
                         </div>
                         {/* Bobeche (cup) - candle sits into this - night-time aware */}
                         <div className={`w-4 h-2.5 bg-gradient-to-b from-yellow-400 to-amber-600 rounded-b-sm border-t-2 border-yellow-300/60 shadow-lg ${isNightTime ? 'brightness-110' : ''}`} />
                       </div>
+
+                      {/* Flickering shadow cast on pilaster */}
+                      <div
+                        className={`absolute right-0 top-1/2 w-3 h-8 candle-shadow pointer-events-none ${isNightTime ? 'opacity-25' : 'opacity-10'}`}
+                        style={{
+                          background: 'linear-gradient(to left, rgba(0,0,0,0.3), transparent)',
+                          transform: 'translateY(-50%)',
+                          '--shadow-delay': `${i * 0.2}s`,
+                          '--shadow-duration': `${1.8 + i * 0.15}s`,
+                        } as React.CSSProperties}
+                      />
 
                       {/* Ambient light - positioned relative to flame */}
                       <div className={`absolute right-3 w-12 h-12 bg-gradient-radial from-orange-400/40 via-amber-500/20 to-transparent rounded-full blur-xl ${isNightTime ? 'opacity-100' : 'opacity-40'}`} style={{ top: '15%' }} />
@@ -1184,6 +1252,20 @@ export default function ArticlesPage() {
                             {/* Highlight glow halo */}
                             {highlightScrolls && (
                               <div className="absolute -inset-1 bg-amber-400/40 rounded-lg blur-md animate-pulse" />
+                            )}
+                            {/* Candlelight reflection from nearby sconces (right side for left shelf) */}
+                            <div className={`absolute right-0 top-1 bottom-1 w-1.5 rounded-r-sm pointer-events-none transition-opacity duration-500 ${isNightTime ? 'opacity-50' : 'opacity-20'}`}
+                              style={{
+                                background: 'linear-gradient(to left, rgba(251,191,36,0.4), transparent)',
+                              }}
+                            />
+                            {/* Candlelight catch on hover */}
+                            {isHovered && (
+                              <div className="absolute inset-0 rounded-sm pointer-events-none scroll-candlelight-hover"
+                                style={{
+                                  background: 'radial-gradient(ellipse at right center, rgba(253,224,71,0.35), transparent 70%)',
+                                }}
+                              />
                             )}
                             {/* Mini scroll */}
                             <div className="absolute inset-0">
@@ -1361,6 +1443,29 @@ export default function ArticlesPage() {
                         filter: 'blur(2px)',
                       }}
                     />
+                    {/* Floating dust motes in candlelight - only visible at night (mirrored) */}
+                    {isNightTime && (
+                      <>
+                        {[0, 1, 2, 3, 4].map((moteIndex) => (
+                          <div
+                            key={`right-dust-${i}-${moteIndex}`}
+                            className="absolute dust-mote pointer-events-none"
+                            style={{
+                              left: `${10 + moteIndex * 15}px`,
+                              top: `${25 + (moteIndex * 19) % 45}%`,
+                              width: `${2 + (moteIndex % 3)}px`,
+                              height: `${2 + (moteIndex % 3)}px`,
+                              background: 'radial-gradient(circle, rgba(253,224,71,0.8), rgba(251,191,36,0.4))',
+                              borderRadius: '50%',
+                              '--dust-dx': `${-5 - moteIndex * 3}px`,
+                              '--dust-dy': `${-12 - moteIndex * 4}px`,
+                              '--dust-duration': `${7 + moteIndex * 1.3 + i * 0.8}s`,
+                              '--dust-delay': `${moteIndex * 1.1 + i * 0.6}s`,
+                            } as React.CSSProperties}
+                          />
+                        ))}
+                      </>
+                    )}
                   </div>
                 ))}
 
@@ -1491,20 +1596,65 @@ export default function ArticlesPage() {
 
                       {/* Candle holder cup (bobeche) with candle sitting inside */}
                       <div className="absolute left-5 top-1/2 -translate-y-1/2 w-4 flex flex-col items-center">
-                        {/* Candle - positioned to sit in the bobeche */}
+                        {/* Candle - positioned to sit in the bobeche, varying heights for realism */}
                         <div className="relative w-2.5 -mb-1.5 z-10">
-                          <div className="w-2.5 h-5 bg-gradient-to-b from-amber-50 via-amber-100 to-amber-200 rounded-t-sm shadow-md" />
+                          {/* Candle body - height varies by position (slightly different pattern than left) */}
+                          <div
+                            className="w-2.5 bg-gradient-to-b from-amber-50 via-amber-100 to-amber-200 rounded-t-sm shadow-md"
+                            style={{ height: `${1.375 - (i % 3) * 0.1}rem` }}
+                          />
+                          {/* Wax drip details (mirrored) */}
+                          <svg className="absolute top-1 -left-0.5 w-1.5 h-3 text-amber-100/80" viewBox="0 0 6 12">
+                            <path d="M3 0 Q2 3 3 6 Q4 8 3 10 Q2.5 11 3 12" fill="currentColor" />
+                          </svg>
+                          {i % 2 === 1 && (
+                            <svg className="absolute top-2 -right-0.5 w-1 h-2 text-amber-100/70" viewBox="0 0 4 8">
+                              <path d="M2 0 Q1 2 2 4 Q2.5 6 2 8" fill="currentColor" />
+                            </svg>
+                          )}
+                          {/* Wax pool in bobeche */}
+                          <div className="absolute -bottom-0.5 left-1/2 -translate-x-1/2 w-3 h-0.5 bg-amber-100/50 rounded-full blur-[0.5px]" />
                           {/* Wick */}
                           <div className="absolute -top-1 left-1/2 -translate-x-1/2 w-0.5 h-1.5 bg-gradient-to-t from-gray-700 to-gray-500" />
                           {/* Flame - sits on wick */}
                           <div className={`absolute -top-5 left-1/2 -translate-x-1/2 ${isNightTime ? 'opacity-100' : 'opacity-60'}`}>
                             <div className="absolute -inset-2 bg-gradient-radial from-orange-400/30 via-orange-300/15 to-transparent rounded-full blur-md" />
                             <div className="w-3 h-4 bg-gradient-to-t from-orange-500 via-orange-400 to-yellow-200 rounded-full blur-[1px] animate-pulse" style={{ animationDelay: `${i * 0.3 + 0.5}s`, animationDuration: '0.7s' }} />
+                            {/* Smoke wisps - subtle, more visible during day when flames are dimmer */}
+                            <div className={`absolute -top-3 left-1/2 -translate-x-1/2 w-2 h-4 pointer-events-none ${isNightTime ? 'opacity-15' : 'opacity-30'}`}>
+                              <div
+                                className="absolute w-1.5 h-3 rounded-full"
+                                style={{
+                                  background: 'linear-gradient(to top, rgba(180,180,180,0.3), rgba(200,200,200,0.1), transparent)',
+                                  animation: `smoke-rise ${2.7 + i * 0.25}s ease-out infinite`,
+                                  animationDelay: `${0.2 + i * 0.35}s`,
+                                }}
+                              />
+                              <div
+                                className="absolute left-0.5 w-1 h-2.5 rounded-full"
+                                style={{
+                                  background: 'linear-gradient(to top, rgba(180,180,180,0.2), transparent)',
+                                  animation: `smoke-rise ${3.2 + i * 0.18}s ease-out infinite`,
+                                  animationDelay: `${0.7 + i * 0.28}s`,
+                                }}
+                              />
+                            </div>
                           </div>
                         </div>
                         {/* Bobeche (cup) - candle sits into this - night-time aware */}
                         <div className={`w-4 h-2.5 bg-gradient-to-b from-yellow-400 to-amber-600 rounded-b-sm border-t-2 border-yellow-300/60 shadow-lg ${isNightTime ? 'brightness-110' : ''}`} />
                       </div>
+
+                      {/* Flickering shadow cast on pilaster (mirrored direction) */}
+                      <div
+                        className={`absolute left-0 top-1/2 w-3 h-8 candle-shadow pointer-events-none ${isNightTime ? 'opacity-25' : 'opacity-10'}`}
+                        style={{
+                          background: 'linear-gradient(to right, rgba(0,0,0,0.3), transparent)',
+                          transform: 'translateY(-50%)',
+                          '--shadow-delay': `${i * 0.2 + 0.1}s`,
+                          '--shadow-duration': `${1.9 + i * 0.12}s`,
+                        } as React.CSSProperties}
+                      />
 
                       {/* Ambient light - positioned relative to flame */}
                       <div className={`absolute left-3 w-12 h-12 bg-gradient-radial from-orange-400/40 via-amber-500/20 to-transparent rounded-full blur-xl ${isNightTime ? 'opacity-100' : 'opacity-40'}`} style={{ top: '15%' }} />
@@ -1583,6 +1733,20 @@ export default function ArticlesPage() {
                             {/* Highlight glow halo */}
                             {highlightScrolls && (
                               <div className="absolute -inset-1 bg-amber-400/40 rounded-lg blur-md animate-pulse" />
+                            )}
+                            {/* Candlelight reflection from nearby sconces (left side for right shelf) */}
+                            <div className={`absolute left-0 top-1 bottom-1 w-1.5 rounded-l-sm pointer-events-none transition-opacity duration-500 ${isNightTime ? 'opacity-50' : 'opacity-20'}`}
+                              style={{
+                                background: 'linear-gradient(to right, rgba(251,191,36,0.4), transparent)',
+                              }}
+                            />
+                            {/* Candlelight catch on hover */}
+                            {isHovered && (
+                              <div className="absolute inset-0 rounded-sm pointer-events-none scroll-candlelight-hover"
+                                style={{
+                                  background: 'radial-gradient(ellipse at left center, rgba(253,224,71,0.35), transparent 70%)',
+                                }}
+                              />
                             )}
                             {/* Mini scroll */}
                             <div className="absolute inset-0">
