@@ -218,7 +218,7 @@ export default function Home() {
                 <span className="text-sm font-bold tracking-wider">OUR MISSION</span>
               </div>
               <h2 className="text-[var(--foreground)]" style={{
-                fontSize: 'clamp(2.5rem, 8vw, 6rem)',
+                fontSize: 'clamp(1.5rem, 5vw, 3rem)',
                 fontWeight: 900,
                 lineHeight: 1.1,
                 maxWidth: '800px'
@@ -235,7 +235,7 @@ export default function Home() {
                   <div className="w-20 h-20 mb-6 rounded-full bg-theme-primary flex items-center justify-center transform group-hover:rotate-12 transition-transform duration-300">
                     <div className="w-10 h-10 rounded-full bg-[var(--background)]" />
                   </div>
-                  <h3 className="text-3xl font-black mb-4 text-theme-primary">
+                  <h3 className="text-xl md:text-2xl font-black mb-4 text-theme-primary">
                     DISCOVER
                   </h3>
                   <p className="text-lg font-medium text-[var(--foreground)]">
@@ -250,7 +250,7 @@ export default function Home() {
                   <div className="w-20 h-20 mb-6 rounded-full bg-theme-accent flex items-center justify-center transform group-hover:rotate-12 transition-transform duration-300">
                     <div className="w-10 h-10 rounded-full bg-[var(--background)]" />
                   </div>
-                  <h3 className="text-3xl font-black mb-4 text-theme-accent">
+                  <h3 className="text-xl md:text-2xl font-black mb-4 text-theme-accent">
                     LEARN
                   </h3>
                   <p className="text-lg font-medium text-[var(--foreground)]">
@@ -265,7 +265,7 @@ export default function Home() {
                   <div className="w-20 h-20 mb-6 rounded-full bg-theme-secondary flex items-center justify-center transform group-hover:rotate-12 transition-transform duration-300">
                     <div className="w-10 h-10 rounded-full bg-[var(--background)]" />
                   </div>
-                  <h3 className="text-3xl font-black mb-4 text-theme-secondary">
+                  <h3 className="text-xl md:text-2xl font-black mb-4 text-theme-secondary">
                     CONNECT
                   </h3>
                   <p className="text-lg font-medium text-[var(--foreground)]">
@@ -283,13 +283,13 @@ export default function Home() {
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
           <div className="max-w-5xl mx-auto text-center space-y-12">
             <h2 style={{
-              fontSize: 'clamp(3rem, 10vw, 7rem)',
+              fontSize: 'clamp(2rem, 6vw, 4rem)',
               fontWeight: 900,
               lineHeight: 1
             }} className="text-[var(--foreground)]">
               PROJECT EXODUS
             </h2>
-            <p className="text-3xl font-black leading-relaxed text-[var(--foreground)]">
+            <p className="text-xl font-bold leading-relaxed text-[var(--foreground)]">
               WE ARE DEVELOPING{' '}
               <span style={{
                 background: 'linear-gradient(135deg, var(--primary), var(--accent))',
@@ -339,7 +339,7 @@ export default function Home() {
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
           <div className="max-w-4xl mx-auto">
             <div className="text-center mb-12">
-              <h2 className="text-6xl font-black mb-8 text-[var(--foreground)]">OUR MISSION</h2>
+              <h2 className="text-3xl md:text-4xl font-black mb-8 text-[var(--foreground)]">OUR MISSION</h2>
             </div>
             <Card className="border-4 border-theme-primary bg-gradient-to-br from-[color-mix(in_srgb,var(--primary)_15%,var(--background))] to-[color-mix(in_srgb,var(--accent)_15%,var(--background))] shadow-theme-2xl">
               <CardContent className="p-12">
@@ -380,7 +380,7 @@ export default function Home() {
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
           <div className="max-w-5xl mx-auto">
             <div className="text-center mb-20">
-              <h2 className="text-6xl font-black mb-6 text-[var(--foreground)]">OUR TEAM STRUCTURE</h2>
+              <h2 className="text-3xl md:text-4xl font-black mb-6 text-[var(--foreground)]">OUR TEAM STRUCTURE</h2>
               <p className="text-xl font-semibold text-theme-muted">
                 Building the future together through collaborative leadership
               </p>
@@ -444,7 +444,7 @@ export default function Home() {
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
           <div className="max-w-4xl mx-auto">
             <div className="text-center mb-16">
-              <h2 className="text-6xl font-black mb-6 text-[var(--foreground)]">OUR PHILOSOPHY</h2>
+              <h2 className="text-3xl md:text-4xl font-black mb-6 text-[var(--foreground)]">OUR PHILOSOPHY</h2>
               <p className="text-xl font-semibold text-theme-muted">
                 Every action we take today becomes the foundation for tomorrow
               </p>

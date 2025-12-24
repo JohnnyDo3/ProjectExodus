@@ -4,9 +4,42 @@ import bcrypt from 'bcryptjs'
 import { z } from 'zod'
 import { rateLimit, rateLimitResponse } from '@/lib/rate-limit'
 
+// List of common disposable/temporary email domains to block
+const DISPOSABLE_EMAIL_DOMAINS = [
+  'tempmail.com', 'throwaway.email', 'guerrillamail.com', 'mailinator.com',
+  '10minutemail.com', 'temp-mail.org', 'fakeinbox.com', 'yopmail.com',
+  'getnada.com', 'dispostable.com', 'trashmail.com', 'maildrop.cc'
+]
+
+// Custom email validation that checks for real email patterns
+const validateEmail = (email: string): boolean => {
+  // Basic format check
+  const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/
+  if (!emailRegex.test(email)) return false
+
+  const domain = email.split('@')[1]?.toLowerCase()
+  if (!domain) return false
+
+  // Check for disposable email domains
+  if (DISPOSABLE_EMAIL_DOMAINS.some(d => domain.includes(d))) return false
+
+  // Ensure domain has valid TLD (at least 2 chars)
+  const tld = domain.split('.').pop()
+  if (!tld || tld.length < 2) return false
+
+  // Block obviously fake patterns
+  if (domain.includes('test') && !domain.includes('gmail') && !domain.includes('outlook')) return false
+
+  return true
+}
+
 const registerSchema = z.object({
   name: z.string().min(2, 'Name must be at least 2 characters').max(100).trim(),
-  email: z.string().email('Invalid email address').toLowerCase().trim(),
+  email: z.string()
+    .email('Invalid email address')
+    .toLowerCase()
+    .trim()
+    .refine(validateEmail, 'Please use a valid, non-disposable email address'),
   password: z.string()
     .min(12, 'Password must be at least 12 characters')
     .max(100)
