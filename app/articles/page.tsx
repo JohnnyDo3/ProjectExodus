@@ -1282,14 +1282,6 @@ export default function ArticlesPage() {
                         animationDuration: `${1.2 + i * 0.15}s`,
                       }}
                     />
-                    {/* Hot spot near flame source */}
-                    <div
-                      className={`absolute right-0 w-12 h-12 ${isNightTime ? 'opacity-60' : 'opacity-30'}`}
-                      style={{
-                        background: 'radial-gradient(circle at 100% 50%, rgba(253,224,71,0.5) 0%, rgba(251,191,36,0.3) 30%, transparent 60%)',
-                        filter: 'blur(2px)',
-                      }}
-                    />
                     {/* Floating dust motes in candlelight - only visible at night */}
                     {isNightTime && (
                       <>
@@ -1767,14 +1759,6 @@ export default function ArticlesPage() {
                         background: 'radial-gradient(ellipse 80% 70% at 0% 50%, rgba(253,224,71,0.4) 0%, rgba(251,191,36,0.2) 40%, transparent 70%)',
                         filter: 'blur(4px)',
                         animationDuration: `${1.2 + i * 0.15}s`,
-                      }}
-                    />
-                    {/* Hot spot near flame source */}
-                    <div
-                      className={`absolute left-0 w-12 h-12 ${isNightTime ? 'opacity-60' : 'opacity-30'}`}
-                      style={{
-                        background: 'radial-gradient(circle at 0% 50%, rgba(253,224,71,0.5) 0%, rgba(251,191,36,0.3) 30%, transparent 60%)',
-                        filter: 'blur(2px)',
                       }}
                     />
                     {/* Floating dust motes in candlelight - only visible at night (mirrored) */}
