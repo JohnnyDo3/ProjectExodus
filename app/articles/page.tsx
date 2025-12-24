@@ -2458,6 +2458,19 @@ export default function ArticlesPage() {
                 backgroundImage: `url("data:image/svg+xml,%3Csvg viewBox='0 0 200 20' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M0 8 Q50 5 100 8 Q150 11 200 8' fill='none' stroke='%23000' stroke-width='0.5'/%3E%3Cpath d='M0 14 Q50 12 100 14 Q150 16 200 14' fill='none' stroke='%23000' stroke-width='0.4'/%3E%3C/svg%3E")`,
               }} />
               <div className="absolute top-1.5 left-4 right-4 h-px bg-gradient-to-r from-transparent via-amber-400/60 to-transparent" />
+              {/* Acanthus leaf corner decorations - matching Shelf 2/3 */}
+              <svg className={`absolute left-2 top-0.5 w-8 h-8 ${isNightTime ? 'text-amber-400/50' : 'text-amber-500/40'}`} viewBox="0 0 32 32">
+                <path d="M4 28 Q10 20 16 16 Q10 12 4 4" fill="none" stroke="currentColor" strokeWidth="1.5"/>
+                <path d="M6 22 Q12 18 16 15" fill="none" stroke="currentColor" strokeWidth="1"/>
+                <path d="M8 16 Q12 14 14 13" fill="none" stroke="currentColor" strokeWidth="0.8"/>
+                <circle cx="16" cy="16" r="2" fill="currentColor" opacity="0.3"/>
+              </svg>
+              <svg className={`absolute right-2 top-0.5 w-8 h-8 ${isNightTime ? 'text-amber-400/50' : 'text-amber-500/40'} scale-x-[-1]`} viewBox="0 0 32 32">
+                <path d="M4 28 Q10 20 16 16 Q10 12 4 4" fill="none" stroke="currentColor" strokeWidth="1.5"/>
+                <path d="M6 22 Q12 18 16 15" fill="none" stroke="currentColor" strokeWidth="1"/>
+                <path d="M8 16 Q12 14 14 13" fill="none" stroke="currentColor" strokeWidth="0.8"/>
+                <circle cx="16" cy="16" r="2" fill="currentColor" opacity="0.3"/>
+              </svg>
               {/* Symmetric rosettes */}
               {[4, 15, 26, 37, 50, 63, 74, 85, 96].map((pos, i) => (
                 <div key={`shelf1-rosette-${i}`} className="absolute top-3.5 -translate-x-1/2" style={{ left: `${pos}%` }}>
@@ -2467,13 +2480,13 @@ export default function ArticlesPage() {
                   </div>
                 </div>
               ))}
-              <svg className="absolute bottom-0 left-0 right-0 h-2.5 opacity-60" preserveAspectRatio="none">
-                <pattern id="shelf1Edgerefined" x="0" y="0" width="24" height="10" patternUnits="userSpaceOnUse">
+              <svg className="absolute bottom-0 left-0 right-0 h-2.5 opacity-50" preserveAspectRatio="none">
+                <pattern id="shelf1EdgePattern" x="0" y="0" width="24" height="10" patternUnits="userSpaceOnUse">
                   <ellipse cx="7" cy="5" rx="5" ry="4" fill="none" stroke="#fbbf24" strokeWidth="0.7"/>
                   <ellipse cx="7" cy="5" rx="2.5" ry="2" fill="#fbbf24" opacity="0.2"/>
                   <path d="M17 1 L18.5 8 L20 1" fill="none" stroke="#fbbf24" strokeWidth="0.7"/>
                 </pattern>
-                <rect width="100%" height="100%" fill="url(#shelf1Edgerefined)"/>
+                <rect width="100%" height="100%" fill="url(#shelf1EdgePattern)"/>
               </svg>
               <div className="absolute bottom-0 left-0 right-0 h-1 bg-gradient-to-t from-amber-950 to-transparent" />
             </div>
@@ -2641,6 +2654,19 @@ export default function ArticlesPage() {
                 backgroundImage: `url("data:image/svg+xml,%3Csvg viewBox='0 0 200 20' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M0 8 Q50 5 100 8 Q150 11 200 8' fill='none' stroke='%23000' stroke-width='0.5'/%3E%3Cpath d='M0 14 Q50 12 100 14 Q150 16 200 14' fill='none' stroke='%23000' stroke-width='0.4'/%3E%3C/svg%3E")`,
               }} />
               <div className="absolute top-1.5 left-4 right-4 h-px bg-gradient-to-r from-transparent via-amber-400/60 to-transparent" />
+              {/* Acanthus leaf corner decorations - matching Shelf 1/3 */}
+              <svg className={`absolute left-2 top-0.5 w-8 h-8 ${isNightTime ? 'text-amber-400/50' : 'text-amber-500/40'}`} viewBox="0 0 32 32">
+                <path d="M4 28 Q10 20 16 16 Q10 12 4 4" fill="none" stroke="currentColor" strokeWidth="1.5"/>
+                <path d="M6 22 Q12 18 16 15" fill="none" stroke="currentColor" strokeWidth="1"/>
+                <path d="M8 16 Q12 14 14 13" fill="none" stroke="currentColor" strokeWidth="0.8"/>
+                <circle cx="16" cy="16" r="2" fill="currentColor" opacity="0.3"/>
+              </svg>
+              <svg className={`absolute right-2 top-0.5 w-8 h-8 ${isNightTime ? 'text-amber-400/50' : 'text-amber-500/40'} scale-x-[-1]`} viewBox="0 0 32 32">
+                <path d="M4 28 Q10 20 16 16 Q10 12 4 4" fill="none" stroke="currentColor" strokeWidth="1.5"/>
+                <path d="M6 22 Q12 18 16 15" fill="none" stroke="currentColor" strokeWidth="1"/>
+                <path d="M8 16 Q12 14 14 13" fill="none" stroke="currentColor" strokeWidth="0.8"/>
+                <circle cx="16" cy="16" r="2" fill="currentColor" opacity="0.3"/>
+              </svg>
               {/* Symmetric rosettes */}
               {[4, 15, 26, 37, 50, 63, 74, 85, 96].map((pos, i) => (
                 <div key={`shelf2-rosette-${i}`} className="absolute top-3.5 -translate-x-1/2" style={{ left: `${pos}%` }}>
@@ -2650,13 +2676,13 @@ export default function ArticlesPage() {
                   </div>
                 </div>
               ))}
-              <svg className="absolute bottom-0 left-0 right-0 h-2.5 opacity-60" preserveAspectRatio="none">
-                <pattern id="shelfEdge2refined" x="0" y="0" width="24" height="10" patternUnits="userSpaceOnUse">
+              <svg className="absolute bottom-0 left-0 right-0 h-2.5 opacity-50" preserveAspectRatio="none">
+                <pattern id="shelf2EdgePattern" x="0" y="0" width="24" height="10" patternUnits="userSpaceOnUse">
                   <ellipse cx="7" cy="5" rx="5" ry="4" fill="none" stroke="#fbbf24" strokeWidth="0.7"/>
                   <ellipse cx="7" cy="5" rx="2.5" ry="2" fill="#fbbf24" opacity="0.2"/>
                   <path d="M17 1 L18.5 8 L20 1" fill="none" stroke="#fbbf24" strokeWidth="0.7"/>
                 </pattern>
-                <rect width="100%" height="100%" fill="url(#shelfEdge2refined)"/>
+                <rect width="100%" height="100%" fill="url(#shelf2EdgePattern)"/>
               </svg>
               <div className="absolute bottom-0 left-0 right-0 h-1 bg-gradient-to-t from-amber-950 to-transparent" />
             </div>
@@ -2806,14 +2832,14 @@ export default function ArticlesPage() {
                 backgroundImage: `url("data:image/svg+xml,%3Csvg viewBox='0 0 200 20' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M0 8 Q50 5 100 8 Q150 11 200 8' fill='none' stroke='%23000' stroke-width='0.5'/%3E%3Cpath d='M0 14 Q50 12 100 14 Q150 16 200 14' fill='none' stroke='%23000' stroke-width='0.4'/%3E%3C/svg%3E")`,
               }} />
               <div className="absolute top-1.5 left-4 right-4 h-px bg-gradient-to-r from-transparent via-amber-400/60 to-transparent" />
-              {/* Enhanced acanthus leaf corner decorations */}
-              <svg className="absolute left-2 top-0.5 w-8 h-8 text-amber-500/50" viewBox="0 0 32 32">
+              {/* Acanthus leaf corner decorations - matching Shelf 1/2 with night-time awareness */}
+              <svg className={`absolute left-2 top-0.5 w-8 h-8 ${isNightTime ? 'text-amber-400/50' : 'text-amber-500/40'}`} viewBox="0 0 32 32">
                 <path d="M4 28 Q10 20 16 16 Q10 12 4 4" fill="none" stroke="currentColor" strokeWidth="1.5"/>
                 <path d="M6 22 Q12 18 16 15" fill="none" stroke="currentColor" strokeWidth="1"/>
                 <path d="M8 16 Q12 14 14 13" fill="none" stroke="currentColor" strokeWidth="0.8"/>
                 <circle cx="16" cy="16" r="2" fill="currentColor" opacity="0.3"/>
               </svg>
-              <svg className="absolute right-2 top-0.5 w-8 h-8 text-amber-500/50 scale-x-[-1]" viewBox="0 0 32 32">
+              <svg className={`absolute right-2 top-0.5 w-8 h-8 ${isNightTime ? 'text-amber-400/50' : 'text-amber-500/40'} scale-x-[-1]`} viewBox="0 0 32 32">
                 <path d="M4 28 Q10 20 16 16 Q10 12 4 4" fill="none" stroke="currentColor" strokeWidth="1.5"/>
                 <path d="M6 22 Q12 18 16 15" fill="none" stroke="currentColor" strokeWidth="1"/>
                 <path d="M8 16 Q12 14 14 13" fill="none" stroke="currentColor" strokeWidth="0.8"/>
@@ -2828,13 +2854,13 @@ export default function ArticlesPage() {
                   </div>
                 </div>
               ))}
-              <svg className="absolute bottom-0 left-0 right-0 h-2.5 opacity-60" preserveAspectRatio="none">
-                <pattern id="shelfEdge3refined" x="0" y="0" width="24" height="10" patternUnits="userSpaceOnUse">
+              <svg className="absolute bottom-0 left-0 right-0 h-2.5 opacity-50" preserveAspectRatio="none">
+                <pattern id="shelf3EdgePattern" x="0" y="0" width="24" height="10" patternUnits="userSpaceOnUse">
                   <ellipse cx="7" cy="5" rx="5" ry="4" fill="none" stroke="#fbbf24" strokeWidth="0.7"/>
                   <ellipse cx="7" cy="5" rx="2.5" ry="2" fill="#fbbf24" opacity="0.2"/>
                   <path d="M17 1 L18.5 8 L20 1" fill="none" stroke="#fbbf24" strokeWidth="0.7"/>
                 </pattern>
-                <rect width="100%" height="100%" fill="url(#shelfEdge3refined)"/>
+                <rect width="100%" height="100%" fill="url(#shelf3EdgePattern)"/>
               </svg>
               <div className="absolute bottom-0 left-0 right-0 h-1 bg-gradient-to-t from-amber-950 to-transparent" />
             </div>
