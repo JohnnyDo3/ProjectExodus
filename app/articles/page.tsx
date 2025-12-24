@@ -195,6 +195,78 @@ export default function ArticlesPage() {
   // Scroll highlight state - glows scrolls when user clicks stat display
   const [highlightScrolls, setHighlightScrolls] = useState(false)
 
+  // ========== GRAND LIBRARY ENHANCED FEATURES ==========
+  // Last read scroll tracking for feather bookmark
+  const [lastReadScrollId, setLastReadScrollId] = useState<string | null>(null)
+
+  // Dust puff particles on click
+  const [dustPuffPosition, setDustPuffPosition] = useState<{ x: number; y: number; active: boolean }>({ x: 0, y: 0, active: false })
+
+  // Secret compartment state
+  const [secretCompartmentOpen, setSecretCompartmentOpen] = useState(false)
+
+  // Adjacent scroll wobble tracking
+  const [wobblingScrolls, setWobblingScrolls] = useState<Set<string>>(new Set())
+
+  // Scroll unrolling animation state
+  const [unrollingScroll, setUnrollingScroll] = useState<string | null>(null)
+
+  // Parallax scroll position
+  const [parallaxOffset, setParallaxOffset] = useState(0)
+
+  // Get current season for decorations
+  const getCurrentSeason = () => {
+    const month = new Date().getMonth()
+    if (month >= 2 && month <= 4) return 'spring'
+    if (month >= 5 && month <= 7) return 'summer'
+    if (month >= 8 && month <= 10) return 'autumn'
+    return 'winter'
+  }
+  const currentSeason = getCurrentSeason()
+
+  // Load last read scroll from localStorage
+  useEffect(() => {
+    const stored = localStorage.getItem('lastReadScrollId')
+    if (stored) setLastReadScrollId(stored)
+  }, [])
+
+  // Parallax effect on scroll
+  useEffect(() => {
+    const handleScroll = () => {
+      setParallaxOffset(window.scrollY * 0.3)
+    }
+    window.addEventListener('scroll', handleScroll, { passive: true })
+    return () => window.removeEventListener('scroll', handleScroll)
+  }, [])
+
+  // Handle dust puff on ancient scroll click
+  const triggerDustPuff = (e: React.MouseEvent, scrollAge: string) => {
+    if (scrollAge === 'ancient' || scrollAge === 'aged') {
+      const rect = (e.currentTarget as HTMLElement).getBoundingClientRect()
+      setDustPuffPosition({ x: rect.left + rect.width / 2, y: rect.top, active: true })
+      setTimeout(() => setDustPuffPosition(prev => ({ ...prev, active: false })), 600)
+    }
+  }
+
+  // Handle adjacent scroll wobble
+  const triggerAdjacentWobble = (articleId: string, adjacentIds: string[]) => {
+    const newWobbling = new Set(adjacentIds)
+    setWobblingScrolls(newWobbling)
+    setTimeout(() => setWobblingScrolls(new Set()), 400)
+  }
+
+  // Handle scroll click with unrolling animation
+  const handleScrollClick = (article: Article, e: React.MouseEvent, scrollAge: string) => {
+    triggerDustPuff(e, scrollAge)
+    setUnrollingScroll(article.id)
+    setLastReadScrollId(article.id)
+    localStorage.setItem('lastReadScrollId', article.id)
+    setTimeout(() => {
+      setUnrollingScroll(null)
+      setPreviewArticle(article)
+    }, 400)
+  }
+
   // Time-based theme for dynamic lighting
   const { phase: timePhase } = useTimeTheme()
   const isNightTime = ['night', 'midnight', 'evening', 'dusk'].includes(timePhase)
@@ -905,6 +977,245 @@ export default function ArticlesPage() {
           </div>
 
           {/* ========================================== */}
+          {/* GRAND LIBRARY ARCHITECTURAL ELEMENTS      */}
+          {/* ========================================== */}
+
+          {/* Coffered Ceiling with ornate beams - parallax effect */}
+          <div
+            className="absolute top-0 left-0 right-0 h-24 pointer-events-none z-5 overflow-hidden hidden lg:block"
+            style={{ transform: `translateY(${parallaxOffset * 0.1}px)` }}
+          >
+            {/* Main ceiling surface */}
+            <div className="absolute inset-0 bg-gradient-to-b from-amber-900/95 via-amber-800/90 to-transparent">
+              {/* Coffered grid pattern */}
+              <svg className="absolute inset-0 w-full h-full" preserveAspectRatio="none" viewBox="0 0 400 60">
+                {/* Horizontal beams */}
+                <defs>
+                  <linearGradient id="beamGradientH" x1="0%" y1="0%" x2="0%" y2="100%">
+                    <stop offset="0%" stopColor="#92400e" />
+                    <stop offset="40%" stopColor="#78350f" />
+                    <stop offset="100%" stopColor="#451a03" />
+                  </linearGradient>
+                  <linearGradient id="beamHighlight" x1="0%" y1="0%" x2="0%" y2="100%">
+                    <stop offset="0%" stopColor="rgba(251,191,36,0.3)" />
+                    <stop offset="100%" stopColor="transparent" />
+                  </linearGradient>
+                </defs>
+                {/* Main horizontal beams */}
+                <rect x="0" y="10" width="400" height="8" fill="url(#beamGradientH)" />
+                <rect x="0" y="10" width="400" height="2" fill="url(#beamHighlight)" />
+                <rect x="0" y="40" width="400" height="6" fill="url(#beamGradientH)" />
+                <rect x="0" y="40" width="400" height="1.5" fill="url(#beamHighlight)" />
+                {/* Vertical beam segments creating coffers */}
+                {[0, 50, 100, 150, 200, 250, 300, 350].map((x, i) => (
+                  <g key={`coffer-${i}`}>
+                    <rect x={x} y="10" width="6" height="36" fill="url(#beamGradientH)" />
+                    <rect x={x} y="10" width="1.5" height="36" fill="url(#beamHighlight)" />
+                    {/* Decorative rosette in each coffer */}
+                    <circle cx={x + 25} cy="28" r="8" fill="none" stroke="#d97706" strokeWidth="0.5" opacity="0.4" />
+                    <circle cx={x + 25} cy="28" r="4" fill="#b45309" opacity="0.3" />
+                    <circle cx={x + 25} cy="28" r="1.5" fill="#fbbf24" opacity="0.4" />
+                  </g>
+                ))}
+              </svg>
+              {/* Candlelight glow on ceiling from below */}
+              <div className={`absolute bottom-0 left-1/4 w-1/2 h-16 ${isNightTime ? 'opacity-40' : 'opacity-15'}`}
+                style={{
+                  background: 'radial-gradient(ellipse 100% 200% at 50% 100%, rgba(251,191,36,0.4), transparent)',
+                  filter: 'blur(8px)',
+                }}
+              />
+            </div>
+            {/* Decorative crown molding */}
+            <div className="absolute bottom-0 left-0 right-0 h-3 bg-gradient-to-b from-amber-700 via-amber-600 to-amber-800 border-b border-amber-500/30">
+              <svg className="w-full h-full" preserveAspectRatio="none" viewBox="0 0 200 12">
+                <path d="M0 6 Q10 2 20 6 Q30 10 40 6 Q50 2 60 6 Q70 10 80 6 Q90 2 100 6 Q110 10 120 6 Q130 2 140 6 Q150 10 160 6 Q170 2 180 6 Q190 10 200 6"
+                  fill="none" stroke="#fbbf24" strokeWidth="0.5" opacity="0.4" />
+              </svg>
+            </div>
+          </div>
+
+          {/* Marble Floor with mosaic pattern */}
+          <div className="absolute bottom-0 left-0 right-0 h-16 pointer-events-none z-5 overflow-hidden hidden lg:block">
+            {/* Floor surface with perspective */}
+            <div className="absolute inset-0 bg-gradient-to-t from-stone-800/95 via-stone-700/85 to-transparent">
+              {/* Marble veining pattern */}
+              <svg className="absolute inset-0 w-full h-full opacity-30" preserveAspectRatio="none" viewBox="0 0 400 40">
+                <defs>
+                  <linearGradient id="marbleVein" x1="0%" y1="0%" x2="100%" y2="100%">
+                    <stop offset="0%" stopColor="#d6d3d1" stopOpacity="0.3" />
+                    <stop offset="50%" stopColor="#a8a29e" stopOpacity="0.5" />
+                    <stop offset="100%" stopColor="#78716c" stopOpacity="0.3" />
+                  </linearGradient>
+                </defs>
+                {/* Marble tile grid */}
+                {[0, 40, 80, 120, 160, 200, 240, 280, 320, 360].map((x, i) => (
+                  <g key={`tile-${i}`}>
+                    <rect x={x} y="0" width="40" height="40" fill="none" stroke="#57534e" strokeWidth="0.5" />
+                    {/* Veining in each tile */}
+                    <path d={`M${x + 5} 5 Q${x + 20} 15 ${x + 35} 25`} fill="none" stroke="url(#marbleVein)" strokeWidth="1" />
+                    <path d={`M${x + 10} 30 Q${x + 25} 20 ${x + 38} 8`} fill="none" stroke="url(#marbleVein)" strokeWidth="0.5" />
+                  </g>
+                ))}
+              </svg>
+              {/* Reflection of candlelight on floor */}
+              <div className={`absolute top-0 left-1/3 w-1/3 h-8 ${isNightTime ? 'opacity-25' : 'opacity-10'}`}
+                style={{
+                  background: 'radial-gradient(ellipse 100% 50% at 50% 0%, rgba(251,191,36,0.3), transparent)',
+                  filter: 'blur(4px)',
+                }}
+              />
+            </div>
+            {/* Decorative floor border */}
+            <div className="absolute top-0 left-0 right-0 h-2 bg-gradient-to-b from-amber-800 to-stone-700 border-t border-amber-600/30" />
+          </div>
+
+          {/* Spider Web in corner - subtle atmospheric detail */}
+          <div className="absolute top-0 left-0 w-32 h-32 pointer-events-none z-10 hidden lg:block opacity-20">
+            <svg viewBox="0 0 100 100" className="w-full h-full">
+              {/* Radial web strands from corner */}
+              <defs>
+                <linearGradient id="webStrand" x1="0%" y1="0%" x2="100%" y2="100%">
+                  <stop offset="0%" stopColor="#d1d5db" stopOpacity="0.8" />
+                  <stop offset="100%" stopColor="#9ca3af" stopOpacity="0.2" />
+                </linearGradient>
+              </defs>
+              {/* Main radial strands */}
+              <line x1="0" y1="0" x2="100" y2="100" stroke="url(#webStrand)" strokeWidth="0.5" className="web-sway" />
+              <line x1="0" y1="0" x2="100" y2="50" stroke="url(#webStrand)" strokeWidth="0.5" className="web-sway" style={{ animationDelay: '0.5s' }} />
+              <line x1="0" y1="0" x2="50" y2="100" stroke="url(#webStrand)" strokeWidth="0.5" className="web-sway" style={{ animationDelay: '1s' }} />
+              <line x1="0" y1="0" x2="100" y2="25" stroke="url(#webStrand)" strokeWidth="0.4" className="web-sway" style={{ animationDelay: '1.5s' }} />
+              <line x1="0" y1="0" x2="25" y2="100" stroke="url(#webStrand)" strokeWidth="0.4" className="web-sway" style={{ animationDelay: '2s' }} />
+              {/* Spiral connecting strands */}
+              <path d="M10 10 Q30 15 25 30 Q20 45 35 45 Q50 45 50 60 Q50 75 65 80"
+                fill="none" stroke="url(#webStrand)" strokeWidth="0.3" className="web-sway" style={{ animationDelay: '0.3s' }} />
+              <path d="M5 20 Q20 25 20 40 Q20 55 35 60 Q50 65 55 80"
+                fill="none" stroke="url(#webStrand)" strokeWidth="0.3" className="web-sway" style={{ animationDelay: '0.7s' }} />
+              <path d="M20 5 Q25 20 40 22 Q55 24 60 40 Q65 56 80 62"
+                fill="none" stroke="url(#webStrand)" strokeWidth="0.3" className="web-sway" style={{ animationDelay: '1.2s' }} />
+              {/* Tiny dew drops on web */}
+              {isNightTime && (
+                <>
+                  <circle cx="25" cy="25" r="1" fill="#e5e7eb" opacity="0.6" />
+                  <circle cx="45" cy="35" r="0.8" fill="#e5e7eb" opacity="0.5" />
+                  <circle cx="60" cy="55" r="1.2" fill="#e5e7eb" opacity="0.4" />
+                </>
+              )}
+            </svg>
+          </div>
+
+          {/* Seasonal Decorations */}
+          {currentSeason === 'winter' && (
+            <div className="absolute inset-0 pointer-events-none z-30 overflow-hidden hidden lg:block">
+              {/* Subtle snowflakes drifting */}
+              {[...Array(8)].map((_, i) => (
+                <div
+                  key={`snowflake-${i}`}
+                  className="absolute snowfall"
+                  style={{
+                    left: `${10 + i * 12}%`,
+                    top: '-20px',
+                    '--snow-delay': `${i * 0.8}s`,
+                    '--snow-duration': `${8 + i * 0.5}s`,
+                    '--snow-drift': `${(i % 2 ? 1 : -1) * (10 + i * 5)}px`,
+                  } as React.CSSProperties}
+                >
+                  <svg width="12" height="12" viewBox="0 0 24 24" className="text-white/30">
+                    <path d="M12 0 L12 24 M0 12 L24 12 M3.5 3.5 L20.5 20.5 M20.5 3.5 L3.5 20.5"
+                      stroke="currentColor" strokeWidth="1" fill="none" />
+                    <circle cx="12" cy="12" r="2" fill="currentColor" />
+                  </svg>
+                </div>
+              ))}
+              {/* Frost on edges */}
+              <div className="absolute top-0 left-0 right-0 h-8 bg-gradient-to-b from-blue-100/10 to-transparent" />
+            </div>
+          )}
+
+          {currentSeason === 'autumn' && (
+            <div className="absolute inset-0 pointer-events-none z-30 overflow-hidden hidden lg:block">
+              {/* Falling leaves */}
+              {[...Array(5)].map((_, i) => (
+                <div
+                  key={`leaf-${i}`}
+                  className="absolute"
+                  style={{
+                    left: `${15 + i * 18}%`,
+                    top: '-30px',
+                    animation: `leaf-fall ${10 + i}s ease-in-out infinite`,
+                    animationDelay: `${i * 2}s`,
+                  }}
+                >
+                  <svg width="16" height="20" viewBox="0 0 16 20" className={i % 2 ? 'text-orange-600/40' : 'text-amber-700/40'}>
+                    <path d="M8 0 Q12 5 12 10 Q12 18 8 20 Q4 18 4 10 Q4 5 8 0" fill="currentColor" />
+                    <path d="M8 2 L8 18" stroke="rgba(0,0,0,0.2)" strokeWidth="0.5" />
+                  </svg>
+                </div>
+              ))}
+            </div>
+          )}
+
+          {currentSeason === 'spring' && (
+            <div className="absolute inset-0 pointer-events-none z-30 overflow-hidden hidden lg:block">
+              {/* Floating pollen/petals */}
+              {[...Array(6)].map((_, i) => (
+                <div
+                  key={`petal-${i}`}
+                  className="absolute dust-mote"
+                  style={{
+                    left: `${10 + i * 15}%`,
+                    top: `${20 + (i * 13) % 60}%`,
+                    '--dust-dx': `${20 + i * 5}px`,
+                    '--dust-dy': `${-30 - i * 10}px`,
+                    '--dust-duration': `${12 + i * 2}s`,
+                    '--dust-delay': `${i * 1.5}s`,
+                  } as React.CSSProperties}
+                >
+                  <svg width="8" height="8" viewBox="0 0 8 8" className="text-pink-300/50">
+                    <ellipse cx="4" cy="4" rx="3" ry="2" fill="currentColor" />
+                  </svg>
+                </div>
+              ))}
+            </div>
+          )}
+
+          {/* Secret Compartment - hidden drawer in bookshelf area */}
+          <div
+            className="absolute bottom-[15%] left-[3%] w-[12%] h-8 cursor-pointer z-25 hidden lg:block"
+            onClick={() => setSecretCompartmentOpen(!secretCompartmentOpen)}
+          >
+            {/* Disguised as wood panel */}
+            <div className={`absolute inset-0 bg-gradient-to-b from-amber-800 to-amber-900 rounded-sm border border-amber-700/50 transition-transform duration-500 ${secretCompartmentOpen ? 'compartment-slide' : ''}`}
+              style={{ transformOrigin: 'left center' }}
+            >
+              {/* Wood grain */}
+              <div className="absolute inset-1 opacity-20">
+                <svg className="w-full h-full" preserveAspectRatio="none" viewBox="0 0 40 12">
+                  <path d="M0 3 Q10 2 20 4 Q30 6 40 3" fill="none" stroke="#d97706" strokeWidth="0.5" />
+                  <path d="M0 8 Q15 7 25 9 Q35 11 40 8" fill="none" stroke="#d97706" strokeWidth="0.5" />
+                </svg>
+              </div>
+              {/* Subtle keyhole hint */}
+              <div className="absolute right-2 top-1/2 -translate-y-1/2 w-1.5 h-2.5 bg-amber-950/60 rounded-full border border-amber-600/30" />
+            </div>
+            {/* Compartment interior (visible when open) */}
+            {secretCompartmentOpen && (
+              <div className="absolute inset-0 bg-gradient-to-r from-amber-950 to-amber-900 rounded-sm overflow-hidden">
+                {/* Hidden scroll inside */}
+                <div className="absolute inset-1 flex items-center justify-center">
+                  <div className="text-amber-400/70 text-[8px] font-serif italic">
+                    ✧ Rare Finds ✧
+                  </div>
+                </div>
+              </div>
+            )}
+            {/* Hover tooltip */}
+            <div className="absolute -top-8 left-1/2 -translate-x-1/2 px-2 py-1 bg-amber-900/95 text-amber-200 text-[9px] rounded opacity-0 hover:opacity-100 transition-opacity whitespace-nowrap">
+              Click to discover...
+            </div>
+          </div>
+
+          {/* ========================================== */}
           {/* GRAND LIBRARY ENTRANCE - Side Bookshelves */}
           {/* ========================================== */}
 
@@ -1240,15 +1551,38 @@ export default function ArticlesPage() {
                         const scrollAge = getScrollAge(article.publishedAt)
                         const ageOpacity = scrollAge === 'new' ? 'opacity-0' : scrollAge === 'recent' ? 'opacity-10' : scrollAge === 'aged' ? 'opacity-20' : 'opacity-30'
 
+                        // Get adjacent scroll IDs for wobble effect
+                        const adjacentIds = shelfArticles
+                          .filter((_, idx) => Math.abs(idx - i) === 1)
+                          .map(a => a.id)
+                        const isWobbling = wobblingScrolls.has(article.id)
+                        const isLastRead = lastReadScrollId === article.id
+                        const isUnrolling = unrollingScroll === article.id
+
                         return (
                           <div
                             key={article.id}
-                            className={`relative w-5 h-14 cursor-pointer transition-all duration-300 ${isHovered ? 'scale-110 -translate-y-2 z-10' : ''} ${highlightScrolls ? 'scroll-highlight-glow' : ''}`}
-                            style={{ transform: `rotate(${(i % 2 - 0.5) * 3}deg)` }}
-                            onMouseEnter={() => handleScrollHover(article)}
+                            className={`relative w-5 h-14 cursor-pointer transition-all duration-300 quill-cursor ${isHovered ? 'scale-110 -translate-y-2 z-10' : ''} ${highlightScrolls ? 'scroll-highlight-glow' : ''} ${isWobbling ? 'scroll-wobble' : ''} ${isUnrolling ? 'scale-105' : ''}`}
+                            style={{
+                              transform: `rotate(${(i % 2 - 0.5) * 3}deg)`,
+                              '--base-rotation': `${(i % 2 - 0.5) * 3}deg`,
+                            } as React.CSSProperties}
+                            onMouseEnter={() => {
+                              handleScrollHover(article)
+                              triggerAdjacentWobble(article.id, adjacentIds)
+                            }}
                             onMouseLeave={handleScrollLeave}
-                            onClick={() => setPreviewArticle(article)}
+                            onClick={(e) => handleScrollClick(article, e, scrollAge)}
                           >
+                            {/* Feather bookmark for last-read scroll */}
+                            {isLastRead && (
+                              <div className="absolute -top-4 -right-2 z-20 feather-bookmark pointer-events-none">
+                                <svg width="16" height="20" viewBox="0 0 16 20" className="text-amber-600 drop-shadow-md">
+                                  <path d="M8 0 Q12 4 12 10 Q12 16 8 20 Q8 14 4 10 Q4 6 8 0" fill="currentColor" />
+                                  <path d="M8 2 Q10 5 10 10 Q10 14 8 18" fill="none" stroke="rgba(0,0,0,0.2)" strokeWidth="0.5" />
+                                </svg>
+                              </div>
+                            )}
                             {/* Highlight glow halo */}
                             {highlightScrolls && (
                               <div className="absolute -inset-1 bg-amber-400/40 rounded-lg blur-md animate-pulse" />
@@ -1721,15 +2055,38 @@ export default function ArticlesPage() {
                         const scrollAge = getScrollAge(article.publishedAt)
                         const ageOpacity = scrollAge === 'new' ? 'opacity-0' : scrollAge === 'recent' ? 'opacity-10' : scrollAge === 'aged' ? 'opacity-20' : 'opacity-30'
 
+                        // Get adjacent scroll IDs for wobble effect
+                        const adjacentIds = shelfArticles
+                          .filter((_, idx) => Math.abs(idx - i) === 1)
+                          .map(a => a.id)
+                        const isWobbling = wobblingScrolls.has(article.id)
+                        const isLastRead = lastReadScrollId === article.id
+                        const isUnrolling = unrollingScroll === article.id
+
                         return (
                           <div
                             key={article.id}
-                            className={`relative w-5 h-14 cursor-pointer transition-all duration-300 ${isHovered ? 'scale-110 -translate-y-2 z-10' : ''} ${highlightScrolls ? 'scroll-highlight-glow' : ''}`}
-                            style={{ transform: `rotate(${(i % 2 - 0.5) * -3}deg)` }}
-                            onMouseEnter={() => handleScrollHover(article)}
+                            className={`relative w-5 h-14 cursor-pointer transition-all duration-300 quill-cursor ${isHovered ? 'scale-110 -translate-y-2 z-10' : ''} ${highlightScrolls ? 'scroll-highlight-glow' : ''} ${isWobbling ? 'scroll-wobble' : ''} ${isUnrolling ? 'scale-105' : ''}`}
+                            style={{
+                              transform: `rotate(${(i % 2 - 0.5) * -3}deg)`,
+                              '--base-rotation': `${(i % 2 - 0.5) * -3}deg`,
+                            } as React.CSSProperties}
+                            onMouseEnter={() => {
+                              handleScrollHover(article)
+                              triggerAdjacentWobble(article.id, adjacentIds)
+                            }}
                             onMouseLeave={handleScrollLeave}
-                            onClick={() => setPreviewArticle(article)}
+                            onClick={(e) => handleScrollClick(article, e, scrollAge)}
                           >
+                            {/* Feather bookmark for last-read scroll */}
+                            {isLastRead && (
+                              <div className="absolute -top-4 -left-2 z-20 feather-bookmark pointer-events-none" style={{ transform: 'scaleX(-1)' }}>
+                                <svg width="16" height="20" viewBox="0 0 16 20" className="text-amber-600 drop-shadow-md">
+                                  <path d="M8 0 Q12 4 12 10 Q12 16 8 20 Q8 14 4 10 Q4 6 8 0" fill="currentColor" />
+                                  <path d="M8 2 Q10 5 10 10 Q10 14 8 18" fill="none" stroke="rgba(0,0,0,0.2)" strokeWidth="0.5" />
+                                </svg>
+                              </div>
+                            )}
                             {/* Highlight glow halo */}
                             {highlightScrolls && (
                               <div className="absolute -inset-1 bg-amber-400/40 rounded-lg blur-md animate-pulse" />
@@ -3362,13 +3719,13 @@ export default function ArticlesPage() {
                       </div>
                     )}
 
-                    {/* Title - rich sepia ink */}
-                    <h2 className="text-2xl sm:text-3xl font-bold text-amber-950 text-center mb-4 leading-tight tracking-tight" style={{ fontFamily: 'Georgia, serif' }}>
+                    {/* Title - rich sepia ink with ink fade-in effect */}
+                    <h2 className="text-2xl sm:text-3xl font-bold text-amber-950 text-center mb-4 leading-tight tracking-tight ink-text" style={{ fontFamily: 'Georgia, serif', animationDelay: '0.2s' }}>
                       {previewArticle.title}
                     </h2>
 
-                    {/* Decorative scroll divider */}
-                    <div className="flex items-center justify-center gap-3 mb-4">
+                    {/* Decorative scroll divider with ink fade */}
+                    <div className="flex items-center justify-center gap-3 mb-4 ink-text" style={{ animationDelay: '0.4s' }}>
                       <div className="h-px w-16 bg-gradient-to-r from-transparent to-amber-600/50" />
                       <svg className="w-6 h-6 text-amber-600/70" viewBox="0 0 24 24">
                         <path d="M12 4 L16 8 L12 12 L8 8 Z" fill="none" stroke="currentColor" strokeWidth="1"/>
@@ -3377,8 +3734,8 @@ export default function ArticlesPage() {
                       <div className="h-px w-16 bg-gradient-to-l from-transparent to-amber-600/50" />
                     </div>
 
-                    {/* Excerpt - elegant calligraphy style */}
-                    <p className="text-sm sm:text-base text-amber-900/90 text-center mb-6 leading-relaxed italic" style={{ fontFamily: 'Georgia, serif', lineHeight: '1.9' }}>
+                    {/* Excerpt - elegant calligraphy style with ink fade-in */}
+                    <p className="text-sm sm:text-base text-amber-900/90 text-center mb-6 leading-relaxed italic ink-text" style={{ fontFamily: 'Georgia, serif', lineHeight: '1.9', animationDelay: '0.5s' }}>
                       "{previewArticle.excerpt}"
                     </p>
 
@@ -4003,6 +4360,56 @@ export default function ArticlesPage() {
         )}
         </div>
       </div>
+
+      {/* Dust Puff Particles Portal - Fixed position particles for ancient scroll clicks */}
+      {dustPuffPosition.active && (
+        <div
+          className="fixed pointer-events-none z-[100]"
+          style={{
+            left: dustPuffPosition.x,
+            top: dustPuffPosition.y,
+          }}
+        >
+          {/* Multiple dust particles exploding outward */}
+          {[...Array(12)].map((_, i) => {
+            const angle = (i / 12) * 360
+            const distance = 20 + (i % 3) * 15
+            const radians = (angle * Math.PI) / 180
+            const x = Math.cos(radians) * distance
+            const y = Math.sin(radians) * distance - 20 // Bias upward
+
+            return (
+              <div
+                key={`dust-puff-${i}`}
+                className="absolute dust-puff-particle"
+                style={{
+                  '--puff-x': `${x}px`,
+                  '--puff-y': `${y}px`,
+                  '--puff-delay': `${i * 0.02}s`,
+                  width: `${3 + (i % 4)}px`,
+                  height: `${3 + (i % 4)}px`,
+                  borderRadius: '50%',
+                  background: `radial-gradient(circle, rgba(${180 + i * 5}, ${160 + i * 3}, ${120 + i * 2}, 0.9), rgba(161, 137, 99, 0.5))`,
+                  boxShadow: '0 0 2px rgba(161, 137, 99, 0.5)',
+                } as React.CSSProperties}
+              />
+            )
+          })}
+          {/* Larger central dust cloud */}
+          <div
+            className="absolute -translate-x-1/2 -translate-y-1/2 dust-puff-particle"
+            style={{
+              '--puff-x': '0px',
+              '--puff-y': '-25px',
+              width: '20px',
+              height: '20px',
+              borderRadius: '50%',
+              background: 'radial-gradient(circle, rgba(180, 160, 120, 0.6), transparent 70%)',
+              filter: 'blur(3px)',
+            } as React.CSSProperties}
+          />
+        </div>
+      )}
 
       {/* Floating Write Button (Mobile) */}
       {session && (

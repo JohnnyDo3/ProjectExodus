@@ -1420,3 +1420,264 @@ body.textbook-fullscreen .fixed.inset-0.z-50 {
     transform: scaleY(1.1);
   }
 }
+
+/* ========== GRAND LIBRARY EXTENDED FEATURES ========== */
+
+/* Scroll wobble when adjacent scroll is hovered */
+@keyframes scroll-wobble {
+  0%, 100% {
+    transform: rotate(var(--base-rotation, 0deg)) translateY(0);
+  }
+  25% {
+    transform: rotate(calc(var(--base-rotation, 0deg) + 1deg)) translateY(-1px);
+  }
+  75% {
+    transform: rotate(calc(var(--base-rotation, 0deg) - 0.5deg)) translateY(0.5px);
+  }
+}
+
+.scroll-wobble {
+  animation: scroll-wobble 0.4s ease-in-out;
+}
+
+/* Dust puff particle explosion */
+@keyframes dust-puff {
+  0% {
+    transform: translate(0, 0) scale(1);
+    opacity: 0.8;
+  }
+  100% {
+    transform: translate(var(--puff-x, 10px), var(--puff-y, -10px)) scale(0);
+    opacity: 0;
+  }
+}
+
+.dust-particle {
+  animation: dust-puff 0.6s ease-out forwards;
+}
+
+/* Parchment unfurl loading animation */
+@keyframes parchment-unfurl {
+  0% {
+    clip-path: inset(0 100% 0 0);
+    opacity: 0.5;
+  }
+  50% {
+    opacity: 1;
+  }
+  100% {
+    clip-path: inset(0 0 0 0);
+    opacity: 1;
+  }
+}
+
+.parchment-unfurl {
+  animation: parchment-unfurl 0.8s ease-out forwards;
+}
+
+/* Scroll unrolling animation */
+@keyframes scroll-unroll-top {
+  0% {
+    transform: translateY(100%) rotate(180deg);
+  }
+  100% {
+    transform: translateY(0) rotate(0deg);
+  }
+}
+
+@keyframes scroll-unroll-reveal {
+  0% {
+    clip-path: inset(100% 0 0 0);
+  }
+  100% {
+    clip-path: inset(0 0 0 0);
+  }
+}
+
+/* Wax seal breaking */
+@keyframes seal-break {
+  0% {
+    transform: scale(1) rotate(0deg);
+    opacity: 1;
+  }
+  30% {
+    transform: scale(1.2) rotate(-5deg);
+  }
+  60% {
+    transform: scale(0.9) rotate(10deg);
+    opacity: 0.8;
+  }
+  100% {
+    transform: scale(1.5) rotate(15deg);
+    opacity: 0;
+  }
+}
+
+.seal-breaking {
+  animation: seal-break 0.4s ease-out forwards;
+}
+
+/* Ink fade-in text effect */
+@keyframes ink-fade-in {
+  0% {
+    opacity: 0;
+    filter: blur(2px);
+  }
+  100% {
+    opacity: 1;
+    filter: blur(0);
+  }
+}
+
+.ink-text {
+  animation: ink-fade-in 0.5s ease-out forwards;
+  animation-delay: var(--ink-delay, 0s);
+}
+
+/* Feather bookmark float */
+@keyframes feather-float {
+  0%, 100% {
+    transform: translateY(0) rotate(-15deg);
+  }
+  50% {
+    transform: translateY(-3px) rotate(-12deg);
+  }
+}
+
+.feather-bookmark {
+  animation: feather-float 3s ease-in-out infinite;
+}
+
+/* Secret compartment reveal */
+@keyframes compartment-slide {
+  0% {
+    transform: translateX(-100%);
+    opacity: 0;
+  }
+  100% {
+    transform: translateX(0);
+    opacity: 1;
+  }
+}
+
+.compartment-reveal {
+  animation: compartment-slide 0.5s ease-out forwards;
+}
+
+/* Spider web sway */
+@keyframes web-sway {
+  0%, 100% {
+    transform: rotate(-2deg) skewX(0deg);
+  }
+  50% {
+    transform: rotate(1deg) skewX(1deg);
+  }
+}
+
+.spider-web {
+  animation: web-sway 8s ease-in-out infinite;
+}
+
+/* Seasonal snowfall */
+@keyframes snowfall {
+  0% {
+    transform: translateY(-10px) translateX(0) rotate(0deg);
+    opacity: 0;
+  }
+  10% {
+    opacity: 0.8;
+  }
+  90% {
+    opacity: 0.6;
+  }
+  100% {
+    transform: translateY(100px) translateX(var(--snow-drift, 20px)) rotate(360deg);
+    opacity: 0;
+  }
+}
+
+.snowflake {
+  animation: snowfall var(--snow-duration, 8s) linear infinite;
+  animation-delay: var(--snow-delay, 0s);
+}
+
+.snowfall {
+  animation: snowfall var(--snow-duration, 8s) linear infinite;
+  animation-delay: var(--snow-delay, 0s);
+}
+
+/* Autumn leaf falling */
+@keyframes leaf-fall {
+  0% {
+    transform: translateY(-30px) rotate(0deg);
+    opacity: 0;
+  }
+  10% {
+    opacity: 1;
+  }
+  25% {
+    transform: translateY(25vh) rotate(45deg) translateX(20px);
+  }
+  50% {
+    transform: translateY(50vh) rotate(90deg) translateX(-15px);
+  }
+  75% {
+    transform: translateY(75vh) rotate(135deg) translateX(25px);
+  }
+  90% {
+    opacity: 1;
+  }
+  100% {
+    transform: translateY(100vh) rotate(180deg) translateX(10px);
+    opacity: 0;
+  }
+}
+
+/* Dust puff particle explosion on click */
+@keyframes dust-puff-particle {
+  0% {
+    transform: translate(0, 0) scale(1);
+    opacity: 0.9;
+  }
+  100% {
+    transform: translate(var(--puff-x, 0), var(--puff-y, -30px)) scale(0);
+    opacity: 0;
+  }
+}
+
+.dust-puff-particle {
+  animation: dust-puff-particle 0.6s ease-out forwards;
+  animation-delay: var(--puff-delay, 0s);
+}
+
+/* Quill cursor */
+.quill-cursor {
+  cursor: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24'%3E%3Cpath fill='%23D97706' d='M3 17.25V21h3.75L17.81 9.94l-3.75-3.75L3 17.25zM20.71 7.04c.39-.39.39-1.02 0-1.41l-2.34-2.34c-.39-.39-1.02-.39-1.41 0l-1.83 1.83 3.75 3.75 1.83-1.83z'/%3E%3C/svg%3E") 0 24, auto;
+}
+
+/* Parallax layers */
+.parallax-bg {
+  transform: translateZ(-2px) scale(1.5);
+}
+
+.parallax-mid {
+  transform: translateZ(-1px) scale(1.25);
+}
+
+.parallax-fg {
+  transform: translateZ(0);
+}
+
+/* Banner wave animation */
+@keyframes banner-wave {
+  0%, 100% {
+    transform: skewX(-1deg) scaleY(1);
+  }
+  50% {
+    transform: skewX(1deg) scaleY(1.02);
+  }
+}
+
+.category-banner {
+  animation: banner-wave 4s ease-in-out infinite;
+}
