@@ -1094,18 +1094,18 @@ export default function ArticlesPage() {
                   <div key={`left-sconce-${i}`} className="absolute left-0 z-30 overflow-visible" style={{ top: `${topPercent}%`, transform: 'translateY(-50%) translateX(-100%)' }}>
                     <div className="relative w-12 h-16">
                       {/* Brass bracket emerging from pilaster */}
-                      <div className="absolute right-0 top-1/2 -translate-y-1/2 w-4 h-10 bg-gradient-to-l from-yellow-600 via-amber-600 to-amber-700 rounded-l-sm shadow-lg border-l border-y border-yellow-500/60">
-                        {/* Decorative rosette */}
+                      <div className={`absolute right-0 top-1/2 -translate-y-1/2 w-4 h-10 bg-gradient-to-l from-yellow-600 via-amber-600 to-amber-700 rounded-l-sm shadow-lg border-l border-y border-yellow-500/60 ${isNightTime ? 'brightness-110' : ''}`}>
+                        {/* Decorative rosette - night-time aware */}
                         <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-3 h-3">
-                          <svg viewBox="0 0 12 12" className="w-full h-full text-yellow-400/70">
+                          <svg viewBox="0 0 12 12" className={`w-full h-full ${isNightTime ? 'text-yellow-300/80' : 'text-yellow-400/70'}`}>
                             <circle cx="6" cy="6" r="4" fill="none" stroke="currentColor" strokeWidth="0.8"/>
                             <circle cx="6" cy="6" r="2" fill="currentColor" opacity="0.5"/>
                           </svg>
                         </div>
                       </div>
 
-                      {/* Curved arm extending from bracket */}
-                      <div className="absolute right-3 top-1/2 w-4 h-2 bg-gradient-to-b from-yellow-500 via-amber-600 to-amber-700 rounded-full shadow-md" style={{ transform: 'translateY(-50%)' }} />
+                      {/* Curved arm extending from bracket - night-time aware */}
+                      <div className={`absolute right-3 top-1/2 w-4 h-2 bg-gradient-to-b from-yellow-500 via-amber-600 to-amber-700 rounded-full shadow-md ${isNightTime ? 'brightness-110' : ''}`} style={{ transform: 'translateY(-50%)' }} />
 
                       {/* Candle holder cup (bobeche) with candle sitting inside */}
                       <div className="absolute right-5 top-1/2 -translate-y-1/2 w-4 flex flex-col items-center">
@@ -1120,8 +1120,8 @@ export default function ArticlesPage() {
                             <div className="w-3 h-4 bg-gradient-to-t from-orange-500 via-orange-400 to-yellow-200 rounded-full blur-[1px] animate-pulse" style={{ animationDelay: `${i * 0.3}s`, animationDuration: '0.7s' }} />
                           </div>
                         </div>
-                        {/* Bobeche (cup) - candle sits into this */}
-                        <div className="w-4 h-2.5 bg-gradient-to-b from-yellow-400 to-amber-600 rounded-b-sm border-t-2 border-yellow-300/60 shadow-lg" />
+                        {/* Bobeche (cup) - candle sits into this - night-time aware */}
+                        <div className={`w-4 h-2.5 bg-gradient-to-b from-yellow-400 to-amber-600 rounded-b-sm border-t-2 border-yellow-300/60 shadow-lg ${isNightTime ? 'brightness-110' : ''}`} />
                       </div>
 
                       {/* Ambient light - positioned relative to flame */}
@@ -1344,13 +1344,13 @@ export default function ArticlesPage() {
                         transform: 'translateX(-15%)',
                       }}
                     />
-                    {/* Flickering highlight - subtle animation */}
+                    {/* Flickering highlight - subtle animation - timing aligned with left bookshelf */}
                     <div
                       className={`absolute left-0 w-24 h-20 animate-pulse ${isNightTime ? 'opacity-50' : 'opacity-25'}`}
                       style={{
                         background: 'radial-gradient(ellipse 80% 70% at 0% 50%, rgba(253,224,71,0.4) 0%, rgba(251,191,36,0.2) 40%, transparent 70%)',
                         filter: 'blur(4px)',
-                        animationDuration: `${1.3 + i * 0.12}s`,
+                        animationDuration: `${1.2 + i * 0.15}s`,
                       }}
                     />
                     {/* Hot spot near flame source */}
@@ -1476,18 +1476,18 @@ export default function ArticlesPage() {
                   <div key={`right-sconce-${i}`} className="absolute right-0 z-30 overflow-visible" style={{ top: `${topPercent}%`, transform: 'translateY(-50%) translateX(100%)' }}>
                     <div className="relative w-12 h-16">
                       {/* Brass bracket emerging from pilaster */}
-                      <div className="absolute left-0 top-1/2 -translate-y-1/2 w-4 h-10 bg-gradient-to-r from-yellow-600 via-amber-600 to-amber-700 rounded-r-sm shadow-lg border-r border-y border-yellow-500/60">
-                        {/* Decorative rosette */}
+                      <div className={`absolute left-0 top-1/2 -translate-y-1/2 w-4 h-10 bg-gradient-to-r from-yellow-600 via-amber-600 to-amber-700 rounded-r-sm shadow-lg border-r border-y border-yellow-500/60 ${isNightTime ? 'brightness-110' : ''}`}>
+                        {/* Decorative rosette - night-time aware */}
                         <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-3 h-3">
-                          <svg viewBox="0 0 12 12" className="w-full h-full text-yellow-400/70">
+                          <svg viewBox="0 0 12 12" className={`w-full h-full ${isNightTime ? 'text-yellow-300/80' : 'text-yellow-400/70'}`}>
                             <circle cx="6" cy="6" r="4" fill="none" stroke="currentColor" strokeWidth="0.8"/>
                             <circle cx="6" cy="6" r="2" fill="currentColor" opacity="0.5"/>
                           </svg>
                         </div>
                       </div>
 
-                      {/* Curved arm extending from bracket */}
-                      <div className="absolute left-3 top-1/2 w-4 h-2 bg-gradient-to-b from-yellow-500 via-amber-600 to-amber-700 rounded-full shadow-md" style={{ transform: 'translateY(-50%)' }} />
+                      {/* Curved arm extending from bracket - night-time aware */}
+                      <div className={`absolute left-3 top-1/2 w-4 h-2 bg-gradient-to-b from-yellow-500 via-amber-600 to-amber-700 rounded-full shadow-md ${isNightTime ? 'brightness-110' : ''}`} style={{ transform: 'translateY(-50%)' }} />
 
                       {/* Candle holder cup (bobeche) with candle sitting inside */}
                       <div className="absolute left-5 top-1/2 -translate-y-1/2 w-4 flex flex-col items-center">
@@ -1502,8 +1502,8 @@ export default function ArticlesPage() {
                             <div className="w-3 h-4 bg-gradient-to-t from-orange-500 via-orange-400 to-yellow-200 rounded-full blur-[1px] animate-pulse" style={{ animationDelay: `${i * 0.3 + 0.5}s`, animationDuration: '0.7s' }} />
                           </div>
                         </div>
-                        {/* Bobeche (cup) - candle sits into this */}
-                        <div className="w-4 h-2.5 bg-gradient-to-b from-yellow-400 to-amber-600 rounded-b-sm border-t-2 border-yellow-300/60 shadow-lg" />
+                        {/* Bobeche (cup) - candle sits into this - night-time aware */}
+                        <div className={`w-4 h-2.5 bg-gradient-to-b from-yellow-400 to-amber-600 rounded-b-sm border-t-2 border-yellow-300/60 shadow-lg ${isNightTime ? 'brightness-110' : ''}`} />
                       </div>
 
                       {/* Ambient light - positioned relative to flame */}
@@ -2073,21 +2073,30 @@ export default function ArticlesPage() {
         {[18, 50, 82].map((topPercent, i) => (
           <div key={`hshelf-left-candle-${i}`} className="absolute left-[72px] z-20" style={{ top: `${topPercent}%`, transform: 'translateY(-50%)' }}>
             <div className="relative w-8 h-12">
-              <div className="absolute inset-0 bg-gradient-to-b from-yellow-500 via-amber-600 to-amber-800 rounded-t-full rounded-b-lg shadow-xl border border-yellow-400/40 overflow-hidden">
+              {/* Decorative backplate with carved flame motif - night-time aware */}
+              <div className={`absolute inset-0 bg-gradient-to-b from-yellow-500 via-amber-600 to-amber-800 rounded-t-full rounded-b-lg shadow-xl border border-yellow-400/40 overflow-hidden ${isNightTime ? 'brightness-110' : ''}`}>
                 <div className="absolute top-1 left-1/2 -translate-x-1/2 w-5 h-5">
-                  <svg viewBox="0 0 20 20" className="w-full h-full text-yellow-300/60">
+                  <svg viewBox="0 0 20 20" className={`w-full h-full ${isNightTime ? 'text-yellow-200/70' : 'text-yellow-300/60'}`}>
                     <path d="M10 2 Q15 6 10 12 Q5 6 10 2" fill="none" stroke="currentColor" strokeWidth="1"/>
                     <circle cx="10" cy="6" r="1.5" fill="currentColor" opacity="0.5"/>
                   </svg>
                 </div>
               </div>
-              <div className="absolute bottom-3 left-1/2 -translate-x-1/2 w-5 h-2.5 bg-gradient-to-b from-yellow-500 to-amber-700 rounded-b-sm border-t border-yellow-300/50" />
-              <div className="absolute -top-5 left-1/2 -translate-x-1/2 w-2.5 h-6 bg-gradient-to-b from-amber-50 via-amber-100 to-amber-200 rounded-t-sm shadow-md" />
-              <div className="absolute -top-6.5 left-1/2 -translate-x-1/2 w-0.5 h-2 bg-gradient-to-t from-gray-800 to-gray-600" />
-              <div className={`absolute -top-9 left-1/2 -translate-x-1/2 ${isNightTime ? 'opacity-100' : 'opacity-70'}`}>
-                <div className="w-3 h-5 bg-gradient-to-t from-orange-500 via-orange-400 to-yellow-200 rounded-full blur-[1px] animate-pulse" style={{ animationDelay: `${i * 0.35}s` }} />
+              {/* Bobeche (candle cup) - matches pilaster sconce style */}
+              <div className={`absolute bottom-3 left-1/2 -translate-x-1/2 w-5 h-2.5 bg-gradient-to-b from-yellow-400 to-amber-600 rounded-b-sm border-t-2 border-yellow-300/60 shadow-lg ${isNightTime ? 'brightness-110' : ''}`} />
+              {/* Candle body - standardized h-5 to match pilaster sconces */}
+              <div className="absolute -top-4 left-1/2 -translate-x-1/2 w-2.5 h-5 bg-gradient-to-b from-amber-50 via-amber-100 to-amber-200 rounded-t-sm shadow-md" />
+              {/* Wick - standardized color to match pilaster sconces */}
+              <div className="absolute -top-5 left-1/2 -translate-x-1/2 w-0.5 h-1.5 bg-gradient-to-t from-gray-700 to-gray-500" />
+              {/* Flame assembly - standardized to match pilaster sconces */}
+              <div className={`absolute -top-8 left-1/2 -translate-x-1/2 ${isNightTime ? 'opacity-100' : 'opacity-60'}`}>
+                {/* Flame halo - now present to match pilaster sconces */}
+                <div className="absolute -inset-2 bg-gradient-radial from-orange-400/30 via-orange-300/15 to-transparent rounded-full blur-md" />
+                {/* Flame - standardized h-4 and timing to match pilaster sconces */}
+                <div className="w-3 h-4 bg-gradient-to-t from-orange-500 via-orange-400 to-yellow-200 rounded-full blur-[1px] animate-pulse" style={{ animationDelay: `${i * 0.3}s`, animationDuration: '0.7s' }} />
               </div>
-              <div className={`absolute -top-6 left-1/2 -translate-x-1/2 w-12 h-12 bg-gradient-radial from-orange-400/40 via-amber-500/20 to-transparent rounded-full blur-lg ${isNightTime ? 'opacity-90' : 'opacity-40'}`} />
+              {/* Ambient glow - standardized blur-xl and opacity to match pilaster sconces */}
+              <div className={`absolute -top-5 left-1/2 -translate-x-1/2 w-12 h-12 bg-gradient-radial from-orange-400/40 via-amber-500/20 to-transparent rounded-full blur-xl ${isNightTime ? 'opacity-100' : 'opacity-40'}`} />
             </div>
           </div>
         ))}
@@ -2096,21 +2105,30 @@ export default function ArticlesPage() {
         {[18, 50, 82].map((topPercent, i) => (
           <div key={`hshelf-right-candle-${i}`} className="absolute right-[72px] z-20" style={{ top: `${topPercent}%`, transform: 'translateY(-50%)' }}>
             <div className="relative w-8 h-12">
-              <div className="absolute inset-0 bg-gradient-to-b from-yellow-500 via-amber-600 to-amber-800 rounded-t-full rounded-b-lg shadow-xl border border-yellow-400/40 overflow-hidden">
+              {/* Decorative backplate with carved flame motif - night-time aware */}
+              <div className={`absolute inset-0 bg-gradient-to-b from-yellow-500 via-amber-600 to-amber-800 rounded-t-full rounded-b-lg shadow-xl border border-yellow-400/40 overflow-hidden ${isNightTime ? 'brightness-110' : ''}`}>
                 <div className="absolute top-1 left-1/2 -translate-x-1/2 w-5 h-5">
-                  <svg viewBox="0 0 20 20" className="w-full h-full text-yellow-300/60">
+                  <svg viewBox="0 0 20 20" className={`w-full h-full ${isNightTime ? 'text-yellow-200/70' : 'text-yellow-300/60'}`}>
                     <path d="M10 2 Q15 6 10 12 Q5 6 10 2" fill="none" stroke="currentColor" strokeWidth="1"/>
                     <circle cx="10" cy="6" r="1.5" fill="currentColor" opacity="0.5"/>
                   </svg>
                 </div>
               </div>
-              <div className="absolute bottom-3 left-1/2 -translate-x-1/2 w-5 h-2.5 bg-gradient-to-b from-yellow-500 to-amber-700 rounded-b-sm border-t border-yellow-300/50" />
-              <div className="absolute -top-5 left-1/2 -translate-x-1/2 w-2.5 h-6 bg-gradient-to-b from-amber-50 via-amber-100 to-amber-200 rounded-t-sm shadow-md" />
-              <div className="absolute -top-6.5 left-1/2 -translate-x-1/2 w-0.5 h-2 bg-gradient-to-t from-gray-800 to-gray-600" />
-              <div className={`absolute -top-9 left-1/2 -translate-x-1/2 ${isNightTime ? 'opacity-100' : 'opacity-70'}`}>
-                <div className="w-3 h-5 bg-gradient-to-t from-orange-500 via-orange-400 to-yellow-200 rounded-full blur-[1px] animate-pulse" style={{ animationDelay: `${i * 0.35 + 0.2}s` }} />
+              {/* Bobeche (candle cup) - matches pilaster sconce style */}
+              <div className={`absolute bottom-3 left-1/2 -translate-x-1/2 w-5 h-2.5 bg-gradient-to-b from-yellow-400 to-amber-600 rounded-b-sm border-t-2 border-yellow-300/60 shadow-lg ${isNightTime ? 'brightness-110' : ''}`} />
+              {/* Candle body - standardized h-5 to match pilaster sconces */}
+              <div className="absolute -top-4 left-1/2 -translate-x-1/2 w-2.5 h-5 bg-gradient-to-b from-amber-50 via-amber-100 to-amber-200 rounded-t-sm shadow-md" />
+              {/* Wick - standardized color to match pilaster sconces */}
+              <div className="absolute -top-5 left-1/2 -translate-x-1/2 w-0.5 h-1.5 bg-gradient-to-t from-gray-700 to-gray-500" />
+              {/* Flame assembly - standardized to match pilaster sconces */}
+              <div className={`absolute -top-8 left-1/2 -translate-x-1/2 ${isNightTime ? 'opacity-100' : 'opacity-60'}`}>
+                {/* Flame halo - now present to match pilaster sconces */}
+                <div className="absolute -inset-2 bg-gradient-radial from-orange-400/30 via-orange-300/15 to-transparent rounded-full blur-md" />
+                {/* Flame - standardized h-4 and timing; offset +0.5s for organic variation like right pilaster */}
+                <div className="w-3 h-4 bg-gradient-to-t from-orange-500 via-orange-400 to-yellow-200 rounded-full blur-[1px] animate-pulse" style={{ animationDelay: `${i * 0.3 + 0.5}s`, animationDuration: '0.7s' }} />
               </div>
-              <div className={`absolute -top-6 left-1/2 -translate-x-1/2 w-12 h-12 bg-gradient-radial from-orange-400/40 via-amber-500/20 to-transparent rounded-full blur-lg ${isNightTime ? 'opacity-90' : 'opacity-40'}`} />
+              {/* Ambient glow - standardized blur-xl and opacity to match pilaster sconces */}
+              <div className={`absolute -top-5 left-1/2 -translate-x-1/2 w-12 h-12 bg-gradient-radial from-orange-400/40 via-amber-500/20 to-transparent rounded-full blur-xl ${isNightTime ? 'opacity-100' : 'opacity-40'}`} />
             </div>
           </div>
         ))}
