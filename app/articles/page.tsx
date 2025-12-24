@@ -1281,31 +1281,103 @@ export default function ArticlesPage() {
 
               {/* ====== OUTER ORNATE PILASTER BORDER (Left Edge) - Enhanced ====== */}
               <div className="absolute left-0 top-0 bottom-0 w-8 bg-gradient-to-r from-amber-800 via-amber-700 to-amber-800 z-10 border-r-2 border-amber-600/60 shadow-xl">
-                {/* Enhanced Corinthian capital with detailed acanthus leaves */}
-                <div className={`absolute top-0 left-0 right-0 h-14 bg-gradient-to-b from-amber-600 via-amber-700 to-amber-800 border-b-2 border-amber-500/50 ${isNightTime ? 'brightness-110' : ''}`}>
-                  <svg viewBox="0 0 32 56" className={`w-full h-full ${isNightTime ? 'text-amber-400' : 'text-amber-500/80'}`}>
-                    {/* Volutes (spiral scrolls) at top */}
-                    <ellipse cx="6" cy="6" rx="4" ry="3" fill="none" stroke="currentColor" strokeWidth="0.9"/>
-                    <path d="M6 9 Q6 12 10 14" fill="none" stroke="currentColor" strokeWidth="0.5"/>
-                    <ellipse cx="26" cy="6" rx="4" ry="3" fill="none" stroke="currentColor" strokeWidth="0.9"/>
-                    <path d="M26 9 Q26 12 22 14" fill="none" stroke="currentColor" strokeWidth="0.5"/>
-                    {/* Abacus plate */}
-                    <rect x="2" y="1" width="28" height="3" fill="none" stroke="currentColor" strokeWidth="0.4" opacity="0.5"/>
-                    {/* Acanthus leaves - main */}
-                    <path d="M16 52 Q6 40 6 28 Q11 34 16 28 Q21 34 26 28 Q26 40 16 52" fill="none" stroke="currentColor" strokeWidth="0.9"/>
-                    <path d="M16 16 Q10 26 10 38 M16 16 Q22 26 22 38" fill="none" stroke="currentColor" strokeWidth="0.6"/>
-                    {/* Caulicoli (leaf stems) */}
-                    <path d="M8 22 Q12 28 12 36" fill="none" stroke="currentColor" strokeWidth="0.5"/>
-                    <path d="M24 22 Q20 28 20 36" fill="none" stroke="currentColor" strokeWidth="0.5"/>
-                    {/* Central rosette */}
-                    <circle cx="16" cy="20" r="5" fill="none" stroke="currentColor" strokeWidth="0.8"/>
-                    <circle cx="16" cy="20" r="3" fill="none" stroke="currentColor" strokeWidth="0.5"/>
-                    <circle cx="16" cy="20" r="1.5" fill="currentColor" opacity="0.5"/>
-                    {/* Leaf tip details */}
-                    <path d="M10 44 Q13 40 16 44 Q19 40 22 44" fill="none" stroke="currentColor" strokeWidth="0.4"/>
+                {/* Architecturally Accurate Corinthian Capital */}
+                <div className={`absolute top-0 left-0 right-0 h-16 bg-gradient-to-b from-amber-600 via-amber-700 to-amber-800 border-b-2 border-amber-600/50 ${isNightTime ? 'brightness-110' : ''}`}>
+                  <svg viewBox="0 0 32 64" className={`w-full h-full ${isNightTime ? 'text-amber-400' : 'text-amber-500/80'}`} preserveAspectRatio="xMidYMid meet">
+                    {/* === ABACUS (Top plate with concave sides) === */}
+                    <path d="M1 0 L31 0 L31 4 Q24 5 16 5 Q8 5 1 4 Z" fill="currentColor" opacity="0.3" stroke="currentColor" strokeWidth="0.3"/>
+                    <path d="M2 2 L30 2" stroke="currentColor" strokeWidth="0.4" opacity="0.6"/>
+
+                    {/* === VOLUTES (Corner spirals) === */}
+                    {/* Left volute */}
+                    <path d="M3 6 Q1 6 1 8 Q1 10 3 10 Q5 10 5 8 Q5 7 4 7" fill="none" stroke="currentColor" strokeWidth="0.7"/>
+                    <circle cx="3.5" cy="8" r="1" fill="currentColor" opacity="0.4"/>
+                    {/* Right volute */}
+                    <path d="M29 6 Q31 6 31 8 Q31 10 29 10 Q27 10 27 8 Q27 7 28 7" fill="none" stroke="currentColor" strokeWidth="0.7"/>
+                    <circle cx="28.5" cy="8" r="1" fill="currentColor" opacity="0.4"/>
+
+                    {/* === HELICES (Small spirals under volutes) === */}
+                    <path d="M5 10 Q7 12 6 14 Q5 15 4 14" fill="none" stroke="currentColor" strokeWidth="0.5"/>
+                    <path d="M27 10 Q25 12 26 14 Q27 15 28 14" fill="none" stroke="currentColor" strokeWidth="0.5"/>
+
+                    {/* === CENTRAL FLEURON (Flower/rosette) === */}
+                    <circle cx="16" cy="12" r="3.5" fill="currentColor" opacity="0.15"/>
+                    <circle cx="16" cy="12" r="2.5" fill="none" stroke="currentColor" strokeWidth="0.5"/>
+                    <circle cx="16" cy="12" r="1.2" fill="currentColor" opacity="0.5"/>
+                    {/* Fleuron petals */}
+                    <path d="M16 8.5 Q17 10 16 11 Q15 10 16 8.5" fill="currentColor" opacity="0.3"/>
+                    <path d="M12.5 12 Q14 13 15 12 Q14 11 12.5 12" fill="currentColor" opacity="0.3"/>
+                    <path d="M19.5 12 Q18 13 17 12 Q18 11 19.5 12" fill="currentColor" opacity="0.3"/>
+                    <path d="M16 15.5 Q17 14 16 13 Q15 14 16 15.5" fill="currentColor" opacity="0.3"/>
+
+                    {/* === CAULICOLI (Stems emerging from leaves) === */}
+                    <path d="M7 14 Q8 18 6 22 Q5 24 6 26" fill="none" stroke="currentColor" strokeWidth="0.6"/>
+                    <path d="M25 14 Q24 18 26 22 Q27 24 26 26" fill="none" stroke="currentColor" strokeWidth="0.6"/>
+
+                    {/* === SECOND ROW ACANTHUS LEAVES (8 leaves) === */}
+                    {/* Left outer leaf */}
+                    <path d="M2 18 Q0 28 2 38 Q3 36 4 38 Q3 30 2 22" fill="currentColor" opacity="0.2"/>
+                    <path d="M2 20 Q1 28 2 36" fill="none" stroke="currentColor" strokeWidth="0.5"/>
+                    <path d="M2 24 Q3.5 26 2 28 M2 30 Q3.5 32 2 34" fill="none" stroke="currentColor" strokeWidth="0.3"/>
+
+                    {/* Left-center leaf */}
+                    <path d="M8 18 Q5 28 7 40 Q9 38 10 40 Q8 30 8 22" fill="currentColor" opacity="0.2"/>
+                    <path d="M8 20 Q6 30 7 38" fill="none" stroke="currentColor" strokeWidth="0.5"/>
+                    <path d="M7 26 Q9 28 7 30 M7 32 Q9 34 7 36" fill="none" stroke="currentColor" strokeWidth="0.3"/>
+
+                    {/* Center-left leaf */}
+                    <path d="M13 16 Q10 28 12 42 Q14 40 15 42 Q13 30 13 20" fill="currentColor" opacity="0.2"/>
+                    <path d="M13 18 Q11 30 12 40" fill="none" stroke="currentColor" strokeWidth="0.5"/>
+                    <path d="M12 28 Q14 30 12 32 M12 34 Q14 36 12 38" fill="none" stroke="currentColor" strokeWidth="0.3"/>
+
+                    {/* Center-right leaf */}
+                    <path d="M19 16 Q22 28 20 42 Q18 40 17 42 Q19 30 19 20" fill="currentColor" opacity="0.2"/>
+                    <path d="M19 18 Q21 30 20 40" fill="none" stroke="currentColor" strokeWidth="0.5"/>
+                    <path d="M20 28 Q18 30 20 32 M20 34 Q18 36 20 38" fill="none" stroke="currentColor" strokeWidth="0.3"/>
+
+                    {/* Right-center leaf */}
+                    <path d="M24 18 Q27 28 25 40 Q23 38 22 40 Q24 30 24 22" fill="currentColor" opacity="0.2"/>
+                    <path d="M24 20 Q26 30 25 38" fill="none" stroke="currentColor" strokeWidth="0.5"/>
+                    <path d="M25 26 Q23 28 25 30 M25 32 Q23 34 25 36" fill="none" stroke="currentColor" strokeWidth="0.3"/>
+
+                    {/* Right outer leaf */}
+                    <path d="M30 18 Q32 28 30 38 Q29 36 28 38 Q29 30 30 22" fill="currentColor" opacity="0.2"/>
+                    <path d="M30 20 Q31 28 30 36" fill="none" stroke="currentColor" strokeWidth="0.5"/>
+                    <path d="M30 24 Q28.5 26 30 28 M30 30 Q28.5 32 30 34" fill="none" stroke="currentColor" strokeWidth="0.3"/>
+
+                    {/* === FIRST ROW ACANTHUS LEAVES (Lower, larger leaves) === */}
+                    {/* Far left base leaf */}
+                    <path d="M3 38 Q0 48 3 58 Q5 54 6 58 Q4 48 4 42" fill="currentColor" opacity="0.25"/>
+                    <path d="M3 40 Q1 50 3 56" fill="none" stroke="currentColor" strokeWidth="0.6"/>
+                    <path d="M3 46 Q5 48 3 50 M3 52 Q5 54 3 56" fill="none" stroke="currentColor" strokeWidth="0.35"/>
+
+                    {/* Left base leaf */}
+                    <path d="M10 36 Q6 48 9 60 Q11 56 13 60 Q10 48 10 40" fill="currentColor" opacity="0.25"/>
+                    <path d="M10 38 Q7 50 9 58" fill="none" stroke="currentColor" strokeWidth="0.6"/>
+                    <path d="M9 46 Q11 48 9 50 M9 52 Q11 54 9 56" fill="none" stroke="currentColor" strokeWidth="0.35"/>
+
+                    {/* Center leaf (main) */}
+                    <path d="M16 34 Q12 48 15 62 Q16 58 17 62 Q20 48 16 38" fill="currentColor" opacity="0.3"/>
+                    <path d="M16 36 Q13 50 15 60" fill="none" stroke="currentColor" strokeWidth="0.7"/>
+                    <path d="M15 46 Q17 48 15 50 M15 52 Q17 54 15 56 M15 58 Q17 60 15 62" fill="none" stroke="currentColor" strokeWidth="0.4"/>
+
+                    {/* Right base leaf */}
+                    <path d="M22 36 Q26 48 23 60 Q21 56 19 60 Q22 48 22 40" fill="currentColor" opacity="0.25"/>
+                    <path d="M22 38 Q25 50 23 58" fill="none" stroke="currentColor" strokeWidth="0.6"/>
+                    <path d="M23 46 Q21 48 23 50 M23 52 Q21 54 23 56" fill="none" stroke="currentColor" strokeWidth="0.35"/>
+
+                    {/* Far right base leaf */}
+                    <path d="M29 38 Q32 48 29 58 Q27 54 26 58 Q28 48 28 42" fill="currentColor" opacity="0.25"/>
+                    <path d="M29 40 Q31 50 29 56" fill="none" stroke="currentColor" strokeWidth="0.6"/>
+                    <path d="M29 46 Q27 48 29 50 M29 52 Q27 54 29 56" fill="none" stroke="currentColor" strokeWidth="0.35"/>
+
+                    {/* === BELL (Kalathos) outline visible between leaves === */}
+                    <path d="M6 56 Q6 50 8 44 Q10 38 14 34 M26 56 Q26 50 24 44 Q22 38 18 34" fill="none" stroke="currentColor" strokeWidth="0.3" opacity="0.4"/>
                   </svg>
+                  {/* Depth shadow at bottom of capital */}
+                  <div className="absolute bottom-0 left-0 right-0 h-2 bg-gradient-to-t from-amber-900/40 to-transparent" />
                   {/* Light-aware highlight on capital */}
-                  <div className={`absolute inset-0 bg-gradient-to-b from-amber-700/25 to-transparent ${isNightTime ? 'opacity-40' : 'opacity-20'}`} />
+                  <div className={`absolute inset-0 bg-gradient-to-b from-amber-700/20 to-transparent ${isNightTime ? 'opacity-50' : 'opacity-25'}`} />
                 </div>
                 {/* Enhanced column shaft with deeper fluting */}
                 <div className="absolute top-16 bottom-12 left-0 right-0 overflow-hidden bg-gradient-to-b from-amber-750 via-amber-800 to-amber-750">
@@ -1336,31 +1408,71 @@ export default function ArticlesPage() {
 
               {/* ====== INNER ORNATE BORDER (Right Edge - facing content) with INTEGRATED SCONCES - Enhanced ====== */}
               <div className="absolute right-0 top-0 bottom-0 w-8 bg-gradient-to-l from-amber-800 via-amber-700 to-amber-800 z-10 border-l-2 border-amber-500/50 shadow-xl overflow-visible">
-                {/* Enhanced Corinthian capital with detailed acanthus leaves */}
-                <div className={`absolute top-0 left-0 right-0 h-14 bg-gradient-to-b from-amber-600 via-amber-700 to-amber-800 border-b-2 border-amber-500/50 ${isNightTime ? 'brightness-110' : ''}`}>
-                  <svg viewBox="0 0 32 56" className={`w-full h-full ${isNightTime ? 'text-amber-400' : 'text-amber-500/80'}`}>
-                    {/* Volutes (spiral scrolls) at top */}
-                    <ellipse cx="6" cy="6" rx="4" ry="3" fill="none" stroke="currentColor" strokeWidth="0.9"/>
-                    <path d="M6 9 Q6 12 10 14" fill="none" stroke="currentColor" strokeWidth="0.5"/>
-                    <ellipse cx="26" cy="6" rx="4" ry="3" fill="none" stroke="currentColor" strokeWidth="0.9"/>
-                    <path d="M26 9 Q26 12 22 14" fill="none" stroke="currentColor" strokeWidth="0.5"/>
-                    {/* Abacus plate */}
-                    <rect x="2" y="1" width="28" height="3" fill="none" stroke="currentColor" strokeWidth="0.4" opacity="0.5"/>
-                    {/* Acanthus leaves - main */}
-                    <path d="M16 52 Q6 40 6 28 Q11 34 16 28 Q21 34 26 28 Q26 40 16 52" fill="none" stroke="currentColor" strokeWidth="0.9"/>
-                    <path d="M16 16 Q10 26 10 38 M16 16 Q22 26 22 38" fill="none" stroke="currentColor" strokeWidth="0.6"/>
-                    {/* Caulicoli (leaf stems) */}
-                    <path d="M8 22 Q12 28 12 36" fill="none" stroke="currentColor" strokeWidth="0.5"/>
-                    <path d="M24 22 Q20 28 20 36" fill="none" stroke="currentColor" strokeWidth="0.5"/>
-                    {/* Central rosette */}
-                    <circle cx="16" cy="20" r="5" fill="none" stroke="currentColor" strokeWidth="0.8"/>
-                    <circle cx="16" cy="20" r="3" fill="none" stroke="currentColor" strokeWidth="0.5"/>
-                    <circle cx="16" cy="20" r="1.5" fill="currentColor" opacity="0.5"/>
-                    {/* Leaf tip details */}
-                    <path d="M10 44 Q13 40 16 44 Q19 40 22 44" fill="none" stroke="currentColor" strokeWidth="0.4"/>
+                {/* Architecturally Accurate Corinthian Capital */}
+                <div className={`absolute top-0 left-0 right-0 h-16 bg-gradient-to-b from-amber-600 via-amber-700 to-amber-800 border-b-2 border-amber-600/50 ${isNightTime ? 'brightness-110' : ''}`}>
+                  <svg viewBox="0 0 32 64" className={`w-full h-full ${isNightTime ? 'text-amber-400' : 'text-amber-500/80'}`} preserveAspectRatio="xMidYMid meet">
+                    {/* === ABACUS (Top plate with concave sides) === */}
+                    <path d="M1 0 L31 0 L31 4 Q24 5 16 5 Q8 5 1 4 Z" fill="currentColor" opacity="0.3" stroke="currentColor" strokeWidth="0.3"/>
+                    <path d="M2 2 L30 2" stroke="currentColor" strokeWidth="0.4" opacity="0.6"/>
+                    {/* === VOLUTES (Corner spirals) === */}
+                    <path d="M3 6 Q1 6 1 8 Q1 10 3 10 Q5 10 5 8 Q5 7 4 7" fill="none" stroke="currentColor" strokeWidth="0.7"/>
+                    <circle cx="3.5" cy="8" r="1" fill="currentColor" opacity="0.4"/>
+                    <path d="M29 6 Q31 6 31 8 Q31 10 29 10 Q27 10 27 8 Q27 7 28 7" fill="none" stroke="currentColor" strokeWidth="0.7"/>
+                    <circle cx="28.5" cy="8" r="1" fill="currentColor" opacity="0.4"/>
+                    {/* === HELICES === */}
+                    <path d="M5 10 Q7 12 6 14 Q5 15 4 14" fill="none" stroke="currentColor" strokeWidth="0.5"/>
+                    <path d="M27 10 Q25 12 26 14 Q27 15 28 14" fill="none" stroke="currentColor" strokeWidth="0.5"/>
+                    {/* === CENTRAL FLEURON === */}
+                    <circle cx="16" cy="12" r="3.5" fill="currentColor" opacity="0.15"/>
+                    <circle cx="16" cy="12" r="2.5" fill="none" stroke="currentColor" strokeWidth="0.5"/>
+                    <circle cx="16" cy="12" r="1.2" fill="currentColor" opacity="0.5"/>
+                    <path d="M16 8.5 Q17 10 16 11 Q15 10 16 8.5" fill="currentColor" opacity="0.3"/>
+                    <path d="M12.5 12 Q14 13 15 12 Q14 11 12.5 12" fill="currentColor" opacity="0.3"/>
+                    <path d="M19.5 12 Q18 13 17 12 Q18 11 19.5 12" fill="currentColor" opacity="0.3"/>
+                    <path d="M16 15.5 Q17 14 16 13 Q15 14 16 15.5" fill="currentColor" opacity="0.3"/>
+                    {/* === CAULICOLI === */}
+                    <path d="M7 14 Q8 18 6 22 Q5 24 6 26" fill="none" stroke="currentColor" strokeWidth="0.6"/>
+                    <path d="M25 14 Q24 18 26 22 Q27 24 26 26" fill="none" stroke="currentColor" strokeWidth="0.6"/>
+                    {/* === SECOND ROW ACANTHUS === */}
+                    <path d="M2 18 Q0 28 2 38 Q3 36 4 38 Q3 30 2 22" fill="currentColor" opacity="0.2"/>
+                    <path d="M2 20 Q1 28 2 36" fill="none" stroke="currentColor" strokeWidth="0.5"/>
+                    <path d="M2 24 Q3.5 26 2 28 M2 30 Q3.5 32 2 34" fill="none" stroke="currentColor" strokeWidth="0.3"/>
+                    <path d="M8 18 Q5 28 7 40 Q9 38 10 40 Q8 30 8 22" fill="currentColor" opacity="0.2"/>
+                    <path d="M8 20 Q6 30 7 38" fill="none" stroke="currentColor" strokeWidth="0.5"/>
+                    <path d="M7 26 Q9 28 7 30 M7 32 Q9 34 7 36" fill="none" stroke="currentColor" strokeWidth="0.3"/>
+                    <path d="M13 16 Q10 28 12 42 Q14 40 15 42 Q13 30 13 20" fill="currentColor" opacity="0.2"/>
+                    <path d="M13 18 Q11 30 12 40" fill="none" stroke="currentColor" strokeWidth="0.5"/>
+                    <path d="M12 28 Q14 30 12 32 M12 34 Q14 36 12 38" fill="none" stroke="currentColor" strokeWidth="0.3"/>
+                    <path d="M19 16 Q22 28 20 42 Q18 40 17 42 Q19 30 19 20" fill="currentColor" opacity="0.2"/>
+                    <path d="M19 18 Q21 30 20 40" fill="none" stroke="currentColor" strokeWidth="0.5"/>
+                    <path d="M20 28 Q18 30 20 32 M20 34 Q18 36 20 38" fill="none" stroke="currentColor" strokeWidth="0.3"/>
+                    <path d="M24 18 Q27 28 25 40 Q23 38 22 40 Q24 30 24 22" fill="currentColor" opacity="0.2"/>
+                    <path d="M24 20 Q26 30 25 38" fill="none" stroke="currentColor" strokeWidth="0.5"/>
+                    <path d="M25 26 Q23 28 25 30 M25 32 Q23 34 25 36" fill="none" stroke="currentColor" strokeWidth="0.3"/>
+                    <path d="M30 18 Q32 28 30 38 Q29 36 28 38 Q29 30 30 22" fill="currentColor" opacity="0.2"/>
+                    <path d="M30 20 Q31 28 30 36" fill="none" stroke="currentColor" strokeWidth="0.5"/>
+                    <path d="M30 24 Q28.5 26 30 28 M30 30 Q28.5 32 30 34" fill="none" stroke="currentColor" strokeWidth="0.3"/>
+                    {/* === FIRST ROW ACANTHUS === */}
+                    <path d="M3 38 Q0 48 3 58 Q5 54 6 58 Q4 48 4 42" fill="currentColor" opacity="0.25"/>
+                    <path d="M3 40 Q1 50 3 56" fill="none" stroke="currentColor" strokeWidth="0.6"/>
+                    <path d="M3 46 Q5 48 3 50 M3 52 Q5 54 3 56" fill="none" stroke="currentColor" strokeWidth="0.35"/>
+                    <path d="M10 36 Q6 48 9 60 Q11 56 13 60 Q10 48 10 40" fill="currentColor" opacity="0.25"/>
+                    <path d="M10 38 Q7 50 9 58" fill="none" stroke="currentColor" strokeWidth="0.6"/>
+                    <path d="M9 46 Q11 48 9 50 M9 52 Q11 54 9 56" fill="none" stroke="currentColor" strokeWidth="0.35"/>
+                    <path d="M16 34 Q12 48 15 62 Q16 58 17 62 Q20 48 16 38" fill="currentColor" opacity="0.3"/>
+                    <path d="M16 36 Q13 50 15 60" fill="none" stroke="currentColor" strokeWidth="0.7"/>
+                    <path d="M15 46 Q17 48 15 50 M15 52 Q17 54 15 56 M15 58 Q17 60 15 62" fill="none" stroke="currentColor" strokeWidth="0.4"/>
+                    <path d="M22 36 Q26 48 23 60 Q21 56 19 60 Q22 48 22 40" fill="currentColor" opacity="0.25"/>
+                    <path d="M22 38 Q25 50 23 58" fill="none" stroke="currentColor" strokeWidth="0.6"/>
+                    <path d="M23 46 Q21 48 23 50 M23 52 Q21 54 23 56" fill="none" stroke="currentColor" strokeWidth="0.35"/>
+                    <path d="M29 38 Q32 48 29 58 Q27 54 26 58 Q28 48 28 42" fill="currentColor" opacity="0.25"/>
+                    <path d="M29 40 Q31 50 29 56" fill="none" stroke="currentColor" strokeWidth="0.6"/>
+                    <path d="M29 46 Q27 48 29 50 M29 52 Q27 54 29 56" fill="none" stroke="currentColor" strokeWidth="0.35"/>
+                    {/* === BELL outline === */}
+                    <path d="M6 56 Q6 50 8 44 Q10 38 14 34 M26 56 Q26 50 24 44 Q22 38 18 34" fill="none" stroke="currentColor" strokeWidth="0.3" opacity="0.4"/>
                   </svg>
-                  {/* Light-aware highlight on capital */}
-                  <div className={`absolute inset-0 bg-gradient-to-b from-amber-700/25 to-transparent ${isNightTime ? 'opacity-40' : 'opacity-20'}`} />
+                  <div className="absolute bottom-0 left-0 right-0 h-2 bg-gradient-to-t from-amber-900/40 to-transparent" />
+                  <div className={`absolute inset-0 bg-gradient-to-b from-amber-700/20 to-transparent ${isNightTime ? 'opacity-50' : 'opacity-25'}`} />
                 </div>
                 {/* Enhanced column shaft with deeper fluting */}
                 <div className="absolute top-16 bottom-12 left-0 right-0 bg-gradient-to-b from-amber-750 via-amber-800 to-amber-750 overflow-hidden">
@@ -1760,31 +1872,71 @@ export default function ArticlesPage() {
 
               {/* ====== OUTER ORNATE PILASTER BORDER (Right Edge) - Enhanced ====== */}
               <div className="absolute right-0 top-0 bottom-0 w-8 bg-gradient-to-l from-amber-800 via-amber-700 to-amber-800 z-10 border-l-2 border-amber-600/60 shadow-xl">
-                {/* Enhanced Corinthian capital with detailed acanthus leaves */}
-                <div className={`absolute top-0 left-0 right-0 h-14 bg-gradient-to-b from-amber-600 via-amber-700 to-amber-800 border-b-2 border-amber-500/50 ${isNightTime ? 'brightness-110' : ''}`}>
-                  <svg viewBox="0 0 32 56" className={`w-full h-full ${isNightTime ? 'text-amber-400' : 'text-amber-500/80'}`}>
-                    {/* Volutes (spiral scrolls) at top */}
-                    <ellipse cx="6" cy="6" rx="4" ry="3" fill="none" stroke="currentColor" strokeWidth="0.9"/>
-                    <path d="M6 9 Q6 12 10 14" fill="none" stroke="currentColor" strokeWidth="0.5"/>
-                    <ellipse cx="26" cy="6" rx="4" ry="3" fill="none" stroke="currentColor" strokeWidth="0.9"/>
-                    <path d="M26 9 Q26 12 22 14" fill="none" stroke="currentColor" strokeWidth="0.5"/>
-                    {/* Abacus plate */}
-                    <rect x="2" y="1" width="28" height="3" fill="none" stroke="currentColor" strokeWidth="0.4" opacity="0.5"/>
-                    {/* Acanthus leaves - main */}
-                    <path d="M16 52 Q6 40 6 28 Q11 34 16 28 Q21 34 26 28 Q26 40 16 52" fill="none" stroke="currentColor" strokeWidth="0.9"/>
-                    <path d="M16 16 Q10 26 10 38 M16 16 Q22 26 22 38" fill="none" stroke="currentColor" strokeWidth="0.6"/>
-                    {/* Caulicoli (leaf stems) */}
-                    <path d="M8 22 Q12 28 12 36" fill="none" stroke="currentColor" strokeWidth="0.5"/>
-                    <path d="M24 22 Q20 28 20 36" fill="none" stroke="currentColor" strokeWidth="0.5"/>
-                    {/* Central rosette */}
-                    <circle cx="16" cy="20" r="5" fill="none" stroke="currentColor" strokeWidth="0.8"/>
-                    <circle cx="16" cy="20" r="3" fill="none" stroke="currentColor" strokeWidth="0.5"/>
-                    <circle cx="16" cy="20" r="1.5" fill="currentColor" opacity="0.5"/>
-                    {/* Leaf tip details */}
-                    <path d="M10 44 Q13 40 16 44 Q19 40 22 44" fill="none" stroke="currentColor" strokeWidth="0.4"/>
+                {/* Architecturally Accurate Corinthian Capital */}
+                <div className={`absolute top-0 left-0 right-0 h-16 bg-gradient-to-b from-amber-600 via-amber-700 to-amber-800 border-b-2 border-amber-600/50 ${isNightTime ? 'brightness-110' : ''}`}>
+                  <svg viewBox="0 0 32 64" className={`w-full h-full ${isNightTime ? 'text-amber-400' : 'text-amber-500/80'}`} preserveAspectRatio="xMidYMid meet">
+                    {/* === ABACUS === */}
+                    <path d="M1 0 L31 0 L31 4 Q24 5 16 5 Q8 5 1 4 Z" fill="currentColor" opacity="0.3" stroke="currentColor" strokeWidth="0.3"/>
+                    <path d="M2 2 L30 2" stroke="currentColor" strokeWidth="0.4" opacity="0.6"/>
+                    {/* === VOLUTES === */}
+                    <path d="M3 6 Q1 6 1 8 Q1 10 3 10 Q5 10 5 8 Q5 7 4 7" fill="none" stroke="currentColor" strokeWidth="0.7"/>
+                    <circle cx="3.5" cy="8" r="1" fill="currentColor" opacity="0.4"/>
+                    <path d="M29 6 Q31 6 31 8 Q31 10 29 10 Q27 10 27 8 Q27 7 28 7" fill="none" stroke="currentColor" strokeWidth="0.7"/>
+                    <circle cx="28.5" cy="8" r="1" fill="currentColor" opacity="0.4"/>
+                    {/* === HELICES === */}
+                    <path d="M5 10 Q7 12 6 14 Q5 15 4 14" fill="none" stroke="currentColor" strokeWidth="0.5"/>
+                    <path d="M27 10 Q25 12 26 14 Q27 15 28 14" fill="none" stroke="currentColor" strokeWidth="0.5"/>
+                    {/* === FLEURON === */}
+                    <circle cx="16" cy="12" r="3.5" fill="currentColor" opacity="0.15"/>
+                    <circle cx="16" cy="12" r="2.5" fill="none" stroke="currentColor" strokeWidth="0.5"/>
+                    <circle cx="16" cy="12" r="1.2" fill="currentColor" opacity="0.5"/>
+                    <path d="M16 8.5 Q17 10 16 11 Q15 10 16 8.5" fill="currentColor" opacity="0.3"/>
+                    <path d="M12.5 12 Q14 13 15 12 Q14 11 12.5 12" fill="currentColor" opacity="0.3"/>
+                    <path d="M19.5 12 Q18 13 17 12 Q18 11 19.5 12" fill="currentColor" opacity="0.3"/>
+                    <path d="M16 15.5 Q17 14 16 13 Q15 14 16 15.5" fill="currentColor" opacity="0.3"/>
+                    {/* === CAULICOLI === */}
+                    <path d="M7 14 Q8 18 6 22 Q5 24 6 26" fill="none" stroke="currentColor" strokeWidth="0.6"/>
+                    <path d="M25 14 Q24 18 26 22 Q27 24 26 26" fill="none" stroke="currentColor" strokeWidth="0.6"/>
+                    {/* === SECOND ROW ACANTHUS === */}
+                    <path d="M2 18 Q0 28 2 38 Q3 36 4 38 Q3 30 2 22" fill="currentColor" opacity="0.2"/>
+                    <path d="M2 20 Q1 28 2 36" fill="none" stroke="currentColor" strokeWidth="0.5"/>
+                    <path d="M2 24 Q3.5 26 2 28 M2 30 Q3.5 32 2 34" fill="none" stroke="currentColor" strokeWidth="0.3"/>
+                    <path d="M8 18 Q5 28 7 40" fill="currentColor" opacity="0.2"/>
+                    <path d="M8 20 Q6 30 7 38" fill="none" stroke="currentColor" strokeWidth="0.5"/>
+                    <path d="M7 26 Q9 28 7 30 M7 32 Q9 34 7 36" fill="none" stroke="currentColor" strokeWidth="0.3"/>
+                    <path d="M13 16 Q10 28 12 42" fill="currentColor" opacity="0.2"/>
+                    <path d="M13 18 Q11 30 12 40" fill="none" stroke="currentColor" strokeWidth="0.5"/>
+                    <path d="M12 28 Q14 30 12 32 M12 34 Q14 36 12 38" fill="none" stroke="currentColor" strokeWidth="0.3"/>
+                    <path d="M19 16 Q22 28 20 42" fill="currentColor" opacity="0.2"/>
+                    <path d="M19 18 Q21 30 20 40" fill="none" stroke="currentColor" strokeWidth="0.5"/>
+                    <path d="M20 28 Q18 30 20 32 M20 34 Q18 36 20 38" fill="none" stroke="currentColor" strokeWidth="0.3"/>
+                    <path d="M24 18 Q27 28 25 40" fill="currentColor" opacity="0.2"/>
+                    <path d="M24 20 Q26 30 25 38" fill="none" stroke="currentColor" strokeWidth="0.5"/>
+                    <path d="M25 26 Q23 28 25 30 M25 32 Q23 34 25 36" fill="none" stroke="currentColor" strokeWidth="0.3"/>
+                    <path d="M30 18 Q32 28 30 38" fill="currentColor" opacity="0.2"/>
+                    <path d="M30 20 Q31 28 30 36" fill="none" stroke="currentColor" strokeWidth="0.5"/>
+                    <path d="M30 24 Q28.5 26 30 28 M30 30 Q28.5 32 30 34" fill="none" stroke="currentColor" strokeWidth="0.3"/>
+                    {/* === FIRST ROW ACANTHUS === */}
+                    <path d="M3 38 Q0 48 3 58" fill="currentColor" opacity="0.25"/>
+                    <path d="M3 40 Q1 50 3 56" fill="none" stroke="currentColor" strokeWidth="0.6"/>
+                    <path d="M3 46 Q5 48 3 50 M3 52 Q5 54 3 56" fill="none" stroke="currentColor" strokeWidth="0.35"/>
+                    <path d="M10 36 Q6 48 9 60" fill="currentColor" opacity="0.25"/>
+                    <path d="M10 38 Q7 50 9 58" fill="none" stroke="currentColor" strokeWidth="0.6"/>
+                    <path d="M9 46 Q11 48 9 50 M9 52 Q11 54 9 56" fill="none" stroke="currentColor" strokeWidth="0.35"/>
+                    <path d="M16 34 Q12 48 15 62 Q16 58 17 62 Q20 48 16 38" fill="currentColor" opacity="0.3"/>
+                    <path d="M16 36 Q13 50 15 60" fill="none" stroke="currentColor" strokeWidth="0.7"/>
+                    <path d="M15 46 Q17 48 15 50 M15 52 Q17 54 15 56 M15 58 Q17 60 15 62" fill="none" stroke="currentColor" strokeWidth="0.4"/>
+                    <path d="M22 36 Q26 48 23 60" fill="currentColor" opacity="0.25"/>
+                    <path d="M22 38 Q25 50 23 58" fill="none" stroke="currentColor" strokeWidth="0.6"/>
+                    <path d="M23 46 Q21 48 23 50 M23 52 Q21 54 23 56" fill="none" stroke="currentColor" strokeWidth="0.35"/>
+                    <path d="M29 38 Q32 48 29 58" fill="currentColor" opacity="0.25"/>
+                    <path d="M29 40 Q31 50 29 56" fill="none" stroke="currentColor" strokeWidth="0.6"/>
+                    <path d="M29 46 Q27 48 29 50 M29 52 Q27 54 29 56" fill="none" stroke="currentColor" strokeWidth="0.35"/>
+                    {/* === BELL outline === */}
+                    <path d="M6 56 Q6 50 8 44 Q10 38 14 34 M26 56 Q26 50 24 44 Q22 38 18 34" fill="none" stroke="currentColor" strokeWidth="0.3" opacity="0.4"/>
                   </svg>
-                  {/* Light-aware highlight on capital */}
-                  <div className={`absolute inset-0 bg-gradient-to-b from-amber-700/25 to-transparent ${isNightTime ? 'opacity-40' : 'opacity-20'}`} />
+                  <div className="absolute bottom-0 left-0 right-0 h-2 bg-gradient-to-t from-amber-900/40 to-transparent" />
+                  <div className={`absolute inset-0 bg-gradient-to-b from-amber-700/20 to-transparent ${isNightTime ? 'opacity-50' : 'opacity-25'}`} />
                 </div>
                 {/* Enhanced column shaft with deeper fluting */}
                 <div className="absolute top-16 bottom-12 left-0 right-0 overflow-hidden bg-gradient-to-b from-amber-750 via-amber-800 to-amber-750">
@@ -1815,31 +1967,71 @@ export default function ArticlesPage() {
 
               {/* ====== INNER ORNATE BORDER (Left Edge - facing content) with INTEGRATED SCONCES - Enhanced ====== */}
               <div className="absolute left-0 top-0 bottom-0 w-8 bg-gradient-to-r from-amber-800 via-amber-700 to-amber-800 z-10 border-r-2 border-amber-500/50 shadow-xl overflow-visible">
-                {/* Enhanced Corinthian capital with detailed acanthus leaves */}
-                <div className={`absolute top-0 left-0 right-0 h-14 bg-gradient-to-b from-amber-600 via-amber-700 to-amber-800 border-b-2 border-amber-500/50 ${isNightTime ? 'brightness-110' : ''}`}>
-                  <svg viewBox="0 0 32 56" className={`w-full h-full ${isNightTime ? 'text-amber-400' : 'text-amber-500/80'}`}>
-                    {/* Volutes (spiral scrolls) at top */}
-                    <ellipse cx="6" cy="6" rx="4" ry="3" fill="none" stroke="currentColor" strokeWidth="0.9"/>
-                    <path d="M6 9 Q6 12 10 14" fill="none" stroke="currentColor" strokeWidth="0.5"/>
-                    <ellipse cx="26" cy="6" rx="4" ry="3" fill="none" stroke="currentColor" strokeWidth="0.9"/>
-                    <path d="M26 9 Q26 12 22 14" fill="none" stroke="currentColor" strokeWidth="0.5"/>
-                    {/* Abacus plate */}
-                    <rect x="2" y="1" width="28" height="3" fill="none" stroke="currentColor" strokeWidth="0.4" opacity="0.5"/>
-                    {/* Acanthus leaves - main */}
-                    <path d="M16 52 Q6 40 6 28 Q11 34 16 28 Q21 34 26 28 Q26 40 16 52" fill="none" stroke="currentColor" strokeWidth="0.9"/>
-                    <path d="M16 16 Q10 26 10 38 M16 16 Q22 26 22 38" fill="none" stroke="currentColor" strokeWidth="0.6"/>
-                    {/* Caulicoli (leaf stems) */}
-                    <path d="M8 22 Q12 28 12 36" fill="none" stroke="currentColor" strokeWidth="0.5"/>
-                    <path d="M24 22 Q20 28 20 36" fill="none" stroke="currentColor" strokeWidth="0.5"/>
-                    {/* Central rosette */}
-                    <circle cx="16" cy="20" r="5" fill="none" stroke="currentColor" strokeWidth="0.8"/>
-                    <circle cx="16" cy="20" r="3" fill="none" stroke="currentColor" strokeWidth="0.5"/>
-                    <circle cx="16" cy="20" r="1.5" fill="currentColor" opacity="0.5"/>
-                    {/* Leaf tip details */}
-                    <path d="M10 44 Q13 40 16 44 Q19 40 22 44" fill="none" stroke="currentColor" strokeWidth="0.4"/>
+                {/* Architecturally Accurate Corinthian Capital */}
+                <div className={`absolute top-0 left-0 right-0 h-16 bg-gradient-to-b from-amber-600 via-amber-700 to-amber-800 border-b-2 border-amber-600/50 ${isNightTime ? 'brightness-110' : ''}`}>
+                  <svg viewBox="0 0 32 64" className={`w-full h-full ${isNightTime ? 'text-amber-400' : 'text-amber-500/80'}`} preserveAspectRatio="xMidYMid meet">
+                    {/* === ABACUS === */}
+                    <path d="M1 0 L31 0 L31 4 Q24 5 16 5 Q8 5 1 4 Z" fill="currentColor" opacity="0.3" stroke="currentColor" strokeWidth="0.3"/>
+                    <path d="M2 2 L30 2" stroke="currentColor" strokeWidth="0.4" opacity="0.6"/>
+                    {/* === VOLUTES === */}
+                    <path d="M3 6 Q1 6 1 8 Q1 10 3 10 Q5 10 5 8 Q5 7 4 7" fill="none" stroke="currentColor" strokeWidth="0.7"/>
+                    <circle cx="3.5" cy="8" r="1" fill="currentColor" opacity="0.4"/>
+                    <path d="M29 6 Q31 6 31 8 Q31 10 29 10 Q27 10 27 8 Q27 7 28 7" fill="none" stroke="currentColor" strokeWidth="0.7"/>
+                    <circle cx="28.5" cy="8" r="1" fill="currentColor" opacity="0.4"/>
+                    {/* === HELICES === */}
+                    <path d="M5 10 Q7 12 6 14 Q5 15 4 14" fill="none" stroke="currentColor" strokeWidth="0.5"/>
+                    <path d="M27 10 Q25 12 26 14 Q27 15 28 14" fill="none" stroke="currentColor" strokeWidth="0.5"/>
+                    {/* === FLEURON === */}
+                    <circle cx="16" cy="12" r="3.5" fill="currentColor" opacity="0.15"/>
+                    <circle cx="16" cy="12" r="2.5" fill="none" stroke="currentColor" strokeWidth="0.5"/>
+                    <circle cx="16" cy="12" r="1.2" fill="currentColor" opacity="0.5"/>
+                    <path d="M16 8.5 Q17 10 16 11 Q15 10 16 8.5" fill="currentColor" opacity="0.3"/>
+                    <path d="M12.5 12 Q14 13 15 12 Q14 11 12.5 12" fill="currentColor" opacity="0.3"/>
+                    <path d="M19.5 12 Q18 13 17 12 Q18 11 19.5 12" fill="currentColor" opacity="0.3"/>
+                    <path d="M16 15.5 Q17 14 16 13 Q15 14 16 15.5" fill="currentColor" opacity="0.3"/>
+                    {/* === CAULICOLI === */}
+                    <path d="M7 14 Q8 18 6 22 Q5 24 6 26" fill="none" stroke="currentColor" strokeWidth="0.6"/>
+                    <path d="M25 14 Q24 18 26 22 Q27 24 26 26" fill="none" stroke="currentColor" strokeWidth="0.6"/>
+                    {/* === SECOND ROW ACANTHUS === */}
+                    <path d="M2 18 Q0 28 2 38 Q3 36 4 38 Q3 30 2 22" fill="currentColor" opacity="0.2"/>
+                    <path d="M2 20 Q1 28 2 36" fill="none" stroke="currentColor" strokeWidth="0.5"/>
+                    <path d="M2 24 Q3.5 26 2 28 M2 30 Q3.5 32 2 34" fill="none" stroke="currentColor" strokeWidth="0.3"/>
+                    <path d="M8 18 Q5 28 7 40" fill="currentColor" opacity="0.2"/>
+                    <path d="M8 20 Q6 30 7 38" fill="none" stroke="currentColor" strokeWidth="0.5"/>
+                    <path d="M7 26 Q9 28 7 30 M7 32 Q9 34 7 36" fill="none" stroke="currentColor" strokeWidth="0.3"/>
+                    <path d="M13 16 Q10 28 12 42" fill="currentColor" opacity="0.2"/>
+                    <path d="M13 18 Q11 30 12 40" fill="none" stroke="currentColor" strokeWidth="0.5"/>
+                    <path d="M12 28 Q14 30 12 32 M12 34 Q14 36 12 38" fill="none" stroke="currentColor" strokeWidth="0.3"/>
+                    <path d="M19 16 Q22 28 20 42" fill="currentColor" opacity="0.2"/>
+                    <path d="M19 18 Q21 30 20 40" fill="none" stroke="currentColor" strokeWidth="0.5"/>
+                    <path d="M20 28 Q18 30 20 32 M20 34 Q18 36 20 38" fill="none" stroke="currentColor" strokeWidth="0.3"/>
+                    <path d="M24 18 Q27 28 25 40" fill="currentColor" opacity="0.2"/>
+                    <path d="M24 20 Q26 30 25 38" fill="none" stroke="currentColor" strokeWidth="0.5"/>
+                    <path d="M25 26 Q23 28 25 30 M25 32 Q23 34 25 36" fill="none" stroke="currentColor" strokeWidth="0.3"/>
+                    <path d="M30 18 Q32 28 30 38" fill="currentColor" opacity="0.2"/>
+                    <path d="M30 20 Q31 28 30 36" fill="none" stroke="currentColor" strokeWidth="0.5"/>
+                    <path d="M30 24 Q28.5 26 30 28 M30 30 Q28.5 32 30 34" fill="none" stroke="currentColor" strokeWidth="0.3"/>
+                    {/* === FIRST ROW ACANTHUS === */}
+                    <path d="M3 38 Q0 48 3 58" fill="currentColor" opacity="0.25"/>
+                    <path d="M3 40 Q1 50 3 56" fill="none" stroke="currentColor" strokeWidth="0.6"/>
+                    <path d="M3 46 Q5 48 3 50 M3 52 Q5 54 3 56" fill="none" stroke="currentColor" strokeWidth="0.35"/>
+                    <path d="M10 36 Q6 48 9 60" fill="currentColor" opacity="0.25"/>
+                    <path d="M10 38 Q7 50 9 58" fill="none" stroke="currentColor" strokeWidth="0.6"/>
+                    <path d="M9 46 Q11 48 9 50 M9 52 Q11 54 9 56" fill="none" stroke="currentColor" strokeWidth="0.35"/>
+                    <path d="M16 34 Q12 48 15 62 Q16 58 17 62 Q20 48 16 38" fill="currentColor" opacity="0.3"/>
+                    <path d="M16 36 Q13 50 15 60" fill="none" stroke="currentColor" strokeWidth="0.7"/>
+                    <path d="M15 46 Q17 48 15 50 M15 52 Q17 54 15 56 M15 58 Q17 60 15 62" fill="none" stroke="currentColor" strokeWidth="0.4"/>
+                    <path d="M22 36 Q26 48 23 60" fill="currentColor" opacity="0.25"/>
+                    <path d="M22 38 Q25 50 23 58" fill="none" stroke="currentColor" strokeWidth="0.6"/>
+                    <path d="M23 46 Q21 48 23 50 M23 52 Q21 54 23 56" fill="none" stroke="currentColor" strokeWidth="0.35"/>
+                    <path d="M29 38 Q32 48 29 58" fill="currentColor" opacity="0.25"/>
+                    <path d="M29 40 Q31 50 29 56" fill="none" stroke="currentColor" strokeWidth="0.6"/>
+                    <path d="M29 46 Q27 48 29 50 M29 52 Q27 54 29 56" fill="none" stroke="currentColor" strokeWidth="0.35"/>
+                    {/* === BELL outline === */}
+                    <path d="M6 56 Q6 50 8 44 Q10 38 14 34 M26 56 Q26 50 24 44 Q22 38 18 34" fill="none" stroke="currentColor" strokeWidth="0.3" opacity="0.4"/>
                   </svg>
-                  {/* Light-aware highlight on capital */}
-                  <div className={`absolute inset-0 bg-gradient-to-b from-amber-700/25 to-transparent ${isNightTime ? 'opacity-40' : 'opacity-20'}`} />
+                  <div className="absolute bottom-0 left-0 right-0 h-2 bg-gradient-to-t from-amber-900/40 to-transparent" />
+                  <div className={`absolute inset-0 bg-gradient-to-b from-amber-700/20 to-transparent ${isNightTime ? 'opacity-50' : 'opacity-25'}`} />
                 </div>
                 {/* Enhanced column shaft with deeper fluting */}
                 <div className="absolute top-16 bottom-12 left-0 right-0 bg-gradient-to-b from-amber-750 via-amber-800 to-amber-750 overflow-hidden">
