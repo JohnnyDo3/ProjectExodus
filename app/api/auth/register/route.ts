@@ -4,33 +4,20 @@ import bcrypt from 'bcryptjs'
 import { z } from 'zod'
 import { rateLimit, rateLimitResponse } from '@/lib/rate-limit'
 
-// List of common disposable/temporary email domains to block
+// List of known disposable/temporary email domains to block bots
 const DISPOSABLE_EMAIL_DOMAINS = [
   'tempmail.com', 'throwaway.email', 'guerrillamail.com', 'mailinator.com',
   '10minutemail.com', 'temp-mail.org', 'fakeinbox.com', 'yopmail.com',
-  'getnada.com', 'dispostable.com', 'trashmail.com', 'maildrop.cc'
+  'getnada.com', 'dispostable.com', 'trashmail.com', 'maildrop.cc',
+  'guerrillamail.info', 'sharklasers.com', 'grr.la', 'guerrillamail.net'
 ]
 
-// Custom email validation that checks for real email patterns
-const validateEmail = (email: string): boolean => {
-  // Basic format check
-  const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/
-  if (!emailRegex.test(email)) return false
-
+// Simple bot-resistant email validation
+const isNotDisposableEmail = (email: string): boolean => {
   const domain = email.split('@')[1]?.toLowerCase()
   if (!domain) return false
-
-  // Check for disposable email domains
-  if (DISPOSABLE_EMAIL_DOMAINS.some(d => domain.includes(d))) return false
-
-  // Ensure domain has valid TLD (at least 2 chars)
-  const tld = domain.split('.').pop()
-  if (!tld || tld.length < 2) return false
-
-  // Block obviously fake patterns
-  if (domain.includes('test') && !domain.includes('gmail') && !domain.includes('outlook')) return false
-
-  return true
+  // Only block known disposable email services
+  return !DISPOSABLE_EMAIL_DOMAINS.some(d => domain.includes(d))
 }
 
 const registerSchema = z.object({
@@ -39,7 +26,7 @@ const registerSchema = z.object({
     .email('Invalid email address')
     .toLowerCase()
     .trim()
-    .refine(validateEmail, 'Please use a valid, non-disposable email address'),
+    .refine(isNotDisposableEmail, 'Disposable email addresses are not allowed'),
   password: z.string()
     .min(12, 'Password must be at least 12 characters')
     .max(100)

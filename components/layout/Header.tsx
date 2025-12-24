@@ -269,7 +269,7 @@ export function Header() {
                                 title="Sign in to access"
                               >
                                 <Lock className="w-4 h-4 flex-shrink-0" />
-                                <span className="text-sm font-semibold truncate">{menuItem.label}</span>
+                                <span className="text-sm font-semibold">{menuItem.label}</span>
                               </div>
                             ) : (
                               <Link
@@ -279,7 +279,7 @@ export function Header() {
                                 onClick={() => setLearnMenuOpen(false)}
                               >
                                 <GraduationCap className="w-4 h-4 flex-shrink-0" />
-                                <span className="truncate">{menuItem.label}</span>
+                                <span>{menuItem.label}</span>
                               </Link>
                             )
                           })}

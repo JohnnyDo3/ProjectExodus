@@ -1738,6 +1738,27 @@ export default function ArticlesPage() {
                           </div>
                         )
                       })}
+                      {/* Ghost scrolls - transparent tan, filling the shelf (skip first one near candle) */}
+                      {Array.from({ length: Math.max(0, 6 - shelfArticles.length) }).map((_, i) => {
+                        // Skip the first ghost scroll on each shelf as it's near the candle
+                        if (i === 0) return null
+                        return (
+                          <div key={`ghost-left-${shelfIndex}-${i}`} className="w-4 h-12 relative opacity-20 hover:opacity-30 transition-opacity">
+                            {/* Ghost scroll body */}
+                            <div className="absolute inset-x-0.5 top-2 bottom-2 bg-amber-600/15 rounded-sm border border-amber-600/25" />
+                            {/* Top rod */}
+                            <div className="absolute top-0 left-0 right-0 h-2 bg-amber-600/20 rounded-t-sm border border-amber-600/30" />
+                            {/* Bottom rod */}
+                            <div className="absolute bottom-0 left-0 right-0 h-2 bg-amber-600/20 rounded-b-sm border border-amber-600/30" />
+                            {/* Subtle text lines */}
+                            <div className="absolute inset-x-1 top-3 bottom-3 flex flex-col justify-center gap-0.5">
+                              <div className="h-px bg-amber-600/20" />
+                              <div className="h-px bg-amber-600/15 w-3/4" />
+                              <div className="h-px bg-amber-600/20" />
+                            </div>
+                          </div>
+                        )
+                      })}
                     </div>
                   </div>
                 )
@@ -2145,6 +2166,27 @@ export default function ArticlesPage() {
 
                     {/* Interactive article scrolls */}
                     <div className="absolute bottom-4 left-1 right-1 flex items-end justify-center gap-1 h-16">
+                      {/* Ghost scrolls - transparent tan, filling the shelf (skip first one near candle) */}
+                      {Array.from({ length: Math.max(0, 6 - shelfArticles.length) }).map((_, i) => {
+                        // Skip the first ghost scroll on each shelf as it's near the candle
+                        if (i === 0) return null
+                        return (
+                          <div key={`ghost-right-${shelfIndex}-${i}`} className="w-4 h-12 relative opacity-20 hover:opacity-30 transition-opacity">
+                            {/* Ghost scroll body */}
+                            <div className="absolute inset-x-0.5 top-2 bottom-2 bg-amber-600/15 rounded-sm border border-amber-600/25" />
+                            {/* Top rod */}
+                            <div className="absolute top-0 left-0 right-0 h-2 bg-amber-600/20 rounded-t-sm border border-amber-600/30" />
+                            {/* Bottom rod */}
+                            <div className="absolute bottom-0 left-0 right-0 h-2 bg-amber-600/20 rounded-b-sm border border-amber-600/30" />
+                            {/* Subtle text lines */}
+                            <div className="absolute inset-x-1 top-3 bottom-3 flex flex-col justify-center gap-0.5">
+                              <div className="h-px bg-amber-600/20" />
+                              <div className="h-px bg-amber-600/15 w-3/4" />
+                              <div className="h-px bg-amber-600/20" />
+                            </div>
+                          </div>
+                        )
+                      })}
                       {shelfArticles.map((article, i) => {
                         const colors = scrollColors[i % 2]
                         const isHovered = hoveredBook === article.id
@@ -3773,7 +3815,7 @@ export default function ArticlesPage() {
                       <Link href={`/articles/${article.slug}`} className="block">
                         <button className="w-full py-3 bg-gradient-to-r from-amber-700 via-amber-600 to-amber-700 hover:from-amber-600 hover:via-amber-500 hover:to-amber-600 text-white font-bold rounded-lg shadow-lg border-2 border-amber-500/40 transition-all flex items-center justify-center gap-2">
                           <BookOpen className="w-5 h-5" />
-                          <span>Unroll & Begin Reading</span>
+                          <span>Read Article Scroll</span>
                           <ArrowRight className="w-5 h-5" />
                         </button>
                       </Link>
@@ -4028,7 +4070,7 @@ export default function ArticlesPage() {
                       <Link href={`/articles/${previewArticle.slug}`} onClick={closePreview}>
                         <Button className="bg-gradient-to-b from-amber-700 via-amber-800 to-amber-900 hover:from-amber-600 hover:via-amber-700 hover:to-amber-800 text-amber-100 font-bold px-8 py-3 rounded-sm shadow-lg border border-amber-600/60" style={{ fontFamily: 'Georgia, serif', letterSpacing: '0.05em' }}>
                           <BookOpen className="w-4 h-4 mr-2" />
-                          Unroll Scroll
+                          Read Article Scroll
                         </Button>
                       </Link>
                       <button
