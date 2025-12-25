@@ -32,11 +32,10 @@ export function SageNapAnimation() {
 
     // Calculate arc that stays within viewport (matching animation)
     const horizontalDist = Math.abs(endX - startX)
-    const verticalDist = Math.abs(endY - startY)
-    const arcHeight = Math.min(horizontalDist * 0.3, 150, verticalDist * 0.25)
+    const arcHeight = Math.min(horizontalDist * 0.4, 250)
     const midX = (startX + endX) / 2
-    const midYBase = (startY + endY) / 2
-    const midY = Math.max(60, midYBase - arcHeight)
+    const higherY = Math.min(startY, endY)
+    const midY = Math.max(80, higherY - arcHeight)
 
     for (let i = 0; i < numSparkles; i++) {
       const progress = i / numSparkles
@@ -85,19 +84,21 @@ export function SageNapAnimation() {
       // Generate sparkles along path
       generateSparkles(startPos.x, startPos.y, endPos.x, endPos.y)
 
-      // Calculate arc control point - gentle curve that stays within viewport
-      // Arc height is proportional to horizontal distance, not vertical
+      // Calculate arc control point - half-arc that goes UP then DOWN
+      // For going-to-nap: bottom-right to top-left with upward arc
       const horizontalDist = Math.abs(endPos.x - startPos.x)
-      const verticalDist = Math.abs(endPos.y - startPos.y)
-      // Use smaller of horizontal distance or 150px for arc height
-      const arcHeight = Math.min(horizontalDist * 0.3, 150, verticalDist * 0.25)
+
+      // More pronounced arc height for a visible half-rainbow effect
+      // The peak should be noticeably above the straight line path
+      const arcHeight = Math.min(horizontalDist * 0.4, 250)
 
       // Calculate midpoint
       const midX = (startPos.x + endPos.x) / 2
-      const midYBase = (startPos.y + endPos.y) / 2
 
-      // Arc curves upward but stays within viewport (minimum 60px from top)
-      const midY = Math.max(60, midYBase - arcHeight)
+      // For going-to-nap: start is lower (bottom-right), end is higher (top-left)
+      // Arc peak should be above both points - use the higher point (endPos) as reference
+      const higherY = Math.min(startPos.y, endPos.y)
+      const midY = Math.max(80, higherY - arcHeight)
 
       // Calculate scale based on direction
       const startScale = animationPhase === 'going-to-nap' ? 1 : 0.6
