@@ -3140,7 +3140,7 @@ export default function ArticlesPage() {
           </div>
 
           {/* Scrolls container - sits ON the shelf */}
-          <div className="relative mx-10">
+          <div className="relative mx-16">
             <div className="flex items-end justify-center gap-2.5 px-6 pb-0 min-h-[85px] flex-wrap overflow-hidden">
               {getShelfArticles(0, shelf1Category).map((article, idx) => {
                 const categorySlug = article.category?.slug || 'default'
@@ -3247,8 +3247,26 @@ export default function ArticlesPage() {
               ))}
             </div>
 
-            {/* Simple Roman shelf surface - matching Shelf 2/3 style */}
-            <div className="h-10 shadow-2xl relative overflow-hidden" style={{ background: 'linear-gradient(to bottom, #ca8a04, #a16207, #451a03)', borderTop: '2px solid rgba(251, 191, 36, 0.5)' }}>
+            {/* Center decorative medallion - matching Shelf 2/3 */}
+            <div className="absolute left-1/2 -translate-x-1/2 -bottom-2 w-12 h-12 z-30">
+              {/* Medallion shadow */}
+              <div className="absolute inset-0 translate-y-1 bg-amber-950/50 rounded-full blur-md" />
+              <div className="relative w-full h-full bg-gradient-to-br from-yellow-400 via-yellow-500 to-amber-700 rounded-full shadow-xl border-2 border-yellow-300/50 flex items-center justify-center overflow-hidden">
+                {/* Hammered texture */}
+                <div className="absolute inset-0 opacity-20" style={{
+                  backgroundImage: `url("data:image/svg+xml,%3Csvg viewBox='0 0 20 20' xmlns='http://www.w3.org/2000/svg'%3E%3Ccircle cx='5' cy='5' r='2' fill='%23fff' opacity='0.3'/%3E%3Ccircle cx='15' cy='10' r='1.5' fill='%23fff' opacity='0.2'/%3E%3C/svg%3E")`,
+                }} />
+                <div className="w-6 h-6 bg-gradient-to-br from-amber-700 to-amber-900 rounded-full border-2 border-yellow-400/40 flex items-center justify-center shadow-inner">
+                  <svg viewBox="0 0 16 16" className="w-4 h-4 text-yellow-400/70">
+                    <path d="M8 1 L9.5 5.5 L14 7 L9.5 8.5 L8 13 L6.5 8.5 L2 7 L6.5 5.5 Z" fill="currentColor"/>
+                    <circle cx="8" cy="7" r="1.5" fill="currentColor" opacity="0.5"/>
+                  </svg>
+                </div>
+              </div>
+            </div>
+
+            {/* Ornate Roman shelf surface - matching Shelf 2/3 style */}
+            <div className="h-10 bg-gradient-to-b from-amber-650 via-amber-750 to-amber-950 border-t-2 border-amber-400/50 shadow-2xl relative overflow-hidden">
               <div className="absolute top-0 left-0 right-0 h-2" style={{ background: 'linear-gradient(to bottom, rgba(245, 158, 11, 0.3), transparent)' }} />
               <div className="absolute inset-0 opacity-25" style={{
                 backgroundImage: `url("data:image/svg+xml,%3Csvg viewBox='0 0 200 20' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M0 8 Q50 5 100 8 Q150 11 200 8' fill='none' stroke='%23000' stroke-width='0.5'/%3E%3Cpath d='M0 14 Q50 12 100 14 Q150 16 200 14' fill='none' stroke='%23000' stroke-width='0.4'/%3E%3C/svg%3E")`,
@@ -3330,7 +3348,7 @@ export default function ArticlesPage() {
           </div>
 
           {/* Scrolls container */}
-          <div className="relative mx-10">
+          <div className="relative mx-16">
             <div className="flex items-end justify-center gap-2.5 px-6 pb-0 min-h-[85px] flex-wrap overflow-hidden">
               {getShelfArticles(1, shelf2Category).map((article, idx) => {
                 const categorySlug = article.category?.slug || 'default'
@@ -3526,7 +3544,7 @@ export default function ArticlesPage() {
           </div>
 
           {/* Scrolls container */}
-          <div className="relative mx-10">
+          <div className="relative mx-16">
             <div className="flex items-end justify-center gap-2.5 px-6 pb-0 min-h-[85px] flex-wrap overflow-hidden">
               {getShelfArticles(2, shelf3Category).map((article, idx) => {
                 const categorySlug = article.category?.slug || 'default'
@@ -3619,6 +3637,24 @@ export default function ArticlesPage() {
                   </div>
                 </div>
               ))}
+            </div>
+
+            {/* Center decorative medallion - matching Shelf 1/2 */}
+            <div className="absolute left-1/2 -translate-x-1/2 -bottom-2 w-12 h-12 z-30">
+              {/* Medallion shadow */}
+              <div className="absolute inset-0 translate-y-1 bg-amber-950/50 rounded-full blur-md" />
+              <div className="relative w-full h-full bg-gradient-to-br from-yellow-400 via-yellow-500 to-amber-700 rounded-full shadow-xl border-2 border-yellow-300/50 flex items-center justify-center overflow-hidden">
+                {/* Hammered texture */}
+                <div className="absolute inset-0 opacity-20" style={{
+                  backgroundImage: `url("data:image/svg+xml,%3Csvg viewBox='0 0 20 20' xmlns='http://www.w3.org/2000/svg'%3E%3Ccircle cx='5' cy='5' r='2' fill='%23fff' opacity='0.3'/%3E%3Ccircle cx='15' cy='10' r='1.5' fill='%23fff' opacity='0.2'/%3E%3C/svg%3E")`,
+                }} />
+                <div className="w-6 h-6 bg-gradient-to-br from-amber-700 to-amber-900 rounded-full border-2 border-yellow-400/40 flex items-center justify-center shadow-inner">
+                  <svg viewBox="0 0 16 16" className="w-4 h-4 text-yellow-400/70">
+                    <path d="M8 1 L9.5 5.5 L14 7 L9.5 8.5 L8 13 L6.5 8.5 L2 7 L6.5 5.5 Z" fill="currentColor"/>
+                    <circle cx="8" cy="7" r="1.5" fill="currentColor" opacity="0.5"/>
+                  </svg>
+                </div>
+              </div>
             </div>
 
             {/* Ornate Roman shelf surface with acanthus leaf corners - Enhanced */}
