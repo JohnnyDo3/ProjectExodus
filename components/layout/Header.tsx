@@ -195,7 +195,7 @@ export function Header() {
 
                   {/* Hover tooltip - "Click to wake" */}
                   <div className="absolute top-full left-1/2 -translate-x-1/2 mt-2 opacity-0 group-hover:opacity-100 transition-opacity duration-200 pointer-events-none z-[200]">
-                    <div className="px-4 py-2 bg-[var(--card)] border-2 border-moss-500 rounded-lg shadow-lg">
+                    <div className="inline-flex px-4 py-2 bg-[var(--card)] border-2 border-moss-500 rounded-lg shadow-lg w-max">
                       <span className="text-xs font-semibold text-moss-600 dark:text-moss-400 whitespace-nowrap">Click to wake</span>
                     </div>
                     {/* Tooltip arrow */}
