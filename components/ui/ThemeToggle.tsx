@@ -84,8 +84,8 @@ export function ThemeToggle() {
             className="fixed inset-0 z-[199]"
             onClick={() => setDropdownOpen(false)}
           />
-          <div className="absolute right-0 mt-2 w-80 bg-[var(--card)] rounded-xl shadow-theme-lg border-2 border-theme-primary z-[200]">
-            <div className="p-4 border-b-2 border-[var(--border)] bg-[var(--muted)]">
+          <div className="absolute right-0 mt-2 bg-[var(--card)] rounded-xl shadow-theme-lg border-2 border-theme-primary z-[200]" style={{ width: '340px', minWidth: '340px' }}>
+            <div className="p-4 border-b-2 border-[var(--border)] bg-[var(--muted)] rounded-t-xl">
               <div className="flex items-center gap-3">
                 {getCurrentIcon('w-6 h-6 text-theme-primary')}
                 <div>
@@ -148,7 +148,7 @@ export function ThemeToggle() {
               })}
             </div>
 
-            <div className="p-4 border-t-2 border-[var(--border)] bg-[var(--muted)]">
+            <div className="p-4 border-t-2 border-[var(--border)] bg-[var(--muted)] rounded-b-xl">
               <div className="flex items-start gap-3">
                 <Sunrise className="w-5 h-5 text-theme-secondary mt-0.5 flex-shrink-0" />
                 <p className="text-sm text-[var(--foreground)] leading-relaxed">

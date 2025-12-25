@@ -2910,193 +2910,200 @@ export default function ArticlesPage() {
           </div>
         ))}
 
-        {/* ============ KEYSTONE DIVIDER - Grand ornate Roman shelf between vertical bookshelves and horizontal shelves ============ */}
+        {/* ============ KEYSTONE DIVIDER - Grand Ornate Roman Architectural Masterpiece ============ */}
         {/* mx-16 matches the pillar width (w-16) to prevent overflow into Corinthian columns */}
-        <div className="h-20 shadow-2xl relative overflow-hidden mx-16" style={{ background: 'linear-gradient(to bottom, #d97706, #b45309, #451a03)', borderTop: '2px solid rgba(251, 191, 36, 0.6)' }}>
-          {/* Top surface highlight band */}
-          <div className="absolute top-0 left-0 right-0 h-3" style={{ background: 'linear-gradient(to bottom, rgba(245, 158, 11, 0.4), rgba(217, 119, 6, 0.2), transparent)' }} />
+        <div className="h-24 shadow-2xl relative overflow-hidden mx-16" style={{ background: 'linear-gradient(to bottom, #d97706, #b45309, #78350f, #451a03)', borderTop: '3px solid rgba(251, 191, 36, 0.7)' }}>
 
-          {/* Enhanced wood grain texture across full depth */}
-          <div className="absolute inset-0 opacity-20" style={{
-            backgroundImage: `url("data:image/svg+xml,%3Csvg viewBox='0 0 200 40' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M0 8 Q50 5 100 8 Q150 11 200 8' fill='none' stroke='%23000' stroke-width='0.5'/%3E%3Cpath d='M0 16 Q50 14 100 16 Q150 18 200 16' fill='none' stroke='%23000' stroke-width='0.4'/%3E%3Cpath d='M0 24 Q60 22 120 24 Q180 26 200 24' fill='none' stroke='%23000' stroke-width='0.4'/%3E%3Cpath d='M0 32 Q40 30 80 32 Q120 34 160 32 Q200 30 200 32' fill='none' stroke='%23000' stroke-width='0.3'/%3E%3C/svg%3E")`,
-          }} />
-
-          {/* === CENTRAL DIAMOND INLAY === */}
-          <svg className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 w-16 h-16 opacity-35 z-20" viewBox="0 0 48 48">
-            <path d="M24 4 L44 24 L24 44 L4 24 Z" fill="none" stroke="#fbbf24" strokeWidth="1.2"/>
-            <path d="M24 12 L36 24 L24 36 L12 24 Z" fill="none" stroke="#f59e0b" strokeWidth="0.8"/>
-            <circle cx="24" cy="24" r="5" fill="none" stroke="#fbbf24" strokeWidth="0.6"/>
-            <circle cx="24" cy="24" r="2.5" fill="#fbbf24" opacity="0.4"/>
-          </svg>
-
-          {/* === CORNER ROSETTES with acanthus detail === */}
-          <svg className={`absolute top-2 left-3 w-8 h-8 ${isNightTime ? 'text-amber-400/50' : 'text-amber-500/40'} z-10`} viewBox="0 0 24 24">
-            <circle cx="12" cy="12" r="10" fill="none" stroke="currentColor" strokeWidth="0.7"/>
-            <circle cx="12" cy="12" r="7" fill="none" stroke="currentColor" strokeWidth="0.5"/>
-            <circle cx="12" cy="12" r="4" fill="none" stroke="currentColor" strokeWidth="0.4"/>
-            <circle cx="12" cy="12" r="2" fill="currentColor" opacity="0.5"/>
-            {/* Petal details */}
-            <path d="M12 2 Q14 6 12 10 Q10 6 12 2" fill="none" stroke="currentColor" strokeWidth="0.4"/>
-            <path d="M22 12 Q18 14 14 12 Q18 10 22 12" fill="none" stroke="currentColor" strokeWidth="0.4"/>
-            <path d="M12 22 Q10 18 12 14 Q14 18 12 22" fill="none" stroke="currentColor" strokeWidth="0.4"/>
-            <path d="M2 12 Q6 10 10 12 Q6 14 2 12" fill="none" stroke="currentColor" strokeWidth="0.4"/>
-          </svg>
-          <svg className={`absolute top-2 right-3 w-8 h-8 ${isNightTime ? 'text-amber-400/50' : 'text-amber-500/40'} z-10`} viewBox="0 0 24 24">
-            <circle cx="12" cy="12" r="10" fill="none" stroke="currentColor" strokeWidth="0.7"/>
-            <circle cx="12" cy="12" r="7" fill="none" stroke="currentColor" strokeWidth="0.5"/>
-            <circle cx="12" cy="12" r="4" fill="none" stroke="currentColor" strokeWidth="0.4"/>
-            <circle cx="12" cy="12" r="2" fill="currentColor" opacity="0.5"/>
-            <path d="M12 2 Q14 6 12 10 Q10 6 12 2" fill="none" stroke="currentColor" strokeWidth="0.4"/>
-            <path d="M22 12 Q18 14 14 12 Q18 10 22 12" fill="none" stroke="currentColor" strokeWidth="0.4"/>
-            <path d="M12 22 Q10 18 12 14 Q14 18 12 22" fill="none" stroke="currentColor" strokeWidth="0.4"/>
-            <path d="M2 12 Q6 10 10 12 Q6 14 2 12" fill="none" stroke="currentColor" strokeWidth="0.4"/>
-          </svg>
-          <svg className={`absolute bottom-2 left-3 w-8 h-8 ${isNightTime ? 'text-amber-400/50' : 'text-amber-500/40'} z-10`} viewBox="0 0 24 24">
-            <circle cx="12" cy="12" r="10" fill="none" stroke="currentColor" strokeWidth="0.7"/>
-            <circle cx="12" cy="12" r="7" fill="none" stroke="currentColor" strokeWidth="0.5"/>
-            <circle cx="12" cy="12" r="4" fill="none" stroke="currentColor" strokeWidth="0.4"/>
-            <circle cx="12" cy="12" r="2" fill="currentColor" opacity="0.5"/>
-            <path d="M12 2 Q14 6 12 10 Q10 6 12 2" fill="none" stroke="currentColor" strokeWidth="0.4"/>
-            <path d="M22 12 Q18 14 14 12 Q18 10 22 12" fill="none" stroke="currentColor" strokeWidth="0.4"/>
-            <path d="M12 22 Q10 18 12 14 Q14 18 12 22" fill="none" stroke="currentColor" strokeWidth="0.4"/>
-            <path d="M2 12 Q6 10 10 12 Q6 14 2 12" fill="none" stroke="currentColor" strokeWidth="0.4"/>
-          </svg>
-          <svg className={`absolute bottom-2 right-3 w-8 h-8 ${isNightTime ? 'text-amber-400/50' : 'text-amber-500/40'} z-10`} viewBox="0 0 24 24">
-            <circle cx="12" cy="12" r="10" fill="none" stroke="currentColor" strokeWidth="0.7"/>
-            <circle cx="12" cy="12" r="7" fill="none" stroke="currentColor" strokeWidth="0.5"/>
-            <circle cx="12" cy="12" r="4" fill="none" stroke="currentColor" strokeWidth="0.4"/>
-            <circle cx="12" cy="12" r="2" fill="currentColor" opacity="0.5"/>
-            <path d="M12 2 Q14 6 12 10 Q10 6 12 2" fill="none" stroke="currentColor" strokeWidth="0.4"/>
-            <path d="M22 12 Q18 14 14 12 Q18 10 22 12" fill="none" stroke="currentColor" strokeWidth="0.4"/>
-            <path d="M12 22 Q10 18 12 14 Q14 18 12 22" fill="none" stroke="currentColor" strokeWidth="0.4"/>
-            <path d="M2 12 Q6 10 10 12 Q6 14 2 12" fill="none" stroke="currentColor" strokeWidth="0.4"/>
-          </svg>
-
-          {/* === UPPER DECORATIVE BAND - Guilloche pattern === */}
-          <div className="absolute top-1 left-0 right-0 h-4 overflow-hidden">
-            <svg className="w-full h-full opacity-50" preserveAspectRatio="none">
+          {/* === LAYER 1: TOP GREEK KEY MEANDER - Full Width === */}
+          <div className="absolute top-0 left-0 right-0 h-5 overflow-hidden">
+            <svg className="w-full h-full" preserveAspectRatio="none" viewBox="0 0 1200 20">
               <defs>
-                <pattern id="keystoneDividerGuilloche" x="0" y="0" width="32" height="16" patternUnits="userSpaceOnUse">
-                  {/* Interlocking wave pattern */}
-                  <path d="M0 8 Q8 0 16 8 Q24 16 32 8" fill="none" stroke="#fbbf24" strokeWidth="0.8"/>
-                  <path d="M0 8 Q8 16 16 8 Q24 0 32 8" fill="none" stroke="#d97706" strokeWidth="0.6"/>
-                  {/* Center beads */}
-                  <circle cx="8" cy="8" r="1.5" fill="#fbbf24" opacity="0.4"/>
-                  <circle cx="24" cy="8" r="1.5" fill="#fbbf24" opacity="0.4"/>
+                <pattern id="keystoneGreekKey" x="0" y="0" width="40" height="20" patternUnits="userSpaceOnUse">
+                  {/* Greek key / meander pattern - perfectly geometric */}
+                  <path d="M0 10 L10 10 L10 5 L5 5 L5 15 L15 15 L15 5 L20 5 L20 10 L30 10 L30 15 L25 15 L25 5 L35 5 L35 15 L40 15"
+                    fill="none" stroke="#fbbf24" strokeWidth="1.2"/>
+                  <path d="M0 10 L10 10 L10 5 L5 5 L5 15 L15 15 L15 5 L20 5 L20 10 L30 10 L30 15 L25 15 L25 5 L35 5 L35 15 L40 15"
+                    fill="none" stroke="#f59e0b" strokeWidth="0.6" strokeDasharray="2,2"/>
                 </pattern>
               </defs>
-              <rect width="100%" height="100%" fill="url(#keystoneDividerGuilloche)"/>
+              <rect width="100%" height="100%" fill="url(#keystoneGreekKey)" opacity="0.6"/>
             </svg>
           </div>
 
-          {/* Gold inlay accent line below guilloche */}
-          <div className="absolute top-5 left-0 right-0 h-px bg-gradient-to-r from-transparent via-amber-400/70 to-transparent" />
+          {/* Gold inlay line below Greek key */}
+          <div className="absolute top-5 left-0 right-0 h-0.5 bg-gradient-to-r from-amber-600/40 via-amber-400/80 to-amber-600/40" />
 
-          {/* === CENTRAL CARVED FRIEZE - Acanthus scrollwork === */}
-          <div className="absolute top-6 left-0 right-0 h-6">
-            <svg className="w-full h-full opacity-60" preserveAspectRatio="none">
+          {/* === LAYER 2: CONTINUOUS GUILLOCHE BAND - Interlocking Circles === */}
+          <div className="absolute top-6 left-0 right-0 h-4 overflow-hidden">
+            <svg className="w-full h-full" preserveAspectRatio="none" viewBox="0 0 1200 16">
               <defs>
-                {/* Acanthus scroll pattern */}
-                <pattern id="keystoneDividerAcanthus" x="0" y="0" width="80" height="24" patternUnits="userSpaceOnUse">
-                  {/* Flowing acanthus leaves with spirals */}
-                  <path d="M0 12 Q10 6 20 12 Q30 18 40 12 Q50 6 60 12 Q70 18 80 12" fill="none" stroke="#fbbf24" strokeWidth="0.9"/>
-                  {/* Leaf curls */}
-                  <path d="M10 8 Q12 4 16 6" fill="none" stroke="#f59e0b" strokeWidth="0.6"/>
-                  <path d="M30 16 Q32 20 36 18" fill="none" stroke="#f59e0b" strokeWidth="0.6"/>
-                  <path d="M50 8 Q52 4 56 6" fill="none" stroke="#f59e0b" strokeWidth="0.6"/>
-                  <path d="M70 16 Q72 20 76 18" fill="none" stroke="#f59e0b" strokeWidth="0.6"/>
-                  {/* Spiral tendrils */}
-                  <circle cx="20" cy="12" r="3" fill="none" stroke="#fbbf24" strokeWidth="0.5"/>
-                  <circle cx="60" cy="12" r="3" fill="none" stroke="#fbbf24" strokeWidth="0.5"/>
-                  {/* Small leaf details */}
-                  <ellipse cx="40" cy="10" rx="2" ry="3" fill="none" stroke="#d97706" strokeWidth="0.4"/>
+                <pattern id="keystoneGuilloche" x="0" y="0" width="32" height="16" patternUnits="userSpaceOnUse">
+                  {/* Interlocking wave guilloche - symmetric */}
+                  <path d="M0 8 Q8 0 16 8 Q24 16 32 8" fill="none" stroke="#fbbf24" strokeWidth="1"/>
+                  <path d="M0 8 Q8 16 16 8 Q24 0 32 8" fill="none" stroke="#d97706" strokeWidth="0.8"/>
+                  {/* Intersection jewels */}
+                  <circle cx="0" cy="8" r="2" fill="#fbbf24" opacity="0.5"/>
+                  <circle cx="16" cy="8" r="2" fill="#fbbf24" opacity="0.5"/>
+                  <circle cx="32" cy="8" r="2" fill="#fbbf24" opacity="0.5"/>
                 </pattern>
               </defs>
-              <rect width="100%" height="100%" fill="url(#keystoneDividerAcanthus)"/>
+              <rect width="100%" height="100%" fill="url(#keystoneGuilloche)" opacity="0.55"/>
             </svg>
           </div>
 
-          {/* === LION HEAD MEDALLIONS - Evenly spaced across shelf === */}
-          {[8, 25, 42, 58, 75, 92].map((pos, i) => (
-            <div key={`keystone-divider-lion-${i}`} className="absolute top-6 -translate-x-1/2 z-10" style={{ left: `${pos}%` }}>
-              <div className="w-5 h-5 bg-gradient-to-br from-yellow-500 via-amber-600 to-amber-800 rounded-full shadow-lg border border-yellow-400/50 relative overflow-hidden">
-                {/* Lion face detail */}
-                <svg viewBox="0 0 20 20" className="w-full h-full text-amber-900/70">
-                  {/* Mane suggestion */}
-                  <circle cx="10" cy="10" r="8" fill="none" stroke="currentColor" strokeWidth="1"/>
-                  {/* Eyes */}
-                  <circle cx="7" cy="8" r="1" fill="currentColor"/>
-                  <circle cx="13" cy="8" r="1" fill="currentColor"/>
-                  {/* Snout */}
-                  <ellipse cx="10" cy="12" rx="2.5" ry="2" fill="none" stroke="currentColor" strokeWidth="0.8"/>
-                  {/* Nose */}
-                  <circle cx="10" cy="11" r="0.8" fill="currentColor"/>
+          {/* === LAYER 3: GRAND CENTRAL SUNBURST MEDALLION === */}
+          <svg className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 w-20 h-20 z-30" viewBox="0 0 80 80">
+            {/* Outer radiating sunburst */}
+            {Array.from({ length: 24 }).map((_, i) => (
+              <line key={`ray-${i}`} x1="40" y1="40" x2={40 + 38 * Math.cos((i * 15 * Math.PI) / 180)} y2={40 + 38 * Math.sin((i * 15 * Math.PI) / 180)}
+                stroke="#fbbf24" strokeWidth={i % 2 === 0 ? "1" : "0.5"} opacity={i % 2 === 0 ? "0.4" : "0.25"}/>
+            ))}
+            {/* Concentric circles */}
+            <circle cx="40" cy="40" r="36" fill="none" stroke="#fbbf24" strokeWidth="0.8" opacity="0.3"/>
+            <circle cx="40" cy="40" r="28" fill="none" stroke="#f59e0b" strokeWidth="1" opacity="0.4"/>
+            <circle cx="40" cy="40" r="20" fill="none" stroke="#fbbf24" strokeWidth="1.2" opacity="0.5"/>
+            {/* Inner diamond */}
+            <path d="M40 18 L62 40 L40 62 L18 40 Z" fill="none" stroke="#fbbf24" strokeWidth="1.5" opacity="0.5"/>
+            <path d="M40 26 L54 40 L40 54 L26 40 Z" fill="none" stroke="#f59e0b" strokeWidth="1" opacity="0.4"/>
+            {/* Central rosette */}
+            <circle cx="40" cy="40" r="12" fill="url(#sunburstGradient)" stroke="#fbbf24" strokeWidth="1.5"/>
+            <circle cx="40" cy="40" r="8" fill="none" stroke="#451a03" strokeWidth="0.8" opacity="0.5"/>
+            <circle cx="40" cy="40" r="4" fill="#fbbf24" opacity="0.6"/>
+            {/* Eight-point star in center */}
+            <path d="M40 32 L42 38 L48 38 L43 42 L45 48 L40 44 L35 48 L37 42 L32 38 L38 38 Z" fill="#fbbf24" opacity="0.5"/>
+            <defs>
+              <radialGradient id="sunburstGradient" cx="50%" cy="50%" r="50%">
+                <stop offset="0%" stopColor="#fbbf24" stopOpacity="0.6"/>
+                <stop offset="100%" stopColor="#d97706" stopOpacity="0.3"/>
+              </radialGradient>
+            </defs>
+          </svg>
+
+          {/* === LAYER 4: SYMMETRIC ACANTHUS SCROLL FRIEZE - Spans Full Width === */}
+          <div className="absolute top-10 left-0 right-0 h-5">
+            <svg className="w-full h-full" preserveAspectRatio="none" viewBox="0 0 1200 20">
+              <defs>
+                <pattern id="keystoneAcanthus" x="0" y="0" width="60" height="20" patternUnits="userSpaceOnUse">
+                  {/* Symmetric acanthus scroll */}
+                  <path d="M0 10 Q7.5 4 15 10 Q22.5 16 30 10 Q37.5 4 45 10 Q52.5 16 60 10" fill="none" stroke="#fbbf24" strokeWidth="1.1"/>
+                  {/* Symmetric leaf curls - left and right mirror */}
+                  <path d="M7.5 6 C10 3 14 5 15 8" fill="none" stroke="#f59e0b" strokeWidth="0.7"/>
+                  <path d="M22.5 14 C20 17 16 15 15 12" fill="none" stroke="#f59e0b" strokeWidth="0.7"/>
+                  <path d="M37.5 6 C40 3 44 5 45 8" fill="none" stroke="#f59e0b" strokeWidth="0.7"/>
+                  <path d="M52.5 14 C50 17 46 15 45 12" fill="none" stroke="#f59e0b" strokeWidth="0.7"/>
+                  {/* Center spiral rosettes */}
+                  <circle cx="15" cy="10" r="2.5" fill="none" stroke="#fbbf24" strokeWidth="0.6"/>
+                  <circle cx="45" cy="10" r="2.5" fill="none" stroke="#fbbf24" strokeWidth="0.6"/>
+                  <circle cx="15" cy="10" r="1" fill="#fbbf24" opacity="0.4"/>
+                  <circle cx="45" cy="10" r="1" fill="#fbbf24" opacity="0.4"/>
+                </pattern>
+              </defs>
+              <rect width="100%" height="100%" fill="url(#keystoneAcanthus)" opacity="0.55"/>
+            </svg>
+          </div>
+
+          {/* === LAYER 5: SYMMETRIC ROSETTE MEDALLIONS - Evenly Distributed === */}
+          {[5, 20, 35, 65, 80, 95].map((pos, i) => (
+            <div key={`keystone-rosette-${i}`} className="absolute top-11 -translate-x-1/2 z-20" style={{ left: `${pos}%` }}>
+              <div className="w-6 h-6 rounded-full relative">
+                <svg viewBox="0 0 24 24" className="w-full h-full">
+                  {/* Outer ring */}
+                  <circle cx="12" cy="12" r="11" fill="none" stroke="#fbbf24" strokeWidth="1" opacity="0.6"/>
+                  {/* Petal pattern - 8 symmetric petals */}
+                  {Array.from({ length: 8 }).map((_, j) => (
+                    <ellipse key={`petal-${j}`} cx="12" cy="5" rx="2" ry="4" fill="none" stroke="#fbbf24" strokeWidth="0.6" opacity="0.5"
+                      transform={`rotate(${j * 45} 12 12)`}/>
+                  ))}
+                  {/* Inner rings */}
+                  <circle cx="12" cy="12" r="6" fill="none" stroke="#f59e0b" strokeWidth="0.7" opacity="0.5"/>
+                  <circle cx="12" cy="12" r="3" fill="#fbbf24" opacity="0.4"/>
                 </svg>
-                {/* Shine highlight */}
-                <div className="absolute top-0.5 left-1 w-2 h-1.5 bg-gradient-to-br from-yellow-300/60 to-transparent rounded-full" />
               </div>
             </div>
           ))}
 
-          {/* === DENTIL COURSE === */}
-          <div className="absolute top-[52px] left-0 right-0 h-2">
-            <svg className="w-full h-full opacity-50" preserveAspectRatio="none">
+          {/* === LAYER 6: DENTIL COURSE - Full Width Geometric === */}
+          <div className="absolute top-[60px] left-0 right-0 h-2.5">
+            <svg className="w-full h-full" preserveAspectRatio="none" viewBox="0 0 1200 10">
               <defs>
-                <pattern id="keystoneDividerDentil" x="0" y="0" width="12" height="8" patternUnits="userSpaceOnUse">
-                  <rect x="1" y="0" width="5" height="7" fill="#fbbf24" opacity="0.3"/>
-                  <rect x="1" y="0" width="5" height="7" fill="none" stroke="#fbbf24" strokeWidth="0.5"/>
+                <pattern id="keystoneDentil" x="0" y="0" width="14" height="10" patternUnits="userSpaceOnUse">
+                  {/* Dentil block */}
+                  <rect x="2" y="1" width="6" height="8" fill="#fbbf24" opacity="0.3"/>
+                  <rect x="2" y="1" width="6" height="8" fill="none" stroke="#fbbf24" strokeWidth="0.6"/>
+                  {/* Shadow detail */}
+                  <line x1="8" y1="2" x2="8" y2="8" stroke="#451a03" strokeWidth="0.5" opacity="0.3"/>
                 </pattern>
               </defs>
-              <rect width="100%" height="100%" fill="url(#keystoneDividerDentil)"/>
+              <rect width="100%" height="100%" fill="url(#keystoneDentil)" opacity="0.6"/>
             </svg>
           </div>
 
-          {/* === BEADED MOLDING STRIP === */}
-          <div className="absolute top-[60px] left-0 right-0 h-1.5 bg-gradient-to-b from-amber-700 to-amber-800">
-            <svg className="w-full h-full opacity-60" preserveAspectRatio="none">
+          {/* Gold separator line */}
+          <div className="absolute top-[72px] left-0 right-0 h-0.5 bg-gradient-to-r from-amber-700/30 via-amber-400/60 to-amber-700/30" />
+
+          {/* === LAYER 7: EGG-AND-DART MOLDING - Full Width at Bottom === */}
+          <div className="absolute bottom-2 left-0 right-0 h-4">
+            <svg className="w-full h-full" preserveAspectRatio="none" viewBox="0 0 1200 16">
               <defs>
-                <pattern id="keystoneDividerBeads" x="0" y="0" width="8" height="6" patternUnits="userSpaceOnUse">
-                  <circle cx="4" cy="3" r="2" fill="#fbbf24" opacity="0.4"/>
-                  <circle cx="4" cy="3" r="2" fill="none" stroke="#fbbf24" strokeWidth="0.4"/>
+                <pattern id="keystoneEggDart" x="0" y="0" width="36" height="16" patternUnits="userSpaceOnUse">
+                  {/* Egg - left */}
+                  <ellipse cx="9" cy="8" rx="6" ry="5" fill="none" stroke="#fbbf24" strokeWidth="0.9"/>
+                  <ellipse cx="9" cy="8" rx="3" ry="2.5" fill="#fbbf24" opacity="0.25"/>
+                  {/* Dart - center */}
+                  <path d="M18 3 L20 13 L22 3" fill="none" stroke="#fbbf24" strokeWidth="0.9"/>
+                  <path d="M20 5 L20 11" stroke="#f59e0b" strokeWidth="0.5"/>
+                  {/* Egg - right */}
+                  <ellipse cx="27" cy="8" rx="6" ry="5" fill="none" stroke="#fbbf24" strokeWidth="0.9"/>
+                  <ellipse cx="27" cy="8" rx="3" ry="2.5" fill="#fbbf24" opacity="0.25"/>
                 </pattern>
               </defs>
-              <rect width="100%" height="100%" fill="url(#keystoneDividerBeads)"/>
+              <rect width="100%" height="100%" fill="url(#keystoneEggDart)" opacity="0.6"/>
             </svg>
           </div>
 
-          {/* === BOTTOM CARVED EDGE - Enhanced egg-and-dart with palmettes === */}
-          <svg className="absolute bottom-0 left-0 right-0 h-4 opacity-65" preserveAspectRatio="none">
-            <defs>
-              <pattern id="keystoneDividerEdge" x="0" y="0" width="40" height="16" patternUnits="userSpaceOnUse">
-                {/* Egg */}
-                <ellipse cx="10" cy="8" rx="6" ry="5" fill="none" stroke="#fbbf24" strokeWidth="0.8"/>
-                <ellipse cx="10" cy="8" rx="3" ry="2.5" fill="#fbbf24" opacity="0.25"/>
-                {/* Dart/Palmette */}
-                <path d="M26 2 L28 14 L30 2" fill="none" stroke="#fbbf24" strokeWidth="0.8"/>
-                <path d="M24 4 L28 12" fill="none" stroke="#d97706" strokeWidth="0.5"/>
-                <path d="M32 4 L28 12" fill="none" stroke="#d97706" strokeWidth="0.5"/>
-                {/* Small leaf flourish */}
-                <path d="M34 6 Q36 8 34 10" fill="none" stroke="#f59e0b" strokeWidth="0.4"/>
-                <path d="M22 6 Q20 8 22 10" fill="none" stroke="#f59e0b" strokeWidth="0.4"/>
-              </pattern>
-            </defs>
-            <rect width="100%" height="100%" fill="url(#keystoneDividerEdge)"/>
+          {/* === CORNER ANTHEMION PALMETTES - All Four Corners === */}
+          {/* Top-left */}
+          <svg className={`absolute top-1 left-1 w-10 h-14 ${isNightTime ? 'opacity-50' : 'opacity-40'} z-10`} viewBox="0 0 40 56">
+            <path d="M20 54 Q6 44 6 28 Q12 36 20 28 Q28 36 34 28 Q34 44 20 54" fill="none" stroke="#fbbf24" strokeWidth="1"/>
+            <path d="M20 8 Q12 20 12 32 M20 8 Q28 20 28 32" fill="none" stroke="#fbbf24" strokeWidth="0.8"/>
+            <path d="M20 4 Q16 16 16 26 M20 4 Q24 16 24 26" fill="none" stroke="#f59e0b" strokeWidth="0.6"/>
+            <circle cx="20" cy="8" r="3" fill="none" stroke="#fbbf24" strokeWidth="0.8"/>
+            <circle cx="20" cy="8" r="1.5" fill="#fbbf24" opacity="0.5"/>
           </svg>
+          {/* Top-right - mirrored */}
+          <svg className={`absolute top-1 right-1 w-10 h-14 ${isNightTime ? 'opacity-50' : 'opacity-40'} z-10 scale-x-[-1]`} viewBox="0 0 40 56">
+            <path d="M20 54 Q6 44 6 28 Q12 36 20 28 Q28 36 34 28 Q34 44 20 54" fill="none" stroke="#fbbf24" strokeWidth="1"/>
+            <path d="M20 8 Q12 20 12 32 M20 8 Q28 20 28 32" fill="none" stroke="#fbbf24" strokeWidth="0.8"/>
+            <path d="M20 4 Q16 16 16 26 M20 4 Q24 16 24 26" fill="none" stroke="#f59e0b" strokeWidth="0.6"/>
+            <circle cx="20" cy="8" r="3" fill="none" stroke="#fbbf24" strokeWidth="0.8"/>
+            <circle cx="20" cy="8" r="1.5" fill="#fbbf24" opacity="0.5"/>
+          </svg>
+          {/* Bottom-left */}
+          <svg className={`absolute bottom-1 left-1 w-10 h-14 ${isNightTime ? 'opacity-50' : 'opacity-40'} z-10 scale-y-[-1]`} viewBox="0 0 40 56">
+            <path d="M20 54 Q6 44 6 28 Q12 36 20 28 Q28 36 34 28 Q34 44 20 54" fill="none" stroke="#fbbf24" strokeWidth="1"/>
+            <path d="M20 8 Q12 20 12 32 M20 8 Q28 20 28 32" fill="none" stroke="#fbbf24" strokeWidth="0.8"/>
+            <path d="M20 4 Q16 16 16 26 M20 4 Q24 16 24 26" fill="none" stroke="#f59e0b" strokeWidth="0.6"/>
+            <circle cx="20" cy="8" r="3" fill="none" stroke="#fbbf24" strokeWidth="0.8"/>
+            <circle cx="20" cy="8" r="1.5" fill="#fbbf24" opacity="0.5"/>
+          </svg>
+          {/* Bottom-right - mirrored both ways */}
+          <svg className={`absolute bottom-1 right-1 w-10 h-14 ${isNightTime ? 'opacity-50' : 'opacity-40'} z-10 scale-[-1]`} viewBox="0 0 40 56">
+            <path d="M20 54 Q6 44 6 28 Q12 36 20 28 Q28 36 34 28 Q34 44 20 54" fill="none" stroke="#fbbf24" strokeWidth="1"/>
+            <path d="M20 8 Q12 20 12 32 M20 8 Q28 20 28 32" fill="none" stroke="#fbbf24" strokeWidth="0.8"/>
+            <path d="M20 4 Q16 16 16 26 M20 4 Q24 16 24 26" fill="none" stroke="#f59e0b" strokeWidth="0.6"/>
+            <circle cx="20" cy="8" r="3" fill="none" stroke="#fbbf24" strokeWidth="0.8"/>
+            <circle cx="20" cy="8" r="1.5" fill="#fbbf24" opacity="0.5"/>
+          </svg>
+
+          {/* === DECORATIVE SIDE BORDERS - Left and Right === */}
+          <div className="absolute top-6 bottom-6 left-0 w-1 bg-gradient-to-b from-amber-400/40 via-amber-500/60 to-amber-400/40" />
+          <div className="absolute top-6 bottom-6 right-0 w-1 bg-gradient-to-b from-amber-400/40 via-amber-500/60 to-amber-400/40" />
 
           {/* Bottom shadow for depth */}
-          <div className="absolute bottom-0 left-0 right-0 h-2 bg-gradient-to-t from-amber-950 via-amber-900/60 to-transparent" />
+          <div className="absolute bottom-0 left-0 right-0 h-2 bg-gradient-to-t from-amber-950 via-amber-900/70 to-transparent" />
 
-          {/* === CORNER PALMETTE ACCENTS === */}
-          <svg className="absolute left-2 top-2 w-6 h-10 opacity-50" viewBox="0 0 24 40">
-            <path d="M12 38 Q4 30 4 20 Q8 25 12 20 Q16 25 20 20 Q20 30 12 38" fill="none" stroke="#fbbf24" strokeWidth="0.8"/>
-            <path d="M12 4 Q8 12 8 22 M12 4 Q16 12 16 22" fill="none" stroke="#fbbf24" strokeWidth="0.6"/>
-            <circle cx="12" cy="8" r="2" fill="none" stroke="#fbbf24" strokeWidth="0.5"/>
-          </svg>
-          <svg className="absolute right-2 top-2 w-6 h-10 opacity-50 scale-x-[-1]" viewBox="0 0 24 40">
-            <path d="M12 38 Q4 30 4 20 Q8 25 12 20 Q16 25 20 20 Q20 30 12 38" fill="none" stroke="#fbbf24" strokeWidth="0.8"/>
-            <path d="M12 4 Q8 12 8 22 M12 4 Q16 12 16 22" fill="none" stroke="#fbbf24" strokeWidth="0.6"/>
-            <circle cx="12" cy="8" r="2" fill="none" stroke="#fbbf24" strokeWidth="0.5"/>
-          </svg>
+          {/* Top surface shimmer */}
+          <div className="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-transparent via-amber-300/30 to-transparent" />
         </div>
 
         {/* ============ SHELF 1 ============ */}
@@ -3265,48 +3272,80 @@ export default function ArticlesPage() {
               </div>
             </div>
 
-            {/* Ornate Roman shelf surface - matching Shelf 2/3 style */}
-            <div className="h-10 bg-gradient-to-b from-amber-650 via-amber-750 to-amber-950 border-t-2 border-amber-400/50 shadow-2xl relative overflow-hidden">
-              <div className="absolute top-0 left-0 right-0 h-2 bg-gradient-to-b from-amber-500/30 to-transparent" />
-              <div className="absolute inset-0 opacity-25" style={{
-                backgroundImage: `url("data:image/svg+xml,%3Csvg viewBox='0 0 200 20' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M0 8 Q50 5 100 8 Q150 11 200 8' fill='none' stroke='%23000' stroke-width='0.5'/%3E%3Cpath d='M0 14 Q50 12 100 14 Q150 16 200 14' fill='none' stroke='%23000' stroke-width='0.4'/%3E%3C/svg%3E")`,
-              }} />
-              <div className="absolute top-1.5 left-4 right-4 h-px bg-gradient-to-r from-transparent via-amber-400/60 to-transparent" />
-              {/* Acanthus leaf corner decorations - matching Shelf 2/3 */}
-              <svg className={`absolute left-2 top-0.5 w-8 h-8 ${isNightTime ? 'text-amber-400/50' : 'text-amber-500/40'}`} viewBox="0 0 32 32">
-                <path d="M4 28 Q10 20 16 16 Q10 12 4 4" fill="none" stroke="currentColor" strokeWidth="1.5"/>
-                <path d="M6 22 Q12 18 16 15" fill="none" stroke="currentColor" strokeWidth="1"/>
-                <path d="M8 16 Q12 14 14 13" fill="none" stroke="currentColor" strokeWidth="0.8"/>
-                <circle cx="16" cy="16" r="2" fill="currentColor" opacity="0.3"/>
+            {/* Ornate Roman shelf surface - Full Width Intricate Design */}
+            <div className="h-12 bg-gradient-to-b from-amber-600 via-amber-700 to-amber-950 border-t-2 border-amber-400/60 shadow-2xl relative overflow-hidden">
+              {/* Top highlight */}
+              <div className="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-amber-500/20 via-amber-400/50 to-amber-500/20" />
+
+              {/* === FULL WIDTH GUILLOCHE BAND - Spans entire shelf === */}
+              <div className="absolute top-1 left-0 right-0 h-3">
+                <svg className="w-full h-full" preserveAspectRatio="none" viewBox="0 0 1200 12">
+                  <defs>
+                    <pattern id="shelf1Guilloche" x="0" y="0" width="24" height="12" patternUnits="userSpaceOnUse">
+                      <path d="M0 6 Q6 0 12 6 Q18 12 24 6" fill="none" stroke="#fbbf24" strokeWidth="0.8"/>
+                      <path d="M0 6 Q6 12 12 6 Q18 0 24 6" fill="none" stroke="#d97706" strokeWidth="0.5"/>
+                      <circle cx="0" cy="6" r="1.5" fill="#fbbf24" opacity="0.4"/>
+                      <circle cx="12" cy="6" r="1.5" fill="#fbbf24" opacity="0.4"/>
+                      <circle cx="24" cy="6" r="1.5" fill="#fbbf24" opacity="0.4"/>
+                    </pattern>
+                  </defs>
+                  <rect width="100%" height="100%" fill="url(#shelf1Guilloche)" opacity="0.6"/>
+                </svg>
+              </div>
+
+              {/* Gold inlay line */}
+              <div className="absolute top-4 left-0 right-0 h-px bg-gradient-to-r from-amber-600/30 via-amber-400/70 to-amber-600/30" />
+
+              {/* === FULL WIDTH GEOMETRIC FRIEZE - Continuous pattern === */}
+              <div className="absolute top-5 left-0 right-0 h-3">
+                <svg className="w-full h-full" preserveAspectRatio="none" viewBox="0 0 1200 12">
+                  <defs>
+                    <pattern id="shelf1Frieze" x="0" y="0" width="36" height="12" patternUnits="userSpaceOnUse">
+                      {/* Diamond chain */}
+                      <path d="M6 6 L12 2 L18 6 L12 10 Z" fill="none" stroke="#fbbf24" strokeWidth="0.7"/>
+                      <path d="M24 6 L30 2 L36 6 L30 10 Z" fill="none" stroke="#fbbf24" strokeWidth="0.7"/>
+                      {/* Connecting lines */}
+                      <line x1="18" y1="6" x2="24" y2="6" stroke="#f59e0b" strokeWidth="0.5"/>
+                      <line x1="0" y1="6" x2="6" y2="6" stroke="#f59e0b" strokeWidth="0.5"/>
+                      {/* Center dots */}
+                      <circle cx="12" cy="6" r="1" fill="#fbbf24" opacity="0.5"/>
+                      <circle cx="30" cy="6" r="1" fill="#fbbf24" opacity="0.5"/>
+                    </pattern>
+                  </defs>
+                  <rect width="100%" height="100%" fill="url(#shelf1Frieze)" opacity="0.55"/>
+                </svg>
+              </div>
+
+              {/* === CORNER ACANTHUS DECORATIONS === */}
+              <svg className={`absolute left-1 top-1 w-6 h-8 ${isNightTime ? 'opacity-50' : 'opacity-40'} z-10`} viewBox="0 0 24 32">
+                <path d="M4 28 Q10 20 12 16 Q10 12 4 4" fill="none" stroke="#fbbf24" strokeWidth="1"/>
+                <path d="M6 20 Q10 16 12 14" fill="none" stroke="#f59e0b" strokeWidth="0.7"/>
+                <circle cx="12" cy="16" r="2" fill="#fbbf24" opacity="0.3"/>
               </svg>
-              <svg className={`absolute right-2 top-0.5 w-8 h-8 ${isNightTime ? 'text-amber-400/50' : 'text-amber-500/40'} scale-x-[-1]`} viewBox="0 0 32 32">
-                <path d="M4 28 Q10 20 16 16 Q10 12 4 4" fill="none" stroke="currentColor" strokeWidth="1.5"/>
-                <path d="M6 22 Q12 18 16 15" fill="none" stroke="currentColor" strokeWidth="1"/>
-                <path d="M8 16 Q12 14 14 13" fill="none" stroke="currentColor" strokeWidth="0.8"/>
-                <circle cx="16" cy="16" r="2" fill="currentColor" opacity="0.3"/>
+              <svg className={`absolute right-1 top-1 w-6 h-8 ${isNightTime ? 'opacity-50' : 'opacity-40'} z-10 scale-x-[-1]`} viewBox="0 0 24 32">
+                <path d="M4 28 Q10 20 12 16 Q10 12 4 4" fill="none" stroke="#fbbf24" strokeWidth="1"/>
+                <path d="M6 20 Q10 16 12 14" fill="none" stroke="#f59e0b" strokeWidth="0.7"/>
+                <circle cx="12" cy="16" r="2" fill="#fbbf24" opacity="0.3"/>
               </svg>
-              {/* Symmetric rosettes */}
-              {[4, 15, 26, 37, 50, 63, 74, 85, 96].map((pos, i) => (
-                <div key={`shelf1-rosette-${i}`} className="absolute top-3.5 -translate-x-1/2" style={{ left: `${pos}%` }}>
-                  <div className="w-3 h-3 bg-gradient-to-br from-yellow-400 via-yellow-500 to-amber-600 rounded-full shadow-md border border-yellow-300/40 relative overflow-hidden">
-                    <div className="absolute top-0.5 left-0.5 w-1.5 h-1.5 bg-gradient-to-br from-yellow-200/70 to-transparent rounded-full" />
-                    <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-1 h-1 bg-amber-700/50 rounded-full" />
-                  </div>
-                </div>
-              ))}
-              <svg className="absolute bottom-0 left-0 right-0 h-2.5 opacity-50" preserveAspectRatio="none">
-                <pattern id="shelf1EdgePattern" x="0" y="0" width="24" height="10" patternUnits="userSpaceOnUse">
-                  {/* Left rosette */}
-                  <ellipse cx="6" cy="5" rx="4" ry="3.5" fill="none" stroke="#fbbf24" strokeWidth="0.7"/>
-                  <ellipse cx="6" cy="5" rx="2" ry="1.5" fill="#fbbf24" opacity="0.2"/>
-                  {/* Center diamond */}
-                  <path d="M12 2 L14 5 L12 8 L10 5 Z" fill="none" stroke="#fbbf24" strokeWidth="0.5"/>
-                  {/* Right rosette - mirrored */}
-                  <ellipse cx="18" cy="5" rx="4" ry="3.5" fill="none" stroke="#fbbf24" strokeWidth="0.7"/>
-                  <ellipse cx="18" cy="5" rx="2" ry="1.5" fill="#fbbf24" opacity="0.2"/>
-                </pattern>
-                <rect width="100%" height="100%" fill="url(#shelf1EdgePattern)"/>
-              </svg>
+
+              {/* === FULL WIDTH EGG-AND-DART BOTTOM EDGE === */}
+              <div className="absolute bottom-1 left-0 right-0 h-2.5">
+                <svg className="w-full h-full" preserveAspectRatio="none" viewBox="0 0 1200 10">
+                  <defs>
+                    <pattern id="shelf1EggDart" x="0" y="0" width="20" height="10" patternUnits="userSpaceOnUse">
+                      {/* Egg */}
+                      <ellipse cx="5" cy="5" rx="3.5" ry="3" fill="none" stroke="#fbbf24" strokeWidth="0.7"/>
+                      <ellipse cx="5" cy="5" rx="1.5" ry="1.2" fill="#fbbf24" opacity="0.25"/>
+                      {/* Dart */}
+                      <path d="M12 2 L14 8 L16 2" fill="none" stroke="#fbbf24" strokeWidth="0.6"/>
+                      <line x1="14" y1="3" x2="14" y2="7" stroke="#f59e0b" strokeWidth="0.4"/>
+                    </pattern>
+                  </defs>
+                  <rect width="100%" height="100%" fill="url(#shelf1EggDart)" opacity="0.55"/>
+                </svg>
+              </div>
+
+              {/* Bottom shadow */}
               <div className="absolute bottom-0 left-0 right-0 h-1 bg-gradient-to-t from-amber-950 to-transparent" />
             </div>
           </div>
@@ -3466,48 +3505,80 @@ export default function ArticlesPage() {
               </div>
             </div>
 
-            {/* Ornate Roman shelf surface - Enhanced */}
-            <div className="h-10 bg-gradient-to-b from-amber-650 via-amber-750 to-amber-950 border-t-2 border-amber-400/50 shadow-2xl relative overflow-hidden">
-              <div className="absolute top-0 left-0 right-0 h-2 bg-gradient-to-b from-amber-500/30 to-transparent" />
-              <div className="absolute inset-0 opacity-25" style={{
-                backgroundImage: `url("data:image/svg+xml,%3Csvg viewBox='0 0 200 20' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M0 8 Q50 5 100 8 Q150 11 200 8' fill='none' stroke='%23000' stroke-width='0.5'/%3E%3Cpath d='M0 14 Q50 12 100 14 Q150 16 200 14' fill='none' stroke='%23000' stroke-width='0.4'/%3E%3C/svg%3E")`,
-              }} />
-              <div className="absolute top-1.5 left-4 right-4 h-px bg-gradient-to-r from-transparent via-amber-400/60 to-transparent" />
-              {/* Acanthus leaf corner decorations - matching Shelf 1/3 */}
-              <svg className={`absolute left-2 top-0.5 w-8 h-8 ${isNightTime ? 'text-amber-400/50' : 'text-amber-500/40'}`} viewBox="0 0 32 32">
-                <path d="M4 28 Q10 20 16 16 Q10 12 4 4" fill="none" stroke="currentColor" strokeWidth="1.5"/>
-                <path d="M6 22 Q12 18 16 15" fill="none" stroke="currentColor" strokeWidth="1"/>
-                <path d="M8 16 Q12 14 14 13" fill="none" stroke="currentColor" strokeWidth="0.8"/>
-                <circle cx="16" cy="16" r="2" fill="currentColor" opacity="0.3"/>
+            {/* Ornate Roman shelf surface - Full Width Intricate Design */}
+            <div className="h-12 bg-gradient-to-b from-amber-600 via-amber-700 to-amber-950 border-t-2 border-amber-400/60 shadow-2xl relative overflow-hidden">
+              {/* Top highlight */}
+              <div className="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-amber-500/20 via-amber-400/50 to-amber-500/20" />
+
+              {/* === FULL WIDTH GUILLOCHE BAND - Spans entire shelf === */}
+              <div className="absolute top-1 left-0 right-0 h-3">
+                <svg className="w-full h-full" preserveAspectRatio="none" viewBox="0 0 1200 12">
+                  <defs>
+                    <pattern id="shelf2Guilloche" x="0" y="0" width="24" height="12" patternUnits="userSpaceOnUse">
+                      <path d="M0 6 Q6 0 12 6 Q18 12 24 6" fill="none" stroke="#fbbf24" strokeWidth="0.8"/>
+                      <path d="M0 6 Q6 12 12 6 Q18 0 24 6" fill="none" stroke="#d97706" strokeWidth="0.5"/>
+                      <circle cx="0" cy="6" r="1.5" fill="#fbbf24" opacity="0.4"/>
+                      <circle cx="12" cy="6" r="1.5" fill="#fbbf24" opacity="0.4"/>
+                      <circle cx="24" cy="6" r="1.5" fill="#fbbf24" opacity="0.4"/>
+                    </pattern>
+                  </defs>
+                  <rect width="100%" height="100%" fill="url(#shelf2Guilloche)" opacity="0.6"/>
+                </svg>
+              </div>
+
+              {/* Gold inlay line */}
+              <div className="absolute top-4 left-0 right-0 h-px bg-gradient-to-r from-amber-600/30 via-amber-400/70 to-amber-600/30" />
+
+              {/* === FULL WIDTH GEOMETRIC FRIEZE - Continuous pattern === */}
+              <div className="absolute top-5 left-0 right-0 h-3">
+                <svg className="w-full h-full" preserveAspectRatio="none" viewBox="0 0 1200 12">
+                  <defs>
+                    <pattern id="shelf2Frieze" x="0" y="0" width="36" height="12" patternUnits="userSpaceOnUse">
+                      {/* Diamond chain */}
+                      <path d="M6 6 L12 2 L18 6 L12 10 Z" fill="none" stroke="#fbbf24" strokeWidth="0.7"/>
+                      <path d="M24 6 L30 2 L36 6 L30 10 Z" fill="none" stroke="#fbbf24" strokeWidth="0.7"/>
+                      {/* Connecting lines */}
+                      <line x1="18" y1="6" x2="24" y2="6" stroke="#f59e0b" strokeWidth="0.5"/>
+                      <line x1="0" y1="6" x2="6" y2="6" stroke="#f59e0b" strokeWidth="0.5"/>
+                      {/* Center dots */}
+                      <circle cx="12" cy="6" r="1" fill="#fbbf24" opacity="0.5"/>
+                      <circle cx="30" cy="6" r="1" fill="#fbbf24" opacity="0.5"/>
+                    </pattern>
+                  </defs>
+                  <rect width="100%" height="100%" fill="url(#shelf2Frieze)" opacity="0.55"/>
+                </svg>
+              </div>
+
+              {/* === CORNER ACANTHUS DECORATIONS === */}
+              <svg className={`absolute left-1 top-1 w-6 h-8 ${isNightTime ? 'opacity-50' : 'opacity-40'} z-10`} viewBox="0 0 24 32">
+                <path d="M4 28 Q10 20 12 16 Q10 12 4 4" fill="none" stroke="#fbbf24" strokeWidth="1"/>
+                <path d="M6 20 Q10 16 12 14" fill="none" stroke="#f59e0b" strokeWidth="0.7"/>
+                <circle cx="12" cy="16" r="2" fill="#fbbf24" opacity="0.3"/>
               </svg>
-              <svg className={`absolute right-2 top-0.5 w-8 h-8 ${isNightTime ? 'text-amber-400/50' : 'text-amber-500/40'} scale-x-[-1]`} viewBox="0 0 32 32">
-                <path d="M4 28 Q10 20 16 16 Q10 12 4 4" fill="none" stroke="currentColor" strokeWidth="1.5"/>
-                <path d="M6 22 Q12 18 16 15" fill="none" stroke="currentColor" strokeWidth="1"/>
-                <path d="M8 16 Q12 14 14 13" fill="none" stroke="currentColor" strokeWidth="0.8"/>
-                <circle cx="16" cy="16" r="2" fill="currentColor" opacity="0.3"/>
+              <svg className={`absolute right-1 top-1 w-6 h-8 ${isNightTime ? 'opacity-50' : 'opacity-40'} z-10 scale-x-[-1]`} viewBox="0 0 24 32">
+                <path d="M4 28 Q10 20 12 16 Q10 12 4 4" fill="none" stroke="#fbbf24" strokeWidth="1"/>
+                <path d="M6 20 Q10 16 12 14" fill="none" stroke="#f59e0b" strokeWidth="0.7"/>
+                <circle cx="12" cy="16" r="2" fill="#fbbf24" opacity="0.3"/>
               </svg>
-              {/* Symmetric rosettes */}
-              {[4, 15, 26, 37, 50, 63, 74, 85, 96].map((pos, i) => (
-                <div key={`shelf2-rosette-${i}`} className="absolute top-3.5 -translate-x-1/2" style={{ left: `${pos}%` }}>
-                  <div className="w-3 h-3 bg-gradient-to-br from-yellow-400 via-yellow-500 to-amber-600 rounded-full shadow-md border border-yellow-300/40 relative overflow-hidden">
-                    <div className="absolute top-0.5 left-0.5 w-1.5 h-1.5 bg-gradient-to-br from-yellow-200/70 to-transparent rounded-full" />
-                    <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-1 h-1 bg-amber-700/50 rounded-full" />
-                  </div>
-                </div>
-              ))}
-              <svg className="absolute bottom-0 left-0 right-0 h-2.5 opacity-50" preserveAspectRatio="none">
-                <pattern id="shelf2EdgePattern" x="0" y="0" width="24" height="10" patternUnits="userSpaceOnUse">
-                  {/* Left rosette */}
-                  <ellipse cx="6" cy="5" rx="4" ry="3.5" fill="none" stroke="#fbbf24" strokeWidth="0.7"/>
-                  <ellipse cx="6" cy="5" rx="2" ry="1.5" fill="#fbbf24" opacity="0.2"/>
-                  {/* Center diamond */}
-                  <path d="M12 2 L14 5 L12 8 L10 5 Z" fill="none" stroke="#fbbf24" strokeWidth="0.5"/>
-                  {/* Right rosette - mirrored */}
-                  <ellipse cx="18" cy="5" rx="4" ry="3.5" fill="none" stroke="#fbbf24" strokeWidth="0.7"/>
-                  <ellipse cx="18" cy="5" rx="2" ry="1.5" fill="#fbbf24" opacity="0.2"/>
-                </pattern>
-                <rect width="100%" height="100%" fill="url(#shelf2EdgePattern)"/>
-              </svg>
+
+              {/* === FULL WIDTH EGG-AND-DART BOTTOM EDGE === */}
+              <div className="absolute bottom-1 left-0 right-0 h-2.5">
+                <svg className="w-full h-full" preserveAspectRatio="none" viewBox="0 0 1200 10">
+                  <defs>
+                    <pattern id="shelf2EggDart" x="0" y="0" width="20" height="10" patternUnits="userSpaceOnUse">
+                      {/* Egg */}
+                      <ellipse cx="5" cy="5" rx="3.5" ry="3" fill="none" stroke="#fbbf24" strokeWidth="0.7"/>
+                      <ellipse cx="5" cy="5" rx="1.5" ry="1.2" fill="#fbbf24" opacity="0.25"/>
+                      {/* Dart */}
+                      <path d="M12 2 L14 8 L16 2" fill="none" stroke="#fbbf24" strokeWidth="0.6"/>
+                      <line x1="14" y1="3" x2="14" y2="7" stroke="#f59e0b" strokeWidth="0.4"/>
+                    </pattern>
+                  </defs>
+                  <rect width="100%" height="100%" fill="url(#shelf2EggDart)" opacity="0.55"/>
+                </svg>
+              </div>
+
+              {/* Bottom shadow */}
               <div className="absolute bottom-0 left-0 right-0 h-1 bg-gradient-to-t from-amber-950 to-transparent" />
             </div>
           </div>
@@ -3667,48 +3738,80 @@ export default function ArticlesPage() {
               </div>
             </div>
 
-            {/* Ornate Roman shelf surface with acanthus leaf corners - Enhanced */}
-            <div className="h-10 bg-gradient-to-b from-amber-650 via-amber-750 to-amber-950 border-t-2 border-amber-400/50 shadow-2xl relative overflow-hidden">
-              <div className="absolute top-0 left-0 right-0 h-2 bg-gradient-to-b from-amber-500/30 to-transparent" />
-              <div className="absolute inset-0 opacity-25" style={{
-                backgroundImage: `url("data:image/svg+xml,%3Csvg viewBox='0 0 200 20' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M0 8 Q50 5 100 8 Q150 11 200 8' fill='none' stroke='%23000' stroke-width='0.5'/%3E%3Cpath d='M0 14 Q50 12 100 14 Q150 16 200 14' fill='none' stroke='%23000' stroke-width='0.4'/%3E%3C/svg%3E")`,
-              }} />
-              <div className="absolute top-1.5 left-4 right-4 h-px bg-gradient-to-r from-transparent via-amber-400/60 to-transparent" />
-              {/* Acanthus leaf corner decorations - matching Shelf 1/2 with night-time awareness */}
-              <svg className={`absolute left-2 top-0.5 w-8 h-8 ${isNightTime ? 'text-amber-400/50' : 'text-amber-500/40'}`} viewBox="0 0 32 32">
-                <path d="M4 28 Q10 20 16 16 Q10 12 4 4" fill="none" stroke="currentColor" strokeWidth="1.5"/>
-                <path d="M6 22 Q12 18 16 15" fill="none" stroke="currentColor" strokeWidth="1"/>
-                <path d="M8 16 Q12 14 14 13" fill="none" stroke="currentColor" strokeWidth="0.8"/>
-                <circle cx="16" cy="16" r="2" fill="currentColor" opacity="0.3"/>
+            {/* Ornate Roman shelf surface - Full Width Intricate Design */}
+            <div className="h-12 bg-gradient-to-b from-amber-600 via-amber-700 to-amber-950 border-t-2 border-amber-400/60 shadow-2xl relative overflow-hidden">
+              {/* Top highlight */}
+              <div className="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-amber-500/20 via-amber-400/50 to-amber-500/20" />
+
+              {/* === FULL WIDTH GUILLOCHE BAND - Spans entire shelf === */}
+              <div className="absolute top-1 left-0 right-0 h-3">
+                <svg className="w-full h-full" preserveAspectRatio="none" viewBox="0 0 1200 12">
+                  <defs>
+                    <pattern id="shelf3Guilloche" x="0" y="0" width="24" height="12" patternUnits="userSpaceOnUse">
+                      <path d="M0 6 Q6 0 12 6 Q18 12 24 6" fill="none" stroke="#fbbf24" strokeWidth="0.8"/>
+                      <path d="M0 6 Q6 12 12 6 Q18 0 24 6" fill="none" stroke="#d97706" strokeWidth="0.5"/>
+                      <circle cx="0" cy="6" r="1.5" fill="#fbbf24" opacity="0.4"/>
+                      <circle cx="12" cy="6" r="1.5" fill="#fbbf24" opacity="0.4"/>
+                      <circle cx="24" cy="6" r="1.5" fill="#fbbf24" opacity="0.4"/>
+                    </pattern>
+                  </defs>
+                  <rect width="100%" height="100%" fill="url(#shelf3Guilloche)" opacity="0.6"/>
+                </svg>
+              </div>
+
+              {/* Gold inlay line */}
+              <div className="absolute top-4 left-0 right-0 h-px bg-gradient-to-r from-amber-600/30 via-amber-400/70 to-amber-600/30" />
+
+              {/* === FULL WIDTH GEOMETRIC FRIEZE - Continuous pattern === */}
+              <div className="absolute top-5 left-0 right-0 h-3">
+                <svg className="w-full h-full" preserveAspectRatio="none" viewBox="0 0 1200 12">
+                  <defs>
+                    <pattern id="shelf3Frieze" x="0" y="0" width="36" height="12" patternUnits="userSpaceOnUse">
+                      {/* Diamond chain */}
+                      <path d="M6 6 L12 2 L18 6 L12 10 Z" fill="none" stroke="#fbbf24" strokeWidth="0.7"/>
+                      <path d="M24 6 L30 2 L36 6 L30 10 Z" fill="none" stroke="#fbbf24" strokeWidth="0.7"/>
+                      {/* Connecting lines */}
+                      <line x1="18" y1="6" x2="24" y2="6" stroke="#f59e0b" strokeWidth="0.5"/>
+                      <line x1="0" y1="6" x2="6" y2="6" stroke="#f59e0b" strokeWidth="0.5"/>
+                      {/* Center dots */}
+                      <circle cx="12" cy="6" r="1" fill="#fbbf24" opacity="0.5"/>
+                      <circle cx="30" cy="6" r="1" fill="#fbbf24" opacity="0.5"/>
+                    </pattern>
+                  </defs>
+                  <rect width="100%" height="100%" fill="url(#shelf3Frieze)" opacity="0.55"/>
+                </svg>
+              </div>
+
+              {/* === CORNER ACANTHUS DECORATIONS === */}
+              <svg className={`absolute left-1 top-1 w-6 h-8 ${isNightTime ? 'opacity-50' : 'opacity-40'} z-10`} viewBox="0 0 24 32">
+                <path d="M4 28 Q10 20 12 16 Q10 12 4 4" fill="none" stroke="#fbbf24" strokeWidth="1"/>
+                <path d="M6 20 Q10 16 12 14" fill="none" stroke="#f59e0b" strokeWidth="0.7"/>
+                <circle cx="12" cy="16" r="2" fill="#fbbf24" opacity="0.3"/>
               </svg>
-              <svg className={`absolute right-2 top-0.5 w-8 h-8 ${isNightTime ? 'text-amber-400/50' : 'text-amber-500/40'} scale-x-[-1]`} viewBox="0 0 32 32">
-                <path d="M4 28 Q10 20 16 16 Q10 12 4 4" fill="none" stroke="currentColor" strokeWidth="1.5"/>
-                <path d="M6 22 Q12 18 16 15" fill="none" stroke="currentColor" strokeWidth="1"/>
-                <path d="M8 16 Q12 14 14 13" fill="none" stroke="currentColor" strokeWidth="0.8"/>
-                <circle cx="16" cy="16" r="2" fill="currentColor" opacity="0.3"/>
+              <svg className={`absolute right-1 top-1 w-6 h-8 ${isNightTime ? 'opacity-50' : 'opacity-40'} z-10 scale-x-[-1]`} viewBox="0 0 24 32">
+                <path d="M4 28 Q10 20 12 16 Q10 12 4 4" fill="none" stroke="#fbbf24" strokeWidth="1"/>
+                <path d="M6 20 Q10 16 12 14" fill="none" stroke="#f59e0b" strokeWidth="0.7"/>
+                <circle cx="12" cy="16" r="2" fill="#fbbf24" opacity="0.3"/>
               </svg>
-              {/* Symmetric rosettes */}
-              {[4, 15, 26, 37, 50, 63, 74, 85, 96].map((pos, i) => (
-                <div key={`shelf3-rosette-${i}`} className="absolute top-3.5 -translate-x-1/2" style={{ left: `${pos}%` }}>
-                  <div className="w-3 h-3 bg-gradient-to-br from-yellow-400 via-yellow-500 to-amber-600 rounded-full shadow-md border border-yellow-300/40 relative overflow-hidden">
-                    <div className="absolute top-0.5 left-0.5 w-1.5 h-1.5 bg-gradient-to-br from-yellow-200/70 to-transparent rounded-full" />
-                    <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-1 h-1 bg-amber-700/50 rounded-full" />
-                  </div>
-                </div>
-              ))}
-              <svg className="absolute bottom-0 left-0 right-0 h-2.5 opacity-50" preserveAspectRatio="none">
-                <pattern id="shelf3EdgePattern" x="0" y="0" width="24" height="10" patternUnits="userSpaceOnUse">
-                  {/* Left rosette */}
-                  <ellipse cx="6" cy="5" rx="4" ry="3.5" fill="none" stroke="#fbbf24" strokeWidth="0.7"/>
-                  <ellipse cx="6" cy="5" rx="2" ry="1.5" fill="#fbbf24" opacity="0.2"/>
-                  {/* Center diamond */}
-                  <path d="M12 2 L14 5 L12 8 L10 5 Z" fill="none" stroke="#fbbf24" strokeWidth="0.5"/>
-                  {/* Right rosette - mirrored */}
-                  <ellipse cx="18" cy="5" rx="4" ry="3.5" fill="none" stroke="#fbbf24" strokeWidth="0.7"/>
-                  <ellipse cx="18" cy="5" rx="2" ry="1.5" fill="#fbbf24" opacity="0.2"/>
-                </pattern>
-                <rect width="100%" height="100%" fill="url(#shelf3EdgePattern)"/>
-              </svg>
+
+              {/* === FULL WIDTH EGG-AND-DART BOTTOM EDGE === */}
+              <div className="absolute bottom-1 left-0 right-0 h-2.5">
+                <svg className="w-full h-full" preserveAspectRatio="none" viewBox="0 0 1200 10">
+                  <defs>
+                    <pattern id="shelf3EggDart" x="0" y="0" width="20" height="10" patternUnits="userSpaceOnUse">
+                      {/* Egg */}
+                      <ellipse cx="5" cy="5" rx="3.5" ry="3" fill="none" stroke="#fbbf24" strokeWidth="0.7"/>
+                      <ellipse cx="5" cy="5" rx="1.5" ry="1.2" fill="#fbbf24" opacity="0.25"/>
+                      {/* Dart */}
+                      <path d="M12 2 L14 8 L16 2" fill="none" stroke="#fbbf24" strokeWidth="0.6"/>
+                      <line x1="14" y1="3" x2="14" y2="7" stroke="#f59e0b" strokeWidth="0.4"/>
+                    </pattern>
+                  </defs>
+                  <rect width="100%" height="100%" fill="url(#shelf3EggDart)" opacity="0.55"/>
+                </svg>
+              </div>
+
+              {/* Bottom shadow */}
               <div className="absolute bottom-0 left-0 right-0 h-1 bg-gradient-to-t from-amber-950 to-transparent" />
             </div>
           </div>
