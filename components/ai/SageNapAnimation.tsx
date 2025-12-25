@@ -51,7 +51,7 @@ export function SageNapAnimation() {
         x: x + (Math.random() - 0.5) * 20,
         y: y + (Math.random() - 0.5) * 20,
         size: 4 + Math.random() * 8,
-        delay: progress * 1.2, // Adjusted for slower animation
+        delay: progress * 2.0, // Slower sparkle trail for sleep animation
       })
     }
 
@@ -110,13 +110,16 @@ export function SageNapAnimation() {
         ? [0.4, 0, 1, 1] // ease-in (accelerates toward end)
         : [0, 0, 0.2, 1] // ease-out (decelerates toward end)
 
+      // Slower animation when going to sleep, normal speed when waking
+      const duration = animationPhase === 'going-to-nap' ? 3.0 : 1.8
+
       await controls.start({
         x: [startPos.x, midX, endPos.x],
         y: [startPos.y, midY, endPos.y],
         scale: [startScale, (startScale + endScale) / 2, endScale],
         opacity: [1, 1, animationPhase === 'going-to-nap' ? 0.8 : 1],
         transition: {
-          duration: 1.8,
+          duration,
           ease: easing as [number, number, number, number],
           times: [0, 0.5, 1],
         }
