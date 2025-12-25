@@ -84,16 +84,16 @@ export function ThemeToggle() {
             className="fixed inset-0 z-[199]"
             onClick={() => setDropdownOpen(false)}
           />
-          <div className="absolute right-0 sm:right-0 mt-2 w-[calc(100vw-2rem)] sm:w-72 max-w-72 bg-[var(--card)] rounded-xl shadow-theme-lg border-2 border-theme-primary overflow-hidden z-[200]">
-            <div className="p-3 border-b-2 border-[var(--border)] bg-[var(--muted)]">
-              <div className="flex items-center gap-2">
-                {getCurrentIcon('w-5 h-5 text-theme-primary')}
+          <div className="absolute right-0 mt-2 w-80 bg-[var(--card)] rounded-xl shadow-theme-lg border-2 border-theme-primary z-[200]">
+            <div className="p-4 border-b-2 border-[var(--border)] bg-[var(--muted)]">
+              <div className="flex items-center gap-3">
+                {getCurrentIcon('w-6 h-6 text-theme-primary')}
                 <div>
-                  <h3 className="font-bold text-[var(--foreground)] text-sm uppercase tracking-wide">
+                  <h3 className="font-bold text-[var(--foreground)] text-base">
                     Living Theme
                   </h3>
                   {mode === 'auto' && (
-                    <p className="text-xs text-theme-muted mt-0.5">
+                    <p className="text-sm text-theme-muted mt-0.5">
                       Currently: {phase}
                     </p>
                   )}
@@ -101,7 +101,7 @@ export function ThemeToggle() {
               </div>
             </div>
 
-            <div className="p-2 space-y-1">
+            <div className="p-3 space-y-2">
               {(Object.keys(modeConfig) as ThemeMode[]).map((themeMode) => {
                 const config = modeConfig[themeMode]
                 const isActive = mode === themeMode
@@ -113,20 +113,20 @@ export function ThemeToggle() {
                       setMode(themeMode)
                       setDropdownOpen(false)
                     }}
-                    className={`w-full flex items-start gap-3 px-3 py-3 rounded-lg transition-all ${
+                    className={`w-full flex items-start gap-3 px-4 py-3 rounded-lg transition-all ${
                       isActive
                         ? 'bg-gradient-to-r from-[var(--primary)]/10 to-[var(--accent)]/10 border-2 border-theme-primary'
                         : 'hover:bg-[var(--muted)] border-2 border-transparent'
                     }`}
                   >
-                    <div className={`p-2 rounded-lg ${isActive ? 'bg-[var(--primary)]/20' : 'bg-[var(--muted)]'}`}>
-                      {getModeIcon(themeMode, `w-4 h-4 ${
+                    <div className={`p-2.5 rounded-lg ${isActive ? 'bg-[var(--primary)]/20' : 'bg-[var(--muted)]'}`}>
+                      {getModeIcon(themeMode, `w-5 h-5 ${
                         isActive
                           ? 'text-theme-primary'
                           : 'text-theme-muted'
                       }`)}
                     </div>
-                    <div className="flex-1 text-left">
+                    <div className="flex-1 text-left min-w-0">
                       <div
                         className={`font-bold text-sm ${
                           isActive
@@ -136,22 +136,22 @@ export function ThemeToggle() {
                       >
                         {config.label}
                       </div>
-                      <div className="text-xs text-theme-muted mt-0.5">
+                      <div className="text-xs text-theme-muted mt-1">
                         {config.description}
                       </div>
                     </div>
                     {isActive && (
-                      <div className="w-2 h-2 rounded-full bg-theme-primary mt-2 animate-pulse" />
+                      <div className="w-2.5 h-2.5 rounded-full bg-theme-primary mt-2 animate-pulse flex-shrink-0" />
                     )}
                   </button>
                 )
               })}
             </div>
 
-            <div className="p-3 border-t-2 border-[var(--border)] bg-[var(--muted)]">
-              <div className="flex items-start gap-2">
-                <Sunrise className="w-4 h-4 text-theme-secondary mt-0.5 flex-shrink-0" />
-                <p className="text-xs text-[var(--foreground)] leading-relaxed">
+            <div className="p-4 border-t-2 border-[var(--border)] bg-[var(--muted)]">
+              <div className="flex items-start gap-3">
+                <Sunrise className="w-5 h-5 text-theme-secondary mt-0.5 flex-shrink-0" />
+                <p className="text-sm text-[var(--foreground)] leading-relaxed">
                   <span className="font-semibold">Auto Sync</span> creates smooth color transitions based on real sunrise/sunset times for your location.
                 </p>
               </div>

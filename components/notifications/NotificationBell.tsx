@@ -331,13 +331,13 @@ export default function NotificationBell() {
           position: absolute;
           top: calc(100% + 8px);
           right: 0;
-          width: 380px;
+          width: 400px;
+          min-width: 360px;
           max-height: 600px;
           background: var(--card);
-          border: 1px solid var(--border);
-          border-radius: 12px;
-          box-shadow: 0 10px 40px rgba(0, 0, 0, 0.1);
-          overflow: hidden;
+          border: 2px solid var(--primary);
+          border-radius: 16px;
+          box-shadow: 0 10px 40px rgba(0, 0, 0, 0.15);
           z-index: 1000;
           display: flex;
           flex-direction: column;
@@ -348,36 +348,39 @@ export default function NotificationBell() {
           align-items: center;
           justify-content: space-between;
           padding: 16px 20px;
-          border-bottom: 1px solid var(--border);
+          border-bottom: 2px solid var(--border);
+          background: var(--muted);
+          border-radius: 14px 14px 0 0;
         }
 
         .notification-header h3 {
           margin: 0;
           font-size: 18px;
-          font-weight: 600;
+          font-weight: 700;
           color: var(--foreground);
         }
 
         .mark-all-read-button {
-          padding: 6px 12px;
+          padding: 8px 14px;
           background: transparent;
           color: var(--primary);
-          border: none;
-          border-radius: 6px;
+          border: 2px solid var(--primary);
+          border-radius: 8px;
           font-size: 13px;
-          font-weight: 500;
+          font-weight: 600;
           cursor: pointer;
           transition: all 0.2s ease;
         }
 
         .mark-all-read-button:hover {
-          background: var(--muted);
+          background: var(--primary);
+          color: white;
         }
 
         .notification-list {
           flex: 1;
           overflow-y: auto;
-          max-height: 480px;
+          max-height: 450px;
         }
 
         .notification-loading,
@@ -386,18 +389,18 @@ export default function NotificationBell() {
           flex-direction: column;
           align-items: center;
           justify-content: center;
-          padding: 48px 20px;
+          padding: 48px 24px;
           color: var(--muted-foreground);
         }
 
         .loading-spinner {
-          width: 32px;
-          height: 32px;
+          width: 36px;
+          height: 36px;
           border: 3px solid var(--muted);
           border-top-color: var(--primary);
           border-radius: 50%;
           animation: spin 1s linear infinite;
-          margin-bottom: 12px;
+          margin-bottom: 16px;
         }
 
         @keyframes spin {
@@ -408,18 +411,18 @@ export default function NotificationBell() {
 
         .empty-icon {
           opacity: 0.3;
-          margin-bottom: 12px;
+          margin-bottom: 16px;
         }
 
         .notification-empty p,
         .notification-loading p {
           margin: 0;
-          font-size: 14px;
+          font-size: 15px;
         }
 
         .notification-item {
           display: flex;
-          gap: 12px;
+          gap: 14px;
           padding: 16px 20px;
           background: transparent;
           border: none;
@@ -440,23 +443,31 @@ export default function NotificationBell() {
         }
 
         .notification-item.unread {
-          background: var(--muted);
+          background: rgba(var(--primary-rgb, 34, 197, 94), 0.05);
         }
 
         .notification-icon {
-          font-size: 24px;
+          font-size: 28px;
           line-height: 1;
           flex-shrink: 0;
+          width: 40px;
+          height: 40px;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          background: var(--muted);
+          border-radius: 10px;
         }
 
         .notification-content {
           flex: 1;
           min-width: 0;
+          padding-right: 16px;
         }
 
         .notification-title {
           font-size: 14px;
-          font-weight: 600;
+          font-weight: 700;
           color: var(--foreground);
           margin-bottom: 4px;
           line-height: 1.4;
@@ -465,8 +476,8 @@ export default function NotificationBell() {
         .notification-message {
           font-size: 13px;
           color: var(--muted-foreground);
-          margin-bottom: 6px;
-          line-height: 1.4;
+          margin-bottom: 8px;
+          line-height: 1.5;
           overflow: hidden;
           text-overflow: ellipsis;
           display: -webkit-box;
@@ -477,47 +488,56 @@ export default function NotificationBell() {
         .notification-time {
           font-size: 12px;
           color: var(--muted-foreground);
-          opacity: 0.7;
+          opacity: 0.8;
+          font-weight: 500;
         }
 
         .notification-unread-indicator {
           position: absolute;
           top: 50%;
-          right: 12px;
+          right: 16px;
           transform: translateY(-50%);
-          width: 8px;
-          height: 8px;
+          width: 10px;
+          height: 10px;
           background: var(--primary);
           border-radius: 50%;
           flex-shrink: 0;
         }
 
         .notification-footer {
-          padding: 12px 20px;
-          border-top: 1px solid var(--border);
+          padding: 14px 20px;
+          border-top: 2px solid var(--border);
+          background: var(--muted);
+          border-radius: 0 0 14px 14px;
         }
 
         .view-all-button {
           width: 100%;
-          padding: 10px;
-          background: transparent;
-          color: var(--primary);
+          padding: 12px;
+          background: var(--primary);
+          color: white;
           border: none;
-          border-radius: 6px;
+          border-radius: 8px;
           font-size: 14px;
-          font-weight: 500;
+          font-weight: 600;
           cursor: pointer;
           transition: all 0.2s ease;
         }
 
         .view-all-button:hover {
-          background: var(--muted);
+          opacity: 0.9;
+          transform: translateY(-1px);
         }
 
         @media (max-width: 640px) {
           .notification-dropdown {
-            width: calc(100vw - 32px);
-            max-width: 380px;
+            position: fixed;
+            top: 70px;
+            right: 16px;
+            left: 16px;
+            width: auto;
+            min-width: unset;
+            max-width: none;
           }
         }
       `}</style>
