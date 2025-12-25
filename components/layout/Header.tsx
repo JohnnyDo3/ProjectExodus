@@ -258,14 +258,14 @@ export function Header() {
                         <div className="h-1 bg-gradient-to-r from-emerald-500 via-teal-500 to-cyan-500" />
 
                         {/* Navigation link - Exodology only */}
-                        <div className="p-2">
+                        <div className="p-3">
                           {learnMenuItems.map((menuItem) => {
                             const isLocked = menuItem.requiresAuth && !session
 
                             return isLocked ? (
                               <div
                                 key={menuItem.label}
-                                className="flex items-center justify-center gap-2 px-3 py-2 rounded-lg text-gray-500 opacity-60 cursor-not-allowed"
+                                className="flex items-center justify-center gap-2 px-4 py-2.5 rounded-lg text-gray-500 opacity-60 cursor-not-allowed"
                                 title="Sign in to access"
                               >
                                 <Lock className="w-3.5 h-3.5 flex-shrink-0" />
@@ -275,7 +275,7 @@ export function Header() {
                               <Link
                                 key={menuItem.label}
                                 href={menuItem.href}
-                                className="flex items-center justify-center px-3 py-2 rounded-lg text-sm font-medium text-gray-800 hover:bg-gray-100 hover:text-emerald-600 transition-colors"
+                                className="flex items-center justify-center px-4 py-2.5 rounded-lg text-sm font-medium text-gray-800 hover:bg-gray-100 hover:text-emerald-600 transition-colors"
                                 onClick={() => setLearnMenuOpen(false)}
                               >
                                 <span>{menuItem.label}</span>
