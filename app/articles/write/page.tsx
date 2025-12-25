@@ -514,54 +514,34 @@ export default function WriteArticlePage() {
 
             {/* Content */}
             <div className="relative z-10 text-center space-y-8">
-              {/* Header ornament */}
+              {/* Sacred divider */}
               <div className="flex items-center justify-center gap-4">
                 <div className="h-px flex-1 bg-gradient-to-r from-transparent via-amber-600/50 to-transparent" />
-                <BookOpen className="w-8 h-8 text-amber-700" />
+                <span className="text-2xl text-amber-700">☥</span>
                 <div className="h-px flex-1 bg-gradient-to-r from-transparent via-amber-600/50 to-transparent" />
               </div>
 
               {/* Main quote */}
-              <div className="space-y-6">
-                <motion.h1
-                  initial={{ opacity: 0, y: 10 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ delay: 0.3, duration: 0.6 }}
-                  className="text-2xl md:text-3xl font-serif text-amber-900 leading-relaxed"
-                >
-                  Welcome to the digital scroll library. lol
-                </motion.h1>
+              <div className="space-y-6 px-4">
+                <p className="text-xl sm:text-2xl font-serif italic text-amber-900 leading-relaxed">
+                  "Welcome to the digital scroll library."
+                </p>
 
-                <motion.p
-                  initial={{ opacity: 0, y: 10 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ delay: 0.5, duration: 0.6 }}
-                  className="text-lg md:text-xl font-serif text-amber-800 leading-relaxed italic"
-                >
+                <p className="text-lg text-amber-800 leading-relaxed">
                   No matter what you&apos;ve written and for what, post it so others can learn from you, forever…
-                </motion.p>
+                </p>
 
-                <motion.p
-                  initial={{ opacity: 0, y: 10 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ delay: 0.7, duration: 0.6 }}
-                  className="text-base text-amber-700 mt-4"
-                >
+                <p className="text-lg text-amber-700">
                   Made with love, for y&apos;all 🙂
-                </motion.p>
+                </p>
               </div>
 
               {/* Signature */}
-              <motion.div
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
-                transition={{ delay: 0.9, duration: 0.6 }}
-                className="pt-4"
-              >
+              <div className="pt-4">
                 <p className="text-amber-800 font-serif italic text-lg">— Mr. Nobody</p>
-              </motion.div>
+              </div>
 
-              {/* Footer ornament */}
+              {/* Footer divider */}
               <div className="flex items-center justify-center gap-4 pt-4">
                 <div className="h-px flex-1 bg-gradient-to-r from-transparent via-amber-600/50 to-transparent" />
                 <div className="w-2 h-2 bg-amber-600/50 rounded-full" />
@@ -569,11 +549,7 @@ export default function WriteArticlePage() {
               </div>
 
               {/* Continue button */}
-              <motion.div
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: 1.1, duration: 0.6 }}
-              >
+              <div>
                 <button
                   onClick={() => setShowIntro(false)}
                   className="group mt-6 px-8 py-3 bg-gradient-to-b from-amber-700 via-amber-800 to-amber-900 text-amber-100 font-semibold rounded-lg shadow-lg hover:from-amber-600 hover:via-amber-700 hover:to-amber-800 transition-all duration-300 border border-amber-600/40"
@@ -584,10 +560,10 @@ export default function WriteArticlePage() {
                     <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
                   </span>
                 </button>
-                <p className="text-xs text-amber-600/70 mt-3 animate-pulse">
+                <p className="text-xs text-amber-600/70 mt-3">
                   Click to continue
                 </p>
-              </motion.div>
+              </div>
             </div>
           </div>
 
