@@ -30,6 +30,14 @@ import {
   Loader2,
   BookOpen,
   Sparkles,
+  Leaf,
+  Droplets,
+  Zap,
+  Recycle,
+  TreePine,
+  Home,
+  Heart,
+  User,
 } from 'lucide-react'
 import toast from 'react-hot-toast'
 import { parseCitation, type ParsedCitation } from '@/components/editor/TipTapEditor'
@@ -57,11 +65,17 @@ interface Reference {
   description: string
 }
 
-interface Category {
-  id: string
-  name: string
-  slug: string
-}
+// Article categories matching the bookshelf filters
+const ARTICLE_CATEGORIES = [
+  { id: 'sustainability', name: 'Sustainability', slug: 'sustainability', icon: Leaf },
+  { id: 'water', name: 'Water', slug: 'water', icon: Droplets },
+  { id: 'energy', name: 'Energy', slug: 'energy', icon: Zap },
+  { id: 'waste', name: 'Waste', slug: 'waste', icon: Recycle },
+  { id: 'nature', name: 'Nature', slug: 'nature', icon: TreePine },
+  { id: 'building', name: 'Building', slug: 'building', icon: Home },
+  { id: 'food', name: 'Food', slug: 'food', icon: Heart },
+  { id: 'community', name: 'Community', slug: 'community', icon: User },
+]
 
 const STEPS = [
   { id: 'title', label: 'Title' },
@@ -82,7 +96,6 @@ export default function WriteArticlePage() {
   // Form state
   const [saving, setSaving] = useState(false)
   const [autoSaveStatus, setAutoSaveStatus] = useState<'idle' | 'saving' | 'saved' | 'error'>('idle')
-  const [categories, setCategories] = useState<Category[]>([])
   const [references, setReferences] = useState<Reference[]>([])
   const [formData, setFormData] = useState({
     title: '',
@@ -116,19 +129,8 @@ export default function WriteArticlePage() {
     }
   }, [status, router])
 
-  // Fetch categories on mount
+  // Load draft from localStorage on mount
   useEffect(() => {
-    fetch('/api/article-categories')
-      .then(res => res.json())
-      .then(data => {
-        if (data.success) {
-          setCategories(data.data)
-        }
-      })
-      .catch(error => {
-        console.error('Error fetching categories:', error)
-      })
-
     // Load draft from localStorage
     const savedDraft = localStorage.getItem('article-draft')
     if (savedDraft) {
@@ -666,7 +668,7 @@ export default function WriteArticlePage() {
                     onChange={handleChange}
                     options={[
                       { value: '', label: 'Select category...', disabled: true },
-                      ...categories.map(cat => ({ value: cat.id, label: cat.name })),
+                      ...ARTICLE_CATEGORIES.map(cat => ({ value: cat.id, label: cat.name })),
                     ]}
                   />
                   <Input
@@ -786,7 +788,7 @@ export default function WriteArticlePage() {
                   <p className="text-lg text-[var(--muted-foreground)]">{formData.excerpt}</p>
                 </div>
                 <div className="flex flex-wrap gap-4 text-sm text-[var(--muted-foreground)]">
-                  <span>Category: <strong className="text-[var(--foreground)]">{categories.find(c => c.id === formData.categoryId)?.name || 'None'}</strong></span>
+                  <span>Category: <strong className="text-[var(--foreground)]">{ARTICLE_CATEGORIES.find(c => c.id === formData.categoryId)?.name || 'None'}</strong></span>
                   <span>Read time: <strong className="text-[var(--foreground)]">{formData.readTime || estimatedReadTime} min</strong></span>
                   <span>Words: <strong className="text-[var(--foreground)]">{wordCount}</strong></span>
                 </div>
