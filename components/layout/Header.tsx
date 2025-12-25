@@ -178,7 +178,7 @@ export function Header() {
             <div
               ref={sageContext?.headerLogoRef}
               onClick={sageContext?.isNapping && !sageContext?.isAnimating ? sageContext.wakeUp : undefined}
-              className={`group relative w-10 h-10 sm:w-12 sm:h-12 rounded-full bg-gradient-to-br from-moss-600 to-ocean-600 flex items-center justify-center shadow-lg transition-all ${
+              className={`group relative w-10 h-10 sm:w-12 sm:h-12 rounded-full bg-gradient-to-br from-moss-600 to-ocean-600 flex items-center justify-center shadow-lg transition-all overflow-visible ${
                 sageContext?.isNapping && !sageContext?.isAnimating
                   ? 'cursor-pointer sage-sleeping sage-wake-indicator hover:scale-110'
                   : 'pulse-alive'

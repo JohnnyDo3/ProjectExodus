@@ -32,10 +32,11 @@ export function SageNapAnimation() {
 
     // Calculate arc that stays within viewport (matching animation)
     const horizontalDist = Math.abs(endX - startX)
-    const arcHeight = Math.min(horizontalDist * 0.4, 250)
+    const verticalDist = Math.abs(endY - startY)
+    const arcHeight = Math.min(horizontalDist * 0.3, 150, verticalDist * 0.25)
     const midX = (startX + endX) / 2
-    const higherY = Math.min(startY, endY)
-    const midY = Math.max(80, higherY - arcHeight)
+    const midYBase = (startY + endY) / 2
+    const midY = Math.max(60, midYBase - arcHeight)
 
     for (let i = 0; i < numSparkles; i++) {
       const progress = i / numSparkles
@@ -84,21 +85,17 @@ export function SageNapAnimation() {
       // Generate sparkles along path
       generateSparkles(startPos.x, startPos.y, endPos.x, endPos.y)
 
-      // Calculate arc control point - half-arc that goes UP then DOWN
-      // For going-to-nap: bottom-right to top-left with upward arc
+      // Calculate arc control point - gentle curve that stays within viewport
       const horizontalDist = Math.abs(endPos.x - startPos.x)
-
-      // More pronounced arc height for a visible half-rainbow effect
-      // The peak should be noticeably above the straight line path
-      const arcHeight = Math.min(horizontalDist * 0.4, 250)
+      const verticalDist = Math.abs(endPos.y - startPos.y)
+      const arcHeight = Math.min(horizontalDist * 0.3, 150, verticalDist * 0.25)
 
       // Calculate midpoint
       const midX = (startPos.x + endPos.x) / 2
+      const midYBase = (startPos.y + endPos.y) / 2
 
-      // For going-to-nap: start is lower (bottom-right), end is higher (top-left)
-      // Arc peak should be above both points - use the higher point (endPos) as reference
-      const higherY = Math.min(startPos.y, endPos.y)
-      const midY = Math.max(80, higherY - arcHeight)
+      // Arc curves upward but stays within viewport (minimum 60px from top)
+      const midY = Math.max(60, midYBase - arcHeight)
 
       // Calculate scale based on direction
       const startScale = animationPhase === 'going-to-nap' ? 1 : 0.6
