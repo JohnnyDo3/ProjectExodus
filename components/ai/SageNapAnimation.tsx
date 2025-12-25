@@ -128,10 +128,19 @@ export function SageNapAnimation() {
         }
       })
 
-      // Brief pause at the end
-      await new Promise(resolve => setTimeout(resolve, 150))
-
+      // Clear sparkles immediately
       setSparkles([])
+
+      // Fade out at the landing position for smooth merge
+      await controls.start({
+        opacity: 0,
+        scale: endScale * 0.8,
+        transition: {
+          duration: 0.3,
+          ease: 'easeOut',
+        }
+      })
+
       setIsVisible(false)
       animationRunning.current = false
       onAnimationComplete(animationPhase)
