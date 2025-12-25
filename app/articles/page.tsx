@@ -3267,7 +3267,7 @@ export default function ArticlesPage() {
 
             {/* Ornate Roman shelf surface - matching Shelf 2/3 style */}
             <div className="h-10 bg-gradient-to-b from-amber-650 via-amber-750 to-amber-950 border-t-2 border-amber-400/50 shadow-2xl relative overflow-hidden">
-              <div className="absolute top-0 left-0 right-0 h-2" style={{ background: 'linear-gradient(to bottom, rgba(245, 158, 11, 0.3), transparent)' }} />
+              <div className="absolute top-0 left-0 right-0 h-2 bg-gradient-to-b from-amber-500/30 to-transparent" />
               <div className="absolute inset-0 opacity-25" style={{
                 backgroundImage: `url("data:image/svg+xml,%3Csvg viewBox='0 0 200 20' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M0 8 Q50 5 100 8 Q150 11 200 8' fill='none' stroke='%23000' stroke-width='0.5'/%3E%3Cpath d='M0 14 Q50 12 100 14 Q150 16 200 14' fill='none' stroke='%23000' stroke-width='0.4'/%3E%3C/svg%3E")`,
               }} />
@@ -3296,9 +3296,14 @@ export default function ArticlesPage() {
               ))}
               <svg className="absolute bottom-0 left-0 right-0 h-2.5 opacity-50" preserveAspectRatio="none">
                 <pattern id="shelf1EdgePattern" x="0" y="0" width="24" height="10" patternUnits="userSpaceOnUse">
-                  <ellipse cx="7" cy="5" rx="5" ry="4" fill="none" stroke="#fbbf24" strokeWidth="0.7"/>
-                  <ellipse cx="7" cy="5" rx="2.5" ry="2" fill="#fbbf24" opacity="0.2"/>
-                  <path d="M17 1 L18.5 8 L20 1" fill="none" stroke="#fbbf24" strokeWidth="0.7"/>
+                  {/* Left rosette */}
+                  <ellipse cx="6" cy="5" rx="4" ry="3.5" fill="none" stroke="#fbbf24" strokeWidth="0.7"/>
+                  <ellipse cx="6" cy="5" rx="2" ry="1.5" fill="#fbbf24" opacity="0.2"/>
+                  {/* Center diamond */}
+                  <path d="M12 2 L14 5 L12 8 L10 5 Z" fill="none" stroke="#fbbf24" strokeWidth="0.5"/>
+                  {/* Right rosette - mirrored */}
+                  <ellipse cx="18" cy="5" rx="4" ry="3.5" fill="none" stroke="#fbbf24" strokeWidth="0.7"/>
+                  <ellipse cx="18" cy="5" rx="2" ry="1.5" fill="#fbbf24" opacity="0.2"/>
                 </pattern>
                 <rect width="100%" height="100%" fill="url(#shelf1EdgePattern)"/>
               </svg>
@@ -3492,9 +3497,14 @@ export default function ArticlesPage() {
               ))}
               <svg className="absolute bottom-0 left-0 right-0 h-2.5 opacity-50" preserveAspectRatio="none">
                 <pattern id="shelf2EdgePattern" x="0" y="0" width="24" height="10" patternUnits="userSpaceOnUse">
-                  <ellipse cx="7" cy="5" rx="5" ry="4" fill="none" stroke="#fbbf24" strokeWidth="0.7"/>
-                  <ellipse cx="7" cy="5" rx="2.5" ry="2" fill="#fbbf24" opacity="0.2"/>
-                  <path d="M17 1 L18.5 8 L20 1" fill="none" stroke="#fbbf24" strokeWidth="0.7"/>
+                  {/* Left rosette */}
+                  <ellipse cx="6" cy="5" rx="4" ry="3.5" fill="none" stroke="#fbbf24" strokeWidth="0.7"/>
+                  <ellipse cx="6" cy="5" rx="2" ry="1.5" fill="#fbbf24" opacity="0.2"/>
+                  {/* Center diamond */}
+                  <path d="M12 2 L14 5 L12 8 L10 5 Z" fill="none" stroke="#fbbf24" strokeWidth="0.5"/>
+                  {/* Right rosette - mirrored */}
+                  <ellipse cx="18" cy="5" rx="4" ry="3.5" fill="none" stroke="#fbbf24" strokeWidth="0.7"/>
+                  <ellipse cx="18" cy="5" rx="2" ry="1.5" fill="#fbbf24" opacity="0.2"/>
                 </pattern>
                 <rect width="100%" height="100%" fill="url(#shelf2EdgePattern)"/>
               </svg>
@@ -3688,9 +3698,14 @@ export default function ArticlesPage() {
               ))}
               <svg className="absolute bottom-0 left-0 right-0 h-2.5 opacity-50" preserveAspectRatio="none">
                 <pattern id="shelf3EdgePattern" x="0" y="0" width="24" height="10" patternUnits="userSpaceOnUse">
-                  <ellipse cx="7" cy="5" rx="5" ry="4" fill="none" stroke="#fbbf24" strokeWidth="0.7"/>
-                  <ellipse cx="7" cy="5" rx="2.5" ry="2" fill="#fbbf24" opacity="0.2"/>
-                  <path d="M17 1 L18.5 8 L20 1" fill="none" stroke="#fbbf24" strokeWidth="0.7"/>
+                  {/* Left rosette */}
+                  <ellipse cx="6" cy="5" rx="4" ry="3.5" fill="none" stroke="#fbbf24" strokeWidth="0.7"/>
+                  <ellipse cx="6" cy="5" rx="2" ry="1.5" fill="#fbbf24" opacity="0.2"/>
+                  {/* Center diamond */}
+                  <path d="M12 2 L14 5 L12 8 L10 5 Z" fill="none" stroke="#fbbf24" strokeWidth="0.5"/>
+                  {/* Right rosette - mirrored */}
+                  <ellipse cx="18" cy="5" rx="4" ry="3.5" fill="none" stroke="#fbbf24" strokeWidth="0.7"/>
+                  <ellipse cx="18" cy="5" rx="2" ry="1.5" fill="#fbbf24" opacity="0.2"/>
                 </pattern>
                 <rect width="100%" height="100%" fill="url(#shelf3EdgePattern)"/>
               </svg>
