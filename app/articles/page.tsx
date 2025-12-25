@@ -2911,7 +2911,8 @@ export default function ArticlesPage() {
         ))}
 
         {/* ============ KEYSTONE DIVIDER - Grand ornate Roman shelf between vertical bookshelves and horizontal shelves ============ */}
-        <div className="h-20 shadow-2xl relative overflow-hidden mx-10" style={{ background: 'linear-gradient(to bottom, #d97706, #b45309, #451a03)', borderTop: '2px solid rgba(251, 191, 36, 0.6)' }}>
+        {/* mx-16 matches the pillar width (w-16) to prevent overflow into Corinthian columns */}
+        <div className="h-20 shadow-2xl relative overflow-hidden mx-16" style={{ background: 'linear-gradient(to bottom, #d97706, #b45309, #451a03)', borderTop: '2px solid rgba(251, 191, 36, 0.6)' }}>
           {/* Top surface highlight band */}
           <div className="absolute top-0 left-0 right-0 h-3" style={{ background: 'linear-gradient(to bottom, rgba(245, 158, 11, 0.4), rgba(217, 119, 6, 0.2), transparent)' }} />
 
