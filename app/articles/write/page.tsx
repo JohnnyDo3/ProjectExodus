@@ -5,6 +5,7 @@ import { useSession } from 'next-auth/react'
 import { useRouter } from 'next/navigation'
 import dynamic from 'next/dynamic'
 import Link from 'next/link'
+import { motion, AnimatePresence } from 'framer-motion'
 import { sanitizeArticleContent } from '@/lib/sanitize'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/Card'
 import { Button } from '@/components/ui/Button'
@@ -30,6 +31,7 @@ import {
   Loader2,
   BookOpen,
   Sparkles,
+  Scroll,
 } from 'lucide-react'
 import toast from 'react-hot-toast'
 import { parseCitation, type ParsedCitation } from '@/components/editor/TipTapEditor'
@@ -75,6 +77,9 @@ const AUTO_SAVE_DELAY = 3000
 export default function WriteArticlePage() {
   const { data: session, status } = useSession()
   const router = useRouter()
+
+  // Intro state - show philosophy page first
+  const [showIntro, setShowIntro] = useState(true)
 
   // Step state
   const [currentStep, setCurrentStep] = useState(0)
@@ -448,6 +453,153 @@ export default function WriteArticlePage() {
   }
 
   if (!session) return null
+
+  // Philosophy intro page
+  if (showIntro) {
+    return (
+      <div className="min-h-screen bg-gradient-to-b from-amber-950 via-amber-900 to-stone-900 flex items-center justify-center p-4 overflow-hidden">
+        {/* Animated background particles */}
+        <div className="absolute inset-0 overflow-hidden pointer-events-none">
+          {[...Array(20)].map((_, i) => (
+            <motion.div
+              key={i}
+              className="absolute w-1 h-1 bg-amber-400/30 rounded-full"
+              initial={{
+                x: Math.random() * (typeof window !== 'undefined' ? window.innerWidth : 1000),
+                y: Math.random() * (typeof window !== 'undefined' ? window.innerHeight : 800),
+                opacity: 0
+              }}
+              animate={{
+                y: [null, -100],
+                opacity: [0, 0.6, 0],
+              }}
+              transition={{
+                duration: 4 + Math.random() * 3,
+                repeat: Infinity,
+                delay: Math.random() * 2,
+                ease: "easeOut"
+              }}
+            />
+          ))}
+        </div>
+
+        {/* Main scroll container */}
+        <motion.div
+          initial={{ opacity: 0, scale: 0.9, y: 30 }}
+          animate={{ opacity: 1, scale: 1, y: 0 }}
+          transition={{ duration: 0.8, ease: "easeOut" }}
+          className="relative max-w-2xl w-full"
+        >
+          {/* Decorative scroll top */}
+          <div className="h-8 bg-gradient-to-b from-amber-700 via-amber-800 to-amber-900 rounded-t-full shadow-lg border-t-2 border-amber-500/40 relative">
+            <div className="absolute left-4 top-1/2 -translate-y-1/2 w-6 h-4 bg-gradient-to-b from-yellow-500 to-yellow-700 rounded-full shadow" />
+            <div className="absolute right-4 top-1/2 -translate-y-1/2 w-6 h-4 bg-gradient-to-b from-yellow-500 to-yellow-700 rounded-full shadow" />
+            <div className="absolute left-1/2 -translate-x-1/2 top-1/2 -translate-y-1/2 flex items-center gap-2">
+              <Scroll className="w-5 h-5 text-amber-400/80" />
+            </div>
+          </div>
+
+          {/* Parchment body */}
+          <div
+            className="bg-gradient-to-b from-amber-100 via-amber-50 to-stone-100 px-8 py-12 md:px-12 md:py-16 shadow-2xl relative"
+            style={{
+              backgroundImage: `url("data:image/svg+xml,%3Csvg viewBox='0 0 100 100' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.08'/%3E%3C/svg%3E")`,
+            }}
+          >
+            {/* Aged paper edge effects */}
+            <div className="absolute top-0 left-0 right-0 h-4 bg-gradient-to-b from-amber-200/50 to-transparent" />
+            <div className="absolute bottom-0 left-0 right-0 h-4 bg-gradient-to-t from-amber-200/50 to-transparent" />
+            <div className="absolute top-0 bottom-0 left-0 w-4 bg-gradient-to-r from-amber-200/30 to-transparent" />
+            <div className="absolute top-0 bottom-0 right-0 w-4 bg-gradient-to-l from-amber-200/30 to-transparent" />
+
+            {/* Content */}
+            <div className="relative z-10 text-center space-y-8">
+              {/* Header ornament */}
+              <div className="flex items-center justify-center gap-4">
+                <div className="h-px flex-1 bg-gradient-to-r from-transparent via-amber-600/50 to-transparent" />
+                <BookOpen className="w-8 h-8 text-amber-700" />
+                <div className="h-px flex-1 bg-gradient-to-r from-transparent via-amber-600/50 to-transparent" />
+              </div>
+
+              {/* Main quote */}
+              <div className="space-y-6">
+                <motion.h1
+                  initial={{ opacity: 0, y: 10 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ delay: 0.3, duration: 0.6 }}
+                  className="text-2xl md:text-3xl font-serif text-amber-900 leading-relaxed"
+                >
+                  Welcome to the digital scroll library. lol
+                </motion.h1>
+
+                <motion.p
+                  initial={{ opacity: 0, y: 10 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ delay: 0.5, duration: 0.6 }}
+                  className="text-lg md:text-xl font-serif text-amber-800 leading-relaxed italic"
+                >
+                  No matter what you&apos;ve written and for what, post it so others can learn from you, forever…
+                </motion.p>
+
+                <motion.p
+                  initial={{ opacity: 0, y: 10 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ delay: 0.7, duration: 0.6 }}
+                  className="text-base text-amber-700 mt-4"
+                >
+                  Made with love, for y&apos;all 🙂
+                </motion.p>
+              </div>
+
+              {/* Signature */}
+              <motion.div
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                transition={{ delay: 0.9, duration: 0.6 }}
+                className="pt-4"
+              >
+                <p className="text-amber-800 font-serif italic text-lg">— Mr. Nobody</p>
+              </motion.div>
+
+              {/* Footer ornament */}
+              <div className="flex items-center justify-center gap-4 pt-4">
+                <div className="h-px flex-1 bg-gradient-to-r from-transparent via-amber-600/50 to-transparent" />
+                <div className="w-2 h-2 bg-amber-600/50 rounded-full" />
+                <div className="h-px flex-1 bg-gradient-to-r from-transparent via-amber-600/50 to-transparent" />
+              </div>
+
+              {/* Continue button */}
+              <motion.div
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: 1.1, duration: 0.6 }}
+              >
+                <button
+                  onClick={() => setShowIntro(false)}
+                  className="group mt-6 px-8 py-3 bg-gradient-to-b from-amber-700 via-amber-800 to-amber-900 text-amber-100 font-semibold rounded-lg shadow-lg hover:from-amber-600 hover:via-amber-700 hover:to-amber-800 transition-all duration-300 border border-amber-600/40"
+                >
+                  <span className="flex items-center gap-2">
+                    <Sparkles className="w-4 h-4 group-hover:animate-pulse" />
+                    Begin Inscribing Your Wisdom
+                    <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
+                  </span>
+                </button>
+                <p className="text-xs text-amber-600/70 mt-3 animate-pulse">
+                  Click to continue
+                </p>
+              </motion.div>
+            </div>
+          </div>
+
+          {/* Decorative scroll bottom */}
+          <div className="h-8 bg-gradient-to-t from-amber-700 via-amber-800 to-amber-900 rounded-b-full shadow-lg border-b-2 border-amber-500/40 relative">
+            <div className="absolute left-4 top-1/2 -translate-y-1/2 w-6 h-4 bg-gradient-to-t from-yellow-500 to-yellow-700 rounded-full shadow" />
+            <div className="absolute right-4 top-1/2 -translate-y-1/2 w-6 h-4 bg-gradient-to-t from-yellow-500 to-yellow-700 rounded-full shadow" />
+          </div>
+        </motion.div>
+      </div>
+    )
+  }
 
   return (
     <div className="min-h-screen bg-[var(--background)]">
