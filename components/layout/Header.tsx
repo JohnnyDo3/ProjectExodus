@@ -247,7 +247,7 @@ export function Header() {
 
                     {/* Learn Dropdown menu - centered */}
                     <div
-                      className={`absolute top-full left-1/2 -translate-x-1/2 mt-2 w-48 rounded-xl overflow-hidden z-[201] transition-all duration-200 origin-top ${
+                      className={`absolute top-full left-1/2 -translate-x-1/2 mt-2 w-56 rounded-xl overflow-hidden z-[201] transition-all duration-200 origin-top ${
                         learnMenuOpen
                           ? 'opacity-100 scale-100 translate-y-0'
                           : 'opacity-0 scale-95 -translate-y-2 pointer-events-none'
@@ -265,20 +265,19 @@ export function Header() {
                             return isLocked ? (
                               <div
                                 key={menuItem.label}
-                                className="flex items-center justify-center gap-2 px-3 py-2.5 rounded-lg text-[var(--muted-foreground)] opacity-60 cursor-not-allowed w-full"
+                                className="flex items-center justify-center gap-2 px-3 py-2 rounded-lg text-[var(--muted-foreground)] opacity-60 cursor-not-allowed"
                                 title="Sign in to access"
                               >
-                                <Lock className="w-4 h-4 flex-shrink-0" />
-                                <span className="text-sm font-semibold">{menuItem.label}</span>
+                                <Lock className="w-3.5 h-3.5 flex-shrink-0" />
+                                <span className="text-sm font-medium">{menuItem.label}</span>
                               </div>
                             ) : (
                               <Link
                                 key={menuItem.label}
                                 href={menuItem.href}
-                                className="flex items-center justify-center gap-2 px-3 py-2.5 rounded-lg text-sm font-semibold text-[var(--foreground)] hover:bg-[var(--muted)]/50 hover:text-[var(--primary)] transition-colors w-full"
+                                className="flex items-center justify-center px-3 py-2 rounded-lg text-sm font-medium text-[var(--foreground)] hover:bg-[var(--muted)]/50 hover:text-[var(--primary)] transition-colors"
                                 onClick={() => setLearnMenuOpen(false)}
                               >
-                                <GraduationCap className="w-4 h-4 flex-shrink-0" />
                                 <span>{menuItem.label}</span>
                               </Link>
                             )
