@@ -193,10 +193,14 @@ export function Header() {
                   <span className="sage-zzz sage-zzz-2">z</span>
                   <span className="sage-zzz sage-zzz-3">z</span>
 
-                  {/* Hover tooltip - "Click to wake" - matches awake Sage tooltip style */}
-                  <div className="absolute top-full left-1/2 -translate-x-1/2 mt-3 px-4 py-2 bg-[var(--card)] border-2 border-theme-primary rounded-lg shadow-lg opacity-0 group-hover:opacity-100 transition-opacity duration-200 whitespace-nowrap pointer-events-none z-[200]">
-                    <p className="text-sm font-bold text-[var(--foreground)]">Click to wake</p>
-                    <div className="absolute top-0 left-1/2 -translate-x-1/2 -translate-y-1/2 rotate-45 w-3 h-3 bg-[var(--card)] border-l-2 border-t-2 border-theme-primary" />
+                  {/* Hover tooltip - "Click to wake" - positioned below with arrow pointing up */}
+                  <div className="absolute top-full left-1/2 -translate-x-1/2 mt-4 pointer-events-none z-[200]">
+                    {/* Arrow pointing up */}
+                    <div className="absolute -top-2 left-1/2 -translate-x-1/2 w-4 h-4 rotate-45 bg-[var(--card)] border-l-2 border-t-2 border-theme-primary" />
+                    {/* Tooltip body */}
+                    <div className="relative px-4 py-2.5 bg-[var(--card)] border-2 border-theme-primary rounded-lg shadow-lg opacity-0 group-hover:opacity-100 transition-opacity duration-200 whitespace-nowrap">
+                      <p className="text-sm font-bold text-[var(--foreground)]">Click to wake</p>
+                    </div>
                   </div>
                 </>
               )}

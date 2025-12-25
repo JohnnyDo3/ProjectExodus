@@ -134,14 +134,21 @@ export function SageNapAnimation() {
       // Fade out at the landing position for smooth merge
       await controls.start({
         opacity: 0,
-        scale: endScale * 0.8,
+        scale: endScale * 0.9,
         transition: {
-          duration: 0.3,
+          duration: 0.4,
           ease: 'easeOut',
         }
       })
 
+      // Wait for fade to fully complete visually before hiding
+      await new Promise(resolve => setTimeout(resolve, 100))
+
       setIsVisible(false)
+
+      // Additional delay before signaling completion to prevent glitch
+      await new Promise(resolve => setTimeout(resolve, 50))
+
       animationRunning.current = false
       onAnimationComplete(animationPhase)
     }
