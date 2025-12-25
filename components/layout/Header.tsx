@@ -194,12 +194,13 @@ export function Header() {
                   <span className="sage-zzz sage-zzz-3">z</span>
 
                   {/* Hover tooltip - "Click to wake" */}
-                  <div className="absolute top-full left-1/2 -translate-x-1/2 mt-2 opacity-0 group-hover:opacity-100 transition-opacity duration-200 pointer-events-none z-[200]">
-                    <div className="inline-flex px-4 py-2 bg-[var(--card)] border-2 border-moss-500 rounded-lg shadow-lg w-max">
+                  <div className="absolute top-full left-1/2 -translate-x-1/2 mt-3 opacity-0 group-hover:opacity-100 transition-opacity duration-200 pointer-events-none z-[200]">
+                    {/* Tooltip arrow - positioned above the bubble */}
+                    <div className="absolute -top-[6px] left-1/2 -translate-x-1/2 w-3 h-3 bg-[var(--card)] border-l-2 border-t-2 border-moss-500 rotate-45" />
+                    {/* Tooltip bubble */}
+                    <div className="relative px-4 py-2 bg-[var(--card)] border-2 border-moss-500 rounded-lg shadow-lg">
                       <span className="text-xs font-semibold text-moss-600 dark:text-moss-400 whitespace-nowrap">Click to wake</span>
                     </div>
-                    {/* Tooltip arrow */}
-                    <div className="absolute -top-1 left-1/2 -translate-x-1/2 w-2 h-2 bg-[var(--card)] border-l-2 border-t-2 border-moss-500 rotate-45" />
                   </div>
                 </>
               )}

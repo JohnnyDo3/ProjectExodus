@@ -82,6 +82,22 @@ export function SageNapAnimation() {
         return
       }
 
+      // Calculate scale based on direction
+      const startScale = animationPhase === 'going-to-nap' ? 1 : 0.6
+      const endScale = animationPhase === 'going-to-nap' ? 0.6 : 1
+
+      // CRITICAL: Set initial position BEFORE starting animation
+      // This prevents the "teleport" effect where the element appears at (0,0) first
+      controls.set({
+        x: startPos.x,
+        y: startPos.y,
+        scale: startScale,
+        opacity: 1
+      })
+
+      // Small delay to ensure the initial position is rendered
+      await new Promise(resolve => setTimeout(resolve, 16))
+
       // Generate sparkles along path
       generateSparkles(startPos.x, startPos.y, endPos.x, endPos.y)
 
@@ -96,10 +112,6 @@ export function SageNapAnimation() {
 
       // Arc curves upward but stays within viewport (minimum 60px from top)
       const midY = Math.max(60, midYBase - arcHeight)
-
-      // Calculate scale based on direction
-      const startScale = animationPhase === 'going-to-nap' ? 1 : 0.6
-      const endScale = animationPhase === 'going-to-nap' ? 0.6 : 1
 
       // Animate with custom easing
       // ease-in for going to nap (gradual start, fast end)
