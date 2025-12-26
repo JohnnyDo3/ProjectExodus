@@ -600,202 +600,8 @@ export default function ArticlesPage() {
     return ARCHETYPE_TRAITS[archetype || 'uriel'] || ARCHETYPE_TRAITS.uriel
   }
 
-  // Non-authenticated view - WYSIWYG Frozen Hero Page (shows exactly what users see, just non-interactive)
-  if (!session) {
-    return (
-      <div className="min-h-screen bg-[var(--background)]">
-        {/* Frozen Hero Header - Same as authenticated but with overlay */}
-        <div className="relative bg-gradient-to-b from-slate-900 via-indigo-950 to-slate-900 text-white overflow-hidden min-h-[70vh] sm:min-h-[75vh]">
-          {/* Ancient Chamber Background - Same as authenticated */}
-          <div className="absolute inset-0 overflow-hidden">
-            {/* Stone texture overlay */}
-            <div
-              className="absolute inset-0 opacity-[0.03]"
-              style={{
-                backgroundImage: `url("data:image/svg+xml,%3Csvg viewBox='0 0 100 100' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E")`,
-              }}
-            />
-
-            {/* Stone pillars - wood-carved tan look */}
-            <div className="absolute inset-0 opacity-10 pointer-events-none">
-              <div className="absolute top-0 left-[10%] w-[3px] h-full bg-gradient-to-b from-amber-700/80 via-amber-600/60 to-amber-700/80" />
-              <div className="absolute top-0 left-[20%] w-[2px] h-full bg-gradient-to-b from-amber-700/60 via-amber-600/40 to-amber-700/60" />
-              <div className="absolute top-0 left-[30%] w-[1px] h-full bg-gradient-to-b from-amber-700/40 via-amber-600/20 to-amber-700/40" />
-              <div className="absolute top-0 right-[10%] w-[3px] h-full bg-gradient-to-b from-amber-700/80 via-amber-600/60 to-amber-700/80" />
-              <div className="absolute top-0 right-[20%] w-[2px] h-full bg-gradient-to-b from-amber-700/60 via-amber-600/40 to-amber-700/60" />
-              <div className="absolute top-0 right-[30%] w-[1px] h-full bg-gradient-to-b from-amber-700/40 via-amber-600/20 to-amber-700/40" />
-            </div>
-
-            {/* Ornate top border */}
-            <svg className="absolute top-0 left-0 right-0 h-8 opacity-30" preserveAspectRatio="none">
-              <defs>
-                <pattern id="greekKey" x="0" y="0" width="32" height="16" patternUnits="userSpaceOnUse">
-                  <path d="M0 8 L8 8 L8 0 L16 0 L16 8 L24 8 L24 16 L32 16 L32 8" fill="none" stroke="url(#goldGradient)" strokeWidth="2"/>
-                </pattern>
-                <linearGradient id="goldGradient" x1="0%" y1="0%" x2="100%" y2="0%">
-                  <stop offset="0%" stopColor="#fbbf24"/>
-                  <stop offset="50%" stopColor="#f59e0b"/>
-                  <stop offset="100%" stopColor="#fbbf24"/>
-                </linearGradient>
-              </defs>
-              <rect x="0" y="0" width="100%" height="16" fill="url(#greekKey)"/>
-            </svg>
-
-            {/* Decorative vines */}
-            <div className="absolute top-20 left-4 bottom-20 w-6 opacity-15">
-              <svg viewBox="0 0 24 200" className="h-full w-full" preserveAspectRatio="none">
-                <path d="M12 0 Q18 25 12 50 Q6 75 12 100 Q18 125 12 150 Q6 175 12 200" fill="none" stroke="#10b981" strokeWidth="2"/>
-                <circle cx="12" cy="50" r="4" fill="#10b981"/>
-                <circle cx="12" cy="100" r="4" fill="#10b981"/>
-                <circle cx="12" cy="150" r="4" fill="#10b981"/>
-              </svg>
-            </div>
-            <div className="absolute top-20 right-4 bottom-20 w-6 opacity-15" style={{ transform: 'scaleX(-1)' }}>
-              <svg viewBox="0 0 24 200" className="h-full w-full" preserveAspectRatio="none">
-                <path d="M12 0 Q18 25 12 50 Q6 75 12 100 Q18 125 12 150 Q6 175 12 200" fill="none" stroke="#10b981" strokeWidth="2"/>
-                <circle cx="12" cy="50" r="4" fill="#10b981"/>
-                <circle cx="12" cy="100" r="4" fill="#10b981"/>
-                <circle cx="12" cy="150" r="4" fill="#10b981"/>
-              </svg>
-            </div>
-          </div>
-
-          <div className="container mx-auto px-4 py-6 sm:py-8 relative z-10">
-            <div className="max-w-6xl mx-auto">
-              {/* Title Section - Same as authenticated */}
-              <div className="text-center mb-6 sm:mb-8">
-                <div className="inline-flex items-center gap-2 px-5 py-2.5 rounded-none bg-gradient-to-r from-amber-900/60 via-amber-800/80 to-amber-900/60 border-y-2 border-amber-500/50 mb-4 relative">
-                  <div className="absolute -left-2 top-1/2 -translate-y-1/2 w-4 h-4 bg-amber-500/30 rotate-45 border border-amber-400/50" />
-                  <div className="absolute -right-2 top-1/2 -translate-y-1/2 w-4 h-4 bg-amber-500/30 rotate-45 border border-amber-400/50" />
-                  <BookOpen className="w-4 h-4 text-amber-300" />
-                  <span className="text-xs font-bold uppercase tracking-[0.2em] text-amber-200">Articles</span>
-                </div>
-
-                <h1 className="text-3xl sm:text-4xl md:text-5xl font-black mb-3 tracking-tight" style={{ fontFamily: 'Georgia, serif', textShadow: '0 2px 20px rgba(251, 191, 36, 0.3)', color: '#ffffff' }}>
-                  Knowledge Shared
-                </h1>
-
-                <div className="flex items-center justify-center gap-3 mb-3">
-                  <div className="h-px w-16" style={{ background: 'linear-gradient(to right, transparent, rgba(245, 158, 11, 0.5))' }} />
-                  <div className="w-2 h-2 rotate-45" style={{ backgroundColor: '#f59e0b' }} />
-                  <div className="h-px w-16" style={{ background: 'linear-gradient(to left, transparent, rgba(245, 158, 11, 0.5))' }} />
-                </div>
-
-                <p className="text-sm sm:text-base font-medium opacity-90 px-4 max-w-lg mx-auto" style={{ fontFamily: 'Georgia, serif', fontStyle: 'italic', color: '#fde68a' }}>
-                  "Wisdom is not consumed — it is received."
-                </p>
-
-                {/* Stats preview - clickable to highlight scrolls */}
-                <div
-                  className={`flex items-center justify-center gap-4 mt-4 cursor-pointer group transition-all duration-300 ${highlightScrolls ? 'scale-105' : 'hover:scale-102'}`}
-                  onClick={() => setHighlightScrolls(prev => !prev)}
-                  title="Click to highlight article scrolls on the shelves"
-                >
-                  <div className={`relative px-4 py-2 bg-gradient-to-b from-slate-800/80 to-slate-900/80 border rounded-sm transition-all duration-300 ${highlightScrolls ? 'border-amber-400 shadow-[0_0_15px_rgba(251,191,36,0.4)]' : 'border-amber-600/40 group-hover:border-amber-500/60'}`}>
-                    <div className="absolute inset-0 bg-gradient-to-r from-amber-500/5 via-amber-500/10 to-amber-500/5" />
-                    <span className="text-xs font-bold text-amber-200 relative">{totalArticles || '???'} Articles</span>
-                  </div>
-                  <div className={`relative px-4 py-2 bg-gradient-to-b from-slate-800/80 to-slate-900/80 border rounded-sm transition-all duration-300 ${highlightScrolls ? 'border-amber-400 shadow-[0_0_15px_rgba(251,191,36,0.4)]' : 'border-amber-600/40 group-hover:border-amber-500/60'}`}>
-                    <div className="absolute inset-0 bg-gradient-to-r from-amber-500/5 via-amber-500/10 to-amber-500/5" />
-                    <span className="text-xs font-bold text-amber-200 relative">{totalViews?.toLocaleString() || '???'} Readers</span>
-                  </div>
-                </div>
-
-                {/* Author Button Preview - disabled state */}
-                <div className="mt-6">
-                  <div className="inline-flex items-center gap-3 px-8 py-4 bg-gradient-to-r from-slate-700 via-slate-600 to-slate-700 text-slate-400 font-bold text-base rounded-lg shadow-lg border-2 border-slate-500/40 cursor-not-allowed opacity-60">
-                    <PenSquare className="w-5 h-5" />
-                    <span className="tracking-wide">Inscribe Your Wisdom</span>
-                  </div>
-                  <p className="mt-2 text-xs text-slate-400/60 font-medium">
-                    Sign in to share your case study or sustainability journey
-                  </p>
-                </div>
-              </div>
-
-              {/* Flipped Arch - Transition between hero text and Recent Articles */}
-              <div className="relative h-12 my-4">
-                <svg className="absolute inset-0 w-full h-full" viewBox="0 0 400 48" preserveAspectRatio="none">
-                  <defs>
-                    <linearGradient id="archStoneFlipped" x1="0%" y1="100%" x2="0%" y2="0%">
-                      <stop offset="0%" stopColor="#78350f" stopOpacity="0.8"/>
-                      <stop offset="50%" stopColor="#451a03" stopOpacity="0.7"/>
-                      <stop offset="100%" stopColor="#1c0a00" stopOpacity="0.6"/>
-                    </linearGradient>
-                    <linearGradient id="archGoldFlipped" x1="0%" y1="0%" x2="100%" y2="0%">
-                      <stop offset="0%" stopColor="#fbbf24" stopOpacity="0.2"/>
-                      <stop offset="50%" stopColor="#f59e0b" stopOpacity="0.4"/>
-                      <stop offset="100%" stopColor="#fbbf24" stopOpacity="0.2"/>
-                    </linearGradient>
-                  </defs>
-
-                  {/* Flipped arch shape - curves at bottom */}
-                  <path
-                    d="M0 0 L0 25 Q0 48 30 48 L370 48 Q400 48 400 25 L400 0 L385 0 L385 22 Q385 38 360 38 L40 38 Q15 38 15 22 L15 0 Z"
-                    fill="url(#archStoneFlipped)"
-                  />
-
-                  {/* Inner arch opening highlight */}
-                  <path
-                    d="M15 0 L15 18 Q15 34 45 34 L355 34 Q385 34 385 18 L385 0"
-                    fill="none"
-                    stroke="url(#archGoldFlipped)"
-                    strokeWidth="1.5"
-                  />
-
-                  {/* Inverted keystone */}
-                  <path
-                    d="M185 48 L215 48 L218 36 L182 36 Z"
-                    fill="#78350f"
-                    stroke="#fbbf24"
-                    strokeWidth="0.8"
-                    opacity="0.7"
-                  />
-
-                  {/* Keystone emblem */}
-                  <circle cx="200" cy="42" r="4" fill="none" stroke="#fbbf24" strokeWidth="0.8" opacity="0.5"/>
-                  <circle cx="200" cy="42" r="2" fill="#fbbf24" opacity="0.3"/>
-                </svg>
-              </div>
-            </div>
-          </div>
-
-          {/* Bottom fade */}
-          <div className="absolute bottom-0 left-0 right-0 h-20 bg-gradient-to-t from-[var(--background)] to-transparent" />
-        </div>
-
-        {/* CTA Section - Below the fold */}
-        <div className="bg-[var(--background)] py-16">
-          <div className="container mx-auto px-4 text-center max-w-2xl">
-            <h2 className="text-2xl sm:text-3xl font-black text-[var(--foreground)] mb-4">
-              Ready to Enter the Library?
-            </h2>
-            <p className="text-base text-theme-muted font-medium mb-8">
-              Join a community of seekers. Access case studies, sustainability journeys, and wisdom from practitioners around the world.
-            </p>
-            <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
-              <Link href="/auth/signup">
-                <Button className="bg-gradient-to-r from-amber-600 to-amber-700 hover:from-amber-500 hover:to-amber-600 text-white font-bold px-8 py-6 text-lg rounded-lg shadow-xl border border-amber-400/30">
-                  <Star className="w-5 h-5 mr-2" />
-                  Join Free & Start Reading
-                </Button>
-              </Link>
-              <Link href="/auth/signin">
-                <Button variant="outline" className="border-2 border-[var(--border)] text-[var(--foreground)] hover:bg-[var(--muted)] font-bold px-8 py-6 text-lg rounded-lg">
-                  Already a Member? Sign In
-                </Button>
-              </Link>
-            </div>
-            <p className="mt-6 text-xs text-theme-muted">
-              Free to join • Contribute your own wisdom • Learn from fellow practitioners
-            </p>
-          </div>
-        </div>
-      </div>
-    )
-  }
-
-  // Authenticated view - Full interactive page
+  // Full interactive page - now accessible to all users (authenticated and non-authenticated)
+  // Non-authenticated users can interact with the bookshelf but must sign up to read articles
   return (
     <div className="min-h-screen bg-[var(--background)]">
       {/* ========================================== */}
@@ -2590,23 +2396,40 @@ export default function ArticlesPage() {
 
               {/* Prominent Author Button */}
               <div className="mt-6">
-                <Link href="/articles/write">
-                  <button className="group relative inline-flex items-center gap-3 px-8 py-4 bg-gradient-to-r from-emerald-700 via-emerald-600 to-emerald-700 hover:from-emerald-600 hover:via-emerald-500 hover:to-emerald-600 text-white font-bold text-base rounded-lg shadow-2xl border-2 border-emerald-400/40 hover:border-emerald-300/60 transition-all duration-300 hover:scale-105 hover:shadow-emerald-500/30">
-                    {/* Decorative quill icon */}
-                    <div className="relative">
-                      <PenSquare className="w-5 h-5" />
-                      <div className="absolute -top-1 -right-1 w-2 h-2 bg-amber-400 rounded-full animate-pulse" />
-                    </div>
-                    <span className="tracking-wide">Inscribe Your Wisdom</span>
-                    {/* Decorative corner accents */}
-                    <div className="absolute top-1 left-1 w-2 h-2 border-l-2 border-t-2 border-emerald-300/50" />
-                    <div className="absolute top-1 right-1 w-2 h-2 border-r-2 border-t-2 border-emerald-300/50" />
-                    <div className="absolute bottom-1 left-1 w-2 h-2 border-l-2 border-b-2 border-emerald-300/50" />
-                    <div className="absolute bottom-1 right-1 w-2 h-2 border-r-2 border-b-2 border-emerald-300/50" />
-                  </button>
-                </Link>
+                {session ? (
+                  <Link href="/articles/write">
+                    <button className="group relative inline-flex items-center gap-3 px-8 py-4 bg-gradient-to-r from-emerald-700 via-emerald-600 to-emerald-700 hover:from-emerald-600 hover:via-emerald-500 hover:to-emerald-600 text-white font-bold text-base rounded-lg shadow-2xl border-2 border-emerald-400/40 hover:border-emerald-300/60 transition-all duration-300 hover:scale-105 hover:shadow-emerald-500/30">
+                      {/* Decorative quill icon */}
+                      <div className="relative">
+                        <PenSquare className="w-5 h-5" />
+                        <div className="absolute -top-1 -right-1 w-2 h-2 bg-amber-400 rounded-full animate-pulse" />
+                      </div>
+                      <span className="tracking-wide">Inscribe Your Wisdom</span>
+                      {/* Decorative corner accents */}
+                      <div className="absolute top-1 left-1 w-2 h-2 border-l-2 border-t-2 border-emerald-300/50" />
+                      <div className="absolute top-1 right-1 w-2 h-2 border-r-2 border-t-2 border-emerald-300/50" />
+                      <div className="absolute bottom-1 left-1 w-2 h-2 border-l-2 border-b-2 border-emerald-300/50" />
+                      <div className="absolute bottom-1 right-1 w-2 h-2 border-r-2 border-b-2 border-emerald-300/50" />
+                    </button>
+                  </Link>
+                ) : (
+                  <Link href="/auth/signup">
+                    <button className="group relative inline-flex items-center gap-3 px-8 py-4 bg-gradient-to-r from-slate-600 via-slate-500 to-slate-600 hover:from-emerald-700 hover:via-emerald-600 hover:to-emerald-700 text-white font-bold text-base rounded-lg shadow-2xl border-2 border-slate-400/40 hover:border-emerald-400/60 transition-all duration-300 hover:scale-105">
+                      {/* Decorative quill icon */}
+                      <div className="relative">
+                        <PenSquare className="w-5 h-5" />
+                      </div>
+                      <span className="tracking-wide">Join to Contribute</span>
+                      {/* Decorative corner accents */}
+                      <div className="absolute top-1 left-1 w-2 h-2 border-l-2 border-t-2 border-slate-300/50" />
+                      <div className="absolute top-1 right-1 w-2 h-2 border-r-2 border-t-2 border-slate-300/50" />
+                      <div className="absolute bottom-1 left-1 w-2 h-2 border-l-2 border-b-2 border-slate-300/50" />
+                      <div className="absolute bottom-1 right-1 w-2 h-2 border-r-2 border-b-2 border-slate-300/50" />
+                    </button>
+                  </Link>
+                )}
                 <p className="mt-2 text-xs text-amber-300/60 font-medium">
-                  Share a case study, lesson, or sustainability journey
+                  {session ? 'Share a case study, lesson, or sustainability journey' : 'Sign up free to share your wisdom'}
                 </p>
               </div>
             </div>
@@ -3966,14 +3789,35 @@ export default function ArticlesPage() {
                         </div>
                       </div>
 
-                      {/* Read button */}
-                      <Link href={`/articles/${article.slug}`} className="block">
-                        <button className="w-full py-3 bg-gradient-to-r from-amber-700 via-amber-600 to-amber-700 hover:from-amber-600 hover:via-amber-500 hover:to-amber-600 text-white font-bold rounded-lg shadow-lg border-2 border-amber-500/40 transition-all flex items-center justify-center gap-2">
-                          <BookOpen className="w-5 h-5" />
-                          <span>Read Article Scroll</span>
-                          <ArrowRight className="w-5 h-5" />
-                        </button>
-                      </Link>
+                      {/* Read button - conditional for authenticated users */}
+                      {session ? (
+                        <Link href={`/articles/${article.slug}`} className="block">
+                          <button className="w-full py-3 bg-gradient-to-r from-amber-700 via-amber-600 to-amber-700 hover:from-amber-600 hover:via-amber-500 hover:to-amber-600 text-white font-bold rounded-lg shadow-lg border-2 border-amber-500/40 transition-all flex items-center justify-center gap-2">
+                            <BookOpen className="w-5 h-5" />
+                            <span>Read Article Scroll</span>
+                            <ArrowRight className="w-5 h-5" />
+                          </button>
+                        </Link>
+                      ) : (
+                        <div className="space-y-2">
+                          <p className="text-center text-sm text-amber-800 italic" style={{ fontFamily: 'Georgia, serif' }}>
+                            Join to read this scroll
+                          </p>
+                          <div className="flex gap-2">
+                            <Link href="/auth/signup" className="flex-1">
+                              <button className="w-full py-2.5 bg-gradient-to-r from-amber-700 via-amber-600 to-amber-700 hover:from-amber-600 hover:via-amber-500 hover:to-amber-600 text-white font-bold rounded-lg shadow-lg border-2 border-amber-500/40 transition-all flex items-center justify-center gap-2">
+                                <Star className="w-4 h-4" />
+                                <span>Join Free</span>
+                              </button>
+                            </Link>
+                            <Link href="/auth/signin" className="flex-1">
+                              <button className="w-full py-2.5 bg-amber-100 hover:bg-amber-200 text-amber-800 font-bold rounded-lg shadow border-2 border-amber-500/40 transition-all flex items-center justify-center gap-2">
+                                <span>Sign In</span>
+                              </button>
+                            </Link>
+                          </div>
+                        </div>
+                      )}
                     </div>
 
                     {/* Bottom scroll rod */}
@@ -4202,8 +4046,8 @@ export default function ArticlesPage() {
                       </div>
                     </div>
 
-                    {/* Reading progress if exists - compact */}
-                    {readingProgress[previewArticle.id] && (
+                    {/* Reading progress if exists - compact (only for authenticated users) */}
+                    {session && readingProgress[previewArticle.id] && (
                       <div className="mb-4 p-2 bg-amber-200/50 border border-amber-600/40 rounded-sm">
                         <div className="flex items-center justify-between mb-2">
                           <span className="text-xs text-amber-800 italic" style={{ fontFamily: 'Georgia, serif' }}>Your Progress</span>
@@ -4221,26 +4065,51 @@ export default function ArticlesPage() {
                     )}
 
                     {/* Action buttons - brass/wood style */}
-                    <div className="flex items-center justify-center gap-4">
-                      <Link href={`/articles/${previewArticle.slug}`} onClick={closePreview}>
-                        <Button className="bg-gradient-to-b from-amber-700 via-amber-800 to-amber-900 hover:from-amber-600 hover:via-amber-700 hover:to-amber-800 text-amber-100 font-bold px-8 py-3 rounded-sm shadow-lg border border-amber-600/60" style={{ fontFamily: 'Georgia, serif', letterSpacing: '0.05em' }}>
-                          <BookOpen className="w-4 h-4 mr-2" />
-                          Read Article Scroll
-                        </Button>
-                      </Link>
-                      <button
-                        onClick={(e) => {
-                          e.stopPropagation()
-                          toggleSaveArticle(previewArticle.id)
-                        }}
-                        className={`p-3 rounded-sm shadow-md transition-colors border-2 ${
-                          savedArticles.includes(previewArticle.id)
-                            ? 'bg-gradient-to-b from-amber-600 to-amber-800 text-amber-100 border-amber-500/60'
-                            : 'bg-amber-100 hover:bg-amber-200 text-amber-800 border-amber-500/50'
-                        }`}
-                      >
-                        <Bookmark className={`w-5 h-5 ${savedArticles.includes(previewArticle.id) ? 'fill-current' : ''}`} />
-                      </button>
+                    <div className="flex flex-col items-center gap-4">
+                      {session ? (
+                        /* Authenticated user - show read and save buttons */
+                        <div className="flex items-center justify-center gap-4">
+                          <Link href={`/articles/${previewArticle.slug}`} onClick={closePreview}>
+                            <Button className="bg-gradient-to-b from-amber-700 via-amber-800 to-amber-900 hover:from-amber-600 hover:via-amber-700 hover:to-amber-800 text-amber-100 font-bold px-8 py-3 rounded-sm shadow-lg border border-amber-600/60" style={{ fontFamily: 'Georgia, serif', letterSpacing: '0.05em' }}>
+                              <BookOpen className="w-4 h-4 mr-2" />
+                              Read Article Scroll
+                            </Button>
+                          </Link>
+                          <button
+                            onClick={(e) => {
+                              e.stopPropagation()
+                              toggleSaveArticle(previewArticle.id)
+                            }}
+                            className={`p-3 rounded-sm shadow-md transition-colors border-2 ${
+                              savedArticles.includes(previewArticle.id)
+                                ? 'bg-gradient-to-b from-amber-600 to-amber-800 text-amber-100 border-amber-500/60'
+                                : 'bg-amber-100 hover:bg-amber-200 text-amber-800 border-amber-500/50'
+                            }`}
+                          >
+                            <Bookmark className={`w-5 h-5 ${savedArticles.includes(previewArticle.id) ? 'fill-current' : ''}`} />
+                          </button>
+                        </div>
+                      ) : (
+                        /* Non-authenticated user - show sign-up CTA */
+                        <div className="text-center">
+                          <p className="text-sm text-amber-800 mb-3 italic" style={{ fontFamily: 'Georgia, serif' }}>
+                            Join our community to unlock this scroll
+                          </p>
+                          <div className="flex items-center justify-center gap-3">
+                            <Link href="/auth/signup" onClick={closePreview}>
+                              <Button className="bg-gradient-to-b from-amber-700 via-amber-800 to-amber-900 hover:from-amber-600 hover:via-amber-700 hover:to-amber-800 text-amber-100 font-bold px-6 py-3 rounded-sm shadow-lg border border-amber-600/60" style={{ fontFamily: 'Georgia, serif', letterSpacing: '0.05em' }}>
+                                <Star className="w-4 h-4 mr-2" />
+                                Join Free
+                              </Button>
+                            </Link>
+                            <Link href="/auth/signin" onClick={closePreview}>
+                              <Button variant="outline" className="bg-amber-100 hover:bg-amber-200 text-amber-800 font-bold px-6 py-3 rounded-sm shadow-md border-2 border-amber-500/50" style={{ fontFamily: 'Georgia, serif', letterSpacing: '0.05em' }}>
+                                Sign In
+                              </Button>
+                            </Link>
+                          </div>
+                        </div>
+                      )}
                     </div>
                   </div>
                 </div>
