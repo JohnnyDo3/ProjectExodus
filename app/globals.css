@@ -1681,3 +1681,17 @@ body.textbook-fullscreen .fixed.inset-0.z-50 {
 .category-banner {
   animation: banner-wave 4s ease-in-out infinite;
 }
+
+/* Shimmer effect for preview mode */
+@keyframes shimmer {
+  0% {
+    background-position: 200% 0;
+  }
+  100% {
+    background-position: -200% 0;
+  }
+}
+
+.animate-shimmer {
+  animation: shimmer 3s ease-in-out infinite;
+}

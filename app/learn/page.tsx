@@ -301,42 +301,65 @@ export default function LearnPage() {
         </div>
       </section>
 
-      {/* View-only overlay for non-authenticated users */}
+      {/* View-only overlay for non-authenticated users - PROMINENT */}
       {!isAuthenticated && (
-        <div className="sticky top-0 z-50 bg-gradient-to-b from-[var(--background)] via-[var(--background)]/95 to-transparent py-4">
+        <div className="sticky top-0 z-50 bg-gradient-to-b from-[var(--primary)]/10 via-[var(--background)] to-transparent py-3 backdrop-blur-sm border-b-2 border-[var(--primary)]/30">
           <div className="container mx-auto px-4">
-            <div className="flex flex-col gap-3 p-4 rounded-2xl bg-[var(--card)] border-2 border-[var(--primary)] shadow-xl max-w-3xl mx-auto">
-              {/* Header row */}
-              <div className="flex items-center justify-between gap-3">
-                <div className="flex items-center gap-3">
-                  <div className="w-10 h-10 rounded-full bg-[var(--primary)]/20 flex items-center justify-center">
-                    <Lock className="w-5 h-5 text-[var(--primary)]" />
+            <div className="flex flex-col gap-4 p-5 rounded-2xl bg-gradient-to-r from-[var(--primary)]/15 via-[var(--card)] to-[var(--accent)]/15 border-2 border-[var(--primary)] shadow-2xl max-w-4xl mx-auto relative overflow-hidden">
+              {/* Animated background shimmer */}
+              <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/5 to-transparent animate-shimmer" style={{ backgroundSize: '200% 100%' }} />
+
+              {/* Main content row */}
+              <div className="relative flex flex-col sm:flex-row items-center justify-between gap-4">
+                {/* Left: Lock icon and text */}
+                <div className="flex items-center gap-4">
+                  {/* Animated lock icon */}
+                  <div className="relative">
+                    <div className="absolute inset-0 bg-[var(--primary)]/30 rounded-full blur-xl animate-pulse" />
+                    <div className="relative w-14 h-14 rounded-full bg-gradient-to-br from-[var(--primary)] to-[var(--accent)] flex items-center justify-center shadow-lg border-2 border-white/20">
+                      <Lock className="w-7 h-7 text-white" />
+                    </div>
                   </div>
                   <div>
-                    <p className="text-sm font-bold text-[var(--foreground)]">Preview Mode</p>
-                    <p className="text-xs text-[var(--muted-foreground)]">Explore what awaits inside</p>
+                    <p className="text-lg font-black text-[var(--foreground)] tracking-tight">PREVIEW MODE</p>
+                    <p className="text-sm text-[var(--muted-foreground)]">Sign up to unlock your learning journey</p>
                   </div>
                 </div>
-                <Link href="/auth/login">
-                  <Button size="sm" className="font-bold">
-                    Sign In
-                  </Button>
-                </Link>
+
+                {/* Right: CTA Buttons */}
+                <div className="flex items-center gap-3">
+                  <Link href="/auth/signup">
+                    <Button size="lg" className="font-black px-6 bg-gradient-to-r from-[var(--primary)] to-[var(--accent)] hover:opacity-90 shadow-lg">
+                      Join Free
+                    </Button>
+                  </Link>
+                  <Link href="/auth/login">
+                    <Button size="lg" variant="outline" className="font-bold px-6 border-2 border-[var(--primary)]">
+                      Sign In
+                    </Button>
+                  </Link>
+                </div>
               </div>
 
-              {/* Philosophy icons with minimal text */}
-              <div className="flex items-center justify-center gap-6 pt-2 border-t border-[var(--border)]/50">
-                <div className="flex items-center gap-1.5 text-[var(--muted-foreground)]">
-                  <BookOpen className="w-4 h-4 text-[var(--primary)]" />
-                  <span className="text-[10px] font-medium">No paywalls</span>
+              {/* Features row */}
+              <div className="relative flex items-center justify-center gap-4 sm:gap-8 pt-3 border-t border-[var(--border)]/30">
+                <div className="flex items-center gap-2 text-[var(--foreground)]">
+                  <div className="w-8 h-8 rounded-lg bg-[var(--primary)]/20 flex items-center justify-center">
+                    <BookOpen className="w-4 h-4 text-[var(--primary)]" />
+                  </div>
+                  <span className="text-xs font-bold">100% Free</span>
                 </div>
-                <div className="flex items-center gap-1.5 text-[var(--muted-foreground)]">
-                  <GraduationCap className="w-4 h-4 text-[var(--primary)]" />
-                  <span className="text-[10px] font-medium">No certificates required</span>
+                <div className="flex items-center gap-2 text-[var(--foreground)]">
+                  <div className="w-8 h-8 rounded-lg bg-[var(--primary)]/20 flex items-center justify-center">
+                    <GraduationCap className="w-4 h-4 text-[var(--primary)]" />
+                  </div>
+                  <span className="text-xs font-bold">All Ages</span>
                 </div>
-                <div className="flex items-center gap-1.5 text-[var(--muted-foreground)]">
-                  <Sprout className="w-4 h-4 text-[var(--primary)]" />
-                  <span className="text-[10px] font-medium">Just your will to learn</span>
+                <div className="flex items-center gap-2 text-[var(--foreground)]">
+                  <div className="w-8 h-8 rounded-lg bg-[var(--primary)]/20 flex items-center justify-center">
+                    <Sprout className="w-4 h-4 text-[var(--primary)]" />
+                  </div>
+                  <span className="text-xs font-bold">Track Progress</span>
                 </div>
               </div>
             </div>
