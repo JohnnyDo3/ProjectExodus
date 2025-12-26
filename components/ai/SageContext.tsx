@@ -59,11 +59,12 @@ export function SageProvider({ children }: { children: ReactNode }) {
   }, [])
 
   const startNap = useCallback(() => {
-    // Save current position before napping
-    const currentPos = getSagePosition()
-    if (currentPos) {
-      setLastPosition(currentPos)
+    // Save current position before napping - use fallback if button ref not available
+    const currentPos = getSagePosition() || {
+      x: typeof window !== 'undefined' ? window.innerWidth - 60 : 100,
+      y: typeof window !== 'undefined' ? window.innerHeight - 60 : 100
     }
+    setLastPosition(currentPos)
 
     setIsAnimating(true)
     setAnimationPhase('going-to-nap')

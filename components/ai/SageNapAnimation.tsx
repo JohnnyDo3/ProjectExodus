@@ -77,11 +77,15 @@ export function SageNapAnimation() {
         endPos = lastPosition || { x: window.innerWidth - 60, y: window.innerHeight - 60 }
       }
 
-      if (!startPos || !endPos) {
-        console.warn('SageNapAnimation: Missing positions', { startPos, endPos })
-        animationRunning.current = false
-        onAnimationComplete(animationPhase)
-        return
+      // Use fallback positions if refs aren't available
+      const fallbackSagePos = { x: window.innerWidth - 60, y: window.innerHeight - 60 }
+      const fallbackHeaderPos = { x: 60, y: 40 }
+
+      if (!startPos) {
+        startPos = animationPhase === 'going-to-nap' ? fallbackSagePos : fallbackHeaderPos
+      }
+      if (!endPos) {
+        endPos = animationPhase === 'going-to-nap' ? fallbackHeaderPos : fallbackSagePos
       }
 
       // Calculate a dramatic arc that sweeps across the viewport
