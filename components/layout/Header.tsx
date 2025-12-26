@@ -194,12 +194,12 @@ export function Header() {
                   <span className="sage-zzz sage-zzz-3">z</span>
 
                   {/* Hover tooltip - "Click to wake" - positioned below with arrow pointing up */}
-                  <div className="absolute top-full left-1/2 -translate-x-1/2 mt-2 pointer-events-none z-[200] opacity-0 group-hover:opacity-100 transition-opacity duration-200">
+                  <div className="absolute top-full left-1/2 -translate-x-1/2 mt-3 pointer-events-none z-[200] opacity-0 group-hover:opacity-100 transition-opacity duration-200">
                     {/* Arrow pointing up */}
-                    <div className="absolute -top-1 left-1/2 -translate-x-1/2 w-2.5 h-2.5 rotate-45 bg-[var(--card)] border-l-2 border-t-2 border-[var(--primary)]" />
-                    {/* Tooltip body */}
-                    <div className="relative px-2.5 py-1.5 bg-[var(--card)] border-2 border-[var(--primary)] rounded-md shadow-lg">
-                      <span className="text-[10px] font-bold text-[var(--foreground)] whitespace-nowrap">Click to wake</span>
+                    <div className="absolute -top-2 left-1/2 -translate-x-1/2 w-4 h-4 rotate-45 bg-[var(--card)] border-l-2 border-t-2 border-[var(--primary)]" />
+                    {/* Tooltip body - large enough to contain text */}
+                    <div className="relative px-4 py-2.5 bg-[var(--card)] border-2 border-[var(--primary)] rounded-xl shadow-xl min-w-max">
+                      <span className="text-sm font-bold text-[var(--foreground)] whitespace-nowrap">Click to wake</span>
                     </div>
                   </div>
                 </>
@@ -266,11 +266,11 @@ export function Header() {
                             return isLocked ? (
                               <div
                                 key={menuItem.label}
-                                className="flex items-center justify-center gap-2 px-4 py-2.5 rounded-lg text-[var(--muted-foreground)] opacity-70 cursor-not-allowed overflow-hidden"
+                                className="flex items-center justify-center gap-3 px-5 py-3 rounded-lg text-[var(--muted-foreground)] opacity-70 cursor-not-allowed"
                                 title="Sign in to access"
                               >
                                 <Lock className="w-4 h-4 flex-shrink-0" />
-                                <span className="text-sm font-medium truncate">{menuItem.label}</span>
+                                <span className="text-sm font-medium">{menuItem.label}</span>
                               </div>
                             ) : (
                               <Link
