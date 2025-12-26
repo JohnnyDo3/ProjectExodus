@@ -719,9 +719,9 @@ export function CommunityHeartPage({ isAuthenticated }: CommunityHeartPageProps)
 
               <div className="relative z-10 h-full flex flex-col items-center justify-center text-center px-2">
                 {/* Enhanced Header - tighter spacing */}
-                <div className="mb-2">
+                <div className="mb-2 flex flex-col items-center">
                   <h3 className="text-base font-black text-[var(--foreground)] mb-1">Your Professional Identity</h3>
-                  <p className="text-[10px] text-[var(--muted-foreground)] max-w-[200px] leading-snug">A verified business card that represents your values, achievements, and contributions to sustainability</p>
+                  <p className="text-[10px] text-[var(--muted-foreground)] max-w-[200px] leading-snug text-center">A verified business card that represents your values, achievements, and contributions to sustainability</p>
                 </div>
 
                 {/* Archetype icons with hover reveal - slightly smaller */}
@@ -1175,11 +1175,11 @@ export function CommunityHeartPage({ isAuthenticated }: CommunityHeartPageProps)
                   <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-56 h-56 rounded-full bg-[var(--accent)]/5 blur-3xl" />
                 </div>
 
-                <div className="relative z-10 h-full flex flex-col items-center justify-center px-3">
+                <div className="relative z-10 h-full flex flex-col items-center justify-center text-center px-3">
                   {/* Enhanced Header */}
-                  <div className="mb-4">
+                  <div className="mb-4 flex flex-col items-center">
                     <h3 className="text-lg font-black text-[var(--foreground)] mb-2">Education Without Barriers</h3>
-                    <p className="text-xs text-[var(--muted-foreground)] max-w-[320px] leading-relaxed">Free, comprehensive sustainability education for all ages and backgrounds</p>
+                    <p className="text-xs text-[var(--muted-foreground)] max-w-[320px] leading-relaxed text-center">Free, comprehensive sustainability education for all ages and backgrounds</p>
                   </div>
 
                   {/* Visual learning journey - ENLARGED */}
