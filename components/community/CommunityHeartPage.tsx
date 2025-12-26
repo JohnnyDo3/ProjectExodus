@@ -119,7 +119,7 @@ const volitionLanes = [
 const guardianArchetypes = [
   { emoji: '⚔️', name: 'MICHAEL', title: 'Strength', desc: 'You stand unwavering. Your strength protects those who cannot protect themselves.', color: 'from-red-600 to-orange-500' },
   { emoji: '💬', name: 'GABRIEL', title: 'Revelation', desc: 'You bring truth to light. Your words reveal what must be known.', color: 'from-sky-500 to-blue-600' },
-  { emoji: '💚', name: 'RAPHAEL', title: 'Healing', desc: 'You mend what is broken. Your presence restores and renews.', color: 'from-emerald-500 to-green-600' },
+  { emoji: '🩺', name: 'RAPHAEL', title: 'Healing', desc: 'You mend what is broken. Your presence restores and renews.', color: 'from-emerald-500 to-green-600' },
   { emoji: '💡', name: 'URIEL', title: 'Wisdom', desc: 'You illuminate the path. Your wisdom guides those who seek understanding.', color: 'from-amber-500 to-yellow-500' },
   { emoji: '💗', name: 'CAMAEL', title: 'Love', desc: 'You embody compassion. Your love connects all beings as one.', color: 'from-pink-500 to-rose-600' },
   { emoji: '🌸', name: 'JOPHIEL', title: 'Beauty', desc: 'You see the divine in all things. Your vision transforms the ordinary into the sacred.', color: 'from-violet-500 to-purple-600' },
