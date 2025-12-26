@@ -246,9 +246,9 @@ export function Header() {
                       <ChevronDown className={`w-4 h-4 transition-transform duration-200 ${learnMenuOpen ? 'rotate-180' : ''}`} />
                     </Link>
 
-                    {/* Learn Dropdown menu - centered, wide enough for content */}
+                    {/* Learn Dropdown menu - centered, snug fit */}
                     <div
-                      className={`absolute top-full left-1/2 -translate-x-1/2 mt-2 min-w-[160px] rounded-xl z-[201] transition-all duration-200 origin-top ${
+                      className={`absolute top-full left-1/2 -translate-x-1/2 mt-2 rounded-xl z-[201] transition-all duration-200 origin-top ${
                         learnMenuOpen
                           ? 'opacity-100 scale-100 translate-y-0'
                           : 'opacity-0 scale-95 -translate-y-2 pointer-events-none'
@@ -259,24 +259,24 @@ export function Header() {
                         <div className="h-1 bg-gradient-to-r from-emerald-500 via-teal-500 to-cyan-500 rounded-t-lg" />
 
                         {/* Navigation link - Exodology only */}
-                        <div className="px-4 py-3">
+                        <div className="px-3 py-2">
                           {learnMenuItems.map((menuItem) => {
                             const isLocked = menuItem.requiresAuth && !session
 
                             return isLocked ? (
                               <div
                                 key={menuItem.label}
-                                className="flex items-center justify-center gap-2 px-4 py-2 rounded-lg text-[var(--muted-foreground)] opacity-70 cursor-not-allowed"
+                                className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-[var(--muted-foreground)] opacity-70 cursor-not-allowed"
                                 title="Sign in to access"
                               >
-                                <Lock className="w-4 h-4 flex-shrink-0" />
+                                <Lock className="w-3.5 h-3.5 flex-shrink-0" />
                                 <span className="text-sm font-medium">{menuItem.label}</span>
                               </div>
                             ) : (
                               <Link
                                 key={menuItem.label}
                                 href={menuItem.href}
-                                className="flex items-center justify-center gap-2 px-4 py-2 rounded-lg text-sm font-medium text-[var(--foreground)] hover:bg-[var(--muted)] hover:text-emerald-600 transition-colors"
+                                className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-sm font-medium text-[var(--foreground)] hover:bg-[var(--muted)] hover:text-emerald-600 transition-colors"
                                 onClick={() => setLearnMenuOpen(false)}
                               >
                                 <span>{menuItem.label}</span>
