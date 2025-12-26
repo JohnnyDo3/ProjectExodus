@@ -1354,7 +1354,7 @@ export function CommunityHeartPage({ isAuthenticated }: CommunityHeartPageProps)
                     /* Non-authenticated: Philosophy Statement on Front Side (shows on hover) */
                     <div className="h-full flex flex-col items-center justify-center text-center px-3">
                       {/* Quote */}
-                      <h3 className="text-base font-bold text-[var(--foreground)] mb-2 italic leading-snug" style={{ fontFamily: 'Georgia, serif' }}>
+                      <h3 className="text-[13px] font-bold text-[var(--foreground)] mb-2 italic leading-relaxed" style={{ fontFamily: 'Georgia, serif' }}>
                         "True wealth is measured in impact, not accumulation."
                       </h3>
 
@@ -1365,14 +1365,14 @@ export function CommunityHeartPage({ isAuthenticated }: CommunityHeartPageProps)
                         <div className="w-6 h-px bg-gradient-to-l from-transparent to-[var(--primary)]/50" />
                       </div>
 
-                      {/* Explanation - more compact */}
-                      <p className="text-[10px] text-[var(--muted-foreground)] leading-relaxed mb-2">
+                      {/* Explanation */}
+                      <p className="text-[11px] text-[var(--muted-foreground)] leading-relaxed mb-2">
                         <span className="font-bold text-[var(--foreground)]">Volition</span> tracks your growth across 7 impact lanes
                         as you contribute to a regenerative future.
                       </p>
 
                       <div className="bg-[var(--muted)]/40 rounded-lg px-2.5 py-2 border border-[var(--border)]/30 mb-2">
-                        <p className="text-[9px] text-[var(--muted-foreground)] leading-relaxed">
+                        <p className="text-[10px] text-[var(--muted-foreground)] leading-relaxed">
                           Every action compounds. Your journey builds <span className="font-semibold text-[var(--primary)]">STOCK</span> —
                           Sustainable Total Outcome Capital Knowledge.
                         </p>
