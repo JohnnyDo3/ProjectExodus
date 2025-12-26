@@ -408,10 +408,10 @@ export function CommunityHeartPage({ isAuthenticated }: CommunityHeartPageProps)
             {[...ancientWisdomQuotes, ...ancientWisdomQuotes].map((item, i) => (
               <span
                 key={i}
-                className="inline-flex items-center text-[11px] text-[var(--muted-foreground)]/40 italic mx-16"
+                className="inline-flex items-center text-sm text-[var(--muted-foreground)]/50 italic mx-20"
                 style={{ fontFamily: 'Georgia, serif' }}
               >
-                "{item.quote}" <span className="ml-1.5 not-italic text-[10px] text-[var(--primary)]/30">— {item.author}</span>
+                "{item.quote}" <span className="ml-2 not-italic text-xs text-[var(--primary)]/40 font-medium">— {item.author}</span>
               </span>
             ))}
           </motion.div>
