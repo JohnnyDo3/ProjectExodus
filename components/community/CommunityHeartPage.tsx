@@ -164,8 +164,18 @@ const interactiveTools = [
   { name: 'Achievements', icon: Trophy, color: 'text-amber-500', desc: 'Earn badges & track your learning journey', bgColor: 'bg-amber-500/10' },
 ]
 
-// 77 Ancient wisdom quotes from history's greatest minds
-const ancientWisdomQuotes = [
+// Fisher-Yates shuffle for randomizing quotes
+function shuffleArray<T>(array: T[]): T[] {
+  const shuffled = [...array]
+  for (let i = shuffled.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1))
+    ;[shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]]
+  }
+  return shuffled
+}
+
+// 77 Ancient wisdom quotes from history's greatest minds (shuffled)
+const ancientWisdomQuotesRaw = [
   // Greek Philosophers
   { quote: "Know thyself", author: "Socrates" },
   { quote: "The unexamined life is not worth living", author: "Socrates" },
@@ -257,6 +267,9 @@ const ancientWisdomQuotes = [
   { quote: "Count no man happy until the end is known", author: "Solon" },
   { quote: "Put more trust in nobility of character than in an oath", author: "Solon" },
 ]
+
+// Shuffle the quotes so same authors aren't back-to-back
+const ancientWisdomQuotes = shuffleArray(ancientWisdomQuotesRaw)
 
 // Fake user ID previews to showcase different guardian archetypes
 const fakeUserPreviews = [
