@@ -367,6 +367,38 @@ export default function ArticlesPage() {
     return filteredArticles.slice(start, start + 12)
   }, [articles])
 
+  // Get mixed shelf items (articles interspersed with ghost scrolls randomly)
+  const getShelfWithGhosts = useCallback((shelfIndex: number, categoryFilter: string | null, totalSlots: number = 16) => {
+    const shelfArticles = getShelfArticles(shelfIndex, categoryFilter)
+    const ghostCount = Math.max(0, totalSlots - shelfArticles.length)
+
+    // Create array of items: articles and ghost placeholders
+    const items: Array<{ type: 'article' | 'ghost', article?: typeof shelfArticles[0], ghostIndex?: number }> = []
+
+    // Add all articles
+    shelfArticles.forEach(article => {
+      items.push({ type: 'article', article })
+    })
+
+    // Add ghost placeholders
+    for (let i = 0; i < ghostCount; i++) {
+      items.push({ type: 'ghost', ghostIndex: i })
+    }
+
+    // Shuffle using seeded random (consistent per shelf based on shelfIndex)
+    // Use Fisher-Yates shuffle with deterministic seed
+    const seed = shelfIndex * 1000 + items.length
+    const shuffled = [...items]
+    for (let i = shuffled.length - 1; i > 0; i--) {
+      // Use a simple seeded random: (seed * (i + 1) * 9301 + 49297) % 233280
+      const randomValue = ((seed * (i + 1) * 9301 + 49297) % 233280) / 233280
+      const j = Math.floor(randomValue * (i + 1))
+      ;[shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]]
+    }
+
+    return shuffled
+  }, [getShelfArticles])
+
   // Get scroll age (weathering effect based on publish date)
   const getScrollAge = (publishedAt: string): 'new' | 'recent' | 'aged' | 'ancient' => {
     const days = Math.floor((Date.now() - new Date(publishedAt).getTime()) / (1000 * 60 * 60 * 24))
@@ -3145,6 +3177,21 @@ export default function ArticlesPage() {
           {/* Scrolls container - sits ON the shelf */}
           <div className="relative mx-16">
             <div className="flex items-end justify-center gap-2.5 px-6 pb-0 min-h-[85px] flex-wrap overflow-hidden">
+              {/* Leading ghost scrolls - add some before articles */}
+              {Array.from({ length: Math.max(0, Math.floor((16 - getShelfArticles(0, shelf1Category).length) / 3)) }).map((_, i) => (
+                <div key={`ghost-shelf1-leading-${i}`} className="flex-shrink-0 w-6 relative opacity-15 hover:opacity-25 transition-opacity" style={{ marginBottom: '0px' }}>
+                  <div className="h-[75px] relative">
+                    <div className="absolute inset-x-0.5 top-4 bottom-4 bg-amber-600/15 rounded-sm border border-amber-600/25" />
+                    <div className="absolute top-0 left-0 right-0 h-4 bg-amber-600/20 rounded-t-sm border border-amber-600/30" />
+                    <div className="absolute bottom-0 left-0 right-0 h-4 bg-amber-600/20 rounded-b-sm border border-amber-600/30" />
+                    <div className="absolute inset-x-1 top-5 bottom-5 flex flex-col justify-center gap-1">
+                      <div className="h-px bg-amber-600/25" />
+                      <div className="h-px bg-amber-600/20 w-4/5" />
+                    </div>
+                    <div className="absolute -right-1.5 top-1/2 -translate-y-1/2 w-4 h-4 border border-amber-600/30 rounded-full bg-amber-600/10" />
+                  </div>
+                </div>
+              ))}
               {getShelfArticles(0, shelf1Category).map((article, idx) => {
                 const categorySlug = article.category?.slug || 'default'
                 const categoryTheme = CATEGORY_SCROLL_THEMES[categorySlug] || CATEGORY_SCROLL_THEMES.sustainability
@@ -3226,28 +3273,28 @@ export default function ArticlesPage() {
                   </div>
                 )
               })}
-              {/* Ghost scrolls - transparent tan, filling the shelf */}
-              {Array.from({ length: Math.max(0, 16 - getShelfArticles(0, shelf1Category).length) }).map((_, i) => (
-                <div key={`ghost-shelf1-${i}`} className="flex-shrink-0 w-6 relative opacity-15 hover:opacity-25 transition-opacity" style={{ marginBottom: '0px' }}>
-                  <div className="h-[75px] relative">
-                    {/* Ghost scroll body */}
-                    <div className="absolute inset-x-0.5 top-4 bottom-4 bg-amber-600/15 rounded-sm border border-amber-600/25" />
-                    {/* Top rod */}
-                    <div className="absolute top-0 left-0 right-0 h-4 bg-amber-600/20 rounded-t-sm border border-amber-600/30" />
-                    {/* Bottom rod */}
-                    <div className="absolute bottom-0 left-0 right-0 h-4 bg-amber-600/20 rounded-b-sm border border-amber-600/30" />
-                    {/* Subtle text lines */}
-                    <div className="absolute inset-x-1 top-5 bottom-5 flex flex-col justify-center gap-1">
-                      <div className="h-px bg-amber-600/25" />
-                      <div className="h-px bg-amber-600/20 w-4/5" />
-                      <div className="h-px bg-amber-600/25" />
-                      <div className="h-px bg-amber-600/20 w-3/5" />
+              {/* Trailing ghost scrolls - remaining after leading and articles */}
+              {(() => {
+                const articleCount = getShelfArticles(0, shelf1Category).length
+                const leadingCount = Math.max(0, Math.floor((16 - articleCount) / 3))
+                const remainingGhosts = Math.max(0, 16 - articleCount - leadingCount)
+                return Array.from({ length: remainingGhosts }).map((_, i) => (
+                  <div key={`ghost-shelf1-trailing-${i}`} className="flex-shrink-0 w-6 relative opacity-15 hover:opacity-25 transition-opacity" style={{ marginBottom: '0px' }}>
+                    <div className="h-[75px] relative">
+                      <div className="absolute inset-x-0.5 top-4 bottom-4 bg-amber-600/15 rounded-sm border border-amber-600/25" />
+                      <div className="absolute top-0 left-0 right-0 h-4 bg-amber-600/20 rounded-t-sm border border-amber-600/30" />
+                      <div className="absolute bottom-0 left-0 right-0 h-4 bg-amber-600/20 rounded-b-sm border border-amber-600/30" />
+                      <div className="absolute inset-x-1 top-5 bottom-5 flex flex-col justify-center gap-1">
+                        <div className="h-px bg-amber-600/25" />
+                        <div className="h-px bg-amber-600/20 w-4/5" />
+                        <div className="h-px bg-amber-600/25" />
+                        <div className="h-px bg-amber-600/20 w-3/5" />
+                      </div>
+                      <div className="absolute -right-1.5 top-1/2 -translate-y-1/2 w-4 h-4 border border-amber-600/30 rounded-full bg-amber-600/10" />
                     </div>
-                    {/* Ghost seal */}
-                    <div className="absolute -right-1.5 top-1/2 -translate-y-1/2 w-4 h-4 border border-amber-600/30 rounded-full bg-amber-600/10" />
                   </div>
-                </div>
-              ))}
+                ))
+              })()}
             </div>
 
             {/* Center decorative medallion - matching Shelf 2/3 */}
