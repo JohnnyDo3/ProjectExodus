@@ -3972,7 +3972,7 @@ export default function ArticlesPage() {
                   <div className="relative p-4 sm:p-6">
                     {/* Category seal - compact */}
                     <div className="flex items-center justify-center mb-3">
-                      <span className="px-3 py-1 text-[9px] font-bold text-amber-800 uppercase tracking-[0.15em] border border-amber-600/50 bg-amber-200/60 rounded-sm shadow-sm" style={{ fontFamily: 'Georgia, serif' }}>
+                      <span className="px-3 py-1 text-[9px] font-bold text-black uppercase tracking-[0.15em] border border-amber-600/50 bg-amber-200/60 rounded-sm shadow-sm" style={{ fontFamily: 'Georgia, serif' }}>
                         {previewArticle.category?.name || 'Article'}
                       </span>
                     </div>
@@ -3990,7 +3990,7 @@ export default function ArticlesPage() {
                     )}
 
                     {/* Title - rich sepia ink with ink fade-in effect */}
-                    <h2 className="text-xl sm:text-2xl font-bold text-amber-950 text-center mb-3 leading-tight tracking-tight ink-text" style={{ fontFamily: 'Georgia, serif', animationDelay: '0.2s' }}>
+                    <h2 className="text-xl sm:text-2xl font-bold text-black text-center mb-3 leading-tight tracking-tight ink-text" style={{ fontFamily: 'Georgia, serif', animationDelay: '0.2s' }}>
                       {previewArticle.title}
                     </h2>
 
@@ -4005,7 +4005,7 @@ export default function ArticlesPage() {
                     </div>
 
                     {/* Excerpt - elegant calligraphy style with ink fade-in, line clamp for long excerpts */}
-                    <p className="text-sm text-amber-900/90 text-center mb-4 leading-relaxed italic ink-text line-clamp-3" style={{ fontFamily: 'Georgia, serif', lineHeight: '1.7', animationDelay: '0.5s' }}>
+                    <p className="text-sm text-black text-center mb-4 leading-relaxed italic ink-text line-clamp-3" style={{ fontFamily: 'Georgia, serif', lineHeight: '1.7', animationDelay: '0.5s' }}>
                       "{previewArticle.excerpt}"
                     </p>
 
@@ -4019,17 +4019,17 @@ export default function ArticlesPage() {
                         )}
                       </div>
                       <div className="text-center">
-                        <p className="font-bold text-amber-900 text-base" style={{ fontFamily: 'Georgia, serif' }}>
+                        <p className="font-bold text-black text-base" style={{ fontFamily: 'Georgia, serif' }}>
                           {previewArticle.author?.name || 'Anonymous Scribe'}
                         </p>
-                        <p className="text-xs text-amber-700" style={{ fontFamily: 'Georgia, serif', fontStyle: 'italic' }}>
+                        <p className="text-xs text-black/70" style={{ fontFamily: 'Georgia, serif', fontStyle: 'italic' }}>
                           {new Date(previewArticle.publishedAt).toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' })}
                         </p>
                       </div>
                     </div>
 
                     {/* Stats - parchment ink style - compact */}
-                    <div className="flex items-center justify-center gap-4 mb-4 text-amber-800">
+                    <div className="flex items-center justify-center gap-4 mb-4 text-black">
                       <div className="flex items-center gap-2">
                         <Clock className="w-4 h-4" />
                         <span className="text-xs font-medium" style={{ fontFamily: 'Georgia, serif' }}>{previewArticle.readTime} min</span>
@@ -4050,8 +4050,8 @@ export default function ArticlesPage() {
                     {session && readingProgress[previewArticle.id] && (
                       <div className="mb-4 p-2 bg-amber-200/50 border border-amber-600/40 rounded-sm">
                         <div className="flex items-center justify-between mb-2">
-                          <span className="text-xs text-amber-800 italic" style={{ fontFamily: 'Georgia, serif' }}>Your Progress</span>
-                          <span className="text-xs font-bold text-amber-900">
+                          <span className="text-xs text-black italic" style={{ fontFamily: 'Georgia, serif' }}>Your Progress</span>
+                          <span className="text-xs font-bold text-black">
                             {readingProgress[previewArticle.id].completed ? 'Completed' : `${Math.round(readingProgress[previewArticle.id].scrollProgress)}%`}
                           </span>
                         </div>
@@ -4092,7 +4092,7 @@ export default function ArticlesPage() {
                       ) : (
                         /* Non-authenticated user - show sign-up CTA */
                         <div className="text-center">
-                          <p className="text-sm text-amber-950 mb-3 italic" style={{ fontFamily: 'Georgia, serif' }}>
+                          <p className="text-sm text-black mb-3 italic" style={{ fontFamily: 'Georgia, serif' }}>
                             Join our community to unlock this scroll
                           </p>
                           <div className="flex items-center justify-center gap-3">
