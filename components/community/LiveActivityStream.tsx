@@ -4,7 +4,7 @@ import { useState, useEffect } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import {
   UserPlus, MessageSquare, Rocket, BookOpen, Calendar,
-  UserCheck, Reply, Activity
+  UserCheck, Reply, Activity, Leaf, Sparkles
 } from 'lucide-react'
 
 interface ActivityItem {
@@ -15,6 +15,23 @@ interface ActivityItem {
   userImage: string | null
   targetName?: string
   createdAt: string
+}
+
+// Daily wisdom quotes about sustainability
+const dailyWisdom = [
+  { quote: "The greatest threat to our planet is the belief that someone else will save it.", author: "Robert Swan" },
+  { quote: "We do not inherit the earth from our ancestors; we borrow it from our children.", author: "Native American Proverb" },
+  { quote: "In every walk with nature, one receives far more than they seek.", author: "John Muir" },
+  { quote: "The Earth does not belong to us. We belong to the Earth.", author: "Chief Seattle" },
+  { quote: "What we are doing to the forests of the world is but a mirror reflection of what we are doing to ourselves.", author: "Mahatma Gandhi" },
+  { quote: "Nature always wears the colors of the spirit.", author: "Ralph Waldo Emerson" },
+  { quote: "Look deep into nature, and then you will understand everything better.", author: "Albert Einstein" },
+]
+
+// Get a quote based on the day of year for consistency
+function getDailyQuote() {
+  const dayOfYear = Math.floor((Date.now() - new Date(new Date().getFullYear(), 0, 0).getTime()) / 86400000)
+  return dailyWisdom[dayOfYear % dailyWisdom.length]
 }
 
 const activityConfig: Record<string, { icon: typeof Activity; color: string; bgColor: string }> = {
@@ -107,11 +124,109 @@ export function LiveActivityStream() {
   }
 
   if (activities.length === 0) {
+    const wisdom = getDailyQuote()
+
     return (
-      <div className="h-full flex items-center justify-center">
-        <div className="text-center">
-          <Activity className="w-6 h-6 mx-auto mb-1 text-[var(--muted-foreground)] opacity-50" />
-          <p className="text-[10px] text-[var(--muted-foreground)]">No activity yet</p>
+      <div className="h-full flex flex-col relative overflow-hidden">
+        {/* Floating leaves animation background */}
+        <div className="absolute inset-0 pointer-events-none overflow-hidden">
+          {[...Array(5)].map((_, i) => (
+            <motion.div
+              key={i}
+              className="absolute text-[var(--primary)]"
+              style={{
+                left: `${15 + i * 18}%`,
+                top: -20,
+              }}
+              animate={{
+                y: ['0%', '400%'],
+                x: [0, Math.sin(i) * 20, 0],
+                rotate: [0, 360],
+                opacity: [0.3, 0.5, 0.3, 0],
+              }}
+              transition={{
+                duration: 8 + i * 2,
+                repeat: Infinity,
+                delay: i * 1.5,
+                ease: 'linear',
+              }}
+            >
+              <Leaf className="w-3 h-3" />
+            </motion.div>
+          ))}
+        </div>
+
+        {/* Header */}
+        <div className="flex items-center justify-between px-3 py-2 border-b border-[var(--border)] relative z-10">
+          <div className="flex items-center gap-1.5">
+            <motion.div
+              className="w-1.5 h-1.5 rounded-full bg-[var(--accent)]"
+              animate={{ scale: [1, 1.2, 1], opacity: [0.6, 1, 0.6] }}
+              transition={{ duration: 3, repeat: Infinity, ease: 'easeInOut' }}
+            />
+            <span className="text-[10px] font-semibold text-[var(--foreground)]">Community Pulse</span>
+          </div>
+          <span className="text-[9px] text-[var(--muted-foreground)]">Daily wisdom</span>
+        </div>
+
+        {/* Main content - Daily Wisdom */}
+        <div className="flex-1 flex flex-col items-center justify-center p-3 relative z-10">
+          {/* Decorative sparkle */}
+          <motion.div
+            className="mb-2"
+            animate={{ rotate: [0, 180, 360], scale: [1, 1.1, 1] }}
+            transition={{ duration: 8, repeat: Infinity, ease: 'easeInOut' }}
+          >
+            <Sparkles className="w-5 h-5 text-[var(--accent)]" />
+          </motion.div>
+
+          {/* Quote */}
+          <motion.div
+            className="text-center px-2"
+            initial={{ opacity: 0, y: 10 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.3 }}
+          >
+            <p className="text-[11px] italic text-[var(--foreground)] leading-relaxed mb-2">
+              "{wisdom.quote}"
+            </p>
+            <p className="text-[9px] text-[var(--muted-foreground)] font-medium">
+              — {wisdom.author}
+            </p>
+          </motion.div>
+
+          {/* Subtle call to action */}
+          <motion.div
+            className="mt-3 px-3 py-1.5 rounded-full bg-[var(--muted)]/40 border border-[var(--border)]/30"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ delay: 0.6 }}
+          >
+            <p className="text-[8px] text-[var(--muted-foreground)] text-center">
+              Be the first to share today ✨
+            </p>
+          </motion.div>
+        </div>
+
+        {/* Ambient pulse rings */}
+        <div className="absolute bottom-3 left-1/2 -translate-x-1/2 pointer-events-none">
+          {[0, 1, 2].map((i) => (
+            <motion.div
+              key={i}
+              className="absolute w-8 h-8 rounded-full border border-[var(--primary)]/20"
+              style={{ left: -16, top: -16 }}
+              animate={{
+                scale: [1, 2.5],
+                opacity: [0.4, 0],
+              }}
+              transition={{
+                duration: 3,
+                repeat: Infinity,
+                delay: i * 1,
+                ease: 'easeOut',
+              }}
+            />
+          ))}
         </div>
       </div>
     )
