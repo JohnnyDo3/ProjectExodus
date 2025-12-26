@@ -717,15 +717,15 @@ export function CommunityHeartPage({ isAuthenticated }: CommunityHeartPageProps)
                 <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-48 h-48 rounded-full bg-[var(--primary)]/5 blur-3xl" />
               </div>
 
-              <div className="relative z-10 h-full flex flex-col items-center justify-center text-center px-2">
-                {/* Enhanced Header - tighter spacing */}
-                <div className="mb-2 flex flex-col items-center">
-                  <h3 className="text-base font-black text-[var(--foreground)] mb-1">Your Professional Identity</h3>
-                  <p className="text-[10px] text-[var(--muted-foreground)] max-w-[200px] leading-snug text-center">A verified business card that represents your values, achievements, and contributions to sustainability</p>
+              <div className="relative z-10 h-full flex flex-col items-center justify-center text-center px-3">
+                {/* Enhanced Header with backdrop for depth */}
+                <div className="mb-3 flex flex-col items-center px-4 py-2.5 rounded-xl bg-[var(--card)]/60 backdrop-blur-sm border border-[var(--border)]/20 shadow-lg">
+                  <h3 className="text-lg font-black text-[var(--foreground)] mb-1.5 tracking-tight drop-shadow-sm">Your Professional Identity</h3>
+                  <p className="text-xs text-[var(--muted-foreground)] max-w-[220px] leading-relaxed text-center">A verified business card representing your values and contributions</p>
                 </div>
 
-                {/* Archetype icons with hover reveal - slightly smaller */}
-                <div className="flex items-center justify-center gap-1.5 mb-2">
+                {/* Archetype icons with hover reveal - enhanced with glow */}
+                <div className="flex items-center justify-center gap-2 mb-3">
                   {guardianArchetypes.map((archetype, i) => (
                     <motion.div
                       key={i}
@@ -734,12 +734,12 @@ export function CommunityHeartPage({ isAuthenticated }: CommunityHeartPageProps)
                       onMouseLeave={() => setHoveredArchetype(null)}
                     >
                       <motion.div
-                        className={`w-9 h-9 rounded-full flex items-center justify-center text-base border-2 cursor-pointer transition-all shadow-md ${
+                        className={`w-10 h-10 rounded-full flex items-center justify-center text-lg border-2 cursor-pointer transition-all ${
                           hoveredArchetype === i
-                            ? 'bg-[var(--primary)]/30 border-[var(--primary)]/60 scale-110 shadow-lg'
-                            : 'bg-[var(--muted)]/50 border-[var(--border)]/40'
+                            ? 'bg-[var(--primary)]/40 border-[var(--primary)]/70 scale-110 shadow-xl shadow-[var(--primary)]/20'
+                            : 'bg-[var(--card)]/80 border-[var(--border)]/50 shadow-md'
                         }`}
-                        whileHover={{ y: -2 }}
+                        whileHover={{ y: -3 }}
                       >
                         {archetype.emoji}
                       </motion.div>
@@ -748,59 +748,59 @@ export function CommunityHeartPage({ isAuthenticated }: CommunityHeartPageProps)
                         <motion.div
                           initial={{ opacity: 0, y: 5 }}
                           animate={{ opacity: 1, y: 0 }}
-                          className="absolute -bottom-14 left-1/2 -translate-x-1/2 w-26 p-1.5 bg-[var(--card)] border-2 border-[var(--primary)]/30 rounded-lg shadow-xl z-20"
+                          className="absolute -bottom-16 left-1/2 -translate-x-1/2 w-28 p-2 bg-[var(--card)] border-2 border-[var(--primary)]/40 rounded-xl shadow-2xl z-20"
                         >
-                          <p className="text-[9px] font-bold text-[var(--foreground)]">{archetype.name}</p>
-                          <p className="text-[7px] text-[var(--muted-foreground)] leading-tight mt-0.5">{archetype.desc}</p>
+                          <p className="text-[10px] font-bold text-[var(--foreground)]">{archetype.name}</p>
+                          <p className="text-[8px] text-[var(--muted-foreground)] leading-snug mt-0.5">{archetype.desc}</p>
                         </motion.div>
                       )}
                     </motion.div>
                   ))}
                 </div>
 
-                {/* Enhanced Quote with decorative elements */}
-                <div className="relative px-4 py-1.5 mb-2 bg-gradient-to-r from-[var(--muted)]/40 via-[var(--muted)]/60 to-[var(--muted)]/40 rounded-lg border border-[var(--border)]/30 shadow-inner">
-                  <div className="absolute -left-0.5 top-1/2 -translate-y-1/2 text-[var(--primary)]/40 text-lg">"</div>
-                  <p className="text-xs italic text-[var(--foreground)] font-medium">Your values define your identity</p>
-                  <div className="absolute -right-0.5 top-1/2 -translate-y-1/2 text-[var(--primary)]/40 text-lg">"</div>
+                {/* Enhanced Quote with better contrast */}
+                <div className="relative px-5 py-2 mb-3 bg-[var(--card)]/70 backdrop-blur-sm rounded-xl border border-[var(--primary)]/20 shadow-lg">
+                  <div className="absolute -left-1 top-1/2 -translate-y-1/2 text-[var(--primary)]/50 text-xl font-serif">"</div>
+                  <p className="text-sm italic text-[var(--foreground)] font-semibold drop-shadow-sm">Your values define your identity</p>
+                  <div className="absolute -right-1 top-1/2 -translate-y-1/2 text-[var(--primary)]/50 text-xl font-serif">"</div>
                 </div>
 
-                {/* Feature explanations - enhanced with icon containers */}
-                <div className="w-full space-y-1">
+                {/* Feature explanations - enhanced with better depth and readability */}
+                <div className="w-full space-y-1.5">
                   <motion.div
-                    className="flex items-center gap-2 px-2 py-1.5 rounded-lg bg-gradient-to-r from-[var(--muted)]/40 to-[var(--muted)]/20 border border-[var(--border)]/30 shadow-sm"
-                    whileHover={{ scale: 1.02, x: 2 }}
+                    className="flex items-center gap-3 px-3 py-2 rounded-xl bg-[var(--card)]/70 backdrop-blur-sm border border-[var(--border)]/40 shadow-md"
+                    whileHover={{ scale: 1.02, x: 3, boxShadow: '0 4px 12px rgba(0,0,0,0.15)' }}
                   >
-                    <div className="w-6 h-6 rounded-md bg-[var(--primary)]/20 flex items-center justify-center flex-shrink-0">
-                      <Shield className="w-3.5 h-3.5 text-[var(--primary)]" />
+                    <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-[var(--primary)]/30 to-[var(--primary)]/10 flex items-center justify-center flex-shrink-0 shadow-inner border border-[var(--primary)]/20">
+                      <Shield className="w-4 h-4 text-[var(--primary)] drop-shadow-sm" />
                     </div>
                     <div className="text-left flex-1">
-                      <p className="text-[10px] font-bold text-[var(--foreground)]">Guardian Theme</p>
-                      <p className="text-[8px] text-[var(--muted-foreground)]">Visual identity based on your archetype</p>
+                      <p className="text-xs font-bold text-[var(--foreground)] drop-shadow-sm">Guardian Theme</p>
+                      <p className="text-[10px] text-[var(--muted-foreground)] leading-snug">Visual identity based on archetype</p>
                     </div>
                   </motion.div>
                   <motion.div
-                    className="flex items-center gap-2 px-2 py-1.5 rounded-lg bg-gradient-to-r from-[var(--muted)]/40 to-[var(--muted)]/20 border border-[var(--border)]/30 shadow-sm"
-                    whileHover={{ scale: 1.02, x: 2 }}
+                    className="flex items-center gap-3 px-3 py-2 rounded-xl bg-[var(--card)]/70 backdrop-blur-sm border border-[var(--border)]/40 shadow-md"
+                    whileHover={{ scale: 1.02, x: 3, boxShadow: '0 4px 12px rgba(0,0,0,0.15)' }}
                   >
-                    <div className="w-6 h-6 rounded-md bg-[var(--accent)]/20 flex items-center justify-center flex-shrink-0">
-                      <Star className="w-3.5 h-3.5 text-[var(--accent)]" />
+                    <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-[var(--accent)]/30 to-[var(--accent)]/10 flex items-center justify-center flex-shrink-0 shadow-inner border border-[var(--accent)]/20">
+                      <Star className="w-4 h-4 text-[var(--accent)] drop-shadow-sm" />
                     </div>
                     <div className="text-left flex-1">
-                      <p className="text-[10px] font-bold text-[var(--foreground)]">Achievement Badges</p>
-                      <p className="text-[8px] text-[var(--muted-foreground)]">Earn recognition for your contributions</p>
+                      <p className="text-xs font-bold text-[var(--foreground)] drop-shadow-sm">Achievement Badges</p>
+                      <p className="text-[10px] text-[var(--muted-foreground)] leading-snug">Recognition for contributions</p>
                     </div>
                   </motion.div>
                   <motion.div
-                    className="flex items-center gap-2 px-2 py-1.5 rounded-lg bg-gradient-to-r from-[var(--muted)]/40 to-[var(--muted)]/20 border border-[var(--border)]/30 shadow-sm"
-                    whileHover={{ scale: 1.02, x: 2 }}
+                    className="flex items-center gap-3 px-3 py-2 rounded-xl bg-[var(--card)]/70 backdrop-blur-sm border border-[var(--border)]/40 shadow-md"
+                    whileHover={{ scale: 1.02, x: 3, boxShadow: '0 4px 12px rgba(0,0,0,0.15)' }}
                   >
-                    <div className="w-6 h-6 rounded-md bg-[var(--primary)]/20 flex items-center justify-center flex-shrink-0">
-                      <TrendingUp className="w-3.5 h-3.5 text-[var(--primary)]" />
+                    <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-emerald-500/30 to-emerald-500/10 flex items-center justify-center flex-shrink-0 shadow-inner border border-emerald-500/20">
+                      <TrendingUp className="w-4 h-4 text-emerald-500 drop-shadow-sm" />
                     </div>
                     <div className="text-left flex-1">
-                      <p className="text-[10px] font-bold text-[var(--foreground)]">STOCK Score</p>
-                      <p className="text-[8px] text-[var(--muted-foreground)]">Track your sustainable value over time</p>
+                      <p className="text-xs font-bold text-[var(--foreground)] drop-shadow-sm">STOCK Score</p>
+                      <p className="text-[10px] text-[var(--muted-foreground)] leading-snug">Track sustainable value over time</p>
                     </div>
                   </motion.div>
                 </div>
@@ -1175,15 +1175,15 @@ export function CommunityHeartPage({ isAuthenticated }: CommunityHeartPageProps)
                   <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-56 h-56 rounded-full bg-[var(--accent)]/5 blur-3xl" />
                 </div>
 
-                <div className="relative z-10 h-full flex flex-col items-center justify-center text-center px-3">
-                  {/* Enhanced Header */}
-                  <div className="mb-4 flex flex-col items-center">
-                    <h3 className="text-lg font-black text-[var(--foreground)] mb-2">Education Without Barriers</h3>
-                    <p className="text-xs text-[var(--muted-foreground)] max-w-[320px] leading-relaxed text-center">Free, comprehensive sustainability education for all ages and backgrounds</p>
+                <div className="relative z-10 h-full flex flex-col items-center justify-center text-center px-4">
+                  {/* Enhanced Header with backdrop for depth */}
+                  <div className="mb-4 flex flex-col items-center px-5 py-3 rounded-xl bg-[var(--card)]/60 backdrop-blur-sm border border-[var(--border)]/20 shadow-lg">
+                    <h3 className="text-xl font-black text-[var(--foreground)] mb-1.5 tracking-tight drop-shadow-sm">Education Without Barriers</h3>
+                    <p className="text-sm text-[var(--muted-foreground)] max-w-[340px] leading-relaxed text-center">Free sustainability education for all ages</p>
                   </div>
 
-                  {/* Visual learning journey - ENLARGED */}
-                  <div className="flex items-center justify-center gap-2 mb-4">
+                  {/* Visual learning journey - enhanced with better depth */}
+                  <div className="flex items-center justify-center gap-2.5 mb-4 px-3 py-2.5 rounded-xl bg-[var(--card)]/40 backdrop-blur-sm border border-[var(--border)]/20">
                     {[
                       { emoji: '🌱', label: 'Begin' },
                       { emoji: '📚', label: 'Study' },
@@ -1200,13 +1200,13 @@ export function CommunityHeartPage({ isAuthenticated }: CommunityHeartPageProps)
                         transition={{ delay: i * 0.06 }}
                         whileHover={{ y: -3, scale: 1.1 }}
                       >
-                        <div className="w-10 h-10 rounded-full bg-[var(--muted)]/50 border border-[var(--border)]/40 flex items-center justify-center shadow-sm mb-1">
+                        <div className="w-11 h-11 rounded-full bg-[var(--card)]/80 border-2 border-[var(--border)]/50 flex items-center justify-center shadow-md mb-1">
                           <span className="text-xl">{stage.emoji}</span>
                         </div>
-                        <span className="text-[8px] font-medium text-[var(--muted-foreground)]">{stage.label}</span>
+                        <span className="text-[9px] font-semibold text-[var(--foreground)]/80 drop-shadow-sm">{stage.label}</span>
                         {i < 5 && (
                           <motion.div
-                            className="absolute w-4 h-0.5 bg-gradient-to-r from-[var(--primary)] to-[var(--accent)] right-[-10px] top-5"
+                            className="absolute w-5 h-0.5 bg-gradient-to-r from-[var(--primary)] to-[var(--accent)] right-[-12px] top-5 rounded-full shadow-sm"
                             initial={{ scaleX: 0 }}
                             animate={{ scaleX: 1 }}
                             transition={{ delay: i * 0.06 + 0.2 }}
@@ -1216,61 +1216,61 @@ export function CommunityHeartPage({ isAuthenticated }: CommunityHeartPageProps)
                     ))}
                   </div>
 
-                  {/* Enhanced Philosophy statement with decorative elements */}
-                  <div className="relative px-5 py-2.5 mb-4 bg-gradient-to-r from-[var(--muted)]/40 via-[var(--muted)]/60 to-[var(--muted)]/40 rounded-xl border border-[var(--border)]/30 shadow-inner">
-                    <div className="absolute -left-1 top-1/2 -translate-y-1/2 text-[var(--accent)]/40 text-xl">"</div>
-                    <p className="text-sm italic text-[var(--foreground)] font-medium">Knowledge belongs to everyone</p>
-                    <div className="absolute -right-1 top-1/2 -translate-y-1/2 text-[var(--accent)]/40 text-xl">"</div>
+                  {/* Enhanced Philosophy statement with better contrast */}
+                  <div className="relative px-6 py-3 mb-4 bg-[var(--card)]/70 backdrop-blur-sm rounded-xl border border-[var(--accent)]/20 shadow-lg">
+                    <div className="absolute -left-1.5 top-1/2 -translate-y-1/2 text-[var(--accent)]/60 text-2xl font-serif">"</div>
+                    <p className="text-base italic text-[var(--foreground)] font-semibold drop-shadow-sm">Knowledge belongs to everyone</p>
+                    <div className="absolute -right-1.5 top-1/2 -translate-y-1/2 text-[var(--accent)]/60 text-2xl font-serif">"</div>
                   </div>
 
-                  {/* Feature explanations - ENLARGED grid */}
-                  <div className="w-full grid grid-cols-2 gap-2">
+                  {/* Feature explanations - enhanced grid with better depth */}
+                  <div className="w-full grid grid-cols-2 gap-2.5">
                     <motion.div
-                      className="flex items-center gap-2.5 px-3 py-2.5 rounded-xl bg-gradient-to-r from-[var(--muted)]/40 to-[var(--muted)]/20 border border-[var(--border)]/30 shadow-sm"
-                      whileHover={{ scale: 1.03, x: 2 }}
+                      className="flex items-center gap-3 px-3 py-2.5 rounded-xl bg-[var(--card)]/70 backdrop-blur-sm border border-[var(--border)]/40 shadow-md"
+                      whileHover={{ scale: 1.03, x: 2, boxShadow: '0 4px 12px rgba(0,0,0,0.15)' }}
                     >
-                      <div className="w-7 h-7 rounded-lg bg-[var(--primary)]/20 flex items-center justify-center flex-shrink-0">
-                        <GraduationCap className="w-4 h-4 text-[var(--primary)]" />
+                      <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-[var(--primary)]/30 to-[var(--primary)]/10 flex items-center justify-center flex-shrink-0 shadow-inner border border-[var(--primary)]/20">
+                        <GraduationCap className="w-4 h-4 text-[var(--primary)] drop-shadow-sm" />
                       </div>
                       <div className="text-left">
-                        <p className="text-[10px] font-bold text-[var(--foreground)]">6 Grade Levels</p>
-                        <p className="text-[8px] text-[var(--muted-foreground)]">K-12 to PhD adapted</p>
+                        <p className="text-xs font-bold text-[var(--foreground)] drop-shadow-sm">6 Grade Levels</p>
+                        <p className="text-[10px] text-[var(--muted-foreground)] leading-snug">K-12 to PhD adapted</p>
                       </div>
                     </motion.div>
                     <motion.div
-                      className="flex items-center gap-2.5 px-3 py-2.5 rounded-xl bg-gradient-to-r from-[var(--muted)]/40 to-[var(--muted)]/20 border border-[var(--border)]/30 shadow-sm"
-                      whileHover={{ scale: 1.03, x: 2 }}
+                      className="flex items-center gap-3 px-3 py-2.5 rounded-xl bg-[var(--card)]/70 backdrop-blur-sm border border-[var(--border)]/40 shadow-md"
+                      whileHover={{ scale: 1.03, x: 2, boxShadow: '0 4px 12px rgba(0,0,0,0.15)' }}
                     >
-                      <div className="w-7 h-7 rounded-lg bg-purple-500/20 flex items-center justify-center flex-shrink-0">
-                        <Gamepad2 className="w-4 h-4 text-purple-500" />
+                      <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-purple-500/30 to-purple-500/10 flex items-center justify-center flex-shrink-0 shadow-inner border border-purple-500/20">
+                        <Gamepad2 className="w-4 h-4 text-purple-500 drop-shadow-sm" />
                       </div>
                       <div className="text-left">
-                        <p className="text-[10px] font-bold text-[var(--foreground)]">Interactive Games</p>
-                        <p className="text-[8px] text-[var(--muted-foreground)]">Learn through play</p>
+                        <p className="text-xs font-bold text-[var(--foreground)] drop-shadow-sm">Interactive Games</p>
+                        <p className="text-[10px] text-[var(--muted-foreground)] leading-snug">Learn through play</p>
                       </div>
                     </motion.div>
                     <motion.div
-                      className="flex items-center gap-2.5 px-3 py-2.5 rounded-xl bg-gradient-to-r from-[var(--muted)]/40 to-[var(--muted)]/20 border border-[var(--border)]/30 shadow-sm"
-                      whileHover={{ scale: 1.03, x: 2 }}
+                      className="flex items-center gap-3 px-3 py-2.5 rounded-xl bg-[var(--card)]/70 backdrop-blur-sm border border-[var(--border)]/40 shadow-md"
+                      whileHover={{ scale: 1.03, x: 2, boxShadow: '0 4px 12px rgba(0,0,0,0.15)' }}
                     >
-                      <div className="w-7 h-7 rounded-lg bg-cyan-500/20 flex items-center justify-center flex-shrink-0">
-                        <Brain className="w-4 h-4 text-cyan-500" />
+                      <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-cyan-500/30 to-cyan-500/10 flex items-center justify-center flex-shrink-0 shadow-inner border border-cyan-500/20">
+                        <Brain className="w-4 h-4 text-cyan-500 drop-shadow-sm" />
                       </div>
                       <div className="text-left">
-                        <p className="text-[10px] font-bold text-[var(--foreground)]">Adaptive Learning</p>
-                        <p className="text-[8px] text-[var(--muted-foreground)]">Adjusts to your pace</p>
+                        <p className="text-xs font-bold text-[var(--foreground)] drop-shadow-sm">Adaptive Learning</p>
+                        <p className="text-[10px] text-[var(--muted-foreground)] leading-snug">Adjusts to your pace</p>
                       </div>
                     </motion.div>
                     <motion.div
-                      className="flex items-center gap-2.5 px-3 py-2.5 rounded-xl bg-gradient-to-r from-[var(--muted)]/40 to-[var(--muted)]/20 border border-[var(--border)]/30 shadow-sm"
-                      whileHover={{ scale: 1.03, x: 2 }}
+                      className="flex items-center gap-3 px-3 py-2.5 rounded-xl bg-[var(--card)]/70 backdrop-blur-sm border border-[var(--border)]/40 shadow-md"
+                      whileHover={{ scale: 1.03, x: 2, boxShadow: '0 4px 12px rgba(0,0,0,0.15)' }}
                     >
-                      <div className="w-7 h-7 rounded-lg bg-[var(--accent)]/20 flex items-center justify-center flex-shrink-0">
-                        <Award className="w-4 h-4 text-[var(--accent)]" />
+                      <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-[var(--accent)]/30 to-[var(--accent)]/10 flex items-center justify-center flex-shrink-0 shadow-inner border border-[var(--accent)]/20">
+                        <Award className="w-4 h-4 text-[var(--accent)] drop-shadow-sm" />
                       </div>
                       <div className="text-left">
-                        <p className="text-[10px] font-bold text-[var(--foreground)]">Certifications</p>
-                        <p className="text-[8px] text-[var(--muted-foreground)]">Earn credentials</p>
+                        <p className="text-xs font-bold text-[var(--foreground)] drop-shadow-sm">Certifications</p>
+                        <p className="text-[10px] text-[var(--muted-foreground)] leading-snug">Earn credentials</p>
                       </div>
                     </motion.div>
                   </div>
