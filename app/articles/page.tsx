@@ -1438,8 +1438,36 @@ export default function ArticlesPage() {
                             </div>
                           </div>
                         </div>
-                        {/* Bobeche (cup) - candle sits into this - night-time aware */}
-                        <div className={`w-4 h-2.5 bg-gradient-to-b from-yellow-400 to-amber-600 rounded-b-sm border-t-2 border-yellow-300/60 shadow-lg ${isNightTime ? 'brightness-110' : ''}`} />
+                        {/* Bobeche (cup) - ornate candle holder with scalloped rim */}
+                        <div className={`relative w-5 h-3.5 ${isNightTime ? 'brightness-110' : ''}`}>
+                          {/* Scalloped decorative rim - top edge */}
+                          <svg className="absolute -top-0.5 left-1/2 -translate-x-1/2 w-6 h-2" viewBox="0 0 24 8">
+                            <path d="M2 4 Q4 1 6 4 Q8 7 10 4 Q12 1 14 4 Q16 7 18 4 Q20 1 22 4" fill="none" stroke="#fef3c7" strokeWidth="1" opacity="0.6"/>
+                            <path d="M3 5 Q5 3 7 5 Q9 7 11 5 Q13 3 15 5 Q17 7 19 5 Q21 3 23 5" fill="none" stroke="#fbbf24" strokeWidth="0.5" opacity="0.4"/>
+                          </svg>
+                          {/* Main cup body with curved bowl shape */}
+                          <div className="absolute inset-0 bg-gradient-to-b from-yellow-400 via-amber-500 to-amber-700 rounded-b-lg shadow-lg overflow-hidden" style={{ borderRadius: '0 0 50% 50% / 0 0 80% 80%' }}>
+                            {/* Inner bowl shadow for depth */}
+                            <div className="absolute top-0 left-1/2 -translate-x-1/2 w-3 h-1.5 bg-gradient-to-b from-amber-800/60 to-transparent rounded-b-full" />
+                            {/* Decorative bead band */}
+                            <div className="absolute top-1 left-0 right-0 flex justify-center gap-0.5">
+                              <div className="w-0.5 h-0.5 rounded-full bg-yellow-300/70" />
+                              <div className="w-0.5 h-0.5 rounded-full bg-yellow-300/60" />
+                              <div className="w-0.5 h-0.5 rounded-full bg-yellow-300/70" />
+                              <div className="w-0.5 h-0.5 rounded-full bg-yellow-300/60" />
+                              <div className="w-0.5 h-0.5 rounded-full bg-yellow-300/70" />
+                            </div>
+                            {/* Engraved line detail */}
+                            <div className="absolute top-2 left-0.5 right-0.5 h-px bg-gradient-to-r from-amber-800/30 via-amber-600/50 to-amber-800/30" />
+                            {/* Inner glow from candle */}
+                            <div className={`absolute top-0 left-1/2 -translate-x-1/2 w-2.5 h-1.5 bg-gradient-to-b from-orange-400/40 to-transparent rounded-b-full blur-[1px] ${isNightTime ? 'opacity-80' : 'opacity-40'}`} />
+                          </div>
+                          {/* Rim highlight */}
+                          <div className="absolute top-0 left-0 right-0 h-0.5 bg-gradient-to-r from-amber-500/30 via-yellow-300/70 to-amber-500/30 rounded-t-sm" />
+                          {/* Side highlights for 3D effect */}
+                          <div className="absolute top-0.5 left-0 w-0.5 h-2 bg-gradient-to-b from-yellow-300/50 to-transparent rounded-l-full" />
+                          <div className="absolute top-0.5 right-0 w-0.5 h-2 bg-gradient-to-b from-amber-800/40 to-transparent rounded-r-full" />
+                        </div>
                       </div>
 
                       {/* Flickering shadow cast on pilaster */}
@@ -2046,8 +2074,36 @@ export default function ArticlesPage() {
                             </div>
                           </div>
                         </div>
-                        {/* Bobeche (cup) - candle sits into this - night-time aware */}
-                        <div className={`w-4 h-2.5 bg-gradient-to-b from-yellow-400 to-amber-600 rounded-b-sm border-t-2 border-yellow-300/60 shadow-lg ${isNightTime ? 'brightness-110' : ''}`} />
+                        {/* Bobeche (cup) - ornate candle holder with scalloped rim */}
+                        <div className={`relative w-5 h-3.5 ${isNightTime ? 'brightness-110' : ''}`}>
+                          {/* Scalloped decorative rim - top edge */}
+                          <svg className="absolute -top-0.5 left-1/2 -translate-x-1/2 w-6 h-2" viewBox="0 0 24 8">
+                            <path d="M2 4 Q4 1 6 4 Q8 7 10 4 Q12 1 14 4 Q16 7 18 4 Q20 1 22 4" fill="none" stroke="#fef3c7" strokeWidth="1" opacity="0.6"/>
+                            <path d="M3 5 Q5 3 7 5 Q9 7 11 5 Q13 3 15 5 Q17 7 19 5 Q21 3 23 5" fill="none" stroke="#fbbf24" strokeWidth="0.5" opacity="0.4"/>
+                          </svg>
+                          {/* Main cup body with curved bowl shape */}
+                          <div className="absolute inset-0 bg-gradient-to-b from-yellow-400 via-amber-500 to-amber-700 rounded-b-lg shadow-lg overflow-hidden" style={{ borderRadius: '0 0 50% 50% / 0 0 80% 80%' }}>
+                            {/* Inner bowl shadow for depth */}
+                            <div className="absolute top-0 left-1/2 -translate-x-1/2 w-3 h-1.5 bg-gradient-to-b from-amber-800/60 to-transparent rounded-b-full" />
+                            {/* Decorative bead band */}
+                            <div className="absolute top-1 left-0 right-0 flex justify-center gap-0.5">
+                              <div className="w-0.5 h-0.5 rounded-full bg-yellow-300/70" />
+                              <div className="w-0.5 h-0.5 rounded-full bg-yellow-300/60" />
+                              <div className="w-0.5 h-0.5 rounded-full bg-yellow-300/70" />
+                              <div className="w-0.5 h-0.5 rounded-full bg-yellow-300/60" />
+                              <div className="w-0.5 h-0.5 rounded-full bg-yellow-300/70" />
+                            </div>
+                            {/* Engraved line detail */}
+                            <div className="absolute top-2 left-0.5 right-0.5 h-px bg-gradient-to-r from-amber-800/30 via-amber-600/50 to-amber-800/30" />
+                            {/* Inner glow from candle */}
+                            <div className={`absolute top-0 left-1/2 -translate-x-1/2 w-2.5 h-1.5 bg-gradient-to-b from-orange-400/40 to-transparent rounded-b-full blur-[1px] ${isNightTime ? 'opacity-80' : 'opacity-40'}`} />
+                          </div>
+                          {/* Rim highlight */}
+                          <div className="absolute top-0 left-0 right-0 h-0.5 bg-gradient-to-r from-amber-500/30 via-yellow-300/70 to-amber-500/30 rounded-t-sm" />
+                          {/* Side highlights for 3D effect */}
+                          <div className="absolute top-0.5 left-0 w-0.5 h-2 bg-gradient-to-b from-yellow-300/50 to-transparent rounded-l-full" />
+                          <div className="absolute top-0.5 right-0 w-0.5 h-2 bg-gradient-to-b from-amber-800/40 to-transparent rounded-r-full" />
+                        </div>
                       </div>
 
                       {/* Flickering shadow cast on pilaster (mirrored direction) */}
@@ -2854,8 +2910,42 @@ export default function ArticlesPage() {
                     />
                   </div>
                 </div>
-                {/* Bobeche (cup) - candle sits into this */}
-                <div className={`w-5 h-2.5 bg-gradient-to-b from-yellow-400 to-amber-600 rounded-b-sm border-t-2 border-yellow-300/60 shadow-lg ${isNightTime ? 'brightness-110' : ''}`} />
+                {/* Bobeche (cup) - ornate candle holder with Victorian details */}
+                <div className={`relative w-6 h-4 ${isNightTime ? 'brightness-110' : ''}`}>
+                  {/* Decorative scalloped rim */}
+                  <svg className="absolute -top-1 left-1/2 -translate-x-1/2 w-7 h-2.5" viewBox="0 0 28 10">
+                    <path d="M2 5 Q4 1 7 5 Q10 9 13 5 Q16 1 19 5 Q22 9 25 5" fill="none" stroke="#fef3c7" strokeWidth="1.2" opacity="0.7"/>
+                    <path d="M3 6 Q5.5 3 8 6 Q10.5 9 13 6 Q15.5 3 18 6 Q20.5 9 23 6" fill="none" stroke="#fbbf24" strokeWidth="0.6" opacity="0.5"/>
+                    {/* Decorative dots on rim */}
+                    <circle cx="7" cy="5" r="0.8" fill="#fef3c7" opacity="0.5"/>
+                    <circle cx="13" cy="5" r="0.8" fill="#fef3c7" opacity="0.5"/>
+                    <circle cx="19" cy="5" r="0.8" fill="#fef3c7" opacity="0.5"/>
+                  </svg>
+                  {/* Main bowl with elegant curved shape */}
+                  <div className="absolute inset-0 bg-gradient-to-b from-yellow-400 via-amber-500 to-amber-700 shadow-lg overflow-hidden" style={{ borderRadius: '0 0 50% 50% / 0 0 100% 100%' }}>
+                    {/* Inner bowl shadow for realistic depth */}
+                    <div className="absolute top-0 left-1/2 -translate-x-1/2 w-4 h-2 bg-gradient-to-b from-amber-800/50 to-transparent rounded-b-full" />
+                    {/* Decorative bead pattern */}
+                    <div className="absolute top-1.5 left-0 right-0 flex justify-center gap-0.5">
+                      <div className="w-0.5 h-0.5 rounded-full bg-yellow-300/80" />
+                      <div className="w-0.5 h-0.5 rounded-full bg-yellow-300/60" />
+                      <div className="w-0.5 h-0.5 rounded-full bg-yellow-300/80" />
+                      <div className="w-0.5 h-0.5 rounded-full bg-yellow-300/60" />
+                      <div className="w-0.5 h-0.5 rounded-full bg-yellow-300/80" />
+                      <div className="w-0.5 h-0.5 rounded-full bg-yellow-300/60" />
+                      <div className="w-0.5 h-0.5 rounded-full bg-yellow-300/80" />
+                    </div>
+                    {/* Engraved decorative lines */}
+                    <div className="absolute top-2.5 left-1 right-1 h-px bg-gradient-to-r from-amber-800/20 via-amber-600/40 to-amber-800/20" />
+                    {/* Inner candlelight glow */}
+                    <div className={`absolute top-0 left-1/2 -translate-x-1/2 w-3 h-2 bg-gradient-to-b from-orange-400/50 to-transparent rounded-b-full blur-[1px] ${isNightTime ? 'opacity-90' : 'opacity-50'}`} />
+                  </div>
+                  {/* Polished rim highlight */}
+                  <div className="absolute top-0 left-0.5 right-0.5 h-0.5 bg-gradient-to-r from-amber-400/20 via-yellow-200/80 to-amber-400/20 rounded-t-full" />
+                  {/* 3D side lighting */}
+                  <div className="absolute top-0.5 left-0 w-0.5 h-2.5 bg-gradient-to-b from-yellow-300/60 to-transparent rounded-l-full" />
+                  <div className="absolute top-0.5 right-0 w-0.5 h-2.5 bg-gradient-to-b from-amber-900/50 to-transparent rounded-r-full" />
+                </div>
               </div>
               {/* Enhanced ambient glow */}
               <div className={`absolute -top-4 left-1/2 -translate-x-1/2 w-16 h-16 bg-gradient-radial from-orange-400/50 via-amber-500/25 to-transparent rounded-full blur-xl ${isNightTime ? 'opacity-100' : 'opacity-50'}`} />
@@ -2937,8 +3027,42 @@ export default function ArticlesPage() {
                     />
                   </div>
                 </div>
-                {/* Bobeche (cup) - candle sits into this */}
-                <div className={`w-5 h-2.5 bg-gradient-to-b from-yellow-400 to-amber-600 rounded-b-sm border-t-2 border-yellow-300/60 shadow-lg ${isNightTime ? 'brightness-110' : ''}`} />
+                {/* Bobeche (cup) - ornate candle holder with Victorian details */}
+                <div className={`relative w-6 h-4 ${isNightTime ? 'brightness-110' : ''}`}>
+                  {/* Decorative scalloped rim */}
+                  <svg className="absolute -top-1 left-1/2 -translate-x-1/2 w-7 h-2.5" viewBox="0 0 28 10">
+                    <path d="M2 5 Q4 1 7 5 Q10 9 13 5 Q16 1 19 5 Q22 9 25 5" fill="none" stroke="#fef3c7" strokeWidth="1.2" opacity="0.7"/>
+                    <path d="M3 6 Q5.5 3 8 6 Q10.5 9 13 6 Q15.5 3 18 6 Q20.5 9 23 6" fill="none" stroke="#fbbf24" strokeWidth="0.6" opacity="0.5"/>
+                    {/* Decorative dots on rim */}
+                    <circle cx="7" cy="5" r="0.8" fill="#fef3c7" opacity="0.5"/>
+                    <circle cx="13" cy="5" r="0.8" fill="#fef3c7" opacity="0.5"/>
+                    <circle cx="19" cy="5" r="0.8" fill="#fef3c7" opacity="0.5"/>
+                  </svg>
+                  {/* Main bowl with elegant curved shape */}
+                  <div className="absolute inset-0 bg-gradient-to-b from-yellow-400 via-amber-500 to-amber-700 shadow-lg overflow-hidden" style={{ borderRadius: '0 0 50% 50% / 0 0 100% 100%' }}>
+                    {/* Inner bowl shadow for realistic depth */}
+                    <div className="absolute top-0 left-1/2 -translate-x-1/2 w-4 h-2 bg-gradient-to-b from-amber-800/50 to-transparent rounded-b-full" />
+                    {/* Decorative bead pattern */}
+                    <div className="absolute top-1.5 left-0 right-0 flex justify-center gap-0.5">
+                      <div className="w-0.5 h-0.5 rounded-full bg-yellow-300/80" />
+                      <div className="w-0.5 h-0.5 rounded-full bg-yellow-300/60" />
+                      <div className="w-0.5 h-0.5 rounded-full bg-yellow-300/80" />
+                      <div className="w-0.5 h-0.5 rounded-full bg-yellow-300/60" />
+                      <div className="w-0.5 h-0.5 rounded-full bg-yellow-300/80" />
+                      <div className="w-0.5 h-0.5 rounded-full bg-yellow-300/60" />
+                      <div className="w-0.5 h-0.5 rounded-full bg-yellow-300/80" />
+                    </div>
+                    {/* Engraved decorative lines */}
+                    <div className="absolute top-2.5 left-1 right-1 h-px bg-gradient-to-r from-amber-800/20 via-amber-600/40 to-amber-800/20" />
+                    {/* Inner candlelight glow */}
+                    <div className={`absolute top-0 left-1/2 -translate-x-1/2 w-3 h-2 bg-gradient-to-b from-orange-400/50 to-transparent rounded-b-full blur-[1px] ${isNightTime ? 'opacity-90' : 'opacity-50'}`} />
+                  </div>
+                  {/* Polished rim highlight */}
+                  <div className="absolute top-0 left-0.5 right-0.5 h-0.5 bg-gradient-to-r from-amber-400/20 via-yellow-200/80 to-amber-400/20 rounded-t-full" />
+                  {/* 3D side lighting */}
+                  <div className="absolute top-0.5 left-0 w-0.5 h-2.5 bg-gradient-to-b from-yellow-300/60 to-transparent rounded-l-full" />
+                  <div className="absolute top-0.5 right-0 w-0.5 h-2.5 bg-gradient-to-b from-amber-900/50 to-transparent rounded-r-full" />
+                </div>
               </div>
               {/* Enhanced ambient glow */}
               <div className={`absolute -top-4 left-1/2 -translate-x-1/2 w-16 h-16 bg-gradient-radial from-orange-400/50 via-amber-500/25 to-transparent rounded-full blur-xl ${isNightTime ? 'opacity-100' : 'opacity-50'}`} />
@@ -3445,6 +3569,21 @@ export default function ArticlesPage() {
           {/* Scrolls container */}
           <div className="relative mx-16">
             <div className="flex items-end justify-center gap-2.5 px-6 pb-0 min-h-[85px] flex-wrap overflow-hidden">
+              {/* Leading ghost scrolls - add some before articles */}
+              {Array.from({ length: Math.max(0, Math.floor((16 - getShelfArticles(1, shelf2Category).length) / 3)) }).map((_, i) => (
+                <div key={`ghost-shelf2-leading-${i}`} className="flex-shrink-0 w-6 relative opacity-15 hover:opacity-25 transition-opacity" style={{ marginBottom: '0px' }}>
+                  <div className="h-[75px] relative">
+                    <div className="absolute inset-x-0.5 top-4 bottom-4 bg-amber-600/15 rounded-sm border border-amber-600/25" />
+                    <div className="absolute top-0 left-0 right-0 h-4 bg-amber-600/20 rounded-t-sm border border-amber-600/30" />
+                    <div className="absolute bottom-0 left-0 right-0 h-4 bg-amber-600/20 rounded-b-sm border border-amber-600/30" />
+                    <div className="absolute inset-x-1 top-5 bottom-5 flex flex-col justify-center gap-1">
+                      <div className="h-px bg-amber-600/25" />
+                      <div className="h-px bg-amber-600/20 w-4/5" />
+                    </div>
+                    <div className="absolute -right-1.5 top-1/2 -translate-y-1/2 w-4 h-4 border border-amber-600/30 rounded-full bg-amber-600/10" />
+                  </div>
+                </div>
+              ))}
               {getShelfArticles(1, shelf2Category).map((article, idx) => {
                 const categorySlug = article.category?.slug || 'default'
                 const categoryTheme = CATEGORY_SCROLL_THEMES[categorySlug] || CATEGORY_SCROLL_THEMES.sustainability
@@ -3514,28 +3653,28 @@ export default function ArticlesPage() {
                   </div>
                 )
               })}
-              {/* Ghost scrolls - transparent tan, filling the shelf */}
-              {Array.from({ length: Math.max(0, 16 - getShelfArticles(1, shelf2Category).length) }).map((_, i) => (
-                <div key={`ghost-shelf2-${i}`} className="flex-shrink-0 w-6 relative opacity-15 hover:opacity-25 transition-opacity" style={{ marginBottom: '0px' }}>
-                  <div className="h-[75px] relative">
-                    {/* Ghost scroll body */}
-                    <div className="absolute inset-x-0.5 top-4 bottom-4 bg-amber-600/15 rounded-sm border border-amber-600/25" />
-                    {/* Top rod */}
-                    <div className="absolute top-0 left-0 right-0 h-4 bg-amber-600/20 rounded-t-sm border border-amber-600/30" />
-                    {/* Bottom rod */}
-                    <div className="absolute bottom-0 left-0 right-0 h-4 bg-amber-600/20 rounded-b-sm border border-amber-600/30" />
-                    {/* Subtle text lines */}
-                    <div className="absolute inset-x-1 top-5 bottom-5 flex flex-col justify-center gap-1">
-                      <div className="h-px bg-amber-600/25" />
-                      <div className="h-px bg-amber-600/20 w-4/5" />
-                      <div className="h-px bg-amber-600/25" />
-                      <div className="h-px bg-amber-600/20 w-3/5" />
+              {/* Trailing ghost scrolls - remaining after leading and articles */}
+              {(() => {
+                const articleCount = getShelfArticles(1, shelf2Category).length
+                const leadingCount = Math.max(0, Math.floor((16 - articleCount) / 3))
+                const remainingGhosts = Math.max(0, 16 - articleCount - leadingCount)
+                return Array.from({ length: remainingGhosts }).map((_, i) => (
+                  <div key={`ghost-shelf2-trailing-${i}`} className="flex-shrink-0 w-6 relative opacity-15 hover:opacity-25 transition-opacity" style={{ marginBottom: '0px' }}>
+                    <div className="h-[75px] relative">
+                      <div className="absolute inset-x-0.5 top-4 bottom-4 bg-amber-600/15 rounded-sm border border-amber-600/25" />
+                      <div className="absolute top-0 left-0 right-0 h-4 bg-amber-600/20 rounded-t-sm border border-amber-600/30" />
+                      <div className="absolute bottom-0 left-0 right-0 h-4 bg-amber-600/20 rounded-b-sm border border-amber-600/30" />
+                      <div className="absolute inset-x-1 top-5 bottom-5 flex flex-col justify-center gap-1">
+                        <div className="h-px bg-amber-600/25" />
+                        <div className="h-px bg-amber-600/20 w-4/5" />
+                        <div className="h-px bg-amber-600/25" />
+                        <div className="h-px bg-amber-600/20 w-3/5" />
+                      </div>
+                      <div className="absolute -right-1.5 top-1/2 -translate-y-1/2 w-4 h-4 border border-amber-600/30 rounded-full bg-amber-600/10" />
                     </div>
-                    {/* Ghost seal */}
-                    <div className="absolute -right-1.5 top-1/2 -translate-y-1/2 w-4 h-4 border border-amber-600/30 rounded-full bg-amber-600/10" />
                   </div>
-                </div>
-              ))}
+                ))
+              })()}
             </div>
 
             {/* Center decorative medallion - enhanced */}
@@ -3678,6 +3817,21 @@ export default function ArticlesPage() {
           {/* Scrolls container */}
           <div className="relative mx-16">
             <div className="flex items-end justify-center gap-2.5 px-6 pb-0 min-h-[85px] flex-wrap overflow-hidden">
+              {/* Leading ghost scrolls - add some before articles */}
+              {Array.from({ length: Math.max(0, Math.floor((16 - getShelfArticles(2, shelf3Category).length) / 3)) }).map((_, i) => (
+                <div key={`ghost-shelf3-leading-${i}`} className="flex-shrink-0 w-6 relative opacity-15 hover:opacity-25 transition-opacity" style={{ marginBottom: '0px' }}>
+                  <div className="h-[75px] relative">
+                    <div className="absolute inset-x-0.5 top-4 bottom-4 bg-amber-600/15 rounded-sm border border-amber-600/25" />
+                    <div className="absolute top-0 left-0 right-0 h-4 bg-amber-600/20 rounded-t-sm border border-amber-600/30" />
+                    <div className="absolute bottom-0 left-0 right-0 h-4 bg-amber-600/20 rounded-b-sm border border-amber-600/30" />
+                    <div className="absolute inset-x-1 top-5 bottom-5 flex flex-col justify-center gap-1">
+                      <div className="h-px bg-amber-600/25" />
+                      <div className="h-px bg-amber-600/20 w-4/5" />
+                    </div>
+                    <div className="absolute -right-1.5 top-1/2 -translate-y-1/2 w-4 h-4 border border-amber-600/30 rounded-full bg-amber-600/10" />
+                  </div>
+                </div>
+              ))}
               {getShelfArticles(2, shelf3Category).map((article, idx) => {
                 const categorySlug = article.category?.slug || 'default'
                 const categoryTheme = CATEGORY_SCROLL_THEMES[categorySlug] || CATEGORY_SCROLL_THEMES.sustainability
@@ -3747,28 +3901,28 @@ export default function ArticlesPage() {
                   </div>
                 )
               })}
-              {/* Ghost scrolls - transparent tan, filling the shelf */}
-              {Array.from({ length: Math.max(0, 16 - getShelfArticles(2, shelf3Category).length) }).map((_, i) => (
-                <div key={`ghost-shelf3-${i}`} className="flex-shrink-0 w-6 relative opacity-15 hover:opacity-25 transition-opacity" style={{ marginBottom: '0px' }}>
-                  <div className="h-[75px] relative">
-                    {/* Ghost scroll body */}
-                    <div className="absolute inset-x-0.5 top-4 bottom-4 bg-amber-600/15 rounded-sm border border-amber-600/25" />
-                    {/* Top rod */}
-                    <div className="absolute top-0 left-0 right-0 h-4 bg-amber-600/20 rounded-t-sm border border-amber-600/30" />
-                    {/* Bottom rod */}
-                    <div className="absolute bottom-0 left-0 right-0 h-4 bg-amber-600/20 rounded-b-sm border border-amber-600/30" />
-                    {/* Subtle text lines */}
-                    <div className="absolute inset-x-1 top-5 bottom-5 flex flex-col justify-center gap-1">
-                      <div className="h-px bg-amber-600/25" />
-                      <div className="h-px bg-amber-600/20 w-4/5" />
-                      <div className="h-px bg-amber-600/25" />
-                      <div className="h-px bg-amber-600/20 w-3/5" />
+              {/* Trailing ghost scrolls - remaining after leading and articles */}
+              {(() => {
+                const articleCount = getShelfArticles(2, shelf3Category).length
+                const leadingCount = Math.max(0, Math.floor((16 - articleCount) / 3))
+                const remainingGhosts = Math.max(0, 16 - articleCount - leadingCount)
+                return Array.from({ length: remainingGhosts }).map((_, i) => (
+                  <div key={`ghost-shelf3-trailing-${i}`} className="flex-shrink-0 w-6 relative opacity-15 hover:opacity-25 transition-opacity" style={{ marginBottom: '0px' }}>
+                    <div className="h-[75px] relative">
+                      <div className="absolute inset-x-0.5 top-4 bottom-4 bg-amber-600/15 rounded-sm border border-amber-600/25" />
+                      <div className="absolute top-0 left-0 right-0 h-4 bg-amber-600/20 rounded-t-sm border border-amber-600/30" />
+                      <div className="absolute bottom-0 left-0 right-0 h-4 bg-amber-600/20 rounded-b-sm border border-amber-600/30" />
+                      <div className="absolute inset-x-1 top-5 bottom-5 flex flex-col justify-center gap-1">
+                        <div className="h-px bg-amber-600/25" />
+                        <div className="h-px bg-amber-600/20 w-4/5" />
+                        <div className="h-px bg-amber-600/25" />
+                        <div className="h-px bg-amber-600/20 w-3/5" />
+                      </div>
+                      <div className="absolute -right-1.5 top-1/2 -translate-y-1/2 w-4 h-4 border border-amber-600/30 rounded-full bg-amber-600/10" />
                     </div>
-                    {/* Ghost seal */}
-                    <div className="absolute -right-1.5 top-1/2 -translate-y-1/2 w-4 h-4 border border-amber-600/30 rounded-full bg-amber-600/10" />
                   </div>
-                </div>
-              ))}
+                ))
+              })()}
             </div>
 
             {/* Center decorative medallion - matching Shelf 1/2 */}
