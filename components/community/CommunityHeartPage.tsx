@@ -947,101 +947,120 @@ export function CommunityHeartPage({ isAuthenticated }: CommunityHeartPageProps)
                 </div>
 
                 {/* Double Carousel - Core Topics & Interactive Tools */}
-                <div className="relative z-10 flex-1 min-h-0 grid grid-cols-2 gap-3">
+                <div className="relative z-10 flex-1 min-h-0 grid grid-cols-2 gap-2">
                   {/* Core Topics Carousel - Left */}
                   <div className="flex flex-col h-full">
-                    <div className="flex items-center justify-between mb-1.5">
-                      <p className="text-[11px] text-[var(--foreground)] font-bold uppercase tracking-wider">Core Topics</p>
-                      <span className="text-[9px] text-[var(--primary)] font-medium">{activeTopicIndex + 1}/{coreLearnTopics.length}</span>
-                    </div>
-
                     {/* Active topic display */}
                     <motion.div
                       key={activeTopicIndex}
                       initial={{ opacity: 0, scale: 0.95 }}
                       animate={{ opacity: 1, scale: 1 }}
-                      transition={{ duration: 0.25 }}
-                      className={`flex-1 ${coreLearnTopics[activeTopicIndex].bgColor} rounded-lg p-2.5 border border-[var(--border)]/40 flex flex-col items-center justify-center text-center`}
+                      transition={{ duration: 0.3 }}
+                      className={`flex-1 ${coreLearnTopics[activeTopicIndex].bgColor} rounded-xl p-3 border border-[var(--border)]/40 flex flex-col`}
                     >
                       {(() => {
                         const topic = coreLearnTopics[activeTopicIndex]
                         const Icon = topic.icon
                         return (
                           <>
-                            <div className={`w-11 h-11 rounded-full bg-[var(--card)] flex items-center justify-center mb-1.5 shadow-lg border-2 ${topic.color.replace('text-', 'border-')}/30`}>
-                              <Icon className={`w-5 h-5 ${topic.color}`} />
+                            {/* Header row */}
+                            <div className="flex items-center gap-2 mb-2">
+                              <div className={`w-10 h-10 rounded-xl bg-[var(--card)] flex items-center justify-center shadow-lg border-2 ${topic.color.replace('text-', 'border-')}/40`}>
+                                <Icon className={`w-5 h-5 ${topic.color}`} />
+                              </div>
+                              <div className="flex-1 min-w-0">
+                                <p className="text-sm font-bold text-[var(--foreground)] leading-tight truncate">{topic.name}</p>
+                                <div className="flex items-center gap-1 mt-0.5">
+                                  <BookOpen className="w-3 h-3 text-[var(--primary)]" />
+                                  <span className="text-[9px] font-semibold text-[var(--primary)]">{topic.modules} modules</span>
+                                </div>
+                              </div>
                             </div>
-                            <p className="text-sm font-bold text-[var(--foreground)] leading-tight mb-1">{topic.name}</p>
-                            <p className="text-[8px] text-[var(--muted-foreground)] leading-snug mb-1.5 px-1">{topic.desc}</p>
-                            <div className="flex items-center gap-1 px-2 py-0.5 rounded-full bg-[var(--card)]/80 border border-[var(--border)]/30">
-                              <BookOpen className="w-2.5 h-2.5 text-[var(--primary)]" />
-                              <span className="text-[7px] font-bold text-[var(--foreground)]">{topic.modules} modules</span>
+
+                            {/* Description - fills remaining space */}
+                            <div className="flex-1 flex items-center">
+                              <p className="text-[11px] text-[var(--foreground)]/80 leading-relaxed">{topic.desc}</p>
+                            </div>
+
+                            {/* Progress dots at bottom */}
+                            <div className="flex items-center justify-center gap-1.5 pt-2 border-t border-[var(--border)]/20 mt-2">
+                              {coreLearnTopics.map((t, i) => {
+                                const DotIcon = t.icon
+                                return (
+                                  <button
+                                    key={i}
+                                    className={`transition-all duration-200 ${
+                                      activeTopicIndex === i
+                                        ? `${t.color} scale-110`
+                                        : 'text-[var(--muted-foreground)]/30 hover:text-[var(--muted-foreground)]/50'
+                                    }`}
+                                    onClick={() => setActiveTopicIndex(i)}
+                                  >
+                                    <DotIcon className="w-3.5 h-3.5" />
+                                  </button>
+                                )
+                              })}
                             </div>
                           </>
                         )
                       })()}
                     </motion.div>
-
-                    {/* Carousel dots */}
-                    <div className="flex items-center justify-center gap-1.5 mt-1.5">
-                      {coreLearnTopics.map((_, i) => (
-                        <button
-                          key={i}
-                          className={`h-1.5 rounded-full transition-all duration-200 ${
-                            activeTopicIndex === i
-                              ? 'bg-[var(--primary)] w-5'
-                              : 'bg-[var(--muted-foreground)]/25 w-1.5 hover:bg-[var(--muted-foreground)]/40'
-                          }`}
-                          onClick={() => setActiveTopicIndex(i)}
-                        />
-                      ))}
-                    </div>
                   </div>
 
                   {/* Interactive Tools Carousel - Right */}
                   <div className="flex flex-col h-full">
-                    <div className="flex items-center justify-between mb-1.5">
-                      <p className="text-[11px] text-[var(--foreground)] font-bold uppercase tracking-wider">Tools</p>
-                      <span className="text-[9px] text-[var(--accent)] font-medium">{activeToolIndex + 1}/{interactiveTools.length}</span>
-                    </div>
-
                     {/* Active tool display */}
                     <motion.div
                       key={activeToolIndex}
                       initial={{ opacity: 0, scale: 0.95 }}
                       animate={{ opacity: 1, scale: 1 }}
-                      transition={{ duration: 0.25 }}
-                      className={`flex-1 ${interactiveTools[activeToolIndex].bgColor} rounded-lg p-2.5 border border-[var(--border)]/40 flex flex-col items-center justify-center text-center`}
+                      transition={{ duration: 0.3 }}
+                      className={`flex-1 ${interactiveTools[activeToolIndex].bgColor} rounded-xl p-3 border border-[var(--border)]/40 flex flex-col`}
                     >
                       {(() => {
                         const tool = interactiveTools[activeToolIndex]
                         const Icon = tool.icon
                         return (
                           <>
-                            <div className={`w-11 h-11 rounded-full bg-[var(--card)] flex items-center justify-center mb-1.5 shadow-lg border-2 ${tool.color.replace('text-', 'border-')}/30`}>
-                              <Icon className={`w-5 h-5 ${tool.color}`} />
+                            {/* Header row */}
+                            <div className="flex items-center gap-2 mb-2">
+                              <div className={`w-10 h-10 rounded-xl bg-[var(--card)] flex items-center justify-center shadow-lg border-2 ${tool.color.replace('text-', 'border-')}/40`}>
+                                <Icon className={`w-5 h-5 ${tool.color}`} />
+                              </div>
+                              <div className="flex-1 min-w-0">
+                                <p className="text-sm font-bold text-[var(--foreground)] leading-tight">{tool.name}</p>
+                                <span className="text-[9px] font-medium text-[var(--accent)]">Interactive</span>
+                              </div>
                             </div>
-                            <p className="text-sm font-bold text-[var(--foreground)] leading-tight mb-1">{tool.name}</p>
-                            <p className="text-[8px] text-[var(--muted-foreground)] leading-snug px-1">{tool.desc}</p>
+
+                            {/* Description - fills remaining space */}
+                            <div className="flex-1 flex items-center">
+                              <p className="text-[11px] text-[var(--foreground)]/80 leading-relaxed">{tool.desc}</p>
+                            </div>
+
+                            {/* Progress dots at bottom */}
+                            <div className="flex items-center justify-center gap-1.5 pt-2 border-t border-[var(--border)]/20 mt-2">
+                              {interactiveTools.map((t, i) => {
+                                const DotIcon = t.icon
+                                return (
+                                  <button
+                                    key={i}
+                                    className={`transition-all duration-200 ${
+                                      activeToolIndex === i
+                                        ? `${t.color} scale-110`
+                                        : 'text-[var(--muted-foreground)]/30 hover:text-[var(--muted-foreground)]/50'
+                                    }`}
+                                    onClick={() => setActiveToolIndex(i)}
+                                  >
+                                    <DotIcon className="w-3.5 h-3.5" />
+                                  </button>
+                                )
+                              })}
+                            </div>
                           </>
                         )
                       })()}
                     </motion.div>
-
-                    {/* Carousel dots */}
-                    <div className="flex items-center justify-center gap-1.5 mt-1.5">
-                      {interactiveTools.map((_, i) => (
-                        <button
-                          key={i}
-                          className={`h-1.5 rounded-full transition-all duration-200 ${
-                            activeToolIndex === i
-                              ? 'bg-[var(--accent)] w-5'
-                              : 'bg-[var(--muted-foreground)]/25 w-1.5 hover:bg-[var(--muted-foreground)]/40'
-                          }`}
-                          onClick={() => setActiveToolIndex(i)}
-                        />
-                      ))}
-                    </div>
                   </div>
                 </div>
               </div>
