@@ -748,11 +748,10 @@ export function CommunityHeartPage({ isAuthenticated }: CommunityHeartPageProps)
                         <motion.div
                           initial={{ opacity: 0, y: 5 }}
                           animate={{ opacity: 1, y: 0 }}
-                          className="absolute -bottom-24 left-1/2 -translate-x-1/2 w-56 p-3 bg-[var(--card)] border-2 border-[var(--primary)]/40 rounded-xl shadow-2xl z-20"
+                          className="absolute -bottom-20 left-1/2 -translate-x-1/2 w-52 p-2.5 bg-[var(--card)] border-2 border-[var(--primary)]/40 rounded-xl shadow-2xl z-20"
                         >
-                          <p className={`text-xs font-black text-center bg-gradient-to-r ${archetype.color} bg-clip-text text-transparent`}>{archetype.name}</p>
-                          <p className="text-[10px] font-semibold text-[var(--foreground)] text-center mt-0.5">Guardian of {archetype.title}</p>
-                          <p className="text-[10px] text-[var(--muted-foreground)] leading-snug mt-1.5 text-center">{archetype.desc}</p>
+                          <p className={`text-xs font-black text-center bg-gradient-to-r ${archetype.color} bg-clip-text text-transparent`}>{archetype.title}</p>
+                          <p className="text-[10px] text-[var(--muted-foreground)] leading-snug mt-1 text-center">{archetype.desc}</p>
                         </motion.div>
                       )}
                     </motion.div>
