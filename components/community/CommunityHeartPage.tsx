@@ -272,12 +272,12 @@ export function CommunityHeartPage({ isAuthenticated }: CommunityHeartPageProps)
       {/* Ambient animated background */}
       <AmbientBackground />
 
-      {/* Tagline bar with auth buttons */}
+      {/* Tagline bar */}
       <motion.div
         initial={{ opacity: 0, y: -10 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.5 }}
-        className="relative z-20 flex items-center justify-between px-4 py-2.5 bg-gradient-to-r from-[var(--primary)]/5 via-[var(--accent)]/10 to-[var(--secondary)]/5 border-b border-[var(--border)]/30 overflow-hidden"
+        className="relative z-20 flex items-center justify-center px-4 py-2.5 bg-gradient-to-r from-[var(--primary)]/5 via-[var(--accent)]/10 to-[var(--secondary)]/5 border-b border-[var(--border)]/30 overflow-hidden"
       >
         {/* Animated background line */}
         <motion.div
@@ -285,18 +285,6 @@ export function CommunityHeartPage({ isAuthenticated }: CommunityHeartPageProps)
           animate={{ x: ['-100%', '100%'] }}
           transition={{ duration: 8, repeat: Infinity, ease: 'linear' }}
         />
-
-        {/* Join Free button */}
-        <Link href="/auth/signup" className="relative z-10">
-          <motion.button
-            className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-gradient-to-r from-[var(--primary)] to-[var(--accent)] text-white text-xs font-semibold shadow-sm hover:shadow-md transition-all"
-            whileHover={{ scale: 1.02 }}
-            whileTap={{ scale: 0.98 }}
-          >
-            Join Free
-            <ArrowRight className="w-3 h-3" />
-          </motion.button>
-        </Link>
 
         {/* Center tagline */}
         <motion.div
@@ -311,7 +299,7 @@ export function CommunityHeartPage({ isAuthenticated }: CommunityHeartPageProps)
             <Sparkles className="w-4 h-4 text-[var(--primary)]" />
           </motion.div>
 
-          <span className="text-sm font-semibold text-[var(--foreground)] tracking-wide hidden sm:block">
+          <span className="text-sm font-semibold text-[var(--foreground)] tracking-wide">
             Where ideas become action
           </span>
 
@@ -322,17 +310,6 @@ export function CommunityHeartPage({ isAuthenticated }: CommunityHeartPageProps)
             <Sparkles className="w-4 h-4 text-[var(--primary)]" />
           </motion.div>
         </motion.div>
-
-        {/* Sign In button */}
-        <Link href="/auth/signin" className="relative z-10">
-          <motion.button
-            className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg border-2 border-[var(--primary)] text-[var(--primary)] text-xs font-semibold hover:bg-[var(--primary)]/10 transition-all"
-            whileHover={{ scale: 1.02 }}
-            whileTap={{ scale: 0.98 }}
-          >
-            Sign In
-          </motion.button>
-        </Link>
       </motion.div>
 
       {/* Main content - extended widgets section to fold */}
