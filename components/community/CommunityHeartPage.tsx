@@ -164,6 +164,100 @@ const interactiveTools = [
   { name: 'Achievements', icon: Trophy, color: 'text-amber-500', desc: 'Earn badges & track your learning journey', bgColor: 'bg-amber-500/10' },
 ]
 
+// 77 Ancient wisdom quotes from history's greatest minds
+const ancientWisdomQuotes = [
+  // Greek Philosophers
+  { quote: "Know thyself", author: "Socrates" },
+  { quote: "The unexamined life is not worth living", author: "Socrates" },
+  { quote: "I know that I know nothing", author: "Socrates" },
+  { quote: "The only true wisdom is knowing you know nothing", author: "Socrates" },
+  { quote: "Be kind, for everyone you meet is fighting a hard battle", author: "Plato" },
+  { quote: "Wise men speak because they have something to say; fools because they have to say something", author: "Plato" },
+  { quote: "The measure of a man is what he does with power", author: "Plato" },
+  { quote: "We can easily forgive a child who is afraid of the dark; the real tragedy is when men are afraid of the light", author: "Plato" },
+  { quote: "Knowing yourself is the beginning of all wisdom", author: "Aristotle" },
+  { quote: "We are what we repeatedly do. Excellence, then, is not an act, but a habit", author: "Aristotle" },
+  { quote: "The roots of education are bitter, but the fruit is sweet", author: "Aristotle" },
+  { quote: "It is the mark of an educated mind to entertain a thought without accepting it", author: "Aristotle" },
+  { quote: "No great mind has ever existed without a touch of madness", author: "Aristotle" },
+  { quote: "The only constant in life is change", author: "Heraclitus" },
+  { quote: "Character is destiny", author: "Heraclitus" },
+  { quote: "No man ever steps in the same river twice", author: "Heraclitus" },
+  { quote: "Big results require big ambitions", author: "Heraclitus" },
+  { quote: "There is nothing permanent except change", author: "Heraclitus" },
+  { quote: "Man is the measure of all things", author: "Protagoras" },
+  { quote: "The life which is unexamined is not worth living", author: "Pythagoras" },
+  { quote: "Do not say a little in many words but a great deal in a few", author: "Pythagoras" },
+  { quote: "Silence is better than unmeaning words", author: "Pythagoras" },
+  { quote: "We suffer not from the events in our lives, but from our judgment about them", author: "Epictetus" },
+  { quote: "It is not things that disturb us, but our judgments about things", author: "Epictetus" },
+  { quote: "First say to yourself what you would be; then do what you have to do", author: "Epictetus" },
+  { quote: "Wealth consists not in having great possessions, but in having few wants", author: "Epictetus" },
+
+  // Roman Philosophers & Leaders
+  { quote: "The happiness of your life depends upon the quality of your thoughts", author: "Marcus Aurelius" },
+  { quote: "Waste no more time arguing about what a good man should be. Be one", author: "Marcus Aurelius" },
+  { quote: "You have power over your mind, not outside events. Realize this, and you will find strength", author: "Marcus Aurelius" },
+  { quote: "The soul becomes dyed with the color of its thoughts", author: "Marcus Aurelius" },
+  { quote: "Very little is needed to make a happy life; it is all within yourself", author: "Marcus Aurelius" },
+  { quote: "When you arise in the morning, think of what a precious privilege it is to be alive", author: "Marcus Aurelius" },
+  { quote: "We suffer more often in imagination than in reality", author: "Seneca" },
+  { quote: "Luck is what happens when preparation meets opportunity", author: "Seneca" },
+  { quote: "It is not that we have a short time to live, but that we waste a lot of it", author: "Seneca" },
+  { quote: "Difficulties strengthen the mind, as labor does the body", author: "Seneca" },
+  { quote: "True happiness is to enjoy the present, without anxious dependence upon the future", author: "Seneca" },
+  { quote: "As is a tale, so is life: not how long it is, but how good it is, is what matters", author: "Seneca" },
+  { quote: "The greatest remedy for anger is delay", author: "Seneca" },
+  { quote: "A room without books is like a body without a soul", author: "Cicero" },
+  { quote: "The life of the dead is placed in the memory of the living", author: "Cicero" },
+  { quote: "To be ignorant of what occurred before you were born is to remain always a child", author: "Cicero" },
+  { quote: "The authority of those who teach is often an obstacle to those who want to learn", author: "Cicero" },
+  { quote: "I came, I saw, I conquered", author: "Julius Caesar" },
+  { quote: "Experience is the teacher of all things", author: "Julius Caesar" },
+
+  // Chinese Sages
+  { quote: "The journey of a thousand miles begins with a single step", author: "Lao Tzu" },
+  { quote: "Knowing others is intelligence; knowing yourself is true wisdom", author: "Lao Tzu" },
+  { quote: "Nature does not hurry, yet everything is accomplished", author: "Lao Tzu" },
+  { quote: "When I let go of what I am, I become what I might be", author: "Lao Tzu" },
+  { quote: "A leader is best when people barely know he exists", author: "Lao Tzu" },
+  { quote: "Silence is a source of great strength", author: "Lao Tzu" },
+  { quote: "He who knows does not speak. He who speaks does not know", author: "Lao Tzu" },
+  { quote: "It does not matter how slowly you go as long as you do not stop", author: "Confucius" },
+  { quote: "Our greatest glory is not in never falling, but in rising every time we fall", author: "Confucius" },
+  { quote: "Real knowledge is to know the extent of one's ignorance", author: "Confucius" },
+  { quote: "Before you embark on a journey of revenge, dig two graves", author: "Confucius" },
+  { quote: "Everything has beauty, but not everyone sees it", author: "Confucius" },
+  { quote: "The man who moves a mountain begins by carrying away small stones", author: "Confucius" },
+  { quote: "Appear weak when you are strong, and strong when you are weak", author: "Sun Tzu" },
+  { quote: "The supreme art of war is to subdue the enemy without fighting", author: "Sun Tzu" },
+  { quote: "In the midst of chaos, there is also opportunity", author: "Sun Tzu" },
+  { quote: "Know yourself and you will win all battles", author: "Sun Tzu" },
+
+  // Indian Sages
+  { quote: "Three things cannot be long hidden: the sun, the moon, and the truth", author: "Buddha" },
+  { quote: "Peace comes from within. Do not seek it without", author: "Buddha" },
+  { quote: "The mind is everything. What you think you become", author: "Buddha" },
+  { quote: "Do not dwell in the past, do not dream of the future, concentrate the mind on the present moment", author: "Buddha" },
+  { quote: "No one saves us but ourselves. No one can and no one may", author: "Buddha" },
+  { quote: "An insincere and evil friend is more to be feared than a wild beast", author: "Buddha" },
+  { quote: "A man is great by deeds, not by birth", author: "Chanakya" },
+  { quote: "Education is the best friend. An educated person is respected everywhere", author: "Chanakya" },
+  { quote: "Before you start some work, always ask yourself three questions", author: "Chanakya" },
+
+  // Persian & Egyptian
+  { quote: "I am Cyrus, king of the world", author: "Cyrus the Great" },
+  { quote: "You cannot be buried in obscurity: you are exposed upon a grand theater", author: "Cyrus the Great" },
+  { quote: "Do not be arrogant because of your knowledge", author: "Ptahhotep" },
+  { quote: "Follow your heart as long as you live", author: "Ptahhotep" },
+
+  // Additional Greek
+  { quote: "Give me a lever long enough and I shall move the world", author: "Archimedes" },
+  { quote: "Eureka! I have found it!", author: "Archimedes" },
+  { quote: "Count no man happy until the end is known", author: "Solon" },
+  { quote: "Put more trust in nobility of character than in an oath", author: "Solon" },
+]
+
 // Fake user ID previews to showcase different guardian archetypes
 const fakeUserPreviews = [
   {
@@ -272,24 +366,37 @@ export function CommunityHeartPage({ isAuthenticated }: CommunityHeartPageProps)
       {/* Ambient animated background */}
       <AmbientBackground />
 
-      {/* Tagline bar */}
+      {/* Tagline bar with ancient wisdom ticker */}
       <motion.div
         initial={{ opacity: 0, y: -10 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.5 }}
         className="relative z-20 flex items-center justify-center px-4 py-2.5 bg-gradient-to-r from-[var(--primary)]/5 via-[var(--accent)]/10 to-[var(--secondary)]/5 border-b border-[var(--border)]/30 overflow-hidden"
       >
-        {/* Animated background line */}
-        <motion.div
-          className="absolute inset-0 bg-gradient-to-r from-transparent via-[var(--primary)]/10 to-transparent"
-          animate={{ x: ['-100%', '100%'] }}
-          transition={{ duration: 8, repeat: Infinity, ease: 'linear' }}
-        />
+        {/* Scrolling wisdom ticker - behind the tagline */}
+        <div className="absolute inset-0 overflow-hidden pointer-events-none">
+          <motion.div
+            className="flex items-center whitespace-nowrap h-full"
+            animate={{ x: ['0%', '-50%'] }}
+            transition={{ duration: 300, repeat: Infinity, ease: 'linear' }}
+          >
+            {/* Duplicate quotes for seamless loop */}
+            {[...ancientWisdomQuotes, ...ancientWisdomQuotes].map((item, i) => (
+              <span
+                key={i}
+                className="inline-flex items-center text-[11px] text-[var(--muted-foreground)]/40 italic mx-16"
+                style={{ fontFamily: 'Georgia, serif' }}
+              >
+                "{item.quote}" <span className="ml-1.5 not-italic text-[10px] text-[var(--primary)]/30">— {item.author}</span>
+              </span>
+            ))}
+          </motion.div>
+        </div>
 
-        {/* Center tagline */}
+        {/* Center tagline - on top */}
         <motion.div
-          className="relative flex items-center gap-3"
-          animate={{ opacity: [0.8, 1, 0.8] }}
+          className="relative z-10 flex items-center gap-3 px-4 py-1 bg-[var(--background)]/80 backdrop-blur-sm rounded-full border border-[var(--border)]/20"
+          animate={{ opacity: [0.9, 1, 0.9] }}
           transition={{ duration: 4, repeat: Infinity, ease: 'easeInOut' }}
         >
           <motion.div
