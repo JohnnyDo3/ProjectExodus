@@ -653,64 +653,79 @@ export function CommunityHeartPage({ isAuthenticated }: CommunityHeartPageProps)
               </div>
             </GlowingBorder>
 
-            {/* Back Side - Full Height BizID Philosophy with Ivy Mural */}
+            {/* Back Side - Full Height BizID Philosophy with Ivy Mural - ENHANCED */}
             <div
-              className="absolute inset-0 bg-gradient-to-br from-[var(--card)] via-[var(--muted)]/50 to-[var(--card)] rounded-xl p-4 overflow-hidden border border-[var(--border)]/30"
+              className="absolute inset-0 bg-gradient-to-br from-[var(--card)] via-[var(--muted)]/50 to-[var(--card)] rounded-xl p-5 overflow-hidden border-2 border-[var(--primary)]/20 shadow-xl"
               style={{ backfaceVisibility: 'hidden', transform: 'rotateY(180deg)' }}
             >
-              {/* Ivy Mural Background - Full */}
+              {/* Ivy Mural Background - Enhanced with more depth */}
               <div className="absolute inset-0 pointer-events-none overflow-hidden rounded-xl">
-                {/* Parchment texture - theme aware */}
-                <div className="absolute inset-0 bg-gradient-to-br from-[var(--primary)]/10 via-transparent to-[var(--muted)]/30" />
+                {/* Deep layered parchment texture */}
+                <div className="absolute inset-0 bg-gradient-to-br from-[var(--primary)]/15 via-transparent to-[var(--accent)]/10" />
+                <div className="absolute inset-0 bg-gradient-to-t from-[var(--card)]/80 via-transparent to-[var(--card)]/40" />
 
-                {/* Ivy vine - left side - fuller - theme aware */}
-                <div className="absolute left-0 top-0 h-full w-12 text-[var(--primary)] opacity-25">
-                  <svg className="h-full w-full" viewBox="0 0 48 300" preserveAspectRatio="none">
-                    <path d="M5 0 Q18 40 8 80 Q2 120 15 160 Q22 200 8 240 Q3 270 10 300" fill="none" stroke="currentColor" strokeWidth="2.5"/>
-                    <path d="M10 35 Q20 28 16 42 Q10 50 10 35" fill="currentColor"/>
-                    <path d="M6 75 Q-4 68 2 82 Q8 92 6 75" fill="currentColor"/>
-                    <path d="M14 115 Q24 106 20 120 Q14 130 14 115" fill="currentColor"/>
-                    <path d="M18 155 Q28 148 24 162 Q16 172 18 155" fill="currentColor"/>
-                    <path d="M10 195 Q0 188 6 202 Q14 212 10 195" fill="currentColor"/>
-                    <path d="M6 235 Q16 228 12 242 Q4 252 6 235" fill="currentColor"/>
-                    <path d="M12 275 Q22 268 18 282 Q10 292 12 275" fill="currentColor"/>
+                {/* Ivy vine - left side - fuller and more detailed */}
+                <div className="absolute left-0 top-0 h-full w-16 text-[var(--primary)] opacity-30">
+                  <svg className="h-full w-full" viewBox="0 0 64 300" preserveAspectRatio="none">
+                    <path d="M5 0 Q20 40 10 80 Q2 120 18 160 Q25 200 10 240 Q3 270 12 300" fill="none" stroke="currentColor" strokeWidth="3"/>
+                    <path d="M12 25 Q25 15 20 35 Q12 48 12 25" fill="currentColor"/>
+                    <path d="M8 65 Q-5 55 5 75 Q12 88 8 65" fill="currentColor"/>
+                    <path d="M16 105 Q30 92 25 115 Q16 130 16 105" fill="currentColor"/>
+                    <path d="M20 145 Q35 135 30 155 Q18 170 20 145" fill="currentColor"/>
+                    <path d="M12 185 Q-2 175 8 195 Q18 210 12 185" fill="currentColor"/>
+                    <path d="M8 225 Q22 215 18 235 Q6 250 8 225" fill="currentColor"/>
+                    <path d="M15 265 Q28 255 23 275 Q12 290 15 265" fill="currentColor"/>
+                    {/* Additional detail leaves */}
+                    <circle cx="18" cy="55" r="3" fill="currentColor" opacity="0.5"/>
+                    <circle cx="10" cy="130" r="2.5" fill="currentColor" opacity="0.4"/>
+                    <circle cx="22" cy="200" r="3" fill="currentColor" opacity="0.5"/>
                   </svg>
                 </div>
 
-                {/* Ivy vine - right side - fuller - theme aware */}
-                <div className="absolute right-0 top-0 h-full w-12 text-[var(--primary)] opacity-20">
-                  <svg className="h-full w-full" viewBox="0 0 48 300" preserveAspectRatio="none">
-                    <path d="M40 0 Q28 35 38 75 Q44 115 32 155 Q26 195 40 235 Q44 270 36 300" fill="none" stroke="currentColor" strokeWidth="2"/>
-                    <path d="M38 45 Q28 38 32 52 Q40 60 38 45" fill="currentColor"/>
-                    <path d="M34 95 Q44 88 40 102 Q32 112 34 95" fill="currentColor"/>
-                    <path d="M30 145 Q20 138 26 152 Q34 162 30 145" fill="currentColor"/>
-                    <path d="M38 195 Q48 188 44 202 Q36 212 38 195" fill="currentColor"/>
-                    <path d="M32 245 Q22 238 28 252 Q36 262 32 245" fill="currentColor"/>
+                {/* Ivy vine - right side - enhanced */}
+                <div className="absolute right-0 top-0 h-full w-14 text-[var(--primary)] opacity-25">
+                  <svg className="h-full w-full" viewBox="0 0 56 300" preserveAspectRatio="none">
+                    <path d="M48 0 Q32 35 45 75 Q52 115 38 155 Q30 195 48 235 Q52 270 42 300" fill="none" stroke="currentColor" strokeWidth="2.5"/>
+                    <path d="M45 40 Q32 30 38 48 Q48 58 45 40" fill="currentColor"/>
+                    <path d="M40 90 Q52 80 48 98 Q38 110 40 90" fill="currentColor"/>
+                    <path d="M35 140 Q22 130 30 150 Q42 162 35 140" fill="currentColor"/>
+                    <path d="M45 190 Q55 180 52 200 Q42 212 45 190" fill="currentColor"/>
+                    <path d="M38 240 Q25 230 32 250 Q44 262 38 240" fill="currentColor"/>
                   </svg>
                 </div>
 
-                {/* Greek key border - top - theme aware */}
-                <div className="absolute top-0 left-10 right-10 h-4 text-[var(--muted-foreground)] opacity-15">
-                  <svg className="h-full w-full" viewBox="0 0 200 16" preserveAspectRatio="none">
-                    <pattern id="greekKeyBack" patternUnits="userSpaceOnUse" width="24" height="12">
-                      <path d="M0 6 L6 6 L6 0 L12 0 L12 6 L18 6 L18 12 L24 12 M24 6 L18 6" fill="none" stroke="currentColor" strokeWidth="1"/>
+                {/* Greek key border - top - enhanced */}
+                <div className="absolute top-0 left-12 right-12 h-5 text-[var(--muted-foreground)] opacity-20">
+                  <svg className="h-full w-full" viewBox="0 0 200 20" preserveAspectRatio="none">
+                    <pattern id="greekKeyBackEnhanced" patternUnits="userSpaceOnUse" width="24" height="14">
+                      <path d="M0 7 L7 7 L7 0 L14 0 L14 7 L21 7 L21 14 L24 14 M24 7 L21 7" fill="none" stroke="currentColor" strokeWidth="1.5"/>
                     </pattern>
-                    <rect x="0" y="0" width="200" height="12" fill="url(#greekKeyBack)"/>
+                    <rect x="0" y="0" width="200" height="14" fill="url(#greekKeyBackEnhanced)"/>
                   </svg>
                 </div>
 
-                {/* Soft glows - theme aware */}
-                <div className="absolute -top-6 -right-6 w-28 h-28 rounded-full bg-[var(--primary)]/15 blur-2xl" />
-                <div className="absolute -bottom-6 -left-6 w-24 h-24 rounded-full bg-[var(--accent)]/15 blur-2xl" />
+                {/* Greek key border - bottom */}
+                <div className="absolute bottom-0 left-12 right-12 h-5 text-[var(--muted-foreground)] opacity-15">
+                  <svg className="h-full w-full" viewBox="0 0 200 20" preserveAspectRatio="none">
+                    <rect x="0" y="0" width="200" height="14" fill="url(#greekKeyBackEnhanced)"/>
+                  </svg>
+                </div>
+
+                {/* Enhanced soft glows with more depth */}
+                <div className="absolute -top-8 -right-8 w-36 h-36 rounded-full bg-[var(--primary)]/20 blur-3xl" />
+                <div className="absolute -bottom-8 -left-8 w-32 h-32 rounded-full bg-[var(--accent)]/20 blur-3xl" />
+                <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-48 h-48 rounded-full bg-[var(--primary)]/5 blur-3xl" />
               </div>
 
-              <div className="relative z-10 h-full flex flex-col items-center justify-center text-center px-2">
-                {/* Header */}
-                <h3 className="text-base font-bold text-[var(--foreground)] mb-1">Your Professional Identity</h3>
-                <p className="text-[10px] text-[var(--muted-foreground)] mb-3 max-w-[200px]">A verified business card that represents your values and contributions</p>
+              <div className="relative z-10 h-full flex flex-col items-center justify-center text-center px-3">
+                {/* Enhanced Header */}
+                <div className="mb-4">
+                  <h3 className="text-lg font-black text-[var(--foreground)] mb-2">Your Professional Identity</h3>
+                  <p className="text-xs text-[var(--muted-foreground)] max-w-[220px] leading-relaxed">A verified business card that represents your values, achievements, and contributions to sustainability</p>
+                </div>
 
-                {/* Archetype icons with hover reveal */}
-                <div className="flex items-center justify-center gap-1.5 mb-3">
+                {/* Archetype icons with hover reveal - ENLARGED */}
+                <div className="flex items-center justify-center gap-2 mb-4">
                   {guardianArchetypes.map((archetype, i) => (
                     <motion.div
                       key={i}
@@ -719,65 +734,73 @@ export function CommunityHeartPage({ isAuthenticated }: CommunityHeartPageProps)
                       onMouseLeave={() => setHoveredArchetype(null)}
                     >
                       <motion.div
-                        className={`w-7 h-7 rounded-full flex items-center justify-center text-sm border cursor-pointer transition-all ${
+                        className={`w-10 h-10 rounded-full flex items-center justify-center text-lg border-2 cursor-pointer transition-all shadow-md ${
                           hoveredArchetype === i
-                            ? 'bg-[var(--primary)]/30 border-[var(--primary)]/50 scale-110'
-                            : 'bg-[var(--muted)]/50 border-[var(--border)]/30'
+                            ? 'bg-[var(--primary)]/30 border-[var(--primary)]/60 scale-115 shadow-lg'
+                            : 'bg-[var(--muted)]/50 border-[var(--border)]/40'
                         }`}
-                        whileHover={{ y: -2 }}
+                        whileHover={{ y: -3 }}
                       >
                         {archetype.emoji}
                       </motion.div>
-                      {/* Hover tooltip */}
+                      {/* Hover tooltip - LARGER */}
                       {hoveredArchetype === i && (
                         <motion.div
                           initial={{ opacity: 0, y: 5 }}
                           animate={{ opacity: 1, y: 0 }}
-                          className="absolute -bottom-14 left-1/2 -translate-x-1/2 w-24 p-1.5 bg-[var(--card)] border border-[var(--border)] rounded-lg shadow-lg z-20"
+                          className="absolute -bottom-16 left-1/2 -translate-x-1/2 w-28 p-2 bg-[var(--card)] border-2 border-[var(--primary)]/30 rounded-lg shadow-xl z-20"
                         >
-                          <p className="text-[8px] font-bold text-[var(--foreground)]">{archetype.name}</p>
-                          <p className="text-[7px] text-[var(--muted-foreground)] leading-tight">{archetype.desc}</p>
+                          <p className="text-[10px] font-bold text-[var(--foreground)]">{archetype.name}</p>
+                          <p className="text-[8px] text-[var(--muted-foreground)] leading-tight mt-0.5">{archetype.desc}</p>
                         </motion.div>
                       )}
                     </motion.div>
                   ))}
                 </div>
 
-                {/* Quote */}
-                <div className="relative px-3 py-1.5 mb-3 bg-[var(--muted)]/30 rounded-lg">
-                  <p className="text-[10px] italic text-[var(--foreground)]">"Your values define your identity"</p>
+                {/* Enhanced Quote with decorative elements */}
+                <div className="relative px-5 py-2.5 mb-4 bg-gradient-to-r from-[var(--muted)]/40 via-[var(--muted)]/60 to-[var(--muted)]/40 rounded-xl border border-[var(--border)]/30 shadow-inner">
+                  <div className="absolute -left-1 top-1/2 -translate-y-1/2 text-[var(--primary)]/40 text-xl">"</div>
+                  <p className="text-sm italic text-[var(--foreground)] font-medium">Your values define your identity</p>
+                  <div className="absolute -right-1 top-1/2 -translate-y-1/2 text-[var(--primary)]/40 text-xl">"</div>
                 </div>
 
-                {/* Feature explanations */}
-                <div className="w-full space-y-1.5">
+                {/* Feature explanations - ENLARGED */}
+                <div className="w-full space-y-2">
                   <motion.div
-                    className="flex items-center gap-2 px-2 py-1.5 rounded-lg bg-[var(--muted)]/30 border border-[var(--border)]/20"
-                    whileHover={{ scale: 1.02, backgroundColor: 'var(--muted)' }}
+                    className="flex items-center gap-3 px-3 py-2.5 rounded-xl bg-gradient-to-r from-[var(--muted)]/40 to-[var(--muted)]/20 border border-[var(--border)]/30 shadow-sm"
+                    whileHover={{ scale: 1.02, x: 3 }}
                   >
-                    <Shield className="w-4 h-4 text-[var(--primary)] flex-shrink-0" />
-                    <div className="text-left">
-                      <p className="text-[9px] font-bold text-[var(--foreground)]">Guardian Theme</p>
-                      <p className="text-[7px] text-[var(--muted-foreground)]">Visual identity based on your archetype</p>
+                    <div className="w-8 h-8 rounded-lg bg-[var(--primary)]/20 flex items-center justify-center">
+                      <Shield className="w-5 h-5 text-[var(--primary)]" />
+                    </div>
+                    <div className="text-left flex-1">
+                      <p className="text-xs font-bold text-[var(--foreground)]">Guardian Theme</p>
+                      <p className="text-[10px] text-[var(--muted-foreground)]">Visual identity based on your archetype</p>
                     </div>
                   </motion.div>
                   <motion.div
-                    className="flex items-center gap-2 px-2 py-1.5 rounded-lg bg-[var(--muted)]/30 border border-[var(--border)]/20"
-                    whileHover={{ scale: 1.02, backgroundColor: 'var(--muted)' }}
+                    className="flex items-center gap-3 px-3 py-2.5 rounded-xl bg-gradient-to-r from-[var(--muted)]/40 to-[var(--muted)]/20 border border-[var(--border)]/30 shadow-sm"
+                    whileHover={{ scale: 1.02, x: 3 }}
                   >
-                    <Star className="w-4 h-4 text-[var(--accent)] flex-shrink-0" />
-                    <div className="text-left">
-                      <p className="text-[9px] font-bold text-[var(--foreground)]">Achievement Badges</p>
-                      <p className="text-[7px] text-[var(--muted-foreground)]">Earn recognition for your contributions</p>
+                    <div className="w-8 h-8 rounded-lg bg-[var(--accent)]/20 flex items-center justify-center">
+                      <Star className="w-5 h-5 text-[var(--accent)]" />
+                    </div>
+                    <div className="text-left flex-1">
+                      <p className="text-xs font-bold text-[var(--foreground)]">Achievement Badges</p>
+                      <p className="text-[10px] text-[var(--muted-foreground)]">Earn recognition for your contributions</p>
                     </div>
                   </motion.div>
                   <motion.div
-                    className="flex items-center gap-2 px-2 py-1.5 rounded-lg bg-[var(--muted)]/30 border border-[var(--border)]/20"
-                    whileHover={{ scale: 1.02, backgroundColor: 'var(--muted)' }}
+                    className="flex items-center gap-3 px-3 py-2.5 rounded-xl bg-gradient-to-r from-[var(--muted)]/40 to-[var(--muted)]/20 border border-[var(--border)]/30 shadow-sm"
+                    whileHover={{ scale: 1.02, x: 3 }}
                   >
-                    <TrendingUp className="w-4 h-4 text-[var(--primary)] flex-shrink-0" />
-                    <div className="text-left">
-                      <p className="text-[9px] font-bold text-[var(--foreground)]">STOCK Score</p>
-                      <p className="text-[7px] text-[var(--muted-foreground)]">Track your sustainable value over time</p>
+                    <div className="w-8 h-8 rounded-lg bg-[var(--primary)]/20 flex items-center justify-center">
+                      <TrendingUp className="w-5 h-5 text-[var(--primary)]" />
+                    </div>
+                    <div className="text-left flex-1">
+                      <p className="text-xs font-bold text-[var(--foreground)]">STOCK Score</p>
+                      <p className="text-[10px] text-[var(--muted-foreground)]">Track your sustainable value over time</p>
                     </div>
                   </motion.div>
                 </div>
@@ -1077,44 +1100,90 @@ export function CommunityHeartPage({ isAuthenticated }: CommunityHeartPageProps)
                 </div>
               </div>
 
-              {/* Back Side - Learning Philosophy with Zen Mural */}
+              {/* Back Side - Learning Philosophy with Zen Mural - ENHANCED */}
               <div
-                className="absolute inset-0 bg-gradient-to-br from-[var(--card)]/95 via-[var(--muted)]/40 to-[var(--card)]/95 rounded-xl p-4 overflow-hidden border border-[var(--border)]/30"
+                className="absolute inset-0 bg-gradient-to-br from-[var(--card)] via-[var(--muted)]/50 to-[var(--card)] rounded-xl p-5 overflow-hidden border-2 border-[var(--accent)]/20 shadow-xl"
                 style={{ backfaceVisibility: 'hidden', transform: 'rotateY(180deg)' }}
               >
-                {/* Zen Mural Background for back - theme aware */}
+                {/* Zen Mural Background for back - Enhanced with more depth */}
                 <div className="absolute inset-0 pointer-events-none overflow-hidden rounded-xl">
-                  <div className="absolute inset-0 bg-gradient-to-b from-[var(--accent)]/15 via-transparent to-[var(--primary)]/10" />
+                  {/* Deep layered zen texture */}
+                  <div className="absolute inset-0 bg-gradient-to-b from-[var(--accent)]/20 via-transparent to-[var(--primary)]/15" />
+                  <div className="absolute inset-0 bg-gradient-to-r from-[var(--card)]/60 via-transparent to-[var(--card)]/60" />
 
-                  {/* Bamboo on back - theme aware */}
-                  <div className="absolute left-0 top-0 h-full w-10 text-[var(--primary)] opacity-15">
-                    <svg className="w-full h-full" viewBox="0 0 40 300" preserveAspectRatio="none">
-                      <rect x="8" y="0" width="6" height="300" fill="currentColor" rx="3"/>
-                      <rect x="22" y="20" width="5" height="280" fill="currentColor" rx="2.5" opacity="0.8"/>
+                  {/* Enhanced bamboo on left */}
+                  <div className="absolute left-0 top-0 h-full w-16 text-[var(--primary)] opacity-25">
+                    <svg className="w-full h-full" viewBox="0 0 64 300" preserveAspectRatio="none">
+                      <rect x="8" y="0" width="8" height="300" fill="currentColor" rx="4"/>
+                      <line x1="8" y1="50" x2="16" y2="50" stroke="currentColor" strokeWidth="2" opacity="0.6"/>
+                      <line x1="8" y1="100" x2="16" y2="100" stroke="currentColor" strokeWidth="2" opacity="0.6"/>
+                      <line x1="8" y1="150" x2="16" y2="150" stroke="currentColor" strokeWidth="2" opacity="0.6"/>
+                      <line x1="8" y1="200" x2="16" y2="200" stroke="currentColor" strokeWidth="2" opacity="0.6"/>
+                      <line x1="8" y1="250" x2="16" y2="250" stroke="currentColor" strokeWidth="2" opacity="0.6"/>
+                      <rect x="28" y="20" width="7" height="280" fill="currentColor" rx="3.5" opacity="0.8"/>
+                      <line x1="28" y1="70" x2="35" y2="70" stroke="currentColor" strokeWidth="1.5" opacity="0.5"/>
+                      <line x1="28" y1="130" x2="35" y2="130" stroke="currentColor" strokeWidth="1.5" opacity="0.5"/>
+                      <line x1="28" y1="190" x2="35" y2="190" stroke="currentColor" strokeWidth="1.5" opacity="0.5"/>
+                      {/* Bamboo leaves */}
+                      <path d="M16 45 Q30 35 40 50" fill="none" stroke="currentColor" strokeWidth="2.5"/>
+                      <path d="M16 95 Q35 82 48 100" fill="none" stroke="currentColor" strokeWidth="2"/>
+                      <path d="M35 125 Q50 112 58 130" fill="none" stroke="currentColor" strokeWidth="2"/>
+                      <path d="M16 195 Q32 182 45 198" fill="none" stroke="currentColor" strokeWidth="2"/>
                     </svg>
                   </div>
 
-                  {/* Cherry blossoms scattered - theme aware */}
-                  <div className="absolute right-0 top-0 w-24 h-20 opacity-20">
-                    <svg className="w-full h-full" viewBox="0 0 100 80">
-                      <circle cx="48" cy="28" r="6" className="fill-[var(--accent)]/30 stroke-[var(--accent)]/50" strokeWidth="0.5"/>
-                      <circle cx="35" cy="36" r="5" className="fill-[var(--accent)]/30 stroke-[var(--accent)]/50" strokeWidth="0.5"/>
-                      <circle cx="65" cy="22" r="4" className="fill-[var(--accent)]/20 stroke-[var(--accent)]/50" strokeWidth="0.5"/>
+                  {/* Enhanced cherry blossoms - more blooms */}
+                  <div className="absolute right-0 top-0 w-32 h-28 opacity-25">
+                    <svg className="w-full h-full" viewBox="0 0 130 110">
+                      {/* Branch */}
+                      <path d="M130 15 Q95 22 70 42 Q50 58 28 50" fill="none" className="stroke-[var(--muted-foreground)]" strokeWidth="3"/>
+                      <path d="M70 42 Q62 65 48 72" fill="none" className="stroke-[var(--muted-foreground)]" strokeWidth="2"/>
+                      {/* Blossoms - more detailed */}
+                      <circle cx="68" cy="38" r="10" className="fill-[var(--accent)]/35 stroke-[var(--accent)]/60" strokeWidth="0.8"/>
+                      <circle cx="48" cy="52" r="9" className="fill-[var(--accent)]/35 stroke-[var(--accent)]/60" strokeWidth="0.8"/>
+                      <circle cx="82" cy="28" r="7" className="fill-[var(--accent)]/25 stroke-[var(--accent)]/50" strokeWidth="0.5"/>
+                      <circle cx="32" cy="48" r="8" className="fill-[var(--accent)]/35 stroke-[var(--accent)]/60" strokeWidth="0.8"/>
+                      <circle cx="55" cy="68" r="7" className="fill-[var(--accent)]/25 stroke-[var(--accent)]/50" strokeWidth="0.5"/>
+                      <circle cx="95" cy="22" r="6" className="fill-[var(--accent)]/20 stroke-[var(--accent)]/40" strokeWidth="0.5"/>
+                      <circle cx="110" cy="18" r="5" className="fill-[var(--accent)]/15 stroke-[var(--accent)]/30" strokeWidth="0.5"/>
+                      {/* Blossom centers */}
+                      <circle cx="68" cy="38" r="3" className="fill-[var(--primary)]" opacity="0.7"/>
+                      <circle cx="48" cy="52" r="2.5" className="fill-[var(--primary)]" opacity="0.7"/>
+                      <circle cx="32" cy="48" r="2.5" className="fill-[var(--primary)]" opacity="0.6"/>
                     </svg>
                   </div>
 
-                  {/* Soft glows - theme aware */}
-                  <div className="absolute -top-6 -right-6 w-28 h-28 rounded-full bg-[var(--accent)]/15 blur-2xl" />
-                  <div className="absolute -bottom-6 -left-6 w-24 h-24 rounded-full bg-[var(--primary)]/15 blur-2xl" />
+                  {/* Zen sand ripples - bottom - enhanced */}
+                  <div className="absolute bottom-0 left-0 right-0 h-16 text-[var(--muted-foreground)] opacity-15">
+                    <svg className="w-full h-full" viewBox="0 0 500 60" preserveAspectRatio="none">
+                      <defs>
+                        <pattern id="sandRippleBack" patternUnits="userSpaceOnUse" width="40" height="20">
+                          <path d="M0 10 Q10 5 20 10 Q30 15 40 10" fill="none" stroke="currentColor" strokeWidth="1"/>
+                        </pattern>
+                      </defs>
+                      <rect x="0" y="0" width="500" height="60" fill="url(#sandRippleBack)"/>
+                      {/* Zen stones */}
+                      <ellipse cx="420" cy="42" rx="22" ry="12" fill="currentColor" opacity="0.4"/>
+                      <ellipse cx="390" cy="50" rx="16" ry="8" fill="currentColor" opacity="0.3"/>
+                      <ellipse cx="455" cy="48" rx="12" ry="6" fill="currentColor" opacity="0.25"/>
+                    </svg>
+                  </div>
+
+                  {/* Enhanced soft glows with more depth */}
+                  <div className="absolute -top-8 -right-8 w-40 h-40 rounded-full bg-[var(--accent)]/20 blur-3xl" />
+                  <div className="absolute -bottom-8 -left-8 w-36 h-36 rounded-full bg-[var(--primary)]/20 blur-3xl" />
+                  <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-56 h-56 rounded-full bg-[var(--accent)]/5 blur-3xl" />
                 </div>
 
-                <div className="relative z-10 h-full flex flex-col items-center justify-center px-2">
-                  {/* Header */}
-                  <h3 className="text-base font-bold text-[var(--foreground)] mb-1">Education Without Barriers</h3>
-                  <p className="text-[10px] text-[var(--muted-foreground)] mb-3 max-w-[280px]">Free, comprehensive sustainability education for all ages and backgrounds</p>
+                <div className="relative z-10 h-full flex flex-col items-center justify-center px-3">
+                  {/* Enhanced Header */}
+                  <div className="mb-4">
+                    <h3 className="text-lg font-black text-[var(--foreground)] mb-2">Education Without Barriers</h3>
+                    <p className="text-xs text-[var(--muted-foreground)] max-w-[320px] leading-relaxed">Free, comprehensive sustainability education for all ages and backgrounds</p>
+                  </div>
 
-                  {/* Visual learning journey */}
-                  <div className="flex items-center gap-1 mb-3">
+                  {/* Visual learning journey - ENLARGED */}
+                  <div className="flex items-center justify-center gap-2 mb-4">
                     {[
                       { emoji: '🌱', label: 'Begin' },
                       { emoji: '📚', label: 'Study' },
@@ -1125,17 +1194,19 @@ export function CommunityHeartPage({ isAuthenticated }: CommunityHeartPageProps)
                     ].map((stage, i) => (
                       <motion.div
                         key={i}
-                        className="flex flex-col items-center"
+                        className="flex flex-col items-center relative"
                         initial={{ opacity: 0, scale: 0.8 }}
                         animate={{ opacity: 1, scale: 1 }}
                         transition={{ delay: i * 0.06 }}
-                        whileHover={{ y: -2 }}
+                        whileHover={{ y: -3, scale: 1.1 }}
                       >
-                        <span className="text-base">{stage.emoji}</span>
-                        <span className="text-[6px] text-[var(--muted-foreground)]">{stage.label}</span>
+                        <div className="w-10 h-10 rounded-full bg-[var(--muted)]/50 border border-[var(--border)]/40 flex items-center justify-center shadow-sm mb-1">
+                          <span className="text-xl">{stage.emoji}</span>
+                        </div>
+                        <span className="text-[8px] font-medium text-[var(--muted-foreground)]">{stage.label}</span>
                         {i < 5 && (
                           <motion.div
-                            className="absolute w-3 h-0.5 bg-gradient-to-r from-[var(--primary)] to-[var(--accent)] -right-2 top-2"
+                            className="absolute w-4 h-0.5 bg-gradient-to-r from-[var(--primary)] to-[var(--accent)] right-[-10px] top-5"
                             initial={{ scaleX: 0 }}
                             animate={{ scaleX: 1 }}
                             transition={{ delay: i * 0.06 + 0.2 }}
@@ -1145,51 +1216,61 @@ export function CommunityHeartPage({ isAuthenticated }: CommunityHeartPageProps)
                     ))}
                   </div>
 
-                  {/* Philosophy statement */}
-                  <div className="relative px-3 py-1.5 mb-3 bg-[var(--muted)]/30 rounded-lg">
-                    <p className="text-[9px] italic text-[var(--foreground)]">"Knowledge belongs to everyone"</p>
+                  {/* Enhanced Philosophy statement with decorative elements */}
+                  <div className="relative px-5 py-2.5 mb-4 bg-gradient-to-r from-[var(--muted)]/40 via-[var(--muted)]/60 to-[var(--muted)]/40 rounded-xl border border-[var(--border)]/30 shadow-inner">
+                    <div className="absolute -left-1 top-1/2 -translate-y-1/2 text-[var(--accent)]/40 text-xl">"</div>
+                    <p className="text-sm italic text-[var(--foreground)] font-medium">Knowledge belongs to everyone</p>
+                    <div className="absolute -right-1 top-1/2 -translate-y-1/2 text-[var(--accent)]/40 text-xl">"</div>
                   </div>
 
-                  {/* Feature explanations */}
-                  <div className="w-full grid grid-cols-2 gap-1.5">
+                  {/* Feature explanations - ENLARGED grid */}
+                  <div className="w-full grid grid-cols-2 gap-2">
                     <motion.div
-                      className="flex items-center gap-2 px-2 py-1.5 rounded-lg bg-[var(--muted)]/30 border border-[var(--border)]/20"
-                      whileHover={{ scale: 1.02 }}
+                      className="flex items-center gap-2.5 px-3 py-2.5 rounded-xl bg-gradient-to-r from-[var(--muted)]/40 to-[var(--muted)]/20 border border-[var(--border)]/30 shadow-sm"
+                      whileHover={{ scale: 1.03, x: 2 }}
                     >
-                      <GraduationCap className="w-3.5 h-3.5 text-[var(--primary)] flex-shrink-0" />
+                      <div className="w-7 h-7 rounded-lg bg-[var(--primary)]/20 flex items-center justify-center flex-shrink-0">
+                        <GraduationCap className="w-4 h-4 text-[var(--primary)]" />
+                      </div>
                       <div className="text-left">
-                        <p className="text-[8px] font-bold text-[var(--foreground)]">6 Grade Levels</p>
-                        <p className="text-[6px] text-[var(--muted-foreground)]">K-12 to PhD adapted</p>
+                        <p className="text-[10px] font-bold text-[var(--foreground)]">6 Grade Levels</p>
+                        <p className="text-[8px] text-[var(--muted-foreground)]">K-12 to PhD adapted</p>
                       </div>
                     </motion.div>
                     <motion.div
-                      className="flex items-center gap-2 px-2 py-1.5 rounded-lg bg-[var(--muted)]/30 border border-[var(--border)]/20"
-                      whileHover={{ scale: 1.02 }}
+                      className="flex items-center gap-2.5 px-3 py-2.5 rounded-xl bg-gradient-to-r from-[var(--muted)]/40 to-[var(--muted)]/20 border border-[var(--border)]/30 shadow-sm"
+                      whileHover={{ scale: 1.03, x: 2 }}
                     >
-                      <Gamepad2 className="w-3.5 h-3.5 text-purple-500 flex-shrink-0" />
+                      <div className="w-7 h-7 rounded-lg bg-purple-500/20 flex items-center justify-center flex-shrink-0">
+                        <Gamepad2 className="w-4 h-4 text-purple-500" />
+                      </div>
                       <div className="text-left">
-                        <p className="text-[8px] font-bold text-[var(--foreground)]">Interactive Games</p>
-                        <p className="text-[6px] text-[var(--muted-foreground)]">Learn through play</p>
+                        <p className="text-[10px] font-bold text-[var(--foreground)]">Interactive Games</p>
+                        <p className="text-[8px] text-[var(--muted-foreground)]">Learn through play</p>
                       </div>
                     </motion.div>
                     <motion.div
-                      className="flex items-center gap-2 px-2 py-1.5 rounded-lg bg-[var(--muted)]/30 border border-[var(--border)]/20"
-                      whileHover={{ scale: 1.02 }}
+                      className="flex items-center gap-2.5 px-3 py-2.5 rounded-xl bg-gradient-to-r from-[var(--muted)]/40 to-[var(--muted)]/20 border border-[var(--border)]/30 shadow-sm"
+                      whileHover={{ scale: 1.03, x: 2 }}
                     >
-                      <Brain className="w-3.5 h-3.5 text-cyan-500 flex-shrink-0" />
+                      <div className="w-7 h-7 rounded-lg bg-cyan-500/20 flex items-center justify-center flex-shrink-0">
+                        <Brain className="w-4 h-4 text-cyan-500" />
+                      </div>
                       <div className="text-left">
-                        <p className="text-[8px] font-bold text-[var(--foreground)]">Adaptive Learning</p>
-                        <p className="text-[6px] text-[var(--muted-foreground)]">Adjusts to your pace</p>
+                        <p className="text-[10px] font-bold text-[var(--foreground)]">Adaptive Learning</p>
+                        <p className="text-[8px] text-[var(--muted-foreground)]">Adjusts to your pace</p>
                       </div>
                     </motion.div>
                     <motion.div
-                      className="flex items-center gap-2 px-2 py-1.5 rounded-lg bg-[var(--muted)]/30 border border-[var(--border)]/20"
-                      whileHover={{ scale: 1.02 }}
+                      className="flex items-center gap-2.5 px-3 py-2.5 rounded-xl bg-gradient-to-r from-[var(--muted)]/40 to-[var(--muted)]/20 border border-[var(--border)]/30 shadow-sm"
+                      whileHover={{ scale: 1.03, x: 2 }}
                     >
-                      <Award className="w-3.5 h-3.5 text-[var(--accent)] flex-shrink-0" />
+                      <div className="w-7 h-7 rounded-lg bg-[var(--accent)]/20 flex items-center justify-center flex-shrink-0">
+                        <Award className="w-4 h-4 text-[var(--accent)]" />
+                      </div>
                       <div className="text-left">
-                        <p className="text-[8px] font-bold text-[var(--foreground)]">Certifications</p>
-                        <p className="text-[6px] text-[var(--muted-foreground)]">Earn credentials</p>
+                        <p className="text-[10px] font-bold text-[var(--foreground)]">Certifications</p>
+                        <p className="text-[8px] text-[var(--muted-foreground)]">Earn credentials</p>
                       </div>
                     </motion.div>
                   </div>
