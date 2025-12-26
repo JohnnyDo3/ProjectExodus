@@ -3956,10 +3956,13 @@ export default function ArticlesPage() {
       </div>
       )}
 
-      {/* ========================================== */}
-      {/* 75% OVERLAY PREVIEW - Scroll Unfurling    */}
-      {/* ========================================== */}
-      <AnimatePresence>
+      {/* Content only visible for authenticated users */}
+      {session && (
+        <>
+        {/* ========================================== */}
+        {/* 75% OVERLAY PREVIEW - Scroll Unfurling    */}
+        {/* ========================================== */}
+        <AnimatePresence>
         {previewArticle && (
           <motion.div
             initial={{ opacity: 0 }}
@@ -4774,6 +4777,8 @@ export default function ArticlesPage() {
             } as React.CSSProperties}
           />
         </div>
+      )}
+      </>
       )}
 
       {/* Floating Write Button (Mobile) */}
