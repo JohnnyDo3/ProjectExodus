@@ -3954,6 +3954,7 @@ export default function ArticlesPage() {
         {/* Bottom fade to content area */}
         <div className="absolute bottom-0 left-0 right-0 h-20 bg-gradient-to-t from-[var(--background)] to-transparent" />
       </div>
+      )}
 
       {/* ========================================== */}
       {/* 75% OVERLAY PREVIEW - Scroll Unfurling    */}
@@ -4773,7 +4774,6 @@ export default function ArticlesPage() {
             } as React.CSSProperties}
           />
         </div>
-      )}
       )}
 
       {/* Floating Write Button (Mobile) */}
