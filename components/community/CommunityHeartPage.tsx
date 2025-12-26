@@ -331,7 +331,7 @@ export function CommunityHeartPage({ isAuthenticated }: CommunityHeartPageProps)
   // Synchronized wave effect - carousels change in right-to-left sequence
   // Wave order: Volition (right) → Tools → Core Topics → BizID (left)
   useEffect(() => {
-    const WAVE_INTERVAL = 4000 // Time between waves
+    const WAVE_INTERVAL = 9000 // Time between waves (slower, more relaxed)
     const WAVE_DELAYS = {
       volition: 0,      // Right column - first
       tools: 700,       // Center-right - 0.7s later
@@ -389,7 +389,7 @@ export function CommunityHeartPage({ isAuthenticated }: CommunityHeartPageProps)
           <motion.div
             className="flex items-center whitespace-nowrap h-full"
             animate={{ x: ['0%', '-50%'] }}
-            transition={{ duration: 300, repeat: Infinity, ease: 'linear' }}
+            transition={{ duration: 90, repeat: Infinity, ease: 'linear' }}
           >
             {/* Duplicate quotes for seamless loop */}
             {[...ancientWisdomQuotes, ...ancientWisdomQuotes].map((item, i) => (
