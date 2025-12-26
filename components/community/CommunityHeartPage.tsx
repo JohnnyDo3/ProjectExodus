@@ -811,24 +811,27 @@ export function CommunityHeartPage({ isAuthenticated }: CommunityHeartPageProps)
                 <CornerOrnament position="bl" />
                 <CornerOrnament position="br" />
 
-                {/* Header - Clean, no icons beside text */}
-                <div className="relative z-10 text-center mb-3 flex-shrink-0">
-                  <h2 className="text-xl font-bold text-[var(--foreground)] tracking-tight">
+                {/* Header - Clean, prominent */}
+                <div className="relative z-10 text-center mb-2 flex-shrink-0">
+                  <h2 className="text-lg font-bold text-[var(--foreground)] tracking-tight">
                     Exodus Academy
                   </h2>
-                  <p className="text-xs text-[var(--muted-foreground)] mt-1">
-                    Sustainability education for all ages
+                  <p className="text-[10px] text-[var(--muted-foreground)] mt-0.5">
+                    Free sustainability education for all ages
                   </p>
                 </div>
 
-                <DecorativeDivider className="mb-3 flex-shrink-0" />
+                <DecorativeDivider className="mb-2 flex-shrink-0" />
 
                 {/* Grade Levels - Horizontal Timeline */}
-                <div className="relative z-10 mb-4 flex-shrink-0">
-                  <p className="text-xs text-[var(--muted-foreground)] font-semibold mb-2 uppercase tracking-wide text-center">6 Grade Levels</p>
-                  <div className="relative flex items-center justify-between px-3">
+                <div className="relative z-10 mb-3 flex-shrink-0">
+                  <div className="flex items-center justify-center gap-2 mb-2">
+                    <GraduationCap className="w-3.5 h-3.5 text-[var(--primary)]" />
+                    <p className="text-[10px] text-[var(--foreground)] font-bold uppercase tracking-wider">6 Learning Paths</p>
+                  </div>
+                  <div className="relative flex items-center justify-between px-2">
                     {/* Timeline connector line */}
-                    <div className="absolute top-1/2 left-4 right-4 h-0.5 bg-gradient-to-r from-[var(--primary)] via-[var(--accent)] to-[var(--secondary)] opacity-40 -translate-y-1/2" />
+                    <div className="absolute top-1/2 left-3 right-3 h-0.5 bg-gradient-to-r from-[var(--primary)] via-[var(--accent)] to-[var(--secondary)] opacity-30 -translate-y-1/2" />
 
                     {gradeLevels.map((level, i) => (
                       <motion.div
@@ -836,106 +839,108 @@ export function CommunityHeartPage({ isAuthenticated }: CommunityHeartPageProps)
                         className="relative flex flex-col items-center z-10"
                         initial={{ opacity: 0, y: 5 }}
                         animate={{ opacity: 1, y: 0 }}
-                        transition={{ delay: 0.1 + i * 0.05 }}
-                        whileHover={{ scale: 1.15 }}
+                        transition={{ delay: 0.1 + i * 0.04 }}
+                        whileHover={{ scale: 1.1, y: -2 }}
                       >
-                        <div className={`w-9 h-9 rounded-full bg-gradient-to-br ${level.color} flex items-center justify-center shadow-lg border-2 border-white/20`}>
-                          <span className="text-base">{level.icon}</span>
+                        <div className={`w-8 h-8 rounded-full bg-gradient-to-br ${level.color} flex items-center justify-center shadow-md border border-white/30`}>
+                          <span className="text-sm">{level.icon}</span>
                         </div>
-                        <p className="text-[9px] font-semibold text-[var(--foreground)] mt-1.5 text-center">{level.ages}</p>
+                        <p className="text-[8px] font-bold text-[var(--foreground)] mt-1 text-center">{level.ages}</p>
                       </motion.div>
                     ))}
                   </div>
                 </div>
 
                 {/* Double Carousel - Core Topics & Interactive Tools */}
-                <div className="relative z-10 flex-1 min-h-0 grid grid-cols-2 gap-4">
+                <div className="relative z-10 flex-1 min-h-0 grid grid-cols-2 gap-3">
                   {/* Core Topics Carousel - Left */}
-                  <div className="flex flex-col">
-                    <p className="text-xs text-[var(--muted-foreground)] font-semibold mb-2 uppercase tracking-wide">Core Topics</p>
-
-                    {/* Carousel dots */}
-                    <div className="flex items-center justify-center gap-1 mb-2">
-                      {coreLearnTopics.map((_, i) => (
-                        <button
-                          key={i}
-                          className={`w-1.5 h-1.5 rounded-full transition-all ${
-                            activeTopicIndex === i
-                              ? 'bg-[var(--primary)] w-4'
-                              : 'bg-[var(--muted-foreground)]/30 hover:bg-[var(--muted-foreground)]/50'
-                          }`}
-                          onClick={() => setActiveTopicIndex(i)}
-                        />
-                      ))}
+                  <div className="flex flex-col h-full">
+                    <div className="flex items-center justify-between mb-1.5">
+                      <p className="text-[11px] text-[var(--foreground)] font-bold uppercase tracking-wider">Core Topics</p>
+                      <span className="text-[9px] text-[var(--primary)] font-medium">{activeTopicIndex + 1}/{coreLearnTopics.length}</span>
                     </div>
 
                     {/* Active topic display */}
                     <motion.div
                       key={activeTopicIndex}
-                      initial={{ opacity: 0, x: -20 }}
-                      animate={{ opacity: 1, x: 0 }}
-                      exit={{ opacity: 0, x: 20 }}
-                      transition={{ duration: 0.3 }}
-                      className={`flex-1 ${coreLearnTopics[activeTopicIndex].bgColor} rounded-xl p-4 border border-[var(--border)]/30 flex flex-col items-center justify-center text-center`}
+                      initial={{ opacity: 0, scale: 0.95 }}
+                      animate={{ opacity: 1, scale: 1 }}
+                      transition={{ duration: 0.25 }}
+                      className={`flex-1 ${coreLearnTopics[activeTopicIndex].bgColor} rounded-lg p-3 border border-[var(--border)]/40 flex flex-col items-center justify-center text-center`}
                     >
                       {(() => {
                         const topic = coreLearnTopics[activeTopicIndex]
                         const Icon = topic.icon
                         return (
                           <>
-                            <div className={`w-12 h-12 rounded-full bg-[var(--card)] flex items-center justify-center mb-2 shadow-md border-2 border-[var(--border)]/30`}>
-                              <Icon className={`w-6 h-6 ${topic.color}`} />
+                            <div className={`w-14 h-14 rounded-full bg-[var(--card)] flex items-center justify-center mb-2 shadow-lg border-2 ${topic.color.replace('text-', 'border-')}/30`}>
+                              <Icon className={`w-7 h-7 ${topic.color}`} />
                             </div>
-                            <p className="text-sm font-bold text-[var(--foreground)]">{topic.name}</p>
-                            <p className="text-[10px] text-[var(--muted-foreground)] mt-1">{activeTopicIndex + 1} of {coreLearnTopics.length}</p>
+                            <p className="text-base font-bold text-[var(--foreground)] leading-tight">{topic.name}</p>
                           </>
                         )
                       })()}
                     </motion.div>
+
+                    {/* Carousel dots */}
+                    <div className="flex items-center justify-center gap-1.5 mt-2">
+                      {coreLearnTopics.map((_, i) => (
+                        <button
+                          key={i}
+                          className={`h-1.5 rounded-full transition-all duration-200 ${
+                            activeTopicIndex === i
+                              ? 'bg-[var(--primary)] w-5'
+                              : 'bg-[var(--muted-foreground)]/25 w-1.5 hover:bg-[var(--muted-foreground)]/40'
+                          }`}
+                          onClick={() => setActiveTopicIndex(i)}
+                        />
+                      ))}
+                    </div>
                   </div>
 
                   {/* Interactive Tools Carousel - Right */}
-                  <div className="flex flex-col">
-                    <p className="text-xs text-[var(--muted-foreground)] font-semibold mb-2 uppercase tracking-wide">Tools</p>
-
-                    {/* Carousel dots */}
-                    <div className="flex items-center justify-center gap-1 mb-2">
-                      {interactiveTools.map((_, i) => (
-                        <button
-                          key={i}
-                          className={`w-1.5 h-1.5 rounded-full transition-all ${
-                            activeToolIndex === i
-                              ? 'bg-[var(--accent)] w-4'
-                              : 'bg-[var(--muted-foreground)]/30 hover:bg-[var(--muted-foreground)]/50'
-                          }`}
-                          onClick={() => setActiveToolIndex(i)}
-                        />
-                      ))}
+                  <div className="flex flex-col h-full">
+                    <div className="flex items-center justify-between mb-1.5">
+                      <p className="text-[11px] text-[var(--foreground)] font-bold uppercase tracking-wider">Tools</p>
+                      <span className="text-[9px] text-[var(--accent)] font-medium">{activeToolIndex + 1}/{interactiveTools.length}</span>
                     </div>
 
                     {/* Active tool display */}
                     <motion.div
                       key={activeToolIndex}
-                      initial={{ opacity: 0, x: 20 }}
-                      animate={{ opacity: 1, x: 0 }}
-                      exit={{ opacity: 0, x: -20 }}
-                      transition={{ duration: 0.3 }}
-                      className="flex-1 bg-[var(--muted)]/50 rounded-xl p-4 border border-[var(--border)]/30 flex flex-col items-center justify-center text-center"
+                      initial={{ opacity: 0, scale: 0.95 }}
+                      animate={{ opacity: 1, scale: 1 }}
+                      transition={{ duration: 0.25 }}
+                      className="flex-1 bg-[var(--muted)]/60 rounded-lg p-3 border border-[var(--border)]/40 flex flex-col items-center justify-center text-center"
                     >
                       {(() => {
                         const tool = interactiveTools[activeToolIndex]
                         const Icon = tool.icon
                         return (
                           <>
-                            <div className="w-12 h-12 rounded-full bg-[var(--card)] flex items-center justify-center mb-2 shadow-md border-2 border-[var(--border)]/30">
-                              <Icon className={`w-6 h-6 ${tool.color}`} />
+                            <div className={`w-14 h-14 rounded-full bg-[var(--card)] flex items-center justify-center mb-2 shadow-lg border-2 ${tool.color.replace('text-', 'border-')}/30`}>
+                              <Icon className={`w-7 h-7 ${tool.color}`} />
                             </div>
-                            <p className="text-sm font-bold text-[var(--foreground)]">{tool.name}</p>
-                            <p className="text-[10px] text-[var(--muted-foreground)] mt-1">{activeToolIndex + 1} of {interactiveTools.length}</p>
+                            <p className="text-base font-bold text-[var(--foreground)] leading-tight">{tool.name}</p>
                           </>
                         )
                       })()}
                     </motion.div>
+
+                    {/* Carousel dots */}
+                    <div className="flex items-center justify-center gap-1.5 mt-2">
+                      {interactiveTools.map((_, i) => (
+                        <button
+                          key={i}
+                          className={`h-1.5 rounded-full transition-all duration-200 ${
+                            activeToolIndex === i
+                              ? 'bg-[var(--accent)] w-5'
+                              : 'bg-[var(--muted-foreground)]/25 w-1.5 hover:bg-[var(--muted-foreground)]/40'
+                          }`}
+                          onClick={() => setActiveToolIndex(i)}
+                        />
+                      ))}
+                    </div>
                   </div>
                 </div>
               </div>
@@ -1164,185 +1169,71 @@ export function CommunityHeartPage({ isAuthenticated }: CommunityHeartPageProps)
                 <CornerOrnament position="br" />
 
                 <div className="relative z-10 h-full flex flex-col">
-                  {/* Header with icon badge - Larger */}
-                  <div className="flex items-center justify-between mb-2">
-                    <div className="flex items-center gap-2">
-                      <motion.div
-                        className="w-7 h-7 rounded-lg bg-gradient-to-br from-[var(--primary)] to-[var(--accent)] flex items-center justify-center shadow-sm"
-                        animate={{ scale: [1, 1.05, 1] }}
-                        transition={{ duration: 3, repeat: Infinity }}
-                      >
-                        <TrendingUp className="w-4 h-4 text-white" />
-                      </motion.div>
-                      <h3 className="font-bold text-base tracking-tight text-[var(--foreground)]">Volition</h3>
-                    </div>
-                    <motion.span
-                      className="text-[10px] px-2.5 py-1 bg-gradient-to-r from-[var(--primary)]/20 to-[var(--accent)]/20 rounded-full text-[var(--primary)] font-semibold border border-[var(--primary)]/20"
-                      animate={{ scale: [1, 1.02, 1] }}
-                      transition={{ duration: 2, repeat: Infinity }}
-                    >
-                      7 Lanes
-                    </motion.span>
-                  </div>
-
-                  {/* Description - Larger */}
-                  <p className="text-xs text-[var(--muted-foreground)] mb-2 leading-relaxed">
-                    Track your stock in Project Exodus
-                  </p>
-
-                  {/* Decorative divider */}
-                  <DecorativeDivider className="mb-3" />
-
-                  {/* 7 Lanes Grid - Larger */}
-                  <div className="flex-1 grid grid-cols-2 gap-1.5">
-                    {volitionLanes.map((lane, i) => {
-                      const Icon = lane.icon
-                      return (
-                        <motion.div
-                          key={lane.label}
-                          className="flex items-center gap-2 bg-[var(--muted)]/50 rounded-lg px-2.5 py-2 border border-[var(--border)]/30 backdrop-blur-sm"
-                          initial={{ opacity: 0, x: -10 }}
-                          animate={{ opacity: 1, x: 0 }}
-                          transition={{ delay: 0.5 + i * 0.05 }}
-                          whileHover={{ scale: 1.02 }}
-                        >
-                          <Icon className={`w-4 h-4 ${lane.color}`} />
-                          <span className="text-[10px] font-semibold text-[var(--foreground)]">{lane.label}</span>
-                        </motion.div>
-                      )
-                    })}
-                    {/* Extra slot for Impact highlight */}
-                    <motion.div
-                      className="col-span-2 flex items-center justify-center gap-2 bg-gradient-to-r from-[var(--primary)]/15 to-[var(--accent)]/15 rounded-lg py-2 border border-[var(--primary)]/20"
-                      initial={{ opacity: 0 }}
-                      animate={{ opacity: 1 }}
-                      transition={{ delay: 0.9 }}
-                    >
-                      <Globe className="w-4 h-4 text-[var(--primary)]" />
-                      <span className="text-[10px] font-bold text-[var(--primary)]">Environmental Impact</span>
-                      <Leaf className="w-3 h-3 text-[var(--accent)]" />
-                    </motion.div>
-                  </div>
-                </div>
-              </motion.div>
-
-              {/* Back Side - Philosophy with Forest Mural (Larger text with internal scroll) */}
-              <motion.div
-                className="absolute inset-0 bg-gradient-to-br from-[var(--card)]/95 via-[var(--muted)]/30 to-[var(--card)]/95 rounded-xl p-4 border border-[var(--border)]/30 flex flex-col"
-                style={{ backfaceVisibility: 'hidden', transform: 'rotateY(180deg)' }}
-              >
-                {/* Forest Mural Background for back - theme aware */}
-                <div className="absolute inset-0 pointer-events-none overflow-hidden rounded-xl">
-                  <div className="absolute inset-0 bg-gradient-to-b from-[var(--accent)]/15 via-transparent to-[var(--muted)]/20" />
-
-                  {/* Stars for back - theme aware */}
-                  <div className="absolute top-0 left-0 right-0 h-16 text-[var(--primary)] opacity-30">
-                    <svg className="w-full h-full" viewBox="0 0 200 65">
-                      <circle cx="20" cy="12" r="0.8" fill="currentColor"/>
-                      <circle cx="55" cy="20" r="1" fill="currentColor" opacity="0.8"/>
-                      <circle cx="90" cy="8" r="0.7" fill="currentColor" opacity="0.9"/>
-                      <circle cx="125" cy="25" r="0.9" fill="currentColor"/>
-                      <circle cx="160" cy="15" r="0.8" fill="currentColor" opacity="0.8"/>
-                      <circle cx="180" cy="30" r="0.6" fill="currentColor" opacity="0.9"/>
-                    </svg>
-                  </div>
-
-                  {/* Pine trees silhouette - back - theme aware */}
-                  <div className="absolute left-0 bottom-0 h-24 w-12 text-[var(--primary)] opacity-15">
-                    <svg className="w-full h-full" viewBox="0 0 48 100">
-                      <path d="M16 100 L16 70 L8 78 L16 60 L6 72 L16 48 L12 54 L16 38 L20 54 L16 48 L26 72 L16 60 L24 78 L16 70 L16 100" fill="currentColor"/>
-                      <rect x="14" y="90" width="4" height="10" className="fill-[var(--muted-foreground)]" opacity="0.4"/>
-                    </svg>
-                  </div>
-
-                  <div className="absolute right-0 bottom-0 h-20 w-10 text-[var(--primary)] opacity-[0.12]">
-                    <svg className="w-full h-full" viewBox="0 0 40 80">
-                      <path d="M25 80 L25 58 L19 64 L25 48 L17 56 L25 38 L22 43 L25 30 L28 43 L25 38 L33 56 L25 48 L31 64 L25 58 L25 80" fill="currentColor"/>
-                      <rect x="23" y="72" width="4" height="8" className="fill-[var(--muted-foreground)]" opacity="0.4"/>
-                    </svg>
-                  </div>
-
-                  {/* Soft glows - theme aware */}
-                  <div className="absolute -top-6 -right-6 w-24 h-24 rounded-full bg-[var(--accent)]/20 blur-2xl" />
-                  <div className="absolute -bottom-6 -left-6 w-20 h-20 rounded-full bg-[var(--primary)]/15 blur-xl" />
-                </div>
-
-                <div className="relative z-10 h-full flex flex-col items-center justify-center text-center px-2">
                   {isAuthenticated ? (
                     <>
-                      {/* Header */}
-                      <h3 className="text-lg font-bold text-[var(--foreground)] mb-1">Volition</h3>
-                      <p className="text-[10px] text-[var(--muted-foreground)] mb-3 max-w-[200px]">Track and grow your contributions across 7 impact lanes</p>
-
-                      {/* Lane Carousel */}
-                      <div className="relative w-full mb-3">
-                        {/* Lane indicator dots */}
-                        <div className="flex items-center justify-center gap-1 mb-2">
-                          {volitionLanes.map((_, i) => (
-                            <motion.button
-                              key={i}
-                              className={`w-1.5 h-1.5 rounded-full transition-all ${
-                                activeLaneIndex === i
-                                  ? 'bg-[var(--primary)] w-3'
-                                  : 'bg-[var(--muted-foreground)]/30'
-                              }`}
-                              onClick={() => setActiveLaneIndex(i)}
-                              whileHover={{ scale: 1.3 }}
-                            />
-                          ))}
+                      {/* Header with icon badge - Larger */}
+                      <div className="flex items-center justify-between mb-2">
+                        <div className="flex items-center gap-2">
+                          <motion.div
+                            className="w-7 h-7 rounded-lg bg-gradient-to-br from-[var(--primary)] to-[var(--accent)] flex items-center justify-center shadow-sm"
+                            animate={{ scale: [1, 1.05, 1] }}
+                            transition={{ duration: 3, repeat: Infinity }}
+                          >
+                            <TrendingUp className="w-4 h-4 text-white" />
+                          </motion.div>
+                          <h3 className="font-bold text-base tracking-tight text-[var(--foreground)]">Volition</h3>
                         </div>
-
-                        {/* Active lane display */}
-                        <motion.div
-                          key={activeLaneIndex}
-                          initial={{ opacity: 0, x: 20 }}
-                          animate={{ opacity: 1, x: 0 }}
-                          exit={{ opacity: 0, x: -20 }}
-                          className="bg-[var(--muted)]/40 rounded-xl p-3 border border-[var(--border)]/30"
+                        <motion.span
+                          className="text-[10px] px-2.5 py-1 bg-gradient-to-r from-[var(--primary)]/20 to-[var(--accent)]/20 rounded-full text-[var(--primary)] font-semibold border border-[var(--primary)]/20"
+                          animate={{ scale: [1, 1.02, 1] }}
+                          transition={{ duration: 2, repeat: Infinity }}
                         >
-                          <div className="flex items-center justify-center gap-2 mb-2">
-                            {(() => {
-                              const lane = volitionLanes[activeLaneIndex]
-                              const Icon = lane.icon
-                              return (
-                                <>
-                                  <div className={`w-10 h-10 rounded-full bg-[var(--card)] flex items-center justify-center border-2 border-[var(--primary)]/30`}>
-                                    <Icon className={`w-5 h-5 ${lane.color}`} />
-                                  </div>
-                                  <div className="text-left">
-                                    <p className="text-sm font-bold text-[var(--foreground)]">{lane.label}</p>
-                                    <p className="text-[8px] text-[var(--muted-foreground)]">Lane {activeLaneIndex + 1} of 7</p>
-                                  </div>
-                                </>
-                              )
-                            })()}
-                          </div>
-                          <p className="text-[9px] text-[var(--muted-foreground)] leading-relaxed">
-                            {volitionLanes[activeLaneIndex].desc}
-                          </p>
+                          7 Lanes
+                        </motion.span>
+                      </div>
+
+                      {/* Description - Larger */}
+                      <p className="text-xs text-[var(--muted-foreground)] mb-2 leading-relaxed">
+                        Track your stock in Project Exodus
+                      </p>
+
+                      {/* Decorative divider */}
+                      <DecorativeDivider className="mb-3" />
+
+                      {/* 7 Lanes Grid - Larger */}
+                      <div className="flex-1 grid grid-cols-2 gap-1.5">
+                        {volitionLanes.map((lane, i) => {
+                          const Icon = lane.icon
+                          return (
+                            <motion.div
+                              key={lane.label}
+                              className="flex items-center gap-2 bg-[var(--muted)]/50 rounded-lg px-2.5 py-2 border border-[var(--border)]/30 backdrop-blur-sm"
+                              initial={{ opacity: 0, x: -10 }}
+                              animate={{ opacity: 1, x: 0 }}
+                              transition={{ delay: 0.5 + i * 0.05 }}
+                              whileHover={{ scale: 1.02 }}
+                            >
+                              <Icon className={`w-4 h-4 ${lane.color}`} />
+                              <span className="text-[10px] font-semibold text-[var(--foreground)]">{lane.label}</span>
+                            </motion.div>
+                          )
+                        })}
+                        {/* Extra slot for Impact highlight */}
+                        <motion.div
+                          className="col-span-2 flex items-center justify-center gap-2 bg-gradient-to-r from-[var(--primary)]/15 to-[var(--accent)]/15 rounded-lg py-2 border border-[var(--primary)]/20"
+                          initial={{ opacity: 0 }}
+                          animate={{ opacity: 1 }}
+                          transition={{ delay: 0.9 }}
+                        >
+                          <Globe className="w-4 h-4 text-[var(--primary)]" />
+                          <span className="text-[10px] font-bold text-[var(--primary)]">Environmental Impact</span>
+                          <Leaf className="w-3 h-3 text-[var(--accent)]" />
                         </motion.div>
-                      </div>
-
-                      {/* STOCK acronym */}
-                      <div className="flex items-center gap-0.5 mb-2">
-                        {['S', 'T', 'O', 'C', 'K'].map((letter, i) => (
-                          <span key={i} className="text-lg font-black bg-gradient-to-b from-[var(--primary)] to-[var(--accent)] bg-clip-text text-transparent">
-                            {letter}
-                          </span>
-                        ))}
-                      </div>
-                      <p className="text-[7px] text-[var(--muted-foreground)] tracking-wider mb-2">SUSTAINABLE TOTAL OUTCOME CAPITAL KNOWLEDGE</p>
-
-                      {/* Growth indicator */}
-                      <div className="flex items-center gap-2 px-3 py-1.5 rounded-full bg-gradient-to-r from-[var(--primary)]/10 to-[var(--accent)]/10 border border-[var(--primary)]/20">
-                        <TrendingUp className="w-3.5 h-3.5 text-[var(--accent)]" />
-                        <span className="text-[10px] font-semibold text-[var(--foreground)]">You Are The Asset</span>
-                        <Sparkles className="w-3.5 h-3.5 text-[var(--primary)]" />
                       </div>
                     </>
                   ) : (
-                    <>
-                      {/* Non-authenticated: Philosophy Statement */}
+                    /* Non-authenticated: Philosophy Statement on Front Side (shows on hover) */
+                    <div className="h-full flex flex-col items-center justify-center text-center px-2">
                       <motion.div
                         initial={{ opacity: 0, y: 10 }}
                         animate={{ opacity: 1, y: 0 }}
@@ -1392,8 +1283,122 @@ export function CommunityHeartPage({ isAuthenticated }: CommunityHeartPageProps)
                         <TrendingUp className="w-4 h-4 text-[var(--accent)]" />
                         <span className="text-[11px] font-semibold text-[var(--foreground)]">Join to track your impact</span>
                       </motion.div>
-                    </>
+                    </div>
                   )}
+                </div>
+              </motion.div>
+
+              {/* Back Side - Philosophy with Forest Mural (Larger text with internal scroll) */}
+              <motion.div
+                className="absolute inset-0 bg-gradient-to-br from-[var(--card)]/95 via-[var(--muted)]/30 to-[var(--card)]/95 rounded-xl p-4 border border-[var(--border)]/30 flex flex-col"
+                style={{ backfaceVisibility: 'hidden', transform: 'rotateY(180deg)' }}
+              >
+                {/* Forest Mural Background for back - theme aware */}
+                <div className="absolute inset-0 pointer-events-none overflow-hidden rounded-xl">
+                  <div className="absolute inset-0 bg-gradient-to-b from-[var(--accent)]/15 via-transparent to-[var(--muted)]/20" />
+
+                  {/* Stars for back - theme aware */}
+                  <div className="absolute top-0 left-0 right-0 h-16 text-[var(--primary)] opacity-30">
+                    <svg className="w-full h-full" viewBox="0 0 200 65">
+                      <circle cx="20" cy="12" r="0.8" fill="currentColor"/>
+                      <circle cx="55" cy="20" r="1" fill="currentColor" opacity="0.8"/>
+                      <circle cx="90" cy="8" r="0.7" fill="currentColor" opacity="0.9"/>
+                      <circle cx="125" cy="25" r="0.9" fill="currentColor"/>
+                      <circle cx="160" cy="15" r="0.8" fill="currentColor" opacity="0.8"/>
+                      <circle cx="180" cy="30" r="0.6" fill="currentColor" opacity="0.9"/>
+                    </svg>
+                  </div>
+
+                  {/* Pine trees silhouette - back - theme aware */}
+                  <div className="absolute left-0 bottom-0 h-24 w-12 text-[var(--primary)] opacity-15">
+                    <svg className="w-full h-full" viewBox="0 0 48 100">
+                      <path d="M16 100 L16 70 L8 78 L16 60 L6 72 L16 48 L12 54 L16 38 L20 54 L16 48 L26 72 L16 60 L24 78 L16 70 L16 100" fill="currentColor"/>
+                      <rect x="14" y="90" width="4" height="10" className="fill-[var(--muted-foreground)]" opacity="0.4"/>
+                    </svg>
+                  </div>
+
+                  <div className="absolute right-0 bottom-0 h-20 w-10 text-[var(--primary)] opacity-[0.12]">
+                    <svg className="w-full h-full" viewBox="0 0 40 80">
+                      <path d="M25 80 L25 58 L19 64 L25 48 L17 56 L25 38 L22 43 L25 30 L28 43 L25 38 L33 56 L25 48 L31 64 L25 58 L25 80" fill="currentColor"/>
+                      <rect x="23" y="72" width="4" height="8" className="fill-[var(--muted-foreground)]" opacity="0.4"/>
+                    </svg>
+                  </div>
+
+                  {/* Soft glows - theme aware */}
+                  <div className="absolute -top-6 -right-6 w-24 h-24 rounded-full bg-[var(--accent)]/20 blur-2xl" />
+                  <div className="absolute -bottom-6 -left-6 w-20 h-20 rounded-full bg-[var(--primary)]/15 blur-xl" />
+                </div>
+
+                <div className="relative z-10 h-full flex flex-col items-center justify-center text-center px-2">
+                  {/* Header */}
+                  <h3 className="text-lg font-bold text-[var(--foreground)] mb-1">Volition</h3>
+                  <p className="text-[10px] text-[var(--muted-foreground)] mb-3 max-w-[200px]">Track and grow your contributions across 7 impact lanes</p>
+
+                  {/* Lane Carousel */}
+                  <div className="relative w-full mb-3">
+                    {/* Lane indicator dots */}
+                    <div className="flex items-center justify-center gap-1 mb-2">
+                      {volitionLanes.map((_, i) => (
+                        <motion.button
+                          key={i}
+                          className={`w-1.5 h-1.5 rounded-full transition-all ${
+                            activeLaneIndex === i
+                              ? 'bg-[var(--primary)] w-3'
+                              : 'bg-[var(--muted-foreground)]/30'
+                          }`}
+                          onClick={() => setActiveLaneIndex(i)}
+                          whileHover={{ scale: 1.3 }}
+                        />
+                      ))}
+                    </div>
+
+                    {/* Active lane display */}
+                    <motion.div
+                      key={activeLaneIndex}
+                      initial={{ opacity: 0, x: 20 }}
+                      animate={{ opacity: 1, x: 0 }}
+                      exit={{ opacity: 0, x: -20 }}
+                      className="bg-[var(--muted)]/40 rounded-xl p-3 border border-[var(--border)]/30"
+                    >
+                      <div className="flex items-center justify-center gap-2 mb-2">
+                        {(() => {
+                          const lane = volitionLanes[activeLaneIndex]
+                          const Icon = lane.icon
+                          return (
+                            <>
+                              <div className={`w-10 h-10 rounded-full bg-[var(--card)] flex items-center justify-center border-2 border-[var(--primary)]/30`}>
+                                <Icon className={`w-5 h-5 ${lane.color}`} />
+                              </div>
+                              <div className="text-left">
+                                <p className="text-sm font-bold text-[var(--foreground)]">{lane.label}</p>
+                                <p className="text-[8px] text-[var(--muted-foreground)]">Lane {activeLaneIndex + 1} of 7</p>
+                              </div>
+                            </>
+                          )
+                        })()}
+                      </div>
+                      <p className="text-[9px] text-[var(--muted-foreground)] leading-relaxed">
+                        {volitionLanes[activeLaneIndex].desc}
+                      </p>
+                    </motion.div>
+                  </div>
+
+                  {/* STOCK acronym */}
+                  <div className="flex items-center gap-0.5 mb-2">
+                    {['S', 'T', 'O', 'C', 'K'].map((letter, i) => (
+                      <span key={i} className="text-lg font-black bg-gradient-to-b from-[var(--primary)] to-[var(--accent)] bg-clip-text text-transparent">
+                        {letter}
+                      </span>
+                    ))}
+                  </div>
+                  <p className="text-[7px] text-[var(--muted-foreground)] tracking-wider mb-2">SUSTAINABLE TOTAL OUTCOME CAPITAL KNOWLEDGE</p>
+
+                  {/* Growth indicator */}
+                  <div className="flex items-center gap-2 px-3 py-1.5 rounded-full bg-gradient-to-r from-[var(--primary)]/10 to-[var(--accent)]/10 border border-[var(--primary)]/20">
+                    <TrendingUp className="w-3.5 h-3.5 text-[var(--accent)]" />
+                    <span className="text-[10px] font-semibold text-[var(--foreground)]">You Are The Asset</span>
+                    <Sparkles className="w-3.5 h-3.5 text-[var(--primary)]" />
+                  </div>
                 </div>
               </motion.div>
             </motion.div>
