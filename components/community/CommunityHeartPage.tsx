@@ -1233,56 +1233,37 @@ export function CommunityHeartPage({ isAuthenticated }: CommunityHeartPageProps)
                     </>
                   ) : (
                     /* Non-authenticated: Philosophy Statement on Front Side (shows on hover) */
-                    <div className="h-full flex flex-col items-center justify-center text-center px-2">
-                      <motion.div
-                        initial={{ opacity: 0, y: 10 }}
-                        animate={{ opacity: 1, y: 0 }}
-                        transition={{ delay: 0.2 }}
-                        className="mb-4"
-                      >
-                        <h3 className="text-xl font-bold text-[var(--foreground)] mb-2 italic" style={{ fontFamily: 'Georgia, serif' }}>
-                          "True wealth is measured in impact, not accumulation."
-                        </h3>
-                      </motion.div>
+                    <div className="h-full flex flex-col items-center justify-center text-center px-3">
+                      {/* Quote */}
+                      <h3 className="text-base font-bold text-[var(--foreground)] mb-2 italic leading-snug" style={{ fontFamily: 'Georgia, serif' }}>
+                        "True wealth is measured in impact, not accumulation."
+                      </h3>
 
                       {/* Decorative divider */}
-                      <div className="flex items-center justify-center gap-2 mb-4">
-                        <div className="w-8 h-px bg-gradient-to-r from-transparent to-[var(--primary)]/50" />
-                        <Leaf className="w-4 h-4 text-[var(--primary)]" />
-                        <div className="w-8 h-px bg-gradient-to-l from-transparent to-[var(--primary)]/50" />
+                      <div className="flex items-center justify-center gap-2 mb-2">
+                        <div className="w-6 h-px bg-gradient-to-r from-transparent to-[var(--primary)]/50" />
+                        <Leaf className="w-3 h-3 text-[var(--primary)]" />
+                        <div className="w-6 h-px bg-gradient-to-l from-transparent to-[var(--primary)]/50" />
                       </div>
 
-                      {/* Explanation */}
-                      <motion.div
-                        initial={{ opacity: 0 }}
-                        animate={{ opacity: 1 }}
-                        transition={{ delay: 0.4 }}
-                        className="space-y-3"
-                      >
-                        <p className="text-xs text-[var(--muted-foreground)] leading-relaxed">
-                          <span className="font-bold text-[var(--foreground)]">Volition</span> is your personal sustainability dashboard —
-                          tracking your growth across 7 impact lanes as you contribute to a regenerative future.
-                        </p>
+                      {/* Explanation - more compact */}
+                      <p className="text-[10px] text-[var(--muted-foreground)] leading-relaxed mb-2">
+                        <span className="font-bold text-[var(--foreground)]">Volition</span> tracks your growth across 7 impact lanes
+                        as you contribute to a regenerative future.
+                      </p>
 
-                        <div className="bg-[var(--muted)]/40 rounded-lg p-3 border border-[var(--border)]/30">
-                          <p className="text-[10px] text-[var(--muted-foreground)] leading-relaxed">
-                            Every action compounds. Every lesson learned becomes wisdom shared.
-                            Your journey here builds <span className="font-semibold text-[var(--primary)]">STOCK</span> —
-                            your Sustainable Total Outcome Capital Knowledge.
-                          </p>
-                        </div>
-                      </motion.div>
+                      <div className="bg-[var(--muted)]/40 rounded-lg px-2.5 py-2 border border-[var(--border)]/30 mb-2">
+                        <p className="text-[9px] text-[var(--muted-foreground)] leading-relaxed">
+                          Every action compounds. Your journey builds <span className="font-semibold text-[var(--primary)]">STOCK</span> —
+                          Sustainable Total Outcome Capital Knowledge.
+                        </p>
+                      </div>
 
                       {/* Join CTA */}
-                      <motion.div
-                        initial={{ opacity: 0, y: 10 }}
-                        animate={{ opacity: 1, y: 0 }}
-                        transition={{ delay: 0.6 }}
-                        className="mt-4 flex items-center gap-2 px-4 py-2 rounded-full bg-gradient-to-r from-[var(--primary)]/15 to-[var(--accent)]/15 border border-[var(--primary)]/30"
-                      >
-                        <TrendingUp className="w-4 h-4 text-[var(--accent)]" />
-                        <span className="text-[11px] font-semibold text-[var(--foreground)]">Join to track your impact</span>
-                      </motion.div>
+                      <div className="flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-gradient-to-r from-[var(--primary)]/15 to-[var(--accent)]/15 border border-[var(--primary)]/30">
+                        <TrendingUp className="w-3.5 h-3.5 text-[var(--accent)]" />
+                        <span className="text-[10px] font-semibold text-[var(--foreground)]">Join to track your impact</span>
+                      </div>
                     </div>
                   )}
                 </div>
