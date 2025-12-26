@@ -146,22 +146,22 @@ const gradeLevels = [
 
 // Core learning topics from the Learn page
 const coreLearnTopics = [
-  { name: 'Renewable Energy', icon: Zap, color: 'text-amber-500', bgColor: 'bg-amber-500/10' },
-  { name: 'Water Systems', icon: Droplet, color: 'text-cyan-500', bgColor: 'bg-cyan-500/10' },
-  { name: 'Regenerative Ag', icon: Sprout, color: 'text-emerald-500', bgColor: 'bg-emerald-500/10' },
-  { name: 'Zero Waste', icon: Recycle, color: 'text-green-500', bgColor: 'bg-green-500/10' },
-  { name: 'Green Building', icon: Home, color: 'text-teal-500', bgColor: 'bg-teal-500/10' },
-  { name: 'Food Sovereignty', icon: Leaf, color: 'text-lime-500', bgColor: 'bg-lime-500/10' },
+  { name: 'Renewable Energy', icon: Zap, color: 'text-amber-500', bgColor: 'bg-amber-500/10', desc: 'Solar, wind, hydro & geothermal power systems', modules: 12 },
+  { name: 'Water Systems', icon: Droplet, color: 'text-cyan-500', bgColor: 'bg-cyan-500/10', desc: 'Conservation, purification & watershed management', modules: 8 },
+  { name: 'Regenerative Ag', icon: Sprout, color: 'text-emerald-500', bgColor: 'bg-emerald-500/10', desc: 'Soil health, permaculture & carbon farming', modules: 15 },
+  { name: 'Zero Waste', icon: Recycle, color: 'text-green-500', bgColor: 'bg-green-500/10', desc: 'Circular economy & waste reduction strategies', modules: 10 },
+  { name: 'Green Building', icon: Home, color: 'text-teal-500', bgColor: 'bg-teal-500/10', desc: 'Sustainable architecture & LEED certification', modules: 9 },
+  { name: 'Food Sovereignty', icon: Leaf, color: 'text-lime-500', bgColor: 'bg-lime-500/10', desc: 'Local food systems & community gardens', modules: 7 },
 ]
 
 // Interactive learning tools
 const interactiveTools = [
-  { name: 'Simulations', icon: FlaskConical, color: 'text-purple-500' },
-  { name: 'Video Lessons', icon: Play, color: 'text-rose-500' },
-  { name: 'Challenges', icon: Puzzle, color: 'text-orange-500' },
-  { name: 'Calculators', icon: Calculator, color: 'text-blue-500' },
-  { name: 'Virtual Tours', icon: Map, color: 'text-teal-500' },
-  { name: 'Achievements', icon: Trophy, color: 'text-amber-500' },
+  { name: 'Simulations', icon: FlaskConical, color: 'text-purple-500', desc: 'Interactive models of ecosystems & energy systems', bgColor: 'bg-purple-500/10' },
+  { name: 'Video Lessons', icon: Play, color: 'text-rose-500', desc: 'Expert-led tutorials & field documentaries', bgColor: 'bg-rose-500/10' },
+  { name: 'Challenges', icon: Puzzle, color: 'text-orange-500', desc: 'Real-world problem solving & case studies', bgColor: 'bg-orange-500/10' },
+  { name: 'Calculators', icon: Calculator, color: 'text-blue-500', desc: 'Carbon footprint & sustainability metrics', bgColor: 'bg-blue-500/10' },
+  { name: 'Virtual Tours', icon: Map, color: 'text-teal-500', desc: 'Explore eco-projects around the world', bgColor: 'bg-teal-500/10' },
+  { name: 'Achievements', icon: Trophy, color: 'text-amber-500', desc: 'Earn badges & track your learning journey', bgColor: 'bg-amber-500/10' },
 ]
 
 // Fake user ID previews to showcase different guardian archetypes
@@ -866,24 +866,29 @@ export function CommunityHeartPage({ isAuthenticated }: CommunityHeartPageProps)
                       initial={{ opacity: 0, scale: 0.95 }}
                       animate={{ opacity: 1, scale: 1 }}
                       transition={{ duration: 0.25 }}
-                      className={`flex-1 ${coreLearnTopics[activeTopicIndex].bgColor} rounded-lg p-3 border border-[var(--border)]/40 flex flex-col items-center justify-center text-center`}
+                      className={`flex-1 ${coreLearnTopics[activeTopicIndex].bgColor} rounded-lg p-2.5 border border-[var(--border)]/40 flex flex-col items-center justify-center text-center`}
                     >
                       {(() => {
                         const topic = coreLearnTopics[activeTopicIndex]
                         const Icon = topic.icon
                         return (
                           <>
-                            <div className={`w-14 h-14 rounded-full bg-[var(--card)] flex items-center justify-center mb-2 shadow-lg border-2 ${topic.color.replace('text-', 'border-')}/30`}>
-                              <Icon className={`w-7 h-7 ${topic.color}`} />
+                            <div className={`w-11 h-11 rounded-full bg-[var(--card)] flex items-center justify-center mb-1.5 shadow-lg border-2 ${topic.color.replace('text-', 'border-')}/30`}>
+                              <Icon className={`w-5 h-5 ${topic.color}`} />
                             </div>
-                            <p className="text-base font-bold text-[var(--foreground)] leading-tight">{topic.name}</p>
+                            <p className="text-sm font-bold text-[var(--foreground)] leading-tight mb-1">{topic.name}</p>
+                            <p className="text-[8px] text-[var(--muted-foreground)] leading-snug mb-1.5 px-1">{topic.desc}</p>
+                            <div className="flex items-center gap-1 px-2 py-0.5 rounded-full bg-[var(--card)]/80 border border-[var(--border)]/30">
+                              <BookOpen className="w-2.5 h-2.5 text-[var(--primary)]" />
+                              <span className="text-[7px] font-bold text-[var(--foreground)]">{topic.modules} modules</span>
+                            </div>
                           </>
                         )
                       })()}
                     </motion.div>
 
                     {/* Carousel dots */}
-                    <div className="flex items-center justify-center gap-1.5 mt-2">
+                    <div className="flex items-center justify-center gap-1.5 mt-1.5">
                       {coreLearnTopics.map((_, i) => (
                         <button
                           key={i}
@@ -911,24 +916,25 @@ export function CommunityHeartPage({ isAuthenticated }: CommunityHeartPageProps)
                       initial={{ opacity: 0, scale: 0.95 }}
                       animate={{ opacity: 1, scale: 1 }}
                       transition={{ duration: 0.25 }}
-                      className="flex-1 bg-[var(--muted)]/60 rounded-lg p-3 border border-[var(--border)]/40 flex flex-col items-center justify-center text-center"
+                      className={`flex-1 ${interactiveTools[activeToolIndex].bgColor} rounded-lg p-2.5 border border-[var(--border)]/40 flex flex-col items-center justify-center text-center`}
                     >
                       {(() => {
                         const tool = interactiveTools[activeToolIndex]
                         const Icon = tool.icon
                         return (
                           <>
-                            <div className={`w-14 h-14 rounded-full bg-[var(--card)] flex items-center justify-center mb-2 shadow-lg border-2 ${tool.color.replace('text-', 'border-')}/30`}>
-                              <Icon className={`w-7 h-7 ${tool.color}`} />
+                            <div className={`w-11 h-11 rounded-full bg-[var(--card)] flex items-center justify-center mb-1.5 shadow-lg border-2 ${tool.color.replace('text-', 'border-')}/30`}>
+                              <Icon className={`w-5 h-5 ${tool.color}`} />
                             </div>
-                            <p className="text-base font-bold text-[var(--foreground)] leading-tight">{tool.name}</p>
+                            <p className="text-sm font-bold text-[var(--foreground)] leading-tight mb-1">{tool.name}</p>
+                            <p className="text-[8px] text-[var(--muted-foreground)] leading-snug px-1">{tool.desc}</p>
                           </>
                         )
                       })()}
                     </motion.div>
 
                     {/* Carousel dots */}
-                    <div className="flex items-center justify-center gap-1.5 mt-2">
+                    <div className="flex items-center justify-center gap-1.5 mt-1.5">
                       {interactiveTools.map((_, i) => (
                         <button
                           key={i}
