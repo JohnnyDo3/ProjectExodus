@@ -956,34 +956,32 @@ export function CommunityHeartPage({ isAuthenticated }: CommunityHeartPageProps)
                       initial={{ opacity: 0, scale: 0.95 }}
                       animate={{ opacity: 1, scale: 1 }}
                       transition={{ duration: 0.3 }}
-                      className={`flex-1 ${coreLearnTopics[activeTopicIndex].bgColor} rounded-xl p-3 border border-[var(--border)]/40 flex flex-col`}
+                      className={`flex-1 ${coreLearnTopics[activeTopicIndex].bgColor} rounded-xl p-3 border border-[var(--border)]/40 flex flex-col items-center justify-between text-center`}
                     >
                       {(() => {
                         const topic = coreLearnTopics[activeTopicIndex]
                         const Icon = topic.icon
                         return (
                           <>
-                            {/* Header row */}
-                            <div className="flex items-center gap-2 mb-2">
-                              <div className={`w-10 h-10 rounded-xl bg-[var(--card)] flex items-center justify-center shadow-lg border-2 ${topic.color.replace('text-', 'border-')}/40`}>
-                                <Icon className={`w-5 h-5 ${topic.color}`} />
-                              </div>
-                              <div className="flex-1 min-w-0">
-                                <p className="text-sm font-bold text-[var(--foreground)] leading-tight truncate">{topic.name}</p>
-                                <div className="flex items-center gap-1 mt-0.5">
-                                  <BookOpen className="w-3 h-3 text-[var(--primary)]" />
-                                  <span className="text-[9px] font-semibold text-[var(--primary)]">{topic.modules} modules</span>
-                                </div>
-                              </div>
+                            {/* Centered icon */}
+                            <div className={`w-12 h-12 rounded-2xl bg-[var(--card)] flex items-center justify-center shadow-lg border-2 ${topic.color.replace('text-', 'border-')}/40`}>
+                              <Icon className={`w-6 h-6 ${topic.color}`} />
                             </div>
 
-                            {/* Description - fills remaining space */}
-                            <div className="flex-1 flex items-center">
-                              <p className="text-[11px] text-[var(--foreground)]/80 leading-relaxed">{topic.desc}</p>
+                            {/* Centered title */}
+                            <p className="text-sm font-bold text-[var(--foreground)] leading-tight mt-2">{topic.name}</p>
+
+                            {/* Centered description */}
+                            <p className="text-[10px] text-[var(--foreground)]/70 leading-relaxed mt-1 px-1">{topic.desc}</p>
+
+                            {/* Centered module badge */}
+                            <div className="flex items-center gap-1.5 mt-2 px-3 py-1 rounded-full bg-[var(--card)]/60 border border-[var(--border)]/30">
+                              <BookOpen className="w-3 h-3 text-[var(--primary)]" />
+                              <span className="text-[9px] font-bold text-[var(--primary)]">{topic.modules} modules</span>
                             </div>
 
-                            {/* Progress dots at bottom */}
-                            <div className="flex items-center justify-center gap-1.5 pt-2 border-t border-[var(--border)]/20 mt-2">
+                            {/* Icon navigation at bottom */}
+                            <div className="flex items-center justify-center gap-2 pt-2 mt-auto">
                               {coreLearnTopics.map((t, i) => {
                                 const DotIcon = t.icon
                                 return (
@@ -991,12 +989,12 @@ export function CommunityHeartPage({ isAuthenticated }: CommunityHeartPageProps)
                                     key={i}
                                     className={`transition-all duration-200 ${
                                       activeTopicIndex === i
-                                        ? `${t.color} scale-110`
-                                        : 'text-[var(--muted-foreground)]/30 hover:text-[var(--muted-foreground)]/50'
+                                        ? `${t.color} scale-125`
+                                        : 'text-[var(--muted-foreground)]/25 hover:text-[var(--muted-foreground)]/50'
                                     }`}
                                     onClick={() => setActiveTopicIndex(i)}
                                   >
-                                    <DotIcon className="w-3.5 h-3.5" />
+                                    <DotIcon className="w-3 h-3" />
                                   </button>
                                 )
                               })}
@@ -1015,31 +1013,32 @@ export function CommunityHeartPage({ isAuthenticated }: CommunityHeartPageProps)
                       initial={{ opacity: 0, scale: 0.95 }}
                       animate={{ opacity: 1, scale: 1 }}
                       transition={{ duration: 0.3 }}
-                      className={`flex-1 ${interactiveTools[activeToolIndex].bgColor} rounded-xl p-3 border border-[var(--border)]/40 flex flex-col`}
+                      className={`flex-1 ${interactiveTools[activeToolIndex].bgColor} rounded-xl p-3 border border-[var(--border)]/40 flex flex-col items-center justify-between text-center`}
                     >
                       {(() => {
                         const tool = interactiveTools[activeToolIndex]
                         const Icon = tool.icon
                         return (
                           <>
-                            {/* Header row */}
-                            <div className="flex items-center gap-2 mb-2">
-                              <div className={`w-10 h-10 rounded-xl bg-[var(--card)] flex items-center justify-center shadow-lg border-2 ${tool.color.replace('text-', 'border-')}/40`}>
-                                <Icon className={`w-5 h-5 ${tool.color}`} />
-                              </div>
-                              <div className="flex-1 min-w-0">
-                                <p className="text-sm font-bold text-[var(--foreground)] leading-tight">{tool.name}</p>
-                                <span className="text-[9px] font-medium text-[var(--accent)]">Interactive</span>
-                              </div>
+                            {/* Centered icon */}
+                            <div className={`w-12 h-12 rounded-2xl bg-[var(--card)] flex items-center justify-center shadow-lg border-2 ${tool.color.replace('text-', 'border-')}/40`}>
+                              <Icon className={`w-6 h-6 ${tool.color}`} />
                             </div>
 
-                            {/* Description - fills remaining space */}
-                            <div className="flex-1 flex items-center">
-                              <p className="text-[11px] text-[var(--foreground)]/80 leading-relaxed">{tool.desc}</p>
+                            {/* Centered title */}
+                            <p className="text-sm font-bold text-[var(--foreground)] leading-tight mt-2">{tool.name}</p>
+
+                            {/* Centered description */}
+                            <p className="text-[10px] text-[var(--foreground)]/70 leading-relaxed mt-1 px-1">{tool.desc}</p>
+
+                            {/* Centered interactive badge */}
+                            <div className="flex items-center gap-1.5 mt-2 px-3 py-1 rounded-full bg-[var(--card)]/60 border border-[var(--border)]/30">
+                              <Sparkles className="w-3 h-3 text-[var(--accent)]" />
+                              <span className="text-[9px] font-bold text-[var(--accent)]">Interactive</span>
                             </div>
 
-                            {/* Progress dots at bottom */}
-                            <div className="flex items-center justify-center gap-1.5 pt-2 border-t border-[var(--border)]/20 mt-2">
+                            {/* Icon navigation at bottom */}
+                            <div className="flex items-center justify-center gap-2 pt-2 mt-auto">
                               {interactiveTools.map((t, i) => {
                                 const DotIcon = t.icon
                                 return (
@@ -1047,12 +1046,12 @@ export function CommunityHeartPage({ isAuthenticated }: CommunityHeartPageProps)
                                     key={i}
                                     className={`transition-all duration-200 ${
                                       activeToolIndex === i
-                                        ? `${t.color} scale-110`
-                                        : 'text-[var(--muted-foreground)]/30 hover:text-[var(--muted-foreground)]/50'
+                                        ? `${t.color} scale-125`
+                                        : 'text-[var(--muted-foreground)]/25 hover:text-[var(--muted-foreground)]/50'
                                     }`}
                                     onClick={() => setActiveToolIndex(i)}
                                   >
-                                    <DotIcon className="w-3.5 h-3.5" />
+                                    <DotIcon className="w-3 h-3" />
                                   </button>
                                 )
                               })}
