@@ -3928,11 +3928,11 @@ export default function ArticlesPage() {
                 scaleY: { duration: 0.45, ease: [0.1, 0.9, 0.3, 1] }
               }}
               style={{ transformOrigin: 'top center', perspective: '1000px' }}
-              className="relative w-full max-w-2xl mx-4 flex flex-col max-h-[85vh]"
+              className="relative w-full max-w-2xl mx-4 flex flex-col"
               onClick={(e) => e.stopPropagation()}
             >
-              {/* Scroll container with rolled ends - flex column for proper sizing */}
-              <div className="relative flex flex-col min-h-0 max-h-full">
+              {/* Scroll container with rolled ends */}
+              <div className="relative flex flex-col">
                 {/* Top scroll roller - wooden rod */}
                 <div className="relative h-8 z-20 flex-shrink-0">
                   <div className="absolute inset-x-0 top-0 h-6 bg-gradient-to-b from-amber-700 via-amber-800 to-amber-900 rounded-t-full shadow-lg border-t-2 border-amber-600/60">
@@ -3953,8 +3953,8 @@ export default function ArticlesPage() {
                   </button>
                 </div>
 
-                {/* Parchment body - flex-1 with min-h-0 for proper shrinking, overflow-auto for scrollable content */}
-                <div className="relative flex-1 min-h-0 bg-gradient-to-b from-amber-100 via-amber-50 to-amber-100 shadow-2xl overflow-y-auto overflow-x-hidden scrollbar-thin scrollbar-thumb-amber-600/40 scrollbar-track-transparent"
+                {/* Parchment body - no scroll, show all content */}
+                <div className="relative bg-gradient-to-b from-amber-100 via-amber-50 to-amber-100 shadow-2xl"
                   style={{ boxShadow: '0 25px 80px -15px rgba(0, 0, 0, 0.6), inset 0 0 40px rgba(139, 69, 19, 0.08)' }}
                 >
                   {/* Aged parchment texture */}
@@ -4070,7 +4070,7 @@ export default function ArticlesPage() {
                         /* Authenticated user - show read and save buttons */
                         <div className="flex items-center justify-center gap-4">
                           <Link href={`/articles/${previewArticle.slug}`} onClick={closePreview}>
-                            <Button className="bg-gradient-to-b from-amber-700 via-amber-800 to-amber-900 hover:from-amber-600 hover:via-amber-700 hover:to-amber-800 text-amber-100 font-bold px-8 py-3 rounded-sm shadow-lg border border-amber-600/60" style={{ fontFamily: 'Georgia, serif', letterSpacing: '0.05em' }}>
+                            <Button className="bg-gradient-to-b from-amber-200 via-amber-300 to-amber-400 hover:from-amber-300 hover:via-amber-400 hover:to-amber-500 text-amber-950 font-bold px-8 py-3 rounded-sm shadow-lg border border-amber-600/60" style={{ fontFamily: 'Georgia, serif', letterSpacing: '0.05em' }}>
                               <BookOpen className="w-4 h-4 mr-2" />
                               Read Article Scroll
                             </Button>
@@ -4082,8 +4082,8 @@ export default function ArticlesPage() {
                             }}
                             className={`p-3 rounded-sm shadow-md transition-colors border-2 ${
                               savedArticles.includes(previewArticle.id)
-                                ? 'bg-gradient-to-b from-amber-600 to-amber-800 text-amber-100 border-amber-500/60'
-                                : 'bg-amber-100 hover:bg-amber-200 text-amber-800 border-amber-500/50'
+                                ? 'bg-gradient-to-b from-amber-400 to-amber-500 text-amber-950 border-amber-600/60'
+                                : 'bg-amber-100 hover:bg-amber-200 text-amber-950 border-amber-500/50'
                             }`}
                           >
                             <Bookmark className={`w-5 h-5 ${savedArticles.includes(previewArticle.id) ? 'fill-current' : ''}`} />
@@ -4092,18 +4092,18 @@ export default function ArticlesPage() {
                       ) : (
                         /* Non-authenticated user - show sign-up CTA */
                         <div className="text-center">
-                          <p className="text-sm text-amber-800 mb-3 italic" style={{ fontFamily: 'Georgia, serif' }}>
+                          <p className="text-sm text-amber-950 mb-3 italic" style={{ fontFamily: 'Georgia, serif' }}>
                             Join our community to unlock this scroll
                           </p>
                           <div className="flex items-center justify-center gap-3">
                             <Link href="/auth/signup" onClick={closePreview}>
-                              <Button className="bg-gradient-to-b from-amber-700 via-amber-800 to-amber-900 hover:from-amber-600 hover:via-amber-700 hover:to-amber-800 text-amber-100 font-bold px-6 py-3 rounded-sm shadow-lg border border-amber-600/60" style={{ fontFamily: 'Georgia, serif', letterSpacing: '0.05em' }}>
+                              <Button className="bg-gradient-to-b from-amber-200 via-amber-300 to-amber-400 hover:from-amber-300 hover:via-amber-400 hover:to-amber-500 text-amber-950 font-bold px-6 py-3 rounded-sm shadow-lg border border-amber-600/60" style={{ fontFamily: 'Georgia, serif', letterSpacing: '0.05em' }}>
                                 <Star className="w-4 h-4 mr-2" />
                                 Join Free
                               </Button>
                             </Link>
                             <Link href="/auth/signin" onClick={closePreview}>
-                              <Button variant="outline" className="bg-amber-100 hover:bg-amber-200 text-amber-800 font-bold px-6 py-3 rounded-sm shadow-md border-2 border-amber-500/50" style={{ fontFamily: 'Georgia, serif', letterSpacing: '0.05em' }}>
+                              <Button variant="outline" className="bg-amber-100 hover:bg-amber-200 text-amber-950 font-bold px-6 py-3 rounded-sm shadow-md border-2 border-amber-600/50" style={{ fontFamily: 'Georgia, serif', letterSpacing: '0.05em' }}>
                                 Sign In
                               </Button>
                             </Link>
