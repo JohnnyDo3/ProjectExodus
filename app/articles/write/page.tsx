@@ -38,6 +38,7 @@ import {
   Home,
   Heart,
   User,
+  MoreHorizontal,
 } from 'lucide-react'
 import toast from 'react-hot-toast'
 import { parseCitation, type ParsedCitation } from '@/components/editor/TipTapEditor'
@@ -75,6 +76,7 @@ const ARTICLE_CATEGORIES = [
   { id: 'building', name: 'Building', slug: 'building', icon: Home },
   { id: 'food', name: 'Food', slug: 'food', icon: Heart },
   { id: 'community', name: 'Community', slug: 'community', icon: User },
+  { id: 'other', name: 'Other', slug: 'other', icon: MoreHorizontal },
 ]
 
 const STEPS = [
