@@ -51,6 +51,7 @@ import {
   Lock,
   Feather,
   ArrowUpDown,
+  UserPlus,
 } from 'lucide-react'
 import { useTimeTheme } from '@/components/providers/TimeThemeProvider'
 
@@ -3673,6 +3674,74 @@ export default function ArticlesPage() {
       {/* CONTENT SECTION - Below the bookshelf     */}
       {/* Search, Categories, and more              */}
       {/* ========================================== */}
+
+      {/* Non-authenticated users see locked content message */}
+      {!session ? (
+        <div className="relative bg-gradient-to-b from-amber-950 via-stone-900 to-stone-950 min-h-[60vh]">
+          {/* Decorative overlay */}
+          <div className="absolute inset-0 opacity-20" style={{
+            backgroundImage: `url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M0 50 Q100 45 200 50' fill='none' stroke='%23fff' stroke-width='0.3'/%3E%3Cpath d='M0 100 Q100 95 200 100' fill='none' stroke='%23fff' stroke-width='0.3'/%3E%3Cpath d='M0 150 Q100 145 200 150' fill='none' stroke='%23fff' stroke-width='0.3'/%3E%3C/svg%3E")`,
+          }} />
+
+          {/* Locked content message */}
+          <div className="relative z-10 flex flex-col items-center justify-center py-20 px-4">
+            {/* Lock icon with glow */}
+            <div className="relative mb-6">
+              <div className="absolute inset-0 bg-amber-500/20 rounded-full blur-xl animate-pulse" />
+              <div className="relative w-20 h-20 bg-gradient-to-br from-amber-700 to-amber-900 rounded-full flex items-center justify-center shadow-2xl border-4 border-amber-600/50">
+                <Lock className="w-10 h-10 text-amber-200" />
+              </div>
+            </div>
+
+            {/* Title */}
+            <h2 className="text-2xl sm:text-3xl font-bold text-amber-100 text-center mb-3" style={{ fontFamily: 'Georgia, serif' }}>
+              Unlock the Grand Library
+            </h2>
+
+            {/* Description */}
+            <p className="text-amber-300/80 text-center max-w-md mb-8 leading-relaxed">
+              Join our community to access the full collection of wisdom scrolls,
+              contribute your own articles, and track your reading journey.
+            </p>
+
+            {/* CTA Buttons */}
+            <div className="flex flex-col sm:flex-row items-center gap-4">
+              <Link
+                href="/auth/signup"
+                className="flex items-center gap-2 px-8 py-3 bg-gradient-to-r from-amber-600 to-amber-700 hover:from-amber-500 hover:to-amber-600 text-white font-bold rounded-xl shadow-lg transition-all transform hover:scale-105 border-2 border-amber-500/50"
+              >
+                <UserPlus className="w-5 h-5" />
+                Join Free
+              </Link>
+              <Link
+                href="/auth/signin"
+                className="flex items-center gap-2 px-8 py-3 bg-transparent hover:bg-amber-800/30 text-amber-200 font-bold rounded-xl transition-all border-2 border-amber-600/50"
+              >
+                Sign In
+              </Link>
+            </div>
+
+            {/* Features preview */}
+            <div className="mt-12 grid grid-cols-1 sm:grid-cols-3 gap-6 max-w-2xl">
+              <div className="flex flex-col items-center text-center p-4">
+                <BookOpen className="w-8 h-8 text-amber-500 mb-2" />
+                <p className="text-sm font-semibold text-amber-200">Browse All Articles</p>
+                <p className="text-xs text-amber-400/70 mt-1">Access our full library</p>
+              </div>
+              <div className="flex flex-col items-center text-center p-4">
+                <PenSquare className="w-8 h-8 text-amber-500 mb-2" />
+                <p className="text-sm font-semibold text-amber-200">Write & Share</p>
+                <p className="text-xs text-amber-400/70 mt-1">Contribute your wisdom</p>
+              </div>
+              <div className="flex flex-col items-center text-center p-4">
+                <TrendingUp className="w-8 h-8 text-amber-500 mb-2" />
+                <p className="text-sm font-semibold text-amber-200">Track Progress</p>
+                <p className="text-xs text-amber-400/70 mt-1">Monitor your journey</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      ) : (
       <div className="relative bg-gradient-to-b from-amber-950 via-stone-900 to-amber-950">
         <div className="container mx-auto px-4 py-8 relative z-10 lg:px-[20%]">
           <div className="max-w-6xl mx-auto">
@@ -4704,6 +4773,7 @@ export default function ArticlesPage() {
             } as React.CSSProperties}
           />
         </div>
+      )}
       )}
 
       {/* Floating Write Button (Mobile) */}
