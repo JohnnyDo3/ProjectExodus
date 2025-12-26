@@ -1695,3 +1695,50 @@ body.textbook-fullscreen .fixed.inset-0.z-50 {
 .animate-shimmer {
   animation: shimmer 3s ease-in-out infinite;
 }
+
+/* Enhanced candle flame animations */
+@keyframes flame-dance {
+  0% {
+    transform: translateX(-50%) scaleX(1) scaleY(1);
+  }
+  50% {
+    transform: translateX(-50%) scaleX(0.95) scaleY(1.05);
+  }
+  100% {
+    transform: translateX(-50%) scaleX(1.05) scaleY(0.95);
+  }
+}
+
+@keyframes flame-core {
+  0% {
+    transform: translateX(-50%) scaleX(1) scaleY(1);
+    opacity: 0.9;
+  }
+  50% {
+    transform: translateX(-50%) scaleX(0.9) scaleY(1.1);
+    opacity: 1;
+  }
+  100% {
+    transform: translateX(-50%) scaleX(1.1) scaleY(0.9);
+    opacity: 0.85;
+  }
+}
+
+@keyframes flame-tip {
+  0%, 100% {
+    transform: translateX(-50%) translateY(0) scaleY(1);
+    opacity: 0.9;
+  }
+  25% {
+    transform: translateX(-48%) translateY(-1px) scaleY(1.1);
+    opacity: 1;
+  }
+  50% {
+    transform: translateX(-50%) translateY(-2px) scaleY(0.9);
+    opacity: 0.8;
+  }
+  75% {
+    transform: translateX(-52%) translateY(-1px) scaleY(1.05);
+    opacity: 1;
+  }
+}

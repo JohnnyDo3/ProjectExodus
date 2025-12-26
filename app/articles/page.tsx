@@ -1336,12 +1336,55 @@ export default function ArticlesPage() {
                           <div className="absolute -bottom-0.5 left-1/2 -translate-x-1/2 w-3 h-0.5 bg-amber-100/50 rounded-full blur-[0.5px]" />
                           {/* Wick */}
                           <div className="absolute -top-1 left-1/2 -translate-x-1/2 w-0.5 h-1.5 bg-gradient-to-t from-gray-700 to-gray-500" />
-                          {/* Flame - sits on wick */}
-                          <div className={`absolute -top-5 left-1/2 -translate-x-1/2 ${isNightTime ? 'opacity-100' : 'opacity-60'}`}>
-                            <div className="absolute -inset-2 bg-gradient-radial from-orange-400/30 via-orange-300/15 to-transparent rounded-full blur-md" />
-                            <div className="w-3 h-4 bg-gradient-to-t from-orange-500 via-orange-400 to-yellow-200 rounded-full blur-[1px] animate-pulse" style={{ animationDelay: `${i * 0.3}s`, animationDuration: '0.7s' }} />
+                          {/* Flame - sits on wick - ENHANCED with multi-layer detail */}
+                          <div className={`absolute -top-6 left-1/2 -translate-x-1/2 ${isNightTime ? 'opacity-100' : 'opacity-70'}`}>
+                            {/* Outer ambient glow - largest, softest */}
+                            <div className="absolute -inset-4 bg-gradient-radial from-orange-400/40 via-amber-400/20 to-transparent rounded-full blur-xl" />
+                            {/* Secondary glow ring */}
+                            <div className="absolute -inset-2 bg-gradient-radial from-yellow-400/50 via-orange-300/25 to-transparent rounded-full blur-md" />
+                            {/* Outer flame - teardrop shape */}
+                            <div
+                              className="relative w-3.5 h-5 rounded-full animate-pulse"
+                              style={{
+                                background: 'linear-gradient(to top, #ea580c 0%, #f97316 30%, #fbbf24 60%, #fef3c7 90%)',
+                                clipPath: 'ellipse(50% 50% at 50% 60%)',
+                                filter: 'blur(0.5px)',
+                                animationDelay: `${i * 0.3}s`,
+                                animationDuration: '0.6s'
+                              }}
+                            />
+                            {/* Middle flame layer */}
+                            <div
+                              className="absolute top-1 left-1/2 -translate-x-1/2 w-2.5 h-3.5 rounded-full"
+                              style={{
+                                background: 'linear-gradient(to top, #dc2626 0%, #f97316 40%, #fbbf24 70%, #fef9c3 100%)',
+                                clipPath: 'ellipse(45% 50% at 50% 55%)',
+                                filter: 'blur(0.3px)',
+                                animation: `flame-dance ${0.4 + i * 0.1}s ease-in-out infinite alternate`,
+                              }}
+                            />
+                            {/* Inner blue-white core - hottest part */}
+                            <div
+                              className="absolute top-2 left-1/2 -translate-x-1/2 w-1.5 h-2.5 rounded-full"
+                              style={{
+                                background: 'linear-gradient(to top, #3b82f6 0%, #60a5fa 30%, #fef3c7 60%, #ffffff 100%)',
+                                clipPath: 'ellipse(40% 50% at 50% 55%)',
+                                filter: 'blur(0.2px)',
+                                animation: `flame-core ${0.3 + i * 0.08}s ease-in-out infinite alternate`,
+                              }}
+                            />
+                            {/* Flame tip - flickering point */}
+                            <div
+                              className="absolute -top-1 left-1/2 -translate-x-1/2 w-1 h-2"
+                              style={{
+                                background: 'linear-gradient(to top, #fef3c7, #ffffff)',
+                                clipPath: 'polygon(50% 0%, 0% 100%, 100% 100%)',
+                                filter: 'blur(0.5px)',
+                                animation: `flame-tip ${0.25 + i * 0.05}s ease-in-out infinite`,
+                              }}
+                            />
                             {/* Smoke wisps - subtle, more visible during day when flames are dimmer */}
-                            <div className={`absolute -top-3 left-1/2 -translate-x-1/2 w-2 h-4 pointer-events-none ${isNightTime ? 'opacity-15' : 'opacity-30'}`}>
+                            <div className={`absolute -top-4 left-1/2 -translate-x-1/2 w-2 h-4 pointer-events-none ${isNightTime ? 'opacity-15' : 'opacity-30'}`}>
                               <div
                                 className="absolute w-1.5 h-3 rounded-full"
                                 style={{
@@ -1899,12 +1942,55 @@ export default function ArticlesPage() {
                           <div className="absolute -bottom-0.5 left-1/2 -translate-x-1/2 w-3 h-0.5 bg-amber-100/50 rounded-full blur-[0.5px]" />
                           {/* Wick */}
                           <div className="absolute -top-1 left-1/2 -translate-x-1/2 w-0.5 h-1.5 bg-gradient-to-t from-gray-700 to-gray-500" />
-                          {/* Flame - sits on wick */}
-                          <div className={`absolute -top-5 left-1/2 -translate-x-1/2 ${isNightTime ? 'opacity-100' : 'opacity-60'}`}>
-                            <div className="absolute -inset-2 bg-gradient-radial from-orange-400/30 via-orange-300/15 to-transparent rounded-full blur-md" />
-                            <div className="w-3 h-4 bg-gradient-to-t from-orange-500 via-orange-400 to-yellow-200 rounded-full blur-[1px] animate-pulse" style={{ animationDelay: `${i * 0.3 + 0.5}s`, animationDuration: '0.7s' }} />
+                          {/* Flame - sits on wick - ENHANCED with multi-layer detail */}
+                          <div className={`absolute -top-6 left-1/2 -translate-x-1/2 ${isNightTime ? 'opacity-100' : 'opacity-70'}`}>
+                            {/* Outer ambient glow - largest, softest */}
+                            <div className="absolute -inset-4 bg-gradient-radial from-orange-400/40 via-amber-400/20 to-transparent rounded-full blur-xl" />
+                            {/* Secondary glow ring */}
+                            <div className="absolute -inset-2 bg-gradient-radial from-yellow-400/50 via-orange-300/25 to-transparent rounded-full blur-md" />
+                            {/* Outer flame - teardrop shape */}
+                            <div
+                              className="relative w-3.5 h-5 rounded-full animate-pulse"
+                              style={{
+                                background: 'linear-gradient(to top, #ea580c 0%, #f97316 30%, #fbbf24 60%, #fef3c7 90%)',
+                                clipPath: 'ellipse(50% 50% at 50% 60%)',
+                                filter: 'blur(0.5px)',
+                                animationDelay: `${i * 0.3 + 0.5}s`,
+                                animationDuration: '0.6s'
+                              }}
+                            />
+                            {/* Middle flame layer */}
+                            <div
+                              className="absolute top-1 left-1/2 -translate-x-1/2 w-2.5 h-3.5 rounded-full"
+                              style={{
+                                background: 'linear-gradient(to top, #dc2626 0%, #f97316 40%, #fbbf24 70%, #fef9c3 100%)',
+                                clipPath: 'ellipse(45% 50% at 50% 55%)',
+                                filter: 'blur(0.3px)',
+                                animation: `flame-dance ${0.4 + i * 0.1}s ease-in-out infinite alternate`,
+                              }}
+                            />
+                            {/* Inner blue-white core - hottest part */}
+                            <div
+                              className="absolute top-2 left-1/2 -translate-x-1/2 w-1.5 h-2.5 rounded-full"
+                              style={{
+                                background: 'linear-gradient(to top, #3b82f6 0%, #60a5fa 30%, #fef3c7 60%, #ffffff 100%)',
+                                clipPath: 'ellipse(40% 50% at 50% 55%)',
+                                filter: 'blur(0.2px)',
+                                animation: `flame-core ${0.3 + i * 0.08}s ease-in-out infinite alternate`,
+                              }}
+                            />
+                            {/* Flame tip - flickering point */}
+                            <div
+                              className="absolute -top-1 left-1/2 -translate-x-1/2 w-1 h-2"
+                              style={{
+                                background: 'linear-gradient(to top, #fef3c7, #ffffff)',
+                                clipPath: 'polygon(50% 0%, 0% 100%, 100% 100%)',
+                                filter: 'blur(0.5px)',
+                                animation: `flame-tip ${0.25 + i * 0.05}s ease-in-out infinite`,
+                              }}
+                            />
                             {/* Smoke wisps - subtle, more visible during day when flames are dimmer */}
-                            <div className={`absolute -top-3 left-1/2 -translate-x-1/2 w-2 h-4 pointer-events-none ${isNightTime ? 'opacity-15' : 'opacity-30'}`}>
+                            <div className={`absolute -top-4 left-1/2 -translate-x-1/2 w-2 h-4 pointer-events-none ${isNightTime ? 'opacity-15' : 'opacity-30'}`}>
                               <div
                                 className="absolute w-1.5 h-3 rounded-full"
                                 style={{
@@ -2681,17 +2767,60 @@ export default function ArticlesPage() {
                   <div className="absolute -bottom-0.5 left-1/2 -translate-x-1/2 w-3 h-0.5 bg-amber-100/50 rounded-full blur-[0.5px]" />
                   {/* Wick */}
                   <div className="absolute -top-1 left-1/2 -translate-x-1/2 w-0.5 h-1.5 bg-gradient-to-t from-gray-700 to-gray-500" />
-                  {/* Flame assembly */}
-                  <div className={`absolute -top-5 left-1/2 -translate-x-1/2 ${isNightTime ? 'opacity-100' : 'opacity-60'}`}>
-                    <div className="absolute -inset-2 bg-gradient-radial from-orange-400/30 via-orange-300/15 to-transparent rounded-full blur-md" />
-                    <div className="w-3 h-4 bg-gradient-to-t from-orange-500 via-orange-400 to-yellow-200 rounded-full blur-[1px] animate-pulse" style={{ animationDelay: `${i * 0.3}s`, animationDuration: '0.7s' }} />
+                  {/* Flame assembly - ENHANCED with multi-layer detail */}
+                  <div className={`absolute -top-6 left-1/2 -translate-x-1/2 ${isNightTime ? 'opacity-100' : 'opacity-70'}`}>
+                    {/* Outer ambient glow */}
+                    <div className="absolute -inset-4 bg-gradient-radial from-orange-400/40 via-amber-400/20 to-transparent rounded-full blur-xl" />
+                    {/* Secondary glow ring */}
+                    <div className="absolute -inset-2 bg-gradient-radial from-yellow-400/50 via-orange-300/25 to-transparent rounded-full blur-md" />
+                    {/* Outer flame */}
+                    <div
+                      className="relative w-3.5 h-5 rounded-full animate-pulse"
+                      style={{
+                        background: 'linear-gradient(to top, #ea580c 0%, #f97316 30%, #fbbf24 60%, #fef3c7 90%)',
+                        clipPath: 'ellipse(50% 50% at 50% 60%)',
+                        filter: 'blur(0.5px)',
+                        animationDelay: `${i * 0.25}s`,
+                        animationDuration: '0.6s'
+                      }}
+                    />
+                    {/* Middle flame layer */}
+                    <div
+                      className="absolute top-1 left-1/2 -translate-x-1/2 w-2.5 h-3.5 rounded-full"
+                      style={{
+                        background: 'linear-gradient(to top, #dc2626 0%, #f97316 40%, #fbbf24 70%, #fef9c3 100%)',
+                        clipPath: 'ellipse(45% 50% at 50% 55%)',
+                        filter: 'blur(0.3px)',
+                        animation: `flame-dance ${0.4 + i * 0.1}s ease-in-out infinite alternate`,
+                      }}
+                    />
+                    {/* Inner blue-white core */}
+                    <div
+                      className="absolute top-2 left-1/2 -translate-x-1/2 w-1.5 h-2.5 rounded-full"
+                      style={{
+                        background: 'linear-gradient(to top, #3b82f6 0%, #60a5fa 30%, #fef3c7 60%, #ffffff 100%)',
+                        clipPath: 'ellipse(40% 50% at 50% 55%)',
+                        filter: 'blur(0.2px)',
+                        animation: `flame-core ${0.3 + i * 0.08}s ease-in-out infinite alternate`,
+                      }}
+                    />
+                    {/* Flame tip */}
+                    <div
+                      className="absolute -top-1 left-1/2 -translate-x-1/2 w-1 h-2"
+                      style={{
+                        background: 'linear-gradient(to top, #fef3c7, #ffffff)',
+                        clipPath: 'polygon(50% 0%, 0% 100%, 100% 100%)',
+                        filter: 'blur(0.5px)',
+                        animation: `flame-tip ${0.25 + i * 0.05}s ease-in-out infinite`,
+                      }}
+                    />
                   </div>
                 </div>
                 {/* Bobeche (cup) - candle sits into this */}
                 <div className={`w-5 h-2.5 bg-gradient-to-b from-yellow-400 to-amber-600 rounded-b-sm border-t-2 border-yellow-300/60 shadow-lg ${isNightTime ? 'brightness-110' : ''}`} />
               </div>
-              {/* Ambient glow */}
-              <div className={`absolute -top-3 left-1/2 -translate-x-1/2 w-12 h-12 bg-gradient-radial from-orange-400/40 via-amber-500/20 to-transparent rounded-full blur-xl ${isNightTime ? 'opacity-100' : 'opacity-40'}`} />
+              {/* Enhanced ambient glow */}
+              <div className={`absolute -top-4 left-1/2 -translate-x-1/2 w-16 h-16 bg-gradient-radial from-orange-400/50 via-amber-500/25 to-transparent rounded-full blur-xl ${isNightTime ? 'opacity-100' : 'opacity-50'}`} />
             </div>
           </div>
         ))}
@@ -2719,17 +2848,60 @@ export default function ArticlesPage() {
                   <div className="absolute -bottom-0.5 left-1/2 -translate-x-1/2 w-3 h-0.5 bg-amber-100/50 rounded-full blur-[0.5px]" />
                   {/* Wick */}
                   <div className="absolute -top-1 left-1/2 -translate-x-1/2 w-0.5 h-1.5 bg-gradient-to-t from-gray-700 to-gray-500" />
-                  {/* Flame assembly */}
-                  <div className={`absolute -top-5 left-1/2 -translate-x-1/2 ${isNightTime ? 'opacity-100' : 'opacity-60'}`}>
-                    <div className="absolute -inset-2 bg-gradient-radial from-orange-400/30 via-orange-300/15 to-transparent rounded-full blur-md" />
-                    <div className="w-3 h-4 bg-gradient-to-t from-orange-500 via-orange-400 to-yellow-200 rounded-full blur-[1px] animate-pulse" style={{ animationDelay: `${i * 0.3 + 0.5}s`, animationDuration: '0.7s' }} />
+                  {/* Flame assembly - ENHANCED with multi-layer detail */}
+                  <div className={`absolute -top-6 left-1/2 -translate-x-1/2 ${isNightTime ? 'opacity-100' : 'opacity-70'}`}>
+                    {/* Outer ambient glow */}
+                    <div className="absolute -inset-4 bg-gradient-radial from-orange-400/40 via-amber-400/20 to-transparent rounded-full blur-xl" />
+                    {/* Secondary glow ring */}
+                    <div className="absolute -inset-2 bg-gradient-radial from-yellow-400/50 via-orange-300/25 to-transparent rounded-full blur-md" />
+                    {/* Outer flame */}
+                    <div
+                      className="relative w-3.5 h-5 rounded-full animate-pulse"
+                      style={{
+                        background: 'linear-gradient(to top, #ea580c 0%, #f97316 30%, #fbbf24 60%, #fef3c7 90%)',
+                        clipPath: 'ellipse(50% 50% at 50% 60%)',
+                        filter: 'blur(0.5px)',
+                        animationDelay: `${i * 0.25 + 0.4}s`,
+                        animationDuration: '0.6s'
+                      }}
+                    />
+                    {/* Middle flame layer */}
+                    <div
+                      className="absolute top-1 left-1/2 -translate-x-1/2 w-2.5 h-3.5 rounded-full"
+                      style={{
+                        background: 'linear-gradient(to top, #dc2626 0%, #f97316 40%, #fbbf24 70%, #fef9c3 100%)',
+                        clipPath: 'ellipse(45% 50% at 50% 55%)',
+                        filter: 'blur(0.3px)',
+                        animation: `flame-dance ${0.45 + i * 0.1}s ease-in-out infinite alternate`,
+                      }}
+                    />
+                    {/* Inner blue-white core */}
+                    <div
+                      className="absolute top-2 left-1/2 -translate-x-1/2 w-1.5 h-2.5 rounded-full"
+                      style={{
+                        background: 'linear-gradient(to top, #3b82f6 0%, #60a5fa 30%, #fef3c7 60%, #ffffff 100%)',
+                        clipPath: 'ellipse(40% 50% at 50% 55%)',
+                        filter: 'blur(0.2px)',
+                        animation: `flame-core ${0.35 + i * 0.08}s ease-in-out infinite alternate`,
+                      }}
+                    />
+                    {/* Flame tip */}
+                    <div
+                      className="absolute -top-1 left-1/2 -translate-x-1/2 w-1 h-2"
+                      style={{
+                        background: 'linear-gradient(to top, #fef3c7, #ffffff)',
+                        clipPath: 'polygon(50% 0%, 0% 100%, 100% 100%)',
+                        filter: 'blur(0.5px)',
+                        animation: `flame-tip ${0.28 + i * 0.05}s ease-in-out infinite`,
+                      }}
+                    />
                   </div>
                 </div>
                 {/* Bobeche (cup) - candle sits into this */}
                 <div className={`w-5 h-2.5 bg-gradient-to-b from-yellow-400 to-amber-600 rounded-b-sm border-t-2 border-yellow-300/60 shadow-lg ${isNightTime ? 'brightness-110' : ''}`} />
               </div>
-              {/* Ambient glow */}
-              <div className={`absolute -top-3 left-1/2 -translate-x-1/2 w-12 h-12 bg-gradient-radial from-orange-400/40 via-amber-500/20 to-transparent rounded-full blur-xl ${isNightTime ? 'opacity-100' : 'opacity-40'}`} />
+              {/* Enhanced ambient glow */}
+              <div className={`absolute -top-4 left-1/2 -translate-x-1/2 w-16 h-16 bg-gradient-radial from-orange-400/50 via-amber-500/25 to-transparent rounded-full blur-xl ${isNightTime ? 'opacity-100' : 'opacity-50'}`} />
             </div>
           </div>
         ))}

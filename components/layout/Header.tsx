@@ -194,12 +194,12 @@ export function Header() {
                   <span className="sage-zzz sage-zzz-3">z</span>
 
                   {/* Hover tooltip - "Click to wake" - positioned below with arrow pointing up */}
-                  <div className="absolute top-full left-1/2 -translate-x-1/2 mt-3 pointer-events-none z-[200] opacity-0 group-hover:opacity-100 transition-opacity duration-200">
+                  <div className="absolute top-full left-1/2 -translate-x-1/2 mt-2 pointer-events-none z-[200] opacity-0 group-hover:opacity-100 transition-opacity duration-200">
                     {/* Arrow pointing up */}
-                    <div className="absolute -top-2 left-1/2 -translate-x-1/2 w-4 h-4 rotate-45 bg-[var(--card)] border-l-2 border-t-2 border-[var(--primary)]" />
-                    {/* Tooltip body - large enough to contain text */}
-                    <div className="relative px-4 py-2.5 bg-[var(--card)] border-2 border-[var(--primary)] rounded-xl shadow-xl min-w-max">
-                      <span className="text-sm font-bold text-[var(--foreground)] whitespace-nowrap">Click to wake</span>
+                    <div className="absolute -top-1.5 left-1/2 -translate-x-1/2 w-3 h-3 rotate-45 bg-[var(--card)] border-l border-t border-[var(--primary)]" />
+                    {/* Tooltip body */}
+                    <div className="relative px-3 py-1.5 bg-[var(--card)] border border-[var(--primary)] rounded-lg shadow-lg min-w-max">
+                      <span className="text-xs font-medium text-[var(--foreground)] whitespace-nowrap">Click to wake</span>
                     </div>
                   </div>
                 </>
@@ -246,40 +246,40 @@ export function Header() {
                       <ChevronDown className={`w-4 h-4 transition-transform duration-200 ${learnMenuOpen ? 'rotate-180' : ''}`} />
                     </Link>
 
-                    {/* Learn Dropdown menu - centered */}
+                    {/* Learn Dropdown menu - centered, wide enough for content */}
                     <div
-                      className={`absolute top-full left-1/2 -translate-x-1/2 mt-2 w-56 rounded-xl overflow-hidden z-[201] transition-all duration-200 origin-top ${
+                      className={`absolute top-full left-1/2 -translate-x-1/2 mt-2 w-48 rounded-xl overflow-visible z-[201] transition-all duration-200 origin-top ${
                         learnMenuOpen
                           ? 'opacity-100 scale-100 translate-y-0'
                           : 'opacity-0 scale-95 -translate-y-2 pointer-events-none'
                       }`}
                     >
-                      <div className="bg-[var(--card)]/95 backdrop-blur-xl border-2 border-theme-primary shadow-2xl rounded-xl overflow-hidden">
+                      <div className="bg-[var(--card)] backdrop-blur-xl border-2 border-theme-primary shadow-2xl rounded-xl overflow-visible">
                         {/* Decorative top gradient bar */}
-                        <div className="h-1 bg-gradient-to-r from-emerald-500 via-teal-500 to-cyan-500" />
+                        <div className="h-1 bg-gradient-to-r from-emerald-500 via-teal-500 to-cyan-500 rounded-t-lg" />
 
                         {/* Navigation link - Exodology only */}
-                        <div className="p-3">
+                        <div className="p-4">
                           {learnMenuItems.map((menuItem) => {
                             const isLocked = menuItem.requiresAuth && !session
 
                             return isLocked ? (
                               <div
                                 key={menuItem.label}
-                                className="flex items-center justify-center gap-3 px-5 py-3 rounded-lg text-[var(--muted-foreground)] opacity-70 cursor-not-allowed"
+                                className="flex items-center justify-center gap-2 px-4 py-3 rounded-lg text-[var(--muted-foreground)] opacity-70 cursor-not-allowed w-full"
                                 title="Sign in to access"
                               >
                                 <Lock className="w-4 h-4 flex-shrink-0" />
-                                <span className="text-sm font-medium">{menuItem.label}</span>
+                                <span className="text-sm font-medium whitespace-nowrap">{menuItem.label}</span>
                               </div>
                             ) : (
                               <Link
                                 key={menuItem.label}
                                 href={menuItem.href}
-                                className="flex items-center justify-center px-4 py-2.5 rounded-lg text-sm font-medium text-gray-800 hover:bg-gray-100 hover:text-emerald-600 transition-colors"
+                                className="flex items-center justify-center px-4 py-3 rounded-lg text-sm font-medium text-[var(--foreground)] hover:bg-[var(--muted)] hover:text-emerald-600 transition-colors w-full"
                                 onClick={() => setLearnMenuOpen(false)}
                               >
-                                <span>{menuItem.label}</span>
+                                <span className="whitespace-nowrap">{menuItem.label}</span>
                               </Link>
                             )
                           })}
