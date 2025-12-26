@@ -115,15 +115,15 @@ const volitionLanes = [
   { icon: Leaf, label: 'Impact', color: 'text-green-400', desc: 'Your measurable environmental footprint and positive actions' },
 ]
 
-// Guardian archetype definitions with meanings
+// The 7 Guardians - Archangel archetypes representing core values
 const guardianArchetypes = [
-  { emoji: '🛡️', name: 'Protector', desc: 'Defends nature and vulnerable ecosystems' },
-  { emoji: '🧭', name: 'Navigator', desc: 'Guides others toward sustainable paths' },
-  { emoji: '📖', name: 'Chronicler', desc: 'Documents knowledge and shares wisdom' },
-  { emoji: '⚔️', name: 'Champion', desc: 'Fights for environmental justice' },
-  { emoji: '💚', name: 'Healer', desc: 'Restores damaged environments' },
-  { emoji: '✨', name: 'Visionary', desc: 'Imagines and builds better futures' },
-  { emoji: '🤝', name: 'Unifier', desc: 'Builds bridges between communities' },
+  { emoji: '⚔️', name: 'MICHAEL', title: 'Strength', desc: 'You stand unwavering. Your strength protects those who cannot protect themselves.', color: 'from-red-600 to-orange-500' },
+  { emoji: '💬', name: 'GABRIEL', title: 'Revelation', desc: 'You bring truth to light. Your words reveal what must be known.', color: 'from-sky-500 to-blue-600' },
+  { emoji: '💚', name: 'RAPHAEL', title: 'Healing', desc: 'You mend what is broken. Your presence restores and renews.', color: 'from-emerald-500 to-green-600' },
+  { emoji: '💡', name: 'URIEL', title: 'Wisdom', desc: 'You illuminate the path. Your wisdom guides those who seek understanding.', color: 'from-amber-500 to-yellow-500' },
+  { emoji: '💗', name: 'CAMAEL', title: 'Love', desc: 'You embody compassion. Your love connects all beings as one.', color: 'from-pink-500 to-rose-600' },
+  { emoji: '🌸', name: 'JOPHIEL', title: 'Beauty', desc: 'You see the divine in all things. Your vision transforms the ordinary into the sacred.', color: 'from-violet-500 to-purple-600' },
+  { emoji: '⚖️', name: 'ZADKIEL', title: 'Mercy', desc: 'You forgive the unforgivable. Your mercy grants second chances.', color: 'from-indigo-500 to-blue-700' },
 ]
 
 // Business card features
@@ -748,10 +748,11 @@ export function CommunityHeartPage({ isAuthenticated }: CommunityHeartPageProps)
                         <motion.div
                           initial={{ opacity: 0, y: 5 }}
                           animate={{ opacity: 1, y: 0 }}
-                          className="absolute -bottom-[4.5rem] left-1/2 -translate-x-1/2 w-44 p-2.5 bg-[var(--card)] border-2 border-[var(--primary)]/40 rounded-xl shadow-2xl z-20"
+                          className="absolute -bottom-24 left-1/2 -translate-x-1/2 w-56 p-3 bg-[var(--card)] border-2 border-[var(--primary)]/40 rounded-xl shadow-2xl z-20"
                         >
-                          <p className="text-xs font-bold text-[var(--foreground)] text-center">{archetype.name}</p>
-                          <p className="text-[10px] text-[var(--muted-foreground)] leading-snug mt-1 text-center">{archetype.desc}</p>
+                          <p className={`text-xs font-black text-center bg-gradient-to-r ${archetype.color} bg-clip-text text-transparent`}>{archetype.name}</p>
+                          <p className="text-[10px] font-semibold text-[var(--foreground)] text-center mt-0.5">Guardian of {archetype.title}</p>
+                          <p className="text-[10px] text-[var(--muted-foreground)] leading-snug mt-1.5 text-center">{archetype.desc}</p>
                         </motion.div>
                       )}
                     </motion.div>
