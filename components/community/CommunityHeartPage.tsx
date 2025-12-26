@@ -328,38 +328,49 @@ export function CommunityHeartPage({ isAuthenticated }: CommunityHeartPageProps)
   const [activeTopicIndex, setActiveTopicIndex] = useState(0)
   const [activeToolIndex, setActiveToolIndex] = useState(0)
 
-  // Auto-cycle through fake user previews
+  // Synchronized wave effect - carousels change in right-to-left sequence
+  // Wave order: Volition (right) → Tools → Core Topics → BizID (left)
   useEffect(() => {
-    if (isBizIDFlipped) return
-    const interval = setInterval(() => {
-      setActiveUserIndex((prev) => (prev + 1) % fakeUserPreviews.length)
-    }, 2500)
-    return () => clearInterval(interval)
-  }, [isBizIDFlipped])
-
-  // Auto-cycle through volition lanes when flipped
-  useEffect(() => {
-    if (!isVolitionFlipped) return
-    const interval = setInterval(() => {
-      setActiveLaneIndex((prev) => (prev + 1) % volitionLanes.length)
-    }, 2500)
-    return () => clearInterval(interval)
-  }, [isVolitionFlipped])
-
-  // Auto-cycle through Academy topics and tools when not flipped
-  useEffect(() => {
-    if (isLearningFlipped) return
-    const topicInterval = setInterval(() => {
-      setActiveTopicIndex((prev) => (prev + 1) % coreLearnTopics.length)
-    }, 3000)
-    const toolInterval = setInterval(() => {
-      setActiveToolIndex((prev) => (prev + 1) % interactiveTools.length)
-    }, 3500)
-    return () => {
-      clearInterval(topicInterval)
-      clearInterval(toolInterval)
+    const WAVE_INTERVAL = 4000 // Time between waves
+    const WAVE_DELAYS = {
+      volition: 0,      // Right column - first
+      tools: 700,       // Center-right - 0.7s later
+      topics: 1400,     // Center-left - 1.4s later
+      bizId: 2100,      // Left column - 2.1s later
     }
-  }, [isLearningFlipped])
+
+    const waveInterval = setInterval(() => {
+      // Volition lanes (only when showing back side with carousel)
+      if (isVolitionFlipped) {
+        setTimeout(() => {
+          setActiveLaneIndex((prev) => (prev + 1) % volitionLanes.length)
+        }, WAVE_DELAYS.volition)
+      }
+
+      // Tools carousel (only when showing front side)
+      if (!isLearningFlipped) {
+        setTimeout(() => {
+          setActiveToolIndex((prev) => (prev + 1) % interactiveTools.length)
+        }, WAVE_DELAYS.tools)
+      }
+
+      // Core Topics carousel (only when showing front side)
+      if (!isLearningFlipped) {
+        setTimeout(() => {
+          setActiveTopicIndex((prev) => (prev + 1) % coreLearnTopics.length)
+        }, WAVE_DELAYS.topics)
+      }
+
+      // BizID user preview (only when showing front side)
+      if (!isBizIDFlipped) {
+        setTimeout(() => {
+          setActiveUserIndex((prev) => (prev + 1) % fakeUserPreviews.length)
+        }, WAVE_DELAYS.bizId)
+      }
+    }, WAVE_INTERVAL)
+
+    return () => clearInterval(waveInterval)
+  }, [isVolitionFlipped, isLearningFlipped, isBizIDFlipped])
 
   return (
     <div className="min-h-screen bg-[var(--background)] relative overflow-y-auto flex flex-col">
