@@ -725,7 +725,7 @@ export function CommunityHeartPage({ isAuthenticated }: CommunityHeartPageProps)
                 </div>
 
                 {/* Archetype icons with hover reveal - enhanced with glow */}
-                <div className="flex items-center justify-center gap-2 mb-3">
+                <div className="relative flex items-center justify-center gap-2 mb-3">
                   {guardianArchetypes.map((archetype, i) => (
                     <motion.div
                       key={i}
@@ -743,19 +743,19 @@ export function CommunityHeartPage({ isAuthenticated }: CommunityHeartPageProps)
                       >
                         {archetype.emoji}
                       </motion.div>
-                      {/* Hover tooltip */}
-                      {hoveredArchetype === i && (
-                        <motion.div
-                          initial={{ opacity: 0, y: 5 }}
-                          animate={{ opacity: 1, y: 0 }}
-                          className="absolute -bottom-[5.5rem] left-1/2 -translate-x-1/2 w-64 min-h-[4.5rem] p-3 bg-[var(--card)] border-2 border-[var(--primary)]/40 rounded-xl shadow-2xl z-20 flex flex-col justify-center"
-                        >
-                          <p className={`text-sm font-black text-center bg-gradient-to-r ${archetype.color} bg-clip-text text-transparent`}>{archetype.title}</p>
-                          <p className="text-xs text-[var(--muted-foreground)] leading-relaxed mt-1.5 text-center">{archetype.desc}</p>
-                        </motion.div>
-                      )}
                     </motion.div>
                   ))}
+                  {/* Hover tooltip - positioned below entire icon row */}
+                  {hoveredArchetype !== null && (
+                    <motion.div
+                      initial={{ opacity: 0, y: 5 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      className="absolute top-full mt-3 left-1/2 -translate-x-1/2 w-72 p-4 bg-[var(--card)] border-2 border-[var(--primary)]/40 rounded-xl shadow-2xl z-20"
+                    >
+                      <p className={`text-base font-black text-center bg-gradient-to-r ${guardianArchetypes[hoveredArchetype].color} bg-clip-text text-transparent`}>{guardianArchetypes[hoveredArchetype].title}</p>
+                      <p className="text-sm text-[var(--muted-foreground)] leading-relaxed mt-2 text-center">{guardianArchetypes[hoveredArchetype].desc}</p>
+                    </motion.div>
+                  )}
                 </div>
 
                 {/* Enhanced Quote with better contrast */}
