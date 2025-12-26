@@ -231,6 +231,8 @@ export function CommunityHeartPage({ isAuthenticated }: CommunityHeartPageProps)
   const [activeUserIndex, setActiveUserIndex] = useState(0)
   const [activeLaneIndex, setActiveLaneIndex] = useState(0)
   const [hoveredArchetype, setHoveredArchetype] = useState<number | null>(null)
+  const [activeTopicIndex, setActiveTopicIndex] = useState(0)
+  const [activeToolIndex, setActiveToolIndex] = useState(0)
 
   // Auto-cycle through fake user previews
   useEffect(() => {
@@ -249,6 +251,21 @@ export function CommunityHeartPage({ isAuthenticated }: CommunityHeartPageProps)
     }, 2500)
     return () => clearInterval(interval)
   }, [isVolitionFlipped])
+
+  // Auto-cycle through Academy topics and tools when not flipped
+  useEffect(() => {
+    if (isLearningFlipped) return
+    const topicInterval = setInterval(() => {
+      setActiveTopicIndex((prev) => (prev + 1) % coreLearnTopics.length)
+    }, 3000)
+    const toolInterval = setInterval(() => {
+      setActiveToolIndex((prev) => (prev + 1) % interactiveTools.length)
+    }, 3500)
+    return () => {
+      clearInterval(topicInterval)
+      clearInterval(toolInterval)
+    }
+  }, [isLearningFlipped])
 
   return (
     <div className="min-h-screen bg-[var(--background)] relative overflow-y-auto flex flex-col">
@@ -794,35 +811,24 @@ export function CommunityHeartPage({ isAuthenticated }: CommunityHeartPageProps)
                 <CornerOrnament position="bl" />
                 <CornerOrnament position="br" />
 
-                {/* Header */}
-                <div className="relative z-10 flex items-center justify-between mb-2 flex-shrink-0">
-                  <h2 className="text-base font-bold text-[var(--foreground)] flex items-center gap-2">
-                    <motion.div
-                      className="w-6 h-6 rounded-md bg-gradient-to-br from-blue-500 to-purple-600 flex items-center justify-center shadow-sm"
-                      animate={{ rotate: [0, 5, 0, -5, 0] }}
-                      transition={{ duration: 4, repeat: Infinity, ease: 'easeInOut' }}
-                    >
-                      <GraduationCap className="w-3.5 h-3.5 text-white" />
-                    </motion.div>
+                {/* Header - Clean, no icons beside text */}
+                <div className="relative z-10 text-center mb-3 flex-shrink-0">
+                  <h2 className="text-xl font-bold text-[var(--foreground)] tracking-tight">
                     Exodus Academy
                   </h2>
-                  <motion.span
-                    className="text-[10px] px-2.5 py-1 bg-gradient-to-r from-blue-500/20 to-purple-500/20 rounded-full text-blue-600 dark:text-blue-400 font-semibold border border-blue-500/20"
-                    animate={{ scale: [1, 1.02, 1] }}
-                    transition={{ duration: 2, repeat: Infinity }}
-                  >
-                    6 Levels
-                  </motion.span>
+                  <p className="text-xs text-[var(--muted-foreground)] mt-1">
+                    Sustainability education for all ages
+                  </p>
                 </div>
 
-                <DecorativeDivider className="mb-2 flex-shrink-0" />
+                <DecorativeDivider className="mb-3 flex-shrink-0" />
 
-                {/* Grade Levels - Horizontal Timeline - Larger */}
-                <div className="relative z-10 mb-3 flex-shrink-0">
-                  <p className="text-[9px] text-[var(--muted-foreground)] font-medium mb-1.5 uppercase tracking-wide">Grade Levels</p>
-                  <div className="relative flex items-center justify-between px-2">
+                {/* Grade Levels - Horizontal Timeline */}
+                <div className="relative z-10 mb-4 flex-shrink-0">
+                  <p className="text-xs text-[var(--muted-foreground)] font-semibold mb-2 uppercase tracking-wide text-center">6 Grade Levels</p>
+                  <div className="relative flex items-center justify-between px-3">
                     {/* Timeline connector line */}
-                    <div className="absolute top-1/2 left-3 right-3 h-0.5 bg-gradient-to-r from-[var(--primary)] via-[var(--accent)] to-[var(--secondary)] opacity-40 -translate-y-1/2" />
+                    <div className="absolute top-1/2 left-4 right-4 h-0.5 bg-gradient-to-r from-[var(--primary)] via-[var(--accent)] to-[var(--secondary)] opacity-40 -translate-y-1/2" />
 
                     {gradeLevels.map((level, i) => (
                       <motion.div
@@ -831,81 +837,105 @@ export function CommunityHeartPage({ isAuthenticated }: CommunityHeartPageProps)
                         initial={{ opacity: 0, y: 5 }}
                         animate={{ opacity: 1, y: 0 }}
                         transition={{ delay: 0.1 + i * 0.05 }}
-                        whileHover={{ scale: 1.1 }}
+                        whileHover={{ scale: 1.15 }}
                       >
-                        <div className={`w-7 h-7 rounded-full bg-gradient-to-br ${level.color} flex items-center justify-center shadow-md`}>
-                          <span className="text-sm">{level.icon}</span>
+                        <div className={`w-9 h-9 rounded-full bg-gradient-to-br ${level.color} flex items-center justify-center shadow-lg border-2 border-white/20`}>
+                          <span className="text-base">{level.icon}</span>
                         </div>
-                        <p className="text-[7px] font-medium text-[var(--muted-foreground)] mt-1 text-center leading-tight">{level.ages}</p>
+                        <p className="text-[9px] font-semibold text-[var(--foreground)] mt-1.5 text-center">{level.ages}</p>
                       </motion.div>
                     ))}
                   </div>
                 </div>
 
-                {/* Core Topics and Interactive Tools - Two column layout */}
-                <div className="relative z-10 flex-1 min-h-0 mb-2 grid grid-cols-2 gap-3">
-                  {/* Core Learn Topics - Left column */}
-                  <div className="flex flex-col min-h-0">
-                    <p className="text-[9px] text-[var(--muted-foreground)] font-medium mb-1.5 uppercase tracking-wide flex-shrink-0">Core Topics</p>
-                    <div className="flex-1 min-h-0 flex flex-col gap-1 overflow-y-auto pr-1">
-                      {coreLearnTopics.map((topic, i) => {
+                {/* Double Carousel - Core Topics & Interactive Tools */}
+                <div className="relative z-10 flex-1 min-h-0 grid grid-cols-2 gap-4">
+                  {/* Core Topics Carousel - Left */}
+                  <div className="flex flex-col">
+                    <p className="text-xs text-[var(--muted-foreground)] font-semibold mb-2 uppercase tracking-wide">Core Topics</p>
+
+                    {/* Carousel dots */}
+                    <div className="flex items-center justify-center gap-1 mb-2">
+                      {coreLearnTopics.map((_, i) => (
+                        <button
+                          key={i}
+                          className={`w-1.5 h-1.5 rounded-full transition-all ${
+                            activeTopicIndex === i
+                              ? 'bg-[var(--primary)] w-4'
+                              : 'bg-[var(--muted-foreground)]/30 hover:bg-[var(--muted-foreground)]/50'
+                          }`}
+                          onClick={() => setActiveTopicIndex(i)}
+                        />
+                      ))}
+                    </div>
+
+                    {/* Active topic display */}
+                    <motion.div
+                      key={activeTopicIndex}
+                      initial={{ opacity: 0, x: -20 }}
+                      animate={{ opacity: 1, x: 0 }}
+                      exit={{ opacity: 0, x: 20 }}
+                      transition={{ duration: 0.3 }}
+                      className={`flex-1 ${coreLearnTopics[activeTopicIndex].bgColor} rounded-xl p-4 border border-[var(--border)]/30 flex flex-col items-center justify-center text-center`}
+                    >
+                      {(() => {
+                        const topic = coreLearnTopics[activeTopicIndex]
                         const Icon = topic.icon
                         return (
-                          <motion.div
-                            key={topic.name}
-                            className={`flex items-center gap-2 px-2 py-1.5 rounded-lg ${topic.bgColor} border border-[var(--border)]/20`}
-                            initial={{ opacity: 0, x: -10 }}
-                            animate={{ opacity: 1, x: 0 }}
-                            transition={{ delay: 0.2 + i * 0.05 }}
-                            whileHover={{ scale: 1.02 }}
-                          >
-                            <Icon className={`w-3.5 h-3.5 ${topic.color} flex-shrink-0`} />
-                            <span className="text-[8px] font-semibold text-[var(--foreground)] truncate">{topic.name}</span>
-                          </motion.div>
+                          <>
+                            <div className={`w-12 h-12 rounded-full bg-[var(--card)] flex items-center justify-center mb-2 shadow-md border-2 border-[var(--border)]/30`}>
+                              <Icon className={`w-6 h-6 ${topic.color}`} />
+                            </div>
+                            <p className="text-sm font-bold text-[var(--foreground)]">{topic.name}</p>
+                            <p className="text-[10px] text-[var(--muted-foreground)] mt-1">{activeTopicIndex + 1} of {coreLearnTopics.length}</p>
+                          </>
                         )
-                      })}
-                    </div>
+                      })()}
+                    </motion.div>
                   </div>
 
-                  {/* Interactive Tools - Right column */}
-                  <div className="flex flex-col min-h-0">
-                    <p className="text-[9px] text-[var(--muted-foreground)] font-medium mb-1.5 uppercase tracking-wide flex-shrink-0">Interactive Tools</p>
-                    <div className="flex-1 min-h-0 flex flex-col gap-1 overflow-y-auto pr-1">
-                      {interactiveTools.map((tool, i) => {
+                  {/* Interactive Tools Carousel - Right */}
+                  <div className="flex flex-col">
+                    <p className="text-xs text-[var(--muted-foreground)] font-semibold mb-2 uppercase tracking-wide">Tools</p>
+
+                    {/* Carousel dots */}
+                    <div className="flex items-center justify-center gap-1 mb-2">
+                      {interactiveTools.map((_, i) => (
+                        <button
+                          key={i}
+                          className={`w-1.5 h-1.5 rounded-full transition-all ${
+                            activeToolIndex === i
+                              ? 'bg-[var(--accent)] w-4'
+                              : 'bg-[var(--muted-foreground)]/30 hover:bg-[var(--muted-foreground)]/50'
+                          }`}
+                          onClick={() => setActiveToolIndex(i)}
+                        />
+                      ))}
+                    </div>
+
+                    {/* Active tool display */}
+                    <motion.div
+                      key={activeToolIndex}
+                      initial={{ opacity: 0, x: 20 }}
+                      animate={{ opacity: 1, x: 0 }}
+                      exit={{ opacity: 0, x: -20 }}
+                      transition={{ duration: 0.3 }}
+                      className="flex-1 bg-[var(--muted)]/50 rounded-xl p-4 border border-[var(--border)]/30 flex flex-col items-center justify-center text-center"
+                    >
+                      {(() => {
+                        const tool = interactiveTools[activeToolIndex]
                         const Icon = tool.icon
                         return (
-                          <motion.div
-                            key={tool.name}
-                            className="flex items-center gap-2 px-2 py-1.5 rounded-lg bg-[var(--muted)]/40 border border-[var(--border)]/20"
-                            initial={{ opacity: 0, x: 10 }}
-                            animate={{ opacity: 1, x: 0 }}
-                            transition={{ delay: 0.3 + i * 0.05 }}
-                            whileHover={{ scale: 1.02, backgroundColor: 'var(--muted)' }}
-                          >
-                            <Icon className={`w-3.5 h-3.5 ${tool.color} flex-shrink-0`} />
-                            <span className="text-[8px] font-semibold text-[var(--foreground)] truncate">{tool.name}</span>
-                          </motion.div>
+                          <>
+                            <div className="w-12 h-12 rounded-full bg-[var(--card)] flex items-center justify-center mb-2 shadow-md border-2 border-[var(--border)]/30">
+                              <Icon className={`w-6 h-6 ${tool.color}`} />
+                            </div>
+                            <p className="text-sm font-bold text-[var(--foreground)]">{tool.name}</p>
+                            <p className="text-[10px] text-[var(--muted-foreground)] mt-1">{activeToolIndex + 1} of {interactiveTools.length}</p>
+                          </>
                         )
-                      })}
-                    </div>
-                  </div>
-                </div>
-
-                {/* Key Features - Larger row */}
-                <div className="relative z-10 flex items-center justify-center gap-4 py-2 bg-[var(--muted)]/30 rounded-lg flex-shrink-0">
-                  <div className="flex items-center gap-1">
-                    <Gamepad2 className="w-3.5 h-3.5 text-[var(--primary)]" />
-                    <span className="text-[8px] font-medium text-[var(--muted-foreground)]">Games</span>
-                  </div>
-                  <div className="w-px h-3 bg-[var(--border)]" />
-                  <div className="flex items-center gap-1">
-                    <Brain className="w-3.5 h-3.5 text-cyan-500" />
-                    <span className="text-[8px] font-medium text-[var(--muted-foreground)]">Adaptive</span>
-                  </div>
-                  <div className="w-px h-3 bg-[var(--border)]" />
-                  <div className="flex items-center gap-1">
-                    <Award className="w-3.5 h-3.5 text-purple-500" />
-                    <span className="text-[8px] font-medium text-[var(--muted-foreground)]">Certs</span>
+                      })()}
+                    </motion.div>
                   </div>
                 </div>
               </div>
