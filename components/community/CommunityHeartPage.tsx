@@ -768,37 +768,37 @@ export function CommunityHeartPage({ isAuthenticated }: CommunityHeartPageProps)
                 {/* Feature explanations - ENLARGED */}
                 <div className="w-full space-y-2">
                   <motion.div
-                    className="flex items-center gap-3 px-3 py-2.5 rounded-xl bg-gradient-to-r from-[var(--muted)]/40 to-[var(--muted)]/20 border border-[var(--border)]/30 shadow-sm"
-                    whileHover={{ scale: 1.02, x: 3 }}
+                    className="flex flex-col items-center justify-center gap-2 px-3 py-2.5 rounded-xl bg-gradient-to-r from-[var(--muted)]/40 to-[var(--muted)]/20 border border-[var(--border)]/30 shadow-sm text-center"
+                    whileHover={{ scale: 1.02 }}
                   >
                     <div className="w-8 h-8 rounded-lg bg-[var(--primary)]/20 flex items-center justify-center">
                       <Shield className="w-5 h-5 text-[var(--primary)]" />
                     </div>
-                    <div className="text-left flex-1">
+                    <div>
                       <p className="text-xs font-bold text-[var(--foreground)]">Guardian Theme</p>
                       <p className="text-[10px] text-[var(--muted-foreground)]">Visual identity based on your archetype</p>
                     </div>
                   </motion.div>
                   <motion.div
-                    className="flex items-center gap-3 px-3 py-2.5 rounded-xl bg-gradient-to-r from-[var(--muted)]/40 to-[var(--muted)]/20 border border-[var(--border)]/30 shadow-sm"
-                    whileHover={{ scale: 1.02, x: 3 }}
+                    className="flex flex-col items-center justify-center gap-2 px-3 py-2.5 rounded-xl bg-gradient-to-r from-[var(--muted)]/40 to-[var(--muted)]/20 border border-[var(--border)]/30 shadow-sm text-center"
+                    whileHover={{ scale: 1.02 }}
                   >
                     <div className="w-8 h-8 rounded-lg bg-[var(--accent)]/20 flex items-center justify-center">
                       <Star className="w-5 h-5 text-[var(--accent)]" />
                     </div>
-                    <div className="text-left flex-1">
+                    <div>
                       <p className="text-xs font-bold text-[var(--foreground)]">Achievement Badges</p>
                       <p className="text-[10px] text-[var(--muted-foreground)]">Earn recognition for your contributions</p>
                     </div>
                   </motion.div>
                   <motion.div
-                    className="flex items-center gap-3 px-3 py-2.5 rounded-xl bg-gradient-to-r from-[var(--muted)]/40 to-[var(--muted)]/20 border border-[var(--border)]/30 shadow-sm"
-                    whileHover={{ scale: 1.02, x: 3 }}
+                    className="flex flex-col items-center justify-center gap-2 px-3 py-2.5 rounded-xl bg-gradient-to-r from-[var(--muted)]/40 to-[var(--muted)]/20 border border-[var(--border)]/30 shadow-sm text-center"
+                    whileHover={{ scale: 1.02 }}
                   >
                     <div className="w-8 h-8 rounded-lg bg-[var(--primary)]/20 flex items-center justify-center">
                       <TrendingUp className="w-5 h-5 text-[var(--primary)]" />
                     </div>
-                    <div className="text-left flex-1">
+                    <div>
                       <p className="text-xs font-bold text-[var(--foreground)]">STOCK Score</p>
                       <p className="text-[10px] text-[var(--muted-foreground)]">Track your sustainable value over time</p>
                     </div>
@@ -1175,11 +1175,11 @@ export function CommunityHeartPage({ isAuthenticated }: CommunityHeartPageProps)
                   <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-56 h-56 rounded-full bg-[var(--accent)]/5 blur-3xl" />
                 </div>
 
-                <div className="relative z-10 h-full flex flex-col items-center justify-center px-3">
+                <div className="relative z-10 h-full flex flex-col items-center justify-center text-center px-3">
                   {/* Enhanced Header */}
-                  <div className="mb-4">
+                  <div className="mb-4 text-center">
                     <h3 className="text-lg font-black text-[var(--foreground)] mb-2">Education Without Barriers</h3>
-                    <p className="text-xs text-[var(--muted-foreground)] max-w-[320px] leading-relaxed">Free, comprehensive sustainability education for all ages and backgrounds</p>
+                    <p className="text-xs text-[var(--muted-foreground)] max-w-[320px] leading-relaxed mx-auto">Free, comprehensive sustainability education for all ages and backgrounds</p>
                   </div>
 
                   {/* Visual learning journey - ENLARGED */}
@@ -1226,49 +1226,49 @@ export function CommunityHeartPage({ isAuthenticated }: CommunityHeartPageProps)
                   {/* Feature explanations - ENLARGED grid */}
                   <div className="w-full grid grid-cols-2 gap-2">
                     <motion.div
-                      className="flex items-center gap-2.5 px-3 py-2.5 rounded-xl bg-gradient-to-r from-[var(--muted)]/40 to-[var(--muted)]/20 border border-[var(--border)]/30 shadow-sm"
-                      whileHover={{ scale: 1.03, x: 2 }}
+                      className="flex flex-col items-center justify-center gap-1.5 px-3 py-2.5 rounded-xl bg-gradient-to-r from-[var(--muted)]/40 to-[var(--muted)]/20 border border-[var(--border)]/30 shadow-sm text-center"
+                      whileHover={{ scale: 1.03 }}
                     >
-                      <div className="w-7 h-7 rounded-lg bg-[var(--primary)]/20 flex items-center justify-center flex-shrink-0">
+                      <div className="w-7 h-7 rounded-lg bg-[var(--primary)]/20 flex items-center justify-center">
                         <GraduationCap className="w-4 h-4 text-[var(--primary)]" />
                       </div>
-                      <div className="text-left">
+                      <div>
                         <p className="text-[10px] font-bold text-[var(--foreground)]">6 Grade Levels</p>
                         <p className="text-[8px] text-[var(--muted-foreground)]">K-12 to PhD adapted</p>
                       </div>
                     </motion.div>
                     <motion.div
-                      className="flex items-center gap-2.5 px-3 py-2.5 rounded-xl bg-gradient-to-r from-[var(--muted)]/40 to-[var(--muted)]/20 border border-[var(--border)]/30 shadow-sm"
-                      whileHover={{ scale: 1.03, x: 2 }}
+                      className="flex flex-col items-center justify-center gap-1.5 px-3 py-2.5 rounded-xl bg-gradient-to-r from-[var(--muted)]/40 to-[var(--muted)]/20 border border-[var(--border)]/30 shadow-sm text-center"
+                      whileHover={{ scale: 1.03 }}
                     >
-                      <div className="w-7 h-7 rounded-lg bg-purple-500/20 flex items-center justify-center flex-shrink-0">
+                      <div className="w-7 h-7 rounded-lg bg-purple-500/20 flex items-center justify-center">
                         <Gamepad2 className="w-4 h-4 text-purple-500" />
                       </div>
-                      <div className="text-left">
+                      <div>
                         <p className="text-[10px] font-bold text-[var(--foreground)]">Interactive Games</p>
                         <p className="text-[8px] text-[var(--muted-foreground)]">Learn through play</p>
                       </div>
                     </motion.div>
                     <motion.div
-                      className="flex items-center gap-2.5 px-3 py-2.5 rounded-xl bg-gradient-to-r from-[var(--muted)]/40 to-[var(--muted)]/20 border border-[var(--border)]/30 shadow-sm"
-                      whileHover={{ scale: 1.03, x: 2 }}
+                      className="flex flex-col items-center justify-center gap-1.5 px-3 py-2.5 rounded-xl bg-gradient-to-r from-[var(--muted)]/40 to-[var(--muted)]/20 border border-[var(--border)]/30 shadow-sm text-center"
+                      whileHover={{ scale: 1.03 }}
                     >
-                      <div className="w-7 h-7 rounded-lg bg-cyan-500/20 flex items-center justify-center flex-shrink-0">
+                      <div className="w-7 h-7 rounded-lg bg-cyan-500/20 flex items-center justify-center">
                         <Brain className="w-4 h-4 text-cyan-500" />
                       </div>
-                      <div className="text-left">
+                      <div>
                         <p className="text-[10px] font-bold text-[var(--foreground)]">Adaptive Learning</p>
                         <p className="text-[8px] text-[var(--muted-foreground)]">Adjusts to your pace</p>
                       </div>
                     </motion.div>
                     <motion.div
-                      className="flex items-center gap-2.5 px-3 py-2.5 rounded-xl bg-gradient-to-r from-[var(--muted)]/40 to-[var(--muted)]/20 border border-[var(--border)]/30 shadow-sm"
-                      whileHover={{ scale: 1.03, x: 2 }}
+                      className="flex flex-col items-center justify-center gap-1.5 px-3 py-2.5 rounded-xl bg-gradient-to-r from-[var(--muted)]/40 to-[var(--muted)]/20 border border-[var(--border)]/30 shadow-sm text-center"
+                      whileHover={{ scale: 1.03 }}
                     >
-                      <div className="w-7 h-7 rounded-lg bg-[var(--accent)]/20 flex items-center justify-center flex-shrink-0">
+                      <div className="w-7 h-7 rounded-lg bg-[var(--accent)]/20 flex items-center justify-center">
                         <Award className="w-4 h-4 text-[var(--accent)]" />
                       </div>
-                      <div className="text-left">
+                      <div>
                         <p className="text-[10px] font-bold text-[var(--foreground)]">Certifications</p>
                         <p className="text-[8px] text-[var(--muted-foreground)]">Earn credentials</p>
                       </div>

@@ -1367,19 +1367,21 @@ export default function ArticlesPage() {
                           {/* Wax pool in bobeche */}
                           <div className="absolute -bottom-0.5 left-1/2 -translate-x-1/2 w-3 h-0.5 bg-amber-100/50 rounded-full blur-[0.5px]" />
                           {/* Wick */}
-                          <div className="absolute -top-1 left-1/2 -translate-x-1/2 w-0.5 h-1.5 bg-gradient-to-t from-gray-700 to-gray-500" />
-                          {/* Flame - sits on wick - ENHANCED with multi-layer detail */}
-                          <div className={`absolute -top-6 left-1/2 -translate-x-1/2 ${isNightTime ? 'opacity-100' : 'opacity-70'}`}>
+                          <div className="absolute -top-1 left-1/2 -translate-x-1/2 w-0.5 h-2 bg-gradient-to-t from-gray-700 via-gray-600 to-gray-800" />
+                          {/* Glowing wick tip - where flame meets wick */}
+                          <div className="absolute -top-3 left-1/2 -translate-x-1/2 w-1 h-1 bg-orange-500 rounded-full blur-[1px]" style={{ boxShadow: '0 0 3px 1px rgba(251, 191, 36, 0.8)' }} />
+                          {/* Flame - sits directly on wick tip */}
+                          <div className={`absolute -top-7 left-1/2 -translate-x-1/2 ${isNightTime ? 'opacity-100' : 'opacity-70'}`}>
                             {/* Outer ambient glow - largest, softest */}
                             <div className="absolute -inset-4 bg-gradient-radial from-orange-400/40 via-amber-400/20 to-transparent rounded-full blur-xl" />
                             {/* Secondary glow ring */}
                             <div className="absolute -inset-2 bg-gradient-radial from-yellow-400/50 via-orange-300/25 to-transparent rounded-full blur-md" />
-                            {/* Outer flame - teardrop shape */}
+                            {/* Outer flame - teardrop shape, bottom connects to wick */}
                             <div
-                              className="relative w-3.5 h-5 rounded-full animate-pulse"
+                              className="relative w-3 h-5 rounded-full animate-pulse"
                               style={{
-                                background: 'linear-gradient(to top, #ea580c 0%, #f97316 30%, #fbbf24 60%, #fef3c7 90%)',
-                                clipPath: 'ellipse(50% 50% at 50% 60%)',
+                                background: 'linear-gradient(to top, #dc2626 0%, #ea580c 20%, #f97316 40%, #fbbf24 70%, #fef3c7 95%)',
+                                clipPath: 'ellipse(50% 50% at 50% 55%)',
                                 filter: 'blur(0.5px)',
                                 animationDelay: `${i * 0.3}s`,
                                 animationDuration: '0.6s'
@@ -1387,27 +1389,27 @@ export default function ArticlesPage() {
                             />
                             {/* Middle flame layer */}
                             <div
-                              className="absolute top-1 left-1/2 -translate-x-1/2 w-2.5 h-3.5 rounded-full"
+                              className="absolute top-0.5 left-1/2 -translate-x-1/2 w-2 h-4 rounded-full"
                               style={{
-                                background: 'linear-gradient(to top, #dc2626 0%, #f97316 40%, #fbbf24 70%, #fef9c3 100%)',
-                                clipPath: 'ellipse(45% 50% at 50% 55%)',
+                                background: 'linear-gradient(to top, #ea580c 0%, #f97316 30%, #fbbf24 60%, #fef9c3 100%)',
+                                clipPath: 'ellipse(45% 50% at 50% 50%)',
                                 filter: 'blur(0.3px)',
                                 animation: `flame-dance ${0.4 + i * 0.1}s ease-in-out infinite alternate`,
                               }}
                             />
-                            {/* Inner blue-white core - hottest part */}
+                            {/* Inner blue-white core - hottest part, sits at wick connection */}
                             <div
-                              className="absolute top-2 left-1/2 -translate-x-1/2 w-1.5 h-2.5 rounded-full"
+                              className="absolute bottom-0 left-1/2 -translate-x-1/2 w-1.5 h-2.5 rounded-full"
                               style={{
-                                background: 'linear-gradient(to top, #3b82f6 0%, #60a5fa 30%, #fef3c7 60%, #ffffff 100%)',
-                                clipPath: 'ellipse(40% 50% at 50% 55%)',
+                                background: 'linear-gradient(to top, #60a5fa 0%, #93c5fd 30%, #fef3c7 60%, #fbbf24 100%)',
+                                clipPath: 'ellipse(40% 50% at 50% 60%)',
                                 filter: 'blur(0.2px)',
                                 animation: `flame-core ${0.3 + i * 0.08}s ease-in-out infinite alternate`,
                               }}
                             />
                             {/* Flame tip - flickering point */}
                             <div
-                              className="absolute -top-1 left-1/2 -translate-x-1/2 w-1 h-2"
+                              className="absolute -top-1.5 left-1/2 -translate-x-1/2 w-1 h-2"
                               style={{
                                 background: 'linear-gradient(to top, #fef3c7, #ffffff)',
                                 clipPath: 'polygon(50% 0%, 0% 100%, 100% 100%)',
@@ -1973,19 +1975,21 @@ export default function ArticlesPage() {
                           {/* Wax pool in bobeche */}
                           <div className="absolute -bottom-0.5 left-1/2 -translate-x-1/2 w-3 h-0.5 bg-amber-100/50 rounded-full blur-[0.5px]" />
                           {/* Wick */}
-                          <div className="absolute -top-1 left-1/2 -translate-x-1/2 w-0.5 h-1.5 bg-gradient-to-t from-gray-700 to-gray-500" />
-                          {/* Flame - sits on wick - ENHANCED with multi-layer detail */}
-                          <div className={`absolute -top-6 left-1/2 -translate-x-1/2 ${isNightTime ? 'opacity-100' : 'opacity-70'}`}>
+                          <div className="absolute -top-1 left-1/2 -translate-x-1/2 w-0.5 h-2 bg-gradient-to-t from-gray-700 via-gray-600 to-gray-800" />
+                          {/* Glowing wick tip - where flame meets wick */}
+                          <div className="absolute -top-3 left-1/2 -translate-x-1/2 w-1 h-1 bg-orange-500 rounded-full blur-[1px]" style={{ boxShadow: '0 0 3px 1px rgba(251, 191, 36, 0.8)' }} />
+                          {/* Flame - sits directly on wick tip */}
+                          <div className={`absolute -top-7 left-1/2 -translate-x-1/2 ${isNightTime ? 'opacity-100' : 'opacity-70'}`}>
                             {/* Outer ambient glow - largest, softest */}
                             <div className="absolute -inset-4 bg-gradient-radial from-orange-400/40 via-amber-400/20 to-transparent rounded-full blur-xl" />
                             {/* Secondary glow ring */}
                             <div className="absolute -inset-2 bg-gradient-radial from-yellow-400/50 via-orange-300/25 to-transparent rounded-full blur-md" />
-                            {/* Outer flame - teardrop shape */}
+                            {/* Outer flame - teardrop shape, bottom connects to wick */}
                             <div
-                              className="relative w-3.5 h-5 rounded-full animate-pulse"
+                              className="relative w-3 h-5 rounded-full animate-pulse"
                               style={{
-                                background: 'linear-gradient(to top, #ea580c 0%, #f97316 30%, #fbbf24 60%, #fef3c7 90%)',
-                                clipPath: 'ellipse(50% 50% at 50% 60%)',
+                                background: 'linear-gradient(to top, #dc2626 0%, #ea580c 20%, #f97316 40%, #fbbf24 70%, #fef3c7 95%)',
+                                clipPath: 'ellipse(50% 50% at 50% 55%)',
                                 filter: 'blur(0.5px)',
                                 animationDelay: `${i * 0.3 + 0.5}s`,
                                 animationDuration: '0.6s'
@@ -1993,27 +1997,27 @@ export default function ArticlesPage() {
                             />
                             {/* Middle flame layer */}
                             <div
-                              className="absolute top-1 left-1/2 -translate-x-1/2 w-2.5 h-3.5 rounded-full"
+                              className="absolute top-0.5 left-1/2 -translate-x-1/2 w-2 h-4 rounded-full"
                               style={{
-                                background: 'linear-gradient(to top, #dc2626 0%, #f97316 40%, #fbbf24 70%, #fef9c3 100%)',
-                                clipPath: 'ellipse(45% 50% at 50% 55%)',
+                                background: 'linear-gradient(to top, #ea580c 0%, #f97316 30%, #fbbf24 60%, #fef9c3 100%)',
+                                clipPath: 'ellipse(45% 50% at 50% 50%)',
                                 filter: 'blur(0.3px)',
                                 animation: `flame-dance ${0.4 + i * 0.1}s ease-in-out infinite alternate`,
                               }}
                             />
-                            {/* Inner blue-white core - hottest part */}
+                            {/* Inner blue-white core - hottest part, sits at wick connection */}
                             <div
-                              className="absolute top-2 left-1/2 -translate-x-1/2 w-1.5 h-2.5 rounded-full"
+                              className="absolute bottom-0 left-1/2 -translate-x-1/2 w-1.5 h-2.5 rounded-full"
                               style={{
-                                background: 'linear-gradient(to top, #3b82f6 0%, #60a5fa 30%, #fef3c7 60%, #ffffff 100%)',
-                                clipPath: 'ellipse(40% 50% at 50% 55%)',
+                                background: 'linear-gradient(to top, #60a5fa 0%, #93c5fd 30%, #fef3c7 60%, #fbbf24 100%)',
+                                clipPath: 'ellipse(40% 50% at 50% 60%)',
                                 filter: 'blur(0.2px)',
                                 animation: `flame-core ${0.3 + i * 0.08}s ease-in-out infinite alternate`,
                               }}
                             />
                             {/* Flame tip - flickering point */}
                             <div
-                              className="absolute -top-1 left-1/2 -translate-x-1/2 w-1 h-2"
+                              className="absolute -top-1.5 left-1/2 -translate-x-1/2 w-1 h-2"
                               style={{
                                 background: 'linear-gradient(to top, #fef3c7, #ffffff)',
                                 clipPath: 'polygon(50% 0%, 0% 100%, 100% 100%)',
@@ -2798,19 +2802,21 @@ export default function ArticlesPage() {
                   {/* Wax pool in bobeche */}
                   <div className="absolute -bottom-0.5 left-1/2 -translate-x-1/2 w-3 h-0.5 bg-amber-100/50 rounded-full blur-[0.5px]" />
                   {/* Wick */}
-                  <div className="absolute -top-1 left-1/2 -translate-x-1/2 w-0.5 h-1.5 bg-gradient-to-t from-gray-700 to-gray-500" />
-                  {/* Flame assembly - ENHANCED with multi-layer detail */}
-                  <div className={`absolute -top-6 left-1/2 -translate-x-1/2 ${isNightTime ? 'opacity-100' : 'opacity-70'}`}>
+                  <div className="absolute -top-1 left-1/2 -translate-x-1/2 w-0.5 h-2 bg-gradient-to-t from-gray-700 via-gray-600 to-gray-800" />
+                  {/* Glowing wick tip - where flame meets wick */}
+                  <div className="absolute -top-3 left-1/2 -translate-x-1/2 w-1 h-1 bg-orange-500 rounded-full blur-[1px]" style={{ boxShadow: '0 0 3px 1px rgba(251, 191, 36, 0.8)' }} />
+                  {/* Flame assembly - sits directly on wick tip */}
+                  <div className={`absolute -top-7 left-1/2 -translate-x-1/2 ${isNightTime ? 'opacity-100' : 'opacity-70'}`}>
                     {/* Outer ambient glow */}
                     <div className="absolute -inset-4 bg-gradient-radial from-orange-400/40 via-amber-400/20 to-transparent rounded-full blur-xl" />
                     {/* Secondary glow ring */}
                     <div className="absolute -inset-2 bg-gradient-radial from-yellow-400/50 via-orange-300/25 to-transparent rounded-full blur-md" />
-                    {/* Outer flame */}
+                    {/* Outer flame - bottom connects to wick */}
                     <div
-                      className="relative w-3.5 h-5 rounded-full animate-pulse"
+                      className="relative w-3 h-5 rounded-full animate-pulse"
                       style={{
-                        background: 'linear-gradient(to top, #ea580c 0%, #f97316 30%, #fbbf24 60%, #fef3c7 90%)',
-                        clipPath: 'ellipse(50% 50% at 50% 60%)',
+                        background: 'linear-gradient(to top, #dc2626 0%, #ea580c 20%, #f97316 40%, #fbbf24 70%, #fef3c7 95%)',
+                        clipPath: 'ellipse(50% 50% at 50% 55%)',
                         filter: 'blur(0.5px)',
                         animationDelay: `${i * 0.25}s`,
                         animationDuration: '0.6s'
@@ -2818,27 +2824,27 @@ export default function ArticlesPage() {
                     />
                     {/* Middle flame layer */}
                     <div
-                      className="absolute top-1 left-1/2 -translate-x-1/2 w-2.5 h-3.5 rounded-full"
+                      className="absolute top-0.5 left-1/2 -translate-x-1/2 w-2 h-4 rounded-full"
                       style={{
-                        background: 'linear-gradient(to top, #dc2626 0%, #f97316 40%, #fbbf24 70%, #fef9c3 100%)',
-                        clipPath: 'ellipse(45% 50% at 50% 55%)',
+                        background: 'linear-gradient(to top, #ea580c 0%, #f97316 30%, #fbbf24 60%, #fef9c3 100%)',
+                        clipPath: 'ellipse(45% 50% at 50% 50%)',
                         filter: 'blur(0.3px)',
                         animation: `flame-dance ${0.4 + i * 0.1}s ease-in-out infinite alternate`,
                       }}
                     />
-                    {/* Inner blue-white core */}
+                    {/* Inner blue-white core - sits at wick connection */}
                     <div
-                      className="absolute top-2 left-1/2 -translate-x-1/2 w-1.5 h-2.5 rounded-full"
+                      className="absolute bottom-0 left-1/2 -translate-x-1/2 w-1.5 h-2.5 rounded-full"
                       style={{
-                        background: 'linear-gradient(to top, #3b82f6 0%, #60a5fa 30%, #fef3c7 60%, #ffffff 100%)',
-                        clipPath: 'ellipse(40% 50% at 50% 55%)',
+                        background: 'linear-gradient(to top, #60a5fa 0%, #93c5fd 30%, #fef3c7 60%, #fbbf24 100%)',
+                        clipPath: 'ellipse(40% 50% at 50% 60%)',
                         filter: 'blur(0.2px)',
                         animation: `flame-core ${0.3 + i * 0.08}s ease-in-out infinite alternate`,
                       }}
                     />
                     {/* Flame tip */}
                     <div
-                      className="absolute -top-1 left-1/2 -translate-x-1/2 w-1 h-2"
+                      className="absolute -top-1.5 left-1/2 -translate-x-1/2 w-1 h-2"
                       style={{
                         background: 'linear-gradient(to top, #fef3c7, #ffffff)',
                         clipPath: 'polygon(50% 0%, 0% 100%, 100% 100%)',
@@ -2879,19 +2885,21 @@ export default function ArticlesPage() {
                   {/* Wax pool in bobeche */}
                   <div className="absolute -bottom-0.5 left-1/2 -translate-x-1/2 w-3 h-0.5 bg-amber-100/50 rounded-full blur-[0.5px]" />
                   {/* Wick */}
-                  <div className="absolute -top-1 left-1/2 -translate-x-1/2 w-0.5 h-1.5 bg-gradient-to-t from-gray-700 to-gray-500" />
-                  {/* Flame assembly - ENHANCED with multi-layer detail */}
-                  <div className={`absolute -top-6 left-1/2 -translate-x-1/2 ${isNightTime ? 'opacity-100' : 'opacity-70'}`}>
+                  <div className="absolute -top-1 left-1/2 -translate-x-1/2 w-0.5 h-2 bg-gradient-to-t from-gray-700 via-gray-600 to-gray-800" />
+                  {/* Glowing wick tip - where flame meets wick */}
+                  <div className="absolute -top-3 left-1/2 -translate-x-1/2 w-1 h-1 bg-orange-500 rounded-full blur-[1px]" style={{ boxShadow: '0 0 3px 1px rgba(251, 191, 36, 0.8)' }} />
+                  {/* Flame assembly - sits directly on wick tip */}
+                  <div className={`absolute -top-7 left-1/2 -translate-x-1/2 ${isNightTime ? 'opacity-100' : 'opacity-70'}`}>
                     {/* Outer ambient glow */}
                     <div className="absolute -inset-4 bg-gradient-radial from-orange-400/40 via-amber-400/20 to-transparent rounded-full blur-xl" />
                     {/* Secondary glow ring */}
                     <div className="absolute -inset-2 bg-gradient-radial from-yellow-400/50 via-orange-300/25 to-transparent rounded-full blur-md" />
-                    {/* Outer flame */}
+                    {/* Outer flame - bottom connects to wick */}
                     <div
-                      className="relative w-3.5 h-5 rounded-full animate-pulse"
+                      className="relative w-3 h-5 rounded-full animate-pulse"
                       style={{
-                        background: 'linear-gradient(to top, #ea580c 0%, #f97316 30%, #fbbf24 60%, #fef3c7 90%)',
-                        clipPath: 'ellipse(50% 50% at 50% 60%)',
+                        background: 'linear-gradient(to top, #dc2626 0%, #ea580c 20%, #f97316 40%, #fbbf24 70%, #fef3c7 95%)',
+                        clipPath: 'ellipse(50% 50% at 50% 55%)',
                         filter: 'blur(0.5px)',
                         animationDelay: `${i * 0.25 + 0.4}s`,
                         animationDuration: '0.6s'
@@ -2899,27 +2907,27 @@ export default function ArticlesPage() {
                     />
                     {/* Middle flame layer */}
                     <div
-                      className="absolute top-1 left-1/2 -translate-x-1/2 w-2.5 h-3.5 rounded-full"
+                      className="absolute top-0.5 left-1/2 -translate-x-1/2 w-2 h-4 rounded-full"
                       style={{
-                        background: 'linear-gradient(to top, #dc2626 0%, #f97316 40%, #fbbf24 70%, #fef9c3 100%)',
-                        clipPath: 'ellipse(45% 50% at 50% 55%)',
+                        background: 'linear-gradient(to top, #ea580c 0%, #f97316 30%, #fbbf24 60%, #fef9c3 100%)',
+                        clipPath: 'ellipse(45% 50% at 50% 50%)',
                         filter: 'blur(0.3px)',
                         animation: `flame-dance ${0.45 + i * 0.1}s ease-in-out infinite alternate`,
                       }}
                     />
-                    {/* Inner blue-white core */}
+                    {/* Inner blue-white core - sits at wick connection */}
                     <div
-                      className="absolute top-2 left-1/2 -translate-x-1/2 w-1.5 h-2.5 rounded-full"
+                      className="absolute bottom-0 left-1/2 -translate-x-1/2 w-1.5 h-2.5 rounded-full"
                       style={{
-                        background: 'linear-gradient(to top, #3b82f6 0%, #60a5fa 30%, #fef3c7 60%, #ffffff 100%)',
-                        clipPath: 'ellipse(40% 50% at 50% 55%)',
+                        background: 'linear-gradient(to top, #60a5fa 0%, #93c5fd 30%, #fef3c7 60%, #fbbf24 100%)',
+                        clipPath: 'ellipse(40% 50% at 50% 60%)',
                         filter: 'blur(0.2px)',
                         animation: `flame-core ${0.35 + i * 0.08}s ease-in-out infinite alternate`,
                       }}
                     />
                     {/* Flame tip */}
                     <div
-                      className="absolute -top-1 left-1/2 -translate-x-1/2 w-1 h-2"
+                      className="absolute -top-1.5 left-1/2 -translate-x-1/2 w-1 h-2"
                       style={{
                         background: 'linear-gradient(to top, #fef3c7, #ffffff)',
                         clipPath: 'polygon(50% 0%, 0% 100%, 100% 100%)',
