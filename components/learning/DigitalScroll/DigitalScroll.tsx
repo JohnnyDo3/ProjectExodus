@@ -815,7 +815,7 @@ export function DigitalScroll({
             </div>
 
             {/* Learning objectives list */}
-            <div className="flex-1 px-4 overflow-y-auto">
+            <div className="flex-1 px-4 overflow-hidden">
               <div className="space-y-3">
                 {page.module?.lessons.slice(0, 6).map((lesson, idx) => (
                   <div
@@ -1038,8 +1038,8 @@ export function DigitalScroll({
               style={{ background: `linear-gradient(to right, transparent, ${reviewColor}60, transparent)` }}
             />
 
-            {/* Scrollable Content */}
-            <div className="flex-1 px-2 pb-2 overflow-y-auto">
+            {/* Content - fits page without scroll */}
+            <div className="flex-1 px-2 pb-2 overflow-hidden">
               {/* Key Terms Section */}
               <div className="mb-3">
                 <p className="text-[10px] font-bold text-[var(--foreground)] mb-1.5 flex items-center gap-1">

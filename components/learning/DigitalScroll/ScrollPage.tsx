@@ -28,6 +28,7 @@ interface ScrollPageProps {
   chapterIndex: number
   side: 'left' | 'right'
   showWatermark?: boolean
+  allowScroll?: boolean // For quizzes/games only, learning content should fit the page
   className?: string
 }
 
@@ -80,7 +81,7 @@ interface Illustration {
 
 export const ScrollPage = forwardRef<HTMLDivElement, ScrollPageProps>(
   function ScrollPage(
-    { children, pageNumber, totalPages, chapterIndex, side, showWatermark = true, className },
+    { children, pageNumber, totalPages, chapterIndex, side, showWatermark = true, allowScroll = false, className },
     ref
   ) {
     const [deviceType, setDeviceType] = useState<'desktop' | 'tablet' | 'mobile'>('desktop')
@@ -139,8 +140,11 @@ export const ScrollPage = forwardRef<HTMLDivElement, ScrollPageProps>(
           )}
         </div>
 
-        {/* Main content area - full width with vertical scroll */}
-        <div className="flex-1 min-h-0 overflow-y-auto overflow-x-hidden py-2">
+        {/* Main content area - scroll only when allowScroll is true (quizzes/games) */}
+        <div className={cn(
+          'flex-1 min-h-0 py-2 overflow-x-hidden',
+          allowScroll ? 'overflow-y-auto' : 'overflow-y-hidden'
+        )}>
           {children}
         </div>
 
