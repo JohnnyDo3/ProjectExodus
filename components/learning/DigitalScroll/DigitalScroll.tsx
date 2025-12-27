@@ -694,84 +694,110 @@ export function DigitalScroll({
         )
 
       case 'learning-mission':
-        // Learning Mission page - initial reflections before beginning
-        const missionNoteKey = 'learning-mission-reflection'
+        // Learning Mission page - fill-in-the-blank intentions
+        const missionColor = currentRibbon?.colors.from || 'var(--primary)'
         return (
           <div className="w-full h-full flex flex-col relative overflow-hidden">
             <AncientBorder />
 
             {/* Header */}
-            <div className="text-center pt-6 pb-3 shrink-0">
-              <div className="flex items-center justify-center gap-2 mb-2">
-                <span className="text-2xl">🎯</span>
+            <div className="text-center pt-5 pb-2 shrink-0">
+              <div className="flex items-center justify-center gap-2 mb-1">
+                <span className="text-xl">🎯</span>
               </div>
-              <h3 className="text-xl font-serif font-bold text-[var(--foreground)] mb-1">
-                Learning Mission
+              <h3 className="text-lg font-serif font-bold text-[var(--foreground)] mb-1">
+                Set Your Intentions
               </h3>
-              <p className="text-xs text-[var(--muted-foreground)] italic max-w-[250px] mx-auto">
-                Before you begin, take a moment to reflect on your learning journey
+              <p className="text-[10px] text-[var(--muted-foreground)] italic max-w-[220px] mx-auto">
+                Complete each statement to define your learning goals
               </p>
             </div>
 
             {/* Divider */}
             <div
-              className="w-3/4 h-px mx-auto mb-4 shrink-0"
+              className="w-3/4 h-px mx-auto mb-3 shrink-0"
               style={{
-                background: `linear-gradient(to right, transparent, ${currentRibbon?.colors.from || 'var(--border)'}60, transparent)`,
+                background: `linear-gradient(to right, transparent, ${missionColor}60, transparent)`,
               }}
             />
 
-            {/* Mission Prompts */}
-            <div className="px-4 mb-3 shrink-0">
-              <div className="space-y-2">
-                <div className="flex items-start gap-2">
+            {/* Fill-in-the-blank Intentions */}
+            <div className="flex-1 px-4 pb-3 space-y-4 overflow-hidden">
+              {/* Intention 1: What I hope to learn */}
+              <div className="space-y-1.5">
+                <div className="flex items-center gap-2">
                   <span className="text-sm">✨</span>
-                  <p className="text-xs text-[var(--muted-foreground)]">
-                    What do you hope to learn from {topic.title}?
+                  <p className="text-xs font-medium text-[var(--foreground)]">
+                    By studying {topic.title}, I hope to learn...
                   </p>
                 </div>
-                <div className="flex items-start gap-2">
+                <input
+                  type="text"
+                  className={cn(
+                    "w-full px-3 py-2 text-sm font-serif",
+                    "bg-transparent border-b-2 border-dashed",
+                    "text-[var(--foreground)]",
+                    "placeholder:text-[var(--muted-foreground)]/40 placeholder:italic",
+                    "focus:outline-none focus:border-solid transition-all"
+                  )}
+                  style={{ borderColor: `${missionColor}40` }}
+                  placeholder="what you want to discover..."
+                  value={pageNotes['mission-hope-to-learn'] || ''}
+                  onChange={(e) => saveNote('mission-hope-to-learn', e.target.value)}
+                />
+              </div>
+
+              {/* Intention 2: What I already know */}
+              <div className="space-y-1.5">
+                <div className="flex items-center gap-2">
                   <span className="text-sm">💭</span>
-                  <p className="text-xs text-[var(--muted-foreground)]">
-                    What do you already know about this topic?
+                  <p className="text-xs font-medium text-[var(--foreground)]">
+                    What I already know about this topic is...
                   </p>
                 </div>
-                <div className="flex items-start gap-2">
+                <input
+                  type="text"
+                  className={cn(
+                    "w-full px-3 py-2 text-sm font-serif",
+                    "bg-transparent border-b-2 border-dashed",
+                    "text-[var(--foreground)]",
+                    "placeholder:text-[var(--muted-foreground)]/40 placeholder:italic",
+                    "focus:outline-none focus:border-solid transition-all"
+                  )}
+                  style={{ borderColor: `${missionColor}40` }}
+                  placeholder="your existing knowledge..."
+                  value={pageNotes['mission-already-know'] || ''}
+                  onChange={(e) => saveNote('mission-already-know', e.target.value)}
+                />
+              </div>
+
+              {/* Intention 3: How I will apply */}
+              <div className="space-y-1.5">
+                <div className="flex items-center gap-2">
                   <span className="text-sm">🌱</span>
-                  <p className="text-xs text-[var(--muted-foreground)]">
-                    How will you apply this knowledge?
+                  <p className="text-xs font-medium text-[var(--foreground)]">
+                    I plan to apply this knowledge by...
                   </p>
                 </div>
+                <input
+                  type="text"
+                  className={cn(
+                    "w-full px-3 py-2 text-sm font-serif",
+                    "bg-transparent border-b-2 border-dashed",
+                    "text-[var(--foreground)]",
+                    "placeholder:text-[var(--muted-foreground)]/40 placeholder:italic",
+                    "focus:outline-none focus:border-solid transition-all"
+                  )}
+                  style={{ borderColor: `${missionColor}40` }}
+                  placeholder="how you'll use what you learn..."
+                  value={pageNotes['mission-apply-knowledge'] || ''}
+                  onChange={(e) => saveNote('mission-apply-knowledge', e.target.value)}
+                />
               </div>
             </div>
 
-            {/* Reflection textarea */}
-            <div className="flex-1 px-4 pb-4 min-h-0">
-              <textarea
-                className={cn(
-                  "w-full h-full resize-none",
-                  "bg-transparent",
-                  "border border-dashed border-[var(--border)]/40 rounded-lg",
-                  "p-3 text-sm font-serif",
-                  "text-[var(--foreground)]",
-                  "placeholder:text-[var(--muted-foreground)]/40 placeholder:italic",
-                  "focus:outline-none focus:border-[var(--primary)]/50",
-                  "transition-colors"
-                )}
-                placeholder="Write your intentions, goals, and starting thoughts here..."
-                value={pageNotes[missionNoteKey] || ''}
-                onChange={(e) => saveNote(missionNoteKey, e.target.value)}
-                style={{
-                  lineHeight: '1.75em',
-                  backgroundImage: 'linear-gradient(to bottom, transparent 90%, var(--border) 90%, var(--border) 92%, transparent 92%)',
-                  backgroundSize: '100% 1.75em',
-                  backgroundPosition: '0 0.25em',
-                }}
-              />
-            </div>
-
             {/* Footer hint */}
-            <div className="shrink-0 text-center pb-4">
+            <div className="shrink-0 text-center pb-3">
               <p className="text-[9px] text-[var(--muted-foreground)]">
                 Turn the page to begin Chapter 1 →
               </p>
@@ -792,55 +818,66 @@ export function DigitalScroll({
         )
 
       case 'chapter-intro':
-        // Right side of chapter spread - shows learning objectives and chapter overview
+        // Right side of chapter spread - shows complete curriculum outline
         const introRibbon = page.chapterIndex !== undefined && RIBBON_ORDER[page.chapterIndex]
           ? GUARDIAN_RIBBONS[RIBBON_ORDER[page.chapterIndex]]
           : null
         const introColor = introRibbon?.colors.from || 'var(--primary)'
+        const allLessons = page.module?.lessons || []
         return (
           <div className="w-full h-full flex flex-col relative overflow-hidden">
             <AncientBorder />
 
             {/* Header */}
-            <div className="text-center pt-6 pb-4 shrink-0">
-              <h3 className="text-lg font-serif font-bold text-[var(--foreground)] mb-2">
-                What You&apos;ll Learn
+            <div className="text-center pt-4 pb-2 shrink-0">
+              <h3 className="text-base font-serif font-bold text-[var(--foreground)] mb-1">
+                Chapter {(page.chapterIndex ?? 0) + 1} Curriculum
               </h3>
+              <p className="text-[10px] text-[var(--muted-foreground)]">
+                {allLessons.length} lessons in this chapter
+              </p>
               <div
-                className="w-24 h-0.5 mx-auto"
+                className="w-20 h-0.5 mx-auto mt-2"
                 style={{
                   background: `linear-gradient(to right, transparent, ${introColor}, transparent)`,
                 }}
               />
             </div>
 
-            {/* Learning objectives list */}
-            <div className="flex-1 px-4 overflow-hidden">
-              <div className="space-y-3">
-                {page.module?.lessons.slice(0, 6).map((lesson, idx) => (
+            {/* Complete curriculum outline - scrollable for full content */}
+            <div className="flex-1 px-3 overflow-y-auto">
+              <div className="space-y-1.5">
+                {allLessons.map((lesson, idx) => (
                   <div
                     key={lesson.id || idx}
-                    className="flex items-start gap-3"
+                    className="flex items-start gap-2 p-1.5 rounded-md hover:bg-[var(--muted)]/30 transition-colors"
                   >
                     <div
-                      className="w-6 h-6 rounded-full flex items-center justify-center text-white text-xs font-bold shrink-0 mt-0.5"
+                      className="w-5 h-5 rounded-full flex items-center justify-center text-white text-[10px] font-bold shrink-0 mt-0.5"
                       style={{ background: introColor }}
                     >
                       {idx + 1}
                     </div>
-                    <div>
-                      <p className="text-sm font-medium text-[var(--foreground)]">
+                    <div className="flex-1 min-w-0">
+                      <p className="text-xs font-medium text-[var(--foreground)] leading-tight">
                         {lesson.title}
                       </p>
+                      {lesson.description && (
+                        <p className="text-[9px] text-[var(--muted-foreground)] mt-0.5 line-clamp-1">
+                          {typeof lesson.description === 'string'
+                            ? lesson.description
+                            : lesson.description[selectedLevel] || Object.values(lesson.description)[0]}
+                        </p>
+                      )}
                     </div>
                   </div>
                 ))}
               </div>
 
-              {/* Module description */}
+              {/* Module overview */}
               {page.module && (
-                <div className="mt-6 p-3 rounded-lg bg-[var(--muted)]/30 border border-[var(--border)]/30">
-                  <p className="text-xs italic text-[var(--muted-foreground)] leading-relaxed">
+                <div className="mt-3 p-2 rounded-lg bg-[var(--muted)]/20 border border-[var(--border)]/20">
+                  <p className="text-[9px] italic text-[var(--muted-foreground)] leading-relaxed">
                     {typeof page.module.description === 'string'
                       ? page.module.description
                       : page.module.description[selectedLevel] || page.module.description.HIGH_SCHOOL}
@@ -850,15 +887,9 @@ export function DigitalScroll({
             </div>
 
             {/* Footer prompt */}
-            <div className="shrink-0 text-center py-4">
-              <div
-                className="w-16 h-0.5 mx-auto mb-3"
-                style={{
-                  background: `linear-gradient(to right, transparent, ${introColor}, transparent)`,
-                }}
-              />
-              <p className="text-xs text-[var(--muted-foreground)]">
-                Turn the page to begin your journey →
+            <div className="shrink-0 text-center py-2">
+              <p className="text-[9px] text-[var(--muted-foreground)]">
+                Turn the page to begin →
               </p>
             </div>
           </div>
