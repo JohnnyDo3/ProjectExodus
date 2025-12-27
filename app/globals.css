@@ -196,6 +196,9 @@
   --card: #fffaf7;
   --card-foreground: var(--earth-800);
   --border: #ffd4c4;
+  /* Digital Scroll book colors */
+  --book-paper: #faf8f5;
+  --book-text: #2d2d2d;
 }
 
 /* 🌅 SUNRISE - Gentle awakening, soft golden dawn (7am-10am) */
@@ -213,11 +216,17 @@
   --card: #fffbf5;
   --card-foreground: var(--earth-800);
   --border: #f4d9c4;
+  /* Digital Scroll book colors */
+  --book-paper: #faf8f5;
+  --book-text: #2d2d2d;
 }
 
 /* ☀️ DAY - Bright, vibrant, full of life (10am-3pm) */
 .day, :root {
   /* Already defined in :root above, but ensuring consistency */
+  /* Digital Scroll book colors */
+  --book-paper: #faf8f5;
+  --book-text: #2d2d2d;
 }
 
 /* 🌤️ AFTERNOON - Warm afternoon light (3pm-6pm) */
@@ -235,6 +244,9 @@
   --card: #fffcf0;
   --card-foreground: var(--earth-900);
   --border: #ead4b0;
+  /* Digital Scroll book colors */
+  --book-paper: #faf8f5;
+  --book-text: #2d2d2d;
 }
 
 /* 🌆 DUSK - Early evening, golden hour (6pm-8pm) */
@@ -252,6 +264,9 @@
   --card: #faf3ea;
   --card-foreground: var(--earth-900);
   --border: #d9c3ad;
+  /* Digital Scroll book colors */
+  --book-paper: #f5f0e8;
+  --book-text: #2d2d2d;
 }
 
 /* 🌇 SUNSET - Warm terracotta, golden hour transition (8pm-10pm) */
@@ -269,6 +284,9 @@
   --card: #f0e8e0;
   --card-foreground: var(--earth-900);
   --border: #cfc0ad;
+  /* Digital Scroll book colors */
+  --book-paper: #f0e8df;
+  --book-text: #2d2d2d;
 }
 
 /* 🌙 NIGHT - Midnight galaxy, cosmic darkness (10pm-2am) */
@@ -290,6 +308,9 @@
   --ring: #6eb5ff;            /* Same as primary for focus rings */
   --destructive: #ff6b6b;     /* Bright red for visibility */
   --destructive-foreground: #020208;
+  /* Digital Scroll book colors - warm parchment for readability */
+  --book-paper: #2a2825;
+  --book-text: #e8e4df;
 }
 
 /* 🌌 MIDNIGHT - Deepest cosmic void (2am-5am) */
@@ -311,6 +332,9 @@
   --ring: #6eb5ff;            /* Same as primary for focus rings */
   --destructive: #ff6b6b;     /* Bright red for visibility */
   --destructive-foreground: #020208;
+  /* Digital Scroll book colors - warm parchment for readability */
+  --book-paper: #2a2825;
+  --book-text: #e8e4df;
 }
 
 /* 🌅 Conditional visibility for day/night elements - SMOOTH TRANSITIONS */

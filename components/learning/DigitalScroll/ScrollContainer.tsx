@@ -259,8 +259,9 @@ export function PageContainer({ children, side, className }: PageContainerProps)
         side === 'left' && isDesktop && 'pl-4 pr-3 py-3',  // Left page: outer=4 (16px), inner=3 (12px)
         side === 'right' && isDesktop && 'pl-3 pr-4 py-3', // Right page: inner=3 (12px), outer=4 (16px)
         !isDesktop && 'p-3',
-        // Page styling
+        // Page styling - book colors for proper theme sync
         'bg-[var(--book-paper,var(--card))]',
+        'text-[var(--book-text,var(--foreground))]',
         // Side-specific styling
         side === 'left' && isDesktop && [
           // Left page has subtle border on right edge

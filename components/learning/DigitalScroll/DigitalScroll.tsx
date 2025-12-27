@@ -647,7 +647,7 @@ export function DigitalScroll({
             <AncientBorder />
             {/* TOC Header */}
             <div className="text-center py-4 shrink-0">
-              <h2 className="text-2xl sm:text-3xl font-serif font-bold text-[var(--foreground)] mb-1">
+              <h2 className="text-2xl sm:text-3xl font-serif font-bold text-[var(--book-text,var(--foreground))] mb-1">
                 Table of Contents
               </h2>
               <p className="text-xs text-[var(--muted-foreground)] italic font-serif">
@@ -675,7 +675,7 @@ export function DigitalScroll({
                       <span className="text-[10px] uppercase tracking-wider text-[var(--muted-foreground)] block">
                         Chapter {i + 1}
                       </span>
-                      <span className="font-serif text-base text-[var(--foreground)] group-hover:text-[var(--primary)] transition-colors truncate block">
+                      <span className="font-serif text-base text-[var(--book-text,var(--foreground))] group-hover:text-[var(--primary)] transition-colors truncate block">
                         {module.title}
                       </span>
                     </div>
@@ -705,7 +705,7 @@ export function DigitalScroll({
               <div className="flex items-center justify-center gap-2 mb-1">
                 <span className="text-xl">🎯</span>
               </div>
-              <h3 className="text-lg font-serif font-bold text-[var(--foreground)] mb-1">
+              <h3 className="text-lg font-serif font-bold text-[var(--book-text,var(--foreground))] mb-1">
                 Set Your Intentions
               </h3>
               <p className="text-[10px] text-[var(--muted-foreground)] italic max-w-[220px] mx-auto">
@@ -727,7 +727,7 @@ export function DigitalScroll({
               <div className="space-y-1.5">
                 <div className="flex items-center gap-2">
                   <span className="text-sm">✨</span>
-                  <p className="text-xs font-medium text-[var(--foreground)]">
+                  <p className="text-xs font-medium text-[var(--book-text,var(--foreground))]">
                     By studying {topic.title}, I hope to learn...
                   </p>
                 </div>
@@ -736,7 +736,7 @@ export function DigitalScroll({
                   className={cn(
                     "w-full px-3 py-2 text-sm font-serif",
                     "bg-transparent border-b-2 border-dashed",
-                    "text-[var(--foreground)]",
+                    "text-[var(--book-text,var(--foreground))]",
                     "placeholder:text-[var(--muted-foreground)]/40 placeholder:italic",
                     "focus:outline-none focus:border-solid transition-all"
                   )}
@@ -751,7 +751,7 @@ export function DigitalScroll({
               <div className="space-y-1.5">
                 <div className="flex items-center gap-2">
                   <span className="text-sm">💭</span>
-                  <p className="text-xs font-medium text-[var(--foreground)]">
+                  <p className="text-xs font-medium text-[var(--book-text,var(--foreground))]">
                     What I already know about this topic is...
                   </p>
                 </div>
@@ -760,7 +760,7 @@ export function DigitalScroll({
                   className={cn(
                     "w-full px-3 py-2 text-sm font-serif",
                     "bg-transparent border-b-2 border-dashed",
-                    "text-[var(--foreground)]",
+                    "text-[var(--book-text,var(--foreground))]",
                     "placeholder:text-[var(--muted-foreground)]/40 placeholder:italic",
                     "focus:outline-none focus:border-solid transition-all"
                   )}
@@ -775,7 +775,7 @@ export function DigitalScroll({
               <div className="space-y-1.5">
                 <div className="flex items-center gap-2">
                   <span className="text-sm">🌱</span>
-                  <p className="text-xs font-medium text-[var(--foreground)]">
+                  <p className="text-xs font-medium text-[var(--book-text,var(--foreground))]">
                     I plan to apply this knowledge by...
                   </p>
                 </div>
@@ -784,7 +784,7 @@ export function DigitalScroll({
                   className={cn(
                     "w-full px-3 py-2 text-sm font-serif",
                     "bg-transparent border-b-2 border-dashed",
-                    "text-[var(--foreground)]",
+                    "text-[var(--book-text,var(--foreground))]",
                     "placeholder:text-[var(--muted-foreground)]/40 placeholder:italic",
                     "focus:outline-none focus:border-solid transition-all"
                   )}
@@ -837,7 +837,7 @@ export function DigitalScroll({
 
             {/* Header */}
             <div className="text-center pt-3 pb-1 shrink-0">
-              <h3 className="text-sm font-serif font-bold text-[var(--foreground)] mb-0.5">
+              <h3 className="text-sm font-serif font-bold text-[var(--book-text,var(--foreground))] mb-0.5">
                 Chapter {(page.chapterIndex ?? 0) + 1} Learning Outline
               </h3>
               <p className="text-[9px] text-[var(--muted-foreground)]">
@@ -870,7 +870,7 @@ export function DigitalScroll({
                       >
                         {idx + 1}
                       </div>
-                      <p className="flex-1 text-[10px] font-medium text-[var(--foreground)] truncate">
+                      <p className="flex-1 text-[10px] font-medium text-[var(--book-text,var(--foreground))] truncate">
                         {lesson.title}
                       </p>
                       <span className="text-[8px] text-[var(--muted-foreground)] shrink-0">
@@ -903,7 +903,7 @@ export function DigitalScroll({
                            activity.type === 'SCENARIO' ? '🎭' :
                            activity.type === 'TIMED_CHALLENGE' ? '⏱️' : '📝'}
                         </span>
-                        <p className="flex-1 text-[9px] text-[var(--foreground)] truncate">
+                        <p className="flex-1 text-[9px] text-[var(--book-text,var(--foreground))] truncate">
                           {typeof activity.title === 'string'
                             ? activity.title
                             : activity.title[selectedLevel] || Object.values(activity.title)[0]}
@@ -925,7 +925,7 @@ export function DigitalScroll({
                     <p className="text-[8px] font-bold text-[var(--muted-foreground)] uppercase mb-0.5 flex items-center gap-1">
                       <span>🎮</span> Game
                     </p>
-                    <p className="text-[9px] font-medium text-[var(--foreground)] truncate">
+                    <p className="text-[9px] font-medium text-[var(--book-text,var(--foreground))] truncate">
                       {chapterGame.title}
                     </p>
                     <p className="text-[7px] text-[var(--muted-foreground)]">
@@ -940,7 +940,7 @@ export function DigitalScroll({
                     <p className="text-[8px] font-bold text-[var(--muted-foreground)] uppercase mb-0.5 flex items-center gap-1">
                       <span>✅</span> Quiz
                     </p>
-                    <p className="text-[9px] font-medium text-[var(--foreground)]">
+                    <p className="text-[9px] font-medium text-[var(--book-text,var(--foreground))]">
                       {chapterQuiz.questions?.length || 0} questions
                     </p>
                     <p className="text-[7px] text-[var(--muted-foreground)]">
@@ -987,7 +987,7 @@ export function DigitalScroll({
             <div className="text-center pt-3 pb-2 shrink-0">
               <div className="flex items-center justify-center gap-2 mb-1">
                 <span className="text-base">{gamesCompleted ? '✅' : '🎮'}</span>
-                <h3 className="text-sm font-serif font-bold text-[var(--foreground)]">
+                <h3 className="text-sm font-serif font-bold text-[var(--book-text,var(--foreground))]">
                   Practice Activities
                 </h3>
               </div>
@@ -1135,7 +1135,7 @@ export function DigitalScroll({
 
             {/* Header */}
             <div className="text-center pt-3 pb-2 shrink-0">
-              <h3 className="text-sm font-serif font-bold text-[var(--foreground)]">
+              <h3 className="text-sm font-serif font-bold text-[var(--book-text,var(--foreground))]">
                 📚 Chapter Review
               </h3>
             </div>
@@ -1149,7 +1149,7 @@ export function DigitalScroll({
             <div className="flex-1 px-2 pb-2 overflow-hidden">
               {/* Key Terms Section */}
               <div className="mb-3">
-                <p className="text-[10px] font-bold text-[var(--foreground)] mb-1.5 flex items-center gap-1">
+                <p className="text-[10px] font-bold text-[var(--book-text,var(--foreground))] mb-1.5 flex items-center gap-1">
                   <span>📖</span> Key Terms
                 </p>
                 <div className="grid grid-cols-2 gap-1">
@@ -1158,7 +1158,7 @@ export function DigitalScroll({
                       key={idx}
                       className="p-1.5 rounded bg-[var(--muted)]/30 border border-[var(--border)]/20"
                     >
-                      <p className="text-[9px] font-bold text-[var(--foreground)] truncate">{item.term}</p>
+                      <p className="text-[9px] font-bold text-[var(--book-text,var(--foreground))] truncate">{item.term}</p>
                       <p className="text-[8px] text-[var(--muted-foreground)] line-clamp-2">{item.definition}</p>
                     </div>
                   ))}
@@ -1167,14 +1167,14 @@ export function DigitalScroll({
 
               {/* Fun Facts Section */}
               <div className="mb-3">
-                <p className="text-[10px] font-bold text-[var(--foreground)] mb-1.5 flex items-center gap-1">
+                <p className="text-[10px] font-bold text-[var(--book-text,var(--foreground))] mb-1.5 flex items-center gap-1">
                   <span>💡</span> Did You Know?
                 </p>
                 <div className="space-y-1">
                   {(page.funFacts || []).slice(0, 3).map((fact, idx) => (
                     <div
                       key={idx}
-                      className="p-1.5 rounded-lg border-l-2 text-[8px] text-[var(--foreground)]"
+                      className="p-1.5 rounded-lg border-l-2 text-[8px] text-[var(--book-text,var(--foreground))]"
                       style={{ borderColor: reviewColor, background: `${reviewColor}08` }}
                     >
                       {fact}
@@ -1185,7 +1185,7 @@ export function DigitalScroll({
 
               {/* Summary Section */}
               <div>
-                <p className="text-[10px] font-bold text-[var(--foreground)] mb-1.5 flex items-center gap-1">
+                <p className="text-[10px] font-bold text-[var(--book-text,var(--foreground))] mb-1.5 flex items-center gap-1">
                   <span>✓</span> Key Takeaways
                 </p>
                 <div className="space-y-1">
@@ -1197,7 +1197,7 @@ export function DigitalScroll({
                       >
                         ✓
                       </span>
-                      <p className="text-[8px] text-[var(--foreground)]">{point}</p>
+                      <p className="text-[8px] text-[var(--book-text,var(--foreground))]">{point}</p>
                     </div>
                   ))}
                 </div>
@@ -1222,7 +1222,7 @@ export function DigitalScroll({
             {/* Footer Quote */}
             <div className="shrink-0 px-2 pb-2">
               <div className="p-2 rounded text-center" style={{ background: `${reviewColor}10` }}>
-                <p className="text-[8px] text-[var(--foreground)] italic">
+                <p className="text-[8px] text-[var(--book-text,var(--foreground))] italic">
                   &ldquo;{getGuardianQuote(page.chapterIndex ?? 0)}&rdquo;
                 </p>
               </div>
@@ -1246,7 +1246,7 @@ export function DigitalScroll({
 
             {/* Header */}
             <div className="text-center pt-3 pb-1 shrink-0">
-              <h3 className="text-sm font-serif font-bold text-[var(--foreground)]">
+              <h3 className="text-sm font-serif font-bold text-[var(--book-text,var(--foreground))]">
                 🎯 Apply & Reflect
               </h3>
               <p className="text-[8px] text-[var(--muted-foreground)]">{enhancedChapterTitle}</p>
@@ -1259,7 +1259,7 @@ export function DigitalScroll({
 
             {/* Real World Actions - Compact */}
             <div className="px-2 mb-2 shrink-0">
-              <p className="text-[9px] font-bold text-[var(--foreground)] mb-1">🌍 Try This:</p>
+              <p className="text-[9px] font-bold text-[var(--book-text,var(--foreground))] mb-1">🌍 Try This:</p>
               <div className="flex gap-1">
                 {(page.realWorldExamples || []).slice(0, 3).map((ex, idx) => (
                   <div
@@ -1267,7 +1267,7 @@ export function DigitalScroll({
                     className="flex-1 p-1.5 rounded bg-[var(--muted)]/30 border border-[var(--border)]/20 text-center"
                   >
                     <span className="text-sm block">{ex.icon}</span>
-                    <p className="text-[7px] font-medium text-[var(--foreground)]">{ex.title}</p>
+                    <p className="text-[7px] font-medium text-[var(--book-text,var(--foreground))]">{ex.title}</p>
                   </div>
                 ))}
               </div>
@@ -1275,14 +1275,14 @@ export function DigitalScroll({
 
             {/* Notes textarea - takes remaining space */}
             <div className="flex-1 px-2 pb-1 min-h-0">
-              <p className="text-[9px] font-bold text-[var(--foreground)] mb-1">📝 Your Notes:</p>
+              <p className="text-[9px] font-bold text-[var(--book-text,var(--foreground))] mb-1">📝 Your Notes:</p>
               <textarea
                 className={cn(
                   "w-full h-[calc(100%-16px)] resize-none",
                   "bg-transparent",
                   "border border-dashed border-[var(--border)]/40 rounded",
                   "p-2 text-[10px] font-serif",
-                  "text-[var(--foreground)]",
+                  "text-[var(--book-text,var(--foreground))]",
                   "placeholder:text-[var(--muted-foreground)]/40 placeholder:italic",
                   "focus:outline-none focus:border-[var(--primary)]/50"
                 )}
@@ -1305,7 +1305,7 @@ export function DigitalScroll({
                   "w-full flex items-center justify-center gap-1 py-1.5 px-2 rounded",
                   "bg-[var(--muted)]/50 hover:bg-[var(--muted)]",
                   "border border-[var(--border)]/50",
-                  "text-[var(--foreground)] text-[9px] font-medium"
+                  "text-[var(--book-text,var(--foreground))] text-[9px] font-medium"
                 )}
                 onClick={() => setShowDiscussion(true)}
               >
@@ -1333,7 +1333,7 @@ export function DigitalScroll({
             <div className="text-center pt-3 pb-2 shrink-0">
               <div className="flex items-center justify-center gap-2 mb-1">
                 <span className="text-base">{isQuizUnlocked ? '📝' : '🔒'}</span>
-                <h3 className="text-sm font-serif font-bold text-[var(--foreground)]">
+                <h3 className="text-sm font-serif font-bold text-[var(--book-text,var(--foreground))]">
                   Chapter Quiz
                 </h3>
               </div>
@@ -1349,7 +1349,7 @@ export function DigitalScroll({
                   <div className="w-16 h-16 rounded-full bg-[var(--muted)] flex items-center justify-center mb-4">
                     <span className="text-3xl">🔒</span>
                   </div>
-                  <h4 className="text-sm font-bold text-[var(--foreground)] mb-2">
+                  <h4 className="text-sm font-bold text-[var(--book-text,var(--foreground))] mb-2">
                     Quiz Locked
                   </h4>
                   <p className="text-xs text-[var(--muted-foreground)] mb-4 max-w-[200px]">
@@ -1531,7 +1531,7 @@ export function DigitalScroll({
             <button
               onClick={prevPage}
               disabled={currentPageIndex === 0}
-              className="p-1.5 rounded-full bg-[var(--card)]/80 text-[var(--foreground)] hover:bg-[var(--primary)] hover:text-[var(--primary-foreground)] disabled:opacity-20 transition-all border border-[var(--border)]/50"
+              className="p-1.5 rounded-full bg-[var(--card)]/80 text-[var(--book-text,var(--foreground))] hover:bg-[var(--primary)] hover:text-[var(--primary-foreground)] disabled:opacity-20 transition-all border border-[var(--border)]/50"
               aria-label="Previous page"
             >
               <ChevronLeft className="w-4 h-4" />
@@ -1544,7 +1544,7 @@ export function DigitalScroll({
             <button
               onClick={nextPage}
               disabled={currentPageIndex >= totalPages - 1}
-              className="p-1.5 rounded-full bg-[var(--card)]/80 text-[var(--foreground)] hover:bg-[var(--primary)] hover:text-[var(--primary-foreground)] disabled:opacity-20 transition-all border border-[var(--border)]/50"
+              className="p-1.5 rounded-full bg-[var(--card)]/80 text-[var(--book-text,var(--foreground))] hover:bg-[var(--primary)] hover:text-[var(--primary-foreground)] disabled:opacity-20 transition-all border border-[var(--border)]/50"
               aria-label="Next page"
             >
               <ChevronRight className="w-4 h-4" />
@@ -1556,7 +1556,7 @@ export function DigitalScroll({
             {/* Sound Toggle */}
             <button
               onClick={() => scrollState.updatePreferences({ soundEnabled: !scrollState.preferences.soundEnabled })}
-              className="p-2 rounded-full bg-[var(--card)]/90 text-[var(--foreground)] hover:bg-[var(--muted)] border border-[var(--border)] transition-all"
+              className="p-2 rounded-full bg-[var(--card)]/90 text-[var(--book-text,var(--foreground))] hover:bg-[var(--muted)] border border-[var(--border)] transition-all"
               aria-label={scrollState.preferences.soundEnabled ? 'Mute sounds' : 'Enable sounds'}
             >
               {scrollState.preferences.soundEnabled ? (
@@ -1569,7 +1569,7 @@ export function DigitalScroll({
             {/* Expand/Minimize Button */}
             <button
               onClick={() => setIsExpanded(!isExpanded)}
-              className="p-2 rounded-full bg-[var(--card)]/90 text-[var(--foreground)] hover:bg-[var(--muted)] border border-[var(--border)] transition-all"
+              className="p-2 rounded-full bg-[var(--card)]/90 text-[var(--book-text,var(--foreground))] hover:bg-[var(--muted)] border border-[var(--border)] transition-all"
               aria-label={isExpanded ? 'Exit fullscreen' : 'Enter fullscreen'}
             >
               {isExpanded ? (
@@ -1629,7 +1629,7 @@ export function DigitalScroll({
               <div className="flex items-center gap-3">
                 <GripVertical className="w-5 h-5 text-[var(--muted-foreground)]" />
                 <div>
-                  <span className="text-sm font-bold text-[var(--foreground)]">
+                  <span className="text-sm font-bold text-[var(--book-text,var(--foreground))]">
                     {topic.title} Discussion
                   </span>
                   <p className="text-[10px] text-[var(--muted-foreground)]">
@@ -1653,7 +1653,7 @@ export function DigitalScroll({
                   <div className="w-16 h-16 rounded-full bg-[var(--muted)] flex items-center justify-center mb-4">
                     <MessageCircle className="w-8 h-8 text-[var(--muted-foreground)]" />
                   </div>
-                  <h4 className="text-base font-bold text-[var(--foreground)] mb-2">
+                  <h4 className="text-base font-bold text-[var(--book-text,var(--foreground))] mb-2">
                     Digital Scroll Discussions
                   </h4>
                   <p className="text-sm text-[var(--muted-foreground)] max-w-[300px] mb-4">
@@ -1681,7 +1681,7 @@ export function DigitalScroll({
                     </button>
                     <button
                       onClick={() => window.open(`/community/forum?topic=${topic.id}`, '_blank')}
-                      className="px-4 py-2 text-xs font-medium rounded-lg border border-[var(--border)] text-[var(--foreground)] hover:bg-[var(--muted)]"
+                      className="px-4 py-2 text-xs font-medium rounded-lg border border-[var(--border)] text-[var(--book-text,var(--foreground))] hover:bg-[var(--muted)]"
                     >
                       Open Forum
                     </button>
