@@ -192,7 +192,7 @@ function Ribbon({
       onClick={onClick}
       onMouseEnter={onMouseEnter}
       onMouseLeave={onMouseLeave}
-      whileHover={isDesktop ? { y: 12, scale: 1.05 } : { scale: 1.15 }}
+      whileHover={isDesktop ? { y: isExpanded ? 35 : 20, scale: 1.05 } : { scale: 1.15 }}
       whileTap={{ scale: 0.95 }}
       animate={
         isActive
