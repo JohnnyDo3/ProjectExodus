@@ -197,8 +197,8 @@ export function ScrollWrapper({ children, className }: ScrollWrapperProps) {
     <div
       className={cn(
         'relative w-full h-full',
-        // Book styling
-        'rounded-lg overflow-hidden',
+        // Book styling - overflow-visible to allow ribbon bookmarks to emerge from top
+        'rounded-lg overflow-visible',
         // Two-page spread on desktop
         deviceType === 'desktop' && 'flex flex-row',
         className

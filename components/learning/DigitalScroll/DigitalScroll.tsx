@@ -1349,18 +1349,18 @@ export function DigitalScroll({
           onKeyDown={handleKeyDown}
           className={className}
         >
-          {/* Ribbon Bookmarks */}
-          <RibbonBookmarks
-            currentChapter={currentChapter}
-            completedChapters={completedChapters}
-            onChapterClick={goToChapter}
-            onContinueClick={continueReading}
-            continuePosition={scrollState.currentPosition || undefined}
-            isExpanded={isExpanded}
-          />
-
           {/* Book Wrapper */}
           <ScrollWrapper>
+            {/* Ribbon Bookmarks - inside the book so they emerge from pages */}
+            <RibbonBookmarks
+              currentChapter={currentChapter}
+              completedChapters={completedChapters}
+              onChapterClick={goToChapter}
+              onContinueClick={continueReading}
+              continuePosition={scrollState.currentPosition || undefined}
+              isExpanded={isExpanded}
+            />
+
             {/* Page Flip Container */}
             <PageFlip
               leftPage={
