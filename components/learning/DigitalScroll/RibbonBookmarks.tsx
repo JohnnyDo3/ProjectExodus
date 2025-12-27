@@ -86,7 +86,8 @@ export function RibbonBookmarks({
       )}
       style={isDesktop ? {
         // Position ribbons so they extend upward from the top edge of the book
-        transform: 'translateY(-90%)',
+        // -75% means 75% sticks out above, 25% is "inside" the book
+        transform: isExpanded ? 'translateY(-75%)' : 'translateY(-75%)',
       } : undefined}
       role="navigation"
       aria-label="Chapter bookmarks"
