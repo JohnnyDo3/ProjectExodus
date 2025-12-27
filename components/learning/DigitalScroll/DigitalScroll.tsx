@@ -862,13 +862,6 @@ export function DigitalScroll({
                       <p className="text-xs font-medium text-[var(--foreground)] leading-tight">
                         {lesson.title}
                       </p>
-                      {lesson.description && (
-                        <p className="text-[9px] text-[var(--muted-foreground)] mt-0.5 line-clamp-1">
-                          {typeof lesson.description === 'string'
-                            ? lesson.description
-                            : lesson.description[selectedLevel] || Object.values(lesson.description)[0]}
-                        </p>
-                      )}
                     </div>
                   </div>
                 ))}
