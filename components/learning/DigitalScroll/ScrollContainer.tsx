@@ -157,16 +157,18 @@ export const ScrollContainer = forwardRef<HTMLDivElement, ScrollContainerProps>(
           </motion.div>
         </div>
 
-        {/* Close hint - positioned at top-left to avoid overlap with control buttons */}
-        <motion.div
-          className="absolute top-6 left-6 text-white/60 text-sm font-medium flex items-center gap-2"
-          initial={{ opacity: 0, y: -10 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 1 }}
-        >
-          <kbd className="px-2 py-1 bg-white/10 rounded text-xs">ESC</kbd>
-          <span>to close</span>
-        </motion.div>
+        {/* Close hint - hidden in expanded view to not interfere with ribbon bookmarks */}
+        {!isExpanded && (
+          <motion.div
+            className="absolute top-6 left-6 text-white/60 text-sm font-medium flex items-center gap-2"
+            initial={{ opacity: 0, y: -10 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 1 }}
+          >
+            <kbd className="px-2 py-1 bg-white/10 rounded text-xs">ESC</kbd>
+            <span>to close</span>
+          </motion.div>
+        )}
       </motion.div>
     )
   }
