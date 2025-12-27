@@ -253,18 +253,18 @@ export function PageContainer({ children, side, className }: PageContainerProps)
         // IMPORTANT: PageFlip already positions this in a w-1/2 container
         // so we need w-full h-full here to fill that container
         'w-full h-full',
-        // Asymmetric padding for book layout:
-        // - More padding on OUTER edge (far from centerfold)
-        // - Moderate cushion padding on INNER edge (centerfold) - close but not hidden
-        side === 'left' && isDesktop && 'pl-4 pr-7 py-3',  // Left page: outer=4, inner(centerfold)=7 (28px)
-        side === 'right' && isDesktop && 'pl-7 pr-4 py-3', // Right page: inner(centerfold)=7 (28px), outer=4
+        // Balanced padding for book layout:
+        // - Outer edge gets slightly more padding
+        // - Inner edge (centerfold) gets minimal padding since spine provides visual separation
+        side === 'left' && isDesktop && 'pl-4 pr-3 py-3',  // Left page: outer=4 (16px), inner=3 (12px)
+        side === 'right' && isDesktop && 'pl-3 pr-4 py-3', // Right page: inner=3 (12px), outer=4 (16px)
         !isDesktop && 'p-3',
         // Page styling
         'bg-[var(--book-paper,var(--card))]',
         // Side-specific styling
         side === 'left' && isDesktop && [
-          // Left page has shadow on right edge
-          'border-r border-[var(--border)]',
+          // Left page has subtle border on right edge
+          'border-r border-[var(--border)]/50',
         ],
         side === 'right' && isDesktop && [
           // Right page styling
@@ -279,27 +279,27 @@ export function PageContainer({ children, side, className }: PageContainerProps)
         ? A11Y_CONFIG.ariaLabels.leftPage
         : A11Y_CONFIG.ariaLabels.rightPage}
     >
-      {/* Page content - fills entire page height, centered content */}
-      <div className="relative w-full h-full flex flex-col">
+      {/* Page content - fills entire page height */}
+      <div className="relative w-full h-full flex flex-col overflow-visible">
         {children}
       </div>
 
-      {/* Page curl shadow effect for left page */}
+      {/* Subtle page shadow near centerfold - doesn't obscure content */}
       {side === 'left' && isDesktop && (
         <div
-          className="absolute inset-y-0 right-0 w-6 pointer-events-none"
+          className="absolute inset-y-0 right-0 w-2 pointer-events-none"
           style={{
-            background: 'linear-gradient(to right, transparent, rgba(0,0,0,0.04))',
+            background: 'linear-gradient(to right, transparent, rgba(0,0,0,0.03))',
           }}
         />
       )}
 
-      {/* Page fold shadow for right page */}
+      {/* Subtle fold shadow for right page */}
       {side === 'right' && isDesktop && (
         <div
-          className="absolute inset-y-0 left-0 w-3 pointer-events-none"
+          className="absolute inset-y-0 left-0 w-2 pointer-events-none"
           style={{
-            background: 'linear-gradient(to left, transparent, rgba(0,0,0,0.06))',
+            background: 'linear-gradient(to left, transparent, rgba(0,0,0,0.04))',
           }}
         />
       )}
@@ -338,36 +338,31 @@ export function ScrollSpine({ className }: ScrollSpineProps) {
         className
       )}
       style={{
-        width: SCROLL_DIMENSIONS.desktop.spineWidth,
+        width: '20px', // Narrower spine for more content space
       }}
       aria-label={A11Y_CONFIG.ariaLabels.spine}
     >
-      {/* Spine gradient */}
+      {/* Subtle spine gradient */}
       <div
         className="absolute inset-0"
         style={{
           background: `linear-gradient(to right,
-            rgba(0,0,0,0.12) 0%,
-            rgba(0,0,0,0.05) 20%,
+            rgba(0,0,0,0.08) 0%,
+            rgba(0,0,0,0.03) 30%,
             transparent 50%,
-            rgba(0,0,0,0.05) 80%,
-            rgba(0,0,0,0.12) 100%
+            rgba(0,0,0,0.03) 70%,
+            rgba(0,0,0,0.08) 100%
           )`,
         }}
       />
 
-      {/* Center line */}
+      {/* Center crease line */}
       <div
         className="absolute top-0 left-1/2 -translate-x-1/2 h-full w-px"
         style={{
-          background: 'linear-gradient(to bottom, rgba(0,0,0,0.15), rgba(0,0,0,0.25), rgba(0,0,0,0.15))',
+          background: 'linear-gradient(to bottom, rgba(0,0,0,0.1), rgba(0,0,0,0.18), rgba(0,0,0,0.1))',
         }}
       />
-
-      {/* Binding stitches effect */}
-      <div className="absolute top-1/4 left-1/2 -translate-x-1/2 w-1 h-2 bg-[rgba(0,0,0,0.1)] rounded-full" />
-      <div className="absolute top-2/4 left-1/2 -translate-x-1/2 w-1 h-2 bg-[rgba(0,0,0,0.1)] rounded-full" />
-      <div className="absolute top-3/4 left-1/2 -translate-x-1/2 w-1 h-2 bg-[rgba(0,0,0,0.1)] rounded-full" />
     </div>
   )
 }
