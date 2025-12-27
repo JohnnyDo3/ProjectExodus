@@ -74,10 +74,10 @@ export function RibbonBookmarks({
     <div
       className={cn(
         'z-40',
-        // Desktop: vertical ribbons - position differently for expanded vs normal
-        isDesktop && !isExpanded && 'absolute -top-16 left-8 flex flex-row gap-2',
-        // Desktop expanded: fixed position at top-left of screen, inside viewport
-        isDesktop && isExpanded && 'fixed top-4 left-4 flex flex-row gap-2 bg-black/30 backdrop-blur-sm rounded-xl p-2',
+        // Desktop: vertical ribbons emerging from book top
+        isDesktop && !isExpanded && 'absolute -top-2 left-8 flex flex-col items-start',
+        // Desktop expanded: fixed position with book binding effect
+        isDesktop && isExpanded && 'fixed top-4 left-4 flex flex-col items-start',
         // Tablet: horizontal strip at top
         deviceType === 'tablet' && 'flex flex-row justify-center gap-1 py-2 bg-[var(--muted)]',
         // Mobile: compact horizontal strip
@@ -87,37 +87,75 @@ export function RibbonBookmarks({
       role="navigation"
       aria-label="Chapter bookmarks"
     >
-      {/* Seven Guardian Ribbons */}
-      {RIBBON_ORDER.map((ribbonKey, index) => {
-        const ribbon = GUARDIAN_RIBBONS[ribbonKey]
-        const isActive = currentChapter === index
-        const isCompleted = completedChapters.includes(index)
-
-        return (
-          <Ribbon
-            key={ribbon.id}
-            ribbon={ribbon}
-            isActive={isActive}
-            isCompleted={isCompleted}
-            isHovered={hoveredRibbon === ribbon.id}
-            deviceType={deviceType}
-            onClick={() => onChapterClick(index)}
-            onMouseEnter={() => setHoveredRibbon(ribbon.id)}
-            onMouseLeave={() => setHoveredRibbon(null)}
+      {/* Book binding edge - where ribbons emerge from */}
+      {isDesktop && (
+        <div className="relative w-full mb-1">
+          {/* Binding shadow overlay */}
+          <div
+            className="absolute -bottom-3 left-0 right-0 h-4 pointer-events-none"
+            style={{
+              background: 'linear-gradient(to bottom, rgba(0,0,0,0.4) 0%, rgba(0,0,0,0.2) 50%, transparent 100%)',
+              borderRadius: '0 0 4px 4px',
+            }}
           />
-        )
-      })}
+          {/* Page edge texture */}
+          <div
+            className="absolute -bottom-1 left-1 right-1 h-2 pointer-events-none"
+            style={{
+              background: 'repeating-linear-gradient(90deg, #f5f0e6 0px, #e8e0d0 1px, #f5f0e6 2px)',
+              borderRadius: '0 0 2px 2px',
+              boxShadow: 'inset 0 1px 2px rgba(0,0,0,0.2)',
+            }}
+          />
+        </div>
+      )}
 
-      {/* Yin-Yang Continue Ribbon */}
-      <YinYangRibbon
-        isActive={false}
-        deviceType={deviceType}
-        continuePosition={continuePosition}
-        onClick={onContinueClick}
-        onMouseEnter={() => setHoveredRibbon('continue')}
-        onMouseLeave={() => setHoveredRibbon(null)}
-        isHovered={hoveredRibbon === 'continue'}
-      />
+      {/* Ribbon container with 3D effect */}
+      <div
+        className={cn(
+          isDesktop && !isExpanded && 'flex flex-row gap-1.5 -mt-[70px]',
+          isDesktop && isExpanded && 'flex flex-row gap-2 bg-black/30 backdrop-blur-sm rounded-xl p-2',
+          !isDesktop && 'contents'
+        )}
+        style={isDesktop && !isExpanded ? {
+          transform: 'perspective(200px) rotateX(-5deg)',
+          transformOrigin: 'bottom center',
+        } : undefined}
+      >
+        {/* Seven Guardian Ribbons */}
+        {RIBBON_ORDER.map((ribbonKey, index) => {
+          const ribbon = GUARDIAN_RIBBONS[ribbonKey]
+          const isActive = currentChapter === index
+          const isCompleted = completedChapters.includes(index)
+
+          return (
+            <Ribbon
+              key={ribbon.id}
+              ribbon={ribbon}
+              isActive={isActive}
+              isCompleted={isCompleted}
+              isHovered={hoveredRibbon === ribbon.id}
+              deviceType={deviceType}
+              onClick={() => onChapterClick(index)}
+              onMouseEnter={() => setHoveredRibbon(ribbon.id)}
+              onMouseLeave={() => setHoveredRibbon(null)}
+              isExpanded={isExpanded}
+            />
+          )
+        })}
+
+        {/* Yin-Yang Continue Ribbon */}
+        <YinYangRibbon
+          isActive={false}
+          deviceType={deviceType}
+          continuePosition={continuePosition}
+          onClick={onContinueClick}
+          onMouseEnter={() => setHoveredRibbon('continue')}
+          onMouseLeave={() => setHoveredRibbon(null)}
+          isHovered={hoveredRibbon === 'continue'}
+          isExpanded={isExpanded}
+        />
+      </div>
     </div>
   )
 }
@@ -135,6 +173,7 @@ interface RibbonProps {
   onClick: () => void
   onMouseEnter: () => void
   onMouseLeave: () => void
+  isExpanded?: boolean
 }
 
 function Ribbon({
@@ -146,6 +185,7 @@ function Ribbon({
   onClick,
   onMouseEnter,
   onMouseLeave,
+  isExpanded = false,
 }: RibbonProps) {
   const Icon = ribbon.icon
   const isDesktop = deviceType === 'desktop'
@@ -169,16 +209,16 @@ function Ribbon({
         width: ribbonWidth,
         height: ribbonHeight,
         background: ribbon.colors.gradient,
-        // Desktop: pointed ribbon shape
+        // Desktop: pointed ribbon shape with folded top effect
         ...(isDesktop && {
           clipPath: 'polygon(0 0, 100% 0, 100% 85%, 50% 100%, 0 85%)',
         }),
-        // Active glow - enhanced
+        // Active glow - enhanced with depth shadows
         boxShadow: isActive
-          ? `0 0 25px ${ribbon.colors.from}, 0 0 50px ${ribbon.colors.from}50, inset 0 0 10px rgba(255,255,255,0.2)`
+          ? `0 0 25px ${ribbon.colors.from}, 0 0 50px ${ribbon.colors.from}50, inset 0 0 10px rgba(255,255,255,0.2), 0 8px 16px rgba(0,0,0,0.4)`
           : isHovered
-          ? `0 6px 20px ${ribbon.colors.from}80, inset 0 0 8px rgba(255,255,255,0.15)`
-          : '2px 4px 10px rgba(0,0,0,0.4)',
+          ? `0 6px 20px ${ribbon.colors.from}80, inset 0 0 8px rgba(255,255,255,0.15), 0 6px 12px rgba(0,0,0,0.3)`
+          : '2px 4px 10px rgba(0,0,0,0.4), inset 0 -2px 4px rgba(0,0,0,0.2)',
       }}
       onClick={onClick}
       onMouseEnter={onMouseEnter}
@@ -309,6 +349,7 @@ interface YinYangRibbonProps {
   onMouseEnter: () => void
   onMouseLeave: () => void
   isHovered: boolean
+  isExpanded?: boolean
 }
 
 function YinYangRibbon({
@@ -319,6 +360,7 @@ function YinYangRibbon({
   onMouseEnter,
   onMouseLeave,
   isHovered,
+  isExpanded = false,
 }: YinYangRibbonProps) {
   const dimensions = SCROLL_DIMENSIONS[deviceType]
   const isDesktop = deviceType === 'desktop'

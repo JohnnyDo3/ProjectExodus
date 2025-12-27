@@ -157,9 +157,9 @@ export const ScrollContainer = forwardRef<HTMLDivElement, ScrollContainerProps>(
           </motion.div>
         </div>
 
-        {/* Close hint - positioned at top */}
+        {/* Close hint - positioned at top-left to avoid overlap with control buttons */}
         <motion.div
-          className="absolute top-6 right-6 text-white/60 text-sm font-medium flex items-center gap-2"
+          className="absolute top-6 left-6 text-white/60 text-sm font-medium flex items-center gap-2"
           initial={{ opacity: 0, y: -10 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 1 }}

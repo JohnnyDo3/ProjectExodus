@@ -160,17 +160,20 @@ export default function TopicPage() {
                     )}
                   </div>
                 )}
-
-                {/* Digital Scroll Button */}
-                <Button
-                  onClick={() => handleOpenDigitalScroll(0)}
-                  className="bg-gradient-to-r from-amber-600 to-orange-600 hover:from-amber-700 hover:to-orange-700 text-white font-bold shadow-lg"
-                  size="sm"
-                >
-                  <Sparkles className="w-4 h-4 mr-2" />
-                  {isScrollUnlocked ? 'Open Digital Scroll' : 'Start Learning'}
-                </Button>
               </div>
+            </div>
+
+            {/* Prominent Digital Scroll Button - Centered */}
+            <div className="mt-8 flex justify-center">
+              <Button
+                onClick={() => handleOpenDigitalScroll(0)}
+                className="bg-gradient-to-r from-amber-500 via-orange-500 to-amber-600 hover:from-amber-600 hover:via-orange-600 hover:to-amber-700 text-white font-black shadow-2xl shadow-amber-500/30 text-lg px-8 py-6 rounded-2xl border-2 border-amber-400/50 transition-all duration-300 hover:scale-105 hover:shadow-amber-500/50"
+                size="lg"
+              >
+                <Sparkles className="w-6 h-6 mr-3" />
+                {isScrollUnlocked ? 'Open Digital Scroll' : 'Begin Your Journey'}
+                <BookOpen className="w-6 h-6 ml-3" />
+              </Button>
             </div>
           </div>
         </div>

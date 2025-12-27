@@ -439,18 +439,6 @@ export function ScrollOpenAnimation({
         </motion.div>
       </div>
 
-      {/* Inspirational quote at bottom */}
-      <motion.div
-        className="absolute bottom-12 left-1/2 -translate-x-1/2 text-center"
-        initial={{ opacity: 0, y: 20 }}
-        animate={{ opacity: 0.7, y: 0 }}
-        transition={{ delay: 0.5, duration: 0.5 }}
-      >
-        <p className="text-white/60 text-base italic font-serif">
-          "And the book was opened..."
-        </p>
-        <p className="text-white/40 text-sm mt-2">— Revelation 20:12</p>
-      </motion.div>
     </div>
   )
 }
