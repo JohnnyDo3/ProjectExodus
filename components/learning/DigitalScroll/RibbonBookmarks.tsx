@@ -159,20 +159,20 @@ function Ribbon({
   const Icon = ribbon.icon
   const isDesktop = deviceType === 'desktop'
 
-  // Enhanced dimensions for better visibility
-  const ribbonWidth = isDesktop ? 28 : 32
-  const ribbonHeight = isDesktop ? 90 : 40
+  // Enhanced dimensions - taller for expanded view
+  const ribbonWidth = isDesktop ? (isExpanded ? 32 : 28) : 32
+  const ribbonHeight = isDesktop ? (isExpanded ? 120 : 90) : 40
 
   return (
     <motion.button
       className={cn(
-        'relative flex items-center justify-center',
+        'relative flex',
         'transition-all duration-300',
         'focus:outline-none focus:ring-2 focus:ring-white/50 focus:ring-offset-2 focus:ring-offset-black',
-        // Desktop: vertical ribbon with pointed bottom
-        isDesktop && 'flex-col',
-        // Tablet/Mobile: square buttons
-        !isDesktop && 'rounded-md'
+        // Desktop: vertical ribbon with icon toward bottom
+        isDesktop && 'flex-col items-center justify-end pb-4',
+        // Tablet/Mobile: square buttons centered
+        !isDesktop && 'rounded-md items-center justify-center'
       )}
       style={{
         width: ribbonWidth,
