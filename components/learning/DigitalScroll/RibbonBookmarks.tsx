@@ -74,88 +74,56 @@ export function RibbonBookmarks({
     <div
       className={cn(
         'z-40',
-        // Desktop: vertical ribbons emerging from book top
-        isDesktop && !isExpanded && 'absolute -top-2 left-8 flex flex-col items-start',
-        // Desktop expanded: fixed position with book binding effect
-        isDesktop && isExpanded && 'fixed top-4 left-4 flex flex-col items-start',
+        // Desktop: ribbons at top of book, extending upward
+        isDesktop && !isExpanded && 'absolute top-0 left-8 flex flex-row gap-1.5',
+        // Desktop expanded: same positioning relative to book
+        isDesktop && isExpanded && 'absolute top-0 left-8 flex flex-row gap-1.5',
         // Tablet: horizontal strip at top
         deviceType === 'tablet' && 'flex flex-row justify-center gap-1 py-2 bg-[var(--muted)]',
         // Mobile: compact horizontal strip
         deviceType === 'mobile' && 'flex flex-row justify-between gap-0.5 px-2 py-1 bg-[var(--muted)]',
         className
       )}
+      style={isDesktop ? {
+        // Position ribbons so they extend upward from the top edge of the book
+        transform: 'translateY(-90%)',
+      } : undefined}
       role="navigation"
       aria-label="Chapter bookmarks"
     >
-      {/* Book binding edge - where ribbons emerge from */}
-      {isDesktop && (
-        <div className="relative w-full mb-1">
-          {/* Binding shadow overlay */}
-          <div
-            className="absolute -bottom-3 left-0 right-0 h-4 pointer-events-none"
-            style={{
-              background: 'linear-gradient(to bottom, rgba(0,0,0,0.4) 0%, rgba(0,0,0,0.2) 50%, transparent 100%)',
-              borderRadius: '0 0 4px 4px',
-            }}
+      {/* Seven Guardian Ribbons */}
+      {RIBBON_ORDER.map((ribbonKey, index) => {
+        const ribbon = GUARDIAN_RIBBONS[ribbonKey]
+        const isActive = currentChapter === index
+        const isCompleted = completedChapters.includes(index)
+
+        return (
+          <Ribbon
+            key={ribbon.id}
+            ribbon={ribbon}
+            isActive={isActive}
+            isCompleted={isCompleted}
+            isHovered={hoveredRibbon === ribbon.id}
+            deviceType={deviceType}
+            onClick={() => onChapterClick(index)}
+            onMouseEnter={() => setHoveredRibbon(ribbon.id)}
+            onMouseLeave={() => setHoveredRibbon(null)}
+            isExpanded={isExpanded}
           />
-          {/* Page edge texture */}
-          <div
-            className="absolute -bottom-1 left-1 right-1 h-2 pointer-events-none"
-            style={{
-              background: 'repeating-linear-gradient(90deg, #f5f0e6 0px, #e8e0d0 1px, #f5f0e6 2px)',
-              borderRadius: '0 0 2px 2px',
-              boxShadow: 'inset 0 1px 2px rgba(0,0,0,0.2)',
-            }}
-          />
-        </div>
-      )}
+        )
+      })}
 
-      {/* Ribbon container with 3D effect */}
-      <div
-        className={cn(
-          isDesktop && !isExpanded && 'flex flex-row gap-1.5 -mt-[70px]',
-          isDesktop && isExpanded && 'flex flex-row gap-2 bg-black/30 backdrop-blur-sm rounded-xl p-2',
-          !isDesktop && 'contents'
-        )}
-        style={isDesktop && !isExpanded ? {
-          transform: 'perspective(200px) rotateX(-5deg)',
-          transformOrigin: 'bottom center',
-        } : undefined}
-      >
-        {/* Seven Guardian Ribbons */}
-        {RIBBON_ORDER.map((ribbonKey, index) => {
-          const ribbon = GUARDIAN_RIBBONS[ribbonKey]
-          const isActive = currentChapter === index
-          const isCompleted = completedChapters.includes(index)
-
-          return (
-            <Ribbon
-              key={ribbon.id}
-              ribbon={ribbon}
-              isActive={isActive}
-              isCompleted={isCompleted}
-              isHovered={hoveredRibbon === ribbon.id}
-              deviceType={deviceType}
-              onClick={() => onChapterClick(index)}
-              onMouseEnter={() => setHoveredRibbon(ribbon.id)}
-              onMouseLeave={() => setHoveredRibbon(null)}
-              isExpanded={isExpanded}
-            />
-          )
-        })}
-
-        {/* Yin-Yang Continue Ribbon */}
-        <YinYangRibbon
-          isActive={false}
-          deviceType={deviceType}
-          continuePosition={continuePosition}
-          onClick={onContinueClick}
-          onMouseEnter={() => setHoveredRibbon('continue')}
-          onMouseLeave={() => setHoveredRibbon(null)}
-          isHovered={hoveredRibbon === 'continue'}
-          isExpanded={isExpanded}
-        />
-      </div>
+      {/* Yin-Yang Continue Ribbon */}
+      <YinYangRibbon
+        isActive={false}
+        deviceType={deviceType}
+        continuePosition={continuePosition}
+        onClick={onContinueClick}
+        onMouseEnter={() => setHoveredRibbon('continue')}
+        onMouseLeave={() => setHoveredRibbon(null)}
+        isHovered={hoveredRibbon === 'continue'}
+        isExpanded={isExpanded}
+      />
     </div>
   )
 }
