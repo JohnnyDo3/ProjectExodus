@@ -818,70 +818,153 @@ export function DigitalScroll({
         )
 
       case 'chapter-intro':
-        // Right side of chapter spread - shows complete curriculum outline
+        // Right side of chapter spread - shows COMPLETE curriculum outline
         const introRibbon = page.chapterIndex !== undefined && RIBBON_ORDER[page.chapterIndex]
           ? GUARDIAN_RIBBONS[RIBBON_ORDER[page.chapterIndex]]
           : null
         const introColor = introRibbon?.colors.from || 'var(--primary)'
-        const allLessons = page.module?.lessons || []
+        const chapterModule = page.module
+        const allLessons = chapterModule?.lessons || []
+        const allActivities = chapterModule?.activities || []
+        const chapterGame = chapterModule?.game
+        const chapterQuiz = chapterModule?.quiz
+        const totalDuration = chapterModule?.duration?.[selectedLevel] ||
+          allLessons.reduce((sum, l) => sum + (l.duration || 0), 0)
+
         return (
           <div className="w-full h-full flex flex-col relative overflow-hidden">
             <AncientBorder />
 
             {/* Header */}
-            <div className="text-center pt-4 pb-2 shrink-0">
-              <h3 className="text-base font-serif font-bold text-[var(--foreground)] mb-1">
-                Chapter {(page.chapterIndex ?? 0) + 1} Curriculum
+            <div className="text-center pt-3 pb-1 shrink-0">
+              <h3 className="text-sm font-serif font-bold text-[var(--foreground)] mb-0.5">
+                Chapter {(page.chapterIndex ?? 0) + 1} Learning Outline
               </h3>
-              <p className="text-[10px] text-[var(--muted-foreground)]">
-                {allLessons.length} lessons in this chapter
+              <p className="text-[9px] text-[var(--muted-foreground)]">
+                {totalDuration} min total • {allLessons.length} lessons
               </p>
               <div
-                className="w-20 h-0.5 mx-auto mt-2"
+                className="w-16 h-0.5 mx-auto mt-1"
                 style={{
                   background: `linear-gradient(to right, transparent, ${introColor}, transparent)`,
                 }}
               />
             </div>
 
-            {/* Complete curriculum outline - scrollable for full content */}
-            <div className="flex-1 px-3 overflow-y-auto">
-              <div className="space-y-1.5">
-                {allLessons.map((lesson, idx) => (
-                  <div
-                    key={lesson.id || idx}
-                    className="flex items-start gap-2 p-1.5 rounded-md hover:bg-[var(--muted)]/30 transition-colors"
-                  >
+            {/* Full Curriculum Outline */}
+            <div className="flex-1 px-2 py-1 overflow-y-auto">
+              {/* LESSONS SECTION */}
+              <div className="mb-2">
+                <p className="text-[9px] font-bold text-[var(--muted-foreground)] uppercase tracking-wider mb-1 flex items-center gap-1">
+                  <span>📚</span> Lessons
+                </p>
+                <div className="space-y-1">
+                  {allLessons.map((lesson, idx) => (
                     <div
-                      className="w-5 h-5 rounded-full flex items-center justify-center text-white text-[10px] font-bold shrink-0 mt-0.5"
-                      style={{ background: introColor }}
+                      key={lesson.id || idx}
+                      className="flex items-center gap-1.5 py-1 px-1.5 rounded bg-[var(--muted)]/20"
                     >
-                      {idx + 1}
-                    </div>
-                    <div className="flex-1 min-w-0">
-                      <p className="text-xs font-medium text-[var(--foreground)] leading-tight">
+                      <div
+                        className="w-4 h-4 rounded-full flex items-center justify-center text-white text-[8px] font-bold shrink-0"
+                        style={{ background: introColor }}
+                      >
+                        {idx + 1}
+                      </div>
+                      <p className="flex-1 text-[10px] font-medium text-[var(--foreground)] truncate">
                         {lesson.title}
                       </p>
+                      <span className="text-[8px] text-[var(--muted-foreground)] shrink-0">
+                        {lesson.duration}m
+                      </span>
+                      {lesson.hasActivity && (
+                        <span className="text-[8px]" title="Includes activity">⚡</span>
+                      )}
                     </div>
-                  </div>
-                ))}
+                  ))}
+                </div>
               </div>
 
-              {/* Module overview */}
-              {page.module && (
-                <div className="mt-3 p-2 rounded-lg bg-[var(--muted)]/20 border border-[var(--border)]/20">
-                  <p className="text-[9px] italic text-[var(--muted-foreground)] leading-relaxed">
-                    {typeof page.module.description === 'string'
-                      ? page.module.description
-                      : page.module.description[selectedLevel] || page.module.description.HIGH_SCHOOL}
+              {/* ACTIVITIES SECTION */}
+              {allActivities.length > 0 && (
+                <div className="mb-2">
+                  <p className="text-[9px] font-bold text-[var(--muted-foreground)] uppercase tracking-wider mb-1 flex items-center gap-1">
+                    <span>🎯</span> Activities
+                  </p>
+                  <div className="space-y-1">
+                    {allActivities.map((activity, idx) => (
+                      <div
+                        key={activity.id || idx}
+                        className="flex items-center gap-1.5 py-1 px-1.5 rounded bg-[var(--primary)]/10"
+                      >
+                        <span className="text-[9px]">
+                          {activity.type === 'DRAG_DROP' ? '🎲' :
+                           activity.type === 'SIMULATION' ? '🔬' :
+                           activity.type === 'PUZZLE' ? '🧩' :
+                           activity.type === 'SCENARIO' ? '🎭' :
+                           activity.type === 'TIMED_CHALLENGE' ? '⏱️' : '📝'}
+                        </span>
+                        <p className="flex-1 text-[9px] text-[var(--foreground)] truncate">
+                          {typeof activity.title === 'string'
+                            ? activity.title
+                            : activity.title[selectedLevel] || Object.values(activity.title)[0]}
+                        </p>
+                        <span className="text-[7px] text-[var(--muted-foreground)] uppercase">
+                          {activity.type.replace('_', ' ')}
+                        </span>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              )}
+
+              {/* GAME & QUIZ ROW */}
+              <div className="flex gap-2 mb-2">
+                {/* Game */}
+                {chapterGame && (
+                  <div className="flex-1 p-1.5 rounded bg-[var(--muted)]/30 border border-[var(--border)]/30">
+                    <p className="text-[8px] font-bold text-[var(--muted-foreground)] uppercase mb-0.5 flex items-center gap-1">
+                      <span>🎮</span> Game
+                    </p>
+                    <p className="text-[9px] font-medium text-[var(--foreground)] truncate">
+                      {chapterGame.title}
+                    </p>
+                    <p className="text-[7px] text-[var(--muted-foreground)]">
+                      {chapterGame.rounds} rounds • {chapterGame.type}
+                    </p>
+                  </div>
+                )}
+
+                {/* Quiz */}
+                {chapterQuiz && (
+                  <div className="flex-1 p-1.5 rounded bg-[var(--muted)]/30 border border-[var(--border)]/30">
+                    <p className="text-[8px] font-bold text-[var(--muted-foreground)] uppercase mb-0.5 flex items-center gap-1">
+                      <span>✅</span> Quiz
+                    </p>
+                    <p className="text-[9px] font-medium text-[var(--foreground)]">
+                      {chapterQuiz.questions?.length || 0} questions
+                    </p>
+                    <p className="text-[7px] text-[var(--muted-foreground)]">
+                      {chapterQuiz.passingScore}% to pass
+                    </p>
+                  </div>
+                )}
+              </div>
+
+              {/* Module Description */}
+              {chapterModule?.description && (
+                <div className="p-1.5 rounded bg-[var(--muted)]/10 border-l-2" style={{ borderColor: introColor }}>
+                  <p className="text-[8px] italic text-[var(--muted-foreground)] leading-relaxed line-clamp-3">
+                    {typeof chapterModule.description === 'string'
+                      ? chapterModule.description
+                      : chapterModule.description[selectedLevel] || chapterModule.description.HIGH_SCHOOL}
                   </p>
                 </div>
               )}
             </div>
 
-            {/* Footer prompt */}
-            <div className="shrink-0 text-center py-2">
-              <p className="text-[9px] text-[var(--muted-foreground)]">
+            {/* Footer */}
+            <div className="shrink-0 text-center py-1">
+              <p className="text-[8px] text-[var(--muted-foreground)]">
                 Turn the page to begin →
               </p>
             </div>
