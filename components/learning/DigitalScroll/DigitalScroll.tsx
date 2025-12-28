@@ -697,44 +697,42 @@ export function DigitalScroll({
         // Learning Mission page - fill-in-the-blank intentions
         const missionColor = currentRibbon?.colors.from || 'var(--primary)'
         return (
-          <div className="w-full h-full flex flex-col relative overflow-hidden">
+          <div className="w-full h-full flex flex-col relative">
             <AncientBorder />
 
-            {/* Header */}
-            <div className="text-center pt-5 pb-2 shrink-0">
-              <div className="flex items-center justify-center gap-2 mb-1">
-                <span className="text-xl">🎯</span>
-              </div>
-              <h3 className="text-lg font-serif font-bold text-[var(--book-text,var(--foreground))] mb-1">
+            {/* Header - compact */}
+            <div className="text-center pt-3 pb-1 shrink-0">
+              <span className="text-lg">🎯</span>
+              <h3 className="text-sm font-serif font-bold text-[var(--book-text,var(--foreground))]">
                 Set Your Intentions
               </h3>
-              <p className="text-[10px] text-[var(--muted-foreground)] italic max-w-[220px] mx-auto">
+              <p className="text-[8px] text-[var(--muted-foreground)] italic">
                 Complete each statement to define your learning goals
               </p>
             </div>
 
             {/* Divider */}
             <div
-              className="w-3/4 h-px mx-auto mb-3 shrink-0"
+              className="w-1/2 h-px mx-auto mb-2 shrink-0"
               style={{
                 background: `linear-gradient(to right, transparent, ${missionColor}60, transparent)`,
               }}
             />
 
-            {/* Fill-in-the-blank Intentions */}
-            <div className="flex-1 px-4 pb-3 space-y-4 overflow-hidden">
+            {/* Fill-in-the-blank Intentions - evenly distributed */}
+            <div className="flex-1 min-h-0 px-3 pb-2 flex flex-col justify-evenly">
               {/* Intention 1: What I hope to learn */}
-              <div className="space-y-1.5">
-                <div className="flex items-center gap-2">
-                  <span className="text-sm">✨</span>
-                  <p className="text-xs font-medium text-[var(--book-text,var(--foreground))]">
+              <div>
+                <div className="flex items-center gap-1 mb-0.5">
+                  <span className="text-[10px]">✨</span>
+                  <p className="text-[9px] font-medium text-[var(--book-text,var(--foreground))]">
                     By studying {topic.title}, I hope to learn...
                   </p>
                 </div>
                 <input
                   type="text"
                   className={cn(
-                    "w-full px-3 py-2 text-sm font-serif",
+                    "w-full px-2 py-1 text-xs font-serif",
                     "bg-transparent border-b-2 border-dashed",
                     "text-[var(--book-text,var(--foreground))]",
                     "placeholder:text-[var(--muted-foreground)]/40 placeholder:italic",
@@ -748,17 +746,17 @@ export function DigitalScroll({
               </div>
 
               {/* Intention 2: What I already know */}
-              <div className="space-y-1.5">
-                <div className="flex items-center gap-2">
-                  <span className="text-sm">💭</span>
-                  <p className="text-xs font-medium text-[var(--book-text,var(--foreground))]">
+              <div>
+                <div className="flex items-center gap-1 mb-0.5">
+                  <span className="text-[10px]">💭</span>
+                  <p className="text-[9px] font-medium text-[var(--book-text,var(--foreground))]">
                     What I already know about this topic is...
                   </p>
                 </div>
                 <input
                   type="text"
                   className={cn(
-                    "w-full px-3 py-2 text-sm font-serif",
+                    "w-full px-2 py-1 text-xs font-serif",
                     "bg-transparent border-b-2 border-dashed",
                     "text-[var(--book-text,var(--foreground))]",
                     "placeholder:text-[var(--muted-foreground)]/40 placeholder:italic",
@@ -772,17 +770,17 @@ export function DigitalScroll({
               </div>
 
               {/* Intention 3: How I will apply */}
-              <div className="space-y-1.5">
-                <div className="flex items-center gap-2">
-                  <span className="text-sm">🌱</span>
-                  <p className="text-xs font-medium text-[var(--book-text,var(--foreground))]">
+              <div>
+                <div className="flex items-center gap-1 mb-0.5">
+                  <span className="text-[10px]">🌱</span>
+                  <p className="text-[9px] font-medium text-[var(--book-text,var(--foreground))]">
                     I plan to apply this knowledge by...
                   </p>
                 </div>
                 <input
                   type="text"
                   className={cn(
-                    "w-full px-3 py-2 text-sm font-serif",
+                    "w-full px-2 py-1 text-xs font-serif",
                     "bg-transparent border-b-2 border-dashed",
                     "text-[var(--book-text,var(--foreground))]",
                     "placeholder:text-[var(--muted-foreground)]/40 placeholder:italic",
@@ -797,8 +795,8 @@ export function DigitalScroll({
             </div>
 
             {/* Footer hint */}
-            <div className="shrink-0 text-center pb-3">
-              <p className="text-[9px] text-[var(--muted-foreground)]">
+            <div className="shrink-0 text-center py-1.5 border-t border-[var(--border)]/20">
+              <p className="text-[8px] text-[var(--muted-foreground)]">
                 Turn the page to begin Chapter 1 →
               </p>
             </div>
@@ -832,128 +830,119 @@ export function DigitalScroll({
           allLessons.reduce((sum, l) => sum + (l.duration || 0), 0)
 
         return (
-          <div className="w-full h-full flex flex-col relative overflow-hidden">
+          <div className="w-full h-full flex flex-col relative">
             <AncientBorder />
 
-            {/* Header */}
-            <div className="text-center pt-3 pb-1 shrink-0">
-              <h3 className="text-sm font-serif font-bold text-[var(--book-text,var(--foreground))] mb-0.5">
-                Chapter {(page.chapterIndex ?? 0) + 1} Learning Outline
+            {/* Header - compact */}
+            <div className="text-center pt-2 pb-1 shrink-0">
+              <h3 className="text-xs font-serif font-bold text-[var(--book-text,var(--foreground))]">
+                Chapter {(page.chapterIndex ?? 0) + 1} Outline
               </h3>
-              <p className="text-[9px] text-[var(--muted-foreground)]">
-                {totalDuration} min total • {allLessons.length} lessons
+              <p className="text-[8px] text-[var(--muted-foreground)]">
+                {totalDuration} min • {allLessons.length} lessons
               </p>
               <div
-                className="w-16 h-0.5 mx-auto mt-1"
+                className="w-12 h-px mx-auto mt-0.5"
                 style={{
                   background: `linear-gradient(to right, transparent, ${introColor}, transparent)`,
                 }}
               />
             </div>
 
-            {/* Full Curriculum Outline */}
-            <div className="flex-1 px-2 py-1 overflow-y-auto">
+            {/* Full Curriculum Outline - scrollable */}
+            <div className="flex-1 min-h-0 px-2 py-1 overflow-y-auto">
               {/* LESSONS SECTION */}
-              <div className="mb-2">
-                <p className="text-[9px] font-bold text-[var(--muted-foreground)] uppercase tracking-wider mb-1 flex items-center gap-1">
+              <div className="mb-1.5">
+                <p className="text-[8px] font-bold text-[var(--muted-foreground)] uppercase tracking-wider mb-0.5 flex items-center gap-1">
                   <span>📚</span> Lessons
                 </p>
-                <div className="space-y-1">
+                <div className="space-y-0.5">
                   {allLessons.map((lesson, idx) => (
                     <div
                       key={lesson.id || idx}
-                      className="flex items-center gap-1.5 py-1 px-1.5 rounded bg-[var(--muted)]/20"
+                      className="flex items-center gap-1 py-0.5 px-1 rounded bg-[var(--muted)]/15"
                     >
                       <div
-                        className="w-4 h-4 rounded-full flex items-center justify-center text-white text-[8px] font-bold shrink-0"
+                        className="w-3.5 h-3.5 rounded-full flex items-center justify-center text-white text-[7px] font-bold shrink-0"
                         style={{ background: introColor }}
                       >
                         {idx + 1}
                       </div>
-                      <p className="flex-1 text-[10px] font-medium text-[var(--book-text,var(--foreground))] truncate">
+                      <p className="flex-1 text-[8px] font-medium text-[var(--book-text,var(--foreground))] truncate">
                         {lesson.title}
                       </p>
-                      <span className="text-[8px] text-[var(--muted-foreground)] shrink-0">
+                      <span className="text-[7px] text-[var(--muted-foreground)] shrink-0">
                         {lesson.duration}m
                       </span>
                       {lesson.hasActivity && (
-                        <span className="text-[8px]" title="Includes activity">⚡</span>
+                        <span className="text-[7px]" title="Includes activity">⚡</span>
                       )}
                     </div>
                   ))}
                 </div>
               </div>
 
-              {/* ACTIVITIES SECTION */}
+              {/* ACTIVITIES SECTION - compact */}
               {allActivities.length > 0 && (
-                <div className="mb-2">
-                  <p className="text-[9px] font-bold text-[var(--muted-foreground)] uppercase tracking-wider mb-1 flex items-center gap-1">
+                <div className="mb-1.5">
+                  <p className="text-[8px] font-bold text-[var(--muted-foreground)] uppercase tracking-wider mb-0.5 flex items-center gap-1">
                     <span>🎯</span> Activities
                   </p>
-                  <div className="space-y-1">
+                  <div className="space-y-0.5">
                     {allActivities.map((activity, idx) => (
                       <div
                         key={activity.id || idx}
-                        className="flex items-center gap-1.5 py-1 px-1.5 rounded bg-[var(--primary)]/10"
+                        className="flex items-center gap-1 py-0.5 px-1 rounded bg-[var(--primary)]/10"
                       >
-                        <span className="text-[9px]">
+                        <span className="text-[8px]">
                           {activity.type === 'DRAG_DROP' ? '🎲' :
                            activity.type === 'SIMULATION' ? '🔬' :
                            activity.type === 'PUZZLE' ? '🧩' :
                            activity.type === 'SCENARIO' ? '🎭' :
                            activity.type === 'TIMED_CHALLENGE' ? '⏱️' : '📝'}
                         </span>
-                        <p className="flex-1 text-[9px] text-[var(--book-text,var(--foreground))] truncate">
+                        <p className="flex-1 text-[8px] text-[var(--book-text,var(--foreground))] truncate">
                           {typeof activity.title === 'string'
                             ? activity.title
                             : activity.title[selectedLevel] || Object.values(activity.title)[0]}
                         </p>
-                        <span className="text-[7px] text-[var(--muted-foreground)] uppercase">
-                          {activity.type.replace('_', ' ')}
-                        </span>
                       </div>
                     ))}
                   </div>
                 </div>
               )}
 
-              {/* GAME & QUIZ ROW */}
-              <div className="flex gap-2 mb-2">
+              {/* GAME & QUIZ ROW - compact */}
+              <div className="flex gap-1 mb-1.5">
                 {/* Game */}
                 {chapterGame && (
-                  <div className="flex-1 p-1.5 rounded bg-[var(--muted)]/30 border border-[var(--border)]/30">
-                    <p className="text-[8px] font-bold text-[var(--muted-foreground)] uppercase mb-0.5 flex items-center gap-1">
+                  <div className="flex-1 p-1 rounded bg-[var(--muted)]/20">
+                    <p className="text-[7px] font-bold text-[var(--muted-foreground)] uppercase flex items-center gap-0.5">
                       <span>🎮</span> Game
                     </p>
-                    <p className="text-[9px] font-medium text-[var(--book-text,var(--foreground))] truncate">
+                    <p className="text-[8px] font-medium text-[var(--book-text,var(--foreground))] truncate">
                       {chapterGame.title}
-                    </p>
-                    <p className="text-[7px] text-[var(--muted-foreground)]">
-                      {chapterGame.rounds} rounds • {chapterGame.type}
                     </p>
                   </div>
                 )}
 
                 {/* Quiz */}
                 {chapterQuiz && (
-                  <div className="flex-1 p-1.5 rounded bg-[var(--muted)]/30 border border-[var(--border)]/30">
-                    <p className="text-[8px] font-bold text-[var(--muted-foreground)] uppercase mb-0.5 flex items-center gap-1">
+                  <div className="flex-1 p-1 rounded bg-[var(--muted)]/20">
+                    <p className="text-[7px] font-bold text-[var(--muted-foreground)] uppercase flex items-center gap-0.5">
                       <span>✅</span> Quiz
                     </p>
-                    <p className="text-[9px] font-medium text-[var(--book-text,var(--foreground))]">
+                    <p className="text-[8px] font-medium text-[var(--book-text,var(--foreground))]">
                       {chapterQuiz.questions?.length || 0} questions
-                    </p>
-                    <p className="text-[7px] text-[var(--muted-foreground)]">
-                      {chapterQuiz.passingScore}% to pass
                     </p>
                   </div>
                 )}
               </div>
 
-              {/* Module Description */}
+              {/* Module Description - compact */}
               {chapterModule?.description && (
-                <div className="p-1.5 rounded bg-[var(--muted)]/10 border-l-2" style={{ borderColor: introColor }}>
-                  <p className="text-[8px] italic text-[var(--muted-foreground)] leading-relaxed line-clamp-3">
+                <div className="p-1 rounded bg-[var(--muted)]/10 border-l-2" style={{ borderColor: introColor }}>
+                  <p className="text-[7px] italic text-[var(--muted-foreground)] leading-relaxed line-clamp-2">
                     {typeof chapterModule.description === 'string'
                       ? chapterModule.description
                       : chapterModule.description[selectedLevel] || chapterModule.description.HIGH_SCHOOL}
@@ -962,9 +951,9 @@ export function DigitalScroll({
               )}
             </div>
 
-            {/* Footer */}
-            <div className="shrink-0 text-center py-1">
-              <p className="text-[8px] text-[var(--muted-foreground)]">
+            {/* Footer - compact */}
+            <div className="shrink-0 text-center py-1 border-t border-[var(--border)]/20">
+              <p className="text-[7px] text-[var(--muted-foreground)]">
                 Turn the page to begin →
               </p>
             </div>
@@ -980,24 +969,24 @@ export function DigitalScroll({
         const chapterIdx = page.chapterIndex ?? 0
         const gamesCompleted = completedGames[chapterIdx] ?? false
         return (
-          <div className="w-full h-full flex flex-col relative overflow-hidden">
+          <div className="w-full h-full flex flex-col relative">
             <AncientBorder />
 
-            {/* Header */}
-            <div className="text-center pt-3 pb-2 shrink-0">
-              <div className="flex items-center justify-center gap-2 mb-1">
-                <span className="text-base">{gamesCompleted ? '✅' : '🎮'}</span>
-                <h3 className="text-sm font-serif font-bold text-[var(--book-text,var(--foreground))]">
+            {/* Header - compact */}
+            <div className="text-center pt-2 pb-1 shrink-0">
+              <div className="flex items-center justify-center gap-1.5 mb-0.5">
+                <span className="text-sm">{gamesCompleted ? '✅' : '🎮'}</span>
+                <h3 className="text-xs font-serif font-bold text-[var(--book-text,var(--foreground))]">
                   Practice Activities
                 </h3>
               </div>
-              <p className="text-[9px] text-[var(--muted-foreground)]">
+              <p className="text-[8px] text-[var(--muted-foreground)]">
                 {gamesCompleted ? 'Completed! Quiz unlocked →' : `Complete to unlock Chapter ${chapterIdx + 1} Quiz`}
               </p>
             </div>
 
-            {/* Games selector */}
-            <div className="flex-1 min-h-0 px-2 pb-2">
+            {/* Games selector - allows internal scroll */}
+            <div className="flex-1 min-h-0 px-2 pb-1 overflow-y-auto">
               {gameItems.length > 0 ? (
                 <ScrollGameSelector
                   items={gameItems}
@@ -1113,6 +1102,7 @@ export function DigitalScroll({
             totalPages={totalPages}
             chapterIndex={page.chapterIndex ?? 0}
             side={side}
+            allowScroll={contentComplexity >= 2}
           >
             {/* Cognitive load indicator */}
             <div className="flex justify-end mb-1 shrink-0">
@@ -1135,7 +1125,7 @@ export function DigitalScroll({
             </div>
 
             {/* Content area - styled by lesson-content CSS classes */}
-            <div className="flex-1 overflow-hidden">
+            <div className="flex-1 min-h-0">
               {typeof page.content === 'string' ? (
                 <div
                   className="lesson-content"
@@ -1168,51 +1158,51 @@ export function DigitalScroll({
           : null
         const reviewColor = reviewRibbon?.colors.from || 'var(--primary)'
         return (
-          <div className="w-full h-full flex flex-col relative overflow-hidden">
+          <div className="w-full h-full flex flex-col relative">
             <AncientBorder />
 
-            {/* Header */}
-            <div className="text-center pt-3 pb-2 shrink-0">
-              <h3 className="text-sm font-serif font-bold text-[var(--book-text,var(--foreground))]">
-                📚 Chapter Review
+            {/* Header - compact */}
+            <div className="text-center pt-2 pb-1 shrink-0">
+              <h3 className="text-xs font-serif font-bold text-[var(--book-text,var(--foreground))] flex items-center justify-center gap-1">
+                <span>📚</span> Chapter Review
               </h3>
             </div>
 
             <div
-              className="w-3/4 h-px mx-auto mb-2 shrink-0"
+              className="w-1/2 h-px mx-auto mb-1.5 shrink-0"
               style={{ background: `linear-gradient(to right, transparent, ${reviewColor}60, transparent)` }}
             />
 
-            {/* Content - fits page without scroll */}
-            <div className="flex-1 px-2 pb-2 overflow-hidden">
-              {/* Key Terms Section */}
-              <div className="mb-3">
-                <p className="text-[10px] font-bold text-[var(--book-text,var(--foreground))] mb-1.5 flex items-center gap-1">
+            {/* Scrollable content area */}
+            <div className="flex-1 min-h-0 px-2 pb-1 overflow-y-auto">
+              {/* Key Terms Section - more compact */}
+              <div className="mb-2">
+                <p className="text-[9px] font-bold text-[var(--muted-foreground)] mb-1 flex items-center gap-1">
                   <span>📖</span> Key Terms
                 </p>
-                <div className="grid grid-cols-2 gap-1">
-                  {(page.keyTerms || []).slice(0, 6).map((item, idx) => (
+                <div className="grid grid-cols-2 gap-0.5">
+                  {(page.keyTerms || []).slice(0, 4).map((item, idx) => (
                     <div
                       key={idx}
-                      className="p-1.5 rounded bg-[var(--muted)]/30 border border-[var(--border)]/20"
+                      className="p-1 rounded bg-[var(--muted)]/20"
                     >
-                      <p className="text-[9px] font-bold text-[var(--book-text,var(--foreground))] truncate">{item.term}</p>
-                      <p className="text-[8px] text-[var(--muted-foreground)] line-clamp-2">{item.definition}</p>
+                      <p className="text-[8px] font-bold text-[var(--book-text,var(--foreground))] truncate">{item.term}</p>
+                      <p className="text-[7px] text-[var(--muted-foreground)] line-clamp-1">{item.definition}</p>
                     </div>
                   ))}
                 </div>
               </div>
 
-              {/* Fun Facts Section */}
-              <div className="mb-3">
-                <p className="text-[10px] font-bold text-[var(--book-text,var(--foreground))] mb-1.5 flex items-center gap-1">
+              {/* Fun Facts Section - compact */}
+              <div className="mb-2">
+                <p className="text-[9px] font-bold text-[var(--muted-foreground)] mb-1 flex items-center gap-1">
                   <span>💡</span> Did You Know?
                 </p>
-                <div className="space-y-1">
-                  {(page.funFacts || []).slice(0, 3).map((fact, idx) => (
+                <div className="space-y-0.5">
+                  {(page.funFacts || []).slice(0, 2).map((fact, idx) => (
                     <div
                       key={idx}
-                      className="p-1.5 rounded-lg border-l-2 text-[8px] text-[var(--book-text,var(--foreground))]"
+                      className="p-1 rounded border-l-2 text-[7px] text-[var(--book-text,var(--foreground))] leading-tight"
                       style={{ borderColor: reviewColor, background: `${reviewColor}08` }}
                     >
                       {fact}
@@ -1221,49 +1211,32 @@ export function DigitalScroll({
                 </div>
               </div>
 
-              {/* Summary Section */}
+              {/* Summary Section - compact */}
               <div>
-                <p className="text-[10px] font-bold text-[var(--book-text,var(--foreground))] mb-1.5 flex items-center gap-1">
+                <p className="text-[9px] font-bold text-[var(--muted-foreground)] mb-1 flex items-center gap-1">
                   <span>✓</span> Key Takeaways
                 </p>
-                <div className="space-y-1">
-                  {(page.summaryPoints || []).slice(0, 3).map((point, idx) => (
+                <div className="space-y-0.5">
+                  {(page.summaryPoints || []).slice(0, 2).map((point, idx) => (
                     <div key={idx} className="flex items-start gap-1">
                       <span
-                        className="w-3 h-3 rounded-full flex items-center justify-center text-white text-[7px] shrink-0 mt-0.5"
+                        className="w-2.5 h-2.5 rounded-full flex items-center justify-center text-white text-[6px] shrink-0 mt-0.5"
                         style={{ background: reviewColor }}
                       >
                         ✓
                       </span>
-                      <p className="text-[8px] text-[var(--book-text,var(--foreground))]">{point}</p>
+                      <p className="text-[7px] text-[var(--book-text,var(--foreground))] leading-tight">{point}</p>
                     </div>
                   ))}
                 </div>
               </div>
-
-              {/* Inline Practice Activities */}
-              {(page.keyTerms || []).length >= 2 && (
-                <ActivitySelector
-                  pageId={`chapter-${page.chapterIndex ?? 0}-review`}
-                  items={(page.keyTerms || []).map((item, idx) => ({
-                    id: `term-${idx}`,
-                    term: item.term,
-                    definition: item.definition,
-                  }))}
-                  topicColor={reviewColor}
-                  level={selectedLevel}
-                  compact
-                />
-              )}
             </div>
 
-            {/* Footer Quote */}
-            <div className="shrink-0 px-2 pb-2">
-              <div className="p-2 rounded text-center" style={{ background: `${reviewColor}10` }}>
-                <p className="text-[8px] text-[var(--book-text,var(--foreground))] italic">
-                  &ldquo;{getGuardianQuote(page.chapterIndex ?? 0)}&rdquo;
-                </p>
-              </div>
+            {/* Footer Quote - compact */}
+            <div className="shrink-0 px-2 py-1.5 border-t border-[var(--border)]/20">
+              <p className="text-[7px] text-[var(--muted-foreground)] italic text-center leading-tight">
+                &ldquo;{getGuardianQuote(page.chapterIndex ?? 0)}&rdquo;
+              </p>
             </div>
           </div>
         )
@@ -1279,47 +1252,47 @@ export function DigitalScroll({
           : 'General'
         const enhancedNoteKey = `chapter-${page.chapterIndex ?? 'general'}-notes`
         return (
-          <div className="w-full h-full flex flex-col relative overflow-hidden">
+          <div className="w-full h-full flex flex-col relative">
             <AncientBorder />
 
-            {/* Header */}
-            <div className="text-center pt-3 pb-1 shrink-0">
-              <h3 className="text-sm font-serif font-bold text-[var(--book-text,var(--foreground))]">
+            {/* Header - compact */}
+            <div className="text-center pt-2 pb-1 shrink-0">
+              <h3 className="text-xs font-serif font-bold text-[var(--book-text,var(--foreground))]">
                 🎯 Apply & Reflect
               </h3>
-              <p className="text-[8px] text-[var(--muted-foreground)]">{enhancedChapterTitle}</p>
+              <p className="text-[7px] text-[var(--muted-foreground)]">{enhancedChapterTitle}</p>
             </div>
 
             <div
-              className="w-3/4 h-px mx-auto mb-2 shrink-0"
+              className="w-1/2 h-px mx-auto mb-1.5 shrink-0"
               style={{ background: `linear-gradient(to right, transparent, ${enhancedColor}60, transparent)` }}
             />
 
             {/* Real World Actions - Compact */}
-            <div className="px-2 mb-2 shrink-0">
-              <p className="text-[9px] font-bold text-[var(--book-text,var(--foreground))] mb-1">🌍 Try This:</p>
-              <div className="flex gap-1">
+            <div className="px-2 mb-1.5 shrink-0">
+              <p className="text-[8px] font-bold text-[var(--muted-foreground)] mb-0.5">🌍 Try This:</p>
+              <div className="flex gap-0.5">
                 {(page.realWorldExamples || []).slice(0, 3).map((ex, idx) => (
                   <div
                     key={idx}
-                    className="flex-1 p-1.5 rounded bg-[var(--muted)]/30 border border-[var(--border)]/20 text-center"
+                    className="flex-1 p-1 rounded bg-[var(--muted)]/20 text-center"
                   >
-                    <span className="text-sm block">{ex.icon}</span>
-                    <p className="text-[7px] font-medium text-[var(--book-text,var(--foreground))]">{ex.title}</p>
+                    <span className="text-xs block">{ex.icon}</span>
+                    <p className="text-[6px] font-medium text-[var(--book-text,var(--foreground))] truncate">{ex.title}</p>
                   </div>
                 ))}
               </div>
             </div>
 
-            {/* Notes textarea - takes remaining space */}
-            <div className="flex-1 px-2 pb-1 min-h-0">
-              <p className="text-[9px] font-bold text-[var(--book-text,var(--foreground))] mb-1">📝 Your Notes:</p>
+            {/* Notes textarea - fills remaining space */}
+            <div className="flex-1 min-h-0 px-2 pb-1 flex flex-col">
+              <p className="text-[8px] font-bold text-[var(--muted-foreground)] mb-0.5 shrink-0">📝 Your Notes:</p>
               <textarea
                 className={cn(
-                  "w-full h-[calc(100%-16px)] resize-none",
+                  "flex-1 w-full resize-none",
                   "bg-transparent",
                   "border border-dashed border-[var(--border)]/40 rounded",
-                  "p-2 text-[10px] font-serif",
+                  "p-1.5 text-[9px] font-serif",
                   "text-[var(--book-text,var(--foreground))]",
                   "placeholder:text-[var(--muted-foreground)]/40 placeholder:italic",
                   "focus:outline-none focus:border-[var(--primary)]/50"
@@ -1328,26 +1301,25 @@ export function DigitalScroll({
                 value={pageNotes[enhancedNoteKey] || ''}
                 onChange={(e) => saveNote(enhancedNoteKey, e.target.value)}
                 style={{
-                  lineHeight: '1.5em',
+                  lineHeight: '1.4em',
                   backgroundImage: 'linear-gradient(to bottom, transparent 85%, var(--border) 85%, var(--border) 88%, transparent 88%)',
-                  backgroundSize: '100% 1.5em',
-                  backgroundPosition: '0 0.2em',
+                  backgroundSize: '100% 1.4em',
+                  backgroundPosition: '0 0.15em',
                 }}
               />
             </div>
 
             {/* Discussion Button - Compact */}
-            <div className="shrink-0 px-2 pb-2">
+            <div className="shrink-0 px-2 py-1.5 border-t border-[var(--border)]/20">
               <button
                 className={cn(
-                  "w-full flex items-center justify-center gap-1 py-1.5 px-2 rounded",
-                  "bg-[var(--muted)]/50 hover:bg-[var(--muted)]",
-                  "border border-[var(--border)]/50",
-                  "text-[var(--book-text,var(--foreground))] text-[9px] font-medium"
+                  "w-full flex items-center justify-center gap-1 py-1 px-2 rounded",
+                  "bg-[var(--muted)]/30 hover:bg-[var(--muted)]/50",
+                  "text-[var(--book-text,var(--foreground))] text-[8px] font-medium"
                 )}
                 onClick={() => setShowDiscussion(true)}
               >
-                <MessageCircle className="w-3 h-3" />
+                <MessageCircle className="w-2.5 h-2.5" />
                 <span>Discussion</span>
               </button>
             </div>
@@ -1364,38 +1336,38 @@ export function DigitalScroll({
         const isQuizUnlocked = completedGames[quizChapterIdx] ?? false
 
         return (
-          <div className="w-full h-full flex flex-col relative overflow-hidden">
+          <div className="w-full h-full flex flex-col relative">
             <AncientBorder />
 
-            {/* Header */}
-            <div className="text-center pt-3 pb-2 shrink-0">
-              <div className="flex items-center justify-center gap-2 mb-1">
-                <span className="text-base">{isQuizUnlocked ? '📝' : '🔒'}</span>
-                <h3 className="text-sm font-serif font-bold text-[var(--book-text,var(--foreground))]">
+            {/* Header - compact */}
+            <div className="text-center pt-2 pb-1 shrink-0">
+              <div className="flex items-center justify-center gap-1.5 mb-0.5">
+                <span className="text-sm">{isQuizUnlocked ? '📝' : '🔒'}</span>
+                <h3 className="text-xs font-serif font-bold text-[var(--book-text,var(--foreground))]">
                   Chapter Quiz
                 </h3>
               </div>
-              <p className="text-[9px] text-[var(--muted-foreground)]">
+              <p className="text-[8px] text-[var(--muted-foreground)]">
                 {isQuizUnlocked ? '5 Questions • Graded Assessment' : 'Complete Practice Activities to unlock'}
               </p>
             </div>
 
-            {/* Quiz Component */}
-            <div className="flex-1 min-h-0 px-2 pb-2">
+            {/* Quiz Component - allows internal scroll */}
+            <div className="flex-1 min-h-0 px-2 pb-1 overflow-y-auto">
               {!isQuizUnlocked ? (
-                <div className="h-full flex flex-col items-center justify-center text-center p-4">
-                  <div className="w-16 h-16 rounded-full bg-[var(--muted)] flex items-center justify-center mb-4">
-                    <span className="text-3xl">🔒</span>
+                <div className="h-full flex flex-col items-center justify-center text-center p-3">
+                  <div className="w-12 h-12 rounded-full bg-[var(--muted)] flex items-center justify-center mb-3">
+                    <span className="text-2xl">🔒</span>
                   </div>
-                  <h4 className="text-sm font-bold text-[var(--book-text,var(--foreground))] mb-2">
+                  <h4 className="text-xs font-bold text-[var(--book-text,var(--foreground))] mb-1.5">
                     Quiz Locked
                   </h4>
-                  <p className="text-xs text-[var(--muted-foreground)] mb-4 max-w-[200px]">
+                  <p className="text-[9px] text-[var(--muted-foreground)] mb-3 max-w-[180px]">
                     Complete at least one Practice Activity to unlock this chapter&apos;s graded quiz.
                   </p>
                   <button
                     onClick={() => prevPage()}
-                    className="px-4 py-2 rounded-lg bg-[var(--primary)] text-[var(--primary-foreground)] text-xs font-medium"
+                    className="px-3 py-1.5 rounded-lg bg-[var(--primary)] text-[var(--primary-foreground)] text-[10px] font-medium"
                   >
                     ← Go to Practice Activities
                   </button>
@@ -1414,7 +1386,7 @@ export function DigitalScroll({
                 />
               ) : (
                 <div className="h-full flex items-center justify-center">
-                  <p className="text-xs text-[var(--muted-foreground)]">
+                  <p className="text-[10px] text-[var(--muted-foreground)]">
                     Quiz requires at least 5 terms...
                   </p>
                 </div>
