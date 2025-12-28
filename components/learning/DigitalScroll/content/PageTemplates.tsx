@@ -450,20 +450,20 @@ function SegmentRenderer({
 }: SegmentRendererProps) {
   switch (segment.type) {
     case 'heading':
-      const HeadingTag = `h${segment.level || 3}` as keyof JSX.IntrinsicElements
-      return (
-        <HeadingTag
-          className={cn(
-            'font-serif font-bold text-[var(--book-text,var(--foreground))]',
-            segment.level === 2 && 'text-lg mt-4 mb-2',
-            segment.level === 3 && 'text-base mt-3 mb-1.5',
-            segment.level === 4 && 'text-sm mt-2 mb-1'
-          )}
-          style={segment.level === 2 ? { color } : undefined}
-        >
-          {segment.content}
-        </HeadingTag>
+      const headingClass = cn(
+        'font-serif font-bold text-[var(--book-text,var(--foreground))]',
+        segment.level === 2 && 'text-lg mt-4 mb-2',
+        segment.level === 3 && 'text-base mt-3 mb-1.5',
+        segment.level === 4 && 'text-sm mt-2 mb-1'
       )
+      const headingStyle = segment.level === 2 ? { color } : undefined
+
+      if (segment.level === 2) {
+        return <h2 className={headingClass} style={headingStyle}>{segment.content}</h2>
+      } else if (segment.level === 4) {
+        return <h4 className={headingClass} style={headingStyle}>{segment.content}</h4>
+      }
+      return <h3 className={headingClass} style={headingStyle}>{segment.content}</h3>
 
     case 'paragraph':
       return (
