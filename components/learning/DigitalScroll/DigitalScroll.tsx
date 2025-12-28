@@ -358,7 +358,9 @@ export function DigitalScroll({
         // Content pages for this verse
         // Split long content into multiple pages
         const content = lesson.content[selectedLevel] || lesson.content.HIGH_SCHOOL
-        const contentChunks = splitContentIntoPages(content, 450)
+        // Use larger chunks (1800 chars ~300 words) to reduce page flips
+        // Internal scroll handles overflow for contextually related content
+        const contentChunks = splitContentIntoPages(content, 1800)
 
         // First chunk gets verse header integrated
         contentChunks.forEach((chunk, pageIndex) => {
@@ -1102,7 +1104,7 @@ export function DigitalScroll({
             totalPages={totalPages}
             chapterIndex={page.chapterIndex ?? 0}
             side={side}
-            allowScroll={contentComplexity >= 2}
+            allowScroll={true}
           >
             {/* Cognitive load indicator */}
             <div className="flex justify-end mb-1 shrink-0">
@@ -1722,18 +1724,38 @@ function splitContentIntoPages(content: string, charsPerPage: number): string[] 
       break
     }
 
-    // Find a good break point (end of paragraph preferred)
-    let breakPoint = remaining.lastIndexOf('</p>', charsPerPage)
-    if (breakPoint === -1 || breakPoint < charsPerPage * 0.3) {
-      // Try to break at a sentence
+    // Priority 1: Find section breaks (headers like <h2>, <h3>, <h4>)
+    // These represent major topic changes - ideal split points
+    let breakPoint = -1
+    const headerMatch = remaining.slice(0, charsPerPage).match(/<\/h[2-4]>[^]*?(?=<h[2-4])/i)
+    if (headerMatch && headerMatch.index !== undefined) {
+      const afterHeader = headerMatch.index + headerMatch[0].length
+      if (afterHeader > charsPerPage * 0.4) {
+        breakPoint = afterHeader
+      }
+    }
+
+    // Priority 2: Find paragraph breaks (multiple paragraphs together)
+    // Try to break after 2+ complete paragraphs for better context grouping
+    if (breakPoint === -1 || breakPoint < charsPerPage * 0.4) {
+      // Find the last </p> within our limit
+      const lastParagraph = remaining.lastIndexOf('</p>', charsPerPage)
+      if (lastParagraph !== -1 && lastParagraph > charsPerPage * 0.4) {
+        breakPoint = lastParagraph + 4 // Include </p>
+      }
+    }
+
+    // Priority 3: Break at sentence boundary
+    if (breakPoint === -1 || breakPoint < charsPerPage * 0.4) {
       breakPoint = remaining.lastIndexOf('. ', charsPerPage)
       if (breakPoint !== -1) breakPoint += 2 // Include the period and space
     }
-    if (breakPoint === -1 || breakPoint < charsPerPage * 0.3) {
-      // Last resort: break at word boundary
+
+    // Priority 4: Last resort - break at word boundary
+    if (breakPoint === -1 || breakPoint < charsPerPage * 0.4) {
       breakPoint = remaining.lastIndexOf(' ', charsPerPage)
     }
-    if (breakPoint === -1 || breakPoint < charsPerPage * 0.3) {
+    if (breakPoint === -1 || breakPoint < charsPerPage * 0.4) {
       breakPoint = charsPerPage
     }
 
