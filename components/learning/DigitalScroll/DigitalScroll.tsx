@@ -1089,6 +1089,24 @@ export function DigitalScroll({
         )
 
       case 'content':
+        // Calculate cognitive complexity based on content length
+        const contentText = typeof page.content === 'string' ? page.content : ''
+        const wordCount = contentText.split(/\s+/).length
+        const contentComplexity: 1 | 2 | 3 = wordCount > 300 ? 3 : wordCount > 150 ? 2 : 1
+        const complexityLabels = ['Quick read', 'Moderate', 'Deep dive']
+
+        // Get next page info for anticipation hint
+        const nextPageInList = bookPages[currentPageIndex + 1]
+        const nextTopicHint = nextPageInList?.type === 'content'
+          ? undefined
+          : nextPageInList?.type === 'chapter-review'
+            ? 'Chapter Review'
+            : nextPageInList?.type === 'games'
+              ? 'Practice Games'
+              : nextPageInList?.type === 'quiz'
+                ? 'Knowledge Check'
+                : undefined
+
         return (
           <ScrollPage
             pageNumber={currentPageIndex + 1}
@@ -1096,30 +1114,50 @@ export function DigitalScroll({
             chapterIndex={page.chapterIndex ?? 0}
             side={side}
           >
-            {/* Content area - fills full page width */}
-            <div
-              className={cn(
-                "w-full h-full",
-                "prose prose-xs sm:prose-sm dark:prose-invert max-w-none",
-                "font-serif",
-                // Typography for book-like appearance - compact sizing
-                "prose-p:text-xs sm:prose-p:text-sm prose-p:leading-relaxed prose-p:mb-3 prose-p:text-justify prose-p:hyphens-auto",
-                "prose-headings:font-bold prose-headings:mb-2",
-                "prose-h2:text-lg sm:prose-h2:text-xl prose-h3:text-base sm:prose-h3:text-lg",
-                "prose-strong:font-bold",
-                "prose-ul:space-y-0.5 prose-ol:space-y-0.5",
-                "prose-li:text-xs sm:prose-li:text-sm prose-li:leading-relaxed",
-                // First paragraph drop cap effect - smaller
-                "[&>div>p:first-of-type]:first-letter:float-left [&>div>p:first-of-type]:first-letter:text-3xl sm:[&>div>p:first-of-type]:first-letter:text-4xl [&>div>p:first-of-type]:first-letter:font-bold [&>div>p:first-of-type]:first-letter:mr-1.5 [&>div>p:first-of-type]:first-letter:mt-0.5",
-                "[&>div>p:first-of-type]:first-letter:text-[var(--primary)]",
-              )}
-            >
+            {/* Cognitive load indicator */}
+            <div className="flex justify-end mb-1 shrink-0">
+              <div className="flex items-center gap-1.5">
+                <div className="flex gap-0.5">
+                  {[1, 2, 3].map((i) => (
+                    <div
+                      key={i}
+                      className={cn(
+                        'w-1.5 h-1.5 rounded-full',
+                        i <= contentComplexity ? 'bg-[var(--primary)]' : 'bg-[var(--muted)]'
+                      )}
+                    />
+                  ))}
+                </div>
+                <span className="text-[8px] text-[var(--muted-foreground)]">
+                  {complexityLabels[contentComplexity - 1]}
+                </span>
+              </div>
+            </div>
+
+            {/* Content area - styled by lesson-content CSS classes */}
+            <div className="flex-1 overflow-hidden">
               {typeof page.content === 'string' ? (
-                <div dangerouslySetInnerHTML={{ __html: page.content }} />
+                <div
+                  className="lesson-content"
+                  dangerouslySetInnerHTML={{ __html: page.content }}
+                />
               ) : (
-                page.content
+                <div className="lesson-content">
+                  {page.content}
+                </div>
               )}
             </div>
+
+            {/* Page turn anticipation hint */}
+            {nextTopicHint && (
+              <div className="shrink-0 flex justify-end pt-1">
+                <div className="flex items-center gap-1 text-[8px] text-[var(--muted-foreground)] opacity-60">
+                  <span>Next:</span>
+                  <span className="font-medium text-[var(--primary)]">{nextTopicHint}</span>
+                  <span>→</span>
+                </div>
+              </div>
+            )}
           </ScrollPage>
         )
 

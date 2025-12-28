@@ -1766,3 +1766,272 @@ body.textbook-fullscreen .fixed.inset-0.z-50 {
     opacity: 1;
   }
 }
+
+/* ============================================
+   DIGITAL SCROLL LESSON CONTENT STYLES
+   Illuminated manuscript-inspired styling
+   for intentional learning presentation
+   ============================================ */
+
+/* Lesson content wrapper */
+.lesson-content {
+  font-family: 'Georgia', 'Times New Roman', serif;
+  line-height: 1.7;
+  color: var(--book-text, var(--foreground));
+}
+
+/* Headings with decorative underlines */
+.lesson-content h2 {
+  font-size: 1.25rem;
+  font-weight: 700;
+  color: var(--primary);
+  margin-top: 1.5rem;
+  margin-bottom: 0.75rem;
+  padding-bottom: 0.5rem;
+  border-bottom: 2px solid transparent;
+  background: linear-gradient(to right, var(--primary), transparent) bottom left / 50% 2px no-repeat;
+}
+
+.lesson-content h3 {
+  font-size: 1rem;
+  font-weight: 600;
+  color: var(--book-text, var(--foreground));
+  margin-top: 1.25rem;
+  margin-bottom: 0.5rem;
+}
+
+.lesson-content h4 {
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: var(--primary);
+  margin-top: 1rem;
+  margin-bottom: 0.5rem;
+}
+
+/* Paragraphs with proper spacing */
+.lesson-content p {
+  font-size: 0.8125rem;
+  margin-bottom: 0.75rem;
+  text-align: justify;
+  hyphens: auto;
+}
+
+/* Drop cap for first paragraph */
+.lesson-content > p:first-of-type::first-letter,
+.lesson-content > div > p:first-of-type::first-letter {
+  float: left;
+  font-size: 3rem;
+  font-weight: 700;
+  line-height: 1;
+  padding-right: 0.5rem;
+  padding-top: 0.25rem;
+  color: var(--primary);
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+/* Emphasis and key terms */
+.lesson-content strong {
+  font-weight: 700;
+  color: var(--primary);
+}
+
+/* Lists with custom styling */
+.lesson-content ul,
+.lesson-content ol {
+  margin: 0.75rem 0;
+  padding-left: 1.25rem;
+}
+
+.lesson-content li {
+  font-size: 0.8125rem;
+  margin-bottom: 0.375rem;
+  line-height: 1.6;
+}
+
+.lesson-content ol li {
+  list-style-type: decimal;
+}
+
+.lesson-content ul li {
+  list-style-type: disc;
+}
+
+/* Blockquotes - illuminated quote style */
+.lesson-content blockquote,
+.lesson-content .scavenger-quote {
+  position: relative;
+  margin: 1rem 0;
+  padding: 1rem 1.25rem;
+  border-left: 3px solid var(--primary);
+  border-right: 3px solid var(--primary);
+  background: linear-gradient(
+    to right,
+    var(--muted) 0%,
+    transparent 20%,
+    transparent 80%,
+    var(--muted) 100%
+  );
+  font-style: italic;
+}
+
+.lesson-content blockquote::before,
+.lesson-content .scavenger-quote::before {
+  content: '"';
+  position: absolute;
+  top: -0.5rem;
+  left: 0.5rem;
+  font-size: 2rem;
+  color: var(--primary);
+  opacity: 0.3;
+  font-family: Georgia, serif;
+}
+
+.lesson-content blockquote p,
+.lesson-content .scavenger-quote p {
+  font-size: 0.875rem;
+  margin: 0;
+  text-align: center;
+  color: var(--book-text, var(--foreground));
+}
+
+.lesson-content blockquote cite,
+.lesson-content .scavenger-quote cite {
+  display: block;
+  margin-top: 0.5rem;
+  font-size: 0.75rem;
+  font-style: normal;
+  text-align: center;
+  color: var(--muted-foreground);
+}
+
+/* Key concept boxes */
+.lesson-content .key-concept {
+  position: relative;
+  margin: 1rem 0;
+  padding: 0.875rem;
+  border-left: 4px solid var(--primary);
+  border-radius: 0.5rem;
+  background: var(--muted);
+  overflow: hidden;
+}
+
+.lesson-content .key-concept::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: 2rem;
+  height: 2rem;
+  background: linear-gradient(135deg, var(--primary) 0%, transparent 50%);
+  opacity: 0.1;
+  border-top-right-radius: 0.5rem;
+}
+
+.lesson-content .key-concept h4 {
+  font-size: 0.75rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: var(--primary);
+  margin: 0 0 0.5rem 0;
+}
+
+.lesson-content .key-concept p {
+  font-size: 0.8125rem;
+  margin: 0;
+  font-style: normal;
+}
+
+/* Image placeholders */
+.lesson-content .image-placeholder {
+  margin: 1rem 0;
+  padding: 1.5rem;
+  border-radius: 0.5rem;
+  background: var(--muted);
+  border: 2px dashed var(--border);
+  text-align: center;
+}
+
+.lesson-content .image-placeholder::before {
+  content: '🖼️';
+  display: block;
+  font-size: 1.5rem;
+  margin-bottom: 0.5rem;
+}
+
+/* Tables with book styling */
+.lesson-content table {
+  width: 100%;
+  margin: 1rem 0;
+  border-collapse: collapse;
+  font-size: 0.75rem;
+}
+
+.lesson-content th {
+  background: var(--muted);
+  padding: 0.5rem;
+  text-align: left;
+  font-weight: 700;
+  border-bottom: 2px solid var(--primary);
+}
+
+.lesson-content td {
+  padding: 0.5rem;
+  border-bottom: 1px solid var(--border);
+}
+
+.lesson-content tr:hover td {
+  background: var(--muted);
+}
+
+/* Component table specific styling */
+.lesson-content .component-table th {
+  background: linear-gradient(to right, var(--primary), var(--primary));
+  color: white;
+}
+
+/* Decorative section dividers */
+.lesson-content hr {
+  border: none;
+  height: 1px;
+  margin: 1.5rem auto;
+  width: 50%;
+  background: linear-gradient(
+    to right,
+    transparent,
+    var(--primary),
+    transparent
+  );
+}
+
+/* Progress celebration animation */
+@keyframes celebrate-pulse {
+  0%, 100% {
+    transform: scale(1);
+    opacity: 1;
+  }
+  50% {
+    transform: scale(1.05);
+    opacity: 0.8;
+  }
+}
+
+.celebrate {
+  animation: celebrate-pulse 0.5s ease-in-out 2;
+}
+
+/* Micro-celebration sparkle effect */
+@keyframes sparkle {
+  0%, 100% {
+    opacity: 0;
+    transform: scale(0) rotate(0deg);
+  }
+  50% {
+    opacity: 1;
+    transform: scale(1) rotate(180deg);
+  }
+}
+
+.sparkle {
+  animation: sparkle 0.6s ease-in-out;
+}
