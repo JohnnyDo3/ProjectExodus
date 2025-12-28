@@ -684,14 +684,14 @@ export function ChapterDivider({
 
   return (
     <MotionWrapper
-      className="w-full h-full flex flex-col items-center justify-center text-center relative px-4"
+      className="w-full h-full flex flex-col items-center justify-evenly text-center relative px-4 py-6 overflow-hidden"
       {...wrapperProps}
     >
-      {/* Corner decorations */}
+      {/* Corner decorations - smaller */}
       {animated && (
         <>
           <motion.svg
-            className="absolute top-4 left-4 w-16 h-16"
+            className="absolute top-2 left-2 w-10 h-10"
             viewBox="0 0 64 64"
             initial={{ opacity: 0, scale: 0.5 }}
             animate={{ opacity: 1, scale: 1 }}
@@ -708,20 +708,10 @@ export function ChapterDivider({
               animate={{ pathLength: 1 }}
               transition={{ duration: 0.6, delay: 0.4 }}
             />
-            <motion.path
-              d="M4 4 L20 20"
-              fill="none"
-              stroke={color}
-              strokeWidth="1"
-              opacity={0.2}
-              initial={{ pathLength: 0 }}
-              animate={{ pathLength: 1 }}
-              transition={{ duration: 0.4, delay: 0.6 }}
-            />
             <circle cx="8" cy="8" r="3" fill={color} opacity={0.4} />
           </motion.svg>
           <motion.svg
-            className="absolute top-4 right-4 w-16 h-16"
+            className="absolute top-2 right-2 w-10 h-10"
             viewBox="0 0 64 64"
             initial={{ opacity: 0, scale: 0.5 }}
             animate={{ opacity: 1, scale: 1 }}
@@ -738,20 +728,10 @@ export function ChapterDivider({
               animate={{ pathLength: 1 }}
               transition={{ duration: 0.6, delay: 0.4 }}
             />
-            <motion.path
-              d="M60 4 L44 20"
-              fill="none"
-              stroke={color}
-              strokeWidth="1"
-              opacity={0.2}
-              initial={{ pathLength: 0 }}
-              animate={{ pathLength: 1 }}
-              transition={{ duration: 0.4, delay: 0.6 }}
-            />
             <circle cx="56" cy="8" r="3" fill={color} opacity={0.4} />
           </motion.svg>
           <motion.svg
-            className="absolute bottom-4 left-4 w-16 h-16"
+            className="absolute bottom-2 left-2 w-10 h-10"
             viewBox="0 0 64 64"
             initial={{ opacity: 0, scale: 0.5 }}
             animate={{ opacity: 1, scale: 1 }}
@@ -768,20 +748,10 @@ export function ChapterDivider({
               animate={{ pathLength: 1 }}
               transition={{ duration: 0.6, delay: 0.4 }}
             />
-            <motion.path
-              d="M4 60 L20 44"
-              fill="none"
-              stroke={color}
-              strokeWidth="1"
-              opacity={0.2}
-              initial={{ pathLength: 0 }}
-              animate={{ pathLength: 1 }}
-              transition={{ duration: 0.4, delay: 0.6 }}
-            />
             <circle cx="8" cy="56" r="3" fill={color} opacity={0.4} />
           </motion.svg>
           <motion.svg
-            className="absolute bottom-4 right-4 w-16 h-16"
+            className="absolute bottom-2 right-2 w-10 h-10"
             viewBox="0 0 64 64"
             initial={{ opacity: 0, scale: 0.5 }}
             animate={{ opacity: 1, scale: 1 }}
@@ -798,306 +768,233 @@ export function ChapterDivider({
               animate={{ pathLength: 1 }}
               transition={{ duration: 0.6, delay: 0.4 }}
             />
-            <motion.path
-              d="M60 60 L44 44"
-              fill="none"
-              stroke={color}
-              strokeWidth="1"
-              opacity={0.2}
-              initial={{ pathLength: 0 }}
-              animate={{ pathLength: 1 }}
-              transition={{ duration: 0.4, delay: 0.6 }}
-            />
             <circle cx="56" cy="56" r="3" fill={color} opacity={0.4} />
           </motion.svg>
         </>
       )}
 
-      {/* Top decorative border */}
-      {animated ? (
-        <motion.svg
-          className="w-64 h-6 mb-8"
-          viewBox="0 0 256 24"
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ delay: 0.2 }}
-        >
-          <motion.path
-            d="M8 12 L80 12"
-            stroke={color}
-            strokeWidth="1"
-            opacity={0.3}
-            initial={{ pathLength: 0 }}
-            animate={{ pathLength: 1 }}
-            transition={{ duration: 0.5, delay: 0.3 }}
-          />
-          <motion.path
-            d="M88 12 Q104 4 120 12 Q104 20 88 12"
-            fill="none"
-            stroke={color}
-            strokeWidth="1"
-            opacity={0.4}
-            initial={{ pathLength: 0 }}
-            animate={{ pathLength: 1 }}
-            transition={{ duration: 0.4, delay: 0.5 }}
-          />
-          <motion.circle
-            cx="128" cy="12" r="4"
-            fill={color}
-            opacity={0.5}
-            initial={{ scale: 0 }}
-            animate={{ scale: 1 }}
-            transition={{ delay: 0.6, type: 'spring' }}
-          />
-          <motion.path
-            d="M168 12 Q152 4 136 12 Q152 20 168 12"
-            fill="none"
-            stroke={color}
-            strokeWidth="1"
-            opacity={0.4}
-            initial={{ pathLength: 0 }}
-            animate={{ pathLength: 1 }}
-            transition={{ duration: 0.4, delay: 0.5 }}
-          />
-          <motion.path
-            d="M176 12 L248 12"
-            stroke={color}
-            strokeWidth="1"
-            opacity={0.3}
-            initial={{ pathLength: 0 }}
-            animate={{ pathLength: 1 }}
-            transition={{ duration: 0.5, delay: 0.3 }}
-          />
-        </motion.svg>
-      ) : (
-        <div className="w-64 h-6 mb-8" />
-      )}
-
-      {/* Guardian Icon with glow effect */}
-      {Icon && (
-        animated ? (
-          <motion.div
-            className="relative mb-6"
-            initial={{ scale: 0, rotate: -180 }}
-            animate={{ scale: 1, rotate: 0 }}
-            transition={{ duration: 0.6, delay: 0.4, type: 'spring' }}
+      {/* Top section: decorative border */}
+      <div className="shrink-0">
+        {animated ? (
+          <motion.svg
+            className="w-48 h-4"
+            viewBox="0 0 256 24"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ delay: 0.2 }}
           >
-            {/* Outer glow ring */}
-            <motion.div
-              className="absolute inset-0 rounded-full"
-              style={{
-                background: `radial-gradient(circle, ${color}40 0%, transparent 70%)`,
-                transform: 'scale(1.5)',
-              }}
-              animate={{ opacity: [0.3, 0.6, 0.3] }}
-              transition={{ duration: 3, repeat: Infinity }}
+            <motion.path
+              d="M8 12 L80 12"
+              stroke={color}
+              strokeWidth="1"
+              opacity={0.3}
+              initial={{ pathLength: 0 }}
+              animate={{ pathLength: 1 }}
+              transition={{ duration: 0.5, delay: 0.3 }}
             />
-            {/* Icon container */}
+            <motion.circle
+              cx="128" cy="12" r="4"
+              fill={color}
+              opacity={0.5}
+              initial={{ scale: 0 }}
+              animate={{ scale: 1 }}
+              transition={{ delay: 0.6, type: 'spring' }}
+            />
+            <motion.path
+              d="M176 12 L248 12"
+              stroke={color}
+              strokeWidth="1"
+              opacity={0.3}
+              initial={{ pathLength: 0 }}
+              animate={{ pathLength: 1 }}
+              transition={{ duration: 0.5, delay: 0.3 }}
+            />
+          </motion.svg>
+        ) : (
+          <div className="w-48 h-4" />
+        )}
+      </div>
+
+      {/* Guardian Icon - smaller */}
+      {Icon && (
+        <div className="shrink-0">
+          {animated ? (
+            <motion.div
+              className="relative"
+              initial={{ scale: 0, rotate: -180 }}
+              animate={{ scale: 1, rotate: 0 }}
+              transition={{ duration: 0.6, delay: 0.4, type: 'spring' }}
+            >
+              <motion.div
+                className="absolute inset-0 rounded-full"
+                style={{
+                  background: `radial-gradient(circle, ${color}40 0%, transparent 70%)`,
+                  transform: 'scale(1.5)',
+                }}
+                animate={{ opacity: [0.3, 0.6, 0.3] }}
+                transition={{ duration: 3, repeat: Infinity }}
+              />
+              <div
+                className="relative w-16 h-16 rounded-full flex items-center justify-center shadow-xl"
+                style={{ background: ribbon?.colors.gradient }}
+              >
+                <Icon className="w-8 h-8 text-white" strokeWidth={1.5} />
+              </div>
+            </motion.div>
+          ) : (
             <div
-              className="relative w-24 h-24 rounded-full flex items-center justify-center shadow-xl"
+              className="w-16 h-16 rounded-full flex items-center justify-center shadow-xl"
               style={{ background: ribbon?.colors.gradient }}
             >
-              <Icon className="w-12 h-12 text-white" strokeWidth={1.5} />
+              <Icon className="w-8 h-8 text-white" strokeWidth={1.5} />
             </div>
-            {/* Decorative ring */}
-            <svg className="absolute inset-0 w-24 h-24" viewBox="0 0 96 96">
-              <motion.circle
-                cx="48" cy="48" r="44"
-                fill="none"
-                stroke="white"
-                strokeWidth="1"
-                strokeDasharray="4 4"
-                opacity={0.3}
-                animate={{ rotate: 360 }}
-                transition={{ duration: 20, repeat: Infinity, ease: 'linear' }}
-                style={{ transformOrigin: 'center' }}
-              />
-            </svg>
+          )}
+        </div>
+      )}
+
+      {/* Chapter number and title */}
+      <div className="shrink-0 space-y-1">
+        {animated ? (
+          <motion.div
+            initial={{ opacity: 0, y: 10 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.5 }}
+          >
+            <span className="inline-flex items-center gap-2">
+              <span className="text-base opacity-40" style={{ color }}>✦</span>
+              <span className="text-xs tracking-[0.2em] uppercase font-medium text-[var(--muted-foreground)]">
+                Chapter {chapterIndex + 1}
+              </span>
+              <span className="text-base opacity-40" style={{ color }}>✦</span>
+            </span>
+          </motion.div>
+        ) : (
+          <div className="text-xs text-[var(--muted-foreground)] tracking-[0.2em] uppercase">
+            Chapter {chapterIndex + 1}
+          </div>
+        )}
+
+        {animated ? (
+          <motion.h2
+            className="text-2xl font-serif font-bold"
+            style={{ color }}
+            initial={{ opacity: 0, y: 10 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.6 }}
+          >
+            {chapterTitle}
+          </motion.h2>
+        ) : (
+          <h2 className="text-2xl font-serif font-bold" style={{ color }}>
+            {chapterTitle}
+          </h2>
+        )}
+
+        {ribbon && (
+          animated ? (
+            <motion.div
+              className="text-sm text-[var(--muted-foreground)]"
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              transition={{ delay: 0.7 }}
+            >
+              The Way of <span className="font-bold" style={{ color }}>{ribbon.value}</span>
+            </motion.div>
+          ) : (
+            <div className="text-sm text-[var(--muted-foreground)]">
+              The Way of <span className="font-bold" style={{ color }}>{ribbon.value}</span>
+            </div>
+          )
+        )}
+      </div>
+
+      {/* Decorative divider */}
+      <div className="shrink-0">
+        {animated ? (
+          <motion.div
+            className="flex items-center gap-2"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ delay: 0.75 }}
+          >
+            <motion.div
+              className="w-10 h-px"
+              style={{ background: `linear-gradient(to right, transparent, ${color})` }}
+              initial={{ scaleX: 0, originX: 1 }}
+              animate={{ scaleX: 1 }}
+              transition={{ delay: 0.8, duration: 0.4 }}
+            />
+            <motion.div
+              className="w-2 h-2 rotate-45 border"
+              style={{ borderColor: color, opacity: 0.5 }}
+              initial={{ scale: 0, rotate: 0 }}
+              animate={{ scale: 1, rotate: 45 }}
+              transition={{ delay: 0.85, type: 'spring' }}
+            />
+            <motion.div
+              className="w-10 h-px"
+              style={{ background: `linear-gradient(to left, transparent, ${color})` }}
+              initial={{ scaleX: 0, originX: 0 }}
+              animate={{ scaleX: 1 }}
+              transition={{ delay: 0.8, duration: 0.4 }}
+            />
           </motion.div>
         ) : (
           <div
-            className="w-24 h-24 rounded-full flex items-center justify-center mb-6 shadow-xl"
-            style={{ background: ribbon?.colors.gradient }}
-          >
-            <Icon className="w-12 h-12 text-white" strokeWidth={1.5} />
-          </div>
-        )
-      )}
+            className="w-24 h-0.5"
+            style={{ background: `linear-gradient(to right, transparent, ${color}, transparent)` }}
+          />
+        )}
+      </div>
 
-      {/* Chapter number with ornate styling */}
-      {animated ? (
-        <motion.div
-          className="mb-3"
-          initial={{ opacity: 0, y: 10 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.5 }}
-        >
-          <span className="inline-flex items-center gap-3">
-            <span className="text-xl opacity-40" style={{ color }}>✦</span>
-            <span className="text-sm tracking-[0.3em] uppercase font-medium text-[var(--muted-foreground)]">
-              Chapter {chapterIndex + 1}
-            </span>
-            <span className="text-xl opacity-40" style={{ color }}>✦</span>
-          </span>
-        </motion.div>
-      ) : (
-        <div className="text-sm text-[var(--muted-foreground)] tracking-[0.3em] uppercase mb-3">
-          Chapter {chapterIndex + 1}
+      {/* Guardian quote - compact */}
+      {guardianQuote && (
+        <div className="shrink-0 max-w-xs">
+          {animated ? (
+            <motion.blockquote
+              className="text-sm italic text-[var(--muted-foreground)] font-serif leading-relaxed"
+              initial={{ opacity: 0, y: 10 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.9 }}
+            >
+              <span className="text-lg opacity-30 mr-0.5" style={{ color }}>"</span>
+              {guardianQuote}
+              <span className="text-lg opacity-30 ml-0.5" style={{ color }}>"</span>
+            </motion.blockquote>
+          ) : (
+            <blockquote className="text-sm italic text-[var(--muted-foreground)] font-serif">
+              "{guardianQuote}"
+            </blockquote>
+          )}
         </div>
       )}
 
-      {/* Chapter title with reveal */}
-      {animated ? (
-        <motion.h2
-          className="text-3xl sm:text-4xl font-serif font-bold mb-4"
-          style={{ color }}
-          initial={{ opacity: 0, y: 10 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.6 }}
-        >
-          {chapterTitle}
-        </motion.h2>
-      ) : (
-        <h2
-          className="text-3xl sm:text-4xl font-serif font-bold mb-4"
-          style={{ color }}
-        >
-          {chapterTitle}
-        </h2>
-      )}
-
-      {/* Guardian name */}
-      {ribbon && (
-        animated ? (
+      {/* Verse count badge */}
+      <div className="shrink-0">
+        {animated ? (
           <motion.div
-            className="text-sm text-[var(--muted-foreground)] mb-6"
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ delay: 0.7 }}
-          >
-            The Way of <span className="font-bold" style={{ color }}>{ribbon.value}</span>
-          </motion.div>
-        ) : (
-          <div className="text-sm text-[var(--muted-foreground)] mb-6">
-            The Way of <span className="font-bold" style={{ color }}>{ribbon.value}</span>
-          </div>
-        )
-      )}
-
-      {/* Decorative divider line */}
-      {animated ? (
-        <motion.div
-          className="flex items-center gap-2 mb-6"
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ delay: 0.75 }}
-        >
-          <motion.div
-            className="w-12 h-px"
-            style={{ background: `linear-gradient(to right, transparent, ${color})` }}
-            initial={{ scaleX: 0, originX: 1 }}
-            animate={{ scaleX: 1 }}
-            transition={{ delay: 0.8, duration: 0.4 }}
-          />
-          <motion.div
-            className="w-3 h-3 rotate-45 border"
-            style={{ borderColor: color, opacity: 0.5 }}
-            initial={{ scale: 0, rotate: 0 }}
-            animate={{ scale: 1, rotate: 45 }}
-            transition={{ delay: 0.85, type: 'spring' }}
-          />
-          <motion.div
-            className="w-12 h-px"
-            style={{ background: `linear-gradient(to left, transparent, ${color})` }}
-            initial={{ scaleX: 0, originX: 0 }}
-            animate={{ scaleX: 1 }}
-            transition={{ delay: 0.8, duration: 0.4 }}
-          />
-        </motion.div>
-      ) : (
-        <div
-          className="w-32 h-0.5 mb-6"
-          style={{
-            background: `linear-gradient(to right, transparent, ${color}, transparent)`,
-          }}
-        />
-      )}
-
-      {/* Guardian quote with reveal */}
-      {guardianQuote && (
-        animated ? (
-          <motion.blockquote
-            className="text-base italic text-[var(--muted-foreground)] max-w-sm mb-6 font-serif leading-relaxed"
             initial={{ opacity: 0, y: 10 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.9 }}
+            transition={{ delay: 1 }}
           >
-            <span className="text-2xl opacity-30 mr-1" style={{ color }}>"</span>
-            {guardianQuote}
-            <span className="text-2xl opacity-30 ml-1" style={{ color }}>"</span>
-          </motion.blockquote>
+            <span
+              className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-medium"
+              style={{
+                background: `${color}15`,
+                color: color,
+                border: `1px solid ${color}30`,
+              }}
+            >
+              <span className="w-1.5 h-1.5 rounded-full" style={{ background: color }} />
+              {versesCount} Verses to explore
+            </span>
+          </motion.div>
         ) : (
-          <blockquote className="text-base italic text-[var(--muted-foreground)] max-w-sm mb-6 font-serif">
-            "{guardianQuote}"
-          </blockquote>
-        )
-      )}
-
-      {/* Verse count with badge styling */}
-      {animated ? (
-        <motion.div
-          className="mt-4"
-          initial={{ opacity: 0, y: 10 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 1 }}
-        >
-          <span
-            className="inline-flex items-center gap-2 px-4 py-2 rounded-full text-xs font-medium"
-            style={{
-              background: `${color}15`,
-              color: color,
-              border: `1px solid ${color}30`,
-            }}
-          >
-            <span className="w-1.5 h-1.5 rounded-full" style={{ background: color }} />
+          <div className="text-xs text-[var(--muted-foreground)]">
             {versesCount} Verses to explore
-          </span>
-        </motion.div>
-      ) : (
-        <div className="mt-4 text-xs text-[var(--muted-foreground)]">
-          {versesCount} Verses to explore
-        </div>
-      )}
-
-      {/* Bottom decorative element */}
-      {animated && (
-        <motion.div
-          className="absolute bottom-20 left-1/2 -translate-x-1/2"
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ delay: 1.1 }}
-        >
-          <svg className="w-24 h-6" viewBox="0 0 96 24">
-            <motion.path
-              d="M8 12 L88 12"
-              stroke={color}
-              strokeWidth="0.5"
-              opacity={0.2}
-              initial={{ pathLength: 0 }}
-              animate={{ pathLength: 1 }}
-              transition={{ duration: 0.6, delay: 1.2 }}
-            />
-            <motion.circle
-              cx="48" cy="12" r="2"
-              fill={color}
-              opacity={0.3}
-              initial={{ scale: 0 }}
-              animate={{ scale: 1 }}
-              transition={{ delay: 1.4 }}
-            />
-          </svg>
-        </motion.div>
-      )}
+          </div>
+        )}
+      </div>
     </MotionWrapper>
   )
 }
