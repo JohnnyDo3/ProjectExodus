@@ -7,7 +7,7 @@
 // ============================================
 
 import { motion, AnimatePresence } from 'framer-motion'
-import { forwardRef, ReactNode, useState, useEffect } from 'react'
+import { forwardRef, ReactNode, useState, useEffect, useRef } from 'react'
 import { cn } from '@/lib/utils/cn'
 import {
   WATERMARK_CONFIG,
@@ -85,6 +85,14 @@ export const ScrollPage = forwardRef<HTMLDivElement, ScrollPageProps>(
     ref
   ) {
     const [deviceType, setDeviceType] = useState<'desktop' | 'tablet' | 'mobile'>('desktop')
+    const scrollContainerRef = useRef<HTMLDivElement>(null)
+
+    // Reset scroll position to top when page changes
+    useEffect(() => {
+      if (scrollContainerRef.current) {
+        scrollContainerRef.current.scrollTop = 0
+      }
+    }, [pageNumber])
 
     useEffect(() => {
       function updateDevice() {
@@ -141,10 +149,15 @@ export const ScrollPage = forwardRef<HTMLDivElement, ScrollPageProps>(
         </div>
 
         {/* Main content area - scroll only when allowScroll is true (quizzes/games) */}
-        <div className={cn(
-          'flex-1 min-h-0 py-2 overflow-x-hidden',
-          allowScroll ? 'overflow-y-auto' : 'overflow-y-hidden'
-        )}>
+        <div
+          ref={scrollContainerRef}
+          className={cn(
+            'flex-1 min-h-0 py-2 overflow-x-hidden',
+            allowScroll ? 'overflow-y-auto' : 'overflow-y-hidden',
+            // Add right padding on left pages to prevent text hitting scrollbar
+            side === 'left' && allowScroll && 'pr-3'
+          )}
+        >
           {children}
         </div>
 
