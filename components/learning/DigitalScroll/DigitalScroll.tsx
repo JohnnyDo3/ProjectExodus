@@ -832,97 +832,67 @@ export function DigitalScroll({
           allLessons.reduce((sum, l) => sum + (l.duration || 0), 0)
 
         return (
-          <div className="w-full h-full flex flex-col relative">
+          <div className="w-full h-full flex flex-col relative px-3 py-2">
             <AncientBorder />
 
-            {/* Header - compact */}
-            <div className="text-center pt-2 pb-1 shrink-0">
-              <h3 className="text-xs font-serif font-bold text-[var(--book-text,var(--foreground))]">
+            {/* Header */}
+            <div className="text-center pb-2 shrink-0">
+              <h3 className="text-lg font-serif font-bold text-[var(--book-text,var(--foreground))]">
                 Chapter {(page.chapterIndex ?? 0) + 1} Outline
               </h3>
-              <p className="text-[8px] text-[var(--muted-foreground)]">
+              <p className="text-sm text-[var(--muted-foreground)]">
                 {totalDuration} min • {allLessons.length} lessons
               </p>
               <div
-                className="w-12 h-px mx-auto mt-0.5"
+                className="w-16 h-0.5 mx-auto mt-2"
                 style={{
                   background: `linear-gradient(to right, transparent, ${introColor}, transparent)`,
                 }}
               />
             </div>
 
-            {/* Full Curriculum Outline - scrollable */}
-            <div className="flex-1 min-h-0 px-2 py-1 overflow-y-auto">
+            {/* Full Curriculum Outline - fills available space */}
+            <div className="flex-1 min-h-0 flex flex-col justify-evenly overflow-hidden">
               {/* LESSONS SECTION */}
-              <div className="mb-1.5">
-                <p className="text-[8px] font-bold text-[var(--muted-foreground)] uppercase tracking-wider mb-0.5 flex items-center gap-1">
-                  <span>📚</span> Lessons
+              <div>
+                <p className="text-xs font-bold text-[var(--muted-foreground)] uppercase tracking-wider mb-2 flex items-center gap-1.5">
+                  <span className="text-sm">📚</span> Lessons
                 </p>
-                <div className="space-y-0.5">
-                  {allLessons.map((lesson, idx) => (
+                <div className="space-y-1.5">
+                  {allLessons.slice(0, 5).map((lesson, idx) => (
                     <div
                       key={lesson.id || idx}
-                      className="flex items-center gap-1 py-0.5 px-1 rounded bg-[var(--muted)]/15"
+                      className="flex items-center gap-2 py-1.5 px-2 rounded bg-[var(--muted)]/15"
                     >
                       <div
-                        className="w-3.5 h-3.5 rounded-full flex items-center justify-center text-white text-[7px] font-bold shrink-0"
+                        className="w-6 h-6 rounded-full flex items-center justify-center text-white text-xs font-bold shrink-0"
                         style={{ background: introColor }}
                       >
                         {idx + 1}
                       </div>
-                      <p className="flex-1 text-[8px] font-medium text-[var(--book-text,var(--foreground))] truncate">
+                      <p className="flex-1 text-sm font-medium text-[var(--book-text,var(--foreground))] truncate">
                         {lesson.title}
                       </p>
-                      <span className="text-[7px] text-[var(--muted-foreground)] shrink-0">
+                      <span className="text-xs text-[var(--muted-foreground)] shrink-0">
                         {lesson.duration}m
                       </span>
                       {lesson.hasActivity && (
-                        <span className="text-[7px]" title="Includes activity">⚡</span>
+                        <span className="text-sm" title="Includes activity">⚡</span>
                       )}
                     </div>
                   ))}
                 </div>
               </div>
 
-              {/* ACTIVITIES SECTION - compact */}
-              {allActivities.length > 0 && (
-                <div className="mb-1.5">
-                  <p className="text-[8px] font-bold text-[var(--muted-foreground)] uppercase tracking-wider mb-0.5 flex items-center gap-1">
-                    <span>🎯</span> Activities
-                  </p>
-                  <div className="space-y-0.5">
-                    {allActivities.map((activity, idx) => (
-                      <div
-                        key={activity.id || idx}
-                        className="flex items-center gap-1 py-0.5 px-1 rounded bg-[var(--primary)]/10"
-                      >
-                        <span className="text-[8px]">
-                          {activity.type === 'DRAG_DROP' ? '🎲' :
-                           activity.type === 'SIMULATION' ? '🔬' :
-                           activity.type === 'PUZZLE' ? '🧩' :
-                           activity.type === 'SCENARIO' ? '🎭' :
-                           activity.type === 'TIMED_CHALLENGE' ? '⏱️' : '📝'}
-                        </span>
-                        <p className="flex-1 text-[8px] text-[var(--book-text,var(--foreground))] truncate">
-                          {typeof activity.title === 'string'
-                            ? activity.title
-                            : activity.title[selectedLevel] || Object.values(activity.title)[0]}
-                        </p>
-                      </div>
-                    ))}
-                  </div>
-                </div>
-              )}
-
-              {/* GAME & QUIZ ROW - compact */}
-              <div className="flex gap-1 mb-1.5">
+              {/* GAME & QUIZ ROW */}
+              <div className="flex gap-3">
                 {/* Game */}
                 {chapterGame && (
-                  <div className="flex-1 p-1 rounded bg-[var(--muted)]/20">
-                    <p className="text-[7px] font-bold text-[var(--muted-foreground)] uppercase flex items-center gap-0.5">
-                      <span>🎮</span> Game
+                  <div className="flex-1 p-3 rounded-lg bg-[var(--muted)]/20">
+                    <p className="text-xs font-bold text-[var(--muted-foreground)] uppercase flex items-center gap-1 mb-1">
+                      <span className="text-base">🎮</span> Game
                     </p>
-                    <p className="text-[8px] font-medium text-[var(--book-text,var(--foreground))] truncate">
+                    <p className="text-sm font-medium text-[var(--book-text,var(--foreground))]">
                       {chapterGame.title}
                     </p>
                   </div>
@@ -930,21 +900,21 @@ export function DigitalScroll({
 
                 {/* Quiz */}
                 {chapterQuiz && (
-                  <div className="flex-1 p-1 rounded bg-[var(--muted)]/20">
-                    <p className="text-[7px] font-bold text-[var(--muted-foreground)] uppercase flex items-center gap-0.5">
-                      <span>✅</span> Quiz
+                  <div className="flex-1 p-3 rounded-lg bg-[var(--muted)]/20">
+                    <p className="text-xs font-bold text-[var(--muted-foreground)] uppercase flex items-center gap-1 mb-1">
+                      <span className="text-base">✅</span> Quiz
                     </p>
-                    <p className="text-[8px] font-medium text-[var(--book-text,var(--foreground))]">
+                    <p className="text-sm font-medium text-[var(--book-text,var(--foreground))]">
                       {chapterQuiz.questions?.length || 0} questions
                     </p>
                   </div>
                 )}
               </div>
 
-              {/* Module Description - compact */}
+              {/* Module Description */}
               {chapterModule?.description && (
-                <div className="p-1 rounded bg-[var(--muted)]/10 border-l-2" style={{ borderColor: introColor }}>
-                  <p className="text-[7px] italic text-[var(--muted-foreground)] leading-relaxed line-clamp-2">
+                <div className="p-3 rounded-lg bg-[var(--muted)]/10 border-l-3" style={{ borderColor: introColor }}>
+                  <p className="text-sm italic text-[var(--muted-foreground)] leading-relaxed">
                     {typeof chapterModule.description === 'string'
                       ? chapterModule.description
                       : chapterModule.description[selectedLevel] || chapterModule.description.HIGH_SCHOOL}
@@ -953,9 +923,9 @@ export function DigitalScroll({
               )}
             </div>
 
-            {/* Footer - compact */}
-            <div className="shrink-0 text-center py-1 border-t border-[var(--border)]/20">
-              <p className="text-[7px] text-[var(--muted-foreground)]">
+            {/* Footer */}
+            <div className="shrink-0 text-center pt-2 border-t border-[var(--border)]/20">
+              <p className="text-xs text-[var(--muted-foreground)]">
                 Turn the page to begin →
               </p>
             </div>
@@ -1160,52 +1130,51 @@ export function DigitalScroll({
           : null
         const reviewColor = reviewRibbon?.colors.from || 'var(--primary)'
         return (
-          <div className="w-full h-full flex flex-col relative">
+          <div className="w-full h-full flex flex-col relative px-3 py-2">
             <AncientBorder />
 
-            {/* Header - compact */}
-            <div className="text-center pt-2 pb-1 shrink-0">
-              <h3 className="text-xs font-serif font-bold text-[var(--book-text,var(--foreground))] flex items-center justify-center gap-1">
-                <span>📚</span> Chapter Review
+            {/* Header */}
+            <div className="text-center pb-2 shrink-0">
+              <h3 className="text-lg font-serif font-bold text-[var(--book-text,var(--foreground))] flex items-center justify-center gap-2">
+                <span className="text-xl">📚</span> Chapter Review
               </h3>
+              <div
+                className="w-16 h-0.5 mx-auto mt-2"
+                style={{ background: `linear-gradient(to right, transparent, ${reviewColor}, transparent)` }}
+              />
             </div>
 
-            <div
-              className="w-1/2 h-px mx-auto mb-1.5 shrink-0"
-              style={{ background: `linear-gradient(to right, transparent, ${reviewColor}60, transparent)` }}
-            />
-
-            {/* Scrollable content area */}
-            <div className="flex-1 min-h-0 px-2 pb-1 overflow-y-auto">
-              {/* Key Terms Section - more compact */}
-              <div className="mb-2">
-                <p className="text-[9px] font-bold text-[var(--muted-foreground)] mb-1 flex items-center gap-1">
-                  <span>📖</span> Key Terms
+            {/* Content fills available space evenly */}
+            <div className="flex-1 min-h-0 flex flex-col justify-evenly overflow-hidden">
+              {/* Key Terms Section */}
+              <div>
+                <p className="text-xs font-bold text-[var(--muted-foreground)] mb-2 flex items-center gap-1.5 uppercase tracking-wider">
+                  <span className="text-sm">📖</span> Key Terms
                 </p>
-                <div className="grid grid-cols-2 gap-0.5">
+                <div className="grid grid-cols-2 gap-2">
                   {(page.keyTerms || []).slice(0, 4).map((item, idx) => (
                     <div
                       key={idx}
-                      className="p-1 rounded bg-[var(--muted)]/20"
+                      className="p-2 rounded-lg bg-[var(--muted)]/20"
                     >
-                      <p className="text-[8px] font-bold text-[var(--book-text,var(--foreground))] truncate">{item.term}</p>
-                      <p className="text-[7px] text-[var(--muted-foreground)] line-clamp-1">{item.definition}</p>
+                      <p className="text-sm font-bold text-[var(--book-text,var(--foreground))]">{item.term}</p>
+                      <p className="text-xs text-[var(--muted-foreground)] line-clamp-2">{item.definition}</p>
                     </div>
                   ))}
                 </div>
               </div>
 
-              {/* Fun Facts Section - compact */}
-              <div className="mb-2">
-                <p className="text-[9px] font-bold text-[var(--muted-foreground)] mb-1 flex items-center gap-1">
-                  <span>💡</span> Did You Know?
+              {/* Fun Facts Section */}
+              <div>
+                <p className="text-xs font-bold text-[var(--muted-foreground)] mb-2 flex items-center gap-1.5 uppercase tracking-wider">
+                  <span className="text-sm">💡</span> Did You Know?
                 </p>
-                <div className="space-y-0.5">
+                <div className="space-y-2">
                   {(page.funFacts || []).slice(0, 2).map((fact, idx) => (
                     <div
                       key={idx}
-                      className="p-1 rounded border-l-2 text-[7px] text-[var(--book-text,var(--foreground))] leading-tight"
-                      style={{ borderColor: reviewColor, background: `${reviewColor}08` }}
+                      className="p-2 rounded-lg border-l-3 text-sm text-[var(--book-text,var(--foreground))] leading-relaxed"
+                      style={{ borderColor: reviewColor, background: `${reviewColor}10` }}
                     >
                       {fact}
                     </div>
@@ -1213,30 +1182,30 @@ export function DigitalScroll({
                 </div>
               </div>
 
-              {/* Summary Section - compact */}
+              {/* Summary Section */}
               <div>
-                <p className="text-[9px] font-bold text-[var(--muted-foreground)] mb-1 flex items-center gap-1">
-                  <span>✓</span> Key Takeaways
+                <p className="text-xs font-bold text-[var(--muted-foreground)] mb-2 flex items-center gap-1.5 uppercase tracking-wider">
+                  <span className="text-sm">✓</span> Key Takeaways
                 </p>
-                <div className="space-y-0.5">
+                <div className="space-y-2">
                   {(page.summaryPoints || []).slice(0, 2).map((point, idx) => (
-                    <div key={idx} className="flex items-start gap-1">
+                    <div key={idx} className="flex items-start gap-2">
                       <span
-                        className="w-2.5 h-2.5 rounded-full flex items-center justify-center text-white text-[6px] shrink-0 mt-0.5"
+                        className="w-5 h-5 rounded-full flex items-center justify-center text-white text-xs shrink-0 mt-0.5"
                         style={{ background: reviewColor }}
                       >
                         ✓
                       </span>
-                      <p className="text-[7px] text-[var(--book-text,var(--foreground))] leading-tight">{point}</p>
+                      <p className="text-sm text-[var(--book-text,var(--foreground))] leading-relaxed">{point}</p>
                     </div>
                   ))}
                 </div>
               </div>
             </div>
 
-            {/* Footer Quote - compact */}
-            <div className="shrink-0 px-2 py-1.5 border-t border-[var(--border)]/20">
-              <p className="text-[7px] text-[var(--muted-foreground)] italic text-center leading-tight">
+            {/* Footer Quote */}
+            <div className="shrink-0 px-3 pt-2 border-t border-[var(--border)]/20">
+              <p className="text-xs text-[var(--muted-foreground)] italic text-center leading-relaxed">
                 &ldquo;{getGuardianQuote(page.chapterIndex ?? 0)}&rdquo;
               </p>
             </div>
@@ -1254,75 +1223,79 @@ export function DigitalScroll({
           : 'General'
         const enhancedNoteKey = `chapter-${page.chapterIndex ?? 'general'}-notes`
         return (
-          <div className="w-full h-full flex flex-col relative">
+          <div className="w-full h-full flex flex-col relative px-3 py-2">
             <AncientBorder />
 
-            {/* Header - compact */}
-            <div className="text-center pt-2 pb-1 shrink-0">
-              <h3 className="text-xs font-serif font-bold text-[var(--book-text,var(--foreground))]">
+            {/* Header */}
+            <div className="text-center pb-2 shrink-0">
+              <h3 className="text-lg font-serif font-bold text-[var(--book-text,var(--foreground))]">
                 🎯 Apply & Reflect
               </h3>
-              <p className="text-[7px] text-[var(--muted-foreground)]">{enhancedChapterTitle}</p>
+              <p className="text-sm text-[var(--muted-foreground)]">{enhancedChapterTitle}</p>
+              <div
+                className="w-16 h-0.5 mx-auto mt-2"
+                style={{ background: `linear-gradient(to right, transparent, ${enhancedColor}, transparent)` }}
+              />
             </div>
 
-            <div
-              className="w-1/2 h-px mx-auto mb-1.5 shrink-0"
-              style={{ background: `linear-gradient(to right, transparent, ${enhancedColor}60, transparent)` }}
-            />
-
-            {/* Real World Actions - Compact */}
-            <div className="px-2 mb-1.5 shrink-0">
-              <p className="text-[8px] font-bold text-[var(--muted-foreground)] mb-0.5">🌍 Try This:</p>
-              <div className="flex gap-0.5">
+            {/* Real World Actions */}
+            <div className="mb-3 shrink-0">
+              <p className="text-xs font-bold text-[var(--muted-foreground)] mb-2 uppercase tracking-wider flex items-center gap-1.5">
+                <span className="text-sm">🌍</span> Try This:
+              </p>
+              <div className="flex gap-2">
                 {(page.realWorldExamples || []).slice(0, 3).map((ex, idx) => (
                   <div
                     key={idx}
-                    className="flex-1 p-1 rounded bg-[var(--muted)]/20 text-center"
+                    className="flex-1 p-3 rounded-lg bg-[var(--muted)]/20 text-center"
                   >
-                    <span className="text-xs block">{ex.icon}</span>
-                    <p className="text-[6px] font-medium text-[var(--book-text,var(--foreground))] truncate">{ex.title}</p>
+                    <span className="text-2xl block mb-1">{ex.icon}</span>
+                    <p className="text-sm font-medium text-[var(--book-text,var(--foreground))]">{ex.title}</p>
                   </div>
                 ))}
               </div>
             </div>
 
             {/* Notes textarea - fills remaining space */}
-            <div className="flex-1 min-h-0 px-2 pb-1 flex flex-col">
-              <p className="text-[8px] font-bold text-[var(--muted-foreground)] mb-0.5 shrink-0">📝 Your Notes:</p>
+            <div className="flex-1 min-h-0 flex flex-col">
+              <p className="text-xs font-bold text-[var(--muted-foreground)] mb-2 uppercase tracking-wider flex items-center gap-1.5 shrink-0">
+                <span className="text-sm">📝</span> Your Notes:
+              </p>
               <textarea
                 className={cn(
                   "flex-1 w-full resize-none",
                   "bg-transparent",
-                  "border border-dashed border-[var(--border)]/40 rounded",
-                  "p-1.5 text-[9px] font-serif",
+                  "border border-dashed border-[var(--border)]/40 rounded-lg",
+                  "p-3 text-sm font-serif",
                   "text-[var(--book-text,var(--foreground))]",
-                  "placeholder:text-[var(--muted-foreground)]/40 placeholder:italic",
+                  "placeholder:text-[var(--muted-foreground)]/50 placeholder:italic",
                   "focus:outline-none focus:border-[var(--primary)]/50"
                 )}
-                placeholder="Write your reflections..."
+                placeholder="Write your reflections and thoughts here..."
                 value={pageNotes[enhancedNoteKey] || ''}
                 onChange={(e) => saveNote(enhancedNoteKey, e.target.value)}
                 style={{
-                  lineHeight: '1.4em',
-                  backgroundImage: 'linear-gradient(to bottom, transparent 85%, var(--border) 85%, var(--border) 88%, transparent 88%)',
-                  backgroundSize: '100% 1.4em',
-                  backgroundPosition: '0 0.15em',
+                  lineHeight: '1.6em',
+                  backgroundImage: 'linear-gradient(to bottom, transparent 90%, var(--border) 90%, var(--border) 92%, transparent 92%)',
+                  backgroundSize: '100% 1.6em',
+                  backgroundPosition: '0 0.2em',
                 }}
               />
             </div>
 
-            {/* Discussion Button - Compact */}
-            <div className="shrink-0 px-2 py-1.5 border-t border-[var(--border)]/20">
+            {/* Discussion Button */}
+            <div className="shrink-0 pt-3 border-t border-[var(--border)]/20 mt-2">
               <button
                 className={cn(
-                  "w-full flex items-center justify-center gap-1 py-1 px-2 rounded",
+                  "w-full flex items-center justify-center gap-2 py-2.5 px-4 rounded-lg",
                   "bg-[var(--muted)]/30 hover:bg-[var(--muted)]/50",
-                  "text-[var(--book-text,var(--foreground))] text-[8px] font-medium"
+                  "text-[var(--book-text,var(--foreground))] text-sm font-medium",
+                  "transition-colors"
                 )}
                 onClick={() => setShowDiscussion(true)}
               >
-                <MessageCircle className="w-2.5 h-2.5" />
-                <span>Discussion</span>
+                <MessageCircle className="w-4 h-4" />
+                <span>Join Discussion</span>
               </button>
             </div>
           </div>
