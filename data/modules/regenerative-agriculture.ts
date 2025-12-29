@@ -625,12 +625,460 @@ export const regenerativeAgricultureModules: Module[] = [
         hasActivity: true,
         activityType: 'DRAG_DROP',
         content: {
-          ELEMENTARY: `<div class="lesson-content"><h2>🌱 Plant Blankets!</h2><p>Cover crops are plants that cover the soil to protect it from sun, wind, and rain!</p><h3>Why Cover the Soil?</h3><ul><li>☀️ Protects from hot sun</li><li>💨 Stops wind erosion</li><li>🌧️ Prevents rain wash-away</li><li>🪱 Feeds soil creatures</li></ul></div>`,
-          MIDDLE_SCHOOL: `<div class="lesson-content"><h2>Cover Crop Benefits</h2><h3>What They Do</h3><ul><li>Prevent erosion</li><li>Add organic matter</li><li>Fix nitrogen (legumes)</li><li>Suppress weeds</li><li>Provide wildlife habitat</li></ul><h3>Common Types</h3><p>Grasses (rye, oats), legumes (clover, vetch), brassicas (radish).</p></div>`,
-          HIGH_SCHOOL: `<div class="lesson-content"><h2>Cover Crop Management</h2><h3>Species Selection</h3><ul><li><strong>Grasses:</strong> Carbon, erosion control, scavenge N</li><li><strong>Legumes:</strong> Fix nitrogen, protein</li><li><strong>Brassicas:</strong> Break compaction, biofumigation</li></ul><h3>Termination</h3><p>Tillage, roller-crimper, herbicide, winterkill.</p></div>`,
-          UNDERGRADUATE: `<div class="lesson-content"><h2>System Integration</h2><h3>Planning Considerations</h3><ul><li>Cash crop rotation fit</li><li>Planting and termination windows</li><li>Equipment needs</li><li>Economic analysis</li></ul><h3>Nutrient Management</h3><p>Nitrogen credits from legumes, carbon-to-nitrogen ratios, timing of release.</p></div>`,
-          GRADUATE: `<div class="lesson-content"><h2>Advanced Cover Cropping</h2><h3>Multi-Species Mixes</h3><p>Cocktail mixes for multiple benefits. Functional group balance.</p><h3>Research Questions</h3><ul><li>Weed seed bank effects</li><li>Disease suppression</li><li>Carbon sequestration rates</li></ul></div>`,
-          PHD: `<div class="lesson-content"><h2>Cover Crop Research</h2><h3>Frontiers</h3><ul><li>Breeding for dual-purpose varieties</li><li>Root exudate chemistry</li><li>Microbiome recruitment</li><li>Ecosystem service quantification</li></ul></div>`
+          ELEMENTARY: `<div class="lesson-content">
+<h2>The Cozy Soil Blanket</h2>
+
+<p>When winter comes, you put on a warm blanket to stay cozy, right? Soil needs a blanket too! That's what cover crops are—living plant blankets that keep the soil warm, protected, and happy.</p>
+
+<div class="image-placeholder" data-caption="Cover crops protecting soil like a blanket">
+[Image: A colorful illustration showing soil being covered by growing plants while sun, rain, and wind are above]
+</div>
+
+<h3>What Are Cover Crops?</h3>
+
+<p>Cover crops are plants that farmers grow NOT to eat, but to help the soil! They cover the ground between growing seasons when the main crops are done.</p>
+
+<h3>Why Does Soil Need a Blanket?</h3>
+
+<ul>
+<li><strong>Sun protection:</strong> Bare soil gets too hot and dries out</li>
+<li><strong>Wind protection:</strong> Wind can blow away the good topsoil</li>
+<li><strong>Rain protection:</strong> Heavy rain washes soil away</li>
+<li><strong>Food for soil creatures:</strong> Worms and bugs need plant roots to eat</li>
+<li><strong>Weed blocking:</strong> If good plants cover the soil, weeds can't grow</li>
+</ul>
+
+<h3>Types of Cover Crop Blankets</h3>
+
+<h4>Grass Family</h4>
+<p>Like rye, wheat, and oats—they have lots of roots that hold soil tight!</p>
+
+<h4>Bean Family</h4>
+<p>Like clover and peas—they have a superpower: they can make their own plant food from air!</p>
+
+<h4>Radish Family</h4>
+<p>Like tillage radish—their big roots dig deep and break up hard soil!</p>
+
+<div class="fun-fact">
+<h4>Amazing Fact!</h4>
+<p>Some cover crop roots can grow 6 feet deep into the soil! That's taller than most grown-ups!</p>
+</div>
+
+<h3>The Cover Crop Cycle</h3>
+
+<ol>
+<li><strong>Fall:</strong> Farmer plants cover crop seeds after harvest</li>
+<li><strong>Winter:</strong> Plants grow and protect the soil</li>
+<li><strong>Spring:</strong> Plants are cut down or rolled flat</li>
+<li><strong>Summer:</strong> Main crop grows right through the cover crop mulch</li>
+</ol>
+
+<h3>What Happens to the Cover Crops?</h3>
+
+<p>When it's time to plant the main crop, farmers roll the cover crops flat. The plants become a soft mulch on top of the soil—like a decomposing blanket that feeds the soil as it breaks down!</p>
+
+<div class="key-concept">
+<h4>Remember!</h4>
+<p>Cover crops are living blankets that protect soil from sun, wind, and rain. They keep soil creatures happy and healthy, and leave behind food for the next crop!</p>
+</div>
+</div>`,
+
+          MIDDLE_SCHOOL: `<div class="lesson-content">
+<h2>Cover Crops: The Unsung Heroes of Healthy Farms</h2>
+
+<p>Between cash crops, many farmers used to leave their fields bare. But bare soil is vulnerable soil. Cover crops change that by keeping the soil alive and protected year-round.</p>
+
+<div class="image-placeholder" data-caption="A field of mixed cover crops">
+[Image: A lush field with multiple types of cover crops growing together—grasses, clovers, and radishes visible]
+</div>
+
+<h3>The Many Benefits of Cover Crops</h3>
+
+<table class="benefits-table">
+<tr><th>Benefit</th><th>How Cover Crops Help</th></tr>
+<tr><td>Erosion control</td><td>Roots hold soil in place; leaves protect from rain impact</td></tr>
+<tr><td>Weed suppression</td><td>Out-compete weeds for light, water, and nutrients</td></tr>
+<tr><td>Nitrogen fixation</td><td>Legume cover crops capture nitrogen from the air</td></tr>
+<tr><td>Organic matter</td><td>Plants decompose into soil-building material</td></tr>
+<tr><td>Soil biology</td><td>Roots feed beneficial microorganisms</td></tr>
+<tr><td>Water infiltration</td><td>Root channels allow water to soak in</td></tr>
+<tr><td>Pollinator habitat</td><td>Flowering cover crops feed bees and butterflies</td></tr>
+</table>
+
+<h3>Types of Cover Crops</h3>
+
+<h4>Grasses</h4>
+<ul>
+<li><strong>Cereal rye:</strong> Most common, very hardy, excellent erosion control</li>
+<li><strong>Oats:</strong> Fast growing, winter kills in cold climates</li>
+<li><strong>Annual ryegrass:</strong> Establishes quickly, good in mixes</li>
+</ul>
+
+<h4>Legumes</h4>
+<ul>
+<li><strong>Crimson clover:</strong> Beautiful red flowers, fixes 50-150 lbs N/acre</li>
+<li><strong>Hairy vetch:</strong> Vining, excellent nitrogen fixer</li>
+<li><strong>Austrian winter peas:</strong> Fast growing legume</li>
+</ul>
+
+<h4>Brassicas</h4>
+<ul>
+<li><strong>Tillage radish:</strong> Deep taproot breaks compaction, scavenges nutrients</li>
+<li><strong>Turnips:</strong> Roots and tops both valuable</li>
+<li><strong>Rapeseed:</strong> Biofumigation effects</li>
+</ul>
+
+<h3>When to Plant Cover Crops</h3>
+
+<ul>
+<li><strong>After summer harvest:</strong> Late summer/fall planting</li>
+<li><strong>Overseeded into crops:</strong> Broadcasting before cash crop harvest</li>
+<li><strong>Spring planted:</strong> Before summer cash crop</li>
+<li><strong>Year-round:</strong> In perennial systems or during fallow</li>
+</ul>
+
+<h3>Terminating Cover Crops</h3>
+
+<p>Before planting the cash crop, cover crops need to be terminated:</p>
+
+<ul>
+<li><strong>Roller-crimper:</strong> Flattens and kills cover crop mechanically</li>
+<li><strong>Mowing:</strong> Cuts plants down</li>
+<li><strong>Tillage:</strong> Incorporates into soil (but damages soil structure)</li>
+<li><strong>Herbicide:</strong> Chemical termination</li>
+<li><strong>Winterkill:</strong> Some species die naturally in cold</li>
+</ul>
+
+<div class="did-you-know">
+<h4>Did You Know?</h4>
+<p>Crimson clover can fix 70-150 pounds of nitrogen per acre—that's worth $50-100 in fertilizer savings!</p>
+</div>
+
+<div class="key-concept">
+<h4>Key Takeaway</h4>
+<p>Cover crops provide multiple benefits including erosion control, nitrogen fixation, weed suppression, and soil health improvement. Choosing the right species and management approach matches cover crop benefits to farm needs.</p>
+</div>
+</div>`,
+
+          HIGH_SCHOOL: `<div class="lesson-content">
+<h2>Cover Crop Science and Management</h2>
+
+<p>Cover cropping has shifted from a niche practice to a mainstream soil health strategy. Understanding species characteristics, planting methods, and termination options enables effective integration into diverse farming systems.</p>
+
+<div class="image-placeholder" data-caption="Cover crop species selection guide">
+[Image: Infographic showing different cover crop functional groups and their primary benefits]
+</div>
+
+<h3>Cover Crop Functional Groups</h3>
+
+<table class="species-table">
+<tr><th>Group</th><th>Examples</th><th>Primary Functions</th><th>C:N Ratio</th></tr>
+<tr><td>Cool-season grasses</td><td>Cereal rye, wheat, oats, barley</td><td>Erosion control, carbon, scavenge N</td><td>High (40-80:1)</td></tr>
+<tr><td>Cool-season legumes</td><td>Crimson clover, hairy vetch, peas</td><td>N fixation, protein</td><td>Low (10-25:1)</td></tr>
+<tr><td>Brassicas</td><td>Radish, turnips, rapeseed</td><td>Compaction, biofumigation, N scavenging</td><td>Medium (15-25:1)</td></tr>
+<tr><td>Warm-season grasses</td><td>Sorghum-sudan, millet, buckwheat</td><td>Biomass, weed suppression</td><td>High (30-50:1)</td></tr>
+<tr><td>Warm-season legumes</td><td>Cowpeas, sunn hemp, soybeans</td><td>N fixation, summer biomass</td><td>Low (10-20:1)</td></tr>
+</table>
+
+<h3>Species Selection Factors</h3>
+
+<ul>
+<li><strong>Planting window:</strong> When can you establish the cover crop?</li>
+<li><strong>Termination timing:</strong> When does the cash crop need to be planted?</li>
+<li><strong>Primary goals:</strong> N fixation, erosion, compaction, weed suppression?</li>
+<li><strong>Climate:</strong> Hardiness zone, rainfall, frost dates</li>
+<li><strong>Cash crop rotation:</strong> Avoid same-family diseases</li>
+</ul>
+
+<h3>Planting Methods</h3>
+
+<h4>Drilling</h4>
+<p>Best seed-to-soil contact, most reliable establishment. Requires dedicated equipment pass.</p>
+
+<h4>Broadcasting</h4>
+<p>Faster, can be done aerially or with spreader. Less reliable, higher seeding rates needed.</p>
+
+<h4>Interseeding</h4>
+<p>Planting into standing cash crop. Challenging timing and competition issues.</p>
+
+<h3>Termination Methods</h3>
+
+<table class="termination-table">
+<tr><th>Method</th><th>Advantages</th><th>Disadvantages</th></tr>
+<tr><td>Roller-crimper</td><td>No chemicals, mulch layer, soil life preserved</td><td>Timing critical, requires right equipment</td></tr>
+<tr><td>Mowing</td><td>Simple equipment</td><td>May not kill, regrowth possible</td></tr>
+<tr><td>Tillage</td><td>Effective kill, incorporation</td><td>Destroys soil structure, loses mulch</td></tr>
+<tr><td>Herbicide</td><td>Flexible timing</td><td>Cost, chemical use</td></tr>
+<tr><td>Winterkill</td><td>No spring termination needed</td><td>Limited species options, less spring biomass</td></tr>
+</table>
+
+<h3>Nitrogen Management</h3>
+
+<p>Legume cover crops fix atmospheric nitrogen through symbiosis with Rhizobium bacteria:</p>
+
+<ul>
+<li>Typical N fixation: 50-200 lbs/acre depending on species and conditions</li>
+<li>N credit to following crop: 30-50% of total fixed (rest in soil organic matter)</li>
+<li>Release timing depends on C:N ratio and termination method</li>
+<li>Mix legumes with grasses to balance C:N for steady release</li>
+</ul>
+
+<div class="key-concept">
+<h4>Management Principle</h4>
+<p>Successful cover cropping matches species selection to specific goals and planting/termination windows. Multi-species mixes can provide multiple benefits, but require careful management of competition and termination timing.</p>
+</div>
+</div>`,
+
+          UNDERGRADUATE: `<div class="lesson-content">
+<h2>Cover Crop System Integration: Agronomic and Economic Analysis</h2>
+
+<p>Professional cover crop management requires systematic integration with cash crop rotations, careful economic analysis, and attention to regional constraints. This lesson covers planning approaches and decision frameworks for cover crop adoption.</p>
+
+<h3>System Integration Framework</h3>
+
+<h4>Planning Considerations</h4>
+<table class="planning-table">
+<tr><th>Factor</th><th>Questions to Address</th></tr>
+<tr><td>Rotation fit</td><td>When are windows available? What follows?</td></tr>
+<tr><td>Equipment</td><td>Planting, termination, and cash crop equipment compatibility?</td></tr>
+<tr><td>Labor</td><td>Time for additional passes? Skill requirements?</td></tr>
+<tr><td>Seed cost</td><td>Species, seeding rate, seed source?</td></tr>
+<tr><td>Goals</td><td>Primary and secondary objectives?</td></tr>
+</table>
+
+<h4>Seeding Rate Calculations</h4>
+<p>Rates depend on planting method and goals:</p>
+<ul>
+<li>Drilled rates typically 60-70% of broadcast rates</li>
+<li>Mixes: Reduce each species to 30-50% of monoculture rate</li>
+<li>Higher rates for weed suppression, lower for N fixation focus</li>
+</ul>
+
+<h3>Economic Analysis</h3>
+
+<h4>Costs</h4>
+<ul>
+<li><strong>Seed:</strong> $15-50/acre depending on species and rate</li>
+<li><strong>Planting:</strong> $8-15/acre custom rate</li>
+<li><strong>Termination:</strong> $0 (winterkill) to $15/acre (herbicide/rolling)</li>
+<li><strong>Management time:</strong> Planning, monitoring, troubleshooting</li>
+</ul>
+
+<h4>Benefits (Quantifiable)</h4>
+<ul>
+<li><strong>N credit:</strong> $20-80/acre from legume fixation</li>
+<li><strong>Erosion prevention:</strong> $5-20/acre soil loss avoided</li>
+<li><strong>Herbicide savings:</strong> $10-30/acre in some systems</li>
+<li><strong>Yield effects:</strong> Variable; -5% to +15% in research</li>
+</ul>
+
+<h4>Benefits (Harder to Quantify)</h4>
+<ul>
+<li>Soil organic matter building</li>
+<li>Soil health improvement</li>
+<li>Water infiltration</li>
+<li>Pollinator and beneficial insect habitat</li>
+<li>Resilience to weather extremes</li>
+</ul>
+
+<h3>Multi-Species Mixes</h3>
+
+<h4>Mix Design Principles</h4>
+<ul>
+<li>Include multiple functional groups (grass, legume, brassica)</li>
+<li>Balance above and below-ground diversity</li>
+<li>Match species to establishment window</li>
+<li>Consider termination compatibility</li>
+</ul>
+
+<h4>Example 8-Way Mix</h4>
+<table class="mix-table">
+<tr><th>Species</th><th>lbs/acre</th><th>Function</th></tr>
+<tr><td>Cereal rye</td><td>30</td><td>Grass, erosion</td></tr>
+<tr><td>Crimson clover</td><td>6</td><td>Legume, N</td></tr>
+<tr><td>Hairy vetch</td><td>4</td><td>Legume, N</td></tr>
+<tr><td>Tillage radish</td><td>2</td><td>Brassica, compaction</td></tr>
+<tr><td>Turnips</td><td>1</td><td>Brassica, N scavenge</td></tr>
+<tr><td>Oats</td><td>15</td><td>Grass, quick cover</td></tr>
+<tr><td>Austrian winter peas</td><td>10</td><td>Legume, early N</td></tr>
+<tr><td>Sunflowers</td><td>2</td><td>Broadleaf diversity</td></tr>
+</table>
+
+<h3>Risk Management</h3>
+
+<ul>
+<li>Start with single species before complex mixes</li>
+<li>Begin on limited acreage to learn</li>
+<li>Connect with experienced cover croppers</li>
+<li>Document outcomes for adaptive management</li>
+</ul>
+
+<div class="key-concept">
+<h4>Professional Practice</h4>
+<p>Cover crop success requires careful integration with the whole farming system. Economic analysis should consider both direct costs/benefits and harder-to-quantify soil health improvements. Starting small and learning iteratively reduces risk while building experience.</p>
+</div>
+</div>`,
+
+          GRADUATE: `<div class="lesson-content">
+<h2>Advanced Cover Cropping: Multi-Species Systems and Ecosystem Services</h2>
+
+<p>Graduate-level cover crop analysis addresses the ecological principles underlying multi-species mixtures, ecosystem service quantification, and the integration of cover cropping with broader agroecological goals. Research is moving beyond simple species selection toward understanding plant-soil-microbe interactions.</p>
+
+<h3>Ecological Principles</h3>
+
+<h4>Functional Diversity</h4>
+<p>Mixtures outperform monocultures when species occupy different niches:</p>
+<ul>
+<li>Temporal niche partitioning (early vs. late season growth)</li>
+<li>Spatial partitioning (root depth, canopy height)</li>
+<li>Resource partitioning (N fixers vs. N scavengers)</li>
+<li>Complementarity and facilitation effects</li>
+</ul>
+
+<h4>Overyielding and Transgressive Overyielding</h4>
+<ul>
+<li>Mixtures often produce more biomass than monoculture average</li>
+<li>Sometimes exceed best-performing monoculture component</li>
+<li>Mechanisms: niche complementarity, facilitation, sampling effect</li>
+</ul>
+
+<h3>Plant-Microbe Interactions</h3>
+
+<h4>Root Exudates</h4>
+<p>Cover crop roots release compounds affecting soil biology:</p>
+<ul>
+<li>Sugars feed microbial communities</li>
+<li>Organic acids mobilize nutrients</li>
+<li>Signaling compounds affect microbiome assembly</li>
+<li>Allelopathic compounds suppress weeds and pathogens</li>
+</ul>
+
+<h4>Mycorrhizal Networks</h4>
+<ul>
+<li>Cover crops maintain mycorrhizal inoculum between cash crops</li>
+<li>Brassicas (non-mycorrhizal) can disrupt networks</li>
+<li>Mixing mycorrhizal and non-mycorrhizal species</li>
+</ul>
+
+<h3>Ecosystem Service Quantification</h3>
+
+<table class="services-table">
+<tr><th>Service</th><th>Measurement Approaches</th><th>Challenges</th></tr>
+<tr><td>Carbon sequestration</td><td>Soil sampling, modeling</td><td>Measurement variability, baseline</td></tr>
+<tr><td>N cycling</td><td>15N tracing, mass balance</td><td>Losses to environment</td></tr>
+<tr><td>Water quality</td><td>Lysimeters, watershed monitoring</td><td>Scale and attribution</td></tr>
+<tr><td>Pollinator support</td><td>Transect counts, nesting surveys</td><td>Landscape context effects</td></tr>
+<tr><td>Pest suppression</td><td>Population counts, crop damage</td><td>Year-to-year variability</td></tr>
+</table>
+
+<h3>Weed Seed Bank Dynamics</h3>
+
+<ul>
+<li>Cover crops reduce weed seed rain through competition</li>
+<li>Mulch layer suppresses germination</li>
+<li>Some cover crops have allelopathic effects</li>
+<li>Long-term rotation effects on weed community</li>
+</ul>
+
+<h3>Climate Adaptation</h3>
+
+<p>Cover crops as climate adaptation strategy:</p>
+<ul>
+<li>Improved water infiltration for drought resilience</li>
+<li>Reduced soil temperature extremes</li>
+<li>Enhanced nutrient cycling under variable weather</li>
+<li>Carbon sequestration for mitigation</li>
+</ul>
+
+<div class="key-concept">
+<h4>Research Frontiers</h4>
+<p>Key research questions include optimizing mixture composition for multiple ecosystem services, understanding root exudate effects on soil microbiome assembly, quantifying carbon sequestration under diverse management, and developing predictive models for cover crop performance across environments.</p>
+</div>
+</div>`,
+
+          PHD: `<div class="lesson-content">
+<h2>Cover Crop Research: Plant-Soil-Microbe Systems and Agroecological Intensification</h2>
+
+<p>Doctoral research on cover crops addresses fundamental questions about plant-soil-microbe interactions, ecosystem function, and the role of cover cropping in sustainable intensification. This work spans plant science, soil microbiology, and agroecosystem ecology.</p>
+
+<h3>Root-Microbiome Interactions</h3>
+
+<h4>Rhizosphere Assembly</h4>
+<ul>
+<li>Cover crop species recruit distinct microbial communities</li>
+<li>Root exudate profiles shape rhizosphere composition</li>
+<li>Legacy effects persist into following cash crop</li>
+<li>Methodological approaches: amplicon sequencing, metagenomics, metabolomics</li>
+</ul>
+
+<h4>Plant-Microbe Signaling</h4>
+<ul>
+<li>Flavonoids and strigolactones in symbiosis initiation</li>
+<li>Volatile organic compounds in induced systemic resistance</li>
+<li>Quorum sensing and biofilm dynamics in rhizosphere</li>
+</ul>
+
+<h3>Carbon Cycling</h3>
+
+<h4>Root Carbon Inputs</h4>
+<ul>
+<li>Rhizodeposition: 5-21% of fixed C released by roots</li>
+<li>Root turnover and decomposition dynamics</li>
+<li>Priming effects: increased or decreased SOM decomposition</li>
+<li>Mineral-associated organic matter formation</li>
+</ul>
+
+<h4>Measurement Approaches</h4>
+<table class="methods-table">
+<tr><th>Method</th><th>Information Provided</th><th>Limitations</th></tr>
+<tr><td>13C pulse labeling</td><td>C flow from plant to soil</td><td>Labor-intensive, short-term</td></tr>
+<tr><td>Natural abundance 13C</td><td>C4 cover crop contribution</td><td>Limited species options</td></tr>
+<tr><td>Minirhizotrons</td><td>Root dynamics in situ</td><td>Equipment cost, image analysis</td></tr>
+<tr><td>Fractionation</td><td>C in different SOM pools</td><td>Operational vs. functional pools</td></tr>
+</table>
+
+<h3>Breeding for Cover Crop Traits</h3>
+
+<h4>Target Traits</h4>
+<ul>
+<li>Rapid establishment and ground cover</li>
+<li>Winterhardiness or reliable winterkill</li>
+<li>Nutrient scavenging efficiency</li>
+<li>Allelopathic compound production</li>
+<li>Dual-purpose (grain + cover) potential</li>
+</ul>
+
+<h4>Approaches</h4>
+<ul>
+<li>Evaluation of germplasm collections</li>
+<li>Participatory breeding with farmers</li>
+<li>Marker-assisted selection for key traits</li>
+<li>Wild relative introgression</li>
+</ul>
+
+<h3>Modeling Cover Crop Effects</h3>
+
+<ul>
+<li>Process-based models (DSSAT, APSIM, DAYCENT)</li>
+<li>Parameterization for cover crop species</li>
+<li>Validation against field experiments</li>
+<li>Scenario analysis for management optimization</li>
+</ul>
+
+<h3>Research Design Considerations</h3>
+
+<ul>
+<li>Long-term experiments for soil health effects</li>
+<li>Landscape-scale studies for ecosystem services</li>
+<li>On-farm research for adoption context</li>
+<li>Interdisciplinary teams bridging biophysical and social science</li>
+</ul>
+
+<div class="key-concept">
+<h4>Doctoral Research Orientation</h4>
+<p>Cover crop research offers opportunities to advance fundamental understanding of plant-soil-microbe interactions while addressing practical questions about sustainable agriculture. Key challenges include linking mechanistic studies to field-scale outcomes and developing predictive frameworks for cover crop management across diverse environments.</p>
+</div>
+</div>`
         }
       }
     ],
