@@ -806,12 +806,460 @@ export const foodSovereigntyModules: Module[] = [
         hasActivity: true,
         activityType: 'SIMULATION',
         content: {
-          ELEMENTARY: `<div class="lesson-content"><h2>🌻 Gardens for Everyone!</h2><p>A community garden is a special place where neighbors share land to grow vegetables, fruits, and flowers together!</p><h3>What Happens in Community Gardens?</h3><ul><li>🥬 People grow their own vegetables</li><li>👨‍👩‍👧‍👦 Families work together</li><li>🐝 Bees and butterflies visit</li><li>🤝 Neighbors become friends</li></ul></div>`,
-          MIDDLE_SCHOOL: `<div class="lesson-content"><h2>Community Garden Benefits</h2><h3>For People</h3><ul><li>Fresh, healthy food access</li><li>Physical activity and exercise</li><li>Mental health and stress relief</li><li>Social connections</li></ul><h3>For the Environment</h3><ul><li>Green spaces in cities</li><li>Habitat for pollinators</li><li>Reduced food transportation</li><li>Composting and recycling</li></ul></div>`,
-          HIGH_SCHOOL: `<div class="lesson-content"><h2>Community Garden Models</h2><h3>Types of Gardens</h3><ul><li><strong>Allotment:</strong> Individual plots for families</li><li><strong>Collective:</strong> Shared cultivation and harvest</li><li><strong>School:</strong> Educational focus for students</li><li><strong>Therapeutic:</strong> Healing and rehabilitation</li></ul><h3>Challenges</h3><p>Land tenure, water access, volunteer management, and equitable access.</p></div>`,
-          UNDERGRADUATE: `<div class="lesson-content"><h2>Urban Food Security</h2><h3>Community Gardens and Food Access</h3><p>Research shows community gardens can significantly improve household food security, particularly in food deserts.</p><h3>Governance Models</h3><ul><li>Non-profit management</li><li>Municipal programs</li><li>Land trust models</li><li>Cooperative structures</li></ul></div>`,
-          GRADUATE: `<div class="lesson-content"><h2>Food Justice in Urban Spaces</h2><h3>Critical Perspectives</h3><p>Community gardens can either reinforce or challenge existing inequalities depending on access, governance, and integration with broader movements.</p><h3>Gentrification Concerns</h3><p>Green amenities can increase property values and displace the communities they were meant to serve.</p></div>`,
-          PHD: `<div class="lesson-content"><h2>Research Frontiers</h2><h3>Measuring Impact</h3><ul><li>Food production quantification</li><li>Social capital metrics</li><li>Health outcome studies</li><li>Environmental services valuation</li></ul><h3>Policy Integration</h3><p>Integrating community gardens into comprehensive urban food system planning.</p></div>`
+          ELEMENTARY: `<div class="lesson-content">
+<h2>The Magic Garden Where Everyone Grows Together</h2>
+
+<p>In a busy city, between tall buildings, there was a special place called the Sunshine Community Garden. It was a magical place where people came together to grow food, make friends, and learn from each other!</p>
+
+<div class="image-placeholder" data-caption="A community garden full of people working together">
+[Image: A colorful illustration of diverse neighbors working in raised garden beds with vegetables growing]
+</div>
+
+<h3>What is a Community Garden?</h3>
+
+<p>A community garden is a piece of land where many different people share space to grow plants. It's like having a garden with all your neighbors!</p>
+
+<h3>Who Gardens There?</h3>
+
+<ul>
+<li><strong>Families</strong> — Parents and kids planting vegetables together</li>
+<li><strong>Grandparents</strong> — Sharing seeds and stories from their countries</li>
+<li><strong>Neighbors</strong> — Getting to know each other while they dig</li>
+<li><strong>Kids</strong> — Learning where food really comes from</li>
+<li><strong>Everyone!</strong> — People of all ages and backgrounds</li>
+</ul>
+
+<h3>What Grows in Community Gardens?</h3>
+
+<p>All kinds of wonderful things!</p>
+
+<ul>
+<li>Vegetables like tomatoes, peppers, lettuce, and carrots</li>
+<li>Fruits like strawberries and raspberries</li>
+<li>Herbs like basil, mint, and parsley</li>
+<li>Beautiful flowers that attract butterflies and bees</li>
+<li>Sometimes even pumpkins and watermelons!</li>
+</ul>
+
+<h3>Why Community Gardens are Special</h3>
+
+<ul>
+<li><strong>Fresh food:</strong> Pick vegetables right when you need them!</li>
+<li><strong>New friends:</strong> Meet neighbors you've never talked to before</li>
+<li><strong>Learn new things:</strong> Older gardeners teach younger ones</li>
+<li><strong>Get outside:</strong> Fresh air and sunshine are good for you</li>
+<li><strong>Help nature:</strong> Bees and butterflies love garden flowers</li>
+</ul>
+
+<div class="fun-fact">
+<h4>Fun Fact!</h4>
+<p>During World War II, people planted "Victory Gardens" in their yards and parks. Over 20 million gardens grew about 40% of America's vegetables!</p>
+</div>
+
+<h3>Garden Rules Everyone Follows</h3>
+
+<ul>
+<li>Take care of your own plot</li>
+<li>Share the water hose</li>
+<li>Put tools back when you're done</li>
+<li>Be kind to the plants AND the people!</li>
+<li>Compost your scraps</li>
+</ul>
+
+<h3>How to Find a Community Garden</h3>
+
+<p>Ask a grown-up to help you look for a community garden near you! Many cities have them in parks, on empty lots, or at schools. You might be surprised how close one is!</p>
+
+<div class="key-concept">
+<h4>Remember!</h4>
+<p>Community gardens are special places where people grow food and friendships together. Everyone works, everyone shares, and everyone enjoys the harvest!</p>
+</div>
+</div>`,
+
+          MIDDLE_SCHOOL: `<div class="lesson-content">
+<h2>Community Gardens: Growing More Than Food</h2>
+
+<p>Community gardens transform empty lots and unused spaces into thriving green oases. But they grow much more than vegetables—they cultivate community, health, and environmental benefits.</p>
+
+<div class="image-placeholder" data-caption="Aerial view of a community garden with diverse plots">
+[Image: Overhead photo showing various garden plots with different vegetables, paths between them, and people working]
+</div>
+
+<h3>Benefits for People</h3>
+
+<h4>Physical Health</h4>
+<ul>
+<li>Gardening burns 300-400 calories per hour</li>
+<li>Fresh produce improves nutrition</li>
+<li>Vitamin D from sunlight exposure</li>
+<li>Exercise through digging, planting, and weeding</li>
+</ul>
+
+<h4>Mental Health</h4>
+<ul>
+<li>Reduces stress and anxiety</li>
+<li>Provides a sense of accomplishment</li>
+<li>"Green therapy" improves mood</li>
+<li>Meditation-like focus during gardening</li>
+</ul>
+
+<h4>Social Benefits</h4>
+<ul>
+<li>Meet neighbors from different backgrounds</li>
+<li>Learn from experienced gardeners</li>
+<li>Share knowledge and produce</li>
+<li>Build community connections</li>
+</ul>
+
+<h3>Benefits for the Environment</h3>
+
+<table class="benefits-table">
+<tr><th>Environmental Benefit</th><th>How Gardens Help</th></tr>
+<tr><td>Habitat creation</td><td>Flowers support bees, butterflies, birds</td></tr>
+<tr><td>Urban cooling</td><td>Plants reduce "heat island" effect</td></tr>
+<tr><td>Stormwater management</td><td>Soil absorbs rain, reduces runoff</td></tr>
+<tr><td>Carbon capture</td><td>Plants absorb CO2 from the air</td></tr>
+<tr><td>Reduced transportation</td><td>Food grown locally, not shipped</td></tr>
+<tr><td>Composting</td><td>Organic waste becomes soil, not landfill</td></tr>
+</table>
+
+<h3>Benefits for Communities</h3>
+
+<ul>
+<li><strong>Food access:</strong> Fresh produce in "food deserts" without grocery stores</li>
+<li><strong>Cultural preservation:</strong> Immigrants can grow traditional foods</li>
+<li><strong>Youth education:</strong> Kids learn science, nutrition, responsibility</li>
+<li><strong>Neighborhood pride:</strong> Beautifies empty or neglected spaces</li>
+<li><strong>Crime reduction:</strong> Active spaces have fewer problems</li>
+</ul>
+
+<h3>How to Start a Garden Plot</h3>
+
+<ol>
+<li>Find a community garden in your area</li>
+<li>Contact the garden coordinator</li>
+<li>Get on the waiting list (popular gardens may have one)</li>
+<li>Pay any fees (usually small, to cover water/tools)</li>
+<li>Learn the garden's rules and guidelines</li>
+<li>Start small and learn as you grow!</li>
+</ol>
+
+<div class="did-you-know">
+<h4>Did You Know?</h4>
+<p>Studies show that people who garden eat more vegetables than people who don't—and they're more likely to try new vegetables they've never eaten before!</p>
+</div>
+
+<div class="key-concept">
+<h4>Key Takeaway</h4>
+<p>Community gardens provide far more than food. They improve physical and mental health, strengthen communities, support the environment, and give people a connection to the land and each other.</p>
+</div>
+</div>`,
+
+          HIGH_SCHOOL: `<div class="lesson-content">
+<h2>Community Garden Models: Organization, Governance, and Sustainability</h2>
+
+<p>Community gardens come in many forms, each with different governance structures, purposes, and challenges. Understanding these models helps in creating and sustaining successful gardens.</p>
+
+<div class="image-placeholder" data-caption="Different types of community gardens">
+[Image: Four-panel illustration showing allotment, collective, school, and therapeutic garden models]
+</div>
+
+<h3>Types of Community Gardens</h3>
+
+<table class="models-table">
+<tr><th>Model</th><th>Structure</th><th>Best For</th><th>Challenges</th></tr>
+<tr><td>Allotment</td><td>Individual plots assigned to families</td><td>Independence, personal preferences</td><td>Uneven maintenance, isolation</td></tr>
+<tr><td>Collective</td><td>Shared work and shared harvest</td><td>Building community, beginners</td><td>Coordination, free-rider problems</td></tr>
+<tr><td>School</td><td>Educational focus with students</td><td>Teaching, youth engagement</td><td>Summer maintenance, curriculum integration</td></tr>
+<tr><td>Therapeutic</td><td>Healing-focused, often supervised</td><td>Health programs, rehabilitation</td><td>Funding, trained staff needed</td></tr>
+<tr><td>Market</td><td>Production for sale</td><td>Income generation, job training</td><td>Business skills, regulations</td></tr>
+</table>
+
+<h3>Governance Structures</h3>
+
+<h4>Common Approaches</h4>
+<ul>
+<li><strong>Member-run:</strong> Democratic decision-making by gardeners</li>
+<li><strong>Non-profit led:</strong> Organization provides structure and resources</li>
+<li><strong>Municipal:</strong> City parks department manages gardens</li>
+<li><strong>Hybrid:</strong> City owns land, non-profit manages operations</li>
+</ul>
+
+<h4>Key Governance Functions</h4>
+<ul>
+<li>Plot assignment and waiting lists</li>
+<li>Rule enforcement and conflict resolution</li>
+<li>Financial management (fees, grants)</li>
+<li>Volunteer coordination</li>
+<li>Communication with landowners and city</li>
+</ul>
+
+<h3>Common Challenges</h3>
+
+<h4>Land Tenure</h4>
+<p>Many gardens operate on borrowed or temporary land, creating uncertainty about long-term viability. When property values rise, gardens often lose their land to development.</p>
+
+<h4>Water Access and Cost</h4>
+<p>Water is essential but expensive. Gardens need reliable water sources and systems to distribute water to individual plots.</p>
+
+<h4>Equitable Access</h4>
+<ul>
+<li>Who gets plots when demand exceeds supply?</li>
+<li>Are fees affordable for low-income gardeners?</li>
+<li>Is the garden accessible to people with disabilities?</li>
+<li>Do hours accommodate working families?</li>
+</ul>
+
+<h4>Volunteer Burnout</h4>
+<p>Gardens depend on volunteer labor for management. When a few people do most of the work, burnout can threaten garden sustainability.</p>
+
+<h3>Sustainability Strategies</h3>
+
+<ul>
+<li>Secure long-term land agreements or land trust ownership</li>
+<li>Diversify funding (fees, grants, donations, sales)</li>
+<li>Distribute leadership to prevent burnout</li>
+<li>Create clear, fair rules everyone understands</li>
+<li>Build partnerships with schools, businesses, government</li>
+</ul>
+
+<div class="key-concept">
+<h4>Design Thinking</h4>
+<p>The most successful community gardens match their organizational model to community needs and resources. There's no single best approach—what works depends on the specific context, goals, and people involved.</p>
+</div>
+</div>`,
+
+          UNDERGRADUATE: `<div class="lesson-content">
+<h2>Urban Food Security and Community Gardens: Systems Analysis</h2>
+
+<p>Community gardens play a complex role in urban food systems. This lesson examines the evidence for their impacts on food security, health, and community development, along with governance models that promote sustainability and equity.</p>
+
+<h3>Food Security Impacts</h3>
+
+<h4>Research Evidence</h4>
+<table class="evidence-table">
+<tr><th>Outcome</th><th>Finding</th><th>Mechanism</th></tr>
+<tr><td>Vegetable consumption</td><td>Gardeners eat more vegetables</td><td>Availability, taste, pride in harvest</td></tr>
+<tr><td>Household food budget</td><td>$200-600 savings per season</td><td>Substitution for purchased produce</td></tr>
+<tr><td>Diet diversity</td><td>More variety of vegetables consumed</td><td>Exposure to new crops</td></tr>
+<tr><td>Food insecurity</td><td>Reduced household food insecurity</td><td>Supplemental food source</td></tr>
+</table>
+
+<h4>Limitations as Food Security Intervention</h4>
+<ul>
+<li>Seasonal production in most climates</li>
+<li>Labor and knowledge requirements</li>
+<li>Limited calorie production per square foot</li>
+<li>Selection bias in who participates</li>
+</ul>
+
+<h3>Governance Models and Sustainability</h3>
+
+<h4>Land Tenure Approaches</h4>
+<table class="tenure-table">
+<tr><th>Approach</th><th>Security</th><th>Pros</th><th>Cons</th></tr>
+<tr><td>License/lease</td><td>Low</td><td>Easy to start</td><td>Can be terminated</td></tr>
+<tr><td>Long-term lease</td><td>Medium</td><td>More stability</td><td>Still not permanent</td></tr>
+<tr><td>Land trust</td><td>High</td><td>Permanent protection</td><td>Complex to establish</td></tr>
+<tr><td>Municipal ownership</td><td>Medium-High</td><td>Public resources</td><td>Political vulnerability</td></tr>
+</table>
+
+<h4>Funding Models</h4>
+<ul>
+<li><strong>Fee-based:</strong> Plot fees cover operating costs</li>
+<li><strong>Grant-dependent:</strong> Foundation or government funding</li>
+<li><strong>Enterprise:</strong> Income from sales, events, services</li>
+<li><strong>Hybrid:</strong> Multiple revenue streams for resilience</li>
+</ul>
+
+<h3>Equity Considerations</h3>
+
+<h4>Access Barriers</h4>
+<ul>
+<li>Location and transportation</li>
+<li>Fee structures and ability to pay</li>
+<li>Physical accessibility for people with disabilities</li>
+<li>Language and cultural barriers</li>
+<li>Time constraints for working families</li>
+</ul>
+
+<h4>Equity-Focused Practices</h4>
+<ul>
+<li>Sliding scale or waived fees</li>
+<li>Prioritized access for food-insecure households</li>
+<li>Multilingual signage and communication</li>
+<li>Accessible plot designs</li>
+<li>Childcare during workdays</li>
+</ul>
+
+<h3>Integration with Urban Food Systems</h3>
+
+<p>Community gardens function most effectively as part of comprehensive food system strategies:</p>
+
+<ul>
+<li>Connection to food assistance programs (SNAP, food banks)</li>
+<li>Linkage to farmers markets and CSAs</li>
+<li>Integration with urban agriculture policies</li>
+<li>Coordination with public health initiatives</li>
+</ul>
+
+<div class="key-concept">
+<h4>Professional Practice</h4>
+<p>Effective community garden programs balance food production goals with community development objectives. Success requires attention to governance, equity, financial sustainability, and integration with broader food system efforts.</p>
+</div>
+</div>`,
+
+          GRADUATE: `<div class="lesson-content">
+<h2>Food Justice in Urban Spaces: Critical Perspectives on Community Gardens</h2>
+
+<p>Graduate-level analysis of community gardens requires engaging with critical food studies scholarship that examines power, race, class, and the potential for gardens to either challenge or reinforce existing inequalities.</p>
+
+<h3>Food Justice Framework</h3>
+
+<p>Food justice extends beyond food security to address systemic inequities:</p>
+
+<ul>
+<li>Who has access to healthy food and why?</li>
+<li>Who controls food production and distribution?</li>
+<li>How do race and class shape food system outcomes?</li>
+<li>What structural changes are needed for equity?</li>
+</ul>
+
+<h3>Critical Perspectives on Community Gardens</h3>
+
+<h4>Neoliberal Critique</h4>
+<p>Gardens can function as neoliberal projects that shift responsibility from the state to individuals and communities, masking systemic failures while providing a feel-good narrative.</p>
+
+<h4>Gentrification Concerns</h4>
+<ul>
+<li>Gardens increase property values and neighborhood desirability</li>
+<li>Green amenities attract higher-income residents</li>
+<li>Original community members may be displaced</li>
+<li>Gardens can be tools of "greenwashing" development</li>
+</ul>
+
+<h4>Cultural Politics</h4>
+<ul>
+<li>Whose gardening traditions are valued?</li>
+<li>Are non-Western practices marginalized?</li>
+<li>Who defines "good" gardening and garden aesthetics?</li>
+<li>How do gardens reproduce or challenge racial hierarchies?</li>
+</ul>
+
+<h3>Transformative Potential</h3>
+
+<p>Despite critiques, gardens can be sites of resistance and transformation:</p>
+
+<ul>
+<li>Spaces for marginalized communities to reclaim land and agency</li>
+<li>Sites for preserving cultural practices and seeds</li>
+<li>Organizing bases for broader food justice movements</li>
+<li>Alternative economies and mutual aid networks</li>
+</ul>
+
+<h3>Research Approaches</h3>
+
+<table class="research-table">
+<tr><th>Approach</th><th>Questions</th><th>Methods</th></tr>
+<tr><td>Political ecology</td><td>Power relations in urban nature</td><td>Ethnography, discourse analysis</td></tr>
+<tr><td>Community-based participatory</td><td>Community-identified priorities</td><td>Collaborative research design</td></tr>
+<tr><td>Spatial analysis</td><td>Garden distribution and access</td><td>GIS, equity mapping</td></tr>
+<tr><td>Political economy</td><td>Economic structures and flows</td><td>Value chain analysis</td></tr>
+</table>
+
+<h3>Policy Implications</h3>
+
+<ul>
+<li>Anti-displacement policies to accompany greening</li>
+<li>Community control over garden governance</li>
+<li>Addressing root causes of food insecurity</li>
+<li>Gardens as part of comprehensive food justice strategies</li>
+</ul>
+
+<div class="key-concept">
+<h4>Critical Analysis</h4>
+<p>Community gardens exist within broader systems of power and inequality. Critical analysis examines both their limitations and their potential as sites for resistance, community building, and food system transformation. The key question is: gardens for whom and controlled by whom?</p>
+</div>
+</div>`,
+
+          PHD: `<div class="lesson-content">
+<h2>Community Garden Research: Methodological Frontiers and Policy Integration</h2>
+
+<p>Doctoral-level engagement with community garden research addresses fundamental questions about measuring impacts, attributing outcomes, and integrating gardens into urban food and land use policy. This work requires interdisciplinary approaches and careful attention to methodology.</p>
+
+<h3>Measuring Garden Impacts</h3>
+
+<h4>Methodological Challenges</h4>
+<table class="methods-table">
+<tr><th>Challenge</th><th>Issue</th><th>Approaches</th></tr>
+<tr><td>Selection bias</td><td>Gardeners self-select; differ from non-gardeners</td><td>Propensity score matching, longitudinal designs</td></tr>
+<tr><td>Attribution</td><td>Isolating garden effects from confounders</td><td>Control groups, difference-in-differences</td></tr>
+<tr><td>Production quantification</td><td>Measuring actual food produced</td><td>Harvest tracking, yield studies</td></tr>
+<tr><td>Social capital</td><td>Measuring relationship and trust changes</td><td>Network analysis, validated scales</td></tr>
+<tr><td>Long-term impacts</td><td>Effects may take years to manifest</td><td>Longitudinal cohorts</td></tr>
+</table>
+
+<h4>Outcome Domains</h4>
+<ul>
+<li><strong>Food security:</strong> Dietary intake, household food access</li>
+<li><strong>Health:</strong> Physical activity, mental health, chronic disease</li>
+<li><strong>Social:</strong> Social capital, community cohesion</li>
+<li><strong>Environmental:</strong> Ecosystem services, biodiversity</li>
+<li><strong>Economic:</strong> Household savings, property values</li>
+</ul>
+
+<h3>Valuing Ecosystem Services</h3>
+
+<p>Gardens provide services difficult to monetize:</p>
+
+<ul>
+<li>Carbon sequestration and storage</li>
+<li>Stormwater management</li>
+<li>Urban heat island mitigation</li>
+<li>Pollinator habitat</li>
+<li>Aesthetic and cultural services</li>
+</ul>
+
+<h4>Valuation Methods</h4>
+<ul>
+<li>Replacement cost (what would it cost to provide these services otherwise?)</li>
+<li>Hedonic pricing (effect on property values)</li>
+<li>Contingent valuation (willingness to pay)</li>
+<li>Benefit transfer from similar sites</li>
+</ul>
+
+<h3>Policy Integration</h3>
+
+<h4>Urban Planning Integration</h4>
+<ul>
+<li>Comprehensive plans and zoning for urban agriculture</li>
+<li>Green infrastructure planning</li>
+<li>Parks and open space planning</li>
+<li>Community development and housing policy</li>
+</ul>
+
+<h4>Multi-level Governance</h4>
+<ul>
+<li>Federal programs (USDA Community Food Projects, etc.)</li>
+<li>State enabling legislation</li>
+<li>Municipal land use and permitting</li>
+<li>Neighborhood-level organization</li>
+</ul>
+
+<h3>Research Ethics</h3>
+
+<ul>
+<li>Community-based participatory research principles</li>
+<li>Avoiding extractive research relationships</li>
+<li>Returning results to communities</li>
+<li>Attending to power dynamics in research</li>
+</ul>
+
+<div class="key-concept">
+<h4>Doctoral Research Orientation</h4>
+<p>Community garden research requires rigorous attention to methodology while remaining engaged with community priorities and policy relevance. The challenge is developing studies that are both scientifically sound and practically useful for advancing urban food justice.</p>
+</div>
+</div>`
         }
       }
     ],
