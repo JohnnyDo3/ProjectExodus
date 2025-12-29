@@ -1395,12 +1395,1316 @@ export const greenBuildingModules: Module[] = [
         hasActivity: true,
         activityType: 'DRAG_DROP',
         content: {
-          ELEMENTARY: `<div class="lesson-content"><h2>🏗️ Cool Building Stuff!</h2><h3>Natural Materials</h3><div class="material-cards"><div class="card"><span>🎋</span><h4>Bamboo</h4><p>Super strong grass!</p></div><div class="card"><span>🌾</span><h4>Straw</h4><p>Makes warm walls!</p></div><div class="card"><span>🪵</span><h4>Wood</h4><p>From trees we plant!</p></div><div class="card"><span>🧱</span><h4>Earth</h4><p>Mud bricks are ancient!</p></div></div></div>`,
-          MIDDLE_SCHOOL: `<div class="lesson-content"><h2>Sustainable Material Options</h2><h3>Natural Materials</h3><ul><li><strong>Wood:</strong> Renewable, stores carbon, low embodied energy</li><li><strong>Bamboo:</strong> Fast-growing, strong, versatile</li><li><strong>Straw bale:</strong> Agricultural waste, excellent insulation</li><li><strong>Adobe/rammed earth:</strong> Local, low-energy, thermal mass</li></ul><h3>Recycled Materials</h3><ul><li>Recycled steel and aluminum</li><li>Recycled plastic lumber</li><li>Fly ash concrete</li><li>Reclaimed wood</li></ul></div>`,
-          HIGH_SCHOOL: `<div class="lesson-content"><h2>Material Life Cycle</h2><h3>Embodied Carbon</h3><p>The carbon emissions from extracting, manufacturing, transporting, and installing materials:</p><table><tr><th>Material</th><th>kgCO₂e/kg</th></tr><tr><td>Concrete</td><td>0.1-0.2</td></tr><tr><td>Steel</td><td>1.5-2.0</td></tr><tr><td>Aluminum</td><td>8-12</td></tr><tr><td>Timber</td><td>-1 to +0.5*</td></tr></table><p>*Timber can be carbon-negative when sustainably sourced.</p><h3>Operational vs Embodied</h3><p>As buildings become more efficient, embodied carbon becomes a larger share of lifetime emissions.</p></div>`,
-          UNDERGRADUATE: `<div class="lesson-content"><h2>Material Selection and LCA</h2><h3>Life Cycle Assessment</h3><p>Cradle-to-grave analysis:</p><ul><li>Raw material extraction (A1)</li><li>Manufacturing (A2-A3)</li><li>Construction (A4-A5)</li><li>Use phase (B1-B7)</li><li>End of life (C1-C4)</li><li>Beyond building life (D)</li></ul><h3>EPDs (Environmental Product Declarations)</h3><p>Standardized reporting of environmental impacts for comparison.</p><h3>Selection Criteria</h3><ul><li>Performance requirements</li><li>Environmental impacts</li><li>Cost and availability</li><li>Durability and maintenance</li></ul></div>`,
-          GRADUATE: `<div class="lesson-content"><h2>Decarbonizing Construction</h2><h3>Material Decarbonization Pathways</h3><ul><li><strong>Concrete:</strong> SCMs, alternative cements, carbon cure</li><li><strong>Steel:</strong> Electric arc furnace, green hydrogen</li><li><strong>Mass timber:</strong> CLT, glulam for structural applications</li></ul><h3>Circular Construction</h3><ul><li>Design for disassembly</li><li>Material passports</li><li>Reuse and recycling</li></ul><h3>Biogenic Carbon</h3><p>Accounting for carbon stored in bio-based materials.</p></div>`,
-          PHD: `<div class="lesson-content"><h2>Material Innovation Research</h2><h3>Novel Bio-Based Materials</h3><ul><li>Mycelium composites</li><li>Hempcrete and other plant fibers</li><li>Algae-based materials</li></ul><h3>Carbon-Negative Construction</h3><ul><li>Biochar concrete additives</li><li>Enhanced weathering</li><li>Carbon mineralization</li></ul><h3>Research Questions</h3><ul><li>Scaling challenges</li><li>Performance verification</li><li>Standards development</li><li>Market transformation</li></ul></div>`
+          ELEMENTARY: `<div class="lesson-content">
+            <h2>Building with Nature's Gifts</h2>
+
+            <div class="story-intro">
+              <p>Have you ever built a fort out of sticks or a sandcastle at the beach? People have been building with things from nature for thousands of years! Let's meet some amazing natural building materials.</p>
+            </div>
+
+            <div class="image-placeholder" data-caption="Children exploring different natural building materials like wood, straw, and bamboo">
+              [Image: Kids touching and examining various natural materials]
+            </div>
+
+            <h3>Chapter 1: Mighty Bamboo - The Super Grass</h3>
+
+            <p>Did you know that bamboo is actually a type of GRASS? But it's not like the grass in your yard - some bamboo grows taller than a 10-story building!</p>
+
+            <div class="key-concept">
+              <h4>Bamboo Superpowers</h4>
+              <ul>
+                <li>Grows up to 3 feet in ONE DAY (that's faster than you can watch it!)</li>
+                <li>Stronger than steel for its weight</li>
+                <li>Grows back after you cut it - no need to replant!</li>
+                <li>Pandas love to eat it (but we use a different kind for building)</li>
+              </ul>
+            </div>
+
+            <p>In many countries like China, Japan, and Colombia, people build entire houses from bamboo. It's like nature's own building kit!</p>
+
+            <div class="image-placeholder" data-caption="A beautiful bamboo house showing the natural golden color of bamboo poles">
+              [Image: Modern bamboo house with curved roof]
+            </div>
+
+            <blockquote class="scavenger-quote" data-quote-id="gb-mat-elem-q1">
+              <p>"Bamboo is the green steel of the 21st century - it grows from the earth and returns to the earth."</p>
+              <cite>— Simon Velez, Bamboo Architect</cite>
+            </blockquote>
+
+            <h3>Chapter 2: Straw - Not Just for Scarecrows!</h3>
+
+            <p>After farmers harvest wheat, rice, or oats, the leftover stalks are called straw. Instead of burning it or throwing it away, we can build with it!</p>
+
+            <div class="fun-fact">
+              <h4>Did You Know?</h4>
+              <p>Straw bale houses are NOT like the straw house in "The Three Little Pigs"! Real straw bale walls are covered in plaster and are actually STRONGER and more fire-resistant than regular walls!</p>
+            </div>
+
+            <p>Straw bales are like giant nature LEGOs. You stack them up, push wooden stakes through them, and cover them with mud plaster. The thick walls keep houses cool in summer and warm in winter!</p>
+
+            <div class="image-placeholder" data-caption="Workers stacking golden straw bales to build a wall">
+              [Image: Construction of a straw bale wall]
+            </div>
+
+            <h3>Chapter 3: Wood - The Classic Choice</h3>
+
+            <p>Wood has been used to build homes for thousands of years. But here's what makes it extra special for our planet:</p>
+
+            <div class="key-concept">
+              <h4>Wood's Earth-Saving Secret</h4>
+              <p>Trees breathe in carbon dioxide (the gas that's warming our planet) and store it in their wood. When we build with wood, we're locking that carbon away! It's like the tree keeps doing its job even after it becomes a house.</p>
+            </div>
+
+            <p>The best part? We can plant new trees to replace the ones we use. That's called sustainable forestry - it means there will always be more trees!</p>
+
+            <div class="activity-box">
+              <h4>Try This!</h4>
+              <p>Look around your home. How many things are made of wood? Count the wooden furniture, doors, floors, and decorations. Wood is everywhere!</p>
+            </div>
+
+            <h3>Chapter 4: Earth and Mud - Ancient Wisdom</h3>
+
+            <p>The ground beneath your feet can become a house! People have built with earth for over 10,000 years.</p>
+
+            <div class="image-placeholder" data-caption="Ancient adobe buildings in a desert landscape, still standing after hundreds of years">
+              [Image: Traditional adobe pueblo village]
+            </div>
+
+            <p><strong>Adobe bricks</strong> are made by mixing mud, water, and straw, then drying them in the sun. No ovens or factories needed!</p>
+
+            <p><strong>Rammed earth</strong> walls are made by pounding dirt between wooden forms until it's hard as rock. These walls can last for CENTURIES!</p>
+
+            <blockquote class="scavenger-quote" data-quote-id="gb-mat-elem-q2">
+              <p>"Building with earth connects us to our ancestors and to the land itself. It's the original green building material!"</p>
+              <cite>— Nader Khalili, Earth Architect</cite>
+            </blockquote>
+
+            <h3>Chapter 5: Recycled Materials - Giving Trash a Second Life</h3>
+
+            <p>Some of the coolest building materials come from things people throw away!</p>
+
+            <ul>
+              <li><strong>Old plastic bottles</strong> can be filled with sand and stacked like bricks</li>
+              <li><strong>Used tires</strong> packed with earth make super-strong walls</li>
+              <li><strong>Crushed glass</strong> can be mixed into countertops that sparkle</li>
+              <li><strong>Old blue jeans</strong> become fluffy insulation to keep houses warm</li>
+            </ul>
+
+            <div class="fun-fact">
+              <h4>Cool Building Fact!</h4>
+              <p>A house in Canada was built using over 600,000 recycled plastic bottles! The bottles were filled with sand and stacked with mortar, just like regular bricks.</p>
+            </div>
+
+            <div class="chapter-summary">
+              <h4>What We Learned</h4>
+              <ul>
+                <li>Bamboo is super-strong grass that grows back quickly</li>
+                <li>Straw bales make excellent, well-insulated walls</li>
+                <li>Wood stores carbon and can be grown sustainably</li>
+                <li>Earth and mud have been used for building for 10,000+ years</li>
+                <li>Recycled materials give new life to things people throw away</li>
+              </ul>
+            </div>
+
+            <div class="reflection-question">
+              <h4>Think About It!</h4>
+              <p>If you could build a fort or playhouse using any natural material, which would you choose and why?</p>
+            </div>
+          </div>`,
+
+          MIDDLE_SCHOOL: `<div class="lesson-content">
+            <h2>Sustainable Building Materials: Building a Better Future</h2>
+
+            <div class="intro-section">
+              <p>Every building starts with materials - and the choices we make about those materials can either help or hurt our planet. Let's explore how sustainable materials are changing the way we build.</p>
+            </div>
+
+            <div class="image-placeholder" data-caption="Comparison of traditional concrete building vs. a modern mass timber structure">
+              [Image: Side-by-side comparison of building types]
+            </div>
+
+            <h3>Why Materials Matter</h3>
+
+            <p>The construction industry uses about <strong>40% of all raw materials</strong> on Earth. That's more than cars, phones, and everything else combined! The materials we choose affect:</p>
+
+            <ul>
+              <li><strong>Carbon emissions</strong> - How much greenhouse gas is released making and transporting materials</li>
+              <li><strong>Resource depletion</strong> - Whether we're using up limited resources or renewable ones</li>
+              <li><strong>Waste</strong> - What happens to materials at the end of a building's life</li>
+              <li><strong>Human health</strong> - The chemicals and pollutants people are exposed to</li>
+            </ul>
+
+            <blockquote class="scavenger-quote" data-quote-id="gb-mat-mid-q1">
+              <p>"The greenest building is one that already exists, and the greenest material is one that was never extracted."</p>
+              <cite>— Carl Elefante, Architect</cite>
+            </blockquote>
+
+            <h3>Natural Materials: Working with Nature</h3>
+
+            <h4>Wood and Mass Timber</h4>
+
+            <p>Wood is experiencing a renaissance in construction. Modern "mass timber" uses engineered wood products that can build skyscrapers!</p>
+
+            <table>
+              <tr>
+                <th>Wood Product</th>
+                <th>What It Is</th>
+                <th>Best Uses</th>
+              </tr>
+              <tr>
+                <td>CLT (Cross-Laminated Timber)</td>
+                <td>Layers of wood glued at 90° angles</td>
+                <td>Walls, floors, roofs</td>
+              </tr>
+              <tr>
+                <td>Glulam (Glued Laminated Timber)</td>
+                <td>Wood pieces glued together lengthwise</td>
+                <td>Beams, columns, arches</td>
+              </tr>
+              <tr>
+                <td>LVL (Laminated Veneer Lumber)</td>
+                <td>Thin wood sheets layered together</td>
+                <td>Headers, beams, joists</td>
+              </tr>
+            </table>
+
+            <div class="key-concept">
+              <h4>Carbon Storage in Wood</h4>
+              <p>Trees absorb CO2 as they grow. When we build with wood, that carbon stays locked in the building. A typical wood-frame house stores about 28 tons of CO2 - equivalent to 7 years of driving a car!</p>
+            </div>
+
+            <div class="image-placeholder" data-caption="The Mjøstårnet in Norway - an 18-story mass timber building">
+              [Image: Tall wooden skyscraper in Norway]
+            </div>
+
+            <h4>Bamboo: The Fastest Renewable</h4>
+
+            <p>Bamboo grows up to 35 inches per day and reaches maturity in 3-5 years (compared to 30-50 years for trees). It has a higher tensile strength than steel and can be used for:</p>
+
+            <ul>
+              <li>Structural framing and scaffolding</li>
+              <li>Flooring and paneling</li>
+              <li>Furniture and finishes</li>
+              <li>Engineered bamboo products similar to plywood</li>
+            </ul>
+
+            <h4>Straw Bale Construction</h4>
+
+            <p>Straw is an agricultural byproduct - about 200 million tons are produced annually in the US alone. Straw bale walls offer:</p>
+
+            <ul>
+              <li>R-value of 30-35 (excellent insulation)</li>
+              <li>Fire resistance when properly plastered (1-2 hour rating)</li>
+              <li>Natural humidity regulation</li>
+              <li>Very low embodied energy</li>
+            </ul>
+
+            <h4>Earth Building: Adobe and Rammed Earth</h4>
+
+            <p>Earth building uses the most abundant material on the planet - soil. Modern earth construction combines ancient techniques with engineering precision.</p>
+
+            <div class="comparison-box">
+              <h4>Adobe vs. Rammed Earth</h4>
+              <table>
+                <tr>
+                  <th>Feature</th>
+                  <th>Adobe</th>
+                  <th>Rammed Earth</th>
+                </tr>
+                <tr>
+                  <td>Method</td>
+                  <td>Sun-dried mud bricks</td>
+                  <td>Compressed soil in forms</td>
+                </tr>
+                <tr>
+                  <td>Wall thickness</td>
+                  <td>10-14 inches</td>
+                  <td>12-24 inches</td>
+                </tr>
+                <tr>
+                  <td>Labor</td>
+                  <td>Can be DIY</td>
+                  <td>Usually professional</td>
+                </tr>
+                <tr>
+                  <td>Appearance</td>
+                  <td>Plastered smooth</td>
+                  <td>Beautiful natural layers</td>
+                </tr>
+              </table>
+            </div>
+
+            <h3>Recycled and Reclaimed Materials</h3>
+
+            <p>Using recycled materials reduces mining, logging, and manufacturing while keeping waste out of landfills.</p>
+
+            <div class="material-spotlight">
+              <h4>Recycled Steel</h4>
+              <p>Steel is 100% recyclable without losing strength. Recycled steel uses 60% less energy than making new steel from iron ore. Most steel beams and rebar today contain 25-90% recycled content.</p>
+            </div>
+
+            <div class="material-spotlight">
+              <h4>Recycled Concrete Aggregate</h4>
+              <p>Crushed concrete from demolished buildings can replace gravel in new concrete or be used for road bases and fill. This keeps millions of tons out of landfills.</p>
+            </div>
+
+            <div class="material-spotlight">
+              <h4>Reclaimed Wood</h4>
+              <p>Wood from old barns, factories, and warehouses often comes from old-growth trees that no longer exist. It's denser, more stable, and full of character.</p>
+            </div>
+
+            <blockquote class="scavenger-quote" data-quote-id="gb-mat-mid-q2">
+              <p>"Waste is just a resource in the wrong place."</p>
+              <cite>— William McDonough, Sustainable Design Pioneer</cite>
+            </blockquote>
+
+            <h3>Innovative New Materials</h3>
+
+            <h4>Hempcrete</h4>
+            <p>Made from hemp fibers mixed with lime, hempcrete is lightweight, insulating, and actually absorbs CO2 as it cures. It's carbon-negative!</p>
+
+            <h4>Mycelium (Mushroom Materials)</h4>
+            <p>Fungal root networks can be grown into insulation panels and packaging. They're biodegradable and require very little energy to produce.</p>
+
+            <h4>Recycled Plastic Lumber</h4>
+            <p>Milk jugs and detergent bottles become decay-proof "lumber" for decks, playgrounds, and outdoor furniture. It never needs painting or staining.</p>
+
+            <div class="chapter-summary">
+              <h4>Key Takeaways</h4>
+              <ul>
+                <li>Construction uses 40% of global raw materials - our choices matter</li>
+                <li>Wood stores carbon and mass timber can build skyscrapers</li>
+                <li>Bamboo, straw, and earth are ancient materials with modern applications</li>
+                <li>Recycled materials reduce waste and save energy</li>
+                <li>Innovative materials like hempcrete and mycelium offer new possibilities</li>
+              </ul>
+            </div>
+
+            <div class="reflection-question">
+              <h4>Design Challenge</h4>
+              <p>If you were designing a community center for your neighborhood, which sustainable materials would you choose for the structure, insulation, and finishes? Why?</p>
+            </div>
+          </div>`,
+
+          HIGH_SCHOOL: `<div class="lesson-content">
+            <h2>Material Life Cycle Analysis: From Cradle to Grave</h2>
+
+            <div class="intro-section">
+              <p>Every building material has a story - from extraction through manufacturing, use, and eventual disposal. Understanding this complete life cycle is essential for making truly sustainable choices.</p>
+            </div>
+
+            <h3>Embodied Carbon: The Hidden Impact</h3>
+
+            <p><strong>Embodied carbon</strong> refers to all the greenhouse gas emissions associated with a material before it even reaches the building site. This includes:</p>
+
+            <ul>
+              <li><strong>Extraction</strong> - Mining, logging, or harvesting raw materials</li>
+              <li><strong>Processing</strong> - Refining, smelting, or chemical treatment</li>
+              <li><strong>Manufacturing</strong> - Forming into usable products</li>
+              <li><strong>Transportation</strong> - Shipping to distributors and job sites</li>
+              <li><strong>Installation</strong> - Energy and waste during construction</li>
+            </ul>
+
+            <div class="image-placeholder" data-caption="Diagram showing the embodied carbon at each stage of a material's journey">
+              [Image: Flow chart of material life cycle with CO2 emissions at each stage]
+            </div>
+
+            <h4>Comparing Embodied Carbon</h4>
+
+            <table>
+              <tr>
+                <th>Material</th>
+                <th>kgCO₂e/kg</th>
+                <th>Key Factors</th>
+              </tr>
+              <tr>
+                <td>Concrete (regular)</td>
+                <td>0.10-0.15</td>
+                <td>Cement production is highly carbon-intensive</td>
+              </tr>
+              <tr>
+                <td>Concrete (with SCMs)</td>
+                <td>0.05-0.10</td>
+                <td>Fly ash or slag replaces some cement</td>
+              </tr>
+              <tr>
+                <td>Steel (virgin)</td>
+                <td>1.8-2.2</td>
+                <td>Blast furnace process uses coal</td>
+              </tr>
+              <tr>
+                <td>Steel (recycled)</td>
+                <td>0.4-0.7</td>
+                <td>Electric arc furnace with scrap</td>
+              </tr>
+              <tr>
+                <td>Aluminum (virgin)</td>
+                <td>8-12</td>
+                <td>Extremely energy-intensive smelting</td>
+              </tr>
+              <tr>
+                <td>Aluminum (recycled)</td>
+                <td>0.5-1.0</td>
+                <td>95% energy savings from recycling</td>
+              </tr>
+              <tr>
+                <td>Timber (sustainably sourced)</td>
+                <td>-0.5 to +0.5</td>
+                <td>Can be carbon-negative due to sequestration</td>
+              </tr>
+              <tr>
+                <td>CLT (Cross-Laminated Timber)</td>
+                <td>-0.3 to +0.2</td>
+                <td>Depends on adhesives and sourcing</td>
+              </tr>
+            </table>
+
+            <blockquote class="scavenger-quote" data-quote-id="gb-mat-hs-q1">
+              <p>"We can't solve the climate crisis by focusing only on building operations. Embodied carbon is the carbon we can't get back."</p>
+              <cite>— Larry Strain, Carbon Leadership Forum</cite>
+            </blockquote>
+
+            <h3>Operational vs. Embodied Carbon</h3>
+
+            <p>Buildings have two types of carbon emissions:</p>
+
+            <div class="key-concept">
+              <h4>The Shifting Balance</h4>
+              <ul>
+                <li><strong>Operational carbon:</strong> Emissions from heating, cooling, lighting, and running equipment over the building's lifetime</li>
+                <li><strong>Embodied carbon:</strong> Emissions from materials and construction (one-time, upfront)</li>
+              </ul>
+            </div>
+
+            <p>Historically, operational carbon dominated (70-80% of lifetime emissions). But as buildings become more efficient and the grid gets cleaner, embodied carbon becomes proportionally larger. For highly efficient buildings, embodied carbon can represent 50-70% of lifetime emissions!</p>
+
+            <div class="image-placeholder" data-caption="Graph showing how embodied carbon becomes more significant as buildings become more efficient">
+              [Image: Stacked bar chart comparing operational vs embodied carbon for standard, efficient, and net-zero buildings]
+            </div>
+
+            <h3>The Cement Problem</h3>
+
+            <p>Cement production alone accounts for about <strong>8% of global CO2 emissions</strong> - more than aviation and shipping combined. Here's why:</p>
+
+            <ol>
+              <li><strong>Chemical reaction:</strong> Converting limestone (CaCO3) to calcium oxide releases CO2: CaCO3 → CaO + CO2</li>
+              <li><strong>High heat:</strong> Kilns reach 1450°C, typically using coal or natural gas</li>
+              <li><strong>Massive scale:</strong> Over 4 billion tons of cement produced annually</li>
+            </ol>
+
+            <h4>Reducing Cement's Impact</h4>
+
+            <table>
+              <tr>
+                <th>Strategy</th>
+                <th>CO2 Reduction</th>
+                <th>How It Works</th>
+              </tr>
+              <tr>
+                <td>Fly ash replacement</td>
+                <td>15-30%</td>
+                <td>Coal power plant byproduct replaces cement</td>
+              </tr>
+              <tr>
+                <td>Slag cement</td>
+                <td>25-50%</td>
+                <td>Steel manufacturing byproduct replaces cement</td>
+              </tr>
+              <tr>
+                <td>Calcined clay</td>
+                <td>30-40%</td>
+                <td>Abundant natural material, lower firing temp</td>
+              </tr>
+              <tr>
+                <td>Carbon curing</td>
+                <td>5-10% + storage</td>
+                <td>CO2 injected during curing becomes permanent</td>
+              </tr>
+              <tr>
+                <td>Alternative binders</td>
+                <td>50-90%</td>
+                <td>Geopolymers and other chemistries</td>
+              </tr>
+            </table>
+
+            <h3>Mass Timber Revolution</h3>
+
+            <p>Cross-Laminated Timber (CLT) and other mass timber products are enabling wood construction at scales previously impossible. Buildings up to 25 stories are now being built with wood structure.</p>
+
+            <div class="key-concept">
+              <h4>Mass Timber Advantages</h4>
+              <ul>
+                <li><strong>Carbon storage:</strong> Each cubic meter stores ~1 ton of CO2</li>
+                <li><strong>Lighter weight:</strong> Reduces foundation requirements</li>
+                <li><strong>Faster construction:</strong> Prefabricated panels install quickly</li>
+                <li><strong>Fire safety:</strong> Chars predictably, maintains structural integrity</li>
+                <li><strong>Seismic performance:</strong> Lighter weight and ductile connections</li>
+              </ul>
+            </div>
+
+            <div class="image-placeholder" data-caption="Construction of a mass timber high-rise showing CLT panels being installed">
+              [Image: Mass timber construction site with crane lifting CLT panel]
+            </div>
+
+            <blockquote class="scavenger-quote" data-quote-id="gb-mat-hs-q2">
+              <p>"We should be building with materials that grow, not materials that are mined."</p>
+              <cite>— Michael Green, Architect</cite>
+            </blockquote>
+
+            <h3>Transparency and Reporting</h3>
+
+            <h4>Environmental Product Declarations (EPDs)</h4>
+
+            <p>EPDs are standardized documents that report the environmental impacts of building products. They're like nutrition labels for materials, allowing apples-to-apples comparisons.</p>
+
+            <p>EPDs typically include:</p>
+            <ul>
+              <li>Global Warming Potential (GWP) - carbon footprint</li>
+              <li>Ozone Depletion Potential</li>
+              <li>Acidification Potential</li>
+              <li>Eutrophication Potential</li>
+              <li>Resource depletion</li>
+            </ul>
+
+            <h4>EC3 Tool</h4>
+            <p>The Embodied Carbon in Construction Calculator (EC3) is a free database with over 100,000 EPDs. It allows designers to compare materials and estimate whole-building embodied carbon.</p>
+
+            <h3>Design Strategies for Low-Carbon Buildings</h3>
+
+            <ol>
+              <li><strong>Right-size structures:</strong> Don't over-engineer - use only what's needed</li>
+              <li><strong>Substitute materials:</strong> Wood for steel, recycled for virgin</li>
+              <li><strong>Specify low-carbon options:</strong> Require EPDs, set carbon limits</li>
+              <li><strong>Design for longevity:</strong> Durable buildings avoid replacement</li>
+              <li><strong>Enable future adaptation:</strong> Flexible designs avoid demolition</li>
+              <li><strong>Plan for end-of-life:</strong> Design for disassembly and reuse</li>
+            </ol>
+
+            <div class="chapter-summary">
+              <h4>Key Takeaways</h4>
+              <ul>
+                <li>Embodied carbon includes all emissions from material extraction to installation</li>
+                <li>As buildings get more efficient, embodied carbon's share increases</li>
+                <li>Cement production is responsible for 8% of global emissions</li>
+                <li>Mass timber stores carbon and can replace steel and concrete</li>
+                <li>EPDs provide standardized environmental data for material comparison</li>
+                <li>Design decisions at early stages have the biggest impact on embodied carbon</li>
+              </ul>
+            </div>
+
+            <div class="reflection-question">
+              <h4>Analysis Exercise</h4>
+              <p>Research a recently constructed building in your area. What structural materials were used? Based on what you've learned, what alternatives might have reduced its embodied carbon?</p>
+            </div>
+          </div>`,
+
+          UNDERGRADUATE: `<div class="lesson-content">
+            <h2>Material Selection and Life Cycle Assessment</h2>
+
+            <div class="intro-section">
+              <p>Sustainable material selection requires balancing multiple criteria across the entire building life cycle. This lesson introduces the frameworks and tools used by professionals to make informed material decisions.</p>
+            </div>
+
+            <h3>Life Cycle Assessment Framework</h3>
+
+            <p>Life Cycle Assessment (LCA) is a standardized methodology (ISO 14040/14044) for quantifying environmental impacts across a product's entire life span. For buildings, the EN 15978 standard defines specific life cycle stages:</p>
+
+            <div class="key-concept">
+              <h4>Building Life Cycle Stages</h4>
+              <table>
+                <tr>
+                  <th>Stage</th>
+                  <th>Code</th>
+                  <th>Description</th>
+                </tr>
+                <tr>
+                  <td>Product</td>
+                  <td>A1-A3</td>
+                  <td>Raw material supply, transport, manufacturing</td>
+                </tr>
+                <tr>
+                  <td>Construction</td>
+                  <td>A4-A5</td>
+                  <td>Transport to site, installation</td>
+                </tr>
+                <tr>
+                  <td>Use</td>
+                  <td>B1-B7</td>
+                  <td>Installed product, maintenance, repair, replacement, operational energy/water</td>
+                </tr>
+                <tr>
+                  <td>End of Life</td>
+                  <td>C1-C4</td>
+                  <td>Deconstruction, transport, processing, disposal</td>
+                </tr>
+                <tr>
+                  <td>Beyond Building</td>
+                  <td>D</td>
+                  <td>Reuse, recovery, recycling potential</td>
+                </tr>
+              </table>
+            </div>
+
+            <div class="image-placeholder" data-caption="Building life cycle stages diagram per EN 15978">
+              [Image: Circular diagram showing all life cycle stages A1-D]
+            </div>
+
+            <h4>LCA Impact Categories</h4>
+
+            <p>A complete LCA evaluates multiple environmental impact categories:</p>
+
+            <table>
+              <tr>
+                <th>Impact Category</th>
+                <th>Unit</th>
+                <th>What It Measures</th>
+              </tr>
+              <tr>
+                <td>Global Warming Potential (GWP)</td>
+                <td>kg CO2e</td>
+                <td>Climate change contribution</td>
+              </tr>
+              <tr>
+                <td>Ozone Depletion (ODP)</td>
+                <td>kg CFC-11e</td>
+                <td>Stratospheric ozone destruction</td>
+              </tr>
+              <tr>
+                <td>Acidification (AP)</td>
+                <td>kg SO2e</td>
+                <td>Acid rain, ecosystem damage</td>
+              </tr>
+              <tr>
+                <td>Eutrophication (EP)</td>
+                <td>kg PO4e</td>
+                <td>Water body nutrient pollution</td>
+              </tr>
+              <tr>
+                <td>Smog Formation (SFP)</td>
+                <td>kg O3e</td>
+                <td>Ground-level ozone creation</td>
+              </tr>
+              <tr>
+                <td>Resource Depletion</td>
+                <td>kg Sb e</td>
+                <td>Non-renewable resource use</td>
+              </tr>
+            </table>
+
+            <blockquote class="scavenger-quote" data-quote-id="gb-mat-und-q1">
+              <p>"Life cycle thinking transforms how we see buildings - not as static objects, but as flows of materials and energy through time."</p>
+              <cite>— Kathrina Simonen, Carbon Leadership Forum</cite>
+            </blockquote>
+
+            <h3>Environmental Product Declarations (EPDs)</h3>
+
+            <p>EPDs provide standardized, third-party verified environmental impact data for building products. They enable meaningful comparisons and specification of low-impact materials.</p>
+
+            <h4>Types of EPDs</h4>
+
+            <ul>
+              <li><strong>Industry-wide EPDs:</strong> Average data for a product category (e.g., "ready-mix concrete")</li>
+              <li><strong>Product-specific EPDs:</strong> Data for a specific manufacturer's product</li>
+              <li><strong>Facility-specific EPDs:</strong> Data from a specific manufacturing plant</li>
+            </ul>
+
+            <p>Product-specific EPDs are most useful for comparing options, but industry-wide EPDs are acceptable when specific data isn't available.</p>
+
+            <h4>Reading an EPD</h4>
+
+            <p>Key information to extract from an EPD:</p>
+
+            <ol>
+              <li><strong>Declared unit:</strong> The quantity basis (e.g., 1 m³, 1 kg, 1 m²)</li>
+              <li><strong>System boundaries:</strong> Which life cycle stages are included</li>
+              <li><strong>GWP (A1-A3):</strong> Upfront carbon - usually the most scrutinized value</li>
+              <li><strong>Service life:</strong> Assumed product lifespan</li>
+              <li><strong>Module D:</strong> End-of-life credits (recycling, energy recovery)</li>
+            </ol>
+
+            <div class="image-placeholder" data-caption="Sample EPD showing key data fields highlighted">
+              [Image: Annotated EPD document with callouts]
+            </div>
+
+            <h3>Material Selection Criteria</h3>
+
+            <p>Sustainable material selection balances multiple, sometimes competing, criteria:</p>
+
+            <div class="criteria-grid">
+              <h4>1. Performance Requirements</h4>
+              <ul>
+                <li>Structural capacity and safety factors</li>
+                <li>Durability and weathering resistance</li>
+                <li>Fire rating requirements</li>
+                <li>Acoustic and thermal properties</li>
+                <li>Aesthetic requirements</li>
+              </ul>
+
+              <h4>2. Environmental Impacts</h4>
+              <ul>
+                <li>Embodied carbon (GWP)</li>
+                <li>Other LCA impact categories</li>
+                <li>Renewability and resource depletion</li>
+                <li>Toxicity and health impacts</li>
+                <li>End-of-life considerations</li>
+              </ul>
+
+              <h4>3. Economic Factors</h4>
+              <ul>
+                <li>First cost (materials + installation)</li>
+                <li>Life cycle cost (maintenance, replacement)</li>
+                <li>Local availability and lead times</li>
+                <li>Market volatility and price stability</li>
+              </ul>
+
+              <h4>4. Social Considerations</h4>
+              <ul>
+                <li>Labor practices in supply chain</li>
+                <li>Local economic impacts</li>
+                <li>Indoor environmental quality</li>
+                <li>Transparency and certifications</li>
+              </ul>
+            </div>
+
+            <h3>Decision-Making Frameworks</h3>
+
+            <h4>Multi-Criteria Decision Analysis (MCDA)</h4>
+
+            <p>MCDA provides a structured approach to comparing options across multiple criteria:</p>
+
+            <ol>
+              <li>Define criteria and sub-criteria</li>
+              <li>Assign weights reflecting project priorities</li>
+              <li>Score each option against each criterion</li>
+              <li>Calculate weighted scores</li>
+              <li>Perform sensitivity analysis</li>
+            </ol>
+
+            <div class="example-box">
+              <h4>Example: Structural System Selection</h4>
+              <table>
+                <tr>
+                  <th>Criterion</th>
+                  <th>Weight</th>
+                  <th>Concrete</th>
+                  <th>Steel</th>
+                  <th>Mass Timber</th>
+                </tr>
+                <tr>
+                  <td>Embodied carbon</td>
+                  <td>30%</td>
+                  <td>2</td>
+                  <td>3</td>
+                  <td>5</td>
+                </tr>
+                <tr>
+                  <td>First cost</td>
+                  <td>25%</td>
+                  <td>4</td>
+                  <td>3</td>
+                  <td>2</td>
+                </tr>
+                <tr>
+                  <td>Speed of construction</td>
+                  <td>20%</td>
+                  <td>2</td>
+                  <td>4</td>
+                  <td>5</td>
+                </tr>
+                <tr>
+                  <td>Fire rating</td>
+                  <td>15%</td>
+                  <td>5</td>
+                  <td>3</td>
+                  <td>4</td>
+                </tr>
+                <tr>
+                  <td>Acoustic performance</td>
+                  <td>10%</td>
+                  <td>5</td>
+                  <td>2</td>
+                  <td>3</td>
+                </tr>
+                <tr>
+                  <td><strong>Weighted Score</strong></td>
+                  <td>100%</td>
+                  <td>3.15</td>
+                  <td>3.05</td>
+                  <td>3.95</td>
+                </tr>
+              </table>
+            </div>
+
+            <h4>Whole-Building LCA Tools</h4>
+
+            <p>Several tools enable whole-building life cycle assessment:</p>
+
+            <ul>
+              <li><strong>Tally:</strong> Revit plug-in for real-time LCA during design</li>
+              <li><strong>One Click LCA:</strong> Web-based tool with extensive database</li>
+              <li><strong>EC3 (Embodied Carbon in Construction Calculator):</strong> Free tool focused on embodied carbon</li>
+              <li><strong>Athena Impact Estimator:</strong> Free North American tool</li>
+            </ul>
+
+            <blockquote class="scavenger-quote" data-quote-id="gb-mat-und-q2">
+              <p>"The best time to influence embodied carbon is at project inception; the ability to make changes decreases dramatically as design progresses."</p>
+              <cite>— SE 2050 Commitment</cite>
+            </blockquote>
+
+            <h3>Specification and Procurement</h3>
+
+            <h4>Writing Low-Carbon Specifications</h4>
+
+            <p>To actually achieve low-carbon construction, environmental requirements must be written into specifications:</p>
+
+            <div class="specification-example">
+              <h4>Example Concrete Specification Language</h4>
+              <p><em>"Concrete for structural applications shall have a maximum Global Warming Potential of 350 kg CO2e per cubic meter, documented by a product-specific EPD conforming to ISO 14025 and EN 15804. Concrete containing at least 30% supplementary cementitious materials (SCMs) by weight of cementitious content is preferred."</em></p>
+            </div>
+
+            <h4>Setting Carbon Budgets</h4>
+
+            <p>Progressive projects set embodied carbon budgets and track against them:</p>
+
+            <table>
+              <tr>
+                <th>Building Type</th>
+                <th>Typical (kg CO2e/m²)</th>
+                <th>Best Practice Target</th>
+              </tr>
+              <tr>
+                <td>Office</td>
+                <td>400-600</td>
+                <td>&lt;300</td>
+              </tr>
+              <tr>
+                <td>Residential</td>
+                <td>300-500</td>
+                <td>&lt;250</td>
+              </tr>
+              <tr>
+                <td>Education</td>
+                <td>350-550</td>
+                <td>&lt;275</td>
+              </tr>
+              <tr>
+                <td>Healthcare</td>
+                <td>500-800</td>
+                <td>&lt;400</td>
+              </tr>
+            </table>
+
+            <div class="chapter-summary">
+              <h4>Key Takeaways</h4>
+              <ul>
+                <li>LCA quantifies environmental impacts across a product's full life cycle (stages A-D)</li>
+                <li>EPDs provide standardized, verified environmental data for comparison</li>
+                <li>Material selection balances performance, environmental, economic, and social criteria</li>
+                <li>MCDA frameworks support systematic decision-making</li>
+                <li>Low-carbon goals must be specified and tracked to be achieved</li>
+                <li>Early design decisions have the greatest influence on embodied carbon</li>
+              </ul>
+            </div>
+
+            <div class="reflection-question">
+              <h4>Application Exercise</h4>
+              <p>Using the EC3 tool or another LCA database, compare three structural systems (concrete frame, steel frame, mass timber) for a hypothetical 5-story office building. Document your methodology, findings, and recommendations.</p>
+            </div>
+          </div>`,
+
+          GRADUATE: `<div class="lesson-content">
+            <h2>Decarbonizing the Construction Industry</h2>
+
+            <div class="intro-section">
+              <p>The construction sector is responsible for approximately 11% of global greenhouse gas emissions from materials and construction processes alone. This lesson examines the pathways, technologies, and market mechanisms driving decarbonization of major construction materials.</p>
+            </div>
+
+            <h3>The Decarbonization Imperative</h3>
+
+            <p>To limit global warming to 1.5°C, the built environment must achieve net-zero emissions by 2050. This requires:</p>
+
+            <ul>
+              <li><strong>40-50% reduction</strong> in embodied carbon by 2030 (vs. 2020 baseline)</li>
+              <li><strong>Net-zero embodied carbon</strong> for new construction by 2050</li>
+              <li><strong>Complete decarbonization</strong> of cement, steel, and aluminum production</li>
+            </ul>
+
+            <div class="image-placeholder" data-caption="Carbon pathway showing required reductions to reach net-zero by 2050">
+              [Image: Graph showing decarbonization trajectory with milestones]
+            </div>
+
+            <blockquote class="scavenger-quote" data-quote-id="gb-mat-grad-q1">
+              <p>"We need to reduce embodied carbon by 65% before 2030 for new buildings. This is not optional—it's physics."</p>
+              <cite>— Architecture 2030</cite>
+            </blockquote>
+
+            <h3>Concrete Decarbonization Pathways</h3>
+
+            <p>Cement production accounts for approximately 8% of global CO2 emissions. Decarbonization strategies include:</p>
+
+            <h4>1. Clinker Substitution</h4>
+
+            <p>Replace Portland cement clinker with supplementary cementitious materials (SCMs):</p>
+
+            <table>
+              <tr>
+                <th>SCM</th>
+                <th>Source</th>
+                <th>Typical Replacement</th>
+                <th>Limitations</th>
+              </tr>
+              <tr>
+                <td>Fly ash</td>
+                <td>Coal power plants</td>
+                <td>15-35%</td>
+                <td>Declining as coal use decreases</td>
+              </tr>
+              <tr>
+                <td>Slag</td>
+                <td>Steel production</td>
+                <td>35-70%</td>
+                <td>Limited supply, regional</td>
+              </tr>
+              <tr>
+                <td>Calcined clay</td>
+                <td>Natural clay deposits</td>
+                <td>30-50%</td>
+                <td>Lower firing temp than clinker</td>
+              </tr>
+              <tr>
+                <td>Natural pozzolans</td>
+                <td>Volcanic materials</td>
+                <td>15-35%</td>
+                <td>Geographic availability</td>
+              </tr>
+              <tr>
+                <td>Limestone</td>
+                <td>Ground limestone</td>
+                <td>5-15%</td>
+                <td>Limited reactivity</td>
+              </tr>
+            </table>
+
+            <h4>2. Alternative Binders</h4>
+
+            <ul>
+              <li><strong>LC3 (Limestone Calcined Clay Cement):</strong> 30-40% reduction, commercially viable today</li>
+              <li><strong>Geopolymers:</strong> Alkali-activated binders, 50-80% reduction potential</li>
+              <li><strong>Magnesium-based cements:</strong> Lower process emissions, potential carbon absorption</li>
+              <li><strong>Belite-ye'elimite-ferrite (BYF) cements:</strong> Lower firing temperature, 20-30% reduction</li>
+            </ul>
+
+            <h4>3. Process Improvements</h4>
+
+            <ul>
+              <li><strong>Kiln efficiency:</strong> Modern kilns achieve 3.0-3.4 GJ/ton vs. 4.5+ for older plants</li>
+              <li><strong>Alternative fuels:</strong> Biomass, waste-derived fuels replace coal</li>
+              <li><strong>Electrification:</strong> Electric kilns powered by renewables (emerging)</li>
+            </ul>
+
+            <h4>4. Carbon Capture and Utilization</h4>
+
+            <ul>
+              <li><strong>Post-combustion capture:</strong> Amine scrubbing of flue gases</li>
+              <li><strong>Oxyfuel combustion:</strong> Pure oxygen enables easier capture</li>
+              <li><strong>Carbon curing:</strong> CO2 injection during concrete curing (CarbonCure, Solidia)</li>
+              <li><strong>Mineralization:</strong> CO2 converted to carbonates in aggregate (Blue Planet)</li>
+            </ul>
+
+            <h3>Steel Decarbonization Pathways</h3>
+
+            <p>Steel production emits approximately 1.85 tons of CO2 per ton of steel via the blast furnace-basic oxygen furnace (BF-BOF) route. Key pathways include:</p>
+
+            <h4>1. Increased Recycling</h4>
+
+            <p>Electric arc furnaces (EAF) using scrap steel emit 0.4-0.7 tons CO2 per ton vs. 1.8-2.2 for virgin steel. Global scrap availability will increase as buildings from the construction boom reach end-of-life.</p>
+
+            <h4>2. Direct Reduced Iron (DRI)</h4>
+
+            <p>DRI processes reduce iron ore with natural gas instead of coal, achieving 30-40% emission reductions. The pathway to zero involves:</p>
+
+            <ol>
+              <li>Natural gas-based DRI (current)</li>
+              <li>Green hydrogen DRI (HYBRIT, H2 Green Steel)</li>
+              <li>Electrolysis-based iron reduction (emerging)</li>
+            </ol>
+
+            <h4>3. Green Hydrogen Steel</h4>
+
+            <p>SSAB's HYBRIT project in Sweden demonstrated fossil-free steel in 2021. Commercial-scale production expected by 2026, with full conversion by 2045.</p>
+
+            <div class="key-concept">
+              <h4>Green Hydrogen Steel Production Chain</h4>
+              <ol>
+                <li>Renewable electricity powers electrolysis</li>
+                <li>Electrolysis splits water into hydrogen and oxygen</li>
+                <li>Hydrogen reduces iron ore in DRI shaft furnace</li>
+                <li>DRI fed to electric arc furnace</li>
+                <li>Only byproducts: water and heat</li>
+              </ol>
+            </div>
+
+            <h3>Mass Timber and Biogenic Carbon</h3>
+
+            <h4>Biogenic Carbon Accounting</h4>
+
+            <p>Biogenic carbon presents accounting complexities:</p>
+
+            <ul>
+              <li><strong>Carbon uptake (A1):</strong> Negative emissions as trees grow</li>
+              <li><strong>Carbon storage (B1):</strong> Sequestered during building use</li>
+              <li><strong>End-of-life (C3-C4):</strong> Released if burned/decayed, maintained if landfilled</li>
+              <li><strong>Module D:</strong> Credits for bioenergy at end-of-life</li>
+            </ul>
+
+            <p>The net climate impact depends on:</p>
+            <ol>
+              <li>Sustainable forest management (forest carbon stocks maintained)</li>
+              <li>Building service life (longer storage = more benefit)</li>
+              <li>End-of-life management (reuse > recycling > energy recovery > landfill)</li>
+            </ol>
+
+            <blockquote class="scavenger-quote" data-quote-id="gb-mat-grad-q2">
+              <p>"Substituting wood for steel and concrete in mid-rise construction can reduce lifecycle carbon emissions by 60-75%."</p>
+              <cite>— Churkina et al., Nature Sustainability (2020)</cite>
+            </blockquote>
+
+            <h4>Mass Timber at Scale</h4>
+
+            <p>Research suggests that storing carbon in buildings could mitigate significant emissions:</p>
+
+            <ul>
+              <li>Potential to store 10-20 Gt CO2 in the global building stock by 2050</li>
+              <li>Requires sustainable forestry practices at scale</li>
+              <li>Urban wood use could sequester ~1 Gt CO2/year globally</li>
+            </ul>
+
+            <h3>Circular Construction</h3>
+
+            <h4>Design for Disassembly</h4>
+
+            <p>Enabling material reuse requires intentional design:</p>
+
+            <ul>
+              <li><strong>Mechanical connections:</strong> Bolts and screws vs. welding and adhesives</li>
+              <li><strong>Modular systems:</strong> Standardized components for interchangeability</li>
+              <li><strong>Material separation:</strong> Avoiding composites and hybrid assemblies</li>
+              <li><strong>Documentation:</strong> As-built records and material specifications</li>
+            </ul>
+
+            <h4>Material Passports</h4>
+
+            <p>Digital documentation of building materials enables circular economy:</p>
+
+            <ul>
+              <li>Material composition and source</li>
+              <li>Environmental impact data</li>
+              <li>Connection details and disassembly instructions</li>
+              <li>Remaining service life estimates</li>
+              <li>Recycling/reuse pathways</li>
+            </ul>
+
+            <h4>Urban Mining</h4>
+
+            <p>Existing buildings represent material banks. Emerging platforms (Madaster, Building Material Scout) create marketplaces for salvaged materials.</p>
+
+            <h3>Market Mechanisms and Policy</h3>
+
+            <h4>Buy Clean Policies</h4>
+
+            <p>Government procurement requirements driving market transformation:</p>
+
+            <ul>
+              <li><strong>California:</strong> Buy Clean California Act (2017) - GWP limits for steel, flat glass, insulation</li>
+              <li><strong>Federal:</strong> Inflation Reduction Act (2022) - $2B for low-carbon materials</li>
+              <li><strong>EU:</strong> Carbon Border Adjustment Mechanism includes construction materials</li>
+            </ul>
+
+            <h4>Carbon Pricing</h4>
+
+            <p>Internal carbon pricing and cap-and-trade systems increasingly affect material costs. Current prices ($50-100/ton CO2e) insufficient to drive major shifts; prices of $150-200+ likely needed.</p>
+
+            <div class="chapter-summary">
+              <h4>Key Takeaways</h4>
+              <ul>
+                <li>Construction materials must achieve net-zero by 2050 to meet climate goals</li>
+                <li>Concrete decarbonization relies on clinker substitution, alternative binders, and carbon capture</li>
+                <li>Steel decarbonization pathway: scrap recycling → natural gas DRI → green hydrogen</li>
+                <li>Mass timber can provide carbon storage at scale with sustainable forestry</li>
+                <li>Circular construction requires design for disassembly and material passports</li>
+                <li>Policy mechanisms (Buy Clean, carbon pricing) essential to drive market transformation</li>
+              </ul>
+            </div>
+
+            <div class="reflection-question">
+              <h4>Research Assignment</h4>
+              <p>Select a specific decarbonization technology (e.g., LC3 cement, green hydrogen steel, or carbon-curing concrete). Conduct a technical and market assessment including: technology readiness level, cost premium, barriers to adoption, and policy mechanisms that could accelerate deployment.</p>
+            </div>
+          </div>`,
+
+          PHD: `<div class="lesson-content">
+            <h2>Material Innovation and Carbon-Negative Construction Research</h2>
+
+            <div class="intro-section">
+              <p>Achieving net-zero buildings by 2050 requires not only decarbonizing existing materials but developing novel carbon-negative alternatives. This lesson examines frontier research in bio-based materials, carbon mineralization, and the systems-level transformations needed for a circular, regenerative built environment.</p>
+            </div>
+
+            <h3>Novel Bio-Based Materials</h3>
+
+            <h4>Mycelium Composites</h4>
+
+            <p>Mycelium—the root structure of fungi—can be grown into structural materials using agricultural waste as substrate. Research directions include:</p>
+
+            <ul>
+              <li><strong>Substrate optimization:</strong> Agricultural residues (straw, hemp hurds, corn stover) affect mechanical properties. Lignin content correlates with density; nitrogen content affects growth rate.</li>
+              <li><strong>Species selection:</strong> Ganoderma lucidum and Trametes versicolor produce different hyphal densities and binding characteristics</li>
+              <li><strong>Growth conditions:</strong> Temperature, humidity, CO2 concentration, and growth duration affect material properties</li>
+              <li><strong>Post-processing:</strong> Heat treatment, cold pressing, and coating affect durability and water resistance</li>
+            </ul>
+
+            <div class="research-data">
+              <h4>Mycelium Composite Properties (Current Research)</h4>
+              <table>
+                <tr>
+                  <th>Property</th>
+                  <th>Range</th>
+                  <th>Comparison</th>
+                </tr>
+                <tr>
+                  <td>Density</td>
+                  <td>60-300 kg/m³</td>
+                  <td>Similar to EPS-rigid foam</td>
+                </tr>
+                <tr>
+                  <td>Compressive strength</td>
+                  <td>30-500 kPa</td>
+                  <td>Non-structural applications</td>
+                </tr>
+                <tr>
+                  <td>Thermal conductivity</td>
+                  <td>0.04-0.08 W/mK</td>
+                  <td>Competitive with mineral wool</td>
+                </tr>
+                <tr>
+                  <td>Fire resistance</td>
+                  <td>Self-extinguishing</td>
+                  <td>Superior to many plastics</td>
+                </tr>
+                <tr>
+                  <td>Carbon footprint</td>
+                  <td>Negative to near-zero</td>
+                  <td>Vs. ~3 kg CO2e/kg for EPS</td>
+                </tr>
+              </table>
+            </div>
+
+            <p>Current applications: acoustic panels, insulation, packaging, furniture. Research challenges: scaling production, achieving structural properties, ensuring consistent quality.</p>
+
+            <blockquote class="scavenger-quote" data-quote-id="gb-mat-phd-q1">
+              <p>"Mycelium represents a fundamentally different manufacturing paradigm—growing materials rather than extracting and processing them."</p>
+              <cite>— Dr. Mitchell Joachim, Terreform ONE</cite>
+            </blockquote>
+
+            <h4>Engineered Living Materials</h4>
+
+            <p>Beyond static bio-based materials, research explores materials with living biological components:</p>
+
+            <ul>
+              <li><strong>Self-healing concrete:</strong> Bacteria (Bacillus species) encapsulated in concrete produce calcite when cracks expose them to water, sealing damage autonomously</li>
+              <li><strong>Bio-cementation:</strong> Microbially-induced calcite precipitation (MICP) using ureolytic bacteria can solidify sand without cement</li>
+              <li><strong>Living building envelopes:</strong> Cyanobacteria or algae integrated into facades for carbon capture and biofuel production</li>
+            </ul>
+
+            <h4>Advanced Plant Fiber Composites</h4>
+
+            <p>Beyond hempcrete, research examines:</p>
+
+            <ul>
+              <li><strong>Flax fiber reinforcement:</strong> Natural fiber composites approaching glass fiber performance</li>
+              <li><strong>Bamboo fiber engineering:</strong> Extracting and reconstituting bamboo fibers for consistent properties</li>
+              <li><strong>Agricultural waste valorization:</strong> Rice hulls, corn cobs, sunflower stalks as matrix or aggregate</li>
+              <li><strong>Seaweed-based materials:</strong> Alginate binders and kelp fiber reinforcement</li>
+            </ul>
+
+            <h3>Carbon Mineralization Technologies</h3>
+
+            <h4>Enhanced Weathering in Concrete</h4>
+
+            <p>Natural mineral carbonation is slow but can be accelerated through material formulation and exposure conditions:</p>
+
+            <ul>
+              <li><strong>Reactive MgO cements:</strong> Magnesium oxide absorbs CO2 during curing, potentially exceeding emissions</li>
+              <li><strong>Olivine aggregates:</strong> Magnesium silicate minerals react with atmospheric CO2</li>
+              <li><strong>Accelerated carbonation curing:</strong> Exposing fresh concrete to elevated CO2 concentrations</li>
+            </ul>
+
+            <div class="key-concept">
+              <h4>Carbon Mineralization Chemistry</h4>
+              <p>Silicate minerals react with CO2 to form stable carbonates:</p>
+              <p><code>Mg₂SiO₄ + 2CO₂ → 2MgCO₃ + SiO₂</code></p>
+              <p>The resulting carbonates are thermodynamically stable over geological timescales, providing permanent carbon storage.</p>
+            </div>
+
+            <h4>Carbon-Negative Aggregates</h4>
+
+            <p>Emerging technologies produce aggregates while sequestering carbon:</p>
+
+            <ul>
+              <li><strong>Blue Planet:</strong> Captures CO2 from flue gas, precipitates as calcium carbonate aggregate</li>
+              <li><strong>Carbon8:</strong> Accelerated carbonation of industrial wastes (APCr) to create aggregate</li>
+              <li><strong>Bioite:</strong> Microbial precipitation of carbonate aggregates</li>
+            </ul>
+
+            <h4>Bioite Formation Process</h4>
+
+            <p>MICP-based aggregate formation represents a convergence of biological and geological carbon sequestration:</p>
+
+            <ol>
+              <li>Ureolytic bacteria (e.g., Sporosarcina pasteurii) hydrolyze urea</li>
+              <li>Hydrolysis raises local pH and produces carbonate ions</li>
+              <li>Calcium ions in solution precipitate as calcite</li>
+              <li>Calcite binds loose aggregate particles</li>
+              <li>Process can operate at ambient temperature and pressure</li>
+            </ol>
+
+            <h3>Systems-Level Research Questions</h3>
+
+            <h4>Scaling Challenges</h4>
+
+            <p>Translating laboratory innovations to industrial scale presents persistent challenges:</p>
+
+            <table>
+              <tr>
+                <th>Challenge</th>
+                <th>Research Questions</th>
+              </tr>
+              <tr>
+                <td>Feedstock supply</td>
+                <td>Can agricultural residue supply meet demand without competing with food/soil health? What are sustainable harvest rates?</td>
+              </tr>
+              <tr>
+                <td>Manufacturing scale-up</td>
+                <td>How do biological processes behave at industrial volumes? What are rate-limiting factors?</td>
+              </tr>
+              <tr>
+                <td>Quality consistency</td>
+                <td>How do we achieve reproducible properties with inherently variable biological systems?</td>
+              </tr>
+              <tr>
+                <td>Energy requirements</td>
+                <td>Are processing energy demands compatible with carbon-negative claims?</td>
+              </tr>
+              <tr>
+                <td>End-of-life</td>
+                <td>How do novel materials perform through multiple use cycles? What degradation mechanisms apply?</td>
+              </tr>
+            </table>
+
+            <h4>Performance Verification</h4>
+
+            <p>Validating novel material performance requires addressing:</p>
+
+            <ul>
+              <li><strong>Long-term durability:</strong> Accelerated aging protocols may not capture all degradation mechanisms</li>
+              <li><strong>Biological stability:</strong> How do bio-based materials respond to moisture, pests, microorganisms?</li>
+              <li><strong>Fire performance:</strong> Standard tests designed for conventional materials may not apply</li>
+              <li><strong>Structural reliability:</strong> Probabilistic models for materials with high inherent variability</li>
+            </ul>
+
+            <blockquote class="scavenger-quote" data-quote-id="gb-mat-phd-q2">
+              <p>"We're not just developing new materials—we're developing new paradigms for how materials can be made, used, and returned to natural cycles."</p>
+              <cite>— Dr. Wil Srubar, University of Colorado Boulder</cite>
+            </blockquote>
+
+            <h4>Standards Development</h4>
+
+            <p>Novel materials require new testing standards and certification pathways:</p>
+
+            <ul>
+              <li>Existing standards assume conventional material properties and failure modes</li>
+              <li>Bio-based materials may require performance-based rather than prescriptive standards</li>
+              <li>Carbon accounting standards must address biogenic carbon complexities</li>
+              <li>Building codes lag material innovation by decades</li>
+            </ul>
+
+            <h4>Market Transformation Research</h4>
+
+            <p>Technical feasibility is necessary but not sufficient. Research examines:</p>
+
+            <ul>
+              <li><strong>Innovation diffusion:</strong> How do novel construction materials achieve market penetration?</li>
+              <li><strong>Risk perception:</strong> How do designers, contractors, and owners evaluate unfamiliar materials?</li>
+              <li><strong>Supply chain development:</strong> What infrastructure investments enable new material supply chains?</li>
+              <li><strong>Policy effectiveness:</strong> Which policy mechanisms most effectively accelerate adoption?</li>
+            </ul>
+
+            <h3>Whole-Systems Carbon Analysis</h3>
+
+            <h4>Consequential vs. Attributional LCA</h4>
+
+            <p>Traditional attributional LCA may underestimate or overestimate actual climate impacts:</p>
+
+            <table>
+              <tr>
+                <th>Approach</th>
+                <th>Method</th>
+                <th>Application</th>
+              </tr>
+              <tr>
+                <td>Attributional</td>
+                <td>Allocates existing impacts to products</td>
+                <td>Product comparisons, EPDs</td>
+              </tr>
+              <tr>
+                <td>Consequential</td>
+                <td>Models system-wide effects of decisions</td>
+                <td>Policy analysis, large-scale shifts</td>
+              </tr>
+            </table>
+
+            <p>For example, attributional LCA may show mass timber as carbon-negative. Consequential LCA asks: if demand increases dramatically, what happens to forest carbon stocks? What land-use changes occur?</p>
+
+            <h4>Dynamic Carbon Accounting</h4>
+
+            <p>Timing of emissions matters for climate impact. Research examines:</p>
+
+            <ul>
+              <li><strong>Temporary carbon storage:</strong> Value of delaying emissions (time value of carbon)</li>
+              <li><strong>Tipping points:</strong> Near-term emissions may cross irreversible thresholds</li>
+              <li><strong>Technology transitions:</strong> How do near-term material choices affect long-term technology trajectories?</li>
+            </ul>
+
+            <h3>Research Frontiers</h3>
+
+            <div class="frontier-topics">
+              <h4>Emerging Research Directions</h4>
+              <ul>
+                <li>Genetic engineering of organisms for optimized material production</li>
+                <li>Machine learning for bio-based material property prediction</li>
+                <li>Digital fabrication with living materials</li>
+                <li>In-situ material production using local resources and biology</li>
+                <li>Integration of material production with building-integrated agriculture</li>
+                <li>Planetary-scale carbon cycle modeling for construction material scenarios</li>
+              </ul>
+            </div>
+
+            <div class="chapter-summary">
+              <h4>Key Research Takeaways</h4>
+              <ul>
+                <li>Mycelium composites represent a "growing not extracting" manufacturing paradigm</li>
+                <li>Engineered living materials offer self-healing and adaptive capabilities</li>
+                <li>Carbon mineralization can provide permanent geological storage in aggregates</li>
+                <li>Scaling biological processes to industrial volumes presents unique challenges</li>
+                <li>Standards and codes lag material innovation, requiring performance-based approaches</li>
+                <li>Consequential LCA reveals system-level effects that attributional approaches miss</li>
+              </ul>
+            </div>
+
+            <div class="reflection-question">
+              <h4>Doctoral Research Prompt</h4>
+              <p>Identify a specific research gap in carbon-negative construction materials (e.g., mycelium structural properties, MICP scaling, biogenic carbon accounting). Develop a research proposal including: literature review and gap analysis, research questions and hypotheses, proposed methodology, expected contributions, and potential barriers to translation.</p>
+            </div>
+          </div>`
         }
       }
     ],
@@ -1518,12 +2822,267 @@ export const greenBuildingModules: Module[] = [
         hasActivity: true,
         activityType: 'SIMULATION',
         content: {
-          ELEMENTARY: `<div class="lesson-content"><h2>🏢 Design Your Dream Green Building!</h2><h3>What Makes a Building Green?</h3><ul><li>☀️ Uses sunshine for light and warmth</li><li>💧 Saves water</li><li>♻️ Made from eco-friendly stuff</li><li>🌱 Has plants inside and outside</li><li>⚡ Uses very little energy</li></ul></div>`,
-          MIDDLE_SCHOOL: `<div class="lesson-content"><h2>Green Building Systems</h2><h3>Key Systems</h3><ul><li><strong>Energy:</strong> Efficient HVAC, lighting, renewables</li><li><strong>Water:</strong> Low-flow fixtures, rainwater, greywater</li><li><strong>Materials:</strong> Sustainable, recycled, local</li><li><strong>Indoor Quality:</strong> Air, light, comfort</li><li><strong>Site:</strong> Location, landscape, transport</li></ul><h3>Certification Systems</h3><ul><li>LEED (most common)</li><li>Passive House (energy-focused)</li><li>Living Building Challenge (most ambitious)</li></ul></div>`,
-          HIGH_SCHOOL: `<div class="lesson-content"><h2>Integrated Design Process</h2><h3>Whole Building Approach</h3><p>All systems interact - optimize the whole, not just parts:</p><ul><li>Better envelope → smaller HVAC</li><li>Daylighting → less electric lighting → less cooling</li><li>Thermal mass + natural ventilation → passive comfort</li></ul><h3>Design Process</h3><ol><li>Set performance targets</li><li>Charrette with all disciplines</li><li>Energy modeling early and often</li><li>Iterate and optimize</li><li>Commissioning and verification</li></ol></div>`,
-          UNDERGRADUATE: `<div class="lesson-content"><h2>High-Performance Building Design</h2><h3>Performance Targets</h3><ul><li>Net zero energy</li><li>Net zero carbon</li><li>Net zero water</li><li>Net positive (regenerative)</li></ul><h3>Energy Modeling</h3><p>Parametric analysis to optimize:</p><ul><li>Envelope (R-values, glazing ratios)</li><li>Systems (efficiency, controls)</li><li>Renewables (PV sizing)</li></ul><h3>Commissioning</h3><p>Verification that systems perform as designed.</p></div>`,
-          GRADUATE: `<div class="lesson-content"><h2>Advanced Building Performance</h2><h3>Performance Gap</h3><p>Measured performance often differs from modeled:</p><ul><li>Occupant behavior</li><li>Construction quality</li><li>Controls and operations</li><li>Model assumptions</li></ul><h3>Measurement and Verification</h3><ul><li>Sub-metering</li><li>Fault detection</li><li>Continuous commissioning</li></ul><h3>Occupant Engagement</h3><p>Feedback systems, dashboards, behavioral programs.</p></div>`,
-          PHD: `<div class="lesson-content"><h2>Building Performance Research</h2><h3>Performance Gap Studies</h3><ul><li>Quantifying discrepancies</li><li>Root cause analysis</li><li>Improvement strategies</li></ul><h3>Building-Grid Integration</h3><ul><li>Demand response</li><li>Thermal storage</li><li>Vehicle-to-building</li></ul><h3>Regenerative Design</h3><ul><li>Net positive frameworks</li><li>Ecosystem services</li><li>Biophilic design research</li></ul></div>`
+          ELEMENTARY: `<div class="lesson-content">
+            <h2>Design Your Dream Green Building!</h2>
+
+            <div class="story-intro">
+              <p>Imagine you could design the perfect building - one that's kind to the Earth and makes everyone inside happy and healthy. That's what green building designers do!</p>
+            </div>
+
+            <h3>What Makes a Building Green?</h3>
+
+            <p>A green building is like a superhero for the planet! It has special powers:</p>
+
+            <div class="key-concept">
+              <h4>Green Building Superpowers</h4>
+              <ul>
+                <li><strong>Sun Power:</strong> Uses sunshine for light and warmth</li>
+                <li><strong>Water Wisdom:</strong> Saves every drop of water</li>
+                <li><strong>Earth-Friendly Materials:</strong> Made from things that don't hurt the planet</li>
+                <li><strong>Living Spaces:</strong> Has plants inside and outside</li>
+                <li><strong>Energy Saver:</strong> Uses very little electricity</li>
+              </ul>
+            </div>
+
+            <h3>Let the Sunshine In!</h3>
+
+            <p>Green buildings are best friends with the sun. They have big windows to let natural light in. This means no need to turn on lights during the day!</p>
+
+            <h3>Water Detective</h3>
+
+            <p>Green buildings are super smart about water:</p>
+            <ul>
+              <li>Catch rainwater from the roof</li>
+              <li>Use special toilets that use less water</li>
+              <li>Have plants that don't need much watering</li>
+            </ul>
+
+            <h3>Nature Inside</h3>
+
+            <p>The coolest green buildings bring nature indoors with living walls covered with plants, indoor gardens, and views of nature from every window!</p>
+
+            <div class="activity-box">
+              <h4>Design Challenge!</h4>
+              <p>Draw your dream green building! Include solar panels, plants, and big windows for sunlight.</p>
+            </div>
+
+            <div class="chapter-summary">
+              <h4>What We Learned</h4>
+              <ul>
+                <li>Green buildings use sunshine for light and warmth</li>
+                <li>They save water and catch rain</li>
+                <li>Nature inside makes people happy</li>
+                <li>Solar panels can make buildings energy factories</li>
+              </ul>
+            </div>
+          </div>`,
+
+          MIDDLE_SCHOOL: `<div class="lesson-content">
+            <h2>Green Building Systems: The Complete Picture</h2>
+
+            <div class="intro-section">
+              <p>Green buildings work like living organisms - many different systems working together in harmony. Understanding how these systems connect is the key to creating truly sustainable buildings.</p>
+            </div>
+
+            <h3>The Five Pillars of Green Building</h3>
+
+            <h4>1. Energy Systems</h4>
+            <p>Energy is often the biggest environmental impact. Green buildings use efficient HVAC, LED lighting, smart controls, and solar panels.</p>
+
+            <h4>2. Water Systems</h4>
+            <ul>
+              <li>Low-flow fixtures using 30-50% less water</li>
+              <li>Rainwater harvesting</li>
+              <li>Greywater recycling</li>
+              <li>Smart irrigation</li>
+            </ul>
+
+            <h4>3. Materials and Resources</h4>
+            <p>Recycled content, rapidly renewable materials like bamboo, and local sourcing all reduce environmental impact.</p>
+
+            <h4>4. Indoor Environmental Quality</h4>
+            <p>Fresh air, daylight, views to outdoors, thermal comfort, and good acoustics make healthy interiors.</p>
+
+            <h4>5. Site and Location</h4>
+            <p>Walkable locations near transit, habitat protection, and stormwater management matter as much as the building itself.</p>
+
+            <h3>Green Building Certification Systems</h3>
+            <table>
+              <tr><th>System</th><th>Focus</th></tr>
+              <tr><td>LEED</td><td>Comprehensive sustainability</td></tr>
+              <tr><td>Passive House</td><td>Extreme energy efficiency</td></tr>
+              <tr><td>Living Building Challenge</td><td>Regenerative design</td></tr>
+            </table>
+
+            <div class="chapter-summary">
+              <h4>Key Takeaways</h4>
+              <ul>
+                <li>Green buildings address energy, water, materials, indoor quality, and site</li>
+                <li>Certification systems verify green building performance</li>
+                <li>Building systems are interconnected</li>
+              </ul>
+            </div>
+          </div>`,
+
+          HIGH_SCHOOL: `<div class="lesson-content">
+            <h2>Integrated Design Process for High-Performance Buildings</h2>
+
+            <div class="intro-section">
+              <p>Creating a truly green building requires rethinking the entire design process to optimize the building as a complete system from the very beginning.</p>
+            </div>
+
+            <h3>The Whole Building Approach</h3>
+
+            <p>Building systems interact in complex ways. Optimizing each system separately misses opportunities:</p>
+            <ul>
+              <li>Better envelope → Smaller HVAC needed</li>
+              <li>Daylighting → Less lighting → Less cooling</li>
+              <li>Thermal mass + Natural ventilation → Passive comfort</li>
+            </ul>
+
+            <h3>The IDP Process</h3>
+            <ol>
+              <li><strong>Set performance targets</strong> - Define quantifiable goals</li>
+              <li><strong>Design charrette</strong> - All disciplines collaborate early</li>
+              <li><strong>Energy modeling</strong> - Test ideas throughout design</li>
+              <li><strong>Iterate and optimize</strong> - Refine based on results</li>
+              <li><strong>Commissioning</strong> - Verify systems work as designed</li>
+            </ol>
+
+            <h3>Performance Targets</h3>
+            <p>Energy Use Intensity (EUI) measures energy use per square foot per year. Net zero buildings produce as much renewable energy as they consume.</p>
+
+            <h3>Beyond Net Zero: Regenerative Design</h3>
+            <p>The most ambitious buildings give back more than they take - exporting clean energy, restoring water cycles, and creating habitat.</p>
+
+            <div class="chapter-summary">
+              <h4>Key Takeaways</h4>
+              <ul>
+                <li>Integrated design brings all team members together from project start</li>
+                <li>Energy modeling should begin early and continue throughout</li>
+                <li>Commissioning verifies performance</li>
+              </ul>
+            </div>
+          </div>`,
+
+          UNDERGRADUATE: `<div class="lesson-content">
+            <h2>High-Performance Building Design: From Targets to Verification</h2>
+
+            <div class="intro-section">
+              <p>High-performance building design requires rigorous goal-setting, sophisticated analysis tools, and systematic verification.</p>
+            </div>
+
+            <h3>Performance Target Hierarchy</h3>
+            <table>
+              <tr><th>Level</th><th>Energy</th><th>Carbon</th></tr>
+              <tr><td>Code Minimum</td><td>ASHRAE 90.1</td><td>Not addressed</td></tr>
+              <tr><td>High Performance</td><td>50-70% below code</td><td>50% reduction</td></tr>
+              <tr><td>Net Zero</td><td>100% renewable offset</td><td>Net zero operational</td></tr>
+              <tr><td>Net Positive</td><td>Exports energy</td><td>Carbon negative</td></tr>
+            </table>
+
+            <h3>Energy Modeling</h3>
+            <p>Parametric modeling tests multiple variables systematically - window ratios, glazing types, insulation levels, HVAC systems - to find optimal combinations.</p>
+
+            <h3>High-Performance HVAC Strategies</h3>
+            <ul>
+              <li>Dedicated Outdoor Air Systems (DOAS)</li>
+              <li>Energy Recovery Ventilation</li>
+              <li>Radiant Heating/Cooling</li>
+              <li>Variable Refrigerant Flow (VRF)</li>
+              <li>Ground Source Heat Pumps</li>
+            </ul>
+
+            <h3>Commissioning and M&V</h3>
+            <p>Commissioning verifies systems operate as designed. IPMVP protocols standardize measurement and verification of energy performance.</p>
+
+            <div class="chapter-summary">
+              <h4>Key Takeaways</h4>
+              <ul>
+                <li>Performance targets should be quantifiable</li>
+                <li>Parametric analysis optimizes multiple variables</li>
+                <li>Load reduction precedes efficient systems and renewables</li>
+                <li>M&V protocols verify performance</li>
+              </ul>
+            </div>
+          </div>`,
+
+          GRADUATE: `<div class="lesson-content">
+            <h2>Advanced Building Performance: Closing the Gap</h2>
+
+            <div class="intro-section">
+              <p>Research consistently shows buildings often use significantly more energy than predicted. Understanding and closing this "performance gap" is critical for genuine sustainability.</p>
+            </div>
+
+            <h3>The Performance Gap</h3>
+            <p>Studies reveal buildings use 25-150% more energy than predicted, with root causes spanning design, construction, operations, and occupancy.</p>
+
+            <h3>Root Causes</h3>
+            <ul>
+              <li><strong>Design:</strong> Unrealistic assumptions, value engineering</li>
+              <li><strong>Construction:</strong> Poor installation, substitutions</li>
+              <li><strong>Operations:</strong> Controls not optimized, maintenance gaps</li>
+              <li><strong>Occupancy:</strong> Different patterns, thermostat overrides</li>
+            </ul>
+
+            <h3>Closing the Gap</h3>
+            <p>Enhanced commissioning, fault detection and diagnostics (FDD), continuous commissioning, and occupant engagement all help buildings perform as intended.</p>
+
+            <h3>Post-Occupancy Evaluation</h3>
+            <p>Systematic assessment after occupancy examines energy performance, indoor environment, occupant satisfaction, and operational effectiveness.</p>
+
+            <h3>Emerging Approaches</h3>
+            <p>Digital twins synchronize virtual models with physical buildings. Machine learning enables anomaly detection, predictive maintenance, and automated optimization.</p>
+
+            <div class="chapter-summary">
+              <h4>Key Takeaways</h4>
+              <ul>
+                <li>Performance gaps are common and significant</li>
+                <li>Continuous commissioning maintains performance</li>
+                <li>Occupant behavior significantly impacts performance</li>
+                <li>Digital twins and ML offer new optimization tools</li>
+              </ul>
+            </div>
+          </div>`,
+
+          PHD: `<div class="lesson-content">
+            <h2>Building Performance Research: Frontiers and Future Directions</h2>
+
+            <div class="intro-section">
+              <p>Building performance research operates at the intersection of engineering, behavioral science, data science, and policy. This lesson examines current research frontiers.</p>
+            </div>
+
+            <h3>Performance Gap Research</h3>
+            <p>Methodological challenges include baseline definition, normalization, attribution, and generalizability. Research directions include uncertainty quantification, calibration protocols, and multi-building studies.</p>
+
+            <h3>Building-Grid Integration</h3>
+            <p>Grid-Interactive Efficient Buildings (GEBs) provide demand response, load shifting, frequency regulation, and renewable firming. Research examines thermal storage, battery integration, predictive controls, and aggregation strategies.</p>
+
+            <h3>Regenerative Design Research</h3>
+            <p>Beyond net zero, net positive frameworks address energy export, water cycle restoration, carbon sequestration, habitat creation, and community benefit. Metrics and verification methods remain underdeveloped.</p>
+
+            <h3>Biophilic Design Research</h3>
+            <p>Evidence links nature exposure to physiological, psychological, cognitive, and health outcomes. Research questions include dose-response relationships, mechanisms, and long-term effects.</p>
+
+            <h3>Emerging Frontiers</h3>
+            <ul>
+              <li>Machine learning for autonomous building control</li>
+              <li>Low-cost sensor networks</li>
+              <li>Privacy-preserving data sharing</li>
+              <li>Circadian lighting research</li>
+              <li>Climate adaptation and resilience</li>
+            </ul>
+
+            <div class="chapter-summary">
+              <h4>Key Research Takeaways</h4>
+              <ul>
+                <li>Performance gap research needs standardized methods</li>
+                <li>Building-grid integration requires coordination research</li>
+                <li>Regenerative design lacks verification methods</li>
+                <li>Biophilic benefits are established but mechanisms need study</li>
+              </ul>
+            </div>
+          </div>`
         }
       }
     ],
