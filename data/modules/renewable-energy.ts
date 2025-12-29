@@ -65,6 +65,23 @@ export const renewableEnergyModules: Module[] = [
 [Image: Cutaway diagram of a solar panel with animated electrons moving]
 </div>
 
+<h3>Meet Sunny's Friends</h3>
+
+<p>Sunny wasn't alone! There were billions of sunbeams traveling together. Let's meet some of Sunny's special friends:</p>
+
+<ul>
+<li><strong>Ray</strong> — A super fast sunbeam who loves racing to Earth</li>
+<li><strong>Goldie</strong> — She makes everything feel warm and cozy</li>
+<li><strong>Spark</strong> — The tiniest sunbeam who works extra hard</li>
+</ul>
+
+<p>All of Sunny's friends work together as a team. When they all land on a solar panel at the same time, they can make even MORE electricity!</p>
+
+<div class="fun-fact">
+<h4>Fun Fact!</h4>
+<p>The sun is so big that one MILLION Earths could fit inside it! That's a lot of sunbeams!</p>
+</div>
+
 <h3>What Can Solar Power Do?</h3>
 
 <p>Thanks to Sunny and millions of other sunbeams, solar panels can power:</p>
@@ -80,15 +97,75 @@ export const renewableEnergyModules: Module[] = [
 <cite>— Kids Solar Club</cite>
 </blockquote>
 
+<h3>Solar Power Around the World</h3>
+
+<p>Solar panels aren't just on houses! You can find them in many cool places:</p>
+
+<ul>
+<li><strong>Schools</strong> — Some schools use solar power to run their lights and computers</li>
+<li><strong>Farms</strong> — Farmers use solar panels to pump water for their animals</li>
+<li><strong>Space!</strong> — Satellites and space stations use solar panels too</li>
+<li><strong>Road signs</strong> — Those blinking lights on the road often use tiny solar panels</li>
+<li><strong>Calculators</strong> — The little dark strip on your calculator is a mini solar panel!</li>
+</ul>
+
+<div class="image-placeholder" data-caption="Solar panels in different places around the world">
+[Image: A collage showing solar panels on schools, farms, satellites, and everyday objects]
+</div>
+
+<h3>Day and Night: When Does Solar Power Work?</h3>
+
+<p>Sunny and friends can only visit during the day when the sun is shining. So what happens at night?</p>
+
+<p>That's where <strong>batteries</strong> come in! Think of batteries like a piggy bank for electricity:</p>
+
+<ol>
+<li>During the day, solar panels make more electricity than we need</li>
+<li>The extra electricity gets saved in batteries</li>
+<li>At night, we use the electricity from the batteries</li>
+<li>When the sun comes up, we fill the batteries again!</li>
+</ol>
+
+<div class="think-about-it">
+<h4>Think About It!</h4>
+<p>On cloudy days, solar panels still work—just not as well. Even when clouds block the sun, some sunbeams still get through!</p>
+</div>
+
+<h3>Taking Care of Solar Panels</h3>
+
+<p>Solar panels are like windows—they work best when they're clean! Here's how people take care of them:</p>
+
+<ul>
+<li>Rinse off dust and dirt with water</li>
+<li>Clear away leaves that might fall on them</li>
+<li>Check that nothing is blocking the sunlight</li>
+<li>Make sure they're pointing toward the sun</li>
+</ul>
+
+<p>Solar panels don't need much work to keep running. That's one reason why solar power is so great!</p>
+
 <h3>Sunny's Happy Ending</h3>
 
 <p>That night, when a little girl named Maya turned on her bedroom light, she didn't know that Sunny the sunbeam had helped make it glow. Sunny felt so proud!</p>
 
 <p>"See you tomorrow!" Sunny called as Maya fell asleep. And sure enough, the next day, more sunbeams made the same amazing journey.</p>
 
+<h3>Be a Solar Detective!</h3>
+
+<p>Now it's your turn to explore! Go on a solar scavenger hunt and try to find:</p>
+
+<ul>
+<li>A house or building with solar panels on the roof</li>
+<li>A solar-powered calculator or small gadget</li>
+<li>A road sign with a small solar panel</li>
+<li>A toy that uses solar power</li>
+</ul>
+
+<p>Ask a grown-up if your school or home uses any solar power. You might be surprised!</p>
+
 <div class="key-concept">
 <h4>Remember!</h4>
-<p>Solar panels turn sunlight into electricity—clean energy from our friend the sun!</p>
+<p>Solar panels turn sunlight into electricity—clean energy from our friend the sun! Every day, billions of sunbeams travel from the sun to help power our world.</p>
 </div>
 </div>`,
 
@@ -101,6 +178,17 @@ export const renewableEnergyModules: Module[] = [
 [Image: Diagram showing the sun with fusion reactions in its core and energy radiating outward]
 </div>
 
+<h3>The Sun: Our Giant Power Plant</h3>
+
+<p>The sun is a massive ball of hydrogen gas, about 93 million miles from Earth. At its core, temperatures reach 27 million degrees Fahrenheit—hot enough to fuse hydrogen atoms together into helium.</p>
+
+<p>This process, called <strong>nuclear fusion</strong>, releases enormous amounts of energy. The sun converts about 4 million tons of matter into energy every single second! This energy travels through space as light and heat, reaching Earth in about 8 minutes.</p>
+
+<div class="did-you-know">
+<h4>Did You Know?</h4>
+<p>The sun is about 4.6 billion years old and is roughly halfway through its life. It has enough hydrogen fuel to keep shining for another 5 billion years!</p>
+</div>
+
 <h3>From Sunlight to Electricity</h3>
 
 <p>Solar panels use the <strong>photovoltaic effect</strong>, discovered in 1839 by French physicist Edmond Becquerel when he was only 19 years old!</p>
@@ -109,6 +197,12 @@ export const renewableEnergyModules: Module[] = [
 <p>"I was experimenting with metal electrodes in a liquid when I noticed they produced more electricity when exposed to light."</p>
 <cite>— Edmond Becquerel, 1839</cite>
 </blockquote>
+
+<p>The word "photovoltaic" comes from two words:</p>
+<ul>
+<li><strong>Photo</strong> — from the Greek word for light</li>
+<li><strong>Voltaic</strong> — relating to electricity (named after Alessandro Volta, inventor of the battery)</li>
+</ul>
 
 <h3>Inside a Solar Cell</h3>
 
@@ -125,6 +219,19 @@ export const renewableEnergyModules: Module[] = [
 [Image: Cross-section of a solar cell showing photons hitting silicon and electrons flowing]
 </div>
 
+<h3>Types of Solar Panels</h3>
+
+<p>Not all solar panels are the same. The three main types are:</p>
+
+<table class="comparison-table">
+<tr><th>Type</th><th>Appearance</th><th>Efficiency</th><th>Cost</th></tr>
+<tr><td>Monocrystalline</td><td>Black, rounded corners</td><td>Highest (20-22%)</td><td>Most expensive</td></tr>
+<tr><td>Polycrystalline</td><td>Blue, square cells</td><td>Medium (15-17%)</td><td>Moderate</td></tr>
+<tr><td>Thin-Film</td><td>Uniform dark surface</td><td>Lower (10-13%)</td><td>Least expensive</td></tr>
+</table>
+
+<p>Monocrystalline panels are made from a single crystal of silicon, making them more efficient but more expensive. Polycrystalline panels use multiple silicon crystals melted together. Thin-film panels use a thin layer of photovoltaic material on glass or metal.</p>
+
 <h3>The Complete Solar System</h3>
 
 <p>A solar panel alone isn't enough. Here's what a home solar system includes:</p>
@@ -138,10 +245,43 @@ export const renewableEnergyModules: Module[] = [
 <tr><td>Battery (optional)</td><td>Stores energy for use at night</td></tr>
 </table>
 
+<h3>Understanding DC vs. AC Electricity</h3>
+
+<p>Solar panels produce <strong>direct current (DC)</strong> electricity, where electrons flow in one direction—like water flowing through a pipe.</p>
+
+<p>But our homes use <strong>alternating current (AC)</strong>, where electrons rapidly switch direction back and forth—about 60 times per second in the United States!</p>
+
+<p>That's why we need an <strong>inverter</strong>. It takes the DC electricity from solar panels and converts it into AC electricity your appliances can use. Modern inverters are about 95-98% efficient, meaning very little energy is lost in the conversion.</p>
+
+<h3>Net Metering: Selling Power Back</h3>
+
+<p>What happens when your solar panels produce more electricity than you need? In many places, you can sell it back to the power company through a system called <strong>net metering</strong>.</p>
+
+<ol>
+<li>During sunny days, your panels might produce more than you use</li>
+<li>The extra electricity flows back to the power grid</li>
+<li>Your electric meter actually runs backwards!</li>
+<li>At night, you draw power from the grid</li>
+<li>You only pay for the "net" difference</li>
+</ol>
+
 <blockquote class="scavenger-quote" data-quote-id="re-mid-q2">
 <p>"Solar energy is now the cheapest electricity in history in many parts of the world."</p>
 <cite>— International Energy Agency, 2020</cite>
 </blockquote>
+
+<h3>Factors That Affect Solar Production</h3>
+
+<p>Several factors determine how much electricity solar panels can generate:</p>
+
+<ul>
+<li><strong>Sunlight intensity:</strong> More direct sunlight = more power</li>
+<li><strong>Panel angle:</strong> Panels work best when facing the sun directly</li>
+<li><strong>Temperature:</strong> Surprisingly, panels work slightly better in cooler weather</li>
+<li><strong>Shading:</strong> Even partial shade can significantly reduce output</li>
+<li><strong>Weather:</strong> Clouds reduce production, but panels still generate some power</li>
+<li><strong>Dust and dirt:</strong> Clean panels produce more electricity</li>
+</ul>
 
 <h3>Solar Power Today</h3>
 
@@ -153,9 +293,20 @@ export const renewableEnergyModules: Module[] = [
 <li>Solar employs over 4 million people worldwide</li>
 </ul>
 
+<h3>The Future of Solar</h3>
+
+<p>Scientists are working on exciting new solar technologies:</p>
+
+<ul>
+<li><strong>Perovskite solar cells:</strong> A new material that could be cheaper and more efficient than silicon</li>
+<li><strong>Bifacial panels:</strong> Panels that capture light on both sides, boosting output by 10-20%</li>
+<li><strong>Building-integrated PV:</strong> Solar cells built into windows, roof tiles, and building materials</li>
+<li><strong>Floating solar farms:</strong> Panels installed on lakes and reservoirs, saving land and reducing evaporation</li>
+</ul>
+
 <div class="key-concept">
 <h4>Key Takeaway</h4>
-<p>Solar power converts sunlight directly into electricity using the photovoltaic effect—a technology that's becoming cheaper and more efficient every year.</p>
+<p>Solar power converts sunlight directly into electricity using the photovoltaic effect—a technology that's becoming cheaper and more efficient every year. A complete solar system includes panels, inverters, and often batteries to provide clean, renewable energy.</p>
 </div>
 </div>`,
 
@@ -168,6 +319,21 @@ export const renewableEnergyModules: Module[] = [
 [Image: Historical photo of the Bell Labs team with their silicon solar cell]
 </div>
 
+<h3>The History of Solar Power</h3>
+
+<p>The journey from discovery to practical application took over a century:</p>
+
+<table class="timeline-table">
+<tr><td>1839</td><td>Edmond Becquerel discovers the photovoltaic effect at age 19</td></tr>
+<tr><td>1883</td><td>Charles Fritts builds the first selenium solar cell (1% efficient)</td></tr>
+<tr><td>1905</td><td>Einstein explains the photoelectric effect (wins 1921 Nobel Prize)</td></tr>
+<tr><td>1954</td><td>Bell Labs creates first practical silicon cell (6% efficient)</td></tr>
+<tr><td>1958</td><td>Vanguard 1 becomes first solar-powered satellite</td></tr>
+<tr><td>1973</td><td>Oil crisis sparks interest in solar research</td></tr>
+<tr><td>2000s</td><td>Government incentives drive rapid adoption</td></tr>
+<tr><td>2020s</td><td>Solar becomes cheapest electricity source in many regions</td></tr>
+</table>
+
 <h3>The Photovoltaic Effect: Physics in Action</h3>
 
 <p>Understanding solar cells requires understanding semiconductors and quantum mechanics:</p>
@@ -176,6 +342,18 @@ export const renewableEnergyModules: Module[] = [
 <p>"The photovoltaic effect occurs when photons with sufficient energy excite electrons from the valence band to the conduction band, creating electron-hole pairs that can be separated by an internal electric field."</p>
 <cite>— Introduction to Semiconductor Physics</cite>
 </blockquote>
+
+<h4>Understanding the Bandgap</h4>
+
+<p>Every semiconductor has a <strong>bandgap</strong>—the minimum energy required to free an electron. For silicon, this is about 1.1 electron volts (eV). Photons with:</p>
+
+<ul>
+<li><strong>Less energy than the bandgap:</strong> Pass through without effect (not absorbed)</li>
+<li><strong>Equal energy to the bandgap:</strong> Perfectly absorbed, creating one electron-hole pair</li>
+<li><strong>More energy than the bandgap:</strong> Absorbed, but excess energy becomes heat</li>
+</ul>
+
+<p>This is why solar cells can't be 100% efficient—they can only capture a portion of the solar spectrum effectively.</p>
 
 <h4>The P-N Junction</h4>
 <p>Solar cells are built around a <strong>P-N junction</strong>—the boundary between two types of silicon:</p>
@@ -206,6 +384,19 @@ export const renewableEnergyModules: Module[] = [
 </tbody>
 </table>
 
+<h4>Manufacturing Process</h4>
+
+<p>Monocrystalline silicon cells are made using the Czochralski process:</p>
+
+<ol>
+<li><strong>Purification:</strong> Sand (silicon dioxide) is refined to 99.9999% pure silicon</li>
+<li><strong>Crystal growth:</strong> A seed crystal is dipped into molten silicon and slowly pulled up</li>
+<li><strong>Slicing:</strong> The crystal ingot is sliced into thin wafers (about 0.2mm thick)</li>
+<li><strong>Doping:</strong> Wafers are treated to create the P-N junction</li>
+<li><strong>Coating:</strong> Anti-reflective coating is applied to capture more light</li>
+<li><strong>Metallization:</strong> Metal contacts are added for electron collection</li>
+</ol>
+
 <h3>System Design Principles</h3>
 
 <p>Designing a solar system involves optimizing several variables:</p>
@@ -223,6 +414,27 @@ export const renewableEnergyModules: Module[] = [
 <li><strong>Temperature:</strong> Solar cells lose efficiency as they heat up</li>
 </ul>
 
+<h4>The Temperature Coefficient</h4>
+
+<p>Solar panels are rated at Standard Test Conditions (STC): 25°C cell temperature and 1000 W/m² irradiance. But real-world conditions vary significantly.</p>
+
+<p>Most silicon panels lose about 0.4-0.5% of their power for every degree Celsius above 25°C. So a panel rated at 400W might only produce 380W on a hot day when the cell temperature reaches 50°C.</p>
+
+<h3>Power Electronics: From Panel to Plug</h3>
+
+<h4>Inverter Types</h4>
+
+<table class="inverter-table">
+<tr><th>Type</th><th>How It Works</th><th>Pros</th><th>Cons</th></tr>
+<tr><td>String Inverter</td><td>One inverter for multiple panels in series</td><td>Lower cost, proven technology</td><td>Shade affects entire string</td></tr>
+<tr><td>Microinverters</td><td>One small inverter per panel</td><td>Panel-level optimization, monitoring</td><td>Higher cost, more components</td></tr>
+<tr><td>Power Optimizers</td><td>DC-DC converters at each panel, central inverter</td><td>Best of both approaches</td><td>Moderate complexity</td></tr>
+</table>
+
+<h4>Maximum Power Point Tracking (MPPT)</h4>
+
+<p>Solar panels have a specific voltage and current combination that produces maximum power—the "maximum power point." MPPT algorithms constantly adjust to find this point as conditions change throughout the day.</p>
+
 <h3>Energy Calculations</h3>
 
 <p>Solar energy output can be estimated using:</p>
@@ -232,9 +444,37 @@ export const renewableEnergyModules: Module[] = [
 <p>For example, a 6kW system in Phoenix (5.5 peak sun hours, 80% efficiency):</p>
 <p>6 kW × 5.5 hours × 0.80 = 26.4 kWh/day ≈ 9,600 kWh/year</p>
 
+<h4>System Losses</h4>
+
+<p>That 80% efficiency accounts for various losses:</p>
+
+<ul>
+<li><strong>Inverter losses:</strong> 3-5%</li>
+<li><strong>Wiring losses:</strong> 1-3%</li>
+<li><strong>Soiling (dust/dirt):</strong> 2-5%</li>
+<li><strong>Shading:</strong> 0-10% (site-dependent)</li>
+<li><strong>Temperature:</strong> 2-10% (climate-dependent)</li>
+<li><strong>Module mismatch:</strong> 1-2%</li>
+<li><strong>Degradation:</strong> 0.5-1% per year</li>
+</ul>
+
+<h3>Economics of Solar</h3>
+
+<h4>Levelized Cost of Energy (LCOE)</h4>
+
+<p>LCOE represents the average cost of electricity over a system's lifetime:</p>
+
+<code>LCOE = (Total Lifetime Cost) ÷ (Total Lifetime Energy Production)</code>
+
+<p>As of 2023, utility-scale solar LCOE ranges from $25-50/MWh—competitive with or cheaper than fossil fuels in most locations.</p>
+
+<h4>Payback Period</h4>
+
+<p>Residential systems typically pay for themselves in 5-10 years, depending on local electricity rates, incentives, and solar resources. With systems lasting 25-30 years, this represents significant long-term savings.</p>
+
 <div class="key-concept">
 <h4>Critical Thinking</h4>
-<p>Solar technology continues advancing rapidly. The efficiency record for lab cells now exceeds 47% using multi-junction designs. How might continued efficiency gains and cost reductions change our energy landscape?</p>
+<p>Solar technology continues advancing rapidly. The efficiency record for lab cells now exceeds 47% using multi-junction designs. How might continued efficiency gains and cost reductions change our energy landscape? Consider the implications for grid stability, energy storage needs, and the economics of fossil fuel plants.</p>
 </div>
 </div>`,
 
@@ -761,12 +1001,653 @@ export const renewableEnergyModules: Module[] = [
         hasActivity: true,
         activityType: 'SIMULATION',
         content: {
-          ELEMENTARY: `<div class="lesson-content"><h2>💨 Wind Power!</h2><p>Wind is moving air - and it can spin giant windmills called turbines to make electricity!</p><h3>How Wind Turbines Work</h3><ul><li>💨 Wind blows against the blades</li><li>🔄 Blades spin around and around</li><li>⚡ Spinning makes electricity</li><li>🏠 Power goes to homes!</li></ul></div>`,
-          MIDDLE_SCHOOL: `<div class="lesson-content"><h2>Wind Energy Basics</h2><h3>Turbine Components</h3><ul><li><strong>Blades:</strong> Catch the wind (usually 3)</li><li><strong>Nacelle:</strong> Houses the generator</li><li><strong>Tower:</strong> Lifts blades high where wind is stronger</li><li><strong>Foundation:</strong> Keeps it standing</li></ul><h3>Why Height Matters</h3><p>Wind is faster and steadier higher up - that's why turbines are so tall!</p></div>`,
-          HIGH_SCHOOL: `<div class="lesson-content"><h2>Wind Energy Engineering</h2><h3>Power in the Wind</h3><p>P = ½ρAv³ - Power increases with the cube of wind speed!</p><h3>Betz Limit</h3><p>Maximum theoretical efficiency is 59.3% - you can't capture all the wind's energy.</p><h3>Modern Turbines</h3><ul><li>Rotor diameters over 150m</li><li>Hub heights over 100m</li><li>Capacity: 3-15 MW</li></ul></div>`,
-          UNDERGRADUATE: `<div class="lesson-content"><h2>Wind Project Development</h2><h3>Resource Assessment</h3><ul><li>Wind measurement campaigns</li><li>Met tower and SODAR/LIDAR data</li><li>Energy yield modeling</li><li>Uncertainty analysis</li></ul><h3>Economics</h3><p>Capacity factors 25-45%. LCOE competitive with fossil fuels in good sites.</p></div>`,
-          GRADUATE: `<div class="lesson-content"><h2>Advanced Wind Technology</h2><h3>Offshore Wind</h3><ul><li>Fixed-bottom foundations</li><li>Floating platforms for deep water</li><li>Higher capacity factors (40-50%)</li></ul><h3>Grid Integration</h3><p>Forecasting, curtailment, storage pairing, and capacity markets.</p></div>`,
-          PHD: `<div class="lesson-content"><h2>Wind Research Frontiers</h2><h3>Wake Effects</h3><p>Downwind turbines produce less due to wake turbulence. Array optimization is critical.</p><h3>Advanced Concepts</h3><ul><li>Airborne wind energy</li><li>Multi-rotor systems</li><li>AI-optimized control</li></ul></div>`
+          ELEMENTARY: `<div class="lesson-content">
+<h2>Wendy the Wind and the Dancing Giants</h2>
+
+<p>Have you ever felt the wind blow on your face? That invisible force is powerful enough to spin giant machines called wind turbines!</p>
+
+<p>Wendy the Wind loved to play. She would swirl through trees, fly kites high in the sky, and make flags wave. But her favorite thing was visiting the tall white towers on the hillside.</p>
+
+<div class="image-placeholder" data-caption="A friendly wind character approaching wind turbines">
+[Image: A cartoon wind character blowing toward spinning wind turbines on a green hill]
+</div>
+
+<h3>What is Wind?</h3>
+
+<p>Wind is just air that is moving! When the sun heats up the ground, the air above it gets warm and rises up. Cooler air rushes in to take its place—and that moving air is what we call wind!</p>
+
+<p>Different places get different amounts of wind:</p>
+<ul>
+<li><strong>Hilltops</strong> — Wind loves to blow over hills</li>
+<li><strong>Coasts</strong> — Where land meets ocean, wind blows strong</li>
+<li><strong>Plains</strong> — Flat, open areas let wind blow freely</li>
+<li><strong>Mountains</strong> — Wind squeezes through mountain passes</li>
+</ul>
+
+<h3>How Wind Turbines Work</h3>
+
+<p>When Wendy the Wind reaches the tall towers, here's what happens:</p>
+
+<ol>
+<li><strong>Wind blows against the blades</strong> — The blades are shaped like airplane wings to catch the wind</li>
+<li><strong>Blades spin around and around</strong> — Just like a pinwheel or a fan running backwards</li>
+<li><strong>Spinning turns a generator</strong> — Inside the box on top, magnets spin to make electricity</li>
+<li><strong>Power travels through wires</strong> — Electricity flows down the tower and to homes!</li>
+</ol>
+
+<div class="image-placeholder" data-caption="Inside a wind turbine showing how it makes electricity">
+[Image: Cutaway diagram of a wind turbine with labeled parts and arrows showing how wind becomes electricity]
+</div>
+
+<h3>Parts of a Wind Turbine</h3>
+
+<p>Wind turbines have several important parts:</p>
+
+<ul>
+<li><strong>Blades</strong> — Usually 3 giant blades that catch the wind (some are longer than a football field!)</li>
+<li><strong>Hub</strong> — The center piece that holds all the blades together</li>
+<li><strong>Nacelle</strong> — The box behind the blades that contains the generator</li>
+<li><strong>Tower</strong> — The tall pole that holds everything up high</li>
+<li><strong>Foundation</strong> — Heavy concrete buried in the ground to keep it standing</li>
+</ul>
+
+<div class="fun-fact">
+<h4>Amazing Fact!</h4>
+<p>Some wind turbine blades are over 100 meters long—that's longer than a football field! And the towers can be as tall as a 30-story building!</p>
+</div>
+
+<h3>Wind Power Around the World</h3>
+
+<p>Wind turbines are spinning all around the world:</p>
+
+<ul>
+<li><strong>On land</strong> — In open fields and on hilltops</li>
+<li><strong>In the ocean</strong> — Offshore wind farms sit in the water</li>
+<li><strong>On farms</strong> — Farmers can grow crops around turbines</li>
+<li><strong>Near cities</strong> — Some small turbines power individual buildings</li>
+</ul>
+
+<h3>Why Wind Power is Great</h3>
+
+<p>Wind power is one of the cleanest ways to make electricity:</p>
+
+<ul>
+<li>Wind is free—it keeps blowing and never runs out!</li>
+<li>No smoke or pollution—just clean energy</li>
+<li>Birds and bats can be protected with careful planning</li>
+<li>Land under turbines can still be used for farming</li>
+</ul>
+
+<h3>When is it Windy?</h3>
+
+<p>Wind doesn't blow all the time, but that's okay! Here's what happens:</p>
+
+<ul>
+<li>When it's windy, turbines make lots of electricity</li>
+<li>When it's calm, we use electricity from other sources</li>
+<li>Batteries can store extra wind energy for later</li>
+<li>Having many turbines spread out helps—it's almost always windy somewhere!</li>
+</ul>
+
+<h3>Be a Wind Detective!</h3>
+
+<p>Go outside and see if you can find signs of wind:</p>
+
+<ul>
+<li>Watch flags and see which way they point</li>
+<li>Look at trees swaying in the breeze</li>
+<li>Feel the wind on your face—is it strong or gentle?</li>
+<li>Try to spot a wind turbine on a drive through the country</li>
+</ul>
+
+<div class="key-concept">
+<h4>Remember!</h4>
+<p>Wind turbines turn the invisible power of moving air into clean electricity! They're like giant pinwheels that help power our homes, schools, and cities.</p>
+</div>
+</div>`,
+
+          MIDDLE_SCHOOL: `<div class="lesson-content">
+<h2>Harnessing the Wind: From Breeze to Electricity</h2>
+
+<p>For thousands of years, humans have used wind power—from ancient sailing ships to traditional windmills grinding grain. Today, modern wind turbines are some of the most impressive machines ever built, turning invisible air currents into clean electricity.</p>
+
+<div class="image-placeholder" data-caption="Evolution from traditional windmill to modern wind turbine">
+[Image: Side-by-side comparison of a Dutch windmill and a modern wind turbine]
+</div>
+
+<h3>What Creates Wind?</h3>
+
+<p>Wind is caused by uneven heating of Earth's surface by the sun:</p>
+
+<ol>
+<li>The sun heats land faster than water</li>
+<li>Warm air over land rises (it's less dense)</li>
+<li>Cooler air from over water rushes in to replace it</li>
+<li>This moving air is what we call wind</li>
+</ol>
+
+<p>This is why coastal areas often have reliable wind—the constant temperature difference between land and sea keeps air moving.</p>
+
+<h3>Anatomy of a Wind Turbine</h3>
+
+<p>Modern wind turbines are engineering marvels with several key components:</p>
+
+<table class="component-table">
+<tr><th>Component</th><th>Function</th><th>Interesting Fact</th></tr>
+<tr><td>Blades</td><td>Catch the wind and rotate</td><td>Made of fiberglass, can be 80m+ long</td></tr>
+<tr><td>Hub</td><td>Connects blades to main shaft</td><td>Can weigh over 20 tons</td></tr>
+<tr><td>Nacelle</td><td>Houses generator and gearbox</td><td>Size of a school bus</td></tr>
+<tr><td>Tower</td><td>Supports the nacelle and blades</td><td>Usually 80-150m tall</td></tr>
+<tr><td>Foundation</td><td>Anchors the turbine</td><td>Uses 1,000+ tons of concrete</td></tr>
+<tr><td>Transformer</td><td>Steps up voltage for grid</td><td>Located at tower base</td></tr>
+</table>
+
+<h3>Why Height Matters</h3>
+
+<p>Wind turbines are getting taller for a good reason: wind is faster and more consistent at higher altitudes.</p>
+
+<ul>
+<li>Near the ground, trees, buildings, and terrain slow down the wind</li>
+<li>Higher up, there's less friction—wind flows more freely</li>
+<li>A turbine at 100m height can capture 30% more energy than one at 50m</li>
+</ul>
+
+<div class="did-you-know">
+<h4>Did You Know?</h4>
+<p>If you double the wind speed, you get EIGHT times more power! That's why finding the windiest locations is so important.</p>
+</div>
+
+<h3>How Blades Capture Wind</h3>
+
+<p>Wind turbine blades work like airplane wings:</p>
+
+<ol>
+<li>The blade shape creates different air pressures on each side</li>
+<li>This pressure difference creates "lift" that pushes the blade</li>
+<li>The blade rotates around the hub</li>
+<li>Most turbines spin at 10-20 revolutions per minute</li>
+</ol>
+
+<p>Modern blades can "pitch" (rotate on their axis) to capture wind at different speeds and to protect the turbine during storms.</p>
+
+<h3>Inside the Nacelle</h3>
+
+<p>The nacelle contains the machinery that turns rotation into electricity:</p>
+
+<ul>
+<li><strong>Main shaft:</strong> Connects to the hub and rotates slowly</li>
+<li><strong>Gearbox:</strong> Speeds up rotation (from ~15 rpm to ~1,500 rpm)</li>
+<li><strong>Generator:</strong> Converts rotational energy to electricity</li>
+<li><strong>Yaw motor:</strong> Rotates the nacelle to face the wind</li>
+<li><strong>Controller:</strong> Brain of the turbine, optimizes performance</li>
+<li><strong>Anemometer:</strong> Measures wind speed and direction</li>
+</ul>
+
+<h3>Types of Wind Farms</h3>
+
+<table class="types-table">
+<tr><th>Type</th><th>Location</th><th>Advantages</th><th>Challenges</th></tr>
+<tr><td>Onshore</td><td>Land-based</td><td>Cheaper to build and maintain</td><td>Less consistent wind, visual impact</td></tr>
+<tr><td>Offshore</td><td>In the ocean</td><td>Stronger, steadier winds</td><td>More expensive, harder to maintain</td></tr>
+<tr><td>Nearshore</td><td>Close to coast</td><td>Balance of both</td><td>Can be visible from shore</td></tr>
+</table>
+
+<h3>Wind Power by the Numbers</h3>
+
+<ul>
+<li>A single large turbine can power 1,000-2,000 homes</li>
+<li>Wind provides about 7% of global electricity</li>
+<li>The largest offshore wind farm has over 100 turbines</li>
+<li>Wind energy costs have dropped 70% since 2009</li>
+<li>The wind industry employs over 1 million people worldwide</li>
+</ul>
+
+<h3>Environmental Considerations</h3>
+
+<p>Wind power is very clean, but we still need to plan carefully:</p>
+
+<ul>
+<li><strong>Birds and bats:</strong> Careful siting and radar can reduce collisions</li>
+<li><strong>Noise:</strong> Modern turbines are quieter, and setbacks from homes help</li>
+<li><strong>Visual impact:</strong> Some people think they're beautiful; others prefer not to see them</li>
+<li><strong>Land use:</strong> The actual turbine footprint is small—farming continues around them</li>
+</ul>
+
+<div class="key-concept">
+<h4>Key Takeaway</h4>
+<p>Wind turbines are sophisticated machines that convert the kinetic energy of moving air into clean electricity. As turbines grow taller and technology improves, wind is becoming one of our most important sources of renewable energy.</p>
+</div>
+</div>`,
+
+          HIGH_SCHOOL: `<div class="lesson-content">
+<h2>Wind Energy Engineering: Physics, Technology, and Systems</h2>
+
+<p>Wind energy has transformed from ancient sailing ships and grain mills to cutting-edge turbines that are among the largest rotating machines ever built. Understanding wind power requires knowledge of fluid dynamics, electrical engineering, and systems thinking.</p>
+
+<div class="image-placeholder" data-caption="Size comparison of wind turbines through history">
+[Image: Scale comparison showing turbine size evolution from 1980s to present day]
+</div>
+
+<h3>The Physics of Wind Power</h3>
+
+<p>The power available in the wind is given by a fundamental equation:</p>
+
+<code>P = ½ρAv³</code>
+
+<p>Where:</p>
+<ul>
+<li><strong>P</strong> = Power (Watts)</li>
+<li><strong>ρ</strong> = Air density (~1.225 kg/m³ at sea level)</li>
+<li><strong>A</strong> = Swept area of the rotor (πr²)</li>
+<li><strong>v</strong> = Wind speed (m/s)</li>
+</ul>
+
+<p>The cubic relationship with wind speed is crucial: doubling wind speed increases available power by 8 times! This explains why turbines are built so tall—to reach stronger, steadier winds aloft.</p>
+
+<h3>The Betz Limit</h3>
+
+<p>In 1919, German physicist Albert Betz proved that no turbine can capture more than 59.3% of the wind's kinetic energy. This is called the Betz Limit.</p>
+
+<blockquote class="scavenger-quote" data-quote-id="re-wind-q1">
+<p>"If a turbine extracted all the wind's energy, the air would stop moving and pile up behind it. The optimal extraction leaves enough energy for air to continue flowing through."</p>
+<cite>— Albert Betz, 1919</cite>
+</blockquote>
+
+<p>Modern turbines achieve 35-45% efficiency—quite close to the theoretical maximum when accounting for real-world losses.</p>
+
+<h3>Blade Aerodynamics</h3>
+
+<p>Wind turbine blades are carefully engineered airfoils:</p>
+
+<ul>
+<li><strong>Root:</strong> Thick and strong to handle structural loads</li>
+<li><strong>Tip:</strong> Thin and fast-moving, optimized for aerodynamics</li>
+<li><strong>Twist:</strong> Blade angle changes along the length to maintain optimal attack angle</li>
+<li><strong>Pitch control:</strong> Active systems rotate blades to optimize capture or limit power</li>
+</ul>
+
+<h4>Tip Speed Ratio</h4>
+
+<p>The tip speed ratio (λ) is the ratio of blade tip speed to wind speed:</p>
+
+<code>λ = (ω × r) / v</code>
+
+<p>Optimal λ is typically 6-8 for modern three-blade turbines. Too slow and blades miss wind; too fast and blades create turbulence that reduces efficiency.</p>
+
+<h3>Modern Turbine Specifications</h3>
+
+<table class="specs-table">
+<tr><th>Parameter</th><th>1990s Turbine</th><th>Modern Onshore</th><th>Modern Offshore</th></tr>
+<tr><td>Capacity</td><td>0.5 MW</td><td>3-6 MW</td><td>10-15 MW</td></tr>
+<tr><td>Rotor Diameter</td><td>40m</td><td>120-150m</td><td>180-220m</td></tr>
+<tr><td>Hub Height</td><td>40m</td><td>80-120m</td><td>100-150m</td></tr>
+<tr><td>Capacity Factor</td><td>20%</td><td>30-40%</td><td>45-55%</td></tr>
+</table>
+
+<h3>Power Electronics and Control</h3>
+
+<p>Modern turbines use sophisticated electronics:</p>
+
+<ul>
+<li><strong>Variable speed operation:</strong> Turbines adjust rotation speed for optimal efficiency</li>
+<li><strong>Power converters:</strong> Convert variable frequency AC to grid-compatible AC</li>
+<li><strong>Pitch control:</strong> Blade angle adjusts continuously for power optimization</li>
+<li><strong>Yaw control:</strong> Nacelle rotates to face changing wind direction</li>
+</ul>
+
+<h4>The Power Curve</h4>
+
+<p>Each turbine has a characteristic power curve:</p>
+
+<ul>
+<li><strong>Cut-in speed:</strong> Minimum wind to start generating (typically 3-4 m/s)</li>
+<li><strong>Rated speed:</strong> Wind speed at which turbine reaches maximum output (12-15 m/s)</li>
+<li><strong>Cut-out speed:</strong> Maximum safe wind speed; turbine shuts down (25+ m/s)</li>
+</ul>
+
+<h3>Wind Resource Assessment</h3>
+
+<p>Before building a wind farm, developers assess the resource:</p>
+
+<ol>
+<li><strong>Site screening:</strong> Identify promising locations using wind maps</li>
+<li><strong>Met towers:</strong> Install 60-100m towers with anemometers for 1-2 years</li>
+<li><strong>Data analysis:</strong> Calculate wind speed distribution, direction, and turbulence</li>
+<li><strong>Energy modeling:</strong> Estimate annual energy production using turbine power curves</li>
+<li><strong>Uncertainty analysis:</strong> Account for measurement and model uncertainties</li>
+</ol>
+
+<h3>Economics of Wind Energy</h3>
+
+<p>Wind economics have improved dramatically:</p>
+
+<ul>
+<li>LCOE (levelized cost of energy) has dropped from $135/MWh in 2009 to under $40/MWh today</li>
+<li>Capacity factors have increased from 25% to 40%+ with larger turbines</li>
+<li>Typical project lifetime is 25-30 years</li>
+<li>O&M costs are about 1-2% of capital cost per year</li>
+</ul>
+
+<div class="key-concept">
+<h4>Engineering Insight</h4>
+<p>Wind energy success depends on understanding the cubic relationship between wind speed and power. Every design decision—tower height, blade length, site selection—is driven by the need to capture faster, more consistent winds while managing structural loads and costs.</p>
+</div>
+</div>`,
+
+          UNDERGRADUATE: `<div class="lesson-content">
+<h2>Wind Energy Systems: Resource Assessment, Design, and Integration</h2>
+
+<p>Wind energy has become a cornerstone of global decarbonization efforts, with over 900 GW installed capacity worldwide as of 2023. Professional wind development requires rigorous resource assessment, sophisticated turbine selection, and careful integration with grid systems.</p>
+
+<h3>Wind Resource Characterization</h3>
+
+<h4>Measurement Techniques</h4>
+
+<table class="measurement-table">
+<tr><th>Technology</th><th>Height Range</th><th>Accuracy</th><th>Cost</th></tr>
+<tr><td>Cup anemometer (met tower)</td><td>10-100m</td><td>±1% (calibrated)</td><td>$50-100k/year</td></tr>
+<tr><td>SODAR (acoustic)</td><td>40-200m</td><td>±3-5%</td><td>$30-50k/year</td></tr>
+<tr><td>LIDAR (scanning)</td><td>40-300m</td><td>±2-3%</td><td>$100-200k/year</td></tr>
+<tr><td>Floating LIDAR</td><td>40-300m</td><td>±3-5%</td><td>$300-500k/year</td></tr>
+</table>
+
+<h4>Weibull Distribution</h4>
+
+<p>Wind speeds at a site are typically characterized by the Weibull distribution:</p>
+
+<code>f(v) = (k/c)(v/c)^(k-1) × exp(-(v/c)^k)</code>
+
+<p>Where k is the shape parameter (typically 1.8-2.5) and c is the scale parameter (related to mean wind speed). Higher k values indicate more consistent wind.</p>
+
+<h4>Vertical Wind Shear</h4>
+
+<p>Wind speed increases with height according to the power law:</p>
+
+<code>v₂/v₁ = (h₂/h₁)^α</code>
+
+<p>The shear exponent α varies from 0.1 (unstable, daytime) to 0.3 (stable, nighttime). Accurate shear measurement is critical for extrapolating hub-height wind speeds.</p>
+
+<h3>Energy Yield Estimation</h3>
+
+<p>Annual Energy Production (AEP) is calculated by integrating the wind speed distribution with the turbine power curve:</p>
+
+<code>AEP = 8760 × ∫ P(v) × f(v) dv</code>
+
+<h4>Loss Factors</h4>
+
+<table class="loss-table">
+<tr><th>Loss Type</th><th>Typical Range</th><th>Mitigation</th></tr>
+<tr><td>Wake losses</td><td>5-15%</td><td>Optimized array layout</td></tr>
+<tr><td>Availability</td><td>2-5%</td><td>Preventive maintenance</td></tr>
+<tr><td>Electrical losses</td><td>2-3%</td><td>Optimal cable sizing</td></tr>
+<tr><td>Turbine performance</td><td>1-3%</td><td>Power curve verification</td></tr>
+<tr><td>Environmental (icing, etc.)</td><td>0-5%</td><td>De-icing systems, site selection</td></tr>
+<tr><td>Curtailment</td><td>0-10%</td><td>Grid development, storage</td></tr>
+</table>
+
+<h3>Turbine Selection and Siting</h3>
+
+<h4>IEC Wind Classes</h4>
+
+<table class="iec-table">
+<tr><th>Class</th><th>V_ref (m/s)</th><th>V_ave (m/s)</th><th>Turbulence (A/B/C)</th></tr>
+<tr><td>I (High wind)</td><td>50</td><td>10</td><td>16%/14%/12%</td></tr>
+<tr><td>II (Medium wind)</td><td>42.5</td><td>8.5</td><td>16%/14%/12%</td></tr>
+<tr><td>III (Low wind)</td><td>37.5</td><td>7.5</td><td>16%/14%/12%</td></tr>
+</table>
+
+<p>Matching turbine class to site conditions is essential for structural integrity and warranty coverage.</p>
+
+<h3>Project Economics</h3>
+
+<h4>Capital Cost Breakdown</h4>
+
+<ul>
+<li><strong>Turbine:</strong> 65-75% (nacelle, blades, tower)</li>
+<li><strong>Balance of plant:</strong> 15-25% (foundations, roads, electrical)</li>
+<li><strong>Development:</strong> 5-10% (permitting, engineering, interconnection)</li>
+</ul>
+
+<h4>Financial Metrics</h4>
+
+<ul>
+<li><strong>LCOE:</strong> $25-50/MWh for onshore, $50-80/MWh for offshore</li>
+<li><strong>Capacity factor:</strong> 30-45% onshore, 45-55% offshore</li>
+<li><strong>IRR targets:</strong> 8-12% equity returns typical</li>
+<li><strong>PPA terms:</strong> 10-25 year power purchase agreements</li>
+</ul>
+
+<h3>Grid Integration Challenges</h3>
+
+<ul>
+<li><strong>Variability:</strong> Wind output varies with weather; forecasting essential</li>
+<li><strong>Ramp rates:</strong> Some grids limit how fast wind can change output</li>
+<li><strong>Curtailment:</strong> Grid constraints may require reducing output</li>
+<li><strong>Capacity value:</strong> Contribution to system reliability is less than nameplate</li>
+<li><strong>Ancillary services:</strong> Modern turbines can provide frequency response</li>
+</ul>
+
+<div class="key-concept">
+<h4>Professional Practice</h4>
+<p>Successful wind development integrates meteorological science, mechanical engineering, power systems, and finance. The trend toward larger turbines and offshore deployment continues to push technological boundaries while driving costs down through scale and learning.</p>
+</div>
+</div>`,
+
+          GRADUATE: `<div class="lesson-content">
+<h2>Advanced Wind Energy: Technology Frontiers and System Integration</h2>
+
+<p>Graduate-level wind energy analysis addresses the complex interactions between advanced turbine technologies, wake aerodynamics, grid stability challenges, and the economics of high renewable penetration. As wind approaches significant grid share, new technical and market challenges emerge.</p>
+
+<h3>Offshore Wind Technology</h3>
+
+<h4>Foundation Types</h4>
+
+<table class="foundation-table">
+<tr><th>Type</th><th>Water Depth</th><th>Advantages</th><th>Challenges</th></tr>
+<tr><td>Monopile</td><td>0-30m</td><td>Simple, proven</td><td>Heavy, large vessels needed</td></tr>
+<tr><td>Jacket</td><td>20-60m</td><td>Lighter, deeper water</td><td>Complex fabrication</td></tr>
+<tr><td>Gravity base</td><td>0-30m</td><td>Local content, no piling</td><td>Very heavy, seabed prep</td></tr>
+<tr><td>Floating (spar)</td><td>60-1000m+</td><td>Deep water access</td><td>Higher cost, mooring</td></tr>
+<tr><td>Floating (semi-sub)</td><td>50-500m</td><td>Assembly onshore</td><td>Complex structure</td></tr>
+<tr><td>Floating (TLP)</td><td>50-200m</td><td>Stable platform</td><td>Complex installation</td></tr>
+</table>
+
+<h4>Floating Wind Challenges</h4>
+
+<ul>
+<li><strong>Platform motion:</strong> Coupled dynamics of turbine and floater</li>
+<li><strong>Mooring systems:</strong> Fatigue, anchor holding, cost</li>
+<li><strong>Dynamic cables:</strong> Movement-tolerant power export</li>
+<li><strong>Installation:</strong> Quayside assembly, wet tow to site</li>
+</ul>
+
+<h3>Wake Effects and Array Optimization</h3>
+
+<p>Downwind turbines experience reduced wind speeds and increased turbulence from upstream wakes:</p>
+
+<blockquote class="scavenger-quote" data-quote-id="re-wind-grad-q1">
+<p>"Wake losses in large wind farms can exceed 15% of potential energy capture. Wake steering through yaw misalignment offers 1-3% recovery, while layout optimization remains the primary mitigation strategy."</p>
+<cite>— Wind Energy Science, 2022</cite>
+</blockquote>
+
+<h4>Wake Modeling Approaches</h4>
+
+<ul>
+<li><strong>Jensen/PARK:</strong> Simple engineering model, linear wake expansion</li>
+<li><strong>Gaussian:</strong> More accurate velocity deficit profile</li>
+<li><strong>CFD/LES:</strong> High-fidelity but computationally expensive</li>
+<li><strong>Dynamic wake meandering:</strong> Captures unsteady wake behavior</li>
+</ul>
+
+<h3>Grid Integration at High Penetration</h3>
+
+<h4>System Stability Concerns</h4>
+
+<ul>
+<li><strong>Inertia reduction:</strong> Inverter-based resources don't inherently provide rotational inertia</li>
+<li><strong>Frequency response:</strong> Synthetic inertia and fast frequency response needed</li>
+<li><strong>Voltage control:</strong> Reactive power capability requirements increasing</li>
+<li><strong>Fault ride-through:</strong> Turbines must remain connected during grid disturbances</li>
+</ul>
+
+<h4>Market Design Challenges</h4>
+
+<ul>
+<li>Zero marginal cost generation suppresses energy market prices</li>
+<li>Capacity markets must value flexibility and reliability</li>
+<li>Ancillary service markets need redesign for IBR participation</li>
+<li>Locational pricing signals for transmission constraints</li>
+</ul>
+
+<h3>Hybrid Systems</h3>
+
+<p>Wind-plus-storage and wind-solar hybrids are increasingly common:</p>
+
+<ul>
+<li><strong>Firming:</strong> Storage fills gaps in wind generation</li>
+<li><strong>Time-shifting:</strong> Store low-price energy for high-price periods</li>
+<li><strong>Grid services:</strong> Battery provides fast response, wind provides energy</li>
+<li><strong>Complementarity:</strong> Wind often strongest at night when solar is zero</li>
+</ul>
+
+<h3>Operations and Maintenance</h3>
+
+<h4>Predictive Maintenance</h4>
+
+<p>Modern turbines generate terabytes of SCADA data enabling:</p>
+
+<ul>
+<li>Condition-based maintenance scheduling</li>
+<li>Failure prediction using machine learning</li>
+<li>Remote diagnostics and troubleshooting</li>
+<li>Performance optimization through digital twins</li>
+</ul>
+
+<div class="key-concept">
+<h4>Research Directions</h4>
+<p>Key research frontiers include floating offshore technology, wake steering and control co-design, grid-forming inverters, and the economics of 100% renewable systems. Interdisciplinary approaches linking aerodynamics, structural mechanics, power electronics, and market design are essential.</p>
+</div>
+</div>`,
+
+          PHD: `<div class="lesson-content">
+<h2>Wind Energy Research: Fundamental Physics, System Dynamics, and Transition Pathways</h2>
+
+<p>Doctoral-level engagement with wind energy spans fundamental fluid mechanics, complex systems analysis, and sociotechnical transition studies. This lesson explores theoretical foundations, open research questions, and the broader context of wind's role in energy system transformation.</p>
+
+<h3>Turbine Aerodynamics</h3>
+
+<h4>Blade Element Momentum Theory</h4>
+
+<p>BEM theory combines 1D momentum theory with blade element analysis, iterating to find induced velocities:</p>
+
+<ul>
+<li>Axial induction factor: a = 1 - (U₁/U∞)</li>
+<li>Tangential induction factor: a' = (ω_wake)/(2Ω)</li>
+<li>Local angle of attack determines lift and drag</li>
+<li>Corrections needed for tip losses, skewed flow, dynamic stall</li>
+</ul>
+
+<blockquote class="scavenger-quote" data-quote-id="re-wind-phd-q1">
+<p>"While BEM remains the industry standard for design, its assumptions break down in complex inflow conditions, motivating ongoing development of vortex methods and actuator-line CFD approaches."</p>
+<cite>— Wind Energy Handbook, Burton et al.</cite>
+</blockquote>
+
+<h4>Dynamic Stall</h4>
+
+<p>Unsteady angle of attack leads to complex stall behavior:</p>
+
+<ul>
+<li>Vortex shedding delays stall onset</li>
+<li>Hysteresis in lift and drag coefficients</li>
+<li>Critical for fatigue loading in turbulent winds</li>
+<li>Semi-empirical models (Beddoes-Leishman) widely used</li>
+</ul>
+
+<h3>Aeroelasticity and Control</h3>
+
+<h4>Modal Analysis</h4>
+
+<p>Modern large turbines exhibit complex coupled dynamics:</p>
+
+<ul>
+<li><strong>Flapwise blade modes:</strong> Out-of-plane bending, frequency 0.5-1.5 Hz</li>
+<li><strong>Edgewise blade modes:</strong> In-plane, higher frequency</li>
+<li><strong>Tower modes:</strong> Fore-aft and side-side, must avoid 1P and 3P</li>
+<li><strong>Drivetrain modes:</strong> Torsional resonances</li>
+</ul>
+
+<h4>Control Strategies</h4>
+
+<table class="control-table">
+<tr><th>Objective</th><th>Strategy</th><th>Research Frontier</th></tr>
+<tr><td>Load reduction</td><td>Individual pitch control</td><td>LIDAR-assisted preview</td></tr>
+<tr><td>Wake steering</td><td>Intentional yaw misalignment</td><td>Closed-loop optimization</td></tr>
+<tr><td>Grid support</td><td>Synthetic inertia</td><td>Grid-forming control</td></tr>
+<tr><td>Lifetime extension</td><td>De-rating, sector management</td><td>Digital twin integration</td></tr>
+</table>
+
+<h3>Atmospheric Boundary Layer</h3>
+
+<h4>Turbulence Modeling</h4>
+
+<p>Turbine inflow is characterized by:</p>
+
+<ul>
+<li><strong>Turbulence intensity:</strong> σ_u / U, typically 5-20%</li>
+<li><strong>Integral length scale:</strong> Characteristic eddy size, 50-200m</li>
+<li><strong>Spectral content:</strong> Kaimal or von Kármán spectra</li>
+<li><strong>Coherence:</strong> Spatial correlation affects rotor loading</li>
+</ul>
+
+<h4>Mesoscale-Microscale Coupling</h4>
+
+<p>Weather Research and Forecasting (WRF) models linked to LES:</p>
+
+<ul>
+<li>Capture terrain effects and local circulations</li>
+<li>Enable resource assessment without met campaigns</li>
+<li>Support short-term forecasting for grid operations</li>
+<li>Inform site selection and layout optimization</li>
+</ul>
+
+<h3>Systems and Transition Research</h3>
+
+<h4>100% Renewable Systems</h4>
+
+<p>Key research questions for very high wind penetration:</p>
+
+<ul>
+<li>How much storage and transmission is needed?</li>
+<li>What role for hydrogen and sector coupling?</li>
+<li>How do wholesale markets function with near-zero marginal cost?</li>
+<li>Can synthetic inertia fully replace synchronous machines?</li>
+</ul>
+
+<h4>Just Transition</h4>
+
+<p>Social science perspectives on wind development:</p>
+
+<ul>
+<li>Community ownership models and benefit sharing</li>
+<li>Procedural justice in siting decisions</li>
+<li>Labor transitions from fossil fuel industries</li>
+<li>Indigenous rights and land use conflicts</li>
+</ul>
+
+<h3>Emerging Technologies</h3>
+
+<ul>
+<li><strong>Airborne wind energy:</strong> Kites and drones accessing high-altitude winds</li>
+<li><strong>Multi-rotor systems:</strong> Disaggregated capacity for transport advantages</li>
+<li><strong>Vertical axis turbines:</strong> Potential for floating and urban applications</li>
+<li><strong>Superconducting generators:</strong> Higher power density, no gearbox</li>
+</ul>
+
+<div class="key-concept">
+<h4>Research Orientation</h4>
+<p>Wind energy research increasingly requires integration across scales—from nanoscale blade coatings to continental power systems—and across disciplines—from fluid mechanics to political science. The urgency of decarbonization demands research that accelerates deployment while attending to equity, reliability, and environmental protection.</p>
+</div>
+</div>`
         }
       }
     ],

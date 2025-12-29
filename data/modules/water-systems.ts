@@ -672,12 +672,454 @@ export const waterSystemsModules: Module[] = [
         hasActivity: true,
         activityType: 'SIMULATION',
         content: {
-          ELEMENTARY: `<div class="lesson-content"><h2>🚿 Water's Second Chance!</h2><p>Water from your shower can water your garden instead of going down the drain!</p><h3>Which Water Can We Reuse?</h3><ul><li>🚿 Shower and bath water</li><li>🧼 Sink water</li><li>👕 Laundry water</li><li>❌ NOT toilet water!</li></ul></div>`,
-          MIDDLE_SCHOOL: `<div class="lesson-content"><h2>What is Greywater?</h2><h3>Greywater vs Blackwater</h3><ul><li><strong>Greywater:</strong> From sinks, showers, laundry</li><li><strong>Blackwater:</strong> From toilets (needs special treatment)</li></ul><h3>Simple Uses</h3><p>Irrigating trees, gardens, and lawns. Must use plant-safe soaps!</p></div>`,
-          HIGH_SCHOOL: `<div class="lesson-content"><h2>Greywater Systems</h2><h3>System Types</h3><ul><li><strong>Laundry to landscape:</strong> Simplest, direct to mulch basins</li><li><strong>Branched drain:</strong> Gravity-fed distribution</li><li><strong>Treatment systems:</strong> For above-ground irrigation</li></ul><h3>Regulations</h3><p>Vary widely by location. Some areas encourage, others restrict.</p></div>`,
-          UNDERGRADUATE: `<div class="lesson-content"><h2>System Design</h2><h3>Key Components</h3><ul><li>Surge tank</li><li>Filtration (mesh, sand, membrane)</li><li>Optional disinfection</li><li>Distribution system</li></ul><h3>Sizing</h3><p>Balance generation rate with irrigation demand and storage.</p></div>`,
-          GRADUATE: `<div class="lesson-content"><h2>Policy and Acceptance</h2><h3>Regulatory Approaches</h3><ul><li>Prohibition vs permitting vs exemption</li><li>Treatment requirements by end use</li><li>Public health safeguards</li></ul><h3>Social Factors</h3><p>Perception of "used" water, education needs, behavioral aspects.</p></div>`,
-          PHD: `<div class="lesson-content"><h2>Research Frontiers</h2><h3>Advanced Topics</h3><ul><li>Quantitative microbial risk assessment</li><li>Emerging contaminants (pharmaceuticals)</li><li>Treatment technology optimization</li><li>Integrated water management modeling</li></ul></div>`
+          ELEMENTARY: `<div class="lesson-content">
+<h2>Splash's Second Adventure</h2>
+
+<p>Splash the water droplet had just finished helping Maya wash her hands. Now he was sliding down the drain, heading for the sewers.</p>
+
+<p>"Wait!" called a friendly pipe. "You don't have to go to the sewer! You can have a second adventure in the garden!"</p>
+
+<div class="image-placeholder" data-caption="Splash the water droplet going on a second adventure">
+[Image: A cartoon water droplet being redirected from a drain to a garden through special pipes]
+</div>
+
+<h3>What is Greywater?</h3>
+
+<p>Greywater is the name for water that's been used once but is still clean enough to help plants grow! It comes from:</p>
+
+<ul>
+<li><strong>Showers and baths</strong> — After you get clean, the water can clean something else!</li>
+<li><strong>Bathroom sinks</strong> — Hand-washing water is still good for gardens</li>
+<li><strong>Washing machines</strong> — Laundry water can water your lawn</li>
+<li><strong>Kitchen sinks</strong> — Sometimes, if there's no grease</li>
+</ul>
+
+<div class="warning-box">
+<h4>Important!</h4>
+<p>Toilet water is NOT greywater. It's called "blackwater" and needs special treatment. We never use toilet water in gardens!</p>
+</div>
+
+<h3>Why Give Water a Second Chance?</h3>
+
+<p>Splash learned that reusing water is really smart:</p>
+
+<ul>
+<li>We save clean drinking water for drinking</li>
+<li>Plants get extra water they love</li>
+<li>We use less water overall</li>
+<li>It's better for the environment</li>
+</ul>
+
+<h3>How Does It Work?</h3>
+
+<p>Instead of going to the sewer, greywater goes through special pipes to your garden:</p>
+
+<ol>
+<li>Water goes down the drain as usual</li>
+<li>A special pipe catches it</li>
+<li>It flows outside to thirsty plants</li>
+<li>Plants drink it up through their roots</li>
+</ol>
+
+<h3>Being Safe with Greywater</h3>
+
+<p>To keep everyone healthy, we follow these rules:</p>
+
+<ul>
+<li>Use plant-safe soaps (grown-ups can check the labels)</li>
+<li>Never drink greywater or play in it</li>
+<li>Let it soak into the ground, not puddle on top</li>
+<li>Wash your hands after gardening</li>
+</ul>
+
+<div class="key-concept">
+<h4>Remember!</h4>
+<p>Greywater gives water a second life! Instead of going to the sewer, it can help your garden grow. That's being water-smart!</p>
+</div>
+</div>`,
+
+          MIDDLE_SCHOOL: `<div class="lesson-content">
+<h2>Greywater: Giving Water a Second Life</h2>
+
+<p>Every day, the average American uses about 80-100 gallons of water. Most of that water goes straight down the drain after a single use. But what if we could use some of that water twice?</p>
+
+<div class="image-placeholder" data-caption="Household water use breakdown">
+[Image: Pie chart showing where household water goes - showers, toilets, laundry, sinks, etc.]
+</div>
+
+<h3>Understanding Greywater vs. Blackwater</h3>
+
+<p>Not all wastewater is the same:</p>
+
+<table class="comparison-table">
+<tr><th>Greywater</th><th>Blackwater</th></tr>
+<tr><td>From showers, sinks, laundry</td><td>From toilets</td></tr>
+<tr><td>Contains soap, dirt, some bacteria</td><td>Contains human waste, pathogens</td></tr>
+<tr><td>Can be reused for irrigation</td><td>Requires sewage treatment</td></tr>
+<tr><td>50-80% of household wastewater</td><td>20-30% of household wastewater</td></tr>
+</table>
+
+<h3>Why Reuse Greywater?</h3>
+
+<ul>
+<li><strong>Water conservation:</strong> Reduce household water use by 30-50%</li>
+<li><strong>Save money:</strong> Lower water and sewer bills</li>
+<li><strong>Drought resilience:</strong> Keep gardens alive during water restrictions</li>
+<li><strong>Reduce treatment load:</strong> Less water going to treatment plants</li>
+<li><strong>Plants love it:</strong> Slight nutrients in greywater can help plants</li>
+</ul>
+
+<h3>Simple Greywater Systems</h3>
+
+<h4>Laundry to Landscape</h4>
+<p>The simplest system sends washing machine water directly to your yard:</p>
+
+<ol>
+<li>Washing machine pumps water out</li>
+<li>Hose directs water to mulched basins around plants</li>
+<li>Water soaks into soil and feeds plant roots</li>
+<li>No storage—use it right away!</li>
+</ol>
+
+<h4>Bucket System</h4>
+<p>While waiting for shower water to warm up, collect the cool water in a bucket. Use it to water houseplants or flush toilets.</p>
+
+<h3>Greywater-Safe Products</h3>
+
+<p>Plants are sensitive to some chemicals in soaps and cleaners. For greywater systems:</p>
+
+<ul>
+<li><strong>Do use:</strong> Biodegradable, plant-friendly soaps</li>
+<li><strong>Avoid:</strong> Bleach, borax, and chlorine products</li>
+<li><strong>Check labels for:</strong> "Greywater safe" or low sodium</li>
+<li><strong>Salt matters:</strong> High-sodium products can damage soil</li>
+</ul>
+
+<div class="did-you-know">
+<h4>Did You Know?</h4>
+<p>California changed its greywater regulations in 2009, making laundry-to-landscape systems legal without a permit. This simple change allowed thousands of people to start reusing water!</p>
+</div>
+
+<div class="key-concept">
+<h4>Key Takeaway</h4>
+<p>Greywater reuse turns waste into a resource. By directing shower, sink, and laundry water to landscapes instead of the sewer, we can dramatically reduce household water consumption while keeping gardens healthy.</p>
+</div>
+</div>`,
+
+          HIGH_SCHOOL: `<div class="lesson-content">
+<h2>Greywater Systems: Engineering Water Reuse</h2>
+
+<p>In an era of growing water scarcity, greywater reuse represents one of the most practical approaches to household water conservation. Understanding the engineering principles, health considerations, and regulatory frameworks enables effective system design and implementation.</p>
+
+<div class="image-placeholder" data-caption="Residential greywater system schematic">
+[Image: Technical diagram of a complete residential greywater system with labeled components]
+</div>
+
+<h3>System Classifications</h3>
+
+<table class="system-table">
+<tr><th>Type</th><th>Components</th><th>Treatment Level</th><th>Permitted Uses</th></tr>
+<tr><td>Laundry to Landscape</td><td>Washing machine, 1" pipe, mulch basins</td><td>None</td><td>Subsurface irrigation only</td></tr>
+<tr><td>Branched Drain</td><td>Gravity distribution, multiple outlets</td><td>None</td><td>Subsurface irrigation only</td></tr>
+<tr><td>Pumped System</td><td>Surge tank, pump, filter, distribution</td><td>Filtration</td><td>Subsurface/drip irrigation</td></tr>
+<tr><td>Treatment System</td><td>Tank, filter, disinfection, storage</td><td>Filtration + disinfection</td><td>Surface irrigation</td></tr>
+</table>
+
+<h3>Water Quality Considerations</h3>
+
+<p>Greywater contains various constituents that affect reuse potential:</p>
+
+<ul>
+<li><strong>Pathogens:</strong> Bacteria levels typically 10²-10⁶ CFU/100mL; lower than blackwater</li>
+<li><strong>Nutrients:</strong> Phosphorus and nitrogen from detergents and body waste</li>
+<li><strong>Surfactants:</strong> Soap residues that can affect soil infiltration</li>
+<li><strong>Sodium:</strong> From water softeners and detergents; can harm soil and plants</li>
+<li><strong>pH:</strong> Can be elevated from cleaning products; affects plant health</li>
+</ul>
+
+<h3>Design Principles</h3>
+
+<h4>Sizing Calculations</h4>
+
+<p>System sizing balances supply and demand:</p>
+
+<ul>
+<li><strong>Supply:</strong> 15-25 gallons per person per day from showers/baths</li>
+<li><strong>Supply:</strong> 15-20 gallons per load from washing machines</li>
+<li><strong>Demand:</strong> Varies by plant type, climate, season</li>
+<li><strong>Storage:</strong> Minimize—greywater should be used within 24 hours</li>
+</ul>
+
+<h4>Distribution Methods</h4>
+
+<ul>
+<li><strong>Mulch basins:</strong> 2-3" layer of mulch allows water to infiltrate without ponding</li>
+<li><strong>Drip irrigation:</strong> Requires filtration; can clog without maintenance</li>
+<li><strong>Subsurface chambers:</strong> Prefabricated infiltration units</li>
+</ul>
+
+<h3>Regulatory Framework</h3>
+
+<p>Greywater regulations vary significantly by jurisdiction:</p>
+
+<ul>
+<li><strong>Arizona, California:</strong> Permissive—simple systems often permit-exempt</li>
+<li><strong>Texas:</strong> Statewide code allows greywater with registration</li>
+<li><strong>Florida, some states:</strong> More restrictive—permits required</li>
+<li><strong>Some jurisdictions:</strong> Prohibition still in place</li>
+</ul>
+
+<h3>Health and Safety</h3>
+
+<ul>
+<li>Never use greywater on edible parts of vegetable plants</li>
+<li>No human contact—subsurface application prevents exposure</li>
+<li>24-hour storage limit prevents bacterial growth</li>
+<li>Diverter valve allows switching to sewer when needed</li>
+</ul>
+
+<div class="key-concept">
+<h4>Engineering Perspective</h4>
+<p>Effective greywater system design matches water supply with irrigation demand while ensuring public health protection. The simplest systems—like laundry to landscape—often perform best because they minimize storage time and maintenance requirements.</p>
+</div>
+</div>`,
+
+          UNDERGRADUATE: `<div class="lesson-content">
+<h2>Greywater Systems Engineering: Design, Treatment, and Integration</h2>
+
+<p>Greywater reuse systems range from simple gravity-fed distribution to sophisticated treatment trains approaching potable reuse quality. Professional design requires understanding water quality dynamics, treatment technologies, and system integration with broader water management.</p>
+
+<h3>Greywater Characterization</h3>
+
+<table class="quality-table">
+<tr><th>Parameter</th><th>Light Greywater</th><th>Dark Greywater</th><th>Treatment Target</th></tr>
+<tr><td>BOD₅ (mg/L)</td><td>50-100</td><td>100-400</td><td><30 (irrigation)</td></tr>
+<tr><td>TSS (mg/L)</td><td>50-100</td><td>100-300</td><td><30</td></tr>
+<tr><td>Total coliforms (CFU/100mL)</td><td>10²-10⁶</td><td>10⁴-10⁸</td><td><2.2 (unrestricted)</td></tr>
+<tr><td>pH</td><td>6.5-8.0</td><td>5.0-9.0</td><td>6.0-9.0</td></tr>
+<tr><td>SAR</td><td>2-10</td><td>2-15</td><td><10 (irrigation)</td></tr>
+</table>
+
+<p>Light greywater (bathroom) is generally higher quality than dark greywater (kitchen, laundry).</p>
+
+<h3>Treatment Technologies</h3>
+
+<h4>Physical Treatment</h4>
+<ul>
+<li><strong>Screening/settling:</strong> Removes hair, lint, large particles</li>
+<li><strong>Sand filtration:</strong> 0.25-0.5mm media removes TSS</li>
+<li><strong>Membrane filtration:</strong> MF/UF for pathogen removal</li>
+</ul>
+
+<h4>Biological Treatment</h4>
+<ul>
+<li><strong>Constructed wetlands:</strong> Subsurface flow systems effective for BOD/nutrient removal</li>
+<li><strong>Rotating biological contactors:</strong> Compact aerobic treatment</li>
+<li><strong>Membrane bioreactors:</strong> High-quality effluent for demanding applications</li>
+</ul>
+
+<h4>Disinfection</h4>
+<ul>
+<li><strong>UV:</strong> Effective for pathogens; no residual</li>
+<li><strong>Chlorine:</strong> Provides residual; potential DBP formation</li>
+<li><strong>Ozone:</strong> Strong oxidant; no residual</li>
+</ul>
+
+<h3>System Hydraulics</h3>
+
+<h4>Surge Tank Design</h4>
+<p>Greywater generation is intermittent; surge tanks buffer peaks:</p>
+<ul>
+<li>Minimum volume: 50-100 gallons for residential</li>
+<li>Maximum retention: 24 hours to prevent odors and bacterial growth</li>
+<li>Overflow to sewer required</li>
+<li>Access for cleaning essential</li>
+</ul>
+
+<h4>Distribution Design</h4>
+<ul>
+<li>Drip systems require 100-200 mesh filtration minimum</li>
+<li>Pressure compensating emitters handle elevation changes</li>
+<li>Flushing capability prevents biofilm accumulation</li>
+</ul>
+
+<h3>Integration with Building Systems</h3>
+
+<ul>
+<li><strong>Plumbing separation:</strong> Dual-plumb new construction; retrofit challenges</li>
+<li><strong>Cross-connection control:</strong> Air gaps, reduced pressure backflow</li>
+<li><strong>Monitoring:</strong> Flow meters, pressure sensors, quality indicators</li>
+<li><strong>Controls:</strong> Automated diversion during maintenance or quality exceedance</li>
+</ul>
+
+<div class="key-concept">
+<h4>Professional Practice</h4>
+<p>Greywater system design balances treatment complexity against end-use requirements. For landscape irrigation, minimal treatment may suffice. For toilet flushing or other indoor uses, more sophisticated treatment trains ensure public health protection while maintaining system reliability.</p>
+</div>
+</div>`,
+
+          GRADUATE: `<div class="lesson-content">
+<h2>Greywater Reuse: Policy, Risk Assessment, and System Optimization</h2>
+
+<p>Graduate-level analysis of greywater systems requires integration of public health risk assessment, policy analysis, behavioral factors, and lifecycle considerations. As water stress intensifies globally, greywater represents a significant decentralized water source requiring sophisticated governance approaches.</p>
+
+<h3>Quantitative Microbial Risk Assessment (QMRA)</h3>
+
+<p>QMRA provides a scientific basis for greywater regulations:</p>
+
+<h4>Framework</h4>
+<ol>
+<li><strong>Hazard identification:</strong> Key pathogens (E. coli, Salmonella, enteric viruses)</li>
+<li><strong>Exposure assessment:</strong> Contact scenarios (accidental ingestion, dermal)</li>
+<li><strong>Dose-response:</strong> Probability of infection given exposure dose</li>
+<li><strong>Risk characterization:</strong> Annual infection probability, DALYs</li>
+</ol>
+
+<h4>Key Findings</h4>
+<ul>
+<li>Subsurface irrigation: Risk typically acceptable (10⁻⁴ to 10⁻⁶ annual infection)</li>
+<li>Surface irrigation: Higher risk; treatment or restricted access needed</li>
+<li>Toilet flushing: Aerosol concerns; UV disinfection recommended</li>
+</ul>
+
+<h3>Policy Analysis</h3>
+
+<h4>Regulatory Approaches</h4>
+
+<table class="policy-table">
+<tr><th>Approach</th><th>Examples</th><th>Advantages</th><th>Challenges</th></tr>
+<tr><td>Prohibition</td><td>Some US states, countries</td><td>Simple enforcement</td><td>Ignores potential benefits</td></tr>
+<tr><td>Permit required</td><td>Florida, some EU</td><td>Quality control</td><td>Cost/complexity barriers</td></tr>
+<tr><td>Tiered permits</td><td>California, Arizona</td><td>Proportional oversight</td><td>Administrative complexity</td></tr>
+<tr><td>Exemption</td><td>AZ (under 400 gpd)</td><td>Enables adoption</td><td>Limited oversight</td></tr>
+</table>
+
+<h4>Policy Design Considerations</h4>
+<ul>
+<li>Risk-proportionate regulation matching treatment to end use</li>
+<li>Enabling provisions for simple systems to increase adoption</li>
+<li>Professional requirements for complex systems</li>
+<li>Integration with plumbing codes and building permits</li>
+</ul>
+
+<h3>Social and Behavioral Dimensions</h3>
+
+<h4>Acceptance Factors</h4>
+<ul>
+<li><strong>Disgust response:</strong> "Yuck factor" for reused water, even when treated</li>
+<li><strong>Trust:</strong> Confidence in treatment system reliability</li>
+<li><strong>Knowledge:</strong> Understanding of risk and treatment processes</li>
+<li><strong>Visibility:</strong> Seeing system operation builds confidence</li>
+</ul>
+
+<h4>Adoption Determinants</h4>
+<ul>
+<li>Water price sensitivity</li>
+<li>Environmental values</li>
+<li>Drought experience</li>
+<li>Ease of installation and maintenance</li>
+</ul>
+
+<h3>Lifecycle Assessment</h3>
+
+<p>Environmental evaluation of greywater systems considers:</p>
+<ul>
+<li>Embedded energy in treatment equipment vs. avoided municipal treatment</li>
+<li>Chemical inputs (disinfection, cleaning) vs. reduced water extraction</li>
+<li>System longevity and maintenance requirements</li>
+<li>End-of-life disposal of treatment components</li>
+</ul>
+
+<div class="key-concept">
+<h4>Research Directions</h4>
+<p>Key research frontiers include developing simplified risk assessment tools for regulators, understanding long-term soil impacts of greywater irrigation, designing behavior-change interventions to increase adoption, and optimizing treatment for emerging contaminants like pharmaceuticals and personal care products.</p>
+</div>
+</div>`,
+
+          PHD: `<div class="lesson-content">
+<h2>Greywater Research Frontiers: Advanced Treatment, Contaminants of Emerging Concern, and System Integration</h2>
+
+<p>Doctoral-level greywater research addresses fundamental questions about contaminant fate, treatment optimization, and the role of decentralized water reuse in sustainable urban water systems. This work integrates environmental engineering, public health, social science, and systems analysis.</p>
+
+<h3>Contaminants of Emerging Concern</h3>
+
+<h4>Pharmaceuticals and Personal Care Products (PPCPs)</h4>
+<ul>
+<li>Antimicrobials (triclosan, triclocarban) in soaps</li>
+<li>Fragrances and preservatives</li>
+<li>Pharmaceutical metabolites from bathing/handwashing</li>
+<li>Endocrine-disrupting compounds</li>
+</ul>
+
+<h4>Research Questions</h4>
+<ul>
+<li>Fate and transport in soil during greywater irrigation</li>
+<li>Plant uptake and food chain implications</li>
+<li>Microbial community impacts</li>
+<li>Treatment technology efficacy for PPCP removal</li>
+</ul>
+
+<h3>Advanced Treatment Technologies</h3>
+
+<h4>Electrochemical Treatment</h4>
+<p>Emerging approaches for decentralized greywater treatment:</p>
+<ul>
+<li>Electrooxidation for organic degradation</li>
+<li>Electrocoagulation for particle removal</li>
+<li>In-situ disinfectant generation</li>
+<li>Energy efficiency optimization</li>
+</ul>
+
+<h4>Photocatalytic Treatment</h4>
+<ul>
+<li>TiO2 for organic contaminant degradation</li>
+<li>Solar-powered systems for off-grid applications</li>
+<li>Catalyst recovery and regeneration</li>
+<li>Byproduct formation and toxicity</li>
+</ul>
+
+<h3>Integrated Urban Water Management</h3>
+
+<h4>Fit-for-Purpose Frameworks</h4>
+<p>Research on matching water quality to end use:</p>
+<ul>
+<li>Multi-criteria decision analysis for reuse options</li>
+<li>Dynamic allocation based on quality and demand</li>
+<li>Network optimization for distributed reuse</li>
+</ul>
+
+<h4>Urban Metabolism Modeling</h4>
+<ul>
+<li>Mass balance approaches at neighborhood/city scale</li>
+<li>Integration with stormwater and blackwater management</li>
+<li>Climate change scenarios and adaptation</li>
+<li>Equity implications of decentralized systems</li>
+</ul>
+
+<h3>Methodological Approaches</h3>
+
+<table class="methods-table">
+<tr><th>Research Question</th><th>Methods</th><th>Key Considerations</th></tr>
+<tr><td>Treatment efficacy</td><td>Bench/pilot studies, analytical chemistry</td><td>Representative water quality, detection limits</td></tr>
+<tr><td>Health risk</td><td>QMRA, epidemiological studies</td><td>Exposure scenario accuracy, vulnerable populations</td></tr>
+<tr><td>Adoption barriers</td><td>Surveys, interviews, experimental economics</td><td>Representative samples, hypothetical bias</td></tr>
+<tr><td>System integration</td><td>Agent-based modeling, LCA</td><td>Model validation, uncertainty propagation</td></tr>
+</table>
+
+<h3>Research Ethics and Practice</h3>
+
+<ul>
+<li>Community engagement in decentralized water projects</li>
+<li>Environmental justice considerations in system siting</li>
+<li>Technology transfer to developing contexts</li>
+<li>Open data and reproducibility</li>
+</ul>
+
+<div class="key-concept">
+<h4>Doctoral Research Orientation</h4>
+<p>Greywater research sits at the intersection of engineering, public health, and social science. Impactful work addresses both fundamental science (contaminant fate, treatment mechanisms) and practical implementation (policy design, adoption barriers). The urgency of water scarcity demands research that accelerates safe, equitable deployment of decentralized reuse systems.</p>
+</div>
+</div>`
         }
       }
     ],
@@ -794,12 +1236,498 @@ export const waterSystemsModules: Module[] = [
         hasActivity: true,
         activityType: 'SIMULATION',
         content: {
-          ELEMENTARY: `<div class="lesson-content"><h2>💧 Slow and Steady!</h2><p>Drip irrigation gives plants exactly what they need - one drop at a time!</p><h3>Why Drip?</h3><ul><li>💧 Saves water - no waste!</li><li>🌱 Water goes right to roots</li><li>🚫 No wet leaves (less disease)</li><li>😊 Happy, healthy plants!</li></ul></div>`,
-          MIDDLE_SCHOOL: `<div class="lesson-content"><h2>Drip Irrigation Basics</h2><h3>How It Works</h3><p>Water flows through tubes with small holes (emitters) that drip water slowly right at plant roots.</p><h3>Water Savings</h3><p>Uses 30-50% less water than sprinklers because water goes directly to plants, not into the air or onto paths.</p></div>`,
-          HIGH_SCHOOL: `<div class="lesson-content"><h2>Drip System Components</h2><h3>Key Parts</h3><ul><li><strong>Main line:</strong> Brings water from source</li><li><strong>Sub-main:</strong> Distribution to zones</li><li><strong>Drip tubing:</strong> With inline emitters</li><li><strong>Emitters:</strong> Control flow rate (GPH)</li><li><strong>Filter:</strong> Prevents clogging</li><li><strong>Pressure regulator:</strong> Correct PSI</li></ul></div>`,
-          UNDERGRADUATE: `<div class="lesson-content"><h2>System Hydraulics</h2><h3>Design Considerations</h3><ul><li>Emitter uniformity</li><li>Pressure compensation</li><li>Friction loss calculations</li><li>Zone sizing</li></ul><h3>Scheduling</h3><p>Based on crop ET, soil type, and root zone depth.</p></div>`,
-          GRADUATE: `<div class="lesson-content"><h2>Precision Irrigation</h2><h3>Advanced Technologies</h3><ul><li>Soil moisture sensors</li><li>Weather-based controllers</li><li>Variable rate irrigation</li><li>Deficit irrigation strategies</li></ul></div>`,
-          PHD: `<div class="lesson-content"><h2>Research Frontiers</h2><h3>Key Questions</h3><ul><li>Crop modeling integration</li><li>Climate adaptation strategies</li><li>Water-nutrient interactions</li><li>Precision ag integration</li></ul></div>`
+          ELEMENTARY: `<div class="lesson-content">
+<h2>Dewdrop's Special Delivery</h2>
+
+<p>Dewdrop was a tiny water drop who had a very important job. While other water drops liked to spray everywhere and make puddles, Dewdrop was different.</p>
+
+<p>"I like to go right where I'm needed!" Dewdrop said proudly.</p>
+
+<div class="image-placeholder" data-caption="Dewdrop delivering water directly to a plant's roots">
+[Image: A cheerful water droplet character traveling through a small tube directly to a plant's roots underground]
+</div>
+
+<h3>What is Drip Irrigation?</h3>
+
+<p>Drip irrigation is like giving plants a drink through a tiny straw! Instead of spraying water everywhere, it delivers water drop by drop, right to where plants need it most—their roots.</p>
+
+<h3>How Does It Work?</h3>
+
+<ol>
+<li><strong>Water flows through a hose</strong> — A long, thin tube carries water from the faucet</li>
+<li><strong>Tiny holes let drops out</strong> — Little openings called "emitters" release water slowly</li>
+<li><strong>Drops fall near the plant</strong> — The water drips right at the base of each plant</li>
+<li><strong>Roots drink it up</strong> — Plant roots absorb the water underground</li>
+</ol>
+
+<h3>Why is Drip Irrigation So Cool?</h3>
+
+<ul>
+<li><strong>Saves water:</strong> Almost every drop goes to the plant—no waste!</li>
+<li><strong>Healthy plants:</strong> Roots get exactly what they need</li>
+<li><strong>No wet leaves:</strong> Dry leaves mean fewer plant diseases</li>
+<li><strong>Less weeds:</strong> Only plants get water, not the spaces between</li>
+<li><strong>Works while you're away:</strong> A timer can run it automatically</li>
+</ul>
+
+<h3>Where Do We Use Drip Irrigation?</h3>
+
+<p>Dewdrop works in lots of places:</p>
+
+<ul>
+<li>Vegetable gardens with tomatoes, peppers, and squash</li>
+<li>Flower beds and planters</li>
+<li>Trees and shrubs</li>
+<li>Farms growing fruits and vegetables</li>
+<li>Greenhouses and nurseries</li>
+</ul>
+
+<div class="fun-fact">
+<h4>Fun Fact!</h4>
+<p>Ancient farmers in China used clay pots buried in the ground to slowly release water to plants. That's an early version of drip irrigation from over 2,000 years ago!</p>
+</div>
+
+<h3>Making Your Own Mini Drip System</h3>
+
+<p>You can make a simple drip irrigator with a grown-up's help:</p>
+
+<ol>
+<li>Take a clean plastic bottle</li>
+<li>Poke tiny holes in the cap</li>
+<li>Fill with water and flip it upside down</li>
+<li>Bury it slightly next to a plant</li>
+<li>Watch it slowly drip water to the roots!</li>
+</ol>
+
+<div class="key-concept">
+<h4>Remember!</h4>
+<p>Drip irrigation delivers water one drop at a time, right to where plants need it. It saves water and keeps plants happy and healthy!</p>
+</div>
+</div>`,
+
+          MIDDLE_SCHOOL: `<div class="lesson-content">
+<h2>Precision Watering: The Science of Drip Irrigation</h2>
+
+<p>While sprinklers shoot water into the air hoping some lands on plants, drip irrigation takes a smarter approach: deliver water exactly where plants need it, exactly when they need it.</p>
+
+<div class="image-placeholder" data-caption="Comparison of sprinkler vs drip irrigation efficiency">
+[Image: Side-by-side comparison showing water waste from sprinklers versus targeted delivery from drip irrigation]
+</div>
+
+<h3>How Drip Systems Work</h3>
+
+<p>A drip irrigation system has several key parts working together:</p>
+
+<table class="components-table">
+<tr><th>Part</th><th>What It Does</th></tr>
+<tr><td>Water source</td><td>Faucet, well, or storage tank</td></tr>
+<tr><td>Backflow preventer</td><td>Keeps dirty water from going back into drinking water</td></tr>
+<tr><td>Filter</td><td>Removes particles that could clog emitters</td></tr>
+<tr><td>Pressure regulator</td><td>Reduces water pressure to drip-friendly levels</td></tr>
+<tr><td>Main line tubing</td><td>Carries water from source to garden areas</td></tr>
+<tr><td>Drip tubing</td><td>Distributes water along plant rows</td></tr>
+<tr><td>Emitters</td><td>Release water at controlled rates (usually 0.5-2 gallons per hour)</td></tr>
+</table>
+
+<h3>Water Savings: The Numbers</h3>
+
+<p>Drip irrigation is incredibly efficient:</p>
+
+<ul>
+<li><strong>Drip irrigation:</strong> 90-95% of water reaches plant roots</li>
+<li><strong>Sprinklers:</strong> Only 50-75% reaches plants (rest evaporates or lands on paths)</li>
+<li><strong>Flood irrigation:</strong> Only 40-50% is used by plants</li>
+</ul>
+
+<p>That means drip can use 30-50% less water to grow the same plants!</p>
+
+<h3>Types of Emitters</h3>
+
+<ul>
+<li><strong>Inline emitters:</strong> Built into the tubing at regular intervals</li>
+<li><strong>Button emitters:</strong> Individual drippers you punch into tubing</li>
+<li><strong>Micro-sprays:</strong> Tiny sprinklers for ground cover or dense plantings</li>
+<li><strong>Soaker hose:</strong> Porous tubing that seeps water along its length</li>
+</ul>
+
+<h3>Benefits Beyond Water Savings</h3>
+
+<ul>
+<li><strong>Healthier plants:</strong> Consistent moisture reduces stress</li>
+<li><strong>Less disease:</strong> Dry leaves mean fewer fungal problems</li>
+<li><strong>Fewer weeds:</strong> Only watered areas grow plants</li>
+<li><strong>Usable during windy conditions:</strong> Water doesn't blow away</li>
+<li><strong>Lower water bills:</strong> Less water = less money spent</li>
+<li><strong>Automation:</strong> Timers handle watering automatically</li>
+</ul>
+
+<h3>When to Water</h3>
+
+<p>The best times for drip irrigation are:</p>
+
+<ul>
+<li><strong>Early morning:</strong> Less evaporation, plants absorb water before heat</li>
+<li><strong>Evening:</strong> Cooler temperatures reduce water loss</li>
+<li><strong>Avoid midday:</strong> Hot sun evaporates water quickly</li>
+</ul>
+
+<div class="did-you-know">
+<h4>Did You Know?</h4>
+<p>Israel is a world leader in drip irrigation technology. With limited water resources, Israeli engineers developed advanced drip systems that are now used to grow food in deserts around the world!</p>
+</div>
+
+<div class="key-concept">
+<h4>Key Takeaway</h4>
+<p>Drip irrigation delivers water directly to plant roots through small emitters, wasting almost nothing. It's one of the most efficient ways to water gardens and farms, saving water, money, and keeping plants healthier.</p>
+</div>
+</div>`,
+
+          HIGH_SCHOOL: `<div class="lesson-content">
+<h2>Drip Irrigation Engineering: System Design and Optimization</h2>
+
+<p>Modern drip irrigation systems represent sophisticated water delivery networks that balance hydraulic engineering, plant biology, and practical economics. Understanding system components and design principles enables effective installation and management.</p>
+
+<div class="image-placeholder" data-caption="Complete drip irrigation system schematic">
+[Image: Technical diagram showing all components of a professional drip irrigation system]
+</div>
+
+<h3>System Components in Detail</h3>
+
+<table class="specs-table">
+<tr><th>Component</th><th>Function</th><th>Specifications</th></tr>
+<tr><td>Backflow preventer</td><td>Prevents contamination of water supply</td><td>RPZ or double-check valve</td></tr>
+<tr><td>Filter</td><td>Removes particles</td><td>120-200 mesh for most emitters</td></tr>
+<tr><td>Pressure regulator</td><td>Reduces pressure</td><td>Typically 15-30 PSI output</td></tr>
+<tr><td>Main line</td><td>Water transport</td><td>1/2" - 1" polyethylene</td></tr>
+<tr><td>Drip tubing</td><td>Distribution</td><td>1/4" - 1/2" with emitters</td></tr>
+<tr><td>Emitters</td><td>Controlled water release</td><td>0.5-4 GPH flow rates</td></tr>
+</table>
+
+<h3>Emitter Technology</h3>
+
+<h4>Pressure-Compensating vs. Non-Compensating</h4>
+
+<ul>
+<li><strong>Pressure-compensating:</strong> Maintain constant flow across pressure variations; essential for sloped terrain or long runs</li>
+<li><strong>Non-compensating:</strong> Simpler, cheaper; flow varies with pressure; suitable for flat areas with short runs</li>
+</ul>
+
+<h4>Emitter Spacing</h4>
+<p>Proper spacing ensures root zone coverage:</p>
+<ul>
+<li>Sandy soil: 12-18" (water spreads less)</li>
+<li>Loam: 18-24"</li>
+<li>Clay: 24-36" (water spreads more)</li>
+</ul>
+
+<h3>Hydraulic Calculations</h3>
+
+<h4>Friction Loss</h4>
+<p>Water loses pressure as it flows through tubing. Calculate using the Hazen-Williams equation:</p>
+
+<code>h_f = (10.67 × Q^1.85 × L) / (C^1.85 × D^4.87)</code>
+
+<p>Where: h_f = head loss, Q = flow rate, L = length, C = pipe coefficient, D = diameter</p>
+
+<h4>Maximum Run Length</h4>
+<p>Longer runs mean more friction loss and less uniform water distribution. Design guidelines:</p>
+<ul>
+<li>1/4" tubing: Maximum 30-50 feet</li>
+<li>1/2" tubing: Maximum 200-400 feet</li>
+<li>Maintain flow variation under 10% across the system</li>
+</ul>
+
+<h3>Scheduling Irrigation</h3>
+
+<p>Irrigation scheduling balances water needs with system capacity:</p>
+
+<ul>
+<li><strong>ET-based:</strong> Match irrigation to evapotranspiration rates</li>
+<li><strong>Soil moisture-based:</strong> Water when sensors indicate dryness</li>
+<li><strong>Time-based:</strong> Fixed schedule adjusted seasonally</li>
+</ul>
+
+<h4>Calculating Runtime</h4>
+<code>Runtime (hours) = Plant water need (gallons) / Emitter flow rate (GPH) / Number of emitters</code>
+
+<h3>Maintenance Requirements</h3>
+
+<ul>
+<li>Clean filters monthly during growing season</li>
+<li>Flush lines periodically to remove sediment</li>
+<li>Check emitters for clogging or damage</li>
+<li>Inspect for leaks, especially at connections</li>
+<li>Winterize in cold climates</li>
+</ul>
+
+<div class="key-concept">
+<h4>Engineering Insight</h4>
+<p>Effective drip system design requires balancing hydraulic efficiency with practical installation and maintenance considerations. Pressure-compensating emitters and proper zone sizing ensure uniform water distribution across varying terrain and run lengths.</p>
+</div>
+</div>`,
+
+          UNDERGRADUATE: `<div class="lesson-content">
+<h2>Drip Irrigation Systems Engineering: Hydraulics, Scheduling, and Optimization</h2>
+
+<p>Professional drip system design integrates fluid mechanics, soil physics, and plant science to deliver water efficiently while minimizing infrastructure costs and operational complexity. This requires systematic approaches to hydraulic design, scheduling algorithms, and performance evaluation.</p>
+
+<h3>Hydraulic Design Principles</h3>
+
+<h4>Distribution Uniformity</h4>
+<p>Uniformity metrics quantify irrigation consistency:</p>
+
+<ul>
+<li><strong>Emission Uniformity (EU):</strong> EU = 100 × (1 - (q_lq / q_avg))</li>
+<li>Where q_lq = average of lowest quartile flows, q_avg = overall average</li>
+<li>Target EU > 85% for drip systems</li>
+</ul>
+
+<h4>Manifold Sizing</h4>
+<table class="hydraulic-table">
+<tr><th>Parameter</th><th>Design Criterion</th><th>Calculation Method</th></tr>
+<tr><td>Manifold diameter</td><td>Limit flow velocity < 5 fps</td><td>Q = V × A</td></tr>
+<tr><td>Lateral length</td><td>Pressure variation < 20%</td><td>Hazen-Williams</td></tr>
+<tr><td>Emitter spacing</td><td>Overlap for full coverage</td><td>Soil wetting patterns</td></tr>
+</table>
+
+<h4>Pressure Management</h4>
+<ul>
+<li>Operating pressure typically 15-30 psi for drip</li>
+<li>Pressure compensating emitters for elevation changes > 3 feet</li>
+<li>Pressure regulators sized for zone flow requirements</li>
+</ul>
+
+<h3>Soil-Water-Plant Relations</h3>
+
+<h4>Wetting Patterns</h4>
+<p>Emitter wetting patterns depend on:</p>
+<ul>
+<li>Soil texture (sand vs. clay)</li>
+<li>Emitter flow rate</li>
+<li>Application duration</li>
+<li>Initial soil moisture</li>
+</ul>
+
+<h4>Root Zone Management</h4>
+<ul>
+<li>Match wetted volume to active root zone</li>
+<li>Avoid waterlogging (maintain aeration)</li>
+<li>Manage salinity by maintaining leaching fraction</li>
+</ul>
+
+<h3>Irrigation Scheduling</h3>
+
+<h4>ET-Based Scheduling</h4>
+<p>Reference ET (ET₀) from weather data × crop coefficient (Kc) = crop ET</p>
+
+<ul>
+<li>Daily or weekly scheduling based on cumulative ET</li>
+<li>Soil water balance: θ_new = θ_old + I - ET - D</li>
+<li>Trigger irrigation at management allowable depletion (MAD)</li>
+</ul>
+
+<h4>Sensor-Based Scheduling</h4>
+<ul>
+<li>Soil moisture sensors (capacitance, TDR, gypsum block)</li>
+<li>Plant-based sensing (dendrometers, leaf temperature)</li>
+<li>Closed-loop control systems</li>
+</ul>
+
+<h3>Fertigation</h3>
+
+<p>Injecting fertilizers through drip systems:</p>
+
+<ul>
+<li><strong>Injection methods:</strong> Venturi, positive displacement, pressure differential</li>
+<li><strong>Compatibility:</strong> Soluble fertilizers only; check chemical interactions</li>
+<li><strong>Uniformity:</strong> Injection rate matched to irrigation flow</li>
+<li><strong>Flushing:</strong> Clear lines after fertigation to prevent precipitation</li>
+</ul>
+
+<h3>System Evaluation</h3>
+
+<h4>Field Testing Protocol</h4>
+<ol>
+<li>Measure emitter flow rates at multiple points</li>
+<li>Calculate statistical uniformity</li>
+<li>Identify clogged or malfunctioning emitters</li>
+<li>Assess pressure distribution</li>
+<li>Recommend adjustments or maintenance</li>
+</ol>
+
+<div class="key-concept">
+<h4>Professional Practice</h4>
+<p>Drip irrigation design balances hydraulic performance with practical constraints of cost, maintenance, and operator capabilities. Proper system evaluation and adjustment over time ensures the designed uniformity is maintained in the field.</p>
+</div>
+</div>`,
+
+          GRADUATE: `<div class="lesson-content">
+<h2>Advanced Drip Irrigation: Precision Agriculture and Deficit Strategies</h2>
+
+<p>Graduate-level drip irrigation analysis addresses the integration of sensing technologies, crop modeling, and optimization algorithms for precision water management. Advanced applications include deficit irrigation strategies, variable rate application, and decision support systems.</p>
+
+<h3>Precision Irrigation Technologies</h3>
+
+<h4>Sensor Networks</h4>
+<table class="sensor-table">
+<tr><th>Sensor Type</th><th>Measurement</th><th>Advantages</th><th>Limitations</th></tr>
+<tr><td>TDR</td><td>Soil water content</td><td>Accurate, fast</td><td>Expensive, installation</td></tr>
+<tr><td>Capacitance</td><td>Soil dielectric</td><td>Lower cost, logging</td><td>Calibration needed</td></tr>
+<tr><td>Tensiometer</td><td>Soil water potential</td><td>Direct measure</td><td>Maintenance, range</td></tr>
+<tr><td>Thermal</td><td>Plant stress</td><td>Non-contact</td><td>Weather dependent</td></tr>
+</table>
+
+<h4>Variable Rate Irrigation (VRI)</h4>
+<ul>
+<li>Spatially variable application based on zone maps</li>
+<li>Integration with GPS and prescription maps</li>
+<li>Pulse-width modulation for flow control</li>
+<li>Economic optimization of water allocation</li>
+</ul>
+
+<h3>Deficit Irrigation Strategies</h3>
+
+<h4>Regulated Deficit Irrigation (RDI)</h4>
+<p>Controlled water stress during specific growth stages:</p>
+<ul>
+<li>Identify stress-tolerant growth periods</li>
+<li>Reduce irrigation during vegetative growth</li>
+<li>Maintain full irrigation during critical reproductive stages</li>
+<li>Potential water savings 20-40% with minimal yield impact</li>
+</ul>
+
+<h4>Partial Root Zone Drying (PRD)</h4>
+<ul>
+<li>Alternate wetting and drying of root system halves</li>
+<li>Induces physiological responses (stomatal closure, ABA signaling)</li>
+<li>Maintains plant water status while signaling drought</li>
+<li>Requires dual-drip line systems</li>
+</ul>
+
+<h3>Crop Modeling Integration</h3>
+
+<h4>Water Production Functions</h4>
+<p>Relating water application to yield:</p>
+<ul>
+<li>Linear: Y/Ymax = a × (ET/ETmax)</li>
+<li>Curvilinear models capture diminishing returns</li>
+<li>Stage-specific sensitivity coefficients</li>
+</ul>
+
+<h4>Decision Support Systems</h4>
+<ul>
+<li>Integration of weather forecasts, crop models, economics</li>
+<li>Optimization algorithms for irrigation scheduling</li>
+<li>Mobile/web interfaces for farmer access</li>
+<li>Machine learning for adaptive management</li>
+</ul>
+
+<h3>Water Quality and Clogging</h3>
+
+<h4>Clogging Agents</h4>
+<ul>
+<li><strong>Physical:</strong> Suspended solids, sand, silt</li>
+<li><strong>Chemical:</strong> Calcium carbonate, iron precipitation</li>
+<li><strong>Biological:</strong> Algae, bacterial slimes, root intrusion</li>
+</ul>
+
+<h4>Prevention and Treatment</h4>
+<ul>
+<li>Filtration matched to water quality</li>
+<li>Chemical treatment (chlorination, acidification)</li>
+<li>Flushing protocols</li>
+<li>Pressure compensation to detect blockages</li>
+</ul>
+
+<div class="key-concept">
+<h4>Research Directions</h4>
+<p>Key frontiers include sensor fusion and machine learning for irrigation decisions, crop model parameterization for diverse genotypes and environments, economic optimization under water scarcity, and integration with precision nutrient management for sustainable intensification.</p>
+</div>
+</div>`,
+
+          PHD: `<div class="lesson-content">
+<h2>Drip Irrigation Research: Soil-Water Dynamics, Optimization, and System Innovation</h2>
+
+<p>Doctoral research in drip irrigation spans fundamental soil physics, advanced control theory, and systems engineering. This work addresses both the physics of water movement and the practical challenges of implementing precision irrigation at scale.</p>
+
+<h3>Soil Water Flow Under Drip</h3>
+
+<h4>Richards Equation</h4>
+<p>Governing equation for unsaturated flow:</p>
+<code>∂θ/∂t = ∇·[K(θ)∇(h + z)]</code>
+
+<ul>
+<li>Nonlinear due to K(θ) and h(θ) relationships</li>
+<li>Numerical solutions (finite element, finite difference)</li>
+<li>HYDRUS and similar models for design and analysis</li>
+</ul>
+
+<h4>Modeling Challenges</h4>
+<ul>
+<li>Soil heterogeneity at field scale</li>
+<li>Hysteresis in wetting-drying cycles</li>
+<li>Root water uptake representation</li>
+<li>Coupled water-solute transport</li>
+</ul>
+
+<h3>Optimization Theory</h3>
+
+<h4>Objective Functions</h4>
+<ul>
+<li>Maximize yield given water constraint</li>
+<li>Minimize water use for target yield</li>
+<li>Maximize profit considering water and yield prices</li>
+<li>Multi-objective optimization (yield, water, quality)</li>
+</ul>
+
+<h4>Optimization Approaches</h4>
+<table class="optimization-table">
+<tr><th>Method</th><th>Application</th><th>Considerations</th></tr>
+<tr><td>Dynamic programming</td><td>Seasonal allocation</td><td>Curse of dimensionality</td></tr>
+<tr><td>Genetic algorithms</td><td>System design</td><td>Convergence, computational cost</td></tr>
+<tr><td>Model predictive control</td><td>Real-time scheduling</td><td>Model accuracy, horizon length</td></tr>
+<tr><td>Reinforcement learning</td><td>Adaptive control</td><td>Training data, generalization</td></tr>
+</table>
+
+<h3>Remote Sensing for Irrigation</h3>
+
+<h4>Vegetation Indices</h4>
+<ul>
+<li>NDVI, NDWI for crop status monitoring</li>
+<li>Thermal imaging for water stress detection</li>
+<li>Multispectral imagery for variable rate prescription</li>
+</ul>
+
+<h4>ET Estimation</h4>
+<ul>
+<li>Surface energy balance models (SEBAL, METRIC)</li>
+<li>Integration with weather station networks</li>
+<li>Validation against lysimeter and flux tower data</li>
+</ul>
+
+<h3>Emerging Technologies</h3>
+
+<ul>
+<li><strong>Subsurface drip irrigation (SDI):</strong> Buried emitters for perennial and annual crops</li>
+<li><strong>Micro-irrigation automation:</strong> IoT-enabled systems with cloud analytics</li>
+<li><strong>Solar-powered systems:</strong> Photovoltaic pumping for remote areas</li>
+<li><strong>Biodegradable drip tape:</strong> Reducing plastic waste in annual crops</li>
+</ul>
+
+<h3>Methodological Considerations</h3>
+
+<ul>
+<li>Field experimental design for variable spatial conditions</li>
+<li>Statistical approaches for non-normal, spatially correlated data</li>
+<li>Model validation protocols</li>
+<li>Transferability of results across environments</li>
+</ul>
+
+<div class="key-concept">
+<h4>Doctoral Research Orientation</h4>
+<p>Drip irrigation research integrates physics-based modeling with data-driven approaches, field experimentation with remote sensing, and engineering design with economic analysis. The challenge is developing methods that work robustly in real-world conditions while advancing fundamental understanding of soil-water-plant systems.</p>
+</div>
+</div>`
         }
       }
     ],
