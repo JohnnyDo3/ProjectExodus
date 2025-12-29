@@ -496,12 +496,490 @@ export const zeroWasteModules: Module[] = [
         hasActivity: true,
         activityType: 'STEP_GUIDED',
         content: {
-          ELEMENTARY: `<div class="lesson-content"><h2>🏗️ Make Your Own Compost Bin!</h2><h3>Simple Steps</h3><ol><li>Find a spot in your yard (ask a grown-up!)</li><li>Start with a layer of sticks for air</li><li>Add brown stuff (leaves, cardboard)</li><li>Add green stuff (food scraps)</li><li>Keep it moist like a sponge</li><li>Wait and watch the magic happen!</li></ol><div class="tip-box"><p>🐛 You might see worms - they're helpers!</p></div></div>`,
-          MIDDLE_SCHOOL: `<div class="lesson-content"><h2>Composting Methods</h2><h3>Bin Composting</h3><p>Enclosed containers keep materials contained and can speed decomposition.</p><h3>Pile Composting</h3><p>Open piles work well for larger quantities of yard waste.</p><h3>Tumbler Composting</h3><p>Rotating drums make turning easy and can produce compost faster.</p><h3>Vermicomposting</h3><p>Red wiggler worms process food scraps indoors - great for apartments!</p><h3>Troubleshooting</h3><ul><li><strong>Smelly?</strong> Too wet or too many greens - add browns</li><li><strong>Not decomposing?</strong> Too dry or too many browns - add water and greens</li><li><strong>Pests?</strong> Bury food scraps, avoid meat/dairy</li></ul></div>`,
-          HIGH_SCHOOL: `<div class="lesson-content"><h2>Optimizing Your Compost</h2><h3>Monitoring Parameters</h3><ul><li><strong>Temperature:</strong> Use compost thermometer, target 130-150°F</li><li><strong>Moisture:</strong> Squeeze test - should feel like wrung sponge</li><li><strong>Aeration:</strong> Turn every 1-2 weeks or use passive aeration</li></ul><h3>Accelerating Decomposition</h3><ul><li>Smaller particle size increases surface area</li><li>Proper C:N ratio fuels microbes</li><li>Adequate moisture and oxygen</li><li>Larger pile retains heat better</li></ul><h3>Finished Compost Indicators</h3><ul><li>Dark, crumbly texture</li><li>Earthy smell</li><li>Original materials unrecognizable</li><li>Temperature stable near ambient</li></ul></div>`,
-          UNDERGRADUATE: `<div class="lesson-content"><h2>System Design and Management</h2><h3>Site Selection</h3><ul><li>Drainage and runoff management</li><li>Access for materials and equipment</li><li>Buffer zones and neighbors</li><li>Regulatory requirements</li></ul><h3>Process Control</h3><ul><li>Recipe development for feedstock mix</li><li>Monitoring and documentation</li><li>PFRP (Process to Further Reduce Pathogens) compliance</li></ul><h3>End Product Quality</h3><ul><li>Maturity testing (germination, respiration)</li><li>Stability assessment</li><li>Contaminant screening</li></ul></div>`,
-          GRADUATE: `<div class="lesson-content"><h2>Commercial Composting Operations</h2><h3>Facility Design</h3><ul><li>Throughput and retention time calculations</li><li>Equipment selection</li><li>Leachate management</li><li>Odor control systems</li></ul><h3>Economics</h3><ul><li>Tipping fees vs. product sales</li><li>Operating cost structures</li><li>Market development</li></ul><h3>Regulatory Compliance</h3><ul><li>Permit requirements</li><li>Testing and reporting</li><li>Neighbor relations</li></ul></div>`,
-          PHD: `<div class="lesson-content"><h2>Advanced Composting Research</h2><h3>Process Optimization</h3><ul><li>Real-time monitoring systems</li><li>Predictive modeling</li><li>Automation and control</li></ul><h3>Emerging Applications</h3><ul><li>Compost as biofilter medium</li><li>Disease suppressive composts</li><li>Biochar-compost combinations</li></ul><h3>Life Cycle Assessment</h3><p>Comparing composting with other organic waste options across environmental impact categories.</p></div>`
+          ELEMENTARY: `<div class="lesson-content">
+<h2>Building Your Very Own Compost Home!</h2>
+
+<p>Remember Bella Banana Peel and her friends from our last lesson? They need a cozy place to live while they transform into super soil! Let's build them the perfect home.</p>
+
+<div class="image-placeholder" data-caption="A colorful backyard compost bin">
+[Image: A cheerful illustration of a backyard compost bin surrounded by happy decomposers and garden plants]
+</div>
+
+<h3>Where Should Your Compost Live?</h3>
+
+<p>The best spot for compost is:</p>
+
+<ul>
+<li>A shady spot (so it doesn't dry out too fast)</li>
+<li>Near a water source (you'll need to keep it moist)</li>
+<li>Easy to reach from the kitchen (you'll visit often!)</li>
+<li>On top of soil (so worms can move in)</li>
+</ul>
+
+<h3>Types of Compost Homes</h3>
+
+<h4>Bin Composting</h4>
+<p>A container keeps everything neat and tidy. You can buy one or make one from wood pallets or wire mesh!</p>
+
+<h4>Pile Composting</h4>
+<p>Just make a pile in your yard! This works great for leaves and yard waste.</p>
+
+<h4>Tumbler Composting</h4>
+<p>A spinning container makes it easy to mix your compost—like a giant salad spinner for scraps!</p>
+
+<h4>Worm Composting</h4>
+<p>Red wiggler worms live in a special bin and eat your food scraps. You can keep them indoors—even in an apartment!</p>
+
+<h3>Building Your Compost: Step by Step</h3>
+
+<ol>
+<li><strong>Start with sticks and twigs</strong> — This lets air flow through the bottom</li>
+<li><strong>Add a layer of brown stuff</strong> — Dead leaves, cardboard, or newspaper</li>
+<li><strong>Add a layer of green stuff</strong> — Food scraps, fresh grass clippings</li>
+<li><strong>Sprinkle with water</strong> — Make it moist like a wrung-out sponge</li>
+<li><strong>Keep adding layers</strong> — Brown, green, brown, green...</li>
+<li><strong>Cover the top</strong> — Keeps moisture in and critters out</li>
+</ol>
+
+<div class="fun-fact">
+<h4>Fun Fact!</h4>
+<p>A healthy compost bin can have over 10,000 different species of tiny creatures living in it! They're all working together like a team.</p>
+</div>
+
+<h3>Taking Care of Your Compost</h3>
+
+<ul>
+<li><strong>Mix it up:</strong> Stir your compost every week or two to add air</li>
+<li><strong>Keep it moist:</strong> Add water if it gets dry</li>
+<li><strong>Add more browns if it smells bad:</strong> Smelly compost needs more leaves or cardboard</li>
+<li><strong>Be patient:</strong> Compost can take 2-6 months to be ready!</li>
+</ul>
+
+<h3>Signs Your Compost is Happy</h3>
+
+<ul>
+<li>It smells like forest soil, not garbage</li>
+<li>It feels warm in the middle (decomposers are working hard!)</li>
+<li>You see insects and worms</li>
+<li>The pile shrinks over time (materials are breaking down)</li>
+</ul>
+
+<div class="key-concept">
+<h4>Remember!</h4>
+<p>Building a compost system is like creating a home for millions of tiny helpers. Give them the right mix of browns, greens, air, and water, and they'll turn your scraps into garden gold!</p>
+</div>
+</div>`,
+
+          MIDDLE_SCHOOL: `<div class="lesson-content">
+<h2>Composting Methods: Finding Your Perfect System</h2>
+
+<p>There's no one-size-fits-all approach to composting. The best system depends on what materials you have, how much space you have, and how much effort you want to put in.</p>
+
+<div class="image-placeholder" data-caption="Comparison of different composting methods">
+[Image: Four-panel illustration showing bin, pile, tumbler, and worm composting systems]
+</div>
+
+<h3>Method 1: Bin Composting</h3>
+
+<p>Enclosed containers are popular for backyard composting:</p>
+
+<table class="comparison-table">
+<tr><th>Pros</th><th>Cons</th></tr>
+<tr><td>Neat and contained</td><td>Limited capacity</td></tr>
+<tr><td>Keeps pests out</td><td>Can be hard to turn</td></tr>
+<tr><td>Faster than piles</td><td>Initial cost for bin</td></tr>
+<tr><td>Works in small spaces</td><td>May need more monitoring</td></tr>
+</table>
+
+<h3>Method 2: Pile Composting</h3>
+
+<p>The simplest approach—just make a pile!</p>
+
+<ul>
+<li>Best for large quantities of yard waste</li>
+<li>Requires more space (at least 3' x 3' x 3')</li>
+<li>Easy to add materials and turn</li>
+<li>May attract animals if food scraps are visible</li>
+</ul>
+
+<h3>Method 3: Tumbler Composting</h3>
+
+<p>Rotating drums make mixing easy:</p>
+
+<ul>
+<li>Spin to turn instead of using a pitchfork</li>
+<li>Can produce compost in 4-8 weeks</li>
+<li>Keeps materials contained and pest-free</li>
+<li>More expensive than other methods</li>
+<li>Limited batch size</li>
+</ul>
+
+<h3>Method 4: Vermicomposting (Worm Composting)</h3>
+
+<p>Red wiggler worms are composting superstars!</p>
+
+<ul>
+<li>Works indoors—perfect for apartments</li>
+<li>Worms eat half their body weight in food daily</li>
+<li>Produces "worm castings"—extremely nutrient-rich</li>
+<li>No turning required</li>
+<li>Must maintain proper conditions (temperature, moisture)</li>
+</ul>
+
+<div class="did-you-know">
+<h4>Did You Know?</h4>
+<p>Red wiggler worms can double their population every 90 days! A single pound of worms can process about 3-4 pounds of food scraps per week.</p>
+</div>
+
+<h3>Method 5: Bokashi Composting</h3>
+
+<p>A Japanese method using fermentation:</p>
+
+<ul>
+<li>Uses special bran inoculated with beneficial microbes</li>
+<li>Can handle meat and dairy (unlike regular composting)</li>
+<li>Works in a sealed bucket</li>
+<li>Fermented material must be buried to finish decomposing</li>
+</ul>
+
+<h3>Troubleshooting Common Problems</h3>
+
+<table class="troubleshooting-table">
+<tr><th>Problem</th><th>Cause</th><th>Solution</th></tr>
+<tr><td>Smelly compost</td><td>Too wet, too many greens</td><td>Add browns, improve drainage</td></tr>
+<tr><td>Not decomposing</td><td>Too dry, too many browns</td><td>Add water and green materials</td></tr>
+<tr><td>Attracting pests</td><td>Food scraps exposed</td><td>Bury scraps, avoid meat/dairy</td></tr>
+<tr><td>Too slow</td><td>Pile too small or cold</td><td>Build larger pile, add nitrogen</td></tr>
+</table>
+
+<div class="key-concept">
+<h4>Key Takeaway</h4>
+<p>The best composting method is the one you'll actually use! Whether it's a simple pile, a spinning tumbler, or a worm bin, consistent effort and proper balance of materials will turn your organic waste into valuable compost.</p>
+</div>
+</div>`,
+
+          HIGH_SCHOOL: `<div class="lesson-content">
+<h2>Optimizing Compost Systems: Science-Based Management</h2>
+
+<p>Successful composting requires understanding and controlling key environmental parameters. By monitoring and adjusting conditions, you can accelerate decomposition and produce high-quality compost consistently.</p>
+
+<div class="image-placeholder" data-caption="Monitoring parameters in a compost system">
+[Image: Diagram showing temperature, moisture, and oxygen monitoring in a compost pile]
+</div>
+
+<h3>Critical Parameters for Composting</h3>
+
+<h4>1. Temperature</h4>
+
+<p>Temperature is the best indicator of microbial activity:</p>
+
+<table class="temperature-table">
+<tr><th>Temperature Range</th><th>Phase</th><th>What's Happening</th></tr>
+<tr><td>50-104°F (10-40°C)</td><td>Mesophilic</td><td>Initial breakdown, bacteria and fungi active</td></tr>
+<tr><td>104-160°F (40-71°C)</td><td>Thermophilic</td><td>Rapid decomposition, pathogen kill</td></tr>
+<tr><td>160°F+ (71°C+)</td><td>Overheating</td><td>Beneficial microbes dying—add water!</td></tr>
+<tr><td>Cooling back to ambient</td><td>Curing</td><td>Maturation and stabilization</td></tr>
+</table>
+
+<p>Use a compost thermometer with a 20" probe to measure internal temperature. Target 130-150°F for pathogen reduction.</p>
+
+<h4>2. Moisture Content</h4>
+
+<p>Optimal moisture is 50-60%—like a wrung-out sponge:</p>
+
+<ul>
+<li><strong>Too dry (under 40%):</strong> Microbial activity slows dramatically</li>
+<li><strong>Too wet (over 65%):</strong> Oxygen is displaced, anaerobic conditions develop</li>
+<li><strong>Test method:</strong> Squeeze a handful—should feel moist but not drip</li>
+</ul>
+
+<h4>3. Oxygen/Aeration</h4>
+
+<p>Aerobic decomposition requires oxygen throughout the pile:</p>
+
+<ul>
+<li><strong>Turning:</strong> Mix pile every 1-2 weeks to introduce air</li>
+<li><strong>Passive aeration:</strong> Perforated pipes or coarse materials at base</li>
+<li><strong>Oxygen minimum:</strong> 5-15% in air spaces for aerobic conditions</li>
+</ul>
+
+<h3>Accelerating Decomposition</h3>
+
+<p>To speed up your compost:</p>
+
+<ol>
+<li><strong>Reduce particle size:</strong> Shred or chip materials to increase surface area</li>
+<li><strong>Optimize C:N ratio:</strong> Target 25-30:1 for fastest decomposition</li>
+<li><strong>Increase pile size:</strong> Minimum 3'x3'x3' to retain heat (up to 5'x5')</li>
+<li><strong>Turn frequently:</strong> More turning = faster composting</li>
+<li><strong>Maintain moisture:</strong> Add water when turning if needed</li>
+<li><strong>Inoculate:</strong> Add finished compost or soil to introduce beneficial microbes</li>
+</ol>
+
+<h3>When is Compost Finished?</h3>
+
+<p>Signs of mature compost:</p>
+
+<ul>
+<li>Dark brown to black color</li>
+<li>Crumbly texture, not slimy or chunite</li>
+<li>Earthy, pleasant smell (like forest floor)</li>
+<li>Original materials no longer recognizable</li>
+<li>Temperature stable at ambient</li>
+<li>Volume reduced by 50-75% from original</li>
+</ul>
+
+<h4>Testing Maturity</h4>
+
+<p>Simple tests to confirm compost is ready:</p>
+
+<ul>
+<li><strong>Bag test:</strong> Seal sample in plastic bag for a week—no odor means stable</li>
+<li><strong>Germination test:</strong> Plant seeds in compost—good germination indicates maturity</li>
+<li><strong>Reheating test:</strong> Wet and pile sample—shouldn't reheat if mature</li>
+</ul>
+
+<div class="key-concept">
+<h4>Engineering Perspective</h4>
+<p>Composting is a controlled biological process. By monitoring temperature, moisture, and aeration—and adjusting inputs accordingly—you can optimize conditions for rapid, complete decomposition and high-quality finished compost.</p>
+</div>
+</div>`,
+
+          UNDERGRADUATE: `<div class="lesson-content">
+<h2>Composting Systems Engineering: Design, Process Control, and Quality Management</h2>
+
+<p>Professional composting operations require systematic approaches to facility design, process control, and product quality assurance. This lesson covers engineering principles for designing and managing composting systems from residential scale to commercial facilities.</p>
+
+<h3>Site Selection and Facility Design</h3>
+
+<h4>Site Criteria</h4>
+<ul>
+<li><strong>Drainage:</strong> Well-drained site, designed to capture and treat runoff</li>
+<li><strong>Buffer zones:</strong> Distance to neighbors, waterways, and sensitive areas</li>
+<li><strong>Access:</strong> Road capacity for material delivery and product removal</li>
+<li><strong>Utilities:</strong> Water for moisture management, electricity for equipment</li>
+<li><strong>Zoning/permits:</strong> Local regulations for waste processing facilities</li>
+</ul>
+
+<h4>Facility Layout</h4>
+<table class="layout-table">
+<tr><th>Area</th><th>Function</th><th>Design Considerations</th></tr>
+<tr><td>Receiving</td><td>Material intake and inspection</td><td>Tipping floor, contamination removal</td></tr>
+<tr><td>Processing</td><td>Grinding, mixing</td><td>Equipment space, material flow</td></tr>
+<tr><td>Active composting</td><td>Decomposition phase</td><td>Pad design, aeration, turning</td></tr>
+<tr><td>Curing</td><td>Maturation</td><td>Extended storage area</td></tr>
+<tr><td>Screening</td><td>Particle size refinement</td><td>Equipment, reject handling</td></tr>
+<tr><td>Storage</td><td>Finished product</td><td>Covered to maintain quality</td></tr>
+</table>
+
+<h3>Process Control Systems</h3>
+
+<h4>Recipe Development</h4>
+<p>Balancing feedstocks for optimal composting:</p>
+
+<ul>
+<li>Calculate weighted average C:N from feedstock analyses</li>
+<li>Target 25-35:1 for active composting</li>
+<li>Adjust for moisture content differences</li>
+<li>Consider bulk density and structure for aeration</li>
+</ul>
+
+<h4>Monitoring Program</h4>
+<ul>
+<li><strong>Temperature:</strong> Daily during active phase, probes at multiple depths</li>
+<li><strong>Moisture:</strong> Weekly grab samples, adjust with water or dry amendments</li>
+<li><strong>Oxygen:</strong> Portable meters for in-pile measurement (target >10%)</li>
+<li><strong>Time tracking:</strong> Record time at temperature for pathogen reduction</li>
+</ul>
+
+<h3>Pathogen Reduction Requirements</h3>
+
+<p>PFRP (Process to Further Reduce Pathogens) under EPA 503 regulations:</p>
+
+<ul>
+<li>In-vessel or static aerated pile: 55°C (131°F) for 3 consecutive days</li>
+<li>Windrow: 55°C (131°F) for 15 days, turned 5 times during that period</li>
+<li>Documentation of time-temperature compliance required</li>
+</ul>
+
+<h3>End Product Quality</h3>
+
+<h4>Testing Parameters</h4>
+<table class="quality-table">
+<tr><th>Parameter</th><th>Test Method</th><th>Significance</th></tr>
+<tr><td>Stability</td><td>Solvita, CO2 respiration</td><td>Risk of odors, plant damage</td></tr>
+<tr><td>Maturity</td><td>Germination index</td><td>Safety for plant contact</td></tr>
+<tr><td>Nutrients</td><td>N-P-K analysis</td><td>Fertilizer value</td></tr>
+<tr><td>pH, EC</td><td>Standard methods</td><td>Plant compatibility</td></tr>
+<tr><td>Contaminants</td><td>Metals, pathogens</td><td>Regulatory compliance</td></tr>
+</table>
+
+<div class="key-concept">
+<h4>Professional Practice</h4>
+<p>Successful composting operations integrate engineering design, process control, and quality management. Systematic monitoring, documentation, and adjustment ensure consistent production of safe, high-quality compost while meeting regulatory requirements.</p>
+</div>
+</div>`,
+
+          GRADUATE: `<div class="lesson-content">
+<h2>Commercial Composting: Operations, Economics, and Policy</h2>
+
+<p>Graduate-level analysis of composting addresses the business and policy dimensions of organic waste management. This includes facility economics, market development, regulatory frameworks, and integration with broader waste management systems.</p>
+
+<h3>Commercial Composting Technologies</h3>
+
+<table class="technology-table">
+<tr><th>Technology</th><th>Capital Cost</th><th>Processing Time</th><th>Labor</th><th>Best For</th></tr>
+<tr><td>Windrow</td><td>Low</td><td>3-6 months</td><td>Medium</td><td>Yard waste</td></tr>
+<tr><td>Static aerated pile</td><td>Medium</td><td>2-3 months</td><td>Low</td><td>Mixed organics</td></tr>
+<tr><td>In-vessel</td><td>High</td><td>2-4 weeks</td><td>Low</td><td>Food waste, limited space</td></tr>
+<tr><td>Vermicomposting</td><td>Medium</td><td>3-4 months</td><td>Medium</td><td>Specialty markets</td></tr>
+</table>
+
+<h3>Economic Analysis</h3>
+
+<h4>Revenue Streams</h4>
+<ul>
+<li><strong>Tipping fees:</strong> $30-80/ton for accepting organic waste</li>
+<li><strong>Product sales:</strong> $15-40/cubic yard bulk, higher for bagged</li>
+<li><strong>Specialty products:</strong> Compost tea, vermicast command premiums</li>
+</ul>
+
+<h4>Cost Structure</h4>
+<ul>
+<li><strong>Labor:</strong> 25-40% of operating costs</li>
+<li><strong>Equipment:</strong> Loaders, turners, screeners (depreciation + maintenance)</li>
+<li><strong>Utilities:</strong> Fuel, water, electricity</li>
+<li><strong>Compliance:</strong> Monitoring, testing, reporting</li>
+<li><strong>Land:</strong> Lease or opportunity cost</li>
+</ul>
+
+<h4>Break-even Analysis</h4>
+<p>Typical facilities need 10,000-20,000 tons annual throughput for profitability without subsidies, though smaller operations can work with specialty markets.</p>
+
+<h3>Market Development</h3>
+
+<h4>Market Segments</h4>
+<ul>
+<li><strong>Bulk landscape:</strong> High volume, lower margins, consistent demand</li>
+<li><strong>Bagged retail:</strong> Higher margins, requires packaging and distribution</li>
+<li><strong>Agriculture:</strong> Large volumes, price-sensitive, quality-focused</li>
+<li><strong>Specialty:</strong> Organic certified, specialty blends, growing media</li>
+<li><strong>Government:</strong> Public works, stormwater, landfill cover</li>
+</ul>
+
+<h3>Regulatory Framework</h3>
+
+<h4>Federal Regulations</h4>
+<ul>
+<li>EPA 40 CFR Part 503: Standards for land application of biosolids</li>
+<li>RCRA: Solid waste exemptions for composting</li>
+<li>Clean Water Act: Stormwater permits for facilities</li>
+</ul>
+
+<h4>State/Local Regulations</h4>
+<ul>
+<li>Permitting requirements vary significantly by state</li>
+<li>Odor management often locally regulated</li>
+<li>Organics diversion mandates in some jurisdictions</li>
+</ul>
+
+<h3>Integration with Waste Systems</h3>
+
+<ul>
+<li>Source separation programs for clean feedstocks</li>
+<li>Transfer station integration for collection efficiency</li>
+<li>Complementary with anaerobic digestion</li>
+<li>Residuals management (overs, contaminants)</li>
+</ul>
+
+<div class="key-concept">
+<h4>Policy Analysis</h4>
+<p>Commercial composting viability depends on the interaction of disposal costs (tipping fees), product markets, and regulatory mandates. Successful operations optimize across these factors while building community support and managing environmental impacts.</p>
+</div>
+</div>`,
+
+          PHD: `<div class="lesson-content">
+<h2>Composting Research: Microbiology, Process Modeling, and Systems Integration</h2>
+
+<p>Doctoral-level composting research addresses fundamental questions about microbial ecology, reaction kinetics, process optimization, and the role of composting in sustainable waste management systems. This work integrates microbiology, environmental engineering, and systems analysis.</p>
+
+<h3>Microbial Ecology of Composting</h3>
+
+<h4>Succession Dynamics</h4>
+<ul>
+<li><strong>Initial phase:</strong> Mesophilic bacteria, fungi establish on fresh substrates</li>
+<li><strong>Thermophilic phase:</strong> Temperature-tolerant bacteria dominate (Bacillus, Thermus)</li>
+<li><strong>Cooling:</strong> Actinomycetes, fungi return; humic substance formation</li>
+<li><strong>Maturation:</strong> Diverse community including protozoa, nematodes</li>
+</ul>
+
+<h4>Research Methods</h4>
+<table class="methods-table">
+<tr><th>Approach</th><th>Information Provided</th><th>Limitations</th></tr>
+<tr><td>16S rRNA sequencing</td><td>Community composition</td><td>DNA from dead cells; PCR bias</td></tr>
+<tr><td>Metatranscriptomics</td><td>Active genes and functions</td><td>RNA extraction challenges</td></tr>
+<tr><td>Stable isotope probing</td><td>Substrate utilization by taxa</td><td>Labor-intensive, limited throughput</td></tr>
+<tr><td>BIOLOG plates</td><td>Functional diversity</td><td>Culturable fraction only</td></tr>
+</table>
+
+<h3>Process Modeling</h3>
+
+<h4>Kinetic Models</h4>
+<p>Mathematical descriptions of decomposition:</p>
+<ul>
+<li>First-order decay: dC/dt = -kC</li>
+<li>Michaelis-Menten kinetics for substrate-limited reactions</li>
+<li>Temperature dependencies (Arrhenius, Ratkowsky)</li>
+<li>Moisture and oxygen limitation factors</li>
+</ul>
+
+<h4>Heat and Mass Transfer</h4>
+<ul>
+<li>Biogenic heat generation models</li>
+<li>Conductive and convective heat transfer in piles</li>
+<li>Moisture migration driven by temperature gradients</li>
+<li>Oxygen transport and consumption</li>
+</ul>
+
+<h3>Emerging Research Areas</h3>
+
+<h4>Compost as Biofilter Medium</h4>
+<ul>
+<li>VOC and odor degradation in compost biofilters</li>
+<li>Media longevity and management</li>
+<li>Microbial community function in biofilters</li>
+</ul>
+
+<h4>Disease Suppressive Composts</h4>
+<ul>
+<li>Mechanisms of pathogen suppression (competition, antibiosis, induced resistance)</li>
+<li>Predicting and enhancing suppressiveness</li>
+<li>Application protocols for disease management</li>
+</ul>
+
+<h4>Biochar-Compost Systems</h4>
+<ul>
+<li>Co-composting with biochar</li>
+<li>Enhanced nutrient retention</li>
+<li>Carbon sequestration potential</li>
+<li>Synergies for soil health</li>
+</ul>
+
+<h3>Life Cycle Assessment</h3>
+
+<p>Comparative environmental analysis:</p>
+<ul>
+<li>GHG emissions (CH4, N2O, CO2) from different processes</li>
+<li>Nutrient recovery efficiency vs. other treatments</li>
+<li>Land use and transportation considerations</li>
+<li>End-use credits for avoided fertilizer, peat</li>
+</ul>
+
+<div class="key-concept">
+<h4>Research Orientation</h4>
+<p>Composting research bridges microbiology, engineering, and environmental science. Key challenges include understanding and managing the complex microbial community, developing predictive models for process control, and quantifying the broader environmental benefits of composting relative to other organic waste management options.</p>
+</div>
+</div>`
         }
       }
     ],
