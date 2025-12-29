@@ -578,6 +578,882 @@ export const foodSovereigntyModules: Module[] = [
 </div>
 </div>`
         }
+      },
+      {
+        id: 'fs-intro-2',
+        title: 'Local Food Systems',
+        order: 2,
+        duration: 15,
+        hasActivity: false,
+        content: {
+          ELEMENTARY: `<div class="lesson-content">
+<h2>Where Does Local Food Come From?</h2>
+
+<p>Remember Maria from our last story? She learned that the best tasting food comes from nearby! Let us explore all the amazing places where local food grows and is sold.</p>
+
+<h3>The Farmers Market</h3>
+<p>A farmers market is like a food party where farmers bring their fresh food to sell:</p>
+<ul>
+<li>Farmers set up tables with fruits and vegetables</li>
+<li>You can meet the person who grew your food!</li>
+<li>The food is super fresh - sometimes picked that morning</li>
+<li>You can ask questions about how food is grown</li>
+</ul>
+
+<h3>Community Gardens</h3>
+<p>In a community garden, neighbors share a big garden space:</p>
+<ul>
+<li>Each family gets their own little plot</li>
+<li>Neighbors help each other learn gardening</li>
+<li>People share extra vegetables with each other</li>
+<li>Kids learn to grow their own food</li>
+</ul>
+
+<h3>Backyard and School Gardens</h3>
+<p>You can grow food right where you are!</p>
+<ul>
+<li>Tomatoes in pots on a balcony</li>
+<li>Herbs in a sunny window</li>
+<li>A vegetable patch in your school</li>
+<li>Fruit trees in your neighborhood</li>
+</ul>
+
+<h3>Food from Local Farms</h3>
+<p>Some families join a special food club called a CSA:</p>
+<ul>
+<li>CSA means Community Supported Agriculture</li>
+<li>You pay the farmer at the start of the season</li>
+<li>Every week you get a box of whatever is growing</li>
+<li>It is like a surprise vegetable present!</li>
+</ul>
+
+<h3>Why Local Food is Special</h3>
+<ul>
+<li>It is fresher and tastes better</li>
+<li>Less pollution from trucks driving far away</li>
+<li>Money helps farmers in your community</li>
+<li>You learn about seasons - strawberries in summer, apples in fall!</li>
+</ul>
+
+<div class="key-concept">
+<h4>Local Food Heroes</h4>
+<p>Farmers, gardeners, and neighbors who grow food near you are helping your community stay healthy and strong!</p>
+</div>
+</div>`,
+
+          MIDDLE_SCHOOL: `<div class="lesson-content">
+<h2>Building Local Food Networks</h2>
+
+<p>Local food systems are networks of farmers, processors, distributors, and consumers all working within a region. These systems create alternatives to the global industrial food chain.</p>
+
+<h3>Types of Local Food Outlets</h3>
+
+<table>
+<tr><th>Type</th><th>Description</th><th>Benefits</th></tr>
+<tr><td>Farmers Markets</td><td>Direct sales from farmer to consumer</td><td>Fresh food, meet your farmer, community gathering</td></tr>
+<tr><td>CSA (Community Supported Agriculture)</td><td>Subscription boxes from local farms</td><td>Share risk with farmer, seasonal variety</td></tr>
+<tr><td>Farm Stands</td><td>On-farm sales locations</td><td>Freshest possible, farm experience</td></tr>
+<tr><td>Food Co-ops</td><td>Member-owned grocery stores</td><td>Local products, democratic ownership</td></tr>
+<tr><td>Farm-to-School</td><td>Schools purchasing from local farms</td><td>Education, healthy meals, farmer income</td></tr>
+</table>
+
+<h3>How CSAs Work</h3>
+
+<p>Community Supported Agriculture connects consumers directly to farmers:</p>
+<ol>
+<li><strong>Sign up:</strong> Pay at the start of the growing season</li>
+<li><strong>Share the risk:</strong> If crops fail, everyone shares the loss; if abundant, everyone shares the bounty</li>
+<li><strong>Weekly pickup:</strong> Receive a share of whatever is harvested</li>
+<li><strong>Eat seasonally:</strong> Learn to cook with what is available</li>
+</ol>
+
+<h3>Benefits of Local Food Systems</h3>
+
+<h4>For Farmers:</h4>
+<ul>
+<li>Keep more money (no middlemen)</li>
+<li>Direct feedback from customers</li>
+<li>More stable income from CSA pre-payments</li>
+<li>Build relationships with community</li>
+</ul>
+
+<h4>For Communities:</h4>
+<ul>
+<li>Fresher, more nutritious food</li>
+<li>Money circulates locally</li>
+<li>Preserve farmland and rural livelihoods</li>
+<li>Reduce environmental impact</li>
+</ul>
+
+<h3>Challenges and Solutions</h3>
+
+<table>
+<tr><th>Challenge</th><th>Solution</th></tr>
+<tr><td>Seasonal availability</td><td>Food preservation, storage crops, greenhouses</td></tr>
+<tr><td>Higher prices</td><td>SNAP at farmers markets, sliding scale CSA</td></tr>
+<tr><td>Convenience</td><td>Online ordering, multiple pickup locations</td></tr>
+<tr><td>Limited selection</td><td>Multi-farm CSAs, food hub aggregation</td></tr>
+</table>
+
+<div class="key-concept">
+<h4>Economic Impact</h4>
+<p>Studies show that dollars spent at local farms recirculate in the local economy 2-3 times more than money spent at chain stores. Local food builds local wealth!</p>
+</div>
+</div>`,
+
+          HIGH_SCHOOL: `<div class="lesson-content">
+<h2>Local Food System Economics and Infrastructure</h2>
+
+<p>Building functional local food systems requires understanding the economics, logistics, and infrastructure that connect local producers to consumers.</p>
+
+<h3>The Local Food Economy</h3>
+
+<h4>Direct Marketing Channels:</h4>
+<table>
+<thead>
+<tr><th>Channel</th><th>Farmer Revenue Share</th><th>Consumer Price Premium</th><th>Annual Growth</th></tr>
+</thead>
+<tbody>
+<tr><td>Farmers Markets</td><td>90-100 percent</td><td>20-50 percent</td><td>3-5 percent</td></tr>
+<tr><td>CSA</td><td>100 percent</td><td>10-30 percent</td><td>5-7 percent</td></tr>
+<tr><td>On-farm sales</td><td>100 percent</td><td>0-20 percent</td><td>4-6 percent</td></tr>
+<tr><td>Conventional retail</td><td>15-25 percent</td><td>0 percent (baseline)</td><td>1-2 percent</td></tr>
+</tbody>
+</table>
+
+<h3>Food Hubs and Aggregation</h3>
+
+<p>Food hubs solve a key problem: connecting many small farms with large buyers.</p>
+
+<h4>Food Hub Functions:</h4>
+<ul>
+<li><strong>Aggregation:</strong> Combine products from multiple farms</li>
+<li><strong>Distribution:</strong> Efficient delivery to buyers</li>
+<li><strong>Marketing:</strong> Brand development and sales</li>
+<li><strong>Processing:</strong> Washing, packing, value-added production</li>
+</ul>
+
+<h4>Food Hub Models:</h4>
+<ul>
+<li><strong>Non-profit:</strong> Mission-driven, grant-supported</li>
+<li><strong>Cooperative:</strong> Farmer-owned and governed</li>
+<li><strong>For-profit:</strong> Private business model</li>
+<li><strong>Hybrid:</strong> Combination structures</li>
+</ul>
+
+<h3>Institutional Procurement</h3>
+
+<p>Large institutions can anchor local food systems:</p>
+<ul>
+<li><strong>Schools:</strong> Farm-to-school programs reaching millions of students</li>
+<li><strong>Hospitals:</strong> Health systems sourcing locally for patient and cafeteria food</li>
+<li><strong>Universities:</strong> Campus dining using local products</li>
+<li><strong>Government:</strong> Procurement policies favoring local</li>
+</ul>
+
+<h4>Barriers to Institutional Buying:</h4>
+<ul>
+<li>Volume and consistency requirements</li>
+<li>Food safety certification needs</li>
+<li>Procurement policies designed for large vendors</li>
+<li>Price competition with industrial suppliers</li>
+</ul>
+
+<h3>Infrastructure Needs</h3>
+
+<p>Local food systems require physical infrastructure:</p>
+<ul>
+<li><strong>Processing:</strong> USDA-inspected meat facilities, commercial kitchens</li>
+<li><strong>Storage:</strong> Cold storage, dry storage, grain handling</li>
+<li><strong>Distribution:</strong> Refrigerated trucks, loading facilities</li>
+<li><strong>Retail:</strong> Farmers market infrastructure, co-op stores</li>
+</ul>
+
+<div class="key-concept">
+<h4>Systems Thinking</h4>
+<p>Local food is not just about individual farm-to-consumer relationships. Building resilient local food systems requires infrastructure, policy, and coordination across the entire supply chain.</p>
+</div>
+</div>`,
+
+          UNDERGRADUATE: `<div class="lesson-content">
+<h2>Local Food Systems: Economic Analysis and Policy Frameworks</h2>
+
+<p>Understanding local food systems requires analyzing their economic structure, measuring their impacts, and examining the policy environment that shapes their development.</p>
+
+<h3>Defining and Measuring Local</h3>
+
+<h4>Defining Local:</h4>
+<ul>
+<li><strong>Geographic radius:</strong> 100-mile, 400-mile definitions common</li>
+<li><strong>Political boundaries:</strong> Same state, region, or foodshed</li>
+<li><strong>Supply chain length:</strong> Number of intermediaries between producer and consumer</li>
+<li><strong>Knowledge relationship:</strong> Consumer knows producer identity</li>
+</ul>
+
+<h4>Market Size Estimates:</h4>
+<table>
+<tr><th>Metric</th><th>Value</th><th>Source</th></tr>
+<tr><td>US local food sales</td><td>12 billion dollars</td><td>USDA 2020</td></tr>
+<tr><td>Percent of farms selling local</td><td>7.8 percent</td><td>Ag Census 2017</td></tr>
+<tr><td>Number of farmers markets</td><td>8,600</td><td>USDA 2019</td></tr>
+<tr><td>Number of food hubs</td><td>300 plus</td><td>USDA 2020</td></tr>
+</table>
+
+<h3>Economic Impact Analysis</h3>
+
+<h4>Methods:</h4>
+<ul>
+<li><strong>Input-output models:</strong> Trace spending through regional economy</li>
+<li><strong>Multiplier effects:</strong> Local spending recirculates more than imports</li>
+<li><strong>Employment impacts:</strong> Jobs created per million dollars of sales</li>
+<li><strong>Leakage analysis:</strong> Money leaving vs. staying in region</li>
+</ul>
+
+<h4>Typical Findings:</h4>
+<ul>
+<li>Local food sales generate 1.4-2.6 times more local economic activity than equivalent imports</li>
+<li>Local farms employ more people per dollar of revenue</li>
+<li>Strong local food systems correlate with lower poverty rates</li>
+</ul>
+
+<h3>Policy Frameworks</h3>
+
+<h4>Federal Policies:</h4>
+<table>
+<tr><th>Program</th><th>Description</th><th>Funding Level</th></tr>
+<tr><td>Farmers Market Promotion Program</td><td>Grants for market development</td><td>23 million dollars per year</td></tr>
+<tr><td>Local Food Promotion Program</td><td>Enterprise and planning grants</td><td>27 million dollars per year</td></tr>
+<tr><td>Value-Added Producer Grants</td><td>Working capital and planning</td><td>23 million dollars per year</td></tr>
+<tr><td>Farm to School Grant Program</td><td>School procurement and education</td><td>12 million dollars per year</td></tr>
+</table>
+
+<h4>State and Local Policies:</h4>
+<ul>
+<li>Procurement preferences for local products</li>
+<li>Food hub and infrastructure investments</li>
+<li>Farmland preservation programs</li>
+<li>Beginning farmer support programs</li>
+<li>Food access and nutrition incentives</li>
+</ul>
+
+<h3>Critical Analysis</h3>
+
+<h4>Debates in Local Food Scholarship:</h4>
+<ul>
+<li><strong>Local trap:</strong> Local does not automatically equal sustainable or just</li>
+<li><strong>Scale appropriateness:</strong> Right-sizing food systems for different contexts</li>
+<li><strong>Equity:</strong> Who has access to local food? Who benefits from local food systems?</li>
+<li><strong>Environmental claims:</strong> Is local always lower impact?</li>
+</ul>
+
+<div class="key-concept">
+<h4>Analytical Framework</h4>
+<p>Rigorous analysis of local food systems requires moving beyond assumptions to examine actual economic flows, environmental impacts, and equity outcomes. Local is a starting point, not an end in itself.</p>
+</div>
+</div>`,
+
+          GRADUATE: `<div class="lesson-content">
+<h2>Local Food Systems: Alternative Networks and Systemic Change</h2>
+
+<p>Graduate engagement with local food systems situates them within broader debates about food system transformation, alternative economic networks, and socioecological sustainability.</p>
+
+<h3>Theoretical Frameworks</h3>
+
+<h4>Alternative Food Networks (AFNs):</h4>
+<p>AFNs are defined in opposition to conventional food systems:</p>
+<ul>
+<li><strong>Shorter supply chains:</strong> Reducing distance and intermediaries</li>
+<li><strong>Embedding:</strong> Social relationships within economic exchange</li>
+<li><strong>Quality conventions:</strong> Alternative definitions of food quality</li>
+<li><strong>Reflexivity:</strong> Consumer awareness of production conditions</li>
+</ul>
+
+<h4>Critiques of AFN Literature:</h4>
+<ul>
+<li>Romanticization of local and small-scale</li>
+<li>Insufficient attention to power and inequality</li>
+<li>Limited engagement with racial justice</li>
+<li>Weak theorization of system change</li>
+</ul>
+
+<h3>Civic Agriculture and Food Democracy</h3>
+
+<h4>Civic Agriculture Concept:</h4>
+<p>Lyson's civic agriculture framework emphasizes:</p>
+<ul>
+<li>Agriculture embedded in local communities</li>
+<li>Farmers as community members, not just producers</li>
+<li>Food system participation as civic engagement</li>
+<li>Local food infrastructure as public goods</li>
+</ul>
+
+<h4>Food Democracy:</h4>
+<p>Decision-making power over food systems:</p>
+<ul>
+<li>Who controls production, distribution, and access?</li>
+<li>Whose knowledge counts in food system governance?</li>
+<li>How are food system decisions made democratically?</li>
+</ul>
+
+<h3>Scale and Transformation</h3>
+
+<table>
+<tr><th>Question</th><th>Reformist Position</th><th>Radical Position</th></tr>
+<tr><td>Relationship to conventional system</td><td>Complement and improve</td><td>Challenge and replace</td></tr>
+<tr><td>Scale of impact</td><td>Incremental expansion</td><td>Systemic transformation</td></tr>
+<tr><td>Market engagement</td><td>Work within markets</td><td>Build alternative economies</td></tr>
+<tr><td>Policy approach</td><td>Support programs</td><td>Structural change</td></tr>
+</table>
+
+<h3>Racial Equity in Local Food</h3>
+
+<p>Critical scholarship examines:</p>
+<ul>
+<li>Whiteness of farmers market spaces and leadership</li>
+<li>Historical dispossession of Black and Indigenous farmers</li>
+<li>Food apartheid and uneven access to local food</li>
+<li>Community-led solutions in marginalized communities</li>
+</ul>
+
+<h3>Research Methods</h3>
+
+<ul>
+<li><strong>Value chain analysis:</strong> Mapping flows of products, money, and power</li>
+<li><strong>Network analysis:</strong> Relationships among food system actors</li>
+<li><strong>Participatory research:</strong> Collaboration with communities and farmers</li>
+<li><strong>Political economy:</strong> Power structures shaping food systems</li>
+</ul>
+
+<div class="key-concept">
+<h4>Graduate Research Orientation</h4>
+<p>Graduate research on local food systems must engage critically with celebratory narratives while remaining committed to alternatives. The task is to analyze limitations while contributing to more just and sustainable food futures.</p>
+</div>
+</div>`,
+
+          PHD: `<div class="lesson-content">
+<h2>Local Food Systems: Theoretical Interventions and Research Frontiers</h2>
+
+<p>Doctoral engagement with local food systems requires theoretical innovation, methodological rigor, and attentiveness to the politics of knowledge production in contested terrain.</p>
+
+<h3>Theoretical Debates</h3>
+
+<h4>Beyond the Local Trap:</h4>
+<p>Born and Purcell's critique and subsequent developments:</p>
+<ul>
+<li>Scale is socially constructed, not inherently meaningful</li>
+<li>Local outcomes depend on the social relations at that scale</li>
+<li>Scalar politics: why is local valorized in food movements?</li>
+<li>Relational approaches to scale in food systems</li>
+</ul>
+
+<h4>Convention Theory Applications:</h4>
+<table>
+<tr><th>Convention</th><th>Quality Definition</th><th>Local Food Application</th></tr>
+<tr><td>Market</td><td>Price signals</td><td>Premium pricing for local</td></tr>
+<tr><td>Industrial</td><td>Efficiency and standards</td><td>Food safety certification</td></tr>
+<tr><td>Domestic</td><td>Trust and tradition</td><td>Farmer-consumer relationships</td></tr>
+<tr><td>Civic</td><td>Collective welfare</td><td>Community food security</td></tr>
+<tr><td>Ecological</td><td>Environmental impact</td><td>Sustainable production</td></tr>
+</table>
+
+<h3>Emerging Research Areas</h3>
+
+<h4>Digital Platforms and Local Food:</h4>
+<ul>
+<li>Online farmers markets and ordering platforms</li>
+<li>Blockchain for local food traceability</li>
+<li>Data governance in local food systems</li>
+<li>Platform cooperativism alternatives</li>
+</ul>
+
+<h4>Climate Adaptation:</h4>
+<ul>
+<li>Local food system resilience to climate shocks</li>
+<li>Bioregional food system planning</li>
+<li>Carbon accounting in local versus global supply chains</li>
+<li>Climate-appropriate crop selection</li>
+</ul>
+
+<h4>Pandemic Lessons:</h4>
+<ul>
+<li>Supply chain vulnerability and local resilience</li>
+<li>Rapid innovation in local food distribution</li>
+<li>Essential worker visibility in food systems</li>
+<li>Mutual aid and community food networks</li>
+</ul>
+
+<h3>Methodological Considerations</h3>
+
+<h4>Challenges in Local Food Research:</h4>
+<ul>
+<li>Defining boundaries of local food systems</li>
+<li>Data availability for small-scale operations</li>
+<li>Attribution of impacts in complex systems</li>
+<li>Researcher positionality in community-engaged work</li>
+</ul>
+
+<h4>Innovative Approaches:</h4>
+<ul>
+<li>GIS and spatial analysis of local food access</li>
+<li>Social network analysis of food system relationships</li>
+<li>Comparative case studies across contexts</li>
+<li>Mixed methods combining quantitative and qualitative</li>
+</ul>
+
+<h3>Contribution to Food Sovereignty</h3>
+
+<p>How does local food scholarship contribute to food sovereignty?</p>
+<ul>
+<li>Documenting alternatives to corporate food systems</li>
+<li>Analyzing conditions enabling community control</li>
+<li>Critiquing co-optation by market forces</li>
+<li>Supporting movement knowledge production</li>
+</ul>
+
+<div class="key-concept">
+<h4>Doctoral Research Orientation</h4>
+<p>Doctoral research on local food systems occupies a space between analytical distance and normative commitment. The challenge is to produce rigorous scholarship that advances both academic debates and practical alternatives to industrial food.</p>
+</div>
+</div>`
+        }
+      },
+      {
+        id: 'fs-intro-3',
+        title: 'Building Food Sovereignty in Your Community',
+        order: 3,
+        duration: 15,
+        hasActivity: true,
+        activityType: 'SCENARIO',
+        content: {
+          ELEMENTARY: `<div class="lesson-content">
+<h2>You Can Be a Food Hero!</h2>
+
+<p>Guess what? Kids like YOU can help build food sovereignty in your community! Here are some fun ways to get started.</p>
+
+<h3>Start a Garden</h3>
+<p>Growing food is the first step to food sovereignty!</p>
+<ul>
+<li>Plant seeds in pots on a windowsill</li>
+<li>Ask your school about starting a garden club</li>
+<li>Help a neighbor with their garden</li>
+<li>Grow easy plants like beans, lettuce, or tomatoes</li>
+</ul>
+
+<h3>Learn About Your Food</h3>
+<p>Food heroes know where their food comes from:</p>
+<ul>
+<li>Ask your parents where food in your kitchen came from</li>
+<li>Visit a farmers market and talk to farmers</li>
+<li>Learn recipes from your grandparents or elders</li>
+<li>Try new vegetables you have never eaten before</li>
+</ul>
+
+<h3>Share With Others</h3>
+<p>Food sovereignty is about community:</p>
+<ul>
+<li>Share garden vegetables with neighbors</li>
+<li>Help cook a meal for your family</li>
+<li>Trade snacks that you grew or made</li>
+<li>Teach a friend how to plant a seed</li>
+</ul>
+
+<h3>Reduce Food Waste</h3>
+<p>Every bit of food is precious:</p>
+<ul>
+<li>Eat all the food on your plate</li>
+<li>Save scraps for compost</li>
+<li>Use leftovers for tomorrow's lunch</li>
+<li>Store food properly so it stays fresh</li>
+</ul>
+
+<h3>Speak Up!</h3>
+<p>Food heroes have a voice:</p>
+<ul>
+<li>Ask your school to serve local food</li>
+<li>Tell your family about what you learned</li>
+<li>Draw pictures about growing food</li>
+<li>Write a story about a community garden</li>
+</ul>
+
+<div class="key-concept">
+<h4>You Have Power!</h4>
+<p>Every seed you plant, every local food you eat, and every person you teach makes your community stronger. YOU are part of the food sovereignty movement!</p>
+</div>
+</div>`,
+
+          MIDDLE_SCHOOL: `<div class="lesson-content">
+<h2>Taking Action for Food Sovereignty</h2>
+
+<p>Food sovereignty is not just an idea to learn about - it is a movement to join. Here is how students can take meaningful action in their communities.</p>
+
+<h3>Action Levels</h3>
+
+<table>
+<tr><th>Level</th><th>Actions</th><th>Impact</th></tr>
+<tr><td>Personal</td><td>Grow food, cook from scratch, reduce waste</td><td>Build skills, reduce dependence</td></tr>
+<tr><td>Family</td><td>Shop at farmers markets, join CSA, preserve food</td><td>Support local farmers, eat seasonally</td></tr>
+<tr><td>School</td><td>Start garden club, advocate for local school food</td><td>Educate peers, change institutions</td></tr>
+<tr><td>Community</td><td>Volunteer at food bank, help community garden</td><td>Build food access, strengthen networks</td></tr>
+</table>
+
+<h3>Starting a School Project</h3>
+
+<h4>School Garden Steps:</h4>
+<ol>
+<li>Find interested students and a supportive teacher</li>
+<li>Survey available space (even containers work!)</li>
+<li>Research what grows in your season and climate</li>
+<li>Write a proposal for school administration</li>
+<li>Seek donations of seeds, tools, and materials</li>
+<li>Plant, maintain, and harvest together</li>
+<li>Share food with cafeteria or community</li>
+</ol>
+
+<h4>Farm-to-School Campaign:</h4>
+<ol>
+<li>Research what local farms exist near your school</li>
+<li>Find out how school food purchasing decisions are made</li>
+<li>Create a petition or presentation for decision-makers</li>
+<li>Propose a pilot program starting small</li>
+<li>Document success and expand</li>
+</ol>
+
+<h3>Community Engagement</h3>
+
+<h4>Ways to Get Involved:</h4>
+<ul>
+<li><strong>Community garden:</strong> Volunteer to help maintain shared plots</li>
+<li><strong>Food bank:</strong> Sort donations, help with distribution</li>
+<li><strong>Farmers market:</strong> Help a farmer at their stand</li>
+<li><strong>Seed library:</strong> Start or support seed sharing</li>
+<li><strong>Cooking classes:</strong> Learn traditional recipes from elders</li>
+</ul>
+
+<h3>Food Preservation Skills</h3>
+
+<p>Preserving food extends local harvests through the year:</p>
+<ul>
+<li><strong>Freezing:</strong> Berries, vegetables, prepared meals</li>
+<li><strong>Canning:</strong> Jams, pickles, tomato sauce (learn from an adult)</li>
+<li><strong>Drying:</strong> Herbs, fruit leather, dried beans</li>
+<li><strong>Fermentation:</strong> Sauerkraut, kimchi, pickles</li>
+</ul>
+
+<div class="key-concept">
+<h4>Start Where You Are</h4>
+<p>You do not need to do everything at once. Pick one action that interests you and start there. Every small step toward food sovereignty adds up!</p>
+</div>
+</div>`,
+
+          HIGH_SCHOOL: `<div class="lesson-content">
+<h2>Organizing for Food System Change</h2>
+
+<p>Moving from individual action to collective organizing is essential for transforming food systems. This lesson explores strategies for effective food sovereignty advocacy.</p>
+
+<h3>Understanding Power in Food Systems</h3>
+
+<h4>Who Holds Power:</h4>
+<ul>
+<li><strong>Corporations:</strong> Control seeds, inputs, processing, retail</li>
+<li><strong>Government:</strong> Sets policy, subsidies, regulations</li>
+<li><strong>Institutions:</strong> Schools, hospitals, prisons make large purchases</li>
+<li><strong>Consumers:</strong> Purchasing decisions send market signals</li>
+<li><strong>Producers:</strong> Farmers and food workers create all food</li>
+</ul>
+
+<h4>Power Mapping:</h4>
+<p>Before organizing, understand:</p>
+<ul>
+<li>Who makes decisions you want to change?</li>
+<li>Who influences those decision-makers?</li>
+<li>What pressure points exist?</li>
+<li>Who are potential allies and opponents?</li>
+</ul>
+
+<h3>Campaign Strategies</h3>
+
+<table>
+<tr><th>Strategy</th><th>Targets</th><th>Tactics</th></tr>
+<tr><td>Policy advocacy</td><td>Legislators, regulators</td><td>Testimony, lobbying, voter mobilization</td></tr>
+<tr><td>Institutional change</td><td>Schools, hospitals, businesses</td><td>Petitions, meetings, media campaigns</td></tr>
+<tr><td>Consumer campaigns</td><td>Companies, retailers</td><td>Boycotts, buycotts, shareholder actions</td></tr>
+<tr><td>Community building</td><td>Neighborhoods, networks</td><td>Gardens, markets, education</td></tr>
+</table>
+
+<h3>Coalition Building</h3>
+
+<p>Food sovereignty connects many issues:</p>
+<ul>
+<li><strong>Environmental groups:</strong> Sustainable agriculture, climate</li>
+<li><strong>Labor organizations:</strong> Food worker rights</li>
+<li><strong>Health advocates:</strong> Nutrition, food access</li>
+<li><strong>Social justice groups:</strong> Racial equity, economic justice</li>
+<li><strong>Farmer organizations:</strong> Producer rights, fair prices</li>
+</ul>
+
+<h3>Campaign Example: Farm to School</h3>
+
+<h4>Phase 1: Research</h4>
+<ul>
+<li>Current school food sourcing and budget</li>
+<li>Local farms and their capacity</li>
+<li>Successful programs in other districts</li>
+<li>Decision-making process for school food</li>
+</ul>
+
+<h4>Phase 2: Coalition Building</h4>
+<ul>
+<li>Student government endorsement</li>
+<li>Parent group support</li>
+<li>Teacher allies</li>
+<li>Local farmer participation</li>
+</ul>
+
+<h4>Phase 3: Action</h4>
+<ul>
+<li>Present to school board</li>
+<li>Propose pilot program</li>
+<li>Media coverage</li>
+<li>Monitor implementation</li>
+</ul>
+
+<div class="key-concept">
+<h4>Organizing Principle</h4>
+<p>Effective food system change requires organized people power. Individual choices matter, but collective action transforms institutions and policies.</p>
+</div>
+</div>`,
+
+          UNDERGRADUATE: `<div class="lesson-content">
+<h2>Food Sovereignty Organizing: Theory and Practice</h2>
+
+<p>Undergraduate engagement with food sovereignty organizing integrates social movement theory with practical skills for food system transformation.</p>
+
+<h3>Social Movement Theory Applied</h3>
+
+<h4>Resource Mobilization:</h4>
+<ul>
+<li>What resources do food movements need? (people, money, expertise)</li>
+<li>How do movements build organizational infrastructure?</li>
+<li>Role of professional movement organizations vs. grassroots</li>
+</ul>
+
+<h4>Political Opportunity:</h4>
+<ul>
+<li>When are policy windows open for change?</li>
+<li>How do external events create opportunities? (food scares, climate disasters)</li>
+<li>Role of elite allies in movement success</li>
+</ul>
+
+<h4>Framing:</h4>
+<ul>
+<li>How do movements define problems and solutions?</li>
+<li>Food sovereignty vs. food security framings</li>
+<li>Counter-framing by corporate food system defenders</li>
+</ul>
+
+<h3>Levels of Intervention</h3>
+
+<table>
+<tr><th>Level</th><th>Focus</th><th>Examples</th></tr>
+<tr><td>Individual</td><td>Behavior and consumption</td><td>Dietary choice, food growing</td></tr>
+<tr><td>Organizational</td><td>Institutional practices</td><td>University dining, hospital food</td></tr>
+<tr><td>Community</td><td>Local food infrastructure</td><td>Markets, gardens, co-ops</td></tr>
+<tr><td>Policy</td><td>Government programs and regulations</td><td>Farm bill, zoning, procurement</td></tr>
+<tr><td>Systemic</td><td>Economic and political structures</td><td>Trade policy, corporate power</td></tr>
+</table>
+
+<h3>Movement Strategy Analysis</h3>
+
+<h4>Inside vs. Outside Strategies:</h4>
+<ul>
+<li><strong>Inside:</strong> Working within institutions, policy advocacy, partnerships</li>
+<li><strong>Outside:</strong> Protest, direct action, building alternatives</li>
+<li><strong>Dual power:</strong> Creating parallel institutions while challenging dominant systems</li>
+</ul>
+
+<h4>Reform vs. Transformation:</h4>
+<ul>
+<li>Do reforms strengthen or weaken transformative potential?</li>
+<li>What is the relationship between incremental and radical change?</li>
+<li>When does working within the system change it vs. co-opt movements?</li>
+</ul>
+
+<h3>Skills for Organizers</h3>
+
+<ul>
+<li><strong>Power analysis:</strong> Understanding decision-making structures</li>
+<li><strong>Campaign planning:</strong> Goals, targets, tactics, timeline</li>
+<li><strong>Coalition building:</strong> Finding common ground across difference</li>
+<li><strong>Communication:</strong> Framing, storytelling, media relations</li>
+<li><strong>Facilitation:</strong> Running effective meetings and processes</li>
+<li><strong>Evaluation:</strong> Learning from success and failure</li>
+</ul>
+
+<div class="key-concept">
+<h4>Praxis</h4>
+<p>Food sovereignty organizing requires integration of theory and practice. Academic analysis informs strategy; organizing experience generates new theoretical insights.</p>
+</div>
+</div>`,
+
+          GRADUATE: `<div class="lesson-content">
+<h2>Food Sovereignty Movements: Comparative Analysis and Strategic Questions</h2>
+
+<p>Graduate engagement with food sovereignty organizing examines movement dynamics, comparative cases, and strategic debates within the global food sovereignty movement.</p>
+
+<h3>La Via Campesina as Transnational Movement</h3>
+
+<h4>Organizational Structure:</h4>
+<ul>
+<li>Federation of national and regional peasant organizations</li>
+<li>Representation from over 80 countries</li>
+<li>Internal democracy and consensus decision-making</li>
+<li>Balance between global coordination and local autonomy</li>
+</ul>
+
+<h4>Movement Strategies:</h4>
+<ul>
+<li><strong>Counter-summits:</strong> Challenging WTO, FAO, World Bank</li>
+<li><strong>Policy engagement:</strong> UN Committee on Food Security</li>
+<li><strong>Direct action:</strong> Land occupations, seed exchanges</li>
+<li><strong>Knowledge production:</strong> Agroecology training centers</li>
+</ul>
+
+<h3>Comparative Movement Analysis</h3>
+
+<table>
+<tr><th>Movement</th><th>Context</th><th>Strategies</th><th>Outcomes</th></tr>
+<tr><td>MST Brazil</td><td>Landless workers</td><td>Land occupation, cooperatives</td><td>400,000 families settled</td></tr>
+<tr><td>Food Sovereignty Ghana</td><td>Seed and trade policy</td><td>Policy advocacy, farmer networks</td><td>Plant Breeders Bill modified</td></tr>
+<tr><td>MASIPAG Philippines</td><td>Rice farmer sovereignty</td><td>Farmer-led breeding, training</td><td>Thousands of farmers using local varieties</td></tr>
+<tr><td>Black Urban Growers US</td><td>Urban food justice</td><td>Land access, education</td><td>Growing network of Black farmers</td></tr>
+</table>
+
+<h3>Strategic Debates</h3>
+
+<h4>State Engagement:</h4>
+<ul>
+<li>Can food sovereignty be achieved through state policy?</li>
+<li>Risks of institutionalization and co-optation</li>
+<li>Cases of state support: Venezuela, Bolivia, Ecuador</li>
+<li>Limits of food sovereignty in capitalist states</li>
+</ul>
+
+<h4>Market Engagement:</h4>
+<ul>
+<li>Role of alternative markets (fair trade, organic, local)</li>
+<li>Certification and market access for small farmers</li>
+<li>Critique of market-based approaches to food system change</li>
+<li>Solidarity economy alternatives</li>
+</ul>
+
+<h4>Scale and Alliance:</h4>
+<ul>
+<li>Rural-urban alliances in food sovereignty</li>
+<li>Producer-consumer relationships beyond markets</li>
+<li>Intersectionality: food sovereignty and other justice movements</li>
+<li>Global North-South solidarity and tensions</li>
+</ul>
+
+<h3>Research Engagement</h3>
+
+<p>Graduate researchers supporting food sovereignty movements:</p>
+<ul>
+<li>Participatory research methodologies</li>
+<li>Movement documentation and analysis</li>
+<li>Policy research for advocacy</li>
+<li>Popular education materials development</li>
+</ul>
+
+<div class="key-concept">
+<h4>Scholar-Activist Orientation</h4>
+<p>Graduate engagement with food sovereignty organizing navigates between analytical rigor and movement accountability. The challenge is to produce scholarship that advances both academic understanding and movement effectiveness.</p>
+</div>
+</div>`,
+
+          PHD: `<div class="lesson-content">
+<h2>Food Sovereignty Praxis: Theoretical and Strategic Frontiers</h2>
+
+<p>Doctoral engagement with food sovereignty organizing requires theoretical sophistication, methodological innovation, and commitment to movement-relevant research.</p>
+
+<h3>Theoretical Frameworks for Movement Analysis</h3>
+
+<h4>Gramscian Analysis:</h4>
+<ul>
+<li>Hegemony and counter-hegemony in food systems</li>
+<li>Building food sovereignty as common sense</li>
+<li>Organic intellectuals within peasant movements</li>
+<li>War of position in food system transformation</li>
+</ul>
+
+<h4>Contentious Politics:</h4>
+<ul>
+<li>Repertoires of contention in food movements</li>
+<li>Dynamics of contention: mechanisms and processes</li>
+<li>Scale shift in transnational food activism</li>
+<li>Certification and institutionalization</li>
+</ul>
+
+<h4>Postcolonial and Decolonial Approaches:</h4>
+<ul>
+<li>Colonial continuities in global food systems</li>
+<li>Food sovereignty as decolonization</li>
+<li>Indigenous food sovereignty and self-determination</li>
+<li>Epistemic justice in food knowledge</li>
+</ul>
+
+<h3>Strategic Analysis Frameworks</h3>
+
+<table>
+<tr><th>Framework</th><th>Key Questions</th><th>Food Sovereignty Application</th></tr>
+<tr><td>Power structure analysis</td><td>Who rules? How is rule maintained?</td><td>Corporate food regime analysis</td></tr>
+<tr><td>Theory of change</td><td>How does change happen? What is our role?</td><td>Movement strategy development</td></tr>
+<tr><td>Conjunctural analysis</td><td>What are conditions for change now?</td><td>Identifying political opportunities</td></tr>
+<tr><td>Prefigurative politics</td><td>How do we build the future now?</td><td>Alternative food systems as strategy</td></tr>
+</table>
+
+<h3>Research Methodologies</h3>
+
+<h4>Participatory Action Research:</h4>
+<ul>
+<li>Research as tool for movement learning and strategy</li>
+<li>Community ownership of research process and outcomes</li>
+<li>Integration of research with organizing</li>
+<li>Challenges: time, resources, academic incentives</li>
+</ul>
+
+<h4>Global Ethnography:</h4>
+<ul>
+<li>Following movements across scales and sites</li>
+<li>Connecting local struggles to global dynamics</li>
+<li>Multi-sited fieldwork challenges</li>
+</ul>
+
+<h3>Emerging Questions</h3>
+
+<ul>
+<li>How do digital technologies reshape food sovereignty organizing?</li>
+<li>What is the role of youth in food sovereignty movements?</li>
+<li>How does climate crisis change movement strategy?</li>
+<li>What are pathways from local alternatives to systemic change?</li>
+<li>How do movements navigate contradiction between reform and transformation?</li>
+</ul>
+
+<h3>Contribution and Accountability</h3>
+
+<p>Doctoral research in food sovereignty organizing requires:</p>
+<ul>
+<li>Theoretical contribution to academic debates</li>
+<li>Practical utility for movement strategy</li>
+<li>Methodological innovation in engaged scholarship</li>
+<li>Accountability to movement partners and communities</li>
+</ul>
+
+<div class="key-concept">
+<h4>Research as Praxis</h4>
+<p>Doctoral research on food sovereignty organizing is itself a form of political practice. The choices about what to study, how to study it, and for whom shape both academic knowledge and movement capacity. The challenge is to navigate these tensions productively.</p>
+</div>
+</div>`
+        }
       }
     ],
     activities: [
