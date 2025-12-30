@@ -74,7 +74,7 @@ export const MIHRAB: ArchitecturalElement = {
       reason: 'Both are niches in religious buildings',
       distinction: 'Apse is a semicircular recess in Christian churches (often with altar); mihrab is Islamic prayer direction niche (no altar)',
     },
-  },
+  ],
 
   searchTags: ['mosque', 'islamic', 'niche', 'prayer', 'qibla', 'mecca', 'direction', 'decorated', 'calligraphy', 'tile'],
 

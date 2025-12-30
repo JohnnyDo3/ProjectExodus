@@ -74,7 +74,7 @@ export const PAGODA: ArchitecturalElement = {
       reason: 'Both are tall religious towers',
       distinction: 'Minaret is Islamic, cylindrical/square, for call to prayer; pagoda is Buddhist, multi-tiered with multiple roofs',
     },
-  },
+  ],
 
   searchTags: ['buddhist', 'tower', 'china', 'japan', 'korea', 'tiered', 'temple', 'curved-roof', 'wooden', 'east-asian'],
 

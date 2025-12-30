@@ -74,7 +74,7 @@ export const BATTLEMENT: ArchitecturalElement = {
       reason: 'Merlons are part of battlements',
       distinction: 'Merlon is the solid upright section; battlement is the complete system of merlons and crenels',
     },
-  },
+  ],
 
   searchTags: ['castle', 'fortification', 'wall', 'defense', 'medieval', 'crenel', 'merlon', 'parapet', 'tower', 'crenellation'],
 

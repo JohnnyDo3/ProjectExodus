@@ -61,7 +61,7 @@ export const NAVE: ArchitecturalElement = {
     { name: 'Chartres Cathedral', location: 'Chartres, France', year: '1194-1220', description: 'High Gothic nave (121 feet high)' },
     { name: 'Amiens Cathedral', location: 'Amiens, France', year: '1220-1270', description: 'Tallest Gothic nave (139 feet)' },
     { name: 'St. Paul\'s Cathedral', location: 'London, England', year: '1675-1710', description: 'Baroque classical nave' },
-  },
+  ],
 
   confusionPairs: [
     {
@@ -74,7 +74,7 @@ export const NAVE: ArchitecturalElement = {
       reason: 'Both are major church spaces',
       distinction: 'Nave is where congregation sits; chancel is the altar area for clergy (usually east of nave)',
     },
-  },
+  ],
 
   searchTags: ['church', 'cathedral', 'basilica', 'central', 'aisle', 'congregation', 'vault', 'gothic', 'romanesque', 'christian', 'space'],
 

@@ -423,3 +423,8 @@ export const CONTINENT_ORDER = [
   'Oceania',
   'Global',
 ] as const;
+
+
+// Alias exports for simpler imports
+export const REGIONS = REGION_DEFINITIONS;
+

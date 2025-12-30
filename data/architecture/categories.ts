@@ -926,3 +926,8 @@ export const CATEGORY_GROUPS = {
 export const CATEGORY_COLORS = Object.fromEntries(
   Object.values(CATEGORY_DEFINITIONS).map(cat => [cat.id, cat.color])
 ) as Record<ElementCategory, string>;
+
+
+// Alias exports for simpler imports
+export const CATEGORIES = CATEGORY_DEFINITIONS;
+

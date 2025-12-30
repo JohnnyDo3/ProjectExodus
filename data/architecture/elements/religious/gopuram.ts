@@ -61,7 +61,7 @@ export const GOPURAM: ArchitecturalElement = {
     { name: 'Srivilliputhur Andal Temple', location: 'Tamil Nadu, India', year: 'Medieval', description: '192-foot gopuram, Tamil Nadu emblem' },
     { name: 'Virupaksha Temple', location: 'Hampi, India', year: '7th-16th century', description: 'Vijayanagara-period gopuram' },
     { name: 'Nataraja Temple', location: 'Chidambaram, India', year: 'Medieval', description: 'Four tall gopurams marking cardinal directions' },
-  },
+  ],
 
   confusionPairs: [
     {
@@ -74,7 +74,7 @@ export const GOPURAM: ArchitecturalElement = {
       reason: 'Both terms used for South Indian temple towers',
       distinction: 'Vimana is the tower above sanctum (like shikhara); gopuram is the gateway tower',
     },
-  },
+  ],
 
   searchTags: ['hindu', 'temple', 'gateway', 'tower', 'south-india', 'tamil', 'colorful', 'sculptural', 'entrance', 'dravidian'],
 

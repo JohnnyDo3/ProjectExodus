@@ -61,7 +61,7 @@ export const SHIKHARA: ArchitecturalElement = {
     { name: 'Konark Sun Temple', location: 'Konark, India', year: '13th century', description: 'Monumental Orissan shikhara (partially collapsed)' },
     { name: 'Lakshmana Temple', location: 'Khajuraho, India', year: '954', description: 'Early Chandella shikhara with miniature towers' },
     { name: 'Lingaraja Temple', location: 'Bhubaneswar, India', year: '11th century', description: 'Classic Orissan rekha deul, 180 feet' },
-  },
+  ],
 
   confusionPairs: [
     {
@@ -74,7 +74,7 @@ export const SHIKHARA: ArchitecturalElement = {
       reason: 'Both are South Asian religious monuments',
       distinction: 'Stupa is Buddhist, dome-shaped; shikhara is Hindu, tower above temple sanctum',
     },
-  },
+  ],
 
   searchTags: ['hindu', 'temple', 'tower', 'india', 'spire', 'mountain', 'nagara', 'dravida', 'vimana', 'sacred', 'carved'],
 

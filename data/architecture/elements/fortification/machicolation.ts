@@ -74,7 +74,7 @@ export const MACHICOLATION: ArchitecturalElement = {
       reason: 'Corbels support machicolations',
       distinction: 'Corbel is a structural bracket; machicolation is the complete defensive gallery system including floor openings',
     },
-  },
+  ],
 
   searchTags: ['castle', 'fortification', 'defense', 'medieval', 'gateway', 'drop', 'murder-hole', 'corbel', 'gallery', 'vertical'],
 

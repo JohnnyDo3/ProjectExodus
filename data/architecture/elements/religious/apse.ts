@@ -61,7 +61,7 @@ export const APSE: ArchitecturalElement = {
     { name: 'Chartres Cathedral', location: 'Chartres, France', year: '1194-1220', description: 'Gothic apse with radiating chapels' },
     { name: 'St. Peter\'s Basilica', location: 'Vatican City', year: '1506-1626', description: 'Renaissance/Baroque monumental apse' },
     { name: 'Durham Cathedral', location: 'Durham, England', year: '1093-1133', description: 'Romanesque apse with ribbed vaults' },
-  },
+  ],
 
   confusionPairs: [
     {
@@ -74,7 +74,7 @@ export const APSE: ArchitecturalElement = {
       reason: 'Both are eastern parts of churches',
       distinction: 'Chancel is the entire area around the altar including choir; apse is specifically the semicircular end portion',
     },
-  },
+  ],
 
   searchTags: ['church', 'christian', 'altar', 'semicircular', 'sanctuary', 'dome', 'mosaic', 'byzantine', 'cathedral', 'basilica'],
 

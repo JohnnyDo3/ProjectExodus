@@ -74,7 +74,7 @@ export const CRENEL: ArchitecturalElement = {
       reason: 'Both are defensive openings',
       distinction: 'Crenel is an open parapet gap for shooting and observation; arrow slit is a narrow vertical slot in a wall or merlon',
     },
-  },
+  ],
 
   searchTags: ['battlement', 'castle', 'fortification', 'gap', 'opening', 'defense', 'medieval', 'embrasure', 'wall', 'shooting'],
 

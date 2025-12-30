@@ -790,3 +790,8 @@ export function getOngoingPeriods(): PeriodDefinition[] {
 export function sortPeriodsByStartYear(periods: PeriodDefinition[]): PeriodDefinition[] {
   return [...periods].sort((a, b) => a.startYear - b.startYear);
 }
+
+
+// Alias exports for simpler imports
+export const PERIODS = ARCHITECTURAL_PERIODS;
+

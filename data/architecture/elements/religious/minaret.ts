@@ -61,7 +61,7 @@ export const MINARET: ArchitecturalElement = {
     { name: 'Qutb Minar', location: 'Delhi, India', year: '1192-1220', description: 'Victory tower, 73 meters tall' },
     { name: 'Süleymaniye Mosque', location: 'Istanbul, Turkey', year: '1550-1558', description: 'Sinan\'s masterpiece with four slender minarets' },
     { name: 'Hassan Tower', location: 'Rabat, Morocco', year: '1195', description: 'Incomplete Almohad minaret' },
-  },
+  ],
 
   confusionPairs: [
     {
@@ -74,7 +74,7 @@ export const MINARET: ArchitecturalElement = {
       reason: 'Both are tall religious towers',
       distinction: 'Minaret is attached to mosques and cylindrical/square; pagoda is East Asian Buddhist with multiple tiers',
     },
-  },
+  ],
 
   searchTags: ['mosque', 'islamic', 'tower', 'call-to-prayer', 'adhan', 'muslim', 'ottoman', 'mughal', 'tall', 'religious'],
 

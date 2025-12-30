@@ -23,41 +23,24 @@ export const LEARNING_LEVELS: LearningLevel[] = [
 ];
 
 export type ElementCategory =
-  | 'columns'
-  | 'arches'
-  | 'vaults'
-  | 'domes'
-  | 'roofs'
-  | 'walls'
-  | 'windows'
-  | 'doors-portals'
-  | 'classical-ornament'
-  | 'gothic-elements'
-  | 'islamic-elements'
-  | 'asian-elements'
-  | 'indian-elements'
-  | 'african-elements'
-  | 'americas-elements'
-  | 'structural'
-  | 'modern-elements'
-  | 'exterior-features';
+  | 'STRUCTURAL'
+  | 'DECORATIVE'
+  | 'FACADE'
+  | 'ROOF'
+  | 'FLOOR'
+  | 'WALL'
+  | 'DOOR'
+  | 'WINDOW'
+  | 'CEILING'
+  | 'COLUMN'
+  | 'RELIGIOUS'
+  | 'FORTIFICATION'
+  | 'GARDEN'
+  | 'INTERIOR'
+  | 'URBAN';
 
-export type GeographicRegion =
-  | 'mediterranean'
-  | 'western-europe'
-  | 'eastern-europe'
-  | 'middle-east'
-  | 'north-africa'
-  | 'sub-saharan-africa'
-  | 'south-asia'
-  | 'southeast-asia'
-  | 'east-asia'
-  | 'central-asia'
-  | 'north-america'
-  | 'mesoamerica'
-  | 'south-america'
-  | 'oceania'
-  | 'global';
+// Geographic regions - flexible string type for various naming conventions
+export type GeographicRegion = string;
 
 export type ArchitecturalPeriod =
   // Ancient
@@ -166,98 +149,58 @@ export interface ArchitecturalElement {
   };
 
   // Classification
-  category: ElementCategory;
+  category: string;             // Element category (flexible string)
   subcategory: string;
-  periods: ArchitecturalPeriod[];
-  regions: GeographicRegion[];
-  styles: ArchitecturalStyle[];
-
-  // Timeline positioning
-  firstAppearance: {
-    year: number;               // Negative for BCE
-    location: string;
-    context: string;
-  };
-  peakUsage: {
-    startYear: number;
-    endYear: number;
-  };
+  periods: string[];            // Architectural periods (flexible strings)
+  regions: string[];            // Geographic regions (flexible strings)
 
   // Media - images and diagrams
   images: {
-    primary: {
-      url: string;
-      caption: string;
-      source: string;           // "Wikimedia Commons", etc.
-      license: string;          // "CC BY-SA 4.0", "Public Domain"
-      photographer?: string;
-    };
-    diagram?: {
-      url: string;
-      caption: string;
-    };
-    examples: {
-      url: string;
-      caption: string;
-      location: string;
-      photographer?: string;
-    }[];
+    primary: string;            // Primary image URL
+    gallery: string[];          // Additional image URLs
+    diagram?: string;           // Diagram URL
   };
 
   // Educational content - varies by learning level
-  definition: LeveledContent;
+  description: LeveledContent;
   history: LeveledContent;
-  construction: LeveledContent;
 
-  // Additional educational content
-  symbolism: string;
-  culturalContext: string;
+  // Key characteristics for quick reference
+  characteristics: string[];
 
   // Famous examples with locations
   famousExamples: {
     name: string;
     location: string;
-    dateBuilt: string;
-    architect?: string;
+    year: string;               // e.g., "447-432 BCE"
     description: string;
-    coordinates?: {
-      lat: number;
-      lng: number;
-    };
-    imageUrl?: string;
   }[];
-
-  // Element relationships
-  relatedElements: string[];    // Element IDs
 
   // Confusion Buster data - commonly confused elements
-  commonlyConfusedWith: {
+  confusionPairs: {
     elementId: string;
+    reason: string;             // Why they're confused
     distinction: string;        // Clear explanation of difference
-    visualCue: string;          // Quick visual identifier
-    memoryTrick?: string;       // Mnemonic device
   }[];
-
-  // Fun facts for engagement
-  funFacts: string[];
 
   // Smart search support
   searchTags: string[];         // "leaf", "decoration", "Greek"
-  searchSynonyms: string[];     // "that curly thing on columns"
 
   // AR-ready metadata for future features
   arMetadata?: {
-    visualFeatures: string[];   // For future ML recognition
-    typicalScale: 'small' | 'medium' | 'large' | 'monumental' | 'varies';
-    typicalMaterials: string[]; // "stone", "marble", "wood"
-    viewAngles: string[];       // "from below", "straight on"
-    recognitionKeypoints?: string[]; // Key visual features for AI
+    modelPath: string;          // Path to 3D model
+    scale: number;              // Display scale
+    rotatable: boolean;         // Can rotate in AR
+    annotations: {
+      label: string;
+      position: { x: number; y: number; z: number };
+    }[];
   };
 
   // Game metadata
-  difficulty: DiagramDifficulty;
-  visualDistinctiveness: DiagramDifficulty;
-  commonness: DiagramDifficulty;      // How often seen in real world
+  difficultyScore: number;      // 1-5 difficulty rating
+  dateAdded: Date;
+  lastUpdated: Date;
 }
 
 // =============================================================================
@@ -567,34 +510,44 @@ export interface UserArchitectureProgress {
 // BADGES & ACHIEVEMENTS
 // =============================================================================
 
+export type BadgeTier = 'BRONZE' | 'SILVER' | 'GOLD' | 'PLATINUM' | 'DIAMOND';
+
 export type BadgeCategory =
-  | 'progress'
-  | 'streak'
-  | 'speed'
-  | 'knowledge-domain'
-  | 'spotted'
-  | 'diagram';
+  | 'STREAK'
+  | 'MASTERY'
+  | 'ACCURACY'
+  | 'SPEED'
+  | 'EXPLORER'
+  | 'SPECIALIST'
+  | 'SPOTTER'
+  | 'SPECIAL';
 
 export interface Badge {
   id: string;
   name: string;
   description: string;
   icon: string;                 // Emoji or icon name
+  tier: BadgeTier;
   category: BadgeCategory;
 
-  // Unlock requirements
+  // Unlock requirements - flexible structure to support various badge conditions
   requirement: {
-    type: 'elements_studied' | 'elements_mastered' | 'streak' | 'speed' |
-          'spotted' | 'diagrams' | 'region' | 'period' | 'perfect_score' | 'games_played';
-    value: number;
-    specificIds?: string[];     // Specific elements/diagrams required
+    type: string;               // Badge requirement type
+    count?: number;             // Count/threshold for the requirement
+    [key: string]: string | number | boolean | string[] | number[] | undefined;  // Allow additional properties
   };
 
-  // Rarity
-  rarity: 'common' | 'uncommon' | 'rare' | 'epic' | 'legendary';
+  // Whether this is a secret/hidden badge
+  secret?: boolean;
 
-  // Points awarded
-  points: number;
+  // Rarity (0-1, lower = rarer)
+  rarity: number;
+
+  // XP awarded
+  xpReward: number;
+
+  // Message shown when unlocked
+  unlockedMessage?: string;
 }
 
 // =============================================================================

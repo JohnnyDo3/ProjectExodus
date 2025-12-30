@@ -61,7 +61,7 @@ export const PORTCULLIS: ArchitecturalElement = {
     { name: 'Warwick Castle', location: 'Warwickshire, England', year: '14th century', description: 'Well-preserved gatehouse portcullises' },
     { name: 'Bodiam Castle', location: 'East Sussex, England', year: '1385', description: 'Intact portcullis grooves and mechanism housing' },
     { name: 'Château de Pierrefonds', location: 'Pierrefonds, France', year: '14th century (restored 19th)', description: 'Restored portcullis system' },
-  },
+  ],
 
   confusionPairs: [
     {
@@ -74,7 +74,7 @@ export const PORTCULLIS: ArchitecturalElement = {
       reason: 'Both control entry',
       distinction: 'Gate is a hinged door; portcullis is a vertical sliding grille that can trap attackers and allow firing through',
     },
-  },
+  ],
 
   searchTags: ['castle', 'fortification', 'gateway', 'sliding', 'gate', 'defense', 'medieval', 'iron', 'lattice', 'barrier', 'mechanism'],
 

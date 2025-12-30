@@ -61,7 +61,7 @@ export const STUPA: ArchitecturalElement = {
     { name: 'Ruwanwelisaya', location: 'Anuradhapura, Sri Lanka', year: '2nd century BCE', description: 'Monumental Sri Lankan dagoba' },
     { name: 'Boudhanath', location: 'Kathmandu, Nepal', year: '5th century (rebuilt)', description: 'Massive Tibetan-style stupa' },
     { name: 'Shwedagon Pagoda', location: 'Yangon, Myanmar', year: '6th-10th century', description: 'Golden Burmese stupa, 326 feet tall' },
-  },
+  ],
 
   confusionPairs: [
     {
@@ -74,7 +74,7 @@ export const STUPA: ArchitecturalElement = {
       reason: 'Stupas have dome-shaped forms',
       distinction: 'Stupa is a complete Buddhist monument with dome; dome is just a hemispherical roof element',
     },
-  },
+  ],
 
   searchTags: ['buddhist', 'dome', 'reliquary', 'india', 'meditation', 'monastery', 'temple', 'monument', 'sacred', 'hemispherical'],
 
