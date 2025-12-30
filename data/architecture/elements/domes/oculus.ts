@@ -1,0 +1,43 @@
+import type { ArchitecturalElement } from '../../types';
+
+export const OCULUS: ArchitecturalElement = {
+  id: 'oculus',
+  slug: 'oculus',
+  name: 'Oculus',
+  alternativeNames: ['Eye', 'Dome Opening', 'Round Opening'],
+  pronunciation: { phonetic: 'OK-yoo-lus', language: 'English' },
+  etymology: { origin: 'Latin', meaning: 'Eye', rootWord: 'oculus (eye)' },
+  category: 'STRUCTURAL',
+  subcategory: 'domes',
+  periods: ['ANCIENT_ROMAN', 'RENAISSANCE', 'BAROQUE', 'NEOCLASSICAL'],
+  regions: ['MEDITERRANEAN', 'NORTHERN_EUROPE', 'NORTH_AMERICA'],
+  images: { primary: '/images/architecture/elements/oculus-primary.jpg', gallery: [], diagram: '/images/architecture/diagrams/oculus.svg' },
+  description: {
+    ELEMENTARY: 'An oculus is a round opening at the top of a dome—like a big eye looking up at the sky! The Pantheon in Rome has the most famous oculus. When it rains, the water falls straight through!',
+    MIDDLE_SCHOOL: 'The oculus is a circular opening at a dome\'s crown, letting in light and air. The Pantheon\'s oculus is 30 feet wide—the only light source for the entire building. The name comes from Latin for "eye," because it looks like an eye to the sky.',
+    HIGH_SCHOOL: 'An oculus is a circular opening at a dome\'s apex, providing natural light and, in ancient examples, ventilation. The Pantheon\'s unreinforced concrete dome uses the oculus both practically (lighting, compression ring) and symbolically (connection to heaven). Later domes often closed the oculus with lanterns.',
+    UNDERGRADUATE: 'The oculus serves structural, practical, and symbolic functions. Structurally, it creates a compression ring at the dome\'s crown, potentially reducing material and weight. The Pantheon\'s open oculus provides all interior illumination while symbolizing cosmic connection. Later architecture substituted glazed lanterns, retaining light while enclosing space.',
+    GRADUATE: 'Oculus analysis addresses structural mechanics, lighting effects, and symbolic meaning. The Pantheon\'s oculus serves as compression ring, light source, and cosmic symbol—integrating structural and meaningful functions. The evolution from open oculus to glazed lantern reflects changing priorities between symbolic openness and practical enclosure.',
+    PHD: 'Advanced oculus scholarship examines the element\'s multiple functions and meanings. Questions include: the structural role of the compression ring, the phenomenology of oculus lighting (moving sun spot), and the oculus as symbolic connection between earthly interior and cosmic exterior. Analysis extends to later transformations and symbolic persistence.',
+  },
+  history: {
+    ELEMENTARY: 'The most famous oculus is in the Pantheon in Rome, built almost 2,000 years ago. It\'s the only window in the whole building! As the sun moves across the sky, a beam of light travels around inside the dome like a spotlight.',
+    MIDDLE_SCHOOL: 'The Pantheon\'s oculus (125 CE) is the most famous—27 feet across and the only light source for the vast interior. Renaissance architects admired but rarely imitated the open oculus, preferring covered lanterns. The moving light beam was likely intentional, creating dramatic solar effects.',
+    HIGH_SCHOOL: 'The Pantheon\'s open oculus represents Roman engineering and symbolic ambition. The 27-foot opening creates a compression ring at the dome\'s apex while providing dramatic lighting. Renaissance and later architects typically substituted glazed lanterns, as at Florence Cathedral and St. Peter\'s, maintaining light while enclosing space.',
+    UNDERGRADUATE: 'Oculus development from the Pantheon\'s open eye to Renaissance lanterns reflects changing architectural priorities. The Pantheon\'s design integrates structure (compression ring), function (lighting), and symbolism (cosmic connection). Later transformations preserved the circular opening while adding enclosure, lantern, and often further domes, elaborating the section while maintaining the basic element.',
+    GRADUATE: 'Critical oculus analysis situates the element within Roman architectural achievement and subsequent reception. The Pantheon\'s integration of structural necessity and cosmic symbolism represents a remarkable synthesis. The transformation to enclosed lanterns in Renaissance and later architecture reveals changing relationships between practical and symbolic functions.',
+    PHD: 'Oculus scholarship synthesizes structural analysis, phenomenological investigation, and cultural interpretation. Questions include: the precise structural role of the Pantheon\'s oculus, the designed intentionality of solar lighting effects, and the element\'s persistence as symbol despite practical transformation. Analysis extends to modern deployments of oculus forms and meanings.',
+  },
+  characteristics: ['Circular opening in dome', 'Allows light into building', 'Creates compression ring', 'May be open or glazed', 'Latin for "eye"', 'Symbolic of heaven connection'],
+  famousExamples: [
+    { name: 'Pantheon', location: 'Rome, Italy', year: '125 CE', description: 'Most famous open oculus' },
+    { name: 'Tempietto', location: 'Rome, Italy', year: '1502', description: 'Bramante\'s Renaissance oculus' },
+    { name: 'San Carlo alle Quattro Fontane', location: 'Rome, Italy', year: '1638-1646', description: 'Baroque oval oculus' },
+  ],
+  confusionPairs: [],
+  searchTags: ['dome', 'oculus', 'opening', 'eye', 'pantheon', 'light', 'roman', 'circular'],
+  arMetadata: { modelPath: '/models/architecture/oculus.glb', scale: 1.0, rotatable: true, annotations: [{ label: 'Opening', position: { x: 0, y: 0.5, z: 0 } }] },
+  difficultyScore: 2,
+  dateAdded: new Date('2024-01-01'),
+  lastUpdated: new Date('2024-01-01'),
+};

@@ -1,0 +1,43 @@
+import type { ArchitecturalElement } from '../../types';
+
+export const GROIN_VAULT: ArchitecturalElement = {
+  id: 'groin-vault',
+  slug: 'groin-vault',
+  name: 'Groin Vault',
+  alternativeNames: ['Cross Vault', 'Double Barrel Vault', 'Intersecting Vault'],
+  pronunciation: { phonetic: 'groyn vawlt', language: 'English' },
+  etymology: { origin: 'English', meaning: 'Named for the sharp edge (groin) where vaults intersect', rootWord: 'groin (edge, angle)' },
+  category: 'STRUCTURAL',
+  subcategory: 'vaults',
+  periods: ['ANCIENT_ROMAN', 'ROMANESQUE', 'GOTHIC'],
+  regions: ['MEDITERRANEAN', 'NORTHERN_EUROPE', 'CENTRAL_EUROPE'],
+  images: { primary: '/images/architecture/elements/groin-vault-primary.jpg', gallery: [], diagram: '/images/architecture/diagrams/groin-vault.svg' },
+  description: {
+    ELEMENTARY: 'A groin vault is made by crossing two barrel vaults at right angles! Where they meet, you see X-shaped edges called groins. This lets builders put windows on all four sides, making spaces brighter.',
+    MIDDLE_SCHOOL: 'The groin vault forms when two barrel vaults intersect at right angles. The sharp edges where they cross are called "groins." This design concentrates weight at four corner points, allowing windows in the walls between—much brighter than barrel vaults!',
+    HIGH_SCHOOL: 'The groin vault results from the intersection of two barrel vaults at right angles, creating X-shaped ridges (groins) on the ceiling. This geometry concentrates structural forces at four corners, allowing wall surfaces between supports to be opened for windows—a major advancement over continuous barrel vaults.',
+    UNDERGRADUATE: 'The groin vault represents a significant structural advancement, transferring vault loads to four discrete points rather than continuous walls. The geometry—two intersecting semicircular barrels—creates diagonal groins where shell surfaces meet. This configuration enabled Roman architects to create open, well-lit interior spaces in bath complexes and basilicas.',
+    GRADUATE: 'Groin vault mechanics involve the resolution of compound curved surfaces at diagonal intersections. Analysis of Roman examples reveals sophisticated understanding of load paths, while Romanesque groin vaults demonstrate craft-based solutions to geometric challenges. The form\'s limitations—requiring square bays for equal-height groins—prompted Gothic innovations.',
+    PHD: 'Groin vault scholarship addresses structural behavior, geometric construction, and the transition to ribbed vaulting. The "groin problem"—achieving smooth curves at diagonal intersections—reveals medieval geometric knowledge. Analysis extends to the vault\'s role in enabling spatial configurations from Roman baths to Romanesque aisles.',
+  },
+  history: {
+    ELEMENTARY: 'Romans invented groin vaults to cover large spaces with lots of light! You can see amazing examples in the ruins of Roman baths. Medieval builders used groin vaults in the side aisles of churches.',
+    MIDDLE_SCHOOL: 'Romans developed groin vaults to span large open spaces in their bath complexes, like the Baths of Diocletian. The design allowed large windows between the supporting corners. Medieval builders continued using groin vaults, especially for church aisles.',
+    HIGH_SCHOOL: 'Roman architects developed groin vaults for bath complexes and basilicas, where large spans and good lighting were essential. The form continued through Romanesque architecture, typically covering side aisles. The challenge of constructing groins in stone—as opposed to Roman concrete—led to rib vault development.',
+    UNDERGRADUATE: 'Groin vault development from Roman concrete to Romanesque stone construction reveals different technical approaches. Roman examples exploit the plasticity of concrete to achieve smooth groin curves. Medieval stone construction, requiring geometric precision in voussoir cutting, encountered difficulties that prompted the invention of the rib vault.',
+    GRADUATE: 'Critical groin vault analysis examines the geometric and structural challenges of the form. The discontinuity between Roman concrete and medieval stone groin vaults reflects broader patterns of technological change. The "invention" of the rib vault as solution to groin construction difficulties remains debated.',
+    PHD: 'Advanced groin vault studies address construction techniques, geometric analysis, and historical development. Questions include: the actual construction methods of Roman and medieval groin vaults, the relationship between groin and rib vault development, and the role of geometric knowledge in medieval architectural practice.',
+  },
+  characteristics: ['Two barrel vaults intersecting', 'X-shaped diagonal groins', 'Weight concentrated at four corners', 'Allows windows on all sides', 'Requires square or rectangular bay', 'Predecessor to rib vault'],
+  famousExamples: [
+    { name: 'Baths of Diocletian', location: 'Rome, Italy', year: '298-306 CE', description: 'Massive Roman groin vaults' },
+    { name: 'Santa Maria Maggiore', location: 'Rome, Italy', year: '432-440 CE', description: 'Early Christian groin-vaulted aisles' },
+    { name: 'Speyer Cathedral', location: 'Speyer, Germany', year: '1030-1106', description: 'Romanesque groin vaults' },
+  ],
+  confusionPairs: [{ elementId: 'rib-vault', reason: 'Both cover rectangular bays', distinction: 'Groin vault has sharp edges; Rib vault has stone ribs along the edges' }],
+  searchTags: ['vault', 'groin', 'cross', 'roman', 'romanesque', 'intersecting', 'ceiling'],
+  arMetadata: { modelPath: '/models/architecture/groin-vault.glb', scale: 1.0, rotatable: true, annotations: [{ label: 'Groin (edge)', position: { x: 0.3, y: 0.7, z: 0.3 } }] },
+  difficultyScore: 2,
+  dateAdded: new Date('2024-01-01'),
+  lastUpdated: new Date('2024-01-01'),
+};

@@ -1,0 +1,43 @@
+import type { ArchitecturalElement } from '../../types';
+
+export const SQUINCH: ArchitecturalElement = {
+  id: 'squinch',
+  slug: 'squinch',
+  name: 'Squinch',
+  alternativeNames: ['Corner Arch', 'Transition Arch', 'Trompe'],
+  pronunciation: { phonetic: 'skwinch', language: 'English' },
+  etymology: { origin: 'Old French', meaning: 'Corner', rootWord: 'escoinson (corner angle)' },
+  category: 'STRUCTURAL',
+  subcategory: 'domes',
+  periods: ['ANCIENT_ROMAN', 'BYZANTINE', 'ISLAMIC_GOLDEN_AGE', 'ROMANESQUE'],
+  regions: ['MEDITERRANEAN', 'MIDDLE_EAST', 'SOUTH_ASIA'],
+  images: { primary: '/images/architecture/elements/squinch-primary.jpg', gallery: [], diagram: '/images/architecture/diagrams/squinch.svg' },
+  description: {
+    ELEMENTARY: 'A squinch is like a small arch or cone placed in the corner of a square room to help support a round dome above! It bridges the corner to help change the square into an octagon or circle.',
+    MIDDLE_SCHOOL: 'A squinch is an arch, lintel, or corbelling across the interior corner of a square tower or room. It transforms a square into an octagon, which can then support a circular dome. Squinches are simpler than pendentives and were common in Islamic architecture.',
+    HIGH_SCHOOL: 'A squinch is an element spanning the interior angle of a square bay to create an octagonal base for a dome. Unlike pendentives (continuous spherical surfaces), squinches are discrete elements—arches, lintels, or corbelled projections. They were widely used in Islamic architecture and early medieval European buildings.',
+    UNDERGRADUATE: 'The squinch provides a simpler but less elegant solution to dome transition than pendentives. Forms include simple arches, corbelled projections, and conical half-domes (trompes). Islamic architects elaborated squinches into complex muqarnas compositions. The form\'s discrete geometry contrasts with pendentives\' continuous spherical surfaces.',
+    GRADUATE: 'Squinch analysis addresses the form\'s structural behavior, geometric types, and cultural deployment. The relationship between squinch and pendentive as alternative solutions reveals different approaches to the same problem. Islamic elaboration of squinches into muqarnas represents a distinctive development with both structural and decorative dimensions.',
+    PHD: 'Advanced squinch scholarship examines origins, regional variations, and relationships to other transition forms. The development from simple corner arches to elaborate muqarnas configurations presents questions of innovation and transmission. Analysis extends to the squinch\'s role in Islamic architectural identity and its relationship to Persian and Central Asian traditions.',
+  },
+  history: {
+    ELEMENTARY: 'Squinches were used in Persia and the Middle East for thousands of years. Islamic architects became masters of squinch design, creating beautiful patterns in mosques. The technique also spread to churches in medieval Europe.',
+    MIDDLE_SCHOOL: 'Squinches developed in Sassanian Persia (3rd-7th century CE) and were widely adopted in Islamic architecture. They transformed into elaborate muqarnas (honeycomb patterns) in mosques throughout the Islamic world. Romanesque builders in Europe also used simpler squinch forms.',
+    HIGH_SCHOOL: 'Squinch architecture developed in Sassanian Persia, predating Byzantine pendentives. Islamic architecture adopted and elaborated squinches, developing muqarnas as a decorative extension. European Romanesque buildings employed squinches before pendentives became preferred for prestigious Renaissance projects.',
+    UNDERGRADUATE: 'Squinch development traces from early Parthian and Sassanian examples through Islamic elaboration. The transformation from simple structural elements to complex muqarnas compositions reveals changing relationships between structure and ornament. Regional variations—Persian, Spanish, Indian—demonstrate the form\'s adaptability across Islamic architectural traditions.',
+    GRADUATE: 'Critical squinch analysis addresses the form\'s development, structural types, and cultural meaning. The relationship between squinch-based and pendentive-based dome transitions reflects regional preferences and available techniques. Muqarnas as elaborated squinch raises questions about the boundary between structure and ornament.',
+    PHD: 'Squinch scholarship engages architectural history, structural analysis, and Islamic artistic traditions. Questions include: the independent development versus influence of various squinch types, the relationship between muqarnas and structural function, and the role of squinches in defining regional architectural identities.',
+  },
+  characteristics: ['Arch or corbelling at corner', 'Transitions square to octagon', 'Simpler than pendentive', 'Common in Islamic architecture', 'Basis for muqarnas', 'Multiple forms: arch, lintel, corbelled'],
+  famousExamples: [
+    { name: 'Palace of Ardashir', location: 'Firuzabad, Iran', year: '224 CE', description: 'Early Sassanian squinches' },
+    { name: 'Alhambra', location: 'Granada, Spain', year: '13th-14th century', description: 'Muqarnas elaborated squinches' },
+    { name: 'Imam Mosque', location: 'Isfahan, Iran', year: '1611-1629', description: 'Persian squinch tradition' },
+  ],
+  confusionPairs: [{ elementId: 'pendentive', reason: 'Both transition square to dome', distinction: 'Squinch is discrete arch/corbel; Pendentive is continuous spherical surface' }],
+  searchTags: ['dome', 'squinch', 'transition', 'islamic', 'persian', 'arch', 'corner', 'muqarnas'],
+  arMetadata: { modelPath: '/models/architecture/squinch.glb', scale: 1.0, rotatable: true, annotations: [{ label: 'Corner Arch', position: { x: 0.2, y: 0.3, z: 0.2 } }] },
+  difficultyScore: 4,
+  dateAdded: new Date('2024-01-01'),
+  lastUpdated: new Date('2024-01-01'),
+};

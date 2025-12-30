@@ -150,6 +150,9 @@ model User {
   exodologyNotes            ExodologyNote[]          @relation("ExodologyNotes")
   exodologyReviews          ExodologyReview[]        @relation("ExodologyReviews")
 
+  // Architecture learning progress
+  architectureProgress      ArchitectureProgress?    @relation("ArchitectureProgress")
+
   @@index([email])
   @@index([role])
 }
@@ -2308,4 +2311,265 @@ model ArticleRecommendation {
   @@index([articleId])
   @@index([score])
   @@index([expiresAt])
+}
+
+// ============================================
+// ARCHITECTURE LEARNING PLATFORM
+// Flashcard game with ghost racing, spotted in wild, diagrams
+// ============================================
+
+// User's overall architecture learning progress and settings
+model ArchitectureProgress {
+  id                    String                      @id @default(cuid())
+  userId                String                      @unique
+
+  // Learning preferences
+  preferredLevel        LearningLevel               @default(HIGH_SCHOOL)
+  preferredGameMode     ArchitectureGameMode        @default(FLASHCARD)
+  preferredPath         ArchitectureLearningPath    @default(RANDOM)
+
+  // Overall stats
+  totalGamesPlayed      Int                         @default(0)
+  totalQuestionsAnswered Int                        @default(0)
+  totalCorrectAnswers   Int                         @default(0)
+  totalTimeSpent        Int                         @default(0) // seconds
+  overallAccuracy       Float?                      // calculated percentage
+
+  // Element mastery
+  elementsEncountered   String[]                    @default([]) // element IDs
+  elementsMastered      String[]                    @default([]) // element IDs with high proficiency
+
+  // Period/Region/Category coverage
+  periodsStudied        String[]                    @default([])
+  regionsStudied        String[]                    @default([])
+  categoriesStudied     String[]                    @default([])
+
+  // XP and leveling
+  totalXp               Int                         @default(0)
+  currentLevel          Int                         @default(1)
+
+  // Ghost racing stats
+  personalBestTime      Int?                        // best time for 25-question game in ms
+  ghostData             Json?                       // serialized ghost for racing
+
+  user                  User                        @relation("ArchitectureProgress", fields: [userId], references: [id], onDelete: Cascade)
+  gameSessions          ArchitectureGameSession[]
+  spottedElements       ArchitectureSpottedElement[]
+  earnedBadges          ArchitectureUserBadge[]
+  streak                ArchitectureStreak?
+  elementProgress       ArchitectureElementProgress[]
+  diagramProgress       ArchitectureDiagramProgress[]
+
+  createdAt             DateTime                    @default(now())
+  updatedAt             DateTime                    @updatedAt
+
+  @@index([userId])
+  @@index([totalXp])
+  @@index([currentLevel])
+}
+
+enum ArchitectureGameMode {
+  FLASHCARD         // Image → Name matching
+  REVERSE           // Name → Image matching
+  CONFUSION_BUSTER  // Similar elements comparison
+  DIAGRAM           // Label the diagram
+  MIXED             // Random mix of all modes
+}
+
+enum ArchitectureLearningPath {
+  TIMELINE      // Chronological by period
+  RANDOM        // Complete random shuffle
+  CATEGORY      // By element category
+  REGION        // By geographic region
+  ADAPTIVE      // AI-driven based on weaknesses
+}
+
+// Individual game session with ghost racing data
+model ArchitectureGameSession {
+  id                    String                      @id @default(cuid())
+  progressId            String
+
+  // Game configuration
+  gameMode              ArchitectureGameMode
+  learningPath          ArchitectureLearningPath
+  questionCount         Int                         @default(25)
+
+  // Filters used
+  periodFilters         String[]                    @default([])
+  regionFilters         String[]                    @default([])
+  categoryFilters       String[]                    @default([])
+
+  // Session state
+  currentQuestion       Int                         @default(0)
+  correctAnswers        Int                         @default(0)
+  incorrectAnswers      Int                         @default(0)
+
+  // Timing
+  startedAt             DateTime                    @default(now())
+  completedAt           DateTime?
+  totalTimeMs           Int?                        // total time in milliseconds
+
+  // Per-question timing for ghost racing
+  questionTimes         Json?                       // [{questionId, elementId, timeMs, correct, answeredAt}]
+
+  // Ghost racing
+  beatPersonalBest      Boolean                     @default(false)
+  previousBestTime      Int?                        // what was PB before this game
+  ghostComparison       Json?                       // comparison data vs ghost
+
+  // Results
+  accuracy              Float?
+  xpEarned              Int                         @default(0)
+
+  progress              ArchitectureProgress        @relation(fields: [progressId], references: [id], onDelete: Cascade)
+
+  @@index([progressId])
+  @@index([gameMode])
+  @@index([completedAt])
+  @@index([accuracy])
+}
+
+// Per-element mastery tracking
+model ArchitectureElementProgress {
+  id                    String                      @id @default(cuid())
+  progressId            String
+  elementId             String                      // references element data file
+
+  // Encounter stats
+  timesEncountered      Int                         @default(0)
+  timesCorrect          Int                         @default(0)
+  timesIncorrect        Int                         @default(0)
+
+  // Mastery calculation
+  masteryScore          Float                       @default(0) // 0-100
+  lastEncounteredAt     DateTime?
+
+  // Spaced repetition data
+  nextReviewAt          DateTime?
+  easeFactor            Float                       @default(2.5) // SM-2 algorithm
+  interval              Int                         @default(1)   // days
+
+  // Common mistakes
+  confusedWith          String[]                    @default([]) // element IDs often confused with
+
+  progress              ArchitectureProgress        @relation(fields: [progressId], references: [id], onDelete: Cascade)
+
+  @@unique([progressId, elementId])
+  @@index([progressId])
+  @@index([masteryScore])
+  @@index([nextReviewAt])
+}
+
+// Diagram game progress
+model ArchitectureDiagramProgress {
+  id                    String                      @id @default(cuid())
+  progressId            String
+  diagramId             String                      // references diagram data file
+
+  // Stats
+  timesAttempted        Int                         @default(0)
+  timesCompleted        Int                         @default(0)
+  bestScore             Float?                      // percentage
+  bestTime              Int?                        // milliseconds
+
+  // Per-label performance
+  labelPerformance      Json?                       // {labelId: {correct, incorrect, avgTime}}
+
+  progress              ArchitectureProgress        @relation(fields: [progressId], references: [id], onDelete: Cascade)
+
+  @@unique([progressId, diagramId])
+  @@index([progressId])
+}
+
+// "Spotted in the Wild" - User-uploaded photos of elements
+model ArchitectureSpottedElement {
+  id                    String                      @id @default(cuid())
+  progressId            String
+  elementId             String                      // references element data file
+
+  // Photo data
+  imageUrl              String                      // stored image URL
+  thumbnailUrl          String?                     // optimized thumbnail
+  originalFilename      String?
+
+  // Location (optional)
+  locationName          String?                     // user-provided location name
+  latitude              Float?
+  longitude             Float?
+  country               String?
+  city                  String?
+
+  // Building info (optional)
+  buildingName          String?
+  buildingYear          String?
+  notes                 String?                     @db.Text
+
+  // Verification/quality
+  isVerified            Boolean                     @default(false)
+  quality               SpottedPhotoQuality         @default(PENDING)
+
+  // Social features
+  isPublic              Boolean                     @default(true)
+  likes                 Int                         @default(0)
+
+  progress              ArchitectureProgress        @relation(fields: [progressId], references: [id], onDelete: Cascade)
+
+  createdAt             DateTime                    @default(now())
+  updatedAt             DateTime                    @updatedAt
+
+  @@index([progressId])
+  @@index([elementId])
+  @@index([isPublic])
+  @@index([createdAt])
+}
+
+enum SpottedPhotoQuality {
+  PENDING       // Not yet reviewed
+  EXCELLENT     // Great example of the element
+  GOOD          // Acceptable quality
+  NEEDS_WORK    // Could be improved
+}
+
+// User's earned architecture badges
+model ArchitectureUserBadge {
+  id                    String                      @id @default(cuid())
+  progressId            String
+  badgeId               String                      // references badge data file
+
+  // When earned
+  earnedAt              DateTime                    @default(now())
+
+  // Progress when earned (for display)
+  progressSnapshot      Json?                       // relevant stats at time of earning
+
+  // Notification
+  notified              Boolean                     @default(false)
+
+  progress              ArchitectureProgress        @relation(fields: [progressId], references: [id], onDelete: Cascade)
+
+  @@unique([progressId, badgeId])
+  @@index([progressId])
+  @@index([earnedAt])
+}
+
+// Architecture learning streak
+model ArchitectureStreak {
+  id                    String                      @id @default(cuid())
+  progressId            String                      @unique
+
+  currentStreak         Int                         @default(0)
+  longestStreak         Int                         @default(0)
+  lastActivityDate      DateTime?
+  streakStartDate       DateTime?
+
+  // Weekly stats
+  daysActiveThisWeek    Int                         @default(0)
+  gamesThisWeek         Int                         @default(0)
+
+  progress              ArchitectureProgress        @relation(fields: [progressId], references: [id], onDelete: Cascade)
+
+  updatedAt             DateTime                    @updatedAt
+
+  @@index([progressId])
+  @@index([currentStreak])
 }

@@ -1,0 +1,43 @@
+import type { ArchitecturalElement } from '../../types';
+
+export const PENDENTIVE: ArchitecturalElement = {
+  id: 'pendentive',
+  slug: 'pendentive',
+  name: 'Pendentive',
+  alternativeNames: ['Spherical Triangle', 'Dome Transition'],
+  pronunciation: { phonetic: 'PEN-den-tiv', language: 'English' },
+  etymology: { origin: 'French', meaning: 'Hanging or pendant', rootWord: 'pendentif (hanging)' },
+  category: 'STRUCTURAL',
+  subcategory: 'domes',
+  periods: ['BYZANTINE', 'RENAISSANCE', 'BAROQUE', 'NEOCLASSICAL'],
+  regions: ['MEDITERRANEAN', 'MIDDLE_EAST', 'NORTHERN_EUROPE', 'NORTH_AMERICA'],
+  images: { primary: '/images/architecture/elements/pendentive-primary.jpg', gallery: [], diagram: '/images/architecture/diagrams/pendentive.svg' },
+  description: {
+    ELEMENTARY: 'A pendentive is a curved triangle that connects a round dome to a square building below! Without pendentives, you couldn\'t put a dome on a square room. They\'re like magical curved bridges between the square and the circle.',
+    MIDDLE_SCHOOL: 'Pendentives are curved triangular sections that transition from a square base to a circular dome. They\'re like pieces of a sphere cut so they connect the corners of a square to the circle of a dome. Hagia Sophia has the most famous pendentives.',
+    HIGH_SCHOOL: 'A pendentive is a spherical triangle transitioning from square supporting arches to a circular dome base. Geometrically, it\'s the portion of a hemisphere that remains after vertical cuts at the base (forming the square) and a horizontal cut at the top (for the dome ring). This Byzantine invention enabled domes over any square space.',
+    UNDERGRADUATE: 'The pendentive represents a sophisticated geometric and structural solution to placing circular domes on square plans. Each pendentive is a portion of a sphere whose diameter equals the square\'s diagonal. The form transfers dome loads to corner piers while maintaining continuous curved geometry—structurally elegant compared to squinch alternatives.',
+    GRADUATE: 'Pendentive analysis addresses the intersection of geometry, structure, and space. The form\'s development in Byzantine architecture—culminating at Hagia Sophia—represents a breakthrough enabling new spatial configurations. Structural behavior involves complex membrane stresses requiring careful analysis. The pendentive\'s symbolic associations with heaven descending connect technical and iconographic analysis.',
+    PHD: 'Advanced pendentive scholarship examines origins, structural mechanics, and cultural meaning. Questions include: the precise development from early experiments to Hagia Sophia\'s mature form, the transmission of pendentive knowledge to Renaissance and later architecture, and the theological significance of the pendentive\'s spatial effects.',
+  },
+  history: {
+    ELEMENTARY: 'Byzantine builders invented pendentives around 1,500 years ago. The most amazing pendentives are at Hagia Sophia in Istanbul—they help support a dome that seems to float on light! Renaissance architects learned from Byzantine examples.',
+    MIDDLE_SCHOOL: 'Pendentives were developed by Byzantine architects in the 4th-6th centuries CE. Hagia Sophia (537 CE) showcases the most spectacular pendentive dome. Renaissance architects including Brunelleschi and Bramante adopted the technique for churches and important buildings.',
+    HIGH_SCHOOL: 'Byzantine development of the pendentive, culminating at Hagia Sophia (532-537 CE), solved the challenge of placing domes on square plans. The technique spread to Islamic and later Western architecture. Renaissance architects employed pendentives for centralized church plans, while Baroque designers elaborated with frescoed pendentive surfaces.',
+    UNDERGRADUATE: 'Pendentive development can be traced from early experiments in Roman and Late Antique architecture through Byzantine perfection at Hagia Sophia. The form\'s structural elegance compared to squinches made it preferred for prestigious buildings. Renaissance and Baroque employment, often with figured decoration, extended the pendentive\'s formal and iconographic possibilities.',
+    GRADUATE: 'Critical pendentive analysis addresses the form\'s development, structural behavior, and cultural deployment. The relationship between pendentive geometry and Byzantine theological concepts of heavenly descent merits examination. Post-Byzantine transmission, particularly to Renaissance Italy, reveals patterns of architectural knowledge transfer.',
+    PHD: 'Pendentive scholarship synthesizes structural analysis, geometric history, and cultural interpretation. The form\'s role in enabling Byzantine spatial innovation, its theological associations, and its transmission across cultures constitute rich research fields. Analysis extends to the pendentive\'s decorative exploitation in Baroque illusionistic painting.',
+  },
+  characteristics: ['Curved triangular transition', 'Connects square base to round dome', 'Portion of a sphere', 'Byzantine invention', 'Elegant structural solution', 'Often decorated with mosaics'],
+  famousExamples: [
+    { name: 'Hagia Sophia', location: 'Istanbul, Turkey', year: '537 CE', description: 'Most famous pendentives' },
+    { name: 'San Vitale', location: 'Ravenna, Italy', year: '547 CE', description: 'Byzantine pendentives' },
+    { name: 'St. Peter\'s Basilica', location: 'Vatican City', year: '1590', description: 'Renaissance pendentives with mosaics' },
+  ],
+  confusionPairs: [{ elementId: 'squinch', reason: 'Both transition square to dome', distinction: 'Pendentive is spherical triangle; Squinch is arch or corbelled cone' }],
+  searchTags: ['dome', 'pendentive', 'byzantine', 'structural', 'transition', 'hagia sophia', 'triangle'],
+  arMetadata: { modelPath: '/models/architecture/pendentive.glb', scale: 1.0, rotatable: true, annotations: [{ label: 'Spherical Surface', position: { x: 0.15, y: 0.5, z: 0.15 } }] },
+  difficultyScore: 4,
+  dateAdded: new Date('2024-01-01'),
+  lastUpdated: new Date('2024-01-01'),
+};

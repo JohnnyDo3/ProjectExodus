@@ -149,6 +149,7 @@ export function Header() {
 
   const learnMenuItems = [
     { label: 'Exodology', href: '/exodology', requiresAuth: true },
+    { label: 'Architecture', href: '/architecture', requiresAuth: true },
   ]
 
   const communityMenuItems = [
