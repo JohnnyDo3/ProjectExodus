@@ -278,7 +278,7 @@ export default function DashboardPage() {
                               Flashcard Game - {activity.correct}/{activity.total} correct
                             </p>
                             <p className="text-sm text-[var(--muted-foreground)]">
-                              {activity.score} points • {formatTime(activity.time)}
+                              {activity.score} points • {formatTime(activity.time ?? 0)}
                             </p>
                           </>
                         )}
@@ -361,7 +361,7 @@ export default function DashboardPage() {
                       <CardContent className="p-4 text-center">
                         <div className="text-4xl mb-2 grayscale">{badge.icon}</div>
                         <p className="font-bold text-sm text-[var(--foreground)]">{badge.name}</p>
-                        <p className="text-xs text-[var(--muted-foreground)]">{badge.requirement}</p>
+                        <p className="text-xs text-[var(--muted-foreground)]">{badge.description}</p>
                       </CardContent>
                     </Card>
                   </motion.div>
