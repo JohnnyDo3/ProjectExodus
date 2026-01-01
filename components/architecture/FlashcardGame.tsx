@@ -10,6 +10,7 @@ import {
 } from 'lucide-react'
 import type { ArchitecturalElement, LearningLevel } from '@/data/architecture/types'
 import { ALL_ELEMENTS, getRandomElements } from '@/data/architecture/elements'
+import { ArchitectureSVG } from './ArchitectureSVG'
 
 interface GameConfig {
   elementCount: number
@@ -312,30 +313,30 @@ export function FlashcardGame({ config: userConfig, onComplete, onExit }: Flashc
             className="flex-1 flex flex-col"
           >
             {/* Header */}
-            <div className="sticky top-0 z-10 bg-[var(--background)]/95 backdrop-blur border-b border-[var(--border)] p-4">
+            <div className="sticky top-0 z-10 bg-[var(--background)]/95 backdrop-blur border-b border-[var(--border)] p-2 sm:p-4">
               <div className="max-w-lg mx-auto">
                 {/* Progress */}
-                <div className="flex items-center justify-between mb-2">
-                  <span className="text-sm font-bold text-[var(--foreground)]">
+                <div className="flex items-center justify-between mb-1 sm:mb-2">
+                  <span className="text-xs sm:text-sm font-bold text-[var(--foreground)]">
                     {gameState.currentIndex + 1} / {elements.length}
                   </span>
-                  <div className="flex items-center gap-4">
-                    <span className="text-xl font-mono font-bold text-[var(--foreground)]">
+                  <div className="flex items-center gap-2 sm:gap-4">
+                    <span className="text-base sm:text-xl font-mono font-bold text-[var(--foreground)]">
                       {formatTime(gameState.elapsed)}
                     </span>
                     <button
                       onClick={() => setSoundEnabled(!soundEnabled)}
-                      className="p-2 rounded-full hover:bg-[var(--muted)]"
+                      className="p-1.5 sm:p-2 rounded-full hover:bg-[var(--muted)]"
                     >
-                      {soundEnabled ? <Volume2 className="w-5 h-5" /> : <VolumeX className="w-5 h-5" />}
+                      {soundEnabled ? <Volume2 className="w-4 h-4 sm:w-5 sm:h-5" /> : <VolumeX className="w-4 h-4 sm:w-5 sm:h-5" />}
                     </button>
                   </div>
                 </div>
 
                 {/* Progress Bars */}
-                <div className="space-y-2">
+                <div className="space-y-1 sm:space-y-2">
                   {/* Your progress */}
-                  <div className="h-2 bg-[var(--muted)] rounded-full overflow-hidden">
+                  <div className="h-1.5 sm:h-2 bg-[var(--muted)] rounded-full overflow-hidden">
                     <motion.div
                       className="h-full bg-gradient-to-r from-amber-500 to-orange-500 rounded-full"
                       initial={{ width: 0 }}
@@ -345,7 +346,7 @@ export function FlashcardGame({ config: userConfig, onComplete, onExit }: Flashc
 
                   {/* Ghost progress */}
                   {config.enableGhost && bestTime && (
-                    <div className="h-1.5 bg-[var(--muted)] rounded-full overflow-hidden">
+                    <div className="h-1 sm:h-1.5 bg-[var(--muted)] rounded-full overflow-hidden">
                       <motion.div
                         className="h-full bg-purple-500/50 rounded-full"
                         animate={{ width: `${(ghostProgress / elements.length) * 100}%` }}
@@ -355,19 +356,19 @@ export function FlashcardGame({ config: userConfig, onComplete, onExit }: Flashc
                 </div>
 
                 {/* Score & Streak */}
-                <div className="flex items-center justify-between mt-2">
-                  <div className="flex items-center gap-2">
-                    <Trophy className="w-4 h-4 text-amber-500" />
-                    <span className="font-bold text-[var(--foreground)]">{gameState.score}</span>
+                <div className="flex items-center justify-between mt-1 sm:mt-2">
+                  <div className="flex items-center gap-1 sm:gap-2">
+                    <Trophy className="w-3 h-3 sm:w-4 sm:h-4 text-amber-500" />
+                    <span className="font-bold text-sm sm:text-base text-[var(--foreground)]">{gameState.score}</span>
                   </div>
                   {gameState.streak > 1 && (
                     <motion.div
                       initial={{ scale: 0 }}
                       animate={{ scale: 1 }}
-                      className="flex items-center gap-1 px-2 py-1 rounded-full bg-amber-500/20"
+                      className="flex items-center gap-1 px-2 py-0.5 sm:py-1 rounded-full bg-amber-500/20"
                     >
                       <Zap className="w-3 h-3 text-amber-500" />
-                      <span className="text-xs font-bold text-amber-500">{gameState.streak}x streak!</span>
+                      <span className="text-[10px] sm:text-xs font-bold text-amber-500">{gameState.streak}x streak!</span>
                     </motion.div>
                   )}
                 </div>
@@ -375,28 +376,28 @@ export function FlashcardGame({ config: userConfig, onComplete, onExit }: Flashc
             </div>
 
             {/* Question Area */}
-            <div className="flex-1 flex flex-col p-4 max-w-lg mx-auto w-full">
+            <div className="flex-1 flex flex-col p-2 sm:p-4 max-w-lg mx-auto w-full">
               {/* Image */}
               <motion.div
                 key={currentElement.id}
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
-                className="flex-1 flex items-center justify-center mb-4"
+                className="flex-1 flex items-center justify-center mb-2 sm:mb-4 min-h-0"
               >
-                <div className="relative w-full max-w-sm aspect-square rounded-2xl overflow-hidden bg-[var(--muted)] border-2 border-[var(--border)]">
-                  {/* Placeholder for actual image */}
-                  <div className="absolute inset-0 flex items-center justify-center">
-                    <div className="text-center p-4">
-                      <div className="text-6xl mb-2">
-                        {currentElement.category === 'STRUCTURAL' ? '🏛️' :
-                         currentElement.category === 'DECORATIVE' ? '🎨' :
-                         currentElement.category === 'RELIGIOUS' ? '⛪' :
-                         currentElement.category === 'FORTIFICATION' ? '🏰' : '🏠'}
-                      </div>
-                      <p className="text-sm text-[var(--muted-foreground)]">
-                        {currentElement.images.primary}
-                      </p>
-                    </div>
+                <div className="relative w-full max-w-[280px] sm:max-w-sm aspect-square rounded-xl sm:rounded-2xl overflow-hidden bg-gradient-to-br from-[var(--muted)] to-[var(--background)] border-2 border-[var(--border)] shadow-lg">
+                  {/* SVG Illustration */}
+                  <div className="absolute inset-0 flex items-center justify-center p-4 sm:p-8">
+                    <ArchitectureSVG
+                      category={currentElement.category}
+                      elementId={currentElement.id}
+                      size={180}
+                      className="w-full h-full max-w-[180px] max-h-[180px] sm:max-w-[220px] sm:max-h-[220px]"
+                    />
+                  </div>
+
+                  {/* Category badge */}
+                  <div className="absolute top-2 left-2 px-2 py-1 rounded-full bg-[var(--background)]/80 backdrop-blur text-[10px] sm:text-xs font-medium text-[var(--muted-foreground)]">
+                    {currentElement.category}
                   </div>
 
                   {/* Feedback overlay */}
@@ -430,13 +431,13 @@ export function FlashcardGame({ config: userConfig, onComplete, onExit }: Flashc
               </motion.div>
 
               {/* Answer Options */}
-              <div className="grid grid-cols-2 gap-3">
+              <div className="grid grid-cols-2 gap-2 sm:gap-3 pb-4 sm:pb-0">
                 {options.map((option, index) => {
                   const isSelected = selectedAnswer === option.id
                   const isCorrectAnswer = option.id === currentElement.id
                   const showResult = selectedAnswer !== null
 
-                  let buttonClass = 'border-[var(--border)] hover:border-[var(--primary)]'
+                  let buttonClass = 'border-[var(--border)] hover:border-[var(--primary)] bg-[var(--card)]'
                   if (showResult) {
                     if (isCorrectAnswer) {
                       buttonClass = 'border-green-500 bg-green-500/10'
@@ -453,11 +454,11 @@ export function FlashcardGame({ config: userConfig, onComplete, onExit }: Flashc
                       transition={{ delay: index * 0.1 }}
                       onClick={() => handleAnswer(option.id)}
                       disabled={selectedAnswer !== null}
-                      className={`p-4 rounded-xl border-2 transition-all ${buttonClass} ${
+                      className={`p-3 sm:p-4 rounded-lg sm:rounded-xl border-2 transition-all ${buttonClass} ${
                         selectedAnswer === null ? 'active:scale-95' : ''
                       }`}
                     >
-                      <span className="font-bold text-[var(--foreground)]">
+                      <span className="font-bold text-sm sm:text-base text-[var(--foreground)] leading-tight block">
                         {option.name}
                       </span>
                     </motion.button>

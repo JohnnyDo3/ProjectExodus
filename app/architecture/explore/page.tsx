@@ -14,6 +14,7 @@ import { CATEGORIES } from '@/data/architecture/categories'
 import { PERIODS } from '@/data/architecture/periods'
 import { REGIONS } from '@/data/architecture/regions'
 import type { ArchitecturalElement, LearningLevel } from '@/data/architecture/types'
+import { ArchitectureSVG } from '@/components/architecture/ArchitectureSVG'
 
 const learningLevels: { id: LearningLevel; name: string }[] = [
   { id: 'ELEMENTARY', name: 'Elementary' },
@@ -246,23 +247,25 @@ export default function ExplorePage() {
                     className="w-full text-left"
                   >
                     <Card className="h-full border border-[var(--border)] hover:border-[var(--primary)]/50 hover:shadow-lg transition-all cursor-pointer group overflow-hidden">
-                      {/* Image placeholder */}
-                      <div className="aspect-square bg-[var(--muted)] relative overflow-hidden">
-                        <div className="absolute inset-0 flex items-center justify-center text-4xl">
-                          {element.category === 'STRUCTURAL' ? '🏛️' :
-                           element.category === 'DECORATIVE' ? '🎨' :
-                           element.category === 'RELIGIOUS' ? '⛪' :
-                           element.category === 'FORTIFICATION' ? '🏰' : '🏠'}
+                      {/* SVG Illustration */}
+                      <div className="aspect-square bg-gradient-to-br from-[var(--muted)] to-[var(--background)] relative overflow-hidden">
+                        <div className="absolute inset-0 flex items-center justify-center p-4">
+                          <ArchitectureSVG
+                            category={element.category}
+                            elementId={element.id}
+                            size={80}
+                            className="opacity-80 group-hover:opacity-100 transition-opacity"
+                          />
                         </div>
                         <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/60 to-transparent p-2">
-                          <span className="text-xs text-white/80">{element.category}</span>
+                          <span className="text-[10px] sm:text-xs text-white/80">{element.category}</span>
                         </div>
                       </div>
-                      <CardContent className="p-3">
-                        <h3 className="font-bold text-sm text-[var(--foreground)] group-hover:text-[var(--primary)] transition-colors truncate">
+                      <CardContent className="p-2 sm:p-3">
+                        <h3 className="font-bold text-xs sm:text-sm text-[var(--foreground)] group-hover:text-[var(--primary)] transition-colors truncate">
                           {element.name}
                         </h3>
-                        <p className="text-xs text-[var(--muted-foreground)] truncate">
+                        <p className="text-[10px] sm:text-xs text-[var(--muted-foreground)] truncate">
                           {element.periods[0]?.replace(/_/g, ' ')}
                         </p>
                       </CardContent>
@@ -274,22 +277,23 @@ export default function ExplorePage() {
                     className="w-full text-left"
                   >
                     <Card className="border border-[var(--border)] hover:border-[var(--primary)]/50 transition-all cursor-pointer group">
-                      <CardContent className="p-4 flex items-center gap-4">
-                        <div className="w-12 h-12 rounded-lg bg-[var(--muted)] flex items-center justify-center text-2xl shrink-0">
-                          {element.category === 'STRUCTURAL' ? '🏛️' :
-                           element.category === 'DECORATIVE' ? '🎨' :
-                           element.category === 'RELIGIOUS' ? '⛪' :
-                           element.category === 'FORTIFICATION' ? '🏰' : '🏠'}
+                      <CardContent className="p-3 sm:p-4 flex items-center gap-3 sm:gap-4">
+                        <div className="w-10 h-10 sm:w-12 sm:h-12 rounded-lg bg-gradient-to-br from-[var(--muted)] to-[var(--background)] flex items-center justify-center shrink-0 p-1.5">
+                          <ArchitectureSVG
+                            category={element.category}
+                            elementId={element.id}
+                            size={32}
+                          />
                         </div>
                         <div className="flex-1 min-w-0">
-                          <h3 className="font-bold text-[var(--foreground)] group-hover:text-[var(--primary)] transition-colors">
+                          <h3 className="font-bold text-sm sm:text-base text-[var(--foreground)] group-hover:text-[var(--primary)] transition-colors">
                             {element.name}
                           </h3>
-                          <p className="text-sm text-[var(--muted-foreground)] truncate">
+                          <p className="text-xs sm:text-sm text-[var(--muted-foreground)] truncate">
                             {element.description[selectedLevel].slice(0, 80)}...
                           </p>
                         </div>
-                        <ChevronRight className="w-5 h-5 text-[var(--muted-foreground)] shrink-0" />
+                        <ChevronRight className="w-4 h-4 sm:w-5 sm:h-5 text-[var(--muted-foreground)] shrink-0" />
                       </CardContent>
                     </Card>
                   </button>
@@ -318,25 +322,27 @@ export default function ExplorePage() {
               className="bg-[var(--card)] rounded-t-2xl sm:rounded-2xl w-full max-w-lg max-h-[85vh] overflow-hidden flex flex-col"
             >
               {/* Header Image */}
-              <div className="h-48 bg-[var(--muted)] relative shrink-0">
-                <div className="absolute inset-0 flex items-center justify-center text-6xl">
-                  {selectedElement.category === 'STRUCTURAL' ? '🏛️' :
-                   selectedElement.category === 'DECORATIVE' ? '🎨' :
-                   selectedElement.category === 'RELIGIOUS' ? '⛪' :
-                   selectedElement.category === 'FORTIFICATION' ? '🏰' : '🏠'}
+              <div className="h-40 sm:h-48 bg-gradient-to-br from-[var(--muted)] to-[var(--background)] relative shrink-0">
+                <div className="absolute inset-0 flex items-center justify-center p-6 sm:p-8">
+                  <ArchitectureSVG
+                    category={selectedElement.category}
+                    elementId={selectedElement.id}
+                    size={120}
+                    className="opacity-90"
+                  />
                 </div>
                 <button
                   onClick={() => setSelectedElement(null)}
-                  className="absolute top-4 right-4 p-2 rounded-full bg-black/20 hover:bg-black/40 text-white transition-colors"
+                  className="absolute top-3 right-3 sm:top-4 sm:right-4 p-2 rounded-full bg-black/20 hover:bg-black/40 text-white transition-colors"
                 >
-                  <X className="w-5 h-5" />
+                  <X className="w-4 h-4 sm:w-5 sm:h-5" />
                 </button>
-                <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/80 to-transparent p-4">
-                  <h2 className="text-2xl font-black text-white">{selectedElement.name}</h2>
-                  <div className="flex items-center gap-2 text-white/80 text-sm">
+                <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/80 to-transparent p-3 sm:p-4">
+                  <h2 className="text-xl sm:text-2xl font-black text-white">{selectedElement.name}</h2>
+                  <div className="flex items-center gap-2 text-white/80 text-xs sm:text-sm">
                     <span>{selectedElement.pronunciation.phonetic}</span>
                     <button className="p-1 rounded-full hover:bg-white/20">
-                      <Volume2 className="w-4 h-4" />
+                      <Volume2 className="w-3 h-3 sm:w-4 sm:h-4" />
                     </button>
                   </div>
                 </div>
