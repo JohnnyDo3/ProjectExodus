@@ -313,8 +313,8 @@ export function FlashcardGame({ config: userConfig, onComplete, onExit }: Flashc
             className="flex-1 flex flex-col"
           >
             {/* Header */}
-            <div className="sticky top-0 z-10 bg-[var(--background)]/95 backdrop-blur border-b border-[var(--border)] p-2 sm:p-4">
-              <div className="max-w-lg mx-auto">
+            <div className="sticky top-0 z-10 bg-[var(--background)]/95 backdrop-blur border-b border-[var(--border)] p-2 sm:p-4 md:p-5 lg:p-6">
+              <div className="max-w-lg md:max-w-2xl lg:max-w-3xl mx-auto">
                 {/* Progress */}
                 <div className="flex items-center justify-between mb-1 sm:mb-2">
                   <span className="text-xs sm:text-sm font-bold text-[var(--foreground)]">
@@ -376,27 +376,27 @@ export function FlashcardGame({ config: userConfig, onComplete, onExit }: Flashc
             </div>
 
             {/* Question Area */}
-            <div className="flex-1 flex flex-col p-2 sm:p-4 max-w-lg mx-auto w-full">
+            <div className="flex-1 flex flex-col p-2 sm:p-4 md:p-6 lg:p-8 max-w-lg md:max-w-2xl lg:max-w-3xl mx-auto w-full">
               {/* Image */}
               <motion.div
                 key={currentElement.id}
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
-                className="flex-1 flex items-center justify-center mb-2 sm:mb-4 min-h-0"
+                className="flex-1 flex items-center justify-center mb-2 sm:mb-4 md:mb-6 min-h-0"
               >
-                <div className="relative w-full max-w-[280px] sm:max-w-sm aspect-square rounded-xl sm:rounded-2xl overflow-hidden bg-gradient-to-br from-[var(--muted)] to-[var(--background)] border-2 border-[var(--border)] shadow-lg">
+                <div className="relative w-full max-w-[280px] sm:max-w-sm md:max-w-md lg:max-w-lg aspect-square rounded-xl sm:rounded-2xl md:rounded-3xl overflow-hidden bg-gradient-to-br from-[var(--muted)] to-[var(--background)] border-2 md:border-3 border-[var(--border)] shadow-lg md:shadow-xl">
                   {/* SVG Illustration */}
-                  <div className="absolute inset-0 flex items-center justify-center p-4 sm:p-8">
+                  <div className="absolute inset-0 flex items-center justify-center p-4 sm:p-6 md:p-8 lg:p-10">
                     <ArchitectureSVG
                       category={currentElement.category}
                       elementId={currentElement.id}
-                      size={180}
-                      className="w-full h-full max-w-[180px] max-h-[180px] sm:max-w-[220px] sm:max-h-[220px]"
+                      className="w-full h-full"
+                      showHalo={true}
                     />
                   </div>
 
                   {/* Category badge */}
-                  <div className="absolute top-2 left-2 px-2 py-1 rounded-full bg-[var(--background)]/80 backdrop-blur text-[10px] sm:text-xs font-medium text-[var(--muted-foreground)]">
+                  <div className="absolute top-2 left-2 md:top-3 md:left-3 px-2 py-1 md:px-3 md:py-1.5 rounded-full bg-[var(--background)]/80 backdrop-blur text-[10px] sm:text-xs md:text-sm font-medium text-[var(--muted-foreground)]">
                     {currentElement.category}
                   </div>
 
@@ -431,7 +431,7 @@ export function FlashcardGame({ config: userConfig, onComplete, onExit }: Flashc
               </motion.div>
 
               {/* Answer Options */}
-              <div className="grid grid-cols-2 gap-2 sm:gap-3 pb-4 sm:pb-0">
+              <div className="grid grid-cols-2 gap-2 sm:gap-3 md:gap-4 lg:gap-5 pb-4 sm:pb-0">
                 {options.map((option, index) => {
                   const isSelected = selectedAnswer === option.id
                   const isCorrectAnswer = option.id === currentElement.id
@@ -454,11 +454,11 @@ export function FlashcardGame({ config: userConfig, onComplete, onExit }: Flashc
                       transition={{ delay: index * 0.1 }}
                       onClick={() => handleAnswer(option.id)}
                       disabled={selectedAnswer !== null}
-                      className={`p-3 sm:p-4 rounded-lg sm:rounded-xl border-2 transition-all ${buttonClass} ${
-                        selectedAnswer === null ? 'active:scale-95' : ''
+                      className={`p-3 sm:p-4 md:p-5 lg:p-6 rounded-lg sm:rounded-xl md:rounded-2xl border-2 md:border-3 transition-all ${buttonClass} ${
+                        selectedAnswer === null ? 'active:scale-95 hover:scale-[1.02]' : ''
                       }`}
                     >
-                      <span className="font-bold text-sm sm:text-base text-[var(--foreground)] leading-tight block">
+                      <span className="font-bold text-sm sm:text-base md:text-lg lg:text-xl text-[var(--foreground)] leading-tight block">
                         {option.name}
                       </span>
                     </motion.button>
