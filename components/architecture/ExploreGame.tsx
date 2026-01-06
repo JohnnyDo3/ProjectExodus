@@ -386,7 +386,7 @@ export function ExploreGame({ onExit }: ExploreGameProps) {
               {(['grid', 'list', 'timeline'] as const).map(view => (
                 <Button
                   key={view}
-                  variant={state.view === view ? 'default' : 'ghost'}
+                  variant={state.view === view ? 'primary' : 'ghost'}
                   size="sm"
                   onClick={() => setState(prev => ({ ...prev, view }))}
                   className={state.view === view ? 'bg-teal-500 text-white' : ''}
