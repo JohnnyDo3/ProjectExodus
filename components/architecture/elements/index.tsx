@@ -19,6 +19,8 @@ import { CEILING_ELEMENTS } from './ceiling'
 import { WALL_ELEMENTS } from './wall'
 import { INTERIOR_ELEMENTS } from './interior'
 import { GARDEN_ELEMENTS } from './garden'
+import { URBAN_ELEMENTS } from './urban'
+import { SPECIALIZED_ELEMENTS } from './specialized'
 
 interface SVGProps {
   showHalo?: boolean
@@ -73,8 +75,12 @@ export const ELEMENT_SVGS: Record<string, React.FC<SVGProps>> = {
 
   // Garden (14)
   ...GARDEN_ELEMENTS,
-  // ...URBAN_ELEMENTS,
-  // ...SPECIALIZED_ELEMENTS,
+
+  // Urban (10)
+  ...URBAN_ELEMENTS,
+
+  // Specialized (32)
+  ...SPECIALIZED_ELEMENTS,
 }
 
 // Helper function to get element SVG by ID
@@ -109,3 +115,5 @@ export * from './ceiling'
 export * from './wall'
 export * from './interior'
 export * from './garden'
+export * from './urban'
+export * from './specialized'
