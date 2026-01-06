@@ -12,6 +12,8 @@ import { WINDOW_ELEMENTS } from './windows'
 import { DOOR_ELEMENTS } from './doors'
 import { DECORATIVE_ELEMENTS } from './decorative'
 import { FACADE_ELEMENTS } from './facade'
+import { RELIGIOUS_ELEMENTS } from './religious'
+import { FORTIFICATION_ELEMENTS } from './fortification'
 
 interface SVGProps {
   showHalo?: boolean
@@ -45,8 +47,12 @@ export const ELEMENT_SVGS: Record<string, React.FC<SVGProps>> = {
 
   // Facade (11)
   ...FACADE_ELEMENTS,
-  // ...RELIGIOUS_ELEMENTS,
-  // ...FORTIFICATION_ELEMENTS,
+
+  // Religious (16)
+  ...RELIGIOUS_ELEMENTS,
+
+  // Fortification (5)
+  ...FORTIFICATION_ELEMENTS,
   // ...FLOOR_ELEMENTS,
   // ...CEILING_ELEMENTS,
   // ...WALL_ELEMENTS,
@@ -81,3 +87,5 @@ export * from './windows'
 export * from './doors'
 export * from './decorative'
 export * from './facade'
+export * from './religious'
+export * from './fortification'
