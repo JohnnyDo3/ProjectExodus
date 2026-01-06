@@ -5,6 +5,9 @@ import React from 'react'
 // Import all element SVG mappings
 import { COLUMN_ELEMENTS } from './columns'
 import { ARCH_ELEMENTS } from './arches'
+import { DOME_ELEMENTS } from './domes'
+import { VAULT_ELEMENTS } from './vaults'
+import { ROOF_ELEMENTS } from './roofs'
 
 interface SVGProps {
   showHalo?: boolean
@@ -18,10 +21,14 @@ export const ELEMENT_SVGS: Record<string, React.FC<SVGProps>> = {
   // Arches (8)
   ...ARCH_ELEMENTS,
 
-  // More categories will be added as they're created:
-  // ...DOME_ELEMENTS,
-  // ...VAULT_ELEMENTS,
-  // ...ROOF_ELEMENTS,
+  // Domes (5)
+  ...DOME_ELEMENTS,
+
+  // Vaults (4)
+  ...VAULT_ELEMENTS,
+
+  // Roofs (7)
+  ...ROOF_ELEMENTS,
   // ...WINDOW_ELEMENTS,
   // ...DOOR_ELEMENTS,
   // ...DECORATIVE_ELEMENTS,
@@ -55,3 +62,6 @@ export function getElementsWithSVGs(): string[] {
 // Re-export individual category exports for direct access
 export * from './columns'
 export * from './arches'
+export * from './domes'
+export * from './vaults'
+export * from './roofs'
