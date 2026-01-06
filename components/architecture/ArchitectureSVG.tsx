@@ -1,6 +1,7 @@
 'use client'
 
 import React from 'react'
+import { getElementSVG } from './elements'
 
 interface ArchitectureSVGProps {
   category: string
@@ -927,6 +928,15 @@ export function ArchitectureSVG({ category, elementId, className = '', size, sho
   const svgClass = `text-[var(--foreground)] ${className}`
 
   const getSVGComponent = () => {
+    // First, check for element-specific SVG
+    if (elementId) {
+      const ElementSVG = getElementSVG(elementId)
+      if (ElementSVG) {
+        return <ElementSVG showHalo={showHalo} />
+      }
+    }
+
+    // Fall back to category-based SVG
     const cat = category?.toUpperCase() || ''
 
     switch (cat) {
