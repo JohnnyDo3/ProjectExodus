@@ -429,7 +429,7 @@ export function ExploreGame({ onExit }: ExploreGameProps) {
 
             {/* Bookmarks filter */}
             <Button
-              variant={state.bookmarks.length > 0 ? 'default' : 'ghost'}
+              variant={state.bookmarks.length > 0 ? 'primary' : 'ghost'}
               size="sm"
               onClick={() => {
                 // Toggle showing only bookmarked
