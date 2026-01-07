@@ -31,411 +31,452 @@ interface SVGProps {
 
 // ============================================================================
 // DORIC COLUMN - Simplest Greek order, no base, 20 shallow flutes, plain capital
+// Reference: Parthenon columns - stocky proportions (1:4-6), no base, simple capital
 // ============================================================================
 export const DoricColumnSVG = ({ showHalo = false }: SVGProps) => (
   <svg viewBox="0 0 100 100" className="w-full h-full stroke-current">
     <HaloFilter />
 
-    {/* Ground line */}
-    <path d="M 15 94 L 85 94" strokeWidth="1" fill="none" opacity="0.3" />
+    {/* CONTEXT: Ground line - dashed */}
+    <path d="M 10 94 L 90 94" strokeWidth="0.8" fill="none" opacity="0.4" strokeDasharray="4 2" />
 
-    {/* Column sits directly on stylobate - NO BASE (key Doric feature) */}
+    {/* CONTEXT: Entablature above - dashed ghost */}
+    <path d="M 20 8 L 80 8" strokeWidth="0.8" fill="none" opacity="0.3" strokeDasharray="3 2" />
+    <path d="M 22 5 L 78 5" strokeWidth="0.6" fill="none" opacity="0.25" strokeDasharray="3 2" />
+
+    {/* PRIMARY: THE DORIC COLUMN */}
     <g filter={showHalo ? "url(#col-halo)" : undefined}>
-      {/* Stylobate platform */}
-      <path d="M 25 94 L 75 94" strokeWidth="2" fill="none" strokeLinecap="round" />
+      {/* Stylobate platform - solid but subtle */}
+      <path d="M 25 94 L 75 94" strokeWidth="1.5" fill="none" strokeLinecap="round" />
+      <path d="M 27 91 L 73 91" strokeWidth="1" fill="none" opacity="0.7" />
 
-      {/* Shaft - stocky proportions (4-6x diameter) */}
-      <path d="M 30 94 L 33 25" strokeWidth="2.5" fill="none" strokeLinecap="round" />
-      <path d="M 70 94 L 67 25" strokeWidth="2.5" fill="none" strokeLinecap="round" />
+      {/* Column shaft - NO BASE (key Doric feature) - stocky proportions */}
+      <path d="M 30 91 Q 29 60, 32 25" strokeWidth="2" fill="none" strokeLinecap="round" />
+      <path d="M 70 91 Q 71 60, 68 25" strokeWidth="2" fill="none" strokeLinecap="round" />
 
-      {/* 20 shallow flutes with sharp arrises */}
-      <path d="M 36 90 L 38 27" strokeWidth="0.8" fill="none" opacity="0.6" />
-      <path d="M 42 90 L 43 27" strokeWidth="0.8" fill="none" opacity="0.6" />
-      <path d="M 48 90 L 48 27" strokeWidth="0.8" fill="none" opacity="0.6" />
-      <path d="M 54 90 L 53 27" strokeWidth="0.8" fill="none" opacity="0.6" />
-      <path d="M 60 90 L 58 27" strokeWidth="0.8" fill="none" opacity="0.6" />
+      {/* 20 shallow flutes with sharp arrises - hand-sketched look */}
+      <path d="M 36 88 Q 37 55, 38 27" strokeWidth="0.6" fill="none" opacity="0.5" />
+      <path d="M 43 88 Q 43 55, 44 27" strokeWidth="0.6" fill="none" opacity="0.5" />
+      <path d="M 50 88 Q 50 55, 50 27" strokeWidth="0.6" fill="none" opacity="0.5" />
+      <path d="M 57 88 Q 57 55, 56 27" strokeWidth="0.6" fill="none" opacity="0.5" />
+      <path d="M 64 88 Q 63 55, 62 27" strokeWidth="0.6" fill="none" opacity="0.5" />
 
-      {/* Subtle entasis curve */}
-      <path d="M 31 60 Q 29 50 31 40" strokeWidth="0.4" fill="none" opacity="0.3" />
-      <path d="M 69 60 Q 71 50 69 40" strokeWidth="0.4" fill="none" opacity="0.3" />
-    </g>
+      {/* Subtle entasis (slight convex curve) */}
+      <path d="M 31 65 Q 28 50, 31 35" strokeWidth="0.4" fill="none" opacity="0.3" />
+      <path d="M 69 65 Q 72 50, 69 35" strokeWidth="0.4" fill="none" opacity="0.3" />
 
-    {/* Capital - simple echinus (cushion) + abacus (square slab) */}
-    <g filter={showHalo ? "url(#col-halo)" : undefined}>
-      {/* Necking */}
-      <path d="M 34 25 L 66 25" strokeWidth="1.5" fill="none" strokeLinecap="round" />
+      {/* Necking rings below capital */}
+      <path d="M 33 25 L 67 25" strokeWidth="1.2" fill="none" strokeLinecap="round" />
+      <path d="M 34 23 L 66 23" strokeWidth="0.8" fill="none" opacity="0.6" />
 
       {/* Echinus - curved cushion shape */}
-      <path d="M 30 22 Q 35 18, 50 17 Q 65 18, 70 22" strokeWidth="2" fill="none" strokeLinecap="round" />
-      <path d="M 32 20 L 68 20" strokeWidth="1" fill="none" opacity="0.5" />
+      <path d="M 30 21 Q 38 17, 50 16 Q 62 17, 70 21" strokeWidth="1.8" fill="none" strokeLinecap="round" />
+      <path d="M 32 19 Q 40 16, 50 15.5 Q 60 16, 68 19" strokeWidth="0.7" fill="none" opacity="0.4" />
 
-      {/* Abacus - plain square slab */}
-      <path d="M 26 14 L 74 14" strokeWidth="2.5" fill="none" strokeLinecap="round" />
-      <path d="M 26 14 L 26 10" strokeWidth="2" fill="none" strokeLinecap="round" />
-      <path d="M 74 14 L 74 10" strokeWidth="2" fill="none" strokeLinecap="round" />
-      <path d="M 26 10 L 74 10" strokeWidth="2.5" fill="none" strokeLinecap="round" />
+      {/* Abacus - plain square slab on top */}
+      <path d="M 26 14 L 74 14" strokeWidth="2" fill="none" strokeLinecap="round" />
+      <path d="M 26 14 L 26 9" strokeWidth="1.8" fill="none" strokeLinecap="round" />
+      <path d="M 74 14 L 74 9" strokeWidth="1.8" fill="none" strokeLinecap="round" />
+      <path d="M 26 9 L 74 9" strokeWidth="2" fill="none" strokeLinecap="round" />
     </g>
   </svg>
 )
 
 // ============================================================================
 // IONIC COLUMN - Volute scrolls on capital, has base, 24 deeper flutes
+// Reference: Erechtheion columns - elegant proportions (1:9), ornate base, scroll volutes
 // ============================================================================
 export const IonicColumnSVG = ({ showHalo = false }: SVGProps) => (
   <svg viewBox="0 0 100 100" className="w-full h-full stroke-current">
     <HaloFilter />
 
-    {/* Ground */}
-    <path d="M 15 94 L 85 94" strokeWidth="1" fill="none" opacity="0.3" />
+    {/* CONTEXT: Ground and entablature - dashed */}
+    <path d="M 10 94 L 90 94" strokeWidth="0.8" fill="none" opacity="0.4" strokeDasharray="4 2" />
+    <path d="M 14 5 L 86 5" strokeWidth="0.6" fill="none" opacity="0.3" strokeDasharray="3 2" />
 
-    {/* Base - Ionic has elaborate base (key difference from Doric) */}
+    {/* PRIMARY: THE IONIC COLUMN */}
     <g filter={showHalo ? "url(#col-halo)" : undefined}>
-      <path d="M 22 94 L 78 94" strokeWidth="2" fill="none" strokeLinecap="round" />
-      <path d="M 25 91 L 75 91" strokeWidth="1.5" fill="none" strokeLinecap="round" />
-      {/* Torus moldings */}
-      <path d="M 27 88 Q 50 86, 73 88" strokeWidth="1.5" fill="none" strokeLinecap="round" />
-      <path d="M 29 85 L 71 85" strokeWidth="1" fill="none" strokeLinecap="round" />
-      <path d="M 30 82 Q 50 80, 70 82" strokeWidth="1.5" fill="none" strokeLinecap="round" />
-    </g>
+      {/* Elaborate Attic base (key Ionic feature - unlike Doric) */}
+      <path d="M 22 94 L 78 94" strokeWidth="1.8" fill="none" strokeLinecap="round" />
+      <path d="M 25 91 L 75 91" strokeWidth="1.2" fill="none" strokeLinecap="round" />
+      {/* Upper torus */}
+      <path d="M 27 88 Q 40 85, 50 85 Q 60 85, 73 88" strokeWidth="1.4" fill="none" strokeLinecap="round" />
+      {/* Scotia (concave molding) */}
+      <path d="M 29 85 Q 40 87, 50 87 Q 60 87, 71 85" strokeWidth="0.8" fill="none" opacity="0.5" />
+      {/* Lower torus */}
+      <path d="M 28 82 Q 40 79, 50 79 Q 60 79, 72 82" strokeWidth="1.4" fill="none" strokeLinecap="round" />
 
-    {/* Shaft - more slender than Doric */}
-    <g filter={showHalo ? "url(#col-halo)" : undefined}>
-      <path d="M 32 82 L 35 28" strokeWidth="2" fill="none" strokeLinecap="round" />
-      <path d="M 68 82 L 65 28" strokeWidth="2" fill="none" strokeLinecap="round" />
+      {/* Slender shaft - more elegant than Doric */}
+      <path d="M 32 79 Q 31 50, 35 26" strokeWidth="1.8" fill="none" strokeLinecap="round" />
+      <path d="M 68 79 Q 69 50, 65 26" strokeWidth="1.8" fill="none" strokeLinecap="round" />
 
       {/* 24 deeper flutes with flat fillets between */}
-      <path d="M 38 78 L 40 30" strokeWidth="0.7" fill="none" opacity="0.5" />
-      <path d="M 44 78 L 45 30" strokeWidth="0.7" fill="none" opacity="0.5" />
-      <path d="M 50 78 L 50 30" strokeWidth="0.7" fill="none" opacity="0.5" />
-      <path d="M 56 78 L 55 30" strokeWidth="0.7" fill="none" opacity="0.5" />
-      <path d="M 62 78 L 60 30" strokeWidth="0.7" fill="none" opacity="0.5" />
-    </g>
+      <path d="M 38 76 Q 39 50, 40 28" strokeWidth="0.5" fill="none" opacity="0.45" />
+      <path d="M 44 76 Q 44 50, 45 28" strokeWidth="0.5" fill="none" opacity="0.45" />
+      <path d="M 50 76 Q 50 50, 50 28" strokeWidth="0.5" fill="none" opacity="0.45" />
+      <path d="M 56 76 Q 56 50, 55 28" strokeWidth="0.5" fill="none" opacity="0.45" />
+      <path d="M 62 76 Q 61 50, 60 28" strokeWidth="0.5" fill="none" opacity="0.45" />
 
-    {/* Capital - distinctive VOLUTE SCROLLS */}
-    <g filter={showHalo ? "url(#col-halo)" : undefined}>
-      {/* Echinus with egg-and-dart */}
-      <path d="M 33 26 L 67 26" strokeWidth="1.5" fill="none" strokeLinecap="round" />
-      <path d="M 35 23 Q 50 21, 65 23" strokeWidth="1" fill="none" opacity="0.6" />
+      {/* Necking with egg-and-dart molding */}
+      <path d="M 36 26 L 64 26" strokeWidth="1.2" fill="none" strokeLinecap="round" />
+      <path d="M 38 24 Q 44 22, 50 22 Q 56 22, 62 24" strokeWidth="0.8" fill="none" opacity="0.5" />
 
-      {/* Volute scrolls - THE defining Ionic feature */}
-      <path d="M 30 20 Q 22 18, 18 14 Q 15 10, 18 7 Q 22 4, 28 6 Q 32 8, 32 12"
-            strokeWidth="2" fill="none" strokeLinecap="round" />
-      <path d="M 70 20 Q 78 18, 82 14 Q 85 10, 82 7 Q 78 4, 72 6 Q 68 8, 68 12"
-            strokeWidth="2" fill="none" strokeLinecap="round" />
+      {/* THE VOLUTE SCROLLS - defining Ionic feature */}
+      {/* Left volute - spiral scroll */}
+      <path d="M 34 22 Q 28 20, 22 16 Q 16 12, 18 8 Q 20 4, 26 5 Q 30 6, 32 10 Q 33 13, 30 15"
+            strokeWidth="1.8" fill="none" strokeLinecap="round" />
+      {/* Inner spiral detail */}
+      <path d="M 28 11 Q 25 10, 25 8 Q 25 6, 28 7" strokeWidth="0.9" fill="none" opacity="0.6" />
 
-      {/* Inner spiral of volutes */}
-      <path d="M 25 10 Q 23 12, 25 14" strokeWidth="1" fill="none" opacity="0.6" />
-      <path d="M 75 10 Q 77 12, 75 14" strokeWidth="1" fill="none" opacity="0.6" />
+      {/* Right volute - spiral scroll */}
+      <path d="M 66 22 Q 72 20, 78 16 Q 84 12, 82 8 Q 80 4, 74 5 Q 70 6, 68 10 Q 67 13, 70 15"
+            strokeWidth="1.8" fill="none" strokeLinecap="round" />
+      {/* Inner spiral detail */}
+      <path d="M 72 11 Q 75 10, 75 8 Q 75 6, 72 7" strokeWidth="0.9" fill="none" opacity="0.6" />
 
-      {/* Abacus */}
-      <path d="M 18 6 L 82 6" strokeWidth="2" fill="none" strokeLinecap="round" />
+      {/* Bolster connecting volutes */}
+      <path d="M 32 18 Q 50 20, 68 18" strokeWidth="1" fill="none" opacity="0.5" />
+
+      {/* Thin abacus */}
+      <path d="M 18 6 L 82 6" strokeWidth="1.8" fill="none" strokeLinecap="round" />
     </g>
   </svg>
 )
 
 // ============================================================================
 // CORINTHIAN COLUMN - Ornate acanthus leaf capital, tallest proportions
+// Reference: Temple of Olympian Zeus - most ornate order, acanthus leaves, small volutes
 // ============================================================================
 export const CorinthianColumnSVG = ({ showHalo = false }: SVGProps) => (
   <svg viewBox="0 0 100 100" className="w-full h-full stroke-current">
     <HaloFilter />
 
-    {/* Ground */}
-    <path d="M 15 96 L 85 96" strokeWidth="1" fill="none" opacity="0.3" />
+    {/* CONTEXT: Ground and entablature - dashed */}
+    <path d="M 10 96 L 90 96" strokeWidth="0.8" fill="none" opacity="0.4" strokeDasharray="4 2" />
+    <path d="M 18 4 L 82 4" strokeWidth="0.6" fill="none" opacity="0.3" strokeDasharray="3 2" />
 
-    {/* Elaborate base */}
-    <g opacity="0.7">
+    {/* PRIMARY: THE CORINTHIAN COLUMN */}
+    <g filter={showHalo ? "url(#col-halo)" : undefined}>
+      {/* Elaborate base similar to Ionic */}
       <path d="M 24 96 L 76 96" strokeWidth="1.5" fill="none" strokeLinecap="round" />
-      <path d="M 27 93 L 73 93" strokeWidth="1.2" fill="none" />
-      <path d="M 29 90 Q 50 88, 71 90" strokeWidth="1.2" fill="none" />
-      <path d="M 31 87 L 69 87" strokeWidth="1" fill="none" />
-    </g>
+      <path d="M 27 93 L 73 93" strokeWidth="1" fill="none" />
+      <path d="M 29 90 Q 45 87, 50 87 Q 55 87, 71 90" strokeWidth="1.2" fill="none" />
+      <path d="M 31 87 L 69 87" strokeWidth="0.8" fill="none" opacity="0.6" />
 
-    {/* Tall slender shaft */}
-    <g filter={showHalo ? "url(#col-halo)" : undefined}>
-      <path d="M 34 87 L 37 38" strokeWidth="1.8" fill="none" strokeLinecap="round" />
-      <path d="M 66 87 L 63 38" strokeWidth="1.8" fill="none" strokeLinecap="round" />
+      {/* Tall slender shaft - tallest of all orders */}
+      <path d="M 34 87 Q 33 55, 37 36" strokeWidth="1.6" fill="none" strokeLinecap="round" />
+      <path d="M 66 87 Q 67 55, 63 36" strokeWidth="1.6" fill="none" strokeLinecap="round" />
 
-      {/* Flutes */}
-      <path d="M 40 83 L 42 40" strokeWidth="0.6" fill="none" opacity="0.5" />
-      <path d="M 46 83 L 47 40" strokeWidth="0.6" fill="none" opacity="0.5" />
-      <path d="M 52 83 L 52 40" strokeWidth="0.6" fill="none" opacity="0.5" />
-      <path d="M 58 83 L 57 40" strokeWidth="0.6" fill="none" opacity="0.5" />
-    </g>
+      {/* Elegant fluting */}
+      <path d="M 40 84 Q 41 55, 42 38" strokeWidth="0.5" fill="none" opacity="0.4" />
+      <path d="M 47 84 Q 47 55, 48 38" strokeWidth="0.5" fill="none" opacity="0.4" />
+      <path d="M 53 84 Q 53 55, 52 38" strokeWidth="0.5" fill="none" opacity="0.4" />
+      <path d="M 60 84 Q 59 55, 58 38" strokeWidth="0.5" fill="none" opacity="0.4" />
 
-    {/* Ornate ACANTHUS LEAF capital - THE defining feature */}
-    <g filter={showHalo ? "url(#col-halo)" : undefined}>
-      {/* Lower row of acanthus leaves */}
-      <path d="M 35 38 Q 30 32, 28 28 Q 26 24, 30 22" strokeWidth="1.5" fill="none" strokeLinecap="round" />
-      <path d="M 42 38 Q 38 33, 36 28" strokeWidth="1.2" fill="none" opacity="0.8" />
-      <path d="M 50 38 Q 50 34, 50 30" strokeWidth="1.2" fill="none" opacity="0.8" />
-      <path d="M 58 38 Q 62 33, 64 28" strokeWidth="1.2" fill="none" opacity="0.8" />
-      <path d="M 65 38 Q 70 32, 72 28 Q 74 24, 70 22" strokeWidth="1.5" fill="none" strokeLinecap="round" />
+      {/* ORNATE ACANTHUS CAPITAL - THE defining Corinthian feature */}
+      {/* Lower row of acanthus leaves (8 around column) */}
+      <path d="M 35 36 Q 28 30, 26 24 Q 24 20, 28 18" strokeWidth="1.3" fill="none" strokeLinecap="round" />
+      <path d="M 39 36 Q 34 31, 32 26 Q 30 22, 33 20" strokeWidth="1" fill="none" opacity="0.8" />
+      <path d="M 44 36 Q 42 32, 40 28 Q 38 24, 41 22" strokeWidth="1" fill="none" opacity="0.8" />
+      <path d="M 50 36 Q 50 32, 50 28" strokeWidth="1" fill="none" opacity="0.8" />
+      <path d="M 56 36 Q 58 32, 60 28 Q 62 24, 59 22" strokeWidth="1" fill="none" opacity="0.8" />
+      <path d="M 61 36 Q 66 31, 68 26 Q 70 22, 67 20" strokeWidth="1" fill="none" opacity="0.8" />
+      <path d="M 65 36 Q 72 30, 74 24 Q 76 20, 72 18" strokeWidth="1.3" fill="none" strokeLinecap="round" />
 
-      {/* Upper row of smaller leaves */}
-      <path d="M 38 28 Q 32 22, 30 16" strokeWidth="1.2" fill="none" />
-      <path d="M 50 28 Q 50 22, 50 16" strokeWidth="1.2" fill="none" />
-      <path d="M 62 28 Q 68 22, 70 16" strokeWidth="1.2" fill="none" />
+      {/* Upper row of smaller acanthus leaves */}
+      <path d="M 37 26 Q 30 20, 28 14 Q 27 11, 30 10" strokeWidth="1.1" fill="none" />
+      <path d="M 50 26 Q 50 20, 50 14" strokeWidth="1.1" fill="none" />
+      <path d="M 63 26 Q 70 20, 72 14 Q 73 11, 70 10" strokeWidth="1.1" fill="none" />
 
-      {/* Caulicoli (small scrolling stems) */}
-      <path d="M 34 18 Q 28 14, 24 12 Q 22 10, 24 8" strokeWidth="1" fill="none" />
-      <path d="M 66 18 Q 72 14, 76 12 Q 78 10, 76 8" strokeWidth="1" fill="none" />
+      {/* Caulicoli - small scrolling stems emerging from leaves */}
+      <path d="M 32 16 Q 26 12, 22 10 Q 20 8, 22 6" strokeWidth="0.9" fill="none" />
+      <path d="M 68 16 Q 74 12, 78 10 Q 80 8, 78 6" strokeWidth="0.9" fill="none" />
 
-      {/* Central flower/rosette at top */}
-      <circle cx="50" cy="10" r="3" strokeWidth="1.5" fill="none" />
-      <path d="M 50 7 L 50 5" strokeWidth="1" fill="none" />
+      {/* Small volutes at corners (unlike Ionic, these are decorative) */}
+      <path d="M 25 9 Q 23 7, 24 5" strokeWidth="0.8" fill="none" opacity="0.7" />
+      <path d="M 75 9 Q 77 7, 76 5" strokeWidth="0.8" fill="none" opacity="0.7" />
+
+      {/* Central flower/rosette at top (typical Corinthian feature) */}
+      <circle cx="50" cy="9" r="3" strokeWidth="1.2" fill="none" />
+      <path d="M 50 6 L 50 5" strokeWidth="0.8" fill="none" />
+      <path d="M 47 8 L 46 7" strokeWidth="0.6" fill="none" opacity="0.6" />
+      <path d="M 53 8 L 54 7" strokeWidth="0.6" fill="none" opacity="0.6" />
 
       {/* Abacus with concave sides */}
-      <path d="M 22 6 Q 36 8, 50 6 Q 64 8, 78 6" strokeWidth="2" fill="none" strokeLinecap="round" />
+      <path d="M 20 5 Q 35 7, 50 5 Q 65 7, 80 5" strokeWidth="1.8" fill="none" strokeLinecap="round" />
     </g>
   </svg>
 )
 
 // ============================================================================
-// COMPOSITE COLUMN - Mix of Ionic volutes + Corinthian acanthus
+// COMPOSITE COLUMN - Roman innovation combining Ionic volutes + Corinthian acanthus
+// Reference: Arch of Titus - Roman grandeur combining Greek elements
 // ============================================================================
 export const CompositeColumnSVG = ({ showHalo = false }: SVGProps) => (
   <svg viewBox="0 0 100 100" className="w-full h-full stroke-current">
     <HaloFilter />
 
-    {/* Ground */}
-    <path d="M 15 96 L 85 96" strokeWidth="1" fill="none" opacity="0.3" />
+    {/* CONTEXT: Ground and entablature - dashed */}
+    <path d="M 10 96 L 90 96" strokeWidth="0.8" fill="none" opacity="0.4" strokeDasharray="4 2" />
+    <path d="M 14 4 L 86 4" strokeWidth="0.6" fill="none" opacity="0.3" strokeDasharray="3 2" />
 
-    {/* Base */}
-    <g opacity="0.6">
-      <path d="M 24 96 L 76 96" strokeWidth="1.5" fill="none" />
-      <path d="M 28 92 Q 50 90, 72 92" strokeWidth="1.2" fill="none" />
-      <path d="M 30 88 L 70 88" strokeWidth="1" fill="none" />
-    </g>
-
-    {/* Shaft */}
+    {/* PRIMARY: THE COMPOSITE COLUMN */}
     <g filter={showHalo ? "url(#col-halo)" : undefined}>
-      <path d="M 33 88 L 36 36" strokeWidth="1.8" fill="none" strokeLinecap="round" />
-      <path d="M 67 88 L 64 36" strokeWidth="1.8" fill="none" strokeLinecap="round" />
+      {/* Elaborate base */}
+      <path d="M 24 96 L 76 96" strokeWidth="1.5" fill="none" strokeLinecap="round" />
+      <path d="M 28 92 Q 50 89, 72 92" strokeWidth="1.1" fill="none" />
+      <path d="M 30 88 L 70 88" strokeWidth="0.9" fill="none" opacity="0.7" />
+
+      {/* Shaft */}
+      <path d="M 33 88 Q 32 55, 36 34" strokeWidth="1.6" fill="none" strokeLinecap="round" />
+      <path d="M 67 88 Q 68 55, 64 34" strokeWidth="1.6" fill="none" strokeLinecap="round" />
 
       {/* Flutes */}
-      <path d="M 42 84 L 44 38" strokeWidth="0.6" fill="none" opacity="0.5" />
-      <path d="M 50 84 L 50 38" strokeWidth="0.6" fill="none" opacity="0.5" />
-      <path d="M 58 84 L 56 38" strokeWidth="0.6" fill="none" opacity="0.5" />
-    </g>
+      <path d="M 42 84 Q 42 55, 43 36" strokeWidth="0.5" fill="none" opacity="0.4" />
+      <path d="M 50 84 Q 50 55, 50 36" strokeWidth="0.5" fill="none" opacity="0.4" />
+      <path d="M 58 84 Q 58 55, 57 36" strokeWidth="0.5" fill="none" opacity="0.4" />
 
-    {/* COMPOSITE CAPITAL - combines Ionic + Corinthian */}
-    <g filter={showHalo ? "url(#col-halo)" : undefined}>
+      {/* COMPOSITE CAPITAL - combines Ionic + Corinthian */}
       {/* Lower acanthus leaves (from Corinthian) */}
-      <path d="M 34 36 Q 28 30, 26 26" strokeWidth="1.3" fill="none" />
-      <path d="M 42 36 Q 40 32, 38 28" strokeWidth="1" fill="none" opacity="0.7" />
-      <path d="M 50 36 Q 50 32, 50 28" strokeWidth="1" fill="none" opacity="0.7" />
-      <path d="M 58 36 Q 60 32, 62 28" strokeWidth="1" fill="none" opacity="0.7" />
-      <path d="M 66 36 Q 72 30, 74 26" strokeWidth="1.3" fill="none" />
+      <path d="M 34 34 Q 26 28, 24 22" strokeWidth="1.2" fill="none" strokeLinecap="round" />
+      <path d="M 40 34 Q 36 29, 34 24" strokeWidth="0.9" fill="none" opacity="0.7" />
+      <path d="M 50 34 Q 50 29, 50 24" strokeWidth="0.9" fill="none" opacity="0.7" />
+      <path d="M 60 34 Q 64 29, 66 24" strokeWidth="0.9" fill="none" opacity="0.7" />
+      <path d="M 66 34 Q 74 28, 76 22" strokeWidth="1.2" fill="none" strokeLinecap="round" />
 
-      {/* Ionic volutes at top (distinctive combination) */}
-      <path d="M 30 22 Q 22 20, 18 16 Q 15 12, 18 9 Q 22 6, 28 8"
-            strokeWidth="1.8" fill="none" strokeLinecap="round" />
-      <path d="M 70 22 Q 78 20, 82 16 Q 85 12, 82 9 Q 78 6, 72 8"
-            strokeWidth="1.8" fill="none" strokeLinecap="round" />
+      {/* Egg-and-dart molding between leaves and volutes */}
+      <path d="M 30 20 Q 42 18, 50 18 Q 58 18, 70 20" strokeWidth="0.8" fill="none" opacity="0.5" />
 
-      {/* Egg-and-dart between leaves and volutes */}
-      <path d="M 32 24 Q 41 22, 50 23 Q 59 22, 68 24" strokeWidth="1" fill="none" opacity="0.6" />
+      {/* Large Ionic volutes at top (key composite feature - larger than Corinthian) */}
+      <path d="M 28 18 Q 20 16, 16 12 Q 13 8, 16 5 Q 20 2, 26 4 Q 30 6, 30 10"
+            strokeWidth="1.6" fill="none" strokeLinecap="round" />
+      <path d="M 72 18 Q 80 16, 84 12 Q 87 8, 84 5 Q 80 2, 74 4 Q 70 6, 70 10"
+            strokeWidth="1.6" fill="none" strokeLinecap="round" />
+
+      {/* Inner spiral details */}
+      <path d="M 23 7 Q 21 6, 21 4" strokeWidth="0.7" fill="none" opacity="0.5" />
+      <path d="M 77 7 Q 79 6, 79 4" strokeWidth="0.7" fill="none" opacity="0.5" />
 
       {/* Abacus */}
-      <path d="M 18 6 L 82 6" strokeWidth="2" fill="none" strokeLinecap="round" />
+      <path d="M 16 5 L 84 5" strokeWidth="1.8" fill="none" strokeLinecap="round" />
     </g>
   </svg>
 )
 
 // ============================================================================
-// TUSCAN COLUMN - Simplest, smooth shaft (no flutes), Roman origin
+// TUSCAN COLUMN - Simplest Roman order, smooth shaft (no flutes), plain capital
+// Reference: Roman vernacular architecture - practical, unadorned, sturdy
 // ============================================================================
 export const TuscanColumnSVG = ({ showHalo = false }: SVGProps) => (
   <svg viewBox="0 0 100 100" className="w-full h-full stroke-current">
     <HaloFilter />
 
-    {/* Ground */}
-    <path d="M 15 94 L 85 94" strokeWidth="1" fill="none" opacity="0.3" />
+    {/* CONTEXT: Ground and entablature - dashed */}
+    <path d="M 10 94 L 90 94" strokeWidth="0.8" fill="none" opacity="0.4" strokeDasharray="4 2" />
+    <path d="M 22 8 L 78 8" strokeWidth="0.6" fill="none" opacity="0.3" strokeDasharray="3 2" />
 
-    {/* Simple base (unlike Doric, Tuscan has a base) */}
+    {/* PRIMARY: THE TUSCAN COLUMN */}
     <g filter={showHalo ? "url(#col-halo)" : undefined}>
-      <path d="M 22 94 L 78 94" strokeWidth="2" fill="none" strokeLinecap="round" />
-      <path d="M 26 90 L 74 90" strokeWidth="1.5" fill="none" strokeLinecap="round" />
-      <path d="M 28 86 L 72 86" strokeWidth="1.5" fill="none" strokeLinecap="round" />
-    </g>
+      {/* Simple base (unlike Doric, Tuscan has a base, but very plain) */}
+      <path d="M 22 94 L 78 94" strokeWidth="1.8" fill="none" strokeLinecap="round" />
+      <path d="M 26 90 L 74 90" strokeWidth="1.3" fill="none" strokeLinecap="round" />
+      <path d="M 28 86 L 72 86" strokeWidth="1.3" fill="none" strokeLinecap="round" />
 
-    {/* SMOOTH shaft - NO FLUTES (key Tuscan feature) */}
-    <g filter={showHalo ? "url(#col-halo)" : undefined}>
-      <path d="M 30 86 L 34 24" strokeWidth="2.5" fill="none" strokeLinecap="round" />
-      <path d="M 70 86 L 66 24" strokeWidth="2.5" fill="none" strokeLinecap="round" />
+      {/* SMOOTH shaft - NO FLUTES (key Tuscan feature) */}
+      <path d="M 30 86 Q 29 55, 34 22" strokeWidth="2.2" fill="none" strokeLinecap="round" />
+      <path d="M 70 86 Q 71 55, 66 22" strokeWidth="2.2" fill="none" strokeLinecap="round" />
 
-      {/* Just subtle shading, no fluting */}
-      <path d="M 35 80 L 38 28" strokeWidth="0.5" fill="none" opacity="0.2" />
-      <path d="M 65 80 L 62 28" strokeWidth="0.5" fill="none" opacity="0.2" />
-    </g>
+      {/* Just subtle shading lines to show roundness, no actual fluting */}
+      <path d="M 36 82 Q 38 55, 40 26" strokeWidth="0.4" fill="none" opacity="0.2" />
+      <path d="M 64 82 Q 62 55, 60 26" strokeWidth="0.4" fill="none" opacity="0.2" />
 
-    {/* Plain capital - very simple */}
-    <g filter={showHalo ? "url(#col-halo)" : undefined}>
       {/* Simple necking */}
-      <path d="M 35 24 L 65 24" strokeWidth="1.5" fill="none" strokeLinecap="round" />
+      <path d="M 35 22 L 65 22" strokeWidth="1.2" fill="none" strokeLinecap="round" />
 
-      {/* Simple round molding */}
-      <path d="M 30 20 Q 50 18, 70 20" strokeWidth="2" fill="none" strokeLinecap="round" />
+      {/* Plain round molding - very simple */}
+      <path d="M 30 18 Q 40 15, 50 15 Q 60 15, 70 18" strokeWidth="1.6" fill="none" strokeLinecap="round" />
 
-      {/* Plain square abacus */}
-      <path d="M 26 16 L 74 16" strokeWidth="2" fill="none" strokeLinecap="round" />
-      <path d="M 26 16 L 26 10" strokeWidth="2" fill="none" strokeLinecap="round" />
-      <path d="M 74 16 L 74 10" strokeWidth="2" fill="none" strokeLinecap="round" />
-      <path d="M 26 10 L 74 10" strokeWidth="2.5" fill="none" strokeLinecap="round" />
+      {/* Plain square abacus - undecorated */}
+      <path d="M 26 14 L 74 14" strokeWidth="1.8" fill="none" strokeLinecap="round" />
+      <path d="M 26 14 L 26 9" strokeWidth="1.6" fill="none" strokeLinecap="round" />
+      <path d="M 74 14 L 74 9" strokeWidth="1.6" fill="none" strokeLinecap="round" />
+      <path d="M 26 9 L 74 9" strokeWidth="2" fill="none" strokeLinecap="round" />
     </g>
   </svg>
 )
 
 // ============================================================================
-// CARYATID - Female figure serving as column support
+// CARYATID - Female sculptural figure serving as architectural column support
+// Reference: Erechtheion Porch of Maidens - draped female figures as columns
 // ============================================================================
 export const CaryatidSVG = ({ showHalo = false }: SVGProps) => (
   <svg viewBox="0 0 100 100" className="w-full h-full stroke-current">
     <HaloFilter />
 
-    {/* Ground/base */}
-    <path d="M 20 96 L 80 96" strokeWidth="1.5" fill="none" opacity="0.4" />
-    <path d="M 25 93 L 75 93" strokeWidth="1.2" fill="none" opacity="0.3" />
+    {/* CONTEXT: Ground platform and entablature - dashed */}
+    <path d="M 15 96 L 85 96" strokeWidth="0.8" fill="none" opacity="0.4" strokeDasharray="4 2" />
+    <path d="M 25 93 L 75 93" strokeWidth="0.6" fill="none" opacity="0.3" strokeDasharray="3 2" />
+    <path d="M 32 5 L 68 5" strokeWidth="0.6" fill="none" opacity="0.3" strokeDasharray="3 2" />
 
+    {/* PRIMARY: THE CARYATID FIGURE */}
     <g filter={showHalo ? "url(#col-halo)" : undefined}>
+      {/* Pedestal base */}
+      <path d="M 35 93 L 65 93" strokeWidth="1.5" fill="none" strokeLinecap="round" />
+      <path d="M 37 90 L 63 90" strokeWidth="1.2" fill="none" />
+
       {/* Feet on pedestal */}
-      <path d="M 38 93 L 38 88" strokeWidth="2" fill="none" />
-      <path d="M 62 93 L 62 88" strokeWidth="2" fill="none" />
+      <path d="M 40 90 L 40 86" strokeWidth="1.5" fill="none" strokeLinecap="round" />
+      <path d="M 60 90 L 60 86" strokeWidth="1.5" fill="none" strokeLinecap="round" />
 
-      {/* Draped dress/chiton - forms column-like body */}
-      <path d="M 38 88 L 35 55 Q 34 50, 36 45" strokeWidth="2" fill="none" strokeLinecap="round" />
-      <path d="M 62 88 L 65 55 Q 66 50, 64 45" strokeWidth="2" fill="none" strokeLinecap="round" />
+      {/* Draped peplos/chiton - forms column-like body */}
+      <path d="M 40 86 Q 37 70, 36 55 Q 35 48, 38 42" strokeWidth="1.6" fill="none" strokeLinecap="round" />
+      <path d="M 60 86 Q 63 70, 64 55 Q 65 48, 62 42" strokeWidth="1.6" fill="none" strokeLinecap="round" />
 
-      {/* Dress folds (like fluting) */}
-      <path d="M 42 86 L 40 52" strokeWidth="0.8" fill="none" opacity="0.5" />
-      <path d="M 48 86 L 48 50" strokeWidth="0.8" fill="none" opacity="0.5" />
-      <path d="M 54 86 L 54 50" strokeWidth="0.8" fill="none" opacity="0.5" />
-      <path d="M 60 86 L 62 52" strokeWidth="0.8" fill="none" opacity="0.5" />
+      {/* Dress folds (like column fluting) */}
+      <path d="M 44 84 Q 43 68, 42 50" strokeWidth="0.6" fill="none" opacity="0.45" />
+      <path d="M 50 84 Q 50 68, 50 48" strokeWidth="0.6" fill="none" opacity="0.45" />
+      <path d="M 56 84 Q 57 68, 58 50" strokeWidth="0.6" fill="none" opacity="0.45" />
 
-      {/* Waist/belt */}
-      <path d="M 38 45 Q 50 42, 62 45" strokeWidth="1.5" fill="none" />
+      {/* Waist/belt (zone) */}
+      <path d="M 38 42 Q 45 40, 50 40 Q 55 40, 62 42" strokeWidth="1.2" fill="none" />
 
       {/* Torso */}
-      <path d="M 40 45 L 42 32" strokeWidth="1.8" fill="none" />
-      <path d="M 60 45 L 58 32" strokeWidth="1.8" fill="none" />
+      <path d="M 40 42 Q 42 36, 44 30" strokeWidth="1.4" fill="none" strokeLinecap="round" />
+      <path d="M 60 42 Q 58 36, 56 30" strokeWidth="1.4" fill="none" strokeLinecap="round" />
 
-      {/* Arms at sides or raised to support */}
-      <path d="M 42 38 Q 36 35, 32 30" strokeWidth="1.5" fill="none" opacity="0.7" />
-      <path d="M 58 38 Q 64 35, 68 30" strokeWidth="1.5" fill="none" opacity="0.7" />
+      {/* Arms - slightly visible at sides */}
+      <path d="M 42 36 Q 36 34, 32 30" strokeWidth="1" fill="none" opacity="0.6" />
+      <path d="M 58 36 Q 64 34, 68 30" strokeWidth="1" fill="none" opacity="0.6" />
 
       {/* Neck */}
-      <path d="M 46 32 L 46 26" strokeWidth="1.5" fill="none" />
-      <path d="M 54 32 L 54 26" strokeWidth="1.5" fill="none" />
+      <path d="M 46 30 L 46 25" strokeWidth="1.2" fill="none" />
+      <path d="M 54 30 L 54 25" strokeWidth="1.2" fill="none" />
 
-      {/* Head - oval shape */}
-      <ellipse cx="50" cy="20" rx="8" ry="10" strokeWidth="2" fill="none" />
+      {/* Head - elegant oval */}
+      <ellipse cx="50" cy="19" rx="7" ry="9" strokeWidth="1.6" fill="none" />
 
-      {/* Hair/headdress */}
-      <path d="M 42 18 Q 40 12, 42 8" strokeWidth="1.2" fill="none" />
-      <path d="M 58 18 Q 60 12, 58 8" strokeWidth="1.2" fill="none" />
-      <path d="M 44 10 Q 50 6, 56 10" strokeWidth="1" fill="none" />
+      {/* Face suggestion */}
+      <path d="M 48 17 L 49 18" strokeWidth="0.5" fill="none" opacity="0.4" />
+      <path d="M 51 17 L 52 18" strokeWidth="0.5" fill="none" opacity="0.4" />
+      <path d="M 48 21 Q 50 22, 52 21" strokeWidth="0.5" fill="none" opacity="0.4" />
 
-      {/* Capital basket on head (kalathos) */}
-      <path d="M 38 8 L 62 8" strokeWidth="2" fill="none" strokeLinecap="round" />
-      <path d="M 36 5 L 64 5" strokeWidth="2" fill="none" strokeLinecap="round" />
+      {/* Elaborate hair/headdress */}
+      <path d="M 43 17 Q 40 12, 43 9" strokeWidth="1" fill="none" />
+      <path d="M 57 17 Q 60 12, 57 9" strokeWidth="1" fill="none" />
+      <path d="M 45 10 Q 50 7, 55 10" strokeWidth="0.8" fill="none" />
+
+      {/* Kalathos (basket capital) on head */}
+      <path d="M 40 8 L 60 8" strokeWidth="1.8" fill="none" strokeLinecap="round" />
+      <path d="M 38 6 L 62 6" strokeWidth="1.8" fill="none" strokeLinecap="round" />
     </g>
   </svg>
 )
 
 // ============================================================================
-// PILASTER - Flat column attached to wall, decorative
+// PILASTER - Flat, shallow pier attached to wall, column-like appearance
+// Reference: Renaissance facades - decorative wall treatment, not structural
 // ============================================================================
 export const PilasterSVG = ({ showHalo = false }: SVGProps) => (
   <svg viewBox="0 0 100 100" className="w-full h-full stroke-current">
     <HaloFilter />
 
-    {/* Wall background */}
-    <rect x="10" y="5" width="80" height="90" strokeWidth="1" fill="none" opacity="0.2" />
-    <path d="M 10 95 L 90 95" strokeWidth="1" fill="none" opacity="0.3" />
+    {/* CONTEXT: Wall behind pilaster - dashed ghost lines */}
+    <path d="M 8 5 L 8 95" strokeWidth="0.7" fill="none" opacity="0.3" strokeDasharray="4 2" />
+    <path d="M 92 5 L 92 95" strokeWidth="0.7" fill="none" opacity="0.3" strokeDasharray="4 2" />
+    <path d="M 8 5 L 92 5" strokeWidth="0.6" fill="none" opacity="0.25" strokeDasharray="3 2" />
+    <path d="M 8 95 L 92 95" strokeWidth="0.6" fill="none" opacity="0.25" strokeDasharray="3 2" />
 
+    {/* Wall surface texture - very light dashed */}
+    <path d="M 15 20 L 85 20" strokeWidth="0.4" fill="none" opacity="0.15" strokeDasharray="2 4" />
+    <path d="M 15 40 L 28 40" strokeWidth="0.4" fill="none" opacity="0.15" strokeDasharray="2 4" />
+    <path d="M 72 40 L 85 40" strokeWidth="0.4" fill="none" opacity="0.15" strokeDasharray="2 4" />
+    <path d="M 15 60 L 28 60" strokeWidth="0.4" fill="none" opacity="0.15" strokeDasharray="2 4" />
+    <path d="M 72 60 L 85 60" strokeWidth="0.4" fill="none" opacity="0.15" strokeDasharray="2 4" />
+    <path d="M 15 80 L 85 80" strokeWidth="0.4" fill="none" opacity="0.15" strokeDasharray="2 4" />
+
+    {/* PRIMARY: THE PILASTER */}
     <g filter={showHalo ? "url(#col-halo)" : undefined}>
       {/* Pilaster base projecting from wall */}
-      <path d="M 30 95 L 70 95" strokeWidth="2" fill="none" strokeLinecap="round" />
-      <path d="M 32 91 L 68 91" strokeWidth="1.5" fill="none" />
-      <path d="M 34 87 L 66 87" strokeWidth="1.2" fill="none" />
+      <path d="M 30 95 L 70 95" strokeWidth="1.8" fill="none" strokeLinecap="round" />
+      <path d="M 32 91 L 68 91" strokeWidth="1.3" fill="none" />
+      <path d="M 34 87 L 66 87" strokeWidth="1.1" fill="none" />
 
       {/* FLAT shaft against wall (key pilaster feature) */}
-      <path d="M 35 87 L 35 22" strokeWidth="2.5" fill="none" strokeLinecap="round" />
-      <path d="M 65 87 L 65 22" strokeWidth="2.5" fill="none" strokeLinecap="round" />
+      <path d="M 35 87 L 35 20" strokeWidth="2" fill="none" strokeLinecap="round" />
+      <path d="M 65 87 L 65 20" strokeWidth="2" fill="none" strokeLinecap="round" />
 
       {/* Shallow relief fluting on flat surface */}
-      <path d="M 42 84 L 42 25" strokeWidth="0.8" fill="none" opacity="0.4" />
-      <path d="M 50 84 L 50 25" strokeWidth="0.8" fill="none" opacity="0.4" />
-      <path d="M 58 84 L 58 25" strokeWidth="0.8" fill="none" opacity="0.4" />
+      <path d="M 42 84 L 42 23" strokeWidth="0.6" fill="none" opacity="0.4" />
+      <path d="M 50 84 L 50 23" strokeWidth="0.6" fill="none" opacity="0.4" />
+      <path d="M 58 84 L 58 23" strokeWidth="0.6" fill="none" opacity="0.4" />
 
-      {/* Capital */}
-      <path d="M 33 22 L 67 22" strokeWidth="1.5" fill="none" />
-      <path d="M 30 18 Q 50 16, 70 18" strokeWidth="1.5" fill="none" />
+      {/* Capital - Ionic style pilaster */}
+      <path d="M 33 20 L 67 20" strokeWidth="1.2" fill="none" strokeLinecap="round" />
+      <path d="M 30 16 Q 45 14, 50 14 Q 55 14, 70 16" strokeWidth="1.2" fill="none" />
 
-      {/* Volutes (Ionic style pilaster) */}
-      <path d="M 28 15 Q 22 13, 20 10" strokeWidth="1.5" fill="none" />
-      <path d="M 72 15 Q 78 13, 80 10" strokeWidth="1.5" fill="none" />
+      {/* Small volutes */}
+      <path d="M 28 14 Q 22 12, 20 9" strokeWidth="1.2" fill="none" strokeLinecap="round" />
+      <path d="M 72 14 Q 78 12, 80 9" strokeWidth="1.2" fill="none" strokeLinecap="round" />
 
       {/* Abacus */}
-      <path d="M 26 10 L 74 10" strokeWidth="2" fill="none" strokeLinecap="round" />
-      <path d="M 26 6 L 74 6" strokeWidth="2" fill="none" strokeLinecap="round" />
+      <path d="M 26 9 L 74 9" strokeWidth="1.8" fill="none" strokeLinecap="round" />
+      <path d="M 26 6 L 74 6" strokeWidth="1.8" fill="none" strokeLinecap="round" />
     </g>
-
-    {/* Show wall connection */}
-    <path d="M 35 50 L 10 50" strokeWidth="0.5" fill="none" opacity="0.2" strokeDasharray="2,2" />
-    <path d="M 65 50 L 90 50" strokeWidth="0.5" fill="none" opacity="0.2" strokeDasharray="2,2" />
   </svg>
 )
 
 // ============================================================================
-// ENTASIS - Subtle convex curve of column shaft (concept illustration)
+// ENTASIS - Subtle convex curve in column shaft for optical correction
+// Reference: Greek temples - counteracts optical illusion of concavity
 // ============================================================================
 export const EntasisSVG = ({ showHalo = false }: SVGProps) => (
   <svg viewBox="0 0 100 100" className="w-full h-full stroke-current">
     <HaloFilter />
 
-    {/* Ground */}
-    <path d="M 10 94 L 90 94" strokeWidth="1" fill="none" opacity="0.3" />
+    {/* CONTEXT: Construction/measurement lines - dashed */}
+    <path d="M 10 94 L 90 94" strokeWidth="0.8" fill="none" opacity="0.4" strokeDasharray="4 2" />
+    <path d="M 22 7 L 78 7" strokeWidth="0.6" fill="none" opacity="0.3" strokeDasharray="3 2" />
 
-    {/* Base */}
-    <path d="M 25 94 L 75 94" strokeWidth="1.5" fill="none" opacity="0.5" />
-    <path d="M 28 90 L 72 90" strokeWidth="1" fill="none" opacity="0.4" />
+    {/* Horizontal measurement lines showing entasis bulge - dashed */}
+    <path d="M 22 30 L 78 30" strokeWidth="0.5" fill="none" opacity="0.35" strokeDasharray="3 2" />
+    <path d="M 20 50 L 80 50" strokeWidth="0.5" fill="none" opacity="0.35" strokeDasharray="3 2" />
+    <path d="M 22 70 L 78 70" strokeWidth="0.5" fill="none" opacity="0.35" strokeDasharray="3 2" />
 
-    {/* Column with EXAGGERATED ENTASIS for illustration */}
+    {/* Theoretical straight line for comparison - dashed */}
+    <path d="M 32 90 L 36 15" strokeWidth="0.6" fill="none" opacity="0.25" strokeDasharray="2 2" />
+    <path d="M 68 90 L 64 15" strokeWidth="0.6" fill="none" opacity="0.25" strokeDasharray="2 2" />
+
+    {/* PRIMARY: Column showing ENTASIS curve */}
     <g filter={showHalo ? "url(#col-halo)" : undefined}>
-      {/* Left edge showing the entasis curve */}
-      <path d="M 32 90 Q 28 70, 26 50 Q 24 30, 30 15"
-            strokeWidth="2.5" fill="none" strokeLinecap="round" />
+      {/* Base */}
+      <path d="M 25 94 L 75 94" strokeWidth="1.5" fill="none" strokeLinecap="round" />
+      <path d="M 28 90 L 72 90" strokeWidth="1" fill="none" opacity="0.7" />
+
+      {/* Left edge showing the entasis curve - THE KEY FEATURE */}
+      {/* Curve is subtle: widest at about 1/3 height, then tapers to top */}
+      <path d="M 30 90 Q 26 70, 24 50 Q 23 35, 28 20 L 32 15"
+            strokeWidth="2.2" fill="none" strokeLinecap="round" />
 
       {/* Right edge showing the entasis curve */}
-      <path d="M 68 90 Q 72 70, 74 50 Q 76 30, 70 15"
-            strokeWidth="2.5" fill="none" strokeLinecap="round" />
+      <path d="M 70 90 Q 74 70, 76 50 Q 77 35, 72 20 L 68 15"
+            strokeWidth="2.2" fill="none" strokeLinecap="round" />
 
-      {/* Measurement/construction lines showing the curve */}
-      <path d="M 24 50 L 76 50" strokeWidth="0.5" fill="none" opacity="0.4" strokeDasharray="3,2" />
-      <path d="M 28 30 L 72 30" strokeWidth="0.5" fill="none" opacity="0.4" strokeDasharray="3,2" />
-      <path d="M 30 70 L 70 70" strokeWidth="0.5" fill="none" opacity="0.4" strokeDasharray="3,2" />
-
-      {/* Arrows indicating the bulge */}
-      <path d="M 20 50 L 24 50" strokeWidth="1" fill="none" opacity="0.6" />
-      <path d="M 20 50 L 22 48" strokeWidth="0.8" fill="none" opacity="0.6" />
-      <path d="M 20 50 L 22 52" strokeWidth="0.8" fill="none" opacity="0.6" />
-
-      <path d="M 80 50 L 76 50" strokeWidth="1" fill="none" opacity="0.6" />
-      <path d="M 80 50 L 78 48" strokeWidth="0.8" fill="none" opacity="0.6" />
-      <path d="M 80 50 L 78 52" strokeWidth="0.8" fill="none" opacity="0.6" />
+      {/* Capital */}
+      <path d="M 30 15 L 70 15" strokeWidth="1.3" fill="none" strokeLinecap="round" />
+      <path d="M 26 11 L 74 11" strokeWidth="1.5" fill="none" strokeLinecap="round" />
+      <path d="M 24 8 L 76 8" strokeWidth="1.8" fill="none" strokeLinecap="round" />
     </g>
 
-    {/* Simple capital */}
-    <path d="M 28 15 L 72 15" strokeWidth="1.5" fill="none" opacity="0.6" />
-    <path d="M 24 11 L 76 11" strokeWidth="1.5" fill="none" opacity="0.6" />
-    <path d="M 22 7 L 78 7" strokeWidth="2" fill="none" opacity="0.6" />
+    {/* Arrows showing maximum bulge point - illustrative */}
+    <g opacity="0.5">
+      <path d="M 16 50 L 23 50" strokeWidth="0.8" fill="none" />
+      <path d="M 16 50 L 18 48" strokeWidth="0.6" fill="none" />
+      <path d="M 16 50 L 18 52" strokeWidth="0.6" fill="none" />
 
-    {/* Label area suggestion */}
-    <text x="50" y="60" textAnchor="middle" fontSize="6" opacity="0.4" fill="currentColor">
-      entasis
-    </text>
+      <path d="M 84 50 L 77 50" strokeWidth="0.8" fill="none" />
+      <path d="M 84 50 L 82 48" strokeWidth="0.6" fill="none" />
+      <path d="M 84 50 L 82 52" strokeWidth="0.6" fill="none" />
+    </g>
   </svg>
 )
 
