@@ -99,6 +99,9 @@ export function getElementsWithSVGs(): string[] {
 }
 
 // Re-export individual category exports for direct access
+// Note: Some modules have conflicting exports (FountainSVG, CapitalSVG, ConsoleSVG, CorniceSVG)
+// We use explicit re-exports to resolve ambiguity
+
 export * from './columns'
 export * from './arches'
 export * from './domes'
@@ -106,14 +109,119 @@ export * from './vaults'
 export * from './roofs'
 export * from './windows'
 export * from './doors'
-export * from './decorative'
-export * from './facade'
 export * from './religious'
 export * from './fortification'
 export * from './floor'
 export * from './ceiling'
 export * from './wall'
 export * from './interior'
-export * from './garden'
-export * from './urban'
-export * from './specialized'
+
+// Decorative - has CorniceSVG, CapitalSVG, ConsoleSVG (keep these from decorative)
+export {
+  DECORATIVE_ELEMENTS,
+  AcroterionSVG,
+  BalusterSVG,
+  BalustradeSVG,
+  CapitalSVG,
+  BracketSVG,
+  CartoucheSVG,
+  ConsoleSVG,
+  CorniceSVG,
+  CrestingSVG,
+  FestoonSVG,
+  FinialSVG,
+  FriezeSVG,
+  GargoyleSVG,
+  GrotesqueSVG,
+  MedallionSVG,
+  MoldingSVG,
+  ParapetSVG,
+  PinnacleSVG,
+} from './decorative'
+
+// Facade - exclude CorniceSVG (already exported from decorative)
+export {
+  FACADE_ELEMENTS,
+  AwningSVG,
+  BayWindowSVG,
+  CanopySVG,
+  EntablatureSVG,
+  FacadeSVG,
+  LoggiaSVG,
+  MarqueeSVG,
+  PorticoSVG,
+  StorefrontSVG,
+  VerandaSVG,
+  // CorniceSVG excluded - already exported from decorative
+} from './facade'
+
+// Garden - has FountainSVG (keep from garden)
+export {
+  GARDEN_ELEMENTS,
+  ArborSVG,
+  BenchSVG,
+  FollySVG,
+  FountainSVG,
+  GazeboSVG,
+  GrottoSVG,
+  HaHaSVG,
+  ObeliskSVG,
+  PagodaSVG,
+  ParterreSVG,
+  PergolaSVG,
+  SundialSVG,
+  TopiarySVG,
+  TrellisSVG,
+} from './garden'
+
+// Urban - exclude FountainSVG (already exported from garden)
+export {
+  URBAN_ELEMENTS,
+  ArcadeSVG,
+  BoulevardSVG,
+  BridgeSVG,
+  KioskSVG,
+  PlazaSVG,
+  PromenadeSVG,
+  SquareSVG,
+  StreetSVG,
+  WaterfrontSVG,
+  // FountainSVG excluded - already exported from garden
+} from './urban'
+
+// Specialized - exclude CapitalSVG, ConsoleSVG (already exported from decorative)
+export {
+  SPECIALIZED_ELEMENTS,
+  AbutmentSVG,
+  AmbulatorySVG,
+  BalconySVG,
+  BasementSVG,
+  ChimneySVG,
+  CopingSVG,
+  EaveSVG,
+  GutterSVG,
+  JambSVG,
+  JoistSVG,
+  LouverSVG,
+  NewelSVG,
+  PedestalSVG,
+  PierSVG,
+  PillarSVG,
+  QuoinSVG,
+  RafterSVG,
+  RailSVG,
+  RevealSVG,
+  RidgepoleSVG,
+  RiserSVG,
+  SillSVG,
+  SoffitSVG,
+  SpandrelSVG,
+  StaircaseSVG,
+  StrutSVG,
+  StringCourseSVG,
+  TrussSVG,
+  TurretSVG,
+  WainscotSVG,
+  // CapitalSVG excluded - already exported from decorative
+  // ConsoleSVG excluded - already exported from decorative
+} from './specialized'
