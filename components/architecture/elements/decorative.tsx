@@ -30,56 +30,81 @@ interface SVGProps {
 }
 
 /**
- * ACROTERION - Ornamental element positioned at apex and corners of pediment
- * Reference: Greek/Roman temple architecture (Parthenon, Temple of Zeus)
- * Typically features palmette or anthemion motifs with volutes
+ * ACROTERION - Ornamental palmette crowning Greek temple pediment apex
+ * Reference: Parthenon (Athens, 447 BC), Temple of Athena Nike
+ * View: Frontal elevation of pediment apex with central acroterion
  */
 const AcroterionSVG: React.FC<SVGProps> = ({ showHalo }) => (
   <svg viewBox="0 0 100 100" className="w-full h-full">
     {showHalo && <HaloFilter id="acroterion-halo" intensity={1} />}
     <g filter={showHalo ? "url(#acroterion-halo)" : undefined} fill="none" stroke="currentColor" strokeLinecap="round">
 
-      {/* CONTEXT: Pediment roof structure */}
+      {/* CONTEXT: Pediment triangular gable with raking cornice */}
       <g strokeDasharray="3 2" opacity="0.4" strokeWidth="0.6">
-        <path d="M5 80 L50 55 L95 80" />
-        <path d="M10 85 L90 85" />
-        <path d="M15 75 L15 85" />
-        <path d="M85 75 L85 85" />
+        <path d="M5 85 L50 55 L95 85" />
+        <path d="M8 88 L92 88" />
+        <path d="M15 78 L15 88" />
+        <path d="M30 70 L30 88" />
+        <path d="M70 70 L70 88" />
+        <path d="M85 78 L85 88" />
+        <path d="M10 87 L90 87" />
       </g>
 
-      {/* PRIMARY: Center acroterion - palmette style */}
-      <g strokeWidth="0.8">
-        {/* Pedestal */}
-        <path d="M45 55 L45 20 L55 20 L55 55" />
-        <path d="M43 55 L43 58 L57 58 L57 55 Z" />
-
-        {/* Central stem */}
-        <path d="M50 20 L50 8" strokeWidth="1" />
-
-        {/* Palmette leaves - primary ornament */}
-        <path d="M50 8 Q55 15, 58 25 Q55 22, 50 20" />
-        <path d="M50 8 Q45 15, 42 25 Q45 22, 50 20" />
-        <path d="M50 10 Q60 18, 62 30" />
-        <path d="M50 10 Q40 18, 38 30" />
-
-        {/* Side volutes */}
-        <path d="M42 35 Q38 30, 35 35 Q32 42, 38 45" />
-        <path d="M58 35 Q62 30, 65 35 Q68 42, 62 45" />
-
-        {/* Inner detail */}
-        <path d="M50 15 Q52 18, 54 22" strokeWidth="0.5" />
-        <path d="M50 15 Q48 18, 46 22" strokeWidth="0.5" />
+      {/* PRIMARY: Acroterion pedestal on apex */}
+      <g strokeWidth="1">
+        <path d="M44 55 L44 45 L56 45 L56 55" />
+        <path d="M42 44 L58 44" />
+        <path d="M43 46 L57 46" strokeWidth="0.5" />
       </g>
 
-      {/* PRIMARY: Corner acroteria - smaller */}
-      <g strokeWidth="0.8">
-        <path d="M8 75 L8 65 L15 65 L15 75" />
-        <path d="M11 65 L11 58 Q12 55, 11.5 52" />
-        <path d="M9 58 L13 58" strokeWidth="0.5" />
+      {/* PRIMARY: Central palmette - anthemion motif */}
+      <g strokeWidth="1.2">
+        {/* Central fan leaf */}
+        <path d="M50 44 L50 28 Q50 22, 50 18" />
+        {/* Flanking leaves - symmetrical */}
+        <path d="M50 25 Q45 20, 42 12 Q44 15, 47 20 Q49 23, 50 25" />
+        <path d="M50 25 Q55 20, 58 12 Q56 15, 53 20 Q51 23, 50 25" />
+        {/* Outer leaves */}
+        <path d="M47 28 Q40 22, 35 10 Q38 14, 42 22 Q45 26, 47 28" />
+        <path d="M53 28 Q60 22, 65 10 Q62 14, 58 22 Q55 26, 53 28" />
+      </g>
 
-        <path d="M92 75 L92 65 L85 65 L85 75" />
-        <path d="M89 65 L89 58 Q88 55, 88.5 52" />
-        <path d="M87 58 L91 58" strokeWidth="0.5" />
+      {/* PRIMARY: Volute scrolls at base */}
+      <g strokeWidth="0.9">
+        <path d="M42 38 Q38 35, 35 38 Q33 42, 36 45 Q40 46, 42 43" />
+        <circle cx="37" cy="41" r="1.5" />
+        <path d="M58 38 Q62 35, 65 38 Q67 42, 64 45 Q60 46, 58 43" />
+        <circle cx="63" cy="41" r="1.5" />
+      </g>
+
+      {/* PRIMARY: Palmette ribs and veins */}
+      <g strokeWidth="0.5" opacity="0.6">
+        <path d="M50 32 L50 18" />
+        <path d="M48 30 L44 18" />
+        <path d="M52 30 L56 18" />
+        <path d="M46 32 L38 16" />
+        <path d="M54 32 L62 16" />
+      </g>
+
+      {/* PRIMARY: Acanthus leaf base detail */}
+      <g strokeWidth="0.8">
+        <path d="M44 40 Q40 42, 38 45" />
+        <path d="M56 40 Q60 42, 62 45" />
+        <path d="M45 42 Q43 44, 44 46" strokeWidth="0.5" />
+        <path d="M55 42 Q57 44, 56 46" strokeWidth="0.5" />
+      </g>
+
+      {/* PRIMARY: Corner acroteria (smaller flanking ornaments) */}
+      <g strokeWidth="0.8">
+        {/* Left corner */}
+        <path d="M10 75 L10 68 L16 68 L16 75" />
+        <path d="M13 68 L13 62 Q13 58, 13 55" />
+        <path d="M11 62 Q13 60, 15 62" strokeWidth="0.6" />
+
+        {/* Right corner */}
+        <path d="M90 75 L90 68 L84 68 L84 75" />
+        <path d="M87 68 L87 62 Q87 58, 87 55" />
+        <path d="M89 62 Q87 60, 85 62" strokeWidth="0.6" />
       </g>
     </g>
   </svg>
@@ -137,59 +162,218 @@ const BalusterSVG: React.FC<SVGProps> = ({ showHalo }) => (
 )
 
 /**
- * BALUSTRADE - Series of balusters supporting handrail
- * Reference: Palladian architecture, grand staircases (Palace of Versailles)
- * Combines turned balusters with continuous top rail and base
+ * BALUSTRADE - Ornamental railing on Baroque grand staircase
+ * Reference: Palace of Versailles (1678), Villa Pisani, Würzburg Residence
+ * View: Side elevation showing marble balustrade with turned balusters
  */
 const BalustradeSVG: React.FC<SVGProps> = ({ showHalo }) => (
   <svg viewBox="0 0 100 100" className="w-full h-full">
     {showHalo && <HaloFilter id="balustrade-halo" intensity={0.85} />}
     <g filter={showHalo ? "url(#balustrade-halo)" : undefined} fill="none" stroke="currentColor" strokeLinecap="round">
 
-      {/* CONTEXT: Floor/terrace base */}
+      {/* CONTEXT: Grand staircase steps with perspective */}
       <g strokeDasharray="3 2" opacity="0.4" strokeWidth="0.6">
-        <path d="M5 88 L95 88" />
+        <path d="M5 90 L35 90 L35 88 L65 88 L65 86 L95 86" />
         <path d="M5 92 L95 92" />
+        <path d="M10 86 L10 92" />
+        <path d="M25 88 L25 92" />
+        <path d="M40 88 L40 92" />
+        <path d="M55 86 L55 92" />
+        <path d="M70 86 L70 92" />
+        <path d="M85 86 L85 92" />
       </g>
 
-      {/* PRIMARY: Top handrail */}
-      <g strokeWidth="1">
-        <path d="M8 20 L92 20 L92 26 L8 26 Z" />
-        <path d="M10 23 L90 23" strokeWidth="0.4" />
+      {/* PRIMARY: Top handrail - molded profile */}
+      <g strokeWidth="1.2">
+        <path d="M6 18 L94 18 L94 24 L6 24 Z" />
+      </g>
+      <g strokeWidth="0.6">
+        <path d="M8 20 L92 20" />
+        <path d="M8 22 L92 22" opacity="0.5" />
       </g>
 
-      {/* PRIMARY: Bottom rail/plinth */}
-      <g strokeWidth="1">
-        <path d="M8 80 L92 80 L92 86 L8 86 Z" />
+      {/* PRIMARY: Bottom rail/base plinth */}
+      <g strokeWidth="1.2">
+        <path d="M6 78 L94 78 L94 84 L6 84 Z" />
+      </g>
+      <g strokeWidth="0.6">
+        <path d="M8 80 L92 80" />
       </g>
 
-      {/* PRIMARY: Multiple balusters */}
-      <g strokeWidth="0.8">
-        {[15, 30, 45, 60, 75].map((x, i) => (
+      {/* PRIMARY: Vase-shaped balusters (classical profile) */}
+      <g strokeWidth="0.9">
+        {[16, 32, 48, 64, 80].map((x, i) => (
           <g key={i}>
-            {/* Vase profile */}
-            <path d={`M${x-3} 26 L${x-3} 30 Q${x-5} 35, ${x-4} 42`} />
-            <path d={`M${x+3} 26 L${x+3} 30 Q${x+5} 35, ${x+4} 42`} />
-            <path d={`M${x-4} 42 Q${x-5} 50, ${x-3} 55`} />
-            <path d={`M${x+4} 42 Q${x+5} 50, ${x+3} 55`} />
-            <path d={`M${x-3} 55 Q${x-6} 65, ${x-4} 75 L${x-4} 80`} />
-            <path d={`M${x+3} 55 Q${x+6} 65, ${x+4} 75 L${x+4} 80`} />
-            {/* Profile rings */}
-            <path d={`M${x-3} 42 L${x+3} 42`} strokeWidth="0.4" />
-            <path d={`M${x-4} 65 L${x+4} 65`} strokeWidth="0.4" />
+            {/* Capital/top necking */}
+            <path d={`M${x-3} 24 L${x-3} 28 Q${x-5} 32, ${x-5} 36`} />
+            <path d={`M${x+3} 24 L${x+3} 28 Q${x+5} 32, ${x+5} 36`} />
+            <path d={`M${x-3} 28 L${x+3} 28`} strokeWidth="0.5" />
+
+            {/* Upper vase/belly */}
+            <path d={`M${x-5} 36 Q${x-6} 44, ${x-4} 50`} />
+            <path d={`M${x+5} 36 Q${x+6} 44, ${x+4} 50`} />
+
+            {/* Narrow neck */}
+            <path d={`M${x-4} 50 Q${x-3.5} 54, ${x-3.5} 58`} />
+            <path d={`M${x+4} 50 Q${x+3.5} 54, ${x+3.5} 58`} />
+            <path d={`M${x-4} 50 L${x+4} 50`} strokeWidth="0.5" />
+
+            {/* Lower belly */}
+            <path d={`M${x-3.5} 58 Q${x-6} 66, ${x-5} 72`} />
+            <path d={`M${x+3.5} 58 Q${x+6} 66, ${x+5} 72`} />
+
+            {/* Base */}
+            <path d={`M${x-5} 72 L${x-3} 78`} />
+            <path d={`M${x+5} 72 L${x+3} 78`} />
+            <path d={`M${x-3} 78 L${x+3} 78`} strokeWidth="0.5" />
           </g>
         ))}
       </g>
 
-      {/* PRIMARY: End posts (newels) */}
+      {/* PRIMARY: End newel posts with finials */}
+      <g strokeWidth="1.1">
+        {/* Left newel */}
+        <path d="M3 12 L3 84 L10 84 L10 12 Z" />
+        <path d="M2 10 L11 10 L11 14 L2 14 Z" />
+        <path d="M4 8 Q6.5 5, 9 8" />
+        <circle cx="6.5" cy="7" r="1.5" />
+
+        {/* Right newel */}
+        <path d="M90 12 L90 84 L97 84 L97 12 Z" />
+        <path d="M89 10 L98 10 L98 14 L89 14 Z" />
+        <path d="M91 8 Q93.5 5, 96 8" />
+        <circle cx="93.5" cy="7" r="1.5" />
+      </g>
+
+      {/* PRIMARY: Newel decorative panels */}
+      <g strokeWidth="0.6">
+        <path d="M5 20 L8 20 L8 30 L5 30 Z" />
+        <path d="M92 20 L95 20 L95 30 L92 30 Z" />
+        <path d="M5 60 L8 60 L8 70 L5 70 Z" />
+        <path d="M92 60 L95 60 L95 70 L92 70 Z" />
+      </g>
+    </g>
+  </svg>
+)
+
+/**
+ * CAPITAL - Corinthian column capital with acanthus leaves
+ * Reference: Temple of Zeus Olympios (Athens, 174 AD), Pantheon (Rome, 126 AD)
+ * View: Frontal elevation of capital atop column in colonnade
+ */
+const CapitalSVG: React.FC<SVGProps> = ({ showHalo }) => (
+  <svg viewBox="0 0 100 100" className="w-full h-full">
+    {showHalo && <HaloFilter id="capital-halo" intensity={0.95} />}
+    <g filter={showHalo ? "url(#capital-halo)" : undefined} fill="none" stroke="currentColor" strokeLinecap="round">
+
+      {/* CONTEXT: Column shaft below capital */}
+      <g strokeDasharray="3 2" opacity="0.4" strokeWidth="0.6">
+        <path d="M35 92 L35 65 L65 65 L65 92" />
+        <path d="M30 92 L70 92" />
+        <path d="M38 75 L38 92" />
+        <path d="M50 75 L50 92" />
+        <path d="M62 75 L62 92" />
+        <path d="M35 85 L65 85" />
+      </g>
+
+      {/* CONTEXT: Entablature above (architrave) */}
+      <g strokeDasharray="3 2" opacity="0.4" strokeWidth="0.6">
+        <path d="M5 8 L95 8" />
+        <path d="M5 12 L95 12" />
+        <path d="M10 8 L10 12" />
+        <path d="M50 8 L50 12" />
+        <path d="M90 8 L90 12" />
+      </g>
+
+      {/* PRIMARY: Abacus (square top plate) */}
+      <g strokeWidth="1.2">
+        <path d="M8 12 L92 12 L92 18 L8 18 Z" />
+      </g>
+      <g strokeWidth="0.6">
+        <path d="M10 15 L90 15" opacity="0.5" />
+        <path d="M12 14 L88 14" strokeWidth="0.4" />
+      </g>
+
+      {/* PRIMARY: Volutes (corner scrolls) - Ionic element */}
       <g strokeWidth="1">
-        <path d="M5 15 L5 90 L11 90 L11 15 Z" />
-        <path d="M89 15 L89 90 L95 90 L95 15 Z" />
-        {/* Post caps */}
-        <path d="M4 12 L12 12 L12 15 L4 15 Z" />
-        <path d="M88 12 L96 12 L96 15 L88 15 Z" />
-        <circle cx="8" cy="10" r="2" />
-        <circle cx="92" cy="10" r="2" />
+        {/* Left volute */}
+        <path d="M18 25 Q12 28, 12 35 Q12 42, 18 45 Q22 46, 24 42" />
+        <circle cx="17" cy="35" r="3" />
+        <circle cx="17" cy="35" r="1.5" />
+
+        {/* Right volute */}
+        <path d="M82 25 Q88 28, 88 35 Q88 42, 82 45 Q78 46, 76 42" />
+        <circle cx="83" cy="35" r="3" />
+        <circle cx="83" cy="35" r="1.5" />
+      </g>
+
+      {/* PRIMARY: Helices (inner scrolls) */}
+      <g strokeWidth="0.8">
+        <path d="M30 22 Q28 25, 30 28 Q34 29, 35 25" />
+        <circle cx="31" cy="25" r="1" />
+        <path d="M70 22 Q72 25, 70 28 Q66 29, 65 25" />
+        <circle cx="69" cy="25" r="1" />
+      </g>
+
+      {/* PRIMARY: Upper row of acanthus leaves */}
+      <g strokeWidth="0.9">
+        {/* Center leaf */}
+        <path d="M50 38 Q48 32, 46 25 Q48 28, 49 32 L50 38" />
+        <path d="M50 38 Q52 32, 54 25 Q52 28, 51 32 L50 38" />
+        <path d="M49 30 L48 26" strokeWidth="0.5" opacity="0.6" />
+        <path d="M51 30 L52 26" strokeWidth="0.5" opacity="0.6" />
+
+        {/* Left leaves */}
+        <path d="M35 42 Q32 36, 28 28 Q30 32, 33 38 L35 42" />
+        <path d="M35 42 Q38 36, 40 28 Q38 32, 36 38 L35 42" />
+
+        {/* Right leaves */}
+        <path d="M65 42 Q62 36, 60 28 Q62 32, 64 38 L65 42" />
+        <path d="M65 42 Q68 36, 72 28 Q70 32, 67 38 L65 42" />
+      </g>
+
+      {/* PRIMARY: Lower row of acanthus leaves */}
+      <g strokeWidth="1">
+        {/* Left group */}
+        <path d="M25 55 Q20 48, 18 38 Q22 44, 24 50 L25 55" />
+        <path d="M30 55 Q28 48, 25 38 Q27 44, 29 50 L30 55" />
+        <path d="M35 55 Q36 48, 36 38 Q35 44, 34 50 L35 55" />
+
+        {/* Center group */}
+        <path d="M45 55 Q44 48, 43 38 Q44 44, 44.5 50 L45 55" />
+        <path d="M50 55 Q50 48, 50 38 Q50 44, 50 50 L50 55" />
+        <path d="M55 55 Q56 48, 57 38 Q56 44, 55.5 50 L55 55" />
+
+        {/* Right group */}
+        <path d="M65 55 Q64 48, 64 38 Q65 44, 66 50 L65 55" />
+        <path d="M70 55 Q72 48, 75 38 Q73 44, 71 50 L70 55" />
+        <path d="M75 55 Q80 48, 82 38 Q78 44, 76 50 L75 55" />
+      </g>
+
+      {/* PRIMARY: Leaf serrations and veins */}
+      <g strokeWidth="0.5" opacity="0.6">
+        <path d="M20 48 Q18 50, 20 52" />
+        <path d="M28 48 Q26 50, 28 52" />
+        <path d="M36 48 Q35 50, 36 52" />
+        <path d="M44 48 Q43 50, 44 52" />
+        <path d="M56 48 Q57 50, 56 52" />
+        <path d="M64 48 Q65 50, 64 52" />
+        <path d="M72 48 Q74 50, 72 52" />
+        <path d="M80 48 Q82 50, 80 52" />
+      </g>
+
+      {/* PRIMARY: Necking/collar at base */}
+      <g strokeWidth="1">
+        <path d="M32 58 L68 58" />
+        <path d="M30 60 L70 60" />
+        <path d="M32 62 L68 62" />
+      </g>
+
+      {/* PRIMARY: Astragal (bead molding) at column junction */}
+      <g strokeWidth="0.8">
+        {[35, 42, 50, 58, 65].map((x, i) => (
+          <circle key={i} cx={x} cy="64" r="2.5" />
+        ))}
       </g>
     </g>
   </svg>
@@ -263,66 +447,409 @@ const BracketSVG: React.FC<SVGProps> = ({ showHalo }) => (
 )
 
 /**
- * CARTOUCHE - Ornamental tablet or shield for inscriptions/emblems
- * Reference: Baroque facades, French Rococo (Palace of Fontainebleau)
- * Features scrolled edges with elaborate framing
+ * CARTOUCHE - Baroque decorative shield on palace facade
+ * Reference: Palace of Fontainebleau (France, 1540s), Zwinger Palace (Dresden, 1728)
+ * View: Frontal view of ornamental cartouche with scrollwork on stone facade
  */
 const CartoucheSVG: React.FC<SVGProps> = ({ showHalo }) => (
   <svg viewBox="0 0 100 100" className="w-full h-full">
     {showHalo && <HaloFilter id="cartouche-halo" intensity={1} />}
     <g filter={showHalo ? "url(#cartouche-halo)" : undefined} fill="none" stroke="currentColor" strokeLinecap="round">
 
-      {/* CONTEXT: Wall or facade surface */}
+      {/* CONTEXT: Baroque palace facade wall with rustication */}
       <g strokeDasharray="3 2" opacity="0.4" strokeWidth="0.6">
         <path d="M5 5 L95 5 L95 95 L5 95 Z" />
-        <path d="M10 10 L90 10" />
-        <path d="M10 90 L90 90" />
-        <path d="M10 10 L10 90" />
-        <path d="M90 10 L90 90" />
+        <path d="M5 20 L95 20" />
+        <path d="M5 40 L95 40" />
+        <path d="M5 60 L95 60" />
+        <path d="M5 80 L95 80" />
+        <path d="M20 5 L20 95" />
+        <path d="M80 5 L80 95" />
       </g>
 
-      {/* PRIMARY: Main shield shape - baroque style */}
+      {/* PRIMARY: Outer cartouche frame - flowing Rococo curves */}
       <g strokeWidth="1.2">
-        <path d="M50 10 Q75 15, 85 35 Q90 55, 75 75 Q60 90, 50 92 Q40 90, 25 75 Q10 55, 15 35 Q25 15, 50 10" />
+        <path d="M50 8 Q72 12, 82 28 Q88 45, 85 55 Q82 68, 70 80 Q58 90, 50 92 Q42 90, 30 80 Q18 68, 15 55 Q12 45, 18 28 Q28 12, 50 8" />
       </g>
 
-      {/* PRIMARY: Inner border/frame */}
+      {/* PRIMARY: Inner shield field */}
+      <g strokeWidth="0.9">
+        <path d="M50 16 Q66 19, 74 32 Q78 45, 76 54 Q73 65, 63 74 Q56 80, 50 82 Q44 80, 37 74 Q27 65, 24 54 Q22 45, 26 32 Q34 19, 50 16" />
+      </g>
+
+      {/* PRIMARY: C-scroll ornaments (left side) */}
+      <g strokeWidth="1">
+        <path d="M18 30 Q10 35, 8 45 Q8 52, 12 58 Q16 62, 20 58" />
+        <path d="M14 38 Q11 42, 11 48 Q11 54, 14 56" strokeWidth="0.6" />
+        <path d="M10 45 Q8 48, 10 52" strokeWidth="0.7" />
+      </g>
+
+      {/* PRIMARY: C-scroll ornaments (right side) */}
+      <g strokeWidth="1">
+        <path d="M82 30 Q90 35, 92 45 Q92 52, 88 58 Q84 62, 80 58" />
+        <path d="M86 38 Q89 42, 89 48 Q89 54, 86 56" strokeWidth="0.6" />
+        <path d="M90 45 Q92 48, 90 52" strokeWidth="0.7" />
+      </g>
+
+      {/* PRIMARY: Top crown ornament */}
+      <g strokeWidth="1">
+        <path d="M45 8 Q50 3, 55 8" />
+        <path d="M50 3 L50 5" />
+        <path d="M48 4 L52 4" strokeWidth="0.7" />
+        <circle cx="50" cy="2" r="1.5" />
+        {/* Side flourishes */}
+        <path d="M40 12 Q35 10, 38 7" strokeWidth="0.7" />
+        <path d="M60 12 Q65 10, 62 7" strokeWidth="0.7" />
+      </g>
+
+      {/* PRIMARY: Bottom pendant ornament */}
+      <g strokeWidth="1">
+        <path d="M50 92 L50 96" />
+        <path d="M47 94 Q50 98, 53 94" />
+        <path d="M48 95 L52 95" strokeWidth="0.6" />
+        <path d="M50 98 Q48 100, 50 102 Q52 100, 50 98" strokeWidth="0.8" />
+      </g>
+
+      {/* PRIMARY: Acanthus leaf details at corners */}
       <g strokeWidth="0.8">
-        <path d="M50 18 Q68 22, 77 38 Q82 52, 70 68 Q58 80, 50 82 Q42 80, 30 68 Q18 52, 23 38 Q32 22, 50 18" />
+        {/* Top corners */}
+        <path d="M28 18 Q22 20, 20 26 Q22 28, 25 26" />
+        <path d="M23 22 L20 24" strokeWidth="0.5" />
+        <path d="M72 18 Q78 20, 80 26 Q78 28, 75 26" />
+        <path d="M77 22 L80 24" strokeWidth="0.5" />
+
+        {/* Bottom corners */}
+        <path d="M28 82 Q22 80, 22 74 Q24 72, 27 75" />
+        <path d="M24 78 L22 76" strokeWidth="0.5" />
+        <path d="M72 82 Q78 80, 78 74 Q76 72, 73 75" />
+        <path d="M76 78 L78 76" strokeWidth="0.5" />
       </g>
 
-      {/* PRIMARY: Scrollwork on sides */}
+      {/* PRIMARY: Rocaille (shell-like) texture in scrolls */}
+      <g strokeWidth="0.5" opacity="0.6">
+        <path d="M10 42 L14 40" />
+        <path d="M10 48 L14 50" />
+        <path d="M10 54 L14 56" />
+        <path d="M90 42 L86 40" />
+        <path d="M90 48 L86 50" />
+        <path d="M90 54 L86 56" />
+      </g>
+
+      {/* Interior inscription field (subtle guide) */}
+      <ellipse cx="50" cy="50" rx="18" ry="22" opacity="0.2" strokeWidth="0.4" strokeDasharray="2 2" />
+    </g>
+  </svg>
+)
+
+/**
+ * CONSOLE - Ornamental bracket supporting balcony or cornice
+ * Reference: Palazzo Farnese (Rome, 1546), Louvre Palace (Paris, 1850s)
+ * View: Side profile of console projecting from facade under balcony
+ */
+const ConsoleSVG: React.FC<SVGProps> = ({ showHalo }) => (
+  <svg viewBox="0 0 100 100" className="w-full h-full">
+    {showHalo && <HaloFilter id="console-halo" intensity={0.95} />}
+    <g filter={showHalo ? "url(#console-halo)" : undefined} fill="none" stroke="currentColor" strokeLinecap="round">
+
+      {/* CONTEXT: Building facade wall */}
+      <g strokeDasharray="3 2" opacity="0.4" strokeWidth="0.6">
+        <path d="M5 10 L5 90" />
+        <path d="M8 10 L8 90" />
+        <path d="M5 20 L20 20" />
+        <path d="M5 40 L20 40" />
+        <path d="M5 60 L20 60" />
+        <path d="M5 80 L20 80" />
+      </g>
+
+      {/* CONTEXT: Balcony floor/soffit above console */}
+      <g strokeDasharray="3 2" opacity="0.4" strokeWidth="0.6">
+        <path d="M18 15 L95 15" />
+        <path d="M18 20 L95 20" />
+        <path d="M25 15 L25 20" />
+        <path d="M45 15 L45 20" />
+        <path d="M65 15 L65 20" />
+        <path d="M85 15 L85 20" />
+      </g>
+
+      {/* PRIMARY: Console main scrolled profile */}
+      <g strokeWidth="1.2">
+        {/* Vertical attachment to wall */}
+        <path d="M18 20 L18 75" />
+
+        {/* Outer scroll curve - dramatic S-curve */}
+        <path d="M18 20 Q35 22, 50 30 Q70 42, 75 55 Q78 65, 70 75 Q60 82, 45 85 Q30 86, 20 82 L18 75" />
+      </g>
+
+      {/* PRIMARY: Inner scroll detail */}
+      <g strokeWidth="0.9">
+        <path d="M22 28 Q35 30, 48 38 Q65 48, 68 60 Q70 70, 62 78 Q52 83, 40 83 Q28 82, 22 78" />
+      </g>
+
+      {/* PRIMARY: Lower volute (scroll termination) */}
+      <g strokeWidth="1">
+        <path d="M45 85 Q50 82, 55 78 Q60 72, 58 68 Q55 64, 50 66" />
+        <circle cx="54" cy="73" r="3" />
+        <circle cx="54" cy="73" r="1.5" />
+      </g>
+
+      {/* PRIMARY: Acanthus leaf enrichment */}
       <g strokeWidth="0.8">
-        <path d="M15 35 Q8 40, 10 50 Q8 55, 15 58" />
-        <path d="M85 35 Q92 40, 90 50 Q92 55, 85 58" />
-        <path d="M12 45 Q10 50, 12 55" />
-        <path d="M88 45 Q90 50, 88 55" />
+        {/* Upper leaves */}
+        <path d="M28 35 Q32 32, 36 35 Q38 38, 35 42 Q32 44, 28 42" />
+        <path d="M31 36 Q33 34, 35 36" strokeWidth="0.5" />
+
+        {/* Middle leaves */}
+        <path d="M35 50 Q40 46, 45 48 Q48 52, 45 56 Q42 58, 38 56" />
+        <path d="M39 50 Q42 48, 44 50" strokeWidth="0.5" />
+
+        {/* Lower leaves */}
+        <path d="M32 65 Q36 62, 40 64 Q42 68, 39 72 Q36 74, 32 72" />
+        <path d="M35 66 Q37 64, 39 66" strokeWidth="0.5" />
       </g>
 
-      {/* PRIMARY: Top decoration */}
-      <g strokeWidth="0.8">
-        <path d="M45 10 Q50 5, 55 10" />
-        <path d="M50 5 L50 2" strokeWidth="1" />
-        <circle cx="50" cy="3" r="1.5" />
+      {/* PRIMARY: Modillion ribs/flutes */}
+      <g strokeWidth="0.6" opacity="0.6">
+        <path d="M25 32 L28 40" />
+        <path d="M32 38 L36 48" />
+        <path d="M40 46 L44 58" />
+        <path d="M46 56 L48 68" />
+        <path d="M48 68 L48 78" />
       </g>
 
-      {/* PRIMARY: Bottom flourish */}
-      <g strokeWidth="0.8">
-        <path d="M50 92 L50 98" />
-        <path d="M45 95 Q50 100, 55 95" />
-        <path d="M47 96 L53 96" strokeWidth="0.5" />
+      {/* PRIMARY: Top attachment block */}
+      <g strokeWidth="1">
+        <path d="M18 18 L28 18 L28 24 L18 24 Z" />
+        <path d="M20 18 L20 24" strokeWidth="0.5" />
+        <path d="M24 18 L24 24" strokeWidth="0.5" />
       </g>
 
-      {/* PRIMARY: Decorative curls at corners */}
+      {/* PRIMARY: Decorative egg-and-dart at top edge */}
       <g strokeWidth="0.7">
-        <path d="M25 20 Q20 25, 22 30 Q24 28, 24 25" />
-        <path d="M75 20 Q80 25, 78 30 Q76 28, 76 25" />
-        <path d="M20 70 Q15 75, 20 80 Q22 78, 22 75" />
-        <path d="M80 70 Q85 75, 80 80 Q78 78, 78 75" />
+        {[22, 28, 34, 40].map((x, i) => (
+          <g key={i}>
+            <circle cx={x} cy="22" r="1.5" />
+            <path d={`M${x} 24 L${x-1} 26 L${x+1} 26 Z`} strokeWidth="0.5" />
+          </g>
+        ))}
       </g>
 
-      {/* Interior field for text/emblem - subtle */}
-      <ellipse cx="50" cy="50" rx="20" ry="25" opacity="0.2" strokeWidth="0.5" strokeDasharray="2 2" />
+      {/* PRIMARY: Bottom water drip molding */}
+      <g strokeWidth="0.8">
+        <path d="M20 82 Q30 88, 45 87 Q58 86, 65 80" />
+      </g>
+    </g>
+  </svg>
+)
+
+/**
+ * CORNICE - Projecting crown molding on Renaissance palazzo facade
+ * Reference: Palazzo Strozzi (Florence, 1489), Palazzo Farnese (Rome, 1546)
+ * View: Section detail showing cornice profile at roofline
+ */
+const CorniceSVG: React.FC<SVGProps> = ({ showHalo }) => (
+  <svg viewBox="0 0 100 100" className="w-full h-full">
+    {showHalo && <HaloFilter id="cornice-halo" intensity={0.9} />}
+    <g filter={showHalo ? "url(#cornice-halo)" : undefined} fill="none" stroke="currentColor" strokeLinecap="round">
+
+      {/* CONTEXT: Facade wall below cornice */}
+      <g strokeDasharray="3 2" opacity="0.4" strokeWidth="0.6">
+        <path d="M5 75 L5 95" />
+        <path d="M15 75 L15 95" />
+        <path d="M35 75 L35 95" />
+        <path d="M55 75 L55 95" />
+        <path d="M75 75 L75 95" />
+        <path d="M95 75 L95 95" />
+        <path d="M5 85 L95 85" />
+      </g>
+
+      {/* CONTEXT: Sky above roofline */}
+      <g strokeDasharray="3 2" opacity="0.4" strokeWidth="0.6">
+        <path d="M25 5 L25 12" />
+        <path d="M50 5 L50 12" />
+        <path d="M75 5 L75 12" />
+      </g>
+
+      {/* PRIMARY: Cyma recta (upper crown) */}
+      <g strokeWidth="1.2">
+        <path d="M10 20 Q20 18, 30 22 Q40 26, 50 24 Q60 22, 70 24 Q80 26, 90 22" />
+        <path d="M10 24 Q20 22, 30 26 Q40 30, 50 28 Q60 26, 70 28 Q80 30, 90 26" />
+      </g>
+
+      {/* PRIMARY: Corona (projecting slab with drip) */}
+      <g strokeWidth="1.2">
+        <path d="M8 30 L92 30 L92 38 L8 38 Z" />
+      </g>
+      <g strokeWidth="0.6">
+        <path d="M10 33 L90 33" opacity="0.5" />
+        <path d="M10 35 L90 35" opacity="0.5" />
+      </g>
+
+      {/* PRIMARY: Dentils (tooth-like blocks) */}
+      <g strokeWidth="1">
+        {[12, 20, 28, 36, 44, 52, 60, 68, 76, 84].map((x, i) => (
+          <path key={i} d={`M${x} 42 L${x} 48 L${x+5} 48 L${x+5} 42 Z`} />
+        ))}
+      </g>
+
+      {/* PRIMARY: Modillion brackets under corona */}
+      <g strokeWidth="0.9">
+        {[15, 35, 55, 75].map((x, i) => (
+          <g key={i}>
+            <path d={`M${x-3} 30 Q${x} 35, ${x} 42 Q${x} 48, ${x-2} 52 L${x+2} 52 Q${x} 48, ${x} 42 Q${x} 35, ${x+3} 30 Z`} />
+            {/* Flute details */}
+            <path d={`M${x-1.5} 35 L${x-1} 48`} strokeWidth="0.4" opacity="0.6" />
+            <path d={`M${x+1.5} 35 L${x+1} 48`} strokeWidth="0.4" opacity="0.6" />
+          </g>
+        ))}
+      </g>
+
+      {/* PRIMARY: Egg-and-dart molding */}
+      <g strokeWidth="0.8">
+        {[15, 25, 35, 45, 55, 65, 75, 85].map((x, i) => (
+          <g key={i}>
+            <ellipse cx={x} cy="56" rx="3" ry="4" />
+            <path d={`M${x-2} 60 L${x} 63 L${x+2} 60`} strokeWidth="0.6" />
+          </g>
+        ))}
+      </g>
+
+      {/* PRIMARY: Fasciacorona band */}
+      <g strokeWidth="1">
+        <path d="M8 65 L92 65" />
+        <path d="M8 70 L92 70" />
+      </g>
+      <g strokeWidth="0.5">
+        <path d="M10 67.5 L90 67.5" opacity="0.5" />
+      </g>
+
+      {/* PRIMARY: Bead-and-reel molding */}
+      <g strokeWidth="0.7">
+        {[12, 22, 32, 42, 52, 62, 72, 82].map((x, i) => (
+          <g key={i}>
+            <circle cx={x} cy="73" r="2" />
+            <ellipse cx={x+5} cy="73" rx="1.5" ry="2.5" />
+          </g>
+        ))}
+      </g>
+
+      {/* PRIMARY: Profile section indicator (right edge) */}
+      <g strokeWidth="1.2" opacity="0.7">
+        <path d="M95 22 Q98 24, 98 30 L100 30 L100 38 L98 38 Q98 42, 100 48 L98 52 Q96 56, 98 60 L95 65 L98 70 L95 75" />
+      </g>
+
+      {/* Detail construction lines */}
+      <g strokeWidth="0.3" opacity="0.3" strokeDasharray="1 2">
+        <path d="M8 30 L100 30" />
+        <path d="M8 52 L100 52" />
+        <path d="M8 65 L100 65" />
+      </g>
+    </g>
+  </svg>
+)
+
+/**
+ * CRESTING - Decorative ridgetop ornament on Victorian roofline
+ * Reference: Victorian Gothic Revival (1850-1900), Crystal Palace (1851)
+ * View: Profile of cast iron cresting along roof peak
+ */
+const CrestingSVG: React.FC<SVGProps> = ({ showHalo }) => (
+  <svg viewBox="0 0 100 100" className="w-full h-full">
+    {showHalo && <HaloFilter id="cresting-halo" intensity={0.95} />}
+    <g filter={showHalo ? "url(#cresting-halo)" : undefined} fill="none" stroke="currentColor" strokeLinecap="round">
+
+      {/* CONTEXT: Roof ridge structure */}
+      <g strokeDasharray="3 2" opacity="0.4" strokeWidth="0.6">
+        <path d="M5 75 L50 60 L95 75" />
+        <path d="M5 78 L95 78" />
+        <path d="M10 65 L10 78" />
+        <path d="M30 62 L30 78" />
+        <path d="M50 60 L50 78" />
+        <path d="M70 62 L70 78" />
+        <path d="M90 65 L90 78" />
+      </g>
+
+      {/* PRIMARY: Base rail mounting */}
+      <g strokeWidth="1">
+        <path d="M8 75 L92 75" />
+        <path d="M8 78 L92 78 L92 82 L8 82 Z" />
+        <path d="M10 80 L90 80" strokeWidth="0.5" />
+      </g>
+
+      {/* PRIMARY: Repeating Gothic spire motifs */}
+      <g strokeWidth="0.9">
+        {/* Spire 1 */}
+        <path d="M18 75 L18 55 L20 52 L22 55 L22 75" />
+        <path d="M20 52 L20 42" />
+        <path d="M18 45 L20 42 L22 45" />
+        <path d="M17 50 Q20 48, 23 50" strokeWidth="0.6" />
+        <path d="M17 60 Q20 58, 23 60" strokeWidth="0.6" />
+        <path d="M17 70 Q20 68, 23 70" strokeWidth="0.6" />
+
+        {/* Spire 2 */}
+        <path d="M38 75 L38 55 L40 52 L42 55 L42 75" />
+        <path d="M40 52 L40 42" />
+        <path d="M38 45 L40 42 L42 45" />
+        <path d="M37 50 Q40 48, 43 50" strokeWidth="0.6" />
+        <path d="M37 60 Q40 58, 43 60" strokeWidth="0.6" />
+        <path d="M37 70 Q40 68, 43 70" strokeWidth="0.6" />
+
+        {/* Spire 3 */}
+        <path d="M58 75 L58 55 L60 52 L62 55 L62 75" />
+        <path d="M60 52 L60 42" />
+        <path d="M58 45 L60 42 L62 45" />
+        <path d="M57 50 Q60 48, 63 50" strokeWidth="0.6" />
+        <path d="M57 60 Q60 58, 63 60" strokeWidth="0.6" />
+        <path d="M57 70 Q60 68, 63 70" strokeWidth="0.6" />
+
+        {/* Spire 4 */}
+        <path d="M78 75 L78 55 L80 52 L82 55 L82 75" />
+        <path d="M80 52 L80 42" />
+        <path d="M78 45 L80 42 L82 45" />
+        <path d="M77 50 Q80 48, 83 50" strokeWidth="0.6" />
+        <path d="M77 60 Q80 58, 83 60" strokeWidth="0.6" />
+        <path d="M77 70 Q80 68, 83 70" strokeWidth="0.6" />
+      </g>
+
+      {/* PRIMARY: Connecting scrollwork between spires */}
+      <g strokeWidth="0.7">
+        <path d="M22 65 Q26 62, 30 65 Q34 68, 38 65" />
+        <path d="M42 65 Q46 62, 50 65 Q54 68, 58 65" />
+        <path d="M62 65 Q66 62, 70 65 Q74 68, 78 65" />
+
+        <path d="M24 63 Q28 60, 32 63" strokeWidth="0.5" opacity="0.7" />
+        <path d="M44 63 Q48 60, 52 63" strokeWidth="0.5" opacity="0.7" />
+        <path d="M64 63 Q68 60, 72 63" strokeWidth="0.5" opacity="0.7" />
+      </g>
+
+      {/* PRIMARY: Decorative finials at spire tops */}
+      <g strokeWidth="0.8">
+        <path d="M19 42 L21 42" />
+        <circle cx="20" cy="40" r="1.5" />
+        <path d="M39 42 L41 42" />
+        <circle cx="40" cy="40" r="1.5" />
+        <path d="M59 42 L61 42" />
+        <circle cx="60" cy="40" r="1.5" />
+        <path d="M79 42 L81 42" />
+        <circle cx="80" cy="40" r="1.5" />
+      </g>
+
+      {/* PRIMARY: Trefoil perforations in spire faces */}
+      <g strokeWidth="0.5">
+        {[20, 40, 60, 80].map((x, i) => (
+          <g key={i}>
+            <circle cx={x} cy="56" r="1.2" opacity="0.6" />
+            <circle cx={x-2} cy="58" r="0.8" opacity="0.6" />
+            <circle cx={x+2} cy="58" r="0.8" opacity="0.6" />
+          </g>
+        ))}
+      </g>
+
+      {/* PRIMARY: Mounting brackets at base */}
+      <g strokeWidth="0.7">
+        {[15, 35, 55, 75].map((x, i) => (
+          <path key={i} d={`M${x} 75 L${x-2} 82 L${x+2} 82 Z`} />
+        ))}
+      </g>
     </g>
   </svg>
 )
@@ -337,12 +864,13 @@ const FestoonSVG: React.FC<SVGProps> = ({ showHalo }) => (
     {showHalo && <HaloFilter id="festoon-halo" intensity={0.95} />}
     <g filter={showHalo ? "url(#festoon-halo)" : undefined} fill="none" stroke="currentColor" strokeLinecap="round">
 
-      {/* CONTEXT: Wall or frieze surface */}
+      {/* CONTEXT: Neoclassical wall or frieze panel */}
       <g strokeDasharray="3 2" opacity="0.4" strokeWidth="0.6">
         <path d="M5 10 L95 10" />
         <path d="M5 15 L95 15" />
         <path d="M10 10 L10 90" />
         <path d="M90 10 L90 90" />
+        <path d="M5 90 L95 90" />
       </g>
 
       {/* PRIMARY: Hanging points - decorative rosettes */}
