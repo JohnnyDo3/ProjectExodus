@@ -30,551 +30,534 @@ interface SVGProps {
 }
 
 /**
- * BEAM - Tudor great hall with massive hammer beam roof
- * Reference: Westminster Hall, London - iconic hammer beam
- * Shows: Looking UP at ornate timber beam with angel brackets
- * Unique view: Worm's eye perspective of structural masterpiece
+ * CEILING ROSE - Victorian ornamental medallion with chandelier
+ * 3D PERSPECTIVE: Looking up at an angle from corner of room
+ * Shows: Circular plaster rose with acanthus leaves, radiating petals
+ * Foreshortening creates elliptical view with depth shadows
  */
-const BeamSVG: React.FC<SVGProps> = ({ showHalo }) => (
+const CeilingRoseSVG: React.FC<SVGProps> = ({ showHalo }) => (
   <svg viewBox="0 0 100 100" className="w-full h-full">
-    {showHalo && <HaloFilter id="beam-halo" intensity={0.85} />}
-    <g filter={showHalo ? "url(#beam-halo)" : undefined} fill="none" stroke="currentColor" strokeLinecap="round">
-      {/* CONTEXT - Room walls converging below */}
-      <g strokeDasharray="3 2" opacity="0.4" strokeWidth="0.8">
-        <path d="M5 95 L5 50" />
-        <path d="M95 95 L95 50" />
-        <path d="M5 95 L95 95" />
-        {/* Wall arcade arches hint */}
-        <path d="M10 80 Q20 70, 30 80" />
-        <path d="M70 80 Q80 70, 90 80" />
+    {showHalo && <HaloFilter id="rose-halo" intensity={0.9} />}
+    <g filter={showHalo ? "url(#rose-halo)" : undefined} fill="none" stroke="currentColor" strokeLinecap="round">
+      {/* CONTEXT - Ceiling plane receding (perspective grid) */}
+      <g strokeDasharray="3 2" opacity="0.3" strokeWidth="0.6">
+        <path d="M0 95 L50 50 L100 95" />
+        <path d="M0 85 L50 50 L100 85" />
+        <path d="M20 100 L50 50 L80 100" />
+        {/* Corner of room */}
+        <path d="M0 0 L0 95" />
+        <path d="M0 0 L100 0" />
       </g>
 
-      {/* PRIMARY - Hammer beam ceiling structure */}
+      {/* PRIMARY - Ceiling rose in perspective (elliptical, tilted) */}
       <g strokeWidth="1.2">
-        {/* Central ridge beam */}
-        <path d="M35 8 L65 8 L65 15 L35 15 Z" strokeWidth="1.5" />
-        <path d="M40 10 L60 10" strokeWidth="0.8" opacity="0.5" />
+        {/* Outer ring - perspective ellipse */}
+        <ellipse cx="50" cy="45" rx="38" ry="28" strokeWidth="2" />
 
-        {/* Main hammer beams projecting from walls */}
-        <path d="M5 45 L35 45 L35 52 L5 52" strokeWidth="1.8" />
-        <path d="M65 45 L95 45 L95 52 L65 52" strokeWidth="1.8" />
+        {/* Second decorative ring */}
+        <ellipse cx="50" cy="45" rx="30" ry="22" strokeWidth="1.5" />
 
-        {/* Hammer posts (vertical from beam) */}
-        <path d="M30 30 L30 45" strokeWidth="2" />
-        <path d="M70 30 L70 45" strokeWidth="2" />
-        <path d="M28 32 L32 32 L32 43 L28 43 Z" strokeWidth="1" />
-        <path d="M68 32 L72 32 L72 43 L68 43 Z" strokeWidth="1" />
+        {/* Inner medallion ring */}
+        <ellipse cx="50" cy="45" rx="20" ry="14" strokeWidth="1.3" />
 
-        {/* Curved braces (arch braces) */}
-        <path d="M5 50 Q20 35, 30 30" strokeWidth="1.5" />
-        <path d="M95 50 Q80 35, 70 30" strokeWidth="1.5" />
+        {/* Center rose for chandelier attachment */}
+        <ellipse cx="50" cy="45" rx="8" ry="5" strokeWidth="1.8" />
 
-        {/* Collar beam connecting posts */}
-        <path d="M30 30 L70 30" strokeWidth="1.5" />
-        <path d="M32 28 L68 28" strokeWidth="0.8" />
+        {/* Chandelier chain dropping down toward viewer */}
+        <path d="M50 50 L50 75" strokeWidth="1" />
+        <path d="M48 75 L52 75 L54 85 L46 85 Z" strokeWidth="0.8" />
 
-        {/* Principal rafters rising to ridge */}
-        <path d="M30 30 L50 8" strokeWidth="1.5" />
-        <path d="M70 30 L50 8" strokeWidth="1.5" />
+        {/* Acanthus leaves radiating out (8 leaves, perspective adjusted) */}
+        {/* Top leaves (farther, smaller) */}
+        <path d="M50 23 Q45 28, 50 31 Q55 28, 50 23" strokeWidth="1" />
+        <path d="M50 23 L50 17" strokeWidth="0.8" />
 
-        {/* Angel bracket decorations */}
-        <path d="M25 45 Q22 38, 28 35" strokeWidth="1" />
-        <circle cx="24" cy="40" r="2" strokeWidth="0.8" />
-        <path d="M75 45 Q78 38, 72 35" strokeWidth="1" />
-        <circle cx="76" cy="40" r="2" strokeWidth="0.8" />
+        {/* Side leaves (larger, closer) */}
+        <path d="M18 42 Q22 45, 20 50 Q18 45, 18 42" strokeWidth="1.2" />
+        <path d="M12 44 L18 42" strokeWidth="0.8" />
+        <path d="M82 42 Q78 45, 80 50 Q82 45, 82 42" strokeWidth="1.2" />
+        <path d="M88 44 L82 42" strokeWidth="0.8" />
 
-        {/* Wood grain on beams */}
-        <path d="M12 48 L20 49" opacity="0.4" strokeWidth="0.6" />
-        <path d="M75 48 L85 49" opacity="0.4" strokeWidth="0.6" />
-        <path d="M40 12 L52 13" opacity="0.4" strokeWidth="0.6" />
+        {/* Bottom leaves (closest, largest due to perspective) */}
+        <path d="M50 67 Q42 62, 48 58 Q52 62, 50 67" strokeWidth="1.3" />
+        <path d="M50 73 L50 67" strokeWidth="0.9" />
 
-        {/* Purlins (horizontal roof members) */}
-        <path d="M38 20 L62 20" strokeWidth="0.8" />
-        <path d="M20 55 L35 40" strokeWidth="0.8" opacity="0.6" />
-        <path d="M80 55 L65 40" strokeWidth="0.8" opacity="0.6" />
+        {/* Diagonal leaves */}
+        <path d="M25 28 Q30 32, 28 38" strokeWidth="1" />
+        <path d="M75 28 Q70 32, 72 38" strokeWidth="1" />
+        <path d="M28 60 Q34 58, 35 52" strokeWidth="1.1" />
+        <path d="M72 60 Q66 58, 65 52" strokeWidth="1.1" />
+
+        {/* Petal details between leaves */}
+        <path d="M35 30 Q40 35, 38 40" strokeWidth="0.7" opacity="0.7" />
+        <path d="M65 30 Q60 35, 62 40" strokeWidth="0.7" opacity="0.7" />
+        <path d="M35 55 Q40 52, 42 48" strokeWidth="0.7" opacity="0.7" />
+        <path d="M65 55 Q60 52, 58 48" strokeWidth="0.7" opacity="0.7" />
+
+        {/* Relief depth shadows on far side */}
+        <path d="M22 35 Q30 38, 35 32" strokeWidth="0.5" opacity="0.4" />
+        <path d="M78 35 Q70 38, 65 32" strokeWidth="0.5" opacity="0.4" />
       </g>
     </g>
   </svg>
 )
 
 /**
- * COFFER - Pantheon dome looking UP into coffered interior
- * Reference: The Pantheon, Rome - iconic coffered dome with oculus
- * Shows: Concentric rings of recessed coffers radiating from oculus
- * Unique view: Standing in center looking straight up
+ * COFFERED CEILING - Pantheon-style recessed panels
+ * 3D PERSPECTIVE: Looking up at angle, one-point perspective to center
+ * Shows: Deep recessed square coffers in grid, getting smaller toward vanishing point
+ * Distinct: Geometric grid with shadowed recesses
  */
-const CofferSVG: React.FC<SVGProps> = ({ showHalo }) => (
+const CofferedCeilingSVG: React.FC<SVGProps> = ({ showHalo }) => (
   <svg viewBox="0 0 100 100" className="w-full h-full">
-    {showHalo && <HaloFilter id="coffer-halo" intensity={0.9} />}
+    {showHalo && <HaloFilter id="coffer-halo" intensity={0.85} />}
     <g filter={showHalo ? "url(#coffer-halo)" : undefined} fill="none" stroke="currentColor" strokeLinecap="round">
-      {/* CONTEXT - Dome base ring */}
-      <g strokeDasharray="3 2" opacity="0.4" strokeWidth="0.8">
-        <circle cx="50" cy="50" r="47" />
-        {/* Cornice at base */}
-        <circle cx="50" cy="50" r="45" />
+      {/* CONTEXT - Wall edges visible at corners */}
+      <g strokeDasharray="3 2" opacity="0.3" strokeWidth="0.6">
+        <path d="M0 100 L0 90 L10 80" />
+        <path d="M100 100 L100 90 L90 80" />
       </g>
 
-      {/* PRIMARY - Coffered dome structure */}
+      {/* PRIMARY - Coffered grid in perspective (converging to center) */}
       <g strokeWidth="1">
-        {/* Oculus (open to sky) */}
-        <circle cx="50" cy="50" r="8" strokeWidth="2" />
-        <circle cx="50" cy="50" r="6" strokeWidth="1" opacity="0.6" />
+        {/* Outer frame of coffered area */}
+        <path d="M5 85 L25 65 L75 65 L95 85" strokeWidth="1.5" />
+        <path d="M25 65 L25 25 L75 25 L75 65" strokeWidth="1.5" />
+        <path d="M5 85 L5 45 L25 25" strokeWidth="1.3" />
+        <path d="M95 85 L95 45 L75 25" strokeWidth="1.3" />
 
-        {/* Concentric coffer rings */}
-        <circle cx="50" cy="50" r="15" strokeWidth="1.2" />
-        <circle cx="50" cy="50" r="24" strokeWidth="1.2" />
-        <circle cx="50" cy="50" r="33" strokeWidth="1.2" />
-        <circle cx="50" cy="50" r="42" strokeWidth="1.5" />
+        {/* TOP ROW coffers (far from viewer, smallest) */}
+        {/* Coffer 1 */}
+        <path d="M28 28 L28 38 L42 38 L42 28 Z" strokeWidth="1.2" />
+        <path d="M30 30 L30 36 L40 36 L40 30 Z" strokeWidth="0.7" opacity="0.6" />
+        {/* Coffer 2 */}
+        <path d="M45 28 L45 38 L55 38 L55 28 Z" strokeWidth="1.2" />
+        <path d="M47 30 L47 36 L53 36 L53 30 Z" strokeWidth="0.7" opacity="0.6" />
+        {/* Coffer 3 */}
+        <path d="M58 28 L58 38 L72 38 L72 28 Z" strokeWidth="1.2" />
+        <path d="M60 30 L60 36 L70 36 L70 30 Z" strokeWidth="0.7" opacity="0.6" />
 
-        {/* Radial coffer divisions (28 coffers per ring historically) */}
-        {[0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11].map((i) => {
-          const angle = (i * 30 * Math.PI) / 180
-          const x1 = 50 + 15 * Math.cos(angle)
-          const y1 = 50 + 15 * Math.sin(angle)
-          const x2 = 50 + 42 * Math.cos(angle)
-          const y2 = 50 + 42 * Math.sin(angle)
-          return <path key={i} d={`M${x1} ${y1} L${x2} ${y2}`} strokeWidth="1" />
-        })}
+        {/* MIDDLE ROW coffers (medium) */}
+        {/* Coffer 4 */}
+        <path d="M26 42 L26 55 L43 55 L43 42 Z" strokeWidth="1.3" />
+        <path d="M28 44 L28 53 L41 53 L41 44 Z" strokeWidth="0.8" opacity="0.6" />
+        {/* Coffer 5 - center with rosette */}
+        <path d="M46 42 L46 55 L54 55 L54 42 Z" strokeWidth="1.3" />
+        <circle cx="50" cy="48" r="4" strokeWidth="0.9" />
+        <circle cx="50" cy="48" r="2" strokeWidth="0.6" />
+        {/* Coffer 6 */}
+        <path d="M57 42 L57 55 L74 55 L74 42 Z" strokeWidth="1.3" />
+        <path d="M59 44 L59 53 L72 53 L72 44 Z" strokeWidth="0.8" opacity="0.6" />
 
-        {/* Inner recess detail on select coffers */}
-        {/* Top coffer detail */}
-        <path d="M47 18 L53 18 L54 23 L46 23 Z" strokeWidth="0.8" />
-        <path d="M48 19 L52 19 L52.5 22 L47.5 22 Z" strokeWidth="0.5" opacity="0.6" />
+        {/* BOTTOM ROW coffers (closest, largest due to perspective) */}
+        {/* Coffer 7 */}
+        <path d="M12 62 L24 58 L24 75 L8 82 Z" strokeWidth="1.4" />
+        <path d="M14 65 L22 62 L22 73 L12 78 Z" strokeWidth="0.8" opacity="0.6" />
+        {/* Coffer 8 */}
+        <path d="M27 58 L45 58 L45 75 L27 75 Z" strokeWidth="1.4" />
+        <path d="M29 60 L43 60 L43 73 L29 73 Z" strokeWidth="0.8" opacity="0.6" />
+        <circle cx="36" cy="66" r="3" strokeWidth="0.7" />
+        {/* Coffer 9 */}
+        <path d="M55 58 L73 58 L73 75 L55 75 Z" strokeWidth="1.4" />
+        <path d="M57 60 L71 60 L71 73 L57 73 Z" strokeWidth="0.8" opacity="0.6" />
+        <circle cx="64" cy="66" r="3" strokeWidth="0.7" />
+        {/* Coffer 10 */}
+        <path d="M76 58 L88 62 L92 82 L76 75 Z" strokeWidth="1.4" />
+        <path d="M78 62 L86 65 L88 78 L78 73 Z" strokeWidth="0.8" opacity="0.6" />
 
-        {/* Side coffer detail */}
-        <path d="M18 47 L18 53 L23 54 L23 46 Z" strokeWidth="0.8" />
-        <path d="M82 47 L82 53 L77 54 L77 46 Z" strokeWidth="0.8" />
-
-        {/* Bottom coffer detail */}
-        <path d="M47 82 L53 82 L54 77 L46 77 Z" strokeWidth="0.8" />
-
-        {/* Central rosettes in coffers (bronze originally) */}
-        <circle cx="50" cy="28" r="1.5" strokeWidth="0.7" />
-        <circle cx="28" cy="50" r="1.5" strokeWidth="0.7" />
-        <circle cx="72" cy="50" r="1.5" strokeWidth="0.7" />
-        <circle cx="50" cy="72" r="1.5" strokeWidth="0.7" />
-
-        {/* Light beam from oculus */}
-        <path d="M50 42 L45 35" strokeDasharray="2 2" opacity="0.3" strokeWidth="0.5" />
-        <path d="M50 42 L55 35" strokeDasharray="2 2" opacity="0.3" strokeWidth="0.5" />
+        {/* Beam edges between coffers */}
+        <path d="M43 28 L43 75" strokeWidth="0.9" />
+        <path d="M57 28 L57 75" strokeWidth="0.9" />
+        <path d="M25 40 L75 40" strokeWidth="0.9" />
+        <path d="M25 57 L75 57" strokeWidth="0.9" />
       </g>
     </g>
   </svg>
 )
 
 /**
- * DROP CEILING - Modern office with suspended T-bar grid
- * Reference: Contemporary commercial interior
- * Shows: T-bar grid with one tile removed showing plenum space
- * Unique view: Looking up at office ceiling with light fixtures
+ * COVED CEILING - Curved transition between wall and ceiling
+ * 3D PERSPECTIVE: Corner view showing curved cove profile
+ * Shows: Smooth concave curve flowing into flat ceiling
+ * Distinct: Elegant curves, often with decorative molding
  */
-const DropCeilingSVG: React.FC<SVGProps> = ({ showHalo }) => (
+const CovedCeilingSVG: React.FC<SVGProps> = ({ showHalo }) => (
+  <svg viewBox="0 0 100 100" className="w-full h-full">
+    {showHalo && <HaloFilter id="coved-halo" intensity={0.85} />}
+    <g filter={showHalo ? "url(#coved-halo)" : undefined} fill="none" stroke="currentColor" strokeLinecap="round">
+      {/* CONTEXT - Room corner walls */}
+      <g strokeDasharray="3 2" opacity="0.35" strokeWidth="0.7">
+        {/* Left wall */}
+        <path d="M0 100 L0 55" />
+        <path d="M0 70 L8 70" strokeWidth="0.5" />
+        <path d="M0 80 L6 80" strokeWidth="0.5" />
+        {/* Right wall in perspective */}
+        <path d="M0 100 L100 85" />
+        <path d="M100 85 L100 45" />
+      </g>
+
+      {/* PRIMARY - Coved ceiling curves in perspective */}
+      <g strokeWidth="1.2">
+        {/* Left wall cove profile (showing the curve) */}
+        <path d="M0 55 Q0 35, 20 30 Q40 28, 55 30" strokeWidth="1.8" />
+
+        {/* Right wall cove sweeping across */}
+        <path d="M100 45 Q95 30, 75 25 Q55 22, 55 30" strokeWidth="1.5" />
+
+        {/* Flat ceiling plane in center */}
+        <path d="M55 30 L55 5 L95 8 L95 25" strokeWidth="1" opacity="0.6" />
+        <path d="M20 30 L20 8 L55 5" strokeWidth="1" opacity="0.6" />
+
+        {/* Cove molding detail on left (closest, largest) */}
+        <path d="M0 52 Q2 38, 18 33" strokeWidth="1.3" />
+        <path d="M0 48 Q5 35, 22 30" strokeWidth="0.9" opacity="0.7" />
+
+        {/* Cove molding detail on right (receding) */}
+        <path d="M95 42 Q90 32, 72 27" strokeWidth="1.1" />
+        <path d="M98 38 Q92 30, 75 25" strokeWidth="0.8" opacity="0.7" />
+
+        {/* Decorative bead molding along cove edge */}
+        <path d="M5 50 Q15 42, 25 38 Q35 35, 45 33 Q55 32, 65 30 Q75 28, 85 30 Q92 32, 96 38" strokeWidth="0.7" strokeDasharray="2 1.5" />
+
+        {/* Crown molding at wall-cove transition */}
+        <path d="M0 55 L0 58" strokeWidth="2" />
+        <path d="M0 58 Q10 52, 15 48" strokeWidth="1" />
+
+        {/* Corner junction detail */}
+        <path d="M0 55 Q8 48, 12 40 Q15 35, 20 30" strokeWidth="0.8" opacity="0.5" />
+
+        {/* Ceiling surface texture lines */}
+        <path d="M25 15 L60 12" strokeWidth="0.4" opacity="0.3" />
+        <path d="M30 20 L65 17" strokeWidth="0.4" opacity="0.3" />
+
+        {/* Light reflection on cove curve */}
+        <path d="M8 42 Q18 38, 28 35" strokeWidth="0.5" opacity="0.4" />
+      </g>
+    </g>
+  </svg>
+)
+
+/**
+ * DROPPED CEILING - Modern suspended T-bar grid system
+ * 3D PERSPECTIVE: Looking up from office floor, strong one-point perspective
+ * Shows: Acoustic tiles, T-bar grid, light fixtures, air vents
+ * Distinct: Industrial/commercial, regular grid pattern
+ */
+const DroppedCeilingSVG: React.FC<SVGProps> = ({ showHalo }) => (
   <svg viewBox="0 0 100 100" className="w-full h-full">
     {showHalo && <HaloFilter id="drop-halo" intensity={0.75} />}
     <g filter={showHalo ? "url(#drop-halo)" : undefined} fill="none" stroke="currentColor" strokeLinecap="round">
-      {/* CONTEXT - Room walls */}
-      <g strokeDasharray="3 2" opacity="0.4" strokeWidth="0.8">
-        <path d="M5 5 L95 5 L95 95 L5 95 Z" />
-        {/* Wall molding */}
-        <path d="M8 8 L92 8" />
-        <path d="M8 8 L8 92" />
-        <path d="M92 8 L92 92" />
+      {/* CONTEXT - Office walls at edges */}
+      <g strokeDasharray="3 2" opacity="0.3" strokeWidth="0.6">
+        <path d="M0 100 L20 70" />
+        <path d="M100 100 L80 70" />
+        <path d="M0 100 L100 100" />
       </g>
 
-      {/* PRIMARY - Suspended ceiling grid */}
+      {/* PRIMARY - Suspended grid in steep perspective */}
       <g strokeWidth="1">
-        {/* Main T-bar grid */}
-        <path d="M10 10 L90 10" strokeWidth="1.5" />
-        <path d="M10 30 L90 30" strokeWidth="1.5" />
-        <path d="M10 50 L90 50" strokeWidth="1.5" />
-        <path d="M10 70 L90 70" strokeWidth="1.5" />
-        <path d="M10 90 L90 90" strokeWidth="1.5" />
+        {/* Vanishing point near center top - main T-bar grid */}
 
-        <path d="M10 10 L10 90" strokeWidth="1.5" />
-        <path d="M30 10 L30 90" strokeWidth="1.5" />
-        <path d="M50 10 L50 90" strokeWidth="1.5" />
-        <path d="M70 10 L70 90" strokeWidth="1.5" />
-        <path d="M90 10 L90 90" strokeWidth="1.5" />
+        {/* Horizontal T-bars (curved for perspective) */}
+        <path d="M5 75 Q50 60, 95 75" strokeWidth="1.5" />
+        <path d="M12 55 Q50 42, 88 55" strokeWidth="1.4" />
+        <path d="M20 38 Q50 28, 80 38" strokeWidth="1.3" />
+        <path d="M30 24 Q50 18, 70 24" strokeWidth="1.2" />
+        <path d="M42 14 Q50 11, 58 14" strokeWidth="1" />
 
-        {/* Acoustic tiles (shown as slightly recessed) */}
-        <path d="M12 12 L28 12 L28 28 L12 28 Z" strokeWidth="0.8" />
-        <path d="M32 12 L48 12 L48 28 L32 28 Z" strokeWidth="0.8" />
-        <path d="M52 12 L68 12 L68 28 L52 28 Z" strokeWidth="0.8" />
-        <path d="M72 12 L88 12 L88 28 L72 28 Z" strokeWidth="0.8" />
+        {/* Vertical T-bars converging to vanishing point */}
+        <path d="M15 72 L42 14" strokeWidth="1.4" />
+        <path d="M35 68 L46 14" strokeWidth="1.3" />
+        <path d="M50 65 L50 12" strokeWidth="1.2" />
+        <path d="M65 68 L54 14" strokeWidth="1.3" />
+        <path d="M85 72 L58 14" strokeWidth="1.4" />
 
-        <path d="M12 32 L28 32 L28 48 L12 48 Z" strokeWidth="0.8" />
-        {/* Fluorescent light fixture */}
-        <path d="M32 32 L68 32 L68 48 L32 48 Z" strokeWidth="1.2" />
-        <path d="M35 35 L65 35 L65 45 L35 45 Z" strokeWidth="0.8" opacity="0.5" />
-        <path d="M38 40 L62 40" strokeWidth="0.6" opacity="0.4" />
-        <path d="M72 32 L88 32 L88 48 L72 48 Z" strokeWidth="0.8" />
+        {/* Acoustic tiles (shown as recessed panels) */}
+        {/* Bottom row - largest tiles (closest) */}
+        <path d="M18 73 L33 66 L45 68 L36 76 Z" strokeWidth="0.8" opacity="0.7" />
+        <path d="M55 68 L67 66 L82 73 L64 76 Z" strokeWidth="0.8" opacity="0.7" />
 
-        {/* Missing tile showing plenum space */}
-        <path d="M12 52 L28 52 L28 68 L12 68 Z" strokeDasharray="3 2" strokeWidth="0.8" opacity="0.5" />
-        {/* Ductwork visible in plenum */}
-        <path d="M14 55 L26 55 L26 60 L14 60" strokeDasharray="2 1" opacity="0.4" strokeWidth="0.6" />
-        <path d="M20 60 L20 66" strokeDasharray="2 1" opacity="0.4" strokeWidth="0.6" />
-        {/* Suspension wire visible */}
-        <path d="M20 52 L20 48" strokeDasharray="1 1" opacity="0.3" strokeWidth="0.5" />
+        {/* Middle row tiles */}
+        <path d="M22 54 L34 45 L48 48 L38 56 Z" strokeWidth="0.7" opacity="0.6" />
+        <path d="M52 48 L66 45 L78 54 L62 56 Z" strokeWidth="0.7" opacity="0.6" />
 
-        <path d="M32 52 L48 52 L48 68 L32 68 Z" strokeWidth="0.8" />
-        <path d="M52 52 L68 52 L68 68 L52 68 Z" strokeWidth="0.8" />
-        {/* Air return grille */}
-        <path d="M72 52 L88 52 L88 68 L72 68 Z" strokeWidth="1" />
-        <path d="M75 55 L85 55" strokeWidth="0.6" />
-        <path d="M75 58 L85 58" strokeWidth="0.6" />
-        <path d="M75 61 L85 61" strokeWidth="0.6" />
-        <path d="M75 64 L85 64" strokeWidth="0.6" />
+        {/* Fluorescent light fixture (2x4 troffer) */}
+        <path d="M38 42 L47 35 L53 35 L62 42 L62 52 L53 48 L47 48 L38 52 Z" strokeWidth="1.2" />
+        <path d="M42 40 L48 36 L52 36 L58 40" strokeWidth="0.6" opacity="0.5" />
+        <path d="M44 45 L56 45" strokeWidth="0.5" opacity="0.4" />
 
-        {/* Bottom row tiles */}
-        <path d="M12 72 L28 72 L28 88 L12 88 Z" strokeWidth="0.8" />
-        <path d="M32 72 L48 72 L48 88 L32 88 Z" strokeWidth="0.8" />
+        {/* Air return grille (perforated) */}
+        <path d="M22 35 L30 28 L42 30 L35 38 Z" strokeWidth="1" />
+        <path d="M25 33 L28 30" strokeWidth="0.5" />
+        <path d="M28 35 L31 32" strokeWidth="0.5" />
+        <path d="M31 33 L34 30" strokeWidth="0.5" />
+        <path d="M32 36 L35 33" strokeWidth="0.5" />
+
         {/* Sprinkler head */}
-        <circle cx="60" cy="80" r="2" strokeWidth="0.8" />
-        <path d="M52 72 L68 72 L68 88 L52 88 Z" strokeWidth="0.8" />
-        <path d="M72 72 L88 72 L88 88 L72 88 Z" strokeWidth="0.8" />
+        <circle cx="72" cy="32" r="2" strokeWidth="0.8" />
+        <path d="M72 30 L72 26" strokeWidth="0.6" />
 
-        {/* Tile texture on one panel */}
-        <path d="M34 74 L46 74" opacity="0.2" strokeWidth="0.4" />
-        <path d="M34 78 L46 78" opacity="0.2" strokeWidth="0.4" />
-        <path d="M34 82 L46 82" opacity="0.2" strokeWidth="0.4" />
+        {/* One tile missing showing plenum space */}
+        <path d="M68 50 L75 45 L85 48 L80 55 Z" strokeDasharray="2 2" strokeWidth="0.7" opacity="0.5" />
+        {/* Ductwork visible above */}
+        <path d="M70 48 L78 44" strokeWidth="0.5" strokeDasharray="1 1" opacity="0.4" />
+        <path d="M74 52 L74 46" strokeWidth="0.5" strokeDasharray="1 1" opacity="0.4" />
+
+        {/* Suspension wires (barely visible) */}
+        <path d="M50 12 L50 5" strokeWidth="0.4" strokeDasharray="1 2" opacity="0.3" />
+        <path d="M30 24 L28 15" strokeWidth="0.4" strokeDasharray="1 2" opacity="0.3" />
+        <path d="M70 24 L72 15" strokeWidth="0.4" strokeDasharray="1 2" opacity="0.3" />
       </g>
     </g>
   </svg>
 )
 
 /**
- * EXPOSED BEAM - Medieval tithe barn with exposed timber structure
- * Reference: Great Coxwell Barn, England - massive oak structure
- * Shows: Looking up at spectacular open timber roof
- * Unique view: Interior of barn with cruck frame visible
+ * EXPOSED BEAMS - Medieval great hall timber ceiling
+ * 3D PERSPECTIVE: Looking up at dramatic angle, beams receding
+ * Shows: Heavy timber joists, smaller cross beams, wood grain
+ * Distinct: Rustic/historic, structural honesty, rhythmic pattern
  */
-const ExposedBeamSVG: React.FC<SVGProps> = ({ showHalo }) => (
+const ExposedBeamsSVG: React.FC<SVGProps> = ({ showHalo }) => (
   <svg viewBox="0 0 100 100" className="w-full h-full">
-    {showHalo && <HaloFilter id="exposed-halo" intensity={0.85} />}
-    <g filter={showHalo ? "url(#exposed-halo)" : undefined} fill="none" stroke="currentColor" strokeLinecap="round">
-      {/* CONTEXT - Stone walls of barn */}
-      <g strokeDasharray="3 2" opacity="0.4" strokeWidth="0.8">
-        <path d="M5 95 L5 55" />
-        <path d="M95 95 L95 55" />
-        <path d="M5 95 L95 95" />
-        {/* Stone texture hint */}
-        <path d="M7 70 L10 72" />
-        <path d="M7 80 L11 81" />
-        <path d="M90 75 L93 74" />
+    {showHalo && <HaloFilter id="beam-halo" intensity={0.85} />}
+    <g filter={showHalo ? "url(#beam-halo)" : undefined} fill="none" stroke="currentColor" strokeLinecap="round">
+      {/* CONTEXT - Stone/plaster walls at edges */}
+      <g strokeDasharray="3 2" opacity="0.3" strokeWidth="0.6">
+        <path d="M0 100 L0 60" />
+        <path d="M100 100 L100 60" />
+        <path d="M0 65 L5 65" strokeWidth="0.4" />
+        <path d="M95 65 L100 65" strokeWidth="0.4" />
       </g>
 
-      {/* PRIMARY - Exposed timber frame */}
+      {/* PRIMARY - Exposed timber structure with perspective */}
       <g strokeWidth="1.2">
-        {/* Ridge beam at apex */}
-        <path d="M40 12 L60 12 L60 18 L40 18 Z" strokeWidth="1.5" />
+        {/* Main beam (wall plate) running along wall edges */}
+        <path d="M0 58 L100 58" strokeWidth="2.5" />
+        <path d="M0 62 L100 62" strokeWidth="1.5" opacity="0.7" />
 
-        {/* Principal rafters (massive timbers) */}
-        <path d="M8 55 L50 12" strokeWidth="2" />
-        <path d="M92 55 L50 12" strokeWidth="2" />
-        {/* Rafter thickness shown */}
-        <path d="M12 55 L50 15" strokeWidth="1" opacity="0.6" />
-        <path d="M88 55 L50 15" strokeWidth="1" opacity="0.6" />
+        {/* Major cross beams (joists) - perspective: closer = larger spacing */}
+        {/* Beam 1 - farthest (at top) */}
+        <path d="M15 58 L15 8" strokeWidth="3" />
+        <path d="M18 58 L18 10" strokeWidth="1.5" opacity="0.5" />
+        <path d="M12 58 L12 10" strokeWidth="1.5" opacity="0.5" />
+        {/* Wood grain */}
+        <path d="M14 25 L17 30" strokeWidth="0.5" opacity="0.4" />
+        <path d="M14 40 L17 45" strokeWidth="0.5" opacity="0.4" />
 
-        {/* Tie beam across */}
-        <path d="M8 55 L92 55" strokeWidth="2.5" />
-        <path d="M8 58 L92 58" strokeWidth="1" opacity="0.5" />
+        {/* Beam 2 */}
+        <path d="M35 58 L35 5" strokeWidth="3.5" />
+        <path d="M38 58 L38 7" strokeWidth="1.6" opacity="0.5" />
+        <path d="M32 58 L32 7" strokeWidth="1.6" opacity="0.5" />
+        <path d="M34 20 L37 25" strokeWidth="0.5" opacity="0.4" />
+        <path d="M34 35 L37 40" strokeWidth="0.5" opacity="0.4" />
 
-        {/* King post from tie beam to ridge */}
-        <path d="M47 55 L47 18" strokeWidth="1.8" />
-        <path d="M53 55 L53 18" strokeWidth="1.8" />
-        <path d="M47 55 L53 55 L53 18 L47 18 Z" strokeWidth="0.5" opacity="0.3" />
+        {/* Beam 3 - center */}
+        <path d="M55 58 L55 3" strokeWidth="4" />
+        <path d="M59 58 L59 5" strokeWidth="1.8" opacity="0.5" />
+        <path d="M51 58 L51 5" strokeWidth="1.8" opacity="0.5" />
+        <path d="M54 18 L57 23" strokeWidth="0.5" opacity="0.4" />
+        <path d="M54 38 L57 43" strokeWidth="0.5" opacity="0.4" />
 
-        {/* Struts from king post to rafters */}
-        <path d="M47 35 L25 50" strokeWidth="1.2" />
-        <path d="M53 35 L75 50" strokeWidth="1.2" />
+        {/* Beam 4 */}
+        <path d="M75 58 L75 8" strokeWidth="3.5" />
+        <path d="M78 58 L78 10" strokeWidth="1.6" opacity="0.5" />
+        <path d="M72 58 L72 10" strokeWidth="1.6" opacity="0.5" />
 
-        {/* Common rafters (smaller) */}
-        <path d="M20 62 L35 30" strokeWidth="0.9" />
-        <path d="M35 65 L45 22" strokeWidth="0.9" />
-        <path d="M55 22 L65 65" strokeWidth="0.9" />
-        <path d="M65 30 L80 62" strokeWidth="0.9" />
+        {/* Beam 5 - closest (largest at bottom of view) */}
+        <path d="M92 58 L92 15" strokeWidth="3" />
+        <path d="M95 58 L95 17" strokeWidth="1.5" opacity="0.5" />
+        <path d="M89 58 L89 17" strokeWidth="1.5" opacity="0.5" />
 
-        {/* Purlins (horizontal between rafters) */}
-        <path d="M18 48 L42 28" strokeWidth="1" />
-        <path d="M58 28 L82 48" strokeWidth="1" />
-        <path d="M25 38 L40 22" strokeWidth="0.8" />
-        <path d="M60 22 L75 38" strokeWidth="0.8" />
+        {/* Smaller purlins running perpendicular (horizontal in view) */}
+        <path d="M15 20 L35 18" strokeWidth="1.2" />
+        <path d="M35 18 L55 15" strokeWidth="1.3" />
+        <path d="M55 15 L75 18" strokeWidth="1.3" />
+        <path d="M75 18 L92 20" strokeWidth="1.2" />
 
-        {/* Roof boarding above rafters */}
-        <path d="M15 52 L38 25" opacity="0.3" strokeWidth="0.5" />
-        <path d="M62 25 L85 52" opacity="0.3" strokeWidth="0.5" />
+        <path d="M15 38 L35 35" strokeWidth="1.2" />
+        <path d="M35 35 L55 32" strokeWidth="1.3" />
+        <path d="M55 32 L75 35" strokeWidth="1.3" />
+        <path d="M75 35 L92 38" strokeWidth="1.2" />
 
-        {/* Wood grain texture */}
-        <path d="M25 56 L40 57" opacity="0.4" strokeWidth="0.5" />
-        <path d="M60 56 L75 57" opacity="0.4" strokeWidth="0.5" />
-        <path d="M48 35 L51 38" opacity="0.4" strokeWidth="0.5" />
+        {/* Ceiling boards between beams (hint) */}
+        <path d="M18 25 L32 23" strokeWidth="0.5" opacity="0.3" />
+        <path d="M38 22 L51 20" strokeWidth="0.5" opacity="0.3" />
+        <path d="M59 20 L72 22" strokeWidth="0.5" opacity="0.3" />
 
-        {/* Timber joint pegs */}
-        <circle cx="50" cy="55" r="1.5" strokeWidth="0.8" />
-        <circle cx="50" cy="18" r="1.5" strokeWidth="0.8" />
-        <circle cx="25" cy="50" r="1" strokeWidth="0.6" />
-        <circle cx="75" cy="50" r="1" strokeWidth="0.6" />
+        {/* Wooden pegs/joints */}
+        <circle cx="15" cy="58" r="1.5" strokeWidth="0.8" />
+        <circle cx="35" cy="58" r="1.8" strokeWidth="0.8" />
+        <circle cx="55" cy="58" r="2" strokeWidth="0.8" />
+        <circle cx="75" cy="58" r="1.8" strokeWidth="0.8" />
+        <circle cx="92" cy="58" r="1.5" strokeWidth="0.8" />
 
-        {/* Wall plate where beams rest */}
-        <path d="M5 55 L8 55 L8 60 L5 60" strokeWidth="1" />
-        <path d="M92 55 L95 55 L95 60 L92 60" strokeWidth="1" />
+        {/* Iron strapping detail on center beam */}
+        <path d="M52 25 L58 25" strokeWidth="1" />
+        <path d="M52 27 L58 27" strokeWidth="0.6" />
       </g>
     </g>
   </svg>
 )
 
 /**
- * TRAY CEILING - Art Deco theater with illuminated stepped ceiling
- * Reference: Radio City Music Hall - spectacular coved ceiling
- * Shows: Concentric illuminated bands stepping up to center
- * Unique view: Theater interior looking up at dramatic ceiling
+ * MUQARNAS CEILING - Islamic honeycomb/stalactite vaulting
+ * 3D PERSPECTIVE: Looking up into complex geometric cells
+ * Shows: Cascading tiers of intricate geometric cells, 8-fold symmetry
+ * Distinct: Fractal-like depth, dramatic shadows, mathematical precision
+ */
+const MuqarnasSVG: React.FC<SVGProps> = ({ showHalo }) => (
+  <svg viewBox="0 0 100 100" className="w-full h-full">
+    {showHalo && <HaloFilter id="muqarnas-halo" intensity={0.9} />}
+    <g filter={showHalo ? "url(#muqarnas-halo)" : undefined} fill="none" stroke="currentColor" strokeLinecap="round">
+      {/* CONTEXT - Archway frame below */}
+      <g strokeDasharray="3 2" opacity="0.3" strokeWidth="0.6">
+        <path d="M0 100 L0 80 Q50 75, 100 80 L100 100" />
+      </g>
+
+      {/* PRIMARY - Muqarnas honeycomb cells from below */}
+      <g strokeWidth="1">
+        {/* Central opening (oculus or lantern) */}
+        <circle cx="50" cy="25" r="8" strokeWidth="1.8" />
+        <circle cx="50" cy="25" r="5" strokeWidth="1" />
+
+        {/* First tier of cells around center (8 cells) */}
+        {/* Each cell is a pointed niche shape */}
+        <path d="M42 25 L35 18 L30 25 L35 32 L42 25" strokeWidth="1.2" />
+        <path d="M58 25 L65 18 L70 25 L65 32 L58 25" strokeWidth="1.2" />
+        <path d="M50 17 L43 10 L50 5 L57 10 L50 17" strokeWidth="1.2" />
+        <path d="M50 33 L43 40 L50 45 L57 40 L50 33" strokeWidth="1.2" />
+
+        {/* Diagonal cells */}
+        <path d="M42 17 L35 10 L42 5 L48 12 L42 17" strokeWidth="1.1" />
+        <path d="M58 17 L65 10 L58 5 L52 12 L58 17" strokeWidth="1.1" />
+        <path d="M42 33 L35 40 L42 45 L48 38 L42 33" strokeWidth="1.1" />
+        <path d="M58 33 L65 40 L58 45 L52 38 L58 33" strokeWidth="1.1" />
+
+        {/* Second tier - larger cells radiating out */}
+        <path d="M25 25 L18 18 L10 22 L15 32 L25 25" strokeWidth="1.3" />
+        <path d="M75 25 L82 18 L90 22 L85 32 L75 25" strokeWidth="1.3" />
+        <path d="M50 50 L40 55 L50 62 L60 55 L50 50" strokeWidth="1.3" />
+
+        {/* Third tier - corner stalactite projections */}
+        <path d="M20 12 L12 8 L5 15 L12 20 L20 12" strokeWidth="1.1" />
+        <path d="M80 12 L88 8 L95 15 L88 20 L80 12" strokeWidth="1.1" />
+        <path d="M30 48 L22 52 L28 60 L35 55 L30 48" strokeWidth="1.2" />
+        <path d="M70 48 L78 52 L72 60 L65 55 L70 48" strokeWidth="1.2" />
+
+        {/* Bottom row - closest cells (largest) */}
+        <path d="M15 55 L8 62 L5 75 L15 70 L22 60 L15 55" strokeWidth="1.4" />
+        <path d="M85 55 L92 62 L95 75 L85 70 L78 60 L85 55" strokeWidth="1.4" />
+        <path d="M40 62 L35 72 L45 78 L55 78 L65 72 L60 62 L50 68 L40 62" strokeWidth="1.5" />
+
+        {/* Cell depth shadows */}
+        <path d="M32 22 L28 25" strokeWidth="0.5" opacity="0.5" />
+        <path d="M68 22 L72 25" strokeWidth="0.5" opacity="0.5" />
+        <path d="M50 38 L50 42" strokeWidth="0.5" opacity="0.5" />
+
+        {/* Inner cell articulation */}
+        <path d="M36 20 L33 25 L36 30" strokeWidth="0.6" opacity="0.6" />
+        <path d="M64 20 L67 25 L64 30" strokeWidth="0.6" opacity="0.6" />
+
+        {/* Star pattern in center cell */}
+        <path d="M47 25 L50 22 L53 25 L50 28 Z" strokeWidth="0.7" />
+
+        {/* Transition zone to base arch */}
+        <path d="M5 75 Q25 72, 40 75 Q50 77, 60 75 Q75 72, 95 75" strokeWidth="1" opacity="0.7" />
+      </g>
+    </g>
+  </svg>
+)
+
+/**
+ * TRAY CEILING - Stepped recessed Art Deco ceiling
+ * 3D PERSPECTIVE: Looking up at concentric stepping inward
+ * Shows: Multiple rectangular tiers, cove lighting channels
+ * Distinct: Modern elegance, clean lines, illuminated edges
  */
 const TrayCeilingSVG: React.FC<SVGProps> = ({ showHalo }) => (
   <svg viewBox="0 0 100 100" className="w-full h-full">
-    {showHalo && <HaloFilter id="tray-halo" intensity={0.9} />}
+    {showHalo && <HaloFilter id="tray-halo" intensity={0.85} />}
     <g filter={showHalo ? "url(#tray-halo)" : undefined} fill="none" stroke="currentColor" strokeLinecap="round">
-      {/* CONTEXT - Theater proscenium arch hint */}
-      <g strokeDasharray="3 2" opacity="0.4" strokeWidth="0.8">
-        {/* Side walls */}
-        <path d="M5 5 L5 95" />
-        <path d="M95 5 L95 95" />
-        {/* Stage area at bottom */}
-        <path d="M20 92 L80 92 L80 98 L20 98 Z" />
-        {/* Balcony rail hint */}
-        <path d="M5 85 Q50 80, 95 85" />
+      {/* CONTEXT - Room walls below */}
+      <g strokeDasharray="3 2" opacity="0.3" strokeWidth="0.6">
+        <path d="M0 100 L15 80" />
+        <path d="M100 100 L85 80" />
       </g>
 
-      {/* PRIMARY - Stepped illuminated tray ceiling */}
-      <g strokeWidth="1">
-        {/* Outermost ceiling level */}
-        <path d="M8 8 L92 8 L92 85 L8 85 Z" strokeWidth="1.5" />
-
-        {/* First step inward - Art Deco curve */}
-        <path d="M15 15 Q50 12, 85 15 L85 78 Q50 82, 15 78 Z" strokeWidth="1.3" />
-        {/* Cove lighting channel */}
-        <path d="M16 16 Q50 13, 84 16" strokeDasharray="4 2" opacity="0.5" strokeWidth="0.6" />
-
-        {/* Second step */}
-        <path d="M22 22 Q50 18, 78 22 L78 72 Q50 76, 22 72 Z" strokeWidth="1.2" />
-        <path d="M23 23 Q50 19, 77 23" strokeDasharray="4 2" opacity="0.5" strokeWidth="0.6" />
-
-        {/* Third step */}
-        <path d="M30 28 Q50 24, 70 28 L70 65 Q50 70, 30 65 Z" strokeWidth="1.1" />
-        <path d="M31 29 Q50 25, 69 29" strokeDasharray="4 2" opacity="0.5" strokeWidth="0.6" />
-
-        {/* Central medallion area */}
-        <path d="M38 35 Q50 32, 62 35 L62 58 Q50 62, 38 58 Z" strokeWidth="1.2" />
-
-        {/* Grand chandelier (simplified) */}
-        <circle cx="50" cy="46" r="8" strokeWidth="1.5" />
-        <circle cx="50" cy="46" r="5" strokeWidth="1" />
-        <circle cx="50" cy="46" r="2" strokeWidth="0.8" />
-        {/* Chandelier arms */}
-        <path d="M42 46 L38 46" strokeWidth="0.8" />
-        <path d="M58 46 L62 46" strokeWidth="0.8" />
-        <path d="M50 38 L50 35" strokeWidth="0.8" />
-        <path d="M50 54 L50 58" strokeWidth="0.8" />
-        {/* Crystal drops */}
-        <path d="M44 50 L44 52" strokeWidth="0.5" />
-        <path d="M56 50 L56 52" strokeWidth="0.5" />
-
-        {/* Art Deco sunburst rays from center */}
-        <path d="M50 35 L50 28" strokeWidth="0.6" />
-        <path d="M50 58 L50 65" strokeWidth="0.6" />
-        <path d="M38 46 L30 46" strokeWidth="0.6" />
-        <path d="M62 46 L70 46" strokeWidth="0.6" />
-        <path d="M42 38 L35 32" strokeWidth="0.5" />
-        <path d="M58 38 L65 32" strokeWidth="0.5" />
-        <path d="M42 54 L35 60" strokeWidth="0.5" />
-        <path d="M58 54 L65 60" strokeWidth="0.5" />
-
-        {/* Decorative corner fans (Art Deco) */}
-        <path d="M10 10 L18 18" strokeWidth="0.8" />
-        <path d="M10 15 L15 18" strokeWidth="0.6" />
-        <path d="M15 10 L18 15" strokeWidth="0.6" />
-        <path d="M90 10 L82 18" strokeWidth="0.8" />
-        <path d="M85 10 L82 15" strokeWidth="0.6" />
-        <path d="M90 15 L85 18" strokeWidth="0.6" />
-      </g>
-    </g>
-  </svg>
-)
-
-/**
- * VAULTED CEILING - Gothic cathedral with ribbed vault
- * Reference: Notre-Dame de Paris - quadripartite ribbed vault
- * Shows: Looking up at intersection of pointed arches
- * Unique view: Standing in nave looking at vault above
- */
-const VaultedCeilingSVG: React.FC<SVGProps> = ({ showHalo }) => (
-  <svg viewBox="0 0 100 100" className="w-full h-full">
-    {showHalo && <HaloFilter id="vaulted-halo" intensity={0.9} />}
-    <g filter={showHalo ? "url(#vaulted-halo)" : undefined} fill="none" stroke="currentColor" strokeLinecap="round">
-      {/* CONTEXT - Column capitals and arcade below */}
-      <g strokeDasharray="3 2" opacity="0.4" strokeWidth="0.8">
-        {/* Column capitals at corners */}
-        <path d="M8 88 L8 95 L15 95 L15 88" />
-        <path d="M85 88 L85 95 L92 95 L92 88" />
-        {/* Arcade arches below */}
-        <path d="M5 95 Q25 85, 50 95" />
-        <path d="M50 95 Q75 85, 95 95" />
-        {/* Clerestory window hint */}
-        <path d="M40 80 L40 88 L60 88 L60 80 Q50 75, 40 80" />
-      </g>
-
-      {/* PRIMARY - Gothic ribbed vault */}
+      {/* PRIMARY - Stepped tray ceiling with perspective */}
       <g strokeWidth="1.2">
-        {/* Central keystone boss */}
-        <circle cx="50" cy="50" r="5" strokeWidth="2" />
-        <circle cx="50" cy="50" r="3" strokeWidth="1" />
-        {/* Decorative carving on boss */}
-        <path d="M48 48 L52 52" strokeWidth="0.6" />
-        <path d="M52 48 L48 52" strokeWidth="0.6" />
+        {/* Outer frame - first tier (closest to walls, largest) */}
+        <path d="M5 82 L5 72 L20 60 L80 60 L95 72 L95 82" strokeWidth="1.8" />
+        <path d="M5 72 L95 72" strokeWidth="1.5" />
 
-        {/* Main diagonal ribs (ogives) crossing at boss */}
-        <path d="M5 90 Q30 20, 50 50 Q70 20, 95 90" strokeWidth="2" />
-        <path d="M95 90 Q70 20, 50 50 Q30 20, 5 90" strokeWidth="2" />
+        {/* Cove lighting channel 1 (glowing edge) */}
+        <path d="M8 70 L20 62 L80 62 L92 70" strokeWidth="0.6" strokeDasharray="4 2" opacity="0.5" />
 
-        {/* Transverse arch (across nave) */}
-        <path d="M5 90 Q50 5, 95 90" strokeWidth="1.8" />
+        {/* Second tier step in */}
+        <path d="M15 60 L15 52 L28 42 L72 42 L85 52 L85 60" strokeWidth="1.6" />
+        <path d="M15 52 L85 52" strokeWidth="1.3" />
 
-        {/* Wall arches (formerets) on sides */}
-        <path d="M5 5 Q5 50, 5 90" strokeWidth="1.5" />
-        <path d="M95 5 Q95 50, 95 90" strokeWidth="1.5" />
+        {/* Cove lighting channel 2 */}
+        <path d="M18 50 L28 44 L72 44 L82 50" strokeWidth="0.6" strokeDasharray="4 2" opacity="0.5" />
 
-        {/* Secondary ribs (tiercerons) */}
-        <path d="M50 50 L50 5" strokeWidth="1.2" />
-        <path d="M50 50 L5 50" strokeWidth="1" />
-        <path d="M50 50 L95 50" strokeWidth="1" />
+        {/* Third tier - innermost step */}
+        <path d="M25 42 L25 35 L38 28 L62 28 L75 35 L75 42" strokeWidth="1.4" />
+        <path d="M25 35 L75 35" strokeWidth="1.2" />
 
-        {/* Vault webbing (panels between ribs) */}
-        <path d="M20 70 Q35 35, 50 50" opacity="0.4" strokeWidth="0.6" />
-        <path d="M80 70 Q65 35, 50 50" opacity="0.4" strokeWidth="0.6" />
-        <path d="M30 25 Q40 35, 50 50" opacity="0.4" strokeWidth="0.6" />
-        <path d="M70 25 Q60 35, 50 50" opacity="0.4" strokeWidth="0.6" />
+        {/* Cove lighting channel 3 */}
+        <path d="M28 33 L38 30 L62 30 L72 33" strokeWidth="0.6" strokeDasharray="4 2" opacity="0.5" />
 
-        {/* Rib profile detail (molded stone) */}
-        <path d="M25 70 L28 72" strokeWidth="0.5" />
-        <path d="M72 70 L75 72" strokeWidth="0.5" />
+        {/* Central flat ceiling with medallion */}
+        <path d="M35 28 L35 18 L65 18 L65 28" strokeWidth="1" />
+        <path d="M35 18 L65 18" strokeWidth="1.3" />
 
-        {/* Springer points where ribs meet columns */}
-        <circle cx="8" cy="88" r="3" strokeWidth="1.5" />
-        <circle cx="92" cy="88" r="3" strokeWidth="1.5" />
+        {/* Central decorative medallion */}
+        <ellipse cx="50" cy="23" rx="10" ry="4" strokeWidth="1.3" />
+        <ellipse cx="50" cy="23" rx="6" ry="2.5" strokeWidth="0.9" />
 
-        {/* Tas-de-charge (stone blocks) */}
-        <path d="M5 85 L12 85 L12 92 L5 92" strokeWidth="1" />
-        <path d="M88 85 L95 85 L95 92 L88 92" strokeWidth="1" />
+        {/* Chandelier or pendant */}
+        <path d="M50 27 L50 45" strokeWidth="0.8" />
+        <path d="M46 45 L54 45" strokeWidth="0.7" />
+        <path d="M44 48 L56 48" strokeWidth="0.8" />
+        <path d="M47 48 L47 55" strokeWidth="0.5" />
+        <path d="M53 48 L53 55" strokeWidth="0.5" />
+        <ellipse cx="50" cy="56" rx="5" ry="2" strokeWidth="0.7" />
 
-        {/* Small bosses at rib intersections */}
-        <circle cx="30" cy="68" r="2" strokeWidth="0.8" />
-        <circle cx="70" cy="68" r="2" strokeWidth="0.8" />
-        <circle cx="50" cy="25" r="2" strokeWidth="0.8" />
+        {/* Art Deco corner accents */}
+        <path d="M8 75 L12 75 L12 68" strokeWidth="1" />
+        <path d="M88 75 L92 75 L92 68" strokeWidth="1" />
+
+        {/* Vertical step transitions (showing depth) */}
+        <path d="M20 60 L15 60" strokeWidth="0.8" opacity="0.6" />
+        <path d="M80 60 L85 60" strokeWidth="0.8" opacity="0.6" />
+        <path d="M28 42 L25 42" strokeWidth="0.7" opacity="0.6" />
+        <path d="M72 42 L75 42" strokeWidth="0.7" opacity="0.6" />
+
+        {/* Subtle surface texture */}
+        <path d="M40 23 L60 23" strokeWidth="0.3" opacity="0.3" />
       </g>
     </g>
   </svg>
 )
 
-/**
- * WOODEN CEILING - Scandinavian cabin with warm wood planks
- * Reference: Traditional Nordic stave construction
- * Shows: Tongue-and-groove planks with exposed beams
- * Unique view: Cozy interior looking up at sloped wood ceiling
- */
-const WoodenCeilingSVG: React.FC<SVGProps> = ({ showHalo }) => (
-  <svg viewBox="0 0 100 100" className="w-full h-full">
-    {showHalo && <HaloFilter id="wooden-halo" intensity={0.8} />}
-    <g filter={showHalo ? "url(#wooden-halo)" : undefined} fill="none" stroke="currentColor" strokeLinecap="round">
-      {/* CONTEXT - Cabin walls with window */}
-      <g strokeDasharray="3 2" opacity="0.4" strokeWidth="0.8">
-        {/* Side walls */}
-        <path d="M5 95 L5 35" />
-        <path d="M95 95 L95 35" />
-        {/* Window in gable */}
-        <path d="M40 25 L40 40 L60 40 L60 25" />
-        <path d="M42 27 L42 38 L58 38 L58 27" />
-        <path d="M50 25 L50 40" />
-        {/* Log wall texture hint */}
-        <path d="M6 60 L8 60" />
-        <path d="M6 70 L9 70" />
-        <path d="M6 80 L8 80" />
-      </g>
-
-      {/* PRIMARY - Wooden plank ceiling with beams */}
-      <g strokeWidth="1">
-        {/* Sloped ceiling following roof line */}
-        <path d="M5 35 L50 10 L95 35" strokeWidth="1.5" />
-
-        {/* Main ridge beam */}
-        <path d="M45 10 L55 10 L55 15 L45 15 Z" strokeWidth="1.2" />
-
-        {/* Exposed ceiling beams (rafters) */}
-        <path d="M15 32 L45 12" strokeWidth="1.8" />
-        <path d="M30 35 L48 14" strokeWidth="1.8" />
-        <path d="M55 12 L85 32" strokeWidth="1.8" />
-        <path d="M52 14 L70 35" strokeWidth="1.8" />
-
-        {/* Tongue and groove planks between beams */}
-        {/* Left slope */}
-        <path d="M8 34 L43 11" strokeWidth="0.7" />
-        <path d="M10 35 L44 12" strokeWidth="0.7" />
-        <path d="M16 38 L46 15" strokeWidth="0.7" />
-        <path d="M20 40 L47 17" strokeWidth="0.7" />
-        <path d="M25 43 L48 20" strokeWidth="0.7" />
-        <path d="M31 47 L49 23" strokeWidth="0.7" />
-
-        {/* Right slope */}
-        <path d="M52 11 L92 34" strokeWidth="0.7" />
-        <path d="M53 13 L90 35" strokeWidth="0.7" />
-        <path d="M54 16 L86 38" strokeWidth="0.7" />
-        <path d="M55 19 L82 40" strokeWidth="0.7" />
-        <path d="M56 22 L78 43" strokeWidth="0.7" />
-        <path d="M57 25 L74 47" strokeWidth="0.7" />
-
-        {/* Wood grain on beams */}
-        <path d="M20 28 L28 24" opacity="0.4" strokeWidth="0.5" />
-        <path d="M35 25 L42 20" opacity="0.4" strokeWidth="0.5" />
-        <path d="M60 20 L68 24" opacity="0.4" strokeWidth="0.5" />
-        <path d="M75 25 L82 28" opacity="0.4" strokeWidth="0.5" />
-
-        {/* Knots in wood */}
-        <circle cx="22" cy="30" r="1.5" opacity="0.5" strokeWidth="0.6" />
-        <circle cx="65" cy="28" r="1.5" opacity="0.5" strokeWidth="0.6" />
-        <circle cx="48" cy="18" r="1" opacity="0.5" strokeWidth="0.5" />
-
-        {/* Beam ends at wall plate */}
-        <path d="M5 35 L5 38 L15 38 L15 32" strokeWidth="1" />
-        <path d="M95 35 L95 38 L85 38 L85 32" strokeWidth="1" />
-
-        {/* Collar tie beam */}
-        <path d="M25 45 L75 45" strokeWidth="1.5" />
-        <path d="M25 48 L75 48" strokeWidth="0.8" opacity="0.5" />
-
-        {/* Pendant light from ridge */}
-        <path d="M50 15 L50 25" strokeWidth="0.8" />
-        <path d="M46 25 L54 25 L52 32 L48 32 Z" strokeWidth="0.8" />
-      </g>
-    </g>
-  </svg>
-)
-
-// Export mapping for all ceiling elements
+// Export mapping for all ceiling elements - MATCHING DATA FILE IDS
 export const CEILING_ELEMENTS: Record<string, React.FC<SVGProps>> = {
-  'beam': BeamSVG,
-  'coffer': CofferSVG,
-  'drop-ceiling': DropCeilingSVG,
-  'exposed-beam': ExposedBeamSVG,
+  'ceiling-rose': CeilingRoseSVG,
+  'coffered-ceiling': CofferedCeilingSVG,
+  'coved-ceiling': CovedCeilingSVG,
+  'dropped-ceiling': DroppedCeilingSVG,
+  'exposed-beams': ExposedBeamsSVG,
+  'muqarnas': MuqarnasSVG,
   'tray-ceiling': TrayCeilingSVG,
-  'vaulted-ceiling': VaultedCeilingSVG,
-  'wooden-ceiling': WoodenCeilingSVG,
 }
 
 export {
-  BeamSVG,
-  CofferSVG,
-  DropCeilingSVG,
-  ExposedBeamSVG,
+  CeilingRoseSVG,
+  CofferedCeilingSVG,
+  CovedCeilingSVG,
+  DroppedCeilingSVG,
+  ExposedBeamsSVG,
+  MuqarnasSVG,
   TrayCeilingSVG,
-  VaultedCeilingSVG,
-  WoodenCeilingSVG,
 }
