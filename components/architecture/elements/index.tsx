@@ -99,8 +99,8 @@ export function getElementsWithSVGs(): string[] {
 }
 
 // Re-export individual category exports for direct access
-// Note: Some modules have conflicting exports (FountainSVG, CapitalSVG, ConsoleSVG, CorniceSVG)
-// We use explicit re-exports to resolve ambiguity
+// Note: FountainSVG appears in both garden and urban - we export from garden
+// CorniceSVG appears in both decorative and facade - we export from decorative
 
 export * from './columns'
 export * from './arches'
@@ -116,27 +116,23 @@ export * from './ceiling'
 export * from './wall'
 export * from './interior'
 
-// Decorative - has CorniceSVG, CapitalSVG, ConsoleSVG (keep these from decorative)
+// Decorative - 14 unique 3D perspective SVGs
 export {
   DECORATIVE_ELEMENTS,
-  AcroterionSVG,
-  BalusterSVG,
-  BalustradeSVG,
-  CapitalSVG,
-  BracketSVG,
+  AcanthusSVG,
+  ArabesqueSVG,
+  BossSVG,
   CartoucheSVG,
-  ConsoleSVG,
   CorniceSVG,
-  CrestingSVG,
-  FestoonSVG,
+  DentilSVG,
+  EggAndDartSVG,
   FinialSVG,
-  FriezeSVG,
   GargoyleSVG,
   GrotesqueSVG,
-  MedallionSVG,
-  MoldingSVG,
-  ParapetSVG,
-  PinnacleSVG,
+  GuillocheSVG,
+  DecorativeMuqarnasSVG,
+  RosetteSVG,
+  VoluteSVG,
 } from './decorative'
 
 // Facade - exclude CorniceSVG (already exported from decorative)
@@ -189,14 +185,16 @@ export {
   // FountainSVG excluded - already exported from garden
 } from './urban'
 
-// Specialized - exclude CapitalSVG, ConsoleSVG (already exported from decorative)
+// Specialized - 32 elements including CapitalSVG and ConsoleSVG
 export {
   SPECIALIZED_ELEMENTS,
   AbutmentSVG,
   AmbulatorySVG,
   BalconySVG,
   BasementSVG,
+  CapitalSVG,
   ChimneySVG,
+  ConsoleSVG,
   CopingSVG,
   EaveSVG,
   GutterSVG,
@@ -222,6 +220,4 @@ export {
   TrussSVG,
   TurretSVG,
   WainscotSVG,
-  // CapitalSVG excluded - already exported from decorative
-  // ConsoleSVG excluded - already exported from decorative
 } from './specialized'
