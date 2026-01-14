@@ -97,8 +97,13 @@ export async function POST(req: NextRequest) {
 
   } catch (error) {
     if (error instanceof z.ZodError) {
+      const firstIssue = error.issues[0]
       return NextResponse.json(
-        { error: 'Validation failed', details: error.issues },
+        {
+          error: firstIssue?.message || 'Validation failed',
+          field: firstIssue?.path?.[0] || null,
+          details: error.issues
+        },
         { status: 400 }
       )
     }
