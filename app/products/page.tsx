@@ -1,180 +1,163 @@
-import { Construction, Package, ShieldCheck, Store, Sparkles, Bell } from 'lucide-react'
-import Link from 'next/link'
 import { Button } from '@/components/ui/Button'
+import { Card, CardContent } from '@/components/ui/Card'
+import { Package, Rocket, ShoppingBag, Sparkles, ArrowRight } from 'lucide-react'
+import Link from 'next/link'
 
 export default function ProductsPage() {
   return (
-    <div className="min-h-screen bg-gradient-to-br from-[var(--background)] via-[color-mix(in_srgb,var(--primary)_5%,var(--background))] to-[var(--background)]">
-      {/* Hero Section */}
-      <section className="py-24 relative overflow-hidden">
+    <div className="min-h-screen">
+      {/* Under Construction Hero */}
+      <section className="py-32 bg-gradient-to-br from-[color-mix(in_srgb,var(--primary)_20%,var(--background))] via-[color-mix(in_srgb,var(--accent)_20%,var(--background))] to-[color-mix(in_srgb,var(--secondary)_20%,var(--background))] relative overflow-hidden">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
           <div className="max-w-5xl mx-auto text-center space-y-8">
-            {/* Construction Icon */}
-            <div className="flex justify-center">
-              <div className="relative">
-                <div className="absolute inset-0 bg-[var(--primary)] blur-3xl opacity-20 rounded-full animate-pulse"></div>
-                <div className="relative bg-gradient-to-br from-[var(--primary)] to-[var(--accent)] p-8 rounded-3xl shadow-2xl">
-                  <Construction className="w-24 h-24 text-[var(--primary-foreground)]" strokeWidth={2.5} />
-                </div>
-              </div>
+            <div className="inline-flex items-center gap-2 px-6 py-3 bg-[var(--card)] border-2 border-theme-accent rounded-full mb-4">
+              <Rocket className="w-5 h-5 text-theme-accent" />
+              <span className="text-sm font-black text-[var(--foreground)]">UNDER CONSTRUCTION</span>
             </div>
 
-            {/* Title */}
-            <div className="space-y-4">
-              <h1
-                className="text-[var(--foreground)]"
-                style={{
-                  fontSize: 'clamp(2rem, 6vw, 5rem)',
-                  fontWeight: 900,
-                  lineHeight: 1.1
-                }}
-              >
-                MARKETPLACE
-                <br />
-                <span className="bg-gradient-to-r from-[var(--primary)] via-[var(--accent)] to-[var(--secondary)] bg-clip-text text-transparent">
-                  COMING SOON
-                </span>
-              </h1>
+            <h1 className="text-[var(--foreground)]" style={{
+              fontSize: 'clamp(2.5rem, 8vw, 5rem)',
+              fontWeight: 900,
+              lineHeight: 1.1
+            }}>
+              SUSTAINABLE MARKETPLACE
+            </h1>
 
-              <p className="text-lg md:text-xl lg:text-2xl font-semibold text-[var(--muted-foreground)] max-w-3xl mx-auto">
-                We're building something extraordinary for conscious consumers
+            <div className="max-w-3xl mx-auto space-y-6">
+              <p className="text-xl md:text-2xl lg:text-3xl font-black text-theme-muted">
+                We're Building Something <span style={{
+                  background: 'linear-gradient(135deg, var(--primary), var(--accent))',
+                  WebkitBackgroundClip: 'text',
+                  WebkitTextFillColor: 'transparent',
+                  fontWeight: 900
+                }}>Amazing</span>
+              </p>
+
+              <p className="text-lg md:text-xl font-semibold text-theme-muted">
+                Our marketplace is currently under development as we curate the best sustainable products for you
               </p>
             </div>
           </div>
         </div>
       </section>
 
-      {/* What's Coming Section */}
-      <section className="py-16 bg-[var(--card)]/30 backdrop-blur-sm">
+      {/* What's Coming */}
+      <section className="py-20 bg-[var(--background)]">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
           <div className="max-w-6xl mx-auto">
-            <h2 className="text-3xl md:text-4xl font-black text-center text-[var(--foreground)] mb-12">
-              What's Coming
+            <h2 className="text-4xl md:text-5xl font-black text-center mb-12 text-[var(--foreground)]">
+              WHAT'S COMING
             </h2>
 
-            <div className="grid md:grid-cols-3 gap-8">
-              {/* Affiliate Sustainable Products */}
-              <div className="group relative">
-                <div className="absolute inset-0 bg-gradient-to-br from-[var(--primary)] to-[var(--accent)] rounded-2xl blur-lg opacity-0 group-hover:opacity-20 transition-opacity duration-500"></div>
-                <div className="relative bg-[var(--card)] border-2 border-[var(--border)] rounded-2xl p-8 hover:border-[var(--primary)]/50 transition-all duration-300 h-full">
-                  <div className="w-16 h-16 bg-gradient-to-br from-[var(--primary)]/10 to-[var(--primary)]/5 rounded-xl flex items-center justify-center mb-6">
-                    <Package className="w-8 h-8 text-[var(--primary)]" />
+            <div className="grid md:grid-cols-2 gap-8">
+              <Card className="border-4 border-theme-primary bg-gradient-to-br from-[color-mix(in_srgb,var(--primary)_10%,var(--background))] to-[var(--background)]">
+                <CardContent className="p-10">
+                  <div className="flex items-center gap-4 mb-6">
+                    <div className="w-16 h-16 rounded-2xl bg-gradient-to-br from-[var(--primary)] to-[var(--accent)] flex items-center justify-center">
+                      <ShoppingBag className="w-8 h-8 text-[var(--primary-foreground)]" />
+                    </div>
+                    <h3 className="text-2xl md:text-3xl font-black text-theme-primary">
+                      Curated Affiliate Products
+                    </h3>
                   </div>
-                  <h3 className="text-xl font-bold text-[var(--foreground)] mb-4">
-                    Affiliate Sustainable Products
-                  </h3>
-                  <p className="text-[var(--muted-foreground)] leading-relaxed">
-                    Carefully curated eco-friendly products from trusted brands, vetted for authenticity and environmental impact
+                  <p className="text-lg font-semibold text-[var(--foreground)] leading-relaxed">
+                    We're partnering with trusted sustainable brands to bring you the best eco-friendly products. Every item will be vetted for sustainability, quality, and real environmental impact.
                   </p>
-                </div>
-              </div>
+                  <div className="mt-6 flex flex-wrap gap-3">
+                    <div className="px-4 py-2 bg-[var(--card)] border-2 border-theme-primary rounded-full">
+                      <span className="text-sm font-bold text-[var(--foreground)]">✓ Vetted Brands</span>
+                    </div>
+                    <div className="px-4 py-2 bg-[var(--card)] border-2 border-theme-primary rounded-full">
+                      <span className="text-sm font-bold text-[var(--foreground)]">✓ Impact Data</span>
+                    </div>
+                    <div className="px-4 py-2 bg-[var(--card)] border-2 border-theme-primary rounded-full">
+                      <span className="text-sm font-bold text-[var(--foreground)]">✓ Honest Reviews</span>
+                    </div>
+                  </div>
+                </CardContent>
+              </Card>
 
-              {/* Exodus Approved Items */}
-              <div className="group relative">
-                <div className="absolute inset-0 bg-gradient-to-br from-[var(--accent)] to-[var(--secondary)] rounded-2xl blur-lg opacity-0 group-hover:opacity-20 transition-opacity duration-500"></div>
-                <div className="relative bg-[var(--card)] border-2 border-[var(--border)] rounded-2xl p-8 hover:border-[var(--accent)]/50 transition-all duration-300 h-full">
-                  <div className="w-16 h-16 bg-gradient-to-br from-[var(--accent)]/10 to-[var(--accent)]/5 rounded-xl flex items-center justify-center mb-6">
-                    <ShieldCheck className="w-8 h-8 text-[var(--accent)]" />
+              <Card className="border-4 border-theme-accent bg-gradient-to-br from-[color-mix(in_srgb,var(--accent)_10%,var(--background))] to-[var(--background)]">
+                <CardContent className="p-10">
+                  <div className="flex items-center gap-4 mb-6">
+                    <div className="w-16 h-16 rounded-2xl bg-gradient-to-br from-[var(--accent)] to-[var(--secondary)] flex items-center justify-center">
+                      <Package className="w-8 h-8 text-[var(--primary-foreground)]" />
+                    </div>
+                    <h3 className="text-2xl md:text-3xl font-black text-theme-accent">
+                      Our Own Product Line
+                    </h3>
                   </div>
-                  <h3 className="text-xl font-bold text-[var(--foreground)] mb-4">
-                    Exodus Approved Items
-                  </h3>
-                  <p className="text-[var(--muted-foreground)] leading-relaxed">
-                    Products that meet our rigorous sustainability standards, complete with carbon impact data and transparency reports
+                  <p className="text-lg font-semibold text-[var(--foreground)] leading-relaxed">
+                    We're developing our own line of sustainable products designed with transparency, durability, and environmental impact at the core. From concept to delivery, every step will be optimized for sustainability.
                   </p>
-                </div>
-              </div>
-
-              {/* Our Own Line */}
-              <div className="group relative">
-                <div className="absolute inset-0 bg-gradient-to-br from-[var(--secondary)] to-[var(--primary)] rounded-2xl blur-lg opacity-0 group-hover:opacity-20 transition-opacity duration-500"></div>
-                <div className="relative bg-[var(--card)] border-2 border-[var(--border)] rounded-2xl p-8 hover:border-[var(--secondary)]/50 transition-all duration-300 h-full">
-                  <div className="w-16 h-16 bg-gradient-to-br from-[var(--secondary)]/10 to-[var(--secondary)]/5 rounded-xl flex items-center justify-center mb-6">
-                    <Store className="w-8 h-8 text-[var(--secondary)]" />
+                  <div className="mt-6 flex flex-wrap gap-3">
+                    <div className="px-4 py-2 bg-[var(--card)] border-2 border-theme-accent rounded-full">
+                      <span className="text-sm font-bold text-[var(--foreground)]">✓ Carbon Neutral</span>
+                    </div>
+                    <div className="px-4 py-2 bg-[var(--card)] border-2 border-theme-accent rounded-full">
+                      <span className="text-sm font-bold text-[var(--foreground)]">✓ Full Transparency</span>
+                    </div>
+                    <div className="px-4 py-2 bg-[var(--card)] border-2 border-theme-accent rounded-full">
+                      <span className="text-sm font-bold text-[var(--foreground)]">✓ Built to Last</span>
+                    </div>
                   </div>
-                  <h3 className="text-xl font-bold text-[var(--foreground)] mb-4">
-                    Exodus Products & Partnerships
-                  </h3>
-                  <p className="text-[var(--muted-foreground)] leading-relaxed">
-                    Our exclusive line of sustainable products, services, and strategic partnerships with changemakers worldwide
-                  </p>
-                </div>
-              </div>
+                </CardContent>
+              </Card>
             </div>
           </div>
         </div>
       </section>
 
-      {/* Features Preview */}
-      <section className="py-16">
+      {/* Timeline */}
+      <section className="py-20 bg-[var(--muted)]">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
           <div className="max-w-4xl mx-auto">
-            <div className="bg-gradient-to-br from-[var(--primary)]/10 via-[var(--accent)]/10 to-[var(--secondary)]/10 rounded-3xl p-8 md:p-12 border border-[var(--border)]">
-              <div className="text-center space-y-6">
-                <div className="inline-flex items-center gap-2 px-4 py-2 bg-[var(--card)] rounded-full border border-[var(--border)]">
-                  <Sparkles className="w-4 h-4 text-[var(--primary)]" />
-                  <span className="text-sm font-bold text-[var(--foreground)]">Expected Features</span>
-                </div>
-
-                <ul className="grid sm:grid-cols-2 gap-4 text-left">
-                  {[
-                    'Real-time sustainability scores',
-                    'Carbon footprint tracking',
-                    'Verified vendor profiles',
-                    'Community reviews & ratings',
-                    'Price comparison tools',
-                    'Impact dashboard',
-                    'Personalized recommendations',
-                    'Exclusive member discounts'
-                  ].map((feature, index) => (
-                    <li
-                      key={index}
-                      className="flex items-center gap-3 text-[var(--foreground)] font-medium"
-                    >
-                      <div className="w-2 h-2 rounded-full bg-gradient-to-r from-[var(--primary)] to-[var(--accent)]"></div>
-                      {feature}
-                    </li>
-                  ))}
-                </ul>
-              </div>
+            <div className="text-center mb-12">
+              <Sparkles className="w-16 h-16 text-theme-primary mx-auto mb-4" />
+              <h2 className="text-4xl font-black text-[var(--foreground)] mb-4">
+                STAY TUNED
+              </h2>
+              <p className="text-xl font-semibold text-theme-muted">
+                We're working hard to launch soon. In the meantime, explore our learning resources to discover sustainable living practices.
+              </p>
             </div>
+
+            <Card className="border-4 border-theme-secondary">
+              <CardContent className="p-8 text-center">
+                <p className="text-lg font-bold text-[var(--foreground)] mb-6">
+                  Want to be notified when we launch?
+                </p>
+                <Link href="/contact">
+                  <Button size="lg" className="text-xl px-12 py-6 font-black rounded-xl">
+                    Get Launch Updates
+                    <ArrowRight className="w-5 h-5 ml-2" />
+                  </Button>
+                </Link>
+              </CardContent>
+            </Card>
           </div>
         </div>
       </section>
 
       {/* Call to Action */}
-      <section className="py-24">
+      <section className="py-32 bg-gradient-to-br from-[var(--primary)] via-[var(--accent)] to-[var(--secondary)] text-[var(--primary-foreground)]">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
           <div className="max-w-4xl mx-auto text-center space-y-8">
-            <div className="inline-flex items-center gap-2 px-6 py-3 bg-[var(--card)] rounded-full border-2 border-[var(--primary)] mb-4">
-              <Bell className="w-5 h-5 text-[var(--primary)] animate-pulse" />
-              <span className="font-bold text-[var(--foreground)]">Stay Updated</span>
-            </div>
-
-            <h2 className="text-3xl md:text-4xl lg:text-5xl font-black text-[var(--foreground)]">
-              Be the First to Know
+            <h2 className="text-3xl md:text-4xl lg:text-5xl font-black">
+              EXPLORE WHILE YOU WAIT
             </h2>
-
-            <p className="text-lg md:text-xl text-[var(--muted-foreground)] max-w-2xl mx-auto">
-              Join our community to get early access when the marketplace launches
+            <p className="text-lg md:text-xl lg:text-2xl font-semibold">
+              Discover sustainable living practices and connect with our community
             </p>
-
-            <div className="flex flex-col sm:flex-row gap-4 justify-center pt-6">
-              <Link href="/community">
-                <Button
-                  size="lg"
-                  className="text-lg px-10 py-6 bg-gradient-to-r from-[var(--primary)] to-[var(--accent)] hover:opacity-90 font-bold shadow-xl rounded-xl transition-all duration-300 hover:scale-105"
-                >
-                  Join Community
+            <div className="flex flex-col sm:flex-row gap-6 justify-center">
+              <Link href="/learn">
+                <Button size="lg" className="text-xl px-12 py-8 bg-[var(--primary-foreground)] text-[var(--primary)] hover:opacity-90 font-black shadow-2xl rounded-2xl">
+                  EXPLORE LEARNING
                 </Button>
               </Link>
-              <Link href="/learn">
-                <Button
-                  size="lg"
-                  variant="outline"
-                  className="text-lg px-10 py-6 border-2 border-[var(--border)] hover:border-[var(--primary)] font-bold rounded-xl transition-all duration-300"
-                >
-                  Explore Learning
+              <Link href="/community">
+                <Button size="lg" variant="outline" className="text-xl px-12 py-8 border-4 border-[var(--primary-foreground)] text-[var(--primary-foreground)] hover:bg-[var(--primary-foreground)] hover:text-[var(--primary)] font-black rounded-2xl">
+                  JOIN COMMUNITY
                 </Button>
               </Link>
             </div>
