@@ -700,7 +700,697 @@ const NewelPostSVG: React.FC<SVGProps> = ({ showHalo }) => (
   </svg>
 )
 
-// Export mapping for floor elements - Part 1-2 (elements 1-10)
+/**
+ * OPUS SECTILE - Roman marble inlay technique
+ * 3D PERSPECTIVE: Looking down at elaborate marble floor
+ * Shows: Cut marble pieces forming geometric/figurative designs
+ * Distinct: Large shaped pieces (vs small tesserae), precious stones
+ */
+const OpusSectileSVG: React.FC<SVGProps> = ({ showHalo }) => (
+  <svg viewBox="0 0 100 100" className="w-full h-full">
+    {showHalo && <HaloFilter id="opus-halo" intensity={0.9} />}
+    <g filter={showHalo ? "url(#opus-halo)" : undefined} fill="none" stroke="currentColor" strokeLinecap="round">
+      {/* CONTEXT - Room border */}
+      <g strokeDasharray="3 2" opacity="0.35" strokeWidth="0.7">
+        <path d="M5 5 L95 5 L95 95 L5 95 Z" />
+      </g>
+
+      {/* PRIMARY - Opus sectile marble inlay */}
+      <g strokeWidth="1.2">
+        {/* Outer border frame */}
+        <path d="M10 10 L90 10 L90 90 L10 90 Z" strokeWidth="1.8" />
+        <path d="M15 15 L85 15 L85 85 L15 85 Z" strokeWidth="1.2" />
+
+        {/* Central medallion - large geometric star */}
+        <circle cx="50" cy="50" r="28" strokeWidth="1.5" />
+        <circle cx="50" cy="50" r="24" strokeWidth="1" />
+
+        {/* 8-pointed star in center */}
+        <path d="M50 26 L54 42 L70 38 L58 50 L70 62 L54 58 L50 74 L46 58 L30 62 L42 50 L30 38 L46 42 Z" strokeWidth="1.6" />
+
+        {/* Inner star details */}
+        <path d="M50 34 L52 44 L62 42 L54 50 L62 58 L52 56 L50 66 L48 56 L38 58 L46 50 L38 42 L48 44 Z" strokeWidth="1" opacity="0.7" />
+
+        {/* Central rosette */}
+        <circle cx="50" cy="50" r="6" strokeWidth="1.3" />
+        <circle cx="50" cy="50" r="3" strokeWidth="0.8" />
+
+        {/* Corner panels - porphyry squares */}
+        <path d="M18 18 L32 18 L32 32 L18 32 Z" strokeWidth="1.4" />
+        <path d="M22 22 L28 22 L28 28 L22 28 Z" strokeWidth="0.8" opacity="0.6" />
+
+        <path d="M68 18 L82 18 L82 32 L68 32 Z" strokeWidth="1.4" />
+        <path d="M72 22 L78 22 L78 28 L72 28 Z" strokeWidth="0.8" opacity="0.6" />
+
+        <path d="M18 68 L32 68 L32 82 L18 82 Z" strokeWidth="1.4" />
+        <path d="M22 72 L28 72 L28 78 L22 78 Z" strokeWidth="0.8" opacity="0.6" />
+
+        <path d="M68 68 L82 68 L82 82 L68 82 Z" strokeWidth="1.4" />
+        <path d="M72 72 L78 72 L78 78 L72 78 Z" strokeWidth="0.8" opacity="0.6" />
+
+        {/* Connecting triangular pieces */}
+        <path d="M32 25 L50 22 L50 26 L32 25" strokeWidth="1" />
+        <path d="M68 25 L50 22 L50 26 L68 25" strokeWidth="1" />
+        <path d="M32 75 L50 78 L50 74 L32 75" strokeWidth="1" />
+        <path d="M68 75 L50 78 L50 74 L68 75" strokeWidth="1" />
+
+        {/* Marble veining suggestion */}
+        <path d="M24 24 L27 26" strokeWidth="0.4" opacity="0.4" />
+        <path d="M74 74 L77 76" strokeWidth="0.4" opacity="0.4" />
+      </g>
+    </g>
+  </svg>
+)
+
+/**
+ * PARQUET - Geometric wood flooring pattern
+ * 3D PERSPECTIVE: Looking down at herringbone/Versailles pattern
+ * Shows: Wood strips arranged in geometric pattern
+ * Distinct: Wood grain, geometric arrangement, warm material
+ */
+const ParquetSVG: React.FC<SVGProps> = ({ showHalo }) => (
+  <svg viewBox="0 0 100 100" className="w-full h-full">
+    {showHalo && <HaloFilter id="parquet-halo" intensity={0.8} />}
+    <g filter={showHalo ? "url(#parquet-halo)" : undefined} fill="none" stroke="currentColor" strokeLinecap="round">
+      {/* CONTEXT - Room corner */}
+      <g strokeDasharray="3 2" opacity="0.35" strokeWidth="0.7">
+        <path d="M5 5 L5 95" />
+        <path d="M5 5 L95 5" />
+      </g>
+
+      {/* PRIMARY - Parquet de Versailles pattern */}
+      <g strokeWidth="1">
+        {/* Floor boundary */}
+        <path d="M10 10 L90 10 L90 90 L10 90 Z" strokeWidth="1.5" />
+
+        {/* Panel 1 - top left */}
+        <path d="M12 12 L48 12 L48 48 L12 48 Z" strokeWidth="1.4" />
+        <path d="M30 12 L30 48" strokeWidth="1" />
+        <path d="M12 30 L48 30" strokeWidth="1" />
+        {/* Inner diamond */}
+        <path d="M30 15 L45 30 L30 45 L15 30 Z" strokeWidth="1.2" />
+        <path d="M30 20 L40 30 L30 40 L20 30 Z" strokeWidth="0.8" opacity="0.6" />
+        {/* Wood grain */}
+        <path d="M18 18 L22 22" strokeWidth="0.4" opacity="0.4" />
+        <path d="M38 38 L42 42" strokeWidth="0.4" opacity="0.4" />
+
+        {/* Panel 2 - top right */}
+        <path d="M52 12 L88 12 L88 48 L52 48 Z" strokeWidth="1.4" />
+        <path d="M70 12 L70 48" strokeWidth="1" />
+        <path d="M52 30 L88 30" strokeWidth="1" />
+        <path d="M70 15 L85 30 L70 45 L55 30 Z" strokeWidth="1.2" />
+        <path d="M70 20 L80 30 L70 40 L60 30 Z" strokeWidth="0.8" opacity="0.6" />
+
+        {/* Panel 3 - bottom left */}
+        <path d="M12 52 L48 52 L48 88 L12 88 Z" strokeWidth="1.4" />
+        <path d="M30 52 L30 88" strokeWidth="1" />
+        <path d="M12 70 L48 70" strokeWidth="1" />
+        <path d="M30 55 L45 70 L30 85 L15 70 Z" strokeWidth="1.2" />
+        <path d="M30 60 L40 70 L30 80 L20 70 Z" strokeWidth="0.8" opacity="0.6" />
+
+        {/* Panel 4 - bottom right */}
+        <path d="M52 52 L88 52 L88 88 L52 88 Z" strokeWidth="1.4" />
+        <path d="M70 52 L70 88" strokeWidth="1" />
+        <path d="M52 70 L88 70" strokeWidth="1" />
+        <path d="M70 55 L85 70 L70 85 L55 70 Z" strokeWidth="1.2" />
+        <path d="M70 60 L80 70 L70 80 L60 70 Z" strokeWidth="0.8" opacity="0.6" />
+
+        {/* Border strip */}
+        <path d="M10 10 L10 90" strokeWidth="2" />
+        <path d="M10 10 L90 10" strokeWidth="2" />
+      </g>
+    </g>
+  </svg>
+)
+
+/**
+ * PERRON - External entrance platform with steps
+ * 3D PERSPECTIVE: Looking at building entrance from outside
+ * Shows: Raised platform at door with flanking steps
+ * Distinct: Exterior, often with balustrade, formal entrance
+ */
+const PerronSVG: React.FC<SVGProps> = ({ showHalo }) => (
+  <svg viewBox="0 0 100 100" className="w-full h-full">
+    {showHalo && <HaloFilter id="perron-halo" intensity={0.85} />}
+    <g filter={showHalo ? "url(#perron-halo)" : undefined} fill="none" stroke="currentColor" strokeLinecap="round">
+      {/* CONTEXT - Building facade behind */}
+      <g strokeDasharray="3 2" opacity="0.35" strokeWidth="0.7">
+        <path d="M20 5 L80 5 L80 45 L20 45 Z" />
+        <path d="M35 10 L65 10 L65 42 L35 42 Z" />
+        <path d="M40 15 L60 15 L60 40 L40 40 Z" />
+        <path d="M25 8 L30 5 L30 15 L25 18 Z" />
+        <path d="M70 8 L75 5 L75 15 L70 18 Z" />
+      </g>
+
+      {/* PRIMARY - Perron platform and steps */}
+      <g strokeWidth="1.2">
+        {/* Main platform top surface */}
+        <path d="M15 45 L85 45 L90 50 L10 50 Z" strokeWidth="1.8" />
+
+        {/* Platform front face */}
+        <path d="M10 50 L10 58 L90 58 L90 50" strokeWidth="1.5" />
+
+        {/* Central steps descending */}
+        <path d="M30 58 L30 66 L70 66 L70 58" strokeWidth="1.5" />
+        <path d="M30 66 L28 66 L28 74 L72 74 L72 66 L70 66" strokeWidth="1.4" />
+        <path d="M28 74 L26 74 L26 82 L74 82 L74 74 L72 74" strokeWidth="1.3" />
+        <path d="M26 82 L24 82 L24 90 L76 90 L76 82 L74 82" strokeWidth="1.2" />
+
+        {/* Step treads */}
+        <path d="M32 62 L68 62" strokeWidth="1" />
+        <path d="M30 70 L70 70" strokeWidth="1" />
+        <path d="M28 78 L72 78" strokeWidth="0.9" />
+        <path d="M26 86 L74 86" strokeWidth="0.9" />
+
+        {/* Ground level */}
+        <path d="M5 90 L95 90" strokeWidth="1.8" />
+
+        {/* Left balustrade/wall */}
+        <path d="M10 45 L10 58 L28 58 L28 90" strokeWidth="1.5" />
+        <path d="M15 48 L15 55" strokeWidth="1" />
+        <path d="M20 48 L20 55" strokeWidth="1" />
+        <path d="M25 48 L25 55" strokeWidth="1" />
+
+        {/* Right balustrade/wall */}
+        <path d="M90 45 L90 58 L72 58 L72 90" strokeWidth="1.5" />
+        <path d="M85 48 L85 55" strokeWidth="1" />
+        <path d="M80 48 L80 55" strokeWidth="1" />
+        <path d="M75 48 L75 55" strokeWidth="1" />
+
+        {/* Decorative urns on platform */}
+        <path d="M12 42 L18 42 L17 45 L13 45 Z" strokeWidth="1" />
+        <path d="M15 40 L15 42" strokeWidth="0.8" />
+        <path d="M82 42 L88 42 L87 45 L83 45 Z" strokeWidth="1" />
+        <path d="M85 40 L85 42" strokeWidth="0.8" />
+
+        {/* Platform surface pattern */}
+        <path d="M20 47 L80 47" strokeWidth="0.5" opacity="0.4" />
+        <path d="M50 45 L50 50" strokeWidth="0.5" opacity="0.4" />
+      </g>
+    </g>
+  </svg>
+)
+
+/**
+ * RISER - Vertical face of a stair step
+ * 3D PERSPECTIVE: Close-up section showing riser and tread
+ * Shows: Vertical board between treads, nose overhang
+ * Distinct: Vertical surface, often decorated, structural
+ */
+const RiserSVG: React.FC<SVGProps> = ({ showHalo }) => (
+  <svg viewBox="0 0 100 100" className="w-full h-full">
+    {showHalo && <HaloFilter id="riser-halo" intensity={0.85} />}
+    <g filter={showHalo ? "url(#riser-halo)" : undefined} fill="none" stroke="currentColor" strokeLinecap="round">
+      {/* CONTEXT - Stair structure */}
+      <g strokeDasharray="3 2" opacity="0.35" strokeWidth="0.7">
+        <path d="M5 5 L5 95" />
+        <path d="M95 25 L95 95" />
+      </g>
+
+      {/* PRIMARY - Stair risers and treads in section */}
+      <g strokeWidth="1.2">
+        {/* Step 1 - Bottom (closest, most detail) */}
+        {/* Riser face */}
+        <path d="M10 70 L10 88 L90 88 L90 70" strokeWidth="2" />
+        {/* Tread surface */}
+        <path d="M8 70 L92 70 L92 65 L5 65 Z" strokeWidth="1.8" />
+        {/* Tread nose (overhang) */}
+        <path d="M5 65 L5 68 Q6 70, 8 70" strokeWidth="1.5" />
+        <path d="M92 70 Q94 70, 95 68 L95 65" strokeWidth="1.5" />
+        {/* Riser detail/molding */}
+        <path d="M12 72 L88 72" strokeWidth="0.8" />
+        <path d="M12 86 L88 86" strokeWidth="0.8" />
+        {/* Decorative panel on riser */}
+        <path d="M20 74 L80 74 L80 84 L20 84 Z" strokeWidth="1" />
+        <path d="M25 76 L75 76 L75 82 L25 82 Z" strokeWidth="0.6" opacity="0.5" />
+
+        {/* Step 2 - Middle */}
+        <path d="M15 45 L15 63 L88 63 L88 45" strokeWidth="1.8" />
+        <path d="M12 45 L90 45 L90 40 L10 40 Z" strokeWidth="1.6" />
+        <path d="M10 40 L10 43 Q11 45, 12 45" strokeWidth="1.3" />
+        <path d="M17 47 L85 47" strokeWidth="0.7" />
+        <path d="M17 61 L85 61" strokeWidth="0.7" />
+        <path d="M25 49 L75 49 L75 59 L25 59 Z" strokeWidth="0.9" />
+
+        {/* Step 3 - Top (farthest) */}
+        <path d="M20 22 L20 38 L85 38 L85 22" strokeWidth="1.5" />
+        <path d="M18 22 L87 22 L87 18 L15 18 Z" strokeWidth="1.4" />
+        <path d="M15 18 L15 20 Q16 22, 18 22" strokeWidth="1.2" />
+        <path d="M22 24 L83 24" strokeWidth="0.6" />
+        <path d="M30 26 L70 26 L70 34 L30 34 Z" strokeWidth="0.8" />
+
+        {/* Stringer (diagonal support) visible */}
+        <path d="M5 88 L5 65 L10 65 L15 40 L20 18 L20 5" strokeWidth="1.3" />
+        <path d="M95 88 L95 65 L90 65 L88 40 L85 22 L85 10" strokeWidth="1.2" />
+
+        {/* Labels/dimension hints */}
+        <path d="M0 70 L5 70" strokeWidth="0.5" opacity="0.4" />
+        <path d="M0 88 L5 88" strokeWidth="0.5" opacity="0.4" />
+      </g>
+    </g>
+  </svg>
+)
+
+/**
+ * SPIRAL STAIR - Helical staircase around central pole
+ * 3D PERSPECTIVE: Looking up through spiral from below
+ * Shows: Wedge-shaped treads around newel, continuous handrail
+ * Distinct: Compact vertical circulation, dramatic spiral view
+ */
+const SpiralStairSVG: React.FC<SVGProps> = ({ showHalo }) => (
+  <svg viewBox="0 0 100 100" className="w-full h-full">
+    {showHalo && <HaloFilter id="spiral-halo" intensity={0.9} />}
+    <g filter={showHalo ? "url(#spiral-halo)" : undefined} fill="none" stroke="currentColor" strokeLinecap="round">
+      {/* CONTEXT - Surrounding walls */}
+      <g strokeDasharray="3 2" opacity="0.35" strokeWidth="0.7">
+        <circle cx="50" cy="50" r="47" />
+      </g>
+
+      {/* PRIMARY - Spiral stair from below */}
+      <g strokeWidth="1.2">
+        {/* Central newel pole */}
+        <circle cx="50" cy="50" r="5" strokeWidth="2" />
+        <circle cx="50" cy="50" r="3" strokeWidth="1" />
+
+        {/* Outer handrail circle */}
+        <circle cx="50" cy="50" r="42" strokeWidth="1.8" />
+        <circle cx="50" cy="50" r="40" strokeWidth="1" opacity="0.6" />
+
+        {/* Wedge treads radiating from center */}
+        {/* Tread 1 - at bottom */}
+        <path d="M50 55 L50 92 M50 55 L85 70" strokeWidth="1.5" />
+        <path d="M55 60 L80 72" strokeWidth="0.8" opacity="0.6" />
+
+        {/* Tread 2 */}
+        <path d="M55 50 L92 50 M55 50 L75 20" strokeWidth="1.5" />
+        <path d="M60 48 L78 28" strokeWidth="0.8" opacity="0.6" />
+
+        {/* Tread 3 */}
+        <path d="M50 45 L50 8 M50 45 L20 25" strokeWidth="1.4" />
+        <path d="M48 40 L25 22" strokeWidth="0.8" opacity="0.6" />
+
+        {/* Tread 4 */}
+        <path d="M45 50 L8 50 M45 50 L25 80" strokeWidth="1.4" />
+        <path d="M42 55 L22 75" strokeWidth="0.8" opacity="0.6" />
+
+        {/* Tread 5 */}
+        <path d="M50 55 L35 88 M55 55 L70 85" strokeWidth="1.3" />
+
+        {/* Additional treads visible through */}
+        <path d="M55 45 L72 15" strokeWidth="1.2" />
+        <path d="M45 45 L28 15" strokeWidth="1.2" />
+        <path d="M45 55 L15 65" strokeWidth="1.2" />
+
+        {/* Riser edges (showing vertical faces) */}
+        <path d="M50 55 L50 58 L82 73 L85 70" strokeWidth="0.8" opacity="0.5" />
+        <path d="M55 50 L58 50 L78 22 L75 20" strokeWidth="0.8" opacity="0.5" />
+        <path d="M50 45 L50 42 L22 23 L20 25" strokeWidth="0.8" opacity="0.5" />
+        <path d="M45 50 L42 50 L23 78 L25 80" strokeWidth="0.8" opacity="0.5" />
+
+        {/* Underside visible (looking up) */}
+        <path d="M55 55 Q60 60, 58 65" strokeWidth="0.6" opacity="0.4" />
+        <path d="M55 45 Q62 42, 65 48" strokeWidth="0.6" opacity="0.4" />
+
+        {/* Handrail spiral suggestion */}
+        <path d="M50 8 Q75 10, 90 35 Q95 55, 85 75 Q70 92, 50 92" strokeWidth="1" strokeDasharray="3 3" opacity="0.5" />
+      </g>
+    </g>
+  </svg>
+)
+
+/**
+ * STRINGER - Diagonal beam supporting stair treads
+ * 3D PERSPECTIVE: Cut-away showing stringer structure
+ * Shows: Notched diagonal beam with treads resting in cuts
+ * Distinct: Structural zigzag profile, supports entire stair
+ */
+const StringerSVG: React.FC<SVGProps> = ({ showHalo }) => (
+  <svg viewBox="0 0 100 100" className="w-full h-full">
+    {showHalo && <HaloFilter id="stringer-halo" intensity={0.85} />}
+    <g filter={showHalo ? "url(#stringer-halo)" : undefined} fill="none" stroke="currentColor" strokeLinecap="round">
+      {/* CONTEXT - Wall and floor */}
+      <g strokeDasharray="3 2" opacity="0.35" strokeWidth="0.7">
+        <path d="M5 5 L5 95" />
+        <path d="M5 95 L95 95" />
+      </g>
+
+      {/* PRIMARY - Stringer beam with notches */}
+      <g strokeWidth="1.2">
+        {/* Main stringer diagonal - thick beam */}
+        <path d="M10 15 L15 15 L90 90 L85 90 L10 20 Z" strokeWidth="2" />
+
+        {/* Notch 1 - top */}
+        <path d="M18 18 L18 28 L30 28 L30 32 L15 32 L15 22" strokeWidth="1.5" />
+        {/* Tread in notch */}
+        <path d="M15 28 L35 28 L35 24 L15 24 Z" strokeWidth="1.3" />
+
+        {/* Notch 2 */}
+        <path d="M32 32 L32 42 L44 42 L44 46 L29 46 L29 36" strokeWidth="1.5" />
+        <path d="M29 42 L49 42 L49 38 L29 38 Z" strokeWidth="1.3" />
+
+        {/* Notch 3 */}
+        <path d="M46 46 L46 56 L58 56 L58 60 L43 60 L43 50" strokeWidth="1.5" />
+        <path d="M43 56 L63 56 L63 52 L43 52 Z" strokeWidth="1.3" />
+
+        {/* Notch 4 */}
+        <path d="M60 60 L60 70 L72 70 L72 74 L57 74 L57 64" strokeWidth="1.5" />
+        <path d="M57 70 L77 70 L77 66 L57 66 Z" strokeWidth="1.3" />
+
+        {/* Notch 5 - bottom */}
+        <path d="M74 74 L74 84 L86 84 L86 88 L71 88 L71 78" strokeWidth="1.5" />
+        <path d="M71 84 L91 84 L91 80 L71 80 Z" strokeWidth="1.3" />
+
+        {/* Riser positions indicated */}
+        <path d="M30 28 L30 42" strokeWidth="1" opacity="0.6" />
+        <path d="M44 42 L44 56" strokeWidth="1" opacity="0.6" />
+        <path d="M58 56 L58 70" strokeWidth="1" opacity="0.6" />
+        <path d="M72 70 L72 84" strokeWidth="1" opacity="0.6" />
+
+        {/* Wood grain on stringer */}
+        <path d="M25 22 L35 32" strokeWidth="0.4" opacity="0.4" />
+        <path d="M50 47 L60 57" strokeWidth="0.4" opacity="0.4" />
+        <path d="M70 67 L80 77" strokeWidth="0.4" opacity="0.4" />
+
+        {/* Bolts/fasteners */}
+        <circle cx="12" cy="18" r="1.5" strokeWidth="0.8" />
+        <circle cx="87" cy="87" r="1.5" strokeWidth="0.8" />
+      </g>
+    </g>
+  </svg>
+)
+
+/**
+ * TATAMI - Japanese woven floor mat
+ * 3D PERSPECTIVE: Room corner showing tatami arrangement
+ * Shows: Rectangular mats with woven texture, border edges
+ * Distinct: Modular arrangement, woven rush surface, cloth borders
+ */
+const TatamiSVG: React.FC<SVGProps> = ({ showHalo }) => (
+  <svg viewBox="0 0 100 100" className="w-full h-full">
+    {showHalo && <HaloFilter id="tatami-halo" intensity={0.8} />}
+    <g filter={showHalo ? "url(#tatami-halo)" : undefined} fill="none" stroke="currentColor" strokeLinecap="round">
+      {/* CONTEXT - Japanese room elements */}
+      <g strokeDasharray="3 2" opacity="0.35" strokeWidth="0.7">
+        <path d="M5 5 L5 95" />
+        <path d="M5 5 L95 5" />
+        <path d="M8 10 L8 40" />
+        <path d="M10 8 L40 8" />
+        <path d="M60 8 L60 20 L75 20 L75 8" />
+      </g>
+
+      {/* PRIMARY - Tatami mat arrangement */}
+      <g strokeWidth="1.2">
+        {/* Room floor boundary */}
+        <path d="M10 10 L90 10 L90 90 L10 90 Z" strokeWidth="1.5" />
+
+        {/* Tatami 1 - horizontal top left */}
+        <path d="M12 12 L55 12 L55 35 L12 35 Z" strokeWidth="1.4" />
+        {/* Cloth border (heri) */}
+        <path d="M12 23 L55 23" strokeWidth="1.8" />
+        <path d="M12 24 L55 24" strokeWidth="0.6" />
+        {/* Woven texture */}
+        <path d="M15 15 L15 21" strokeWidth="0.4" opacity="0.4" />
+        <path d="M20 15 L20 21" strokeWidth="0.4" opacity="0.4" />
+        <path d="M25 15 L25 21" strokeWidth="0.4" opacity="0.4" />
+        <path d="M30 15 L30 21" strokeWidth="0.4" opacity="0.4" />
+        <path d="M35 15 L35 21" strokeWidth="0.4" opacity="0.4" />
+        <path d="M40 15 L40 21" strokeWidth="0.4" opacity="0.4" />
+        <path d="M45 15 L45 21" strokeWidth="0.4" opacity="0.4" />
+        <path d="M50 15 L50 21" strokeWidth="0.4" opacity="0.4" />
+
+        {/* Tatami 2 - vertical top right */}
+        <path d="M57 12 L88 12 L88 55 L57 55 Z" strokeWidth="1.4" />
+        <path d="M72 12 L72 55" strokeWidth="1.8" />
+        <path d="M73 12 L73 55" strokeWidth="0.6" />
+        <path d="M60 15 L68 15" strokeWidth="0.4" opacity="0.4" />
+        <path d="M60 22 L68 22" strokeWidth="0.4" opacity="0.4" />
+        <path d="M60 29 L68 29" strokeWidth="0.4" opacity="0.4" />
+        <path d="M60 36 L68 36" strokeWidth="0.4" opacity="0.4" />
+        <path d="M60 43 L68 43" strokeWidth="0.4" opacity="0.4" />
+        <path d="M60 50 L68 50" strokeWidth="0.4" opacity="0.4" />
+
+        {/* Tatami 3 - vertical left */}
+        <path d="M12 37 L35 37 L35 88 L12 88 Z" strokeWidth="1.4" />
+        <path d="M23 37 L23 88" strokeWidth="1.8" />
+        <path d="M24 37 L24 88" strokeWidth="0.6" />
+        <path d="M15 40 L21 40" strokeWidth="0.4" opacity="0.4" />
+        <path d="M15 50 L21 50" strokeWidth="0.4" opacity="0.4" />
+        <path d="M15 60 L21 60" strokeWidth="0.4" opacity="0.4" />
+        <path d="M15 70 L21 70" strokeWidth="0.4" opacity="0.4" />
+        <path d="M15 80 L21 80" strokeWidth="0.4" opacity="0.4" />
+
+        {/* Tatami 4 - horizontal center */}
+        <path d="M37 37 L55 37 L55 57 L37 57 Z" strokeWidth="1.4" />
+        <path d="M37 47 L55 47" strokeWidth="1.6" />
+        <path d="M40 40 L40 45" strokeWidth="0.4" opacity="0.4" />
+        <path d="M47 40 L47 45" strokeWidth="0.4" opacity="0.4" />
+
+        {/* Tatami 5 - horizontal bottom */}
+        <path d="M37 59 L88 59 L88 88 L37 88 Z" strokeWidth="1.4" />
+        <path d="M37 73 L88 73" strokeWidth="1.8" />
+        <path d="M37 74 L88 74" strokeWidth="0.6" />
+        <path d="M42 62 L42 70" strokeWidth="0.4" opacity="0.4" />
+        <path d="M52 62 L52 70" strokeWidth="0.4" opacity="0.4" />
+        <path d="M62 62 L62 70" strokeWidth="0.4" opacity="0.4" />
+        <path d="M72 62 L72 70" strokeWidth="0.4" opacity="0.4" />
+        <path d="M82 62 L82 70" strokeWidth="0.4" opacity="0.4" />
+      </g>
+    </g>
+  </svg>
+)
+
+/**
+ * TERRAZZO - Polished aggregate flooring
+ * 3D PERSPECTIVE: Looking down at terrazzo with brass strips
+ * Shows: Marble chips in cement, metal divider strips
+ * Distinct: Random aggregate pattern, geometric dividers, polished
+ */
+const TerrazzoSVG: React.FC<SVGProps> = ({ showHalo }) => (
+  <svg viewBox="0 0 100 100" className="w-full h-full">
+    {showHalo && <HaloFilter id="terrazzo-halo" intensity={0.85} />}
+    <g filter={showHalo ? "url(#terrazzo-halo)" : undefined} fill="none" stroke="currentColor" strokeLinecap="round">
+      {/* CONTEXT - Room edge */}
+      <g strokeDasharray="3 2" opacity="0.35" strokeWidth="0.7">
+        <path d="M5 5 L95 5 L95 95 L5 95 Z" />
+      </g>
+
+      {/* PRIMARY - Terrazzo floor with brass dividers */}
+      <g strokeWidth="1">
+        {/* Floor boundary */}
+        <path d="M10 10 L90 10 L90 90 L10 90 Z" strokeWidth="1.5" />
+
+        {/* Brass divider strips - geometric pattern */}
+        <path d="M10 50 L90 50" strokeWidth="2.5" />
+        <path d="M50 10 L50 90" strokeWidth="2.5" />
+        <path d="M30 10 L30 90" strokeWidth="1.8" />
+        <path d="M70 10 L70 90" strokeWidth="1.8" />
+        <path d="M10 30 L90 30" strokeWidth="1.8" />
+        <path d="M10 70 L90 70" strokeWidth="1.8" />
+
+        {/* Diagonal accent strip */}
+        <path d="M10 10 L50 50" strokeWidth="2" />
+        <path d="M90 10 L50 50" strokeWidth="2" />
+
+        {/* Aggregate chips - various sizes and shapes */}
+        {/* Top left quadrant */}
+        <path d="M15 15 L18 17 L16 20 Z" strokeWidth="0.8" />
+        <path d="M22 18 L25 16 L26 20 L23 21 Z" strokeWidth="0.8" />
+        <path d="M14 24 L17 22 L18 26 Z" strokeWidth="0.8" />
+        <path d="M24 24 L27 25 L25 28 Z" strokeWidth="0.8" />
+
+        {/* Top right quadrant */}
+        <path d="M55 15 L58 17 L56 20 Z" strokeWidth="0.8" />
+        <path d="M62 18 L65 16 L66 20 L63 21 Z" strokeWidth="0.8" />
+        <path d="M75 15 L78 17 L76 20 Z" strokeWidth="0.8" />
+        <path d="M82 22 L85 20 L86 24 L83 25 Z" strokeWidth="0.8" />
+        <path d="M58 24 L61 25 L59 28 Z" strokeWidth="0.8" />
+
+        {/* Bottom left quadrant */}
+        <path d="M15 55 L18 57 L16 60 Z" strokeWidth="0.8" />
+        <path d="M22 58 L25 56 L26 60 L23 61 Z" strokeWidth="0.8" />
+        <path d="M15 75 L18 77 L16 80 Z" strokeWidth="0.8" />
+        <path d="M24 78 L27 76 L28 80 L25 81 Z" strokeWidth="0.8" />
+        <path d="M14 84 L17 82 L18 86 Z" strokeWidth="0.8" />
+
+        {/* Bottom right quadrant */}
+        <path d="M55 55 L58 57 L56 60 Z" strokeWidth="0.8" />
+        <path d="M72 58 L75 56 L76 60 L73 61 Z" strokeWidth="0.8" />
+        <path d="M82 55 L85 57 L83 60 Z" strokeWidth="0.8" />
+        <path d="M58 75 L61 77 L59 80 Z" strokeWidth="0.8" />
+        <path d="M75 78 L78 76 L79 80 L76 81 Z" strokeWidth="0.8" />
+        <path d="M84 82 L87 80 L88 84 L85 85 Z" strokeWidth="0.8" />
+
+        {/* Polished surface gleam */}
+        <path d="M20 20 L22 22" strokeWidth="0.5" opacity="0.3" />
+        <path d="M65 35 L67 37" strokeWidth="0.5" opacity="0.3" />
+        <path d="M40 75 L42 77" strokeWidth="0.5" opacity="0.3" />
+      </g>
+    </g>
+  </svg>
+)
+
+/**
+ * TREAD - Horizontal step surface
+ * 3D PERSPECTIVE: Close-up of stair tread detail
+ * Shows: Worn surface, nosing edge, anti-slip grooves
+ * Distinct: Horizontal walking surface, often worn pattern
+ */
+const TreadSVG: React.FC<SVGProps> = ({ showHalo }) => (
+  <svg viewBox="0 0 100 100" className="w-full h-full">
+    {showHalo && <HaloFilter id="tread-halo" intensity={0.85} />}
+    <g filter={showHalo ? "url(#tread-halo)" : undefined} fill="none" stroke="currentColor" strokeLinecap="round">
+      {/* CONTEXT - Stair structure */}
+      <g strokeDasharray="3 2" opacity="0.35" strokeWidth="0.7">
+        <path d="M5 35 L5 95" />
+        <path d="M95 35 L95 95" />
+        <path d="M5 95 L95 95" />
+      </g>
+
+      {/* PRIMARY - Stair treads in 3D perspective */}
+      <g strokeWidth="1.2">
+        {/* Tread 1 - Top (farthest, smallest) */}
+        <path d="M20 15 L80 15 L85 22 L15 22 Z" strokeWidth="1.4" />
+        <path d="M15 22 L15 28 L85 28 L85 22" strokeWidth="1.2" />
+        {/* Nosing detail */}
+        <path d="M13 22 L13 25 Q14 28, 15 28" strokeWidth="1" />
+        <path d="M85 28 Q86 28, 87 25 L87 22" strokeWidth="1" />
+        <path d="M22 18 L78 18" strokeWidth="0.6" opacity="0.5" />
+
+        {/* Tread 2 */}
+        <path d="M15 32 L85 32 L90 40 L10 40 Z" strokeWidth="1.6" />
+        <path d="M10 40 L10 48 L90 48 L90 40" strokeWidth="1.4" />
+        <path d="M8 40 L8 44 Q9 48, 10 48" strokeWidth="1.2" />
+        <path d="M90 48 Q91 48, 92 44 L92 40" strokeWidth="1.2" />
+        {/* Anti-slip grooves */}
+        <path d="M18 35 L82 35" strokeWidth="0.8" />
+        <path d="M16 37 L84 37" strokeWidth="0.6" />
+        {/* Wear pattern in center */}
+        <path d="M35 36 Q50 34, 65 36" strokeWidth="0.5" opacity="0.4" />
+
+        {/* Tread 3 - Main focus (closest, largest, most detail) */}
+        <path d="M8 55 L92 55 L97 65 L3 65 Z" strokeWidth="2" />
+        <path d="M3 65 L3 78 L97 78 L97 65" strokeWidth="1.8" />
+        {/* Nosing - prominent rounded edge */}
+        <path d="M0 65 L0 70 Q2 78, 3 78" strokeWidth="1.5" />
+        <path d="M97 78 Q98 78, 100 70 L100 65" strokeWidth="1.5" />
+
+        {/* Anti-slip grooves on tread */}
+        <path d="M12 58 L88 58" strokeWidth="1" />
+        <path d="M10 60 L90 60" strokeWidth="0.8" />
+        <path d="M8 62 L92 62" strokeWidth="0.6" />
+
+        {/* Wear pattern - centuries of footsteps */}
+        <path d="M25 60 Q50 56, 75 60" strokeWidth="1.2" />
+        <path d="M30 62 Q50 58, 70 62" strokeWidth="0.8" opacity="0.6" />
+
+        {/* Stone texture / material grain */}
+        <path d="M15 68 L20 72" strokeWidth="0.4" opacity="0.4" />
+        <path d="M45 70 L50 74" strokeWidth="0.4" opacity="0.4" />
+        <path d="M75 68 L80 72" strokeWidth="0.4" opacity="0.4" />
+
+        {/* Riser below */}
+        <path d="M3 78 L3 95 L97 95 L97 78" strokeWidth="1.5" />
+        <path d="M5 80 L95 80" strokeWidth="0.7" />
+        <path d="M5 92 L95 92" strokeWidth="0.7" />
+      </g>
+    </g>
+  </svg>
+)
+
+/**
+ * WAFFLE SLAB - Concrete slab with grid of ribs
+ * 3D PERSPECTIVE: Looking up at exposed waffle slab structure
+ * Shows: Two-way ribbed concrete, coffered underside
+ * Distinct: Grid pattern of recesses, modern brutalist aesthetic
+ */
+const WaffleSlabSVG: React.FC<SVGProps> = ({ showHalo }) => (
+  <svg viewBox="0 0 100 100" className="w-full h-full">
+    {showHalo && <HaloFilter id="waffle-halo" intensity={0.85} />}
+    <g filter={showHalo ? "url(#waffle-halo)" : undefined} fill="none" stroke="currentColor" strokeLinecap="round">
+      {/* CONTEXT - Support columns */}
+      <g strokeDasharray="3 2" opacity="0.35" strokeWidth="0.7">
+        <path d="M10 90 L10 98" />
+        <path d="M8 90 L12 90" />
+        <path d="M90 90 L90 98" />
+        <path d="M88 90 L92 90" />
+      </g>
+
+      {/* PRIMARY - Waffle slab from below */}
+      <g strokeWidth="1.2">
+        {/* Slab outline */}
+        <path d="M5 10 L95 10 L95 90 L5 90 Z" strokeWidth="1.8" />
+
+        {/* Main ribs - horizontal */}
+        <path d="M5 25 L95 25" strokeWidth="2" />
+        <path d="M5 42 L95 42" strokeWidth="2" />
+        <path d="M5 58 L95 58" strokeWidth="2" />
+        <path d="M5 75 L95 75" strokeWidth="2" />
+
+        {/* Main ribs - vertical */}
+        <path d="M22 10 L22 90" strokeWidth="2" />
+        <path d="M40 10 L40 90" strokeWidth="2" />
+        <path d="M58 10 L58 90" strokeWidth="2" />
+        <path d="M76 10 L76 90" strokeWidth="2" />
+
+        {/* Waffle cells (coffers) - recessed squares */}
+        {/* Row 1 */}
+        <path d="M8 13 L19 13 L19 22 L8 22 Z" strokeWidth="1" />
+        <path d="M10 15 L17 15 L17 20 L10 20 Z" strokeWidth="0.6" opacity="0.5" />
+
+        <path d="M25 13 L37 13 L37 22 L25 22 Z" strokeWidth="1" />
+        <path d="M27 15 L35 15 L35 20 L27 20 Z" strokeWidth="0.6" opacity="0.5" />
+
+        <path d="M43 13 L55 13 L55 22 L43 22 Z" strokeWidth="1" />
+        <path d="M45 15 L53 15 L53 20 L45 20 Z" strokeWidth="0.6" opacity="0.5" />
+
+        <path d="M61 13 L73 13 L73 22 L61 22 Z" strokeWidth="1" />
+        <path d="M63 15 L71 15 L71 20 L63 20 Z" strokeWidth="0.6" opacity="0.5" />
+
+        <path d="M79 13 L92 13 L92 22 L79 22 Z" strokeWidth="1" />
+
+        {/* Row 2 */}
+        <path d="M8 28 L19 28 L19 39 L8 39 Z" strokeWidth="1" />
+        <path d="M25 28 L37 28 L37 39 L25 39 Z" strokeWidth="1" />
+        <path d="M43 28 L55 28 L55 39 L43 39 Z" strokeWidth="1" />
+        <path d="M45 30 L53 30 L53 37 L45 37 Z" strokeWidth="0.6" opacity="0.5" />
+        <path d="M61 28 L73 28 L73 39 L61 39 Z" strokeWidth="1" />
+        <path d="M79 28 L92 28 L92 39 L79 39 Z" strokeWidth="1" />
+
+        {/* Row 3 */}
+        <path d="M8 45 L19 45 L19 55 L8 55 Z" strokeWidth="1" />
+        <path d="M25 45 L37 45 L37 55 L25 55 Z" strokeWidth="1" />
+        <path d="M27 47 L35 47 L35 53 L27 53 Z" strokeWidth="0.6" opacity="0.5" />
+        <path d="M43 45 L55 45 L55 55 L43 55 Z" strokeWidth="1" />
+        <path d="M61 45 L73 45 L73 55 L61 55 Z" strokeWidth="1" />
+        <path d="M79 45 L92 45 L92 55 L79 55 Z" strokeWidth="1" />
+        <path d="M81 47 L90 47 L90 53 L81 53 Z" strokeWidth="0.6" opacity="0.5" />
+
+        {/* Row 4 */}
+        <path d="M8 61 L19 61 L19 72 L8 72 Z" strokeWidth="1" />
+        <path d="M10 63 L17 63 L17 70 L10 70 Z" strokeWidth="0.6" opacity="0.5" />
+        <path d="M25 61 L37 61 L37 72 L25 72 Z" strokeWidth="1" />
+        <path d="M43 61 L55 61 L55 72 L43 72 Z" strokeWidth="1" />
+        <path d="M61 61 L73 61 L73 72 L61 72 Z" strokeWidth="1" />
+        <path d="M63 63 L71 63 L71 70 L63 70 Z" strokeWidth="0.6" opacity="0.5" />
+        <path d="M79 61 L92 61 L92 72 L79 72 Z" strokeWidth="1" />
+
+        {/* Row 5 */}
+        <path d="M8 78 L19 78 L19 87 L8 87 Z" strokeWidth="1" />
+        <path d="M25 78 L37 78 L37 87 L25 87 Z" strokeWidth="1" />
+        <path d="M43 78 L55 78 L55 87 L43 87 Z" strokeWidth="1" />
+        <path d="M61 78 L73 78 L73 87 L61 87 Z" strokeWidth="1" />
+        <path d="M79 78 L92 78 L92 87 L79 87 Z" strokeWidth="1" />
+
+        {/* Concrete texture */}
+        <path d="M12 18 L14 16" strokeWidth="0.3" opacity="0.3" />
+        <path d="M48 50 L50 48" strokeWidth="0.3" opacity="0.3" />
+        <path d="M65 65 L67 67" strokeWidth="0.3" opacity="0.3" />
+      </g>
+    </g>
+  </svg>
+)
+
+// Export mapping for all 20 floor elements
 export const FLOOR_ELEMENTS: Record<string, React.FC<SVGProps>> = {
   'accessibility-ramp': AccessibilityRampSVG,
   'baluster': BalusterSVG,
@@ -712,6 +1402,16 @@ export const FLOOR_ELEMENTS: Record<string, React.FC<SVGProps>> = {
   'landing': LandingSVG,
   'mosaic-floor': MosaicFloorSVG,
   'newel-post': NewelPostSVG,
+  'opus-sectile': OpusSectileSVG,
+  'parquet': ParquetSVG,
+  'perron': PerronSVG,
+  'riser': RiserSVG,
+  'spiral-stair': SpiralStairSVG,
+  'stringer': StringerSVG,
+  'tatami': TatamiSVG,
+  'terrazzo': TerrazzoSVG,
+  'tread': TreadSVG,
+  'waffle-slab': WaffleSlabSVG,
 }
 
 export {
@@ -725,4 +1425,14 @@ export {
   LandingSVG,
   MosaicFloorSVG,
   NewelPostSVG,
+  OpusSectileSVG,
+  ParquetSVG,
+  PerronSVG,
+  RiserSVG,
+  SpiralStairSVG,
+  StringerSVG,
+  TatamiSVG,
+  TerrazzoSVG,
+  TreadSVG,
+  WaffleSlabSVG,
 }
