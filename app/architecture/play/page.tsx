@@ -60,8 +60,8 @@ export default function PlayPage() {
   return (
     <div className="min-h-screen bg-[var(--background)]">
       {/* Header */}
-      <div className="sticky top-0 z-10 bg-[var(--background)]/95 backdrop-blur border-b border-[var(--border)]">
-        <div className="container mx-auto px-4 py-4">
+      <div className="bg-[var(--background)]/95 backdrop-blur border-b border-[var(--border)]">
+        <div className="container mx-auto px-4 py-3">
           <div className="flex items-center gap-4">
             <Link href="/architecture">
               <Button variant="ghost" size="sm">
@@ -74,11 +74,11 @@ export default function PlayPage() {
         </div>
       </div>
 
-      <div className="container mx-auto px-3 sm:px-4 py-4 sm:py-8 max-w-4xl">
+      <div className="container mx-auto px-3 sm:px-4 py-3 sm:py-4 max-w-4xl">
         {/* Game Mode Selection */}
-        <section className="mb-8 sm:mb-12">
-          <h2 className="text-base sm:text-lg font-bold text-[var(--foreground)] mb-3 sm:mb-4">Game Mode</h2>
-          <div className="grid gap-3 sm:gap-4">
+        <section className="mb-4 sm:mb-6">
+          <h2 className="text-base sm:text-lg font-bold text-[var(--foreground)] mb-2 sm:mb-3">Game Mode</h2>
+          <div className="grid gap-2 sm:gap-3">
             {gameModes.map((mode, index) => {
               const Icon = mode.icon
               return (
@@ -90,21 +90,21 @@ export default function PlayPage() {
                 >
                   <Link href={mode.href}>
                     <Card className="border-2 border-[var(--border)] hover:border-[var(--primary)]/50 transition-all cursor-pointer group">
-                      <CardContent className="p-3 sm:p-4">
-                        <div className="flex items-center gap-3 sm:gap-4">
-                          <div className={`w-12 h-12 sm:w-14 sm:h-14 rounded-xl bg-gradient-to-br ${mode.color} flex items-center justify-center shrink-0 group-hover:scale-110 transition-transform`}>
-                            <Icon className="w-6 h-6 sm:w-7 sm:h-7 text-white" />
+                      <CardContent className="p-2 sm:p-3">
+                        <div className="flex items-center gap-2 sm:gap-3">
+                          <div className={`w-10 h-10 sm:w-12 sm:h-12 rounded-xl bg-gradient-to-br ${mode.color} flex items-center justify-center shrink-0 group-hover:scale-110 transition-transform`}>
+                            <Icon className="w-5 h-5 sm:w-6 sm:h-6 text-white" />
                           </div>
                           <div className="flex-1 min-w-0">
                             <h3 className="font-bold text-sm sm:text-base text-[var(--foreground)] group-hover:text-[var(--primary)] transition-colors">
                               {mode.name}
                             </h3>
                             <p className="text-xs sm:text-sm text-[var(--muted-foreground)]">{mode.description}</p>
-                            <div className="flex flex-wrap gap-1.5 sm:gap-2 mt-1.5 sm:mt-2">
+                            <div className="flex flex-wrap gap-1 sm:gap-1.5 mt-1 sm:mt-1.5">
                               {mode.features.map((feature) => (
                                 <span
                                   key={feature}
-                                  className={`text-[10px] sm:text-xs px-1.5 sm:px-2 py-0.5 rounded-full ${mode.bgColor}`}
+                                  className={`text-[10px] sm:text-xs px-1.5 py-0.5 rounded-full ${mode.bgColor}`}
                                 >
                                   {feature}
                                 </span>
@@ -123,15 +123,15 @@ export default function PlayPage() {
         </section>
 
         {/* Quick Play Configuration */}
-        <section className="mb-8 sm:mb-12">
-          <div className="flex items-center gap-2 mb-3 sm:mb-4">
+        <section className="mb-4 sm:mb-6">
+          <div className="flex items-center gap-2 mb-2">
             <Zap className="w-4 h-4 sm:w-5 sm:h-5 text-amber-500" />
             <h2 className="text-base sm:text-lg font-bold text-[var(--foreground)]">Quick Play Settings</h2>
           </div>
 
           {/* Element Count */}
-          <div className="mb-4 sm:mb-6">
-            <label className="text-xs sm:text-sm font-semibold text-[var(--muted-foreground)] mb-2 block">
+          <div className="mb-3 sm:mb-4">
+            <label className="text-xs sm:text-sm font-semibold text-[var(--muted-foreground)] mb-1.5 block">
               Number of Elements
             </label>
             <div className="grid grid-cols-4 gap-1.5 sm:gap-2">
@@ -139,7 +139,7 @@ export default function PlayPage() {
                 <button
                   key={option.count}
                   onClick={() => setSelectedCount(option.count)}
-                  className={`p-2 sm:p-3 rounded-lg sm:rounded-xl border-2 transition-all text-center ${
+                  className={`p-2 sm:p-2.5 rounded-lg border-2 transition-all text-center ${
                     selectedCount === option.count
                       ? 'border-amber-500 bg-amber-500/10'
                       : 'border-[var(--border)] hover:border-[var(--primary)]/50'
@@ -153,14 +153,14 @@ export default function PlayPage() {
           </div>
 
           {/* Learning Path */}
-          <div className="mb-4 sm:mb-6">
-            <label className="text-xs sm:text-sm font-semibold text-[var(--muted-foreground)] mb-2 block">
+          <div className="mb-3 sm:mb-4">
+            <label className="text-xs sm:text-sm font-semibold text-[var(--muted-foreground)] mb-1.5 block">
               Learning Path
             </label>
             <div className="grid grid-cols-3 gap-1.5 sm:gap-2">
               <button
                 onClick={() => setSelectedPath('random')}
-                className={`p-2 sm:p-3 rounded-lg sm:rounded-xl border-2 transition-all ${
+                className={`p-2 sm:p-2.5 rounded-lg border-2 transition-all ${
                   selectedPath === 'random'
                     ? 'border-teal-500 bg-teal-500/10'
                     : 'border-[var(--border)] hover:border-[var(--primary)]/50'
@@ -171,7 +171,7 @@ export default function PlayPage() {
               </button>
               <button
                 onClick={() => setSelectedPath('timeline')}
-                className={`p-2 sm:p-3 rounded-lg sm:rounded-xl border-2 transition-all ${
+                className={`p-2 sm:p-2.5 rounded-lg border-2 transition-all ${
                   selectedPath === 'timeline'
                     ? 'border-amber-500 bg-amber-500/10'
                     : 'border-[var(--border)] hover:border-[var(--primary)]/50'
@@ -182,7 +182,7 @@ export default function PlayPage() {
               </button>
               <button
                 onClick={() => setSelectedPath('category')}
-                className={`p-2 sm:p-3 rounded-lg sm:rounded-xl border-2 transition-all ${
+                className={`p-2 sm:p-2.5 rounded-lg border-2 transition-all ${
                   selectedPath === 'category'
                     ? 'border-purple-500 bg-purple-500/10'
                     : 'border-[var(--border)] hover:border-[var(--primary)]/50'
@@ -199,9 +199,9 @@ export default function PlayPage() {
             <motion.div
               initial={{ opacity: 0, height: 0 }}
               animate={{ opacity: 1, height: 'auto' }}
-              className="mb-4 sm:mb-6"
+              className="mb-3 sm:mb-4"
             >
-              <label className="text-xs sm:text-sm font-semibold text-[var(--muted-foreground)] mb-2 block">
+              <label className="text-xs sm:text-sm font-semibold text-[var(--muted-foreground)] mb-1.5 block">
                 Select Category
               </label>
               <div className="grid grid-cols-2 sm:grid-cols-3 gap-1.5 sm:gap-2">
@@ -209,7 +209,7 @@ export default function PlayPage() {
                   <button
                     key={category.id}
                     onClick={() => setSelectedCategory(category.id)}
-                    className={`p-2 sm:p-3 rounded-lg sm:rounded-xl border-2 transition-all text-left ${
+                    className={`p-2 sm:p-2.5 rounded-lg border-2 transition-all text-left ${
                       selectedCategory === category.id
                         ? 'border-purple-500 bg-purple-500/10'
                         : 'border-[var(--border)] hover:border-[var(--primary)]/50'
@@ -229,7 +229,7 @@ export default function PlayPage() {
           <Link
             href={`/architecture/play/flashcard?count=${selectedCount}&path=${selectedPath}${selectedCategory ? `&category=${selectedCategory}` : ''}`}
           >
-            <Button className="w-full py-4 sm:py-6 text-base sm:text-lg font-bold bg-gradient-to-r from-amber-500 to-orange-600 text-white">
+            <Button className="w-full py-3 sm:py-4 text-base sm:text-lg font-bold bg-gradient-to-r from-amber-500 to-orange-600 text-white">
               <Gamepad2 className="w-4 h-4 sm:w-5 sm:h-5 mr-2" />
               Start Flashcard Game
             </Button>
@@ -237,30 +237,30 @@ export default function PlayPage() {
         </section>
 
         {/* Stats Preview */}
-        <section className="pb-6">
-          <div className="flex items-center gap-2 mb-3 sm:mb-4">
+        <section className="pb-4">
+          <div className="flex items-center gap-2 mb-2 sm:mb-3">
             <Trophy className="w-4 h-4 sm:w-5 sm:h-5 text-amber-500" />
             <h2 className="text-base sm:text-lg font-bold text-[var(--foreground)]">Your Stats</h2>
           </div>
 
           <Card className="border border-[var(--border)]">
-            <CardContent className="p-4 sm:p-6">
-              <div className="grid grid-cols-3 gap-2 sm:gap-4 text-center">
+            <CardContent className="p-3 sm:p-4">
+              <div className="grid grid-cols-3 gap-2 sm:gap-3 text-center">
                 <div>
-                  <p className="text-xl sm:text-2xl font-bold text-[var(--foreground)]">0</p>
+                  <p className="text-lg sm:text-xl font-bold text-[var(--foreground)]">0</p>
                   <p className="text-[10px] sm:text-xs text-[var(--muted-foreground)]">Games Played</p>
                 </div>
                 <div>
-                  <p className="text-xl sm:text-2xl font-bold text-[var(--foreground)]">--</p>
+                  <p className="text-lg sm:text-xl font-bold text-[var(--foreground)]">--</p>
                   <p className="text-[10px] sm:text-xs text-[var(--muted-foreground)]">Best Time</p>
                 </div>
                 <div>
-                  <p className="text-xl sm:text-2xl font-bold text-[var(--foreground)]">0</p>
+                  <p className="text-lg sm:text-xl font-bold text-[var(--foreground)]">0</p>
                   <p className="text-[10px] sm:text-xs text-[var(--muted-foreground)]">Elements Mastered</p>
                 </div>
               </div>
 
-              <div className="mt-3 sm:mt-4 pt-3 sm:pt-4 border-t border-[var(--border)]">
+              <div className="mt-2 sm:mt-3 pt-2 sm:pt-3 border-t border-[var(--border)]">
                 <div className="flex items-center justify-center gap-2 text-purple-500">
                   <Ghost className="w-3 h-3 sm:w-4 sm:h-4" />
                   <span className="text-xs sm:text-sm font-semibold text-center">Ghost Racing unlocks after your first game!</span>
