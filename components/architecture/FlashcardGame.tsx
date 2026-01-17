@@ -391,7 +391,7 @@ export function FlashcardGame({ config: userConfig, onComplete, onExit }: Flashc
                       category={currentElement.category}
                       elementId={currentElement.id}
                       className="w-full h-full"
-                      showHalo={true}
+                      showHalo={false}
                     />
                   </div>
 
