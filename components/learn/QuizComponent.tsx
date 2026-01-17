@@ -129,7 +129,7 @@ export function QuizComponent({
         </Card>
 
         {/* Detailed Results */}
-        <div className="max-h-96 overflow-y-auto space-y-4 pr-2">
+        <div className="space-y-3">
           {results.map((result: any, index: number) => (
             <Card
               key={index}
@@ -137,18 +137,18 @@ export function QuizComponent({
                 result.isCorrect ? 'border-green-500' : 'border-red-500'
               }`}
             >
-              <CardContent className="p-4">
-                <div className="flex items-start gap-3">
+              <CardContent className="p-3">
+                <div className="flex items-start gap-2">
                   {result.isCorrect ? (
-                    <CheckCircle className="w-6 h-6 text-green-500 mt-1 flex-shrink-0" />
+                    <CheckCircle className="w-5 h-5 text-green-500 mt-0.5 flex-shrink-0" />
                   ) : (
-                    <XCircle className="w-6 h-6 text-red-500 mt-1 flex-shrink-0" />
+                    <XCircle className="w-5 h-5 text-red-500 mt-0.5 flex-shrink-0" />
                   )}
-                  <div className="flex-1">
-                    <p className="font-bold text-[var(--foreground)] mb-2">
-                      Question {index + 1}: {result.question}
+                  <div className="flex-1 min-w-0">
+                    <p className="font-bold text-sm text-[var(--foreground)] mb-1">
+                      Q{index + 1}: {result.question}
                     </p>
-                    <p className="text-sm font-semibold text-theme-muted">
+                    <p className="text-xs font-semibold text-theme-muted">
                       Your answer:{' '}
                       <span
                         className={result.isCorrect ? 'text-green-600' : 'text-red-600'}
@@ -157,8 +157,8 @@ export function QuizComponent({
                       </span>
                     </p>
                     {!result.isCorrect && (
-                      <p className="text-sm font-semibold text-green-600 dark:text-green-400 mt-1">
-                        Correct answer: {result.correctAnswer}
+                      <p className="text-xs font-semibold text-green-600 dark:text-green-400 mt-0.5">
+                        Correct: {result.correctAnswer}
                       </p>
                     )}
                   </div>
@@ -210,12 +210,12 @@ export function QuizComponent({
         </CardContent>
       </Card>
 
-      {/* Questions - Scrollable */}
-      <div className="max-h-96 overflow-y-auto space-y-4 pr-2">
+      {/* Questions - Fit to Viewport */}
+      <div className="space-y-3">
         {questions.map((question, index) => (
           <Card key={index} className="border-2 border-theme-primary">
-            <CardContent className="p-5">
-              <h3 className="text-base font-black text-[var(--foreground)] mb-4">
+            <CardContent className="p-4">
+              <h3 className="text-sm font-black text-[var(--foreground)] mb-3">
                 {index + 1}. {question.question}
               </h3>
 
@@ -223,7 +223,7 @@ export function QuizComponent({
                 {question.options.map((option, optionIndex) => (
                   <label
                     key={optionIndex}
-                    className={`flex items-center gap-3 p-3 rounded-lg border-2 cursor-pointer transition-all ${
+                    className={`flex items-center gap-2 p-2.5 rounded-lg border-2 cursor-pointer transition-all ${
                       userAnswers[index] === option
                         ? 'border-theme-primary bg-[var(--primary)]/10'
                         : 'border-[var(--border)] hover:border-theme-primary/50'
@@ -235,7 +235,7 @@ export function QuizComponent({
                       value={option}
                       checked={userAnswers[index] === option}
                       onChange={(e) => handleAnswerChange(index, e.target.value)}
-                      className="w-4 h-4 text-theme-primary"
+                      className="w-4 h-4 text-theme-primary flex-shrink-0"
                     />
                     <span className="text-sm font-semibold text-[var(--foreground)]">
                       {option}

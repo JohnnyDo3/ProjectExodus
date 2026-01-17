@@ -1,142 +1,142 @@
-import { Suspense } from 'react'
-import { ProductsClient } from '@/components/product/ProductsClient'
 import { Button } from '@/components/ui/Button'
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/Card'
-import { Zap, Droplet, Recycle, Leaf } from 'lucide-react'
+import { Card, CardContent } from '@/components/ui/Card'
+import { Package, Rocket, ShoppingBag, Sparkles, ArrowRight } from 'lucide-react'
 import Link from 'next/link'
-import { prisma } from '@/lib/db'
 
-async function getProducts() {
-  try {
-    const products = await prisma.product.findMany({
-      where: {
-        status: 'PUBLISHED',
-      },
-      include: {
-        category: true,
-        vendor: true,
-        images: true,
-        sustainabilityMetric: true,
-        tags: {
-          include: {
-            tag: true,
-          },
-        },
-      },
-      take: 50,
-      orderBy: {
-        createdAt: 'desc',
-      },
-    })
-
-    // Convert Prisma types to frontend-compatible types
-    return products.map((product: any) => ({
-      ...product,
-      price: product.price ? Number(product.price) : null,
-      vendor: product.vendor ? { name: product.vendor.name } : undefined,
-      sustainabilityMetric: product.sustainabilityMetric ? {
-        sustainabilityScore: product.sustainabilityMetric.sustainabilityScore ? Number(product.sustainabilityMetric.sustainabilityScore) : null,
-        carbonSavings: product.sustainabilityMetric.carbonSavings ? Number(product.sustainabilityMetric.carbonSavings) : null,
-      } : undefined,
-    }))
-  } catch (error) {
-    console.error('Error fetching products:', error)
-    return []
-  }
-}
-
-async function getCategories() {
-  try {
-    const categories = await prisma.category.findMany({
-      include: {
-        _count: {
-          select: {
-            products: true,
-          },
-        },
-      },
-      orderBy: {
-        name: 'asc',
-      },
-    })
-
-    return categories
-  } catch (error) {
-    console.error('Error fetching categories:', error)
-    return []
-  }
-}
-
-// Icon mapping for categories
-const categoryIcons: Record<string, any> = {
-  'energy': Zap,
-  'water': Droplet,
-  'materials': Recycle,
-  'organic': Leaf,
-  'default': Leaf,
-}
-
-function getCategoryIcon(categorySlug: string) {
-  const iconKey = Object.keys(categoryIcons).find(key =>
-    categorySlug.toLowerCase().includes(key)
-  )
-  return categoryIcons[iconKey || 'default']
-}
-
-export default async function ProductsPage() {
-  const [products, categories] = await Promise.all([
-    getProducts(),
-    getCategories(),
-  ])
-
-  const totalProducts = products.length
-  const totalCategories = categories.length
-
+export default function ProductsPage() {
   return (
     <div className="min-h-screen">
-      {/* Hero Section */}
-      <section className="py-24 bg-gradient-to-br from-[color-mix(in_srgb,var(--primary)_15%,var(--background))] via-[color-mix(in_srgb,var(--accent)_15%,var(--background))] to-[color-mix(in_srgb,var(--secondary)_15%,var(--background))] relative overflow-hidden">
+      {/* Under Construction Hero */}
+      <section className="py-32 bg-gradient-to-br from-[color-mix(in_srgb,var(--primary)_20%,var(--background))] via-[color-mix(in_srgb,var(--accent)_20%,var(--background))] to-[color-mix(in_srgb,var(--secondary)_20%,var(--background))] relative overflow-hidden">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="max-w-5xl mx-auto text-center space-y-6">
+          <div className="max-w-5xl mx-auto text-center space-y-8">
+            <div className="inline-flex items-center gap-2 px-6 py-3 bg-[var(--card)] border-2 border-theme-accent rounded-full mb-4">
+              <Rocket className="w-5 h-5 text-theme-accent" />
+              <span className="text-sm font-black text-[var(--foreground)]">UNDER CONSTRUCTION</span>
+            </div>
+
             <h1 className="text-[var(--foreground)]" style={{
-              fontSize: 'clamp(1.75rem, 5vw, 4rem)',
+              fontSize: 'clamp(2.5rem, 8vw, 5rem)',
               fontWeight: 900,
-              lineHeight: 1
+              lineHeight: 1.1
             }}>
               SUSTAINABLE MARKETPLACE
             </h1>
-            <p className="text-lg md:text-xl lg:text-2xl font-bold text-theme-muted max-w-3xl mx-auto">
-              Discover <span style={{
-                background: 'linear-gradient(135deg, var(--primary), var(--accent))',
-                WebkitBackgroundClip: 'text',
-                WebkitTextFillColor: 'transparent',
-                fontWeight: 900
-              }}>{totalProducts}+ eco-friendly products</span> across {totalCategories} categories
-            </p>
-            <div className="flex flex-wrap justify-center gap-4 pt-4">
-              <div className="px-6 py-3 bg-[var(--card)] border-2 border-theme-primary rounded-full">
-                <p className="text-sm font-black text-[var(--foreground)]">
-                  ✓ Vetted for Sustainability
-                </p>
-              </div>
-              <div className="px-6 py-3 bg-[var(--card)] border-2 border-theme-accent rounded-full">
-                <p className="text-sm font-black text-[var(--foreground)]">
-                  ✓ Real Brands You Trust
-                </p>
-              </div>
-              <div className="px-6 py-3 bg-[var(--card)] border-2 border-theme-secondary rounded-full">
-                <p className="text-sm font-black text-[var(--foreground)]">
-                  ✓ Carbon Impact Data
-                </p>
-              </div>
+
+            <div className="max-w-3xl mx-auto space-y-6">
+              <p className="text-xl md:text-2xl lg:text-3xl font-black text-theme-muted">
+                We're Building Something <span style={{
+                  background: 'linear-gradient(135deg, var(--primary), var(--accent))',
+                  WebkitBackgroundClip: 'text',
+                  WebkitTextFillColor: 'transparent',
+                  fontWeight: 900
+                }}>Amazing</span>
+              </p>
+
+              <p className="text-lg md:text-xl font-semibold text-theme-muted">
+                Our marketplace is currently under development as we curate the best sustainable products for you
+              </p>
             </div>
           </div>
         </div>
       </section>
 
-      {/* Search, Filters, and Products Grid - IMMEDIATELY AFTER HERO */}
-      <section className="py-16 bg-[var(--background)]">
-        <ProductsClient initialProducts={products} categories={categories} />
+      {/* What's Coming */}
+      <section className="py-20 bg-[var(--background)]">
+        <div className="container mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="max-w-6xl mx-auto">
+            <h2 className="text-4xl md:text-5xl font-black text-center mb-12 text-[var(--foreground)]">
+              WHAT'S COMING
+            </h2>
+
+            <div className="grid md:grid-cols-2 gap-8">
+              <Card className="border-4 border-theme-primary bg-gradient-to-br from-[color-mix(in_srgb,var(--primary)_10%,var(--background))] to-[var(--background)]">
+                <CardContent className="p-10">
+                  <div className="flex items-center gap-4 mb-6">
+                    <div className="w-16 h-16 rounded-2xl bg-gradient-to-br from-[var(--primary)] to-[var(--accent)] flex items-center justify-center">
+                      <ShoppingBag className="w-8 h-8 text-[var(--primary-foreground)]" />
+                    </div>
+                    <h3 className="text-2xl md:text-3xl font-black text-theme-primary">
+                      Curated Affiliate Products
+                    </h3>
+                  </div>
+                  <p className="text-lg font-semibold text-[var(--foreground)] leading-relaxed">
+                    We're partnering with trusted sustainable brands to bring you the best eco-friendly products. Every item will be vetted for sustainability, quality, and real environmental impact.
+                  </p>
+                  <div className="mt-6 flex flex-wrap gap-3">
+                    <div className="px-4 py-2 bg-[var(--card)] border-2 border-theme-primary rounded-full">
+                      <span className="text-sm font-bold text-[var(--foreground)]">✓ Vetted Brands</span>
+                    </div>
+                    <div className="px-4 py-2 bg-[var(--card)] border-2 border-theme-primary rounded-full">
+                      <span className="text-sm font-bold text-[var(--foreground)]">✓ Impact Data</span>
+                    </div>
+                    <div className="px-4 py-2 bg-[var(--card)] border-2 border-theme-primary rounded-full">
+                      <span className="text-sm font-bold text-[var(--foreground)]">✓ Honest Reviews</span>
+                    </div>
+                  </div>
+                </CardContent>
+              </Card>
+
+              <Card className="border-4 border-theme-accent bg-gradient-to-br from-[color-mix(in_srgb,var(--accent)_10%,var(--background))] to-[var(--background)]">
+                <CardContent className="p-10">
+                  <div className="flex items-center gap-4 mb-6">
+                    <div className="w-16 h-16 rounded-2xl bg-gradient-to-br from-[var(--accent)] to-[var(--secondary)] flex items-center justify-center">
+                      <Package className="w-8 h-8 text-[var(--primary-foreground)]" />
+                    </div>
+                    <h3 className="text-2xl md:text-3xl font-black text-theme-accent">
+                      Our Own Product Line
+                    </h3>
+                  </div>
+                  <p className="text-lg font-semibold text-[var(--foreground)] leading-relaxed">
+                    We're developing our own line of sustainable products designed with transparency, durability, and environmental impact at the core. From concept to delivery, every step will be optimized for sustainability.
+                  </p>
+                  <div className="mt-6 flex flex-wrap gap-3">
+                    <div className="px-4 py-2 bg-[var(--card)] border-2 border-theme-accent rounded-full">
+                      <span className="text-sm font-bold text-[var(--foreground)]">✓ Carbon Neutral</span>
+                    </div>
+                    <div className="px-4 py-2 bg-[var(--card)] border-2 border-theme-accent rounded-full">
+                      <span className="text-sm font-bold text-[var(--foreground)]">✓ Full Transparency</span>
+                    </div>
+                    <div className="px-4 py-2 bg-[var(--card)] border-2 border-theme-accent rounded-full">
+                      <span className="text-sm font-bold text-[var(--foreground)]">✓ Built to Last</span>
+                    </div>
+                  </div>
+                </CardContent>
+              </Card>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Timeline */}
+      <section className="py-20 bg-[var(--muted)]">
+        <div className="container mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="max-w-4xl mx-auto">
+            <div className="text-center mb-12">
+              <Sparkles className="w-16 h-16 text-theme-primary mx-auto mb-4" />
+              <h2 className="text-4xl font-black text-[var(--foreground)] mb-4">
+                STAY TUNED
+              </h2>
+              <p className="text-xl font-semibold text-theme-muted">
+                We're working hard to launch soon. In the meantime, explore our learning resources to discover sustainable living practices.
+              </p>
+            </div>
+
+            <Card className="border-4 border-theme-secondary">
+              <CardContent className="p-8 text-center">
+                <p className="text-lg font-bold text-[var(--foreground)] mb-6">
+                  Want to be notified when we launch?
+                </p>
+                <Link href="/contact">
+                  <Button size="lg" className="text-xl px-12 py-6 font-black rounded-xl">
+                    Get Launch Updates
+                    <ArrowRight className="w-5 h-5 ml-2" />
+                  </Button>
+                </Link>
+              </CardContent>
+            </Card>
+          </div>
+        </div>
       </section>
 
       {/* Call to Action */}
@@ -144,20 +144,20 @@ export default async function ProductsPage() {
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
           <div className="max-w-4xl mx-auto text-center space-y-8">
             <h2 className="text-3xl md:text-4xl lg:text-5xl font-black">
-              CAN'T FIND WHAT YOU'RE LOOKING FOR?
+              EXPLORE WHILE YOU WAIT
             </h2>
             <p className="text-lg md:text-xl lg:text-2xl font-semibold">
-              Request a product and help us expand our sustainable marketplace
+              Discover sustainable living practices and connect with our community
             </p>
             <div className="flex flex-col sm:flex-row gap-6 justify-center">
-              <Link href="/contact">
+              <Link href="/learn">
                 <Button size="lg" className="text-xl px-12 py-8 bg-[var(--primary-foreground)] text-[var(--primary)] hover:opacity-90 font-black shadow-2xl rounded-2xl">
-                  REQUEST A PRODUCT
+                  EXPLORE LEARNING
                 </Button>
               </Link>
-              <Link href="/learn">
+              <Link href="/community">
                 <Button size="lg" variant="outline" className="text-xl px-12 py-8 border-4 border-[var(--primary-foreground)] text-[var(--primary-foreground)] hover:bg-[var(--primary-foreground)] hover:text-[var(--primary)] font-black rounded-2xl">
-                  LEARN MORE
+                  JOIN COMMUNITY
                 </Button>
               </Link>
             </div>
