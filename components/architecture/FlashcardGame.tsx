@@ -239,7 +239,7 @@ export function FlashcardGame({ config: userConfig, onComplete, onExit }: Flashc
   const currentElement = elements[gameState.currentIndex]
 
   return (
-    <div className="min-h-screen bg-[var(--background)] flex flex-col">
+    <div className="h-full bg-[var(--background)] flex flex-col overflow-hidden">
       {/* Intro Phase */}
       <AnimatePresence mode="wait">
         {gameState.phase === 'intro' && (
@@ -431,7 +431,7 @@ export function FlashcardGame({ config: userConfig, onComplete, onExit }: Flashc
               </motion.div>
 
               {/* Answer Options */}
-              <div className="grid grid-cols-2 gap-2 sm:gap-3 md:gap-4 lg:gap-5 pb-4 sm:pb-0">
+              <div className="grid grid-cols-2 gap-2 sm:gap-3 md:gap-4 lg:gap-5">
                 {options.map((option, index) => {
                   const isSelected = selectedAnswer === option.id
                   const isCorrectAnswer = option.id === currentElement.id
