@@ -58,10 +58,10 @@ export default function PlayPage() {
   const [selectedCategory, setSelectedCategory] = useState<string | null>(null)
 
   return (
-    <div className="min-h-screen bg-[var(--background)]">
+    <div className="h-screen bg-[var(--background)] flex flex-col overflow-hidden">
       {/* Header */}
-      <div className="sticky top-0 z-10 bg-[var(--background)]/95 backdrop-blur border-b border-[var(--border)]">
-        <div className="container mx-auto px-4 py-4">
+      <div className="flex-shrink-0 bg-[var(--background)]/95 backdrop-blur border-b border-[var(--border)]">
+        <div className="container mx-auto px-4 py-3">
           <div className="flex items-center gap-4">
             <Link href="/architecture">
               <Button variant="ghost" size="sm">
@@ -74,11 +74,12 @@ export default function PlayPage() {
         </div>
       </div>
 
-      <div className="container mx-auto px-3 sm:px-4 py-4 sm:py-8 max-w-4xl">
-        {/* Game Mode Selection */}
-        <section className="mb-8 sm:mb-12">
-          <h2 className="text-base sm:text-lg font-bold text-[var(--foreground)] mb-3 sm:mb-4">Game Mode</h2>
-          <div className="grid gap-3 sm:gap-4">
+      <div className="flex-1 overflow-y-auto">
+        <div className="container mx-auto px-3 sm:px-4 py-4 sm:py-6 max-w-4xl">
+          {/* Game Mode Selection */}
+          <section className="mb-6 sm:mb-8">
+            <h2 className="text-base sm:text-lg font-bold text-[var(--foreground)] mb-3">Game Mode</h2>
+            <div className="grid gap-2 sm:gap-3">
             {gameModes.map((mode, index) => {
               const Icon = mode.icon
               return (
@@ -90,7 +91,7 @@ export default function PlayPage() {
                 >
                   <Link href={mode.href}>
                     <Card className="border-2 border-[var(--border)] hover:border-[var(--primary)]/50 transition-all cursor-pointer group">
-                      <CardContent className="p-3 sm:p-4">
+                      <CardContent className="p-2 sm:p-3">
                         <div className="flex items-center gap-3 sm:gap-4">
                           <div className={`w-12 h-12 sm:w-14 sm:h-14 rounded-xl bg-gradient-to-br ${mode.color} flex items-center justify-center shrink-0 group-hover:scale-110 transition-transform`}>
                             <Icon className="w-6 h-6 sm:w-7 sm:h-7 text-white" />
@@ -123,15 +124,15 @@ export default function PlayPage() {
         </section>
 
         {/* Quick Play Configuration */}
-        <section className="mb-8 sm:mb-12">
-          <div className="flex items-center gap-2 mb-3 sm:mb-4">
+        <section className="mb-6 sm:mb-8">
+          <div className="flex items-center gap-2 mb-2 sm:mb-3">
             <Zap className="w-4 h-4 sm:w-5 sm:h-5 text-amber-500" />
             <h2 className="text-base sm:text-lg font-bold text-[var(--foreground)]">Quick Play Settings</h2>
           </div>
 
           {/* Element Count */}
-          <div className="mb-4 sm:mb-6">
-            <label className="text-xs sm:text-sm font-semibold text-[var(--muted-foreground)] mb-2 block">
+          <div className="mb-3 sm:mb-4">
+            <label className="text-xs sm:text-sm font-semibold text-[var(--muted-foreground)] mb-1.5 block">
               Number of Elements
             </label>
             <div className="grid grid-cols-4 gap-1.5 sm:gap-2">
@@ -153,8 +154,8 @@ export default function PlayPage() {
           </div>
 
           {/* Learning Path */}
-          <div className="mb-4 sm:mb-6">
-            <label className="text-xs sm:text-sm font-semibold text-[var(--muted-foreground)] mb-2 block">
+          <div className="mb-3 sm:mb-4">
+            <label className="text-xs sm:text-sm font-semibold text-[var(--muted-foreground)] mb-1.5 block">
               Learning Path
             </label>
             <div className="grid grid-cols-3 gap-1.5 sm:gap-2">
