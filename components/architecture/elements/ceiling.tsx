@@ -324,15 +324,49 @@ const ExposedBeamsSVG: React.FC<SVGProps> = ({ showHalo }) => (
     <MaterialPatterns />
     {showHalo && <HaloFilter id="beam-halo" intensity={0.85} />}
     <g filter={showHalo ? "url(#beam-halo)" : undefined} fill="none" stroke="currentColor" strokeLinecap="round">
-      {/* CONTEXT - Stone/plaster walls at edges - more refined */}
-      <g strokeDasharray="3 2" opacity="0.25" strokeWidth="0.5">
+      {/* CONTEXT - RICH ENVIRONMENTAL SETTING */}
+
+      {/* Room corner - where two walls meet the ceiling */}
+      <g strokeDasharray="2 1.5" opacity="0.2" strokeWidth="0.4">
         <path d="M0 100 L0 60" />
         <path d="M100 100 L100 60" />
-        <path d="M0 65 L5 65" strokeWidth="0.3" />
-        <path d="M95 65 L100 65" strokeWidth="0.3" />
-        {/* Subtle plaster texture on walls */}
-        <path d="M2 72 L4 74" strokeWidth="0.2" opacity="0.5" />
-        <path d="M96 78 L98 80" strokeWidth="0.2" opacity="0.5" />
+        {/* Wall corner detail */}
+        <path d="M0 60 L0 55 L100 55 L100 60" opacity="0.15" />
+      </g>
+
+      {/* Stone/plaster walls with detailed texture */}
+      <g opacity="0.25" strokeWidth="0.3">
+        {/* Left wall plaster texture */}
+        <rect x="0" y="60" width="5" height="40" fill="url(#plaster-smooth)" opacity="0.2" stroke="none" />
+        <path d="M2 72 L4 74" opacity="0.4" />
+        <path d="M1 80 L3 82" opacity="0.4" />
+        <path d="M2 88 L4 90" opacity="0.4" />
+        {/* Plaster cracks on wall */}
+        <path d="M3 68 Q3.5 75, 3 82" strokeDasharray="1 0.8" opacity="0.3" />
+
+        {/* Right wall plaster texture */}
+        <rect x="95" y="60" width="5" height="40" fill="url(#plaster-smooth)" opacity="0.2" stroke="none" />
+        <path d="M96 78 L98 80" opacity="0.4" />
+        <path d="M97 86 L99 88" opacity="0.4" />
+        <path d="M96 94 L98 96" opacity="0.4" />
+        {/* Wall trim/molding at corner */}
+        <path d="M0 60 L5 60" strokeWidth="0.5" opacity="0.3" />
+        <path d="M95 60 L100 60" strokeWidth="0.5" opacity="0.3" />
+      </g>
+
+      {/* Window opening hint on left wall */}
+      <g strokeDasharray="3 2" opacity="0.18" strokeWidth="0.35">
+        <path d="M0 75 L0 95 L4 95 L4 75" />
+        <path d="M0 85 L4 85" />
+        {/* Light coming through window */}
+        <path d="M4 80 L8 78" strokeDasharray="1 1.5" opacity="0.25" />
+        <path d="M4 88 L8 86" strokeDasharray="1 1.5" opacity="0.25" />
+      </g>
+
+      {/* Floor suggestion far below (perspective) */}
+      <g strokeDasharray="4 3" opacity="0.15" strokeWidth="0.3">
+        <path d="M5 100 L95 100" />
+        <path d="M10 99 L90 99" opacity="0.5" />
       </g>
 
       {/* PRIMARY - Exposed timber structure with perspective */}
@@ -418,10 +452,24 @@ const ExposedBeamsSVG: React.FC<SVGProps> = ({ showHalo }) => (
         <path d="M75 35 L92 38" strokeWidth="1.4" />
         <path d="M75 36 L92 39" strokeWidth="0.6" opacity="0.4" />
 
-        {/* Ceiling boards between beams - more refined */}
-        <path d="M18 25 L32 23" strokeWidth="0.4" opacity="0.25" strokeDasharray="2 1" />
-        <path d="M38 22 L51 20" strokeWidth="0.4" opacity="0.25" strokeDasharray="2 1" />
-        <path d="M59 20 L72 22" strokeWidth="0.4" opacity="0.25" strokeDasharray="2 1" />
+        {/* ENHANCED ceiling boards between beams - much more detailed */}
+        <g opacity="0.3">
+          {/* Board planks with wood grain */}
+          <path d="M18 25 L32 23" strokeWidth="0.5" strokeDasharray="3 1" />
+          <path d="M18 26.5 L32 24.5" strokeWidth="0.25" />
+          <path d="M19 28 L31 26" strokeWidth="0.5" strokeDasharray="3 1" />
+
+          <path d="M38 22 L51 20" strokeWidth="0.5" strokeDasharray="3 1" />
+          <path d="M38 23.5 L51 21.5" strokeWidth="0.25" />
+
+          <path d="M59 20 L72 22" strokeWidth="0.5" strokeDasharray="3 1" />
+          <path d="M59 21.5 L72 23.5" strokeWidth="0.25" />
+
+          {/* Wood grain on ceiling boards */}
+          <rect x="18" y="23" width="14" height="6" fill="url(#wood-grain-fine)" opacity="0.15" stroke="none" />
+          <rect x="38" y="20" width="13" height="6" fill="url(#wood-grain-fine)" opacity="0.15" stroke="none" />
+          <rect x="59" y="20" width="13" height="6" fill="url(#wood-grain-fine)" opacity="0.15" stroke="none" />
+        </g>
 
         {/* Wooden pegs/joints - MORE DETAILED */}
         <circle cx="15" cy="58" r="1.5" strokeWidth="0.9" />
@@ -445,6 +493,15 @@ const ExposedBeamsSVG: React.FC<SVGProps> = ({ showHalo }) => (
         {/* Rust/weathering */}
         <path d="M54 26 L54.5 26.5" strokeWidth="0.2" opacity="0.3" />
         <path d="M56 27 L56.5 27.5" strokeWidth="0.2" opacity="0.3" />
+      </g>
+
+      {/* Light and shadow effects from window */}
+      <g opacity="0.12" strokeWidth="0.2" strokeDasharray="2 3">
+        {/* Light rays casting across ceiling */}
+        <path d="M8 82 L12 28" />
+        <path d="M8 86 L12 35" />
+        {/* Shadow cast by nearest beam on ceiling */}
+        <path d="M88 20 L88 58" opacity="0.15" strokeWidth="0.4" />
       </g>
     </g>
   </svg>

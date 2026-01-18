@@ -39,13 +39,54 @@ export const DoricColumnSVG = ({ showHalo = false }: SVGProps) => (
     <MaterialPatterns />
     <HaloFilter />
 
-    {/* CONTEXT: Ground line - refined dashed */}
-    <path d="M 10 94 L 90 94" strokeWidth="0.7" fill="none" opacity="0.35" strokeDasharray="4 2" />
-    <path d="M 15 96 L 85 96" strokeWidth="0.4" fill="none" opacity="0.2" strokeDasharray="2 1" />
+    {/* CONTEXT: TEMPLE ENVIRONMENTAL SETTING */}
 
-    {/* CONTEXT: Entablature above - refined ghost */}
-    <path d="M 20 8 L 80 8" strokeWidth="0.7" fill="none" opacity="0.25" strokeDasharray="3 2" />
-    <path d="M 22 5 L 78 5" strokeWidth="0.5" fill="none" opacity="0.2" strokeDasharray="3 2" />
+    {/* Marble floor paving with pattern */}
+    <g opacity="0.2" strokeWidth="0.3">
+      {/* Floor tiles */}
+      <rect x="10" y="92" width="80" height="8" fill="url(#marble-veined)" opacity="0.15" stroke="none" />
+      <path d="M 10 94 L 90 94" strokeDasharray="4 2" />
+      <path d="M 15 96 L 85 96" strokeDasharray="2 1" opacity="0.6" />
+      <path d="M 30 93 L 30 100" strokeDasharray="2 1.5" opacity="0.5" />
+      <path d="M 50 93 L 50 100" strokeDasharray="2 1.5" opacity="0.5" />
+      <path d="M 70 93 L 70 100" strokeDasharray="2 1.5" opacity="0.5" />
+    </g>
+
+    {/* Temple steps/stylobate detail */}
+    <g opacity="0.18" strokeWidth="0.35">
+      <path d="M 20 94 L 20 97 L 80 97 L 80 94" strokeDasharray="2 1" />
+      <path d="M 22 97 L 22 99 L 78 99 L 78 97" strokeDasharray="2 1" opacity="0.7" />
+    </g>
+
+    {/* Adjacent column in distance (left) */}
+    <g opacity="0.12" strokeWidth="0.4" strokeDasharray="2 1.5">
+      <path d="M 5 94 Q 4 60, 6 25" />
+      <path d="M 8 94 Q 9 60, 7 25" />
+    </g>
+
+    {/* Entablature above with architectural detail */}
+    <g opacity="0.22" strokeWidth="0.4">
+      {/* Architrave */}
+      <path d="M 20 8 L 80 8" strokeDasharray="3 2" />
+      <path d="M 22 6 L 78 6" strokeDasharray="3 2" opacity="0.7" />
+      {/* Frieze hint */}
+      <path d="M 22 5 L 78 5" strokeDasharray="2 1" opacity="0.5" />
+      {/* Cornice */}
+      <path d="M 18 3 L 82 3" strokeWidth="0.5" strokeDasharray="3 1.5" opacity="0.6" />
+    </g>
+
+    {/* Temple wall behind column */}
+    <g opacity="0.15" strokeWidth="0.3" strokeDasharray="3 2.5">
+      <rect x="20" y="15" width="60" height="75" fill="url(#stone-smooth)" opacity="0.08" stroke="none" />
+      <path d="M 20 15 L 20 90" />
+      <path d="M 80 15 L 80 90" />
+    </g>
+
+    {/* Shadow cast by column on floor */}
+    <g opacity="0.1" strokeWidth="0.25" strokeDasharray="1 1">
+      <path d="M 72 94 Q 75 95, 78 96" />
+      <path d="M 73 96 Q 76 97, 79 98" />
+    </g>
 
     {/* PRIMARY: THE DORIC COLUMN - STONE MATERIALITY */}
     <g filter={showHalo ? "url(#col-halo)" : undefined}>
