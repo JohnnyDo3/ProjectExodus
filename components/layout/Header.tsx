@@ -153,9 +153,9 @@ export function Header() {
   ]
 
   const communityMenuItems = [
-    { label: 'Discussions', href: '/community/feed' },
-    { label: 'Projects', href: '/community/projects' },
-    { label: 'Network', href: '/network' },
+    { label: 'Discussions', href: '/community/feed', myLabel: 'My Discussions' },
+    { label: 'Projects', href: '/community/projects', myLabel: 'My Projects' },
+    { label: 'Network', href: '/network', myLabel: 'My Network' },
   ]
 
   const handleSignOut = async () => {
@@ -348,7 +348,7 @@ export function Header() {
                                 className="flex items-center justify-center gap-2 px-3 py-2 rounded-lg text-sm font-medium text-[var(--foreground)] hover:bg-[var(--muted)]/50 hover:text-[var(--primary)] transition-colors"
                                 onClick={() => setCommunityMenuOpen(false)}
                               >
-                                <span>{menuItem.label}</span>
+                                <span>{menuItem.myLabel}</span>
                               </Link>
                             )
                           })}
@@ -636,7 +636,7 @@ export function Header() {
                         className="flex items-center justify-center py-3 px-2 rounded-xl bg-[var(--muted)] hover:bg-theme-primary/10 transition-colors"
                         onClick={() => setMobileMenuOpen(false)}
                       >
-                        <span className="text-xs font-medium text-[var(--foreground)]">{menuItem.label}</span>
+                        <span className="text-xs font-medium text-[var(--foreground)]">{menuItem.myLabel}</span>
                       </Link>
                     )
                   })}
@@ -674,15 +674,6 @@ export function Header() {
                       <div className="flex items-center gap-3">
                         <LayoutDashboard className="w-5 h-5 text-theme-primary" />
                         <span className="font-bold text-[var(--foreground)]">My Volition</span>
-                      </div>
-                      <ChevronRight className="w-5 h-5 text-theme-muted" />
-                    </div>
-                  </Link>
-                  <Link href="/network" onClick={() => setMobileMenuOpen(false)}>
-                    <div className="flex items-center justify-between py-3 px-4 rounded-xl bg-[var(--muted)] hover:bg-theme-primary/10 transition-colors">
-                      <div className="flex items-center gap-3">
-                        <Users className="w-5 h-5 text-theme-accent" />
-                        <span className="font-bold text-[var(--foreground)]">My Network</span>
                       </div>
                       <ChevronRight className="w-5 h-5 text-theme-muted" />
                     </div>
