@@ -313,10 +313,10 @@ export function FlashcardGame({ config: userConfig, onComplete, onExit }: Flashc
             className="flex-1 flex flex-col"
           >
             {/* Header */}
-            <div className="bg-[var(--background)]/95 backdrop-blur border-b border-[var(--border)] p-1.5 sm:p-2">
+            <div className="bg-[var(--background)]/95 backdrop-blur border-b border-[var(--border)] px-2 py-1">
               <div className="max-w-lg md:max-w-2xl lg:max-w-3xl mx-auto">
                 {/* Progress */}
-                <div className="flex items-center justify-between mb-1">
+                <div className="flex items-center justify-between mb-0.5">
                   <div className="flex items-center gap-2">
                     {onExit && (
                       <Button
@@ -333,23 +333,23 @@ export function FlashcardGame({ config: userConfig, onComplete, onExit }: Flashc
                       {gameState.currentIndex + 1} / {elements.length}
                     </span>
                   </div>
-                  <div className="flex items-center gap-2">
-                    <span className="text-sm sm:text-base font-mono font-bold text-[var(--foreground)]">
+                  <div className="flex items-center gap-1.5">
+                    <span className="text-xs font-mono font-bold text-[var(--foreground)]">
                       {formatTime(gameState.elapsed)}
                     </span>
                     <button
                       onClick={() => setSoundEnabled(!soundEnabled)}
-                      className="p-1 sm:p-1.5 rounded-full hover:bg-[var(--muted)]"
+                      className="p-0.5 rounded-full hover:bg-[var(--muted)]"
                     >
-                      {soundEnabled ? <Volume2 className="w-4 h-4" /> : <VolumeX className="w-4 h-4" />}
+                      {soundEnabled ? <Volume2 className="w-3.5 h-3.5" /> : <VolumeX className="w-3.5 h-3.5" />}
                     </button>
                   </div>
                 </div>
 
                 {/* Progress Bars */}
-                <div className="space-y-1">
+                <div className="space-y-0.5">
                   {/* Your progress */}
-                  <div className="h-1.5 sm:h-2 bg-[var(--muted)] rounded-full overflow-hidden">
+                  <div className="h-1 bg-[var(--muted)] rounded-full overflow-hidden">
                     <motion.div
                       className="h-full bg-gradient-to-r from-amber-500 to-orange-500 rounded-full"
                       initial={{ width: 0 }}
@@ -359,7 +359,7 @@ export function FlashcardGame({ config: userConfig, onComplete, onExit }: Flashc
 
                   {/* Ghost progress */}
                   {config.enableGhost && bestTime && (
-                    <div className="h-1 sm:h-1.5 bg-[var(--muted)] rounded-full overflow-hidden">
+                    <div className="h-0.5 bg-[var(--muted)] rounded-full overflow-hidden">
                       <motion.div
                         className="h-full bg-purple-500/50 rounded-full"
                         animate={{ width: `${(ghostProgress / elements.length) * 100}%` }}
@@ -369,10 +369,10 @@ export function FlashcardGame({ config: userConfig, onComplete, onExit }: Flashc
                 </div>
 
                 {/* Score & Streak */}
-                <div className="flex items-center justify-between mt-1">
-                  <div className="flex items-center gap-1 sm:gap-2">
-                    <Trophy className="w-3 h-3 sm:w-4 sm:h-4 text-amber-500" />
-                    <span className="font-bold text-sm sm:text-base text-[var(--foreground)]">{gameState.score}</span>
+                <div className="flex items-center justify-between mt-0.5">
+                  <div className="flex items-center gap-1">
+                    <Trophy className="w-3 h-3 text-amber-500" />
+                    <span className="font-bold text-xs text-[var(--foreground)]">{gameState.score}</span>
                   </div>
                   {gameState.streak > 1 && (
                     <motion.div
@@ -389,17 +389,17 @@ export function FlashcardGame({ config: userConfig, onComplete, onExit }: Flashc
             </div>
 
             {/* Question Area */}
-            <div className="flex-1 flex flex-col p-2 sm:p-3 max-w-lg md:max-w-2xl mx-auto w-full overflow-hidden min-h-0">
+            <div className="flex-1 flex flex-col p-1.5 sm:p-2 max-w-lg md:max-w-2xl mx-auto w-full overflow-hidden min-h-0">
               {/* Image */}
               <motion.div
                 key={currentElement.id}
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
-                className="flex-1 flex items-center justify-center mb-1.5 sm:mb-2 min-h-0"
+                className="flex-1 flex items-center justify-center mb-1 min-h-0"
               >
-                <div className="relative w-full max-w-[200px] sm:max-w-[240px] md:max-w-[280px] aspect-square rounded-xl overflow-hidden bg-gradient-to-br from-[var(--muted)] to-[var(--background)] border-2 border-[var(--border)] shadow-lg">
+                <div className="relative w-full max-w-[140px] sm:max-w-[160px] md:max-w-[180px] aspect-square rounded-lg overflow-hidden bg-gradient-to-br from-[var(--muted)] to-[var(--background)] border-2 border-[var(--border)]">
                   {/* SVG Illustration */}
-                  <div className="absolute inset-0 flex items-center justify-center p-3 sm:p-4 md:p-6">
+                  <div className="absolute inset-0 flex items-center justify-center p-2 sm:p-3">
                     <ArchitectureSVG
                       category={currentElement.category}
                       elementId={currentElement.id}
@@ -409,7 +409,7 @@ export function FlashcardGame({ config: userConfig, onComplete, onExit }: Flashc
                   </div>
 
                   {/* Category badge */}
-                  <div className="absolute top-1.5 left-1.5 sm:top-2 sm:left-2 px-1.5 py-0.5 sm:px-2 sm:py-1 rounded-full bg-[var(--background)]/80 backdrop-blur text-[9px] sm:text-[10px] font-medium text-[var(--muted-foreground)]">
+                  <div className="absolute top-1 left-1 px-1.5 py-0.5 rounded-full bg-[var(--background)]/80 backdrop-blur text-[8px] font-medium text-[var(--muted-foreground)]">
                     {currentElement.category}
                   </div>
 
@@ -444,7 +444,7 @@ export function FlashcardGame({ config: userConfig, onComplete, onExit }: Flashc
               </motion.div>
 
               {/* Answer Options */}
-              <div className="grid grid-cols-2 gap-1.5 sm:gap-2 md:gap-3">
+              <div className="grid grid-cols-2 gap-1 sm:gap-1.5">
                 {options.map((option, index) => {
                   const isSelected = selectedAnswer === option.id
                   const isCorrectAnswer = option.id === currentElement.id
@@ -467,11 +467,11 @@ export function FlashcardGame({ config: userConfig, onComplete, onExit }: Flashc
                       transition={{ delay: index * 0.1 }}
                       onClick={() => handleAnswer(option.id)}
                       disabled={selectedAnswer !== null}
-                      className={`p-1.5 sm:p-2 md:p-3 rounded-lg sm:rounded-xl border-2 transition-all ${buttonClass} ${
+                      className={`p-1 sm:p-1.5 rounded-md border-2 transition-all ${buttonClass} ${
                         selectedAnswer === null ? 'active:scale-95 hover:scale-[1.02]' : ''
                       }`}
                     >
-                      <span className="font-bold text-[11px] sm:text-xs md:text-sm text-[var(--foreground)] leading-tight block">
+                      <span className="font-bold text-[10px] sm:text-[11px] text-[var(--foreground)] leading-tight block">
                         {option.name}
                       </span>
                     </motion.button>
