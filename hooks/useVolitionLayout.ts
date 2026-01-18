@@ -33,11 +33,14 @@ export const DEFAULT_LANES: LaneDefinition[] = [
 // Card order per lane - stores the order of item IDs within each lane (partial since not all lanes may have custom order)
 export type CardOrderMap = Partial<Record<LaneId, string[]>>
 
+// View mode for lanes
+export type ViewMode = 'expanded' | 'compact' | 'minimal'
+
 interface VolitionLayoutData {
   version: number
   laneOrder: LaneId[]
   enabledLanes: LaneId[]
-  isCompact: boolean
+  viewMode: ViewMode
   spotlightDismissed: string[]
   cardOrder: CardOrderMap
 }
@@ -50,7 +53,7 @@ function getDefaultLayoutData(): VolitionLayoutData {
     version: CURRENT_VERSION,
     laneOrder: DEFAULT_LANES.map(l => l.id),
     enabledLanes: DEFAULT_LANES.filter(l => l.enabled).map(l => l.id),
-    isCompact: false,
+    viewMode: 'expanded',
     spotlightDismissed: [],
     cardOrder: {},
   }
@@ -66,14 +69,23 @@ function loadLayoutData(): VolitionLayoutData {
   try {
     const stored = localStorage.getItem(STORAGE_KEY)
     if (stored) {
-      const parsed = JSON.parse(stored) as VolitionLayoutData
+      const parsed = JSON.parse(stored) as any
       if (parsed.version === CURRENT_VERSION) {
+        // Migrate from old isCompact boolean to new viewMode
+        let viewMode: ViewMode = defaults.viewMode
+        if ('viewMode' in parsed && (parsed.viewMode === 'expanded' || parsed.viewMode === 'compact' || parsed.viewMode === 'minimal')) {
+          viewMode = parsed.viewMode
+        } else if ('isCompact' in parsed && typeof parsed.isCompact === 'boolean') {
+          // Backward compatibility: convert isCompact to viewMode
+          viewMode = parsed.isCompact ? 'compact' : 'expanded'
+        }
+
         // Validate arrays exist and are actually arrays
         return {
           version: CURRENT_VERSION,
           laneOrder: Array.isArray(parsed.laneOrder) ? parsed.laneOrder : defaults.laneOrder,
           enabledLanes: Array.isArray(parsed.enabledLanes) ? parsed.enabledLanes : defaults.enabledLanes,
-          isCompact: typeof parsed.isCompact === 'boolean' ? parsed.isCompact : defaults.isCompact,
+          viewMode,
           spotlightDismissed: Array.isArray(parsed.spotlightDismissed) ? parsed.spotlightDismissed : [],
           cardOrder: parsed.cardOrder && typeof parsed.cardOrder === 'object' ? parsed.cardOrder : {},
         }
@@ -99,7 +111,7 @@ function saveLayoutData(data: VolitionLayoutData): void {
 export function useVolitionLayout() {
   const [laneOrder, setLaneOrder] = useState<LaneId[]>(() => loadLayoutData().laneOrder)
   const [enabledLanes, setEnabledLanes] = useState<LaneId[]>(() => loadLayoutData().enabledLanes)
-  const [isCompact, setIsCompact] = useState(() => loadLayoutData().isCompact)
+  const [viewMode, setViewMode] = useState<ViewMode>(() => loadLayoutData().viewMode)
   const [spotlightDismissed, setSpotlightDismissed] = useState<string[]>(() => loadLayoutData().spotlightDismissed)
   const [cardOrder, setCardOrderState] = useState<CardOrderMap>(() => loadLayoutData().cardOrder)
   const [isCustomizing, setIsCustomizing] = useState(false)
@@ -117,7 +129,7 @@ export function useVolitionLayout() {
         version: CURRENT_VERSION,
         laneOrder,
         enabledLanes,
-        isCompact,
+        viewMode,
         spotlightDismissed,
         cardOrder,
       })
@@ -128,7 +140,7 @@ export function useVolitionLayout() {
         clearTimeout(saveTimeoutRef.current)
       }
     }
-  }, [laneOrder, enabledLanes, isCompact, spotlightDismissed, cardOrder])
+  }, [laneOrder, enabledLanes, viewMode, spotlightDismissed, cardOrder])
 
   // Get ordered lanes
   const getOrderedLanes = useCallback((): LaneDefinition[] => {
@@ -168,9 +180,13 @@ export function useVolitionLayout() {
     })
   }, [])
 
-  // Toggle compact mode
-  const toggleCompact = useCallback(() => {
-    setIsCompact(prev => !prev)
+  // Cycle view mode: expanded -> compact -> minimal -> expanded
+  const cycleViewMode = useCallback(() => {
+    setViewMode(prev => {
+      if (prev === 'expanded') return 'compact'
+      if (prev === 'compact') return 'minimal'
+      return 'expanded'
+    })
   }, [])
 
   // Dismiss spotlight item
@@ -215,7 +231,7 @@ export function useVolitionLayout() {
     const defaults = getDefaultLayoutData()
     setLaneOrder(defaults.laneOrder)
     setEnabledLanes(defaults.enabledLanes)
-    setIsCompact(defaults.isCompact)
+    setViewMode(defaults.viewMode)
     setSpotlightDismissed([])
     setCardOrderState({})
   }, [])
@@ -233,7 +249,7 @@ export function useVolitionLayout() {
     // State
     laneOrder,
     enabledLanes,
-    isCompact,
+    viewMode,
     spotlightDismissed,
     isCustomizing,
     cardOrder,
@@ -246,7 +262,7 @@ export function useVolitionLayout() {
     toggleLane,
     reorderLanes,
     moveLane,
-    toggleCompact,
+    cycleViewMode,
     dismissSpotlight,
     clearDismissedSpotlights,
     resetToDefaults,
