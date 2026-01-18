@@ -392,7 +392,7 @@ export function FlashcardGame({ config: userConfig, onComplete, onExit }: Flashc
 
             {/* Question Area - Self-Aware Spacing */}
             <div className="flex-1 flex flex-col justify-center items-center max-w-lg md:max-w-2xl mx-auto w-full overflow-hidden min-h-0" style={{ padding: 'clamp(0.5rem, 2vh, 1rem)' }}>
-              {/* Image Container - Viewport-Intelligent */}
+              {/* Image Container - MAXIMUM SIZE Intelligence */}
               <motion.div
                 key={currentElement.id}
                 initial={{ opacity: 0, y: 20 }}
@@ -403,8 +403,8 @@ export function FlashcardGame({ config: userConfig, onComplete, onExit }: Flashc
                 <div
                   className="relative rounded-lg overflow-hidden bg-gradient-to-br from-[var(--muted)] to-[var(--background)] border-2 border-[var(--border)]"
                   style={{
-                    width: 'min(clamp(120px, 30vw, 150px), 28vh)',
-                    height: 'min(clamp(120px, 30vw, 150px), 28vh)',
+                    width: 'min(clamp(120px, 45vw, 600px), clamp(28vh, 42vh, 55vh))',
+                    height: 'min(clamp(120px, 45vw, 600px), clamp(28vh, 42vh, 55vh))',
                     aspectRatio: '1 / 1'
                   }}
                 >
