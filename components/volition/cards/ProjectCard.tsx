@@ -1,8 +1,9 @@
 'use client'
 
-import { Users, Target, Calendar, MoreHorizontal, Eye, Edit, Trash2, Award, MessageSquare, FileText, BookOpen, TrendingUp } from 'lucide-react'
+import { Users, Target, Calendar, MoreHorizontal, Eye, Edit, Trash2, Award, MessageSquare, FileText, BookOpen, TrendingUp, Rocket } from 'lucide-react'
 import Link from 'next/link'
 import { useState } from 'react'
+import { ViewMode } from '@/hooks/useVolitionLayout'
 
 interface ProjectMemberData {
   role: 'VIEWER' | 'CONTRIBUTOR' | 'MODERATOR' | 'ADMIN' | 'OWNER'
@@ -30,7 +31,7 @@ interface ProjectCardProps {
     membership?: ProjectMemberData
   }
   userId?: string
-  isCompact?: boolean
+  viewMode?: ViewMode
   onDelete?: (id: string) => void
   onPreview?: (project: any) => void // Show preview modal instead of navigating
   showContributions?: boolean // New: show contribution summary
@@ -71,12 +72,29 @@ const roleColors: Record<string, { bg: string; text: string; label: string }> = 
 export function ProjectCard({
   project,
   userId,
-  isCompact = false,
+  viewMode = 'expanded',
   onDelete,
   onPreview,
   showContributions = false,
   className = '',
 }: ProjectCardProps) {
+  const isCompact = viewMode === 'compact'
+  const isMinimal = viewMode === 'minimal'
+
+  // Minimal view - just title header
+  if (isMinimal) {
+    return (
+      <div className={`rounded-lg overflow-hidden ${className}`}>
+        <div className="p-2 bg-gradient-to-r from-violet-500 to-purple-600">
+          <div className="flex items-center gap-2">
+            <Rocket className="w-4 h-4 text-white flex-shrink-0" />
+            <h3 className="text-xs font-bold text-white truncate">{project.name}</h3>
+          </div>
+        </div>
+      </div>
+    )
+  }
+
   const [showMenu, setShowMenu] = useState(false)
   const isOwner = project.creatorId === userId
   const colors = statusColors[project.status] || statusColors.PLANNING
