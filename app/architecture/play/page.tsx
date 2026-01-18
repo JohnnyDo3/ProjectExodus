@@ -69,7 +69,7 @@ export default function PlayPage() {
                 Back
               </Button>
             </Link>
-            <h1 className="text-xl font-black text-[var(--foreground)]">Choose Game Mode</h1>
+            <h1 className="text-sm font-bold text-[var(--foreground)]">Choose Game Mode</h1>
           </div>
         </div>
       </div>
