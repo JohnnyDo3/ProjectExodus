@@ -3,6 +3,7 @@
 import { User, MapPin, Mail, Edit2, Sword, MessageCircle, Stethoscope, Lightbulb, HeartHandshake, Flower2, Scale, Phone, Briefcase, Building2, FileText, Sparkles, Heart } from 'lucide-react'
 import Link from 'next/link'
 import { LucideIcon } from 'lucide-react'
+import { ViewMode } from '@/hooks/useVolitionLayout'
 
 // Guardian Archetypes - matching ProfileBusinessCard with hex colors
 const GUARDIAN_ARCHETYPES: Record<string, {
@@ -112,7 +113,7 @@ interface ProfileCardProps {
       articles?: number
     }
   } | null
-  isCompact?: boolean
+  viewMode?: ViewMode
   className?: string
   onExpand?: () => void
 }
@@ -120,13 +121,31 @@ interface ProfileCardProps {
 export function ProfileCard({
   user,
   userProfile,
-  isCompact = false,
+  viewMode = 'expanded',
   className = '',
   onExpand,
 }: ProfileCardProps) {
+  const isCompact = viewMode === 'compact'
+  const isMinimal = viewMode === 'minimal'
   const archetype = userProfile?.guardianArchetype
     ? GUARDIAN_ARCHETYPES[userProfile.guardianArchetype.toLowerCase()]
     : null
+
+  // Minimal view - just title header
+  if (isMinimal) {
+    return (
+      <div className={`rounded-lg overflow-hidden ${className}`}>
+        <div className="p-2 bg-gradient-to-r from-[var(--primary)] to-[var(--accent)]">
+          <div className="flex items-center gap-2">
+            <User className="w-4 h-4 text-white flex-shrink-0" />
+            <h3 className="text-xs font-bold text-white truncate">
+              {user.name || 'Profile'}
+            </h3>
+          </div>
+        </div>
+      </div>
+    )
+  }
 
   const ArchetypeIcon = archetype?.icon || User
   // Use hex gradient from archetype colors, fallback to CSS variables
