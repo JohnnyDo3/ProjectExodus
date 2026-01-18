@@ -390,29 +390,30 @@ export function FlashcardGame({ config: userConfig, onComplete, onExit }: Flashc
               </div>
             </div>
 
-            {/* Question Area - Orientation-Aware Layout */}
+            {/* Question Area - 50/50 Split Layout */}
             <div
-              className="flex-1 flex flex-col lg:flex-row justify-center items-center lg:items-stretch max-w-lg md:max-w-2xl lg:max-w-5xl mx-auto w-full overflow-hidden min-h-0"
+              className="flex-1 flex flex-col lg:flex-row justify-center items-center lg:items-stretch max-w-lg md:max-w-2xl lg:max-w-6xl mx-auto w-full overflow-hidden min-h-0"
               style={{
                 padding: 'clamp(0.5rem, 2vh, 1rem)',
-                gap: 'clamp(1rem, 3vw, 2rem)'
+                gap: 'clamp(1rem, 2vw, 1.5rem)'
               }}
             >
-              {/* Image Container - Landscape-Optimized */}
-              <motion.div
-                key={currentElement.id}
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                className="flex-shrink-0 flex items-center justify-center"
-              >
-                <div
-                  className="relative rounded-lg overflow-hidden bg-gradient-to-br from-[var(--muted)] to-[var(--background)] border-2 border-[var(--border)]"
-                  style={{
-                    width: 'min(clamp(120px, 45vw, 600px), clamp(28vh, 50vh, 65vh))',
-                    height: 'min(clamp(120px, 45vw, 600px), clamp(28vh, 50vh, 65vh))',
-                    aspectRatio: '1 / 1'
-                  }}
+              {/* LEFT HALF - Image Container */}
+              <div className="flex-shrink-0 lg:flex-1 flex items-center justify-center">
+                <motion.div
+                  key={currentElement.id}
+                  initial={{ opacity: 0, y: 20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  className="w-full flex items-center justify-center"
                 >
+                  <div
+                    className="relative rounded-lg overflow-hidden bg-gradient-to-br from-[var(--muted)] to-[var(--background)] border-2 border-[var(--border)]"
+                    style={{
+                      width: 'min(clamp(120px, 45vw, 600px), clamp(28vh, 50vh, 65vh))',
+                      height: 'min(clamp(120px, 45vw, 600px), clamp(28vh, 50vh, 65vh))',
+                      aspectRatio: '1 / 1'
+                    }}
+                  >
                   {/* SVG Illustration */}
                   <div className="absolute inset-0 flex items-center justify-center" style={{ padding: 'clamp(0.5rem, 2%, 0.75rem)' }}>
                     <ArchitectureSVG
@@ -470,10 +471,13 @@ export function FlashcardGame({ config: userConfig, onComplete, onExit }: Flashc
                   </AnimatePresence>
                 </div>
               </motion.div>
+            </div>
 
-              {/* Answer Options - Adaptive Grid (2x2 portrait, centered 1-col landscape) */}
+            {/* RIGHT HALF - Buttons Container */}
+            <div className="w-full lg:flex-1 flex items-center justify-center">
+              {/* Answer Options - Vertically Distributed */}
               <div
-                className="w-full grid grid-cols-2 lg:grid-cols-1 flex-shrink-0 max-w-md lg:max-w-xs lg:flex-1 lg:self-center"
+                className="w-full grid grid-cols-2 lg:grid-cols-1 lg:flex lg:flex-col lg:justify-between flex-shrink-0 max-w-md lg:max-w-full lg:h-full lg:py-4"
                 style={{ gap: 'clamp(0.375rem, 1vh, 0.75rem)' }}
               >
                 {options.map((option, index) => {
@@ -498,7 +502,7 @@ export function FlashcardGame({ config: userConfig, onComplete, onExit }: Flashc
                       transition={{ delay: index * 0.1 }}
                       onClick={() => handleAnswer(option.id)}
                       disabled={selectedAnswer !== null}
-                      className={`rounded-md border-2 transition-all ${buttonClass} ${
+                      className={`rounded-md border-2 transition-all lg:flex-1 lg:flex lg:items-center lg:justify-center ${buttonClass} ${
                         selectedAnswer === null ? 'active:scale-95 hover:scale-[1.02]' : ''
                       }`}
                       style={{
@@ -516,6 +520,7 @@ export function FlashcardGame({ config: userConfig, onComplete, onExit }: Flashc
                   )
                 })}
               </div>
+            </div>
             </div>
           </motion.div>
         )}
