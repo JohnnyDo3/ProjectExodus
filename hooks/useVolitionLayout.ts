@@ -65,6 +65,7 @@ function loadLayoutData(): VolitionLayoutData {
   }
 
   const defaults = getDefaultLayoutData()
+  const validLaneIds: LaneId[] = ['profile', 'projects', 'articles', 'learning', 'network', 'feed', 'impact']
 
   try {
     const stored = localStorage.getItem(STORAGE_KEY)
@@ -80,19 +81,56 @@ function loadLayoutData(): VolitionLayoutData {
           viewMode = parsed.isCompact ? 'compact' : 'expanded'
         }
 
-        // Validate arrays exist and are actually arrays
+        // Validate laneOrder array and contents
+        const validatedLaneOrder = Array.isArray(parsed.laneOrder) &&
+          parsed.laneOrder.every((id: unknown) => typeof id === 'string' && validLaneIds.includes(id as LaneId))
+          ? parsed.laneOrder
+          : defaults.laneOrder
+
+        // Validate enabledLanes array and contents
+        const validatedEnabledLanes = Array.isArray(parsed.enabledLanes) &&
+          parsed.enabledLanes.every((id: unknown) => typeof id === 'string' && validLaneIds.includes(id as LaneId))
+          ? parsed.enabledLanes
+          : defaults.enabledLanes
+
+        // Validate spotlightDismissed contains only strings with reasonable length
+        const validatedSpotlightDismissed = Array.isArray(parsed.spotlightDismissed) &&
+          parsed.spotlightDismissed.every((id: unknown) => typeof id === 'string' && id.length < 200)
+          ? parsed.spotlightDismissed
+          : []
+
+        // Validate cardOrder structure
+        let validatedCardOrder: CardOrderMap = {}
+        if (parsed.cardOrder && typeof parsed.cardOrder === 'object') {
+          for (const [key, value] of Object.entries(parsed.cardOrder)) {
+            if (
+              validLaneIds.includes(key as LaneId) &&
+              Array.isArray(value) &&
+              value.every((id: unknown) => typeof id === 'string' && id.length < 200)
+            ) {
+              validatedCardOrder[key as LaneId] = value
+            }
+          }
+        }
+
         return {
           version: CURRENT_VERSION,
-          laneOrder: Array.isArray(parsed.laneOrder) ? parsed.laneOrder : defaults.laneOrder,
-          enabledLanes: Array.isArray(parsed.enabledLanes) ? parsed.enabledLanes : defaults.enabledLanes,
+          laneOrder: validatedLaneOrder,
+          enabledLanes: validatedEnabledLanes,
           viewMode,
-          spotlightDismissed: Array.isArray(parsed.spotlightDismissed) ? parsed.spotlightDismissed : [],
-          cardOrder: parsed.cardOrder && typeof parsed.cardOrder === 'object' ? parsed.cardOrder : {},
+          spotlightDismissed: validatedSpotlightDismissed,
+          cardOrder: validatedCardOrder,
         }
       }
     }
   } catch (error) {
     console.error('Error loading volition layout:', error)
+    // Clear corrupted data
+    try {
+      localStorage.removeItem(STORAGE_KEY)
+    } catch (e) {
+      // Ignore storage errors
+    }
   }
 
   return defaults
