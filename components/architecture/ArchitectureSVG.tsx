@@ -56,14 +56,14 @@ const ColumnSVG = ({ showHalo = false }: { showHalo?: boolean }) => (
     <HaloFilter />
 
     {/* Base/Plinth - context */}
-    <path d="M 22 95 L 78 95" strokeWidth="2.5" fill="none" strokeLinecap="round" opacity="0.5" />
-    <path d="M 25 91 L 75 91" strokeWidth="2" fill="none" strokeLinecap="round" opacity="0.5" />
-    <path d="M 27 87 L 73 87" strokeWidth="1.5" fill="none" strokeLinecap="round" opacity="0.5" />
+    <path d="M 22 95 L 78 95" strokeWidth="2" fill="none" strokeLinecap="round" strokeDasharray="3 2" opacity="0.6" />
+    <path d="M 25 91 L 75 91" strokeWidth="2" fill="none" strokeLinecap="round" strokeDasharray="3 2" opacity="0.6" />
+    <path d="M 27 87 L 73 87" strokeWidth="1.5" fill="none" strokeLinecap="round" strokeDasharray="3 2" opacity="0.6" />
 
     {/* Column Shaft - HIGHLIGHTED */}
     <g filter={showHalo ? "url(#halo-glow)" : undefined}>
-      <path d="M 32 87 L 35 28" strokeWidth="2.5" fill="none" strokeLinecap="round" />
-      <path d="M 68 87 L 65 28" strokeWidth="2.5" fill="none" strokeLinecap="round" />
+      <path d="M 32 87 L 35 28" strokeWidth="3" fill="none" strokeLinecap="round" />
+      <path d="M 68 87 L 65 28" strokeWidth="3" fill="none" strokeLinecap="round" />
 
       {/* Fluting details */}
       <path d="M 38 82 L 40 30" strokeWidth="1" fill="none" opacity="0.7" />
@@ -79,16 +79,16 @@ const ColumnSVG = ({ showHalo = false }: { showHalo?: boolean }) => (
 
     {/* Capital - HIGHLIGHTED */}
     <g filter={showHalo ? "url(#halo-glow)" : undefined}>
-      <path d="M 30 28 L 70 28" strokeWidth="2" fill="none" strokeLinecap="round" />
-      <path d="M 28 24 L 72 24" strokeWidth="2" fill="none" strokeLinecap="round" />
+      <path d="M 30 28 L 70 28" strokeWidth="2.5" fill="none" strokeLinecap="round" />
+      <path d="M 28 24 L 72 24" strokeWidth="2.5" fill="none" strokeLinecap="round" />
 
       {/* Volutes (Ionic style) */}
-      <path d="M 25 20 Q 18 17, 20 11 Q 23 5, 30 9" strokeWidth="2" fill="none" strokeLinecap="round" />
-      <path d="M 75 20 Q 82 17, 80 11 Q 77 5, 70 9" strokeWidth="2" fill="none" strokeLinecap="round" />
+      <path d="M 25 20 Q 18 17, 20 11 Q 23 5, 30 9" strokeWidth="2.5" fill="none" strokeLinecap="round" />
+      <path d="M 75 20 Q 82 17, 80 11 Q 77 5, 70 9" strokeWidth="2.5" fill="none" strokeLinecap="round" />
 
       {/* Echinus and abacus */}
-      <path d="M 22 9 L 78 9" strokeWidth="2.5" fill="none" strokeLinecap="round" />
-      <path d="M 20 5 L 80 5" strokeWidth="2.5" fill="none" strokeLinecap="round" />
+      <path d="M 22 9 L 78 9" strokeWidth="3" fill="none" strokeLinecap="round" />
+      <path d="M 20 5 L 80 5" strokeWidth="3" fill="none" strokeLinecap="round" />
     </g>
   </svg>
 )
@@ -99,20 +99,20 @@ const ArchSVG = ({ showHalo = false }: { showHalo?: boolean }) => (
     <HaloFilter />
 
     {/* Piers/supports - context */}
-    <g opacity="0.5">
-      <path d="M 12 95 L 12 42" strokeWidth="2" fill="none" strokeLinecap="round" />
-      <path d="M 24 95 L 24 42" strokeWidth="2" fill="none" strokeLinecap="round" />
-      <path d="M 76 95 L 76 42" strokeWidth="2" fill="none" strokeLinecap="round" />
-      <path d="M 88 95 L 88 42" strokeWidth="2" fill="none" strokeLinecap="round" />
+    <g opacity="0.6">
+      <path d="M 12 95 L 12 42" strokeWidth="2" fill="none" strokeLinecap="round" strokeDasharray="3 2" />
+      <path d="M 24 95 L 24 42" strokeWidth="2" fill="none" strokeLinecap="round" strokeDasharray="3 2" />
+      <path d="M 76 95 L 76 42" strokeWidth="2" fill="none" strokeLinecap="round" strokeDasharray="3 2" />
+      <path d="M 88 95 L 88 42" strokeWidth="2" fill="none" strokeLinecap="round" strokeDasharray="3 2" />
     </g>
 
     {/* Ground line */}
-    <path d="M 5 95 L 95 95" strokeWidth="1.5" fill="none" strokeLinecap="round" opacity="0.4" />
+    <path d="M 5 95 L 95 95" strokeWidth="1.5" fill="none" strokeLinecap="round" strokeDasharray="3 2" opacity="0.6" />
 
     {/* Arch curve - HIGHLIGHTED */}
     <g filter={showHalo ? "url(#halo-glow)" : undefined}>
-      <path d="M 24 42 Q 24 10, 50 10 Q 76 10, 76 42" strokeWidth="2.5" fill="none" strokeLinecap="round" />
-      <path d="M 12 42 Q 12 5, 50 5 Q 88 5, 88 42" strokeWidth="2.5" fill="none" strokeLinecap="round" />
+      <path d="M 24 42 Q 24 10, 50 10 Q 76 10, 76 42" strokeWidth="3" fill="none" strokeLinecap="round" />
+      <path d="M 12 42 Q 12 5, 50 5 Q 88 5, 88 42" strokeWidth="3" fill="none" strokeLinecap="round" />
 
       {/* Voussoirs (arch stones) */}
       <path d="M 28 38 L 22 26" strokeWidth="1.5" fill="none" opacity="0.8" />
@@ -123,8 +123,8 @@ const ArchSVG = ({ showHalo = false }: { showHalo?: boolean }) => (
 
     {/* Keystone - EXTRA HIGHLIGHTED */}
     <g filter={showHalo ? "url(#halo-glow)" : undefined}>
-      <path d="M 44 14 L 44 5 L 56 5 L 56 14" strokeWidth="2" fill="none" strokeLinecap="round" />
-      <path d="M 46 10 L 50 7 L 54 10" strokeWidth="1" fill="none" opacity="0.7" />
+      <path d="M 44 14 L 44 5 L 56 5 L 56 14" strokeWidth="2.5" fill="none" strokeLinecap="round" />
+      <path d="M 46 10 L 50 7 L 54 10" strokeWidth="1.5" fill="none" opacity="0.7" />
     </g>
   </svg>
 )
@@ -135,15 +135,15 @@ const DomeSVG = ({ showHalo = false }: { showHalo?: boolean }) => (
     <HaloFilter />
 
     {/* Base structure - context */}
-    <g opacity="0.5">
-      <path d="M 8 72 L 8 90" strokeWidth="2" fill="none" strokeLinecap="round" />
-      <path d="M 92 72 L 92 90" strokeWidth="2" fill="none" strokeLinecap="round" />
-      <path d="M 8 90 L 92 90" strokeWidth="2" fill="none" strokeLinecap="round" />
+    <g opacity="0.6">
+      <path d="M 8 72 L 8 90" strokeWidth="2" fill="none" strokeLinecap="round" strokeDasharray="3 2" />
+      <path d="M 92 72 L 92 90" strokeWidth="2" fill="none" strokeLinecap="round" strokeDasharray="3 2" />
+      <path d="M 8 90 L 92 90" strokeWidth="2" fill="none" strokeLinecap="round" strokeDasharray="3 2" />
     </g>
 
     {/* Main dome curve - HIGHLIGHTED */}
     <g filter={showHalo ? "url(#halo-glow)" : undefined}>
-      <path d="M 8 72 Q 8 20, 50 15 Q 92 20, 92 72" strokeWidth="2.5" fill="none" strokeLinecap="round" />
+      <path d="M 8 72 Q 8 20, 50 15 Q 92 20, 92 72" strokeWidth="3" fill="none" strokeLinecap="round" />
 
       {/* Inner dome structure */}
       <path d="M 18 68 Q 18 28, 50 23 Q 82 28, 82 68" strokeWidth="1.5" fill="none" opacity="0.6" />
@@ -184,18 +184,18 @@ const WindowSVG = ({ showHalo = false }: { showHalo?: boolean }) => (
     <HaloFilter />
 
     {/* Outer frame - context */}
-    <g opacity="0.5">
-      <path d="M 18 92 L 18 28" strokeWidth="2" fill="none" strokeLinecap="round" />
-      <path d="M 82 92 L 82 28" strokeWidth="2" fill="none" strokeLinecap="round" />
-      <path d="M 18 28 Q 18 10, 50 10 Q 82 10, 82 28" strokeWidth="2" fill="none" strokeLinecap="round" />
-      <path d="M 18 92 L 82 92" strokeWidth="2" fill="none" strokeLinecap="round" />
+    <g opacity="0.6">
+      <path d="M 18 92 L 18 28" strokeWidth="2" fill="none" strokeLinecap="round" strokeDasharray="3 2" />
+      <path d="M 82 92 L 82 28" strokeWidth="2" fill="none" strokeLinecap="round" strokeDasharray="3 2" />
+      <path d="M 18 28 Q 18 10, 50 10 Q 82 10, 82 28" strokeWidth="2" fill="none" strokeLinecap="round" strokeDasharray="3 2" />
+      <path d="M 18 92 L 82 92" strokeWidth="2" fill="none" strokeLinecap="round" strokeDasharray="3 2" />
     </g>
 
     {/* Rose window tracery - HIGHLIGHTED */}
     <g filter={showHalo ? "url(#halo-glow)" : undefined}>
-      <circle cx="50" cy="38" r="18" strokeWidth="2" fill="none" />
-      <circle cx="50" cy="38" r="10" strokeWidth="1.5" fill="none" />
-      <circle cx="50" cy="38" r="4" strokeWidth="1" fill="none" />
+      <circle cx="50" cy="38" r="18" strokeWidth="2.5" fill="none" />
+      <circle cx="50" cy="38" r="10" strokeWidth="2" fill="none" />
+      <circle cx="50" cy="38" r="4" strokeWidth="1.5" fill="none" />
 
       {/* Tracery spokes */}
       <path d="M 50 20 L 50 28" strokeWidth="1.5" fill="none" />
@@ -215,11 +215,11 @@ const WindowSVG = ({ showHalo = false }: { showHalo?: boolean }) => (
     </g>
 
     {/* Lower panels - context */}
-    <g opacity="0.5">
-      <path d="M 18 60 L 82 60" strokeWidth="1.5" fill="none" />
-      <path d="M 50 60 L 50 92" strokeWidth="1.5" fill="none" />
-      <path d="M 34 60 L 34 92" strokeWidth="1" fill="none" opacity="0.6" />
-      <path d="M 66 60 L 66 92" strokeWidth="1" fill="none" opacity="0.6" />
+    <g opacity="0.6">
+      <path d="M 18 60 L 82 60" strokeWidth="1.5" fill="none" strokeDasharray="3 2" />
+      <path d="M 50 60 L 50 92" strokeWidth="1.5" fill="none" strokeDasharray="3 2" />
+      <path d="M 34 60 L 34 92" strokeWidth="1" fill="none" strokeDasharray="3 2" opacity="0.6" />
+      <path d="M 66 60 L 66 92" strokeWidth="1" fill="none" strokeDasharray="3 2" opacity="0.6" />
     </g>
   </svg>
 )
@@ -230,13 +230,13 @@ const RoofSVG = ({ showHalo = false }: { showHalo?: boolean }) => (
     <HaloFilter />
 
     {/* Building facade - context */}
-    <g opacity="0.5">
-      <path d="M 10 62 L 10 92" strokeWidth="2" fill="none" strokeLinecap="round" />
-      <path d="M 90 62 L 90 92" strokeWidth="2" fill="none" strokeLinecap="round" />
-      <path d="M 10 92 L 90 92" strokeWidth="2" fill="none" strokeLinecap="round" />
-      <rect x="22" y="70" width="14" height="18" strokeWidth="1" fill="none" rx="1" />
-      <rect x="64" y="70" width="14" height="18" strokeWidth="1" fill="none" rx="1" />
-      <path d="M 42 92 L 42 72 Q 50 67, 58 72 L 58 92" strokeWidth="1.5" fill="none" />
+    <g opacity="0.6">
+      <path d="M 10 62 L 10 92" strokeWidth="2" fill="none" strokeLinecap="round" strokeDasharray="3 2" />
+      <path d="M 90 62 L 90 92" strokeWidth="2" fill="none" strokeLinecap="round" strokeDasharray="3 2" />
+      <path d="M 10 92 L 90 92" strokeWidth="2" fill="none" strokeLinecap="round" strokeDasharray="3 2" />
+      <rect x="22" y="70" width="14" height="18" strokeWidth="1" fill="none" rx="1" strokeDasharray="3 2" />
+      <rect x="64" y="70" width="14" height="18" strokeWidth="1" fill="none" rx="1" strokeDasharray="3 2" />
+      <path d="M 42 92 L 42 72 Q 50 67, 58 72 L 58 92" strokeWidth="1.5" fill="none" strokeDasharray="3 2" />
     </g>
 
     {/* Main roof - HIGHLIGHTED */}
@@ -262,8 +262,8 @@ const RoofSVG = ({ showHalo = false }: { showHalo?: boolean }) => (
 
     {/* Chimney - context */}
     <g opacity="0.6">
-      <path d="M 68 38 L 68 22 L 78 22 L 78 45" strokeWidth="1.5" fill="none" strokeLinecap="round" />
-      <path d="M 66 22 L 80 22" strokeWidth="1.5" fill="none" strokeLinecap="round" />
+      <path d="M 68 38 L 68 22 L 78 22 L 78 45" strokeWidth="1.5" fill="none" strokeLinecap="round" strokeDasharray="3 2" />
+      <path d="M 66 22 L 80 22" strokeWidth="1.5" fill="none" strokeLinecap="round" strokeDasharray="3 2" />
     </g>
   </svg>
 )
