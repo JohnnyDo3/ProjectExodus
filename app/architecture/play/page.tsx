@@ -75,11 +75,11 @@ export default function PlayPage() {
       </div>
 
       <div className="flex-1 overflow-y-auto">
-        <div className="container mx-auto px-3 sm:px-4 py-3 sm:py-4 max-w-4xl">
+        <div className="container mx-auto px-3 sm:px-4 py-2 sm:py-3 max-w-4xl">
         {/* Game Mode Selection */}
-        <section className="mb-3 sm:mb-4">
-          <h2 className="text-base sm:text-lg font-bold text-[var(--foreground)] mb-2 sm:mb-3">Game Mode</h2>
-          <div className="grid gap-3 sm:gap-4">
+        <section className="mb-2 sm:mb-3">
+          <h2 className="text-base sm:text-lg font-bold text-[var(--foreground)] mb-1.5 sm:mb-2">Game Mode</h2>
+          <div className="grid md:grid-cols-2 gap-2 sm:gap-3">
             {gameModes.map((mode, index) => {
               const Icon = mode.icon
               return (
@@ -124,14 +124,14 @@ export default function PlayPage() {
         </section>
 
         {/* Quick Play Configuration */}
-        <section className="mb-3 sm:mb-4">
-          <div className="flex items-center gap-2 mb-2 sm:mb-3">
+        <section className="mb-2 sm:mb-3">
+          <div className="flex items-center gap-2 mb-1.5 sm:mb-2">
             <Zap className="w-4 h-4 sm:w-5 sm:h-5 text-amber-500" />
             <h2 className="text-base sm:text-lg font-bold text-[var(--foreground)]">Quick Play Settings</h2>
           </div>
 
           {/* Element Count */}
-          <div className="mb-3 sm:mb-4">
+          <div className="mb-2 sm:mb-3">
             <label className="text-xs sm:text-sm font-semibold text-[var(--muted-foreground)] mb-2 block">
               Number of Elements
             </label>
@@ -154,7 +154,7 @@ export default function PlayPage() {
           </div>
 
           {/* Learning Path */}
-          <div className="mb-3 sm:mb-4">
+          <div className="mb-2 sm:mb-3">
             <label className="text-xs sm:text-sm font-semibold text-[var(--muted-foreground)] mb-2 block">
               Learning Path
             </label>
@@ -200,7 +200,7 @@ export default function PlayPage() {
             <motion.div
               initial={{ opacity: 0, height: 0 }}
               animate={{ opacity: 1, height: 'auto' }}
-              className="mb-3 sm:mb-4"
+              className="mb-2 sm:mb-3"
             >
               <label className="text-xs sm:text-sm font-semibold text-[var(--muted-foreground)] mb-2 block">
                 Select Category
@@ -238,8 +238,8 @@ export default function PlayPage() {
         </section>
 
         {/* Stats Preview */}
-        <section className="pb-3 sm:pb-4">
-          <div className="flex items-center gap-2 mb-2 sm:mb-3">
+        <section className="pb-2 sm:pb-3">
+          <div className="flex items-center gap-2 mb-1.5 sm:mb-2">
             <Trophy className="w-4 h-4 sm:w-5 sm:h-5 text-amber-500" />
             <h2 className="text-base sm:text-lg font-bold text-[var(--foreground)]">Your Stats</h2>
           </div>
