@@ -475,14 +475,6 @@ export function Header() {
                           <span className="font-bold text-[var(--foreground)] group-hover:text-theme-primary">My Volition</span>
                         </Link>
                         <Link
-                          href="/network"
-                          className="flex items-center gap-3 px-4 py-2 rounded-lg hover:bg-[var(--muted)] transition-colors group"
-                          onClick={() => setUserMenuOpen(false)}
-                        >
-                          <Users className="w-4 h-4 text-theme-accent" />
-                          <span className="font-bold text-[var(--foreground)] group-hover:text-theme-accent">My Network</span>
-                        </Link>
-                        <Link
                           href="/events"
                           className="flex items-center gap-3 px-4 py-2 rounded-lg hover:bg-[var(--muted)] transition-colors group"
                           onClick={() => setUserMenuOpen(false)}
