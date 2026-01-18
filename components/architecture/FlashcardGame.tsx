@@ -312,43 +312,47 @@ export function FlashcardGame({ config: userConfig, onComplete, onExit }: Flashc
             exit={{ opacity: 0 }}
             className="flex-1 flex flex-col"
           >
-            {/* Header - Readable */}
-            <div className="flex-shrink-0 bg-[var(--background)]/95 backdrop-blur border-b border-[var(--border)] px-2 py-1 sm:py-1.5">
+            {/* Header - Viewport-Aware Typography */}
+            <div className="flex-shrink-0 bg-[var(--background)]/95 backdrop-blur border-b border-[var(--border)] px-[clamp(0.5rem,2vw,1rem)] py-[clamp(0.25rem,1vh,0.75rem)]">
               <div className="max-w-lg md:max-w-2xl lg:max-w-3xl mx-auto">
                 {/* Progress */}
-                <div className="flex items-center justify-between mb-1">
-                  <div className="flex items-center gap-2">
+                <div className="flex items-center justify-between mb-[clamp(0.25rem,0.5vh,0.5rem)]">
+                  <div className="flex items-center gap-[clamp(0.375rem,1vw,0.75rem)]">
                     {onExit && (
                       <Button
                         onClick={onExit}
                         variant="ghost"
                         size="sm"
-                        className="text-xs py-1 h-auto"
+                        className="py-1 h-auto"
+                        style={{ fontSize: 'clamp(0.625rem, 1.5vw, 0.75rem)' }}
                       >
-                        <Home className="w-3 h-3 sm:w-3.5 sm:h-3.5 mr-1" />
+                        <Home className="mr-1" style={{ width: 'clamp(0.625rem, 2vw, 0.875rem)', height: 'clamp(0.625rem, 2vw, 0.875rem)' }} />
                         <span className="hidden sm:inline">Quit</span>
                       </Button>
                     )}
-                    <span className="text-xs sm:text-sm font-bold text-[var(--foreground)]">
+                    <span className="font-bold text-[var(--foreground)]" style={{ fontSize: 'clamp(0.75rem, 2vw, 0.875rem)' }}>
                       {gameState.currentIndex + 1}/{elements.length}
                     </span>
                   </div>
-                  <div className="flex items-center gap-1.5">
-                    <span className="text-xs sm:text-sm font-mono font-bold text-[var(--foreground)]">
+                  <div className="flex items-center gap-[clamp(0.25rem,1vw,0.5rem)]">
+                    <span className="font-mono font-bold text-[var(--foreground)]" style={{ fontSize: 'clamp(0.75rem, 2vw, 0.875rem)' }}>
                       {formatTime(gameState.elapsed)}
                     </span>
                     <button
                       onClick={() => setSoundEnabled(!soundEnabled)}
                       className="p-1 rounded-full hover:bg-[var(--muted)]"
                     >
-                      {soundEnabled ? <Volume2 className="w-3 h-3 sm:w-3.5 sm:h-3.5" /> : <VolumeX className="w-3 h-3 sm:w-3.5 sm:h-3.5" />}
+                      {soundEnabled ?
+                        <Volume2 style={{ width: 'clamp(0.625rem, 2vw, 0.875rem)', height: 'clamp(0.625rem, 2vw, 0.875rem)' }} /> :
+                        <VolumeX style={{ width: 'clamp(0.625rem, 2vw, 0.875rem)', height: 'clamp(0.625rem, 2vw, 0.875rem)' }} />
+                      }
                     </button>
                   </div>
                 </div>
 
-                {/* Progress Bars */}
-                <div className="space-y-0.5">
-                  <div className="h-1 sm:h-1.5 bg-[var(--muted)] rounded-full overflow-hidden">
+                {/* Progress Bars - Proportional Height */}
+                <div style={{ display: 'flex', flexDirection: 'column', gap: 'clamp(0.125rem, 0.3vh, 0.25rem)' }}>
+                  <div className="bg-[var(--muted)] rounded-full overflow-hidden" style={{ height: 'clamp(0.25rem, 0.8vh, 0.375rem)' }}>
                     <motion.div
                       className="h-full bg-gradient-to-r from-amber-500 to-orange-500 rounded-full"
                       initial={{ width: 0 }}
@@ -356,7 +360,7 @@ export function FlashcardGame({ config: userConfig, onComplete, onExit }: Flashc
                     />
                   </div>
                   {config.enableGhost && bestTime && (
-                    <div className="h-0.5 sm:h-1 bg-[var(--muted)] rounded-full overflow-hidden">
+                    <div className="bg-[var(--muted)] rounded-full overflow-hidden" style={{ height: 'clamp(0.125rem, 0.5vh, 0.25rem)' }}>
                       <motion.div
                         className="h-full bg-purple-500/50 rounded-full"
                         animate={{ width: `${(ghostProgress / elements.length) * 100}%` }}
@@ -365,38 +369,47 @@ export function FlashcardGame({ config: userConfig, onComplete, onExit }: Flashc
                   )}
                 </div>
 
-                {/* Score & Streak */}
-                <div className="flex items-center justify-between mt-1">
-                  <div className="flex items-center gap-1.5">
-                    <Trophy className="w-3 h-3 sm:w-3.5 sm:h-3.5 text-amber-500" />
-                    <span className="font-bold text-xs sm:text-sm text-[var(--foreground)]">{gameState.score}</span>
+                {/* Score & Streak - Fluid Icons */}
+                <div className="flex items-center justify-between" style={{ marginTop: 'clamp(0.25rem, 0.8vh, 0.5rem)' }}>
+                  <div className="flex items-center" style={{ gap: 'clamp(0.25rem, 1vw, 0.5rem)' }}>
+                    <Trophy className="text-amber-500" style={{ width: 'clamp(0.625rem, 2vw, 0.875rem)', height: 'clamp(0.625rem, 2vw, 0.875rem)' }} />
+                    <span className="font-bold text-[var(--foreground)]" style={{ fontSize: 'clamp(0.75rem, 2vw, 0.875rem)' }}>{gameState.score}</span>
                   </div>
                   {gameState.streak > 1 && (
                     <motion.div
                       initial={{ scale: 0 }}
                       animate={{ scale: 1 }}
-                      className="flex items-center gap-1 px-2 py-1 rounded-full bg-amber-500/20"
+                      className="flex items-center gap-1 rounded-full bg-amber-500/20"
+                      style={{ padding: 'clamp(0.25rem, 0.5vh, 0.375rem) clamp(0.5rem, 1.5vw, 0.75rem)' }}
                     >
-                      <Zap className="w-3 h-3 sm:w-3.5 sm:h-3.5 text-amber-500" />
-                      <span className="text-[10px] sm:text-xs font-bold text-amber-500">{gameState.streak}x</span>
+                      <Zap className="text-amber-500" style={{ width: 'clamp(0.625rem, 2vw, 0.875rem)', height: 'clamp(0.625rem, 2vw, 0.875rem)' }} />
+                      <span className="font-bold text-amber-500" style={{ fontSize: 'clamp(0.625rem, 1.5vw, 0.75rem)' }}>{gameState.streak}x</span>
                     </motion.div>
                   )}
                 </div>
               </div>
             </div>
 
-            {/* Question Area - Viewport-relative sizing */}
-            <div className="flex-1 flex flex-col justify-center items-center p-3 sm:p-4 md:p-1.5 lg:p-2 max-w-lg md:max-w-2xl mx-auto w-full overflow-hidden min-h-0">
-              {/* Image - Adaptive to screen orientation */}
+            {/* Question Area - Self-Aware Spacing */}
+            <div className="flex-1 flex flex-col justify-center items-center max-w-lg md:max-w-2xl mx-auto w-full overflow-hidden min-h-0" style={{ padding: 'clamp(0.5rem, 2vh, 1rem)' }}>
+              {/* Image Container - Viewport-Intelligent */}
               <motion.div
                 key={currentElement.id}
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
-                className="flex-shrink-0 mb-2 sm:mb-3 md:mb-1.5"
+                className="flex-shrink-0"
+                style={{ marginBottom: 'clamp(0.5rem, 1.5vh, 1rem)' }}
               >
-                <div className="relative w-[min(120px,30vw)] h-[min(120px,28vh)] sm:w-[min(140px,32vw)] sm:h-[min(140px,30vh)] md:w-[min(140px,24vw)] md:h-[min(140px,20vh)] lg:w-[min(150px,22vw)] lg:h-[min(150px,22vh)] rounded-lg overflow-hidden bg-gradient-to-br from-[var(--muted)] to-[var(--background)] border-2 border-[var(--border)]">
+                <div
+                  className="relative rounded-lg overflow-hidden bg-gradient-to-br from-[var(--muted)] to-[var(--background)] border-2 border-[var(--border)]"
+                  style={{
+                    width: 'min(clamp(120px, 30vw, 150px), 28vh)',
+                    height: 'min(clamp(120px, 30vw, 150px), 28vh)',
+                    aspectRatio: '1 / 1'
+                  }}
+                >
                   {/* SVG Illustration */}
-                  <div className="absolute inset-0 flex items-center justify-center p-2 sm:p-3">
+                  <div className="absolute inset-0 flex items-center justify-center" style={{ padding: 'clamp(0.5rem, 2%, 0.75rem)' }}>
                     <ArchitectureSVG
                       category={currentElement.category}
                       elementId={currentElement.id}
@@ -405,12 +418,20 @@ export function FlashcardGame({ config: userConfig, onComplete, onExit }: Flashc
                     />
                   </div>
 
-                  {/* Category badge */}
-                  <div className="absolute top-1 left-1 px-1.5 py-0.5 rounded-full bg-[var(--background)]/80 backdrop-blur text-[8px] font-medium text-[var(--muted-foreground)]">
+                  {/* Category Badge - Proportional to Image */}
+                  <div
+                    className="absolute rounded-full bg-[var(--background)]/80 backdrop-blur font-medium text-[var(--muted-foreground)]"
+                    style={{
+                      top: 'clamp(0.25rem, 2%, 0.375rem)',
+                      left: 'clamp(0.25rem, 2%, 0.375rem)',
+                      padding: 'clamp(0.125rem, 1%, 0.25rem) clamp(0.375rem, 2%, 0.5rem)',
+                      fontSize: 'clamp(0.5rem, 1.5vw, 0.625rem)'
+                    }}
+                  >
                     {currentElement.category}
                   </div>
 
-                  {/* Feedback overlay */}
+                  {/* Feedback Overlay - Intelligent Icon Sizing */}
                   <AnimatePresence>
                     {isCorrect !== null && (
                       <motion.div
@@ -424,14 +445,19 @@ export function FlashcardGame({ config: userConfig, onComplete, onExit }: Flashc
                         <motion.div
                           initial={{ scale: 0 }}
                           animate={{ scale: 1 }}
-                          className={`w-20 h-20 rounded-full flex items-center justify-center ${
+                          className={`rounded-full flex items-center justify-center ${
                             isCorrect ? 'bg-green-500' : 'bg-red-500'
                           }`}
+                          style={{
+                            width: 'min(5rem, 40%)',
+                            height: 'min(5rem, 40%)',
+                            aspectRatio: '1 / 1'
+                          }}
                         >
                           {isCorrect ? (
-                            <Check className="w-10 h-10 text-white" />
+                            <Check className="text-white" style={{ width: '50%', height: '50%' }} />
                           ) : (
-                            <X className="w-10 h-10 text-white" />
+                            <X className="text-white" style={{ width: '50%', height: '50%' }} />
                           )}
                         </motion.div>
                       </motion.div>
@@ -440,8 +466,8 @@ export function FlashcardGame({ config: userConfig, onComplete, onExit }: Flashc
                 </div>
               </motion.div>
 
-              {/* Answer Options - Readable grid */}
-              <div className="w-full grid grid-cols-2 gap-1.5 sm:gap-2 md:gap-1 flex-shrink-0 max-w-md">
+              {/* Answer Options - Intelligent Grid */}
+              <div className="w-full grid grid-cols-2 flex-shrink-0 max-w-md" style={{ gap: 'clamp(0.375rem, 1vh, 0.5rem)' }}>
                 {options.map((option, index) => {
                   const isSelected = selectedAnswer === option.id
                   const isCorrectAnswer = option.id === currentElement.id
@@ -464,11 +490,18 @@ export function FlashcardGame({ config: userConfig, onComplete, onExit }: Flashc
                       transition={{ delay: index * 0.1 }}
                       onClick={() => handleAnswer(option.id)}
                       disabled={selectedAnswer !== null}
-                      className={`p-1.5 sm:p-2 md:p-1 rounded-md border-2 transition-all min-h-[36px] sm:min-h-[40px] md:min-h-[32px] ${buttonClass} ${
+                      className={`rounded-md border-2 transition-all ${buttonClass} ${
                         selectedAnswer === null ? 'active:scale-95 hover:scale-[1.02]' : ''
                       }`}
+                      style={{
+                        padding: 'clamp(0.375rem, 1vh, 0.5rem)',
+                        minHeight: 'clamp(2rem, 4vh, 2.5rem)'
+                      }}
                     >
-                      <span className="font-bold text-[10px] sm:text-xs md:text-[11px] text-[var(--foreground)] leading-tight block">
+                      <span
+                        className="font-bold text-[var(--foreground)] leading-tight block"
+                        style={{ fontSize: 'clamp(0.625rem, 1.75vw, 0.75rem)' }}
+                      >
                         {option.name}
                       </span>
                     </motion.button>
