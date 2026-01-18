@@ -389,15 +389,15 @@ export function FlashcardGame({ config: userConfig, onComplete, onExit }: Flashc
             </div>
 
             {/* Question Area */}
-            <div className="flex-1 flex flex-col p-1.5 sm:p-2 max-w-lg md:max-w-2xl mx-auto w-full overflow-hidden min-h-0">
+            <div className="flex-1 flex flex-col justify-center p-1.5 sm:p-2 max-w-lg md:max-w-2xl mx-auto w-full overflow-hidden min-h-0 gap-1.5 sm:gap-2">
               {/* Image */}
               <motion.div
                 key={currentElement.id}
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
-                className="flex-1 flex items-center justify-center mb-1 min-h-0"
+                className="flex items-center justify-center flex-shrink min-h-0"
               >
-                <div className="relative w-full max-w-[140px] sm:max-w-[160px] md:max-w-[180px] aspect-square rounded-lg overflow-hidden bg-gradient-to-br from-[var(--muted)] to-[var(--background)] border-2 border-[var(--border)]">
+                <div className="relative w-full max-w-[120px] sm:max-w-[140px] md:max-w-[160px] aspect-square rounded-lg overflow-hidden bg-gradient-to-br from-[var(--muted)] to-[var(--background)] border-2 border-[var(--border)]">
                   {/* SVG Illustration */}
                   <div className="absolute inset-0 flex items-center justify-center p-2 sm:p-3">
                     <ArchitectureSVG
@@ -444,7 +444,7 @@ export function FlashcardGame({ config: userConfig, onComplete, onExit }: Flashc
               </motion.div>
 
               {/* Answer Options */}
-              <div className="grid grid-cols-2 gap-1 sm:gap-1.5">
+              <div className="grid grid-cols-2 gap-1 sm:gap-1.5 flex-shrink-0">
                 {options.map((option, index) => {
                   const isSelected = selectedAnswer === option.id
                   const isCorrectAnswer = option.id === currentElement.id
