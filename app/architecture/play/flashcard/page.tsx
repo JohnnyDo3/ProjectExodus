@@ -34,11 +34,13 @@ function FlashcardGameWrapper() {
   }
 
   return (
-    <FlashcardGame
-      config={config}
-      onExit={handleExit}
-      onComplete={handleComplete}
-    />
+    <div className="h-full">
+      <FlashcardGame
+        config={config}
+        onExit={handleExit}
+        onComplete={handleComplete}
+      />
+    </div>
   )
 }
 
