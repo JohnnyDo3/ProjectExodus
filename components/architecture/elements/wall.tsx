@@ -413,81 +413,187 @@ const RusticationSVG: React.FC<SVGProps> = ({ showHalo }) => (
     <MaterialPatterns />
     {showHalo && <HaloFilter id="rustication-halo" intensity={0.9} />}
     <g filter={showHalo ? "url(#rustication-halo)" : undefined} fill="none" stroke="currentColor" strokeLinecap="round">
-      {/* CONTEXT: Building facade with floor levels - refined */}
-      <g strokeDasharray="3 2" opacity="0.3" strokeWidth="0.4">
-        {/* Floor level indicators */}
-        <path d="M2 30 L6 30" />
-        <path d="M2 70 L6 70" />
-        <text x="1" y="29" fontSize="3" opacity="0.5">2ND</text>
-        <text x="1" y="69" fontSize="3" opacity="0.5">1ST</text>
-        {/* Window openings */}
-        <path d="M25 5 L25 8 L35 8 L35 5" />
-        <path d="M65 5 L65 8 L75 8 L75 5" />
-        {/* Adjacent wall */}
-        <path d="M92 8 L98 8 L98 92" />
-        {/* Base/plinth */}
-        <path d="M5 92 L98 92" strokeWidth="0.6" />
+      {/* THREE-POINT PERSPECTIVE GRID - Viewing facade from ground-level at angle */}
+      <g opacity="0.08" strokeWidth="0.2" strokeDasharray="3 4">
+        {/* Left vanishing point (off-canvas left, ~-20, 40) */}
+        {/* Lines converging to left vanishing point */}
+        <path d="M 10 95 L 5 45" />
+        <path d="M 15 95 L 8 45" />
+
+        {/* Right vanishing point (off-canvas right, ~120, 35) */}
+        {/* Lines converging to right vanishing point */}
+        <path d="M 90 95 L 95 40" />
+        <path d="M 85 95 L 93 40" />
+
+        {/* Vertical vanishing point (upward, ~50, -50) */}
+        {/* Vertical lines slightly converging upward */}
+        <path d="M 15 100 L 45 5" />
+        <path d="M 50 100 L 50 5" />
+        <path d="M 85 100 L 55 5" />
+
+        {/* Horizontal depth guides (perspective curves) */}
+        <path d="M 10 90 Q 50 88, 90 85" opacity="0.6" />
+        <path d="M 12 50 Q 50 48, 88 46" opacity="0.6" />
+        <path d="M 18 15 Q 50 13, 82 12" opacity="0.6" />
       </g>
 
-      {/* PRIMARY: Rusticated stones - BOLD STONE MATERIALITY */}
+      {/* CONTEXT: Building facade with floor levels - refined */}
+      <g strokeDasharray="3 2" opacity="0.2" strokeWidth="0.35">
+        {/* Floor level indicators (perspective-adjusted) */}
+        <path d="M2 32 L6 32" />
+        <path d="M2 68 L6 68" />
+        <text x="1" y="31" fontSize="2.5" opacity="0.5">2ND</text>
+        <text x="1" y="67" fontSize="2.5" opacity="0.5">1ST</text>
+        {/* Window openings (perspective-adjusted) */}
+        <path d="M25 8 L25 12 L33 12 L34 8" />
+        <path d="M67 8 L67 12 L74 12 L75 8" />
+        {/* Adjacent wall receding */}
+        <path d="M 88 12 L 95 15 L 95 88" />
+        {/* Base/plinth (perspective curve) */}
+        <path d="M 8 92 Q 50 94, 95 90" strokeWidth="0.5" />
+      </g>
+
+      {/* PRIMARY: Rusticated stones - THREE-POINT PERSPECTIVE */}
       <g strokeWidth="0.8">
-        {[0, 1, 2, 3].map((row) => {
-          const offset = row % 2 === 0 ? 0 : 22
-          return [0, 1, 2].map((col) => {
-            const x = 8 + offset + col * 44
-            const y = 10 + row * 20
-            const width = 40
-            if (x + width > 92) return null
-            return (
-              <g key={`${row}-${col}`}>
-                {/* Rough stone material fill */}
-                <rect x={x} y={y} width={width} height={18} fill="url(#stone-rough)" opacity="0.35" stroke="none" />
+        {/* BOTTOM ROW - Closest to viewer (largest, widest) */}
+        {/* Stone 1 (bottom-left, closest) */}
+        <g>
+          <path d="M 10 92 L 46 92 L 45 73 L 12 74 Z" strokeWidth="1.3" />
+          <path d="M 12 90 L 44 90 L 43 75 L 14 76 Z" strokeWidth="0.7" opacity="0.7" />
+          <path d="M 14 88 L 42 88 L 41 77 L 16 78 Z" strokeWidth="0.35" opacity="0.4" />
+          {/* Chisel marks */}
+          <path d="M 18 82 L 22 84" opacity="0.35" strokeWidth="0.5" />
+          <path d="M 30 85 L 34 87" opacity="0.35" strokeWidth="0.5" />
+        </g>
 
-                {/* Stone block outer edge - BOLD */}
-                <path d={`M${x} ${y} L${x+width} ${y} L${x+width} ${y+18} L${x} ${y+18} Z`} strokeWidth="1.2" />
+        {/* Stone 2 (bottom-center) */}
+        <g>
+          <path d="M 46 92 L 82 91 L 80 72 L 45 73 Z" strokeWidth="1.3" />
+          <path d="M 48 90 L 80 89 L 78 74 L 47 75 Z" strokeWidth="0.7" opacity="0.7" />
+          <path d="M 50 88 L 78 87 L 76 76 L 49 77 Z" strokeWidth="0.35" opacity="0.4" />
+          {/* Chisel marks */}
+          <path d="M 55 82 L 59 84" opacity="0.35" strokeWidth="0.5" />
+          <path d="M 68 85 L 72 86" opacity="0.35" strokeWidth="0.5" />
+        </g>
 
-                {/* Beveled/chamfered edges showing depth - enhanced */}
-                <path d={`M${x+2} ${y+2} L${x+width-2} ${y+2} L${x+width-2} ${y+16} L${x+2} ${y+16} Z`} strokeWidth="0.6" opacity="0.7" />
-                <path d={`M${x+3} ${y+3} L${x+width-3} ${y+3} L${x+width-3} ${y+15} L${x+3} ${y+15} Z`} strokeWidth="0.3" opacity="0.4" />
+        {/* Stone 3 (bottom-right, receding) */}
+        <g>
+          <path d="M 82 91 L 94 89 L 92 71 L 80 72 Z" strokeWidth="1.2" />
+          <path d="M 83 89 L 92 87 L 90 73 L 81 74 Z" strokeWidth="0.6" opacity="0.7" />
+          {/* Chisel mark */}
+          <path d="M 85 80 L 88 81" opacity="0.35" strokeWidth="0.5" />
+        </g>
 
-                {/* Rough-hewn chisel marks - MORE DETAIL */}
-                <path d={`M${x+8} ${y+6} L${x+12} ${y+8}`} opacity="0.35" strokeWidth="0.5" />
-                <path d={`M${x+22} ${y+10} L${x+28} ${y+12}`} opacity="0.35" strokeWidth="0.5" />
-                <path d={`M${x+15} ${y+12} L${x+19} ${y+14}`} opacity="0.3" strokeWidth="0.4" />
+        {/* SECOND ROW - Mid-distance */}
+        {/* Stone 4 (left) */}
+        <g>
+          <path d="M 12 74 L 30 73 L 30 54 L 14 56 Z" strokeWidth="1.2" />
+          <path d="M 14 72 L 28 71 L 28 56 L 16 58 Z" strokeWidth="0.6" opacity="0.7" />
+          <path d="M 16 70 L 26 69 L 26 58 L 18 60 Z" strokeWidth="0.3" opacity="0.4" />
+          {/* Chisel marks */}
+          <path d="M 18 64 L 21 65" opacity="0.35" strokeWidth="0.45" />
+        </g>
 
-                {/* Weathering and natural stone variation */}
-                <path d={`M${x+10} ${y+4} L${x+13} ${y+5}`} opacity="0.2" strokeWidth="0.3" />
-                <path d={`M${x+30} ${y+8} L${x+33} ${y+9}`} opacity="0.2" strokeWidth="0.3" />
+        {/* Stone 5 (center) */}
+        <g>
+          <path d="M 30 73 L 68 72 L 67 53 L 30 54 Z" strokeWidth="1.2" />
+          <path d="M 32 71 L 66 70 L 65 55 L 32 56 Z" strokeWidth="0.6" opacity="0.7" />
+          <path d="M 34 69 L 64 68 L 63 57 L 34 58 Z" strokeWidth="0.3" opacity="0.4" />
+          {/* Chisel marks */}
+          <path d="M 40 64 L 44 65" opacity="0.35" strokeWidth="0.45" />
+          <path d="M 54 66 L 58 67" opacity="0.35" strokeWidth="0.45" />
+        </g>
 
-                {/* Shadow on beveled edge */}
-                <path d={`M${x+2} ${y+2} L${x+2} ${y+16}`} opacity="0.2" strokeWidth="0.4" strokeDasharray="1 0.5" />
-              </g>
-            )
-          })
-        })}
+        {/* Stone 6 (right) */}
+        <g>
+          <path d="M 68 72 L 90 70 L 88 52 L 67 53 Z" strokeWidth="1.2" />
+          <path d="M 69 70 L 88 68 L 86 54 L 68 55 Z" strokeWidth="0.6" opacity="0.7" />
+          {/* Chisel mark */}
+          <path d="M 74 62 L 77 63" opacity="0.35" strokeWidth="0.45" />
+        </g>
 
-        {/* Deep horizontal joint grooves - ENHANCED DEPTH */}
-        <path d="M8 28 L92 28" strokeWidth="3" opacity="0.75" />
-        <path d="M8 27 L92 27" strokeWidth="0.8" opacity="0.3" />
-        <path d="M8 48 L92 48" strokeWidth="3" opacity="0.75" />
-        <path d="M8 47 L92 47" strokeWidth="0.8" opacity="0.3" />
-        <path d="M8 68 L92 68" strokeWidth="3" opacity="0.75" />
-        <path d="M8 67 L92 67" strokeWidth="0.8" opacity="0.3" />
-        <path d="M8 88 L92 88" strokeWidth="3" opacity="0.75" />
-        <path d="M8 87 L92 87" strokeWidth="0.8" opacity="0.3" />
+        {/* THIRD ROW - Far distance (narrower, smaller) */}
+        {/* Stone 7 (left) */}
+        <g>
+          <path d="M 14 56 L 44 54 L 44 36 L 18 38 Z" strokeWidth="1.1" />
+          <path d="M 16 54 L 42 52 L 42 38 L 20 40 Z" strokeWidth="0.55" opacity="0.7" />
+          {/* Chisel marks */}
+          <path d="M 24 46 L 27 47" opacity="0.3" strokeWidth="0.4" />
+        </g>
 
-        {/* Deep vertical joint grooves - ENHANCED DEPTH */}
-        <path d="M48 10 L48 28" strokeWidth="3" opacity="0.75" />
-        <path d="M47 10 L47 28" strokeWidth="0.8" opacity="0.3" />
-        <path d="M30 28 L30 48" strokeWidth="3" opacity="0.75" />
-        <path d="M29 28 L29 48" strokeWidth="0.8" opacity="0.3" />
-        <path d="M74 28 L74 48" strokeWidth="3" opacity="0.75" />
-        <path d="M73 28 L73 48" strokeWidth="0.8" opacity="0.3" />
-        <path d="M52 48 L52 68" strokeWidth="3" opacity="0.75" />
-        <path d="M51 48 L51 68" strokeWidth="0.8" opacity="0.3" />
+        {/* Stone 8 (center) */}
+        <g>
+          <path d="M 44 54 L 74 53 L 74 35 L 44 36 Z" strokeWidth="1.1" />
+          <path d="M 46 52 L 72 51 L 72 37 L 46 38 Z" strokeWidth="0.55" opacity="0.7" />
+          {/* Chisel marks */}
+          <path d="M 52 46 L 55 47" opacity="0.3" strokeWidth="0.4" />
+        </g>
 
-        {/* Wall outline - refined */}
-        <path d="M8 10 L92 10 L92 90 L8 90 Z" strokeWidth="1.4" />
+        {/* Stone 9 (right) */}
+        <g>
+          <path d="M 74 53 L 86 51 L 85 34 L 74 35 Z" strokeWidth="1.1" />
+          <path d="M 75 51 L 84 49 L 83 36 L 75 37 Z" strokeWidth="0.55" opacity="0.7" />
+        </g>
+
+        {/* TOP ROW - Farthest (smallest, most compressed) */}
+        {/* Stone 10 (left) */}
+        <g>
+          <path d="M 18 38 L 36 36 L 37 20 L 22 22 Z" strokeWidth="1.0" />
+          <path d="M 20 36 L 34 34 L 35 22 L 24 24 Z" strokeWidth="0.5" opacity="0.7" />
+        </g>
+
+        {/* Stone 11 (center) */}
+        <g>
+          <path d="M 37 36 L 63 35 L 63 19 L 37 20 Z" strokeWidth="1.0" />
+          <path d="M 39 34 L 61 33 L 61 21 L 39 22 Z" strokeWidth="0.5" opacity="0.7" />
+        </g>
+
+        {/* Stone 12 (right) */}
+        <g>
+          <path d="M 63 35 L 82 33 L 81 18 L 63 19 Z" strokeWidth="1.0" />
+          <path d="M 64 33 L 80 31 L 79 20 L 64 21 Z" strokeWidth="0.5" opacity="0.7" />
+        </g>
+
+        {/* Deep horizontal joint grooves - PERSPECTIVE-CORRECTED */}
+        {/* Bottom joint (closest, thickest) */}
+        <path d="M 10 92 Q 50 93, 94 89" strokeWidth="3.5" opacity="0.75" />
+        <path d="M 10 91 Q 50 92, 94 88" strokeWidth="1" opacity="0.3" />
+
+        {/* Second joint */}
+        <path d="M 12 74 Q 50 74, 90 70" strokeWidth="3.2" opacity="0.75" />
+        <path d="M 12 73 Q 50 73, 90 69" strokeWidth="0.9" opacity="0.3" />
+
+        {/* Third joint */}
+        <path d="M 14 56 Q 50 55, 86 51" strokeWidth="3" opacity="0.75" />
+        <path d="M 14 55 Q 50 54, 86 50" strokeWidth="0.85" opacity="0.3" />
+
+        {/* Top joint (farthest, thinnest) */}
+        <path d="M 18 38 Q 50 37, 82 33" strokeWidth="2.8" opacity="0.75" />
+        <path d="M 18 37 Q 50 36, 82 32" strokeWidth="0.8" opacity="0.3" />
+
+        {/* Deep vertical joint grooves - PERSPECTIVE-CORRECTED (converging upward) */}
+        {/* Left vertical joints */}
+        <path d="M 30 73 L 30 54" strokeWidth="3" opacity="0.75" />
+        <path d="M 29 73 L 29 54" strokeWidth="0.8" opacity="0.3" />
+        <path d="M 44 54 L 44 36" strokeWidth="2.8" opacity="0.75" />
+        <path d="M 43 54 L 43 36" strokeWidth="0.75" opacity="0.3" />
+
+        {/* Center vertical joints */}
+        <path d="M 46 92 L 45 73" strokeWidth="3.2" opacity="0.75" />
+        <path d="M 45 92 L 44 73" strokeWidth="0.85" opacity="0.3" />
+        <path d="M 63 35 L 63 19" strokeWidth="2.6" opacity="0.75" />
+        <path d="M 62 35 L 62 19" strokeWidth="0.7" opacity="0.3" />
+
+        {/* Right vertical joints */}
+        <path d="M 68 72 L 67 53" strokeWidth="3" opacity="0.75" />
+        <path d="M 67 72 L 66 53" strokeWidth="0.8" opacity="0.3" />
+        <path d="M 82 91 L 80 72" strokeWidth="3" opacity="0.75" />
+        <path d="M 81 91 L 79 72" strokeWidth="0.8" opacity="0.3" />
+        <path d="M 74 53 L 74 35" strokeWidth="2.8" opacity="0.75" />
+        <path d="M 73 53 L 73 35" strokeWidth="0.75" opacity="0.3" />
+
+        {/* Wall outline - THREE-POINT PERSPECTIVE */}
+        <path d="M 10 92 L 94 89 L 82 18 L 18 20 Z" strokeWidth="1.5" />
       </g>
     </g>
   </svg>

@@ -88,64 +88,84 @@ export const DoricColumnSVG = ({ showHalo = false }: SVGProps) => (
       <path d="M 73 96 Q 76 97, 79 98" />
     </g>
 
-    {/* PRIMARY: THE DORIC COLUMN - STONE MATERIALITY */}
+    {/* PERSPECTIVE GRID - Ground-level upward view with foreshortening */}
+    <g opacity="0.08" strokeWidth="0.2" strokeDasharray="3 4">
+      {/* Converging lines showing upward perspective */}
+      <path d="M 20 100 L 40 5" />
+      <path d="M 50 100 L 50 5" />
+      <path d="M 80 100 L 60 5" />
+      {/* Horizontal depth lines (elliptical due to looking up) */}
+      <path d="M 25 90 L 75 90" opacity="0.6" />
+      <path d="M 32 50 L 68 50" opacity="0.6" />
+      <path d="M 38 20 L 62 20" opacity="0.6" />
+    </g>
+
+    {/* PRIMARY: THE DORIC COLUMN - UPWARD PERSPECTIVE WITH FORESHORTENING */}
     <g filter={showHalo ? "url(#col-halo)" : undefined}>
-      {/* Stylobate platform - stone base with refined edges */}
-      <path d="M 25 94 L 75 94" strokeWidth="1.8" fill="none" strokeLinecap="round" />
-      <path d="M 27 91 L 73 91" strokeWidth="1.1" fill="none" opacity="0.6" />
-      <path d="M 26 93 L 74 93" strokeWidth="0.5" fill="none" opacity="0.3" />
+      {/* Stylobate platform - stone base (closest to viewer, widest) */}
+      <path d="M 22 94 L 78 94" strokeWidth="2.2" fill="none" strokeLinecap="round" />
+      <path d="M 24 91 L 76 91" strokeWidth="1.3" fill="none" opacity="0.6" />
+      <path d="M 23 93 L 77 93" strokeWidth="0.6" fill="none" opacity="0.3" />
 
-      {/* Column shaft - NO BASE (key Doric feature) - stocky stone proportions */}
-      <path d="M 30 91 Q 29 60, 32 25" strokeWidth="2.2" fill="none" strokeLinecap="round" />
-      <path d="M 70 91 Q 71 60, 68 25" strokeWidth="2.2" fill="none" strokeLinecap="round" />
+      {/* Column shaft with UPWARD FORESHORTENING - wider at base, narrower at top */}
+      {/* Left edge converging upward */}
+      <path d="M 26 91 Q 28 60, 36 25" strokeWidth="2.5" fill="none" strokeLinecap="round" />
+      {/* Right edge converging upward */}
+      <path d="M 74 91 Q 72 60, 64 25" strokeWidth="2.5" fill="none" strokeLinecap="round" />
 
-      {/* Stone material texture on shaft */}
-      <rect x="30" y="25" width="40" height="66" fill="url(#stone-smooth)" opacity="0.3" stroke="none" />
+      {/* Stone material texture on shaft (perspective-adjusted) */}
+      <path d="M 28 85 Q 30 70, 38 50 Q 40 35, 38 27" strokeWidth="0.2" opacity="0.2" fill="none" />
+      <path d="M 72 85 Q 70 70, 62 50 Q 60 35, 62 27" strokeWidth="0.2" opacity="0.2" fill="none" />
 
-      {/* 20 shallow flutes with sharp arrises - crisp stone carving */}
-      <path d="M 36 88 Q 37 55, 38 27" strokeWidth="0.7" fill="none" opacity="0.5" />
-      <path d="M 43 88 Q 43 55, 44 27" strokeWidth="0.7" fill="none" opacity="0.5" />
-      <path d="M 50 88 Q 50 55, 50 27" strokeWidth="0.7" fill="none" opacity="0.5" />
-      <path d="M 57 88 Q 57 55, 56 27" strokeWidth="0.7" fill="none" opacity="0.5" />
-      <path d="M 64 88 Q 63 55, 62 27" strokeWidth="0.7" fill="none" opacity="0.5" />
+      {/* Flutes with PERSPECTIVE - wider spacing at base, converging at top */}
+      {/* Left side flutes */}
+      <path d="M 32 88 Q 34 55, 40 27" strokeWidth="0.7" fill="none" opacity="0.5" />
+      <path d="M 38 88 Q 40 55, 44 27" strokeWidth="0.7" fill="none" opacity="0.5" />
+      {/* Center flutes */}
+      <path d="M 44 88 Q 46 55, 48 27" strokeWidth="0.7" fill="none" opacity="0.5" />
+      <path d="M 50 88 Q 50 55, 50 27" strokeWidth="0.8" fill="none" opacity="0.5" />
+      <path d="M 56 88 Q 54 55, 52 27" strokeWidth="0.7" fill="none" opacity="0.5" />
+      {/* Right side flutes */}
+      <path d="M 62 88 Q 60 55, 56 27" strokeWidth="0.7" fill="none" opacity="0.5" />
+      <path d="M 68 88 Q 66 55, 60 27" strokeWidth="0.7" fill="none" opacity="0.5" />
 
-      {/* Shadow in deeper flutes */}
-      <path d="M 36.5 88 Q 37 55, 37.5 27" strokeWidth="0.3" fill="none" opacity="0.25" />
+      {/* Shadow in deeper flutes (perspective-adjusted) */}
+      <path d="M 32.5 88 Q 34.5 55, 40.5 27" strokeWidth="0.3" fill="none" opacity="0.25" />
       <path d="M 50.5 88 Q 50.5 55, 50.5 27" strokeWidth="0.3" fill="none" opacity="0.25" />
-      <path d="M 63.5 88 Q 63 55, 62.5 27" strokeWidth="0.3" fill="none" opacity="0.25" />
+      <path d="M 67.5 88 Q 65.5 55, 59.5 27" strokeWidth="0.3" fill="none" opacity="0.25" />
 
-      {/* Subtle entasis (slight convex curve) - refined */}
-      <path d="M 31 65 Q 28 50, 31 35" strokeWidth="0.5" fill="none" opacity="0.25" />
-      <path d="M 69 65 Q 72 50, 69 35" strokeWidth="0.5" fill="none" opacity="0.25" />
+      {/* Subtle entasis with perspective */}
+      <path d="M 28 65 Q 27 50, 32 35" strokeWidth="0.5" fill="none" opacity="0.25" />
+      <path d="M 72 65 Q 73 50, 68 35" strokeWidth="0.5" fill="none" opacity="0.25" />
 
-      {/* Chisel marks on stone */}
-      <path d="M 33 52 L 35 53" strokeWidth="0.25" fill="none" opacity="0.2" />
-      <path d="M 65 48 L 67 49" strokeWidth="0.25" fill="none" opacity="0.2" />
+      {/* Chisel marks on stone (perspective-adjusted) */}
+      <path d="M 30 52 L 32 53" strokeWidth="0.25" fill="none" opacity="0.2" />
+      <path d="M 68 48 L 70 49" strokeWidth="0.25" fill="none" opacity="0.2" />
 
-      {/* Necking rings below capital - carved bands */}
-      <path d="M 33 25 L 67 25" strokeWidth="1.4" fill="none" strokeLinecap="round" />
-      <path d="M 34 23 L 66 23" strokeWidth="0.9" fill="none" opacity="0.6" />
-      <path d="M 33.5 24 L 66.5 24" strokeWidth="0.4" fill="none" opacity="0.3" />
+      {/* Necking rings below capital - FORESHORTENED (narrower, compressed) */}
+      <path d="M 37 25 L 63 25" strokeWidth="1.2" fill="none" strokeLinecap="round" />
+      <path d="M 38 23.5 L 62 23.5" strokeWidth="0.8" fill="none" opacity="0.6" />
+      <path d="M 37.5 24 L 62.5 24" strokeWidth="0.35" fill="none" opacity="0.3" />
 
-      {/* Echinus - curved cushion shape with stone depth */}
-      <path d="M 30 21 Q 38 17, 50 16 Q 62 17, 70 21" strokeWidth="2" fill="none" strokeLinecap="round" />
-      <path d="M 32 19 Q 40 16, 50 15.5 Q 60 16, 68 19" strokeWidth="0.8" fill="none" opacity="0.4" />
-      <path d="M 31 20 Q 39 16.5, 50 15.8 Q 61 16.5, 69 20" strokeWidth="0.4" fill="none" opacity="0.25" />
+      {/* Echinus - FORESHORTENED curved cushion (narrower, more compressed) */}
+      <path d="M 35 21 Q 42 18, 50 17.5 Q 58 18, 65 21" strokeWidth="1.7" fill="none" strokeLinecap="round" />
+      <path d="M 36 19.5 Q 43 17.5, 50 17 Q 57 17.5, 64 19.5" strokeWidth="0.7" fill="none" opacity="0.4" />
+      <path d="M 35.5 20 Q 42.5 17.8, 50 17.3 Q 57.5 17.8, 64.5 20" strokeWidth="0.35" fill="none" opacity="0.25" />
       {/* Shadow under echinus */}
-      <path d="M 32 21.5 Q 40 20, 50 19.5 Q 60 20, 68 21.5" strokeWidth="0.5" fill="none" opacity="0.2" />
+      <path d="M 36 21.5 Q 43 20.5, 50 20 Q 57 20.5, 64 21.5" strokeWidth="0.45" fill="none" opacity="0.2" />
 
-      {/* Abacus - plain square slab on top with refined stone edges */}
-      <path d="M 26 14 L 74 14" strokeWidth="2.2" fill="none" strokeLinecap="round" />
-      <path d="M 26 14 L 26 9" strokeWidth="2" fill="none" strokeLinecap="round" />
-      <path d="M 74 14 L 74 9" strokeWidth="2" fill="none" strokeLinecap="round" />
-      <path d="M 26 9 L 74 9" strokeWidth="2.2" fill="none" strokeLinecap="round" />
-      {/* Stone thickness/depth */}
-      <path d="M 26 13 L 74 13" strokeWidth="0.6" fill="none" opacity="0.3" />
-      <path d="M 26 10 L 74 10" strokeWidth="0.6" fill="none" opacity="0.3" />
+      {/* Abacus - FORESHORTENED square slab (narrower, height compressed) */}
+      <path d="M 33 14 L 67 14" strokeWidth="1.9" fill="none" strokeLinecap="round" />
+      <path d="M 33 14 L 33 10" strokeWidth="1.7" fill="none" strokeLinecap="round" />
+      <path d="M 67 14 L 67 10" strokeWidth="1.7" fill="none" strokeLinecap="round" />
+      <path d="M 33 10 L 67 10" strokeWidth="1.9" fill="none" strokeLinecap="round" />
+      {/* Stone thickness/depth (compressed in perspective) */}
+      <path d="M 33 13.2 L 67 13.2" strokeWidth="0.5" fill="none" opacity="0.3" />
+      <path d="M 33 10.8 L 67 10.8" strokeWidth="0.5" fill="none" opacity="0.3" />
 
-      {/* Weathering on abacus top */}
-      <path d="M 35 11 L 38 11.5" strokeWidth="0.25" fill="none" opacity="0.2" />
-      <path d="M 62 10.5 L 65 11" strokeWidth="0.25" fill="none" opacity="0.2" />
+      {/* Weathering on abacus top (perspective-adjusted) */}
+      <path d="M 40 11.5 L 43 12" strokeWidth="0.22" fill="none" opacity="0.2" />
+      <path d="M 57 11.5 L 60 12" strokeWidth="0.22" fill="none" opacity="0.2" />
     </g>
   </svg>
 )

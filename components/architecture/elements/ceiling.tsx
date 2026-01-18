@@ -369,106 +369,142 @@ const ExposedBeamsSVG: React.FC<SVGProps> = ({ showHalo }) => (
         <path d="M10 99 L90 99" opacity="0.5" />
       </g>
 
-      {/* PRIMARY - Exposed timber structure with perspective */}
+      {/* PERSPECTIVE GRID - Single vanishing point at (50, 2) */}
+      <g opacity="0.08" strokeWidth="0.2" strokeDasharray="3 4">
+        {/* Converging perspective lines from viewer to vanishing point */}
+        <path d="M10 100 L50 2" />
+        <path d="M30 100 L50 2" />
+        <path d="M70 100 L50 2" />
+        <path d="M90 100 L50 2" />
+        {/* Horizontal depth lines */}
+        <path d="M5 80 L95 80" opacity="0.6" />
+        <path d="M15 40 L85 40" opacity="0.6" />
+        <path d="M30 15 L70 15" opacity="0.6" />
+      </g>
+
+      {/* PRIMARY - Exposed timber structure with TRUE SINGLE-POINT PERSPECTIVE */}
       <g strokeWidth="1.2">
-        {/* Main beam (wall plate) running along wall edges - enhanced depth */}
+        {/* Main beam (wall plate) - CONVERGING toward vanishing point */}
+        {/* Near edge (at viewer) */}
         <path d="M0 58 L100 58" strokeWidth="2.8" />
         <path d="M0 61 L100 61" strokeWidth="1.8" opacity="0.6" />
         <path d="M0 63 L100 63" strokeWidth="0.8" opacity="0.3" />
+        {/* Far edges converging */}
+        <path d="M10 5 L90 5" strokeWidth="1.2" opacity="0.4" />
+        <path d="M20 3 L80 3" strokeWidth="0.6" opacity="0.25" />
 
-        {/* Beam 1 - farthest (at top) - ENHANCED */}
-        {/* Main beam body with depth */}
-        <path d="M15 58 L15 8" strokeWidth="3.2" />
-        <path d="M18 58 L18 10" strokeWidth="1.6" opacity="0.5" />
-        <path d="M12 58 L12 10" strokeWidth="1.6" opacity="0.5" />
-        {/* Wood grain texture - more detailed */}
-        <rect x="12" y="10" width="6" height="48" fill="url(#wood-grain-bold)" opacity="0.25" stroke="none" />
-        <path d="M13.5 25 Q14.5 27, 15.5 25" strokeWidth="0.4" opacity="0.35" />
-        <path d="M13.5 40 Q14.5 42, 15.5 40" strokeWidth="0.4" opacity="0.35" />
-        {/* Knot detail */}
-        <ellipse cx="14.5" cy="32" rx="1" ry="1.5" strokeWidth="0.4" opacity="0.3" />
+        {/* Beam 1 - CONVERGING toward vanishing point (15, 58) → (32, 8) */}
+        {/* Main beam center line */}
+        <path d="M15 58 L32 8" strokeWidth="3.2" />
+        {/* Right edge (showing depth) */}
+        <path d="M18 58 L34 9" strokeWidth="1.6" opacity="0.5" />
+        {/* Left edge (showing depth) */}
+        <path d="M12 58 L30 9" strokeWidth="1.6" opacity="0.5" />
+        {/* Wood grain texture - more detailed, transformed for perspective */}
+        <path d="M13.5 48 Q14.5 50, 15.5 48" strokeWidth="0.4" opacity="0.35" />
+        <path d="M15 35 Q16 37, 17 35" strokeWidth="0.4" opacity="0.35" />
+        <path d="M20 20 Q21 22, 22 20" strokeWidth="0.35" opacity="0.3" />
+        {/* Knot detail (foreshortened in distance) */}
+        <ellipse cx="18" cy="28" rx="0.8" ry="1.2" strokeWidth="0.4" opacity="0.3" />
         {/* Shadow on underside */}
-        <path d="M12 10 L12 58" strokeWidth="0.5" opacity="0.2" strokeDasharray="1 1" />
+        <path d="M12 58 L30 9" strokeWidth="0.5" opacity="0.2" strokeDasharray="1 1" />
 
-        {/* Beam 2 - ENHANCED */}
-        <path d="M35 58 L35 5" strokeWidth="3.8" />
-        <path d="M38 58 L38 7" strokeWidth="1.8" opacity="0.5" />
-        <path d="M32 58 L32 7" strokeWidth="1.8" opacity="0.5" />
-        {/* Wood grain texture */}
-        <rect x="32" y="7" width="6" height="51" fill="url(#wood-grain-bold)" opacity="0.3" stroke="none" />
-        <path d="M33.5 20 Q34.5 22, 35.5 20" strokeWidth="0.45" opacity="0.35" />
-        <path d="M33.5 35 Q34.5 37, 35.5 35" strokeWidth="0.45" opacity="0.35" />
+        {/* Beam 2 - CONVERGING toward vanishing point (35, 58) → (44, 5) */}
+        {/* Main beam center line */}
+        <path d="M35 58 L44 5" strokeWidth="3.8" />
+        {/* Right edge (showing depth) */}
+        <path d="M38 58 L46 6" strokeWidth="1.8" opacity="0.5" />
+        {/* Left edge (showing depth) */}
+        <path d="M32 58 L42 6" strokeWidth="1.8" opacity="0.5" />
+        {/* Wood grain texture (perspective-adjusted) */}
+        <path d="M33.5 48 Q34.5 50, 35.5 48" strokeWidth="0.45" opacity="0.35" />
+        <path d="M36 32 Q37 34, 38 32" strokeWidth="0.45" opacity="0.35" />
+        <path d="M40 18 Q41 20, 42 18" strokeWidth="0.4" opacity="0.3" />
         {/* Chamfered edge detail */}
-        <path d="M38 7 L39 8" strokeWidth="0.6" opacity="0.4" />
         <path d="M38 58 L39 57" strokeWidth="0.6" opacity="0.4" />
+        <path d="M45 7 L46 8" strokeWidth="0.5" opacity="0.35" />
 
-        {/* Beam 3 - center - LARGEST, MOST DETAILED */}
-        <path d="M55 58 L55 3" strokeWidth="4.5" />
-        <path d="M59 58 L59 5" strokeWidth="2" opacity="0.5" />
-        <path d="M51 58 L51 5" strokeWidth="2" opacity="0.5" />
-        {/* Rich wood grain texture */}
-        <rect x="51" y="5" width="8" height="53" fill="url(#wood-grain-bold)" opacity="0.35" stroke="none" />
-        <path d="M52.5 18 Q53.5 20, 54.5 18" strokeWidth="0.5" opacity="0.4" />
-        <path d="M52.5 38 Q53.5 40, 54.5 38" strokeWidth="0.5" opacity="0.4" />
-        {/* Large knot with detail */}
-        <ellipse cx="55" cy="28" rx="1.5" ry="2" strokeWidth="0.5" opacity="0.35" />
-        <circle cx="55" cy="28" r="0.8" strokeWidth="0.3" opacity="0.25" />
+        {/* Beam 3 - center - CONVERGING toward vanishing point (55, 58) → (52, 3) */}
+        {/* Main beam center line (largest, closest to viewer) */}
+        <path d="M55 58 L52 3" strokeWidth="4.5" />
+        {/* Right edge (showing depth) */}
+        <path d="M59 58 L54 4" strokeWidth="2" opacity="0.5" />
+        {/* Left edge (showing depth) */}
+        <path d="M51 58 L50 4" strokeWidth="2" opacity="0.5" />
+        {/* Rich wood grain texture (perspective-adjusted) */}
+        <path d="M52.5 48 Q53.5 50, 54.5 48" strokeWidth="0.5" opacity="0.4" />
+        <path d="M53 35 Q54 37, 55 35" strokeWidth="0.5" opacity="0.4" />
+        <path d="M52 22 Q52.5 24, 53 22" strokeWidth="0.45" opacity="0.35" />
+        {/* Large knot with detail (foreshortened) */}
+        <ellipse cx="54" cy="30" rx="1.3" ry="1.8" strokeWidth="0.5" opacity="0.35" />
+        <circle cx="54" cy="30" r="0.7" strokeWidth="0.3" opacity="0.25" />
         {/* Wood split/crack */}
-        <path d="M55 15 L55.5 18 L55 21" strokeWidth="0.3" opacity="0.3" strokeDasharray="1 0.5" />
+        <path d="M53 18 L53.2 20 L52.8 22" strokeWidth="0.3" opacity="0.3" strokeDasharray="1 0.5" />
 
-        {/* Beam 4 - ENHANCED */}
-        <path d="M75 58 L75 8" strokeWidth="3.8" />
-        <path d="M78 58 L78 10" strokeWidth="1.8" opacity="0.5" />
-        <path d="M72 58 L72 10" strokeWidth="1.8" opacity="0.5" />
-        {/* Wood grain */}
-        <rect x="72" y="10" width="6" height="48" fill="url(#wood-grain-bold)" opacity="0.3" stroke="none" />
-        <path d="M73.5 22 Q74.5 24, 75.5 22" strokeWidth="0.45" opacity="0.35" />
-        <path d="M73.5 42 Q74.5 44, 75.5 42" strokeWidth="0.45" opacity="0.35" />
+        {/* Beam 4 - CONVERGING toward vanishing point (75, 58) → (56, 5) */}
+        {/* Main beam center line */}
+        <path d="M75 58 L56 5" strokeWidth="3.8" />
+        {/* Right edge (showing depth) */}
+        <path d="M78 58 L58 6" strokeWidth="1.8" opacity="0.5" />
+        {/* Left edge (showing depth) */}
+        <path d="M72 58 L54 6" strokeWidth="1.8" opacity="0.5" />
+        {/* Wood grain (perspective-adjusted) */}
+        <path d="M73.5 48 Q74.5 50, 75.5 48" strokeWidth="0.45" opacity="0.35" />
+        <path d="M70 32 Q71 34, 72 32" strokeWidth="0.45" opacity="0.35" />
+        <path d="M62 18 Q63 20, 64 18" strokeWidth="0.4" opacity="0.3" />
 
-        {/* Beam 5 - closest (largest at bottom) - ENHANCED */}
-        <path d="M92 58 L92 15" strokeWidth="3.2" />
-        <path d="M95 58 L95 17" strokeWidth="1.6" opacity="0.5" />
-        <path d="M89 58 L89 17" strokeWidth="1.6" opacity="0.5" />
-        {/* Wood grain */}
-        <rect x="89" y="17" width="6" height="41" fill="url(#wood-grain-bold)" opacity="0.25" stroke="none" />
-        <path d="M90.5 30 Q91.5 32, 92.5 30" strokeWidth="0.4" opacity="0.35" />
+        {/* Beam 5 - CONVERGING toward vanishing point (92, 58) → (68, 8) */}
+        {/* Main beam center line */}
+        <path d="M92 58 L68 8" strokeWidth="3.2" />
+        {/* Right edge (showing depth) */}
+        <path d="M95 58 L70 9" strokeWidth="1.6" opacity="0.5" />
+        {/* Left edge (showing depth) */}
+        <path d="M89 58 L66 9" strokeWidth="1.6" opacity="0.5" />
+        {/* Wood grain (perspective-adjusted) */}
+        <path d="M90.5 48 Q91.5 50, 92.5 48" strokeWidth="0.4" opacity="0.35" />
+        <path d="M85 35 Q86 37, 87 35" strokeWidth="0.4" opacity="0.35" />
+        <path d="M72 20 Q73 22, 74 20" strokeWidth="0.35" opacity="0.3" />
 
-        {/* Smaller purlins running perpendicular - ENHANCED with depth */}
-        <path d="M15 20 L35 18" strokeWidth="1.4" />
-        <path d="M15 21 L35 19" strokeWidth="0.6" opacity="0.4" />
-        <path d="M35 18 L55 15" strokeWidth="1.5" />
-        <path d="M35 19 L55 16" strokeWidth="0.6" opacity="0.4" />
-        <path d="M55 15 L75 18" strokeWidth="1.5" />
-        <path d="M55 16 L75 19" strokeWidth="0.6" opacity="0.4" />
-        <path d="M75 18 L92 20" strokeWidth="1.4" />
-        <path d="M75 19 L92 21" strokeWidth="0.6" opacity="0.4" />
+        {/* Smaller purlins running perpendicular - PERSPECTIVE-CORRECTED */}
+        {/* Upper purlin near vanishing point (connecting far ends of beams) */}
+        <path d="M30 9 L42 6" strokeWidth="1.2" />
+        <path d="M30 9.5 L42 6.5" strokeWidth="0.5" opacity="0.4" />
+        <path d="M42 6 L52 4" strokeWidth="1.3" />
+        <path d="M42 6.5 L52 4.5" strokeWidth="0.5" opacity="0.4" />
+        <path d="M52 4 L58 6" strokeWidth="1.3" />
+        <path d="M52 4.5 L58 6.5" strokeWidth="0.5" opacity="0.4" />
+        <path d="M58 6 L70 9" strokeWidth="1.2" />
+        <path d="M58 6.5 L70 9.5" strokeWidth="0.5" opacity="0.4" />
 
-        <path d="M15 38 L35 35" strokeWidth="1.4" />
-        <path d="M15 39 L35 36" strokeWidth="0.6" opacity="0.4" />
-        <path d="M35 35 L55 32" strokeWidth="1.5" />
-        <path d="M35 36 L55 33" strokeWidth="0.6" opacity="0.4" />
-        <path d="M55 32 L75 35" strokeWidth="1.5" />
-        <path d="M55 33 L75 36" strokeWidth="0.6" opacity="0.4" />
-        <path d="M75 35 L92 38" strokeWidth="1.4" />
-        <path d="M75 36 L92 39" strokeWidth="0.6" opacity="0.4" />
+        {/* Lower purlin at mid-distance (connecting beams at mid-points) */}
+        <path d="M24 32 L39 20" strokeWidth="1.4" />
+        <path d="M24 32.5 L39 20.5" strokeWidth="0.6" opacity="0.4" />
+        <path d="M39 20 L53 12" strokeWidth="1.5" />
+        <path d="M39 20.5 L53 12.5" strokeWidth="0.6" opacity="0.4" />
+        <path d="M53 12 L64 20" strokeWidth="1.5" />
+        <path d="M53 12.5 L64 20.5" strokeWidth="0.6" opacity="0.4" />
+        <path d="M64 20 L80 32" strokeWidth="1.4" />
+        <path d="M64 20.5 L80 32.5" strokeWidth="0.6" opacity="0.4" />
 
-        {/* ENHANCED ceiling boards between beams - much more detailed */}
+        {/* ENHANCED ceiling boards between beams - PERSPECTIVE-CORRECTED */}
         <g opacity="0.3">
-          {/* Board planks with wood grain */}
-          <path d="M18 25 L32 23" strokeWidth="0.5" strokeDasharray="3 1" />
-          <path d="M18 26.5 L32 24.5" strokeWidth="0.25" />
-          <path d="M19 28 L31 26" strokeWidth="0.5" strokeDasharray="3 1" />
+          {/* Board planks with wood grain - following perspective convergence */}
+          {/* Between beam 1 and beam 2 */}
+          <path d="M28 24 L38 16" strokeWidth="0.5" strokeDasharray="3 1" />
+          <path d="M29 26 L39 18" strokeWidth="0.25" />
+          <path d="M27 28 L37 20" strokeWidth="0.5" strokeDasharray="3 1" />
 
-          <path d="M38 22 L51 20" strokeWidth="0.5" strokeDasharray="3 1" />
-          <path d="M38 23.5 L51 21.5" strokeWidth="0.25" />
+          {/* Between beam 2 and beam 3 */}
+          <path d="M46 14 L53 10" strokeWidth="0.5" strokeDasharray="3 1" />
+          <path d="M47 16 L53.5 12" strokeWidth="0.25" />
 
-          <path d="M59 20 L72 22" strokeWidth="0.5" strokeDasharray="3 1" />
-          <path d="M59 21.5 L72 23.5" strokeWidth="0.25" />
+          {/* Between beam 3 and beam 4 */}
+          <path d="M53 10 L60 14" strokeWidth="0.5" strokeDasharray="3 1" />
+          <path d="M53.5 12 L61 16" strokeWidth="0.25" />
 
-          {/* Wood grain on ceiling boards */}
-          <rect x="18" y="23" width="14" height="6" fill="url(#wood-grain-fine)" opacity="0.15" stroke="none" />
-          <rect x="38" y="20" width="13" height="6" fill="url(#wood-grain-fine)" opacity="0.15" stroke="none" />
-          <rect x="59" y="20" width="13" height="6" fill="url(#wood-grain-fine)" opacity="0.15" stroke="none" />
+          {/* Between beam 4 and beam 5 */}
+          <path d="M68 16 L78 24" strokeWidth="0.5" strokeDasharray="3 1" />
+          <path d="M67 18 L77 26" strokeWidth="0.25" />
         </g>
 
         {/* Wooden pegs/joints - MORE DETAILED */}
