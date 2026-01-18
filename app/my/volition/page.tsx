@@ -15,6 +15,7 @@ import {
   Rocket,
   Maximize2,
   Minimize2,
+  Minus,
   RotateCcw,
   Check,
   Settings,
@@ -62,12 +63,12 @@ export default function MyVolitionPage() {
   // Layout state
   const {
     enabledLanes,
-    isCompact,
+    viewMode,
     isCustomizing,
     getOrderedLanes,
     allLanes,
     toggleLane,
-    toggleCompact,
+    cycleViewMode,
     resetToDefaults,
     startCustomizing,
     stopCustomizing,
@@ -345,7 +346,7 @@ export default function MyVolitionPage() {
               <ProjectCard
                 project={project}
                 userId={user.id}
-                isCompact={isCompact}
+                viewMode={viewMode}
                 onPreview={(p) => setPreviewProject(p)}
                 onDelete={(id) =>
                   setDeleteModal({
@@ -366,7 +367,7 @@ export default function MyVolitionPage() {
             <SortableCard key={article.id} id={article.id} isCustomizing={isCustomizing}>
               <ArticleCard
                 article={article}
-                isCompact={isCompact}
+                viewMode={viewMode}
                 onDelete={(id) =>
                   setDeleteModal({
                     isOpen: true,
@@ -386,7 +387,7 @@ export default function MyVolitionPage() {
             <SortableCard key={module.id} id={module.id} isCustomizing={isCustomizing}>
               <LearningCard
                 module={module}
-                isCompact={isCompact}
+                viewMode={viewMode}
               />
             </SortableCard>
           ))
@@ -405,7 +406,7 @@ export default function MyVolitionPage() {
                     key={user.id}
                     user={user}
                     type="following"
-                    isCompact={isCompact}
+                    viewMode={viewMode}
                     className="mb-2"
                   />
                 ))}
@@ -421,7 +422,7 @@ export default function MyVolitionPage() {
                     key={user.id}
                     user={user}
                     type="suggestion"
-                    isCompact={isCompact}
+                    viewMode={viewMode}
                     onFollow={handleFollow}
                     className="mb-2"
                   />
@@ -438,7 +439,7 @@ export default function MyVolitionPage() {
               <FeedPostCard
                 post={post}
                 currentUserId={user.id}
-                isCompact={isCompact}
+                viewMode={viewMode}
                 onDelete={(id) =>
                   setDeleteModal({
                     isOpen: true,
@@ -453,7 +454,7 @@ export default function MyVolitionPage() {
         ) : null
 
       case 'impact':
-        return <ImpactCard isCompact={isCompact} />
+        return <ImpactCard viewMode={viewMode} />
 
       default:
         return null
@@ -559,17 +560,28 @@ export default function MyVolitionPage() {
 
             {/* Desktop controls */}
             <div className="hidden md:flex items-center gap-2">
-              {/* Compact toggle */}
+              {/* View mode toggle */}
               <button
-                onClick={toggleCompact}
+                onClick={cycleViewMode}
                 className="flex items-center gap-2 px-3 py-2 bg-white/20 hover:bg-white/30 rounded-lg text-white text-sm font-medium transition-colors"
-                title={isCompact ? 'Expand cards' : 'Compact cards'}
+                title={
+                  viewMode === 'expanded' ? 'Switch to compact view' :
+                  viewMode === 'compact' ? 'Switch to minimal view' :
+                  'Switch to expanded view'
+                }
               >
-                {isCompact ? (
-                  <Maximize2 className="w-4 h-4" />
-                ) : (
+                {viewMode === 'expanded' ? (
                   <Minimize2 className="w-4 h-4" />
+                ) : viewMode === 'compact' ? (
+                  <Minus className="w-4 h-4" />
+                ) : (
+                  <Maximize2 className="w-4 h-4" />
                 )}
+                <span className="text-xs">
+                  {viewMode === 'expanded' ? 'Full' :
+                   viewMode === 'compact' ? 'Compact' :
+                   'Minimal'}
+                </span>
               </button>
 
               {!isCustomizing ? (
@@ -665,7 +677,7 @@ export default function MyVolitionPage() {
                 <ProfileCard
                   user={user}
                   userProfile={userProfile}
-                  isCompact={isCompact}
+                  viewMode={viewMode}
                   onExpand={() => setShowBusinessCardModal(true)}
                 />
               ) : (
@@ -675,7 +687,7 @@ export default function MyVolitionPage() {
                   icon={iconMap[orderedLanes[activeLaneIndex].icon as keyof typeof iconMap] || User}
                   count={getLaneCount(orderedLanes[activeLaneIndex].id)}
                   gradient={orderedLanes[activeLaneIndex].gradient}
-                  isCompact={isCompact}
+                  viewMode={viewMode}
                   isCustomizing={isCustomizing}
                   onRemove={() => toggleLane(orderedLanes[activeLaneIndex].id)}
                   emptyState={getLaneEmptyState(orderedLanes[activeLaneIndex].id)}
@@ -717,7 +729,7 @@ export default function MyVolitionPage() {
                       <ProfileCard
                         user={user}
                         userProfile={userProfile}
-                        isCompact={isCompact}
+                        viewMode={viewMode}
                         onExpand={() => setShowBusinessCardModal(true)}
                       />
                     </div>
@@ -734,7 +746,7 @@ export default function MyVolitionPage() {
                   itemIds={itemIds}
                   count={getLaneCount(lane.id)}
                   gradient={lane.gradient}
-                  isCompact={isCompact}
+                  viewMode={viewMode}
                   isCustomizing={isCustomizing}
                   onRemove={() => toggleLane(lane.id)}
                   emptyState={getLaneEmptyState(lane.id)}
@@ -761,7 +773,7 @@ export default function MyVolitionPage() {
                   icon={Icon}
                   count={getLaneCount(lane.id)}
                   gradient={lane.gradient}
-                  isCompact={isCompact}
+                  viewMode={viewMode}
                   isCustomizing={isCustomizing}
                   onRemove={() => toggleLane(lane.id)}
                   emptyState={getLaneEmptyState(lane.id)}
