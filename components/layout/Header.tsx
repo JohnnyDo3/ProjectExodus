@@ -153,9 +153,9 @@ export function Header() {
   ]
 
   const communityMenuItems = [
-    { label: 'Discussions', href: '/community/feed', myLabel: 'My Discussions' },
-    { label: 'Projects', href: '/community/projects', myLabel: 'My Projects' },
-    { label: 'Network', href: '/network', myLabel: 'My Network' },
+    { label: 'Discussions', href: '/community/feed', myLabel: 'Discussions' },
+    { label: 'Projects', href: '/community/projects', myLabel: 'Projects' },
+    { label: 'Network', href: '/network', myLabel: 'Network' },
   ]
 
   const handleSignOut = async () => {
