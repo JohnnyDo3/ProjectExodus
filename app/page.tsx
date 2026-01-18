@@ -398,7 +398,7 @@ export default function Home() {
                 </CardHeader>
                 <CardContent className="text-center">
                   <p className="text-base font-bold text-theme-muted">
-                    Our Senate - Collaborative decision-making body guiding strategic direction
+                    Our Senate - Collaborative prosumer decision-making body guiding strategic direction
                   </p>
                 </CardContent>
               </Card>
