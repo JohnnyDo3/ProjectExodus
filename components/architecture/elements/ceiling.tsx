@@ -1,6 +1,7 @@
 'use client'
 
 import React from 'react'
+import { MaterialPatterns } from './materialPatterns'
 
 // Reusable HaloFilter for golden glow effect
 const HaloFilter = ({ id, intensity = 1 }: { id: string; intensity?: number }) => (
@@ -320,81 +321,130 @@ const DroppedCeilingSVG: React.FC<SVGProps> = ({ showHalo }) => (
  */
 const ExposedBeamsSVG: React.FC<SVGProps> = ({ showHalo }) => (
   <svg viewBox="0 0 100 100" className="w-full h-full">
+    <MaterialPatterns />
     {showHalo && <HaloFilter id="beam-halo" intensity={0.85} />}
     <g filter={showHalo ? "url(#beam-halo)" : undefined} fill="none" stroke="currentColor" strokeLinecap="round">
-      {/* CONTEXT - Stone/plaster walls at edges */}
-      <g strokeDasharray="3 2" opacity="0.3" strokeWidth="0.6">
+      {/* CONTEXT - Stone/plaster walls at edges - more refined */}
+      <g strokeDasharray="3 2" opacity="0.25" strokeWidth="0.5">
         <path d="M0 100 L0 60" />
         <path d="M100 100 L100 60" />
-        <path d="M0 65 L5 65" strokeWidth="0.4" />
-        <path d="M95 65 L100 65" strokeWidth="0.4" />
+        <path d="M0 65 L5 65" strokeWidth="0.3" />
+        <path d="M95 65 L100 65" strokeWidth="0.3" />
+        {/* Subtle plaster texture on walls */}
+        <path d="M2 72 L4 74" strokeWidth="0.2" opacity="0.5" />
+        <path d="M96 78 L98 80" strokeWidth="0.2" opacity="0.5" />
       </g>
 
       {/* PRIMARY - Exposed timber structure with perspective */}
       <g strokeWidth="1.2">
-        {/* Main beam (wall plate) running along wall edges */}
-        <path d="M0 58 L100 58" strokeWidth="2.5" />
-        <path d="M0 62 L100 62" strokeWidth="1.5" opacity="0.7" />
+        {/* Main beam (wall plate) running along wall edges - enhanced depth */}
+        <path d="M0 58 L100 58" strokeWidth="2.8" />
+        <path d="M0 61 L100 61" strokeWidth="1.8" opacity="0.6" />
+        <path d="M0 63 L100 63" strokeWidth="0.8" opacity="0.3" />
 
-        {/* Major cross beams (joists) - perspective: closer = larger spacing */}
-        {/* Beam 1 - farthest (at top) */}
-        <path d="M15 58 L15 8" strokeWidth="3" />
-        <path d="M18 58 L18 10" strokeWidth="1.5" opacity="0.5" />
-        <path d="M12 58 L12 10" strokeWidth="1.5" opacity="0.5" />
+        {/* Beam 1 - farthest (at top) - ENHANCED */}
+        {/* Main beam body with depth */}
+        <path d="M15 58 L15 8" strokeWidth="3.2" />
+        <path d="M18 58 L18 10" strokeWidth="1.6" opacity="0.5" />
+        <path d="M12 58 L12 10" strokeWidth="1.6" opacity="0.5" />
+        {/* Wood grain texture - more detailed */}
+        <rect x="12" y="10" width="6" height="48" fill="url(#wood-grain-bold)" opacity="0.25" stroke="none" />
+        <path d="M13.5 25 Q14.5 27, 15.5 25" strokeWidth="0.4" opacity="0.35" />
+        <path d="M13.5 40 Q14.5 42, 15.5 40" strokeWidth="0.4" opacity="0.35" />
+        {/* Knot detail */}
+        <ellipse cx="14.5" cy="32" rx="1" ry="1.5" strokeWidth="0.4" opacity="0.3" />
+        {/* Shadow on underside */}
+        <path d="M12 10 L12 58" strokeWidth="0.5" opacity="0.2" strokeDasharray="1 1" />
+
+        {/* Beam 2 - ENHANCED */}
+        <path d="M35 58 L35 5" strokeWidth="3.8" />
+        <path d="M38 58 L38 7" strokeWidth="1.8" opacity="0.5" />
+        <path d="M32 58 L32 7" strokeWidth="1.8" opacity="0.5" />
+        {/* Wood grain texture */}
+        <rect x="32" y="7" width="6" height="51" fill="url(#wood-grain-bold)" opacity="0.3" stroke="none" />
+        <path d="M33.5 20 Q34.5 22, 35.5 20" strokeWidth="0.45" opacity="0.35" />
+        <path d="M33.5 35 Q34.5 37, 35.5 35" strokeWidth="0.45" opacity="0.35" />
+        {/* Chamfered edge detail */}
+        <path d="M38 7 L39 8" strokeWidth="0.6" opacity="0.4" />
+        <path d="M38 58 L39 57" strokeWidth="0.6" opacity="0.4" />
+
+        {/* Beam 3 - center - LARGEST, MOST DETAILED */}
+        <path d="M55 58 L55 3" strokeWidth="4.5" />
+        <path d="M59 58 L59 5" strokeWidth="2" opacity="0.5" />
+        <path d="M51 58 L51 5" strokeWidth="2" opacity="0.5" />
+        {/* Rich wood grain texture */}
+        <rect x="51" y="5" width="8" height="53" fill="url(#wood-grain-bold)" opacity="0.35" stroke="none" />
+        <path d="M52.5 18 Q53.5 20, 54.5 18" strokeWidth="0.5" opacity="0.4" />
+        <path d="M52.5 38 Q53.5 40, 54.5 38" strokeWidth="0.5" opacity="0.4" />
+        {/* Large knot with detail */}
+        <ellipse cx="55" cy="28" rx="1.5" ry="2" strokeWidth="0.5" opacity="0.35" />
+        <circle cx="55" cy="28" r="0.8" strokeWidth="0.3" opacity="0.25" />
+        {/* Wood split/crack */}
+        <path d="M55 15 L55.5 18 L55 21" strokeWidth="0.3" opacity="0.3" strokeDasharray="1 0.5" />
+
+        {/* Beam 4 - ENHANCED */}
+        <path d="M75 58 L75 8" strokeWidth="3.8" />
+        <path d="M78 58 L78 10" strokeWidth="1.8" opacity="0.5" />
+        <path d="M72 58 L72 10" strokeWidth="1.8" opacity="0.5" />
         {/* Wood grain */}
-        <path d="M14 25 L17 30" strokeWidth="0.5" opacity="0.4" />
-        <path d="M14 40 L17 45" strokeWidth="0.5" opacity="0.4" />
+        <rect x="72" y="10" width="6" height="48" fill="url(#wood-grain-bold)" opacity="0.3" stroke="none" />
+        <path d="M73.5 22 Q74.5 24, 75.5 22" strokeWidth="0.45" opacity="0.35" />
+        <path d="M73.5 42 Q74.5 44, 75.5 42" strokeWidth="0.45" opacity="0.35" />
 
-        {/* Beam 2 */}
-        <path d="M35 58 L35 5" strokeWidth="3.5" />
-        <path d="M38 58 L38 7" strokeWidth="1.6" opacity="0.5" />
-        <path d="M32 58 L32 7" strokeWidth="1.6" opacity="0.5" />
-        <path d="M34 20 L37 25" strokeWidth="0.5" opacity="0.4" />
-        <path d="M34 35 L37 40" strokeWidth="0.5" opacity="0.4" />
+        {/* Beam 5 - closest (largest at bottom) - ENHANCED */}
+        <path d="M92 58 L92 15" strokeWidth="3.2" />
+        <path d="M95 58 L95 17" strokeWidth="1.6" opacity="0.5" />
+        <path d="M89 58 L89 17" strokeWidth="1.6" opacity="0.5" />
+        {/* Wood grain */}
+        <rect x="89" y="17" width="6" height="41" fill="url(#wood-grain-bold)" opacity="0.25" stroke="none" />
+        <path d="M90.5 30 Q91.5 32, 92.5 30" strokeWidth="0.4" opacity="0.35" />
 
-        {/* Beam 3 - center */}
-        <path d="M55 58 L55 3" strokeWidth="4" />
-        <path d="M59 58 L59 5" strokeWidth="1.8" opacity="0.5" />
-        <path d="M51 58 L51 5" strokeWidth="1.8" opacity="0.5" />
-        <path d="M54 18 L57 23" strokeWidth="0.5" opacity="0.4" />
-        <path d="M54 38 L57 43" strokeWidth="0.5" opacity="0.4" />
+        {/* Smaller purlins running perpendicular - ENHANCED with depth */}
+        <path d="M15 20 L35 18" strokeWidth="1.4" />
+        <path d="M15 21 L35 19" strokeWidth="0.6" opacity="0.4" />
+        <path d="M35 18 L55 15" strokeWidth="1.5" />
+        <path d="M35 19 L55 16" strokeWidth="0.6" opacity="0.4" />
+        <path d="M55 15 L75 18" strokeWidth="1.5" />
+        <path d="M55 16 L75 19" strokeWidth="0.6" opacity="0.4" />
+        <path d="M75 18 L92 20" strokeWidth="1.4" />
+        <path d="M75 19 L92 21" strokeWidth="0.6" opacity="0.4" />
 
-        {/* Beam 4 */}
-        <path d="M75 58 L75 8" strokeWidth="3.5" />
-        <path d="M78 58 L78 10" strokeWidth="1.6" opacity="0.5" />
-        <path d="M72 58 L72 10" strokeWidth="1.6" opacity="0.5" />
+        <path d="M15 38 L35 35" strokeWidth="1.4" />
+        <path d="M15 39 L35 36" strokeWidth="0.6" opacity="0.4" />
+        <path d="M35 35 L55 32" strokeWidth="1.5" />
+        <path d="M35 36 L55 33" strokeWidth="0.6" opacity="0.4" />
+        <path d="M55 32 L75 35" strokeWidth="1.5" />
+        <path d="M55 33 L75 36" strokeWidth="0.6" opacity="0.4" />
+        <path d="M75 35 L92 38" strokeWidth="1.4" />
+        <path d="M75 36 L92 39" strokeWidth="0.6" opacity="0.4" />
 
-        {/* Beam 5 - closest (largest at bottom of view) */}
-        <path d="M92 58 L92 15" strokeWidth="3" />
-        <path d="M95 58 L95 17" strokeWidth="1.5" opacity="0.5" />
-        <path d="M89 58 L89 17" strokeWidth="1.5" opacity="0.5" />
+        {/* Ceiling boards between beams - more refined */}
+        <path d="M18 25 L32 23" strokeWidth="0.4" opacity="0.25" strokeDasharray="2 1" />
+        <path d="M38 22 L51 20" strokeWidth="0.4" opacity="0.25" strokeDasharray="2 1" />
+        <path d="M59 20 L72 22" strokeWidth="0.4" opacity="0.25" strokeDasharray="2 1" />
 
-        {/* Smaller purlins running perpendicular (horizontal in view) */}
-        <path d="M15 20 L35 18" strokeWidth="1.2" />
-        <path d="M35 18 L55 15" strokeWidth="1.3" />
-        <path d="M55 15 L75 18" strokeWidth="1.3" />
-        <path d="M75 18 L92 20" strokeWidth="1.2" />
+        {/* Wooden pegs/joints - MORE DETAILED */}
+        <circle cx="15" cy="58" r="1.5" strokeWidth="0.9" />
+        <circle cx="15" cy="58" r="0.8" strokeWidth="0.4" opacity="0.5" />
+        <circle cx="35" cy="58" r="1.8" strokeWidth="1" />
+        <circle cx="35" cy="58" r="1" strokeWidth="0.4" opacity="0.5" />
+        <circle cx="55" cy="58" r="2" strokeWidth="1.1" />
+        <circle cx="55" cy="58" r="1.2" strokeWidth="0.5" opacity="0.5" />
+        <circle cx="75" cy="58" r="1.8" strokeWidth="1" />
+        <circle cx="75" cy="58" r="1" strokeWidth="0.4" opacity="0.5" />
+        <circle cx="92" cy="58" r="1.5" strokeWidth="0.9" />
+        <circle cx="92" cy="58" r="0.8" strokeWidth="0.4" opacity="0.5" />
 
-        <path d="M15 38 L35 35" strokeWidth="1.2" />
-        <path d="M35 35 L55 32" strokeWidth="1.3" />
-        <path d="M55 32 L75 35" strokeWidth="1.3" />
-        <path d="M75 35 L92 38" strokeWidth="1.2" />
-
-        {/* Ceiling boards between beams (hint) */}
-        <path d="M18 25 L32 23" strokeWidth="0.5" opacity="0.3" />
-        <path d="M38 22 L51 20" strokeWidth="0.5" opacity="0.3" />
-        <path d="M59 20 L72 22" strokeWidth="0.5" opacity="0.3" />
-
-        {/* Wooden pegs/joints */}
-        <circle cx="15" cy="58" r="1.5" strokeWidth="0.8" />
-        <circle cx="35" cy="58" r="1.8" strokeWidth="0.8" />
-        <circle cx="55" cy="58" r="2" strokeWidth="0.8" />
-        <circle cx="75" cy="58" r="1.8" strokeWidth="0.8" />
-        <circle cx="92" cy="58" r="1.5" strokeWidth="0.8" />
-
-        {/* Iron strapping detail on center beam */}
-        <path d="M52 25 L58 25" strokeWidth="1" />
-        <path d="M52 27 L58 27" strokeWidth="0.6" />
+        {/* Iron strapping detail on center beam - more refined metal look */}
+        <path d="M52 25 L58 25" strokeWidth="1.2" />
+        <path d="M52 26.5 L58 26.5" strokeWidth="0.7" opacity="0.6" />
+        <path d="M52 28 L58 28" strokeWidth="0.4" opacity="0.3" />
+        {/* Rivet details */}
+        <circle cx="53" cy="25" r="0.5" strokeWidth="0.4" opacity="0.6" />
+        <circle cx="57" cy="25" r="0.5" strokeWidth="0.4" opacity="0.6" />
+        {/* Rust/weathering */}
+        <path d="M54 26 L54.5 26.5" strokeWidth="0.2" opacity="0.3" />
+        <path d="M56 27 L56.5 27.5" strokeWidth="0.2" opacity="0.3" />
       </g>
     </g>
   </svg>

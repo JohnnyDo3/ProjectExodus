@@ -1,6 +1,7 @@
 'use client'
 
 import React from 'react'
+import { MaterialPatterns } from './materialPatterns'
 
 // Shared Halo Filter for all column SVGs
 const HaloFilter = () => (
@@ -35,49 +36,75 @@ interface SVGProps {
 // ============================================================================
 export const DoricColumnSVG = ({ showHalo = false }: SVGProps) => (
   <svg viewBox="0 0 100 100" className="w-full h-full stroke-current">
+    <MaterialPatterns />
     <HaloFilter />
 
-    {/* CONTEXT: Ground line - dashed */}
-    <path d="M 10 94 L 90 94" strokeWidth="0.8" fill="none" opacity="0.4" strokeDasharray="4 2" />
+    {/* CONTEXT: Ground line - refined dashed */}
+    <path d="M 10 94 L 90 94" strokeWidth="0.7" fill="none" opacity="0.35" strokeDasharray="4 2" />
+    <path d="M 15 96 L 85 96" strokeWidth="0.4" fill="none" opacity="0.2" strokeDasharray="2 1" />
 
-    {/* CONTEXT: Entablature above - dashed ghost */}
-    <path d="M 20 8 L 80 8" strokeWidth="0.8" fill="none" opacity="0.3" strokeDasharray="3 2" />
-    <path d="M 22 5 L 78 5" strokeWidth="0.6" fill="none" opacity="0.25" strokeDasharray="3 2" />
+    {/* CONTEXT: Entablature above - refined ghost */}
+    <path d="M 20 8 L 80 8" strokeWidth="0.7" fill="none" opacity="0.25" strokeDasharray="3 2" />
+    <path d="M 22 5 L 78 5" strokeWidth="0.5" fill="none" opacity="0.2" strokeDasharray="3 2" />
 
-    {/* PRIMARY: THE DORIC COLUMN */}
+    {/* PRIMARY: THE DORIC COLUMN - STONE MATERIALITY */}
     <g filter={showHalo ? "url(#col-halo)" : undefined}>
-      {/* Stylobate platform - solid but subtle */}
-      <path d="M 25 94 L 75 94" strokeWidth="1.5" fill="none" strokeLinecap="round" />
-      <path d="M 27 91 L 73 91" strokeWidth="1" fill="none" opacity="0.7" />
+      {/* Stylobate platform - stone base with refined edges */}
+      <path d="M 25 94 L 75 94" strokeWidth="1.8" fill="none" strokeLinecap="round" />
+      <path d="M 27 91 L 73 91" strokeWidth="1.1" fill="none" opacity="0.6" />
+      <path d="M 26 93 L 74 93" strokeWidth="0.5" fill="none" opacity="0.3" />
 
-      {/* Column shaft - NO BASE (key Doric feature) - stocky proportions */}
-      <path d="M 30 91 Q 29 60, 32 25" strokeWidth="2" fill="none" strokeLinecap="round" />
-      <path d="M 70 91 Q 71 60, 68 25" strokeWidth="2" fill="none" strokeLinecap="round" />
+      {/* Column shaft - NO BASE (key Doric feature) - stocky stone proportions */}
+      <path d="M 30 91 Q 29 60, 32 25" strokeWidth="2.2" fill="none" strokeLinecap="round" />
+      <path d="M 70 91 Q 71 60, 68 25" strokeWidth="2.2" fill="none" strokeLinecap="round" />
 
-      {/* 20 shallow flutes with sharp arrises - hand-sketched look */}
-      <path d="M 36 88 Q 37 55, 38 27" strokeWidth="0.6" fill="none" opacity="0.5" />
-      <path d="M 43 88 Q 43 55, 44 27" strokeWidth="0.6" fill="none" opacity="0.5" />
-      <path d="M 50 88 Q 50 55, 50 27" strokeWidth="0.6" fill="none" opacity="0.5" />
-      <path d="M 57 88 Q 57 55, 56 27" strokeWidth="0.6" fill="none" opacity="0.5" />
-      <path d="M 64 88 Q 63 55, 62 27" strokeWidth="0.6" fill="none" opacity="0.5" />
+      {/* Stone material texture on shaft */}
+      <rect x="30" y="25" width="40" height="66" fill="url(#stone-smooth)" opacity="0.3" stroke="none" />
 
-      {/* Subtle entasis (slight convex curve) */}
-      <path d="M 31 65 Q 28 50, 31 35" strokeWidth="0.4" fill="none" opacity="0.3" />
-      <path d="M 69 65 Q 72 50, 69 35" strokeWidth="0.4" fill="none" opacity="0.3" />
+      {/* 20 shallow flutes with sharp arrises - crisp stone carving */}
+      <path d="M 36 88 Q 37 55, 38 27" strokeWidth="0.7" fill="none" opacity="0.5" />
+      <path d="M 43 88 Q 43 55, 44 27" strokeWidth="0.7" fill="none" opacity="0.5" />
+      <path d="M 50 88 Q 50 55, 50 27" strokeWidth="0.7" fill="none" opacity="0.5" />
+      <path d="M 57 88 Q 57 55, 56 27" strokeWidth="0.7" fill="none" opacity="0.5" />
+      <path d="M 64 88 Q 63 55, 62 27" strokeWidth="0.7" fill="none" opacity="0.5" />
 
-      {/* Necking rings below capital */}
-      <path d="M 33 25 L 67 25" strokeWidth="1.2" fill="none" strokeLinecap="round" />
-      <path d="M 34 23 L 66 23" strokeWidth="0.8" fill="none" opacity="0.6" />
+      {/* Shadow in deeper flutes */}
+      <path d="M 36.5 88 Q 37 55, 37.5 27" strokeWidth="0.3" fill="none" opacity="0.25" />
+      <path d="M 50.5 88 Q 50.5 55, 50.5 27" strokeWidth="0.3" fill="none" opacity="0.25" />
+      <path d="M 63.5 88 Q 63 55, 62.5 27" strokeWidth="0.3" fill="none" opacity="0.25" />
 
-      {/* Echinus - curved cushion shape */}
-      <path d="M 30 21 Q 38 17, 50 16 Q 62 17, 70 21" strokeWidth="1.8" fill="none" strokeLinecap="round" />
-      <path d="M 32 19 Q 40 16, 50 15.5 Q 60 16, 68 19" strokeWidth="0.7" fill="none" opacity="0.4" />
+      {/* Subtle entasis (slight convex curve) - refined */}
+      <path d="M 31 65 Q 28 50, 31 35" strokeWidth="0.5" fill="none" opacity="0.25" />
+      <path d="M 69 65 Q 72 50, 69 35" strokeWidth="0.5" fill="none" opacity="0.25" />
 
-      {/* Abacus - plain square slab on top */}
-      <path d="M 26 14 L 74 14" strokeWidth="2" fill="none" strokeLinecap="round" />
-      <path d="M 26 14 L 26 9" strokeWidth="1.8" fill="none" strokeLinecap="round" />
-      <path d="M 74 14 L 74 9" strokeWidth="1.8" fill="none" strokeLinecap="round" />
-      <path d="M 26 9 L 74 9" strokeWidth="2" fill="none" strokeLinecap="round" />
+      {/* Chisel marks on stone */}
+      <path d="M 33 52 L 35 53" strokeWidth="0.25" fill="none" opacity="0.2" />
+      <path d="M 65 48 L 67 49" strokeWidth="0.25" fill="none" opacity="0.2" />
+
+      {/* Necking rings below capital - carved bands */}
+      <path d="M 33 25 L 67 25" strokeWidth="1.4" fill="none" strokeLinecap="round" />
+      <path d="M 34 23 L 66 23" strokeWidth="0.9" fill="none" opacity="0.6" />
+      <path d="M 33.5 24 L 66.5 24" strokeWidth="0.4" fill="none" opacity="0.3" />
+
+      {/* Echinus - curved cushion shape with stone depth */}
+      <path d="M 30 21 Q 38 17, 50 16 Q 62 17, 70 21" strokeWidth="2" fill="none" strokeLinecap="round" />
+      <path d="M 32 19 Q 40 16, 50 15.5 Q 60 16, 68 19" strokeWidth="0.8" fill="none" opacity="0.4" />
+      <path d="M 31 20 Q 39 16.5, 50 15.8 Q 61 16.5, 69 20" strokeWidth="0.4" fill="none" opacity="0.25" />
+      {/* Shadow under echinus */}
+      <path d="M 32 21.5 Q 40 20, 50 19.5 Q 60 20, 68 21.5" strokeWidth="0.5" fill="none" opacity="0.2" />
+
+      {/* Abacus - plain square slab on top with refined stone edges */}
+      <path d="M 26 14 L 74 14" strokeWidth="2.2" fill="none" strokeLinecap="round" />
+      <path d="M 26 14 L 26 9" strokeWidth="2" fill="none" strokeLinecap="round" />
+      <path d="M 74 14 L 74 9" strokeWidth="2" fill="none" strokeLinecap="round" />
+      <path d="M 26 9 L 74 9" strokeWidth="2.2" fill="none" strokeLinecap="round" />
+      {/* Stone thickness/depth */}
+      <path d="M 26 13 L 74 13" strokeWidth="0.6" fill="none" opacity="0.3" />
+      <path d="M 26 10 L 74 10" strokeWidth="0.6" fill="none" opacity="0.3" />
+
+      {/* Weathering on abacus top */}
+      <path d="M 35 11 L 38 11.5" strokeWidth="0.25" fill="none" opacity="0.2" />
+      <path d="M 62 10.5 L 65 11" strokeWidth="0.25" fill="none" opacity="0.2" />
     </g>
   </svg>
 )
@@ -88,11 +115,12 @@ export const DoricColumnSVG = ({ showHalo = false }: SVGProps) => (
 // ============================================================================
 export const IonicColumnSVG = ({ showHalo = false }: SVGProps) => (
   <svg viewBox="0 0 100 100" className="w-full h-full stroke-current">
+    <MaterialPatterns />
     <HaloFilter />
 
-    {/* CONTEXT: Ground and entablature - dashed */}
-    <path d="M 10 94 L 90 94" strokeWidth="0.8" fill="none" opacity="0.4" strokeDasharray="4 2" />
-    <path d="M 14 5 L 86 5" strokeWidth="0.6" fill="none" opacity="0.3" strokeDasharray="3 2" />
+    {/* CONTEXT: Ground and entablature - refined dashed */}
+    <path d="M 10 94 L 90 94" strokeWidth="0.7" fill="none" opacity="0.35" strokeDasharray="4 2" />
+    <path d="M 14 5 L 86 5" strokeWidth="0.5" fill="none" opacity="0.25" strokeDasharray="3 2" />
 
     {/* PRIMARY: THE IONIC COLUMN */}
     <g filter={showHalo ? "url(#col-halo)" : undefined}>
@@ -106,16 +134,22 @@ export const IonicColumnSVG = ({ showHalo = false }: SVGProps) => (
       {/* Lower torus */}
       <path d="M 28 82 Q 40 79, 50 79 Q 60 79, 72 82" strokeWidth="1.4" fill="none" strokeLinecap="round" />
 
-      {/* Slender shaft - more elegant than Doric */}
-      <path d="M 32 79 Q 31 50, 35 26" strokeWidth="1.8" fill="none" strokeLinecap="round" />
-      <path d="M 68 79 Q 69 50, 65 26" strokeWidth="1.8" fill="none" strokeLinecap="round" />
+      {/* Slender shaft - more elegant than Doric - STONE MATERIAL */}
+      <path d="M 32 79 Q 31 50, 35 26" strokeWidth="2" fill="none" strokeLinecap="round" />
+      <path d="M 68 79 Q 69 50, 65 26" strokeWidth="2" fill="none" strokeLinecap="round" />
 
-      {/* 24 deeper flutes with flat fillets between */}
-      <path d="M 38 76 Q 39 50, 40 28" strokeWidth="0.5" fill="none" opacity="0.45" />
-      <path d="M 44 76 Q 44 50, 45 28" strokeWidth="0.5" fill="none" opacity="0.45" />
-      <path d="M 50 76 Q 50 50, 50 28" strokeWidth="0.5" fill="none" opacity="0.45" />
-      <path d="M 56 76 Q 56 50, 55 28" strokeWidth="0.5" fill="none" opacity="0.45" />
-      <path d="M 62 76 Q 61 50, 60 28" strokeWidth="0.5" fill="none" opacity="0.45" />
+      {/* Stone material texture */}
+      <rect x="32" y="26" width="36" height="53" fill="url(#stone-smooth)" opacity="0.25" stroke="none" />
+
+      {/* 24 deeper flutes with flat fillets - refined stone carving */}
+      <path d="M 38 76 Q 39 50, 40 28" strokeWidth="0.6" fill="none" opacity="0.5" />
+      <path d="M 44 76 Q 44 50, 45 28" strokeWidth="0.6" fill="none" opacity="0.5" />
+      <path d="M 50 76 Q 50 50, 50 28" strokeWidth="0.6" fill="none" opacity="0.5" />
+      <path d="M 56 76 Q 56 50, 55 28" strokeWidth="0.6" fill="none" opacity="0.5" />
+      <path d="M 62 76 Q 61 50, 60 28" strokeWidth="0.6" fill="none" opacity="0.5" />
+      {/* Flute depth shadows */}
+      <path d="M 38.3 76 Q 39 50, 39.7 28" strokeWidth="0.25" fill="none" opacity="0.2" />
+      <path d="M 50.3 76 Q 50.3 50, 50.3 28" strokeWidth="0.25" fill="none" opacity="0.2" />
 
       {/* Necking with egg-and-dart molding */}
       <path d="M 36 26 L 64 26" strokeWidth="1.2" fill="none" strokeLinecap="round" />
@@ -149,29 +183,36 @@ export const IonicColumnSVG = ({ showHalo = false }: SVGProps) => (
 // ============================================================================
 export const CorinthianColumnSVG = ({ showHalo = false }: SVGProps) => (
   <svg viewBox="0 0 100 100" className="w-full h-full stroke-current">
+    <MaterialPatterns />
     <HaloFilter />
 
-    {/* CONTEXT: Ground and entablature - dashed */}
-    <path d="M 10 96 L 90 96" strokeWidth="0.8" fill="none" opacity="0.4" strokeDasharray="4 2" />
-    <path d="M 18 4 L 82 4" strokeWidth="0.6" fill="none" opacity="0.3" strokeDasharray="3 2" />
+    {/* CONTEXT: Ground and entablature - refined */}
+    <path d="M 10 96 L 90 96" strokeWidth="0.7" fill="none" opacity="0.35" strokeDasharray="4 2" />
+    <path d="M 18 4 L 82 4" strokeWidth="0.5" fill="none" opacity="0.25" strokeDasharray="3 2" />
 
-    {/* PRIMARY: THE CORINTHIAN COLUMN */}
+    {/* PRIMARY: THE CORINTHIAN COLUMN - FINEST STONE */}
     <g filter={showHalo ? "url(#col-halo)" : undefined}>
       {/* Elaborate base similar to Ionic */}
-      <path d="M 24 96 L 76 96" strokeWidth="1.5" fill="none" strokeLinecap="round" />
-      <path d="M 27 93 L 73 93" strokeWidth="1" fill="none" />
-      <path d="M 29 90 Q 45 87, 50 87 Q 55 87, 71 90" strokeWidth="1.2" fill="none" />
-      <path d="M 31 87 L 69 87" strokeWidth="0.8" fill="none" opacity="0.6" />
+      <path d="M 24 96 L 76 96" strokeWidth="1.7" fill="none" strokeLinecap="round" />
+      <path d="M 27 93 L 73 93" strokeWidth="1.1" fill="none" />
+      <path d="M 29 90 Q 45 87, 50 87 Q 55 87, 71 90" strokeWidth="1.3" fill="none" />
+      <path d="M 31 87 L 69 87" strokeWidth="0.9" fill="none" opacity="0.6" />
 
-      {/* Tall slender shaft - tallest of all orders */}
-      <path d="M 34 87 Q 33 55, 37 36" strokeWidth="1.6" fill="none" strokeLinecap="round" />
-      <path d="M 66 87 Q 67 55, 63 36" strokeWidth="1.6" fill="none" strokeLinecap="round" />
+      {/* Tall slender shaft - tallest of all orders - MARBLE QUALITY */}
+      <path d="M 34 87 Q 33 55, 37 36" strokeWidth="1.8" fill="none" strokeLinecap="round" />
+      <path d="M 66 87 Q 67 55, 63 36" strokeWidth="1.8" fill="none" strokeLinecap="round" />
 
-      {/* Elegant fluting */}
-      <path d="M 40 84 Q 41 55, 42 38" strokeWidth="0.5" fill="none" opacity="0.4" />
-      <path d="M 47 84 Q 47 55, 48 38" strokeWidth="0.5" fill="none" opacity="0.4" />
-      <path d="M 53 84 Q 53 55, 52 38" strokeWidth="0.5" fill="none" opacity="0.4" />
-      <path d="M 60 84 Q 59 55, 58 38" strokeWidth="0.5" fill="none" opacity="0.4" />
+      {/* Fine marble texture */}
+      <rect x="34" y="36" width="32" height="51" fill="url(#marble-veined)" opacity="0.2" stroke="none" />
+
+      {/* Elegant fluting - precise stone carving */}
+      <path d="M 40 84 Q 41 55, 42 38" strokeWidth="0.6" fill="none" opacity="0.45" />
+      <path d="M 47 84 Q 47 55, 48 38" strokeWidth="0.6" fill="none" opacity="0.45" />
+      <path d="M 53 84 Q 53 55, 52 38" strokeWidth="0.6" fill="none" opacity="0.45" />
+      <path d="M 60 84 Q 59 55, 58 38" strokeWidth="0.6" fill="none" opacity="0.45" />
+      {/* Flute shadows */}
+      <path d="M 40.3 84 Q 41 55, 41.7 38" strokeWidth="0.25" fill="none" opacity="0.2" />
+      <path d="M 53.3 84 Q 53.3 55, 52.7 38" strokeWidth="0.25" fill="none" opacity="0.2" />
 
       {/* ORNATE ACANTHUS CAPITAL - THE defining Corinthian feature */}
       {/* Lower row of acanthus leaves (8 around column) */}

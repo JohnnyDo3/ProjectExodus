@@ -1,6 +1,7 @@
 'use client'
 
 import React from 'react'
+import { MaterialPatterns } from './materialPatterns'
 
 // Reusable HaloFilter for golden glow effect
 const HaloFilter = ({ id, intensity = 1 }: { id: string; intensity?: number }) => (
@@ -409,25 +410,26 @@ const RubbleSVG: React.FC<SVGProps> = ({ showHalo }) => (
  */
 const RusticationSVG: React.FC<SVGProps> = ({ showHalo }) => (
   <svg viewBox="0 0 100 100" className="w-full h-full">
+    <MaterialPatterns />
     {showHalo && <HaloFilter id="rustication-halo" intensity={0.9} />}
     <g filter={showHalo ? "url(#rustication-halo)" : undefined} fill="none" stroke="currentColor" strokeLinecap="round">
-      {/* CONTEXT: Building facade with floor levels */}
-      <g strokeDasharray="3 2" opacity="0.4" strokeWidth="0.5">
+      {/* CONTEXT: Building facade with floor levels - refined */}
+      <g strokeDasharray="3 2" opacity="0.3" strokeWidth="0.4">
         {/* Floor level indicators */}
         <path d="M2 30 L6 30" />
         <path d="M2 70 L6 70" />
-        <text x="1" y="29" fontSize="3" opacity="0.6">2ND</text>
-        <text x="1" y="69" fontSize="3" opacity="0.6">1ST</text>
+        <text x="1" y="29" fontSize="3" opacity="0.5">2ND</text>
+        <text x="1" y="69" fontSize="3" opacity="0.5">1ST</text>
         {/* Window openings */}
         <path d="M25 5 L25 8 L35 8 L35 5" />
         <path d="M65 5 L65 8 L75 8 L75 5" />
         {/* Adjacent wall */}
         <path d="M92 8 L98 8 L98 92" />
         {/* Base/plinth */}
-        <path d="M5 92 L98 92" strokeWidth="0.7" />
+        <path d="M5 92 L98 92" strokeWidth="0.6" />
       </g>
 
-      {/* PRIMARY: Rusticated stones with deep joints and chamfered edges */}
+      {/* PRIMARY: Rusticated stones - BOLD STONE MATERIALITY */}
       <g strokeWidth="0.8">
         {[0, 1, 2, 3].map((row) => {
           const offset = row % 2 === 0 ? 0 : 22
@@ -438,29 +440,54 @@ const RusticationSVG: React.FC<SVGProps> = ({ showHalo }) => (
             if (x + width > 92) return null
             return (
               <g key={`${row}-${col}`}>
-                {/* Stone block outer edge */}
-                <path d={`M${x} ${y} L${x+width} ${y} L${x+width} ${y+18} L${x} ${y+18} Z`} strokeWidth="1" />
-                {/* Beveled/chamfered edges showing depth */}
-                <path d={`M${x+2} ${y+2} L${x+width-2} ${y+2} L${x+width-2} ${y+16} L${x+2} ${y+16} Z`} strokeWidth="0.5" />
-                {/* Rough texture on face */}
-                <path d={`M${x+8} ${y+6} L${x+12} ${y+8}`} opacity="0.4" strokeWidth="0.6" />
-                <path d={`M${x+22} ${y+10} L${x+28} ${y+12}`} opacity="0.4" strokeWidth="0.6" />
+                {/* Rough stone material fill */}
+                <rect x={x} y={y} width={width} height={18} fill="url(#stone-rough)" opacity="0.35" stroke="none" />
+
+                {/* Stone block outer edge - BOLD */}
+                <path d={`M${x} ${y} L${x+width} ${y} L${x+width} ${y+18} L${x} ${y+18} Z`} strokeWidth="1.2" />
+
+                {/* Beveled/chamfered edges showing depth - enhanced */}
+                <path d={`M${x+2} ${y+2} L${x+width-2} ${y+2} L${x+width-2} ${y+16} L${x+2} ${y+16} Z`} strokeWidth="0.6" opacity="0.7" />
+                <path d={`M${x+3} ${y+3} L${x+width-3} ${y+3} L${x+width-3} ${y+15} L${x+3} ${y+15} Z`} strokeWidth="0.3" opacity="0.4" />
+
+                {/* Rough-hewn chisel marks - MORE DETAIL */}
+                <path d={`M${x+8} ${y+6} L${x+12} ${y+8}`} opacity="0.35" strokeWidth="0.5" />
+                <path d={`M${x+22} ${y+10} L${x+28} ${y+12}`} opacity="0.35" strokeWidth="0.5" />
+                <path d={`M${x+15} ${y+12} L${x+19} ${y+14}`} opacity="0.3" strokeWidth="0.4" />
+
+                {/* Weathering and natural stone variation */}
+                <path d={`M${x+10} ${y+4} L${x+13} ${y+5}`} opacity="0.2" strokeWidth="0.3" />
+                <path d={`M${x+30} ${y+8} L${x+33} ${y+9}`} opacity="0.2" strokeWidth="0.3" />
+
+                {/* Shadow on beveled edge */}
+                <path d={`M${x+2} ${y+2} L${x+2} ${y+16}`} opacity="0.2" strokeWidth="0.4" strokeDasharray="1 0.5" />
               </g>
             )
           })
         })}
-        {/* Deep horizontal joint grooves */}
-        <path d="M8 28 L92 28" strokeWidth="2.5" opacity="0.7" />
-        <path d="M8 48 L92 48" strokeWidth="2.5" opacity="0.7" />
-        <path d="M8 68 L92 68" strokeWidth="2.5" opacity="0.7" />
-        <path d="M8 88 L92 88" strokeWidth="2.5" opacity="0.7" />
-        {/* Deep vertical joint grooves */}
-        <path d="M48 10 L48 28" strokeWidth="2.5" opacity="0.7" />
-        <path d="M30 28 L30 48" strokeWidth="2.5" opacity="0.7" />
-        <path d="M74 28 L74 48" strokeWidth="2.5" opacity="0.7" />
-        <path d="M52 48 L52 68" strokeWidth="2.5" opacity="0.7" />
-        {/* Wall outline */}
-        <path d="M8 10 L92 10 L92 90 L8 90 Z" strokeWidth="1.2" />
+
+        {/* Deep horizontal joint grooves - ENHANCED DEPTH */}
+        <path d="M8 28 L92 28" strokeWidth="3" opacity="0.75" />
+        <path d="M8 27 L92 27" strokeWidth="0.8" opacity="0.3" />
+        <path d="M8 48 L92 48" strokeWidth="3" opacity="0.75" />
+        <path d="M8 47 L92 47" strokeWidth="0.8" opacity="0.3" />
+        <path d="M8 68 L92 68" strokeWidth="3" opacity="0.75" />
+        <path d="M8 67 L92 67" strokeWidth="0.8" opacity="0.3" />
+        <path d="M8 88 L92 88" strokeWidth="3" opacity="0.75" />
+        <path d="M8 87 L92 87" strokeWidth="0.8" opacity="0.3" />
+
+        {/* Deep vertical joint grooves - ENHANCED DEPTH */}
+        <path d="M48 10 L48 28" strokeWidth="3" opacity="0.75" />
+        <path d="M47 10 L47 28" strokeWidth="0.8" opacity="0.3" />
+        <path d="M30 28 L30 48" strokeWidth="3" opacity="0.75" />
+        <path d="M29 28 L29 48" strokeWidth="0.8" opacity="0.3" />
+        <path d="M74 28 L74 48" strokeWidth="3" opacity="0.75" />
+        <path d="M73 28 L73 48" strokeWidth="0.8" opacity="0.3" />
+        <path d="M52 48 L52 68" strokeWidth="3" opacity="0.75" />
+        <path d="M51 48 L51 68" strokeWidth="0.8" opacity="0.3" />
+
+        {/* Wall outline - refined */}
+        <path d="M8 10 L92 10 L92 90 L8 90 Z" strokeWidth="1.4" />
       </g>
     </g>
   </svg>
