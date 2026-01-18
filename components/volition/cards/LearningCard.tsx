@@ -2,6 +2,7 @@
 
 import { BookOpen, Clock, CheckCircle, PlayCircle } from 'lucide-react'
 import Link from 'next/link'
+import { ViewMode } from '@/hooks/useVolitionLayout'
 
 interface LearningCardProps {
   module: {
@@ -19,15 +20,17 @@ interface LearningCardProps {
     }
     updatedAt?: string | Date
   }
-  isCompact?: boolean
+  viewMode?: ViewMode
   className?: string
 }
 
 export function LearningCard({
   module,
-  isCompact = false,
+  viewMode = 'expanded',
   className = '',
 }: LearningCardProps) {
+  const isCompact = viewMode === 'compact'
+  const isMinimal = viewMode === 'minimal'
   const title = module.title || module.module?.title || 'Learning Module'
   const description = module.module?.description
   const duration = module.module?.duration
@@ -35,6 +38,20 @@ export function LearningCard({
   const isCompleted = module.completed || progress >= 100
   const isInProgress = progress > 0 && !isCompleted
   const moduleId = module.moduleId || module.module?.id || module.id
+
+  // Minimal view - just title header
+  if (isMinimal) {
+    return (
+      <div className={`rounded-lg overflow-hidden ${className}`}>
+        <div className="p-2 bg-gradient-to-r from-[var(--primary)] to-[var(--secondary)]">
+          <div className="flex items-center gap-2">
+            <BookOpen className="w-4 h-4 text-white flex-shrink-0" />
+            <h3 className="text-xs font-bold text-white truncate">{title}</h3>
+          </div>
+        </div>
+      </div>
+    )
+  }
 
   if (isCompact) {
     return (

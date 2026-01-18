@@ -1,8 +1,9 @@
 'use client'
 
-import { User, UserPlus, MessageCircle, Check } from 'lucide-react'
+import { User, UserPlus, MessageCircle, Check, Users } from 'lucide-react'
 import Link from 'next/link'
 import { useState } from 'react'
+import { ViewMode } from '@/hooks/useVolitionLayout'
 
 interface NetworkCardProps {
   user: {
@@ -14,7 +15,7 @@ interface NetworkCardProps {
     isFollowing?: boolean
   }
   type?: 'suggestion' | 'following' | 'follower'
-  isCompact?: boolean
+  viewMode?: ViewMode
   onFollow?: (userId: string) => void
   onMessage?: (userId: string) => void
   className?: string
@@ -23,11 +24,13 @@ interface NetworkCardProps {
 export function NetworkCard({
   user,
   type = 'suggestion',
-  isCompact = false,
+  viewMode = 'expanded',
   onFollow,
   onMessage,
   className = '',
 }: NetworkCardProps) {
+  const isCompact = viewMode === 'compact'
+  const isMinimal = viewMode === 'minimal'
   const [isFollowing, setIsFollowing] = useState(user.isFollowing || false)
   const [isLoading, setIsLoading] = useState(false)
 
@@ -42,6 +45,20 @@ export function NetworkCard({
     } finally {
       setIsLoading(false)
     }
+  }
+
+  // Minimal view - just title header
+  if (isMinimal) {
+    return (
+      <div className={`rounded-lg overflow-hidden ${className}`}>
+        <div className="p-2 bg-gradient-to-r from-[var(--accent)] to-[var(--primary)]">
+          <div className="flex items-center gap-2">
+            <Users className="w-4 h-4 text-white flex-shrink-0" />
+            <h3 className="text-xs font-bold text-white truncate">{user.name || 'Network'}</h3>
+          </div>
+        </div>
+      </div>
+    )
   }
 
   if (isCompact) {

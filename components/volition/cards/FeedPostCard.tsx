@@ -3,6 +3,7 @@
 import { Heart, MessageCircle, Share2, MoreHorizontal, Trash2, Eye, User } from 'lucide-react'
 import Link from 'next/link'
 import { useState } from 'react'
+import { ViewMode } from '@/hooks/useVolitionLayout'
 
 interface FeedPostCardProps {
   post: {
@@ -23,7 +24,7 @@ interface FeedPostCardProps {
     images?: string[]
   }
   currentUserId?: string
-  isCompact?: boolean
+  viewMode?: ViewMode
   onDelete?: (id: string) => void
   onLike?: (id: string) => void
   className?: string
@@ -32,11 +33,13 @@ interface FeedPostCardProps {
 export function FeedPostCard({
   post,
   currentUserId,
-  isCompact = false,
+  viewMode = 'expanded',
   onDelete,
   onLike,
   className = '',
 }: FeedPostCardProps) {
+  const isCompact = viewMode === 'compact'
+  const isMinimal = viewMode === 'minimal'
   const [showMenu, setShowMenu] = useState(false)
   const isOwner = post.userId === currentUserId
   const isLiked = post.likes?.some((like: any) => like.userId === currentUserId)
@@ -56,6 +59,20 @@ export function FeedPostCard({
     if (diffHours < 24) return `${diffHours}h ago`
     if (diffDays < 7) return `${diffDays}d ago`
     return d.toLocaleDateString()
+  }
+
+  // Minimal view - just title header
+  if (isMinimal) {
+    return (
+      <div className={`rounded-lg overflow-hidden ${className}`}>
+        <div className="p-2 bg-gradient-to-r from-[var(--secondary)] to-[var(--accent)]">
+          <div className="flex items-center gap-2">
+            <MessageCircle className="w-4 h-4 text-white flex-shrink-0" />
+            <h3 className="text-xs font-bold text-white truncate">Feed Post</h3>
+          </div>
+        </div>
+      </div>
+    )
   }
 
   if (isCompact) {

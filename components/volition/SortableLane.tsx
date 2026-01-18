@@ -18,6 +18,7 @@ import {
 } from '@dnd-kit/sortable'
 import { LucideIcon } from 'lucide-react'
 import { Lane } from './Lane'
+import { ViewMode } from '@/hooks/useVolitionLayout'
 
 interface SortableLaneProps {
   id: string
@@ -29,7 +30,7 @@ interface SortableLaneProps {
   gradient?: string
   onAdd?: () => void
   addLabel?: string
-  isCompact?: boolean
+  viewMode?: ViewMode
   isCustomizing?: boolean
   onRemove?: () => void
   emptyState?: ReactNode
@@ -47,7 +48,7 @@ export function SortableLane({
   gradient,
   onAdd,
   addLabel,
-  isCompact = false,
+  viewMode = 'expanded',
   isCustomizing = false,
   onRemove,
   emptyState,
@@ -85,7 +86,7 @@ export function SortableLane({
       gradient={gradient}
       onAdd={onAdd}
       addLabel={addLabel}
-      isCompact={isCompact}
+      viewMode={viewMode}
       isCustomizing={isCustomizing}
       onRemove={onRemove}
       emptyState={emptyState}

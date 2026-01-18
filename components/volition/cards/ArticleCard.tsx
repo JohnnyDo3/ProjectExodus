@@ -1,8 +1,9 @@
 'use client'
 
-import { Eye, Clock, MoreHorizontal, Edit, Trash2, ExternalLink } from 'lucide-react'
+import { Eye, Clock, MoreHorizontal, Edit, Trash2, ExternalLink, FileText } from 'lucide-react'
 import Link from 'next/link'
 import { useState } from 'react'
+import { ViewMode } from '@/hooks/useVolitionLayout'
 
 interface ArticleCardProps {
   article: {
@@ -17,7 +18,7 @@ interface ArticleCardProps {
     createdAt: string | Date
     publishedAt?: string | Date | null
   }
-  isCompact?: boolean
+  viewMode?: ViewMode
   onEdit?: (id: string) => void
   onDelete?: (id: string) => void
   className?: string
@@ -25,11 +26,28 @@ interface ArticleCardProps {
 
 export function ArticleCard({
   article,
-  isCompact = false,
+  viewMode = 'expanded',
   onEdit,
   onDelete,
   className = '',
 }: ArticleCardProps) {
+  const isCompact = viewMode === 'compact'
+  const isMinimal = viewMode === 'minimal'
+
+  // Minimal view - just title header
+  if (isMinimal) {
+    return (
+      <div className={`rounded-lg overflow-hidden ${className}`}>
+        <div className="p-2 bg-gradient-to-r from-[var(--accent)] to-[var(--secondary)]">
+          <div className="flex items-center gap-2">
+            <FileText className="w-4 h-4 text-white flex-shrink-0" />
+            <h3 className="text-xs font-bold text-white truncate">{article.title}</h3>
+          </div>
+        </div>
+      </div>
+    )
+  }
+
   const [showMenu, setShowMenu] = useState(false)
   const isPublished = article.status === 'PUBLISHED'
   const isDraft = article.status === 'DRAFT'

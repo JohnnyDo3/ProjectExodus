@@ -4,6 +4,7 @@ import { ReactNode, useState } from 'react'
 import { ChevronDown, ChevronUp, Plus, MoreHorizontal, X } from 'lucide-react'
 import { LucideIcon } from 'lucide-react'
 import { useIsMobile } from '@/hooks/useIsMobile'
+import { ViewMode } from '@/hooks/useVolitionLayout'
 
 interface LaneProps {
   id: string
@@ -14,7 +15,7 @@ interface LaneProps {
   gradient?: string
   onAdd?: () => void
   addLabel?: string
-  isCompact?: boolean
+  viewMode?: ViewMode
   isCustomizing?: boolean
   onRemove?: () => void
   emptyState?: ReactNode
@@ -30,12 +31,14 @@ export function Lane({
   gradient = 'from-[var(--primary)] to-[var(--accent)]',
   onAdd,
   addLabel = 'Add New',
-  isCompact = false,
+  viewMode = 'expanded',
   isCustomizing = false,
   onRemove,
   emptyState,
   className = '',
 }: LaneProps) {
+  const isCompact = viewMode === 'compact'
+  const isMinimal = viewMode === 'minimal'
   const isMobile = useIsMobile()
   const [isCollapsed, setIsCollapsed] = useState(false)
 
