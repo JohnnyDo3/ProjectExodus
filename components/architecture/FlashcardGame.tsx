@@ -390,21 +390,26 @@ export function FlashcardGame({ config: userConfig, onComplete, onExit }: Flashc
               </div>
             </div>
 
-            {/* Question Area - Self-Aware Spacing */}
-            <div className="flex-1 flex flex-col justify-center items-center max-w-lg md:max-w-2xl mx-auto w-full overflow-hidden min-h-0" style={{ padding: 'clamp(0.5rem, 2vh, 1rem)' }}>
-              {/* Image Container - MAXIMUM SIZE Intelligence */}
+            {/* Question Area - Orientation-Aware Layout */}
+            <div
+              className="flex-1 flex flex-col lg:flex-row justify-center items-center lg:items-stretch max-w-lg md:max-w-2xl lg:max-w-5xl mx-auto w-full overflow-hidden min-h-0"
+              style={{
+                padding: 'clamp(0.5rem, 2vh, 1rem)',
+                gap: 'clamp(1rem, 3vw, 2rem)'
+              }}
+            >
+              {/* Image Container - Landscape-Optimized */}
               <motion.div
                 key={currentElement.id}
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
-                className="flex-shrink-0"
-                style={{ marginBottom: 'clamp(0.5rem, 1.5vh, 1rem)' }}
+                className="flex-shrink-0 flex items-center justify-center"
               >
                 <div
                   className="relative rounded-lg overflow-hidden bg-gradient-to-br from-[var(--muted)] to-[var(--background)] border-2 border-[var(--border)]"
                   style={{
-                    width: 'min(clamp(120px, 45vw, 600px), clamp(28vh, 42vh, 55vh))',
-                    height: 'min(clamp(120px, 45vw, 600px), clamp(28vh, 42vh, 55vh))',
+                    width: 'min(clamp(120px, 45vw, 600px), clamp(28vh, 50vh, 65vh))',
+                    height: 'min(clamp(120px, 45vw, 600px), clamp(28vh, 50vh, 65vh))',
                     aspectRatio: '1 / 1'
                   }}
                 >
@@ -466,8 +471,11 @@ export function FlashcardGame({ config: userConfig, onComplete, onExit }: Flashc
                 </div>
               </motion.div>
 
-              {/* Answer Options - Intelligent Grid */}
-              <div className="w-full grid grid-cols-2 flex-shrink-0 max-w-md" style={{ gap: 'clamp(0.375rem, 1vh, 0.5rem)' }}>
+              {/* Answer Options - Adaptive Grid (2x2 portrait, centered 1-col landscape) */}
+              <div
+                className="w-full grid grid-cols-2 lg:grid-cols-1 flex-shrink-0 max-w-md lg:max-w-xs lg:flex-1 lg:self-center"
+                style={{ gap: 'clamp(0.375rem, 1vh, 0.75rem)' }}
+              >
                 {options.map((option, index) => {
                   const isSelected = selectedAnswer === option.id
                   const isCorrectAnswer = option.id === currentElement.id
