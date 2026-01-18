@@ -58,10 +58,10 @@ export default function PlayPage() {
   const [selectedCategory, setSelectedCategory] = useState<string | null>(null)
 
   return (
-    <div className="min-h-screen bg-[var(--background)]">
+    <div className="h-full bg-[var(--background)] flex flex-col overflow-hidden">
       {/* Header */}
-      <div className="sticky top-0 z-10 bg-[var(--background)]/95 backdrop-blur border-b border-[var(--border)]">
-        <div className="container mx-auto px-4 py-4">
+      <div className="bg-[var(--background)]/95 backdrop-blur border-b border-[var(--border)]">
+        <div className="container mx-auto px-4 py-3">
           <div className="flex items-center gap-4">
             <Link href="/architecture">
               <Button variant="ghost" size="sm">
@@ -74,10 +74,11 @@ export default function PlayPage() {
         </div>
       </div>
 
-      <div className="container mx-auto px-3 sm:px-4 py-4 sm:py-8 max-w-4xl">
+      <div className="flex-1 overflow-y-auto">
+        <div className="container mx-auto px-3 sm:px-4 py-3 sm:py-4 max-w-4xl">
         {/* Game Mode Selection */}
-        <section className="mb-8 sm:mb-12">
-          <h2 className="text-base sm:text-lg font-bold text-[var(--foreground)] mb-3 sm:mb-4">Game Mode</h2>
+        <section className="mb-3 sm:mb-4">
+          <h2 className="text-base sm:text-lg font-bold text-[var(--foreground)] mb-2 sm:mb-3">Game Mode</h2>
           <div className="grid gap-3 sm:gap-4">
             {gameModes.map((mode, index) => {
               const Icon = mode.icon
@@ -90,7 +91,7 @@ export default function PlayPage() {
                 >
                   <Link href={mode.href}>
                     <Card className="border-2 border-[var(--border)] hover:border-[var(--primary)]/50 transition-all cursor-pointer group">
-                      <CardContent className="p-3 sm:p-4">
+                      <CardContent className="p-2 sm:p-3">
                         <div className="flex items-center gap-3 sm:gap-4">
                           <div className={`w-12 h-12 sm:w-14 sm:h-14 rounded-xl bg-gradient-to-br ${mode.color} flex items-center justify-center shrink-0 group-hover:scale-110 transition-transform`}>
                             <Icon className="w-6 h-6 sm:w-7 sm:h-7 text-white" />
@@ -123,14 +124,14 @@ export default function PlayPage() {
         </section>
 
         {/* Quick Play Configuration */}
-        <section className="mb-8 sm:mb-12">
-          <div className="flex items-center gap-2 mb-3 sm:mb-4">
+        <section className="mb-3 sm:mb-4">
+          <div className="flex items-center gap-2 mb-2 sm:mb-3">
             <Zap className="w-4 h-4 sm:w-5 sm:h-5 text-amber-500" />
             <h2 className="text-base sm:text-lg font-bold text-[var(--foreground)]">Quick Play Settings</h2>
           </div>
 
           {/* Element Count */}
-          <div className="mb-4 sm:mb-6">
+          <div className="mb-3 sm:mb-4">
             <label className="text-xs sm:text-sm font-semibold text-[var(--muted-foreground)] mb-2 block">
               Number of Elements
             </label>
@@ -153,7 +154,7 @@ export default function PlayPage() {
           </div>
 
           {/* Learning Path */}
-          <div className="mb-4 sm:mb-6">
+          <div className="mb-3 sm:mb-4">
             <label className="text-xs sm:text-sm font-semibold text-[var(--muted-foreground)] mb-2 block">
               Learning Path
             </label>
@@ -199,7 +200,7 @@ export default function PlayPage() {
             <motion.div
               initial={{ opacity: 0, height: 0 }}
               animate={{ opacity: 1, height: 'auto' }}
-              className="mb-4 sm:mb-6"
+              className="mb-3 sm:mb-4"
             >
               <label className="text-xs sm:text-sm font-semibold text-[var(--muted-foreground)] mb-2 block">
                 Select Category
@@ -229,7 +230,7 @@ export default function PlayPage() {
           <Link
             href={`/architecture/play/flashcard?count=${selectedCount}&path=${selectedPath}${selectedCategory ? `&category=${selectedCategory}` : ''}`}
           >
-            <Button className="w-full py-4 sm:py-6 text-base sm:text-lg font-bold bg-gradient-to-r from-amber-500 to-orange-600 text-white">
+            <Button className="w-full py-3 sm:py-4 text-base sm:text-lg font-bold bg-gradient-to-r from-amber-500 to-orange-600 text-white">
               <Gamepad2 className="w-4 h-4 sm:w-5 sm:h-5 mr-2" />
               Start Flashcard Game
             </Button>
@@ -237,14 +238,14 @@ export default function PlayPage() {
         </section>
 
         {/* Stats Preview */}
-        <section className="pb-6">
-          <div className="flex items-center gap-2 mb-3 sm:mb-4">
+        <section className="pb-3 sm:pb-4">
+          <div className="flex items-center gap-2 mb-2 sm:mb-3">
             <Trophy className="w-4 h-4 sm:w-5 sm:h-5 text-amber-500" />
             <h2 className="text-base sm:text-lg font-bold text-[var(--foreground)]">Your Stats</h2>
           </div>
 
           <Card className="border border-[var(--border)]">
-            <CardContent className="p-4 sm:p-6">
+            <CardContent className="p-3 sm:p-4">
               <div className="grid grid-cols-3 gap-2 sm:gap-4 text-center">
                 <div>
                   <p className="text-xl sm:text-2xl font-bold text-[var(--foreground)]">0</p>
@@ -260,7 +261,7 @@ export default function PlayPage() {
                 </div>
               </div>
 
-              <div className="mt-3 sm:mt-4 pt-3 sm:pt-4 border-t border-[var(--border)]">
+              <div className="mt-2 sm:mt-3 pt-2 sm:pt-3 border-t border-[var(--border)]">
                 <div className="flex items-center justify-center gap-2 text-purple-500">
                   <Ghost className="w-3 h-3 sm:w-4 sm:h-4" />
                   <span className="text-xs sm:text-sm font-semibold text-center">Ghost Racing unlocks after your first game!</span>
@@ -269,6 +270,7 @@ export default function PlayPage() {
             </CardContent>
           </Card>
         </section>
+        </div>
       </div>
     </div>
   )

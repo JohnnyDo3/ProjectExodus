@@ -483,7 +483,7 @@ export function NightSkyConstellations({ alwaysShow = false, starCount = 1400 }:
           Math.abs(star.x - mousePos.x) < 100 &&
           Math.abs(star.y - mousePos.y) < 100
 
-        const starColor = isNearMouse ? [255, 223, 0] : star.color
+        const starColor = isNearMouse ? [255, 255, 255] : star.color
         // Add subtle twinkling animation
         const twinkle = 0.8 + 0.2 * Math.sin(time * star.twinkleSpeed + star.pulsePhase)
         // Boost brightness for better visibility and stunning galaxy effect
@@ -496,7 +496,7 @@ export function NightSkyConstellations({ alwaysShow = false, starCount = 1400 }:
         // Enhanced glow for better visibility with star color
         if (star.isConstellation) {
           ctx.shadowBlur = isNearMouse ? 15 : 10
-          ctx.shadowColor = isNearMouse ? '#FFD700' : `rgba(${starColor[0]}, ${starColor[1]}, ${starColor[2]}, 0.8)`
+          ctx.shadowColor = isNearMouse ? '#FFFFFF' : `rgba(${starColor[0]}, ${starColor[1]}, ${starColor[2]}, 0.8)`
         } else {
           // Subtle glow for smaller stars
           ctx.shadowBlur = star.size > 1 ? 4 : 2
@@ -537,10 +537,10 @@ export function NightSkyConstellations({ alwaysShow = false, starCount = 1400 }:
       // Draw constellation lines when hovering nearby (inside rotation context so they rotate with stars)
       if (activeConstellation !== null) {
         const constellation = constellations[activeConstellation]
-        ctx.strokeStyle = 'rgba(255, 223, 0, 0.5)'
+        ctx.strokeStyle = 'rgba(255, 255, 255, 0.5)'
         ctx.lineWidth = 2
         ctx.shadowBlur = 10
-        ctx.shadowColor = '#FFD700'
+        ctx.shadowColor = '#FFFFFF'
 
         constellation.connections.forEach(([startIdx, endIdx]) => {
           const start = stars[startIdx]
@@ -555,7 +555,7 @@ export function NightSkyConstellations({ alwaysShow = false, starCount = 1400 }:
 
         // Draw constellation name
         ctx.font = 'bold 20px sans-serif'
-        ctx.fillStyle = 'rgba(255, 223, 0, 0.9)'
+        ctx.fillStyle = 'rgba(255, 255, 255, 0.9)'
         ctx.shadowBlur = 15
         ctx.textAlign = 'center'
         const firstStar = stars[constellation.stars[0]]

@@ -34,9 +34,28 @@ export function MainLayoutWrapper({
   // Learning module pages - no footer, full viewport height, no scroll
   const isLearningPage = pathname?.startsWith('/learn/modules/')
 
+  // Architecture game pages - no footer, full viewport height, no scroll
+  const isArchitectureGame = pathname?.startsWith('/architecture/play')
+
   if (isAdminRoute) {
     // Admin pages - completely clean, no theming decorations
     return <>{children}</>
+  }
+
+  // Architecture game pages get minimal UI - no footer, no scroll
+  if (isArchitectureGame) {
+    return (
+      <>
+        {skyBackground}
+        <div className="relative z-10 h-screen flex flex-col">
+          <Header />
+          <div className="flex-1 overflow-hidden">
+            {children}
+          </div>
+        </div>
+        {aiAssistant}
+      </>
+    )
   }
 
   // Learning pages get minimal UI - no footer, no scroll
