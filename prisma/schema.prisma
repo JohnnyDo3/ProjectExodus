@@ -155,6 +155,8 @@ model User {
 
   @@index([email])
   @@index([role])
+  @@index([createdAt])
+  @@index([guardianArchetype])
 }
 
 enum UserRole {
@@ -240,6 +242,11 @@ model Product {
   @@index([vendorId])
   @@index([status])
   @@index([featured])
+  @@index([createdAt])
+  @@index([publishedAt])
+  @@index([status, featured]) // Composite: Published featured products
+  @@index([vendorId, status]) // Composite: Vendor's products by status
+  @@index([categoryId, status]) // Composite: Category products by status
 }
 
 enum ProductStatus {
@@ -394,6 +401,8 @@ model Review {
   @@index([productId])
   @@index([userId])
   @@index([rating])
+  @@index([productId, rating]) // Composite: Product reviews sorted by rating
+  @@index([productId, createdAt]) // Composite: Product reviews sorted by date
 }
 
 model SavedProduct {
@@ -468,6 +477,11 @@ model Article {
   @@index([status])
   @@index([featured])
   @@index([moduleType])
+  @@index([publishedAt])
+  @@index([createdAt])
+  @@index([authorId, status]) // Composite: Author's articles by status
+  @@index([status, publishedAt]) // Composite: Published articles sorted by date
+  @@index([categoryId, status]) // Composite: Category articles by status
 }
 
 enum ArticleStatus {
@@ -516,6 +530,8 @@ model Comment {
   @@index([articleId])
   @@index([userId])
   @@index([parentId])
+  @@index([articleId, createdAt]) // Composite: Article comments sorted by date
+  @@index([articleId, parentId]) // Composite: Article root comments vs replies
 }
 
 // Article Peer Reviews - Reddit-style threaded reviews with ratings
@@ -814,6 +830,8 @@ model UserLearningProgress {
   @@index([articleId])
   @@index([status])
   @@index([selectedLevel])
+  @@index([userId, status]) // Composite: User's modules by completion status
+  @@index([articleId, status]) // Composite: Article completions
 }
 
 enum LearningStatus {
@@ -926,6 +944,8 @@ model SocialPost {
   @@index([userId])
   @@index([createdAt])
   @@index([visibility])
+  @@index([visibility, createdAt]) // Composite: Public posts sorted by date
+  @@index([userId, createdAt]) // Composite: User's posts sorted by date
 }
 
 enum PostVisibility {
@@ -1026,6 +1046,8 @@ model Project {
   @@index([creatorId])
   @@index([status])
   @@index([visibility])
+  @@index([createdAt])
+  @@index([status, visibility]) // Composite: Active public projects
 }
 
 enum ProjectStatus {
@@ -1070,6 +1092,8 @@ model ProjectMember {
   @@index([projectId])
   @@index([userId])
   @@index([role])
+  @@index([projectId, role]) // Composite: Project members by role
+  @@index([userId, role]) // Composite: User's project memberships by role
 }
 
 enum ProjectMemberRole {
@@ -1693,6 +1717,9 @@ model DirectMessage {
   @@index([receiverId])
   @@index([createdAt])
   @@index([read])
+  @@index([receiverId, read]) // Composite: Receiver's unread messages
+  @@index([senderId, createdAt]) // Composite: Sender's messages sorted by date
+  @@index([receiverId, createdAt]) // Composite: Receiver's messages sorted by date
 }
 
 model MessageReaction {
@@ -1735,6 +1762,8 @@ model Event {
   @@index([creatorId])
   @@index([startDate])
   @@index([type])
+  @@index([type, startDate]) // Composite: Events by type sorted by date
+  @@index([creatorId, startDate]) // Composite: Creator's events sorted by date
 }
 
 enum EventType {
@@ -1782,6 +1811,8 @@ model Notification {
   @@index([userId])
   @@index([read])
   @@index([createdAt])
+  @@index([userId, read]) // Composite: User's unread notifications
+  @@index([userId, createdAt]) // Composite: User's notifications sorted by date
 }
 
 enum NotificationType {

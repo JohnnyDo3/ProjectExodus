@@ -5,11 +5,15 @@ import { MessageSquare, User, Pin, ThumbsUp, Clock } from 'lucide-react'
 import Link from 'next/link'
 import { formatDate } from '@/lib/utils/format'
 
+// ISR: Revalidate forum category pages every 5 minutes (300 seconds)
+// Forum content is more dynamic, so shorter cache time
+export const revalidate = 300
+
 async function getCategoryData(slug: string) {
   try {
     const baseUrl = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3000'
     const res = await fetch(`${baseUrl}/api/forum/category/${slug}`, {
-      cache: 'no-store',
+      next: { revalidate: 300 }, // Cache for 5 minutes, matching page revalidate
     })
 
     if (!res.ok) {

@@ -5,11 +5,15 @@ import { BackButton } from '@/components/navigation/BackButton'
 import { Leaf, ExternalLink, TrendingDown, Award } from 'lucide-react'
 import Link from 'next/link'
 
+// ISR: Revalidate product pages every 30 minutes (1800 seconds)
+// Products may have price/availability changes, so shorter cache time
+export const revalidate = 1800
+
 async function getProduct(slug: string) {
   try {
     const baseUrl = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3000'
     const res = await fetch(`${baseUrl}/api/products/${slug}`, {
-      cache: 'no-store',
+      next: { revalidate: 1800 }, // Cache for 30 minutes, matching page revalidate
     })
 
     if (!res.ok) {

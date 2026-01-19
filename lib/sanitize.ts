@@ -1,4 +1,4 @@
-import DOMPurify from 'dompurify'
+import DOMPurify from 'isomorphic-dompurify'
 
 // Allowed HTML tags for article content
 const ALLOWED_TAGS = [
@@ -20,15 +20,10 @@ const ALLOWED_ATTR = [
 
 /**
  * Sanitize HTML content to prevent XSS attacks
- * Uses DOMPurify with a strict allowlist of tags and attributes
+ * Uses isomorphic DOMPurify which works on both client and server
+ * ✅ SECURITY FIX: Now properly sanitizes on server-side rendering
  */
 export function sanitizeHtml(dirty: string): string {
-  if (typeof window === 'undefined') {
-    // Server-side: return empty string or use isomorphic-dompurify
-    // For now, we'll handle this client-side only
-    return dirty
-  }
-
   return DOMPurify.sanitize(dirty, {
     ALLOWED_TAGS,
     ALLOWED_ATTR,

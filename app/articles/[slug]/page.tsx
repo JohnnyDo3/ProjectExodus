@@ -7,11 +7,15 @@ import { formatDate } from '@/lib/utils/format'
 import Link from 'next/link'
 import { ArticleClientWrapper } from '@/components/article/ArticleClientWrapper'
 
+// ISR: Revalidate article pages every 1 hour (3600 seconds)
+// Articles don't change frequently, so caching improves performance
+export const revalidate = 3600
+
 async function getArticle(slug: string) {
   try {
     const baseUrl = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3000'
     const res = await fetch(`${baseUrl}/api/articles/${slug}`, {
-      cache: 'no-store',
+      next: { revalidate: 3600 }, // Cache for 1 hour, matching page revalidate
     })
 
     if (!res.ok) {
