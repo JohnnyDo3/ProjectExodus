@@ -179,9 +179,45 @@ export const IonicColumnSVG = ({ showHalo = false }: SVGProps) => (
     <MaterialPatterns />
     <HaloFilter />
 
-    {/* CONTEXT: Ground and entablature - refined dashed */}
-    <path d="M 10 94 L 90 94" strokeWidth="0.7" fill="none" opacity="0.35" strokeDasharray="4 2" />
-    <path d="M 14 5 L 86 5" strokeWidth="0.5" fill="none" opacity="0.25" strokeDasharray="3 2" />
+    {/* CONTEXT: ERECHTHEION ON THE ACROPOLIS - Refined temple setting */}
+
+    {/* White marble floor of the Acropolis with subtle joints */}
+    <g opacity="0.2" strokeWidth="0.3">
+      <rect x="10" y="92" width="80" height="8" fill="url(#marble-veined)" opacity="0.18" stroke="none" />
+      <path d="M 10 94 L 90 94" strokeDasharray="5 3" />
+      <path d="M 15 96 L 85 96" strokeDasharray="3 2" opacity="0.6" />
+      <path d="M 35 93 L 35 100" strokeDasharray="2 1.5" opacity="0.5" />
+      <path d="M 65 93 L 65 100" strokeDasharray="2 1.5" opacity="0.5" />
+    </g>
+
+    {/* Elegant entablature above with refined Ionic moldings */}
+    <g opacity="0.22" strokeWidth="0.4">
+      {/* Dentils (tooth-like blocks typical of Ionic) */}
+      <path d="M 22 6 L 78 6" strokeDasharray="1.5 1" strokeWidth="0.6" />
+      {/* Cornice */}
+      <path d="M 18 3 L 82 3" strokeWidth="0.5" strokeDasharray="3 1.5" opacity="0.6" />
+    </g>
+
+    {/* Adjacent Ionic column in distance (elegant temple colonnade) */}
+    <g opacity="0.12" strokeWidth="0.4" strokeDasharray="2 1.5">
+      <path d="M 8 94 Q 7 60, 9 25" />
+      <path d="M 11 94 Q 12 60, 10 25" />
+      {/* Hint of volute */}
+      <circle cx="9" cy="18" r="2" opacity="0.4" />
+    </g>
+
+    {/* Cella wall behind (temple sanctuary) */}
+    <g opacity="0.15" strokeWidth="0.3" strokeDasharray="3 2.5">
+      <rect x="20" y="10" width="60" height="80" fill="url(#marble-veined)" opacity="0.08" stroke="none" />
+      <path d="M 20 10 L 20 90" />
+      <path d="M 80 10 L 80 90" />
+    </g>
+
+    {/* Shadow cast by column on marble floor */}
+    <g opacity="0.1" strokeWidth="0.25" strokeDasharray="1 1">
+      <path d="M 70 94 Q 73 95, 76 96" />
+      <path d="M 71 96 Q 74 97, 77 98" />
+    </g>
 
     {/* PRIMARY: THE IONIC COLUMN */}
     <g filter={showHalo ? "url(#col-halo)" : undefined}>
@@ -195,12 +231,15 @@ export const IonicColumnSVG = ({ showHalo = false }: SVGProps) => (
       {/* Lower torus */}
       <path d="M 28 82 Q 40 79, 50 79 Q 60 79, 72 82" strokeWidth="1.4" fill="none" strokeLinecap="round" />
 
-      {/* Slender shaft - more elegant than Doric - STONE MATERIAL */}
+      {/* Slender shaft - more elegant than Doric - WHITE PENTELIC MARBLE */}
       <path d="M 32 79 Q 31 50, 35 26" strokeWidth="2" fill="none" strokeLinecap="round" />
       <path d="M 68 79 Q 69 50, 65 26" strokeWidth="2" fill="none" strokeLinecap="round" />
 
-      {/* Stone material texture */}
-      <rect x="32" y="26" width="36" height="53" fill="url(#stone-smooth)" opacity="0.25" stroke="none" />
+      {/* Pentelic marble veining (quarried from Mt. Pentelicus for the Erechtheion) */}
+      <rect x="32" y="26" width="36" height="53" fill="url(#marble-veined)" opacity="0.22" stroke="none" />
+      {/* Subtle marble veins running through the shaft */}
+      <path d="M 35 75 Q 37 60, 38 45 Q 36 32, 37 28" strokeWidth="0.2" opacity="0.15" fill="none" />
+      <path d="M 63 72 Q 61 55, 62 40 Q 64 30, 63 27" strokeWidth="0.2" opacity="0.15" fill="none" />
 
       {/* 24 deeper flutes with flat fillets - refined stone carving */}
       <path d="M 38 76 Q 39 50, 40 28" strokeWidth="0.6" fill="none" opacity="0.5" />

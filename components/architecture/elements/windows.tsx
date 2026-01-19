@@ -36,6 +36,25 @@ const CasementSVG: React.FC<SVGProps> = ({ showHalo }) => (
     {showHalo && <HaloFilter id="casement-halo" intensity={0.9} />}
     <g filter={showHalo ? "url(#casement-halo)" : undefined} fill="none" stroke="currentColor" strokeLinecap="round">
 
+      {/* LIGHT STREAMING THROUGH - Morning sunlight pouring into room */}
+      <g opacity="0.2" strokeWidth="0.5" strokeDasharray="1 2">
+        {/* Dramatic light beams from open left casement */}
+        <path d="M 24 30 L 8 45" stroke="currentColor" />
+        <path d="M 30 35 L 10 55" stroke="currentColor" />
+        <path d="M 35 40 L 12 65" stroke="currentColor" />
+        <path d="M 38 50 L 14 75" stroke="currentColor" />
+        <path d="M 35 60 L 12 82" stroke="currentColor" />
+        <path d="M 30 70 L 10 88" stroke="currentColor" />
+        {/* Dust motes dancing in the sunbeams */}
+        <circle cx="18" cy="55" r="0.4" fill="currentColor" opacity="0.6" />
+        <circle cx="15" cy="68" r="0.3" fill="currentColor" opacity="0.5" />
+        <circle cx="12" cy="78" r="0.35" fill="currentColor" opacity="0.4" />
+        <circle cx="20" cy="62" r="0.25" fill="currentColor" opacity="0.5" />
+        {/* Glass reflection - subtle warping */}
+        <path d="M 58 25 Q 60 30, 62 35" strokeWidth="0.3" opacity="0.15" />
+        <path d="M 67 28 Q 69 35, 71 42" strokeWidth="0.3" opacity="0.15" />
+      </g>
+
       {/* CONTEXT: Surrounding wall */}
       <g strokeWidth="0.8" strokeDasharray="3 2" opacity="0.4">
         <path d="M5 10 L5 90 L18 90 L18 10 Z" />
@@ -81,6 +100,37 @@ const ClerestorySVG: React.FC<SVGProps> = ({ showHalo }) => (
     {showHalo && <HaloFilter id="clerestory-halo" intensity={0.85} />}
     <g filter={showHalo ? "url(#clerestory-halo)" : undefined} fill="none" stroke="currentColor" strokeLinecap="round">
 
+      {/* DRAMATIC LIGHT STREAMING - High afternoon sun flooding the sanctuary */}
+      <g opacity="0.22" strokeWidth="0.6" strokeDasharray="1 3">
+        {/* Powerful light shafts from each window casting down */}
+        <path d="M 20 32 L 15 70" stroke="currentColor" />
+        <path d="M 24 30 L 20 72" stroke="currentColor" />
+        <path d="M 28 32 L 25 75" stroke="currentColor" />
+        <path d="M 40 30 L 35 70" stroke="currentColor" />
+        <path d="M 44 28 L 40 73" stroke="currentColor" />
+        <path d="M 48 30 L 45 76" stroke="currentColor" />
+        <path d="M 60 30 L 55 70" stroke="currentColor" />
+        <path d="M 64 28 L 60 74" stroke="currentColor" />
+        <path d="M 68 30 L 65 77" stroke="currentColor" />
+        <path d="M 80 32 L 75 70" stroke="currentColor" />
+        <path d="M 84 30 L 80 73" stroke="currentColor" />
+        <path d="M 86 32 L 83 76" stroke="currentColor" />
+        {/* Cathedral dust motes floating in the sacred light */}
+        <circle cx="22" cy="55" r="0.5" fill="currentColor" opacity="0.6" />
+        <circle cx="30" cy="62" r="0.4" fill="currentColor" opacity="0.5" />
+        <circle cx="18" cy="68" r="0.35" fill="currentColor" opacity="0.5" />
+        <circle cx="43" cy="58" r="0.45" fill="currentColor" opacity="0.6" />
+        <circle cx="48" cy="65" r="0.3" fill="currentColor" opacity="0.4" />
+        <circle cx="63" cy="60" r="0.4" fill="currentColor" opacity="0.55" />
+        <circle cx="70" cy="67" r="0.35" fill="currentColor" opacity="0.5" />
+        <circle cx="82" cy="63" r="0.45" fill="currentColor" opacity="0.6" />
+        {/* Light pools on floor where beams strike */}
+        <ellipse cx="20" cy="75" rx="8" ry="3" fill="currentColor" opacity="0.08" stroke="none" />
+        <ellipse cx="42" cy="78" rx="9" ry="3" fill="currentColor" opacity="0.08" stroke="none" />
+        <ellipse cx="62" cy="77" rx="8" ry="3" fill="currentColor" opacity="0.08" stroke="none" />
+        <ellipse cx="80" cy="76" rx="9" ry="3" fill="currentColor" opacity="0.08" stroke="none" />
+      </g>
+
       {/* CONTEXT: Building structure and lower walls */}
       <g strokeWidth="0.8" strokeDasharray="3 2" opacity="0.4">
         {/* Lower wall section */}
@@ -89,11 +139,6 @@ const ClerestorySVG: React.FC<SVGProps> = ({ showHalo }) => (
         <path d="M60 65 L60 90 L85 90 L85 65 Z" />
         {/* Roofline indication */}
         <path d="M5 20 Q50 12, 95 20" />
-        {/* Light rays streaming in */}
-        <path d="M22 50 L18 65" strokeDasharray="2,2" />
-        <path d="M42 50 L38 65" strokeDasharray="2,2" />
-        <path d="M62 50 L58 65" strokeDasharray="2,2" />
-        <path d="M82 50 L78 65" strokeDasharray="2,2" />
       </g>
 
       {/* PRIMARY: Clerestory windows */}
@@ -283,6 +328,30 @@ const PalladianWindowSVG: React.FC<SVGProps> = ({ showHalo }) => (
     {showHalo && <HaloFilter id="palladian-halo" intensity={1} />}
     <g filter={showHalo ? "url(#palladian-halo)" : undefined} fill="none" stroke="currentColor" strokeLinecap="round">
 
+      {/* ELEGANT LIGHT - Villa interior bathed in balanced natural light */}
+      <g opacity="0.18" strokeWidth="0.5" strokeDasharray="1 3">
+        {/* Dramatic light from arched center section */}
+        <path d="M 45 25 L 35 75" stroke="currentColor" />
+        <path d="M 50 20 L 42 78" stroke="currentColor" />
+        <path d="M 55 25 L 48 76" stroke="currentColor" />
+        <path d="M 50 35 L 45 82" stroke="currentColor" />
+        {/* Softer light from side sections */}
+        <path d="M 20 48 L 8 82" stroke="currentColor" opacity="0.4" />
+        <path d="M 25 52 L 12 85" stroke="currentColor" opacity="0.4" />
+        <path d="M 75 48 L 62 82" stroke="currentColor" opacity="0.4" />
+        <path d="M 80 52 L 68 85" stroke="currentColor" opacity="0.4" />
+        {/* Dust motes in the Renaissance light */}
+        <circle cx="48" cy="55" r="0.4" fill="currentColor" opacity="0.6" />
+        <circle cx="42" cy="65" r="0.35" fill="currentColor" opacity="0.5" />
+        <circle cx="38" cy="72" r="0.3" fill="currentColor" opacity="0.55" />
+        <circle cx="18" cy="70" r="0.3" fill="currentColor" opacity="0.45" />
+        <circle cx="65" cy="70" r="0.3" fill="currentColor" opacity="0.45" />
+        {/* Light pools on marble floor */}
+        <ellipse cx="42" cy="82" rx="10" ry="3" fill="currentColor" opacity="0.08" stroke="none" />
+        <ellipse cx="15" cy="85" rx="6" ry="2" fill="currentColor" opacity="0.06" stroke="none" />
+        <ellipse cx="65" cy="85" rx="6" ry="2" fill="currentColor" opacity="0.06" stroke="none" />
+      </g>
+
       {/* CONTEXT: Surrounding wall */}
       <g strokeWidth="0.8" strokeDasharray="3 2" opacity="0.4">
         {/* Wall sections */}
@@ -332,6 +401,37 @@ const RoseWindowSVG: React.FC<SVGProps> = ({ showHalo }) => (
   <svg viewBox="0 0 100 100" className="w-full h-full">
     {showHalo && <HaloFilter id="rose-halo" intensity={1.1} />}
     <g filter={showHalo ? "url(#rose-halo)" : undefined} fill="none" stroke="currentColor" strokeLinecap="round">
+
+      {/* MAGNIFICENT COLORED LIGHT - Afternoon sun streaming through stained glass */}
+      <g opacity="0.18" strokeWidth="0.4">
+        {/* Radiating colored light beams matching the 12-petal pattern */}
+        <path d="M 50 50 L 50 92" stroke="currentColor" strokeDasharray="2 3" opacity="0.5" />
+        <path d="M 50 50 L 68 88" stroke="currentColor" strokeDasharray="2 3" opacity="0.45" />
+        <path d="M 50 50 L 82 82" stroke="currentColor" strokeDasharray="2 3" opacity="0.4" />
+        <path d="M 50 50 L 88 68" stroke="currentColor" strokeDasharray="2 3" opacity="0.45" />
+        <path d="M 50 50 L 92 50" stroke="currentColor" strokeDasharray="2 3" opacity="0.5" />
+        <path d="M 50 50 L 88 32" stroke="currentColor" strokeDasharray="2 3" opacity="0.45" />
+        <path d="M 50 50 L 82 18" stroke="currentColor" strokeDasharray="2 3" opacity="0.4" />
+        <path d="M 50 50 L 68 12" stroke="currentColor" strokeDasharray="2 3" opacity="0.45" />
+        <path d="M 50 50 L 50 8" stroke="currentColor" strokeDasharray="2 3" opacity="0.5" />
+        <path d="M 50 50 L 32 12" stroke="currentColor" strokeDasharray="2 3" opacity="0.45" />
+        <path d="M 50 50 L 18 18" stroke="currentColor" strokeDasharray="2 3" opacity="0.4" />
+        <path d="M 50 50 L 12 32" stroke="currentColor" strokeDasharray="2 3" opacity="0.45" />
+        {/* Colored light projection on floor - circular pattern echoing the rose */}
+        <circle cx="50" cy="85" r="20" fill="none" stroke="currentColor" opacity="0.12" strokeWidth="0.4" strokeDasharray="3 2" />
+        <circle cx="50" cy="85" r="15" fill="none" stroke="currentColor" opacity="0.1" strokeWidth="0.3" strokeDasharray="2 1" />
+        <circle cx="50" cy="85" r="10" fill="currentColor" opacity="0.06" stroke="none" />
+        {/* Petal-shaped light pools on floor */}
+        <path d="M 50 70 Q 55 75, 50 80 Q 45 75, 50 70" fill="currentColor" opacity="0.08" stroke="none" />
+        <path d="M 60 78 Q 63 83, 58 86 Q 55 82, 60 78" fill="currentColor" opacity="0.07" stroke="none" />
+        <path d="M 40 78 Q 35 82, 42 86 Q 45 83, 40 78" fill="currentColor" opacity="0.07" stroke="none" />
+        {/* Dust motes swirling in the colorful light */}
+        <circle cx="55" cy="65" r="0.4" fill="currentColor" opacity="0.6" />
+        <circle cx="45" cy="68" r="0.35" fill="currentColor" opacity="0.5" />
+        <circle cx="60" cy="72" r="0.3" fill="currentColor" opacity="0.55" />
+        <circle cx="40" cy="70" r="0.35" fill="currentColor" opacity="0.5" />
+        <circle cx="52" cy="75" r="0.4" fill="currentColor" opacity="0.6" />
+      </g>
 
       {/* CONTEXT: Cathedral wall */}
       <g strokeWidth="0.8" strokeDasharray="3 2" opacity="0.4">
@@ -483,6 +583,41 @@ const StainedGlassSVG: React.FC<SVGProps> = ({ showHalo }) => (
   <svg viewBox="0 0 100 100" className="w-full h-full">
     {showHalo && <HaloFilter id="stained-halo" intensity={1.1} />}
     <g filter={showHalo ? "url(#stained-halo)" : undefined} fill="none" stroke="currentColor" strokeLinecap="round">
+
+      {/* BREATHTAKING COLORED LIGHT - Morning sun transformed by stained glass */}
+      <g opacity="0.2" strokeWidth="0.5">
+        {/* Upper section light beams (blues from upper panels) */}
+        <path d="M 25 30 L 8 65" stroke="currentColor" strokeDasharray="2 4" opacity="0.6" />
+        <path d="M 35 25 L 15 70" stroke="currentColor" strokeDasharray="2 4" opacity="0.55" />
+        <path d="M 45 20 L 22 75" stroke="currentColor" strokeDasharray="2 4" opacity="0.5" />
+        <path d="M 55 20 L 30 80" stroke="currentColor" strokeDasharray="2 4" opacity="0.5" />
+        <path d="M 65 25 L 38 82" stroke="currentColor" strokeDasharray="2 4" opacity="0.55" />
+        <path d="M 75 30 L 48 85" stroke="currentColor" strokeDasharray="2 4" opacity="0.6" />
+        {/* Middle section light beams (reds/golds from central motif) */}
+        <path d="M 35 50 L 10 88" stroke="currentColor" strokeDasharray="2 3" opacity="0.65" />
+        <path d="M 50 48 L 25 92" stroke="currentColor" strokeDasharray="2 3" opacity="0.7" />
+        <path d="M 65 50 L 40 94" stroke="currentColor" strokeDasharray="2 3" opacity="0.65" />
+        {/* Lower section light beams (greens from lower panels) */}
+        <path d="M 30 75 L 15 95" stroke="currentColor" strokeDasharray="2 4" opacity="0.5" />
+        <path d="M 50 75 L 32 96" stroke="currentColor" strokeDasharray="2 4" opacity="0.55" />
+        <path d="M 70 75 L 48 95" stroke="currentColor" strokeDasharray="2 4" opacity="0.5" />
+        {/* Colored light pools on chapel floor - layered colors */}
+        <ellipse cx="25" cy="85" rx="15" ry="5" fill="currentColor" opacity="0.08" stroke="none" />
+        <ellipse cx="35" cy="88" rx="12" ry="4" fill="currentColor" opacity="0.1" stroke="none" />
+        <ellipse cx="28" cy="90" rx="18" ry="6" fill="currentColor" opacity="0.06" stroke="none" />
+        {/* Sacred dust motes in colored beams */}
+        <circle cx="30" cy="55" r="0.4" fill="currentColor" opacity="0.65" />
+        <circle cx="45" cy="62" r="0.35" fill="currentColor" opacity="0.6" />
+        <circle cx="55" cy="58" r="0.4" fill="currentColor" opacity="0.65" />
+        <circle cx="38" cy="70" r="0.35" fill="currentColor" opacity="0.6" />
+        <circle cx="50" cy="68" r="0.4" fill="currentColor" opacity="0.7" />
+        <circle cx="25" cy="80" r="0.35" fill="currentColor" opacity="0.6" />
+        <circle cx="42" cy="78" r="0.4" fill="currentColor" opacity="0.65" />
+        {/* Lead came shadows cast on floor */}
+        <path d="M 20 86 L 22 92" strokeWidth="0.3" opacity="0.2" />
+        <path d="M 28 84 L 31 94" strokeWidth="0.3" opacity="0.2" />
+        <path d="M 35 85 L 38 95" strokeWidth="0.3" opacity="0.2" />
+      </g>
 
       {/* CONTEXT: Chapel or church wall */}
       <g strokeWidth="0.8" strokeDasharray="3 2" opacity="0.4">

@@ -34,10 +34,25 @@ export const GableSVG = ({ showHalo = false }: SVGProps) => (
       <path d="M 12 58 L 88 58" strokeWidth="1" fill="none" />
     </g>
 
-    {/* CONTEXT: Roof slopes extending from gable - dashed */}
+    {/* CONTEXT: Roof slopes extending from gable - WITH SHINGLE TEXTURE */}
     <g strokeDasharray="3 2" opacity="0.3">
       <path d="M 50 12 L 92 58" strokeWidth="0.8" fill="none" />
       <path d="M 50 12 L 8 58" strokeWidth="0.8" fill="none" />
+      {/* Wood shingle rows on left slope */}
+      <path d="M 12 56 L 51 15" strokeWidth="0.4" opacity="0.5" />
+      <path d="M 15 52 L 52 18" strokeWidth="0.4" opacity="0.5" />
+      <path d="M 18 48 L 53 21" strokeWidth="0.4" opacity="0.5" />
+      <path d="M 22 44 L 54 24" strokeWidth="0.4" opacity="0.5" />
+      {/* Wood shingle rows on right slope */}
+      <path d="M 88 56 L 49 15" strokeWidth="0.4" opacity="0.5" />
+      <path d="M 85 52 L 48 18" strokeWidth="0.4" opacity="0.5" />
+      <path d="M 82 48 L 47 21" strokeWidth="0.4" opacity="0.5" />
+      <path d="M 78 44 L 46 24" strokeWidth="0.4" opacity="0.5" />
+      {/* Individual shingle gaps/edges */}
+      <path d="M 25 50 L 26 49" strokeWidth="0.25" opacity="0.4" />
+      <path d="M 35 42 L 36 41" strokeWidth="0.25" opacity="0.4" />
+      <path d="M 65 42 L 64 41" strokeWidth="0.25" opacity="0.4" />
+      <path d="M 75 50 L 74 49" strokeWidth="0.25" opacity="0.4" />
     </g>
 
     {/* PRIMARY: THE GABLE - triangular wall end */}
@@ -99,10 +114,22 @@ export const HipRoofSVG = ({ showHalo = false }: SVGProps) => (
       <path d="M 12 58 L 34 20" strokeWidth="1.8" fill="none" opacity="0.8" />
       <path d="M 88 58 L 66 20" strokeWidth="1.8" fill="none" opacity="0.8" />
 
-      {/* Roof surface lines showing slope */}
-      <path d="M 50 58 L 50 35" strokeWidth="0.7" fill="none" opacity="0.4" />
-      <path d="M 24 58 L 38 30" strokeWidth="0.6" fill="none" opacity="0.35" />
-      <path d="M 76 58 L 62 30" strokeWidth="0.6" fill="none" opacity="0.35" />
+      {/* CLAY TILE TEXTURE - horizontal rows following roof slope */}
+      <path d="M 15 54 L 85 54" strokeWidth="0.5" fill="none" opacity="0.35" />
+      <path d="M 18 50 L 82 50" strokeWidth="0.5" fill="none" opacity="0.35" />
+      <path d="M 21 46 L 79 46" strokeWidth="0.5" fill="none" opacity="0.35" />
+      <path d="M 24 42 L 76 42" strokeWidth="0.5" fill="none" opacity="0.35" />
+      <path d="M 27 38 L 73 38" strokeWidth="0.5" fill="none" opacity="0.3" />
+      <path d="M 30 34 L 70 34" strokeWidth="0.5" fill="none" opacity="0.3" />
+      <path d="M 34 30 L 66 30" strokeWidth="0.5" fill="none" opacity="0.3" />
+      <path d="M 38 26 L 62 26" strokeWidth="0.5" fill="none" opacity="0.25" />
+      <path d="M 43 22 L 57 22" strokeWidth="0.5" fill="none" opacity="0.25" />
+      {/* Individual tile edges/shadows */}
+      <path d="M 30 48 L 31 47" strokeWidth="0.25" opacity="0.3" />
+      <path d="M 50 44 L 51 43" strokeWidth="0.25" opacity="0.3" />
+      <path d="M 70 48 L 69 47" strokeWidth="0.25" opacity="0.3" />
+      <path d="M 45 30 L 46 29" strokeWidth="0.25" opacity="0.25" />
+      <path d="M 55 30 L 54 29" strokeWidth="0.25" opacity="0.25" />
     </g>
   </svg>
 )
@@ -148,10 +175,26 @@ export const MansardSVG = ({ showHalo = false }: SVGProps) => (
         <path d="M 68 46 L 68 36" strokeWidth="0.6" fill="none" opacity="0.45" />
       </g>
 
-      {/* Slate/tile pattern on steep slope */}
-      <path d="M 10 52 L 86 52" strokeWidth="0.5" fill="none" opacity="0.3" />
-      <path d="M 12 44 L 84 44" strokeWidth="0.5" fill="none" opacity="0.3" />
-      <path d="M 15 36 L 81 36" strokeWidth="0.5" fill="none" opacity="0.25" />
+      {/* FRENCH SLATE TEXTURE - Rows on steep lower slope */}
+      <path d="M 9 56 L 91 56" strokeWidth="0.5" fill="none" opacity="0.35" />
+      <path d="M 10 52 L 90 52" strokeWidth="0.5" fill="none" opacity="0.35" />
+      <path d="M 11 48 L 89 48" strokeWidth="0.5" fill="none" opacity="0.35" />
+      <path d="M 12 44 L 88 44" strokeWidth="0.5" fill="none" opacity="0.35" />
+      <path d="M 13 40 L 87 40" strokeWidth="0.5" fill="none" opacity="0.3" />
+      <path d="M 14 36 L 86 36" strokeWidth="0.5" fill="none" opacity="0.3" />
+      <path d="M 15 32 L 85 32" strokeWidth="0.5" fill="none" opacity="0.3" />
+      <path d="M 16 28 L 84 28" strokeWidth="0.5" fill="none" opacity="0.25" />
+      {/* Slate on shallow upper slope */}
+      <path d="M 22 24 L 78 24" strokeWidth="0.4" fill="none" opacity="0.25" />
+      <path d="M 28 21 L 72 21" strokeWidth="0.4" fill="none" opacity="0.25" />
+      <path d="M 34 19 L 66 19" strokeWidth="0.4" fill="none" opacity="0.2" />
+      {/* Individual slate edges */}
+      <path d="M 25 50 L 26 49" strokeWidth="0.25" opacity="0.3" />
+      <path d="M 45 42 L 46 41" strokeWidth="0.25" opacity="0.3" />
+      <path d="M 55 42 L 54 41" strokeWidth="0.25" opacity="0.3" />
+      <path d="M 75 50 L 74 49" strokeWidth="0.25" opacity="0.3" />
+      <path d="M 40 23 L 41 22" strokeWidth="0.2" opacity="0.25" />
+      <path d="M 60 23 L 59 22" strokeWidth="0.2" opacity="0.25" />
     </g>
   </svg>
 )
