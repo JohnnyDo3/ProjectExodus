@@ -1,6 +1,7 @@
 'use client'
 
 import React from 'react'
+import { MaterialPatterns } from './materialPatterns'
 
 const HaloFilter = () => (
   <defs>
@@ -23,40 +24,56 @@ interface SVGProps { showHalo?: boolean }
 // ============================================================================
 export const DomeSVG = ({ showHalo = false }: SVGProps) => (
   <svg viewBox="0 0 100 100" className="w-full h-full stroke-current">
+    <MaterialPatterns />
     <HaloFilter />
 
-    {/* CONTEXT: Drum/base and supporting walls - dashed blueprint */}
-    <g strokeDasharray="3 2" opacity="0.4">
-      <path d="M 8 78 L 8 92" strokeWidth="1" fill="none" />
-      <path d="M 92 78 L 92 92" strokeWidth="1" fill="none" />
-      <path d="M 5 92 L 95 92" strokeWidth="0.8" fill="none" />
+    {/* CONTEXT: Drum/base with stone/concrete construction */}
+    <g opacity="0.25">
+      {/* Base walls with stone texture */}
+      <rect x="8" y="78" width="4" height="14" fill="url(#stone-smooth)" opacity="0.2" stroke="none" />
+      <rect x="88" y="78" width="4" height="14" fill="url(#stone-smooth)" opacity="0.2" stroke="none" />
+      <path d="M 8 78 L 8 92" strokeWidth="1.2" fill="none" />
+      <path d="M 92 78 L 92 92" strokeWidth="1.2" fill="none" />
+      <rect x="5" y="92" width="90" height="8" fill="url(#stone-smooth)" opacity="0.15" stroke="none" />
+      <path d="M 5 92 L 95 92" strokeWidth="1" fill="none" />
     </g>
 
-    {/* CONTEXT: Drum with windows - dashed */}
-    <g strokeDasharray="3 2" opacity="0.35">
-      <path d="M 10 78 L 90 78" strokeWidth="1" fill="none" />
-      <path d="M 12 85 L 88 85" strokeWidth="0.8" fill="none" />
-      {/* Drum windows */}
-      <path d="M 25 85 L 25 78" strokeWidth="0.6" fill="none" />
-      <path d="M 40 85 L 40 78" strokeWidth="0.6" fill="none" />
-      <path d="M 60 85 L 60 78" strokeWidth="0.6" fill="none" />
-      <path d="M 75 85 L 75 78" strokeWidth="0.6" fill="none" />
+    {/* CONTEXT: Drum with windows - solid with openings */}
+    <g opacity="0.28">
+      {/* Drum cylinder with stone/concrete texture */}
+      <rect x="10" y="78" width="80" height="8" fill="url(#concrete-smooth)" opacity="0.2" stroke="none" />
+      <path d="M 10 78 L 90 78" strokeWidth="1.3" fill="none" />
+      <path d="M 12 85 L 88 85" strokeWidth="1" fill="none" />
+      {/* Drum window openings (dark recesses) */}
+      <path d="M 25 85 L 25 78" strokeWidth="1.2" fill="none" opacity="0.7" />
+      <path d="M 40 85 L 40 78" strokeWidth="1.2" fill="none" opacity="0.7" />
+      <path d="M 60 85 L 60 78" strokeWidth="1.2" fill="none" opacity="0.7" />
+      <path d="M 75 85 L 75 78" strokeWidth="1.2" fill="none" opacity="0.7" />
     </g>
 
-    {/* PRIMARY: THE DOME - hemispherical shell */}
+    {/* PRIMARY: THE DOME - MASONRY/CONCRETE hemispherical shell */}
     <g filter={showHalo ? "url(#dome-halo)" : undefined}>
-      {/* Extrados (outer surface) */}
-      <path d="M 10 78 Q 10 28, 50 15 Q 90 28, 90 78" strokeWidth="2.2" fill="none" strokeLinecap="round" />
+      {/* Dome shell material (concrete with subtle texture) */}
+      <path d="M 14 76 Q 14 30, 50 18 Q 86 30, 86 76" fill="url(#concrete-smooth)" opacity="0.22" stroke="none" />
 
-      {/* Intrados (inner surface) */}
-      <path d="M 18 75 Q 18 34, 50 22 Q 82 34, 82 75" strokeWidth="1.6" fill="none" opacity="0.7" />
+      {/* Extrados (outer surface) - BOLD */}
+      <path d="M 10 78 Q 10 28, 50 15 Q 90 28, 90 78" strokeWidth="2.5" fill="none" strokeLinecap="round" />
 
-      {/* Meridian ribs radiating from apex */}
-      <path d="M 50 15 L 50 75" strokeWidth="0.9" fill="none" opacity="0.5" />
-      <path d="M 50 18 Q 28 28, 15 65" strokeWidth="0.7" fill="none" opacity="0.4" />
-      <path d="M 50 18 Q 72 28, 85 65" strokeWidth="0.7" fill="none" opacity="0.4" />
-      <path d="M 50 18 Q 35 30, 22 68" strokeWidth="0.6" fill="none" opacity="0.35" />
-      <path d="M 50 18 Q 65 30, 78 68" strokeWidth="0.6" fill="none" opacity="0.35" />
+      {/* Intrados (inner surface) - showing thickness */}
+      <path d="M 18 75 Q 18 34, 50 22 Q 82 34, 82 75" strokeWidth="1.8" fill="none" opacity="0.7" />
+
+      {/* Shell thickness shadow */}
+      <path d="M 19 75 Q 19 35, 50 23 Q 81 35, 81 75" strokeWidth="0.5" fill="none" opacity="0.2" />
+
+      {/* Meridian ribs radiating from apex - ENHANCED */}
+      <path d="M 50 15 L 50 75" strokeWidth="1.1" fill="none" opacity="0.5" />
+      <path d="M 50 16 L 50 75" strokeWidth="0.4" fill="none" opacity="0.25" />
+      <path d="M 50 18 Q 28 28, 15 65" strokeWidth="0.9" fill="none" opacity="0.4" />
+      <path d="M 50 19 Q 28.5 29, 15.5 65" strokeWidth="0.35" fill="none" opacity="0.2" />
+      <path d="M 50 18 Q 72 28, 85 65" strokeWidth="0.9" fill="none" opacity="0.4" />
+      <path d="M 50 19 Q 72.5 29, 85.5 65" strokeWidth="0.35" fill="none" opacity="0.2" />
+      <path d="M 50 18 Q 35 30, 22 68" strokeWidth="0.8" fill="none" opacity="0.35" />
+      <path d="M 50 18 Q 65 30, 78 68" strokeWidth="0.8" fill="none" opacity="0.35" />
 
       {/* Parallel rings/courses */}
       <path d="M 20 58 Q 50 52, 80 58" strokeWidth="0.6" fill="none" opacity="0.4" />

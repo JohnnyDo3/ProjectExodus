@@ -1,6 +1,7 @@
 'use client'
 
 import React from 'react'
+import { MaterialPatterns } from './materialPatterns'
 
 // Shared Halo Filter
 const HaloFilter = () => (
@@ -35,41 +36,63 @@ interface SVGProps {
 // ============================================================================
 export const RoundArchSVG = ({ showHalo = false }: SVGProps) => (
   <svg viewBox="0 0 100 100" className="w-full h-full stroke-current">
+    <MaterialPatterns />
     <HaloFilter />
 
-    {/* CONTEXT: Ground line and wall continuation - dashed */}
-    <path d="M 5 94 L 95 94" strokeWidth="0.8" fill="none" opacity="0.4" strokeDasharray="4 2" />
-
-    {/* CONTEXT: Supporting piers/jambs - dashed ghost lines */}
-    <g opacity="0.4" strokeDasharray="3 2">
-      <path d="M 15 94 L 15 48" strokeWidth="1.5" fill="none" />
-      <path d="M 20 94 L 20 48" strokeWidth="1" fill="none" />
-      <path d="M 85 94 L 85 48" strokeWidth="1.5" fill="none" />
-      <path d="M 80 94 L 80 48" strokeWidth="1" fill="none" />
+    {/* CONTEXT: Ground line and wall continuation - stone floor */}
+    <g opacity="0.25" strokeWidth="0.35">
+      <rect x="5" y="92" width="90" height="8" fill="url(#stone-smooth)" opacity="0.15" stroke="none" />
+      <path d="M 5 94 L 95 94" strokeDasharray="4 2" />
     </g>
 
-    {/* PRIMARY: THE ROUND ARCH - perfect semicircle */}
+    {/* CONTEXT: Supporting piers/jambs - solid stone with texture */}
+    <g opacity="0.3">
+      {/* Left pier with stone texture */}
+      <rect x="15" y="48" width="5" height="46" fill="url(#stone-smooth)" opacity="0.2" stroke="none" />
+      <path d="M 15 94 L 15 48" strokeWidth="1.8" fill="none" />
+      <path d="M 20 94 L 20 48" strokeWidth="1.2" fill="none" opacity="0.6" />
+      {/* Right pier with stone texture */}
+      <rect x="80" y="48" width="5" height="46" fill="url(#stone-smooth)" opacity="0.2" stroke="none" />
+      <path d="M 85 94 L 85 48" strokeWidth="1.8" fill="none" />
+      <path d="M 80 94 L 80 48" strokeWidth="1.2" fill="none" opacity="0.6" />
+    </g>
+
+    {/* PRIMARY: THE ROUND ARCH - STONE MATERIAL with detailed voussoirs */}
     <g filter={showHalo ? "url(#arch-halo)" : undefined}>
-      {/* Extrados - outer curve of arch */}
+      {/* Stone material texture on arch */}
+      <path d="M 17 48 Q 17 12, 50 12 Q 83 12, 83 48" fill="url(#stone-smooth)" opacity="0.25" stroke="none" />
+
+      {/* Extrados - outer curve of arch - BOLD */}
       <path d="M 15 48 Q 15 8, 50 8 Q 85 8, 85 48"
-            strokeWidth="2.2" fill="none" strokeLinecap="round" />
+            strokeWidth="2.5" fill="none" strokeLinecap="round" />
 
       {/* Intrados - inner curve of arch */}
       <path d="M 20 48 Q 20 16, 50 16 Q 80 16, 80 48"
-            strokeWidth="1.8" fill="none" strokeLinecap="round" />
+            strokeWidth="2" fill="none" strokeLinecap="round" />
 
-      {/* Voussoir lines radiating from center - key arch feature */}
-      <path d="M 22 42 L 26 34" strokeWidth="0.8" fill="none" opacity="0.6" />
-      <path d="M 28 32 L 34 24" strokeWidth="0.8" fill="none" opacity="0.6" />
-      <path d="M 38 22 L 44 14" strokeWidth="0.8" fill="none" opacity="0.6" />
-      <path d="M 56 14 L 62 22" strokeWidth="0.8" fill="none" opacity="0.6" />
-      <path d="M 66 24 L 72 32" strokeWidth="0.8" fill="none" opacity="0.6" />
-      <path d="M 74 34 L 78 42" strokeWidth="0.8" fill="none" opacity="0.6" />
+      {/* Depth shadow on inner arch */}
+      <path d="M 21 48 Q 21 17, 50 17 Q 79 17, 79 48"
+            strokeWidth="0.6" fill="none" opacity="0.2" />
 
-      {/* THE KEYSTONE at crown - central wedge stone */}
-      <path d="M 44 10 L 46 8 L 54 8 L 56 10" strokeWidth="1.8" fill="none" strokeLinejoin="round" />
-      <path d="M 46 14 L 46 9" strokeWidth="1" fill="none" opacity="0.7" />
-      <path d="M 54 14 L 54 9" strokeWidth="1" fill="none" opacity="0.7" />
+      {/* Voussoir lines radiating from center - ENHANCED with depth */}
+      <path d="M 22 42 L 26 34" strokeWidth="1.2" fill="none" opacity="0.6" />
+      <path d="M 22.5 42 L 26.5 34" strokeWidth="0.4" fill="none" opacity="0.3" />
+      <path d="M 28 32 L 34 24" strokeWidth="1.2" fill="none" opacity="0.6" />
+      <path d="M 28.5 32 L 34.5 24" strokeWidth="0.4" fill="none" opacity="0.3" />
+      <path d="M 38 22 L 44 14" strokeWidth="1.2" fill="none" opacity="0.6" />
+      <path d="M 38.5 22 L 44.5 14" strokeWidth="0.4" fill="none" opacity="0.3" />
+      <path d="M 56 14 L 62 22" strokeWidth="1.2" fill="none" opacity="0.6" />
+      <path d="M 56.5 14 L 62.5 22" strokeWidth="0.4" fill="none" opacity="0.3" />
+      <path d="M 66 24 L 72 32" strokeWidth="1.2" fill="none" opacity="0.6" />
+      <path d="M 66.5 24 L 72.5 32" strokeWidth="0.4" fill="none" opacity="0.3" />
+      <path d="M 74 34 L 78 42" strokeWidth="1.2" fill="none" opacity="0.6" />
+      <path d="M 74.5 34 L 78.5 42" strokeWidth="0.4" fill="none" opacity="0.3" />
+
+      {/* THE KEYSTONE at crown - central wedge stone with DETAIL */}
+      <path d="M 44 10 L 46 8 L 54 8 L 56 10" strokeWidth="2" fill="none" strokeLinejoin="round" />
+      <path d="M 46 14 L 46 9" strokeWidth="1.2" fill="none" opacity="0.7" />
+      <path d="M 54 14 L 54 9" strokeWidth="1.2" fill="none" opacity="0.7" />
+      <path d="M 48 9 L 52 9" strokeWidth="0.5" fill="none" opacity="0.5" />
 
       {/* Impost blocks where arch springs from piers */}
       <path d="M 12 48 L 23 48" strokeWidth="1.8" fill="none" strokeLinecap="round" />
