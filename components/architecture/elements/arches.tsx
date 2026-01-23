@@ -112,64 +112,96 @@ export const PointedArchSVG = ({ showHalo = false }: SVGProps) => (
     <MaterialPatterns />
     <HaloFilter />
 
-    {/* CONTEXT: GOTHIC CATHEDRAL INTERIOR */}
+    {/* CONTEXT: COMPLETE GOTHIC CATHEDRAL NAVE - field sketch extending off-page */}
 
-    {/* Rose window light streaming through - creating sacred atmosphere */}
+    {/* CEILING: Gothic ribbed vaulting extending beyond frame */}
+    <g opacity="0.2" strokeDasharray="2 3" strokeWidth="0.5">
+      {/* Vault ribs continuing upward off-page */}
+      <path d="M -5 50 Q 20 -10, 50 -15" fill="none" />
+      <path d="M 105 50 Q 80 -10, 50 -15" fill="none" />
+      {/* Transverse arch ribs */}
+      <path d="M 15 10 Q 50 -5, 85 10" fill="none" />
+      <path d="M 10 5 Q 50 -8, 90 5" fill="none" />
+    </g>
+
+    {/* NAVE WALLS: Complete cathedral walls extending beyond frame */}
+    <g opacity="0.25" strokeDasharray="3 2.5" strokeWidth="0.6">
+      {/* Left nave wall off-page top and bottom */}
+      <path d="M -5 -10 L -5 110" fill="none" />
+      <path d="M 0 -10 L 0 110" fill="none" opacity="0.7" />
+      {/* Right nave wall off-page */}
+      <path d="M 100 -10 L 100 110" fill="none" />
+      <path d="M 105 -10 L 105 110" fill="none" opacity="0.7" />
+      {/* Stone courses */}
+      <path d="M -5 25 L 5 25" strokeWidth="0.4" opacity="0.5" />
+      <path d="M 95 25 L 105 25" strokeWidth="0.4" opacity="0.5" />
+      <path d="M -5 65 L 5 65" strokeWidth="0.4" opacity="0.5" />
+      <path d="M 95 65 L 105 65" strokeWidth="0.4" opacity="0.5" />
+    </g>
+
+    {/* ADJACENT BAY ARCHES: Cathedral colonnade continuing into distance */}
+    <g opacity="0.18" strokeDasharray="2 2" strokeWidth="0.6">
+      {/* Next bay to left (perspective) */}
+      <path d="M -15 60 Q -10 42, 0 28 Q 10 42, 5 60" fill="none" />
+      {/* Next bay to right */}
+      <path d="M 95 60 Q 90 42, 100 28 Q 110 42, 115 60" fill="none" />
+    </g>
+
+    {/* Sacred light from clerestory windows high above */}
     <g opacity="0.15" strokeDasharray="2 3" strokeWidth="0.4">
-      {/* Morning light rays from rose window */}
-      <path d="M 10 20 L 25 45" stroke="currentColor" />
-      <path d="M 20 18 L 32 45" stroke="currentColor" />
-      <path d="M 30 16 L 40 45" stroke="currentColor" />
-      <path d="M 70 16 L 60 45" stroke="currentColor" />
-      <path d="M 80 18 L 68 45" stroke="currentColor" />
-      <path d="M 90 20 L 75 45" stroke="currentColor" />
-      {/* Dust motes in light */}
+      {/* Light rays streaming from off-page windows */}
+      <path d="M -10 5 L 25 45" stroke="currentColor" />
+      <path d="M 5 0 L 32 45" stroke="currentColor" />
+      <path d="M 20 -5 L 40 45" stroke="currentColor" />
+      <path d="M 80 -5 L 60 45" stroke="currentColor" />
+      <path d="M 95 0 L 68 45" stroke="currentColor" />
+      <path d="M 110 5 L 75 45" stroke="currentColor" />
+      {/* Dust motes floating in sacred light */}
       <circle cx="22" cy="35" r="0.3" fill="currentColor" opacity="0.5" />
       <circle cx="38" cy="40" r="0.25" fill="currentColor" opacity="0.4" />
       <circle cx="62" cy="40" r="0.25" fill="currentColor" opacity="0.4" />
       <circle cx="78" cy="35" r="0.3" fill="currentColor" opacity="0.5" />
     </g>
 
-    {/* Flying buttress structure beyond arch */}
-    <g opacity="0.2" strokeDasharray="3 2" strokeWidth="0.8">
-      <path d="M 5 52 Q 8 40, 15 52" fill="none" />
-      <path d="M 95 52 Q 92 40, 85 52" fill="none" />
-    </g>
-
-    {/* Stone floor with worn medieval paths */}
+    {/* FLOOR: Cathedral pavement extending far beyond */}
     <g opacity="0.25">
-      <rect x="10" y="90" width="80" height="8" fill="url(#stone-smooth)" opacity="0.15" stroke="none" />
-      <path d="M 5 94 L 95 94" strokeWidth="0.8" fill="none" opacity="0.5" strokeDasharray="4 2" />
-      {/* Worn path down center where centuries of feet have walked */}
+      <rect x="-10" y="90" width="120" height="20" fill="url(#stone-smooth)" opacity="0.15" stroke="none" />
+      {/* Floor extending off-page left/right */}
+      <path d="M -10 94 L 110 94" strokeWidth="0.8" fill="none" opacity="0.5" strokeDasharray="5 3" />
+      <path d="M -10 100 L 110 100" strokeWidth="0.6" fill="none" opacity="0.4" strokeDasharray="4 2" />
+      {/* Worn pilgrimage path - centuries of footsteps */}
       <path d="M 30 92 Q 50 93, 70 92" strokeWidth="0.3" opacity="0.3" fill="none" />
       <path d="M 32 95 Q 50 96, 68 95" strokeWidth="0.3" opacity="0.3" fill="none" />
+      <path d="M 35 98 Q 50 99, 65 98" strokeWidth="0.3" opacity="0.3" fill="none" />
     </g>
 
-    {/* Supporting piers with limestone texture */}
-    <g opacity="0.3">
-      {/* Left pier with medieval limestone */}
-      <rect x="16" y="52" width="10" height="44" fill="url(#stone-smooth)" opacity="0.2" stroke="none" />
-      <path d="M 18 94 L 18 52" strokeWidth="1.5" fill="none" />
-      <path d="M 24 94 L 24 52" strokeWidth="1" fill="none" />
-      {/* Right pier with limestone */}
-      <rect x="74" y="52" width="10" height="44" fill="url(#stone-smooth)" opacity="0.2" stroke="none" />
-      <path d="M 82 94 L 82 52" strokeWidth="1.5" fill="none" />
-      <path d="M 76 94 L 76 52" strokeWidth="1" fill="none" />
+    {/* COMPOUND PIERS: Clustered columns extending off-page */}
+    <g opacity="0.28" strokeWidth="0.7">
+      {/* Left pier - continues up beyond frame */}
+      <rect x="16" y="-10" width="10" height="120" fill="url(#stone-smooth)" opacity="0.2" stroke="none" />
+      <path d="M 18 -10 L 18 110" strokeWidth="1.5" fill="none" strokeDasharray="5 2" />
+      <path d="M 21 -10 L 21 110" strokeWidth="1" fill="none" strokeDasharray="5 2" opacity="0.7" />
+      <path d="M 24 -10 L 24 110" strokeWidth="1" fill="none" strokeDasharray="5 2" opacity="0.7" />
+      {/* Right pier - continues up beyond frame */}
+      <rect x="74" y="-10" width="10" height="120" fill="url(#stone-smooth)" opacity="0.2" stroke="none" />
+      <path d="M 82 -10 L 82 110" strokeWidth="1.5" fill="none" strokeDasharray="5 2" />
+      <path d="M 79 -10 L 79 110" strokeWidth="1" fill="none" strokeDasharray="5 2" opacity="0.7" />
+      <path d="M 76 -10 L 76 110" strokeWidth="1" fill="none" strokeDasharray="5 2" opacity="0.7" />
     </g>
 
-    {/* PRIMARY: THE POINTED ARCH - two arcs meeting at apex with LIMESTONE MATERIAL */}
+    {/* PRIMARY: THE POINTED ARCH - BOLD FIELD SKETCH LINES */}
     <g filter={showHalo ? "url(#arch-halo)" : undefined}>
       {/* Limestone material fill for arch mass */}
       <path d="M 18 52 Q 22 28, 50 6 Q 78 28, 82 52" fill="url(#stone-smooth)" opacity="0.25" stroke="none" />
 
-      {/* Left curve rising to point - extrados */}
-      <path d="M 18 52 Q 22 28, 50 6" strokeWidth="2.2" fill="none" strokeLinecap="round" />
-      {/* Right curve rising to point - extrados */}
-      <path d="M 82 52 Q 78 28, 50 6" strokeWidth="2.2" fill="none" strokeLinecap="round" />
+      {/* BOLD LEFT CURVE rising to point - extrados (field sketch confidence) */}
+      <path d="M 18 52 Q 22 28, 50 6" strokeWidth="3.2" fill="none" strokeLinecap="round" />
+      {/* BOLD RIGHT CURVE rising to point - extrados */}
+      <path d="M 82 52 Q 78 28, 50 6" strokeWidth="3.2" fill="none" strokeLinecap="round" />
 
-      {/* Intrados curves */}
-      <path d="M 24 52 Q 28 30, 50 12" strokeWidth="1.8" fill="none" strokeLinecap="round" />
-      <path d="M 76 52 Q 72 30, 50 12" strokeWidth="1.8" fill="none" strokeLinecap="round" />
+      {/* BOLD Intrados curves */}
+      <path d="M 24 52 Q 28 30, 50 12" strokeWidth="2.5" fill="none" strokeLinecap="round" />
+      <path d="M 76 52 Q 72 30, 50 12" strokeWidth="2.5" fill="none" strokeLinecap="round" />
 
       {/* Depth shadow in arch */}
       <path d="M 25 52 Q 29 31, 50 13" strokeWidth="0.6" fill="none" opacity="0.2" />
@@ -195,17 +227,17 @@ export const PointedArchSVG = ({ showHalo = false }: SVGProps) => (
       <path d="M 60 31 L 62 30" strokeWidth="0.25" fill="none" opacity="0.25" />
       <path d="M 70 43 L 72 42" strokeWidth="0.25" fill="none" opacity="0.25" />
 
-      {/* Pointed keystone at apex with DETAIL */}
-      <path d="M 44 14 L 50 5 L 56 14" strokeWidth="1.8" fill="none" strokeLinecap="round" strokeLinejoin="round" />
-      <path d="M 46 10 L 50 6 L 54 10" strokeWidth="0.8" fill="none" opacity="0.5" />
+      {/* BOLD Pointed keystone at apex */}
+      <path d="M 44 14 L 50 5 L 56 14" strokeWidth="2.8" fill="none" strokeLinecap="round" strokeLinejoin="round" />
+      <path d="M 46 10 L 50 6 L 54 10" strokeWidth="1.2" fill="none" opacity="0.5" />
       {/* Keystone edges */}
-      <path d="M 46 12 L 50 7 L 54 12" strokeWidth="0.4" fill="none" opacity="0.35" />
+      <path d="M 46 12 L 50 7 L 54 12" strokeWidth="0.6" fill="none" opacity="0.35" />
 
-      {/* Impost moldings with Gothic detail */}
-      <path d="M 14 52 L 27 52" strokeWidth="1.8" fill="none" strokeLinecap="round" />
-      <path d="M 15 50 L 26 50" strokeWidth="1" fill="none" opacity="0.6" />
-      <path d="M 73 52 L 86 52" strokeWidth="1.8" fill="none" strokeLinecap="round" />
-      <path d="M 74 50 L 85 50" strokeWidth="1" fill="none" opacity="0.6" />
+      {/* BOLD Impost moldings with Gothic detail */}
+      <path d="M 14 52 L 27 52" strokeWidth="2.8" fill="none" strokeLinecap="round" />
+      <path d="M 15 50 L 26 50" strokeWidth="1.4" fill="none" opacity="0.6" />
+      <path d="M 73 52 L 86 52" strokeWidth="2.8" fill="none" strokeLinecap="round" />
+      <path d="M 74 50 L 85 50" strokeWidth="1.4" fill="none" opacity="0.6" />
 
       {/* Soot darkening from centuries of candles (weathering) */}
       <path d="M 25 48 Q 30 35, 45 18" strokeWidth="0.4" fill="none" opacity="0.15" />
@@ -223,53 +255,85 @@ export const HorseshoeArchSVG = ({ showHalo = false }: SVGProps) => (
     <MaterialPatterns />
     <HaloFilter />
 
-    {/* CONTEXT: CÓRDOBA MOSQUE INTERIOR - striped arches beyond */}
-    <g opacity="0.18" strokeDasharray="2 3" strokeWidth="0.6">
-      {/* Adjacent striped horseshoe arches in background (famous Córdoba feature) */}
-      <path d="M 5 58 Q 2 52, 4 45 Q 8 38, 12 45 Q 14 52, 11 58" fill="none" />
-      <path d="M 89 58 Q 92 52, 90 45 Q 86 38, 82 45 Q 80 52, 83 58" fill="none" />
-      {/* Alternating stripe pattern on background arches */}
-      <rect x="6" y="45" width="5" height="3" opacity="0.4" fill="currentColor" stroke="none" />
-      <rect x="84" y="45" width="5" height="3" opacity="0.4" fill="currentColor" stroke="none" />
+    {/* CONTEXT: COMPLETE CÓRDOBA MOSQUE PRAYER HALL - field sketch off-page */}
+
+    {/* CEILING: Wooden coffered ceiling extending beyond */}
+    <g opacity="0.2" strokeDasharray="3 2" strokeWidth="0.5">
+      {/* Ceiling beams continuing off-page */}
+      <path d="M -10 0 L 110 0" fill="none" opacity="0.6" />
+      <path d="M -10 8 L 110 8" fill="none" />
+      <path d="M -10 16 L 110 16" fill="none" opacity="0.6" />
     </g>
 
-    {/* Marble floor with geometric Islamic tile patterns */}
+    {/* MOSQUE WALLS: Complete hypostyle hall walls */}
+    <g opacity="0.25" strokeDasharray="3 2.5" strokeWidth="0.6">
+      {/* Left wall extending off-page */}
+      <path d="M -5 -10 L -5 110" fill="none" />
+      <path d="M 0 -10 L 0 110" fill="none" opacity="0.7" />
+      {/* Right wall off-page */}
+      <path d="M 100 -10 L 100 110" fill="none" />
+      <path d="M 105 -10 L 105 110" fill="none" opacity="0.7" />
+    </g>
+
+    {/* FAMOUS CÓRDOBA COLONNADE: Rows of striped arches extending beyond */}
+    <g opacity="0.18" strokeDasharray="2 2" strokeWidth="0.6">
+      {/* Arcade continues left - multiple bays visible */}
+      <path d="M -20 58 Q -25 52, -22 45 Q -18 38, -12 45 Q -10 52, -15 58" fill="none" />
+      <path d="M -5 58 Q -10 52, -8 45 Q -4 38, 2 45 Q 4 52, 0 58" fill="none" />
+      {/* Stripes on left arches */}
+      <rect x="-18" y="45" width="4" height="3" opacity="0.4" fill="currentColor" stroke="none" />
+      <rect x="-3" y="45" width="4" height="3" opacity="0.4" fill="currentColor" stroke="none" />
+      {/* Arcade continues right */}
+      <path d="M 100 58 Q 95 52, 98 45 Q 102 38, 108 45 Q 110 52, 105 58" fill="none" />
+      <path d="M 115 58 Q 110 52, 113 45 Q 117 38, 123 45 Q 125 52, 120 58" fill="none" />
+      {/* Stripes on right arches */}
+      <rect x="100" y="45" width="4" height="3" opacity="0.4" fill="currentColor" stroke="none" />
+      <rect x="115" y="45" width="4" height="3" opacity="0.4" fill="currentColor" stroke="none" />
+    </g>
+
+    {/* FLOOR: Marble & tile pavement extending far beyond */}
     <g opacity="0.25">
-      <rect x="10" y="90" width="80" height="8" fill="url(#stone-smooth)" opacity="0.15" stroke="none" />
-      <path d="M 5 94 L 95 94" strokeWidth="0.8" fill="none" opacity="0.5" strokeDasharray="4 2" />
-      {/* Geometric tile pattern */}
+      <rect x="-10" y="90" width="120" height="20" fill="url(#stone-smooth)" opacity="0.15" stroke="none" />
+      {/* Floor extending off-page */}
+      <path d="M -10 94 L 110 94" strokeWidth="0.8" fill="none" opacity="0.5" strokeDasharray="5 3" />
+      <path d="M -10 100 L 110 100" strokeWidth="0.6" fill="none" opacity="0.4" strokeDasharray="4 2" />
+      {/* Islamic geometric tile pattern across floor */}
+      <path d="M 0 92 L 5 92 L 5 96 L 0 96 Z" strokeWidth="0.2" opacity="0.3" fill="none" />
       <path d="M 20 92 L 25 92 L 25 96 L 20 96 Z" strokeWidth="0.2" opacity="0.3" fill="none" />
       <path d="M 40 92 L 45 92 L 45 96 L 40 96 Z" strokeWidth="0.2" opacity="0.3" fill="none" />
       <path d="M 60 92 L 65 92 L 65 96 L 60 96 Z" strokeWidth="0.2" opacity="0.3" fill="none" />
       <path d="M 80 92 L 85 92 L 85 96 L 80 96 Z" strokeWidth="0.2" opacity="0.3" fill="none" />
+      <path d="M 100 92 L 105 92 L 105 96 L 100 96 Z" strokeWidth="0.2" opacity="0.3" fill="none" />
     </g>
 
-    {/* Piers with brick texture - set INWARD because arch extends past vertical */}
-    <g opacity="0.3">
-      {/* Left pier with alternating brick courses */}
-      <rect x="23" y="58" width="9" height="38" fill="url(#brick-rough)" opacity="0.2" stroke="none" />
-      <path d="M 25 94 L 25 58" strokeWidth="1.5" fill="none" />
-      <path d="M 30 94 L 30 58" strokeWidth="1" fill="none" />
-      {/* Right pier with brick */}
-      <rect x="68" y="58" width="9" height="38" fill="url(#brick-rough)" opacity="0.2" stroke="none" />
-      <path d="M 75 94 L 75 58" strokeWidth="1.5" fill="none" />
-      <path d="M 70 94 L 70 58" strokeWidth="1" fill="none" />
+    {/* BRICK COLUMNS: Supporting colonnade extending up off-page */}
+    <g opacity="0.28" strokeWidth="0.7">
+      {/* Left column - continues up beyond frame */}
+      <rect x="23" y="-10" width="9" height="120" fill="url(#brick-rough)" opacity="0.2" stroke="none" />
+      <path d="M 25 -10 L 25 110" strokeWidth="1.5" fill="none" strokeDasharray="5 2" />
+      <path d="M 28 -10 L 28 110" strokeWidth="1" fill="none" strokeDasharray="5 2" opacity="0.7" />
+      <path d="M 30 -10 L 30 110" strokeWidth="1" fill="none" strokeDasharray="5 2" opacity="0.7" />
+      {/* Right column - continues up beyond frame */}
+      <rect x="68" y="-10" width="9" height="120" fill="url(#brick-rough)" opacity="0.2" stroke="none" />
+      <path d="M 75 -10 L 75 110" strokeWidth="1.5" fill="none" strokeDasharray="5 2" />
+      <path d="M 72 -10 L 72 110" strokeWidth="1" fill="none" strokeDasharray="5 2" opacity="0.7" />
+      <path d="M 70 -10 L 70 110" strokeWidth="1" fill="none" strokeDasharray="5 2" opacity="0.7" />
     </g>
 
-    {/* PRIMARY: THE HORSESHOE ARCH with MOORISH BRICK & TILE */}
+    {/* PRIMARY: THE HORSESHOE ARCH - BOLD FIELD SKETCH */}
     <g filter={showHalo ? "url(#arch-halo)" : undefined}>
       {/* Brick material fill for arch mass */}
       <path d="M 25 58 Q 16 58, 14 48 Q 10 32, 20 18 Q 32 6, 50 6 Q 68 6, 80 18 Q 90 32, 86 48 Q 84 58, 75 58"
             fill="url(#brick-rough)" opacity="0.22" stroke="none" />
 
-      {/* Key feature: arch extends INWARD past the piers before curving up */}
+      {/* BOLD horseshoe curve - arch extends INWARD past piers (field sketch confidence) */}
       {/* Extrados */}
       <path d="M 25 58 Q 16 58, 14 48 Q 10 32, 20 18 Q 32 6, 50 6 Q 68 6, 80 18 Q 90 32, 86 48 Q 84 58, 75 58"
-            strokeWidth="2.2" fill="none" strokeLinecap="round" />
+            strokeWidth="3.2" fill="none" strokeLinecap="round" />
 
-      {/* Intrados */}
+      {/* BOLD Intrados */}
       <path d="M 30 55 Q 22 55, 20 46 Q 16 34, 26 22 Q 36 12, 50 12 Q 64 12, 74 22 Q 84 34, 80 46 Q 78 55, 70 55"
-            strokeWidth="1.8" fill="none" strokeLinecap="round" />
+            strokeWidth="2.5" fill="none" strokeLinecap="round" />
 
       {/* Depth shadow */}
       <path d="M 31 55 Q 23 55, 21 46 Q 17 35, 27 23 Q 37 13, 50 13 Q 63 13, 73 23 Q 83 35, 79 46 Q 77 55, 69 55"
@@ -301,20 +365,20 @@ export const HorseshoeArchSVG = ({ showHalo = false }: SVGProps) => (
       <path d="M 76 44 L 79 52" strokeWidth="1.2" fill="none" opacity="0.8" />
       <path d="M 76.5 44 L 79.5 52" strokeWidth="0.4" fill="none" opacity="0.4" />
 
-      {/* Keystone with Islamic geometric detail */}
-      <path d="M 45 8 L 50 5 L 55 8" strokeWidth="1.5" fill="none" strokeLinejoin="round" />
-      <path d="M 46 10 L 54 10" strokeWidth="1.8" fill="none" strokeLinecap="round" />
+      {/* BOLD Keystone with Islamic geometric detail */}
+      <path d="M 45 8 L 50 5 L 55 8" strokeWidth="2.5" fill="none" strokeLinejoin="round" />
+      <path d="M 46 10 L 54 10" strokeWidth="2.8" fill="none" strokeLinecap="round" />
       {/* Geometric star pattern on keystone */}
-      <path d="M 48 7 L 50 5.5 L 52 7" strokeWidth="0.4" fill="none" opacity="0.4" />
+      <path d="M 48 7 L 50 5.5 L 52 7" strokeWidth="0.6" fill="none" opacity="0.4" />
 
-      {/* Impost/capital with Moorish calligraphic decoration */}
-      <path d="M 20 58 L 33 58" strokeWidth="1.8" fill="none" strokeLinecap="round" />
-      <path d="M 21 56 L 32 56" strokeWidth="1" fill="none" opacity="0.6" />
+      {/* BOLD Impost/capital with Moorish calligraphic decoration */}
+      <path d="M 20 58 L 33 58" strokeWidth="2.8" fill="none" strokeLinecap="round" />
+      <path d="M 21 56 L 32 56" strokeWidth="1.4" fill="none" opacity="0.6" />
       {/* Stylized calligraphic curves */}
-      <path d="M 23 57 Q 25 56.5, 27 57" strokeWidth="0.3" fill="none" opacity="0.4" />
-      <path d="M 67 58 L 80 58" strokeWidth="1.8" fill="none" strokeLinecap="round" />
-      <path d="M 68 56 L 79 56" strokeWidth="1" fill="none" opacity="0.6" />
-      <path d="M 73 57 Q 75 56.5, 77 57" strokeWidth="0.3" fill="none" opacity="0.4" />
+      <path d="M 23 57 Q 25 56.5, 27 57" strokeWidth="0.4" fill="none" opacity="0.4" />
+      <path d="M 67 58 L 80 58" strokeWidth="2.8" fill="none" strokeLinecap="round" />
+      <path d="M 68 56 L 79 56" strokeWidth="1.4" fill="none" opacity="0.6" />
+      <path d="M 73 57 Q 75 56.5, 77 57" strokeWidth="0.4" fill="none" opacity="0.4" />
     </g>
   </svg>
 )
