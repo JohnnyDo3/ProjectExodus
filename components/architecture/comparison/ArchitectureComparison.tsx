@@ -1,83 +1,8 @@
 'use client'
 
 import React, { useState } from 'react'
-import { DoricColumnSVG, IonicColumnSVG, CorinthianColumnSVG } from '../elements/columns'
-import { PointedArchSVG, RoundArchSVG, HorseshoeArchSVG } from '../elements/arches'
-
-// Comparison data structure
-interface ComparisonFeature {
-  label: string
-  doric?: string
-  ionic?: string
-  corinthian?: string
-  highlighted?: boolean
-}
-
-interface ComparisonSet {
-  id: string
-  title: string
-  subtitle: string
-  elements: {
-    id: string
-    name: string
-    component: React.FC<{ showHalo?: boolean }>
-  }[]
-  features: ComparisonFeature[]
-  culturalContext?: string
-}
-
-// Greek Column Orders Comparison
-const greekColumnsComparison: ComparisonSet = {
-  id: 'greek-columns',
-  title: 'The Three Greek Orders',
-  subtitle: 'How to tell Doric, Ionic, and Corinthian apart',
-  elements: [
-    { id: 'doric', name: 'Doric', component: DoricColumnSVG },
-    { id: 'ionic', name: 'Ionic', component: IonicColumnSVG },
-    { id: 'corinthian', name: 'Corinthian', component: CorinthianColumnSVG },
-  ],
-  features: [
-    {
-      label: 'Base',
-      doric: 'NO BASE - sits directly on platform',
-      ionic: 'Elaborate Attic base with moldings',
-      corinthian: 'Similar to Ionic - ornate base',
-      highlighted: true,
-    },
-    {
-      label: 'Proportions',
-      doric: 'Stocky (1:4-6 height to diameter)',
-      ionic: 'Slender (1:9)',
-      corinthian: 'Tallest (1:10+)',
-    },
-    {
-      label: 'Flutes',
-      doric: '20 shallow flutes, sharp edges',
-      ionic: '24 deeper flutes with flat fillets',
-      corinthian: '24 flutes like Ionic',
-    },
-    {
-      label: 'Capital',
-      doric: 'Simple echinus (cushion) + abacus',
-      ionic: 'Scroll volutes (ram\'s horns)',
-      corinthian: 'Ornate acanthus leaves + small volutes',
-      highlighted: true,
-    },
-    {
-      label: 'Character',
-      doric: 'Masculine, sturdy, military',
-      ionic: 'Feminine, elegant, refined',
-      corinthian: 'Ornate, luxurious, decorative',
-    },
-    {
-      label: 'Famous Example',
-      doric: 'Parthenon (Athens)',
-      ionic: 'Erechtheion (Athens)',
-      corinthian: 'Temple of Olympian Zeus (Athens)',
-    },
-  ],
-  culturalContext: 'The Greeks developed these three orders in sequence: Doric (earliest, 7th century BCE) → Ionic (6th century BCE) → Corinthian (5th century BCE). Each represented different aesthetic values and was chosen for specific building types.',
-}
+import type { ComparisonSet } from '@/lib/architecture/comparisonSets'
+import { greekColumnsComparison } from '@/lib/architecture/comparisonSets'
 
 interface Props {
   comparisonSet?: ComparisonSet
@@ -90,6 +15,7 @@ export default function ArchitectureComparison({
 }: Props) {
   const [selectedFeature, setSelectedFeature] = useState<string | null>(null)
   const [showContext, setShowContext] = useState(false)
+  const [showTimeline, setShowTimeline] = useState(false)
   const [quizAnswers, setQuizAnswers] = useState<Record<string, string>>({})
 
   return (
@@ -169,42 +95,45 @@ export default function ArchitectureComparison({
                     </span>
                   )}
                 </td>
-                <td className="p-4 text-sm">
-                  {feature.doric && (
-                    <span className={selectedFeature === feature.label ? 'font-semibold' : ''}>
-                      {feature.doric}
-                    </span>
-                  )}
-                </td>
-                <td className="p-4 text-sm">
-                  {feature.ionic && (
-                    <span className={selectedFeature === feature.label ? 'font-semibold' : ''}>
-                      {feature.ionic}
-                    </span>
-                  )}
-                </td>
-                <td className="p-4 text-sm">
-                  {feature.corinthian && (
-                    <span className={selectedFeature === feature.label ? 'font-semibold' : ''}>
-                      {feature.corinthian}
-                    </span>
-                  )}
-                </td>
+                {comparisonSet.elements.map((element) => (
+                  <td key={element.id} className="p-4 text-sm">
+                    {feature.values[element.id] && (
+                      <span className={selectedFeature === feature.label ? 'font-semibold' : ''}>
+                        {feature.values[element.id]}
+                      </span>
+                    )}
+                  </td>
+                ))}
               </tr>
             ))}
           </tbody>
         </table>
       </div>
 
-      {/* Quick Tip */}
-      <div className="bg-accent/50 border border-accent rounded-lg p-4">
-        <h4 className="font-semibold mb-2">💡 Quick Memory Tip</h4>
-        <p className="text-sm">
-          <strong>D</strong>oric = <strong>D</strong>irect (no base),
-          <strong> I</strong>onic = <strong>I</strong>ntricate (scroll volutes),
-          <strong> C</strong>orinthian = <strong>C</strong>urly (acanthus leaves)
-        </p>
-      </div>
+      {/* Memory Tip */}
+      {comparisonSet.memoryTip && (
+        <div className="bg-accent/50 border border-accent rounded-lg p-4">
+          <h4 className="font-semibold mb-2">💡 Quick Memory Tip</h4>
+          <p className="text-sm">{comparisonSet.memoryTip}</p>
+        </div>
+      )}
+
+      {/* Historical Timeline */}
+      {comparisonSet.historicalTimeline && (
+        <div>
+          <button
+            onClick={() => setShowTimeline(!showTimeline)}
+            className="text-sm text-primary hover:underline mb-2"
+          >
+            {showTimeline ? '− Hide' : '+ Show'} Historical Timeline
+          </button>
+          {showTimeline && (
+            <div className="p-4 bg-muted/50 rounded-lg text-sm">
+              <p className="leading-relaxed">{comparisonSet.historicalTimeline}</p>
+            </div>
+          )}
+        </div>
+      )}
 
       {/* Interactive Hint */}
       <p className="text-center text-sm text-muted-foreground">
