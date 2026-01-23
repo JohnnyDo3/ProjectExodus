@@ -39,36 +39,82 @@ export const RoundArchSVG = ({ showHalo = false }: SVGProps) => (
     <MaterialPatterns />
     <HaloFilter />
 
-    {/* CONTEXT: Ground line and wall continuation - stone floor */}
-    <g opacity="0.25" strokeWidth="0.35">
-      <rect x="5" y="92" width="90" height="8" fill="url(#stone-smooth)" opacity="0.15" stroke="none" />
-      <path d="M 5 94 L 95 94" strokeDasharray="4 2" />
+    {/* CONTEXT: COMPLETE ROMAN AQUEDUCT/BASILICA - field sketch off-page */}
+
+    {/* CEILING/SKY: Roman coffered ceiling or open sky */}
+    <g opacity="0.2" strokeDasharray="3 2" strokeWidth="0.5">
+      {/* Coffers or sky indication extending beyond */}
+      <path d="M -10 0 L 110 0" fill="none" opacity="0.6" />
+      <path d="M -10 10 L 110 10" fill="none" />
     </g>
 
-    {/* CONTEXT: Supporting piers/jambs - solid stone with texture */}
-    <g opacity="0.3">
-      {/* Left pier with stone texture */}
-      <rect x="15" y="48" width="5" height="46" fill="url(#stone-smooth)" opacity="0.2" stroke="none" />
-      <path d="M 15 94 L 15 48" strokeWidth="1.8" fill="none" />
-      <path d="M 20 94 L 20 48" strokeWidth="1.2" fill="none" opacity="0.6" />
-      {/* Right pier with stone texture */}
-      <rect x="80" y="48" width="5" height="46" fill="url(#stone-smooth)" opacity="0.2" stroke="none" />
-      <path d="M 85 94 L 85 48" strokeWidth="1.8" fill="none" />
-      <path d="M 80 94 L 80 48" strokeWidth="1.2" fill="none" opacity="0.6" />
+    {/* MASSIVE ROMAN WALLS: Extending up and down beyond frame */}
+    <g opacity="0.25" strokeDasharray="3 2.5" strokeWidth="0.6">
+      {/* Left Roman wall - massive masonry */}
+      <path d="M -5 -10 L -5 110" fill="none" />
+      <path d="M 0 -10 L 0 110" fill="none" opacity="0.7" />
+      <path d="M 5 -10 L 5 110" fill="none" opacity="0.5" />
+      {/* Right Roman wall */}
+      <path d="M 95 -10 L 95 110" fill="none" />
+      <path d="M 100 -10 L 100 110" fill="none" opacity="0.7" />
+      <path d="M 105 -10 L 105 110" fill="none" opacity="0.5" />
+      {/* Roman stone courses */}
+      <path d="M -5 30 L 10 30" strokeWidth="0.4" opacity="0.5" />
+      <path d="M 90 30 L 105 30" strokeWidth="0.4" opacity="0.5" />
+      <path d="M -5 70 L 10 70" strokeWidth="0.4" opacity="0.5" />
+      <path d="M 90 70 L 105 70" strokeWidth="0.4" opacity="0.5" />
     </g>
 
-    {/* PRIMARY: THE ROUND ARCH - STONE MATERIAL with detailed voussoirs */}
+    {/* ADJACENT ARCADE: Roman arches continuing into distance */}
+    <g opacity="0.18" strokeDasharray="2 2" strokeWidth="0.6">
+      {/* Next arch to left (perspective) */}
+      <path d="M -20 60 Q -20 32, 0 32 Q 20 32, 20 60" fill="none" />
+      <path d="M -10 60 Q -10 35, 5 35 Q 20 35, 20 60" fill="none" opacity="0.7" />
+      {/* Next arch to right */}
+      <path d="M 80 60 Q 80 35, 95 35 Q 110 35, 110 60" fill="none" opacity="0.7" />
+      <path d="M 80 60 Q 80 32, 100 32 Q 120 32, 120 60" fill="none" />
+    </g>
+
+    {/* ROMAN FLOOR: Paved stone extending far beyond */}
+    <g opacity="0.25">
+      <rect x="-10" y="90" width="120" height="20" fill="url(#stone-smooth)" opacity="0.15" stroke="none" />
+      {/* Floor extending off-page */}
+      <path d="M -10 94 L 110 94" strokeWidth="0.8" fill="none" opacity="0.5" strokeDasharray="5 3" />
+      <path d="M -10 100 L 110 100" strokeWidth="0.6" fill="none" opacity="0.4" strokeDasharray="4 2" />
+      {/* Roman paving stones */}
+      <path d="M 0 92 L 0 105" strokeWidth="0.3" opacity="0.3" />
+      <path d="M 25 92 L 25 105" strokeWidth="0.3" opacity="0.3" />
+      <path d="M 50 92 L 50 105" strokeWidth="0.3" opacity="0.3" />
+      <path d="M 75 92 L 75 105" strokeWidth="0.3" opacity="0.3" />
+      <path d="M 100 92 L 100 105" strokeWidth="0.3" opacity="0.3" />
+    </g>
+
+    {/* MASSIVE PIERS: Roman piers extending up off-page */}
+    <g opacity="0.28" strokeWidth="0.7">
+      {/* Left pier - continues up beyond frame */}
+      <rect x="15" y="-10" width="5" height="120" fill="url(#stone-smooth)" opacity="0.2" stroke="none" />
+      <path d="M 15 -10 L 15 110" strokeWidth="1.8" fill="none" strokeDasharray="5 2" />
+      <path d="M 18 -10 L 18 110" strokeWidth="1.2" fill="none" strokeDasharray="5 2" opacity="0.7" />
+      <path d="M 20 -10 L 20 110" strokeWidth="1" fill="none" strokeDasharray="5 2" opacity="0.6" />
+      {/* Right pier - continues up beyond frame */}
+      <rect x="80" y="-10" width="5" height="120" fill="url(#stone-smooth)" opacity="0.2" stroke="none" />
+      <path d="M 85 -10 L 85 110" strokeWidth="1.8" fill="none" strokeDasharray="5 2" />
+      <path d="M 82 -10 L 82 110" strokeWidth="1.2" fill="none" strokeDasharray="5 2" opacity="0.7" />
+      <path d="M 80 -10 L 80 110" strokeWidth="1" fill="none" strokeDasharray="5 2" opacity="0.6" />
+    </g>
+
+    {/* PRIMARY: THE ROUND ARCH - BOLD ROMAN ENGINEERING */}
     <g filter={showHalo ? "url(#arch-halo)" : undefined}>
       {/* Stone material texture on arch */}
       <path d="M 17 48 Q 17 12, 50 12 Q 83 12, 83 48" fill="url(#stone-smooth)" opacity="0.25" stroke="none" />
 
-      {/* Extrados - outer curve of arch - BOLD */}
+      {/* BOLD Extrados - perfect Roman semicircle (field sketch confidence) */}
       <path d="M 15 48 Q 15 8, 50 8 Q 85 8, 85 48"
-            strokeWidth="2.5" fill="none" strokeLinecap="round" />
+            strokeWidth="3.2" fill="none" strokeLinecap="round" />
 
-      {/* Intrados - inner curve of arch */}
+      {/* BOLD Intrados - inner curve */}
       <path d="M 20 48 Q 20 16, 50 16 Q 80 16, 80 48"
-            strokeWidth="2" fill="none" strokeLinecap="round" />
+            strokeWidth="2.5" fill="none" strokeLinecap="round" />
 
       {/* Depth shadow on inner arch */}
       <path d="M 21 48 Q 21 17, 50 17 Q 79 17, 79 48"
@@ -88,17 +134,17 @@ export const RoundArchSVG = ({ showHalo = false }: SVGProps) => (
       <path d="M 74 34 L 78 42" strokeWidth="1.2" fill="none" opacity="0.6" />
       <path d="M 74.5 34 L 78.5 42" strokeWidth="0.4" fill="none" opacity="0.3" />
 
-      {/* THE KEYSTONE at crown - central wedge stone with DETAIL */}
-      <path d="M 44 10 L 46 8 L 54 8 L 56 10" strokeWidth="2" fill="none" strokeLinejoin="round" />
-      <path d="M 46 14 L 46 9" strokeWidth="1.2" fill="none" opacity="0.7" />
-      <path d="M 54 14 L 54 9" strokeWidth="1.2" fill="none" opacity="0.7" />
-      <path d="M 48 9 L 52 9" strokeWidth="0.5" fill="none" opacity="0.5" />
+      {/* BOLD KEYSTONE at crown - central wedge stone */}
+      <path d="M 44 10 L 46 8 L 54 8 L 56 10" strokeWidth="2.8" fill="none" strokeLinejoin="round" />
+      <path d="M 46 14 L 46 9" strokeWidth="1.5" fill="none" opacity="0.7" />
+      <path d="M 54 14 L 54 9" strokeWidth="1.5" fill="none" opacity="0.7" />
+      <path d="M 48 9 L 52 9" strokeWidth="0.7" fill="none" opacity="0.5" />
 
-      {/* Impost blocks where arch springs from piers */}
-      <path d="M 12 48 L 23 48" strokeWidth="1.8" fill="none" strokeLinecap="round" />
-      <path d="M 77 48 L 88 48" strokeWidth="1.8" fill="none" strokeLinecap="round" />
-      <path d="M 14 46 L 21 46" strokeWidth="1" fill="none" opacity="0.6" />
-      <path d="M 79 46 L 86 46" strokeWidth="1" fill="none" opacity="0.6" />
+      {/* BOLD Impost blocks where arch springs from piers */}
+      <path d="M 12 48 L 23 48" strokeWidth="2.8" fill="none" strokeLinecap="round" />
+      <path d="M 77 48 L 88 48" strokeWidth="2.8" fill="none" strokeLinecap="round" />
+      <path d="M 14 46 L 21 46" strokeWidth="1.4" fill="none" opacity="0.6" />
+      <path d="M 79 46 L 86 46" strokeWidth="1.4" fill="none" opacity="0.6" />
     </g>
   </svg>
 )
@@ -392,56 +438,98 @@ export const OgeeArchSVG = ({ showHalo = false }: SVGProps) => (
     <MaterialPatterns />
     <HaloFilter />
 
-    {/* CONTEXT: INDO-ISLAMIC PALACE */}
+    {/* CONTEXT: COMPLETE MUGHAL PALACE IWAN - field sketch off-page */}
 
-    {/* Geometric jali (perforated screen) patterns in background */}
-    <g opacity="0.15" strokeDasharray="2 2" strokeWidth="0.3">
-      {/* Geometric lattice patterns typical of Mughal architecture */}
-      <circle cx="10" cy="25" r="3" fill="none" />
-      <circle cx="20" cy="15" r="3" fill="none" />
-      <circle cx="90" cy="25" r="3" fill="none" />
-      <circle cx="80" cy="15" r="3" fill="none" />
-      {/* Star pattern connections */}
-      <path d="M 10 25 L 20 15" />
-      <path d="M 80 15 L 90 25" />
+    {/* CEILING: Persian muqarnas vaulting extending beyond */}
+    <g opacity="0.2" strokeDasharray="2 3" strokeWidth="0.5">
+      {/* Honeycomb muqarnas extending off-page */}
+      <path d="M -10 0 L 110 0" fill="none" opacity="0.6" />
+      <path d="M 0 8 Q 25 5, 50 8 Q 75 5, 100 8" fill="none" />
+      <path d="M 10 15 Q 35 12, 50 15 Q 65 12, 90 15" fill="none" opacity="0.7" />
     </g>
 
-    {/* Sandstone floor with Persian carpet pattern indication */}
+    {/* PALACE WALLS: Complete iwan walls with tile work */}
+    <g opacity="0.25" strokeDasharray="3 2.5" strokeWidth="0.6">
+      {/* Left wall extending off-page */}
+      <path d="M -5 -10 L -5 110" fill="none" />
+      <path d="M 0 -10 L 0 110" fill="none" opacity="0.7" />
+      {/* Right wall off-page */}
+      <path d="M 100 -10 L 100 110" fill="none" />
+      <path d="M 105 -10 L 105 110" fill="none" opacity="0.7" />
+      {/* Tile work bands */}
+      <path d="M -5 35 L 5 35" strokeWidth="0.4" opacity="0.5" />
+      <path d="M 95 35 L 105 35" strokeWidth="0.4" opacity="0.5" />
+    </g>
+
+    {/* JALI SCREENS: Geometric perforated screens extending across */}
+    <g opacity="0.18" strokeDasharray="2 2" strokeWidth="0.4">
+      {/* Left jali screen patterns */}
+      <circle cx="-5" cy="25" r="3" fill="none" />
+      <circle cx="5" cy="15" r="3" fill="none" />
+      <circle cx="15" cy="25" r="3" fill="none" />
+      {/* Star connections */}
+      <path d="M -5 25 L 5 15" />
+      <path d="M 5 15 L 15 25" />
+      {/* Right jali screens */}
+      <circle cx="85" cy="25" r="3" fill="none" />
+      <circle cx="95" cy="15" r="3" fill="none" />
+      <circle cx="105" cy="25" r="3" fill="none" />
+      <path d="M 85 25 L 95 15" />
+      <path d="M 95 15 L 105 25" />
+    </g>
+
+    {/* ADJACENT OGEE ARCHES: Palace arcade continuing */}
+    <g opacity="0.18" strokeDasharray="2 2" strokeWidth="0.6">
+      {/* Next arch to left (perspective) */}
+      <path d="M -15 65 Q -22 55, -18 45 Q -12 32, 5 18" fill="none" />
+      {/* Next arch to right */}
+      <path d="M 115 65 Q 122 55, 118 45 Q 112 32, 95 18" fill="none" />
+    </g>
+
+    {/* FLOOR: Marble & tile pavement with Persian carpet */}
     <g opacity="0.25">
-      <rect x="10" y="90" width="80" height="8" fill="url(#stone-smooth)" opacity="0.15" stroke="none" />
-      <path d="M 5 94 L 95 94" strokeWidth="0.8" fill="none" opacity="0.5" strokeDasharray="4 2" />
-      {/* Carpet border pattern */}
-      <path d="M 15 92 L 20 94 L 15 96" strokeWidth="0.2" opacity="0.3" fill="none" />
+      <rect x="-10" y="90" width="120" height="20" fill="url(#stone-smooth)" opacity="0.15" stroke="none" />
+      {/* Floor extending off-page */}
+      <path d="M -10 94 L 110 94" strokeWidth="0.8" fill="none" opacity="0.5" strokeDasharray="5 3" />
+      <path d="M -10 100 L 110 100" strokeWidth="0.6" fill="none" opacity="0.4" strokeDasharray="4 2" />
+      {/* Persian carpet border patterns */}
+      <path d="M 0 92 L 5 94 L 0 96" strokeWidth="0.2" opacity="0.3" fill="none" />
+      <path d="M 25 92 L 30 94 L 25 96" strokeWidth="0.2" opacity="0.3" fill="none" />
       <path d="M 50 92 L 55 94 L 50 96" strokeWidth="0.2" opacity="0.3" fill="none" />
-      <path d="M 85 92 L 80 94 L 85 96" strokeWidth="0.2" opacity="0.3" fill="none" />
+      <path d="M 75 92 L 80 94 L 75 96" strokeWidth="0.2" opacity="0.3" fill="none" />
+      <path d="M 100 92 L 95 94 L 100 96" strokeWidth="0.2" opacity="0.3" fill="none" />
     </g>
 
-    {/* Supporting piers with sandstone texture */}
-    <g opacity="0.3">
-      <rect x="16" y="58" width="8" height="38" fill="url(#stone-smooth)" opacity="0.2" stroke="none" />
-      <path d="M 18 94 L 18 58" strokeWidth="1.5" fill="none" />
-      <rect x="76" y="58" width="8" height="38" fill="url(#stone-smooth)" opacity="0.2" stroke="none" />
-      <path d="M 82 94 L 82 58" strokeWidth="1.5" fill="none" />
+    {/* CARVED PIERS: Sandstone piers extending up off-page */}
+    <g opacity="0.28" strokeWidth="0.7">
+      {/* Left pier - continues up beyond frame */}
+      <rect x="16" y="-10" width="8" height="120" fill="url(#stone-smooth)" opacity="0.2" stroke="none" />
+      <path d="M 18 -10 L 18 110" strokeWidth="1.5" fill="none" strokeDasharray="5 2" />
+      <path d="M 22 -10 L 22 110" strokeWidth="1" fill="none" strokeDasharray="5 2" opacity="0.7" />
+      {/* Right pier - continues up beyond frame */}
+      <rect x="76" y="-10" width="8" height="120" fill="url(#stone-smooth)" opacity="0.2" stroke="none" />
+      <path d="M 82 -10 L 82 110" strokeWidth="1.5" fill="none" strokeDasharray="5 2" />
+      <path d="M 78 -10 L 78 110" strokeWidth="1" fill="none" strokeDasharray="5 2" opacity="0.7" />
     </g>
 
-    {/* PRIMARY: THE OGEE ARCH with CARVED SANDSTONE */}
+    {/* PRIMARY: THE OGEE ARCH - BOLD MUGHAL ELEGANCE */}
     <g filter={showHalo ? "url(#arch-halo)" : undefined}>
       {/* Sandstone material fill for arch mass */}
       <path d="M 18 58 Q 10 48, 16 38 Q 24 26, 50 6 Q 76 26, 84 38 Q 90 48, 82 58"
             fill="url(#stone-smooth)" opacity="0.25" stroke="none" />
 
-      {/* Left ogee: concave curve outward, then convex curve to point */}
+      {/* BOLD Left ogee: flowing S-curve (field sketch confidence) */}
       <path d="M 18 58 Q 10 48, 16 38 Q 24 26, 50 6"
-            strokeWidth="2.2" fill="none" strokeLinecap="round" />
-      {/* Right ogee: mirror */}
+            strokeWidth="3.2" fill="none" strokeLinecap="round" />
+      {/* BOLD Right ogee: mirror S-curve */}
       <path d="M 82 58 Q 90 48, 84 38 Q 76 26, 50 6"
-            strokeWidth="2.2" fill="none" strokeLinecap="round" />
+            strokeWidth="3.2" fill="none" strokeLinecap="round" />
 
-      {/* Inner ogee curves */}
+      {/* BOLD Inner ogee curves */}
       <path d="M 24 58 Q 17 50, 22 40 Q 30 28, 50 12"
-            strokeWidth="1.6" fill="none" strokeLinecap="round" />
+            strokeWidth="2.5" fill="none" strokeLinecap="round" />
       <path d="M 76 58 Q 83 50, 78 40 Q 70 28, 50 12"
-            strokeWidth="1.6" fill="none" strokeLinecap="round" />
+            strokeWidth="2.5" fill="none" strokeLinecap="round" />
 
       {/* Depth shadow */}
       <path d="M 25 58 Q 18 50, 23 40 Q 31 29, 50 13"
@@ -462,12 +550,12 @@ export const OgeeArchSVG = ({ showHalo = false }: SVGProps) => (
       <path d="M 68 44 Q 70 42, 72 44" strokeWidth="0.3" fill="none" opacity="0.35" />
       <path d="M 76 52 Q 78 50, 80 52" strokeWidth="0.3" fill="none" opacity="0.35" />
 
-      {/* Finial at apex with Islamic geometric detail */}
-      <path d="M 50 6 L 50 2" strokeWidth="1.5" fill="none" strokeLinecap="round" />
-      <circle cx="50" cy="2" r="2" strokeWidth="1.2" fill="none" />
+      {/* BOLD Finial at apex with Islamic geometric detail */}
+      <path d="M 50 6 L 50 2" strokeWidth="2.5" fill="none" strokeLinecap="round" />
+      <circle cx="50" cy="2" r="2" strokeWidth="2" fill="none" />
       {/* Star finial ornament */}
-      <path d="M 48 2 L 50 0.5 L 52 2" strokeWidth="0.4" fill="none" opacity="0.5" />
-      <path d="M 48 2 L 50 3.5 L 52 2" strokeWidth="0.4" fill="none" opacity="0.5" />
+      <path d="M 48 2 L 50 0.5 L 52 2" strokeWidth="0.6" fill="none" opacity="0.5" />
+      <path d="M 48 2 L 50 3.5 L 52 2" strokeWidth="0.6" fill="none" opacity="0.5" />
 
       {/* Crockets along curve - enhanced as carved lotus buds */}
       <circle cx="18" cy="44" r="2" strokeWidth="0.8" fill="none" opacity="0.5" />
@@ -479,16 +567,16 @@ export const OgeeArchSVG = ({ showHalo = false }: SVGProps) => (
       <circle cx="82" cy="44" r="2" strokeWidth="0.8" fill="none" opacity="0.5" />
       <path d="M 81 44 L 83 44" strokeWidth="0.3" fill="none" opacity="0.4" />
 
-      {/* Imposts with inlaid geometric patterns */}
-      <path d="M 14 58 L 27 58" strokeWidth="1.8" fill="none" strokeLinecap="round" />
-      <path d="M 15 56 L 26 56" strokeWidth="1" fill="none" opacity="0.6" />
+      {/* BOLD Imposts with inlaid geometric patterns */}
+      <path d="M 14 58 L 27 58" strokeWidth="2.8" fill="none" strokeLinecap="round" />
+      <path d="M 15 56 L 26 56" strokeWidth="1.4" fill="none" opacity="0.6" />
       {/* Geometric inlay pattern */}
-      <path d="M 17 57 L 19 57 L 19 59 L 17 59 Z" strokeWidth="0.2" fill="none" opacity="0.3" />
-      <path d="M 21 57 L 23 57 L 23 59 L 21 59 Z" strokeWidth="0.2" fill="none" opacity="0.3" />
-      <path d="M 73 58 L 86 58" strokeWidth="1.8" fill="none" strokeLinecap="round" />
-      <path d="M 74 56 L 85 56" strokeWidth="1" fill="none" opacity="0.6" />
-      <path d="M 77 57 L 79 57 L 79 59 L 77 59 Z" strokeWidth="0.2" fill="none" opacity="0.3" />
-      <path d="M 81 57 L 83 57 L 83 59 L 81 59 Z" strokeWidth="0.2" fill="none" opacity="0.3" />
+      <path d="M 17 57 L 19 57 L 19 59 L 17 59 Z" strokeWidth="0.3" fill="none" opacity="0.3" />
+      <path d="M 21 57 L 23 57 L 23 59 L 21 59 Z" strokeWidth="0.3" fill="none" opacity="0.3" />
+      <path d="M 73 58 L 86 58" strokeWidth="2.8" fill="none" strokeLinecap="round" />
+      <path d="M 74 56 L 85 56" strokeWidth="1.4" fill="none" opacity="0.6" />
+      <path d="M 77 57 L 79 57 L 79 59 L 77 59 Z" strokeWidth="0.3" fill="none" opacity="0.3" />
+      <path d="M 81 57 L 83 57 L 83 59 L 81 59 Z" strokeWidth="0.3" fill="none" opacity="0.3" />
     </g>
   </svg>
 )
