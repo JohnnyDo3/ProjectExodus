@@ -100,6 +100,84 @@ const ClerestorySVG: React.FC<SVGProps> = ({ showHalo }) => (
     {showHalo && <HaloFilter id="clerestory-halo" intensity={0.85} />}
     <g filter={showHalo ? "url(#clerestory-halo)" : undefined} fill="none" stroke="currentColor" strokeLinecap="round">
 
+      {/* CONTEXT: COMPLETE CHURCH NAVE - field sketch extending off-page */}
+
+      {/* CEILING VAULT: Extending upward beyond frame */}
+      <g opacity="0.18" strokeDasharray="2 3" strokeWidth="0.5">
+        {/* Ribbed vaulting continuing up */}
+        <path d="M -5 20 Q 25 -5, 50 -8 Q 75 -5, 105 20" fill="none" opacity="0.6" />
+        {/* Vault ribs */}
+        <path d="M 10 15 Q 30 0, 50 -3" fill="none" />
+        <path d="M 50 -3 Q 70 0, 90 15" fill="none" />
+        <path d="M 25 10 Q 38 -2, 50 -5" fill="none" opacity="0.7" />
+        <path d="M 50 -5 Q 62 -2, 75 10" fill="none" opacity="0.7" />
+      </g>
+
+      {/* TRIFORIUM ARCADE: Mid-level gallery extending horizontally */}
+      <g opacity="0.2" strokeDasharray="2 2" strokeWidth="0.6">
+        {/* Triforium arches extending off-page left */}
+        <path d="M -10 58 Q -10 54, -5 52 Q 0 54, 0 58" fill="none" />
+        <path d="M 0 58 Q 0 54, 5 52 Q 10 54, 10 58" fill="none" />
+
+        {/* Triforium arches visible in frame */}
+        <path d="M 10 58 Q 10 54, 15 52 Q 20 54, 20 58" fill="none" />
+        <path d="M 20 58 Q 20 54, 25 52 Q 30 54, 30 58" fill="none" opacity="0.8" />
+        <path d="M 35 58 Q 35 54, 40 52 Q 45 54, 45 58" fill="none" opacity="0.7" />
+        <path d="M 55 58 Q 55 54, 60 52 Q 65 54, 65 58" fill="none" opacity="0.7" />
+        <path d="M 70 58 Q 70 54, 75 52 Q 80 54, 80 58" fill="none" opacity="0.8" />
+        <path d="M 80 58 Q 80 54, 85 52 Q 90 54, 90 58" fill="none" />
+
+        {/* Continuing off-page right */}
+        <path d="M 90 58 Q 90 54, 95 52 Q 100 54, 100 58" fill="none" />
+        <path d="M 100 58 Q 100 54, 105 52 Q 110 54, 110 58" fill="none" />
+      </g>
+
+      {/* NAVE ARCADE: Lower level colonnade extending beyond */}
+      <g opacity="0.22" strokeDasharray="3 2" strokeWidth="0.7">
+        {/* Arcade arches extending off-page left */}
+        <path d="M -15 85 Q -15 68, 0 68 Q 15 68, 15 85" fill="none" />
+        <path d="M -8 85 Q -8 70, 5 70 Q 18 70, 18 85" fill="none" opacity="0.7" />
+
+        {/* Nave arcade in frame */}
+        <path d="M 15 85 Q 15 68, 30 68 Q 45 68, 45 85" fill="none" />
+        <path d="M 20 85 Q 20 70, 32 70 Q 44 70, 44 85" fill="none" opacity="0.7" />
+        <path d="M 55 85 Q 55 68, 70 68 Q 85 68, 85 85" fill="none" />
+        <path d="M 56 85 Q 56 70, 68 70 Q 80 70, 80 85" fill="none" opacity="0.7" />
+
+        {/* Continuing off-page right */}
+        <path d="M 85 85 Q 85 68, 100 68 Q 115 68, 115 85" fill="none" />
+        <path d="M 82 85 Q 82 70, 95 70 Q 108 70, 108 85" fill="none" opacity="0.7" />
+      </g>
+
+      {/* NAVE WALLS: Complete walls extending vertically */}
+      <g opacity="0.25" strokeDasharray="3 2.5" strokeWidth="0.8">
+        {/* Left nave wall extending off-page */}
+        <path d="M -5 -10 L -5 110" fill="none" />
+        <path d="M 0 -10 L 0 110" fill="none" opacity="0.8" />
+        <path d="M 5 -10 L 5 110" fill="none" opacity="0.6" />
+
+        {/* Right nave wall */}
+        <path d="M 95 -10 L 95 110" fill="none" opacity="0.6" />
+        <path d="M 100 -10 L 100 110" fill="none" opacity="0.8" />
+        <path d="M 105 -10 L 105 110" fill="none" />
+
+        {/* Stone courses */}
+        <path d="M -5 35 L 10 35" strokeWidth="0.4" opacity="0.5" />
+        <path d="M 90 35 L 105 35" strokeWidth="0.4" opacity="0.5" />
+      </g>
+
+      {/* NAVE FLOOR: Extending down beyond frame */}
+      <g opacity="0.2" strokeWidth="0.4">
+        {/* Floor paving extending off-page */}
+        <path d="M -10 95 L 110 95" strokeDasharray="5 3" />
+        <path d="M -10 98 L 110 98" strokeDasharray="4 2" opacity="0.7" />
+        <path d="M -10 102 L 110 102" strokeDasharray="3 2" opacity="0.5" />
+        {/* Vertical joints */}
+        <path d="M 20 94 L 20 110" strokeDasharray="2 1.5" opacity="0.5" />
+        <path d="M 50 94 L 50 110" strokeDasharray="2 1.5" opacity="0.5" />
+        <path d="M 80 94 L 80 110" strokeDasharray="2 1.5" opacity="0.5" />
+      </g>
+
       {/* DRAMATIC LIGHT STREAMING - High afternoon sun flooding the sanctuary */}
       <g opacity="0.22" strokeWidth="0.6" strokeDasharray="1 3">
         {/* Powerful light shafts from each window casting down */}
@@ -124,32 +202,30 @@ const ClerestorySVG: React.FC<SVGProps> = ({ showHalo }) => (
         <circle cx="63" cy="60" r="0.4" fill="currentColor" opacity="0.55" />
         <circle cx="70" cy="67" r="0.35" fill="currentColor" opacity="0.5" />
         <circle cx="82" cy="63" r="0.45" fill="currentColor" opacity="0.6" />
-        {/* Light pools on floor where beams strike */}
-        <ellipse cx="20" cy="75" rx="8" ry="3" fill="currentColor" opacity="0.08" stroke="none" />
-        <ellipse cx="42" cy="78" rx="9" ry="3" fill="currentColor" opacity="0.08" stroke="none" />
-        <ellipse cx="62" cy="77" rx="8" ry="3" fill="currentColor" opacity="0.08" stroke="none" />
-        <ellipse cx="80" cy="76" rx="9" ry="3" fill="currentColor" opacity="0.08" stroke="none" />
       </g>
 
-      {/* CONTEXT: Building structure and lower walls */}
-      <g strokeWidth="0.8" strokeDasharray="3 2" opacity="0.4">
-        {/* Lower wall section */}
-        <path d="M10 60 L10 95 L90 95 L90 60" />
-        <path d="M15 65 L15 90 L40 90 L40 65 Z" />
-        <path d="M60 65 L60 90 L85 90 L85 65 Z" />
-        {/* Roofline indication */}
-        <path d="M5 20 Q50 12, 95 20" />
-      </g>
-
-      {/* PRIMARY: Clerestory windows */}
+      {/* PRIMARY: THE CLERESTORY WINDOWS - BOLD FIELD SKETCH LINES */}
       <g strokeWidth="0.8">
-        {/* Clerestory level wall */}
-        <path d="M10 20 L10 55 L90 55 L90 20" />
-        {/* Row of clerestory windows */}
-        <path d="M15 25 L15 50 L30 50 L30 25 Z" strokeWidth="1" />
-        <path d="M35 25 L35 50 L50 50 L50 25 Z" strokeWidth="1" />
-        <path d="M55 25 L55 50 L70 50 L70 25 Z" strokeWidth="1" />
-        <path d="M75 25 L75 50 L88 50 L88 25 Z" strokeWidth="1" />
+        {/* BOLD Clerestory level wall */}
+        <path d="M10 20 L10 55 L90 55 L90 20" strokeWidth="2.8" />
+
+        {/* BOLD Row of clerestory windows - high windows flooding nave with light */}
+        <path d="M15 25 L15 50 L30 50 L30 25 Z" strokeWidth="3.2" />
+        <path d="M35 25 L35 50 L50 50 L50 25 Z" strokeWidth="3.2" />
+        <path d="M55 25 L55 50 L70 50 L70 25 Z" strokeWidth="3.2" />
+        <path d="M75 25 L75 50 L88 50 L88 25 Z" strokeWidth="3.2" />
+
+        {/* Window mullions */}
+        <path d="M22.5 25 L22.5 50" strokeWidth="1.5" />
+        <path d="M42.5 25 L42.5 50" strokeWidth="1.5" />
+        <path d="M62.5 25 L62.5 50" strokeWidth="1.5" />
+        <path d="M81.5 25 L81.5 50" strokeWidth="1.5" />
+
+        {/* Window sills - stone thickness */}
+        <path d="M15 50 L15 52 L30 52 L30 50" strokeWidth="2" />
+        <path d="M35 50 L35 52 L50 52 L50 50" strokeWidth="2" />
+        <path d="M55 50 L55 52 L70 52 L70 50" strokeWidth="2" />
+        <path d="M75 50 L75 52 L88 52 L88 50" strokeWidth="2" />
       </g>
     </g>
   </svg>
@@ -402,6 +478,86 @@ const RoseWindowSVG: React.FC<SVGProps> = ({ showHalo }) => (
     {showHalo && <HaloFilter id="rose-halo" intensity={1.1} />}
     <g filter={showHalo ? "url(#rose-halo)" : undefined} fill="none" stroke="currentColor" strokeLinecap="round">
 
+      {/* CONTEXT: COMPLETE GOTHIC CATHEDRAL WEST FACADE - field sketch off-page */}
+
+      {/* TWIN TOWERS: Extending upward beyond frame (Notre-Dame style) */}
+      <g opacity="0.18" strokeDasharray="2 2" strokeWidth="0.6">
+        {/* Left tower rising off-page */}
+        <path d="M -5 110 L -5 -10" fill="none" />
+        <path d="M 8 110 L 8 -10" fill="none" opacity="0.7" />
+        {/* Gothic pinnacles at top */}
+        <path d="M -5 -8 L 1.5 -15 L 8 -8" strokeWidth="0.5" opacity="0.6" />
+
+        {/* Right tower rising off-page */}
+        <path d="M 92 110 L 92 -10" fill="none" opacity="0.7" />
+        <path d="M 105 110 L 105 -10" fill="none" />
+        {/* Gothic pinnacles */}
+        <path d="M 92 -8 L 98.5 -15 L 105 -8" strokeWidth="0.5" opacity="0.6" />
+      </g>
+
+      {/* GABLE: Gothic pointed arch above rose window */}
+      <g opacity="0.2" strokeDasharray="2 3" strokeWidth="0.5">
+        {/* Pointed gable extending upward */}
+        <path d="M 10 8 L 50 -10 L 90 8" fill="none" />
+        <path d="M 12 10 L 50 -7 L 88 10" fill="none" opacity="0.7" />
+        {/* Gothic tracery in gable */}
+        <path d="M 40 5 Q 45 0, 50 -2 Q 55 0, 60 5" strokeWidth="0.4" opacity="0.6" />
+      </g>
+
+      {/* FLYING BUTTRESSES: Extending from both sides */}
+      <g opacity="0.15" strokeDasharray="3 2" strokeWidth="0.5">
+        {/* Left flying buttress */}
+        <path d="M -10 40 Q -5 45, 5 48" fill="none" />
+        <path d="M -10 60 Q -5 63, 5 65" fill="none" opacity="0.8" />
+
+        {/* Right flying buttress */}
+        <path d="M 110 40 Q 105 45, 95 48" fill="none" />
+        <path d="M 110 60 Q 105 63, 95 65" fill="none" opacity="0.8" />
+      </g>
+
+      {/* PORTAL ARCHES: Grand entrance portals below extending down */}
+      <g opacity="0.18" strokeDasharray="2 2" strokeWidth="0.6">
+        {/* Left portal arch */}
+        <path d="M 8 88 Q 5 92, 8 96 Q 12 102, 20 105" fill="none" />
+        <path d="M 12 90 Q 10 94, 12 98" strokeWidth="0.5" opacity="0.7" />
+
+        {/* Center portal (grand) */}
+        <path d="M 30 88 Q 25 95, 30 100 Q 40 108, 50 110" fill="none" />
+        <path d="M 70 88 Q 75 95, 70 100 Q 60 108, 50 110" fill="none" />
+
+        {/* Right portal */}
+        <path d="M 92 88 Q 95 92, 92 96 Q 88 102, 80 105" fill="none" />
+        <path d="M 88 90 Q 90 94, 88 98" strokeWidth="0.5" opacity="0.7" />
+      </g>
+
+      {/* FACADE WALLS: Complete west facade extending beyond */}
+      <g opacity="0.25" strokeDasharray="3 2" strokeWidth="0.7">
+        {/* Left facade wall */}
+        <path d="M -5 -10 L -5 110" fill="none" />
+        <path d="M 10 -10 L 10 110" fill="none" opacity="0.8" />
+        {/* Stone courses */}
+        <path d="M -5 20 L 10 20" strokeWidth="0.4" opacity="0.5" />
+        <path d="M -5 70 L 10 70" strokeWidth="0.4" opacity="0.5" />
+
+        {/* Right facade wall */}
+        <path d="M 90 -10 L 90 110" fill="none" opacity="0.8" />
+        <path d="M 105 -10 L 105 110" fill="none" />
+        {/* Stone courses */}
+        <path d="M 90 20 L 105 20" strokeWidth="0.4" opacity="0.5" />
+        <path d="M 90 70 L 105 70" strokeWidth="0.4" opacity="0.5" />
+      </g>
+
+      {/* LANCET WINDOWS: Tall Gothic windows flanking rose */}
+      <g opacity="0.2" strokeDasharray="2 2" strokeWidth="0.6">
+        {/* Left lancet pair */}
+        <path d="M 12 65 Q 14 75, 16 85" fill="none" />
+        <path d="M 18 65 Q 20 75, 22 85" fill="none" opacity="0.7" />
+
+        {/* Right lancet pair */}
+        <path d="M 88 65 Q 86 75, 84 85" fill="none" />
+        <path d="M 82 65 Q 80 75, 78 85" fill="none" opacity="0.7" />
+      </g>
+
       {/* MAGNIFICENT COLORED LIGHT - Afternoon sun streaming through stained glass */}
       <g opacity="0.18" strokeWidth="0.4">
         {/* Radiating colored light beams matching the 12-petal pattern */}
@@ -413,18 +569,6 @@ const RoseWindowSVG: React.FC<SVGProps> = ({ showHalo }) => (
         <path d="M 50 50 L 88 32" stroke="currentColor" strokeDasharray="2 3" opacity="0.45" />
         <path d="M 50 50 L 82 18" stroke="currentColor" strokeDasharray="2 3" opacity="0.4" />
         <path d="M 50 50 L 68 12" stroke="currentColor" strokeDasharray="2 3" opacity="0.45" />
-        <path d="M 50 50 L 50 8" stroke="currentColor" strokeDasharray="2 3" opacity="0.5" />
-        <path d="M 50 50 L 32 12" stroke="currentColor" strokeDasharray="2 3" opacity="0.45" />
-        <path d="M 50 50 L 18 18" stroke="currentColor" strokeDasharray="2 3" opacity="0.4" />
-        <path d="M 50 50 L 12 32" stroke="currentColor" strokeDasharray="2 3" opacity="0.45" />
-        {/* Colored light projection on floor - circular pattern echoing the rose */}
-        <circle cx="50" cy="85" r="20" fill="none" stroke="currentColor" opacity="0.12" strokeWidth="0.4" strokeDasharray="3 2" />
-        <circle cx="50" cy="85" r="15" fill="none" stroke="currentColor" opacity="0.1" strokeWidth="0.3" strokeDasharray="2 1" />
-        <circle cx="50" cy="85" r="10" fill="currentColor" opacity="0.06" stroke="none" />
-        {/* Petal-shaped light pools on floor */}
-        <path d="M 50 70 Q 55 75, 50 80 Q 45 75, 50 70" fill="currentColor" opacity="0.08" stroke="none" />
-        <path d="M 60 78 Q 63 83, 58 86 Q 55 82, 60 78" fill="currentColor" opacity="0.07" stroke="none" />
-        <path d="M 40 78 Q 35 82, 42 86 Q 45 83, 40 78" fill="currentColor" opacity="0.07" stroke="none" />
         {/* Dust motes swirling in the colorful light */}
         <circle cx="55" cy="65" r="0.4" fill="currentColor" opacity="0.6" />
         <circle cx="45" cy="68" r="0.35" fill="currentColor" opacity="0.5" />
@@ -433,48 +577,52 @@ const RoseWindowSVG: React.FC<SVGProps> = ({ showHalo }) => (
         <circle cx="52" cy="75" r="0.4" fill="currentColor" opacity="0.6" />
       </g>
 
-      {/* CONTEXT: Cathedral wall */}
-      <g strokeWidth="0.8" strokeDasharray="3 2" opacity="0.4">
-        {/* Wall corners */}
-        <path d="M5 5 L5 15 L10 15" />
-        <path d="M90 15 L95 15 L95 5" />
-        <path d="M5 85 L5 95 L15 95" />
-        <path d="M85 95 L95 95 L95 85" />
-        {/* Stone masonry around window */}
-        <path d="M12 12 Q50 8, 88 12" />
-        <path d="M12 88 Q50 92, 88 88" />
+      {/* STONE MASONRY: Sculpted surround */}
+      <g opacity="0.28" strokeDasharray="3 2" strokeWidth="0.8">
+        {/* Carved stone frame around rose */}
+        <circle cx="50" cy="50" r="42" strokeWidth="0.6" opacity="0.6" />
+        <circle cx="50" cy="50" r="44" strokeWidth="0.5" opacity="0.4" />
+        {/* Gothic quatrefoil decorations around frame */}
+        <circle cx="50" cy="6" r="2" strokeWidth="0.4" opacity="0.5" />
+        <circle cx="94" cy="50" r="2" strokeWidth="0.4" opacity="0.5" />
+        <circle cx="50" cy="94" r="2" strokeWidth="0.4" opacity="0.5" />
+        <circle cx="6" cy="50" r="2" strokeWidth="0.4" opacity="0.5" />
       </g>
 
-      {/* PRIMARY: Rose window */}
+      {/* PRIMARY: THE ROSE WINDOW - BOLD FIELD SKETCH LINES */}
       <g strokeWidth="0.8">
-        {/* Outer circles */}
-        <circle cx="50" cy="50" r="38" strokeWidth="1.2" />
-        <circle cx="50" cy="50" r="35" strokeWidth="1" />
-        {/* Inner circles */}
-        <circle cx="50" cy="50" r="10" strokeWidth="1" />
-        <circle cx="50" cy="50" r="7" />
-        {/* Radiating petals - 12 divisions */}
+        {/* BOLD Outer circles - stone tracery frame */}
+        <circle cx="50" cy="50" r="38" strokeWidth="3.5" />
+        <circle cx="50" cy="50" r="35" strokeWidth="2.5" />
+
+        {/* BOLD Inner hub circles */}
+        <circle cx="50" cy="50" r="10" strokeWidth="2.8" />
+        <circle cx="50" cy="50" r="7" strokeWidth="2" />
+
+        {/* BOLD Radiating mullions - 12 divisions (Gothic tracery) */}
         {[0, 30, 60, 90, 120, 150, 180, 210, 240, 270, 300, 330].map((angle, i) => {
           const rad = (angle * Math.PI) / 180
           const x1 = 50 + 10 * Math.cos(rad)
           const y1 = 50 + 10 * Math.sin(rad)
           const x2 = 50 + 33 * Math.cos(rad)
           const y2 = 50 + 33 * Math.sin(rad)
-          return <path key={i} d={`M${x1} ${y1} L${x2} ${y2}`} />
+          return <path key={i} d={`M${x1} ${y1} L${x2} ${y2}`} strokeWidth="2.5" />
         })}
-        {/* Petal shapes between spokes */}
+
+        {/* BOLD Petal shapes - trefoils and quatrefoils */}
         {[15, 45, 75, 105, 135, 165, 195, 225, 255, 285, 315, 345].map((angle, i) => {
           const rad = (angle * Math.PI) / 180
           const cx = 50 + 22 * Math.cos(rad)
           const cy = 50 + 22 * Math.sin(rad)
-          return <circle key={i} cx={cx} cy={cy} r="6" opacity="0.7" />
+          return <circle key={i} cx={cx} cy={cy} r="6" opacity="0.7" strokeWidth="2" />
         })}
-        {/* Trefoil details in petals */}
+
+        {/* Trefoil centers - delicate detail */}
         {[15, 75, 135, 195, 255, 315].map((angle, i) => {
           const rad = (angle * Math.PI) / 180
           const cx = 50 + 22 * Math.cos(rad)
           const cy = 50 + 22 * Math.sin(rad)
-          return <circle key={i} cx={cx} cy={cy} r="2" />
+          return <circle key={i} cx={cx} cy={cy} r="2" strokeWidth="1.5" />
         })}
       </g>
     </g>

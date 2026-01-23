@@ -39,133 +39,163 @@ export const DoricColumnSVG = ({ showHalo = false }: SVGProps) => (
     <MaterialPatterns />
     <HaloFilter />
 
-    {/* CONTEXT: TEMPLE ENVIRONMENTAL SETTING */}
+    {/* CONTEXT: COMPLETE GREEK TEMPLE PERISTYLE - field sketch extending off-page */}
 
-    {/* Marble floor paving with pattern */}
-    <g opacity="0.2" strokeWidth="0.3">
-      {/* Floor tiles */}
-      <rect x="10" y="92" width="80" height="8" fill="url(#marble-veined)" opacity="0.15" stroke="none" />
-      <path d="M 10 94 L 90 94" strokeDasharray="4 2" />
-      <path d="M 15 96 L 85 96" strokeDasharray="2 1" opacity="0.6" />
-      <path d="M 30 93 L 30 100" strokeDasharray="2 1.5" opacity="0.5" />
-      <path d="M 50 93 L 50 100" strokeDasharray="2 1.5" opacity="0.5" />
-      <path d="M 70 93 L 70 100" strokeDasharray="2 1.5" opacity="0.5" />
+    {/* CEILING: Temple roof structure extending beyond frame */}
+    <g opacity="0.2" strokeDasharray="2 3" strokeWidth="0.5">
+      {/* Roof beams/rafters visible from below */}
+      <path d="M -10 -5 L 110 -5" fill="none" opacity="0.6" />
+      <path d="M 0 2 L 100 2" fill="none" />
+      <path d="M 10 5 L 90 5" fill="none" opacity="0.7" />
     </g>
 
-    {/* Temple steps/stylobate detail */}
-    <g opacity="0.18" strokeWidth="0.35">
-      <path d="M 20 94 L 20 97 L 80 97 L 80 94" strokeDasharray="2 1" />
-      <path d="M 22 97 L 22 99 L 78 99 L 78 97" strokeDasharray="2 1" opacity="0.7" />
-    </g>
-
-    {/* Adjacent column in distance (left) */}
-    <g opacity="0.12" strokeWidth="0.4" strokeDasharray="2 1.5">
-      <path d="M 5 94 Q 4 60, 6 25" />
-      <path d="M 8 94 Q 9 60, 7 25" />
-    </g>
-
-    {/* Entablature above with architectural detail */}
-    <g opacity="0.22" strokeWidth="0.4">
+    {/* COMPLETE ENTABLATURE: Extending horizontally beyond frame */}
+    <g opacity="0.22" strokeWidth="0.6" strokeDasharray="3 2">
+      {/* Cornice extending off-page left and right */}
+      <path d="M -10 3 L 110 3" strokeWidth="0.7" fill="none" />
+      <path d="M -8 4.5 L 108 4.5" strokeWidth="0.5" opacity="0.7" />
+      {/* Triglyphs and metopes in frieze (Doric feature) */}
+      <rect x="15" y="5.5" width="3" height="2" opacity="0.4" fill="currentColor" stroke="none" />
+      <rect x="35" y="5.5" width="3" height="2" opacity="0.4" fill="currentColor" stroke="none" />
+      <rect x="62" y="5.5" width="3" height="2" opacity="0.4" fill="currentColor" stroke="none" />
+      <rect x="82" y="5.5" width="3" height="2" opacity="0.4" fill="currentColor" stroke="none" />
       {/* Architrave */}
-      <path d="M 20 8 L 80 8" strokeDasharray="3 2" />
-      <path d="M 22 6 L 78 6" strokeDasharray="3 2" opacity="0.7" />
-      {/* Frieze hint */}
-      <path d="M 22 5 L 78 5" strokeDasharray="2 1" opacity="0.5" />
-      {/* Cornice */}
-      <path d="M 18 3 L 82 3" strokeWidth="0.5" strokeDasharray="3 1.5" opacity="0.6" />
+      <path d="M -5 8 L 105 8" strokeDasharray="4 2" opacity="0.8" />
+      <path d="M 0 10 L 100 10" strokeDasharray="3 2" opacity="0.6" />
     </g>
 
-    {/* Temple wall behind column */}
-    <g opacity="0.15" strokeWidth="0.3" strokeDasharray="3 2.5">
-      <rect x="20" y="15" width="60" height="75" fill="url(#stone-smooth)" opacity="0.08" stroke="none" />
-      <path d="M 20 15 L 20 90" />
-      <path d="M 80 15 L 80 90" />
+    {/* TEMPLE COLONNADE: Doric columns extending in BOTH directions (perspective) */}
+    <g opacity="0.18" strokeDasharray="2 2" strokeWidth="0.6">
+      {/* Columns receding to left */}
+      <path d="M -15 94 Q -16 60, -12 25" fill="none" />
+      <path d="M -8 94 Q -9 60, -6 25" fill="none" opacity="0.7" />
+      {/* Simple echinus capitals on left columns */}
+      <path d="M -14 22 Q -10 20, -7 22" strokeWidth="0.5" opacity="0.6" />
+
+      {/* Next column to left (closer) */}
+      <path d="M 5 94 Q 4 60, 6 25" fill="none" />
+      <path d="M 8 94 Q 9 60, 7 25" fill="none" opacity="0.7" />
+      <path d="M 4 22 Q 6.5 20, 9 22" strokeWidth="0.5" opacity="0.6" />
+
+      {/* Columns receding to right */}
+      <path d="M 92 94 Q 91 60, 94 25" fill="none" opacity="0.7" />
+      <path d="M 95 94 Q 96 60, 93 25" fill="none" />
+      <path d="M 91 22 Q 93.5 20, 96 22" strokeWidth="0.5" opacity="0.6" />
+
+      {/* Further right column */}
+      <path d="M 108 94 Q 109 60, 106 25" fill="none" opacity="0.7" />
+      <path d="M 115 94 Q 116 60, 112 25" fill="none" />
+      <path d="M 107 22 Q 109 20, 113 22" strokeWidth="0.5" opacity="0.6" />
     </g>
 
-    {/* Shadow cast by column on floor */}
+    {/* STYLOBATE PLATFORM: Three-stepped crepidoma extending off-page horizontally */}
+    <g opacity="0.25" strokeDasharray="3 2" strokeWidth="0.7">
+      {/* Top step (stylobate) - extends beyond frame */}
+      <path d="M -10 94 L 110 94" fill="none" />
+      <path d="M -8 95 L 108 95" strokeWidth="0.5" opacity="0.7" />
+      {/* Second step */}
+      <path d="M -10 97 L 110 97" strokeWidth="0.6" opacity="0.8" />
+      {/* Third step (base) */}
+      <path d="M -10 99 L 110 99" strokeWidth="0.6" opacity="0.6" />
+      {/* Stone joints in platform */}
+      <path d="M -5 93 L -5 100" strokeDasharray="2 1" strokeWidth="0.4" opacity="0.5" />
+      <path d="M 20 93 L 20 100" strokeDasharray="2 1" strokeWidth="0.4" opacity="0.5" />
+      <path d="M 50 93 L 50 100" strokeDasharray="2 1" strokeWidth="0.4" opacity="0.5" />
+      <path d="M 80 93 L 80 100" strokeDasharray="2 1" strokeWidth="0.4" opacity="0.5" />
+      <path d="M 105 93 L 105 100" strokeDasharray="2 1" strokeWidth="0.4" opacity="0.5" />
+    </g>
+
+    {/* MARBLE FLOOR: White Pentelic marble extending beyond */}
+    <g opacity="0.2" strokeWidth="0.3">
+      <rect x="-10" y="92" width="120" height="18" fill="url(#marble-veined)" opacity="0.15" stroke="none" />
+      {/* Floor paving joints extending off-page */}
+      <path d="M -10 96 L 110 96" strokeDasharray="5 3" />
+      <path d="M -10 101 L 110 101" strokeDasharray="4 2" opacity="0.6" />
+      <path d="M 30 93 L 30 110" strokeDasharray="2 1.5" opacity="0.5" />
+      <path d="M 70 93 L 70 110" strokeDasharray="2 1.5" opacity="0.5" />
+    </g>
+
+    {/* CELLA WALL: Temple sanctuary wall behind colonnade */}
+    <g opacity="0.15" strokeWidth="0.4" strokeDasharray="3 2.5">
+      {/* Wall extending vertically beyond frame */}
+      <rect x="15" y="-5" width="70" height="120" fill="url(#stone-smooth)" opacity="0.08" stroke="none" />
+      <path d="M 20 -5 L 20 110" />
+      <path d="M 80 -5 L 80 110" />
+      {/* Stone courses */}
+      <path d="M 20 20 L 80 20" strokeWidth="0.3" opacity="0.5" />
+      <path d="M 20 45 L 80 45" strokeWidth="0.3" opacity="0.5" />
+      <path d="M 20 70 L 80 70" strokeWidth="0.3" opacity="0.5" />
+    </g>
+
+    {/* SHADOW cast by column on marble floor */}
     <g opacity="0.1" strokeWidth="0.25" strokeDasharray="1 1">
-      <path d="M 72 94 Q 75 95, 78 96" />
-      <path d="M 73 96 Q 76 97, 79 98" />
+      <path d="M 72 94 Q 75 96, 78 98" />
+      <path d="M 73 96 Q 76 98, 79 100" />
     </g>
 
-    {/* PERSPECTIVE GRID - Ground-level upward view with foreshortening */}
-    <g opacity="0.08" strokeWidth="0.2" strokeDasharray="3 4">
-      {/* Converging lines showing upward perspective */}
-      <path d="M 20 100 L 40 5" />
-      <path d="M 50 100 L 50 5" />
-      <path d="M 80 100 L 60 5" />
-      {/* Horizontal depth lines (elliptical due to looking up) */}
-      <path d="M 25 90 L 75 90" opacity="0.6" />
-      <path d="M 32 50 L 68 50" opacity="0.6" />
-      <path d="M 38 20 L 62 20" opacity="0.6" />
-    </g>
-
-    {/* PRIMARY: THE DORIC COLUMN - UPWARD PERSPECTIVE WITH FORESHORTENING */}
+    {/* PRIMARY: THE DORIC COLUMN - BOLD FIELD SKETCH LINES */}
     <g filter={showHalo ? "url(#col-halo)" : undefined}>
-      {/* Stylobate platform - stone base (closest to viewer, widest) */}
-      <path d="M 22 94 L 78 94" strokeWidth="2.2" fill="none" strokeLinecap="round" />
-      <path d="M 24 91 L 76 91" strokeWidth="1.3" fill="none" opacity="0.6" />
-      <path d="M 23 93 L 77 93" strokeWidth="0.6" fill="none" opacity="0.3" />
+      {/* BOLD Stylobate platform under this column */}
+      <path d="M 22 94 L 78 94" strokeWidth="3" fill="none" strokeLinecap="round" />
+      <path d="M 24 91 L 76 91" strokeWidth="2" fill="none" opacity="0.6" />
+      <path d="M 23 93 L 77 93" strokeWidth="1" fill="none" opacity="0.3" />
 
-      {/* Column shaft with UPWARD FORESHORTENING - wider at base, narrower at top */}
-      {/* Left edge converging upward */}
-      <path d="M 26 91 Q 28 60, 36 25" strokeWidth="2.5" fill="none" strokeLinecap="round" />
-      {/* Right edge converging upward */}
-      <path d="M 74 91 Q 72 60, 64 25" strokeWidth="2.5" fill="none" strokeLinecap="round" />
+      {/* BOLD Column shaft edges - NO BASE (key Doric feature) */}
+      {/* Left edge */}
+      <path d="M 26 91 Q 28 60, 36 25" strokeWidth="3.5" fill="none" strokeLinecap="round" />
+      {/* Right edge */}
+      <path d="M 74 91 Q 72 60, 64 25" strokeWidth="3.5" fill="none" strokeLinecap="round" />
 
-      {/* Stone material texture on shaft (perspective-adjusted) */}
-      <path d="M 28 85 Q 30 70, 38 50 Q 40 35, 38 27" strokeWidth="0.2" opacity="0.2" fill="none" />
-      <path d="M 72 85 Q 70 70, 62 50 Q 60 35, 62 27" strokeWidth="0.2" opacity="0.2" fill="none" />
+      {/* Stone material texture on shaft */}
+      <path d="M 28 85 Q 30 70, 38 50 Q 40 35, 38 27" strokeWidth="0.3" opacity="0.2" fill="none" />
+      <path d="M 72 85 Q 70 70, 62 50 Q 60 35, 62 27" strokeWidth="0.3" opacity="0.2" fill="none" />
 
-      {/* Flutes with PERSPECTIVE - wider spacing at base, converging at top */}
-      {/* Left side flutes */}
-      <path d="M 32 88 Q 34 55, 40 27" strokeWidth="0.7" fill="none" opacity="0.5" />
-      <path d="M 38 88 Q 40 55, 44 27" strokeWidth="0.7" fill="none" opacity="0.5" />
-      {/* Center flutes */}
-      <path d="M 44 88 Q 46 55, 48 27" strokeWidth="0.7" fill="none" opacity="0.5" />
-      <path d="M 50 88 Q 50 55, 50 27" strokeWidth="0.8" fill="none" opacity="0.5" />
-      <path d="M 56 88 Q 54 55, 52 27" strokeWidth="0.7" fill="none" opacity="0.5" />
-      {/* Right side flutes */}
-      <path d="M 62 88 Q 60 55, 56 27" strokeWidth="0.7" fill="none" opacity="0.5" />
-      <path d="M 68 88 Q 66 55, 60 27" strokeWidth="0.7" fill="none" opacity="0.5" />
+      {/* 20 shallow flutes (Doric characteristic) */}
+      <path d="M 32 88 Q 34 55, 40 27" strokeWidth="0.8" fill="none" opacity="0.5" />
+      <path d="M 38 88 Q 40 55, 44 27" strokeWidth="0.8" fill="none" opacity="0.5" />
+      <path d="M 44 88 Q 46 55, 48 27" strokeWidth="0.8" fill="none" opacity="0.5" />
+      <path d="M 50 88 Q 50 55, 50 27" strokeWidth="0.9" fill="none" opacity="0.5" />
+      <path d="M 56 88 Q 54 55, 52 27" strokeWidth="0.8" fill="none" opacity="0.5" />
+      <path d="M 62 88 Q 60 55, 56 27" strokeWidth="0.8" fill="none" opacity="0.5" />
+      <path d="M 68 88 Q 66 55, 60 27" strokeWidth="0.8" fill="none" opacity="0.5" />
 
-      {/* Shadow in deeper flutes (perspective-adjusted) */}
-      <path d="M 32.5 88 Q 34.5 55, 40.5 27" strokeWidth="0.3" fill="none" opacity="0.25" />
-      <path d="M 50.5 88 Q 50.5 55, 50.5 27" strokeWidth="0.3" fill="none" opacity="0.25" />
-      <path d="M 67.5 88 Q 65.5 55, 59.5 27" strokeWidth="0.3" fill="none" opacity="0.25" />
+      {/* Flute depth shadows */}
+      <path d="M 32.5 88 Q 34.5 55, 40.5 27" strokeWidth="0.4" fill="none" opacity="0.25" />
+      <path d="M 50.5 88 Q 50.5 55, 50.5 27" strokeWidth="0.4" fill="none" opacity="0.25" />
+      <path d="M 67.5 88 Q 65.5 55, 59.5 27" strokeWidth="0.4" fill="none" opacity="0.25" />
 
-      {/* Subtle entasis with perspective */}
-      <path d="M 28 65 Q 27 50, 32 35" strokeWidth="0.5" fill="none" opacity="0.25" />
-      <path d="M 72 65 Q 73 50, 68 35" strokeWidth="0.5" fill="none" opacity="0.25" />
+      {/* Subtle entasis (convex curve) */}
+      <path d="M 28 65 Q 27 50, 32 35" strokeWidth="0.6" fill="none" opacity="0.25" />
+      <path d="M 72 65 Q 73 50, 68 35" strokeWidth="0.6" fill="none" opacity="0.25" />
 
-      {/* Chisel marks on stone (perspective-adjusted) */}
-      <path d="M 30 52 L 32 53" strokeWidth="0.25" fill="none" opacity="0.2" />
-      <path d="M 68 48 L 70 49" strokeWidth="0.25" fill="none" opacity="0.2" />
+      {/* Chisel marks on stone */}
+      <path d="M 30 52 L 32 53" strokeWidth="0.3" fill="none" opacity="0.2" />
+      <path d="M 68 48 L 70 49" strokeWidth="0.3" fill="none" opacity="0.2" />
 
-      {/* Necking rings below capital - FORESHORTENED (narrower, compressed) */}
-      <path d="M 37 25 L 63 25" strokeWidth="1.2" fill="none" strokeLinecap="round" />
-      <path d="M 38 23.5 L 62 23.5" strokeWidth="0.8" fill="none" opacity="0.6" />
-      <path d="M 37.5 24 L 62.5 24" strokeWidth="0.35" fill="none" opacity="0.3" />
+      {/* BOLD Necking rings below capital */}
+      <path d="M 37 25 L 63 25" strokeWidth="2.8" fill="none" strokeLinecap="round" />
+      <path d="M 38 23.5 L 62 23.5" strokeWidth="1.5" fill="none" opacity="0.6" />
+      <path d="M 37.5 24 L 62.5 24" strokeWidth="0.8" fill="none" opacity="0.3" />
 
-      {/* Echinus - FORESHORTENED curved cushion (narrower, more compressed) */}
-      <path d="M 35 21 Q 42 18, 50 17.5 Q 58 18, 65 21" strokeWidth="1.7" fill="none" strokeLinecap="round" />
-      <path d="M 36 19.5 Q 43 17.5, 50 17 Q 57 17.5, 64 19.5" strokeWidth="0.7" fill="none" opacity="0.4" />
-      <path d="M 35.5 20 Q 42.5 17.8, 50 17.3 Q 57.5 17.8, 64.5 20" strokeWidth="0.35" fill="none" opacity="0.25" />
+      {/* BOLD Echinus - curved cushion capital (defining Doric feature) */}
+      <path d="M 35 21 Q 42 18, 50 17.5 Q 58 18, 65 21" strokeWidth="3.2" fill="none" strokeLinecap="round" />
+      <path d="M 36 19.5 Q 43 17.5, 50 17 Q 57 17.5, 64 19.5" strokeWidth="1.5" fill="none" opacity="0.4" />
+      <path d="M 35.5 20 Q 42.5 17.8, 50 17.3 Q 57.5 17.8, 64.5 20" strokeWidth="0.8" fill="none" opacity="0.25" />
       {/* Shadow under echinus */}
-      <path d="M 36 21.5 Q 43 20.5, 50 20 Q 57 20.5, 64 21.5" strokeWidth="0.45" fill="none" opacity="0.2" />
+      <path d="M 36 21.5 Q 43 20.5, 50 20 Q 57 20.5, 64 21.5" strokeWidth="0.6" fill="none" opacity="0.2" />
 
-      {/* Abacus - FORESHORTENED square slab (narrower, height compressed) */}
-      <path d="M 33 14 L 67 14" strokeWidth="1.9" fill="none" strokeLinecap="round" />
-      <path d="M 33 14 L 33 10" strokeWidth="1.7" fill="none" strokeLinecap="round" />
-      <path d="M 67 14 L 67 10" strokeWidth="1.7" fill="none" strokeLinecap="round" />
-      <path d="M 33 10 L 67 10" strokeWidth="1.9" fill="none" strokeLinecap="round" />
-      {/* Stone thickness/depth (compressed in perspective) */}
-      <path d="M 33 13.2 L 67 13.2" strokeWidth="0.5" fill="none" opacity="0.3" />
-      <path d="M 33 10.8 L 67 10.8" strokeWidth="0.5" fill="none" opacity="0.3" />
+      {/* BOLD Abacus - square slab (plain Doric style) */}
+      <path d="M 33 14 L 67 14" strokeWidth="3.2" fill="none" strokeLinecap="round" />
+      <path d="M 33 14 L 33 10" strokeWidth="3" fill="none" strokeLinecap="round" />
+      <path d="M 67 14 L 67 10" strokeWidth="3" fill="none" strokeLinecap="round" />
+      <path d="M 33 10 L 67 10" strokeWidth="3.2" fill="none" strokeLinecap="round" />
+      {/* Stone thickness */}
+      <path d="M 33 13.2 L 67 13.2" strokeWidth="0.8" fill="none" opacity="0.3" />
+      <path d="M 33 10.8 L 67 10.8" strokeWidth="0.8" fill="none" opacity="0.3" />
 
-      {/* Weathering on abacus top (perspective-adjusted) */}
-      <path d="M 40 11.5 L 43 12" strokeWidth="0.22" fill="none" opacity="0.2" />
-      <path d="M 57 11.5 L 60 12" strokeWidth="0.22" fill="none" opacity="0.2" />
+      {/* Weathering on abacus */}
+      <path d="M 40 11.5 L 43 12" strokeWidth="0.3" fill="none" opacity="0.2" />
+      <path d="M 57 11.5 L 60 12" strokeWidth="0.3" fill="none" opacity="0.2" />
     </g>
   </svg>
 )
@@ -179,100 +209,166 @@ export const IonicColumnSVG = ({ showHalo = false }: SVGProps) => (
     <MaterialPatterns />
     <HaloFilter />
 
-    {/* CONTEXT: ERECHTHEION ON THE ACROPOLIS - Refined temple setting */}
+    {/* CONTEXT: COMPLETE ERECHTHEION ON THE ACROPOLIS - field sketch off-page */}
 
-    {/* White marble floor of the Acropolis with subtle joints */}
+    {/* CEILING: Refined coffered ceiling extending beyond */}
+    <g opacity="0.2" strokeDasharray="2 3" strokeWidth="0.4">
+      {/* Delicate coffers receding */}
+      <path d="M -10 -2 L 110 -2" fill="none" opacity="0.6" />
+      <rect x="10" y="2" width="15" height="2" opacity="0.3" fill="none" stroke="currentColor" strokeWidth="0.4" />
+      <rect x="35" y="2" width="15" height="2" opacity="0.3" fill="none" stroke="currentColor" strokeWidth="0.4" />
+      <rect x="60" y="2" width="15" height="2" opacity="0.3" fill="none" stroke="currentColor" strokeWidth="0.4" />
+    </g>
+
+    {/* COMPLETE ENTABLATURE: Ionic refinement with dentils extending off-page */}
+    <g opacity="0.22" strokeWidth="0.5" strokeDasharray="3 2">
+      {/* Cornice extending horizontally */}
+      <path d="M -10 3 L 110 3" strokeWidth="0.6" fill="none" />
+      {/* DENTILS - tooth-like blocks (signature Ionic feature) extending off-page */}
+      <path d="M -10 6 L 110 6" strokeDasharray="1.5 1" strokeWidth="0.7" />
+      <rect x="-8" y="5.5" width="1.2" height="1" opacity="0.4" fill="currentColor" stroke="none" />
+      <rect x="5" y="5.5" width="1.2" height="1" opacity="0.4" fill="currentColor" stroke="none" />
+      <rect x="18" y="5.5" width="1.2" height="1" opacity="0.4" fill="currentColor" stroke="none" />
+      <rect x="31" y="5.5" width="1.2" height="1" opacity="0.4" fill="currentColor" stroke="none" />
+      <rect x="44" y="5.5" width="1.2" height="1" opacity="0.4" fill="currentColor" stroke="none" />
+      <rect x="57" y="5.5" width="1.2" height="1" opacity="0.4" fill="currentColor" stroke="none" />
+      <rect x="70" y="5.5" width="1.2" height="1" opacity="0.4" fill="currentColor" stroke="none" />
+      <rect x="83" y="5.5" width="1.2" height="1" opacity="0.4" fill="currentColor" stroke="none" />
+      <rect x="96" y="5.5" width="1.2" height="1" opacity="0.4" fill="currentColor" stroke="none" />
+      {/* Architrave */}
+      <path d="M -5 8 L 105 8" strokeDasharray="4 2" opacity="0.8" />
+      <path d="M 0 10 L 100 10" strokeDasharray="3 2" opacity="0.6" />
+    </g>
+
+    {/* ELEGANT COLONNADE: Ionic columns with volutes extending in BOTH directions */}
+    <g opacity="0.18" strokeDasharray="2 2" strokeWidth="0.6">
+      {/* Columns to left with visible volutes */}
+      <path d="M -12 94 Q -13 60, -10 26" fill="none" />
+      <path d="M -6 94 Q -7 60, -5 26" fill="none" opacity="0.7" />
+      {/* Volute scrolls on left columns */}
+      <circle cx="-8" cy="18" r="2.5" fill="none" opacity="0.5" />
+      <path d="M -10 16 Q -12 14, -11 12" strokeWidth="0.5" opacity="0.6" />
+
+      {/* Next column to left (closer) */}
+      <path d="M 8 94 Q 7 60, 9 26" fill="none" />
+      <path d="M 11 94 Q 12 60, 10 26" fill="none" opacity="0.7" />
+      <circle cx="9" cy="18" r="2.5" fill="none" opacity="0.5" />
+      <path d="M 7 16 Q 5 14, 6 12" strokeWidth="0.5" opacity="0.6" />
+
+      {/* Columns to right */}
+      <path d="M 89 94 Q 88 60, 91 26" fill="none" opacity="0.7" />
+      <path d="M 92 94 Q 93 60, 90 26" fill="none" />
+      <circle cx="91" cy="18" r="2.5" fill="none" opacity="0.5" />
+      <path d="M 93 16 Q 95 14, 94 12" strokeWidth="0.5" opacity="0.6" />
+
+      {/* Further right */}
+      <path d="M 106 94 Q 107 60, 105 26" fill="none" opacity="0.7" />
+      <path d="M 112 94 Q 113 60, 110 26" fill="none" />
+      <circle cx="108" cy="18" r="2.5" fill="none" opacity="0.5" />
+      <path d="M 110 16 Q 112 14, 111 12" strokeWidth="0.5" opacity="0.6" />
+    </g>
+
+    {/* STYLOBATE: Refined platform extending off-page */}
+    <g opacity="0.25" strokeDasharray="3 2" strokeWidth="0.6">
+      <path d="M -10 94 L 110 94" fill="none" />
+      <path d="M -10 96 L 110 96" strokeWidth="0.5" opacity="0.8" />
+      <path d="M -10 98 L 110 98" strokeWidth="0.5" opacity="0.6" />
+      {/* Marble joints */}
+      <path d="M 0 93 L 0 100" strokeDasharray="2 1" strokeWidth="0.4" opacity="0.5" />
+      <path d="M 25 93 L 25 100" strokeDasharray="2 1" strokeWidth="0.4" opacity="0.5" />
+      <path d="M 50 93 L 50 100" strokeDasharray="2 1" strokeWidth="0.4" opacity="0.5" />
+      <path d="M 75 93 L 75 100" strokeDasharray="2 1" strokeWidth="0.4" opacity="0.5" />
+      <path d="M 100 93 L 100 100" strokeDasharray="2 1" strokeWidth="0.4" opacity="0.5" />
+    </g>
+
+    {/* WHITE PENTELIC MARBLE FLOOR: Acropolis platform extending beyond */}
     <g opacity="0.2" strokeWidth="0.3">
-      <rect x="10" y="92" width="80" height="8" fill="url(#marble-veined)" opacity="0.18" stroke="none" />
-      <path d="M 10 94 L 90 94" strokeDasharray="5 3" />
-      <path d="M 15 96 L 85 96" strokeDasharray="3 2" opacity="0.6" />
-      <path d="M 35 93 L 35 100" strokeDasharray="2 1.5" opacity="0.5" />
-      <path d="M 65 93 L 65 100" strokeDasharray="2 1.5" opacity="0.5" />
+      <rect x="-10" y="92" width="120" height="18" fill="url(#marble-veined)" opacity="0.18" stroke="none" />
+      {/* Refined marble paving extending off-page */}
+      <path d="M -10 94 L 110 94" strokeDasharray="5 3" />
+      <path d="M -10 96 L 110 96" strokeDasharray="3 2" opacity="0.6" />
+      <path d="M -10 101 L 110 101" strokeDasharray="4 2" opacity="0.5" />
+      <path d="M 35 93 L 35 110" strokeDasharray="2 1.5" opacity="0.5" />
+      <path d="M 65 93 L 65 110" strokeDasharray="2 1.5" opacity="0.5" />
     </g>
 
-    {/* Elegant entablature above with refined Ionic moldings */}
-    <g opacity="0.22" strokeWidth="0.4">
-      {/* Dentils (tooth-like blocks typical of Ionic) */}
-      <path d="M 22 6 L 78 6" strokeDasharray="1.5 1" strokeWidth="0.6" />
-      {/* Cornice */}
-      <path d="M 18 3 L 82 3" strokeWidth="0.5" strokeDasharray="3 1.5" opacity="0.6" />
+    {/* CELLA WALL: Temple sanctuary behind with marble */}
+    <g opacity="0.15" strokeWidth="0.4" strokeDasharray="3 2.5">
+      <rect x="15" y="-5" width="70" height="120" fill="url(#marble-veined)" opacity="0.08" stroke="none" />
+      {/* Walls extending vertically beyond frame */}
+      <path d="M 20 -5 L 20 110" />
+      <path d="M 80 -5 L 80 110" />
+      {/* Refined stone courses */}
+      <path d="M 20 25 L 80 25" strokeWidth="0.3" opacity="0.5" />
+      <path d="M 20 50 L 80 50" strokeWidth="0.3" opacity="0.5" />
+      <path d="M 20 75 L 80 75" strokeWidth="0.3" opacity="0.5" />
     </g>
 
-    {/* Adjacent Ionic column in distance (elegant temple colonnade) */}
-    <g opacity="0.12" strokeWidth="0.4" strokeDasharray="2 1.5">
-      <path d="M 8 94 Q 7 60, 9 25" />
-      <path d="M 11 94 Q 12 60, 10 25" />
-      {/* Hint of volute */}
-      <circle cx="9" cy="18" r="2" opacity="0.4" />
-    </g>
-
-    {/* Cella wall behind (temple sanctuary) */}
-    <g opacity="0.15" strokeWidth="0.3" strokeDasharray="3 2.5">
-      <rect x="20" y="10" width="60" height="80" fill="url(#marble-veined)" opacity="0.08" stroke="none" />
-      <path d="M 20 10 L 20 90" />
-      <path d="M 80 10 L 80 90" />
-    </g>
-
-    {/* Shadow cast by column on marble floor */}
+    {/* SHADOW on pristine marble */}
     <g opacity="0.1" strokeWidth="0.25" strokeDasharray="1 1">
-      <path d="M 70 94 Q 73 95, 76 96" />
-      <path d="M 71 96 Q 74 97, 77 98" />
+      <path d="M 70 94 Q 73 96, 76 98" />
+      <path d="M 71 96 Q 74 98, 77 100" />
     </g>
 
-    {/* PRIMARY: THE IONIC COLUMN */}
+    {/* PRIMARY: THE IONIC COLUMN - BOLD FIELD SKETCH LINES */}
     <g filter={showHalo ? "url(#col-halo)" : undefined}>
-      {/* Elaborate Attic base (key Ionic feature - unlike Doric) */}
-      <path d="M 22 94 L 78 94" strokeWidth="1.8" fill="none" strokeLinecap="round" />
-      <path d="M 25 91 L 75 91" strokeWidth="1.2" fill="none" strokeLinecap="round" />
-      {/* Upper torus */}
-      <path d="M 27 88 Q 40 85, 50 85 Q 60 85, 73 88" strokeWidth="1.4" fill="none" strokeLinecap="round" />
+      {/* BOLD Elaborate Attic base (key Ionic feature - has base unlike Doric) */}
+      <path d="M 22 94 L 78 94" strokeWidth="3" fill="none" strokeLinecap="round" />
+      <path d="M 25 91 L 75 91" strokeWidth="2.2" fill="none" strokeLinecap="round" />
+      {/* Upper torus molding */}
+      <path d="M 27 88 Q 40 85, 50 85 Q 60 85, 73 88" strokeWidth="2.8" fill="none" strokeLinecap="round" />
       {/* Scotia (concave molding) */}
-      <path d="M 29 85 Q 40 87, 50 87 Q 60 87, 71 85" strokeWidth="0.8" fill="none" opacity="0.5" />
+      <path d="M 29 85 Q 40 87, 50 87 Q 60 87, 71 85" strokeWidth="1.5" fill="none" opacity="0.5" />
       {/* Lower torus */}
-      <path d="M 28 82 Q 40 79, 50 79 Q 60 79, 72 82" strokeWidth="1.4" fill="none" strokeLinecap="round" />
+      <path d="M 28 82 Q 40 79, 50 79 Q 60 79, 72 82" strokeWidth="2.8" fill="none" strokeLinecap="round" />
 
-      {/* Slender shaft - more elegant than Doric - WHITE PENTELIC MARBLE */}
-      <path d="M 32 79 Q 31 50, 35 26" strokeWidth="2" fill="none" strokeLinecap="round" />
-      <path d="M 68 79 Q 69 50, 65 26" strokeWidth="2" fill="none" strokeLinecap="round" />
+      {/* BOLD Slender shaft - elegant Ionic proportions (1:9) - WHITE PENTELIC MARBLE */}
+      <path d="M 32 79 Q 31 50, 35 26" strokeWidth="3.2" fill="none" strokeLinecap="round" />
+      <path d="M 68 79 Q 69 50, 65 26" strokeWidth="3.2" fill="none" strokeLinecap="round" />
 
-      {/* Pentelic marble veining (quarried from Mt. Pentelicus for the Erechtheion) */}
+      {/* Pentelic marble veining (from Mt. Pentelicus for Erechtheion) */}
       <rect x="32" y="26" width="36" height="53" fill="url(#marble-veined)" opacity="0.22" stroke="none" />
-      {/* Subtle marble veins running through the shaft */}
-      <path d="M 35 75 Q 37 60, 38 45 Q 36 32, 37 28" strokeWidth="0.2" opacity="0.15" fill="none" />
-      <path d="M 63 72 Q 61 55, 62 40 Q 64 30, 63 27" strokeWidth="0.2" opacity="0.15" fill="none" />
+      {/* Marble veins through shaft */}
+      <path d="M 35 75 Q 37 60, 38 45 Q 36 32, 37 28" strokeWidth="0.3" opacity="0.15" fill="none" />
+      <path d="M 63 72 Q 61 55, 62 40 Q 64 30, 63 27" strokeWidth="0.3" opacity="0.15" fill="none" />
 
-      {/* 24 deeper flutes with flat fillets - refined stone carving */}
-      <path d="M 38 76 Q 39 50, 40 28" strokeWidth="0.6" fill="none" opacity="0.5" />
-      <path d="M 44 76 Q 44 50, 45 28" strokeWidth="0.6" fill="none" opacity="0.5" />
-      <path d="M 50 76 Q 50 50, 50 28" strokeWidth="0.6" fill="none" opacity="0.5" />
-      <path d="M 56 76 Q 56 50, 55 28" strokeWidth="0.6" fill="none" opacity="0.5" />
-      <path d="M 62 76 Q 61 50, 60 28" strokeWidth="0.6" fill="none" opacity="0.5" />
-      {/* Flute depth shadows */}
-      <path d="M 38.3 76 Q 39 50, 39.7 28" strokeWidth="0.25" fill="none" opacity="0.2" />
-      <path d="M 50.3 76 Q 50.3 50, 50.3 28" strokeWidth="0.25" fill="none" opacity="0.2" />
+      {/* 24 deeper flutes with flat fillets (Ionic vs Doric's 20 shallow) */}
+      <path d="M 38 76 Q 39 50, 40 28" strokeWidth="0.7" fill="none" opacity="0.5" />
+      <path d="M 44 76 Q 44 50, 45 28" strokeWidth="0.7" fill="none" opacity="0.5" />
+      <path d="M 50 76 Q 50 50, 50 28" strokeWidth="0.7" fill="none" opacity="0.5" />
+      <path d="M 56 76 Q 56 50, 55 28" strokeWidth="0.7" fill="none" opacity="0.5" />
+      <path d="M 62 76 Q 61 50, 60 28" strokeWidth="0.7" fill="none" opacity="0.5" />
+      {/* Flute shadows */}
+      <path d="M 38.3 76 Q 39 50, 39.7 28" strokeWidth="0.35" fill="none" opacity="0.2" />
+      <path d="M 50.3 76 Q 50.3 50, 50.3 28" strokeWidth="0.35" fill="none" opacity="0.2" />
 
-      {/* Necking with egg-and-dart molding */}
-      <path d="M 36 26 L 64 26" strokeWidth="1.2" fill="none" strokeLinecap="round" />
-      <path d="M 38 24 Q 44 22, 50 22 Q 56 22, 62 24" strokeWidth="0.8" fill="none" opacity="0.5" />
+      {/* BOLD Necking with egg-and-dart molding */}
+      <path d="M 36 26 L 64 26" strokeWidth="2.8" fill="none" strokeLinecap="round" />
+      <path d="M 38 24 Q 44 22, 50 22 Q 56 22, 62 24" strokeWidth="1.5" fill="none" opacity="0.5" />
 
-      {/* THE VOLUTE SCROLLS - defining Ionic feature */}
-      {/* Left volute - spiral scroll */}
+      {/* BOLD VOLUTE SCROLLS - THE defining Ionic feature */}
+      {/* Left volute - elegant spiral scroll */}
       <path d="M 34 22 Q 28 20, 22 16 Q 16 12, 18 8 Q 20 4, 26 5 Q 30 6, 32 10 Q 33 13, 30 15"
-            strokeWidth="1.8" fill="none" strokeLinecap="round" />
+            strokeWidth="3.2" fill="none" strokeLinecap="round" />
       {/* Inner spiral detail */}
-      <path d="M 28 11 Q 25 10, 25 8 Q 25 6, 28 7" strokeWidth="0.9" fill="none" opacity="0.6" />
+      <path d="M 28 11 Q 25 10, 25 8 Q 25 6, 28 7" strokeWidth="1.8" fill="none" opacity="0.6" />
+      {/* Eye of volute */}
+      <circle cx="26" cy="8" r="1" strokeWidth="0.6" fill="none" opacity="0.4" />
 
-      {/* Right volute - spiral scroll */}
+      {/* Right volute - mirror spiral */}
       <path d="M 66 22 Q 72 20, 78 16 Q 84 12, 82 8 Q 80 4, 74 5 Q 70 6, 68 10 Q 67 13, 70 15"
-            strokeWidth="1.8" fill="none" strokeLinecap="round" />
+            strokeWidth="3.2" fill="none" strokeLinecap="round" />
       {/* Inner spiral detail */}
-      <path d="M 72 11 Q 75 10, 75 8 Q 75 6, 72 7" strokeWidth="0.9" fill="none" opacity="0.6" />
+      <path d="M 72 11 Q 75 10, 75 8 Q 75 6, 72 7" strokeWidth="1.8" fill="none" opacity="0.6" />
+      {/* Eye of volute */}
+      <circle cx="74" cy="8" r="1" strokeWidth="0.6" fill="none" opacity="0.4" />
 
       {/* Bolster connecting volutes */}
-      <path d="M 32 18 Q 50 20, 68 18" strokeWidth="1" fill="none" opacity="0.5" />
+      <path d="M 32 18 Q 50 20, 68 18" strokeWidth="2" fill="none" opacity="0.5" />
 
-      {/* Thin abacus */}
-      <path d="M 18 6 L 82 6" strokeWidth="1.8" fill="none" strokeLinecap="round" />
+      {/* BOLD Thin abacus (thinner than Doric) */}
+      <path d="M 18 6 L 82 6" strokeWidth="3" fill="none" strokeLinecap="round" />
+      <path d="M 18 4 L 82 4" strokeWidth="2" fill="none" opacity="0.5" />
     </g>
   </svg>
 )
