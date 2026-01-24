@@ -87,10 +87,10 @@ export default function ConfusionBusterPage() {
   const scorePercent = totalQuestions > 0 ? Math.round((correctCount / totalQuestions) * 100) : 0
 
   return (
-    <div className="min-h-screen bg-[var(--background)]">
+    <div className="min-h-screen bg-[var(--background)] flex flex-col overflow-x-hidden">
       {/* Header */}
-      <div className="bg-[var(--background)]/95 backdrop-blur border-b border-[var(--border)] sticky top-0 z-10">
-        <div className="container mx-auto px-4 py-4">
+      <div className="bg-[var(--background)]/95 backdrop-blur border-b border-[var(--border)] sticky top-0 z-10 flex-shrink-0">
+        <div className="container mx-auto" style={{ padding: 'clamp(0.5rem, 1vh, 1rem)' }}>
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-4">
               <Link href="/architecture/play">
@@ -121,9 +121,17 @@ export default function ConfusionBusterPage() {
         </div>
       </div>
 
-      <div className="container mx-auto px-4 py-6 max-w-7xl">
+      <div
+        className="container mx-auto max-w-7xl flex-1 overflow-y-auto overflow-x-hidden"
+        style={{
+          padding: 'clamp(0.75rem, 2vh, 1.5rem)',
+          display: 'flex',
+          flexDirection: 'column',
+          gap: 'clamp(0.75rem, 1.5vh, 1.5rem)'
+        }}
+      >
         {/* Mode Toggle */}
-        <div className="flex justify-center gap-2 mb-6">
+        <div className="flex justify-center" style={{ gap: 'clamp(0.25rem, 0.5vw, 0.5rem)' }}>
           <Button
             variant={mode === 'study' ? 'primary' : 'outline'}
             onClick={() => setMode('study')}
@@ -152,11 +160,21 @@ export default function ConfusionBusterPage() {
             <ArchitectureComparison comparisonSet={currentSet} mode="study" />
 
             {/* Navigation */}
-            <div className="flex justify-between items-center mt-8">
+            <div
+              className="flex justify-between items-center flex-wrap"
+              style={{
+                marginTop: 'clamp(1rem, 2vh, 2rem)',
+                gap: 'clamp(0.5rem, 1vw, 0.75rem)'
+              }}
+            >
               <Button
                 variant="outline"
                 onClick={() => setCurrentSetIndex(Math.max(0, currentSetIndex - 1))}
                 disabled={currentSetIndex === 0}
+                style={{
+                  fontSize: 'clamp(0.75rem, 1.5vw, 0.875rem)',
+                  padding: 'clamp(0.375rem, 1vh, 0.5rem) clamp(0.75rem, 2vw, 1rem)'
+                }}
               >
                 ← Previous Pair
               </Button>
@@ -164,6 +182,10 @@ export default function ConfusionBusterPage() {
               <Button
                 onClick={() => setMode('quiz')}
                 className="bg-gradient-to-r from-purple-500 to-indigo-600 text-white"
+                style={{
+                  fontSize: 'clamp(0.75rem, 1.5vw, 0.875rem)',
+                  padding: 'clamp(0.375rem, 1vh, 0.5rem) clamp(0.75rem, 2vw, 1rem)'
+                }}
               >
                 Test Your Knowledge →
               </Button>
@@ -172,6 +194,10 @@ export default function ConfusionBusterPage() {
                 variant="outline"
                 onClick={handleNextSet}
                 disabled={currentSetIndex === allSets.length - 1}
+                style={{
+                  fontSize: 'clamp(0.75rem, 1.5vw, 0.875rem)',
+                  padding: 'clamp(0.375rem, 1vh, 0.5rem) clamp(0.75rem, 2vw, 1rem)'
+                }}
               >
                 Next Pair →
               </Button>
@@ -188,12 +214,21 @@ export default function ConfusionBusterPage() {
             exit={{ opacity: 0, y: -20 }}
           >
             {/* Quiz Progress */}
-            <div className="mb-6">
-              <div className="flex justify-between text-sm text-[var(--muted-foreground)] mb-2">
+            <div style={{ marginBottom: 'clamp(0.75rem, 1.5vh, 1.5rem)' }}>
+              <div
+                className="flex justify-between text-[var(--muted-foreground)]"
+                style={{
+                  fontSize: 'clamp(0.75rem, 1.5vw, 0.875rem)',
+                  marginBottom: 'clamp(0.25rem, 0.5vh, 0.5rem)'
+                }}
+              >
                 <span>Question {currentQuestionIndex + 1} of {totalQuestions}</span>
                 <span>{correctCount} correct</span>
               </div>
-              <div className="h-2 bg-[var(--muted)] rounded-full overflow-hidden">
+              <div
+                className="bg-[var(--muted)] rounded-full overflow-hidden"
+                style={{ height: 'clamp(0.375rem, 0.8vh, 0.5rem)' }}
+              >
                 <motion.div
                   className="h-full bg-gradient-to-r from-purple-500 to-indigo-600"
                   initial={{ width: 0 }}
@@ -203,9 +238,18 @@ export default function ConfusionBusterPage() {
             </div>
 
             {/* Show comparison reference */}
-            <Card className="mb-6 border-purple-500/30 bg-purple-500/5">
-              <CardContent className="p-4">
-                <p className="text-sm text-[var(--muted-foreground)] mb-4">
+            <Card
+              className="border-purple-500/30 bg-purple-500/5"
+              style={{ marginBottom: 'clamp(0.75rem, 1.5vh, 1.5rem)' }}
+            >
+              <CardContent style={{ padding: 'clamp(0.5rem, 1vh, 1rem)' }}>
+                <p
+                  className="text-[var(--muted-foreground)]"
+                  style={{
+                    fontSize: 'clamp(0.75rem, 1.5vw, 0.875rem)',
+                    marginBottom: 'clamp(0.5rem, 1vh, 1rem)'
+                  }}
+                >
                   💡 Reference the comparison above to answer:
                 </p>
                 <ArchitectureComparison comparisonSet={currentSet} mode="study" />

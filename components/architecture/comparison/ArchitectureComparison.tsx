@@ -19,53 +19,98 @@ export default function ArchitectureComparison({
   const [quizAnswers, setQuizAnswers] = useState<Record<string, string>>({})
 
   return (
-    <div className="w-full max-w-7xl mx-auto p-6 space-y-8">
+    <div
+      className="w-full max-w-7xl mx-auto overflow-hidden"
+      style={{
+        padding: 'clamp(0.75rem, 2vh, 1.5rem)',
+        display: 'flex',
+        flexDirection: 'column',
+        gap: 'clamp(1rem, 2vh, 2rem)'
+      }}
+    >
       {/* Header */}
-      <div className="text-center space-y-2">
-        <h2 className="text-3xl font-bold">{comparisonSet.title}</h2>
-        <p className="text-muted-foreground text-lg">{comparisonSet.subtitle}</p>
+      <div className="text-center" style={{ display: 'flex', flexDirection: 'column', gap: 'clamp(0.25rem, 0.5vh, 0.5rem)' }}>
+        <h2 className="font-bold" style={{ fontSize: 'clamp(1.25rem, 3vw, 1.875rem)' }}>{comparisonSet.title}</h2>
+        <p className="text-muted-foreground" style={{ fontSize: 'clamp(0.875rem, 2vw, 1.125rem)' }}>{comparisonSet.subtitle}</p>
 
         {comparisonSet.culturalContext && (
           <button
             onClick={() => setShowContext(!showContext)}
-            className="text-sm text-primary hover:underline"
+            className="text-primary hover:underline"
+            style={{ fontSize: 'clamp(0.75rem, 1.5vw, 0.875rem)', marginTop: 'clamp(0.25rem, 0.5vh, 0.5rem)' }}
           >
             {showContext ? '− Hide' : '+ Show'} Historical Context
           </button>
         )}
 
         {showContext && comparisonSet.culturalContext && (
-          <div className="mt-4 p-4 bg-muted/50 rounded-lg text-sm text-left max-w-3xl mx-auto">
+          <div
+            className="bg-muted/50 rounded-lg text-left max-w-3xl mx-auto"
+            style={{
+              marginTop: 'clamp(0.5rem, 1vh, 1rem)',
+              padding: 'clamp(0.75rem, 1.5vh, 1rem)',
+              fontSize: 'clamp(0.75rem, 1.5vw, 0.875rem)'
+            }}
+          >
             <p className="leading-relaxed">{comparisonSet.culturalContext}</p>
           </div>
         )}
       </div>
 
       {/* Side-by-Side Elements */}
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+      <div
+        className="grid grid-cols-1 md:grid-cols-3"
+        style={{ gap: 'clamp(0.75rem, 2vw, 1.5rem)' }}
+      >
         {comparisonSet.elements.map((element) => (
           <div
             key={element.id}
-            className="space-y-3"
+            style={{ display: 'flex', flexDirection: 'column', gap: 'clamp(0.5rem, 1vh, 0.75rem)' }}
           >
-            <h3 className="text-xl font-semibold text-center">{element.name}</h3>
+            <h3 className="font-semibold text-center" style={{ fontSize: 'clamp(1rem, 2.5vw, 1.25rem)' }}>{element.name}</h3>
 
-            {/* SVG Container */}
-            <div className="relative aspect-square bg-background border-2 border-border rounded-lg overflow-hidden shadow-sm">
+            {/* SVG Container - Viewport-Aware Sizing */}
+            <div
+              className="relative bg-background border-2 border-border rounded-lg overflow-hidden shadow-sm"
+              style={{
+                width: '100%',
+                maxWidth: 'min(clamp(200px, 30vw, 400px), clamp(20vh, 30vh, 40vh))',
+                height: 'min(clamp(200px, 30vw, 400px), clamp(20vh, 30vh, 40vh))',
+                aspectRatio: '1 / 1',
+                margin: '0 auto'
+              }}
+            >
               <element.component showHalo={false} />
             </div>
           </div>
         ))}
       </div>
 
-      {/* Comparison Table */}
-      <div className="border rounded-lg overflow-hidden">
-        <table className="w-full">
+      {/* Comparison Table - Viewport-Aware with Horizontal Scroll */}
+      <div className="border rounded-lg overflow-x-auto overflow-y-visible">
+        <table className="w-full min-w-max">
           <thead>
             <tr className="bg-muted">
-              <th className="text-left p-4 font-semibold border-r">Feature</th>
+              <th
+                className="text-left font-semibold border-r sticky left-0 bg-muted z-10"
+                style={{
+                  padding: 'clamp(0.5rem, 1vh, 1rem)',
+                  fontSize: 'clamp(0.75rem, 1.5vw, 0.875rem)',
+                  minWidth: 'clamp(100px, 20vw, 150px)'
+                }}
+              >
+                Feature
+              </th>
               {comparisonSet.elements.map((element) => (
-                <th key={element.id} className="text-left p-4 font-semibold">
+                <th
+                  key={element.id}
+                  className="text-left font-semibold"
+                  style={{
+                    padding: 'clamp(0.5rem, 1vh, 1rem)',
+                    fontSize: 'clamp(0.75rem, 1.5vw, 0.875rem)',
+                    minWidth: 'clamp(150px, 25vw, 250px)'
+                  }}
+                >
                   {element.name}
                 </th>
               ))}
@@ -87,16 +132,36 @@ export default function ArchitectureComparison({
                 )}
                 style={{ cursor: 'pointer' }}
               >
-                <td className="p-4 font-medium border-r">
+                <td
+                  className="font-medium border-r sticky left-0 z-10"
+                  style={{
+                    padding: 'clamp(0.5rem, 1vh, 1rem)',
+                    fontSize: 'clamp(0.75rem, 1.5vw, 0.875rem)',
+                    backgroundColor: selectedFeature === feature.label
+                      ? 'var(--primary-opacity-10)'
+                      : feature.highlighted
+                      ? 'var(--accent-opacity-30)'
+                      : 'var(--background)'
+                  }}
+                >
                   {feature.label}
                   {feature.highlighted && (
-                    <span className="ml-2 text-xs bg-primary text-primary-foreground px-2 py-0.5 rounded">
+                    <span
+                      className="ml-2 bg-primary text-primary-foreground px-2 py-0.5 rounded"
+                      style={{ fontSize: 'clamp(0.625rem, 1.25vw, 0.75rem)' }}
+                    >
                       KEY
                     </span>
                   )}
                 </td>
                 {comparisonSet.elements.map((element) => (
-                  <td key={element.id} className="p-4 text-sm">
+                  <td
+                    key={element.id}
+                    style={{
+                      padding: 'clamp(0.5rem, 1vh, 1rem)',
+                      fontSize: 'clamp(0.7rem, 1.4vw, 0.8rem)'
+                    }}
+                  >
                     {feature.values[element.id] && (
                       <span className={selectedFeature === feature.label ? 'font-semibold' : ''}>
                         {feature.values[element.id]}
@@ -112,9 +177,14 @@ export default function ArchitectureComparison({
 
       {/* Memory Tip */}
       {comparisonSet.memoryTip && (
-        <div className="bg-accent/50 border border-accent rounded-lg p-4">
-          <h4 className="font-semibold mb-2">💡 Quick Memory Tip</h4>
-          <p className="text-sm">{comparisonSet.memoryTip}</p>
+        <div
+          className="bg-accent/50 border border-accent rounded-lg"
+          style={{ padding: 'clamp(0.75rem, 1.5vh, 1rem)' }}
+        >
+          <h4 className="font-semibold" style={{ fontSize: 'clamp(0.875rem, 1.75vw, 1rem)', marginBottom: 'clamp(0.25rem, 0.5vh, 0.5rem)' }}>
+            💡 Quick Memory Tip
+          </h4>
+          <p style={{ fontSize: 'clamp(0.75rem, 1.5vw, 0.875rem)' }}>{comparisonSet.memoryTip}</p>
         </div>
       )}
 
@@ -123,12 +193,22 @@ export default function ArchitectureComparison({
         <div>
           <button
             onClick={() => setShowTimeline(!showTimeline)}
-            className="text-sm text-primary hover:underline mb-2"
+            className="text-primary hover:underline"
+            style={{
+              fontSize: 'clamp(0.75rem, 1.5vw, 0.875rem)',
+              marginBottom: 'clamp(0.25rem, 0.5vh, 0.5rem)'
+            }}
           >
             {showTimeline ? '− Hide' : '+ Show'} Historical Timeline
           </button>
           {showTimeline && (
-            <div className="p-4 bg-muted/50 rounded-lg text-sm">
+            <div
+              className="bg-muted/50 rounded-lg"
+              style={{
+                padding: 'clamp(0.75rem, 1.5vh, 1rem)',
+                fontSize: 'clamp(0.75rem, 1.5vw, 0.875rem)'
+              }}
+            >
               <p className="leading-relaxed">{comparisonSet.historicalTimeline}</p>
             </div>
           )}
@@ -136,7 +216,10 @@ export default function ArchitectureComparison({
       )}
 
       {/* Interactive Hint */}
-      <p className="text-center text-sm text-muted-foreground">
+      <p
+        className="text-center text-muted-foreground"
+        style={{ fontSize: 'clamp(0.75rem, 1.5vw, 0.875rem)' }}
+      >
         💡 Click any row in the table to highlight that feature
       </p>
     </div>
