@@ -87,9 +87,9 @@ export default function ConfusionBusterPage() {
   const scorePercent = totalQuestions > 0 ? Math.round((correctCount / totalQuestions) * 100) : 0
 
   return (
-    <div className="min-h-screen bg-[var(--background)] flex flex-col">
+    <div className="min-h-screen lg:h-screen bg-[var(--background)] flex flex-col lg:overflow-hidden">
       {/* Header */}
-      <div className="bg-[var(--background)]/95 backdrop-blur border-b border-[var(--border)] sticky top-0 z-10">
+      <div className="bg-[var(--background)]/95 backdrop-blur border-b border-[var(--border)] sticky top-0 z-10 flex-shrink-0">
         <div className="container mx-auto" style={{ padding: 'clamp(0.5rem, 1vh, 1rem)' }}>
           <div
             className="flex items-center justify-between flex-wrap"
@@ -158,7 +158,7 @@ export default function ConfusionBusterPage() {
       </div>
 
       <div
-        className="container mx-auto max-w-7xl flex-1"
+        className="container mx-auto max-w-7xl flex-1 lg:overflow-y-auto lg:min-h-0"
         style={{
           padding: 'clamp(0.75rem, 2vh, 1.5rem)',
           display: 'flex',
