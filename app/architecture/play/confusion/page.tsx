@@ -274,23 +274,23 @@ export default function ConfusionBusterPage() {
             </div>
 
             {/* Show comparison reference */}
-            <Card
-              className="border-purple-500/30 bg-purple-500/5"
+            <div
+              className="border-2 border-purple-500/30 bg-purple-500/5 rounded-lg"
               style={{ marginBottom: 'clamp(0.75rem, 1.5vh, 1.5rem)' }}
             >
-              <CardContent style={{ padding: 'clamp(0.5rem, 1vh, 1rem)' }}>
+              <div style={{ padding: 'clamp(0.5rem, 1vh, 1rem) clamp(0.75rem, 2vh, 1.5rem) 0' }}>
                 <p
-                  className="text-[var(--muted-foreground)]"
+                  className="text-[var(--muted-foreground)] text-center"
                   style={{
                     fontSize: 'clamp(0.75rem, 1.5vw, 0.875rem)',
                     marginBottom: 'clamp(0.5rem, 1vh, 1rem)'
                   }}
                 >
-                  💡 Reference the comparison above to answer:
+                  💡 Reference the comparison below to answer
                 </p>
-                <ArchitectureComparison comparisonSet={currentSet} mode="study" />
-              </CardContent>
-            </Card>
+              </div>
+              <ArchitectureComparison comparisonSet={currentSet} mode="study" />
+            </div>
 
             {/* Current Question */}
             <AnimatePresence mode="wait">
