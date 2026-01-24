@@ -20,7 +20,7 @@ export default function ArchitectureComparison({
 
   return (
     <div
-      className="w-full max-w-7xl mx-auto overflow-hidden"
+      className="w-full max-w-7xl mx-auto"
       style={{
         padding: 'clamp(0.75rem, 2vh, 1.5rem)',
         display: 'flex',
