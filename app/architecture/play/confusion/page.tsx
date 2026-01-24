@@ -91,29 +91,65 @@ export default function ConfusionBusterPage() {
       {/* Header */}
       <div className="bg-[var(--background)]/95 backdrop-blur border-b border-[var(--border)] sticky top-0 z-10 flex-shrink-0">
         <div className="container mx-auto" style={{ padding: 'clamp(0.5rem, 1vh, 1rem)' }}>
-          <div className="flex items-center justify-between">
-            <div className="flex items-center gap-4">
+          <div
+            className="flex items-center justify-between flex-wrap"
+            style={{ gap: 'clamp(0.5rem, 1vw, 1rem)' }}
+          >
+            <div
+              className="flex items-center"
+              style={{ gap: 'clamp(0.5rem, 1vw, 1rem)' }}
+            >
               <Link href="/architecture/play">
-                <Button variant="ghost" size="sm">
-                  <ArrowLeft className="w-4 h-4 mr-2" />
+                <Button
+                  variant="ghost"
+                  size="sm"
+                  style={{
+                    fontSize: 'clamp(0.75rem, 1.5vw, 0.875rem)',
+                    padding: 'clamp(0.25rem, 0.5vh, 0.5rem) clamp(0.5rem, 1vw, 0.75rem)'
+                  }}
+                >
+                  <ArrowLeft style={{ width: 'clamp(0.75rem, 1.5vw, 1rem)', height: 'clamp(0.75rem, 1.5vw, 1rem)', marginRight: 'clamp(0.25rem, 0.5vw, 0.5rem)' }} />
                   Back
                 </Button>
               </Link>
               <div>
-                <h1 className="text-xl font-bold text-[var(--foreground)] flex items-center gap-2">
-                  <Brain className="w-6 h-6 text-purple-500" />
+                <h1
+                  className="font-bold text-[var(--foreground)] flex items-center"
+                  style={{
+                    fontSize: 'clamp(1rem, 2.5vw, 1.25rem)',
+                    gap: 'clamp(0.25rem, 0.5vw, 0.5rem)'
+                  }}
+                >
+                  <Brain
+                    className="text-purple-500"
+                    style={{
+                      width: 'clamp(1.25rem, 2.5vw, 1.5rem)',
+                      height: 'clamp(1.25rem, 2.5vw, 1.5rem)'
+                    }}
+                  />
                   Confusion Buster
                 </h1>
-                <p className="text-sm text-[var(--muted-foreground)]">Master commonly confused pairs</p>
+                <p
+                  className="text-[var(--muted-foreground)]"
+                  style={{ fontSize: 'clamp(0.75rem, 1.5vw, 0.875rem)' }}
+                >
+                  Master commonly confused pairs
+                </p>
               </div>
             </div>
 
             {/* Progress */}
             <div className="text-right">
-              <p className="text-sm font-semibold text-[var(--foreground)]">
+              <p
+                className="font-semibold text-[var(--foreground)]"
+                style={{ fontSize: 'clamp(0.75rem, 1.5vw, 0.875rem)' }}
+              >
                 Set {currentSetIndex + 1} of {allSets.length}
               </p>
-              <p className="text-xs text-[var(--muted-foreground)]">
+              <p
+                className="text-[var(--muted-foreground)]"
+                style={{ fontSize: 'clamp(0.625rem, 1.25vw, 0.75rem)' }}
+              >
                 {currentSet.difficulty} • {currentSet.category}
               </p>
             </div>
@@ -282,38 +318,109 @@ export default function ConfusionBusterPage() {
             animate={{ opacity: 1, scale: 1 }}
           >
             <Card className="border-2 border-purple-500">
-              <CardContent className="p-8 text-center">
-                <Trophy className="w-16 h-16 mx-auto mb-4 text-amber-500" />
-                <h2 className="text-3xl font-bold mb-2">Quiz Complete!</h2>
-                <p className="text-4xl font-bold text-purple-500 mb-4">{scorePercent}%</p>
-                <p className="text-lg text-[var(--muted-foreground)] mb-6">
+              <CardContent
+                className="text-center"
+                style={{ padding: 'clamp(1rem, 3vh, 2rem)' }}
+              >
+                <Trophy
+                  className="mx-auto text-amber-500"
+                  style={{
+                    width: 'clamp(2.5rem, 6vw, 4rem)',
+                    height: 'clamp(2.5rem, 6vw, 4rem)',
+                    marginBottom: 'clamp(0.75rem, 1.5vh, 1rem)'
+                  }}
+                />
+                <h2
+                  className="font-bold"
+                  style={{
+                    fontSize: 'clamp(1.5rem, 4vw, 1.875rem)',
+                    marginBottom: 'clamp(0.25rem, 0.5vh, 0.5rem)'
+                  }}
+                >
+                  Quiz Complete!
+                </h2>
+                <p
+                  className="font-bold text-purple-500"
+                  style={{
+                    fontSize: 'clamp(2rem, 5vw, 2.5rem)',
+                    marginBottom: 'clamp(0.75rem, 1.5vh, 1rem)'
+                  }}
+                >
+                  {scorePercent}%
+                </p>
+                <p
+                  className="text-[var(--muted-foreground)]"
+                  style={{
+                    fontSize: 'clamp(0.875rem, 2vw, 1.125rem)',
+                    marginBottom: 'clamp(1rem, 2vh, 1.5rem)'
+                  }}
+                >
                   You got {correctCount} out of {totalQuestions} correct
                 </p>
 
                 {scorePercent >= 80 && (
-                  <div className="bg-green-500/10 border border-green-500/30 rounded-lg p-4 mb-6">
-                    <CheckCircle2 className="w-8 h-8 mx-auto mb-2 text-green-500" />
-                    <p className="font-semibold text-green-600 dark:text-green-400">
+                  <div
+                    className="bg-green-500/10 border border-green-500/30 rounded-lg"
+                    style={{
+                      padding: 'clamp(0.75rem, 1.5vh, 1rem)',
+                      marginBottom: 'clamp(1rem, 2vh, 1.5rem)'
+                    }}
+                  >
+                    <CheckCircle2
+                      className="mx-auto text-green-500"
+                      style={{
+                        width: 'clamp(1.5rem, 3vw, 2rem)',
+                        height: 'clamp(1.5rem, 3vw, 2rem)',
+                        marginBottom: 'clamp(0.25rem, 0.5vh, 0.5rem)'
+                      }}
+                    />
+                    <p
+                      className="font-semibold text-green-600 dark:text-green-400"
+                      style={{ fontSize: 'clamp(0.875rem, 1.75vw, 1rem)' }}
+                    >
                       Excellent! You've mastered this comparison!
                     </p>
                   </div>
                 )}
 
                 {scorePercent < 80 && (
-                  <div className="bg-amber-500/10 border border-amber-500/30 rounded-lg p-4 mb-6">
-                    <XCircle className="w-8 h-8 mx-auto mb-2 text-amber-500" />
-                    <p className="font-semibold text-amber-600 dark:text-amber-400">
+                  <div
+                    className="bg-amber-500/10 border border-amber-500/30 rounded-lg"
+                    style={{
+                      padding: 'clamp(0.75rem, 1.5vh, 1rem)',
+                      marginBottom: 'clamp(1rem, 2vh, 1.5rem)'
+                    }}
+                  >
+                    <XCircle
+                      className="mx-auto text-amber-500"
+                      style={{
+                        width: 'clamp(1.5rem, 3vw, 2rem)',
+                        height: 'clamp(1.5rem, 3vw, 2rem)',
+                        marginBottom: 'clamp(0.25rem, 0.5vh, 0.5rem)'
+                      }}
+                    />
+                    <p
+                      className="font-semibold text-amber-600 dark:text-amber-400"
+                      style={{ fontSize: 'clamp(0.875rem, 1.75vw, 1rem)' }}
+                    >
                       Review the comparison and try again!
                     </p>
                   </div>
                 )}
 
-                <div className="flex gap-3 justify-center">
+                <div
+                  className="flex justify-center flex-wrap"
+                  style={{ gap: 'clamp(0.5rem, 1vw, 0.75rem)' }}
+                >
                   <Button
                     variant="outline"
                     onClick={handleRetakeQuiz}
+                    style={{
+                      fontSize: 'clamp(0.75rem, 1.5vw, 0.875rem)',
+                      padding: 'clamp(0.375rem, 1vh, 0.5rem) clamp(0.75rem, 2vw, 1rem)'
+                    }}
                   >
-                    <RefreshCw className="w-4 h-4 mr-2" />
+                    <RefreshCw style={{ width: 'clamp(0.75rem, 1.5vw, 1rem)', height: 'clamp(0.75rem, 1.5vw, 1rem)', marginRight: 'clamp(0.25rem, 0.5vw, 0.5rem)' }} />
                     Retake Quiz
                   </Button>
 
@@ -321,16 +428,26 @@ export default function ConfusionBusterPage() {
                     <Button
                       onClick={handleNextSet}
                       className="bg-gradient-to-r from-purple-500 to-indigo-600 text-white"
+                      style={{
+                        fontSize: 'clamp(0.75rem, 1.5vw, 0.875rem)',
+                        padding: 'clamp(0.375rem, 1vh, 0.5rem) clamp(0.75rem, 2vw, 1rem)'
+                      }}
                     >
                       Next Confusion Pair
-                      <ChevronRight className="w-4 h-4 ml-2" />
+                      <ChevronRight style={{ width: 'clamp(0.75rem, 1.5vw, 1rem)', height: 'clamp(0.75rem, 1.5vw, 1rem)', marginLeft: 'clamp(0.25rem, 0.5vw, 0.5rem)' }} />
                     </Button>
                   )}
 
                   {currentSetIndex === allSets.length - 1 && (
                     <Link href="/architecture/play">
-                      <Button className="bg-gradient-to-r from-purple-500 to-indigo-600 text-white">
-                        <Trophy className="w-4 h-4 mr-2" />
+                      <Button
+                        className="bg-gradient-to-r from-purple-500 to-indigo-600 text-white"
+                        style={{
+                          fontSize: 'clamp(0.75rem, 1.5vw, 0.875rem)',
+                          padding: 'clamp(0.375rem, 1vh, 0.5rem) clamp(0.75rem, 2vw, 1rem)'
+                        }}
+                      >
+                        <Trophy style={{ width: 'clamp(0.75rem, 1.5vw, 1rem)', height: 'clamp(0.75rem, 1.5vw, 1rem)', marginRight: 'clamp(0.25rem, 0.5vw, 0.5rem)' }} />
                         Complete!
                       </Button>
                     </Link>
@@ -368,12 +485,18 @@ function QuizQuestion({
 
   return (
     <Card className="border-2 border-[var(--border)]">
-      <CardContent className="p-6">
-        <h3 className="text-xl font-bold mb-6 text-[var(--foreground)]">
+      <CardContent style={{ padding: 'clamp(0.75rem, 2vh, 1.5rem)' }}>
+        <h3
+          className="font-bold text-[var(--foreground)]"
+          style={{
+            fontSize: 'clamp(1rem, 2.5vw, 1.25rem)',
+            marginBottom: 'clamp(0.75rem, 2vh, 1.5rem)'
+          }}
+        >
           {question.question}
         </h3>
 
-        <div className="grid gap-3">
+        <div style={{ display: 'grid', gap: 'clamp(0.5rem, 1vh, 0.75rem)' }}>
           {question.answers.map((answer) => {
             const isSelected = selectedAnswer === answer
             const isWrong = answered && isSelected && !isCorrect
@@ -384,7 +507,7 @@ function QuizQuestion({
                 key={answer}
                 onClick={() => handleSelect(answer)}
                 disabled={answered}
-                className={`p-4 rounded-lg border-2 text-left font-semibold transition-all ${
+                className={`rounded-lg border-2 text-left font-semibold transition-all ${
                   isRight
                     ? 'border-green-500 bg-green-500/10 text-green-600 dark:text-green-400'
                     : isWrong
@@ -393,11 +516,15 @@ function QuizQuestion({
                     ? 'border-purple-500 bg-purple-500/10'
                     : 'border-[var(--border)] hover:border-purple-500/50'
                 } ${answered ? 'cursor-not-allowed' : 'cursor-pointer'}`}
+                style={{
+                  padding: 'clamp(0.75rem, 1.5vh, 1rem)',
+                  fontSize: 'clamp(0.875rem, 1.75vw, 1rem)'
+                }}
               >
                 <div className="flex items-center justify-between">
                   <span>{answer}</span>
-                  {isRight && <CheckCircle2 className="w-5 h-5" />}
-                  {isWrong && <XCircle className="w-5 h-5" />}
+                  {isRight && <CheckCircle2 style={{ width: 'clamp(1rem, 2vw, 1.25rem)', height: 'clamp(1rem, 2vw, 1.25rem)' }} />}
+                  {isWrong && <XCircle style={{ width: 'clamp(1rem, 2vw, 1.25rem)', height: 'clamp(1rem, 2vw, 1.25rem)' }} />}
                 </div>
               </button>
             )
@@ -408,9 +535,16 @@ function QuizQuestion({
           <motion.div
             initial={{ opacity: 0, y: -10 }}
             animate={{ opacity: 1, y: 0 }}
-            className="mt-4 p-4 bg-purple-500/10 border border-purple-500/30 rounded-lg"
+            className="bg-purple-500/10 border border-purple-500/30 rounded-lg"
+            style={{
+              marginTop: 'clamp(0.75rem, 1.5vh, 1rem)',
+              padding: 'clamp(0.75rem, 1.5vh, 1rem)'
+            }}
           >
-            <p className="text-sm font-semibold text-purple-600 dark:text-purple-400">
+            <p
+              className="font-semibold text-purple-600 dark:text-purple-400"
+              style={{ fontSize: 'clamp(0.75rem, 1.5vw, 0.875rem)' }}
+            >
               💡 Tip: Look at the "{question.featureHighlight}" row in the comparison table above!
             </p>
           </motion.div>
