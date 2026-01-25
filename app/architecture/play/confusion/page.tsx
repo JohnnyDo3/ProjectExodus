@@ -158,9 +158,10 @@ export default function ConfusionBusterPage() {
       </div>
 
       <div
-        className="container mx-auto max-w-7xl flex-1 lg:overflow-y-auto lg:min-h-0"
+        className="container mx-auto max-w-7xl lg:flex-1 lg:overflow-y-auto lg:min-h-0"
         style={{
           padding: 'clamp(0.75rem, 2vh, 1.5rem)',
+          paddingBottom: 'clamp(2rem, 5vh, 4rem)',
           display: 'flex',
           flexDirection: 'column',
           gap: 'clamp(0.75rem, 1.5vh, 1.5rem)'
