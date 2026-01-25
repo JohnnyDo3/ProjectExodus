@@ -39,6 +39,7 @@ function FlashcardGameWrapper() {
         config={config}
         onExit={handleExit}
         onComplete={handleComplete}
+        showConfig={!searchParams.get('count')} // Show config if no parameters provided
       />
     </div>
   )
