@@ -275,60 +275,60 @@ export function DiagramBuilderGame({ config: userConfig, onComplete, onExit, sho
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
-            className="flex-1 flex items-center justify-center p-3 sm:p-4"
+            className="flex-1 flex items-center justify-center p-2 sm:p-3"
           >
-            <Card className="max-w-2xl w-full border-2 border-[var(--border)]">
-              <CardContent className="p-3 sm:p-4">
-                <div className="text-center mb-3 sm:mb-4">
+            <Card className="max-w-xl w-full border-2 border-[var(--border)]">
+              <CardContent className="p-2.5 sm:p-3">
+                <div className="text-center mb-2 sm:mb-3">
                   <motion.div
                     animate={{ scale: [1, 1.1, 1] }}
                     transition={{ duration: 2, repeat: Infinity }}
-                    className="w-12 h-12 sm:w-16 sm:h-16 mx-auto mb-2 sm:mb-3 rounded-2xl bg-gradient-to-br from-teal-500 to-cyan-600 flex items-center justify-center"
+                    className="w-10 h-10 sm:w-12 sm:h-12 mx-auto mb-1.5 sm:mb-2 rounded-2xl bg-gradient-to-br from-teal-500 to-cyan-600 flex items-center justify-center"
                   >
-                    <Layers className="w-6 h-6 sm:w-8 sm:h-8 text-white" />
+                    <Layers className="w-5 h-5 sm:w-6 sm:h-6 text-white" />
                   </motion.div>
 
-                  <h2 className="text-lg sm:text-xl font-black text-[var(--foreground)] mb-1">
+                  <h2 className="text-base sm:text-lg font-black text-[var(--foreground)] mb-0.5 sm:mb-1">
                     Diagram Builder
                   </h2>
-                  <p className="text-xs sm:text-sm text-[var(--muted-foreground)]">
+                  <p className="text-[0.625rem] sm:text-xs text-[var(--muted-foreground)]">
                     {showConfig ? 'Select a structure to label' : 'Label architectural elements on the diagram'}
                   </p>
                 </div>
 
                 {/* Structure Selection */}
                 {showConfig && (
-                  <div className="space-y-3 sm:space-y-4 mb-3 sm:mb-4">
+                  <div className="space-y-2.5 sm:space-y-3 mb-3 sm:mb-4">
                     <div>
-                      <label className="text-xs sm:text-sm font-semibold text-[var(--muted-foreground)] mb-1.5 block">
+                      <label className="text-xs font-semibold text-[var(--muted-foreground)] mb-1.5 block">
                         Choose Structure
                       </label>
-                      <div className="grid gap-2">
+                      <div className="grid gap-1.5">
                         {DIAGRAM_STRUCTURES.map((structure) => (
                           <button
                             key={structure.id}
                             onClick={() => setSelectedStructure(structure.id)}
-                            className={`p-2 sm:p-3 rounded-lg border-2 transition-all text-left ${
+                            className={`p-1.5 sm:p-2 rounded-lg border-2 transition-all text-left ${
                               selectedStructure === structure.id
                                 ? 'border-teal-500 bg-teal-500/10'
                                 : 'border-[var(--border)] hover:border-[var(--primary)]/50'
                             }`}
                           >
-                            <div className="flex items-center justify-between">
-                              <div>
-                                <span className="font-bold text-xs sm:text-sm text-[var(--foreground)] block">
+                            <div className="flex items-center justify-between gap-2">
+                              <div className="min-w-0 flex-1">
+                                <span className="font-bold text-xs text-[var(--foreground)] block truncate">
                                   {structure.name}
                                 </span>
-                                <span className="text-[0.625rem] text-[var(--muted-foreground)]">
-                                  {structure.description} • {structure.labels.length} labels
+                                <span className="text-[0.625rem] text-[var(--muted-foreground)] block truncate">
+                                  {structure.labels.length} labels • {structure.difficulty}
                                 </span>
                               </div>
-                              <span className={`text-xs px-2 py-0.5 rounded-full ${
+                              <span className={`text-[0.625rem] px-1.5 py-0.5 rounded-full whitespace-nowrap flex-shrink-0 ${
                                 structure.difficulty === 'beginner' ? 'bg-green-500/10 text-green-600' :
                                 structure.difficulty === 'intermediate' ? 'bg-amber-500/10 text-amber-600' :
                                 'bg-red-500/10 text-red-600'
                               }`}>
-                                {structure.difficulty}
+                                {structure.difficulty.slice(0, 3)}
                               </span>
                             </div>
                           </button>
@@ -338,40 +338,34 @@ export function DiagramBuilderGame({ config: userConfig, onComplete, onExit, sho
 
                     {/* Interaction Mode */}
                     <div>
-                      <label className="text-xs sm:text-sm font-semibold text-[var(--muted-foreground)] mb-1.5 block">
-                        Interaction Mode
+                      <label className="text-xs font-semibold text-[var(--muted-foreground)] mb-1.5 block">
+                        How to Play
                       </label>
-                      <div className="grid grid-cols-2 gap-2">
+                      <div className="grid grid-cols-2 gap-1.5 sm:gap-2">
                         <button
                           onClick={() => setSelectedMode('click')}
-                          className={`p-2 sm:p-3 rounded-lg border-2 transition-all ${
+                          className={`p-1.5 sm:p-2 rounded-lg border-2 transition-all ${
                             selectedMode === 'click'
                               ? 'border-teal-500 bg-teal-500/10'
                               : 'border-[var(--border)] hover:border-[var(--primary)]/50'
                           }`}
                         >
-                          <MousePointer className="w-4 h-4 mx-auto mb-1 text-teal-500" />
-                          <span className="font-bold text-xs sm:text-sm text-[var(--foreground)] block text-center">
-                            Click Mode
-                          </span>
-                          <span className="text-[0.625rem] text-[var(--muted-foreground)] block text-center">
-                            Click word, then label
+                          <MousePointer className="w-3.5 h-3.5 sm:w-4 sm:h-4 mx-auto mb-0.5 text-teal-500" />
+                          <span className="font-bold text-[0.625rem] sm:text-xs text-[var(--foreground)] block text-center">
+                            Click
                           </span>
                         </button>
                         <button
                           onClick={() => setSelectedMode('drag')}
-                          className={`p-2 sm:p-3 rounded-lg border-2 transition-all ${
+                          className={`p-1.5 sm:p-2 rounded-lg border-2 transition-all ${
                             selectedMode === 'drag'
                               ? 'border-teal-500 bg-teal-500/10'
                               : 'border-[var(--border)] hover:border-[var(--primary)]/50'
                           }`}
                         >
-                          <Hand className="w-4 h-4 mx-auto mb-1 text-teal-500" />
-                          <span className="font-bold text-xs sm:text-sm text-[var(--foreground)] block text-center">
-                            Drag Mode
-                          </span>
-                          <span className="text-[0.625rem] text-[var(--muted-foreground)] block text-center">
-                            Drag words to labels
+                          <Hand className="w-3.5 h-3.5 sm:w-4 sm:h-4 mx-auto mb-0.5 text-teal-500" />
+                          <span className="font-bold text-[0.625rem] sm:text-xs text-[var(--foreground)] block text-center">
+                            Drag
                           </span>
                         </button>
                       </div>
@@ -460,12 +454,12 @@ export function DiagramBuilderGame({ config: userConfig, onComplete, onExit, sho
             </div>
 
             {/* Main Content Area */}
-            <div className="flex-1 flex flex-col lg:flex-row overflow-hidden">
+            <div className="flex-1 flex flex-col lg:flex-row overflow-hidden min-h-0">
               {/* Diagram Area */}
-              <div className="flex-1 flex items-center justify-center p-4 overflow-auto">
-                <div className="relative w-full max-w-2xl aspect-[3/4] bg-gradient-to-br from-[var(--muted)] to-[var(--background)] border-2 border-[var(--border)] rounded-lg">
+              <div className="flex-1 flex items-center justify-center p-2 sm:p-3 overflow-auto">
+                <div className="relative w-full max-w-xl aspect-[3/4] bg-gradient-to-br from-[var(--muted)] to-[var(--background)] border-2 border-[var(--border)] rounded-lg">
                   {/* Placeholder diagram - would be replaced with actual diagram */}
-                  <div className="absolute inset-0 flex items-center justify-center text-[var(--muted-foreground)] text-sm">
+                  <div className="absolute inset-0 flex items-center justify-center text-[var(--muted-foreground)] text-xs">
                     [Diagram of {currentStructure.name}]
                   </div>
 
@@ -502,12 +496,12 @@ export function DiagramBuilderGame({ config: userConfig, onComplete, onExit, sho
               </div>
 
               {/* Word Bank */}
-              <div className="w-full lg:w-80 border-t lg:border-t-0 lg:border-l border-[var(--border)] bg-[var(--background)] p-3 overflow-auto">
-                <h3 className="font-bold text-sm mb-2 text-[var(--foreground)]">Word Bank</h3>
-                <p className="text-xs text-[var(--muted-foreground)] mb-3">
-                  {config.interactionMode === 'click' ? 'Click a word, then click a label' : 'Drag words to labels'}
+              <div className="w-full lg:w-80 border-t lg:border-t-0 lg:border-l border-[var(--border)] bg-[var(--background)] p-1.5 sm:p-2 overflow-auto">
+                <h3 className="font-bold text-xs sm:text-sm mb-1 sm:mb-1.5 text-[var(--foreground)]">Word Bank</h3>
+                <p className="text-[0.625rem] sm:text-xs text-[var(--muted-foreground)] mb-1.5 sm:mb-2">
+                  {config.interactionMode === 'click' ? 'Click word → label' : 'Drag to labels'}
                 </p>
-                <div className="space-y-2">
+                <div className="space-y-1 sm:space-y-1.5">
                   {shuffledWords.map((element) => {
                     const isUsed = Object.values(gameState.assignments).includes(element.id)
                     const isSelected = gameState.selectedWord === element.id
@@ -517,7 +511,7 @@ export function DiagramBuilderGame({ config: userConfig, onComplete, onExit, sho
                         key={element.id}
                         onClick={() => handleWordClick(element.id)}
                         disabled={isUsed}
-                        className={`w-full p-2 rounded-lg border-2 transition-all text-left ${
+                        className={`w-full p-1.5 sm:p-2 rounded-lg border-2 transition-all text-left ${
                           isUsed
                             ? 'border-[var(--border)] bg-[var(--muted)] opacity-50 cursor-not-allowed'
                             : isSelected
@@ -525,7 +519,7 @@ export function DiagramBuilderGame({ config: userConfig, onComplete, onExit, sho
                             : 'border-[var(--border)] hover:border-teal-500/50 cursor-pointer'
                         }`}
                       >
-                        <span className="font-bold text-xs sm:text-sm text-[var(--foreground)]">
+                        <span className="font-bold text-xs text-[var(--foreground)]">
                           {element.name}
                         </span>
                       </button>
@@ -543,25 +537,25 @@ export function DiagramBuilderGame({ config: userConfig, onComplete, onExit, sho
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
-            className="flex-1 flex items-center justify-center p-3 sm:p-4"
+            className="flex-1 flex items-center justify-center p-2 sm:p-3"
           >
             <Card className="max-w-md w-full border-2 border-[var(--border)]">
-              <CardContent className="p-4 sm:p-5 text-center">
+              <CardContent className="p-3 sm:p-4 text-center">
                 <motion.div
                   initial={{ scale: 0, rotate: -20 }}
                   animate={{ scale: 1, rotate: 0 }}
                   transition={{ type: 'spring', bounce: 0.5 }}
-                  className="w-16 h-16 sm:w-20 sm:h-20 mx-auto mb-3 sm:mb-4 rounded-2xl bg-gradient-to-br from-teal-500 to-cyan-600 flex items-center justify-center"
+                  className="w-12 h-12 sm:w-16 sm:h-16 mx-auto mb-2 sm:mb-3 rounded-2xl bg-gradient-to-br from-teal-500 to-cyan-600 flex items-center justify-center"
                 >
-                  <Trophy className="w-8 h-8 sm:w-10 sm:h-10 text-white" />
+                  <Trophy className="w-6 h-6 sm:w-8 sm:h-8 text-white" />
                 </motion.div>
 
-                <h2 className="text-xl sm:text-2xl font-black text-[var(--foreground)] mb-1 sm:mb-2">
+                <h2 className="text-lg sm:text-xl font-black text-[var(--foreground)] mb-1 sm:mb-1.5">
                   Diagram Complete!
                 </h2>
 
                 {/* Stats */}
-                <div className="grid grid-cols-2 gap-2 sm:gap-3 my-3 sm:my-4">
+                <div className="grid grid-cols-2 gap-1.5 sm:gap-2 my-2 sm:my-3">
                   <div className="p-2 sm:p-3 rounded-xl bg-[var(--muted)]">
                     <p className="text-2xl font-mono font-bold text-[var(--foreground)]">
                       {formatTime(gameState.elapsed)}
@@ -593,20 +587,20 @@ export function DiagramBuilderGame({ config: userConfig, onComplete, onExit, sho
                   <motion.div
                     initial={{ scale: 0 }}
                     animate={{ scale: 1 }}
-                    className="mb-3 sm:mb-4 p-2 sm:p-3 rounded-xl bg-teal-500/20 border border-teal-500/30"
+                    className="mb-2 sm:mb-3 p-1.5 sm:p-2 rounded-xl bg-teal-500/20 border border-teal-500/30"
                   >
-                    <div className="flex items-center justify-center gap-2 text-teal-500 mb-1">
-                      <Check className="w-4 h-4 sm:w-5 sm:h-5" />
-                      <span className="text-sm sm:text-base font-bold">PERFECT!</span>
+                    <div className="flex items-center justify-center gap-1.5 text-teal-500 mb-0.5">
+                      <Check className="w-3.5 h-3.5 sm:w-4 sm:h-4" />
+                      <span className="text-xs sm:text-sm font-bold">PERFECT!</span>
                     </div>
-                    <p className="text-xs sm:text-sm text-[var(--muted-foreground)]">
+                    <p className="text-[0.625rem] sm:text-xs text-[var(--muted-foreground)]">
                       You labeled everything correctly on the first try!
                     </p>
                   </motion.div>
                 )}
 
                 {/* Actions */}
-                <div className="space-y-2">
+                <div className="space-y-1.5">
                   <Button
                     onClick={startGame}
                     className="w-full bg-gradient-to-r from-teal-500 to-cyan-600 text-white font-bold"
