@@ -266,33 +266,33 @@ export function FlashcardGame({ config: userConfig, onComplete, onExit, showConf
             className="flex-1 flex items-center justify-center p-3 sm:p-4"
           >
             <Card className="max-w-2xl w-full border-2 border-[var(--border)]">
-              <CardContent className="p-4 sm:p-6">
-                <div className="text-center mb-4 sm:mb-6">
+              <CardContent className="p-3 sm:p-4">
+                <div className="text-center mb-3 sm:mb-4">
                   <motion.div
                     animate={{ scale: [1, 1.1, 1] }}
                     transition={{ duration: 2, repeat: Infinity }}
-                    className="w-16 h-16 sm:w-20 sm:h-20 mx-auto mb-3 sm:mb-4 rounded-2xl bg-gradient-to-br from-amber-500 to-orange-600 flex items-center justify-center"
+                    className="w-12 h-12 sm:w-16 sm:h-16 mx-auto mb-2 sm:mb-3 rounded-2xl bg-gradient-to-br from-amber-500 to-orange-600 flex items-center justify-center"
                   >
-                    <Zap className="w-8 h-8 sm:w-10 sm:h-10 text-white" />
+                    <Zap className="w-6 h-6 sm:w-8 sm:h-8 text-white" />
                   </motion.div>
 
-                  <h2 className="text-xl sm:text-2xl font-black text-[var(--foreground)] mb-1 sm:mb-2">
+                  <h2 className="text-lg sm:text-xl font-black text-[var(--foreground)] mb-1">
                     Flashcard Match
                   </h2>
-                  <p className="text-sm sm:text-base text-[var(--muted-foreground)]">
+                  <p className="text-xs sm:text-sm text-[var(--muted-foreground)]">
                     {showConfig ? 'Configure your game settings' : `Match ${config.elementCount} architectural elements with their images`}
                   </p>
                 </div>
 
                 {/* Quick Play Settings (when showConfig is true) */}
                 {showConfig && (
-                  <div className="space-y-4 sm:space-y-5 mb-4 sm:mb-6">
+                  <div className="space-y-3 sm:space-y-4 mb-3 sm:mb-4">
                     {/* Element Count */}
                     <div>
-                      <label className="text-sm font-semibold text-[var(--muted-foreground)] mb-2 block">
+                      <label className="text-xs sm:text-sm font-semibold text-[var(--muted-foreground)] mb-1.5 block">
                         Number of Elements
                       </label>
-                      <div className="grid grid-cols-4 gap-2">
+                      <div className="grid grid-cols-4 gap-1.5 sm:gap-2">
                         {[
                           { count: 5, time: '~1 min' },
                           { count: 10, time: '~3 min' },
@@ -302,14 +302,14 @@ export function FlashcardGame({ config: userConfig, onComplete, onExit, showConf
                           <button
                             key={option.count}
                             onClick={() => setSelectedCount(option.count)}
-                            className={`p-2 sm:p-3 rounded-lg border-2 transition-all text-center ${
+                            className={`p-1.5 sm:p-2 rounded-lg border-2 transition-all text-center ${
                               selectedCount === option.count
                                 ? 'border-amber-500 bg-amber-500/10'
                                 : 'border-[var(--border)] hover:border-[var(--primary)]/50'
                             }`}
                           >
-                            <span className="font-bold text-sm sm:text-base text-[var(--foreground)] block">{option.count}</span>
-                            <span className="text-xs text-[var(--muted-foreground)]">{option.time}</span>
+                            <span className="font-bold text-xs sm:text-sm text-[var(--foreground)] block">{option.count}</span>
+                            <span className="text-[0.625rem] text-[var(--muted-foreground)]">{option.time}</span>
                           </button>
                         ))}
                       </div>
@@ -317,42 +317,42 @@ export function FlashcardGame({ config: userConfig, onComplete, onExit, showConf
 
                     {/* Learning Path */}
                     <div>
-                      <label className="text-sm font-semibold text-[var(--muted-foreground)] mb-2 block">
+                      <label className="text-xs sm:text-sm font-semibold text-[var(--muted-foreground)] mb-1.5 block">
                         Learning Path
                       </label>
-                      <div className="grid grid-cols-3 gap-2">
+                      <div className="grid grid-cols-3 gap-1.5 sm:gap-2">
                         <button
                           onClick={() => setSelectedPath('random')}
-                          className={`p-2 sm:p-3 rounded-lg border-2 transition-all ${
+                          className={`p-1.5 sm:p-2 rounded-lg border-2 transition-all ${
                             selectedPath === 'random'
                               ? 'border-teal-500 bg-teal-500/10'
                               : 'border-[var(--border)] hover:border-[var(--primary)]/50'
                           }`}
                         >
-                          <Shuffle className="w-4 h-4 sm:w-5 sm:h-5 mx-auto mb-1 text-teal-500" />
-                          <span className="font-bold text-xs sm:text-sm text-[var(--foreground)] block">Random</span>
+                          <Shuffle className="w-3.5 h-3.5 sm:w-4 sm:h-4 mx-auto mb-0.5 text-teal-500" />
+                          <span className="font-bold text-[0.625rem] sm:text-xs text-[var(--foreground)] block">Random</span>
                         </button>
                         <button
                           onClick={() => setSelectedPath('timeline')}
-                          className={`p-2 sm:p-3 rounded-lg border-2 transition-all ${
+                          className={`p-1.5 sm:p-2 rounded-lg border-2 transition-all ${
                             selectedPath === 'timeline'
                               ? 'border-amber-500 bg-amber-500/10'
                               : 'border-[var(--border)] hover:border-[var(--primary)]/50'
                           }`}
                         >
-                          <Clock className="w-4 h-4 sm:w-5 sm:h-5 mx-auto mb-1 text-amber-500" />
-                          <span className="font-bold text-xs sm:text-sm text-[var(--foreground)] block">Timeline</span>
+                          <Clock className="w-3.5 h-3.5 sm:w-4 sm:h-4 mx-auto mb-0.5 text-amber-500" />
+                          <span className="font-bold text-[0.625rem] sm:text-xs text-[var(--foreground)] block">Timeline</span>
                         </button>
                         <button
                           onClick={() => setSelectedPath('category')}
-                          className={`p-2 sm:p-3 rounded-lg border-2 transition-all ${
+                          className={`p-1.5 sm:p-2 rounded-lg border-2 transition-all ${
                             selectedPath === 'category'
                               ? 'border-purple-500 bg-purple-500/10'
                               : 'border-[var(--border)] hover:border-[var(--primary)]/50'
                           }`}
                         >
-                          <Target className="w-4 h-4 sm:w-5 sm:h-5 mx-auto mb-1 text-purple-500" />
-                          <span className="font-bold text-xs sm:text-sm text-[var(--foreground)] block">Category</span>
+                          <Target className="w-3.5 h-3.5 sm:w-4 sm:h-4 mx-auto mb-0.5 text-purple-500" />
+                          <span className="font-bold text-[0.625rem] sm:text-xs text-[var(--foreground)] block">Category</span>
                         </button>
                       </div>
                     </div>
@@ -363,22 +363,22 @@ export function FlashcardGame({ config: userConfig, onComplete, onExit, showConf
                         initial={{ opacity: 0, height: 0 }}
                         animate={{ opacity: 1, height: 'auto' }}
                       >
-                        <label className="text-sm font-semibold text-[var(--muted-foreground)] mb-2 block">
+                        <label className="text-xs sm:text-sm font-semibold text-[var(--muted-foreground)] mb-1.5 block">
                           Select Category
                         </label>
-                        <div className="grid grid-cols-2 sm:grid-cols-3 gap-2">
+                        <div className="grid grid-cols-2 sm:grid-cols-3 gap-1.5 sm:gap-2">
                           {Object.values(CATEGORIES).slice(0, 6).map((category) => (
                             <button
                               key={category.id}
                               onClick={() => setSelectedCategory(category.id)}
-                              className={`p-2 sm:p-3 rounded-lg border-2 transition-all text-left ${
+                              className={`p-1.5 sm:p-2 rounded-lg border-2 transition-all text-left ${
                                 selectedCategory === category.id
                                   ? 'border-purple-500 bg-purple-500/10'
                                   : 'border-[var(--border)] hover:border-[var(--primary)]/50'
                               }`}
                             >
                               <span className="font-bold text-xs sm:text-sm text-[var(--foreground)] block">{category.name}</span>
-                              <span className="text-xs text-[var(--muted-foreground)]">
+                              <span className="text-[0.625rem] text-[var(--muted-foreground)]">
                                 {ALL_ELEMENTS.filter(e => e.category === category.id).length} elements
                               </span>
                             </button>
@@ -391,23 +391,23 @@ export function FlashcardGame({ config: userConfig, onComplete, onExit, showConf
 
                 {/* Ghost Racing Info */}
                 {!showConfig && config.enableGhost && bestTime && (
-                  <div className="mb-4 sm:mb-6 p-3 sm:p-4 rounded-xl bg-purple-500/10 border border-purple-500/30">
-                    <div className="flex items-center justify-center gap-2 text-purple-500 mb-1">
-                      <Ghost className="w-5 h-5" />
-                      <span className="font-bold">Ghost Mode Active</span>
+                  <div className="mb-3 sm:mb-4 p-2 sm:p-3 rounded-xl bg-purple-500/10 border border-purple-500/30">
+                    <div className="flex items-center justify-center gap-1.5 text-purple-500 mb-0.5">
+                      <Ghost className="w-4 h-4" />
+                      <span className="font-bold text-sm">Ghost Mode Active</span>
                     </div>
-                    <p className="text-sm text-[var(--muted-foreground)] text-center">
+                    <p className="text-xs text-[var(--muted-foreground)] text-center">
                       Beat your best time: <span className="font-mono font-bold">{formatTime(bestTime)}</span>
                     </p>
                   </div>
                 )}
 
-                <div className="space-y-2">
+                <div className="space-y-1.5 sm:space-y-2">
                   <Button
                     onClick={startGame}
-                    className="w-full bg-gradient-to-r from-amber-500 to-orange-600 text-white font-bold py-4 sm:py-5 text-base sm:text-lg"
+                    className="w-full bg-gradient-to-r from-amber-500 to-orange-600 text-white font-bold py-2.5 sm:py-3 text-sm sm:text-base"
                   >
-                    <Play className="w-5 h-5 mr-2" />
+                    <Play className="w-4 h-4 mr-2" />
                     Start Game
                   </Button>
 
@@ -415,9 +415,9 @@ export function FlashcardGame({ config: userConfig, onComplete, onExit, showConf
                     <Button
                       onClick={onExit}
                       variant="outline"
-                      className="w-full"
+                      className="w-full text-sm"
                     >
-                      <Home className="w-4 h-4 mr-2" />
+                      <Home className="w-3.5 h-3.5 mr-2" />
                       Back to Menu
                     </Button>
                   )}
