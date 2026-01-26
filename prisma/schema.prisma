@@ -2390,6 +2390,7 @@ model ArchitectureProgress {
   streak                ArchitectureStreak?
   elementProgress       ArchitectureElementProgress[]
   diagramProgress       ArchitectureDiagramProgress[]
+  leaderboardEntries    ArchitectureLeaderboard[]
 
   createdAt             DateTime                    @default(now())
   updatedAt             DateTime                    @updatedAt
@@ -2419,6 +2420,7 @@ enum ArchitectureLearningPath {
 model ArchitectureGameSession {
   id                    String                      @id @default(cuid())
   progressId            String
+  userId                String
 
   // Game configuration
   gameMode              ArchitectureGameMode
@@ -2435,6 +2437,11 @@ model ArchitectureGameSession {
   correctAnswers        Int                         @default(0)
   incorrectAnswers      Int                         @default(0)
 
+  // Scoring
+  score                 Int                         @default(0)
+  maxStreak             Int                         @default(0)
+  perfectScore          Boolean                     @default(false)
+
   // Timing
   startedAt             DateTime                    @default(now())
   completedAt           DateTime?
@@ -2448,6 +2455,10 @@ model ArchitectureGameSession {
   previousBestTime      Int?                        // what was PB before this game
   ghostComparison       Json?                       // comparison data vs ghost
 
+  // Game-specific fields
+  diagramStructureId    String?                     // For Diagram Builder
+  comparisonSetIds      String[]                    @default([]) // For Confusion Buster
+
   // Results
   accuracy              Float?
   xpEarned              Int                         @default(0)
@@ -2455,9 +2466,11 @@ model ArchitectureGameSession {
   progress              ArchitectureProgress        @relation(fields: [progressId], references: [id], onDelete: Cascade)
 
   @@index([progressId])
+  @@index([userId])
   @@index([gameMode])
   @@index([completedAt])
   @@index([accuracy])
+  @@index([perfectScore])
 }
 
 // Per-element mastery tracking
@@ -2603,4 +2616,35 @@ model ArchitectureStreak {
 
   @@index([progressId])
   @@index([currentStreak])
+}
+
+// Global leaderboards for architecture games
+model ArchitectureLeaderboard {
+  id                    String                      @id @default(cuid())
+  userId                String
+  progressId            String
+
+  // Leaderboard type
+  category              String                      // "fastest_flashcard", "highest_accuracy", "most_games_week", etc
+  timeframe             String                      // "all_time", "monthly", "weekly", "daily"
+  gameMode              ArchitectureGameMode?
+
+  // Ranking details
+  rank                  Int?
+  score                 Float                       // flexible score value (time, percentage, count, etc)
+  metadata              Json?                       // additional context (game config, timestamp, etc)
+
+  // Timestamps
+  achievedAt            DateTime                    @default(now())
+  lastUpdated           DateTime                    @updatedAt
+
+  progress              ArchitectureProgress        @relation(fields: [progressId], references: [id], onDelete: Cascade)
+
+  @@unique([userId, category, timeframe, gameMode])
+  @@index([progressId])
+  @@index([userId])
+  @@index([category])
+  @@index([timeframe])
+  @@index([rank])
+  @@index([achievedAt])
 }
