@@ -28,6 +28,7 @@ export default function ConfusionBusterPage() {
   const [quizAnswers, setQuizAnswers] = useState<Record<string, boolean>>({})
   const [showResults, setShowResults] = useState(false)
   const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0)
+  const [showFullComparison, setShowFullComparison] = useState(false) // For quiz mode
 
   const currentSet = allSets[currentSetIndex]
   const quizQuestions = generateQuizQuestions(currentSet)
@@ -300,20 +301,20 @@ export default function ConfusionBusterPage() {
             exit={{ opacity: 0, y: -20 }}
           >
             {/* Quiz Progress */}
-            <div style={{ marginBottom: 'clamp(0.75rem, 1.5vh, 1.5rem)' }}>
+            <div style={{ marginBottom: 'clamp(0.5rem, 1vh, 0.75rem)' }}>
               <div
                 className="flex justify-between text-[var(--muted-foreground)]"
                 style={{
-                  fontSize: 'clamp(0.75rem, 1.5vw, 0.875rem)',
+                  fontSize: 'clamp(0.625rem, 1.25vw, 0.75rem)',
                   marginBottom: 'clamp(0.25rem, 0.5vh, 0.5rem)'
                 }}
               >
-                <span>Question {currentQuestionIndex + 1} of {totalQuestions}</span>
-                <span>{correctCount} correct</span>
+                <span>Q {currentQuestionIndex + 1}/{totalQuestions}</span>
+                <span>✓ {correctCount}</span>
               </div>
               <div
                 className="bg-[var(--muted)] rounded-full overflow-hidden"
-                style={{ height: 'clamp(0.375rem, 0.8vh, 0.5rem)' }}
+                style={{ height: 'clamp(0.25rem, 0.6vh, 0.375rem)' }}
               >
                 <motion.div
                   className="h-full bg-gradient-to-r from-purple-500 to-indigo-600"
@@ -323,23 +324,26 @@ export default function ConfusionBusterPage() {
               </div>
             </div>
 
-            {/* Show comparison reference */}
+            {/* Compact comparison reference with toggle */}
             <div
-              className="border-2 border-purple-500/30 bg-purple-500/5 rounded-lg"
-              style={{ marginBottom: 'clamp(0.75rem, 1.5vh, 1.5rem)' }}
+              className="border border-purple-500/30 bg-purple-500/5 rounded-lg"
+              style={{ marginBottom: 'clamp(0.5rem, 1vh, 0.75rem)' }}
             >
-              <div style={{ padding: 'clamp(0.5rem, 1vh, 1rem) clamp(0.75rem, 2vh, 1.5rem) 0' }}>
-                <p
-                  className="text-[var(--muted-foreground)] text-center"
-                  style={{
-                    fontSize: 'clamp(0.75rem, 1.5vw, 0.875rem)',
-                    marginBottom: 'clamp(0.5rem, 1vh, 1rem)'
-                  }}
-                >
-                  💡 Reference the comparison below to answer
-                </p>
-              </div>
-              <ArchitectureComparison comparisonSet={currentSet} mode="study" />
+              <button
+                onClick={() => setShowFullComparison(!showFullComparison)}
+                className="w-full text-center py-2 px-3 hover:bg-purple-500/10 transition-colors rounded-t-lg"
+                style={{ fontSize: 'clamp(0.625rem, 1.25vw, 0.75rem)' }}
+              >
+                <span className="text-[var(--muted-foreground)]">
+                  {showFullComparison ? '▼' : '▶'} Reference: {currentSet.elements.map(e => e.name).join(' vs ')}
+                </span>
+              </button>
+
+              {showFullComparison && (
+                <div style={{ maxHeight: '40vh', overflowY: 'auto' }}>
+                  <QuickComparisonTable comparisonSet={currentSet} />
+                </div>
+              )}
             </div>
 
             {/* Current Question */}
@@ -507,6 +511,37 @@ export default function ConfusionBusterPage() {
             </Card>
           </motion.div>
         )}
+      </div>
+    </div>
+  )
+}
+
+// Quick Comparison Table (Compact for Quiz Mode)
+function QuickComparisonTable({ comparisonSet }: { comparisonSet: ComparisonSet }) {
+  return (
+    <div className="p-2 sm:p-3">
+      {/* Only show highlighted/key features */}
+      <div className="space-y-2">
+        {comparisonSet.features.filter(f => f.highlighted).map((feature, index) => (
+          <div
+            key={index}
+            className="border border-[var(--border)] rounded p-2 bg-[var(--background)]"
+          >
+            <div className="font-semibold text-xs mb-1 text-purple-500">
+              {feature.label}
+            </div>
+            <div className="grid grid-cols-2 gap-2 text-xs">
+              {comparisonSet.elements.map((element) => (
+                <div key={element.id}>
+                  <span className="font-medium text-[var(--foreground)]">{element.name}:</span>{' '}
+                  <span className="text-[var(--muted-foreground)]">
+                    {feature.values[element.id]}
+                  </span>
+                </div>
+              ))}
+            </div>
+          </div>
+        ))}
       </div>
     </div>
   )
