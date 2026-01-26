@@ -166,9 +166,9 @@ export function Header() {
     <header
       className="sticky top-0 z-[100] bg-[var(--card)] border-b-4 border-theme-primary shadow-sm transition-all duration-300 safe-area-top"
       style={{
-        // When mobile menu is open, disable transform to prevent breaking fixed positioning of menu
-        transform: mobileMenuOpen ? 'none' : (isHeaderVisible ? 'translateY(0)' : 'translateY(-100%)'),
-        opacity: mobileMenuOpen ? 1 : (isHeaderVisible ? 1 : 0),
+        // When mobile menu is open OR Sage is napping/animating, disable transform to prevent breaking positioning
+        transform: (mobileMenuOpen || sageContext?.isNapping || sageContext?.isAnimating) ? 'none' : (isHeaderVisible ? 'translateY(0)' : 'translateY(-100%)'),
+        opacity: (mobileMenuOpen || sageContext?.isNapping || sageContext?.isAnimating) ? 1 : (isHeaderVisible ? 1 : 0),
       }}
     >
       <nav className="container mx-auto px-4 sm:px-6 lg:px-8">
@@ -184,15 +184,23 @@ export function Header() {
                   ? 'cursor-pointer sage-sleeping sage-wake-indicator hover:scale-110'
                   : 'pulse-alive'
               }`}
+              style={{
+                // Ensure stable positioning for animation target
+                willChange: sageContext?.isAnimating ? 'transform' : 'auto',
+                isolation: 'isolate',
+              }}
             >
               <Leaf className="w-5 h-5 sm:w-7 sm:h-7 text-white" />
 
               {/* Zzz animation when Sage is napping (not during animation) */}
               {sageContext?.isNapping && !sageContext?.isAnimating && (
                 <>
-                  <span className="sage-zzz sage-zzz-1">z</span>
-                  <span className="sage-zzz sage-zzz-2">z</span>
-                  <span className="sage-zzz sage-zzz-3">z</span>
+                  {/* Stable container for zzz elements to prevent jitter */}
+                  <div className="absolute inset-0 pointer-events-none" style={{ willChange: 'transform' }}>
+                    <span className="sage-zzz sage-zzz-1">z</span>
+                    <span className="sage-zzz sage-zzz-2">z</span>
+                    <span className="sage-zzz sage-zzz-3">z</span>
+                  </div>
 
                   {/* Hover tooltip - "Click to wake" - positioned below with arrow pointing up */}
                   <div className="absolute top-full left-1/2 -translate-x-1/2 mt-2 pointer-events-none z-[200] opacity-0 group-hover:opacity-100 transition-opacity duration-200">

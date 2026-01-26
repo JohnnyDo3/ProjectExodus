@@ -1264,6 +1264,9 @@ body.textbook-fullscreen .fixed.inset-0.z-50 {
 
 .sage-sleeping {
   animation: sage-bob 2s ease-in-out infinite;
+  will-change: transform;
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
 }
 
 .sage-zzz {
@@ -1274,6 +1277,12 @@ body.textbook-fullscreen .fixed.inset-0.z-50 {
   text-shadow: 0 1px 3px rgba(0,0,0,0.4);
   pointer-events: none;
   font-family: Georgia, serif;
+  will-change: transform, opacity;
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
+  /* Prevent subpixel rendering issues */
+  transform: translateZ(0);
+  -webkit-font-smoothing: antialiased;
 }
 
 .sage-zzz-1 {
@@ -1306,6 +1315,7 @@ body.textbook-fullscreen .fixed.inset-0.z-50 {
 
 .sage-wake-indicator {
   animation: sage-wake-pulse 2s ease-in-out infinite;
+  will-change: box-shadow;
 }
 
 /* ========== GRAND LIBRARY CANDLELIGHT EFFECTS ========== */

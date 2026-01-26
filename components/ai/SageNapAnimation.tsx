@@ -95,23 +95,32 @@ export function SageNapAnimation() {
       const midYBase = Math.min(startPos.y, endPos.y)
       const arcPeak = Math.max(80, midYBase - 250) // Go high up in the viewport
 
-      // Calculate scale
-      const startScale = animationPhase === 'going-to-nap' ? 1 : 0.6
-      const endScale = animationPhase === 'going-to-nap' ? 0.6 : 1
+      // Calculate scale - match header icon size perfectly (1.0) for seamless merge
+      const startScale = animationPhase === 'going-to-nap' ? 1 : 1
+      const endScale = animationPhase === 'going-to-nap' ? 1 : 1
 
-      // Make visible and set initial position BEFORE any animation
-      setIsVisible(true)
-
-      // Immediately position at start
+      // Set initial position FIRST while still invisible
       controls.set({
         x: startPos.x,
         y: startPos.y,
         scale: startScale,
-        opacity: 1
+        opacity: 0
       })
 
-      // Wait for the element to render at start position
-      await new Promise(resolve => setTimeout(resolve, 50))
+      // Make visible now that position is set
+      setIsVisible(true)
+
+      // Wait for the element to mount in the DOM
+      await new Promise(resolve => setTimeout(resolve, 30))
+
+      // Fade in from the correct position
+      await controls.start({
+        opacity: 1,
+        transition: {
+          duration: 0.15,
+          ease: 'easeOut'
+        }
+      })
 
       // Generate sparkles along the arc path
       generateSparkles(startPos.x, startPos.y, midX, arcPeak, endPos.x, endPos.y)
@@ -136,21 +145,20 @@ export function SageNapAnimation() {
       setSparkles([])
 
       // Fade out at the landing position for smooth merge
+      // Use shorter, snappier fade to prevent double-icon flash
       await controls.start({
         opacity: 0,
-        scale: endScale * 0.9,
+        scale: endScale,
         transition: {
-          duration: 0.4,
-          ease: 'easeOut',
+          duration: 0.2,
+          ease: [0.4, 0.0, 0.2, 1], // Material design deceleration curve
         }
       })
 
-      // Wait for fade to fully complete visually before hiding
-      await new Promise(resolve => setTimeout(resolve, 100))
-
+      // Immediately hide after fade completes
       setIsVisible(false)
 
-      // Additional delay before signaling completion to prevent glitch
+      // Brief delay before signaling completion to ensure clean state transition
       await new Promise(resolve => setTimeout(resolve, 50))
 
       animationRunning.current = false
@@ -173,7 +181,13 @@ export function SageNapAnimation() {
   if (!isVisible) return null
 
   return createPortal(
-    <div className="fixed inset-0 z-[9999] pointer-events-none overflow-hidden">
+    <div
+      className="fixed inset-0 z-[9999] pointer-events-none overflow-hidden"
+      style={{
+        isolation: 'isolate',
+        willChange: 'contents',
+      }}
+    >
       {/* Sparkles trail */}
       {sparkles.map((sparkle) => (
         <motion.div
@@ -213,6 +227,9 @@ export function SageNapAnimation() {
         style={{
           translateX: '-50%',
           translateY: '-50%',
+          willChange: 'transform, opacity',
+          backfaceVisibility: 'hidden',
+          WebkitBackfaceVisibility: 'hidden',
         }}
       >
         {/* Glowing trail effect */}
