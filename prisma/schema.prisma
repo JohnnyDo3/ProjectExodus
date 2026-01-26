@@ -2403,7 +2403,6 @@ model ArchitectureProgress {
 enum ArchitectureGameMode {
   FLASHCARD         // Image → Name matching
   REVERSE           // Name → Image matching
-  CONFUSION_BUSTER  // Similar elements comparison
   DIAGRAM           // Label the diagram
   MIXED             // Random mix of all modes
 }
@@ -2457,7 +2456,6 @@ model ArchitectureGameSession {
 
   // Game-specific fields
   diagramStructureId    String?                     // For Diagram Builder
-  comparisonSetIds      String[]                    @default([]) // For Confusion Buster
 
   // Results
   accuracy              Float?

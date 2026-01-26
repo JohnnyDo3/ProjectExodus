@@ -9,7 +9,7 @@ import {
   Building2, Gamepad2, Camera, BookOpen, Trophy, Timer,
   ChevronRight, Layers, Globe, Search, Shuffle, Clock,
   Target, Zap, Award, Map, GraduationCap, Columns3,
-  ChurchIcon, Castle, ArrowRight, Play, Sparkles, Brain
+  ChurchIcon, Castle, ArrowRight, Play, Sparkles
 } from 'lucide-react'
 import Link from 'next/link'
 import { ALL_ELEMENTS, ELEMENT_STATS } from '@/data/architecture/elements'
@@ -48,16 +48,6 @@ const gameModes = [
     bgColor: 'bg-teal-500/10',
     features: ['Drag & drop labels', 'Word bank mode', 'Full structure diagrams'],
     href: '/architecture/play/diagram'
-  },
-  {
-    id: 'confusion',
-    name: 'Confusion Buster',
-    description: 'Master commonly confused pairs like Doric vs Ionic columns.',
-    icon: Brain,
-    color: 'from-purple-500 to-indigo-600',
-    bgColor: 'bg-purple-500/10',
-    features: ['Side-by-side comparison', 'Key differences', 'Memory tricks'],
-    href: '/architecture/play/confusion'
   },
   {
     id: 'spotted',

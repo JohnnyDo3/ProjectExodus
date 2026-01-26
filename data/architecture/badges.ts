@@ -592,46 +592,6 @@ export const BADGES: Badge[] = [
   },
 
   // ============================================
-  // CONFUSION BUSTER BADGES
-  // ============================================
-  {
-    id: 'confusion-cleared',
-    name: 'Confusion Cleared',
-    description: 'Complete a Confusion Buster session',
-    icon: '💡',
-    tier: 'BRONZE',
-    category: 'MASTERY',
-    requirement: { type: 'confusion_buster_completed', count: 1 },
-    xpReward: 75,
-    rarity: 0.5,
-    unlockedMessage: "You've cleared up some architectural confusion!",
-  },
-  {
-    id: 'distinction-master',
-    name: 'Distinction Master',
-    description: 'Complete 20 Confusion Buster sessions',
-    icon: '🔬',
-    tier: 'SILVER',
-    category: 'MASTERY',
-    requirement: { type: 'confusion_buster_completed', count: 20 },
-    xpReward: 300,
-    rarity: 0.2,
-    unlockedMessage: "You can tell the difference between similar elements!",
-  },
-  {
-    id: 'never-confused',
-    name: 'Never Confused',
-    description: 'Get 100% on 10 Confusion Buster sessions',
-    icon: '🧠',
-    tier: 'GOLD',
-    category: 'MASTERY',
-    requirement: { type: 'confusion_buster_perfect', count: 10 },
-    xpReward: 500,
-    rarity: 0.08,
-    unlockedMessage: "Nothing confuses you anymore!",
-  },
-
-  // ============================================
   // DIAGRAM BADGES
   // ============================================
   {
@@ -849,7 +809,6 @@ export function getBadgeProgress(badge: Badge, userStats: Record<string, number>
     case 'perfect_game':
     case 'elements_spotted':
     case 'photos_uploaded':
-    case 'confusion_buster_completed':
     case 'diagrams_completed':
     case 'regions_studied':
     case 'periods_studied':
