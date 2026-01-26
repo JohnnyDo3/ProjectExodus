@@ -198,12 +198,46 @@ export function DiagramBuilderGame({ config: userConfig, onComplete, onExit, sho
 
       // Check if game is complete
       if (correctCount === currentStructure.labels.length) {
-        setTimeout(() => {
+        setTimeout(async () => {
+          const finalElapsed = Date.now() - gameState.startTime
+          const finalAccuracy = gameState.attempts > 0
+            ? (correctCount / gameState.attempts) * 100
+            : 100
+          const finalScore = Math.max(0, 1000 - (gameState.attempts - correctCount) * 50)
+
           setGameState(state => ({
             ...state,
             phase: 'results',
-            elapsed: Date.now() - state.startTime,
+            elapsed: finalElapsed,
+            correctCount,
           }))
+
+          // Save to database
+          try {
+            await fetch('/api/architecture/games', {
+              method: 'POST',
+              headers: { 'Content-Type': 'application/json' },
+              body: JSON.stringify({
+                gameMode: 'DIAGRAM',
+                learningPath: 'CATEGORY',
+                questionCount: currentStructure.labels.length,
+                correctAnswers: correctCount,
+                incorrectAnswers: gameState.attempts - correctCount,
+                totalTimeMs: finalElapsed,
+                score: finalScore,
+                maxStreak: 0,
+                accuracy: finalAccuracy,
+                xpEarned: finalScore,
+                diagramStructureId: currentStructure.id,
+                periodFilters: [],
+                regionFilters: [],
+                categoryFilters: [currentStructure.category],
+              }),
+            })
+          } catch (error) {
+            console.error('Failed to save diagram results:', error)
+          }
+
           onComplete?.(gameState)
         }, 500)
       }

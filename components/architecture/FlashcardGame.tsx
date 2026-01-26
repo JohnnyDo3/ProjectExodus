@@ -213,8 +213,9 @@ export function FlashcardGame({ config: userConfig, onComplete, onExit, showConf
   }, [selectedAnswer, gameState.phase, gameState.currentIndex, elements, soundEnabled])
 
   // Finish game
-  const finishGame = useCallback(() => {
+  const finishGame = useCallback(async () => {
     const finalElapsed = Date.now() - gameState.startTime
+    const beatPB = bestTime ? finalElapsed < bestTime : false
 
     setGameState(prev => ({
       ...prev,
@@ -223,7 +224,7 @@ export function FlashcardGame({ config: userConfig, onComplete, onExit, showConf
     }))
 
     // Save ghost data if this is a new best
-    if (!bestTime || finalElapsed < bestTime) {
+    if (beatPB) {
       const newGhostData: GhostData[] = gameState.answers.map((a, i) => ({
         elementId: a.elementId,
         timestamp: gameState.answers.slice(0, i + 1).reduce((sum, ans) => sum + ans.timeMs, 0),
@@ -237,10 +238,43 @@ export function FlashcardGame({ config: userConfig, onComplete, onExit, showConf
       setBestTime(finalElapsed)
     }
 
+    // Save game results to database
+    try {
+      const correctCount = gameState.answers.filter(a => a.correct).length
+      const accuracy = (correctCount / gameState.answers.length) * 100
+      const xp = gameState.score // Use score as XP
+
+      await fetch('/api/architecture/games', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          gameMode: 'FLASHCARD',
+          learningPath: config.shuffleMode.toUpperCase(),
+          questionCount: elements.length,
+          correctAnswers: correctCount,
+          incorrectAnswers: gameState.answers.length - correctCount,
+          totalTimeMs: finalElapsed,
+          score: gameState.score,
+          maxStreak: gameState.maxStreak,
+          accuracy,
+          xpEarned: xp,
+          beatPersonalBest: beatPB,
+          previousBestTime: bestTime,
+          questionTimes: gameState.answers,
+          periodFilters: [],
+          regionFilters: [],
+          categoryFilters: config.category ? [config.category] : [],
+        }),
+      })
+    } catch (error) {
+      console.error('Failed to save game results:', error)
+      // Continue anyway - don't block the user
+    }
+
     if (onComplete) {
       onComplete(gameState)
     }
-  }, [gameState, bestTime, onComplete])
+  }, [gameState, bestTime, onComplete, config, elements.length])
 
   // Format time
   const formatTime = (ms: number) => {

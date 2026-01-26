@@ -37,19 +37,68 @@ export default function ConfusionBusterPage() {
 
     // Generate questions from features
     set.features.filter(f => f.highlighted).forEach((feature, index) => {
-      const elementIds = set.elements.map(e => e.id)
+      // Find which element has this feature based on the values
+      let correctElement = set.elements[0]
 
-      // Find which element has unique/distinguishing feature
+      // If the feature has different values per element, find the right one
+      if (feature.values && Array.isArray(feature.values)) {
+        // Multiple values - use index to pick element
+        const valueIndex = feature.values.findIndex(v =>
+          v && typeof v === 'string' && v.length > 0
+        )
+        correctElement = set.elements[Math.max(0, valueIndex)]
+      } else {
+        // Single value or no values - use first element
+        correctElement = set.elements[0]
+      }
+
+      // Generate different question types
+      const questionTypes = [
+        {
+          question: `Which ${set.category.slice(0, -1).toLowerCase()} ${feature.label.toLowerCase()}?`,
+          type: 'has-feature'
+        },
+        {
+          question: `What is the ${feature.label.toLowerCase()} of the ${correctElement.name}?`,
+          type: 'feature-value',
+          answers: set.elements.map((e, i) => {
+            if (feature.values && Array.isArray(feature.values)) {
+              return feature.values[i] || e.name
+            }
+            return e.name
+          })
+        },
+        {
+          question: `Which statement is TRUE about ${correctElement.name}?`,
+          type: 'true-false'
+        }
+      ]
+
+      const questionType = questionTypes[index % questionTypes.length]
+
       questions.push({
         id: `${set.id}-${index}`,
-        question: `Which ${set.category.slice(0, -1)} has: "${feature.label.toLowerCase()}"?`,
-        answers: set.elements.map(e => e.name),
-        correctAnswer: set.elements[0].name, // Simplified - would need better logic
+        question: questionType.question,
+        answers: questionType.answers || set.elements.map(e => e.name),
+        correctAnswer: questionType.answers
+          ? questionType.answers[0]
+          : correctElement.name,
         featureHighlight: feature.label,
       })
     })
 
-    return questions.slice(0, 5) // Limit to 5 questions per set
+    // Also generate "spot the difference" questions
+    if (set.elements.length === 2) {
+      questions.push({
+        id: `${set.id}-diff-1`,
+        question: `What is the main difference between ${set.elements[0].name} and ${set.elements[1].name}?`,
+        answers: set.features.filter(f => f.highlighted).map(f => f.label),
+        correctAnswer: set.features.filter(f => f.highlighted)[0]?.label || '',
+        featureHighlight: set.features.filter(f => f.highlighted)[0]?.label,
+      })
+    }
+
+    return questions.slice(0, 6) // Limit to 6 questions per set
   }
 
   function handleQuizAnswer(questionId: string, isCorrect: boolean) {
