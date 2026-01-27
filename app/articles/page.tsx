@@ -4705,15 +4705,16 @@ export default function ArticlesPage() {
         </motion.div>
       )}
 
-      {/* Filter Bar - Styled as bookshelf drawer */}
-      <div className="sticky top-16 sm:top-20 z-40 bg-gradient-to-b from-amber-950 to-stone-900 border-b-4 border-amber-700/60">
-        <div className="container mx-auto px-4">
-          <div className="flex items-center py-3 sm:py-4 gap-2">
-            {/* Decorative left bracket */}
-            <div className="hidden sm:block w-8 h-8 border-l-2 border-t-2 border-amber-500/40 rounded-tl-lg" />
-
-            {/* Sort Options - Styled as brass toggles */}
-            <div className="flex items-center gap-1.5 sm:gap-2 overflow-x-auto pb-1 sm:pb-0 flex-1 scrollbar-hide -mx-1 px-1">
+      {/* Unified Filter Section - Clean & Intuitive */}
+      <div className="sticky top-16 sm:top-20 z-40 bg-gradient-to-b from-amber-950 to-stone-900 border-b-2 border-amber-700/40 shadow-lg">
+        <div className="container mx-auto px-4 py-4">
+          {/* Sort By Section */}
+          <div className="mb-4">
+            <h3 className="text-xs font-semibold text-amber-300/80 uppercase tracking-wider mb-2 flex items-center gap-2">
+              <ArrowUpDown className="w-3.5 h-3.5" />
+              Sort By
+            </h3>
+            <div className="flex items-center gap-2 overflow-x-auto pb-1 scrollbar-hide -mx-1 px-1">
               {sortOptions.map((option) => {
                 const Icon = option.icon
                 const isActive = activeSort === option.value
@@ -4722,23 +4723,70 @@ export default function ArticlesPage() {
                     key={option.value}
                     onClick={() => setActiveSort(option.value)}
                     disabled={option.value === 'read' && !session}
-                    className={`flex items-center gap-1.5 sm:gap-2 px-3 sm:px-4 py-1.5 sm:py-2 rounded-lg font-bold text-xs sm:text-sm whitespace-nowrap transition-all flex-shrink-0 border-2 ${
+                    className={`flex items-center gap-1.5 px-4 py-2 rounded-md font-medium text-sm whitespace-nowrap transition-all flex-shrink-0 border ${
                       isActive
-                        ? 'bg-gradient-to-b from-amber-600 to-amber-800 border-yellow-500/50 text-amber-100 shadow-lg'
-                        : 'bg-gradient-to-b from-stone-700 to-stone-800 border-amber-700/30 text-amber-300/70 hover:border-amber-500/50'
-                    } ${option.value === 'read' && !session ? 'opacity-50 cursor-not-allowed' : ''}`}
+                        ? 'bg-amber-600 border-amber-500 text-white shadow-md'
+                        : 'bg-stone-800/50 border-stone-700 text-amber-300/70 hover:bg-stone-700/50 hover:border-amber-600/40'
+                    } ${option.value === 'read' && !session ? 'opacity-40 cursor-not-allowed' : ''}`}
                     title={option.value === 'read' && !session ? 'Sign in to see studied texts' : ''}
                   >
-                    <Icon className="w-3.5 h-3.5 sm:w-4 sm:h-4" />
-                    <span className="hidden xs:inline">{option.label}</span>
-                    <span className="xs:hidden">{option.label.split(' ')[0]}</span>
+                    <Icon className="w-4 h-4" />
+                    <span>{option.label}</span>
                   </button>
                 )
               })}
             </div>
+          </div>
 
-            {/* Decorative right bracket */}
-            <div className="hidden sm:block w-8 h-8 border-r-2 border-t-2 border-amber-500/40 rounded-tr-lg" />
+          {/* Filter By Category Section */}
+          <div>
+            <h3 className="text-xs font-semibold text-amber-300/80 uppercase tracking-wider mb-2 flex items-center gap-2">
+              <Filter className="w-3.5 h-3.5" />
+              Filter By Category
+            </h3>
+            <div className="flex flex-wrap items-center gap-2">
+              {/* "All" filter */}
+              <button
+                onClick={() => setActiveCategoryFilter(null)}
+                className={`flex items-center gap-1.5 px-3 py-1.5 rounded-md font-medium text-sm transition-all border ${
+                  activeCategoryFilter === null
+                    ? 'bg-amber-600 border-amber-500 text-white shadow-md'
+                    : 'bg-stone-800/50 border-stone-700 text-amber-300/70 hover:bg-stone-700/50 hover:border-amber-600/40'
+                }`}
+              >
+                <BookOpen className="w-3.5 h-3.5" />
+                <span>All</span>
+              </button>
+
+              {/* Category filters */}
+              {BOOK_CATEGORIES.map((category) => {
+                const isActive = activeCategoryFilter === category.slug
+                const CategoryIcon = category.icon
+                const categoryCount = articlesByCategory[category.slug]?.length || 0
+
+                return (
+                  <button
+                    key={category.id}
+                    onClick={() => setActiveCategoryFilter(isActive ? null : category.slug)}
+                    className={`flex items-center gap-1.5 px-3 py-1.5 rounded-md font-medium text-sm transition-all border ${
+                      isActive
+                        ? `bg-gradient-to-r ${category.color} border-white/20 text-white shadow-md`
+                        : 'bg-stone-800/50 border-stone-700 text-amber-300/70 hover:bg-stone-700/50 hover:border-amber-600/40'
+                    }`}
+                  >
+                    <CategoryIcon className="w-3.5 h-3.5" />
+                    <span className="hidden sm:inline">{category.name}</span>
+                    {categoryCount > 0 && (
+                      <span className={`text-xs px-1.5 py-0.5 rounded-full font-semibold ${
+                        isActive ? 'bg-white/20' : 'bg-amber-700/30'
+                      }`}>
+                        {categoryCount}
+                      </span>
+                    )}
+                  </button>
+                )
+              })}
+            </div>
           </div>
         </div>
       </div>
@@ -4775,82 +4823,6 @@ export default function ArticlesPage() {
           </div>
         ) : (
           <>
-            {/* ========================================== */}
-            {/* ORNATE TOGGLE SWITCH CATEGORY FILTERS     */}
-            {/* ========================================== */}
-            <div className="mb-8">
-              <div className="flex flex-wrap items-center justify-center gap-3 px-4">
-                {/* "All" filter toggle */}
-                <div className="relative group/toggle">
-                  <button
-                    onClick={() => setActiveCategoryFilter(null)}
-                    className={`relative flex items-center gap-2 px-3 py-2 rounded-lg border-2 transition-all duration-300 ${
-                      activeCategoryFilter === null
-                        ? 'bg-gradient-to-b from-amber-600 to-amber-800 border-yellow-500/60 shadow-lg shadow-amber-500/30'
-                        : 'bg-gradient-to-b from-stone-700 to-stone-800 border-amber-700/40 hover:border-amber-500/50'
-                    }`}
-                  >
-                    <div className={`w-4 h-4 rounded-full border-2 flex items-center justify-center transition-all ${
-                      activeCategoryFilter === null
-                        ? 'bg-yellow-400 border-yellow-300 shadow-inner'
-                        : 'bg-stone-600 border-stone-500'
-                    }`}>
-                      {activeCategoryFilter === null && (
-                        <div className="w-1.5 h-1.5 rounded-full bg-amber-800" />
-                      )}
-                    </div>
-                    <span className={`text-xs font-bold uppercase tracking-wider ${
-                      activeCategoryFilter === null ? 'text-amber-100' : 'text-amber-300/70'
-                    }`}>All</span>
-                    <div className="absolute -left-0.5 top-1/2 -translate-y-1/2 w-1.5 h-1.5 rounded-full bg-gradient-to-br from-yellow-400 to-yellow-600 border border-yellow-300/50" />
-                    <div className="absolute -right-0.5 top-1/2 -translate-y-1/2 w-1.5 h-1.5 rounded-full bg-gradient-to-br from-yellow-400 to-yellow-600 border border-yellow-300/50" />
-                  </button>
-                  <div className="absolute -bottom-8 left-1/2 -translate-x-1/2 px-2 py-1 bg-amber-900/95 text-amber-100 text-[9px] font-bold rounded whitespace-nowrap opacity-0 group-hover/toggle:opacity-100 transition-opacity shadow-lg z-50">
-                    View All Scrolls
-                  </div>
-                </div>
-
-                {BOOK_CATEGORIES.map((category) => {
-                  const isActive = activeCategoryFilter === category.slug
-                  const CategoryIcon = category.icon
-                  const categoryCount = articlesByCategory[category.slug]?.length || 0
-
-                  return (
-                    <div key={category.id} className="relative group/toggle">
-                      <button
-                        onClick={() => setActiveCategoryFilter(isActive ? null : category.slug)}
-                        className={`relative flex items-center gap-2 px-3 py-2 rounded-lg border-2 transition-all duration-300 ${
-                          isActive
-                            ? `bg-gradient-to-b ${category.color} border-white/30 shadow-lg`
-                            : 'bg-gradient-to-b from-stone-700 to-stone-800 border-amber-700/40 hover:border-amber-500/50'
-                        }`}
-                      >
-                        <div className={`w-5 h-5 rounded-full border-2 flex items-center justify-center transition-all ${
-                          isActive
-                            ? 'bg-white/20 border-white/40 shadow-inner'
-                            : 'bg-stone-600 border-stone-500'
-                        }`}>
-                          <CategoryIcon className={`w-2.5 h-2.5 ${isActive ? 'text-white' : 'text-amber-400/60'}`} />
-                        </div>
-                        <span className={`text-xs font-bold uppercase tracking-wider hidden sm:inline ${
-                          isActive ? 'text-white' : 'text-amber-300/70'
-                        }`}>{category.name}</span>
-                        {categoryCount > 0 && (
-                          <span className={`text-[9px] px-1.5 py-0.5 rounded-full font-bold ${
-                            isActive ? 'bg-white/20 text-white' : 'bg-amber-800/50 text-amber-300/70'
-                          }`}>{categoryCount}</span>
-                        )}
-                        <div className="absolute -left-0.5 top-1/2 -translate-y-1/2 w-1.5 h-1.5 rounded-full bg-gradient-to-br from-yellow-400 to-yellow-600 border border-yellow-300/50" />
-                        <div className="absolute -right-0.5 top-1/2 -translate-y-1/2 w-1.5 h-1.5 rounded-full bg-gradient-to-br from-yellow-400 to-yellow-600 border border-yellow-300/50" />
-                      </button>
-                      <div className="absolute -bottom-8 left-1/2 -translate-x-1/2 px-2 py-1 bg-amber-900/95 text-amber-100 text-[9px] font-bold rounded whitespace-nowrap opacity-0 group-hover/toggle:opacity-100 transition-opacity shadow-lg z-50">
-                        {category.name} ({categoryCount})
-                      </div>
-                    </div>
-                  )
-                })}
-              </div>
-            </div>
 
             {/* ========================================== */}
             {/* ARTICLE GRID - Modern Card Layout         */}
