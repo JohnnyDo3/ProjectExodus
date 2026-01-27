@@ -323,7 +323,7 @@ export default function ArticlesPage() {
       return !progress?.completed && (progress?.scrollProgress || 0) < 50
     })
 
-    // Prioritize preferred categories, then by views
+    // Prioritize preferred categories, then by readers
     return unreadArticles
       .sort((a, b) => {
         const aCatIndex = sortedCategories.indexOf(a.category?.slug || '')
@@ -331,7 +331,7 @@ export default function ArticlesPage() {
         if (aCatIndex !== -1 && bCatIndex === -1) return -1
         if (bCatIndex !== -1 && aCatIndex === -1) return 1
         if (aCatIndex !== bCatIndex) return aCatIndex - bCatIndex
-        return (b.views || 0) - (a.views || 0)
+        return (b._count.readBy || 0) - (a._count.readBy || 0)
       })
       .slice(0, 7)
   }, [articles, readingProgress])
@@ -493,23 +493,23 @@ export default function ArticlesPage() {
   // Use ref for offset to avoid stale closure issues
   const offsetRef = useRef(0)
 
-  // Fetch trending articles (most views in recent timeframe)
+  // Fetch trending articles (most readers in recent timeframe)
   const fetchTrendingArticles = useCallback(async () => {
     try {
       const res = await fetch('/api/articles?limit=3&sort=most_read')
       if (res.ok) {
         const data = await res.json()
         if (data.success && data.data) {
-          // Calculate trending score based on views and recency
+          // Calculate trending score based on unique readers and recency
           const trending = data.data.map((article: Article) => {
             const daysSincePublished = Math.max(1, Math.floor((Date.now() - new Date(article.publishedAt).getTime()) / (1000 * 60 * 60 * 24)))
-            const trendingScore = article.views / daysSincePublished
+            const trendingScore = article._count.readBy / daysSincePublished
             return { ...article, trendingScore }
           }).sort((a: TrendingArticle, b: TrendingArticle) => (b.trendingScore || 0) - (a.trendingScore || 0))
           setTrendingArticles(trending)
 
           // Calculate totals
-          const totalViewsCount = data.data.reduce((sum: number, a: Article) => sum + a.views, 0)
+          const totalViewsCount = data.data.reduce((sum: number, a: Article) => sum + a._count.readBy, 0)
           setTotalViews(totalViewsCount)
           if (data.pagination?.total) {
             setTotalArticles(data.pagination.total)
@@ -4202,8 +4202,8 @@ export default function ArticlesPage() {
                       <div className="flex items-center justify-center gap-6 mb-6">
                         <div className="flex items-center gap-1.5 text-amber-800">
                           <Eye className="w-4 h-4" />
-                          <span className="text-sm font-bold">{article.views}</span>
-                          <span className="text-xs opacity-70">views</span>
+                          <span className="text-sm font-bold">{article._count.readBy}</span>
+                          <span className="text-xs opacity-70">readers</span>
                         </div>
                         <div className="flex items-center gap-1.5 text-amber-800">
                           <Clock className="w-4 h-4" />
@@ -4451,7 +4451,7 @@ export default function ArticlesPage() {
                         <p className="font-bold text-black text-base" style={{ fontFamily: 'Georgia, serif' }}>
                           {previewArticle.author?.name || 'Anonymous Scribe'}
                         </p>
-                        <p className="text-xs text-black/70" style={{ fontFamily: 'Georgia, serif', fontStyle: 'italic' }}>
+                        <p className="text-xs text-black" style={{ fontFamily: 'Georgia, serif', fontStyle: 'italic' }}>
                           {new Date(previewArticle.publishedAt).toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' })}
                         </p>
                       </div>
@@ -4466,7 +4466,7 @@ export default function ArticlesPage() {
                       <div className="w-1.5 h-1.5 bg-amber-600/60 rounded-full" />
                       <div className="flex items-center gap-2">
                         <Eye className="w-4 h-4" />
-                        <span className="text-xs font-medium" style={{ fontFamily: 'Georgia, serif' }}>{previewArticle.views} views</span>
+                        <span className="text-xs font-medium" style={{ fontFamily: 'Georgia, serif' }}>{previewArticle._count?.readBy || 0} readers</span>
                       </div>
                       <div className="w-1.5 h-1.5 bg-amber-600/60 rounded-full" />
                       <div className="flex items-center gap-2">
@@ -5038,7 +5038,7 @@ export default function ArticlesPage() {
                               </span>
                               <span className="flex items-center gap-1">
                                 <Eye className="w-3.5 h-3.5" />
-                                {article.views}
+                                {article._count.readBy}
                               </span>
                             </div>
                             {article.author && (
