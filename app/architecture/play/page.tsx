@@ -4,7 +4,7 @@ import { Card, CardContent } from '@/components/ui/Card'
 import { Button } from '@/components/ui/Button'
 import { motion } from 'framer-motion'
 import {
-  Gamepad2, Layers, Camera,
+  Gamepad2, Layers, Camera, Brain,
   ChevronRight, ArrowLeft
 } from 'lucide-react'
 import Link from 'next/link'
@@ -29,6 +29,16 @@ const gameModes = [
     bgColor: 'bg-teal-500/10',
     href: '/architecture/play/diagram',
     features: ['Full Structures', 'Word Bank', 'Click or Drag'],
+  },
+  {
+    id: 'confusion',
+    name: 'Confusion Buster',
+    description: 'Study commonly confused architectural pairs',
+    icon: Brain,
+    color: 'from-purple-500 to-indigo-600',
+    bgColor: 'bg-purple-500/10',
+    href: '/architecture/play/confusion',
+    features: ['Side-by-Side Comparisons', 'Key Differences', 'Visual Learning'],
   },
 ]
 
