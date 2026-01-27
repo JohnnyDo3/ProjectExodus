@@ -1636,17 +1636,6 @@ export default function ArticlesPage() {
                             </div>
                             {/* Age weathering overlay */}
                             <div className={`absolute inset-0 bg-gradient-to-b from-amber-900/0 via-amber-800/10 to-amber-900/20 pointer-events-none rounded-sm ${ageOpacity}`} />
-                            {/* Hover tooltip with progress */}
-                            {isHovered && !previewArticle && (
-                              <div className="absolute -top-12 left-1/2 -translate-x-1/2 px-2 py-1.5 bg-amber-900/95 text-amber-100 text-[8px] font-bold rounded whitespace-nowrap z-50 shadow-lg">
-                                <div className="max-w-24 truncate">{article.title}</div>
-                                {progressPercent > 0 && (
-                                  <div className="text-[7px] text-emerald-300 mt-0.5">
-                                    {isCompleted ? '✓ Complete' : `${Math.round(progressPercent)}% read`}
-                                  </div>
-                                )}
-                              </div>
-                            )}
                           </div>
                         )
                       })}
@@ -2293,17 +2282,6 @@ export default function ArticlesPage() {
                             </div>
                             {/* Age weathering overlay */}
                             <div className={`absolute inset-0 bg-gradient-to-b from-amber-900/0 via-amber-800/10 to-amber-900/20 pointer-events-none rounded-sm ${ageOpacity}`} />
-                            {/* Hover tooltip with progress */}
-                            {isHovered && !previewArticle && (
-                              <div className="absolute -top-12 left-1/2 -translate-x-1/2 px-2 py-1.5 bg-amber-900/95 text-amber-100 text-[8px] font-bold rounded whitespace-nowrap z-50 shadow-lg">
-                                <div className="max-w-24 truncate">{article.title}</div>
-                                {progressPercent > 0 && (
-                                  <div className="text-[7px] text-emerald-300 mt-0.5">
-                                    {isCompleted ? '✓ Complete' : `${Math.round(progressPercent)}% read`}
-                                  </div>
-                                )}
-                              </div>
-                            )}
                           </div>
                         )
                       })}

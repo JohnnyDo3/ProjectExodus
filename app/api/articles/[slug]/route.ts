@@ -119,11 +119,65 @@ export async function GET(
       )
     }
 
-    // Increment view count
-    await prisma.article.update({
-      where: { id: article.id },
-      data: { views: { increment: 1 } },
-    })
+    // Get session for user's like status
+    const session = await auth()
+
+    // Track unique user views - only increment if this user hasn't viewed before
+    if (session?.user?.id) {
+      // For authenticated users, check if they've already viewed this article
+      const existingRead = await prisma.articleRead.findUnique({
+        where: {
+          userId_articleId: {
+            userId: session.user.id,
+            articleId: article.id,
+          },
+        },
+      })
+
+      // Only increment view count for new unique viewers
+      if (!existingRead) {
+        await Promise.all([
+          prisma.article.update({
+            where: { id: article.id },
+            data: { views: { increment: 1 } },
+          }),
+          prisma.articleRead.create({
+            data: {
+              userId: session.user.id,
+              articleId: article.id,
+            },
+          }),
+        ])
+      }
+    } else {
+      // For anonymous users, still increment (but this is less precise)
+      // Could track by IP or session if needed, but for now just increment
+      await prisma.article.update({
+        where: { id: article.id },
+        data: { views: { increment: 1 } },
+      })
+    }
+
+    // Get user's liked review IDs if logged in
+    let userLikedReviewIds: Set<string> = new Set()
+    if (session?.user?.id && article.peerReviews.length > 0) {
+      const userLikes = await prisma.reviewLike.findMany({
+        where: {
+          reviewId: { in: article.peerReviews.map((r: PeerReviewWithCount) => r.id) },
+          userId: session.user.id
+        },
+        select: { reviewId: true }
+      })
+      userLikedReviewIds = new Set(userLikes.map((l: { reviewId: string }) => l.reviewId))
+    }
+
+    // Process peer reviews to include likeCount and liked status
+    const processedPeerReviews = article.peerReviews.map((review: PeerReviewWithCount) => ({
+      ...review,
+      likeCount: review._count?.likes || 0,
+      liked: userLikedReviewIds.has(review.id),
+      _count: undefined
+    }))
 
     // Get session for user's like status
     const session = await auth()
