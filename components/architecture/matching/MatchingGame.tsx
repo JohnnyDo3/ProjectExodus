@@ -1,6 +1,6 @@
 'use client'
 
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useRef } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import { CheckCircle2, XCircle, Sparkles } from 'lucide-react'
 import { Button } from '@/components/ui/Button'
@@ -37,6 +37,12 @@ export default function MatchingGame({ question, elements, items, onComplete }: 
   const [showFeedback, setShowFeedback] = useState<Record<string, boolean>>({}) // elementId -> isCorrect
   const [isComplete, setIsComplete] = useState(false)
   const [hasChecked, setHasChecked] = useState(false)
+
+  // Touch support
+  const [isTouchDragging, setIsTouchDragging] = useState(false)
+  const [touchDragPosition, setTouchDragPosition] = useState<{ x: number; y: number } | null>(null)
+  const dropZoneRefs = useRef<Record<string, HTMLDivElement | null>>({})
+  const touchDragSourceRef = useRef<string | null>(null) // Track if dragging from slot or available items
 
   // Get items that haven't been placed yet
   const availableItems = items.filter(item =>
@@ -98,6 +104,102 @@ export default function MatchingGame({ question, elements, items, onComplete }: 
     }
   }
 
+  // Touch event handlers
+  const handleTouchStart = (e: React.TouchEvent, item: MatchingItem, fromSlot: string | null = null) => {
+    e.stopPropagation()
+    const touch = e.touches[0]
+    setIsTouchDragging(true)
+    setDraggedItem({ itemId: item.id, text: item.text })
+    setTouchDragPosition({ x: touch.clientX, y: touch.clientY })
+    touchDragSourceRef.current = fromSlot
+
+    if (fromSlot) {
+      // Remove from slot immediately when dragging from a slot
+      setSlotAssignments(prev => {
+        const newAssignments = { ...prev }
+        delete newAssignments[fromSlot]
+        return newAssignments
+      })
+    }
+  }
+
+  const handleTouchMove = (e: React.TouchEvent) => {
+    if (!isTouchDragging || !draggedItem) return
+
+    e.preventDefault() // Prevent scrolling while dragging
+    const touch = e.touches[0]
+    setTouchDragPosition({ x: touch.clientX, y: touch.clientY })
+
+    // Check which drop zone we're over
+    let foundSlot: string | null = null
+    for (const [elementId, ref] of Object.entries(dropZoneRefs.current)) {
+      if (ref) {
+        const rect = ref.getBoundingClientRect()
+        if (
+          touch.clientX >= rect.left &&
+          touch.clientX <= rect.right &&
+          touch.clientY >= rect.top &&
+          touch.clientY <= rect.bottom
+        ) {
+          foundSlot = elementId
+          break
+        }
+      }
+    }
+    setDragOverSlot(foundSlot)
+  }
+
+  const handleTouchEnd = (e: React.TouchEvent) => {
+    if (!isTouchDragging || !draggedItem) return
+
+    e.preventDefault()
+    const touch = e.changedTouches[0]
+
+    // Find which drop zone we ended on
+    let targetSlot: string | null = null
+    for (const [elementId, ref] of Object.entries(dropZoneRefs.current)) {
+      if (ref) {
+        const rect = ref.getBoundingClientRect()
+        if (
+          touch.clientX >= rect.left &&
+          touch.clientX <= rect.right &&
+          touch.clientY >= rect.top &&
+          touch.clientY <= rect.bottom
+        ) {
+          targetSlot = elementId
+          break
+        }
+      }
+    }
+
+    // If we dropped on a valid slot, assign it
+    if (targetSlot) {
+      setSlotAssignments(prev => ({
+        ...prev,
+        [targetSlot]: draggedItem.itemId
+      }))
+
+      // Clear feedback when user makes changes
+      if (hasChecked) {
+        setShowFeedback({})
+        setHasChecked(false)
+      }
+    } else if (touchDragSourceRef.current) {
+      // If dropped outside and came from a slot, return it to the slot
+      setSlotAssignments(prev => ({
+        ...prev,
+        [touchDragSourceRef.current!]: draggedItem.itemId
+      }))
+    }
+
+    // Reset touch state
+    setIsTouchDragging(false)
+    setTouchDragPosition(null)
+    setDragOverSlot(null)
+    setDraggedItem(null)
+    touchDragSourceRef.current = null
+  }
+
   // Check answers
   const checkAnswers = () => {
     const feedback: Record<string, boolean> = {}
@@ -137,7 +239,7 @@ export default function MatchingGame({ question, elements, items, onComplete }: 
   }
 
   return (
-    <div className="w-full max-w-6xl mx-auto h-full flex flex-col">
+    <div className="w-full max-w-6xl mx-auto h-full flex flex-col relative">
       <motion.div
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
@@ -230,6 +332,7 @@ export default function MatchingGame({ question, elements, items, onComplete }: 
 
                 {/* Drop zone */}
                 <div
+                  ref={(el) => { dropZoneRefs.current[element.id] = el }}
                   onDragOver={(e) => handleDragOver(e, element.id)}
                   onDragLeave={handleDragLeave}
                   onDrop={(e) => handleDrop(e, element.id)}
@@ -251,7 +354,10 @@ export default function MatchingGame({ question, elements, items, onComplete }: 
                     <div
                       draggable
                       onDragStart={() => handleDragStartFromSlot(element.id)}
-                      className="cursor-move text-center relative group w-full"
+                      onTouchStart={(e) => handleTouchStart(e, assignedItem!, element.id)}
+                      onTouchMove={handleTouchMove}
+                      onTouchEnd={handleTouchEnd}
+                      className="cursor-move text-center relative group w-full touch-none"
                     >
                       <p
                         className="font-medium text-[var(--foreground)] leading-snug"
@@ -328,6 +434,9 @@ export default function MatchingGame({ question, elements, items, onComplete }: 
                   key={item.id}
                   draggable
                   onDragStart={() => handleDragStart(item)}
+                  onTouchStart={(e) => handleTouchStart(e, item)}
+                  onTouchMove={handleTouchMove}
+                  onTouchEnd={handleTouchEnd}
                   layout
                   initial={{ opacity: 0, scale: 0.8 }}
                   animate={{ opacity: 1, scale: 1 }}
@@ -339,6 +448,7 @@ export default function MatchingGame({ question, elements, items, onComplete }: 
                     rounded-lg cursor-move
                     hover:shadow-lg hover:border-purple-500
                     transition-all
+                    touch-none
                   "
                   style={{
                     padding: 'clamp(0.5rem, 1vh, 0.75rem) clamp(0.75rem, 1.5vw, 1rem)',
@@ -466,6 +576,27 @@ export default function MatchingGame({ question, elements, items, onComplete }: 
           )}
         </AnimatePresence>
       </motion.div>
+
+      {/* Touch drag indicator */}
+      {isTouchDragging && draggedItem && touchDragPosition && (
+        <div
+          className="fixed pointer-events-none z-50 bg-gradient-to-br from-purple-500/90 to-blue-500/90 border-2 border-purple-500 rounded-lg shadow-2xl"
+          style={{
+            left: touchDragPosition.x - 100,
+            top: touchDragPosition.y - 30,
+            width: '200px',
+            padding: 'clamp(0.5rem, 1vh, 0.75rem) clamp(0.75rem, 1.5vw, 1rem)',
+            transform: 'scale(1.1)',
+          }}
+        >
+          <p
+            className="font-medium text-white leading-snug text-center"
+            style={{ fontSize: 'clamp(0.75rem, 1.5vw, 0.875rem)' }}
+          >
+            {draggedItem.text}
+          </p>
+        </div>
+      )}
     </div>
   )
 }
