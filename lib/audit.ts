@@ -1,30 +1,37 @@
 import { prisma } from '@/lib/db'
 import { pusherServer } from '@/lib/pusher'
 
-// Local type definitions for Prisma enums (until Prisma client is regenerated)
-type AdminAction =
-  | 'USER_BANNED'
-  | 'USER_UNBANNED'
-  | 'PRODUCT_APPROVED'
-  | 'PRODUCT_REJECTED'
-  | 'ARTICLE_PUBLISHED'
-  | 'ARTICLE_UNPUBLISHED'
-  | 'CONTENT_DELETED'
-  | 'REPORT_RESOLVED'
-  | 'SETTINGS_CHANGED'
-  | 'OTHER'
+// Temporary type definitions until Prisma client is regenerated
+export enum AdminAction {
+  USER_BANNED = 'USER_BANNED',
+  USER_UNBANNED = 'USER_UNBANNED',
+  PRODUCT_APPROVED = 'PRODUCT_APPROVED',
+  PRODUCT_REJECTED = 'PRODUCT_REJECTED',
+  ARTICLE_PUBLISHED = 'ARTICLE_PUBLISHED',
+  ARTICLE_UNPUBLISHED = 'ARTICLE_UNPUBLISHED',
+  CONTENT_DELETED = 'CONTENT_DELETED',
+  REPORT_RESOLVED = 'REPORT_RESOLVED',
+  SETTINGS_CHANGED = 'SETTINGS_CHANGED',
+  OTHER = 'OTHER',
+}
 
-type AdminAlertType =
-  | 'NEW_REPORT'
-  | 'USER_BANNED'
-  | 'SECURITY_ALERT'
-  | 'SYSTEM_ERROR'
-  | 'CONTENT_FLAGGED'
-  | 'PRODUCT_SUBMISSION'
-  | 'HIGH_PRIORITY_REPORT'
-  | 'ADMIN_ACTION'
+export enum AdminAlertType {
+  NEW_REPORT = 'NEW_REPORT',
+  USER_BANNED = 'USER_BANNED',
+  SECURITY_ALERT = 'SECURITY_ALERT',
+  SYSTEM_ERROR = 'SYSTEM_ERROR',
+  CONTENT_FLAGGED = 'CONTENT_FLAGGED',
+  PRODUCT_SUBMISSION = 'PRODUCT_SUBMISSION',
+  HIGH_PRIORITY_REPORT = 'HIGH_PRIORITY_REPORT',
+  ADMIN_ACTION = 'ADMIN_ACTION',
+}
 
-type AlertPriority = 'LOW' | 'MEDIUM' | 'HIGH' | 'CRITICAL'
+export enum AlertPriority {
+  LOW = 'LOW',
+  MEDIUM = 'MEDIUM',
+  HIGH = 'HIGH',
+  CRITICAL = 'CRITICAL',
+}
 
 interface LogAdminActionParams {
   userId: string
@@ -97,7 +104,7 @@ export async function logAdminAction({
  */
 export async function createAdminAlert({
   type,
-  priority = 'MEDIUM',
+  priority = AlertPriority.MEDIUM,
   title,
   message,
   link,
@@ -159,7 +166,7 @@ export async function logUserBan(
 ) {
   await logAdminAction({
     userId: adminId,
-    action: 'USER_BANNED',
+    action: AdminAction.USER_BANNED,
     description: `Banned user ${targetUserId}${permanent ? ' permanently' : ''}`,
     targetType: 'user',
     targetId: targetUserId,
@@ -169,8 +176,8 @@ export async function logUserBan(
 
   // Create admin alert
   await createAdminAlert({
-    type: 'USER_BANNED',
-    priority: 'MEDIUM',
+    type: AdminAlertType.USER_BANNED,
+    priority: AlertPriority.MEDIUM,
     title: 'User Banned',
     message: `A user was ${permanent ? 'permanently ' : ''}banned: ${reason}`,
     link: `/admin/users?id=${targetUserId}`,
@@ -187,7 +194,7 @@ export async function logUserUnban(
 ) {
   await logAdminAction({
     userId: adminId,
-    action: 'USER_UNBANNED',
+    action: AdminAction.USER_UNBANNED,
     description: `Unbanned user ${targetUserId}`,
     targetType: 'user',
     targetId: targetUserId,
@@ -206,7 +213,7 @@ export async function logProductApproval(
 ) {
   await logAdminAction({
     userId: adminId,
-    action: 'PRODUCT_APPROVED',
+    action: AdminAction.PRODUCT_APPROVED,
     description: `Approved product: ${productName}`,
     targetType: 'product',
     targetId: productId,
@@ -226,7 +233,7 @@ export async function logProductRejection(
 ) {
   await logAdminAction({
     userId: adminId,
-    action: 'PRODUCT_REJECTED',
+    action: AdminAction.PRODUCT_REJECTED,
     description: `Rejected product: ${productName}`,
     targetType: 'product',
     targetId: productId,
@@ -246,7 +253,7 @@ export async function logArticlePublish(
 ) {
   await logAdminAction({
     userId: adminId,
-    action: 'ARTICLE_PUBLISHED',
+    action: AdminAction.ARTICLE_PUBLISHED,
     description: `Published article: ${articleTitle}`,
     targetType: 'article',
     targetId: articleId,
@@ -265,7 +272,7 @@ export async function logArticleUnpublish(
 ) {
   await logAdminAction({
     userId: adminId,
-    action: 'ARTICLE_UNPUBLISHED',
+    action: AdminAction.ARTICLE_UNPUBLISHED,
     description: `Unpublished article: ${articleTitle}`,
     targetType: 'article',
     targetId: articleId,
@@ -285,7 +292,7 @@ export async function logContentDeletion(
 ) {
   await logAdminAction({
     userId: adminId,
-    action: 'CONTENT_DELETED',
+    action: AdminAction.CONTENT_DELETED,
     description: `Deleted ${contentType}: ${contentTitle}`,
     targetType: contentType as any,
     targetId: contentId,
@@ -305,7 +312,7 @@ export async function logReportResolution(
 ) {
   await logAdminAction({
     userId: adminId,
-    action: 'REPORT_RESOLVED',
+    action: AdminAction.REPORT_RESOLVED,
     description: `${action === 'resolved' ? 'Resolved' : 'Dismissed'} report`,
     targetType: 'report',
     targetId: reportId,
@@ -326,7 +333,7 @@ export async function logSettingsChange(
 ) {
   await logAdminAction({
     userId: adminId,
-    action: 'SETTINGS_CHANGED',
+    action: AdminAction.SETTINGS_CHANGED,
     description: `Changed setting: ${settingKey}`,
     targetType: 'setting',
     targetId: settingKey,

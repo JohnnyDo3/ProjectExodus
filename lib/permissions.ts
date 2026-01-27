@@ -1,7 +1,13 @@
 import { prisma } from '@/lib/db'
 
-// Local type definition (until Prisma client is regenerated)
-type UserRole = 'USER' | 'EDITOR' | 'MODERATOR' | 'ADMIN' | 'SUPER_ADMIN'
+// Temporary type definition until Prisma client is regenerated
+export enum UserRole {
+  USER = 'USER',
+  EDITOR = 'EDITOR',
+  MODERATOR = 'MODERATOR',
+  ADMIN = 'ADMIN',
+  SUPER_ADMIN = 'SUPER_ADMIN',
+}
 
 /**
  * All available permissions in the system
@@ -124,7 +130,7 @@ export async function hasPermission(
     if (!user) return false
 
     // SUPER_ADMIN has all permissions
-    if (user.role === 'SUPER_ADMIN') return true
+    if (user.role === UserRole.SUPER_ADMIN) return true
 
     // Check for custom permission override
     const customPermission = await prisma.rolePermission.findUnique({
@@ -224,7 +230,7 @@ export async function setRolePermissions(
   permissions: Permission[]
 ): Promise<void> {
   // Don't allow modifying SUPER_ADMIN permissions
-  if (role === 'SUPER_ADMIN') {
+  if (role === UserRole.SUPER_ADMIN) {
     throw new Error('Cannot modify SUPER_ADMIN permissions')
   }
 
@@ -253,7 +259,7 @@ export async function addRolePermission(
   role: UserRole,
   permission: Permission
 ): Promise<void> {
-  if (role === 'SUPER_ADMIN') return // SUPER_ADMIN already has all permissions
+  if (role === UserRole.SUPER_ADMIN) return // SUPER_ADMIN already has all permissions
 
   await prisma.rolePermission.upsert({
     where: {
@@ -271,7 +277,7 @@ export async function removeRolePermission(
   role: UserRole,
   permission: Permission
 ): Promise<void> {
-  if (role === 'SUPER_ADMIN') return
+  if (role === UserRole.SUPER_ADMIN) return
 
   await prisma.rolePermission.deleteMany({
     where: { role, permission }
@@ -282,7 +288,7 @@ export async function removeRolePermission(
  * Check if user is at least a certain role level
  */
 export function isRoleAtLeast(userRole: UserRole, minimumRole: UserRole): boolean {
-  const roleHierarchy: UserRole[] = ['USER', 'EDITOR', 'MODERATOR', 'ADMIN', 'SUPER_ADMIN']
+  const roleHierarchy: UserRole[] = [UserRole.USER, UserRole.EDITOR, UserRole.MODERATOR, UserRole.ADMIN, UserRole.SUPER_ADMIN]
   const userLevel = roleHierarchy.indexOf(userRole)
   const minLevel = roleHierarchy.indexOf(minimumRole)
   return userLevel >= minLevel

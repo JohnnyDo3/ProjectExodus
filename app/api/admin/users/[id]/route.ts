@@ -2,7 +2,7 @@ import { NextRequest, NextResponse } from 'next/server'
 import { auth } from '@/auth'
 import { prisma } from '@/lib/db'
 import { hasPermission } from '@/lib/permissions'
-import { logAdminAction } from '@/lib/audit'
+import { logAdminAction, AdminAction } from '@/lib/audit'
 
 export async function GET(
   request: NextRequest,
@@ -186,7 +186,7 @@ export async function PATCH(
     if (role && role !== currentUser.role) {
       await logAdminAction({
         userId: session.user.id,
-        action: 'OTHER',
+        action: AdminAction.OTHER,
         description: `Changed role of ${currentUser.name} from ${currentUser.role} to ${role}`,
         targetType: 'user',
         targetId: id,
@@ -261,7 +261,7 @@ export async function DELETE(
     // Log the action
     await logAdminAction({
       userId: session.user.id,
-      action: 'CONTENT_DELETED',
+      action: AdminAction.CONTENT_DELETED,
       description: `Deleted user account: ${user.name} (${user.email})`,
       targetType: 'user',
       targetId: id,
