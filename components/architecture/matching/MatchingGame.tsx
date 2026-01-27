@@ -120,11 +120,20 @@ export default function MatchingGame({ question, elements, items, onComplete }: 
 
     if (allCorrect) {
       setIsComplete(true)
-      // Delay the onComplete callback to show the success animation
-      setTimeout(() => {
-        onComplete()
-      }, 2000)
     }
+  }
+
+  // Try again - reset the quiz
+  const handleTryAgain = () => {
+    setSlotAssignments({})
+    setShowFeedback({})
+    setHasChecked(false)
+    setIsComplete(false)
+  }
+
+  // Proceed to next set
+  const handleNext = () => {
+    onComplete()
   }
 
   return (
@@ -135,6 +144,7 @@ export default function MatchingGame({ question, elements, items, onComplete }: 
         className="bg-gradient-to-br from-purple-500/10 via-blue-500/10 to-pink-500/10 rounded-lg border-2 border-purple-500/30 flex flex-col"
         style={{
           padding: 'clamp(0.75rem, 1.5vh, 1rem)',
+          paddingBottom: 'clamp(1.5rem, 3vh, 2rem)',
           minHeight: 0,
           flex: 1,
           maxHeight: '100%',
@@ -375,8 +385,8 @@ export default function MatchingGame({ question, elements, items, onComplete }: 
               initial={{ opacity: 0, y: 10 }}
               animate={{ opacity: 1, y: 0 }}
               exit={{ opacity: 0 }}
-              className="text-center"
-              style={{ marginTop: 'clamp(0.75rem, 1.5vh, 1rem)' }}
+              className="flex flex-col items-center"
+              style={{ marginTop: 'clamp(0.75rem, 1.5vh, 1rem)', gap: 'clamp(0.75rem, 1.5vh, 1rem)' }}
             >
               <div
                 className="inline-block bg-amber-500/20 border border-amber-500/50 rounded-lg"
@@ -386,9 +396,21 @@ export default function MatchingGame({ question, elements, items, onComplete }: 
                   className="text-amber-600 dark:text-amber-400 font-medium"
                   style={{ fontSize: 'clamp(0.75rem, 1.5vw, 0.875rem)' }}
                 >
-                  Not quite right! Try rearranging the incorrect matches.
+                  Not quite right! You must get all correct to proceed.
                 </p>
               </div>
+              <Button
+                onClick={handleTryAgain}
+                size="lg"
+                variant="outline"
+                className="font-semibold"
+                style={{
+                  fontSize: 'clamp(0.875rem, 1.75vw, 1rem)',
+                  padding: 'clamp(0.5rem, 1vh, 0.625rem) clamp(1.5rem, 3vw, 2rem)'
+                }}
+              >
+                Try Again
+              </Button>
             </motion.div>
           )}
 
@@ -396,8 +418,8 @@ export default function MatchingGame({ question, elements, items, onComplete }: 
             <motion.div
               initial={{ opacity: 0, scale: 0.8 }}
               animate={{ opacity: 1, scale: 1 }}
-              className="text-center"
-              style={{ marginTop: 'clamp(0.75rem, 1.5vh, 1rem)' }}
+              className="flex flex-col items-center"
+              style={{ marginTop: 'clamp(0.75rem, 1.5vh, 1rem)', gap: 'clamp(0.75rem, 1.5vh, 1rem)' }}
             >
               <div
                 className="inline-block bg-green-500/20 border-2 border-green-500 rounded-lg"
@@ -426,9 +448,20 @@ export default function MatchingGame({ question, elements, items, onComplete }: 
                   className="text-[var(--muted-foreground)]"
                   style={{ fontSize: 'clamp(0.75rem, 1.5vw, 0.875rem)' }}
                 >
-                  Moving to the next set...
+                  You mastered this set! Click Next to continue.
                 </p>
               </div>
+              <Button
+                onClick={handleNext}
+                size="lg"
+                className="bg-gradient-to-r from-purple-500 to-blue-500 hover:from-purple-600 hover:to-blue-600 text-white font-semibold"
+                style={{
+                  fontSize: 'clamp(0.875rem, 1.75vw, 1rem)',
+                  padding: 'clamp(0.5rem, 1vh, 0.625rem) clamp(1.5rem, 3vw, 2rem)'
+                }}
+              >
+                Next Set →
+              </Button>
             </motion.div>
           )}
         </AnimatePresence>

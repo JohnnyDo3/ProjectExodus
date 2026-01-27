@@ -23,13 +23,14 @@ export default function ArchitectureComparison({
       className="w-full max-w-7xl mx-auto"
       style={{
         padding: 'clamp(0.5rem, 1.5vh, 1rem)',
+        paddingBottom: 'clamp(1.5rem, 3vh, 2rem)',
         display: 'flex',
         flexDirection: 'column',
-        gap: 'clamp(0.75rem, 1.5vh, 1.25rem)'
+        gap: 'clamp(1rem, 2vh, 1.5rem)'
       }}
     >
-      {/* Header - More Compact */}
-      <div className="text-center" style={{ display: 'flex', flexDirection: 'column', gap: 'clamp(0.25rem, 0.5vh, 0.375rem)' }}>
+      {/* Header */}
+      <div className="text-center" style={{ display: 'flex', flexDirection: 'column', gap: 'clamp(0.5rem, 1vh, 0.75rem)' }}>
         <h2 className="font-bold" style={{ fontSize: 'clamp(1rem, 2.5vw, 1.5rem)' }}>{comparisonSet.title}</h2>
         <p className="text-muted-foreground" style={{ fontSize: 'clamp(0.75rem, 1.75vw, 0.875rem)' }}>{comparisonSet.subtitle}</p>
 
@@ -56,15 +57,15 @@ export default function ArchitectureComparison({
         )}
       </div>
 
-      {/* Side-by-Side Elements - More Compact */}
+      {/* Side-by-Side Elements */}
       <div
         className="grid grid-cols-2 md:grid-cols-3"
-        style={{ gap: 'clamp(0.5rem, 1.5vw, 1rem)' }}
+        style={{ gap: 'clamp(0.75rem, 2vw, 1.5rem)' }}
       >
         {comparisonSet.elements.map((element) => (
           <div
             key={element.id}
-            style={{ display: 'flex', flexDirection: 'column', gap: 'clamp(0.375rem, 0.75vh, 0.5rem)' }}
+            style={{ display: 'flex', flexDirection: 'column', gap: 'clamp(0.5rem, 1vh, 0.75rem)' }}
           >
             <h3 className="font-bold text-center" style={{ fontSize: 'clamp(0.875rem, 2vw, 1rem)' }}>{element.name}</h3>
 
@@ -85,7 +86,7 @@ export default function ArchitectureComparison({
         ))}
       </div>
 
-      {/* Comparison Table - More Compact & Scannable */}
+      {/* Comparison Table */}
       <div className="border rounded-lg overflow-x-auto overflow-y-visible">
         <table className="w-full min-w-max">
           <thead>
@@ -170,38 +171,39 @@ export default function ArchitectureComparison({
         </table>
       </div>
 
-      {/* Memory Tip - Compact with Icon */}
+      {/* Memory Tip */}
       {comparisonSet.memoryTip && (
         <div
-          className="bg-amber-500/10 border border-amber-500/30 rounded-lg flex items-start gap-2"
-          style={{ padding: 'clamp(0.5rem, 1vh, 0.75rem)' }}
+          className="bg-amber-500/10 border border-amber-500/30 rounded-lg flex items-start"
+          style={{ padding: 'clamp(0.75rem, 1.5vh, 1rem)', gap: 'clamp(0.5rem, 1vw, 0.75rem)' }}
         >
-          <span className="text-amber-500 text-lg flex-shrink-0">💡</span>
+          <span className="text-amber-500 flex-shrink-0" style={{ fontSize: 'clamp(1rem, 2vw, 1.25rem)' }}>💡</span>
           <div>
-            <h4 className="font-bold text-amber-600 dark:text-amber-500" style={{ fontSize: 'clamp(0.625rem, 1.25vw, 0.75rem)', marginBottom: '0.25rem' }}>
+            <h4 className="font-bold text-amber-600 dark:text-amber-500" style={{ fontSize: 'clamp(0.75rem, 1.5vw, 0.875rem)', marginBottom: 'clamp(0.25rem, 0.5vh, 0.375rem)' }}>
               Memory Tip
             </h4>
-            <p className="text-[var(--foreground)]" style={{ fontSize: 'clamp(0.625rem, 1.25vw, 0.7rem)', lineHeight: '1.4' }}>{comparisonSet.memoryTip}</p>
+            <p className="text-[var(--foreground)]" style={{ fontSize: 'clamp(0.75rem, 1.5vw, 0.875rem)', lineHeight: '1.5' }}>{comparisonSet.memoryTip}</p>
           </div>
         </div>
       )}
 
-      {/* Historical Timeline - Collapsed by default */}
+      {/* Historical Timeline */}
       {comparisonSet.historicalTimeline && (
         <details className="group">
           <summary
-            className="cursor-pointer list-none flex items-center gap-2 text-[var(--muted-foreground)] hover:text-[var(--foreground)] transition-colors"
-            style={{ fontSize: 'clamp(0.625rem, 1.25vw, 0.75rem)' }}
+            className="cursor-pointer list-none flex items-center text-[var(--muted-foreground)] hover:text-[var(--foreground)] transition-colors"
+            style={{ fontSize: 'clamp(0.75rem, 1.5vw, 0.875rem)', gap: 'clamp(0.375rem, 0.75vw, 0.5rem)' }}
           >
             <span className="transition-transform group-open:rotate-90">▶</span>
             <span>Historical Timeline</span>
           </summary>
           <div
-            className="bg-muted/30 rounded-lg mt-2"
+            className="bg-muted/30 rounded-lg"
             style={{
-              padding: 'clamp(0.5rem, 1vh, 0.75rem)',
-              fontSize: 'clamp(0.625rem, 1.25vw, 0.7rem)',
-              lineHeight: '1.5'
+              marginTop: 'clamp(0.5rem, 1vh, 0.75rem)',
+              padding: 'clamp(0.75rem, 1.5vh, 1rem)',
+              fontSize: 'clamp(0.75rem, 1.5vw, 0.875rem)',
+              lineHeight: '1.6'
             }}
           >
             <p>{comparisonSet.historicalTimeline}</p>
@@ -209,10 +211,10 @@ export default function ArchitectureComparison({
         </details>
       )}
 
-      {/* Interactive Hint - Smaller */}
+      {/* Interactive Hint */}
       <p
         className="text-center text-muted-foreground italic"
-        style={{ fontSize: 'clamp(0.625rem, 1.25vw, 0.7rem)' }}
+        style={{ fontSize: 'clamp(0.75rem, 1.5vw, 0.875rem)' }}
       >
         Tip: Click rows with ★ to highlight key differences
       </p>

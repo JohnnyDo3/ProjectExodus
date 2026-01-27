@@ -42,8 +42,8 @@ export default function ConfusionBusterPage() {
   }
 
   function handleGameComplete() {
-    // User can manually advance or it will auto-advance
-    // Auto-advance removed - user controls navigation
+    // Advance to next set when user completes the quiz perfectly
+    handleNextSet()
   }
 
   return (
@@ -121,7 +121,7 @@ export default function ConfusionBusterPage() {
         className="container mx-auto max-w-7xl lg:flex-1 lg:overflow-y-auto lg:min-h-0"
         style={{
           padding: 'clamp(0.75rem, 2vh, 1.5rem)',
-          paddingBottom: 'clamp(1rem, 2vh, 2rem)',
+          paddingBottom: 'clamp(2rem, 4vh, 3rem)',
           display: 'flex',
           flexDirection: 'column',
           gap: 'clamp(0.75rem, 1.5vh, 1.5rem)'
@@ -145,8 +145,8 @@ export default function ConfusionBusterPage() {
                 <div
                   className="flex flex-col"
                   style={{
-                    marginTop: 'clamp(1rem, 2vh, 1.5rem)',
-                    gap: 'clamp(0.75rem, 1.5vh, 1rem)'
+                    marginTop: 'clamp(1.5rem, 3vh, 2rem)',
+                    gap: 'clamp(1rem, 2vh, 1.5rem)'
                   }}
                 >
                   {/* Primary Action - Test Knowledge or Next Pair */}
@@ -233,8 +233,8 @@ export default function ConfusionBusterPage() {
                 <div
                   className="flex justify-center items-center flex-wrap"
                   style={{
-                    marginTop: 'clamp(0.75rem, 1.5vh, 1rem)',
-                    gap: 'clamp(0.5rem, 1vw, 0.75rem)'
+                    marginTop: 'clamp(1rem, 2vh, 1.5rem)',
+                    gap: 'clamp(0.75rem, 1.5vw, 1rem)'
                   }}
                 >
                   <Button
