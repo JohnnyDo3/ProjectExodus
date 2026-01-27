@@ -172,23 +172,6 @@ export async function GET(
     }
 
     // Process peer reviews to include likeCount and liked status
-    // Get session for user's like status
-    const session = await auth()
-
-    // Get user's liked review IDs if logged in
-    let userLikedReviewIds: Set<string> = new Set()
-    if (session?.user?.id && article.peerReviews.length > 0) {
-      const userLikes = await prisma.reviewLike.findMany({
-        where: {
-          reviewId: { in: article.peerReviews.map((r: PeerReviewWithCount) => r.id) },
-          userId: session.user.id
-        },
-        select: { reviewId: true }
-      })
-      userLikedReviewIds = new Set(userLikes.map((l: { reviewId: string }) => l.reviewId))
-    }
-
-    // Process peer reviews to include likeCount and liked status
     const processedPeerReviews = article.peerReviews.map((review: PeerReviewWithCount) => ({
       ...review,
       likeCount: review._count?.likes || 0,
