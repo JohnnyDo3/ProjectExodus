@@ -74,9 +74,9 @@ export function CommunityNewspaper({
   const latestActivity = recentActivity?.slice(0, 5) || []
 
   return (
-    <div className="min-h-screen bg-[var(--background)] overflow-hidden">
-      {/* NEWSPAPER CONTAINER - Fixed height to fit viewport */}
-      <div className="h-[calc(100vh-64px)] flex flex-col">
+    <div className="min-h-screen bg-[var(--background)]">
+      {/* NEWSPAPER CONTAINER - Scrollable like a traditional newspaper page */}
+      <div className="flex flex-col">
 
         {/* ============================================ */}
         {/* MASTHEAD - Classic Newspaper Header */}
@@ -197,9 +197,9 @@ export function CommunityNewspaper({
         {/* ============================================ */}
         {/* NEWSPAPER CONTENT - 3 Column Layout */}
         {/* ============================================ */}
-        <div className="flex-1 overflow-auto">
+        <div className="flex-1">
           <div className="container mx-auto px-4 py-4">
-            <div className="grid grid-cols-12 gap-4 h-full">
+            <div className="grid grid-cols-12 gap-4">
 
               {/* ======================================== */}
               {/* LEFT COLUMN - Headlines (Discussions) */}
