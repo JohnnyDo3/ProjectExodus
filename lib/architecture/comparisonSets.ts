@@ -34,6 +34,7 @@ export interface ComparisonSet {
   historicalTimeline?: string
   memoryTip?: string
   quizQuestions?: ComparisonQuizQuestion[]
+  matchingGame?: MatchingGameData
 }
 
 export interface ComparisonQuizQuestion {
@@ -43,6 +44,17 @@ export interface ComparisonQuizQuestion {
   correctAnswer: string
   options?: string[]
   explanation?: string
+}
+
+export interface MatchingGameItem {
+  id: string
+  text: string
+  correctElementId: string
+}
+
+export interface MatchingGameData {
+  question: string
+  items: MatchingGameItem[]
 }
 
 // ============================================================================
@@ -144,6 +156,27 @@ export const greekColumnsComparison: ComparisonSet = {
   historicalTimeline: 'Doric (700 BCE) → Ionic (600 BCE) → Corinthian (500 BCE) → Roman adaptations (100 BCE - 400 CE) → Renaissance revival (1400s) → Neoclassical (1700s-1800s) → Still used today in government buildings worldwide',
 
   memoryTip: '**D**oric = **D**irect (no base), **I**onic = **I**ntricate scrolls, **C**orinthian = **C**urly leaves',
+
+  matchingGame: {
+    question: 'Match each description to the correct Greek column order',
+    items: [
+      {
+        id: 'no-base',
+        text: 'No base - sits directly on platform',
+        correctElementId: 'doric'
+      },
+      {
+        id: 'scroll-volutes',
+        text: 'Distinctive scroll volutes (ram\'s horns)',
+        correctElementId: 'ionic'
+      },
+      {
+        id: 'acanthus-leaves',
+        text: 'Elaborate carved acanthus leaves',
+        correctElementId: 'corinthian'
+      }
+    ]
+  },
 
   quizQuestions: [
     {
@@ -280,6 +313,32 @@ export const archEvolutionComparison: ComparisonSet = {
   historicalTimeline: 'Round arch (Ancient Rome 200 BCE) → Horseshoe (Visigoths/Islam 600 CE) → Pointed arch develops independently in Islamic architecture (800s) → Gothic architects adopt pointed arch (1100s) → Ogee arrives via Islamic/Persian influence (1200s-1300s)',
 
   memoryTip: '**Round** = **R**oman, **Pointed** = Gothic **P**rayers reaching heaven, **Horseshoe** = **H**ugging (embracing form), **Ogee** = **O**rnamental double-curve',
+
+  matchingGame: {
+    question: 'Match each description to the correct arch type',
+    items: [
+      {
+        id: 'roman-engineering',
+        text: 'Ancient Rome - engineering innovation',
+        correctElementId: 'round'
+      },
+      {
+        id: 'gothic-structural',
+        text: 'Gothic - allows taller buildings',
+        correctElementId: 'pointed'
+      },
+      {
+        id: 'islamic-cultural',
+        text: 'Islamic - cultural signature',
+        correctElementId: 'horseshoe'
+      },
+      {
+        id: 'persian-decorative',
+        text: 'Persian/Islamic - decorative curves',
+        correctElementId: 'ogee'
+      }
+    ]
+  },
 }
 
 // ============================================================================
@@ -371,6 +430,27 @@ export const sacredWindowsComparison: ComparisonSet = {
   culturalContext: 'Medieval cathedral windows served multiple purposes: practical (illumination), theological (divine light symbolism), and educational (teaching Bible stories to illiterate congregations). Abbot Suger of Saint-Denis pioneered this "metaphysics of light" in the 1140s, believing colored light brought worshippers closer to God. The technology of stained glass - melting sand with metal oxides for color, cutting shapes, joining with lead - was one of the most sophisticated crafts of the Middle Ages.',
 
   memoryTip: '**R**ose = **R**ound and radial, **C**lerestory = **C**lear (high) light, **S**tained = **S**tories in glass',
+
+  matchingGame: {
+    question: 'Match each description to the correct window type',
+    items: [
+      {
+        id: 'west-facade',
+        text: 'West facade - symbolic centerpiece',
+        correctElementId: 'rose'
+      },
+      {
+        id: 'high-walls',
+        text: 'High walls - floods nave with light',
+        correctElementId: 'clerestory'
+      },
+      {
+        id: 'biblical-stories',
+        text: 'Biblical stories - Bible for illiterate',
+        correctElementId: 'stained'
+      }
+    ]
+  },
 }
 
 // ============================================================================

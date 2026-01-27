@@ -1,11 +1,12 @@
 'use client'
 
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { Button } from '@/components/ui/Button'
 import { ArrowLeft, Brain } from 'lucide-react'
 import Link from 'next/link'
-import { motion } from 'framer-motion'
+import { motion, AnimatePresence } from 'framer-motion'
 import ArchitectureComparison from '@/components/architecture/comparison/ArchitectureComparison'
+import MatchingGame from '@/components/architecture/matching/MatchingGame'
 import {
   getAllComparisonSets,
 } from '@/lib/architecture/comparisonSets'
@@ -13,8 +14,14 @@ import {
 export default function ConfusionBusterPage() {
   const allSets = getAllComparisonSets()
   const [currentSetIndex, setCurrentSetIndex] = useState(0)
+  const [showComparison, setShowComparison] = useState(false)
 
   const currentSet = allSets[currentSetIndex]
+
+  // Reset to matching game when changing sets
+  useEffect(() => {
+    setShowComparison(false)
+  }, [currentSetIndex])
 
   function handleNextSet() {
     if (currentSetIndex < allSets.length - 1) {
@@ -109,50 +116,66 @@ export default function ConfusionBusterPage() {
           gap: 'clamp(0.75rem, 1.5vh, 1.5rem)'
         }}
       >
-        {/* Study Mode */}
-        <motion.div
-          key={currentSetIndex}
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          exit={{ opacity: 0, y: -20 }}
-        >
-          <ArchitectureComparison comparisonSet={currentSet} mode="study" />
-
-          {/* Navigation */}
-          <div
-            className="flex justify-between items-center flex-wrap"
-            style={{
-              marginTop: 'clamp(1rem, 2vh, 2rem)',
-              gap: 'clamp(0.5rem, 1vw, 0.75rem)'
-            }}
+        {/* Matching Game or Study Mode */}
+        <AnimatePresence mode="wait">
+          <motion.div
+            key={`${currentSetIndex}-${showComparison ? 'comparison' : 'matching'}`}
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: -20 }}
+            transition={{ duration: 0.3 }}
           >
-            <Button
-              variant="outline"
-              onClick={handlePreviousSet}
-              disabled={currentSetIndex === 0}
-              style={{
-                fontSize: 'clamp(0.75rem, 1.5vw, 0.875rem)',
-                padding: 'clamp(0.375rem, 1vh, 0.5rem) clamp(0.75rem, 2vw, 1rem)'
-              }}
-            >
-              ← Previous Pair
-            </Button>
+            {!showComparison && currentSet.matchingGame ? (
+              <>
+                <MatchingGame
+                  question={currentSet.matchingGame.question}
+                  elements={currentSet.elements}
+                  items={currentSet.matchingGame.items}
+                  onComplete={() => setShowComparison(true)}
+                />
+              </>
+            ) : (
+              <>
+                <ArchitectureComparison comparisonSet={currentSet} mode="study" />
 
-            <div className="flex-1" />
+                {/* Navigation */}
+                <div
+                  className="flex justify-between items-center flex-wrap"
+                  style={{
+                    marginTop: 'clamp(1rem, 2vh, 2rem)',
+                    gap: 'clamp(0.5rem, 1vw, 0.75rem)'
+                  }}
+                >
+                  <Button
+                    variant="outline"
+                    onClick={handlePreviousSet}
+                    disabled={currentSetIndex === 0}
+                    style={{
+                      fontSize: 'clamp(0.75rem, 1.5vw, 0.875rem)',
+                      padding: 'clamp(0.375rem, 1vh, 0.5rem) clamp(0.75rem, 2vw, 1rem)'
+                    }}
+                  >
+                    ← Previous Pair
+                  </Button>
 
-            <Button
-              variant="outline"
-              onClick={handleNextSet}
-              disabled={currentSetIndex === allSets.length - 1}
-              style={{
-                fontSize: 'clamp(0.75rem, 1.5vw, 0.875rem)',
-                padding: 'clamp(0.375rem, 1vh, 0.5rem) clamp(0.75rem, 2vw, 1rem)'
-              }}
-            >
-              Next Pair →
-            </Button>
-          </div>
-        </motion.div>
+                  <div className="flex-1" />
+
+                  <Button
+                    variant="outline"
+                    onClick={handleNextSet}
+                    disabled={currentSetIndex === allSets.length - 1}
+                    style={{
+                      fontSize: 'clamp(0.75rem, 1.5vw, 0.875rem)',
+                      padding: 'clamp(0.375rem, 1vh, 0.5rem) clamp(0.75rem, 2vw, 1rem)'
+                    }}
+                  >
+                    Next Pair →
+                  </Button>
+                </div>
+              </>
+            )}
+          </motion.div>
+        </AnimatePresence>
       </div>
     </div>
   )
