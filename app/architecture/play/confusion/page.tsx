@@ -42,12 +42,8 @@ export default function ConfusionBusterPage() {
   }
 
   function handleGameComplete() {
-    // Auto-advance to next set
-    if (currentSetIndex < allSets.length - 1) {
-      setTimeout(() => {
-        setCurrentSetIndex(currentSetIndex + 1)
-      }, 2000)
-    }
+    // User can manually advance or it will auto-advance
+    // Auto-advance removed - user controls navigation
   }
 
   return (
@@ -145,51 +141,126 @@ export default function ConfusionBusterPage() {
               <div className="flex flex-col h-full">
                 <ArchitectureComparison comparisonSet={currentSet} mode="study" />
 
-                {/* Next Button */}
+                {/* Navigation Controls */}
                 <div
-                  className="flex justify-center items-center"
+                  className="flex flex-col"
                   style={{
                     marginTop: 'clamp(1rem, 2vh, 1.5rem)',
+                    gap: 'clamp(0.75rem, 1.5vh, 1rem)'
                   }}
                 >
-                  {currentSet.matchingGame ? (
-                    <Button
-                      onClick={handleProceedToGame}
-                      size="lg"
-                      className="bg-gradient-to-r from-purple-500 to-blue-500 hover:from-purple-600 hover:to-blue-600 text-white font-semibold"
-                      style={{
-                        fontSize: 'clamp(0.875rem, 1.75vw, 1rem)',
-                        padding: 'clamp(0.5rem, 1vh, 0.75rem) clamp(1.5rem, 3vw, 2rem)',
-                        display: 'flex',
-                        alignItems: 'center',
-                        gap: 'clamp(0.375rem, 0.75vw, 0.5rem)'
-                      }}
-                    >
-                      Next: Test Your Knowledge
-                      <ArrowRight style={{ width: 'clamp(1rem, 2vw, 1.25rem)', height: 'clamp(1rem, 2vw, 1.25rem)' }} />
-                    </Button>
-                  ) : (
+                  {/* Primary Action - Test Knowledge or Next Pair */}
+                  <div className="flex justify-center items-center">
+                    {currentSet.matchingGame ? (
+                      <Button
+                        onClick={handleProceedToGame}
+                        size="lg"
+                        className="bg-gradient-to-r from-purple-500 to-blue-500 hover:from-purple-600 hover:to-blue-600 text-white font-semibold"
+                        style={{
+                          fontSize: 'clamp(0.875rem, 1.75vw, 1rem)',
+                          padding: 'clamp(0.5rem, 1vh, 0.75rem) clamp(1.5rem, 3vw, 2rem)',
+                          display: 'flex',
+                          alignItems: 'center',
+                          gap: 'clamp(0.375rem, 0.75vw, 0.5rem)'
+                        }}
+                      >
+                        Next: Test Your Knowledge
+                        <ArrowRight style={{ width: 'clamp(1rem, 2vw, 1.25rem)', height: 'clamp(1rem, 2vw, 1.25rem)' }} />
+                      </Button>
+                    ) : (
+                      <Button
+                        onClick={handleNextSet}
+                        disabled={currentSetIndex === allSets.length - 1}
+                        size="lg"
+                        className="bg-gradient-to-r from-purple-500 to-blue-500 hover:from-purple-600 hover:to-blue-600 text-white font-semibold disabled:opacity-50 disabled:cursor-not-allowed"
+                        style={{
+                          fontSize: 'clamp(0.875rem, 1.75vw, 1rem)',
+                          padding: 'clamp(0.5rem, 1vh, 0.75rem) clamp(1.5rem, 3vw, 2rem)',
+                          display: 'flex',
+                          alignItems: 'center',
+                          gap: 'clamp(0.375rem, 0.75vw, 0.5rem)'
+                        }}
+                      >
+                        Next Pair
+                        <ArrowRight style={{ width: 'clamp(1rem, 2vw, 1.25rem)', height: 'clamp(1rem, 2vw, 1.25rem)' }} />
+                      </Button>
+                    )}
+                  </div>
+
+                  {/* Secondary Navigation - Previous/Skip */}
+                  <div
+                    className="flex justify-center items-center flex-wrap"
+                    style={{ gap: 'clamp(0.5rem, 1vw, 0.75rem)' }}
+                  >
                     <Button
                       variant="outline"
-                      onClick={handleNextSet}
-                      disabled={currentSetIndex === allSets.length - 1}
+                      onClick={handlePreviousSet}
+                      disabled={currentSetIndex === 0}
                       style={{
                         fontSize: 'clamp(0.75rem, 1.5vw, 0.875rem)',
                         padding: 'clamp(0.375rem, 1vh, 0.5rem) clamp(0.75rem, 2vw, 1rem)'
                       }}
                     >
-                      Next Pair →
+                      ← Previous
                     </Button>
-                  )}
+
+                    {currentSet.matchingGame && (
+                      <Button
+                        variant="ghost"
+                        onClick={handleNextSet}
+                        disabled={currentSetIndex === allSets.length - 1}
+                        style={{
+                          fontSize: 'clamp(0.75rem, 1.5vw, 0.875rem)',
+                          padding: 'clamp(0.375rem, 1vh, 0.5rem) clamp(0.75rem, 2vw, 1rem)'
+                        }}
+                      >
+                        Skip Game →
+                      </Button>
+                    )}
+                  </div>
                 </div>
               </div>
             ) : (
-              <MatchingGame
-                question={currentSet.matchingGame!.question}
-                elements={currentSet.elements}
-                items={currentSet.matchingGame!.items}
-                onComplete={handleGameComplete}
-              />
+              <div className="flex flex-col h-full">
+                <MatchingGame
+                  question={currentSet.matchingGame!.question}
+                  elements={currentSet.elements}
+                  items={currentSet.matchingGame!.items}
+                  onComplete={handleGameComplete}
+                />
+
+                {/* Game Navigation */}
+                <div
+                  className="flex justify-center items-center flex-wrap"
+                  style={{
+                    marginTop: 'clamp(0.75rem, 1.5vh, 1rem)',
+                    gap: 'clamp(0.5rem, 1vw, 0.75rem)'
+                  }}
+                >
+                  <Button
+                    variant="outline"
+                    onClick={() => setPhase('study')}
+                    style={{
+                      fontSize: 'clamp(0.75rem, 1.5vw, 0.875rem)',
+                      padding: 'clamp(0.375rem, 1vh, 0.5rem) clamp(0.75rem, 2vw, 1rem)'
+                    }}
+                  >
+                    ← Back to Study
+                  </Button>
+
+                  <Button
+                    variant="outline"
+                    onClick={handleNextSet}
+                    disabled={currentSetIndex === allSets.length - 1}
+                    style={{
+                      fontSize: 'clamp(0.75rem, 1.5vw, 0.875rem)',
+                      padding: 'clamp(0.375rem, 1vh, 0.5rem) clamp(0.75rem, 2vw, 1rem)'
+                    }}
+                  >
+                    Next Set →
+                  </Button>
+                </div>
+              </div>
             )}
           </motion.div>
         </AnimatePresence>
