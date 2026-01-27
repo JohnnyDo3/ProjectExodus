@@ -166,7 +166,7 @@ interface NightSkyConstellationsProps {
   starCount?: number
 }
 
-export function NightSkyConstellations({ alwaysShow = false, starCount = 1400 }: NightSkyConstellationsProps) {
+export function NightSkyConstellations({ alwaysShow = false, starCount = 2200 }: NightSkyConstellationsProps) {
   const canvasRef = useRef<HTMLCanvasElement>(null)
   const [stars, setStars] = useState<Star[]>([])
   const [mousePos, setMousePos] = useState({ x: 0, y: 0 })
@@ -397,8 +397,12 @@ export function NightSkyConstellations({ alwaysShow = false, starCount = 1400 }:
 
       // Generate stars in a circular area centered on screen
       // This ensures stars fill the view no matter the rotation angle
+      // 30% of stars are biased toward the outer edges to fill empty space
+      const isEdgeBiased = i < starCount * 0.3
       const angle = Math.random() * Math.PI * 2
-      const radius = Math.random() * padding
+      const radius = isEdgeBiased
+        ? padding * 0.6 + Math.random() * padding * 0.4 // Outer 40% radius for edge stars
+        : Math.random() * padding // Random radius for other stars
       const x = centerX + Math.cos(angle) * radius
       const y = centerY + Math.sin(angle) * radius
 

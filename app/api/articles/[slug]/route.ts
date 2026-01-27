@@ -172,13 +172,6 @@ export async function GET(
     }
 
     // Process peer reviews to include likeCount and liked status
-    const processedPeerReviews = article.peerReviews.map((review: PeerReviewWithCount) => ({
-      ...review,
-      likeCount: review._count?.likes || 0,
-      liked: userLikedReviewIds.has(review.id),
-      _count: undefined
-    }))
-
     // Get session for user's like status
     const session = await auth()
 
