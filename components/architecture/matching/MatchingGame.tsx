@@ -128,28 +128,59 @@ export default function MatchingGame({ question, elements, items, onComplete }: 
   }
 
   return (
-    <div className="w-full max-w-6xl mx-auto">
+    <div className="w-full max-w-6xl mx-auto h-full flex flex-col">
       <motion.div
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
-        className="bg-gradient-to-br from-purple-500/10 via-blue-500/10 to-pink-500/10 rounded-lg border-2 border-purple-500/30 p-6 md:p-8"
+        className="bg-gradient-to-br from-purple-500/10 via-blue-500/10 to-pink-500/10 rounded-lg border-2 border-purple-500/30 flex flex-col"
+        style={{
+          padding: 'clamp(0.75rem, 1.5vh, 1rem)',
+          minHeight: 0,
+          flex: 1,
+          maxHeight: '100%',
+          overflow: 'auto'
+        }}
       >
         {/* Header */}
-        <div className="text-center mb-8">
-          <div className="flex items-center justify-center gap-2 mb-3">
-            <Sparkles className="w-6 h-6 text-purple-500" />
-            <h2 className="text-2xl md:text-3xl font-bold text-[var(--foreground)]">
+        <div
+          className="text-center"
+          style={{ marginBottom: 'clamp(0.75rem, 1.5vh, 1rem)' }}
+        >
+          <div
+            className="flex items-center justify-center mb-2"
+            style={{ gap: 'clamp(0.25rem, 0.5vw, 0.5rem)' }}
+          >
+            <Sparkles
+              className="text-purple-500"
+              style={{ width: 'clamp(1rem, 2vw, 1.25rem)', height: 'clamp(1rem, 2vw, 1.25rem)' }}
+            />
+            <h2
+              className="font-bold text-[var(--foreground)]"
+              style={{ fontSize: 'clamp(1.125rem, 2.25vw, 1.5rem)' }}
+            >
               Matching Challenge
             </h2>
-            <Sparkles className="w-6 h-6 text-purple-500" />
+            <Sparkles
+              className="text-purple-500"
+              style={{ width: 'clamp(1rem, 2vw, 1.25rem)', height: 'clamp(1rem, 2vw, 1.25rem)' }}
+            />
           </div>
-          <p className="text-lg text-[var(--muted-foreground)]">
+          <p
+            className="text-[var(--muted-foreground)]"
+            style={{ fontSize: 'clamp(0.875rem, 1.75vw, 1rem)' }}
+          >
             {question}
           </p>
         </div>
 
         {/* Elements with drop zones */}
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
+        <div
+          className="grid grid-cols-1 md:grid-cols-3"
+          style={{
+            gap: 'clamp(0.75rem, 1.5vw, 1rem)',
+            marginBottom: 'clamp(0.75rem, 1.5vh, 1rem)'
+          }}
+        >
           {elements.map(element => {
             const ElementComponent = element.component
             const assignedItemId = slotAssignments[element.id]
@@ -159,13 +190,30 @@ export default function MatchingGame({ question, elements, items, onComplete }: 
             const isDragOver = dragOverSlot === element.id
 
             return (
-              <div key={element.id} className="flex flex-col items-center gap-4">
+              <div
+                key={element.id}
+                className="flex flex-col items-center"
+                style={{ gap: 'clamp(0.5rem, 1vh, 0.75rem)' }}
+              >
                 {/* Element name and SVG */}
-                <div className="text-center">
-                  <h3 className="text-xl font-semibold text-[var(--foreground)] mb-3">
+                <div className="text-center w-full">
+                  <h3
+                    className="font-semibold text-[var(--foreground)]"
+                    style={{
+                      fontSize: 'clamp(0.875rem, 1.75vw, 1rem)',
+                      marginBottom: 'clamp(0.375rem, 0.75vh, 0.5rem)'
+                    }}
+                  >
                     {element.name}
                   </h3>
-                  <div className="bg-[var(--card)] rounded-lg p-4 border border-[var(--border)]">
+                  <div
+                    className="bg-[var(--card)] rounded-lg border border-[var(--border)] mx-auto"
+                    style={{
+                      padding: 'clamp(0.5rem, 1vh, 0.75rem)',
+                      maxWidth: 'clamp(80px, 15vw, 120px)',
+                      maxHeight: 'clamp(80px, 15vh, 120px)'
+                    }}
+                  >
                     <ElementComponent showHalo={false} />
                   </div>
                 </div>
@@ -176,22 +224,29 @@ export default function MatchingGame({ question, elements, items, onComplete }: 
                   onDragLeave={handleDragLeave}
                   onDrop={(e) => handleDrop(e, element.id)}
                   className={`
-                    w-full min-h-[100px] rounded-lg border-2 border-dashed
-                    flex items-center justify-center p-4 transition-all
+                    w-full rounded-lg border-2 border-dashed
+                    flex items-center justify-center transition-all
                     ${isDragOver ? 'border-purple-500 bg-purple-500/20 scale-105' : ''}
                     ${!hasAssignment && !isDragOver ? 'border-[var(--border)] bg-[var(--card)]/50' : ''}
                     ${hasAssignment && !hasChecked ? 'border-blue-500 bg-blue-500/10' : ''}
                     ${hasChecked && isCorrect ? 'border-green-500 bg-green-500/10' : ''}
                     ${hasChecked && !isCorrect && hasAssignment ? 'border-red-500 bg-red-500/10' : ''}
                   `}
+                  style={{
+                    minHeight: 'clamp(60px, 10vh, 80px)',
+                    padding: 'clamp(0.5rem, 1vh, 0.75rem)'
+                  }}
                 >
                   {hasAssignment ? (
                     <div
                       draggable
                       onDragStart={() => handleDragStartFromSlot(element.id)}
-                      className="cursor-move text-center relative group"
+                      className="cursor-move text-center relative group w-full"
                     >
-                      <p className="text-sm font-medium text-[var(--foreground)] leading-snug">
+                      <p
+                        className="font-medium text-[var(--foreground)] leading-snug"
+                        style={{ fontSize: 'clamp(0.75rem, 1.5vw, 0.875rem)' }}
+                      >
                         {assignedItem?.text}
                       </p>
 
@@ -203,9 +258,15 @@ export default function MatchingGame({ question, elements, items, onComplete }: 
                           className="absolute -top-2 -right-2"
                         >
                           {isCorrect ? (
-                            <CheckCircle2 className="w-6 h-6 text-green-500" />
+                            <CheckCircle2
+                              className="text-green-500"
+                              style={{ width: 'clamp(1rem, 2vw, 1.25rem)', height: 'clamp(1rem, 2vw, 1.25rem)' }}
+                            />
                           ) : (
-                            <XCircle className="w-6 h-6 text-red-500" />
+                            <XCircle
+                              className="text-red-500"
+                              style={{ width: 'clamp(1rem, 2vw, 1.25rem)', height: 'clamp(1rem, 2vw, 1.25rem)' }}
+                            />
                           )}
                         </motion.div>
                       )}
@@ -213,14 +274,20 @@ export default function MatchingGame({ question, elements, items, onComplete }: 
                       {/* Hover hint */}
                       {!hasChecked && (
                         <div className="absolute inset-0 bg-black/5 opacity-0 group-hover:opacity-100 transition-opacity rounded flex items-center justify-center">
-                          <span className="text-xs text-[var(--muted-foreground)]">
+                          <span
+                            className="text-[var(--muted-foreground)]"
+                            style={{ fontSize: 'clamp(0.625rem, 1.25vw, 0.75rem)' }}
+                          >
                             Drag to move
                           </span>
                         </div>
                       )}
                     </div>
                   ) : (
-                    <p className="text-sm text-[var(--muted-foreground)]">
+                    <p
+                      className="text-[var(--muted-foreground)]"
+                      style={{ fontSize: 'clamp(0.75rem, 1.5vw, 0.875rem)' }}
+                    >
                       Drop answer here
                     </p>
                   )}
@@ -232,11 +299,20 @@ export default function MatchingGame({ question, elements, items, onComplete }: 
 
         {/* Available items */}
         {availableItems.length > 0 && (
-          <div className="mb-6">
-            <h3 className="text-lg font-semibold text-[var(--foreground)] mb-3 text-center">
+          <div style={{ marginBottom: 'clamp(0.75rem, 1.5vh, 1rem)' }}>
+            <h3
+              className="font-semibold text-[var(--foreground)] text-center"
+              style={{
+                fontSize: 'clamp(0.875rem, 1.75vw, 1rem)',
+                marginBottom: 'clamp(0.5rem, 1vh, 0.75rem)'
+              }}
+            >
               Drag these descriptions to match:
             </h3>
-            <div className="flex flex-wrap justify-center gap-3">
+            <div
+              className="flex flex-wrap justify-center"
+              style={{ gap: 'clamp(0.5rem, 1vw, 0.75rem)' }}
+            >
               {availableItems.map(item => (
                 <motion.div
                   key={item.id}
@@ -250,12 +326,19 @@ export default function MatchingGame({ question, elements, items, onComplete }: 
                   className="
                     bg-gradient-to-br from-purple-500/20 to-blue-500/20
                     border-2 border-purple-500/50
-                    rounded-lg px-4 py-3 cursor-move
+                    rounded-lg cursor-move
                     hover:shadow-lg hover:border-purple-500
-                    transition-all max-w-[300px]
+                    transition-all
                   "
+                  style={{
+                    padding: 'clamp(0.5rem, 1vh, 0.75rem) clamp(0.75rem, 1.5vw, 1rem)',
+                    maxWidth: 'clamp(200px, 40vw, 280px)'
+                  }}
                 >
-                  <p className="text-sm font-medium text-[var(--foreground)] leading-snug text-center">
+                  <p
+                    className="font-medium text-[var(--foreground)] leading-snug text-center"
+                    style={{ fontSize: 'clamp(0.75rem, 1.5vw, 0.875rem)' }}
+                  >
                     {item.text}
                   </p>
                 </motion.div>
@@ -274,7 +357,11 @@ export default function MatchingGame({ question, elements, items, onComplete }: 
             <Button
               onClick={checkAnswers}
               size="lg"
-              className="bg-gradient-to-r from-purple-500 to-blue-500 hover:from-purple-600 hover:to-blue-600 text-white font-semibold px-8 py-3"
+              className="bg-gradient-to-r from-purple-500 to-blue-500 hover:from-purple-600 hover:to-blue-600 text-white font-semibold"
+              style={{
+                fontSize: 'clamp(0.875rem, 1.75vw, 1rem)',
+                padding: 'clamp(0.5rem, 1vh, 0.625rem) clamp(1.5rem, 3vw, 2rem)'
+              }}
             >
               Check My Answers
             </Button>
@@ -288,10 +375,17 @@ export default function MatchingGame({ question, elements, items, onComplete }: 
               initial={{ opacity: 0, y: 10 }}
               animate={{ opacity: 1, y: 0 }}
               exit={{ opacity: 0 }}
-              className="mt-6 text-center"
+              className="text-center"
+              style={{ marginTop: 'clamp(0.75rem, 1.5vh, 1rem)' }}
             >
-              <div className="inline-block bg-amber-500/20 border border-amber-500/50 rounded-lg px-6 py-3">
-                <p className="text-amber-600 dark:text-amber-400 font-medium">
+              <div
+                className="inline-block bg-amber-500/20 border border-amber-500/50 rounded-lg"
+                style={{ padding: 'clamp(0.5rem, 1vh, 0.75rem) clamp(1rem, 2vw, 1.5rem)' }}
+              >
+                <p
+                  className="text-amber-600 dark:text-amber-400 font-medium"
+                  style={{ fontSize: 'clamp(0.75rem, 1.5vw, 0.875rem)' }}
+                >
                   Not quite right! Try rearranging the incorrect matches.
                 </p>
               </div>
@@ -302,18 +396,37 @@ export default function MatchingGame({ question, elements, items, onComplete }: 
             <motion.div
               initial={{ opacity: 0, scale: 0.8 }}
               animate={{ opacity: 1, scale: 1 }}
-              className="mt-6 text-center"
+              className="text-center"
+              style={{ marginTop: 'clamp(0.75rem, 1.5vh, 1rem)' }}
             >
-              <div className="inline-block bg-green-500/20 border-2 border-green-500 rounded-lg px-8 py-4">
-                <div className="flex items-center gap-3 mb-2">
-                  <CheckCircle2 className="w-8 h-8 text-green-500" />
-                  <p className="text-2xl font-bold text-green-600 dark:text-green-400">
+              <div
+                className="inline-block bg-green-500/20 border-2 border-green-500 rounded-lg"
+                style={{ padding: 'clamp(0.75rem, 1.5vh, 1rem) clamp(1.5rem, 3vw, 2rem)' }}
+              >
+                <div
+                  className="flex items-center justify-center mb-1"
+                  style={{ gap: 'clamp(0.5rem, 1vw, 0.75rem)' }}
+                >
+                  <CheckCircle2
+                    className="text-green-500"
+                    style={{ width: 'clamp(1.25rem, 2.5vw, 1.5rem)', height: 'clamp(1.25rem, 2.5vw, 1.5rem)' }}
+                  />
+                  <p
+                    className="font-bold text-green-600 dark:text-green-400"
+                    style={{ fontSize: 'clamp(1.125rem, 2.25vw, 1.5rem)' }}
+                  >
                     Perfect! 🎉
                   </p>
-                  <CheckCircle2 className="w-8 h-8 text-green-500" />
+                  <CheckCircle2
+                    className="text-green-500"
+                    style={{ width: 'clamp(1.25rem, 2.5vw, 1.5rem)', height: 'clamp(1.25rem, 2.5vw, 1.5rem)' }}
+                  />
                 </div>
-                <p className="text-[var(--muted-foreground)]">
-                  Loading the full comparison...
+                <p
+                  className="text-[var(--muted-foreground)]"
+                  style={{ fontSize: 'clamp(0.75rem, 1.5vw, 0.875rem)' }}
+                >
+                  Moving to the next set...
                 </p>
               </div>
             </motion.div>

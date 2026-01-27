@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from 'react'
 import { Button } from '@/components/ui/Button'
-import { ArrowLeft, Brain } from 'lucide-react'
+import { ArrowLeft, Brain, ArrowRight } from 'lucide-react'
 import Link from 'next/link'
 import { motion, AnimatePresence } from 'framer-motion'
 import ArchitectureComparison from '@/components/architecture/comparison/ArchitectureComparison'
@@ -11,16 +11,18 @@ import {
   getAllComparisonSets,
 } from '@/lib/architecture/comparisonSets'
 
+type Phase = 'study' | 'game'
+
 export default function ConfusionBusterPage() {
   const allSets = getAllComparisonSets()
   const [currentSetIndex, setCurrentSetIndex] = useState(0)
-  const [showComparison, setShowComparison] = useState(false)
+  const [phase, setPhase] = useState<Phase>('study')
 
   const currentSet = allSets[currentSetIndex]
 
-  // Reset to matching game when changing sets
+  // Reset to study phase when changing sets
   useEffect(() => {
-    setShowComparison(false)
+    setPhase('study')
   }, [currentSetIndex])
 
   function handleNextSet() {
@@ -32,6 +34,19 @@ export default function ConfusionBusterPage() {
   function handlePreviousSet() {
     if (currentSetIndex > 0) {
       setCurrentSetIndex(currentSetIndex - 1)
+    }
+  }
+
+  function handleProceedToGame() {
+    setPhase('game')
+  }
+
+  function handleGameComplete() {
+    // Auto-advance to next set
+    if (currentSetIndex < allSets.length - 1) {
+      setTimeout(() => {
+        setCurrentSetIndex(currentSetIndex + 1)
+      }, 2000)
     }
   }
 
@@ -82,7 +97,7 @@ export default function ConfusionBusterPage() {
                   className="text-[var(--muted-foreground)]"
                   style={{ fontSize: 'clamp(0.75rem, 1.5vw, 0.875rem)' }}
                 >
-                  Study commonly confused pairs
+                  {phase === 'study' ? 'Study the comparison' : 'Test your knowledge'}
                 </p>
               </div>
             </div>
@@ -99,7 +114,7 @@ export default function ConfusionBusterPage() {
                 className="text-[var(--muted-foreground)]"
                 style={{ fontSize: 'clamp(0.625rem, 1.25vw, 0.75rem)' }}
               >
-                {currentSet.difficulty} • {currentSet.category}
+                {currentSet.difficulty} • {currentSet.category} • {phase === 'study' ? 'Study' : 'Game'}
               </p>
             </div>
           </div>
@@ -110,69 +125,71 @@ export default function ConfusionBusterPage() {
         className="container mx-auto max-w-7xl lg:flex-1 lg:overflow-y-auto lg:min-h-0"
         style={{
           padding: 'clamp(0.75rem, 2vh, 1.5rem)',
-          paddingBottom: 'clamp(2rem, 5vh, 4rem)',
+          paddingBottom: 'clamp(1rem, 2vh, 2rem)',
           display: 'flex',
           flexDirection: 'column',
           gap: 'clamp(0.75rem, 1.5vh, 1.5rem)'
         }}
       >
-        {/* Matching Game or Study Mode */}
+        {/* Study Mode or Matching Game */}
         <AnimatePresence mode="wait">
           <motion.div
-            key={`${currentSetIndex}-${showComparison ? 'comparison' : 'matching'}`}
+            key={`${currentSetIndex}-${phase}`}
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: -20 }}
             transition={{ duration: 0.3 }}
+            className="flex-1 flex flex-col"
           >
-            {!showComparison && currentSet.matchingGame ? (
-              <>
-                <MatchingGame
-                  question={currentSet.matchingGame.question}
-                  elements={currentSet.elements}
-                  items={currentSet.matchingGame.items}
-                  onComplete={() => setShowComparison(true)}
-                />
-              </>
-            ) : (
-              <>
+            {phase === 'study' ? (
+              <div className="flex flex-col h-full">
                 <ArchitectureComparison comparisonSet={currentSet} mode="study" />
 
-                {/* Navigation */}
+                {/* Next Button */}
                 <div
-                  className="flex justify-between items-center flex-wrap"
+                  className="flex justify-center items-center"
                   style={{
-                    marginTop: 'clamp(1rem, 2vh, 2rem)',
-                    gap: 'clamp(0.5rem, 1vw, 0.75rem)'
+                    marginTop: 'clamp(1rem, 2vh, 1.5rem)',
                   }}
                 >
-                  <Button
-                    variant="outline"
-                    onClick={handlePreviousSet}
-                    disabled={currentSetIndex === 0}
-                    style={{
-                      fontSize: 'clamp(0.75rem, 1.5vw, 0.875rem)',
-                      padding: 'clamp(0.375rem, 1vh, 0.5rem) clamp(0.75rem, 2vw, 1rem)'
-                    }}
-                  >
-                    ← Previous Pair
-                  </Button>
-
-                  <div className="flex-1" />
-
-                  <Button
-                    variant="outline"
-                    onClick={handleNextSet}
-                    disabled={currentSetIndex === allSets.length - 1}
-                    style={{
-                      fontSize: 'clamp(0.75rem, 1.5vw, 0.875rem)',
-                      padding: 'clamp(0.375rem, 1vh, 0.5rem) clamp(0.75rem, 2vw, 1rem)'
-                    }}
-                  >
-                    Next Pair →
-                  </Button>
+                  {currentSet.matchingGame ? (
+                    <Button
+                      onClick={handleProceedToGame}
+                      size="lg"
+                      className="bg-gradient-to-r from-purple-500 to-blue-500 hover:from-purple-600 hover:to-blue-600 text-white font-semibold"
+                      style={{
+                        fontSize: 'clamp(0.875rem, 1.75vw, 1rem)',
+                        padding: 'clamp(0.5rem, 1vh, 0.75rem) clamp(1.5rem, 3vw, 2rem)',
+                        display: 'flex',
+                        alignItems: 'center',
+                        gap: 'clamp(0.375rem, 0.75vw, 0.5rem)'
+                      }}
+                    >
+                      Next: Test Your Knowledge
+                      <ArrowRight style={{ width: 'clamp(1rem, 2vw, 1.25rem)', height: 'clamp(1rem, 2vw, 1.25rem)' }} />
+                    </Button>
+                  ) : (
+                    <Button
+                      variant="outline"
+                      onClick={handleNextSet}
+                      disabled={currentSetIndex === allSets.length - 1}
+                      style={{
+                        fontSize: 'clamp(0.75rem, 1.5vw, 0.875rem)',
+                        padding: 'clamp(0.375rem, 1vh, 0.5rem) clamp(0.75rem, 2vw, 1rem)'
+                      }}
+                    >
+                      Next Pair →
+                    </Button>
+                  )}
                 </div>
-              </>
+              </div>
+            ) : (
+              <MatchingGame
+                question={currentSet.matchingGame!.question}
+                elements={currentSet.elements}
+                items={currentSet.matchingGame!.items}
+                onComplete={handleGameComplete}
+              />
             )}
           </motion.div>
         </AnimatePresence>
