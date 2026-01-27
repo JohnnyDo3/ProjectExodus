@@ -117,7 +117,7 @@ export function CommunityNewspaper({
                 <Newspaper className="w-6 h-6 text-theme-primary" />
                 <div className="h-[2px] flex-1 bg-gradient-to-r from-[var(--border)] via-[var(--border)] to-transparent" />
               </div>
-              <h1 className="text-3xl sm:text-4xl lg:text-5xl font-bold text-[var(--foreground)] tracking-tight" style={{ fontFamily: 'Georgia, serif', letterSpacing: '0.05em' }}>
+              <h1 className="text-2xl sm:text-3xl lg:text-4xl font-semibold text-[var(--foreground)] tracking-tight" style={{ fontFamily: 'Georgia, serif', letterSpacing: '0.05em' }}>
                 THE PROJECT EXODUS CHRONICLE
               </h1>
               <div className="flex items-center justify-center gap-2 mt-1.5">
@@ -180,12 +180,12 @@ export function CommunityNewspaper({
         <div className="border-b-2 border-[var(--border)] bg-gradient-to-r from-red-500/10 via-orange-500/10 to-red-500/10 shadow-inner">
           <div className="max-w-6xl mx-auto overflow-hidden">
             <div className="flex items-center gap-3 px-4 py-2">
-              <div className="flex items-center gap-1.5 bg-red-600 text-white px-3 py-1 rounded-sm text-[10px] font-black uppercase flex-shrink-0 shadow-md">
+              <div className="flex items-center gap-1.5 bg-red-600 text-white px-3 py-1 rounded-sm text-[10px] font-bold uppercase flex-shrink-0 shadow-md">
                 <AlertCircle className="w-3.5 h-3.5 animate-pulse" />
                 Breaking News
               </div>
               <div className="flex-1 overflow-hidden">
-                <div className="animate-marquee whitespace-nowrap text-sm font-bold text-[var(--foreground)]" style={{ fontFamily: 'Georgia, serif' }}>
+                <div className="animate-marquee whitespace-nowrap text-sm font-medium text-[var(--foreground)]" style={{ fontFamily: 'Georgia, serif' }}>
                   {latestActivity.map((activity: any, i: number) => (
                     <span key={i} className="inline-block mr-12">
                       {activity.message}
@@ -215,7 +215,7 @@ export function CommunityNewspaper({
                 {/* Section Header with Ornament */}
                 <div className="relative">
                   <div className="border-t-4 border-b-2 border-double border-[var(--border)] py-2">
-                    <h2 className="text-base font-black uppercase tracking-wider text-[var(--foreground)] text-center" style={{ fontFamily: 'Georgia, serif' }}>
+                    <h2 className="text-base font-bold uppercase tracking-wider text-[var(--foreground)] text-center" style={{ fontFamily: 'Georgia, serif' }}>
                       ◆ Community Headlines ◆
                     </h2>
                   </div>
@@ -247,15 +247,15 @@ export function CommunityNewspaper({
                             {getTimeAgo(featuredDiscussion.createdAt)}
                           </p>
                         </div>
-                        <div className="text-[9px] font-black uppercase text-red-600 px-2 py-1 bg-red-50 dark:bg-red-950/30 rounded">
+                        <div className="text-[9px] font-bold uppercase text-red-600 px-2 py-1 bg-red-50 dark:bg-red-950/30 rounded">
                           Breaking
                         </div>
                       </div>
 
                       {/* Headline with Drop Cap effect */}
                       <div className="relative">
-                        <h3 className="text-lg font-bold text-[var(--foreground)] leading-snug mb-3" style={{ fontFamily: 'Georgia, serif' }}>
-                          <span className="float-left text-5xl font-black mr-2 mt-1 leading-none text-theme-primary" style={{ fontFamily: 'Georgia, serif' }}>
+                        <h3 className="text-base font-semibold text-[var(--foreground)] leading-relaxed mb-3" style={{ fontFamily: 'Georgia, serif' }}>
+                          <span className="float-left text-4xl font-bold mr-2 mt-0.5 leading-none text-theme-primary" style={{ fontFamily: 'Georgia, serif' }}>
                             {featuredDiscussion.content.charAt(0)}
                           </span>
                           {featuredDiscussion.content.substring(1, 120)}{featuredDiscussion.content.length > 120 ? '...' : ''}
@@ -263,7 +263,7 @@ export function CommunityNewspaper({
                       </div>
 
                       {/* Engagement Stats */}
-                      <div className="flex items-center gap-4 text-[10px] text-theme-muted font-bold border-t border-[var(--border)] pt-2">
+                      <div className="flex items-center gap-4 text-[10px] text-theme-muted font-medium border-t border-[var(--border)] pt-2.5 mt-1">
                         <span className="flex items-center gap-1.5">
                           <Heart className="w-3.5 h-3.5" />
                           {featuredDiscussion._count.likes}
@@ -280,7 +280,7 @@ export function CommunityNewspaper({
                 {/* More Headlines - News Briefs Style */}
                 <div className="space-y-3">
                   <div className="border-t border-b border-[var(--border)] py-1.5">
-                    <h3 className="text-[11px] font-black uppercase tracking-wider text-theme-muted text-center">
+                    <h3 className="text-[11px] font-semibold uppercase tracking-wider text-theme-muted text-center">
                       More Stories
                     </h3>
                   </div>
@@ -288,14 +288,14 @@ export function CommunityNewspaper({
                     <Link key={discussion.id} href="/community/feed">
                       <div className="border-l-4 border-[var(--border)] pl-3 py-2 hover:border-theme-primary hover:bg-[var(--muted)]/20 transition-all">
                         <div className="flex items-start gap-2">
-                          <span className="text-lg font-black text-theme-muted/30 leading-none" style={{ fontFamily: 'Georgia, serif' }}>
+                          <span className="text-base font-semibold text-theme-muted/40 leading-none" style={{ fontFamily: 'Georgia, serif' }}>
                             {idx + 2}
                           </span>
                           <div className="flex-1">
-                            <p className="text-sm font-bold text-[var(--foreground)] leading-tight mb-1" style={{ fontFamily: 'Georgia, serif' }}>
+                            <p className="text-sm font-medium text-[var(--foreground)] leading-relaxed mb-1" style={{ fontFamily: 'Georgia, serif' }}>
                               {discussion.content.substring(0, 90)}{discussion.content.length > 90 ? '...' : ''}
                             </p>
-                            <p className="text-[9px] text-theme-muted font-semibold">
+                            <p className="text-[9px] text-theme-muted font-medium">
                               {discussion.user.name} • {getTimeAgo(discussion.createdAt)}
                             </p>
                           </div>
@@ -309,7 +309,7 @@ export function CommunityNewspaper({
                 <div className="border-2 border-dashed border-[var(--border)] p-3 bg-[var(--muted)]/10">
                   <div className="flex items-center gap-2 mb-2">
                     <PenTool className="w-4 h-4 text-theme-accent" />
-                    <h3 className="text-xs font-black uppercase text-theme-muted">Your Voice Matters</h3>
+                    <h3 className="text-xs font-semibold uppercase text-theme-muted">Your Voice Matters</h3>
                   </div>
                   <p className="text-[10px] text-theme-muted leading-relaxed mb-3">
                     Share your thoughts, ideas, and solutions with the community. Every voice contributes to our collective wisdom.
@@ -330,7 +330,7 @@ export function CommunityNewspaper({
                 {/* Section Header with Ornament */}
                 <div className="relative">
                   <div className="border-t-4 border-b-2 border-double border-[var(--border)] py-2">
-                    <h2 className="text-base font-black uppercase tracking-wider text-[var(--foreground)] text-center" style={{ fontFamily: 'Georgia, serif' }}>
+                    <h2 className="text-base font-bold uppercase tracking-wider text-[var(--foreground)] text-center" style={{ fontFamily: 'Georgia, serif' }}>
                       ◆ Active Initiatives ◆
                     </h2>
                   </div>
@@ -344,16 +344,16 @@ export function CommunityNewspaper({
                       {/* Feature Badge */}
                       <div className="bg-gradient-to-r from-orange-500 to-red-500 px-4 py-2 flex items-center justify-center gap-2">
                         <Rocket className="w-5 h-5 text-white" />
-                        <span className="text-xs font-black uppercase text-white tracking-widest">Featured Initiative</span>
+                        <span className="text-xs font-bold uppercase text-white tracking-widest">Featured Initiative</span>
                       </div>
 
                       {/* Content */}
                       <div className="p-4">
-                        <h3 className="text-xl font-black text-[var(--foreground)] leading-tight mb-3 border-b-2 border-[var(--border)] pb-2" style={{ fontFamily: 'Georgia, serif' }}>
+                        <h3 className="text-lg font-bold text-[var(--foreground)] leading-snug mb-3 border-b-2 border-[var(--border)] pb-2" style={{ fontFamily: 'Georgia, serif' }}>
                           {featuredProject.name}
                         </h3>
 
-                        <p className="text-sm text-theme-muted leading-relaxed mb-4" style={{ textAlign: 'justify' }}>
+                        <p className="text-sm text-theme-muted leading-loose mb-4" style={{ textAlign: 'justify' }}>
                           {featuredProject.description}
                         </p>
 
@@ -371,7 +371,7 @@ export function CommunityNewspaper({
                               {featuredProject._count.members} members
                             </span>
                           </div>
-                          <span className="px-3 py-1 bg-emerald-500/20 text-emerald-600 rounded-full text-[10px] font-black uppercase tracking-wide">
+                          <span className="px-3 py-1 bg-emerald-500/20 text-emerald-600 rounded-full text-[10px] font-bold uppercase tracking-wide">
                             {featuredProject.status}
                           </span>
                         </div>
@@ -383,7 +383,7 @@ export function CommunityNewspaper({
                 {/* More Projects - List Style */}
                 <div className="space-y-3">
                   <div className="border-t border-b border-[var(--border)] py-1.5">
-                    <h3 className="text-[11px] font-black uppercase tracking-wider text-theme-muted text-center">
+                    <h3 className="text-[11px] font-semibold uppercase tracking-wider text-theme-muted text-center">
                       More Initiatives
                     </h3>
                   </div>
@@ -397,7 +397,7 @@ export function CommunityNewspaper({
                               <Rocket className="w-4 h-4 text-white" />
                             </div>
                             <div className="flex-1 min-w-0">
-                              <p className="text-sm font-bold text-[var(--foreground)] line-clamp-1 mb-0.5" style={{ fontFamily: 'Georgia, serif' }}>
+                              <p className="text-sm font-semibold text-[var(--foreground)] line-clamp-1 mb-0.5" style={{ fontFamily: 'Georgia, serif' }}>
                                 {project.name}
                               </p>
                               <p className="text-[10px] text-theme-muted line-clamp-2 leading-relaxed">
@@ -409,7 +409,7 @@ export function CommunityNewspaper({
                                   {project._count.members}
                                 </span>
                                 <span className="text-[9px] text-theme-muted">•</span>
-                                <span className="text-[9px] font-bold text-emerald-600 uppercase">
+                                <span className="text-[9px] font-semibold text-emerald-600 uppercase">
                                   {project.status}
                                 </span>
                               </div>
@@ -427,7 +427,7 @@ export function CommunityNewspaper({
                     <div className="inline-flex items-center justify-center w-12 h-12 rounded-full bg-gradient-to-br from-orange-400 to-red-500 mb-3">
                       <Rocket className="w-6 h-6 text-white" />
                     </div>
-                    <h3 className="text-sm font-black uppercase text-[var(--foreground)] mb-1" style={{ fontFamily: 'Georgia, serif' }}>
+                    <h3 className="text-sm font-bold uppercase text-[var(--foreground)] mb-1" style={{ fontFamily: 'Georgia, serif' }}>
                       Launch Your Vision
                     </h3>
                     <p className="text-[10px] text-theme-muted mb-3 leading-relaxed">
@@ -450,7 +450,7 @@ export function CommunityNewspaper({
                 {/* Section Header with Ornament */}
                 <div className="relative">
                   <div className="border-t-4 border-b-2 border-double border-[var(--border)] py-2">
-                    <h2 className="text-base font-black uppercase tracking-wider text-[var(--foreground)] text-center" style={{ fontFamily: 'Georgia, serif' }}>
+                    <h2 className="text-base font-bold uppercase tracking-wider text-[var(--foreground)] text-center" style={{ fontFamily: 'Georgia, serif' }}>
                       ◆ Community Pulse ◆
                     </h2>
                   </div>
@@ -460,34 +460,34 @@ export function CommunityNewspaper({
                 {/* Stats Grid - Newspaper Box Score Style */}
                 <div className="border-4 border-double border-[var(--border)] bg-[var(--card)]">
                   <div className="bg-[var(--muted)]/30 px-3 py-2 border-b-2 border-[var(--border)]">
-                    <h3 className="text-[10px] font-black uppercase tracking-wider text-center text-theme-muted">
+                    <h3 className="text-[10px] font-semibold uppercase tracking-wider text-center text-theme-muted">
                       Community Statistics
                     </h3>
                   </div>
                   <div className="grid grid-cols-2 divide-x divide-y divide-[var(--border)]">
                     <div className="p-3 text-center hover:bg-[var(--muted)]/20 transition-colors">
-                      <div className="text-2xl font-black text-theme-primary mb-1" style={{ fontFamily: 'Georgia, serif' }}>
+                      <div className="text-xl font-bold text-theme-primary mb-1" style={{ fontFamily: 'Georgia, serif' }}>
                         {communityStats.totalMembers.toLocaleString()}
                       </div>
-                      <div className="text-[9px] font-black text-theme-muted uppercase tracking-wide">Members</div>
+                      <div className="text-[9px] font-semibold text-theme-muted uppercase tracking-wide">Members</div>
                     </div>
                     <div className="p-3 text-center hover:bg-[var(--muted)]/20 transition-colors">
-                      <div className="text-2xl font-black text-orange-500 mb-1" style={{ fontFamily: 'Georgia, serif' }}>
+                      <div className="text-xl font-bold text-orange-500 mb-1" style={{ fontFamily: 'Georgia, serif' }}>
                         {communityStats.totalProjects}
                       </div>
-                      <div className="text-[9px] font-black text-theme-muted uppercase tracking-wide">Projects</div>
+                      <div className="text-[9px] font-semibold text-theme-muted uppercase tracking-wide">Projects</div>
                     </div>
                     <div className="p-3 text-center hover:bg-[var(--muted)]/20 transition-colors">
-                      <div className="text-2xl font-black text-emerald-500 mb-1" style={{ fontFamily: 'Georgia, serif' }}>
+                      <div className="text-xl font-bold text-emerald-500 mb-1" style={{ fontFamily: 'Georgia, serif' }}>
                         {communityStats.totalArticles}
                       </div>
-                      <div className="text-[9px] font-black text-theme-muted uppercase tracking-wide">Articles</div>
+                      <div className="text-[9px] font-semibold text-theme-muted uppercase tracking-wide">Articles</div>
                     </div>
                     <div className="p-3 text-center hover:bg-[var(--muted)]/20 transition-colors">
-                      <div className="text-2xl font-black text-purple-500 mb-1" style={{ fontFamily: 'Georgia, serif' }}>
+                      <div className="text-xl font-bold text-purple-500 mb-1" style={{ fontFamily: 'Georgia, serif' }}>
                         {communityStats.activeProjects}
                       </div>
-                      <div className="text-[9px] font-black text-theme-muted uppercase tracking-wide">Active</div>
+                      <div className="text-[9px] font-semibold text-theme-muted uppercase tracking-wide">Active</div>
                     </div>
                   </div>
                 </div>
@@ -495,7 +495,7 @@ export function CommunityNewspaper({
                 {/* Community Directory - Roll Call Style */}
                 <div className="border-4 border-double border-[var(--border)] bg-[var(--card)]">
                   <div className="bg-[var(--muted)]/30 px-3 py-2 border-b-2 border-[var(--border)]">
-                    <h3 className="text-[10px] font-black uppercase tracking-wider text-center text-theme-muted">
+                    <h3 className="text-[10px] font-semibold uppercase tracking-wider text-center text-theme-muted">
                       Notable Changemakers
                     </h3>
                   </div>
@@ -553,7 +553,7 @@ export function CommunityNewspaper({
                     <div className="inline-flex items-center justify-center w-12 h-12 rounded-full bg-gradient-to-br from-emerald-400 to-teal-500 mb-3">
                       <BookOpen className="w-6 h-6 text-white" />
                     </div>
-                    <h3 className="text-sm font-black uppercase text-[var(--foreground)] mb-1" style={{ fontFamily: 'Georgia, serif' }}>
+                    <h3 className="text-sm font-bold uppercase text-[var(--foreground)] mb-1" style={{ fontFamily: 'Georgia, serif' }}>
                       Share Your Wisdom
                     </h3>
                     <p className="text-[10px] text-theme-muted mb-3 leading-relaxed">
@@ -571,7 +571,7 @@ export function CommunityNewspaper({
                 {/* Weather Widget Style - Quick Links */}
                 <div className="border-2 border-[var(--border)] bg-[var(--card)]">
                   <div className="bg-[var(--muted)]/30 px-3 py-1.5 border-b border-[var(--border)]">
-                    <h3 className="text-[9px] font-black uppercase tracking-wider text-center text-theme-muted">
+                    <h3 className="text-[9px] font-semibold uppercase tracking-wider text-center text-theme-muted">
                       Quick Access
                     </h3>
                   </div>
@@ -616,7 +616,7 @@ export function CommunityNewspaper({
                   <div className="bg-gradient-to-r from-[var(--primary)] to-[var(--accent)] px-4 py-2 border-b-2 border-[var(--border)]">
                     <div className="flex items-center justify-center gap-2">
                       <TrendingUp className="w-4 h-4 text-white" />
-                      <h3 className="text-xs font-black uppercase tracking-wider text-white">
+                      <h3 className="text-xs font-bold uppercase tracking-wider text-white">
                         Trending Topics
                       </h3>
                     </div>
@@ -625,11 +625,11 @@ export function CommunityNewspaper({
                     <div className="space-y-3">
                       {['Sustainability', 'Renewable Energy', 'Community Action', 'Green Tech', 'Climate Solutions'].map((topic, i) => (
                         <div key={i} className="flex items-center gap-3 pb-2 border-b border-[var(--border)] last:border-0">
-                          <div className="flex items-center justify-center w-8 h-8 rounded-full bg-gradient-to-br from-[var(--primary)] to-[var(--accent)] text-white font-black text-sm">
+                          <div className="flex items-center justify-center w-8 h-8 rounded-full bg-gradient-to-br from-[var(--primary)] to-[var(--accent)] text-white font-bold text-sm">
                             {i + 1}
                           </div>
                           <div className="flex-1">
-                            <p className="text-xs font-bold text-[var(--foreground)]" style={{ fontFamily: 'Georgia, serif' }}>
+                            <p className="text-xs font-semibold text-[var(--foreground)]" style={{ fontFamily: 'Georgia, serif' }}>
                               #{topic}
                             </p>
                             <p className="text-[9px] text-theme-muted">
@@ -647,7 +647,7 @@ export function CommunityNewspaper({
                   <div className="bg-gradient-to-r from-amber-500 to-orange-500 px-4 py-2 border-b-2 border-[var(--border)]">
                     <div className="flex items-center justify-center gap-2">
                       <Award className="w-4 h-4 text-white" />
-                      <h3 className="text-xs font-black uppercase tracking-wider text-white">
+                      <h3 className="text-xs font-bold uppercase tracking-wider text-white">
                         Recent Achievements
                       </h3>
                     </div>
@@ -666,7 +666,7 @@ export function CommunityNewspaper({
                             <Award className="w-5 h-5 text-white" />
                           </div>
                           <div className="flex-1">
-                            <p className="text-xs font-bold text-[var(--foreground)]" style={{ fontFamily: 'Georgia, serif' }}>
+                            <p className="text-xs font-semibold text-[var(--foreground)]" style={{ fontFamily: 'Georgia, serif' }}>
                               {achievement.badge}
                             </p>
                             <p className="text-[9px] text-theme-muted">
@@ -684,7 +684,7 @@ export function CommunityNewspaper({
                   <div className="bg-gradient-to-r from-emerald-500 to-teal-500 px-4 py-2 border-b-2 border-[var(--border)]">
                     <div className="flex items-center justify-center gap-2">
                       <Calendar className="w-4 h-4 text-white" />
-                      <h3 className="text-xs font-black uppercase tracking-wider text-white">
+                      <h3 className="text-xs font-bold uppercase tracking-wider text-white">
                         This Week
                       </h3>
                     </div>
@@ -700,10 +700,10 @@ export function CommunityNewspaper({
                       ].map((item, i) => (
                         <div key={i} className="flex items-start gap-3 pb-2 border-b border-[var(--border)] last:border-0">
                           <div className="flex flex-col items-center justify-center w-10 h-10 rounded bg-gradient-to-br from-emerald-400 to-teal-500 text-white flex-shrink-0">
-                            <span className="text-[9px] font-bold uppercase">{item.day}</span>
+                            <span className="text-[9px] font-semibold uppercase">{item.day}</span>
                           </div>
                           <div className="flex-1 min-w-0">
-                            <p className="text-xs font-bold text-[var(--foreground)] line-clamp-1" style={{ fontFamily: 'Georgia, serif' }}>
+                            <p className="text-xs font-semibold text-[var(--foreground)] line-clamp-1" style={{ fontFamily: 'Georgia, serif' }}>
                               {item.event}
                             </p>
                             <p className="text-[9px] text-theme-muted flex items-center gap-1">
@@ -722,10 +722,10 @@ export function CommunityNewspaper({
               <div className="mt-6 border-t-2 border-b-2 border-[var(--border)] py-6 bg-[var(--muted)]/10">
                 <div className="max-w-3xl mx-auto text-center px-8">
                   <div className="text-4xl text-theme-primary mb-2 opacity-30" style={{ fontFamily: 'Georgia, serif' }}>"</div>
-                  <blockquote className="text-lg font-bold text-[var(--foreground)] italic leading-relaxed" style={{ fontFamily: 'Georgia, serif' }}>
+                  <blockquote className="text-base font-medium text-[var(--foreground)] italic leading-relaxed" style={{ fontFamily: 'Georgia, serif' }}>
                     The future belongs to those who believe in the beauty of their dreams, and the power of their actions to make them real.
                   </blockquote>
-                  <div className="mt-3 text-xs font-semibold text-theme-muted uppercase tracking-wider">
+                  <div className="mt-3 text-xs font-medium text-theme-muted uppercase tracking-wider">
                     — Project Exodus Community
                   </div>
                 </div>
