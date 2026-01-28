@@ -192,7 +192,7 @@ export default function NewProjectPage() {
   const canProceed = () => {
     switch (currentStep) {
       case 1:
-        return name.trim().length >= 3 && description.trim().length >= 10
+        return name.trim().length >= 1 && description.trim().length >= 1
       case 2:
         return visibility && category
       case 3:
