@@ -125,7 +125,7 @@ export default async function ProjectsPage() {
               </div>
               <Link href="/community/projects/new">
                 <Button className="font-black text-xs uppercase tracking-wider border-2 border-[var(--foreground)]">
-                  Submit Story
+                  Create a Project
                 </Button>
               </Link>
             </div>
@@ -230,7 +230,7 @@ export default async function ProjectsPage() {
                       <div className="flex items-center gap-3">
                         <Link href={`/community/projects/${project.slug}`}>
                           <Button variant="outline" size="sm" className="font-black text-xs uppercase tracking-wider border-2">
-                            Read Full Story →
+                            Explore Full Project →
                           </Button>
                         </Link>
                         <JoinProjectButton projectId={project.id} projectName={project.name} />
@@ -255,7 +255,7 @@ export default async function ProjectsPage() {
                   </div>
                   <Link href="/community/projects/new">
                     <Button size="lg" className="font-black text-sm uppercase tracking-wider border-2 border-[var(--foreground)] px-8 py-6">
-                      Submit Your Story
+                      Create a Project
                     </Button>
                   </Link>
                 </div>
