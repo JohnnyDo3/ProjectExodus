@@ -5,20 +5,22 @@ import {
   Newspaper, Radio, Clock, Users, Rocket, MessageSquare,
   BookOpen, TrendingUp, Heart, MessageCircle, ChevronRight,
   Zap, Activity, Calendar, MapPin, Award, Eye, Flame,
-  Target, Shield, Sparkles, Globe, Compass, AlertCircle, PenTool
+  Target, Shield, Sparkles, Globe, Compass, AlertCircle, PenTool,
+  Leaf, Sprout, Wind, Waves, Sun, Moon, Star, Hexagon, Network,
+  Wifi, RefreshCw, TreePine, Sunrise
 } from 'lucide-react'
 import { Button } from '@/components/ui/Button'
 import { useEffect, useState } from 'react'
 
-// Guardian archetype icons
-const archetypeConfig: Record<string, { icon: any, gradient: string, name: string }> = {
-  GUARDIAN_OF_TEMPERANCE: { icon: Shield, gradient: 'from-blue-500 to-cyan-500', name: 'Guardian of Temperance' },
-  GUARDIAN_OF_WISDOM: { icon: Eye, gradient: 'from-violet-500 to-purple-500', name: 'Guardian of Wisdom' },
-  GUARDIAN_OF_COURAGE: { icon: Flame, gradient: 'from-orange-500 to-red-500', name: 'Guardian of Courage' },
-  GUARDIAN_OF_JUSTICE: { icon: Target, gradient: 'from-amber-500 to-yellow-500', name: 'Guardian of Justice' },
-  GUARDIAN_OF_HUMANITY: { icon: Heart, gradient: 'from-pink-500 to-rose-500', name: 'Guardian of Humanity' },
-  GUARDIAN_OF_TRANSCENDENCE: { icon: Sparkles, gradient: 'from-indigo-500 to-blue-500', name: 'Guardian of Transcendence' },
-  GUARDIAN_OF_NATURE: { icon: Globe, gradient: 'from-emerald-500 to-green-500', name: 'Guardian of Nature' },
+// Guardian archetype icons - Exodology's Seven Virtues
+const archetypeConfig: Record<string, { icon: any, gradient: string, name: string, color: string }> = {
+  GUARDIAN_OF_TEMPERANCE: { icon: Shield, gradient: 'from-blue-500 via-cyan-400 to-teal-500', name: 'Guardian of Temperance', color: 'text-cyan-400' },
+  GUARDIAN_OF_WISDOM: { icon: Eye, gradient: 'from-violet-500 via-purple-400 to-fuchsia-500', name: 'Guardian of Wisdom', color: 'text-violet-400' },
+  GUARDIAN_OF_COURAGE: { icon: Flame, gradient: 'from-orange-500 via-red-400 to-pink-500', name: 'Guardian of Courage', color: 'text-orange-400' },
+  GUARDIAN_OF_JUSTICE: { icon: Target, gradient: 'from-amber-500 via-yellow-400 to-orange-400', name: 'Guardian of Justice', color: 'text-amber-400' },
+  GUARDIAN_OF_HUMANITY: { icon: Heart, gradient: 'from-pink-500 via-rose-400 to-red-400', name: 'Guardian of Humanity', color: 'text-rose-400' },
+  GUARDIAN_OF_TRANSCENDENCE: { icon: Sparkles, gradient: 'from-indigo-500 via-blue-400 to-cyan-500', name: 'Guardian of Transcendence', color: 'text-indigo-400' },
+  GUARDIAN_OF_NATURE: { icon: Globe, gradient: 'from-emerald-500 via-green-400 to-teal-500', name: 'Guardian of Nature', color: 'text-emerald-400' },
 }
 
 interface CommunityNewspaperProps {
@@ -75,341 +77,527 @@ export function CommunityNewspaper({
 
   return (
     <div className="min-h-screen bg-[var(--background)]">
-      {/* NEWSPAPER CONTAINER - Scrollable like a traditional newspaper page */}
+      {/* EXODOLOGY HUB - Bio-Digital Interface */}
       <div className="flex flex-col">
 
         {/* ============================================ */}
-        {/* MASTHEAD - Classic Newspaper Header */}
+        {/* MASTHEAD - Futuristic Bio-Digital Header */}
         {/* ============================================ */}
-        <div className="border-b-4 border-double border-[var(--border)] bg-[var(--card)]">
-          {/* Top ribbon - Date & Edition info */}
-          <div className="border-b border-[var(--border)] px-4 py-1 bg-[var(--muted)]/30">
-            <div className="max-w-6xl mx-auto flex items-center justify-between text-[10px] text-theme-muted">
+        <div className="relative overflow-hidden bg-gradient-to-br from-[var(--card)] via-[var(--background)] to-[var(--card)]">
+          {/* Holographic grid background */}
+          <div className="absolute inset-0 opacity-[0.03]" style={{
+            backgroundImage: `
+              linear-gradient(to right, var(--primary) 1px, transparent 1px),
+              linear-gradient(to bottom, var(--primary) 1px, transparent 1px)
+            `,
+            backgroundSize: '40px 40px'
+          }} />
+
+          {/* Ambient glow effects */}
+          <div className="absolute top-0 left-1/4 w-64 h-64 bg-[var(--primary)]/5 rounded-full blur-3xl" />
+          <div className="absolute top-0 right-1/4 w-64 h-64 bg-[var(--accent)]/5 rounded-full blur-3xl" />
+
+          {/* Top Status Bar - Ecosystem Health */}
+          <div className="relative border-b border-[var(--border)]/50 backdrop-blur-sm bg-[var(--card)]/50 px-4 py-2">
+            <div className="max-w-7xl mx-auto flex items-center justify-between text-[10px]">
+              <div className="flex items-center gap-4">
+                <div className="flex items-center gap-1.5">
+                  <div className="relative">
+                    <Activity className="w-3.5 h-3.5 text-emerald-500" />
+                    <div className="absolute inset-0 bg-emerald-500/20 blur-sm rounded-full animate-pulse" />
+                  </div>
+                  <span className="font-semibold text-emerald-600 dark:text-emerald-400">
+                    Ecosystem: Thriving
+                  </span>
+                </div>
+                <div className="flex items-center gap-1.5 text-theme-muted">
+                  <Clock className="w-3 h-3" />
+                  <span className="font-medium">
+                    {currentTime.toLocaleDateString('en-US', {
+                      weekday: 'long',
+                      month: 'short',
+                      day: 'numeric',
+                      year: 'numeric'
+                    })}
+                  </span>
+                  <span className="hidden sm:inline">•</span>
+                  <span className="hidden sm:inline">
+                    {currentTime.toLocaleTimeString('en-US', {
+                      hour: '2-digit',
+                      minute: '2-digit'
+                    })}
+                  </span>
+                </div>
+              </div>
               <div className="flex items-center gap-3">
-                <span className="font-semibold">
-                  {currentTime.toLocaleDateString('en-US', {
-                    weekday: 'long',
-                    year: 'numeric',
-                    month: 'long',
-                    day: 'numeric'
-                  })}
-                </span>
-                <span className="hidden sm:inline">•</span>
-                <span className="hidden sm:inline">
-                  {currentTime.toLocaleTimeString('en-US', {
-                    hour: '2-digit',
-                    minute: '2-digit'
-                  })}
-                </span>
-              </div>
-              <div className="flex items-center gap-2">
-                <Radio className="w-3 h-3 text-green-500" />
-                <span className="font-bold uppercase text-green-600">Live Edition</span>
+                <div className="hidden sm:flex items-center gap-1.5 px-2 py-1 rounded-full bg-gradient-to-r from-emerald-500/10 to-teal-500/10 border border-emerald-500/20">
+                  <Leaf className="w-3 h-3 text-emerald-500" />
+                  <span className="text-emerald-600 dark:text-emerald-400 font-bold">Carbon Neutral</span>
+                </div>
+                <div className="flex items-center gap-1.5">
+                  <div className="relative">
+                    <Wifi className="w-3 h-3 text-blue-500" />
+                    <div className="absolute inset-0 bg-blue-500/20 blur-sm rounded-full animate-pulse" />
+                  </div>
+                  <span className="font-bold text-blue-600 dark:text-blue-400 uppercase">Live</span>
+                </div>
               </div>
             </div>
           </div>
 
-          {/* Newspaper Title */}
-          <div className="px-4 py-4 border-b border-[var(--border)]">
-            <div className="max-w-6xl mx-auto text-center">
-              <div className="flex items-center justify-center gap-3 mb-2">
-                <div className="h-[2px] flex-1 bg-gradient-to-r from-transparent via-[var(--border)] to-[var(--border)]" />
-                <Newspaper className="w-6 h-6 text-theme-primary" />
-                <div className="h-[2px] flex-1 bg-gradient-to-r from-[var(--border)] via-[var(--border)] to-transparent" />
+          {/* Main Title Section - Holographic Treatment */}
+          <div className="relative px-4 py-6 border-b border-[var(--border)]/30">
+            <div className="max-w-7xl mx-auto text-center space-y-4">
+              {/* Guardian Constellation */}
+              <div className="flex items-center justify-center gap-2 mb-2">
+                {Object.values(archetypeConfig).map((config, i) => {
+                  const Icon = config.icon
+                  return (
+                    <div key={i} className="relative group">
+                      <div className={`w-2 h-2 rounded-full bg-gradient-to-br ${config.gradient} opacity-60 group-hover:opacity-100 transition-opacity`} />
+                      <div className={`absolute inset-0 bg-gradient-to-br ${config.gradient} blur-md opacity-0 group-hover:opacity-50 transition-opacity`} />
+                    </div>
+                  )
+                })}
               </div>
-              <h1 className="text-2xl sm:text-3xl lg:text-4xl font-semibold text-[var(--foreground)] tracking-tight" style={{ fontFamily: 'Georgia, serif', letterSpacing: '0.05em' }}>
-                THE PROJECT EXODUS CHRONICLE
-              </h1>
-              <div className="flex items-center justify-center gap-2 mt-1.5">
-                <div className="h-px w-12 bg-[var(--border)]" />
-                <p className="text-[11px] text-theme-muted italic font-serif">
-                  "Building Tomorrow's Sustainable Future, Together"
+
+              {/* Title with holographic effect */}
+              <div className="relative inline-block">
+                <h1 className="text-3xl sm:text-4xl lg:text-5xl font-bold bg-gradient-to-r from-[var(--foreground)] via-[var(--primary)] to-[var(--foreground)] bg-clip-text text-transparent tracking-tight">
+                  EXODUS CHRONICLE
+                </h1>
+                <div className="absolute -inset-1 bg-gradient-to-r from-[var(--primary)] via-[var(--accent)] to-[var(--secondary)] opacity-10 blur-xl" />
+              </div>
+
+              {/* Subtitle with bio-digital aesthetic */}
+              <div className="flex items-center justify-center gap-3">
+                <Hexagon className="w-4 h-4 text-theme-primary opacity-40" />
+                <p className="text-sm text-theme-muted font-medium tracking-wide">
+                  Where <span className="text-[var(--primary)] font-semibold">Consciousness</span> meets <span className="text-[var(--accent)] font-semibold">Action</span>
                 </p>
-                <div className="h-px w-12 bg-[var(--border)]" />
+                <Hexagon className="w-4 h-4 text-theme-accent opacity-40" />
               </div>
-              <p className="text-[9px] text-theme-muted mt-2 font-semibold tracking-wide">
-                EST. 2026 • VOL. 1 • NO. {Math.floor(Date.now() / 86400000) % 365}
-              </p>
+
+              {/* Meta info with tech aesthetic */}
+              <div className="flex items-center justify-center gap-4 text-[9px] text-theme-muted font-mono">
+                <div className="flex items-center gap-1.5 px-2 py-1 rounded bg-[var(--muted)]/30 border border-[var(--border)]/30">
+                  <Sunrise className="w-3 h-3" />
+                  <span>EST. 2026</span>
+                </div>
+                <div className="flex items-center gap-1.5 px-2 py-1 rounded bg-[var(--muted)]/30 border border-[var(--border)]/30">
+                  <Hexagon className="w-3 h-3" />
+                  <span>VOL. 1</span>
+                </div>
+                <div className="flex items-center gap-1.5 px-2 py-1 rounded bg-[var(--muted)]/30 border border-[var(--border)]/30">
+                  <Star className="w-3 h-3" />
+                  <span>ISSUE {Math.floor(Date.now() / 86400000) % 365}</span>
+                </div>
+              </div>
             </div>
           </div>
 
-          {/* Navigation Ribbon - Newspaper Sections */}
-          <div className="px-4 py-2 bg-[var(--muted)]/20 border-b border-[var(--border)]">
-            <div className="max-w-6xl mx-auto flex items-center justify-between">
-              <div className="flex items-center gap-1 overflow-x-auto scrollbar-hide">
+          {/* Navigation Bar - Holographic Pills */}
+          <div className="relative px-4 py-3 backdrop-blur-md bg-[var(--card)]/30 border-b border-[var(--border)]/30">
+            <div className="max-w-7xl mx-auto flex items-center justify-between">
+              <div className="flex items-center gap-2 overflow-x-auto scrollbar-hide">
                 <Link href="/community/feed">
-                  <Button size="sm" variant="ghost" className="h-7 px-3 text-xs font-bold uppercase tracking-wide">
-                    <MessageSquare className="w-3 h-3 mr-1.5" />
-                    Discussions
+                  <Button
+                    size="sm"
+                    variant="ghost"
+                    className="h-8 px-4 text-xs font-semibold rounded-full hover:bg-gradient-to-r hover:from-blue-500/10 hover:to-cyan-500/10 hover:border-blue-500/30 border border-transparent transition-all"
+                  >
+                    <MessageSquare className="w-3.5 h-3.5 mr-2" />
+                    Round Table
                   </Button>
                 </Link>
-                <span className="text-theme-muted">|</span>
                 <Link href="/community/projects">
-                  <Button size="sm" variant="ghost" className="h-7 px-3 text-xs font-bold uppercase tracking-wide">
-                    <Rocket className="w-3 h-3 mr-1.5" />
-                    Projects
+                  <Button
+                    size="sm"
+                    variant="ghost"
+                    className="h-8 px-4 text-xs font-semibold rounded-full hover:bg-gradient-to-r hover:from-orange-500/10 hover:to-red-500/10 hover:border-orange-500/30 border border-transparent transition-all"
+                  >
+                    <Rocket className="w-3.5 h-3.5 mr-2" />
+                    Initiatives
                   </Button>
                 </Link>
-                <span className="text-theme-muted">|</span>
                 <Link href="/community/users">
-                  <Button size="sm" variant="ghost" className="h-7 px-3 text-xs font-bold uppercase tracking-wide">
-                    <Users className="w-3 h-3 mr-1.5" />
-                    Network
+                  <Button
+                    size="sm"
+                    variant="ghost"
+                    className="h-8 px-4 text-xs font-semibold rounded-full hover:bg-gradient-to-r hover:from-purple-500/10 hover:to-pink-500/10 hover:border-purple-500/30 border border-transparent transition-all"
+                  >
+                    <Network className="w-3.5 h-3.5 mr-2" />
+                    Mycelium
                   </Button>
                 </Link>
-                <span className="text-theme-muted hidden sm:inline">|</span>
                 <Link href="/articles" className="hidden sm:block">
-                  <Button size="sm" variant="ghost" className="h-7 px-3 text-xs font-bold uppercase tracking-wide">
-                    <BookOpen className="w-3 h-3 mr-1.5" />
-                    Articles
+                  <Button
+                    size="sm"
+                    variant="ghost"
+                    className="h-8 px-4 text-xs font-semibold rounded-full hover:bg-gradient-to-r hover:from-emerald-500/10 hover:to-teal-500/10 hover:border-emerald-500/30 border border-transparent transition-all"
+                  >
+                    <BookOpen className="w-3.5 h-3.5 mr-2" />
+                    Wisdom
                   </Button>
                 </Link>
               </div>
-              <div className="flex items-center gap-2 text-xs font-semibold text-theme-muted">
-                <Users className="w-3 h-3" />
-                <span className="hidden sm:inline">{communityStats.totalMembers.toLocaleString()} Members</span>
-                <span className="sm:hidden">{communityStats.totalMembers.toLocaleString()}</span>
+
+              {/* Community Counter with Pulse */}
+              <div className="flex items-center gap-2 px-3 py-1.5 rounded-full bg-gradient-to-r from-[var(--primary)]/10 to-[var(--accent)]/10 border border-[var(--primary)]/20">
+                <div className="relative">
+                  <Users className="w-3.5 h-3.5 text-theme-primary" />
+                  <div className="absolute inset-0 bg-[var(--primary)]/20 blur-sm rounded-full animate-pulse" />
+                </div>
+                <span className="text-xs font-bold text-theme-primary hidden sm:inline">
+                  {communityStats.totalMembers.toLocaleString()} Guardians
+                </span>
+                <span className="text-xs font-bold text-theme-primary sm:hidden">
+                  {communityStats.totalMembers.toLocaleString()}
+                </span>
               </div>
             </div>
           </div>
         </div>
 
         {/* ============================================ */}
-        {/* BREAKING NEWS TICKER */}
+        {/* PULSE STREAM - Live Activity Feed */}
         {/* ============================================ */}
-        <div className="border-b-2 border-[var(--border)] bg-gradient-to-r from-red-500/10 via-orange-500/10 to-red-500/10 shadow-inner">
-          <div className="max-w-6xl mx-auto overflow-hidden">
-            <div className="flex items-center gap-3 px-4 py-2">
-              <div className="flex items-center gap-1.5 bg-red-600 text-white px-3 py-1 rounded-sm text-[10px] font-bold uppercase flex-shrink-0 shadow-md">
-                <AlertCircle className="w-3.5 h-3.5 animate-pulse" />
-                Breaking News
+        <div className="relative overflow-hidden border-b border-[var(--border)]/30 bg-gradient-to-r from-[var(--primary)]/5 via-[var(--accent)]/5 to-[var(--secondary)]/5">
+          {/* Flowing energy lines */}
+          <div className="absolute inset-0 opacity-20">
+            <div className="absolute top-0 left-0 w-full h-full">
+              <div className="absolute top-1/2 left-0 w-full h-px bg-gradient-to-r from-transparent via-[var(--primary)] to-transparent animate-pulse" />
+            </div>
+          </div>
+
+          <div className="relative max-w-7xl mx-auto overflow-hidden">
+            <div className="flex items-center gap-3 px-4 py-2.5">
+              {/* Pulse Indicator */}
+              <div className="flex items-center gap-2 bg-gradient-to-r from-emerald-500/20 to-teal-500/20 border border-emerald-500/30 text-emerald-600 dark:text-emerald-400 px-3 py-1.5 rounded-full text-[10px] font-bold uppercase flex-shrink-0 backdrop-blur-sm">
+                <div className="relative">
+                  <Zap className="w-3.5 h-3.5" />
+                  <div className="absolute inset-0 bg-emerald-500 blur-sm rounded-full animate-pulse" />
+                </div>
+                <span>Live Pulse</span>
               </div>
+
+              {/* Activity Stream */}
               <div className="flex-1 overflow-hidden">
-                <div className="animate-marquee whitespace-nowrap text-sm font-medium text-[var(--foreground)]" style={{ fontFamily: 'Georgia, serif' }}>
+                <div className="animate-marquee whitespace-nowrap text-sm font-medium text-[var(--foreground)]">
                   {latestActivity.map((activity: any, i: number) => (
-                    <span key={i} className="inline-block mr-12">
+                    <span key={i} className="inline-flex items-center mr-12">
+                      <Hexagon className="w-3 h-3 text-theme-primary mr-2 inline-block" style={{ fill: 'var(--primary)', fillOpacity: 0.2 }} />
                       {activity.message}
-                      <span className="mx-3 text-theme-muted">★</span>
+                      <Sparkles className="w-3 h-3 text-theme-accent mx-3 inline-block" />
                     </span>
                   ))}
                   {latestActivity.length === 0 && (
-                    <span>Welcome to Project Exodus Community ★ Join discussions, launch projects, connect with changemakers ★ Building a sustainable future together</span>
+                    <span className="inline-flex items-center">
+                      <Hexagon className="w-3 h-3 text-theme-primary mr-2" style={{ fill: 'var(--primary)', fillOpacity: 0.2 }} />
+                      Welcome to the Exodus Chronicle — Where ideas become reality
+                      <Sparkles className="w-3 h-3 text-theme-accent mx-3" />
+                      Join the Round Table • Launch Initiatives • Connect with Changemakers
+                      <Sparkles className="w-3 h-3 text-theme-accent mx-3" />
+                      Building tomorrow's regenerative civilization, today
+                    </span>
                   )}
                 </div>
+              </div>
+
+              {/* Energy indicator */}
+              <div className="hidden lg:flex items-center gap-1.5 text-[10px] text-theme-muted font-mono">
+                <Activity className="w-3 h-3 text-emerald-500" />
+                <span className="font-semibold">99.9% Uptime</span>
               </div>
             </div>
           </div>
         </div>
 
         {/* ============================================ */}
-        {/* NEWSPAPER CONTENT - 3 Column Layout */}
+        {/* MAIN CONTENT - Bio-Digital 3 Column Grid */}
         {/* ============================================ */}
-        <div className="flex-1 bg-gradient-to-b from-[var(--background)] to-[var(--muted)]/20">
-          <div className="max-w-6xl mx-auto px-4 py-6">
-            <div className="grid grid-cols-12 gap-5">
+        <div className="flex-1 relative">
+          {/* Ambient background */}
+          <div className="absolute inset-0 bg-gradient-to-b from-[var(--background)] via-[var(--background)] to-[var(--muted)]/10" />
+
+          <div className="relative max-w-7xl mx-auto px-4 py-8">
+            <div className="grid grid-cols-12 gap-6">
 
               {/* ======================================== */}
-              {/* LEFT COLUMN - Headlines (Discussions) */}
+              {/* LEFT COLUMN - Round Table (Discussions) */}
+              {/* Guardian of Humanity - Heart */}
               {/* ======================================== */}
-              <div className="col-span-12 lg:col-span-4 space-y-4 border-r lg:border-r-2 lg:border-[var(--border)] lg:pr-5">
-                {/* Section Header with Ornament */}
+              <div className="col-span-12 lg:col-span-4 space-y-5">
+                {/* Section Header - Bio-Digital Style */}
                 <div className="relative">
-                  <div className="border-t-4 border-b-2 border-double border-[var(--border)] py-2">
-                    <h2 className="text-base font-bold uppercase tracking-wider text-[var(--foreground)] text-center" style={{ fontFamily: 'Georgia, serif' }}>
-                      ◆ Community Headlines ◆
-                    </h2>
+                  <div className="flex items-center gap-3 mb-4">
+                    <div className="relative">
+                      <div className="w-10 h-10 rounded-lg bg-gradient-to-br from-pink-500 via-rose-400 to-red-400 flex items-center justify-center">
+                        <Heart className="w-5 h-5 text-white" />
+                      </div>
+                      <div className="absolute inset-0 bg-gradient-to-br from-pink-500 to-rose-500 blur-lg opacity-30 rounded-lg" />
+                    </div>
+                    <div className="flex-1">
+                      <h2 className="text-lg font-bold text-[var(--foreground)] tracking-tight">
+                        Round Table
+                      </h2>
+                      <p className="text-[10px] text-theme-muted font-medium uppercase tracking-wider">
+                        Guardian of Humanity
+                      </p>
+                    </div>
                   </div>
-                  <div className="absolute -bottom-1 left-1/2 transform -translate-x-1/2 w-16 h-0.5 bg-[var(--foreground)]" />
+                  {/* Connecting line */}
+                  <div className="absolute top-5 left-5 w-px h-full bg-gradient-to-b from-rose-500/30 to-transparent" />
                 </div>
 
-                {/* Featured Discussion - Large Lead Story */}
+                {/* Featured Discussion - Holographic Card */}
                 {featuredDiscussion && (
                   <Link href={`/community/feed`}>
-                    <div className="border-4 border-double border-[var(--border)] p-4 hover:bg-[var(--muted)]/40 transition-all hover:shadow-lg bg-[var(--card)]">
-                      {/* Byline */}
-                      <div className="flex items-center gap-2 mb-3 pb-2 border-b border-[var(--border)]">
-                        {featuredDiscussion.user.image ? (
-                          <img
-                            src={featuredDiscussion.user.image}
-                            alt=""
-                            className="w-9 h-9 rounded-full object-cover border-2 border-[var(--border)]"
-                          />
-                        ) : (
-                          <div className="w-9 h-9 rounded-full bg-gradient-to-br from-[var(--primary)] to-[var(--accent)] flex items-center justify-center border-2 border-[var(--border)]">
-                            <span className="text-xs font-bold text-white">{featuredDiscussion.user.name?.[0]}</span>
+                    <div className="group relative rounded-xl overflow-hidden bg-gradient-to-br from-[var(--card)] to-[var(--card)]/50 border border-[var(--border)]/50 hover:border-rose-500/50 transition-all duration-300 backdrop-blur-sm">
+                      {/* Holographic shimmer effect */}
+                      <div className="absolute inset-0 bg-gradient-to-br from-rose-500/5 via-transparent to-pink-500/5 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+                      <div className="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-rose-500/50 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+
+                      <div className="relative p-5 space-y-4">
+                        {/* Author info with holographic avatar */}
+                        <div className="flex items-center gap-3">
+                          <div className="relative">
+                            {featuredDiscussion.user.image ? (
+                              <img
+                                src={featuredDiscussion.user.image}
+                                alt=""
+                                className="w-11 h-11 rounded-full object-cover border-2 border-rose-500/30"
+                              />
+                            ) : (
+                              <div className="w-11 h-11 rounded-full bg-gradient-to-br from-rose-500 via-pink-500 to-red-500 flex items-center justify-center border-2 border-rose-500/30">
+                                <span className="text-sm font-bold text-white">{featuredDiscussion.user.name?.[0]}</span>
+                              </div>
+                            )}
+                            <div className="absolute inset-0 bg-rose-500/20 blur-md rounded-full" />
                           </div>
-                        )}
-                        <div className="flex-1 min-w-0">
-                          <p className="text-[9px] font-bold text-theme-muted uppercase tracking-wider">
-                            By {featuredDiscussion.user.name}
-                          </p>
-                          <p className="text-[9px] text-theme-muted">
-                            {getTimeAgo(featuredDiscussion.createdAt)}
+                          <div className="flex-1 min-w-0">
+                            <p className="text-xs font-bold text-[var(--foreground)] truncate">
+                              {featuredDiscussion.user.name}
+                            </p>
+                            <p className="text-[10px] text-theme-muted font-mono">
+                              {getTimeAgo(featuredDiscussion.createdAt)}
+                            </p>
+                          </div>
+                          <div className="flex items-center gap-1 px-2 py-1 rounded-full bg-gradient-to-r from-rose-500/20 to-red-500/20 border border-rose-500/30">
+                            <Flame className="w-3 h-3 text-rose-500 animate-pulse" />
+                            <span className="text-[9px] font-bold uppercase text-rose-600 dark:text-rose-400">
+                              Hot
+                            </span>
+                          </div>
+                        </div>
+
+                        {/* Content with subtle glow */}
+                        <div className="relative space-y-3">
+                          <p className="text-sm text-[var(--foreground)] leading-relaxed line-clamp-4">
+                            {featuredDiscussion.content.substring(0, 180)}{featuredDiscussion.content.length > 180 ? '...' : ''}
                           </p>
                         </div>
-                        <div className="text-[9px] font-bold uppercase text-red-600 px-2 py-1 bg-red-50 dark:bg-red-950/30 rounded">
-                          Breaking
+
+                        {/* Engagement Stats with icons */}
+                        <div className="flex items-center gap-4 pt-3 border-t border-[var(--border)]/30">
+                          <div className="flex items-center gap-1.5 text-xs text-theme-muted hover:text-rose-500 transition-colors">
+                            <div className="relative">
+                              <Heart className="w-4 h-4" />
+                              <div className="absolute inset-0 bg-rose-500/0 group-hover:bg-rose-500/20 blur-sm rounded-full transition-all" />
+                            </div>
+                            <span className="font-semibold">{featuredDiscussion._count.likes}</span>
+                          </div>
+                          <div className="flex items-center gap-1.5 text-xs text-theme-muted hover:text-blue-500 transition-colors">
+                            <MessageCircle className="w-4 h-4" />
+                            <span className="font-semibold">{featuredDiscussion._count.comments}</span>
+                          </div>
+                          <div className="flex-1" />
+                          <ChevronRight className="w-4 h-4 text-theme-muted group-hover:text-rose-500 group-hover:translate-x-1 transition-all" />
                         </div>
-                      </div>
-
-                      {/* Headline with Drop Cap effect */}
-                      <div className="relative">
-                        <h3 className="text-base font-semibold text-[var(--foreground)] leading-relaxed mb-3" style={{ fontFamily: 'Georgia, serif' }}>
-                          <span className="float-left text-4xl font-bold mr-2 mt-0.5 leading-none text-theme-primary" style={{ fontFamily: 'Georgia, serif' }}>
-                            {featuredDiscussion.content.charAt(0)}
-                          </span>
-                          {featuredDiscussion.content.substring(1, 120)}{featuredDiscussion.content.length > 120 ? '...' : ''}
-                        </h3>
-                      </div>
-
-                      {/* Engagement Stats */}
-                      <div className="flex items-center gap-4 text-[10px] text-theme-muted font-medium border-t border-[var(--border)] pt-2.5 mt-1">
-                        <span className="flex items-center gap-1.5">
-                          <Heart className="w-3.5 h-3.5" />
-                          {featuredDiscussion._count.likes}
-                        </span>
-                        <span className="flex items-center gap-1.5">
-                          <MessageCircle className="w-3.5 h-3.5" />
-                          {featuredDiscussion._count.comments}
-                        </span>
                       </div>
                     </div>
                   </Link>
                 )}
 
-                {/* More Headlines - News Briefs Style */}
-                <div className="space-y-3">
-                  <div className="border-t border-b border-[var(--border)] py-1.5">
-                    <h3 className="text-[11px] font-semibold uppercase tracking-wider text-theme-muted text-center">
-                      More Stories
-                    </h3>
+                {/* More Discussions - Compact List */}
+                <div className="space-y-2">
+                  <div className="flex items-center gap-2 mb-2">
+                    <div className="h-px flex-1 bg-gradient-to-r from-transparent via-[var(--border)]/50 to-[var(--border)]/50" />
+                    <span className="text-[10px] font-bold uppercase tracking-wider text-theme-muted">
+                      More Voices
+                    </span>
+                    <div className="h-px flex-1 bg-gradient-to-r from-[var(--border)]/50 via-[var(--border)]/50 to-transparent" />
                   </div>
-                  {topDiscussions.map((discussion: any, idx: number) => (
-                    <Link key={discussion.id} href="/community/feed">
-                      <div className="border-l-4 border-[var(--border)] pl-3 py-2 hover:border-theme-primary hover:bg-[var(--muted)]/20 transition-all">
-                        <div className="flex items-start gap-2">
-                          <span className="text-base font-semibold text-theme-muted/40 leading-none" style={{ fontFamily: 'Georgia, serif' }}>
-                            {idx + 2}
-                          </span>
-                          <div className="flex-1">
-                            <p className="text-sm font-medium text-[var(--foreground)] leading-relaxed mb-1" style={{ fontFamily: 'Georgia, serif' }}>
-                              {discussion.content.substring(0, 90)}{discussion.content.length > 90 ? '...' : ''}
-                            </p>
-                            <p className="text-[9px] text-theme-muted font-medium">
-                              {discussion.user.name} • {getTimeAgo(discussion.createdAt)}
-                            </p>
+
+                  <div className="space-y-2">
+                    {topDiscussions.map((discussion: any, idx: number) => (
+                      <Link key={discussion.id} href="/community/feed">
+                        <div className="group relative p-3 rounded-lg bg-[var(--card)]/30 border border-[var(--border)]/30 hover:border-rose-500/30 hover:bg-[var(--card)]/60 transition-all">
+                          <div className="flex items-start gap-3">
+                            <div className="flex-shrink-0 w-6 h-6 rounded-md bg-gradient-to-br from-rose-500/20 to-pink-500/20 border border-rose-500/30 flex items-center justify-center text-xs font-bold text-rose-500">
+                              {idx + 2}
+                            </div>
+                            <div className="flex-1 min-w-0 space-y-1">
+                              <p className="text-xs text-[var(--foreground)] leading-snug line-clamp-2">
+                                {discussion.content.substring(0, 100)}{discussion.content.length > 100 ? '...' : ''}
+                              </p>
+                              <div className="flex items-center gap-2 text-[9px] text-theme-muted font-mono">
+                                <span className="truncate">{discussion.user.name}</span>
+                                <span>•</span>
+                                <span>{getTimeAgo(discussion.createdAt)}</span>
+                              </div>
+                            </div>
                           </div>
                         </div>
-                      </div>
-                    </Link>
-                  ))}
+                      </Link>
+                    ))}
+                  </div>
                 </div>
 
-                {/* Opinion Box */}
-                <div className="border-2 border-dashed border-[var(--border)] p-3 bg-[var(--muted)]/10">
-                  <div className="flex items-center gap-2 mb-2">
-                    <PenTool className="w-4 h-4 text-theme-accent" />
-                    <h3 className="text-xs font-semibold uppercase text-theme-muted">Your Voice Matters</h3>
+                {/* Action Card - Join Discussion */}
+                <div className="relative rounded-xl overflow-hidden bg-gradient-to-br from-rose-500/10 via-pink-500/5 to-red-500/10 border border-rose-500/20 p-5">
+                  <div className="absolute top-0 right-0 w-24 h-24 bg-rose-500/10 rounded-full blur-2xl" />
+                  <div className="relative space-y-3">
+                    <div className="flex items-center gap-2">
+                      <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-rose-500 to-pink-500 flex items-center justify-center">
+                        <PenTool className="w-4 h-4 text-white" />
+                      </div>
+                      <h3 className="text-sm font-bold text-[var(--foreground)]">
+                        Your Voice Matters
+                      </h3>
+                    </div>
+                    <p className="text-xs text-theme-muted leading-relaxed">
+                      Every perspective enriches our collective wisdom. Share your insights with the community.
+                    </p>
+                    <Link href="/community/feed">
+                      <Button size="sm" className="w-full h-9 text-xs font-semibold bg-gradient-to-r from-rose-500 to-pink-500 hover:from-rose-600 hover:to-pink-600 rounded-lg">
+                        Join the Round Table
+                        <ChevronRight className="w-3.5 h-3.5 ml-1" />
+                      </Button>
+                    </Link>
                   </div>
-                  <p className="text-[10px] text-theme-muted leading-relaxed mb-3">
-                    Share your thoughts, ideas, and solutions with the community. Every voice contributes to our collective wisdom.
-                  </p>
-                  <Link href="/community/feed">
-                    <Button size="sm" className="w-full h-8 text-xs font-bold">
-                      Join the Discussion
-                      <ChevronRight className="w-3 h-3 ml-1" />
-                    </Button>
-                  </Link>
                 </div>
               </div>
 
               {/* ======================================== */}
-              {/* CENTER COLUMN - Featured Project */}
+              {/* CENTER COLUMN - Active Initiatives */}
+              {/* Guardian of Courage - Flame */}
               {/* ======================================== */}
-              <div className="col-span-12 lg:col-span-4 space-y-4 border-r lg:border-r-2 lg:border-[var(--border)] lg:pr-5">
-                {/* Section Header with Ornament */}
+              <div className="col-span-12 lg:col-span-4 space-y-5">
+                {/* Section Header - Bio-Digital Style */}
                 <div className="relative">
-                  <div className="border-t-4 border-b-2 border-double border-[var(--border)] py-2">
-                    <h2 className="text-base font-bold uppercase tracking-wider text-[var(--foreground)] text-center" style={{ fontFamily: 'Georgia, serif' }}>
-                      ◆ Active Initiatives ◆
-                    </h2>
+                  <div className="flex items-center gap-3 mb-4">
+                    <div className="relative">
+                      <div className="w-10 h-10 rounded-lg bg-gradient-to-br from-orange-500 via-red-400 to-pink-500 flex items-center justify-center">
+                        <Rocket className="w-5 h-5 text-white" />
+                      </div>
+                      <div className="absolute inset-0 bg-gradient-to-br from-orange-500 to-red-500 blur-lg opacity-30 rounded-lg" />
+                    </div>
+                    <div className="flex-1">
+                      <h2 className="text-lg font-bold text-[var(--foreground)] tracking-tight">
+                        Active Initiatives
+                      </h2>
+                      <p className="text-[10px] text-theme-muted font-medium uppercase tracking-wider">
+                        Guardian of Courage
+                      </p>
+                    </div>
                   </div>
-                  <div className="absolute -bottom-1 left-1/2 transform -translate-x-1/2 w-16 h-0.5 bg-[var(--foreground)]" />
+                  {/* Connecting line */}
+                  <div className="absolute top-5 left-5 w-px h-full bg-gradient-to-b from-orange-500/30 to-transparent" />
                 </div>
 
-                {/* Featured Project - Magazine Style */}
+                {/* Featured Initiative - Hero Card */}
                 {featuredProject && (
                   <Link href={`/community/projects/${featuredProject.slug}`}>
-                    <div className="border-4 border-double border-[var(--border)] overflow-hidden hover:shadow-xl transition-all bg-[var(--card)]">
+                    <div className="group relative rounded-xl overflow-hidden bg-gradient-to-br from-[var(--card)] to-[var(--card)]/50 border border-[var(--border)]/50 hover:border-orange-500/50 transition-all duration-300">
+                      {/* Holographic effect */}
+                      <div className="absolute inset-0 bg-gradient-to-br from-orange-500/5 via-transparent to-red-500/5 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+                      <div className="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-orange-500/50 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+
                       {/* Feature Badge */}
-                      <div className="bg-gradient-to-r from-orange-500 to-red-500 px-4 py-2 flex items-center justify-center gap-2">
-                        <Rocket className="w-5 h-5 text-white" />
-                        <span className="text-xs font-bold uppercase text-white tracking-widest">Featured Initiative</span>
+                      <div className="relative bg-gradient-to-r from-orange-500 via-red-500 to-pink-500 px-4 py-3 flex items-center justify-center gap-2">
+                        <Flame className="w-5 h-5 text-white animate-pulse" />
+                        <span className="text-xs font-bold uppercase text-white tracking-widest">
+                          Featured Initiative
+                        </span>
+                        <div className="absolute inset-0 bg-gradient-to-r from-orange-600/50 to-red-600/50 opacity-0 group-hover:opacity-100 transition-opacity" />
                       </div>
 
                       {/* Content */}
-                      <div className="p-4">
-                        <h3 className="text-lg font-bold text-[var(--foreground)] leading-snug mb-3 border-b-2 border-[var(--border)] pb-2" style={{ fontFamily: 'Georgia, serif' }}>
+                      <div className="relative p-5 space-y-4">
+                        <h3 className="text-lg font-bold text-[var(--foreground)] leading-tight">
                           {featuredProject.name}
                         </h3>
 
-                        <p className="text-sm text-theme-muted leading-loose mb-4" style={{ textAlign: 'justify' }}>
+                        <p className="text-sm text-theme-muted leading-relaxed">
                           {featuredProject.description}
                         </p>
 
-                        {/* Project Stats */}
-                        <div className="flex items-center justify-between pt-3 border-t border-[var(--border)]">
+                        {/* Stats Row */}
+                        <div className="flex items-center justify-between pt-3 border-t border-[var(--border)]/30">
                           <div className="flex items-center gap-2">
                             <div className="flex -space-x-2">
                               {[...Array(Math.min(3, featuredProject._count.members))].map((_, i) => (
-                                <div key={i} className="w-6 h-6 rounded-full bg-gradient-to-br from-[var(--primary)] to-[var(--accent)] border-2 border-[var(--card)] flex items-center justify-center">
-                                  <Users className="w-3 h-3 text-white" />
+                                <div key={i} className="relative">
+                                  <div className="w-7 h-7 rounded-full bg-gradient-to-br from-orange-400 to-red-500 border-2 border-[var(--card)] flex items-center justify-center">
+                                    <Users className="w-3 h-3 text-white" />
+                                  </div>
                                 </div>
                               ))}
                             </div>
                             <span className="text-xs font-bold text-theme-muted">
-                              {featuredProject._count.members} members
+                              {featuredProject._count.members}
                             </span>
                           </div>
-                          <span className="px-3 py-1 bg-emerald-500/20 text-emerald-600 rounded-full text-[10px] font-bold uppercase tracking-wide">
-                            {featuredProject.status}
-                          </span>
+                          <div className="flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-gradient-to-r from-emerald-500/20 to-teal-500/20 border border-emerald-500/30">
+                            <Zap className="w-3 h-3 text-emerald-500" />
+                            <span className="text-[10px] font-bold uppercase text-emerald-600 dark:text-emerald-400">
+                              {featuredProject.status}
+                            </span>
+                          </div>
                         </div>
+
+                        <ChevronRight className="absolute bottom-5 right-5 w-5 h-5 text-theme-muted group-hover:text-orange-500 group-hover:translate-x-1 transition-all" />
                       </div>
                     </div>
                   </Link>
                 )}
 
-                {/* More Projects - List Style */}
-                <div className="space-y-3">
-                  <div className="border-t border-b border-[var(--border)] py-1.5">
-                    <h3 className="text-[11px] font-semibold uppercase tracking-wider text-theme-muted text-center">
+                {/* More Initiatives - Compact Grid */}
+                <div className="space-y-2">
+                  <div className="flex items-center gap-2 mb-2">
+                    <div className="h-px flex-1 bg-gradient-to-r from-transparent via-[var(--border)]/50 to-[var(--border)]/50" />
+                    <span className="text-[10px] font-bold uppercase tracking-wider text-theme-muted">
                       More Initiatives
-                    </h3>
+                    </span>
+                    <div className="h-px flex-1 bg-gradient-to-r from-[var(--border)]/50 via-[var(--border)]/50 to-transparent" />
                   </div>
 
-                  <div className="grid gap-2">
+                  <div className="space-y-2">
                     {topProjects.map((project: any, idx: number) => (
                       <Link key={project.id} href={`/community/projects/${project.slug}`}>
-                        <div className="border border-[var(--border)] p-3 hover:bg-[var(--muted)]/30 hover:border-orange-500 transition-all">
-                          <div className="flex items-start gap-2">
-                            <div className="w-8 h-8 rounded bg-gradient-to-br from-orange-400 to-red-500 flex items-center justify-center flex-shrink-0">
-                              <Rocket className="w-4 h-4 text-white" />
+                        <div className="group relative p-3 rounded-lg bg-[var(--card)]/30 border border-[var(--border)]/30 hover:border-orange-500/30 hover:bg-[var(--card)]/60 transition-all">
+                          <div className="flex items-start gap-3">
+                            <div className="relative flex-shrink-0">
+                              <div className="w-9 h-9 rounded-lg bg-gradient-to-br from-orange-400 via-red-500 to-pink-500 flex items-center justify-center">
+                                <Rocket className="w-4 h-4 text-white" />
+                              </div>
+                              <div className="absolute inset-0 bg-orange-500/20 blur-md rounded-lg" />
                             </div>
-                            <div className="flex-1 min-w-0">
-                              <p className="text-sm font-semibold text-[var(--foreground)] line-clamp-1 mb-0.5" style={{ fontFamily: 'Georgia, serif' }}>
+                            <div className="flex-1 min-w-0 space-y-1.5">
+                              <p className="text-sm font-bold text-[var(--foreground)] line-clamp-1">
                                 {project.name}
                               </p>
-                              <p className="text-[10px] text-theme-muted line-clamp-2 leading-relaxed">
+                              <p className="text-xs text-theme-muted line-clamp-2 leading-relaxed">
                                 {project.description}
                               </p>
-                              <div className="flex items-center gap-2 mt-1.5">
-                                <span className="text-[9px] text-theme-muted flex items-center gap-1">
-                                  <Users className="w-2.5 h-2.5" />
-                                  {project._count.members}
-                                </span>
-                                <span className="text-[9px] text-theme-muted">•</span>
-                                <span className="text-[9px] font-semibold text-emerald-600 uppercase">
+                              <div className="flex items-center gap-2 text-[10px]">
+                                <div className="flex items-center gap-1 text-theme-muted">
+                                  <Users className="w-3 h-3" />
+                                  <span className="font-semibold">{project._count.members}</span>
+                                </div>
+                                <span className="text-theme-muted">•</span>
+                                <span className="font-semibold text-emerald-600 dark:text-emerald-400 uppercase">
                                   {project.status}
                                 </span>
                               </div>
@@ -421,22 +609,28 @@ export function CommunityNewspaper({
                   </div>
                 </div>
 
-                {/* Classified Ad Style - Launch Project */}
-                <div className="border-4 border-double border-[var(--border)] p-4 bg-gradient-to-br from-[var(--muted)]/30 to-[var(--card)]">
-                  <div className="text-center">
-                    <div className="inline-flex items-center justify-center w-12 h-12 rounded-full bg-gradient-to-br from-orange-400 to-red-500 mb-3">
-                      <Rocket className="w-6 h-6 text-white" />
+                {/* Action Card - Launch Initiative */}
+                <div className="relative rounded-xl overflow-hidden bg-gradient-to-br from-orange-500/10 via-red-500/5 to-pink-500/10 border border-orange-500/20 p-5">
+                  <div className="absolute top-0 right-0 w-24 h-24 bg-orange-500/10 rounded-full blur-2xl" />
+                  <div className="relative space-y-3">
+                    <div className="flex items-center gap-2">
+                      <div className="relative">
+                        <div className="w-10 h-10 rounded-lg bg-gradient-to-br from-orange-500 via-red-500 to-pink-500 flex items-center justify-center">
+                          <Rocket className="w-5 h-5 text-white" />
+                        </div>
+                        <div className="absolute inset-0 bg-orange-500/20 blur-lg rounded-lg" />
+                      </div>
+                      <h3 className="text-sm font-bold text-[var(--foreground)]">
+                        Launch Your Vision
+                      </h3>
                     </div>
-                    <h3 className="text-sm font-bold uppercase text-[var(--foreground)] mb-1" style={{ fontFamily: 'Georgia, serif' }}>
-                      Launch Your Vision
-                    </h3>
-                    <p className="text-[10px] text-theme-muted mb-3 leading-relaxed">
-                      Turn your ideas into action. Start a project and rally the community.
+                    <p className="text-xs text-theme-muted leading-relaxed">
+                      Transform ideas into reality. Rally the community around your sustainable initiative.
                     </p>
                     <Link href="/community/projects/new">
-                      <Button size="sm" className="w-full h-9 text-xs font-bold">
-                        Start a Project
-                        <ChevronRight className="w-3 h-3 ml-1" />
+                      <Button size="sm" className="w-full h-9 text-xs font-semibold bg-gradient-to-r from-orange-500 to-red-500 hover:from-orange-600 hover:to-red-600 rounded-lg">
+                        Start Initiative
+                        <ChevronRight className="w-3.5 h-3.5 ml-1" />
                       </Button>
                     </Link>
                   </div>
@@ -444,289 +638,414 @@ export function CommunityNewspaper({
               </div>
 
               {/* ======================================== */}
-              {/* RIGHT COLUMN - Community Pulse & Sidebar */}
+              {/* RIGHT COLUMN - Collective Intelligence */}
+              {/* Guardian of Wisdom - Eye */}
               {/* ======================================== */}
-              <div className="col-span-12 lg:col-span-4 space-y-4">
-                {/* Section Header with Ornament */}
+              <div className="col-span-12 lg:col-span-4 space-y-5">
+                {/* Section Header - Bio-Digital Style */}
                 <div className="relative">
-                  <div className="border-t-4 border-b-2 border-double border-[var(--border)] py-2">
-                    <h2 className="text-base font-bold uppercase tracking-wider text-[var(--foreground)] text-center" style={{ fontFamily: 'Georgia, serif' }}>
-                      ◆ Community Pulse ◆
-                    </h2>
+                  <div className="flex items-center gap-3 mb-4">
+                    <div className="relative">
+                      <div className="w-10 h-10 rounded-lg bg-gradient-to-br from-violet-500 via-purple-400 to-fuchsia-500 flex items-center justify-center">
+                        <Eye className="w-5 h-5 text-white" />
+                      </div>
+                      <div className="absolute inset-0 bg-gradient-to-br from-violet-500 to-purple-500 blur-lg opacity-30 rounded-lg" />
+                    </div>
+                    <div className="flex-1">
+                      <h2 className="text-lg font-bold text-[var(--foreground)] tracking-tight">
+                        Collective Pulse
+                      </h2>
+                      <p className="text-[10px] text-theme-muted font-medium uppercase tracking-wider">
+                        Guardian of Wisdom
+                      </p>
+                    </div>
                   </div>
-                  <div className="absolute -bottom-1 left-1/2 transform -translate-x-1/2 w-16 h-0.5 bg-[var(--foreground)]" />
+                  {/* Connecting line */}
+                  <div className="absolute top-5 left-5 w-px h-full bg-gradient-to-b from-violet-500/30 to-transparent" />
                 </div>
 
-                {/* Stats Grid - Newspaper Box Score Style */}
-                <div className="border-4 border-double border-[var(--border)] bg-[var(--card)]">
-                  <div className="bg-[var(--muted)]/30 px-3 py-2 border-b-2 border-[var(--border)]">
-                    <h3 className="text-[10px] font-semibold uppercase tracking-wider text-center text-theme-muted">
-                      Community Statistics
-                    </h3>
-                  </div>
-                  <div className="grid grid-cols-2 divide-x divide-y divide-[var(--border)]">
-                    <div className="p-3 text-center hover:bg-[var(--muted)]/20 transition-colors">
-                      <div className="text-xl font-bold text-theme-primary mb-1" style={{ fontFamily: 'Georgia, serif' }}>
-                        {communityStats.totalMembers.toLocaleString()}
-                      </div>
-                      <div className="text-[9px] font-semibold text-theme-muted uppercase tracking-wide">Members</div>
+                {/* Impact Metrics - Data Visualization */}
+                <div className="relative rounded-xl overflow-hidden bg-gradient-to-br from-[var(--card)] to-[var(--card)]/50 border border-[var(--border)]/50">
+                  <div className="absolute top-0 left-0 right-0 h-24 bg-gradient-to-b from-violet-500/5 to-transparent" />
+
+                  <div className="relative p-5 space-y-4">
+                    <div className="flex items-center gap-2 mb-2">
+                      <Hexagon className="w-4 h-4 text-violet-500" />
+                      <h3 className="text-xs font-bold uppercase tracking-wider text-theme-muted">
+                        Ecosystem Metrics
+                      </h3>
                     </div>
-                    <div className="p-3 text-center hover:bg-[var(--muted)]/20 transition-colors">
-                      <div className="text-xl font-bold text-orange-500 mb-1" style={{ fontFamily: 'Georgia, serif' }}>
-                        {communityStats.totalProjects}
+
+                    <div className="grid grid-cols-2 gap-3">
+                      {/* Guardians Count */}
+                      <div className="relative group p-3 rounded-lg bg-gradient-to-br from-blue-500/10 to-cyan-500/10 border border-blue-500/20 hover:border-blue-500/40 transition-all">
+                        <div className="absolute top-0 right-0 w-12 h-12 bg-blue-500/10 rounded-full blur-xl" />
+                        <div className="relative space-y-1">
+                          <div className="text-2xl font-bold bg-gradient-to-r from-blue-500 to-cyan-500 bg-clip-text text-transparent">
+                            {communityStats.totalMembers.toLocaleString()}
+                          </div>
+                          <div className="text-[9px] font-semibold text-theme-muted uppercase tracking-wide">
+                            Guardians
+                          </div>
+                        </div>
                       </div>
-                      <div className="text-[9px] font-semibold text-theme-muted uppercase tracking-wide">Projects</div>
-                    </div>
-                    <div className="p-3 text-center hover:bg-[var(--muted)]/20 transition-colors">
-                      <div className="text-xl font-bold text-emerald-500 mb-1" style={{ fontFamily: 'Georgia, serif' }}>
-                        {communityStats.totalArticles}
+
+                      {/* Initiatives Count */}
+                      <div className="relative group p-3 rounded-lg bg-gradient-to-br from-orange-500/10 to-red-500/10 border border-orange-500/20 hover:border-orange-500/40 transition-all">
+                        <div className="absolute top-0 right-0 w-12 h-12 bg-orange-500/10 rounded-full blur-xl" />
+                        <div className="relative space-y-1">
+                          <div className="text-2xl font-bold bg-gradient-to-r from-orange-500 to-red-500 bg-clip-text text-transparent">
+                            {communityStats.totalProjects}
+                          </div>
+                          <div className="text-[9px] font-semibold text-theme-muted uppercase tracking-wide">
+                            Initiatives
+                          </div>
+                        </div>
                       </div>
-                      <div className="text-[9px] font-semibold text-theme-muted uppercase tracking-wide">Articles</div>
-                    </div>
-                    <div className="p-3 text-center hover:bg-[var(--muted)]/20 transition-colors">
-                      <div className="text-xl font-bold text-purple-500 mb-1" style={{ fontFamily: 'Georgia, serif' }}>
-                        {communityStats.activeProjects}
+
+                      {/* Wisdom Count */}
+                      <div className="relative group p-3 rounded-lg bg-gradient-to-br from-emerald-500/10 to-teal-500/10 border border-emerald-500/20 hover:border-emerald-500/40 transition-all">
+                        <div className="absolute top-0 right-0 w-12 h-12 bg-emerald-500/10 rounded-full blur-xl" />
+                        <div className="relative space-y-1">
+                          <div className="text-2xl font-bold bg-gradient-to-r from-emerald-500 to-teal-500 bg-clip-text text-transparent">
+                            {communityStats.totalArticles}
+                          </div>
+                          <div className="text-[9px] font-semibold text-theme-muted uppercase tracking-wide">
+                            Wisdom
+                          </div>
+                        </div>
                       </div>
-                      <div className="text-[9px] font-semibold text-theme-muted uppercase tracking-wide">Active</div>
+
+                      {/* Active Status */}
+                      <div className="relative group p-3 rounded-lg bg-gradient-to-br from-violet-500/10 to-purple-500/10 border border-violet-500/20 hover:border-violet-500/40 transition-all">
+                        <div className="absolute top-0 right-0 w-12 h-12 bg-violet-500/10 rounded-full blur-xl" />
+                        <div className="relative space-y-1">
+                          <div className="text-2xl font-bold bg-gradient-to-r from-violet-500 to-purple-500 bg-clip-text text-transparent">
+                            {communityStats.activeProjects}
+                          </div>
+                          <div className="text-[9px] font-semibold text-theme-muted uppercase tracking-wide">
+                            Active Now
+                          </div>
+                        </div>
+                      </div>
                     </div>
                   </div>
                 </div>
 
-                {/* Community Directory - Roll Call Style */}
-                <div className="border-4 border-double border-[var(--border)] bg-[var(--card)]">
-                  <div className="bg-[var(--muted)]/30 px-3 py-2 border-b-2 border-[var(--border)]">
-                    <h3 className="text-[10px] font-semibold uppercase tracking-wider text-center text-theme-muted">
-                      Notable Changemakers
-                    </h3>
-                  </div>
-                  <div className="p-3 space-y-2">
-                    {suggestedUsers.slice(0, 5).map((suggestedUser: any) => {
-                      const config = suggestedUser.guardianArchetype ? archetypeConfig[suggestedUser.guardianArchetype] : null
-                      const Icon = config?.icon || Compass
-                      return (
-                        <Link key={suggestedUser.id} href={`/profile/${suggestedUser.id}`}>
-                          <div className="flex items-center gap-2 hover:bg-[var(--muted)]/40 p-2 rounded border border-transparent hover:border-[var(--border)] transition-all">
-                            {suggestedUser.image ? (
-                              <img
-                                src={suggestedUser.image}
-                                alt=""
-                                className="w-8 h-8 rounded-full object-cover border-2 border-[var(--border)]"
-                              />
-                            ) : (
-                              <div className={`w-8 h-8 rounded-full bg-gradient-to-br ${config?.gradient || 'from-gray-400 to-gray-600'} flex items-center justify-center border-2 border-[var(--border)]`}>
-                                <span className="text-xs font-bold text-white">{suggestedUser.name?.[0]}</span>
-                              </div>
-                            )}
-                            <div className="flex-1 min-w-0">
-                              <p className="text-[11px] font-bold text-[var(--foreground)] truncate">{suggestedUser.name}</p>
-                              <div className="flex items-center gap-1.5">
-                                <p className="text-[9px] text-theme-muted">{suggestedUser._count.followers} followers</p>
-                                {suggestedUser._count.articles > 0 && (
-                                  <>
-                                    <span className="text-[9px] text-theme-muted">•</span>
-                                    <p className="text-[9px] text-theme-muted">{suggestedUser._count.articles} articles</p>
-                                  </>
-                                )}
+                {/* Mycelium Network - Connected Guardians */}
+                <div className="relative rounded-xl overflow-hidden bg-gradient-to-br from-[var(--card)] to-[var(--card)]/50 border border-[var(--border)]/50">
+                  <div className="absolute top-0 left-0 right-0 h-16 bg-gradient-to-b from-purple-500/5 to-transparent" />
+
+                  <div className="relative p-4 space-y-3">
+                    <div className="flex items-center gap-2 mb-1">
+                      <Network className="w-4 h-4 text-purple-500" />
+                      <h3 className="text-xs font-bold uppercase tracking-wider text-theme-muted">
+                        Mycelium Network
+                      </h3>
+                    </div>
+
+                    <div className="space-y-2">
+                      {suggestedUsers.slice(0, 5).map((suggestedUser: any) => {
+                        const config = suggestedUser.guardianArchetype ? archetypeConfig[suggestedUser.guardianArchetype] : null
+                        const Icon = config?.icon || Compass
+                        return (
+                          <Link key={suggestedUser.id} href={`/profile/${suggestedUser.id}`}>
+                            <div className="group relative p-2.5 rounded-lg bg-[var(--muted)]/20 border border-[var(--border)]/30 hover:border-purple-500/30 hover:bg-[var(--card)]/50 transition-all">
+                              <div className="flex items-center gap-3">
+                                <div className="relative flex-shrink-0">
+                                  {suggestedUser.image ? (
+                                    <img
+                                      src={suggestedUser.image}
+                                      alt=""
+                                      className={`w-9 h-9 rounded-full object-cover border-2 ${config ? `border-${config.color.split('-')[1]}-500/40` : 'border-[var(--border)]'}`}
+                                    />
+                                  ) : (
+                                    <div className={`w-9 h-9 rounded-full bg-gradient-to-br ${config?.gradient || 'from-gray-400 to-gray-600'} flex items-center justify-center border-2 ${config ? 'border-white/20' : 'border-[var(--border)]'}`}>
+                                      <span className="text-xs font-bold text-white">{suggestedUser.name?.[0]}</span>
+                                    </div>
+                                  )}
+                                  {config && (
+                                    <div className={`absolute -bottom-1 -right-1 w-5 h-5 rounded-full bg-gradient-to-br ${config.gradient} border-2 border-[var(--card)] flex items-center justify-center`}>
+                                      <Icon className="w-2.5 h-2.5 text-white" />
+                                    </div>
+                                  )}
+                                </div>
+                                <div className="flex-1 min-w-0 space-y-0.5">
+                                  <p className="text-xs font-bold text-[var(--foreground)] truncate">
+                                    {suggestedUser.name}
+                                  </p>
+                                  <div className="flex items-center gap-2 text-[9px] text-theme-muted font-mono">
+                                    <span className="flex items-center gap-1">
+                                      <Users className="w-2.5 h-2.5" />
+                                      {suggestedUser._count.followers}
+                                    </span>
+                                    {suggestedUser._count.articles > 0 && (
+                                      <>
+                                        <span>•</span>
+                                        <span className="flex items-center gap-1">
+                                          <BookOpen className="w-2.5 h-2.5" />
+                                          {suggestedUser._count.articles}
+                                        </span>
+                                      </>
+                                    )}
+                                  </div>
+                                </div>
+                                <ChevronRight className="w-4 h-4 text-theme-muted group-hover:text-purple-500 group-hover:translate-x-0.5 transition-all flex-shrink-0" />
                               </div>
                             </div>
-                            {config && (
-                              <Icon className="w-4 h-4 text-theme-muted flex-shrink-0" />
-                            )}
-                          </div>
-                        </Link>
-                      )
-                    })}
-                  </div>
-                  <div className="border-t-2 border-[var(--border)] p-2">
+                          </Link>
+                        )
+                      })}
+                    </div>
+
                     <Link href="/community/users">
-                      <Button size="sm" variant="ghost" className="w-full h-8 text-[10px] font-bold">
-                        View All Members
-                        <ChevronRight className="w-3 h-3 ml-1" />
+                      <Button
+                        size="sm"
+                        variant="ghost"
+                        className="w-full h-8 text-xs font-semibold rounded-lg hover:bg-gradient-to-r hover:from-purple-500/10 hover:to-pink-500/10 hover:border-purple-500/30 border border-transparent transition-all"
+                      >
+                        View Network
+                        <ChevronRight className="w-3.5 h-3.5 ml-1" />
                       </Button>
                     </Link>
                   </div>
                 </div>
 
-                {/* Classified Ad Style - Write Article */}
-                <div className="border-4 border-double border-[var(--border)] p-4 bg-gradient-to-br from-[var(--card)] to-[var(--muted)]/30">
-                  <div className="text-center">
-                    <div className="inline-flex items-center justify-center w-12 h-12 rounded-full bg-gradient-to-br from-emerald-400 to-teal-500 mb-3">
-                      <BookOpen className="w-6 h-6 text-white" />
+                {/* Action Card - Share Wisdom */}
+                <div className="relative rounded-xl overflow-hidden bg-gradient-to-br from-emerald-500/10 via-teal-500/5 to-green-500/10 border border-emerald-500/20 p-5">
+                  <div className="absolute top-0 right-0 w-24 h-24 bg-emerald-500/10 rounded-full blur-2xl" />
+                  <div className="relative space-y-3">
+                    <div className="flex items-center gap-2">
+                      <div className="relative">
+                        <div className="w-10 h-10 rounded-lg bg-gradient-to-br from-emerald-500 via-teal-500 to-green-500 flex items-center justify-center">
+                          <BookOpen className="w-5 h-5 text-white" />
+                        </div>
+                        <div className="absolute inset-0 bg-emerald-500/20 blur-lg rounded-lg" />
+                      </div>
+                      <h3 className="text-sm font-bold text-[var(--foreground)]">
+                        Share Wisdom
+                      </h3>
                     </div>
-                    <h3 className="text-sm font-bold uppercase text-[var(--foreground)] mb-1" style={{ fontFamily: 'Georgia, serif' }}>
-                      Share Your Wisdom
-                    </h3>
-                    <p className="text-[10px] text-theme-muted mb-3 leading-relaxed">
-                      Contribute to our knowledge base. Write an article and inspire others.
+                    <p className="text-xs text-theme-muted leading-relaxed">
+                      Contribute to our collective knowledge. Your insights shape our future.
                     </p>
                     <Link href="/articles/write">
-                      <Button size="sm" className="w-full h-9 text-xs font-bold">
+                      <Button size="sm" className="w-full h-9 text-xs font-semibold bg-gradient-to-r from-emerald-500 to-teal-500 hover:from-emerald-600 hover:to-teal-600 rounded-lg">
                         Write Article
-                        <ChevronRight className="w-3 h-3 ml-1" />
+                        <ChevronRight className="w-3.5 h-3.5 ml-1" />
                       </Button>
                     </Link>
                   </div>
                 </div>
 
-                {/* Weather Widget Style - Quick Links */}
-                <div className="border-2 border-[var(--border)] bg-[var(--card)]">
-                  <div className="bg-[var(--muted)]/30 px-3 py-1.5 border-b border-[var(--border)]">
-                    <h3 className="text-[9px] font-semibold uppercase tracking-wider text-center text-theme-muted">
-                      Quick Access
-                    </h3>
-                  </div>
-                  <div className="p-2 grid grid-cols-2 gap-1">
-                    <Link href="/community/leaderboard">
-                      <Button variant="ghost" size="sm" className="w-full h-auto flex flex-col items-center gap-1 py-2 text-[10px]">
-                        <Award className="w-4 h-4 text-amber-500" />
-                        <span className="font-bold">Leaderboard</span>
-                      </Button>
-                    </Link>
-                    <Link href="/articles">
-                      <Button variant="ghost" size="sm" className="w-full h-auto flex flex-col items-center gap-1 py-2 text-[10px]">
-                        <BookOpen className="w-4 h-4 text-emerald-500" />
-                        <span className="font-bold">Articles</span>
-                      </Button>
-                    </Link>
-                    <Link href="/community/projects">
-                      <Button variant="ghost" size="sm" className="w-full h-auto flex flex-col items-center gap-1 py-2 text-[10px]">
-                        <Rocket className="w-4 h-4 text-orange-500" />
-                        <span className="font-bold">Projects</span>
-                      </Button>
-                    </Link>
-                    <Link href="/community/feed">
-                      <Button variant="ghost" size="sm" className="w-full h-auto flex flex-col items-center gap-1 py-2 text-[10px]">
-                        <MessageSquare className="w-4 h-4 text-blue-500" />
-                        <span className="font-bold">Feed</span>
-                      </Button>
-                    </Link>
+                {/* Quick Navigation - Hexagonal Grid */}
+                <div className="relative rounded-xl overflow-hidden bg-gradient-to-br from-[var(--card)] to-[var(--card)]/50 border border-[var(--border)]/50">
+                  <div className="p-4 space-y-3">
+                    <div className="flex items-center gap-2">
+                      <Compass className="w-4 h-4 text-theme-primary" />
+                      <h3 className="text-xs font-bold uppercase tracking-wider text-theme-muted">
+                        Navigate
+                      </h3>
+                    </div>
+
+                    <div className="grid grid-cols-2 gap-2">
+                      <Link href="/community/leaderboard">
+                        <div className="group relative p-3 rounded-lg bg-gradient-to-br from-amber-500/10 to-orange-500/10 border border-amber-500/20 hover:border-amber-500/40 transition-all">
+                          <div className="absolute top-0 right-0 w-12 h-12 bg-amber-500/10 rounded-full blur-xl opacity-0 group-hover:opacity-100 transition-opacity" />
+                          <div className="relative flex flex-col items-center gap-2 text-center">
+                            <Award className="w-5 h-5 text-amber-500" />
+                            <span className="text-[10px] font-bold text-[var(--foreground)]">Champions</span>
+                          </div>
+                        </div>
+                      </Link>
+                      <Link href="/articles">
+                        <div className="group relative p-3 rounded-lg bg-gradient-to-br from-emerald-500/10 to-teal-500/10 border border-emerald-500/20 hover:border-emerald-500/40 transition-all">
+                          <div className="absolute top-0 right-0 w-12 h-12 bg-emerald-500/10 rounded-full blur-xl opacity-0 group-hover:opacity-100 transition-opacity" />
+                          <div className="relative flex flex-col items-center gap-2 text-center">
+                            <BookOpen className="w-5 h-5 text-emerald-500" />
+                            <span className="text-[10px] font-bold text-[var(--foreground)]">Wisdom</span>
+                          </div>
+                        </div>
+                      </Link>
+                      <Link href="/community/projects">
+                        <div className="group relative p-3 rounded-lg bg-gradient-to-br from-orange-500/10 to-red-500/10 border border-orange-500/20 hover:border-orange-500/40 transition-all">
+                          <div className="absolute top-0 right-0 w-12 h-12 bg-orange-500/10 rounded-full blur-xl opacity-0 group-hover:opacity-100 transition-opacity" />
+                          <div className="relative flex flex-col items-center gap-2 text-center">
+                            <Rocket className="w-5 h-5 text-orange-500" />
+                            <span className="text-[10px] font-bold text-[var(--foreground)]">Initiatives</span>
+                          </div>
+                        </div>
+                      </Link>
+                      <Link href="/community/feed">
+                        <div className="group relative p-3 rounded-lg bg-gradient-to-br from-blue-500/10 to-cyan-500/10 border border-blue-500/20 hover:border-blue-500/40 transition-all">
+                          <div className="absolute top-0 right-0 w-12 h-12 bg-blue-500/10 rounded-full blur-xl opacity-0 group-hover:opacity-100 transition-opacity" />
+                          <div className="relative flex flex-col items-center gap-2 text-center">
+                            <MessageSquare className="w-5 h-5 text-blue-500" />
+                            <span className="text-[10px] font-bold text-[var(--foreground)]">Round Table</span>
+                          </div>
+                        </div>
+                      </Link>
+                    </div>
                   </div>
                 </div>
               </div>
             </div>
 
             {/* ============================================ */}
-            {/* BOTTOM SECTION - Additional Content */}
+            {/* BOTTOM GRID - Living Archives */}
             {/* ============================================ */}
-            <div className="mt-8 pt-8 border-t-4 border-double border-[var(--border)]">
+            <div className="mt-10 pt-8 border-t border-[var(--border)]/30">
               <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
 
-                {/* Trending Topics */}
-                <div className="border-2 border-[var(--border)] bg-[var(--card)]">
-                  <div className="bg-gradient-to-r from-[var(--primary)] to-[var(--accent)] px-4 py-2 border-b-2 border-[var(--border)]">
-                    <div className="flex items-center justify-center gap-2">
-                      <TrendingUp className="w-4 h-4 text-white" />
-                      <h3 className="text-xs font-bold uppercase tracking-wider text-white">
-                        Trending Topics
-                      </h3>
-                    </div>
+                {/* Trending Streams - Guardian of Nature */}
+                <div className="relative rounded-xl overflow-hidden bg-gradient-to-br from-[var(--card)] to-[var(--card)]/50 border border-[var(--border)]/50">
+                  <div className="absolute top-0 left-0 right-0 h-20 bg-gradient-to-b from-emerald-500/5 to-transparent" />
+
+                  <div className="relative bg-gradient-to-r from-emerald-500 via-green-500 to-teal-500 px-4 py-3 flex items-center justify-center gap-2">
+                    <TrendingUp className="w-5 h-5 text-white" />
+                    <h3 className="text-xs font-bold uppercase tracking-widest text-white">
+                      Trending Streams
+                    </h3>
                   </div>
-                  <div className="p-4">
-                    <div className="space-y-3">
-                      {['Sustainability', 'Renewable Energy', 'Community Action', 'Green Tech', 'Climate Solutions'].map((topic, i) => (
-                        <div key={i} className="flex items-center gap-3 pb-2 border-b border-[var(--border)] last:border-0">
-                          <div className="flex items-center justify-center w-8 h-8 rounded-full bg-gradient-to-br from-[var(--primary)] to-[var(--accent)] text-white font-bold text-sm">
-                            {i + 1}
+
+                  <div className="p-4 space-y-2.5">
+                    {['Regenerative Systems', 'Circular Economy', 'Community Resilience', 'Bio-Integration', 'Future Ethics'].map((topic, i) => (
+                      <div key={i} className="group relative p-3 rounded-lg bg-gradient-to-br from-emerald-500/5 to-teal-500/5 border border-emerald-500/20 hover:border-emerald-500/40 transition-all">
+                        <div className="flex items-center gap-3">
+                          <div className="relative flex-shrink-0">
+                            <div className="w-9 h-9 rounded-lg bg-gradient-to-br from-emerald-400 to-teal-500 flex items-center justify-center text-white font-bold text-sm">
+                              {i + 1}
+                            </div>
+                            <div className="absolute inset-0 bg-emerald-500/20 blur-md rounded-lg" />
                           </div>
-                          <div className="flex-1">
-                            <p className="text-xs font-semibold text-[var(--foreground)]" style={{ fontFamily: 'Georgia, serif' }}>
+                          <div className="flex-1 min-w-0 space-y-0.5">
+                            <p className="text-xs font-bold text-[var(--foreground)] truncate">
                               #{topic}
                             </p>
-                            <p className="text-[9px] text-theme-muted">
-                              {Math.floor(Math.random() * 500) + 100} discussions
+                            <p className="text-[9px] text-theme-muted font-mono">
+                              {Math.floor(Math.random() * 500) + 100} active
                             </p>
                           </div>
+                          <Sparkles className="w-4 h-4 text-emerald-500 opacity-0 group-hover:opacity-100 transition-opacity" />
                         </div>
-                      ))}
-                    </div>
+                      </div>
+                    ))}
                   </div>
                 </div>
 
-                {/* Community Achievements */}
-                <div className="border-2 border-[var(--border)] bg-[var(--card)]">
-                  <div className="bg-gradient-to-r from-amber-500 to-orange-500 px-4 py-2 border-b-2 border-[var(--border)]">
-                    <div className="flex items-center justify-center gap-2">
-                      <Award className="w-4 h-4 text-white" />
-                      <h3 className="text-xs font-bold uppercase tracking-wider text-white">
-                        Recent Achievements
-                      </h3>
-                    </div>
+                {/* Guardian Achievements - Guardian of Justice */}
+                <div className="relative rounded-xl overflow-hidden bg-gradient-to-br from-[var(--card)] to-[var(--card)]/50 border border-[var(--border)]/50">
+                  <div className="absolute top-0 left-0 right-0 h-20 bg-gradient-to-b from-amber-500/5 to-transparent" />
+
+                  <div className="relative bg-gradient-to-r from-amber-500 via-yellow-500 to-orange-500 px-4 py-3 flex items-center justify-center gap-2">
+                    <Award className="w-5 h-5 text-white" />
+                    <h3 className="text-xs font-bold uppercase tracking-widest text-white">
+                      Recent Milestones
+                    </h3>
                   </div>
-                  <div className="p-4">
-                    <div className="space-y-3">
-                      {[
-                        { badge: 'First Steps', user: 'New Members', count: 12 },
-                        { badge: 'Collaborator', user: 'Active Contributors', count: 8 },
-                        { badge: 'Thought Leader', user: 'Top Authors', count: 5 },
-                        { badge: 'Project Pioneer', user: 'Innovators', count: 3 },
-                        { badge: 'Community Champion', user: 'Leaders', count: 2 }
-                      ].map((achievement, i) => (
-                        <div key={i} className="flex items-center gap-3 pb-2 border-b border-[var(--border)] last:border-0">
-                          <div className="flex items-center justify-center w-10 h-10 rounded-full bg-gradient-to-br from-amber-400 to-orange-500">
-                            <Award className="w-5 h-5 text-white" />
-                          </div>
-                          <div className="flex-1">
-                            <p className="text-xs font-semibold text-[var(--foreground)]" style={{ fontFamily: 'Georgia, serif' }}>
-                              {achievement.badge}
-                            </p>
-                            <p className="text-[9px] text-theme-muted">
-                              {achievement.count} {achievement.user}
-                            </p>
+
+                  <div className="p-4 space-y-2.5">
+                    {[
+                      { badge: 'First Light', user: 'New Guardians', count: 12, icon: Sunrise },
+                      { badge: 'Collective Force', user: 'Contributors', count: 8, icon: Users },
+                      { badge: 'Wisdom Keeper', user: 'Authors', count: 5, icon: Eye },
+                      { badge: 'Catalyst', user: 'Innovators', count: 3, icon: Zap },
+                      { badge: 'Pillar', user: 'Leaders', count: 2, icon: Shield }
+                    ].map((achievement, i) => {
+                      const Icon = achievement.icon
+                      return (
+                        <div key={i} className="group relative p-3 rounded-lg bg-gradient-to-br from-amber-500/5 to-orange-500/5 border border-amber-500/20 hover:border-amber-500/40 transition-all">
+                          <div className="flex items-center gap-3">
+                            <div className="relative flex-shrink-0">
+                              <div className="w-10 h-10 rounded-lg bg-gradient-to-br from-amber-400 via-yellow-500 to-orange-500 flex items-center justify-center">
+                                <Icon className="w-5 h-5 text-white" />
+                              </div>
+                              <div className="absolute inset-0 bg-amber-500/20 blur-md rounded-lg" />
+                            </div>
+                            <div className="flex-1 min-w-0 space-y-0.5">
+                              <p className="text-xs font-bold text-[var(--foreground)]">
+                                {achievement.badge}
+                              </p>
+                              <p className="text-[9px] text-theme-muted font-mono">
+                                {achievement.count} {achievement.user}
+                              </p>
+                            </div>
+                            <Star className="w-4 h-4 text-amber-500 opacity-0 group-hover:opacity-100 transition-opacity" />
                           </div>
                         </div>
-                      ))}
-                    </div>
+                      )
+                    })}
                   </div>
                 </div>
 
-                {/* Community Calendar */}
-                <div className="border-2 border-[var(--border)] bg-[var(--card)]">
-                  <div className="bg-gradient-to-r from-emerald-500 to-teal-500 px-4 py-2 border-b-2 border-[var(--border)]">
-                    <div className="flex items-center justify-center gap-2">
-                      <Calendar className="w-4 h-4 text-white" />
-                      <h3 className="text-xs font-bold uppercase tracking-wider text-white">
-                        This Week
-                      </h3>
-                    </div>
+                {/* Temporal Cycles - Guardian of Transcendence */}
+                <div className="relative rounded-xl overflow-hidden bg-gradient-to-br from-[var(--card)] to-[var(--card)]/50 border border-[var(--border)]/50">
+                  <div className="absolute top-0 left-0 right-0 h-20 bg-gradient-to-b from-indigo-500/5 to-transparent" />
+
+                  <div className="relative bg-gradient-to-r from-indigo-500 via-blue-500 to-cyan-500 px-4 py-3 flex items-center justify-center gap-2">
+                    <Calendar className="w-5 h-5 text-white" />
+                    <h3 className="text-xs font-bold uppercase tracking-widest text-white">
+                      This Cycle
+                    </h3>
                   </div>
-                  <div className="p-4">
-                    <div className="space-y-3">
-                      {[
-                        { day: 'MON', event: 'Community Roundtable', time: '2:00 PM' },
-                        { day: 'TUE', event: 'Project Launch Day', time: '4:00 PM' },
-                        { day: 'WED', event: 'Article Writing Workshop', time: '3:00 PM' },
-                        { day: 'THU', event: 'Sustainability Forum', time: '5:00 PM' },
-                        { day: 'FRI', event: 'Weekly Recap & Awards', time: '6:00 PM' }
-                      ].map((item, i) => (
-                        <div key={i} className="flex items-start gap-3 pb-2 border-b border-[var(--border)] last:border-0">
-                          <div className="flex flex-col items-center justify-center w-10 h-10 rounded bg-gradient-to-br from-emerald-400 to-teal-500 text-white flex-shrink-0">
-                            <span className="text-[9px] font-semibold uppercase">{item.day}</span>
-                          </div>
-                          <div className="flex-1 min-w-0">
-                            <p className="text-xs font-semibold text-[var(--foreground)] line-clamp-1" style={{ fontFamily: 'Georgia, serif' }}>
-                              {item.event}
-                            </p>
-                            <p className="text-[9px] text-theme-muted flex items-center gap-1">
-                              <Clock className="w-2.5 h-2.5" />
-                              {item.time}
-                            </p>
+
+                  <div className="p-4 space-y-2.5">
+                    {[
+                      { day: 'MON', event: 'Community Convergence', time: '2:00 PM', icon: Users },
+                      { day: 'TUE', event: 'Initiative Launch', time: '4:00 PM', icon: Rocket },
+                      { day: 'WED', event: 'Wisdom Circle', time: '3:00 PM', icon: BookOpen },
+                      { day: 'THU', event: 'Regeneration Forum', time: '5:00 PM', icon: RefreshCw },
+                      { day: 'FRI', event: 'Reflection & Recognition', time: '6:00 PM', icon: Star }
+                    ].map((item, i) => {
+                      const Icon = item.icon
+                      return (
+                        <div key={i} className="group relative p-3 rounded-lg bg-gradient-to-br from-indigo-500/5 to-blue-500/5 border border-indigo-500/20 hover:border-indigo-500/40 transition-all">
+                          <div className="flex items-start gap-3">
+                            <div className="relative flex-shrink-0">
+                              <div className="w-10 h-10 rounded-lg bg-gradient-to-br from-indigo-400 via-blue-500 to-cyan-500 flex items-center justify-center text-white">
+                                <span className="text-[9px] font-bold uppercase">{item.day}</span>
+                              </div>
+                              <div className="absolute inset-0 bg-indigo-500/20 blur-md rounded-lg" />
+                            </div>
+                            <div className="flex-1 min-w-0 space-y-1">
+                              <p className="text-xs font-bold text-[var(--foreground)] line-clamp-1 flex items-center gap-1.5">
+                                <Icon className="w-3 h-3 text-theme-muted" />
+                                {item.event}
+                              </p>
+                              <p className="text-[9px] text-theme-muted flex items-center gap-1 font-mono">
+                                <Clock className="w-2.5 h-2.5" />
+                                {item.time}
+                              </p>
+                            </div>
                           </div>
                         </div>
-                      ))}
-                    </div>
+                      )
+                    })}
                   </div>
                 </div>
               </div>
 
-              {/* Quote of the Day - Pull Quote Style */}
-              <div className="mt-6 border-t-2 border-b-2 border-[var(--border)] py-6 bg-[var(--muted)]/10">
-                <div className="max-w-3xl mx-auto text-center px-8">
-                  <div className="text-4xl text-theme-primary mb-2 opacity-30" style={{ fontFamily: 'Georgia, serif' }}>"</div>
-                  <blockquote className="text-base font-medium text-[var(--foreground)] italic leading-relaxed" style={{ fontFamily: 'Georgia, serif' }}>
-                    The future belongs to those who believe in the beauty of their dreams, and the power of their actions to make them real.
+              {/* Wisdom Transmission - Exodology Quote */}
+              <div className="mt-8 relative rounded-xl overflow-hidden">
+                <div className="absolute inset-0 bg-gradient-to-r from-[var(--primary)]/5 via-[var(--accent)]/5 to-[var(--secondary)]/5" />
+                <div className="absolute top-0 left-1/4 w-32 h-32 bg-[var(--primary)]/10 rounded-full blur-3xl" />
+                <div className="absolute top-0 right-1/4 w-32 h-32 bg-[var(--accent)]/10 rounded-full blur-3xl" />
+
+                <div className="relative max-w-3xl mx-auto text-center px-8 py-10">
+                  <div className="flex items-center justify-center gap-3 mb-4">
+                    <Sparkles className="w-5 h-5 text-theme-primary opacity-50" />
+                    <div className="h-px w-16 bg-gradient-to-r from-transparent via-[var(--primary)] to-transparent" />
+                    <Sparkles className="w-5 h-5 text-theme-accent opacity-50" />
+                  </div>
+
+                  <blockquote className="text-lg font-medium text-[var(--foreground)] leading-relaxed mb-4">
+                    "The future is not something we enter. The future is something we <span className="text-theme-primary font-bold">create</span> — through <span className="text-theme-accent font-bold">conscious action</span>, <span className="text-theme-secondary font-bold">collective wisdom</span>, and unwavering commitment to <span className="bg-gradient-to-r from-emerald-500 to-teal-500 bg-clip-text text-transparent font-bold">regeneration</span>."
                   </blockquote>
-                  <div className="mt-3 text-xs font-medium text-theme-muted uppercase tracking-wider">
-                    — Project Exodus Community
+
+                  <div className="flex items-center justify-center gap-2 text-xs font-bold text-theme-muted uppercase tracking-wider">
+                    <Hexagon className="w-3 h-3" />
+                    <span>Core Tenet of Exodology</span>
+                    <Hexagon className="w-3 h-3" />
                   </div>
                 </div>
               </div>
@@ -735,41 +1054,71 @@ export function CommunityNewspaper({
         </div>
 
         {/* ============================================ */}
-        {/* FOOTER - Newspaper Edition Info */}
+        {/* FOOTER - Bio-Digital Signature */}
         {/* ============================================ */}
-        <div className="border-t-4 border-double border-[var(--border)] bg-[var(--card)] mt-8">
-          <div className="max-w-6xl mx-auto px-4 py-4">
-            {/* Decorative separator */}
-            <div className="flex items-center justify-center gap-2 mb-3">
-              <div className="h-px flex-1 bg-gradient-to-r from-transparent via-[var(--border)] to-[var(--border)]" />
-              <div className="flex gap-1">
-                <div className="w-1 h-1 bg-[var(--border)] rounded-full" />
-                <div className="w-1 h-1 bg-[var(--border)] rounded-full" />
-                <div className="w-1 h-1 bg-[var(--border)] rounded-full" />
+        <div className="relative border-t border-[var(--border)]/30 bg-gradient-to-br from-[var(--card)] via-[var(--background)] to-[var(--card)] mt-10">
+          {/* Subtle grid overlay */}
+          <div className="absolute inset-0 opacity-[0.02]" style={{
+            backgroundImage: `
+              linear-gradient(to right, var(--primary) 1px, transparent 1px),
+              linear-gradient(to bottom, var(--primary) 1px, transparent 1px)
+            `,
+            backgroundSize: '30px 30px'
+          }} />
+
+          <div className="relative max-w-7xl mx-auto px-4 py-6">
+            {/* Guardian Constellation Divider */}
+            <div className="flex items-center justify-center gap-2 mb-5">
+              <div className="h-px flex-1 bg-gradient-to-r from-transparent via-[var(--border)]/50 to-[var(--border)]/50" />
+              <div className="flex gap-1.5">
+                {Object.values(archetypeConfig).map((config, i) => (
+                  <div key={i} className={`w-1.5 h-1.5 rounded-full bg-gradient-to-br ${config.gradient} opacity-40`} />
+                ))}
               </div>
-              <div className="h-px flex-1 bg-gradient-to-r from-[var(--border)] via-[var(--border)] to-transparent" />
+              <div className="h-px flex-1 bg-gradient-to-r from-[var(--border)]/50 via-[var(--border)]/50 to-transparent" />
             </div>
 
-            {/* Footer content */}
-            <div className="flex flex-col sm:flex-row items-center justify-between gap-3 text-[10px] text-theme-muted">
-              <div className="flex items-center gap-3">
-                <span className="font-bold" style={{ fontFamily: 'Georgia, serif' }}>© 2026 Project Exodus</span>
-                <span className="hidden sm:inline">•</span>
-                <span className="hidden sm:inline font-semibold">Community Edition</span>
-                <span className="hidden sm:inline">•</span>
-                <span className="hidden sm:inline italic">Est. 2026</span>
+            {/* Main Footer Content */}
+            <div className="flex flex-col sm:flex-row items-center justify-between gap-4">
+              <div className="flex flex-col sm:flex-row items-center gap-3 text-[10px] text-theme-muted font-medium">
+                <div className="flex items-center gap-2">
+                  <Hexagon className="w-3.5 h-3.5 text-theme-primary" />
+                  <span className="font-bold text-[var(--foreground)]">Project Exodus</span>
+                </div>
+                <span className="hidden sm:inline opacity-50">•</span>
+                <span className="font-mono">Chronicle v1.0</span>
+                <span className="hidden sm:inline opacity-50">•</span>
+                <span className="hidden sm:inline">Est. 2026</span>
               </div>
-              <div className="flex items-center gap-2">
-                <Activity className="w-3.5 h-3.5 text-green-500" />
-                <span className="font-semibold">All systems operational</span>
+
+              <div className="flex items-center gap-4">
+                <div className="flex items-center gap-2 px-3 py-1.5 rounded-full bg-emerald-500/10 border border-emerald-500/30">
+                  <div className="relative">
+                    <Activity className="w-3.5 h-3.5 text-emerald-500" />
+                    <div className="absolute inset-0 bg-emerald-500/20 blur-sm rounded-full animate-pulse" />
+                  </div>
+                  <span className="text-[10px] font-bold text-emerald-600 dark:text-emerald-400">
+                    All Systems Optimal
+                  </span>
+                </div>
               </div>
             </div>
 
-            {/* Page number */}
-            <div className="text-center mt-3 pt-3 border-t border-[var(--border)]">
-              <p className="text-[9px] text-theme-muted font-serif italic">
-                Page 1 of 1 • {currentTime.toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' })}
-              </p>
+            {/* Meta Info */}
+            <div className="text-center mt-4 pt-4 border-t border-[var(--border)]/20">
+              <div className="flex items-center justify-center gap-3 text-[9px] text-theme-muted font-mono">
+                <div className="flex items-center gap-1.5">
+                  <Sun className="w-3 h-3" />
+                  <span>Solar Sync Active</span>
+                </div>
+                <span className="opacity-50">•</span>
+                <span>{currentTime.toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' })}</span>
+                <span className="opacity-50">•</span>
+                <div className="flex items-center gap-1.5">
+                  <Leaf className="w-3 h-3 text-emerald-500" />
+                  <span>Carbon Neutral Platform</span>
+                </div>
+              </div>
             </div>
           </div>
         </div>
