@@ -81,179 +81,188 @@ export function CommunityNewspaper({
       <div className="flex flex-col">
 
         {/* ============================================ */}
-        {/* MASTHEAD - Futuristic Bio-Digital Header */}
+        {/* MASTHEAD - Vintage Newspaper Header */}
         {/* ============================================ */}
-        <div className="relative overflow-hidden bg-gradient-to-br from-[var(--card)] via-[var(--background)] to-[var(--card)]">
-          {/* Holographic grid background */}
+        <div className="relative overflow-hidden bg-[var(--background)] border-b-4 border-double border-[var(--foreground)]">
+          {/* Aged paper texture overlay */}
           <div className="absolute inset-0 opacity-[0.03]" style={{
-            backgroundImage: `
-              linear-gradient(to right, var(--primary) 1px, transparent 1px),
-              linear-gradient(to bottom, var(--primary) 1px, transparent 1px)
-            `,
-            backgroundSize: '40px 40px'
+            backgroundImage: `repeating-linear-gradient(
+              0deg,
+              var(--foreground) 0px,
+              transparent 1px,
+              transparent 2px,
+              var(--foreground) 3px
+            )`,
+            backgroundSize: '100% 3px'
           }} />
 
-          {/* Ambient glow effects */}
-          <div className="absolute top-0 left-1/4 w-64 h-64 bg-[var(--primary)]/5 rounded-full blur-3xl" />
-          <div className="absolute top-0 right-1/4 w-64 h-64 bg-[var(--accent)]/5 rounded-full blur-3xl" />
-
-          {/* Top Status Bar - Ecosystem Health */}
-          <div className="relative border-b border-[var(--border)]/50 backdrop-blur-sm bg-[var(--card)]/50 px-4 py-2">
-            <div className="max-w-7xl mx-auto flex items-center justify-between text-[10px]">
-              <div className="flex items-center gap-4">
-                <div className="flex items-center gap-1.5">
-                  <div className="relative">
-                    <Activity className="w-3.5 h-3.5 text-emerald-500" />
-                    <div className="absolute inset-0 bg-emerald-500/20 blur-sm rounded-full animate-pulse" />
-                  </div>
-                  <span className="font-semibold text-emerald-600 dark:text-emerald-400">
-                    Ecosystem: Thriving
-                  </span>
-                </div>
-                <div className="flex items-center gap-1.5 text-theme-muted">
-                  <Clock className="w-3 h-3" />
-                  <span className="font-medium">
+          {/* Top Border - Ornamental */}
+          <div className="relative border-b-2 border-[var(--foreground)] bg-[var(--card)]">
+            <div className="max-w-7xl mx-auto px-4 py-2">
+              <div className="flex items-center justify-between text-[10px] font-bold uppercase tracking-widest">
+                <div className="flex items-center gap-4">
+                  <span className="text-[var(--foreground)]">Est. 2026</span>
+                  <span className="text-theme-muted">•</span>
+                  <span className="text-theme-muted">
                     {currentTime.toLocaleDateString('en-US', {
                       weekday: 'long',
-                      month: 'short',
+                      month: 'long',
                       day: 'numeric',
                       year: 'numeric'
                     })}
                   </span>
-                  <span className="hidden sm:inline">•</span>
-                  <span className="hidden sm:inline">
-                    {currentTime.toLocaleTimeString('en-US', {
-                      hour: '2-digit',
-                      minute: '2-digit'
-                    })}
-                  </span>
+                </div>
+                <div className="flex items-center gap-4">
+                  <span className="text-theme-muted hidden sm:inline">Vol. {Math.floor((Date.now() - new Date('2026-01-01').getTime()) / (365 * 24 * 60 * 60 * 1000)) + 1}</span>
+                  <span className="text-theme-muted hidden sm:inline">•</span>
+                  <span className="text-[var(--foreground)]">No. {Math.floor(Date.now() / 86400000) % 365}</span>
+                  <span className="text-theme-muted hidden md:inline">•</span>
+                  <span className="text-theme-muted hidden md:inline">FREE</span>
                 </div>
               </div>
-              <div className="flex items-center gap-3">
-                <div className="hidden sm:flex items-center gap-1.5 px-2 py-1 rounded-full bg-gradient-to-r from-emerald-500/10 to-teal-500/10 border border-emerald-500/20">
-                  <Leaf className="w-3 h-3 text-emerald-500" />
-                  <span className="text-emerald-600 dark:text-emerald-400 font-bold">Carbon Neutral</span>
+            </div>
+          </div>
+
+          {/* Main Masthead */}
+          <div className="relative px-4 py-8 border-b-2 border-[var(--foreground)]">
+            <div className="max-w-7xl mx-auto">
+              {/* Decorative Top Border */}
+              <div className="flex items-center justify-center gap-2 mb-6">
+                <div className="h-px flex-1 bg-gradient-to-r from-transparent via-[var(--foreground)] to-transparent" />
+                <div className="flex gap-1">
+                  {[...Array(5)].map((_, i) => (
+                    <div key={i} className="w-1.5 h-1.5 rotate-45 border border-[var(--foreground)]" />
+                  ))}
                 </div>
-                <div className="flex items-center gap-1.5">
-                  <div className="relative">
-                    <Wifi className="w-3 h-3 text-blue-500" />
-                    <div className="absolute inset-0 bg-blue-500/20 blur-sm rounded-full animate-pulse" />
+                <div className="h-px flex-1 bg-gradient-to-r from-transparent via-[var(--foreground)] to-transparent" />
+              </div>
+
+              {/* Newspaper Title - Classic Serif Style */}
+              <div className="text-center space-y-3">
+                {/* Pre-title ornament */}
+                <div className="flex items-center justify-center gap-3 text-[10px] uppercase tracking-[0.3em] font-bold text-theme-muted">
+                  <span>⚜</span>
+                  <span>The Daily</span>
+                  <span>⚜</span>
+                </div>
+
+                {/* Main Title - Gothic Newspaper Style */}
+                <h1 className="font-serif text-5xl sm:text-6xl md:text-7xl lg:text-8xl font-black text-[var(--foreground)] tracking-tight leading-none" style={{
+                  textShadow: '2px 2px 0px var(--muted)',
+                  letterSpacing: '0.02em'
+                }}>
+                  <div className="relative inline-block">
+                    EXODUS
+                    {/* Decorative underline */}
+                    <div className="absolute -bottom-2 left-0 right-0 h-1 bg-[var(--foreground)]" />
+                    <div className="absolute -bottom-3 left-0 right-0 h-px bg-[var(--foreground)]" />
                   </div>
-                  <span className="font-bold text-blue-600 dark:text-blue-400 uppercase">Live</span>
-                </div>
-              </div>
-            </div>
-          </div>
-
-          {/* Main Title Section - Holographic Treatment */}
-          <div className="relative px-4 py-6 border-b border-[var(--border)]/30">
-            <div className="max-w-7xl mx-auto text-center space-y-4">
-              {/* Guardian Constellation */}
-              <div className="flex items-center justify-center gap-2 mb-2">
-                {Object.values(archetypeConfig).map((config, i) => {
-                  const Icon = config.icon
-                  return (
-                    <div key={i} className="relative group">
-                      <div className={`w-2 h-2 rounded-full bg-gradient-to-br ${config.gradient} opacity-60 group-hover:opacity-100 transition-opacity`} />
-                      <div className={`absolute inset-0 bg-gradient-to-br ${config.gradient} blur-md opacity-0 group-hover:opacity-50 transition-opacity`} />
-                    </div>
-                  )
-                })}
-              </div>
-
-              {/* Title with holographic effect */}
-              <div className="relative inline-block">
-                <h1 className="text-3xl sm:text-4xl lg:text-5xl font-bold bg-gradient-to-r from-[var(--foreground)] via-[var(--primary)] to-[var(--foreground)] bg-clip-text text-transparent tracking-tight">
-                  EXODUS CHRONICLE
                 </h1>
-                <div className="absolute -inset-1 bg-gradient-to-r from-[var(--primary)] via-[var(--accent)] to-[var(--secondary)] opacity-10 blur-xl" />
-              </div>
 
-              {/* Subtitle with bio-digital aesthetic */}
-              <div className="flex items-center justify-center gap-3">
-                <Hexagon className="w-4 h-4 text-theme-primary opacity-40" />
-                <p className="text-sm text-theme-muted font-medium tracking-wide">
-                  Where <span className="text-[var(--primary)] font-semibold">Consciousness</span> meets <span className="text-[var(--accent)] font-semibold">Action</span>
+                {/* Subtitle */}
+                <div className="flex items-center justify-center gap-3">
+                  <div className="hidden sm:block h-px w-12 bg-[var(--foreground)]" />
+                  <p className="font-serif text-lg sm:text-xl md:text-2xl font-bold italic text-[var(--foreground)]">
+                    Chronicle
+                  </p>
+                  <div className="hidden sm:block h-px w-12 bg-[var(--foreground)]" />
+                </div>
+
+                {/* Tagline - Old Newspaper Style */}
+                <p className="text-xs sm:text-sm font-bold uppercase tracking-[0.15em] text-theme-muted border-t border-b border-[var(--border)] py-2 max-w-2xl mx-auto">
+                  "All The News That's Fit For A Sustainable Future"
                 </p>
-                <Hexagon className="w-4 h-4 text-theme-accent opacity-40" />
+
+                {/* Location & Circulation Info */}
+                <div className="flex items-center justify-center gap-6 text-[10px] font-bold uppercase tracking-wider text-theme-muted pt-2">
+                  <div className="flex items-center gap-2">
+                    <MapPin className="w-3 h-3" />
+                    <span>Global Edition</span>
+                  </div>
+                  <span className="hidden sm:inline">|</span>
+                  <div className="hidden sm:flex items-center gap-2">
+                    <Users className="w-3 h-3" />
+                    <span>{communityStats.totalMembers.toLocaleString()} Readers</span>
+                  </div>
+                  <span className="hidden md:inline">|</span>
+                  <div className="hidden md:flex items-center gap-2">
+                    <Newspaper className="w-3 h-3" />
+                    <span>Daily Circulation</span>
+                  </div>
+                </div>
               </div>
 
-              {/* Meta info with tech aesthetic */}
-              <div className="flex items-center justify-center gap-4 text-[9px] text-theme-muted font-mono">
-                <div className="flex items-center gap-1.5 px-2 py-1 rounded bg-[var(--muted)]/30 border border-[var(--border)]/30">
-                  <Sunrise className="w-3 h-3" />
-                  <span>EST. 2026</span>
+              {/* Decorative Bottom Border */}
+              <div className="flex items-center justify-center gap-2 mt-6">
+                <div className="h-px flex-1 bg-gradient-to-r from-transparent via-[var(--foreground)] to-transparent" />
+                <div className="flex gap-1">
+                  {[...Array(5)].map((_, i) => (
+                    <div key={i} className="w-1.5 h-1.5 rotate-45 border border-[var(--foreground)]" />
+                  ))}
                 </div>
-                <div className="flex items-center gap-1.5 px-2 py-1 rounded bg-[var(--muted)]/30 border border-[var(--border)]/30">
-                  <Hexagon className="w-3 h-3" />
-                  <span>VOL. 1</span>
-                </div>
-                <div className="flex items-center gap-1.5 px-2 py-1 rounded bg-[var(--muted)]/30 border border-[var(--border)]/30">
-                  <Star className="w-3 h-3" />
-                  <span>ISSUE {Math.floor(Date.now() / 86400000) % 365}</span>
-                </div>
+                <div className="h-px flex-1 bg-gradient-to-r from-transparent via-[var(--foreground)] to-transparent" />
               </div>
             </div>
           </div>
 
-          {/* Navigation Bar - Holographic Pills */}
-          <div className="relative px-4 py-3 backdrop-blur-md bg-[var(--card)]/30 border-b border-[var(--border)]/30">
-            <div className="max-w-7xl mx-auto flex items-center justify-between">
-              <div className="flex items-center gap-2 overflow-x-auto scrollbar-hide">
-                <Link href="/community/feed">
-                  <Button
-                    size="sm"
-                    variant="ghost"
-                    className="h-8 px-4 text-xs font-semibold rounded-full hover:bg-gradient-to-r hover:from-blue-500/10 hover:to-cyan-500/10 hover:border-blue-500/30 border border-transparent transition-all"
-                  >
-                    <MessageSquare className="w-3.5 h-3.5 mr-2" />
-                    Round Table
-                  </Button>
-                </Link>
-                <Link href="/community/projects">
-                  <Button
-                    size="sm"
-                    variant="ghost"
-                    className="h-8 px-4 text-xs font-semibold rounded-full hover:bg-gradient-to-r hover:from-orange-500/10 hover:to-red-500/10 hover:border-orange-500/30 border border-transparent transition-all"
-                  >
-                    <Rocket className="w-3.5 h-3.5 mr-2" />
-                    Initiatives
-                  </Button>
-                </Link>
-                <Link href="/community/users">
-                  <Button
-                    size="sm"
-                    variant="ghost"
-                    className="h-8 px-4 text-xs font-semibold rounded-full hover:bg-gradient-to-r hover:from-purple-500/10 hover:to-pink-500/10 hover:border-purple-500/30 border border-transparent transition-all"
-                  >
-                    <Network className="w-3.5 h-3.5 mr-2" />
-                    Mycelium
-                  </Button>
-                </Link>
-                <Link href="/articles" className="hidden sm:block">
-                  <Button
-                    size="sm"
-                    variant="ghost"
-                    className="h-8 px-4 text-xs font-semibold rounded-full hover:bg-gradient-to-r hover:from-emerald-500/10 hover:to-teal-500/10 hover:border-emerald-500/30 border border-transparent transition-all"
-                  >
-                    <BookOpen className="w-3.5 h-3.5 mr-2" />
-                    Wisdom
-                  </Button>
-                </Link>
-              </div>
-
-              {/* Community Counter with Pulse */}
-              <div className="flex items-center gap-2 px-3 py-1.5 rounded-full bg-gradient-to-r from-[var(--primary)]/10 to-[var(--accent)]/10 border border-[var(--primary)]/20">
-                <div className="relative">
-                  <Users className="w-3.5 h-3.5 text-theme-primary" />
-                  <div className="absolute inset-0 bg-[var(--primary)]/20 blur-sm rounded-full animate-pulse" />
+          {/* Section Headers - Classic Newspaper Departments */}
+          <div className="relative border-b border-[var(--border)] bg-[var(--card)]">
+            <div className="max-w-7xl mx-auto px-4 py-3">
+              <div className="flex items-center justify-between overflow-x-auto scrollbar-hide">
+                <div className="flex items-center gap-1 flex-shrink-0">
+                  <Link href="/community/feed">
+                    <Button
+                      size="sm"
+                      variant="ghost"
+                      className="h-8 px-4 text-xs font-bold uppercase tracking-wide border border-transparent hover:border-[var(--foreground)] transition-all"
+                    >
+                      <MessageSquare className="w-3.5 h-3.5 mr-2" />
+                      Op-Ed
+                    </Button>
+                  </Link>
+                  <span className="text-theme-muted">|</span>
+                  <Link href="/community/projects">
+                    <Button
+                      size="sm"
+                      variant="ghost"
+                      className="h-8 px-4 text-xs font-bold uppercase tracking-wide border border-transparent hover:border-[var(--foreground)] transition-all"
+                    >
+                      <Rocket className="w-3.5 h-3.5 mr-2" />
+                      Business
+                    </Button>
+                  </Link>
+                  <span className="text-theme-muted hidden sm:inline">|</span>
+                  <Link href="/community/users" className="hidden sm:block">
+                    <Button
+                      size="sm"
+                      variant="ghost"
+                      className="h-8 px-4 text-xs font-bold uppercase tracking-wide border border-transparent hover:border-[var(--foreground)] transition-all"
+                    >
+                      <Users className="w-3.5 h-3.5 mr-2" />
+                      Society
+                    </Button>
+                  </Link>
+                  <span className="text-theme-muted hidden md:inline">|</span>
+                  <Link href="/articles" className="hidden md:block">
+                    <Button
+                      size="sm"
+                      variant="ghost"
+                      className="h-8 px-4 text-xs font-bold uppercase tracking-wide border border-transparent hover:border-[var(--foreground)] transition-all"
+                    >
+                      <BookOpen className="w-3.5 h-3.5 mr-2" />
+                      Features
+                    </Button>
+                  </Link>
                 </div>
-                <span className="text-xs font-bold text-theme-primary hidden sm:inline">
-                  {communityStats.totalMembers.toLocaleString()} Guardians
-                </span>
-                <span className="text-xs font-bold text-theme-primary sm:hidden">
-                  {communityStats.totalMembers.toLocaleString()}
-                </span>
+
+                {/* Weather/Status Widget */}
+                <div className="flex items-center gap-3 px-3 py-1.5 border border-[var(--border)] text-[10px] font-bold uppercase tracking-wide flex-shrink-0 ml-4">
+                  <div className="flex items-center gap-1.5">
+                    <Activity className="w-3 h-3 text-emerald-600" />
+                    <span className="text-emerald-600 hidden sm:inline">Community: Thriving</span>
+                    <span className="text-emerald-600 sm:hidden">Live</span>
+                  </div>
+                </div>
               </div>
             </div>
           </div>
