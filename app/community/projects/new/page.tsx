@@ -1,83 +1,185 @@
 'use client'
 
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { useSession } from 'next-auth/react'
 import { redirect, useRouter } from 'next/navigation'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/Card'
 import { Button } from '@/components/ui/Button'
 import { motion, AnimatePresence } from 'framer-motion'
 import {
-  Briefcase,
-  Target,
-  Users,
-  FileText,
-  ArrowLeft,
-  ChevronDown,
-  ChevronUp,
-  Settings2,
-  Layers,
-  BookOpen,
-  ShieldCheck,
-  Plus,
-  X,
-  GraduationCap,
-  Clock,
-  Award,
-  Trash2
+  Sparkles, Eye, Heart, Flame, Target, Shield, Globe, Compass,
+  ArrowLeft, ArrowRight, Check, Rocket, Users, FileText,
+  Settings, Layers, BookOpen, Lock, Unlock, Globe2, Archive,
+  Palette, Layout, ImageIcon, Tag, FolderTree, Plus, X, ChevronDown,
+  Zap, Leaf, Sun, Moon, TreePine, Waves
 } from 'lucide-react'
 import { BackButton } from '@/components/navigation/BackButton'
 import Link from 'next/link'
 
-interface Prerequisite {
-  id: string
-  type: 'EXODUS_COURSE' | 'EXPERIENCE_LEVEL' | 'SKILL' | 'CUSTOM'
-  displayName: string
-  description: string
-  requiredTag?: string
-  isRequired: boolean
-}
+// Guardian-themed steps
+const STEPS = [
+  {
+    id: 1,
+    name: 'Vision',
+    guardian: 'Transcendence',
+    icon: Sparkles,
+    gradient: 'from-indigo-500 via-blue-400 to-cyan-500',
+    color: 'text-indigo-400',
+    description: 'Plant the seed of your vision'
+  },
+  {
+    id: 2,
+    name: 'Foundation',
+    guardian: 'Temperance',
+    icon: Shield,
+    gradient: 'from-blue-500 via-cyan-400 to-teal-500',
+    color: 'text-cyan-400',
+    description: 'Establish your project foundation'
+  },
+  {
+    id: 3,
+    name: 'Structure',
+    guardian: 'Wisdom',
+    icon: Eye,
+    gradient: 'from-violet-500 via-purple-400 to-fuchsia-500',
+    color: 'text-violet-400',
+    description: 'Design your ecosystem architecture'
+  },
+  {
+    id: 4,
+    name: 'Collaboration',
+    guardian: 'Humanity',
+    icon: Heart,
+    gradient: 'from-pink-500 via-rose-400 to-red-400',
+    color: 'text-rose-400',
+    description: 'Configure collaboration & team settings'
+  },
+  {
+    id: 5,
+    name: 'Launch',
+    guardian: 'Courage',
+    icon: Flame,
+    gradient: 'from-orange-500 via-red-400 to-pink-500',
+    color: 'text-orange-400',
+    description: 'Review and bring your vision to life'
+  }
+]
 
-interface Subgroup {
+const VISIBILITY_OPTIONS = [
+  {
+    value: 'PUBLIC',
+    icon: Globe2,
+    label: 'Public',
+    description: 'Visible to everyone on Project Exodus',
+    gradient: 'from-emerald-500 to-teal-500',
+    badge: 'Open to All'
+  },
+  {
+    value: 'PRIVATE',
+    icon: Lock,
+    label: 'Private',
+    description: 'Visible only to invited members',
+    gradient: 'from-violet-500 to-purple-500',
+    badge: 'Invite Only'
+  },
+  {
+    value: 'DRAFT',
+    icon: Archive,
+    label: 'Draft',
+    description: 'Hidden until you are ready to publish',
+    gradient: 'from-amber-500 to-orange-500',
+    badge: 'Work in Progress'
+  }
+]
+
+const PROJECT_THEMES = [
+  { value: 'nature', label: 'Nature', colors: { primary: '#10b981', accent: '#14b8a6' }, icon: Leaf },
+  { value: 'solar', label: 'Solar', colors: { primary: '#f59e0b', accent: '#f97316' }, icon: Sun },
+  { value: 'lunar', label: 'Lunar', colors: { primary: '#6366f1', accent: '#8b5cf6' }, icon: Moon },
+  { value: 'forest', label: 'Forest', colors: { primary: '#059669', accent: '#0d9488' }, icon: TreePine },
+  { value: 'ocean', label: 'Ocean', colors: { primary: '#0ea5e9', accent: '#06b6d4' }, icon: Waves },
+  { value: 'fire', label: 'Fire', colors: { primary: '#ef4444', accent: '#f97316' }, icon: Flame },
+]
+
+interface Subproject {
   id: string
   name: string
   description: string
-  memberLimit: number | null
-}
-
-interface LearningModule {
-  id: string
-  title: string
-  description: string
-  contentType: 'VIDEO' | 'ARTICLE' | 'QUIZ' | 'ASSIGNMENT'
-  externalUrl?: string
+  parentId: string | null
 }
 
 export default function NewProjectPage() {
   const { data: session, status } = useSession()
   const router = useRouter()
+
+  // Step management
+  const [currentStep, setCurrentStep] = useState(1)
+  const [completedSteps, setCompletedSteps] = useState<number[]>([])
+
+  // Loading & submission states
   const [isSubmitting, setIsSubmitting] = useState(false)
   const [submitMessage, setSubmitMessage] = useState('')
-  const [showAdvanced, setShowAdvanced] = useState(false)
+  const [availableProjects, setAvailableProjects] = useState<any[]>([])
+  const [loadingProjects, setLoadingProjects] = useState(false)
 
-  // Basic form data
-  const [formData, setFormData] = useState({
-    name: '',
-    description: '',
-    goal: '',
-    status: 'PLANNING',
-  })
+  // Step 1: Vision
+  const [name, setName] = useState('')
+  const [tagline, setTagline] = useState('')
+  const [description, setDescription] = useState('')
+  const [mission, setMission] = useState('')
 
-  // Advanced form data
-  const [prerequisites, setPrerequisites] = useState<Prerequisite[]>([])
-  const [subgroups, setSubgroups] = useState<Subgroup[]>([])
-  const [learningModules, setLearningModules] = useState<LearningModule[]>([])
+  // Step 2: Foundation
+  const [visibility, setVisibility] = useState('PUBLIC')
+  const [category, setCategory] = useState('')
+  const [tags, setTags] = useState<string[]>([])
+  const [newTag, setNewTag] = useState('')
+  const [parentProjectId, setParentProjectId] = useState<string | null>(null)
+
+  // Step 3: Structure
+  const [theme, setTheme] = useState('nature')
+  const [subprojects, setSubprojects] = useState<Subproject[]>([])
+  const [showSubprojectForm, setShowSubprojectForm] = useState(false)
+  const [newSubproject, setNewSubproject] = useState({ name: '', description: '' })
+
+  // Step 4: Collaboration
+  const [enableDiscussions, setEnableDiscussions] = useState(true)
+  const [enableResearch, setEnableResearch] = useState(true)
+  const [enableLearning, setEnableLearning] = useState(true)
+  const [requireApproval, setRequireApproval] = useState(false)
+
+  // Step 5: Launch
+  const [projectStatus, setProjectStatus] = useState('PLANNING')
+  const [goal, setGoal] = useState('')
+
+  // Fetch user's projects for nesting
+  useEffect(() => {
+    if (session?.user?.id) {
+      fetchUserProjects()
+    }
+  }, [session])
+
+  const fetchUserProjects = async () => {
+    setLoadingProjects(true)
+    try {
+      const res = await fetch('/api/projects')
+      const data = await res.json()
+      if (data.success) {
+        // Filter to show only user's projects where they are creator
+        setAvailableProjects(data.data.filter((p: any) => p.creatorId === session?.user?.id))
+      }
+    } catch (error) {
+      console.error('Error fetching projects:', error)
+    } finally {
+      setLoadingProjects(false)
+    }
+  }
 
   if (status === 'loading') {
     return (
-      <div className="min-h-screen flex items-center justify-center">
+      <div className="min-h-screen flex items-center justify-center bg-[var(--background)]">
         <div className="text-center space-y-4">
           <div className="w-16 h-16 border-4 border-theme-primary border-t-transparent rounded-full animate-spin mx-auto" />
-          <p className="text-lg font-bold text-theme-muted">Loading...</p>
+          <p className="text-lg font-bold text-theme-muted">Initializing Creation Space...</p>
         </div>
       </div>
     )
@@ -87,14 +189,72 @@ export default function NewProjectPage() {
     redirect('/auth/signin')
   }
 
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault()
+  const canProceed = () => {
+    switch (currentStep) {
+      case 1:
+        return name.trim().length >= 3 && description.trim().length >= 10
+      case 2:
+        return visibility && category
+      case 3:
+        return true // Structure is optional
+      case 4:
+        return true // Collaboration settings are optional
+      case 5:
+        return true // Ready to launch
+      default:
+        return false
+    }
+  }
+
+  const handleNext = () => {
+    if (canProceed()) {
+      setCompletedSteps([...completedSteps, currentStep])
+      setCurrentStep(currentStep + 1)
+    }
+  }
+
+  const handleBack = () => {
+    setCurrentStep(currentStep - 1)
+  }
+
+  const addTag = () => {
+    if (newTag.trim() && !tags.includes(newTag.trim())) {
+      setTags([...tags, newTag.trim()])
+      setNewTag('')
+    }
+  }
+
+  const removeTag = (tag: string) => {
+    setTags(tags.filter(t => t !== tag))
+  }
+
+  const addSubproject = () => {
+    if (newSubproject.name.trim()) {
+      setSubprojects([
+        ...subprojects,
+        {
+          id: crypto.randomUUID(),
+          name: newSubproject.name,
+          description: newSubproject.description,
+          parentId: null
+        }
+      ])
+      setNewSubproject({ name: '', description: '' })
+      setShowSubprojectForm(false)
+    }
+  }
+
+  const removeSubproject = (id: string) => {
+    setSubprojects(subprojects.filter(sp => sp.id !== id))
+  }
+
+  const handleSubmit = async () => {
     setIsSubmitting(true)
     setSubmitMessage('')
 
     try {
-      // Generate slug from project name
-      const slug = formData.name
+      // Generate slug
+      const slug = name
         .toLowerCase()
         .replace(/[^a-z0-9\s-]/g, '')
         .replace(/\s+/g, '-')
@@ -102,25 +262,41 @@ export default function NewProjectPage() {
         .trim()
         + '-' + Date.now().toString(36)
 
+      const projectData = {
+        name,
+        description,
+        tagline,
+        mission,
+        goal,
+        status: projectStatus,
+        visibility,
+        category,
+        tags,
+        parentProjectId,
+        theme,
+        slug,
+        settings: {
+          enableDiscussions,
+          enableResearch,
+          enableLearning,
+          requireApproval
+        },
+        subprojects: subprojects.map(sp => ({
+          name: sp.name,
+          description: sp.description
+        }))
+      }
+
       const res = await fetch('/api/projects', {
         method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          ...formData,
-          slug,
-          // Include advanced settings if any were configured
-          prerequisites: prerequisites.length > 0 ? prerequisites : undefined,
-          subgroups: subgroups.length > 0 ? subgroups : undefined,
-          learningModules: learningModules.length > 0 ? learningModules : undefined,
-        }),
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(projectData),
       })
 
       const data = await res.json()
 
       if (data.success) {
-        setSubmitMessage('Project created successfully! Redirecting...')
+        setSubmitMessage('Project created successfully! Launching your ecosystem...')
         setTimeout(() => {
           router.push(`/community/projects/${slug}`)
         }, 1500)
@@ -134,595 +310,659 @@ export default function NewProjectPage() {
     }
   }
 
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
-    setFormData({
-      ...formData,
-      [e.target.name]: e.target.value,
-    })
-  }
-
-  // Prerequisite helpers
-  const addPrerequisite = () => {
-    setPrerequisites([
-      ...prerequisites,
-      {
-        id: crypto.randomUUID(),
-        type: 'EXODUS_COURSE',
-        displayName: '',
-        description: '',
-        isRequired: true,
-      }
-    ])
-  }
-
-  const updatePrerequisite = (id: string, updates: Partial<Prerequisite>) => {
-    setPrerequisites(prerequisites.map((p: Prerequisite) =>
-      p.id === id ? { ...p, ...updates } : p
-    ))
-  }
-
-  const removePrerequisite = (id: string) => {
-    setPrerequisites(prerequisites.filter((p: Prerequisite) => p.id !== id))
-  }
-
-  // Subgroup helpers
-  const addSubgroup = () => {
-    setSubgroups([
-      ...subgroups,
-      {
-        id: crypto.randomUUID(),
-        name: '',
-        description: '',
-        memberLimit: null,
-      }
-    ])
-  }
-
-  const updateSubgroup = (id: string, updates: Partial<Subgroup>) => {
-    setSubgroups(subgroups.map((s: Subgroup) =>
-      s.id === id ? { ...s, ...updates } : s
-    ))
-  }
-
-  const removeSubgroup = (id: string) => {
-    setSubgroups(subgroups.filter((s: Subgroup) => s.id !== id))
-  }
-
-  // Learning module helpers
-  const addLearningModule = () => {
-    setLearningModules([
-      ...learningModules,
-      {
-        id: crypto.randomUUID(),
-        title: '',
-        description: '',
-        contentType: 'ARTICLE',
-      }
-    ])
-  }
-
-  const updateLearningModule = (id: string, updates: Partial<LearningModule>) => {
-    setLearningModules(learningModules.map((m: LearningModule) =>
-      m.id === id ? { ...m, ...updates } : m
-    ))
-  }
-
-  const removeLearningModule = (id: string) => {
-    setLearningModules(learningModules.filter((m: LearningModule) => m.id !== id))
-  }
-
-  const advancedItemCount = prerequisites.length + subgroups.length + learningModules.length
+  const currentStepData = STEPS.find(s => s.id === currentStep)!
+  const StepIcon = currentStepData.icon
+  const selectedTheme = PROJECT_THEMES.find(t => t.value === theme)
 
   return (
     <div className="min-h-screen bg-[var(--background)]">
-      {/* Header */}
-      <section className="py-12 bg-gradient-to-br from-[color-mix(in_srgb,var(--secondary)_15%,var(--background))] via-[color-mix(in_srgb,var(--primary)_15%,var(--background))] to-[color-mix(in_srgb,var(--accent)_15%,var(--background))]">
-        <div className="container mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="mb-6">
-            <BackButton label="Back to Projects" fallbackUrl="/community/projects" />
-          </div>
-          <div className="max-w-4xl mx-auto">
-            <Link href="/community/projects">
-              <Button variant="ghost" className="mb-6 font-bold">
-                <ArrowLeft className="w-4 h-4 mr-2" />
-                BACK TO PROJECTS
-              </Button>
-            </Link>
-            <div className="flex items-center gap-4 mb-4">
-              <div className="w-16 h-16 rounded-full bg-gradient-to-br from-[var(--primary)] to-[var(--accent)] flex items-center justify-center shadow-xl">
-                <Briefcase className="w-8 h-8 text-[var(--primary-foreground)]" />
+      {/* Header with Progress */}
+      <section className="relative overflow-hidden bg-gradient-to-br from-[var(--card)] via-[var(--background)] to-[var(--card)] border-b border-[var(--border)]/30">
+        {/* Ambient glow */}
+        <div className="absolute top-0 left-1/4 w-64 h-64 bg-[var(--primary)]/5 rounded-full blur-3xl" />
+        <div className="absolute top-0 right-1/4 w-64 h-64 bg-[var(--accent)]/5 rounded-full blur-3xl" />
+
+        <div className="relative container mx-auto px-4 py-8">
+          <div className="max-w-5xl mx-auto">
+            <BackButton label="Back to Projects" fallbackUrl="/community/projects" className="mb-6" />
+
+            {/* Title */}
+            <div className="text-center mb-8">
+              <div className="inline-flex items-center gap-2 mb-3 px-4 py-2 rounded-full bg-gradient-to-r from-[var(--primary)]/10 to-[var(--accent)]/10 border border-[var(--primary)]/20">
+                <Rocket className="w-4 h-4 text-theme-primary" />
+                <span className="text-xs font-bold uppercase tracking-wider text-theme-primary">
+                  Project Creation Wizard
+                </span>
               </div>
-              <div>
-                <h1 className="text-5xl font-black text-[var(--foreground)]">
-                  START A PROJECT
-                </h1>
-                <p className="text-lg font-semibold text-theme-muted mt-2">
-                  Create a community sustainability initiative
-                </p>
-              </div>
+              <h1 className="text-4xl font-bold bg-gradient-to-r from-[var(--foreground)] via-[var(--primary)] to-[var(--foreground)] bg-clip-text text-transparent mb-2">
+                Build Your Ecosystem
+              </h1>
+              <p className="text-theme-muted font-medium">
+                Step {currentStep} of {STEPS.length}: {currentStepData.description}
+              </p>
+            </div>
+
+            {/* Progress Steps */}
+            <div className="flex items-center justify-between mb-8">
+              {STEPS.map((step, index) => {
+                const Icon = step.icon
+                const isCompleted = completedSteps.includes(step.id)
+                const isCurrent = step.id === currentStep
+                const isUpcoming = step.id > currentStep
+
+                return (
+                  <div key={step.id} className="flex items-center flex-1">
+                    <div className="flex flex-col items-center flex-1">
+                      <div className={`relative w-12 h-12 rounded-full flex items-center justify-center border-2 transition-all ${
+                        isCompleted
+                          ? `bg-gradient-to-br ${step.gradient} border-transparent`
+                          : isCurrent
+                          ? `border-[var(--primary)] bg-[var(--card)]`
+                          : `border-[var(--border)] bg-[var(--muted)]/20`
+                      }`}>
+                        {isCompleted ? (
+                          <Check className="w-6 h-6 text-white" />
+                        ) : (
+                          <Icon className={`w-5 h-5 ${isCurrent ? 'text-theme-primary' : 'text-theme-muted'}`} />
+                        )}
+                        {isCurrent && (
+                          <div className={`absolute inset-0 bg-gradient-to-br ${step.gradient} blur-xl opacity-20 rounded-full animate-pulse`} />
+                        )}
+                      </div>
+                      <span className={`text-xs font-bold mt-2 hidden sm:block ${
+                        isCurrent ? 'text-[var(--foreground)]' : 'text-theme-muted'
+                      }`}>
+                        {step.name}
+                      </span>
+                    </div>
+                    {index < STEPS.length - 1 && (
+                      <div className={`h-0.5 flex-1 mx-2 ${
+                        isCompleted ? `bg-gradient-to-r ${step.gradient}` : 'bg-[var(--border)]'
+                      }`} />
+                    )}
+                  </div>
+                )
+              })}
             </div>
           </div>
         </div>
       </section>
 
-      {/* Form */}
-      <section className="py-16">
-        <div className="container mx-auto px-4 sm:px-6 lg:px-8">
+      {/* Step Content */}
+      <section className="py-12">
+        <div className="container mx-auto px-4">
           <div className="max-w-4xl mx-auto">
-            <form onSubmit={handleSubmit} className="space-y-8">
-              {/* Basic Details Card */}
-              <Card className="border-4 border-theme-primary shadow-xl">
-                <CardHeader>
-                  <CardTitle className="text-3xl font-black">PROJECT DETAILS</CardTitle>
-                </CardHeader>
-                <CardContent className="space-y-8">
-                  {/* Project Name */}
-                  <div>
-                    <label className="flex items-center gap-2 text-sm font-black text-[var(--foreground)] mb-3 uppercase">
-                      <Briefcase className="w-4 h-4" />
-                      Project Name *
-                    </label>
-                    <input
-                      type="text"
-                      name="name"
-                      value={formData.name}
-                      onChange={handleChange}
-                      required
-                      maxLength={100}
-                      placeholder="e.g., Community Garden Initiative"
-                      className="w-full px-4 py-3 rounded-lg border-2 border-[var(--border)] bg-[var(--background)] text-[var(--foreground)] font-semibold focus:border-theme-primary focus:outline-none transition-colors"
-                    />
-                    <p className="text-xs font-medium text-theme-muted mt-2">
-                      Give your project a clear, descriptive name
-                    </p>
-                  </div>
+            <AnimatePresence mode="wait">
+              <motion.div
+                key={currentStep}
+                initial={{ opacity: 0, x: 20 }}
+                animate={{ opacity: 1, x: 0 }}
+                exit={{ opacity: 0, x: -20 }}
+                transition={{ duration: 0.3 }}
+              >
+                <Card className={`relative overflow-hidden border-2 shadow-xl`}>
+                  {/* Step header with Guardian gradient */}
+                  <div className={`absolute top-0 left-0 right-0 h-1 bg-gradient-to-r ${currentStepData.gradient}`} />
 
-                  {/* Description */}
-                  <div>
-                    <label className="flex items-center gap-2 text-sm font-black text-[var(--foreground)] mb-3 uppercase">
-                      <FileText className="w-4 h-4" />
-                      Description *
-                    </label>
-                    <textarea
-                      name="description"
-                      value={formData.description}
-                      onChange={handleChange}
-                      required
-                      maxLength={500}
-                      rows={5}
-                      placeholder="Describe what your project aims to accomplish and why it matters..."
-                      className="w-full px-4 py-3 rounded-lg border-2 border-[var(--border)] bg-[var(--background)] text-[var(--foreground)] font-semibold focus:border-theme-primary focus:outline-none transition-colors resize-none"
-                    />
-                    <p className="text-xs font-medium text-theme-muted mt-2">
-                      {formData.description.length}/500 characters
-                    </p>
-                  </div>
-
-                  {/* Goal */}
-                  <div>
-                    <label className="flex items-center gap-2 text-sm font-black text-[var(--foreground)] mb-3 uppercase">
-                      <Target className="w-4 h-4" />
-                      Goal
-                    </label>
-                    <input
-                      type="text"
-                      name="goal"
-                      value={formData.goal}
-                      onChange={handleChange}
-                      maxLength={150}
-                      placeholder="e.g., Plant 100 trees by end of year"
-                      className="w-full px-4 py-3 rounded-lg border-2 border-[var(--border)] bg-[var(--background)] text-[var(--foreground)] font-semibold focus:border-theme-primary focus:outline-none transition-colors"
-                    />
-                    <p className="text-xs font-medium text-theme-muted mt-2">
-                      Optional: Set a specific, measurable goal for your project
-                    </p>
-                  </div>
-
-                  {/* Status */}
-                  <div>
-                    <label className="flex items-center gap-2 text-sm font-black text-[var(--foreground)] mb-3 uppercase">
-                      <Users className="w-4 h-4" />
-                      Project Status *
-                    </label>
-                    <select
-                      name="status"
-                      value={formData.status}
-                      onChange={handleChange}
-                      required
-                      className="w-full px-4 py-3 rounded-lg border-2 border-[var(--border)] bg-[var(--background)] text-[var(--foreground)] font-semibold focus:border-theme-primary focus:outline-none transition-colors"
-                    >
-                      <option value="PLANNING">Planning - Still organizing</option>
-                      <option value="ACTIVE">Active - Currently running</option>
-                      <option value="COMPLETED">Completed - Project finished</option>
-                    </select>
-                    <p className="text-xs font-medium text-theme-muted mt-2">
-                      Select the current status of your project
-                    </p>
-                  </div>
-                </CardContent>
-              </Card>
-
-              {/* Advanced Settings Toggle */}
-              <Card className="border-2 border-[var(--border)] shadow-lg overflow-hidden">
-                <button
-                  type="button"
-                  onClick={() => setShowAdvanced(!showAdvanced)}
-                  className="w-full p-6 flex items-center justify-between hover:bg-[var(--muted)]/50 transition-colors"
-                >
-                  <div className="flex items-center gap-3">
-                    <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-[var(--secondary)] to-[var(--primary)] flex items-center justify-center">
-                      <Settings2 className="w-6 h-6 text-[var(--primary-foreground)]" />
+                  <CardHeader>
+                    <div className="flex items-center gap-4">
+                      <div className={`w-14 h-14 rounded-xl bg-gradient-to-br ${currentStepData.gradient} flex items-center justify-center`}>
+                        <StepIcon className="w-7 h-7 text-white" />
+                      </div>
+                      <div>
+                        <CardTitle className="text-2xl font-bold">
+                          {currentStepData.name}
+                        </CardTitle>
+                        <p className="text-sm text-theme-muted font-medium mt-1">
+                          Guardian of {currentStepData.guardian}
+                        </p>
+                      </div>
                     </div>
-                    <div className="text-left">
-                      <h3 className="text-xl font-black text-[var(--foreground)]">
-                        ADVANCED SETTINGS
-                      </h3>
-                      <p className="text-sm font-semibold text-theme-muted">
-                        Prerequisites, Subgroups, Learning Modules
-                        {advancedItemCount > 0 && (
-                          <span className="ml-2 px-2 py-0.5 bg-[var(--primary)]/10 text-theme-primary rounded-full text-xs">
-                            {advancedItemCount} configured
-                          </span>
-                        )}
-                      </p>
-                    </div>
-                  </div>
-                  <motion.div
-                    animate={{ rotate: showAdvanced ? 180 : 0 }}
-                    transition={{ duration: 0.2 }}
-                  >
-                    <ChevronDown className="w-6 h-6 text-theme-muted" />
-                  </motion.div>
-                </button>
+                  </CardHeader>
 
-                <AnimatePresence>
-                  {showAdvanced && (
-                    <motion.div
-                      initial={{ height: 0, opacity: 0 }}
-                      animate={{ height: 'auto', opacity: 1 }}
-                      exit={{ height: 0, opacity: 0 }}
-                      transition={{ duration: 0.3 }}
-                      className="overflow-hidden"
-                    >
-                      <div className="p-6 pt-0 space-y-8 border-t border-[var(--border)]">
-                        {/* Prerequisites Section */}
+                  <CardContent className="space-y-6 pb-8">
+                    {/* STEP 1: VISION */}
+                    {currentStep === 1 && (
+                      <div className="space-y-6">
                         <div>
-                          <div className="flex items-center justify-between mb-4">
-                            <div className="flex items-center gap-2">
-                              <ShieldCheck className="w-5 h-5 text-theme-accent" />
-                              <h4 className="text-lg font-black">PREREQUISITES</h4>
-                            </div>
-                            <Button
-                              type="button"
-                              variant="outline"
-                              size="sm"
-                              onClick={addPrerequisite}
-                              className="font-bold"
-                            >
-                              <Plus className="w-4 h-4 mr-1" />
-                              Add
-                            </Button>
-                          </div>
-                          <p className="text-sm text-theme-muted mb-4">
-                            Set requirements members must meet before joining your project
-                          </p>
-
-                          {prerequisites.length === 0 ? (
-                            <div className="p-6 border-2 border-dashed border-[var(--border)] rounded-lg text-center">
-                              <ShieldCheck className="w-8 h-8 mx-auto mb-2 text-theme-muted opacity-50" />
-                              <p className="text-sm font-semibold text-theme-muted">
-                                No prerequisites set - anyone can join
-                              </p>
-                            </div>
-                          ) : (
-                            <div className="space-y-4">
-                              {prerequisites.map((prereq, index) => (
-                                <Card key={prereq.id} className="border-2">
-                                  <CardContent className="p-4">
-                                    <div className="flex items-start gap-4">
-                                      <div className="w-8 h-8 rounded-full bg-[var(--accent)]/10 flex items-center justify-center font-black text-sm text-theme-accent">
-                                        {index + 1}
-                                      </div>
-                                      <div className="flex-1 space-y-3">
-                                        <div className="grid grid-cols-2 gap-3">
-                                          <select
-                                            value={prereq.type}
-                                            onChange={(e) => updatePrerequisite(prereq.id, { type: e.target.value as Prerequisite['type'] })}
-                                            className="px-3 py-2 rounded-lg border-2 border-[var(--border)] bg-[var(--background)] text-[var(--foreground)] font-semibold text-sm focus:border-theme-primary focus:outline-none"
-                                          >
-                                            <option value="EXODUS_COURSE">Exodus Course</option>
-                                            <option value="EXPERIENCE_LEVEL">Experience Level</option>
-                                            <option value="SKILL">Skill</option>
-                                            <option value="CUSTOM">Custom</option>
-                                          </select>
-                                          <input
-                                            type="text"
-                                            value={prereq.displayName}
-                                            onChange={(e) => updatePrerequisite(prereq.id, { displayName: e.target.value })}
-                                            placeholder="Display name"
-                                            className="px-3 py-2 rounded-lg border-2 border-[var(--border)] bg-[var(--background)] text-[var(--foreground)] font-semibold text-sm focus:border-theme-primary focus:outline-none"
-                                          />
-                                        </div>
-                                        <input
-                                          type="text"
-                                          value={prereq.description}
-                                          onChange={(e) => updatePrerequisite(prereq.id, { description: e.target.value })}
-                                          placeholder="Description (e.g., Complete the Sustainability 101 course)"
-                                          className="w-full px-3 py-2 rounded-lg border-2 border-[var(--border)] bg-[var(--background)] text-[var(--foreground)] font-semibold text-sm focus:border-theme-primary focus:outline-none"
-                                        />
-                                        <div className="flex items-center gap-4">
-                                          <label className="flex items-center gap-2 text-sm font-semibold">
-                                            <input
-                                              type="checkbox"
-                                              checked={prereq.isRequired}
-                                              onChange={(e) => updatePrerequisite(prereq.id, { isRequired: e.target.checked })}
-                                              className="w-4 h-4 rounded border-[var(--border)]"
-                                            />
-                                            Required
-                                          </label>
-                                          {prereq.type === 'EXODUS_COURSE' && (
-                                            <input
-                                              type="text"
-                                              value={prereq.requiredTag || ''}
-                                              onChange={(e) => updatePrerequisite(prereq.id, { requiredTag: e.target.value })}
-                                              placeholder="Course tag (e.g., sustainability)"
-                                              className="flex-1 px-3 py-1 rounded-lg border-2 border-[var(--border)] bg-[var(--background)] text-[var(--foreground)] font-semibold text-xs focus:border-theme-primary focus:outline-none"
-                                            />
-                                          )}
-                                        </div>
-                                      </div>
-                                      <button
-                                        type="button"
-                                        onClick={() => removePrerequisite(prereq.id)}
-                                        className="p-2 text-red-500 hover:bg-red-500/10 rounded-lg transition-colors"
-                                      >
-                                        <Trash2 className="w-4 h-4" />
-                                      </button>
-                                    </div>
-                                  </CardContent>
-                                </Card>
-                              ))}
-                            </div>
-                          )}
+                          <label className="flex items-center gap-2 text-sm font-bold text-[var(--foreground)] mb-2">
+                            <Sparkles className="w-4 h-4" />
+                            Project Name *
+                          </label>
+                          <input
+                            type="text"
+                            value={name}
+                            onChange={(e) => setName(e.target.value)}
+                            placeholder="e.g., Urban Regeneration Initiative"
+                            maxLength={100}
+                            className="w-full px-4 py-3 rounded-lg border-2 border-[var(--border)] bg-[var(--background)] text-[var(--foreground)] font-semibold focus:border-theme-primary focus:outline-none transition-colors"
+                          />
+                          <p className="text-xs text-theme-muted mt-1">{name.length}/100 characters</p>
                         </div>
 
-                        {/* Subgroups Section */}
                         <div>
-                          <div className="flex items-center justify-between mb-4">
-                            <div className="flex items-center gap-2">
-                              <Layers className="w-5 h-5 text-theme-primary" />
-                              <h4 className="text-lg font-black">SUBGROUPS</h4>
-                            </div>
-                            <Button
-                              type="button"
-                              variant="outline"
-                              size="sm"
-                              onClick={addSubgroup}
-                              className="font-bold"
-                            >
-                              <Plus className="w-4 h-4 mr-1" />
-                              Add
-                            </Button>
-                          </div>
-                          <p className="text-sm text-theme-muted mb-4">
-                            Create teams or working groups within your project
-                          </p>
-
-                          {subgroups.length === 0 ? (
-                            <div className="p-6 border-2 border-dashed border-[var(--border)] rounded-lg text-center">
-                              <Layers className="w-8 h-8 mx-auto mb-2 text-theme-muted opacity-50" />
-                              <p className="text-sm font-semibold text-theme-muted">
-                                No subgroups - all members in one group
-                              </p>
-                            </div>
-                          ) : (
-                            <div className="space-y-4">
-                              {subgroups.map((group, index) => (
-                                <Card key={group.id} className="border-2">
-                                  <CardContent className="p-4">
-                                    <div className="flex items-start gap-4">
-                                      <div className="w-8 h-8 rounded-full bg-[var(--primary)]/10 flex items-center justify-center font-black text-sm text-theme-primary">
-                                        {index + 1}
-                                      </div>
-                                      <div className="flex-1 space-y-3">
-                                        <div className="grid grid-cols-2 gap-3">
-                                          <input
-                                            type="text"
-                                            value={group.name}
-                                            onChange={(e) => updateSubgroup(group.id, { name: e.target.value })}
-                                            placeholder="Subgroup name"
-                                            className="px-3 py-2 rounded-lg border-2 border-[var(--border)] bg-[var(--background)] text-[var(--foreground)] font-semibold text-sm focus:border-theme-primary focus:outline-none"
-                                          />
-                                          <input
-                                            type="number"
-                                            value={group.memberLimit || ''}
-                                            onChange={(e) => updateSubgroup(group.id, { memberLimit: e.target.value ? parseInt(e.target.value) : null })}
-                                            placeholder="Member limit (optional)"
-                                            min="1"
-                                            className="px-3 py-2 rounded-lg border-2 border-[var(--border)] bg-[var(--background)] text-[var(--foreground)] font-semibold text-sm focus:border-theme-primary focus:outline-none"
-                                          />
-                                        </div>
-                                        <input
-                                          type="text"
-                                          value={group.description}
-                                          onChange={(e) => updateSubgroup(group.id, { description: e.target.value })}
-                                          placeholder="Description (e.g., Handles outreach and community engagement)"
-                                          className="w-full px-3 py-2 rounded-lg border-2 border-[var(--border)] bg-[var(--background)] text-[var(--foreground)] font-semibold text-sm focus:border-theme-primary focus:outline-none"
-                                        />
-                                      </div>
-                                      <button
-                                        type="button"
-                                        onClick={() => removeSubgroup(group.id)}
-                                        className="p-2 text-red-500 hover:bg-red-500/10 rounded-lg transition-colors"
-                                      >
-                                        <Trash2 className="w-4 h-4" />
-                                      </button>
-                                    </div>
-                                  </CardContent>
-                                </Card>
-                              ))}
-                            </div>
-                          )}
+                          <label className="flex items-center gap-2 text-sm font-bold text-[var(--foreground)] mb-2">
+                            <Zap className="w-4 h-4" />
+                            Tagline
+                          </label>
+                          <input
+                            type="text"
+                            value={tagline}
+                            onChange={(e) => setTagline(e.target.value)}
+                            placeholder="A punchy one-liner that captures your vision..."
+                            maxLength={80}
+                            className="w-full px-4 py-3 rounded-lg border-2 border-[var(--border)] bg-[var(--background)] text-[var(--foreground)] font-semibold focus:border-theme-primary focus:outline-none transition-colors"
+                          />
+                          <p className="text-xs text-theme-muted mt-1">{tagline.length}/80 characters</p>
                         </div>
 
-                        {/* Learning Modules Section */}
                         <div>
-                          <div className="flex items-center justify-between mb-4">
-                            <div className="flex items-center gap-2">
-                              <BookOpen className="w-5 h-5 text-theme-secondary" />
-                              <h4 className="text-lg font-black">LEARNING MODULES</h4>
-                            </div>
-                            <Button
-                              type="button"
-                              variant="outline"
-                              size="sm"
-                              onClick={addLearningModule}
-                              className="font-bold"
-                            >
-                              <Plus className="w-4 h-4 mr-1" />
-                              Add
+                          <label className="flex items-center gap-2 text-sm font-bold text-[var(--foreground)] mb-2">
+                            <FileText className="w-4 h-4" />
+                            Description *
+                          </label>
+                          <textarea
+                            value={description}
+                            onChange={(e) => setDescription(e.target.value)}
+                            placeholder="Tell the story of your project. What problem are you solving? Why does it matter?"
+                            maxLength={500}
+                            rows={5}
+                            className="w-full px-4 py-3 rounded-lg border-2 border-[var(--border)] bg-[var(--background)] text-[var(--foreground)] font-semibold focus:border-theme-primary focus:outline-none transition-colors resize-none"
+                          />
+                          <p className="text-xs text-theme-muted mt-1">{description.length}/500 characters</p>
+                        </div>
+
+                        <div>
+                          <label className="flex items-center gap-2 text-sm font-bold text-[var(--foreground)] mb-2">
+                            <Target className="w-4 h-4" />
+                            Mission Statement
+                          </label>
+                          <textarea
+                            value={mission}
+                            onChange={(e) => setMission(e.target.value)}
+                            placeholder="Optional: Your guiding principles and long-term impact vision..."
+                            maxLength={300}
+                            rows={3}
+                            className="w-full px-4 py-3 rounded-lg border-2 border-[var(--border)] bg-[var(--background)] text-[var(--foreground)] font-semibold focus:border-theme-primary focus:outline-none transition-colors resize-none"
+                          />
+                          <p className="text-xs text-theme-muted mt-1">{mission.length}/300 characters</p>
+                        </div>
+                      </div>
+                    )}
+
+                    {/* STEP 2: FOUNDATION */}
+                    {currentStep === 2 && (
+                      <div className="space-y-8">
+                        {/* Visibility Selection */}
+                        <div>
+                          <label className="flex items-center gap-2 text-sm font-bold text-[var(--foreground)] mb-4">
+                            <Globe className="w-4 h-4" />
+                            Project Visibility *
+                          </label>
+                          <div className="grid md:grid-cols-3 gap-4">
+                            {VISIBILITY_OPTIONS.map((option) => {
+                              const Icon = option.icon
+                              const isSelected = visibility === option.value
+
+                              return (
+                                <button
+                                  key={option.value}
+                                  type="button"
+                                  onClick={() => setVisibility(option.value)}
+                                  className={`relative p-5 rounded-xl border-2 transition-all text-left ${
+                                    isSelected
+                                      ? `border-[var(--primary)] bg-gradient-to-br ${option.gradient} bg-opacity-10`
+                                      : 'border-[var(--border)] hover:border-[var(--primary)]/30'
+                                  }`}
+                                >
+                                  <div className="flex items-start gap-3 mb-3">
+                                    <div className={`w-10 h-10 rounded-lg bg-gradient-to-br ${option.gradient} flex items-center justify-center`}>
+                                      <Icon className="w-5 h-5 text-white" />
+                                    </div>
+                                    <div className="flex-1">
+                                      <h4 className="font-bold text-[var(--foreground)]">{option.label}</h4>
+                                      <span className="text-[10px] font-semibold text-theme-muted uppercase tracking-wide">
+                                        {option.badge}
+                                      </span>
+                                    </div>
+                                    {isSelected && (
+                                      <Check className="w-5 h-5 text-theme-primary" />
+                                    )}
+                                  </div>
+                                  <p className="text-xs text-theme-muted leading-relaxed">
+                                    {option.description}
+                                  </p>
+                                </button>
+                              )
+                            })}
+                          </div>
+                        </div>
+
+                        {/* Parent Project (Nesting) */}
+                        <div>
+                          <label className="flex items-center gap-2 text-sm font-bold text-[var(--foreground)] mb-2">
+                            <FolderTree className="w-4 h-4" />
+                            Nest Within Existing Project (Optional)
+                          </label>
+                          <select
+                            value={parentProjectId || ''}
+                            onChange={(e) => setParentProjectId(e.target.value || null)}
+                            className="w-full px-4 py-3 rounded-lg border-2 border-[var(--border)] bg-[var(--background)] text-[var(--foreground)] font-semibold focus:border-theme-primary focus:outline-none"
+                          >
+                            <option value="">None - This is a top-level project</option>
+                            {loadingProjects ? (
+                              <option disabled>Loading your projects...</option>
+                            ) : (
+                              availableProjects.map((project) => (
+                                <option key={project.id} value={project.id}>
+                                  {project.name}
+                                </option>
+                              ))
+                            )}
+                          </select>
+                          <p className="text-xs text-theme-muted mt-2">
+                            Create subprojects within subprojects - infinite nesting supported!
+                          </p>
+                        </div>
+
+                        {/* Category */}
+                        <div>
+                          <label className="flex items-center gap-2 text-sm font-bold text-[var(--foreground)] mb-2">
+                            <Tag className="w-4 h-4" />
+                            Category *
+                          </label>
+                          <select
+                            value={category}
+                            onChange={(e) => setCategory(e.target.value)}
+                            className="w-full px-4 py-3 rounded-lg border-2 border-[var(--border)] bg-[var(--background)] text-[var(--foreground)] font-semibold focus:border-theme-primary focus:outline-none"
+                          >
+                            <option value="">Select a category...</option>
+                            <option value="environment">Environment & Conservation</option>
+                            <option value="community">Community Building</option>
+                            <option value="education">Education & Learning</option>
+                            <option value="technology">Sustainable Technology</option>
+                            <option value="agriculture">Agriculture & Food</option>
+                            <option value="energy">Renewable Energy</option>
+                            <option value="advocacy">Advocacy & Policy</option>
+                            <option value="research">Research & Innovation</option>
+                            <option value="arts">Arts & Culture</option>
+                            <option value="other">Other</option>
+                          </select>
+                        </div>
+
+                        {/* Tags */}
+                        <div>
+                          <label className="flex items-center gap-2 text-sm font-bold text-[var(--foreground)] mb-2">
+                            <Tag className="w-4 h-4" />
+                            Tags
+                          </label>
+                          <div className="flex gap-2 mb-3">
+                            <input
+                              type="text"
+                              value={newTag}
+                              onChange={(e) => setNewTag(e.target.value)}
+                              onKeyPress={(e) => e.key === 'Enter' && (e.preventDefault(), addTag())}
+                              placeholder="Add tags (e.g., urban, gardening, youth)"
+                              className="flex-1 px-4 py-2 rounded-lg border-2 border-[var(--border)] bg-[var(--background)] text-[var(--foreground)] font-semibold focus:border-theme-primary focus:outline-none"
+                            />
+                            <Button type="button" onClick={addTag} size="sm" className="font-bold">
+                              <Plus className="w-4 h-4" />
                             </Button>
                           </div>
-                          <p className="text-sm text-theme-muted mb-4">
-                            Add educational content for your project members
-                          </p>
-
-                          {learningModules.length === 0 ? (
-                            <div className="p-6 border-2 border-dashed border-[var(--border)] rounded-lg text-center">
-                              <BookOpen className="w-8 h-8 mx-auto mb-2 text-theme-muted opacity-50" />
-                              <p className="text-sm font-semibold text-theme-muted">
-                                No learning modules - add some to help members get started
-                              </p>
-                            </div>
-                          ) : (
-                            <div className="space-y-4">
-                              {learningModules.map((module, index) => (
-                                <Card key={module.id} className="border-2">
-                                  <CardContent className="p-4">
-                                    <div className="flex items-start gap-4">
-                                      <div className="w-8 h-8 rounded-full bg-[var(--secondary)]/10 flex items-center justify-center font-black text-sm text-theme-secondary">
-                                        {index + 1}
-                                      </div>
-                                      <div className="flex-1 space-y-3">
-                                        <div className="grid grid-cols-2 gap-3">
-                                          <input
-                                            type="text"
-                                            value={module.title}
-                                            onChange={(e) => updateLearningModule(module.id, { title: e.target.value })}
-                                            placeholder="Module title"
-                                            className="px-3 py-2 rounded-lg border-2 border-[var(--border)] bg-[var(--background)] text-[var(--foreground)] font-semibold text-sm focus:border-theme-primary focus:outline-none"
-                                          />
-                                          <select
-                                            value={module.contentType}
-                                            onChange={(e) => updateLearningModule(module.id, { contentType: e.target.value as LearningModule['contentType'] })}
-                                            className="px-3 py-2 rounded-lg border-2 border-[var(--border)] bg-[var(--background)] text-[var(--foreground)] font-semibold text-sm focus:border-theme-primary focus:outline-none"
-                                          >
-                                            <option value="ARTICLE">Article</option>
-                                            <option value="VIDEO">Video</option>
-                                            <option value="QUIZ">Quiz</option>
-                                            <option value="ASSIGNMENT">Assignment</option>
-                                          </select>
-                                        </div>
-                                        <input
-                                          type="text"
-                                          value={module.description}
-                                          onChange={(e) => updateLearningModule(module.id, { description: e.target.value })}
-                                          placeholder="Description"
-                                          className="w-full px-3 py-2 rounded-lg border-2 border-[var(--border)] bg-[var(--background)] text-[var(--foreground)] font-semibold text-sm focus:border-theme-primary focus:outline-none"
-                                        />
-                                        <input
-                                          type="url"
-                                          value={module.externalUrl || ''}
-                                          onChange={(e) => updateLearningModule(module.id, { externalUrl: e.target.value })}
-                                          placeholder="External URL (optional)"
-                                          className="w-full px-3 py-2 rounded-lg border-2 border-[var(--border)] bg-[var(--background)] text-[var(--foreground)] font-semibold text-sm focus:border-theme-primary focus:outline-none"
-                                        />
-                                      </div>
-                                      <button
-                                        type="button"
-                                        onClick={() => removeLearningModule(module.id)}
-                                        className="p-2 text-red-500 hover:bg-red-500/10 rounded-lg transition-colors"
-                                      >
-                                        <Trash2 className="w-4 h-4" />
-                                      </button>
-                                    </div>
-                                  </CardContent>
-                                </Card>
+                          {tags.length > 0 && (
+                            <div className="flex flex-wrap gap-2">
+                              {tags.map((tag) => (
+                                <div key={tag} className="flex items-center gap-1 px-3 py-1 bg-[var(--muted)] rounded-full text-sm font-semibold">
+                                  <span>#{tag}</span>
+                                  <button onClick={() => removeTag(tag)} className="hover:text-red-500">
+                                    <X className="w-3 h-3" />
+                                  </button>
+                                </div>
                               ))}
                             </div>
                           )}
                         </div>
                       </div>
-                    </motion.div>
-                  )}
-                </AnimatePresence>
-              </Card>
+                    )}
 
-              {/* Info Box */}
-              <Card className="bg-[color-mix(in_srgb,var(--accent)_10%,var(--background))] border-2 border-theme-accent">
-                <CardContent className="p-6">
-                  <div className="flex items-start gap-3">
-                    <div className="text-2xl">💡</div>
-                    <div>
-                      <h3 className="font-black text-[var(--foreground)] mb-2">
-                        TIPS FOR SUCCESS
-                      </h3>
-                      <ul className="space-y-1 text-sm font-semibold text-theme-muted">
-                        <li>• Be specific about what you want to achieve</li>
-                        <li>• Include why this project matters to your community</li>
-                        <li>• Set realistic goals and timelines</li>
-                        <li>• Invite others to join and collaborate</li>
-                        <li>• Use subgroups to organize larger teams</li>
-                        <li>• Add learning modules to onboard new members</li>
-                      </ul>
-                    </div>
-                  </div>
-                </CardContent>
-              </Card>
+                    {/* STEP 3: STRUCTURE */}
+                    {currentStep === 3 && (
+                      <div className="space-y-8">
+                        {/* Theme Selection */}
+                        <div>
+                          <label className="flex items-center gap-2 text-sm font-bold text-[var(--foreground)] mb-4">
+                            <Palette className="w-4 h-4" />
+                            Visual Theme
+                          </label>
+                          <div className="grid grid-cols-2 md:grid-cols-3 gap-3">
+                            {PROJECT_THEMES.map((t) => {
+                              const Icon = t.icon
+                              const isSelected = theme === t.value
 
-              {/* Submit Message */}
-              {submitMessage && (
-                <div
-                  className={`p-4 rounded-lg font-bold text-center ${
-                    submitMessage.includes('success')
-                      ? 'bg-[color-mix(in_srgb,var(--accent)_20%,var(--background))] text-theme-accent'
-                      : 'bg-[color-mix(in_srgb,var(--secondary)_20%,var(--background))] text-theme-secondary'
-                  }`}
-                >
-                  {submitMessage}
-                </div>
-              )}
+                              return (
+                                <button
+                                  key={t.value}
+                                  type="button"
+                                  onClick={() => setTheme(t.value)}
+                                  className={`p-4 rounded-lg border-2 transition-all ${
+                                    isSelected
+                                      ? 'border-[var(--primary)] ring-2 ring-[var(--primary)]/20'
+                                      : 'border-[var(--border)] hover:border-[var(--primary)]/30'
+                                  }`}
+                                  style={{
+                                    background: isSelected
+                                      ? `linear-gradient(135deg, ${t.colors.primary}15, ${t.colors.accent}15)`
+                                      : 'transparent'
+                                  }}
+                                >
+                                  <Icon
+                                    className="w-8 h-8 mx-auto mb-2"
+                                    style={{ color: t.colors.primary }}
+                                  />
+                                  <p className="text-sm font-bold text-center">{t.label}</p>
+                                </button>
+                              )
+                            })}
+                          </div>
+                        </div>
 
-              {/* Actions */}
-              <div className="flex gap-4 pt-4">
-                <Button
-                  type="submit"
-                  size="lg"
-                  disabled={isSubmitting}
-                  className="flex-1 font-black text-lg py-6"
-                >
-                  {isSubmitting ? (
-                    <>
-                      <div className="w-5 h-5 border-2 border-[var(--primary-foreground)] border-t-transparent rounded-full animate-spin mr-2" />
-                      CREATING PROJECT...
-                    </>
-                  ) : (
-                    'CREATE PROJECT'
-                  )}
-                </Button>
-                <Link href="/community/projects" className="flex-1">
-                  <Button
-                    type="button"
-                    variant="outline"
-                    size="lg"
-                    disabled={isSubmitting}
-                    className="w-full font-black text-lg py-6"
+                        {/* Subprojects */}
+                        <div>
+                          <div className="flex items-center justify-between mb-4">
+                            <label className="flex items-center gap-2 text-sm font-bold text-[var(--foreground)]">
+                              <Layers className="w-4 h-4" />
+                              Subprojects (Optional)
+                            </label>
+                            <Button
+                              type="button"
+                              size="sm"
+                              onClick={() => setShowSubprojectForm(!showSubprojectForm)}
+                              className="font-bold"
+                            >
+                              <Plus className="w-4 h-4 mr-1" />
+                              Add Subproject
+                            </Button>
+                          </div>
+
+                          {showSubprojectForm && (
+                            <Card className="mb-4 border-2 border-dashed">
+                              <CardContent className="p-4 space-y-3">
+                                <input
+                                  type="text"
+                                  value={newSubproject.name}
+                                  onChange={(e) => setNewSubproject({ ...newSubproject, name: e.target.value })}
+                                  placeholder="Subproject name..."
+                                  className="w-full px-3 py-2 rounded-lg border-2 border-[var(--border)] bg-[var(--background)] text-[var(--foreground)] font-semibold focus:border-theme-primary focus:outline-none"
+                                />
+                                <input
+                                  type="text"
+                                  value={newSubproject.description}
+                                  onChange={(e) => setNewSubproject({ ...newSubproject, description: e.target.value })}
+                                  placeholder="Brief description..."
+                                  className="w-full px-3 py-2 rounded-lg border-2 border-[var(--border)] bg-[var(--background)] text-[var(--foreground)] font-semibold focus:border-theme-primary focus:outline-none"
+                                />
+                                <div className="flex gap-2">
+                                  <Button type="button" size="sm" onClick={addSubproject} className="font-bold">
+                                    Add
+                                  </Button>
+                                  <Button type="button" size="sm" variant="ghost" onClick={() => setShowSubprojectForm(false)} className="font-bold">
+                                    Cancel
+                                  </Button>
+                                </div>
+                              </CardContent>
+                            </Card>
+                          )}
+
+                          {subprojects.length > 0 ? (
+                            <div className="space-y-2">
+                              {subprojects.map((sp) => (
+                                <Card key={sp.id} className="border-2">
+                                  <CardContent className="p-4 flex items-center justify-between">
+                                    <div>
+                                      <p className="font-bold">{sp.name}</p>
+                                      <p className="text-sm text-theme-muted">{sp.description}</p>
+                                    </div>
+                                    <button
+                                      onClick={() => removeSubproject(sp.id)}
+                                      className="p-2 hover:bg-red-500/10 rounded-lg text-red-500 transition-colors"
+                                    >
+                                      <X className="w-4 h-4" />
+                                    </button>
+                                  </CardContent>
+                                </Card>
+                              ))}
+                            </div>
+                          ) : (
+                            <Card className="border-2 border-dashed">
+                              <CardContent className="p-8 text-center">
+                                <Layers className="w-12 h-12 mx-auto mb-3 text-theme-muted opacity-50" />
+                                <p className="text-sm text-theme-muted">
+                                  No subprojects yet. Add them to organize your work into focused teams!
+                                </p>
+                              </CardContent>
+                            </Card>
+                          )}
+                          <p className="text-xs text-theme-muted mt-2">
+                            Each subproject can have its own subprojects - build complex ecosystems!
+                          </p>
+                        </div>
+                      </div>
+                    )}
+
+                    {/* STEP 4: COLLABORATION */}
+                    {currentStep === 4 && (
+                      <div className="space-y-6">
+                        <div className="grid md:grid-cols-2 gap-4">
+                          <label className="flex items-start gap-3 p-4 rounded-lg border-2 border-[var(--border)] hover:border-[var(--primary)]/30 cursor-pointer transition-colors">
+                            <input
+                              type="checkbox"
+                              checked={enableDiscussions}
+                              onChange={(e) => setEnableDiscussions(e.target.checked)}
+                              className="mt-1 w-5 h-5 rounded border-[var(--border)]"
+                            />
+                            <div>
+                              <p className="font-bold">Enable Discussions</p>
+                              <p className="text-xs text-theme-muted mt-1">
+                                Allow members to chat and collaborate in real-time
+                              </p>
+                            </div>
+                          </label>
+
+                          <label className="flex items-start gap-3 p-4 rounded-lg border-2 border-[var(--border)] hover:border-[var(--primary)]/30 cursor-pointer transition-colors">
+                            <input
+                              type="checkbox"
+                              checked={enableResearch}
+                              onChange={(e) => setEnableResearch(e.target.checked)}
+                              className="mt-1 w-5 h-5 rounded border-[var(--border)]"
+                            />
+                            <div>
+                              <p className="font-bold">Enable Research Hub</p>
+                              <p className="text-xs text-theme-muted mt-1">
+                                Share articles, papers, and resources with the team
+                              </p>
+                            </div>
+                          </label>
+
+                          <label className="flex items-start gap-3 p-4 rounded-lg border-2 border-[var(--border)] hover:border-[var(--primary)]/30 cursor-pointer transition-colors">
+                            <input
+                              type="checkbox"
+                              checked={enableLearning}
+                              onChange={(e) => setEnableLearning(e.target.checked)}
+                              className="mt-1 w-5 h-5 rounded border-[var(--border)]"
+                            />
+                            <div>
+                              <p className="font-bold">Enable Learning Modules</p>
+                              <p className="text-xs text-theme-muted mt-1">
+                                Create courses and training for new members
+                              </p>
+                            </div>
+                          </label>
+
+                          <label className="flex items-start gap-3 p-4 rounded-lg border-2 border-[var(--border)] hover:border-[var(--primary)]/30 cursor-pointer transition-colors">
+                            <input
+                              type="checkbox"
+                              checked={requireApproval}
+                              onChange={(e) => setRequireApproval(e.target.checked)}
+                              className="mt-1 w-5 h-5 rounded border-[var(--border)]"
+                            />
+                            <div>
+                              <p className="font-bold">Require Join Approval</p>
+                              <p className="text-xs text-theme-muted mt-1">
+                                Review and approve new member requests manually
+                              </p>
+                            </div>
+                          </label>
+                        </div>
+                      </div>
+                    )}
+
+                    {/* STEP 5: LAUNCH */}
+                    {currentStep === 5 && (
+                      <div className="space-y-6">
+                        {/* Status */}
+                        <div>
+                          <label className="flex items-center gap-2 text-sm font-bold text-[var(--foreground)] mb-2">
+                            <Rocket className="w-4 h-4" />
+                            Initial Status
+                          </label>
+                          <select
+                            value={projectStatus}
+                            onChange={(e) => setProjectStatus(e.target.value)}
+                            className="w-full px-4 py-3 rounded-lg border-2 border-[var(--border)] bg-[var(--background)] text-[var(--foreground)] font-semibold focus:border-theme-primary focus:outline-none"
+                          >
+                            <option value="PLANNING">Planning - Still organizing</option>
+                            <option value="ACTIVE">Active - Ready to go!</option>
+                            <option value="COMPLETED">Completed - Already finished</option>
+                          </select>
+                        </div>
+
+                        {/* Goal */}
+                        <div>
+                          <label className="flex items-center gap-2 text-sm font-bold text-[var(--foreground)] mb-2">
+                            <Target className="w-4 h-4" />
+                            Primary Goal (Optional)
+                          </label>
+                          <input
+                            type="text"
+                            value={goal}
+                            onChange={(e) => setGoal(e.target.value)}
+                            placeholder="e.g., Plant 1,000 trees by December"
+                            maxLength={150}
+                            className="w-full px-4 py-3 rounded-lg border-2 border-[var(--border)] bg-[var(--background)] text-[var(--foreground)] font-semibold focus:border-theme-primary focus:outline-none"
+                          />
+                        </div>
+
+                        {/* Preview */}
+                        <Card className="border-2 border-[var(--primary)]/30 bg-gradient-to-br from-[var(--primary)]/5 to-[var(--accent)]/5">
+                          <CardHeader>
+                            <CardTitle className="flex items-center gap-2">
+                              <Eye className="w-5 h-5" />
+                              Preview
+                            </CardTitle>
+                          </CardHeader>
+                          <CardContent className="space-y-3">
+                            <div>
+                              <p className="text-xs font-bold text-theme-muted uppercase mb-1">Name</p>
+                              <p className="font-bold text-lg">{name || 'Untitled Project'}</p>
+                            </div>
+                            {tagline && (
+                              <div>
+                                <p className="text-xs font-bold text-theme-muted uppercase mb-1">Tagline</p>
+                                <p className="text-sm italic text-theme-muted">{tagline}</p>
+                              </div>
+                            )}
+                            <div>
+                              <p className="text-xs font-bold text-theme-muted uppercase mb-1">Description</p>
+                              <p className="text-sm">{description || 'No description'}</p>
+                            </div>
+                            <div className="flex flex-wrap gap-2 pt-2">
+                              <span className={`px-3 py-1 rounded-full text-xs font-bold bg-gradient-to-r ${VISIBILITY_OPTIONS.find(v => v.value === visibility)?.gradient} text-white`}>
+                                {VISIBILITY_OPTIONS.find(v => v.value === visibility)?.label}
+                              </span>
+                              <span className="px-3 py-1 rounded-full text-xs font-bold bg-[var(--muted)] text-[var(--foreground)]">
+                                {category || 'Uncategorized'}
+                              </span>
+                              {selectedTheme && (
+                                <span className="px-3 py-1 rounded-full text-xs font-bold bg-[var(--muted)] text-[var(--foreground)]">
+                                  {selectedTheme.label} Theme
+                                </span>
+                              )}
+                              {subprojects.length > 0 && (
+                                <span className="px-3 py-1 rounded-full text-xs font-bold bg-[var(--muted)] text-[var(--foreground)]">
+                                  {subprojects.length} Subprojects
+                                </span>
+                              )}
+                            </div>
+                          </CardContent>
+                        </Card>
+                      </div>
+                    )}
+                  </CardContent>
+                </Card>
+
+                {/* Submit Message */}
+                {submitMessage && (
+                  <motion.div
+                    initial={{ opacity: 0, y: -10 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    className={`mt-4 p-4 rounded-lg font-bold text-center ${
+                      submitMessage.includes('success')
+                        ? 'bg-emerald-500/10 text-emerald-600 border-2 border-emerald-500/30'
+                        : 'bg-red-500/10 text-red-600 border-2 border-red-500/30'
+                    }`}
                   >
-                    CANCEL
-                  </Button>
-                </Link>
-              </div>
-            </form>
+                    {submitMessage}
+                  </motion.div>
+                )}
+
+                {/* Navigation Buttons */}
+                <div className="flex gap-4 mt-8">
+                  {currentStep > 1 && (
+                    <Button
+                      type="button"
+                      variant="outline"
+                      onClick={handleBack}
+                      disabled={isSubmitting}
+                      className="font-bold"
+                    >
+                      <ArrowLeft className="w-4 h-4 mr-2" />
+                      Back
+                    </Button>
+                  )}
+
+                  {currentStep < STEPS.length ? (
+                    <Button
+                      type="button"
+                      onClick={handleNext}
+                      disabled={!canProceed()}
+                      className="flex-1 font-bold"
+                    >
+                      Next: {STEPS[currentStep].name}
+                      <ArrowRight className="w-4 h-4 ml-2" />
+                    </Button>
+                  ) : (
+                    <Button
+                      type="button"
+                      onClick={handleSubmit}
+                      disabled={isSubmitting}
+                      className="flex-1 font-bold bg-gradient-to-r from-orange-500 to-red-500 hover:from-orange-600 hover:to-red-600"
+                    >
+                      {isSubmitting ? (
+                        <>
+                          <div className="w-5 h-5 border-2 border-white border-t-transparent rounded-full animate-spin mr-2" />
+                          Launching...
+                        </>
+                      ) : (
+                        <>
+                          <Flame className="w-5 h-5 mr-2" />
+                          Launch Project!
+                        </>
+                      )}
+                    </Button>
+                  )}
+                </div>
+              </motion.div>
+            </AnimatePresence>
           </div>
         </div>
       </section>
