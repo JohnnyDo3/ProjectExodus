@@ -315,35 +315,35 @@ export default function NewProjectPage() {
   const selectedTheme = PROJECT_THEMES.find(t => t.value === theme)
 
   return (
-    <div className="min-h-screen bg-[var(--background)]">
+    <div className="h-full flex flex-col bg-[var(--background)] overflow-hidden">
       {/* Header with Progress */}
-      <section className="relative overflow-hidden bg-gradient-to-br from-[var(--card)] via-[var(--background)] to-[var(--card)] border-b border-[var(--border)]/30">
+      <section className="relative overflow-hidden bg-gradient-to-br from-[var(--card)] via-[var(--background)] to-[var(--card)] border-b border-[var(--border)]/30 flex-shrink-0">
         {/* Ambient glow */}
         <div className="absolute top-0 left-1/4 w-64 h-64 bg-[var(--primary)]/5 rounded-full blur-3xl" />
         <div className="absolute top-0 right-1/4 w-64 h-64 bg-[var(--accent)]/5 rounded-full blur-3xl" />
 
-        <div className="relative container mx-auto px-4 py-8">
+        <div className="relative container mx-auto px-4 py-4">
           <div className="max-w-5xl mx-auto">
-            <BackButton label="Back to Projects" fallbackUrl="/community/projects" className="mb-6" />
+            <BackButton label="Back to Projects" fallbackUrl="/community/projects" className="mb-3" />
 
             {/* Title */}
-            <div className="text-center mb-8">
-              <div className="inline-flex items-center gap-2 mb-3 px-4 py-2 rounded-full bg-gradient-to-r from-[var(--primary)]/10 to-[var(--accent)]/10 border border-[var(--primary)]/20">
-                <Rocket className="w-4 h-4 text-theme-primary" />
-                <span className="text-xs font-bold uppercase tracking-wider text-theme-primary">
+            <div className="text-center mb-4">
+              <div className="inline-flex items-center gap-2 mb-2 px-3 py-1.5 rounded-full bg-gradient-to-r from-[var(--primary)]/10 to-[var(--accent)]/10 border border-[var(--primary)]/20">
+                <Rocket className="w-3.5 h-3.5 text-theme-primary" />
+                <span className="text-[10px] font-bold uppercase tracking-wider text-theme-primary">
                   Project Creation Wizard
                 </span>
               </div>
-              <h1 className="text-4xl font-bold bg-gradient-to-r from-[var(--foreground)] via-[var(--primary)] to-[var(--foreground)] bg-clip-text text-transparent mb-2">
+              <h1 className="text-2xl font-bold bg-gradient-to-r from-[var(--foreground)] via-[var(--primary)] to-[var(--foreground)] bg-clip-text text-transparent mb-1">
                 Build Your Ecosystem
               </h1>
-              <p className="text-theme-muted font-medium">
+              <p className="text-sm text-theme-muted font-medium">
                 Step {currentStep} of {STEPS.length}: {currentStepData.description}
               </p>
             </div>
 
             {/* Progress Steps */}
-            <div className="flex items-center justify-between mb-8">
+            <div className="flex items-center justify-between mb-4">
               {STEPS.map((step, index) => {
                 const Icon = step.icon
                 const isCompleted = completedSteps.includes(step.id)
@@ -353,7 +353,7 @@ export default function NewProjectPage() {
                 return (
                   <div key={step.id} className="flex items-center flex-1">
                     <div className="flex flex-col items-center flex-1">
-                      <div className={`relative w-12 h-12 rounded-full flex items-center justify-center border-2 transition-all ${
+                      <div className={`relative w-10 h-10 rounded-full flex items-center justify-center border-2 transition-all ${
                         isCompleted
                           ? `bg-gradient-to-br ${step.gradient} border-transparent`
                           : isCurrent
@@ -361,15 +361,15 @@ export default function NewProjectPage() {
                           : `border-[var(--border)] bg-[var(--muted)]/20`
                       }`}>
                         {isCompleted ? (
-                          <Check className="w-6 h-6 text-white" />
+                          <Check className="w-5 h-5 text-white" />
                         ) : (
-                          <Icon className={`w-5 h-5 ${isCurrent ? 'text-theme-primary' : 'text-theme-muted'}`} />
+                          <Icon className={`w-4 h-4 ${isCurrent ? 'text-theme-primary' : 'text-theme-muted'}`} />
                         )}
                         {isCurrent && (
                           <div className={`absolute inset-0 bg-gradient-to-br ${step.gradient} blur-xl opacity-20 rounded-full animate-pulse`} />
                         )}
                       </div>
-                      <span className={`text-xs font-bold mt-2 hidden sm:block ${
+                      <span className={`text-[10px] font-bold mt-1.5 hidden sm:block ${
                         isCurrent ? 'text-[var(--foreground)]' : 'text-theme-muted'
                       }`}>
                         {step.name}
@@ -389,9 +389,9 @@ export default function NewProjectPage() {
       </section>
 
       {/* Step Content */}
-      <section className="py-12">
-        <div className="container mx-auto px-4">
-          <div className="max-w-4xl mx-auto">
+      <section className="flex-1 overflow-y-auto py-4">
+        <div className="container mx-auto px-4 h-full">
+          <div className="max-w-4xl mx-auto h-full flex flex-col">
             <AnimatePresence mode="wait">
               <motion.div
                 key={currentStep}
@@ -399,34 +399,35 @@ export default function NewProjectPage() {
                 animate={{ opacity: 1, x: 0 }}
                 exit={{ opacity: 0, x: -20 }}
                 transition={{ duration: 0.3 }}
+                className="flex-1 flex flex-col min-h-0"
               >
-                <Card className={`relative overflow-hidden border-2 shadow-xl`}>
+                <Card className={`relative overflow-hidden border-2 shadow-xl flex-1 flex flex-col min-h-0`}>
                   {/* Step header with Guardian gradient */}
                   <div className={`absolute top-0 left-0 right-0 h-1 bg-gradient-to-r ${currentStepData.gradient}`} />
 
-                  <CardHeader>
-                    <div className="flex items-center gap-4">
-                      <div className={`w-14 h-14 rounded-xl bg-gradient-to-br ${currentStepData.gradient} flex items-center justify-center`}>
-                        <StepIcon className="w-7 h-7 text-white" />
+                  <CardHeader className="flex-shrink-0 pb-3">
+                    <div className="flex items-center gap-3">
+                      <div className={`w-12 h-12 rounded-xl bg-gradient-to-br ${currentStepData.gradient} flex items-center justify-center flex-shrink-0`}>
+                        <StepIcon className="w-6 h-6 text-white" />
                       </div>
                       <div>
-                        <CardTitle className="text-2xl font-bold">
+                        <CardTitle className="text-xl font-bold">
                           {currentStepData.name}
                         </CardTitle>
-                        <p className="text-sm text-theme-muted font-medium mt-1">
+                        <p className="text-xs text-theme-muted font-medium mt-0.5">
                           Guardian of {currentStepData.guardian}
                         </p>
                       </div>
                     </div>
                   </CardHeader>
 
-                  <CardContent className="space-y-6 pb-8">
+                  <CardContent className="space-y-4 pb-4 flex-1 overflow-y-auto">
                     {/* STEP 1: VISION */}
                     {currentStep === 1 && (
-                      <div className="space-y-6">
+                      <div className="space-y-3">
                         <div>
-                          <label className="flex items-center gap-2 text-sm font-bold text-[var(--foreground)] mb-2">
-                            <Sparkles className="w-4 h-4" />
+                          <label className="flex items-center gap-1.5 text-xs font-bold text-[var(--foreground)] mb-1.5">
+                            <Sparkles className="w-3.5 h-3.5" />
                             Project Name *
                           </label>
                           <input
@@ -435,14 +436,14 @@ export default function NewProjectPage() {
                             onChange={(e) => setName(e.target.value)}
                             placeholder="e.g., Urban Regeneration Initiative"
                             maxLength={100}
-                            className="w-full px-4 py-3 rounded-lg border-2 border-[var(--border)] bg-[var(--background)] text-[var(--foreground)] font-semibold focus:border-theme-primary focus:outline-none transition-colors"
+                            className="w-full px-3 py-2 rounded-lg border-2 border-[var(--border)] bg-[var(--background)] text-[var(--foreground)] text-sm font-semibold focus:border-theme-primary focus:outline-none transition-colors"
                           />
-                          <p className="text-xs text-theme-muted mt-1">{name.length}/100 characters</p>
+                          <p className="text-[10px] text-theme-muted mt-0.5">{name.length}/100 characters</p>
                         </div>
 
                         <div>
-                          <label className="flex items-center gap-2 text-sm font-bold text-[var(--foreground)] mb-2">
-                            <Zap className="w-4 h-4" />
+                          <label className="flex items-center gap-1.5 text-xs font-bold text-[var(--foreground)] mb-1.5">
+                            <Zap className="w-3.5 h-3.5" />
                             Tagline
                           </label>
                           <input
@@ -451,14 +452,14 @@ export default function NewProjectPage() {
                             onChange={(e) => setTagline(e.target.value)}
                             placeholder="A punchy one-liner that captures your vision..."
                             maxLength={80}
-                            className="w-full px-4 py-3 rounded-lg border-2 border-[var(--border)] bg-[var(--background)] text-[var(--foreground)] font-semibold focus:border-theme-primary focus:outline-none transition-colors"
+                            className="w-full px-3 py-2 rounded-lg border-2 border-[var(--border)] bg-[var(--background)] text-[var(--foreground)] text-sm font-semibold focus:border-theme-primary focus:outline-none transition-colors"
                           />
-                          <p className="text-xs text-theme-muted mt-1">{tagline.length}/80 characters</p>
+                          <p className="text-[10px] text-theme-muted mt-0.5">{tagline.length}/80 characters</p>
                         </div>
 
                         <div>
-                          <label className="flex items-center gap-2 text-sm font-bold text-[var(--foreground)] mb-2">
-                            <FileText className="w-4 h-4" />
+                          <label className="flex items-center gap-1.5 text-xs font-bold text-[var(--foreground)] mb-1.5">
+                            <FileText className="w-3.5 h-3.5" />
                             Description *
                           </label>
                           <textarea
@@ -466,15 +467,15 @@ export default function NewProjectPage() {
                             onChange={(e) => setDescription(e.target.value)}
                             placeholder="Tell the story of your project. What problem are you solving? Why does it matter?"
                             maxLength={500}
-                            rows={5}
-                            className="w-full px-4 py-3 rounded-lg border-2 border-[var(--border)] bg-[var(--background)] text-[var(--foreground)] font-semibold focus:border-theme-primary focus:outline-none transition-colors resize-none"
+                            rows={3}
+                            className="w-full px-3 py-2 rounded-lg border-2 border-[var(--border)] bg-[var(--background)] text-[var(--foreground)] text-sm font-semibold focus:border-theme-primary focus:outline-none transition-colors resize-none"
                           />
-                          <p className="text-xs text-theme-muted mt-1">{description.length}/500 characters</p>
+                          <p className="text-[10px] text-theme-muted mt-0.5">{description.length}/500 characters</p>
                         </div>
 
                         <div>
-                          <label className="flex items-center gap-2 text-sm font-bold text-[var(--foreground)] mb-2">
-                            <Target className="w-4 h-4" />
+                          <label className="flex items-center gap-1.5 text-xs font-bold text-[var(--foreground)] mb-1.5">
+                            <Target className="w-3.5 h-3.5" />
                             Mission Statement
                           </label>
                           <textarea
@@ -482,24 +483,24 @@ export default function NewProjectPage() {
                             onChange={(e) => setMission(e.target.value)}
                             placeholder="Optional: Your guiding principles and long-term impact vision..."
                             maxLength={300}
-                            rows={3}
-                            className="w-full px-4 py-3 rounded-lg border-2 border-[var(--border)] bg-[var(--background)] text-[var(--foreground)] font-semibold focus:border-theme-primary focus:outline-none transition-colors resize-none"
+                            rows={2}
+                            className="w-full px-3 py-2 rounded-lg border-2 border-[var(--border)] bg-[var(--background)] text-[var(--foreground)] text-sm font-semibold focus:border-theme-primary focus:outline-none transition-colors resize-none"
                           />
-                          <p className="text-xs text-theme-muted mt-1">{mission.length}/300 characters</p>
+                          <p className="text-[10px] text-theme-muted mt-0.5">{mission.length}/300 characters</p>
                         </div>
                       </div>
                     )}
 
                     {/* STEP 2: FOUNDATION */}
                     {currentStep === 2 && (
-                      <div className="space-y-8">
+                      <div className="space-y-4">
                         {/* Visibility Selection */}
                         <div>
-                          <label className="flex items-center gap-2 text-sm font-bold text-[var(--foreground)] mb-4">
-                            <Globe className="w-4 h-4" />
+                          <label className="flex items-center gap-1.5 text-xs font-bold text-[var(--foreground)] mb-2">
+                            <Globe className="w-3.5 h-3.5" />
                             Project Visibility *
                           </label>
-                          <div className="grid md:grid-cols-3 gap-4">
+                          <div className="grid md:grid-cols-3 gap-2">
                             {VISIBILITY_OPTIONS.map((option) => {
                               const Icon = option.icon
                               const isSelected = visibility === option.value
@@ -509,27 +510,27 @@ export default function NewProjectPage() {
                                   key={option.value}
                                   type="button"
                                   onClick={() => setVisibility(option.value)}
-                                  className={`relative p-5 rounded-xl border-2 transition-all text-left ${
+                                  className={`relative p-3 rounded-lg border-2 transition-all text-left ${
                                     isSelected
                                       ? `border-[var(--primary)] bg-gradient-to-br ${option.gradient} bg-opacity-10`
                                       : 'border-[var(--border)] hover:border-[var(--primary)]/30'
                                   }`}
                                 >
-                                  <div className="flex items-start gap-3 mb-3">
-                                    <div className={`w-10 h-10 rounded-lg bg-gradient-to-br ${option.gradient} flex items-center justify-center`}>
-                                      <Icon className="w-5 h-5 text-white" />
+                                  <div className="flex items-start gap-2 mb-2">
+                                    <div className={`w-8 h-8 rounded-lg bg-gradient-to-br ${option.gradient} flex items-center justify-center flex-shrink-0`}>
+                                      <Icon className="w-4 h-4 text-white" />
                                     </div>
-                                    <div className="flex-1">
-                                      <h4 className="font-bold text-[var(--foreground)]">{option.label}</h4>
-                                      <span className="text-[10px] font-semibold text-theme-muted uppercase tracking-wide">
+                                    <div className="flex-1 min-w-0">
+                                      <h4 className="font-bold text-sm text-[var(--foreground)]">{option.label}</h4>
+                                      <span className="text-[9px] font-semibold text-theme-muted uppercase tracking-wide">
                                         {option.badge}
                                       </span>
                                     </div>
                                     {isSelected && (
-                                      <Check className="w-5 h-5 text-theme-primary" />
+                                      <Check className="w-4 h-4 text-theme-primary flex-shrink-0" />
                                     )}
                                   </div>
-                                  <p className="text-xs text-theme-muted leading-relaxed">
+                                  <p className="text-[10px] text-theme-muted leading-snug">
                                     {option.description}
                                   </p>
                                 </button>
@@ -538,43 +539,16 @@ export default function NewProjectPage() {
                           </div>
                         </div>
 
-                        {/* Parent Project (Nesting) */}
-                        <div>
-                          <label className="flex items-center gap-2 text-sm font-bold text-[var(--foreground)] mb-2">
-                            <FolderTree className="w-4 h-4" />
-                            Nest Within Existing Project (Optional)
-                          </label>
-                          <select
-                            value={parentProjectId || ''}
-                            onChange={(e) => setParentProjectId(e.target.value || null)}
-                            className="w-full px-4 py-3 rounded-lg border-2 border-[var(--border)] bg-[var(--background)] text-[var(--foreground)] font-semibold focus:border-theme-primary focus:outline-none"
-                          >
-                            <option value="">None - This is a top-level project</option>
-                            {loadingProjects ? (
-                              <option disabled>Loading your projects...</option>
-                            ) : (
-                              availableProjects.map((project) => (
-                                <option key={project.id} value={project.id}>
-                                  {project.name}
-                                </option>
-                              ))
-                            )}
-                          </select>
-                          <p className="text-xs text-theme-muted mt-2">
-                            Create subprojects within subprojects - infinite nesting supported!
-                          </p>
-                        </div>
-
                         {/* Category */}
                         <div>
-                          <label className="flex items-center gap-2 text-sm font-bold text-[var(--foreground)] mb-2">
-                            <Tag className="w-4 h-4" />
+                          <label className="flex items-center gap-1.5 text-xs font-bold text-[var(--foreground)] mb-1.5">
+                            <Tag className="w-3.5 h-3.5" />
                             Category *
                           </label>
                           <select
                             value={category}
                             onChange={(e) => setCategory(e.target.value)}
-                            className="w-full px-4 py-3 rounded-lg border-2 border-[var(--border)] bg-[var(--background)] text-[var(--foreground)] font-semibold focus:border-theme-primary focus:outline-none"
+                            className="w-full px-3 py-2 rounded-lg border-2 border-[var(--border)] bg-[var(--background)] text-[var(--foreground)] text-sm font-semibold focus:border-theme-primary focus:outline-none"
                           >
                             <option value="">Select a category...</option>
                             <option value="environment">Environment & Conservation</option>
@@ -590,32 +564,56 @@ export default function NewProjectPage() {
                           </select>
                         </div>
 
+                        {/* Parent Project (Nesting) */}
+                        <div>
+                          <label className="flex items-center gap-1.5 text-xs font-bold text-[var(--foreground)] mb-1.5">
+                            <FolderTree className="w-3.5 h-3.5" />
+                            Nest Within Project (Optional)
+                          </label>
+                          <select
+                            value={parentProjectId || ''}
+                            onChange={(e) => setParentProjectId(e.target.value || null)}
+                            className="w-full px-3 py-2 rounded-lg border-2 border-[var(--border)] bg-[var(--background)] text-[var(--foreground)] text-sm font-semibold focus:border-theme-primary focus:outline-none"
+                          >
+                            <option value="">None - Top-level project</option>
+                            {loadingProjects ? (
+                              <option disabled>Loading...</option>
+                            ) : (
+                              availableProjects.map((project) => (
+                                <option key={project.id} value={project.id}>
+                                  {project.name}
+                                </option>
+                              ))
+                            )}
+                          </select>
+                        </div>
+
                         {/* Tags */}
                         <div>
-                          <label className="flex items-center gap-2 text-sm font-bold text-[var(--foreground)] mb-2">
-                            <Tag className="w-4 h-4" />
+                          <label className="flex items-center gap-1.5 text-xs font-bold text-[var(--foreground)] mb-1.5">
+                            <Tag className="w-3.5 h-3.5" />
                             Tags
                           </label>
-                          <div className="flex gap-2 mb-3">
+                          <div className="flex gap-2 mb-2">
                             <input
                               type="text"
                               value={newTag}
                               onChange={(e) => setNewTag(e.target.value)}
                               onKeyPress={(e) => e.key === 'Enter' && (e.preventDefault(), addTag())}
-                              placeholder="Add tags (e.g., urban, gardening, youth)"
-                              className="flex-1 px-4 py-2 rounded-lg border-2 border-[var(--border)] bg-[var(--background)] text-[var(--foreground)] font-semibold focus:border-theme-primary focus:outline-none"
+                              placeholder="e.g., urban, gardening, youth"
+                              className="flex-1 px-3 py-2 rounded-lg border-2 border-[var(--border)] bg-[var(--background)] text-[var(--foreground)] text-sm font-semibold focus:border-theme-primary focus:outline-none"
                             />
                             <Button type="button" onClick={addTag} size="sm" className="font-bold">
-                              <Plus className="w-4 h-4" />
+                              <Plus className="w-3.5 h-3.5" />
                             </Button>
                           </div>
                           {tags.length > 0 && (
-                            <div className="flex flex-wrap gap-2">
+                            <div className="flex flex-wrap gap-1.5">
                               {tags.map((tag) => (
-                                <div key={tag} className="flex items-center gap-1 px-3 py-1 bg-[var(--muted)] rounded-full text-sm font-semibold">
+                                <div key={tag} className="flex items-center gap-1 px-2 py-0.5 bg-[var(--muted)] rounded-full text-xs font-semibold">
                                   <span>#{tag}</span>
                                   <button onClick={() => removeTag(tag)} className="hover:text-red-500">
-                                    <X className="w-3 h-3" />
+                                    <X className="w-2.5 h-2.5" />
                                   </button>
                                 </div>
                               ))}
@@ -627,14 +625,14 @@ export default function NewProjectPage() {
 
                     {/* STEP 3: STRUCTURE */}
                     {currentStep === 3 && (
-                      <div className="space-y-8">
+                      <div className="space-y-4">
                         {/* Theme Selection */}
                         <div>
-                          <label className="flex items-center gap-2 text-sm font-bold text-[var(--foreground)] mb-4">
-                            <Palette className="w-4 h-4" />
+                          <label className="flex items-center gap-1.5 text-xs font-bold text-[var(--foreground)] mb-2">
+                            <Palette className="w-3.5 h-3.5" />
                             Visual Theme
                           </label>
-                          <div className="grid grid-cols-2 md:grid-cols-3 gap-3">
+                          <div className="grid grid-cols-3 md:grid-cols-6 gap-2">
                             {PROJECT_THEMES.map((t) => {
                               const Icon = t.icon
                               const isSelected = theme === t.value
@@ -644,7 +642,7 @@ export default function NewProjectPage() {
                                   key={t.value}
                                   type="button"
                                   onClick={() => setTheme(t.value)}
-                                  className={`p-4 rounded-lg border-2 transition-all ${
+                                  className={`p-2 rounded-lg border-2 transition-all ${
                                     isSelected
                                       ? 'border-[var(--primary)] ring-2 ring-[var(--primary)]/20'
                                       : 'border-[var(--border)] hover:border-[var(--primary)]/30'
@@ -656,10 +654,10 @@ export default function NewProjectPage() {
                                   }}
                                 >
                                   <Icon
-                                    className="w-8 h-8 mx-auto mb-2"
+                                    className="w-6 h-6 mx-auto mb-1"
                                     style={{ color: t.colors.primary }}
                                   />
-                                  <p className="text-sm font-bold text-center">{t.label}</p>
+                                  <p className="text-[10px] font-bold text-center">{t.label}</p>
                                 </button>
                               )
                             })}
@@ -668,44 +666,44 @@ export default function NewProjectPage() {
 
                         {/* Subprojects */}
                         <div>
-                          <div className="flex items-center justify-between mb-4">
-                            <label className="flex items-center gap-2 text-sm font-bold text-[var(--foreground)]">
-                              <Layers className="w-4 h-4" />
+                          <div className="flex items-center justify-between mb-2">
+                            <label className="flex items-center gap-1.5 text-xs font-bold text-[var(--foreground)]">
+                              <Layers className="w-3.5 h-3.5" />
                               Subprojects (Optional)
                             </label>
                             <Button
                               type="button"
                               size="sm"
                               onClick={() => setShowSubprojectForm(!showSubprojectForm)}
-                              className="font-bold"
+                              className="font-bold text-xs h-7"
                             >
-                              <Plus className="w-4 h-4 mr-1" />
-                              Add Subproject
+                              <Plus className="w-3 h-3 mr-1" />
+                              Add
                             </Button>
                           </div>
 
                           {showSubprojectForm && (
-                            <Card className="mb-4 border-2 border-dashed">
-                              <CardContent className="p-4 space-y-3">
+                            <Card className="mb-2 border-2 border-dashed">
+                              <CardContent className="p-2 space-y-2">
                                 <input
                                   type="text"
                                   value={newSubproject.name}
                                   onChange={(e) => setNewSubproject({ ...newSubproject, name: e.target.value })}
                                   placeholder="Subproject name..."
-                                  className="w-full px-3 py-2 rounded-lg border-2 border-[var(--border)] bg-[var(--background)] text-[var(--foreground)] font-semibold focus:border-theme-primary focus:outline-none"
+                                  className="w-full px-2 py-1.5 text-sm rounded-lg border-2 border-[var(--border)] bg-[var(--background)] text-[var(--foreground)] font-semibold focus:border-theme-primary focus:outline-none"
                                 />
                                 <input
                                   type="text"
                                   value={newSubproject.description}
                                   onChange={(e) => setNewSubproject({ ...newSubproject, description: e.target.value })}
                                   placeholder="Brief description..."
-                                  className="w-full px-3 py-2 rounded-lg border-2 border-[var(--border)] bg-[var(--background)] text-[var(--foreground)] font-semibold focus:border-theme-primary focus:outline-none"
+                                  className="w-full px-2 py-1.5 text-sm rounded-lg border-2 border-[var(--border)] bg-[var(--background)] text-[var(--foreground)] font-semibold focus:border-theme-primary focus:outline-none"
                                 />
                                 <div className="flex gap-2">
-                                  <Button type="button" size="sm" onClick={addSubproject} className="font-bold">
+                                  <Button type="button" size="sm" onClick={addSubproject} className="font-bold text-xs h-7">
                                     Add
                                   </Button>
-                                  <Button type="button" size="sm" variant="ghost" onClick={() => setShowSubprojectForm(false)} className="font-bold">
+                                  <Button type="button" size="sm" variant="ghost" onClick={() => setShowSubprojectForm(false)} className="font-bold text-xs h-7">
                                     Cancel
                                   </Button>
                                 </div>
@@ -714,19 +712,19 @@ export default function NewProjectPage() {
                           )}
 
                           {subprojects.length > 0 ? (
-                            <div className="space-y-2">
+                            <div className="space-y-1.5">
                               {subprojects.map((sp) => (
                                 <Card key={sp.id} className="border-2">
-                                  <CardContent className="p-4 flex items-center justify-between">
-                                    <div>
-                                      <p className="font-bold">{sp.name}</p>
-                                      <p className="text-sm text-theme-muted">{sp.description}</p>
+                                  <CardContent className="p-2 flex items-center justify-between">
+                                    <div className="min-w-0 flex-1">
+                                      <p className="font-bold text-sm">{sp.name}</p>
+                                      <p className="text-xs text-theme-muted truncate">{sp.description}</p>
                                     </div>
                                     <button
                                       onClick={() => removeSubproject(sp.id)}
-                                      className="p-2 hover:bg-red-500/10 rounded-lg text-red-500 transition-colors"
+                                      className="p-1.5 hover:bg-red-500/10 rounded-lg text-red-500 transition-colors flex-shrink-0 ml-2"
                                     >
-                                      <X className="w-4 h-4" />
+                                      <X className="w-3.5 h-3.5" />
                                     </button>
                                   </CardContent>
                                 </Card>
@@ -734,81 +732,78 @@ export default function NewProjectPage() {
                             </div>
                           ) : (
                             <Card className="border-2 border-dashed">
-                              <CardContent className="p-8 text-center">
-                                <Layers className="w-12 h-12 mx-auto mb-3 text-theme-muted opacity-50" />
-                                <p className="text-sm text-theme-muted">
-                                  No subprojects yet. Add them to organize your work into focused teams!
+                              <CardContent className="p-4 text-center">
+                                <Layers className="w-8 h-8 mx-auto mb-2 text-theme-muted opacity-50" />
+                                <p className="text-xs text-theme-muted">
+                                  No subprojects yet. Add them to organize your work!
                                 </p>
                               </CardContent>
                             </Card>
                           )}
-                          <p className="text-xs text-theme-muted mt-2">
-                            Each subproject can have its own subprojects - build complex ecosystems!
-                          </p>
                         </div>
                       </div>
                     )}
 
                     {/* STEP 4: COLLABORATION */}
                     {currentStep === 4 && (
-                      <div className="space-y-6">
-                        <div className="grid md:grid-cols-2 gap-4">
-                          <label className="flex items-start gap-3 p-4 rounded-lg border-2 border-[var(--border)] hover:border-[var(--primary)]/30 cursor-pointer transition-colors">
+                      <div className="space-y-3">
+                        <div className="grid md:grid-cols-2 gap-2">
+                          <label className="flex items-start gap-2 p-2.5 rounded-lg border-2 border-[var(--border)] hover:border-[var(--primary)]/30 cursor-pointer transition-colors">
                             <input
                               type="checkbox"
                               checked={enableDiscussions}
                               onChange={(e) => setEnableDiscussions(e.target.checked)}
-                              className="mt-1 w-5 h-5 rounded border-[var(--border)]"
+                              className="mt-0.5 w-4 h-4 rounded border-[var(--border)] flex-shrink-0"
                             />
-                            <div>
-                              <p className="font-bold">Enable Discussions</p>
-                              <p className="text-xs text-theme-muted mt-1">
-                                Allow members to chat and collaborate in real-time
+                            <div className="min-w-0">
+                              <p className="font-bold text-sm">Enable Discussions</p>
+                              <p className="text-[10px] text-theme-muted mt-0.5">
+                                Chat and collaborate in real-time
                               </p>
                             </div>
                           </label>
 
-                          <label className="flex items-start gap-3 p-4 rounded-lg border-2 border-[var(--border)] hover:border-[var(--primary)]/30 cursor-pointer transition-colors">
+                          <label className="flex items-start gap-2 p-2.5 rounded-lg border-2 border-[var(--border)] hover:border-[var(--primary)]/30 cursor-pointer transition-colors">
                             <input
                               type="checkbox"
                               checked={enableResearch}
                               onChange={(e) => setEnableResearch(e.target.checked)}
-                              className="mt-1 w-5 h-5 rounded border-[var(--border)]"
+                              className="mt-0.5 w-4 h-4 rounded border-[var(--border)] flex-shrink-0"
                             />
-                            <div>
-                              <p className="font-bold">Enable Research Hub</p>
-                              <p className="text-xs text-theme-muted mt-1">
-                                Share articles, papers, and resources with the team
+                            <div className="min-w-0">
+                              <p className="font-bold text-sm">Enable Research Hub</p>
+                              <p className="text-[10px] text-theme-muted mt-0.5">
+                                Share articles and resources
                               </p>
                             </div>
                           </label>
 
-                          <label className="flex items-start gap-3 p-4 rounded-lg border-2 border-[var(--border)] hover:border-[var(--primary)]/30 cursor-pointer transition-colors">
+                          <label className="flex items-start gap-2 p-2.5 rounded-lg border-2 border-[var(--border)] hover:border-[var(--primary)]/30 cursor-pointer transition-colors">
                             <input
                               type="checkbox"
                               checked={enableLearning}
                               onChange={(e) => setEnableLearning(e.target.checked)}
-                              className="mt-1 w-5 h-5 rounded border-[var(--border)]"
+                              className="mt-0.5 w-4 h-4 rounded border-[var(--border)] flex-shrink-0"
                             />
-                            <div>
-                              <p className="font-bold">Enable Learning Modules</p>
-                              <p className="text-xs text-theme-muted mt-1">
-                                Create courses and training for new members
+                            <div className="min-w-0">
+                              <p className="font-bold text-sm">Enable Learning Modules</p>
+                              <p className="text-[10px] text-theme-muted mt-0.5">
+                                Create courses and training
                               </p>
                             </div>
                           </label>
 
-                          <label className="flex items-start gap-3 p-4 rounded-lg border-2 border-[var(--border)] hover:border-[var(--primary)]/30 cursor-pointer transition-colors">
+                          <label className="flex items-start gap-2 p-2.5 rounded-lg border-2 border-[var(--border)] hover:border-[var(--primary)]/30 cursor-pointer transition-colors">
                             <input
                               type="checkbox"
                               checked={requireApproval}
                               onChange={(e) => setRequireApproval(e.target.checked)}
-                              className="mt-1 w-5 h-5 rounded border-[var(--border)]"
+                              className="mt-0.5 w-4 h-4 rounded border-[var(--border)] flex-shrink-0"
                             />
-                            <div>
-                              <p className="font-bold">Require Join Approval</p>
-                              <p className="text-xs text-theme-muted mt-1">
-                                Review and approve new member requests manually
+                            <div className="min-w-0">
+                              <p className="font-bold text-sm">Require Join Approval</p>
+                              <p className="text-[10px] text-theme-muted mt-0.5">
+                                Manually approve new members
                               </p>
                             </div>
                           </label>
@@ -818,17 +813,17 @@ export default function NewProjectPage() {
 
                     {/* STEP 5: LAUNCH */}
                     {currentStep === 5 && (
-                      <div className="space-y-6">
+                      <div className="space-y-3">
                         {/* Status */}
                         <div>
-                          <label className="flex items-center gap-2 text-sm font-bold text-[var(--foreground)] mb-2">
-                            <Rocket className="w-4 h-4" />
+                          <label className="flex items-center gap-1.5 text-xs font-bold text-[var(--foreground)] mb-1.5">
+                            <Rocket className="w-3.5 h-3.5" />
                             Initial Status
                           </label>
                           <select
                             value={projectStatus}
                             onChange={(e) => setProjectStatus(e.target.value)}
-                            className="w-full px-4 py-3 rounded-lg border-2 border-[var(--border)] bg-[var(--background)] text-[var(--foreground)] font-semibold focus:border-theme-primary focus:outline-none"
+                            className="w-full px-3 py-2 rounded-lg border-2 border-[var(--border)] bg-[var(--background)] text-[var(--foreground)] text-sm font-semibold focus:border-theme-primary focus:outline-none"
                           >
                             <option value="PLANNING">Planning - Still organizing</option>
                             <option value="ACTIVE">Active - Ready to go!</option>
@@ -838,8 +833,8 @@ export default function NewProjectPage() {
 
                         {/* Goal */}
                         <div>
-                          <label className="flex items-center gap-2 text-sm font-bold text-[var(--foreground)] mb-2">
-                            <Target className="w-4 h-4" />
+                          <label className="flex items-center gap-1.5 text-xs font-bold text-[var(--foreground)] mb-1.5">
+                            <Target className="w-3.5 h-3.5" />
                             Primary Goal (Optional)
                           </label>
                           <input
@@ -848,48 +843,48 @@ export default function NewProjectPage() {
                             onChange={(e) => setGoal(e.target.value)}
                             placeholder="e.g., Plant 1,000 trees by December"
                             maxLength={150}
-                            className="w-full px-4 py-3 rounded-lg border-2 border-[var(--border)] bg-[var(--background)] text-[var(--foreground)] font-semibold focus:border-theme-primary focus:outline-none"
+                            className="w-full px-3 py-2 rounded-lg border-2 border-[var(--border)] bg-[var(--background)] text-[var(--foreground)] text-sm font-semibold focus:border-theme-primary focus:outline-none"
                           />
                         </div>
 
                         {/* Preview */}
                         <Card className="border-2 border-[var(--primary)]/30 bg-gradient-to-br from-[var(--primary)]/5 to-[var(--accent)]/5">
-                          <CardHeader>
-                            <CardTitle className="flex items-center gap-2">
-                              <Eye className="w-5 h-5" />
+                          <CardHeader className="pb-2">
+                            <CardTitle className="flex items-center gap-1.5 text-base">
+                              <Eye className="w-4 h-4" />
                               Preview
                             </CardTitle>
                           </CardHeader>
-                          <CardContent className="space-y-3">
+                          <CardContent className="space-y-2">
                             <div>
-                              <p className="text-xs font-bold text-theme-muted uppercase mb-1">Name</p>
-                              <p className="font-bold text-lg">{name || 'Untitled Project'}</p>
+                              <p className="text-[10px] font-bold text-theme-muted uppercase mb-0.5">Name</p>
+                              <p className="font-bold text-base">{name || 'Untitled Project'}</p>
                             </div>
                             {tagline && (
                               <div>
-                                <p className="text-xs font-bold text-theme-muted uppercase mb-1">Tagline</p>
-                                <p className="text-sm italic text-theme-muted">{tagline}</p>
+                                <p className="text-[10px] font-bold text-theme-muted uppercase mb-0.5">Tagline</p>
+                                <p className="text-xs italic text-theme-muted">{tagline}</p>
                               </div>
                             )}
                             <div>
-                              <p className="text-xs font-bold text-theme-muted uppercase mb-1">Description</p>
-                              <p className="text-sm">{description || 'No description'}</p>
+                              <p className="text-[10px] font-bold text-theme-muted uppercase mb-0.5">Description</p>
+                              <p className="text-xs line-clamp-3">{description || 'No description'}</p>
                             </div>
-                            <div className="flex flex-wrap gap-2 pt-2">
-                              <span className={`px-3 py-1 rounded-full text-xs font-bold bg-gradient-to-r ${VISIBILITY_OPTIONS.find(v => v.value === visibility)?.gradient} text-white`}>
+                            <div className="flex flex-wrap gap-1.5 pt-1">
+                              <span className={`px-2 py-0.5 rounded-full text-[10px] font-bold bg-gradient-to-r ${VISIBILITY_OPTIONS.find(v => v.value === visibility)?.gradient} text-white`}>
                                 {VISIBILITY_OPTIONS.find(v => v.value === visibility)?.label}
                               </span>
-                              <span className="px-3 py-1 rounded-full text-xs font-bold bg-[var(--muted)] text-[var(--foreground)]">
+                              <span className="px-2 py-0.5 rounded-full text-[10px] font-bold bg-[var(--muted)] text-[var(--foreground)]">
                                 {category || 'Uncategorized'}
                               </span>
                               {selectedTheme && (
-                                <span className="px-3 py-1 rounded-full text-xs font-bold bg-[var(--muted)] text-[var(--foreground)]">
-                                  {selectedTheme.label} Theme
+                                <span className="px-2 py-0.5 rounded-full text-[10px] font-bold bg-[var(--muted)] text-[var(--foreground)]">
+                                  {selectedTheme.label}
                                 </span>
                               )}
                               {subprojects.length > 0 && (
-                                <span className="px-3 py-1 rounded-full text-xs font-bold bg-[var(--muted)] text-[var(--foreground)]">
-                                  {subprojects.length} Subprojects
+                                <span className="px-2 py-0.5 rounded-full text-[10px] font-bold bg-[var(--muted)] text-[var(--foreground)]">
+                                  {subprojects.length} Sub
                                 </span>
                               )}
                             </div>
@@ -900,67 +895,72 @@ export default function NewProjectPage() {
                   </CardContent>
                 </Card>
 
-                {/* Submit Message */}
-                {submitMessage && (
-                  <motion.div
-                    initial={{ opacity: 0, y: -10 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    className={`mt-4 p-4 rounded-lg font-bold text-center ${
-                      submitMessage.includes('success')
-                        ? 'bg-emerald-500/10 text-emerald-600 border-2 border-emerald-500/30'
-                        : 'bg-red-500/10 text-red-600 border-2 border-red-500/30'
-                    }`}
-                  >
-                    {submitMessage}
-                  </motion.div>
-                )}
+                  </CardContent>
 
-                {/* Navigation Buttons */}
-                <div className="flex gap-4 mt-8">
-                  {currentStep > 1 && (
-                    <Button
-                      type="button"
-                      variant="outline"
-                      onClick={handleBack}
-                      disabled={isSubmitting}
-                      className="font-bold"
-                    >
-                      <ArrowLeft className="w-4 h-4 mr-2" />
-                      Back
-                    </Button>
-                  )}
+                  {/* Submit Message & Navigation - Fixed at bottom of card */}
+                  <div className="flex-shrink-0 px-6 pb-4 space-y-3">
+                    {submitMessage && (
+                      <motion.div
+                        initial={{ opacity: 0, y: -10 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        className={`p-3 rounded-lg font-bold text-center text-sm ${
+                          submitMessage.includes('success')
+                            ? 'bg-emerald-500/10 text-emerald-600 border-2 border-emerald-500/30'
+                            : 'bg-red-500/10 text-red-600 border-2 border-red-500/30'
+                        }`}
+                      >
+                        {submitMessage}
+                      </motion.div>
+                    )}
 
-                  {currentStep < STEPS.length ? (
-                    <Button
-                      type="button"
-                      onClick={handleNext}
-                      disabled={!canProceed()}
-                      className="flex-1 font-bold"
-                    >
-                      Next: {STEPS[currentStep].name}
-                      <ArrowRight className="w-4 h-4 ml-2" />
-                    </Button>
-                  ) : (
-                    <Button
-                      type="button"
-                      onClick={handleSubmit}
-                      disabled={isSubmitting}
-                      className="flex-1 font-bold bg-gradient-to-r from-orange-500 to-red-500 hover:from-orange-600 hover:to-red-600"
-                    >
-                      {isSubmitting ? (
-                        <>
-                          <div className="w-5 h-5 border-2 border-white border-t-transparent rounded-full animate-spin mr-2" />
-                          Launching...
-                        </>
-                      ) : (
-                        <>
-                          <Flame className="w-5 h-5 mr-2" />
-                          Launch Project!
-                        </>
+                    {/* Navigation Buttons */}
+                    <div className="flex gap-3">
+                      {currentStep > 1 && (
+                        <Button
+                          type="button"
+                          variant="outline"
+                          onClick={handleBack}
+                          disabled={isSubmitting}
+                          className="font-bold"
+                        >
+                          <ArrowLeft className="w-4 h-4 mr-2" />
+                          Back
+                        </Button>
                       )}
-                    </Button>
-                  )}
-                </div>
+
+                      {currentStep < STEPS.length ? (
+                        <Button
+                          type="button"
+                          onClick={handleNext}
+                          disabled={!canProceed()}
+                          className="flex-1 font-bold"
+                        >
+                          Next: {STEPS[currentStep].name}
+                          <ArrowRight className="w-4 h-4 ml-2" />
+                        </Button>
+                      ) : (
+                        <Button
+                          type="button"
+                          onClick={handleSubmit}
+                          disabled={isSubmitting}
+                          className="flex-1 font-bold bg-gradient-to-r from-orange-500 to-red-500 hover:from-orange-600 hover:to-red-600"
+                        >
+                          {isSubmitting ? (
+                            <>
+                              <div className="w-5 h-5 border-2 border-white border-t-transparent rounded-full animate-spin mr-2" />
+                              Launching...
+                            </>
+                          ) : (
+                            <>
+                              <Flame className="w-5 h-5 mr-2" />
+                              Launch Project!
+                            </>
+                          )}
+                        </Button>
+                      )}
+                    </div>
+                  </div>
+                </Card>
               </motion.div>
             </AnimatePresence>
           </div>

@@ -37,6 +37,9 @@ export function MainLayoutWrapper({
   // Architecture game pages - no footer, full viewport height, no scroll
   const isArchitectureGame = pathname?.startsWith('/architecture/play')
 
+  // Project creation wizard - no footer, full viewport height, no scroll
+  const isProjectWizard = pathname === '/community/projects/new'
+
   if (isAdminRoute) {
     // Admin pages - completely clean, no theming decorations
     return <>{children}</>
@@ -64,6 +67,22 @@ export function MainLayoutWrapper({
       <>
         {skyBackground}
         <div className="relative z-10 h-screen flex flex-col">
+          <Header />
+          <div className="flex-1 overflow-hidden">
+            {children}
+          </div>
+        </div>
+        {aiAssistant}
+      </>
+    )
+  }
+
+  // Project wizard - no footer, no scroll, viewport height
+  if (isProjectWizard) {
+    return (
+      <>
+        {skyBackground}
+        <div className="relative z-10 h-screen flex flex-col overflow-hidden">
           <Header />
           <div className="flex-1 overflow-hidden">
             {children}
