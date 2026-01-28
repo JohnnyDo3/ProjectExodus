@@ -893,9 +893,6 @@ export default function NewProjectPage() {
                       </div>
                     )}
                   </CardContent>
-                </Card>
-
-                  </CardContent>
 
                   {/* Submit Message & Navigation - Fixed at bottom of card */}
                   <div className="flex-shrink-0 px-6 pb-4 space-y-3">
