@@ -315,9 +315,9 @@ export default function NewProjectPage() {
   const selectedTheme = PROJECT_THEMES.find(t => t.value === theme)
 
   return (
-    <div className="h-full flex flex-col bg-[var(--background)] overflow-hidden">
+    <div className="min-h-screen flex flex-col bg-[var(--background)]">
       {/* Header with Progress */}
-      <section className="relative overflow-hidden bg-gradient-to-br from-[var(--card)] via-[var(--background)] to-[var(--card)] border-b border-[var(--border)]/30 flex-shrink-0">
+      <section className="relative overflow-hidden bg-gradient-to-br from-[var(--card)] via-[var(--background)] to-[var(--card)] border-b border-[var(--border)]/30">
         {/* Ambient glow */}
         <div className="absolute top-0 left-1/4 w-64 h-64 bg-[var(--primary)]/5 rounded-full blur-3xl" />
         <div className="absolute top-0 right-1/4 w-64 h-64 bg-[var(--accent)]/5 rounded-full blur-3xl" />
@@ -389,9 +389,9 @@ export default function NewProjectPage() {
       </section>
 
       {/* Step Content */}
-      <section className="flex-1 overflow-y-auto py-4">
-        <div className="container mx-auto px-4 h-full">
-          <div className="max-w-4xl mx-auto h-full flex flex-col">
+      <section className="py-8">
+        <div className="container mx-auto px-4">
+          <div className="max-w-4xl mx-auto">
             <AnimatePresence mode="wait">
               <motion.div
                 key={currentStep}
@@ -399,13 +399,12 @@ export default function NewProjectPage() {
                 animate={{ opacity: 1, x: 0 }}
                 exit={{ opacity: 0, x: -20 }}
                 transition={{ duration: 0.3 }}
-                className="flex-1 flex flex-col min-h-0"
               >
-                <Card className={`relative overflow-hidden border-2 shadow-xl flex-1 flex flex-col min-h-0`}>
+                <Card className={`relative overflow-hidden border-2 shadow-xl`}>
                   {/* Step header with Guardian gradient */}
                   <div className={`absolute top-0 left-0 right-0 h-1 bg-gradient-to-r ${currentStepData.gradient}`} />
 
-                  <CardHeader className="flex-shrink-0 pb-3">
+                  <CardHeader className="pb-3">
                     <div className="flex items-center gap-3">
                       <div className={`w-12 h-12 rounded-xl bg-gradient-to-br ${currentStepData.gradient} flex items-center justify-center flex-shrink-0`}>
                         <StepIcon className="w-6 h-6 text-white" />
@@ -421,7 +420,7 @@ export default function NewProjectPage() {
                     </div>
                   </CardHeader>
 
-                  <CardContent className="space-y-4 pb-4 flex-1 overflow-y-auto">
+                  <CardContent className="space-y-4 pb-4">
                     {/* STEP 1: VISION */}
                     {currentStep === 1 && (
                       <div className="space-y-3">
@@ -894,8 +893,8 @@ export default function NewProjectPage() {
                     )}
                   </CardContent>
 
-                  {/* Submit Message & Navigation - Fixed at bottom of card */}
-                  <div className="flex-shrink-0 px-6 pb-4 space-y-3">
+                  {/* Submit Message & Navigation */}
+                  <div className="px-6 pb-4 space-y-3">
                     {submitMessage && (
                       <motion.div
                         initial={{ opacity: 0, y: -10 }}
