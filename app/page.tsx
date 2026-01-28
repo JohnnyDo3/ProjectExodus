@@ -163,10 +163,12 @@ export default function Home() {
                 WELCOME TO
               </div>
               <div style={{
-                background: 'linear-gradient(135deg, var(--primary) 0%, var(--accent) 50%, var(--secondary) 100%)',
+                background: 'linear-gradient(135deg, #36763d 0%, #357777 50%, #c24f31 100%)',
                 WebkitBackgroundClip: 'text',
                 WebkitTextFillColor: 'transparent',
-                backgroundClip: 'text'
+                backgroundClip: 'text',
+                textShadow: '0 0 40px rgba(54, 118, 61, 0.3)',
+                filter: 'drop-shadow(0 2px 8px rgba(0, 0, 0, 0.1))'
               }}>
                 PROJECT EXODUS
               </div>
@@ -179,17 +181,17 @@ export default function Home() {
               lineHeight: 1.3
             }}>
               Building sustainable infrastructure for <span style={{
-                background: 'linear-gradient(135deg, var(--primary), var(--accent))',
+                background: 'linear-gradient(135deg, #36763d, #357777)',
                 WebkitBackgroundClip: 'text',
                 WebkitTextFillColor: 'transparent',
                 fontWeight: 800
               }}>Food</span>, <span style={{
-                background: 'linear-gradient(135deg, var(--accent), var(--secondary))',
+                background: 'linear-gradient(135deg, #357777, #c24f31)',
                 WebkitBackgroundClip: 'text',
                 WebkitTextFillColor: 'transparent',
                 fontWeight: 800
               }}>Water</span>, and <span style={{
-                background: 'linear-gradient(135deg, var(--secondary), var(--primary))',
+                background: 'linear-gradient(135deg, #c24f31, #36763d)',
                 WebkitBackgroundClip: 'text',
                 WebkitTextFillColor: 'transparent',
                 fontWeight: 800
@@ -292,7 +294,7 @@ export default function Home() {
             <p className="text-xl font-bold leading-relaxed text-[var(--foreground)]">
               WE ARE DEVELOPING{' '}
               <span style={{
-                background: 'linear-gradient(135deg, var(--primary), var(--accent))',
+                background: 'linear-gradient(135deg, #36763d, #357777)',
                 WebkitBackgroundClip: 'text',
                 WebkitTextFillColor: 'transparent',
                 fontWeight: 900
@@ -348,7 +350,7 @@ export default function Home() {
                 </div>
                 <p className="text-2xl font-bold leading-relaxed text-center text-[var(--foreground)]">
                   It is our <span style={{
-                    background: 'linear-gradient(135deg, var(--primary), var(--accent))',
+                    background: 'linear-gradient(135deg, #36763d, #357777)',
                     WebkitBackgroundClip: 'text',
                     WebkitTextFillColor: 'transparent',
                     fontWeight: 900
@@ -459,7 +461,7 @@ export default function Home() {
                   <blockquote className="text-xl font-bold leading-relaxed text-center space-y-6 text-[var(--foreground)]">
                     <p>
                       When you <span style={{
-                        background: 'linear-gradient(135deg, var(--primary), var(--accent))',
+                        background: 'linear-gradient(135deg, #36763d, #357777)',
                         WebkitBackgroundClip: 'text',
                         WebkitTextFillColor: 'transparent',
                         fontWeight: 900
