@@ -152,50 +152,150 @@ export const RibVaultSVG = ({ showHalo = false }: SVGProps) => (
 
 // ============================================================================
 // FAN VAULT - Ribs spread like fan from springer, English Perpendicular
-// Reference: King's College Chapel, Cambridge - masterpiece of fan vaulting
+// Reference: King's College Chapel, Gloucester Cathedral cloisters
+// PERSPECTIVE: Looking up from directly below, viewer on floor
 // ============================================================================
 export const FanVaultSVG = ({ showHalo = false }: SVGProps) => (
   <svg viewBox="0 0 100 100" className="w-full h-full stroke-current">
     <HaloFilter />
 
-    {/* CONTEXT: Corner springer/corbel and walls - dashed blueprint */}
-    <g strokeDasharray="3 2" opacity="0.4">
-      <path d="M 6 92 L 6 62" strokeWidth="2" fill="none" />
-      <path d="M 94 92 L 94 62" strokeWidth="2" fill="none" />
-      <path d="M 6 92 L 94 92" strokeWidth="0.8" fill="none" />
+    {/* CONTEXT: Bay edges and walls far above - dashed reference */}
+    <g strokeDasharray="3 2" opacity="0.3" strokeWidth="0.6">
+      {/* Bay outline (rectangular quadrangular bay) */}
+      <rect x="5" y="5" width="90" height="90" fill="none" />
+      {/* Wall corners hint */}
+      <path d="M 5 5 L 2 2" />
+      <path d="M 95 5 L 98 2" />
+      <path d="M 5 95 L 2 98" />
+      <path d="M 95 95 L 98 98" />
     </g>
 
-    {/* PRIMARY: THE FAN VAULT - ribs radiating like an open fan */}
+    {/* PRIMARY: FOUR FAN CONOIDS - viewed from directly below */}
     <g filter={showHalo ? "url(#vault-halo)" : undefined}>
-      {/* LEFT FAN - ribs spreading from corner springer */}
-      <path d="M 6 62 Q 14 58, 24 54" strokeWidth="1.8" fill="none" strokeLinecap="round" />
-      <path d="M 6 62 Q 18 50, 32 44" strokeWidth="1.8" fill="none" strokeLinecap="round" />
-      <path d="M 6 62 Q 22 42, 40 34" strokeWidth="2" fill="none" strokeLinecap="round" />
-      <path d="M 6 62 Q 28 36, 50 26" strokeWidth="2.2" fill="none" strokeLinecap="round" />
-      <path d="M 6 62 Q 30 44, 50 40" strokeWidth="1.8" fill="none" strokeLinecap="round" />
 
-      {/* RIGHT FAN - mirror image */}
-      <path d="M 94 62 Q 86 58, 76 54" strokeWidth="1.8" fill="none" strokeLinecap="round" />
-      <path d="M 94 62 Q 82 50, 68 44" strokeWidth="1.8" fill="none" strokeLinecap="round" />
-      <path d="M 94 62 Q 78 42, 60 34" strokeWidth="2" fill="none" strokeLinecap="round" />
-      <path d="M 94 62 Q 72 36, 50 26" strokeWidth="2.2" fill="none" strokeLinecap="round" />
-      <path d="M 94 62 Q 70 44, 50 40" strokeWidth="1.8" fill="none" strokeLinecap="round" />
+      {/* BOTTOM-LEFT CORNER FAN (closest to viewer - largest) */}
+      <g opacity="1">
+        {/* Main radiating ribs (equal curvature, equal spacing) */}
+        <path d="M 5 95 Q 18 82, 28 72" strokeWidth="2.2" fill="none" strokeLinecap="round" />
+        <path d="M 5 95 Q 15 78, 22 64" strokeWidth="2" fill="none" strokeLinecap="round" />
+        <path d="M 5 95 Q 12 72, 18 56" strokeWidth="2" fill="none" strokeLinecap="round" />
+        <path d="M 5 95 Q 10 66, 16 50" strokeWidth="2" fill="none" strokeLinecap="round" />
+        <path d="M 5 95 Q 9 60, 15 44" strokeWidth="2" fill="none" strokeLinecap="round" />
+        <path d="M 5 95 Q 18 62, 28 50" strokeWidth="2" fill="none" strokeLinecap="round" />
+        <path d="M 5 95 Q 22 68, 35 56" strokeWidth="2" fill="none" strokeLinecap="round" />
+        <path d="M 5 95 Q 28 75, 42 64" strokeWidth="2.2" fill="none" strokeLinecap="round" />
 
-      {/* Conoid surface curves (the fan shape) */}
-      <path d="M 14 60 Q 32 52, 50 48" strokeWidth="0.9" fill="none" opacity="0.5" />
-      <path d="M 86 60 Q 68 52, 50 48" strokeWidth="0.9" fill="none" opacity="0.5" />
+        {/* Lierne ribs (horizontal connecting ribs) */}
+        <path d="M 18 82 Q 19 77, 22 72" strokeWidth="0.8" fill="none" opacity="0.6" />
+        <path d="M 15 72 Q 17 66, 20 60" strokeWidth="0.8" fill="none" opacity="0.6" />
+        <path d="M 13 62 Q 16 56, 19 50" strokeWidth="0.8" fill="none" opacity="0.6" />
 
-      {/* Decorative tracery panels between ribs */}
-      <path d="M 18 56 Q 28 52, 36 50" strokeWidth="0.5" fill="none" opacity="0.35" />
-      <path d="M 82 56 Q 72 52, 64 50" strokeWidth="0.5" fill="none" opacity="0.35" />
+        {/* Tracery decoration within panels */}
+        <path d="M 12 76 Q 15 74, 18 74" strokeWidth="0.4" fill="none" opacity="0.4" />
+        <path d="M 11 68 Q 13 66, 16 66" strokeWidth="0.4" fill="none" opacity="0.4" />
+        <path d="M 10 60 Q 12 58, 14 58" strokeWidth="0.4" fill="none" opacity="0.4" />
+      </g>
+
+      {/* BOTTOM-RIGHT CORNER FAN (closest to viewer - largest) */}
+      <g opacity="1">
+        {/* Main radiating ribs */}
+        <path d="M 95 95 Q 82 82, 72 72" strokeWidth="2.2" fill="none" strokeLinecap="round" />
+        <path d="M 95 95 Q 85 78, 78 64" strokeWidth="2" fill="none" strokeLinecap="round" />
+        <path d="M 95 95 Q 88 72, 82 56" strokeWidth="2" fill="none" strokeLinecap="round" />
+        <path d="M 95 95 Q 90 66, 84 50" strokeWidth="2" fill="none" strokeLinecap="round" />
+        <path d="M 95 95 Q 91 60, 85 44" strokeWidth="2" fill="none" strokeLinecap="round" />
+        <path d="M 95 95 Q 82 62, 72 50" strokeWidth="2" fill="none" strokeLinecap="round" />
+        <path d="M 95 95 Q 78 68, 65 56" strokeWidth="2" fill="none" strokeLinecap="round" />
+        <path d="M 95 95 Q 72 75, 58 64" strokeWidth="2.2" fill="none" strokeLinecap="round" />
+
+        {/* Lierne ribs */}
+        <path d="M 82 82 Q 81 77, 78 72" strokeWidth="0.8" fill="none" opacity="0.6" />
+        <path d="M 85 72 Q 83 66, 80 60" strokeWidth="0.8" fill="none" opacity="0.6" />
+        <path d="M 87 62 Q 84 56, 81 50" strokeWidth="0.8" fill="none" opacity="0.6" />
+
+        {/* Tracery decoration */}
+        <path d="M 88 76 Q 85 74, 82 74" strokeWidth="0.4" fill="none" opacity="0.4" />
+        <path d="M 89 68 Q 87 66, 84 66" strokeWidth="0.4" fill="none" opacity="0.4" />
+        <path d="M 90 60 Q 88 58, 86 58" strokeWidth="0.4" fill="none" opacity="0.4" />
+      </g>
+
+      {/* TOP-LEFT CORNER FAN (farther away - smaller) */}
+      <g opacity="0.9">
+        {/* Main radiating ribs */}
+        <path d="M 5 5 Q 18 18, 28 28" strokeWidth="1.8" fill="none" strokeLinecap="round" />
+        <path d="M 5 5 Q 15 22, 22 36" strokeWidth="1.6" fill="none" strokeLinecap="round" />
+        <path d="M 5 5 Q 12 28, 18 44" strokeWidth="1.6" fill="none" strokeLinecap="round" />
+        <path d="M 5 5 Q 10 34, 16 50" strokeWidth="1.6" fill="none" strokeLinecap="round" />
+        <path d="M 5 5 Q 18 38, 28 50" strokeWidth="1.6" fill="none" strokeLinecap="round" />
+        <path d="M 5 5 Q 22 32, 35 44" strokeWidth="1.6" fill="none" strokeLinecap="round" />
+        <path d="M 5 5 Q 28 25, 42 36" strokeWidth="1.8" fill="none" strokeLinecap="round" />
+
+        {/* Lierne ribs */}
+        <path d="M 18 18 Q 19 23, 22 28" strokeWidth="0.7" fill="none" opacity="0.6" />
+        <path d="M 15 28 Q 17 34, 20 40" strokeWidth="0.7" fill="none" opacity="0.6" />
+
+        {/* Tracery */}
+        <path d="M 12 24 Q 15 26, 18 26" strokeWidth="0.3" fill="none" opacity="0.4" />
+        <path d="M 11 32 Q 13 34, 16 34" strokeWidth="0.3" fill="none" opacity="0.4" />
+      </g>
+
+      {/* TOP-RIGHT CORNER FAN (farther away - smaller) */}
+      <g opacity="0.9">
+        {/* Main radiating ribs */}
+        <path d="M 95 5 Q 82 18, 72 28" strokeWidth="1.8" fill="none" strokeLinecap="round" />
+        <path d="M 95 5 Q 85 22, 78 36" strokeWidth="1.6" fill="none" strokeLinecap="round" />
+        <path d="M 95 5 Q 88 28, 82 44" strokeWidth="1.6" fill="none" strokeLinecap="round" />
+        <path d="M 95 5 Q 90 34, 84 50" strokeWidth="1.6" fill="none" strokeLinecap="round" />
+        <path d="M 95 5 Q 82 38, 72 50" strokeWidth="1.6" fill="none" strokeLinecap="round" />
+        <path d="M 95 5 Q 78 32, 65 44" strokeWidth="1.6" fill="none" strokeLinecap="round" />
+        <path d="M 95 5 Q 72 25, 58 36" strokeWidth="1.8" fill="none" strokeLinecap="round" />
+
+        {/* Lierne ribs */}
+        <path d="M 82 18 Q 81 23, 78 28" strokeWidth="0.7" fill="none" opacity="0.6" />
+        <path d="M 85 28 Q 83 34, 80 40" strokeWidth="0.7" fill="none" opacity="0.6" />
+
+        {/* Tracery */}
+        <path d="M 88 24 Q 85 26, 82 26" strokeWidth="0.3" fill="none" opacity="0.4" />
+        <path d="M 89 32 Q 87 34, 84 34" strokeWidth="0.3" fill="none" opacity="0.4" />
+      </g>
+
+      {/* CENTRAL FLAT SPANDREL (where four fans meet in center) */}
+      <g opacity="0.85">
+        {/* Spandrel outline (diamond/square shape) */}
+        <path d="M 50 35 L 65 50 L 50 65 L 35 50 Z" strokeWidth="1.8" fill="none" strokeLinecap="round" />
+
+        {/* Central boss/medallion */}
+        <circle cx="50" cy="50" r="8" strokeWidth="1.6" fill="none" />
+        <circle cx="50" cy="50" r="5" strokeWidth="1.2" fill="none" />
+        <circle cx="50" cy="50" r="2.5" strokeWidth="0.8" fill="none" />
+
+        {/* Decorative rosette pattern */}
+        <path d="M 50 42 L 50 45" strokeWidth="1" opacity="0.6" />
+        <path d="M 50 55 L 50 58" strokeWidth="1" opacity="0.6" />
+        <path d="M 42 50 L 45 50" strokeWidth="1" opacity="0.6" />
+        <path d="M 55 50 L 58 50" strokeWidth="1" opacity="0.6" />
+        <path d="M 44 44 L 46 46" strokeWidth="0.8" opacity="0.5" />
+        <path d="M 56 56 L 54 54" strokeWidth="0.8" opacity="0.5" />
+        <path d="M 44 56 L 46 54" strokeWidth="0.8" opacity="0.5" />
+        <path d="M 56 44 L 54 46" strokeWidth="0.8" opacity="0.5" />
+      </g>
+
+      {/* Conoid surface boundaries (trumpet shapes) */}
+      <g opacity="0.4" strokeWidth="0.6">
+        <path d="M 28 72 Q 35 64, 42 64 Q 46 58, 50 54" fill="none" />
+        <path d="M 72 72 Q 65 64, 58 64 Q 54 58, 50 54" fill="none" />
+        <path d="M 28 28 Q 35 36, 42 36 Q 46 42, 50 46" fill="none" />
+        <path d="M 72 28 Q 65 36, 58 36 Q 54 42, 50 46" fill="none" />
+      </g>
     </g>
 
-    {/* Central spine/ridge where fans meet */}
-    <path d="M 50 26 L 50 62" strokeWidth="1.4" fill="none" opacity="0.6" />
-
-    {/* Pendant boss (hanging ornament) */}
-    <circle cx="50" cy="26" r="3.5" strokeWidth="1.6" fill="none" />
-    <path d="M 50 29.5 L 50 38" strokeWidth="1.4" fill="none" opacity="0.7" />
+    {/* SPRINGER CORBELS at corners (where fans originate) */}
+    <g opacity="0.6">
+      <circle cx="5" cy="95" r="3" strokeWidth="1.2" fill="none" />
+      <circle cx="95" cy="95" r="3" strokeWidth="1.2" fill="none" />
+      <circle cx="5" cy="5" r="2.5" strokeWidth="1" fill="none" />
+      <circle cx="95" cy="5" r="2.5" strokeWidth="1" fill="none" />
+    </g>
   </svg>
 )
 
