@@ -3,6 +3,7 @@ import { auth } from '@/auth'
 import { prisma } from '@/lib/db'
 import { hasPermission } from '@/lib/permissions'
 import bcrypt from 'bcryptjs'
+import { z } from 'zod'
 
 export async function GET(request: NextRequest) {
   try {
@@ -127,6 +128,20 @@ export async function GET(request: NextRequest) {
   }
 }
 
+// Schema for admin user creation with strong password requirements
+const createUserSchema = z.object({
+  name: z.string().min(2, 'Name must be at least 2 characters').max(100).trim(),
+  email: z.string().email('Invalid email address').toLowerCase().trim(),
+  password: z.string()
+    .min(12, 'Password must be at least 12 characters')
+    .max(100)
+    .regex(/[A-Z]/, 'Password must contain at least one uppercase letter')
+    .regex(/[a-z]/, 'Password must contain at least one lowercase letter')
+    .regex(/[0-9]/, 'Password must contain at least one number')
+    .regex(/[^A-Za-z0-9]/, 'Password must contain at least one special character'),
+  role: z.enum(['USER', 'EDITOR', 'MODERATOR', 'ADMIN', 'SUPER_ADMIN']).optional()
+})
+
 export async function POST(request: NextRequest) {
   try {
     const session = await auth()
@@ -142,18 +157,13 @@ export async function POST(request: NextRequest) {
     }
 
     const body = await request.json()
-    const { name, email, password, role } = body
 
-    if (!name || !email || !password) {
-      return NextResponse.json(
-        { error: 'Name, email, and password are required' },
-        { status: 400 }
-      )
-    }
+    // Validate and sanitize input
+    const validatedData = createUserSchema.parse(body)
 
     // Check if email already exists
     const existingUser = await prisma.user.findUnique({
-      where: { email }
+      where: { email: validatedData.email }
     })
 
     if (existingUser) {
@@ -164,15 +174,15 @@ export async function POST(request: NextRequest) {
     }
 
     // Hash password
-    const hashedPassword = await bcrypt.hash(password, 12)
+    const hashedPassword = await bcrypt.hash(validatedData.password, 12)
 
     // Create user
     const user = await prisma.user.create({
       data: {
-        name,
-        email,
+        name: validatedData.name,
+        email: validatedData.email,
         password: hashedPassword,
-        role: role || 'USER',
+        role: validatedData.role || 'USER',
         emailVerified: new Date(), // Admin-created users are auto-verified
       },
       select: {
@@ -189,6 +199,18 @@ export async function POST(request: NextRequest) {
       user
     })
   } catch (error) {
+    if (error instanceof z.ZodError) {
+      const firstIssue = error.issues[0]
+      return NextResponse.json(
+        {
+          error: firstIssue?.message || 'Validation failed',
+          field: firstIssue?.path?.[0] || null,
+          details: error.issues
+        },
+        { status: 400 }
+      )
+    }
+
     console.error('Failed to create user:', error)
     return NextResponse.json(
       { error: 'Failed to create user' },
