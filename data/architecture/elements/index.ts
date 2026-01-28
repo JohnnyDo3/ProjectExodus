@@ -17,13 +17,14 @@ export { TREFOIL_ARCH } from './arches/trefoil-arch';
 export { TUDOR_ARCH } from './arches/tudor-arch';
 export { VOUSSOIR } from './arches/voussoir';
 
-// Ceiling (7)
+// Ceiling (8)
 export { CEILING_ROSE } from './ceiling/ceiling-rose';
 export { COFFERED_CEILING } from './ceiling/coffered-ceiling';
 export { COVED_CEILING } from './ceiling/coved-ceiling';
 export { DROPPED_CEILING } from './ceiling/dropped-ceiling';
 export { EXPOSED_BEAMS } from './ceiling/exposed-beams';
 export { MUQARNAS as CEILING_MUQARNAS } from './ceiling/muqarnas';
+export { REFLECTED_CEILING_PLAN } from './ceiling/reflected-ceiling-plan';
 export { TRAY_CEILING } from './ceiling/tray-ceiling';
 
 // Columns (8)
@@ -292,6 +293,7 @@ import { COVED_CEILING } from './ceiling/coved-ceiling';
 import { DROPPED_CEILING } from './ceiling/dropped-ceiling';
 import { EXPOSED_BEAMS } from './ceiling/exposed-beams';
 import { MUQARNAS as CEILING_MUQARNAS } from './ceiling/muqarnas';
+import { REFLECTED_CEILING_PLAN } from './ceiling/reflected-ceiling-plan';
 import { TRAY_CEILING } from './ceiling/tray-ceiling';
 
 // Columns
@@ -542,7 +544,7 @@ import { TRANSOM as WINDOW_TRANSOM } from './windows/transom';
 import type { ArchitecturalElement } from '../types';
 
 // ============================================================================
-// ALL_ELEMENTS ARRAY - Complete list of all 198 architectural elements
+// ALL_ELEMENTS ARRAY - Complete list of all 199 architectural elements
 // ============================================================================
 
 export const ALL_ELEMENTS: ArchitecturalElement[] = [
@@ -556,13 +558,14 @@ export const ALL_ELEMENTS: ArchitecturalElement[] = [
   TUDOR_ARCH,
   VOUSSOIR,
 
-  // Ceiling (7)
+  // Ceiling (8)
   CEILING_ROSE,
   COFFERED_CEILING,
   COVED_CEILING,
   DROPPED_CEILING,
   EXPOSED_BEAMS,
   CEILING_MUQARNAS,
+  REFLECTED_CEILING_PLAN,
   TRAY_CEILING,
 
   // Columns (8)
@@ -860,7 +863,7 @@ export const ELEMENT_STATS = {
   ),
   byDirectory: {
     arches: 8,
-    ceiling: 7,
+    ceiling: 8,
     columns: 8,
     decorative: 14,
     domes: 5,

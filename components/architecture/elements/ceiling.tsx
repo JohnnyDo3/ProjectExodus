@@ -684,6 +684,126 @@ const TrayCeilingSVG: React.FC<SVGProps> = ({ showHalo }) => (
   </svg>
 )
 
+/**
+ * REFLECTED CEILING PLAN (RCP) - Technical architectural drawing
+ * PLAN VIEW: Looking down at a mirror on the floor reflecting the ceiling
+ * Shows: Lighting fixtures, HVAC diffusers, sprinklers, smoke detectors, ceiling grid
+ * Distinct: Architectural documentation with standardized symbols
+ */
+const ReflectedCeilingPlanSVG: React.FC<SVGProps> = ({ showHalo }) => (
+  <svg viewBox="0 0 100 100" className="w-full h-full">
+    {showHalo && <HaloFilter id="rcp-halo" intensity={0.8} />}
+    <g filter={showHalo ? "url(#rcp-halo)" : undefined} fill="none" stroke="currentColor" strokeLinecap="round">
+      {/* CONTEXT - Room outline (walls as dashed reference) */}
+      <g strokeDasharray="3 2" opacity="0.35" strokeWidth="0.8">
+        <rect x="10" y="10" width="80" height="80" />
+      </g>
+
+      {/* PRIMARY - Ceiling grid (2'x2' acoustical tile) */}
+      <g opacity="0.25" strokeWidth="0.4">
+        {[20, 30, 40, 50, 60, 70, 80].map((pos, i) => (
+          <React.Fragment key={`grid-${i}`}>
+            <line x1={pos} y1="10" x2={pos} y2="90" />
+            <line x1="10" y1={pos} x2="90" y2={pos} />
+          </React.Fragment>
+        ))}
+      </g>
+
+      {/* RECESSED LIGHTS - highlighted with halo */}
+      <g strokeWidth="1.5">
+        {/* 3x3 grid of recessed lights */}
+        {[25, 50, 75].map((x, i) =>
+          [25, 50, 75].map((y, j) => (
+            <g key={`light-${i}-${j}`}>
+              <circle cx={x} cy={y} r="3" />
+              <line x1={x-2} y1={y-2} x2={x+2} y2={y+2} strokeWidth="1" />
+              <line x1={x-2} y1={y+2} x2={x+2} y2={y-2} strokeWidth="1" />
+            </g>
+          ))
+        )}
+      </g>
+
+      {/* HVAC LINEAR DIFFUSERS */}
+      <g strokeWidth="1.2" opacity="0.8">
+        {/* Left diffuser */}
+        <rect x="16" y="47.5" width="6" height="5" rx="0.5" />
+        <line x1="17" y1="49" x2="21" y2="49" strokeWidth="0.5" />
+        <line x1="17" y1="51" x2="21" y2="51" strokeWidth="0.5" />
+
+        {/* Right diffuser */}
+        <rect x="78" y="47.5" width="6" height="5" rx="0.5" />
+        <line x1="79" y1="49" x2="83" y2="49" strokeWidth="0.5" />
+        <line x1="79" y1="51" x2="83" y2="51" strokeWidth="0.5" />
+      </g>
+
+      {/* RETURN AIR GRILLE (troffer style) */}
+      <g strokeWidth="1" opacity="0.7">
+        <rect x="48" y="44" width="4" height="12" rx="0.5" />
+        {[46, 48, 50, 52, 54].map((y, i) => (
+          <line key={`grille-${i}`} x1="48.5" y1={y} x2="51.5" y2={y} strokeWidth="0.3" />
+        ))}
+      </g>
+
+      {/* SPRINKLER HEADS - with coverage radius */}
+      <g strokeWidth="1.3">
+        {[[25, 35], [75, 35], [25, 65], [75, 65]].map(([x, y], i) => (
+          <g key={`sprinkler-${i}`}>
+            <circle cx={x} cy={y} r="1.5" fill="none" />
+            <circle cx={x} cy={y} r="0.5" fill="currentColor" />
+            <line x1={x-2} y1={y} x2={x-3.5} y2={y} strokeWidth="0.8" />
+            <line x1={x+2} y1={y} x2={x+3.5} y2={y} strokeWidth="0.8" />
+            <line x1={x} y1={y-2} x2={x} y2={y-3.5} strokeWidth="0.8" />
+            <line x1={x} y1={y+2} x2={x} y2={y+3.5} strokeWidth="0.8" />
+            {/* Coverage radius */}
+            <circle cx={x} cy={y} r="7.5" strokeWidth="0.3" strokeDasharray="1 1" opacity="0.25" />
+          </g>
+        ))}
+      </g>
+
+      {/* SMOKE DETECTORS */}
+      <g strokeWidth="1.2" opacity="0.75">
+        {[[50, 15], [50, 85]].map(([x, y], i) => (
+          <g key={`smoke-${i}`}>
+            <circle cx={x} cy={y} r="2" />
+            <line x1={x-1.5} y1={y} x2={x+1.5} y2={y} strokeWidth="0.9" />
+            <line x1={x} y1={y-1.5} x2={x} y2={y+1.5} strokeWidth="0.9" />
+          </g>
+        ))}
+      </g>
+
+      {/* ELECTRICAL CIRCUIT - connecting top row lights */}
+      <g strokeWidth="0.7" strokeDasharray="2 1.5" opacity="0.4">
+        <path d="M 25 25 Q 37.5 23, 50 25 Q 62.5 27, 75 25" />
+        <line x1="50" y1="25" x2="50" y2="10" />
+      </g>
+
+      {/* SWITCH SYMBOL */}
+      <g>
+        <circle cx="50" cy="10" r="1.3" fill="currentColor" opacity="0.6" />
+        <text x="50" y="7" fontSize="3" textAnchor="middle" fill="currentColor" opacity="0.7" fontWeight="bold">S</text>
+      </g>
+
+      {/* EXIT SIGN */}
+      <g opacity="0.6">
+        <rect x="44" y="87.5" width="12" height="3" strokeWidth="0.8" rx="0.5" />
+        <text x="50" y="90" fontSize="2" textAnchor="middle" fill="currentColor" fontWeight="bold">EXIT</text>
+      </g>
+
+      {/* SPEAKER (PA system) */}
+      <g strokeWidth="1" opacity="0.6">
+        <circle cx="15" cy="15" r="1.8" />
+        <circle cx="15" cy="15" r="1" />
+        <circle cx="15" cy="15" r="0.4" fill="currentColor" />
+      </g>
+
+      {/* TITLE ANNOTATION */}
+      <g opacity="0.5">
+        <text x="11" y="96" fontSize="2.5" fill="currentColor">RCP</text>
+      </g>
+    </g>
+  </svg>
+)
+
 // Export mapping for all ceiling elements - MATCHING DATA FILE IDS
 export const CEILING_ELEMENTS: Record<string, React.FC<SVGProps>> = {
   'ceiling-rose': CeilingRoseSVG,
@@ -693,6 +813,7 @@ export const CEILING_ELEMENTS: Record<string, React.FC<SVGProps>> = {
   'exposed-beams': ExposedBeamsSVG,
   'muqarnas': MuqarnasSVG,
   'tray-ceiling': TrayCeilingSVG,
+  'reflected-ceiling-plan': ReflectedCeilingPlanSVG,
 }
 
 export {
@@ -703,4 +824,5 @@ export {
   ExposedBeamsSVG,
   MuqarnasSVG,
   TrayCeilingSVG,
+  ReflectedCeilingPlanSVG,
 }
