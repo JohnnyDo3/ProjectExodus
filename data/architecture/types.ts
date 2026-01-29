@@ -56,8 +56,10 @@ export type ArchitecturalPeriod =
   // Medieval
   | 'byzantine'
   | 'early-islamic'
+  | 'medieval-ethiopian'
   | 'romanesque'
   | 'gothic'
+  | 'isabelline-gothic'
   | 'moorish'
   | 'indian-medieval'
   | 'southeast-asian-classical'
@@ -68,6 +70,7 @@ export type ArchitecturalPeriod =
   | 'mannerism'
   | 'mughal'
   | 'ottoman'
+  | 'ottoman-classical'
   | 'baroque'
   | 'rococo'
   | 'colonial-american'

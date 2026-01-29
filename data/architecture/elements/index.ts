@@ -17,7 +17,7 @@ export { TREFOIL_ARCH } from './arches/trefoil-arch';
 export { TUDOR_ARCH } from './arches/tudor-arch';
 export { VOUSSOIR } from './arches/voussoir';
 
-// Ceiling (8)
+// Ceiling (9)
 export { CEILING_ROSE } from './ceiling/ceiling-rose';
 export { COFFERED_CEILING } from './ceiling/coffered-ceiling';
 export { COVED_CEILING } from './ceiling/coved-ceiling';
@@ -25,6 +25,7 @@ export { DROPPED_CEILING } from './ceiling/dropped-ceiling';
 export { EXPOSED_BEAMS } from './ceiling/exposed-beams';
 export { MUQARNAS as CEILING_MUQARNAS } from './ceiling/muqarnas';
 export { REFLECTED_CEILING_PLAN } from './ceiling/reflected-ceiling-plan';
+export { TENTED_CEILING } from './ceiling/tented-ceiling';
 export { TRAY_CEILING } from './ceiling/tray-ceiling';
 
 // Columns (8)
@@ -37,9 +38,10 @@ export { IONIC_COLUMN } from './columns/ionic-column';
 export { PILASTER } from './columns/pilaster';
 export { TUSCAN_COLUMN } from './columns/tuscan-column';
 
-// Decorative (14)
+// Decorative (18)
 export { ACANTHUS } from './decorative/acanthus';
 export { ARABESQUE } from './decorative/arabesque';
+export { ASTWERK_BRANCHES_WORK } from './decorative/astwerk-branches-work';
 export { BOSS } from './decorative/boss';
 export { CARTOUCHE } from './decorative/cartouche';
 export { CORNICE } from './decorative/cornice';
@@ -49,9 +51,12 @@ export { FINIAL } from './decorative/finial';
 export { GARGOYLE } from './decorative/gargoyle';
 export { GROTESQUE } from './decorative/grotesque';
 export { GUILLOCHE } from './decorative/guilloche';
+export { IZNIK_TILES } from './decorative/iznik-tiles';
 export { MUQARNAS as DECORATIVE_MUQARNAS } from './decorative/muqarnas';
+export { PLATERESQUE_ORNAMENT } from './decorative/plateresque-ornament';
 export { ROSETTE } from './decorative/rosette';
 export { VOLUTE } from './decorative/volute';
+export { WILD_MEN_SAVAGE_MEN } from './decorative/wild-men-savage-men';
 
 // Domes (5)
 export { DOME } from './domes/dome';
@@ -73,8 +78,10 @@ export { REVOLVING_DOOR } from './doors/revolving-door';
 export { TRANSOM as DOOR_TRANSOM } from './doors/transom';
 export { TYMPANUM as DOOR_TYMPANUM } from './doors/tympanum';
 
-// Facade (11)
+// Facade (14)
 export { BALUSTRADE } from './facade/balustrade';
+export { HERALDIC_ALTARPIECE_FACADE } from './facade/heraldic-altarpiece-facade';
+export { ISABELLINE_FACADE } from './facade/isabelline-facade';
 export { JULIET_BALCONY } from './facade/juliet-balcony';
 export { LOGGIA } from './facade/loggia';
 export { PEDIMENT } from './facade/pediment';
@@ -82,6 +89,7 @@ export { PORTE_COCHERE } from './facade/porte-cochere';
 export { PORTICO } from './facade/portico';
 export { PROPYLAEA } from './facade/propylaea';
 export { QUOINS } from './facade/quoins';
+export { ROCK_CUT_FACADE } from './facade/rock-cut-facade';
 export { RUSTICATION } from './facade/rustication';
 export { STRING_COURSE } from './facade/string-course';
 export { TYMPANUM as FACADE_TYMPANUM } from './facade/tympanum';
@@ -131,7 +139,7 @@ export { NYMPHAEUM } from './garden/nymphaeum';
 export { PERGOLA } from './garden/pergola';
 export { TERRACE } from './garden/terrace';
 
-// Interior (9)
+// Interior (10)
 export { BASEBOARD } from './interior/baseboard';
 export { BOISERIE } from './interior/boiserie';
 export { BUILT_IN_BOOKCASE } from './interior/built-in-bookcase';
@@ -139,10 +147,11 @@ export { CHAIR_RAIL } from './interior/chair-rail';
 export { CROWN_MOLDING } from './interior/crown-molding';
 export { FIREPLACE } from './interior/fireplace';
 export { INGLENOOK } from './interior/inglenook';
+export { KUBBEALTI_DOMED_CHAMBER } from './interior/kubbealti-domed-chamber';
 export { MANTELPIECE } from './interior/mantelpiece';
 export { SHOJI_SCREEN } from './interior/shoji-screen';
 
-// Religious (16)
+// Religious (17)
 export { ALTAR } from './religious/altar';
 export { APSE } from './religious/apse';
 export { BAPTISTERY } from './religious/baptistery';
@@ -151,6 +160,7 @@ export { GOPURAM } from './religious/gopuram';
 export { MIHRAB } from './religious/mihrab';
 export { MINARET } from './religious/minaret';
 export { MINBAR } from './religious/minbar';
+export { MONOLITHIC_CHURCH } from './religious/monolithic-church';
 export { NAVE } from './religious/nave';
 export { PAGODA } from './religious/pagoda';
 export { QIBLA_WALL } from './religious/qibla-wall';
@@ -229,13 +239,21 @@ export { TRULLO } from './specialized/vernacular/trullo';
 export { WINDCATCHER } from './specialized/vernacular/windcatcher';
 export { YURT } from './specialized/vernacular/yurt';
 
-// Urban (10)
+// Structural (3)
+export { HERRINGBONE_BRICK_PATTERN } from './structural/herringbone-brick-pattern';
+export { STONE_AND_CHAIN_HOOPS } from './structural/stone-and-chain-hoops';
+export { TRIPLE_STEPPED_PLATFORM } from './structural/triple-stepped-platform';
+
+// Urban (13)
 export { AQUEDUCT } from './urban/aqueduct';
 export { ARCADE } from './urban/arcade';
 export { BRIDGE } from './urban/bridge';
 export { CITY_GATE } from './urban/city-gate';
 export { CLOCK_TOWER } from './urban/clock-tower';
 export { COLONNADE } from './urban/colonnade';
+export { EXCAVATION_TRENCH } from './urban/excavation-trench';
+export { IMPERIAL_GATE_BAB_I_HUMAYUN } from './urban/imperial-gate-bab-i-humayun';
+export { LAYERED_COURTYARD_SYSTEM } from './urban/layered-courtyard-system';
 export { MARKET_HALL } from './urban/market-hall';
 export { OBELISK } from './urban/obelisk';
 export { PLAZA } from './urban/plaza';
@@ -294,6 +312,7 @@ import { DROPPED_CEILING } from './ceiling/dropped-ceiling';
 import { EXPOSED_BEAMS } from './ceiling/exposed-beams';
 import { MUQARNAS as CEILING_MUQARNAS } from './ceiling/muqarnas';
 import { REFLECTED_CEILING_PLAN } from './ceiling/reflected-ceiling-plan';
+import { TENTED_CEILING } from './ceiling/tented-ceiling';
 import { TRAY_CEILING } from './ceiling/tray-ceiling';
 
 // Columns
@@ -309,6 +328,7 @@ import { TUSCAN_COLUMN } from './columns/tuscan-column';
 // Decorative
 import { ACANTHUS } from './decorative/acanthus';
 import { ARABESQUE } from './decorative/arabesque';
+import { ASTWERK_BRANCHES_WORK } from './decorative/astwerk-branches-work';
 import { BOSS } from './decorative/boss';
 import { CARTOUCHE } from './decorative/cartouche';
 import { CORNICE } from './decorative/cornice';
@@ -318,9 +338,12 @@ import { FINIAL } from './decorative/finial';
 import { GARGOYLE } from './decorative/gargoyle';
 import { GROTESQUE } from './decorative/grotesque';
 import { GUILLOCHE } from './decorative/guilloche';
+import { IZNIK_TILES } from './decorative/iznik-tiles';
 import { MUQARNAS as DECORATIVE_MUQARNAS } from './decorative/muqarnas';
+import { PLATERESQUE_ORNAMENT } from './decorative/plateresque-ornament';
 import { ROSETTE } from './decorative/rosette';
 import { VOLUTE } from './decorative/volute';
+import { WILD_MEN_SAVAGE_MEN } from './decorative/wild-men-savage-men';
 
 // Domes
 import { DOME } from './domes/dome';
@@ -344,6 +367,8 @@ import { TYMPANUM as DOOR_TYMPANUM } from './doors/tympanum';
 
 // Facade
 import { BALUSTRADE } from './facade/balustrade';
+import { HERALDIC_ALTARPIECE_FACADE } from './facade/heraldic-altarpiece-facade';
+import { ISABELLINE_FACADE } from './facade/isabelline-facade';
 import { JULIET_BALCONY } from './facade/juliet-balcony';
 import { LOGGIA } from './facade/loggia';
 import { PEDIMENT } from './facade/pediment';
@@ -351,6 +376,7 @@ import { PORTE_COCHERE } from './facade/porte-cochere';
 import { PORTICO } from './facade/portico';
 import { PROPYLAEA } from './facade/propylaea';
 import { QUOINS } from './facade/quoins';
+import { ROCK_CUT_FACADE } from './facade/rock-cut-facade';
 import { RUSTICATION } from './facade/rustication';
 import { STRING_COURSE } from './facade/string-course';
 import { TYMPANUM as FACADE_TYMPANUM } from './facade/tympanum';
@@ -408,6 +434,7 @@ import { CHAIR_RAIL } from './interior/chair-rail';
 import { CROWN_MOLDING } from './interior/crown-molding';
 import { FIREPLACE } from './interior/fireplace';
 import { INGLENOOK } from './interior/inglenook';
+import { KUBBEALTI_DOMED_CHAMBER } from './interior/kubbealti-domed-chamber';
 import { MANTELPIECE } from './interior/mantelpiece';
 import { SHOJI_SCREEN } from './interior/shoji-screen';
 
@@ -420,6 +447,7 @@ import { GOPURAM } from './religious/gopuram';
 import { MIHRAB } from './religious/mihrab';
 import { MINARET } from './religious/minaret';
 import { MINBAR } from './religious/minbar';
+import { MONOLITHIC_CHURCH } from './religious/monolithic-church';
 import { NAVE } from './religious/nave';
 import { PAGODA } from './religious/pagoda';
 import { QIBLA_WALL } from './religious/qibla-wall';
@@ -498,6 +526,11 @@ import { TRULLO } from './specialized/vernacular/trullo';
 import { WINDCATCHER } from './specialized/vernacular/windcatcher';
 import { YURT } from './specialized/vernacular/yurt';
 
+// Structural
+import { HERRINGBONE_BRICK_PATTERN } from './structural/herringbone-brick-pattern';
+import { STONE_AND_CHAIN_HOOPS } from './structural/stone-and-chain-hoops';
+import { TRIPLE_STEPPED_PLATFORM } from './structural/triple-stepped-platform';
+
 // Urban
 import { AQUEDUCT } from './urban/aqueduct';
 import { ARCADE } from './urban/arcade';
@@ -505,6 +538,9 @@ import { BRIDGE } from './urban/bridge';
 import { CITY_GATE } from './urban/city-gate';
 import { CLOCK_TOWER } from './urban/clock-tower';
 import { COLONNADE } from './urban/colonnade';
+import { EXCAVATION_TRENCH } from './urban/excavation-trench';
+import { IMPERIAL_GATE_BAB_I_HUMAYUN } from './urban/imperial-gate-bab-i-humayun';
+import { LAYERED_COURTYARD_SYSTEM } from './urban/layered-courtyard-system';
 import { MARKET_HALL } from './urban/market-hall';
 import { OBELISK } from './urban/obelisk';
 import { PLAZA } from './urban/plaza';
@@ -544,7 +580,7 @@ import { TRANSOM as WINDOW_TRANSOM } from './windows/transom';
 import type { ArchitecturalElement } from '../types';
 
 // ============================================================================
-// ALL_ELEMENTS ARRAY - Complete list of all 199 architectural elements
+// ALL_ELEMENTS ARRAY - Complete list of all 214 architectural elements
 // ============================================================================
 
 export const ALL_ELEMENTS: ArchitecturalElement[] = [
@@ -558,7 +594,7 @@ export const ALL_ELEMENTS: ArchitecturalElement[] = [
   TUDOR_ARCH,
   VOUSSOIR,
 
-  // Ceiling (8)
+  // Ceiling (9)
   CEILING_ROSE,
   COFFERED_CEILING,
   COVED_CEILING,
@@ -566,6 +602,7 @@ export const ALL_ELEMENTS: ArchitecturalElement[] = [
   EXPOSED_BEAMS,
   CEILING_MUQARNAS,
   REFLECTED_CEILING_PLAN,
+  TENTED_CEILING,
   TRAY_CEILING,
 
   // Columns (8)
@@ -578,9 +615,10 @@ export const ALL_ELEMENTS: ArchitecturalElement[] = [
   PILASTER,
   TUSCAN_COLUMN,
 
-  // Decorative (14)
+  // Decorative (18)
   ACANTHUS,
   ARABESQUE,
+  ASTWERK_BRANCHES_WORK,
   BOSS,
   CARTOUCHE,
   CORNICE,
@@ -590,9 +628,12 @@ export const ALL_ELEMENTS: ArchitecturalElement[] = [
   GARGOYLE,
   GROTESQUE,
   GUILLOCHE,
+  IZNIK_TILES,
   DECORATIVE_MUQARNAS,
+  PLATERESQUE_ORNAMENT,
   ROSETTE,
   VOLUTE,
+  WILD_MEN_SAVAGE_MEN,
 
   // Domes (5)
   DOME,
@@ -614,8 +655,10 @@ export const ALL_ELEMENTS: ArchitecturalElement[] = [
   DOOR_TRANSOM,
   DOOR_TYMPANUM,
 
-  // Facade (11)
+  // Facade (14)
   BALUSTRADE,
+  HERALDIC_ALTARPIECE_FACADE,
+  ISABELLINE_FACADE,
   JULIET_BALCONY,
   LOGGIA,
   PEDIMENT,
@@ -623,6 +666,7 @@ export const ALL_ELEMENTS: ArchitecturalElement[] = [
   PORTICO,
   PROPYLAEA,
   QUOINS,
+  ROCK_CUT_FACADE,
   RUSTICATION,
   STRING_COURSE,
   FACADE_TYMPANUM,
@@ -672,7 +716,7 @@ export const ALL_ELEMENTS: ArchitecturalElement[] = [
   PERGOLA,
   TERRACE,
 
-  // Interior (9)
+  // Interior (10)
   BASEBOARD,
   BOISERIE,
   BUILT_IN_BOOKCASE,
@@ -680,10 +724,11 @@ export const ALL_ELEMENTS: ArchitecturalElement[] = [
   CROWN_MOLDING,
   FIREPLACE,
   INGLENOOK,
+  KUBBEALTI_DOMED_CHAMBER,
   MANTELPIECE,
   SHOJI_SCREEN,
 
-  // Religious (16)
+  // Religious (17)
   ALTAR,
   APSE,
   BAPTISTERY,
@@ -692,6 +737,7 @@ export const ALL_ELEMENTS: ArchitecturalElement[] = [
   MIHRAB,
   MINARET,
   MINBAR,
+  MONOLITHIC_CHURCH,
   NAVE,
   PAGODA,
   QIBLA_WALL,
@@ -770,13 +816,21 @@ export const ALL_ELEMENTS: ArchitecturalElement[] = [
   WINDCATCHER,
   YURT,
 
-  // Urban (10)
+  // Structural (3)
+  HERRINGBONE_BRICK_PATTERN,
+  STONE_AND_CHAIN_HOOPS,
+  TRIPLE_STEPPED_PLATFORM,
+
+  // Urban (13)
   AQUEDUCT,
   ARCADE,
   BRIDGE,
   CITY_GATE,
   CLOCK_TOWER,
   COLONNADE,
+  EXCAVATION_TRENCH,
+  IMPERIAL_GATE_BAB_I_HUMAYUN,
+  LAYERED_COURTYARD_SYSTEM,
   MARKET_HALL,
   OBELISK,
   PLAZA,
@@ -863,17 +917,17 @@ export const ELEMENT_STATS = {
   ),
   byDirectory: {
     arches: 8,
-    ceiling: 8,
+    ceiling: 9,
     columns: 8,
-    decorative: 14,
+    decorative: 18,
     domes: 5,
     doors: 11,
-    facade: 11,
+    facade: 14,
     floor: 20,
     fortification: 5,
     garden: 14,
-    interior: 9,
-    religious: 16,
+    interior: 10,
+    religious: 17,
     roofs: 7,
     'specialized/art-deco': 6,
     'specialized/art-nouveau': 6,
@@ -882,7 +936,8 @@ export const ELEMENT_STATS = {
     'specialized/high-tech': 6,
     'specialized/modernist': 8,
     'specialized/vernacular': 8,
-    urban: 10,
+    structural: 3,
+    urban: 13,
     vaults: 4,
     wall: 8,
     windows: 13,

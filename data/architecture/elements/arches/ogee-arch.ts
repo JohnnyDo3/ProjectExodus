@@ -16,8 +16,8 @@ export const OGEE_ARCH: ArchitecturalElement = {
   },
   category: 'STRUCTURAL',
   subcategory: 'arches',
-  periods: ['GOTHIC', 'DECORATED_GOTHIC', 'INDIAN'],
-  regions: ['NORTHERN_EUROPE', 'SOUTH_ASIA', 'MIDDLE_EAST'],
+  periods: ['GOTHIC', 'DECORATED_GOTHIC', 'INDIAN', 'isabelline-gothic'],
+  regions: ['NORTHERN_EUROPE', 'SOUTH_ASIA', 'MIDDLE_EAST', 'IBERIAN_PENINSULA'],
 
   images: {
     primary: '/images/architecture/elements/ogee-arch-primary.jpg',
@@ -28,8 +28,8 @@ export const OGEE_ARCH: ArchitecturalElement = {
   description: {
     ELEMENTARY: 'An ogee arch has a really fancy S-curved shape! Each side curves outward at the bottom, then curves inward to meet at a point at the top. It looks like two S\'s facing each other. You\'ll see them on fancy doors and windows.',
     MIDDLE_SCHOOL: 'The ogee arch features an S-shaped curve on each side-convex at the bottom, then concave as it rises to a pointed apex. It\'s very decorative and was popular in late Gothic architecture. You\'ll also see it in Indian Mughal buildings like the Taj Mahal.',
-    HIGH_SCHOOL: 'The ogee arch combines concave and convex curves, creating an S-shaped profile that rises to a point. It emerged in late medieval Decorated Gothic architecture (14th century) and appears independently in Islamic and Indian traditions. Structurally weaker than simpler arches, it was used primarily for decorative effect.',
-    UNDERGRADUATE: 'The ogee arch represents the late Gothic tendency toward complex, flowing forms. The double-curved profile-convex below, concave above-creates visual dynamism but reduces structural efficiency. The form\'s appearance in both European Gothic and Indo-Islamic architecture raises questions about independent invention versus transmission.',
+    HIGH_SCHOOL: 'The ogee arch combines concave and convex curves, creating an S-shaped profile that rises to a point. It emerged in late medieval Decorated Gothic architecture (14th century) and appears independently in Islamic and Indian traditions. Structurally weaker than simpler arches, it was used primarily for decorative effect. Spanish Isabelline Gothic (late 15th century) developed elaborate ogee trefoil variants: a three-centered base arch covered by an ogee (S-curve) arch with trefoil (three-lobed) decoration, creating multiple arch layers of extraordinary depth and complexity.',
+    UNDERGRADUATE: 'The ogee arch represents the late Gothic tendency toward complex, flowing forms. The double-curved profile-convex below, concave above-creates visual dynamism but reduces structural efficiency. The form\'s appearance in both European Gothic and Indo-Islamic architecture raises questions about independent invention versus transmission. Spanish Isabelline Gothic architecture (1474-1516) developed particularly elaborate ogee variants at buildings like Colegio de San Gregorio (1488-1498): the entrance features a three-centered arch as base, covered by an ogee trefoil arch, with multiple arch layers creating extraordinary depth. This Spanish variant integrated ogee forms with extensive sculptural ornament (plateresque decoration), creating facades of "intentional excess" combining Gothic structure with decorative exuberance.',
     GRADUATE: 'Ogee arch analysis addresses the late medieval preference for complex curves over structural clarity. The relationship between European ogee and similar forms in Indian and Islamic architecture remains debated. The arch\'s decorative emphasis reflects changing priorities in late Gothic design toward surface elaboration.',
     PHD: 'Advanced ogee arch scholarship examines the form\'s emergence in specific cultural contexts, its relationship to molding profiles (cyma recta/reversa), and its distribution across architectural traditions. Questions of independent invention, possible transmission routes, and changing aesthetic values inform investigation.',
   },
@@ -54,6 +54,7 @@ export const OGEE_ARCH: ArchitecturalElement = {
 
   famousExamples: [
     { name: 'Ely Cathedral Lady Chapel', location: 'Ely, UK', year: '1321-1349', description: 'Decorated Gothic ogee arches' },
+    { name: 'Colegio de San Gregorio', location: 'Valladolid, Spain', year: '1488-1498', description: 'Isabelline Gothic ogee trefoil arch - three-centered base covered by S-curved ogee with trefoil decoration' },
     { name: 'Taj Mahal', location: 'Agra, India', year: '1632-1653', description: 'Mughal ogee (cusped) arches' },
     { name: 'St. Mary Redcliffe', location: 'Bristol, UK', year: '14th-15th century', description: 'Elaborate ogee doorway' },
   ],
@@ -86,5 +87,5 @@ export const OGEE_ARCH: ArchitecturalElement = {
 
   difficultyScore: 3,
   dateAdded: new Date('2024-01-01'),
-  lastUpdated: new Date('2024-01-01'),
+  lastUpdated: new Date('2026-01-29'),
 };
