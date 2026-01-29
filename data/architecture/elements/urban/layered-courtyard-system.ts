@@ -84,7 +84,7 @@ export const LAYERED_COURTYARD_SYSTEM: ArchitecturalElement = {
       year: '1639-1648',
       description: 'Mughal palace with layered courtyards showing parallel Islamic palace traditions in South Asian context',
     },
-  },
+  ],
 
   confusionPairs: [
     {
@@ -102,7 +102,7 @@ export const LAYERED_COURTYARD_SYSTEM: ArchitecturalElement = {
       reason: 'Both organize outdoor spaces architecturally',
       distinction: 'Formal gardens emphasize landscape design and plant arrangements; layered courtyard systems organize functional spaces (administrative, residential) with gardens as integrated elements',
     },
-  },
+  ],
 
   searchTags: [
     'layered courtyards',

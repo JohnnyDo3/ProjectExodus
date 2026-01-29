@@ -84,7 +84,7 @@ export const ASTWERK_BRANCHES_WORK: ArchitecturalElement = {
       year: 'c. 1490s',
       description: 'Spanish Isabelline church featuring astwerk with pomegranate and vegetal decoration',
     },
-  },
+  ],
 
   confusionPairs: [
     {

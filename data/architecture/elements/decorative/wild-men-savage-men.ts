@@ -84,7 +84,7 @@ export const WILD_MEN_SAVAGE_MEN: ArchitecturalElement = {
       year: '14th-15th century',
       description: 'Wild men incorporated into church decorative program',
     },
-  },
+  ],
 
   confusionPairs: [
     {
@@ -102,7 +102,7 @@ export const WILD_MEN_SAVAGE_MEN: ArchitecturalElement = {
       reason: 'Both are figural architectural sculptures with protective associations',
       distinction: 'Gargoyles are waterspouts with apotropaic functions, often animalistic or demonic; wild men are humanoid decorative sculptures symbolizing wildness, strength, or otherness',
     },
-  },
+  ],
 
   searchTags: [
     'wild men',

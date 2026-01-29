@@ -68,11 +68,14 @@ export type ArchitecturalPeriod =
   // Renaissance to Early Modern
   | 'renaissance'
   | 'mannerism'
+  | 'plateresque'
+  | 'spanish-renaissance'
   | 'mughal'
   | 'ottoman'
   | 'ottoman-classical'
   | 'baroque'
   | 'rococo'
+  | 'ottoman-baroque'
   | 'colonial-american'
   | 'neoclassical'
   // 19th Century

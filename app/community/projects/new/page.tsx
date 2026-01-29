@@ -11,10 +11,12 @@ import {
   ArrowLeft, ArrowRight, Check, Rocket, Users, FileText,
   Settings, Layers, BookOpen, Lock, Unlock, Globe2, Archive,
   Palette, Layout, ImageIcon, Tag, FolderTree, Plus, X, ChevronDown,
-  Zap, Leaf, Sun, Moon, TreePine, Waves
+  Zap, Leaf, Sun, Moon, TreePine, Waves, Mountain, Wind
 } from 'lucide-react'
 import { BackButton } from '@/components/navigation/BackButton'
 import Link from 'next/link'
+import { ProjectTemplateGallery } from '@/components/projects/ProjectTemplateGallery'
+import { ProjectTemplate } from '@/data/project-templates'
 
 // Guardian-themed steps
 const STEPS = [
@@ -93,12 +95,18 @@ const VISIBILITY_OPTIONS = [
 ]
 
 const PROJECT_THEMES = [
-  { value: 'nature', label: 'Nature', colors: { primary: '#10b981', accent: '#14b8a6' }, icon: Leaf },
-  { value: 'solar', label: 'Solar', colors: { primary: '#f59e0b', accent: '#f97316' }, icon: Sun },
-  { value: 'lunar', label: 'Lunar', colors: { primary: '#6366f1', accent: '#8b5cf6' }, icon: Moon },
-  { value: 'forest', label: 'Forest', colors: { primary: '#059669', accent: '#0d9488' }, icon: TreePine },
-  { value: 'ocean', label: 'Ocean', colors: { primary: '#0ea5e9', accent: '#06b6d4' }, icon: Waves },
-  { value: 'fire', label: 'Fire', colors: { primary: '#ef4444', accent: '#f97316' }, icon: Flame },
+  { value: 'nature', label: 'Nature', colors: { primary: '#10b981', accent: '#14b8a6', gradient: 'from-emerald-500 to-teal-500' }, icon: Leaf, description: 'Fresh and growing' },
+  { value: 'solar', label: 'Solar', colors: { primary: '#f59e0b', accent: '#f97316', gradient: 'from-yellow-500 to-orange-500' }, icon: Sun, description: 'Bright and energizing' },
+  { value: 'lunar', label: 'Lunar', colors: { primary: '#6366f1', accent: '#8b5cf6', gradient: 'from-indigo-500 to-purple-500' }, icon: Moon, description: 'Calm and mystical' },
+  { value: 'forest', label: 'Forest', colors: { primary: '#059669', accent: '#0d9488', gradient: 'from-green-600 to-teal-600' }, icon: TreePine, description: 'Deep and natural' },
+  { value: 'ocean', label: 'Ocean', colors: { primary: '#0ea5e9', accent: '#06b6d4', gradient: 'from-blue-500 to-cyan-500' }, icon: Waves, description: 'Flowing and vast' },
+  { value: 'fire', label: 'Fire', colors: { primary: '#ef4444', accent: '#f97316', gradient: 'from-red-500 to-orange-500' }, icon: Flame, description: 'Bold and passionate' },
+  { value: 'earth', label: 'Earth', colors: { primary: '#92400e', accent: '#b45309', gradient: 'from-amber-800 to-orange-700' }, icon: Mountain, description: 'Grounded and solid' },
+  { value: 'sky', label: 'Sky', colors: { primary: '#0284c7', accent: '#0ea5e9', gradient: 'from-cyan-600 to-blue-500' }, icon: Wind, description: 'Open and expansive' },
+  { value: 'rose', label: 'Rose', colors: { primary: '#e11d48', accent: '#f43f5e', gradient: 'from-rose-600 to-pink-500' }, icon: Heart, description: 'Warm and inviting' },
+  { value: 'amethyst', label: 'Amethyst', colors: { primary: '#7c3aed', accent: '#a78bfa', gradient: 'from-violet-600 to-purple-400' }, icon: Sparkles, description: 'Creative and inspiring' },
+  { value: 'arctic', label: 'Arctic', colors: { primary: '#0891b2', accent: '#06b6d4', gradient: 'from-cyan-600 to-sky-400' }, icon: Waves, description: 'Cool and crisp' },
+  { value: 'sunset', label: 'Sunset', colors: { primary: '#ea580c', accent: '#f97316', gradient: 'from-orange-600 to-amber-500' }, icon: Sun, description: 'Warm and glowing' },
 ]
 
 interface Subproject {
@@ -113,6 +121,8 @@ export default function NewProjectPage() {
   const router = useRouter()
 
   // Step management
+  const [showTemplateGallery, setShowTemplateGallery] = useState(true)
+  const [selectedTemplate, setSelectedTemplate] = useState<ProjectTemplate | null>(null)
   const [currentStep, setCurrentStep] = useState(1)
   const [completedSteps, setCompletedSteps] = useState<number[]>([])
 
@@ -127,6 +137,9 @@ export default function NewProjectPage() {
   const [tagline, setTagline] = useState('')
   const [description, setDescription] = useState('')
   const [mission, setMission] = useState('')
+  const [coverImage, setCoverImage] = useState<string | null>(null)
+  const [coverImageFile, setCoverImageFile] = useState<File | null>(null)
+  const [inspirationImages, setInspirationImages] = useState<string[]>([])
 
   // Step 2: Foundation
   const [visibility, setVisibility] = useState('PUBLIC')
@@ -150,6 +163,30 @@ export default function NewProjectPage() {
   // Step 5: Launch
   const [projectStatus, setProjectStatus] = useState('PLANNING')
   const [goal, setGoal] = useState('')
+
+  // Handle template selection
+  const handleTemplateSelection = (template: ProjectTemplate | null) => {
+    setSelectedTemplate(template)
+
+    if (template) {
+      // Populate form fields with template data
+      setName(template.name)
+      setTagline(template.tagline)
+      setDescription(template.description)
+      setMission(template.mission)
+      setCategory(template.category)
+      setTags(template.tags)
+      setTheme(template.theme)
+      setGoal(template.suggestedGoal)
+      setEnableDiscussions(template.features.enableDiscussions)
+      setEnableResearch(template.features.enableResearch)
+      setEnableLearning(template.features.enableLearning)
+      setRequireApproval(template.features.requireApproval)
+    }
+
+    // Hide template gallery and show wizard
+    setShowTemplateGallery(false)
+  }
 
   // Fetch user's projects for nesting
   useEffect(() => {
@@ -248,6 +285,41 @@ export default function NewProjectPage() {
     setSubprojects(subprojects.filter(sp => sp.id !== id))
   }
 
+  const handleCoverImageUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0]
+    if (file && file.type.startsWith('image/')) {
+      setCoverImageFile(file)
+      // Create preview URL
+      const reader = new FileReader()
+      reader.onloadend = () => {
+        setCoverImage(reader.result as string)
+      }
+      reader.readAsDataURL(file)
+    }
+  }
+
+  const removeCoverImage = () => {
+    setCoverImage(null)
+    setCoverImageFile(null)
+  }
+
+  const handleInspirationImageUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const files = Array.from(e.target.files || [])
+    files.forEach(file => {
+      if (file.type.startsWith('image/')) {
+        const reader = new FileReader()
+        reader.onloadend = () => {
+          setInspirationImages(prev => [...prev, reader.result as string])
+        }
+        reader.readAsDataURL(file)
+      }
+    })
+  }
+
+  const removeInspirationImage = (index: number) => {
+    setInspirationImages(prev => prev.filter((_, i) => i !== index))
+  }
+
   const handleSubmit = async () => {
     setIsSubmitting(true)
     setSubmitMessage('')
@@ -314,6 +386,35 @@ export default function NewProjectPage() {
   const StepIcon = currentStepData.icon
   const selectedTheme = PROJECT_THEMES.find(t => t.value === theme)
 
+  // Show template gallery if user hasn't selected a template yet
+  if (showTemplateGallery) {
+    return (
+      <div className="min-h-screen flex flex-col bg-[var(--background)]">
+        <section className="relative overflow-hidden bg-gradient-to-br from-[var(--card)] via-[var(--background)] to-[var(--card)] border-b border-[var(--border)]/30">
+          <div className="absolute top-0 left-1/4 w-64 h-64 bg-[var(--primary)]/5 rounded-full blur-3xl" />
+          <div className="absolute top-0 right-1/4 w-64 h-64 bg-[var(--accent)]/5 rounded-full blur-3xl" />
+
+          <div className="relative container mx-auto px-4 py-6">
+            <div className="max-w-5xl mx-auto">
+              <BackButton label="Back to Projects" fallbackUrl="/community/projects" className="mb-4" />
+            </div>
+          </div>
+        </section>
+
+        <section className="py-8 flex-1">
+          <div className="container mx-auto px-4">
+            <div className="max-w-6xl mx-auto">
+              <ProjectTemplateGallery
+                onSelectTemplate={handleTemplateSelection}
+                selectedTemplateId={selectedTemplate?.id}
+              />
+            </div>
+          </div>
+        </section>
+      </div>
+    )
+  }
+
   return (
     <div className="min-h-screen flex flex-col bg-[var(--background)]">
       {/* Header with Progress */}
@@ -325,6 +426,24 @@ export default function NewProjectPage() {
         <div className="relative container mx-auto px-4 py-4">
           <div className="max-w-5xl mx-auto">
             <BackButton label="Back to Projects" fallbackUrl="/community/projects" className="mb-3" />
+
+            {/* Template Badge */}
+            {selectedTemplate && (
+              <div className="mb-3 flex items-center gap-2">
+                <div className="flex items-center gap-2 px-3 py-1.5 rounded-full bg-gradient-to-r from-[var(--primary)]/10 to-[var(--accent)]/10 border border-[var(--primary)]/20">
+                  <Sparkles className="w-3 h-3 text-theme-primary" />
+                  <span className="text-xs font-bold text-theme-primary">
+                    Using template: {selectedTemplate.name}
+                  </span>
+                </div>
+                <button
+                  onClick={() => setShowTemplateGallery(true)}
+                  className="text-xs font-bold text-theme-muted hover:text-theme-primary underline"
+                >
+                  Change Template
+                </button>
+              </div>
+            )}
 
             {/* Title */}
             <div className="text-center mb-4">
@@ -487,6 +606,99 @@ export default function NewProjectPage() {
                           />
                           <p className="text-[10px] text-theme-muted mt-0.5">{mission.length}/300 characters</p>
                         </div>
+
+                        {/* Cover Image Upload */}
+                        <div className="pt-2">
+                          <label className="flex items-center gap-1.5 text-xs font-bold text-[var(--foreground)] mb-2">
+                            <ImageIcon className="w-3.5 h-3.5" />
+                            Cover Image (Optional)
+                          </label>
+
+                          {coverImage ? (
+                            <div className="relative group">
+                              <img
+                                src={coverImage}
+                                alt="Cover preview"
+                                className="w-full h-48 object-cover rounded-xl border-2 border-[var(--border)]"
+                              />
+                              <div className="absolute inset-0 bg-black/50 opacity-0 group-hover:opacity-100 transition-opacity rounded-xl flex items-center justify-center">
+                                <button
+                                  onClick={removeCoverImage}
+                                  className="px-4 py-2 bg-red-500 hover:bg-red-600 text-white rounded-lg font-bold text-sm transition-colors flex items-center gap-2"
+                                >
+                                  <X className="w-4 h-4" />
+                                  Remove Cover
+                                </button>
+                              </div>
+                            </div>
+                          ) : (
+                            <label className="flex flex-col items-center justify-center w-full h-48 border-2 border-dashed border-[var(--border)] rounded-xl cursor-pointer hover:border-[var(--primary)] transition-colors bg-[var(--muted)]/20 hover:bg-[var(--muted)]/40">
+                              <div className="flex flex-col items-center justify-center pt-5 pb-6">
+                                <ImageIcon className="w-10 h-10 mb-3 text-theme-muted" />
+                                <p className="mb-2 text-sm font-bold text-theme-muted">
+                                  <span className="text-theme-primary">Click to upload</span> or drag and drop
+                                </p>
+                                <p className="text-xs text-theme-muted">PNG, JPG, GIF up to 10MB</p>
+                              </div>
+                              <input
+                                type="file"
+                                className="hidden"
+                                accept="image/*"
+                                onChange={handleCoverImageUpload}
+                              />
+                            </label>
+                          )}
+                        </div>
+
+                        {/* Inspiration Board */}
+                        <div className="pt-2">
+                          <div className="flex items-center justify-between mb-2">
+                            <label className="flex items-center gap-1.5 text-xs font-bold text-[var(--foreground)]">
+                              <Sparkles className="w-3.5 h-3.5" />
+                              Inspiration Board (Optional)
+                            </label>
+                            <label className="cursor-pointer">
+                              <div className="flex items-center gap-1.5 px-3 py-1.5 bg-[var(--primary)]/10 hover:bg-[var(--primary)]/20 rounded-lg transition-colors">
+                                <Plus className="w-3.5 h-3.5 text-theme-primary" />
+                                <span className="text-xs font-bold text-theme-primary">Add Image</span>
+                              </div>
+                              <input
+                                type="file"
+                                className="hidden"
+                                accept="image/*"
+                                multiple
+                                onChange={handleInspirationImageUpload}
+                              />
+                            </label>
+                          </div>
+
+                          {inspirationImages.length > 0 ? (
+                            <div className="grid grid-cols-3 md:grid-cols-4 gap-2">
+                              {inspirationImages.map((img, idx) => (
+                                <div key={idx} className="relative group">
+                                  <img
+                                    src={img}
+                                    alt={`Inspiration ${idx + 1}`}
+                                    className="w-full aspect-square object-cover rounded-lg border-2 border-[var(--border)]"
+                                  />
+                                  <button
+                                    onClick={() => removeInspirationImage(idx)}
+                                    className="absolute top-1 right-1 w-6 h-6 bg-red-500 hover:bg-red-600 text-white rounded-full flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity shadow-lg"
+                                  >
+                                    <X className="w-3.5 h-3.5" />
+                                  </button>
+                                </div>
+                              ))}
+                            </div>
+                          ) : (
+                            <div className="p-6 border-2 border-dashed border-[var(--border)] rounded-lg text-center">
+                              <Sparkles className="w-8 h-8 mx-auto mb-2 text-theme-muted" />
+                              <p className="text-xs text-theme-muted">
+                                Add images that inspire your project vision
+                              </p>
+                            </div>
+                          )}
+                        </div>
                       </div>
                     )}
 
@@ -625,13 +837,47 @@ export default function NewProjectPage() {
                     {/* STEP 3: STRUCTURE */}
                     {currentStep === 3 && (
                       <div className="space-y-4">
-                        {/* Theme Selection */}
+                        {/* Theme Selection - Enhanced */}
                         <div>
-                          <label className="flex items-center gap-1.5 text-xs font-bold text-[var(--foreground)] mb-2">
+                          <label className="flex items-center gap-1.5 text-xs font-bold text-[var(--foreground)] mb-3">
                             <Palette className="w-3.5 h-3.5" />
-                            Visual Theme
+                            Visual Theme & Colors
                           </label>
-                          <div className="grid grid-cols-3 md:grid-cols-6 gap-2">
+
+                          {/* Selected Theme Preview */}
+                          {selectedTheme && (
+                            <div
+                              className="mb-4 p-4 rounded-xl border-2 border-[var(--primary)] relative overflow-hidden"
+                              style={{
+                                background: `linear-gradient(135deg, ${selectedTheme.colors.primary}10, ${selectedTheme.colors.accent}10)`
+                              }}
+                            >
+                              <div
+                                className={`absolute inset-0 opacity-20 bg-gradient-to-r ${selectedTheme.colors.gradient}`}
+                              />
+                              <div className="relative flex items-center gap-3">
+                                <div
+                                  className="w-12 h-12 rounded-lg flex items-center justify-center"
+                                  style={{
+                                    background: `linear-gradient(135deg, ${selectedTheme.colors.primary}, ${selectedTheme.colors.accent})`
+                                  }}
+                                >
+                                  <selectedTheme.icon className="w-6 h-6 text-white" />
+                                </div>
+                                <div>
+                                  <h4 className="text-sm font-bold text-[var(--foreground)]">
+                                    {selectedTheme.label} Theme
+                                  </h4>
+                                  <p className="text-xs text-theme-muted">
+                                    {selectedTheme.description}
+                                  </p>
+                                </div>
+                              </div>
+                            </div>
+                          )}
+
+                          {/* Theme Grid */}
+                          <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-2.5">
                             {PROJECT_THEMES.map((t) => {
                               const Icon = t.icon
                               const isSelected = theme === t.value
@@ -641,26 +887,55 @@ export default function NewProjectPage() {
                                   key={t.value}
                                   type="button"
                                   onClick={() => setTheme(t.value)}
-                                  className={`p-2 rounded-lg border-2 transition-all ${
+                                  className={`group relative p-3 rounded-xl border-2 transition-all hover:scale-105 ${
                                     isSelected
-                                      ? 'border-[var(--primary)] ring-2 ring-[var(--primary)]/20'
-                                      : 'border-[var(--border)] hover:border-[var(--primary)]/30'
+                                      ? 'border-[var(--primary)] ring-2 ring-[var(--primary)]/20 scale-105'
+                                      : 'border-[var(--border)] hover:border-[var(--primary)]/50'
                                   }`}
-                                  style={{
-                                    background: isSelected
-                                      ? `linear-gradient(135deg, ${t.colors.primary}15, ${t.colors.accent}15)`
-                                      : 'transparent'
-                                  }}
+                                  title={t.description}
                                 >
-                                  <Icon
-                                    className="w-6 h-6 mx-auto mb-1"
-                                    style={{ color: t.colors.primary }}
+                                  {/* Gradient Background */}
+                                  <div
+                                    className={`absolute inset-0 rounded-xl bg-gradient-to-br ${t.colors.gradient} opacity-0 group-hover:opacity-10 transition-opacity ${
+                                      isSelected ? 'opacity-15' : ''
+                                    }`}
                                   />
-                                  <p className="text-[10px] font-bold text-center">{t.label}</p>
+
+                                  {/* Content */}
+                                  <div className="relative">
+                                    <div
+                                      className="w-10 h-10 mx-auto mb-2 rounded-lg flex items-center justify-center"
+                                      style={{
+                                        background: `linear-gradient(135deg, ${t.colors.primary}, ${t.colors.accent})`
+                                      }}
+                                    >
+                                      <Icon className="w-5 h-5 text-white" />
+                                    </div>
+                                    <p className="text-[10px] font-bold text-center text-[var(--foreground)] mb-0.5">
+                                      {t.label}
+                                    </p>
+                                    {isSelected && (
+                                      <div className="absolute -top-1 -right-1">
+                                        <div
+                                          className="w-5 h-5 rounded-full flex items-center justify-center shadow-lg"
+                                          style={{
+                                            background: `linear-gradient(135deg, ${t.colors.primary}, ${t.colors.accent})`
+                                          }}
+                                        >
+                                          <Check className="w-3 h-3 text-white" />
+                                        </div>
+                                      </div>
+                                    )}
+                                  </div>
                                 </button>
                               )
                             })}
                           </div>
+
+                          {/* Theme Info */}
+                          <p className="text-xs text-theme-muted mt-3 italic">
+                            Your theme sets the visual identity for your project. You can always change it later.
+                          </p>
                         </div>
 
                         {/* Subprojects */}

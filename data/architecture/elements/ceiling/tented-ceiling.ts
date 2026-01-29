@@ -84,7 +84,7 @@ export const TENTED_CEILING: ArchitecturalElement = {
       year: '16th-17th century',
       description: 'Tented ceiling in chamber used for princely circumcision ceremonies',
     },
-  },
+  ],
 
   confusionPairs: [
     {

@@ -84,7 +84,7 @@ export const IMPERIAL_GATE_BAB_I_HUMAYUN: ArchitecturalElement = {
       year: '1856',
       description: 'Later Ottoman imperial gate employing European neoclassical style, shows evolution of Ottoman architecture',
     },
-  },
+  ],
 
   confusionPairs: [
     {
@@ -102,7 +102,7 @@ export const IMPERIAL_GATE_BAB_I_HUMAYUN: ArchitecturalElement = {
       reason: 'Both feature vaulted entrance spaces in Islamic architecture',
       distinction: 'Iwans are vaulted halls open on one side (often in courtyards); imperial gates are passage structures controlling access with closed sides',
     },
-  },
+  ],
 
   searchTags: [
     'imperial gate',

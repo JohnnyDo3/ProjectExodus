@@ -96,7 +96,7 @@ export const HERRINGBONE_BRICK_PATTERN: ArchitecturalElement = {
       reason: 'Both enable construction without centering',
       distinction: 'Corbelling projects each course beyond the one below creating overhangs; herringbone uses diagonal bracing between vertical courses on curved surfaces',
     },
-  },
+  ],
 
   searchTags: [
     'herringbone',

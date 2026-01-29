@@ -84,7 +84,7 @@ export const HERALDIC_ALTARPIECE_FACADE: ArchitecturalElement = {
       year: 'c. 1485',
       description: 'Palace featuring Isabelline facade with heraldic elements in altarpiece-influenced composition',
     },
-  },
+  ],
 
   confusionPairs: [
     {
