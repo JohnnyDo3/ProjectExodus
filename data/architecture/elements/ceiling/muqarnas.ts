@@ -61,6 +61,8 @@ export const MUQARNAS: ArchitecturalElement = {
     { name: 'Alhambra Hall of Two Sisters', location: 'Granada, Spain', year: '14th century', description: 'Magnificent muqarnas dome ceiling with over 5,000 cells' },
     { name: 'Imam Mosque', location: 'Isfahan, Iran', year: '1611-1638', description: 'Persian muqarnas ceiling vaulting in portal iwans' },
     { name: 'Madrasa of Sultan Hassan', location: 'Cairo, Egypt', year: '1356-1363', description: 'Monumental Mamluk stone muqarnas ceiling' },
+    { name: 'Topkapi Palace Imperial Gate', location: 'Istanbul, Turkey', year: '1478, renovated 18th century', description: 'Ottoman muqarnas integrated with Baroque flourishes (Tulip Period), combined with pointed arches and later European influences' },
+    { name: 'Baghdad Kiosk, Topkapi Palace', location: 'Istanbul, Turkey', year: '1638-1639', description: 'Classical Ottoman muqarnas in conical tented ceiling with blue-and-white Iznik tile facade' },
     { name: 'Alhambra Hall of the Abencerrajes', location: 'Granada, Spain', year: '14th century', description: 'Star-shaped muqarnas ceiling dome' },
     { name: 'Taj Mahal Gateway', location: 'Agra, India', year: '1632-1653', description: 'Mughal marble muqarnas ceiling vaulting' },
   ],
