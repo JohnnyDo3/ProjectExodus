@@ -77,14 +77,14 @@ export function MainLayoutWrapper({
     )
   }
 
-  // Project wizard - no footer, no scroll, viewport height
+  // Project wizard - no footer, scrollable content
   if (isProjectWizard) {
     return (
       <>
         {skyBackground}
         <div className="relative z-10 h-screen flex flex-col overflow-hidden">
           <Header />
-          <div className="flex-1 overflow-hidden">
+          <div className="flex-1 overflow-y-auto">
             {children}
           </div>
         </div>
