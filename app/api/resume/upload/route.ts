@@ -4,6 +4,8 @@ import { prisma } from '@/lib/db'
 import { writeFile, mkdir } from 'fs/promises'
 import { join } from 'path'
 import { existsSync } from 'fs'
+import { randomBytes } from 'crypto'
+import { rateLimit, rateLimitResponse } from '@/lib/rate-limit'
 
 export async function POST(request: NextRequest) {
   try {
@@ -14,6 +16,17 @@ export async function POST(request: NextRequest) {
         { success: false, error: 'Unauthorized' },
         { status: 401 }
       )
+    }
+
+    // SECURITY FIX: Add rate limiting for resume uploads (3 per hour per user)
+    const rateLimitResult = await rateLimit(request, {
+      id: `resume-upload-${session.user.id}`,
+      limit: 3,
+      windowSeconds: 3600,
+    })
+
+    if (!rateLimitResult.success) {
+      return rateLimitResponse(rateLimitResult.reset)
     }
 
     const formData = await request.formData()
@@ -43,15 +56,15 @@ export async function POST(request: NextRequest) {
       )
     }
 
-    // Create uploads directory if it doesn't exist
-    const uploadsDir = join(process.cwd(), 'public', 'uploads', 'resumes')
+    // SECURITY FIX: Store resumes outside public directory for access control
+    const uploadsDir = join(process.cwd(), 'uploads', 'resumes')
     if (!existsSync(uploadsDir)) {
       await mkdir(uploadsDir, { recursive: true })
     }
 
-    // Generate unique filename
-    const timestamp = Date.now()
-    const filename = `${session.user.id}_${timestamp}.pdf`
+    // SECURITY FIX: Generate cryptographically secure random filename to prevent enumeration
+    const randomName = randomBytes(16).toString('hex')
+    const filename = `${randomName}.pdf`
     const filepath = join(uploadsDir, filename)
 
     // Convert file to buffer and save
@@ -59,11 +72,12 @@ export async function POST(request: NextRequest) {
     const buffer = Buffer.from(bytes)
     await writeFile(filepath, buffer)
 
-    // Update user record with resume URL
-    const resumeUrl = `/uploads/resumes/${filename}`
+    // Update user record with secure resume reference
+    // Note: Resumes are now served via an authenticated API endpoint instead of public directory
+    const resumeUrl = `/api/resume/download/${filename}`
     await prisma.user.update({
       where: { id: session.user.id },
-      data: { resume: resumeUrl }
+      data: { resume: filename } // Store only filename, not full path
     })
 
     return NextResponse.json({

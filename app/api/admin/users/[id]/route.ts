@@ -3,6 +3,7 @@ import { auth } from '@/auth'
 import { prisma } from '@/lib/db'
 import { hasPermission } from '@/lib/permissions'
 import { logAdminAction, AdminAction } from '@/lib/audit'
+import { z } from 'zod'
 
 export async function GET(
   request: NextRequest,
@@ -113,6 +114,13 @@ export async function GET(
   }
 }
 
+// SECURITY FIX: Add input validation schema
+const userUpdateSchema = z.object({
+  role: z.enum(['USER', 'EDITOR', 'MODERATOR', 'ADMIN', 'SUPER_ADMIN']).optional(),
+  name: z.string().min(2).max(100).trim().optional(),
+  email: z.string().email().toLowerCase().trim().optional(),
+})
+
 export async function PATCH(
   request: NextRequest,
   { params }: { params: Promise<{ id: string }> }
@@ -131,7 +139,17 @@ export async function PATCH(
     }
 
     const body = await request.json()
-    const { role, name, email } = body
+
+    // SECURITY FIX: Validate input before using it
+    const validationResult = userUpdateSchema.safeParse(body)
+    if (!validationResult.success) {
+      return NextResponse.json(
+        { error: 'Invalid input', details: validationResult.error.issues },
+        { status: 400 }
+      )
+    }
+
+    const { role, name, email } = validationResult.data
 
     // Get current user data for logging
     const currentUser = await prisma.user.findUnique({

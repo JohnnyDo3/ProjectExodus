@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { auth } from '@/auth'
 import { uploadImage } from '@/lib/cloudinary'
+import { rateLimit, rateLimitResponse } from '@/lib/rate-limit'
 
 // Allowed image types (no SVG to prevent XSS)
 const ALLOWED_IMAGE_TYPES = ['image/jpeg', 'image/png', 'image/jpg', 'image/webp']
@@ -15,6 +16,17 @@ export async function POST(request: NextRequest) {
         { success: false, error: 'Unauthorized' },
         { status: 401 }
       )
+    }
+
+    // SECURITY FIX: Add rate limiting for image uploads (20 per hour per user)
+    const rateLimitResult = await rateLimit(request, {
+      id: `image-upload-${session.user.id}`,
+      limit: 20,
+      windowSeconds: 3600,
+    })
+
+    if (!rateLimitResult.success) {
+      return rateLimitResponse(rateLimitResult.reset)
     }
 
     const { image, folder } = await request.json()

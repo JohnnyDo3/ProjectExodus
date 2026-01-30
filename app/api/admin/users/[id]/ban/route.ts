@@ -3,6 +3,13 @@ import { auth } from '@/auth'
 import { prisma } from '@/lib/db'
 import { hasPermission } from '@/lib/permissions'
 import { logUserBan, logUserUnban, createAdminAlert } from '@/lib/audit'
+import { z } from 'zod'
+
+// SECURITY FIX: Add input validation for ban requests
+const banRequestSchema = z.object({
+  reason: z.string().min(10, 'Ban reason must be at least 10 characters').max(500, 'Ban reason must not exceed 500 characters').trim(),
+  duration: z.number().positive().optional().nullable(),
+})
 
 // Ban a user
 export async function POST(
@@ -23,14 +30,17 @@ export async function POST(
     }
 
     const body = await request.json()
-    const { reason, duration } = body // duration in days, null = permanent
 
-    if (!reason) {
+    // SECURITY FIX: Validate and sanitize input
+    const validationResult = banRequestSchema.safeParse(body)
+    if (!validationResult.success) {
       return NextResponse.json(
-        { error: 'Ban reason is required' },
+        { error: 'Invalid input', details: validationResult.error.issues },
         { status: 400 }
       )
     }
+
+    const { reason, duration } = validationResult.data // duration in days, null = permanent
 
     // Get user info
     const user = await prisma.user.findUnique({
