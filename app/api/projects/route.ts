@@ -156,6 +156,53 @@ export async function POST(request: NextRequest) {
       })
     }
 
+    // Create mind map with nodes if provided
+    if (body.mindMap && body.mindMap.nodes && Array.isArray(body.mindMap.nodes) && body.mindMap.nodes.length > 0) {
+      // Create the mind map first
+      const mindMap = await prisma.mindMap.create({
+        data: {
+          projectId: project.id,
+          title: `${body.name} Mind Map`,
+          creatorId: session.user.id,
+          isCollaborative: true,
+          isPublic: body.visibility === 'PUBLIC',
+          nodeCount: body.mindMap.nodes.length,
+          connectionCount: 0,
+        },
+      })
+
+      // Create all nodes
+      if (body.mindMap.nodes.length > 0) {
+        await prisma.mindMapNode.createMany({
+          data: body.mindMap.nodes.map((node: {
+            type: string
+            label: string
+            description?: string
+            x: number
+            y: number
+          }) => ({
+            mindMapId: mindMap.id,
+            type: node.type,
+            label: node.label,
+            description: node.description || null,
+            x: node.x,
+            y: node.y,
+            createdById: session.user.id,
+          })),
+        })
+
+        // Add creator as contributor with ADMIN permission
+        await prisma.mindMapContributor.create({
+          data: {
+            mindMapId: mindMap.id,
+            userId: session.user.id,
+            permission: 'ADMIN',
+            nodesCreated: body.mindMap.nodes.length,
+          },
+        })
+      }
+    }
+
     return NextResponse.json({
       success: true,
       data: project,

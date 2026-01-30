@@ -1038,6 +1038,7 @@ model Project {
   waivers             ProjectPrerequisiteWaiver[]
   contributions       ProjectContribution[]
   projectNotifications ProjectNotification[]
+  mindMap             MindMap?
 
   createdAt   DateTime        @default(now())
   updatedAt   DateTime        @updatedAt
@@ -1694,6 +1695,305 @@ enum ProjectNotificationType {
   WAIVER_APPROVED
   WAIVER_DENIED
   PROJECT_ANNOUNCEMENT
+}
+
+// ============================================
+// COLLABORATIVE MIND MAP MODELS
+// Visual brainstorming and project planning
+// ============================================
+
+model MindMap {
+  id            String              @id @default(cuid())
+  projectId     String
+  title         String              @default("Project Mind Map")
+  description   String?             @db.Text
+
+  // Configuration
+  isCollaborative Boolean           @default(true)
+  isPublic      Boolean             @default(false)  // If false, only project members can view
+  allowComments Boolean             @default(true)
+
+  // Layout settings
+  layoutType    MindMapLayoutType   @default(FORCE_GRAPH)
+  canvasWidth   Int                 @default(3000)
+  canvasHeight  Int                 @default(2000)
+  zoom          Float               @default(1.0)
+  centerX       Float               @default(1500)
+  centerY       Float               @default(1000)
+
+  // Metadata
+  creatorId     String
+  nodeCount     Int                 @default(0)
+  connectionCount Int               @default(0)
+  lastEditedBy  String?
+  lastEditedAt  DateTime?
+
+  // Relations
+  project       Project             @relation(fields: [projectId], references: [id], onDelete: Cascade)
+  nodes         MindMapNode[]
+  connections   MindMapConnection[]
+  contributors  MindMapContributor[]
+  activities    MindMapActivity[]
+
+  createdAt     DateTime            @default(now())
+  updatedAt     DateTime            @updatedAt
+
+  @@unique([projectId])  // One mind map per project
+  @@index([projectId])
+  @@index([creatorId])
+  @@index([isPublic])
+}
+
+enum MindMapLayoutType {
+  FORCE_GRAPH     // Physics-based force layout
+  INFINITE_CANVAS // Free-form infinite canvas
+  TREE            // Hierarchical tree layout
+  RADIAL          // Radial/circular layout
+}
+
+model MindMapNode {
+  id            String              @id @default(cuid())
+  mindMapId     String
+
+  // Node properties
+  type          MindMapNodeType
+  label         String
+  description   String?             @db.Text
+
+  // Position
+  x             Float
+  y             Float
+  width         Float               @default(200)
+  height        Float               @default(100)
+
+  // Visual styling
+  color         String?             // Hex color code
+  emoji         String?             // Node icon
+  fontSize      Int                 @default(14)
+
+  // Node metadata
+  priority      NodePriority?
+  status        NodeStatus?
+  assigneeId    String?             // User assigned to this node
+  dueDate       DateTime?
+  tags          String[]            @default([])
+
+  // State
+  isLocked      Boolean             @default(false)
+  isVisible     Boolean             @default(true)
+
+  // Collaboration
+  createdById   String
+  lastEditedBy  String?
+  lastEditedAt  DateTime?
+
+  // Relations
+  mindMap       MindMap             @relation(fields: [mindMapId], references: [id], onDelete: Cascade)
+  sourceConnections MindMapConnection[] @relation("SourceNode")
+  targetConnections MindMapConnection[] @relation("TargetNode")
+  comments      MindMapNodeComment[]
+
+  createdAt     DateTime            @default(now())
+  updatedAt     DateTime            @updatedAt
+
+  @@index([mindMapId])
+  @@index([type])
+  @@index([createdById])
+  @@index([assigneeId])
+  @@index([status])
+}
+
+enum MindMapNodeType {
+  IDEA          // 💡 Brainstorming idea
+  TASK          // ✅ Actionable task
+  MILESTONE     // 🎯 Project milestone
+  RESOURCE      // 📦 Reference/resource
+  NOTE          // 📝 General note
+  DECISION      // 🎲 Decision point
+  RISK          // ⚠️ Risk/concern
+  OPPORTUNITY   // 🌟 Opportunity
+  PERSON        // 👤 Person/stakeholder
+  QUESTION      // ❓ Open question
+}
+
+enum NodePriority {
+  LOW
+  MEDIUM
+  HIGH
+  CRITICAL
+}
+
+enum NodeStatus {
+  NOT_STARTED
+  IN_PROGRESS
+  BLOCKED
+  COMPLETED
+  CANCELLED
+}
+
+model MindMapConnection {
+  id            String              @id @default(cuid())
+  mindMapId     String
+  sourceNodeId  String
+  targetNodeId  String
+
+  // Connection properties
+  type          ConnectionType      @default(RELATED)
+  label         String?
+  description   String?             @db.Text
+
+  // Visual styling
+  color         String?             // Hex color code
+  style         ConnectionStyle     @default(SOLID)
+  thickness     Int                 @default(2)
+
+  // Arrow configuration
+  showArrow     Boolean             @default(true)
+  bidirectional Boolean             @default(false)
+
+  // Collaboration
+  createdById   String
+  lastEditedBy  String?
+  lastEditedAt  DateTime?
+
+  // Relations
+  mindMap       MindMap             @relation(fields: [mindMapId], references: [id], onDelete: Cascade)
+  sourceNode    MindMapNode         @relation("SourceNode", fields: [sourceNodeId], references: [id], onDelete: Cascade)
+  targetNode    MindMapNode         @relation("TargetNode", fields: [targetNodeId], references: [id], onDelete: Cascade)
+  comments      MindMapConnectionComment[]
+
+  createdAt     DateTime            @default(now())
+  updatedAt     DateTime            @updatedAt
+
+  @@index([mindMapId])
+  @@index([sourceNodeId])
+  @@index([targetNodeId])
+  @@index([type])
+  @@index([createdById])
+}
+
+enum ConnectionType {
+  RELATED       // General relationship
+  DEPENDS       // Target depends on source
+  LEADS_TO      // Source leads to target
+  BLOCKS        // Source blocks target
+  SUPPORTS      // Source supports target
+  CONFLICTS     // Source conflicts with target
+  PART_OF       // Target is part of source
+  SIMILAR_TO    // Similar concepts
+}
+
+enum ConnectionStyle {
+  SOLID         // ───
+  DASHED        // - - -
+  DOTTED        // ···
+  THICK         // ━━━
+}
+
+model MindMapNodeComment {
+  id            String              @id @default(cuid())
+  nodeId        String
+  userId        String
+  content       String              @db.Text
+  isResolved    Boolean             @default(false)
+  resolvedBy    String?
+  resolvedAt    DateTime?
+
+  node          MindMapNode         @relation(fields: [nodeId], references: [id], onDelete: Cascade)
+
+  createdAt     DateTime            @default(now())
+  updatedAt     DateTime            @updatedAt
+
+  @@index([nodeId])
+  @@index([userId])
+  @@index([isResolved])
+}
+
+model MindMapConnectionComment {
+  id            String              @id @default(cuid())
+  connectionId  String
+  userId        String
+  content       String              @db.Text
+  isResolved    Boolean             @default(false)
+  resolvedBy    String?
+  resolvedAt    DateTime?
+
+  connection    MindMapConnection   @relation(fields: [connectionId], references: [id], onDelete: Cascade)
+
+  createdAt     DateTime            @default(now())
+  updatedAt     DateTime            @updatedAt
+
+  @@index([connectionId])
+  @@index([userId])
+  @@index([isResolved])
+}
+
+model MindMapContributor {
+  id            String              @id @default(cuid())
+  mindMapId     String
+  userId        String
+  permission    MindMapPermission   @default(VIEW)
+
+  // Activity tracking
+  nodesCreated  Int                 @default(0)
+  nodesEdited   Int                 @default(0)
+  connectionsCreated Int            @default(0)
+  lastActiveAt  DateTime?
+
+  mindMap       MindMap             @relation(fields: [mindMapId], references: [id], onDelete: Cascade)
+
+  addedAt       DateTime            @default(now())
+
+  @@unique([mindMapId, userId])
+  @@index([mindMapId])
+  @@index([userId])
+  @@index([permission])
+}
+
+enum MindMapPermission {
+  VIEW          // Can only view
+  COMMENT       // Can view and comment
+  EDIT          // Can edit nodes and connections
+  ADMIN         // Full control
+}
+
+model MindMapActivity {
+  id            String              @id @default(cuid())
+  mindMapId     String
+  userId        String
+
+  // Activity details
+  activityType  MindMapActivityType
+  entityType    String?             // 'node', 'connection', 'map'
+  entityId      String?             // ID of affected entity
+
+  // Change details
+  description   String              // Human-readable description
+  changes       Json?               // Detailed change data
+
+  mindMap       MindMap             @relation(fields: [mindMapId], references: [id], onDelete: Cascade)
+
+  createdAt     DateTime            @default(now())
+
+  @@index([mindMapId])
+  @@index([userId])
+  @@index([activityType])
+  @@index([createdAt])
+  @@index([mindMapId, createdAt]) // For activity feed
+}
+
+enum MindMapActivityType {
+  NODE_CREATED
+  NODE_UPDATED
+  NODE_DELETED
+  NODE_MOVED
+  CONNECTION_CREATED
+  CONNECTION_UPDATED
+  CONNECTION_DELETED
+  COMMENT_ADDED
+  MAP_SETTINGS_CHANGED
+  CONTRIBUTOR_ADDED
+  CONTRIBUTOR_REMOVED
 }
 
 // ============================================

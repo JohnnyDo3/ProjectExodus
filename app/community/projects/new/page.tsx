@@ -11,7 +11,8 @@ import {
   ArrowLeft, ArrowRight, Check, Rocket, Users, FileText,
   Settings, Layers, BookOpen, Lock, Unlock, Globe2, Archive,
   Palette, Layout, ImageIcon, Tag, FolderTree, Plus, X, ChevronDown,
-  Zap, Leaf, Sun, Moon, TreePine, Waves, Mountain, Wind
+  Zap, Leaf, Sun, Moon, TreePine, Waves, Mountain, Wind, Network,
+  Lightbulb, CheckSquare, Flag, Package, StickyNote, Hexagon, AlertTriangle, Star
 } from 'lucide-react'
 import { BackButton } from '@/components/navigation/BackButton'
 import Link from 'next/link'
@@ -49,6 +50,15 @@ const STEPS = [
   },
   {
     id: 4,
+    name: 'Mind Map',
+    guardian: 'Clarity',
+    icon: Compass,
+    gradient: 'from-emerald-500 via-teal-400 to-cyan-500',
+    color: 'text-emerald-400',
+    description: 'Visualize your project roadmap'
+  },
+  {
+    id: 5,
     name: 'Collaboration',
     guardian: 'Humanity',
     icon: Heart,
@@ -57,7 +67,7 @@ const STEPS = [
     description: 'Configure collaboration & team settings'
   },
   {
-    id: 5,
+    id: 6,
     name: 'Launch',
     guardian: 'Courage',
     icon: Flame,
@@ -154,13 +164,20 @@ export default function NewProjectPage() {
   const [showSubprojectForm, setShowSubprojectForm] = useState(false)
   const [newSubproject, setNewSubproject] = useState({ name: '', description: '' })
 
-  // Step 4: Collaboration
+  // Step 4: Mind Map
+  const [mindMapNodes, setMindMapNodes] = useState<any[]>([])
+  const [mindMapConnections, setMindMapConnections] = useState<any[]>([])
+  const [selectedNodeType, setSelectedNodeType] = useState<string>('IDEA')
+  const [showNodeForm, setShowNodeForm] = useState(false)
+  const [newNode, setNewNode] = useState({ label: '', description: '', type: 'IDEA' })
+
+  // Step 5: Collaboration
   const [enableDiscussions, setEnableDiscussions] = useState(true)
   const [enableResearch, setEnableResearch] = useState(true)
   const [enableLearning, setEnableLearning] = useState(true)
   const [requireApproval, setRequireApproval] = useState(false)
 
-  // Step 5: Launch
+  // Step 6: Launch
   const [projectStatus, setProjectStatus] = useState('PLANNING')
   const [goal, setGoal] = useState('')
 
@@ -235,8 +252,10 @@ export default function NewProjectPage() {
       case 3:
         return true // Structure is optional
       case 4:
-        return true // Collaboration settings are optional
+        return true // Mind map is optional
       case 5:
+        return true // Collaboration settings are optional
+      case 6:
         return true // Ready to launch
       default:
         return false
@@ -283,6 +302,29 @@ export default function NewProjectPage() {
 
   const removeSubproject = (id: string) => {
     setSubprojects(subprojects.filter(sp => sp.id !== id))
+  }
+
+  // Mind Map helpers
+  const addMindMapNode = () => {
+    if (newNode.label.trim()) {
+      const node = {
+        id: crypto.randomUUID(),
+        label: newNode.label,
+        description: newNode.description,
+        type: newNode.type,
+        x: Math.random() * 600 + 100, // Random position
+        y: Math.random() * 400 + 100,
+      }
+      setMindMapNodes([...mindMapNodes, node])
+      setNewNode({ label: '', description: '', type: 'IDEA' })
+      setShowNodeForm(false)
+    }
+  }
+
+  const removeMindMapNode = (id: string) => {
+    setMindMapNodes(mindMapNodes.filter(n => n.id !== id))
+    // Also remove connections involving this node
+    setMindMapConnections(mindMapConnections.filter(c => c.sourceNodeId !== id && c.targetNodeId !== id))
   }
 
   const handleCoverImageUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -356,7 +398,17 @@ export default function NewProjectPage() {
         subprojects: subprojects.map(sp => ({
           name: sp.name,
           description: sp.description
-        }))
+        })),
+        mindMap: {
+          nodes: mindMapNodes.map(node => ({
+            type: node.type,
+            label: node.label,
+            description: node.description,
+            x: node.x,
+            y: node.y
+          })),
+          connections: mindMapConnections
+        }
       }
 
       const res = await fetch('/api/projects', {
@@ -1018,9 +1070,213 @@ export default function NewProjectPage() {
                       </div>
                     )}
 
-                    {/* STEP 4: COLLABORATION */}
+                    {/* STEP 4: MIND MAP */}
                     {currentStep === 4 && (
+                      <div className="space-y-4">
+                        <div className="bg-gradient-to-r from-emerald-500/10 to-teal-500/10 border-2 border-emerald-500/20 rounded-xl p-4 mb-4">
+                          <div className="flex items-start gap-3">
+                            <div className="w-10 h-10 rounded-lg bg-gradient-to-br from-emerald-500 to-teal-500 flex items-center justify-center flex-shrink-0">
+                              <Network className="w-5 h-5 text-white" />
+                            </div>
+                            <div>
+                              <h3 className="text-sm font-bold text-[var(--foreground)] mb-1">
+                                Draft Your Project Mind Map
+                              </h3>
+                              <p className="text-xs text-theme-muted leading-relaxed">
+                                Create a visual roadmap of your ideas, tasks, milestones, and resources.
+                                After launch, you and your team can collaboratively expand this map together.
+                              </p>
+                            </div>
+                          </div>
+                        </div>
+
+                        {/* Node Type Legend */}
+                        <div className="grid grid-cols-2 sm:grid-cols-5 gap-2 mb-3">
+                          {[
+                            { type: 'IDEA', icon: Lightbulb, label: 'Idea', color: 'from-yellow-500 to-amber-500' },
+                            { type: 'TASK', icon: CheckSquare, label: 'Task', color: 'from-blue-500 to-cyan-500' },
+                            { type: 'MILESTONE', icon: Flag, label: 'Milestone', color: 'from-pink-500 to-rose-500' },
+                            { type: 'RESOURCE', icon: Package, label: 'Resource', color: 'from-purple-500 to-violet-500' },
+                            { type: 'NOTE', icon: StickyNote, label: 'Note', color: 'from-green-500 to-emerald-500' }
+                          ].map(({ type, icon: Icon, label, color }) => (
+                            <div key={type} className="flex items-center gap-1.5 p-2 bg-[var(--muted)]/20 rounded-lg border border-[var(--border)]">
+                              <div className={`w-6 h-6 rounded bg-gradient-to-br ${color} flex items-center justify-center`}>
+                                <Icon className="w-3.5 h-3.5 text-white" />
+                              </div>
+                              <span className="text-[10px] font-bold text-theme-muted">{label}</span>
+                            </div>
+                          ))}
+                        </div>
+
+                        {/* Add Node Button */}
+                        <div className="flex justify-between items-center mb-3">
+                          <label className="flex items-center gap-1.5 text-xs font-bold text-[var(--foreground)]">
+                            <Network className="w-3.5 h-3.5" />
+                            Mind Map Nodes
+                          </label>
+                          <Button
+                            type="button"
+                            size="sm"
+                            onClick={() => setShowNodeForm(!showNodeForm)}
+                            className="font-bold text-xs h-7"
+                          >
+                            <Plus className="w-3 h-3 mr-1" />
+                            Add Node
+                          </Button>
+                        </div>
+
+                        {/* Add Node Form */}
+                        {showNodeForm && (
+                          <Card className="mb-3 border-2 border-dashed border-emerald-500/30">
+                            <CardContent className="p-3 space-y-2">
+                              <div>
+                                <label className="text-[10px] font-bold text-theme-muted mb-1 block">Node Type</label>
+                                <select
+                                  value={newNode.type}
+                                  onChange={(e) => setNewNode({ ...newNode, type: e.target.value })}
+                                  className="w-full px-2 py-1.5 text-sm rounded-lg border-2 border-[var(--border)] bg-[var(--background)] text-[var(--foreground)] font-semibold focus:border-theme-primary focus:outline-none"
+                                >
+                                  <option value="IDEA">💡 Idea</option>
+                                  <option value="TASK">✅ Task</option>
+                                  <option value="MILESTONE">🎯 Milestone</option>
+                                  <option value="RESOURCE">📦 Resource</option>
+                                  <option value="NOTE">📝 Note</option>
+                                  <option value="DECISION">🎲 Decision</option>
+                                  <option value="RISK">⚠️ Risk</option>
+                                  <option value="OPPORTUNITY">🌟 Opportunity</option>
+                                </select>
+                              </div>
+                              <input
+                                type="text"
+                                value={newNode.label}
+                                onChange={(e) => setNewNode({ ...newNode, label: e.target.value })}
+                                placeholder="Node title (e.g., 'Launch website', 'Research partners')"
+                                className="w-full px-2 py-1.5 text-sm rounded-lg border-2 border-[var(--border)] bg-[var(--background)] text-[var(--foreground)] font-semibold focus:border-theme-primary focus:outline-none"
+                              />
+                              <textarea
+                                value={newNode.description}
+                                onChange={(e) => setNewNode({ ...newNode, description: e.target.value })}
+                                placeholder="Optional description..."
+                                rows={2}
+                                className="w-full px-2 py-1.5 text-sm rounded-lg border-2 border-[var(--border)] bg-[var(--background)] text-[var(--foreground)] font-semibold focus:border-theme-primary focus:outline-none resize-none"
+                              />
+                              <div className="flex gap-2">
+                                <Button type="button" size="sm" onClick={addMindMapNode} className="font-bold text-xs h-7">
+                                  Add Node
+                                </Button>
+                                <Button type="button" size="sm" variant="ghost" onClick={() => setShowNodeForm(false)} className="font-bold text-xs h-7">
+                                  Cancel
+                                </Button>
+                              </div>
+                            </CardContent>
+                          </Card>
+                        )}
+
+                        {/* Mind Map Nodes List */}
+                        {mindMapNodes.length > 0 ? (
+                          <div className="space-y-2">
+                            {mindMapNodes.map((node) => {
+                              const getNodeIcon = (type: string) => {
+                                switch (type) {
+                                  case 'IDEA': return Lightbulb
+                                  case 'TASK': return CheckSquare
+                                  case 'MILESTONE': return Flag
+                                  case 'RESOURCE': return Package
+                                  case 'NOTE': return StickyNote
+                                  case 'DECISION': return Hexagon
+                                  case 'RISK': return AlertTriangle
+                                  case 'OPPORTUNITY': return Star
+                                  default: return Lightbulb
+                                }
+                              }
+                              const getNodeColor = (type: string) => {
+                                switch (type) {
+                                  case 'IDEA': return 'from-yellow-500 to-amber-500'
+                                  case 'TASK': return 'from-blue-500 to-cyan-500'
+                                  case 'MILESTONE': return 'from-pink-500 to-rose-500'
+                                  case 'RESOURCE': return 'from-purple-500 to-violet-500'
+                                  case 'NOTE': return 'from-green-500 to-emerald-500'
+                                  case 'DECISION': return 'from-orange-500 to-amber-500'
+                                  case 'RISK': return 'from-red-500 to-orange-500'
+                                  case 'OPPORTUNITY': return 'from-emerald-500 to-teal-500'
+                                  default: return 'from-gray-500 to-slate-500'
+                                }
+                              }
+                              const Icon = getNodeIcon(node.type)
+                              return (
+                                <Card key={node.id} className="border-2">
+                                  <CardContent className="p-2.5 flex items-start gap-2.5">
+                                    <div className={`w-8 h-8 rounded-lg bg-gradient-to-br ${getNodeColor(node.type)} flex items-center justify-center flex-shrink-0`}>
+                                      <Icon className="w-4 h-4 text-white" />
+                                    </div>
+                                    <div className="min-w-0 flex-1">
+                                      <div className="flex items-start justify-between gap-2">
+                                        <p className="font-bold text-sm text-[var(--foreground)]">{node.label}</p>
+                                        <span className="text-[9px] font-bold px-1.5 py-0.5 bg-[var(--muted)]/50 rounded uppercase tracking-wide text-theme-muted flex-shrink-0">
+                                          {node.type}
+                                        </span>
+                                      </div>
+                                      {node.description && (
+                                        <p className="text-xs text-theme-muted mt-1 leading-snug">{node.description}</p>
+                                      )}
+                                    </div>
+                                    <button
+                                      onClick={() => removeMindMapNode(node.id)}
+                                      className="p-1.5 hover:bg-red-500/10 rounded-lg text-red-500 transition-colors flex-shrink-0"
+                                    >
+                                      <X className="w-3.5 h-3.5" />
+                                    </button>
+                                  </CardContent>
+                                </Card>
+                              )
+                            })}
+                          </div>
+                        ) : (
+                          <Card className="border-2 border-dashed">
+                            <CardContent className="p-6 text-center">
+                              <Network className="w-12 h-12 mx-auto mb-3 text-theme-muted opacity-50" />
+                              <p className="text-sm font-bold text-[var(--foreground)] mb-1">
+                                No nodes yet - start mapping!
+                              </p>
+                              <p className="text-xs text-theme-muted leading-relaxed">
+                                Add your first node to begin visualizing your project. This is optional - you can skip this step and create your mind map after launch.
+                              </p>
+                            </CardContent>
+                          </Card>
+                        )}
+
+                        {mindMapNodes.length > 0 && (
+                          <div className="bg-emerald-500/10 border border-emerald-500/20 rounded-lg p-3 mt-3">
+                            <div className="flex items-start gap-2">
+                              <Check className="w-4 h-4 text-emerald-500 mt-0.5 flex-shrink-0" />
+                              <p className="text-xs text-theme-muted leading-relaxed">
+                                <span className="font-bold text-emerald-600 dark:text-emerald-400">{mindMapNodes.length} node{mindMapNodes.length !== 1 ? 's' : ''} added.</span> After launching your project, you can expand this mind map with your team, add connections between nodes, and collaborate in real-time!
+                              </p>
+                            </div>
+                          </div>
+                        )}
+                      </div>
+                    )}
+
+                    {/* STEP 5: COLLABORATION */}
+                    {currentStep === 5 && (
                       <div className="space-y-3">
+                        <div className="bg-gradient-to-r from-pink-500/10 to-rose-500/10 border-2 border-pink-500/20 rounded-xl p-4 mb-4">
+                          <div className="flex items-start gap-3">
+                            <div className="w-10 h-10 rounded-lg bg-gradient-to-br from-pink-500 to-rose-500 flex items-center justify-center flex-shrink-0">
+                              <Heart className="w-5 h-5 text-white" />
+                            </div>
+                            <div>
+                              <h3 className="text-sm font-bold text-[var(--foreground)] mb-1">
+                                Configure Collaboration Features
+                              </h3>
+                              <p className="text-xs text-theme-muted leading-relaxed">
+                                Choose which collaboration tools to enable for your project community.
+                              </p>
+                            </div>
+                          </div>
+                        </div>
+
                         <div className="grid md:grid-cols-2 gap-2">
                           <label className="flex items-start gap-2 p-2.5 rounded-lg border-2 border-[var(--border)] hover:border-[var(--primary)]/30 cursor-pointer transition-colors">
                             <input
@@ -1085,9 +1341,24 @@ export default function NewProjectPage() {
                       </div>
                     )}
 
-                    {/* STEP 5: LAUNCH */}
-                    {currentStep === 5 && (
+                    {/* STEP 6: LAUNCH */}
+                    {currentStep === 6 && (
                       <div className="space-y-3">
+                        <div className="bg-gradient-to-r from-orange-500/10 to-red-500/10 border-2 border-orange-500/20 rounded-xl p-4 mb-4">
+                          <div className="flex items-start gap-3">
+                            <div className="w-10 h-10 rounded-lg bg-gradient-to-br from-orange-500 to-red-500 flex items-center justify-center flex-shrink-0">
+                              <Rocket className="w-5 h-5 text-white" />
+                            </div>
+                            <div>
+                              <h3 className="text-sm font-bold text-[var(--foreground)] mb-1">
+                                Ready to Launch Your Project!
+                              </h3>
+                              <p className="text-xs text-theme-muted leading-relaxed">
+                                Review your project settings and bring your vision to life.
+                              </p>
+                            </div>
+                          </div>
+                        </div>
                         {/* Status */}
                         <div>
                           <label className="flex items-center gap-1.5 text-xs font-bold text-[var(--foreground)] mb-1.5">
