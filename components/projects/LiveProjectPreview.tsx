@@ -398,7 +398,7 @@ function PreviewCard(props: any) {
 
           {tags.length > 0 && (
             <div className="flex flex-wrap gap-1">
-              {tags.slice(0, 3).map((tag, idx) => (
+              {tags.slice(0, 3).map((tag: string, idx: number) => (
                 <span key={idx} className="px-1.5 py-0.5 bg-[var(--muted)] rounded text-[9px] font-semibold">
                   #{tag}
                 </span>

@@ -429,7 +429,15 @@ export function SmartSuggestions({
 
 // Helper Components
 
-function SuggestionTypeButton({ icon: Icon, label, active, onClick, disabled }: any) {
+interface SuggestionTypeButtonProps {
+  icon: React.ComponentType<{ className?: string }>
+  label: string
+  active: boolean
+  onClick: () => void
+  disabled: boolean
+}
+
+function SuggestionTypeButton({ icon: Icon, label, active, onClick, disabled }: SuggestionTypeButtonProps) {
   return (
     <button
       onClick={onClick}
@@ -448,8 +456,18 @@ function SuggestionTypeButton({ icon: Icon, label, active, onClick, disabled }: 
   )
 }
 
-function SuggestionCard({ suggestion, expanded, onToggleExpanded, onAccept, onReject, onCopy, isLiked }: any) {
-  const confidenceColors = {
+interface SuggestionCardProps {
+  suggestion: Suggestion
+  expanded: boolean
+  onToggleExpanded: (id: string) => void
+  onAccept: (suggestion: Suggestion) => void
+  onReject: (id: string) => void
+  onCopy: (content: string) => void
+  isLiked: boolean
+}
+
+function SuggestionCard({ suggestion, expanded, onToggleExpanded, onAccept, onReject, onCopy, isLiked }: SuggestionCardProps) {
+  const confidenceColors: Record<'high' | 'medium' | 'low', string> = {
     high: 'from-green-500 to-emerald-500',
     medium: 'from-yellow-500 to-orange-500',
     low: 'from-gray-500 to-slate-500'
@@ -531,7 +549,14 @@ function SuggestionCard({ suggestion, expanded, onToggleExpanded, onAccept, onRe
   )
 }
 
-function CompactSuggestionCard({ suggestion, onAccept, onReject, isLiked }: any) {
+interface CompactSuggestionCardProps {
+  suggestion: Suggestion
+  onAccept: (suggestion: Suggestion) => void
+  onReject: (id: string) => void
+  isLiked: boolean
+}
+
+function CompactSuggestionCard({ suggestion, onAccept, onReject, isLiked }: CompactSuggestionCardProps) {
   return (
     <motion.div
       layout
