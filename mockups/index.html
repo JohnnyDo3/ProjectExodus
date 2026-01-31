@@ -1,0 +1,1587 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Project Exodus - Design Mockups</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            /* Day Theme Colors */
+            --background-day: #fafaf9;
+            --foreground-day: #473d35;
+            --primary-day: #36763d;
+            --secondary-day: #d46643;
+            --accent-day: #429393;
+            --muted-day: #f3f1ee;
+            --border-day: #e5e3df;
+            --card-day: #ffffff;
+
+            /* Night Theme Colors */
+            --background-night: #020208;
+            --foreground-night: #e8e6e3;
+            --primary-night: #4a9952;
+            --secondary-night: #ff7f5c;
+            --accent-night: #5eb8b8;
+            --muted-night: #1a1a24;
+            --border-night: #2a2a3a;
+            --card-night: #13131a;
+
+            /* Current theme (default: day) */
+            --background: var(--background-day);
+            --foreground: var(--foreground-day);
+            --primary: var(--primary-day);
+            --secondary: var(--secondary-day);
+            --accent: var(--accent-day);
+            --muted: var(--muted-day);
+            --border: var(--border-day);
+            --card: var(--card-day);
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: #1a1a1a;
+            color: #fff;
+            overflow-x: hidden;
+        }
+
+        /* Mockup Viewer Shell */
+        .mockup-viewer {
+            max-width: 1600px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+
+        .viewer-header {
+            background: linear-gradient(135deg, #36763d, #429393);
+            padding: 3rem 2rem;
+            border-radius: 20px;
+            margin-bottom: 2rem;
+            text-align: center;
+        }
+
+        .viewer-header h1 {
+            font-size: clamp(2rem, 5vw, 3.5rem);
+            font-weight: 900;
+            margin-bottom: 1rem;
+            text-shadow: 0 2px 10px rgba(0,0,0,0.2);
+        }
+
+        .viewer-header p {
+            font-size: 1.2rem;
+            opacity: 0.95;
+        }
+
+        /* Controls */
+        .controls {
+            background: rgba(255,255,255,0.1);
+            backdrop-filter: blur(10px);
+            padding: 1.5rem;
+            border-radius: 15px;
+            margin-bottom: 2rem;
+            display: flex;
+            gap: 1rem;
+            flex-wrap: wrap;
+            align-items: center;
+            border: 2px solid rgba(255,255,255,0.2);
+        }
+
+        .control-group {
+            display: flex;
+            gap: 0.5rem;
+            align-items: center;
+        }
+
+        .control-group label {
+            font-weight: 600;
+            font-size: 0.9rem;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .btn {
+            padding: 0.75rem 1.5rem;
+            border: 2px solid #fff;
+            background: rgba(255,255,255,0.1);
+            color: #fff;
+            border-radius: 10px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.3s;
+            font-size: 0.9rem;
+        }
+
+        .btn:hover {
+            background: rgba(255,255,255,0.2);
+            transform: translateY(-2px);
+        }
+
+        .btn.active {
+            background: #36763d;
+            border-color: #36763d;
+        }
+
+        /* Mockup Container */
+        .mockup-container {
+            background: #2a2a2a;
+            border-radius: 20px;
+            padding: 2rem;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.5);
+            margin-bottom: 2rem;
+        }
+
+        .mockup-meta {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1.5rem;
+            padding-bottom: 1rem;
+            border-bottom: 2px solid rgba(255,255,255,0.1);
+        }
+
+        .mockup-title {
+            font-size: 1.5rem;
+            font-weight: 700;
+        }
+
+        .mockup-label {
+            padding: 0.5rem 1rem;
+            background: rgba(54, 118, 61, 0.3);
+            border: 2px solid #36763d;
+            border-radius: 8px;
+            font-size: 0.85rem;
+            font-weight: 600;
+        }
+
+        /* Browser Chrome */
+        .browser-chrome {
+            background: #e5e3df;
+            border-radius: 15px 15px 0 0;
+            padding: 0.75rem 1rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .browser-dots {
+            display: flex;
+            gap: 0.4rem;
+        }
+
+        .browser-dot {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+        }
+
+        .browser-dot.red { background: #ff5f56; }
+        .browser-dot.yellow { background: #ffbd2e; }
+        .browser-dot.green { background: #27c93f; }
+
+        .browser-url {
+            flex: 1;
+            background: #fff;
+            padding: 0.4rem 1rem;
+            border-radius: 6px;
+            font-size: 0.85rem;
+            color: #666;
+            margin-left: 1rem;
+        }
+
+        /* Mockup Frame */
+        .mockup-frame {
+            background: var(--background);
+            border-radius: 0 0 15px 15px;
+            overflow: hidden;
+            transition: all 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+            box-shadow: inset 0 0 100px rgba(0,0,0,0.05);
+        }
+
+        .mockup-frame.night-theme {
+            --background: var(--background-night);
+            --foreground: var(--foreground-night);
+            --primary: var(--primary-night);
+            --secondary: var(--secondary-night);
+            --accent: var(--accent-night);
+            --muted: var(--muted-night);
+            --border: var(--border-night);
+            --card: var(--card-night);
+        }
+
+        /* Component Styles */
+        .mockup-page {
+            color: var(--foreground);
+            min-height: 600px;
+        }
+
+        /* Header Component */
+        .header {
+            background: var(--card);
+            border-bottom: 2px solid var(--border);
+            padding: 1rem 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            backdrop-filter: blur(10px);
+            background: rgba(var(--card), 0.95);
+        }
+
+        .logo {
+            font-size: 1.5rem;
+            font-weight: 900;
+            color: var(--primary);
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .logo-icon {
+            width: 36px;
+            height: 36px;
+            background: linear-gradient(135deg, var(--primary), var(--accent));
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.2rem;
+        }
+
+        .nav {
+            display: flex;
+            gap: 2rem;
+            list-style: none;
+        }
+
+        .nav a {
+            color: var(--foreground);
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 0.95rem;
+            transition: color 0.3s;
+            position: relative;
+        }
+
+        .nav a:hover {
+            color: var(--primary);
+        }
+
+        .nav a::after {
+            content: '';
+            position: absolute;
+            bottom: -4px;
+            left: 0;
+            right: 0;
+            height: 2px;
+            background: var(--primary);
+            transform: scaleX(0);
+            transition: transform 0.3s;
+        }
+
+        .nav a:hover::after {
+            transform: scaleX(1);
+        }
+
+        /* Hero Section */
+        .hero {
+            padding: 6rem 2rem;
+            background: linear-gradient(135deg,
+                var(--primary) 0%,
+                var(--accent) 100%);
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .hero::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 600px;
+            height: 600px;
+            background: radial-gradient(circle, rgba(255,255,255,0.2) 0%, transparent 70%);
+            transform: translate(-50%, -50%);
+            pointer-events: none;
+        }
+
+        .hero-content {
+            position: relative;
+            z-index: 1;
+            max-width: 900px;
+            margin: 0 auto;
+        }
+
+        .hero h1 {
+            font-size: clamp(2.5rem, 6vw, 5rem);
+            font-weight: 900;
+            color: white;
+            margin-bottom: 1.5rem;
+            line-height: 1.1;
+            text-shadow: 0 4px 20px rgba(0,0,0,0.2);
+        }
+
+        .hero p {
+            font-size: 1.25rem;
+            color: rgba(255,255,255,0.95);
+            margin-bottom: 2rem;
+            line-height: 1.6;
+        }
+
+        .hero-buttons {
+            display: flex;
+            gap: 1rem;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
+        .btn-primary {
+            padding: 1rem 2.5rem;
+            background: white;
+            color: var(--primary);
+            border: 4px solid white;
+            border-radius: 12px;
+            font-weight: 700;
+            font-size: 1.1rem;
+            cursor: pointer;
+            transition: all 0.3s;
+            text-decoration: none;
+            display: inline-block;
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+        }
+
+        .btn-secondary {
+            padding: 1rem 2.5rem;
+            background: transparent;
+            color: white;
+            border: 4px solid white;
+            border-radius: 12px;
+            font-weight: 700;
+            font-size: 1.1rem;
+            cursor: pointer;
+            transition: all 0.3s;
+            text-decoration: none;
+            display: inline-block;
+        }
+
+        .btn-secondary:hover {
+            background: rgba(255,255,255,0.1);
+            transform: translateY(-4px);
+        }
+
+        /* Content Section */
+        .content-section {
+            padding: 4rem 2rem;
+            background: var(--background);
+        }
+
+        .content-section.alt {
+            background: var(--muted);
+        }
+
+        .container {
+            max-width: 1280px;
+            margin: 0 auto;
+        }
+
+        .section-title {
+            font-size: clamp(2rem, 4vw, 3rem);
+            font-weight: 900;
+            color: var(--foreground);
+            text-align: center;
+            margin-bottom: 3rem;
+        }
+
+        /* Card Grid */
+        .card-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+        }
+
+        .card {
+            background: var(--card);
+            border: 4px solid var(--border);
+            border-radius: 16px;
+            padding: 2rem;
+            transition: all 0.3s;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 6px;
+            background: linear-gradient(90deg, var(--primary), var(--accent));
+        }
+
+        .card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+            border-color: var(--primary);
+        }
+
+        .card-icon {
+            width: 60px;
+            height: 60px;
+            background: linear-gradient(135deg, var(--primary), var(--accent));
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2rem;
+            margin-bottom: 1.5rem;
+            color: white;
+        }
+
+        .card h3 {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--foreground);
+            margin-bottom: 1rem;
+        }
+
+        .card p {
+            color: var(--foreground);
+            opacity: 0.8;
+            line-height: 1.6;
+        }
+
+        /* Stats Section */
+        .stats {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 2rem;
+            margin: 3rem 0;
+        }
+
+        .stat-card {
+            text-align: center;
+            padding: 2rem;
+            background: var(--card);
+            border: 3px solid var(--border);
+            border-radius: 12px;
+        }
+
+        .stat-number {
+            font-size: 3rem;
+            font-weight: 900;
+            background: linear-gradient(135deg, var(--primary), var(--accent));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 0.5rem;
+        }
+
+        .stat-label {
+            font-size: 0.95rem;
+            color: var(--foreground);
+            opacity: 0.7;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        /* Learning Module Card */
+        .learning-card {
+            background: var(--card);
+            border: 4px solid var(--primary);
+            border-radius: 16px;
+            overflow: hidden;
+            transition: all 0.3s;
+        }
+
+        .learning-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 20px 40px rgba(54, 118, 61, 0.2);
+        }
+
+        .learning-header {
+            background: linear-gradient(135deg, var(--primary), var(--accent));
+            padding: 2rem;
+            color: white;
+        }
+
+        .learning-header h3 {
+            font-size: 1.75rem;
+            font-weight: 800;
+            margin-bottom: 0.5rem;
+            color: white;
+        }
+
+        .learning-meta {
+            display: flex;
+            gap: 1rem;
+            font-size: 0.9rem;
+            opacity: 0.95;
+        }
+
+        .learning-body {
+            padding: 2rem;
+        }
+
+        .progress-bar {
+            height: 12px;
+            background: var(--muted);
+            border-radius: 6px;
+            overflow: hidden;
+            margin-bottom: 1rem;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, var(--primary), var(--accent));
+            border-radius: 6px;
+            transition: width 0.5s;
+        }
+
+        .badge {
+            display: inline-block;
+            padding: 0.5rem 1rem;
+            background: var(--muted);
+            border: 2px solid var(--primary);
+            border-radius: 20px;
+            font-size: 0.85rem;
+            font-weight: 600;
+            color: var(--primary);
+            margin-right: 0.5rem;
+            margin-bottom: 0.5rem;
+        }
+
+        /* Community Newspaper Layout */
+        .newspaper {
+            display: grid;
+            grid-template-columns: 2fr 1fr;
+            gap: 2rem;
+            padding: 2rem;
+        }
+
+        .newspaper-main {
+            display: flex;
+            flex-direction: column;
+            gap: 2rem;
+        }
+
+        .newspaper-featured {
+            background: var(--card);
+            border: 4px solid var(--border);
+            border-radius: 16px;
+            overflow: hidden;
+        }
+
+        .featured-image {
+            height: 300px;
+            background: linear-gradient(135deg, var(--primary), var(--accent));
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 4rem;
+            color: white;
+        }
+
+        .featured-content {
+            padding: 2rem;
+        }
+
+        .featured-content h2 {
+            font-size: 2rem;
+            font-weight: 900;
+            color: var(--foreground);
+            margin-bottom: 1rem;
+        }
+
+        .newspaper-sidebar {
+            display: flex;
+            flex-direction: column;
+            gap: 1.5rem;
+        }
+
+        .sidebar-card {
+            background: var(--card);
+            border: 3px solid var(--border);
+            border-radius: 12px;
+            padding: 1.5rem;
+        }
+
+        .sidebar-card h4 {
+            font-size: 1.1rem;
+            font-weight: 700;
+            color: var(--foreground);
+            margin-bottom: 0.75rem;
+        }
+
+        /* Footer */
+        .footer {
+            background: var(--muted);
+            border-top: 2px solid var(--border);
+            padding: 3rem 2rem;
+            margin-top: auto;
+        }
+
+        .footer-content {
+            max-width: 1280px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 2rem;
+        }
+
+        .footer-section h4 {
+            font-size: 1.1rem;
+            font-weight: 700;
+            color: var(--foreground);
+            margin-bottom: 1rem;
+        }
+
+        .footer-links {
+            list-style: none;
+        }
+
+        .footer-links li {
+            margin-bottom: 0.5rem;
+        }
+
+        .footer-links a {
+            color: var(--foreground);
+            opacity: 0.7;
+            text-decoration: none;
+            transition: opacity 0.3s;
+        }
+
+        .footer-links a:hover {
+            opacity: 1;
+            color: var(--primary);
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .nav {
+                display: none;
+            }
+
+            .newspaper {
+                grid-template-columns: 1fr;
+            }
+
+            .mockup-viewer {
+                padding: 1rem;
+            }
+
+            .controls {
+                flex-direction: column;
+            }
+        }
+
+        /* Night Sky Animation */
+        @keyframes twinkle {
+            0%, 100% { opacity: 0.3; }
+            50% { opacity: 1; }
+        }
+
+        .night-sky {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: radial-gradient(ellipse at bottom, #1b2735 0%, #090a0f 100%);
+            overflow: hidden;
+        }
+
+        .star {
+            position: absolute;
+            width: 2px;
+            height: 2px;
+            background: white;
+            border-radius: 50%;
+            animation: twinkle 3s infinite;
+        }
+
+        /* Product Card */
+        .product-card {
+            background: var(--card);
+            border: 4px solid var(--border);
+            border-radius: 16px;
+            overflow: hidden;
+            transition: all 0.3s;
+        }
+
+        .product-card:hover {
+            transform: translateY(-4px);
+            border-color: var(--secondary);
+        }
+
+        .product-image {
+            height: 200px;
+            background: linear-gradient(135deg, var(--secondary), var(--primary));
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 3rem;
+            color: white;
+        }
+
+        .product-content {
+            padding: 1.5rem;
+        }
+
+        .product-title {
+            font-size: 1.25rem;
+            font-weight: 700;
+            color: var(--foreground);
+            margin-bottom: 0.5rem;
+        }
+
+        .product-price {
+            font-size: 1.5rem;
+            font-weight: 900;
+            color: var(--secondary);
+            margin: 1rem 0;
+        }
+
+        .sustainability-score {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            margin-top: 1rem;
+            padding: 0.75rem;
+            background: var(--muted);
+            border-radius: 8px;
+        }
+
+        .score-value {
+            font-weight: 800;
+            font-size: 1.25rem;
+            color: var(--primary);
+        }
+    </style>
+</head>
+<body>
+    <div class="mockup-viewer">
+        <div class="viewer-header">
+            <h1>🌍 Project Exodus Design Mockups</h1>
+            <p>Sustainability Hub Platform • Living Design System</p>
+        </div>
+
+        <div class="controls">
+            <div class="control-group">
+                <label>Theme:</label>
+                <button class="btn active" onclick="setTheme('day')" id="btn-day">☀️ Day</button>
+                <button class="btn" onclick="setTheme('night')" id="btn-night">🌙 Night</button>
+            </div>
+            <div class="control-group">
+                <label>View:</label>
+                <button class="btn active" onclick="showMockup('home')" id="btn-home">Home</button>
+                <button class="btn" onclick="showMockup('exodology')" id="btn-exodology">Exodology</button>
+                <button class="btn" onclick="showMockup('community')" id="btn-community">Community</button>
+                <button class="btn" onclick="showMockup('products')" id="btn-products">Products</button>
+                <button class="btn" onclick="showMockup('dashboard')" id="btn-dashboard">Dashboard</button>
+            </div>
+        </div>
+
+        <!-- HOME MOCKUP -->
+        <div class="mockup-container" id="mockup-home">
+            <div class="mockup-meta">
+                <div class="mockup-title">Homepage</div>
+                <div class="mockup-label">Main Landing</div>
+            </div>
+            <div class="browser-chrome">
+                <div class="browser-dots">
+                    <div class="browser-dot red"></div>
+                    <div class="browser-dot yellow"></div>
+                    <div class="browser-dot green"></div>
+                </div>
+                <div class="browser-url">https://projectexodus.earth</div>
+            </div>
+            <div class="mockup-frame" id="frame-home">
+                <div class="mockup-page">
+                    <!-- Header -->
+                    <div class="header">
+                        <div class="logo">
+                            <div class="logo-icon">🌍</div>
+                            <span>EXODUS</span>
+                        </div>
+                        <nav>
+                            <ul class="nav">
+                                <li><a href="#">Home</a></li>
+                                <li><a href="#">Exodology</a></li>
+                                <li><a href="#">Community</a></li>
+                                <li><a href="#">Products</a></li>
+                                <li><a href="#">Articles</a></li>
+                            </ul>
+                        </nav>
+                    </div>
+
+                    <!-- Hero -->
+                    <div class="hero">
+                        <div class="hero-content">
+                            <h1>Build a Sustainable Future Together</h1>
+                            <p>Join our global community of changemakers learning, sharing, and creating solutions for a regenerative world. Experience design that adapts to your natural rhythm.</p>
+                            <div class="hero-buttons">
+                                <a href="#" class="btn-primary">Start Learning</a>
+                                <a href="#" class="btn-secondary">Explore Community</a>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Features -->
+                    <div class="content-section">
+                        <div class="container">
+                            <h2 class="section-title">Everything You Need</h2>
+                            <div class="card-grid">
+                                <div class="card">
+                                    <div class="card-icon">📚</div>
+                                    <h3>Exodology</h3>
+                                    <p>Comprehensive learning paths covering sustainability, regenerative design, and ecological restoration.</p>
+                                </div>
+                                <div class="card">
+                                    <div class="card-icon">🤝</div>
+                                    <h3>Community</h3>
+                                    <p>Connect with like-minded individuals, share projects, and collaborate on solutions.</p>
+                                </div>
+                                <div class="card">
+                                    <div class="card-icon">🛍️</div>
+                                    <h3>Marketplace</h3>
+                                    <p>Discover sustainable products rated on environmental impact and ethical standards.</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Stats -->
+                    <div class="content-section alt">
+                        <div class="container">
+                            <h2 class="section-title">Our Impact</h2>
+                            <div class="stats">
+                                <div class="stat-card">
+                                    <div class="stat-number">12K+</div>
+                                    <div class="stat-label">Active Learners</div>
+                                </div>
+                                <div class="stat-card">
+                                    <div class="stat-number">850+</div>
+                                    <div class="stat-label">Projects</div>
+                                </div>
+                                <div class="stat-card">
+                                    <div class="stat-number">45</div>
+                                    <div class="stat-label">Countries</div>
+                                </div>
+                                <div class="stat-card">
+                                    <div class="stat-number">98%</div>
+                                    <div class="stat-label">Satisfaction</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Footer -->
+                    <div class="footer">
+                        <div class="footer-content">
+                            <div class="footer-section">
+                                <h4>Exodus</h4>
+                                <ul class="footer-links">
+                                    <li><a href="#">About</a></li>
+                                    <li><a href="#">Mission</a></li>
+                                    <li><a href="#">Team</a></li>
+                                </ul>
+                            </div>
+                            <div class="footer-section">
+                                <h4>Learn</h4>
+                                <ul class="footer-links">
+                                    <li><a href="#">Exodology</a></li>
+                                    <li><a href="#">Architecture</a></li>
+                                    <li><a href="#">Certifications</a></li>
+                                </ul>
+                            </div>
+                            <div class="footer-section">
+                                <h4>Community</h4>
+                                <ul class="footer-links">
+                                    <li><a href="#">Forum</a></li>
+                                    <li><a href="#">Projects</a></li>
+                                    <li><a href="#">Events</a></li>
+                                </ul>
+                            </div>
+                            <div class="footer-section">
+                                <h4>Support</h4>
+                                <ul class="footer-links">
+                                    <li><a href="#">Help Center</a></li>
+                                    <li><a href="#">Contact</a></li>
+                                    <li><a href="#">FAQ</a></li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- EXODOLOGY MOCKUP -->
+        <div class="mockup-container" id="mockup-exodology" style="display: none;">
+            <div class="mockup-meta">
+                <div class="mockup-title">Exodology Learning Hub</div>
+                <div class="mockup-label">Education Platform</div>
+            </div>
+            <div class="browser-chrome">
+                <div class="browser-dots">
+                    <div class="browser-dot red"></div>
+                    <div class="browser-dot yellow"></div>
+                    <div class="browser-dot green"></div>
+                </div>
+                <div class="browser-url">https://projectexodus.earth/exodology</div>
+            </div>
+            <div class="mockup-frame" id="frame-exodology">
+                <div class="mockup-page">
+                    <div class="header">
+                        <div class="logo">
+                            <div class="logo-icon">🌍</div>
+                            <span>EXODUS</span>
+                        </div>
+                        <nav>
+                            <ul class="nav">
+                                <li><a href="#">Home</a></li>
+                                <li><a href="#" style="color: var(--primary)">Exodology</a></li>
+                                <li><a href="#">Community</a></li>
+                                <li><a href="#">Products</a></li>
+                            </ul>
+                        </nav>
+                    </div>
+
+                    <div class="hero">
+                        <div class="hero-content">
+                            <h1>Exodology</h1>
+                            <p>Master the science and art of sustainable living through structured learning paths</p>
+                        </div>
+                    </div>
+
+                    <div class="content-section">
+                        <div class="container">
+                            <h2 class="section-title">Learning Paths</h2>
+                            <div class="card-grid">
+                                <div class="learning-card">
+                                    <div class="learning-header">
+                                        <h3>Foundations of Sustainability</h3>
+                                        <div class="learning-meta">
+                                            <span>⏱️ 12 hours</span>
+                                            <span>📊 Beginner</span>
+                                            <span>🎓 5 modules</span>
+                                        </div>
+                                    </div>
+                                    <div class="learning-body">
+                                        <div class="progress-bar">
+                                            <div class="progress-fill" style="width: 65%"></div>
+                                        </div>
+                                        <p style="color: var(--foreground); opacity: 0.8; margin-bottom: 1rem;">Learn the core principles of environmental sustainability and regenerative design.</p>
+                                        <div>
+                                            <span class="badge">Ecology</span>
+                                            <span class="badge">Systems Thinking</span>
+                                            <span class="badge">Climate</span>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="learning-card">
+                                    <div class="learning-header">
+                                        <h3>Regenerative Agriculture</h3>
+                                        <div class="learning-meta">
+                                            <span>⏱️ 18 hours</span>
+                                            <span>📊 Intermediate</span>
+                                            <span>🎓 8 modules</span>
+                                        </div>
+                                    </div>
+                                    <div class="learning-body">
+                                        <div class="progress-bar">
+                                            <div class="progress-fill" style="width: 30%"></div>
+                                        </div>
+                                        <p style="color: var(--foreground); opacity: 0.8; margin-bottom: 1rem;">Deep dive into soil health, permaculture, and farming practices that restore ecosystems.</p>
+                                        <div>
+                                            <span class="badge">Permaculture</span>
+                                            <span class="badge">Soil Science</span>
+                                            <span class="badge">Food Systems</span>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="learning-card">
+                                    <div class="learning-header">
+                                        <h3>Circular Economy Design</h3>
+                                        <div class="learning-meta">
+                                            <span>⏱️ 15 hours</span>
+                                            <span>📊 Advanced</span>
+                                            <span>🎓 6 modules</span>
+                                        </div>
+                                    </div>
+                                    <div class="learning-body">
+                                        <div class="progress-bar">
+                                            <div class="progress-fill" style="width: 0%"></div>
+                                        </div>
+                                        <p style="color: var(--foreground); opacity: 0.8; margin-bottom: 1rem;">Create closed-loop systems that eliminate waste and maximize resource efficiency.</p>
+                                        <div>
+                                            <span class="badge">Product Design</span>
+                                            <span class="badge">Waste Reduction</span>
+                                            <span class="badge">Innovation</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="content-section alt">
+                        <div class="container">
+                            <h2 class="section-title">Your Progress</h2>
+                            <div class="stats">
+                                <div class="stat-card">
+                                    <div class="stat-number">3</div>
+                                    <div class="stat-label">Paths Started</div>
+                                </div>
+                                <div class="stat-card">
+                                    <div class="stat-number">47%</div>
+                                    <div class="stat-label">Overall Progress</div>
+                                </div>
+                                <div class="stat-card">
+                                    <div class="stat-number">12</div>
+                                    <div class="stat-label">Badges Earned</div>
+                                </div>
+                                <div class="stat-card">
+                                    <div class="stat-number">28</div>
+                                    <div class="stat-label">Hours Learned</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="footer">
+                        <div class="footer-content">
+                            <div class="footer-section">
+                                <h4>Exodus</h4>
+                                <ul class="footer-links">
+                                    <li><a href="#">About</a></li>
+                                    <li><a href="#">Mission</a></li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- COMMUNITY MOCKUP -->
+        <div class="mockup-container" id="mockup-community" style="display: none;">
+            <div class="mockup-meta">
+                <div class="mockup-title">Community Newspaper</div>
+                <div class="mockup-label">Social Hub</div>
+            </div>
+            <div class="browser-chrome">
+                <div class="browser-dots">
+                    <div class="browser-dot red"></div>
+                    <div class="browser-dot yellow"></div>
+                    <div class="browser-dot green"></div>
+                </div>
+                <div class="browser-url">https://projectexodus.earth/community</div>
+            </div>
+            <div class="mockup-frame" id="frame-community">
+                <div class="mockup-page">
+                    <div class="header">
+                        <div class="logo">
+                            <div class="logo-icon">🌍</div>
+                            <span>EXODUS</span>
+                        </div>
+                        <nav>
+                            <ul class="nav">
+                                <li><a href="#">Home</a></li>
+                                <li><a href="#">Exodology</a></li>
+                                <li><a href="#" style="color: var(--primary)">Community</a></li>
+                                <li><a href="#">Products</a></li>
+                            </ul>
+                        </nav>
+                    </div>
+
+                    <div class="content-section" style="background: var(--background);">
+                        <div class="container">
+                            <h2 class="section-title" style="text-align: left; margin-bottom: 2rem;">The Exodus Times</h2>
+                            <div class="newspaper">
+                                <div class="newspaper-main">
+                                    <div class="newspaper-featured">
+                                        <div class="featured-image">🌱</div>
+                                        <div class="featured-content">
+                                            <h2>Community Garden Initiative Reaches 100 Cities Worldwide</h2>
+                                            <p style="color: var(--foreground); opacity: 0.8; line-height: 1.6; margin-bottom: 1rem;">
+                                                Our global network of urban farmers has transformed vacant lots into thriving food forests, bringing fresh produce and community connection to neighborhoods around the world.
+                                            </p>
+                                            <div>
+                                                <span class="badge">Agriculture</span>
+                                                <span class="badge">Community</span>
+                                                <span class="badge">Impact</span>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="card-grid" style="margin-top: 2rem;">
+                                        <div class="card">
+                                            <div class="card-icon">💡</div>
+                                            <h3>New Project: Solar Co-op</h3>
+                                            <p>Join our community solar initiative to bring renewable energy to underserved neighborhoods.</p>
+                                        </div>
+                                        <div class="card">
+                                            <div class="card-icon">🎓</div>
+                                            <h3>Workshop: Composting 101</h3>
+                                            <p>Learn how to turn food waste into black gold for your garden this Saturday.</p>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="newspaper-sidebar">
+                                    <div class="sidebar-card" style="background: linear-gradient(135deg, var(--primary), var(--accent)); color: white; border: none;">
+                                        <h4 style="color: white;">🏆 Top Contributors</h4>
+                                        <div style="display: flex; flex-direction: column; gap: 0.75rem; margin-top: 1rem;">
+                                            <div style="display: flex; justify-content: space-between; align-items: center;">
+                                                <span style="font-weight: 600;">Sarah Chen</span>
+                                                <span style="background: rgba(255,255,255,0.2); padding: 0.25rem 0.75rem; border-radius: 12px; font-size: 0.85rem;">1,247 pts</span>
+                                            </div>
+                                            <div style="display: flex; justify-content: space-between; align-items: center;">
+                                                <span style="font-weight: 600;">Marcus Rodriguez</span>
+                                                <span style="background: rgba(255,255,255,0.2); padding: 0.25rem 0.75rem; border-radius: 12px; font-size: 0.85rem;">1,156 pts</span>
+                                            </div>
+                                            <div style="display: flex; justify-content: space-between; align-items: center;">
+                                                <span style="font-weight: 600;">Aisha Patel</span>
+                                                <span style="background: rgba(255,255,255,0.2); padding: 0.25rem 0.75rem; border-radius: 12px; font-size: 0.85rem;">1,089 pts</span>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="sidebar-card">
+                                        <h4>📅 Upcoming Events</h4>
+                                        <div style="display: flex; flex-direction: column; gap: 1rem; margin-top: 1rem;">
+                                            <div>
+                                                <div style="font-weight: 600; color: var(--primary); margin-bottom: 0.25rem;">Tomorrow</div>
+                                                <div style="color: var(--foreground); font-size: 0.95rem;">Community Cleanup Day</div>
+                                            </div>
+                                            <div>
+                                                <div style="font-weight: 600; color: var(--primary); margin-bottom: 0.25rem;">Feb 5</div>
+                                                <div style="color: var(--foreground); font-size: 0.95rem;">Permaculture Workshop</div>
+                                            </div>
+                                            <div>
+                                                <div style="font-weight: 600; color: var(--primary); margin-bottom: 0.25rem;">Feb 12</div>
+                                                <div style="color: var(--foreground); font-size: 0.95rem;">Climate Action Summit</div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="sidebar-card">
+                                        <h4>🔥 Trending Topics</h4>
+                                        <div style="margin-top: 1rem;">
+                                            <span class="badge">#RegenAg</span>
+                                            <span class="badge">#ZeroWaste</span>
+                                            <span class="badge">#SolarPunk</span>
+                                            <span class="badge">#LocalFood</span>
+                                            <span class="badge">#CircularEconomy</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="footer">
+                        <div class="footer-content">
+                            <div class="footer-section">
+                                <h4>Community</h4>
+                                <ul class="footer-links">
+                                    <li><a href="#">Forum</a></li>
+                                    <li><a href="#">Projects</a></li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- PRODUCTS MOCKUP -->
+        <div class="mockup-container" id="mockup-products" style="display: none;">
+            <div class="mockup-meta">
+                <div class="mockup-title">Sustainable Marketplace</div>
+                <div class="mockup-label">Product Discovery</div>
+            </div>
+            <div class="browser-chrome">
+                <div class="browser-dots">
+                    <div class="browser-dot red"></div>
+                    <div class="browser-dot yellow"></div>
+                    <div class="browser-dot green"></div>
+                </div>
+                <div class="browser-url">https://projectexodus.earth/products</div>
+            </div>
+            <div class="mockup-frame" id="frame-products">
+                <div class="mockup-page">
+                    <div class="header">
+                        <div class="logo">
+                            <div class="logo-icon">🌍</div>
+                            <span>EXODUS</span>
+                        </div>
+                        <nav>
+                            <ul class="nav">
+                                <li><a href="#">Home</a></li>
+                                <li><a href="#">Exodology</a></li>
+                                <li><a href="#">Community</a></li>
+                                <li><a href="#" style="color: var(--primary)">Products</a></li>
+                            </ul>
+                        </nav>
+                    </div>
+
+                    <div class="hero" style="padding: 4rem 2rem;">
+                        <div class="hero-content">
+                            <h1>Sustainable Marketplace</h1>
+                            <p>Every product rated for environmental impact and ethical standards</p>
+                        </div>
+                    </div>
+
+                    <div class="content-section">
+                        <div class="container">
+                            <div class="card-grid">
+                                <div class="product-card">
+                                    <div class="product-image">🧴</div>
+                                    <div class="product-content">
+                                        <div class="product-title">Organic Shampoo Bar</div>
+                                        <p style="color: var(--foreground); opacity: 0.8; font-size: 0.95rem; margin-bottom: 0.5rem;">
+                                            Zero-waste alternative to bottled shampoo. Lasts 80+ washes.
+                                        </p>
+                                        <div class="product-price">$12.99</div>
+                                        <div class="sustainability-score">
+                                            <div class="score-value">9.2</div>
+                                            <div style="flex: 1;">
+                                                <div style="font-size: 0.85rem; font-weight: 600; color: var(--foreground);">Sustainability Score</div>
+                                                <div style="font-size: 0.8rem; color: var(--foreground); opacity: 0.7;">Excellent Impact</div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="product-card">
+                                    <div class="product-image">👕</div>
+                                    <div class="product-content">
+                                        <div class="product-title">Hemp T-Shirt</div>
+                                        <p style="color: var(--foreground); opacity: 0.8; font-size: 0.95rem; margin-bottom: 0.5rem;">
+                                            Organic hemp fiber, fair trade certified, carbon neutral shipping.
+                                        </p>
+                                        <div class="product-price">$34.99</div>
+                                        <div class="sustainability-score">
+                                            <div class="score-value">8.7</div>
+                                            <div style="flex: 1;">
+                                                <div style="font-size: 0.85rem; font-weight: 600; color: var(--foreground);">Sustainability Score</div>
+                                                <div style="font-size: 0.8rem; color: var(--foreground); opacity: 0.7;">Great Impact</div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="product-card">
+                                    <div class="product-image">☕</div>
+                                    <div class="product-content">
+                                        <div class="product-title">Bamboo Travel Mug</div>
+                                        <p style="color: var(--foreground); opacity: 0.8; font-size: 0.95rem; margin-bottom: 0.5rem;">
+                                            Insulated, leak-proof, made from sustainable bamboo fiber.
+                                        </p>
+                                        <div class="product-price">$24.99</div>
+                                        <div class="sustainability-score">
+                                            <div class="score-value">8.9</div>
+                                            <div style="flex: 1;">
+                                                <div style="font-size: 0.85rem; font-weight: 600; color: var(--foreground);">Sustainability Score</div>
+                                                <div style="font-size: 0.8rem; color: var(--foreground); opacity: 0.7;">Great Impact</div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="product-card">
+                                    <div class="product-image">🌱</div>
+                                    <div class="product-content">
+                                        <div class="product-title">Indoor Herb Garden Kit</div>
+                                        <p style="color: var(--foreground); opacity: 0.8; font-size: 0.95rem; margin-bottom: 0.5rem;">
+                                            Complete kit with heirloom seeds, organic soil, and planters.
+                                        </p>
+                                        <div class="product-price">$49.99</div>
+                                        <div class="sustainability-score">
+                                            <div class="score-value">9.4</div>
+                                            <div style="flex: 1;">
+                                                <div style="font-size: 0.85rem; font-weight: 600; color: var(--foreground);">Sustainability Score</div>
+                                                <div style="font-size: 0.8rem; color: var(--foreground); opacity: 0.7;">Excellent Impact</div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="product-card">
+                                    <div class="product-image">🔋</div>
+                                    <div class="product-content">
+                                        <div class="product-title">Solar Power Bank</div>
+                                        <p style="color: var(--foreground); opacity: 0.8; font-size: 0.95rem; margin-bottom: 0.5rem;">
+                                            20,000mAh capacity with solar charging panel.
+                                        </p>
+                                        <div class="product-price">$64.99</div>
+                                        <div class="sustainability-score">
+                                            <div class="score-value">8.1</div>
+                                            <div style="flex: 1;">
+                                                <div style="font-size: 0.85rem; font-weight: 600; color: var(--foreground);">Sustainability Score</div>
+                                                <div style="font-size: 0.8rem; color: var(--foreground); opacity: 0.7;">Good Impact</div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="product-card">
+                                    <div class="product-image">🧺</div>
+                                    <div class="product-content">
+                                        <div class="product-title">Reusable Produce Bags</div>
+                                        <p style="color: var(--foreground); opacity: 0.8; font-size: 0.95rem; margin-bottom: 0.5rem;">
+                                            Set of 6 mesh bags made from organic cotton. Machine washable.
+                                        </p>
+                                        <div class="product-price">$18.99</div>
+                                        <div class="sustainability-score">
+                                            <div class="score-value">9.1</div>
+                                            <div style="flex: 1;">
+                                                <div style="font-size: 0.85rem; font-weight: 600; color: var(--foreground);">Sustainability Score</div>
+                                                <div style="font-size: 0.8rem; color: var(--foreground); opacity: 0.7;">Excellent Impact</div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="footer">
+                        <div class="footer-content">
+                            <div class="footer-section">
+                                <h4>Shop</h4>
+                                <ul class="footer-links">
+                                    <li><a href="#">All Products</a></li>
+                                    <li><a href="#">Vendors</a></li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- DASHBOARD MOCKUP -->
+        <div class="mockup-container" id="mockup-dashboard" style="display: none;">
+            <div class="mockup-meta">
+                <div class="mockup-title">User Dashboard</div>
+                <div class="mockup-label">Personal Hub</div>
+            </div>
+            <div class="browser-chrome">
+                <div class="browser-dots">
+                    <div class="browser-dot red"></div>
+                    <div class="browser-dot yellow"></div>
+                    <div class="browser-dot green"></div>
+                </div>
+                <div class="browser-url">https://projectexodus.earth/dashboard</div>
+            </div>
+            <div class="mockup-frame" id="frame-dashboard">
+                <div class="mockup-page">
+                    <div class="header">
+                        <div class="logo">
+                            <div class="logo-icon">🌍</div>
+                            <span>EXODUS</span>
+                        </div>
+                        <nav>
+                            <ul class="nav">
+                                <li><a href="#">Dashboard</a></li>
+                                <li><a href="#">Learning</a></li>
+                                <li><a href="#">Projects</a></li>
+                                <li><a href="#">Network</a></li>
+                            </ul>
+                        </nav>
+                    </div>
+
+                    <div class="content-section">
+                        <div class="container">
+                            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 3rem;">
+                                <div>
+                                    <h1 style="font-size: 2.5rem; font-weight: 900; color: var(--foreground); margin-bottom: 0.5rem;">Welcome back, Alex! 👋</h1>
+                                    <p style="color: var(--foreground); opacity: 0.7; font-size: 1.1rem;">You're making great progress on your sustainability journey</p>
+                                </div>
+                            </div>
+
+                            <div class="stats">
+                                <div class="stat-card">
+                                    <div class="stat-number">47%</div>
+                                    <div class="stat-label">Learning Progress</div>
+                                </div>
+                                <div class="stat-card">
+                                    <div class="stat-number">3</div>
+                                    <div class="stat-label">Active Projects</div>
+                                </div>
+                                <div class="stat-card">
+                                    <div class="stat-number">156</div>
+                                    <div class="stat-label">Community Points</div>
+                                </div>
+                                <div class="stat-card">
+                                    <div class="stat-number">12</div>
+                                    <div class="stat-label">Badges Earned</div>
+                                </div>
+                            </div>
+
+                            <div style="margin-top: 3rem;">
+                                <h2 style="font-size: 1.75rem; font-weight: 800; color: var(--foreground); margin-bottom: 2rem;">Continue Learning</h2>
+                                <div class="card-grid">
+                                    <div class="learning-card">
+                                        <div class="learning-header">
+                                            <h3>Foundations of Sustainability</h3>
+                                            <div class="learning-meta">
+                                                <span>⏱️ 3h 20m left</span>
+                                            </div>
+                                        </div>
+                                        <div class="learning-body">
+                                            <div class="progress-bar">
+                                                <div class="progress-fill" style="width: 65%"></div>
+                                            </div>
+                                            <p style="color: var(--foreground); opacity: 0.8; margin-bottom: 1rem;">Module 4: Climate Systems</p>
+                                            <a href="#" class="btn-primary" style="display: inline-block; padding: 0.75rem 1.5rem; font-size: 0.95rem;">Continue</a>
+                                        </div>
+                                    </div>
+
+                                    <div class="card">
+                                        <div class="card-icon">🎯</div>
+                                        <h3>Your Goals</h3>
+                                        <ul style="color: var(--foreground); opacity: 0.8; line-height: 2; list-style: none; padding: 0;">
+                                            <li>✅ Complete 2 learning paths</li>
+                                            <li>⏳ Join 5 community projects</li>
+                                            <li>⏳ Earn Climate Champion badge</li>
+                                        </ul>
+                                    </div>
+
+                                    <div class="card" style="background: linear-gradient(135deg, var(--primary), var(--accent)); border: none; color: white;">
+                                        <div style="font-size: 2.5rem; margin-bottom: 1rem;">🏆</div>
+                                        <h3 style="color: white; margin-bottom: 1rem;">Recent Achievement</h3>
+                                        <p style="opacity: 0.95;">You earned the "Sustainability Advocate" badge for completing your first learning path!</p>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div style="margin-top: 3rem;">
+                                <h2 style="font-size: 1.75rem; font-weight: 800; color: var(--foreground); margin-bottom: 2rem;">Active Projects</h2>
+                                <div class="card-grid">
+                                    <div class="card">
+                                        <div style="display: flex; align-items: center; gap: 1rem; margin-bottom: 1rem;">
+                                            <div style="width: 50px; height: 50px; background: linear-gradient(135deg, var(--primary), var(--accent)); border-radius: 10px; display: flex; align-items: center; justify-content: center; font-size: 1.5rem; color: white;">🌱</div>
+                                            <div>
+                                                <h3 style="margin-bottom: 0.25rem;">Community Garden</h3>
+                                                <p style="color: var(--foreground); opacity: 0.6; font-size: 0.9rem;">12 members</p>
+                                            </div>
+                                        </div>
+                                        <p style="color: var(--foreground); opacity: 0.8; line-height: 1.6;">Transform vacant lot into urban food forest</p>
+                                    </div>
+
+                                    <div class="card">
+                                        <div style="display: flex; align-items: center; gap: 1rem; margin-bottom: 1rem;">
+                                            <div style="width: 50px; height: 50px; background: linear-gradient(135deg, var(--secondary), var(--primary)); border-radius: 10px; display: flex; align-items: center; justify-content: center; font-size: 1.5rem; color: white;">♻️</div>
+                                            <div>
+                                                <h3 style="margin-bottom: 0.25rem;">Zero Waste Challenge</h3>
+                                                <p style="color: var(--foreground); opacity: 0.6; font-size: 0.9rem;">45 members</p>
+                                            </div>
+                                        </div>
+                                        <p style="color: var(--foreground); opacity: 0.8; line-height: 1.6;">30-day challenge to reduce household waste</p>
+                                    </div>
+
+                                    <div class="card">
+                                        <div style="display: flex; align-items: center; gap: 1rem; margin-bottom: 1rem;">
+                                            <div style="width: 50px; height: 50px; background: linear-gradient(135deg, var(--accent), var(--secondary)); border-radius: 10px; display: flex; align-items: center; justify-content: center; font-size: 1.5rem; color: white;">☀️</div>
+                                            <div>
+                                                <h3 style="margin-bottom: 0.25rem;">Solar Co-op</h3>
+                                                <p style="color: var(--foreground); opacity: 0.6; font-size: 0.9rem;">8 members</p>
+                                            </div>
+                                        </div>
+                                        <p style="color: var(--foreground); opacity: 0.8; line-height: 1.6;">Bring solar energy to our neighborhood</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="footer">
+                        <div class="footer-content">
+                            <div class="footer-section">
+                                <h4>Account</h4>
+                                <ul class="footer-links">
+                                    <li><a href="#">Profile</a></li>
+                                    <li><a href="#">Settings</a></li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let currentTheme = 'day';
+        let currentMockup = 'home';
+
+        function setTheme(theme) {
+            currentTheme = theme;
+
+            // Update button states
+            document.querySelectorAll('.controls .btn').forEach(btn => {
+                btn.classList.remove('active');
+            });
+            document.getElementById('btn-' + theme).classList.add('active');
+
+            // Update all mockup frames
+            document.querySelectorAll('.mockup-frame').forEach(frame => {
+                if (theme === 'night') {
+                    frame.classList.add('night-theme');
+                } else {
+                    frame.classList.remove('night-theme');
+                }
+            });
+        }
+
+        function showMockup(mockupId) {
+            currentMockup = mockupId;
+
+            // Hide all mockups
+            document.querySelectorAll('.mockup-container').forEach(container => {
+                container.style.display = 'none';
+            });
+
+            // Show selected mockup
+            document.getElementById('mockup-' + mockupId).style.display = 'block';
+
+            // Update button states
+            document.querySelectorAll('.control-group:last-child .btn').forEach(btn => {
+                btn.classList.remove('active');
+            });
+            document.getElementById('btn-' + mockupId).classList.add('active');
+
+            // Scroll to mockup
+            setTimeout(() => {
+                document.getElementById('mockup-' + mockupId).scrollIntoView({
+                    behavior: 'smooth',
+                    block: 'start'
+                });
+            }, 100);
+        }
+
+        // Initialize with day theme and home mockup
+        setTheme('day');
+        showMockup('home');
+    </script>
+</body>
+</html>
