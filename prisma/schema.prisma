@@ -153,6 +153,16 @@ model User {
   // Architecture learning progress
   architectureProgress      ArchitectureProgress?    @relation("ArchitectureProgress")
 
+  // Collaborative documents
+  createdDocuments          Document[]               @relation("CreatedDocuments")
+  lastEditedDocuments       Document[]               @relation("LastEditedDocuments")
+  documentVersions          DocumentVersion[]
+  documentCollaborations    DocumentCollaborator[]
+  documentComments          DocumentComment[]
+  resolvedComments          DocumentComment[]        @relation("ResolvedComments")
+  documentMentionsReceived  DocumentMention[]        @relation("MentionedInDocuments")
+  documentMentionsMade      DocumentMention[]        @relation("DocumentMentions")
+
   @@index([email])
   @@index([role])
   @@index([createdAt])
@@ -1039,6 +1049,7 @@ model Project {
   contributions       ProjectContribution[]
   projectNotifications ProjectNotification[]
   mindMap             MindMap?
+  documents           Document[]
 
   createdAt   DateTime        @default(now())
   updatedAt   DateTime        @updatedAt
@@ -2945,4 +2956,215 @@ model ArchitectureLeaderboard {
   @@index([timeframe])
   @@index([rank])
   @@index([achievedAt])
+}
+
+// ============================================
+// COLLABORATIVE DOCUMENTS MODELS
+// ============================================
+
+model Document {
+  id                String                @id @default(cuid())
+  title             String
+  slug              String
+  content           String                @db.Text // JSON content from Tiptap editor
+  plainText         String?               @db.Text // Plain text for search
+
+  // Project association
+  projectId         String
+  project           Project               @relation(fields: [projectId], references: [id], onDelete: Cascade)
+
+  // Document type
+  type              DocumentType          @default(GENERAL)
+  templateId        String?
+
+  // Collaboration settings
+  isPublic          Boolean               @default(false)
+  allowComments     Boolean               @default(true)
+  allowSuggestions  Boolean               @default(true)
+
+  // Status
+  status            DocumentStatus        @default(DRAFT)
+  publishedAt       DateTime?
+  archivedAt        DateTime?
+
+  // Creator and editor tracking
+  creatorId         String
+  creator           User                  @relation("CreatedDocuments", fields: [creatorId], references: [id])
+  lastEditedById    String?
+  lastEditedBy      User?                 @relation("LastEditedDocuments", fields: [lastEditedById], references: [id])
+
+  // Statistics
+  wordCount         Int                   @default(0)
+  readCount         Int                   @default(0)
+  editCount         Int                   @default(0)
+
+  // Relationships
+  versions          DocumentVersion[]
+  collaborators     DocumentCollaborator[]
+  comments          DocumentComment[]
+  mentions          DocumentMention[]
+
+  // Timestamps
+  createdAt         DateTime              @default(now())
+  updatedAt         DateTime              @updatedAt
+
+  @@unique([projectId, slug])
+  @@index([projectId])
+  @@index([creatorId])
+  @@index([status])
+  @@index([type])
+  @@index([publishedAt])
+  @@index([updatedAt])
+}
+
+model DocumentVersion {
+  id                String                @id @default(cuid())
+  documentId        String
+  document          Document              @relation(fields: [documentId], references: [id], onDelete: Cascade)
+
+  // Version data
+  versionNumber     Int
+  title             String
+  content           String                @db.Text // Snapshot of content
+  plainText         String?               @db.Text
+  wordCount         Int                   @default(0)
+
+  // Change tracking
+  createdById       String
+  createdBy         User                  @relation(fields: [createdById], references: [id])
+  changeDescription String?               // Optional description of changes
+
+  // Metadata
+  isAutoSaved       Boolean               @default(false)
+  isMajorVersion    Boolean               @default(false)
+
+  createdAt         DateTime              @default(now())
+
+  @@unique([documentId, versionNumber])
+  @@index([documentId])
+  @@index([createdById])
+  @@index([createdAt])
+}
+
+model DocumentCollaborator {
+  id                String                @id @default(cuid())
+  documentId        String
+  document          Document              @relation(fields: [documentId], references: [id], onDelete: Cascade)
+
+  userId            String
+  user              User                  @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  // Permission level
+  permission        DocumentPermission    @default(VIEW)
+
+  // Activity tracking
+  lastViewedAt      DateTime?
+  lastEditedAt      DateTime?
+  editsCount        Int                   @default(0)
+  commentsCount     Int                   @default(0)
+
+  // Collaboration status
+  isActive          Boolean               @default(true)
+  lastCursorPosition Int?                 // For real-time cursor tracking
+
+  joinedAt          DateTime              @default(now())
+
+  @@unique([documentId, userId])
+  @@index([documentId])
+  @@index([userId])
+  @@index([permission])
+}
+
+model DocumentComment {
+  id                String                @id @default(cuid())
+  documentId        String
+  document          Document              @relation(fields: [documentId], references: [id], onDelete: Cascade)
+
+  // Comment content
+  content           String                @db.Text
+
+  // Position in document (JSON with from/to character positions)
+  position          Json?                 // { from: 100, to: 150 } for inline comments
+
+  // Thread information
+  parentId          String?               // For replies
+  parent            DocumentComment?      @relation("CommentReplies", fields: [parentId], references: [id], onDelete: Cascade)
+  replies           DocumentComment[]     @relation("CommentReplies")
+
+  // Author
+  authorId          String
+  author            User                  @relation(fields: [authorId], references: [id], onDelete: Cascade)
+
+  // Status
+  isResolved        Boolean               @default(false)
+  resolvedById      String?
+  resolvedBy        User?                 @relation("ResolvedComments", fields: [resolvedById], references: [id])
+  resolvedAt        DateTime?
+
+  // Metadata
+  isEdited          Boolean               @default(false)
+  editedAt          DateTime?
+
+  createdAt         DateTime              @default(now())
+  updatedAt         DateTime              @updatedAt
+
+  @@index([documentId])
+  @@index([authorId])
+  @@index([parentId])
+  @@index([isResolved])
+  @@index([createdAt])
+}
+
+model DocumentMention {
+  id                String                @id @default(cuid())
+  documentId        String
+  document          Document              @relation(fields: [documentId], references: [id], onDelete: Cascade)
+
+  // User being mentioned
+  mentionedUserId   String
+  mentionedUser     User                  @relation("MentionedInDocuments", fields: [mentionedUserId], references: [id], onDelete: Cascade)
+
+  // Who mentioned them
+  mentionedById     String
+  mentionedBy       User                  @relation("DocumentMentions", fields: [mentionedById], references: [id], onDelete: Cascade)
+
+  // Position in document
+  position          Int                   // Character position
+
+  // Notification status
+  isRead            Boolean               @default(false)
+  readAt            DateTime?
+
+  createdAt         DateTime              @default(now())
+
+  @@index([documentId])
+  @@index([mentionedUserId])
+  @@index([mentionedById])
+  @@index([isRead])
+}
+
+enum DocumentType {
+  GENERAL
+  MEETING_NOTES
+  PROPOSAL
+  REPORT
+  RESEARCH
+  PLAN
+  GUIDELINES
+  AGENDA
+}
+
+enum DocumentStatus {
+  DRAFT
+  IN_REVIEW
+  PUBLISHED
+  ARCHIVED
+}
+
+enum DocumentPermission {
+  VIEW
+  COMMENT
+  SUGGEST
+  EDIT
+  ADMIN
 }
