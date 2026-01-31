@@ -1731,6 +1731,7 @@ model MindMap {
   zoom          Float               @default(1.0)
   centerX       Float               @default(1500)
   centerY       Float               @default(1000)
+  yjsState      Bytes?                   // Y.js CRDT state for real-time collaboration
 
   // Metadata
   creatorId     String
@@ -2968,6 +2969,7 @@ model Document {
   slug              String
   content           String                @db.Text // JSON content from Tiptap editor
   plainText         String?               @db.Text // Plain text for search
+  yjsState          Bytes?                       // Y.js CRDT state for real-time collaboration
 
   // Project association
   projectId         String
@@ -2997,6 +2999,7 @@ model Document {
   wordCount         Int                   @default(0)
   readCount         Int                   @default(0)
   editCount         Int                   @default(0)
+  version           Int                   @default(1)  // Current version number
 
   // Relationships
   versions          DocumentVersion[]
