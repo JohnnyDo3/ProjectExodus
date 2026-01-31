@@ -133,16 +133,16 @@ const server = new Server({
 })
 
 // Start the server
-server.listen(() => {
-  console.log(`🚀 Hocuspocus collaboration server running on port ${server.configuration.port}`)
-  console.log(`📡 WebSocket URL: ws://localhost:${server.configuration.port}`)
+server.listen()
 
-  if (DATABASE_URL) {
-    console.log('💾 Database persistence enabled')
-  } else {
-    console.log('⚠️  Database persistence disabled (documents stored in memory only)')
-  }
-})
+console.log(`🚀 Hocuspocus collaboration server running on port ${server.configuration.port}`)
+console.log(`📡 WebSocket URL: ws://localhost:${server.configuration.port}`)
+
+if (DATABASE_URL) {
+  console.log('💾 Database persistence enabled')
+} else {
+  console.log('⚠️  Database persistence disabled (documents stored in memory only)')
+}
 
 // Graceful shutdown
 process.on('SIGTERM', () => {
