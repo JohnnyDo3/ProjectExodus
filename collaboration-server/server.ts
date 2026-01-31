@@ -17,7 +17,7 @@ import { Logger } from '@hocuspocus/extension-logger'
 // PostgreSQL connection for persistence (optional but recommended)
 const DATABASE_URL = process.env.DATABASE_URL
 
-const server = Server.configure({
+const server = new Server({
   port: process.env.PORT ? parseInt(process.env.PORT) : 1234,
 
   extensions: [
