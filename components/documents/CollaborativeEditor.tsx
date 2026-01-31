@@ -16,7 +16,12 @@ import Typography from '@tiptap/extension-typography'
 import CharacterCount from '@tiptap/extension-character-count'
 import { Color } from '@tiptap/extension-color'
 import TextStyle from '@tiptap/extension-text-style'
-import { useCallback, useEffect, useState } from 'react'
+import Collaboration from '@tiptap/extension-collaboration'
+import CollaborationCursor from '@tiptap/extension-collaboration-cursor'
+import { useCallback, useEffect, useState, useRef } from 'react'
+import { HocuspocusProvider } from '@hocuspocus/provider'
+import * as Y from 'yjs'
+import { collaborationConfig, getDocumentName, getUserAwarenessInfo } from '@/lib/collaboration'
 import {
   Bold, Italic, Underline, Strikethrough, Code, Heading1, Heading2, Heading3,
   List, ListOrdered, ListChecks, Quote, Link2, Image as ImageIcon, Table as TableIcon,
@@ -39,6 +44,14 @@ interface CollaborativeEditorProps {
   showToolbar?: boolean
   showStats?: boolean
   placeholder?: string
+  // Collaboration options
+  enableCollaboration?: boolean
+  collaborationType?: 'document' | 'mindmap'
+  currentUser?: {
+    id: string
+    name: string | null
+    image?: string | null
+  } | null
 }
 
 export function CollaborativeEditor({
@@ -51,17 +64,71 @@ export function CollaborativeEditor({
   autoSaveInterval = 30000,
   showToolbar = true,
   showStats = true,
-  placeholder = 'Start writing your document...'
+  placeholder = 'Start writing your document...',
+  enableCollaboration = false,
+  collaborationType = 'document',
+  currentUser = null,
 }: CollaborativeEditorProps) {
   const [isSaving, setIsSaving] = useState(false)
   const [lastSaved, setLastSaved] = useState<Date | null>(null)
   const [hasUnsavedChanges, setHasUnsavedChanges] = useState(false)
   const [showBubbleMenu, setShowBubbleMenu] = useState(false)
+  const [connectionStatus, setConnectionStatus] = useState<'connecting' | 'connected' | 'disconnected' | 'error'>('disconnected')
+  const [activeUsers, setActiveUsers] = useState<any[]>([])
+
+  const providerRef = useRef<HocuspocusProvider | null>(null)
+  const ydocRef = useRef<Y.Doc | null>(null)
+
+  // Initialize Y.js and Hocuspocus provider for collaboration
+  useEffect(() => {
+    if (!enableCollaboration || !documentId || !currentUser) {
+      return
+    }
+
+    try {
+      // Create Y.js document
+      const ydoc = new Y.Doc()
+      ydocRef.current = ydoc
+
+      // Create Hocuspocus provider
+      const provider = new HocuspocusProvider({
+        url: collaborationConfig.serverUrl,
+        name: getDocumentName(collaborationType, documentId),
+        document: ydoc,
+        token: collaborationConfig.getToken() || undefined,
+        maxAttempts: collaborationConfig.maxAttempts,
+        delay: collaborationConfig.delay,
+        onStatus: ({ status }: { status: string }) => {
+          setConnectionStatus(status as any)
+        },
+        onAwarenessUpdate: () => {
+          const states = Array.from(provider.awareness.getStates().values())
+          setActiveUsers(states.map((state: any) => state.user).filter(Boolean))
+        },
+      })
+
+      providerRef.current = provider
+
+      // Set current user awareness
+      provider.setAwarenessField('user', getUserAwarenessInfo(currentUser).user)
+
+      return () => {
+        provider.destroy()
+        ydoc.destroy()
+        providerRef.current = null
+        ydocRef.current = null
+      }
+    } catch (error) {
+      console.error('Failed to initialize collaboration:', error)
+      setConnectionStatus('error')
+    }
+  }, [enableCollaboration, documentId, currentUser, collaborationType])
 
   const editor = useEditor({
     extensions: [
       StarterKit.configure({
-        history: {
+        // Disable history when collaboration is enabled (Y.js handles it)
+        history: enableCollaboration ? false : {
           depth: 100,
         },
       }),
@@ -92,11 +159,25 @@ export function CollaborativeEditor({
       CharacterCount,
       Color,
       TextStyle,
+      // Add collaboration extensions only when enabled
+      ...(enableCollaboration && ydocRef.current && providerRef.current
+        ? [
+            Collaboration.configure({
+              document: ydocRef.current,
+            }),
+            CollaborationCursor.configure({
+              provider: providerRef.current,
+              user: currentUser ? getUserAwarenessInfo(currentUser).user : undefined,
+            }),
+          ]
+        : []),
     ],
-    content: initialContent,
+    content: enableCollaboration ? undefined : initialContent, // Don't set initial content when collaborating (loaded from Y.js)
     editable: !readOnly,
     onUpdate: ({ editor }) => {
-      setHasUnsavedChanges(true)
+      if (!enableCollaboration) {
+        setHasUnsavedChanges(true)
+      }
       onUpdate?.(editor.getHTML())
     },
     editorProps: {
@@ -104,7 +185,7 @@ export function CollaborativeEditor({
         class: 'prose prose-sm sm:prose lg:prose-lg xl:prose-xl max-w-none focus:outline-none min-h-[500px] p-6',
       },
     },
-  })
+  }, [enableCollaboration, ydocRef.current, providerRef.current])
 
   // Auto-save functionality
   useEffect(() => {
@@ -443,6 +524,63 @@ export function CollaborativeEditor({
             <div className="flex items-center gap-4">
               <span>{wordCount} words</span>
               <span>{charCount} characters</span>
+              {enableCollaboration && (
+                <>
+                  <span className="text-xs">•</span>
+                  <div className="flex items-center gap-2">
+                    {connectionStatus === 'connected' && (
+                      <span className="flex items-center gap-1 text-green-500">
+                        <span className="w-1.5 h-1.5 rounded-full bg-green-500 animate-pulse" />
+                        Connected
+                      </span>
+                    )}
+                    {connectionStatus === 'connecting' && (
+                      <span className="flex items-center gap-1 text-yellow-500">
+                        <span className="w-1.5 h-1.5 rounded-full bg-yellow-500 animate-pulse" />
+                        Connecting...
+                      </span>
+                    )}
+                    {connectionStatus === 'disconnected' && (
+                      <span className="flex items-center gap-1 text-theme-muted">
+                        <span className="w-1.5 h-1.5 rounded-full bg-gray-400" />
+                        Offline
+                      </span>
+                    )}
+                    {connectionStatus === 'error' && (
+                      <span className="flex items-center gap-1 text-red-500">
+                        <span className="w-1.5 h-1.5 rounded-full bg-red-500" />
+                        Error
+                      </span>
+                    )}
+                  </div>
+                  {activeUsers.length > 0 && (
+                    <>
+                      <span className="text-xs">•</span>
+                      <div className="flex items-center gap-1">
+                        <Users className="w-3 h-3" />
+                        <span>{activeUsers.length + 1} active</span>
+                        <div className="flex -space-x-2 ml-1">
+                          {activeUsers.slice(0, 3).map((user: any, index: number) => (
+                            <div
+                              key={index}
+                              className="w-5 h-5 rounded-full border-2 border-white dark:border-slate-900 flex items-center justify-center text-[10px] font-bold text-white"
+                              style={{ backgroundColor: user.color }}
+                              title={user.name}
+                            >
+                              {user.name?.[0]?.toUpperCase() || '?'}
+                            </div>
+                          ))}
+                          {activeUsers.length > 3 && (
+                            <div className="w-5 h-5 rounded-full border-2 border-white dark:border-slate-900 bg-gray-500 flex items-center justify-center text-[10px] font-bold text-white">
+                              +{activeUsers.length - 3}
+                            </div>
+                          )}
+                        </div>
+                      </div>
+                    </>
+                  )}
+                </>
+              )}
             </div>
             {readOnly && (
               <Badge size="sm" variant="outline">

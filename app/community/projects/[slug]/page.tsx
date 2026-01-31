@@ -43,11 +43,13 @@ import {
   TrendingUp,
   Lock,
   Unlock,
+  Brain,
+  File,
 } from 'lucide-react'
 import Link from 'next/link'
 import { JoinProjectButton } from '@/components/projects/JoinProjectButton'
 
-type TabType = 'overview' | 'learning' | 'research' | 'discussions' | 'members' | 'settings'
+type TabType = 'overview' | 'learning' | 'research' | 'discussions' | 'members' | 'mindmaps' | 'documents' | 'settings'
 
 interface LearningModule {
   id: string
@@ -126,10 +128,14 @@ export default function ProjectPage({ params }: { params: Promise<{ slug: string
   const [researchPosts, setResearchPosts] = useState<ResearchPost[]>([])
   const [subgroups, setSubgroups] = useState<Subgroup[]>([])
   const [membersWithBadges, setMembersWithBadges] = useState<MemberWithBadges[]>([])
+  const [mindMapData, setMindMapData] = useState<any>(null)
+  const [documents, setDocuments] = useState<any[]>([])
   const [loadingModules, setLoadingModules] = useState(false)
   const [loadingResearch, setLoadingResearch] = useState(false)
   const [loadingSubgroups, setLoadingSubgroups] = useState(false)
   const [loadingMembers, setLoadingMembers] = useState(false)
+  const [loadingMindMap, setLoadingMindMap] = useState(false)
+  const [loadingDocuments, setLoadingDocuments] = useState(false)
 
   // Sage visibility
   const [showSage, setShowSage] = useState(false)
@@ -242,6 +248,38 @@ export default function ProjectPage({ params }: { params: Promise<{ slug: string
     }
   }, [project?.id])
 
+  const fetchMindMap = useCallback(async () => {
+    if (!project?.mindMapId) return
+    setLoadingMindMap(true)
+    try {
+      const res = await fetch(`/api/mindmaps/${project.mindMapId}`)
+      const data = await res.json()
+      if (data.success) {
+        setMindMapData(data.data)
+      }
+    } catch (error) {
+      console.error('Error fetching mind map:', error)
+    } finally {
+      setLoadingMindMap(false)
+    }
+  }, [project?.mindMapId])
+
+  const fetchDocuments = useCallback(async () => {
+    if (!project?.id) return
+    setLoadingDocuments(true)
+    try {
+      const res = await fetch(`/api/documents?projectId=${project.id}`)
+      const data = await res.json()
+      if (data.success) {
+        setDocuments(data.data)
+      }
+    } catch (error) {
+      console.error('Error fetching documents:', error)
+    } finally {
+      setLoadingDocuments(false)
+    }
+  }, [project?.id])
+
   useEffect(() => {
     fetchProject()
   }, [fetchProject])
@@ -266,12 +304,16 @@ export default function ProjectPage({ params }: { params: Promise<{ slug: string
     } else if (activeTab === 'members') {
       fetchMembersWithBadges()
       fetchSubgroups()
+    } else if (activeTab === 'mindmaps') {
+      fetchMindMap()
+    } else if (activeTab === 'documents') {
+      fetchDocuments()
     } else if (activeTab === 'overview') {
       // Load summary data for overview
       fetchSubgroups()
       fetchLearningModules()
     }
-  }, [activeTab, project?.id, fetchLearningModules, fetchResearchPosts, fetchSubgroups, fetchMembersWithBadges])
+  }, [activeTab, project?.id, fetchLearningModules, fetchResearchPosts, fetchSubgroups, fetchMembersWithBadges, fetchMindMap, fetchDocuments])
 
   useEffect(() => {
     // Only auto-scroll if user has interacted with the chat
@@ -471,6 +513,8 @@ export default function ProjectPage({ params }: { params: Promise<{ slug: string
 
   const tabs: { id: TabType; label: string; icon: typeof Users; memberOnly?: boolean }[] = [
     { id: 'overview', label: 'Overview', icon: Target },
+    { id: 'mindmaps', label: 'Mind Map', icon: Brain, memberOnly: true },
+    { id: 'documents', label: 'Documents', icon: File, memberOnly: true },
     { id: 'learning', label: 'Learning', icon: BookOpen, memberOnly: true },
     { id: 'research', label: 'Research', icon: FlaskConical, memberOnly: true },
     { id: 'discussions', label: 'Discussions', icon: MessageSquare, memberOnly: true },
@@ -990,6 +1034,147 @@ export default function ProjectPage({ params }: { params: Promise<{ slug: string
               </div>
             )}
 
+            {/* Mind Maps Tab */}
+            {activeTab === 'mindmaps' && isMember && (
+              <div className="space-y-6">
+                <div className="flex items-center justify-between">
+                  <h2 className="text-2xl font-black">PROJECT MIND MAP</h2>
+                </div>
+
+                {loadingMindMap ? (
+                  <div className="flex items-center justify-center py-12">
+                    <Loader2 className="w-8 h-8 animate-spin text-theme-primary" />
+                  </div>
+                ) : !project.mindMapId ? (
+                  <Card className="border-2 border-dashed">
+                    <CardContent className="p-12 text-center">
+                      <Brain className="w-16 h-16 mx-auto mb-4 text-theme-muted opacity-50" />
+                      <h3 className="text-xl font-black mb-2 text-theme-muted">NO MIND MAP YET</h3>
+                      <p className="text-theme-muted mb-4">This project doesn't have a mind map configured yet.</p>
+                      <p className="text-sm text-theme-muted">Mind maps are created during project setup and help visualize project structure and goals.</p>
+                    </CardContent>
+                  </Card>
+                ) : mindMapData ? (
+                  <Card className="border-2 border-theme-primary">
+                    <CardContent className="p-6">
+                      <div className="mb-4 p-4 bg-[var(--muted)] rounded-lg">
+                        <h3 className="font-black mb-2">{mindMapData.title || 'Project Mind Map'}</h3>
+                        {mindMapData.description && (
+                          <p className="text-sm text-theme-muted">{mindMapData.description}</p>
+                        )}
+                        <div className="flex items-center gap-4 mt-3 text-sm">
+                          <span className="flex items-center gap-1 text-theme-muted">
+                            <Network className="w-4 h-4" />
+                            {mindMapData._count?.nodes || 0} nodes
+                          </span>
+                          <span className="flex items-center gap-1 text-theme-muted">
+                            <ArrowLeft className="w-4 h-4" />
+                            {mindMapData._count?.connections || 0} connections
+                          </span>
+                          <span className="flex items-center gap-1 text-theme-muted">
+                            <Users className="w-4 h-4" />
+                            {mindMapData._count?.contributors || 0} contributors
+                          </span>
+                        </div>
+                      </div>
+                      <div className="text-center py-8 bg-[var(--background)] rounded-lg border-2 border-dashed">
+                        <Brain className="w-12 h-12 mx-auto mb-4 text-theme-primary" />
+                        <p className="text-theme-muted mb-4">Interactive mind map viewer coming soon</p>
+                        <Button variant="outline" className="font-bold">
+                          <ExternalLink className="w-4 h-4 mr-2" />
+                          OPEN IN FULL SCREEN
+                        </Button>
+                      </div>
+                    </CardContent>
+                  </Card>
+                ) : null}
+              </div>
+            )}
+
+            {/* Documents Tab */}
+            {activeTab === 'documents' && isMember && (
+              <div className="space-y-6">
+                <div className="flex items-center justify-between">
+                  <h2 className="text-2xl font-black">PROJECT DOCUMENTS</h2>
+                  <Button className="font-bold">
+                    <Plus className="w-4 h-4 mr-2" />
+                    NEW DOCUMENT
+                  </Button>
+                </div>
+
+                {loadingDocuments ? (
+                  <div className="flex items-center justify-center py-12">
+                    <Loader2 className="w-8 h-8 animate-spin text-theme-primary" />
+                  </div>
+                ) : documents.length === 0 ? (
+                  <Card className="border-2 border-dashed">
+                    <CardContent className="p-12 text-center">
+                      <FileText className="w-16 h-16 mx-auto mb-4 text-theme-muted opacity-50" />
+                      <h3 className="text-xl font-black mb-2 text-theme-muted">NO DOCUMENTS YET</h3>
+                      <p className="text-theme-muted mb-4">Create collaborative documents for meeting notes, proposals, reports, and more.</p>
+                      <Button className="font-bold">
+                        <Plus className="w-4 h-4 mr-2" />
+                        CREATE FIRST DOCUMENT
+                      </Button>
+                    </CardContent>
+                  </Card>
+                ) : (
+                  <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-4">
+                    {documents.map((doc: any) => (
+                      <Link key={doc.id} href={`/community/projects/${slug}/documents/${doc.id}`}>
+                        <Card className="border-2 hover:border-theme-primary transition-colors cursor-pointer h-full">
+                          <CardContent className="p-5">
+                            <div className="flex items-start gap-3 mb-3">
+                              <div className="p-2 rounded-lg bg-[var(--primary)]/10">
+                                <FileText className="w-5 h-5 text-theme-primary" />
+                              </div>
+                              <div className="flex-1 min-w-0">
+                                <h3 className="font-black text-lg mb-1 truncate">{doc.title}</h3>
+                                <p className="text-xs text-theme-muted">
+                                  {new Date(doc.updatedAt).toLocaleDateString()}
+                                </p>
+                              </div>
+                            </div>
+                            {doc.description && (
+                              <p className="text-sm text-theme-muted line-clamp-2 mb-3">{doc.description}</p>
+                            )}
+                            <div className="flex items-center justify-between text-xs">
+                              <span className="px-2 py-1 bg-[var(--muted)] rounded text-theme-muted">
+                                {doc.type}
+                              </span>
+                              <span className={`px-2 py-1 rounded font-bold ${
+                                doc.status === 'PUBLISHED'
+                                  ? 'bg-green-500/10 text-green-500'
+                                  : doc.status === 'DRAFT'
+                                  ? 'bg-[var(--muted)] text-theme-muted'
+                                  : 'bg-[var(--primary)]/10 text-theme-primary'
+                              }`}>
+                                {doc.status}
+                              </span>
+                            </div>
+                            <div className="mt-3 pt-3 border-t border-[var(--border)] flex items-center gap-3 text-xs text-theme-muted">
+                              <span className="flex items-center gap-1">
+                                <Users className="w-3 h-3" />
+                                {doc._count?.collaborators || 0}
+                              </span>
+                              <span className="flex items-center gap-1">
+                                <MessageSquare className="w-3 h-3" />
+                                {doc._count?.comments || 0}
+                              </span>
+                              <span className="flex items-center gap-1">
+                                <Clock className="w-3 h-3" />
+                                v{doc.version || 1}
+                              </span>
+                            </div>
+                          </CardContent>
+                        </Card>
+                      </Link>
+                    ))}
+                  </div>
+                )}
+              </div>
+            )}
+
             {/* Discussions Tab */}
             {activeTab === 'discussions' && isMember && (
               <div className="space-y-6">
@@ -1273,7 +1458,7 @@ export default function ProjectPage({ params }: { params: Promise<{ slug: string
             )}
 
             {/* Not a Member Message for restricted tabs */}
-            {!isMember && ['learning', 'research', 'discussions', 'settings'].includes(activeTab) && (
+            {!isMember && ['learning', 'research', 'discussions', 'mindmaps', 'documents', 'settings'].includes(activeTab) && (
               <Card className="border-4 border-theme-secondary">
                 <CardContent className="p-12 text-center">
                   <Lock className="w-16 h-16 text-theme-secondary mx-auto mb-4 opacity-50" />
