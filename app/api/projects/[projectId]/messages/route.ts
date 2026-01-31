@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { prisma } from '@/lib/db'
 import { auth } from '@/auth'
+import { pusherServer } from '@/lib/pusher'
 
 // GET /api/projects/[projectId]/messages - Get all messages for a project
 export async function GET(
@@ -95,6 +96,16 @@ export async function POST(
         },
       },
     })
+
+    // Broadcast real-time update via Pusher
+    try {
+      await pusherServer.trigger(`project-${projectId}`, 'message-created', {
+        message,
+      })
+    } catch (pusherError) {
+      console.error('Error broadcasting message via Pusher:', pusherError)
+      // Don't fail the request if Pusher fails
+    }
 
     return NextResponse.json({
       success: true,

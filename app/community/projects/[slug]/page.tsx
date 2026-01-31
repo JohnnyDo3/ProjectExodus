@@ -45,7 +45,13 @@ import {
   Unlock,
   Brain,
   File,
+  ChevronLeft,
+  Maximize2,
+  Minimize2,
+  Edit,
+  Zap,
 } from 'lucide-react'
+import { getPusherClient } from '@/lib/pusher'
 import Link from 'next/link'
 import { JoinProjectButton } from '@/components/projects/JoinProjectButton'
 import { DocumentTemplateSelector } from '@/components/documents/DocumentTemplateSelector'
@@ -150,6 +156,11 @@ export default function ProjectPage({ params }: { params: Promise<{ slug: string
   const [editedGoal, setEditedGoal] = useState('')
   const [editedStatus, setEditedStatus] = useState('')
   const [isSaving, setIsSaving] = useState(false)
+
+  // New: Sidebar and live features state
+  const [isSidebarCollapsed, setIsSidebarCollapsed] = useState(false)
+  const [showMindMapPreview, setShowMindMapPreview] = useState(true)
+  const [editingSection, setEditingSection] = useState<string | null>(null)
 
   // Delete modal state
   const [showDeleteModal, setShowDeleteModal] = useState(false)
@@ -320,12 +331,40 @@ export default function ProjectPage({ params }: { params: Promise<{ slug: string
     fetchProject()
   }, [fetchProject])
 
+  // Replace polling with Pusher real-time updates
   useEffect(() => {
-    if (project?.id) {
-      fetchMessages()
-      // Poll for new messages every 5 seconds
+    if (!project?.id) return
+
+    // Initial fetch
+    fetchMessages()
+
+    // Subscribe to Pusher for real-time updates
+    const pusher = getPusherClient()
+    if (!pusher) {
+      console.warn('Pusher client not available, falling back to polling')
       const interval = setInterval(fetchMessages, 5000)
       return () => clearInterval(interval)
+    }
+
+    const channel = pusher.subscribe(`project-${project.id}`)
+
+    // Listen for new messages
+    channel.bind('message-created', (data: any) => {
+      setMessages((prev) => [...prev, data.message])
+    })
+
+    // Listen for message updates/deletes
+    channel.bind('message-updated', (data: any) => {
+      setMessages((prev) => prev.map((msg) => msg.id === data.message.id ? data.message : msg))
+    })
+
+    channel.bind('message-deleted', (data: any) => {
+      setMessages((prev) => prev.filter((msg) => msg.id !== data.messageId))
+    })
+
+    return () => {
+      channel.unbind_all()
+      channel.unsubscribe()
     }
   }, [project?.id, fetchMessages])
 
@@ -563,6 +602,61 @@ export default function ProjectPage({ params }: { params: Promise<{ slug: string
 
   return (
     <div className="min-h-screen bg-[var(--background)]">
+      {/* Owner Superpowers Toolbar - Floating */}
+      {isCreator && !isEditing && (
+        <div className="fixed bottom-6 right-6 z-50">
+          <Card className="border-2 border-theme-primary bg-[var(--background)]/95 backdrop-blur-sm shadow-2xl">
+            <CardContent className="p-3">
+              <div className="flex items-center gap-2">
+                <div className="flex items-center gap-1 px-2 py-1 bg-gradient-to-r from-[var(--accent)] to-[var(--primary)] rounded-full mr-2">
+                  <Crown className="w-3 h-3 text-[var(--primary-foreground)]" />
+                  <span className="text-xs font-black text-[var(--primary-foreground)]">OWNER</span>
+                </div>
+                <Button
+                  size="sm"
+                  variant="outline"
+                  onClick={startEditing}
+                  className="font-bold h-8"
+                  title="Edit Project"
+                >
+                  <Pencil className="w-3 h-3 mr-1" />
+                  Edit
+                </Button>
+                <Button
+                  size="sm"
+                  variant="outline"
+                  onClick={() => setActiveTab('settings')}
+                  className="font-bold h-8"
+                  title="Project Settings"
+                >
+                  <SettingsIcon className="w-3 h-3 mr-1" />
+                  Settings
+                </Button>
+                <Button
+                  size="sm"
+                  variant="outline"
+                  onClick={() => setShowSage(true)}
+                  className="font-bold h-8 bg-gradient-to-r from-green-500/10 to-emerald-500/10 border-green-500/30"
+                  title="Ask Sage AI"
+                >
+                  <Sparkles className="w-3 h-3 mr-1" />
+                  Sage
+                </Button>
+                <Button
+                  size="sm"
+                  variant="outline"
+                  onClick={() => setShowDeleteModal(true)}
+                  className="font-bold h-8 text-red-500 border-red-500/30 hover:bg-red-500/10"
+                  title="Delete Project"
+                >
+                  <Trash2 className="w-3 h-3" />
+                </Button>
+              </div>
+            </CardContent>
+          </Card>
+        </div>
+      )}
+
       {/* Header */}
       <section className="py-8 bg-gradient-to-br from-[color-mix(in_srgb,var(--secondary)_15%,var(--background))] via-[color-mix(in_srgb,var(--primary)_15%,var(--background))] to-[color-mix(in_srgb,var(--accent)_15%,var(--background))]">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
@@ -786,123 +880,296 @@ export default function ProjectPage({ params }: { params: Promise<{ slug: string
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
           <div className="max-w-6xl mx-auto">
 
-            {/* Overview Tab */}
+            {/* Overview Tab - Newspaper Style with Collapsible Sidebar */}
             {activeTab === 'overview' && (
-              <div className="space-y-8">
-                {/* Goal */}
-                {project.goal && (
-                  <Card className="border-2 border-theme-accent">
-                    <CardContent className="p-6">
-                      <div className="flex items-start gap-4">
-                        <div className="p-3 rounded-full bg-[color-mix(in_srgb,var(--accent)_20%,var(--background))]">
-                          <Target className="w-6 h-6 text-theme-accent" />
+              <div className="flex gap-6">
+                {/* Collapsible Sidebar - Team Graph */}
+                {isMember && (
+                  <div className={`transition-all duration-300 ${isSidebarCollapsed ? 'w-12' : 'w-80'} flex-shrink-0`}>
+                    <Card className="border-2 border-theme-primary sticky top-20 h-fit">
+                      <CardHeader className="pb-3">
+                        <div className="flex items-center justify-between">
+                          {!isSidebarCollapsed && (
+                            <CardTitle className="text-sm font-black flex items-center gap-2">
+                              <Network className="w-4 h-4" />
+                              TEAM NETWORK
+                            </CardTitle>
+                          )}
+                          <Button
+                            variant="ghost"
+                            size="sm"
+                            onClick={() => setIsSidebarCollapsed(!isSidebarCollapsed)}
+                            className="p-1 h-8 w-8"
+                          >
+                            {isSidebarCollapsed ? <ChevronRight className="w-4 h-4" /> : <ChevronLeft className="w-4 h-4" />}
+                          </Button>
                         </div>
-                        <div>
-                          <h3 className="font-black text-lg mb-1">PROJECT GOAL</h3>
-                          <p className="text-[var(--foreground)] font-semibold">{project.goal}</p>
-                        </div>
-                      </div>
-                    </CardContent>
-                  </Card>
+                      </CardHeader>
+                      {!isSidebarCollapsed && (
+                        <CardContent className="pt-0">
+                          <div className="h-96">
+                            <TeamCollaborationVisualization
+                              projectId={project.id}
+                              projectName={project.name}
+                              members={project.members?.map((m: any) => ({
+                                id: m.id,
+                                userId: m.userId,
+                                name: m.user.name || 'Anonymous',
+                                image: m.user.image,
+                                role: m.role,
+                                isCreator: m.userId === project.creatorId,
+                                messageCount: messages.filter((msg: any) => msg.userId === m.userId).length,
+                              })) || []}
+                              currentUserId={session?.user?.id || null}
+                              messages={messages}
+                            />
+                          </div>
+                        </CardContent>
+                      )}
+                    </Card>
+                  </div>
                 )}
 
-                {/* Quick Stats */}
-                <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-                  <Card className="border-2">
-                    <CardContent className="p-4 text-center">
-                      <Users className="w-8 h-8 mx-auto mb-2 text-theme-primary" />
-                      <div className="text-3xl font-black">{project._count?.members || 0}</div>
-                      <div className="text-sm font-bold text-theme-muted">Members</div>
-                    </CardContent>
-                  </Card>
-                  <Card className="border-2">
-                    <CardContent className="p-4 text-center">
-                      <Layers className="w-8 h-8 mx-auto mb-2 text-theme-accent" />
-                      <div className="text-3xl font-black">{subgroups.length}</div>
-                      <div className="text-sm font-bold text-theme-muted">Subgroups</div>
-                    </CardContent>
-                  </Card>
-                  <Card className="border-2">
-                    <CardContent className="p-4 text-center">
-                      <BookOpen className="w-8 h-8 mx-auto mb-2 text-theme-secondary" />
-                      <div className="text-3xl font-black">{totalModules}</div>
-                      <div className="text-sm font-bold text-theme-muted">Modules</div>
-                    </CardContent>
-                  </Card>
-                  <Card className="border-2">
-                    <CardContent className="p-4 text-center">
-                      <MessageSquare className="w-8 h-8 mx-auto mb-2 text-green-500" />
-                      <div className="text-3xl font-black">{messages.length}</div>
-                      <div className="text-sm font-bold text-theme-muted">Messages</div>
-                    </CardContent>
-                  </Card>
-                </div>
-
-                {/* Subgroups Preview */}
-                {subgroups.length > 0 && (
-                  <Card className="border-2">
-                    <CardHeader className="flex flex-row items-center justify-between">
-                      <CardTitle className="text-xl font-black flex items-center gap-2">
-                        <Layers className="w-5 h-5" />
-                        SUBGROUPS
-                      </CardTitle>
-                      {isMember && (
-                        <Button variant="ghost" size="sm" onClick={() => setActiveTab('members')}>
-                          View All <ChevronRight className="w-4 h-4 ml-1" />
-                        </Button>
-                      )}
-                    </CardHeader>
-                    <CardContent>
-                      <div className="grid md:grid-cols-2 gap-4">
-                        {subgroups.slice(0, 4).map((sg: Subgroup) => (
-                          <div key={sg.id} className="p-4 bg-[var(--muted)] rounded-lg">
+                {/* Main Content Area - Newspaper Style */}
+                <div className="flex-1 space-y-6">
+                  {/* Goal Section - Editable */}
+                  {(project.goal || isCreator) && (
+                    <Card className="border-2 border-theme-accent">
+                      <CardContent className="p-6">
+                        <div className="flex items-start gap-4">
+                          <div className="p-3 rounded-full bg-[color-mix(in_srgb,var(--accent)_20%,var(--background))]">
+                            <Target className="w-6 h-6 text-theme-accent" />
+                          </div>
+                          <div className="flex-1">
                             <div className="flex items-center justify-between mb-2">
-                              <h4 className="font-black">{sg.name}</h4>
-                              <span className="text-sm font-bold text-theme-muted">
-                                {sg._count.members}{sg.memberLimit ? `/${sg.memberLimit}` : ''} members
-                              </span>
+                              <h3 className="font-black text-lg">PROJECT GOAL</h3>
+                              {isCreator && editingSection !== 'goal' && (
+                                <Button
+                                  variant="ghost"
+                                  size="sm"
+                                  onClick={() => setEditingSection('goal')}
+                                  className="p-1 h-8"
+                                >
+                                  <Edit className="w-4 h-4" />
+                                </Button>
+                              )}
                             </div>
-                            <p className="text-sm text-theme-muted line-clamp-2">{sg.description}</p>
-                            {sg.userMembership && (
-                              <span className="inline-block mt-2 px-2 py-0.5 bg-[var(--primary)]/10 text-theme-primary text-xs font-bold rounded">
-                                Joined as {sg.userMembership.role}
-                              </span>
+                            {editingSection === 'goal' ? (
+                              <div className="space-y-2">
+                                <textarea
+                                  value={editedGoal}
+                                  onChange={(e) => setEditedGoal(e.target.value)}
+                                  className="w-full p-3 border-2 border-[var(--border)] rounded-lg bg-[var(--background)] text-[var(--foreground)] font-semibold focus:border-theme-primary focus:outline-none resize-none"
+                                  rows={3}
+                                  placeholder="Enter project goal..."
+                                />
+                                <div className="flex gap-2">
+                                  <Button
+                                    size="sm"
+                                    onClick={async () => {
+                                      await saveChanges()
+                                      setEditingSection(null)
+                                    }}
+                                    disabled={isSaving}
+                                  >
+                                    <Save className="w-3 h-3 mr-1" />
+                                    Save
+                                  </Button>
+                                  <Button
+                                    size="sm"
+                                    variant="outline"
+                                    onClick={() => {
+                                      setEditedGoal(project.goal || '')
+                                      setEditingSection(null)
+                                    }}
+                                  >
+                                    <X className="w-3 h-3 mr-1" />
+                                    Cancel
+                                  </Button>
+                                </div>
+                              </div>
+                            ) : (
+                              <p className="text-[var(--foreground)] font-semibold">
+                                {project.goal || 'Click edit to add a project goal'}
+                              </p>
                             )}
                           </div>
-                        ))}
-                      </div>
-                    </CardContent>
-                  </Card>
-                )}
+                        </div>
+                      </CardContent>
+                    </Card>
+                  )}
 
-                {/* Team Network - Members Only */}
-                {isMember && (
-                  <Card className="border-2">
-                    <CardHeader>
-                      <CardTitle className="text-xl font-black flex items-center gap-2">
-                        <Network className="w-5 h-5" />
-                        TEAM COLLABORATION MAP
-                      </CardTitle>
-                    </CardHeader>
-                    <CardContent>
-                      <TeamCollaborationVisualization
-                        projectId={project.id}
-                        projectName={project.name}
-                        members={project.members?.map((m: any) => ({
-                          id: m.id,
-                          userId: m.userId,
-                          name: m.user.name || 'Anonymous',
-                          image: m.user.image,
-                          role: m.role,
-                          isCreator: m.userId === project.creatorId,
-                          messageCount: messages.filter((msg: any) => msg.userId === m.userId).length,
-                        })) || []}
-                        currentUserId={session?.user?.id || null}
-                        messages={messages}
-                      />
-                    </CardContent>
-                  </Card>
-                )}
+                  {/* Live Stats Bar with Real-time Indicator */}
+                  <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+                    <Card className="border-2 relative overflow-hidden">
+                      <div className="absolute top-0 right-0 w-2 h-2 bg-green-500 rounded-full m-2 animate-pulse"></div>
+                      <CardContent className="p-4 text-center">
+                        <Users className="w-8 h-8 mx-auto mb-2 text-theme-primary" />
+                        <div className="text-3xl font-black">{project._count?.members || 0}</div>
+                        <div className="text-sm font-bold text-theme-muted">Members</div>
+                      </CardContent>
+                    </Card>
+                    <Card className="border-2">
+                      <CardContent className="p-4 text-center">
+                        <Layers className="w-8 h-8 mx-auto mb-2 text-theme-accent" />
+                        <div className="text-3xl font-black">{subgroups.length}</div>
+                        <div className="text-sm font-bold text-theme-muted">Subgroups</div>
+                      </CardContent>
+                    </Card>
+                    <Card className="border-2">
+                      <CardContent className="p-4 text-center">
+                        <BookOpen className="w-8 h-8 mx-auto mb-2 text-theme-secondary" />
+                        <div className="text-3xl font-black">{totalModules}</div>
+                        <div className="text-sm font-bold text-theme-muted">Modules</div>
+                      </CardContent>
+                    </Card>
+                    <Card className="border-2 relative overflow-hidden">
+                      <div className="absolute top-0 right-0 w-2 h-2 bg-green-500 rounded-full m-2 animate-pulse"></div>
+                      <CardContent className="p-4 text-center">
+                        <MessageSquare className="w-8 h-8 mx-auto mb-2 text-green-500" />
+                        <div className="text-3xl font-black">{messages.length}</div>
+                        <div className="text-sm font-bold text-theme-muted flex items-center justify-center gap-1">
+                          <Zap className="w-3 h-3" />
+                          Live
+                        </div>
+                      </CardContent>
+                    </Card>
+                  </div>
+
+                  {/* Mind Map Mini Preview */}
+                  {isMember && project.mindMapId && showMindMapPreview && (
+                    <Card className="border-2 border-purple-500/30 bg-gradient-to-br from-purple-500/5 to-pink-500/5">
+                      <CardHeader className="pb-3">
+                        <div className="flex items-center justify-between">
+                          <CardTitle className="text-lg font-black flex items-center gap-2">
+                            <Brain className="w-5 h-5 text-purple-500" />
+                            MIND MAP PREVIEW
+                          </CardTitle>
+                          <div className="flex gap-2">
+                            <Button
+                              size="sm"
+                              variant="outline"
+                              onClick={() => setActiveTab('mindmaps')}
+                              className="font-bold"
+                            >
+                              <Maximize2 className="w-3 h-3 mr-1" />
+                              Open Full Editor
+                            </Button>
+                            <Button
+                              variant="ghost"
+                              size="sm"
+                              onClick={() => setShowMindMapPreview(false)}
+                              className="p-1 h-8 w-8"
+                            >
+                              <X className="w-4 h-4" />
+                            </Button>
+                          </div>
+                        </div>
+                      </CardHeader>
+                      <CardContent>
+                        <div className="aspect-video bg-[var(--muted)] rounded-lg border-2 border-dashed border-purple-500/30 flex items-center justify-center">
+                          <div className="text-center">
+                            <Brain className="w-12 h-12 mx-auto mb-3 text-purple-500 opacity-50" />
+                            <p className="text-sm text-theme-muted mb-3">
+                              {mindMapData?._count?.nodes || 0} nodes, {mindMapData?._count?.connections || 0} connections
+                            </p>
+                            <Button
+                              onClick={() => setActiveTab('mindmaps')}
+                              className="bg-gradient-to-r from-purple-500 to-pink-500 hover:from-purple-600 hover:to-pink-600"
+                            >
+                              <Brain className="w-4 h-4 mr-2" />
+                              Open Interactive Mind Map
+                            </Button>
+                          </div>
+                        </div>
+                      </CardContent>
+                    </Card>
+                  )}
+
+                  {/* Subgroups Section - Editable Title */}
+                  {subgroups.length > 0 && (
+                    <Card className="border-2">
+                      <CardHeader className="flex flex-row items-center justify-between">
+                        <CardTitle className="text-xl font-black flex items-center gap-2">
+                          <Layers className="w-5 h-5" />
+                          SUBGROUPS
+                        </CardTitle>
+                        {isMember && (
+                          <Button variant="ghost" size="sm" onClick={() => setActiveTab('members')}>
+                            View All <ChevronRight className="w-4 h-4 ml-1" />
+                          </Button>
+                        )}
+                      </CardHeader>
+                      <CardContent>
+                        <div className="grid md:grid-cols-2 gap-4">
+                          {subgroups.slice(0, 4).map((sg: Subgroup) => (
+                            <div key={sg.id} className="p-4 bg-[var(--muted)] rounded-lg hover:bg-[color-mix(in_srgb,var(--primary)_10%,var(--muted))] transition-colors">
+                              <div className="flex items-center justify-between mb-2">
+                                <h4 className="font-black">{sg.name}</h4>
+                                <span className="text-sm font-bold text-theme-muted">
+                                  {sg._count.members}{sg.memberLimit ? `/${sg.memberLimit}` : ''} members
+                                </span>
+                              </div>
+                              <p className="text-sm text-theme-muted line-clamp-2">{sg.description}</p>
+                              {sg.userMembership && (
+                                <span className="inline-block mt-2 px-2 py-0.5 bg-[var(--primary)]/10 text-theme-primary text-xs font-bold rounded">
+                                  Joined as {sg.userMembership.role}
+                                </span>
+                              )}
+                            </div>
+                          ))}
+                        </div>
+                      </CardContent>
+                    </Card>
+                  )}
+
+                  {/* Recent Activity / Messages Preview */}
+                  {isMember && messages.length > 0 && (
+                    <Card className="border-2">
+                      <CardHeader className="flex flex-row items-center justify-between">
+                        <CardTitle className="text-xl font-black flex items-center gap-2">
+                          <MessageSquare className="w-5 h-5" />
+                          RECENT ACTIVITY
+                          <span className="ml-2 px-2 py-0.5 bg-green-500/10 text-green-500 text-xs font-bold rounded-full flex items-center gap-1">
+                            <Zap className="w-3 h-3" />
+                            LIVE
+                          </span>
+                        </CardTitle>
+                        <Button variant="ghost" size="sm" onClick={() => setActiveTab('discussions')}>
+                          Join Discussion <ChevronRight className="w-4 h-4 ml-1" />
+                        </Button>
+                      </CardHeader>
+                      <CardContent>
+                        <div className="space-y-3">
+                          {messages.slice(-5).reverse().map((msg: any) => (
+                            <div key={msg.id} className="flex gap-3 p-3 bg-[var(--muted)] rounded-lg hover:bg-[color-mix(in_srgb,var(--primary)_10%,var(--muted))] transition-colors">
+                              <div className="w-8 h-8 rounded-full bg-gradient-to-br from-[var(--primary)] to-[var(--accent)] flex items-center justify-center flex-shrink-0">
+                                {msg.user.image ? (
+                                  <img
+                                    src={msg.user.image}
+                                    alt={msg.user.name}
+                                    className="w-full h-full rounded-full object-cover"
+                                  />
+                                ) : (
+                                  <User className="w-4 h-4 text-[var(--primary-foreground)]" />
+                                )}
+                              </div>
+                              <div className="flex-1 min-w-0">
+                                <div className="flex items-center gap-2 mb-1">
+                                  <span className="font-black text-xs">{msg.user.name || 'Anonymous'}</span>
+                                  <span className="text-xs text-theme-muted">
+                                    {new Date(msg.createdAt).toLocaleTimeString()}
+                                  </span>
+                                </div>
+                                <p className="text-sm font-semibold line-clamp-2">{msg.content}</p>
+                              </div>
+                            </div>
+                          ))}
+                        </div>
+                      </CardContent>
+                    </Card>
+                  )}
+                </div>
               </div>
             )}
 
