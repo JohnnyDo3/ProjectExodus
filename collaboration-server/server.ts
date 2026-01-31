@@ -78,12 +78,12 @@ const server = new Server({
                 if (type === 'document') {
                   await prisma.document.update({
                     where: { id },
-                    data: { yjsState: state },
+                    data: { yjsState: new Uint8Array(state) },
                   })
                 } else if (type === 'mindmap') {
                   await prisma.mindMap.update({
                     where: { id },
-                    data: { yjsState: state },
+                    data: { yjsState: new Uint8Array(state) },
                   })
                 }
               } catch (error) {
