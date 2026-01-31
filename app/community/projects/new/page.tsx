@@ -12,7 +12,7 @@ import {
   Settings, Layers, BookOpen, Lock, Unlock, Globe2, Archive,
   Palette, Layout, ImageIcon, Tag, FolderTree, Plus, X, ChevronDown,
   Zap, Leaf, Sun, Moon, TreePine, Waves, Mountain, Wind, Network,
-  Lightbulb, CheckSquare, Flag, Package, StickyNote, Hexagon, AlertTriangle, Star
+  Lightbulb, CheckSquare, Flag, Package, StickyNote, Hexagon, AlertTriangle, Star, Link2
 } from 'lucide-react'
 import { BackButton } from '@/components/navigation/BackButton'
 import Link from 'next/link'
@@ -170,6 +170,8 @@ export default function NewProjectPage() {
   const [selectedNodeType, setSelectedNodeType] = useState<string>('IDEA')
   const [showNodeForm, setShowNodeForm] = useState(false)
   const [newNode, setNewNode] = useState({ label: '', description: '', type: 'IDEA' })
+  const [showConnectionForm, setShowConnectionForm] = useState(false)
+  const [newConnection, setNewConnection] = useState({ from: '', to: '', type: 'RELATED' })
 
   // Step 5: Collaboration
   const [enableDiscussions, setEnableDiscussions] = useState(true)
@@ -324,7 +326,25 @@ export default function NewProjectPage() {
   const removeMindMapNode = (id: string) => {
     setMindMapNodes(mindMapNodes.filter(n => n.id !== id))
     // Also remove connections involving this node
-    setMindMapConnections(mindMapConnections.filter(c => c.sourceNodeId !== id && c.targetNodeId !== id))
+    setMindMapConnections(mindMapConnections.filter(c => c.from !== id && c.to !== id))
+  }
+
+  const addMindMapConnection = () => {
+    if (newConnection.from && newConnection.to && newConnection.from !== newConnection.to) {
+      const connection = {
+        id: crypto.randomUUID(),
+        from: newConnection.from,
+        to: newConnection.to,
+        type: newConnection.type,
+      }
+      setMindMapConnections([...mindMapConnections, connection])
+      setNewConnection({ from: '', to: '', type: 'RELATED' })
+      setShowConnectionForm(false)
+    }
+  }
+
+  const removeMindMapConnection = (id: string) => {
+    setMindMapConnections(mindMapConnections.filter(c => c.id !== id))
   }
 
   const handleCoverImageUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -401,6 +421,7 @@ export default function NewProjectPage() {
         })),
         mindMap: {
           nodes: mindMapNodes.map(node => ({
+            id: node.id, // Include temp ID for connection mapping
             type: node.type,
             label: node.label,
             description: node.description,
@@ -1245,12 +1266,173 @@ export default function NewProjectPage() {
                           </Card>
                         )}
 
+                        {/* Connections Section */}
+                        {mindMapNodes.length >= 2 && (
+                          <>
+                            <div className="flex justify-between items-center mb-3 mt-6">
+                              <label className="flex items-center gap-1.5 text-xs font-bold text-[var(--foreground)]">
+                                <Link2 className="w-3.5 h-3.5" />
+                                Node Connections
+                              </label>
+                              <Button
+                                type="button"
+                                size="sm"
+                                onClick={() => setShowConnectionForm(!showConnectionForm)}
+                                className="font-bold text-xs h-7"
+                              >
+                                <Plus className="w-3 h-3 mr-1" />
+                                Add Connection
+                              </Button>
+                            </div>
+
+                            {/* Add Connection Form */}
+                            {showConnectionForm && (
+                              <Card className="mb-3 border-2 border-dashed border-teal-500/30">
+                                <CardContent className="p-3 space-y-2">
+                                  <div>
+                                    <label className="text-[10px] font-bold text-theme-muted mb-1 block">From Node</label>
+                                    <select
+                                      value={newConnection.from}
+                                      onChange={(e) => setNewConnection({ ...newConnection, from: e.target.value })}
+                                      className="w-full px-2 py-1.5 text-sm rounded-lg border-2 border-[var(--border)] bg-[var(--background)] text-[var(--foreground)] font-semibold focus:border-theme-primary focus:outline-none"
+                                    >
+                                      <option value="">Select source node...</option>
+                                      {mindMapNodes.map(node => (
+                                        <option key={node.id} value={node.id}>
+                                          {node.type === 'IDEA' && '💡'}
+                                          {node.type === 'TASK' && '✅'}
+                                          {node.type === 'MILESTONE' && '🎯'}
+                                          {node.type === 'RESOURCE' && '📦'}
+                                          {node.type === 'NOTE' && '📝'}
+                                          {node.type === 'DECISION' && '🎲'}
+                                          {node.type === 'RISK' && '⚠️'}
+                                          {node.type === 'OPPORTUNITY' && '🌟'}
+                                          {' '}{node.label}
+                                        </option>
+                                      ))}
+                                    </select>
+                                  </div>
+                                  <div>
+                                    <label className="text-[10px] font-bold text-theme-muted mb-1 block">Connection Type</label>
+                                    <select
+                                      value={newConnection.type}
+                                      onChange={(e) => setNewConnection({ ...newConnection, type: e.target.value })}
+                                      className="w-full px-2 py-1.5 text-sm rounded-lg border-2 border-[var(--border)] bg-[var(--background)] text-[var(--foreground)] font-semibold focus:border-theme-primary focus:outline-none"
+                                    >
+                                      <option value="RELATED">🔗 Related to</option>
+                                      <option value="DEPENDS">⚡ Depends on</option>
+                                      <option value="LEADS_TO">➡️ Leads to</option>
+                                      <option value="BLOCKS">🚫 Blocks</option>
+                                      <option value="SUPPORTS">🤝 Supports</option>
+                                      <option value="CONFLICTS">⚔️ Conflicts with</option>
+                                    </select>
+                                  </div>
+                                  <div>
+                                    <label className="text-[10px] font-bold text-theme-muted mb-1 block">To Node</label>
+                                    <select
+                                      value={newConnection.to}
+                                      onChange={(e) => setNewConnection({ ...newConnection, to: e.target.value })}
+                                      className="w-full px-2 py-1.5 text-sm rounded-lg border-2 border-[var(--border)] bg-[var(--background)] text-[var(--foreground)] font-semibold focus:border-theme-primary focus:outline-none"
+                                    >
+                                      <option value="">Select target node...</option>
+                                      {mindMapNodes.filter(n => n.id !== newConnection.from).map(node => (
+                                        <option key={node.id} value={node.id}>
+                                          {node.type === 'IDEA' && '💡'}
+                                          {node.type === 'TASK' && '✅'}
+                                          {node.type === 'MILESTONE' && '🎯'}
+                                          {node.type === 'RESOURCE' && '📦'}
+                                          {node.type === 'NOTE' && '📝'}
+                                          {node.type === 'DECISION' && '🎲'}
+                                          {node.type === 'RISK' && '⚠️'}
+                                          {node.type === 'OPPORTUNITY' && '🌟'}
+                                          {' '}{node.label}
+                                        </option>
+                                      ))}
+                                    </select>
+                                  </div>
+                                  <div className="flex gap-2">
+                                    <Button type="button" size="sm" onClick={addMindMapConnection} className="font-bold text-xs h-7">
+                                      Add Connection
+                                    </Button>
+                                    <Button type="button" size="sm" variant="ghost" onClick={() => setShowConnectionForm(false)} className="font-bold text-xs h-7">
+                                      Cancel
+                                    </Button>
+                                  </div>
+                                </CardContent>
+                              </Card>
+                            )}
+
+                            {/* Connections List */}
+                            {mindMapConnections.length > 0 && (
+                              <div className="space-y-2">
+                                {mindMapConnections.map((conn) => {
+                                  const fromNode = mindMapNodes.find(n => n.id === conn.from)
+                                  const toNode = mindMapNodes.find(n => n.id === conn.to)
+                                  if (!fromNode || !toNode) return null
+
+                                  const getConnectionIcon = (type: string) => {
+                                    switch (type) {
+                                      case 'RELATED': return '🔗'
+                                      case 'DEPENDS': return '⚡'
+                                      case 'LEADS_TO': return '➡️'
+                                      case 'BLOCKS': return '🚫'
+                                      case 'SUPPORTS': return '🤝'
+                                      case 'CONFLICTS': return '⚔️'
+                                      default: return '🔗'
+                                    }
+                                  }
+
+                                  const getConnectionLabel = (type: string) => {
+                                    switch (type) {
+                                      case 'RELATED': return 'Related to'
+                                      case 'DEPENDS': return 'Depends on'
+                                      case 'LEADS_TO': return 'Leads to'
+                                      case 'BLOCKS': return 'Blocks'
+                                      case 'SUPPORTS': return 'Supports'
+                                      case 'CONFLICTS': return 'Conflicts with'
+                                      default: return 'Connected to'
+                                    }
+                                  }
+
+                                  return (
+                                    <Card key={conn.id} className="border-2 bg-gradient-to-r from-teal-500/5 to-cyan-500/5">
+                                      <CardContent className="p-2.5 flex items-center gap-2">
+                                        <div className="flex items-center gap-2 flex-1 min-w-0">
+                                          <div className="px-2 py-1 bg-[var(--muted)] rounded text-xs font-bold truncate">
+                                            {fromNode.label}
+                                          </div>
+                                          <div className="flex items-center gap-1 text-xs font-bold text-theme-muted">
+                                            <span>{getConnectionIcon(conn.type)}</span>
+                                            <span className="hidden sm:inline">{getConnectionLabel(conn.type)}</span>
+                                          </div>
+                                          <div className="px-2 py-1 bg-[var(--muted)] rounded text-xs font-bold truncate">
+                                            {toNode.label}
+                                          </div>
+                                        </div>
+                                        <button
+                                          onClick={() => removeMindMapConnection(conn.id)}
+                                          className="p-1.5 hover:bg-red-500/10 rounded-lg text-red-500 transition-colors flex-shrink-0"
+                                        >
+                                          <X className="w-3.5 h-3.5" />
+                                        </button>
+                                      </CardContent>
+                                    </Card>
+                                  )
+                                })}
+                              </div>
+                            )}
+                          </>
+                        )}
+
                         {mindMapNodes.length > 0 && (
                           <div className="bg-emerald-500/10 border border-emerald-500/20 rounded-lg p-3 mt-3">
                             <div className="flex items-start gap-2">
                               <Check className="w-4 h-4 text-emerald-500 mt-0.5 flex-shrink-0" />
                               <p className="text-xs text-theme-muted leading-relaxed">
-                                <span className="font-bold text-emerald-600 dark:text-emerald-400">{mindMapNodes.length} node{mindMapNodes.length !== 1 ? 's' : ''} added.</span> After launching your project, you can expand this mind map with your team, add connections between nodes, and collaborate in real-time!
+                                <span className="font-bold text-emerald-600 dark:text-emerald-400">
+                                  {mindMapNodes.length} node{mindMapNodes.length !== 1 ? 's' : ''}
+                                  {mindMapConnections.length > 0 && ` and ${mindMapConnections.length} connection${mindMapConnections.length !== 1 ? 's' : ''}`} added.
+                                </span> After launching your project, you can expand this mind map with your team, add more connections, and collaborate in real-time!
                               </p>
                             </div>
                           </div>

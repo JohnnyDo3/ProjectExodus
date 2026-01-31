@@ -167,20 +167,16 @@ export async function POST(request: NextRequest) {
           isCollaborative: true,
           isPublic: body.visibility === 'PUBLIC',
           nodeCount: body.mindMap.nodes.length,
-          connectionCount: 0,
+          connectionCount: body.mindMap.connections?.length || 0,
         },
       })
 
-      // Create all nodes
-      if (body.mindMap.nodes.length > 0) {
-        await prisma.mindMapNode.createMany({
-          data: body.mindMap.nodes.map((node: {
-            type: string
-            label: string
-            description?: string
-            x: number
-            y: number
-          }) => ({
+      // Create all nodes and store their IDs
+      const createdNodesMap = new Map<string, string>() // Map temp IDs to real database IDs
+
+      for (const node of body.mindMap.nodes) {
+        const createdNode = await prisma.mindMapNode.create({
+          data: {
             mindMapId: mindMap.id,
             type: node.type,
             label: node.label,
@@ -188,19 +184,41 @@ export async function POST(request: NextRequest) {
             x: node.x,
             y: node.y,
             createdById: session.user.id,
-          })),
-        })
-
-        // Add creator as contributor with ADMIN permission
-        await prisma.mindMapContributor.create({
-          data: {
-            mindMapId: mindMap.id,
-            userId: session.user.id,
-            permission: 'ADMIN',
-            nodesCreated: body.mindMap.nodes.length,
           },
         })
+        // Store the mapping of temporary ID (from wizard) to real database ID
+        if (node.id) {
+          createdNodesMap.set(node.id, createdNode.id)
+        }
       }
+
+      // Create connections if provided
+      if (body.mindMap.connections && Array.isArray(body.mindMap.connections) && body.mindMap.connections.length > 0) {
+        await prisma.mindMapConnection.createMany({
+          data: body.mindMap.connections.map((conn: {
+            from: string
+            to: string
+            type: string
+          }) => ({
+            mindMapId: mindMap.id,
+            fromNodeId: createdNodesMap.get(conn.from) || conn.from,
+            toNodeId: createdNodesMap.get(conn.to) || conn.to,
+            type: conn.type,
+            createdById: session.user.id,
+          })),
+        })
+      }
+
+      // Add creator as contributor with ADMIN permission
+      await prisma.mindMapContributor.create({
+        data: {
+          mindMapId: mindMap.id,
+          userId: session.user.id,
+          permission: 'ADMIN',
+          nodesCreated: body.mindMap.nodes.length,
+          connectionsCreated: body.mindMap.connections?.length || 0,
+        },
+      })
     }
 
     return NextResponse.json({
