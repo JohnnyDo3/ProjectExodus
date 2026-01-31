@@ -29,20 +29,21 @@ import { ZodError } from 'zod'
  */
 export async function GET(
   request: NextRequest,
-  { params }: { params: { id: string; nodeId: string } }
+  { params }: { params: Promise<{ id: string; nodeId: string }> }
 ): Promise<NextResponse<ApiResponse<NodeResponse>>> {
   try {
+    const { id, nodeId } = await params
     const session = await auth()
     if (!session?.user) {
       throw new UnauthorizedError('Please sign in to view nodes')
     }
 
-    await assertMindMapAccess(params.id, session.user.id, 'VIEW')
+    await assertMindMapAccess(id, session.user.id, 'VIEW')
 
     const node = await prisma.mindMapNode.findFirst({
       where: {
-        id: params.nodeId,
-        mindMapId: params.id
+        id: nodeId,
+        mindMapId: id
       },
       include: {
         assignedTo: {
@@ -97,23 +98,24 @@ export async function GET(
  */
 export async function PATCH(
   request: NextRequest,
-  { params }: { params: { id: string; nodeId: string } }
+  { params }: { params: Promise<{ id: string; nodeId: string }> }
 ): Promise<NextResponse<ApiResponse<NodeResponse>>> {
   try {
+    const { id, nodeId } = await params
     const session = await auth()
     if (!session?.user) {
       throw new UnauthorizedError('Please sign in to update nodes')
     }
 
-    await assertMindMapAccess(params.id, session.user.id, 'EDIT')
+    await assertMindMapAccess(id, session.user.id, 'EDIT')
 
     const body = await request.json()
     const validatedData = UpdateNodeSchema.parse(body)
 
     const node = await prisma.mindMapNode.update({
       where: {
-        id: params.nodeId,
-        mindMapId: params.id
+        id: nodeId,
+        mindMapId: id
       },
       data: {
         ...validatedData,
@@ -145,7 +147,7 @@ export async function PATCH(
 
     // Update mind map last edited
     await prisma.mindMap.update({
-      where: { id: params.id },
+      where: { id: id },
       data: {
         lastEditedById: session.user.id
       }
@@ -153,7 +155,7 @@ export async function PATCH(
 
     // Log activity
     await logActivity(
-      params.id,
+      id,
       session.user.id,
       'NODE_UPDATED',
       { label: node.label, changes: validatedData },
@@ -163,7 +165,7 @@ export async function PATCH(
 
     // Broadcast real-time update
     await broadcastNodeUpdated(
-      params.id,
+      id,
       node as NodeResponse,
       session.user.id,
       session.user.name || null
@@ -179,7 +181,7 @@ export async function PATCH(
 
     if (error instanceof ZodError) {
       return NextResponse.json(
-        { success: false, error: error.errors[0].message },
+        { success: false, error: error.issues[0].message },
         { status: 400 }
       )
     }
@@ -203,21 +205,22 @@ export async function PATCH(
  */
 export async function DELETE(
   request: NextRequest,
-  { params }: { params: { id: string; nodeId: string } }
+  { params }: { params: Promise<{ id: string; nodeId: string }> }
 ): Promise<NextResponse<ApiResponse<void>>> {
   try {
+    const { id, nodeId } = await params
     const session = await auth()
     if (!session?.user) {
       throw new UnauthorizedError('Please sign in to delete nodes')
     }
 
-    await assertMindMapAccess(params.id, session.user.id, 'EDIT')
+    await assertMindMapAccess(id, session.user.id, 'EDIT')
 
     // Get node before deletion for broadcast
     const node = await prisma.mindMapNode.findFirst({
       where: {
-        id: params.nodeId,
-        mindMapId: params.id
+        id: nodeId,
+        mindMapId: id
       },
       include: {
         assignedTo: {
@@ -249,14 +252,14 @@ export async function DELETE(
     // Delete node (cascade deletes comments and connections)
     await prisma.mindMapNode.delete({
       where: {
-        id: params.nodeId,
-        mindMapId: params.id
+        id: nodeId,
+        mindMapId: id
       }
     })
 
     // Update mind map node count
     await prisma.mindMap.update({
-      where: { id: params.id },
+      where: { id: id },
       data: {
         nodeCount: { decrement: 1 },
         lastEditedById: session.user.id
@@ -265,7 +268,7 @@ export async function DELETE(
 
     // Log activity
     await logActivity(
-      params.id,
+      id,
       session.user.id,
       'NODE_DELETED',
       { label: node.label, type: node.type },
@@ -275,7 +278,7 @@ export async function DELETE(
 
     // Broadcast real-time deletion
     await broadcastNodeDeleted(
-      params.id,
+      id,
       node as NodeResponse,
       session.user.id,
       session.user.name || null

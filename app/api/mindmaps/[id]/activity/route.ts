@@ -21,15 +21,16 @@ import { assertMindMapAccess } from '@/lib/mindmap/permissions'
  */
 export async function GET(
   request: NextRequest,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ): Promise<NextResponse<ApiResponse<PaginatedResponse<ActivityResponse>>>> {
   try {
     const session = await auth()
+    const { id } = await params
     if (!session?.user) {
       throw new UnauthorizedError('Please sign in to view activity')
     }
 
-    await assertMindMapAccess(params.id, session.user.id, 'VIEW')
+    await assertMindMapAccess(id, session.user.id, 'VIEW')
 
     // Parse query parameters
     const { searchParams } = new URL(request.url)
@@ -40,7 +41,7 @@ export async function GET(
 
     // Build where clause
     const where: any = {
-      mindMapId: params.id
+      mindMapId: id
     }
 
     if (type) where.type = type

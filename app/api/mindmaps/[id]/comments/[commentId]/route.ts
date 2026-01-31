@@ -23,20 +23,22 @@ import { ZodError } from 'zod'
  */
 export async function GET(
   request: NextRequest,
-  { params }: { params: { id: string; commentId: string } }
+  { params }: { params: Promise<{ id: string; commentId: string }> }
 ): Promise<NextResponse<ApiResponse<CommentResponse>>> {
   try {
+    const { id, commentId } = await params
     const session = await auth()
+    
     if (!session?.user) {
       throw new UnauthorizedError('Please sign in to view comments')
     }
 
-    await assertMindMapAccess(params.id, session.user.id, 'VIEW')
+    await assertMindMapAccess(id, session.user.id, 'VIEW')
 
     const comment = await prisma.mindMapNodeComment.findFirst({
       where: {
-        id: params.commentId,
-        mindMapId: params.id
+        id: commentId,
+        mindMapId: id
       },
       include: {
         author: {
@@ -84,21 +86,23 @@ export async function GET(
  */
 export async function PATCH(
   request: NextRequest,
-  { params }: { params: { id: string; commentId: string } }
+  { params }: { params: Promise<{ id: string; commentId: string }> }
 ): Promise<NextResponse<ApiResponse<CommentResponse>>> {
   try {
+    const { id, commentId } = await params
     const session = await auth()
+    
     if (!session?.user) {
       throw new UnauthorizedError('Please sign in to update comments')
     }
 
-    await assertMindMapAccess(params.id, session.user.id, 'COMMENT')
+    await assertMindMapAccess(id, session.user.id, 'COMMENT')
 
     // Get the comment to check ownership
     const existingComment = await prisma.mindMapNodeComment.findFirst({
       where: {
-        id: params.commentId,
-        mindMapId: params.id
+        id: commentId,
+        mindMapId: id
       }
     })
 
@@ -116,8 +120,8 @@ export async function PATCH(
 
     const comment = await prisma.mindMapNodeComment.update({
       where: {
-        id: params.commentId,
-        mindMapId: params.id
+        id: commentId,
+        mindMapId: id
       },
       data: validatedData,
       include: {
@@ -138,7 +142,7 @@ export async function PATCH(
 
     // Log activity
     await logActivity(
-      params.id,
+      id,
       session.user.id,
       'COMMENT_UPDATED',
       { changes: validatedData },
@@ -156,7 +160,7 @@ export async function PATCH(
 
     if (error instanceof ZodError) {
       return NextResponse.json(
-        { success: false, error: error.errors[0].message },
+        { success: false, error: error.issues[0].message },
         { status: 400 }
       )
     }
@@ -180,21 +184,23 @@ export async function PATCH(
  */
 export async function DELETE(
   request: NextRequest,
-  { params }: { params: { id: string; commentId: string } }
+  { params }: { params: Promise<{ id: string; commentId: string }> }
 ): Promise<NextResponse<ApiResponse<void>>> {
   try {
+    const { id, commentId } = await params
     const session = await auth()
+    
     if (!session?.user) {
       throw new UnauthorizedError('Please sign in to delete comments')
     }
 
-    await assertMindMapAccess(params.id, session.user.id, 'COMMENT')
+    await assertMindMapAccess(id, session.user.id, 'COMMENT')
 
     // Get the comment to check ownership
     const existingComment = await prisma.mindMapNodeComment.findFirst({
       where: {
-        id: params.commentId,
-        mindMapId: params.id
+        id: commentId,
+        mindMapId: id
       }
     })
 
@@ -205,25 +211,25 @@ export async function DELETE(
     // Only the author or admin can delete the comment
     if (existingComment.userId !== session.user.id) {
       // Check if user has ADMIN permission
-      await assertMindMapAccess(params.id, session.user.id, 'ADMIN')
+      await assertMindMapAccess(id, session.user.id, 'ADMIN')
     }
 
     // Delete comment (cascade deletes replies)
     await prisma.mindMapNodeComment.delete({
       where: {
-        id: params.commentId,
-        mindMapId: params.id
+        id: commentId,
+        mindMapId: id
       }
     })
 
     // Log activity
     await logActivity(
-      params.id,
+      id,
       session.user.id,
       'COMMENT_DELETED',
       {},
       'comment',
-      params.commentId
+      commentId
     )
 
     return NextResponse.json({

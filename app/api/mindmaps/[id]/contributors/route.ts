@@ -23,19 +23,20 @@ import { ZodError } from 'zod'
  */
 export async function GET(
   request: NextRequest,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ): Promise<NextResponse<ApiResponse<ContributorResponse[]>>> {
   try {
     const session = await auth()
+    const { id } = await params
     if (!session?.user) {
       throw new UnauthorizedError('Please sign in to view contributors')
     }
 
-    await assertMindMapAccess(params.id, session.user.id, 'VIEW')
+    await assertMindMapAccess(id, session.user.id, 'VIEW')
 
     const contributors = await prisma.mindMapContributor.findMany({
       where: {
-        mindMapId: params.id
+        mindMapId: id
       },
       include: {
         user: {
@@ -76,16 +77,17 @@ export async function GET(
  */
 export async function POST(
   request: NextRequest,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ): Promise<NextResponse<ApiResponse<ContributorResponse>>> {
   try {
     const session = await auth()
+    const { id } = await params
     if (!session?.user) {
       throw new UnauthorizedError('Please sign in to add contributors')
     }
 
     // Only admins can add contributors
-    await assertMindMapAccess(params.id, session.user.id, 'ADMIN')
+    await assertMindMapAccess(id, session.user.id, 'ADMIN')
 
     const body = await request.json()
     const validatedData = AddContributorSchema.parse(body)
@@ -103,7 +105,7 @@ export async function POST(
     const existingContributor = await prisma.mindMapContributor.findUnique({
       where: {
         mindMapId_userId: {
-          mindMapId: params.id,
+          mindMapId: id,
           userId: validatedData.userId
         }
       }
@@ -115,7 +117,7 @@ export async function POST(
 
     const contributor = await prisma.mindMapContributor.create({
       data: {
-        mindMapId: params.id,
+        mindMapId: id,
         userId: validatedData.userId,
         permission: validatedData.permission
       },
@@ -133,7 +135,7 @@ export async function POST(
 
     // Log activity
     await logActivity(
-      params.id,
+      id,
       session.user.id,
       'CONTRIBUTOR_ADDED',
       {
@@ -152,7 +154,7 @@ export async function POST(
 
     if (error instanceof ZodError) {
       return NextResponse.json(
-        { success: false, error: error.errors[0].message },
+        { success: false, error: error.issues[0].message },
         { status: 400 }
       )
     }

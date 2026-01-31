@@ -32,15 +32,16 @@ import { ZodError } from 'zod'
  */
 export async function GET(
   request: NextRequest,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ): Promise<NextResponse<ApiResponse<PaginatedResponse<NodeResponse>>>> {
   try {
     const session = await auth()
+    const { id } = await params
     if (!session?.user) {
       throw new UnauthorizedError('Please sign in to view nodes')
     }
 
-    await assertMindMapAccess(params.id, session.user.id, 'VIEW')
+    await assertMindMapAccess(id, session.user.id, 'VIEW')
 
     // Parse query parameters
     const { searchParams } = new URL(request.url)
@@ -52,7 +53,7 @@ export async function GET(
 
     // Build where clause
     const where: any = {
-      mindMapId: params.id
+      mindMapId: id
     }
 
     if (type) where.type = type
@@ -129,15 +130,16 @@ export async function GET(
  */
 export async function POST(
   request: NextRequest,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ): Promise<NextResponse<ApiResponse<NodeResponse | NodeResponse[]>>> {
   try {
     const session = await auth()
+    const { id } = await params
     if (!session?.user) {
       throw new UnauthorizedError('Please sign in to create nodes')
     }
 
-    await assertMindMapAccess(params.id, session.user.id, 'EDIT')
+    await assertMindMapAccess(id, session.user.id, 'EDIT')
 
     const body = await request.json()
 
@@ -150,7 +152,7 @@ export async function POST(
           prisma.mindMapNode.create({
             data: {
               ...nodeData,
-              mindMapId: params.id,
+              mindMapId: id,
               createdById: session.user.id
             },
             include: {
@@ -180,7 +182,7 @@ export async function POST(
 
       // Update mind map node count
       await prisma.mindMap.update({
-        where: { id: params.id },
+        where: { id: id },
         data: {
           nodeCount: { increment: createdNodes.length },
           lastEditedById: session.user.id
@@ -188,14 +190,14 @@ export async function POST(
       })
 
       // Update contributor stats
-      await updateContributorActivity(params.id, session.user.id, {
+      await updateContributorActivity(id, session.user.id, {
         nodesCreated: createdNodes.length
       })
 
       // Log activities
       for (const node of createdNodes) {
         await logActivity(
-          params.id,
+          id,
           session.user.id,
           'NODE_CREATED',
           { nodeType: node.type, label: node.label },
@@ -205,7 +207,7 @@ export async function POST(
 
         // Broadcast real-time event
         await broadcastNodeCreated(
-          params.id,
+          id,
           node as NodeResponse,
           session.user.id,
           session.user.name || null
@@ -224,7 +226,7 @@ export async function POST(
       const node = await prisma.mindMapNode.create({
         data: {
           ...validatedData,
-          mindMapId: params.id,
+          mindMapId: id,
           createdById: session.user.id
         },
         include: {
@@ -252,7 +254,7 @@ export async function POST(
 
       // Update mind map node count
       await prisma.mindMap.update({
-        where: { id: params.id },
+        where: { id: id },
         data: {
           nodeCount: { increment: 1 },
           lastEditedById: session.user.id
@@ -260,13 +262,13 @@ export async function POST(
       })
 
       // Update contributor stats
-      await updateContributorActivity(params.id, session.user.id, {
+      await updateContributorActivity(id, session.user.id, {
         nodesCreated: 1
       })
 
       // Log activity
       await logActivity(
-        params.id,
+        id,
         session.user.id,
         'NODE_CREATED',
         { nodeType: node.type, label: node.label },
@@ -276,7 +278,7 @@ export async function POST(
 
       // Broadcast real-time event
       await broadcastNodeCreated(
-        params.id,
+        id,
         node as NodeResponse,
         session.user.id,
         session.user.name || null
@@ -293,7 +295,7 @@ export async function POST(
 
     if (error instanceof ZodError) {
       return NextResponse.json(
-        { success: false, error: error.errors[0].message },
+        { success: false, error: error.issues[0].message },
         { status: 400 }
       )
     }
@@ -317,15 +319,16 @@ export async function POST(
  */
 export async function PUT(
   request: NextRequest,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ): Promise<NextResponse<ApiResponse<NodeResponse[]>>> {
   try {
     const session = await auth()
+    const { id } = await params
     if (!session?.user) {
       throw new UnauthorizedError('Please sign in to update nodes')
     }
 
-    await assertMindMapAccess(params.id, session.user.id, 'EDIT')
+    await assertMindMapAccess(id, session.user.id, 'EDIT')
 
     const body = await request.json()
     const validatedData = BulkUpdateNodesSchema.parse(body)
@@ -333,7 +336,7 @@ export async function PUT(
     const updatedNodes = await prisma.$transaction(
       validatedData.updates.map(({ id, data }) =>
         prisma.mindMapNode.update({
-          where: { id, mindMapId: params.id },
+          where: { id, mindMapId: id },
           data: {
             ...data,
             lastEditedById: session.user.id,
@@ -366,7 +369,7 @@ export async function PUT(
 
     // Update mind map last edited
     await prisma.mindMap.update({
-      where: { id: params.id },
+      where: { id: id },
       data: {
         lastEditedById: session.user.id
       }
@@ -375,7 +378,7 @@ export async function PUT(
     // Log activities
     for (const node of updatedNodes) {
       await logActivity(
-        params.id,
+        id,
         session.user.id,
         'NODE_UPDATED',
         { label: node.label },
@@ -394,7 +397,7 @@ export async function PUT(
 
     if (error instanceof ZodError) {
       return NextResponse.json(
-        { success: false, error: error.errors[0].message },
+        { success: false, error: error.issues[0].message },
         { status: 400 }
       )
     }
@@ -418,15 +421,16 @@ export async function PUT(
  */
 export async function DELETE(
   request: NextRequest,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ): Promise<NextResponse<ApiResponse<void>>> {
   try {
     const session = await auth()
+    const { id } = await params
     if (!session?.user) {
       throw new UnauthorizedError('Please sign in to delete nodes')
     }
 
-    await assertMindMapAccess(params.id, session.user.id, 'EDIT')
+    await assertMindMapAccess(id, session.user.id, 'EDIT')
 
     const body = await request.json()
     const validatedData = BulkDeleteNodesSchema.parse(body)
@@ -435,13 +439,13 @@ export async function DELETE(
     const deleteResult = await prisma.mindMapNode.deleteMany({
       where: {
         id: { in: validatedData.nodeIds },
-        mindMapId: params.id
+        mindMapId: id
       }
     })
 
     // Update mind map node count
     await prisma.mindMap.update({
-      where: { id: params.id },
+      where: { id: id },
       data: {
         nodeCount: { decrement: deleteResult.count },
         lastEditedById: session.user.id
@@ -451,7 +455,7 @@ export async function DELETE(
     // Log activities
     for (const nodeId of validatedData.nodeIds) {
       await logActivity(
-        params.id,
+        id,
         session.user.id,
         'NODE_DELETED',
         {},
@@ -469,7 +473,7 @@ export async function DELETE(
 
     if (error instanceof ZodError) {
       return NextResponse.json(
-        { success: false, error: error.errors[0].message },
+        { success: false, error: error.issues[0].message },
         { status: 400 }
       )
     }

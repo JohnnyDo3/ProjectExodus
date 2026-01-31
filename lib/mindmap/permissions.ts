@@ -57,7 +57,7 @@ export async function checkMindMapAccess(
   // Check contributor permissions
   const contributor = mindMap.contributors[0]
   if (contributor) {
-    const hasPermission = PERMISSION_LEVELS[contributor.permission] >= PERMISSION_LEVELS[requiredPermission]
+    const hasPermission = PERMISSION_LEVELS[contributor.permission as Permission] >= PERMISSION_LEVELS[requiredPermission]
     return hasPermission
   }
 

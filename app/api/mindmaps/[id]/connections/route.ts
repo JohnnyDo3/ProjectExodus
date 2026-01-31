@@ -31,15 +31,16 @@ import { ZodError } from 'zod'
  */
 export async function GET(
   request: NextRequest,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ): Promise<NextResponse<ApiResponse<PaginatedResponse<ConnectionResponse>>>> {
   try {
     const session = await auth()
+    const { id } = await params
     if (!session?.user) {
       throw new UnauthorizedError('Please sign in to view connections')
     }
 
-    await assertMindMapAccess(params.id, session.user.id, 'VIEW')
+    await assertMindMapAccess(id, session.user.id, 'VIEW')
 
     // Parse query parameters
     const { searchParams } = new URL(request.url)
@@ -50,7 +51,7 @@ export async function GET(
 
     // Build where clause
     const where: any = {
-      mindMapId: params.id
+      mindMapId: id
     }
 
     if (type) where.type = type
@@ -131,15 +132,16 @@ export async function GET(
  */
 export async function POST(
   request: NextRequest,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ): Promise<NextResponse<ApiResponse<ConnectionResponse | ConnectionResponse[]>>> {
   try {
     const session = await auth()
+    const { id } = await params
     if (!session?.user) {
       throw new UnauthorizedError('Please sign in to create connections')
     }
 
-    await assertMindMapAccess(params.id, session.user.id, 'EDIT')
+    await assertMindMapAccess(id, session.user.id, 'EDIT')
 
     const body = await request.json()
 
@@ -157,7 +159,7 @@ export async function POST(
       const nodes = await prisma.mindMapNode.findMany({
         where: {
           id: { in: Array.from(nodeIds) },
-          mindMapId: params.id
+          mindMapId: id
         }
       })
 
@@ -170,7 +172,7 @@ export async function POST(
           prisma.mindMapConnection.create({
             data: {
               ...connData,
-              mindMapId: params.id
+              mindMapId: id
             },
             include: {
               fromNode: {
@@ -199,7 +201,7 @@ export async function POST(
 
       // Update mind map connection count
       await prisma.mindMap.update({
-        where: { id: params.id },
+        where: { id: id },
         data: {
           connectionCount: { increment: createdConnections.length },
           lastEditedById: session.user.id
@@ -207,14 +209,14 @@ export async function POST(
       })
 
       // Update contributor stats
-      await updateContributorActivity(params.id, session.user.id, {
+      await updateContributorActivity(id, session.user.id, {
         connectionsCreated: createdConnections.length
       })
 
       // Log activities
       for (const connection of createdConnections) {
         await logActivity(
-          params.id,
+          id,
           session.user.id,
           'CONNECTION_CREATED',
           { type: connection.type, from: connection.sourceNodeId, to: connection.targetNodeId },
@@ -224,7 +226,7 @@ export async function POST(
 
         // Broadcast real-time event
         await broadcastConnectionCreated(
-          params.id,
+          id,
           connection as ConnectionResponse,
           session.user.id,
           session.user.name || null
@@ -244,7 +246,7 @@ export async function POST(
       const nodes = await prisma.mindMapNode.findMany({
         where: {
           id: { in: [validatedData.sourceNodeId, validatedData.targetNodeId] },
-          mindMapId: params.id
+          mindMapId: id
         }
       })
 
@@ -260,7 +262,7 @@ export async function POST(
       const connection = await prisma.mindMapConnection.create({
         data: {
           ...validatedData,
-          mindMapId: params.id
+          mindMapId: id
         },
         include: {
           fromNode: {
@@ -287,7 +289,7 @@ export async function POST(
 
       // Update mind map connection count
       await prisma.mindMap.update({
-        where: { id: params.id },
+        where: { id: id },
         data: {
           connectionCount: { increment: 1 },
           lastEditedById: session.user.id
@@ -295,13 +297,13 @@ export async function POST(
       })
 
       // Update contributor stats
-      await updateContributorActivity(params.id, session.user.id, {
+      await updateContributorActivity(id, session.user.id, {
         connectionsCreated: 1
       })
 
       // Log activity
       await logActivity(
-        params.id,
+        id,
         session.user.id,
         'CONNECTION_CREATED',
         { type: connection.type, from: connection.fromNodeId, to: connection.toNodeId },
@@ -311,7 +313,7 @@ export async function POST(
 
       // Broadcast real-time event
       await broadcastConnectionCreated(
-        params.id,
+        id,
         connection as ConnectionResponse,
         session.user.id,
         session.user.name || null
@@ -328,7 +330,7 @@ export async function POST(
 
     if (error instanceof ZodError) {
       return NextResponse.json(
-        { success: false, error: error.errors[0].message },
+        { success: false, error: error.issues[0].message },
         { status: 400 }
       )
     }
@@ -352,15 +354,16 @@ export async function POST(
  */
 export async function DELETE(
   request: NextRequest,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ): Promise<NextResponse<ApiResponse<void>>> {
   try {
     const session = await auth()
+    const { id } = await params
     if (!session?.user) {
       throw new UnauthorizedError('Please sign in to delete connections')
     }
 
-    await assertMindMapAccess(params.id, session.user.id, 'EDIT')
+    await assertMindMapAccess(id, session.user.id, 'EDIT')
 
     const body = await request.json()
     const validatedData = BulkDeleteConnectionsSchema.parse(body)
@@ -369,13 +372,13 @@ export async function DELETE(
     const deleteResult = await prisma.mindMapConnection.deleteMany({
       where: {
         id: { in: validatedData.connectionIds },
-        mindMapId: params.id
+        mindMapId: id
       }
     })
 
     // Update mind map connection count
     await prisma.mindMap.update({
-      where: { id: params.id },
+      where: { id: id },
       data: {
         connectionCount: { decrement: deleteResult.count },
         lastEditedById: session.user.id
@@ -385,7 +388,7 @@ export async function DELETE(
     // Log activities
     for (const connectionId of validatedData.connectionIds) {
       await logActivity(
-        params.id,
+        id,
         session.user.id,
         'CONNECTION_DELETED',
         {},
@@ -403,7 +406,7 @@ export async function DELETE(
 
     if (error instanceof ZodError) {
       return NextResponse.json(
-        { success: false, error: error.errors[0].message },
+        { success: false, error: error.issues[0].message },
         { status: 400 }
       )
     }

@@ -48,9 +48,10 @@ export default function DocumentPage({
         // Fetch project
         const projectRes = await fetch('/api/projects')
         const projectData = await projectRes.json()
+        let currentProject = null
         if (projectData.success) {
-          const proj = projectData.data.find((p: any) => p.slug === slug)
-          setProject(proj)
+          currentProject = projectData.data.find((p: any) => p.slug === slug)
+          setProject(currentProject)
         }
 
         // Fetch document
@@ -60,7 +61,7 @@ export default function DocumentPage({
           setDocument(docData.data)
 
           // Check if user can edit
-          const isMember = proj?.members?.some((m: any) => m.userId === session?.user?.id)
+          const isMember = currentProject?.members?.some((m: any) => m.userId === session?.user?.id)
           const isCreator = docData.data.creatorId === session?.user?.id
           const collaborator = docData.data.collaborators?.find(
             (c: any) => c.userId === session?.user?.id
@@ -242,8 +243,8 @@ export default function DocumentPage({
                     session?.user
                       ? {
                           id: session.user.id!,
-                          name: session.user.name,
-                          image: session.user.image,
+                          name: session.user.name ?? null,
+                          image: session.user.image ?? null,
                         }
                       : null
                   }

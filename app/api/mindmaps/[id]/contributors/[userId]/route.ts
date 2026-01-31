@@ -23,16 +23,18 @@ import { ZodError } from 'zod'
  */
 export async function PATCH(
   request: NextRequest,
-  { params }: { params: { id: string; userId: string } }
+  { params }: { params: Promise<{ id: string; userId: string }> }
 ): Promise<NextResponse<ApiResponse<ContributorResponse>>> {
   try {
+    const { id, userId } = await params
     const session = await auth()
+    
     if (!session?.user) {
       throw new UnauthorizedError('Please sign in to update contributors')
     }
 
     // Only admins can update contributor permissions
-    await assertMindMapAccess(params.id, session.user.id, 'ADMIN')
+    await assertMindMapAccess(id, session.user.id, 'ADMIN')
 
     const body = await request.json()
     const validatedData = UpdateContributorSchema.parse(body)
@@ -41,8 +43,8 @@ export async function PATCH(
     const existingContributor = await prisma.mindMapContributor.findUnique({
       where: {
         mindMapId_userId: {
-          mindMapId: params.id,
-          userId: params.userId
+          mindMapId: id,
+          userId: userId
         }
       }
     })
@@ -53,19 +55,19 @@ export async function PATCH(
 
     // Prevent changing the creator's permission
     const mindMap = await prisma.mindMap.findUnique({
-      where: { id: params.id },
+      where: { id: id },
       select: { creatorId: true }
     })
 
-    if (mindMap?.creatorId === params.userId) {
+    if (mindMap?.creatorId === userId) {
       throw new ValidationError('Cannot change the creator\'s permission')
     }
 
     const contributor = await prisma.mindMapContributor.update({
       where: {
         mindMapId_userId: {
-          mindMapId: params.id,
-          userId: params.userId
+          mindMapId: id,
+          userId: userId
         }
       },
       data: {
@@ -85,11 +87,11 @@ export async function PATCH(
 
     // Log activity
     await logActivity(
-      params.id,
+      id,
       session.user.id,
       'CONTRIBUTOR_UPDATED',
       {
-        contributorId: params.userId,
+        contributorId: userId,
         newPermission: validatedData.permission
       }
     )
@@ -104,7 +106,7 @@ export async function PATCH(
 
     if (error instanceof ZodError) {
       return NextResponse.json(
-        { success: false, error: error.errors[0].message },
+        { success: false, error: error.issues[0].message },
         { status: 400 }
       )
     }
@@ -128,23 +130,25 @@ export async function PATCH(
  */
 export async function DELETE(
   request: NextRequest,
-  { params }: { params: { id: string; userId: string } }
+  { params }: { params: Promise<{ id: string; userId: string }> }
 ): Promise<NextResponse<ApiResponse<void>>> {
   try {
+    const { id, userId } = await params
     const session = await auth()
+    
     if (!session?.user) {
       throw new UnauthorizedError('Please sign in to remove contributors')
     }
 
     // Only admins can remove contributors
-    await assertMindMapAccess(params.id, session.user.id, 'ADMIN')
+    await assertMindMapAccess(id, session.user.id, 'ADMIN')
 
     // Verify contributor exists
     const existingContributor = await prisma.mindMapContributor.findUnique({
       where: {
         mindMapId_userId: {
-          mindMapId: params.id,
-          userId: params.userId
+          mindMapId: id,
+          userId: userId
         }
       }
     })
@@ -155,11 +159,11 @@ export async function DELETE(
 
     // Prevent removing the creator
     const mindMap = await prisma.mindMap.findUnique({
-      where: { id: params.id },
+      where: { id: id },
       select: { creatorId: true }
     })
 
-    if (mindMap?.creatorId === params.userId) {
+    if (mindMap?.creatorId === userId) {
       throw new ValidationError('Cannot remove the creator from contributors')
     }
 
@@ -167,19 +171,19 @@ export async function DELETE(
     await prisma.mindMapContributor.delete({
       where: {
         mindMapId_userId: {
-          mindMapId: params.id,
-          userId: params.userId
+          mindMapId: id,
+          userId: userId
         }
       }
     })
 
     // Log activity
     await logActivity(
-      params.id,
+      id,
       session.user.id,
       'CONTRIBUTOR_REMOVED',
       {
-        contributorId: params.userId
+        contributorId: userId
       }
     )
 

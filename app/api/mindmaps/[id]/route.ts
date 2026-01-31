@@ -27,16 +27,17 @@ import { ZodError } from 'zod'
  */
 export async function GET(
   request: NextRequest,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ): Promise<NextResponse<ApiResponse<MindMapResponse>>> {
   try {
     const session = await auth()
+    const { id } = await params
     if (!session?.user) {
       throw new UnauthorizedError('Please sign in to view mind maps')
     }
 
     const mindMap = await getMindMapWithPermission(
-      params.id,
+      id,
       session.user.id,
       'VIEW'
     )
@@ -71,22 +72,23 @@ export async function GET(
  */
 export async function PATCH(
   request: NextRequest,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ): Promise<NextResponse<ApiResponse<MindMapResponse>>> {
   try {
     const session = await auth()
+    const { id } = await params
     if (!session?.user) {
       throw new UnauthorizedError('Please sign in to update mind maps')
     }
 
     // Check EDIT permission
-    await assertMindMapAccess(params.id, session.user.id, 'EDIT')
+    await assertMindMapAccess(id, session.user.id, 'EDIT')
 
     const body = await request.json()
     const validatedData = UpdateMindMapSchema.parse(body)
 
     const mindMap = await prisma.mindMap.update({
-      where: { id: params.id },
+      where: { id: id },
       data: {
         ...validatedData,
         lastEditedById: session.user.id
@@ -118,7 +120,7 @@ export async function PATCH(
 
     // Log activity
     await logActivity(
-      params.id,
+      id,
       session.user.id,
       'SETTINGS_UPDATED',
       { changes: validatedData }
@@ -134,7 +136,7 @@ export async function PATCH(
 
     if (error instanceof ZodError) {
       return NextResponse.json(
-        { success: false, error: error.errors[0].message },
+        { success: false, error: error.issues[0].message },
         { status: 400 }
       )
     }
@@ -158,20 +160,21 @@ export async function PATCH(
  */
 export async function DELETE(
   request: NextRequest,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ): Promise<NextResponse<ApiResponse<void>>> {
   try {
     const session = await auth()
+    const { id } = await params
     if (!session?.user) {
       throw new UnauthorizedError('Please sign in to delete mind maps')
     }
 
     // Check ADMIN permission (only admins can delete)
-    await assertMindMapAccess(params.id, session.user.id, 'ADMIN')
+    await assertMindMapAccess(id, session.user.id, 'ADMIN')
 
     // Delete all related data (cascade)
     await prisma.mindMap.delete({
-      where: { id: params.id }
+      where: { id: id }
     })
 
     return NextResponse.json({

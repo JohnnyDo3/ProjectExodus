@@ -67,7 +67,7 @@ export async function GET(
     // Check permissions
     const isCreator = document.creatorId === session.user.id
     const isMember = document.project.members.length > 0
-    const collaborator = document.collaborators.find((c) => c.userId === session.user.id)
+    const collaborator = document.collaborators.find((c: any) => c.userId === session.user.id)
     const canView =
       isCreator ||
       collaborator ||

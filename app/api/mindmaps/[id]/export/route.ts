@@ -22,15 +22,16 @@ import { ZodError } from 'zod'
  */
 export async function GET(
   request: NextRequest,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ): Promise<NextResponse> {
   try {
     const session = await auth()
+    const { id } = await params
     if (!session?.user) {
       throw new UnauthorizedError('Please sign in to export mind maps')
     }
 
-    await assertMindMapAccess(params.id, session.user.id, 'VIEW')
+    await assertMindMapAccess(id, session.user.id, 'VIEW')
 
     // Parse query parameters
     const { searchParams } = new URL(request.url)
@@ -47,7 +48,7 @@ export async function GET(
 
     // Fetch mind map with all data
     const mindMap = await prisma.mindMap.findUnique({
-      where: { id: params.id },
+      where: { id: id },
       include: {
         project: {
           select: {
@@ -198,16 +199,17 @@ export async function GET(
         markdown += `---\n\n`
 
         // Group nodes by type
-        const nodesByType = mindMap.nodes.reduce((acc, node) => {
+        type NodeType = typeof mindMap.nodes[number]
+        const nodesByType = mindMap.nodes.reduce((acc: Record<string, NodeType[]>, node: NodeType) => {
           if (!acc[node.type]) acc[node.type] = []
           acc[node.type].push(node)
           return acc
-        }, {} as Record<string, typeof mindMap.nodes>)
+        }, {} as Record<string, NodeType[]>)
 
         markdown += `## Nodes\n\n`
         for (const [type, nodes] of Object.entries(nodesByType)) {
           markdown += `### ${type.charAt(0) + type.slice(1).toLowerCase()}s\n\n`
-          for (const node of nodes) {
+          for (const node of nodes as NodeType[]) {
             markdown += `- **${node.label}**`
             if (node.description) {
               markdown += `: ${node.description}`
@@ -233,15 +235,16 @@ export async function GET(
         // Connections
         if (mindMap.connections.length > 0) {
           markdown += `## Connections\n\n`
-          const connectionsByType = mindMap.connections.reduce((acc, conn) => {
+          type ConnectionType = typeof mindMap.connections[number]
+          const connectionsByType = mindMap.connections.reduce((acc: Record<string, ConnectionType[]>, conn: ConnectionType) => {
             if (!acc[conn.type]) acc[conn.type] = []
             acc[conn.type].push(conn)
             return acc
-          }, {} as Record<string, typeof mindMap.connections>)
+          }, {} as Record<string, ConnectionType[]>)
 
           for (const [type, connections] of Object.entries(connectionsByType)) {
             markdown += `### ${type.charAt(0) + type.slice(1).toLowerCase().replace(/_/g, ' ')}\n\n`
-            for (const conn of connections) {
+            for (const conn of connections as ConnectionType[]) {
               markdown += `- ${conn.fromNode.label} → ${conn.toNode.label}`
               if (conn.label) {
                 markdown += `: ${conn.label}`
@@ -257,7 +260,7 @@ export async function GET(
           markdown += `## Contributors\n\n`
           for (const contrib of mindMap.contributors) {
             markdown += `- ${contrib.user.name} (${contrib.permission})`
-            markdown += ` - ${contrib.nodesCreated} nodes, ${contrib.connectionsCreated} connections, ${contrib.commentsAdded} comments\n`
+            markdown += ` - ${contrib.nodesCreated} nodes, ${contrib.connectionsCreated} connections, ${contrib.commentsAdded || 0} comments\n`
           }
           markdown += `\n`
         }
@@ -300,7 +303,7 @@ export async function GET(
 
     if (error instanceof ZodError) {
       return NextResponse.json(
-        { success: false, error: error.errors[0].message },
+        { success: false, error: error.issues[0].message },
         { status: 400 }
       )
     }

@@ -96,14 +96,14 @@ export function CollaborativeEditor({
         name: getDocumentName(collaborationType, documentId),
         document: ydoc,
         token: collaborationConfig.getToken() || undefined,
-        maxAttempts: collaborationConfig.maxAttempts,
-        delay: collaborationConfig.delay,
         onStatus: ({ status }: { status: string }) => {
           setConnectionStatus(status as any)
         },
         onAwarenessUpdate: () => {
-          const states = Array.from(provider.awareness.getStates().values())
-          setActiveUsers(states.map((state: any) => state.user).filter(Boolean))
+          if (provider.awareness) {
+            const states = Array.from(provider.awareness.getStates().values())
+            setActiveUsers(states.map((state: any) => state.user).filter(Boolean))
+          }
         },
       })
 
@@ -126,12 +126,14 @@ export function CollaborativeEditor({
 
   const editor = useEditor({
     extensions: [
-      StarterKit.configure({
-        // Disable history when collaboration is enabled (Y.js handles it)
-        history: enableCollaboration ? false : {
-          depth: 100,
-        },
-      }),
+      StarterKit.configure(
+        enableCollaboration
+          ? ({
+              // Disable history when collaboration is enabled (Y.js handles it)
+              history: false,
+            } as any)
+          : {}
+      ),
       Placeholder.configure({
         placeholder,
       }),

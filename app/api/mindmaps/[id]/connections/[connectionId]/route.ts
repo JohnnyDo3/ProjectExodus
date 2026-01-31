@@ -23,20 +23,22 @@ import { ZodError } from 'zod'
  */
 export async function GET(
   request: NextRequest,
-  { params }: { params: { id: string; connectionId: string } }
+  { params }: { params: Promise<{ id: string; connectionId: string }> }
 ): Promise<NextResponse<ApiResponse<ConnectionResponse>>> {
   try {
+    const { id, connectionId } = await params
     const session = await auth()
+    
     if (!session?.user) {
       throw new UnauthorizedError('Please sign in to view connections')
     }
 
-    await assertMindMapAccess(params.id, session.user.id, 'VIEW')
+    await assertMindMapAccess(id, session.user.id, 'VIEW')
 
     const connection = await prisma.mindMapConnection.findFirst({
       where: {
-        id: params.connectionId,
-        mindMapId: params.id
+        id: connectionId,
+        mindMapId: id
       },
       include: {
         sourceNode: {
@@ -91,23 +93,25 @@ export async function GET(
  */
 export async function PATCH(
   request: NextRequest,
-  { params }: { params: { id: string; connectionId: string } }
+  { params }: { params: Promise<{ id: string; connectionId: string }> }
 ): Promise<NextResponse<ApiResponse<ConnectionResponse>>> {
   try {
+    const { id, connectionId } = await params
     const session = await auth()
+    
     if (!session?.user) {
       throw new UnauthorizedError('Please sign in to update connections')
     }
 
-    await assertMindMapAccess(params.id, session.user.id, 'EDIT')
+    await assertMindMapAccess(id, session.user.id, 'EDIT')
 
     const body = await request.json()
     const validatedData = UpdateConnectionSchema.parse(body)
 
     const connection = await prisma.mindMapConnection.update({
       where: {
-        id: params.connectionId,
-        mindMapId: params.id
+        id: connectionId,
+        mindMapId: id
       },
       data: validatedData,
       include: {
@@ -135,7 +139,7 @@ export async function PATCH(
 
     // Update mind map last edited
     await prisma.mindMap.update({
-      where: { id: params.id },
+      where: { id: id },
       data: {
         lastEditedById: session.user.id
       }
@@ -143,7 +147,7 @@ export async function PATCH(
 
     // Log activity
     await logActivity(
-      params.id,
+      id,
       session.user.id,
       'CONNECTION_UPDATED',
       { changes: validatedData },
@@ -161,7 +165,7 @@ export async function PATCH(
 
     if (error instanceof ZodError) {
       return NextResponse.json(
-        { success: false, error: error.errors[0].message },
+        { success: false, error: error.issues[0].message },
         { status: 400 }
       )
     }
@@ -185,21 +189,23 @@ export async function PATCH(
  */
 export async function DELETE(
   request: NextRequest,
-  { params }: { params: { id: string; connectionId: string } }
+  { params }: { params: Promise<{ id: string; connectionId: string }> }
 ): Promise<NextResponse<ApiResponse<void>>> {
   try {
+    const { id, connectionId } = await params
     const session = await auth()
+    
     if (!session?.user) {
       throw new UnauthorizedError('Please sign in to delete connections')
     }
 
-    await assertMindMapAccess(params.id, session.user.id, 'EDIT')
+    await assertMindMapAccess(id, session.user.id, 'EDIT')
 
     // Get connection before deletion for broadcast
     const connection = await prisma.mindMapConnection.findFirst({
       where: {
-        id: params.connectionId,
-        mindMapId: params.id
+        id: connectionId,
+        mindMapId: id
       },
       include: {
         sourceNode: {
@@ -231,14 +237,14 @@ export async function DELETE(
     // Delete connection
     await prisma.mindMapConnection.delete({
       where: {
-        id: params.connectionId,
-        mindMapId: params.id
+        id: connectionId,
+        mindMapId: id
       }
     })
 
     // Update mind map connection count
     await prisma.mindMap.update({
-      where: { id: params.id },
+      where: { id: id },
       data: {
         connectionCount: { decrement: 1 },
         lastEditedById: session.user.id
@@ -247,7 +253,7 @@ export async function DELETE(
 
     // Log activity
     await logActivity(
-      params.id,
+      id,
       session.user.id,
       'CONNECTION_DELETED',
       { type: connection.type },
@@ -257,7 +263,7 @@ export async function DELETE(
 
     // Broadcast real-time deletion
     await broadcastConnectionDeleted(
-      params.id,
+      id,
       connection as ConnectionResponse,
       session.user.id,
       session.user.name || null
