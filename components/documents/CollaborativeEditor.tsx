@@ -1,23 +1,23 @@
 'use client'
 
-import { useEditor, EditorContent, BubbleMenu, FloatingMenu } from '@tiptap/react'
-import StarterKit from '@tiptap/starter-kit'
-import Placeholder from '@tiptap/extension-placeholder'
-import TaskList from '@tiptap/extension-task-list'
-import TaskItem from '@tiptap/extension-task-item'
-import Link from '@tiptap/extension-link'
-import Image from '@tiptap/extension-image'
-import Table from '@tiptap/extension-table'
-import TableRow from '@tiptap/extension-table-row'
-import TableCell from '@tiptap/extension-table-cell'
-import TableHeader from '@tiptap/extension-table-header'
-import Highlight from '@tiptap/extension-highlight'
-import Typography from '@tiptap/extension-typography'
-import CharacterCount from '@tiptap/extension-character-count'
+import { useEditor, EditorContent } from '@tiptap/react'
+import { StarterKit } from '@tiptap/starter-kit'
+import { Placeholder } from '@tiptap/extension-placeholder'
+import { TaskList } from '@tiptap/extension-task-list'
+import { TaskItem } from '@tiptap/extension-task-item'
+import { Link } from '@tiptap/extension-link'
+import { Image } from '@tiptap/extension-image'
+import { Table } from '@tiptap/extension-table'
+import { TableRow } from '@tiptap/extension-table-row'
+import { TableCell } from '@tiptap/extension-table-cell'
+import { TableHeader } from '@tiptap/extension-table-header'
+import { Highlight } from '@tiptap/extension-highlight'
+import { Typography } from '@tiptap/extension-typography'
+import { CharacterCount } from '@tiptap/extension-character-count'
 import { Color } from '@tiptap/extension-color'
-import TextStyle from '@tiptap/extension-text-style'
-import Collaboration from '@tiptap/extension-collaboration'
-import CollaborationCursor from '@tiptap/extension-collaboration-cursor'
+import { TextStyle } from '@tiptap/extension-text-style'
+import { Collaboration } from '@tiptap/extension-collaboration'
+import { CollaborationCursor } from '@tiptap/extension-collaboration-cursor'
 import { useCallback, useEffect, useState, useRef } from 'react'
 import { HocuspocusProvider } from '@hocuspocus/provider'
 import * as Y from 'yjs'
@@ -447,74 +447,6 @@ export function CollaborativeEditor({
       {/* Editor content */}
       <div className="relative bg-white dark:bg-slate-900">
         <EditorContent editor={editor} />
-
-        {/* Bubble menu for text selection */}
-        {editor && !readOnly && (
-          <BubbleMenu
-            editor={editor}
-            tippyOptions={{ duration: 100 }}
-            className="bg-slate-900 dark:bg-slate-800 rounded-lg shadow-xl border border-slate-700 p-1 flex items-center gap-0.5"
-          >
-            <Button
-              size="sm"
-              variant={editor.isActive('bold') ? 'primary' : 'ghost'}
-              onClick={() => editor.chain().focus().toggleBold().run()}
-              className="text-white"
-            >
-              <Bold className="w-3 h-3"/>
-            </Button>
-            <Button
-              size="sm"
-              variant={editor.isActive('italic') ? 'primary' : 'ghost'}
-              onClick={() => editor.chain().focus().toggleItalic().run()}
-              className="text-white"
-            >
-              <Italic className="w-3 h-3"/>
-            </Button>
-            <Button
-              size="sm"
-              variant={editor.isActive('link') ? 'primary' : 'ghost'}
-              onClick={setLink}
-              className="text-white"
-            >
-              <Link2 className="w-3 h-3"/>
-            </Button>
-          </BubbleMenu>
-        )}
-
-        {/* Floating menu for new lines */}
-        {editor && !readOnly && (
-          <FloatingMenu
-            editor={editor}
-            tippyOptions={{ duration: 100 }}
-            className="bg-slate-900 dark:bg-slate-800 rounded-lg shadow-xl border border-slate-700 p-1 flex items-center gap-0.5"
-          >
-            <Button
-              size="sm"
-              variant="ghost"
-              onClick={() => editor.chain().focus().toggleHeading({ level: 1 }).run()}
-              className="text-white"
-            >
-              <Heading1 className="w-3 h-3"/>
-            </Button>
-            <Button
-              size="sm"
-              variant="ghost"
-              onClick={() => editor.chain().focus().toggleBulletList().run()}
-              className="text-white"
-            >
-              <List className="w-3 h-3"/>
-            </Button>
-            <Button
-              size="sm"
-              variant="ghost"
-              onClick={() => editor.chain().focus().toggleTaskList().run()}
-              className="text-white"
-            >
-              <ListChecks className="w-3 h-3"/>
-            </Button>
-          </FloatingMenu>
-        )}
       </div>
 
       {/* Stats bar */}

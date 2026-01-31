@@ -48,6 +48,8 @@ import {
 } from 'lucide-react'
 import Link from 'next/link'
 import { JoinProjectButton } from '@/components/projects/JoinProjectButton'
+import { DocumentTemplateSelector } from '@/components/documents/DocumentTemplateSelector'
+import type { DocumentTemplate } from '@/data/document-templates'
 
 type TabType = 'overview' | 'learning' | 'research' | 'discussions' | 'members' | 'mindmaps' | 'documents' | 'settings'
 
@@ -136,6 +138,7 @@ export default function ProjectPage({ params }: { params: Promise<{ slug: string
   const [loadingMembers, setLoadingMembers] = useState(false)
   const [loadingMindMap, setLoadingMindMap] = useState(false)
   const [loadingDocuments, setLoadingDocuments] = useState(false)
+  const [showTemplateSelector, setShowTemplateSelector] = useState(false)
 
   // Sage visibility
   const [showSage, setShowSage] = useState(false)
@@ -279,6 +282,39 @@ export default function ProjectPage({ params }: { params: Promise<{ slug: string
       setLoadingDocuments(false)
     }
   }, [project?.id])
+
+  const handleCreateDocument = useCallback(async (template: DocumentTemplate, customTitle?: string) => {
+    if (!project?.id) return
+
+    try {
+      const res = await fetch('/api/documents', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          projectId: project.id,
+          title: customTitle || template.name,
+          description: template.description,
+          content: template.content,
+          type: template.type,
+          status: 'DRAFT',
+        }),
+      })
+
+      const data = await res.json()
+      if (data.success) {
+        // Refresh documents list
+        await fetchDocuments()
+        // Navigate to the new document
+        router.push(`/community/projects/${slug}/documents/${data.data.id}`)
+      } else {
+        throw new Error(data.error || 'Failed to create document')
+      }
+    } catch (error) {
+      console.error('Error creating document:', error)
+      alert('Failed to create document. Please try again.')
+      throw error
+    }
+  }, [project?.id, slug, router, fetchDocuments])
 
   useEffect(() => {
     fetchProject()
@@ -1096,7 +1132,7 @@ export default function ProjectPage({ params }: { params: Promise<{ slug: string
               <div className="space-y-6">
                 <div className="flex items-center justify-between">
                   <h2 className="text-2xl font-black">PROJECT DOCUMENTS</h2>
-                  <Button className="font-bold">
+                  <Button className="font-bold" onClick={() => setShowTemplateSelector(true)}>
                     <Plus className="w-4 h-4 mr-2" />
                     NEW DOCUMENT
                   </Button>
@@ -1112,7 +1148,7 @@ export default function ProjectPage({ params }: { params: Promise<{ slug: string
                       <FileText className="w-16 h-16 mx-auto mb-4 text-theme-muted opacity-50" />
                       <h3 className="text-xl font-black mb-2 text-theme-muted">NO DOCUMENTS YET</h3>
                       <p className="text-theme-muted mb-4">Create collaborative documents for meeting notes, proposals, reports, and more.</p>
-                      <Button className="font-bold">
+                      <Button className="font-bold" onClick={() => setShowTemplateSelector(true)}>
                         <Plus className="w-4 h-4 mr-2" />
                         CREATE FIRST DOCUMENT
                       </Button>
@@ -1500,6 +1536,16 @@ export default function ProjectPage({ params }: { params: Promise<{ slug: string
         description={`Are you sure you want to delete "${project.name}"? This will permanently remove the project and all its messages. This action cannot be undone.`}
         isLoading={isDeleting}
       />
+
+      {/* Document Template Selector */}
+      {project && (
+        <DocumentTemplateSelector
+          isOpen={showTemplateSelector}
+          onClose={() => setShowTemplateSelector(false)}
+          onSelect={handleCreateDocument}
+          projectId={project.id}
+        />
+      )}
     </div>
   )
 }
