@@ -62,6 +62,9 @@ model User {
   // Notification Preferences (JSON object with notification settings)
   notificationPreferences Json? // { email, newsletter, communityUpdates, productUpdates, messages, connectionRequests, endorsements }
 
+  // Theme Preference
+  themePreference String?   @default("auto") // Theme mode: auto, light, dark, sunrise, sunset, dusk
+
   role          UserRole  @default(USER)
   createdAt     DateTime  @default(now())
   updatedAt     DateTime  @updatedAt

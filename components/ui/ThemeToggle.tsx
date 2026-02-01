@@ -1,10 +1,12 @@
 'use client'
 
 import { useEffect, useState } from 'react'
-import { Moon, Sun, Clock, Sunrise, ChevronDown } from 'lucide-react'
+import { useSession } from 'next-auth/react'
+import { Moon, Sun, Clock, Sunrise, Sunset, CloudMoon, ChevronDown } from 'lucide-react'
 import { useTimeTheme, type ThemeMode } from '@/components/providers/TimeThemeProvider'
 
 export function ThemeToggle() {
+  const { data: session } = useSession()
   const { mode, setMode, phase, isDay, twilightProgress } = useTimeTheme()
   const [mounted, setMounted] = useState(false)
   const [dropdownOpen, setDropdownOpen] = useState(false)
@@ -12,6 +14,27 @@ export function ThemeToggle() {
   useEffect(() => {
     setMounted(true)
   }, [])
+
+  // Enhanced mode setter that saves to database for logged-in users
+  const handleModeChange = async (newMode: ThemeMode) => {
+    // Update local state immediately
+    setMode(newMode)
+    setDropdownOpen(false)
+
+    // Save to database if user is logged in
+    if (session?.user) {
+      try {
+        await fetch('/api/users/theme', {
+          method: 'PUT',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ themePreference: newMode }),
+        })
+        console.log('[Theme] Saved preference to database:', newMode)
+      } catch (error) {
+        console.error('[Theme] Failed to save preference to database:', error)
+      }
+    }
+  }
 
   // Avoid hydration mismatch
   if (!mounted) {
@@ -25,27 +48,42 @@ export function ThemeToggle() {
     )
   }
 
-  const modeConfig = {
+  const modeConfig: Record<ThemeMode, { label: string; description: string }> = {
     auto: {
-      label: 'Auto Sync',
-      description: 'Smooth transitions throughout the day',
+      label: 'Auto (Follows Sun)',
+      description: 'Changes with real sunrise and sunset',
     },
-    morning: {
-      label: 'Day Mode',
-      description: 'Bright and vibrant, always',
+    light: {
+      label: 'Light (Always Day)',
+      description: 'Bright and sunny, all the time',
     },
-    night: {
-      label: 'Night Mode',
-      description: 'Dark and restful, always',
+    dark: {
+      label: 'Dark (Always Night)',
+      description: 'Dark and starry, all the time',
+    },
+    sunrise: {
+      label: 'Sunrise',
+      description: 'Warm morning golden hour',
+    },
+    sunset: {
+      label: 'Sunset',
+      description: 'Beautiful evening colors',
+    },
+    dusk: {
+      label: 'Dusk',
+      description: 'Peaceful twilight mood',
     },
   }
 
   const getModeIcon = (themeMode: ThemeMode, className?: string) => {
     const props = { className: className || 'w-5 h-5' }
     switch (themeMode) {
-      case 'auto': return <Sunrise {...props} />
-      case 'morning': return <Sun {...props} />
-      case 'night': return <Moon {...props} />
+      case 'auto': return <Clock {...props} />
+      case 'light': return <Sun {...props} />
+      case 'dark': return <Moon {...props} />
+      case 'sunrise': return <Sunrise {...props} />
+      case 'sunset': return <Sunset {...props} />
+      case 'dusk': return <CloudMoon {...props} />
       default: return <Clock {...props} />
     }
   }
@@ -109,10 +147,7 @@ export function ThemeToggle() {
                 return (
                   <button
                     key={themeMode}
-                    onClick={() => {
-                      setMode(themeMode)
-                      setDropdownOpen(false)
-                    }}
+                    onClick={() => handleModeChange(themeMode)}
                     className={`w-full flex items-start gap-3 px-4 py-3 rounded-lg transition-all ${
                       isActive
                         ? 'bg-gradient-to-r from-[var(--primary)]/10 to-[var(--accent)]/10 border-2 border-theme-primary'
@@ -150,9 +185,9 @@ export function ThemeToggle() {
 
             <div className="p-4 border-t-2 border-[var(--border)] bg-[var(--muted)] rounded-b-xl">
               <div className="flex items-start gap-3">
-                <Sunrise className="w-5 h-5 text-theme-secondary mt-0.5 flex-shrink-0" />
+                <Clock className="w-5 h-5 text-theme-secondary mt-0.5 flex-shrink-0" />
                 <p className="text-sm text-[var(--foreground)] leading-relaxed">
-                  <span className="font-semibold">Auto Sync</span> creates smooth color transitions based on real sunrise/sunset times for your location.
+                  <span className="font-semibold">Pick your favorite!</span> Auto follows the real sun, or choose any theme you like.
                 </p>
               </div>
             </div>

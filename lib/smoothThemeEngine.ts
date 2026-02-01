@@ -41,7 +41,7 @@ export interface TimeKeyframe {
 }
 
 export interface UserPreferences {
-  mode: 'auto' | 'morning' | 'night'
+  mode: 'auto' | 'light' | 'dark' | 'sunrise' | 'sunset' | 'dusk'
   latitude: number | null
   longitude: number | null
   lastUpdated: number // timestamp
@@ -922,6 +922,9 @@ export function loadPreferences(): UserPreferences {
     const stored = localStorage.getItem(STORAGE_KEY)
     if (stored) {
       const parsed = JSON.parse(stored)
+      // Migrate old 'morning' to 'light' and 'night' to 'dark'
+      if (parsed.mode === 'morning') parsed.mode = 'light'
+      if (parsed.mode === 'night') parsed.mode = 'dark'
       return { ...defaults, ...parsed }
     }
   } catch (e) {
@@ -977,4 +980,39 @@ export function getTwilightProgress(
 
   // Interpolate through twilight
   return (6 - sunAltitude) / 18
+}
+
+/**
+ * Get theme colors for a specific fixed mode
+ */
+export function getFixedModeColors(mode: 'light' | 'dark' | 'sunrise' | 'sunset' | 'dusk'): {
+  colors: ThemeColors
+  phase: string
+  className: string
+} {
+  // Map modes to specific keyframes
+  const modeMapping = {
+    light: TIME_KEYFRAMES.find(kf => kf.hour === 12), // Midday
+    dark: TIME_KEYFRAMES.find(kf => kf.hour === 0), // Midnight
+    sunrise: TIME_KEYFRAMES.find(kf => kf.hour === 6), // Sunrise
+    sunset: TIME_KEYFRAMES.find(kf => kf.hour === 19.5), // Sunset Peak
+    dusk: TIME_KEYFRAMES.find(kf => kf.hour === 20.3), // Twilight
+  }
+
+  const keyframe = modeMapping[mode] || modeMapping.light!
+
+  // Map modes to HTML class names for visibility toggles
+  const classMapping = {
+    light: 'day',
+    dark: 'night',
+    sunrise: 'day',
+    sunset: 'dusk',
+    dusk: 'evening',
+  }
+
+  return {
+    colors: keyframe.colors,
+    phase: `${keyframe.label} (Fixed)`,
+    className: classMapping[mode],
+  }
 }

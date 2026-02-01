@@ -1,6 +1,7 @@
 'use client'
 
 import { useEffect, useState, useCallback, createContext, useContext } from 'react'
+import { useSession } from 'next-auth/react'
 import * as SunCalc from 'suncalc'
 import {
   getCurrentThemeColors,
@@ -10,11 +11,12 @@ import {
   loadPreferences,
   getSunPosition,
   getTwilightProgress,
+  getFixedModeColors,
   type ThemeColors,
   type UserPreferences,
 } from '@/lib/smoothThemeEngine'
 
-export type ThemeMode = 'auto' | 'morning' | 'night'
+export type ThemeMode = 'auto' | 'light' | 'dark' | 'sunrise' | 'sunset' | 'dusk'
 export type TimeTheme = 'dawn' | 'sunrise' | 'morning' | 'day' | 'afternoon' | 'dusk' | 'sunset' | 'evening' | 'night' | 'midnight'
 
 interface GeolocationCoords {
@@ -51,6 +53,7 @@ export function useTimeTheme() {
 }
 
 export function TimeThemeProvider({ children }: { children: React.ReactNode }) {
+  const { data: session, status } = useSession()
   const [mounted, setMounted] = useState(false)
   const [coords, setCoords] = useState<GeolocationCoords | null>(null)
   const [mode, setModeState] = useState<ThemeMode>('auto')
@@ -101,6 +104,22 @@ export function TimeThemeProvider({ children }: { children: React.ReactNode }) {
     }
   }, [])
 
+  // Load theme preference from database when user logs in
+  useEffect(() => {
+    if (status === 'authenticated' && session?.user) {
+      fetch('/api/users/theme')
+        .then(res => res.json())
+        .then(data => {
+          if (data.themePreference && data.themePreference !== mode) {
+            console.log('[Theme] Loading preference from database:', data.themePreference)
+            setModeState(data.themePreference as ThemeMode)
+            savePreferences({ mode: data.themePreference as ThemeMode })
+          }
+        })
+        .catch(err => console.error('[Theme] Failed to load preference from database:', err))
+    }
+  }, [status, session?.user])
+
   // Mode setter that persists to storage
   const setMode = useCallback((newMode: ThemeMode) => {
     setModeState(newMode)
@@ -118,23 +137,17 @@ export function TimeThemeProvider({ children }: { children: React.ReactNode }) {
       const now = new Date()
 
       // Handle fixed modes
-      if (mode === 'morning') {
-        document.documentElement.className = 'day'
-        clearThemeColors()
-        setPhase('Day (Fixed)')
-        setIsDay(true)
-        setTwilightProgress(0)
-        setSunAltitude(60)
-        return
-      }
+      if (mode !== 'auto') {
+        const { colors, phase: fixedPhase, className } = getFixedModeColors(mode as 'light' | 'dark' | 'sunrise' | 'sunset' | 'dusk')
+        document.documentElement.className = className
+        applyThemeColors(colors)
+        setPhase(fixedPhase)
 
-      if (mode === 'night') {
-        document.documentElement.className = 'night'
-        clearThemeColors()
-        setPhase('Night (Fixed)')
-        setIsDay(false)
-        setTwilightProgress(1)
-        setSunAltitude(-30)
+        // Set appropriate values for fixed modes
+        const isLightMode = mode === 'light' || mode === 'sunrise'
+        setIsDay(isLightMode)
+        setTwilightProgress(isLightMode ? 0 : 1)
+        setSunAltitude(isLightMode ? 60 : -30)
         return
       }
 
