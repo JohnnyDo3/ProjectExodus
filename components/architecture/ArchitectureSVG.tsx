@@ -463,100 +463,212 @@ const VaultSVG = ({ showHalo = false }: { showHalo?: boolean }) => (
   </svg>
 )
 
-// Religious/Church SVG - with highlighted rose window and spire
+// Religious/Church SVG - Gothic cathedral with French Renaissance elements
 const ReligiousSVG = ({ showHalo = false }: { showHalo?: boolean }) => (
   <svg viewBox="0 0 100 100" className="w-full h-full stroke-current">
     <HaloFilter />
 
-    {/* Main tower walls - context */}
+    {/* Main tower/facade - context */}
     <g opacity="0.5">
-      <path d="M 32 92 L 32 48" strokeWidth="2" fill="none" strokeLinecap="round" />
-      <path d="M 68 92 L 68 48" strokeWidth="2" fill="none" strokeLinecap="round" />
+      <path d="M 30 92 L 30 50" strokeWidth="2.5" fill="none" strokeLinecap="round" />
+      <path d="M 70 92 L 70 50" strokeWidth="2.5" fill="none" strokeLinecap="round" />
+      <path d="M 30 92 L 70 92" strokeWidth="2" fill="none" />
     </g>
 
-    {/* Steeple - HIGHLIGHTED */}
+    {/* Gothic spire - HIGHLIGHTED (inspired by Chambord's lantern towers) */}
     <g filter={showHalo ? "url(#halo-glow)" : undefined}>
-      <path d="M 32 48 L 50 15 L 68 48" strokeWidth="2.5" fill="none" strokeLinecap="round" strokeLinejoin="round" />
+      {/* Octagonal tower base */}
+      <path d="M 38 50 L 38 28 L 44 24 L 56 24 L 62 28 L 62 50" strokeWidth="2.5" fill="none" strokeLinejoin="round" />
 
-      {/* Cross at top */}
-      <path d="M 50 15 L 50 5" strokeWidth="2.5" fill="none" strokeLinecap="round" />
-      <path d="M 44 10 L 56 10" strokeWidth="2.5" fill="none" strokeLinecap="round" />
+      {/* Spire with crockets (Gothic decorative elements) */}
+      <path d="M 38 28 L 44 10 L 50 6 L 56 10 L 62 28" strokeWidth="2.5" fill="none" strokeLinecap="round" strokeLinejoin="round" />
+
+      {/* Pinnacles (small spires at corners) */}
+      <path d="M 38 28 L 36 20" strokeWidth="1.5" fill="none" />
+      <path d="M 62 28 L 64 20" strokeWidth="1.5" fill="none" />
+      <circle cx="36" cy="18" r="2" strokeWidth="1" fill="none" />
+      <circle cx="64" cy="18" r="2" strokeWidth="1" fill="none" />
+
+      {/* Cross finial at apex */}
+      <path d="M 50 6 L 50 0" strokeWidth="2.5" fill="none" strokeLinecap="round" />
+      <path d="M 45 3 L 55 3" strokeWidth="2.5" fill="none" strokeLinecap="round" />
+      <circle cx="50" cy="5" r="1.5" strokeWidth="1.2" fill="none" />
+
+      {/* Decorative bands on spire */}
+      <path d="M 40 24 L 60 24" strokeWidth="1.5" fill="none" />
+      <path d="M 42 18 L 58 18" strokeWidth="1.2" fill="none" opacity="0.7" />
+      <path d="M 46 12 L 54 12" strokeWidth="1" fill="none" opacity="0.6" />
     </g>
 
-    {/* Rose window - HIGHLIGHTED */}
+    {/* Rose window - HIGHLIGHTED (Gothic tracery) */}
     <g filter={showHalo ? "url(#halo-glow)" : undefined}>
-      <circle cx="50" cy="60" r="10" strokeWidth="2" fill="none" />
-      <circle cx="50" cy="60" r="5" strokeWidth="1" fill="none" />
-      <path d="M 50 50 L 50 55" strokeWidth="1" fill="none" />
-      <path d="M 50 65 L 50 70" strokeWidth="1" fill="none" />
-      <path d="M 40 60 L 45 60" strokeWidth="1" fill="none" />
-      <path d="M 55 60 L 60 60" strokeWidth="1" fill="none" />
+      <circle cx="50" cy="62" r="12" strokeWidth="2.5" fill="none" />
+      <circle cx="50" cy="62" r="8" strokeWidth="2" fill="none" />
+      <circle cx="50" cy="62" r="4" strokeWidth="1.5" fill="none" />
+
+      {/* Tracery spokes (8-fold pattern) */}
+      <path d="M 50 50 L 50 58" strokeWidth="1.5" fill="none" />
+      <path d="M 50 66 L 50 74" strokeWidth="1.5" fill="none" />
+      <path d="M 38 62 L 46 62" strokeWidth="1.5" fill="none" />
+      <path d="M 54 62 L 62 62" strokeWidth="1.5" fill="none" />
+
+      {/* Diagonal tracery */}
+      <path d="M 42 54 L 46 58" strokeWidth="1.2" fill="none" />
+      <path d="M 54 66 L 58 70" strokeWidth="1.2" fill="none" />
+      <path d="M 58 54 L 54 58" strokeWidth="1.2" fill="none" />
+      <path d="M 46 66 L 42 70" strokeWidth="1.2" fill="none" />
+
+      {/* Quatrefoils */}
+      <circle cx="50" cy="54" r="2" strokeWidth="0.8" fill="none" opacity="0.7" />
+      <circle cx="54" cy="62" r="2" strokeWidth="0.8" fill="none" opacity="0.7" />
+      <circle cx="50" cy="70" r="2" strokeWidth="0.8" fill="none" opacity="0.7" />
+      <circle cx="46" cy="62" r="2" strokeWidth="0.8" fill="none" opacity="0.7" />
     </g>
 
-    {/* Door - context */}
+    {/* Portal (main entrance) - context */}
     <g opacity="0.5">
-      <path d="M 40 92 L 40 75 Q 50 70, 60 75 L 60 92" strokeWidth="1.5" fill="none" />
+      {/* Pointed arch portal */}
+      <path d="M 38 92 L 38 82 L 50 76 L 62 82 L 62 92" strokeWidth="2" fill="none" />
+
+      {/* Tympanum (sculptural area above door) */}
+      <path d="M 40 82 L 50 78 L 60 82" strokeWidth="1.5" fill="none" />
+      <circle cx="50" cy="80" r="2" strokeWidth="1" fill="none" />
     </g>
 
-    {/* Side wings - context */}
+    {/* Side chapels/buttresses - context */}
     <g opacity="0.4">
-      <path d="M 12 92 L 12 62 L 32 62" strokeWidth="1.5" fill="none" strokeLinecap="round" />
-      <path d="M 88 92 L 88 62 L 68 62" strokeWidth="1.5" fill="none" strokeLinecap="round" />
-      <path d="M 12 62 L 22 52 L 32 62" strokeWidth="1.5" fill="none" />
-      <path d="M 68 62 L 78 52 L 88 62" strokeWidth="1.5" fill="none" />
+      {/* Flying buttresses suggestion */}
+      <path d="M 12 92 L 12 68 L 30 58" strokeWidth="1.8" fill="none" strokeLinecap="round" />
+      <path d="M 88 92 L 88 68 L 70 58" strokeWidth="1.8" fill="none" strokeLinecap="round" />
+
+      {/* Chapel roofs */}
+      <path d="M 10 68 L 18 58 L 26 68" strokeWidth="1.5" fill="none" />
+      <path d="M 74 68 L 82 58 L 90 68" strokeWidth="1.5" fill="none" />
     </g>
 
-    {/* Ground */}
+    {/* Ground line */}
     <path d="M 5 92 L 95 92" strokeWidth="1.5" fill="none" opacity="0.4" />
   </svg>
 )
 
-// Fortification/Castle SVG - with highlighted battlements
+// Fortification/Castle SVG - French Renaissance château (Chambord-inspired)
 const FortificationSVG = ({ showHalo = false }: { showHalo?: boolean }) => (
   <svg viewBox="0 0 100 100" className="w-full h-full stroke-current">
     <HaloFilter />
 
-    {/* Main walls - context */}
+    {/* Corner towers (cylindrical) - context */}
     <g opacity="0.5">
-      <path d="M 8 92 L 8 42" strokeWidth="2" fill="none" strokeLinecap="round" />
-      <path d="M 92 92 L 92 42" strokeWidth="2" fill="none" strokeLinecap="round" />
+      {/* Left tower */}
+      <path d="M 8 92 L 8 45" strokeWidth="2.5" fill="none" strokeLinecap="round" />
+      <path d="M 18 92 L 18 45" strokeWidth="2.5" fill="none" strokeLinecap="round" />
+
+      {/* Right tower */}
+      <path d="M 82 92 L 82 45" strokeWidth="2.5" fill="none" strokeLinecap="round" />
+      <path d="M 92 92 L 92 45" strokeWidth="2.5" fill="none" strokeLinecap="round" />
+
+      {/* Tower tops */}
+      <path d="M 8 45 Q 13 44, 18 45" strokeWidth="2" fill="none" />
+      <path d="M 82 45 Q 87 44, 92 45" strokeWidth="2" fill="none" />
     </g>
 
-    {/* Battlements/Crenellations - HIGHLIGHTED */}
+    {/* Conical roofs - HIGHLIGHTED (French château signature) */}
     <g filter={showHalo ? "url(#halo-glow)" : undefined}>
-      <path d="M 8 42 L 8 35 L 16 35 L 16 42 L 24 42 L 24 35 L 32 35 L 32 42" strokeWidth="2" fill="none" />
-      <path d="M 68 42 L 68 35 L 76 35 L 76 42 L 84 42 L 84 35 L 92 35 L 92 42" strokeWidth="2" fill="none" />
+      {/* Left tower conical roof */}
+      <path d="M 6 45 L 13 22 L 20 45" strokeWidth="2.5" fill="none" strokeLinejoin="round" />
+
+      {/* Right tower conical roof */}
+      <path d="M 80 45 L 87 22 L 94 45" strokeWidth="2.5" fill="none" strokeLinejoin="round" />
+
+      {/* Roof texture (slate tiles) */}
+      <path d="M 9 40 L 13 26 L 17 40" strokeWidth="1.5" fill="none" opacity="0.7" />
+      <path d="M 83 40 L 87 26 L 91 40" strokeWidth="1.5" fill="none" opacity="0.7" />
+
+      {/* Horizontal bands on roofs */}
+      <path d="M 10 36 L 16 36" strokeWidth="1" fill="none" opacity="0.6" />
+      <path d="M 11 32 L 15 32" strokeWidth="0.8" fill="none" opacity="0.5" />
+      <path d="M 84 36 L 90 36" strokeWidth="1" fill="none" opacity="0.6" />
+      <path d="M 85 32 L 89 32" strokeWidth="0.8" fill="none" opacity="0.5" />
+
+      {/* Finials at roof peaks */}
+      <path d="M 13 22 L 13 18" strokeWidth="1.5" fill="none" />
+      <circle cx="13" cy="16" r="2" strokeWidth="1.2" fill="none" />
+
+      <path d="M 87 22 L 87 18" strokeWidth="1.5" fill="none" />
+      <circle cx="87" cy="16" r="2" strokeWidth="1.2" fill="none" />
     </g>
 
-    {/* Central tower - context */}
+    {/* Central keep/donjon - context */}
     <g opacity="0.6">
-      <path d="M 36 92 L 36 25" strokeWidth="2" fill="none" strokeLinecap="round" />
-      <path d="M 64 92 L 64 25" strokeWidth="2" fill="none" strokeLinecap="round" />
+      <path d="M 35 92 L 35 32" strokeWidth="2.5" fill="none" strokeLinecap="round" />
+      <path d="M 65 92 L 65 32" strokeWidth="2.5" fill="none" strokeLinecap="round" />
+      <path d="M 35 92 L 65 92" strokeWidth="2" fill="none" />
     </g>
 
-    {/* Tower battlements - HIGHLIGHTED */}
+    {/* Elaborate roofline - HIGHLIGHTED (Chambord's famous skyline) */}
     <g filter={showHalo ? "url(#halo-glow)" : undefined}>
-      <path d="M 36 25 L 36 18 L 44 18 L 44 25 L 50 25 L 50 18 L 56 18 L 56 25 L 64 25 L 64 18" strokeWidth="2" fill="none" />
+      {/* Main roof */}
+      <path d="M 32 32 L 50 14 L 68 32" strokeWidth="2.5" fill="none" strokeLinejoin="round" />
+
+      {/* Dormer windows (lucarne) */}
+      <path d="M 40 28 L 40 20 L 44 18 L 48 20 L 48 28" strokeWidth="2" fill="none" />
+      <path d="M 52 28 L 52 20 L 56 18 L 60 20 L 60 28" strokeWidth="2" fill="none" />
+
+      {/* Dormer pediments */}
+      <path d="M 38 20 L 44 14 L 50 20" strokeWidth="1.5" fill="none" />
+      <path d="M 50 20 L 56 14 L 62 20" strokeWidth="1.5" fill="none" />
+
+      {/* Chimneys (elaborate French Renaissance design) */}
+      <path d="M 36 24 L 36 8 L 40 8 L 40 24" strokeWidth="2" fill="none" />
+      <path d="M 60 24 L 60 8 L 64 8 L 64 24" strokeWidth="2" fill="none" />
+
+      {/* Chimney caps with decorative bands */}
+      <path d="M 34 8 L 42 8" strokeWidth="2" fill="none" />
+      <path d="M 35 11 L 41 11" strokeWidth="1" fill="none" opacity="0.7" />
+      <path d="M 35 14 L 41 14" strokeWidth="1" fill="none" opacity="0.7" />
+
+      <path d="M 58 8 L 66 8" strokeWidth="2" fill="none" />
+      <path d="M 59 11 L 65 11" strokeWidth="1" fill="none" opacity="0.7" />
+      <path d="M 59 14 L 65 14" strokeWidth="1" fill="none" opacity="0.7" />
+
+      {/* Lantern/cupola at apex */}
+      <path d="M 48 14 L 48 6 L 52 6 L 52 14" strokeWidth="2" fill="none" />
+      <path d="M 46 6 L 54 6" strokeWidth="1.8" fill="none" />
+      <path d="M 48 6 L 50 2 L 52 6" strokeWidth="1.5" fill="none" />
     </g>
 
-    {/* Arrow slits - HIGHLIGHTED */}
+    {/* Machicolations (projecting gallery for defense) - HIGHLIGHTED */}
     <g filter={showHalo ? "url(#halo-glow-soft)" : undefined}>
-      <path d="M 48 38 L 52 38 M 50 34 L 50 42" strokeWidth="1.5" fill="none" />
-      <path d="M 48 55 L 52 55 M 50 51 L 50 59" strokeWidth="1.5" fill="none" />
+      <path d="M 32 35 L 68 35" strokeWidth="2" fill="none" />
+
+      {/* Corbels supporting machicolations */}
+      <path d="M 36 35 Q 36 37, 38 38" strokeWidth="1.2" fill="none" />
+      <path d="M 44 35 Q 44 37, 46 38" strokeWidth="1.2" fill="none" />
+      <path d="M 54 35 Q 54 37, 52 38" strokeWidth="1.2" fill="none" />
+      <path d="M 62 35 Q 62 37, 60 38" strokeWidth="1.2" fill="none" />
     </g>
 
-    {/* Gate with portcullis - context */}
+    {/* Decorated portal - context (Renaissance style) */}
     <g opacity="0.5">
-      <path d="M 42 92 L 42 68 Q 50 60, 58 68 L 58 92" strokeWidth="1.5" fill="none" />
-      <path d="M 44 68 L 44 90" strokeWidth="0.8" fill="none" opacity="0.6" />
-      <path d="M 50 62 L 50 90" strokeWidth="0.8" fill="none" opacity="0.6" />
-      <path d="M 56 68 L 56 90" strokeWidth="0.8" fill="none" opacity="0.6" />
-      <path d="M 42 75 L 58 75" strokeWidth="0.8" fill="none" opacity="0.6" />
-      <path d="M 42 82 L 58 82" strokeWidth="0.8" fill="none" opacity="0.6" />
+      {/* Arched entrance with orders */}
+      <path d="M 40 92 L 40 70 A 10 10 0 0 1 60 70 L 60 92" strokeWidth="2" fill="none" />
+
+      {/* Pediment over door */}
+      <path d="M 38 70 L 50 64 L 62 70" strokeWidth="1.5" fill="none" />
+
+      {/* Pilasters flanking door */}
+      <path d="M 38 92 L 38 70" strokeWidth="1.5" fill="none" />
+      <path d="M 62 92 L 62 70" strokeWidth="1.5" fill="none" />
     </g>
 
-    {/* Ground */}
-    <path d="M 0 92 L 100 92" strokeWidth="1.5" fill="none" opacity="0.4" />
+    {/* Decorative string course (horizontal molding) */}
+    <g opacity="0.4">
+      <path d="M 8 60 L 18 60" strokeWidth="1.2" fill="none" />
+      <path d="M 35 48 L 65 48" strokeWidth="1.2" fill="none" />
+      <path d="M 82 60 L 92 60" strokeWidth="1.2" fill="none" />
+    </g>
+
+    {/* Ground with approach */}
+    <path d="M 0 92 L 100 92" strokeWidth="2" fill="none" opacity="0.4" />
   </svg>
 )
 
@@ -867,45 +979,94 @@ const FacadeSVG = ({ showHalo = false }: { showHalo?: boolean }) => (
   </svg>
 )
 
-// Floor/Stairs SVG - with highlighted balustrade
+// Floor/Stairs SVG - Double-helix staircase (inspired by Chambord/Leonardo da Vinci)
 const FloorSVG = ({ showHalo = false }: { showHalo?: boolean }) => (
   <svg viewBox="0 0 100 100" className="w-full h-full stroke-current">
     <HaloFilter />
 
-    {/* Stair treads - context */}
-    <g opacity="0.5">
-      <path d="M 18 88 L 38 88 L 38 72 L 58 72 L 58 56 L 78 56 L 78 40" strokeWidth="2" fill="none" strokeLinecap="round" strokeLinejoin="round" />
+    {/* Central newel (core around which staircases spiral) - context */}
+    <g opacity="0.4">
+      <circle cx="50" cy="50" r="12" strokeWidth="2" fill="none" />
+      <circle cx="50" cy="50" r="8" strokeWidth="1.5" fill="none" />
     </g>
 
-    {/* Handrail and balusters - HIGHLIGHTED */}
+    {/* First helix (ascending clockwise) - HIGHLIGHTED */}
     <g filter={showHalo ? "url(#halo-glow)" : undefined}>
-      {/* Handrail */}
-      <path d="M 16 82 L 36 82 L 36 66 L 56 66 L 56 50 L 76 50 L 76 34" strokeWidth="2.5" fill="none" strokeLinecap="round" strokeLinejoin="round" />
+      {/* Spiral path 1 - outer helix */}
+      <path d="M 62 50 Q 62 35, 50 28 Q 38 35, 38 50 Q 38 65, 50 72 Q 62 65, 62 50" strokeWidth="3" fill="none" opacity="0.9" />
 
-      {/* Balusters */}
-      <path d="M 24 88 L 24 82" strokeWidth="1.5" fill="none" />
-      <path d="M 30 88 L 30 82" strokeWidth="1.5" fill="none" />
-      <path d="M 44 72 L 44 66" strokeWidth="1.5" fill="none" />
-      <path d="M 50 72 L 50 66" strokeWidth="1.5" fill="none" />
-      <path d="M 64 56 L 64 50" strokeWidth="1.5" fill="none" />
-      <path d="M 70 56 L 70 50" strokeWidth="1.5" fill="none" />
+      {/* Treads of first helix */}
+      <path d="M 62 50 L 70 50" strokeWidth="2.5" fill="none" />
+      <path d="M 56 38 L 62 32" strokeWidth="2.5" fill="none" />
+      <path d="M 44 32 L 50 28" strokeWidth="2.5" fill="none" />
+      <path d="M 32 44 L 28 38" strokeWidth="2.5" fill="none" />
+      <path d="M 38 62 L 32 68" strokeWidth="2.5" fill="none" />
+      <path d="M 50 68 L 50 75" strokeWidth="2.5" fill="none" />
+
+      {/* Handrail of first helix */}
+      <path d="M 64 48 Q 64 33, 52 26 Q 40 33, 40 48 Q 40 63, 52 70 Q 64 63, 64 48" strokeWidth="1.8" fill="none" opacity="0.7" />
     </g>
 
-    {/* Newel posts - HIGHLIGHTED */}
+    {/* Second helix (descending/ascending counter-clockwise) - HIGHLIGHTED */}
     <g filter={showHalo ? "url(#halo-glow)" : undefined}>
-      <circle cx="38" cy="72" r="3" strokeWidth="2" fill="none" />
-      <circle cx="58" cy="56" r="3" strokeWidth="2" fill="none" />
-      <circle cx="78" cy="40" r="3" strokeWidth="2" fill="none" />
+      {/* Spiral path 2 - interlocking helix */}
+      <path d="M 38 50 Q 38 35, 50 28 Q 62 35, 62 50 Q 62 65, 50 72 Q 38 65, 38 50" strokeWidth="3" fill="none" opacity="0.85" strokeDasharray="6 4" />
 
-      {/* Finial */}
-      <path d="M 78 40 L 78 28" strokeWidth="2" fill="none" />
-      <circle cx="78" cy="24" r="4" strokeWidth="1.5" fill="none" />
+      {/* Treads of second helix (offset from first) */}
+      <path d="M 38 50 L 30 50" strokeWidth="2.5" fill="none" />
+      <path d="M 44 62 L 38 68" strokeWidth="2.5" fill="none" />
+      <path d="M 56 68 L 50 72" strokeWidth="2.5" fill="none" />
+      <path d="M 68 56 L 72 62" strokeWidth="2.5" fill="none" />
+      <path d="M 62 38 L 68 32" strokeWidth="2.5" fill="none" />
+      <path d="M 50 32 L 50 25" strokeWidth="2.5" fill="none" />
+
+      {/* Handrail of second helix */}
+      <path d="M 36 52 Q 36 37, 48 30 Q 60 37, 60 52 Q 60 67, 48 74 Q 36 67, 36 52" strokeWidth="1.8" fill="none" opacity="0.6" strokeDasharray="4 3" />
     </g>
 
-    {/* Floor pattern - context */}
+    {/* Central column detail - HIGHLIGHTED */}
+    <g filter={showHalo ? "url(#halo-glow)" : undefined}>
+      {/* Opening in central newel (viewing aperture between helixes) */}
+      <path d="M 45 45 L 45 55 L 55 55 L 55 45 Z" strokeWidth="1.5" fill="none" opacity="0.6" />
+
+      {/* Decorative Renaissance ornament on newel */}
+      <circle cx="50" cy="50" r="4" strokeWidth="1.5" fill="none" />
+      <path d="M 50 46 L 50 48 M 50 52 L 50 54 M 46 50 L 48 50 M 52 50 L 54 50" strokeWidth="1" fill="none" />
+    </g>
+
+    {/* Lantern above (Chambord's signature element) - context */}
+    <g opacity="0.4">
+      <path d="M 44 20 L 44 8 L 56 8 L 56 20" strokeWidth="1.5" fill="none" />
+      <path d="M 42 8 L 58 8" strokeWidth="1.5" fill="none" />
+
+      {/* Lantern windows */}
+      <rect x="46" y="12" width="3" height="5" strokeWidth="0.8" fill="none" />
+      <rect x="51" y="12" width="3" height="5" strokeWidth="0.8" fill="none" />
+
+      {/* Fleur-de-lis finial (French royal symbol) */}
+      <path d="M 50 8 L 50 4" strokeWidth="1.2" fill="none" />
+      <path d="M 50 4 Q 47 2, 48 0 M 50 4 Q 50 1, 50 0 M 50 4 Q 53 2, 52 0" strokeWidth="1" fill="none" />
+    </g>
+
+    {/* Floor level indicators - context */}
     <g opacity="0.3">
-      <path d="M 5 95 L 95 95" strokeWidth="1" fill="none" />
-      <path d="M 8 92 L 18 92" strokeWidth="0.8" fill="none" />
+      {/* Ground floor */}
+      <path d="M 5 88 L 30 88" strokeWidth="1.5" fill="none" />
+      <path d="M 70 88 L 95 88" strokeWidth="1.5" fill="none" />
+
+      {/* Upper floor */}
+      <path d="M 5 25 L 30 25" strokeWidth="1.5" fill="none" />
+      <path d="M 70 25 L 95 25" strokeWidth="1.5" fill="none" />
+
+      {/* Floor labels */}
+      <circle cx="15" cy="88" r="2" strokeWidth="1" fill="none" />
+      <circle cx="15" cy="25" r="2" strokeWidth="1" fill="none" />
+    </g>
+
+    {/* Intertwining indication (shows the helixes never meet) */}
+    <g opacity="0.25">
+      <path d="M 50 28 L 50 20" strokeWidth="1" fill="none" strokeDasharray="2 2" />
+      <path d="M 50 72 L 50 80" strokeWidth="1" fill="none" strokeDasharray="2 2" />
     </g>
   </svg>
 )
