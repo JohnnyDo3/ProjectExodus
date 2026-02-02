@@ -163,7 +163,6 @@ export async function POST(
         leaders: {
           create: {
             userId: session.user.id,
-            isLeader: true,
           },
         },
         members: {

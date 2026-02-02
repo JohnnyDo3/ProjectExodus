@@ -38,11 +38,11 @@ const nextConfig: NextConfig = {
               // SECURITY: unsafe-inline and unsafe-eval needed for Next.js dev mode and some dynamic features
               // TODO: Remove unsafe-inline/unsafe-eval and use nonces for production in a future update
               "script-src 'self' 'unsafe-inline' 'unsafe-eval' https://cdn.jsdelivr.net https://js.pusher.com https://stats.pusher.com",
-              "style-src 'self' 'unsafe-inline'",
+              "style-src 'self' 'unsafe-inline' https://fonts.googleapis.com",
               // Allow images from Cloudinary and other CDNs
               "img-src 'self' data: https: blob: https://res.cloudinary.com",
-              "font-src 'self' data:",
-              "connect-src 'self' https://api.pusher.com wss://*.pusher.com https://sockjs-mt1.pusher.com https://*.cloudinary.com",
+              "font-src 'self' data: https://fonts.gstatic.com",
+              "connect-src 'self' https://api.pusher.com wss://*.pusher.com https://sockjs*.pusher.com https://*.cloudinary.com ws://localhost:* http://localhost:*",
               "frame-ancestors 'none'",
               "base-uri 'self'",
               "form-action 'self'",

@@ -14,14 +14,6 @@ export async function GET(
     const modules = await prisma.projectLearningModule.findMany({
       where: { projectId },
       include: {
-        creator: {
-          select: {
-            id: true,
-            name: true,
-            username: true,
-            image: true,
-          },
-        },
         _count: {
           select: {
             progress: true,
@@ -35,7 +27,7 @@ export async function GET(
     let modulesWithProgress = modules
 
     if (session?.user?.id) {
-      const userProgress = await prisma.projectLearningProgress.findMany({
+      const userProgress = await prisma.projectModuleProgress.findMany({
         where: {
           userId: session.user.id,
           moduleId: { in: modules.map((m: { id: string }) => m.id) },
@@ -130,23 +122,12 @@ export async function POST(
     const module = await prisma.projectLearningModule.create({
       data: {
         projectId,
-        creatorId: session.user.id,
         title: title.trim(),
         description: description?.trim() || null,
-        content: content?.trim() || null,
+        textContent: content?.trim() || null,
         videoUrl: videoUrl?.trim() || null,
         estimatedMinutes: estimatedMinutes || null,
         order: moduleOrder,
-      },
-      include: {
-        creator: {
-          select: {
-            id: true,
-            name: true,
-            username: true,
-            image: true,
-          },
-        },
       },
     })
 
