@@ -764,6 +764,418 @@ const GallerySVG: React.FC<SVGProps> = ({ showHalo }) => (
   </svg>
 )
 
+/**
+ * FIREPLACE - Georgian Adam-style fireplace with classical mantelpiece
+ * Reference: Robert Adam designs at Kedleston Hall, Syon House (1760s-1790s)
+ * Shows: White marble mantel, classical frieze, firebasket, delicate ornament
+ * Unique view: Front elevation showing neoclassical refinement
+ */
+const FireplaceSVG: React.FC<SVGProps> = ({ showHalo }) => (
+  <svg viewBox="0 0 100 100" className="w-full h-full">
+    {showHalo && <HaloFilter id="fireplace-halo" intensity={0.95} />}
+    <g filter={showHalo ? "url(#fireplace-halo)" : undefined} fill="none" stroke="currentColor" strokeLinecap="round">
+      {/* CONTEXT: Room interior */}
+      <g strokeDasharray="3 2" opacity="0.4" strokeWidth="0.8">
+        {/* Wall extends beyond */}
+        <path d="M5 12 L5 95 L95 95 L95 12" />
+        {/* Ceiling cornice */}
+        <path d="M5 12 L95 12 L95 15 L5 15" />
+        {/* Dado rail */}
+        <path d="M5 75 L18 75" />
+        <path d="M82 75 L95 75" />
+        {/* Floorboards */}
+        <path d="M5 92 L95 92" />
+      </g>
+
+      {/* PRIMARY - Adam-style mantelpiece */}
+      <g strokeWidth="1.2">
+        {/* Mantelshelf with dentil molding - HIGHLIGHTED */}
+        <g filter={showHalo ? "url(#fireplace-halo)" : undefined}>
+          <path d="M 14 35 L 86 35" strokeWidth="3" />
+          <path d="M 16 38 L 84 38" strokeWidth="2.5" />
+
+          {/* Dentil molding on underside */}
+          <path d="M 18 36 L 20 36 M 22 36 L 24 36 M 26 36 L 28 36 M 30 36 L 32 36 M 34 36 L 36 36" strokeWidth="1.5" />
+          <path d="M 40 36 L 42 36 M 44 36 L 46 36 M 48 36 L 50 36 M 52 36 L 54 36 M 56 36 L 58 36" strokeWidth="1.5" />
+          <path d="M 64 36 L 66 36 M 68 36 L 70 36 M 72 36 L 74 36 M 76 36 L 78 36 M 80 36 L 82 36" strokeWidth="1.5" />
+        </g>
+
+        {/* Frieze panel with classical ornament - HIGHLIGHTED */}
+        <g filter={showHalo ? "url(#fireplace-halo)" : undefined}>
+          <path d="M 18 38 L 82 38 L 82 50 L 18 50 Z" strokeWidth="2" />
+
+          {/* Central patera (rosette medallion) */}
+          <circle cx="50" cy="44" r="5" strokeWidth="1.5" />
+          <circle cx="50" cy="44" r="3" strokeWidth="1" />
+          <path d="M 50 39 L 50 41 M 50 47 L 50 49" strokeWidth="0.8" />
+          <path d="M 45 44 L 47 44 M 53 44 L 55 44" strokeWidth="0.8" />
+
+          {/* Swags and husks */}
+          <path d="M 28 41 Q 32 43, 36 41" strokeWidth="1.2" />
+          <path d="M 30 42 L 30 46" strokeWidth="0.7" />
+          <path d="M 34 42 L 34 46" strokeWidth="0.7" />
+
+          <path d="M 64 41 Q 68 43, 72 41" strokeWidth="1.2" />
+          <path d="M 66 42 L 66 46" strokeWidth="0.7" />
+          <path d="M 70 42 L 70 46" strokeWidth="0.7" />
+
+          {/* Delicate guilloche border */}
+          <path d="M 20 40 Q 22 38, 24 40 Q 26 42, 28 40" strokeWidth="0.6" opacity="0.7" />
+          <path d="M 72 40 Q 74 38, 76 40 Q 78 42, 80 40" strokeWidth="0.6" opacity="0.7" />
+        </g>
+
+        {/* Pilasters (flanking columns) - HIGHLIGHTED */}
+        <g filter={showHalo ? "url(#fireplace-halo)" : undefined}>
+          {/* Left pilaster */}
+          <path d="M 18 50 L 18 88" strokeWidth="2.5" />
+          <path d="M 20 50 L 20 88" strokeWidth="2.5" />
+
+          {/* Fluting */}
+          <path d="M 19 52 L 19 86" strokeWidth="0.7" opacity="0.6" />
+
+          {/* Capital with volute */}
+          <path d="M 16 50 L 22 50" strokeWidth="2" />
+          <path d="M 17 52 L 21 52" strokeWidth="1" />
+          <path d="M 16 54 Q 15 52, 16 50" strokeWidth="1.2" />
+
+          {/* Base */}
+          <path d="M 16 88 L 22 88" strokeWidth="2" />
+          <path d="M 16 90 L 22 90" strokeWidth="1.5" />
+
+          {/* Right pilaster (mirrored) */}
+          <path d="M 80 50 L 80 88" strokeWidth="2.5" />
+          <path d="M 82 50 L 82 88" strokeWidth="2.5" />
+          <path d="M 81 52 L 81 86" strokeWidth="0.7" opacity="0.6" />
+          <path d="M 78 50 L 84 50" strokeWidth="2" />
+          <path d="M 79 52 L 83 52" strokeWidth="1" />
+          <path d="M 84 54 Q 85 52, 84 50" strokeWidth="1.2" />
+          <path d="M 78 88 L 84 88" strokeWidth="2" />
+          <path d="M 78 90 L 84 90" strokeWidth="1.5" />
+        </g>
+
+        {/* Firebox opening */}
+        <path d="M 24 52 L 24 88 L 76 88 L 76 52 Z" strokeWidth="1.5" opacity="0.6" />
+        <path d="M 28 56 L 28 85 L 72 85 L 72 56 Z" strokeWidth="1.2" opacity="0.5" />
+
+        {/* Firebasket with classical andirons - HIGHLIGHTED */}
+        <g filter={showHalo ? "url(#fireplace-halo)" : undefined} opacity="0.8">
+          {/* Basket grate */}
+          <path d="M 32 80 L 68 80 L 68 85 L 32 85 Z" strokeWidth="1.3" />
+          <path d="M 38 80 L 38 85 M 44 80 L 44 85 M 50 80 L 50 85 M 56 80 L 56 85 M 62 80 L 62 85" strokeWidth="0.7" />
+
+          {/* Classical urn andirons */}
+          <path d="M 35 75 L 35 80" strokeWidth="1.2" />
+          <path d="M 33 75 L 37 75 L 37 70 L 33 70 Z" strokeWidth="1" />
+          <path d="M 34 70 L 36 70 L36 68 L 34 68 Z" strokeWidth="0.8" />
+
+          <path d="M 65 75 L 65 80" strokeWidth="1.2" />
+          <path d="M 63 75 L 67 75 L 67 70 L 63 70 Z" strokeWidth="1" />
+          <path d="M 64 70 L 66 70 L66 68 L 64 68 Z" strokeWidth="0.8" />
+
+          {/* Logs */}
+          <path d="M 38 82 L 50 80 L 62 82" strokeWidth="1.5" />
+          <path d="M 42 84 L 58 84" strokeWidth="1.3" />
+        </g>
+
+        {/* Hearth (floor extension) */}
+        <path d="M 16 90 L 84 90 L 84 95 L 16 95 Z" strokeWidth="1.8" opacity="0.5" />
+        <path d="M 18 92 L 82 92" strokeWidth="1" opacity="0.4" />
+
+        {/* Fire fender (brass rail) */}
+        <path d="M 26 87 L 74 87" strokeWidth="1.5" />
+        <path d="M 26 87 L 26 90" strokeWidth="1" />
+        <path d="M 74 87 L 74 90" strokeWidth="1" />
+
+        {/* Overmantel decoration (painting/mirror) */}
+        <path d="M 25 15 L 75 15 L 75 32 L 25 32 Z" strokeWidth="1.5" opacity="0.5" />
+        <path d="M 27 17 L 73 17 L 73 30 L 27 30 Z" strokeWidth="0.8" opacity="0.4" />
+      </g>
+    </g>
+  </svg>
+)
+
+/**
+ * MANTELPIECE - Renaissance carved stone chimneypiece with caryatids
+ * Reference: Château de Chenonceau, Blois, Italian Renaissance palaces
+ * Shows: Massive carved limestone, caryatids, heraldic overmantel, sculptural depth
+ * Unique view: Front elevation showing architectural grandeur
+ */
+const MantelSVG: React.FC<SVGProps> = ({ showHalo }) => (
+  <svg viewBox="0 0 100 100" className="w-full h-full">
+    {showHalo && <HaloFilter id="mantel-halo" intensity={1} />}
+    <g filter={showHalo ? "url(#mantel-halo)" : undefined} fill="none" stroke="currentColor" strokeLinecap="round">
+      {/* CONTEXT: Great hall or salon */}
+      <g strokeDasharray="3 2" opacity="0.4" strokeWidth="0.8">
+        {/* Stone wall */}
+        <path d="M5 8 L5 95 L95 95 L95 8" />
+        {/* Floor stones */}
+        <path d="M5 92 L95 92" />
+        <path d="M20 92 L20 95 M 40 92 L 40 95 M 60 92 L 60 95 M 80 92 L 80 95" />
+      </g>
+
+      {/* PRIMARY - Renaissance mantelpiece */}
+      <g strokeWidth="1.2">
+        {/* Massive mantelshelf - HIGHLIGHTED */}
+        <g filter={showHalo ? "url(#mantel-halo)" : undefined}>
+          <path d="M 8 42 L 92 42" strokeWidth="4" />
+          <path d="M 10 45 L 90 45" strokeWidth="3" />
+          <path d="M 12 48 L 88 48" strokeWidth="2" />
+
+          {/* Carved egg-and-dart on edge */}
+          <ellipse cx="20" cy="43" rx="2" ry="1.5" strokeWidth="0.8" />
+          <ellipse cx="28" cy="43" rx="2" ry="1.5" strokeWidth="0.8" />
+          <ellipse cx="36" cy="43" rx="2" ry="1.5" strokeWidth="0.8" />
+          <ellipse cx="50" cy="43" rx="2" ry="1.5" strokeWidth="0.8" />
+          <ellipse cx="64" cy="43" rx="2" ry="1.5" strokeWidth="0.8" />
+          <ellipse cx="72" cy="43" rx="2" ry="1.5" strokeWidth="0.8" />
+          <ellipse cx="80" cy="43" rx="2" ry="1.5" strokeWidth="0.8" />
+        </g>
+
+        {/* Overmantel with coat of arms - HIGHLIGHTED */}
+        <g filter={showHalo ? "url(#mantel-halo)" : undefined}>
+          <path d="M 20 12 L 80 12 L 80 40 L 20 40 Z" strokeWidth="2.5" />
+
+          {/* Heraldic shield */}
+          <path d="M 40 18 L 60 18 L 60 30 Q 50 35, 40 30 Z" strokeWidth="2" />
+          <path d="M 50 18 L 50 32" strokeWidth="1.2" />
+          <path d="M 40 24 L 60 24" strokeWidth="1.2" />
+
+          {/* Supporters (lions rampant) */}
+          <path d="M 35 28 L 35 20 Q 33 18, 35 16" strokeWidth="1.3" />
+          <circle cx="34" cy="18" r="2" strokeWidth="1" />
+
+          <path d="M 65 28 L 65 20 Q 67 18, 65 16" strokeWidth="1.3" />
+          <circle cx="66" cy="18" r="2" strokeWidth="1" />
+
+          {/* Crown above */}
+          <path d="M 45 15 L 48 10 L 50 12 L 52 10 L 55 15" strokeWidth="1.5" />
+          <path d="M 45 15 L 55 15" strokeWidth="1.2" />
+
+          {/* Scrollwork cartouche */}
+          <path d="M 22 15 Q 18 20, 22 25" strokeWidth="1.5" />
+          <path d="M 78 15 Q 82 20, 78 25" strokeWidth="1.5" />
+        </g>
+
+        {/* Caryatids (female figures supporting mantel) - HIGHLIGHTED */}
+        <g filter={showHalo ? "url(#mantel-halo)" : undefined}>
+          {/* Left caryatid */}
+          <ellipse cx="16" cy="56" rx="5" ry="6" strokeWidth="1.5" />
+          <path d="M 12 61 L 10 72 L 22 72 L 20 61" strokeWidth="1.5" />
+          <path d="M 14 65 Q 16 68, 18 65" strokeWidth="1" />
+          <path d="M 12 63 L 8 68" strokeWidth="1.2" />
+          <path d="M 20 63 L 23 66 L 22 70" strokeWidth="1.2" />
+          {/* Drapery folds */}
+          <path d="M 12 68 Q 14 70, 12 73" strokeWidth="0.8" />
+          <path d="M 20 68 Q 18 70, 20 73" strokeWidth="0.8" />
+          {/* Capital on head (basket/crown) */}
+          <path d="M 11 50 L 21 50 L 20 48 L 12 48 Z" strokeWidth="1.3" />
+          <path d="M 12 48 L 20 48 L 19 42 L 13 42 Z" strokeWidth="1.5" />
+
+          {/* Right caryatid (mirrored) */}
+          <ellipse cx="84" cy="56" rx="5" ry="6" strokeWidth="1.5" />
+          <path d="M 80 61 L 78 72 L 90 72 L 88 61" strokeWidth="1.5" />
+          <path d="M 82 65 Q 84 68, 86 65" strokeWidth="1" />
+          <path d="M 80 63 L 77 66 L 78 70" strokeWidth="1.2" />
+          <path d="M 88 63 L 92 68" strokeWidth="1.2" />
+          <path d="M 80 68 Q 82 70, 80 73" strokeWidth="0.8" />
+          <path d="M 88 68 Q 86 70, 88 73" strokeWidth="0.8" />
+          <path d="M 79 50 L 89 50 L 88 48 L 80 48 Z" strokeWidth="1.3" />
+          <path d="M 80 48 L 88 48 L 87 42 L 81 42 Z" strokeWidth="1.5" />
+        </g>
+
+        {/* Frieze between caryatids */}
+        <path d="M 24 48 L 76 48" strokeWidth="2" />
+
+        {/* Acanthus scroll frieze */}
+        <path d="M 28 48 Q 32 46, 36 48 Q 40 50, 44 48" strokeWidth="1.3" />
+        <path d="M 56 48 Q 60 50, 64 48 Q 68 46, 72 48" strokeWidth="1.3" />
+        <path d="M 50 45 Q 50 48, 50 51" strokeWidth="1.2" />
+
+        {/* Paterae (rosettes) */}
+        <circle cx="32" cy="48" r="2.5" strokeWidth="1" />
+        <circle cx="68" cy="48" r="2.5" strokeWidth="1" />
+
+        {/* Firebox with stone arch */}
+        <path d="M 26 72 L 26 88 L 74 88 L 74 72 Z" strokeWidth="2" />
+        <path d="M 26 72 A 24 24 0 0 1 74 72" strokeWidth="2.5" />
+
+        {/* Inner arch detail */}
+        <path d="M 30 73 A 20 20 0 0 1 70 73" strokeWidth="1.5" opacity="0.6" />
+
+        {/* Stone blocks around arch (voussoirs) */}
+        <path d="M 32 74 L 30 68" strokeWidth="1" />
+        <path d="M 40 70 L 38 64" strokeWidth="1" />
+        <path d="M 60 70 L 62 64" strokeWidth="1" />
+        <path d="M 68 74 L 70 68" strokeWidth="1" />
+
+        {/* Keystone */}
+        <path d="M 47 64 L 50 60 L 53 64 L 53 68 L 47 68 Z" strokeWidth="1.5" />
+
+        {/* Carved relief in spandrels */}
+        <path d="M 28 70 Q 30 68, 32 70" strokeWidth="0.9" />
+        <path d="M 68 70 Q 70 68, 72 70" strokeWidth="0.9" />
+
+        {/* Hearth with massive stone slabs */}
+        <path d="M 10 88 L 90 88 L 90 95 L 10 95 Z" strokeWidth="2" opacity="0.6" />
+        <path d="M 30 88 L 30 95 M 50 88 L 50 95 M 70 88 L 70 95" strokeWidth="1" opacity="0.4" />
+
+        {/* Andirons (heavy wrought iron) */}
+        <path d="M 32 78 L 32 88" strokeWidth="2" opacity="0.7" />
+        <path d="M 30 78 L 34 78 L 34 75 L 30 75 Z" strokeWidth="1.5" opacity="0.7" />
+        <path d="M 68 78 L 68 88" strokeWidth="2" opacity="0.7" />
+        <path d="M 66 78 L 70 78 L 70 75 L 66 75 Z" strokeWidth="1.5" opacity="0.7" />
+      </g>
+    </g>
+  </svg>
+)
+
+/**
+ * INGLENOOK - Arts & Crafts inglenook with built-in seating
+ * Reference: Philip Webb's Standen (1894), Greene & Greene's Gamble House (1908)
+ * Shows: Massive brick fireplace, oak settles, handcrafted tiles, beamed alcove
+ * Unique view: Looking into the cozy alcove from the hall
+ */
+const InglenookSVG: React.FC<SVGProps> = ({ showHalo }) => (
+  <svg viewBox="0 0 100 100" className="w-full h-full">
+    {showHalo && <HaloFilter id="inglenook-halo" intensity={0.95} />}
+    <g filter={showHalo ? "url(#inglenook-halo)" : undefined} fill="none" stroke="currentColor" strokeLinecap="round">
+      {/* CONTEXT: Hall or great room */}
+      <g strokeDasharray="3 2" opacity="0.4" strokeWidth="0.8">
+        {/* Room extends beyond */}
+        <path d="M5 15 L5 95 L95 95 L95 15" />
+        {/* Floor planks */}
+        <path d="M5 92 L95 92" />
+        <path d="M5 88 L95 88" />
+      </g>
+
+      {/* PRIMARY - Inglenook alcove */}
+      <g strokeWidth="1.2">
+        {/* Overhead beam defining alcove - HIGHLIGHTED */}
+        <g filter={showHalo ? "url(#inglenook-halo)" : undefined}>
+          <path d="M 8 30 L 92 30" strokeWidth="3.5" />
+          <path d="M 10 33 L 90 33" strokeWidth="2" />
+
+          {/* Carved detail on beam */}
+          <path d="M 48 30 L 48 28 L 52 28 L 52 30" strokeWidth="1" />
+          <path d="M 20 30 L 20 28 L 24 28 L 24 30" strokeWidth="0.8" />
+          <path d="M 76 30 L 76 28 L 80 28 L 80 30" strokeWidth="0.8" />
+
+          {/* Corbels supporting beam */}
+          <path d="M 10 30 Q 8 32, 10 36" strokeWidth="1.8" />
+          <path d="M 90 30 Q 92 32, 90 36" strokeWidth="1.8" />
+        </g>
+
+        {/* Side walls creating alcove */}
+        <path d="M 10 30 L 10 90" strokeWidth="2.5" />
+        <path d="M 90 30 L 90 90" strokeWidth="2.5" />
+
+        {/* Built-in oak settles (benches) - HIGHLIGHTED */}
+        <g filter={showHalo ? "url(#inglenook-halo)" : undefined}>
+          {/* Left settle */}
+          <path d="M 12 60 L 12 45 L 32 45 L 32 60 Z" strokeWidth="2" />
+          {/* High back with panels */}
+          <path d="M 12 45 L 12 35 L 32 35 L 32 45" strokeWidth="2" />
+          <path d="M 16 37 L 16 43 L 28 43 L 28 37 Z" strokeWidth="1.2" />
+          {/* Seat cushion */}
+          <path d="M 14 55 L 30 55 L 30 58 L 14 58" strokeWidth="1.5" />
+          {/* Arms */}
+          <path d="M 32 45 L 35 45 L 35 58" strokeWidth="1.5" />
+
+          {/* Right settle (mirrored) */}
+          <path d="M 68 60 L 68 45 L 88 45 L 88 60 Z" strokeWidth="2" />
+          <path d="M 68 45 L 68 35 L 88 35 L 88 45" strokeWidth="2" />
+          <path d="M 72 37 L 72 43 L 84 43 L 84 37 Z" strokeWidth="1.2" />
+          <path d="M 70 55 L 86 55 L 86 58 L 70 58" strokeWidth="1.5" />
+          <path d="M 68 45 L 65 45 L 65 58" strokeWidth="1.5" />
+
+          {/* Storage beneath seats */}
+          <path d="M 12 60 L 32 60 L 32 70 L 12 70" strokeWidth="1.3" />
+          <path d="M 22 60 L 22 70" strokeWidth="0.8" />
+          <path d="M 16 65 L 16 67" strokeWidth="0.9" />
+          <path d="M 28 65 L 28 67" strokeWidth="0.9" />
+
+          <path d="M 68 60 L 88 60 L 88 70 L 68 70" strokeWidth="1.3" />
+          <path d="M 78 60 L 78 70" strokeWidth="0.8" />
+          <path d="M 72 65 L 72 67" strokeWidth="0.9" />
+          <path d="M 84 65 L 84 67" strokeWidth="0.9" />
+        </g>
+
+        {/* Massive brick fireplace - HIGHLIGHTED */}
+        <g filter={showHalo ? "url(#inglenook-halo)" : undefined}>
+          {/* Brick surround */}
+          <path d="M 36 35 L 36 85 L 64 85 L 64 35" strokeWidth="2.5" />
+
+          {/* Wide, low fireplace opening (Arts & Crafts style) */}
+          <path d="M 38 60 L 38 82 L 62 82 L 62 60" strokeWidth="2" />
+
+          {/* Flat stone lintel */}
+          <path d="M 36 60 L 64 60" strokeWidth="3" />
+          <path d="M 37 63 L 63 63" strokeWidth="1.5" />
+
+          {/* Brick courses (visible texture) */}
+          <path d="M 38 40 L 62 40" strokeWidth="0.7" opacity="0.6" />
+          <path d="M 40 44 L 60 44" strokeWidth="0.7" opacity="0.6" />
+          <path d="M 38 48 L 62 48" strokeWidth="0.7" opacity="0.6" />
+          <path d="M 40 52 L 60 52" strokeWidth="0.7" opacity="0.6" />
+          <path d="M 38 56 L 62 56" strokeWidth="0.7" opacity="0.6" />
+
+          {/* Decorative tiles around opening (William Morris/De Morgan style) */}
+          <path d="M 38 58 L 38 62 L 42 62 L 42 58 Z" strokeWidth="1.3" />
+          <path d="M 39 59 Q 40 60, 41 59 Q 40 61, 39 60" strokeWidth="0.6" />
+
+          <path d="M 44 58 L 44 62 L 48 62 L 48 58 Z" strokeWidth="1.3" />
+          <path d="M 45 59 Q 46 60, 47 59 Q 46 61, 45 60" strokeWidth="0.6" />
+
+          <path d="M 52 58 L 52 62 L 56 62 L 56 58 Z" strokeWidth="1.3" />
+          <path d="M 53 59 Q 54 60, 55 59 Q 54 61, 53 60" strokeWidth="0.6" />
+
+          <path d="M 58 58 L 58 62 L 62 62 L 62 58 Z" strokeWidth="1.3" />
+          <path d="M 59 59 Q 60 60, 61 59 Q 60 61, 59 60" strokeWidth="0.6" />
+
+          {/* Copper hood (optional Arts & Crafts element) */}
+          <path d="M 34 35 L 34 50 L 38 60 L 62 60 L 66 50 L 66 35" strokeWidth="1.8" opacity="0.7" />
+          <path d="M 36 40 L 40 55" strokeWidth="0.6" opacity="0.5" />
+          <path d="M 64 40 L 60 55" strokeWidth="0.6" opacity="0.5" />
+
+          {/* Rivet details on hood */}
+          <circle cx="37" cy="42" r="0.8" strokeWidth="0.5" opacity="0.6" />
+          <circle cx="50" cy="37" r="0.8" strokeWidth="0.5" opacity="0.6" />
+          <circle cx="63" cy="42" r="0.8" strokeWidth="0.5" opacity="0.6" />
+        </g>
+
+        {/* Fire with logs - Arts & Crafts emphasis on real materials */}
+        <path d="M 42 75 L 50 72 L 58 75" strokeWidth="2" opacity="0.7" />
+        <path d="M 44 78 L 56 78" strokeWidth="1.8" opacity="0.7" />
+        <path d="M 46 80 L 54 80" strokeWidth="1.5" opacity="0.7" />
+
+        {/* Andirons (handcrafted wrought iron) */}
+        <path d="M 43 70 L 43 82" strokeWidth="1.5" opacity="0.6" />
+        <path d="M 41 70 L 45 70 L 44 68 L 42 68 Z" strokeWidth="1.2" opacity="0.6" />
+        <path d="M 57 70 L 57 82" strokeWidth="1.5" opacity="0.6" />
+        <path d="M 55 70 L 59 70 L 58 68 L 56 68 Z" strokeWidth="1.2" opacity="0.6" />
+
+        {/* Hearth with flagstone or tile */}
+        <path d="M 10 85 L 90 85 L 90 90 L 10 90 Z" strokeWidth="1.8" opacity="0.5" />
+        <path d="M 30 85 L 30 90 M 50 85 L 50 90 M 70 85 L 70 90" strokeWidth="1" opacity="0.4" />
+
+        {/* Alcove ceiling with exposed joists */}
+        <path d="M 10 30 L 10 25" strokeWidth="1.5" opacity="0.5" />
+        <path d="M 30 30 L 30 25" strokeWidth="1.5" opacity="0.5" />
+        <path d="M 50 30 L 50 25" strokeWidth="1.5" opacity="0.5" />
+        <path d="M 70 30 L 70 25" strokeWidth="1.5" opacity="0.5" />
+        <path d="M 90 30 L 90 25" strokeWidth="1.5" opacity="0.5" />
+
+        {/* Lantern or candle sconce */}
+        <path d="M 20 38 L 20 42" strokeWidth="0.9" opacity="0.6" />
+        <path d="M 18 42 L 22 42 L 21 46 L 19 46 Z" strokeWidth="0.8" opacity="0.6" />
+
+        <path d="M 80 38 L 80 42" strokeWidth="0.9" opacity="0.6" />
+        <path d="M 78 42 L 82 42 L 81 46 L 79 46 Z" strokeWidth="0.8" opacity="0.6" />
+      </g>
+    </g>
+  </svg>
+)
+
 // Export mapping for all interior elements
 export const INTERIOR_ELEMENTS: Record<string, React.FC<SVGProps>> = {
   'alcove': AlcoveSVG,
@@ -775,6 +1187,9 @@ export const INTERIOR_ELEMENTS: Record<string, React.FC<SVGProps>> = {
   'pantry': PantrySVG,
   'vestibule': VestibuleSVG,
   'gallery': GallerySVG,
+  'fireplace': FireplaceSVG,
+  'mantelpiece': MantelSVG,
+  'inglenook': InglenookSVG,
 }
 
 export {
@@ -787,4 +1202,7 @@ export {
   PantrySVG,
   VestibuleSVG,
   GallerySVG,
+  FireplaceSVG,
+  MantelSVG,
+  InglenookSVG,
 }
