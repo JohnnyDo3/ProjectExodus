@@ -4401,7 +4401,7 @@ export default function ArticlesPage() {
                   <div className="relative p-4 sm:p-6">
                     {/* Category seal - compact */}
                     <div className="flex items-center justify-center mb-3">
-                      <span className="px-3 py-1 text-[9px] font-bold text-black uppercase tracking-[0.15em] border border-amber-600/50 bg-amber-200/60 rounded-sm shadow-sm" style={{ fontFamily: 'Georgia, serif' }}>
+                      <span className="px-3 py-1 text-[9px] font-bold text-black uppercase tracking-[0.15em] border border-amber-600/50 bg-amber-200/60 rounded-sm shadow-sm" style={{ fontFamily: 'Georgia, serif', color: '#000' }}>
                         {previewArticle.category?.name || 'Article'}
                       </span>
                     </div>
@@ -4419,7 +4419,7 @@ export default function ArticlesPage() {
                     )}
 
                     {/* Title - rich sepia ink with ink fade-in effect */}
-                    <h2 className="text-xl sm:text-2xl font-bold text-black text-center mb-3 leading-tight tracking-tight ink-text" style={{ fontFamily: 'Georgia, serif', animationDelay: '0.2s' }}>
+                    <h2 className="text-xl sm:text-2xl font-bold text-black text-center mb-3 leading-tight tracking-tight ink-text" style={{ fontFamily: 'Georgia, serif', animationDelay: '0.2s', color: '#000' }}>
                       {previewArticle.title}
                     </h2>
 
@@ -4434,7 +4434,7 @@ export default function ArticlesPage() {
                     </div>
 
                     {/* Excerpt - elegant calligraphy style with ink fade-in, line clamp for long excerpts */}
-                    <p className="text-sm text-black text-center mb-4 leading-relaxed italic ink-text line-clamp-3" style={{ fontFamily: 'Georgia, serif', lineHeight: '1.7', animationDelay: '0.5s' }}>
+                    <p className="text-sm text-black text-center mb-4 leading-relaxed italic ink-text line-clamp-3" style={{ fontFamily: 'Georgia, serif', lineHeight: '1.7', animationDelay: '0.5s', color: '#000' }}>
                       "{previewArticle.excerpt}"
                     </p>
 
@@ -4448,30 +4448,30 @@ export default function ArticlesPage() {
                         )}
                       </div>
                       <div className="text-center">
-                        <p className="font-bold text-black text-base" style={{ fontFamily: 'Georgia, serif' }}>
+                        <p className="font-bold text-black text-base" style={{ fontFamily: 'Georgia, serif', color: '#000' }}>
                           {previewArticle.author?.name || 'Anonymous Scribe'}
                         </p>
-                        <p className="text-xs text-black" style={{ fontFamily: 'Georgia, serif', fontStyle: 'italic' }}>
+                        <p className="text-xs text-black" style={{ fontFamily: 'Georgia, serif', fontStyle: 'italic', color: '#000' }}>
                           {new Date(previewArticle.publishedAt).toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' })}
                         </p>
                       </div>
                     </div>
 
                     {/* Stats - parchment ink style - compact */}
-                    <div className="flex items-center justify-center gap-4 mb-4 text-black">
+                    <div className="flex items-center justify-center gap-4 mb-4 text-black" style={{ color: '#000' }}>
                       <div className="flex items-center gap-2">
-                        <Clock className="w-4 h-4" />
-                        <span className="text-xs font-medium" style={{ fontFamily: 'Georgia, serif' }}>{previewArticle.readTime} min</span>
+                        <Clock className="w-4 h-4" style={{ color: '#000' }} />
+                        <span className="text-xs font-medium" style={{ fontFamily: 'Georgia, serif', color: '#000' }}>{previewArticle.readTime} min</span>
                       </div>
                       <div className="w-1.5 h-1.5 bg-amber-600/60 rounded-full" />
                       <div className="flex items-center gap-2">
-                        <Eye className="w-4 h-4" />
-                        <span className="text-xs font-medium" style={{ fontFamily: 'Georgia, serif' }}>{previewArticle._count?.readBy || 0} readers</span>
+                        <Eye className="w-4 h-4" style={{ color: '#000' }} />
+                        <span className="text-xs font-medium" style={{ fontFamily: 'Georgia, serif', color: '#000' }}>{previewArticle._count?.readBy || 0} readers</span>
                       </div>
                       <div className="w-1.5 h-1.5 bg-amber-600/60 rounded-full" />
                       <div className="flex items-center gap-2">
-                        <MessageCircle className="w-4 h-4" />
-                        <span className="text-xs font-medium" style={{ fontFamily: 'Georgia, serif' }}>{previewArticle._count?.comments || 0}</span>
+                        <MessageCircle className="w-4 h-4" style={{ color: '#000' }} />
+                        <span className="text-xs font-medium" style={{ fontFamily: 'Georgia, serif', color: '#000' }}>{previewArticle._count?.comments || 0}</span>
                       </div>
                     </div>
 
@@ -4479,8 +4479,8 @@ export default function ArticlesPage() {
                     {session && readingProgress[previewArticle.id] && (
                       <div className="mb-4 p-2 bg-amber-200/50 border border-amber-600/40 rounded-sm">
                         <div className="flex items-center justify-between mb-2">
-                          <span className="text-xs text-black italic" style={{ fontFamily: 'Georgia, serif' }}>Your Progress</span>
-                          <span className="text-xs font-bold text-black">
+                          <span className="text-xs text-black italic" style={{ fontFamily: 'Georgia, serif', color: '#000' }}>Your Progress</span>
+                          <span className="text-xs font-bold text-black" style={{ color: '#000' }}>
                             {readingProgress[previewArticle.id].completed ? 'Completed' : `${Math.round(readingProgress[previewArticle.id].scrollProgress)}%`}
                           </span>
                         </div>
@@ -4521,7 +4521,7 @@ export default function ArticlesPage() {
                       ) : (
                         /* Non-authenticated user - show sign-up CTA */
                         <div className="text-center">
-                          <p className="text-sm text-black mb-3 italic" style={{ fontFamily: 'Georgia, serif' }}>
+                          <p className="text-sm text-black mb-3 italic" style={{ fontFamily: 'Georgia, serif', color: '#000' }}>
                             Join our community to unlock this scroll
                           </p>
                           <div className="flex items-center justify-center gap-3">
