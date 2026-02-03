@@ -133,12 +133,13 @@ export function CollaborativeEditor({
 
   // Build extensions array - memoize to prevent recreation
   const extensions = useCallback(() => {
+    // Configure StarterKit - disable history when collaboration is enabled (Y.js handles undo/redo)
+    const starterKitOptions = enableCollaboration && collaborationReady
+      ? { history: false as const }
+      : undefined
+
     const baseExtensions = [
-      StarterKit.configure(
-        enableCollaboration && collaborationReady
-          ? { history: false } // Disable history when collaboration is enabled (Y.js handles it)
-          : {}
-      ),
+      StarterKit.configure(starterKitOptions as any),
       Placeholder.configure({
         placeholder,
       }),
