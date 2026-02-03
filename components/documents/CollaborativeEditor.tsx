@@ -78,10 +78,12 @@ export function CollaborativeEditor({
 
   const providerRef = useRef<HocuspocusProvider | null>(null)
   const ydocRef = useRef<Y.Doc | null>(null)
+  const [collaborationReady, setCollaborationReady] = useState(false)
 
   // Initialize Y.js and Hocuspocus provider for collaboration
   useEffect(() => {
     if (!enableCollaboration || !documentId || !currentUser) {
+      setCollaborationReady(false)
       return
     }
 
@@ -112,7 +114,11 @@ export function CollaborativeEditor({
       // Set current user awareness
       provider.setAwarenessField('user', getUserAwarenessInfo(currentUser).user)
 
+      // Mark collaboration as ready after provider is set up
+      setCollaborationReady(true)
+
       return () => {
+        setCollaborationReady(false)
         provider.destroy()
         ydoc.destroy()
         providerRef.current = null
@@ -121,17 +127,16 @@ export function CollaborativeEditor({
     } catch (error) {
       console.error('Failed to initialize collaboration:', error)
       setConnectionStatus('error')
+      setCollaborationReady(false)
     }
   }, [enableCollaboration, documentId, currentUser, collaborationType])
 
-  const editor = useEditor({
-    extensions: [
+  // Build extensions array - memoize to prevent recreation
+  const extensions = useCallback(() => {
+    const baseExtensions = [
       StarterKit.configure(
-        enableCollaboration
-          ? ({
-              // Disable history when collaboration is enabled (Y.js handles it)
-              history: false,
-            } as any)
+        enableCollaboration && collaborationReady
+          ? { history: false } // Disable history when collaboration is enabled (Y.js handles it)
           : {}
       ),
       Placeholder.configure({
@@ -161,20 +166,27 @@ export function CollaborativeEditor({
       CharacterCount,
       Color,
       TextStyle,
-      // Add collaboration extensions only when enabled
-      ...(enableCollaboration && ydocRef.current && providerRef.current
-        ? [
-            Collaboration.configure({
-              document: ydocRef.current,
-            }),
-            CollaborationCursor.configure({
-              provider: providerRef.current,
-              user: currentUser ? getUserAwarenessInfo(currentUser).user : undefined,
-            }),
-          ]
-        : []),
-    ],
-    content: enableCollaboration ? undefined : initialContent, // Don't set initial content when collaborating (loaded from Y.js)
+    ]
+
+    // Add collaboration extensions only when ready
+    if (enableCollaboration && collaborationReady && ydocRef.current && providerRef.current) {
+      baseExtensions.push(
+        Collaboration.configure({
+          document: ydocRef.current,
+        }),
+        CollaborationCursor.configure({
+          provider: providerRef.current,
+          user: currentUser ? getUserAwarenessInfo(currentUser).user : undefined,
+        })
+      )
+    }
+
+    return baseExtensions
+  }, [enableCollaboration, collaborationReady, readOnly, placeholder, currentUser])
+
+  const editor = useEditor({
+    extensions: extensions(),
+    content: (enableCollaboration && collaborationReady) ? undefined : initialContent,
     editable: !readOnly,
     onUpdate: ({ editor }) => {
       if (!enableCollaboration) {
@@ -187,7 +199,7 @@ export function CollaborativeEditor({
         class: 'prose prose-sm sm:prose lg:prose-lg xl:prose-xl max-w-none focus:outline-none min-h-[500px] p-6',
       },
     },
-  }, [enableCollaboration, ydocRef.current, providerRef.current])
+  }, [extensions, initialContent, readOnly, enableCollaboration, collaborationReady])
 
   // Auto-save functionality
   useEffect(() => {

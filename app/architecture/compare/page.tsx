@@ -1,16 +1,50 @@
-import { Metadata } from 'next'
-import Link from 'next/link'
-import { getAllComparisonSets } from '@/lib/architecture/comparisonSets'
-import ArchitectureComparison from '@/components/architecture/comparison/ArchitectureComparison'
-import { greekColumnsComparison } from '@/lib/architecture/comparisonSets'
+'use client'
 
-export const metadata: Metadata = {
-  title: 'Compare Architectural Elements | Architecture Learning',
-  description: 'Side-by-side comparisons of architectural elements. Learn the differences between Doric, Ionic, and Corinthian columns, different arch types, and more.',
-}
+import { useState, useEffect } from 'react'
+import Link from 'next/link'
+import { useSearchParams } from 'next/navigation'
+import { getAllComparisonSets, getComparisonSetsByCategory, type ComparisonSet } from '@/lib/architecture/comparisonSets'
+import ArchitectureComparison from '@/components/architecture/comparison/ArchitectureComparison'
+import { greekColumnsComparison, bracingTypesComparison } from '@/lib/architecture/comparisonSets'
+import { HardHat, Building2, Columns3, Church, Shield } from 'lucide-react'
+
+// Category tabs for filtering
+const categoryTabs = [
+  { id: 'all', name: 'All Sets', icon: Building2 },
+  { id: 'structural', name: 'Structural Engineering', icon: HardHat },
+  { id: 'columns', name: 'Columns', icon: Columns3 },
+  { id: 'arches', name: 'Arches', icon: Church },
+  { id: 'windows', name: 'Windows', icon: Shield },
+]
 
 export default function CompareMainPage() {
-  const allSets = getAllComparisonSets()
+  const searchParams = useSearchParams()
+  const categoryParam = searchParams.get('category')
+  const [activeCategory, setActiveCategory] = useState<string>(categoryParam || 'all')
+  const [displayedSets, setDisplayedSets] = useState<ComparisonSet[]>([])
+
+  useEffect(() => {
+    if (categoryParam) {
+      setActiveCategory(categoryParam)
+    }
+  }, [categoryParam])
+
+  useEffect(() => {
+    if (activeCategory === 'all') {
+      setDisplayedSets(getAllComparisonSets())
+    } else {
+      setDisplayedSets(getComparisonSetsByCategory(activeCategory as ComparisonSet['category']))
+    }
+  }, [activeCategory])
+
+  // Get default comparison based on category
+  const defaultComparison = activeCategory === 'structural' ? bracingTypesComparison : greekColumnsComparison
+  const defaultTitle = activeCategory === 'structural'
+    ? 'Featured: Bracing Systems'
+    : 'Featured: The Three Greek Orders'
+  const defaultDescription = activeCategory === 'structural'
+    ? 'Start here with lateral force resisting systems - essential for earthquake and wind engineering'
+    : 'Start here with the most fundamental comparison in Classical architecture'
 
   return (
     <div className="min-h-screen bg-background">
@@ -18,23 +52,59 @@ export default function CompareMainPage() {
       <div className="border-b bg-muted/30">
         <div className="container py-4">
           <div className="flex items-center gap-2 text-sm text-muted-foreground mb-2">
-            <Link href="/architecture/dashboard" className="hover:text-foreground transition-colors">
+            <Link href="/architecture" className="hover:text-foreground transition-colors">
               Architecture
             </Link>
             <span>/</span>
             <span className="text-foreground font-medium">Compare</span>
+            {activeCategory !== 'all' && (
+              <>
+                <span>/</span>
+                <span className="text-primary font-medium capitalize">{activeCategory}</span>
+              </>
+            )}
           </div>
-          <h1 className="text-3xl font-bold">Compare Architectural Elements</h1>
+          <h1 className="text-3xl font-bold">
+            {activeCategory === 'structural' ? 'Structural Engineering' : 'Compare Architectural Elements'}
+          </h1>
           <p className="text-muted-foreground mt-1">
-            Learn to distinguish similar elements through side-by-side comparison
+            {activeCategory === 'structural'
+              ? 'Learn bracing, trusses, foundations, and load types through interactive comparisons'
+              : 'Learn to distinguish similar elements through side-by-side comparison'}
           </p>
+        </div>
+      </div>
+
+      {/* Category Tabs */}
+      <div className="border-b bg-muted/10">
+        <div className="container py-3">
+          <div className="flex flex-wrap gap-2">
+            {categoryTabs.map((tab) => {
+              const Icon = tab.icon
+              const isActive = activeCategory === tab.id
+              return (
+                <button
+                  key={tab.id}
+                  onClick={() => setActiveCategory(tab.id)}
+                  className={`inline-flex items-center gap-2 px-4 py-2 rounded-full text-sm font-medium transition-all ${
+                    isActive
+                      ? 'bg-primary text-primary-foreground shadow-sm'
+                      : 'bg-muted hover:bg-muted/80 text-muted-foreground hover:text-foreground'
+                  }`}
+                >
+                  <Icon className="w-4 h-4" />
+                  {tab.name}
+                </button>
+              )
+            })}
+          </div>
         </div>
       </div>
 
       <div className="container py-8">
         {/* Comparison Set Selector */}
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-12">
-          {allSets.map((set) => (
+          {displayedSets.map((set) => (
             <Link
               key={set.id}
               href={`/architecture/compare/${set.id}`}
@@ -87,15 +157,15 @@ export default function CompareMainPage() {
           ))}
         </div>
 
-        {/* Default: Show Greek Columns Comparison */}
+        {/* Default: Show featured comparison based on category */}
         <div className="border-t pt-8">
           <div className="mb-6">
-            <h2 className="text-2xl font-bold mb-2">Featured: The Three Greek Orders</h2>
+            <h2 className="text-2xl font-bold mb-2">{defaultTitle}</h2>
             <p className="text-muted-foreground">
-              Start here with the most fundamental comparison in Classical architecture
+              {defaultDescription}
             </p>
           </div>
-          <ArchitectureComparison comparisonSet={greekColumnsComparison} />
+          <ArchitectureComparison comparisonSet={defaultComparison} />
         </div>
       </div>
     </div>

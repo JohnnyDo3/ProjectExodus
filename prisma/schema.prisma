@@ -1150,9 +1150,11 @@ model ProjectSubgroup {
   id                String              @id @default(cuid())
   projectId         String
   name              String
+  slug              String
   description       String?             @db.Text
   goal              String?             @db.Text
   isPrivate         Boolean             @default(false)
+  entryRequirements String?             @db.Text
 
   // Subgroup-specific learning requirements
   requiresLearning  Boolean             @default(false)
@@ -1167,6 +1169,7 @@ model ProjectSubgroup {
   createdAt         DateTime            @default(now())
   updatedAt         DateTime            @updatedAt
 
+  @@unique([projectId, slug])
   @@index([projectId])
   @@index([isPrivate])
 }

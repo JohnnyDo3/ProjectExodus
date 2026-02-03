@@ -9,7 +9,8 @@ import {
   Building2, Gamepad2, Camera, BookOpen, Trophy, Timer,
   ChevronRight, Layers, Globe, Search, Shuffle, Clock,
   Target, Zap, Award, Map, GraduationCap, Columns3,
-  ChurchIcon, Castle, ArrowRight, Play, Sparkles, Brain
+  ChurchIcon, Castle, ArrowRight, Play, Sparkles, Brain,
+  HardHat, Hammer, Wrench
 } from 'lucide-react'
 import Link from 'next/link'
 import { ALL_ELEMENTS, ELEMENT_STATS } from '@/data/architecture/elements'
@@ -38,6 +39,16 @@ const gameModes = [
     bgColor: 'bg-amber-500/10',
     features: ['Kahoot-style gameplay', 'Ghost racing mode', 'Personal records'],
     href: '/architecture/play/flashcard'
+  },
+  {
+    id: 'structural',
+    name: 'Structural Engineering',
+    description: 'Learn bracing systems, trusses, foundations, and load types with interactive comparisons.',
+    icon: HardHat,
+    color: 'from-blue-500 to-indigo-600',
+    bgColor: 'bg-blue-500/10',
+    features: ['Bracing & trusses', 'Foundation types', 'Load analysis', 'Multi-view learning'],
+    href: '/architecture/compare?category=structural'
   },
   {
     id: 'diagram',
@@ -77,6 +88,14 @@ const featuredCategories = [
   { id: 'DECORATIVE', name: 'Decorative Details', icon: Sparkles, count: 12 },
   { id: 'RELIGIOUS', name: 'Religious Architecture', icon: ChurchIcon, count: 8 },
   { id: 'FORTIFICATION', name: 'Fortifications', icon: Castle, count: 5 },
+]
+
+// Structural Engineering learning sets (for the dedicated mode)
+const structuralEngineeringSets = [
+  { id: 'bracing-types', name: 'Bracing Systems', description: 'Diagonal, X-bracing, chevron, BRB, and more', count: 10 },
+  { id: 'truss-types', name: 'Truss Types', description: 'King post to lattice - all major trusses', count: 12 },
+  { id: 'foundation-types', name: 'Foundation Types', description: 'Spread footings to micropiles', count: 11 },
+  { id: 'load-types', name: 'Load Types', description: 'Dead, live, wind, seismic, and environmental loads', count: 11 },
 ]
 
 export default function ArchitecturePage() {
