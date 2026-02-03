@@ -9,6 +9,7 @@
  */
 
 import {
+  // Bracing Types
   DiagonalBracingSVG,
   XBracingSVG,
   KBracingSVG,
@@ -17,6 +18,9 @@ import {
   KneeBracingSVG,
   EccentricBracingSVG,
   MomentFrameSVG,
+  ZipperBracingSVG,
+  BucklingRestrainedBraceSVG,
+  // Truss Types
   KingPostTrussSVG,
   QueenPostTrussSVG,
   PrattTrussSVG,
@@ -26,6 +30,10 @@ import {
   BowstringTrussSVG,
   VierendeelTrussSVG,
   LatticeTrussSVG,
+  BaltimoreTrussSVG,
+  ScissorsTrussSVG,
+  GambrelTrussSVG,
+  // Foundation Types
   SpreadFootingSVG,
   StripFootingSVG,
   CombinedFootingSVG,
@@ -35,6 +43,9 @@ import {
   CaissonFoundationSVG,
   FloatingFoundationSVG,
   RubbleTrenchSVG,
+  HelicalPileSVG,
+  MicropileSVG,
+  // Load Types - Main
   DeadLoadSVG,
   LiveLoadSVG,
   WindLoadSVG,
@@ -44,6 +55,32 @@ import {
   ImpactLoadSVG,
   ThermalLoadSVG,
   HydrostaticLoadSVG,
+  EarthPressureLoadSVG,
+  BuoyancyLoadSVG,
+  // Load Types - Symbolic Views
+  DeadLoadSymbolicSVG,
+  LiveLoadSymbolicSVG,
+  WindLoadSymbolicSVG,
+  SeismicLoadSymbolicSVG,
+  SnowLoadSymbolicSVG,
+  RainLoadSymbolicSVG,
+  ImpactLoadSymbolicSVG,
+  ThermalLoadSymbolicSVG,
+  HydrostaticLoadSymbolicSVG,
+  EarthPressureSymbolicSVG,
+  BuoyancySymbolicSVG,
+  // Load Types - Effect Views
+  DeadLoadEffectSVG,
+  LiveLoadEffectSVG,
+  WindLoadEffectSVG,
+  SeismicLoadEffectSVG,
+  SnowLoadEffectSVG,
+  RainLoadEffectSVG,
+  ImpactLoadEffectSVG,
+  ThermalLoadEffectSVG,
+  HydrostaticLoadEffectSVG,
+  EarthPressureEffectSVG,
+  BuoyancyEffectSVG,
 } from '@/components/architecture/elements/structural'
 
 import type { ComparisonSet } from './comparisonSets'
@@ -400,13 +437,49 @@ export const loadTypesComparison: ComparisonSet = {
   difficulty: 'beginner',
   title: 'Structural Loads',
   subtitle: 'Understanding forces that act on buildings',
-  description: 'Every structure must resist multiple types of forces. Engineers must account for permanent loads, occupancy, weather, earthquakes, and more. Understanding loads is the first step in structural design.',
+  description: 'Every structure must resist multiple types of forces. Engineers must account for permanent loads, occupancy, weather, earthquakes, and more. Understanding loads is the first step in structural design. Use the multi-view feature to see symbolic icons and structural effects.',
 
   elements: [
-    { id: 'dead-load', name: 'Dead Load', component: DeadLoadSVG },
-    { id: 'live-load', name: 'Live Load', component: LiveLoadSVG },
-    { id: 'wind-load', name: 'Wind Load', component: WindLoadSVG },
-    { id: 'seismic-load', name: 'Seismic Load', component: SeismicLoadSVG },
+    {
+      id: 'dead-load',
+      name: 'Dead Load',
+      component: DeadLoadSVG,
+      views: [
+        { id: 'realistic', label: 'Realistic', description: 'Building cross-section showing self-weight', component: DeadLoadSVG },
+        { id: 'symbolic', label: 'Symbolic', description: 'Simple icon representation', component: DeadLoadSymbolicSVG },
+        { id: 'effect', label: 'Effect', description: 'Structural deformation under load', component: DeadLoadEffectSVG },
+      ],
+    },
+    {
+      id: 'live-load',
+      name: 'Live Load',
+      component: LiveLoadSVG,
+      views: [
+        { id: 'realistic', label: 'Realistic', description: 'Occupants and furniture on floor', component: LiveLoadSVG },
+        { id: 'symbolic', label: 'Symbolic', description: 'People icons', component: LiveLoadSymbolicSVG },
+        { id: 'effect', label: 'Effect', description: 'Floor deflection under use', component: LiveLoadEffectSVG },
+      ],
+    },
+    {
+      id: 'wind-load',
+      name: 'Wind Load',
+      component: WindLoadSVG,
+      views: [
+        { id: 'realistic', label: 'Realistic', description: 'Building with wind pressure arrows', component: WindLoadSVG },
+        { id: 'symbolic', label: 'Symbolic', description: 'Wind direction icon', component: WindLoadSymbolicSVG },
+        { id: 'effect', label: 'Effect', description: 'Building sway under wind', component: WindLoadEffectSVG },
+      ],
+    },
+    {
+      id: 'seismic-load',
+      name: 'Seismic Load',
+      component: SeismicLoadSVG,
+      views: [
+        { id: 'realistic', label: 'Realistic', description: 'Building on shaking ground', component: SeismicLoadSVG },
+        { id: 'symbolic', label: 'Symbolic', description: 'Earthquake wave icon', component: SeismicLoadSymbolicSVG },
+        { id: 'effect', label: 'Effect', description: 'Story drift diagram', component: SeismicLoadEffectSVG },
+      ],
+    },
   ],
 
   features: [
@@ -514,13 +587,15 @@ export const advancedBracingComparison: ComparisonSet = {
   difficulty: 'advanced',
   title: 'Advanced Bracing Systems',
   subtitle: 'Specialized systems for seismic and architectural requirements',
-  description: 'Beyond basic bracing, modern structures use sophisticated systems that balance structural performance with architectural flexibility.',
+  description: 'Beyond basic bracing, modern structures use sophisticated systems that balance structural performance with architectural flexibility. These include both traditional approaches and cutting-edge seismic technologies.',
 
   elements: [
     { id: 'k-bracing', name: 'K-Bracing', component: KBracingSVG },
     { id: 'inverted-chevron-bracing', name: 'Inverted Chevron', component: InvertedChevronBracingSVG },
     { id: 'knee-bracing', name: 'Knee Bracing', component: KneeBracingSVG },
     { id: 'moment-frame', name: 'Moment Frame', component: MomentFrameSVG },
+    { id: 'zipper-bracing', name: 'Zipper', component: ZipperBracingSVG },
+    { id: 'buckling-restrained-brace', name: 'BRB', component: BucklingRestrainedBraceSVG },
   ],
 
   features: [
@@ -531,17 +606,22 @@ export const advancedBracingComparison: ComparisonSet = {
         'inverted-chevron-bracing': 'V-shape with apex at bottom beam',
         'knee-bracing': 'Short diagonals at corners only',
         'moment-frame': 'NO bracing - rigid beam-column connections',
+        'zipper-bracing': 'Vertical "zippers" connect chevron brace points',
+        'buckling-restrained-brace': 'Steel core in concrete-filled tube',
       },
       highlighted: true,
     },
     {
-      label: 'Seismic Concern',
+      label: 'Seismic Performance',
       values: {
         'k-bracing': 'CAUTION: Can cause column failure - limited use',
         'inverted-chevron-bracing': 'Good: Similar to chevron performance',
         'knee-bracing': 'Limited: For low-seismic zones only',
         'moment-frame': 'Excellent: Ductile behavior, but expensive',
+        'zipper-bracing': 'Excellent: Prevents soft-story failure',
+        'buckling-restrained-brace': 'Superior: Yields in tension AND compression',
       },
+      highlighted: true,
     },
     {
       label: 'Architectural Benefit',
@@ -550,6 +630,8 @@ export const advancedBracingComparison: ComparisonSet = {
         'inverted-chevron-bracing': 'Upper portion of frame open',
         'knee-bracing': 'Frame mostly open - traditional aesthetics',
         'moment-frame': 'Completely open - no diagonal obstructions',
+        'zipper-bracing': 'Moderate obstruction, but excellent safety',
+        'buckling-restrained-brace': 'Thinner braces possible, cleaner look',
       },
     },
     {
@@ -559,13 +641,15 @@ export const advancedBracingComparison: ComparisonSet = {
         'inverted-chevron-bracing': 'Modern alternative to chevron',
         'knee-bracing': 'Medieval timber framing tradition',
         'moment-frame': '1890s Chicago School, perfected 1960s+',
+        'zipper-bracing': '1970s Japan, refined after Kobe earthquake',
+        'buckling-restrained-brace': '1980s Japan, now global standard',
       },
     },
   ],
 
-  culturalContext: 'The moment frame emerged from the Chicago School architects who wanted open floor plans. After seismic failures in the 1994 Northridge earthquake revealed welding defects, connection design was revolutionized. K-bracing, once common, is now restricted after failures showed it could buckle columns.',
+  culturalContext: 'The moment frame emerged from the Chicago School architects who wanted open floor plans. After seismic failures in the 1994 Northridge earthquake revealed welding defects, connection design was revolutionized. K-bracing, once common, is now restricted after failures showed it could buckle columns. Zipper bracing and BRBs represent Japanese engineering innovations that have become global best practices.',
 
-  memoryTip: '**K** = meets at column (K shape), Inverted = **I**nverted V at bottom, **K**nee = **K**orner only, **M**oment = **M**issing bracing (rigid joints)',
+  memoryTip: '**K** = meets at column (K shape), **Z**ipper = **Z**ig-zag verticals connecting brace points, **BRB** = **B**uckling **R**estrained by encasing',
 
   matchingGame: {
     question: 'Match each description to the correct system',
@@ -574,6 +658,8 @@ export const advancedBracingComparison: ComparisonSet = {
       { id: 'apex-bottom', text: 'V-shape with apex at lower beam', correctElementId: 'inverted-chevron-bracing' },
       { id: 'corners-only', text: 'Short diagonals at corners only', correctElementId: 'knee-bracing' },
       { id: 'no-diagonals', text: 'No diagonals - rigid connections only', correctElementId: 'moment-frame' },
+      { id: 'vertical-zippers', text: 'Vertical members connect brace intersections', correctElementId: 'zipper-bracing' },
+      { id: 'encased-core', text: 'Steel core inside concrete-filled tube', correctElementId: 'buckling-restrained-brace' },
     ],
   },
 }
@@ -584,13 +670,16 @@ export const advancedTrussComparison: ComparisonSet = {
   difficulty: 'advanced',
   title: 'Specialized Truss Systems',
   subtitle: 'Complex trusses for long spans and special requirements',
-  description: 'These truss types represent engineering innovations for specific challenges - curved roofs, open passages, and record-breaking spans.',
+  description: 'These truss types represent engineering innovations for specific challenges - curved roofs, open passages, vaulted ceilings, and record-breaking spans.',
 
   elements: [
     { id: 'bowstring-truss', name: 'Bowstring', component: BowstringTrussSVG },
     { id: 'vierendeel-truss', name: 'Vierendeel', component: VierendeelTrussSVG },
     { id: 'fink-truss', name: 'Fink', component: FinkTrussSVG },
     { id: 'lattice-truss', name: 'Lattice', component: LatticeTrussSVG },
+    { id: 'baltimore-truss', name: 'Baltimore', component: BaltimoreTrussSVG },
+    { id: 'scissors-truss', name: 'Scissors', component: ScissorsTrussSVG },
+    { id: 'gambrel-truss', name: 'Gambrel', component: GambrelTrussSVG },
   ],
 
   features: [
@@ -601,6 +690,9 @@ export const advancedTrussComparison: ComparisonSet = {
         'vierendeel-truss': 'NO DIAGONALS - rectangular openings',
         'fink-truss': 'W-PATTERN web members',
         'lattice-truss': 'DENSE mesh of overlapping diagonals',
+        'baltimore-truss': 'SUBDIVIDED Pratt with extra diagonals',
+        'scissors-truss': 'CROSSING diagonal bottom chords',
+        'gambrel-truss': 'TWO SLOPES per side (barn roof)',
       },
       highlighted: true,
     },
@@ -611,6 +703,9 @@ export const advancedTrussComparison: ComparisonSet = {
         'vierendeel-truss': 'Rigid frame action (moment connections)',
         'fink-truss': 'Subdivided panels for longer spans',
         'lattice-truss': 'Many small members share the load',
+        'baltimore-truss': 'Reduced unsupported member length',
+        'scissors-truss': 'Diagonal tension creates vaulted ceiling',
+        'gambrel-truss': 'Steeper lower slopes maximize headroom',
       },
     },
     {
@@ -620,6 +715,9 @@ export const advancedTrussComparison: ComparisonSet = {
         'vierendeel-truss': 'Bridges needing unobstructed view/access',
         'fink-truss': 'Residential roofs, long-span pitched roofs',
         'lattice-truss': 'Historic covered bridges, decorative trusses',
+        'baltimore-truss': 'Long-span railroad bridges',
+        'scissors-truss': 'Churches, cathedral ceilings, great halls',
+        'gambrel-truss': 'Barns, Dutch Colonial houses, loft spaces',
       },
     },
     {
@@ -629,13 +727,16 @@ export const advancedTrussComparison: ComparisonSet = {
         'vierendeel-truss': '1896 - Belgian engineer Arthur Vierendeel',
         'fink-truss': '1854 - Albert Fink for railways',
         'lattice-truss': '1820 - Ithiel Town\'s patented design',
+        'baltimore-truss': '1870s - Baltimore & Ohio Railroad',
+        'scissors-truss': 'Medieval - Gothic cathedral tradition',
+        'gambrel-truss': '17th century - Dutch Colonial America',
       },
     },
   ],
 
-  culturalContext: 'The Vierendeel truss was considered structurally "wrong" because it violates the principle of triangulation, but rigid connections make it work. Town\'s lattice truss was so simple that untrained carpenters could build it with wooden pegs, spreading bridge construction across rural America.',
+  culturalContext: 'The Vierendeel truss was considered structurally "wrong" because it violates the principle of triangulation, but rigid connections make it work. Town\'s lattice truss was so simple that untrained carpenters could build it with wooden pegs, spreading bridge construction across rural America. The scissors truss became iconic in medieval churches, while the gambrel truss defined the American barn aesthetic.',
 
-  memoryTip: '**B**owstring = **B**ow shaped (curved), **V**ierendeel = **V**oid of diagonals (rectangular), **F**ink = **F**an-W pattern, **L**attice = **L**ots of crossing members',
+  memoryTip: '**B**owstring = **B**ow shaped, **V**ierendeel = **V**oid of diagonals, **S**cissors = **S**lashing cross pattern, **G**ambrel = **G**ot two slopes (barn)',
 
   matchingGame: {
     question: 'Match each description to the correct truss',
@@ -644,6 +745,9 @@ export const advancedTrussComparison: ComparisonSet = {
       { id: 'no-diagonals', text: 'No diagonals - rectangular openings only', correctElementId: 'vierendeel-truss' },
       { id: 'w-pattern', text: 'W-pattern subdivided web members', correctElementId: 'fink-truss' },
       { id: 'dense-mesh', text: 'Dense overlapping diagonal mesh', correctElementId: 'lattice-truss' },
+      { id: 'subdivided-pratt', text: 'Pratt truss with additional sub-diagonals', correctElementId: 'baltimore-truss' },
+      { id: 'crossing-chords', text: 'Crossing diagonals create vaulted ceiling', correctElementId: 'scissors-truss' },
+      { id: 'two-slopes', text: 'Two different slopes maximize loft space', correctElementId: 'gambrel-truss' },
     ],
   },
 }
@@ -654,13 +758,15 @@ export const advancedFoundationsComparison: ComparisonSet = {
   difficulty: 'advanced',
   title: 'Specialized Foundation Systems',
   subtitle: 'Solutions for challenging conditions',
-  description: 'When standard foundations won\'t work, engineers turn to these specialized systems for difficult soils, water, and environmental concerns.',
+  description: 'When standard foundations won\'t work, engineers turn to these specialized systems for difficult soils, water, limited access, and retrofit situations.',
 
   elements: [
     { id: 'bored-pile', name: 'Bored Pile', component: BoredPileSVG },
     { id: 'strip-footing', name: 'Strip Footing', component: StripFootingSVG },
     { id: 'combined-footing', name: 'Combined', component: CombinedFootingSVG },
     { id: 'floating-foundation', name: 'Floating', component: FloatingFoundationSVG },
+    { id: 'helical-pile', name: 'Helical Pile', component: HelicalPileSVG },
+    { id: 'micropile', name: 'Micropile', component: MicropileSVG },
   ],
 
   features: [
@@ -671,6 +777,8 @@ export const advancedFoundationsComparison: ComparisonSet = {
         'strip-footing': 'Continuous footing under walls',
         'combined-footing': 'Single footing under multiple columns',
         'floating-foundation': 'Excavated weight = building weight',
+        'helical-pile': 'Steel shaft with helical plates - screwed in',
+        'micropile': 'Small diameter drilled pile with steel core',
       },
       highlighted: true,
     },
@@ -681,7 +789,10 @@ export const advancedFoundationsComparison: ComparisonSet = {
         'strip-footing': 'Load-bearing wall construction',
         'combined-footing': 'Closely spaced columns, property lines',
         'floating-foundation': 'Very soft compressible soils',
+        'helical-pile': 'Quick install, residential, retrofits',
+        'micropile': 'Limited access, underpinning, rock bearing',
       },
+      highlighted: true,
     },
     {
       label: 'Advantage',
@@ -690,9 +801,26 @@ export const advancedFoundationsComparison: ComparisonSet = {
         'strip-footing': 'Simple, economical for wall loads',
         'combined-footing': 'Prevents overlapping footings',
         'floating-foundation': 'No net stress increase on soil',
+        'helical-pile': 'Immediate load capacity, no concrete cure',
+        'micropile': 'High capacity in small footprint, any access',
+      },
+    },
+    {
+      label: 'Origin',
+      values: {
+        'bored-pile': '1890s - development of drilling technology',
+        'strip-footing': 'Ancient - continuous wall foundations',
+        'combined-footing': '19th century - steel frame buildings',
+        'floating-foundation': '1930s - Mexico City clay soils',
+        'helical-pile': '1830s - Alexander Mitchell\'s lighthouse piles',
+        'micropile': '1950s - Italian "pali radice" for monuments',
       },
     },
   ],
+
+  culturalContext: 'Helical piles were invented in 1833 by Irish engineer Alexander Mitchell for lighthouse foundations in soft soils. Micropiles ("root piles") were developed by Dr. Fernando Lizzi in Italy during the 1950s to underpin historic monuments without disturbing fragile structures.',
+
+  memoryTip: '**H**elical = **H**elix plates screwed in, **M**icropile = **M**ini drill + high-strength steel core',
 
   matchingGame: {
     question: 'Match each foundation to its key feature',
@@ -701,6 +829,8 @@ export const advancedFoundationsComparison: ComparisonSet = {
       { id: 'continuous-wall', text: 'Continuous footing under walls', correctElementId: 'strip-footing' },
       { id: 'multi-column', text: 'One footing for multiple columns', correctElementId: 'combined-footing' },
       { id: 'weight-balance', text: 'Excavation weight balances building', correctElementId: 'floating-foundation' },
+      { id: 'screw-in', text: 'Screwed into ground like a giant screw', correctElementId: 'helical-pile' },
+      { id: 'small-drill', text: 'Small diameter - fits anywhere', correctElementId: 'micropile' },
     ],
   },
 }
@@ -711,13 +841,15 @@ export const environmentalLoadsComparison: ComparisonSet = {
   difficulty: 'intermediate',
   title: 'Environmental Loads',
   subtitle: 'Nature\'s forces on structures',
-  description: 'Beyond occupancy, structures must resist environmental forces - snow, rain, temperature changes, and water pressure.',
+  description: 'Beyond occupancy, structures must resist environmental forces - snow, rain, temperature changes, water pressure, soil pressure, and buoyancy.',
 
   elements: [
     { id: 'snow-load', name: 'Snow Load', component: SnowLoadSVG },
     { id: 'rain-load', name: 'Rain Load', component: RainLoadSVG },
     { id: 'thermal-load', name: 'Thermal Load', component: ThermalLoadSVG },
     { id: 'hydrostatic-load', name: 'Hydrostatic', component: HydrostaticLoadSVG },
+    { id: 'earth-pressure', name: 'Earth Pressure', component: EarthPressureLoadSVG },
+    { id: 'buoyancy-load', name: 'Buoyancy', component: BuoyancyLoadSVG },
   ],
 
   features: [
@@ -728,6 +860,8 @@ export const environmentalLoadsComparison: ComparisonSet = {
         'rain-load': 'Ponding water on flat roofs',
         'thermal-load': 'Temperature expansion/contraction',
         'hydrostatic-load': 'Water pressure against walls',
+        'earth-pressure': 'Lateral soil pressure on walls',
+        'buoyancy-load': 'Upward force from displaced water',
       },
       highlighted: true,
     },
@@ -738,6 +872,8 @@ export const environmentalLoadsComparison: ComparisonSet = {
         'rain-load': 'Flat roofs with blocked drains',
         'thermal-load': 'Long structures, exposed elements',
         'hydrostatic-load': 'Basements, retaining walls, pools',
+        'earth-pressure': 'Retaining walls, basement walls',
+        'buoyancy-load': 'Submerged structures, tanks, basements',
       },
     },
     {
@@ -747,6 +883,8 @@ export const environmentalLoadsComparison: ComparisonSet = {
         'rain-load': 'Positive drainage, secondary drains',
         'thermal-load': 'Expansion joints at intervals',
         'hydrostatic-load': 'Waterproofing + structural resistance',
+        'earth-pressure': 'Retaining wall design, drainage',
+        'buoyancy-load': 'Weight anchors, tie-downs, drainage',
       },
     },
     {
@@ -756,13 +894,15 @@ export const environmentalLoadsComparison: ComparisonSet = {
         'rain-load': 'Progressive collapse (ponding instability)',
         'thermal-load': 'Cracking, buckling, joint failure',
         'hydrostatic-load': 'Flooding, wall collapse',
+        'earth-pressure': 'Wall failure, slide, collapse',
+        'buoyancy-load': 'Structure floats, floors heave',
       },
     },
   ],
 
-  culturalContext: 'Ponding collapse of flat roofs killed dozens in the 20th century before codes required secondary drainage. The 1978 Hartford Civic Center roof collapsed under snow load, revolutionizing snow load provisions. Thermal loads were only understood after early steel buildings developed cracks.',
+  culturalContext: 'Ponding collapse of flat roofs killed dozens in the 20th century before codes required secondary drainage. The 1978 Hartford Civic Center roof collapsed under snow load, revolutionizing snow load provisions. Buoyancy has lifted empty swimming pools out of the ground and caused basement floor heaving during floods.',
 
-  memoryTip: '**S**now = **S**tacks on roof, **R**ain = **R**ises if blocked, **T**hermal = **T**emperature movement, **H**ydrostatic = **H**₂O pressure',
+  memoryTip: '**S**now = **S**tacks on roof, **E**arth = pushes **E**verything sideways, **B**uoyancy = **B**obs up (floats)',
 
   matchingGame: {
     question: 'Match each load to its primary concern',
@@ -771,6 +911,8 @@ export const environmentalLoadsComparison: ComparisonSet = {
       { id: 'ponding', text: 'Pooling water causing progressive failure', correctElementId: 'rain-load' },
       { id: 'expansion', text: 'Expansion/contraction from temperature', correctElementId: 'thermal-load' },
       { id: 'water-pressure', text: 'Water pressure increasing with depth', correctElementId: 'hydrostatic-load' },
+      { id: 'soil-lateral', text: 'Lateral soil pressure on retaining walls', correctElementId: 'earth-pressure' },
+      { id: 'uplift', text: 'Upward force trying to float structure', correctElementId: 'buoyancy-load' },
     ],
   },
 }

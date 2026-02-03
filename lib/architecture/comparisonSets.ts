@@ -15,10 +15,18 @@ export interface ComparisonFeature {
   highlighted?: boolean // Mark key distinguishing features
 }
 
+export interface ElementView {
+  id: string
+  label: string
+  description?: string
+  component: React.FC<{ showHalo?: boolean }>
+}
+
 export interface ComparisonElement {
   id: string
   name: string
-  component: React.FC<{ showHalo?: boolean }>
+  component: React.FC<{ showHalo?: boolean }> // Primary/default view
+  views?: ElementView[] // Additional views for click-through learning
 }
 
 export interface ComparisonSet {

@@ -487,6 +487,147 @@ export const MomentFrameSVG: React.FC<SVGProps> = ({ showHalo }) => (
   </svg>
 )
 
+/**
+ * ZIPPER BRACING - Chevron braces with vertical "zipper" columns
+ * Modern system that prevents soft-story collapse after brace buckling
+ * Shows: Multi-story frame with chevron braces connected by vertical zippers
+ * Key feature: Zipper columns redistribute forces when one brace buckles
+ */
+export const ZipperBracingSVG: React.FC<SVGProps> = ({ showHalo }) => (
+  <svg viewBox="0 0 100 100" className="w-full h-full">
+    {showHalo && <HaloFilter id="zipper-bracing-halo" intensity={0.8} />}
+    <g filter={showHalo ? "url(#zipper-bracing-halo)" : undefined} fill="none" stroke="currentColor" strokeLinecap="round">
+      {/* CONTEXT - Ground line */}
+      <g strokeDasharray="3 2" opacity="0.3" strokeWidth="0.6">
+        <path d="M5 95 L95 95" />
+      </g>
+
+      {/* PRIMARY - Multi-story frame */}
+      <g strokeWidth="2">
+        {/* Columns */}
+        <path d="M15 5 L15 92" />
+        <path d="M85 5 L85 92" />
+        {/* Floor beams */}
+        <path d="M15 5 L85 5" />
+        <path d="M15 32 L85 32" />
+        <path d="M15 62 L85 62" />
+        <path d="M15 92 L85 92" />
+      </g>
+
+      {/* CHEVRON BRACES - Each floor */}
+      <g strokeWidth="2">
+        {/* Top floor chevrons */}
+        <path d="M15 5 L50 22" />
+        <path d="M85 5 L50 22" />
+        {/* Middle floor chevrons */}
+        <path d="M15 32 L50 49" />
+        <path d="M85 32 L50 49" />
+        {/* Bottom floor chevrons */}
+        <path d="M15 62 L50 79" />
+        <path d="M85 62 L50 79" />
+      </g>
+
+      {/* ZIPPER COLUMNS - Key feature: vertical members at brace intersections */}
+      <g strokeWidth="2.5">
+        {/* Zipper from top to mid brace point */}
+        <path d="M50 22 L50 32" />
+        {/* Zipper from mid to lower brace point */}
+        <path d="M50 49 L50 62" />
+        {/* Zipper from lower to bottom brace point */}
+        <path d="M50 79 L50 92" />
+      </g>
+
+      {/* Connection nodes at zipper points */}
+      <g strokeWidth="1">
+        <circle cx="50" cy="22" r="2.5" fill="currentColor" opacity="0.4" />
+        <circle cx="50" cy="49" r="2.5" fill="currentColor" opacity="0.4" />
+        <circle cx="50" cy="79" r="2.5" fill="currentColor" opacity="0.4" />
+      </g>
+
+      {/* Force redistribution arrows (showing zipper action) */}
+      <g strokeWidth="0.8" opacity="0.5">
+        <path d="M50 25 L50 29" />
+        <path d="M50 29 L48 27 M50 29 L52 27" />
+        <path d="M50 52 L50 59" />
+        <path d="M50 59 L48 57 M50 59 L52 57" />
+      </g>
+    </g>
+  </svg>
+)
+
+/**
+ * BUCKLING-RESTRAINED BRACE (BRB) - High-performance seismic bracing
+ * Steel core inside concrete-filled tube prevents buckling
+ * Shows: Cross-section view of BRB and frame installation
+ * Key feature: Core yields symmetrically in tension AND compression
+ */
+export const BucklingRestrainedBraceSVG: React.FC<SVGProps> = ({ showHalo }) => (
+  <svg viewBox="0 0 100 100" className="w-full h-full">
+    {showHalo && <HaloFilter id="brb-halo" intensity={0.8} />}
+    <g filter={showHalo ? "url(#brb-halo)" : undefined} fill="none" stroke="currentColor" strokeLinecap="round">
+      {/* CONTEXT - Frame outline */}
+      <g strokeDasharray="3 2" opacity="0.3" strokeWidth="0.6">
+        <path d="M5 92 L95 92" />
+      </g>
+
+      {/* PRIMARY - Structural frame */}
+      <g strokeWidth="2">
+        {/* Columns */}
+        <path d="M15 10 L15 88" />
+        <path d="M85 10 L85 88" />
+        {/* Beams */}
+        <path d="M10 10 L90 10" />
+        <path d="M10 88 L90 88" />
+      </g>
+
+      {/* BRB BRACE - Key feature: encased core shown as layered element */}
+      <g strokeWidth="2.5">
+        {/* Outer casing (restraining tube) */}
+        <path d="M20 18 L80 80" />
+        {/* Parallel line to show casing thickness */}
+        <path d="M22 16 L82 78" strokeWidth="1.5" opacity="0.6" />
+        <path d="M18 20 L78 82" strokeWidth="1.5" opacity="0.6" />
+      </g>
+
+      {/* Detail callout - Cross section of BRB */}
+      <g transform="translate(68, 20)">
+        {/* Cross section circle */}
+        <circle cx="0" cy="0" r="12" strokeWidth="1.5" />
+        {/* Outer steel tube */}
+        <circle cx="0" cy="0" r="10" strokeWidth="1" opacity="0.7" />
+        {/* Concrete/mortar infill */}
+        <circle cx="0" cy="0" r="7" strokeWidth="0.8" opacity="0.5" />
+        {/* Steel core (unbonded) */}
+        <rect x="-3" y="-6" width="6" height="12" strokeWidth="1.5" />
+        {/* Gap/debonding layer indicator */}
+        <path d="M-4 -4 L-4 4" strokeWidth="0.5" opacity="0.4" strokeDasharray="1 1" />
+        <path d="M4 -4 L4 4" strokeWidth="0.5" opacity="0.4" strokeDasharray="1 1" />
+      </g>
+
+      {/* Callout line */}
+      <g strokeWidth="0.6" opacity="0.5">
+        <path d="M50 49 L60 28" />
+      </g>
+
+      {/* Connection gussets */}
+      <g strokeWidth="1.5">
+        {/* Top gusset */}
+        <path d="M15 10 L15 25 L30 10 Z" />
+        {/* Bottom gusset */}
+        <path d="M85 88 L85 73 L70 88 Z" />
+      </g>
+
+      {/* Hysteretic behavior hint - symmetric yielding */}
+      <g strokeWidth="0.8" opacity="0.4" transform="translate(12, 55)">
+        <path d="M0 10 L5 5 L10 10 L5 15 Z" />
+        <path d="M2 7 L8 13" />
+        <path d="M2 13 L8 7" />
+        <text x="5" y="22" fontSize="4" textAnchor="middle" fill="currentColor">YIELD</text>
+      </g>
+    </g>
+  </svg>
+)
+
 // =============================================================================
 // BRACING TYPES EXPORT
 // =============================================================================
@@ -500,6 +641,8 @@ export const BRACING_ELEMENTS: Record<string, React.FC<SVGProps>> = {
   'knee-bracing': KneeBracingSVG,
   'eccentric-bracing': EccentricBracingSVG,
   'moment-frame': MomentFrameSVG,
+  'zipper-bracing': ZipperBracingSVG,
+  'buckling-restrained-brace': BucklingRestrainedBraceSVG,
 }
 
 // =============================================================================
@@ -1114,6 +1257,219 @@ export const LatticeTrussSVG: React.FC<SVGProps> = ({ showHalo }) => (
   </svg>
 )
 
+/**
+ * BALTIMORE TRUSS - Subdivided Pratt truss for long spans
+ * Adds intermediate diagonals to reduce unsupported member lengths
+ * Shows: Pratt pattern with subdivided panels
+ * Used for: Railroad bridges, long-span applications (1850s+)
+ */
+export const BaltimoreTrussSVG: React.FC<SVGProps> = ({ showHalo }) => (
+  <svg viewBox="0 0 100 100" className="w-full h-full">
+    {showHalo && <HaloFilter id="baltimore-halo" intensity={0.8} />}
+    <g filter={showHalo ? "url(#baltimore-halo)" : undefined} fill="none" stroke="currentColor" strokeLinecap="round">
+      {/* CONTEXT - Support points */}
+      <g strokeDasharray="3 2" opacity="0.3" strokeWidth="0.6">
+        <path d="M5 72 L95 72" />
+      </g>
+
+      {/* PRIMARY - Main chords */}
+      <g strokeWidth="2.5">
+        {/* Top chord */}
+        <path d="M8 25 L92 25" />
+        {/* Bottom chord */}
+        <path d="M8 68 L92 68" />
+      </g>
+
+      {/* MAIN VERTICALS - Full-height posts */}
+      <g strokeWidth="2">
+        <path d="M8 25 L8 68" />
+        <path d="M29 25 L29 68" />
+        <path d="M50 25 L50 68" />
+        <path d="M71 25 L71 68" />
+        <path d="M92 25 L92 68" />
+      </g>
+
+      {/* MAIN DIAGONALS - Pratt-style (tension diagonals) */}
+      <g strokeWidth="2">
+        <path d="M8 68 L29 25" />
+        <path d="M29 68 L50 25" />
+        <path d="M71 25 L50 68" />
+        <path d="M92 25 L71 68" />
+      </g>
+
+      {/* SUB-VERTICALS - Key Baltimore feature: intermediate posts */}
+      <g strokeWidth="1.5" opacity="0.8">
+        <path d="M18.5 25 L18.5 46.5" />
+        <path d="M39.5 25 L39.5 46.5" />
+        <path d="M60.5 25 L60.5 46.5" />
+        <path d="M81.5 25 L81.5 46.5" />
+      </g>
+
+      {/* SUB-DIAGONALS - Subdivide the panels */}
+      <g strokeWidth="1.5" opacity="0.8">
+        <path d="M8 46.5 L18.5 25" />
+        <path d="M18.5 46.5 L29 25" />
+        <path d="M29 46.5 L39.5 25" />
+        <path d="M39.5 46.5 L50 25" />
+        <path d="M60.5 25 L50 46.5" />
+        <path d="M71 25 L60.5 46.5" />
+        <path d="M81.5 25 L71 46.5" />
+        <path d="M92 25 L81.5 46.5" />
+      </g>
+
+      {/* Sub-strut (horizontal at mid-height) */}
+      <g strokeWidth="1" opacity="0.6">
+        <path d="M8 46.5 L92 46.5" />
+      </g>
+
+      {/* Support symbols */}
+      <g strokeWidth="1.5">
+        <path d="M3 71 L13 71 L8 68 Z" />
+        <circle cx="92" cy="71" r="2" />
+        <path d="M87 73 L97 73" />
+      </g>
+    </g>
+  </svg>
+)
+
+/**
+ * SCISSORS TRUSS - Two crossing diagonal members
+ * Creates vaulted/cathedral ceiling appearance from below
+ * Shows: Triangular profile with crossing bottom chords
+ * Used for: Churches, great halls, open-ceiling residential
+ */
+export const ScissorsTrussSVG: React.FC<SVGProps> = ({ showHalo }) => (
+  <svg viewBox="0 0 100 100" className="w-full h-full">
+    {showHalo && <HaloFilter id="scissors-halo" intensity={0.8} />}
+    <g filter={showHalo ? "url(#scissors-halo)" : undefined} fill="none" stroke="currentColor" strokeLinecap="round">
+      {/* CONTEXT - Support points */}
+      <g strokeDasharray="3 2" opacity="0.3" strokeWidth="0.6">
+        <path d="M5 88 L95 88" />
+      </g>
+
+      {/* PRIMARY - Roof rafters (top chords) */}
+      <g strokeWidth="2.5">
+        {/* Left rafter */}
+        <path d="M10 75 L50 20" />
+        {/* Right rafter */}
+        <path d="M90 75 L50 20" />
+      </g>
+
+      {/* SCISSORS MEMBERS - Key feature: crossing diagonal chords */}
+      <g strokeWidth="2.5">
+        {/* Left scissors member (from left support to right rafter) */}
+        <path d="M10 75 L70 35" />
+        {/* Right scissors member (from right support to left rafter) */}
+        <path d="M90 75 L30 35" />
+      </g>
+
+      {/* Intersection point emphasis */}
+      <circle cx="50" cy="55" r="3" strokeWidth="1.5" fill="currentColor" opacity="0.3" />
+
+      {/* King post from apex (optional in some scissors trusses) */}
+      <g strokeWidth="1.5" opacity="0.7">
+        <path d="M50 20 L50 55" />
+      </g>
+
+      {/* Collar tie hint (horizontal member) */}
+      <g strokeWidth="1.5" opacity="0.6">
+        <path d="M30 35 L70 35" />
+      </g>
+
+      {/* Vaulted ceiling indicator (the visible effect from below) */}
+      <g strokeDasharray="4 2" opacity="0.3" strokeWidth="0.8">
+        <path d="M15 72 L50 50 L85 72" />
+        <text x="50" y="65" fontSize="4" textAnchor="middle" fill="currentColor">VAULT</text>
+      </g>
+
+      {/* Support symbols */}
+      <g strokeWidth="1.5">
+        <path d="M5 78 L15 78 L10 75 Z" />
+        <path d="M85 78 L95 78 L90 75 Z" />
+      </g>
+
+      {/* Ridge connection */}
+      <g strokeWidth="1">
+        <circle cx="50" cy="20" r="2" fill="currentColor" opacity="0.5" />
+      </g>
+    </g>
+  </svg>
+)
+
+/**
+ * GAMBREL TRUSS - Barn-roof double-slope design
+ * Two different slopes per side maximize attic/loft space
+ * Shows: Characteristic barn roof profile
+ * Used for: Barns, Dutch Colonial houses, agricultural buildings
+ */
+export const GambrelTrussSVG: React.FC<SVGProps> = ({ showHalo }) => (
+  <svg viewBox="0 0 100 100" className="w-full h-full">
+    {showHalo && <HaloFilter id="gambrel-halo" intensity={0.8} />}
+    <g filter={showHalo ? "url(#gambrel-halo)" : undefined} fill="none" stroke="currentColor" strokeLinecap="round">
+      {/* CONTEXT - Support/wall line */}
+      <g strokeDasharray="3 2" opacity="0.3" strokeWidth="0.6">
+        <path d="M5 88 L95 88" />
+      </g>
+
+      {/* PRIMARY - Bottom chord (tie beam) */}
+      <g strokeWidth="2.5">
+        <path d="M10 80 L90 80" />
+      </g>
+
+      {/* GAMBREL RAFTERS - Key feature: two slopes per side */}
+      <g strokeWidth="2.5">
+        {/* Left side - steep lower slope */}
+        <path d="M10 80 L25 50" />
+        {/* Left side - shallow upper slope */}
+        <path d="M25 50 L50 25" />
+        {/* Right side - shallow upper slope */}
+        <path d="M50 25 L75 50" />
+        {/* Right side - steep lower slope */}
+        <path d="M75 50 L90 80" />
+      </g>
+
+      {/* Collar beam at knee point */}
+      <g strokeWidth="2">
+        <path d="M25 50 L75 50" />
+      </g>
+
+      {/* Vertical posts at knees */}
+      <g strokeWidth="2">
+        <path d="M25 50 L25 80" />
+        <path d="M75 50 L75 80" />
+      </g>
+
+      {/* King post from ridge */}
+      <g strokeWidth="2">
+        <path d="M50 25 L50 50" />
+      </g>
+
+      {/* Optional diagonal bracing in upper section */}
+      <g strokeWidth="1.5" opacity="0.6">
+        <path d="M25 50 L50 35" />
+        <path d="M75 50 L50 35" />
+      </g>
+
+      {/* Loft space indication (the usable area gained) */}
+      <g strokeDasharray="3 2" opacity="0.25" strokeWidth="0.6">
+        <rect x="28" y="52" width="44" height="25" />
+        <text x="50" y="67" fontSize="5" textAnchor="middle" fill="currentColor">LOFT</text>
+      </g>
+
+      {/* Support symbols */}
+      <g strokeWidth="1.5">
+        <path d="M5 83 L15 83 L10 80 Z" />
+        <path d="M85 83 L95 83 L90 80 Z" />
+      </g>
+
+      {/* Ridge cap */}
+      <g strokeWidth="1">
+        <circle cx="50" cy="25" r="2" fill="currentColor" opacity="0.5" />
+      </g>
+    </g>
+  </svg>
+)
+
 // =============================================================================
 // TRUSS TYPES EXPORT
 // =============================================================================
@@ -1128,6 +1484,9 @@ export const TRUSS_ELEMENTS: Record<string, React.FC<SVGProps>> = {
   'bowstring-truss': BowstringTrussSVG,
   'vierendeel-truss': VierendeelTrussSVG,
   'lattice-truss': LatticeTrussSVG,
+  'baltimore-truss': BaltimoreTrussSVG,
+  'scissors-truss': ScissorsTrussSVG,
+  'gambrel-truss': GambrelTrussSVG,
 }
 
 // =============================================================================
@@ -1773,6 +2132,167 @@ export const RubbleTrenchSVG: React.FC<SVGProps> = ({ showHalo }) => (
   </svg>
 )
 
+/**
+ * HELICAL PILE (Screw Pile) - Steel shaft with helical plates
+ * Screwed into ground, minimal disturbance
+ * Shows: Shaft with spiral helix plates, rotation indication
+ * Used for: Residential, retrofitting, difficult soils, quick install
+ */
+export const HelicalPileSVG: React.FC<SVGProps> = ({ showHalo }) => (
+  <svg viewBox="0 0 100 100" className="w-full h-full">
+    {showHalo && <HaloFilter id="helical-pile-halo" intensity={0.8} />}
+    <g filter={showHalo ? "url(#helical-pile-halo)" : undefined} fill="none" stroke="currentColor" strokeLinecap="round">
+      {/* CONTEXT - Ground level */}
+      <g strokeWidth="1.5">
+        <path d="M5 30 L40 30 M60 30 L95 30" />
+      </g>
+
+      {/* Soil layers */}
+      <g strokeWidth="0.5" opacity="0.3">
+        <path d="M10 45 L35 45 M65 45 L90 45" />
+        <path d="M10 60 L35 60 M65 60 L90 60" />
+        <path d="M10 75 L35 75 M65 75 L90 75" />
+      </g>
+
+      {/* Structure above */}
+      <g strokeWidth="2">
+        <path d="M40 10 L60 10 L60 30 L40 30 Z" />
+      </g>
+
+      {/* Cap/bracket */}
+      <g strokeWidth="2">
+        <path d="M42 25 L58 25 L58 32 L42 32 Z" />
+      </g>
+
+      {/* STEEL SHAFT - Central element */}
+      <g strokeWidth="2.5">
+        <path d="M50 32 L50 90" />
+      </g>
+
+      {/* HELICAL PLATES - Key feature: spiral blades */}
+      <g strokeWidth="2">
+        {/* Top helix */}
+        <ellipse cx="50" cy="45" rx="15" ry="5" />
+        {/* Middle helix */}
+        <ellipse cx="50" cy="62" rx="18" ry="6" />
+        {/* Bottom helix (largest) */}
+        <ellipse cx="50" cy="80" rx="20" ry="7" />
+      </g>
+
+      {/* Helix pitch indicators (3D spiral suggestion) */}
+      <g strokeWidth="1" opacity="0.5">
+        <path d="M35 45 L50 42" />
+        <path d="M32 62 L50 58" />
+        <path d="M30 80 L50 75" />
+      </g>
+
+      {/* Rotation direction indicator */}
+      <g strokeWidth="1.2" opacity="0.6">
+        <path d="M70 15 Q80 10, 85 20" />
+        <path d="M85 20 L82 17 M85 20 L88 17" />
+        <text x="78" y="8" fontSize="4" fill="currentColor">ROTATE</text>
+      </g>
+
+      {/* Pilot point at tip */}
+      <g strokeWidth="1.5">
+        <path d="M50 90 L47 95 L50 98 L53 95 Z" />
+      </g>
+
+      {/* Bearing capacity zones */}
+      <g strokeWidth="0.6" opacity="0.3" strokeDasharray="2 2">
+        <ellipse cx="50" cy="80" rx="25" ry="9" />
+      </g>
+    </g>
+  </svg>
+)
+
+/**
+ * MICROPILE - Small-diameter drilled and grouted pile
+ * High capacity in constrained spaces
+ * Shows: Narrow steel core in grout, threaded connections
+ * Used for: Underpinning, retrofits, limited access, high loads in small footprint
+ */
+export const MicropileSVG: React.FC<SVGProps> = ({ showHalo }) => (
+  <svg viewBox="0 0 100 100" className="w-full h-full">
+    {showHalo && <HaloFilter id="micropile-halo" intensity={0.8} />}
+    <g filter={showHalo ? "url(#micropile-halo)" : undefined} fill="none" stroke="currentColor" strokeLinecap="round">
+      {/* CONTEXT - Ground level and existing structure */}
+      <g strokeWidth="1.5">
+        <path d="M5 35 L35 35 M65 35 L95 35" />
+      </g>
+
+      {/* Existing footing being underpinned */}
+      <g strokeWidth="2" opacity="0.7">
+        <path d="M30 25 L70 25 L70 38 L30 38 Z" />
+        <text x="50" y="33" fontSize="4" textAnchor="middle" fill="currentColor" opacity="0.5">EXISTING</text>
+      </g>
+
+      {/* Soil layers */}
+      <g strokeWidth="0.5" opacity="0.3">
+        <path d="M10 50 L35 50 M65 50 L90 50" />
+        <path d="M10 65 L35 65 M65 65 L90 65" />
+        <path d="M10 80 L35 80 M65 80 L90 80" />
+      </g>
+
+      {/* Bearing stratum at bottom */}
+      <g strokeWidth="0.8" opacity="0.4">
+        <path d="M5 90 L95 90" />
+        <text x="85" y="88" fontSize="3" fill="currentColor">ROCK</text>
+      </g>
+
+      {/* GROUT COLUMN - Outer casing */}
+      <g strokeWidth="1.5" opacity="0.6">
+        <path d="M45 38 L45 92" />
+        <path d="M55 38 L55 92" />
+      </g>
+
+      {/* STEEL CORE - Key feature: high-strength bar */}
+      <g strokeWidth="2.5">
+        <path d="M50 28 L50 95" />
+      </g>
+
+      {/* Thread/coupler indication */}
+      <g strokeWidth="0.8" opacity="0.7">
+        <path d="M48 50 L52 50" />
+        <path d="M48 52 L52 52" />
+        <path d="M48 54 L52 54" />
+        <path d="M48 70 L52 70" />
+        <path d="M48 72 L52 72" />
+        <path d="M48 74 L52 74" />
+      </g>
+
+      {/* Grout texture */}
+      <g strokeWidth="0.5" opacity="0.3">
+        <path d="M46 45 L54 45" />
+        <path d="M46 60 L54 60" />
+        <path d="M46 85 L54 85" />
+      </g>
+
+      {/* Bond zone (enlarged grout in bearing stratum) */}
+      <g strokeWidth="1.5">
+        <path d="M42 85 Q40 88, 42 92 L50 95 L58 92 Q60 88, 58 85" />
+      </g>
+
+      {/* Drill rig hint (small scale indication) */}
+      <g strokeWidth="0.8" opacity="0.4">
+        <path d="M50 15 L50 25" />
+        <path d="M45 15 L55 15 L55 18 L45 18 Z" />
+        <path d="M48 12 L48 15" />
+        <path d="M52 12 L52 15" />
+      </g>
+
+      {/* Diameter indication */}
+      <g strokeWidth="0.6" opacity="0.5">
+        <path d="M38 55 L45 55" />
+        <path d="M55 55 L62 55" />
+        <path d="M38 55 L40 53 M38 55 L40 57" />
+        <path d="M62 55 L60 53 M62 55 L60 57" />
+        <text x="50" y="60" fontSize="3" textAnchor="middle" fill="currentColor">150-300mm</text>
+      </g>
+    </g>
+  </svg>
+)
+
 // =============================================================================
 // FOUNDATION TYPES EXPORT
 // =============================================================================
@@ -1787,6 +2307,8 @@ export const FOUNDATION_ELEMENTS: Record<string, React.FC<SVGProps>> = {
   'caisson-foundation': CaissonFoundationSVG,
   'floating-foundation': FloatingFoundationSVG,
   'rubble-trench': RubbleTrenchSVG,
+  'helical-pile': HelicalPileSVG,
+  'micropile': MicropileSVG,
 }
 
 // =============================================================================
@@ -2469,6 +2991,1281 @@ export const HydrostaticLoadSVG: React.FC<SVGProps> = ({ showHalo }) => (
   </svg>
 )
 
+/**
+ * EARTH PRESSURE - Lateral soil pressure on retaining structures
+ * Active, passive, and at-rest pressure conditions
+ * Shows: Retaining wall with triangular soil pressure distribution
+ * Characteristic: Lateral, varies with soil type and wall movement
+ */
+export const EarthPressureLoadSVG: React.FC<SVGProps> = ({ showHalo }) => (
+  <svg viewBox="0 0 100 100" className="w-full h-full">
+    {showHalo && <HaloFilter id="earth-pressure-halo" intensity={0.8} />}
+    <g filter={showHalo ? "url(#earth-pressure-halo)" : undefined} fill="none" stroke="currentColor" strokeLinecap="round">
+      {/* Ground level */}
+      <g strokeWidth="1.5">
+        <path d="M5 20 L40 20" />
+        <path d="M55 20 L95 20" />
+      </g>
+
+      {/* RETAINING WALL - Central element */}
+      <g strokeWidth="2.5">
+        <path d="M40 15 L55 15 L55 90 L40 90 Z" />
+      </g>
+
+      {/* Wall reinforcement hints */}
+      <g strokeWidth="1" opacity="0.5">
+        <path d="M42 25 L53 25" />
+        <path d="M42 40 L53 40" />
+        <path d="M42 55 L53 55" />
+        <path d="M42 70 L53 70" />
+        <path d="M42 85 L53 85" />
+      </g>
+
+      {/* SOIL MASS (retained side - left) */}
+      <g strokeWidth="0.5" opacity="0.3">
+        {/* Soil texture */}
+        <path d="M10 30 L15 30 M20 28 L25 28 M30 32 L35 32" />
+        <path d="M8 45 L13 45 M18 43 L23 43 M28 47 L33 47" />
+        <path d="M10 60 L15 60 M20 58 L25 58 M30 62 L35 62" />
+        <path d="M8 75 L13 75 M18 73 L23 73 M28 77 L33 77" />
+        <path d="M10 88 L15 88 M20 86 L25 86 M30 90 L35 90" />
+      </g>
+
+      {/* ACTIVE EARTH PRESSURE ARROWS - Key feature */}
+      <g strokeWidth="1.5" opacity="0.8">
+        {/* Arrows increasing with depth (triangular distribution) */}
+        <path d="M32 30 L38 30" />
+        <path d="M38 30 L36 28 M38 30 L36 32" />
+
+        <path d="M28 45 L38 45" />
+        <path d="M38 45 L36 43 M38 45 L36 47" />
+
+        <path d="M24 60 L38 60" />
+        <path d="M38 60 L36 58 M38 60 L36 62" />
+
+        <path d="M20 75 L38 75" />
+        <path d="M38 75 L36 73 M38 75 L36 77" />
+
+        <path d="M16 88 L38 88" />
+        <path d="M38 88 L36 86 M38 88 L36 90" />
+      </g>
+
+      {/* Pressure diagram (triangular shape) */}
+      <g strokeWidth="1" opacity="0.5">
+        <path d="M38 20 L16 90 L38 90 Z" strokeDasharray="3 2" />
+      </g>
+
+      {/* PASSIVE PRESSURE (toe resistance - front of wall) */}
+      <g strokeWidth="1.2" opacity="0.6">
+        <path d="M60 82 L57 82" />
+        <path d="M57 82 L59 80 M57 82 L59 84" />
+        <path d="M65 88 L57 88" />
+        <path d="M57 88 L59 86 M57 88 L59 90" />
+      </g>
+
+      {/* Wall heel and toe indication */}
+      <g strokeWidth="1.5" opacity="0.7">
+        <path d="M32 90 L40 90 L40 95 L32 95 Z" />
+        <path d="M55 90 L63 90 L63 95 L55 95 Z" />
+      </g>
+
+      {/* Labels */}
+      <g opacity="0.4">
+        <text x="20" y="15" fontSize="4" fill="currentColor">ACTIVE</text>
+        <text x="62" y="80" fontSize="3" fill="currentColor">PASSIVE</text>
+      </g>
+
+      {/* Slip plane indication */}
+      <g strokeWidth="0.8" opacity="0.3" strokeDasharray="4 2">
+        <path d="M5 90 L40 45" />
+      </g>
+    </g>
+  </svg>
+)
+
+/**
+ * BUOYANCY/UPLIFT - Upward force from displaced water
+ * Acts on submerged or floating structures
+ * Shows: Submerged structure with upward pressure arrows
+ * Characteristic: Equal to weight of displaced fluid (Archimedes)
+ */
+export const BuoyancyLoadSVG: React.FC<SVGProps> = ({ showHalo }) => (
+  <svg viewBox="0 0 100 100" className="w-full h-full">
+    {showHalo && <HaloFilter id="buoyancy-halo" intensity={0.8} />}
+    <g filter={showHalo ? "url(#buoyancy-halo)" : undefined} fill="none" stroke="currentColor" strokeLinecap="round">
+      {/* Ground/water surface */}
+      <g strokeWidth="1.5">
+        <path d="M5 25 L20 25 M80 25 L95 25" />
+      </g>
+
+      {/* Water level wavy line */}
+      <g strokeWidth="1" opacity="0.6">
+        <path d="M5 25 Q15 22, 25 25 Q35 28, 45 25 Q55 22, 65 25 Q75 28, 85 25 Q92 23, 95 25" />
+      </g>
+
+      {/* SUBMERGED STRUCTURE (basement/tank/caisson) */}
+      <g strokeWidth="2.5">
+        <path d="M25 20 L75 20 L75 80 L25 80 Z" />
+      </g>
+
+      {/* Structure interior divisions */}
+      <g strokeWidth="1" opacity="0.4">
+        <path d="M25 40 L75 40" />
+        <path d="M25 60 L75 60" />
+        <path d="M50 20 L50 80" />
+      </g>
+
+      {/* WATER surrounding structure */}
+      <g strokeWidth="0.5" opacity="0.3">
+        {/* Left side water */}
+        <path d="M8 35 Q12 33, 16 35" />
+        <path d="M8 50 Q12 48, 16 50" />
+        <path d="M8 65 Q12 63, 16 65" />
+        <path d="M8 78 Q12 76, 16 78" />
+        {/* Right side water */}
+        <path d="M82 35 Q86 33, 90 35" />
+        <path d="M82 50 Q86 48, 90 50" />
+        <path d="M82 65 Q86 63, 90 65" />
+        <path d="M82 78 Q86 76, 90 78" />
+      </g>
+
+      {/* BUOYANCY ARROWS - Key feature: upward pressure */}
+      <g strokeWidth="2" opacity="0.8">
+        {/* Bottom uplift arrows (uniform) */}
+        <path d="M32 92 L32 82" />
+        <path d="M32 82 L29 86 M32 82 L35 86" />
+
+        <path d="M44 92 L44 82" />
+        <path d="M44 82 L41 86 M44 82 L47 86" />
+
+        <path d="M56 92 L56 82" />
+        <path d="M56 82 L53 86 M56 82 L59 86" />
+
+        <path d="M68 92 L68 82" />
+        <path d="M68 82 L65 86 M68 82 L71 86" />
+      </g>
+
+      {/* Side pressure (horizontal inward) */}
+      <g strokeWidth="1.2" opacity="0.5">
+        <path d="M15 50 L23 50" />
+        <path d="M23 50 L20 48 M23 50 L20 52" />
+        <path d="M85 50 L77 50" />
+        <path d="M77 50 L80 48 M77 50 L80 52" />
+      </g>
+
+      {/* Weight arrow (gravity counteracting buoyancy) */}
+      <g strokeWidth="1.5" opacity="0.6">
+        <path d="M50 10 L50 18" />
+        <path d="M50 18 L48 15 M50 18 L52 15" />
+        <text x="55" y="15" fontSize="4" fill="currentColor">W</text>
+      </g>
+
+      {/* Net buoyancy equation hint */}
+      <g opacity="0.4">
+        <text x="50" y="98" fontSize="4" textAnchor="middle" fill="currentColor">Fb = ρ × V × g</text>
+      </g>
+
+      {/* Displaced volume indication */}
+      <g strokeWidth="0.8" opacity="0.3" strokeDasharray="2 2">
+        <path d="M25 25 L25 80 L75 80 L75 25" />
+      </g>
+
+      {/* Water table marker */}
+      <g strokeWidth="0.8" opacity="0.5">
+        <path d="M5 25 L5 30" />
+        <text x="3" y="35" fontSize="3" fill="currentColor">WT</text>
+      </g>
+    </g>
+  </svg>
+)
+
+// =============================================================================
+// LOAD TYPES - MULTI-VIEW: SYMBOLIC ICONS
+// Simple, recognizable icons for each load type
+// =============================================================================
+
+/**
+ * DEAD LOAD - Symbolic View
+ * Simple weight/mass icon representing permanent gravity load
+ */
+export const DeadLoadSymbolicSVG: React.FC<SVGProps> = ({ showHalo }) => (
+  <svg viewBox="0 0 100 100" className="w-full h-full">
+    {showHalo && <HaloFilter id="dead-symbolic-halo" intensity={0.8} />}
+    <g filter={showHalo ? "url(#dead-symbolic-halo)" : undefined} fill="none" stroke="currentColor" strokeLinecap="round">
+      {/* Weight/mass symbol - solid block with down arrow */}
+      <g strokeWidth="2.5">
+        {/* Solid block representing mass */}
+        <path d="M25 30 L75 30 L75 60 L25 60 Z" />
+        <path d="M30 35 L70 35" strokeWidth="1.5" opacity="0.5" />
+        <path d="M30 42 L70 42" strokeWidth="1.5" opacity="0.5" />
+        <path d="M30 49 L70 49" strokeWidth="1.5" opacity="0.5" />
+        <path d="M30 56 L70 56" strokeWidth="1.5" opacity="0.5" />
+      </g>
+
+      {/* Downward arrow - gravity */}
+      <g strokeWidth="3">
+        <path d="M50 65 L50 90" />
+        <path d="M40 80 L50 90 L60 80" />
+      </g>
+
+      {/* "G" for gravity indicator */}
+      <g strokeWidth="1.5" opacity="0.6">
+        <text x="50" y="25" fontSize="12" textAnchor="middle" fill="currentColor" fontWeight="bold">G</text>
+      </g>
+    </g>
+  </svg>
+)
+
+/**
+ * LIVE LOAD - Symbolic View
+ * People icons representing occupancy load
+ */
+export const LiveLoadSymbolicSVG: React.FC<SVGProps> = ({ showHalo }) => (
+  <svg viewBox="0 0 100 100" className="w-full h-full">
+    {showHalo && <HaloFilter id="live-symbolic-halo" intensity={0.8} />}
+    <g filter={showHalo ? "url(#live-symbolic-halo)" : undefined} fill="none" stroke="currentColor" strokeLinecap="round">
+      {/* Person 1 - center */}
+      <g strokeWidth="2">
+        <circle cx="50" cy="25" r="8" />
+        <path d="M50 33 L50 55" strokeWidth="2.5" />
+        <path d="M50 40 L35 50" />
+        <path d="M50 40 L65 50" />
+        <path d="M50 55 L38 75" />
+        <path d="M50 55 L62 75" />
+      </g>
+
+      {/* Person 2 - left (smaller, background) */}
+      <g strokeWidth="1.5" opacity="0.5">
+        <circle cx="22" cy="45" r="5" />
+        <path d="M22 50 L22 65" />
+        <path d="M22 54 L15 60" />
+        <path d="M22 54 L29 60" />
+        <path d="M22 65 L17 78" />
+        <path d="M22 65 L27 78" />
+      </g>
+
+      {/* Person 3 - right (smaller, background) */}
+      <g strokeWidth="1.5" opacity="0.5">
+        <circle cx="78" cy="45" r="5" />
+        <path d="M78 50 L78 65" />
+        <path d="M78 54 L71 60" />
+        <path d="M78 54 L85 60" />
+        <path d="M78 65 L73 78" />
+        <path d="M78 65 L83 78" />
+      </g>
+
+      {/* Floor line */}
+      <path d="M10 85 L90 85" strokeWidth="2" />
+
+      {/* Variable indicator */}
+      <g strokeWidth="1" opacity="0.4">
+        <path d="M15 92 Q25 88, 35 92 Q45 96, 55 92 Q65 88, 75 92 Q85 96, 90 92" />
+      </g>
+    </g>
+  </svg>
+)
+
+/**
+ * WIND LOAD - Symbolic View
+ * Wind/air flow lines
+ */
+export const WindLoadSymbolicSVG: React.FC<SVGProps> = ({ showHalo }) => (
+  <svg viewBox="0 0 100 100" className="w-full h-full">
+    {showHalo && <HaloFilter id="wind-symbolic-halo" intensity={0.8} />}
+    <g filter={showHalo ? "url(#wind-symbolic-halo)" : undefined} fill="none" stroke="currentColor" strokeLinecap="round">
+      {/* Wind flow lines */}
+      <g strokeWidth="2.5">
+        <path d="M10 30 Q30 25, 50 30 Q70 35, 80 30" />
+        <path d="M80 30 L75 25" />
+        <path d="M80 30 L75 35" />
+      </g>
+
+      <g strokeWidth="2">
+        <path d="M5 50 Q25 45, 50 50 Q75 55, 90 50" />
+        <path d="M90 50 L85 45" />
+        <path d="M90 50 L85 55" />
+      </g>
+
+      <g strokeWidth="2.5">
+        <path d="M10 70 Q30 65, 50 70 Q70 75, 80 70" />
+        <path d="M80 70 L75 65" />
+        <path d="M80 70 L75 75" />
+      </g>
+
+      {/* Swirl accent */}
+      <g strokeWidth="1.5" opacity="0.6">
+        <path d="M85 35 Q95 40, 90 50 Q85 55, 90 60" />
+      </g>
+
+      {/* Small particles */}
+      <g opacity="0.4">
+        <circle cx="20" cy="40" r="1.5" fill="currentColor" />
+        <circle cx="40" cy="60" r="1" fill="currentColor" />
+        <circle cx="60" cy="38" r="1.2" fill="currentColor" />
+        <circle cx="75" cy="55" r="1" fill="currentColor" />
+      </g>
+    </g>
+  </svg>
+)
+
+/**
+ * SEISMIC LOAD - Symbolic View
+ * Earthquake/seismic wave symbol
+ */
+export const SeismicLoadSymbolicSVG: React.FC<SVGProps> = ({ showHalo }) => (
+  <svg viewBox="0 0 100 100" className="w-full h-full">
+    {showHalo && <HaloFilter id="seismic-symbolic-halo" intensity={0.8} />}
+    <g filter={showHalo ? "url(#seismic-symbolic-halo)" : undefined} fill="none" stroke="currentColor" strokeLinecap="round">
+      {/* Seismograph wave pattern */}
+      <g strokeWidth="2.5">
+        <path d="M10 50 L25 50 L30 20 L35 80 L40 30 L45 70 L50 40 L55 60 L60 45 L65 55 L70 50 L90 50" />
+      </g>
+
+      {/* Ground crack symbol */}
+      <g strokeWidth="2" opacity="0.7">
+        <path d="M30 85 L35 75 L40 85 L45 72 L50 88" />
+        <path d="M55 85 L60 78 L65 85" />
+      </g>
+
+      {/* Radiating waves from epicenter */}
+      <g strokeWidth="1.5" opacity="0.4">
+        <circle cx="40" cy="50" r="15" />
+        <circle cx="40" cy="50" r="25" />
+        <circle cx="40" cy="50" r="35" />
+      </g>
+
+      {/* Epicenter dot */}
+      <circle cx="40" cy="50" r="3" fill="currentColor" opacity="0.6" />
+    </g>
+  </svg>
+)
+
+/**
+ * SNOW LOAD - Symbolic View
+ * Snowflake icon
+ */
+export const SnowLoadSymbolicSVG: React.FC<SVGProps> = ({ showHalo }) => (
+  <svg viewBox="0 0 100 100" className="w-full h-full">
+    {showHalo && <HaloFilter id="snow-symbolic-halo" intensity={0.8} />}
+    <g filter={showHalo ? "url(#snow-symbolic-halo)" : undefined} fill="none" stroke="currentColor" strokeLinecap="round">
+      {/* Main snowflake */}
+      <g strokeWidth="2.5">
+        {/* Vertical arm */}
+        <path d="M50 15 L50 85" />
+        {/* Horizontal arm */}
+        <path d="M15 50 L85 50" />
+        {/* Diagonal arms */}
+        <path d="M25 25 L75 75" />
+        <path d="M75 25 L25 75" />
+      </g>
+
+      {/* Branch details */}
+      <g strokeWidth="2">
+        {/* Top branches */}
+        <path d="M50 25 L42 33 M50 25 L58 33" />
+        {/* Bottom branches */}
+        <path d="M50 75 L42 67 M50 75 L58 67" />
+        {/* Left branches */}
+        <path d="M25 50 L33 42 M25 50 L33 58" />
+        {/* Right branches */}
+        <path d="M75 50 L67 42 M75 50 L67 58" />
+        {/* Diagonal branches */}
+        <path d="M35 35 L30 42 M35 35 L42 30" />
+        <path d="M65 35 L70 42 M65 35 L58 30" />
+        <path d="M35 65 L30 58 M35 65 L42 70" />
+        <path d="M65 65 L70 58 M65 65 L58 70" />
+      </g>
+
+      {/* Center crystal */}
+      <circle cx="50" cy="50" r="5" strokeWidth="2" />
+    </g>
+  </svg>
+)
+
+/**
+ * RAIN LOAD - Symbolic View
+ * Rain drops icon
+ */
+export const RainLoadSymbolicSVG: React.FC<SVGProps> = ({ showHalo }) => (
+  <svg viewBox="0 0 100 100" className="w-full h-full">
+    {showHalo && <HaloFilter id="rain-symbolic-halo" intensity={0.8} />}
+    <g filter={showHalo ? "url(#rain-symbolic-halo)" : undefined} fill="none" stroke="currentColor" strokeLinecap="round">
+      {/* Cloud */}
+      <g strokeWidth="2">
+        <path d="M25 40 Q25 25, 40 25 Q45 15, 60 20 Q80 20, 80 40 Q90 40, 85 55 L20 55 Q10 55, 15 40 Q15 40, 25 40" />
+      </g>
+
+      {/* Rain drops */}
+      <g strokeWidth="2.5">
+        <path d="M30 62 L30 75 Q30 80, 30 75" />
+        <path d="M30 75 Q28 78, 30 80 Q32 78, 30 75" fill="currentColor" opacity="0.3" />
+
+        <path d="M50 62 L50 80 Q50 85, 50 80" />
+        <path d="M50 80 Q48 83, 50 85 Q52 83, 50 80" fill="currentColor" opacity="0.3" />
+
+        <path d="M70 62 L70 72 Q70 77, 70 72" />
+        <path d="M70 72 Q68 75, 70 77 Q72 75, 70 72" fill="currentColor" opacity="0.3" />
+      </g>
+
+      {/* Water pooling */}
+      <g strokeWidth="1.5" opacity="0.5">
+        <ellipse cx="50" cy="92" rx="30" ry="4" />
+      </g>
+    </g>
+  </svg>
+)
+
+/**
+ * IMPACT LOAD - Symbolic View
+ * Impact/collision starburst
+ */
+export const ImpactLoadSymbolicSVG: React.FC<SVGProps> = ({ showHalo }) => (
+  <svg viewBox="0 0 100 100" className="w-full h-full">
+    {showHalo && <HaloFilter id="impact-symbolic-halo" intensity={0.8} />}
+    <g filter={showHalo ? "url(#impact-symbolic-halo)" : undefined} fill="none" stroke="currentColor" strokeLinecap="round">
+      {/* Impact starburst */}
+      <g strokeWidth="2.5">
+        {/* Main spikes */}
+        <path d="M50 50 L50 15" />
+        <path d="M50 50 L50 85" />
+        <path d="M50 50 L15 50" />
+        <path d="M50 50 L85 50" />
+        <path d="M50 50 L25 25" />
+        <path d="M50 50 L75 25" />
+        <path d="M50 50 L25 75" />
+        <path d="M50 50 L75 75" />
+      </g>
+
+      {/* Secondary spikes */}
+      <g strokeWidth="2" opacity="0.7">
+        <path d="M50 50 L35 20" />
+        <path d="M50 50 L65 20" />
+        <path d="M50 50 L20 35" />
+        <path d="M50 50 L80 35" />
+        <path d="M50 50 L20 65" />
+        <path d="M50 50 L80 65" />
+        <path d="M50 50 L35 80" />
+        <path d="M50 50 L65 80" />
+      </g>
+
+      {/* Center burst */}
+      <circle cx="50" cy="50" r="8" strokeWidth="2.5" />
+      <circle cx="50" cy="50" r="4" fill="currentColor" opacity="0.5" />
+
+      {/* Motion arrow */}
+      <g strokeWidth="2" opacity="0.6">
+        <path d="M10 20 L30 40" />
+        <path d="M30 40 L25 32 M30 40 L22 38" />
+      </g>
+    </g>
+  </svg>
+)
+
+/**
+ * THERMAL LOAD - Symbolic View
+ * Thermometer with expansion arrows
+ */
+export const ThermalLoadSymbolicSVG: React.FC<SVGProps> = ({ showHalo }) => (
+  <svg viewBox="0 0 100 100" className="w-full h-full">
+    {showHalo && <HaloFilter id="thermal-symbolic-halo" intensity={0.8} />}
+    <g filter={showHalo ? "url(#thermal-symbolic-halo)" : undefined} fill="none" stroke="currentColor" strokeLinecap="round">
+      {/* Thermometer */}
+      <g strokeWidth="2">
+        {/* Bulb */}
+        <circle cx="50" cy="75" r="12" />
+        {/* Stem */}
+        <path d="M44 75 L44 25 Q44 20, 50 20 Q56 20, 56 25 L56 75" />
+        {/* Mercury */}
+        <path d="M47 70 L47 35" strokeWidth="4" opacity="0.5" />
+        <circle cx="50" cy="75" r="8" fill="currentColor" opacity="0.3" />
+        {/* Scale marks */}
+        <path d="M58 35 L62 35" strokeWidth="1.5" />
+        <path d="M58 45 L62 45" strokeWidth="1.5" />
+        <path d="M58 55 L62 55" strokeWidth="1.5" />
+        <path d="M58 65 L62 65" strokeWidth="1.5" />
+      </g>
+
+      {/* Expansion arrows */}
+      <g strokeWidth="2" opacity="0.7">
+        {/* Left arrow */}
+        <path d="M25 50 L10 50" />
+        <path d="M10 50 L15 45 M10 50 L15 55" />
+        {/* Right arrow */}
+        <path d="M75 50 L90 50" />
+        <path d="M90 50 L85 45 M90 50 L85 55" />
+      </g>
+
+      {/* Hot/cold indicators */}
+      <g strokeWidth="1" opacity="0.5">
+        <text x="85" y="30" fontSize="8" fill="currentColor">+</text>
+        <text x="10" y="30" fontSize="8" fill="currentColor">−</text>
+      </g>
+    </g>
+  </svg>
+)
+
+/**
+ * HYDROSTATIC LOAD - Symbolic View
+ * Water level with pressure triangle
+ */
+export const HydrostaticLoadSymbolicSVG: React.FC<SVGProps> = ({ showHalo }) => (
+  <svg viewBox="0 0 100 100" className="w-full h-full">
+    {showHalo && <HaloFilter id="hydro-symbolic-halo" intensity={0.8} />}
+    <g filter={showHalo ? "url(#hydro-symbolic-halo)" : undefined} fill="none" stroke="currentColor" strokeLinecap="round">
+      {/* Container/wall */}
+      <g strokeWidth="2.5">
+        <path d="M70 20 L70 85 L30 85" />
+      </g>
+
+      {/* Water surface */}
+      <g strokeWidth="2">
+        <path d="M30 30 Q40 27, 50 30 Q60 33, 70 30" />
+      </g>
+
+      {/* Water fill indication */}
+      <g strokeWidth="0.8" opacity="0.3">
+        <path d="M32 40 Q42 37, 52 40 Q62 43, 68 40" />
+        <path d="M32 50 Q42 47, 52 50 Q62 53, 68 50" />
+        <path d="M32 60 Q42 57, 52 60 Q62 63, 68 60" />
+        <path d="M32 70 Q42 67, 52 70 Q62 73, 68 70" />
+        <path d="M32 80 Q42 77, 52 80 Q62 83, 68 80" />
+      </g>
+
+      {/* Pressure triangle */}
+      <g strokeWidth="2" opacity="0.7">
+        <path d="M25 30 L10 85 L25 85 Z" strokeDasharray="4 2" />
+      </g>
+
+      {/* Pressure arrows */}
+      <g strokeWidth="1.5" opacity="0.6">
+        <path d="M15 45 L28 45" />
+        <path d="M28 45 L25 42 M28 45 L25 48" />
+        <path d="M12 65 L28 65" />
+        <path d="M28 65 L25 62 M28 65 L25 68" />
+        <path d="M10 82 L28 82" />
+        <path d="M28 82 L25 79 M28 82 L25 85" />
+      </g>
+
+      {/* Depth indicator */}
+      <g strokeWidth="1.5" opacity="0.5">
+        <path d="M75 30 L75 85" />
+        <path d="M73 30 L77 30" />
+        <path d="M73 85 L77 85" />
+        <text x="80" y="60" fontSize="6" fill="currentColor">h</text>
+      </g>
+    </g>
+  </svg>
+)
+
+/**
+ * EARTH PRESSURE - Symbolic View
+ * Retaining wall with soil pressure symbol
+ */
+export const EarthPressureSymbolicSVG: React.FC<SVGProps> = ({ showHalo }) => (
+  <svg viewBox="0 0 100 100" className="w-full h-full">
+    {showHalo && <HaloFilter id="earth-symbolic-halo" intensity={0.8} />}
+    <g filter={showHalo ? "url(#earth-symbolic-halo)" : undefined} fill="none" stroke="currentColor" strokeLinecap="round">
+      {/* Retaining wall */}
+      <g strokeWidth="3">
+        <path d="M55 15 L55 90" />
+        <path d="M50 15 L60 15" />
+        <path d="M50 90 L65 90 L65 95 L45 95 Z" />
+      </g>
+
+      {/* Soil mass indication */}
+      <g strokeWidth="1" opacity="0.4">
+        <path d="M10 25 L50 25" />
+        <path d="M10 40 L50 40" />
+        <path d="M10 55 L50 55" />
+        <path d="M10 70 L50 70" />
+        <path d="M10 85 L50 85" />
+      </g>
+
+      {/* Triangular earth pressure */}
+      <g strokeWidth="2">
+        <path d="M50 20 L15 90 L50 90 Z" opacity="0.3" />
+      </g>
+
+      {/* Pressure arrows */}
+      <g strokeWidth="2" opacity="0.8">
+        <path d="M35 35 L50 35" />
+        <path d="M50 35 L45 32 M50 35 L45 38" />
+        <path d="M25 60 L50 60" />
+        <path d="M50 60 L45 57 M50 60 L45 63" />
+        <path d="M18 82 L50 82" />
+        <path d="M50 82 L45 79 M50 82 L45 85" />
+      </g>
+
+      {/* Ka symbol */}
+      <g opacity="0.6">
+        <text x="30" y="50" fontSize="10" fill="currentColor" fontWeight="bold">Ka</text>
+      </g>
+    </g>
+  </svg>
+)
+
+/**
+ * BUOYANCY - Symbolic View
+ * Upward arrows from water displacement
+ */
+export const BuoyancySymbolicSVG: React.FC<SVGProps> = ({ showHalo }) => (
+  <svg viewBox="0 0 100 100" className="w-full h-full">
+    {showHalo && <HaloFilter id="buoyancy-symbolic-halo" intensity={0.8} />}
+    <g filter={showHalo ? "url(#buoyancy-symbolic-halo)" : undefined} fill="none" stroke="currentColor" strokeLinecap="round">
+      {/* Submerged box */}
+      <g strokeWidth="2.5">
+        <path d="M25 35 L75 35 L75 70 L25 70 Z" />
+      </g>
+
+      {/* Water surface wavy line */}
+      <g strokeWidth="1.5" opacity="0.6">
+        <path d="M10 25 Q20 22, 30 25 Q40 28, 50 25 Q60 22, 70 25 Q80 28, 90 25" />
+      </g>
+
+      {/* Water indication around object */}
+      <g strokeWidth="0.8" opacity="0.3">
+        <path d="M12 40 Q16 38, 20 40" />
+        <path d="M12 55 Q16 53, 20 55" />
+        <path d="M80 40 Q84 38, 88 40" />
+        <path d="M80 55 Q84 53, 88 55" />
+      </g>
+
+      {/* BUOYANCY ARROWS - Upward */}
+      <g strokeWidth="2.5">
+        <path d="M35 90 L35 75" />
+        <path d="M35 75 L30 82 M35 75 L40 82" />
+        <path d="M50 90 L50 75" />
+        <path d="M50 75 L45 82 M50 75 L55 82" />
+        <path d="M65 90 L65 75" />
+        <path d="M65 75 L60 82 M65 75 L70 82" />
+      </g>
+
+      {/* Fb label */}
+      <g opacity="0.6">
+        <text x="50" y="55" fontSize="12" textAnchor="middle" fill="currentColor" fontWeight="bold">Fb</text>
+      </g>
+
+      {/* Upward indication */}
+      <g strokeWidth="1.5" opacity="0.5">
+        <text x="50" y="10" fontSize="6" textAnchor="middle" fill="currentColor">↑</text>
+      </g>
+    </g>
+  </svg>
+)
+
+// =============================================================================
+// LOAD TYPES - MULTI-VIEW: EFFECT DIAGRAMS
+// Showing structural response/deformation
+// =============================================================================
+
+/**
+ * DEAD LOAD - Effect View
+ * Structure under constant compression
+ */
+export const DeadLoadEffectSVG: React.FC<SVGProps> = ({ showHalo }) => (
+  <svg viewBox="0 0 100 100" className="w-full h-full">
+    {showHalo && <HaloFilter id="dead-effect-halo" intensity={0.8} />}
+    <g filter={showHalo ? "url(#dead-effect-halo)" : undefined} fill="none" stroke="currentColor" strokeLinecap="round">
+      {/* Column under compression */}
+      <g strokeWidth="2">
+        {/* Original column outline (dashed) */}
+        <path d="M35 20 L65 20 L65 80 L35 80 Z" strokeDasharray="4 2" opacity="0.4" />
+        {/* Compressed column (slightly shorter/wider at base) */}
+        <path d="M34 22 L66 22 L67 78 L33 78 Z" strokeWidth="2.5" />
+      </g>
+
+      {/* Compression stress arrows */}
+      <g strokeWidth="1.5" opacity="0.7">
+        <path d="M50 8 L50 18" />
+        <path d="M50 18 L47 14 M50 18 L53 14" />
+        <path d="M50 92 L50 82" />
+        <path d="M50 82 L47 86 M50 82 L53 86" />
+      </g>
+
+      {/* Internal stress pattern */}
+      <g strokeWidth="0.8" opacity="0.4">
+        <path d="M40 30 L40 70" />
+        <path d="M50 28 L50 72" />
+        <path d="M60 30 L60 70" />
+      </g>
+
+      {/* Shortening indicator */}
+      <g strokeWidth="1" opacity="0.5">
+        <path d="M75 20 L75 78" strokeDasharray="2 2" />
+        <path d="M72 20 L78 20" />
+        <path d="M72 22 L78 22" />
+        <text x="82" y="50" fontSize="5" fill="currentColor">Δ</text>
+      </g>
+
+      {/* Foundation */}
+      <path d="M25 80 L75 80 L75 88 L25 88 Z" strokeWidth="2" />
+    </g>
+  </svg>
+)
+
+/**
+ * LIVE LOAD - Effect View
+ * Floor deflection under occupancy
+ */
+export const LiveLoadEffectSVG: React.FC<SVGProps> = ({ showHalo }) => (
+  <svg viewBox="0 0 100 100" className="w-full h-full">
+    {showHalo && <HaloFilter id="live-effect-halo" intensity={0.8} />}
+    <g filter={showHalo ? "url(#live-effect-halo)" : undefined} fill="none" stroke="currentColor" strokeLinecap="round">
+      {/* Supports */}
+      <g strokeWidth="2">
+        <path d="M15 50 L15 85" />
+        <path d="M85 50 L85 85" />
+        <path d="M10 85 L90 85" />
+      </g>
+
+      {/* Original beam position (dashed) */}
+      <path d="M15 50 L85 50" strokeWidth="1.5" strokeDasharray="4 2" opacity="0.4" />
+
+      {/* Deflected beam */}
+      <path d="M15 50 Q50 65, 85 50" strokeWidth="3" />
+
+      {/* Load on beam */}
+      <g strokeWidth="1.5">
+        <path d="M50 35 L50 52" />
+        <path d="M50 52 L47 48 M50 52 L53 48" />
+        <rect x="40" y="20" width="20" height="15" strokeWidth="1.5" />
+      </g>
+
+      {/* Deflection indicator */}
+      <g strokeWidth="1" opacity="0.6">
+        <path d="M50 50 L50 62" strokeDasharray="2 2" />
+        <path d="M47 50 L53 50" />
+        <path d="M47 62 L53 62" />
+        <text x="56" y="58" fontSize="5" fill="currentColor">δ</text>
+      </g>
+
+      {/* Stress pattern in beam */}
+      <g strokeWidth="0.6" opacity="0.4">
+        {/* Tension at bottom */}
+        <path d="M25 58 L35 58" />
+        <path d="M45 60 L55 60" />
+        <path d="M65 58 L75 58" />
+      </g>
+    </g>
+  </svg>
+)
+
+/**
+ * WIND LOAD - Effect View
+ * Building sway/lateral deflection
+ */
+export const WindLoadEffectSVG: React.FC<SVGProps> = ({ showHalo }) => (
+  <svg viewBox="0 0 100 100" className="w-full h-full">
+    {showHalo && <HaloFilter id="wind-effect-halo" intensity={0.8} />}
+    <g filter={showHalo ? "url(#wind-effect-halo)" : undefined} fill="none" stroke="currentColor" strokeLinecap="round">
+      {/* Original building position (dashed) */}
+      <path d="M35 15 L35 85 L65 85 L65 15 Z" strokeWidth="1.5" strokeDasharray="4 2" opacity="0.3" />
+
+      {/* Deflected building */}
+      <g strokeWidth="2">
+        <path d="M40 15 L35 85 L65 85 L70 15 Z" />
+        {/* Floor lines showing drift */}
+        <path d="M36 55 L66 55" strokeWidth="1" opacity="0.5" />
+        <path d="M38 35 L68 35" strokeWidth="1" opacity="0.5" />
+      </g>
+
+      {/* Wind arrows */}
+      <g strokeWidth="1.5" opacity="0.6">
+        <path d="M10 30 L35 30" />
+        <path d="M35 30 L30 27 M35 30 L30 33" />
+        <path d="M10 50 L35 50" />
+        <path d="M35 50 L30 47 M35 50 L30 53" />
+        <path d="M10 70 L35 70" />
+        <path d="M35 70 L30 67 M35 70 L30 73" />
+      </g>
+
+      {/* Drift indicator */}
+      <g strokeWidth="1" opacity="0.6">
+        <path d="M50 10 L50 15" strokeDasharray="2 2" />
+        <path d="M50 10 L55 10" />
+        <path d="M55 10 L55 15" strokeDasharray="2 2" />
+        <text x="52" y="8" fontSize="5" fill="currentColor">Δ</text>
+      </g>
+
+      {/* Foundation (fixed) */}
+      <path d="M30 85 L70 85 L70 92 L30 92 Z" strokeWidth="2" />
+
+      {/* Ground */}
+      <path d="M20 92 L80 92" strokeWidth="1.5" />
+    </g>
+  </svg>
+)
+
+/**
+ * SEISMIC LOAD - Effect View
+ * Building lateral movement, inter-story drift
+ */
+export const SeismicLoadEffectSVG: React.FC<SVGProps> = ({ showHalo }) => (
+  <svg viewBox="0 0 100 100" className="w-full h-full">
+    {showHalo && <HaloFilter id="seismic-effect-halo" intensity={0.8} />}
+    <g filter={showHalo ? "url(#seismic-effect-halo)" : undefined} fill="none" stroke="currentColor" strokeLinecap="round">
+      {/* Original position (dashed) */}
+      <path d="M40 10 L40 75 L60 75 L60 10 Z" strokeWidth="1" strokeDasharray="3 2" opacity="0.3" />
+
+      {/* Deformed building showing inter-story drift */}
+      <g strokeWidth="2">
+        {/* Each floor shifts differently */}
+        <path d="M50 10 L38 30 L65 30" />
+        <path d="M38 30 L42 50 L62 50" />
+        <path d="M42 50 L40 75 L60 75 L58 50" />
+        <path d="M62 50 L60 30" />
+        <path d="M65 30 L58 10" />
+        <path d="M50 10 L58 10" />
+      </g>
+
+      {/* Ground motion arrows */}
+      <g strokeWidth="1.5" opacity="0.7">
+        <path d="M25 82 L35 82" />
+        <path d="M35 82 L32 79 M35 82 L32 85" />
+        <path d="M75 82 L65 82" />
+        <path d="M65 82 L68 79 M65 82 L68 85" />
+      </g>
+
+      {/* Seismic waves at base */}
+      <g strokeWidth="1.5">
+        <path d="M15 90 Q25 85, 35 90 Q45 95, 55 90 Q65 85, 75 90 Q85 95, 90 90" />
+      </g>
+
+      {/* Inter-story drift markers */}
+      <g strokeWidth="0.8" opacity="0.5">
+        <path d="M70 10 L70 30" strokeDasharray="2 1" />
+        <path d="M70 30 L70 50" strokeDasharray="2 1" />
+        <text x="73" y="20" fontSize="4" fill="currentColor">drift</text>
+      </g>
+
+      {/* Foundation */}
+      <path d="M35 75 L65 75 L65 82 L35 82 Z" strokeWidth="2" />
+    </g>
+  </svg>
+)
+
+/**
+ * SNOW LOAD - Effect View
+ * Roof deflection under snow weight
+ */
+export const SnowLoadEffectSVG: React.FC<SVGProps> = ({ showHalo }) => (
+  <svg viewBox="0 0 100 100" className="w-full h-full">
+    {showHalo && <HaloFilter id="snow-effect-halo" intensity={0.8} />}
+    <g filter={showHalo ? "url(#snow-effect-halo)" : undefined} fill="none" stroke="currentColor" strokeLinecap="round">
+      {/* Supports */}
+      <g strokeWidth="2">
+        <path d="M20 55 L20 85" />
+        <path d="M80 55 L80 85" />
+      </g>
+
+      {/* Original roof (dashed) */}
+      <path d="M15 55 L50 25 L85 55" strokeWidth="1.5" strokeDasharray="4 2" opacity="0.3" />
+
+      {/* Deflected roof */}
+      <path d="M15 55 Q35 45, 50 35 Q65 45, 85 55" strokeWidth="2.5" />
+
+      {/* Snow on roof */}
+      <g strokeWidth="1.5" opacity="0.6">
+        <path d="M18 53 Q35 40, 50 32 Q65 40, 82 53" />
+        {/* Snow texture */}
+        <path d="M25 48 Q30 46, 35 48" strokeWidth="0.8" />
+        <path d="M60 48 Q65 46, 70 48" strokeWidth="0.8" />
+      </g>
+
+      {/* Weight arrows */}
+      <g strokeWidth="1.2" opacity="0.5">
+        <path d="M35 22 L35 38" />
+        <path d="M35 38 L33 35 M35 38 L37 35" />
+        <path d="M50 15 L50 30" />
+        <path d="M50 30 L48 27 M50 30 L52 27" />
+        <path d="M65 22 L65 38" />
+        <path d="M65 38 L63 35 M65 38 L67 35" />
+      </g>
+
+      {/* Deflection indicator at ridge */}
+      <g strokeWidth="1" opacity="0.6">
+        <path d="M50 25 L50 35" strokeDasharray="2 2" />
+        <path d="M47 25 L53 25" />
+        <path d="M47 35 L53 35" />
+        <text x="54" y="32" fontSize="5" fill="currentColor">δ</text>
+      </g>
+
+      {/* Ground */}
+      <path d="M10 85 L90 85" strokeWidth="1.5" />
+    </g>
+  </svg>
+)
+
+/**
+ * RAIN LOAD - Effect View
+ * Progressive ponding deflection
+ */
+export const RainLoadEffectSVG: React.FC<SVGProps> = ({ showHalo }) => (
+  <svg viewBox="0 0 100 100" className="w-full h-full">
+    {showHalo && <HaloFilter id="rain-effect-halo" intensity={0.8} />}
+    <g filter={showHalo ? "url(#rain-effect-halo)" : undefined} fill="none" stroke="currentColor" strokeLinecap="round">
+      {/* Building walls */}
+      <g strokeWidth="2">
+        <path d="M15 30 L15 85" />
+        <path d="M85 30 L85 85" />
+      </g>
+
+      {/* Original roof (flat, dashed) */}
+      <path d="M15 30 L85 30" strokeWidth="1.5" strokeDasharray="4 2" opacity="0.3" />
+
+      {/* Deflected roof with ponding */}
+      <g strokeWidth="2">
+        <path d="M15 30 Q50 50, 85 30" />
+      </g>
+
+      {/* Water surface */}
+      <g strokeWidth="1.5" opacity="0.6">
+        <path d="M20 32 Q50 45, 80 32" />
+        {/* Water fill */}
+        <path d="M25 33 Q50 42, 75 33" strokeWidth="0.8" opacity="0.4" />
+        <path d="M30 34 Q50 40, 70 34" strokeWidth="0.8" opacity="0.4" />
+      </g>
+
+      {/* Blocked drain symbol */}
+      <g strokeWidth="1.5" opacity="0.7">
+        <circle cx="75" cy="35" r="4" />
+        <path d="M72 32 L78 38" />
+        <path d="M78 32 L72 38" />
+      </g>
+
+      {/* Progressive failure arrows */}
+      <g strokeWidth="1" opacity="0.5">
+        <path d="M50 35 L50 45" />
+        <path d="M50 45 L48 42 M50 45 L52 42" />
+        <path d="M50 50 L50 60" strokeDasharray="2 2" />
+        <path d="M50 60 L48 57 M50 60 L52 57" />
+      </g>
+
+      {/* Warning indicator */}
+      <g strokeWidth="1.5" opacity="0.6">
+        <path d="M45 70 L50 60 L55 70 Z" />
+        <path d="M50 64 L50 67" strokeWidth="2" />
+        <circle cx="50" cy="68.5" r="0.8" fill="currentColor" />
+      </g>
+
+      {/* Ground */}
+      <path d="M10 85 L90 85" strokeWidth="1.5" />
+    </g>
+  </svg>
+)
+
+/**
+ * IMPACT LOAD - Effect View
+ * Local damage and stress waves
+ */
+export const ImpactLoadEffectSVG: React.FC<SVGProps> = ({ showHalo }) => (
+  <svg viewBox="0 0 100 100" className="w-full h-full">
+    {showHalo && <HaloFilter id="impact-effect-halo" intensity={0.8} />}
+    <g filter={showHalo ? "url(#impact-effect-halo)" : undefined} fill="none" stroke="currentColor" strokeLinecap="round">
+      {/* Beam/structure */}
+      <g strokeWidth="2">
+        <path d="M10 50 L90 50 L90 60 L10 60 Z" />
+        {/* Supports */}
+        <path d="M15 60 L15 85" />
+        <path d="M85 60 L85 85" />
+      </g>
+
+      {/* Impact point with local deformation */}
+      <g strokeWidth="2">
+        <path d="M45 50 Q50 55, 55 50" />
+      </g>
+
+      {/* Impacting object */}
+      <g strokeWidth="1.5">
+        <circle cx="50" cy="35" r="8" />
+        <path d="M50 28 L50 20" />
+        <path d="M50 20 L47 25 M50 20 L53 25" />
+      </g>
+
+      {/* Stress waves radiating from impact */}
+      <g strokeWidth="1" opacity="0.5">
+        <path d="M50 55 Q40 58, 30 55" strokeDasharray="2 2" />
+        <path d="M50 55 Q60 58, 70 55" strokeDasharray="2 2" />
+        <path d="M50 55 Q35 60, 20 55" strokeDasharray="2 2" opacity="0.3" />
+        <path d="M50 55 Q65 60, 80 55" strokeDasharray="2 2" opacity="0.3" />
+      </g>
+
+      {/* Impact starburst */}
+      <g strokeWidth="1.2" opacity="0.6">
+        <path d="M45 48 L42 42" />
+        <path d="M50 47 L50 40" />
+        <path d="M55 48 L58 42" />
+      </g>
+
+      {/* Vibration indication */}
+      <g strokeWidth="0.8" opacity="0.4">
+        <path d="M25 62 Q27 65, 25 68" />
+        <path d="M75 62 Q77 65, 75 68" />
+      </g>
+
+      {/* Ground */}
+      <path d="M5 85 L95 85" strokeWidth="1.5" />
+    </g>
+  </svg>
+)
+
+/**
+ * THERMAL LOAD - Effect View
+ * Expansion joint movement
+ */
+export const ThermalLoadEffectSVG: React.FC<SVGProps> = ({ showHalo }) => (
+  <svg viewBox="0 0 100 100" className="w-full h-full">
+    {showHalo && <HaloFilter id="thermal-effect-halo" intensity={0.8} />}
+    <g filter={showHalo ? "url(#thermal-effect-halo)" : undefined} fill="none" stroke="currentColor" strokeLinecap="round">
+      {/* Structure - two sections with expansion joint */}
+      <g strokeWidth="2">
+        {/* Left section */}
+        <path d="M10 30 L45 30 L45 75 L10 75 Z" />
+        {/* Right section */}
+        <path d="M55 30 L90 30 L90 75 L55 75 Z" />
+      </g>
+
+      {/* Expansion joint gap - COLD state (wider) */}
+      <g strokeWidth="1.5" strokeDasharray="3 2" opacity="0.4">
+        <path d="M46 30 L46 75" />
+        <path d="M54 30 L54 75" />
+      </g>
+
+      {/* Expansion joint gap - HOT state (narrower) */}
+      <g strokeWidth="2" opacity="0.8">
+        <path d="M47 32 L47 73" />
+        <path d="M53 32 L53 73" />
+      </g>
+
+      {/* Expansion arrows */}
+      <g strokeWidth="1.5" opacity="0.7">
+        {/* Left section expanding right */}
+        <path d="M35 52 L44 52" />
+        <path d="M44 52 L41 49 M44 52 L41 55" />
+        {/* Right section expanding left */}
+        <path d="M65 52 L56 52" />
+        <path d="M56 52 L59 49 M56 52 L59 55" />
+      </g>
+
+      {/* Temperature indicators */}
+      <g strokeWidth="1.2" opacity="0.5">
+        {/* Sun (hot) */}
+        <circle cx="80" cy="15" r="6" />
+        <path d="M80 5 L80 8" />
+        <path d="M80 22 L80 25" />
+        <path d="M70 15 L73 15" />
+        <path d="M87 15 L90 15" />
+
+        {/* Cold indicator */}
+        <path d="M15 15 L15 22 M12 18 L18 18" strokeWidth="1.5" />
+      </g>
+
+      {/* Gap measurement */}
+      <g strokeWidth="0.8" opacity="0.5">
+        <path d="M47 80 L53 80" />
+        <path d="M47 78 L47 82" />
+        <path d="M53 78 L53 82" />
+        <text x="50" y="88" fontSize="5" textAnchor="middle" fill="currentColor">gap</text>
+      </g>
+
+      {/* Foundation */}
+      <path d="M5 75 L95 75" strokeWidth="1.5" />
+    </g>
+  </svg>
+)
+
+/**
+ * HYDROSTATIC LOAD - Effect View
+ * Wall bending under water pressure
+ */
+export const HydrostaticLoadEffectSVG: React.FC<SVGProps> = ({ showHalo }) => (
+  <svg viewBox="0 0 100 100" className="w-full h-full">
+    {showHalo && <HaloFilter id="hydro-effect-halo" intensity={0.8} />}
+    <g filter={showHalo ? "url(#hydro-effect-halo)" : undefined} fill="none" stroke="currentColor" strokeLinecap="round">
+      {/* Original wall position (dashed) */}
+      <path d="M50 15 L50 85" strokeWidth="1.5" strokeDasharray="4 2" opacity="0.3" />
+
+      {/* Deflected wall (curved) */}
+      <g strokeWidth="3">
+        <path d="M50 15 Q58 50, 50 85" />
+      </g>
+
+      {/* Water on left side */}
+      <g strokeWidth="0.6" opacity="0.3">
+        <path d="M10 25 Q20 22, 30 25 Q40 28, 50 25" />
+        <path d="M10 40 Q20 37, 30 40 Q40 43, 52 40" />
+        <path d="M10 55 Q20 52, 30 55 Q40 58, 54 55" />
+        <path d="M10 70 Q20 67, 30 70 Q40 73, 55 70" />
+      </g>
+
+      {/* Pressure distribution arrows */}
+      <g strokeWidth="1.5" opacity="0.7">
+        <path d="M20 30 L48 30" />
+        <path d="M48 30 L44 27 M48 30 L44 33" />
+        <path d="M15 50 L52 50" />
+        <path d="M52 50 L48 47 M52 50 L48 53" />
+        <path d="M10 70 L54 70" />
+        <path d="M54 70 L50 67 M54 70 L50 73" />
+      </g>
+
+      {/* Deflection indicator */}
+      <g strokeWidth="1" opacity="0.6">
+        <path d="M50 50 L56 50" strokeDasharray="2 2" />
+        <path d="M50 48 L50 52" />
+        <path d="M56 48 L56 52" />
+        <text x="58" y="52" fontSize="5" fill="currentColor">δ</text>
+      </g>
+
+      {/* Moment diagram hint */}
+      <g strokeWidth="0.8" opacity="0.4">
+        <path d="M65 15 Q70 50, 65 85" strokeDasharray="3 2" />
+      </g>
+
+      {/* Base restraint */}
+      <g strokeWidth="2">
+        <path d="M45 85 L55 85 L55 92 L45 92 Z" />
+        <path d="M40 92 L60 92" />
+      </g>
+
+      {/* Water level indicator */}
+      <g strokeWidth="1" opacity="0.5">
+        <path d="M5 20 L15 20" />
+        <text x="8" y="18" fontSize="4" fill="currentColor">WL</text>
+      </g>
+    </g>
+  </svg>
+)
+
+/**
+ * EARTH PRESSURE - Effect View
+ * Wall deflection and rotation under soil pressure
+ */
+export const EarthPressureEffectSVG: React.FC<SVGProps> = ({ showHalo }) => (
+  <svg viewBox="0 0 100 100" className="w-full h-full">
+    {showHalo && <HaloFilter id="earth-effect-halo" intensity={0.8} />}
+    <g filter={showHalo ? "url(#earth-effect-halo)" : undefined} fill="none" stroke="currentColor" strokeLinecap="round">
+      {/* Original wall position (dashed) */}
+      <path d="M50 10 L50 85" strokeWidth="2" strokeDasharray="4 2" opacity="0.3" />
+
+      {/* Deflected/rotated wall */}
+      <g strokeWidth="3">
+        <path d="M50 85 L58 10" />
+      </g>
+
+      {/* Soil on active side */}
+      <g strokeWidth="0.5" opacity="0.3">
+        <path d="M10 20 L48 20" />
+        <path d="M10 40 L52 40" />
+        <path d="M10 60 L55 60" />
+        <path d="M10 80 L50 80" />
+      </g>
+
+      {/* Active pressure arrows */}
+      <g strokeWidth="1.5" opacity="0.7">
+        <path d="M30 25 L52 25" />
+        <path d="M52 25 L48 22 M52 25 L48 28" />
+        <path d="M20 50 L54 50" />
+        <path d="M54 50 L50 47 M54 50 L50 53" />
+        <path d="M15 75 L52 75" />
+        <path d="M52 75 L48 72 M52 75 L48 78" />
+      </g>
+
+      {/* Wall rotation indicator */}
+      <g strokeWidth="1" opacity="0.6">
+        <path d="M50 10 L58 10" strokeDasharray="2 2" />
+        <path d="M50 8 L50 12" />
+        <path d="M58 8 L58 12" />
+        <text x="54" y="7" fontSize="4" fill="currentColor">δ</text>
+      </g>
+
+      {/* Rotation angle arc */}
+      <g strokeWidth="0.8" opacity="0.5">
+        <path d="M50 75 Q54 72, 55 68" />
+        <text x="56" y="74" fontSize="4" fill="currentColor">θ</text>
+      </g>
+
+      {/* Base/heel */}
+      <g strokeWidth="2">
+        <path d="M35 85 L65 85 L65 92 L35 92 Z" />
+        <path d="M30 92 L70 92" />
+      </g>
+
+      {/* Passive resistance (toe) */}
+      <g strokeWidth="1.2" opacity="0.5">
+        <path d="M75 82 L62 82" />
+        <path d="M62 82 L66 79 M62 82 L66 85" />
+      </g>
+    </g>
+  </svg>
+)
+
+/**
+ * BUOYANCY - Effect View
+ * Structure lifted by hydrostatic uplift
+ */
+export const BuoyancyEffectSVG: React.FC<SVGProps> = ({ showHalo }) => (
+  <svg viewBox="0 0 100 100" className="w-full h-full">
+    {showHalo && <HaloFilter id="buoyancy-effect-halo" intensity={0.8} />}
+    <g filter={showHalo ? "url(#buoyancy-effect-halo)" : undefined} fill="none" stroke="currentColor" strokeLinecap="round">
+      {/* Original position (dashed) */}
+      <path d="M25 50 L75 50 L75 85 L25 85 Z" strokeWidth="1.5" strokeDasharray="4 2" opacity="0.3" />
+
+      {/* Lifted structure */}
+      <g strokeWidth="2.5">
+        <path d="M25 40 L75 40 L75 75 L25 75 Z" />
+      </g>
+
+      {/* Water surface */}
+      <g strokeWidth="1.5" opacity="0.6">
+        <path d="M5 30 Q15 27, 25 30 Q35 33, 45 30 Q55 27, 65 30 Q75 33, 85 30 Q92 28, 95 30" />
+      </g>
+
+      {/* Water around structure */}
+      <g strokeWidth="0.5" opacity="0.3">
+        <path d="M8 45 Q12 43, 18 45" />
+        <path d="M8 60 Q12 58, 18 60" />
+        <path d="M82 45 Q86 43, 92 45" />
+        <path d="M82 60 Q86 58, 92 60" />
+      </g>
+
+      {/* Uplift arrows */}
+      <g strokeWidth="2" opacity="0.8">
+        <path d="M35 90 L35 78" />
+        <path d="M35 78 L32 82 M35 78 L38 82" />
+        <path d="M50 90 L50 78" />
+        <path d="M50 78 L47 82 M50 78 L53 82" />
+        <path d="M65 90 L65 78" />
+        <path d="M65 78 L62 82 M65 78 L68 82" />
+      </g>
+
+      {/* Uplift displacement indicator */}
+      <g strokeWidth="1" opacity="0.6">
+        <path d="M80 50 L80 40" strokeDasharray="2 2" />
+        <path d="M78 50 L82 50" />
+        <path d="M78 40 L82 40" />
+        <text x="84" y="47" fontSize="5" fill="currentColor">Δ</text>
+      </g>
+
+      {/* Weight arrow (gravity) */}
+      <g strokeWidth="1.5" opacity="0.5">
+        <path d="M50 25 L50 38" />
+        <path d="M50 38 L47 34 M50 38 L53 34" />
+        <text x="55" y="30" fontSize="4" fill="currentColor">W</text>
+      </g>
+
+      {/* Net force indication */}
+      <g opacity="0.4">
+        <text x="50" y="58" fontSize="5" textAnchor="middle" fill="currentColor">Fb &gt; W</text>
+      </g>
+
+      {/* Original base position line */}
+      <g strokeWidth="0.8" opacity="0.4">
+        <path d="M20 85 L80 85" strokeDasharray="3 2" />
+      </g>
+    </g>
+  </svg>
+)
+
 // =============================================================================
 // LOAD TYPES EXPORT
 // =============================================================================
@@ -2483,6 +4280,37 @@ export const LOAD_ELEMENTS: Record<string, React.FC<SVGProps>> = {
   'impact-load': ImpactLoadSVG,
   'thermal-load': ThermalLoadSVG,
   'hydrostatic-load': HydrostaticLoadSVG,
+  'earth-pressure': EarthPressureLoadSVG,
+  'buoyancy-load': BuoyancyLoadSVG,
+}
+
+// Load type multi-view components
+export const LOAD_SYMBOLIC_VIEWS: Record<string, React.FC<SVGProps>> = {
+  'dead-load': DeadLoadSymbolicSVG,
+  'live-load': LiveLoadSymbolicSVG,
+  'wind-load': WindLoadSymbolicSVG,
+  'seismic-load': SeismicLoadSymbolicSVG,
+  'snow-load': SnowLoadSymbolicSVG,
+  'rain-load': RainLoadSymbolicSVG,
+  'impact-load': ImpactLoadSymbolicSVG,
+  'thermal-load': ThermalLoadSymbolicSVG,
+  'hydrostatic-load': HydrostaticLoadSymbolicSVG,
+  'earth-pressure': EarthPressureSymbolicSVG,
+  'buoyancy-load': BuoyancySymbolicSVG,
+}
+
+export const LOAD_EFFECT_VIEWS: Record<string, React.FC<SVGProps>> = {
+  'dead-load': DeadLoadEffectSVG,
+  'live-load': LiveLoadEffectSVG,
+  'wind-load': WindLoadEffectSVG,
+  'seismic-load': SeismicLoadEffectSVG,
+  'snow-load': SnowLoadEffectSVG,
+  'rain-load': RainLoadEffectSVG,
+  'impact-load': ImpactLoadEffectSVG,
+  'thermal-load': ThermalLoadEffectSVG,
+  'hydrostatic-load': HydrostaticLoadEffectSVG,
+  'earth-pressure': EarthPressureEffectSVG,
+  'buoyancy-load': BuoyancyEffectSVG,
 }
 
 // =============================================================================
