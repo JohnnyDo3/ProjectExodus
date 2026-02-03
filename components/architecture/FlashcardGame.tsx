@@ -400,23 +400,25 @@ export function FlashcardGame({ config: userConfig, onComplete, onExit, showConf
                         <label className="text-xs sm:text-sm font-semibold text-[var(--muted-foreground)] mb-1.5 block">
                           Select Category
                         </label>
-                        <div className="grid grid-cols-2 sm:grid-cols-3 gap-1.5 sm:gap-2">
-                          {Object.values(CATEGORIES).slice(0, 6).map((category) => (
-                            <button
-                              key={category.id}
-                              onClick={() => setSelectedCategory(category.id)}
-                              className={`p-1.5 sm:p-2 rounded-lg border-2 transition-all text-left ${
-                                selectedCategory === category.id
-                                  ? 'border-purple-500 bg-purple-500/10'
-                                  : 'border-[var(--border)] hover:border-[var(--primary)]/50'
-                              }`}
-                            >
-                              <span className="font-bold text-xs sm:text-sm text-[var(--foreground)] block">{category.name}</span>
-                              <span className="text-[0.625rem] text-[var(--muted-foreground)]">
-                                {ALL_ELEMENTS.filter(e => e.category === category.id).length} elements
-                              </span>
-                            </button>
-                          ))}
+                        <div className="max-h-[200px] sm:max-h-[240px] overflow-y-auto pr-1 scrollbar-thin scrollbar-thumb-[var(--muted-foreground)]/30 scrollbar-track-transparent">
+                          <div className="grid grid-cols-2 sm:grid-cols-3 gap-1.5 sm:gap-2">
+                            {Object.values(CATEGORIES).map((category) => (
+                              <button
+                                key={category.id}
+                                onClick={() => setSelectedCategory(category.id)}
+                                className={`p-1.5 sm:p-2 rounded-lg border-2 transition-all text-left ${
+                                  selectedCategory === category.id
+                                    ? 'border-purple-500 bg-purple-500/10'
+                                    : 'border-[var(--border)] hover:border-[var(--primary)]/50'
+                                }`}
+                              >
+                                <span className="font-bold text-xs sm:text-sm text-[var(--foreground)] block">{category.name}</span>
+                                <span className="text-[0.625rem] text-[var(--muted-foreground)]">
+                                  {ALL_ELEMENTS.filter(e => e.category === category.id).length} elements
+                                </span>
+                              </button>
+                            ))}
+                          </div>
                         </div>
                       </motion.div>
                     )}
