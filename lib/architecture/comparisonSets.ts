@@ -23,7 +23,7 @@ export interface ComparisonElement {
 
 export interface ComparisonSet {
   id: string
-  category: 'columns' | 'arches' | 'windows' | 'roofs' | 'mixed'
+  category: 'columns' | 'arches' | 'windows' | 'roofs' | 'mixed' | 'structural'
   difficulty: 'beginner' | 'intermediate' | 'advanced'
   title: string
   subtitle: string
@@ -456,10 +456,14 @@ export const sacredWindowsComparison: ComparisonSet = {
 // ============================================================================
 // COMPARISON SETS REGISTRY
 // ============================================================================
+import { STRUCTURAL_COMPARISON_SETS } from './structuralComparisonSets'
+
 export const COMPARISON_SETS: Record<string, ComparisonSet> = {
   'greek-columns': greekColumnsComparison,
   'arch-evolution': archEvolutionComparison,
   'sacred-windows': sacredWindowsComparison,
+  // Structural engineering sets are merged in
+  ...STRUCTURAL_COMPARISON_SETS,
 }
 
 // ============================================================================
@@ -485,3 +489,22 @@ export function getComparisonSetsByDifficulty(difficulty: ComparisonSet['difficu
 export function getComparisonSetIds(): string[] {
   return Object.keys(COMPARISON_SETS)
 }
+
+// =============================================================================
+// STRUCTURAL ENGINEERING SETS (imported from structuralComparisonSets.ts)
+// =============================================================================
+
+export {
+  STRUCTURAL_COMPARISON_SETS,
+  getAllStructuralComparisonSets,
+  getStructuralComparisonSetById,
+  getStructuralSetsByDifficulty,
+  bracingTypesComparison,
+  trussTypesComparison,
+  foundationTypesComparison,
+  loadTypesComparison,
+  advancedBracingComparison,
+  advancedTrussComparison,
+  advancedFoundationsComparison,
+  environmentalLoadsComparison,
+} from './structuralComparisonSets'
