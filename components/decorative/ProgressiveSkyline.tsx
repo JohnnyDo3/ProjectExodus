@@ -2331,7 +2331,7 @@ export function ProgressiveSkyline() {
                     {/* Picket */}
                     <rect x="3798" y={195 + i * 3} width="4" height="10" fill="#f5f5f5" />
                     {/* Pointed top */}
-                    <path d="M 3798,${195 + i * 3} L 3800,${192 + i * 3} L 3802,${195 + i * 3} Z" fill="#f5f5f5" />
+                    <path d={`M 3798,${195 + i * 3} L 3800,${192 + i * 3} L 3802,${195 + i * 3} Z`} fill="#f5f5f5" />
                   </g>
                 ))}
                 {/* Horizontal rails */}
