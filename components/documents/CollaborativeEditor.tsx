@@ -138,7 +138,7 @@ export function CollaborativeEditor({
       ? { history: false as const }
       : undefined
 
-    const baseExtensions = [
+    const baseExtensions: any[] = [
       StarterKit.configure(starterKitOptions as any),
       Placeholder.configure({
         placeholder,
