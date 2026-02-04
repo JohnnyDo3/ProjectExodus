@@ -52,7 +52,7 @@ export async function GET(
       filteredMembers = members.filter(
         (m: typeof members[number]) =>
           m.user.name?.toLowerCase().includes(searchLower) ||
-          m.user.username?.toLowerCase().includes(searchLower)
+          m.user.email?.toLowerCase().includes(searchLower)
       )
     }
 
