@@ -25,7 +25,7 @@ export async function GET(
           select: {
             id: true,
             name: true,
-            username: true,
+            
             image: true,
             stockScore: true,
             bio: true,
@@ -37,7 +37,7 @@ export async function GET(
           select: {
             id: true,
             name: true,
-            username: true,
+            
           },
         },
         project: {
@@ -180,7 +180,7 @@ export async function PUT(
           select: {
             id: true,
             name: true,
-            username: true,
+            
             email: true,
           },
         },

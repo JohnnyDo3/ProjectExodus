@@ -38,7 +38,7 @@ export async function GET(
             select: {
               id: true,
               name: true,
-              username: true,
+              
               image: true,
             },
           },
@@ -166,7 +166,7 @@ export async function POST(
           select: {
             id: true,
             name: true,
-            username: true,
+            
             image: true,
           },
         },
