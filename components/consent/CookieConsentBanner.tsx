@@ -76,21 +76,21 @@ export function CookieConsentBanner() {
   }, [])
 
   const acceptAll = () => {
-    const next = { necessary: true, functional: true, analytics: true, marketing: true }
+    const next: CookiePrefs = { necessary: true, functional: true, analytics: true, marketing: true }
     persistPrefs(next)
     setPrefs(next)
     setVisible(false)
   }
 
   const rejectNonEssential = () => {
-    const next = { necessary: true, functional: false, analytics: false, marketing: false }
+    const next: CookiePrefs = { necessary: true, functional: false, analytics: false, marketing: false }
     persistPrefs(next)
     setPrefs(next)
     setVisible(false)
   }
 
   const savePrefs = () => {
-    const next = { ...prefs, necessary: true }
+    const next: CookiePrefs = { ...prefs, necessary: true }
     persistPrefs(next)
     setPrefs(next)
     setVisible(false)

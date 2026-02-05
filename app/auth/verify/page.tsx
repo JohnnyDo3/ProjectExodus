@@ -99,11 +99,12 @@ export default function VerifyEmailPage() {
             </p>
             {status === 'success' && (
               <div className="space-y-3">
-                <Button asChild className="w-full">
-                  <Link href="/auth/signin">
-                    Continue to sign in
-                  </Link>
-                </Button>
+                <Link
+                  href="/auth/signin"
+                  className="inline-flex items-center justify-center w-full rounded-lg font-medium transition-all duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-[var(--primary)] bg-[var(--primary)] text-[var(--primary-foreground)] hover:opacity-90 shadow-sm hover:shadow-md px-4 py-2 text-base"
+                >
+                  Continue to sign in
+                </Link>
                 <p className="text-xs text-theme-muted">
                   Redirecting in {countdown}s...
                 </p>
@@ -129,11 +130,12 @@ export default function VerifyEmailPage() {
                     <p className="text-xs text-theme-muted">{resendMessage}</p>
                   )}
                 </div>
-                <Button asChild variant="outline" className="w-full">
-                  <Link href="/auth/signin?verify=1">
-                    Back to sign in
-                  </Link>
-                </Button>
+                <Link
+                  href="/auth/signin?verify=1"
+                  className="inline-flex items-center justify-center w-full rounded-lg font-medium transition-all duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-[var(--primary)] border-2 border-[var(--primary)] text-[var(--primary)] hover:bg-[var(--muted)] bg-transparent px-4 py-2 text-base"
+                >
+                  Back to sign in
+                </Link>
               </div>
             )}
           </CardContent>
