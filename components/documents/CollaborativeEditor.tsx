@@ -19,8 +19,8 @@ import { TextStyle } from '@tiptap/extension-text-style'
 import Collaboration from '@tiptap/extension-collaboration'
 import CollaborationCursor from '@tiptap/extension-collaboration-cursor'
 import { useCallback, useEffect, useState, useRef } from 'react'
-import { HocuspocusProvider } from '@hocuspocus/provider'
-import * as Y from 'yjs'
+import type { HocuspocusProvider as HocuspocusProviderType } from '@hocuspocus/provider'
+import type * as YType from 'yjs'
 import { collaborationConfig, getDocumentName, getUserAwarenessInfo } from '@/lib/collaboration'
 import {
   Bold, Italic, Underline, Strikethrough, Code, Heading1, Heading2, Heading3,
@@ -76,8 +76,8 @@ export function CollaborativeEditor({
   const [connectionStatus, setConnectionStatus] = useState<'connecting' | 'connected' | 'disconnected' | 'error'>('disconnected')
   const [activeUsers, setActiveUsers] = useState<any[]>([])
 
-  const providerRef = useRef<HocuspocusProvider | null>(null)
-  const ydocRef = useRef<Y.Doc | null>(null)
+  const providerRef = useRef<HocuspocusProviderType | null>(null)
+  const ydocRef = useRef<YType.Doc | null>(null)
   const [collaborationReady, setCollaborationReady] = useState(false)
 
   // Initialize Y.js and Hocuspocus provider for collaboration
@@ -87,47 +87,64 @@ export function CollaborativeEditor({
       return
     }
 
-    try {
-      // Create Y.js document
-      const ydoc = new Y.Doc()
-      ydocRef.current = ydoc
+    let provider: HocuspocusProviderType | null = null
+    let ydoc: YType.Doc | null = null
 
-      // Create Hocuspocus provider
-      const provider = new HocuspocusProvider({
-        url: collaborationConfig.serverUrl,
-        name: getDocumentName(collaborationType, documentId),
-        document: ydoc,
-        token: collaborationConfig.getToken() || undefined,
-        onStatus: ({ status }: { status: string }) => {
-          setConnectionStatus(status as any)
-        },
-        onAwarenessUpdate: () => {
-          if (provider.awareness) {
-            const states = Array.from(provider.awareness.getStates().values())
-            setActiveUsers(states.map((state: any) => state.user).filter(Boolean))
-          }
-        },
-      })
+    const initCollaboration = async () => {
+      try {
+        // Dynamically import browser-only packages
+        const [{ HocuspocusProvider }, { Doc }] = await Promise.all([
+          import('@hocuspocus/provider'),
+          import('yjs')
+        ])
 
-      providerRef.current = provider
+        // Create Y.js document
+        ydoc = new Doc()
+        ydocRef.current = ydoc
 
-      // Set current user awareness
-      provider.setAwarenessField('user', getUserAwarenessInfo(currentUser).user)
+        // Create Hocuspocus provider
+        provider = new HocuspocusProvider({
+          url: collaborationConfig.serverUrl,
+          name: getDocumentName(collaborationType, documentId),
+          document: ydoc,
+          token: collaborationConfig.getToken() || undefined,
+          onStatus: ({ status }: { status: string }) => {
+            setConnectionStatus(status as any)
+          },
+          onAwarenessUpdate: () => {
+            if (provider?.awareness) {
+              const states = Array.from(provider.awareness.getStates().values())
+              setActiveUsers(states.map((state: any) => state.user).filter(Boolean))
+            }
+          },
+        })
 
-      // Mark collaboration as ready after provider is set up
-      setCollaborationReady(true)
+        providerRef.current = provider
 
-      return () => {
+        // Set current user awareness
+        provider.setAwarenessField('user', getUserAwarenessInfo(currentUser).user)
+
+        // Mark collaboration as ready after provider is set up
+        setCollaborationReady(true)
+      } catch (error) {
+        console.error('Failed to initialize collaboration:', error)
+        setConnectionStatus('error')
         setCollaborationReady(false)
-        provider.destroy()
-        ydoc.destroy()
-        providerRef.current = null
-        ydocRef.current = null
       }
-    } catch (error) {
-      console.error('Failed to initialize collaboration:', error)
-      setConnectionStatus('error')
+    }
+
+    initCollaboration()
+
+    return () => {
       setCollaborationReady(false)
+      if (provider) {
+        provider.destroy()
+      }
+      if (ydoc) {
+        ydoc.destroy()
+      }
+      providerRef.current = null
+      ydocRef.current = null
     }
   }, [enableCollaboration, documentId, currentUser, collaborationType])
 

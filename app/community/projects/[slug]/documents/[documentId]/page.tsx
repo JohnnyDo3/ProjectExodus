@@ -3,8 +3,8 @@
 import { use, useEffect, useState, useCallback } from 'react'
 import { useSession } from 'next-auth/react'
 import { useRouter } from 'next/navigation'
+import dynamic from 'next/dynamic'
 import { BackButton } from '@/components/navigation/BackButton'
-import { CollaborativeEditor } from '@/components/documents/CollaborativeEditor'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/Card'
 import { Button } from '@/components/ui/Button'
 import { Badge } from '@/components/ui/Badge'
@@ -23,6 +23,22 @@ import {
   Lock,
   CheckCircle,
 } from 'lucide-react'
+
+// Dynamic import to prevent SSR issues with @hocuspocus/provider WebSocket APIs
+const CollaborativeEditor = dynamic(
+  () => import('@/components/documents/CollaborativeEditor').then(mod => ({ default: mod.CollaborativeEditor })),
+  {
+    ssr: false,
+    loading: () => (
+      <div className="flex items-center justify-center h-64">
+        <div className="text-center">
+          <Loader2 className="w-8 h-8 text-theme-primary animate-spin mx-auto mb-3" />
+          <p className="text-theme-muted font-medium">Loading editor...</p>
+        </div>
+      </div>
+    ),
+  }
+)
 
 export default function DocumentPage({
   params,
@@ -237,7 +253,7 @@ export default function DocumentPage({
                   showToolbar={canEdit && isEditMode}
                   showStats={true}
                   placeholder="Start writing your document..."
-                  enableCollaboration={true}
+                  enableCollaboration={!!process.env.NEXT_PUBLIC_HOCUSPOCUS_URL}
                   collaborationType="document"
                   currentUser={
                     session?.user
