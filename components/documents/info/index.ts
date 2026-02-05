@@ -1,0 +1,1 @@
+export { DocumentInfoPanel } from './DocumentInfoPanel'

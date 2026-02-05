@@ -165,6 +165,11 @@ model User {
   resolvedComments          DocumentComment[]        @relation("ResolvedComments")
   documentMentionsReceived  DocumentMention[]        @relation("MentionedInDocuments")
   documentMentionsMade      DocumentMention[]        @relation("DocumentMentions")
+  lockedDocuments           Document[]               @relation("LockedDocuments")
+  documentSuggestions       DocumentSuggestion[]     @relation("DocumentSuggestionAuthor")
+  resolvedSuggestions       DocumentSuggestion[]     @relation("SuggestionResolver")
+  createdTemplates          DocumentTemplate[]       @relation("TemplateCreator")
+  commentReactions          CommentReaction[]        @relation("CommentReactions")
 
   @@index([email])
   @@index([role])
@@ -1053,6 +1058,7 @@ model Project {
   projectNotifications ProjectNotification[]
   mindMap             MindMap?
   documents           Document[]
+  documentTemplates   DocumentTemplate[]
 
   createdAt   DateTime        @default(now())
   updatedAt   DateTime        @updatedAt
@@ -3007,17 +3013,34 @@ model Document {
   editCount         Int                   @default(0)
   version           Int                   @default(1)  // Current version number
 
+  // Sharing settings
+  shareToken        String?               @unique // For shareable links
+  shareExpiry       DateTime?             // Optional link expiration
+  publicAccess      DocumentPermission?   // What link holders can do
+
+  // Document locking
+  isLocked          Boolean               @default(false)
+  lockedById        String?
+  lockedBy          User?                 @relation("LockedDocuments", fields: [lockedById], references: [id])
+  lockedAt          DateTime?
+
+  // Visual customization
+  coverImage        String?               // Cover image for document list
+  tags              String[]              // Tags for organization
+
   // Relationships
   versions          DocumentVersion[]
   collaborators     DocumentCollaborator[]
   comments          DocumentComment[]
   mentions          DocumentMention[]
+  suggestions       DocumentSuggestion[]
 
   // Timestamps
   createdAt         DateTime              @default(now())
   updatedAt         DateTime              @updatedAt
 
   @@unique([projectId, slug])
+  @@index([shareToken])
   @@index([projectId])
   @@index([creatorId])
   @@index([status])
@@ -3046,6 +3069,7 @@ model DocumentVersion {
   // Metadata
   isAutoSaved       Boolean               @default(false)
   isMajorVersion    Boolean               @default(false)
+  name              String?               // Named checkpoint (e.g., "Final Draft", "Client Review")
 
   createdAt         DateTime              @default(now())
 
@@ -3114,6 +3138,12 @@ model DocumentComment {
   isEdited          Boolean               @default(false)
   editedAt          DateTime?
 
+  // Quoted text from document (for context)
+  quotedText        String?               @db.Text
+
+  // Reactions
+  reactions         CommentReaction[]
+
   createdAt         DateTime              @default(now())
   updatedAt         DateTime              @updatedAt
 
@@ -3176,4 +3206,108 @@ enum DocumentPermission {
   SUGGEST
   EDIT
   ADMIN
+}
+
+// ============================================
+// DOCUMENT SUGGESTIONS (Track Changes)
+// ============================================
+
+model DocumentSuggestion {
+  id                String                @id @default(cuid())
+  documentId        String
+  document          Document              @relation(fields: [documentId], references: [id], onDelete: Cascade)
+
+  // Suggestion author
+  authorId          String
+  author            User                  @relation("DocumentSuggestionAuthor", fields: [authorId], references: [id], onDelete: Cascade)
+
+  // Suggestion type and content
+  type              SuggestionType
+  originalText      String?               @db.Text // Text being replaced/deleted
+  suggestedText     String?               @db.Text // New text being suggested
+  position          Json                  // { from: number, to: number }
+
+  // Status
+  status            SuggestionStatus      @default(PENDING)
+  resolvedAt        DateTime?
+  resolvedById      String?
+  resolvedBy        User?                 @relation("SuggestionResolver", fields: [resolvedById], references: [id])
+  rejectionReason   String?               // Optional reason for rejection
+
+  createdAt         DateTime              @default(now())
+
+  @@index([documentId])
+  @@index([authorId])
+  @@index([status])
+  @@index([createdAt])
+}
+
+enum SuggestionType {
+  INSERT
+  DELETE
+  REPLACE
+  FORMAT  // Formatting changes
+}
+
+enum SuggestionStatus {
+  PENDING
+  ACCEPTED
+  REJECTED
+}
+
+// ============================================
+// DOCUMENT TEMPLATES
+// ============================================
+
+model DocumentTemplate {
+  id                String                @id @default(cuid())
+  name              String
+  description       String?               @db.Text
+  content           String                @db.Text // HTML/JSON content
+  category          String                // e.g., "Meeting Notes", "Reports", "Planning"
+  icon              String?               // Icon name or emoji
+
+  // Ownership
+  isBuiltIn         Boolean               @default(false) // System template
+  creatorId         String?
+  creator           User?                 @relation("TemplateCreator", fields: [creatorId], references: [id])
+  projectId         String?               // Project-specific templates
+  project           Project?              @relation(fields: [projectId], references: [id], onDelete: Cascade)
+
+  // Usage tracking
+  usageCount        Int                   @default(0)
+
+  // Metadata
+  isPublic          Boolean               @default(true) // Can other users see this template
+  tags              String[]
+
+  createdAt         DateTime              @default(now())
+  updatedAt         DateTime              @updatedAt
+
+  @@index([category])
+  @@index([creatorId])
+  @@index([projectId])
+  @@index([isBuiltIn])
+  @@index([usageCount])
+}
+
+// ============================================
+// COMMENT REACTIONS
+// ============================================
+
+model CommentReaction {
+  id                String                @id @default(cuid())
+  commentId         String
+  comment           DocumentComment       @relation(fields: [commentId], references: [id], onDelete: Cascade)
+
+  userId            String
+  user              User                  @relation("CommentReactions", fields: [userId], references: [id], onDelete: Cascade)
+
+  emoji             String                // 👍 ❤️ 😄 🎉 😕 👀
+
+  createdAt         DateTime              @default(now())
+
+  @@unique([commentId, userId, emoji]) // One reaction type per user per comment
+  @@index([commentId])
+  @@index([userId])
 }
