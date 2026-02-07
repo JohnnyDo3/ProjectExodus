@@ -239,10 +239,20 @@ export { TRULLO } from './specialized/vernacular/trullo';
 export { WINDCATCHER } from './specialized/vernacular/windcatcher';
 export { YURT } from './specialized/vernacular/yurt';
 
-// Structural (3)
+// Structural (8 - including new engineering elements)
 export { HERRINGBONE_BRICK_PATTERN } from './structural/herringbone-brick-pattern';
 export { STONE_AND_CHAIN_HOOPS } from './structural/stone-and-chain-hoops';
 export { TRIPLE_STEPPED_PLATFORM } from './structural/triple-stepped-platform';
+// Structural Engineering - Bracing
+export { DIAGONAL_BRACING } from './structural/bracing/diagonal-bracing';
+export { X_BRACING } from './structural/bracing/x-bracing';
+export { CHEVRON_BRACING } from './structural/bracing/chevron-bracing';
+// Structural Engineering - Trusses
+export { PRATT_TRUSS } from './structural/trusses/pratt-truss';
+// Structural Engineering - Foundations
+export { SPREAD_FOOTING } from './structural/foundations/spread-footing';
+// Structural Engineering - Loads
+export { DEAD_LOAD } from './structural/loads/dead-load';
 
 // Urban (13)
 export { AQUEDUCT } from './urban/aqueduct';
@@ -530,6 +540,16 @@ import { YURT } from './specialized/vernacular/yurt';
 import { HERRINGBONE_BRICK_PATTERN } from './structural/herringbone-brick-pattern';
 import { STONE_AND_CHAIN_HOOPS } from './structural/stone-and-chain-hoops';
 import { TRIPLE_STEPPED_PLATFORM } from './structural/triple-stepped-platform';
+// Structural Engineering - Bracing
+import { DIAGONAL_BRACING } from './structural/bracing/diagonal-bracing';
+import { X_BRACING } from './structural/bracing/x-bracing';
+import { CHEVRON_BRACING } from './structural/bracing/chevron-bracing';
+// Structural Engineering - Trusses
+import { PRATT_TRUSS } from './structural/trusses/pratt-truss';
+// Structural Engineering - Foundations
+import { SPREAD_FOOTING } from './structural/foundations/spread-footing';
+// Structural Engineering - Loads
+import { DEAD_LOAD } from './structural/loads/dead-load';
 
 // Urban
 import { AQUEDUCT } from './urban/aqueduct';
@@ -580,7 +600,7 @@ import { TRANSOM as WINDOW_TRANSOM } from './windows/transom';
 import type { ArchitecturalElement } from '../types';
 
 // ============================================================================
-// ALL_ELEMENTS ARRAY - Complete list of all 214 architectural elements
+// ALL_ELEMENTS ARRAY - Complete list of all 220 architectural elements
 // ============================================================================
 
 export const ALL_ELEMENTS: ArchitecturalElement[] = [
@@ -816,10 +836,20 @@ export const ALL_ELEMENTS: ArchitecturalElement[] = [
   WINDCATCHER,
   YURT,
 
-  // Structural (3)
+  // Structural (8 - including engineering elements)
   HERRINGBONE_BRICK_PATTERN,
   STONE_AND_CHAIN_HOOPS,
   TRIPLE_STEPPED_PLATFORM,
+  // Structural Engineering - Bracing
+  DIAGONAL_BRACING,
+  X_BRACING,
+  CHEVRON_BRACING,
+  // Structural Engineering - Trusses
+  PRATT_TRUSS,
+  // Structural Engineering - Foundations
+  SPREAD_FOOTING,
+  // Structural Engineering - Loads
+  DEAD_LOAD,
 
   // Urban (13)
   AQUEDUCT,
@@ -936,7 +966,7 @@ export const ELEMENT_STATS = {
     'specialized/high-tech': 6,
     'specialized/modernist': 8,
     'specialized/vernacular': 8,
-    structural: 3,
+    structural: 8,
     urban: 13,
     vaults: 4,
     wall: 8,
