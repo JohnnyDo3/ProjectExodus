@@ -1,6 +1,11 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { prisma } from '@/lib/db'
 import { auth } from '@/auth'
+import {
+  validateArticleContent,
+  sanitizeHtml,
+  CONTENT_LIMITS,
+} from '@/lib/article/contentSecurity'
 
 // Type for article query results
 interface ArticleQueryResult {
@@ -209,15 +214,73 @@ export async function POST(request: NextRequest) {
 
     const body = await request.json()
 
+    // ============================================
+    // SERVER-SIDE SECURITY VALIDATION
+    // ============================================
+
+    // Validate required fields
+    if (!body.title || typeof body.title !== 'string') {
+      return NextResponse.json(
+        { success: false, error: 'Title is required' },
+        { status: 400 }
+      )
+    }
+
+    if (!body.content || typeof body.content !== 'string') {
+      return NextResponse.json(
+        { success: false, error: 'Content is required' },
+        { status: 400 }
+      )
+    }
+
+    // Enforce length limits
+    const title = body.title.slice(0, CONTENT_LIMITS.MAX_TITLE_LENGTH)
+    const excerpt = (body.excerpt || '').slice(0, CONTENT_LIMITS.MAX_EXCERPT_LENGTH)
+    const content = body.content.slice(0, CONTENT_LIMITS.MAX_CONTENT_LENGTH)
+
+    // Full content validation
+    const validation = validateArticleContent({
+      title,
+      excerpt,
+      content,
+      references: body.references?.slice(0, CONTENT_LIMITS.MAX_REFERENCES),
+    })
+
+    // Block if security violations detected
+    const securityErrors = validation.errors.filter(e => e.includes('Security') || e.includes('Dangerous'))
+    if (securityErrors.length > 0) {
+      console.error('[API /articles] Security violation blocked:', securityErrors)
+      return NextResponse.json(
+        { success: false, error: 'Content validation failed due to security concerns' },
+        { status: 400 }
+      )
+    }
+
+    // For publishing, enforce minimum word count
+    const isPublishing = body.status !== 'DRAFT'
+    if (isPublishing && validation.stats.wordCount < CONTENT_LIMITS.MIN_WORDS) {
+      return NextResponse.json(
+        { success: false, error: `Article must have at least ${CONTENT_LIMITS.MIN_WORDS} words to publish` },
+        { status: 400 }
+      )
+    }
+
+    // Sanitize HTML content
+    const sanitizedContent = sanitizeHtml(content)
+
+    // ============================================
+    // END SECURITY VALIDATION
+    // ============================================
+
     // Generate slug from title if not provided
-    const slug = body.slug || body.title
+    const slug = (body.slug || title)
       .toLowerCase()
       .replace(/[^a-z0-9]+/g, '-')
-      .replace(/(^-|-$)/g, '') + '-' + Date.now()
+      .replace(/(^-|-$)/g, '')
+      .slice(0, 100) + '-' + Date.now()
 
-    // Calculate read time from content (roughly 200 words per minute)
-    const wordCount = body.content?.split(/\s+/).length || 0
-    const readTime = body.readTime || Math.max(1, Math.ceil(wordCount / 200))
+    // Use validated word count
+    const readTime = body.readTime || Math.max(1, Math.ceil(validation.stats.wordCount / 200))
 
     // Get or create a default category if none provided
     let categoryId = body.categoryId
@@ -240,19 +303,19 @@ export async function POST(request: NextRequest) {
 
     const article = await prisma.article.create({
       data: {
-        title: body.title,
+        title,
         slug,
-        excerpt: body.excerpt || body.content?.substring(0, 200) + '...',
-        content: body.content,
+        excerpt: excerpt || sanitizedContent.replace(/<[^>]*>/g, '').substring(0, 200) + '...',
+        content: sanitizedContent, // Use sanitized content
         coverImage: body.coverImage || null,
         readTime,
-        status: body.status || 'PUBLISHED', // Default to published for user articles
+        status: body.status || 'PUBLISHED',
         featured: false, // Only admins can feature articles
         publishedAt: body.status === 'DRAFT' ? null : new Date(),
         categoryId,
         authorId: session.user.id,
-        seoTitle: body.seoTitle || body.title,
-        seoDescription: body.seoDescription || body.excerpt,
+        seoTitle: body.seoTitle || title,
+        seoDescription: body.seoDescription || excerpt,
       },
       include: {
         category: true,

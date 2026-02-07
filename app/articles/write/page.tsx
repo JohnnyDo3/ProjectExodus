@@ -8,6 +8,13 @@ import Link from 'next/link'
 import { motion, AnimatePresence, Reorder } from 'framer-motion'
 import { parseContent, type ParsedContent, type ParsedReference } from '@/lib/article/contentParser'
 import { sanitizeArticleContent } from '@/lib/sanitize'
+import {
+  quickValidatePastedContent,
+  validateArticleContent,
+  validateFileUpload,
+  sanitizeHtml,
+  CONTENT_LIMITS,
+} from '@/lib/article/contentSecurity'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/Card'
 import { Button } from '@/components/ui/Button'
 import { Input } from '@/components/ui/Input'
@@ -198,34 +205,84 @@ export default function WriteArticlePage() {
     }
   }, [articleData, widgets, autoSave])
 
-  // Parse pasted content
+  // Parse pasted content with security validation
   const handleParse = useCallback(() => {
     if (!pastedContent.trim()) {
       toast.error('Please paste your content first')
       return
     }
 
+    // Quick security check before processing
+    const quickCheck = quickValidatePastedContent(pastedContent)
+    if (!quickCheck.isValid) {
+      toast.error(quickCheck.error || 'Content validation failed')
+      return
+    }
+
     setIsParsing(true)
 
-    // Simulate slight delay for UX
+    // Process with slight delay for UX
     setTimeout(() => {
       try {
         const parsed = parseContent(pastedContent)
 
-        setArticleData({
+        // Sanitize the parsed content
+        const sanitizedBody = sanitizeHtml(parsed.body)
+
+        // Validate the full article
+        const validation = validateArticleContent({
           title: parsed.title,
-          content: parsed.body,
           excerpt: parsed.excerpt,
+          content: sanitizedBody,
+          references: parsed.references.map(r => ({ title: r.title, url: r.url })),
+        })
+
+        // Show warnings if any
+        if (validation.warnings.length > 0) {
+          toast(
+            `${validation.warnings.length} warning(s) found. Review your content.`,
+            { icon: '⚠️', duration: 5000 }
+          )
+        }
+
+        // Check for critical errors
+        if (!validation.isValid) {
+          const criticalErrors = validation.errors.filter(e => e.includes('Security'))
+          if (criticalErrors.length > 0) {
+            toast.error('Content contains security issues and cannot be processed.')
+            setIsParsing(false)
+            return
+          }
+        }
+
+        setArticleData({
+          title: parsed.title.slice(0, CONTENT_LIMITS.MAX_TITLE_LENGTH),
+          content: sanitizedBody,
+          excerpt: parsed.excerpt.slice(0, CONTENT_LIMITS.MAX_EXCERPT_LENGTH),
           coverImage: '',
           categoryId: parsed.suggestedCategory || '',
           tags: '',
-          references: parsed.references,
+          references: parsed.references.slice(0, CONTENT_LIMITS.MAX_REFERENCES),
         })
 
         setViewMode('preview')
-        toast.success(`Parsed successfully! Found ${parsed.references.length} references.`, {
-          icon: <Sparkles className="w-4 h-4" />,
-        })
+
+        // Show success with stats
+        const wordCount = validation.stats.wordCount
+        toast.success(
+          `Parsed! ${wordCount.toLocaleString()} words, ${parsed.references.length} references.`,
+          { icon: <Sparkles className="w-4 h-4" /> }
+        )
+
+        // Show word count warning if too short
+        if (wordCount < CONTENT_LIMITS.MIN_WORDS) {
+          setTimeout(() => {
+            toast(
+              `Article needs at least ${CONTENT_LIMITS.MIN_WORDS} words to publish (currently ${wordCount}).`,
+              { icon: '📝', duration: 6000 }
+            )
+          }, 1000)
+        }
       } catch (error) {
         console.error('Parse error:', error)
         toast.error('Failed to parse content. Please try again.')
@@ -235,22 +292,48 @@ export default function WriteArticlePage() {
     }, 500)
   }, [pastedContent])
 
-  // Handle file upload
+  // Handle file upload with security validation
   const handleFileUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0]
     if (!file) return
 
-    // For now, only support text files
-    if (file.type === 'text/plain' || file.name.endsWith('.txt') || file.name.endsWith('.md')) {
-      const text = await file.text()
-      setPastedContent(text)
-      toast.success('File loaded! Click "Parse Content" to continue.')
-    } else {
-      toast.error('Currently only .txt and .md files are supported. Please paste your content instead.')
+    // Validate file before processing
+    const fileValidation = validateFileUpload({
+      name: file.name,
+      size: file.size,
+      type: file.type,
+    })
+
+    if (!fileValidation.isValid) {
+      toast.error(fileValidation.error || 'Invalid file')
+      // Clear the input
+      e.target.value = ''
+      return
     }
+
+    try {
+      const text = await file.text()
+
+      // Quick security check on file contents
+      const contentCheck = quickValidatePastedContent(text)
+      if (!contentCheck.isValid) {
+        toast.error(contentCheck.error || 'File contains invalid content')
+        e.target.value = ''
+        return
+      }
+
+      setPastedContent(text)
+      toast.success('File loaded! Click "Parse & Preview" to continue.')
+    } catch (error) {
+      console.error('File read error:', error)
+      toast.error('Failed to read file. Please try copying and pasting instead.')
+    }
+
+    // Clear the input for re-upload
+    e.target.value = ''
   }
 
-  // Handle publish
+  // Handle publish with full validation
   const handleSubmit = async (publish: boolean = false) => {
     if (!session?.user?.id) {
       toast.error('You must be logged in')
@@ -267,32 +350,63 @@ export default function WriteArticlePage() {
       return
     }
 
+    // Full validation before submission
+    const validation = validateArticleContent({
+      title: articleData.title,
+      excerpt: articleData.excerpt,
+      content: articleData.content,
+      references: articleData.references.map(r => ({ title: r.title, url: r.url })),
+    })
+
+    // Block if validation fails (especially for publishing)
+    if (!validation.isValid) {
+      if (publish) {
+        // Show first error for publishing
+        toast.error(validation.errors[0] || 'Validation failed')
+        return
+      } else {
+        // Warn but allow draft save
+        toast(
+          `Draft has ${validation.errors.length} issue(s). Fix before publishing.`,
+          { icon: '⚠️' }
+        )
+      }
+    }
+
+    // Extra check for minimum word count when publishing
+    if (publish && validation.stats.wordCount < CONTENT_LIMITS.MIN_WORDS) {
+      toast.error(`Article must have at least ${CONTENT_LIMITS.MIN_WORDS} words to publish`)
+      return
+    }
+
     setSaving(true)
     setShowPublishDialog(false)
 
     try {
-      const wordCount = articleData.content.replace(/<[^>]*>/g, '').split(/\s+/).filter(Boolean).length
+      // Use sanitized content
+      const sanitizedContent = sanitizeHtml(articleData.content)
+      const wordCount = validation.stats.wordCount
       const readTime = Math.max(1, Math.ceil(wordCount / 200))
 
       const res = await fetch('/api/articles', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
-          title: articleData.title,
-          slug: articleData.title.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, ''),
-          excerpt: articleData.excerpt,
-          content: articleData.content,
+          title: articleData.title.slice(0, CONTENT_LIMITS.MAX_TITLE_LENGTH),
+          slug: articleData.title.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '').slice(0, 100),
+          excerpt: articleData.excerpt.slice(0, CONTENT_LIMITS.MAX_EXCERPT_LENGTH),
+          content: sanitizedContent, // Use sanitized content
           coverImage: articleData.coverImage,
           categoryId: articleData.categoryId || 'other',
           status: publish ? 'PUBLISHED' : 'DRAFT',
           authorId: session.user.id,
           readTime,
-          references: articleData.references.map(r => ({
-            title: r.title,
-            url: r.url || '',
-            description: r.authors ? `${r.authors}${r.year ? ` (${r.year})` : ''}` : '',
+          references: articleData.references.slice(0, CONTENT_LIMITS.MAX_REFERENCES).map(r => ({
+            title: (r.title || '').slice(0, CONTENT_LIMITS.MAX_REFERENCE_TITLE),
+            url: (r.url || '').slice(0, CONTENT_LIMITS.MAX_REFERENCE_URL),
+            description: r.authors ? `${r.authors}${r.year ? ` (${r.year})` : ''}`.slice(0, 500) : '',
           })),
-          tags: articleData.tags.split(',').map(t => t.trim()).filter(Boolean),
+          tags: articleData.tags.split(',').map(t => t.trim()).filter(Boolean).slice(0, 20),
           widgetOrder: widgets.filter(w => w.enabled).map(w => w.id),
         }),
       })
