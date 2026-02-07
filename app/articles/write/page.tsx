@@ -5,31 +5,43 @@ import { useSession } from 'next-auth/react'
 import { useRouter } from 'next/navigation'
 import dynamic from 'next/dynamic'
 import Link from 'next/link'
+import { motion, AnimatePresence, Reorder } from 'framer-motion'
+import { parseContent, type ParsedContent, type ParsedReference } from '@/lib/article/contentParser'
 import { sanitizeArticleContent } from '@/lib/sanitize'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/Card'
 import { Button } from '@/components/ui/Button'
 import { Input } from '@/components/ui/Input'
 import { Select } from '@/components/ui/Select'
 import { Textarea } from '@/components/ui/Textarea'
-import StepProgress from '@/components/article/StepProgress'
 import CoverImageUpload from '@/components/article/CoverImageUpload'
 import PublishConfirmDialog from '@/components/article/PublishConfirmDialog'
 import {
   ArrowLeft,
-  ArrowRight,
-  Save,
+  Upload,
+  ClipboardPaste,
+  FileText,
+  Sparkles,
+  Loader2,
   Eye,
   EyeOff,
-  Plus,
-  Trash2,
-  Link as LinkIcon,
+  Edit3,
+  Save,
   Send,
-  Clock,
   CheckCircle,
   AlertCircle,
-  Loader2,
+  Clock,
   BookOpen,
-  Sparkles,
+  MessageCircle,
+  User,
+  GripVertical,
+  X,
+  Plus,
+  Trash2,
+  ExternalLink,
+  ChevronDown,
+  ChevronUp,
+  Calendar,
+  Tag,
   Leaf,
   Droplets,
   Zap,
@@ -37,92 +49,103 @@ import {
   TreePine,
   Home,
   Heart,
-  User,
+  Users,
   MoreHorizontal,
+  Image as ImageIcon,
+  Settings,
+  Link as LinkIcon,
 } from 'lucide-react'
 import toast from 'react-hot-toast'
-import { parseCitation, type ParsedCitation } from '@/components/editor/TipTapEditor'
 
-// Dynamically import TipTap editor to avoid SSR issues
+// Dynamically import TipTap editor
 const TipTapEditor = dynamic(
   () => import('@/components/editor/TipTapEditor'),
   {
     ssr: false,
     loading: () => (
-      <div className="flex items-center justify-center h-[400px] bg-[var(--muted)] rounded-lg border-2 border-[var(--border)]">
-        <div className="text-center">
-          <Loader2 className="w-8 h-8 text-[var(--primary)] animate-spin mx-auto mb-3" />
-          <p className="text-[var(--muted-foreground)] font-medium">Loading editor...</p>
-        </div>
+      <div className="flex items-center justify-center h-[200px] bg-[var(--muted)] rounded-lg border-2 border-[var(--border)]">
+        <Loader2 className="w-6 h-6 text-[var(--primary)] animate-spin" />
       </div>
     ),
   }
 )
 
-interface Reference {
-  id: string
-  title: string
-  url: string
-  description: string
+// Article categories
+const ARTICLE_CATEGORIES = [
+  { id: 'sustainability', name: 'Sustainability', icon: Leaf },
+  { id: 'water', name: 'Water', icon: Droplets },
+  { id: 'energy', name: 'Energy', icon: Zap },
+  { id: 'waste', name: 'Waste', icon: Recycle },
+  { id: 'nature', name: 'Nature', icon: TreePine },
+  { id: 'building', name: 'Building', icon: Home },
+  { id: 'food', name: 'Food', icon: Heart },
+  { id: 'community', name: 'Community', icon: Users },
+  { id: 'other', name: 'Other', icon: MoreHorizontal },
+]
+
+// Widget types for sidebar
+type WidgetType = 'references' | 'discussion' | 'author' | 'share'
+
+interface SidebarWidget {
+  id: WidgetType
+  name: string
+  icon: any
+  enabled: boolean
 }
 
-// Article categories matching the bookshelf filters
-const ARTICLE_CATEGORIES = [
-  { id: 'sustainability', name: 'Sustainability', slug: 'sustainability', icon: Leaf },
-  { id: 'water', name: 'Water', slug: 'water', icon: Droplets },
-  { id: 'energy', name: 'Energy', slug: 'energy', icon: Zap },
-  { id: 'waste', name: 'Waste', slug: 'waste', icon: Recycle },
-  { id: 'nature', name: 'Nature', slug: 'nature', icon: TreePine },
-  { id: 'building', name: 'Building', slug: 'building', icon: Home },
-  { id: 'food', name: 'Food', slug: 'food', icon: Heart },
-  { id: 'community', name: 'Community', slug: 'community', icon: User },
-  { id: 'other', name: 'Other', slug: 'other', icon: MoreHorizontal },
+const DEFAULT_WIDGETS: SidebarWidget[] = [
+  { id: 'references', name: 'Works Cited', icon: BookOpen, enabled: true },
+  { id: 'discussion', name: 'Discussion', icon: MessageCircle, enabled: true },
+  { id: 'author', name: 'Author Card', icon: User, enabled: true },
+  { id: 'share', name: 'Share', icon: ExternalLink, enabled: true },
 ]
 
-const STEPS = [
-  { id: 'title', label: 'Title' },
-  { id: 'content', label: 'Content' },
-  { id: 'settings', label: 'Settings' },
-  { id: 'review', label: 'Review' },
-]
-
-const AUTO_SAVE_DELAY = 3000
+type ViewMode = 'paste' | 'preview'
 
 export default function WriteArticlePage() {
   const { data: session, status } = useSession()
   const router = useRouter()
 
-  // Step state
-  const [currentStep, setCurrentStep] = useState(0)
+  // View mode
+  const [viewMode, setViewMode] = useState<ViewMode>('paste')
+  const [isParsing, setIsParsing] = useState(false)
 
-  // Form state
-  const [saving, setSaving] = useState(false)
-  const [autoSaveStatus, setAutoSaveStatus] = useState<'idle' | 'saving' | 'saved' | 'error'>('idle')
-  const [references, setReferences] = useState<Reference[]>([])
-  const [formData, setFormData] = useState({
+  // Paste content
+  const [pastedContent, setPastedContent] = useState('')
+
+  // Parsed article data
+  const [articleData, setArticleData] = useState<{
+    title: string
+    content: string
+    excerpt: string
+    coverImage: string
+    categoryId: string
+    tags: string
+    references: ParsedReference[]
+  }>({
     title: '',
-    slug: '',
-    excerpt: '',
     content: '',
+    excerpt: '',
     coverImage: '',
     categoryId: '',
-    readTime: '',
-    featured: false,
     tags: '',
+    references: [],
   })
-  const [slugManuallyEdited, setSlugManuallyEdited] = useState(false)
 
-  // Preview state
-  const [showPreview, setShowPreview] = useState(false)
-  const [hasViewedPreview, setHasViewedPreview] = useState(false)
-  const [detectedCitations, setDetectedCitations] = useState<ParsedCitation[]>([])
+  // Sidebar widgets
+  const [widgets, setWidgets] = useState<SidebarWidget[]>(DEFAULT_WIDGETS)
 
-  // Dialog state
+  // UI state
+  const [isEditing, setIsEditing] = useState(false)
+  const [editingField, setEditingField] = useState<string | null>(null)
+  const [showSettings, setShowSettings] = useState(false)
   const [showPublishDialog, setShowPublishDialog] = useState(false)
+  const [saving, setSaving] = useState(false)
+  const [autoSaveStatus, setAutoSaveStatus] = useState<'idle' | 'saving' | 'saved' | 'error'>('idle')
 
-  // Auto-save timer
+  // Refs
+  const fileInputRef = useRef<HTMLInputElement>(null)
   const autoSaveTimer = useRef<NodeJS.Timeout | null>(null)
-  const draftId = useRef<string | null>(null)
 
   // Redirect if not logged in
   useEffect(() => {
@@ -131,147 +154,116 @@ export default function WriteArticlePage() {
     }
   }, [status, router])
 
-  // Load draft from localStorage on mount
+  // Load draft from localStorage
   useEffect(() => {
-    // Load draft from localStorage
-    const savedDraft = localStorage.getItem('article-draft')
+    const savedDraft = localStorage.getItem('article-draft-v2')
     if (savedDraft) {
       try {
         const draft = JSON.parse(savedDraft)
-        setFormData(draft.formData)
-        setReferences(draft.references || [])
-        draftId.current = draft.draftId
+        setArticleData(draft.articleData)
+        setWidgets(draft.widgets || DEFAULT_WIDGETS)
+        if (draft.articleData.content) {
+          setViewMode('preview')
+        }
         toast.success('Draft restored')
       } catch {
-        // Invalid draft data
+        // Invalid draft
       }
     }
   }, [])
 
-  // Generate slug from title
-  const generateSlug = (title: string) => {
-    return title
-      .toLowerCase()
-      .replace(/[^a-z0-9\s-]/g, '')
-      .replace(/\s+/g, '-')
-      .replace(/-+/g, '-')
-      .trim()
-  }
-
-  // Auto-generate slug when title changes
-  useEffect(() => {
-    if (formData.title && !slugManuallyEdited) {
-      setFormData(prev => ({ ...prev, slug: generateSlug(formData.title) }))
-    }
-  }, [formData.title, slugManuallyEdited])
-
-  // Auto-save to localStorage
+  // Auto-save
   const autoSave = useCallback(() => {
-    if (!formData.title && !formData.content) return
+    if (!articleData.title && !articleData.content) return
 
     setAutoSaveStatus('saving')
-
-    const draft = {
-      formData,
-      references,
-      draftId: draftId.current || crypto.randomUUID(),
-      savedAt: new Date().toISOString(),
-    }
-
     try {
-      localStorage.setItem('article-draft', JSON.stringify(draft))
-      draftId.current = draft.draftId
+      localStorage.setItem('article-draft-v2', JSON.stringify({
+        articleData,
+        widgets,
+        savedAt: new Date().toISOString(),
+      }))
       setAutoSaveStatus('saved')
       setTimeout(() => setAutoSaveStatus('idle'), 3000)
     } catch {
       setAutoSaveStatus('error')
     }
-  }, [formData, references])
+  }, [articleData, widgets])
 
-  // Trigger auto-save when form changes
   useEffect(() => {
-    if (autoSaveTimer.current) {
-      clearTimeout(autoSaveTimer.current)
-    }
-    autoSaveTimer.current = setTimeout(autoSave, AUTO_SAVE_DELAY)
+    if (autoSaveTimer.current) clearTimeout(autoSaveTimer.current)
+    autoSaveTimer.current = setTimeout(autoSave, 3000)
     return () => {
       if (autoSaveTimer.current) clearTimeout(autoSaveTimer.current)
     }
-  }, [formData, references, autoSave])
+  }, [articleData, widgets, autoSave])
 
-  const addReference = () => {
-    setReferences(prev => [
-      ...prev,
-      { id: crypto.randomUUID(), title: '', url: '', description: '' },
-    ])
-  }
-
-  const updateReference = (id: string, field: keyof Reference, value: string) => {
-    setReferences(prev =>
-      prev.map(ref => (ref.id === id ? { ...ref, [field]: value } : ref))
-    )
-  }
-
-  const removeReference = (id: string) => {
-    setReferences(prev => prev.filter(ref => ref.id !== id))
-  }
-
-  // Auto-extract URLs from article content
-  const autoExtractUrls = () => {
-    // Regex to match URLs in content (handles both plain URLs and HTML anchor hrefs)
-    const urlRegex = /(?:href=["']([^"']+)["'])|(?:https?:\/\/[^\s<"']+)/g
-    const content = formData.content
-    const matches = new Set<string>()
-
-    let match
-    while ((match = urlRegex.exec(content)) !== null) {
-      const url = match[1] || match[0]
-      // Filter out common non-reference URLs
-      if (url &&
-          !url.includes('localhost') &&
-          !url.includes('127.0.0.1') &&
-          !url.startsWith('#') &&
-          !url.startsWith('mailto:')) {
-        matches.add(url)
-      }
+  // Parse pasted content
+  const handleParse = useCallback(() => {
+    if (!pastedContent.trim()) {
+      toast.error('Please paste your content first')
+      return
     }
 
-    // Get existing URLs to avoid duplicates
-    const existingUrls = new Set(references.map(r => r.url))
+    setIsParsing(true)
 
-    // Add new references for each found URL
-    const newRefs: Reference[] = []
-    matches.forEach(url => {
-      if (!existingUrls.has(url)) {
-        // Try to extract a title from the URL
-        let title = ''
-        try {
-          const urlObj = new URL(url)
-          title = urlObj.hostname.replace('www.', '')
-        } catch {
-          title = 'Reference'
-        }
+    // Simulate slight delay for UX
+    setTimeout(() => {
+      try {
+        const parsed = parseContent(pastedContent)
 
-        newRefs.push({
-          id: crypto.randomUUID(),
-          title,
-          url,
-          description: ''
+        setArticleData({
+          title: parsed.title,
+          content: parsed.body,
+          excerpt: parsed.excerpt,
+          coverImage: '',
+          categoryId: parsed.suggestedCategory || '',
+          tags: '',
+          references: parsed.references,
         })
-      }
-    })
 
-    if (newRefs.length > 0) {
-      setReferences(prev => [...prev, ...newRefs])
-      toast.success(`Found ${newRefs.length} new URL${newRefs.length > 1 ? 's' : ''}`)
+        setViewMode('preview')
+        toast.success(`Parsed successfully! Found ${parsed.references.length} references.`, {
+          icon: <Sparkles className="w-4 h-4" />,
+        })
+      } catch (error) {
+        console.error('Parse error:', error)
+        toast.error('Failed to parse content. Please try again.')
+      } finally {
+        setIsParsing(false)
+      }
+    }, 500)
+  }, [pastedContent])
+
+  // Handle file upload
+  const handleFileUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0]
+    if (!file) return
+
+    // For now, only support text files
+    if (file.type === 'text/plain' || file.name.endsWith('.txt') || file.name.endsWith('.md')) {
+      const text = await file.text()
+      setPastedContent(text)
+      toast.success('File loaded! Click "Parse Content" to continue.')
     } else {
-      toast('No new URLs found in content', { icon: 'ℹ️' })
+      toast.error('Currently only .txt and .md files are supported. Please paste your content instead.')
     }
   }
 
+  // Handle publish
   const handleSubmit = async (publish: boolean = false) => {
     if (!session?.user?.id) {
       toast.error('You must be logged in')
+      return
+    }
+
+    if (!articleData.title.trim()) {
+      toast.error('Title is required')
+      return
+    }
+
+    if (!articleData.content.trim()) {
+      toast.error('Content is required')
       return
     }
 
@@ -279,23 +271,36 @@ export default function WriteArticlePage() {
     setShowPublishDialog(false)
 
     try {
+      const wordCount = articleData.content.replace(/<[^>]*>/g, '').split(/\s+/).filter(Boolean).length
+      const readTime = Math.max(1, Math.ceil(wordCount / 200))
+
       const res = await fetch('/api/articles', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
-          ...formData,
+          title: articleData.title,
+          slug: articleData.title.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, ''),
+          excerpt: articleData.excerpt,
+          content: articleData.content,
+          coverImage: articleData.coverImage,
+          categoryId: articleData.categoryId || 'other',
           status: publish ? 'PUBLISHED' : 'DRAFT',
           authorId: session.user.id,
-          readTime: formData.readTime ? parseInt(formData.readTime) : estimatedReadTime,
-          references: references.filter(r => r.title && r.url),
-          tags: formData.tags.split(',').map(t => t.trim()).filter(Boolean),
+          readTime,
+          references: articleData.references.map(r => ({
+            title: r.title,
+            url: r.url || '',
+            description: r.authors ? `${r.authors}${r.year ? ` (${r.year})` : ''}` : '',
+          })),
+          tags: articleData.tags.split(',').map(t => t.trim()).filter(Boolean),
+          widgetOrder: widgets.filter(w => w.enabled).map(w => w.id),
         }),
       })
 
       const data = await res.json()
 
       if (data.success) {
-        localStorage.removeItem('article-draft')
+        localStorage.removeItem('article-draft-v2')
         toast.success(publish ? 'Article published!' : 'Draft saved!')
         router.push(`/articles/${data.data.slug}`)
       } else {
@@ -309,140 +314,11 @@ export default function WriteArticlePage() {
     }
   }
 
-  const handleDelete = () => {
-    if (confirm('Delete this draft? This cannot be undone.')) {
-      localStorage.removeItem('article-draft')
-      setFormData({
-        title: '',
-        slug: '',
-        excerpt: '',
-        content: '',
-        coverImage: '',
-        categoryId: '',
-        readTime: '',
-        featured: false,
-        tags: '',
-      })
-      setReferences([])
-      setCurrentStep(0)
-      toast.success('Draft deleted')
-    }
-  }
+  // Calculate stats
+  const wordCount = articleData.content.replace(/<[^>]*>/g, '').split(/\s+/).filter(Boolean).length
+  const readTime = Math.max(1, Math.ceil(wordCount / 200))
 
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
-    const { name, value, type } = e.target
-    if (name === 'slug') setSlugManuallyEdited(true)
-    setFormData(prev => ({
-      ...prev,
-      [name]: type === 'checkbox' ? (e.target as HTMLInputElement).checked : value,
-    }))
-  }
-
-  const handleContentChange = (content: string) => {
-    setFormData(prev => ({ ...prev, content }))
-  }
-
-  // Handle citation paste from editor
-  const handleCitationPaste = (text: string) => {
-    const citation = parseCitation(text)
-    if (citation) {
-      // Check if we already have this citation
-      const exists = detectedCitations.some(c => c.raw === citation.raw)
-      if (!exists) {
-        setDetectedCitations(prev => [...prev, citation])
-
-        // Auto-add to references
-        const newRef: Reference = {
-          id: crypto.randomUUID(),
-          title: citation.title,
-          url: citation.url || '',
-          description: `${citation.authors}${citation.year ? ` (${citation.year})` : ''}${citation.publisher ? `. ${citation.publisher}` : ''}`,
-        }
-        setReferences(prev => [...prev, newRef])
-        toast.success(`${citation.format} citation detected and added to references!`, {
-          icon: <BookOpen className="w-4 h-4" />,
-          duration: 4000,
-        })
-      }
-    }
-  }
-
-  // Toggle preview and track that user has viewed it
-  const togglePreview = () => {
-    if (!showPreview) {
-      setHasViewedPreview(true)
-    }
-    setShowPreview(!showPreview)
-  }
-
-  const handleCoverImageChange = (url: string) => {
-    setFormData(prev => ({ ...prev, coverImage: url }))
-  }
-
-  // Validation
-  const canProceedFromStep = (step: number): boolean => {
-    switch (step) {
-      case 0: return formData.title.trim().length > 0
-      case 1: return formData.content.trim().length > 0 && hasViewedPreview
-      case 2: return formData.excerpt.trim().length > 0
-      default: return true
-    }
-  }
-
-  // Get validation message for current step
-  const getStepValidationMessage = (step: number): string | null => {
-    switch (step) {
-      case 1:
-        if (!formData.content.trim()) return 'Please write some content'
-        if (!hasViewedPreview) return 'Please preview your content before continuing'
-        return null
-      default:
-        return null
-    }
-  }
-
-  const goToNextStep = () => {
-    if (canProceedFromStep(currentStep) && currentStep < STEPS.length - 1) {
-      setCurrentStep(currentStep + 1)
-    }
-  }
-
-  const goToPreviousStep = () => {
-    if (currentStep > 0) setCurrentStep(currentStep - 1)
-  }
-
-  // Calculate read time
-  const wordCount = formData.content.replace(/<[^>]*>/g, '').split(/\s+/).filter(Boolean).length
-  const estimatedReadTime = Math.max(1, Math.ceil(wordCount / 200))
-
-  const renderAutoSaveStatus = () => {
-    switch (autoSaveStatus) {
-      case 'saving':
-        return (
-          <span className="flex items-center gap-2 text-sm text-[var(--muted-foreground)]">
-            <Clock size={14} className="animate-pulse" />
-            Saving...
-          </span>
-        )
-      case 'saved':
-        return (
-          <span className="flex items-center gap-2 text-sm text-green-600">
-            <CheckCircle size={14} />
-            Draft saved
-          </span>
-        )
-      case 'error':
-        return (
-          <span className="flex items-center gap-2 text-sm text-red-600">
-            <AlertCircle size={14} />
-            Save failed
-          </span>
-        )
-      default:
-        return null
-    }
-  }
-
+  // Loading state
   if (status === 'loading') {
     return (
       <div className="min-h-screen flex items-center justify-center bg-[var(--background)]">
@@ -456,8 +332,8 @@ export default function WriteArticlePage() {
   return (
     <div className="min-h-screen bg-[var(--background)]">
       {/* Header */}
-      <div className="bg-[var(--card)] border-b border-[var(--border)]">
-        <div className="container mx-auto px-4 sm:px-6 lg:px-8 py-4">
+      <div className="sticky top-0 z-50 bg-[var(--card)] border-b border-[var(--border)] shadow-sm">
+        <div className="container mx-auto px-4 sm:px-6 lg:px-8 py-3">
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-4">
               <Link href="/articles">
@@ -467,396 +343,653 @@ export default function WriteArticlePage() {
                 </Button>
               </Link>
               <div>
-                <h1 className="text-xl font-bold text-[var(--foreground)]">
-                  {formData.title || 'Write Article'}
+                <h1 className="text-lg font-bold text-[var(--foreground)]">
+                  {viewMode === 'paste' ? 'Inscribe Your Wisdom' : articleData.title || 'Untitled Article'}
                 </h1>
-                <div className="flex items-center gap-3 mt-1">
-                  {renderAutoSaveStatus()}
-                  <span className="text-sm text-[var(--muted-foreground)]">
-                    {wordCount} words • {estimatedReadTime} min read
-                  </span>
-                </div>
-              </div>
-            </div>
-            <div className="flex items-center gap-2">
-              <Button
-                variant="ghost"
-                size="sm"
-                onClick={handleDelete}
-                className="text-red-600 hover:text-red-700 hover:bg-red-50"
-              >
-                <Trash2 className="w-4 h-4 mr-2" />
-                Delete
-              </Button>
-              {currentStep === 1 && (
-                <div className="flex items-center gap-2">
-                  {hasViewedPreview && (
-                    <span className="flex items-center gap-1 text-xs text-green-600">
-                      <CheckCircle className="w-3 h-3" />
-                      Preview viewed
-                    </span>
-                  )}
-                  <Button
-                    variant={!hasViewedPreview ? 'primary' : 'outline'}
-                    size="sm"
-                    onClick={togglePreview}
-                    className={!hasViewedPreview ? 'animate-pulse' : ''}
-                  >
-                    {showPreview ? <EyeOff className="w-4 h-4 mr-2" /> : <Eye className="w-4 h-4 mr-2" />}
-                    {showPreview ? 'Hide Preview' : hasViewedPreview ? 'Preview' : 'Preview (Required)'}
-                  </Button>
-                </div>
-              )}
-            </div>
-          </div>
-        </div>
-      </div>
-
-      {/* Step Progress */}
-      <StepProgress
-        steps={STEPS}
-        currentStep={currentStep}
-        onStepClick={index => index <= currentStep && setCurrentStep(index)}
-      />
-
-      {/* Main Content */}
-      <div className="container mx-auto px-4 sm:px-6 lg:px-8 py-8">
-        <div className="max-w-4xl mx-auto">
-
-          {/* Step 1: Title & Cover */}
-          {currentStep === 0 && (
-            <div className="space-y-6">
-              <Card className="border-2 border-[var(--border)]">
-                <CardHeader>
-                  <CardTitle>What&apos;s your article about?</CardTitle>
-                </CardHeader>
-                <CardContent className="space-y-6">
-                  <div className="space-y-2">
-                    <input
-                      type="text"
-                      name="title"
-                      value={formData.title}
-                      onChange={handleChange}
-                      placeholder="Enter a compelling title..."
-                      className="w-full text-3xl font-bold bg-transparent border-none outline-none text-[var(--foreground)] placeholder:text-[var(--muted-foreground)]"
-                      autoFocus
-                    />
-                    <div className="h-1 w-full bg-[var(--border)] rounded overflow-hidden">
-                      <div
-                        className="h-full bg-[var(--primary)] rounded transition-all duration-300"
-                        style={{ width: `${Math.min(100, formData.title.length * 2)}%` }}
-                      />
-                    </div>
-                  </div>
-
-                  <div className="space-y-2">
-                    <label className="text-sm font-medium text-[var(--muted-foreground)]">URL Slug</label>
-                    <Input
-                      name="slug"
-                      value={formData.slug}
-                      onChange={handleChange}
-                      placeholder="article-url-slug"
-                    />
-                    <p className="text-sm text-[var(--muted-foreground)]">/articles/{formData.slug || 'your-slug'}</p>
-                  </div>
-
-                  <div className="space-y-2">
-                    <label className="text-sm font-medium text-[var(--muted-foreground)]">Cover Image</label>
-                    <CoverImageUpload value={formData.coverImage} onChange={handleCoverImageChange} />
-                  </div>
-                </CardContent>
-              </Card>
-            </div>
-          )}
-
-          {/* Step 2: Content Editor */}
-          {currentStep === 1 && (
-            <div className="space-y-6">
-              {/* Preview requirement notice */}
-              {!hasViewedPreview && (
-                <div className="flex items-center gap-3 p-4 bg-gradient-to-r from-[var(--primary)]/10 to-[var(--accent)]/10 border border-[var(--primary)]/20 rounded-lg">
-                  <Eye className="w-5 h-5 text-[var(--primary)]" />
-                  <div>
-                    <p className="text-sm font-medium text-[var(--foreground)]">Preview required before continuing</p>
-                    <p className="text-xs text-[var(--muted-foreground)]">Click the Preview button above to review your content before proceeding</p>
-                  </div>
-                </div>
-              )}
-
-              {/* Citation format info */}
-              <div className="flex items-start gap-3 p-3 bg-[var(--muted)]/50 border border-[var(--border)] rounded-lg">
-                <Sparkles className="w-4 h-4 text-[var(--primary)] mt-0.5" />
-                <div className="text-xs text-[var(--muted-foreground)]">
-                  <strong className="text-[var(--foreground)]">Smart Citation Detection:</strong> Paste MLA, APA, or Chicago formatted citations and they'll be automatically recognized and added to your references.
-                </div>
-              </div>
-
-              {showPreview ? (
-                <div className="grid lg:grid-cols-2 gap-6">
-                  <div>
-                    <h3 className="text-sm font-medium text-[var(--muted-foreground)] mb-3">Editor</h3>
-                    <TipTapEditor
-                      content={formData.content}
-                      onChange={handleContentChange}
-                      onPaste={handleCitationPaste}
-                      placeholder="Start writing your article..."
-                    />
-                  </div>
-                  <div>
-                    <h3 className="text-sm font-medium text-[var(--muted-foreground)] mb-3 flex items-center gap-2">
-                      <CheckCircle className="w-4 h-4 text-green-600" />
-                      Preview
-                    </h3>
-                    <Card className="h-[500px] overflow-auto border-2 border-green-500/50">
-                      <CardContent className="p-6">
-                        <article
-                          className="prose prose-lg max-w-none"
-                          dangerouslySetInnerHTML={{ __html: sanitizeArticleContent(formData.content) }}
-                        />
-                      </CardContent>
-                    </Card>
-                  </div>
-                </div>
-              ) : (
-                <TipTapEditor
-                  content={formData.content}
-                  onChange={handleContentChange}
-                  onPaste={handleCitationPaste}
-                  placeholder="Start writing your article..."
-                />
-              )}
-
-              {/* Detected citations summary */}
-              {detectedCitations.length > 0 && (
-                <div className="p-4 bg-[var(--primary)]/5 border border-[var(--primary)]/20 rounded-lg">
-                  <h4 className="text-sm font-medium text-[var(--foreground)] mb-2 flex items-center gap-2">
-                    <BookOpen className="w-4 h-4 text-[var(--primary)]" />
-                    Detected Citations ({detectedCitations.length})
-                  </h4>
-                  <div className="space-y-2">
-                    {detectedCitations.map((citation, idx) => (
-                      <div key={idx} className="text-xs text-[var(--muted-foreground)] flex items-start gap-2">
-                        <span className="px-1.5 py-0.5 bg-[var(--primary)]/20 text-[var(--primary)] rounded text-[10px] font-bold">
-                          {citation.format}
-                        </span>
-                        <span className="truncate">{citation.title}</span>
-                      </div>
-                    ))}
-                  </div>
-                </div>
-              )}
-            </div>
-          )}
-
-          {/* Step 3: Settings */}
-          {currentStep === 2 && (
-            <div className="grid md:grid-cols-2 gap-6">
-              <Card>
-                <CardHeader><CardTitle>Details</CardTitle></CardHeader>
-                <CardContent className="space-y-4">
-                  <Textarea
-                    label="Excerpt"
-                    name="excerpt"
-                    rows={3}
-                    value={formData.excerpt}
-                    onChange={handleChange}
-                    placeholder="A brief summary..."
-                    hint="Appears in article listings"
-                  />
-                  <Select
-                    label="Category"
-                    name="categoryId"
-                    value={formData.categoryId}
-                    onChange={handleChange}
-                    options={[
-                      { value: '', label: 'Select category...', disabled: true },
-                      ...ARTICLE_CATEGORIES.map(cat => ({ value: cat.id, label: cat.name })),
-                    ]}
-                  />
-                  <Input
-                    label="Tags"
-                    name="tags"
-                    value={formData.tags}
-                    onChange={handleChange}
-                    placeholder="solar, renewable, beginner"
-                    hint="Comma-separated"
-                  />
-                </CardContent>
-              </Card>
-
-              <Card>
-                <CardHeader><CardTitle>Publishing</CardTitle></CardHeader>
-                <CardContent className="space-y-4">
-                  <Input
-                    label="Read Time (minutes)"
-                    name="readTime"
-                    type="number"
-                    min="1"
-                    value={formData.readTime}
-                    onChange={handleChange}
-                    placeholder={estimatedReadTime.toString()}
-                    hint="Auto-calculated if empty"
-                  />
-                  <div className="flex items-center gap-2 p-4 bg-[var(--muted)] rounded-lg">
-                    <input
-                      type="checkbox"
-                      id="featured"
-                      name="featured"
-                      checked={formData.featured}
-                      onChange={handleChange}
-                      className="w-5 h-5"
-                    />
-                    <label htmlFor="featured" className="font-medium text-[var(--foreground)]">
-                      Mark as featured
-                    </label>
-                  </div>
-                  <div className="p-4 bg-[var(--primary)]/10 rounded-lg">
-                    <p className="text-sm"><strong>Author:</strong> {session?.user?.name}</p>
-                  </div>
-                </CardContent>
-              </Card>
-
-              {/* References */}
-              <Card className="md:col-span-2 border-2 border-[var(--primary)]/30">
-                <CardHeader>
-                  <div className="flex items-center justify-between">
-                    <CardTitle className="flex items-center gap-2">
-                      <LinkIcon className="w-5 h-5 text-[var(--primary)]" />
-                      References
-                    </CardTitle>
-                    <div className="flex gap-2">
-                      <Button type="button" variant="outline" size="sm" onClick={autoExtractUrls}>
-                        <CheckCircle className="w-4 h-4 mr-1" />
-                        Auto-Detect
-                      </Button>
-                      <Button type="button" variant="outline" size="sm" onClick={addReference}>
-                        <Plus className="w-4 h-4 mr-1" />
-                        Add
-                      </Button>
-                    </div>
-                  </div>
-                </CardHeader>
-                <CardContent>
-                  {/* Guidance Text */}
-                  <div className="mb-4 p-4 bg-gradient-to-r from-[var(--primary)]/10 to-[var(--accent)]/10 border border-[var(--primary)]/20 rounded-lg">
-                    <p className="text-sm text-[var(--foreground)] font-medium mb-2">
-                      <strong>Sage will automatically link your sources!</strong>
-                    </p>
-                    <p className="text-xs text-[var(--muted-foreground)]">
-                      Include URLs in your article content and click "Auto-Detect" to extract them as references.
-                      These will appear in the References widget for your readers. You can also add references manually.
-                    </p>
-                  </div>
-
-                  {references.length === 0 ? (
-                    <p className="text-sm text-[var(--muted-foreground)] text-center py-8">
-                      No references yet. Add URLs to your content or add sources manually.
-                    </p>
-                  ) : (
-                    <div className="space-y-4">
-                      {references.map((ref, index) => (
-                        <div key={ref.id} className="p-4 bg-[var(--muted)] rounded-lg space-y-3">
-                          <div className="flex items-center justify-between">
-                            <span className="text-xs font-bold text-[var(--primary)] uppercase">
-                              Reference #{index + 1}
-                            </span>
-                            <button onClick={() => removeReference(ref.id)} className="p-1 text-red-600 hover:bg-red-100 rounded">
-                              <Trash2 className="w-4 h-4" />
-                            </button>
-                          </div>
-                          <Input value={ref.title} onChange={e => updateReference(ref.id, 'title', e.target.value)} placeholder="Title" />
-                          <Input value={ref.url} onChange={e => updateReference(ref.id, 'url', e.target.value)} placeholder="https://..." />
-                        </div>
-                      ))}
-                    </div>
-                  )}
-                </CardContent>
-              </Card>
-            </div>
-          )}
-
-          {/* Step 4: Review */}
-          {currentStep === 3 && (
-            <Card>
-              <CardHeader><CardTitle>Review Your Article</CardTitle></CardHeader>
-              <CardContent className="space-y-6">
-                {formData.coverImage && (
-                  <div className="aspect-video relative rounded-lg overflow-hidden">
-                    <img src={formData.coverImage} alt="Cover" className="w-full h-full object-cover" />
+                {viewMode === 'preview' && (
+                  <div className="flex items-center gap-3 text-sm text-[var(--muted-foreground)]">
+                    {autoSaveStatus === 'saving' && (
+                      <span className="flex items-center gap-1">
+                        <Clock className="w-3 h-3 animate-pulse" /> Saving...
+                      </span>
+                    )}
+                    {autoSaveStatus === 'saved' && (
+                      <span className="flex items-center gap-1 text-green-600">
+                        <CheckCircle className="w-3 h-3" /> Saved
+                      </span>
+                    )}
+                    <span>{wordCount} words</span>
+                    <span>{readTime} min read</span>
+                    <span>{articleData.references.length} references</span>
                   </div>
                 )}
-                <div>
-                  <h2 className="text-3xl font-bold text-[var(--foreground)] mb-3">{formData.title}</h2>
-                  <p className="text-lg text-[var(--muted-foreground)]">{formData.excerpt}</p>
-                </div>
-                <div className="flex flex-wrap gap-4 text-sm text-[var(--muted-foreground)]">
-                  <span>Category: <strong className="text-[var(--foreground)]">{ARTICLE_CATEGORIES.find(c => c.id === formData.categoryId)?.name || 'None'}</strong></span>
-                  <span>Read time: <strong className="text-[var(--foreground)]">{formData.readTime || estimatedReadTime} min</strong></span>
-                  <span>Words: <strong className="text-[var(--foreground)]">{wordCount}</strong></span>
-                </div>
-                {formData.tags && (
-                  <div className="flex flex-wrap gap-2">
-                    {formData.tags.split(',').map((tag, i) => (
-                      <span key={i} className="px-3 py-1 bg-[var(--muted)] rounded-full text-sm">{tag.trim()}</span>
-                    ))}
-                  </div>
-                )}
-                <div className="border-t border-[var(--border)] pt-6">
-                  <h3 className="text-sm font-medium text-[var(--muted-foreground)] mb-4">Content Preview</h3>
-                  <div className="max-h-[400px] overflow-auto p-4 bg-[var(--muted)] rounded-lg">
-                    <article className="prose prose-lg max-w-none" dangerouslySetInnerHTML={{ __html: sanitizeArticleContent(formData.content) }} />
-                  </div>
-                </div>
-              </CardContent>
-            </Card>
-          )}
+              </div>
+            </div>
 
-          {/* Navigation */}
-          <div className="flex items-center justify-between mt-8 pt-6 border-t border-[var(--border)]">
-            <Button variant="outline" onClick={goToPreviousStep} disabled={currentStep === 0}>
-              <ArrowLeft className="w-4 h-4 mr-2" />
-              Previous
-            </Button>
-            <div className="flex items-center gap-3">
-              {/* Validation message */}
-              {currentStep === 1 && !canProceedFromStep(1) && formData.content.trim() && (
-                <span className="text-xs text-amber-600 flex items-center gap-1">
-                  <Eye className="w-3 h-3" />
-                  Preview required
-                </span>
-              )}
-              <Button variant="outline" onClick={() => handleSubmit(false)} disabled={saving}>
-                <Save className="w-4 h-4 mr-2" />
-                Save Draft
-              </Button>
-              {currentStep === STEPS.length - 1 ? (
-                <Button onClick={() => setShowPublishDialog(true)} disabled={saving || !canProceedFromStep(2)}>
+            {viewMode === 'preview' && (
+              <div className="flex items-center gap-2">
+                <Button
+                  variant="ghost"
+                  size="sm"
+                  onClick={() => setShowSettings(!showSettings)}
+                  className={showSettings ? 'bg-[var(--muted)]' : ''}
+                >
+                  <Settings className="w-4 h-4 mr-2" />
+                  Settings
+                </Button>
+                <Button
+                  variant="outline"
+                  size="sm"
+                  onClick={() => handleSubmit(false)}
+                  disabled={saving}
+                >
+                  <Save className="w-4 h-4 mr-2" />
+                  Save Draft
+                </Button>
+                <Button
+                  size="sm"
+                  onClick={() => setShowPublishDialog(true)}
+                  disabled={saving}
+                  className="bg-gradient-to-r from-emerald-600 to-emerald-700 hover:from-emerald-500 hover:to-emerald-600"
+                >
                   <Send className="w-4 h-4 mr-2" />
                   Publish
                 </Button>
-              ) : (
-                <Button
-                  onClick={goToNextStep}
-                  disabled={!canProceedFromStep(currentStep)}
-                  title={getStepValidationMessage(currentStep) || undefined}
-                >
-                  Next
-                  <ArrowRight className="w-4 h-4 ml-2" />
-                </Button>
-              )}
-            </div>
+              </div>
+            )}
           </div>
         </div>
       </div>
+
+      <AnimatePresence mode="wait">
+        {/* PASTE VIEW */}
+        {viewMode === 'paste' && (
+          <motion.div
+            key="paste"
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: -20 }}
+            className="container mx-auto px-4 sm:px-6 lg:px-8 py-12"
+          >
+            <div className="max-w-4xl mx-auto">
+              {/* Hero */}
+              <div className="text-center mb-12">
+                <div className="inline-flex items-center justify-center w-20 h-20 rounded-full bg-gradient-to-br from-emerald-500 to-emerald-700 mb-6">
+                  <FileText className="w-10 h-10 text-white" />
+                </div>
+                <h2 className="text-3xl sm:text-4xl font-black text-[var(--foreground)] mb-4">
+                  Paste Your Work
+                </h2>
+                <p className="text-lg text-[var(--muted-foreground)] max-w-2xl mx-auto">
+                  Copy and paste your research paper, essay, or article below.
+                  We'll automatically detect your title, content, and works cited section.
+                </p>
+              </div>
+
+              {/* Paste Area */}
+              <Card className="border-2 border-dashed border-[var(--border)] hover:border-[var(--primary)]/50 transition-colors">
+                <CardContent className="p-6">
+                  <textarea
+                    value={pastedContent}
+                    onChange={(e) => setPastedContent(e.target.value)}
+                    placeholder="Paste your entire document here...
+
+Include your title, body content, and Works Cited / References section.
+
+We support MLA, APA, and Chicago citation formats."
+                    className="w-full h-[400px] bg-transparent border-none outline-none resize-none text-[var(--foreground)] placeholder:text-[var(--muted-foreground)] font-mono text-sm"
+                  />
+                </CardContent>
+              </Card>
+
+              {/* Actions */}
+              <div className="flex flex-col sm:flex-row items-center justify-center gap-4 mt-8">
+                <Button
+                  size="lg"
+                  onClick={handleParse}
+                  disabled={!pastedContent.trim() || isParsing}
+                  className="w-full sm:w-auto bg-gradient-to-r from-emerald-600 to-emerald-700 hover:from-emerald-500 hover:to-emerald-600 text-white font-bold px-8"
+                >
+                  {isParsing ? (
+                    <>
+                      <Loader2 className="w-5 h-5 mr-2 animate-spin" />
+                      Parsing...
+                    </>
+                  ) : (
+                    <>
+                      <Sparkles className="w-5 h-5 mr-2" />
+                      Parse & Preview
+                    </>
+                  )}
+                </Button>
+
+                <span className="text-[var(--muted-foreground)]">or</span>
+
+                <Button
+                  variant="outline"
+                  size="lg"
+                  onClick={() => fileInputRef.current?.click()}
+                  className="w-full sm:w-auto"
+                >
+                  <Upload className="w-5 h-5 mr-2" />
+                  Upload File
+                </Button>
+                <input
+                  ref={fileInputRef}
+                  type="file"
+                  accept=".txt,.md"
+                  onChange={handleFileUpload}
+                  className="hidden"
+                />
+              </div>
+
+              {/* Supported Formats */}
+              <div className="mt-12 p-6 bg-[var(--muted)]/50 rounded-xl">
+                <h3 className="font-bold text-[var(--foreground)] mb-4 flex items-center gap-2">
+                  <BookOpen className="w-5 h-5 text-[var(--primary)]" />
+                  Supported Citation Formats
+                </h3>
+                <div className="grid sm:grid-cols-3 gap-4">
+                  <div className="p-4 bg-[var(--background)] rounded-lg">
+                    <h4 className="font-bold text-[var(--foreground)] mb-2">MLA</h4>
+                    <p className="text-sm text-[var(--muted-foreground)]">
+                      Author. "Title." Container, Year.
+                    </p>
+                  </div>
+                  <div className="p-4 bg-[var(--background)] rounded-lg">
+                    <h4 className="font-bold text-[var(--foreground)] mb-2">APA</h4>
+                    <p className="text-sm text-[var(--muted-foreground)]">
+                      Author, A. A. (Year). Title.
+                    </p>
+                  </div>
+                  <div className="p-4 bg-[var(--background)] rounded-lg">
+                    <h4 className="font-bold text-[var(--foreground)] mb-2">Chicago</h4>
+                    <p className="text-sm text-[var(--muted-foreground)]">
+                      Author. Title. Place: Publisher, Year.
+                    </p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </motion.div>
+        )}
+
+        {/* PREVIEW VIEW */}
+        {viewMode === 'preview' && (
+          <motion.div
+            key="preview"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+          >
+            {/* Settings Panel */}
+            <AnimatePresence>
+              {showSettings && (
+                <motion.div
+                  initial={{ height: 0, opacity: 0 }}
+                  animate={{ height: 'auto', opacity: 1 }}
+                  exit={{ height: 0, opacity: 0 }}
+                  className="border-b border-[var(--border)] bg-[var(--muted)]/30 overflow-hidden"
+                >
+                  <div className="container mx-auto px-4 sm:px-6 lg:px-8 py-6">
+                    <div className="grid md:grid-cols-3 gap-6">
+                      {/* Cover Image */}
+                      <div>
+                        <label className="text-sm font-bold text-[var(--foreground)] mb-2 block">
+                          Cover Image
+                        </label>
+                        <CoverImageUpload
+                          value={articleData.coverImage}
+                          onChange={(url) => setArticleData(prev => ({ ...prev, coverImage: url }))}
+                        />
+                      </div>
+
+                      {/* Category & Tags */}
+                      <div className="space-y-4">
+                        <div>
+                          <label className="text-sm font-bold text-[var(--foreground)] mb-2 block">
+                            Category
+                          </label>
+                          <Select
+                            value={articleData.categoryId}
+                            onChange={(e) => setArticleData(prev => ({ ...prev, categoryId: e.target.value }))}
+                            options={[
+                              { value: '', label: 'Select category...', disabled: true },
+                              ...ARTICLE_CATEGORIES.map(cat => ({ value: cat.id, label: cat.name })),
+                            ]}
+                          />
+                        </div>
+                        <div>
+                          <label className="text-sm font-bold text-[var(--foreground)] mb-2 block">
+                            Tags (comma-separated)
+                          </label>
+                          <Input
+                            value={articleData.tags}
+                            onChange={(e) => setArticleData(prev => ({ ...prev, tags: e.target.value }))}
+                            placeholder="sustainability, research, climate"
+                          />
+                        </div>
+                      </div>
+
+                      {/* Widget Order */}
+                      <div>
+                        <label className="text-sm font-bold text-[var(--foreground)] mb-2 block">
+                          Sidebar Widgets
+                        </label>
+                        <p className="text-xs text-[var(--muted-foreground)] mb-3">
+                          Drag to reorder, toggle to show/hide
+                        </p>
+                        <Reorder.Group
+                          axis="y"
+                          values={widgets}
+                          onReorder={setWidgets}
+                          className="space-y-2"
+                        >
+                          {widgets.map((widget) => (
+                            <Reorder.Item
+                              key={widget.id}
+                              value={widget}
+                              className="flex items-center gap-3 p-3 bg-[var(--background)] rounded-lg cursor-grab active:cursor-grabbing"
+                            >
+                              <GripVertical className="w-4 h-4 text-[var(--muted-foreground)]" />
+                              <widget.icon className="w-4 h-4 text-[var(--primary)]" />
+                              <span className="flex-1 text-sm font-medium text-[var(--foreground)]">
+                                {widget.name}
+                              </span>
+                              <button
+                                onClick={() => setWidgets(prev =>
+                                  prev.map(w => w.id === widget.id ? { ...w, enabled: !w.enabled } : w)
+                                )}
+                                className={`w-8 h-5 rounded-full transition-colors ${
+                                  widget.enabled ? 'bg-emerald-500' : 'bg-[var(--muted)]'
+                                }`}
+                              >
+                                <div className={`w-4 h-4 bg-white rounded-full shadow transition-transform ${
+                                  widget.enabled ? 'translate-x-3.5' : 'translate-x-0.5'
+                                }`} />
+                              </button>
+                            </Reorder.Item>
+                          ))}
+                        </Reorder.Group>
+                      </div>
+                    </div>
+                  </div>
+                </motion.div>
+              )}
+            </AnimatePresence>
+
+            {/* Article Preview - Matches actual article display */}
+            <div className="min-h-screen">
+              {/* Hero Section */}
+              <section className="py-16 sm:py-24 bg-gradient-to-br from-[color-mix(in_srgb,var(--primary)_15%,var(--background))] via-[color-mix(in_srgb,var(--accent)_15%,var(--background))] to-[color-mix(in_srgb,var(--secondary)_15%,var(--background))]">
+                <div className="container mx-auto px-4 sm:px-6 lg:px-8">
+                  <div className="max-w-5xl mx-auto text-center space-y-6">
+                    {/* Editable Title */}
+                    <div className="group relative">
+                      {editingField === 'title' ? (
+                        <input
+                          type="text"
+                          value={articleData.title}
+                          onChange={(e) => setArticleData(prev => ({ ...prev, title: e.target.value }))}
+                          onBlur={() => setEditingField(null)}
+                          autoFocus
+                          className="w-full text-4xl sm:text-5xl md:text-6xl font-black text-center bg-transparent border-2 border-[var(--primary)] rounded-lg px-4 py-2 outline-none text-[var(--foreground)]"
+                        />
+                      ) : (
+                        <h1
+                          onClick={() => setEditingField('title')}
+                          className="text-4xl sm:text-5xl md:text-6xl font-black leading-tight text-[var(--foreground)] cursor-pointer hover:bg-[var(--primary)]/10 rounded-lg px-4 py-2 transition-colors"
+                        >
+                          {articleData.title || 'Click to add title'}
+                          <Edit3 className="inline-block w-6 h-6 ml-3 opacity-0 group-hover:opacity-50" />
+                        </h1>
+                      )}
+                    </div>
+
+                    {/* Editable Excerpt */}
+                    <div className="group relative max-w-4xl mx-auto">
+                      {editingField === 'excerpt' ? (
+                        <textarea
+                          value={articleData.excerpt}
+                          onChange={(e) => setArticleData(prev => ({ ...prev, excerpt: e.target.value }))}
+                          onBlur={() => setEditingField(null)}
+                          autoFocus
+                          rows={3}
+                          className="w-full text-xl sm:text-2xl font-semibold text-center bg-transparent border-2 border-[var(--primary)] rounded-lg px-4 py-2 outline-none text-[var(--muted-foreground)] resize-none"
+                        />
+                      ) : (
+                        <p
+                          onClick={() => setEditingField('excerpt')}
+                          className="text-xl sm:text-2xl font-semibold text-[var(--muted-foreground)] cursor-pointer hover:bg-[var(--primary)]/10 rounded-lg px-4 py-2 transition-colors"
+                        >
+                          {articleData.excerpt || 'Click to add excerpt...'}
+                          <Edit3 className="inline-block w-5 h-5 ml-2 opacity-0 group-hover:opacity-50" />
+                        </p>
+                      )}
+                    </div>
+
+                    {/* Meta Info */}
+                    <div className="flex flex-wrap items-center justify-center gap-4 sm:gap-8 text-sm sm:text-base font-bold pt-4">
+                      <div className="flex items-center gap-2 text-[var(--primary)]">
+                        <User className="w-4 h-4 sm:w-5 sm:h-5" />
+                        <span>{session?.user?.name || 'Author'}</span>
+                      </div>
+                      <div className="flex items-center gap-2 text-[var(--muted-foreground)]">
+                        <Calendar className="w-4 h-4 sm:w-5 sm:h-5" />
+                        <span>{new Date().toLocaleDateString()}</span>
+                      </div>
+                      <div className="flex items-center gap-2 text-[var(--accent)]">
+                        <Clock className="w-4 h-4 sm:w-5 sm:h-5" />
+                        <span>{readTime} MIN READ</span>
+                      </div>
+                    </div>
+
+                    {/* Category Badge */}
+                    {articleData.categoryId && (
+                      <div>
+                        <span className="inline-block px-6 py-3 bg-gradient-to-br from-[var(--primary)] to-[var(--accent)] text-[var(--primary-foreground)] rounded-2xl text-base font-black uppercase shadow-xl">
+                          {ARTICLE_CATEGORIES.find(c => c.id === articleData.categoryId)?.name || 'Other'}
+                        </span>
+                      </div>
+                    )}
+                  </div>
+                </div>
+              </section>
+
+              {/* Content Section */}
+              <section className="py-12 sm:py-20">
+                <div className="container mx-auto px-4 sm:px-6 lg:px-8">
+                  <div className="max-w-5xl mx-auto">
+                    <div className="grid md:grid-cols-3 gap-8">
+                      {/* Main Content */}
+                      <article className="md:col-span-2">
+                        <Card className="bg-[var(--card)] border-2 border-[var(--border)]">
+                          <CardContent className="p-6 sm:p-8 md:p-12">
+                            <TipTapEditor
+                              content={articleData.content}
+                              onChange={(content) => setArticleData(prev => ({ ...prev, content }))}
+                              placeholder="Your article content..."
+                            />
+                          </CardContent>
+                        </Card>
+                      </article>
+
+                      {/* Sidebar */}
+                      <aside className="md:col-span-1 space-y-6">
+                        <Reorder.Group
+                          axis="y"
+                          values={widgets.filter(w => w.enabled)}
+                          onReorder={(newOrder) => {
+                            const disabledWidgets = widgets.filter(w => !w.enabled)
+                            setWidgets([...newOrder, ...disabledWidgets])
+                          }}
+                          className="space-y-6"
+                        >
+                          {widgets.filter(w => w.enabled).map((widget) => (
+                            <Reorder.Item
+                              key={widget.id}
+                              value={widget}
+                              className="cursor-grab active:cursor-grabbing"
+                            >
+                              {widget.id === 'references' && (
+                                <ReferencesPreview
+                                  references={articleData.references}
+                                  onUpdate={(refs) => setArticleData(prev => ({ ...prev, references: refs }))}
+                                />
+                              )}
+                              {widget.id === 'discussion' && <DiscussionPreview />}
+                              {widget.id === 'author' && <AuthorPreview session={session} />}
+                              {widget.id === 'share' && <SharePreview />}
+                            </Reorder.Item>
+                          ))}
+                        </Reorder.Group>
+                      </aside>
+                    </div>
+                  </div>
+                </div>
+              </section>
+            </div>
+
+            {/* Back to Edit Paste Button */}
+            <div className="fixed bottom-6 left-6 z-50">
+              <Button
+                variant="outline"
+                size="sm"
+                onClick={() => setViewMode('paste')}
+                className="shadow-lg bg-[var(--background)]"
+              >
+                <ClipboardPaste className="w-4 h-4 mr-2" />
+                Re-paste Content
+              </Button>
+            </div>
+          </motion.div>
+        )}
+      </AnimatePresence>
 
       {/* Publish Dialog */}
       <PublishConfirmDialog
         isOpen={showPublishDialog}
         onClose={() => setShowPublishDialog(false)}
         onConfirm={() => handleSubmit(true)}
-        title={formData.title}
+        title={articleData.title}
         isPublishing={saving}
       />
     </div>
+  )
+}
+
+// References Preview Widget
+function ReferencesPreview({
+  references,
+  onUpdate,
+}: {
+  references: ParsedReference[]
+  onUpdate: (refs: ParsedReference[]) => void
+}) {
+  const [isExpanded, setIsExpanded] = useState(true)
+  const [editingId, setEditingId] = useState<string | null>(null)
+
+  const addReference = () => {
+    onUpdate([
+      ...references,
+      {
+        id: `ref-${Date.now()}`,
+        raw: '',
+        title: 'New Reference',
+        format: 'Unknown',
+      },
+    ])
+  }
+
+  const removeReference = (id: string) => {
+    onUpdate(references.filter(r => r.id !== id))
+  }
+
+  const updateReference = (id: string, field: keyof ParsedReference, value: string) => {
+    onUpdate(references.map(r =>
+      r.id === id ? { ...r, [field]: value } : r
+    ))
+  }
+
+  return (
+    <Card className="border-4 border-[var(--border)] group">
+      <div className="absolute -top-2 -left-2 opacity-0 group-hover:opacity-100 transition-opacity">
+        <div className="p-1 bg-[var(--primary)] rounded">
+          <GripVertical className="w-4 h-4 text-white" />
+        </div>
+      </div>
+      <CardHeader className="pb-2">
+        <CardTitle className="text-base flex items-center justify-between text-[var(--foreground)]">
+          <div className="flex items-center gap-2">
+            <BookOpen className="w-4 h-4 text-[var(--primary)]" />
+            Works Cited ({references.length})
+          </div>
+          <div className="flex items-center gap-2">
+            <button
+              onClick={addReference}
+              className="p-1 hover:bg-[var(--muted)] rounded"
+              title="Add reference"
+            >
+              <Plus className="w-4 h-4" />
+            </button>
+            <button
+              onClick={() => setIsExpanded(!isExpanded)}
+              className="p-1 hover:bg-[var(--muted)] rounded"
+            >
+              {isExpanded ? <ChevronUp className="w-4 h-4" /> : <ChevronDown className="w-4 h-4" />}
+            </button>
+          </div>
+        </CardTitle>
+      </CardHeader>
+      {isExpanded && (
+        <CardContent className="space-y-2">
+          {references.length === 0 ? (
+            <p className="text-sm text-[var(--muted-foreground)] text-center py-4">
+              No references detected. Click + to add manually.
+            </p>
+          ) : (
+            references.map((ref) => (
+              <div
+                key={ref.id}
+                className="p-3 bg-[var(--muted)] rounded-lg group/ref"
+              >
+                {editingId === ref.id ? (
+                  <div className="space-y-2">
+                    <Input
+                      value={ref.title}
+                      onChange={(e) => updateReference(ref.id, 'title', e.target.value)}
+                      placeholder="Title"
+                      className="text-sm"
+                    />
+                    <Input
+                      value={ref.url || ''}
+                      onChange={(e) => updateReference(ref.id, 'url', e.target.value)}
+                      placeholder="URL (optional)"
+                      className="text-sm"
+                    />
+                    <Button size="sm" onClick={() => setEditingId(null)}>Done</Button>
+                  </div>
+                ) : (
+                  <div className="flex items-start gap-2">
+                    <div className="flex-1 min-w-0">
+                      <p className="font-bold text-sm text-[var(--foreground)] line-clamp-1">
+                        {ref.title}
+                      </p>
+                      {ref.authors && (
+                        <p className="text-xs text-[var(--muted-foreground)]">
+                          {ref.authors}{ref.year ? ` (${ref.year})` : ''}
+                        </p>
+                      )}
+                      <span className="text-xs px-1.5 py-0.5 bg-[var(--primary)]/20 text-[var(--primary)] rounded">
+                        {ref.format}
+                      </span>
+                    </div>
+                    <div className="flex gap-1 opacity-0 group-hover/ref:opacity-100 transition-opacity">
+                      <button
+                        onClick={() => setEditingId(ref.id)}
+                        className="p-1 hover:bg-[var(--background)] rounded"
+                      >
+                        <Edit3 className="w-3 h-3" />
+                      </button>
+                      <button
+                        onClick={() => removeReference(ref.id)}
+                        className="p-1 hover:bg-red-100 rounded text-red-500"
+                      >
+                        <Trash2 className="w-3 h-3" />
+                      </button>
+                    </div>
+                  </div>
+                )}
+              </div>
+            ))
+          )}
+        </CardContent>
+      )}
+    </Card>
+  )
+}
+
+// Discussion Preview Widget
+function DiscussionPreview() {
+  return (
+    <Card className="border-4 border-[var(--border)] group">
+      <div className="absolute -top-2 -left-2 opacity-0 group-hover:opacity-100 transition-opacity">
+        <div className="p-1 bg-[var(--primary)] rounded">
+          <GripVertical className="w-4 h-4 text-white" />
+        </div>
+      </div>
+      <CardHeader>
+        <CardTitle className="text-base flex items-center gap-2 text-[var(--foreground)]">
+          <MessageCircle className="w-4 h-4 text-[var(--primary)]" />
+          Round Table Discussion
+        </CardTitle>
+      </CardHeader>
+      <CardContent>
+        <div className="text-center py-6 text-[var(--muted-foreground)]">
+          <MessageCircle className="w-8 h-8 mx-auto mb-2 opacity-50" />
+          <p className="text-sm">Discussion will appear here after publishing</p>
+        </div>
+      </CardContent>
+    </Card>
+  )
+}
+
+// Author Preview Widget
+function AuthorPreview({ session }: { session: any }) {
+  return (
+    <Card className="border-4 border-[var(--border)] group">
+      <div className="absolute -top-2 -left-2 opacity-0 group-hover:opacity-100 transition-opacity">
+        <div className="p-1 bg-[var(--primary)] rounded">
+          <GripVertical className="w-4 h-4 text-white" />
+        </div>
+      </div>
+      <CardHeader>
+        <CardTitle className="text-base text-[var(--foreground)]">About the Author</CardTitle>
+      </CardHeader>
+      <CardContent>
+        <div className="flex items-center gap-4">
+          <div className="w-16 h-16 rounded-full bg-gradient-to-br from-[var(--primary)] to-[var(--accent)] flex items-center justify-center">
+            {session?.user?.image ? (
+              <img src={session.user.image} alt="" className="w-16 h-16 rounded-full" />
+            ) : (
+              <User className="w-8 h-8 text-white" />
+            )}
+          </div>
+          <div>
+            <h4 className="font-bold text-[var(--foreground)]">{session?.user?.name || 'Author'}</h4>
+            <p className="text-sm text-[var(--muted-foreground)]">Article Author</p>
+          </div>
+        </div>
+      </CardContent>
+    </Card>
+  )
+}
+
+// Share Preview Widget
+function SharePreview() {
+  return (
+    <Card className="border-4 border-[var(--border)] group">
+      <div className="absolute -top-2 -left-2 opacity-0 group-hover:opacity-100 transition-opacity">
+        <div className="p-1 bg-[var(--primary)] rounded">
+          <GripVertical className="w-4 h-4 text-white" />
+        </div>
+      </div>
+      <CardHeader>
+        <CardTitle className="text-base text-[var(--foreground)]">Share Article</CardTitle>
+      </CardHeader>
+      <CardContent>
+        <div className="space-y-2">
+          <Button variant="outline" className="w-full text-sm" size="sm" disabled>
+            Share on Twitter
+          </Button>
+          <Button variant="outline" className="w-full text-sm" size="sm" disabled>
+            Share on Facebook
+          </Button>
+          <Button variant="outline" className="w-full text-sm" size="sm" disabled>
+            Copy Link
+          </Button>
+        </div>
+      </CardContent>
+    </Card>
   )
 }
