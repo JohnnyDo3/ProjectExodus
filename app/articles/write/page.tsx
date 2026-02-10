@@ -5,7 +5,7 @@ import { useSession } from 'next-auth/react'
 import { useRouter } from 'next/navigation'
 import dynamic from 'next/dynamic'
 import Link from 'next/link'
-import { motion, AnimatePresence, Reorder } from 'framer-motion'
+import { motion, AnimatePresence } from 'framer-motion'
 import { parseContent, type ParsedContent, type ParsedReference } from '@/lib/article/contentParser'
 import { sanitizeArticleContent } from '@/lib/sanitize'
 import {
@@ -40,7 +40,6 @@ import {
   BookOpen,
   MessageCircle,
   User,
-  GripVertical,
   X,
   Plus,
   Trash2,
@@ -59,7 +58,6 @@ import {
   Users,
   MoreHorizontal,
   Image as ImageIcon,
-  Settings,
   Link as LinkIcon,
 } from 'lucide-react'
 import toast from 'react-hot-toast'
@@ -145,7 +143,6 @@ export default function WriteArticlePage() {
   // UI state
   const [isEditing, setIsEditing] = useState(false)
   const [editingField, setEditingField] = useState<string | null>(null)
-  const [showSettings, setShowSettings] = useState(false)
   const [showPublishDialog, setShowPublishDialog] = useState(false)
   const [saving, setSaving] = useState(false)
   const [autoSaveStatus, setAutoSaveStatus] = useState<'idle' | 'saving' | 'saved' | 'error'>('idle')
@@ -489,15 +486,6 @@ export default function WriteArticlePage() {
             {viewMode === 'preview' && (
               <div className="flex items-center gap-2">
                 <Button
-                  variant="ghost"
-                  size="sm"
-                  onClick={() => setShowSettings(!showSettings)}
-                  className={showSettings ? 'bg-[var(--muted)]' : ''}
-                >
-                  <Settings className="w-4 h-4 mr-2" />
-                  Settings
-                </Button>
-                <Button
                   variant="outline"
                   size="sm"
                   onClick={() => handleSubmit(false)}
@@ -642,102 +630,6 @@ We support MLA, APA, and Chicago citation formats."
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
           >
-            {/* Settings Panel */}
-            <AnimatePresence>
-              {showSettings && (
-                <motion.div
-                  initial={{ height: 0, opacity: 0 }}
-                  animate={{ height: 'auto', opacity: 1 }}
-                  exit={{ height: 0, opacity: 0 }}
-                  className="border-b border-[var(--border)] bg-[var(--muted)]/30 overflow-hidden"
-                >
-                  <div className="container mx-auto px-4 sm:px-6 lg:px-8 py-6">
-                    <div className="grid md:grid-cols-3 gap-6">
-                      {/* Cover Image */}
-                      <div>
-                        <label className="text-sm font-bold text-[var(--foreground)] mb-2 block">
-                          Cover Image
-                        </label>
-                        <CoverImageUpload
-                          value={articleData.coverImage}
-                          onChange={(url) => setArticleData(prev => ({ ...prev, coverImage: url }))}
-                        />
-                      </div>
-
-                      {/* Category & Tags */}
-                      <div className="space-y-4">
-                        <div>
-                          <label className="text-sm font-bold text-[var(--foreground)] mb-2 block">
-                            Category
-                          </label>
-                          <Select
-                            value={articleData.categoryId}
-                            onChange={(e) => setArticleData(prev => ({ ...prev, categoryId: e.target.value }))}
-                            options={[
-                              { value: '', label: 'Select category...', disabled: true },
-                              ...ARTICLE_CATEGORIES.map(cat => ({ value: cat.id, label: cat.name })),
-                            ]}
-                          />
-                        </div>
-                        <div>
-                          <label className="text-sm font-bold text-[var(--foreground)] mb-2 block">
-                            Tags (comma-separated)
-                          </label>
-                          <Input
-                            value={articleData.tags}
-                            onChange={(e) => setArticleData(prev => ({ ...prev, tags: e.target.value }))}
-                            placeholder="sustainability, research, climate"
-                          />
-                        </div>
-                      </div>
-
-                      {/* Widget Order */}
-                      <div>
-                        <label className="text-sm font-bold text-[var(--foreground)] mb-2 block">
-                          Sidebar Widgets
-                        </label>
-                        <p className="text-xs text-[var(--muted-foreground)] mb-3">
-                          Drag to reorder, toggle to show/hide
-                        </p>
-                        <Reorder.Group
-                          axis="y"
-                          values={widgets}
-                          onReorder={setWidgets}
-                          className="space-y-2"
-                        >
-                          {widgets.map((widget) => (
-                            <Reorder.Item
-                              key={widget.id}
-                              value={widget}
-                              className="flex items-center gap-3 p-3 bg-[var(--background)] rounded-lg cursor-grab active:cursor-grabbing"
-                            >
-                              <GripVertical className="w-4 h-4 text-[var(--muted-foreground)]" />
-                              <widget.icon className="w-4 h-4 text-[var(--primary)]" />
-                              <span className="flex-1 text-sm font-medium text-[var(--foreground)]">
-                                {widget.name}
-                              </span>
-                              <button
-                                onClick={() => setWidgets(prev =>
-                                  prev.map(w => w.id === widget.id ? { ...w, enabled: !w.enabled } : w)
-                                )}
-                                className={`w-8 h-5 rounded-full transition-colors ${
-                                  widget.enabled ? 'bg-emerald-500' : 'bg-[var(--muted)]'
-                                }`}
-                              >
-                                <div className={`w-4 h-4 bg-white rounded-full shadow transition-transform ${
-                                  widget.enabled ? 'translate-x-3.5' : 'translate-x-0.5'
-                                }`} />
-                              </button>
-                            </Reorder.Item>
-                          ))}
-                        </Reorder.Group>
-                      </div>
-                    </div>
-                  </div>
-                </motion.div>
-              )}
-            </AnimatePresence>
-
             {/* Article Preview - Matches actual article display */}
             <div className="min-h-screen">
               {/* Hero Section */}
@@ -836,33 +728,60 @@ We support MLA, APA, and Chicago citation formats."
 
                       {/* Sidebar */}
                       <aside className="md:col-span-1 space-y-6">
-                        <Reorder.Group
-                          axis="y"
-                          values={widgets.filter(w => w.enabled)}
-                          onReorder={(newOrder) => {
-                            const disabledWidgets = widgets.filter(w => !w.enabled)
-                            setWidgets([...newOrder, ...disabledWidgets])
-                          }}
-                          className="space-y-6"
-                        >
-                          {widgets.filter(w => w.enabled).map((widget) => (
-                            <Reorder.Item
-                              key={widget.id}
-                              value={widget}
-                              className="cursor-grab active:cursor-grabbing"
-                            >
-                              {widget.id === 'references' && (
-                                <ReferencesPreview
-                                  references={articleData.references}
-                                  onUpdate={(refs) => setArticleData(prev => ({ ...prev, references: refs }))}
-                                />
-                              )}
-                              {widget.id === 'discussion' && <DiscussionPreview />}
-                              {widget.id === 'author' && <AuthorPreview session={session} />}
-                              {widget.id === 'share' && <SharePreview />}
-                            </Reorder.Item>
-                          ))}
-                        </Reorder.Group>
+                        {/* Article Settings */}
+                        <Card className="bg-[var(--card)] border-2 border-[var(--border)]">
+                          <CardHeader className="pb-3">
+                            <CardTitle className="text-sm font-bold flex items-center gap-2">
+                              <Tag className="w-4 h-4 text-[var(--primary)]" />
+                              Article Details
+                            </CardTitle>
+                          </CardHeader>
+                          <CardContent className="space-y-4">
+                            <div>
+                              <label className="text-xs font-medium text-[var(--muted-foreground)] mb-1 block">
+                                Category
+                              </label>
+                              <Select
+                                value={articleData.categoryId}
+                                onChange={(e) => setArticleData(prev => ({ ...prev, categoryId: e.target.value }))}
+                                options={[
+                                  { value: '', label: 'Select category...', disabled: true },
+                                  ...ARTICLE_CATEGORIES.map(cat => ({ value: cat.id, label: cat.name })),
+                                ]}
+                              />
+                            </div>
+                            <div>
+                              <label className="text-xs font-medium text-[var(--muted-foreground)] mb-1 block">
+                                Tags
+                              </label>
+                              <Input
+                                value={articleData.tags}
+                                onChange={(e) => setArticleData(prev => ({ ...prev, tags: e.target.value }))}
+                                placeholder="sustainability, research"
+                                className="text-sm"
+                              />
+                            </div>
+                            <div>
+                              <label className="text-xs font-medium text-[var(--muted-foreground)] mb-1 block">
+                                Cover Image
+                              </label>
+                              <CoverImageUpload
+                                value={articleData.coverImage}
+                                onChange={(url) => setArticleData(prev => ({ ...prev, coverImage: url }))}
+                              />
+                            </div>
+                          </CardContent>
+                        </Card>
+
+                        {/* Static widget display */}
+                        <div className="space-y-6">
+                          <ReferencesPreview
+                            references={articleData.references}
+                            onUpdate={(refs) => setArticleData(prev => ({ ...prev, references: refs }))}
+                          />
+                          <AuthorPreview session={session} />
+                          <SharePreview />
+                        </div>
                       </aside>
                     </div>
                   </div>
@@ -932,12 +851,7 @@ function ReferencesPreview({
   }
 
   return (
-    <Card className="border-4 border-[var(--border)] group">
-      <div className="absolute -top-2 -left-2 opacity-0 group-hover:opacity-100 transition-opacity">
-        <div className="p-1 bg-[var(--primary)] rounded">
-          <GripVertical className="w-4 h-4 text-white" />
-        </div>
-      </div>
+    <Card className="border-4 border-[var(--border)]">
       <CardHeader className="pb-2">
         <CardTitle className="text-base flex items-center justify-between text-[var(--foreground)]">
           <div className="flex items-center gap-2">
@@ -1032,12 +946,7 @@ function ReferencesPreview({
 // Discussion Preview Widget
 function DiscussionPreview() {
   return (
-    <Card className="border-4 border-[var(--border)] group">
-      <div className="absolute -top-2 -left-2 opacity-0 group-hover:opacity-100 transition-opacity">
-        <div className="p-1 bg-[var(--primary)] rounded">
-          <GripVertical className="w-4 h-4 text-white" />
-        </div>
-      </div>
+    <Card className="border-4 border-[var(--border)]">
       <CardHeader>
         <CardTitle className="text-base flex items-center gap-2 text-[var(--foreground)]">
           <MessageCircle className="w-4 h-4 text-[var(--primary)]" />
@@ -1057,12 +966,7 @@ function DiscussionPreview() {
 // Author Preview Widget
 function AuthorPreview({ session }: { session: any }) {
   return (
-    <Card className="border-4 border-[var(--border)] group">
-      <div className="absolute -top-2 -left-2 opacity-0 group-hover:opacity-100 transition-opacity">
-        <div className="p-1 bg-[var(--primary)] rounded">
-          <GripVertical className="w-4 h-4 text-white" />
-        </div>
-      </div>
+    <Card className="border-4 border-[var(--border)]">
       <CardHeader>
         <CardTitle className="text-base text-[var(--foreground)]">About the Author</CardTitle>
       </CardHeader>
@@ -1088,12 +992,7 @@ function AuthorPreview({ session }: { session: any }) {
 // Share Preview Widget
 function SharePreview() {
   return (
-    <Card className="border-4 border-[var(--border)] group">
-      <div className="absolute -top-2 -left-2 opacity-0 group-hover:opacity-100 transition-opacity">
-        <div className="p-1 bg-[var(--primary)] rounded">
-          <GripVertical className="w-4 h-4 text-white" />
-        </div>
-      </div>
+    <Card className="border-4 border-[var(--border)]">
       <CardHeader>
         <CardTitle className="text-base text-[var(--foreground)]">Share Article</CardTitle>
       </CardHeader>

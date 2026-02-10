@@ -81,6 +81,7 @@ export default function MyVolitionPage() {
   // Data state
   const [projects, setProjects] = useState<any[]>([])
   const [articles, setArticles] = useState<any[]>([])
+  const [localDrafts, setLocalDrafts] = useState<any[]>([])
   const [feedPosts, setFeedPosts] = useState<any[]>([])
   const [userProfile, setUserProfile] = useState<any>(null)
   const [networkSuggestions, setNetworkSuggestions] = useState<any[]>([])
@@ -145,6 +146,39 @@ export default function MyVolitionPage() {
       console.error('Error fetching articles:', error)
     }
   }, [session?.user?.id])
+
+  // Load local drafts from localStorage
+  const loadLocalDrafts = useCallback(() => {
+    try {
+      const savedDraft = localStorage.getItem('article-draft-v2')
+      if (savedDraft) {
+        const draft = JSON.parse(savedDraft)
+        if (draft.articleData?.title || draft.articleData?.content) {
+          // Create a pseudo-article object for the draft
+          const draftArticle = {
+            id: 'local-draft',
+            title: draft.articleData.title || 'Untitled Draft',
+            slug: 'local-draft',
+            excerpt: draft.articleData.excerpt || '',
+            coverImage: draft.articleData.coverImage || null,
+            status: 'LOCAL_DRAFT',
+            views: 0,
+            readTime: Math.ceil((draft.articleData.content?.split(/\s+/).length || 0) / 200),
+            createdAt: draft.savedAt || new Date().toISOString(),
+            isLocalDraft: true,
+          }
+          setLocalDrafts([draftArticle])
+        } else {
+          setLocalDrafts([])
+        }
+      } else {
+        setLocalDrafts([])
+      }
+    } catch (error) {
+      console.error('Error loading local drafts:', error)
+      setLocalDrafts([])
+    }
+  }, [])
 
   const fetchFeedPosts = useCallback(async () => {
     if (!session?.user?.id) return
@@ -236,6 +270,9 @@ export default function MyVolitionPage() {
   // Initial data fetch
   useEffect(() => {
     if (session?.user?.id) {
+      // Load local drafts from localStorage (sync operation)
+      loadLocalDrafts()
+
       Promise.all([
         fetchProjects(),
         fetchArticles(),
@@ -249,6 +286,7 @@ export default function MyVolitionPage() {
     }
   }, [
     session?.user?.id,
+    loadLocalDrafts,
     fetchProjects,
     fetchArticles,
     fetchFeedPosts,
@@ -362,23 +400,45 @@ export default function MyVolitionPage() {
         ) : null
 
       case 'articles':
-        return articles.length > 0 ? (
-          getSortedItems(articles, 'articles').map((article) => (
-            <SortableCard key={article.id} id={article.id} isCustomizing={isCustomizing}>
-              <ArticleCard
-                article={article}
-                viewMode={viewMode}
-                onDelete={(id) =>
-                  setDeleteModal({
-                    isOpen: true,
-                    type: 'article',
-                    id,
-                    title: 'Delete Article',
-                  })
-                }
-              />
-            </SortableCard>
-          ))
+        // Combine local drafts with API-fetched articles
+        const allArticles = [...localDrafts, ...articles]
+        return allArticles.length > 0 ? (
+          <>
+            {/* Local drafts first */}
+            {localDrafts.map((draft) => (
+              <SortableCard key={draft.id} id={draft.id} isCustomizing={isCustomizing}>
+                <ArticleCard
+                  article={{
+                    ...draft,
+                    status: 'DRAFT', // Display as DRAFT for styling
+                  }}
+                  viewMode={viewMode}
+                  onDelete={() => {
+                    // Clear local draft
+                    localStorage.removeItem('article-draft-v2')
+                    setLocalDrafts([])
+                  }}
+                />
+              </SortableCard>
+            ))}
+            {/* API-fetched articles */}
+            {getSortedItems(articles, 'articles').map((article) => (
+              <SortableCard key={article.id} id={article.id} isCustomizing={isCustomizing}>
+                <ArticleCard
+                  article={article}
+                  viewMode={viewMode}
+                  onDelete={(id) =>
+                    setDeleteModal({
+                      isOpen: true,
+                      type: 'article',
+                      id,
+                      title: 'Delete Article',
+                    })
+                  }
+                />
+              </SortableCard>
+            ))}
+          </>
         ) : null
 
       case 'learning':
@@ -499,7 +559,7 @@ export default function MyVolitionPage() {
     switch (laneId) {
       case 'profile': return 1 // Always show the business card
       case 'projects': return projects.length
-      case 'articles': return articles.length
+      case 'articles': return articles.length + localDrafts.length
       case 'learning': return learningModules.length
       case 'network': return following.length + networkSuggestions.length
       case 'feed': return feedPosts.length
@@ -511,7 +571,7 @@ export default function MyVolitionPage() {
   const getLaneItemIds = (laneId: LaneId): string[] => {
     switch (laneId) {
       case 'projects': return projects.map(p => p.id)
-      case 'articles': return articles.map(a => a.id)
+      case 'articles': return [...localDrafts.map(d => d.id), ...articles.map(a => a.id)]
       case 'learning': return learningModules.map(m => m.id)
       case 'feed': return feedPosts.map(p => p.id)
       default: return []

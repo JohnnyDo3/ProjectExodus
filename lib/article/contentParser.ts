@@ -93,20 +93,32 @@ function parseCitation(raw: string, index: number): ParsedReference {
   let publisher = ''
 
   // Extract URL if present - handle various formats
-  // Standard URLs
+  // Use a comprehensive regex that captures URLs in many contexts
   const urlPatterns = [
-    /https?:\/\/[^\s<>"{}|\\^`\[\]]+/gi,  // Standard URLs
-    /www\.[^\s<>"{}|\\^`\[\]]+/gi,         // www. URLs
-    /doi\.org\/[^\s<>"{}|\\^`\[\]]+/gi,    // DOI URLs
-    /doi:\s*([^\s<>"{}|\\^`\[\]]+)/gi,     // doi: format
+    // Standard URLs - more permissive to catch full URLs
+    /https?:\/\/[^\s<>"{}|\\^`\[\]()]+(?:\([^\s<>"{}|\\^`\[\]]*\))?[^\s<>"{}|\\^`\[\]()]*/gi,
+    // URLs in parentheses or angle brackets
+    /[<(](https?:\/\/[^\s<>()]+)[>)]/gi,
+    // www. URLs
+    /www\.[a-zA-Z0-9][a-zA-Z0-9-]*\.[a-zA-Z]{2,}[^\s<>"{}|\\^`\[\]]*/gi,
+    // DOI URLs
+    /doi\.org\/[^\s<>"{}|\\^`\[\]]+/gi,
+    // doi: format
+    /doi:\s*10\.[^\s<>"{}|\\^`\[\]]+/gi,
   ]
 
   for (const pattern of urlPatterns) {
+    // Reset lastIndex for global patterns
+    pattern.lastIndex = 0
     const match = trimmed.match(pattern)
     if (match) {
       url = match[0]
-        .replace(/[.,;:)\]]+$/, '') // Remove trailing punctuation
-        .replace(/^doi:\s*/i, 'https://doi.org/') // Convert doi: to URL
+        // Remove surrounding brackets/parens if captured
+        .replace(/^[<(]|[>)]$/g, '')
+        // Remove trailing punctuation that's not part of URL
+        .replace(/[.,;:)\]>'"]+$/, '')
+        // Convert doi: to URL
+        .replace(/^doi:\s*/i, 'https://doi.org/')
       if (!url.startsWith('http')) {
         url = 'https://' + url
       }
@@ -114,14 +126,40 @@ function parseCitation(raw: string, index: number): ParsedReference {
     }
   }
 
-  // Also check for "Retrieved from" or "Available at" patterns
+  // Check for "Retrieved from", "Available at", or "Accessed" patterns
   if (!url) {
-    const retrievedMatch = trimmed.match(/(?:Retrieved|Accessed|Available)\s+(?:from|at)[:\s]+([^\s]+)/i)
-    if (retrievedMatch) {
-      url = retrievedMatch[1].replace(/[.,;:)\]]+$/, '')
-      if (!url.startsWith('http')) {
-        url = 'https://' + url
+    const retrievedPatterns = [
+      /(?:Retrieved|Accessed|Available)\s+(?:from|at)[:\s]+(\S+)/i,
+      /(?:Retrieved|Accessed)\s+\w+\s+\d+,?\s+\d{4},?\s+from\s+(\S+)/i, // "Retrieved January 15, 2024, from URL"
+      /URL:\s*(\S+)/i,
+      /Link:\s*(\S+)/i,
+    ]
+
+    for (const pattern of retrievedPatterns) {
+      const match = trimmed.match(pattern)
+      if (match) {
+        url = match[1].replace(/[.,;:)\]>'"]+$/, '')
+        if (!url.startsWith('http') && !url.startsWith('www.')) {
+          // Skip if it doesn't look like a URL
+          if (url.includes('.') && url.length > 5) {
+            url = 'https://' + url
+          } else {
+            url = ''
+          }
+        } else if (url.startsWith('www.')) {
+          url = 'https://' + url
+        }
+        if (url) break
       }
+    }
+  }
+
+  // Check if citation ends with a URL (common in website citations)
+  if (!url) {
+    // Look for URL at end of citation after common separators
+    const endUrlMatch = trimmed.match(/(?:,|\.|;)\s*(https?:\/\/[^\s<>"]+)\s*\.?$/i)
+    if (endUrlMatch) {
+      url = endUrlMatch[1].replace(/[.,;:)\]>'"]+$/, '')
     }
   }
 
@@ -311,7 +349,12 @@ function extractWorksCited(content: string): { body: string; references: ParsedR
         /^[@][\w]+/.test(trimmed) ||                           // @citation
         // Special starts
         /^"[A-Z]/.test(trimmed) ||                             // "Title (no author)
-        /^The\s+[A-Z]/.test(trimmed) && trimmed.length < 100   // The Organization
+        (/^The\s+[A-Z]/.test(trimmed) && trimmed.length < 100) || // The Organization
+        // Website citation patterns
+        /^"[^"]+"\.\s*[A-Z]/.test(trimmed) ||                  // "Article Title". Website
+        /^[A-Z][a-z]+\s+[A-Z][a-z]+\.\s*"/.test(trimmed) ||    // Website Name. "Title"
+        /^[A-Z][a-zA-Z]+\.[a-z]{2,}/.test(trimmed) ||          // Domain.com style
+        (/^[A-Z][a-zÀ-ÿ]+\s+/.test(trimmed) && /https?:\/\//.test(trimmed) && trimmed.length < 500) // Line with URL
     }
 
     if (isNewRef && currentRef) {
@@ -337,6 +380,111 @@ function extractWorksCited(content: string): { body: string; references: ParsedR
 }
 
 /**
+ * Detect if a line looks like an author name (for MLA header detection)
+ */
+function looksLikeAuthorName(line: string): boolean {
+  const trimmed = line.trim()
+  // Short line with 2-4 words, capitalized, no special formatting
+  const words = trimmed.split(/\s+/)
+  if (words.length < 1 || words.length > 5) return false
+  if (trimmed.length > 50) return false
+
+  // Check for name patterns: "John Smith" or "Smith, John" or "John A. Smith"
+  const namePattern = /^[A-Z][a-zÀ-ÿ]+(?:\s+[A-Z]\.?)?\s+[A-Z][a-zÀ-ÿ]+$/
+  const lastFirstPattern = /^[A-Z][a-zÀ-ÿ]+,\s*[A-Z][a-zÀ-ÿ]+/
+
+  return namePattern.test(trimmed) || lastFirstPattern.test(trimmed)
+}
+
+/**
+ * Detect if a line looks like a professor/instructor line
+ */
+function looksLikeProfessorLine(line: string): boolean {
+  const trimmed = line.trim().toLowerCase()
+  return /^(professor|prof\.|dr\.|instructor|mr\.|mrs\.|ms\.)\s+/i.test(line.trim()) ||
+         trimmed.includes('professor') ||
+         /^[A-Z][a-z]+\s+[A-Z][a-z]+$/.test(line.trim()) // Could be just a name
+}
+
+/**
+ * Detect if a line looks like a class/course name
+ */
+function looksLikeClassName(line: string): boolean {
+  const trimmed = line.trim()
+  // Class patterns: "ENG 101", "English Composition", "HIST-201", "Biology 101"
+  const courseCodePattern = /^[A-Z]{2,4}[-\s]?\d{2,4}/
+  const courseNamePattern = /^[A-Z][a-z]+\s+(Composition|Literature|Studies|History|Science|Writing|Analysis|Theory|Introduction|Fundamentals)/i
+  const genericCoursePattern = /\b(101|102|201|202|1010|1020|2010)\b/
+
+  return courseCodePattern.test(trimmed) ||
+         courseNamePattern.test(trimmed) ||
+         (trimmed.length < 40 && genericCoursePattern.test(trimmed))
+}
+
+/**
+ * Detect if a line looks like a date
+ */
+function looksLikeDateLine(line: string): boolean {
+  const trimmed = line.trim()
+  // Date patterns: "15 February 2026", "February 15, 2026", "2/15/2026", "15/02/2026"
+  const monthNames = /\b(January|February|March|April|May|June|July|August|September|October|November|December)\b/i
+  const numericDate = /^\d{1,2}[\/\-\.]\d{1,2}[\/\-\.]\d{2,4}$/
+  const writtenDate = /^\d{1,2}\s+(January|February|March|April|May|June|July|August|September|October|November|December)\s+\d{4}$/i
+  const americanDate = /^(January|February|March|April|May|June|July|August|September|October|November|December)\s+\d{1,2},?\s+\d{4}$/i
+
+  return (trimmed.length < 30 && monthNames.test(trimmed)) ||
+         numericDate.test(trimmed) ||
+         writtenDate.test(trimmed) ||
+         americanDate.test(trimmed)
+}
+
+/**
+ * Detect MLA-style header and find where the actual title starts
+ * MLA format: Author, Professor, Class, Date, then Title
+ */
+function detectMlaHeader(lines: string[]): { headerLineCount: number; isMlaFormat: boolean } {
+  if (lines.length < 5) {
+    return { headerLineCount: 0, isMlaFormat: false }
+  }
+
+  // Check first 4 lines for MLA pattern
+  const line1 = lines[0].trim()
+  const line2 = lines[1].trim()
+  const line3 = lines[2].trim()
+  const line4 = lines[3].trim()
+
+  // Score how likely this is MLA format
+  let mlaScore = 0
+
+  // Line 1: Author name
+  if (looksLikeAuthorName(line1)) mlaScore += 2
+
+  // Line 2: Professor
+  if (looksLikeProfessorLine(line2)) mlaScore += 2
+
+  // Line 3: Class name
+  if (looksLikeClassName(line3)) mlaScore += 2
+
+  // Line 4: Date
+  if (looksLikeDateLine(line4)) mlaScore += 2
+
+  // If we have a strong MLA pattern (score >= 4), skip header
+  if (mlaScore >= 4) {
+    return { headerLineCount: 4, isMlaFormat: true }
+  }
+
+  // Check for a less strict pattern: date somewhere in first 4 lines
+  for (let i = 0; i < Math.min(4, lines.length); i++) {
+    if (looksLikeDateLine(lines[i])) {
+      // Found date - title is likely after it
+      return { headerLineCount: i + 1, isMlaFormat: true }
+    }
+  }
+
+  return { headerLineCount: 0, isMlaFormat: false }
+}
+
+/**
  * Extract title from content
  */
 function extractTitle(content: string): { title: string; bodyWithoutTitle: string } {
@@ -346,8 +494,23 @@ function extractTitle(content: string): { title: string; bodyWithoutTitle: strin
     return { title: 'Untitled', bodyWithoutTitle: content }
   }
 
-  // First non-empty line is likely the title
-  let title = lines[0].trim()
+  // Check for MLA-style header (author, professor, class, date before title)
+  const { headerLineCount, isMlaFormat } = detectMlaHeader(lines)
+
+  let titleLineIndex = 0
+
+  if (isMlaFormat && headerLineCount > 0) {
+    // Skip the header lines to find the actual title
+    titleLineIndex = headerLineCount
+
+    // Make sure we have a line after the header
+    if (titleLineIndex >= lines.length) {
+      titleLineIndex = 0 // Fall back to first line if no title after header
+    }
+  }
+
+  // Get the title from the identified line
+  let title = lines[titleLineIndex].trim()
 
   // Remove common title markers
   title = title
@@ -356,19 +519,31 @@ function extractTitle(content: string): { title: string; bodyWithoutTitle: strin
     .replace(/^<h1>|<\/h1>$/gi, '') // HTML heading
     .trim()
 
-  // If title is too long, it might not be a title
+  // If title is too long, it might not be a title - look for next short line
   if (title.length > 200) {
-    // Try to find a shorter first sentence
-    const firstSentence = title.match(/^[^.!?]+[.!?]/)
-    if (firstSentence && firstSentence[0].length < 150) {
-      title = firstSentence[0]
-    } else {
-      title = title.slice(0, 100) + '...'
+    // Try to find a shorter line nearby that could be the title
+    for (let i = titleLineIndex + 1; i < Math.min(titleLineIndex + 3, lines.length); i++) {
+      const candidate = lines[i].trim()
+      if (candidate.length > 10 && candidate.length < 150 && !looksLikeDateLine(candidate)) {
+        title = candidate
+        titleLineIndex = i
+        break
+      }
+    }
+
+    // If still too long, truncate
+    if (title.length > 200) {
+      const firstSentence = title.match(/^[^.!?]+[.!?]/)
+      if (firstSentence && firstSentence[0].length < 150) {
+        title = firstSentence[0]
+      } else {
+        title = title.slice(0, 100) + '...'
+      }
     }
   }
 
-  // Remove the title line from body
-  const bodyWithoutTitle = lines.slice(1).join('\n').trim()
+  // Remove all lines up to and including the title line from body
+  const bodyWithoutTitle = lines.slice(titleLineIndex + 1).join('\n').trim()
 
   return { title, bodyWithoutTitle }
 }
