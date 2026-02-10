@@ -316,13 +316,18 @@ function extractWorksCited(content: string): { body: string; references: ParsedR
     line.length > 0 && /^\s{2,}/.test(line) && line.trim().length > 0
   )
 
+  // Count empty lines to detect if refs are separated by blank lines
+  const emptyLineCount = refLines.filter(l => !l.trim()).length
+  const nonEmptyCount = refLines.filter(l => l.trim()).length
+  const separatedByBlankLines = emptyLineCount >= nonEmptyCount * 0.3 // ~30% empty lines suggests separation
+
   for (let i = 0; i < refLines.length; i++) {
     const line = refLines[i]
     const trimmed = line.trim()
 
     if (!trimmed) {
-      // Empty line - save current reference if exists
-      if (currentRef) {
+      // Empty line - save current reference if using blank line separation
+      if (currentRef && separatedByBlankLines) {
         references.push(parseCitation(currentRef, references.length))
         currentRef = ''
       }
@@ -335,14 +340,17 @@ function extractWorksCited(content: string): { body: string; references: ParsedR
     if (hasHangingIndent) {
       // With hanging indent: new refs start at column 0, continuations are indented
       isNewRef = /^\S/.test(line) && line.trim().length > 0
+    } else if (separatedByBlankLines) {
+      // If blank-line separated, each non-empty section is a new ref
+      isNewRef = !currentRef
     } else {
-      // Without hanging indent: detect by content patterns
+      // Without clear separation: detect by content patterns
       isNewRef =
         // Author patterns
         /^[A-Z][a-zÀ-ÿ]+,\s*[A-Z]/.test(trimmed) ||           // Smith, J or Smith, John
         /^[A-Z][a-zÀ-ÿ]+\s+[A-Z][a-zÀ-ÿ]+\s*[,.]/.test(trimmed) || // John Smith,
         /^[A-Z][a-zÀ-ÿ]+\s+[A-Z]\.\s*[A-Z]?/.test(trimmed) || // Smith J. or Smith J. A.
-        /^[A-Z][A-Z]+[,.]/.test(trimmed) ||                    // ALL CAPS org name
+        /^[A-Z][A-Z]+[,.\s]/.test(trimmed) ||                  // ALL CAPS org name
         // Numbered/bracketed references
         /^\d+[\.\)]\s/.test(trimmed) ||                        // 1. or 1)
         /^\[\d+\]/.test(trimmed) ||                            // [1]
@@ -354,7 +362,7 @@ function extractWorksCited(content: string): { body: string; references: ParsedR
         /^"[^"]+"\.\s*[A-Z]/.test(trimmed) ||                  // "Article Title". Website
         /^[A-Z][a-z]+\s+[A-Z][a-z]+\.\s*"/.test(trimmed) ||    // Website Name. "Title"
         /^[A-Z][a-zA-Z]+\.[a-z]{2,}/.test(trimmed) ||          // Domain.com style
-        (/^[A-Z][a-zÀ-ÿ]+\s+/.test(trimmed) && /https?:\/\//.test(trimmed) && trimmed.length < 500) // Line with URL
+        (/^[A-Z]/.test(trimmed) && /https?:\/\//.test(trimmed)) // Any line starting with cap letter and has URL
     }
 
     if (isNewRef && currentRef) {
@@ -441,44 +449,44 @@ function looksLikeDateLine(line: string): boolean {
 /**
  * Detect MLA-style header and find where the actual title starts
  * MLA format: Author, Professor, Class, Date, then Title
+ * Only detects if we have strong evidence of all 4 header elements
  */
 function detectMlaHeader(lines: string[]): { headerLineCount: number; isMlaFormat: boolean } {
-  if (lines.length < 5) {
+  if (lines.length < 6) {
+    // Need at least 6 lines: 4 header + title + some body content
     return { headerLineCount: 0, isMlaFormat: false }
   }
 
-  // Check first 4 lines for MLA pattern
+  // Check first 4 lines for MLA pattern - require ALL 4 to match
   const line1 = lines[0].trim()
   const line2 = lines[1].trim()
   const line3 = lines[2].trim()
   const line4 = lines[3].trim()
 
-  // Score how likely this is MLA format
-  let mlaScore = 0
-
-  // Line 1: Author name
-  if (looksLikeAuthorName(line1)) mlaScore += 2
-
-  // Line 2: Professor
-  if (looksLikeProfessorLine(line2)) mlaScore += 2
-
-  // Line 3: Class name
-  if (looksLikeClassName(line3)) mlaScore += 2
-
-  // Line 4: Date
-  if (looksLikeDateLine(line4)) mlaScore += 2
-
-  // If we have a strong MLA pattern (score >= 4), skip header
-  if (mlaScore >= 4) {
-    return { headerLineCount: 4, isMlaFormat: true }
+  // All lines must be short (typical header lines are brief)
+  if (line1.length > 60 || line2.length > 60 || line3.length > 60 || line4.length > 30) {
+    return { headerLineCount: 0, isMlaFormat: false }
   }
 
-  // Check for a less strict pattern: date somewhere in first 4 lines
-  for (let i = 0; i < Math.min(4, lines.length); i++) {
-    if (looksLikeDateLine(lines[i])) {
-      // Found date - title is likely after it
-      return { headerLineCount: i + 1, isMlaFormat: true }
-    }
+  // Score how likely this is MLA format - require strong match
+  let mlaScore = 0
+
+  // Line 1: Author name (must match)
+  if (looksLikeAuthorName(line1)) mlaScore += 2
+
+  // Line 2: Professor (must match)
+  if (looksLikeProfessorLine(line2)) mlaScore += 2
+
+  // Line 3: Class name (must match)
+  if (looksLikeClassName(line3)) mlaScore += 2
+
+  // Line 4: Date (must match exactly - strict date patterns only)
+  const strictDatePattern = /^(\d{1,2}\s+(January|February|March|April|May|June|July|August|September|October|November|December)\s+\d{4}|(January|February|March|April|May|June|July|August|September|October|November|December)\s+\d{1,2},?\s+\d{4}|\d{1,2}[\/\-]\d{1,2}[\/\-]\d{2,4})$/i
+  if (strictDatePattern.test(line4)) mlaScore += 2
+
+  // Only detect MLA if we have ALL 4 elements (score = 8)
+  if (mlaScore >= 8) {
+    return { headerLineCount: 4, isMlaFormat: true }
   }
 
   return { headerLineCount: 0, isMlaFormat: false }
@@ -488,14 +496,16 @@ function detectMlaHeader(lines: string[]): { headerLineCount: number; isMlaForma
  * Extract title from content
  */
 function extractTitle(content: string): { title: string; bodyWithoutTitle: string } {
-  const lines = content.split('\n').filter(l => l.trim())
+  // Keep original content for body extraction
+  const originalLines = content.split('\n')
+  const nonEmptyLines = originalLines.filter(l => l.trim())
 
-  if (lines.length === 0) {
+  if (nonEmptyLines.length === 0) {
     return { title: 'Untitled', bodyWithoutTitle: content }
   }
 
   // Check for MLA-style header (author, professor, class, date before title)
-  const { headerLineCount, isMlaFormat } = detectMlaHeader(lines)
+  const { headerLineCount, isMlaFormat } = detectMlaHeader(nonEmptyLines)
 
   let titleLineIndex = 0
 
@@ -504,13 +514,13 @@ function extractTitle(content: string): { title: string; bodyWithoutTitle: strin
     titleLineIndex = headerLineCount
 
     // Make sure we have a line after the header
-    if (titleLineIndex >= lines.length) {
+    if (titleLineIndex >= nonEmptyLines.length) {
       titleLineIndex = 0 // Fall back to first line if no title after header
     }
   }
 
   // Get the title from the identified line
-  let title = lines[titleLineIndex].trim()
+  let title = nonEmptyLines[titleLineIndex].trim()
 
   // Remove common title markers
   title = title
@@ -519,31 +529,34 @@ function extractTitle(content: string): { title: string; bodyWithoutTitle: strin
     .replace(/^<h1>|<\/h1>$/gi, '') // HTML heading
     .trim()
 
-  // If title is too long, it might not be a title - look for next short line
+  // If title is too long, it's probably not the title - truncate
   if (title.length > 200) {
-    // Try to find a shorter line nearby that could be the title
-    for (let i = titleLineIndex + 1; i < Math.min(titleLineIndex + 3, lines.length); i++) {
-      const candidate = lines[i].trim()
-      if (candidate.length > 10 && candidate.length < 150 && !looksLikeDateLine(candidate)) {
-        title = candidate
-        titleLineIndex = i
-        break
-      }
-    }
-
-    // If still too long, truncate
-    if (title.length > 200) {
-      const firstSentence = title.match(/^[^.!?]+[.!?]/)
-      if (firstSentence && firstSentence[0].length < 150) {
-        title = firstSentence[0]
-      } else {
-        title = title.slice(0, 100) + '...'
-      }
+    const firstSentence = title.match(/^[^.!?]+[.!?]/)
+    if (firstSentence && firstSentence[0].length < 150) {
+      title = firstSentence[0]
+    } else {
+      title = title.slice(0, 100) + '...'
     }
   }
 
-  // Remove all lines up to and including the title line from body
-  const bodyWithoutTitle = lines.slice(titleLineIndex + 1).join('\n').trim()
+  // Build body: find where the title line is in original content and skip to there
+  // First, find the title text in original lines
+  let foundTitleInOriginal = -1
+  for (let i = 0; i < originalLines.length; i++) {
+    if (originalLines[i].trim() === nonEmptyLines[titleLineIndex].trim()) {
+      foundTitleInOriginal = i
+      break
+    }
+  }
+
+  // Body is everything after the title line (preserving original formatting)
+  let bodyWithoutTitle: string
+  if (foundTitleInOriginal >= 0) {
+    bodyWithoutTitle = originalLines.slice(foundTitleInOriginal + 1).join('\n').trim()
+  } else {
+    // Fallback: just remove the first non-empty line content
+    bodyWithoutTitle = nonEmptyLines.slice(titleLineIndex + 1).join('\n').trim()
+  }
 
   return { title, bodyWithoutTitle }
 }
