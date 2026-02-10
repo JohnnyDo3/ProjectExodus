@@ -92,63 +92,144 @@ function parseCitation(raw: string, index: number): ParsedReference {
   let url = ''
   let publisher = ''
 
-  // Extract URL if present
-  const urlMatch = trimmed.match(/https?:\/\/[^\s]+/)
-  if (urlMatch) {
-    url = urlMatch[0].replace(/[.,;:]+$/, '') // Remove trailing punctuation
+  // Extract URL if present - handle various formats
+  // Standard URLs
+  const urlPatterns = [
+    /https?:\/\/[^\s<>"{}|\\^`\[\]]+/gi,  // Standard URLs
+    /www\.[^\s<>"{}|\\^`\[\]]+/gi,         // www. URLs
+    /doi\.org\/[^\s<>"{}|\\^`\[\]]+/gi,    // DOI URLs
+    /doi:\s*([^\s<>"{}|\\^`\[\]]+)/gi,     // doi: format
+  ]
+
+  for (const pattern of urlPatterns) {
+    const match = trimmed.match(pattern)
+    if (match) {
+      url = match[0]
+        .replace(/[.,;:)\]]+$/, '') // Remove trailing punctuation
+        .replace(/^doi:\s*/i, 'https://doi.org/') // Convert doi: to URL
+      if (!url.startsWith('http')) {
+        url = 'https://' + url
+      }
+      break
+    }
   }
 
-  // Extract year
-  const yearMatch = trimmed.match(/\((\d{4})\)|\b(19|20)\d{2}\b/)
-  if (yearMatch) {
-    year = yearMatch[1] || yearMatch[0]
+  // Also check for "Retrieved from" or "Available at" patterns
+  if (!url) {
+    const retrievedMatch = trimmed.match(/(?:Retrieved|Accessed|Available)\s+(?:from|at)[:\s]+([^\s]+)/i)
+    if (retrievedMatch) {
+      url = retrievedMatch[1].replace(/[.,;:)\]]+$/, '')
+      if (!url.startsWith('http')) {
+        url = 'https://' + url
+      }
+    }
   }
 
-  // Extract authors (usually first part before period or parenthesis)
-  const authorMatch = trimmed.match(/^([^.(]+)/)
-  if (authorMatch) {
-    authors = authorMatch[1].trim().replace(/,$/, '')
+  // Extract year - multiple patterns
+  const yearPatterns = [
+    /\((\d{4})\)/,                    // (2020)
+    /\((\d{4}),/,                     // (2020,
+    /,\s*(\d{4})\./,                  // , 2020.
+    /\b(19|20)\d{2}\b/,               // standalone year
+  ]
+
+  for (const pattern of yearPatterns) {
+    const match = trimmed.match(pattern)
+    if (match) {
+      year = match[1] || match[0]
+      break
+    }
   }
 
-  // Extract title (usually in quotes or italics, or after first period)
-  const quotedTitleMatch = trimmed.match(/"([^"]+)"/)
-  const italicTitleMatch = trimmed.match(/<i>([^<]+)<\/i>/) || trimmed.match(/<em>([^<]+)<\/em>/)
+  // Extract authors (usually first part before period, parenthesis, or year)
+  const authorPatterns = [
+    /^([^.(]+?)\s*\(\d{4}\)/,         // Authors (Year)
+    /^([^.]+?)\.\s*["(]/,             // Authors. "Title or (Year
+    /^([^.]+?)\.\s*[A-Z]/,            // Authors. Title
+  ]
 
-  if (quotedTitleMatch) {
-    title = quotedTitleMatch[1]
-  } else if (italicTitleMatch) {
-    title = italicTitleMatch[1]
-  } else {
-    // Try to extract title after first period
-    const parts = trimmed.split('.')
+  for (const pattern of authorPatterns) {
+    const match = trimmed.match(pattern)
+    if (match) {
+      authors = match[1].trim().replace(/,$/, '').replace(/\s+/g, ' ')
+      break
+    }
+  }
+
+  // Fallback: first part before period
+  if (!authors) {
+    const fallbackMatch = trimmed.match(/^([^.]+)/)
+    if (fallbackMatch) {
+      authors = fallbackMatch[1].trim().replace(/,$/, '')
+    }
+  }
+
+  // Extract title - try multiple patterns
+  const titlePatterns = [
+    /"([^"]+)"/,                       // "Quoted title"
+    /''([^']+)''/,                     // ''Single quoted''
+    /<i>([^<]+)<\/i>/i,               // <i>Italic title</i>
+    /<em>([^<]+)<\/em>/i,             // <em>Italic title</em>
+    /\*([^*]+)\*/,                     // *Markdown italic*
+    /\(\d{4}\)\.\s*([^.]+\.)/,        // (Year). Title.
+  ]
+
+  for (const pattern of titlePatterns) {
+    const match = trimmed.match(pattern)
+    if (match) {
+      title = match[1].trim()
+      break
+    }
+  }
+
+  // Fallback: try to extract title after first period (skip author)
+  if (!title) {
+    const parts = trimmed.split(/\.\s+/)
     if (parts.length > 1) {
-      // Skip author part, get next substantial part
       for (let i = 1; i < parts.length; i++) {
         const part = parts[i].trim()
-        if (part.length > 10 && !part.match(/^\d{4}$/) && !part.match(/^[A-Z]\./)) {
-          title = part
+        // Skip if it's just initials, year, or very short
+        if (part.length > 15 &&
+            !part.match(/^\d{4}$/) &&
+            !part.match(/^[A-Z]\.$/) &&
+            !part.match(/^[A-Z]\.\s*[A-Z]\.$/)) {
+          title = part.replace(/\.$/, '')
           break
         }
       }
     }
   }
 
-  // If no title found, use a portion of the raw text
+  // If still no title, use a cleaned portion of raw text
   if (!title) {
-    title = trimmed.slice(0, 80) + (trimmed.length > 80 ? '...' : '')
+    // Remove URL and author portion, use what's left
+    let remaining = trimmed
+      .replace(/https?:\/\/[^\s]+/g, '')
+      .replace(/^[^.]+\.\s*/, '')
+      .trim()
+    title = remaining.slice(0, 100) + (remaining.length > 100 ? '...' : '')
   }
 
-  // Extract publisher (often after colon or before year)
-  const publisherMatch = trimmed.match(/:\s*([^,]+),/) || trimmed.match(/([A-Z][a-z]+\s*(Press|Publishing|Publications|Books|University))/)
-  if (publisherMatch) {
-    publisher = publisherMatch[1].trim()
+  // Extract publisher
+  const publisherPatterns = [
+    /:\s*([^,]+),\s*\d{4}/,                                    // Place: Publisher, Year
+    /([A-Z][a-z]+(?:\s+[A-Z][a-z]+)?\s*(?:Press|Publishing|Publications|Books|University|Inc\.|Ltd\.))/,
+    /In\s+([^(]+)\s*\(/,                                        // In Journal Name (
+  ]
+
+  for (const pattern of publisherPatterns) {
+    const match = trimmed.match(pattern)
+    if (match) {
+      publisher = match[1].trim()
+      break
+    }
   }
 
   return {
     id: `ref-${index}-${Date.now()}`,
     raw: trimmed,
-    title,
-    authors,
+    title: title || 'Unknown Title',
+    authors: authors || 'Unknown Author',
     year,
     url,
     publisher,
@@ -162,15 +243,17 @@ function parseCitation(raw: string, index: number): ParsedReference {
 function extractWorksCited(content: string): { body: string; references: ParsedReference[] } {
   const lines = content.split('\n')
   let worksCitedIndex = -1
-  let worksCitedHeader = ''
 
-  // Find works cited section header
+  // Find works cited section header - more flexible matching
   for (let i = 0; i < lines.length; i++) {
     const lineLower = lines[i].toLowerCase().trim()
+    const lineClean = lineLower.replace(/[:#\-_*]+/g, '').trim()
+
     for (const header of WORKS_CITED_HEADERS) {
-      if (lineLower === header || lineLower.startsWith(header + ':') || lineLower.endsWith(header)) {
+      if (lineClean === header ||
+          lineLower.startsWith(header) ||
+          lineLower.includes(header)) {
         worksCitedIndex = i
-        worksCitedHeader = lines[i]
         break
       }
     }
@@ -186,12 +269,17 @@ function extractWorksCited(content: string): { body: string; references: ParsedR
   const bodyLines = lines.slice(0, worksCitedIndex)
   const refLines = lines.slice(worksCitedIndex + 1)
 
-  // Parse references - each reference typically starts on a new line
-  // and may span multiple lines (hanging indent)
+  // Parse references - handle various formats
   const references: ParsedReference[] = []
   let currentRef = ''
 
-  for (const line of refLines) {
+  // Detect if references use hanging indent (continuation lines start with spaces)
+  const hasHangingIndent = refLines.some(line =>
+    line.length > 0 && /^\s{2,}/.test(line) && line.trim().length > 0
+  )
+
+  for (let i = 0; i < refLines.length; i++) {
+    const line = refLines[i]
     const trimmed = line.trim()
 
     if (!trimmed) {
@@ -203,18 +291,35 @@ function extractWorksCited(content: string): { body: string; references: ParsedR
       continue
     }
 
-    // Check if this is a new reference (starts with author name pattern)
-    // or continuation of previous reference
-    const isNewRef = /^[A-Z][a-z]+,/.test(trimmed) ||
-                     /^[A-Z][a-z]+\s+[A-Z]/.test(trimmed) ||
-                     /^\d+\./.test(trimmed) || // Numbered references
-                     /^[@\[]/.test(trimmed) // @author or [1] style
+    // Determine if this is a new reference or continuation
+    let isNewRef = false
+
+    if (hasHangingIndent) {
+      // With hanging indent: new refs start at column 0, continuations are indented
+      isNewRef = /^\S/.test(line) && line.trim().length > 0
+    } else {
+      // Without hanging indent: detect by content patterns
+      isNewRef =
+        // Author patterns
+        /^[A-Z][a-zÀ-ÿ]+,\s*[A-Z]/.test(trimmed) ||           // Smith, J or Smith, John
+        /^[A-Z][a-zÀ-ÿ]+\s+[A-Z][a-zÀ-ÿ]+\s*[,.]/.test(trimmed) || // John Smith,
+        /^[A-Z][a-zÀ-ÿ]+\s+[A-Z]\.\s*[A-Z]?/.test(trimmed) || // Smith J. or Smith J. A.
+        /^[A-Z][A-Z]+[,.]/.test(trimmed) ||                    // ALL CAPS org name
+        // Numbered/bracketed references
+        /^\d+[\.\)]\s/.test(trimmed) ||                        // 1. or 1)
+        /^\[\d+\]/.test(trimmed) ||                            // [1]
+        /^[@][\w]+/.test(trimmed) ||                           // @citation
+        // Special starts
+        /^"[A-Z]/.test(trimmed) ||                             // "Title (no author)
+        /^The\s+[A-Z]/.test(trimmed) && trimmed.length < 100   // The Organization
+    }
 
     if (isNewRef && currentRef) {
       references.push(parseCitation(currentRef, references.length))
       currentRef = trimmed
     } else if (currentRef) {
-      currentRef += ' ' + trimmed
+      // Continuation - add space if needed
+      currentRef += (currentRef.endsWith('-') ? '' : ' ') + trimmed
     } else {
       currentRef = trimmed
     }
