@@ -464,7 +464,7 @@ export default function WriteArticlePage() {
               </Link>
               <div>
                 <h1 className="text-lg font-bold text-[var(--foreground)]">
-                  {viewMode === 'paste' ? 'Inscribe Your Wisdom' : articleData.title || 'Untitled Article'}
+                  {viewMode === 'paste' ? 'Publish an Article' : articleData.title || 'Untitled Article'}
                 </h1>
                 {viewMode === 'preview' && (
                   <div className="flex items-center gap-3 text-sm text-[var(--muted-foreground)]">

@@ -2561,7 +2561,7 @@ export default function ArticlesPage() {
                         <PenSquare className="w-5 h-5" />
                         <div className="absolute -top-1 -right-1 w-2 h-2 bg-amber-400 rounded-full animate-pulse" />
                       </div>
-                      <span className="tracking-wide">Inscribe Your Wisdom</span>
+                      <span className="tracking-wide">Publish an Article</span>
                       {/* Decorative corner accents */}
                       <div className="absolute top-1 left-1 w-2 h-2 border-l-2 border-t-2 border-emerald-300/50" />
                       <div className="absolute top-1 right-1 w-2 h-2 border-r-2 border-t-2 border-emerald-300/50" />
