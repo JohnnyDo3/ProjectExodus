@@ -45,14 +45,8 @@ const DANGEROUS_PATTERNS = [
   /expression\s*\(/gi,
   /url\s*\(\s*['"]?\s*javascript:/gi,
 
-  // Import/include attacks
-  /@import\s/gi,
-
-  // SQL injection patterns (in case content reaches DB queries)
-  /(\b(SELECT|INSERT|UPDATE|DELETE|DROP|UNION|ALTER)\b.*\b(FROM|INTO|TABLE|DATABASE)\b)/gi,
-
-  // Command injection
-  /[;&|`$]/g,  // Shell metacharacters (will be escaped, not blocked)
+  // Import/include attacks (CSS)
+  /@import\s+url/gi,
 
   // PHP/Server-side injection
   /<\?php/gi,
