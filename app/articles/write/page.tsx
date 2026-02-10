@@ -154,6 +154,12 @@ export default function WriteArticlePage() {
   const fileInputRef = useRef<HTMLInputElement>(null)
   const autoSaveTimer = useRef<NodeJS.Timeout | null>(null)
 
+  // Client-side only state (to avoid hydration mismatch)
+  const [mounted, setMounted] = useState(false)
+  useEffect(() => {
+    setMounted(true)
+  }, [])
+
   // Redirect if not logged in
   useEffect(() => {
     if (status === 'unauthenticated') {
@@ -790,7 +796,7 @@ We support MLA, APA, and Chicago citation formats."
                       </div>
                       <div className="flex items-center gap-2 text-[var(--muted-foreground)]">
                         <Calendar className="w-4 h-4 sm:w-5 sm:h-5" />
-                        <span>{new Date().toLocaleDateString()}</span>
+                        <span>{mounted ? new Date().toLocaleDateString() : 'Today'}</span>
                       </div>
                       <div className="flex items-center gap-2 text-[var(--accent)]">
                         <Clock className="w-4 h-4 sm:w-5 sm:h-5" />
