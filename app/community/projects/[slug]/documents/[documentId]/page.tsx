@@ -690,7 +690,7 @@ export default function DocumentPage({
                     showToolbar={editorMode !== 'view'}
                     showStats={false}
                     placeholder="Start writing your document..."
-                    enableCollaboration={!!process.env.NEXT_PUBLIC_HOCUSPOCUS_URL}
+                    enableCollaboration={!!process.env.NEXT_PUBLIC_PARTYKIT_HOST}
                     collaborationType="document"
                     currentUser={
                       session?.user
