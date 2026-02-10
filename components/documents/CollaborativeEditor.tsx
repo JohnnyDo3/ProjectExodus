@@ -18,6 +18,7 @@ import Color from '@tiptap/extension-color'
 import { TextStyle } from '@tiptap/extension-text-style'
 import Collaboration from '@tiptap/extension-collaboration'
 import CollaborationCursor from '@tiptap/extension-collaboration-cursor'
+import { SlashCommands } from './editor/SlashCommands'
 import { useCallback, useEffect, useState, useRef } from 'react'
 import { collaborationConfig, getDocumentName, getUserAwarenessInfo } from '@/lib/collaboration'
 import {
@@ -220,6 +221,8 @@ export function CollaborativeEditor({
       CharacterCount,
       Color,
       TextStyle,
+      // Slash commands for Notion-style block insertion
+      SlashCommands,
     ]
 
     // Add collaboration extensions only when ready

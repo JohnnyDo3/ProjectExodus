@@ -2101,3 +2101,121 @@ body.textbook-fullscreen .fixed.inset-0.z-50 {
 .sparkle {
   animation: sparkle 0.6s ease-in-out;
 }
+
+/* ============================================
+   DOCUMENT COMMENTS SYSTEM
+   Highlighting and interaction styles
+   ============================================ */
+
+/* Active comment highlight - yellow/amber for visibility */
+.comment-highlight.comment-active {
+  background-color: rgba(251, 191, 36, 0.3);
+  border-bottom: 2px solid rgba(251, 191, 36, 0.6);
+  cursor: pointer;
+  transition: background-color 200ms ease, border-color 200ms ease;
+  border-radius: 2px;
+}
+
+.comment-highlight.comment-active:hover {
+  background-color: rgba(251, 191, 36, 0.5);
+  border-bottom-color: rgba(251, 191, 36, 0.8);
+}
+
+/* Resolved comment highlight - gray/muted */
+.comment-highlight.comment-resolved {
+  background-color: rgba(156, 163, 175, 0.2);
+  border-bottom: 2px solid rgba(156, 163, 175, 0.4);
+  cursor: pointer;
+  transition: background-color 200ms ease, border-color 200ms ease;
+  border-radius: 2px;
+}
+
+.comment-highlight.comment-resolved:hover {
+  background-color: rgba(156, 163, 175, 0.3);
+  border-bottom-color: rgba(156, 163, 175, 0.6);
+}
+
+/* Focused comment - when selected from sidebar */
+.comment-highlight.comment-focused {
+  background-color: rgba(251, 191, 36, 0.5);
+  border-bottom: 3px solid rgba(251, 191, 36, 1);
+  animation: comment-pulse 2s ease-in-out;
+}
+
+@keyframes comment-pulse {
+  0%, 100% {
+    background-color: rgba(251, 191, 36, 0.5);
+  }
+  50% {
+    background-color: rgba(251, 191, 36, 0.7);
+  }
+}
+
+/* Comment selection indicator */
+.comment-selection-active {
+  position: relative;
+}
+
+.comment-selection-active::after {
+  content: '';
+  position: absolute;
+  top: -2px;
+  left: -2px;
+  right: -2px;
+  bottom: -2px;
+  border: 2px dashed var(--primary);
+  border-radius: 4px;
+  pointer-events: none;
+  animation: selection-dash 0.5s linear infinite;
+}
+
+@keyframes selection-dash {
+  to {
+    stroke-dashoffset: 10;
+  }
+}
+
+/* Dark mode adjustments for comment highlights */
+.dark .comment-highlight.comment-active,
+.night .comment-highlight.comment-active,
+.midnight .comment-highlight.comment-active,
+.evening .comment-highlight.comment-active {
+  background-color: rgba(251, 191, 36, 0.25);
+  border-bottom-color: rgba(251, 191, 36, 0.5);
+}
+
+.dark .comment-highlight.comment-active:hover,
+.night .comment-highlight.comment-active:hover,
+.midnight .comment-highlight.comment-active:hover,
+.evening .comment-highlight.comment-active:hover {
+  background-color: rgba(251, 191, 36, 0.4);
+  border-bottom-color: rgba(251, 191, 36, 0.7);
+}
+
+.dark .comment-highlight.comment-resolved,
+.night .comment-highlight.comment-resolved,
+.midnight .comment-highlight.comment-resolved,
+.evening .comment-highlight.comment-resolved {
+  background-color: rgba(156, 163, 175, 0.15);
+  border-bottom-color: rgba(156, 163, 175, 0.3);
+}
+
+/* Comments sidebar scrollbar styling */
+.comments-sidebar::-webkit-scrollbar {
+  width: 6px;
+}
+
+.comments-sidebar::-webkit-scrollbar-track {
+  background: var(--muted);
+  border-radius: 3px;
+}
+
+.comments-sidebar::-webkit-scrollbar-thumb {
+  background: var(--primary);
+  border-radius: 3px;
+  opacity: 0.5;
+}
+
+.comments-sidebar::-webkit-scrollbar-thumb:hover {
+  opacity: 1;
+}

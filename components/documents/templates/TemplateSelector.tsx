@@ -2,81 +2,90 @@
 
 import { useState, useMemo } from 'react'
 import {
-  FileText, Search, X, ChevronRight, Star, Plus, Clock,
-  FileCheck, Users, Briefcase, BookOpen, Target, ListChecks,
-  Presentation, Bug, Lightbulb, FileQuestion
+  FileText,
+  Search,
+  X,
+  Plus,
+  Clock,
+  Users,
+  Lightbulb,
+  RotateCcw,
+  Code,
+  Target,
+  Bug,
+  FlaskConical,
+  Palette,
+  FileEdit,
+  LucideIcon,
+  Folder,
+  Sparkles,
 } from 'lucide-react'
 import { Button } from '@/components/ui/Button'
+import { TemplateCard } from './TemplateCard'
 import { TemplatePreview } from './TemplatePreview'
-
-interface Template {
-  id: string
-  name: string
-  description: string | null
-  content: string
-  category: string
-  icon: string | null
-  isBuiltIn: boolean
-  usageCount: number
-  createdAt: Date | string
-}
+import {
+  DOCUMENT_TEMPLATES,
+  TEMPLATE_CATEGORIES,
+  DocumentTemplate,
+  TemplateCategory,
+} from '@/data/document-templates'
 
 interface TemplateSelectorProps {
   isOpen: boolean
-  templates: Template[]
-  recentTemplates?: Template[]
-  onSelect: (template: Template | null, customTitle?: string) => void
+  recentTemplateIds?: string[]
+  onSelect: (template: DocumentTemplate | null, customTitle?: string) => void
   onClose: () => void
 }
 
-// Icon mapping for templates
-const TEMPLATE_ICONS: Record<string, React.ReactNode> = {
-  file: <FileText className="w-5 h-5" />,
-  meeting: <Users className="w-5 h-5" />,
-  proposal: <Briefcase className="w-5 h-5" />,
-  research: <BookOpen className="w-5 h-5" />,
-  spec: <FileCheck className="w-5 h-5" />,
-  story: <Target className="w-5 h-5" />,
-  retro: <ListChecks className="w-5 h-5" />,
-  design: <Presentation className="w-5 h-5" />,
-  content: <FileQuestion className="w-5 h-5" />,
-  bug: <Bug className="w-5 h-5" />,
-  idea: <Lightbulb className="w-5 h-5" />,
-  default: <FileText className="w-5 h-5" />,
+// Icon mapping from icon name string to component
+const ICON_MAP: Record<string, LucideIcon> = {
+  FileText,
+  Users,
+  Lightbulb,
+  RotateCcw,
+  Code,
+  Target,
+  Bug,
+  FlaskConical,
+  Palette,
+  FileEdit,
 }
 
-// Category definitions
-const CATEGORIES = [
-  { id: 'all', label: 'All Templates' },
-  { id: 'planning', label: 'Planning' },
-  { id: 'documentation', label: 'Documentation' },
-  { id: 'meetings', label: 'Meetings' },
-  { id: 'project', label: 'Project Management' },
-  { id: 'custom', label: 'Custom' },
-]
+// Category icons
+const CATEGORY_ICONS: Record<string, LucideIcon> = {
+  'General': FileText,
+  'Project Management': Folder,
+  'Engineering': Code,
+  'Content': FileEdit,
+}
 
 export function TemplateSelector({
   isOpen,
-  templates,
-  recentTemplates = [],
+  recentTemplateIds = [],
   onSelect,
   onClose,
 }: TemplateSelectorProps) {
   const [searchTerm, setSearchTerm] = useState('')
-  const [selectedCategory, setSelectedCategory] = useState('all')
-  const [selectedTemplate, setSelectedTemplate] = useState<Template | null>(null)
+  const [selectedCategory, setSelectedCategory] = useState<TemplateCategory | 'all'>('all')
+  const [selectedTemplate, setSelectedTemplate] = useState<DocumentTemplate | null>(null)
   const [showPreview, setShowPreview] = useState(false)
   const [customTitle, setCustomTitle] = useState('')
 
+  // Get recent templates from IDs
+  const recentTemplates = useMemo(() => {
+    return recentTemplateIds
+      .map((id) => DOCUMENT_TEMPLATES.find((t) => t.id === id))
+      .filter((t): t is DocumentTemplate => t !== undefined)
+      .slice(0, 3)
+  }, [recentTemplateIds])
+
   // Filter templates
   const filteredTemplates = useMemo(() => {
-    let result = templates
+    let result = [...DOCUMENT_TEMPLATES]
 
     // Filter by category
     if (selectedCategory !== 'all') {
-      result = result.filter((t) =>
-        t.category.toLowerCase() === selectedCategory.toLowerCase()
-      )
+      result = result.filter((t) => t.category === selectedCategory)
     }
 
     // Filter by search
@@ -85,13 +94,16 @@ export function TemplateSelector({
       result = result.filter(
         (t) =>
           t.name.toLowerCase().includes(term) ||
-          t.description?.toLowerCase().includes(term) ||
+          t.description.toLowerCase().includes(term) ||
           t.category.toLowerCase().includes(term)
       )
     }
 
+    // Sort by popularity
+    result.sort((a, b) => b.popularity - a.popularity)
+
     return result
-  }, [templates, selectedCategory, searchTerm])
+  }, [selectedCategory, searchTerm])
 
   // Group templates by category for display
   const groupedTemplates = useMemo(() => {
@@ -99,30 +111,50 @@ export function TemplateSelector({
       return { [selectedCategory]: filteredTemplates }
     }
 
-    const groups: Record<string, Template[]> = {}
+    const groups: Record<string, DocumentTemplate[]> = {}
     filteredTemplates.forEach((template) => {
-      const category = template.category || 'Other'
+      const category = template.category
       if (!groups[category]) {
         groups[category] = []
       }
       groups[category].push(template)
     })
-    return groups
-  }, [filteredTemplates, selectedCategory])
 
-  const getIcon = (iconName: string | null) => {
-    if (!iconName) return TEMPLATE_ICONS.default
-    return TEMPLATE_ICONS[iconName.toLowerCase()] || TEMPLATE_ICONS.default
-  }
+    // Sort categories by the order defined in TEMPLATE_CATEGORIES
+    const sortedGroups: Record<string, DocumentTemplate[]> = {}
+    TEMPLATE_CATEGORIES.forEach(({ id }) => {
+      if (groups[id]) {
+        sortedGroups[id] = groups[id]
+      }
+    })
+
+    return sortedGroups
+  }, [filteredTemplates, selectedCategory])
 
   const handleSelect = () => {
     onSelect(selectedTemplate, customTitle || undefined)
-    onClose()
+    handleClose()
   }
 
   const handleBlankDocument = () => {
-    onSelect(null, customTitle || 'Untitled Document')
+    const blankTemplate = DOCUMENT_TEMPLATES.find((t) => t.id === 'blank')
+    onSelect(blankTemplate || null, customTitle || 'Untitled Document')
+    handleClose()
+  }
+
+  const handleClose = () => {
+    setSelectedTemplate(null)
+    setShowPreview(false)
+    setCustomTitle('')
+    setSearchTerm('')
+    setSelectedCategory('all')
     onClose()
+  }
+
+  const handleTemplateClick = (template: DocumentTemplate) => {
+    setSelectedTemplate(template)
+    setShowPreview(true)
+    setCustomTitle('')
   }
 
   if (!isOpen) return null
@@ -130,79 +162,114 @@ export function TemplateSelector({
   return (
     <>
       {/* Backdrop */}
-      <div className="fixed inset-0 bg-black/50 z-50" onClick={onClose} />
+      <div
+        className="fixed inset-0 bg-black/50 backdrop-blur-sm z-50"
+        onClick={handleClose}
+      />
 
       {/* Modal */}
-      <div className="fixed inset-4 md:inset-8 lg:inset-16 bg-[var(--background)] border border-[var(--border)] rounded-xl shadow-2xl z-50 flex flex-col overflow-hidden">
+      <div className="fixed inset-4 md:inset-8 lg:inset-12 bg-[var(--background)] border-2 border-[var(--border)] rounded-2xl shadow-2xl z-50 flex flex-col overflow-hidden">
         {/* Header */}
-        <div className="flex items-center justify-between p-4 border-b border-[var(--border)]">
-          <div>
-            <h2 className="text-lg font-bold">Create New Document</h2>
-            <p className="text-sm text-[var(--muted)]">
-              Start with a template or create a blank document
-            </p>
+        <div className="flex items-center justify-between p-5 border-b border-[var(--border)]">
+          <div className="flex items-center gap-3">
+            <div className="p-2 bg-[var(--primary)]/10 rounded-lg">
+              <Sparkles className="w-5 h-5 text-[var(--primary)]" />
+            </div>
+            <div>
+              <h2 className="text-lg font-bold text-[var(--foreground)]">Create New Document</h2>
+              <p className="text-sm text-[var(--muted)]">
+                Start with a template or create a blank document
+              </p>
+            </div>
           </div>
           <Button
             size="sm"
             variant="ghost"
-            onClick={onClose}
-            className="h-8 w-8 p-0"
+            onClick={handleClose}
+            className="h-9 w-9 p-0"
           >
-            <X className="w-4 h-4" />
+            <X className="w-5 h-5" />
           </Button>
         </div>
 
         <div className="flex flex-1 overflow-hidden">
           {/* Sidebar */}
-          <div className="w-48 border-r border-[var(--border)] p-2 flex-shrink-0 overflow-y-auto">
+          <div className="w-56 border-r border-[var(--border)] p-3 flex-shrink-0 overflow-y-auto bg-[var(--muted)]/20">
             {/* Blank document button */}
             <button
               onClick={handleBlankDocument}
-              className="w-full flex items-center gap-3 px-3 py-2 mb-2 rounded-lg bg-[var(--primary)]/10 text-[var(--primary)] hover:bg-[var(--primary)]/20 transition-colors"
+              className="w-full flex items-center gap-3 px-4 py-3 mb-3 rounded-xl bg-[var(--primary)] text-[var(--primary-foreground)] hover:opacity-90 transition-opacity font-bold shadow-sm"
             >
-              <Plus className="w-4 h-4" />
-              <span className="font-medium text-sm">Blank Document</span>
+              <Plus className="w-5 h-5" />
+              <span>Blank Document</span>
             </button>
 
             {/* Recent templates */}
             {recentTemplates.length > 0 && (
               <div className="mb-4">
-                <div className="px-3 py-1 text-[10px] font-medium text-[var(--muted)] uppercase tracking-wide">
+                <div className="px-3 py-2 text-[10px] font-bold text-[var(--muted)] uppercase tracking-wider">
                   Recent
                 </div>
-                {recentTemplates.slice(0, 3).map((template) => (
-                  <button
-                    key={template.id}
-                    onClick={() => {
-                      setSelectedTemplate(template)
-                      setShowPreview(true)
-                    }}
-                    className="w-full flex items-center gap-2 px-3 py-1.5 text-left rounded hover:bg-[var(--secondary)]/10"
-                  >
-                    <Clock className="w-3 h-3 text-[var(--muted)]" />
-                    <span className="text-xs truncate">{template.name}</span>
-                  </button>
-                ))}
+                {recentTemplates.map((template) => {
+                  const Icon = ICON_MAP[template.icon] || FileText
+                  return (
+                    <button
+                      key={template.id}
+                      onClick={() => handleTemplateClick(template)}
+                      className={`w-full flex items-center gap-2 px-3 py-2 text-left rounded-lg hover:bg-[var(--muted)]/50 transition-colors ${
+                        selectedTemplate?.id === template.id ? 'bg-[var(--primary)]/10' : ''
+                      }`}
+                    >
+                      <Clock className="w-3.5 h-3.5 text-[var(--muted)]" />
+                      <span className="text-sm truncate">{template.name}</span>
+                    </button>
+                  )
+                })}
               </div>
             )}
 
             {/* Categories */}
-            <div className="px-3 py-1 text-[10px] font-medium text-[var(--muted)] uppercase tracking-wide">
+            <div className="px-3 py-2 text-[10px] font-bold text-[var(--muted)] uppercase tracking-wider">
               Categories
             </div>
-            {CATEGORIES.map((category) => (
-              <button
-                key={category.id}
-                onClick={() => setSelectedCategory(category.id)}
-                className={`w-full flex items-center gap-2 px-3 py-1.5 text-left rounded transition-colors ${
-                  selectedCategory === category.id
-                    ? 'bg-[var(--primary)]/10 text-[var(--primary)]'
-                    : 'hover:bg-[var(--secondary)]/10'
-                }`}
-              >
-                <span className="text-sm">{category.label}</span>
-              </button>
-            ))}
+
+            {/* All Templates */}
+            <button
+              onClick={() => setSelectedCategory('all')}
+              className={`w-full flex items-center gap-2 px-3 py-2.5 text-left rounded-lg transition-colors ${
+                selectedCategory === 'all'
+                  ? 'bg-[var(--primary)]/10 text-[var(--primary)] font-medium'
+                  : 'hover:bg-[var(--muted)]/50'
+              }`}
+            >
+              <Sparkles className="w-4 h-4" />
+              <span className="text-sm">All Templates</span>
+              <span className="ml-auto text-[10px] text-[var(--muted)] bg-[var(--muted)]/30 px-1.5 py-0.5 rounded">
+                {DOCUMENT_TEMPLATES.length}
+              </span>
+            </button>
+
+            {TEMPLATE_CATEGORIES.map((category) => {
+              const Icon = CATEGORY_ICONS[category.id] || Folder
+              const count = DOCUMENT_TEMPLATES.filter((t) => t.category === category.id).length
+              return (
+                <button
+                  key={category.id}
+                  onClick={() => setSelectedCategory(category.id)}
+                  className={`w-full flex items-center gap-2 px-3 py-2.5 text-left rounded-lg transition-colors ${
+                    selectedCategory === category.id
+                      ? 'bg-[var(--primary)]/10 text-[var(--primary)] font-medium'
+                      : 'hover:bg-[var(--muted)]/50'
+                  }`}
+                >
+                  <Icon className="w-4 h-4" />
+                  <span className="text-sm">{category.label}</span>
+                  <span className="ml-auto text-[10px] text-[var(--muted)] bg-[var(--muted)]/30 px-1.5 py-0.5 rounded">
+                    {count}
+                  </span>
+                </button>
+              )
+            })}
           </div>
 
           {/* Main content */}
@@ -216,7 +283,7 @@ export function TemplateSelector({
                   value={searchTerm}
                   onChange={(e) => setSearchTerm(e.target.value)}
                   placeholder="Search templates..."
-                  className="w-full pl-10 pr-4 py-2 text-sm bg-[var(--background)] border border-[var(--border)] rounded-lg focus:outline-none focus:ring-2 focus:ring-[var(--primary)]/50"
+                  className="w-full pl-10 pr-4 py-2.5 text-sm bg-[var(--background)] border-2 border-[var(--border)] rounded-xl focus:outline-none focus:border-[var(--primary)] transition-colors"
                 />
               </div>
             </div>
@@ -224,57 +291,48 @@ export function TemplateSelector({
             {/* Templates grid */}
             <div className="flex-1 overflow-y-auto p-4">
               {Object.keys(groupedTemplates).length > 0 ? (
-                Object.entries(groupedTemplates).map(([category, categoryTemplates]) => (
-                  <div key={category} className="mb-6">
-                    <h3 className="text-sm font-bold mb-3 capitalize">{category}</h3>
-                    <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3">
-                      {categoryTemplates.map((template) => (
-                        <button
-                          key={template.id}
-                          onClick={() => {
-                            setSelectedTemplate(template)
-                            setShowPreview(true)
-                          }}
-                          className={`p-4 text-left border rounded-lg transition-all hover:border-[var(--primary)]/50 hover:shadow-md ${
-                            selectedTemplate?.id === template.id
-                              ? 'border-[var(--primary)] bg-[var(--primary)]/5'
-                              : 'border-[var(--border)]'
-                          }`}
-                        >
-                          <div className="flex items-start justify-between mb-2">
-                            <div className={`p-2 rounded-lg ${
-                              template.isBuiltIn
-                                ? 'bg-[var(--primary)]/10 text-[var(--primary)]'
-                                : 'bg-[var(--secondary)]/20 text-[var(--muted)]'
-                            }`}>
-                              {getIcon(template.icon)}
-                            </div>
-                            {template.isBuiltIn && (
-                              <Star className="w-3 h-3 text-yellow-500 fill-yellow-500" />
-                            )}
-                          </div>
-                          <h4 className="font-medium text-sm mb-1 line-clamp-1">
-                            {template.name}
-                          </h4>
-                          <p className="text-xs text-[var(--muted)] line-clamp-2">
-                            {template.description || 'No description'}
-                          </p>
-                          {template.usageCount > 0 && (
-                            <p className="text-[10px] text-[var(--muted)] mt-2">
-                              Used {template.usageCount} times
-                            </p>
-                          )}
-                        </button>
-                      ))}
+                Object.entries(groupedTemplates).map(([category, categoryTemplates]) => {
+                  const CategoryIcon = CATEGORY_ICONS[category] || Folder
+                  const categoryInfo = TEMPLATE_CATEGORIES.find((c) => c.id === category)
+
+                  return (
+                    <div key={category} className="mb-8">
+                      <div className="flex items-center gap-2 mb-4">
+                        <CategoryIcon className="w-5 h-5 text-[var(--primary)]" />
+                        <h3 className="text-base font-bold">{category}</h3>
+                        {categoryInfo && (
+                          <span className="text-xs text-[var(--muted)]">
+                            - {categoryInfo.description}
+                          </span>
+                        )}
+                      </div>
+                      <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
+                        {categoryTemplates.map((template) => (
+                          <TemplateCard
+                            key={template.id}
+                            id={template.id}
+                            name={template.name}
+                            description={template.description}
+                            icon={template.icon}
+                            category={template.category}
+                            isBuiltIn={true}
+                            isSelected={selectedTemplate?.id === template.id}
+                            onClick={() => handleTemplateClick(template)}
+                          />
+                        ))}
+                      </div>
                     </div>
-                  </div>
-                ))
+                  )
+                })
               ) : (
-                <div className="text-center py-12">
-                  <FileText className="w-12 h-12 mx-auto mb-4 text-[var(--muted)] opacity-50" />
+                <div className="text-center py-16">
+                  <div className="inline-flex items-center justify-center w-16 h-16 rounded-full bg-[var(--muted)]/30 mb-4">
+                    <FileText className="w-8 h-8 text-[var(--muted)]" />
+                  </div>
+                  <h3 className="text-lg font-bold mb-2">No templates found</h3>
                   <p className="text-sm text-[var(--muted)]">
                     {searchTerm
-                      ? 'No templates match your search'
+                      ? `No templates match "${searchTerm}"`
                       : 'No templates in this category'}
                   </p>
                 </div>
@@ -284,9 +342,19 @@ export function TemplateSelector({
 
           {/* Preview panel */}
           {showPreview && selectedTemplate && (
-            <div className="w-80 border-l border-[var(--border)] flex flex-col overflow-hidden">
+            <div className="w-96 border-l border-[var(--border)] flex flex-col overflow-hidden bg-[var(--card)]">
               <TemplatePreview
-                template={selectedTemplate}
+                template={{
+                  id: selectedTemplate.id,
+                  name: selectedTemplate.name,
+                  description: selectedTemplate.description,
+                  content: selectedTemplate.content,
+                  category: selectedTemplate.category,
+                  icon: selectedTemplate.icon,
+                  isBuiltIn: true,
+                  usageCount: 0,
+                  createdAt: new Date(),
+                }}
                 customTitle={customTitle}
                 onTitleChange={setCustomTitle}
                 onUse={handleSelect}
@@ -297,6 +365,15 @@ export function TemplateSelector({
               />
             </div>
           )}
+        </div>
+
+        {/* Footer */}
+        <div className="p-3 border-t border-[var(--border)] bg-[var(--muted)]/20">
+          <p className="text-xs text-center text-[var(--muted)]">
+            {filteredTemplates.length} template{filteredTemplates.length !== 1 ? 's' : ''}{' '}
+            available
+            {selectedCategory !== 'all' && ` in ${selectedCategory}`}
+          </p>
         </div>
       </div>
     </>

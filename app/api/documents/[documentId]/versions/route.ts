@@ -74,7 +74,7 @@ export async function POST(
 
     const { documentId } = await context.params
     const body = await request.json()
-    const { name, changeDescription } = body
+    const { name, changeDescription, isMajorVersion = true } = body
 
     // Get document and check permission
     const document = await prisma.document.findUnique({
@@ -114,7 +114,7 @@ export async function POST(
         createdById: session.user.id,
         changeDescription: changeDescription || null,
         name: name || null,
-        isMajorVersion: true,
+        isMajorVersion: isMajorVersion,
         isAutoSaved: false,
       },
       include: {
