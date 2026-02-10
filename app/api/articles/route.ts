@@ -284,7 +284,33 @@ export async function POST(request: NextRequest) {
 
     // Get or create a default category if none provided
     let categoryId = body.categoryId
-    if (!categoryId) {
+
+    // The frontend sends category slug (like 'sustainability'), not the database ID
+    // We need to look up the actual category by slug
+    if (categoryId) {
+      const existingCategory = await prisma.articleCategory.findFirst({
+        where: {
+          OR: [
+            { id: categoryId },
+            { slug: categoryId },
+            { name: { equals: categoryId, mode: 'insensitive' } },
+          ]
+        },
+      })
+      if (existingCategory) {
+        categoryId = existingCategory.id
+      } else {
+        // Category doesn't exist, create it
+        const newCategory = await prisma.articleCategory.create({
+          data: {
+            name: categoryId.charAt(0).toUpperCase() + categoryId.slice(1),
+            slug: categoryId.toLowerCase().replace(/[^a-z0-9]+/g, '-'),
+            description: `Articles about ${categoryId}`,
+          },
+        })
+        categoryId = newCategory.id
+      }
+    } else {
       // Find or create "General" category
       let generalCategory = await prisma.articleCategory.findFirst({
         where: { slug: 'general' },
