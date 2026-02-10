@@ -248,7 +248,7 @@ export function CollaborativeEditor({
     },
     editorProps: {
       attributes: {
-        class: 'prose prose-sm sm:prose lg:prose-lg xl:prose-xl max-w-none focus:outline-none min-h-[500px] p-6',
+        class: 'prose prose-sm sm:prose lg:prose-lg xl:prose-xl max-w-none focus:outline-none min-h-[500px] p-6 prose-headings:text-[var(--foreground)] prose-p:text-[var(--foreground)] prose-strong:text-[var(--foreground)] prose-a:text-[var(--primary)] prose-code:text-[var(--foreground)] prose-pre:bg-[var(--secondary)] prose-blockquote:border-[var(--primary)] prose-blockquote:text-[var(--muted)] text-[var(--foreground)]',
       },
     },
   }, [extensions, initialContent, readOnly, canUseCollaboration, collaborationReady])
@@ -324,7 +324,7 @@ export function CollaborativeEditor({
     <div className="relative w-full">
       {/* Toolbar */}
       {showToolbar && !readOnly && (
-        <div className="sticky top-0 z-10 bg-white dark:bg-slate-900 border-b border-[var(--border)] shadow-sm">
+        <div className="sticky top-0 z-10 bg-[var(--background)] border-b border-[var(--border)] shadow-sm">
           <div className="flex items-center gap-1 p-2 flex-wrap">
             {/* Text formatting */}
             <div className="flex items-center gap-0.5 border-r pr-2">
@@ -511,13 +511,13 @@ export function CollaborativeEditor({
       )}
 
       {/* Editor content */}
-      <div className="relative bg-white dark:bg-slate-900">
+      <div className="relative bg-[var(--background)]">
         <EditorContent editor={editor} />
       </div>
 
       {/* Stats bar */}
       {showStats && (
-        <div className="sticky bottom-0 bg-white dark:bg-slate-900 border-t border-[var(--border)] px-4 py-2">
+        <div className="sticky bottom-0 bg-[var(--background)] border-t border-[var(--border)] px-4 py-2">
           <div className="flex items-center justify-between text-xs text-theme-muted">
             <div className="flex items-center gap-4">
               <span>{wordCount} words</span>

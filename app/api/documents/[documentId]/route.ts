@@ -161,6 +161,7 @@ export async function PATCH(
       await prisma.documentVersion.create({
         data: {
           documentId,
+          title: document.title,
           content: document.content,
           versionNumber: document.version,
           createdById: session.user.id,
