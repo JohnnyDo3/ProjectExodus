@@ -213,8 +213,15 @@ export default function ArticlesPage() {
   // Parallax scroll position
   const [parallaxOffset, setParallaxOffset] = useState(0)
 
-  // Get current season for decorations
+  // Client-side only state (to avoid hydration mismatch)
+  const [mounted, setMounted] = useState(false)
+  useEffect(() => {
+    setMounted(true)
+  }, [])
+
+  // Get current season for decorations (only after mount to avoid hydration mismatch)
   const getCurrentSeason = () => {
+    if (!mounted) return 'winter' // Default for SSR
     const month = new Date().getMonth()
     if (month >= 2 && month <= 4) return 'spring'
     if (month >= 5 && month <= 7) return 'summer'
@@ -400,7 +407,9 @@ export default function ArticlesPage() {
   }, [getShelfArticles])
 
   // Get scroll age (weathering effect based on publish date)
+  // Returns 'new' during SSR to avoid hydration mismatch
   const getScrollAge = (publishedAt: string): 'new' | 'recent' | 'aged' | 'ancient' => {
+    if (!mounted) return 'new' // Default for SSR
     const days = Math.floor((Date.now() - new Date(publishedAt).getTime()) / (1000 * 60 * 60 * 24))
     if (days < 7) return 'new'
     if (days < 30) return 'recent'
