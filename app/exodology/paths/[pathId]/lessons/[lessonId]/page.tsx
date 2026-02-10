@@ -233,11 +233,12 @@ type LessonData = {
     context?: string
     options?: Array<{ id: string; text: string; feedback: string; isOptimal: boolean }>
     // Guided exercise
-    steps?: Array<{ instruction: string; example?: string; tip?: string }>
+    steps?: Array<{ instruction: string; example?: string; tip?: string; prompt?: string; guidance?: string; options?: string[] }>
     synthesis?: string
-    // Reflection
-    reflectionPrompts?: string[]
-    prompts?: string[]
+    // Reflection - prompts can be strings or objects with question/guidance
+    reflectionPrompts?: Array<string | { question: string; guidance?: string }>
+    prompts?: Array<string | { question: string; guidance?: string }>
+    closingNote?: string
   }
   learningObjectives?: string[]
   keyTerms?: Array<{ term: string; definition: string }>
@@ -873,13 +874,28 @@ function ScenarioPlayer({ content }: { content: NonNullable<LessonData['content'
   )
 }
 
-function ReflectionContent({ prompts }: { prompts: string[] }) {
+// Prompt can be either a string or an object with question and optional guidance
+type ReflectionPrompt = string | { question: string; guidance?: string }
+
+function ReflectionContent({ prompts }: { prompts: ReflectionPrompt[] }) {
   const [responses, setResponses] = useState<Record<number, string>>({})
   const [saved, setSaved] = useState(false)
 
   const handleSave = () => {
     setSaved(true)
     // In a real app, this would save to the backend
+  }
+
+  // Helper to extract question text from prompt (handles both string and object formats)
+  const getQuestion = (prompt: ReflectionPrompt): string => {
+    if (typeof prompt === 'string') return prompt
+    return prompt.question
+  }
+
+  // Helper to extract guidance from prompt (only for object format)
+  const getGuidance = (prompt: ReflectionPrompt): string | undefined => {
+    if (typeof prompt === 'string') return undefined
+    return prompt.guidance
   }
 
   return (
@@ -894,26 +910,36 @@ function ReflectionContent({ prompts }: { prompts: string[] }) {
         </p>
       </div>
 
-      {prompts.map((prompt, i) => (
-        <motion.div
-          key={i}
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.1 * i }}
-          className="space-y-3"
-        >
-          <label className="block text-lg font-bold text-[var(--foreground)]">
-            {i + 1}. {prompt}
-          </label>
-          <textarea
-            value={responses[i] || ''}
-            onChange={(e) => setResponses(prev => ({ ...prev, [i]: e.target.value }))}
-            placeholder="Write your reflection here..."
-            rows={4}
-            className="w-full p-4 rounded-xl border-2 border-[var(--border)] bg-[var(--card)] text-[var(--foreground)] placeholder:text-[var(--muted-foreground)] focus:border-[var(--primary)] focus:outline-none resize-none"
-          />
-        </motion.div>
-      ))}
+      {prompts.map((prompt, i) => {
+        const question = getQuestion(prompt)
+        const guidance = getGuidance(prompt)
+
+        return (
+          <motion.div
+            key={i}
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.1 * i }}
+            className="space-y-3"
+          >
+            <label className="block text-lg font-bold text-[var(--foreground)]">
+              {i + 1}. {question}
+            </label>
+            {guidance && (
+              <p className="text-sm text-[var(--muted-foreground)] italic pl-4 border-l-2 border-amber-500/30">
+                {guidance}
+              </p>
+            )}
+            <textarea
+              value={responses[i] || ''}
+              onChange={(e) => setResponses(prev => ({ ...prev, [i]: e.target.value }))}
+              placeholder="Write your reflection here..."
+              rows={4}
+              className="w-full p-4 rounded-xl border-2 border-[var(--border)] bg-[var(--card)] text-[var(--foreground)] placeholder:text-[var(--muted-foreground)] focus:border-[var(--primary)] focus:outline-none resize-none"
+            />
+          </motion.div>
+        )
+      })}
 
       <Button onClick={handleSave} className="w-full" disabled={saved}>
         {saved ? (
@@ -984,6 +1010,30 @@ function GuidedExercisePlayer({ content }: { content: NonNullable<LessonData['co
             <p className="text-sm text-[var(--muted-foreground)]">
               <strong>Example:</strong> {steps[currentStep].example}
             </p>
+          </div>
+        )}
+
+        {steps[currentStep].prompt && (
+          <p className="text-[var(--muted-foreground)] italic">{steps[currentStep].prompt}</p>
+        )}
+
+        {steps[currentStep].guidance && (
+          <p className="text-sm text-[var(--muted-foreground)] pl-4 border-l-2 border-teal-500/30 italic">
+            {steps[currentStep].guidance}
+          </p>
+        )}
+
+        {steps[currentStep].options && steps[currentStep].options.length > 0 && (
+          <div className="space-y-2">
+            <p className="text-sm font-medium text-[var(--muted-foreground)]">Options:</p>
+            <ul className="space-y-1 pl-4">
+              {steps[currentStep].options.map((option, i) => (
+                <li key={i} className="text-[var(--muted-foreground)] flex items-start gap-2">
+                  <span className="text-teal-500">•</span>
+                  {option}
+                </li>
+              ))}
+            </ul>
           </div>
         )}
 
