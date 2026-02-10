@@ -162,11 +162,11 @@ export async function PATCH(
         data: {
           documentId,
           title: document.title,
-          content: document.content,
+          content: document.content || '',
           versionNumber: document.version,
           createdById: session.user.id,
           changeDescription: 'Auto-saved version',
-          isAutoSave: true,
+          isAutoSaved: true,
         },
       })
     }
