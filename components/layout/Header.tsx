@@ -258,7 +258,7 @@ export function Header() {
 
                     {/* Learn Dropdown menu - centered, matching Community dropdown */}
                     <div
-                      className={`absolute top-full left-1/2 -translate-x-1/2 mt-2 min-w-[140px] rounded-xl overflow-hidden z-[201] transition-all duration-200 origin-top ${
+                      className={`absolute top-full left-1/2 -translate-x-1/2 mt-2 min-w-[200px] rounded-xl overflow-hidden z-[201] transition-all duration-200 origin-top ${
                         learnMenuOpen
                           ? 'opacity-100 scale-100 translate-y-0'
                           : 'opacity-0 scale-95 -translate-y-2 pointer-events-none'
