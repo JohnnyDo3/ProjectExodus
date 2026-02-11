@@ -145,7 +145,8 @@ export async function createPartyKitProvider(
   let YPartyKitProvider: any;
   try {
     const partykit = await import("y-partykit/provider");
-    YPartyKitProvider = partykit.YPartyKitProvider;
+    // YPartyKitProvider is the default export
+    YPartyKitProvider = partykit.default;
   } catch (e) {
     throw new Error("y-partykit not installed. Run: npm install y-partykit");
   }

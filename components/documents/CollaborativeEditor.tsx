@@ -103,7 +103,8 @@ export function CollaborativeEditor({
         let YPartyKitProvider: any
         try {
           const partykit = await import('y-partykit/provider')
-          YPartyKitProvider = partykit.YPartyKitProvider
+          // YPartyKitProvider is the default export
+          YPartyKitProvider = partykit.default
         } catch (e) {
           console.warn('y-partykit not installed. Run: npm install y-partykit')
           setConnectionStatus('error')
@@ -188,12 +189,17 @@ export function CollaborativeEditor({
   // Build extensions array
   const extensions = useCallback(() => {
     // Configure StarterKit - disable history when collaboration is enabled
-    const starterKitOptions = canUseCollaboration && collaborationReady
-      ? { history: false as const }
-      : undefined
+    // Also disable link since we configure it separately with custom options
+    const starterKitOptions: any = {
+      link: false, // We add Link extension separately with custom config
+    }
+
+    if (canUseCollaboration && collaborationReady) {
+      starterKitOptions.history = false
+    }
 
     const baseExtensions: any[] = [
-      StarterKit.configure(starterKitOptions as any),
+      StarterKit.configure(starterKitOptions),
       Placeholder.configure({
         placeholder,
       }),
