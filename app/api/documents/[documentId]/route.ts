@@ -155,55 +155,70 @@ export async function PATCH(
       )
     }
 
-    // Create version snapshot if content changed
+    // Create version snapshot + update document in a transaction
+    // This prevents race conditions where version is created but update fails
     const shouldCreateVersion = content && content !== document.content
-    if (shouldCreateVersion) {
-      await prisma.documentVersion.create({
+
+    const updatedDocument = await prisma.$transaction(async (tx: any) => {
+      // Create version snapshot if content changed
+      if (shouldCreateVersion) {
+        // Use upsert-like pattern to handle duplicate version numbers gracefully
+        const existingVersion = await tx.documentVersion.findUnique({
+          where: {
+            documentId_versionNumber: {
+              documentId,
+              versionNumber: document.version,
+            },
+          },
+        })
+
+        if (!existingVersion) {
+          await tx.documentVersion.create({
+            data: {
+              documentId,
+              title: document.title,
+              content: document.content || '',
+              versionNumber: document.version,
+              createdById: session.user.id,
+              changeDescription: 'Auto-saved version',
+              isAutoSaved: true,
+            },
+          })
+        }
+      }
+
+      // Update document
+      return tx.document.update({
+        where: { id: documentId },
         data: {
-          documentId,
-          title: document.title,
-          content: document.content || '',
-          versionNumber: document.version,
-          createdById: session.user.id,
-          changeDescription: 'Auto-saved version',
-          isAutoSaved: true,
+          ...(title !== undefined && { title }),
+          ...(content !== undefined && { content }),
+          ...(status !== undefined && { status }),
+          ...(type !== undefined && { type }),
+          ...(isPublic !== undefined && { isPublic }),
+          ...(allowComments !== undefined && { allowComments }),
+          ...(allowSuggestions !== undefined && { allowSuggestions }),
+          ...(content !== undefined && { wordCount: content.split(/\s+/).filter(Boolean).length }),
+          ...(shouldCreateVersion && { version: { increment: 1 } }),
+          lastEditedById: session.user.id,
+        },
+        include: {
+          creator: {
+            select: {
+              id: true,
+              name: true,
+              image: true,
+            },
+          },
+          _count: {
+            select: {
+              collaborators: true,
+              comments: true,
+              versions: true,
+            },
+          },
         },
       })
-    }
-
-    // Update document
-    const updatedDocument = await prisma.document.update({
-      where: { id: documentId },
-      data: {
-        ...(title !== undefined && { title }),
-        ...(description !== undefined && { description }),
-        ...(content !== undefined && { content }),
-        ...(status !== undefined && { status }),
-        ...(type !== undefined && { type }),
-        ...(isPublic !== undefined && { isPublic }),
-        ...(allowComments !== undefined && { allowComments }),
-        ...(allowSuggestions !== undefined && { allowSuggestions }),
-        ...(content !== undefined && { wordCount: content.split(/\s+/).length }),
-        ...(shouldCreateVersion && { version: { increment: 1 } }),
-        lastEditedById: session.user.id,
-        lastEditedAt: new Date(),
-      },
-      include: {
-        creator: {
-          select: {
-            id: true,
-            name: true,
-            image: true,
-          },
-        },
-        _count: {
-          select: {
-            collaborators: true,
-            comments: true,
-            versions: true,
-          },
-        },
-      },
     })
 
     return NextResponse.json({ success: true, data: updatedDocument })
