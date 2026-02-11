@@ -73,9 +73,36 @@ export default function TopicPage() {
     }
   }, [])
 
-  // Mock progress state - in production this would come from API
-  // TODO: Replace with actual API call to fetch user's progress
-  const [completedModules] = useState<string[]>([])
+  // User's completed modules for this topic, fetched from the progress API
+  const [completedModules, setCompletedModules] = useState<string[]>([])
+
+  useEffect(() => {
+    async function fetchProgress() {
+      try {
+        const res = await fetch('/api/learn/topic-progress')
+        const data = await res.json()
+        if (data.success && Array.isArray(data.data)) {
+          const topicData = data.data.find(
+            (tp: { topicId: string }) => tp.topicId === slug
+          )
+          if (topicData && topicData.completedModules > 0) {
+            // The topic-progress API returns counts, not IDs.
+            // To get specific completed module IDs we query per-module progress.
+            const progressRes = await fetch('/api/learn/progress')
+            const progressData = await progressRes.json()
+            if (progressData.success && Array.isArray(progressData.data?.completed)) {
+              setCompletedModules(
+                progressData.data.completed.map((m: { moduleId: string }) => m.moduleId)
+              )
+            }
+          }
+        }
+      } catch (error) {
+        console.error('Failed to fetch learning progress:', error)
+      }
+    }
+    fetchProgress()
+  }, [slug])
 
   const topic = getTopic(slug)
 

@@ -15,54 +15,62 @@ import {
 // GET /api/events - Get all events
 export async function GET(request: NextRequest) {
   try {
-    console.log('[API /events] Request received')
     const { searchParams } = new URL(request.url)
     const type = searchParams.get('type') // Filter by VIRTUAL/IN_PERSON/HYBRID
     const upcoming = searchParams.get('upcoming') === 'true'
-    console.log('[API /events] Query params:', { type, upcoming })
+    const limit = Math.min(parseInt(searchParams.get('limit') || '50') || 50, 100)
+    const offset = parseInt(searchParams.get('offset') || '0')
+    const where: any = {
+      AND: [
+        type ? { type: type as any } : {},
+        upcoming ? { startDate: { gte: new Date() } } : {},
+      ],
+    }
 
-    console.log('[API /events] Fetching events from database...')
-    const events = await prisma.event.findMany({
-      where: {
-        AND: [
-          type ? { type: type as any } : {},
-          upcoming ? { startDate: { gte: new Date() } } : {},
-        ],
-      },
-      include: {
-        creator: {
-          select: {
-            id: true,
-            name: true,
-            image: true,
+    const [events, total] = await Promise.all([
+      prisma.event.findMany({
+        where,
+        include: {
+          creator: {
+            select: {
+              id: true,
+              name: true,
+              image: true,
+            },
           },
-        },
-        attendees: {
-          include: {
-            user: {
-              select: {
-                id: true,
-                name: true,
-                image: true,
+          attendees: {
+            include: {
+              user: {
+                select: {
+                  id: true,
+                  name: true,
+                  image: true,
+                },
               },
             },
           },
-        },
-        _count: {
-          select: {
-            attendees: true,
+          _count: {
+            select: {
+              attendees: true,
+            },
           },
         },
-      },
-      orderBy: { startDate: 'asc' },
-    })
-
-    console.log('[API /events] Found', events.length, 'events')
-    console.log('[API /events] Returning success response')
+        take: limit,
+        skip: offset,
+        orderBy: { startDate: 'asc' },
+      }),
+      prisma.event.count({ where }),
+    ])
 
     return NextResponse.json({
       success: true,
       data: events,
+      pagination: {
+        total,
+        limit,
+        offset,
+        hasMore: offset + limit < total,
+      },
     })
   } catch (error) {
     console.error('[API /events] ERROR:', error)

@@ -52,7 +52,7 @@ import { DocumentInfoPanel } from '@/components/documents/info/DocumentInfoPanel
 import { ActiveUsersBar } from '@/components/documents/presence/ActiveUsersBar'
 import { PresenceIndicator } from '@/components/documents/presence/PresenceIndicator'
 
-// Dynamic import to prevent SSR issues with @hocuspocus/provider WebSocket APIs
+// Dynamic import to prevent SSR issues with collaborative editor WebSocket APIs
 const CollaborativeEditor = dynamic(
   () => import('@/components/documents/CollaborativeEditor').then(mod => ({ default: mod.CollaborativeEditor })),
   {
@@ -451,11 +451,22 @@ export default function DocumentPage({
   }
 
   const handleScrollToCommentPosition = (position: { from: number; to: number }) => {
-    // This would scroll the editor to highlight the commented text
-    // Implementation depends on the editor instance
-    if (editorRef) {
-      // TODO: Implement scroll to position in editor
-      console.log('Scroll to position:', position)
+    if (editorRef && editorRef.commands) {
+      try {
+        // Use TipTap editor API to set selection and scroll into view
+        editorRef.chain()
+          .setTextSelection({ from: position.from, to: position.to })
+          .scrollIntoView()
+          .run()
+      } catch (err) {
+        console.error('Failed to scroll to comment position:', err)
+      }
+    } else {
+      // Fallback: scroll the editor container's .ProseMirror element into view
+      const proseMirror = document.querySelector('.ProseMirror')
+      if (proseMirror) {
+        proseMirror.scrollIntoView({ behavior: 'smooth', block: 'center' })
+      }
     }
   }
 

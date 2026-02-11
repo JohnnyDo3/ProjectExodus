@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { auth } from '@/auth'
-import prisma from '@/lib/db/prisma'
+import { prisma } from '@/lib/db'
 import { checkAndAwardBadges } from '@/lib/projects/recognition'
 
 // GET - Get single learning module with content

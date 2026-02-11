@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server'
-import prisma from '@/lib/db/prisma'
+import { prisma } from '@/lib/db'
 import { getProjectLeaderboard } from '@/lib/projects/recognition'
 
 // GET - Get project leaderboard

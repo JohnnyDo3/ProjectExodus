@@ -60,13 +60,10 @@ function withTimeout<T>(promise: Promise<T>, ms: number, name: string): Promise<
 export async function GET(request: NextRequest) {
   const startTime = Date.now()
   try {
-    console.log('[API /articles] Request received')
-
     // Auth is optional - used for read tracking only (with 5s timeout)
     let session = null
     try {
       session = await withTimeout(auth(), 5000, 'Auth')
-      console.log('[API /articles] Auth completed in', Date.now() - startTime, 'ms, user:', session?.user?.id || 'anonymous')
     } catch (authError) {
       console.error('[API /articles] Auth error (continuing without auth):', authError)
       // Continue without auth - articles are public
@@ -75,7 +72,7 @@ export async function GET(request: NextRequest) {
     const searchParams = request.nextUrl.searchParams
     const category = searchParams.get('category')
     const featured = searchParams.get('featured')
-    const limit = parseInt(searchParams.get('limit') || '20')
+    const limit = Math.min(parseInt(searchParams.get('limit') || '50') || 50, 100)
     const offset = parseInt(searchParams.get('offset') || '0')
     const sort = searchParams.get('sort') || 'newest' // newest, oldest, most_read, read
     const search = searchParams.get('search') || ''
@@ -125,7 +122,6 @@ export async function GET(request: NextRequest) {
       orderBy = { publishedAt: 'desc' }
     }
 
-    console.log('[API /articles] Starting database query at', Date.now() - startTime, 'ms')
     const [articles, total] = await withTimeout(
       Promise.all([
         prisma.article.findMany({
@@ -161,8 +157,6 @@ export async function GET(request: NextRequest) {
       10000,
       'Database query'
     )
-    console.log('[API /articles] Database query complete in', Date.now() - startTime, 'ms, found', articles.length, 'articles')
-
     // If user is logged in, mark which articles they've read
     let readArticleIds: string[] = []
     if (session?.user?.id) {
@@ -219,16 +213,39 @@ export async function POST(request: NextRequest) {
     // ============================================
 
     // Validate required fields
-    if (!body.title || typeof body.title !== 'string') {
+    if (!body.title || typeof body.title !== 'string' || body.title.trim().length === 0) {
       return NextResponse.json(
         { success: false, error: 'Title is required' },
         { status: 400 }
       )
     }
 
-    if (!body.content || typeof body.content !== 'string') {
+    if (body.title.length > CONTENT_LIMITS.MAX_TITLE_LENGTH) {
+      return NextResponse.json(
+        { success: false, error: `Title must be under ${CONTENT_LIMITS.MAX_TITLE_LENGTH} characters` },
+        { status: 400 }
+      )
+    }
+
+    if (!body.content || typeof body.content !== 'string' || body.content.trim().length === 0) {
       return NextResponse.json(
         { success: false, error: 'Content is required' },
+        { status: 400 }
+      )
+    }
+
+    // Validate status enum if provided
+    if (body.status && !['DRAFT', 'PUBLISHED'].includes(body.status)) {
+      return NextResponse.json(
+        { success: false, error: 'Status must be DRAFT or PUBLISHED' },
+        { status: 400 }
+      )
+    }
+
+    // Validate categoryId is a string if provided
+    if (body.categoryId && typeof body.categoryId !== 'string') {
+      return NextResponse.json(
+        { success: false, error: 'Invalid category' },
         { status: 400 }
       )
     }

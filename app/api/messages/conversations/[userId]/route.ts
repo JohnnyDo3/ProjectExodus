@@ -30,6 +30,9 @@ export async function GET(
     }
 
     const { userId } = await params
+    const { searchParams } = new URL(request.url)
+    const limit = Math.min(parseInt(searchParams.get('limit') || '100') || 100, 200)
+    const offset = parseInt(searchParams.get('offset') || '0')
 
     // SECURITY: Only return messages where current user is sender OR receiver
     const messages = await prisma.directMessage.findMany({
@@ -71,6 +74,8 @@ export async function GET(
           },
         },
       },
+      take: limit,
+      skip: offset,
       orderBy: { createdAt: 'asc' },
     })
 

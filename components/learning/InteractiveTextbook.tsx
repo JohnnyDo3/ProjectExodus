@@ -841,7 +841,19 @@ export function InteractiveTextbook({
   const handleQuizComplete = (score: number, passed: boolean) => {
     setQuizScore(score)
     setQuizPassed(passed)
-    // TODO: Save progress to API
+
+    // Save quiz result and module completion to the progress API
+    fetch('/api/learn/progress', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        action: 'submit_quiz',
+        moduleId: module.slug,
+        quizId: levelContent.quiz.id,
+        score,
+        passed,
+      }),
+    }).catch((err) => console.error('Failed to save quiz progress:', err))
   }
 
   // Start screen

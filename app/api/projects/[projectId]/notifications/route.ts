@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { auth } from '@/auth'
-import prisma from '@/lib/db/prisma'
+import { prisma } from '@/lib/db'
 
 // GET - Get user's project notifications
 export async function GET(

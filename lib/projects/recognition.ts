@@ -1,4 +1,4 @@
-import prisma from '@/lib/db/prisma'
+import { prisma } from '@/lib/db'
 import { createProjectNotification } from './notifications'
 
 // Badge types from Prisma schema

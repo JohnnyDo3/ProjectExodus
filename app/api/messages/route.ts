@@ -13,10 +13,11 @@ export async function GET(request: NextRequest) {
       )
     }
 
-    // Get all unique conversation partners
+    // Get all unique conversation partners (capped at 100 most recent)
     const sentMessages = await prisma.directMessage.findMany({
       where: { senderId: session.user.id },
       distinct: ['receiverId'],
+      take: 100,
       orderBy: { createdAt: 'desc' },
       include: {
         receiver: {
@@ -33,6 +34,7 @@ export async function GET(request: NextRequest) {
     const receivedMessages = await prisma.directMessage.findMany({
       where: { receiverId: session.user.id },
       distinct: ['senderId'],
+      take: 100,
       orderBy: { createdAt: 'desc' },
       include: {
         sender: {
@@ -70,7 +72,8 @@ export async function GET(request: NextRequest) {
       })
     }
 
-    // Fetch ALL messages for ALL conversations in ONE query
+    // Fetch recent messages for conversations to find the latest per partner
+    // We only need the most recent message per conversation, so cap the total
     const allMessages = await prisma.directMessage.findMany({
       where: {
         OR: [
@@ -78,6 +81,7 @@ export async function GET(request: NextRequest) {
           { senderId: { in: partnerIds }, receiverId: session.user.id },
         ],
       },
+      take: partnerIds.length * 2,
       orderBy: { createdAt: 'desc' },
     })
 

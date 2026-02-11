@@ -9,11 +9,15 @@ export const config = {
     '/admin/:path*',      // Protect all admin routes
     '/auth/:path*',       // Handle auth route redirects
     '/profile/:path*',    // Protect user profile routes
-    '/my/:path*',         // Protect user dashboards (basecamp, volition)
+    '/my/:path*',         // Protect user dashboards (analytics, volition)
     '/messages/:path*',   // Protect private messages
     '/settings',          // Protect user settings
+    '/notifications',     // Protect user notifications
+    '/dashboard',         // Protect user dashboard
     '/articles/write',    // Protect article creation
     '/events/create',     // Protect event creation
     '/community/projects/new', // Protect project creation
+    '/community/projects/:slug/documents/:path*', // Protect document editing
+    '/network/:path*',    // Protect social networking features
   ],
 }

@@ -1,6 +1,6 @@
 import { NextResponse } from 'next/server'
 import { auth } from '@/auth'
-import prisma from '@/lib/db/prisma'
+import { prisma } from '@/lib/db'
 
 // GET /api/architecture/stats - Get user's overall stats and progress
 export async function GET(req: Request) {

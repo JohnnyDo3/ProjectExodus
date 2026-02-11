@@ -65,6 +65,9 @@ model User {
   // Theme Preference
   themePreference String?   @default("auto") // Theme mode: auto, light, dark, sunrise, sunset, dusk
 
+  // Reputation / contribution score (computed from projects, articles, modules, followers, connections)
+  stockScore    Int       @default(0)
+
   role          UserRole  @default(USER)
   createdAt     DateTime  @default(now())
   updatedAt     DateTime  @updatedAt

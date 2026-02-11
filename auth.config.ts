@@ -64,6 +64,17 @@ export const authConfig = {
         return Response.redirect(new URL('/', nextUrl))
       }
 
+      // Allow unauthenticated access to auth pages (signin, signup, etc.)
+      if (isOnAuth) {
+        return true
+      }
+
+      // All other matched routes require authentication
+      // The middleware matcher in middleware.ts controls which routes reach this point
+      if (!isLoggedIn) {
+        return false // Redirects to signIn page defined above
+      }
+
       return true
     },
   },

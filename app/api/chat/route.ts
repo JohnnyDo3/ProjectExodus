@@ -88,10 +88,8 @@ export async function POST(request: NextRequest) {
       return rateLimitResponse(rateLimitResult.reset)
     }
 
-    console.log('[CHAT API] Request received')
     const body = await request.json()
     const { messages } = body
-    console.log('[CHAT API] Messages count:', messages?.length)
 
     if (!messages || !Array.isArray(messages)) {
       console.error('[CHAT API] Invalid request format')
@@ -103,10 +101,8 @@ export async function POST(request: NextRequest) {
 
     // Check if Google AI API key is available
     const googleApiKey = process.env.GOOGLE_AI_API_KEY
-    console.log('[CHAT API] API key present:', !!googleApiKey)
 
     if (!googleApiKey) {
-      console.log('[CHAT API] Using fallback response (no API key)')
       // Fallback to rule-based responses if no API key
       const lastMessage = messages[messages.length - 1]
       const response = generateFallbackResponse(lastMessage.content)
@@ -127,7 +123,6 @@ export async function POST(request: NextRequest) {
 
     // Use Google Gemini API (Gemini 2.5 Flash-Lite - free tier: 15 RPM, 250K TPM, 1K RPD)
     const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash-lite:generateContent?key=${googleApiKey}`
-    console.log('[CHAT API] Calling Gemini API...')
 
     const geminiResponse = await fetch(apiUrl, {
       method: 'POST',
@@ -143,8 +138,6 @@ export async function POST(request: NextRequest) {
       })
     })
 
-    console.log('[CHAT API] Gemini response status:', geminiResponse.status)
-
     if (!geminiResponse.ok) {
       const errorData = await geminiResponse.json()
       console.error('[CHAT API] Gemini API error:', JSON.stringify(errorData, null, 2))
@@ -152,7 +145,6 @@ export async function POST(request: NextRequest) {
     }
 
     const data = await geminiResponse.json()
-    console.log('[CHAT API] Gemini response received successfully')
     const assistantMessage = data.candidates[0].content.parts[0].text
 
     return NextResponse.json({ message: assistantMessage })

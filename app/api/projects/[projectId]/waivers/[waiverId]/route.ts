@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { auth } from '@/auth'
-import prisma from '@/lib/db/prisma'
+import { prisma } from '@/lib/db'
 
 // GET - Get single waiver details
 export async function GET(
@@ -133,7 +133,7 @@ export async function PUT(
 
     const project = await prisma.project.findUnique({
       where: { id: projectId },
-      select: { creatorId: true },
+      select: { creatorId: true, name: true, slug: true },
     })
 
     const isOwner = project?.creatorId === session.user.id
@@ -220,8 +220,38 @@ export async function PUT(
       }
     }
 
-    // TODO: Send notification to user about waiver decision
-    // This would integrate with Phase 8: Notifications
+    // Send notification to user about waiver decision
+    try {
+      const projectName = project?.name || 'a project'
+      const projectSlug = project?.slug || projectId
+      const isApproved = action === 'APPROVED'
+      const isDenied = action === 'DENIED'
+
+      const notificationTitle = isApproved
+        ? 'Waiver Request Approved'
+        : isDenied
+        ? 'Waiver Request Denied'
+        : 'Additional Information Requested'
+
+      const notificationMessage = isApproved
+        ? `Your prerequisite waiver for "${projectName}" has been approved. You now have contributor access.`
+        : isDenied
+        ? `Your prerequisite waiver for "${projectName}" has been denied.${reviewNotes ? ` Reason: ${reviewNotes.trim()}` : ''}`
+        : `The reviewer has requested additional information for your waiver request on "${projectName}".${reviewNotes ? ` Details: ${reviewNotes.trim()}` : ''}`
+
+      await prisma.notification.create({
+        data: {
+          type: 'PROJECT_INVITE',
+          title: notificationTitle,
+          message: notificationMessage,
+          link: `/community/projects/${projectSlug}`,
+          userId: waiver.userId,
+        },
+      })
+    } catch (notifError) {
+      // Log but do not fail the waiver review if notification creation fails
+      console.error('Failed to create waiver decision notification:', notifError)
+    }
 
     return NextResponse.json({
       success: true,

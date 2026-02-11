@@ -1,4 +1,4 @@
-import prisma from '@/lib/db/prisma'
+import { prisma } from '@/lib/db'
 
 // Notification types
 export type ProjectNotificationType =

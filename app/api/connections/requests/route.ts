@@ -4,8 +4,6 @@ import { prisma } from '@/lib/db'
 
 export async function GET() {
   try {
-    console.log('[API /connections/requests] Request received')
-
     const session = await auth()
 
     if (!session?.user?.id) {
@@ -14,8 +12,6 @@ export async function GET() {
         { status: 401 }
       )
     }
-
-    console.log('[API /connections/requests] Fetching pending requests for user:', session.user.id)
 
     // Fetch pending connection requests where the current user is the recipient
     const pendingRequests = await prisma.connection.findMany({
@@ -36,12 +32,11 @@ export async function GET() {
           },
         },
       },
+      take: 50,
       orderBy: {
         createdAt: 'desc',
       },
     })
-
-    console.log('[API /connections/requests] Found', pendingRequests.length, 'pending requests')
 
     return NextResponse.json({
       success: true,

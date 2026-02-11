@@ -1356,7 +1356,24 @@ export function DigitalScroll({
                   onComplete={(score, total) => {
                     const percentage = Math.round((score / total) * 100)
                     console.log(`Quiz completed: ${score}/${total} (${percentage}%)`)
-                    // TODO: Save quiz result for badge progress
+
+                    // Mark chapter as complete in local scroll state if passing score (>=70%)
+                    if (percentage >= 70 && quizChapterIdx !== undefined) {
+                      scrollState.markChapterComplete(quizChapterIdx)
+                    }
+
+                    // Persist quiz result to the progress API (fire-and-forget)
+                    fetch('/api/learn/progress', {
+                      method: 'POST',
+                      headers: { 'Content-Type': 'application/json' },
+                      body: JSON.stringify({
+                        action: 'submit_quiz',
+                        moduleId: modules[quizChapterIdx]?.slug,
+                        quizId: `${topic.id}-ch${quizChapterIdx}-quiz`,
+                        score: percentage,
+                        passed: percentage >= 70,
+                      }),
+                    }).catch((err) => console.error('Failed to save quiz progress:', err))
                   }}
                 />
               ) : (

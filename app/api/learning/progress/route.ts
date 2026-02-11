@@ -4,14 +4,9 @@ import { prisma } from '@/lib/db'
 
 export async function GET(request: Request) {
   try {
-    console.log('[API /learning/progress] Request received')
-
     const session = await auth()
     const { searchParams } = new URL(request.url)
     const userId = searchParams.get('userId')
-
-    console.log('[API /learning/progress] Session user ID:', session?.user?.id)
-    console.log('[API /learning/progress] Requested user ID:', userId)
 
     if (!session?.user?.id) {
       return NextResponse.json(
@@ -22,8 +17,6 @@ export async function GET(request: Request) {
 
     // If userId is provided, filter by that user, otherwise use the logged-in user
     const targetUserId = userId || session.user.id
-
-    console.log('[API /learning/progress] Fetching learning progress for user:', targetUserId)
 
     // Fetch saved articles count (articles the user has bookmarked/saved)
     const savedArticlesCount = await prisma.savedArticle.count({
@@ -65,8 +58,6 @@ export async function GET(request: Request) {
       coursesCompleted: completedProjectsCount, // Using completed projects as "courses"
       totalHours: totalHours,
     }
-
-    console.log('[API /learning/progress] Learning progress:', learningProgress)
 
     return NextResponse.json({
       success: true,
