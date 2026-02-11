@@ -48,7 +48,7 @@ const gameModes = [
     color: 'from-blue-500 to-indigo-600',
     bgColor: 'bg-blue-500/10',
     features: ['Bracing & trusses', 'Foundation types', 'Load analysis', 'Multi-view learning'],
-    href: '/architecture/compare?category=structural'
+    href: '/architecture/structural'
   },
   {
     id: 'diagram',
