@@ -15,7 +15,9 @@
     "db:seed:products": "tsx prisma/seed-products.ts",
     "db:seed:expansion": "tsx prisma/seed-products-expansion.ts",
     "setup:db": "tsx scripts/setup-db.ts",
-    "postinstall": "echo 'Skipping prisma generate in this environment'"
+    "postinstall": "echo 'Skipping prisma generate in this environment'",
+    "party:dev": "partykit dev",
+    "party:deploy": "partykit deploy"
   },
   "prisma": {
     "seed": "tsx prisma/seed.ts"
@@ -63,6 +65,7 @@
     "@tiptap/extension-underline": "^3.13.0",
     "@tiptap/react": "^3.13.0",
     "@tiptap/starter-kit": "^3.13.0",
+    "@tiptap/suggestion": "^3.19.0",
     "@tiptap/y-tiptap": "^3.0.2",
     "@types/dompurify": "^3.2.0",
     "@types/papaparse": "^5.5.1",
@@ -73,6 +76,7 @@
     "cloudinary": "^2.8.0",
     "clsx": "^2.1.1",
     "date-fns": "^4.1.0",
+    "docx": "^9.5.1",
     "dompurify": "^3.3.0",
     "force-graph": "^1.51.0",
     "framer-motion": "^12.23.24",
@@ -95,7 +99,9 @@
     "suncalc": "^1.9.0",
     "tailwind-merge": "^3.4.0",
     "three": "^0.181.2",
+    "tippy.js": "^6.3.7",
     "uploadthing": "^7.7.4",
+    "y-partykit": "^0.0.25",
     "y-prosemirror": "^1.3.7",
     "y-websocket": "^3.0.0",
     "yjs": "^13.6.29",
@@ -110,6 +116,7 @@
     "@types/suncalc": "^1.9.2",
     "eslint": "^9",
     "eslint-config-next": "16.0.3",
+    "partykit": "^0.0.111",
     "prisma": "^6.19.0",
     "tailwindcss": "^4",
     "tsx": "^4.20.6",

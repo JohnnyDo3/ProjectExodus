@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { auth } from '@/auth'
 import { prisma } from '@/lib/db/prisma'
+import { getDocumentTemplateById, TEMPLATE_CATEGORIES } from '@/data/document-templates'
 
 // GET /api/document-templates/[templateId] - Get a specific template
 export async function GET(
@@ -15,6 +16,37 @@ export async function GET(
 
     const { templateId } = await context.params
 
+    // Check if this is a built-in template
+    if (templateId.startsWith('builtin-')) {
+      const builtInId = templateId.replace('builtin-', '')
+      const builtInTemplate = getDocumentTemplateById(builtInId)
+
+      if (!builtInTemplate) {
+        return NextResponse.json({ success: false, error: 'Template not found' }, { status: 404 })
+      }
+
+      return NextResponse.json({
+        success: true,
+        data: {
+          id: templateId,
+          name: builtInTemplate.name,
+          description: builtInTemplate.description,
+          content: builtInTemplate.content,
+          category: builtInTemplate.category,
+          icon: builtInTemplate.icon,
+          isBuiltIn: true,
+          isPublic: true,
+          usageCount: 0,
+          createdAt: new Date().toISOString(),
+          updatedAt: new Date().toISOString(),
+          creator: null,
+          projectId: null,
+          tags: [],
+        },
+      })
+    }
+
+    // Otherwise, fetch from database
     const template = await prisma.documentTemplate.findUnique({
       where: { id: templateId },
       include: {
@@ -68,8 +100,17 @@ export async function PATCH(
     }
 
     const { templateId } = await context.params
+
+    // Built-in templates cannot be updated
+    if (templateId.startsWith('builtin-')) {
+      return NextResponse.json(
+        { success: false, error: 'Built-in templates cannot be modified' },
+        { status: 403 }
+      )
+    }
+
     const body = await request.json()
-    const { name, description, content, category, isPublic, tags } = body
+    const { name, description, content, category, isPublic, tags, icon } = body
 
     // Get template
     const template = await prisma.documentTemplate.findUnique({
@@ -85,6 +126,17 @@ export async function PATCH(
       return NextResponse.json({ success: false, error: 'Access denied' }, { status: 403 })
     }
 
+    // Validate category if provided
+    if (category) {
+      const validCategories = TEMPLATE_CATEGORIES.map((c) => c.id)
+      if (!validCategories.includes(category) && category !== 'Custom') {
+        return NextResponse.json(
+          { success: false, error: 'Invalid category' },
+          { status: 400 }
+        )
+      }
+    }
+
     // Build update data
     const updateData: any = {}
     if (name !== undefined) updateData.name = name.trim()
@@ -93,6 +145,7 @@ export async function PATCH(
     if (category !== undefined) updateData.category = category.trim()
     if (isPublic !== undefined) updateData.isPublic = isPublic
     if (tags !== undefined) updateData.tags = tags
+    if (icon !== undefined) updateData.icon = icon
 
     const updatedTemplate = await prisma.documentTemplate.update({
       where: { id: templateId },
@@ -130,6 +183,14 @@ export async function DELETE(
     }
 
     const { templateId } = await context.params
+
+    // Built-in templates cannot be deleted
+    if (templateId.startsWith('builtin-')) {
+      return NextResponse.json(
+        { success: false, error: 'Built-in templates cannot be deleted' },
+        { status: 403 }
+      )
+    }
 
     // Get template
     const template = await prisma.documentTemplate.findUnique({

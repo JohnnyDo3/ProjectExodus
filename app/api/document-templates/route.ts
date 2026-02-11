@@ -1,8 +1,16 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { auth } from '@/auth'
 import { prisma } from '@/lib/db/prisma'
+import {
+  DOCUMENT_TEMPLATES,
+  TEMPLATE_CATEGORIES,
+  getDocumentTemplateById,
+  getDocumentTemplatesByCategory,
+  searchDocumentTemplates,
+  TemplateCategory,
+} from '@/data/document-templates'
 
-// GET /api/document-templates - Get all templates
+// GET /api/document-templates - Get all templates (built-in + custom)
 export async function GET(request: NextRequest) {
   try {
     const session = await auth()
@@ -12,13 +20,61 @@ export async function GET(request: NextRequest) {
 
     const url = new URL(request.url)
     const projectId = url.searchParams.get('projectId')
-    const category = url.searchParams.get('category')
+    const category = url.searchParams.get('category') as TemplateCategory | null
     const builtInOnly = url.searchParams.get('builtInOnly') === 'true'
+    const searchQuery = url.searchParams.get('search')
 
-    // Build where clause
+    // Start with built-in templates
+    let builtInTemplates = [...DOCUMENT_TEMPLATES]
+
+    // Filter built-in templates by category
+    if (category) {
+      builtInTemplates = getDocumentTemplatesByCategory(category)
+    }
+
+    // Search built-in templates
+    if (searchQuery) {
+      builtInTemplates = searchDocumentTemplates(searchQuery)
+      // If also filtering by category, intersect the results
+      if (category) {
+        const categoryTemplates = getDocumentTemplatesByCategory(category)
+        const categoryIds = new Set(categoryTemplates.map((t) => t.id))
+        builtInTemplates = builtInTemplates.filter((t) => categoryIds.has(t.id))
+      }
+    }
+
+    // Convert built-in templates to API format
+    const formattedBuiltIn = builtInTemplates.map((template) => ({
+      id: `builtin-${template.id}`,
+      name: template.name,
+      description: template.description,
+      content: template.content,
+      category: template.category,
+      icon: template.icon,
+      isBuiltIn: true,
+      isPublic: true,
+      usageCount: 0,
+      createdAt: new Date().toISOString(),
+      updatedAt: new Date().toISOString(),
+      creator: null,
+      projectId: null,
+      tags: [],
+    }))
+
+    // If only built-in templates requested, return early
+    if (builtInOnly) {
+      return NextResponse.json({
+        success: true,
+        data: {
+          templates: formattedBuiltIn,
+          categories: TEMPLATE_CATEGORIES,
+        },
+      })
+    }
+
+    // Build where clause for custom templates
     const where: any = {
       OR: [
-        { isBuiltIn: true },
         { creatorId: session.user.id },
         { isPublic: true },
       ],
@@ -32,11 +88,8 @@ export async function GET(request: NextRequest) {
       where.category = category
     }
 
-    if (builtInOnly) {
-      where.isBuiltIn = true
-    }
-
-    const templates = await prisma.documentTemplate.findMany({
+    // Fetch custom templates from database
+    const customTemplates = await prisma.documentTemplate.findMany({
       where,
       include: {
         creator: {
@@ -48,13 +101,42 @@ export async function GET(request: NextRequest) {
         },
       },
       orderBy: [
-        { isBuiltIn: 'desc' },
         { usageCount: 'desc' },
         { createdAt: 'desc' },
       ],
     })
 
-    return NextResponse.json({ success: true, data: templates })
+    // Filter custom templates by search if provided
+    let filteredCustom = customTemplates
+    if (searchQuery) {
+      const lowerSearch = searchQuery.toLowerCase()
+      filteredCustom = customTemplates.filter(
+        (t: { name: string; description: string | null; category: string }) =>
+          t.name.toLowerCase().includes(lowerSearch) ||
+          t.description?.toLowerCase().includes(lowerSearch) ||
+          t.category.toLowerCase().includes(lowerSearch)
+      )
+    }
+
+    // Format custom templates
+    const formattedCustom = filteredCustom.map((template: typeof customTemplates[number]) => ({
+      ...template,
+      isBuiltIn: false,
+    }))
+
+    // Combine built-in and custom templates
+    // Built-in templates first, then custom sorted by usage
+    const allTemplates = [...formattedBuiltIn, ...formattedCustom]
+
+    return NextResponse.json({
+      success: true,
+      data: {
+        templates: allTemplates,
+        categories: TEMPLATE_CATEGORIES,
+        builtInCount: formattedBuiltIn.length,
+        customCount: formattedCustom.length,
+      },
+    })
   } catch (error) {
     console.error('Error fetching templates:', error)
     return NextResponse.json(
@@ -64,7 +146,7 @@ export async function GET(request: NextRequest) {
   }
 }
 
-// POST /api/document-templates - Create a new template
+// POST /api/document-templates - Create a new custom template
 export async function POST(request: NextRequest) {
   try {
     const session = await auth()
@@ -73,11 +155,20 @@ export async function POST(request: NextRequest) {
     }
 
     const body = await request.json()
-    const { name, description, content, category, projectId, isPublic = false, tags = [] } = body
+    const { name, description, content, category, projectId, isPublic = false, tags = [], icon } = body
 
     if (!name?.trim() || !content?.trim() || !category?.trim()) {
       return NextResponse.json(
         { success: false, error: 'Name, content, and category are required' },
+        { status: 400 }
+      )
+    }
+
+    // Validate category
+    const validCategories = TEMPLATE_CATEGORIES.map((c) => c.id)
+    if (!validCategories.includes(category) && category !== 'Custom') {
+      return NextResponse.json(
+        { success: false, error: 'Invalid category' },
         { status: 400 }
       )
     }
@@ -111,6 +202,7 @@ export async function POST(request: NextRequest) {
         description: description?.trim() || null,
         content: content.trim(),
         category: category.trim(),
+        icon: icon || 'FileText',
         creatorId: session.user.id,
         projectId: projectId || null,
         isPublic,

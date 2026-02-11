@@ -44,6 +44,7 @@ import { InlineCommentPopover } from '@/components/documents/comments/InlineComm
 import { VersionHistoryPanel } from '@/components/documents/versions/VersionHistoryPanel'
 import { VersionDiff } from '@/components/documents/versions/VersionDiff'
 import { RestoreVersionModal } from '@/components/documents/versions/RestoreVersionModal'
+import { CreateCheckpointModal } from '@/components/documents/versions/CreateCheckpointModal'
 import { ShareModal } from '@/components/documents/sharing/ShareModal'
 import { ExportMenu } from '@/components/documents/export/ExportMenu'
 import { TableOfContents } from '@/components/documents/navigation/TableOfContents'
@@ -108,6 +109,7 @@ export default function DocumentPage({
   const [showShareModal, setShowShareModal] = useState(false)
   const [showVersionDiff, setShowVersionDiff] = useState(false)
   const [showRestoreModal, setShowRestoreModal] = useState(false)
+  const [showCheckpointModal, setShowCheckpointModal] = useState(false)
 
   // Data state
   const [comments, setComments] = useState<any[]>([])
@@ -299,22 +301,187 @@ export default function DocumentPage({
     }
   }
 
+  const handleUnresolveComment = async (commentId: string) => {
+    try {
+      const res = await fetch(`/api/documents/${documentId}/comments/${commentId}/resolve`, {
+        method: 'DELETE',
+      })
+
+      const data = await res.json()
+      if (data.success) {
+        setComments((prev) =>
+          prev.map((c) => (c.id === commentId ? { ...c, isResolved: false, resolvedBy: null, resolvedAt: null } : c))
+        )
+      }
+    } catch (error) {
+      console.error('Error unresolving comment:', error)
+    }
+  }
+
+  const handleEditComment = async (commentId: string, content: string) => {
+    try {
+      const res = await fetch(`/api/documents/${documentId}/comments/${commentId}`, {
+        method: 'PATCH',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ content }),
+      })
+
+      const data = await res.json()
+      if (data.success) {
+        setComments((prev) =>
+          prev.map((c) => {
+            if (c.id === commentId) {
+              return { ...c, content, isEdited: true }
+            }
+            // Check if it's in replies
+            if (c.replies?.some((r: any) => r.id === commentId)) {
+              return {
+                ...c,
+                replies: c.replies.map((r: any) =>
+                  r.id === commentId ? { ...r, content, isEdited: true } : r
+                ),
+              }
+            }
+            return c
+          })
+        )
+      }
+    } catch (error) {
+      console.error('Error editing comment:', error)
+    }
+  }
+
+  const handleDeleteComment = async (commentId: string) => {
+    try {
+      const res = await fetch(`/api/documents/${documentId}/comments/${commentId}`, {
+        method: 'DELETE',
+      })
+
+      const data = await res.json()
+      if (data.success) {
+        setComments((prev) =>
+          prev
+            .filter((c) => c.id !== commentId)
+            .map((c) => ({
+              ...c,
+              replies: c.replies?.filter((r: any) => r.id !== commentId),
+            }))
+        )
+      }
+    } catch (error) {
+      console.error('Error deleting comment:', error)
+    }
+  }
+
+  const handleReactToComment = async (commentId: string, emoji: string) => {
+    try {
+      const res = await fetch(`/api/documents/${documentId}/comments/${commentId}/react`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ emoji }),
+      })
+
+      const data = await res.json()
+      if (data.success) {
+        setComments((prev) =>
+          prev.map((c) => {
+            if (c.id === commentId) {
+              return { ...c, reactions: [...(c.reactions || []), data.data] }
+            }
+            // Check if it's in replies
+            if (c.replies?.some((r: any) => r.id === commentId)) {
+              return {
+                ...c,
+                replies: c.replies.map((r: any) =>
+                  r.id === commentId
+                    ? { ...r, reactions: [...(r.reactions || []), data.data] }
+                    : r
+                ),
+              }
+            }
+            return c
+          })
+        )
+      }
+    } catch (error) {
+      console.error('Error adding reaction:', error)
+    }
+  }
+
+  const handleRemoveReaction = async (commentId: string, emoji: string) => {
+    try {
+      const res = await fetch(
+        `/api/documents/${documentId}/comments/${commentId}/react?emoji=${encodeURIComponent(emoji)}`,
+        { method: 'DELETE' }
+      )
+
+      const data = await res.json()
+      if (data.success) {
+        setComments((prev) =>
+          prev.map((c) => {
+            if (c.id === commentId) {
+              return {
+                ...c,
+                reactions: c.reactions?.filter((r: any) => !(r.userId === session?.user?.id && r.emoji === emoji)),
+              }
+            }
+            // Check if it's in replies
+            if (c.replies?.some((r: any) => r.id === commentId)) {
+              return {
+                ...c,
+                replies: c.replies.map((r: any) =>
+                  r.id === commentId
+                    ? {
+                        ...r,
+                        reactions: r.reactions?.filter(
+                          (re: any) => !(re.userId === session?.user?.id && re.emoji === emoji)
+                        ),
+                      }
+                    : r
+                ),
+              }
+            }
+            return c
+          })
+        )
+      }
+    } catch (error) {
+      console.error('Error removing reaction:', error)
+    }
+  }
+
+  const handleScrollToCommentPosition = (position: { from: number; to: number }) => {
+    // This would scroll the editor to highlight the commented text
+    // Implementation depends on the editor instance
+    if (editorRef) {
+      // TODO: Implement scroll to position in editor
+      console.log('Scroll to position:', position)
+    }
+  }
+
   // Version handlers
-  const handleCreateCheckpoint = async () => {
+  const handleOpenCheckpointModal = () => {
+    setShowCheckpointModal(true)
+  }
+
+  const handleCreateCheckpoint = async (name: string, description: string, isMajorVersion: boolean) => {
     try {
       const res = await fetch(`/api/documents/${documentId}/versions`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ name: 'Manual checkpoint' }),
+        body: JSON.stringify({ name, changeDescription: description, isMajorVersion }),
       })
 
       const data = await res.json()
       if (data.success) {
         setVersions((prev) => [data.data, ...prev])
         setDocument((prev: any) => ({ ...prev, version: data.data.versionNumber }))
+      } else {
+        throw new Error(data.error || 'Failed to create checkpoint')
       }
     } catch (error) {
       console.error('Error creating checkpoint:', error)
+      throw error
     }
   }
 
@@ -341,6 +508,25 @@ export default function DocumentPage({
     }
   }
 
+  const handleRenameVersion = async (versionId: string, name: string) => {
+    try {
+      const res = await fetch(`/api/documents/${documentId}/versions/${versionId}`, {
+        method: 'PATCH',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ name }),
+      })
+
+      const data = await res.json()
+      if (data.success) {
+        setVersions((prev) =>
+          prev.map((v) => (v.id === versionId ? { ...v, name } : v))
+        )
+      }
+    } catch (error) {
+      console.error('Error renaming version:', error)
+    }
+  }
+
   // Collaborator handlers
   const handleInviteCollaborator = async (userId: string, permission: string) => {
     try {
@@ -360,62 +546,7 @@ export default function DocumentPage({
     }
   }
 
-  // Export handler
-  const handleExport = async (format: string) => {
-    // Simplified export - in production, this would call a server endpoint
-    const content = document?.content || ''
-
-    if (format === 'md') {
-      // Simple HTML to Markdown conversion
-      const markdown = content
-        .replace(/<h1[^>]*>(.*?)<\/h1>/gi, '# $1\n\n')
-        .replace(/<h2[^>]*>(.*?)<\/h2>/gi, '## $1\n\n')
-        .replace(/<h3[^>]*>(.*?)<\/h3>/gi, '### $1\n\n')
-        .replace(/<p[^>]*>(.*?)<\/p>/gi, '$1\n\n')
-        .replace(/<strong[^>]*>(.*?)<\/strong>/gi, '**$1**')
-        .replace(/<em[^>]*>(.*?)<\/em>/gi, '*$1*')
-        .replace(/<[^>]*>/g, '')
-
-      const blob = new Blob([markdown], { type: 'text/markdown' })
-      const url = URL.createObjectURL(blob)
-      const a = window.document.createElement('a')
-      a.href = url
-      a.download = `${document?.title || 'document'}.md`
-      a.click()
-      URL.revokeObjectURL(url)
-    } else if (format === 'html') {
-      const html = `<!DOCTYPE html>
-<html>
-<head>
-  <title>${document?.title || 'Document'}</title>
-  <style>
-    body { font-family: system-ui, sans-serif; max-width: 800px; margin: 0 auto; padding: 2rem; }
-  </style>
-</head>
-<body>
-  <h1>${document?.title || 'Document'}</h1>
-  ${content}
-</body>
-</html>`
-
-      const blob = new Blob([html], { type: 'text/html' })
-      const url = URL.createObjectURL(blob)
-      const a = window.document.createElement('a')
-      a.href = url
-      a.download = `${document?.title || 'document'}.html`
-      a.click()
-      URL.revokeObjectURL(url)
-    } else if (format === 'txt') {
-      const text = content.replace(/<[^>]*>/g, '')
-      const blob = new Blob([text], { type: 'text/plain' })
-      const url = URL.createObjectURL(blob)
-      const a = window.document.createElement('a')
-      a.href = url
-      a.download = `${document?.title || 'document'}.txt`
-      a.click()
-      URL.revokeObjectURL(url)
-    }
-  }
+  // Export is now handled directly by ExportMenu component
 
   // Calculate document stats
   const stats = useMemo(() => {
@@ -497,7 +628,13 @@ export default function DocumentPage({
             onToggleCollapse={() => setSidebarCollapsed(!sidebarCollapsed)}
             onAddComment={() => setActiveSidebar('comments')}
             onReply={handleReplyComment}
+            onEdit={handleEditComment}
+            onDelete={handleDeleteComment}
             onResolve={handleResolveComment}
+            onUnresolve={handleUnresolveComment}
+            onReact={handleReactToComment}
+            onRemoveReaction={handleRemoveReaction}
+            onScrollToPosition={handleScrollToCommentPosition}
           />
         )
       case 'versions':
@@ -510,7 +647,8 @@ export default function DocumentPage({
             onPreview={(v) => setCompareVersions({ v1: v, v2: versions[0] })}
             onRestore={(v) => { setRestoreVersion(v); setShowRestoreModal(true); }}
             onCompare={(v1, v2) => { setCompareVersions({ v1, v2 }); setShowVersionDiff(true); }}
-            onCreateCheckpoint={handleCreateCheckpoint}
+            onCreateCheckpoint={handleOpenCheckpointModal}
+            onRenameVersion={handleRenameVersion}
           />
         )
       case 'info':
@@ -588,7 +726,10 @@ export default function DocumentPage({
               <ExportMenu
                 documentId={documentId}
                 documentTitle={document.title}
-                onExport={handleExport}
+                documentContent={document.content || ''}
+                author={document.creator?.name || ''}
+                createdAt={document.createdAt ? new Date(document.createdAt) : undefined}
+                updatedAt={document.updatedAt ? new Date(document.updatedAt) : undefined}
                 onPrint={() => window.print()}
               />
 
@@ -690,7 +831,7 @@ export default function DocumentPage({
                     showToolbar={editorMode !== 'view'}
                     showStats={false}
                     placeholder="Start writing your document..."
-                    enableCollaboration={!!process.env.NEXT_PUBLIC_HOCUSPOCUS_URL}
+                    enableCollaboration={!!process.env.NEXT_PUBLIC_PARTYKIT_HOST}
                     collaborationType="document"
                     currentUser={
                       session?.user
@@ -890,6 +1031,13 @@ export default function DocumentPage({
             onConfirm={handleRestoreVersion}
           />
         )}
+
+        <CreateCheckpointModal
+          isOpen={showCheckpointModal}
+          onClose={() => setShowCheckpointModal(false)}
+          onConfirm={handleCreateCheckpoint}
+          currentVersion={document.version}
+        />
 
         <InlineCommentPopover
           isOpen={commentPopover.isOpen}

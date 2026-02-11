@@ -161,11 +161,12 @@ export async function PATCH(
       await prisma.documentVersion.create({
         data: {
           documentId,
-          content: document.content,
+          title: document.title,
+          content: document.content || '',
           versionNumber: document.version,
           createdById: session.user.id,
           changeDescription: 'Auto-saved version',
-          isAutoSave: true,
+          isAutoSaved: true,
         },
       })
     }

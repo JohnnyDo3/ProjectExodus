@@ -18,16 +18,15 @@ import Color from '@tiptap/extension-color'
 import { TextStyle } from '@tiptap/extension-text-style'
 import Collaboration from '@tiptap/extension-collaboration'
 import CollaborationCursor from '@tiptap/extension-collaboration-cursor'
+import { SlashCommands } from './editor/SlashCommands'
 import { useCallback, useEffect, useState, useRef } from 'react'
-import type { HocuspocusProvider as HocuspocusProviderType } from '@hocuspocus/provider'
-import type * as YType from 'yjs'
 import { collaborationConfig, getDocumentName, getUserAwarenessInfo } from '@/lib/collaboration'
 import {
   Bold, Italic, Underline, Strikethrough, Code, Heading1, Heading2, Heading3,
   List, ListOrdered, ListChecks, Quote, Link2, Image as ImageIcon, Table as TableIcon,
   Undo, Redo, Save, Eye, Clock, Users, MessageSquare, Sparkles,
   ChevronDown, Type, Palette, AlignLeft, AlignCenter, AlignRight,
-  MoreHorizontal
+  MoreHorizontal, Wifi, WifiOff
 } from 'lucide-react'
 import { Button } from '@/components/ui/Button'
 import { Card } from '@/components/ui/Card'
@@ -72,59 +71,97 @@ export function CollaborativeEditor({
   const [isSaving, setIsSaving] = useState(false)
   const [lastSaved, setLastSaved] = useState<Date | null>(null)
   const [hasUnsavedChanges, setHasUnsavedChanges] = useState(false)
-  const [showBubbleMenu, setShowBubbleMenu] = useState(false)
   const [connectionStatus, setConnectionStatus] = useState<'connecting' | 'connected' | 'disconnected' | 'error'>('disconnected')
   const [activeUsers, setActiveUsers] = useState<any[]>([])
+  const [isSynced, setIsSynced] = useState(false)
 
-  const providerRef = useRef<HocuspocusProviderType | null>(null)
-  const ydocRef = useRef<YType.Doc | null>(null)
+  const providerRef = useRef<any>(null)
+  const ydocRef = useRef<any>(null)
   const [collaborationReady, setCollaborationReady] = useState(false)
 
-  // Initialize Y.js and Hocuspocus provider for collaboration
+  // Check if collaboration is available
+  const canUseCollaboration = enableCollaboration && documentId && currentUser && collaborationConfig.isAvailable
+
+  // Initialize Y.js and PartyKit provider for collaboration
   useEffect(() => {
-    if (!enableCollaboration || !documentId || !currentUser) {
+    if (!canUseCollaboration) {
       setCollaborationReady(false)
       return
     }
 
-    let provider: HocuspocusProviderType | null = null
-    let ydoc: YType.Doc | null = null
+    let provider: any = null
+    let ydoc: any = null
 
     const initCollaboration = async () => {
       try {
-        // Dynamically import browser-only packages
-        const [{ HocuspocusProvider }, { Doc }] = await Promise.all([
-          import('@hocuspocus/provider'),
-          import('yjs')
-        ])
+        setConnectionStatus('connecting')
+
+        // Dynamically import Y.js and PartyKit provider
+        const { Doc } = await import('yjs')
+
+        // Try to import y-partykit - may not be installed
+        let YPartyKitProvider: any
+        try {
+          const partykit = await import('y-partykit/provider')
+          YPartyKitProvider = partykit.YPartyKitProvider
+        } catch (e) {
+          console.warn('y-partykit not installed. Run: npm install y-partykit')
+          setConnectionStatus('error')
+          return
+        }
 
         // Create Y.js document
         ydoc = new Doc()
         ydocRef.current = ydoc
 
-        // Create Hocuspocus provider
-        provider = new HocuspocusProvider({
-          url: collaborationConfig.serverUrl,
-          name: getDocumentName(collaborationType, documentId),
-          document: ydoc,
-          token: collaborationConfig.getToken() || undefined,
-          onStatus: ({ status }: { status: string }) => {
-            setConnectionStatus(status as any)
-          },
-          onAwarenessUpdate: () => {
-            if (provider?.awareness) {
-              const states = Array.from(provider.awareness.getStates().values())
-              setActiveUsers(states.map((state: any) => state.user).filter(Boolean))
-            }
-          },
-        })
+        // Get room name
+        const roomName = getDocumentName(collaborationType, documentId!)
+
+        // Create PartyKit provider
+        provider = new YPartyKitProvider(
+          collaborationConfig.host!,
+          roomName,
+          ydoc,
+          {
+            connect: true,
+          }
+        )
 
         providerRef.current = provider
 
-        // Set current user awareness
-        provider.setAwarenessField('user', getUserAwarenessInfo(currentUser).user)
+        // Handle connection status
+        provider.on('status', ({ status }: { status: string }) => {
+          if (status === 'connected') {
+            setConnectionStatus('connected')
+          } else if (status === 'disconnected') {
+            setConnectionStatus('disconnected')
+          }
+        })
 
-        // Mark collaboration as ready after provider is set up
+        // Handle sync status
+        provider.on('synced', ({ synced }: { synced: boolean }) => {
+          setIsSynced(synced)
+          if (synced) {
+            // Auto-save to database when synced
+            if (onSave && ydocRef.current) {
+              // Debounced save will be handled by the editor's onUpdate
+            }
+          }
+        })
+
+        // Handle awareness (other users' cursors)
+        provider.awareness.on('change', () => {
+          const states = Array.from(provider.awareness.getStates().values())
+          const otherUsers = states
+            .map((state: any) => state.user)
+            .filter((user: any) => user && user.id !== currentUser?.id)
+          setActiveUsers(otherUsers)
+        })
+
+        // Set current user awareness
+        provider.awareness.setLocalStateField('user', getUserAwarenessInfo(currentUser!).user)
+
+        // Mark collaboration as ready
         setCollaborationReady(true)
       } catch (error) {
         console.error('Failed to initialize collaboration:', error)
@@ -146,12 +183,12 @@ export function CollaborativeEditor({
       providerRef.current = null
       ydocRef.current = null
     }
-  }, [enableCollaboration, documentId, currentUser, collaborationType])
+  }, [canUseCollaboration, documentId, currentUser, collaborationType])
 
-  // Build extensions array - memoize to prevent recreation
+  // Build extensions array
   const extensions = useCallback(() => {
-    // Configure StarterKit - disable history when collaboration is enabled (Y.js handles undo/redo)
-    const starterKitOptions = enableCollaboration && collaborationReady
+    // Configure StarterKit - disable history when collaboration is enabled
+    const starterKitOptions = canUseCollaboration && collaborationReady
       ? { history: false as const }
       : undefined
 
@@ -184,10 +221,12 @@ export function CollaborativeEditor({
       CharacterCount,
       Color,
       TextStyle,
+      // Slash commands for Notion-style block insertion
+      SlashCommands,
     ]
 
     // Add collaboration extensions only when ready
-    if (enableCollaboration && collaborationReady && ydocRef.current && providerRef.current) {
+    if (canUseCollaboration && collaborationReady && ydocRef.current && providerRef.current) {
       baseExtensions.push(
         Collaboration.configure({
           document: ydocRef.current,
@@ -200,24 +239,22 @@ export function CollaborativeEditor({
     }
 
     return baseExtensions
-  }, [enableCollaboration, collaborationReady, readOnly, placeholder, currentUser])
+  }, [canUseCollaboration, collaborationReady, readOnly, placeholder, currentUser])
 
   const editor = useEditor({
     extensions: extensions(),
-    content: (enableCollaboration && collaborationReady) ? undefined : initialContent,
+    content: (canUseCollaboration && collaborationReady) ? undefined : initialContent,
     editable: !readOnly,
     onUpdate: ({ editor }) => {
-      if (!enableCollaboration) {
-        setHasUnsavedChanges(true)
-      }
+      setHasUnsavedChanges(true)
       onUpdate?.(editor.getHTML())
     },
     editorProps: {
       attributes: {
-        class: 'prose prose-sm sm:prose lg:prose-lg xl:prose-xl max-w-none focus:outline-none min-h-[500px] p-6',
+        class: 'prose prose-sm sm:prose lg:prose-lg xl:prose-xl max-w-none focus:outline-none min-h-[500px] p-6 prose-headings:text-[var(--foreground)] prose-p:text-[var(--foreground)] prose-strong:text-[var(--foreground)] prose-a:text-[var(--primary)] prose-code:text-[var(--foreground)] prose-pre:bg-[var(--secondary)] prose-blockquote:border-[var(--primary)] prose-blockquote:text-[var(--muted)] text-[var(--foreground)]',
       },
     },
-  }, [extensions, initialContent, readOnly, enableCollaboration, collaborationReady])
+  }, [extensions, initialContent, readOnly, canUseCollaboration, collaborationReady])
 
   // Auto-save functionality
   useEffect(() => {
@@ -290,7 +327,7 @@ export function CollaborativeEditor({
     <div className="relative w-full">
       {/* Toolbar */}
       {showToolbar && !readOnly && (
-        <div className="sticky top-0 z-10 bg-white dark:bg-slate-900 border-b border-[var(--border)] shadow-sm">
+        <div className="sticky top-0 z-10 bg-[var(--background)] border-b border-[var(--border)] shadow-sm">
           <div className="flex items-center gap-1 p-2 flex-wrap">
             {/* Text formatting */}
             <div className="flex items-center gap-0.5 border-r pr-2">
@@ -477,43 +514,45 @@ export function CollaborativeEditor({
       )}
 
       {/* Editor content */}
-      <div className="relative bg-white dark:bg-slate-900">
+      <div className="relative bg-[var(--background)]">
         <EditorContent editor={editor} />
       </div>
 
       {/* Stats bar */}
       {showStats && (
-        <div className="sticky bottom-0 bg-white dark:bg-slate-900 border-t border-[var(--border)] px-4 py-2">
+        <div className="sticky bottom-0 bg-[var(--background)] border-t border-[var(--border)] px-4 py-2">
           <div className="flex items-center justify-between text-xs text-theme-muted">
             <div className="flex items-center gap-4">
               <span>{wordCount} words</span>
               <span>{charCount} characters</span>
-              {enableCollaboration && (
+              {canUseCollaboration && (
                 <>
                   <span className="text-xs">•</span>
                   <div className="flex items-center gap-2">
                     {connectionStatus === 'connected' && (
                       <span className="flex items-center gap-1 text-green-500">
+                        <Wifi className="w-3 h-3" />
                         <span className="w-1.5 h-1.5 rounded-full bg-green-500 animate-pulse" />
                         Connected
+                        {isSynced && <span className="text-[10px]">(synced)</span>}
                       </span>
                     )}
                     {connectionStatus === 'connecting' && (
                       <span className="flex items-center gap-1 text-yellow-500">
-                        <span className="w-1.5 h-1.5 rounded-full bg-yellow-500 animate-pulse" />
+                        <Wifi className="w-3 h-3 animate-pulse" />
                         Connecting...
                       </span>
                     )}
                     {connectionStatus === 'disconnected' && (
                       <span className="flex items-center gap-1 text-theme-muted">
-                        <span className="w-1.5 h-1.5 rounded-full bg-gray-400" />
+                        <WifiOff className="w-3 h-3" />
                         Offline
                       </span>
                     )}
                     {connectionStatus === 'error' && (
                       <span className="flex items-center gap-1 text-red-500">
-                        <span className="w-1.5 h-1.5 rounded-full bg-red-500" />
-                        Error
+                        <WifiOff className="w-3 h-3" />
+                        Connection Error
                       </span>
                     )}
                   </div>
@@ -522,7 +561,7 @@ export function CollaborativeEditor({
                       <span className="text-xs">•</span>
                       <div className="flex items-center gap-1">
                         <Users className="w-3 h-3" />
-                        <span>{activeUsers.length + 1} active</span>
+                        <span>{activeUsers.length + 1} editing</span>
                         <div className="flex -space-x-2 ml-1">
                           {activeUsers.slice(0, 3).map((user: any, index: number) => (
                             <div
