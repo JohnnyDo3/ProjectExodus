@@ -42,7 +42,7 @@ const nextConfig: NextConfig = {
               // Allow images from Cloudinary and other CDNs
               "img-src 'self' data: https: blob: https://res.cloudinary.com",
               "font-src 'self' data: https://fonts.gstatic.com",
-              "connect-src 'self' https://api.pusher.com wss://*.pusher.com https://sockjs*.pusher.com https://*.cloudinary.com ws://localhost:* http://localhost:*",
+              "connect-src 'self' https://api.pusher.com wss://*.pusher.com https://sockjs*.pusher.com https://*.cloudinary.com https://*.partykit.dev wss://*.partykit.dev ws://localhost:* http://localhost:*",
               "frame-ancestors 'none'",
               "base-uri 'self'",
               "form-action 'self'",
