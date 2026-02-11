@@ -272,25 +272,23 @@ export function Header() {
                         <div className="p-2">
                           {learnMenuItems.map((menuItem) => {
                             const isLocked = menuItem.requiresAuth && !session
-                            const isIndented = 'indent' in menuItem && menuItem.indent
 
                             return isLocked ? (
                               <div
                                 key={menuItem.label}
-                                className={`flex items-center gap-2 px-3 py-2 rounded-lg text-[var(--muted-foreground)] opacity-60 cursor-not-allowed ${isIndented ? 'ml-4 text-xs' : 'justify-center'}`}
+                                className="flex items-center justify-center gap-2 px-3 py-2 rounded-lg text-[var(--muted-foreground)] opacity-60 cursor-not-allowed"
                                 title="Sign in to access"
                               >
                                 <Lock className="w-3.5 h-3.5 flex-shrink-0" />
-                                <span className={`font-medium whitespace-nowrap ${isIndented ? 'text-xs' : 'text-sm'}`}>{menuItem.label}</span>
+                                <span className="font-medium whitespace-nowrap text-sm">{menuItem.label}</span>
                               </div>
                             ) : (
                               <Link
                                 key={menuItem.label}
                                 href={menuItem.href}
-                                className={`flex items-center gap-2 px-3 py-2 rounded-lg font-medium text-[var(--foreground)] hover:bg-[var(--muted)]/50 hover:text-emerald-600 transition-colors whitespace-nowrap ${isIndented ? 'ml-4 text-xs' : 'justify-center text-sm'}`}
+                                className="flex items-center justify-center gap-2 px-3 py-2 rounded-lg font-medium text-[var(--foreground)] hover:bg-[var(--muted)]/50 hover:text-emerald-600 transition-colors whitespace-nowrap text-sm"
                                 onClick={() => setLearnMenuOpen(false)}
                               >
-                                {isIndented && <span className="text-muted-foreground">→</span>}
                                 <span>{menuItem.label}</span>
                               </Link>
                             )
