@@ -497,23 +497,43 @@ export function CollaborativeEditor({
               </Button>
             </div>
 
-            {/* Save */}
+            {/* Save / Sync Status */}
             <div className="flex items-center gap-2 ml-auto">
-              {autoSave && lastSaved && (
-                <span className="text-xs text-theme-muted">
-                  {hasUnsavedChanges ? 'Saving...' : `Saved ${lastSaved.toLocaleTimeString()}`}
+              {canUseCollaboration ? (
+                // Collaboration mode: show subtle sync status, no save button
+                <span className="text-xs text-theme-muted flex items-center gap-1.5">
+                  {isSaving ? (
+                    <>
+                      <span className="w-1.5 h-1.5 rounded-full bg-yellow-500 animate-pulse" />
+                      Syncing...
+                    </>
+                  ) : lastSaved ? (
+                    <>
+                      <span className="w-1.5 h-1.5 rounded-full bg-green-500" />
+                      Saved
+                    </>
+                  ) : null}
                 </span>
+              ) : (
+                // Non-collaboration mode: show save button
+                <>
+                  {autoSave && lastSaved && (
+                    <span className="text-xs text-theme-muted">
+                      {hasUnsavedChanges ? 'Saving...' : `Saved ${lastSaved.toLocaleTimeString()}`}
+                    </span>
+                  )}
+                  <Button
+                    size="sm"
+                    variant={hasUnsavedChanges ? 'primary' : 'ghost'}
+                    onClick={handleSave}
+                    disabled={isSaving || !hasUnsavedChanges}
+                    title="Save (Ctrl+S)"
+                  >
+                    <Save className="w-4 h-4 mr-1"/>
+                    {isSaving ? 'Saving...' : hasUnsavedChanges ? 'Save' : 'Saved'}
+                  </Button>
+                </>
               )}
-              <Button
-                size="sm"
-                variant={hasUnsavedChanges ? 'primary' : 'ghost'}
-                onClick={handleSave}
-                disabled={isSaving || !hasUnsavedChanges}
-                title="Save (Ctrl+S)"
-              >
-                <Save className="w-4 h-4 mr-1"/>
-                {isSaving ? 'Saving...' : hasUnsavedChanges ? 'Save' : 'Saved'}
-              </Button>
             </div>
           </div>
         </div>
