@@ -175,8 +175,15 @@ export function NightSkyConstellations({ alwaysShow = false, starCount = 2200 }:
   const animationFrameRef = useRef<number | undefined>(undefined)
   const shootingStarsRef = useRef<ShootingStar[]>([])
   const lastShootingStarTimeRef = useRef(0)
-  // Persist rotation start time across re-renders
-  const rotationStartTimeRef = useRef<number>(Date.now())
+  // Persist rotation start time across re-renders (set on client only)
+  const rotationStartTimeRef = useRef<number>(0)
+
+  // Initialize rotation start time on client only
+  useEffect(() => {
+    if (rotationStartTimeRef.current === 0) {
+      rotationStartTimeRef.current = Date.now()
+    }
+  }, [])
 
   // Only show constellations during night phases (unless alwaysShow is true)
   const isNightTime = alwaysShow || ['dusk', 'evening', 'night', 'midnight'].includes(currentPhase)
