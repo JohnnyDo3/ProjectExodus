@@ -358,59 +358,95 @@ export const KneeBracingSVG: React.FC<SVGProps> = ({ showHalo }) => (
 /**
  * ECCENTRIC BRACING (EBF) - Offset connection for ductility
  * Brace connects to beam AWAY from column, creating "link beam"
- * Shows: Diagonal with offset, highlighted link beam section
- * Modern seismic design: Link yields and absorbs energy
+ * The link beam is the key feature - it yields and absorbs seismic energy
+ * "e" represents the eccentricity (offset distance from column)
  */
 export const EccentricBracingSVG: React.FC<SVGProps> = ({ showHalo }) => (
   <svg viewBox="0 0 100 100" className="w-full h-full">
     {showHalo && <HaloFilter id="eccentric-halo" intensity={0.8} />}
     <g filter={showHalo ? "url(#eccentric-halo)" : undefined} fill="none" stroke="currentColor" strokeLinecap="round">
-      {/* CONTEXT - Ground line */}
-      <g strokeDasharray="3 2" opacity="0.3" strokeWidth="0.6">
-        <path d="M5 92 L95 92" />
+      {/* CONTEXT - Ground line with foundation hatching */}
+      <g strokeWidth="0.8" opacity="0.4">
+        <path d="M10 90 L90 90" />
+        <path d="M15 90 L12 95" />
+        <path d="M25 90 L22 95" />
+        <path d="M35 90 L32 95" />
+        <path d="M65 90 L62 95" />
+        <path d="M75 90 L72 95" />
+        <path d="M85 90 L82 95" />
       </g>
 
-      {/* PRIMARY - Structural frame */}
-      <g strokeWidth="2">
-        {/* Columns */}
-        <path d="M20 15 L20 88" />
-        <path d="M80 15 L80 88" />
-        {/* Top beam */}
-        <path d="M15 15 L85 15" />
-        {/* Bottom beam */}
-        <path d="M15 88 L85 88" />
-      </g>
-
-      {/* THE LINK BEAM - Key feature: highlighted section that yields */}
-      <g strokeWidth="4" opacity="0.6">
-        <path d="M35 15 L50 15" className="text-amber-500" stroke="currentColor" />
-      </g>
-
-      {/* ECCENTRIC BRACES - Note offset from column */}
+      {/* PRIMARY - Structural frame columns */}
       <g strokeWidth="2.5">
-        {/* Left brace: from bottom-left to OFFSET point on top beam */}
-        <path d="M20 88 L35 15" />
-        {/* Right brace: from bottom-right to OFFSET point on top beam */}
-        <path d="M80 88 L50 15" />
+        <path d="M22 20 L22 88" />
+        <path d="M78 20 L78 88" />
+        {/* Top beam segments (outside the link) */}
+        <path d="M18 20 L36 20" />
+        <path d="M64 20 L82 20" />
+        {/* Bottom beam */}
+        <path d="M18 88 L82 88" />
       </g>
 
-      {/* Connection points */}
-      <g strokeWidth="1.2">
-        <circle cx="35" cy="15" r="3" />
-        <circle cx="50" cy="15" r="3" />
+      {/* ═══ THE LINK BEAM ═══ */}
+      {/* This is the KEY feature - the section that yields during earthquakes */}
+      {/* Thicker stroke + glow effect to make it prominent */}
+      <g strokeWidth="6" opacity="0.85">
+        <path d="M36 20 L64 20" />
+      </g>
+      {/* Glow/highlight around link beam */}
+      <g strokeWidth="10" opacity="0.12">
+        <path d="M36 20 L64 20" />
       </g>
 
-      {/* Link beam label indicator */}
-      <g strokeWidth="0.8" opacity="0.5">
-        <path d="M42.5 8 L42.5 12" />
-        <path d="M38 5 L47 5" />
-        <text x="42.5" y="4" fontSize="4" textAnchor="middle" fill="currentColor" opacity="0.6">link</text>
+      {/* ECCENTRIC BRACES - They connect to the LINK, not to columns */}
+      <g strokeWidth="2.5">
+        <path d="M22 88 L36 20" />
+        <path d="M78 88 L64 20" />
       </g>
 
-      {/* Energy dissipation symbol */}
-      <g strokeWidth="0.6" opacity="0.4">
-        <path d="M40 20 Q42 22, 40 24 Q38 26, 40 28" />
-        <path d="M45 20 Q47 22, 45 24 Q43 26, 45 28" />
+      {/* Connection nodes at brace-to-link joints */}
+      <g strokeWidth="1.5">
+        <circle cx="36" cy="20" r="4" fill="currentColor" fillOpacity="0.35" />
+        <circle cx="64" cy="20" r="4" fill="currentColor" fillOpacity="0.35" />
+        <circle cx="22" cy="88" r="3" fill="currentColor" fillOpacity="0.2" />
+        <circle cx="78" cy="88" r="3" fill="currentColor" fillOpacity="0.2" />
+      </g>
+
+      {/* ═══ ECCENTRICITY DIMENSION LINES ═══ */}
+      {/* These show the offset "e" - the defining feature */}
+      <g strokeWidth="0.8" opacity="0.65" strokeDasharray="2 1.5">
+        {/* Left eccentricity */}
+        <path d="M22 13 L36 13" />
+        <path d="M22 13 L24.5 11 M22 13 L24.5 15" strokeDasharray="none" />
+        <path d="M36 13 L33.5 11 M36 13 L33.5 15" strokeDasharray="none" />
+        {/* Right eccentricity */}
+        <path d="M64 13 L78 13" />
+        <path d="M64 13 L66.5 11 M64 13 L66.5 15" strokeDasharray="none" />
+        <path d="M78 13 L75.5 11 M78 13 L75.5 15" strokeDasharray="none" />
+      </g>
+      {/* "e" labels showing eccentricity */}
+      <text x="29" y="10" fontSize="6" textAnchor="middle" fill="currentColor" opacity="0.75" fontStyle="italic">e</text>
+      <text x="71" y="10" fontSize="6" textAnchor="middle" fill="currentColor" opacity="0.75" fontStyle="italic">e</text>
+
+      {/* ═══ LINK BEAM LABEL ═══ */}
+      <g opacity="0.85">
+        <text x="50" y="34" fontSize="6" textAnchor="middle" fill="currentColor" fontWeight="bold">LINK</text>
+        <path d="M50 29 L50 23" strokeWidth="1.2" />
+        <path d="M50 23 L47.5 26 M50 23 L52.5 26" strokeWidth="1.2" />
+      </g>
+
+      {/* Energy dissipation waves under the link */}
+      <g strokeWidth="1" opacity="0.45">
+        <path d="M42 26 Q44.5 28.5, 42 31 Q39.5 33.5, 42 36" />
+        <path d="M50 26 Q52.5 28.5, 50 31 Q47.5 33.5, 50 36" />
+        <path d="M58 26 Q60.5 28.5, 58 31 Q55.5 33.5, 58 36" />
+      </g>
+
+      {/* Lateral force arrow (seismic load) */}
+      <g strokeWidth="1.5" opacity="0.55">
+        <path d="M4 52 L14 52" />
+        <path d="M14 52 L10.5 49 M14 52 L10.5 55" />
+        <text x="9" y="60" fontSize="5" textAnchor="middle" fill="currentColor" fontWeight="bold">F</text>
       </g>
     </g>
   </svg>
