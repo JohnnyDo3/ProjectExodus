@@ -446,14 +446,28 @@ function formatMessage(content: string): React.ReactNode {
     .split('\n')
     .map((line, i) => {
       // Bold
-      line = line.replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>')
+      // Bold - safely extract text and wrap in <strong> without dangerouslySetInnerHTML
+      const parts: React.ReactNode[] = []
+      const boldRegex = /\*\*(.*?)\*\*/g
+      let lastIndex = 0
+      let match
       // Bullet points
       if (line.startsWith('- ')) {
         line = '• ' + line.slice(2)
       }
-      // Numbered lists stay as-is
+      while ((match = boldRegex.exec(line)) !== null) {
+        if (match.index > lastIndex) {
+          parts.push(line.slice(lastIndex, match.index))
+        }
+        parts.push(<strong key={`b-${i}-${match.index}`}>{match[1]}</strong>)
+        lastIndex = boldRegex.lastIndex
+      }
+      if (lastIndex < line.length) {
+        parts.push(line.slice(lastIndex))
+      }
       return (
-        <span key={i} dangerouslySetInnerHTML={{ __html: line }}>
+        <span key={i}>
+          {parts.length > 0 ? parts : line}
         </span>
       )
     })

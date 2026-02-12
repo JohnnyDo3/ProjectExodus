@@ -201,6 +201,26 @@ export async function PUT(
 
     const { name, description, coverImage, isPublic } = body
 
+    // Validate input lengths
+    if (name !== undefined && (typeof name !== 'string' || name.trim().length === 0 || name.trim().length > 200)) {
+      return NextResponse.json(
+        { success: false, error: 'Name must be 1-200 characters' },
+        { status: 400 }
+      )
+    }
+    if (description !== undefined && typeof description === 'string' && description.length > 2000) {
+      return NextResponse.json(
+        { success: false, error: 'Description must be under 2000 characters' },
+        { status: 400 }
+      )
+    }
+    if (isPublic !== undefined && typeof isPublic !== 'boolean') {
+      return NextResponse.json(
+        { success: false, error: 'isPublic must be a boolean' },
+        { status: 400 }
+      )
+    }
+
     const updated = await prisma.readingCollection.update({
       where: { id },
       data: {

@@ -3,6 +3,7 @@
 // ============================================
 // BOOK PAGE
 // The sacred container for knowledge
+import { sanitizeHtml } from '@/lib/utils/sanitize'
 // Each page: paper texture, content area, watermark
 // ============================================
 
@@ -260,7 +261,7 @@ export function PageContent({
       {content && (
         <div className="prose prose-sm dark:prose-invert max-w-none">
           {typeof content === 'string' ? (
-            <div dangerouslySetInnerHTML={{ __html: content }} />
+            <div dangerouslySetInnerHTML={{ __html: sanitizeHtml(content as string) }} />
           ) : (
             content
           )}

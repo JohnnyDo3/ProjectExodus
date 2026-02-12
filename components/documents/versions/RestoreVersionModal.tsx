@@ -4,6 +4,7 @@ import { useState } from 'react'
 import { format } from 'date-fns'
 import { RotateCcw, AlertTriangle, X, Eye } from 'lucide-react'
 import { Button } from '@/components/ui/Button'
+import { sanitizeHtml } from '@/lib/utils/sanitize'
 
 interface DocumentVersion {
   id: string
@@ -147,7 +148,7 @@ export function RestoreVersionModal({
               <div className="mt-3 p-3 bg-[var(--background)] border border-[var(--border)] rounded-lg max-h-48 overflow-auto">
                 <div
                   className="prose prose-sm max-w-none text-sm"
-                  dangerouslySetInnerHTML={{ __html: version.content }}
+                  dangerouslySetInnerHTML={{ __html: sanitizeHtml(version.content) }}
                 />
               </div>
             )}

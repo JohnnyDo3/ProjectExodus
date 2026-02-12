@@ -42,7 +42,7 @@ export async function POST(request: NextRequest) {
       declaration
     } = body
 
-    // Update user profile
+    // Update user profile - only whitelisted fields
     const updatedUser = await prisma.user.update({
       where: { id: session.user.id },
       data: {
@@ -71,6 +71,25 @@ export async function POST(request: NextRequest) {
         projects,
         guardianArchetype,
         declaration
+      },
+      select: {
+        id: true,
+        name: true,
+        headline: true,
+        bio: true,
+        location: true,
+        company: true,
+        jobTitle: true,
+        website: true,
+        linkedin: true,
+        twitter: true,
+        image: true,
+        banner: true,
+        interests: true,
+        expertise: true,
+        guardianArchetype: true,
+        declaration: true,
+        updatedAt: true,
       }
     })
 

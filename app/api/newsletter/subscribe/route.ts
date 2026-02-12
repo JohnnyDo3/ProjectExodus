@@ -28,22 +28,18 @@ export async function POST(request: NextRequest) {
     })
 
     if (existing) {
-      if (existing.status === 'ACTIVE') {
-        return NextResponse.json(
-          { success: false, error: 'This email is already subscribed' },
-          { status: 400 }
-        )
-      } else {
+      if (existing.status !== 'ACTIVE') {
         // Reactivate if previously unsubscribed
         await prisma.newsletterSubscription.update({
           where: { email },
           data: { status: 'ACTIVE', source },
         })
-        return NextResponse.json({
-          success: true,
-          message: 'Welcome back! Your subscription has been reactivated.',
-        })
       }
+      // Return same message regardless to prevent email enumeration
+      return NextResponse.json({
+        success: true,
+        message: 'Thank you for subscribing!',
+      })
     }
 
     // Create new subscription
@@ -57,7 +53,7 @@ export async function POST(request: NextRequest) {
 
     return NextResponse.json({
       success: true,
-      message: 'Successfully subscribed to the newsletter!',
+      message: 'Thank you for subscribing!',
     })
   } catch (error) {
     console.error('Error subscribing to newsletter:', error)

@@ -3,6 +3,7 @@
 import { useState, useEffect, useCallback } from 'react'
 import { useSession } from 'next-auth/react'
 import { Card, CardContent } from '@/components/ui/Card'
+import { sanitizeHtml } from '@/lib/utils/sanitize'
 import { Button } from '@/components/ui/Button'
 import { motion, AnimatePresence } from 'framer-motion'
 import {
@@ -397,7 +398,7 @@ function InstructionContent({ content }: { content: NonNullable<LessonData['cont
                       <li key={k} className="text-[var(--muted-foreground)] flex items-start gap-2">
                         <CheckCircle2 className="w-5 h-5 text-[var(--primary)] flex-shrink-0 mt-0.5" />
                         <span dangerouslySetInnerHTML={{
-                          __html: item.replace('- ', '').replace(/\*\*(.+?)\*\*/g, '<strong class="text-[var(--foreground)]">$1</strong>')
+                          __html: sanitizeHtml(item.replace('- ', '').replace(/\*\*(.+?)\*\*/g, '<strong class="text-[var(--foreground)]">$1</strong>'))
                         }} />
                       </li>
                     ))}
@@ -414,7 +415,7 @@ function InstructionContent({ content }: { content: NonNullable<LessonData['cont
                           {k + 1}
                         </span>
                         <span className="pt-0.5" dangerouslySetInnerHTML={{
-                          __html: item.replace(/^\d+\.\s*/, '').replace(/\*\*(.+?)\*\*/g, '<strong class="text-[var(--foreground)]">$1</strong>')
+                          __html: sanitizeHtml(item.replace(/^\d+\.\s*/, '').replace(/\*\*(.+?)\*\*/g, '<strong class="text-[var(--foreground)]">$1</strong>'))
                         }} />
                       </li>
                     ))}

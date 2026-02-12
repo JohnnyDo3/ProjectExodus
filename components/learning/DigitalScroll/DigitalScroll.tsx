@@ -9,6 +9,7 @@
 import { useState, useEffect, useCallback, useMemo, ReactNode } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import { cn } from '@/lib/utils/cn'
+import { sanitizeHtml } from '@/lib/utils/sanitize'
 import { X, Volume2, VolumeX, Maximize2, Minimize2, ChevronLeft, ChevronRight, GripVertical, MessageCircle } from 'lucide-react'
 
 // Scroll components
@@ -1101,7 +1102,7 @@ export function DigitalScroll({
               {typeof page.content === 'string' ? (
                 <div
                   className="lesson-content"
-                  dangerouslySetInnerHTML={{ __html: page.content }}
+                  dangerouslySetInnerHTML={{ __html: sanitizeHtml(page.content as string) }}
                 />
               ) : (
                 <div className="lesson-content">

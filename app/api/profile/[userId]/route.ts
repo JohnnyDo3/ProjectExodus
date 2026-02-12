@@ -64,13 +64,11 @@ export async function GET(
 
     // Filter email/phone based on privacy settings
     const isOwnProfile = session?.user?.id === userId
+    const { showEmail, showPhone, email, phone, ...rest } = user
     const filteredUser = {
-      ...user,
-      email: (user.showEmail || isOwnProfile) ? user.email : undefined,
-      phone: (user.showPhone || isOwnProfile) ? user.phone : undefined,
-      // Remove privacy flags from response
-      showEmail: undefined,
-      showPhone: undefined,
+      ...rest,
+      ...(showEmail || isOwnProfile ? { email } : {}),
+      ...(showPhone || isOwnProfile ? { phone } : {}),
     }
 
     return NextResponse.json({

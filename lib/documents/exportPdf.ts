@@ -86,7 +86,9 @@ export async function generatePdf(
     includeHeader,
   })
 
-  container.innerHTML = styledContent
+  // Sanitize HTML content before inserting into DOM to prevent XSS
+  const { sanitizeHtml } = await import('@/lib/sanitize')
+  container.innerHTML = sanitizeHtml(styledContent)
   document.body.appendChild(container)
 
   try {

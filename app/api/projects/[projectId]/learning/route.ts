@@ -82,6 +82,24 @@ export async function POST(
       )
     }
 
+    // Validate video URL if provided
+    if (videoUrl) {
+      try {
+        const parsed = new URL(videoUrl)
+        if (parsed.protocol !== 'https:') {
+          return NextResponse.json(
+            { success: false, error: 'Video URL must use HTTPS' },
+            { status: 400 }
+          )
+        }
+      } catch {
+        return NextResponse.json(
+          { success: false, error: 'Invalid video URL' },
+          { status: 400 }
+        )
+      }
+    }
+
     // Check if admin
     const membership = await prisma.projectMember.findUnique({
       where: {

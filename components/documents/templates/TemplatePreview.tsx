@@ -1,5 +1,6 @@
 'use client'
 
+import { sanitizeHtml } from '@/lib/utils/sanitize'
 import {
   X,
   FileText,
@@ -179,7 +180,7 @@ export function TemplatePreview({
               prose-blockquote:border-l-4 prose-blockquote:border-[var(--primary)] prose-blockquote:pl-4 prose-blockquote:italic
               prose-strong:font-bold prose-strong:text-[var(--foreground)]
               prose-em:italic"
-            dangerouslySetInnerHTML={{ __html: template.content }}
+            dangerouslySetInnerHTML={{ __html: sanitizeHtml(template.content) }}
           />
         </div>
       </div>

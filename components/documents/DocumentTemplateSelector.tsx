@@ -8,6 +8,7 @@ import {
   TemplateCategory,
 } from '@/data/document-templates'
 import { Button } from '@/components/ui/Button'
+import { sanitizeHtml } from '@/lib/utils/sanitize'
 import { Card, CardContent } from '@/components/ui/Card'
 import {
   FileText,
@@ -366,7 +367,7 @@ export function DocumentTemplateSelector({
                       prose-table:my-3 prose-table:text-xs
                       prose-th:bg-[var(--muted)]/30 prose-th:p-2
                       prose-td:p-2 prose-td:border prose-td:border-[var(--border)]"
-                    dangerouslySetInnerHTML={{ __html: selectedTemplate.content }}
+                    dangerouslySetInnerHTML={{ __html: sanitizeHtml(selectedTemplate.content) }}
                   />
                 </div>
               </div>

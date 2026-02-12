@@ -22,10 +22,17 @@ export function MarkdownContent({ content }: MarkdownContentProps) {
     // Italic
     html = html.replace(/\*(.+?)\*/g, '<em class="italic">$1</em>')
 
-    // Links - styled with theme primary color
+    // Links - styled with theme primary color, with URL protocol validation
     html = html.replace(
       /\[([^\]]+)\]\(([^)]+)\)/g,
-      '<a href="$2" style="color: var(--primary); text-decoration: underline;" target="_blank" rel="noopener noreferrer">$1</a>'
+      (_match: string, text: string, url: string) => {
+        // Only allow safe URL protocols
+        const trimmed = url.trim().toLowerCase()
+        if (trimmed.startsWith('javascript:') || trimmed.startsWith('data:') || trimmed.startsWith('vbscript:')) {
+          return text // Strip dangerous links, keep text only
+        }
+        return `<a href="${url}" style="color: var(--primary); text-decoration: underline;" target="_blank" rel="noopener noreferrer">${text}</a>`
+      }
     )
 
     // Lists - Ordered

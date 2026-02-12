@@ -8,6 +8,7 @@
 
 import { ReactNode } from 'react'
 import { cn } from '@/lib/utils/cn'
+import { sanitizeHtml } from '@/lib/utils/sanitize'
 import { ContentSegment } from './ContentParser'
 import {
   OrnamentalDivider,
@@ -474,7 +475,7 @@ function SegmentRenderer({
             isFirst && '[&::first-letter]:float-left [&::first-letter]:text-3xl [&::first-letter]:font-bold [&::first-letter]:mr-1.5 [&::first-letter]:mt-0.5',
             isFirst && '[&::first-letter]:text-[var(--primary)]'
           )}
-          dangerouslySetInnerHTML={{ __html: segment.content }}
+          dangerouslySetInnerHTML={{ __html: sanitizeHtml(segment.content) }}
         />
       )
 
@@ -482,7 +483,7 @@ function SegmentRenderer({
       return (
         <div
           className="text-xs leading-relaxed text-[var(--book-text,var(--foreground))] mb-2 [&_li]:mb-1 [&_strong]:font-bold"
-          dangerouslySetInnerHTML={{ __html: segment.content }}
+          dangerouslySetInnerHTML={{ __html: sanitizeHtml(segment.content) }}
         />
       )
 
@@ -502,7 +503,7 @@ function SegmentRenderer({
           title={segment.metadata?.caption || 'Key Concept'}
           color={color}
         >
-          <div dangerouslySetInnerHTML={{ __html: segment.content }} />
+          <div dangerouslySetInnerHTML={{ __html: sanitizeHtml(segment.content) }} />
         </KeyConceptCard>
       )
 
@@ -520,7 +521,7 @@ function SegmentRenderer({
       return (
         <div
           className="my-3 text-xs overflow-x-auto [&_table]:w-full [&_th]:bg-[var(--muted)]/30 [&_th]:p-1.5 [&_th]:text-left [&_th]:font-bold [&_td]:p-1.5 [&_td]:border-b [&_td]:border-[var(--border)]/30"
-          dangerouslySetInnerHTML={{ __html: segment.content }}
+          dangerouslySetInnerHTML={{ __html: sanitizeHtml(segment.content) }}
         />
       )
 
@@ -539,7 +540,7 @@ function SegmentRenderer({
       return (
         <div
           className="text-xs text-[var(--book-text,var(--foreground))] mb-2"
-          dangerouslySetInnerHTML={{ __html: segment.content }}
+          dangerouslySetInnerHTML={{ __html: sanitizeHtml(segment.content) }}
         />
       )
   }
