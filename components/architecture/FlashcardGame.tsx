@@ -203,19 +203,20 @@ export function FlashcardGame({ config: userConfig, onComplete, onExit, showConf
       audio.play().catch(() => {}) // Ignore audio errors
     }
 
+    // Calculate streak for SRS quality
+    const newStreak = correct ? gameState.streak + 1 : 0
+
+    // Record to spaced repetition system (must be outside setState callback)
+    const quality = gameResultToQuality(correct, timeMs, newStreak)
+    recordReview(current.id, { quality })
+
     // Update state
     setGameState(prev => {
-      const newStreak = correct ? prev.streak + 1 : 0
-
-      // Record to spaced repetition system
-      const quality = gameResultToQuality(correct, timeMs, newStreak)
-      recordReview(current.id, { quality })
-
       return {
         ...prev,
         score: prev.score + (correct ? 100 + (prev.streak * 10) : 0),
-        streak: newStreak,
-        maxStreak: Math.max(prev.maxStreak, newStreak),
+        streak: correct ? prev.streak + 1 : 0,
+        maxStreak: Math.max(prev.maxStreak, correct ? prev.streak + 1 : 0),
         answers: [...prev.answers, { elementId: current.id, correct, timeMs }],
       }
     })
