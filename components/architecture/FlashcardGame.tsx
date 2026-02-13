@@ -14,6 +14,15 @@ import { ALL_ELEMENTS, getRandomElements } from '@/data/architecture/elements'
 import { CATEGORIES } from '@/data/architecture/categories'
 import { ArchitectureSVG } from './ArchitectureSVG'
 
+// Screen reader announcement component
+function LiveRegion({ message }: { message: string }) {
+  return (
+    <div role="status" aria-live="polite" aria-atomic="true" className="sr-only">
+      {message}
+    </div>
+  )
+}
+
 interface GameConfig {
   elementCount: number
   learningLevel: LearningLevel
@@ -95,9 +104,11 @@ export function FlashcardGame({ config: userConfig, onComplete, onExit, showConf
 
   // Audio & UI
   const [soundEnabled, setSoundEnabled] = useState(true)
+  const [announcement, setAnnouncement] = useState('')
 
   // Timer ref
   const timerRef = useRef<NodeJS.Timeout | null>(null)
+  const optionRefs = useRef<(HTMLButtonElement | null)[]>([])
   const questionStartRef = useRef<number>(0)
 
   // Initialize game
@@ -149,6 +160,8 @@ export function FlashcardGame({ config: userConfig, onComplete, onExit, showConf
       const allOptions = [current, ...wrongOptions].sort(() => Math.random() - 0.5)
       setOptions(allOptions)
       questionStartRef.current = Date.now()
+      // Focus first option
+      setTimeout(() => optionRefs.current[0]?.focus(), 100)
     }
   }, [elements, gameState.currentIndex])
 
@@ -176,6 +189,7 @@ export function FlashcardGame({ config: userConfig, onComplete, onExit, showConf
 
     setSelectedAnswer(answerId)
     setIsCorrect(correct)
+    setAnnouncement(correct ? `Correct! It was ${current.name}.` : `Incorrect. The answer was ${current.name}.`)
 
     // Play sound
     if (soundEnabled) {
@@ -211,6 +225,21 @@ export function FlashcardGame({ config: userConfig, onComplete, onExit, showConf
       }
     }, 1000)
   }, [selectedAnswer, gameState.phase, gameState.currentIndex, elements, soundEnabled])
+
+  // Keyboard shortcuts for answers (1-4)
+  useEffect(() => {
+    if (gameState.phase !== 'playing' || selectedAnswer !== null) return
+
+    const handleKeyDown = (e: KeyboardEvent) => {
+      const keyNum = parseInt(e.key)
+      if (keyNum >= 1 && keyNum <= 4 && options[keyNum - 1]) {
+        handleAnswer(options[keyNum - 1].id)
+      }
+    }
+
+    window.addEventListener('keydown', handleKeyDown)
+    return () => window.removeEventListener('keydown', handleKeyDown)
+  }, [gameState.phase, selectedAnswer, options, handleAnswer])
 
   // Finish game
   const finishGame = useCallback(async () => {
@@ -289,7 +318,8 @@ export function FlashcardGame({ config: userConfig, onComplete, onExit, showConf
   const currentElement = elements[gameState.currentIndex]
 
   return (
-    <div className="h-full bg-[var(--background)] flex flex-col overflow-hidden">
+    <div className="h-full bg-[var(--background)] flex flex-col overflow-hidden" role="application" aria-label="Architecture Flashcard Game">
+      <LiveRegion message={announcement} />
       {/* Intro Phase */}
       <AnimatePresence mode="wait">
         {gameState.phase === 'intro' && (
