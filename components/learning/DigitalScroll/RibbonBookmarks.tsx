@@ -2,22 +2,22 @@
 
 // ============================================
 // RIBBON BOOKMARKS
-// The Seven Guardian Ribbons + Yin-Yang Continue
-// Each ribbon = one chapter, colors match Guardian Archetypes
+// The Seven Learning Stage Ribbons + Yin-Yang Continue
+// Each ribbon = one chapter, represents a stage in learning journey
 // ============================================
 
 import { motion, AnimatePresence } from 'framer-motion'
 import { useState, useEffect } from 'react'
 import { cn } from '@/lib/utils/cn'
 import {
-  GUARDIAN_RIBBONS,
-  RIBBON_ORDER,
+  LEARNING_STAGE_RIBBONS,
+  STAGE_ORDER,
   YIN_YANG_RIBBON,
   SCROLL_DIMENSIONS,
   ANIMATION_TIMINGS,
   A11Y_CONFIG,
   getDeviceType,
-  type GuardianRibbon,
+  type LearningStageRibbon,
 } from './scrollConstants'
 
 // ============================================
@@ -92,9 +92,9 @@ export function RibbonBookmarks({
       role="navigation"
       aria-label="Chapter bookmarks"
     >
-      {/* Seven Guardian Ribbons */}
-      {RIBBON_ORDER.map((ribbonKey, index) => {
-        const ribbon = GUARDIAN_RIBBONS[ribbonKey]
+      {/* Seven Learning Stage Ribbons */}
+      {STAGE_ORDER.map((stageKey, index) => {
+        const ribbon = LEARNING_STAGE_RIBBONS[stageKey]
         const isActive = currentChapter === index
         const isCompleted = completedChapters.includes(index)
 
@@ -134,7 +134,7 @@ export function RibbonBookmarks({
 // ============================================
 
 interface RibbonProps {
-  ribbon: GuardianRibbon
+  ribbon: LearningStageRibbon
   isActive: boolean
   isCompleted: boolean
   isHovered: boolean
@@ -156,7 +156,6 @@ function Ribbon({
   onMouseLeave,
   isExpanded = false,
 }: RibbonProps) {
-  const Icon = ribbon.icon
   const isDesktop = deviceType === 'desktop'
 
   // Enhanced dimensions - taller for expanded view
@@ -214,13 +213,13 @@ function Ribbon({
       }
       aria-label={A11Y_CONFIG.ariaLabels.ribbon(ribbon.name)}
       aria-current={isActive ? 'page' : undefined}
-      title={`${ribbon.title} - ${ribbon.value}`}
+      title={`${ribbon.name} - ${ribbon.description}`}
     >
-      {/* Icon - more visible */}
+      {/* Emoji icon - more visible */}
       {isDesktop ? (
-        <Icon className="w-4 h-4 text-white drop-shadow-md mb-0.5" strokeWidth={2.5} />
+        <span className="text-base drop-shadow-md mb-0.5">{ribbon.icon}</span>
       ) : (
-        <Icon className="w-5 h-5 text-white drop-shadow-md" strokeWidth={2.5} />
+        <span className="text-lg drop-shadow-md">{ribbon.icon}</span>
       )}
 
       {/* Chapter number (desktop only) - more visible */}
@@ -243,7 +242,7 @@ function Ribbon({
         </motion.div>
       )}
 
-      {/* Enhanced Tooltip with Archetype Logo on hover (desktop only) */}
+      {/* Enhanced Tooltip with Learning Stage on hover (desktop only) */}
       <AnimatePresence>
         {isHovered && isDesktop && (
           <motion.div
@@ -253,14 +252,14 @@ function Ribbon({
             exit={{ opacity: 0, x: -15, scale: 0.9 }}
             transition={{ type: 'spring', stiffness: 400, damping: 25 }}
           >
-            {/* Archetype Card with Logo */}
+            {/* Learning Stage Card */}
             <div
               className="px-4 py-3 rounded-xl backdrop-blur-md border border-white/20 shadow-2xl min-w-[140px]"
               style={{
                 background: `linear-gradient(135deg, ${ribbon.colors.from}dd, ${ribbon.colors.to}dd)`,
               }}
             >
-              {/* Large Archetype Icon */}
+              {/* Large Emoji Icon */}
               <div className="flex items-center justify-center mb-2">
                 <div
                   className="w-10 h-10 rounded-full flex items-center justify-center"
@@ -269,23 +268,23 @@ function Ribbon({
                     boxShadow: `0 0 20px ${ribbon.colors.from}60`,
                   }}
                 >
-                  <Icon className="w-6 h-6 text-white drop-shadow-lg" strokeWidth={2} />
+                  <span className="text-2xl drop-shadow-lg">{ribbon.icon}</span>
                 </div>
               </div>
 
-              {/* Guardian Name */}
+              {/* Stage Name */}
               <div className="text-center">
                 <div className="font-black text-white text-sm tracking-wider drop-shadow-md">
                   {ribbon.name}
                 </div>
                 <div className="text-white/80 text-[10px] font-medium mt-0.5">
-                  {ribbon.title}
+                  {ribbon.description}
                 </div>
                 <div
                   className="text-[9px] font-bold mt-1 px-2 py-0.5 rounded-full inline-block"
                   style={{ background: 'rgba(255,255,255,0.2)' }}
                 >
-                  {ribbon.value}
+                  Chapter {ribbon.chapterIndex + 1}
                 </div>
               </div>
             </div>
