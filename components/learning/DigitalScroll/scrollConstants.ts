@@ -128,7 +128,7 @@ export const GUARDIAN_RIBBONS: Record<string, GuardianRibbon> = {
   },
 }
 
-// Ordered array for rendering
+// Ordered array for rendering (legacy)
 export const RIBBON_ORDER = [
   'michael',
   'gabriel',
@@ -138,6 +138,128 @@ export const RIBBON_ORDER = [
   'jophiel',
   'zadkiel',
 ] as const
+
+// ============================================
+// LEARNING STAGE RIBBONS (New - replaces Guardian theming)
+// Each ribbon represents a stage in the learning journey
+// ============================================
+
+export interface LearningStageRibbon {
+  id: string
+  name: string
+  description: string
+  icon: string
+  colors: {
+    from: string
+    to: string
+    gradient: string
+  }
+  chapterIndex: number
+}
+
+export const LEARNING_STAGE_RIBBONS: Record<string, LearningStageRibbon> = {
+  foundation: {
+    id: 'foundation',
+    name: 'Foundation',
+    description: 'Building core understanding',
+    icon: '🌱',
+    colors: {
+      from: '#10b981',
+      to: '#059669',
+      gradient: 'linear-gradient(135deg, #10b981 0%, #059669 100%)',
+    },
+    chapterIndex: 0,
+  },
+  growth: {
+    id: 'growth',
+    name: 'Growth',
+    description: 'Expanding knowledge',
+    icon: '🌿',
+    colors: {
+      from: '#0ea5e9',
+      to: '#0284c7',
+      gradient: 'linear-gradient(135deg, #0ea5e9 0%, #0284c7 100%)',
+    },
+    chapterIndex: 1,
+  },
+  connection: {
+    id: 'connection',
+    name: 'Connection',
+    description: 'Linking concepts together',
+    icon: '🔗',
+    colors: {
+      from: '#8b5cf6',
+      to: '#7c3aed',
+      gradient: 'linear-gradient(135deg, #8b5cf6 0%, #7c3aed 100%)',
+    },
+    chapterIndex: 2,
+  },
+  application: {
+    id: 'application',
+    name: 'Application',
+    description: 'Putting knowledge into practice',
+    icon: '⚡',
+    colors: {
+      from: '#f59e0b',
+      to: '#d97706',
+      gradient: 'linear-gradient(135deg, #f59e0b 0%, #d97706 100%)',
+    },
+    chapterIndex: 3,
+  },
+  mastery: {
+    id: 'mastery',
+    name: 'Mastery',
+    description: 'Deep expertise',
+    icon: '🏆',
+    colors: {
+      from: '#ec4899',
+      to: '#db2777',
+      gradient: 'linear-gradient(135deg, #ec4899 0%, #db2777 100%)',
+    },
+    chapterIndex: 4,
+  },
+  innovation: {
+    id: 'innovation',
+    name: 'Innovation',
+    description: 'Creating new solutions',
+    icon: '💡',
+    colors: {
+      from: '#6366f1',
+      to: '#4f46e5',
+      gradient: 'linear-gradient(135deg, #6366f1 0%, #4f46e5 100%)',
+    },
+    chapterIndex: 5,
+  },
+  leadership: {
+    id: 'leadership',
+    name: 'Leadership',
+    description: 'Teaching and guiding others',
+    icon: '🌟',
+    colors: {
+      from: '#dc2626',
+      to: '#b91c1c',
+      gradient: 'linear-gradient(135deg, #dc2626 0%, #b91c1c 100%)',
+    },
+    chapterIndex: 6,
+  },
+}
+
+// Stage order for new system
+export const STAGE_ORDER = [
+  'foundation',
+  'growth',
+  'connection',
+  'application',
+  'mastery',
+  'innovation',
+  'leadership',
+] as const
+
+// Helper to get stage ribbon for chapter
+export function getStageForChapter(chapterIndex: number): LearningStageRibbon | null {
+  const stageKey = STAGE_ORDER[chapterIndex]
+  return stageKey ? LEARNING_STAGE_RIBBONS[stageKey] : null
+}
 
 // ============================================
 // THE YIN-YANG RIBBON (Continue Reading)
