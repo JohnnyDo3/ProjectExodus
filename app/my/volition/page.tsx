@@ -539,6 +539,173 @@ export default function MyVolitionPage() {
     }
   }
 
+  // Render lane content for minimal view expansion (uses 'compact' style)
+  const renderLaneContentExpanded = (laneId: LaneId) => {
+    const compactViewMode = 'compact' as const
+
+    switch (laneId) {
+      case 'profile':
+        return (
+          <div className="col-span-full sm:col-span-1">
+            <ProfileCard
+              user={user}
+              userProfile={userProfile}
+              viewMode={compactViewMode}
+              onExpand={() => setShowBusinessCardModal(true)}
+            />
+          </div>
+        )
+
+      case 'projects':
+        return projects.length > 0 ? (
+          getSortedItems(projects, 'projects').map((project) => (
+            <ProjectCard
+              key={project.id}
+              project={project}
+              userId={user.id}
+              viewMode={compactViewMode}
+              onPreview={(p) => setPreviewProject(p)}
+              onDelete={(id) =>
+                setDeleteModal({
+                  isOpen: true,
+                  type: 'project',
+                  id,
+                  title: 'Delete Project',
+                })
+              }
+            />
+          ))
+        ) : null
+
+      case 'articles':
+        const allArticlesExpanded = [...localDrafts, ...articles]
+        return allArticlesExpanded.length > 0 ? (
+          <>
+            {localDrafts.map((draft) => (
+              <ArticleCard
+                key={draft.id}
+                article={{
+                  ...draft,
+                  status: 'DRAFT',
+                }}
+                viewMode={compactViewMode}
+                onDelete={() => {
+                  localStorage.removeItem('article-draft-v2')
+                  setLocalDrafts([])
+                }}
+              />
+            ))}
+            {getSortedItems(articles, 'articles').map((article) => (
+              <ArticleCard
+                key={article.id}
+                article={article}
+                viewMode={compactViewMode}
+                onDelete={(id) =>
+                  setDeleteModal({
+                    isOpen: true,
+                    type: 'article',
+                    id,
+                    title: 'Delete Article',
+                  })
+                }
+              />
+            ))}
+          </>
+        ) : null
+
+      case 'learning':
+        return (
+          <>
+            {srsLoaded && srsCards.length > 0 && (
+              <div className="col-span-full mb-4">
+                <SpacedRepetitionMiniDashboard cards={srsCards} />
+              </div>
+            )}
+            {learningModules.length > 0 && (
+              getSortedItems(learningModules, 'learning').map((module) => (
+                <LearningCard
+                  key={module.id}
+                  module={module}
+                  viewMode={compactViewMode}
+                />
+              ))
+            )}
+          </>
+        )
+
+      case 'network':
+        return (
+          <div className="col-span-full">
+            {following.length > 0 && (
+              <div className="mb-4">
+                <h4 className="text-xs font-bold text-[var(--foreground)]/50 uppercase mb-2 px-1">
+                  Following
+                </h4>
+                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-2">
+                  {following.slice(0, 6).map((u) => (
+                    <NetworkCard
+                      key={u.id}
+                      user={u}
+                      type="following"
+                      viewMode={compactViewMode}
+                    />
+                  ))}
+                </div>
+              </div>
+            )}
+            {networkSuggestions.length > 0 && (
+              <div>
+                <h4 className="text-xs font-bold text-[var(--foreground)]/50 uppercase mb-2 px-1">
+                  Suggested
+                </h4>
+                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-2">
+                  {networkSuggestions.slice(0, 6).map((u) => (
+                    <NetworkCard
+                      key={u.id}
+                      user={u}
+                      type="suggestion"
+                      viewMode={compactViewMode}
+                      onFollow={handleFollow}
+                    />
+                  ))}
+                </div>
+              </div>
+            )}
+          </div>
+        )
+
+      case 'feed':
+        return feedPosts.length > 0 ? (
+          getSortedItems(feedPosts, 'feed').map((post) => (
+            <FeedPostCard
+              key={post.id}
+              post={post}
+              currentUserId={user.id}
+              viewMode={compactViewMode}
+              onDelete={(id) =>
+                setDeleteModal({
+                  isOpen: true,
+                  type: 'discussion',
+                  id,
+                  title: 'Delete Post',
+                })
+              }
+            />
+          ))
+        ) : null
+
+      case 'impact':
+        return (
+          <div className="col-span-full">
+            <ImpactCard viewMode={compactViewMode} />
+          </div>
+        )
+
+      default:
+        return null
+    }
+  }
+
   // Get lane empty state
   const getLaneEmptyState = (laneId: LaneId) => {
     const emptyStates: Record<LaneId, { icon: any; message: string; action?: string; href?: string }> = {
@@ -790,22 +957,7 @@ export default function MyVolitionPage() {
             onChipClick={(laneId) => {
               setExpandedLaneId(prev => prev === laneId ? null : laneId)
             }}
-            renderLaneContent={(laneId) => {
-              // For minimal view, render cards in a grid-friendly way
-              if (laneId === 'profile') {
-                return (
-                  <div className="col-span-full sm:col-span-1">
-                    <ProfileCard
-                      user={user}
-                      userProfile={userProfile}
-                      viewMode="compact"
-                      onExpand={() => setShowBusinessCardModal(true)}
-                    />
-                  </div>
-                )
-              }
-              return renderLaneContent(laneId)
-            }}
+            renderLaneContent={renderLaneContentExpanded}
             getLaneEmptyState={getLaneEmptyState}
           />
         ) : (
