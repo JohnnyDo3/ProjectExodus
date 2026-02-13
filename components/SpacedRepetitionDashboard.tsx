@@ -401,7 +401,8 @@ export function SpacedRepetitionDashboard({
 
 // Compact version for embedding in other pages
 export function SpacedRepetitionMiniDashboard({ cards }: { cards: CardProgress[] }) {
-  const stats = useMemo(() => getStudyStats(cards), [cards])
+  const { gameCount } = useSpacedRepetitionStore()
+  const stats = useMemo(() => getStudyStats(cards, gameCount), [cards, gameCount])
   const masteryPercent = useMemo(() => calculateMastery(cards), [cards])
 
   return (
@@ -424,7 +425,11 @@ export function SpacedRepetitionMiniDashboard({ cards }: { cards: CardProgress[]
         </Link>
       </div>
 
-      <div className="grid grid-cols-4 gap-2 text-center">
+      <div className="grid grid-cols-5 gap-2 text-center">
+        <div>
+          <p className="text-lg font-bold text-teal-500">{gameCount}</p>
+          <p className="text-[10px] text-[var(--muted-foreground)]">Games</p>
+        </div>
         <div>
           <p className="text-lg font-bold text-amber-500">{stats.due}</p>
           <p className="text-[10px] text-[var(--muted-foreground)]">Due</p>

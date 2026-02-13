@@ -927,10 +927,133 @@ export function searchElements(query: string): ArchitecturalElement[] {
   );
 }
 
-export function getRandomElements(count: number, exclude: string[] = []): ArchitecturalElement[] {
+/**
+ * Get random elements with balanced category distribution.
+ * Ensures a good mix across different categories instead of pure random selection.
+ * @param count - Number of elements to return
+ * @param exclude - Element IDs to exclude from selection
+ * @param balanceByCategory - If true (default), distributes selection across categories
+ */
+export function getRandomElements(
+  count: number,
+  exclude: string[] = [],
+  balanceByCategory: boolean = true
+): ArchitecturalElement[] {
   const available = ALL_ELEMENTS.filter(el => !exclude.includes(el.id));
-  const shuffled = [...available].sort(() => Math.random() - 0.5);
-  return shuffled.slice(0, count);
+
+  if (!balanceByCategory || count <= 1) {
+    // Simple random selection
+    const shuffled = [...available].sort(() => Math.random() - 0.5);
+    return shuffled.slice(0, count);
+  }
+
+  // Group elements by category
+  const byCategory = new Map<string, ArchitecturalElement[]>();
+  available.forEach(el => {
+    const existing = byCategory.get(el.category) || [];
+    existing.push(el);
+    byCategory.set(el.category, existing);
+  });
+
+  // Shuffle elements within each category
+  byCategory.forEach((elements, category) => {
+    byCategory.set(category, elements.sort(() => Math.random() - 0.5));
+  });
+
+  // Get shuffled category list
+  const categories = [...byCategory.keys()].sort(() => Math.random() - 0.5);
+
+  const selected: ArchitecturalElement[] = [];
+  const usedFromCategory = new Map<string, number>();
+  categories.forEach(cat => usedFromCategory.set(cat, 0));
+
+  // Round-robin through categories
+  let categoryIndex = 0;
+  while (selected.length < count && selected.length < available.length) {
+    const category = categories[categoryIndex % categories.length];
+    const categoryElements = byCategory.get(category)!;
+    const usedCount = usedFromCategory.get(category)!;
+
+    if (usedCount < categoryElements.length) {
+      selected.push(categoryElements[usedCount]);
+      usedFromCategory.set(category, usedCount + 1);
+    }
+
+    categoryIndex++;
+
+    // Safety check: if we've gone through all categories without adding anything,
+    // all categories are exhausted - break to avoid infinite loop
+    if (categoryIndex > categories.length * Math.max(...Array.from(usedFromCategory.values())) + categories.length) {
+      break;
+    }
+  }
+
+  // Final shuffle to avoid predictable category order in results
+  return selected.sort(() => Math.random() - 0.5);
+}
+
+/**
+ * Get random wrong options for multiple choice, preferring different categories.
+ * This creates more educational value by showing varied architectural elements.
+ * @param count - Number of wrong options needed
+ * @param correctElement - The correct answer (to exclude and avoid same category when possible)
+ * @param exclude - Additional element IDs to exclude
+ */
+export function getRandomWrongOptions(
+  count: number,
+  correctElement: ArchitecturalElement,
+  exclude: string[] = []
+): ArchitecturalElement[] {
+  const excludeIds = new Set([correctElement.id, ...exclude]);
+  const available = ALL_ELEMENTS.filter(el => !excludeIds.has(el.id));
+
+  // Separate elements into different categories vs same category
+  const differentCategory = available.filter(el => el.category !== correctElement.category);
+  const sameCategory = available.filter(el => el.category === correctElement.category);
+
+  // Shuffle both arrays
+  const shuffledDifferent = [...differentCategory].sort(() => Math.random() - 0.5);
+  const shuffledSame = [...sameCategory].sort(() => Math.random() - 0.5);
+
+  // Prioritize elements from different categories
+  const selected: ArchitecturalElement[] = [];
+
+  // First, pick from different categories (balanced across them)
+  if (shuffledDifferent.length > 0) {
+    const byCategory = new Map<string, ArchitecturalElement[]>();
+    shuffledDifferent.forEach(el => {
+      const existing = byCategory.get(el.category) || [];
+      existing.push(el);
+      byCategory.set(el.category, existing);
+    });
+
+    const categories = [...byCategory.keys()].sort(() => Math.random() - 0.5);
+    let catIndex = 0;
+    const usedFromCat = new Map<string, number>();
+    categories.forEach(c => usedFromCat.set(c, 0));
+
+    while (selected.length < count && selected.length < shuffledDifferent.length) {
+      const cat = categories[catIndex % categories.length];
+      const catElements = byCategory.get(cat)!;
+      const used = usedFromCat.get(cat)!;
+
+      if (used < catElements.length) {
+        selected.push(catElements[used]);
+        usedFromCat.set(cat, used + 1);
+      }
+      catIndex++;
+
+      if (catIndex > categories.length * 10) break; // Safety limit
+    }
+  }
+
+  // If still need more, add from same category
+  if (selected.length < count) {
+    const needed = count - selected.length;
+    selected.push(...shuffledSame.slice(0, needed));
+  }
+
+  return selected.sort(() => Math.random() - 0.5);
 }
 
 // ============================================================================

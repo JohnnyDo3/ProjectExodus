@@ -10,7 +10,7 @@ import {
   Shuffle, Clock, Target
 } from 'lucide-react'
 import type { ArchitecturalElement, LearningLevel } from '@/data/architecture/types'
-import { ALL_ELEMENTS, getRandomElements } from '@/data/architecture/elements'
+import { ALL_ELEMENTS, getRandomElements, getRandomWrongOptions } from '@/data/architecture/elements'
 import { CATEGORIES } from '@/data/architecture/categories'
 import { ArchitectureSVG } from './ArchitectureSVG'
 import { useSpacedRepetitionStore } from '@/hooks/useSpacedRepetitionStore'
@@ -161,7 +161,7 @@ export function FlashcardGame({ config: userConfig, onComplete, onExit, showConf
   useEffect(() => {
     if (elements.length > 0 && gameState.currentIndex < elements.length) {
       const current = elements[gameState.currentIndex]
-      const wrongOptions = getRandomElements(3, [current.id, ...elements.map(e => e.id)])
+      const wrongOptions = getRandomWrongOptions(3, current, elements.map(e => e.id))
       const allOptions = [current, ...wrongOptions].sort(() => Math.random() - 0.5)
       setOptions(allOptions)
       questionStartRef.current = Date.now()
