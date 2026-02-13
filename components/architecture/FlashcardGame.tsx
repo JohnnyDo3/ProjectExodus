@@ -15,6 +15,7 @@ import { CATEGORIES } from '@/data/architecture/categories'
 import { ArchitectureSVG } from './ArchitectureSVG'
 import { useSpacedRepetitionStore } from '@/hooks/useSpacedRepetitionStore'
 import { gameResultToQuality } from '@/lib/spacedRepetition'
+import { playCorrectSound, playWrongSound } from '@/lib/sounds'
 
 // Screen reader announcement component
 function LiveRegion({ message }: { message: string }) {
@@ -198,9 +199,11 @@ export function FlashcardGame({ config: userConfig, onComplete, onExit, showConf
 
     // Play sound
     if (soundEnabled) {
-      const audio = new Audio(correct ? '/sounds/correct.mp3' : '/sounds/wrong.mp3')
-      audio.volume = 0.3
-      audio.play().catch(() => {}) // Ignore audio errors
+      if (correct) {
+        playCorrectSound(0.3)
+      } else {
+        playWrongSound(0.3)
+      }
     }
 
     // Calculate streak for SRS quality
