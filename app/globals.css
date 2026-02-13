@@ -1730,6 +1730,20 @@ body.textbook-fullscreen .fixed.inset-0.z-50 {
   animation: shimmer 3s ease-in-out infinite;
 }
 
+/* Skeleton loading shimmer - translateX sweep effect */
+@keyframes skeleton-shimmer {
+  0% {
+    transform: translateX(-100%);
+  }
+  100% {
+    transform: translateX(100%);
+  }
+}
+
+.animate-skeleton-shimmer {
+  animation: skeleton-shimmer 1.5s ease-in-out infinite;
+}
+
 /* Enhanced candle flame animations */
 @keyframes flame-dance {
   0% {
