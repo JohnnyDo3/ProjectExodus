@@ -46,6 +46,7 @@ import { FeedPostCard } from '@/components/volition/cards/FeedPostCard'
 import { ImpactCard } from '@/components/volition/cards/ImpactCard'
 import { SpacedRepetitionMiniDashboard } from '@/components/SpacedRepetitionDashboard'
 import { useSpacedRepetitionStore } from '@/hooks/useSpacedRepetitionStore'
+import { MinimalChipGrid } from '@/components/volition/MinimalChipGrid'
 
 const iconMap = {
   User,
@@ -113,6 +114,9 @@ export default function MyVolitionPage() {
 
   // Project preview modal
   const [previewProject, setPreviewProject] = useState<any | null>(null)
+
+  // Minimal view expansion state
+  const [expandedLaneId, setExpandedLaneId] = useState<LaneId | null>(null)
 
   // Fetch functions
   const fetchProjects = useCallback(async () => {
@@ -741,7 +745,7 @@ export default function MyVolitionPage() {
       </div>
 
       {/* Main content area */}
-      <div className="py-4">
+      <div className="py-4 pb-24">
         {isMobile ? (
           // Mobile: Show active lane only
           <div className="container mx-auto px-4">
@@ -772,6 +776,38 @@ export default function MyVolitionPage() {
               )
             )}
           </div>
+        ) : viewMode === 'minimal' ? (
+          // Desktop Minimal: Grid of clickable chips
+          <MinimalChipGrid
+            lanes={orderedLanes.map((lane) => ({
+              id: lane.id,
+              title: lane.title,
+              icon: iconMap[lane.icon as keyof typeof iconMap] || User,
+              gradient: lane.gradient,
+              count: getLaneCount(lane.id),
+            }))}
+            expandedLaneId={expandedLaneId}
+            onChipClick={(laneId) => {
+              setExpandedLaneId(prev => prev === laneId ? null : laneId)
+            }}
+            renderLaneContent={(laneId) => {
+              // For minimal view, render cards in a grid-friendly way
+              if (laneId === 'profile') {
+                return (
+                  <div className="col-span-full sm:col-span-1">
+                    <ProfileCard
+                      user={user}
+                      userProfile={userProfile}
+                      viewMode="compact"
+                      onExpand={() => setShowBusinessCardModal(true)}
+                    />
+                  </div>
+                )
+              }
+              return renderLaneContent(laneId)
+            }}
+            getLaneEmptyState={getLaneEmptyState}
+          />
         ) : (
           // Desktop: Horizontal scrolling lanes with drag-to-reorder
           <SortableLaneContainer
