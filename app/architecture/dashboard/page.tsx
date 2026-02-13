@@ -1,6 +1,6 @@
 'use client'
 
-import { useState } from 'react'
+import { useState, useMemo } from 'react'
 import { useSession } from 'next-auth/react'
 import { Card, CardContent } from '@/components/ui/Card'
 import { Button } from '@/components/ui/Button'
@@ -8,11 +8,14 @@ import { motion } from 'framer-motion'
 import {
   Trophy, Award, Zap, Target, Clock, Flame, Star,
   ArrowLeft, ChevronRight, TrendingUp, Calendar, Gamepad2,
-  Camera, Brain, Medal, Crown, Shield, Gem, Heart
+  Camera, Brain, Medal, Crown, Shield, Gem, Heart, BookOpen
 } from 'lucide-react'
 import Link from 'next/link'
 import { ALL_ELEMENTS } from '@/data/architecture/elements'
 import { BADGES } from '@/data/architecture/badges'
+import { SpacedRepetitionDashboard } from '@/components/SpacedRepetitionDashboard'
+import { useSpacedRepetitionStore } from '@/hooks/useSpacedRepetitionStore'
+import { getStudyStats, calculateMastery } from '@/lib/spacedRepetition'
 
 // Mock user stats - in production these would come from the database
 const mockStats = {
@@ -48,7 +51,12 @@ const earnedBadges = [
 export default function DashboardPage() {
   const { data: session, status } = useSession()
   const isAuthenticated = status === 'authenticated'
-  const [activeTab, setActiveTab] = useState<'overview' | 'badges' | 'elements' | 'history'>('overview')
+  const [activeTab, setActiveTab] = useState<'overview' | 'study' | 'badges' | 'elements' | 'history'>('overview')
+
+  // Spaced repetition data
+  const { cards: srsCards, isLoaded: srsLoaded } = useSpacedRepetitionStore()
+  const srsStats = useMemo(() => getStudyStats(srsCards), [srsCards])
+  const srsMastery = useMemo(() => calculateMastery(srsCards), [srsCards])
 
   // Calculate XP progress
   const xpProgress = (mockStats.xpTotal % 1000) / 10 // Percentage to next level
@@ -152,6 +160,7 @@ export default function DashboardPage() {
         <div className="flex gap-2 mb-6 overflow-x-auto pb-2">
           {[
             { id: 'overview', label: 'Overview', icon: Target },
+            { id: 'study', label: 'Study', icon: BookOpen, badge: srsStats.due > 0 ? srsStats.due : undefined },
             { id: 'badges', label: 'Badges', icon: Award },
             { id: 'elements', label: 'Elements', icon: Brain },
             { id: 'history', label: 'History', icon: Clock },
@@ -159,7 +168,7 @@ export default function DashboardPage() {
             <button
               key={tab.id}
               onClick={() => setActiveTab(tab.id as any)}
-              className={`flex items-center gap-2 px-4 py-2 rounded-xl font-semibold transition-all whitespace-nowrap ${
+              className={`relative flex items-center gap-2 px-4 py-2 rounded-xl font-semibold transition-all whitespace-nowrap ${
                 activeTab === tab.id
                   ? 'bg-amber-500 text-white'
                   : 'bg-[var(--muted)] text-[var(--muted-foreground)] hover:text-[var(--foreground)]'
@@ -167,6 +176,11 @@ export default function DashboardPage() {
             >
               <tab.icon className="w-4 h-4" />
               {tab.label}
+              {'badge' in tab && tab.badge && (
+                <span className="absolute -top-1 -right-1 min-w-[18px] h-[18px] px-1 rounded-full bg-rose-500 text-white text-xs font-bold flex items-center justify-center">
+                  {tab.badge}
+                </span>
+              )}
             </button>
           ))}
         </div>
@@ -198,6 +212,41 @@ export default function DashboardPage() {
                 </motion.div>
               ))}
             </div>
+
+            {/* Spaced Repetition Quick Status */}
+            {srsLoaded && srsCards.length > 0 && (
+              <motion.div
+                initial={{ opacity: 0, y: 10 }}
+                animate={{ opacity: 1, y: 0 }}
+              >
+                <Card className={`border-2 ${srsStats.due > 0 ? 'border-amber-500/50 bg-amber-500/5' : 'border-green-500/50 bg-green-500/5'}`}>
+                  <CardContent className="p-4">
+                    <div className="flex items-center justify-between">
+                      <div className="flex items-center gap-3">
+                        <div className={`p-2 rounded-lg ${srsStats.due > 0 ? 'bg-amber-500/20' : 'bg-green-500/20'}`}>
+                          <BookOpen className={`w-5 h-5 ${srsStats.due > 0 ? 'text-amber-500' : 'text-green-500'}`} />
+                        </div>
+                        <div>
+                          <p className="font-bold text-[var(--foreground)]">
+                            {srsStats.due > 0 ? `${srsStats.due} cards ready to review` : 'All caught up!'}
+                          </p>
+                          <p className="text-sm text-[var(--muted-foreground)]">
+                            {srsMastery}% mastery • {srsStats.accuracy}% accuracy
+                          </p>
+                        </div>
+                      </div>
+                      <Button
+                        size="sm"
+                        onClick={() => setActiveTab('study')}
+                        className={srsStats.due > 0 ? 'bg-amber-500 hover:bg-amber-600' : ''}
+                      >
+                        {srsStats.due > 0 ? 'Review Now' : 'View Progress'}
+                      </Button>
+                    </div>
+                  </CardContent>
+                </Card>
+              </motion.div>
+            )}
 
             {/* Element Mastery */}
             <Card className="border border-[var(--border)]">
@@ -309,6 +358,11 @@ export default function DashboardPage() {
               </CardContent>
             </Card>
           </div>
+        )}
+
+        {/* Study Tab - Spaced Repetition */}
+        {activeTab === 'study' && (
+          <SpacedRepetitionDashboard cards={srsCards} showDetailedView={true} />
         )}
 
         {/* Badges Tab */}

@@ -13,6 +13,7 @@ import { headers } from "next/headers";
 import { MainLayoutWrapper } from "@/components/layout/MainLayoutWrapper";
 import { DigitalScrollProvider } from "@/components/learning/DigitalScroll/DigitalScrollContext";
 import { SageProvider } from "@/components/ai/SageContext";
+import { PWAInstallPrompt } from "@/components/PWAInstallPrompt";
 
 // Viewport configuration for mobile responsiveness
 export const viewport: Viewport = {
@@ -172,6 +173,8 @@ export default async function RootLayout({
                     },
                   }}
                 />
+                {/* PWA Install Prompt */}
+                <PWAInstallPrompt />
               </DigitalScrollProvider>
             </SkyThemeProvider>
           </TimeThemeProvider>

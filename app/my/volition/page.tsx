@@ -44,6 +44,8 @@ import { LearningCard } from '@/components/volition/cards/LearningCard'
 import { NetworkCard } from '@/components/volition/cards/NetworkCard'
 import { FeedPostCard } from '@/components/volition/cards/FeedPostCard'
 import { ImpactCard } from '@/components/volition/cards/ImpactCard'
+import { SpacedRepetitionMiniDashboard } from '@/components/SpacedRepetitionDashboard'
+import { useSpacedRepetitionStore } from '@/hooks/useSpacedRepetitionStore'
 
 const iconMap = {
   User,
@@ -59,6 +61,7 @@ const iconMap = {
 export default function MyVolitionPage() {
   const { data: session, status } = useSession()
   const isMobile = useIsMobile()
+  const { cards: srsCards, isLoaded: srsLoaded } = useSpacedRepetitionStore()
 
   // Layout state
   const {
@@ -442,16 +445,27 @@ export default function MyVolitionPage() {
         ) : null
 
       case 'learning':
-        return learningModules.length > 0 ? (
-          getSortedItems(learningModules, 'learning').map((module) => (
-            <SortableCard key={module.id} id={module.id} isCustomizing={isCustomizing}>
-              <LearningCard
-                module={module}
-                viewMode={viewMode}
-              />
-            </SortableCard>
-          ))
-        ) : null
+        return (
+          <>
+            {/* Spaced Repetition Mini Dashboard */}
+            {srsLoaded && srsCards.length > 0 && (
+              <div className="mb-4">
+                <SpacedRepetitionMiniDashboard cards={srsCards} />
+              </div>
+            )}
+            {/* Learning Modules */}
+            {learningModules.length > 0 && (
+              getSortedItems(learningModules, 'learning').map((module) => (
+                <SortableCard key={module.id} id={module.id} isCustomizing={isCustomizing}>
+                  <LearningCard
+                    module={module}
+                    viewMode={viewMode}
+                  />
+                </SortableCard>
+              ))
+            )}
+          </>
+        )
 
       case 'network':
         return (
