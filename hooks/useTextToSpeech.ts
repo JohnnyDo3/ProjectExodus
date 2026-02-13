@@ -11,10 +11,16 @@ interface TTSOptions {
 
 interface UseTTSReturn {
   speak: (text: string, options?: TTSOptions) => void
+  pause: () => void
+  resume: () => void
   stop: () => void
   isSpeaking: boolean
+  isPaused: boolean
   isSupported: boolean
   voices: SpeechSynthesisVoice[]
+  progress: number // 0-100 approximate progress
+  setRate: (rate: number) => void
+  rate: number
 }
 
 const DEFAULT_OPTIONS: TTSOptions = {
@@ -27,14 +33,20 @@ const DEFAULT_OPTIONS: TTSOptions = {
  * useTextToSpeech - Hook for browser Text-to-Speech
  *
  * Usage:
- * const { speak, stop, isSpeaking, isSupported } = useTextToSpeech()
- * speak('King Post Truss')
+ * const { speak, pause, resume, stop, isSpeaking, isPaused, progress } = useTextToSpeech()
+ * speak('Hello world')
  */
 export function useTextToSpeech(): UseTTSReturn {
   const [isSpeaking, setIsSpeaking] = useState(false)
+  const [isPaused, setIsPaused] = useState(false)
   const [voices, setVoices] = useState<SpeechSynthesisVoice[]>([])
   const [isSupported, setIsSupported] = useState(false)
+  const [progress, setProgress] = useState(0)
+  const [rate, setRate] = useState(0.9)
   const utteranceRef = useRef<SpeechSynthesisUtterance | null>(null)
+  const textRef = useRef<string>('')
+  const progressIntervalRef = useRef<NodeJS.Timeout | null>(null)
+  const startTimeRef = useRef<number>(0)
 
   useEffect(() => {
     if (typeof window !== 'undefined' && 'speechSynthesis' in window) {
@@ -54,14 +66,40 @@ export function useTextToSpeech(): UseTTSReturn {
     }
   }, [])
 
+  // Clean up on unmount
+  useEffect(() => {
+    return () => {
+      if (typeof window !== 'undefined' && 'speechSynthesis' in window) {
+        window.speechSynthesis.cancel()
+      }
+      if (progressIntervalRef.current) {
+        clearInterval(progressIntervalRef.current)
+      }
+    }
+  }, [])
+
+  // Estimate reading duration
+  const estimateDuration = useCallback((text: string, speechRate: number) => {
+    const words = text.split(/\s+/).length
+    const wpm = 150 * speechRate
+    return (words / wpm) * 60 * 1000
+  }, [])
+
   const speak = useCallback((text: string, options: TTSOptions = {}) => {
     if (!isSupported) return
 
     // Stop any current speech
     window.speechSynthesis.cancel()
+    if (progressIntervalRef.current) {
+      clearInterval(progressIntervalRef.current)
+    }
 
-    const mergedOptions = { ...DEFAULT_OPTIONS, ...options }
-    const utterance = new SpeechSynthesisUtterance(text)
+    // Strip HTML tags
+    const cleanText = text.replace(/<[^>]*>/g, ' ').replace(/\s+/g, ' ').trim()
+    textRef.current = cleanText
+
+    const mergedOptions = { ...DEFAULT_OPTIONS, ...options, rate: options.rate ?? rate }
+    const utterance = new SpeechSynthesisUtterance(cleanText)
 
     utterance.rate = mergedOptions.rate!
     utterance.pitch = mergedOptions.pitch!
@@ -72,7 +110,6 @@ export function useTextToSpeech(): UseTTSReturn {
       const voice = voices.find(v => v.name === mergedOptions.voice)
       if (voice) utterance.voice = voice
     } else {
-      // Prefer US English voices
       const preferredVoice = voices.find(v =>
         v.lang.startsWith('en-US') && v.localService
       ) || voices.find(v =>
@@ -81,21 +118,80 @@ export function useTextToSpeech(): UseTTSReturn {
       if (preferredVoice) utterance.voice = preferredVoice
     }
 
-    utterance.onstart = () => setIsSpeaking(true)
-    utterance.onend = () => setIsSpeaking(false)
-    utterance.onerror = () => setIsSpeaking(false)
+    utterance.onstart = () => {
+      setIsSpeaking(true)
+      setIsPaused(false)
+      setProgress(0)
+      startTimeRef.current = Date.now()
+
+      const duration = estimateDuration(cleanText, mergedOptions.rate!)
+      progressIntervalRef.current = setInterval(() => {
+        const elapsed = Date.now() - startTimeRef.current
+        const newProgress = Math.min(100, (elapsed / duration) * 100)
+        setProgress(newProgress)
+      }, 100)
+    }
+
+    utterance.onend = () => {
+      setIsSpeaking(false)
+      setIsPaused(false)
+      setProgress(100)
+      if (progressIntervalRef.current) {
+        clearInterval(progressIntervalRef.current)
+      }
+    }
+
+    utterance.onerror = (event) => {
+      if (event.error !== 'interrupted') {
+        console.error('Speech synthesis error:', event.error)
+      }
+      setIsSpeaking(false)
+      setIsPaused(false)
+      setProgress(0)
+      if (progressIntervalRef.current) {
+        clearInterval(progressIntervalRef.current)
+      }
+    }
 
     utteranceRef.current = utterance
     window.speechSynthesis.speak(utterance)
-  }, [isSupported, voices])
+  }, [isSupported, voices, rate, estimateDuration])
+
+  const pause = useCallback(() => {
+    if (!isSupported) return
+    window.speechSynthesis.pause()
+    setIsPaused(true)
+    if (progressIntervalRef.current) {
+      clearInterval(progressIntervalRef.current)
+    }
+  }, [isSupported])
+
+  const resume = useCallback(() => {
+    if (!isSupported) return
+    window.speechSynthesis.resume()
+    setIsPaused(false)
+    startTimeRef.current = Date.now() - (progress / 100) * estimateDuration(textRef.current, rate)
+
+    const duration = estimateDuration(textRef.current, rate)
+    progressIntervalRef.current = setInterval(() => {
+      const elapsed = Date.now() - startTimeRef.current
+      const newProgress = Math.min(100, (elapsed / duration) * 100)
+      setProgress(newProgress)
+    }, 100)
+  }, [isSupported, progress, rate, estimateDuration])
 
   const stop = useCallback(() => {
     if (!isSupported) return
     window.speechSynthesis.cancel()
     setIsSpeaking(false)
+    setIsPaused(false)
+    setProgress(0)
+    if (progressIntervalRef.current) {
+      clearInterval(progressIntervalRef.current)
+    }
   }, [isSupported])
 
-  return { speak, stop, isSpeaking, isSupported, voices }
+  return { speak, pause, resume, stop, isSpeaking, isPaused, isSupported, voices, progress, setRate, rate }
 }
 
 /**
