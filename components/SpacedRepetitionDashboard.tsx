@@ -401,9 +401,27 @@ export function SpacedRepetitionDashboard({
 
 // Compact version for embedding in other pages
 export function SpacedRepetitionMiniDashboard({ cards }: { cards: CardProgress[] }) {
-  const { gameCount } = useSpacedRepetitionStore()
+  const { gameCount, isLoaded } = useSpacedRepetitionStore()
   const stats = useMemo(() => getStudyStats(cards, gameCount), [cards, gameCount])
   const masteryPercent = useMemo(() => calculateMastery(cards), [cards])
+
+  // Don't render until client-side data is loaded to prevent hydration mismatch
+  if (!isLoaded) {
+    return (
+      <div
+        className="p-4 rounded-xl bg-gradient-to-br from-purple-500/10 to-teal-500/10 border border-purple-500/20 animate-pulse"
+        role="region"
+        aria-label="Loading Study Progress"
+      >
+        <div className="h-6 bg-[var(--muted)] rounded w-1/3 mb-3" />
+        <div className="grid grid-cols-5 gap-2">
+          {[...Array(5)].map((_, i) => (
+            <div key={i} className="h-10 bg-[var(--muted)] rounded" />
+          ))}
+        </div>
+      </div>
+    )
+  }
 
   return (
     <div
