@@ -2,8 +2,10 @@
 
 import { useState, useEffect, useCallback, useMemo, useRef } from 'react'
 import { motion } from 'framer-motion'
-import { HardHat, Play, Trophy, RotateCcw, Zap, Check, X } from 'lucide-react'
+import { HardHat, Play, Trophy, RotateCcw, Zap, Check, X, Volume2, VolumeX } from 'lucide-react'
 import { getAllStructuralElements, GameProps } from './shared'
+import { useTextToSpeech } from '@/hooks/useTextToSpeech'
+import { useLearningProgress } from '@/hooks/useLearningProgress'
 
 // Screen reader announcement component
 function LiveRegion({ message }: { message: string }) {
@@ -33,8 +35,14 @@ export function FlashcardGame({ onBack }: GameProps) {
   const [isPlaying, setIsPlaying] = useState(false)
   const [gameComplete, setGameComplete] = useState(false)
   const [announcement, setAnnouncement] = useState('')
+  const [questionStartTime, setQuestionStartTime] = useState(0)
+  const [audioEnabled, setAudioEnabled] = useState(true)
   const optionRefs = useRef<(HTMLButtonElement | null)[]>([])
   const startButtonRef = useRef<HTMLButtonElement>(null)
+
+  // TTS and learning progress hooks
+  const { speak, isSpeaking, isSupported: ttsSupported } = useTextToSpeech()
+  const { recordGameResult, getStats } = useLearningProgress('structural')
 
   const startGame = useCallback(() => {
     const shuffled = [...allElements].sort(() => Math.random() - 0.5).slice(0, 10)
@@ -53,6 +61,7 @@ export function FlashcardGame({ onBack }: GameProps) {
       const wrongOptions = others.sort(() => Math.random() - 0.5).slice(0, 3)
       const allOptions = [current, ...wrongOptions].sort(() => Math.random() - 0.5)
       setOptions(allOptions)
+      setQuestionStartTime(Date.now())
       // Focus first option when question changes
       setTimeout(() => optionRefs.current[0]?.focus(), 100)
     }
@@ -61,17 +70,32 @@ export function FlashcardGame({ onBack }: GameProps) {
   const handleAnswer = useCallback((answerId: string) => {
     if (showResult) return
 
+    const timeMs = Date.now() - questionStartTime
     const correct = answerId === gameElements[currentIndex]?.id
-    const correctName = gameElements[currentIndex]?.name || ''
+    const currentElement = gameElements[currentIndex]
+    const correctName = currentElement?.name || ''
     setShowResult(correct ? 'correct' : 'wrong')
+
+    // Record for spaced repetition
+    if (currentElement) {
+      recordGameResult(currentElement.id, correct, timeMs, streak)
+    }
 
     if (correct) {
       setScore(s => s + 1)
       setStreak(s => s + 1)
       setAnnouncement(`Correct! It was ${correctName}.`)
+      // Speak the correct answer
+      if (audioEnabled && ttsSupported) {
+        speak(correctName)
+      }
     } else {
       setStreak(0)
       setAnnouncement(`Incorrect. The answer was ${correctName}.`)
+      // Speak the correct answer so user learns
+      if (audioEnabled && ttsSupported) {
+        speak(correctName)
+      }
     }
 
     setTimeout(() => {
@@ -83,8 +107,8 @@ export function FlashcardGame({ onBack }: GameProps) {
         setCurrentIndex(i => i + 1)
         setAnnouncement('')
       }
-    }, 1000)
-  }, [showResult, gameElements, currentIndex])
+    }, 1200)
+  }, [showResult, gameElements, currentIndex, questionStartTime, streak, recordGameResult, audioEnabled, ttsSupported, speak])
 
   // Keyboard shortcuts for answers (1-4)
   useEffect(() => {
@@ -182,6 +206,20 @@ export function FlashcardGame({ onBack }: GameProps) {
           <Zap className="w-4 h-4" aria-hidden="true" />
           <span className="font-bold">{streak}</span>
         </div>
+        {ttsSupported && (
+          <button
+            onClick={() => setAudioEnabled(!audioEnabled)}
+            className="p-1.5 rounded-lg hover:bg-muted transition-colors focus:outline-none focus:ring-2 focus:ring-blue-500"
+            aria-label={audioEnabled ? 'Disable audio pronunciations' : 'Enable audio pronunciations'}
+            aria-pressed={audioEnabled}
+          >
+            {audioEnabled ? (
+              <Volume2 className="w-4 h-4 text-blue-500" aria-hidden="true" />
+            ) : (
+              <VolumeX className="w-4 h-4 text-muted-foreground" aria-hidden="true" />
+            )}
+          </button>
+        )}
       </div>
 
       {/* Question */}
