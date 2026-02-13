@@ -9,6 +9,7 @@ import {
 } from '@/lib/spacedRepetition'
 
 const STORAGE_KEY = 'srs-card-progress'
+const GAME_COUNT_KEY = 'srs-game-count'
 const HISTORY_KEY = 'srs-study-history'
 
 interface StudySession {
@@ -19,14 +20,17 @@ interface StudySession {
 
 interface UseSpacedRepetitionStoreReturn {
   cards: CardProgress[]
+  gameCount: number
   getCardProgress: (cardId: string) => CardProgress
   recordReview: (cardId: string, result: ReviewResult) => void
+  incrementGameCount: () => void
   studyHistory: StudySession[]
   isLoaded: boolean
 }
 
 export function useSpacedRepetitionStore(): UseSpacedRepetitionStoreReturn {
   const [cards, setCards] = useState<CardProgress[]>([])
+  const [gameCount, setGameCount] = useState(0)
   const [studyHistory, setStudyHistory] = useState<StudySession[]>([])
   const [isLoaded, setIsLoaded] = useState(false)
 
@@ -37,7 +41,30 @@ export function useSpacedRepetitionStore(): UseSpacedRepetitionStoreReturn {
     try {
       const storedCards = localStorage.getItem(STORAGE_KEY)
       if (storedCards) {
-        setCards(JSON.parse(storedCards))
+        const parsed = JSON.parse(storedCards)
+        // Handle migration from old format
+        const migratedCards = parsed.map((card: any) => {
+          if ('nextReview' in card && !('nextReviewAfterGame' in card)) {
+            // Legacy format - migrate
+            return {
+              cardId: card.cardId,
+              easeFactor: card.easeFactor,
+              interval: card.interval,
+              repetitions: card.repetitions,
+              nextReviewAfterGame: 0, // Due immediately
+              lastReviewedAtGame: 0,
+              totalReviews: card.totalReviews,
+              correctCount: card.correctCount,
+            }
+          }
+          return card
+        })
+        setCards(migratedCards)
+      }
+
+      const storedGameCount = localStorage.getItem(GAME_COUNT_KEY)
+      if (storedGameCount) {
+        setGameCount(parseInt(storedGameCount, 10))
       }
 
       const storedHistory = localStorage.getItem(HISTORY_KEY)
@@ -63,6 +90,18 @@ export function useSpacedRepetitionStore(): UseSpacedRepetitionStoreReturn {
     }
   }, [cards, isLoaded])
 
+  // Save game count to localStorage
+  useEffect(() => {
+    if (!isLoaded) return
+    if (typeof window === 'undefined') return
+
+    try {
+      localStorage.setItem(GAME_COUNT_KEY, gameCount.toString())
+    } catch (e) {
+      console.error('Failed to save game count:', e)
+    }
+  }, [gameCount, isLoaded])
+
   // Save history to localStorage whenever it changes
   useEffect(() => {
     if (!isLoaded) return
@@ -85,12 +124,12 @@ export function useSpacedRepetitionStore(): UseSpacedRepetitionStoreReturn {
     return newCard
   }, [cards])
 
-  // Record a review
+  // Record a review (called for each answer)
   const recordReview = useCallback((cardId: string, result: ReviewResult) => {
     setCards(prev => {
       const cardIndex = prev.findIndex(c => c.cardId === cardId)
       const card = cardIndex >= 0 ? prev[cardIndex] : createCardProgress(cardId)
-      const updatedCard = processReview(card, result)
+      const updatedCard = processReview(card, result, gameCount)
 
       if (cardIndex >= 0) {
         const newCards = [...prev]
@@ -124,12 +163,22 @@ export function useSpacedRepetitionStore(): UseSpacedRepetitionStoreReturn {
         }]
       }
     })
+
+    // Increment game count for each answer (so reviews space out during a session)
+    setGameCount(prev => prev + 1)
+  }, [gameCount])
+
+  // Increment game count manually (e.g., at end of a game round)
+  const incrementGameCount = useCallback(() => {
+    setGameCount(prev => prev + 1)
   }, [])
 
   return {
     cards,
+    gameCount,
     getCardProgress,
     recordReview,
+    incrementGameCount,
     studyHistory,
     isLoaded,
   }

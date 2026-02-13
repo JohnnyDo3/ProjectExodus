@@ -13,10 +13,12 @@ import {
 } from '@/lib/spacedRepetition'
 
 const STORAGE_KEY = 'exodus_learning_progress'
+const GAME_COUNT_KEY = 'exodus_game_count'
 const SYNC_DEBOUNCE_MS = 5000
 
 interface LearningProgressState {
   cards: Record<string, CardProgress>
+  gameCount: number
   lastSynced: number
   version: number
 }
@@ -35,6 +37,7 @@ interface UseLearningProgressReturn {
   // State
   isLoading: boolean
   isSyncing: boolean
+  gameCount: number
 
   // Actions
   resetProgress: (cardIds?: string[]) => void
@@ -43,11 +46,13 @@ interface UseLearningProgressReturn {
 
 /**
  * useLearningProgress - Manages spaced repetition progress with localStorage + server sync
+ * Uses game-based intervals (cards become due after X games, not X days)
  */
 export function useLearningProgress(moduleId: string): UseLearningProgressReturn {
   const { data: session } = useSession()
   const [state, setState] = useState<LearningProgressState>({
     cards: {},
+    gameCount: 0,
     lastSynced: 0,
     version: 1,
   })
@@ -56,6 +61,7 @@ export function useLearningProgress(moduleId: string): UseLearningProgressReturn
   const [pendingSync, setPendingSync] = useState(false)
 
   const storageKey = `${STORAGE_KEY}_${moduleId}`
+  const gameCountKey = `${GAME_COUNT_KEY}_${moduleId}`
 
   // Load from localStorage on mount
   useEffect(() => {
@@ -63,13 +69,46 @@ export function useLearningProgress(moduleId: string): UseLearningProgressReturn
       const stored = localStorage.getItem(storageKey)
       if (stored) {
         const parsed = JSON.parse(stored) as LearningProgressState
-        setState(parsed)
+
+        // Migrate old format cards if needed
+        const migratedCards: Record<string, CardProgress> = {}
+        Object.entries(parsed.cards).forEach(([id, card]: [string, any]) => {
+          if ('nextReview' in card && !('nextReviewAfterGame' in card)) {
+            // Legacy format - migrate
+            migratedCards[id] = {
+              cardId: card.cardId,
+              easeFactor: card.easeFactor,
+              interval: card.interval,
+              repetitions: card.repetitions,
+              nextReviewAfterGame: 0,
+              lastReviewedAtGame: 0,
+              totalReviews: card.totalReviews,
+              correctCount: card.correctCount,
+            }
+          } else {
+            migratedCards[id] = card as CardProgress
+          }
+        })
+
+        setState({
+          ...parsed,
+          cards: migratedCards,
+        })
+      }
+
+      // Load game count
+      const storedGameCount = localStorage.getItem(gameCountKey)
+      if (storedGameCount) {
+        setState(prev => ({
+          ...prev,
+          gameCount: parseInt(storedGameCount, 10),
+        }))
       }
     } catch (error) {
       console.error('[LearningProgress] Failed to load from localStorage:', error)
     }
     setIsLoading(false)
-  }, [storageKey])
+  }, [storageKey, gameCountKey])
 
   // Save to localStorage when state changes
   useEffect(() => {
@@ -77,10 +116,11 @@ export function useLearningProgress(moduleId: string): UseLearningProgressReturn
 
     try {
       localStorage.setItem(storageKey, JSON.stringify(state))
+      localStorage.setItem(gameCountKey, state.gameCount.toString())
     } catch (error) {
       console.error('[LearningProgress] Failed to save to localStorage:', error)
     }
-  }, [state, storageKey, isLoading])
+  }, [state, storageKey, gameCountKey, isLoading])
 
   // Debounced sync to server when user is logged in
   useEffect(() => {
@@ -101,7 +141,7 @@ export function useLearningProgress(moduleId: string): UseLearningProgressReturn
   const recordReview = useCallback((cardId: string, result: ReviewResult) => {
     setState(prev => {
       const currentCard = prev.cards[cardId] || createCardProgress(cardId)
-      const updatedCard = processReview(currentCard, result)
+      const updatedCard = processReview(currentCard, result, prev.gameCount)
 
       return {
         ...prev,
@@ -109,6 +149,7 @@ export function useLearningProgress(moduleId: string): UseLearningProgressReturn
           ...prev.cards,
           [cardId]: updatedCard,
         },
+        gameCount: prev.gameCount + 1, // Increment game count for each review
         version: prev.version + 1,
       }
     })
@@ -126,12 +167,12 @@ export function useLearningProgress(moduleId: string): UseLearningProgressReturn
   }, [recordReview])
 
   const getDueCardsForModule = useCallback((): CardProgress[] => {
-    return getDueCards(Object.values(state.cards))
-  }, [state.cards])
+    return getDueCards(Object.values(state.cards), state.gameCount)
+  }, [state.cards, state.gameCount])
 
   const getStatsForModule = useCallback(() => {
-    return getStudyStats(Object.values(state.cards))
-  }, [state.cards])
+    return getStudyStats(Object.values(state.cards), state.gameCount)
+  }, [state.cards, state.gameCount])
 
   const getAllProgress = useCallback((): CardProgress[] => {
     return Object.values(state.cards)
@@ -140,7 +181,7 @@ export function useLearningProgress(moduleId: string): UseLearningProgressReturn
   const resetProgress = useCallback((cardIds?: string[]) => {
     setState(prev => {
       if (!cardIds) {
-        return { cards: {}, lastSynced: 0, version: prev.version + 1 }
+        return { cards: {}, gameCount: 0, lastSynced: 0, version: prev.version + 1 }
       }
 
       const newCards = { ...prev.cards }
@@ -166,6 +207,7 @@ export function useLearningProgress(moduleId: string): UseLearningProgressReturn
         body: JSON.stringify({
           moduleId,
           cards: state.cards,
+          gameCount: state.gameCount,
           version: state.version,
         }),
       })
@@ -178,7 +220,7 @@ export function useLearningProgress(moduleId: string): UseLearningProgressReturn
     } finally {
       setIsSyncing(false)
     }
-  }, [session, moduleId, state.cards, state.version])
+  }, [session, moduleId, state.cards, state.gameCount, state.version])
 
   return {
     getCardProgress,
@@ -189,6 +231,7 @@ export function useLearningProgress(moduleId: string): UseLearningProgressReturn
     getAllProgress,
     isLoading,
     isSyncing,
+    gameCount: state.gameCount,
     resetProgress,
     syncToServer,
   }

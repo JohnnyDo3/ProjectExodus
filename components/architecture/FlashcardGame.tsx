@@ -13,6 +13,8 @@ import type { ArchitecturalElement, LearningLevel } from '@/data/architecture/ty
 import { ALL_ELEMENTS, getRandomElements } from '@/data/architecture/elements'
 import { CATEGORIES } from '@/data/architecture/categories'
 import { ArchitectureSVG } from './ArchitectureSVG'
+import { useSpacedRepetitionStore } from '@/hooks/useSpacedRepetitionStore'
+import { gameResultToQuality } from '@/lib/spacedRepetition'
 
 // Screen reader announcement component
 function LiveRegion({ message }: { message: string }) {
@@ -105,6 +107,9 @@ export function FlashcardGame({ config: userConfig, onComplete, onExit, showConf
   // Audio & UI
   const [soundEnabled, setSoundEnabled] = useState(true)
   const [announcement, setAnnouncement] = useState('')
+
+  // Spaced repetition
+  const { recordReview } = useSpacedRepetitionStore()
 
   // Timer ref
   const timerRef = useRef<NodeJS.Timeout | null>(null)
@@ -201,6 +206,11 @@ export function FlashcardGame({ config: userConfig, onComplete, onExit, showConf
     // Update state
     setGameState(prev => {
       const newStreak = correct ? prev.streak + 1 : 0
+
+      // Record to spaced repetition system
+      const quality = gameResultToQuality(correct, timeMs, newStreak)
+      recordReview(current.id, { quality })
+
       return {
         ...prev,
         score: prev.score + (correct ? 100 + (prev.streak * 10) : 0),

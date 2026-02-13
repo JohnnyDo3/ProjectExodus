@@ -17,9 +17,11 @@ import {
   getUpcomingCards,
   calculateMastery,
 } from '@/lib/spacedRepetition'
+import { useSpacedRepetitionStore } from '@/hooks/useSpacedRepetitionStore'
 
 interface SpacedRepetitionDashboardProps {
   cards: CardProgress[]
+  gameCount?: number
   onStartReview?: () => void
   showDetailedView?: boolean
 }
@@ -35,10 +37,15 @@ interface StudySession {
 
 export function SpacedRepetitionDashboard({
   cards,
+  gameCount: propGameCount,
   onStartReview,
   showDetailedView = false
 }: SpacedRepetitionDashboardProps) {
   const [studyHistory, setStudyHistory] = useState<StudySession[]>([])
+  const { gameCount: storeGameCount } = useSpacedRepetitionStore()
+
+  // Use prop gameCount if provided, otherwise use store
+  const gameCount = propGameCount ?? storeGameCount
 
   // Load study history from localStorage
   useEffect(() => {
@@ -53,10 +60,10 @@ export function SpacedRepetitionDashboard({
     }
   }, [])
 
-  // Calculate stats from cards
-  const stats = useMemo(() => getStudyStats(cards), [cards])
-  const dueCards = useMemo(() => getDueCards(cards), [cards])
-  const upcomingCards = useMemo(() => getUpcomingCards(cards, 7), [cards])
+  // Calculate stats from cards (using game count for due calculation)
+  const stats = useMemo(() => getStudyStats(cards, gameCount), [cards, gameCount])
+  const dueCards = useMemo(() => getDueCards(cards, gameCount), [cards, gameCount])
+  const upcomingCards = useMemo(() => getUpcomingCards(cards, gameCount, 10), [cards, gameCount])
   const masteryPercent = useMemo(() => calculateMastery(cards), [cards])
 
   // Calculate study streak
@@ -110,19 +117,13 @@ export function SpacedRepetitionDashboard({
     }
   }, [studyHistory])
 
-  // Format next review time
-  const formatNextReview = (timestamp: number) => {
-    const now = Date.now()
-    const diff = timestamp - now
+  // Format next review (games until due)
+  const formatNextReview = (nextReviewAfterGame: number) => {
+    const gamesUntil = nextReviewAfterGame - gameCount
 
-    if (diff <= 0) return 'Now'
-
-    const hours = Math.floor(diff / (1000 * 60 * 60))
-    const days = Math.floor(hours / 24)
-
-    if (days > 0) return `${days}d`
-    if (hours > 0) return `${hours}h`
-    return 'Soon'
+    if (gamesUntil <= 0) return 'Now'
+    if (gamesUntil === 1) return '1 game'
+    return `${gamesUntil} games`
   }
 
   return (
@@ -307,7 +308,7 @@ export function SpacedRepetitionDashboard({
           <CardContent className="p-6">
             <h3 className="font-bold text-[var(--foreground)] mb-4 flex items-center gap-2">
               <Calendar className="w-5 h-5 text-purple-500" aria-hidden="true" />
-              Upcoming Reviews (Next 7 Days)
+              Upcoming Reviews (Next 10 Games)
             </h3>
 
             <div className="space-y-2">
@@ -325,7 +326,7 @@ export function SpacedRepetitionDashboard({
                     </span>
                   </div>
                   <span className="text-sm text-[var(--muted-foreground)]">
-                    {formatNextReview(card.nextReview)}
+                    {formatNextReview(card.nextReviewAfterGame)}
                   </span>
                 </div>
               ))}

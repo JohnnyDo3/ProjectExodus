@@ -1,19 +1,20 @@
 /**
- * Spaced Repetition System using SM-2 Algorithm
+ * Spaced Repetition System - Game-Based Intervals
  *
- * Based on the SuperMemo SM-2 algorithm by Piotr Wozniak
- * https://www.supermemo.com/en/archives1990-2015/english/ol/sm2
+ * Modified SM-2 algorithm that uses game rounds instead of days.
+ * Cards become due after a certain number of games, not after days pass.
+ * This allows intensive learning sessions without waiting.
  */
 
 export interface CardProgress {
   cardId: string
-  easeFactor: number      // Difficulty multiplier (starts at 2.5)
-  interval: number        // Days until next review
-  repetitions: number     // Number of successful reviews
-  nextReview: number      // Unix timestamp for next review
-  lastReview: number      // Unix timestamp of last review
-  totalReviews: number    // Total number of reviews
-  correctCount: number    // Number of correct answers
+  easeFactor: number           // Difficulty multiplier (starts at 2.5)
+  interval: number             // Games until next review
+  repetitions: number          // Number of successful reviews in a row
+  nextReviewAfterGame: number  // Card is due when totalGamesPlayed >= this
+  lastReviewedAtGame: number   // Game count when last reviewed
+  totalReviews: number         // Total number of reviews
+  correctCount: number         // Number of correct answers
 }
 
 export interface ReviewResult {
@@ -31,22 +32,25 @@ const DEFAULT_EASE_FACTOR = 2.5
 
 /**
  * Calculate the new card state after a review
+ * @param card - Current card progress
+ * @param result - Review quality result
+ * @param currentGameCount - Current total games played (used for scheduling next review)
  */
 export function processReview(
   card: CardProgress,
-  result: ReviewResult
+  result: ReviewResult,
+  currentGameCount: number = 0
 ): CardProgress {
   const { quality } = result
-  const now = Date.now()
 
   // If quality < 3, reset repetitions (failed recall)
   if (quality < 3) {
     return {
       ...card,
       repetitions: 0,
-      interval: 1,
-      nextReview: now + 24 * 60 * 60 * 1000, // Review tomorrow
-      lastReview: now,
+      interval: 1, // Review in 1 game
+      nextReviewAfterGame: currentGameCount + 1,
+      lastReviewedAtGame: currentGameCount,
       totalReviews: card.totalReviews + 1,
       // Decrease ease factor
       easeFactor: Math.max(
@@ -61,12 +65,18 @@ export function processReview(
   const newRepetitions = card.repetitions + 1
 
   if (newRepetitions === 1) {
-    newInterval = 1
+    newInterval = 1 // Review after 1 game
   } else if (newRepetitions === 2) {
-    newInterval = 6
+    newInterval = 3 // Review after 3 games
+  } else if (newRepetitions === 3) {
+    newInterval = 6 // Review after 6 games
   } else {
+    // After 3rd successful review, space out more
     newInterval = Math.round(card.interval * card.easeFactor)
   }
+
+  // Cap interval at 50 games to keep cards cycling
+  newInterval = Math.min(newInterval, 50)
 
   // Calculate new ease factor
   const newEaseFactor = Math.max(
@@ -78,8 +88,8 @@ export function processReview(
     ...card,
     repetitions: newRepetitions,
     interval: newInterval,
-    nextReview: now + newInterval * 24 * 60 * 60 * 1000,
-    lastReview: now,
+    nextReviewAfterGame: currentGameCount + newInterval,
+    lastReviewedAtGame: currentGameCount,
     totalReviews: card.totalReviews + 1,
     correctCount: card.correctCount + 1,
     easeFactor: newEaseFactor,
@@ -95,8 +105,8 @@ export function createCardProgress(cardId: string): CardProgress {
     easeFactor: DEFAULT_EASE_FACTOR,
     interval: 0,
     repetitions: 0,
-    nextReview: Date.now(),
-    lastReview: 0,
+    nextReviewAfterGame: 0, // Due immediately
+    lastReviewedAtGame: 0,
     totalReviews: 0,
     correctCount: 0,
   }
@@ -104,22 +114,25 @@ export function createCardProgress(cardId: string): CardProgress {
 
 /**
  * Check if a card is due for review
+ * @param card - Card to check
+ * @param currentGameCount - Current total games played
  */
-export function isDue(card: CardProgress): boolean {
-  return Date.now() >= card.nextReview
+export function isDue(card: CardProgress, currentGameCount: number = 0): boolean {
+  return currentGameCount >= card.nextReviewAfterGame
 }
 
 /**
  * Get cards that are due for review, sorted by priority
+ * @param cards - All cards
+ * @param currentGameCount - Current total games played
  */
-export function getDueCards(cards: CardProgress[]): CardProgress[] {
-  const now = Date.now()
+export function getDueCards(cards: CardProgress[], currentGameCount: number = Infinity): CardProgress[] {
   return cards
-    .filter(card => card.nextReview <= now)
+    .filter(card => currentGameCount >= card.nextReviewAfterGame)
     .sort((a, b) => {
-      // Priority: overdue cards first, then by interval (shorter = newer = higher priority)
-      const aOverdue = now - a.nextReview
-      const bOverdue = now - b.nextReview
+      // Priority: most overdue first, then by interval (shorter = newer = higher priority)
+      const aOverdue = currentGameCount - a.nextReviewAfterGame
+      const bOverdue = currentGameCount - b.nextReviewAfterGame
       if (aOverdue !== bOverdue) return bOverdue - aOverdue
       return a.interval - b.interval
     })
@@ -127,13 +140,19 @@ export function getDueCards(cards: CardProgress[]): CardProgress[] {
 
 /**
  * Get upcoming cards (not yet due)
+ * @param cards - All cards
+ * @param currentGameCount - Current total games played
+ * @param lookAhead - How many games ahead to look (default 10)
  */
-export function getUpcomingCards(cards: CardProgress[], days = 7): CardProgress[] {
-  const now = Date.now()
-  const futureLimit = now + days * 24 * 60 * 60 * 1000
+export function getUpcomingCards(
+  cards: CardProgress[],
+  currentGameCount: number = 0,
+  lookAhead: number = 10
+): CardProgress[] {
+  const futureLimit = currentGameCount + lookAhead
   return cards
-    .filter(card => card.nextReview > now && card.nextReview <= futureLimit)
-    .sort((a, b) => a.nextReview - b.nextReview)
+    .filter(card => card.nextReviewAfterGame > currentGameCount && card.nextReviewAfterGame <= futureLimit)
+    .sort((a, b) => a.nextReviewAfterGame - b.nextReviewAfterGame)
 }
 
 /**
@@ -151,10 +170,11 @@ export function calculateMastery(cards: CardProgress[]): number {
 
 /**
  * Get study statistics
+ * @param cards - All cards
+ * @param currentGameCount - Current total games played (used to determine due cards)
  */
-export function getStudyStats(cards: CardProgress[]) {
-  const now = Date.now()
-  const dueCards = cards.filter(c => c.nextReview <= now)
+export function getStudyStats(cards: CardProgress[], currentGameCount: number = Infinity) {
+  const dueCards = cards.filter(c => currentGameCount >= c.nextReviewAfterGame)
   const newCards = cards.filter(c => c.totalReviews === 0)
   const learningCards = cards.filter(c => c.totalReviews > 0 && c.repetitions < 3)
   const masteredCards = cards.filter(c => c.repetitions >= 3)
@@ -191,4 +211,36 @@ export function gameResultToQuality(
   if (timeMs < 3000) return 4 // Reasonably fast = good
   if (timeMs < 5000) return 3 // Slow but correct = difficult
   return 3 // Very slow = serious difficulty
+}
+
+// ============================================================================
+// Legacy compatibility - for components that still use time-based nextReview
+// ============================================================================
+
+/** @deprecated Use nextReviewAfterGame instead */
+export interface LegacyCardProgress {
+  cardId: string
+  easeFactor: number
+  interval: number
+  repetitions: number
+  nextReview: number      // Unix timestamp (legacy)
+  lastReview: number      // Unix timestamp (legacy)
+  totalReviews: number
+  correctCount: number
+}
+
+/**
+ * Convert legacy card format to new format
+ */
+export function migrateLegacyCard(legacy: LegacyCardProgress): CardProgress {
+  return {
+    cardId: legacy.cardId,
+    easeFactor: legacy.easeFactor,
+    interval: legacy.interval,
+    repetitions: legacy.repetitions,
+    nextReviewAfterGame: 0, // Due immediately after migration
+    lastReviewedAtGame: 0,
+    totalReviews: legacy.totalReviews,
+    correctCount: legacy.correctCount,
+  }
 }
