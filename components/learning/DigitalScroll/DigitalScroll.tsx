@@ -613,11 +613,13 @@ export function DigitalScroll({
   const renderPageContent = (page: ScrollContent, side: 'left' | 'right') => {
     switch (page.type) {
       case 'cover':
+        // Use ribbon color with fallback to primary for proper theme support
+        const coverTitleColor = currentRibbon?.colors.from || 'var(--primary)'
         return (
-          <div className="w-full h-full flex items-center justify-center">
+          <div className="w-full h-full flex items-center justify-center bg-[var(--book-paper,var(--card))] text-[var(--book-text,var(--foreground))]">
             <div className="text-center px-4">
               <span className="text-7xl block mb-6">{CORE_TOPIC_ICONS[topic.id] || '📖'}</span>
-              <h1 className="text-3xl sm:text-4xl font-serif font-bold" style={{ color: currentRibbon?.colors.from }}>
+              <h1 className="text-3xl sm:text-4xl font-serif font-bold" style={{ color: coverTitleColor }}>
                 {topic.title}
               </h1>
               <p className="text-sm text-[var(--muted-foreground)] mt-4 italic">
@@ -644,8 +646,10 @@ export function DigitalScroll({
         )
 
       case 'toc':
+        // Use ribbon color with fallback for divider
+        const tocDividerColor = currentRibbon?.colors.from || 'var(--primary)'
         return (
-          <div className="w-full h-full flex flex-col px-2">
+          <div className="w-full h-full flex flex-col px-2 bg-[var(--book-paper,var(--card))] text-[var(--book-text,var(--foreground))]">
             <AncientBorder />
             {/* TOC Header */}
             <div className="text-center py-4 shrink-0">
@@ -656,7 +660,7 @@ export function DigitalScroll({
                 The Seven Paths of Knowledge
               </p>
             </div>
-            <HieroglyphicDivider color={currentRibbon?.colors.from} />
+            <HieroglyphicDivider color={tocDividerColor} />
             {/* Chapter List - fills available space with scroll if needed */}
             <div className="flex-1 overflow-y-auto space-y-2 py-2">
               {modules.slice(0, 7).map((module, i) => {
@@ -699,7 +703,7 @@ export function DigitalScroll({
         // Learning Mission page - fill-in-the-blank intentions
         const missionColor = currentRibbon?.colors.from || 'var(--primary)'
         return (
-          <div className="w-full h-full flex flex-col relative">
+          <div className="w-full h-full flex flex-col relative bg-[var(--book-paper,var(--card))] text-[var(--book-text,var(--foreground))]">
             <AncientBorder />
 
             {/* Header - compact */}

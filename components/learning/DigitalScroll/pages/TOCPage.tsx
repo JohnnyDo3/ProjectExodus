@@ -13,8 +13,11 @@ interface TOCPageProps {
 }
 
 export function TOCPage({ modules, currentRibbon, goToChapter }: TOCPageProps) {
+  // Use ribbon color with fallback to primary for divider
+  const dividerColor = currentRibbon?.colors.from || 'var(--primary)'
+
   return (
-    <div className="w-full h-full flex flex-col px-2">
+    <div className="w-full h-full flex flex-col px-2 bg-[var(--book-paper,var(--card))] text-[var(--book-text,var(--foreground))]">
       <AncientBorder />
       {/* TOC Header */}
       <div className="text-center py-4 shrink-0">
@@ -25,7 +28,7 @@ export function TOCPage({ modules, currentRibbon, goToChapter }: TOCPageProps) {
           Your Learning Journey
         </p>
       </div>
-      <HieroglyphicDivider color={currentRibbon?.colors.from} seed={0} />
+      <HieroglyphicDivider color={dividerColor} seed={0} />
       {/* Chapter List - fills available space with scroll if needed */}
       <div className="flex-1 overflow-y-auto space-y-2 py-2">
         {modules.slice(0, 7).map((module, i) => {

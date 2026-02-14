@@ -45,7 +45,7 @@ export function QuizPage({
   // Quiz is locked - show unlock prompt
   if (!isQuizUnlocked) {
     return (
-      <div className="w-full h-full flex flex-col relative px-3 py-2">
+      <div className="w-full h-full flex flex-col relative px-3 py-2 bg-[var(--book-paper,var(--card))] text-[var(--book-text,var(--foreground))]">
         <AncientBorder />
 
         {/* Header */}
@@ -117,7 +117,7 @@ export function QuizPage({
 
   // Quiz is unlocked - show quiz
   return (
-    <div className="w-full h-full flex flex-col relative px-3 py-2">
+    <div className="w-full h-full flex flex-col relative px-3 py-2 bg-[var(--book-paper,var(--card))] text-[var(--book-text,var(--foreground))]">
       <AncientBorder />
 
       {/* Header */}

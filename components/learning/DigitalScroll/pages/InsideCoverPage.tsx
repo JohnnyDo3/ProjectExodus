@@ -22,7 +22,7 @@ export function InsideCoverPage({
   goToPage,
 }: InsideCoverPageProps) {
   return (
-    <div className="w-full h-full">
+    <div className="w-full h-full bg-[var(--book-paper,var(--card))] text-[var(--book-text,var(--foreground))]">
       <InsideCover
         topicSlug={topic.id}
         topicTitle={topic.title}

@@ -21,7 +21,7 @@ export function LearningMissionPage({
   const missionColor = currentRibbon?.colors.from || 'var(--primary)'
 
   return (
-    <div className="w-full h-full flex flex-col relative">
+    <div className="w-full h-full flex flex-col relative bg-[var(--book-paper,var(--card))] text-[var(--book-text,var(--foreground))]">
       <AncientBorder />
 
       {/* Header - compact */}

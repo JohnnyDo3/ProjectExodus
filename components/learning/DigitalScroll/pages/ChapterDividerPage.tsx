@@ -10,7 +10,7 @@ interface ChapterDividerPageProps {
 
 export function ChapterDividerPage({ page }: ChapterDividerPageProps) {
   return (
-    <div className="w-full h-full">
+    <div className="w-full h-full bg-[var(--book-paper,var(--card))] text-[var(--book-text,var(--foreground))]">
       <ChapterDivider
         chapterIndex={page.chapterIndex ?? 0}
         chapterTitle={page.title || ''}

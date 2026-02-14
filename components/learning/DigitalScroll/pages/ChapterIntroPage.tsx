@@ -23,7 +23,7 @@ export function ChapterIntroPage({ page, selectedLevel }: ChapterIntroPageProps)
     allLessons.reduce((sum, l) => sum + (l.duration || 0), 0)
 
   return (
-    <div className="w-full h-full flex flex-col relative px-3 py-2">
+    <div className="w-full h-full flex flex-col relative px-3 py-2 bg-[var(--book-paper,var(--card))] text-[var(--book-text,var(--foreground))]">
       <AncientBorder />
 
       {/* Header */}
