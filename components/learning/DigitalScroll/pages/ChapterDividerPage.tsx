@@ -15,7 +15,7 @@ export function ChapterDividerPage({ page }: ChapterDividerPageProps) {
         chapterIndex={page.chapterIndex ?? 0}
         chapterTitle={page.title || ''}
         versesCount={page.module?.lessons.length ?? 0}
-        guardianQuote={getLearningStageQuote(page.chapterIndex ?? 0)}
+        stageQuote={getLearningStageQuote(page.chapterIndex ?? 0)}
       />
     </div>
   )

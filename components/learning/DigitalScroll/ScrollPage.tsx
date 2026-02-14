@@ -11,10 +11,13 @@ import { forwardRef, ReactNode, useState, useEffect, useRef } from 'react'
 import { cn } from '@/lib/utils/cn'
 import {
   WATERMARK_CONFIG,
-  GUARDIAN_RIBBONS,
-  RIBBON_ORDER,
+  LEARNING_STAGE_RIBBONS,
+  STAGE_ORDER,
   A11Y_CONFIG,
   getDeviceType,
+  // Deprecated - kept for backwards compatibility
+  GUARDIAN_RIBBONS,
+  RIBBON_ORDER,
 } from './scrollConstants'
 
 // ============================================
@@ -104,8 +107,10 @@ export const ScrollPage = forwardRef<HTMLDivElement, ScrollPageProps>(
     }, [])
 
     const isDesktop = deviceType === 'desktop'
-    const ribbon = RIBBON_ORDER[chapterIndex] ? GUARDIAN_RIBBONS[RIBBON_ORDER[chapterIndex]] : null
-    const WatermarkIcon = ribbon?.icon
+    // Use Learning Stage ribbon for watermark
+    const stageKey = STAGE_ORDER[chapterIndex]
+    const ribbon = stageKey ? LEARNING_STAGE_RIBBONS[stageKey] : null
+    const watermarkEmoji = ribbon?.icon
 
     return (
       <div
@@ -180,23 +185,21 @@ export const ScrollPage = forwardRef<HTMLDivElement, ScrollPageProps>(
           )}
         </div>
 
-        {/* Guardian Watermark Easter Egg */}
-        {showWatermark && WatermarkIcon && (
+        {/* Learning Stage Watermark Easter Egg */}
+        {showWatermark && watermarkEmoji && (
           <div
-            className="absolute bottom-12 right-8 pointer-events-none"
+            className="absolute bottom-12 right-8 pointer-events-none flex items-center justify-center"
             style={{
               width: WATERMARK_CONFIG.size,
               height: WATERMARK_CONFIG.size,
               opacity: WATERMARK_CONFIG.opacity,
               transform: `rotate(${WATERMARK_CONFIG.rotation}deg)`,
               filter: `blur(${WATERMARK_CONFIG.blur})`,
+              fontSize: '4rem',
+              color: ribbon?.colors.from,
             }}
           >
-            <WatermarkIcon
-              className="w-full h-full"
-              style={{ color: ribbon?.colors.from }}
-              strokeWidth={0.5}
-            />
+            {watermarkEmoji}
           </div>
         )}
 
@@ -660,6 +663,8 @@ interface ChapterDividerProps {
   chapterIndex: number
   chapterTitle: string
   versesCount: number
+  stageQuote?: string
+  /** @deprecated Use stageQuote instead */
   guardianQuote?: string
   animated?: boolean
 }
@@ -668,12 +673,18 @@ export function ChapterDivider({
   chapterIndex,
   chapterTitle,
   versesCount,
+  stageQuote,
   guardianQuote,
   animated = true,
 }: ChapterDividerProps) {
-  const ribbon = RIBBON_ORDER[chapterIndex] ? GUARDIAN_RIBBONS[RIBBON_ORDER[chapterIndex]] : null
-  const Icon = ribbon?.icon
+  // Use Learning Stage ribbon system
+  const stageKey = STAGE_ORDER[chapterIndex]
+  const ribbon = stageKey ? LEARNING_STAGE_RIBBONS[stageKey] : null
+  // Learning Stage ribbons use emoji icons stored in 'icon' field, not Lucide components
+  const stageIcon = ribbon?.icon
   const color = ribbon?.colors.from || 'var(--primary)'
+  // Support both new and deprecated prop names
+  const quote = stageQuote || guardianQuote
 
   const MotionWrapper = animated ? motion.div : 'div'
   const wrapperProps = animated ? {
@@ -815,8 +826,8 @@ export function ChapterDivider({
         )}
       </div>
 
-      {/* Guardian Icon - smaller */}
-      {Icon && (
+      {/* Learning Stage Icon */}
+      {stageIcon && (
         <div className="shrink-0">
           {animated ? (
             <motion.div
@@ -838,7 +849,7 @@ export function ChapterDivider({
                 className="relative w-16 h-16 rounded-full flex items-center justify-center shadow-xl"
                 style={{ background: ribbon?.colors.gradient }}
               >
-                <Icon className="w-8 h-8 text-white" strokeWidth={1.5} />
+                <span className="text-3xl">{stageIcon}</span>
               </div>
             </motion.div>
           ) : (
@@ -846,7 +857,7 @@ export function ChapterDivider({
               className="w-16 h-16 rounded-full flex items-center justify-center shadow-xl"
               style={{ background: ribbon?.colors.gradient }}
             >
-              <Icon className="w-8 h-8 text-white" strokeWidth={1.5} />
+              <span className="text-3xl">{stageIcon}</span>
             </div>
           )}
         </div>
@@ -898,11 +909,11 @@ export function ChapterDivider({
               animate={{ opacity: 1 }}
               transition={{ delay: 0.7 }}
             >
-              The Way of <span className="font-bold" style={{ color }}>{ribbon.value}</span>
+              Stage: <span className="font-bold" style={{ color }}>{ribbon.name}</span>
             </motion.div>
           ) : (
             <div className="text-sm text-[var(--muted-foreground)]">
-              The Way of <span className="font-bold" style={{ color }}>{ribbon.value}</span>
+              Stage: <span className="font-bold" style={{ color }}>{ribbon.name}</span>
             </div>
           )
         )}
@@ -947,8 +958,8 @@ export function ChapterDivider({
         )}
       </div>
 
-      {/* Guardian quote - compact */}
-      {guardianQuote && (
+      {/* Learning stage quote - compact */}
+      {quote && (
         <div className="shrink-0 max-w-xs">
           {animated ? (
             <motion.blockquote
@@ -958,12 +969,12 @@ export function ChapterDivider({
               transition={{ delay: 0.9 }}
             >
               <span className="text-lg opacity-30 mr-0.5" style={{ color }}>"</span>
-              {guardianQuote}
+              {quote}
               <span className="text-lg opacity-30 ml-0.5" style={{ color }}>"</span>
             </motion.blockquote>
           ) : (
             <blockquote className="text-sm italic text-[var(--muted-foreground)] font-serif">
-              "{guardianQuote}"
+              "{quote}"
             </blockquote>
           )}
         </div>

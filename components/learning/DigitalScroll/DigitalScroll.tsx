@@ -22,6 +22,7 @@ import { useScrollState } from './useScrollState'
 import { ScrollGameSelector, GradedQuiz } from './ScrollGames'
 import { CrosswordPuzzle } from './CrosswordPuzzle'
 import { ActivitySelector } from './ActivitySelector'
+import { getLearningStageQuote } from './DecorativeElements'
 
 // Game item type for interactive activities
 interface GameItem {
@@ -34,16 +35,21 @@ interface GameItem {
 // Import term extraction utilities
 import { extractTermsFromModule, KEY_TERMS_BY_TOPIC } from '@/lib/learning/termExtractor'
 import {
-  GUARDIAN_RIBBONS,
-  RIBBON_ORDER,
+  LEARNING_STAGE_RIBBONS,
+  STAGE_ORDER,
+  getStageForChapter,
   A11Y_CONFIG,
   getDeviceType,
   CORE_TOPIC_ICONS,
+  // Deprecated - kept for backwards compatibility
+  GUARDIAN_RIBBONS,
+  RIBBON_ORDER,
 } from './scrollConstants'
 
 // Learning data
 import type { Module, TopicDefinition, CoreTopic } from '@/data/modules'
 import type { LearningLevel } from '@/types/learning'
+import { getFunFacts, getRealWorldExamples, getSummaryPoints } from '@/data/learning/funFacts'
 
 // ============================================
 // TYPES
@@ -309,8 +315,8 @@ export function DigitalScroll({
           chapterIndex: prevChapter,
           module: prevModule,
           keyTerms: prevGameItems.map(t => ({ term: t.term, definition: t.definition })),
-          funFacts: generateFunFacts(prevModule, selectedLevel, topic.id).slice(0, 2),
-          summaryPoints: generateSummaryPoints(prevModule, selectedLevel).slice(0, 2),
+          funFacts: getFunFacts(topic.id, selectedLevel).slice(0, 2),
+          summaryPoints: getSummaryPoints(topic.id, selectedLevel).slice(0, 2),
         })
       }
 
@@ -393,8 +399,8 @@ export function DigitalScroll({
             term: item.term,
             definition: item.definition,
           })),
-          funFacts: generateFunFacts(module, selectedLevel, topic.id).slice(0, 3),
-          summaryPoints: generateSummaryPoints(module, selectedLevel).slice(0, 3),
+          funFacts: getFunFacts(topic.id, selectedLevel).slice(0, 3),
+          summaryPoints: getSummaryPoints(topic.id, selectedLevel).slice(0, 3),
         })
       }
 
@@ -407,8 +413,8 @@ export function DigitalScroll({
           term: item.term,
           definition: item.definition,
         })),
-        funFacts: generateFunFacts(module, selectedLevel, topic.id).slice(0, 3),
-        summaryPoints: generateSummaryPoints(module, selectedLevel).slice(0, 3),
+        funFacts: getFunFacts(topic.id, selectedLevel).slice(0, 3),
+        summaryPoints: getSummaryPoints(topic.id, selectedLevel).slice(0, 3),
       })
 
       // Enhanced Notes page (RIGHT) - includes Real World Actions + Notes + Discussion
@@ -416,7 +422,7 @@ export function DigitalScroll({
         type: 'notes-enhanced',
         chapterIndex,
         module,
-        realWorldExamples: generateRealWorldExamples(module, selectedLevel, topic.id),
+        realWorldExamples: getRealWorldExamples(topic.id),
       })
 
       // ============================================
@@ -459,10 +465,8 @@ export function DigitalScroll({
   const currentPage = bookPages[currentPageIndex]
   const currentChapter = currentPage?.chapterIndex ?? 0
 
-  // Get the ribbon for current chapter
-  const currentRibbon = RIBBON_ORDER[currentChapter]
-    ? GUARDIAN_RIBBONS[RIBBON_ORDER[currentChapter]]
-    : null
+  // Get the learning stage ribbon for current chapter
+  const currentRibbon = getStageForChapter(currentChapter)
 
   // ============================================
   // NAVIGATION HANDLERS
@@ -664,7 +668,8 @@ export function DigitalScroll({
             {/* Chapter List - fills available space with scroll if needed */}
             <div className="flex-1 overflow-y-auto space-y-2 py-2">
               {modules.slice(0, 7).map((module, i) => {
-                const ribbon = RIBBON_ORDER[i] ? GUARDIAN_RIBBONS[RIBBON_ORDER[i]] : null
+                const stageKey = STAGE_ORDER[i]
+                const ribbon = stageKey ? LEARNING_STAGE_RIBBONS[stageKey] : null
                 return (
                   <button
                     key={module.id}
@@ -816,16 +821,15 @@ export function DigitalScroll({
               chapterIndex={page.chapterIndex ?? 0}
               chapterTitle={page.title || ''}
               versesCount={page.module?.lessons.length ?? 0}
-              guardianQuote={getGuardianQuote(page.chapterIndex ?? 0)}
+              stageQuote={getLearningStageQuote(page.chapterIndex ?? 0)}
             />
           </div>
         )
 
       case 'chapter-intro':
         // Right side of chapter spread - shows COMPLETE curriculum outline
-        const introRibbon = page.chapterIndex !== undefined && RIBBON_ORDER[page.chapterIndex]
-          ? GUARDIAN_RIBBONS[RIBBON_ORDER[page.chapterIndex]]
-          : null
+        const introStageKey = page.chapterIndex !== undefined ? STAGE_ORDER[page.chapterIndex] : undefined
+        const introRibbon = introStageKey ? LEARNING_STAGE_RIBBONS[introStageKey] : null
         const introColor = introRibbon?.colors.from || 'var(--primary)'
         const chapterModule = page.module
         const allLessons = chapterModule?.lessons || []
@@ -938,9 +942,8 @@ export function DigitalScroll({
 
       case 'games':
         // Interactive learning games page
-        const gamesRibbon = page.chapterIndex !== undefined && RIBBON_ORDER[page.chapterIndex]
-          ? GUARDIAN_RIBBONS[RIBBON_ORDER[page.chapterIndex]]
-          : null
+        const gamesStageKey = page.chapterIndex !== undefined ? STAGE_ORDER[page.chapterIndex] : undefined
+        const gamesRibbon = gamesStageKey ? LEARNING_STAGE_RIBBONS[gamesStageKey] : null
         const gameItems = page.gameItems || []
         const chapterIdx = page.chapterIndex ?? 0
         const gamesCompleted = completedGames[chapterIdx] ?? false
@@ -986,7 +989,8 @@ export function DigitalScroll({
         )
 
       case 'verse':
-        const verseRibbon = RIBBON_ORDER[page.chapterIndex ?? 0] ? GUARDIAN_RIBBONS[RIBBON_ORDER[page.chapterIndex ?? 0]] : null
+        const verseStageKey = STAGE_ORDER[page.chapterIndex ?? 0]
+        const verseRibbon = verseStageKey ? LEARNING_STAGE_RIBBONS[verseStageKey] : null
         return (
           <div className="w-full h-full flex flex-col items-center justify-center px-4">
             <AncientBorder />
@@ -1129,9 +1133,8 @@ export function DigitalScroll({
 
       case 'chapter-review':
         // Combined Chapter Review: Key Terms + Fun Facts + Summary on ONE page
-        const reviewRibbon = page.chapterIndex !== undefined && RIBBON_ORDER[page.chapterIndex]
-          ? GUARDIAN_RIBBONS[RIBBON_ORDER[page.chapterIndex]]
-          : null
+        const reviewStageKey = page.chapterIndex !== undefined ? STAGE_ORDER[page.chapterIndex] : undefined
+        const reviewRibbon = reviewStageKey ? LEARNING_STAGE_RIBBONS[reviewStageKey] : null
         const reviewColor = reviewRibbon?.colors.from || 'var(--primary)'
         return (
           <div className="w-full h-full flex flex-col relative px-3 py-2">
@@ -1210,7 +1213,7 @@ export function DigitalScroll({
             {/* Footer Quote */}
             <div className="shrink-0 px-3 pt-2 border-t border-[var(--border)]/20">
               <p className="text-xs text-[var(--muted-foreground)] italic text-center leading-relaxed">
-                &ldquo;{getGuardianQuote(page.chapterIndex ?? 0)}&rdquo;
+                &ldquo;{getLearningStageQuote(page.chapterIndex ?? 0)}&rdquo;
               </p>
             </div>
           </div>
@@ -1218,9 +1221,8 @@ export function DigitalScroll({
 
       case 'notes-enhanced':
         // Enhanced Notes: Real World Actions + Notes + Discussion on ONE page
-        const enhancedRibbon = page.chapterIndex !== undefined && RIBBON_ORDER[page.chapterIndex]
-          ? GUARDIAN_RIBBONS[RIBBON_ORDER[page.chapterIndex]]
-          : null
+        const enhancedStageKey = page.chapterIndex !== undefined ? STAGE_ORDER[page.chapterIndex] : undefined
+        const enhancedRibbon = enhancedStageKey ? LEARNING_STAGE_RIBBONS[enhancedStageKey] : null
         const enhancedColor = enhancedRibbon?.colors.from || 'var(--primary)'
         const enhancedChapterTitle = page.chapterIndex !== undefined && page.chapterIndex < modules.length
           ? modules[page.chapterIndex].title
@@ -1307,9 +1309,8 @@ export function DigitalScroll({
 
       case 'quiz':
         // Graded 5-question quiz for assessment
-        const quizRibbon = page.chapterIndex !== undefined && RIBBON_ORDER[page.chapterIndex]
-          ? GUARDIAN_RIBBONS[RIBBON_ORDER[page.chapterIndex]]
-          : null
+        const quizStageKey = page.chapterIndex !== undefined ? STAGE_ORDER[page.chapterIndex] : undefined
+        const quizRibbon = quizStageKey ? LEARNING_STAGE_RIBBONS[quizStageKey] : null
         const quizItems = page.gameItems || []
         const quizChapterIdx = page.chapterIndex ?? 0
         const isQuizUnlocked = completedGames[quizChapterIdx] ?? false
@@ -1746,241 +1747,6 @@ function splitContentIntoPages(content: string, charsPerPage: number): string[] 
   return pages.length > 0 ? pages : ['']
 }
 
-function getGuardianQuote(chapterIndex: number): string {
-  const quotes: Record<number, string> = {
-    0: "Stand firm in the face of challenge, for strength is found in perseverance.",
-    1: "Truth reveals itself to those who seek with open hearts.",
-    2: "In healing others, we discover our own wholeness.",
-    3: "Wisdom is not the accumulation of knowledge, but its application in love.",
-    4: "Love connects all beings as threads in the great tapestry of existence.",
-    5: "Beauty reveals the divine in the ordinary, transforming vision into wonder.",
-    6: "Mercy is the bridge between justice and grace, where healing begins.",
-  }
-  return quotes[chapterIndex] || "The journey of a thousand miles begins with a single step."
-}
-
-// Generate summary points based on level
-function generateSummaryPoints(module: Module, level: LearningLevel): string[] {
-  const basePoints = [
-    `${module.title} is essential for sustainable living`,
-    `Key concepts covered in this chapter will help you understand real-world applications`,
-    `Practice activities reinforce your learning`,
-  ]
-
-  const levelSpecific: Record<LearningLevel, string[]> = {
-    ELEMENTARY: [
-      '🌟 You learned something amazing today!',
-      '🎯 Remember the key words from this chapter',
-      '🌱 Small actions make big differences',
-      '💡 Share what you learned with friends and family',
-    ],
-    MIDDLE_SCHOOL: [
-      'Understanding the basics helps build stronger knowledge',
-      'Real-world examples show how this applies to daily life',
-      'Critical thinking helps us make better decisions',
-      'Every expert was once a beginner',
-    ],
-    HIGH_SCHOOL: [
-      'Systems thinking reveals interconnected relationships',
-      'Data and evidence support informed decision-making',
-      'Historical context provides perspective on current challenges',
-      'Innovation requires both creativity and scientific understanding',
-    ],
-    UNDERGRADUATE: [
-      'Interdisciplinary approaches yield comprehensive solutions',
-      'Policy implications extend beyond immediate applications',
-      'Economic factors influence adoption and scalability',
-      'Research methodology strengthens analytical capabilities',
-    ],
-    GRADUATE: [
-      'Advanced analysis reveals nuanced relationships',
-      'Peer-reviewed literature provides foundational evidence',
-      'Methodological rigor ensures valid conclusions',
-      'Synthesis of multiple perspectives enhances understanding',
-    ],
-    PHD: [
-      'Cutting-edge research pushes boundaries of knowledge',
-      'Theoretical frameworks guide empirical investigation',
-      'Publication contributes to the broader scientific discourse',
-      'Mentorship extends impact beyond individual research',
-    ],
-  }
-
-  return [...basePoints, ...levelSpecific[level].slice(0, 2)]
-}
-
-// Generate fun facts based on topic and level
-function generateFunFacts(module: Module, level: LearningLevel, topicId: string): string[] {
-  const funFactsByTopic: Record<string, Record<LearningLevel, string[]>> = {
-    'renewable-energy': {
-      ELEMENTARY: [
-        '☀️ The sun produces enough energy in ONE SECOND to power Earth for 500,000 years!',
-        '💨 Wind turbines can be as tall as the Statue of Liberty!',
-        '🌊 The ocean has enough energy to power millions of homes!',
-        '🔋 A single solar panel can power a refrigerator for a whole day!',
-        '🦅 Birds can fly between wind turbine blades safely!',
-      ],
-      MIDDLE_SCHOOL: [
-        'Solar panels on just 0.6% of the US could power the entire country',
-        'Wind energy has been used for over 5,000 years, starting with sailboats',
-        'The largest solar farm covers 56 square kilometers in India',
-        'One wind turbine can power 1,500 homes for a year',
-        'Germany sometimes produces so much renewable energy they PAY people to use it!',
-      ],
-      HIGH_SCHOOL: [
-        'Solar panel efficiency has improved from 6% in 1954 to over 47% in lab conditions today',
-        'Offshore wind turbines can generate up to 15 megawatts each',
-        'The energy payback time for solar panels is now under 2 years',
-        'Renewable energy jobs grew 500% faster than total US employment in 2019',
-        'Perovskite solar cells could revolutionize the industry with lower costs',
-      ],
-      UNDERGRADUATE: [
-        'Levelized cost of solar dropped 89% between 2010-2020, faster than any energy source in history',
-        'Floating offshore wind platforms can access winds 60% stronger than near-shore installations',
-        'Bifacial solar panels can increase energy yield by 10-20% by capturing reflected light',
-        'Grid-scale battery storage costs fell 87% in the last decade',
-        'Agrivoltaics (combining farming and solar) can increase land productivity by 160%',
-      ],
-      GRADUATE: [
-        'Tandem perovskite-silicon cells have achieved 29.8% efficiency, approaching theoretical limits',
-        'Machine learning optimization has improved wind farm output by 20% in field trials',
-        'Power-to-X technologies enable seasonal storage of renewable energy as hydrogen or ammonia',
-        'Virtual power plants aggregate distributed resources to provide grid services',
-        'Wake steering in wind farms can increase total output by 3-4% through coordinated control',
-      ],
-      PHD: [
-        'Hot carrier solar cells could theoretically achieve 66% efficiency by harvesting excess photon energy',
-        'Topological insulators show promise for lossless energy transmission',
-        'Quantum dots enable tunable bandgaps for multi-junction solar cells',
-        'Metamaterial wind turbine blades could reduce noise while increasing efficiency',
-        'Thermophotovoltaic systems can achieve 40%+ efficiency converting heat to electricity',
-      ],
-    },
-    'zero-waste': {
-      ELEMENTARY: [
-        '♻️ Recycling one aluminum can saves enough energy to run a TV for 3 hours!',
-        '🐢 Plastic bags can take 1,000 years to break down!',
-        '🍌 Banana peels make great plant food!',
-        '📦 Cardboard can be recycled 7 times before the fibers get too short!',
-        '🌍 If everyone composted, we could reduce trash by 30%!',
-      ],
-      MIDDLE_SCHOOL: [
-        'The average person generates 4.5 pounds of trash daily',
-        'Glass can be recycled forever without losing quality',
-        'Landfills are the third-largest source of methane emissions in the US',
-        'Japan recycles 84% of its plastic, one of the highest rates globally',
-        'A single reusable bag can replace 700 disposable bags over its lifetime',
-      ],
-      HIGH_SCHOOL: [
-        'Circular economy principles could unlock $4.5 trillion in economic growth by 2030',
-        'Extended Producer Responsibility laws exist in 400+ jurisdictions worldwide',
-        'Sweden imports trash from other countries to fuel its waste-to-energy plants',
-        'Microplastics have been found in 94% of tap water samples in the US',
-        'Zero-waste grocery stores have grown 300% in the last 5 years',
-      ],
-      UNDERGRADUATE: [
-        'Life Cycle Assessment reveals that product disposal accounts for only 5% of total environmental impact',
-        'Industrial symbiosis in Kalundborg, Denmark saves 635,000 tons of CO2 annually',
-        'Pyrolysis can convert plastic waste back into fuel oil with 80% efficiency',
-        'Chemical recycling technologies can process mixed plastics previously destined for landfills',
-        'Blockchain is enabling transparent waste tracking and recycling verification',
-      ],
-      GRADUATE: [
-        'Material flow analysis of global plastic shows only 9% has ever been recycled',
-        'Enzymatic plastic degradation using PETase shows promise for biological recycling',
-        'Urban mining recovers more gold per ton than traditional ore mining',
-        'Decentralized waste processing with IoT optimization reduces collection emissions by 40%',
-        'Bioplastic end-of-life pathways require careful system design to avoid contamination',
-      ],
-      PHD: [
-        'Thermochemical conversion of mixed waste streams achieves 85% carbon utilization efficiency',
-        'Machine learning contamination detection improves recycling stream purity to 99.5%',
-        'Closed-loop textile recycling using ionic liquids preserves fiber quality across cycles',
-        'Cradle-to-cradle certification requires full material health assessment and recyclability planning',
-        'Agent-based modeling reveals optimal intervention points for circular economy transitions',
-      ],
-    },
-  }
-
-  // Default facts if topic not found
-  const defaultFacts: Record<LearningLevel, string[]> = {
-    ELEMENTARY: [
-      '🌍 Our planet is amazing and needs our help!',
-      '🌱 Small changes can make a big difference!',
-      '💚 Nature has incredible solutions to problems!',
-      '🤝 Working together helps everyone!',
-    ],
-    MIDDLE_SCHOOL: [
-      'Sustainable practices have been used by indigenous cultures for thousands of years',
-      'Young people are leading many environmental movements today',
-      'Technology is making sustainable solutions more accessible than ever',
-      'Every action, no matter how small, contributes to positive change',
-    ],
-    HIGH_SCHOOL: [
-      'The UN Sustainable Development Goals guide global environmental efforts',
-      'Green jobs are among the fastest-growing employment sectors',
-      'Biomimicry draws inspiration from nature to solve human challenges',
-      'Systems thinking reveals how everything is connected',
-    ],
-    UNDERGRADUATE: [
-      'Transdisciplinary approaches are essential for addressing complex sustainability challenges',
-      'Social license to operate increasingly depends on environmental performance',
-      'Natural capital accounting is being integrated into national GDP calculations',
-      'Behavioral economics insights improve environmental program effectiveness',
-    ],
-    GRADUATE: [
-      'Planetary boundaries framework identifies nine critical Earth system thresholds',
-      'Doughnut economics provides a visual model for sustainable development',
-      'Environmental justice research reveals disproportionate impacts on marginalized communities',
-      'Transition management theory guides societal shifts toward sustainability',
-    ],
-    PHD: [
-      'Earth system models integrate human and natural systems at global scales',
-      'Leverage points analysis identifies high-impact intervention opportunities',
-      'Post-normal science addresses issues with high stakes and high uncertainty',
-      'Sustainability science is emerging as a distinct transdisciplinary field',
-    ],
-  }
-
-  return funFactsByTopic[topicId]?.[level] || defaultFacts[level]
-}
-
-// Generate real-world examples based on topic and level
-function generateRealWorldExamples(module: Module, level: LearningLevel, topicId: string): Array<{ title: string; description: string; icon: string }> {
-  const examplesByLevel: Record<LearningLevel, Array<{ title: string; description: string; icon: string }>> = {
-    ELEMENTARY: [
-      { title: 'At Home', description: 'Turn off lights when you leave a room to save energy!', icon: '🏠' },
-      { title: 'At School', description: 'Use both sides of paper and recycle when done!', icon: '🏫' },
-      { title: 'Outside', description: 'Plant a tree or start a small garden!', icon: '🌳' },
-    ],
-    MIDDLE_SCHOOL: [
-      { title: 'Community Projects', description: 'Join local clean-up events or start a recycling program at school.', icon: '🤝' },
-      { title: 'Smart Shopping', description: 'Choose products with less packaging and bring reusable bags.', icon: '🛒' },
-      { title: 'Tech Solutions', description: 'Use apps to track your carbon footprint and find ways to reduce it.', icon: '📱' },
-    ],
-    HIGH_SCHOOL: [
-      { title: 'Career Exploration', description: 'Green jobs in engineering, science, and policy are growing rapidly.', icon: '💼' },
-      { title: 'Civic Engagement', description: 'Advocate for sustainable policies in your local government.', icon: '🗳️' },
-      { title: 'Innovation', description: 'Enter sustainability competitions or start an eco-business.', icon: '💡' },
-    ],
-    UNDERGRADUATE: [
-      { title: 'Research Opportunities', description: 'Join labs working on sustainability solutions and contribute to publications.', icon: '🔬' },
-      { title: 'Internships', description: 'Gain experience with renewable energy companies or environmental NGOs.', icon: '📋' },
-      { title: 'Consulting', description: 'Help organizations measure and reduce their environmental impact.', icon: '📊' },
-    ],
-    GRADUATE: [
-      { title: 'Policy Analysis', description: 'Evaluate effectiveness of environmental regulations and propose improvements.', icon: '📜' },
-      { title: 'Industry Leadership', description: 'Drive sustainability initiatives within corporations and supply chains.', icon: '🏢' },
-      { title: 'Academic Contribution', description: 'Publish research that advances the field and informs practice.', icon: '📚' },
-    ],
-    PHD: [
-      { title: 'Breakthrough Research', description: 'Develop novel technologies or frameworks that transform the field.', icon: '🧬' },
-      { title: 'Expert Advisory', description: 'Advise governments, international bodies, and major corporations.', icon: '🌐' },
-      { title: 'Knowledge Transfer', description: 'Bridge academia and practice through partnerships and entrepreneurship.', icon: '🔗' },
-    ],
-  }
-
-  return examplesByLevel[level]
-}
+// Legacy inline generators removed - now using external data from @/data/learning/funFacts
 
 export default DigitalScroll
