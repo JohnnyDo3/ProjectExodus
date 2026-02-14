@@ -739,7 +739,7 @@ export function ProgressiveSkyline() {
                   <ellipse className="chimney-smoke" cx={x+30} cy="164" rx="2.5" ry="4" fill="#c4c4c4" opacity="1" />
 
                   {/* Decorative trim */}
-                  <rect x={x} y="207" width="35" height="2" fill="#d4c4a8" opacity="1" />
+                  <rect x={x} y="206" width="35" height="2" fill="#d4c4a8" opacity="1" />
                 </g>
               ))}
 
@@ -827,9 +827,9 @@ export function ProgressiveSkyline() {
 
                   {/* Shutters */}
                   <rect x={x+3} y="184" width="1.2" height="8" fill="#2f2f2f" opacity="1" />
-                  <rect x={x+11.8} y="184" width="1.2" height="8" fill="#2f2f2f" opacity="1" />
+                  <rect x={x+12} y="184" width="1.2" height="8" fill="#2f2f2f" opacity="1" />
                   <rect x={x+27} y="184" width="1.2" height="8" fill="#2f2f2f" opacity="1" />
-                  <rect x={x+35.8} y="184" width="1.2" height="8" fill="#2f2f2f" opacity="1" />
+                  <rect x={x+36} y="184" width="1.2" height="8" fill="#2f2f2f" opacity="1" />
                 </g>
               ))}
 
@@ -929,15 +929,15 @@ export function ProgressiveSkyline() {
                   </g>
 
                   {/* Window boxes with flowers */}
-                  <rect x={x+3} y="198" width="6" height="1.5" fill="#8b7355" opacity="1" />
-                  <rect x={x+15} y="198" width="6" height="1.5" fill="#8b7355" opacity="1" />
-                  <circle cx={x+5} cy="197" r="0.8" fill="#ff69b4" opacity="1" />
-                  <circle cx={x+7} cy="197" r="0.8" fill="#ffd700" opacity="1" />
-                  <circle cx={x+17} cy="197" r="0.8" fill="#ff69b4" opacity="1" />
-                  <circle cx={x+19} cy="197" r="0.8" fill="#ffd700" opacity="1" />
+                  <rect x={x+4} y="198" width="6" height="1.5" fill="#8b7355" opacity="1" />
+                  <rect x={x+19} y="198" width="6" height="1.5" fill="#8b7355" opacity="1" />
+                  <circle cx={x+6} cy="197" r="0.8" fill="#ff69b4" opacity="1" />
+                  <circle cx={x+8} cy="197" r="0.8" fill="#ffd700" opacity="1" />
+                  <circle cx={x+21} cy="197" r="0.8" fill="#ff69b4" opacity="1" />
+                  <circle cx={x+23} cy="197" r="0.8" fill="#ffd700" opacity="1" />
 
                   {/* Small chimney */}
-                  <rect x={x+19} y="186" width="2.5" height="6" fill="#a85757" opacity="1" />
+                  <rect x={x+22} y="178" width="2.5" height="10" fill="#a85757" opacity="1" />
 
                   {/* Garden fence */}
                   {Array.from({length: 6}).map((_, fi) => (
@@ -993,8 +993,8 @@ export function ProgressiveSkyline() {
                   <rect x={x+18} y="181" width="12" height="1.5" fill="#3d5866" opacity="1" />
 
                   {/* Modern landscaping - larger */}
-                  <circle cx={x+5} cy="208" r="4" fill="#8bc34a" opacity="1" />
-                  <circle cx={x+28} cy="208" r="4" fill="#8bc34a" opacity="1" />
+                  <circle cx={x+6} cy="208" r="4" fill="#8bc34a" opacity="1" />
+                  <circle cx={x+27} cy="208" r="4" fill="#8bc34a" opacity="1" />
                 </g>
               ))}
 
