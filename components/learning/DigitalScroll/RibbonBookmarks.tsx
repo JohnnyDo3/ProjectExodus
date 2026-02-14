@@ -80,14 +80,15 @@ export function RibbonBookmarks({
         isDesktop && isExpanded && 'absolute top-0 left-8 flex flex-row gap-1.5',
         // Tablet: horizontal strip at top
         deviceType === 'tablet' && 'flex flex-row justify-center gap-1 py-2 bg-[var(--muted)]',
-        // Mobile: compact horizontal strip
-        deviceType === 'mobile' && 'flex flex-row justify-between gap-0.5 px-2 py-1 bg-[var(--muted)]',
+        // Mobile: compact horizontal strip with scroll for overflow
+        deviceType === 'mobile' && 'flex flex-row justify-start gap-1 px-2 py-1 bg-[var(--muted)] overflow-x-auto',
         className
       )}
       style={isDesktop ? {
         // Position ribbons so they extend upward from the top edge of the book
-        // -75% means 75% sticks out above, 25% is "inside" the book
-        transform: isExpanded ? 'translateY(-75%)' : 'translateY(-75%)',
+        // In fullscreen (-60%) less protrusion to avoid viewport clipping
+        // In minimized (-75%) more visible protrusion
+        transform: isExpanded ? 'translateY(-55%)' : 'translateY(-75%)',
       } : undefined}
       role="navigation"
       aria-label="Chapter bookmarks"
@@ -158,9 +159,9 @@ function Ribbon({
 }: RibbonProps) {
   const isDesktop = deviceType === 'desktop'
 
-  // Enhanced dimensions - taller for expanded view
-  const ribbonWidth = isDesktop ? (isExpanded ? 32 : 28) : 32
-  const ribbonHeight = isDesktop ? (isExpanded ? 120 : 90) : 40
+  // Enhanced dimensions - taller for expanded view, smaller for mobile
+  const ribbonWidth = isDesktop ? (isExpanded ? 32 : 28) : deviceType === 'mobile' ? 24 : 32
+  const ribbonHeight = isDesktop ? (isExpanded ? 120 : 90) : deviceType === 'mobile' ? 28 : 40
 
   return (
     <motion.button

@@ -249,6 +249,20 @@ export function DigitalScroll({
     toggleBookmark,
   } = useScrollBookmarks(topic.id)
 
+  // Center discussion modal when it opens
+  useEffect(() => {
+    if (showDiscussion) {
+      // Calculate modal size (matching the min() values in styles)
+      const modalWidth = Math.min(600, window.innerWidth * 0.6)
+      const modalHeight = Math.min(500, window.innerHeight * 0.6)
+      // Center in viewport with some top bias for better UX
+      setDiscussionPosition({
+        x: Math.max(16, (window.innerWidth - modalWidth) / 2),
+        y: Math.max(16, (window.innerHeight - modalHeight) / 2 - 40),
+      })
+    }
+  }, [showDiscussion])
+
   // Load notes from localStorage on mount
   useEffect(() => {
     const savedNotes = localStorage.getItem(`book-notes-${topic.id}`)
@@ -1777,8 +1791,8 @@ export function DigitalScroll({
         onUpdateColor={updateBookmarkColor}
       />
 
-      {/* Floating Action Buttons (FABs) in corner */}
-      <div className="fixed bottom-6 right-6 z-40 flex flex-col gap-3">
+      {/* Floating Action Buttons (FABs) - positioned relative to book on wide screens */}
+      <div className="fixed bottom-6 right-6 sm:right-[max(1.5rem,calc(50vw-700px+1.5rem))] z-[55] flex flex-col gap-3">
         {/* Bookmark FAB */}
         <button
           onClick={() => setShowBookmarks(prev => !prev)}
