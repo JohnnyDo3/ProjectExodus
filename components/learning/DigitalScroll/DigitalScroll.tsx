@@ -9,7 +9,7 @@
 import { useState, useEffect, useCallback, useMemo, ReactNode } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import { cn } from '@/lib/utils/cn'
-import { X, Volume2, VolumeX, Maximize2, Minimize2, ChevronLeft, ChevronRight, GripVertical, MessageCircle } from 'lucide-react'
+import { X, Volume2, VolumeX, Maximize2, Minimize2, ChevronLeft, ChevronRight, GripVertical, MessageCircle, Search, Bookmark } from 'lucide-react'
 
 // Scroll components
 import ScrollContainer, { ScrollWrapper, PageContainer, ScrollSpine, PageEdges } from './ScrollContainer'
@@ -23,6 +23,12 @@ import { ScrollGameSelector, GradedQuiz } from './ScrollGames'
 import { CrosswordPuzzle } from './CrosswordPuzzle'
 import { ActivitySelector } from './ActivitySelector'
 import { getLearningStageQuote } from './DecorativeElements'
+
+// Feature components
+import { SearchPanel } from './SearchPanel'
+import { BookmarksList } from './BookmarksList'
+import { TextToSpeechControl } from './TextToSpeechControl'
+import { useScrollBookmarks } from '@/hooks/useScrollBookmarks'
 
 // Game item type for interactive activities
 interface GameItem {
@@ -228,6 +234,20 @@ export function DigitalScroll({
   const [showDiscussion, setShowDiscussion] = useState(false)
   const [discussionPosition, setDiscussionPosition] = useState({ x: 100, y: 100 })
   const [isDragging, setIsDragging] = useState(false)
+
+  // Feature panel states
+  const [showSearch, setShowSearch] = useState(false)
+  const [showBookmarks, setShowBookmarks] = useState(false)
+
+  // Bookmarks hook
+  const {
+    bookmarks,
+    addBookmark,
+    removeBookmark,
+    updateBookmarkNote,
+    updateBookmarkColor,
+    toggleBookmark,
+  } = useScrollBookmarks(topic.id)
 
   // Load notes from localStorage on mount
   useEffect(() => {
@@ -468,6 +488,21 @@ export function DigitalScroll({
   // Get the learning stage ribbon for current chapter
   const currentRibbon = getStageForChapter(currentChapter)
 
+  // Extract text content for TTS from current page
+  const currentPageTextContent = useMemo(() => {
+    if (!currentPage) return ''
+    // Handle string content
+    if (typeof currentPage.content === 'string') {
+      // Strip HTML tags for plain text
+      return currentPage.content.replace(/<[^>]*>/g, ' ').replace(/\s+/g, ' ').trim()
+    }
+    // For non-content pages, provide contextual text
+    if (currentPage.title) {
+      return `${currentPage.title}. ${currentPage.subtitle || ''}`
+    }
+    return ''
+  }, [currentPage])
+
   // ============================================
   // NAVIGATION HANDLERS
   // ============================================
@@ -537,6 +572,20 @@ export function DigitalScroll({
   // ============================================
 
   const handleKeyDown = useCallback((e: React.KeyboardEvent) => {
+    // Search shortcut: Cmd+K / Ctrl+K
+    if ((e.metaKey || e.ctrlKey) && e.key === 'k') {
+      e.preventDefault()
+      setShowSearch(true)
+      return
+    }
+
+    // Bookmarks shortcut: Cmd+B / Ctrl+B
+    if ((e.metaKey || e.ctrlKey) && e.key === 'b') {
+      e.preventDefault()
+      setShowBookmarks(prev => !prev)
+      return
+    }
+
     if (A11Y_CONFIG.keyboardNav.closeScroll.includes(e.key)) {
       e.preventDefault()
       onClose()
@@ -1543,6 +1592,13 @@ export function DigitalScroll({
 
           {/* Top Control Bar */}
           <div className="absolute top-4 sm:top-6 right-4 sm:right-6 flex items-center gap-2 z-30">
+            {/* Text-to-Speech Control (when page has text content) */}
+            {currentPageTextContent && (
+              <div className="relative bg-[var(--card)]/90 rounded-full border border-[var(--border)]">
+                <TextToSpeechControl content={currentPageTextContent} />
+              </div>
+            )}
+
             {/* Sound Toggle */}
             <button
               onClick={() => scrollState.updatePreferences({ soundEnabled: !scrollState.preferences.soundEnabled })}
@@ -1682,6 +1738,75 @@ export function DigitalScroll({
           </motion.div>
         )}
       </AnimatePresence>
+
+      {/* Search Panel - Cmd+K */}
+      <SearchPanel
+        modules={modules}
+        selectedLevel={selectedLevel}
+        isOpen={showSearch}
+        onClose={() => setShowSearch(false)}
+        onResultClick={(chapterIndex, lessonIndex) => {
+          // Find the page index for this chapter/lesson
+          const pageIndex = bookPages.findIndex(
+            p => p.chapterIndex === chapterIndex && p.verseIndex === lessonIndex
+          )
+          if (pageIndex !== -1) {
+            goToPage(pageIndex)
+            setShowSearch(false)
+          }
+        }}
+      />
+
+      {/* Bookmarks List */}
+      <BookmarksList
+        bookmarks={bookmarks}
+        isOpen={showBookmarks}
+        onClose={() => setShowBookmarks(false)}
+        onBookmarkClick={(bookmark) => {
+          const pageIndex = bookPages.findIndex(
+            p => p.chapterIndex === bookmark.chapterIndex &&
+                 p.verseIndex === bookmark.lessonIndex
+          )
+          if (pageIndex !== -1) {
+            goToPage(pageIndex)
+            setShowBookmarks(false)
+          }
+        }}
+        onDeleteBookmark={removeBookmark}
+        onUpdateNote={updateBookmarkNote}
+        onUpdateColor={updateBookmarkColor}
+      />
+
+      {/* Floating Action Buttons (FABs) in corner */}
+      <div className="fixed bottom-6 right-6 z-40 flex flex-col gap-3">
+        {/* Bookmark FAB */}
+        <button
+          onClick={() => setShowBookmarks(prev => !prev)}
+          className={cn(
+            'w-12 h-12 rounded-full shadow-lg transition-all flex items-center justify-center',
+            showBookmarks
+              ? 'bg-[var(--primary)] text-[var(--primary-foreground)]'
+              : 'bg-[var(--card)] text-[var(--foreground)] hover:bg-[var(--muted)] border border-[var(--border)]'
+          )}
+          title="Bookmarks (Cmd+B)"
+        >
+          <Bookmark className="w-5 h-5" />
+          {bookmarks.length > 0 && (
+            <span className="absolute -top-1 -right-1 w-5 h-5 bg-[var(--primary)] text-[var(--primary-foreground)] text-xs rounded-full flex items-center justify-center">
+              {bookmarks.length}
+            </span>
+          )}
+        </button>
+
+        {/* Search FAB */}
+        <button
+          onClick={() => setShowSearch(true)}
+          className="w-12 h-12 rounded-full bg-[var(--card)] text-[var(--foreground)] hover:bg-[var(--muted)] border border-[var(--border)] shadow-lg transition-all flex items-center justify-center"
+          title="Search (Cmd+K)"
+        >
+          <Search className="w-5 h-5" />
+        </button>
+      </div>
     </>
   )
 }
