@@ -414,10 +414,10 @@ export function ProgressiveSkyline() {
                     <path d={`M ${x+8},198 L ${x+11},195 L ${x+10},200 Z`} fill="#654321" />
 
                     {/* Horse head - defined and forward-facing */}
-                    <ellipse cx={x+13} cy="195" rx="3.5" ry="4.5" fill="#654321" />
+                    <ellipse cx={x+13} cy="195" rx="2.8" ry="3.6" fill="#654321" />
 
                     {/* Snout/muzzle - lighter color */}
-                    <ellipse cx={x+15} cy="196" rx="2" ry="2.5" fill="#8b6f47" />
+                    <ellipse cx={x+14.5} cy="196" rx="1.6" ry="2" fill="#8b6f47" />
 
                     {/* Ears - two visible ears */}
                     <path d={`M ${x+12},191 L ${x+11},188 L ${x+13},190 Z`} fill="#654321" />
@@ -428,7 +428,7 @@ export function ProgressiveSkyline() {
                     <circle cx={x+13.3} cy="193.7" r="0.4" fill="#ffffff" opacity="1" />
 
                     {/* Nostril */}
-                    <circle cx={x+15.5} cy="197" r="0.5" fill="#4a3520" />
+                    <circle cx={x+15} cy="197" r="0.4" fill="#4a3520" />
 
                     {/* Front legs - clearly separated */}
                     <rect x={x+3} y="206" width="2" height="6" fill="#654321" />
@@ -505,18 +505,18 @@ export function ProgressiveSkyline() {
                     <circle cx={x-9.7} cy="193.7" r="0.4" fill="#ffffff" opacity="1" />
 
                     {/* Front legs - clearly separated */}
-                    <rect x={x-5} y="205" width="2" height="7" rx="1" fill="#e8e8e8" />
-                    <rect x={x-1} y="205" width="2" height="7" rx="1" fill="#e8e8e8" />
+                    <rect x={x-5} y="205" width="2" height="5" rx="1" fill="#e8e8e8" />
+                    <rect x={x-1} y="205" width="2" height="5" rx="1" fill="#e8e8e8" />
                     {/* Hooves on front legs */}
-                    <rect x={x-5} y="211" width="2" height="1" fill="#2f2f2f" />
-                    <rect x={x-1} y="211" width="2" height="1" fill="#2f2f2f" />
+                    <rect x={x-5} y="209" width="2" height="1" fill="#2f2f2f" />
+                    <rect x={x-1} y="209" width="2" height="1" fill="#2f2f2f" />
 
                     {/* Back legs - clearly separated */}
-                    <rect x={x+2} y="205" width="2" height="7" rx="1" fill="#e8e8e8" />
-                    <rect x={x+6} y="205" width="2" height="7" rx="1" fill="#e8e8e8" />
+                    <rect x={x+2} y="205" width="2" height="5" rx="1" fill="#e8e8e8" />
+                    <rect x={x+6} y="205" width="2" height="5" rx="1" fill="#e8e8e8" />
                     {/* Hooves on back legs */}
-                    <rect x={x+2} y="211" width="2" height="1" fill="#2f2f2f" />
-                    <rect x={x+6} y="211" width="2" height="1" fill="#2f2f2f" />
+                    <rect x={x+2} y="209" width="2" height="1" fill="#2f2f2f" />
+                    <rect x={x+6} y="209" width="2" height="1" fill="#2f2f2f" />
 
                     {/* Tail - hanging down with tuft */}
                     <path d={`M ${x+8},199 L ${x+10},205`} stroke="#f5f5f5" strokeWidth="1.5" />
@@ -579,49 +579,49 @@ export function ProgressiveSkyline() {
                   return (
                   <g key={`chicken-${i}`} transform={`translate(0, ${yOffsets[i]})`} className="animal-chicken" opacity="1" style={{animationDelay: `${i * 0.2}s`}}>
                     {/* Chicken body - plump and defined */}
-                    <ellipse cx={x} cy="207" rx="3.5" ry="3" fill="#d4a574" />
+                    <ellipse cx={x} cy="208" rx="2.5" ry="2.2" fill="#d4a574" />
 
                     {/* Wing detail - darker feather area */}
-                    <ellipse cx={x+0.5} cy="207" rx="2" ry="2" fill="#b8946a" />
+                    <ellipse cx={x+0.3} cy="208" rx="1.4" ry="1.4" fill="#b8946a" />
 
                     {/* Tail feathers - pointing upward */}
-                    <path d={`M ${x+3},206 Q ${x+4.5},204 ${x+5},202 Q ${x+4},203 ${x+3.5},205 Z`}
+                    <path d={`M ${x+2},207 Q ${x+3},205.5 ${x+3.5},204 Q ${x+2.8},205 ${x+2.5},206.5 Z`}
                           fill="#8b6f47" />
-                    <path d={`M ${x+3.5},205 Q ${x+5},203 ${x+5.5},201 Q ${x+4.5},202 ${x+4},204 Z`}
+                    <path d={`M ${x+2.5},206 Q ${x+3.5},204.5 ${x+4},203.5 Q ${x+3.2},204.2 ${x+2.8},205.5 Z`}
                           fill="#9a7a55" />
 
                     {/* Neck connecting body to head */}
-                    <rect x={x-2.5} y="204" width="1.5" height="2" rx="0.5" fill="#d4a574" />
+                    <rect x={x-2} y="205.5" width="1" height="1.5" rx="0.3" fill="#d4a574" />
 
                     {/* Chicken head - round and defined */}
-                    <circle cx={x-2.5} cy="204" r="2" fill="#d4a574" />
+                    <circle cx={x-2} cy="205.5" r="1.5" fill="#d4a574" />
 
                     {/* Red comb - prominent and wavy */}
-                    <path d={`M ${x-3},202 L ${x-2.8},200.5 L ${x-2.3},201 L ${x-2},200 L ${x-1.8},201 L ${x-1.5},202 Z`}
+                    <path d={`M ${x-2.5},204 L ${x-2.3},203 L ${x-2},203.5 L ${x-1.7},202.8 L ${x-1.5},203.5 L ${x-1.3},204 Z`}
                           fill="#cc3333" />
 
                     {/* Wattle under beak */}
-                    <ellipse cx={x-3} cy="205" rx="0.6" ry="0.8" fill="#cc3333" />
+                    <ellipse cx={x-2.5} cy="206.8" rx="0.4" ry="0.6" fill="#cc3333" />
 
                     {/* Beak - prominent yellow */}
-                    <path d={`M ${x-4},204 L ${x-5},204 L ${x-4.5},204.5 Z`}
+                    <path d={`M ${x-3.2},205.5 L ${x-4},205.5 L ${x-3.6},206 Z`}
                           fill="#ffd700" />
 
                     {/* Eye - small but visible */}
-                    <circle cx={x-2.5} cy="203.5" r="0.4" fill="#2f2f2f" />
-                    <circle cx={x-2.3} cy="203.3" r="0.15" fill="#ffffff" />
+                    <circle cx={x-2} cy="205" r="0.3" fill="#2f2f2f" />
+                    <circle cx={x-1.85} cy="204.85" r="0.1" fill="#ffffff" />
 
                     {/* Legs - thin chicken legs with visible joints */}
-                    <path d={`M ${x-1},210 L ${x-1},211 L ${x-2},212`}
-                          stroke="#ffd700" strokeWidth="1" fill="none" />
-                    <path d={`M ${x+1},210 L ${x+1},211 L ${x+2},212`}
-                          stroke="#ffd700" strokeWidth="1" fill="none" />
+                    <path d={`M ${x-0.8},210 L ${x-0.8},211 L ${x-1.5},211.5`}
+                          stroke="#ffd700" strokeWidth="0.8" fill="none" />
+                    <path d={`M ${x+0.8},210 L ${x+0.8},211 L ${x+1.5},211.5`}
+                          stroke="#ffd700" strokeWidth="0.8" fill="none" />
 
                     {/* Feet - three toes visible */}
-                    <path d={`M ${x-2},212 L ${x-2.5},212 M ${x-2},212 L ${x-2},212.5 M ${x-2},212 L ${x-1.5},212`}
-                          stroke="#ffd700" strokeWidth="0.5" />
-                    <path d={`M ${x+2},212 L ${x+2.5},212 M ${x+2},212 L ${x+2},212.5 M ${x+2},212 L ${x+1.5},212`}
-                          stroke="#ffd700" strokeWidth="0.5" />
+                    <path d={`M ${x-1.5},211.5 L ${x-1.9},211.5 M ${x-1.5},211.5 L ${x-1.5},212 M ${x-1.5},211.5 L ${x-1.1},211.5`}
+                          stroke="#ffd700" strokeWidth="0.4" />
+                    <path d={`M ${x+1.5},211.5 L ${x+1.9},211.5 M ${x+1.5},211.5 L ${x+1.5},212 M ${x+1.5},211.5 L ${x+1.1},211.5`}
+                          stroke="#ffd700" strokeWidth="0.4" />
                   </g>
                   );
                 })}
@@ -2474,10 +2474,10 @@ export function ProgressiveSkyline() {
                     <path d={`M ${x+8},198 L ${x+11},195 L ${x+10},200 Z`} fill="#654321" />
 
                     {/* Horse head - defined and forward-facing */}
-                    <ellipse cx={x+13} cy="195" rx="3.5" ry="4.5" fill="#654321" />
+                    <ellipse cx={x+13} cy="195" rx="2.8" ry="3.6" fill="#654321" />
 
                     {/* Snout/muzzle - lighter color */}
-                    <ellipse cx={x+15} cy="196" rx="2" ry="2.5" fill="#8b6f47" />
+                    <ellipse cx={x+14.5} cy="196" rx="1.6" ry="2" fill="#8b6f47" />
 
                     {/* Ears - two visible ears */}
                     <path d={`M ${x+12},191 L ${x+11},188 L ${x+13},190 Z`} fill="#654321" />
@@ -2488,7 +2488,7 @@ export function ProgressiveSkyline() {
                     <circle cx={x+13.3} cy="193.7" r="0.4" fill="#ffffff" opacity="1" />
 
                     {/* Nostril */}
-                    <circle cx={x+15.5} cy="197" r="0.5" fill="#4a3520" />
+                    <circle cx={x+15} cy="197" r="0.4" fill="#4a3520" />
 
                     {/* Front legs - clearly separated */}
                     <rect x={x+3} y="206" width="2" height="6" fill="#654321" />
@@ -2565,18 +2565,18 @@ export function ProgressiveSkyline() {
                     <circle cx={x-9.7} cy="193.7" r="0.4" fill="#ffffff" opacity="1" />
 
                     {/* Front legs - clearly separated */}
-                    <rect x={x-5} y="205" width="2" height="7" rx="1" fill="#e8e8e8" />
-                    <rect x={x-1} y="205" width="2" height="7" rx="1" fill="#e8e8e8" />
+                    <rect x={x-5} y="205" width="2" height="5" rx="1" fill="#e8e8e8" />
+                    <rect x={x-1} y="205" width="2" height="5" rx="1" fill="#e8e8e8" />
                     {/* Hooves on front legs */}
-                    <rect x={x-5} y="211" width="2" height="1" fill="#2f2f2f" />
-                    <rect x={x-1} y="211" width="2" height="1" fill="#2f2f2f" />
+                    <rect x={x-5} y="209" width="2" height="1" fill="#2f2f2f" />
+                    <rect x={x-1} y="209" width="2" height="1" fill="#2f2f2f" />
 
                     {/* Back legs - clearly separated */}
-                    <rect x={x+2} y="205" width="2" height="7" rx="1" fill="#e8e8e8" />
-                    <rect x={x+6} y="205" width="2" height="7" rx="1" fill="#e8e8e8" />
+                    <rect x={x+2} y="205" width="2" height="5" rx="1" fill="#e8e8e8" />
+                    <rect x={x+6} y="205" width="2" height="5" rx="1" fill="#e8e8e8" />
                     {/* Hooves on back legs */}
-                    <rect x={x+2} y="211" width="2" height="1" fill="#2f2f2f" />
-                    <rect x={x+6} y="211" width="2" height="1" fill="#2f2f2f" />
+                    <rect x={x+2} y="209" width="2" height="1" fill="#2f2f2f" />
+                    <rect x={x+6} y="209" width="2" height="1" fill="#2f2f2f" />
 
                     {/* Tail - hanging down with tuft */}
                     <path d={`M ${x+8},199 L ${x+10},205`} stroke="#f5f5f5" strokeWidth="1.5" />
@@ -2639,49 +2639,49 @@ export function ProgressiveSkyline() {
                   return (
                   <g key={`chicken-end-${i}`} transform={`translate(0, ${yOffsets[i]})`} className="animal-chicken" opacity="1" style={{animationDelay: `${i * 0.2}s`}}>
                     {/* Chicken body - plump and defined */}
-                    <ellipse cx={x} cy="207" rx="3.5" ry="3" fill="#d4a574" />
+                    <ellipse cx={x} cy="208" rx="2.5" ry="2.2" fill="#d4a574" />
 
                     {/* Wing detail - darker feather area */}
-                    <ellipse cx={x+0.5} cy="207" rx="2" ry="2" fill="#b8946a" />
+                    <ellipse cx={x+0.3} cy="208" rx="1.4" ry="1.4" fill="#b8946a" />
 
                     {/* Tail feathers - pointing upward */}
-                    <path d={`M ${x+3},206 Q ${x+4.5},204 ${x+5},202 Q ${x+4},203 ${x+3.5},205 Z`}
+                    <path d={`M ${x+2},207 Q ${x+3},205.5 ${x+3.5},204 Q ${x+2.8},205 ${x+2.5},206.5 Z`}
                           fill="#8b6f47" />
-                    <path d={`M ${x+3.5},205 Q ${x+5},203 ${x+5.5},201 Q ${x+4.5},202 ${x+4},204 Z`}
+                    <path d={`M ${x+2.5},206 Q ${x+3.5},204.5 ${x+4},203.5 Q ${x+3.2},204.2 ${x+2.8},205.5 Z`}
                           fill="#9a7a55" />
 
                     {/* Neck connecting body to head */}
-                    <rect x={x-2.5} y="204" width="1.5" height="2" rx="0.5" fill="#d4a574" />
+                    <rect x={x-2} y="205.5" width="1" height="1.5" rx="0.3" fill="#d4a574" />
 
                     {/* Chicken head - round and defined */}
-                    <circle cx={x-2.5} cy="204" r="2" fill="#d4a574" />
+                    <circle cx={x-2} cy="205.5" r="1.5" fill="#d4a574" />
 
                     {/* Red comb - prominent and wavy */}
-                    <path d={`M ${x-3},202 L ${x-2.8},200.5 L ${x-2.3},201 L ${x-2},200 L ${x-1.8},201 L ${x-1.5},202 Z`}
+                    <path d={`M ${x-2.5},204 L ${x-2.3},203 L ${x-2},203.5 L ${x-1.7},202.8 L ${x-1.5},203.5 L ${x-1.3},204 Z`}
                           fill="#cc3333" />
 
                     {/* Wattle under beak */}
-                    <ellipse cx={x-3} cy="205" rx="0.6" ry="0.8" fill="#cc3333" />
+                    <ellipse cx={x-2.5} cy="206.8" rx="0.4" ry="0.6" fill="#cc3333" />
 
                     {/* Beak - prominent yellow */}
-                    <path d={`M ${x-4},204 L ${x-5},204 L ${x-4.5},204.5 Z`}
+                    <path d={`M ${x-3.2},205.5 L ${x-4},205.5 L ${x-3.6},206 Z`}
                           fill="#ffd700" />
 
                     {/* Eye - small but visible */}
-                    <circle cx={x-2.5} cy="203.5" r="0.4" fill="#2f2f2f" />
-                    <circle cx={x-2.3} cy="203.3" r="0.15" fill="#ffffff" />
+                    <circle cx={x-2} cy="205" r="0.3" fill="#2f2f2f" />
+                    <circle cx={x-1.85} cy="204.85" r="0.1" fill="#ffffff" />
 
                     {/* Legs - thin chicken legs with visible joints */}
-                    <path d={`M ${x-1},210 L ${x-1},211 L ${x-2},212`}
-                          stroke="#ffd700" strokeWidth="1" fill="none" />
-                    <path d={`M ${x+1},210 L ${x+1},211 L ${x+2},212`}
-                          stroke="#ffd700" strokeWidth="1" fill="none" />
+                    <path d={`M ${x-0.8},210 L ${x-0.8},211 L ${x-1.5},211.5`}
+                          stroke="#ffd700" strokeWidth="0.8" fill="none" />
+                    <path d={`M ${x+0.8},210 L ${x+0.8},211 L ${x+1.5},211.5`}
+                          stroke="#ffd700" strokeWidth="0.8" fill="none" />
 
                     {/* Feet - three toes visible */}
-                    <path d={`M ${x-2},212 L ${x-2.5},212 M ${x-2},212 L ${x-2},212.5 M ${x-2},212 L ${x-1.5},212`}
-                          stroke="#ffd700" strokeWidth="0.5" />
-                    <path d={`M ${x+2},212 L ${x+2.5},212 M ${x+2},212 L ${x+2},212.5 M ${x+2},212 L ${x+1.5},212`}
-                          stroke="#ffd700" strokeWidth="0.5" />
+                    <path d={`M ${x-1.5},211.5 L ${x-1.9},211.5 M ${x-1.5},211.5 L ${x-1.5},212 M ${x-1.5},211.5 L ${x-1.1},211.5`}
+                          stroke="#ffd700" strokeWidth="0.4" />
+                    <path d={`M ${x+1.5},211.5 L ${x+1.9},211.5 M ${x+1.5},211.5 L ${x+1.5},212 M ${x+1.5},211.5 L ${x+1.1},211.5`}
+                          stroke="#ffd700" strokeWidth="0.4" />
                   </g>
                   );
                 })}
