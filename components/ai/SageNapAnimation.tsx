@@ -2,16 +2,21 @@
 
 import { useEffect, useState, useCallback, useRef } from 'react'
 import { createPortal } from 'react-dom'
-import { motion, useAnimation } from 'framer-motion'
+import { motion, useSpring, useTransform, MotionValue } from 'framer-motion'
 import { Leaf } from 'lucide-react'
 import { useSageContextSafe } from './SageContext'
 
 interface Sparkle {
   id: number
-  x: number
-  y: number
+  progress: number // 0-1 along the path
   size: number
-  delay: number
+  offset: { x: number; y: number }
+}
+
+// Quadratic bezier interpolation helper
+function quadraticBezier(t: number, p0: number, p1: number, p2: number): number {
+  const mt = 1 - t
+  return mt * mt * p0 + 2 * mt * t * p1 + t * t * p2
 }
 
 export function SageNapAnimation() {
@@ -19,32 +24,63 @@ export function SageNapAnimation() {
   const [mounted, setMounted] = useState(false)
   const [sparkles, setSparkles] = useState<Sparkle[]>([])
   const [isVisible, setIsVisible] = useState(false)
-  const controls = useAnimation()
   const animationRunning = useRef(false)
+
+  // Store animation path parameters
+  const pathRef = useRef<{
+    startX: number
+    startY: number
+    controlX: number
+    controlY: number
+    endX: number
+    endY: number
+  } | null>(null)
+
+  // Spring-based progress for smooth arc animation
+  const progress = useSpring(0, {
+    stiffness: 60,
+    damping: 20,
+    mass: 1,
+  })
+
+  // Opacity spring for smooth fade
+  const opacity = useSpring(0, {
+    stiffness: 200,
+    damping: 30,
+  })
 
   // Client-side only
   useEffect(() => {
     setMounted(true)
   }, [])
 
+  // Calculate position along bezier curve based on progress
+  const x = useTransform(progress, (p) => {
+    if (!pathRef.current) return 0
+    const { startX, controlX, endX } = pathRef.current
+    return quadraticBezier(p, startX, controlX, endX)
+  })
+
+  const y = useTransform(progress, (p) => {
+    if (!pathRef.current) return 0
+    const { startY, controlY, endY } = pathRef.current
+    return quadraticBezier(p, startY, controlY, endY)
+  })
+
   // Generate sparkles along the arc path
-  const generateSparkles = useCallback((startX: number, startY: number, midX: number, midY: number, endX: number, endY: number) => {
-    const numSparkles = 12
+  const generateSparkles = useCallback(() => {
+    const numSparkles = 10
     const newSparkles: Sparkle[] = []
 
     for (let i = 0; i < numSparkles; i++) {
-      const t = i / numSparkles
-
-      // Quadratic bezier curve point
-      const x = (1 - t) * (1 - t) * startX + 2 * (1 - t) * t * midX + t * t * endX
-      const y = (1 - t) * (1 - t) * startY + 2 * (1 - t) * t * midY + t * t * endY
-
       newSparkles.push({
         id: i,
-        x: x + (Math.random() - 0.5) * 30,
-        y: y + (Math.random() - 0.5) * 30,
-        size: 6 + Math.random() * 10,
-        delay: t * 2.5,
+        progress: i / numSparkles,
+        size: 6 + Math.random() * 8,
+        offset: {
+          x: (Math.random() - 0.5) * 24,
+          y: (Math.random() - 0.5) * 24,
+        },
       })
     }
 
@@ -69,7 +105,6 @@ export function SageNapAnimation() {
       let startPos, endPos
 
       if (animationPhase === 'going-to-nap') {
-        // Use lastPosition which was saved BEFORE the button was hidden
         startPos = lastPosition
         endPos = getHeaderPosition()
       } else {
@@ -88,77 +123,62 @@ export function SageNapAnimation() {
         endPos = animationPhase === 'going-to-nap' ? fallbackHeaderPos : fallbackSagePos
       }
 
-      // Calculate a dramatic arc that sweeps across the viewport
+      // Calculate control point for smooth arc
+      // The control point is above the midpoint for a nice parabolic arc
       const midX = (startPos.x + endPos.x) / 2
+      const minY = Math.min(startPos.y, endPos.y)
+      // Arc peaks at 200-300px above the lower of the two points
+      const controlY = Math.max(60, minY - 280)
 
-      // Make the arc go UP significantly - at least 200px above the midpoint, or to near the top
-      const midYBase = Math.min(startPos.y, endPos.y)
-      const arcPeak = Math.max(80, midYBase - 250) // Go high up in the viewport
+      // Store path parameters
+      pathRef.current = {
+        startX: startPos.x,
+        startY: startPos.y,
+        controlX: midX,
+        controlY: controlY,
+        endX: endPos.x,
+        endY: endPos.y,
+      }
 
-      // Calculate scale - match header icon size perfectly (1.0) for seamless merge
-      const startScale = animationPhase === 'going-to-nap' ? 1 : 1
-      const endScale = animationPhase === 'going-to-nap' ? 1 : 1
+      // Set initial position immediately (progress = 0)
+      progress.jump(0)
+      opacity.jump(0)
 
-      // Set initial position FIRST while still invisible
-      controls.set({
-        x: startPos.x,
-        y: startPos.y,
-        scale: startScale,
-        opacity: 0
-      })
+      // Generate sparkles
+      generateSparkles()
 
-      // Make visible now that position is set
+      // Make visible
       setIsVisible(true)
 
-      // Wait for the element to mount in the DOM
-      await new Promise(resolve => setTimeout(resolve, 30))
+      // Small delay to ensure DOM is ready
+      await new Promise(resolve => requestAnimationFrame(resolve))
 
-      // Fade in from the correct position
-      await controls.start({
-        opacity: 1,
-        transition: {
-          duration: 0.15,
-          ease: 'easeOut'
-        }
-      })
+      // Fade in
+      opacity.set(1)
 
-      // Generate sparkles along the arc path
-      generateSparkles(startPos.x, startPos.y, midX, arcPeak, endPos.x, endPos.y)
+      // Wait for fade in
+      await new Promise(resolve => setTimeout(resolve, 100))
 
-      // Animation duration - slow and visible
-      const duration = animationPhase === 'going-to-nap' ? 2.5 : 1.5
+      // Animate along the arc
+      progress.set(1)
 
-      // Animate along the arc using keyframes
-      await controls.start({
-        x: [startPos.x, midX, endPos.x],
-        y: [startPos.y, arcPeak, endPos.y],
-        scale: [startScale, (startScale + endScale) / 2, endScale],
-        opacity: 1,
-        transition: {
-          duration,
-          ease: [0.25, 0.1, 0.25, 1], // Smooth cubic bezier
-          times: [0, 0.5, 1],
-        }
-      })
+      // Wait for spring animation to mostly complete
+      const animationDuration = animationPhase === 'going-to-nap' ? 2200 : 1400
+      await new Promise(resolve => setTimeout(resolve, animationDuration))
 
-      // Clear sparkles immediately
+      // Clear sparkles
       setSparkles([])
 
-      // Fade out at the landing position for smooth merge
-      // Use shorter, snappier fade to prevent double-icon flash
-      await controls.start({
-        opacity: 0,
-        scale: endScale,
-        transition: {
-          duration: 0.2,
-          ease: [0.4, 0.0, 0.2, 1], // Material design deceleration curve
-        }
-      })
+      // Fade out
+      opacity.set(0)
 
-      // Immediately hide after fade completes
+      // Wait for fade out
+      await new Promise(resolve => setTimeout(resolve, 250))
+
+      // Hide
       setIsVisible(false)
 
-      // Brief delay before signaling completion to ensure clean state transition
+      // Brief delay before signaling completion
       await new Promise(resolve => setTimeout(resolve, 50))
 
       animationRunning.current = false
@@ -166,7 +186,7 @@ export function SageNapAnimation() {
     }
 
     runAnimation()
-  }, [sageContext?.animationPhase, mounted, controls, generateSparkles, sageContext])
+  }, [sageContext?.animationPhase, mounted, progress, opacity, generateSparkles, sageContext])
 
   // Reset when animation phase becomes idle
   useEffect(() => {
@@ -181,55 +201,34 @@ export function SageNapAnimation() {
   if (!isVisible) return null
 
   return createPortal(
-    <div
+    <motion.div
       className="fixed inset-0 z-[9999] pointer-events-none overflow-hidden"
       style={{
-        isolation: 'isolate',
-        willChange: 'contents',
+        opacity,
       }}
     >
-      {/* Sparkles trail */}
-      {sparkles.map((sparkle) => (
-        <motion.div
-          key={sparkle.id}
-          className="absolute"
-          initial={{
-            x: sparkle.x - sparkle.size / 2,
-            y: sparkle.y - sparkle.size / 2,
-            opacity: 0,
-            scale: 0,
-          }}
-          animate={{
-            opacity: [0, 1, 1, 0],
-            scale: [0, 1.2, 1, 0],
-          }}
-          transition={{
-            duration: 1,
-            delay: sparkle.delay,
-            ease: 'easeOut',
-          }}
-          style={{ width: sparkle.size, height: sparkle.size }}
-        >
-          <div
-            className="w-full h-full rounded-full"
-            style={{
-              background: 'radial-gradient(circle, rgba(251,191,36,0.9) 0%, rgba(245,158,11,0.6) 40%, transparent 70%)',
-              boxShadow: '0 0 12px rgba(251,191,36,0.8), 0 0 24px rgba(251,191,36,0.4)',
-            }}
+      {/* Sparkles along the trail */}
+      {sparkles.map((sparkle) => {
+        // Calculate sparkle position based on current progress
+        return (
+          <SparkleElement
+            key={sparkle.id}
+            sparkle={sparkle}
+            progress={progress}
+            pathRef={pathRef}
           />
-        </motion.div>
-      ))}
+        )
+      })}
 
       {/* Flying Sage Icon */}
       <motion.div
         className="absolute"
-        animate={controls}
         style={{
+          x,
+          y,
+          // Center the element on the path point
           translateX: '-50%',
           translateY: '-50%',
-          willChange: 'transform, opacity',
-          backfaceVisibility: 'hidden',
-          WebkitBackfaceVisibility: 'hidden',
         }}
       >
         {/* Glowing trail effect */}
@@ -250,8 +249,8 @@ export function SageNapAnimation() {
         />
 
         {/* Main icon container */}
-        <div className="w-16 h-16 bg-gradient-to-br from-moss-600 to-ocean-600 rounded-full flex items-center justify-center shadow-2xl relative">
-          <Leaf className="w-8 h-8 text-white" />
+        <div className="w-14 h-14 bg-gradient-to-br from-moss-600 to-ocean-600 rounded-full flex items-center justify-center shadow-2xl relative">
+          <Leaf className="w-7 h-7 text-white" />
 
           {/* Rotating sparkle ring */}
           <motion.div
@@ -266,22 +265,22 @@ export function SageNapAnimation() {
             {[0, 60, 120, 180, 240, 300].map((angle, i) => (
               <motion.div
                 key={i}
-                className="absolute w-2.5 h-2.5 rounded-full"
+                className="absolute w-2 h-2 rounded-full"
                 style={{
                   left: '50%',
                   top: '50%',
-                  transform: `rotate(${angle}deg) translateY(-36px) translateX(-50%)`,
+                  transform: `rotate(${angle}deg) translateY(-32px) translateX(-50%)`,
                   background: 'radial-gradient(circle, rgba(251,191,36,1) 0%, rgba(251,191,36,0.6) 50%, transparent 70%)',
-                  boxShadow: '0 0 8px rgba(251,191,36,0.8)',
+                  boxShadow: '0 0 6px rgba(251,191,36,0.8)',
                 }}
                 animate={{
-                  opacity: [0.4, 1, 0.4],
-                  scale: [0.8, 1.3, 0.8],
+                  opacity: [0.5, 1, 0.5],
+                  scale: [0.8, 1.2, 0.8],
                 }}
                 transition={{
-                  duration: 0.5,
+                  duration: 0.6,
                   repeat: Infinity,
-                  delay: i * 0.08,
+                  delay: i * 0.1,
                   ease: 'easeInOut',
                 }}
               />
@@ -289,7 +288,79 @@ export function SageNapAnimation() {
           </motion.div>
         </div>
       </motion.div>
-    </div>,
+    </motion.div>,
     document.body
+  )
+}
+
+// Sparkle element that follows the path with a delay
+function SparkleElement({
+  sparkle,
+  progress,
+  pathRef,
+}: {
+  sparkle: Sparkle
+  progress: MotionValue<number>
+  pathRef: React.MutableRefObject<{
+    startX: number
+    startY: number
+    controlX: number
+    controlY: number
+    endX: number
+    endY: number
+  } | null>
+}) {
+  // Sparkle appears when progress reaches its position, then fades
+  const sparkleOpacity = useTransform(progress, (p) => {
+    const diff = p - sparkle.progress
+    if (diff < 0) return 0
+    if (diff > 0.3) return 0
+    // Fade in quickly, stay, then fade out
+    if (diff < 0.05) return diff / 0.05
+    if (diff > 0.2) return 1 - (diff - 0.2) / 0.1
+    return 1
+  })
+
+  const sparkleScale = useTransform(progress, (p) => {
+    const diff = p - sparkle.progress
+    if (diff < 0 || diff > 0.3) return 0
+    if (diff < 0.1) return 0.5 + (diff / 0.1) * 0.7
+    return 1.2 - (diff - 0.1) * 0.5
+  })
+
+  const sparkleX = useTransform(progress, () => {
+    if (!pathRef.current) return 0
+    const { startX, controlX, endX } = pathRef.current
+    return quadraticBezier(sparkle.progress, startX, controlX, endX) + sparkle.offset.x
+  })
+
+  const sparkleY = useTransform(progress, () => {
+    if (!pathRef.current) return 0
+    const { startY, controlY, endY } = pathRef.current
+    return quadraticBezier(sparkle.progress, startY, controlY, endY) + sparkle.offset.y
+  })
+
+  return (
+    <motion.div
+      className="absolute"
+      style={{
+        x: sparkleX,
+        y: sparkleY,
+        opacity: sparkleOpacity,
+        scale: sparkleScale,
+        translateX: '-50%',
+        translateY: '-50%',
+        width: sparkle.size,
+        height: sparkle.size,
+      }}
+    >
+      <div
+        className="w-full h-full rounded-full"
+        style={{
+          background: 'radial-gradient(circle, rgba(251,191,36,0.9) 0%, rgba(245,158,11,0.6) 40%, transparent 70%)',
+          boxShadow: '0 0 10px rgba(251,191,36,0.8), 0 0 20px rgba(251,191,36,0.4)',
+        }}
+      />
+    </motion.div>
   )
 }
