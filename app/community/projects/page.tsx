@@ -193,41 +193,141 @@ export default function ProjectsPage() {
         </div>
       </section>
 
-      {/* Stats - Newspaper Info Box */}
+      {/* The Wire - Breaking Updates & Featured Story */}
       <section className="bg-[var(--muted)] border-b-4 border-[var(--foreground)]">
-        <div className="container mx-auto px-4 sm:px-6 lg:px-8 py-6">
-          <div className="max-w-4xl mx-auto">
-            <div className="border-4 border-double border-[var(--foreground)] bg-[var(--background)] p-6">
-              <div className="text-center mb-4">
-                <h3 className="text-sm font-black tracking-widest uppercase text-theme-muted border-b-2 border-[var(--foreground)] pb-2 inline-block px-4">
-                  At a Glance
-                </h3>
+        <div className="container mx-auto px-4 sm:px-6 lg:px-8 py-8">
+          <div className="max-w-6xl mx-auto">
+            {/* Wire Header */}
+            <div className="flex items-center gap-3 mb-6">
+              <div className="flex items-center gap-2 bg-[var(--foreground)] text-[var(--background)] px-3 py-1.5">
+                <div className="w-2 h-2 bg-red-500 rounded-full animate-pulse" />
+                <span className="text-xs font-black uppercase tracking-wider">Live</span>
               </div>
-              <div className="grid grid-cols-3 divide-x-2 divide-[var(--foreground)]">
-                <div className="text-center px-4">
-                  <div className="text-5xl font-black mb-1 text-[var(--foreground)]" style={{ fontFamily: 'serif' }}>
-                    {projects.filter((p: any) => p.status === 'ACTIVE').length}
-                  </div>
-                  <div className="text-xs font-black text-theme-muted uppercase tracking-wide">
-                    Active Projects
+              <div className="h-px flex-1 bg-[var(--foreground)]" />
+              <span className="text-xs font-black uppercase tracking-widest text-theme-muted">The Community Wire</span>
+              <div className="h-px flex-1 bg-[var(--foreground)]" />
+            </div>
+
+            <div className="grid lg:grid-cols-3 gap-6">
+              {/* Featured Story - Takes up 2 columns */}
+              {projects.length > 0 && (
+                <div className="lg:col-span-2">
+                  <div className="border-4 border-[var(--foreground)] bg-[var(--background)] h-full">
+                    <div className="bg-[var(--foreground)] text-[var(--background)] px-4 py-2">
+                      <span className="text-xs font-black uppercase tracking-widest">Featured Story</span>
+                    </div>
+                    <div className="p-6">
+                      {(() => {
+                        const featured = [...projects].sort((a: any, b: any) => b._count.members - a._count.members)[0]
+                        if (!featured) return null
+                        return (
+                          <>
+                            <div className="flex items-center gap-3 mb-3">
+                              <span className="text-xs font-black uppercase tracking-wide text-theme-muted border-2 border-[var(--foreground)] px-2 py-0.5">
+                                {featured.status === 'ACTIVE' ? 'Developing' : featured.status === 'COMPLETED' ? 'Success' : 'Planning'}
+                              </span>
+                              <span className="text-xs font-bold text-theme-muted">
+                                {featured._count.members} contributors
+                              </span>
+                            </div>
+                            <Link href={`/community/projects/${featured.slug}`}>
+                              <h3 className="text-3xl sm:text-4xl font-black leading-tight mb-3 hover:underline cursor-pointer" style={{ fontFamily: 'serif' }}>
+                                {featured.name}
+                              </h3>
+                            </Link>
+                            <p className="text-lg leading-relaxed text-[var(--foreground)] mb-4 line-clamp-3" style={{ fontFamily: 'serif' }}>
+                              {featured.description}
+                            </p>
+                            <div className="flex items-center justify-between pt-4 border-t-2 border-dashed border-[var(--border)]">
+                              <div className="flex items-center gap-2 text-sm text-theme-muted">
+                                <User className="w-4 h-4" />
+                                <span className="font-bold">Led by {featured.creator.name || 'Anonymous'}</span>
+                              </div>
+                              <Link href={`/community/projects/${featured.slug}`}>
+                                <Button variant="outline" size="sm" className="font-black text-xs uppercase tracking-wider border-2">
+                                  Full Story →
+                                </Button>
+                              </Link>
+                            </div>
+                          </>
+                        )
+                      })()}
+                    </div>
                   </div>
                 </div>
-                <div className="text-center px-4">
-                  <div className="text-5xl font-black mb-1 text-[var(--foreground)]" style={{ fontFamily: 'serif' }}>
-                    {projects.reduce((sum: number, p: any) => sum + p._count.members, 0)}
+              )}
+
+              {/* Sidebar - Quick Stats & Latest */}
+              <div className="space-y-4">
+                {/* Bulletin Board */}
+                <div className="border-4 border-double border-[var(--foreground)] bg-[var(--background)] p-4">
+                  <div className="text-center mb-3 pb-2 border-b-2 border-[var(--foreground)]">
+                    <span className="text-xs font-black uppercase tracking-widest">Bulletin Board</span>
                   </div>
-                  <div className="text-xs font-black text-theme-muted uppercase tracking-wide">
-                    Community Members
+                  <div className="space-y-3">
+                    <div className="flex items-center justify-between">
+                      <span className="text-sm font-bold">Active Initiatives</span>
+                      <span className="text-2xl font-black" style={{ fontFamily: 'serif' }}>
+                        {projects.filter((p: any) => p.status === 'ACTIVE').length}
+                      </span>
+                    </div>
+                    <div className="h-px bg-[var(--border)]" />
+                    <div className="flex items-center justify-between">
+                      <span className="text-sm font-bold">Total Contributors</span>
+                      <span className="text-2xl font-black" style={{ fontFamily: 'serif' }}>
+                        {projects.reduce((sum: number, p: any) => sum + p._count.members, 0)}
+                      </span>
+                    </div>
+                    <div className="h-px bg-[var(--border)]" />
+                    <div className="flex items-center justify-between">
+                      <span className="text-sm font-bold">Success Stories</span>
+                      <span className="text-2xl font-black" style={{ fontFamily: 'serif' }}>
+                        {projects.filter((p: any) => p.status === 'COMPLETED').length}
+                      </span>
+                    </div>
                   </div>
                 </div>
-                <div className="text-center px-4">
-                  <div className="text-5xl font-black mb-1 text-[var(--foreground)]" style={{ fontFamily: 'serif' }}>
-                    {projects.filter((p: any) => p.status === 'COMPLETED').length}
+
+                {/* Recent Headlines */}
+                <div className="border-2 border-[var(--foreground)] bg-[var(--background)]">
+                  <div className="bg-[var(--foreground)] text-[var(--background)] px-3 py-1.5">
+                    <span className="text-xs font-black uppercase tracking-wider">Recent Headlines</span>
                   </div>
-                  <div className="text-xs font-black text-theme-muted uppercase tracking-wide">
-                    Completed
+                  <div className="divide-y divide-[var(--border)]">
+                    {projects.slice(0, 3).map((project: any, index: number) => (
+                      <Link key={project.id} href={`/community/projects/${project.slug}`}>
+                        <div className="p-3 hover:bg-[var(--muted)] transition-colors cursor-pointer">
+                          <div className="flex items-start gap-2">
+                            <span className="text-lg font-black text-theme-muted" style={{ fontFamily: 'serif' }}>
+                              {index + 1}.
+                            </span>
+                            <div className="flex-1 min-w-0">
+                              <h4 className="text-sm font-black leading-tight line-clamp-2 hover:underline">
+                                {project.name}
+                              </h4>
+                              <p className="text-xs text-theme-muted mt-1">
+                                {project._count.members} members
+                              </p>
+                            </div>
+                          </div>
+                        </div>
+                      </Link>
+                    ))}
+                    {projects.length === 0 && (
+                      <div className="p-4 text-center text-sm text-theme-muted italic">
+                        No stories yet. Be the first!
+                      </div>
+                    )}
                   </div>
                 </div>
+
+                {/* Quick Action */}
+                <Link href="/community/projects/new" className="block">
+                  <div className="border-2 border-dashed border-[var(--foreground)] bg-[var(--background)] p-4 text-center hover:bg-[var(--muted)] transition-colors cursor-pointer group">
+                    <div className="text-xs font-black uppercase tracking-widest text-theme-muted mb-1">Submit Your Story</div>
+                    <div className="text-lg font-black group-hover:underline">Start a Project →</div>
+                  </div>
+                </Link>
               </div>
             </div>
           </div>
