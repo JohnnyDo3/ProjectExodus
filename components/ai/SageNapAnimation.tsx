@@ -55,16 +55,19 @@ export function SageNapAnimation() {
   }, [])
 
   // Calculate position along bezier curve based on progress
+  // Subtract 28px (half of 56px icon) to center the icon on the path
+  const iconHalfSize = 28
+
   const x = useTransform(progress, (p) => {
     if (!pathRef.current) return 0
     const { startX, controlX, endX } = pathRef.current
-    return quadraticBezier(p, startX, controlX, endX)
+    return quadraticBezier(p, startX, controlX, endX) - iconHalfSize
   })
 
   const y = useTransform(progress, (p) => {
     if (!pathRef.current) return 0
     const { startY, controlY, endY } = pathRef.current
-    return quadraticBezier(p, startY, controlY, endY)
+    return quadraticBezier(p, startY, controlY, endY) - iconHalfSize
   })
 
   // Generate sparkles along the arc path
@@ -224,12 +227,10 @@ export function SageNapAnimation() {
       <motion.div
         className="absolute"
         style={{
-          left: x,
-          top: y,
+          x,
+          y,
         }}
       >
-        {/* Centering wrapper */}
-        <div style={{ transform: 'translate(-50%, -50%)' }}>
         {/* Glowing trail effect */}
         <motion.div
           className="absolute inset-0 rounded-full"
@@ -286,7 +287,6 @@ export function SageNapAnimation() {
             ))}
           </motion.div>
         </div>
-        </div>
       </motion.div>
     </motion.div>,
     document.body
@@ -328,24 +328,27 @@ function SparkleElement({
     return 1.2 - (diff - 0.1) * 0.5
   })
 
+  // Calculate sparkle position with centering offset built in
+  const sparkleHalfSize = sparkle.size / 2
+
   const sparkleX = useTransform(progress, () => {
     if (!pathRef.current) return 0
     const { startX, controlX, endX } = pathRef.current
-    return quadraticBezier(sparkle.progress, startX, controlX, endX) + sparkle.offset.x
+    return quadraticBezier(sparkle.progress, startX, controlX, endX) + sparkle.offset.x - sparkleHalfSize
   })
 
   const sparkleY = useTransform(progress, () => {
     if (!pathRef.current) return 0
     const { startY, controlY, endY } = pathRef.current
-    return quadraticBezier(sparkle.progress, startY, controlY, endY) + sparkle.offset.y
+    return quadraticBezier(sparkle.progress, startY, controlY, endY) + sparkle.offset.y - sparkleHalfSize
   })
 
   return (
     <motion.div
       className="absolute"
       style={{
-        left: sparkleX,
-        top: sparkleY,
+        x: sparkleX,
+        y: sparkleY,
         opacity: sparkleOpacity,
         scale: sparkleScale,
         width: sparkle.size,
@@ -355,7 +358,6 @@ function SparkleElement({
       <div
         className="w-full h-full rounded-full"
         style={{
-          transform: 'translate(-50%, -50%)',
           background: 'radial-gradient(circle, rgba(251,191,36,0.9) 0%, rgba(245,158,11,0.6) 40%, transparent 70%)',
           boxShadow: '0 0 10px rgba(251,191,36,0.8), 0 0 20px rgba(251,191,36,0.4)',
         }}
