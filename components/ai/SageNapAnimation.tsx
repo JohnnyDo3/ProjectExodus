@@ -224,13 +224,12 @@ export function SageNapAnimation() {
       <motion.div
         className="absolute"
         style={{
-          x,
-          y,
-          // Center the element on the path point
-          translateX: '-50%',
-          translateY: '-50%',
+          left: x,
+          top: y,
         }}
       >
+        {/* Centering wrapper */}
+        <div style={{ transform: 'translate(-50%, -50%)' }}>
         {/* Glowing trail effect */}
         <motion.div
           className="absolute inset-0 rounded-full"
@@ -286,6 +285,7 @@ export function SageNapAnimation() {
               />
             ))}
           </motion.div>
+        </div>
         </div>
       </motion.div>
     </motion.div>,
@@ -344,12 +344,10 @@ function SparkleElement({
     <motion.div
       className="absolute"
       style={{
-        x: sparkleX,
-        y: sparkleY,
+        left: sparkleX,
+        top: sparkleY,
         opacity: sparkleOpacity,
         scale: sparkleScale,
-        translateX: '-50%',
-        translateY: '-50%',
         width: sparkle.size,
         height: sparkle.size,
       }}
@@ -357,6 +355,7 @@ function SparkleElement({
       <div
         className="w-full h-full rounded-full"
         style={{
+          transform: 'translate(-50%, -50%)',
           background: 'radial-gradient(circle, rgba(251,191,36,0.9) 0%, rgba(245,158,11,0.6) 40%, transparent 70%)',
           boxShadow: '0 0 10px rgba(251,191,36,0.8), 0 0 20px rgba(251,191,36,0.4)',
         }}
