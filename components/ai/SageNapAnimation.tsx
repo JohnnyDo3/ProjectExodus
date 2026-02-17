@@ -225,7 +225,7 @@ export function SageNapAnimation() {
 
       {/* Flying Sage Icon */}
       <motion.div
-        className="absolute"
+        className="absolute left-0 top-0"
         style={{
           x,
           y,
@@ -345,7 +345,7 @@ function SparkleElement({
 
   return (
     <motion.div
-      className="absolute"
+      className="absolute left-0 top-0"
       style={{
         x: sparkleX,
         y: sparkleY,
