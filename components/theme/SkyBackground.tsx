@@ -20,8 +20,12 @@ export function SkyBackground() {
         />
       )}
 
-      {/* Night Sky with Constellations */}
-      {isNightTime && <NightSkyConstellations />}
+      {/* Night Sky with Constellations - fixed position for all pages */}
+      {isNightTime && (
+        <div className="fixed inset-0 z-0">
+          <NightSkyConstellations />
+        </div>
+      )}
 
       {/* Content overlay to ensure content is above background */}
       <div className="relative z-10">

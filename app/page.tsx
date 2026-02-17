@@ -2,7 +2,6 @@ import Link from 'next/link'
 import { Button } from '@/components/ui/Button'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/Card'
 import { Leaf, Droplet, Zap, Users, Heart, BookOpen, Award, Sprout } from 'lucide-react'
-import { NightSkyConstellations } from '@/components/theme/NightSkyConstellations'
 import { TreeBranches } from '@/components/decorative/TreeBranches'
 import { FlyingBirds } from '@/components/decorative/FlyingBirds'
 import { CircularCarousel } from '@/components/carousel/CircularCarousel'
@@ -142,11 +141,6 @@ export default function Home() {
                style={{ transform: 'translateZ(0) scale(1.3)' }} />
           <div className="absolute top-1/2 left-1/3 w-80 h-80 bg-[var(--secondary)] rounded-full blur-3xl opacity-20"
                style={{ transform: 'translateZ(0)' }} />
-        </div>
-
-        {/* Night Sky Constellations - Only at night */}
-        <div className="absolute inset-0 z-[1]">
-          <NightSkyConstellations starCount={1400} />
         </div>
 
         {/* Main Hero Content - pointer-events-none allows constellation hover through text */}
